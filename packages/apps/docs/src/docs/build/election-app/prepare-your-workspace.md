@@ -10,7 +10,7 @@ tags: [pact, smart contract, typescript, tutorial]
 
 # Prepare your workspace
 
-To get started with the Election workshop, you first need to prepare a working environment with some starter code for the election website you''ll be building.
+To get started with the Election workshop, you first need to prepare a working environment with some starter code for the election application website you''ll be building.
 In this tutorial, you'll complete the following tasks:
 
 - Clone the project repository.
@@ -78,7 +78,7 @@ To use the Pact extension in Visual Studio Code:
 
 4. In the Visual Studio Code editor, select **View**, then click **Extensions**.
 
-5. Type Pact to search for the extension, select Pact from the search results, then click **Install**.
+5. Type Pact to search for the extension, select **Pact** from the search results, then click **Install**.
    
    You can also install the Pact Snippets extension.
    The Pact Snippets extension provides a collection of code templates for common operations.
@@ -87,10 +87,10 @@ To use the Pact extension in Visual Studio Code:
 
 1. Click the **Explorer** view and notice that the `election-dapp` contains the following folders: 
    
-   - The `frontend` folder contains the files for the election website.
+   - The `frontend` folder contains the files for the election application website.
      In this tutorial, the website consists of React components, but you could use any framework to create the frontend.
      The frontend of the application connects to the blockchain through the [Kadena client](https://www.npmjs.com/package/@kadena/client).
-     The Kadena client is an `npm` package that can be imported into any JavaScript projec and acts as a conduit for making HTTP API requests to the blockchain. 
+     The Kadena client is an `npm` package that can be imported into any JavaScript project and acts as a conduit for making HTTP API requests to the blockchain. 
      You'll get a closer look at the frontend components in [Explore the frontend application](#explore-the-frontend-application).
 
    - The `pact` folder contains your smart contract `.pact` files  and the `.repl` files that are used to test your smart contracts before you deploy them. You'll see that the `pact/root` folder already contains some `.pact` files. 
@@ -98,20 +98,22 @@ To use the Pact extension in Visual Studio Code:
       These modules are for local testing with `.repl` files. 
       You don't need to deploy them because they are deployed on Kadena networks by default.
 
-   - The `snippets` folder contains JavaScript snippets that use the Kadena client library to perform actions against the blockchain that aren't directly related to the functionality of the election application. 
-      For example, files in the snippets folder support deploying and upgrading smart contracts, creating and funding accounts, and transferring coins. 
-      You'll learn more about the snippets in the later tutorials.
+   - The `snippets` folder contains scripts that use the Kadena client library to perform actions against the blockchain that aren't directly related to the functionality of the election application. 
+      For example, files in the `snippets` folder support deploying and upgrading smart contracts, creating and funding accounts, and transferring funds between accounts. 
+      You'll learn more about the scripts in the `snippets` folder in later tutorials.
 
 ## Explore the frontend application
 
-Initially, the election website uses React components that are not connected to a blockchain backend. 
+Initially, the election application website uses React components that are not connected to a blockchain backend. 
 Inside of the React components, data is manipulated by calling service methods.
-The services methods get a specific implementation of repositories injected—depending on the project configuration—and, at this point, the project is configured to use an in-memory implementation of repositories and perform all data operations on JavaScript arrays and objects defined in the same file. 
+The services methods get a specific implementation of repositories injected depending on the project configuration.
+At this point, the project is configured to use an **in-memory** implementation of the repositories.
+The project performs all data operations using JavaScript arrays and objects that are defined in an in-memory backend file. 
 
 The in-memory implementation allows you to explore the basic data flow as a frame of reference before you start building the blockchain implementation. 
 By exploring the application before you start building, you'll have some context to help you understand the work you're about to do.
 
-To explore the election website frontend application:
+To explore the election application website frontend:
 
 1. Open a terminal shell on your computer.
 
@@ -122,7 +124,7 @@ To explore the election website frontend application:
    git branch
    ```
 
-3. Change to the frontend directory by running the following command:
+3. Change to the `frontend` directory by running the following command:
 
    ```bash
    cd ./frontend
@@ -143,9 +145,10 @@ To explore the election website frontend application:
 2. Open a browser and navigate to the URL `http://localhost:5173`.
 
    The website displays a list of candidates and the number of votes each candidate has received. 
-   You can set an account name and cast a vote on any of the candidates. 
-   You can only cast one vote per account.
-   You can also add candidates. 
+   If you have a Kadena account, you can set an account name and cast a vote on any of the candidates. 
+   The application only allows you to cast one vote per account.
+   
+   If you have a Kadena account, you can also add candidates. 
    There are no specific permissions required to perform any operation at this point.
 
    Because all data is manipulated in memory, the state of the frontend is reset as soon as you refresh the page.
@@ -155,5 +158,6 @@ To explore the election website frontend application:
 At this point, you have a basic development environment and an overview of the project directory structure. 
 You have also had you're first look at the frontend for the election website and explored its main features. 
 
-In the next tutorial, you'll start a development network—`devnet`—blockchain on your local computer inside of a Docker container. 
+In the next tutorial, you'll start a development network—**devnet**—on your local computer inside of a Docker container. 
+The development network is a local blockchain similar to the Kadena test network where you can experiment with different features in an isolated environment.
 After you get the development network running, you'll be ready to start developing smart contracts to connect the election application to the blockchain backend.

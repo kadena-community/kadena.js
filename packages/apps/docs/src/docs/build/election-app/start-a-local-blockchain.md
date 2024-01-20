@@ -18,7 +18,7 @@ The smart contract you'll be writing for the election application defines rules 
 - Storing the nominated candidates and the votes for each candidate.
 
 Before you publish any smart contract on a public network, like the Kadena test network or the Kadena main network, you should always test that the contract works as expected on your local computer.
-In this tutorial, you'll set up a local development network—`devnet`—to run a blockchain inside of a Docker container on your local computer.
+In this tutorial, you'll set up a local development network—**devnet**—to run a blockchain inside of a Docker container on your local computer.
 You can use this development network to test your smart contracts and experiment with code in an isolated environment that your can reset to a clean state at any time.
 
 ## Before you begin
@@ -27,12 +27,12 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git election-dapp) as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace) and have checkd out the `01-getting-started` branch.
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) as described in [Prepare your workspace](/build/election/prepare-your-workspace) and have checked out the `01-getting-started` branch.
 - You have [Docker](https://docs.docker.com/get-docker/) installed and are generally familiar with using Docker commands for containerized applications.
 
 ## Run the development network in Docker
 
-The Kadena development network—called `devnet`—is a fully functional Kadena blockchain network that runs inside of a Docker application container.
+The Kadena development network—called **devnet**—is a fully functional Kadena blockchain network that runs inside of a Docker application container.
 For this tutorial, you'll want to start the blockchain with a clean slate every time you stop and restart the container.
 Because you don't need to maintain the state of the local blockchain between restarts, you can start the container without creating a persistent volume.
 
@@ -50,15 +50,16 @@ To start the local development network:
    docker run --interactive --tty --publish 8080:8080 kadena/devnet:latest
    ```
 
-   You can stop the network at any time—and reset the blockchain state—by pressing Ctrl-c in the terminal. starting it again with the command above.
+   You can stop the network at any time—and reset the blockchain state—by pressing Ctrl-c in the terminal. 
+   After you stop the network, restart it using the previous command or one of the commands that follow.
 
-   If you encounter an error where the version of Chainweb is invalid after a certain date (mostly after a service date) run the following command to pull the latest version
+   If you encounter an error where the version of Chainweb is invalid after a certain date (typically after a service update), run the following command to pull the latest version:
 
    ```shell
    docker run --pull=always --interactive --tty --publish 8080:8080 kadena/devnet:latest
    ```
 
-   If you can't run the Pact executable on your local computer, you can mount the `./pact` folder of the project in the container by running the following command:
+   If you can't run the Pact executable on your local computer, you can mount the `./pact` folder for the election project in the Docker container by running the following command:
 
    ```bash
    docker run --interactive --tty \
@@ -67,7 +68,7 @@ To start the local development network:
     kadena/devnet:latest
    ```
 
-   If you mount the `pact` folder, you can execute `pact` commands using an interactive `pact>` shell in your browser at [http://localhost:8080/ttyd/pact-cli/](http://localhost:8080/ttyd/pact-cli/).
+   If you mount the `pact` folder in the Docker container, you can execute `pact` commands using an interactive `pact>` shell in your browser at [http://localhost:8080/ttyd/pact-cli/](http://localhost:8080/ttyd/pact-cli/).
 
    After you start the development network, you'll see information about the network processes displayed in a terminal console.
 
@@ -94,7 +95,8 @@ To create a Chainweaver account:
 
 1. Click **Copy** to copy the 12-word recovery phrase to the clipboard so you can save it in a secure location, for example, as a note in a password vault.
 
-   You can also reveal each word by moving the cursor over the text field in the browser. Write each word in the correct order and store the complete recovery phrase in a secure place.
+   You can also reveal each word by moving the cursor over the text field in the browser. 
+   Write each word in the correct order and store the complete recovery phrase in a secure place.
 
 1. Confirm that you have stored the recovery phrase, then click **Continue**.
 
@@ -155,9 +157,10 @@ list of unique contracts that are deployed to development network by default:
    - Organizing contracts into namespaces in the `ns` contract.
 
    These contracts are the same as the contracts in the `./pact/root` folder of your project.
-   As you might remember from [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace), the contracts exist in your project to enable local testing without connecting to the development network.
+   As you might remember from [Prepare your workspace](/build/election/prepare-your-workspace), the contracts exist in your project to enable local testing without connecting to the development network.
 
-   You should also note that these default contracts aren't related to the election application. You'll be creating election-related content in contracts in later tutorials.
+   You should also note that these default contracts aren't related to the election application. 
+   You'll be creating election-related content in contracts in later tutorials.
 
 1. Click **View** for the `coin` contract to view its details.
 
@@ -169,7 +172,7 @@ list of unique contracts that are deployed to development network by default:
    - details
    - create-account
 
-   You'll interact with these functions and learn more about these features of smart contracts and in later tutorials.
+   You'll interact with these functions and learn more about these features of smart contracts in later tutorials.
    For now, it's enough to have a general idea of what's in a typical contract.
 
 2. Click **Open** to load the source code for the `coin` contract into the left pane.
@@ -223,7 +226,7 @@ To explore using TypeScript and Kadena client:
    Notice that when the environment variable `KADENA_NETWORK` is set to `devnet`, the functions exported from this file return the following:
 
    - The network identifier `fast-development`.
-   - The chain identifier `1`
+   - The chain identifier `1`.
    - The API base URL `localhost:8080`—the host and port for the node you previously specified for the development network—and appended with the network id and chain id.
 
    These configuration settings are loaded into the `list-modules.ts` file to configure the transaction that is sent to your local blockchain using the Kadena client.
@@ -268,8 +271,7 @@ To explore using TypeScript and Kadena client:
 
    The rest of the `main` function processes the response from the API.
 
-1. Execute the `(list-modules)` script by running the following command in a terminal window
-with the current directory set to the `./snippets` folder:
+2. Execute the `(list-modules)` script in the terminal by running the following command:
 
    ```bash
    npm run list-modules:devnet
@@ -292,12 +294,13 @@ with the current directory set to the `./snippets` folder:
    ```
 
    This list is the same as the list displayed in the Chainweaver Module Explorer.
-   You can use either Chainweaver or Kadena client to interact with the Kadena blockchain. These tools support both simple read operations and complex multi-step transactions.
-   You'll learn more about using Chainweaver and Kadena client to test smart contracts in later tutorials as you develop functionality for the election back-end.
+   You can use either Chainweaver or Kadena client to interact with the Kadena blockchain. 
+   These tools support both simple read operations and complex multi-step transactions.
+   You'll learn more about using Chainweaver and Kadena client to test smart contracts in later tutorials as you develop functionality for the election backend.
 
 ## Next steps
 
-At this point, you have a functioning Kadena blockchain development network—`devnet`—running on your local computer.
+At this point, you have a functioning Kadena blockchain development network—**devnet**—running on your local computer.
 In this tutorial, you learned:
 
 -  How to start and stop a development network running on your local computer.

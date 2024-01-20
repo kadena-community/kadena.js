@@ -12,7 +12,7 @@ tags: [pact, smart contract, typescript, tutorial]
 
 In the previous tutorial, you built and deployed an election smart contract on the local development network. 
 You then connected the frontend built with the `@kadena/client` library to the development network backend.
-After connecting the frontend to the development network backend, you were able to add a candidate to a `candidates` database table in the Pact `election` module and see the results in the election application website.
+After connecting the frontend to the development network backend, you were able to add a candidate to the `candidates` database table in the Pact `election` module and see the results in the election application website.
 
 In this tutorial, you'll update the `election` module to allow anyone with a Kadena account to cast a vote on a candidate. 
 After you update the backend functionality, you'll modify the frontend to use the development network so that Kadena account holders can vote using the election application website and have their votes recorded on the blockchain, ensuring the security and transparency of the election process.
@@ -23,13 +23,13 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace).
-- You have the development network running in a Docker container as described in [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain).
-- You are [connected to the development network](/build/guides/election-dapp-tutorial/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
-- You have created and funded an administrative account as described in [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
-- You have created a principal namespace on the development network as described in [Define a namespace](/build/guides/election-dapp-tutorial/define-a-namespace).
-- You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/guides/election-dapp-tutorial/define-keysets).
-- You have created an election Pact module and deployed it as described in [Write a smart contract](/build/guides/election-dapp-tutorial/write-a-smart-contract) and updated its functionality as described in [Nominate candidates](/build/guides/election-dapp-tutorial/nominate-candidates).
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
+- You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
+- You are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
+- You have created and funded an administrative account as described in [Add an administrator account](/build/election-dapp-tutorial/add-admin-account).
+- You have created a principal namespace on the development network as described in [Define a namespace](/build/election/define-a-namespace).
+- You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/election/define-keysets).
+- You have created an election Pact module and deployed it as described in [Write a smart contract](/build/election/write-a-smart-contract) and updated its functionality as described in [Nominate candidates](/build/election/nominate-candidates).
 
 ## Increment votes for a candidate
 

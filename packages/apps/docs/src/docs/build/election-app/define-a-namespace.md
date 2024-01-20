@@ -32,22 +32,22 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git election-dapp) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started) and have checked out the `01-getting-started` branch.
-- You have the development network running in a Docker container as described in [Start a local blockchain](/build/guides/election-dapp-tutorial/02-running-devnet).
-- You are [connected to the development network](/build/guides/election-dapp-tutorial/02-running-devnet#connect-to-the-development-network) using your local host IP address and port number 8080.
-- You have created and funded an administrative account as described in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
+- You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
+- You are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
+- You have created and funded an administrative account as described in [Add an administrator account](/build/election/add-admin-account).
 
 ## Write a transaction in Pact
 
-In this tutorial, you'll write and execute some code using the Pact smart contract programming language and the Pact REPL. 
+In this tutorial, you'll write and execute some code using the Pact smart contract programming language and the Pact read–eval–print-loop (REPL) interactive shell program. 
 
 To write a simple transaction in Pact:
 
-1. Open the `election-dapp/pact` folder in a terminal shell on your computer.
+1. Open the `election-dapp/pact` folder in the code editor on your computer.
 
-3. Create a new file named `namespace.repl` in the `pact` folder. 
+2. Create a new file named `namespace.repl` in the `pact` folder. 
 
-4. Write an empty transaction by typing the following lines of code in the `namespace.repl` file:
+3. Write an empty transaction by typing the following lines of code in the `namespace.repl` file:
    
    ```pact
    (begin-tx
@@ -56,15 +56,19 @@ To write a simple transaction in Pact:
    (commit-tx)
    ```
 
-5. Execute the transaction using the `pact` command-line program running locally or in a browser.
+4. Save your changes.
 
-   If `pact-cli` is installed locally, run the following command in the current terminal shell:
+5. Change to the `pact` folder in a terminal within your code editor.
+
+6. Execute the transaction using the `pact` command-line program.
+
+   If `pact-cli` is installed locally, run the following command inside the `pact` folder in the terminal shell:
    
    ```bash
    pact namespace.repl -t
    ```
    
-  After you execute the file, you should see the following output:
+   After you execute the file, you should see the following output:
    
    ```bash
    namespace.repl:1:0:Trace: Begin Tx 0: Define a namespace called 'election
@@ -81,18 +85,18 @@ To write a simple transaction in Pact:
     --volume ./pact:/pact-cli:ro kadena/devnet:latest
    ```
    
-   After you start the development network with the `pact` folder mounted, you can load the `namespace.repl` file in the [pact-cli](http://localhost:8080/ttyd/pact-cli/) with the following command:
+   After you start the development network with the `pact` folder mounted, you can load the `namespace.repl` file with the following command:
 
    ```pact
    (load "namespace.repl")
    ```
 
-   If you are using the pact-cli in a browser, you can replace the `pact namespace.repl -t` command with `(load "namespace.repl")` throughout this tutorial.
+   If you are using `pact-cli` in a browser, you can replace the `pact namespace.repl -t` command with `(load "namespace.repl")` throughout this tutorial.
 
 ## Use Pact built-in functions
 
 Pact has two built-in functions to define and work inside of a namespace: `define-namespace` and `namespace`. 
-To define a namespace, you must specify a user keyset and an admin keyset.
+To define a namespace, you must specify a **user keyset** and an **admin keyset**.
 These two keysets control who can access the namespace and what they can do.
 - The user keyset controls who can use the modules and contracts deployed to the namespace.
 - The admin keyset controls who owns the namespace and can upload or modify what the namespace contains.
@@ -104,7 +108,7 @@ For this function call, you must provide the following information as arguments:
 
 - The name of the namespace.
 - The keyset that defines who can use the namespace.
-- The keyset that defines who governs the namespace. 
+- The keyset that defines who owns the namespace and governs what it contains. 
 
 ### Arguments for the expect function
 
@@ -119,7 +123,7 @@ The `expect` function takes three arguments:
 
 To define the election application namespace with the `define-namespace` function:
 
-1. Open the `election-dapp/pact/namespace.repl` file in a terminal shell on your computer.
+1. Open the `election-dapp/pact/namespace.repl` file in the code editor on your computer.
 
 2. Add the following lines of code between the `begin-tx` and `commit-tx` lines:
 
@@ -147,7 +151,7 @@ To define the election application namespace with the `define-namespace` functio
    Load failed
    ```
    
-   For the transaction to succeed, you must first load the `user-keyset` and `admin-keyset` into the context of the Pact REPL so they can be read using the `read-keyset` function.
+   For the transaction to succeed, you must first load the `user-keyset` and `admin-keyset` into the context of the Pact REPL so they can be read using the `read-keyset` function within the `define-namespace` function.
 
 4. Add the following lines at the top of the `namespace.repl` file:
 
@@ -185,12 +189,12 @@ To define the election application namespace with the `define-namespace` functio
 
 ## Modify the namespace
 
-After you define a namespace, only the `admin-keyset`—the namespace owner—you can update the namespace. 
+After you define a namespace, only the `admin-keyset`—the namespace owner—can update the namespace. 
 You can test this behavior by creating a new transaction to modify the namespace with an instruction to allow the `user-keyset` to govern the namespace and limit the `admin-keyset` to only use the namespace. 
 
 To test modifying the election application namespace:
 
-1. Open the `election-dapp/pact/namespace.repl` file in a terminal shell on your computer.
+1. Open the `election-dapp/pact/namespace.repl` file in the code editor on your computer.
 
 2. Add the following lines of code as a second transaction at the bottom of the `namespace.repl` file:
    
@@ -214,7 +218,7 @@ To test modifying the election application namespace:
 
    You'll see that this transaction fails with a message containing `Keyset failure` because only the `admin-keyset` is allowed to update the namespace and the transaction isn't signed by the `admin-keyset`.
 
-4. Sign the transaction with the `admin-keyset` by loading it into the context of the Pact REPL right before the last transaction with the following lines of code and run `namespace.repl` again.
+4. Sign the transaction with the `admin-keyset` by loading it into the context of the Pact REPL right before the last transaction with the following lines of code:
 
    ```pact
    (env-sigs
@@ -230,7 +234,7 @@ To test modifying the election application namespace:
    pact namespace.repl -t
    ```
    
-  You'll see that the update transaction succeeds with output similar to the following:
+   You'll see that the update transaction succeeds with output similar to the following:
    
    ```bash
    namespace.repl:1:0:Trace: Setting transaction data
@@ -251,13 +255,12 @@ To test modifying the election application namespace:
 Now that you have successfully modified the `election` namespace, you can no longer use the `admin-keyset` to sign transactions that modify the namespace.
 You can confirm this behavior by adding another transaction that attempts to redefine the namespace with the same permissions that you used when you initially created the namespace.
 
-This transaction is expected to fail because it's signed using the `admin-keyset` and the admin-keyset no longer governs the namespace.
-after the previous transaction. 
-Therefore, for this example, you can wrap the `define-namespace` function inside an `expect-failure` function to assert that redefining the namespace will fail. 
+This transaction is expected to fail because it's signed using the `admin-keyset` and that keyset no longer governs the namespace after the previous transaction. 
+Therefore, for this example, you can wrap the `define-namespace` function inside an `expect-failure` function to assert that redefining the namespace is expected to fail. 
 
 To verify that redefining the election application namespace fails:
 
-1. Open the `election-dapp/pact/namespace.repl` file in a terminal shell on your computer.
+1. Open the `election-dapp/pact/namespace.repl` file in the code editor on your computer.
 
 2. Add the following lines of code as a third transaction at the bottom of the `namespace.repl` file:
    
@@ -279,7 +282,7 @@ To verify that redefining the election application namespace fails:
    pact namespace.repl -t
    ```
 
-   You'll see that the transaction fails as expected with output similar to the following:
+   You'll see that the redefining the namespace fails—as expected—with output similar to the following:
    
    ```bash
    namespace.repl:36:0:Trace: Begin Tx 2: Try to update the 'election' namespace with the wrong permissions
@@ -294,7 +297,7 @@ To verify that the `user-keyset` can now redefine the namespace, you can load th
 
 To verify that redefining the election application namespace succeeds:
 
-1. Open the `election-dapp/pact/namespace.repl` file in a terminal shell on your computer.
+1. Open the `election-dapp/pact/namespace.repl` file in the code editor on your computer.
 
 2. Add the following lines of code as a fourth transaction at the bottom of the `namespace.repl` file:
    
@@ -321,7 +324,7 @@ To verify that redefining the election application namespace succeeds:
    pact namespace.repl -t
    ```
 
-   You'll see that the transaction fails as expected with output similar to the following:
+   You'll see that the transaction succeeds with output similar to the following:
    
    ```bash
    namespace.repl:50:0:Trace: Begin Tx 3: Redefine a namespace called 'election as the new admin
@@ -345,7 +348,7 @@ The steps are similar to what you've done before.
 
 To create a principal namespace:
 
-1. Open the `election-dapp/pact` folder in a terminal shell on your computer.
+1. Open the `election-dapp/pact` folder in the code editor on your computer.
 
 3. Create a new file named `principal-namespace.repl` in the `pact` folder.
 
@@ -361,11 +364,11 @@ To create a principal namespace:
    )
    ```
 
-5. Load the `ns` module from the local filesystem to make it available in the Pact REPL by adding the following lines of code to the principal-namespace.repl:
+5. Load the `ns` module from the local filesystem to make it available in the Pact REPL by adding the following lines of code to the `principal-namespace.repl`:
     
    ```pact
    (begin-tx)
-   (load "root/ns.pact")
+     (load "root/ns.pact")
    (commit-tx)
    ```
    
@@ -393,12 +396,12 @@ To create a principal namespace:
    - The output of the `ns.create-principal-namespace` function is stored in the `ns-name` variable.
    - The `define-namespace` function takes the output stored in  `ns-name` variable as its first argument to create the unique name for the namespace. 
    
-   The code is similar to the code you wrote in the `namespace.repl` file except that you're using the `ns` module and passing the `ns-name` variable `ns-name` instead of using a hardcoded string `election`. 
+   The code is similar to the code you wrote in the `namespace.repl` file except that you're using the `ns` module and passing the `ns-name` variable instead of using a hardcoded  `election` string. 
 
-3. Execute the transaction using the `pact` command-line program:
+2. Execute the transaction using the `pact` command-line program:
    
    ```bash
-   pact namespace.repl -t
+   pact principal-namespace.repl -t
    ```
 
    You'll see that the transaction succeeds with output similar to the following:
@@ -415,8 +418,8 @@ To create a principal namespace:
    Load successful
    ```
 
-In this example, you defined a principal namespace in the Pact REPL using the public key for `sender00` account. 
-Next, you can define a principal namespace on the development network using the administrative account you created in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
+In this example, you defined a principal namespace in the Pact REPL using the public key for the `sender00` test account. 
+Next, you can define a principal namespace on the development network using the administrative account you created in [Add an administrator account](/build/election/add-admin-account).
 
 ## Create your own principal namespace
 
@@ -438,7 +441,7 @@ To create your principal namespace on the development network:
 
 3. Open the `election-dapp/snippets/principal-namespace.ts` file in your code editor. 
 
-   The `pactCommand` variable in this file contains the Pact code for defining a principal namespace that you tested in the Pact REPL.
+   The `pactCommand` variable in this file contains the same Pact code for defining a principal namespace that you tested in the Pact REPL.
 
    ```typescript
    async function main(account: string) {
@@ -481,15 +484,15 @@ To create your principal namespace on the development network:
    npm run create-namespace:devnet -- k:<your-public-key>
    ```
    
-  Remember that `k:<your-public-key>` is the default **account name** for your administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
-  You can copy this account name from Chainweaver when viewing the account watch list.
+   Remember that `k:<your-public-key>` is the default **account name** for your administrative account that you funded in [Add an administrator account](/build/election/add-admin-account).
+   You can copy this account name from Chainweaver when viewing the account watch list.
 
-  When you run the script, you should see Chainweaver display a QuickSign Request.
-  For example:
+   When you run the script, you should see Chainweaver display a QuickSign Request.
+   For example:
+   
+   ![Sample QuickSign request](/assets/docs/election-workshop/quicksign-request.png)
 
-  ![Sample QuickSign request](/assets/docs/election-workshop/quicksign-request.png)
-
-  If you don't see the request automatically, select Chainweaver to bring it to the foreground. 
+   If you don't see the request automatically, select Chainweaver to bring it to the foreground. 
 
 1. Click **Sign All** to sign the request.
 
@@ -503,7 +506,7 @@ To create your principal namespace on the development network:
    }
    ```
 
-You now have a unique **principal namespace** that you can use in your local development network and that can be governed and used by your administrative account.
+You now have a unique **principal namespace** that you can use in your local development network and that you can govern using your administrative account.
 
 ## Next steps
 

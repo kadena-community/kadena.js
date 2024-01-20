@@ -97,7 +97,7 @@ whether your development environment meets the following basic requirements:
 
 If you have everything you need, let’s start building the election website by
 following the workshop roadmap to get started with
-[Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started).
+[Prepare your workspace](/build/election/prepare-your-workspace).
 
 ## Workshop roadmap
 
@@ -112,15 +112,15 @@ begin building the blockchain back-end for the election website. The workshop
 repository contains branches with starter code for every tutorial, so you can
 compare your solution with the finished code at every step along the way.
 
-- [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace)
-- [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain)
-- [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account)
-- [Define a namespaces](/build/guides/election-dapp-tutorial/define-a-namespace)
-- [Define keysets](/build/guides/election-dapp-tutorial/05-keysets)
-- [Write the smart contract](/build/guides/election-dapp-tutorial/06-smart-contract)
-- [Nominate candidates](/build/guides/election-dapp-tutorial/07-nominate-candidates)
-- [Add voting management](/build/guides/election-dapp-tutorial/08-voting)
-- [Add a gas station](/build/guides/election-dapp-tutorial/09-gas-station)
+- [Prepare your workspace](/build/election/prepare-your-workspace)
+- [Start a local blockchain](/build/election/start-a-local-blockchain)
+- [Add an administrator account](/build/election/add-admin-account)
+- [Define a namespaces](/build/election/define-a-namespace)
+- [Define keysets](/build/election/define-keysets)
+- [Write the smart contract](/buildelection/write-a-smart-contract)
+- [Nominate candidates](/build/election/nominate-candidates)
+- [Add voting management](/build/election/add-vote-management)
+- [Add a gas station](/build/election/add-a-gas-station)
 
 Stay tuned for future editions of this workshop and for more intermediate and
 advanced tutorials covering additional topics, such as:
@@ -132,4 +132,4 @@ To suggest topics you’d like to see covered in future tutorials and workshops,
 submit a
 [documentation request](https://github.com/kadena-community/kadena.js/issues/new?assignees=&labels=documentation&projects=&template=003-improve_documentation.yml).
 If you'd like to contribute content—either in the form of a new tutorial or to
-fix issues—see our [contributor's guide](/contribute/docs).
+fix issues—see our [contributor's guide](/participate/docs).

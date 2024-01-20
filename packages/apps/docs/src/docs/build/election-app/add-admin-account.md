@@ -34,13 +34,13 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git election-dapp) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace) and have checked out the `01-getting-started` branch.
-- You have the development network running in a Docker container as described in [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain).
-- You have created a [Chainweaver account](/build/guides/election-dapp-tutorial/start-a-local-blockchain#create-a-chainweaver-accounth-214253667) and are [connected to the development network](/build/guides/election-dapp-tutorial/start-a-local-blockchain#connect-to-the-development-networkh1207030923) using your local host IP address and port number 8080.
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
+- You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
+- You have created a [Chainweaver account](/build/election/start-a-local-blockchain#create-a-chainweaver-account) and are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
 
 ## Generate the administrative key pair
 
-There are many tools you can use to create keys, including the Chainweaver application you used in previous tutorial.
+There are many tools you can use to create keys, including the Chainweaver application you used in the previous tutorial.
 In fact, if you followed that tutorial, you already have a public and private key pair that you could use as the basis for your administrative account.
 However, for demonstration purposes in this tutorial, let's create a new key in Chainweaver and use the new key as the basis for your Kadena account.
 
@@ -63,9 +63,9 @@ To create a new key pair and account:
 
    ![Initial state of a new account](/assets/docs/election-workshop/new-admin-account.png)
 
-   In this initial state, the account name acts as a placeholder but the account doesn't exist yet on the development network.
+   In this initial state, the account name acts as a placeholder, but the account doesn't exist yet on the development network.
 
-   If you change to the `./snippets` folder in the root of your project, you can also verify that your account doesn't exist using the Kadena client.
+   If you change to the `./snippets` folder in the election project directory, you can also verify that your account doesn't exist using the Kadena client.
    For example, you can run the `coin-details` script for the administrative account you just added with a command similar to the following:
 
    ```bash
@@ -82,8 +82,7 @@ To create a new key pair and account:
 ## Transfer coins to create an account
 
 An account must have funds before it can be used on any Kadena blockchain.
-To interact with the Kadena main public network (`mainnet`), you typically buy KDA as a digital asset through an exchange then transfer the KDA to the Kadena account you want to
-fund.
+To interact with the Kadena main public network (`mainnet`), you typically buy KDA as a digital asset through an exchange then transfer the KDA to the Kadena account you want to fund.
 For the Kadena test network (`testnet`), you can submit a request to [transfer 20 KDA](https://faucet.testnet.chainweb.com/) to a specified account for testing purposes.
 
 To interact with the local development network (`devnet`), you can either:
@@ -105,10 +104,10 @@ To transfer coins to fund the administrative account:
    This script uses the Kadena client to call the `transfer-create` function of the `coin` contract to create and fund your administrative account.
    After importing the dependencies and creating the client with the `devnet` configuration, the `main` function is called with information about the sender, the receiver, and the amount.
 
-   - The sender—`sender00`—is one of the pre-installed Devnet test accounts that holds some KDA on all chains.
+   - The sender—`sender00`—is one of the pre-installed development network test accounts that holds some KDA on all chains.
      The public and private key for this account are copied from GitHub.
    - You specify the receiver—your administrative account name—as an argument when running the script.
-   -  The amount to transfer to the receiver is hardcoded to 20.
+   - The amount to transfer to the receiver is hardcoded to 20.
 
    Inside the `main` function, the amount to transfer is converted to a `PactDecimal` with the format: `{ decimal: '20.0' }`.
 
@@ -118,11 +117,12 @@ To transfer coins to fund the administrative account:
    To define the guard for the account, the `.addData()` function uses the public key of the administrative account as the only key and `keys-all` as the predicate.
    This guard associates the public key of your administrative account with the private key you hold in Chainweaver to ensure that only you can control the account.
 
-   The `.addSigner()` function specifies that the sender must sign the transaction to pay the gas fee and to make the transfer with the provided details.
+   The `.addSigner()` function specifies that the sender must sign the transaction to pay the transaction fee—commonly referred to as **gas**—and to make the transfer with the provided details.
    In the `.setMeta()` function, `sender00` is specified as the `senderAccount`.
-   After setting the network id from the `devnet` configuration, the transaction is created. Next, the transaction is signed with the private key of the `sender00` account and the transaction is submitted.
+   After setting the network id from the `devnet` configuration, the transaction is created.
+   The transaction is then signed with the private key of the `sender00` account and the transaction is submitted.
 
-3. Create and fund your administrative account using the `transfer-create` script by running  a command similar to the following with your administrative account name:
+3. Create and fund your administrative account using the `transfer-create` script by running a command similar to the following with your administrative account name:
 
    ```bash
    npm run transfer-create:devnet -- k:<your-public-key>

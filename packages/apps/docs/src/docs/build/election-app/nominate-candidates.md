@@ -10,7 +10,7 @@ tags: [pact, smart contract, typescript, tutorial]
 
 # Nominate candidates
 
-In [Write a smart contract](/build/guides/elections-dapp-tutorial/06-smart-contracts), you learned about defining Pact modules and created a skeleton `election` module for the smart contract that will become the back-end of the election application. 
+In [Write a smart contract](/build/election/write-a-smart-contract), you learned about defining Pact modules and created a skeleton `election` module for the smart contract that will become the backend of the election application. 
 In this tutorial, you'll update the `election` module with a database table and functions to support the following operations:
 
 - Store a list of candidates and the number of votes each candidate receives.
@@ -24,13 +24,13 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git election-dapp) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace).
-- You have the development network running in a Docker container as described in [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain).
-- You are [connected to the development network](/build/guides/election-dapp-tutorial/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
-- You have created and funded an administrative account as described in [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
-- You have created a principal namespace on the development network as described in [Define a namespace](/build/guides/election-dapp-tutorial/define-a-namespace).
-- You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/guides/election-dapp-tutorial/define-keysets). 
-- You have created a minimal election module using the Pact smart contract language as described in [Write a smart contract](/build/guides/election-dapp-tutorial/write-a-smart-contract).
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
+- You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
+- You are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
+- You have created and funded an administrative account as described in [Add an administrator account](/build/election/add-admin-account).
+- You have created a principal namespace on the development network as described in [Define a namespace](/build/election/define-a-namespace).
+- You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/election/define-keysets). 
+- You have created a minimal election module using the Pact smart contract language as described in [Write a smart contract](/build/election/write-a-smart-contract).
   
 ## Define the database schema and table
 
@@ -40,8 +40,8 @@ The actual creation of the table happens outside the Pact module, just like sele
 
 To define the database schema and table:
 
-1. Open the `election-dapp/pact/election.pact` file in your code editor.
-2. Add the schema for the database table inside of the `election` module definition wit the following lines of code:
+1. Open the `election-dapp/pact/election.pact` file in the code editor on your computer.
+2. Add the schema for the database table inside of the `election` module definition with the following lines of code:
 
    ```pact
      (defschema candidates-schema
@@ -54,7 +54,7 @@ To define the database schema and table:
 
    In this code, `defschema` defines a `candidate-schema` for a database table with two columns: `name` of type string and `votes` of type integer.
 
-1. Create the table outside of the election module by adding the following lines of code at the end of `./pact/election.pact`, after the `election` module definition:
+1. Create the table outside of the election module by adding the following lines of code at the end of `./pact/election.pact` file, after the closing parenthesis (`)`) of the `election` module definition:
 
    ```pact
    (if (read-msg "init-candidates")
@@ -63,9 +63,8 @@ To define the database schema and table:
    )
    ```
    
-   With this code, `read-msg` read the `init-candidates` field from the transaction data object. 
-   If you set this field to `true` in the data for your module deployment transaction, the statement between the first square brackets is executed. 
-   This statement creates the `candidates` table based on its schema definition inside the module.
+   With this code, the `read-msg` function reads the `init-candidates` field from the transaction data. 
+   If you set this field to `true` in the data for your module deployment transaction, the statement between the first square brackets—`(create-table candidates)`—is executed to create the `candidates` table based on its schema definition inside the `election` module.
 
 ## Test table creation
 
@@ -73,8 +72,9 @@ Before trying to create the table on your local development network, you can ver
 
 To test table creation:
 
-1. Open the `election-dapp/pact` folder in your code editor.
-2. Create a new `./pact/election.repl` file and set up your REPL test environment using keysets from previous tutorials.
+1. Open the `election-dapp/pact` folder in the code editor on your computer.
+4. Create a new file named `election.repl` in the `pact` folder.
+5. Set the `env-data` and `env-sigs` fields for the REPL test environment to use the public key for your own administrative account.
    
    For example:
    
@@ -95,11 +95,10 @@ To test table creation:
      }]
    )
    ```
-   
-   To set up the environment, set the `env-data` and `env-sigs` fields to use the public key of your own administrative account. 
-   Also, notice that `'init-candidates: true` is included in the data to ensure that the `(create-table candidates)` command is executed when you load the `election` module into the Pact REPL. 
 
-1. Define your principal namespace and an `admin-keyset` for the namespace using the principal namespace you used in your `election.pact` file.
+   Also, notice that `'init-candidates: true` is included in the environment data to ensure that the `(create-table candidates)` command is executed when you load the `election` module into the Pact REPL. 
+
+6. Define your principal namespace and the `admin-keyset` for the namespace using the principal namespace you used in your `election.pact` file.
 
    For example: 
    
@@ -114,9 +113,9 @@ To test table creation:
    (commit-tx)
    ```
    
-   These transactions are required to load the `election.pact` file because inside `election.pact` file the `election` module is defined in your principal namespace and it is governed by the `admin-keyset` in that same namespace.
+   These transactions are required because, inside `election.pact` file, the `election` module is defined in your principal namespace and it is governed by the `admin-keyset` in that namespace.
 
-1. Add a transaction to load the election module:
+7. Add a transaction to load the election module:
    
    ```pact
    (begin-tx "Load election module")
@@ -124,21 +123,21 @@ To test table creation:
    (commit-tx)
    ```
 
-1. Execute the transaction using the `pact` command-line program running locally or using [pact-cli](http://localhost:8080/ttyd/pact-cli/) from the Docker container.
+8. Execute the transaction using the `pact` command-line program running locally or using [pact-cli](http://localhost:8080/ttyd/pact-cli/) from the Docker container.
 
-   If `pact-cli` is installed locally, run the following command in the current terminal shell:
+   If `pact-cli` is installed locally, run the following command inside the `pact` folder in current terminal shell:
 
    ```bash
    pact election.repl -t
    ```
 
-   As before, if you don't have `pact` installed locally, you can load the `module.repl` file in the [pact-cli](http://localhost:8080/ttyd/pact-cli/) from the Docker container with the following command:
+   As before, if you don't have `pact` installed locally, you can load the `election.repl` file with the following command:
 
    ```pact
-   (load "module.repl")
+   (load "election.repl")
    ```
 
-   If you are using the `pact-cli` in a browser, you can replace the `pact module.repl -t` command with `(load "module.repl")` throughout this tutorial.
+   If you are using the `pact-cli` in a browser, you can replace the `pact election.repl -t` command with `(load "election.repl")` throughout this tutorial.
    
    You should see that the transaction succeeds with output similar to the following:
 
@@ -152,11 +151,11 @@ To test table creation:
 ## List candidates from a table
 
 Although the `candidates` table seems to have been created successfully, it is worth testing
-that the table works as expected before upgrading the `election` module on the development network.
+that the table works as expected before updating the `election` module on the development network.
 
 To test that the table works as expected:
 
-1. Open the `election-dapp/pact/election.repl` file in your code editor.
+1. Open the `election-dapp/pact/election.repl` file in the code editor on your computer.
 
 1. Add a transaction to test the current implementation of the `election.list-candidates` function:
 
@@ -165,7 +164,7 @@ To test that the table works as expected:
      (use n_14912521e87a6d387157d526b281bde8422371d1.election)
      (expect
        "There should be no candidates in the candidates table"
-       [1, 2, 3]
+       [1, 2, 3, 4, 5]
        (list-candidates)
      )
    (commit-tx)
@@ -177,7 +176,7 @@ To test that the table works as expected:
    pact election.repl -t
    ```
 
-   If the current implementation of the `list-candidates` function returns [1, 2, 3], you should see the transaction succeed with output similar to the following:
+   If the current implementation of the `list-candidates` function returns [1, 2, 3, 4, 5], you should see the transaction succeed with output similar to the following:
 
    ```bash
    election.repl:29:0:Trace: Begin Tx 3: List candidates
@@ -190,8 +189,8 @@ To test that the table works as expected:
    If you were to change the expected output to an empty list (`[]`) and run the file again, you would see the transaction fails with output similar to the following:
    
    ```bash
-   election.repl:36:0:Trace: Commit Tx 3: List candidates
-   election.repl:31:2:ExecError: FAILURE: There should be no candidates in the candidates table: expected []:[<a>], received [1 2 3]:[<c>]
+   election.repl:37:0:Trace: Commit Tx 3: List candidates
+   election.repl:32:2:ExecError: FAILURE: There should be no candidates in the candidates table: expected []:[<a>], received [1 2 3 4 5]:[<c>]
    Load failed
    ```
    
@@ -199,7 +198,7 @@ To test that the table works as expected:
 
 1. Open the `election-dapp/pact/election.pact` file in your code editor.
 
-1. Update the return value of the `list-candidates` function to select all of the rows of the candidates table, including the key and the column values of each row.
+1. Update the return value of the `list-candidates` function to select all of the rows of the `candidates` table, including the key and the column values of each row.
 
    For example: 
    
@@ -212,12 +211,13 @@ To test that the table works as expected:
    ```
 
    In this code, the `fold-db` function is like a `SELECT * FROM table` statement in SQL, except that it fetches the value of the `key` column  separately from the other column values. 
-   The first argument for `fold-db` is the table name. 
-   The second argument is a predicate function that determines which rows should be selected. 
-   To fetch all rows from a table, you can simply return `true` here. 
-   The third argument is an accumulator function that allows you to map the data of each row to a different format. 
    
-   This example formats the return value of the `fold-db` function with the following structure.
+   - The first argument for `fold-db` is the table name. 
+   - The second argument is a predicate function that determines which rows should be selected. 
+     To fetch all rows from a table, you can simply return `true` here. 
+   - The third argument is an accumulator function that allows you to map the data of each row to a different format. 
+   
+   This example formats the return value of the `fold-db` function as a JSON object with the following structure.
 
    ```pact
    [
@@ -226,13 +226,13 @@ To test that the table works as expected:
    ]
    ```
 
-2. Execute the transaction using the `pact` command-line program:
+1. Execute the transaction using the `pact` command-line program:
    
    ```pact
    pact election.repl -t
    ```
    
-   Because there are no candidates in the table, you should see the transactions succeeds with output similar to the following:
+   Because there are no candidates in the table, you should see the transaction succeeds with output similar to the following:
    
    ```bash
    election.repl:30:2:Trace: Using n_14912521e87a6d387157d526b281bde8422371d1.election
@@ -241,7 +241,7 @@ To test that the table works as expected:
    Load successful
    ```
 
-   Note that you shouldn't include a call to functions like `fold-db` in transactions sent to the blockchain. 
+   Note that you shouldn't include a call to a function like `fold-db` in transactions sent to the blockchain. 
    Instead, you can make a local request to select all rows from a table to save gas. 
    You'll learn more about making local requests using the Kadena client later in this tutorial.
 
@@ -276,7 +276,7 @@ To add candidates to the database:
    (commit-tx)
    ```
    
-   If you were to execute the transaction, the test would fail because the `add-candidate` function doesn't exist yet in the `election` module and you would see output similar to the following:
+   If you were to execute the transaction now, the test would fail because the `add-candidate` function doesn't exist yet in the `election` module and you would see output similar to the following:
    
    ```bash
    election.repl:40:0:Error: Cannot resolve add-candidate
@@ -308,15 +308,15 @@ To add candidates to the database:
    )
    ```
 
- In this code, you pass the following arguments to the `insert` function:
- 
- - The name of table you want to update. 
-   In this case, the table is the `candidates` table. 
- - The value for the key of the row to be inserted. 
-   In this case, the value of the `key` field is extracted from the `candidate` object
- - The key-value object representing the row to be inserted into the table. 
-   The keys correspond to the column names.
-   In this case, the `votes` column of the new value always gets a value `0` and the `name` column gets a value of `"Candidate A"`, `"Candidate B"`, or `"Candidate C"`, as per your test cases.
+   In this code, you pass the following arguments to the `insert` function:
+   
+   - The name of table you want to update. 
+     In this case, the table is the `candidates` table. 
+   - The value for the key of the row to be inserted. 
+     In this case, the value of the `key` field is extracted from the `candidate` object
+   - The key-value object representing the row to be inserted into the table. 
+     The keys correspond to the column names.
+     In this case, the `votes` column of the new value always gets a value `0` and the `name` column gets a value of `"Candidate A"`, `"Candidate B"`, or `"Candidate C"`, as per your test cases.
 
 2. Execute the transaction using the `pact` command-line program:
    
@@ -324,7 +324,7 @@ To add candidates to the database:
    pact election.repl -t
    ```
 
-   You should see the transaction succeed with output similar to the following:
+   You should see that the transaction succeeds with output similar to the following:
 
    ```bash
    election.repl:39:0:Trace: Using n_14912521e87a6d387157d526b281bde8422371d1.election
@@ -336,7 +336,7 @@ To add candidates to the database:
    ```   
 
    The key of each row in a table must be unique.
-   You can add a transaction to test that you can't insert a row with a duplicate key.
+   You can add a transaction the the `election.repl` file to test that you can't insert a row with a duplicate key.
    For example:
    
    ```pact
@@ -349,7 +349,15 @@ To add candidates to the database:
    (commit-tx)
    ```
 
-   If you were to execute this transaction, it would fail with a `Database exception`.
+   If you were to execute this transaction, it would fail—as expected—with output similar to the following:
+
+   ```bash
+   election.repl:57:0:Trace: Begin Tx 5: Add candidate with existing key
+   election.repl:58:2:Trace: Using n_14912521e87a6d387157d526b281bde8422371d1.election
+   election.repl:59:2:Trace: Expect failure: success: Database exception: Insert: row found for key 1
+   election.repl:63:0:Trace: Commit Tx 5: Add candidate with existing key
+   Load successful
+   ```
 
 3. Verify you only have three candidates in the table by adding the following assertion to `election-dapp/pact/election.repl`
 
@@ -364,22 +372,40 @@ To add candidates to the database:
    (commit-tx)
    ```
 
-You've now seen how candidates can be stored in a database table and that the `list-candidates` function works as expected to retrieve information from that table.
-The next step is to restrict access to the `add-candidate` function, so that ony the `election` module owner can update the `candidates` database.
+2. Execute the transaction using the `pact` command-line program:
+   
+   ```pact
+   pact election.repl -t
+   ```
 
-## Guard adding candidates with a capability
+   You should see that the transaction succeeds with output similar to the following:
+
+   ```bash
+   election.repl:64:0:Trace: Begin Tx 6: List candidates
+   election.repl:65:2:Trace: Using n_14912521e87a6d387157d526b281bde8422371d1.election
+   election.repl:66:2:Trace: Expect: success: There should be three candidates
+   election.repl:71:0:Trace: Commit Tx 6: List candidates
+   Load successful
+   ```
+
+   You've now seen how candidates can be stored in a database table and that the `list-candidates` function works as expected to retrieve information from that table.
+   The next step is to restrict access to the `add-candidate` function, so that ony the `election` module owner can update the `candidates` database.
+
+## Guard add-candidate with a capability
 
 Right now, the `add-candidate` function is publicly accessible.
 Anyone with a Kadena account can nominate a candidate. 
 If everyone can nominate and vote on anyone, the whole election process and the idea of representative governance breaks down.
 To prevent that kind of chaos, you need a gatekeeper—a guard—that restricts access to the nominating process and the number of candidates to be voted on.
 
-For the election application, this gatekeeper or guard is the holder of the `admin-keyset`. 
-To that end, you can use the `GOVERNANCE` capability that enforces the `admin-keyset` to protect access to the `add-candidate` function.
+For the election application, this gatekeeper or **guard** is the holder of the `admin-keyset` administrative account. 
+To restrict access to the `add-candidate` function, you can use the `GOVERNANCE` capability.
+The `GOVERNANCE` capability enforces the use of the `admin-keyset` to sign transactions that call specific functions.
+In the election application, the `GOVERNANCE` capability protects access to the `add-candidate` function.
 
-To guard access to adding candidates:
+To guard access to the `add-candidate` function:
 
-1. Open the `election-dapp/pact/election.repl` file in your code editor.
+1. Open the `election-dapp/pact/election.repl` file in the code editor on your computer.
 
 2. Add a transaction in which you expect adding a fourth candidate to fail. 
    
@@ -408,13 +434,13 @@ To guard access to adding candidates:
    (commit-tx)
    ```
 
-2. Execute the transaction using the `pact` command-line program:
+3. Execute the transaction using the `pact` command-line program:
    
    ```pact
    pact election.repl -t
    ```
 
-   You should see that the transaction failed with output similar to the following:
+   You should see that the transaction fails with output similar to the following:
 
    ```bash
    election.repl:89:4:Trace: FAILURE: Adding a candidate with the wrong keyset should fail: expected failure, got result = "Write succeeded"
@@ -423,9 +449,9 @@ To guard access to adding candidates:
    Load failed
    ```
 
-1. Open the `election-dapp/pact/election.pact` file in your code editor.
+4. Open the `election-dapp/pact/election.pact` file in your code editor.
 
-2. Update the `add-candidate` function to add a capability guard as follows:
+5. Update the `add-candidate` function to add a capability guard as follows:
 
    ```pact
    (defun add-candidate (candidate)
@@ -445,7 +471,7 @@ To guard access to adding candidates:
    The `with-capability` function tries to bring the `GOVERNANCE` in scope of the code block that it wraps. 
    If it fails to do so, because of a keyset failure in this case, the wrapped code block isn't executed. 
    
-2. Execute the transaction using the `pact` command-line program:
+6. Execute the transaction using the `pact` command-line program:
    
    ```pact
    pact election.repl -t
@@ -463,9 +489,9 @@ To guard access to adding candidates:
 
 ## Update the election module locally
 
-Now that you've updated and tested your election modules using the Pact REPL, you can update the module deployed on the local development network.
+Now that you've updated and tested your `election` module using the Pact REPL, you can update the module deployed on the local development network.
 
-To update the election module on the development network:
+To update the `election` module on the development network:
 
 1. Verify the development network is currently running on your local computer.
 
@@ -475,21 +501,21 @@ To update the election module on the development network:
    - Your administrative account name with the **k:** prefix exists on chain 1.
    - Your administrative account name is funded with KDA on chain 1. 
    
-   You're going to use Chainweaver to sign the transaction that defines the keyset. 
+   You're going to use Chainweaver to sign the transaction that updates the module. 
 
-3. Open the `election-dapp/snippets` folder file in your code editor.
+3. Open the `election-dapp/snippets` folder in the terminal shell.
 
-4. Deploy your election module on the development network by running a command similar to the following with your administrative account name:
+4. Update your `election` module on the development network by running a command similar to the following with your administrative account name:
    
    ```bash
    npm run deploy-module:devnet -- k:<your-public-key> upgrade init-candidates
    ```
    
-   Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
+   Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/election/add-admin-account).
    You can copy this account name from Chainweaver when viewing the account watch list. 
   
    In addition to the account name, you pass `upgrade` and `init-candidates` to add`{"init-candidates": true, "upgrade": true}` to the transaction data.
-   These fields are required to allow you to upgrade the module and execute `(create-table candidates)` statement from your `election` module.
+   These fields are required to allow you to upgrade the module and execute the `(create-table candidates)` statement from your `election` module.
 
 5. Click **Sign All** in Chainweaver to sign the request.
    
@@ -537,7 +563,7 @@ To update the election module on the development network:
 
 ## Connect the front-end
 
-You now have the election backend defined in a smart contract running on development network.
+You now have the election backend defined in a smart contract running on the development network.
 To make the functions in the smart contract available to the election application website, you need to modify the frontend to exchange data with the development network.
 
 The frontend, written in TypeScript, uses repositories to exchange data with the backend. 
@@ -546,7 +572,7 @@ By default, the frontend uses the in-memory implementations of the repositories.
 By making changes to the implementation of the `interface ICandidateRepository` in
 `frontend/src/repositories/candidate/DevnetCandidateRepository.ts`, you can configure the
 frontend to use the `devnet` backend instead of the `in-memory` backend. 
-After making these changes, you can use the frontend to add candidates to and list candidates from the `candidates` table managed by your election module running on the development network blockchain.
+After making these changes, you can use the frontend to add candidates to and list candidates from the `candidates` table managed by your `election` module running on the development network blockchain.
 
 ### List candidates
 
@@ -580,8 +606,9 @@ To modify the frontend to list candidates from the development network:
    };
    ```
     
-    Remove the `@ts-ignore` comment and notice that the name of your module cannot be found in `Pact.modules`.
-    To fix this problem, you must generate types for your Pact module that can be picked up by `@kadena/client`.
+1. Remove the `@ts-ignore` comment and notice that the name of your module cannot be found in `Pact.modules`.
+    
+    To fix this problem, you must generate types for your Pact module that can be picked up by the Kadena client (`@kadena/client` library).
 
 4. Open a terminal, change to the `election-dapp/frontend` directory, then generate types for your `election` module by running the following command:
    
@@ -595,19 +622,19 @@ To modify the frontend to list candidates from the development network:
    After you clear the error, note that the `listCandidates` function:
    
    - Sets the chain identifier, gas limit, and network identifier before creating the transaction.
-   - Uses the `dirtyRead` method to preview the without sending a transaction to the blockchain. 
-     The `dirtyRead` method is provided by the Kadena client package and allows you to return a raw response for a transaction as you saw when you deployed your smart contract. 
+   - Uses the `dirtyRead` method to preview the transaction result without sending a transaction to the blockchain. 
+     The `dirtyRead` method is provided by the Kadena client library.
+     This method allows you to return a raw response for a transaction as you saw when you deployed your smart contract. 
    - Processes the response from the development network and returns a list of candidates or an empty list.
 
-5. Open the `election-dapp/frontend` directory in a terminal shell. 
+5. Change to the terminal where the `election-dapp/frontend` directory is your current working directory. 
 6. Install the frontend dependencies by running the following command:
    
    ```bash
    npm install
    ```
 
-1. Start the frontend application configured to use the `devnet` backend by
-running the following command: 
+1. Start the frontend application configured to use the `devnet` backend by running the following command: 
 
    ```bash
    npm run start-devnet
@@ -627,7 +654,7 @@ To modify the frontend to add candidates from the development network:
 
 3. Review the `addCandidate` function.
    
-   In the fist line, the function receives a candidate object and the account of the transaction sender.
+   In the first line, the function receives a candidate object and the account of the transaction sender.
 
    ```typescript
    const addCandidate = async (candidate: ICandidate, sender: string = ''): Promise<void> => {
@@ -645,10 +672,11 @@ To modify the frontend to add candidates from the development network:
     )
    ```
    
-   Remove the `@ts-ignore` comment to enable the frontend function to call the `add-candidate` function in your `election` module.
+1. Remove the `@ts-ignore` comment to enable the frontend function to call the `add-candidate` function in your `election` module.
+   
    The function takes the `candidate` object to insert data into the `candidates` database when the transaction is executed.
    
-   Because the `add-candidate` function is guarded by the `GOVERNANCE` capability that enforces the `admin-keyset`, the next lines add the keyset and signer data to the transaction:
+   Because the `add-candidate` function is guarded by the `GOVERNANCE` capability that enforces the `admin-keyset` account, the next lines add the keyset and signer data to the transaction:
 
    ```typescript
    .addData('admin-keyset', {
@@ -661,7 +689,7 @@ To modify the frontend to add candidates from the development network:
    These lines correspond to the `(env-data)` and `(env-sig)` code you specified in your `./pact/election.repl` file.
    Unlike the transaction for listing candidates, the transaction for adding candidates must be sent to the blockchain, so you must pay a transaction fee—in units of gas—for the resources consumed to process the transaction.
    
-   The value of the `senderAccount` field in the metadata specifies the account that pays for gas. This is important to remember because, in the next tutorial, you'll specify the account of a **gas station** to pay for transactions that are signed by voters.
+   The value of the `senderAccount` field in the metadata specifies the account that pays for gas. This is important to remember because, in the [Add a gas station](/build/election/add-a-gas-station) tutorial, you'll specify the account of a **gas station** to pay for transactions that are signed by voters.
    However, the transaction to add a candidate must be signed and paid for by the same account.
 
    ```typescript
@@ -694,15 +722,15 @@ To modify the frontend to add candidates from the development network:
    - Your administrative account name with the **k:** prefix exists on chain 1.
    - Your administrative account name is funded with KDA on chain 1. 
    
-   You're going to use Chainweaver to sign the transaction that defines the keyset. 
+   You're going to use Chainweaver to sign the transaction that adds a candidate to the database. 
 
-1. Click **Accounts** in the Chainweaver navigation panel, then copy the account name for your administrative account.
+3. Click **Accounts** in the Chainweaver navigation panel, then copy the account name for your administrative account.
 
-2. Open `http://localhost:5173` in your browser, then click **Set Account**.
+4. Open `http://localhost:5173` in your browser, then click **Set Account**.
 
-1. Paste your administrative account, then click **Save**.
+5. Paste your administrative account, then click **Save**.
 
-2. Click **Add candidate**, type the candidate information, then click **Save**. 
+6. Click **Add candidate**, type the candidate information, then click **Save**. 
    
    Type candidate information using the following format:
 
@@ -710,7 +738,7 @@ To modify the frontend to add candidates from the development network:
    { "key": "1", "name": "Your name" }
    ```
 
-3. Click **Sign All**.
+7. Click **Sign All**.
    
    After signing the request, a loading indicator is displayed on the website while the transaction is in progress. 
    As soon as the transaction completes successfully, the candidate you nominated is added to the list.

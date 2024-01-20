@@ -10,9 +10,8 @@ tags: [account, keyset, namespace, governance, authorization, tutorial]
 
 # Define keysets
 
-As you learned in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account) and [Define a namespace](/build/guides/election-dapp-tutorial/04-namespaces), keysets determine rules for signing transaction and controlling the accounts that can access and update the namespaces where you deploy smart contracts. 
-This tutorial demonstrates how to define the `admin-keyset` in the principal
-namespace that you created in [Define a namespace](/build/guides/election-dapp-tutorial/04-namespaces) using the public key of the administrative account you created in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account). 
+As you learned in [Add an administrator account](/build/election/dd-admin-account) and [Define a namespace](/build/election/define-a-namespace), keysets determine rules for signing transactions and controlling the accounts that can access and update the namespaces where you deploy smart contracts. 
+This tutorial demonstrates how to define the `admin-keyset` in the principal namespace that you created in [Define a namespace](/build/election/define-a-namespace) using the public key of the administrative account you created in [Add an administrator account](/build/election/add-admin-account). 
 
 After you define the `admin-keyset` in your principal namespace, you'll be able to use it to authorize your administrative account to submit specific types of transactions for the election application you're building.
 For example, you'll be able to authorize transactions that deploy and upgrade the election smart contract and that nominate the candidates that other accounts can vote on.
@@ -23,11 +22,11 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git election-dapp) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace) and have checked out the `01-getting-started` branch.
-- You have the development network running in a Docker container as described in [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain).
-- You are [connected to the development network](/build/guides/election-dapp-tutorial/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
-- You have created and funded an administrative account as described in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
-- You have created a principal namespace on the development network as described in [Define a namespace](/build/guides/election-dapp-tutorial/04-namespaces).
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
+- You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
+- You are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
+- You have created and funded an administrative account as described in [Add an administrator account](/build/election/add-admin-account).
+- You have created a principal namespace on the development network as described in [Define a namespace](/build/election/define-a-namespace).
 
 ## Write a transaction to define a keyset
 
@@ -36,7 +35,7 @@ After testing the transaction to define a keyset in the Pact REPL, you'll define
 
 To define a keyset:
 
-1. Open the `election-dapp/pact` folder in a terminal shell on your computer.
+1. Open the `election-dapp/pact` folder in the code editor on your computer.
 
 2. Create a new file named `keyset.repl` in the `pact` folder.
 
@@ -51,7 +50,7 @@ To define a keyset:
 
 1. Execute the transaction using the `pact` command-line program running locally or using [pact-cli](http://localhost:8080/ttyd/pact-cli/) from the Docker container.
    
-   If `pact-cli` is installed locally, run the following command in the current terminal shell:
+   If `pact-cli` is installed locally, run the following command inside the `pact` folder in the terminal shell:
 
    ```bash
    pact keyset.repl -t
@@ -65,7 +64,7 @@ To define a keyset:
    Load successful
    ```
 
-   As before, if you don't have `pact` installed locally, you can load the `keyset.repl` file in the [pact-cli](http://localhost:8080/ttyd/pact-cli/) from the Docker container with the following command:
+   As before, if you don't have `pact` installed locally, you can load the `keyset.repl` file with the following command:
 
    ```pact
    (load "keyset.repl")
@@ -79,7 +78,7 @@ Pact has a built-in function—`define-keyset`—that you can use to define keys
 This function takes two arguments:
 
 - The name keyset of the keyset.
-- The keyset—that is, one or more keys and a predicate—that you want to associate with the keyset name you re defining.
+- The keyset—that is, one or more keys and a predicate—that you want to associate with the keyset name you are defining.
 
 The `define-keyset` function is wrapped by the `expect` function to test that calling `define-keyset` will succeed.
 The `expect` function takes three arguments:
@@ -88,14 +87,9 @@ The `expect` function takes three arguments:
 - The expected output of the `define-keyset` function.
 - The `define-keyset` function call.
 
-The first argument of expect is the title of the test, the second argument is the expected
-output of the `define-keyset` function and the third argument is the actual `define-keyset`
-function call. 
-
 To define a keyset:
 
-
-1. Open the `election-dapp/pact/keyset.repl` file in a terminal shell on your computer.
+1. Open the `election-dapp/pact/keyset.repl` file in the code editor on your computer.
 
 2. Add the following lines of code between the `begin-tx` and `commit-tx` lines:
 
@@ -107,7 +101,7 @@ To define a keyset:
    )
    ```
 
-3. Execute the transaction using the `pact` command-line program by running the following command in the current terminal shell:
+3. Execute the transaction using the `pact` command-line program:
 
    ```bash
    pact keyset.repl -t
@@ -123,9 +117,9 @@ To define a keyset:
    Load failed
    ```
 
-   As you saw when defining a namespace, you must load the `admin-keyset` into the context of the Pact REPL so it can be read using the `read-keyset` function. 
+   As you saw when defining a namespace, you must load the `admin-keyset` into the context of the Pact REPL so it can be read using the `read-keyset` function within the `define-keyset` function. 
 
-1. Add the following lines at the top of the `keyset.repl` file:
+4. Add the following lines at the top of the `keyset.repl` file:
 
    ```pact
    (env-data
@@ -143,7 +137,7 @@ To define a keyset:
    
    As this error indicates, keysets must be defined within the context of a specific namespace.
    
-2. Add the following transaction to define the `election` namespace before the transaction to define a keyset.
+5. Add the following transaction to define the `election` namespace before the transaction to define a keyset.
 
    ```pact
    (begin-tx
@@ -153,7 +147,7 @@ To define a keyset:
    (commit-tx)
    ```
 
-1. Modify the `Define a new keyset` transaction to specify the `election` namespace as a prefix for the new keyset with the following lines of code:
+6. Modify the `Define a new keyset` transaction to specify the `election` namespace as a prefix for the new keyset with the following lines of code:
    
    ```pact
    (begin-tx
@@ -167,7 +161,7 @@ To define a keyset:
    (commit-tx)
    ```
 
-2. Execute the transaction using the `pact` command-line program:
+7. Execute the transaction using the `pact` command-line program:
 
    ```bash
    pact keyset.repl -t
@@ -180,7 +174,7 @@ To define a keyset:
   
    The transaction failed because it isn't following the signing rules specified by the keyset passed to the `define-keyset` function. 
 
-3. Sign the transaction with the key from the `admin-keyset` you loaded into the context of the Pact REPL. 
+8. Sign the transaction with the key from the `admin-keyset` you loaded into the context of the Pact REPL. 
    
    For example, sign the transaction with the `admin-public-key` by adding the following lines of code before the `Define a new keyset` transaction:
 
@@ -192,7 +186,7 @@ To define a keyset:
    )
    ```
 
-2. Execute the transaction using the `pact` command-line program:
+9. Execute the transaction using the `pact` command-line program:
 
    ```bash
    pact keyset.repl -t
@@ -218,15 +212,14 @@ To define a keyset:
 ## Test keyset authorization
 
 The `election.admin-keyset` you just defined is protected by the `admin-keyset` that has only one key, the `admin-public-key`. 
-Only this account is authorized to call the `define-keyset` function to modify or update
-the `election.admin-keyset` definitions. 
+Only this account is authorized to call the `define-keyset` function to modify or update the `election.admin-keyset` definition. 
 Transactions that use any other key will fail. 
 
 To test keyset authorization and verify that no other accounts can take control of your namespace, you can add another test case to the `keyset.repl` file. 
 
 To test keyset authorization works as expected:
 
-1. Open the `election-dapp/pact/keyset.repl` file in a terminal shell on your computer.
+1. Open the `election-dapp/pact/keyset.repl` file in the code editor on your computer.
 
 2. Load the `admin-keyset` with a different public key than you previously used into the context of the Pact REPL. 
    
@@ -244,7 +237,7 @@ To test keyset authorization works as expected:
 
    These lines establish a different context for the transaction trying to change the keyset definition.
 
-1. Sign the transaction with the key from the `admin-keyset` you loaded into the context of the Pact REPL. 
+3. Sign the transaction with the key from the second `admin-keyset` loaded into the context of the Pact REPL. 
    
    For example, sign the transaction with the `other-public-key` by adding the following lines of code after the lines changing the context and before the new `Define a keyset` transaction:
    
@@ -256,7 +249,7 @@ To test keyset authorization works as expected:
    )
    ```
 
-2. Add a transaction to define a new keyset using the `other-public-key` in the `admin-keyset`
+4. Add a transaction to define a new keyset using the `other-public-key` in the second `admin-keyset`
 and change the `expect` function to `expect-failure` with the following lines of code:
    
    ```pact
@@ -272,7 +265,7 @@ and change the `expect` function to `expect-failure` with the following lines of
    (commit-tx)
    ```
 
-2. Execute the transaction using the `pact` command-line program:
+1. Execute the transaction using the `pact` command-line program:
 
    ```bash
    pact keyset.repl -t
@@ -300,7 +293,7 @@ For example, if the administrator of an election resigns or retires, you can use
 
 To rotate the keyset to accept a new signature:
 
-1. Open the `election-dapp/pact/keyset.repl` file in a terminal shell on your computer.
+1. Open the `election-dapp/pact/keyset.repl` file in the code editor on your computer.
 
 2. Add signatures for both authorized accounts using the following lines of code:
    
@@ -314,7 +307,7 @@ To rotate the keyset to accept a new signature:
      }]
    )
    ```
-3. Add a new transaction that allows the `election.admin-keyset` to be modifies and is expected to succeed:
+3. Add a new transaction that allows the `election.admin-keyset` to be modified and is expected to succeed:
 
    ```pact
    (begin-tx
@@ -335,7 +328,7 @@ To rotate the keyset to accept a new signature:
    pact keyset.repl -t
    ```
 
-   You'll see that the transaction to change the `election.admin-keyset` fails—as expected—with output similar to the following:
+   You'll see that the transaction to rotate the `election.admin-keyset` succeeds with output similar to the following:
 
    ```bash
    keyset.repl:49:2:Trace: Setting transaction signatures/caps
@@ -350,13 +343,13 @@ To rotate the keyset to accept a new signature:
 
 ## Test your keyset definition
 
-In [Define a namespace](/build/guides/election-dapp-tutorial/04-namespaces), you defined a principal namespace for your local development network. 
+In [Define a namespace](/build/election/define-a-namespace), you defined a principal namespace for your local development network. 
 In this tutorial, you'll add a keyset definition for your account to govern that principal namespace. 
 As a best practice, you can use the Pact REPL to test the transaction before you submit it on the development network. 
 
 To test your keyset definition:
 
-1. Open the `election-dapp/pact/principal-namespace.repl` file in your code editor.
+1. Open the `election-dapp/pact/principal-namespace.repl` file in the code editor on your computer.
    
    You might remember that this file:
    
@@ -406,11 +399,11 @@ To test your keyset definition:
    ```
 
    In this example, you defined a keyset in the Pact REPL using the public key for `sender00` account. 
-   Next, you can define a keyset in your principal namespace on the development network using the administrative account you created in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
+   Next, you can define a keyset in your principal namespace on the development network using the administrative account you created in [Add an administrator account](/build/election/add-admin-account).
 
-## Define your keyset in your principal namespace
+## Define a keyset in your principal namespace
 
-Now that you've seen how to use the `define-keyset` and how to enter your namespace with the `namespace` functions, you're ready to define keyset for the your principal namespace on the local development network with the administrative account you created using Chainweaver.
+Now that you've seen how to use the `define-keyset` and how to enter your namespace with the `namespace` functions, you're ready to define a keyset for your principal namespace on the local development network with the administrative account you created using Chainweaver.
 
 To define your keyset on the development network:
 
@@ -424,24 +417,24 @@ To define your keyset on the development network:
    
    You're going to use Chainweaver to sign the transaction that defines the keyset. 
 
-3. Open the `election-dapp/snippets/define-keyset.ts` file in your code editor. 
+3. Open the `election-dapp/snippets/define-keyset.ts` file in the code editor on your computer. 
 
    The `pactCommand` variable in this file contains the same Pact code for defining a keyset that you tested in the Pact REPL.
    After the `pactCommand`, the next lines construct the transaction and wait for the signature from Chainweaver.
 
-1. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
+4. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
 
-2. Create the keyset for your principal namespace using the `define-keyset` script by running a command similar to the following with your administrative account name:
+5. Create the keyset for your principal namespace using the `define-keyset` script by running a command similar to the following with your administrative account name:
    
    ```bash
    npm run define-keyset:devnet -- k:<your-public-key>
    ```
    
-  Remember that `k:<your-public-key>` is the default **account name** for your administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
-  You can copy this account name from Chainweaver when viewing the account watch list.
-  When you run the script, you should see Chainweaver display a QuickSign Request.
+   Remember that `k:<your-public-key>` is the default **account name** for your administrative account that you funded in [Add an administrator account](/build/election/add-admin-account).
+   You can copy this account name from Chainweaver when viewing the account watch list.
+   When you run the script, you should see Chainweaver display a QuickSign Request.
   
-1. Click **Sign All** to sign the request.
+6. Click **Sign All** to sign the request.
    
    After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
    For example, you should see output similar to the following:
@@ -451,7 +444,7 @@ To define your keyset on the development network:
    ```
 
 You now have a **keyset definition** that governs your principal namespace on the local development network.
-This keyset is governed controlled by the administrative account you created in Chainweaver.
+This keyset is controlled by the administrative account you created in Chainweaver.
 
 ## Next steps
 
@@ -459,10 +452,10 @@ In this tutorial, you learned how to:
 
 - Define and update a keyset in the Pact REPL.
 - Test the behavior of keysets before defining a keyset on the blockchain.
-- Use the Kadena client to define a keyset in your principal namespace in the local development network.
+- Use the Kadena client to define a keyset in your principal namespace on the local development network.
 
 In the next tutorial, you'll create your first **Pact module** for the election application.
-You'll define the Pact module inside of your principal namespace and control how it's used with the keyset you defined in this tutorial. After you complete the tutorial, you'll have the basic functionality for the election website.
+You'll define the Pact module inside of your principal namespace and control how it's used with the keyset you defined in this tutorial. After you complete the tutorial, you'll have the basic functionality for the election application website.
 
 To see the code for the activity you completed in this tutorial and get the starter code for the next tutorial, check out the `06-smart-contracts` branch from the `election-dapp` repository by running the following command in your terminal shell:
 

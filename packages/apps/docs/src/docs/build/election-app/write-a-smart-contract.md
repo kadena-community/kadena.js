@@ -20,7 +20,7 @@ By deploying a smart contract on a blockchain, the terms of an agreement can be 
 On the Kadena blockchain, a smart contract consists of one or more **modules** written in the Pact programming language. 
 For this tutorial, the election smart contract consists of two modules: the main **election** module and an auxiliary **gas station** module. 
 
-The exercises in this tutorial illustrate the basics of building and deploying a Pact module as you develop the main election module. 
+The exercises in this tutorial illustrate the basics of building and deploying a Pact module as you develop the main **election** module. 
 At the completion of this tutorial, you'll deploy the core logic of the election module on your local development network.
 
 ## Before you begin
@@ -29,13 +29,12 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git election-dapp) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git election-dapp) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace) and have checked out the `01-getting-started` branch.
-) and have checked out the `01-getting-started` branch.
-- You have the development network running in a Docker container as described in [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain).
-- You are [connected to the development network](/build/guides/election-dapp-tutorial/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
-- You have created and funded an administrative account as described in [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
-- You have created a principal namespace on the development network as described in [Define a namespace](/build/guides/election-dapp-tutorial/define-a-namespace).
-- You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/guides/election-dapp-tutorial/define-keysets). 
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.gitp) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
+- You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
+- You are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
+- You have created and funded an administrative account as described in [Add an administrator account](/build/election/add-admin-account).
+- You have created a principal namespace on the development network as described in [Define a namespace](/build/election/define-a-namespace).
+- You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/election/define-keysets). 
 
 ## Define a minimal Pact module
 
@@ -45,7 +44,7 @@ After you have a minimal working deployment, you can add and refactor the code t
 
 To create the starter code for a Pact module:
 
-1. Open the `election-dapp/pact` folder in a terminal shell on your computer.
+1. Open the `election-dapp/pact` folder in the code editor on your computer.
 
 2. Create a new file named `module.repl` in the `pact` folder.
 
@@ -61,7 +60,7 @@ To create the starter code for a Pact module:
 
 1. Execute the transaction using the `pact` command-line program running locally or using [pact-cli](http://localhost:8080/ttyd/pact-cli/) from the Docker container.
 
-   If `pact-cli` is installed locally, run the following command in the current terminal shell:
+   If `pact-cli` is installed locally, run the following command inside the `pact` folder in the terminal shell:
 
    ```bash
    pact module.repl -t
@@ -81,8 +80,8 @@ To create the starter code for a Pact module:
    error: Unexpected end of input, Expected: atom, Expected: literal
    ```
    
-   Modules require you to define either a **keyset** or a **capability** guard to govern access to the module's functions.
-   Capabilities are similar to  keysets in that they control permissions—who can do what—in the context of a Pact smart contract. 
+   Modules require you to define either a **keyset** or a **capability** to protect access to the module's functions.
+   Capabilities are similar to keysets in that they control permissions—who can do what—in the context of a Pact smart contract. 
    You'll learn more about capabilities in this tutorial and in other tutorials.
    For now, you can use the `admin-keyset` you defined in the previous tutorial.
 
@@ -105,7 +104,7 @@ To create the starter code for a Pact module:
    Although you've added an owner to the module, the module doesn't yet include any functions.
    You must define at least one function in a Pact module for the module to be valid.
 
-1. Add a `list-candidates` function to the transaction that defines the `election` module.
+3. Add a `list-candidates` function to the transaction that defines the `election` module.
    
    ```pact
    (begin-tx
@@ -117,7 +116,7 @@ To create the starter code for a Pact module:
    (commit-tx)
    ```
 
-   Later, you'll update this function to list the candidates stored in ae database table. 
+   Later, you'll update this function to list the candidates stored in a database table. 
    For now, this function just returns an empty list (`[]`).
    If you execute the transaction in the Pact REPL now, you should see a familiar error:
 
@@ -128,7 +127,7 @@ To create the starter code for a Pact module:
    Remember that you can only define a keyset in a namespace. 
    The current `module.repl` file doesn't define a namespace, so it can't define or use the keyset you've specified for the module definition.
 
-1. Add the following code—which should look familiar from the previous tutorials—before the transaction to define the `election` module:
+4. Add the following code—which should look familiar from the previous tutorials—before the transaction to define the `election` module:
 
    ```pact
    (env-data
@@ -158,7 +157,7 @@ To create the starter code for a Pact module:
    (commit-tx)
    ```
 
-2. Execute the transaction using the `pact` command-line program:
+5. Execute the transaction using the `pact` command-line program:
    
    ```pact
    pact module.repl -t
@@ -187,8 +186,8 @@ To create the starter code for a Pact module:
 
 ## Test the election module
 
-Although the `election` module is governed by a keyset and can't be modified without a signed transaction, the `list-candidate` function publicly accessible.
-You can use the global `list-modules` Pact function in the Pact REPL to test access to the `election` module and the `list-candidate` function. 
+Although the `election` module is governed by a keyset and can't be modified without a signed transaction, the `list-candidate` function is publicly accessible.
+You can use the global `list-modules` Pact function in the Pact REPL to test access to the `election` module and the `list-candidates` function. 
 
 To test access to the election module:
 
@@ -223,7 +222,7 @@ To test access to the election module:
    Load successful
    ```
 
-3. Add the following lines of code to the `module.repl` file to clear the environment keyset and signature information, call the `list-candidates` function on the `election` module, and assert that the function returns an array:
+3. Add the following lines of code to the `module.repl` file to clear the environment keyset and signature information, call the `list-candidates` function on the `election` module, and assert that the function returns an empty array:
 
    ```pact
    (env-data {})
@@ -259,13 +258,15 @@ To test access to the election module:
 
    Proving that you can call this function inside of the `election` module without an identity context or a signature is important because, in a democracy, the list of candidates should be publicly accessible.
 
-## Upgrade the election Pact module
+## Update the election Pact module
 
 When you defined the `election` module, you specified the keyset used to govern it. 
-Every change to the module requires the upgrade transaction to be signed with that keyset. 
-To test that upgrades works as expected, you can try upgrading the Pact module with the correct keyset and with an incorrect keyset.
+Every change to the module requires the update transaction to be signed with that keyset. 
+To test that updates work as expected, you can try updating the Pact module with the correct keyset and with an incorrect keyset.
 
-To test upgrading with the correct keyset:
+### Use the correct keyset
+
+To test updating a module with the correct keyset:
 
 1. Open the `election-dapp/pact/module.repl` file in the code editor on your computer.
 
@@ -287,7 +288,7 @@ To test upgrading with the correct keyset:
    )
    
    (begin-tx
-     "Upgrade the module"
+     "Update the module"
    )
      (module election "election.admin-keyset"
        (defun list-candidates () [1, 2, 3])
@@ -307,9 +308,15 @@ To test upgrading with the correct keyset:
    
    This code:
    
-   - Reloads the correct keyset and signature into the Pact REPL
-   - Redefines the `election` module with the `list-candidates` function to return a different list containing 1, 2, 3.
+   - Reloads the correct keyset and signature into the Pact REPL.
+   - Redefines the `election` module with the `list-candidates` function to return a list containing 1, 2, 3.
    - Tests that `list-candidates` returns the new list.
+
+2. Execute the transaction using the `pact` command-line program:
+   
+   ```pact
+   pact module.repl -t
+   ```
    
     You should see output similar to the following that indicates you were able to call the updated `list-candidates` function and that the function returned a list with numbers:
 
@@ -320,9 +327,11 @@ To test upgrading with the correct keyset:
    Load successful
    ```
 
-Yo can't use `expect-failure` in the Pact REPL to test module definitions, but you can simulate an unauthorized user attempting to update a module.
+### Use an incorrect keyset
 
-To test upgrading with an incorrect keyset:
+You can't use `expect-failure` in the Pact REPL to test module definitions, but you can simulate an unauthorized user attempting to update a module.
+
+To test updating a module with an incorrect keyset:
 
 1. Open the `election-dapp/pact/module.repl` file in the code editor on your computer.
 
@@ -352,18 +361,18 @@ To test upgrading with an incorrect keyset:
    (commit-tx)
    ```
 
-   2. Execute the transaction using the `pact` command-line program:
+1. Execute the transaction using the `pact` command-line program:
    
    ```pact
    pact module.repl -t
    ```
    
-   You should see the `Load failed`message and that the failure was caused by a `Keyset failure` error. 
-   With these two tests, you know that you can update the Pact module by signing a transaction with with the `election.admin-keyset` and that no other keyset can update the `election` module. 
+   You should see the `Load failed` message and that the failure was caused by a `Keyset failure` error. 
+   With these two tests, you know that you can update the Pact module by signing a transaction with the `election.admin-keyset` and that no other keyset can update the `election` module. 
    
-1. Remove the code you added for testing an incorrect keyset.
+2. Remove the code you added for testing an incorrect keyset.
       
-2. Execute the transaction using the `pact` command-line program to verify that the `module.repl` file loads successfully before you continue:
+3. Execute the transaction using the `pact` command-line program to verify that the `module.repl` file loads successfully before you continue:
    
    ```pact
    pact module.repl -t
@@ -372,8 +381,8 @@ To test upgrading with an incorrect keyset:
 ## Modify module governance
 
 You now have the basic scaffolding for the `election` module in place.
-However, your current configuration uses the `election.admin-keyset` to governs the `election` module.
-To simplify permission management with a separation of concerns, you can use a **capability** to govern the module instead of using the `election.admin-keyset` keyset directly.
+However, your current configuration uses the `election.admin-keyset` to govern the `election` module and its functions.
+To simplify permission management with a separation of concerns, you can use a **capability** to control access to the module instead of using the `election.admin-keyset` keyset directly.
 By moving module ownership to a governance capability, you can later use the `election.admin-keyset` keyset to restrict access to specific functions without repeating code.
 
 To modify governance for the module:
@@ -408,7 +417,7 @@ To modify governance for the module:
    (commit-tx)
    ```
    
-   This code resets the environment and defines a capability `GOVERNANCE` that enforces the keyset `election.admin-keyset`. 
+   This code resets the environment and defines a `GOVERNANCE` capability that enforces the use of the `election.admin-keyset` keyset when called upon. 
 
 2. Execute the transaction using the `pact` command-line program:
    
@@ -416,16 +425,16 @@ To modify governance for the module:
    pact module.repl -t
    ```
    
-   You should see output similar to the following that indicates you successfully upgraded the `election` module to be governed by a capability:
+   You should see output similar to the following that indicates you successfully updated the `election` module to be governed by a capability:
 
-   ```
+   ```bash
    module.repl:106:0:Trace: Begin Tx 7: Refactor governance of the module
    module.repl:109:4:Trace: Loaded module election, hash QIk-zRAVReFt6NAFNhdEjXOVYRhqlKsGDH8q0-gB0sA
    module.repl:114:0:Trace: Commit Tx 7: Refactor governance of the module
    Load successful
    ```
 
-You can write additional test cases to verify that the `election.admin-keyset` is still able to upgrade the module now that governance of the module is implemented with a capability.
+   You can write additional test cases to verify that the `election.admin-keyset` is still able to update the module now that governance of the module is implemented with a capability.
 
 ## Deploy the Pact module locally
 
@@ -441,15 +450,17 @@ To deploy the Pact module on the development network:
    - Your administrative account name with the **k:** prefix exists on chain 1.
    - Your administrative account name is funded with KDA on chain 1. 
    
-   You're going to use Chainweaver to sign the transaction that defines the keyset. 
+   You're going to use Chainweaver to sign the transaction that deploys the module. 
 
-3. Open the `election-dapp/pact` folder file in your code editor and create a new file named `election.pact`.
+3. Open the `election-dapp/pact` folder in the code editor on your computer.
 
-4. Add the minimal Pact code required to define a module to the `election.pact` file. 
+4. Create a new file named `election.pact` in the `pact` folder.
+
+5. Add the minimal Pact code required to define a module to the `election.pact` file. 
    
    Remember that a module definition requires a namespace, a governing owner, and at least one function.
    
-   Because your deploying the module in your own principal namespace on the local development network, replace the generic `election` namespace and keyset you used in the` module.repl` file with the unique principal namespace you defined on the development network.
+   Because you're deploying the module in your own principal namespace on the local development network, replace the generic `election` namespace and keyset you used in the` module.repl` file with the unique principal namespace you defined on the development network.
    
    For example:
 
@@ -464,7 +475,7 @@ To deploy the Pact module on the development network:
    )
    ```
 
-1. Open the `./snippets/deploy-module.ts` file in your code editor. 
+6. Open the `election-dapp/snippets/deploy-module.ts` file in your code editor. 
    
    You'll notice several differences between this script and the previous scripts you've used. 
    For example, in this script, the Pact code is read from your `election.pact` module rather than passed as a string or a function call to an existing module like `Pact.modules.coin`. 
@@ -482,14 +493,16 @@ To deploy the Pact module on the development network:
    gasPrice: 0.00000001,
    ```
   
-  Deploying a Pact module is a relatively expensive type of transaction because of the resources required to update the blockchain.
-  The transaction will fail if the gas limit is set too low. 
+   Deploying a Pact module is a relatively expensive type of transaction because of the resources required to update the blockchain.
+   The transaction will fail if the gas limit is set too low. 
   
-  After the code used to sign the transaction, the script sends a **preflight request** for the signed transaction to the blockchain using the Kadena client. 
-  The response to the preflight request contains information about the expected success of the transaction and the how much gas the transaction requires. 
-  The preflight request helps to ensure that the script doesn't send a transaction to the blockchain that is likely to fail.
+   After the code used to sign the transaction, the script sends a **preflight request** for the signed transaction to the blockchain using the Kadena client. 
+   The response to the preflight request contains information about the expected success of the transaction and the how much gas the transaction requires. 
+   The preflight request helps to ensure that the script doesn't send a transaction to the blockchain that is likely to fail.
   
-  Because you must for pay processing any transaction request even if a transaction fails, you should use a preflight request for any computationally expensive transactions—like deploying a module—before sending the actual transaction to the blockchain.
+   Because you must for pay processing any transaction request even if a transaction fails, you should use a preflight request for any computationally expensive transactions—like deploying a module—before sending the actual transaction to the blockchain.
+
+4. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
 
 1. Deploy your election module on the development network by running a command similar to the following with your administrative account name:
    
@@ -497,11 +510,11 @@ To deploy the Pact module on the development network:
    npm run deploy-module:devnet -- k:<your-public-key>
    ```
    
-  Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
-  You can copy this account name from Chainweaver when viewing the account watch list.
-  When you run the script, you should see Chainweaver display a QuickSign Request.
+   Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/election/add-admin-account).
+   You can copy this account name from Chainweaver when viewing the account watch list.
+   When you run the script, you should see Chainweaver display a QuickSign Request.
   
-1. Click **Sign All** to sign the request.
+2. Click **Sign All** to sign the request.
    
    After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
    For example, you should see output similar to the following:
@@ -577,18 +590,18 @@ To view the module in Chainweaver:
 
 2. In Chainweaver, click **Contracts** in the navigation panel, then click **Module Explorer**.
 3. Under **Deployed Contracts**, search for the `election` module. 
-4. Click **View** to see the name of the function and capability that you defined in the module
+4. Click **View** to see the name of the function and capability that you defined in the module.
 5. Click **Open** to see the content of the module.
    
    The line specifying the namespace for the module isn't included because it isn't considered part of the module itself. 
 6. Click **Call** to the right of the `list-candidates` function. 
-7. In Function modal, click **Preview** tab and scroll down to see that the **Raw Response** displayed is `[1, 2, 3]`. 
+7. In the **Function: list-candidates** window, click **Preview** and scroll down to see that the **Raw Response** displayed is `[1, 2, 3]`. 
    
-   This is an actual response from the blockchain that you can receive without paying transaction fees.
+   This is an actual response from the blockchain that you can receive without paying any transaction fees.
    
-   In certain situations, getting a raw response is a preferable alternative to sending an actual transaction to the blockchain because sending a transaction requires you to pay for gas.
+   In certain situations, getting a raw response is a preferable alternative to sending an transaction to the blockchain because sending a transaction requires you to pay for processing of the transaction.
 
-1. Leave Chainweaver open with the content of the election module displayed.
+8. Leave Chainweaver open with the content of the election module displayed.
 
 ## Update your deployed Pact module
 
@@ -607,21 +620,23 @@ To test updating a deployed smart contract:
      (defun list-candidates () [1, 2, 3, 4, 5])
    ```
 
-3. Update the `election` module by running the `deploy-module:devnet` script in a terminal shell:
+4. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
+
+5. Update the `election` module by running the `deploy-module:devnet` script:
    
    ```bash
    npm run deploy-module:devnet -- k:<your-public-key>
    ```
 
-1. Click **Sign All** in Chainweaver to sign the request.
+6. Click **Sign All** in Chainweaver to sign the request.
 
-2. In Chainweaver, click **Open** to refresh the module and confirm that the module displays the changes you made. 
+7. In Chainweaver, click **Open** to refresh the module and confirm that the module displays the changes you made. 
 
-3. Click **Call** to the right of the `list-candidates` function, click **Preview** and scroll to see that the **Raw Response** from the blockchain now displays the changes you made for the return value of the function.
+8. Click **Call** to the right of the `list-candidates` function, click **Preview** and scroll to see that the **Raw Response** from the blockchain now displays the changes you made for the return value of the function.
 
 ## Verify other accounts can't update your module
 
-You've seen that you can use your account to deploy and update the election module on the local development network.
+You've seen that you can use your account to deploy and update the `election` module on the local development network.
 You might also want to verify that no other accounts can make changes to your deployed module.
 
 To verify that other accounts can't update your module:
@@ -634,7 +649,8 @@ To verify that other accounts can't update your module:
 
 3. Copy the **Account name** for the new account.
 
-4. Open a terminal shell on your computer.
+4. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
+
 5. Create and fund the new account using the `transfer-create` script by running a command similar to the following with the new account name you copied from Chainweaver:
 
    ```bash
