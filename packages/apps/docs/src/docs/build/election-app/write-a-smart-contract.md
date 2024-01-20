@@ -125,9 +125,8 @@ To create the starter code for a Pact module:
    any functions. You must define at least one function in a Pact module for the
    module to be valid.
 
-6. Add a `list-candidates` function to the transaction that defines the
-   `election` module.
-
+6. Add a `list-candidates` function to the transaction that defines the `election` module.
+   
    ```pact
    (begin-tx
      "Deploy the election module"
@@ -349,7 +348,7 @@ To test updating a module with the correct keyset:
    pact module.repl -t
    ```
    
-    You should see output similar to the following that indicates you were able to call the updated `list-candidates` function and that the function returned a list with numbers:
+   You should see output similar to the following that indicates you were able to call the updated `list-candidates` function and that the function returned a list with numbers:
 
    ```bash
    module.repl:82:0:Trace: Begin Tx 6: Call updated list-candidates function
@@ -360,8 +359,7 @@ To test updating a module with the correct keyset:
 
 ### Use an incorrect keyset
 
-You can't use `expect-failure` in the Pact REPL to test module definitions, but
-you can simulate an unauthorized user attempting to update a module.
+You can't use `expect-failure` in the Pact REPL to test module definitions, but you can simulate an unauthorized user attempting to update a module.
 
 To test updating a module with an incorrect keyset:
 

@@ -69,7 +69,11 @@ To write a simple transaction in Pact:
    ```
    
    After you execute the file, you should see the following output:
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> 0bdf68538 (Fix typos, paths, clean up steps and consistency issues)
    ```bash
    namespace.repl:1:0:Trace: Begin Tx 0: Define a namespace called 'election
    namespace.repl:4:0:Trace: Commit Tx 0: Define a namespace called 'election
@@ -488,6 +492,9 @@ To create your principal namespace on the development network:
    Remember that `k:<your-public-key>` is the default **account name** for your administrative account that you funded in [Add an administrator account](/build/election/add-admin-account).
    You can copy this account name from Chainweaver when viewing the account watch list.
 
+   When you run the script, you should see Chainweaver display a QuickSign Request.
+   For example:
+   
    ![Sample QuickSign request](/assets/docs/election-workshop/quicksign-request.png)
 
    If you don't see the request automatically, select Chainweaver to bring it to the foreground. 

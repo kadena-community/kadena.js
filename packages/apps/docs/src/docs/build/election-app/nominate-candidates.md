@@ -628,7 +628,6 @@ To modify the frontend to list candidates from the development network:
    - Processes the response from the development network and returns a list of candidates or an empty list.
 
 5. Change to the terminal where the `election-dapp/frontend` directory is your current working directory. 
-
 6. Install the frontend dependencies by running the following command:
    
    ```bash

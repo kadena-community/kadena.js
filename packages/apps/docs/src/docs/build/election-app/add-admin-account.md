@@ -71,7 +71,7 @@ To create a new key pair and account:
 
    In this initial state, the account name acts as a placeholder, but the account doesn't exist yet on the development network.
 
-   If you change to the `./snippets` folder in the root of your project, you can also verify that your account doesn't exist using the Kadena client.
+   If you change to the `./snippets` folder in the election project directory, you can also verify that your account doesn't exist using the Kadena client.
    For example, you can run the `coin-details` script for the administrative account you just added with a command similar to the following:
 
    ```bash
