@@ -15,7 +15,7 @@ export const decrypt = async (
   password: string,
   keyMessage: EncryptedString,
 ): Promise<CommandResult<{ value: string }>> => {
-  const decryptedMessage = kadenaDecrypt(password, keyMessage);
+  const decryptedMessage = await kadenaDecrypt(password, keyMessage);
 
   const isLegacy = decryptedMessage.byteLength >= 128;
 
