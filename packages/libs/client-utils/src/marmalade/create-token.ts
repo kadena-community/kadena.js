@@ -14,7 +14,7 @@ import {
 } from '@kadena/client/fp';
 import { PactNumber } from '@kadena/pactjs';
 import { submitClient } from '../core/client-helpers';
-import { IClientConfig } from '../core/utils/helpers';
+import type { IClientConfig } from '../core/utils/helpers';
 
 interface ICreateTokenInput {
   policies?: string[];

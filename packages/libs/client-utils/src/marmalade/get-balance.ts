@@ -1,4 +1,5 @@
-import { IPactModules, Pact, PactReturnType } from '@kadena/client';
+import type { IPactModules, PactReturnType } from '@kadena/client';
+import { Pact } from '@kadena/client';
 import {
   addKeyset,
   addSigner,
@@ -6,9 +7,9 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import { ChainId } from '@kadena/types';
+import type { ChainId } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
-import { IClientConfig } from '../core/utils/helpers';
+import type { IClientConfig } from '../core/utils/helpers';
 
 interface IGeBalanceInput {
   tokenId: string;

@@ -1,4 +1,5 @@
-import { IPactModules, Pact, PactReturnType, readKeyset } from '@kadena/client';
+import type { IPactModules, PactReturnType } from '@kadena/client';
+import { Pact, readKeyset } from '@kadena/client';
 import {
   addKeyset,
   addSigner,
@@ -6,9 +7,9 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import { ChainId, IPactDecimal } from '@kadena/types';
+import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
-import { IClientConfig } from '../core/utils/helpers';
+import type { IClientConfig } from '../core/utils/helpers';
 
 export interface ITransferCreateTokenInput {
   tokenId: string;
