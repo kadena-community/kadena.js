@@ -1,5 +1,6 @@
 import { useLayoutEffect } from '@react-aria/utils';
-import { RefObject, useCallback, useRef, useState } from 'react';
+import type { RefObject } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 
 export function useEnterAnimation(
@@ -55,7 +56,6 @@ function useAnimation(
     // This is ok because we only read it in the layout effect below, immediately after the commit phase.
     // We could move this to another effect that runs every render, but this would be unnecessarily slow.
     // We only need the computed style right before the animation becomes active.
-    // eslint-disable-next-line rulesdir/pure-render
     prevAnimation.current = window.getComputedStyle(ref.current).animation;
   }
 
@@ -68,6 +68,7 @@ function useAnimation(
         computedStyle.animationName !== 'none' &&
         computedStyle.animation !== prevAnimation.current
       ) {
+        let element = ref.current;
         let onAnimationEnd = (e: AnimationEvent) => {
           if (e.target === ref.current) {
             element.removeEventListener('animationend', onAnimationEnd);
@@ -77,7 +78,6 @@ function useAnimation(
           }
         };
 
-        let element = ref.current;
         element.addEventListener('animationend', onAnimationEnd);
         return () => {
           element.removeEventListener('animationend', onAnimationEnd);

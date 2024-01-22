@@ -3,11 +3,8 @@ import type { ForwardedRef, ReactNode, RefObject } from 'react';
 import React, { forwardRef } from 'react';
 import type { AriaPopoverProps, PositionProps } from 'react-aria';
 import { DismissButton, Overlay, usePopover } from 'react-aria';
-import {
-  OverlayTriggerProps,
-  useOverlayTriggerState,
-  type OverlayTriggerState,
-} from 'react-stately';
+import type { OverlayTriggerProps, OverlayTriggerState } from 'react-stately';
+import { useOverlayTriggerState } from 'react-stately';
 import { useEnterAnimation, useExitAnimation } from '../../utils/useAnimation';
 import { arrowClass, popoverClass, underlayClass } from './Popover.css';
 
