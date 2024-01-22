@@ -37,6 +37,10 @@ export type AsyncState<T> =
 type AsyncFnState<T extends AsyncFn> = AsyncState<Awaited<ReturnType<T>>>;
 export type AsyncFnReturn<T extends AsyncFn = AsyncFn> = [AsyncFnState<T>, T];
 
+/**
+ * A hook that manages a state of an async function.
+ * useful for avoiding boilerplate when running async functions.
+ */
 export function useAsyncFn<T extends AsyncFn>(
   fn: T,
   deps: DependencyList = [],

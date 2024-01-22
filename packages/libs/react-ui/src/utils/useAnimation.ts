@@ -3,6 +3,11 @@ import type { RefObject } from 'react';
 import { useCallback, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 
+// those utils are adopted from https://github.com/adobe/react-spectrum/blob/main/packages/react-aria-components/src/utils.tsx#L240
+
+/**
+ * check if the element "ref" is entering an animation
+ */
 export function useEnterAnimation(
   ref: RefObject<HTMLElement>,
   isReady: boolean = true,
@@ -16,6 +21,9 @@ export function useEnterAnimation(
   return isEntering && isReady;
 }
 
+/**
+ * check if the element "ref" is exiting an animation
+ */
 export function useExitAnimation(ref: RefObject<HTMLElement>, isOpen: boolean) {
   // State to trigger a re-render after animation is complete, which causes the element to be removed from the DOM.
   // Ref to track the state we're in, so we don't immediately reset isExiting to true after the animation.
@@ -46,6 +54,9 @@ export function useExitAnimation(ref: RefObject<HTMLElement>, isOpen: boolean) {
   return isExiting;
 }
 
+/**
+ * This hook is used to detect when an animation ends.
+ */
 function useAnimation(
   ref: RefObject<HTMLElement>,
   isActive: boolean,
@@ -87,27 +98,4 @@ function useAnimation(
       }
     }
   }, [ref, isActive, onEnd]);
-}
-
-// React doesn't understand the <template> element, which doesn't have children like a normal element.
-// It will throw an error during hydration when it expects the firstChild to contain content rendered
-// on the server, when in reality, the browser will have placed this inside the `content` document fragment.
-// This monkey patches the firstChild property for our special hidden template elements to work around this error.
-// See https://github.com/facebook/react/issues/19932
-if (typeof HTMLTemplateElement !== 'undefined') {
-  const getFirstChild = Object.getOwnPropertyDescriptor(
-    Node.prototype,
-    'firstChild',
-  )!.get!;
-  Object.defineProperty(HTMLTemplateElement.prototype, 'firstChild', {
-    configurable: true,
-    enumerable: true,
-    get: function () {
-      if (this.dataset.reactAriaHidden) {
-        return this.content.firstChild;
-      } else {
-        return getFirstChild.call(this);
-      }
-    },
-  });
 }
