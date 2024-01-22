@@ -1,6 +1,6 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { darkThemeClass, vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
+import { sprinkles } from '../../styles/sprinkles.css';
+import { darkThemeClass, vars } from '../../styles/vars.css';
 
 export const layoutVariant = styleVariants({
   horizontal: [

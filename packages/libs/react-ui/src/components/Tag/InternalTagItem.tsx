@@ -1,10 +1,10 @@
-import { SystemIcon } from '@components/Icon';
 import { mergeRefs } from '@react-aria/utils';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
 import type { AriaButtonOptions, AriaTagProps } from 'react-aria';
 import { useButton, useFocusRing, useTag } from 'react-aria';
 import type { ListState } from 'react-stately';
+import { SystemIcon } from '../Icon';
 import { Tag } from './Tag';
 import { closeButtonClass, tagItemClass } from './Tag.css';
 

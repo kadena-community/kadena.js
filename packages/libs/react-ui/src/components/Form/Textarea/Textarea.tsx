@@ -1,7 +1,7 @@
-import { atoms } from '@theme/atoms.css';
 import classNames from 'classnames';
 import type { FC, TextareaHTMLAttributes } from 'react';
 import React, { forwardRef, useContext } from 'react';
+import { atoms } from '../../../styles/atoms.css';
 import { baseContainerClass, baseOutlinedClass } from '../Form.css';
 import { FormFieldWrapperContext } from '../FormFieldWrapper/FormFieldWrapper.context';
 import {

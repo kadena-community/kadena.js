@@ -9,18 +9,22 @@ import {
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
+import {
+  extraMarginSmallWrapper,
+  extraMarginWrapper,
+} from '@/styles/index.css';
 import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
 import {
   Box,
-  Button,
   Card,
   Grid,
   GridItem,
   Heading,
+  Link as KadenaLink,
+  SystemIcon,
   Text,
 } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/theme';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -52,17 +56,18 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   Pact to create a smart contract
                 </Text>
               </Box>
-              <Button as="a" asChild icon="TrailingIcon">
-                <Link href={'/pact/beginner'}>Getting started</Link>
-              </Button>
+              <KadenaLink
+                endIcon={<SystemIcon.TrailingIcon />}
+                href="/pact/beginner"
+                variant="contained"
+              >
+                Getting started
+              </KadenaLink>
             </Card>
           </GridItem>
           <GridItem>
             <Box
-              className={sprinkles({
-                marginBlockStart: '$8',
-                marginInlineEnd: { sm: 0, xl: '$32' },
-              })}
+              className={extraMarginWrapper}
               marginInlineStart={{ sm: 'no', lg: 'md' }}
             >
               <MostPopular
@@ -74,12 +79,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
           </GridItem>
         </Grid>
 
-        <Box
-          className={sprinkles({
-            marginBlockStart: '$8',
-            marginBlockEnd: '$20',
-          })}
-        >
+        <Box className={extraMarginSmallWrapper}>
           <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
             <GridItem rowSpan={2}>
               <DocsCard

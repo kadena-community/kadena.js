@@ -1,7 +1,8 @@
-import type { ITextareaProps } from '@components/Form';
-import { CopyButton, Textarea } from '@components/Form';
 import type { FC } from 'react';
 import React, { useState } from 'react';
+import { CopyButton } from '../../ActionButtons/CopyButton';
+import type { ITextareaProps } from '../Textarea';
+import { Textarea } from '../Textarea';
 
 export const TextareaCopy: FC<ITextareaProps> = (props) => {
   const [value, setValue] = useState<string>('');

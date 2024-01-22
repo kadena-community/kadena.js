@@ -1,10 +1,10 @@
-import type { ITextFieldProps } from '@components/Form';
-import { TextField } from '@components/Form';
-import { statusVariant } from '@components/Form/FormFieldWrapper/FormFieldWrapper.css';
-import { SystemIcon } from '@components/Icon';
-import { onLayer2, withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { onLayer2, withContentWidth } from '../../../storyDecorators';
+import { SystemIcon } from '../../Icon';
+import { statusVariant } from '../FormFieldWrapper/FormFieldWrapper.css';
+import type { ITextFieldProps } from './TextField';
+import { TextField } from './TextField';
 
 const meta: Meta<ITextFieldProps> = {
   title: 'Form/TextField',

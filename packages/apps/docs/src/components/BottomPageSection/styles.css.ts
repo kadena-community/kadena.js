@@ -1,4 +1,4 @@
-import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const bottomWrapperClass = style([
@@ -20,3 +20,16 @@ export const bottomWrapperCodeLayoutClass = style(
     },
   }),
 );
+
+export const navClass = style([
+  {
+    ...responsiveStyle({
+      xs: {
+        width: '100%',
+      },
+      lg: {
+        width: '100%',
+      },
+    }),
+  },
+]);

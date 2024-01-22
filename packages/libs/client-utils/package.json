@@ -17,7 +17,8 @@
     "./built-in": "./lib/built-in/index.js",
     "./coin": "./lib/coin/index.js",
     "./core": "./lib/core/index.js",
-    "./nodejs": "./lib/nodejs/index.js"
+    "./nodejs": "./lib/nodejs/index.js",
+    "./marmalade": "./lib/marmalade/index.js"
   },
   "main": "./lib/core/index.js",
   "typesVersions": {
@@ -33,6 +34,9 @@
       ],
       "nodejs": [
         "./lib/nodejs/index.d.ts"
+      ],
+      "marmalade": [
+        "./lib/marmalade/index.d.ts"
       ]
     }
   },

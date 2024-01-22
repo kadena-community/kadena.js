@@ -1,8 +1,8 @@
 'use client';
-import { darkThemeClass } from '@theme/index';
 import type { FC, FunctionComponentElement } from 'react';
 import React, { useState } from 'react';
 import type { INavAccordionLinkProps, INavAccordionSectionProps } from '.';
+import { darkThemeClass } from '../../styles/index';
 import type { NavAccordionState } from './NavAccordion.context';
 import {
   NavAccordionContext,

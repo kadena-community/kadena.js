@@ -7,7 +7,8 @@ import { markDownComponents } from '@/components/Markdown';
 import { MenuProvider } from '@/hooks/useMenu/MenuProvider';
 import { getLayout } from '@/utils/getLayout';
 import type { IPageMeta, IPageProps } from '@kadena/docs-tools';
-import { darkThemeClass } from '@kadena/react-ui/theme';
+import { RouterProvider } from '@kadena/react-ui';
+import { darkThemeClass } from '@kadena/react-ui/styles';
 import { MDXProvider } from '@mdx-js/react';
 import { ThemeProvider } from 'next-themes';
 import type { AppProps } from 'next/app';
@@ -112,13 +113,15 @@ export const MyApp = ({
             dark: darkThemeClass,
           }}
         >
-          <MenuProvider>
-            <Header menuItems={props.headerMenuItems} />
-            <CookieConsent />
-            <Layout {...props}>
-              <Component {...props} />
-            </Layout>
-          </MenuProvider>
+          <RouterProvider navigate={router.push}>
+            <MenuProvider>
+              <Header menuItems={props.headerMenuItems} />
+              <CookieConsent />
+              <Layout {...props}>
+                <Component {...props} />
+              </Layout>
+            </MenuProvider>
+          </RouterProvider>
         </ThemeProvider>
       </MDXProvider>
       <Analytics />

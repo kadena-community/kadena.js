@@ -1,7 +1,4 @@
-import { Grid, GridItem } from '@components/Layout/Grid';
-import { onLayer2 } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
-import { atoms } from '@theme/atoms.css';
 import classNames from 'classnames';
 import React from 'react';
 import { componentClass, containerClass, itemClass } from '../stories.css';
@@ -12,6 +9,11 @@ import {
 } from '../storyComponents';
 import type { IGridProps } from './Grid';
 import type { ResponsiveInputType } from './Grid.css';
+
+import { onLayer2 } from '../../../storyDecorators';
+import { atoms } from '../../../styles/atoms.css';
+import { Grid } from './Grid';
+import { GridItem } from './GridItem';
 
 type StoryType = {
   columnSpan: ResponsiveInputType;

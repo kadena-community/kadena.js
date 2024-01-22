@@ -1,8 +1,8 @@
-import { Breadcrumbs, BreadcrumbsItem } from '@components/Breadcrumbs';
-import { SystemIcon } from '@components/Icon';
 import { render } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, test } from 'vitest';
+import { Breadcrumbs, BreadcrumbsItem } from '../Breadcrumbs';
+import { SystemIcon } from '../Icon';
 
 describe('Breadcrumbs', () => {
   test('has the correct aria label and breadcrumbs', () => {

@@ -1,5 +1,5 @@
 import type { LayoutType } from '@kadena/docs-tools';
-import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const articleClass = style([

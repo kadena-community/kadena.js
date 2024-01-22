@@ -1,14 +1,14 @@
-import type { INotificationProps } from '@components/Notification';
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+import { SystemIcon } from '..';
+import { withContentWidth } from '../../storyDecorators';
+import type { INotificationProps } from '../Notification';
 import {
   Notification,
   NotificationButton,
   NotificationFooter,
   NotificationHeading,
-} from '@components/Notification';
-import { withContentWidth } from '@storyDecorators';
-import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import { SystemIcon } from '..';
+} from '../Notification';
 import { notificationRecipe } from './Notification.css';
 
 // eslint-disable-next-line @kadena-dev/typedef-var

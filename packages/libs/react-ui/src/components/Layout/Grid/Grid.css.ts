@@ -1,7 +1,7 @@
 /* eslint @typescript-eslint/naming-convention: 0 */
-import { breakpoints, mapToProperty } from '@theme/themeUtils';
 import { style, styleVariants } from '@vanilla-extract/css';
 import mapValues from 'lodash.mapvalues';
+import { breakpoints, mapToProperty } from '../../../styles/themeUtils';
 
 export const gridContainerClass = style([
   {

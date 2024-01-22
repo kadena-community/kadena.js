@@ -1,7 +1,7 @@
-import { SystemIcon } from '@components/Icon';
-import { onLayer2, withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+import { onLayer2, withContentWidth } from '../../../storyDecorators';
+import { SystemIcon } from '../../Icon';
 import type { ISelectProps } from './Select';
 import { Select } from './Select';
 

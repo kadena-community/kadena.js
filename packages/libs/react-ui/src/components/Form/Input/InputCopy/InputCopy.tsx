@@ -1,7 +1,8 @@
-import type { IInputProps } from '@components/Form';
-import { CopyButton, Input } from '@components/Form';
 import type { FC } from 'react';
 import React, { useState } from 'react';
+import { CopyButton } from '../../ActionButtons/CopyButton';
+import type { IInputProps } from '../Input';
+import { Input } from '../Input';
 
 export const InputCopy: FC<IInputProps> = (props) => {
   const [value, setValue] = useState<string>('');

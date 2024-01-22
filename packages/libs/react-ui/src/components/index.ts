@@ -4,7 +4,7 @@ export type {
   IAccordionSectionProps,
 } from './Accordion';
 export type { IBreadcrumbItemProps, IBreadcrumbsProps } from './Breadcrumbs';
-export type { IButtonProps } from './Button';
+export type { IButtonProps, IToggleButtonProps } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
@@ -24,7 +24,6 @@ export type {
   ITextareaProps,
 } from './Form';
 export type { IIconProps } from './Icon';
-export type { IIconButtonProps } from './IconButton';
 export type {
   IBoxProps,
   IGridItemProps,
@@ -81,7 +80,7 @@ export type {
 
 export { Accordion } from './Accordion';
 export { Breadcrumbs, BreadcrumbsItem } from './Breadcrumbs';
-export { Button } from './Button';
+export { Button, ToggleButton } from './Button';
 export { Card } from './Card';
 export { ContentHeader } from './ContentHeader';
 export {
@@ -104,7 +103,6 @@ export {
   TextareaField,
 } from './Form';
 export { ProductIcon, SystemIcon } from './Icon';
-export { IconButton } from './IconButton';
 export { Box, Grid, GridItem, Stack } from './Layout';
 export { Link } from './Link';
 export { MaskedValue } from './MaskedValue/MaskedValue';

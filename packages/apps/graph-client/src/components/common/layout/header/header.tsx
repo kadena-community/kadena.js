@@ -1,10 +1,10 @@
 import routes from '@/constants/routes';
-import { Text } from '@components/text';
 import {
   Button,
   FormFieldWrapper,
   Grid,
   GridItem,
+  Heading,
   Input,
   Select,
 } from '@kadena/react-ui';
@@ -204,19 +204,7 @@ const Header: FC<IHeaderProps> = (props) => {
   return (
     <div>
       <header className={headerStyle}>
-        <Text
-          as="h1"
-          css={{
-            display: 'block',
-            color: '$mauve12',
-            fontSize: 48,
-            marginBottom: '$6',
-            cursor: 'pointer',
-          }}
-          onClick={() => router.push(routes.HOME)}
-        >
-          {title}
-        </Text>
+        <Heading as="h1">{title}</Heading>
 
         <Grid columns={gridColumns + 1}>
           <GridItem>

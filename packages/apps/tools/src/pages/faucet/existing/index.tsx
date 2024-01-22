@@ -20,6 +20,7 @@ import {
   Notification,
   NotificationHeading,
   Stack,
+  SystemIcon,
 } from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -194,11 +195,11 @@ const ExistingAccountFaucetPage: FC = () => {
           </Card>
           <div className={buttonContainerClass}>
             <Button
-              loading={requestStatus.status === 'processing'}
-              icon="TrailingIcon"
-              iconAlign="right"
+              isLoading={requestStatus.status === 'processing'}
+              endIcon={<SystemIcon.TrailingIcon />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-              disabled={disabledButton}
+              isDisabled={disabledButton}
+              type="submit"
             >
               {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             </Button>

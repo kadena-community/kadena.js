@@ -1,8 +1,8 @@
-import { atoms } from '@theme/atoms.css';
-import { tokens } from '@theme/tokens/contract.css';
-import { vars } from '@theme/vars.css';
 import { style, styleVariants } from '@vanilla-extract/css';
 import { calc } from '@vanilla-extract/css-utils';
+import { atoms } from '../../../styles/atoms.css';
+import { tokens } from '../../../styles/tokens/contract.css';
+import { vars } from '../../../styles/vars.css';
 
 export const disabledClass = style([
   atoms({

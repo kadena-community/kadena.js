@@ -1,12 +1,12 @@
-import { Button } from '@components/Button';
-import type { IInputProps } from '@components/Form';
-import { Input } from '@components/Form';
-import { SystemIcon } from '@components/Icon';
-import { Stack } from '@components/Layout/Stack';
-import { onLayer2, withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { HTMLInputTypeAttribute } from 'react';
 import React from 'react';
+import { onLayer2, withContentWidth } from '../../../storyDecorators';
+import { Button } from '../../Button';
+import type { IInputProps } from '../../Form';
+import { Input } from '../../Form';
+import { SystemIcon } from '../../Icon';
+import { Stack } from '../../Layout/Stack';
 
 const HTMLInputTypes: HTMLInputTypeAttribute[] = [
   'button',

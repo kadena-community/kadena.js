@@ -8,17 +8,16 @@ import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
 import {
   Box,
-  Button,
   Card,
   Grid,
   GridItem,
   Heading,
+  Link,
   Stack,
+  SystemIcon,
   Text,
 } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/theme';
 import type { GetStaticProps } from 'next';
-import Link from 'next/link';
 import type { FC } from 'react';
 import React from 'react';
 
@@ -44,18 +43,17 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 clicking Quick start.
               </Text>
             </Box>
-            <Button as="a" asChild icon="TrailingIcon">
-              <Link href={'/build/quickstart'}>Quick start</Link>
-            </Button>
+            <Link
+              endIcon={<SystemIcon.TrailingIcon />}
+              variant="contained"
+              href="/build/quickstart"
+            >
+              Quick start
+            </Link>
           </Card>
         </GridItem>
         <GridItem>
-          <Box
-            className={sprinkles({
-              marginBlock: '$8',
-              marginInlineStart: '$12',
-            })}
-          >
+          <Box marginBlock="xxl" marginInlineStart="xxxl">
             <MostPopular
               pages={popularPages}
               title="Most viewed docs"
@@ -64,9 +62,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           </Box>
         </GridItem>
       </Grid>
-      <Box
-        className={sprinkles({ marginBlockStart: '$6', marginBlockEnd: '$20' })}
-      >
+      <Box marginBlockStart="lg" marginBlockEnd="xxxl">
         <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem>
             <DocsCard

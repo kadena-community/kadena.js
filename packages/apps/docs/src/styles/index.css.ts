@@ -1,7 +1,7 @@
-import { responsiveStyle, tokens } from '@kadena/react-ui/theme';
+import { responsiveStyle, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
-const browseSectionWrapper = style([
+export const browseSectionWrapper = style([
   {
     marginBlockEnd: tokens.kda.foundation.spacing.lg,
     flexBasis: '50%',
@@ -11,4 +11,28 @@ const browseSectionWrapper = style([
   },
 ]);
 
-export { browseSectionWrapper };
+export const extraMarginWrapper = style({
+  marginBlockStart: tokens.kda.foundation.size.n8,
+  ...responsiveStyle({
+    sm: { marginInlineEnd: 0 },
+    xl: { marginInlineEnd: tokens.kda.foundation.size.n32 },
+  }),
+});
+
+export const extraMarginSmallWrapper = style({
+  marginBlockStart: tokens.kda.foundation.size.n8,
+  marginBlockEnd: tokens.kda.foundation.size.n20,
+});
+export const marmaladeWrapperClass = style({
+  ...responsiveStyle({
+    sm: {
+      marginInlineEnd: 0,
+    },
+    lg: {
+      marginInlineEnd: tokens.kda.foundation.size.n32,
+    },
+    xl: {
+      marginInlineEnd: tokens.kda.foundation.size.n64,
+    },
+  }),
+});
