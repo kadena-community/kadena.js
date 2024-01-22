@@ -10,4 +10,4 @@ next-env.d.ts
 .env.local
 
 .vscode/settings.json
-.tsconfig.tsbuildinfo
+*.tsbuildinfo

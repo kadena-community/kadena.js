@@ -1,12 +1,12 @@
-import type { Content, Root } from 'mdast-util-from-markdown/lib';
+function hasChildren(content: any): content is {
+  children: any[];
+} {
+  return 'children' in content;
+}
 
-export const getTypes = <T>(
-  tree: Root | Content,
-  type: string,
-  arr: T[] = [],
-): T[] => {
-  if ('children' in tree) {
-    tree.children.forEach((branch: Content) => {
+export const getTypes = <T>(tree: any, type: string, arr: T[] = []): T[] => {
+  if (hasChildren(tree)) {
+    tree.children.forEach((branch) => {
       if (branch.type === type) {
         arr.push(branch as unknown as T);
       }

@@ -2518,7 +2518,7 @@ importers:
         version: 3.3.0(eslint@8.45.0)(typescript@5.2.2)
       '@types/mdast':
         specifier: ^4.0.1
-        version: 4.0.2
+        version: 4.0.3
       '@types/node':
         specifier: ^18.17.14
         version: 18.17.14
@@ -13156,12 +13156,6 @@ packages:
     resolution: {integrity: sha512-DT+iNIRNX884cx0/Q1ja7NyUPpZuv0KPyL5rGNxm1WC1OtHstl7n4Jb7nk+xacNShQMbczJjt8uFzznpp6kYBg==}
     dependencies:
       '@types/unist': 2.0.8
-
-  /@types/mdast@4.0.2:
-    resolution: {integrity: sha512-tYR83EignvhYO9iU3kDg8V28M0jqyh9zzp5GV+EO+AYnyUl3P5ltkTeJuTiFZQFz670FSb3EwT/6LQdX+UdKfw==}
-    dependencies:
-      '@types/unist': 3.0.2
-    dev: true
 
   /@types/mdast@4.0.3:
     resolution: {integrity: sha512-LsjtqsyF+d2/yFOYaN22dHZI1Cpwkrj+g06G8+qtUKlhovPW89YhqSnfKtMbkgmEtYpH2gydRNULd6y8mciAFg==}

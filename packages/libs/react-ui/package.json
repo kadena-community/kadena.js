@@ -7,7 +7,9 @@
   "author": "KADENA",
   "sideEffects": [
     "*.css.*",
-    "dist/side-effects/**"
+    "dist/global.*",
+    "dist/side-effects/**",
+    "src/entries/global.ts"
   ],
   "exports": {
     ".": {
@@ -17,6 +19,14 @@
       },
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
+    },
+    "./global": {
+      "types": {
+        "import": "./dist/global.d.mts",
+        "require": "./dist/global.d.ts"
+      },
+      "import": "./dist/global.mjs",
+      "require": "./dist/global.cjs"
     },
     "./styles": {
       "types": {
@@ -33,10 +43,11 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
+    "global",
     "styles"
   ],
   "scripts": {
-    "build": "crackle package",
+    "build": "crackle package --clean --fix",
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
     "chromatic": "chromatic -b build:storybook",
