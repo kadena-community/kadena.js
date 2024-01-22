@@ -24,20 +24,29 @@ export interface IComboboxProps<T extends object = any>
    * @deprecated Use `isDisabled` instead. only here to support libs that manages props like `react-hook-form`
    */
   disabled?: boolean;
+  /** The filter function used to determine if a option should be included in the combo box list. */
+  defaultFilter?: (textValue: string, inputValue: string) => boolean;
 }
 
 function ComboBoxBase<T extends object>(
   props: IComboboxProps<T>,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
-  const { contains } = useFilter({ sensitivity: 'base' });
-  const state = useComboBoxState({ ...props, defaultFilter: contains });
+  const isDisabled = props.disabled ?? props.isDisabled;
   const inputRef = useObjectRef(ref);
   const buttonRef = useRef(null);
   const listBoxRef = useRef(null);
   const popoverRef = useRef(null);
   const triggerRef = useRef(null);
-  const isDisabled = props.disabled ?? props.isDisabled;
+
+  const { contains } = useFilter({ sensitivity: 'base' });
+  const state = useComboBoxState({
+    shouldCloseOnBlur: true,
+    ...props,
+    isDisabled,
+    defaultFilter: props.defaultFilter || contains,
+  });
+
   const {
     buttonProps,
     inputProps,
