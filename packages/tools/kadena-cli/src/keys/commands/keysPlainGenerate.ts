@@ -40,7 +40,7 @@ async function generateLegacyKeyPairs(
 ): Promise<storageService.IKeyPair[]> {
   const keyPairs: storageService.IKeyPair[] = [];
   const password = '';
-  const rootKey = kadenaEncrypt(password, randomBytes(128));
+  const rootKey = await kadenaEncrypt(password, randomBytes(128));
 
   for (let i = 0; i < amount; i++) {
     const { publicKey, secretKey } = await kadenaGenKeypair(

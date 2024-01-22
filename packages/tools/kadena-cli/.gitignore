@@ -6,3 +6,4 @@
 .kadena/
 
 *.js
+!/vitest.setup.js
