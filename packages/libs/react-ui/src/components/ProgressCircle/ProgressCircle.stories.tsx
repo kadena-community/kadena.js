@@ -4,7 +4,6 @@ import { colorAtoms } from '../../styles/atoms.css';
 import type { IProgressCircleProps } from './ProgressCircle';
 import { ProgressCircle } from './ProgressCircle';
 
-console.log('colorAtoms', colorAtoms, Object.keys(colorAtoms));
 const meta: Meta<IProgressCircleProps> = {
   title: 'Components/ProgressCircle',
   parameters: {
