@@ -31,9 +31,12 @@ function SelectBase<T extends object>(
   props: ISelectProps<T>,
   forwardedRef: ForwardedRef<HTMLButtonElement>,
 ) {
-  const state = useSelectState(props);
-  const ref = useObjectRef(forwardedRef);
   const isDisabled = props.disabled ?? props.isDisabled;
+  const ref = useObjectRef(forwardedRef);
+  const state = useSelectState({
+    ...props,
+    isDisabled,
+  });
   const {
     labelProps,
     triggerProps,

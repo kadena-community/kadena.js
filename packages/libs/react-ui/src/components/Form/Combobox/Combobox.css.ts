@@ -75,5 +75,6 @@ export const comboBoxButtonClass = style([
     justifyContent: 'center',
     height: '100%',
     cursor: 'pointer',
+    padding: 'no',
   }),
 ]);

@@ -1,57 +1,128 @@
-import { useObjectRef } from '@react-aria/utils';
-import type { ForwardedRef } from 'react';
+import { filterDOMProps, mergeProps, useObjectRef } from '@react-aria/utils';
+import type { ForwardedRef, ReactNode, RefObject } from 'react';
 import React, { forwardRef } from 'react';
-import type { AriaPopoverProps } from 'react-aria';
+import type { AriaPopoverProps, PositionProps } from 'react-aria';
 import { DismissButton, Overlay, usePopover } from 'react-aria';
-import type { OverlayTriggerState } from 'react-stately';
+import {
+  OverlayTriggerProps,
+  useOverlayTriggerState,
+  type OverlayTriggerState,
+} from 'react-stately';
+import { useEnterAnimation, useExitAnimation } from '../../utils/useAnimation';
 import { arrowClass, popoverClass, underlayClass } from './Popover.css';
 
-interface IPopoverProps extends Omit<AriaPopoverProps, 'popoverRef'> {
-  children: React.ReactNode;
-  state: OverlayTriggerState;
+interface ICommonProps {
+  state?: OverlayTriggerState;
+  children: ReactNode;
+  /**
+   * Whether the show the arrow pointing to the trigger element.
+   */
   showArrow?: boolean;
+  /**
+   * The name of the component that triggered the popover. This is reflected on the element
+   * as the `data-trigger` attribute, and can be used to provide specific
+   * styles for the popover depending on which element triggered it.
+   */
+  trigger?: string;
+  /**
+   * Whether the popover is currently performing an entry animation.
+   */
+  isEntering?: boolean;
+  /**
+   * Whether the popover is currently performing an exit animation.
+   */
+  isExiting?: boolean;
+  /**
+   * Whether the popover should resize to match the width of its trigger.
+   * @default true
+   */
   resizeToTrigger?: boolean;
+  /**
+   * The additional offset applied along the main axis between the element and its
+   * anchor element.
+   * @default 8
+   */
+  offset?: number;
+  /**
+   * The container element in which the overlay portal will be placed. This may have unknown behavior depending on where it is portalled to.
+   * @default document.body
+   */
+  portalContainer?: Element;
 }
+export interface IPopoverProps
+  extends Omit<PositionProps, 'isOpen'>,
+    Omit<AriaPopoverProps, 'popoverRef' | 'offset'>,
+    OverlayTriggerProps,
+    ICommonProps {}
 
 function PopoverBase(
-  {
-    children,
-    state,
-    offset = 8,
-    showArrow = true,
-    arrowBoundaryOffset = 10,
-    resizeToTrigger = true,
-    triggerRef,
-    ...props
-  }: IPopoverProps,
+  props: IPopoverProps,
   forwardedRef: ForwardedRef<HTMLDivElement>,
 ) {
-  const popoverRef = useObjectRef(forwardedRef);
-  const { popoverProps, underlayProps, arrowProps, placement } = usePopover(
+  const ref = useObjectRef(forwardedRef);
+  let localState = useOverlayTriggerState(props);
+  let state = props.state || localState;
+  let isExiting =
+    useExitAnimation(ref, state.isOpen) || props.isExiting || false;
+
+  if (state && !state.isOpen && !isExiting) {
+    return null;
+  }
+
+  return (
+    <PopoverInner
+      {...props}
+      state={state}
+      popoverRef={ref}
+      isExiting={isExiting}
+    />
+  );
+}
+
+interface PopoverInnerProps extends AriaPopoverProps, IPopoverProps {
+  state: OverlayTriggerState;
+}
+
+function PopoverInner({
+  state,
+  isExiting,
+  portalContainer,
+  resizeToTrigger = true,
+  ...props
+}: PopoverInnerProps) {
+  let { popoverProps, underlayProps, arrowProps, placement } = usePopover(
     {
       ...props,
-      triggerRef,
-      arrowBoundaryOffset,
-      offset,
-      popoverRef,
+      offset: props.offset ?? 8,
+      arrowBoundaryOffset: props.arrowBoundaryOffset ? 10 : undefined,
     },
     state,
   );
-  const triggerWidth = triggerRef?.current?.clientWidth;
-
+  const ref = props.popoverRef as RefObject<HTMLDivElement>;
+  let isEntering =
+    useEnterAnimation(ref, !!placement) || props.isEntering || false;
+  const triggerWidth = props.triggerRef?.current?.clientWidth;
+  const style = {
+    ...popoverProps.style,
+    minWidth: resizeToTrigger ? triggerWidth : undefined,
+  };
   return (
-    <Overlay>
-      <div {...underlayProps} className={underlayClass} />
+    <Overlay isExiting={isExiting} portalContainer={portalContainer}>
+      {!props.isNonModal && state.isOpen && (
+        <div {...underlayProps} className={underlayClass} />
+      )}
       <div
-        {...popoverProps}
-        style={{
-          ...popoverProps.style,
-          minWidth: resizeToTrigger ? triggerWidth : undefined,
-        }}
-        ref={popoverRef}
+        {...mergeProps(filterDOMProps(props as any), popoverProps)}
+        style={style}
+        ref={ref}
         className={popoverClass}
+        data-trigger={props.trigger}
+        data-placement={placement}
+        data-entering={isEntering || undefined}
+        data-exiting={isExiting || undefined}
       >
-        {showArrow && (
+        {!props.isNonModal && <DismissButton onDismiss={state.close} />}
+        {props.showArrow && (
           <svg
             {...arrowProps}
             className={arrowClass}
@@ -61,8 +132,7 @@ function PopoverBase(
             <path d="M0 0 L6 6 L12 0" />
           </svg>
         )}
-        <DismissButton onDismiss={state.close} />
-        {children}
+        {props.children}
         <DismissButton onDismiss={state.close} />
       </div>
     </Overlay>
