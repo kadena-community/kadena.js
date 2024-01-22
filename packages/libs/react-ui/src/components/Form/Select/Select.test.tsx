@@ -1,7 +1,7 @@
-import { Select } from '@components/Form';
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
+import { Select } from '../Select';
 
 describe('Select', () => {
   it('renders without errors', () => {

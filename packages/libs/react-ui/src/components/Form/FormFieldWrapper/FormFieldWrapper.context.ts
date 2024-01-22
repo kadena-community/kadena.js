@@ -1,4 +1,4 @@
-import type { vars } from '@theme/vars.css';
+import type { vars } from '../../../styles/vars.css';
 
 import { createContext } from 'react';
 import type { FormFieldStatus } from '../Form.css';

@@ -1,9 +1,9 @@
-import type { IFormFieldWrapperProps } from '@components/Form';
-import { FormFieldWrapper, Input } from '@components/Form';
-import { onLayer2, withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
-import { vars } from '@theme/vars.css';
 import React from 'react';
+import { onLayer2, withContentWidth } from '../../../storyDecorators';
+import { vars } from '../../../styles/vars.css';
+import type { IFormFieldWrapperProps } from '../../Form';
+import { FormFieldWrapper, Input } from '../../Form';
 import { statusVariant } from './FormFieldWrapper.css';
 
 type StoryProps = {

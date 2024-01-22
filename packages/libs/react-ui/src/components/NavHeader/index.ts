@@ -7,7 +7,8 @@ import type { INavHeaderLinkProps } from './NavHeaderLink';
 import { NavHeaderLink } from './NavHeaderLink';
 import type { INavHeaderNavigationProps } from './NavHeaderNavigation';
 import { NavHeaderNavigation } from './NavHeaderNavigation';
-import { INavHeaderSelectProps, NavHeaderSelect } from './NavHeaderSelect';
+import type { INavHeaderSelectProps } from './NavHeaderSelect';
+import { NavHeaderSelect } from './NavHeaderSelect';
 
 export {
   INavHeaderContentProps,

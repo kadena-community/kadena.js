@@ -1,7 +1,7 @@
-import type { ILinkProps } from '@components/Link';
-import { Link } from '@components/Link';
 import type { FC } from 'react';
 import React from 'react';
+import type { ILinkProps } from '../Link';
+import { Link } from '../Link';
 
 export interface IProfileSummaryLinkProps extends ILinkProps {}
 

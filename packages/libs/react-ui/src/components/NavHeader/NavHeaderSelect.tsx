@@ -1,7 +1,7 @@
-import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { forwardRef } from 'react';
+import { SystemIcon } from '../Icon';
 import {
   chevronIconClass,
   selectClass,

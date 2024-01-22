@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { atoms } from '@theme/atoms.css';
 import React from 'react';
+import { atoms } from '../../styles/atoms.css';
 import type { IAccordionProps, IAccordionSectionProps } from './';
 import { Accordion } from './';
 

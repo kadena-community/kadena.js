@@ -1,4 +1,4 @@
-import { atoms, responsiveStyle } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle } from '@kadena/react-ui/styles';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const menuCardClass = style([

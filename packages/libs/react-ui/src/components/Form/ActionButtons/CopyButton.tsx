@@ -1,6 +1,6 @@
-import { SystemIcon } from '@components/Icon';
 import type { FC } from 'react';
 import React, { useState } from 'react';
+import { SystemIcon } from '../../Icon';
 import { buttonClass } from './CopyButton.css';
 
 const COPY_DURATION_TIME: number = 1000;

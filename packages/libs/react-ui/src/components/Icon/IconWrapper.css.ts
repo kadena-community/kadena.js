@@ -1,5 +1,5 @@
-import { sprinkles } from '@theme/sprinkles.css';
 import { createVar, style, styleVariants } from '@vanilla-extract/css';
+import { sprinkles } from '../../styles/sprinkles.css';
 
 export const iconFill = createVar();
 export const iconContainer = style([
