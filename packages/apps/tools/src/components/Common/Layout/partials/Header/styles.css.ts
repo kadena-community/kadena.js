@@ -14,11 +14,14 @@ export const headerButtonStyle = style([
     border: 'none',
     cursor: 'pointer',
     marginInlineEnd: 'sm',
-    color: 'text.gray.default',
+    color: 'text.gray.inverse.default',
   }),
   {
     padding: tokens.kda.foundation.size.n3,
     selectors: {
+      [`${darkThemeClass} &`]: {
+        color: tokens.kda.foundation.color.neutral.n70,
+      },
       [`${darkThemeClass} &:hover`]: {
         color: tokens.kda.foundation.color.neutral.n100,
       },
