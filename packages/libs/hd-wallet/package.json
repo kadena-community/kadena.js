@@ -17,9 +17,15 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js",
-      "types": "./dist/hd-wallet.d.ts"
+      "default": {
+        "import": "./lib/esm/index.js",
+        "require": "./lib/cjs/index.js",
+        "types": "./dist/hd-wallet.d.ts"
+      },
+      "browser": {
+        "import": "./lib/esm/browser.js",
+        "require": "./lib/cjs/browser.js"
+      }
     },
     "./chainweaver": {
       "types": "./lib/esm/chainweaver/index.d.ts",

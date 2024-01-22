@@ -1,2 +1,2 @@
-import './browser-polyfill';
-export * from './index';
+import './browser-polyfill.js';
+export * from './index.js';
