@@ -1,7 +1,7 @@
 export type BinaryLike = string | ArrayBuffer | Uint8Array;
 
 export const randomBytes = (size: number) =>
-  crypto.getRandomValues(new Uint8Array(size)).buffer as ArrayBuffer;
+  crypto.getRandomValues(new Uint8Array(size));
 
 // derive string key
 async function deriveKey(password: BinaryLike, salt: BinaryLike) {
@@ -45,11 +45,13 @@ export async function encrypt(
     iv: randomBytes(12),
   } as const;
   return {
-    cipherText: await crypto.subtle.encrypt(
-      algo,
-      await deriveKey(password, salt),
-      //   new TextEncoder().encode(text)
-      typeof text === 'string' ? new TextEncoder().encode(text) : text,
+    cipherText: new Uint8Array(
+      await crypto.subtle.encrypt(
+        algo,
+        await deriveKey(password, salt),
+        //   new TextEncoder().encode(text)
+        typeof text === 'string' ? new TextEncoder().encode(text) : text,
+      ),
     ),
     iv: algo.iv,
   };
@@ -68,9 +70,11 @@ export async function decrypt(
     length: 256,
     iv: encrypted.iv,
   };
-  return await crypto.subtle.decrypt(
-    algo,
-    await deriveKey(password, salt),
-    encrypted.cipherText,
+  return new Uint8Array(
+    await crypto.subtle.decrypt(
+      algo,
+      await deriveKey(password, salt),
+      encrypted.cipherText,
+    ),
   );
 }

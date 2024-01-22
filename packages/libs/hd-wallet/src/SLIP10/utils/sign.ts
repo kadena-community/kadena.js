@@ -10,18 +10,15 @@ export interface ISignatureWithPublicKey {
 
 /**
  * Derive a key pair using a seed and an index.
- * @param {ArrayBuffer} seed - The seed for key derivation.
+ * @param {Uint8Array} seed - The seed for key derivation.
  * @param {number} index - The index for key derivation.
  * @returns {{ privateKey: string; publicKey: string }} - Returns the derived private and public keys.
  */
 export const deriveKeyPair = (
-  seed: ArrayBuffer,
+  seed: Uint8Array,
   derivationPath: string,
 ): { privateKey: string; publicKey: string } => {
-  const key = HDKey.fromMasterSeed(new Uint8Array(seed)).derive(
-    derivationPath,
-    true,
-  );
+  const key = HDKey.fromMasterSeed(seed).derive(derivationPath, true);
 
   return {
     privateKey: uint8ArrayToHex(key.privateKey),
@@ -54,12 +51,12 @@ export const signWithKeyPair =
 
 /**
  * Generate a signer function using a seed and an index.
- * @param {ArrayBuffer} seed - The seed for key derivation.
+ * @param {Uint8Array} seed - The seed for key derivation.
  * @param {number} index - The index for key derivation.
  * @returns {(tx: IUnsignedCommand) => { sigs: { sig: string }[] }} - Returns a function that can sign a transaction.
  */
 export const signWithSeed = (
-  seed: ArrayBuffer,
+  seed: Uint8Array,
   derivationPath: string,
 ): ((hash: string) => ISignatureWithPublicKey) => {
   const { publicKey, privateKey } = deriveKeyPair(seed, derivationPath);

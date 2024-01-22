@@ -104,7 +104,7 @@ export async function kadenaChangePassword(
     );
   }
 
-  let decryptedPrivateKey: ArrayBuffer;
+  let decryptedPrivateKey: Uint8Array;
   try {
     decryptedPrivateKey = await kadenaDecrypt(password, encryptedData);
   } catch (error) {
