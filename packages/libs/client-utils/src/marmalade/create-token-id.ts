@@ -23,7 +23,7 @@ interface ICreateTokenIdInput {
   };
 }
 
-export const createTokenIdCommand = ({
+const createTokenIdCommand = ({
   policies = [],
   uri,
   precision,

@@ -24,7 +24,7 @@ interface IGeBalanceInput {
   };
 }
 
-export const getBalanceCommand = ({
+const getBalanceCommand = ({
   tokenId,
   chainId,
   accountName,

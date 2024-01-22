@@ -11,7 +11,7 @@ import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 
-export interface IMintTokenInput {
+interface IMintTokenInput {
   tokenId: string;
   creatorAccount: string;
   chainId: ChainId;
@@ -25,7 +25,7 @@ export interface IMintTokenInput {
   amount: IPactDecimal;
 }
 
-export const mintTokenCommand = ({
+const mintTokenCommand = ({
   tokenId,
   creatorAccount,
   chainId,

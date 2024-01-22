@@ -11,7 +11,7 @@ import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
-export interface ITransferCreateTokenInput {
+interface ITransferCreateTokenInput {
   tokenId: string;
   chainId: ChainId;
   sender: {
@@ -31,7 +31,7 @@ export interface ITransferCreateTokenInput {
   amount: IPactDecimal;
 }
 
-export const createTransferTokenCommand = ({
+const createTransferTokenCommand = ({
   tokenId,
   chainId,
   sender,
