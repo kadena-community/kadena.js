@@ -1,15 +1,14 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
-import { FormStatusNotification } from '@/components/Global';
 import {
   AccountNameField,
+  FormItemCard,
+  FormStatusNotification,
   NAME_VALIDATION,
-} from '@/components/Global/AccountNameField';
-import { FormItemCard } from '@/components/Global/FormItemCard';
-import { OptionsModal } from '@/components/Global/OptionsModal';
-import RequestKeyField, {
+  OptionsModal,
   REQUEST_KEY_VALIDATION,
-} from '@/components/Global/RequestKeyField';
+  RequestKeyField,
+} from '@/components/Global';
 import client from '@/constants/client';
 import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';

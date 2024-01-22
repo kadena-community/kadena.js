@@ -1,29 +1,32 @@
-import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, darkThemeClass, tokens } from '@kadena/react-ui/theme';
 import { style } from '@vanilla-extract/css';
 
 export const walletConnectWrapperStyle = style([
-  sprinkles({
-    marginLeft: '$4',
+  atoms({
+    marginInlineStart: 'md',
   }),
 ]);
 
 export const headerButtonStyle = style([
-  sprinkles({
+  atoms({
     outline: 'none',
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-    padding: '$3',
-    marginRight: '$2',
-    color: '$gray40',
+    marginInlineEnd: 'sm',
+    color: 'text.gray.inverse.default',
   }),
   {
+    padding: tokens.kda.foundation.size.n3,
     selectors: {
+      [`${darkThemeClass} &`]: {
+        color: tokens.kda.foundation.color.neutral.n70,
+      },
       [`${darkThemeClass} &:hover`]: {
-        color: vars.colors.$white,
+        color: tokens.kda.foundation.color.neutral.n100,
       },
       [`&:hover`]: {
-        color: vars.colors.$white,
+        color: tokens.kda.foundation.color.neutral.n0,
       },
     },
   },

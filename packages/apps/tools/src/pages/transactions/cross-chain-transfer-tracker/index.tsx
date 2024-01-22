@@ -1,10 +1,11 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
-import { FormItemCard } from '@/components/Global/FormItemCard';
-import { ProgressBar } from '@/components/Global/ProgressBar';
-import RequestKeyField, {
+import {
+  FormItemCard,
+  ProgressBar,
   REQUEST_KEY_VALIDATION,
-} from '@/components/Global/RequestKeyField';
+  RequestKeyField,
+} from '@/components/Global';
 import { sidebarLinks } from '@/constants/side-links';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';

@@ -31,14 +31,16 @@ import {
   notificationContainerStyle,
 } from '../styles.css';
 
-import type { FormStatus } from '@/components/Global';
-import { ChainSelect, FormStatusNotification } from '@/components/Global';
-import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
-import AccountNameField from '@/components/Global/AccountNameField';
-import { HoverTag } from '@/components/Global/HoverTag';
-import type { PredKey } from '@/components/Global/PredKeysSelect';
-import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
-import { PublicKeyField } from '@/components/Global/PublicKeyField';
+import type { FormStatus, PredKey } from '@/components/Global';
+import {
+  AccountHoverTag,
+  AccountNameField,
+  ChainSelect,
+  FormStatusNotification,
+  HoverTag,
+  PredKeysSelect,
+  PublicKeyField,
+} from '@/components/Global';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';

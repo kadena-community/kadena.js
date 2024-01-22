@@ -24,11 +24,11 @@ export const REQUEST_KEY_VALIDATION = z
     },
   );
 
-interface IRequestKeyFieldProps extends Partial<ITextFieldProps> {
+export interface IRequestKeyFieldProps extends Partial<ITextFieldProps> {
   error?: FieldError;
 }
 
-const RequestKeyField: FC<IRequestKeyFieldProps> = forwardRef<
+export const RequestKeyField: FC<IRequestKeyFieldProps> = forwardRef<
   HTMLInputElement,
   IRequestKeyFieldProps
 >(function RequestKeyField({ error, status, helperText, ...rest }, ref) {
@@ -49,5 +49,3 @@ const RequestKeyField: FC<IRequestKeyFieldProps> = forwardRef<
     />
   );
 });
-
-export default RequestKeyField;
