@@ -53,11 +53,11 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const KEYS = getKeysKey(activeProfile);
 
-  const [encryptionKey] = useState<ArrayBuffer>(() => randomBytes(16));
+  const [encryptionKey] = useState<Uint8Array>(() => randomBytes(16));
 
   const [keyStores, setKeyStores] = useLocalStorage<KeyStore[]>(KEYS, []);
 
-  const [encryptedSeed, setEncryptedSeed] = useState<ArrayBuffer>();
+  const [encryptedSeed, setEncryptedSeed] = useState<Uint8Array>();
 
   const createWallet = async (
     profile: string,
