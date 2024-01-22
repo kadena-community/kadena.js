@@ -208,7 +208,7 @@ export const NativeValidation: Story = {
       >
         <p>
           Keep in mind that native validation is only triggered when the a form
-          is submitted. for realtime validation use the them `isInvalid` prop.
+          is submitted. for realtime validation use the `isInvalid` prop.
         </p>
         <Select
           label="Select an option"
