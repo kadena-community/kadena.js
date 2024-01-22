@@ -1,4 +1,4 @@
-import { kadenaEncrypt, type EncryptedString } from '@kadena/hd-wallet';
+import type { EncryptedString } from '@kadena/hd-wallet';
 import { assert, describe, expect, it } from 'vitest';
 import { decrypt } from '../commands/keysDecrypt.js';
 
