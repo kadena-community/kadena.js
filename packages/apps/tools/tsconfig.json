@@ -7,7 +7,8 @@
     "skipLibCheck": true,
     "noEmit": true,
     "incremental": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "declaration": false, // fixes pnpm issue: https://github.com/microsoft/TypeScript/issues/42873
