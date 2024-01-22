@@ -6,7 +6,7 @@ import yaml from 'js-yaml';
 
 import type { ChainId } from '@kadena/types';
 import { services } from '../../services/index.js';
-import type { IAddAccountManualConfig } from '../types.js';
+import type { IAddAccountManualConfig, Predicate } from '../types.js';
 
 export const isEmpty = (value?: string): boolean =>
   value === undefined || value === '' || value === null;
@@ -19,7 +19,7 @@ export async function writeAlias(
   await services.filesystem.writeFile(filePath, yaml.dump(config));
 }
 
-const validatePublicKeys = (
+export const validatePublicKeys = (
   publicKeysConfig: string[],
   keys: string[],
 ): boolean => {
@@ -34,7 +34,7 @@ const validatePublicKeys = (
 
 interface IAccountDetailsResult {
   publicKeys: string[];
-  predicate?: string;
+  predicate?: Predicate;
 }
 
 export async function getAccountDetailsFromChain(
@@ -56,13 +56,13 @@ export async function getAccountDetailsFromChain(
 
     return {
       publicKeys: keys,
-      predicate: pred,
+      predicate: pred as Predicate,
     };
   } catch (e) {
     if (e.message?.includes('row not found') === true) {
       console.log(
         chalk.red(
-          `The account ${accountName} is not on chain yet. To create it on-chain, transfer funds to it from ${networkId} and use "fund" command).`,
+          `The account ${accountName} is not on chain yet. To create it on-chain, transfer funds to it from ${networkId} and use "fund" command.`,
         ),
       );
       process.exit(1);
@@ -96,11 +96,12 @@ export async function compareAndUpdateConfig(
     if (updateOption === 'userInput') {
       return config;
     } else {
-      Object.assign(config, {
-        publicKeys,
-        predicate,
-      });
-      return config;
+      const updatedConfig = {
+        ...config,
+        publicKeysConfig: publicKeys,
+        predicate: predicate as Predicate,
+      };
+      return updatedConfig;
     }
   } else {
     return config;
@@ -115,7 +116,7 @@ export async function createAccountName(
   if (publicKeys.length === 0) {
     console.log(
       chalk.red(
-        'No public keys provided. Please provide at least one public key.',
+        'No public keys provided. Please provide minimum one public key to create an account name',
       ),
     );
     return;
@@ -189,17 +190,22 @@ export async function createAccount(
     process.exit(1);
   }
 
-  Object.assign(config, { accountName }) as IAddAccountManualConfig;
-  return validateAccountDetails(config);
+  return {
+    ...config,
+    accountName,
+  };
 }
 
 export async function validateAccountDetails(
   config: IAddAccountManualConfig,
 ): Promise<IAddAccountManualConfig> {
   const { accountName } = config;
-  return isEmpty(accountName)
-    ? createAccount(config)
-    : getAccountDetails(config);
+  if (isEmpty(accountName)) {
+    const updatedConfig = await createAccount(config);
+    return getAccountDetails(updatedConfig);
+  }
+
+  return getAccountDetails(config);
 }
 
 export async function validateConfigFileExistence(
