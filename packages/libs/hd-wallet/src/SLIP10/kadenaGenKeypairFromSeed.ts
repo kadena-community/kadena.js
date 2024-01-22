@@ -66,7 +66,7 @@ export async function kadenaGenKeypairFromSeed(
     throw new Error('No seed provided.');
   }
 
-  const seedBuffer = new Uint8Array(await kadenaDecrypt(password, seed));
+  const seedBuffer = await kadenaDecrypt(password, seed);
 
   if (typeof indexOrRange === 'number') {
     return genKeypairFromSeed(
