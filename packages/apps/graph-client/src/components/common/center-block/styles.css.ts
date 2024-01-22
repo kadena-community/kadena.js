@@ -1,6 +1,6 @@
-import { style } from '@vanilla-extract/css';
+import { atoms } from '@kadena/react-ui/styles';
 
-export const centerBlockStyle = style({
+export const centerBlockClass = atoms({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
