@@ -43,7 +43,7 @@ const createTokenIdCommand = ({
 
 export const createTokenId = (
   inputs: ICreateTokenIdInput,
-  config: IClientConfig,
+  config: Omit<IClientConfig, 'sign'>,
 ) =>
   dirtyReadClient<
     PactReturnType<IPactModules['marmalade-v2.ledger']['create-token-id']>
