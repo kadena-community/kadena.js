@@ -11,7 +11,7 @@ export type EncryptedString = string & { _brand: 'EncryptedString' };
  */
 export async function kadenaEncrypt<
   TEncode extends 'base64' | 'buffer' = 'base64',
-  TReturn = TEncode extends 'base64' ? EncryptedString : ArrayBuffer,
+  TReturn = TEncode extends 'base64' ? EncryptedString : Uint8Array,
 >(
   password: BinaryLike,
   message: BinaryLike,
@@ -43,13 +43,14 @@ export async function kadenaEncrypt<
  *
  * @param {string} encryptedData - The encrypted data as a Base64 encoded string.
  * @param {BinaryLike} password - The password used to encrypt the private key.
- * @returns {ArrayBuffer} The decrypted private key.
+ * @returns {Uint8Array} The decrypted private key.
  * @throws {Error} Throws an error if decryption fails.
+ * @alpha
  */
 export async function kadenaDecrypt(
   password: BinaryLike,
   encryptedData: BinaryLike,
-): Promise<ArrayBuffer> {
+): Promise<Uint8Array> {
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (!encryptedData) {
     throw new Error('Encrypted data is empty');
@@ -69,7 +70,7 @@ export async function kadenaDecrypt(
   const decrypted = await decrypt({ cipherText, iv }, password, salt).catch(
     () => undefined,
   );
-  if (decrypted) return decrypted;
+  if (decrypted) return new Uint8Array(decrypted);
 
   throw new Error('Decryption failed');
 }

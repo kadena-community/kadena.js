@@ -24,6 +24,14 @@ async function genKeypairFromSeed(
   return [publicKey, encryptedPrivateKey];
 }
 
+/**
+ *
+ * @param password
+ * @param seed
+ * @param index
+ * @param derivationPathTemplate
+ * @alpha
+ */
 export function kadenaGenKeypairFromSeed(
   password: BinaryLike,
   seed: EncryptedString,

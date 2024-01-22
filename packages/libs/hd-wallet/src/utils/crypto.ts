@@ -1,4 +1,4 @@
-export type BinaryLike = string | ArrayBuffer;
+export type BinaryLike = string | ArrayBuffer | Uint8Array;
 
 export const randomBytes = (size: number) =>
   crypto.getRandomValues(new Uint8Array(size)).buffer as ArrayBuffer;
