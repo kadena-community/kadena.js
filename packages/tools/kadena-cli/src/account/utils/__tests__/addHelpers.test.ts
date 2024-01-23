@@ -46,6 +46,15 @@ describe('createAccountName', () => {
     expect(accountName).toBeUndefined();
   });
 
+  it('should return undefined when predicate is not provided', async () => {
+    const accountName = await createAccountName({
+      ...defaultConfig,
+      predicate: undefined as unknown as Predicate,
+      publicKeysConfig: ['publicKey1', 'publicKey2'],
+      });
+    expect(accountName).toBeUndefined();
+  });
+
   it('should call createPrincipal method and return w:account when multiple public keys are provided', async () => {
     const accountName = await createAccountName({
       ...defaultConfig,
@@ -88,6 +97,11 @@ describe('createAccountName', () => {
 describe('validatePublicKeys', () => {
   beforeAll(() => {
     vi.resetAllMocks();
+  });
+
+  it('should return true if no public keys are provided from user', () => {
+    const result = validatePublicKeys([], ['publicKey1', 'publicKey2']);
+    expect(result).toBe(true);
   });
 
   it('should return true if all public keys are valid', () => {
@@ -278,12 +292,14 @@ describe('writeInConfigFile', () => {
     expect(await fs.fileExists(filePath)).toBe(false);
     await writeConfigInFile(filePath, config);
     const fileContent = await fs.readFile(filePath);
-    expect(fileContent).toBe(yaml.dump({
-      name: config.accountName,
-      fungible: config.fungible,
-      publicKeys: config.publicKeysConfig.filter((key: string) => !!key),
-      predicate: config.predicate,
-    }));
+    expect(fileContent).toBe(
+      yaml.dump({
+        name: config.accountName,
+        fungible: config.fungible,
+        publicKeys: config.publicKeysConfig.filter((key: string) => !!key),
+        predicate: config.predicate,
+      }),
+    );
     expect(await fs.fileExists(filePath)).toBe(true);
   });
 

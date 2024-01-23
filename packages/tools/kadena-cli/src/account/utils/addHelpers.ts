@@ -17,12 +17,15 @@ export async function writeAlias(
 ): Promise<void> {
   const { publicKeysConfig, predicate, accountName, fungible } = config;
   await services.filesystem.ensureDirectoryExists(filePath);
-  await services.filesystem.writeFile(filePath, yaml.dump({
-    name: accountName,
-    fungible,
-    publicKeys: publicKeysConfig.filter((key: string) => !!key),
-    predicate,
-  }));
+  await services.filesystem.writeFile(
+    filePath,
+    yaml.dump({
+      name: accountName,
+      fungible,
+      publicKeys: publicKeysConfig.filter((key: string) => !!key),
+      predicate,
+    }),
+  );
 }
 
 export const validatePublicKeys = (
@@ -128,7 +131,7 @@ export async function createAccountName(
     return;
   }
 
-  if (config.predicate === undefined || config.predicate === null) {
+  if (isEmpty(config.predicate)) {
     console.log(
       chalk.red('No predicate provided. Please provide a predicate.'),
     );
