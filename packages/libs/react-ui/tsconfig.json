@@ -9,7 +9,7 @@
     "declarationDir": "types",
     "outDir": "dist/esm",
     "allowJs": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "removeComments": true
   },
   "include": ["./src"],

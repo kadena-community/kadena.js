@@ -8,6 +8,8 @@ module.exports = {
   ],
   rules: {
     'react/prop-types': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    'react/function-component-definition': 'off',
   },
   parserOptions: {
     tsconfigRootDir: __dirname,

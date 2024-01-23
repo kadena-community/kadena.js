@@ -1,12 +1,10 @@
 import routes from '@/constants/routes';
 import {
   Button,
-  FormFieldWrapper,
-  Grid,
-  GridItem,
   Heading,
-  Input,
   Select,
+  SelectItem,
+  TextField,
 } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
@@ -21,7 +19,7 @@ import {
   thirdSeachTypeLabels,
   thirdSearchFieldPlaceholders,
 } from '@/constants/search';
-import { headerStyle } from './styles.css';
+import { headerClass, headerFormClass } from './styles.css';
 
 export interface IHeaderProps {
   title?: string;
@@ -38,7 +36,6 @@ const Header: FC<IHeaderProps> = (props) => {
   const [searchField, setSearchField] = useState<string>('');
   const [secondSearchField, setSecondSearchField] = useState<string>('');
   const [thirdSearchField, setThirdSearchField] = useState<string>('');
-  const [gridColumns, setGridColumns] = useState<number>(3);
   const [defaultHashOption, setDefaultHashOption] = useState<SearchType>(
     SearchType.Transactions,
   );
@@ -140,11 +137,9 @@ const Header: FC<IHeaderProps> = (props) => {
     }
   };
 
-  const handleSearchFieldChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setSearchField(event.target.value);
-    const fieldValue = event.target.value;
+  const handleSearchFieldChange = (value: string) => {
+    setSearchField(value);
+    const fieldValue = value;
 
     if (searchType === SearchType.GasEstimation) {
       return;
@@ -172,123 +167,83 @@ const Header: FC<IHeaderProps> = (props) => {
     }
   };
 
-  const handleSearchTypeChange = (
-    event: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    setSearchType(event.target.value as SearchType);
-    if (event.target.value === SearchType.Transactions) {
+  const handleSearchTypeChange = (selectedKey: string | number) => {
+    setSearchType(selectedKey as SearchType);
+    if (selectedKey === SearchType.Transactions) {
       setDefaultHashOption(SearchType.Transactions);
-      setGridColumns(3);
     }
-    if (event.target.value === SearchType.Block) {
+    if (selectedKey === SearchType.Block) {
       setDefaultHashOption(SearchType.Block);
-      setGridColumns(3);
     }
-    if (event.target.value === SearchType.Event) {
-      setGridColumns(3);
-    }
-    if (event.target.value === SearchType.Account) {
+
+    if (selectedKey === SearchType.Account) {
       setSecondSearchField('coin');
-      setGridColumns(4);
     }
-    if (event.target.value === SearchType.GasEstimation) {
+    if (selectedKey === SearchType.GasEstimation) {
       setSecondSearchField('');
-      setGridColumns(5);
     }
-    if (event.target.value === SearchType.NonFungibleAccount) {
-      setGridColumns(3);
+    if (selectedKey === SearchType.NonFungibleAccount) {
     }
     setSearchField('');
   };
 
   return (
     <div>
-      <header className={headerStyle}>
+      <header className={headerClass}>
         <Heading as="h1">{title}</Heading>
+        <div className={headerFormClass}>
+          <Select
+            label="Search Type"
+            id="search-type"
+            onSelectionChange={handleSearchTypeChange}
+            selectedKey={searchType}
+          >
+            <SelectItem key={SearchType.Transactions}>Request Key</SelectItem>
+            <SelectItem key={SearchType.Account}>Account</SelectItem>
+            <SelectItem key={SearchType.NonFungibleAccount}>
+              Non-Fungible Account
+            </SelectItem>
+            <SelectItem key={SearchType.Event}>Event</SelectItem>
+            <SelectItem key={SearchType.Block}>Block</SelectItem>
+            <SelectItem key={SearchType.GasEstimation}>
+              Gas Estimation
+            </SelectItem>
+          </Select>
 
-        <Grid columns={gridColumns + 1}>
-          <GridItem>
-            <FormFieldWrapper htmlFor="search-type" label="Search Type">
-              <Select
-                ariaLabel="search-type"
-                id="search-type"
-                onChange={handleSearchTypeChange}
-                value={searchType}
-              >
-                <option value={SearchType.Transactions}>Request Key</option>
-                <option value={SearchType.Account}>Account</option>
-                <option value={SearchType.NonFungibleAccount}>
-                  Non-Fungible Account
-                </option>
-                <option value={SearchType.Event}>Event</option>
-                <option value={SearchType.Block}>Block</option>
-                <option value={SearchType.GasEstimation}>Gas Estimation</option>
-              </Select>
-            </FormFieldWrapper>
-          </GridItem>
-
-          <GridItem>
-            <FormFieldWrapper
-              htmlFor="search-field"
-              label={searchTypeLabels[searchType]}
-            >
-              <Input
-                id="search-field"
-                value={searchField}
-                placeholder={searchTypePlaceholders[searchType]}
-                onChange={handleSearchFieldChange}
-                onKeyDown={handleKeyPress}
-              />
-            </FormFieldWrapper>
-          </GridItem>
+          {/* TODO: Maybe replace with SearchField when it is implemented in the react-ui */}
+          <TextField
+            label={searchTypeLabels[searchType]}
+            id="search-field"
+            value={searchField}
+            placeholder={searchTypePlaceholders[searchType]}
+            onValueChange={handleSearchFieldChange}
+            onKeyDown={handleKeyPress}
+          />
 
           {(searchType.startsWith('account') ||
             searchType.startsWith('gas')) && (
-            <GridItem>
-              <FormFieldWrapper
-                htmlFor="second-search-field"
-                label={secondSearchTypeLabels[searchType]}
-              >
-                <Input
-                  id="second-search-field"
-                  value={secondSearchField}
-                  placeholder={secondSearchFieldPlaceholders[searchType]}
-                  onChange={(event) => setSecondSearchField(event.target.value)}
-                  onKeyDown={handleKeyPress}
-                />
-              </FormFieldWrapper>
-            </GridItem>
+            <TextField
+              label={secondSearchTypeLabels[searchType]}
+              id="second-search-field"
+              value={secondSearchField}
+              placeholder={secondSearchFieldPlaceholders[searchType]}
+              onValueChange={setSecondSearchField}
+              onKeyDown={handleKeyPress}
+            />
           )}
 
           {searchType.startsWith('gas') && (
-            <GridItem>
-              <FormFieldWrapper
-                htmlFor="third-search-field"
-                label={thirdSeachTypeLabels[searchType]}
-              >
-                <Input
-                  id="third-search-field"
-                  value={thirdSearchField}
-                  placeholder={thirdSearchFieldPlaceholders[searchType]}
-                  onChange={(event) => setThirdSearchField(event.target.value)}
-                  onKeyDown={handleKeyPress}
-                />
-              </FormFieldWrapper>
-            </GridItem>
+            <TextField
+              label={thirdSeachTypeLabels[searchType]}
+              id="third-search-field"
+              value={thirdSearchField}
+              placeholder={thirdSearchFieldPlaceholders[searchType]}
+              onValueChange={setThirdSearchField}
+              onKeyDown={handleKeyPress}
+            />
           )}
-          <GridItem>
-            <Button
-              onClick={search}
-              style={{
-                position: 'relative',
-                top: '100%',
-                transform: 'translateY(-100%)',
-              }}
-            >
-              Search
-            </Button>
-          </GridItem>
-        </Grid>
+          <Button onClick={search}>Search</Button>
+        </div>
       </header>
     </div>
   );

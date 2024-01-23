@@ -1,3 +1,6 @@
+// load global styles from @kadena/react-ui
+import '@kadena/react-ui/global';
+
 import { Layout } from '@/components/Common';
 import { AppContextProvider, LayoutContextProvider } from '@/context';
 import { WalletConnectClientContextProvider } from '@/context/connect-wallet-context';
