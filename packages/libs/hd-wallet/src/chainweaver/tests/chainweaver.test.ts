@@ -94,7 +94,7 @@ describe('kadenaMnemonicToRootKeypair', () => {
   });
 });
 
-describe.skip('kadenaGenKeypair', () => {
+describe('kadenaGenKeypair', () => {
   it('should generate keyPair from the rootKey', async () => {
     const rootKey = await kadenaMnemonicToRootKeypair(PASSWORD, MNEMONIC);
     const { publicKey, secretKey } = await kadenaGenKeypair(
