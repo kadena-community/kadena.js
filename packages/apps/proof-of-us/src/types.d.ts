@@ -19,12 +19,17 @@ type IDataHook<T> = (...args: any) => {
 };
 
 interface IProofOfUs {
-  id: string;
+  tokenId: string;
   date: number;
-  minted: number;
-  signees?: string[];
+  minted?: number;
+  signees: IProofOfUsSignee[];
 }
 
 interface IError {
   message: string;
+}
+
+interface IProofOfUsSignee {
+  name: string;
+  key: string;
 }

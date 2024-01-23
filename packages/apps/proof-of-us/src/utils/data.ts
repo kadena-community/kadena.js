@@ -1,13 +1,27 @@
-export const proofOfUsData = [
+export const proofOfUsData: IProofOfUs[] = [
   {
-    id: '1',
+    tokenId: '1',
     date: 245599529000,
     minted: 4,
+    signees: [],
   },
   {
-    id: '2',
+    tokenId: '2',
     date: 1365257129000,
     minted: 0,
-    signees: ['k:23424', 'k:567hffgh', 'k:456rg'],
+    signees: [
+      {
+        name: 'he-man',
+        key: 'k:23424',
+      },
+      {
+        name: 'skeletor',
+        key: 'k:4545645g',
+      },
+      {
+        name: 'orko',
+        key: 'k:23dfgdfg424',
+      },
+    ],
   },
 ];

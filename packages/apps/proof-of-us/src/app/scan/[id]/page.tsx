@@ -1,5 +1,5 @@
 'use client';
-import { useAccount } from '@/hooks/account';
+import { ListSubscribers } from '@/components/ListSubscribers/ListSubscribers';
 import { useSocket } from '@/hooks/socket';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -11,27 +11,31 @@ interface IProps {
 }
 
 const Page: FC<IProps> = ({ params }) => {
-  const { connect, socket } = useSocket();
-  const { account } = useAccount();
+  const { addSignee, removeSignee, isConnected, connect } = useSocket();
+
+  const handleJoin = async () => {
+    addSignee({ tokenId: params.id });
+  };
+
+  const handleRemove = async () => {
+    removeSignee({ tokenId: params.id });
+  };
 
   useEffect(() => {
     connect(params.id);
   }, []);
 
-  const handleJoin = () => {
-    if (!socket) return;
-    socket.emit('private message', {
-      content: account?.publicKey,
-      to: params.id,
-    });
-  };
-
   return (
     <div>
       <section>
-        <button onClick={handleJoin}>say hello!</button>
+        {!isConnected() ? (
+          <button onClick={handleJoin}>join</button>
+        ) : (
+          <button onClick={handleRemove}>remove</button>
+        )}
       </section>
-      scanned Proof Of Us with ID ({params.id})<section></section>
+      scanned Proof Of Us with ID ({params.id})
+      <ListSubscribers />
     </div>
   );
 };

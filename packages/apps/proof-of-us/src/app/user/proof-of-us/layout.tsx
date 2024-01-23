@@ -23,10 +23,12 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
     <ProofOfUsContext.Provider value={{ data }}>
       <ul>
         <li>
-          <Link href={`/user/proof-of-us/${data.id}`}>Proof Of Us</Link>
+          <Link href={`/user/proof-of-us/${data.tokenId}`}>Proof Of Us</Link>
         </li>
         <li>
-          <Link href={`/user/proof-of-us/${data.id}/analytics`}>analytics</Link>
+          <Link href={`/user/proof-of-us/${data.tokenId}/analytics`}>
+            analytics
+          </Link>
         </li>
       </ul>
 

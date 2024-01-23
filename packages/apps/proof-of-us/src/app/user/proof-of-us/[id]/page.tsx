@@ -1,4 +1,5 @@
 'use client';
+import { ListSubscribers } from '@/components/ListSubscribers/ListSubscribers';
 import { PROOFOFUS_QR_URL } from '@/constants';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSocket } from '@/hooks/socket';
@@ -15,13 +16,12 @@ interface IProps {
 
 const Page: FC<IProps> = ({ params }) => {
   const qrRef = useRef<QRCode | null>(null);
-  const { connect } = useSocket();
-
+  const { createToken, socket } = useSocket();
   const { data } = useProofOfUs();
 
   useEffect(() => {
-    connect(params.id);
-  }, []);
+    createToken({ tokenId: params.id });
+  }, [socket]);
 
   const handleQRPNGDownload = () => {
     if (!qrRef.current || !data) return;
@@ -33,7 +33,7 @@ const Page: FC<IProps> = ({ params }) => {
       .replace('image/png', 'image/octet-stream');
     const downloadLink = document.createElement('a');
     downloadLink.href = pngUrl;
-    downloadLink.download = `qrcode_${data.id}.png`;
+    downloadLink.download = `qrcode_${data.tokenId}.png`;
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -43,16 +43,17 @@ const Page: FC<IProps> = ({ params }) => {
 
   return (
     <div>
-      Proof Of Us with ID ({data.id})
+      Proof Of Us with ID ({data.tokenId})
       <section>
         <h2>Communication</h2>
+        <ListSubscribers />
       </section>
       <section>
         <h2>qr code</h2>
         <QRCode
           ecLevel="H"
           ref={qrRef}
-          value={`${env.URL}${PROOFOFUS_QR_URL}/${data.id}`}
+          value={`${env.URL}${PROOFOFUS_QR_URL}/${data.tokenId}`}
           removeQrCodeBehindLogo={true}
           logoImage="/assets/qrlogo.png"
           logoPadding={5}
