@@ -22,7 +22,7 @@ pattern will export multiple subcomponents to compose the compound component.
 A simple example of a component that should use this pattern is the Grid
 component.
 
-```jsx
+```tsx
 <Grid>
   <GridItem>{item1}</GridItem>
   <GridItem>{item2}</GridItem>
@@ -49,7 +49,7 @@ more subcomponents would negatively affect DX.
 > [here](https://bradfrost.com/blog/post/atomic-web-design/) and
 > [here](https://atomicdesign.bradfrost.com/chapter-2/).
 
-##### Button component as an example (Needs to be updated)
+##### Button component as an example
 
 One example of a component that we updated from the Composition to Configuration
 approach was the `Button` component.
@@ -57,7 +57,7 @@ approach was the `Button` component.
 Previously when the `Button` was used with an icon, it needed to be composed
 like this:
 
-```jsx
+```tsx
 <Button.Root>
   Label
   <Button.Icon />
@@ -77,7 +77,7 @@ pattern of the other components, however in usage it caused confusion becuase:
 Now, it has been updated with the configuration approach and can be used in the
 following way:
 
-```jsx
+```tsx
 <Button startIcon="someIcon" loading={false}>
   Label
 </Button>
@@ -234,13 +234,9 @@ any client component files:
 
 Guidelines when styling with VE:
 
-- Classnames should use camel-casing and always have `Class` suffix -
-  `containerClass`
 - You should use `atoms` whenever possible since these are predefined utility
   class. If a style value that you think is commonly used is not available as a
   `atoms`, feel free to add it.
-- If you want to create multiple variations of a components style, use variants.
-  Variants should have a `Variant` suffix - `colorVariant`
 
 ### Selectors
 

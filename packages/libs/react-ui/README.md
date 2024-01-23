@@ -91,7 +91,7 @@ utilities that align with the [Kadena Design System][3].
 
 Example for importing and using components:
 
-```ts
+```tsx
 import { Text } from '@kadena/react-ui';
 
 export const Component = () => {
@@ -134,7 +134,7 @@ provider.
 You can use "next-themes" to set this up in Next.js projects by wrapping
 `Component` with the `ThemeProvider` in `__app.tsx`
 
-```js
+```tsx
 import { darkThemeClass } from '@kadena/react-ui';
 import { ThemeProvider } from 'next-themes';
 
