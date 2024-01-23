@@ -10,7 +10,7 @@ export interface IPaginationProps extends ReactComponentElement<'nav'> {
   totalPages: number;
   selectedPage?: number;
   visiblePageLimit?: number;
-  defaultSelectedKey?: number;
+  defaultSelectedPage?: number;
   onPageChange: (page: number) => void;
 }
 
@@ -18,17 +18,17 @@ export const Pagination: FC<IPaginationProps> = ({
   totalPages,
   selectedPage,
   visiblePageLimit = 3,
-  defaultSelectedKey,
+  defaultSelectedPage,
   onPageChange,
   ...props
 }) => {
-  const validDefaultSelectedKey =
-    defaultSelectedKey &&
-    defaultSelectedKey <= totalPages &&
-    defaultSelectedKey > 0;
+  const validDefaultSelectedPage =
+    defaultSelectedPage &&
+    defaultSelectedPage <= totalPages &&
+    defaultSelectedPage > 0;
 
   const [_page, setPage] = useState(
-    validDefaultSelectedKey ? defaultSelectedKey : 1,
+    validDefaultSelectedPage ? defaultSelectedPage : 1,
   );
   const page = selectedPage || _page;
   const pages = paginate({

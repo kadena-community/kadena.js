@@ -175,7 +175,7 @@ export const ExtendedTransfersTable = (
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Pagination
             totalPages={totalPages}
-            currentPage={currentPage}
+            selectedPage={currentPage}
             onPageChange={handlePaginationClick}
           />
         </div>
