@@ -35,6 +35,7 @@ const WalletContext = createContext<{
   keyStores: KeyStore[];
   isUnlocked: boolean;
   decryptMnemonic: (password: string) => Promise<string>;
+  lockWallet: () => void;
 } | null>(null);
 
 export const useWallet = () => {
@@ -163,11 +164,17 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
     return mnemonic;
   };
 
+  const lockWallet = () => {
+    setEncryptedSeed(undefined);
+    setActiveProfile('default');
+  };
+
   return (
     <WalletContext.Provider
       value={{
         createWallet,
         unlockWallet,
+        lockWallet,
         createPublicKeys,
         keyStores,
         sign,

@@ -17,15 +17,15 @@
   "type": "module",
   "exports": {
     ".": {
-      "default": {
-        "import": "./lib/esm/index.js",
-        "require": "./lib/cjs/index.js",
-        "types": "./dist/hd-wallet.d.ts"
+      "import": {
+        "browser": "./lib/esm/browser.js",
+        "default": "./lib/esm/index.js"
       },
-      "browser": {
-        "import": "./lib/esm/browser.js",
-        "require": "./lib/cjs/browser.js"
-      }
+      "require": {
+        "browser": "./lib/cjs/browser.js",
+        "default": "./lib/cjs/index.js"
+      },
+      "types": "./dist/hd-wallet.d.ts"
     },
     "./chainweaver": {
       "types": "./lib/esm/chainweaver/index.d.ts",
@@ -33,8 +33,6 @@
       "import": "./lib/esm/chainweaver/index.js"
     }
   },
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.js",
   "files": [
     "lib",
     "chainweaver"
