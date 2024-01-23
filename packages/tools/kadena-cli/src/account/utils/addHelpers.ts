@@ -15,8 +15,14 @@ export async function writeAlias(
   config: IAddAccountManualConfig,
   filePath: string,
 ): Promise<void> {
+  const { publicKeysConfig, predicate, accountName, fungible } = config;
   await services.filesystem.ensureDirectoryExists(filePath);
-  await services.filesystem.writeFile(filePath, yaml.dump(config));
+  await services.filesystem.writeFile(filePath, yaml.dump({
+    name: accountName,
+    fungible,
+    publicKeys: publicKeysConfig.filter((key: string) => !!key),
+    predicate,
+  }));
 }
 
 export const validatePublicKeys = (

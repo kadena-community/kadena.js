@@ -278,7 +278,12 @@ describe('writeInConfigFile', () => {
     expect(await fs.fileExists(filePath)).toBe(false);
     await writeConfigInFile(filePath, config);
     const fileContent = await fs.readFile(filePath);
-    expect(fileContent).toBe(yaml.dump(config));
+    expect(fileContent).toBe(yaml.dump({
+      name: config.accountName,
+      fungible: config.fungible,
+      publicKeys: config.publicKeysConfig.filter((key: string) => !!key),
+      predicate: config.predicate,
+    }));
     expect(await fs.fileExists(filePath)).toBe(true);
   });
 
