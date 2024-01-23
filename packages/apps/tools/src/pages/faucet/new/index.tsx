@@ -296,19 +296,15 @@ const NewAccountFaucetPage: FC = () => {
             <Heading as="h5">Public Keys</Heading>
             <Box marginBlockEnd="md" />
 
-            <div className={pubKeyInputWrapperStyle}>
-              <div className={inputWrapperStyle}>
-                <PublicKeyField
-                  {...register('pubKey', {
-                    onChange: () => {
-                      clearErrors('pubKey');
-                    },
-                  })}
-                  errorMessage={errors?.pubKey?.message}
-                  isInvalid={!!errors.pubKey}
-                />
-              </div>
-              <div className={iconButtonWrapper}>
+            <PublicKeyField
+              {...register('pubKey', {
+                onChange: () => {
+                  clearErrors('pubKey');
+                },
+              })}
+              errorMessage={errors?.pubKey?.message}
+              isInvalid={!!errors.pubKey}
+              endAddon={
                 <Button
                   icon={<SystemIcon.Plus />}
                   variant="text"
@@ -329,8 +325,8 @@ const NewAccountFaucetPage: FC = () => {
                   color="primary"
                   type="button"
                 />
-              </div>
-            </div>
+              }
+            />
 
             {pubKeys.length > 0 ? renderPubKeys() : null}
 
