@@ -21,6 +21,8 @@ A GraphQL endpoint that interacts with chainweb-data and chainweb-node.
   - [Connect to the database](#connect-to-the-database)
   - [Fund an account on the devnet](#fund-an-account-on-the-devnet)
   - [Simulate traffic on the devnet](#simulate-traffic-on-the-devnet)
+    - [Coin simulation](#coin-simulation)
+    - [Marmalade simulation](#marmalade-simulation)
   - [Tracing and trace analysis](#tracing-and-trace-analysis)
   - [Query Complexity](#query-complexity)
 
@@ -30,7 +32,7 @@ First, install dependencies and build up to and including `@kadena/graph`.
 
 ```sh
 pnpm install --filter @kadena/graph...
-pnpm build --filter @kadena/graph...
+pnpm turbo build --filter @kadena/graph...
 ```
 
 > **NOTE:** you need Docker (or an alternative, e.g.

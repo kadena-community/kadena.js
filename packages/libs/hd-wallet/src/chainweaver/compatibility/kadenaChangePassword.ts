@@ -9,7 +9,7 @@ export const kadenaChangePassword = async (
   newPassword: string,
 ): Promise<EncryptedString> => {
   const newSecretKey = await originalKadenaChangePassword(
-    kadenaDecrypt(oldPassword, secretKey),
+    await kadenaDecrypt(oldPassword, secretKey),
     oldPassword,
     newPassword,
   );

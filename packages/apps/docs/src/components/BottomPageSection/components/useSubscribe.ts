@@ -1,5 +1,6 @@
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { isEmailValid } from '@/utils/isEmailValid';
+import type { IButtonProps } from '@kadena/react-ui';
 import type { ChangeEvent, MouseEvent } from 'react';
 import { useState } from 'react';
 
@@ -7,7 +8,7 @@ interface IReturn {
   hasError: boolean;
   message?: string;
   handleFormState: (event: ChangeEvent<HTMLInputElement>) => void;
-  handleSubscribe: (e: MouseEvent<HTMLButtonElement, SubmitEvent>) => void;
+  handleSubscribe: IButtonProps['onClick'];
   canSubmit: boolean;
   hasSuccess: boolean;
   isLoading: boolean;
@@ -23,7 +24,7 @@ export const useSubscribe = (): IReturn => {
   const hasSuccess = Boolean(message) && !hasError;
 
   const handleSubscribe = async (
-    event: MouseEvent<HTMLButtonElement, SubmitEvent>,
+    event: MouseEvent<HTMLButtonElement>,
   ): Promise<void> => {
     event.preventDefault();
 

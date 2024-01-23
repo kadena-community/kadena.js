@@ -7,7 +7,7 @@ export async function kadenaGetPublicFromRootKey(
   rootKey: EncryptedString,
   index: number,
 ): Promise<Uint8Array> {
-  const decrypted = kadenaDecrypt(password, rootKey);
+  const decrypted = await kadenaDecrypt(password, rootKey);
   const [, publicKey] = await kadenaGenKeypair(password, decrypted, index);
   return publicKey;
 }

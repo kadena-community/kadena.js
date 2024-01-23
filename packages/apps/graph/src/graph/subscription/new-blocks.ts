@@ -1,21 +1,22 @@
 import { prismaClient } from '@db/prisma-client';
-import type { Block } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
+import { createID } from '@utils/global-id';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
+import GQLBlock from '../objects/block';
 
 builder.subscriptionField('newBlocks', (t) =>
-  t.prismaField({
+  t.field({
     description: 'Subscribe to new blocks.',
     args: {
       chainIds: t.arg.intList({ required: false }),
     },
-    type: ['Block'],
+    type: ['ID'],
     nullable: true,
-    subscribe: (__parent, args, context) =>
+    subscribe: (__root, args, context) =>
       iteratorFn(args.chainIds as number[] | undefined, context),
-    resolve: (__query, parent) => parent as Block[],
+    resolve: (parent) => parent,
   }),
 );
 
@@ -24,27 +25,31 @@ async function* iteratorFn(
     (__, i) => i,
   ),
   context: IContext,
-): AsyncGenerator<Block[], void, unknown> {
-  let lastBlock = (await getLastBlocks(chainIds))[0];
+): AsyncGenerator<string[], void, unknown> {
+  const blockResult = await getLastBlocks(chainIds);
+  let lastBlock;
 
-  yield [lastBlock];
+  if (!nullishOrEmpty(blockResult)) {
+    lastBlock = blockResult[0];
+    yield [createID(GQLBlock.name, lastBlock.hash)];
+  }
 
   while (!context.req.socket.destroyed) {
-    const newBlocks = await getLastBlocks(chainIds, lastBlock.id);
+    const newBlocks = await getLastBlocks(chainIds, lastBlock?.id);
 
-    if (!nullishOrEmpty(newBlocks) && lastBlock.id !== newBlocks?.[0]?.id) {
-      lastBlock = newBlocks[newBlocks.length - 1];
-      yield newBlocks;
+    if (!nullishOrEmpty(newBlocks)) {
+      lastBlock = newBlocks[0];
+      yield newBlocks.map((block) => createID(GQLBlock.name, block.hash));
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 }
 
 async function getLastBlocks(
   chainIds: number[],
   id?: number,
-): Promise<Block[]> {
+): Promise<{ id: number; hash: string }[]> {
   const defaultFilter: Parameters<typeof prismaClient.block.findMany>[0] = {
     orderBy: {
       id: 'desc',
@@ -53,16 +58,20 @@ async function getLastBlocks(
 
   const extendedFilter =
     id === undefined
-      ? { take: 1, ...defaultFilter }
+      ? { take: 5, ...defaultFilter }
       : {
-          take: 500,
+          take: 100,
           where: { id: { gt: id } },
         };
 
   const foundblocks = await prismaClient.block.findMany({
     ...extendedFilter,
     where: { ...extendedFilter.where, chainId: { in: chainIds } },
+    select: {
+      id: true,
+      hash: true,
+    },
   });
 
-  return foundblocks;
+  return foundblocks.sort((a, b) => b.id - a.id);
 }

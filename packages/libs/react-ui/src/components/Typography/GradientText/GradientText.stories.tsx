@@ -1,6 +1,6 @@
-import { GradientText } from '@components/Typography/GradientText/GradientText';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { GradientText } from '../GradientText/GradientText';
 
 const meta: Meta<typeof GradientText> = {
   title: 'Typography/GradientText',

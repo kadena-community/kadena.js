@@ -1,8 +1,8 @@
 'use client';
-import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useState } from 'react';
+import { SystemIcon } from '../Icon';
 import {
   treeBranchWrapperVariant,
   treeTitleClass,

@@ -19,7 +19,7 @@ builder.queryField('fungibleAccount', (t) =>
       const chainAccounts = (
         await Promise.all(
           chainIds.map(async (chainId) => {
-            return await getFungibleChainAccount({
+            return getFungibleChainAccount({
               chainId: chainId,
               fungibleName: args.fungibleName,
               accountName: args.accountName,

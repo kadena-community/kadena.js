@@ -1,16 +1,13 @@
 import classNames from 'classnames';
-import type { FC } from 'react';
-import React from 'react';
+import type { ForwardedRef } from 'react';
+import React, { forwardRef } from 'react';
 import type { IBoxProps } from '../Box';
 import { Box } from '../Box';
 import type { ResponsiveInputType } from './Grid.css';
 import { containerColumnVariants, gridContainerClass } from './Grid.css';
 
 export interface IGridProps
-  extends Omit<
-    IBoxProps,
-    'display' | 'flex' | 'alignItems' | 'flexDirection' | 'justifyContent'
-  > {
+  extends Omit<IBoxProps, 'display' | 'flex' | 'flexDirection'> {
   columns?: ResponsiveInputType;
 }
 
@@ -28,20 +25,20 @@ const assembleColumnVariants = (
   });
 };
 
-export const Grid: FC<IGridProps> = ({
-  className,
-  children,
-  columns,
-  ...props
-}) => {
+const BaseGrid = (
+  { className, children, columns, ...props }: IGridProps,
+  ref: ForwardedRef<HTMLElement>,
+): React.ReactElement => {
   const classList = classNames(
     gridContainerClass,
     columns && assembleColumnVariants(columns),
     className,
   );
   return (
-    <Box className={classList} {...props}>
+    <Box ref={ref} className={classList} {...props}>
       {children}
     </Box>
   );
 };
+
+export const Grid = forwardRef(BaseGrid);

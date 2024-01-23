@@ -19,7 +19,6 @@ import {
   innerWrapperClass,
   logoClass,
   navClass,
-  navLinkActiveVariant,
   navLinkClass,
   skipNavClass,
   socialGroupClass,
@@ -55,13 +54,7 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
             <ul className={ulClass} ref={listRef}>
               {menuItems.map((item) => (
                 <li key={item.root}>
-                  <Link
-                    href={item.root}
-                    className={classNames(
-                      navLinkClass,
-                      navLinkActiveVariant[item.isMenuOpen ? 'true' : 'false'],
-                    )}
-                  >
+                  <Link href={item.root} className={classNames(navLinkClass)}>
                     {item.menu}
                   </Link>
                 </li>

@@ -1,14 +1,14 @@
 'use client';
+import classNames from 'classnames';
+import type { FC, FunctionComponentElement as FCElement } from 'react';
+import React, { Children, useContext } from 'react';
 import {
   accordionButtonClass,
   accordionHeadingTitleClass,
   accordionSectionClass,
   accordionToggleIconClass,
-} from '@components/Accordion/Accordion.css';
-import { SystemIcon } from '@components/Icon';
-import classNames from 'classnames';
-import type { FC, FunctionComponentElement as FCElement } from 'react';
-import React, { Children, useContext } from 'react';
+} from '../Accordion/Accordion.css';
+import { SystemIcon } from '../Icon';
 import { NavAccordionContext } from './NavAccordion.context';
 import {
   navAccordionListClass,

@@ -113,7 +113,7 @@ async function generateSingleKeyPair(
     publicKey = _publicKey;
     secretKey = _secretKey;
   } else {
-    const [publicKeyString, secretKeyString] = kadenaGenKeypairFromSeed(
+    const [publicKeyString, secretKeyString] = await kadenaGenKeypairFromSeed(
       config.securityPassword,
       keyWallet,
       index,
@@ -121,7 +121,9 @@ async function generateSingleKeyPair(
     publicKey = publicKeyString;
     secretKey =
       config.keyGenFromChoice === 'genPublicSecretKeyDec'
-        ? toHexStr(kadenaDecrypt(config.securityPassword, secretKeyString))
+        ? toHexStr(
+            await kadenaDecrypt(config.securityPassword, secretKeyString),
+          )
         : secretKeyString;
   }
 

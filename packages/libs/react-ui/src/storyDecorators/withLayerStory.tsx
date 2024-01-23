@@ -2,11 +2,11 @@
   This Decorator can place the story on a colored layer from the design system.
   More info: https://storybook.js.org/docs/react/writing-stories/decorators
 */
-import { Text } from '@components/Typography';
 import type { Decorator } from '@storybook/react';
-import { atoms } from '@theme/atoms.css';
 import type { FC } from 'react';
 import React from 'react';
+import { Text } from '../components/Typography';
+import { atoms } from '../styles/atoms.css';
 
 interface IWithLayerStoryProps {
   children: React.ReactNode;

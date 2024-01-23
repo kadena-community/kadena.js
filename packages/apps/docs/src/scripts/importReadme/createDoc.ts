@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import * as fs from 'fs';
-import type { Alternative, Literal, Resource } from 'mdast';
 import type {
+  Alternative,
   Content,
   Definition,
   Heading,
@@ -9,7 +9,9 @@ import type {
   ImageReference,
   Link,
   LinkReference,
-} from 'mdast-util-from-markdown/lib';
+  Literal,
+  Resource,
+} from 'mdast';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { toString } from 'mdast-util-to-string';
 import { remark } from 'remark';
@@ -19,7 +21,7 @@ import type { IImportReadMeItem } from '../utils';
 import { getTypes } from '../utils';
 import { removeRepoDomain } from './index';
 
-const DOCS_ROOT = './src/pages';
+export const DOCS_ROOT = './src/pages';
 
 const createFrontMatter = (
   title: string,
@@ -70,7 +72,7 @@ const getTitle = (pageAST: Root): string => {
     .join(' ');
 };
 
-const createDir = (dir: string): void => {
+export const createDir = (dir: string): void => {
   fs.mkdirSync(dir, { recursive: true });
 };
 
@@ -80,7 +82,7 @@ export const getFirstHeading = (doc: string): Heading | undefined => {
   const headings = getTypes<Heading>(md, 'heading');
 
   if (!headings.length) return;
-  const value = (headings[0].children[0] as any).value;
+  const value = (headings[0].children[0] as Literal).value;
   (headings[0].children[0] as any).value = value
     .replace('@kadena/', '')
     .replace(/-/g, ' ');
@@ -100,7 +102,7 @@ const setTitleHeader = (tree: Root, firstHeading?: Heading): void => {
       firstHeading?.depth === 1 &&
       firstHeading?.children[0] !== headings[0].children[0]
     ) {
-      tree.children.unshift(firstHeading);
+      tree.children.unshift(firstHeading as any);
     } else {
       headings[0].depth = 1;
     }
@@ -260,7 +262,7 @@ const createPage = async (
   // if more, keep only 1 and replace the next with an h2
   const pageContent = cleanUp(page, `/${item.destination}/${slug}`);
 
-  const doc = toMarkdown(pageContent);
+  const doc = toMarkdown(pageContent as Root);
 
   fs.writeFileSync(
     `${DOCS_ROOT}/${item.destination}/index.md`,
