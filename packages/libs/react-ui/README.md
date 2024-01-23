@@ -19,7 +19,7 @@ with their configuration options.
 ### Install
 
 ```sh
-$ npm install @kadena/react-ui
+pnpm install @kadena/react-ui
 ```
 
 Since this library uses VE and is not pre-bundled, the consuming project will
@@ -66,7 +66,7 @@ _If you don’t have a next.config.js file in the root of your project, you'll
 need to create one first._ Add the plugin to your next.config.js file and add
 **@kadena/react-ui** to transpilePackages:
 
-```js
+```ts
 const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
 const withVanillaExtract = createVanillaExtractPlugin();
 
@@ -91,7 +91,7 @@ utilities that align with the [Kadena Design System][3].
 
 Example for importing and using components:
 
-```js
+```ts
 import { Text } from '@kadena/react-ui';
 
 export const Component = () => {
@@ -105,22 +105,23 @@ conjunction with [vanilla-extract/css][1] in your own project, you can import
 them via `@kadena/react-ui/styles`:
 
 ```ts
-import { sprinkles, vars } from '@kadena/react-ui/styles';
+import { atoms, vars } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const exampleClass = style([
-  sprinkles({
-    bg: '$negativeSurface',
-    color: '$negativeAccent',
-    margin: '$3',
+  atoms({
+    backgroundColor: 'base.default',
+    color: 'text.base.default',
+    margin: 'sm',
   }),
 ]);
 ```
 
 ### Global styles
 
-We are overriding some global styles and adding fonts in this library. To make sure fonts are loaded and global styles are applied, you will need to add the `import '@kadena/react-ui/global'` to your app's entry point.
-
+We are overriding some global styles and adding fonts in this library. To make
+sure fonts are loaded and global styles are applied, you will need to add the
+`import '@kadena/react-ui/global'` to your app's entry point.
 
 ### Dark Theme
 
