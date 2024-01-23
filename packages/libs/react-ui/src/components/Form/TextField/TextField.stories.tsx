@@ -58,7 +58,17 @@ const meta: Meta<ITextFieldProps> = {
         type: { summary: 'string' },
       },
     },
-
+    inputFont: {
+      description: 'Font to use for the input.',
+      control: {
+        type: 'select',
+        options: ['body', 'code'],
+      },
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'body' },
+      },
+    },
     info: {
       description: 'Additional information to display below the input.',
       control: {
@@ -157,7 +167,7 @@ export const TextFieldStory: Story = {
   args: {
     isDisabled: false,
     tag: 'tag',
-    helperText: 'This is helper text',
+    description: 'This is helper text',
     info: '(optional)',
     label: 'Label',
     id: 'TextFieldStory',
@@ -168,6 +178,7 @@ export const TextFieldStory: Story = {
     isReadOnly: false,
     isRequired: false,
     errorMessage: '',
+    inputFont: 'body',
   },
   render: (props) => {
     const [value, setValue] = useState<string>('');

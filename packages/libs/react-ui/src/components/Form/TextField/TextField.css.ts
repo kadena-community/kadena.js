@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { atoms, bodyBaseRegular, token } from '../../../styles';
+import { atoms, token } from '../../../styles';
 
 export const startAddon = style({
   position: 'absolute',
@@ -16,7 +16,6 @@ export const endAddon = style({
 });
 
 export const input = style([
-  bodyBaseRegular,
   atoms({
     borderRadius: 'sm',
     backgroundColor: 'layer-3.default',
@@ -24,9 +23,7 @@ export const input = style([
     color: 'text.base.default',
     outline: 'none',
     flex: 1,
-    fontSize: 'base',
     overflow: 'hidden',
-    lineHeight: 'lg',
   }),
   {
     paddingInlineStart: token('spacing.md'),

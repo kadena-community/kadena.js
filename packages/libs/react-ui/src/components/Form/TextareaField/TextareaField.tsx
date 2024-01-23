@@ -11,6 +11,7 @@ import type {
 import React, { forwardRef, useCallback } from 'react';
 import type { AriaTextFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useTextField } from 'react-aria';
+import { bodyBaseRegular, codeBaseRegular } from '../../../styles';
 import { formField, inputContainer } from '../Form.css';
 import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
@@ -40,6 +41,8 @@ export interface ITextareaFieldProps extends PickedAriaTextFieldProps {
   rows?: number;
   autoResize?: boolean;
   endAddon?: ReactNode;
+  isOutlined?: boolean;
+  inputFont?: 'body' | 'code';
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, react/function-component-definition
@@ -136,9 +139,13 @@ export function TextareaFieldBase(
           rows={props.rows}
           onChange={handleOnChange}
           ref={ref}
-          className={textarea}
+          className={classNames(
+            textarea,
+            props.inputFont === 'code' ? codeBaseRegular : bodyBaseRegular,
+          )}
+          data-outlined={props.isOutlined || undefined}
           data-focused={isFocused || undefined}
-          data-disabled={props.disabled || undefined}
+          data-disabled={isDisabled || undefined}
           data-hovered={isHovered || undefined}
           data-focus-visible={isFocusVisible || undefined}
           data-invalid={validation.isInvalid || undefined}

@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { atoms, bodyBaseRegular, token } from '../../../styles';
+import { atoms, token } from '../../../styles';
 
 export const addon = style({
   position: 'absolute',
@@ -8,7 +8,6 @@ export const addon = style({
 });
 
 export const textarea = style([
-  bodyBaseRegular,
   atoms({
     borderRadius: 'sm',
     backgroundColor: 'layer-3.default',
@@ -29,6 +28,9 @@ export const textarea = style([
     boxShadow: `0px 1px 0 0 ${token('color.border.base.default')}`,
     outlineOffset: '2px',
     selectors: {
+      '&[data-outlined]': {
+        border: `2px solid ${token('color.border.base.default')}`,
+      },
       [`&:has(~ ${addon})`]: {
         paddingInlineEnd: `calc(var(--end-addon-width) + ${token(
           'spacing.lg',

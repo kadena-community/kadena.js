@@ -48,11 +48,9 @@ export const formField = atoms({
   gap: 'sm',
 });
 
-export const inputContainer = style([
-  atoms({
-    display: 'flex',
-    flex: 1,
-    position: 'relative',
-    alignItems: 'stretch',
-  }),
-]);
+export const inputContainer = atoms({
+  display: 'flex',
+  flex: 1,
+  position: 'relative',
+  alignItems: 'stretch',
+});

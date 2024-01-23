@@ -48,6 +48,17 @@ const meta: Meta<ITextareaFieldProps> = {
         disable: true,
       },
     },
+    inputFont: {
+      description: 'Font to use for the input.',
+      control: {
+        type: 'select',
+        options: ['body', 'code'],
+      },
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'body' },
+      },
+    },
     description: {
       description: 'Helper text to display below the input.',
       control: {
@@ -185,6 +196,7 @@ export const TextareaFieldStory: Story = {
     isRequired: false,
     autoResize: false,
     errorMessage: '',
+    inputFont: 'body',
   },
   render: (props) => {
     const [value, setValue] = useState<string>('');

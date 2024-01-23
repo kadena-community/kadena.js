@@ -26,14 +26,14 @@ const BaseAccountNameField = (
   return (
     <div className={accountInputWrapperStyle}>
       <TextField
-        validationBehavior="aria"
+        {...props}
+        inputFont="code"
         placeholder={t('Type Account Name')}
         id="kd-select-account-input"
         value={selectedAccount as string}
         onValueChange={setSelectedAccount}
         isInvalid={!!props.errorMessage}
         errorMessage={props.errorMessage}
-        {...props}
         ref={forwardedRef}
       />
     </div>
