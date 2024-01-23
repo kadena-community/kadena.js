@@ -44,7 +44,7 @@ import {
   Stack,
   SystemIcon,
   TextField,
-  Textarea,
+  TextareaField,
   TrackerCard,
 } from '@kadena/react-ui';
 import Debug from 'debug';
@@ -509,18 +509,14 @@ const CrossChainTransferFinisher: FC = () => {
                   <GridItem>
                     <AccountNameField
                       label={t('Gas Payer')}
-                      inputProps={{
-                        ...register('gasPayer', { shouldUnregister: true }),
-                        id: 'gas-payer-account-input',
-                        placeholder: t('Enter Your Account'),
-                      }}
-                      error={
+                      {...register('gasPayer', { shouldUnregister: true })}
+                      id="gas-payer-account-input"
+                      placeholder={t('Enter Your Account')}
+                      isInvalid={!!errors.gasPayer}
+                      errorMessage={
                         !isGasStation
-                          ? {
-                              message: 'Please enter kadena-xchain-gas',
-                              type: 'gas-station',
-                            }
-                          : errors.gasPayer
+                          ? 'Please enter kadena-xchain-gas'
+                          : errors.gasPayer?.message
                       }
                     />
                   </GridItem>
@@ -530,11 +526,11 @@ const CrossChainTransferFinisher: FC = () => {
                   <GridItem>
                     <TextField
                       disabled={!isAdvancedOptions}
-                      helperText={t(
-                        'This input field will only be enabled if the user is in Backend or dApp Developer mode',
+                      description={t(
+                        'This input field will only be enabled if the user is in expert mode',
                       )}
-                      {...register('gasLimit', { shouldUnregister: true })}
                       label={t('Gas Limit')}
+                      {...register('gasLimit', { shouldUnregister: true })}
                       id="gas-limit-input"
                       placeholder={t('Enter Gas Limit')}
                     />
@@ -554,9 +550,9 @@ const CrossChainTransferFinisher: FC = () => {
                 <Grid columns={1}>
                   <GridItem>
                     <div className={textareaContainerStyle}>
-                      <Textarea
-                        readOnly
-                        fontFamily="codeFont"
+                      <TextareaField
+                        isReadOnly
+                        inputFont="code"
                         id="sig-text-area"
                         value={formattedSigData}
                       />
