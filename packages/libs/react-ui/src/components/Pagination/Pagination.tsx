@@ -1,12 +1,12 @@
 'use client';
-import type { FC, ReactComponentElement } from 'react';
+import type { ComponentPropsWithRef, FC } from 'react';
 import React, { useState } from 'react';
 import { PageNav } from './PageNav';
 import { PageNum } from './PageNum';
 import { listClass } from './Pagination.css';
 import { paginate } from './paginate';
 
-export interface IPaginationProps extends ReactComponentElement<'nav'> {
+export interface IPaginationProps extends ComponentPropsWithRef<'nav'> {
   totalPages: number;
   selectedPage?: number;
   visiblePageLimit?: number;
