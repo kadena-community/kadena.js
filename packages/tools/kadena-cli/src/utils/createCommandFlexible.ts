@@ -2,6 +2,7 @@ import type { Command } from 'commander';
 import { getCommandExecution } from './createCommand.js';
 import type { OptionType } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
+import { handlePromptError } from './helpers.js';
 import type { Fn, Prettify } from './typeUtilities.js';
 
 export type OptionConfig<Option extends OptionType> = {
@@ -99,18 +100,22 @@ export const createCommandFlexible =
 
       const collectOptionsMap = options.reduce((acc, option) => {
         acc[option.key] = async (customArgs = {}) => {
-          const { value, config } = await executeOption(
-            option,
-            {
-              ...args,
-              ...customArgs,
-            },
-            originalArgs,
-          );
+          try {
+            const { value, config } = await executeOption(
+              option,
+              {
+                ...args,
+                ...customArgs,
+              },
+              originalArgs,
+            );
 
-          // Keep track of previous args to prompts can use them
-          args = { ...args, [option.key]: value };
-          return config;
+            // Keep track of previous args to prompts can use them
+            args = { ...args, [option.key]: value };
+            return config;
+          } catch (error) {
+            handlePromptError(error);
+          }
         };
         return acc;
       }, {} as any);

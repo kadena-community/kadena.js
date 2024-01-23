@@ -31,6 +31,7 @@ import {
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
 import { templateVariables } from '../prompts/tx.js';
+import { services } from '../services/index.js';
 import { defaultTemplates } from '../tx/commands/templates/templates.js';
 import { getTemplateVariables } from '../tx/utils/template.js';
 import { createOption } from './createOption.js';
@@ -513,11 +514,23 @@ export const globalOptions = {
     option: new Option('--template <template>', 'select a template'),
     validation: z.string(),
     prompt: tx.selectTemplate,
-    async expand(templateFile: string) {
-      const template = defaultTemplates[templateFile];
+    async expand(templateInput: string) {
+      // option 1. --template="send"
+      // option 2. --template="./send.ktpl"
+
+      let template = defaultTemplates[templateInput];
 
       if (template === undefined) {
-        throw Error(`Template "${templateFile}" not found`);
+        // not in template list, try to load from file
+        const templatePath = join(process.cwd(), templateInput);
+        const file = await services.filesystem.readFile(templatePath);
+
+        if (file === null) {
+          // not in file either, error
+          throw Error(`Template "${templateInput}" not found`);
+        }
+
+        template = file;
       }
 
       const variables = getTemplateVariables(template);

@@ -4,6 +4,7 @@ import type { IUnsignedCommand } from '@kadena/client';
 import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
 import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
 
+import debug from 'debug';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
@@ -75,7 +76,7 @@ export const createTransactionCommandNew = createCommandFlexible(
       variables: template.templateConfig.variables,
     });
 
-    console.log('create-transaction:action', {
+    debug.log('create-transaction:action', {
       ...template,
       ...templateVariables,
       ...outputFile,
