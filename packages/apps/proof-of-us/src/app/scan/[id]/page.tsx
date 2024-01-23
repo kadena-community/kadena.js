@@ -22,7 +22,7 @@ const Page: FC<IProps> = ({ params }) => {
     if (!socket) return;
     socket.emit('private message', {
       content: account?.publicKey,
-      to: 'TOKENID2',
+      to: params.id,
     });
   };
 

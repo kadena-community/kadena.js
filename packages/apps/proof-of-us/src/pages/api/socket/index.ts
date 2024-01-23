@@ -44,7 +44,7 @@ export default function SocketHandler(
   });
 
   io.on('connection', (socket) => {
-    socket.join('TOKENID2');
+    socket.join(socket.handshake.auth.tokenId);
     socket.on('send-message', (obj) => {
       io.emit('receive-message', obj);
     });
