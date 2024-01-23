@@ -7,7 +7,8 @@ import { createContext, useCallback, useState } from 'react';
 
 export interface ISocketContext {
   socket?: Socket;
-  connect: (id: string) => Promise<Socket | undefined>;
+  connect: ({ tokenId }: { tokenId: string }) => Promise<Socket | undefined>;
+  disconnect: ({ tokenId }: { tokenId: string }) => void;
   removeSignee: ({ tokenId }: { tokenId: string }) => Promise<void>;
   addSignee: ({ tokenId }: { tokenId: string }) => Promise<void>;
   createToken: ({ tokenId }: { tokenId: string }) => Promise<void>;
@@ -18,6 +19,7 @@ export interface ISocketContext {
 export const SocketContext = createContext<ISocketContext>({
   socket: undefined,
   connect: async () => undefined,
+  disconnect: () => {},
   removeSignee: async () => {},
   addSignee: async () => {},
   createToken: async () => {},
@@ -31,14 +33,14 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
   const [state, setState] = useState<IProofOfUs>();
   const { account } = useAccount();
 
-  const connect = async (id: string) => {
+  const connect = async ({ tokenId }: { tokenId: string }) => {
     if (socket) return socket;
 
     await fetch('/api/socket');
     const sock = io({ autoConnect: false });
 
     setSocket(sock);
-    sock.auth = { tokenId: '1' };
+    sock.auth = { tokenId: tokenId };
     await sock.connect();
 
     sock.on('connect', () => {
@@ -52,8 +54,15 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
     return sock;
   };
 
+  const disconnect = ({ tokenId }: { tokenId: string }) => {
+    if ((socket?.auth as any)?.tokenId === tokenId) return;
+    socket?.close();
+
+    setSocket(undefined);
+  };
+
   const addSignee = async ({ tokenId }: { tokenId: string }) => {
-    const socket = await connect(tokenId);
+    const socket = await connect({ tokenId });
     socket?.emit('addSignee', {
       content: {
         name: account?.name,
@@ -64,7 +73,7 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const removeSignee = async ({ tokenId }: { tokenId: string }) => {
-    const socket = await connect(tokenId);
+    const socket = await connect({ tokenId });
     socket?.emit('removeSignee', {
       content: {
         name: account?.name,
@@ -75,7 +84,7 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const createToken = async ({ tokenId }: { tokenId: string }) => {
-    const socket = await connect(tokenId);
+    const socket = await connect({ tokenId });
 
     if (!socket || !account) return;
 
@@ -97,6 +106,7 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
       value={{
         socket,
         connect,
+        disconnect,
         addSignee,
         removeSignee,
         proofOfUs: state,

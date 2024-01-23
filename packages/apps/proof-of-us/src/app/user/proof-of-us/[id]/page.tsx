@@ -16,12 +16,13 @@ interface IProps {
 
 const Page: FC<IProps> = ({ params }) => {
   const qrRef = useRef<QRCode | null>(null);
-  const { createToken, socket } = useSocket();
+  const { createToken, socket, disconnect } = useSocket();
   const { data } = useProofOfUs();
 
   useEffect(() => {
+    disconnect({ tokenId: params.id });
     createToken({ tokenId: params.id });
-  }, [socket]);
+  }, [socket, params.id]);
 
   const handleQRPNGDownload = () => {
     if (!qrRef.current || !data) return;

@@ -17,10 +17,12 @@ const ProofOfUsStore = () => {
   };
 
   const getProofOfUs = (tokenId: string) => {
+    console.log(store);
     return store[tokenId];
   };
 
   const addSignee = (tokenId: string, account: IProofOfUsSignee) => {
+    console.log(store);
     const signeesList = store[tokenId]?.signees;
     if (!signeesList) return;
 
@@ -30,6 +32,7 @@ const ProofOfUsStore = () => {
   };
 
   const removeSignee = (tokenId: string, account: IProofOfUsSignee) => {
+    console.log(store);
     const signeesList = store[tokenId]?.signees;
     if (!signeesList) return;
 

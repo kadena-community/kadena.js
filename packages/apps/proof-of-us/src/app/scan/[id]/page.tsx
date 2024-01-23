@@ -22,7 +22,7 @@ const Page: FC<IProps> = ({ params }) => {
   };
 
   useEffect(() => {
-    connect(params.id);
+    connect({ tokenId: params.id });
   }, []);
 
   return (
