@@ -4,7 +4,7 @@ import { style } from '@vanilla-extract/css';
 export const resourceLinksWrapperClass = style([
   atoms({
     marginBlockStart: 'md',
-    paddingBlockStart: 'md',
+    padding: 'md',
   }),
   {
     borderTop: `1px solid ${tokens.kda.foundation.color.border.base['@disabled']}`,

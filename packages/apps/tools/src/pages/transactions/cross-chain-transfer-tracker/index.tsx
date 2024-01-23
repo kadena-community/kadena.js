@@ -20,6 +20,7 @@ import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Accordion,
+  Box,
   Breadcrumbs,
   BreadcrumbsItem,
   Button,
@@ -226,6 +227,7 @@ const CrossChainTransferTracker: FC = () => {
             helperOnClick={() => onOpenItemChange()}
             disabled={false}
           >
+            <Box marginBlockEnd="md" />
             <Grid>
               <GridItem>
                 <RequestKeyField
@@ -252,63 +254,71 @@ const CrossChainTransferTracker: FC = () => {
 
         {data.receiverAccount ? (
           <FormItemCard heading={t('Overview')} disabled={false}>
-            <Stack flexDirection="row" gap="md">
-              <TrackerCard
-                variant="vertical"
-                icon={'QuickStart'}
-                labelValues={[
-                  {
-                    label: t('Sender'),
-                    value: data.senderAccount || '',
-                    isAccount: true,
-                  },
-                  {
-                    label: t('Chain'),
-                    value: data.senderChain || '',
-                  },
-                ]}
-              />
+            <Grid columns={3} marginBlockStart="md" gap={'md'}>
+              <GridItem>
+                <TrackerCard
+                  variant="vertical"
+                  icon={'QuickStart'}
+                  labelValues={[
+                    {
+                      label: t('Sender'),
+                      value: data.senderAccount || '',
+                      isAccount: true,
+                    },
+                    {
+                      label: t('Chain'),
+                      value: data.senderChain || '',
+                    },
+                  ]}
+                />
+              </GridItem>
+              <GridItem>
               {/*  Progress Bar will only show if the transfer is in progress /
                         completed.  If an error occurs, the notification will display the
                         error and no progress bar will show */}
-              <ProgressBar
-                checkpoints={[
-                  {
-                    status: 'complete',
-                    title: t('Initiated transaction'),
-                  },
-                  {
-                    status:
-                      data?.id === StatusId.Success ? 'complete' : 'pending',
-                    title: data.description || 'An error has occurred',
-                  },
-                  {
-                    status:
-                      data.id === StatusId.Pending ? 'incomplete' : 'complete',
-                    title: t('Transfer complete'),
-                  },
-                ]}
-              />
-              <TrackerCard
-                variant="vertical"
-                icon={
-                  data?.id === StatusId.Success
-                    ? 'Receiver'
-                    : 'ReceiverInactive'
-                }
-                labelValues={[
-                  {
-                    label: t('Receiver'),
-                    value: data.receiverAccount || '',
-                    isAccount: true,
-                  },
-                  {
-                    label: t('Chain'),
-                    value: data.receiverChain || '',
-                  },
-                ]}
-              />
-            </Stack>
+                <ProgressBar
+                  checkpoints={[
+                    {
+                      status: 'complete',
+                      title: t('Initiated transaction'),
+                    },
+                    {
+                      status:
+                        data?.id === StatusId.Success ? 'complete' : 'pending',
+                      title: data.description || 'An error has occurred',
+                    },
+                    {
+                      status:
+                        data.id === StatusId.Pending
+                          ? 'incomplete'
+                          : 'complete',
+                      title: t('Transfer complete'),
+                    },
+                  ]}
+                />
+              </GridItem>
+              <GridItem>
+                <TrackerCard
+                  variant="vertical"
+                  icon={
+                    data?.id === StatusId.Success
+                      ? 'Receiver'
+                      : 'ReceiverInactive'
+                  }
+                  labelValues={[
+                    {
+                      label: t('Receiver'),
+                      value: data.receiverAccount || '',
+                      isAccount: true,
+                    },
+                    {
+                      label: t('Chain'),
+                      value: data.receiverChain || '',
+                    },
+                  ]}
+                />
+              </GridItem>
+            </Grid>
           </FormItemCard>
         ) : null}
       </Stack>

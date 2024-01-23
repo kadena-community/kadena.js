@@ -7,6 +7,12 @@ export const walletConnectWrapperStyle = style([
   }),
 ]);
 
+export const headerButtonsWrapperStyle = style([
+  atoms({
+    marginInlineEnd: 'sm',
+  }),
+]);
+
 export const headerButtonStyle = style([
   atoms({
     outline: 'none',

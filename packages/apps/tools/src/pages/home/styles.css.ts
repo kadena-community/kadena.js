@@ -13,3 +13,13 @@ export const helpCenterButtonClass = style([
     cursor: 'pointer',
   }),
 ]);
+
+export const infoBoxStyle = style([
+  atoms({
+    fontSize: 'sm',
+    padding: 'sm',
+    borderRadius: 'sm',
+    display: 'flex',
+    flexDirection: 'column',
+  }),
+]);

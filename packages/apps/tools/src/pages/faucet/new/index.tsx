@@ -1,5 +1,6 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
+  Accordion,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -23,8 +24,8 @@ import {
   accountNameContainerClass,
   buttonContainerClass,
   chainSelectContainerClass,
-  containerClass,
-  inputContainerClass,
+  containerClass, infoBoxStyle, infoTitleStyle,
+  inputContainerClass, linksBoxStyle, linkStyle,
   notificationContainerStyle,
 } from '../styles.css';
 
@@ -53,9 +54,12 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
+import DrawerToolbar from "@/components/Common/DrawerToolbar";
+import {sidebarLinks} from "@/constants/side-links";
+import {MenuLinkButton} from "@/components/Common/Layout/partials/Sidebar/MenuLinkButton";
 
 interface IFundExistingAccountResponseBody {
   result: {
@@ -93,6 +97,11 @@ const NewAccountFaucetPage: FC = () => {
     message?: string;
   }>({ status: 'idle' });
   const [pubKeys, setPubKeys] = useState<string[]>([]);
+  const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
+    undefined,
+  );
+  const drawerPanelRef = useRef<HTMLElement | null>(null);
+
 
   const { data: accountName } = useQuery({
     queryKey: [
@@ -126,6 +135,54 @@ const NewAccountFaucetPage: FC = () => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
+
+  const faqs: Array<{ title: string; body: React.ReactNode }> = [
+    {
+      title: t('What can I do with the Faucet?'),
+      body: (
+        <Trans
+          i18nKey="common:faucet-description"
+          components={[
+            <Link
+              className={linkStyle}
+              href="/faucet/existing"
+              key="faucet-existing-link"
+            />,
+            <Link
+              className={linkStyle}
+              href="/faucet/new"
+              key="faucet-new-link"
+            />,
+          ]}
+        />
+      ),
+    },
+    {
+      title: t('How do I generate a key pair?'),
+      body: (
+        <Trans
+          i18nKey="common:how-to-keypair"
+          components={[
+            <a
+              className={linkStyle}
+              href="https://transfer.chainweb.com/"
+              target="_blank"
+              rel="noreferrer"
+              key="chainweb-transfer-link"
+            />,
+            <strong key="generate-keypair" />,
+            <a
+              className={linkStyle}
+              href="https://chainweaver.kadena.network/"
+              target="_blank"
+              rel="noreferrer"
+              key="chainweaver-link"
+            />,
+          ]}
+        />
+      ),
+    },
+  ];
 
   useEffect(() => {
     setValue('name', typeof accountName === 'string' ? accountName : '');
@@ -164,7 +221,8 @@ const NewAccountFaucetPage: FC = () => {
           });
           return;
         }
-        setRequestStatus({ status: 'successful' });
+        setRequestStatus({ status: 'successful' })
+        setOpenItem(undefined);
       } catch (err) {
         let message;
         if (isCustomError(err)) {
@@ -210,6 +268,11 @@ const NewAccountFaucetPage: FC = () => {
 
     setPubKeys(copyPubKeys);
   };
+
+  const handleOnClickLink = () => {
+    setOpenItem(undefined);
+  };
+
 
   const renderPubKeys = () => (
     <div className={pubKeysContainerStyle}>
@@ -390,6 +453,47 @@ const NewAccountFaucetPage: FC = () => {
           </div>
         </Stack>
       </form>
+
+      <DrawerToolbar
+        ref={drawerPanelRef}
+        initialOpenItem={openItem}
+        sections={[
+          {
+            icon: 'Information',
+            title: t('Frequently asked questions'),
+            children: (
+              <>
+                {faqs.map((faq) => (
+                  <div className={infoBoxStyle} key={faq.title}>
+                    <p className={infoTitleStyle}>{faq.title}</p>
+                    <p>{faq.body}</p>
+                  </div>
+                ))}
+              </>
+            ),
+          },
+          {
+            icon: 'Link',
+            title: t('Resources & Links'),
+            children: (
+              <div className={linksBoxStyle}>
+                <Accordion.Root>
+                  {sidebarLinks.map((item, index) => (
+                    <MenuLinkButton
+                      title={item.title}
+                      key={`menu-link-${index}`}
+                      href={item.href}
+                      active={item.href === router.pathname}
+                      target="_blank"
+                      onClick={handleOnClickLink}
+                    />
+                  ))}
+                </Accordion.Root>
+              </div>
+            ),
+          },
+        ]}
+      />
     </section>
   );
 };

@@ -25,6 +25,7 @@ import Head from 'next/head';
 
 import type { FC } from 'react';
 import React, { useRef } from 'react';
+import {linkStyle} from "@/pages/faucet/styles.css";
 
 const Home: FC = () => {
   const helpCenterRef = useRef<HTMLElement | null>(null);
@@ -37,12 +38,12 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:faucet-description"
           components={[
-            <Link key="faucet-existing-link" href="/faucet/existing">
+            <a className={linkStyle} key="faucet-existing-link" href="/faucet/existing">
               {t('faucet-existing-link')}
-            </Link>,
-            <Link key="faucet-new-link" href="/faucet/new">
+            </a>,
+            <a className={linkStyle} key="faucet-new-link" href="/faucet/new">
               {t('faucet-new-link')}
-            </Link>,
+            </a>,
           ]}
         />
       ),
@@ -53,20 +54,20 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:how-to-keypair"
           components={[
-            <Link
+            <a className={linkStyle}
               key="chainweb-transfer-link"
               href="https://transfer.chainweb.com/"
               target="_blank"
             >
               {t('chainweb-transfer-link')}
-            </Link>,
-            <Link
+            </a>,
+            <a className={linkStyle}
               key="chainweaver-link"
               href="https://kadena.io/chainweaver-tos/"
               target="_blank"
             >
               {t('chainweaver-link')}
-            </Link>,
+            </a>,
           ]}
         />
       ),
@@ -136,22 +137,23 @@ const Home: FC = () => {
                 <Box marginBlockEnd="md" />
                 <ul>
                   <li>
-                    <Link href="https://docs.kadena.io/kadena" target="_blank">
+                    <a className={linkStyle} href="https://docs.kadena.io/kadena" target="_blank">
                       {t('Overview of Kadena')}
-                    </Link>
+                    </a>
                   </li>
                   <li>
-                    <Link
+                    <a
+                      className={linkStyle}
                       href="https://docs.kadena.io/kadena/kda/manage-kda"
                       target="_blank"
                     >
                       {t('Manage your KDA')}
-                    </Link>
+                    </a>
                   </li>
                   <li>
-                    <Link href="https://kadena.io/grants/" target="_blank">
+                    <a className={linkStyle} href="https://kadena.io/grants/" target="_blank">
                       {t('Contribute to the network')}
-                    </Link>
+                    </a>
                   </li>
                 </ul>
               </GridItem>
@@ -162,25 +164,25 @@ const Home: FC = () => {
                 <Box marginBlockEnd="md" />
                 <ul>
                   <li>
-                    <Link
+                    <a className={linkStyle}
                       href="https://docs.kadena.io/build/quickstart"
                       target="_blank"
                     >
                       {t('Quick start')}
-                    </Link>
+                    </a>
                   </li>
                   <li>
-                    <Link href="https://docs.kadena.io/pact" target="_blank">
+                    <a className={linkStyle} href="https://docs.kadena.io/pact" target="_blank">
                       {t('Pact language resources')}
-                    </Link>
+                    </a>
                   </li>
                   <li>
-                    <Link
+                    <a className={linkStyle}
                       href="https://docs.kadena.io/build/guides/election-dapp-tutorial"
                       target="_blank"
                     >
                       {t('Build your first dApp')}
-                    </Link>
+                    </a>
                   </li>
                 </ul>
               </GridItem>

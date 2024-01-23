@@ -1,5 +1,5 @@
 import { HeaderMenuButton } from '@/components/Common/Layout/partials/Header/HeaderMenuButton';
-import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
+import {headerButtonsWrapperStyle, walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
 import { AddNetworkModal } from '@/components/Global';
 import { OptionsModal } from '@/components/Global/OptionsModal';
 import type { Network } from '@/constants/kadena';
@@ -71,16 +71,18 @@ const Header: FC<IHeaderProps> = () => {
           ))}
         </NavHeader.Navigation>
         <NavHeader.Content>
-          <HeaderMenuButton
-            title={'Toggle theme'}
-            icon={'ThemeLightDark'}
-            onClick={() => toggleTheme()}
-          />
-          <HeaderMenuButton
-            title={'Application Settings'}
-            icon={'ApplicationBrackets'}
-            onClick={() => handleDevOptionsClick()}
-          />
+          <div className={headerButtonsWrapperStyle}>
+            <HeaderMenuButton
+              title={'Toggle theme'}
+              icon={'ThemeLightDark'}
+              onClick={() => toggleTheme()}
+            />
+            <HeaderMenuButton
+              title={'Application Settings'}
+              icon={'ApplicationBrackets'}
+              onClick={() => handleDevOptionsClick()}
+            />
+          </div>
           <NavHeader.Select
             id="network-select"
             ariaLabel={t('Select Network')}

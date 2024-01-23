@@ -77,6 +77,7 @@ export const expandedDrawerContentClass = style([
   {
     overflowY: 'auto',
     height: `calc(100% - ${tokens.kda.foundation.size.n20})`,
+    zIndex: 99,
   },
 ]);
 
@@ -89,12 +90,12 @@ export const expandedDrawerContentStyle = style([
     bottom: 0,
     backgroundColor: 'layer-1.default',
     fontSize: 'sm',
-    zIndex: 1,
   }),
   {
     width: tokens.kda.foundation.size.n12,
     top: tokens.kda.foundation.size.n16,
     height: '100vh',
     overflowY: 'auto',
+    zIndex: 99
   },
 ]);
