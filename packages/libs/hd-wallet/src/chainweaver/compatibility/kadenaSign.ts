@@ -10,6 +10,6 @@ export const kadenaSign = async (
   return await originalKadenaSign(
     password,
     message,
-    kadenaDecrypt(password, secretKey),
+    await kadenaDecrypt(password, secretKey),
   );
 };

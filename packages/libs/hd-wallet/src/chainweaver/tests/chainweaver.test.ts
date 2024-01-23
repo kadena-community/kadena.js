@@ -16,8 +16,15 @@ const MNEMONIC =
 function validateEncryptedValue(value: string) {
   const buffer = Buffer.from(value, 'base64').toString('utf8');
   const parts = buffer.split('.');
-  // parts: salt, iv, tag, data, public key (only for secretKeys, not rootKey)
-  return parts.length === 4 || parts.length === 5;
+  // parts: salt, iv, data
+  return parts.length === 3;
+}
+
+function validateEncryptedKeyPair(value: string) {
+  const buffer = Buffer.from(value, 'base64').toString('utf8');
+  const parts = buffer.split('.');
+  // parts: salt, iv, data, public key (only for secretKeys, not rootKey)
+  return parts.length === 4;
 }
 
 describe('kadenaGenMnemonic', () => {
@@ -67,8 +74,8 @@ describe('kadenaMnemonicToRootKeypair', () => {
       mnemonicSecond,
     );
 
-    const rootKey1Decrypted = kadenaDecrypt(PASSWORD, rootKey1);
-    const rootKey2Decrypted = kadenaDecrypt(PASSWORD, rootKey2);
+    const rootKey1Decrypted = await kadenaDecrypt(PASSWORD, rootKey1);
+    const rootKey2Decrypted = await kadenaDecrypt(PASSWORD, rootKey2);
 
     expect(rootKey1Decrypted).not.toEqual(rootKey2Decrypted);
   });
@@ -80,8 +87,8 @@ describe('kadenaMnemonicToRootKeypair', () => {
     const rootKey1 = await kadenaMnemonicToRootKeypair('pass-one', MNEMONIC);
     const rootKey2 = await kadenaMnemonicToRootKeypair('pass-two', MNEMONIC);
 
-    const rootKey1Decrypted = kadenaDecrypt('pass-one', rootKey1);
-    const rootKey2Decrypted = kadenaDecrypt('pass-two', rootKey2);
+    const rootKey1Decrypted = await kadenaDecrypt('pass-one', rootKey1);
+    const rootKey2Decrypted = await kadenaDecrypt('pass-two', rootKey2);
 
     expect(rootKey1Decrypted).not.toEqual(rootKey2Decrypted);
   });
@@ -95,11 +102,11 @@ describe('kadenaGenKeypair', () => {
       rootKey,
       1,
     );
-    expect(validateEncryptedValue(secretKey)).toBe(true);
+    expect(validateEncryptedKeyPair(secretKey)).toBe(true);
 
-    const secretKeyDecrypted = kadenaDecrypt(PASSWORD, secretKey);
+    const secretKeyDecrypted = await kadenaDecrypt(PASSWORD, secretKey);
 
-    expect(secretKeyDecrypted.length).toBe(128);
+    expect(Buffer.from(secretKeyDecrypted).length).toBe(128);
     expect(publicKey.length).toBe(64);
 
     const publicKeyFromSecret = getPublicKeyFromLegacySecretKey(secretKey);
@@ -112,7 +119,7 @@ describe('kadenaGenKeypair', () => {
     expect(keyPairs).toHaveLength(4);
 
     keyPairs.forEach(({ publicKey, secretKey }) => {
-      expect(validateEncryptedValue(secretKey)).toBe(true);
+      expect(validateEncryptedKeyPair(secretKey)).toBe(true);
       expect(publicKey.length).toBe(64);
     });
   });

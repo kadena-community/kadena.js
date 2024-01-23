@@ -1,8 +1,10 @@
 import type { EncryptedString } from '../../index.js';
 import { kadenaDecrypt } from '../../index.js';
-import { HARDENED_OFFSET, harden } from '../../utils/crypto.js';
 import { kadenaGenKeypair as kadenaGenKeypairOriginal } from '../kadena-crypto.js';
 import { encryptLegacySecretKey } from './encryption.js';
+
+const HARDENED_OFFSET = 0x80000000;
+const harden = (n: number) => HARDENED_OFFSET + n;
 
 async function kadenaGenOneKeypair(
   password: string,
@@ -15,7 +17,7 @@ async function kadenaGenOneKeypair(
   const keyPair = await kadenaGenKeypairOriginal(password, rootKey, index);
   return {
     publicKey: Buffer.from(keyPair[1]).toString('hex'),
-    secretKey: encryptLegacySecretKey(password, keyPair[0]),
+    secretKey: await encryptLegacySecretKey(password, keyPair[0]),
   };
 }
 
@@ -48,7 +50,7 @@ export async function kadenaGenKeypair(
   rootKey: EncryptedString,
   indexOrRange: number | [start: number, end: number],
 ) {
-  const decrypted = kadenaDecrypt(password, rootKey);
+  const decrypted = await kadenaDecrypt(password, rootKey);
   if (typeof indexOrRange === 'number') {
     return await kadenaGenOneKeypair(password, decrypted, harden(indexOrRange));
   }

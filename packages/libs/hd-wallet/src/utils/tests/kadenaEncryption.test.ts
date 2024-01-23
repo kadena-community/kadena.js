@@ -11,69 +11,75 @@ describe('kadenaDecrypt', () => {
   it('should correctly decrypt a previously encrypted string', async () => {
     const password = 'test-password';
     const message = Buffer.from('test-message');
-    const encryptedMessage = kadenaEncrypt(password, message);
-    const decryptedMessage = kadenaDecrypt(password, encryptedMessage);
+    const encryptedMessage = await kadenaEncrypt(password, message);
+    const decryptedMessage = await kadenaDecrypt(password, encryptedMessage);
     expect(Buffer.from(decryptedMessage).toString('utf-8')).toEqual(
       message.toString('utf-8'),
     );
-    expect(message.toJSON()).not.toBe(encryptedMessage);
-    expect(encryptedMessage.toString()).not.toBe(decryptedMessage.toString());
+    expect(message.toString()).not.toBe(encryptedMessage);
+    expect(encryptedMessage).not.toBe(Buffer.from(decryptedMessage).toString());
   });
 
   it('should throw an error when the incorrect password is provided', async () => {
     const correctPassword = 'correct-password';
     const wrongPassword = 'wrong-password';
     const message = Buffer.from('test-message');
-    const encryptedMessage = kadenaEncrypt(correctPassword, message);
-    expect(() => {
-      kadenaDecrypt(wrongPassword, encryptedMessage);
-    }).toThrow('Decryption failed');
+    const encryptedMessage = await kadenaEncrypt(correctPassword, message);
+    await expect(() =>
+      kadenaDecrypt(wrongPassword, encryptedMessage),
+    ).rejects.toThrow('Decryption failed');
   });
 
-  it('should throw an error if the encrypted key is corrupted', () => {
+  it('should throw an error if the encrypted key is corrupted', async () => {
     const password = 'test-password';
     const corruptedEncryptedPrivateKey = 'corrupted-data' as EncryptedString;
 
-    expect(() => {
-      kadenaDecrypt(password, corruptedEncryptedPrivateKey);
-    }).toThrow();
+    await expect(() =>
+      kadenaDecrypt(password, corruptedEncryptedPrivateKey),
+    ).rejects.toThrow();
   });
 
-  it('should throw an error if the encrypted data is empty', () => {
+  it('should throw an error if the encrypted data is empty', async () => {
     const password = 'test-password';
     const emptyEncryptedMessage = '' as EncryptedString;
 
-    expect(() => {
-      kadenaDecrypt(password, emptyEncryptedMessage);
-    }).toThrow('Encrypted data is empty');
+    await expect(() =>
+      kadenaDecrypt(password, emptyEncryptedMessage),
+    ).rejects.toThrow('Encrypted data is empty');
   });
 
   it('should handle passwords with special characters', async () => {
     const specialCharPassword = 'p@ssw0rd!#%&';
     const message = Buffer.from('test-message');
-    const encryptedMessage = kadenaEncrypt(specialCharPassword, message);
-    expect(
-      kadenaDecrypt(specialCharPassword, encryptedMessage).toString(),
-    ).toBe(message.toString());
+    const encryptedMessage = await kadenaEncrypt(specialCharPassword, message);
+    const decryptedMessage = await kadenaDecrypt(
+      specialCharPassword,
+      encryptedMessage,
+    );
+    expect(Buffer.from(decryptedMessage).toString()).toBe(message.toString());
   });
 
   it('should handle extremely long passwords', async () => {
     const longPassword = 'p'.repeat(1000);
     const message = Buffer.from('test-message');
-    const encryptedMessage = kadenaEncrypt(longPassword, message);
-    expect(kadenaDecrypt(longPassword, encryptedMessage).toString()).toBe(
-      message.toString(),
+    const encryptedMessage = await kadenaEncrypt(longPassword, message);
+    const decryptedMessage = await kadenaDecrypt(
+      longPassword,
+      encryptedMessage,
     );
+    expect(Buffer.from(decryptedMessage).toString()).toBe(message.toString());
   });
 
   it('should handle unicode characters in passwords', async () => {
     const unicodePassword = '密码'; // 'password' in Chinese
     const message = Buffer.from('test-message');
-    const encryptedMessage = kadenaEncrypt(unicodePassword, message);
-
-    expect(kadenaDecrypt(unicodePassword, encryptedMessage).toString()).toBe(
-      message.toString(),
+    const encryptedMessage = await kadenaEncrypt(unicodePassword, message);
+    const decryptedMessage = await kadenaDecrypt(
+      unicodePassword,
+      encryptedMessage,
     );
+
+    expect(Buffer.from(decryptedMessage).toString()).toBe(message.toString());
   });
 });
 
@@ -84,12 +90,12 @@ describe('kadenaChangePassword', () => {
   const password = 'currentPassword123';
   const newPassword = 'newPassword123';
 
-  it('changes the password successfully and allows decryption with the new password', () => {
+  it('changes the password successfully and allows decryption with the new password', async () => {
     const firstPassword = 'firstPassword123';
     const secondPassword = 'secondPassword123';
     const message = Buffer.from('test-message');
-    const encryptedMessage = kadenaEncrypt(firstPassword, message);
-    const newEncryptedMessage = kadenaChangePassword(
+    const encryptedMessage = await kadenaEncrypt(firstPassword, message);
+    const newEncryptedMessage = await kadenaChangePassword(
       firstPassword,
       encryptedMessage,
       secondPassword,
@@ -99,33 +105,36 @@ describe('kadenaChangePassword', () => {
     );
 
     const decryptedMessage = Buffer.from(
-      kadenaDecrypt(secondPassword, newEncryptedMessage),
+      await kadenaDecrypt(secondPassword, newEncryptedMessage),
     );
+
     expect(decryptedMessage.toString()).toBe(message.toString());
   });
 
-  it('throws an error when the password is incorrect', () => {
-    const encryptedPrivateKey = kadenaEncrypt(password, privateKey);
+  it('throws an error when the password is incorrect', async () => {
+    const encryptedPrivateKey = await kadenaEncrypt(password, privateKey);
     const incorrectPassword = 'wrongPassword';
     const changePasswordAttempt = () =>
       kadenaChangePassword(incorrectPassword, encryptedPrivateKey, newPassword);
 
-    expect(changePasswordAttempt).toThrow(
+    await expect(() => changePasswordAttempt()).rejects.toThrow(
       'Failed to decrypt the private key with the old password: Decryption failed',
     );
   });
 
-  it('fails to decrypt with the old password after the password has been changed', () => {
+  it('fails to decrypt with the old password after the password has been changed', async () => {
     const firstPassword = 'firstPassword123';
     const secondPassword = 'secondPassword123';
     const message = Buffer.from('test-message');
-    const encryptedMessage = kadenaEncrypt(firstPassword, message);
-    const newEncryptedMessage = kadenaChangePassword(
+    const encryptedMessage = await kadenaEncrypt(firstPassword, message);
+    const newEncryptedMessage = await kadenaChangePassword(
       firstPassword,
       encryptedMessage,
       secondPassword,
     );
-    expect(() => kadenaDecrypt(firstPassword, newEncryptedMessage)).toThrow();
+    await expect(() =>
+      kadenaDecrypt(firstPassword, newEncryptedMessage),
+    ).rejects.toThrow();
   });
 
   const testUndefined = undefined as unknown as EncryptedString;
@@ -135,27 +144,27 @@ describe('kadenaChangePassword', () => {
   }) as unknown as EncryptedString;
   const testMessage = 'test-message' as EncryptedString;
 
-  it('handles non-string inputs for private keys and passwords', () => {
-    expect(() =>
+  it('handles non-string inputs for private keys and passwords', async () => {
+    await expect(() =>
       kadenaChangePassword(password, testUndefined, newPassword),
-    ).toThrow();
-    expect(() =>
+    ).rejects.toThrow();
+    await expect(() =>
       kadenaChangePassword(testUndefined, testMessage, newPassword),
-    ).toThrow();
-    expect(() =>
+    ).rejects.toThrow();
+    await expect(() =>
       kadenaChangePassword(password, testMessage, testUndefined),
-    ).toThrow();
-    expect(() =>
+    ).rejects.toThrow();
+    await expect(() =>
       kadenaChangePassword(password, testNull, newPassword),
-    ).toThrow();
-    expect(() =>
+    ).rejects.toThrow();
+    await expect(() =>
       kadenaChangePassword(testNull, testUnint8Array, newPassword),
-    ).toThrow();
-    expect(() =>
+    ).rejects.toThrow();
+    await expect(() =>
       kadenaChangePassword(password, testMessage, testNull),
-    ).toThrow();
-    expect(() =>
+    ).rejects.toThrow();
+    await expect(() =>
       kadenaChangePassword(password, testMessage, password),
-    ).toThrow();
+    ).rejects.toThrow();
   });
 });

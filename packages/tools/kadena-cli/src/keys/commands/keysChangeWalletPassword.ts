@@ -64,11 +64,11 @@ export const changeWalletPassword = async (
       newPassword,
     );
   } else {
-    const decryptedCurrentSeed = kadenaDecrypt(
+    const decryptedCurrentSeed = await kadenaDecrypt(
       currentPassword,
       walletContent as EncryptedString,
     );
-    encryptedNewSeed = kadenaEncrypt(newPassword, decryptedCurrentSeed);
+    encryptedNewSeed = await kadenaEncrypt(newPassword, decryptedCurrentSeed);
   }
 
   await storageService.storeWallet(

@@ -1,14 +1,14 @@
-import type { BinaryLike } from 'crypto';
+import type { BinaryLike } from '../utils/crypto.js';
 import type { EncryptedString } from '../utils/kadenaEncryption.js';
 import { kadenaDecrypt, kadenaEncrypt } from '../utils/kadenaEncryption.js';
 import { deriveKeyPair } from './utils/sign.js';
 
-function genKeypairFromSeed(
+async function genKeypairFromSeed(
   password: BinaryLike,
   seedBuffer: Uint8Array,
   index: number,
   derivationPathTemplate: string,
-): [string, EncryptedString] {
+): Promise<[string, EncryptedString]> {
   const derivationPath = derivationPathTemplate.replace(
     '<index>',
     index.toString(),
@@ -16,7 +16,7 @@ function genKeypairFromSeed(
 
   const { publicKey, privateKey } = deriveKeyPair(seedBuffer, derivationPath);
 
-  const encryptedPrivateKey = kadenaEncrypt(
+  const encryptedPrivateKey = await kadenaEncrypt(
     password,
     Buffer.from(privateKey, 'hex'),
   );
@@ -24,19 +24,27 @@ function genKeypairFromSeed(
   return [publicKey, encryptedPrivateKey];
 }
 
+/**
+ *
+ * @param password
+ * @param seed
+ * @param index
+ * @param derivationPathTemplate
+ * @alpha
+ */
 export function kadenaGenKeypairFromSeed(
   password: BinaryLike,
   seed: EncryptedString,
   index: number,
   derivationPathTemplate?: string,
-): [string, EncryptedString];
+): Promise<[string, EncryptedString]>;
 
 export function kadenaGenKeypairFromSeed(
   password: BinaryLike,
   seed: EncryptedString,
   indexRange: [number, number],
   derivationPathTemplate?: string,
-): Array<[string, EncryptedString]>;
+): Promise<Array<[string, EncryptedString]>>;
 
 /**
  * Generates a key pair from a seed buffer and an index or range of indices, and optionally encrypts the private key.
@@ -48,17 +56,17 @@ export function kadenaGenKeypairFromSeed(
  * @returns {([string, string] | [string, string][])} - Depending on the input, either a tuple for a single key pair or an array of tuples for a range of key pairs, with the private key encrypted if a password is provided.
  * @throws {Error} Throws an error if the seed buffer is not provided, if the indices are invalid, or if encryption fails.
  */
-export function kadenaGenKeypairFromSeed(
+export async function kadenaGenKeypairFromSeed(
   password: BinaryLike,
   seed: EncryptedString,
   indexOrRange: number | [number, number],
   derivationPathTemplate: string = `m'/44'/626'/<index>'`,
-): [string, EncryptedString] | Array<[string, EncryptedString]> {
+): Promise<[string, EncryptedString] | Array<[string, EncryptedString]>> {
   if (typeof seed !== 'string' || seed === '') {
     throw new Error('No seed provided.');
   }
 
-  const seedBuffer = kadenaDecrypt(password, seed);
+  const seedBuffer = await kadenaDecrypt(password, seed);
 
   if (typeof indexOrRange === 'number') {
     return genKeypairFromSeed(
@@ -77,7 +85,7 @@ export function kadenaGenKeypairFromSeed(
     const keyPairs: [string, EncryptedString][] = [];
 
     for (let index = startIndex; index <= endIndex; index++) {
-      const [publicKey, encryptedPrivateKey] = genKeypairFromSeed(
+      const [publicKey, encryptedPrivateKey] = await genKeypairFromSeed(
         password,
         seedBuffer,
         index,

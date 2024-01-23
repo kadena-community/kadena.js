@@ -94,5 +94,5 @@ export function isValidEncryptedValue(value: string | unknown): boolean {
   const buffer = Buffer.from(value, 'base64').toString('utf8');
   const parts = buffer.split('.');
   // parts: salt, iv, tag, data, public key (only for secretKeys, not rootKey)
-  return parts.length === 4 || parts.length === 5;
+  return parts.length === 3 || parts.length === 4;
 }

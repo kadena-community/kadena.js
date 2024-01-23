@@ -54,6 +54,9 @@ export default builder.prismaNode('Block', {
               where: {
                 blockHash: parent.hash,
               },
+              select: {
+                key: true,
+              },
             })
           )?.map((x) => x.key),
           predicate: parent.predicate as Guard['predicate'],
@@ -72,9 +75,10 @@ export default builder.prismaNode('Block', {
       select: {
         parentBlockHash: true,
       },
-      async resolve(__query, parent) {
+      async resolve(query, parent) {
         try {
           return await prismaClient.block.findUnique({
+            ...query,
             where: {
               hash: parent.parentBlockHash,
             },
