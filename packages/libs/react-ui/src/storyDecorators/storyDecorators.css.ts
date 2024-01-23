@@ -1,6 +1,5 @@
-import { responsiveStyle } from '@theme/themeUtils';
-import { tokens } from '@theme/tokens/contract.css';
 import { style } from '@vanilla-extract/css';
+import { responsiveStyle, tokens } from '../styles';
 
 export const minWidth = style(
   responsiveStyle({

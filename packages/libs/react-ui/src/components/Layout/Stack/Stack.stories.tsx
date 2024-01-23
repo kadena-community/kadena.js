@@ -1,14 +1,14 @@
-import { Stack } from '@components/Layout/Stack';
-import { onLayer2 } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import className from 'classnames';
 import React from 'react';
+import { onLayer2 } from '../../../storyDecorators';
 import { componentClass, containerClass, itemClass } from '../stories.css';
 import {
   Legend,
   defaultBoxArgs,
   sharedStoryArgTypes,
 } from '../storyComponents';
+import { Stack } from './Stack';
 import { itemSizeClass } from './stories.css';
 
 const meta: Meta<typeof Stack> = {

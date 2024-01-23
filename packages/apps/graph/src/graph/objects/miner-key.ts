@@ -6,16 +6,17 @@ import { builder } from '../builder';
 export default builder.prismaNode('MinerKey', {
   description: 'The account of the miner that solved a block.',
   id: { field: 'blockHash_key' },
+  select: {},
   fields: (t) => ({
-    // database fields
     blockHash: t.exposeString('blockHash'),
     key: t.exposeString('key'),
-
-    //relations
     block: t.prismaField({
       type: 'Block',
       nullable: false,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      select: {
+        blockHash: true,
+      },
       async resolve(query, parent) {
         try {
           return await prismaClient.block.findUniqueOrThrow({

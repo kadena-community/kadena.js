@@ -1,10 +1,10 @@
-import type { IFormFieldWrapperProps, IInputProps } from '@components/Form';
-import { Input } from '@components/Form';
 import type { FC } from 'react';
 import React, { forwardRef } from 'react';
+import type { IFormFieldWrapperProps } from '../FormFieldWrapper';
 import { FormFieldHeader, FormFieldHelper } from '../FormFieldWrapper';
 import { statusVariant } from '../FormFieldWrapper/FormFieldWrapper.css';
-
+import type { IInputProps } from '../Input';
+import { Input } from '../Input';
 export interface ITextFieldProps
   extends Omit<IFormFieldWrapperProps, 'children' | 'htmlFor'>,
     Omit<IInputProps, 'disabled' | 'children'> {}

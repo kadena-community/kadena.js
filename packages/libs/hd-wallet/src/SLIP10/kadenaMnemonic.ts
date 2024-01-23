@@ -1,7 +1,7 @@
 import * as bip39 from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
-import type { BinaryLike } from 'crypto';
-import { kadenaEncrypt } from '../utils/kadenaEncryption';
+import type { BinaryLike } from '../utils/crypto.js';
+import { kadenaEncrypt } from '../utils/kadenaEncryption.js';
 /**
  * Generates a mnemonic phrase using the BIP39 protocol with a specified wordlist.
  *

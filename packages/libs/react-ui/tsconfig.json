@@ -1,6 +1,7 @@
 {
-  "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
+  "extends": "@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
+    "rootDir": "./src",
     "baseUrl": ".",
     "types": ["node", "vitest-dom/extend-expect"],
     "skipLibCheck": true,
@@ -9,12 +10,7 @@
     "outDir": "dist/esm",
     "allowJs": true,
     "moduleResolution": "node",
-    "removeComments": true,
-    "paths": {
-      "@components/*": ["src/components/*"],
-      "@theme/*": ["src/styles/*"],
-      "@storyDecorators": ["src/storyDecorators"]
-    }
+    "removeComments": true
   },
   "include": ["./src"],
   "exclude": ["node_modules"]

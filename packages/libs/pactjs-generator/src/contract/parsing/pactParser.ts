@@ -36,6 +36,7 @@ export interface IFunction extends IMethod {
   bodyPointer?: number;
   requiredCapabilities?: string[];
   withCapabilities?: string[];
+  events?: string[];
   functionCalls?: {
     internal: string[];
     external: Array<{ namespace?: string; module: string; func: string }>;

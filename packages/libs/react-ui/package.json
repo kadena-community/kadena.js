@@ -4,32 +4,43 @@
   "private": true,
   "description": "A react component library built on Kadena's Design System",
   "license": "ISC",
-  "author": "",
+  "author": "KADENA",
+  "sideEffects": [
+    "*.css.*",
+    "dist/side-effects/**"
+  ],
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
-      "types": "./types/index.d.ts"
+      "types": {
+        "import": "./dist/index.d.mts",
+        "require": "./dist/index.d.ts"
+      },
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     },
-    "./theme": {
-      "import": "./dist/esm/styles/index.js",
-      "require": "./dist/cjs/styles/index.js",
-      "types": "./theme/index.d.ts"
-    }
+    "./styles": {
+      "types": {
+        "import": "./dist/styles.d.mts",
+        "require": "./dist/styles.d.ts"
+      },
+      "import": "./dist/styles.mjs",
+      "require": "./dist/styles.cjs"
+    },
+    "./package.json": "./package.json"
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "types/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
-    "types",
-    "theme"
+    "styles"
   ],
   "scripts": {
-    "build": "rimraf theme && tsc && tsc-alias && tsc -p ./tsconfig.cjs.json && tsc-alias -p ./tsconfig.cjs.json && copyfiles -f \"./types/styles/*\" theme",
+    "build": "crackle package",
     "build:storybook": "storybook build",
     "build:test": "tsc --noEmit & tsc -p ./tsconfig.cjs.json --noEmit",
     "chromatic": "chromatic -b build:storybook",
+    "dev": "crackle dev --webpack",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -63,6 +74,7 @@
     "react-stately": "^3.28.0"
   },
   "devDependencies": {
+    "@crackle/cli": "^0.13.0",
     "@design-sync/cli": "^0.11.1",
     "@design-sync/vanilla-extract-plugin": "^0.7.0",
     "@etchteam/storybook-addon-status": "^4.2.4",

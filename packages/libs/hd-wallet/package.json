@@ -11,25 +11,30 @@
   "license": "MIT",
   "contributors": [
     "Javad Khalilian <javad@kadena.io>",
+    "Albert Groothedde <albert@kadena.io>",
     "Danillo Felixdaal <danillo@kadena.io>"
   ],
+  "type": "module",
   "exports": {
-    "./chainweaver": "./lib/chainweaver/index.js"
-  },
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "chainweaver": [
-        "./lib/chainweaver/index.d.ts"
-      ]
+    ".": {
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js",
+      "types": "./dist/hd-wallet.d.ts"
+    },
+    "./chainweaver": {
+      "types": "./lib/esm/chainweaver/index.d.ts",
+      "require": "./lib/cjs/chainweaver/index.js",
+      "import": "./lib/esm/chainweaver/index.js"
     }
   },
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
   "files": [
-    "lib"
+    "lib",
+    "chainweaver"
   ],
   "scripts": {
-    "build": "tsc && cpy ./src/chainweaver/vendor/**/* ./lib/chainweaver/vendor/",
+    "build": "tsc -p tsconfig.cjs.json && tsc && api-extractor run || true && cpy ./src/chainweaver/vendor/**/* ./lib/cjs/chainweaver/vendor/ && cpy ./src/chainweaver/vendor/**/* ./lib/esm/chainweaver/vendor/ && cp ./package.cjs.json ./lib/cjs/package.json",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",

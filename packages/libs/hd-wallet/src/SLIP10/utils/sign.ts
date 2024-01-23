@@ -1,7 +1,7 @@
 import { signHash } from '@kadena/cryptography-utils';
 
 import { HDKey } from 'ed25519-keygen/hdkey';
-import { uint8ArrayToHex } from '../../utils/buffer-helpers';
+import { uint8ArrayToHex } from '../../utils/buffer-helpers.js';
 
 export interface ISignatureWithPublicKey {
   sig: string;

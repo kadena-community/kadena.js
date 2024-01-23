@@ -83,7 +83,7 @@ const Event: React.FC = () => {
 
       setSubscriptionsEvents(updatedEvents);
     }
-  }, [nodesQueryData]);
+  }, [nodesQueryData?.nodes]);
 
   // Pagination
   const itemsPerPageOptions = [10, 50, 100, 200];

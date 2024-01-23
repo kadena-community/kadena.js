@@ -3,7 +3,7 @@ import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/Menu
 import { useLayoutContext } from '@/context';
 import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
 import { Accordion } from '@kadena/react-ui';
-import { breakpoints } from '@kadena/react-ui/theme';
+import { breakpoints } from '@kadena/react-ui/styles';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';

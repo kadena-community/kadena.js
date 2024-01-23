@@ -1,7 +1,7 @@
-import { SystemIcon } from '@components/Icon';
-import { Label } from '@components/Typography/Label/Label';
 import type { FC } from 'react';
 import React from 'react';
+import { SystemIcon } from '../../../Icon';
+import { Label } from '../../../Typography/Label/Label';
 import { headerClass, infoClass, tagClass } from './FormFieldHeader.css';
 
 export interface IFormFieldHeaderProps {

@@ -11,13 +11,13 @@ import {
   getGraphConfiguration,
 } from '@/graphql/queries.graph';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
-import { Text } from '@components/text';
 import routes from '@constants/routes';
 import {
   Accordion,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+  Heading,
   Link,
   Notification,
   Stack,
@@ -79,17 +79,7 @@ const Block: React.FC = () => {
 
         {data?.block && (
           <>
-            <Text
-              as="h2"
-              css={{
-                display: 'block',
-                color: '$mauve12',
-                fontSize: '$2xl',
-                my: '$4',
-              }}
-            >
-              Block Header
-            </Text>
+            <Heading as="h2">Block Header</Heading>
 
             <Table.Root wordBreak="break-word">
               <Table.Body>
@@ -166,17 +156,8 @@ const Block: React.FC = () => {
 
             <Box margin="md" />
 
-            <Text
-              as="h2"
-              css={{
-                display: 'block',
-                color: '$mauve12',
-                fontSize: '$2xl',
-                my: '$4',
-              }}
-            >
-              Block Payload
-            </Text>
+            <Heading as="h2">Block Payload</Heading>
+
             <Table.Root wordBreak="break-word">
               <Table.Body>
                 <Table.Tr>

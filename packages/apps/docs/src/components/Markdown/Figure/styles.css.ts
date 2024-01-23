@@ -1,5 +1,5 @@
 import { getClassName } from '@/utils/getClassName';
-import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/theme';
+import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { paragraphWrapperClass } from '../Paragraph/styles.css';
 
