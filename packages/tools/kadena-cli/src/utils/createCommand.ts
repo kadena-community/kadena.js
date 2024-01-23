@@ -3,16 +3,15 @@ import type { Command } from 'commander';
 import { z } from 'zod';
 import { CLIRootName } from '../constants/config.js';
 import { displayConfig } from './createCommandDisplayHelper.js';
-import type { createOption } from './createOption.js';
+import type { OptionType, createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
 import { collectResponses } from './helpers.js';
 import type { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
 
 type AsOption<T> = T extends {
   key: infer K;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   prompt: infer R;
-  transform: infer Tr;
+  transform?: infer Tr;
 }
   ? K extends string
     ? {
@@ -47,9 +46,7 @@ export type CreateCommandReturnType = (
 ) => void;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function createCommand<
-  const T extends ReturnType<ReturnType<typeof createOption>>[],
->(
+export function createCommand<const T extends OptionType[]>(
   name: string,
   description: string,
   options: [...T],
@@ -133,20 +130,6 @@ export function createCommand<
   };
 }
 
-type Fn = (...args: any[]) => unknown;
-
-export type TransformOption<
-  Option extends { key: string; prompt: Fn; transform?: Fn; expand?: Fn },
-> = {
-  [P in Option['key']]: Option['transform'] extends (...args: any[]) => infer Tr
-    ? Awaited<Tr>
-    : Awaited<ReturnType<Option['prompt']>>;
-} & (Option['expand'] extends (...args: any[]) => infer Ex
-  ? {
-      [P in `${Option['key']}Config`]: Awaited<Ex>;
-    }
-  : {});
-
 export function handleQuietOption(
   command: string,
   args: Record<string, unknown>,
@@ -179,44 +162,6 @@ export function handleQuietOption(
   }
 }
 
-export async function executeOption<
-  Option extends ReturnType<ReturnType<typeof createOption>>,
->(
-  option: Option,
-  args: Record<string, unknown> = {},
-): Promise<Prettify<TransformOption<Option>>> {
-  let value = args[option.key];
-
-  if (value === undefined) {
-    if (args.quiet !== 'true') {
-      value = await option.prompt(args, args, option.isOptional);
-    } else if (option.isOptional === false) {
-      throw new Error(
-        `Missing required argument: ${option.key} (${option.option.flags})`,
-      );
-    }
-  }
-
-  const newConfig = { [option.key]: value } as TransformOption<Option>;
-  if ('expand' in option) {
-    if (typeof option.expand === 'function') {
-      const expanded = await option.expand(value);
-      if (expanded !== undefined && expanded !== null) {
-        // @ts-ignore
-        newConfig[`${option.key}Config`] = expanded;
-      }
-    }
-  }
-  if ('transform' in option) {
-    if (typeof option.transform === 'function') {
-      // @ts-ignore
-      newConfig[option.key] = await option.transform(value);
-    }
-  }
-
-  return newConfig;
-}
-
 export function getCommandExecution(
   command: string,
   args: Record<string, unknown>,
@@ -243,7 +188,7 @@ export function getCommandExecution(
             return undefined;
           } else if (value === null) {
             // if null, leave out from command entirely
-            return;
+            displayValue = '';
           } else if (
             typeof value === 'object' &&
             value !== null &&

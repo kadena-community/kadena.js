@@ -1,6 +1,6 @@
-const sendTemplate = `
+const transferTemplate = `
 code: |-
-  (coin.transfer "{{{from-acct}}}" "{{{to-acct}}}" {{amount}})
+  (coin.transfer "{{{pk-from}}}" "{{{to-acct}}}" {{amount}})
 data:
 meta:
   chainId: "{{chain}}"
@@ -21,7 +21,6 @@ signers:
 type: exec
 `;
 
-export const defaultTemplates = { send: sendTemplate } as Record<
-  string,
-  string
->;
+export const defaultTemplates = {
+  transfer: transferTemplate,
+} as Record<string, string>;
