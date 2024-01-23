@@ -15,7 +15,7 @@ const meta: Meta<ISelectProps> = {
   component: Select,
   decorators: [withContentWidth, onLayer2],
   parameters: {
-    status: { type: 'inDevelopment' },
+    status: { type: 'releaseCandidate' },
     docs: {
       description: {
         component:

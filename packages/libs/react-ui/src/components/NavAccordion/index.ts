@@ -22,6 +22,10 @@ export interface INavAccordionProps {
   Link: FC<INavAccordionLinkProps>;
 }
 
+/**
+ * A component used for grouping items in a navigation accordion.
+ * @deprecated This component will be redesigned.
+ */
 export const NavAccordion: INavAccordionProps = {
   Root: NavAccordionRoot,
   Section: NavAccordionSection,

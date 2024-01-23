@@ -14,7 +14,7 @@ const meta: Meta<{ icon: string } & IIconProps> = {
   title: 'Icons/SystemIcons',
   parameters: {
     status: {
-      type: ['stable'],
+      type: ['needsRevision'],
     },
   },
   argTypes: {
