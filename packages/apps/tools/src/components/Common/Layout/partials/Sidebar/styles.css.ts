@@ -21,7 +21,7 @@ export const gridMiniMenuListButtonStyle = style([
     color: tokens.kda.foundation.color.neutral.n50,
     selectors: {
       [`${darkThemeClass} &:hover`]: {
-        color: tokens.kda.foundation.color.neutral.n100,
+        color: tokens.kda.foundation.color.palette.blue.n60,
       },
       [`&:hover`]: {
         color: tokens.kda.foundation.color.palette.blue.n60,

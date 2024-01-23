@@ -30,23 +30,27 @@ import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React, {useCallback, useRef, useState} from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
+import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
+import { sidebarLinks } from '@/constants/side-links';
 import { notificationLinkStyle } from '@/pages/faucet/new/styles.css';
+import Link from 'next/link';
 import {
   accountNameContainerClass,
   buttonContainerClass,
   chainSelectContainerClass,
-  containerClass, infoBoxStyle, infoTitleStyle,
-  inputContainerClass, linksBoxStyle, linkStyle,
+  containerClass,
+  infoBoxStyle,
+  infoTitleStyle,
+  inputContainerClass,
+  linksBoxStyle,
+  linkStyle,
   notificationContainerStyle,
 } from '../styles.css';
-import {sidebarLinks} from "@/constants/side-links";
-import {MenuLinkButton} from "@/components/Common/Layout/partials/Sidebar/MenuLinkButton";
-import DrawerToolbar from "@/components/Common/DrawerToolbar";
-import Link from "next/link";
 
 const schema = z.object({
   name: NAME_VALIDATION,
@@ -138,7 +142,6 @@ const ExistingAccountFaucetPage: FC = () => {
     undefined,
   );
   const drawerPanelRef = useRef<HTMLElement | null>(null);
-
 
   useToolbar(menuData, router.pathname);
 

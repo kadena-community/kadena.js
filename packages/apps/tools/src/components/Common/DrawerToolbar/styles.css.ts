@@ -96,6 +96,6 @@ export const expandedDrawerContentStyle = style([
     top: tokens.kda.foundation.size.n16,
     height: '100vh',
     overflowY: 'auto',
-    zIndex: 99
+    zIndex: 99,
   },
 ]);

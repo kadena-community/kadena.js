@@ -15,7 +15,6 @@ import {
   Grid,
   GridItem,
   Heading,
-  Link,
   Stack,
   Table,
 } from '@kadena/react-ui';
@@ -23,9 +22,9 @@ import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 
+import { linkStyle } from '@/pages/faucet/styles.css';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
-import {linkStyle} from "@/pages/faucet/styles.css";
 
 const Home: FC = () => {
   const helpCenterRef = useRef<HTMLElement | null>(null);
@@ -38,7 +37,11 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:faucet-description"
           components={[
-            <a className={linkStyle} key="faucet-existing-link" href="/faucet/existing">
+            <a
+              className={linkStyle}
+              key="faucet-existing-link"
+              href="/faucet/existing"
+            >
               {t('faucet-existing-link')}
             </a>,
             <a className={linkStyle} key="faucet-new-link" href="/faucet/new">
@@ -54,17 +57,21 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:how-to-keypair"
           components={[
-            <a className={linkStyle}
+            <a
+              className={linkStyle}
               key="chainweb-transfer-link"
               href="https://transfer.chainweb.com/"
               target="_blank"
+              rel="noreferrer"
             >
               {t('chainweb-transfer-link')}
             </a>,
-            <a className={linkStyle}
+            <a
+              className={linkStyle}
               key="chainweaver-link"
               href="https://kadena.io/chainweaver-tos/"
               target="_blank"
+              rel="noreferrer"
             >
               {t('chainweaver-link')}
             </a>,
@@ -137,7 +144,12 @@ const Home: FC = () => {
                 <Box marginBlockEnd="md" />
                 <ul>
                   <li>
-                    <a className={linkStyle} href="https://docs.kadena.io/kadena" target="_blank">
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/kadena"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       {t('Overview of Kadena')}
                     </a>
                   </li>
@@ -146,12 +158,18 @@ const Home: FC = () => {
                       className={linkStyle}
                       href="https://docs.kadena.io/kadena/kda/manage-kda"
                       target="_blank"
+                      rel="noreferrer"
                     >
                       {t('Manage your KDA')}
                     </a>
                   </li>
                   <li>
-                    <a className={linkStyle} href="https://kadena.io/grants/" target="_blank">
+                    <a
+                      className={linkStyle}
+                      href="https://kadena.io/grants/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       {t('Contribute to the network')}
                     </a>
                   </li>
@@ -164,22 +182,31 @@ const Home: FC = () => {
                 <Box marginBlockEnd="md" />
                 <ul>
                   <li>
-                    <a className={linkStyle}
+                    <a
+                      className={linkStyle}
                       href="https://docs.kadena.io/build/quickstart"
                       target="_blank"
+                      rel="noreferrer"
                     >
                       {t('Quick start')}
                     </a>
                   </li>
                   <li>
-                    <a className={linkStyle} href="https://docs.kadena.io/pact" target="_blank">
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/pact"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       {t('Pact language resources')}
                     </a>
                   </li>
                   <li>
-                    <a className={linkStyle}
+                    <a
+                      className={linkStyle}
                       href="https://docs.kadena.io/build/guides/election-dapp-tutorial"
                       target="_blank"
+                      rel="noreferrer"
                     >
                       {t('Build your first dApp')}
                     </a>

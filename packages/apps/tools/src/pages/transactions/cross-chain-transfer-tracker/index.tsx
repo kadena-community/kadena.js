@@ -273,7 +273,7 @@ const CrossChainTransferTracker: FC = () => {
                 />
               </GridItem>
               <GridItem>
-              {/*  Progress Bar will only show if the transfer is in progress /
+                {/*  Progress Bar will only show if the transfer is in progress /
                         completed.  If an error occurs, the notification will display the
                         error and no progress bar will show */}
                 <ProgressBar

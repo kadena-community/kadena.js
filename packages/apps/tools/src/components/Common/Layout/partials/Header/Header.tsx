@@ -1,5 +1,8 @@
 import { HeaderMenuButton } from '@/components/Common/Layout/partials/Header/HeaderMenuButton';
-import {headerButtonsWrapperStyle, walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
+import {
+  headerButtonsWrapperStyle,
+  walletConnectWrapperStyle,
+} from '@/components/Common/Layout/partials/Header/styles.css';
 import { AddNetworkModal } from '@/components/Global';
 import { OptionsModal } from '@/components/Global/OptionsModal';
 import type { Network } from '@/constants/kadena';

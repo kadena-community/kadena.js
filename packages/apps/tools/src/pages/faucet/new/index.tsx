@@ -24,11 +24,17 @@ import {
   accountNameContainerClass,
   buttonContainerClass,
   chainSelectContainerClass,
-  containerClass, infoBoxStyle, infoTitleStyle,
-  inputContainerClass, linksBoxStyle, linkStyle,
+  containerClass,
+  infoBoxStyle,
+  infoTitleStyle,
+  inputContainerClass,
+  linksBoxStyle,
+  linkStyle,
   notificationContainerStyle,
 } from '../styles.css';
 
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
+import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import type { FormStatus, PredKey } from '@/components/Global';
 import {
   AccountHoverTag,
@@ -39,6 +45,7 @@ import {
   PredKeysSelect,
   PublicKeyField,
 } from '@/components/Global';
+import { sidebarLinks } from '@/constants/side-links';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
@@ -57,9 +64,6 @@ import type { FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
-import DrawerToolbar from "@/components/Common/DrawerToolbar";
-import {sidebarLinks} from "@/constants/side-links";
-import {MenuLinkButton} from "@/components/Common/Layout/partials/Sidebar/MenuLinkButton";
 
 interface IFundExistingAccountResponseBody {
   result: {
@@ -101,7 +105,6 @@ const NewAccountFaucetPage: FC = () => {
     undefined,
   );
   const drawerPanelRef = useRef<HTMLElement | null>(null);
-
 
   const { data: accountName } = useQuery({
     queryKey: [
@@ -221,7 +224,7 @@ const NewAccountFaucetPage: FC = () => {
           });
           return;
         }
-        setRequestStatus({ status: 'successful' })
+        setRequestStatus({ status: 'successful' });
         setOpenItem(undefined);
       } catch (err) {
         let message;
@@ -272,7 +275,6 @@ const NewAccountFaucetPage: FC = () => {
   const handleOnClickLink = () => {
     setOpenItem(undefined);
   };
-
 
   const renderPubKeys = () => (
     <div className={pubKeysContainerStyle}>
@@ -453,7 +455,6 @@ const NewAccountFaucetPage: FC = () => {
           </div>
         </Stack>
       </form>
-
       <DrawerToolbar
         ref={drawerPanelRef}
         initialOpenItem={openItem}
