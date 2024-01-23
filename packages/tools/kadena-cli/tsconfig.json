@@ -3,7 +3,7 @@
   "compilerOptions": {
     "lib": ["ES2022"],
     "module": "NodeNext",
-    "types": [".kadena/pactjs-generated", "vitest/globals"],
+    "types": [".kadena/pactjs-generated", "vitest/globals"]
   },
-  "exclude": ["./src/mocks", "src/__tests__/**/*"]
+  "exclude": ["./src/mocks", "src/__tests__/**/*", "src/**/*.test.ts"]
 }
