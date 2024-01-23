@@ -128,7 +128,7 @@ export async function simulateCoin({
       }
       accounts.push(account);
 
-      appendToLogFile(filepath, {
+      await appendToLogFile(filepath, {
         timestamp: Date.now(),
         from: defaultAccount.account,
         to: account.account,
@@ -255,7 +255,7 @@ export async function simulateCoin({
           }
         }
 
-        appendToLogFile(filepath, {
+        await appendToLogFile(filepath, {
           timestamp: Date.now(),
           from: account.account,
           to: nextAccount.account,
@@ -278,7 +278,7 @@ export async function simulateCoin({
     }
   } catch (error) {
     console.error(error);
-    appendToLogFile(filepath, { error });
+    await appendToLogFile(filepath, { error });
     throw error;
   }
 }

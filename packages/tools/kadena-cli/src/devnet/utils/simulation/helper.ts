@@ -4,7 +4,7 @@ import { getBalance } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import type { ChainId } from '@kadena/types';
 import seedrandom from 'seedrandom';
-import type { IAccount} from '../../../constants/devnets.js';
+import type { IAccount } from '../../../constants/devnets.js';
 import { simulationDefaults } from '../../../constants/devnets.js';
 
 export const generateAccount = async (
