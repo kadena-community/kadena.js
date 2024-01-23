@@ -72,21 +72,24 @@ To create a voter account:
 
    If you expand the new account, you'll see that no balance exists for the account on any chain and there's no information about the owner or keyset for the account.
 
-1. Open the `election-dapp/snippets` folder in the code editor in a terminal shell on your computer.
+7. Open the `election-dapp/snippets/create-account.ts` file in the code editor on your computer.
 
-2. Open the `./create-account.ts` script.
-
-   This script uses the Kadena client to call the `createaccount` function of the `coin` contract to create and voter account.
-   After importing the dependencies and creating the client with the `devnet` configuration, the `main` function is called
-   You'll notice that this script is  similar to `./snippets/transfer-create.ts`, except that no amount is passed to the executed function and it isn't necessary to sign for the `COIN.TRANSFER` capability. 
+   This script uses the Kadena client to call the `create-account` function of the `coin` contract to create a voter account.
+   After importing the dependencies and creating the client with the `devnet` configuration, the script calls the `main` function.
+   You'll notice that this script is similar to the `./snippets/transfer-create.ts` script you used previously.
+   However, this script doesn't pass funds to the executed function and it isn't necessary to sign for the `COIN.TRANSFER` capability. 
    
-1. Open the `election-dapp/snippets` folder in a terminal shell on your computer. 
+8. Open the `election-dapp/snippets` folder in a terminal shell on your computer. 
 
-2. Run the following command to create your voter account. Replace `k:account` with your voter account.
+9.  Run the following command to create a new voter account. Replace `k:account` with your voter account.
 
    ```bash
-   npm run create-account:devnet -- k:<your-public-key>
+   npm run create-account:devnet -- k:<voter-public-key>
    ```
+
+
+   Remember that `k:<voter-public-key>` is the default **account name** for the new voter account that you generated keys for.
+   You can copy this account name from Chainweaver when viewing the account watch list.
 
    After a few seconds, you should see a status message:
 
@@ -94,41 +97,66 @@ To create a voter account:
    { status: 'success', data: 'Write succeeded' }
    ```
 
-1. Verify that the account was created by checking the account details using the Kadena JavaScript client.
-Replace `k:account` with your voter account.
+10. Verify that the account was created by checking the account details using the Kadena client:
 
-```bash
-npm run coin-details:devnet -- k:account
-```
+   ```bash
+   npm run coin-details:devnet -- k:<voter-public-key>
+   ```
+   
+   After running this command, you should see output similar to the following for the new voter account:
 
-This time, the script should print out the account name, the KDA balance and the receiver guard
-of the account. Verify that the balance of the voter account is `0`.
-Chainweaver will tell the same story. Navigate to `Accounts` in the top section
-of the left menu bar. Expand the voter account to view the information on all chains. You may need
-to click refresh at the top of the window. You will
-see that on chain 1 you are the owner, one keyset is defined and the balance is 0 KDA where it
-previously said `Does not exist`.
+   ```bash
+   {
+     guard: {
+       pred: 'keys-all',
+       keys: [
+         'bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e'
+       ]
+     },
+     balance: 0,
+     account: 'k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e'
+   }
+   ```
 
-## Cast a vote on the election website
+   If you view the account in Chainweaver, you'll see similar information for the new account.
 
-Open up a terminal with the current directory set to `./frontend` relative to the root
-of your project. Run the front-end application configured with the `devnet` back-end by
-executing the following commands. Visit `http://localhost:5173` in your browser and
-verify that the website loads without errors.
+## Attempt to cast a vote
 
-```bash
-npm install
-npm run start-devnet
-```
+To attempt to cast a vote with the voter account:
 
-Make sure that the list of nominated candidates is not empty. Otherwise, first nominate a
-candidate with your admin account according to the instructions in the previous chapter.
-Set the account to your voter account. Make
-sure that Chainweaver is open so you can sign the transaction. Click the `Vote` button
-behind your favorite candidate, sign the transaction and wait for the transaction to
-finish. You will see an error similar to
-`Attempt to buy gas failed with: (enforce (<= amount balance) "...: Failure: Tx Failed: Insufficient funds`,
-proving that it is indeed not possible to vote with an account that has zero balance.
+1. Verify the development network is currently running on your local computer.
+
+2. Open and unlock the Chainweaver desktop or web application and verify that:
+   
+   - You're connected to **development network (devnet)** from the network list.
+   - Your voter account name with the **k:** prefix exists on chain 1.
+   - Your voter account name has no KDA account balance (0) on chain 1. 
+
+3. Open the `election-dapp/frontend` folder in a terminal shell on your computer. 
+
+4. Install the frontend dependencies by running the following command:
+   
+   ```bash
+   npm install
+   ```
+
+5. Start the frontend application configured to use the `devnet` backend by running the following command: 
+
+   ```bash
+   npm run start-devnet
+   ```
+
+6. Open `http://localhost:5173` in your browser and verify that there's at least one candidate listed.
+
+7. Click **Set Account**.
+8. Paste your voter account name, then click **Save**.
+9. Click **Vote Now** for a candidate, sign the transaction, then open the Developer Tools for your browser and view the console output.
+
+   In the console, you'll see an error similar to the following:
+   
+   ```console
+   Attempt to buy gas failed with: (enforce (<= amount balance) "...: Failure: Tx Failed: Insufficient funds`, proving that it is indeed not possible to vote with an account that has zero balance.
+   ```
 
 ## Implement gas station interface
 
