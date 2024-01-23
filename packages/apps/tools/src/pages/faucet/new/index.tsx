@@ -14,11 +14,8 @@ import {
 
 import {
   hoverTagContainerStyle,
-  iconButtonWrapper,
-  inputWrapperStyle,
   notificationContentStyle,
   notificationLinkStyle,
-  pubKeyInputWrapperStyle,
   pubKeysContainerStyle,
 } from './styles.css';
 
