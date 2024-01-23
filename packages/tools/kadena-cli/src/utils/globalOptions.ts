@@ -530,7 +530,6 @@ export const globalOptions = {
     },
   }),
 
-  // transaction
   txUnsignedCommand: createOption({
     key: 'txUnsignedCommand',
     prompt: tx.txUnsignedCommandPrompt,
@@ -540,8 +539,18 @@ export const globalOptions = {
       'enter your unsigned command to sign',
     ),
   }),
+  // TO-DO: use flexible command
   txTransaction: createTransactionOption(false),
   txSignedTransaction: createTransactionOption(true),
+  txTransactionDir: createOption({
+    key: 'txTransactionDir' as const,
+    prompt: tx.txTransactionDirPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-d, --tx-transaction-dir <txTransactionDir>',
+      'Enter your transaction directory (default: "./transactions")',
+    ),
+  }),
 } as const;
 
 export type GlobalOptions = typeof globalOptions;

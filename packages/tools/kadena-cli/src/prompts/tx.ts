@@ -3,6 +3,7 @@ import type { IUnsignedCommand } from '@kadena/types';
 import chalk from 'chalk';
 import { z } from 'zod';
 import { getTransactions } from '../tx/utils/helpers.js';
+import { isAlphanumeric } from '../utils/helpers.js';
 
 const CommandPayloadStringifiedJSONSchema = z.string();
 const PactTransactionHashSchema = z.string();
@@ -64,4 +65,16 @@ export async function transactionSelectPrompt(
   });
 
   return selectedTransaction;
+}
+
+export async function txTransactionDirPrompt(): Promise<string> {
+  return await input({
+    message: `Enter your transaction directory (default: './transactions'):`,
+    validate: function (input) {
+      if (!isAlphanumeric(input)) {
+        return 'Directories must be alphanumeric! Please enter a directory name.';
+      }
+      return true;
+    },
+  });
 }

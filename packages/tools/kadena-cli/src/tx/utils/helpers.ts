@@ -20,6 +20,8 @@ import type {
 import { readKeyFileContent } from '../../keys/utils/storage.js';
 import { services } from '../../services/index.js';
 
+// TO-DO remove no needed helperfunctions that were created before using the @kadena/client
+
 /**
  * Retrieves all transaction file names from the transaction directory based on the signature status.
  * @param {boolean} signed - Whether to retrieve signed or unsigned transactions.
@@ -98,10 +100,11 @@ export async function signTransactionWithSeed(
   try {
     let signedCommand: ICommand | IUnsignedCommand;
     const parsedTransaction = JSON.parse(unsignedCommand.cmd);
-    const keys = await getPublicKeysAndIndicesFromFileSystem(walletName);
+    const keys = await getKeyPairAndIndicesFromFileSystem(walletName);
     const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
 
     if (legacy === true) {
+      // TO-DO implement legacy signing from seed
       signedCommand = {} as ICommand;
     } else {
       const signatures = relevantKeyPairs.map((key) => {
@@ -325,12 +328,12 @@ export async function getSignersFromTransactionHd(
 }
 
 /**
- * Reads a key file and extracts the public key and index.
+ * Reads a key file and extracts the public key, index, and optionally the private key.
  * @param {string} walletDir - The directory of the wallet.
  * @param {string} keyFile - The key file name.
  * @returns {Promise<IKeyPairLocal | undefined>}
  */
-export async function getPublicKeyAndIndexFromFile(
+export async function getKeyPairAndIndexFromFile(
   walletDir: string,
   keyFile: string,
 ): Promise<IKeyPairLocal | undefined> {
@@ -343,10 +346,16 @@ export async function getPublicKeyAndIndexFromFile(
     'publicKey' in keyContent &&
     'index' in keyContent
   ) {
-    return {
+    const result: IKeyPairLocal = {
       publicKey: keyContent.publicKey,
       index: keyContent.index,
     };
+
+    if ('secretKey' in keyContent) {
+      result.secretKey = keyContent.secretKey;
+    }
+
+    return result;
   }
 
   return undefined;
@@ -357,7 +366,7 @@ export async function getPublicKeyAndIndexFromFile(
  * @param {string} [walletName] - Optional name of the wallet.
  * @returns {Promise<Array<IKeyPairLocal>>}
  */
-export async function getPublicKeysAndIndicesFromFileSystem(
+export async function getKeyPairAndIndicesFromFileSystem(
   walletName?: string,
 ): Promise<Array<IKeyPairLocal>> {
   const walletDirs = await getWalletDirectories(walletName);
@@ -372,7 +381,7 @@ export async function getPublicKeysAndIndicesFromFileSystem(
 
     const keyFiles = await getKeyFilesFromDirectory(dirName);
     const publicKeyPromises = keyFiles.map((keyFile) =>
-      getPublicKeyAndIndexFromFile(walletDir, keyFile),
+      getKeyPairAndIndexFromFile(walletDir, keyFile),
     );
     const keys = await Promise.all(publicKeyPromises);
 

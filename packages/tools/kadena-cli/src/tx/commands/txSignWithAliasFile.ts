@@ -3,7 +3,7 @@ import type { Command } from 'commander';
 import debug from 'debug';
 
 import type { CommandResult } from '../../utils/command.util.js';
-import { assertCommandError } from '../../utils/command.util.js';
+// import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
@@ -11,7 +11,7 @@ import {
   // getSignersFromTransactionPlain,
   signTransactionWithKeyPair,
 } from '../utils/helpers.js';
-import { saveSignedTransaction } from '../utils/storage.js';
+// import { saveSignedTransaction } from '../utils/storage.js';
 
 import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
@@ -20,17 +20,11 @@ export const signActionPlain = async (
   keyPairs: IKeyPair[],
 ): Promise<CommandResult<ICommand>> => {
   try {
-    const keys = keyPairs; // temp
-    // const keys = await getSignersFromTransactionPlain(
-    //   unsignedCommand.cmd,
-    //   keyPairs,
-    // );
-
-    if (keys.length === 0) {
+    if (keyPairs.length === 0) {
       throw new Error('Error signing transaction: no keys found.');
     }
     const signedCommand = await signTransactionWithKeyPair(
-      keys,
+      keyPairs,
       unsignedCommand,
     );
 
@@ -60,8 +54,15 @@ export const createSignTransactionWithAliasFileCommand: (
   'sign-with-alias-file',
   'Sign a transaction using your local aliased file containing your keypair.',
   [
+    // rewrite to flexible command
+    // select wallet
+    // result all => all aliases
+    // result wallet => all aliases in wallet
+    // select alias
+    globalOptions.keyAlias(),
+    // get content from keyAlias file
     globalOptions.txTransaction(),
-    globalOptions.keyPairs(),
+    globalOptions.txTransactionDir({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
@@ -71,17 +72,18 @@ export const createSignTransactionWithAliasFileCommand: (
         txTransaction: { unsignedCommand },
       } = config;
 
-      const result = await signActionPlain(
-        unsignedCommand as IUnsignedCommand,
-        config.keyPairs,
-      );
+      // const result = await signActionPlain(
+      //   unsignedCommand as IUnsignedCommand,
+      //   [config.keyAlias], // Todo: key alias content ( IKeyPair )
+      // );
 
-      assertCommandError(result);
+      // assertCommandError(result);
 
-      await saveSignedTransaction(
-        result.data,
-        config.txTransaction.transactionFile,
-      );
+      // await saveSignedTransaction(
+      //   result.data,
+      //   config.txTransaction.transactionFile,
+      //   config.txTransactionDir
+      // );
 
       console.log(chalk.green(`\nTransaction withinsigned successfully.\n`));
     } catch (error) {

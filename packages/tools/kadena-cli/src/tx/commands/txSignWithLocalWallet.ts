@@ -56,6 +56,7 @@ export const createSignTransactionWithLocalWalletCommand: (
     globalOptions.keyWalletSelect(),
     globalOptions.securityPassword(),
     globalOptions.txTransaction(),
+    globalOptions.txTransactionDir({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
@@ -87,6 +88,7 @@ export const createSignTransactionWithLocalWalletCommand: (
       await saveSignedTransaction(
         result.data,
         config.txTransaction.transactionFile,
+        config.txTransactionDir,
       );
 
       console.log(chalk.green(`\nTransaction withinsigned successfully.\n`));

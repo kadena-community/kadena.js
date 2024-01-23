@@ -43,6 +43,9 @@ export const createTestSignedTransactionCommand: (
   'test-signed-transaction',
   'test a signed transaction.',
   [
+    // rewrite to flexible command in order to support both signed and unsigned transactions
+    // and set the transaction path, now the transaction retrieval path is hardcoded
+    globalOptions.txTransactionDir({ isOptional: true }),
     globalOptions.txSignedTransaction(),
     globalOptions.network(),
     globalOptions.chainId(),

@@ -14,11 +14,17 @@ import { formatDate } from '../../tx/utils/helpers.js';
 export async function saveSignedTransaction(
   transactionData: ICommand,
   originalFilename: string,
+  transactionDir?: string,
 ): Promise<void> {
   const dateSuffix = formatDate();
   const newFilename = `${originalFilename}-${dateSuffix}-signed.json`;
 
-  const filePath = join(TRANSACTION_DIR, newFilename);
+  const storagePath =
+    transactionDir !== undefined
+      ? `${process.cwd()}/${transactionDir}`
+      : TRANSACTION_DIR;
+
+  const filePath = join(storagePath, newFilename);
 
   try {
     await services.filesystem.ensureDirectoryExists(filePath);
