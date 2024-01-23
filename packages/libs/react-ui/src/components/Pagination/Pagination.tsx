@@ -1,15 +1,14 @@
 'use client';
-import type { FC } from 'react';
+import type { FC, ReactComponentElement } from 'react';
 import React, { useState } from 'react';
 import { PageNav } from './PageNav';
 import { PageNum } from './PageNum';
 import { listClass } from './Pagination.css';
 import { paginate } from './paginate';
 
-export interface IPaginationProps {
+export interface IPaginationProps extends ReactComponentElement<'nav'> {
   totalPages: number;
   currentPage?: number;
-  label: string;
   visiblePageLimit?: number;
   initialSelectedPage?: number;
   onPageChange: (page: number) => void;
@@ -18,10 +17,10 @@ export interface IPaginationProps {
 export const Pagination: FC<IPaginationProps> = ({
   totalPages,
   currentPage,
-  label,
   visiblePageLimit = 3,
   initialSelectedPage,
   onPageChange,
+  ...props
 }) => {
   const validInitialSelectedPage =
     initialSelectedPage &&
@@ -46,13 +45,13 @@ export const Pagination: FC<IPaginationProps> = ({
   };
 
   return (
-    <nav aria-label={label}>
+    <nav role="navigation" aria-label="Pagination navigation" {...props}>
       <ul className={listClass}>
         <li>
           <PageNav
             label="Previous"
             direction="prev"
-            disabled={!enablePrevious}
+            isDisabled={!enablePrevious}
             onClick={() => onClick(page - 1)}
           />
         </li>
@@ -70,7 +69,7 @@ export const Pagination: FC<IPaginationProps> = ({
           <PageNav
             label="Next"
             direction="next"
-            disabled={!enableNext}
+            isDisabled={!enableNext}
             onClick={() => onClick(page + 1)}
           />
         </li>

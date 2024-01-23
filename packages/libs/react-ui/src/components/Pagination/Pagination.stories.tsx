@@ -23,16 +23,6 @@ const meta: Meta<
     },
   },
   argTypes: {
-    label: {
-      control: {
-        type: 'text',
-      },
-      description:
-        'Text that is passed to the Nav element as an aria-label for accessibility.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
     currentPage: {
       control: {
         type: 'number',
@@ -96,7 +86,6 @@ type Story = StoryObj<IPaginationProps>;
 
 export const Controlled: Story = {
   args: {
-    label: 'Pagination',
     totalPages: 10,
     visiblePageLimit: 3,
     initialSelectedPage: 2,
@@ -104,7 +93,6 @@ export const Controlled: Story = {
   },
   render: ({
     totalPages,
-    label,
     visiblePageLimit,
     initialSelectedPage,
     currentPage,
@@ -114,7 +102,6 @@ export const Controlled: Story = {
         <Pagination
           totalPages={totalPages}
           currentPage={currentPage}
-          label={label}
           visiblePageLimit={visiblePageLimit}
           initialSelectedPage={initialSelectedPage}
           onPageChange={() => console.log('Updating Page')}
@@ -126,16 +113,14 @@ export const Controlled: Story = {
 
 export const Uncontrolled: Story = {
   args: {
-    label: 'Label',
     totalPages: 10,
     visiblePageLimit: 3,
     initialSelectedPage: 2,
   },
-  render: ({ totalPages, label, visiblePageLimit, initialSelectedPage }) => {
+  render: ({ totalPages, visiblePageLimit, initialSelectedPage }) => {
     return (
       <Pagination
         totalPages={totalPages}
-        label={label}
         visiblePageLimit={visiblePageLimit}
         initialSelectedPage={initialSelectedPage}
         onPageChange={() => console.log('Updating Page')}

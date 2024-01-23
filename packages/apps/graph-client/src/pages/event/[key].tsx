@@ -257,7 +257,6 @@ const Event: React.FC = () => {
             </Select>
             <Pagination
               totalPages={totalPages}
-              label="pagination"
               currentPage={currentPage}
               onPageChange={handlePaginationClick}
             />
