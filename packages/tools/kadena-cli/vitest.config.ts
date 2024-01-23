@@ -12,12 +12,6 @@ export default defineConfig({
       enabled: true,
       provider: 'v8',
       reporter: ['text', 'html'],
-      thresholds: {
-        lines: 0,
-        functions: 0,
-        branches: 0,
-        statements: 0,
-      },
       include: ['src/**/*.ts'],
       exclude: ['**/mocks/**'],
     },
