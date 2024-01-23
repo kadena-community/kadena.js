@@ -1,40 +1,40 @@
-import type { ChainId } from '@kadena/types';
 import chalk from 'chalk';
 import debug from 'debug';
 import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { containerIsRunning, guardDocker } from '../utils/docker.js';
+import { simulationOptions } from '../../utils/simulationOptions.js';
+import { networkIsAlive } from '../utils/network.js';
 import { simulateCoin } from '../utils/simulation/coin/simulate.js';
 
 export const simulateCommand: CreateCommandReturnType = createCommand(
   'simulate',
   'Simulate traffic on a devnet',
   [
-    globalOptions.devnet(),
-    globalOptions.numberOfAccounts({ isOptional: true }),
-    globalOptions.transferInterval({ isOptional: true }),
+    globalOptions.network(),
+    simulationOptions.simulationNumberOfAccounts({ isOptional: true }),
+    simulationOptions.simulationTransferInterval({ isOptional: true }),
     globalOptions.logFolder({ isOptional: true }),
-    globalOptions.tokenPool({ isOptional: true }),
-    globalOptions.maxTransferAmount({ isOptional: true }),
-    globalOptions.defaultChainId({ isOptional: true }),
-    globalOptions.seed({ isOptional: true }),
+    simulationOptions.simulationTokenPool({ isOptional: true }),
+    simulationOptions.simulationMaxTransferAmount({ isOptional: true }),
+    simulationOptions.simulationDefaultChainId({ isOptional: true }),
+    simulationOptions.simulationSeed({ isOptional: true }),
   ],
   async (config) => {
     try {
       debug('devnet-simulate:action')({ config });
 
-      guardDocker();
-
-      if (!containerIsRunning(config.devnetConfig.name)) {
-        console.log('Devnet is not running. Please run the devnet first.');
+      if (!(await networkIsAlive(config.networkConfig.networkHost))) {
+        console.log(
+          'Network is not reachable. Please check if the provided host is exposed.',
+        );
         return;
       }
 
       await simulateCoin({
         network: {
           id: 'fast-development',
-          host: `http://localhost:${config.devnetConfig.port}`,
+          host: config.networkConfig.networkHost,
         },
         maxAmount: config.maxTransferAmount,
         numberOfAccounts: config.accounts,

@@ -19,7 +19,7 @@ export async function safeTransfer({
   sender: IAccount;
   amount: number;
 }): Promise<ICommandResult> {
-  const extraAmount = new PactNumber('0.001').toPactDecimal();
+  const extraAmount = new PactNumber('0.00000001').toPactDecimal();
   const pactAmount = new PactNumber(amount)
     .plus(extraAmount.decimal)
     .toPactDecimal();

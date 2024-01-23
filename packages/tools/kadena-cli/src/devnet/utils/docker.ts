@@ -142,12 +142,12 @@ export function updateDevnet(version?: string): void {
   console.log(chalk.green(`Updated ${image}`));
 }
 
-export function containerIsRunning(name: string): boolean {
-  const runningContainers = execSync(
-    'docker ps --filter ancestor=kadena/devnet --format "{{.Names}}"',
+export function containerIsRunning(): boolean {
+  const runningContainersCount = execSync(
+    'docker ps --filter ancestor=kadena/devnet --format "{{.Names}}" | wc -l',
   )
     .toString()
-    .trim()
-    .split('\n');
-  return runningContainers.includes(name);
+    .trim();
+
+  return parseInt(runningContainersCount, 10) > 0;
 }

@@ -1,8 +1,8 @@
 import type { ChainId, ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCrossChain } from '@kadena/client-utils/coin';
-import type { IAccount} from '../../../../constants/devnets.js';
-import { sender00 } from '../../../../constants/devnets.js';
+import type { IAccount } from '../../../../constants/devnets.js';
+import { defaultAccount } from '../../../../constants/devnets.js';
 
 export async function crossChainTransfer({
   network,
@@ -18,18 +18,18 @@ export async function crossChainTransfer({
   gasPayer: IAccount;
 }): Promise<ICommandResult> {
   // Gas Payer validations
-  if (gasPayer.chainId !== receiver.chainId && gasPayer !== sender00) {
+  if (gasPayer.chainId !== receiver.chainId && gasPayer !== defaultAccount) {
     console.log(
-      `Gas payer ${gasPayer.account} does not for sure have an account on the receiver chain; using sender00 as gas payer`,
+      `Gas payer ${gasPayer.account} does not for sure have an account on the receiver chain; using ${defaultAccount.account} as gas payer`,
     );
-    gasPayer = sender00;
+    gasPayer = defaultAccount;
   }
 
   if (!gasPayer.keys.map((key) => key.secretKey)) {
     console.log(
-      `Gas payer ${gasPayer.account} does not have a secret key; using sender00 as gas payer`,
+      `Gas payer ${gasPayer.account} does not have a secret key; using ${defaultAccount.account} as gas payer`,
     );
-    gasPayer = sender00;
+    gasPayer = defaultAccount;
   }
 
   console.log(

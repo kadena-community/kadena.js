@@ -10,7 +10,6 @@ import {
   // marmalade,
   networks,
   security,
-  simulate as simulationPrompts,
   typescript,
 } from '../prompts/index.js';
 
@@ -196,51 +195,7 @@ export const globalOptions = {
       'Version of the kadena/devnet Docker image to use (e.g. "latest")',
     ),
   }),
-  //Simulation
-  numberOfAccounts: createOption({
-    key: 'accounts' as const,
-    prompt: simulationPrompts.numberOfAccountsPrompt,
-    validation: z.number(),
-    option: new Option(
-      '-a, --accounts <accounts>',
-      'Amount of accounts to be created in the simulation.',
-    ),
-  }),
-  transferInterval: createOption({
-    key: 'interval' as const,
-    prompt: simulationPrompts.transferIntervalPrompt,
-    validation: z.number(),
-    option: new Option(
-      '-i, --interval <interval>',
-      'Transfer interval in milliseconds.',
-    ).argParser((value) => parseInt(value, 10)),
-  }),
-
-  maxTransferAmount: createOption({
-    key: 'maxTransferAmount' as const,
-    prompt: simulationPrompts.maxTransferAmountPrompt,
-    validation: z.number(),
-    option: new Option(
-      '-x, --max-transfer-amount <maxTransferAmount>',
-      'Max transfer amount per single transaction (coin).',
-    ),
-  }),
-
-  tokenPool: createOption({
-    key: 'tokenPool' as const,
-    prompt: simulationPrompts.tokenPoolPrompt,
-    validation: z.number(),
-    option: new Option(
-      '-p, --token-pool <tokenPool>',
-      'Total token pool (coin).',
-    ),
-  }),
-  seed: createOption({
-    key: 'seed' as const,
-    prompt: simulationPrompts.seedPrompt,
-    validation: z.string(),
-    option: new Option('-s, --seed <seed>', 'Seed for the simulation.'),
-  }),
+  // Logs
   logFolder: createOption({
     key: 'logFolder' as const,
     prompt: generic.logFolderPrompt,
@@ -250,19 +205,6 @@ export const globalOptions = {
       'Directory where the log file will be generated. (e.g. ./kadena/simulation-logs/',
     ),
   }),
-  defaultChainId: createOption({
-    key: 'defaultChainId' as const,
-    prompt: simulationPrompts.defaultChainIdPrompt,
-    validation: z.string(),
-    transform: (chainId: string) => {
-      return chainId as ChainId;
-    },
-    option: new Option(
-      '-c, --default-chain-id <defaultChainId>',
-      'Default chain id for the simulation (eg. 0).',
-    ),
-  }),
-
   // Network
   networkName: createOption({
     key: 'network' as const,

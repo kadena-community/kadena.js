@@ -29,19 +29,6 @@ export const devnetDefaults: IDefaultDevnetOptions = {
   },
 };
 
-export const defaultDevnetsPath: string = `${process.cwd()}/.kadena/devnets`;
-export const standardDevnets: string[] = ['devnet'];
-export const defaultDevnet: string = 'devnet';
-
-/**
- * @const simulationDefaults
- * Provides the default simulation configurations.
- */
-export const simulationDefaults = {
-  NETWORK_ID: 'fast-development',
-  CHAIN_COUNT: 20,
-};
-
 export const sender00: IAccount = {
   keys: [
     {
@@ -52,4 +39,18 @@ export const sender00: IAccount = {
     },
   ],
   account: 'sender00',
+};
+
+export const defaultDevnetsPath: string = `${process.cwd()}/.kadena/devnets`;
+export const standardDevnets: string[] = ['devnet'];
+export const defaultDevnet: string = 'devnet';
+export const defaultAccount = sender00;
+
+/**
+ * @const simulationDefaults
+ * Provides the default simulation configurations.
+ */
+export const simulationDefaults = {
+  NETWORK_ID: 'fast-development',
+  CHAIN_COUNT: 20,
 };

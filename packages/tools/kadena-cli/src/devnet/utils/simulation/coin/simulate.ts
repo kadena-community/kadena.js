@@ -1,6 +1,9 @@
 import type { ChainId } from '@kadena/client';
 import type { IAccount } from '../../../../constants/devnets.js';
-import { sender00, simulationDefaults } from '../../../../constants/devnets.js';
+import {
+  defaultAccount,
+  simulationDefaults,
+} from '../../../../constants/devnets.js';
 import type { TransferType } from '../file.js';
 import { appendToLogFile, createFile } from '../file.js';
 import {
@@ -86,7 +89,7 @@ export async function simulateCoin({
           : 'transfer';
 
       let result;
-      const sender: IAccount = { ...sender00, chainId: '0' };
+      const sender: IAccount = { ...defaultAccount, chainId: '0' };
 
       if (fundingType === 'cross-chain-transfer') {
         account = {
@@ -99,7 +102,7 @@ export async function simulateCoin({
           sender,
           receiver: account,
           amount: tokenPool / numberOfAccounts,
-          gasPayer: sender00,
+          gasPayer: defaultAccount,
         });
       } else if (fundingType === 'safe-transfer') {
         result = await safeTransfer({
@@ -127,7 +130,7 @@ export async function simulateCoin({
 
       appendToLogFile(filepath, {
         timestamp: Date.now(),
-        from: 'sender00',
+        from: defaultAccount.account,
         to: account.account,
         amount: tokenPool / numberOfAccounts,
         requestKey: result.reqKey,
@@ -152,7 +155,7 @@ export async function simulateCoin({
             receiver: account,
             chainId: defaultChain,
             amount: tokenPool / numberOfAccounts,
-            sender: sender00,
+            sender: defaultAccount,
           });
           counter = 0;
         }
@@ -218,7 +221,7 @@ export async function simulateCoin({
             gasPayer:
               possibleGasPayer.chainId === nextAccount.chainId
                 ? possibleGasPayer
-                : sender00,
+                : defaultAccount,
           });
         } else {
           // Make sure the chain id is the same if the transfer type is transfer or safe-transfer
