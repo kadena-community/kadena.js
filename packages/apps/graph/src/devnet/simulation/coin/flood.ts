@@ -2,11 +2,16 @@ import { generateAccount } from '../helper';
 import { transfer } from './transfer';
 
 interface IFloodOptions {
+  iterationsPerSecond: number;
   iterations: number;
   timeout: number;
 }
 
-export async function flood({ iterations, timeout }: IFloodOptions) {
+export async function flood({
+  iterationsPerSecond,
+  iterations,
+  timeout,
+}: IFloodOptions) {
   const startTime = Date.now();
 
   const account = await generateAccount();
@@ -31,8 +36,9 @@ export async function flood({ iterations, timeout }: IFloodOptions) {
 
       console.log(count);
 
-      // if (count % 200 === 0)
-      //   await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) =>
+        setTimeout(resolve, 1000 / iterationsPerSecond),
+      );
     }
   } catch (error) {
     console.error(error);

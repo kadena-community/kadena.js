@@ -123,7 +123,11 @@ program
     new Option('-i, --iterations <number>', 'Number of iterations').default(1),
   )
   .action(async (args) => {
-    flood({ iterations: args.iterations, timeout: 1000 });
+    flood({
+      iterationsPerSecond: 25,
+      iterations: args.iterations,
+      timeout: 100000,
+    });
   });
 
 program.parse();
