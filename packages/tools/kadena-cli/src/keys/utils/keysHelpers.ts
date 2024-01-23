@@ -2,6 +2,7 @@ import yaml from 'js-yaml';
 import { join } from 'node:path';
 import sanitizeFilename from 'sanitize-filename';
 
+import { EncryptedString } from '@kadena/hd-wallet';
 import {
   KEY_EXT,
   KEY_LEGACY_EXT,
@@ -357,8 +358,12 @@ export function parseKeyPairsInput(input: string): IKeyPair[] {
         .split(',')
         .reduce((acc: Partial<IKeyPair>, keyValue) => {
           const [key, value] = keyValue.split('=').map((item) => item.trim());
-          if (key === 'publicKey' || key === 'secretKey') {
-            acc[key as keyof IKeyPair] = value;
+          if (key === 'publicKey') {
+            acc.publicKey = value;
+          } else if (key === 'secretKey') {
+            acc.secretKey = value as EncryptedString | string;
+          } else if (key === 'index') {
+            acc.index = parseInt(value);
           }
           return acc;
         }, {});
@@ -371,10 +376,7 @@ export function parseKeyPairsInput(input: string): IKeyPair[] {
           'Invalid custom string format. Expected "publicKey=xxx,secretKey=xxx;..."',
         );
       }
-      return {
-        publicKey: keyValuePairs.publicKey,
-        secretKey: keyValuePairs.secretKey,
-      } as IKeyPair;
+      return keyValuePairs as IKeyPair;
     });
   }
 }
