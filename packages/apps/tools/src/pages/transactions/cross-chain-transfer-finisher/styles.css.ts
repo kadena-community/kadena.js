@@ -9,7 +9,7 @@ export const formContentStyle = style([
   {
     width: '680px',
     height: '65vh',
-    overflow: 'scroll',
+    overflow: 'auto',
   },
 ]);
 
