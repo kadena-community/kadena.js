@@ -18,7 +18,6 @@
   "dependencies": {
     "@google-analytics/data": "~3.2.2",
     "@kadena/fonts": "~0.0.1",
-    "@types/socket.io": "^3.0.2",
     "@vanilla-extract/css": "1.14.0",
     "next": "13.5.5",
     "next-themes": "~0.2.1",
