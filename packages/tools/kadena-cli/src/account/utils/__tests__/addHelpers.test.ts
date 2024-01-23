@@ -51,7 +51,7 @@ describe('createAccountName', () => {
       ...defaultConfig,
       predicate: undefined as unknown as Predicate,
       publicKeysConfig: ['publicKey1', 'publicKey2'],
-      });
+    });
     expect(accountName).toBeUndefined();
   });
 

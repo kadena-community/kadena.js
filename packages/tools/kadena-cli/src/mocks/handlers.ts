@@ -4,6 +4,10 @@ import {
   createPrincipalSuccessData,
 } from './data/accountDetails.js';
 
+interface IPayloadData {
+  cmd: string;
+}
+
 // Define handlers that catch the corresponding requests and returns the mock data.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handlers: any = [
@@ -16,10 +20,13 @@ export const handlers: any = [
 
   http.post(
     'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/local',
-    async ({ request }) => {
-      const data = await request.json();
-      const parsedCMD = JSON.parse(data.cmd);
-      if (parsedCMD.payload.exec.code.includes('create-principal')) {
+    async ({ request }): Promise<HttpResponse> => {
+      const data = (await request.json()) as unknown as IPayloadData;
+      if (data === undefined)
+        return HttpResponse.json(accountDetailsSuccessData, { status: 200 });
+
+      const parsedCMD = JSON.parse(data.cmd as string);
+      if (parsedCMD.payload.exec.code.includes('create-principal') === true) {
         if (parsedCMD.payload.exec.data.ks.keys.length === 1) {
           return HttpResponse.json(
             {
