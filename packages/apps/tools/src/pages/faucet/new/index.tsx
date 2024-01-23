@@ -52,7 +52,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 interface IFundExistingAccountResponseBody {
@@ -112,6 +112,7 @@ const NewAccountFaucetPage: FC = () => {
     setError,
     getValues,
     resetField,
+    control,
     setValue,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -292,37 +293,43 @@ const NewAccountFaucetPage: FC = () => {
           <Card fullWidth>
             <Heading as="h5">Public Keys</Heading>
             <Box marginBlockEnd="md" />
-
-            <PublicKeyField
-              {...register('pubKey', {
-                onChange: () => {
-                  clearErrors('pubKey');
-                },
-              })}
-              errorMessage={errors?.pubKey?.message}
-              isInvalid={!!errors.pubKey}
-              endAddon={
-                <Button
-                  icon={<SystemIcon.Plus />}
-                  variant="text"
-                  onPress={() => {
-                    const value = getValues('pubKey');
-                    const valid = validatePublicKey(value || '');
-                    if (valid) {
-                      addPublicKey();
-                    } else {
-                      setError('pubKey', {
-                        type: 'custom',
-                        message: t('invalid-pub-key-length'),
-                      });
-                    }
+            <Controller
+              name="pubKey"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <PublicKeyField
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    clearErrors('pubKey');
                   }}
-                  aria-label="Add public key"
-                  title="Add Public Key"
-                  color="primary"
-                  type="button"
+                  errorMessage={errors?.pubKey?.message}
+                  isInvalid={!!errors.pubKey}
+                  endAddon={
+                    <Button
+                      icon={<SystemIcon.Plus />}
+                      variant="text"
+                      onPress={() => {
+                        const value = getValues('pubKey');
+                        const valid = validatePublicKey(value || '');
+                        if (valid) {
+                          addPublicKey();
+                        } else {
+                          setError('pubKey', {
+                            type: 'custom',
+                            message: t('invalid-pub-key-length'),
+                          });
+                        }
+                      }}
+                      aria-label="Add public key"
+                      title="Add Public Key"
+                      color="primary"
+                      type="button"
+                    />
+                  }
                 />
-              }
+              )}
             />
 
             {pubKeys.length > 0 ? renderPubKeys() : null}
