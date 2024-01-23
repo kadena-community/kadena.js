@@ -22,7 +22,7 @@ export const addAccountWalletCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'add-wallet',
+  'add-from-wallet',
   'Add an account from a wallet to the CLI',
   [
     globalOptions.accountAlias(),
