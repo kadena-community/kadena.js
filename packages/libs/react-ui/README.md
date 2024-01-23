@@ -101,7 +101,7 @@ conjunction with [vanilla-extract/css][1] in your own project, you can import
 them via `@kadena/react-ui/styles`:
 
 ```ts
-import { sprinkles, vars } from '@kadena/react-ui';
+import { sprinkles, vars } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const exampleClass = style([
@@ -112,6 +112,11 @@ export const exampleClass = style([
   }),
 ]);
 ```
+
+### Global styles
+
+We are overriding some global styles and adding fonts in this library. To make sure fonts are loaded and global styles are applied, you will need to add the `import '@kadena/react-ui/global'` to your app's entry point.
+
 
 ### Dark Theme
 

@@ -240,10 +240,6 @@ const CrossChainTransferFinisher: FC = () => {
 
   const isGasStation = watchGasPayer === 'kadena-xchain-gas';
   const isAdvancedOptions = devOption !== 'BASIC';
-  const showInputError =
-    pollResults.error === undefined ? undefined : 'negative';
-  const showInputHelper =
-    pollResults.error !== undefined ? pollResults.error : '';
   const showNotification = Object.keys(finalResults).length > 0;
 
   const formattedSigData = `{
@@ -373,13 +369,14 @@ const CrossChainTransferFinisher: FC = () => {
               <Grid>
                 <GridItem>
                   <RequestKeyField
-                    helperText={showInputHelper}
-                    status={showInputError}
+                    errorMessage={
+                      pollResults.error || errors.requestKey?.message
+                    }
+                    isInvalid={!!pollResults.error}
                     {...register('requestKey')}
                     value={requestKey}
                     onChange={onRequestKeyChange}
                     onKeyUp={onCheckRequestKey}
-                    error={errors.requestKey}
                   />
                 </GridItem>
               </Grid>
@@ -395,12 +392,11 @@ const CrossChainTransferFinisher: FC = () => {
                 <GridItem>
                   <AccountNameField
                     label={t('Gas Payer')}
-                    inputProps={{
-                      ...register('gasPayer', { shouldUnregister: true }),
-                      id: 'gas-payer-account-input',
-                      placeholder: t('Enter Your Account'),
-                    }}
-                    error={errors.gasPayer}
+                    {...register('gasPayer', { shouldUnregister: true })}
+                    id="gas-payer-account-input"
+                    placeholder={t('Enter Your Account')}
+                    isInvalid={!!errors.gasPayer}
+                    errorMessage={errors.gasPayer?.message}
                   />
                 </GridItem>
               </Grid>
@@ -411,17 +407,16 @@ const CrossChainTransferFinisher: FC = () => {
                     disabled={true}
                     label={t('Gas Price')}
                     info={t('approx. USD 000.1 ¢')}
-                    leadingTextWidth="$16"
                     {...register('gasPrice', { shouldUnregister: true })}
                     id="gas-price-input"
                     placeholder={t('Enter Gas Price')}
-                    leadingText={t('KDA')}
+                    startAddon={t('KDA')}
                   />
                 </GridItem>
                 <GridItem>
                   <TextField
                     disabled={!isAdvancedOptions}
-                    helperText={t(
+                    description={t(
                       'This input field will only be enabled if the user is in expert mode',
                     )}
                     label={t('Gas Limit')}

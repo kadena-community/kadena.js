@@ -3,27 +3,20 @@ import { TextField } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { forwardRef } from 'react';
-import type { FieldError } from 'react-hook-form';
 
-interface IPublicKeyFieldProps extends Omit<ITextFieldProps, 'id'> {
-  error?: FieldError;
-}
-
-export const PublicKeyField: FC<IPublicKeyFieldProps> = forwardRef<
+export const PublicKeyField: FC<ITextFieldProps> = forwardRef<
   HTMLInputElement,
-  IPublicKeyFieldProps
->(function PublicKeyField({ status, error, ...rest }, ref) {
+  ITextFieldProps
+>(function PublicKeyField(props, ref) {
   const { t } = useTranslation('common');
-
   return (
     <TextField
+      {...props}
       ref={ref}
       label={t('Public Key')}
-      status={error ? 'negative' : status}
-      fontFamily="codeFont"
+      inputFont="code"
       id="public-key-input"
       placeholder={t('Enter Public Key')}
-      {...rest}
     />
   );
 });
