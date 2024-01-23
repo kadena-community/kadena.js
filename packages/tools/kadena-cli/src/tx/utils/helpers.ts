@@ -3,7 +3,10 @@ import type { IPactCommand } from '@kadena/client';
 import { addSignatures, createSignWithKeypair } from '@kadena/client';
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaDecrypt, kadenaSignWithSeed } from '@kadena/hd-wallet';
-import { kadenaSign as legacyKadenaSign } from '@kadena/hd-wallet/chainweaver';
+import {
+  kadenaSign as legacyKadenaSign,
+  kadenaSignFromRootKey as legacyKadenaSignWithSeed,
+} from '@kadena/hd-wallet/chainweaver';
 import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
 import { join } from 'path';
@@ -102,10 +105,23 @@ export async function signTransactionWithSeed(
     const parsedTransaction = JSON.parse(unsignedCommand.cmd);
     const keys = await getKeyPairAndIndicesFromFileSystem(walletName);
     const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
-
     if (legacy === true) {
-      // TO-DO implement legacy signing from seed
-      signedCommand = {} as ICommand;
+      const signatures = await Promise.all(
+        relevantKeyPairs.map(async (key) => {
+          const sigUint8Array = await legacyKadenaSignWithSeed(
+            password,
+            unsignedCommand.cmd,
+            wallet,
+            key.index as number,
+          );
+
+          return {
+            sig: Buffer.from(sigUint8Array).toString('hex'),
+            pubKey: key.publicKey,
+          };
+        }),
+      );
+      signedCommand = addSignatures(unsignedCommand, ...signatures);
     } else {
       const signatures = relevantKeyPairs.map((key) => {
         const signWithSeed = kadenaSignWithSeed(
