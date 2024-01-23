@@ -37,6 +37,10 @@ import {
 } from '../networks/utils/networkHelpers.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
+import { templateVariables } from '../prompts/tx.js';
+import { services } from '../services/index.js';
+import { defaultTemplates } from '../tx/commands/templates/templates.js';
+import { getTemplateVariables } from '../tx/utils/template.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
 import { removeAfterFirstDot } from './path.util.js';
@@ -550,6 +554,60 @@ export const globalOptions = {
       '-d, --tx-transaction-dir <txTransactionDir>',
       'Enter your transaction directory (default: "./transactions")',
     ),
+  }),
+  // TX
+  outFileJson: createOption({
+    key: 'outFile',
+    prompt: tx.outFilePrompt,
+    validation: z.string().optional(),
+    option: new Option(
+      '-o, --out-file <outFile>',
+      'Enter the file name to save the output',
+    ),
+    defaultIsOptional: true,
+    transform(value: string) {
+      if (!value) return null;
+      const file = value.endsWith('.json') ? value : `${value}.json`;
+      return join(process.cwd(), file);
+    },
+  }),
+  selectTemplate: createOption({
+    key: 'template',
+    option: new Option('--template <template>', 'select a template'),
+    validation: z.string(),
+    prompt: tx.selectTemplate,
+    async expand(templateInput: string) {
+      // option 1. --template="send"
+      // option 2. --template="./send.ktpl"
+
+      let template = defaultTemplates[templateInput];
+
+      if (template === undefined) {
+        // not in template list, try to load from file
+        const templatePath = join(process.cwd(), templateInput);
+        const file = await services.filesystem.readFile(templatePath);
+
+        if (file === null) {
+          // not in file either, error
+          throw Error(`Template "${templateInput}" not found`);
+        }
+
+        template = file;
+      }
+
+      const variables = getTemplateVariables(template);
+
+      return { template, variables };
+    },
+  }),
+  templateVariables: createOption({
+    key: 'templateVariables',
+    validation: z.object({}).passthrough(),
+    option: new Option(
+      '--template-variables <templateVariables>',
+      'template variables',
+    ),
+    prompt: templateVariables,
   }),
 } as const;
 

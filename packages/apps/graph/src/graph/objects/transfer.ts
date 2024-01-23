@@ -91,6 +91,21 @@ export default builder.prismaNode('Transfer', {
         } catch (error) {
           throw normalizeError(error);
         }
+
+        /* Note: Multiple options were tested to find the cross chain counterpart, including using a single raw query.
+        Although it would reduce the complexity, the time it takes is greater than the current method. This is due
+        to raw queries resulting in unmapped responses and the additional processing this requires.
+        In any case, here is the single raw query
+
+          SELECT tr.*
+          FROM transactions AS t1
+          INNER JOIN transactions AS t2
+            ON (t1.pactId = t2.requestKey AND t1.requestKey = ${requestKey})
+            OR (t1.requestKey = t2.pactId AND t1.requestKey = ${requestKey} AND t1.block = ${blockHash})
+          INNER JOIN transfers AS tr ON tr.requestKey = t2.requestKey AND tr.amount = ${amount}
+          LIMIT 1
+        `;
+        */
       },
     }),
 

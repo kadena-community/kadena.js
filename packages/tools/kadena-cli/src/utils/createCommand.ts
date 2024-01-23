@@ -3,16 +3,15 @@ import type { Command } from 'commander';
 import { z } from 'zod';
 import { CLIName } from '../constants/config.js';
 import { displayConfig } from './createCommandDisplayHelper.js';
-import type { createOption } from './createOption.js';
+import type { OptionType, createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
 import { collectResponses } from './helpers.js';
 import type { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
 
 type AsOption<T> = T extends {
   key: infer K;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   prompt: infer R;
-  transform: infer Tr;
+  transform?: infer Tr;
 }
   ? K extends string
     ? {
@@ -47,9 +46,7 @@ export type CreateCommandReturnType = (
 ) => void;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function createCommand<
-  const T extends ReturnType<ReturnType<typeof createOption>>[],
->(
+export function createCommand<const T extends OptionType[]>(
   name: string,
   description: string,
   options: [...T],
@@ -70,93 +67,24 @@ export function createCommand<
 
     command.action(async (args, ...rest) => {
       try {
-        const getCommandExecution = (args: Record<string, unknown>): string => {
-          return chalk.yellow(
-            `${CLIName} ${program.name()} ${name} ${Object.getOwnPropertyNames(
-              args,
-            )
-              .map((arg) => {
-                let displayValue: string | null = null;
-                const value = args[arg];
-                const argName = arg.toLowerCase();
-
-                if (argName.includes('password')) {
-                  if (value === '') {
-                    displayValue = '';
-                  } else {
-                    displayValue = '******';
-                  }
-                } else {
-                  if (Array.isArray(value)) {
-                    displayValue = value.join(' ');
-                  } else if (typeof value === 'string') {
-                    displayValue = `"${value}"`;
-                  } else if (typeof value === 'number') {
-                    displayValue = value.toString();
-                  } else if (typeof value === 'boolean' && value === false) {
-                    return undefined;
-                  }
-                }
-
-                return `--${arg.replace(
-                  /[A-Z]/g,
-                  (match) => `-${match.toLowerCase()}`,
-                )} ${
-                  displayValue !== null && displayValue !== undefined
-                    ? displayValue
-                    : ''
-                }`;
-              })
-              .filter(Boolean)
-              .join(' ')}`,
-          );
-        };
-
         // collectResponses
-        const questionsMap = options
-          .filter((o) => o.isInQuestions)
-          .map(({ prompt, key, isOptional }) => ({
-            key,
-            prompt,
-            isOptional,
-          }));
+        const questionsMap = options.filter((o) => o.isInQuestions);
 
-        if (args.quiet === true) {
-          const missing = questionsMap.filter(
-            (question) =>
-              question.isOptional === false && args[question.key] === undefined,
-          );
-          if (missing.length) {
-            console.log(
-              `${chalk.yellow('Missing arguments in: ')}${getCommandExecution(
-                args,
-              )}`,
-            );
-            console.log(
-              chalk.red(
-                `\nMissing required arguments:\n${missing
-                  .map((m) => options.find((q) => q.key === m.key)!)
-                  .map((m) => `- ${m.key} (${m.option.flags})\n`)
-                  .join('')}`,
-              ),
-            );
-            console.log(
-              chalk.yellow(
-                'Remove the --quiet flag to enable interactive prompts\n',
-              ),
-            );
-            process.exit(1);
-          }
-        }
+        handleQuietOption(`${program.name()} ${name}`, args, questionsMap);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const newArgs: any =
           args.quiet === true
             ? args
             : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              await collectResponses<any>(args, questionsMap);
+              await collectResponses<any>(args, questionsMap as any);
 
-        console.log(`\nExecuting: ${getCommandExecution(newArgs)}`);
+        console.log(
+          `\nExecuting: ${getCommandExecution(
+            `${program.name()} ${name}`,
+            newArgs,
+          )}`,
+        );
 
         // zod validation
         const zodValidationObject = options.reduce(
@@ -200,4 +128,87 @@ export function createCommand<
       }
     });
   };
+}
+
+export function handleQuietOption(
+  command: string,
+  args: Record<string, unknown>,
+  options: ReturnType<ReturnType<typeof createOption>>[],
+): void {
+  if (args.quiet === true) {
+    const missing = options.filter(
+      (option) => option.isOptional === false && args[option.key] === undefined,
+    );
+    if (missing.length) {
+      console.log(
+        `${chalk.yellow('Missing arguments in: ')}${getCommandExecution(
+          `${command}`,
+          args,
+        )}`,
+      );
+      console.log(
+        chalk.red(
+          `\nMissing required arguments:\n${missing
+            .map((m) => options.find((q) => q.key === m.key)!)
+            .map((m) => `- ${m.key} (${m.option.flags})\n`)
+            .join('')}`,
+        ),
+      );
+      console.log(
+        chalk.yellow('Remove the --quiet flag to enable interactive prompts\n'),
+      );
+      process.exit(1);
+    }
+  }
+}
+
+export function getCommandExecution(
+  command: string,
+  args: Record<string, unknown>,
+): string {
+  return chalk.yellow(
+    `${CLIName} ${command} ${Object.getOwnPropertyNames(args)
+      .map((arg) => {
+        let displayValue: string | null = null;
+        const value = args[arg];
+        const argName = arg.toLowerCase();
+
+        if (argName.includes('password')) {
+          if (value === '') {
+            displayValue = '';
+          } else {
+            displayValue = '******';
+          }
+        } else {
+          if (typeof value === 'string') {
+            displayValue = `"${value}"`;
+          } else if (typeof value === 'number') {
+            displayValue = value.toString();
+          } else if (typeof value === 'boolean' && value === false) {
+            return undefined;
+          } else if (value === null) {
+            // if null, leave out from command entirely
+            displayValue = '';
+          } else if (
+            typeof value === 'object' &&
+            value !== null &&
+            Object.getPrototypeOf(value) === Object.prototype
+          ) {
+            return Object.entries(value)
+              .map(([key, value]) => `--${key}=${value}`)
+              .join(' ');
+          }
+        }
+
+        const key = arg.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
+
+        return `--${key} ${
+          displayValue !== null && displayValue !== undefined
+            ? displayValue
+            : ''
+        }`;
+      })
+      .filter(Boolean)
+      .join(' ')}`,
+  );
 }
