@@ -78,11 +78,11 @@ export const createDir = (dir: string): void => {
 
 //get the first title heading you find in the doc
 export const getFirstHeading = (doc: string): Heading | undefined => {
-  const md = remark.parse(doc);
+  const md: Root = remark.parse(doc);
   const headings = getTypes<Heading>(md, 'heading');
 
   if (!headings.length) return;
-  const value = (headings[0].children[0] as any).value;
+  const value = (headings[0].children[0] as Literal).value;
   (headings[0].children[0] as any).value = value
     .replace('@kadena/', '')
     .replace(/-/g, ' ');
@@ -262,7 +262,7 @@ const createPage = async (
   // if more, keep only 1 and replace the next with an h2
   const pageContent = cleanUp(page, `/${item.destination}/${slug}`);
 
-  const doc = toMarkdown(pageContent as any);
+  const doc = toMarkdown(pageContent as Root);
 
   fs.writeFileSync(
     `${DOCS_ROOT}/${item.destination}/index.md`,

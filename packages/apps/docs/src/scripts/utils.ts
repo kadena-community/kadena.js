@@ -1,11 +1,11 @@
-function hasChildren(content: any): content is {
-  children: any[];
-} {
-  return 'children' in content;
+import type { Node, Parent } from 'mdast';
+
+function isParent(node: Node): node is Parent {
+  return 'children' in node;
 }
 
-export const getTypes = <T>(tree: any, type: string, arr: T[] = []): T[] => {
-  if (hasChildren(tree)) {
+export function getTypes<T>(tree: Node, type: string, arr: T[] = []): T[] {
+  if (isParent(tree)) {
     tree.children.forEach((branch) => {
       if (branch.type === type) {
         arr.push(branch as unknown as T);
@@ -14,7 +14,7 @@ export const getTypes = <T>(tree: any, type: string, arr: T[] = []): T[] => {
     });
   }
   return arr;
-};
+}
 
 interface IImportReadMeItemOptions {
   RootOrder: number;
