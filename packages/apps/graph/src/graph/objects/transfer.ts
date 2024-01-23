@@ -94,7 +94,8 @@ export default builder.prismaNode('Transfer', {
 
         /* Note: Multiples options were tested to find the xchain counterpart including using a single raw query.
         Although it would reduce the complexity, the time it takes is greater than the current method. This is due
-        to raw queries resulting in unmapped responses and the need to map the response. In any case, here is the single raw query
+        to raw queries resulting in unmapped responses and the additional processing this requires.
+        In any case, here is the single raw query
 
           SELECT tr.*
           FROM transactions AS t1
