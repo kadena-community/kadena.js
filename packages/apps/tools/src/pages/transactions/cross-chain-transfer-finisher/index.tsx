@@ -301,10 +301,6 @@ const CrossChainTransferFinisher: FC = () => {
 
   const isGasStation = watchGasPayer === 'kadena-xchain-gas';
   const isAdvancedOptions = devOption !== 'BASIC';
-  const showInputError =
-    pollResults.error === undefined ? undefined : 'negative';
-  const showInputHelper =
-    pollResults.error !== undefined ? pollResults.error : '';
   const showNotification = Object.keys(finalResults).length > 0;
 
   const formattedSigData = `{
@@ -417,13 +413,14 @@ const CrossChainTransferFinisher: FC = () => {
               <Grid>
                 <GridItem>
                   <RequestKeyField
-                    helperText={showInputHelper}
-                    status={showInputError}
+                    errorMessage={
+                      pollResults.error || errors.requestKey?.message
+                    }
+                    isInvalid={!!pollResults.error}
                     {...register('requestKey')}
                     value={requestKey}
                     onChange={onRequestKeyChange}
                     onKeyUp={onCheckRequestKey}
-                    error={errors.requestKey}
                   />
                 </GridItem>
               </Grid>

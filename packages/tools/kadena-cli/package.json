@@ -1,0 +1,90 @@
+{
+  "name": "@kadena/kadena-cli",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/kadena-cli"
+  },
+  "license": "ISC",
+  "contributors": [
+    "Danillo Felixdaal <danillo@kadena.io>",
+    "Albert Groothedde <albert@kadena.io",
+    "Jesse van Muijden <jesse@kadena.io",
+    "Jermaine Jong <jermaine@kadena.io",
+    "Javad Khalilian <javad@kadena.io>"
+  ],
+  "type": "module",
+  "bin": {
+    "kadena": "./bin/kadena-cli.js"
+  },
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "scripts": {
+    "build": "pnpm run generate:ts && tsc",
+    "dev": "node --import 'data:text/javascript,import {register} from \"node:module\";import {pathToFileURL} from \"node:url\";register(\"%40swc-node/register/esm\",pathToFileURL(\"./\"));' src/index.ts",
+    "format": "pnpm run /^format:.*/",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:src": "prettier config src --write",
+    "generate:ts": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
+    "lint": "eslint src --ext .js,.ts --fix",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^3.0.4",
+    "@kadena/client": "workspace:^",
+    "@kadena/client-utils": "workspace:*",
+    "@kadena/cryptography-utils": "workspace:*",
+    "@kadena/hd-wallet": "workspace:*",
+    "@kadena/pactjs": "workspace:*",
+    "@kadena/pactjs-cli": "workspace:^",
+    "@kadena/pactjs-generator": "workspace:*",
+    "@scure/bip39": "^1.2.1",
+    "cardano-crypto.js": "https://github.com/kadena-io/cardano-crypto.js.git#jam@chainweaver-keygen",
+    "chalk": "^5.2.0",
+    "clear": "^0.1.0",
+    "commander": "^11.0.0",
+    "cross-fetch": "~3.1.5",
+    "cross-spawn": "~7.0.3",
+    "debug": "~4.3.4",
+    "ed25519-keygen": "^0.4.8",
+    "js-yaml": "~4.1.0",
+    "memfs": "~3.5.1",
+    "mkdirp": "~1.0.4",
+    "node-fetch": "~2.6.2",
+    "ora": "^7.0.1",
+    "pact-lang-api": "^4.2.0",
+    "rimraf": "~5.0.1",
+    "sanitize-filename": "^1.6.3",
+    "yaml": "~2.1.1",
+    "zod": "~3.18.0"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/heft": "~0.50.6",
+    "@swc-node/register": "^1.6.8",
+    "@types/clear": "^0.1.2",
+    "@types/cross-spawn": "~6.0.2",
+    "@types/debug": "~4.1.7",
+    "@types/heft-jest": "~1.0.6",
+    "@types/isomorphic-fetch": "~0.0.36",
+    "@types/js-yaml": "4.0.9",
+    "@types/mkdirp": "~1.0.2",
+    "@types/node": "^18.17.14",
+    "@types/rimraf": "~3.0.2",
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.3",
+    "typescript": "5.2.2",
+    "vitest": "^1.1.0"
+  }
+}

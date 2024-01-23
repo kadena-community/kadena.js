@@ -186,16 +186,15 @@ const ExistingAccountFaucetPage: FC = () => {
             <div className={inputContainerClass}>
               <div className={accountNameContainerClass}>
                 <AccountNameField
-                  inputProps={register('name')}
-                  error={errors.name}
+                  {...register('name')}
+                  errorMessage={errors.name?.message}
                   label={t('The account name to fund coins to')}
                 />
               </div>
               <div className={chainSelectContainerClass}>
                 <ChainSelect
-                  onChange={onChainSelectChange}
-                  value={chainID}
-                  ariaLabel="Select Chain ID"
+                  onSelectionChange={onChainSelectChange}
+                  selectedKey={chainID}
                 />
               </div>
             </div>

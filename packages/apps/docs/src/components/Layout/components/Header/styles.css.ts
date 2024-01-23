@@ -3,7 +3,7 @@ import {
   darkThemeClass,
   responsiveStyle,
   tokens,
-} from '@kadena/react-ui/theme';
+} from '@kadena/react-ui/styles';
 import { style, styleVariants } from '@vanilla-extract/css';
 import { $$modalZIndex, $$navMenu, $$pageWidth } from '../../global.css';
 

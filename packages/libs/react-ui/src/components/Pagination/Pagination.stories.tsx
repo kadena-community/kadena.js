@@ -1,8 +1,8 @@
-import { Stack } from '@components/Layout/Stack';
-import type { IPaginationProps } from '@components/Pagination';
-import { Pagination } from '@components/Pagination';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { Stack } from '../Layout/Stack';
+import type { IPaginationProps } from '../Pagination';
+import { Pagination } from '../Pagination';
 
 const meta: Meta<
   {

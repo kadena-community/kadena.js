@@ -2,7 +2,7 @@ import { AuthorProfileCard } from '@/components/AuthorProfileCard/AuthorProfileC
 import { formatDateDistance } from '@/utils/dates';
 import type { IPageProps } from '@kadena/docs-tools';
 import { TagGroup, TagItem } from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/theme';
+import { atoms } from '@kadena/react-ui/styles';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { FC } from 'react';

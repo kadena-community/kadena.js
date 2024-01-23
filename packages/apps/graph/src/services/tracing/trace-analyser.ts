@@ -1,8 +1,6 @@
-import 'module-alias/register';
-
-import { dotenv } from '@utils/dotenv';
 import { Command, Option } from 'commander';
 import { readFileSync } from 'fs';
+import { dotenv } from '../../utils/dotenv';
 
 new Command()
   .command('trace-analyser')

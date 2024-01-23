@@ -21,7 +21,7 @@ const meta: Meta<ILinkProps> = {
   title: 'Components/Link',
   component: Link,
   parameters: {
-    status: { type: 'inDevelopment' },
+    status: { type: 'releaseCandidate' },
     controls: {
       hideNoControlsWarning: true,
       sort: 'requiredFirst',

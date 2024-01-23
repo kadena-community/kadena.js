@@ -92,21 +92,21 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
                       label={t('Network label')}
                       id="label"
                       {...register('label')}
-                      onChange={(e) => setLabel(e.target.value)}
+                      onValueChange={setLabel}
                       value={label}
                       placeholder="devnet"
-                      status={errors?.label ? 'negative' : undefined}
-                      helperText={errors?.label?.message ?? ''}
+                      isInvalid={!!errors?.label}
+                      errorMessage={errors?.label?.message ?? ''}
                     />
                     <TextField
                       label={t('Network ID')}
                       id="networkId"
                       {...register('networkId')}
-                      onChange={(e) => setNetworkId(e.target.value)}
+                      onValueChange={setNetworkId}
                       value={networkId}
                       placeholder="fast-development"
-                      status={errors?.networkId ? 'negative' : undefined}
-                      helperText={errors?.networkId?.message ?? ''}
+                      isInvalid={!!errors?.networkId}
+                      errorMessage={errors?.networkId?.message ?? ''}
                     />
                     <TextField
                       label={t('Network api')}
@@ -115,8 +115,8 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
                       onChange={(e) => setApi(e.target.value)}
                       value={api}
                       placeholder="localhost:8080"
-                      status={errors?.api ? 'negative' : undefined}
-                      helperText={errors?.api?.message ?? ''}
+                      isInvalid={!!errors?.api}
+                      errorMessage={errors?.api?.message ?? ''}
                     />
                   </Stack>
                 </section>

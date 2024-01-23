@@ -1,14 +1,14 @@
-import { Card } from '@components/Card';
-import { withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { withContentWidth } from '../../storyDecorators';
+import { Card } from '../Card';
 import { Divider } from './Divider';
 
 const meta: Meta = {
   title: 'Layout/Divider',
   decorators: [withContentWidth],
   parameters: {
-    status: { type: 'stable' },
+    status: { type: 'releaseCandidate' },
     docs: {
       description: {
         component:

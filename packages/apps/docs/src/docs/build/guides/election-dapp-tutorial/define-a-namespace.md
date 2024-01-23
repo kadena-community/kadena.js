@@ -229,7 +229,6 @@ function:
    namespace.repl:20:0:Trace: Commit Tx 0: Define a namespace called 'election
    Load successful
    ```
-
    You now have a namespace called `election` defined in the Pact REPL.
 
 ## Modify the namespace
