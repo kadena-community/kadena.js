@@ -104,17 +104,18 @@ export async function signTransactionWithSeed(
     if (legacy === true) {
       signedCommand = {} as ICommand;
     } else {
-      const signatures = await Promise.all(
-        relevantKeyPairs.map((key) => {
-          const signWithSeed = kadenaSignWithSeed(
-            password,
-            wallet,
-            key.index as number,
-          );
-          const { sigs } = signWithSeed(unsignedCommand);
-          return { sig: sigs[0].sig, pubKey: key.publicKey };
-        }),
-      );
+      const signatures = relevantKeyPairs.map((key) => {
+        const signWithSeed = kadenaSignWithSeed(
+          password,
+          wallet,
+          key.index as number,
+        );
+        const sigs = signWithSeed(unsignedCommand.hash);
+        return {
+          sig: sigs.sig,
+          pubKey: key.publicKey,
+        };
+      });
       signedCommand = addSignatures(unsignedCommand, ...signatures);
     }
 
