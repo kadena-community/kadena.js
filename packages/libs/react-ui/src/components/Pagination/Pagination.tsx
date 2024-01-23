@@ -8,29 +8,29 @@ import { paginate } from './paginate';
 
 export interface IPaginationProps extends ReactComponentElement<'nav'> {
   totalPages: number;
-  currentPage?: number;
+  selectedPage?: number;
   visiblePageLimit?: number;
-  initialSelectedPage?: number;
+  defaultSelectedKey?: number;
   onPageChange: (page: number) => void;
 }
 
 export const Pagination: FC<IPaginationProps> = ({
   totalPages,
-  currentPage,
+  selectedPage,
   visiblePageLimit = 3,
-  initialSelectedPage,
+  defaultSelectedKey,
   onPageChange,
   ...props
 }) => {
-  const validInitialSelectedPage =
-    initialSelectedPage &&
-    initialSelectedPage <= totalPages &&
-    initialSelectedPage > 0;
+  const validDefaultSelectedKey =
+    defaultSelectedKey &&
+    defaultSelectedKey <= totalPages &&
+    defaultSelectedKey > 0;
 
   const [_page, setPage] = useState(
-    validInitialSelectedPage ? initialSelectedPage : 1,
+    validDefaultSelectedKey ? defaultSelectedKey : 1,
   );
-  const page = currentPage || _page;
+  const page = selectedPage || _page;
   const pages = paginate({
     page,
     total: totalPages,
