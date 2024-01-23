@@ -1,11 +1,18 @@
 {
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
-    "types": ["node", "@types/gtag.js"],
+    "types": [
+      "node",
+      "@types/gtag.js"
+    ],
     "rootDir": ".",
     "baseUrl": ".",
     "target": "ES2020",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "skipLibCheck": true,
     "noEmit": true,
     "incremental": true,
@@ -15,7 +22,9 @@
     "declaration": false, // fixes pnpm issue: https://github.com/microsoft/TypeScript/issues/42873
     "declarationMap": false,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
     "allowJs": true,
     "jsx": "preserve",
@@ -23,8 +32,15 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "strictNullChecks": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
