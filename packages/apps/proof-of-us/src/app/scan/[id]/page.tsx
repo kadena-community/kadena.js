@@ -1,9 +1,8 @@
 'use client';
 import { useAccount } from '@/hooks/account';
+import { useSocket } from '@/hooks/socket';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
-import type { Socket } from 'Socket.IO-client';
-import io from 'Socket.IO-client';
+import { useEffect } from 'react';
 
 interface IProps {
   params: {
@@ -12,30 +11,11 @@ interface IProps {
 }
 
 const Page: FC<IProps> = ({ params }) => {
-  const [socket, setSocket] = useState<Socket>();
+  const { connect, socket } = useSocket();
   const { account } = useAccount();
 
-  const socketInitializer = async () => {
-    await fetch('/api/socket');
-    const sock = io({ autoConnect: false });
-
-    setSocket(sock);
-    sock.auth = { tokenId: 'TOKENID2' };
-    sock.connect();
-
-    sock.on('connect', () => {
-      sock.send('test');
-
-      console.log('connected');
-    });
-
-    sock.onAny((event, ...args) => {
-      console.log(event, args);
-    });
-  };
-
   useEffect(() => {
-    socketInitializer();
+    connect(params.id);
   }, []);
 
   const handleJoin = () => {

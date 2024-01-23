@@ -1,12 +1,11 @@
 'use client';
 import { PROOFOFUS_QR_URL } from '@/constants';
 import { useProofOfUs } from '@/hooks/proofOfUs';
+import { useSocket } from '@/hooks/socket';
 import { env } from '@/utils/env';
 import type { FC } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
-import type { Socket } from 'Socket.IO-client';
-import io from 'Socket.IO-client';
 
 interface IProps {
   params: {
@@ -16,30 +15,12 @@ interface IProps {
 
 const Page: FC<IProps> = ({ params }) => {
   const qrRef = useRef<QRCode | null>(null);
-  const [socket, setSocket] = useState<Socket>();
+  const { connect } = useSocket();
 
   const { data } = useProofOfUs();
 
-  const socketInitializer = async () => {
-    await fetch('/api/socket');
-    const sock = io({ autoConnect: false });
-
-    setSocket(sock);
-    sock.auth = { tokenId: 'TOKENID2' };
-    sock.connect();
-
-    sock.on('connect', () => {
-      sock.send('test');
-      console.log('connected');
-    });
-
-    sock.onAny((event, ...args) => {
-      console.log(event, args);
-    });
-  };
-
   useEffect(() => {
-    socketInitializer();
+    connect(params.id);
   }, []);
 
   const handleQRPNGDownload = () => {

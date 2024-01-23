@@ -1,18 +1,25 @@
+import type { Server as IHTTPServer } from 'http';
+import type { Socket as INetSocket } from 'net';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { Server as IOServer } from 'socket.io';
 import { Server } from 'socket.io';
 
-const TokenStore = () => {
-  const tokens = [];
-  const createSession = () => {};
-  const getSession = () => {};
-  return {
-    createSession,
-    getSession,
-  };
-};
+interface ISocketServer extends IHTTPServer {
+  io?: IOServer | undefined;
+}
 
-export default function SocketHandler(req, res) {
-  const tokenStore = TokenStore();
+interface ISocketWithIO extends INetSocket {
+  server: ISocketServer;
+}
 
+interface INextApiResponseWithSocket extends NextApiResponse {
+  socket: ISocketWithIO;
+}
+
+export default function SocketHandler(
+  _: NextApiRequest,
+  res: INextApiResponseWithSocket,
+) {
   if (res.socket.server.io) {
     console.log('Already set up');
     res.end();
@@ -55,7 +62,7 @@ export default function SocketHandler(req, res) {
     });
 
     const users = [];
-    for (const [id, socket] of io.of('/').sockets) {
+    for (const [id] of io.of('/').sockets) {
       users.push({
         userID: id,
       });
