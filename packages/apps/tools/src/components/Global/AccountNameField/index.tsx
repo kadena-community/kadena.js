@@ -2,8 +2,8 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { ITextFieldProps } from '@kadena/react-ui';
 import { TextField } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
-import { ForwardedRef, forwardRef } from 'react';
-import { FieldError } from 'react-hook-form';
+import type { ForwardedRef } from 'react';
+import React, { forwardRef } from 'react';
 import * as z from 'zod';
 import { accountInputWrapperStyle } from './styles.css';
 
@@ -16,10 +16,10 @@ interface IAccountNameFieldProps
   > {
   errorMessage?: string;
 }
-function BaseAccountNameField(
+const BaseAccountNameField = (
   props: IAccountNameFieldProps,
   forwardedRef: ForwardedRef<HTMLInputElement>,
-) {
+) => {
   const { t } = useTranslation('common');
   const { selectedAccount, setSelectedAccount } = useWalletConnectClient();
 
@@ -38,6 +38,6 @@ function BaseAccountNameField(
       />
     </div>
   );
-}
+};
 
 export const AccountNameField = forwardRef(BaseAccountNameField);

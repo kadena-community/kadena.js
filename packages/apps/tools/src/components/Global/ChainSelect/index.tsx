@@ -3,7 +3,7 @@ import { CHAINS } from '@kadena/chainweb-node-client';
 import type { ISelectProps } from '@kadena/react-ui';
 import { Select, SelectItem, SystemIcon } from '@kadena/react-ui';
 import type { FC } from 'react';
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 export type OnChainSelectChange = (value: ChainwebChainId) => void;
 

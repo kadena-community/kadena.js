@@ -3,7 +3,6 @@ import { SystemIcon, TextField } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { forwardRef } from 'react';
-import type { FieldError } from 'react-hook-form';
 import * as z from 'zod';
 
 export const RequestLength: { MIN: number; MAX: number } = { MIN: 43, MAX: 44 };

@@ -1,8 +1,7 @@
 import type { ISelectProps } from '@kadena/react-ui';
 import { Select, SelectItem } from '@kadena/react-ui';
-
 import type { FC } from 'react';
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 export type PredKey = 'keys-all' | 'keys-any' | 'keys-2';
 
@@ -32,10 +31,6 @@ const PredKeysSelect: FC<IPredKeysSelectProps> = ({
     },
     [onSelectionChange],
   );
-
-  const options = predicates.map((pred) => {
-    return <option key={`id-${pred}`}>{pred}</option>;
-  });
 
   return (
     <Select
