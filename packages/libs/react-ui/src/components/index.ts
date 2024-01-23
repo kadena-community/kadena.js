@@ -14,14 +14,11 @@ export type {
   IDialogProps,
 } from './Dialog';
 export type {
-  FormFieldStatus,
-  IFormFieldWrapperProps,
-  IInputProps,
-  ISelectFieldProps,
+  IComboboxProps,
+  IFormProps,
   ISelectProps,
   ITextFieldProps,
   ITextareaFieldProps,
-  ITextareaProps,
 } from './Form';
 export type { IIconProps } from './Icon';
 export type {
@@ -92,14 +89,15 @@ export {
 } from './Dialog';
 export { Divider } from './Divider/Divider';
 export {
-  FormFieldWrapper,
-  Input,
-  InputCopy,
+  Combobox,
+  ComboboxItem,
+  CopyButton,
+  Form,
+  FormFieldHeader,
+  FormFieldHelper,
   Select,
-  SelectField,
+  SelectItem,
   TextField,
-  Textarea,
-  TextareaCopy,
   TextareaField,
 } from './Form';
 export { ProductIcon, SystemIcon } from './Icon';
