@@ -85,7 +85,6 @@ const Header: FC<IHeaderProps> = () => {
           onClick={() => toggleTheme()}
           className={atoms({ marginInlineEnd: 'sm' })}
         />
-
         <NavHeaderButton
           aria-label={'Application Settings'}
           icon={<SystemIcon.ProgressWrench />}
@@ -99,7 +98,7 @@ const Header: FC<IHeaderProps> = () => {
           onChange={(e) => handleOnChange(e)}
           icon="Earth"
         >
-          {networksData.map((network: INetworkData) => (
+          {...networksData.map((network: INetworkData) => (
             <SelectItem key={network.networkId} textValue={network.networkId}>
               {network.label}
             </SelectItem>
