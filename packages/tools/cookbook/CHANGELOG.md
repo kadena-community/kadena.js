@@ -1,5 +1,12 @@
 # @kadena/cookbook
 
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies [0540b213b]
+  - @kadena/client@1.8.0
+
 ## 0.0.9
 
 ### Patch Changes

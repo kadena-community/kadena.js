@@ -1,5 +1,14 @@
 # @kadena/hd-wallet
 
+## 0.3.0
+
+### Minor Changes
+
+- c756c1425: Removed dependency to @kadena/client and refactor sign functions to
+  sign hash
+- 8fca466c7: refactor hd-wallet to use web-crypto api for cross platform
+  compatibility
+
 ## 0.2.0
 
 ### Minor Changes
