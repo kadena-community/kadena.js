@@ -5,6 +5,7 @@ import { defaultAccountPath } from '../../constants/account.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
+import { IAddAccountManualConfig } from '../types.js';
 import {
   validateAccountDetails,
   writeConfigInFile,
@@ -25,14 +26,16 @@ export const addAccountManualCommand: (
     globalOptions.publicKeys(),
     globalOptions.predicate(),
   ],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async function addAccount(config: any): Promise<void> {
+
+  async function addAccount(config): Promise<void> {
     debug('account-add-manual:action')({ config });
 
     const sanitizedAlias = sanitizeFilename(config.accountAlias).toLowerCase();
     const filePath = path.join(defaultAccountPath, `${sanitizedAlias}.yaml`);
 
-    const newConfig = await validateAccountDetails(config);
+    const newConfig = await validateAccountDetails(
+      config as unknown as IAddAccountManualConfig,
+    );
 
     await writeConfigInFile(filePath, newConfig);
   },

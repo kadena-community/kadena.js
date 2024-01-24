@@ -13,6 +13,7 @@ import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
+import { IAddAccountManualConfig } from '../types.js';
 import {
   validateAccountDetails,
   writeConfigInFile,
@@ -32,8 +33,8 @@ export const addAccountWalletCommand: (
     globalOptions.chainId(),
     globalOptions.predicate(),
   ],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async function addAccount(config: any): Promise<void> {
+
+  async function addAccount(config): Promise<void> {
     debug('account-add-manual:action')({ config });
     const { keyWalletConfig } = config;
     await printWalletKeys(keyWalletConfig);
@@ -51,7 +52,6 @@ export const addAccountWalletCommand: (
       publicKeysList.push(parsed?.publicKey);
     }
 
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     publicKeysList.filter((key) => !!key);
 
     const selectPublicKeys = await checkbox({
@@ -59,13 +59,15 @@ export const addAccountWalletCommand: (
       choices: publicKeysList.map((key) => ({ value: key })),
     });
 
-    // eslint-disable-next-line require-atomic-updates
-    config.publicKeysConfig = selectPublicKeys;
+    (config as unknown as IAddAccountManualConfig).publicKeysConfig =
+      selectPublicKeys as string[];
 
     const sanitizedAlias = sanitizeFilename(config.accountAlias).toLowerCase();
     const filePath = path.join(defaultAccountPath, `${sanitizedAlias}.yaml`);
 
-    const newConfig = await validateAccountDetails(config);
+    const newConfig = await validateAccountDetails(
+      config as unknown as IAddAccountManualConfig,
+    );
 
     await writeConfigInFile(filePath, newConfig);
   },
