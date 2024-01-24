@@ -185,7 +185,6 @@ const NewAccountFaucetPage: FC = () => {
 
   useEffect(() => {
     setRequestStatus({ status: 'idle' });
-    setValue('name', typeof accountName === 'string' ? accountName : '');
   }, [pubKeys.length]);
 
   const currentAccName = getValues('name');
@@ -195,7 +194,7 @@ const NewAccountFaucetPage: FC = () => {
       'name',
       typeof accountName === 'string' && pubKeys.length > 0 ? accountName : '',
     );
-  }, [accountName, chainID, currentAccName, setValue]);
+  }, [accountName, chainID, currentAccName, setValue, pubKeys.length]);
 
   useToolbar(menuData, router.pathname);
 

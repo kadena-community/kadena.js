@@ -23,6 +23,7 @@ export const modalButtonStyle = style([
     display: 'flex',
     flexDirection: 'row-reverse',
     fontSize: 'xs',
+    marginBlockStart: 'md',
   }),
 ]);
 
