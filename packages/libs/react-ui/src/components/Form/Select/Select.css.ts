@@ -13,7 +13,6 @@ export const selectButtonClass = style([
     outline: 'none',
     flex: 1,
     overflow: 'hidden',
-    position: 'relative',
   }),
   {
     paddingInlineStart: token('spacing.md'),
