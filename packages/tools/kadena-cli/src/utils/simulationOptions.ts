@@ -7,59 +7,62 @@ import { simulate as simulationPrompts } from '../prompts/index.js';
 export const simulationOptions = {
   //Simulation
   simulationNumberOfAccounts: createOption({
-    key: 'accounts' as const,
+    key: 'simulationNumberOfAccounts' as const,
     prompt: simulationPrompts.numberOfAccountsPrompt,
     validation: z.number(),
     option: new Option(
-      '-na, --accounts <accounts>',
+      '-na, --simulation-number-of-accounts <simulationNumberOfAccounts>',
       'Amount of accounts to be created in the simulation.',
     ),
   }),
   simulationTransferInterval: createOption({
-    key: 'interval' as const,
+    key: 'simulationTransferInterval' as const,
     prompt: simulationPrompts.transferIntervalPrompt,
     validation: z.number(),
     option: new Option(
-      '-ti, --interval <interval>',
+      '-ti, --simulation-transfer-interval <simulationTransferInterval>',
       'Transfer interval in milliseconds.',
     ).argParser((value) => parseInt(value, 10)),
   }),
 
   simulationMaxTransferAmount: createOption({
-    key: 'maxTransferAmount' as const,
+    key: 'simulationMaxTransferAmount' as const,
     prompt: simulationPrompts.maxTransferAmountPrompt,
     validation: z.number(),
     option: new Option(
-      '-mta, --max-transfer-amount <maxTransferAmount>',
+      '-mta, --simulation-max-transfer-amount <simulationMaxTransferAmount>',
       'Max transfer amount per single transaction (coin).',
     ),
   }),
 
   simulationTokenPool: createOption({
-    key: 'tokenPool' as const,
+    key: 'simulationTokenPool' as const,
     prompt: simulationPrompts.tokenPoolPrompt,
     validation: z.number(),
     option: new Option(
-      '-tp, --token-pool <tokenPool>',
+      '-tp, --simulation-token-pool <simulationTokenPool>',
       'Total token pool (coin).',
     ),
   }),
   simulationSeed: createOption({
-    key: 'seed' as const,
+    key: 'simulationSeed' as const,
     prompt: simulationPrompts.seedPrompt,
     validation: z.string(),
-    option: new Option('-s, --seed <seed>', 'Seed for the simulation.'),
+    option: new Option(
+      '-s, --simulation-seed <simulationSeed>',
+      'Seed for the simulation.',
+    ),
   }),
 
   simulationDefaultChainId: createOption({
-    key: 'defaultChainId' as const,
+    key: 'simulationDefaultChainId' as const,
     prompt: simulationPrompts.defaultChainIdPrompt,
     validation: z.string(),
     transform: (chainId: string) => {
       return chainId as ChainId;
     },
     option: new Option(
-      '-dc, --default-chain-id <defaultChainId>',
+      '-dc, --simulation-default-chain-id <simulationDefaultChainId>',
       'Default chain id for the simulation (eg. 0).',
     ),
   }),
