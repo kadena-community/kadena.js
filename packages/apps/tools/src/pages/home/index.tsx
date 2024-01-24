@@ -2,10 +2,7 @@ import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import ResourceLinks from '@/components/Global/ResourceLinks';
 import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
-import {
-  homeWrapperClass,
-  infoBoxStyle,
-} from '@/pages/home/styles.css';
+import { homeWrapperClass, infoBoxStyle } from '@/pages/home/styles.css';
 import {
   Accordion,
   Box,

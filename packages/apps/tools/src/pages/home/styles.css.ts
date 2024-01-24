@@ -23,13 +23,3 @@ export const infoBoxStyle = style([
     flexDirection: 'column',
   }),
 ]);
-
-export const infoBoxStyle = style([
-  sprinkles({
-    fontSize: '$sm',
-    padding: '$4',
-    borderRadius: '$sm',
-    display: 'flex',
-    flexDirection: 'column',
-  }),
-]);
