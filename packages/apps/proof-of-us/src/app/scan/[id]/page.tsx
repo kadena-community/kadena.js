@@ -1,5 +1,5 @@
 'use client';
-import { ListSubscribers } from '@/components/ListSubscribers/ListSubscribers';
+import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useAccount } from '@/hooks/account';
 import { useSocket } from '@/hooks/socket';
 import type { FC } from 'react';
@@ -39,7 +39,7 @@ const Page: FC<IProps> = ({ params }) => {
         )}
       </section>
       scanned Proof Of Us with ID ({params.id})
-      <ListSubscribers />
+      <ListSignees />
     </div>
   );
 };

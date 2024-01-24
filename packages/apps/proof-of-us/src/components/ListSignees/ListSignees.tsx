@@ -3,14 +3,14 @@ import { useSocket } from '@/hooks/socket';
 import { useParams } from 'next/navigation';
 import type { FC } from 'react';
 
-export const ListSubscribers: FC = () => {
+export const ListSignees: FC = () => {
   const { id: tokenId } = useParams();
   const { proofOfUs, isInitiator, removeSignee } = useSocket();
   const { account } = useAccount();
 
   return (
     <section>
-      <h3>Subscribers</h3>
+      <h3>Signees</h3>
       <ul>
         {proofOfUs?.signees.map((signee) => (
           <li key={signee.cid}>

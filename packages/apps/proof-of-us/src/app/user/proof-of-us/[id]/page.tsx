@@ -1,5 +1,5 @@
 'use client';
-import { ListSubscribers } from '@/components/ListSubscribers/ListSubscribers';
+import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { PROOFOFUS_QR_URL } from '@/constants';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSocket } from '@/hooks/socket';
@@ -47,7 +47,7 @@ const Page: FC<IProps> = ({ params }) => {
       Proof Of Us with ID ({data.tokenId})
       <section>
         <h2>Communication</h2>
-        <ListSubscribers />
+        <ListSignees />
       </section>
       <section>
         <h2>qr code</h2>
