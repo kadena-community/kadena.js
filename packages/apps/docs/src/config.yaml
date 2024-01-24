@@ -12,9 +12,9 @@ pages:
     url: /kadena
     file: /kadena/index.tsx
     children:
-      overview:
-        url: /overview
-        file: /kadena/overview.md
+      Whykadena:
+        url: /why-kadena
+        file: /kadena/why-kadena.md
       kda:
         url: /kda
         file: /kadena/kda/index.md
@@ -25,16 +25,6 @@ pages:
           kdaconcepts:
             url: /kda-concepts
             file: /kadena/kda/kda-concepts.md
-      whitepapers:
-        url: /whitepapers
-        file: /kadena/whitepapers/index.md
-        children:
-          chainweblayer1:
-            url: /chainweb-layer-1
-            file: /kadena/whitepapers/chainweb-layer-1.md
-          pactsmartcontractlanguage:
-            url: /pact-smart-contract-language
-            file: /kadena/whitepapers/pact-smart-contract-language.md
       wallets:
         url: /wallets
         file: /kadena/wallets/index.md
@@ -52,16 +42,9 @@ pages:
           ledger:
             url: /ledger
             file: /kadena/wallets/ledger/index.md
-      support:
-        url: /support
-        file: /kadena/support/index.md
-        children:
-          developerprogram:
-            url: /developer-program
-            file: /kadena/support/developer-program.md
-          technicalgrants:
-            url: /technical-grants
-            file: /kadena/support/technical-grants.md
+      exchanges:
+        url: /exchanges
+        file: /kadena/exchanges.md
       client:
         file: /packages/libs/client/README.md
         repo: https://github.com/kadena-community/kadena.js
@@ -75,29 +58,22 @@ pages:
         file: /packages/libs/client-examples/README.md
         repo: https://github.com/kadena-community/kadena.js
         url: /client-examples
-      codeofconduct:
-        url: /code-of-conduct
-        file: /kadena/code-of-conduct.md
-      exchanges:
-        url: /exchanges
-        file: /kadena/exchanges.md
       kadenajs:
         file: /packages/libs/kadena.js/README.md
         repo: https://github.com/kadena-community/kadena.js
         url: /kadenajs
+      glossary:
+        url: /glossary
+        file: /kadena/glossary.md
+      support:
+        url: /kadena-faq.md
+        file: /kadena/kadena-faq.md
       resources:
         url: /resources
-        file: /kadena/resources/index.md
-        children:
-          presskit:
-            url: /press-kit
-            file: /kadena/resources/press-kit.md
-          glossary:
-            url: /glossary
-            file: /kadena/resources/glossary.md
-          contentrepository:
-            url: /kadena-content-repository
-            file: /kadena/resources/kadena-content-repository.md
+        file: /kadena/resources.md
+      codeofconduct:
+        url: /code-of-conduct
+        file: /kadena/code-of-conduct.md
   build:
     url: /build
     file: /build/index.tsx
