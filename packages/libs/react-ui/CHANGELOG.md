@@ -1,5 +1,53 @@
 # @kadena/react-ui
 
+## 0.7.0
+
+### Minor Changes
+
+- a4b469d49: Updated the `Tag` component to use new design tokens and
+  incorporated `useTagGroup` from react-aria
+
+  - Added the `TagGroup` component which only implements the onRemove and
+    disabledKeys config options from `useTagGroup`.
+  - Added the `TagItem` component which wraps `Item` from react-stately
+  - Removed onClose prop from the `Tag` component so its primary purpose is for
+    applying the tag styles
+  - Added the `tagAsChild` prop to allow consumers to place all accessibility
+    attributes from `TagItem` to it's child component. An example use case would
+    be when consumers need to use next/link as a tag
+
+  In most cases moving forward, consumers should use the `TagGroup` and
+  `TagItem` components to compose their tags, however the `Tag` component is
+  still exposed for when consumers need to compose their own custom component
+  using the `Tag` styles
+
+- 803668c21: Updated the Breadcrumbs component to use `useBreadcrumbs` from
+  react-aria
+- 3e940f62e: New form fields
+- b8f8fb55e: Fix logo sizes
+- bc071367c: Cleanup old Button and Link components
+- fc92629b5: Updated the Box, Stack, and Grid components props to map to the new
+  atom utility classes
+- 5516b2467: New brand logos
+- 0dc7a52b7: Updated the Box, Stack, and Grid components to accept refs
+- 5e63b76a6: Updated input props for SelectField, TextareaField and TextField
+  components and deprecated Input Select and Textarea in favour of the updated
+  ones
+- db097d39b: Breadcrumbs accepts an icon element to be rendered and exposed the
+  components in order to compose.
+- 90227d348: Use new button tokens and add small tokens utils
+- e10423358: updated NavHeader glow initial position and scroll
+- 9d3aab7c8: Add LinkButton component
+- 58ed2adfa: Improve react ui build system and remove ts path aliases
+
+### Patch Changes
+
+- 940891ac6: Used new token system
+- 13e2cc6a3: Add zIndex to Tooltip component
+- 1ed317352: Updat turbo file to cache new build artifacts
+- bd357be45: Update Select and Combobox styles
+- 47e3ac2a9: Allow className on Table components
+
 ## 0.6.0
 
 ### Minor Changes
