@@ -2173,6 +2173,46 @@ importers:
         specifier: 5.2.2
         version: 5.2.2
 
+  packages/tools/faucet-devnet:
+    dependencies:
+      '@kadena/chainweb-node-client':
+        specifier: workspace:^
+        version: link:../../libs/chainweb-node-client
+      '@kadena/client':
+        specifier: workspace:^
+        version: link:../../libs/client
+      '@kadena/client-utils':
+        specifier: workspace:^
+        version: link:../../libs/client-utils
+      '@kadena/cryptography-utils':
+        specifier: workspace:^
+        version: link:../../libs/cryptography-utils
+    devDependencies:
+      '@kadena-dev/eslint-config':
+        specifier: workspace:^
+        version: link:../eslint-config
+      '@kadena-dev/lint-package':
+        specifier: workspace:^
+        version: link:../lint-package
+      '@kadena-dev/shared-config':
+        specifier: workspace:^
+        version: link:../shared-config
+      '@kadena/types':
+        specifier: workspace:^
+        version: link:../../libs/types
+      eslint:
+        specifier: ^8.45.0
+        version: 8.53.0
+      prettier:
+        specifier: ~3.0.3
+        version: 3.0.3
+      tsx:
+        specifier: ^3.12.10
+        version: 3.12.10
+      typescript:
+        specifier: 5.2.2
+        version: 5.2.2
+
   packages/tools/integration-tests:
     dependencies:
       '@kadena/client':
@@ -5367,7 +5407,7 @@ packages:
     resolution: {integrity: sha512-BDXFbYOJzT/NBEtp71cvsrGPwGAMGRB/349rwKuoxNSiKjPraNNnlK6MIIabViCjqZugu6j+xeMDlEkWdHHJSg==}
     dependencies:
       '@esbuild-kit/core-utils': 3.3.2
-      get-tsconfig: 4.7.0
+      get-tsconfig: 4.7.2
     dev: true
 
   /@esbuild-kit/core-utils@3.3.2:
@@ -5381,7 +5421,7 @@ packages:
     resolution: {integrity: sha512-FxEMIkJKnodyA1OaCUoEvbYRkoZlLZ4d/eXFu9Fh8CbBBgP5EmZxrfTRyN0qpXZ4vOvqnE5YdRdcrmUUXuU+dA==}
     dependencies:
       '@esbuild-kit/core-utils': 3.3.2
-      get-tsconfig: 4.7.0
+      get-tsconfig: 4.7.2
     dev: true
 
   /@esbuild/aix-ppc64@0.19.10:
@@ -20035,7 +20075,7 @@ packages:
     resolution: {integrity: sha512-OHx4Qwrrt0E4jEIcI5/Xb+f+QmJYNj2rrK8wiIdQOIrB9WrrJL8cjZvXdXuBTkkEwEqLycb5BeZDV1o2i9bTew==}
     engines: {node: '>=12.0.0'}
     dependencies:
-      flatted: 3.2.7
+      flatted: 3.2.9
       keyv: 4.5.3
       rimraf: 3.0.2
 
@@ -20043,9 +20083,6 @@ packages:
     resolution: {integrity: sha512-b6suED+5/3rTpUBdG1gupIl8MPFCAMA0QXwmljLhvCUKcUvdE4gWky9zpuGCcXHOsz4J9wPGNWq6OKpmIzz3hQ==}
     hasBin: true
     dev: true
-
-  /flatted@3.2.7:
-    resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
 
   /flatted@3.2.9:
     resolution: {integrity: sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==}

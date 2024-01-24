@@ -21,7 +21,24 @@
   "files": [
     "dist"
   ],
-  "scripts": {},
-  "dependencies": {},
-  "devDependencies": {}
+  "scripts": {
+    "deploy": "tsx ./src/deploy/index.ts",
+    "start-devnet": "docker run -it -p 8080:8080 kadena/devnet:latest"
+  },
+  "dependencies": {
+    "@kadena/chainweb-node-client": "workspace:^",
+    "@kadena/client": "workspace:^",
+    "@kadena/client-utils": "workspace:^",
+    "@kadena/cryptography-utils": "workspace:^"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:^",
+    "@kadena-dev/lint-package": "workspace:^",
+    "@kadena-dev/shared-config": "workspace:^",
+    "@kadena/types": "workspace:^",
+    "eslint": "^8.45.0",
+    "prettier": "~3.0.3",
+    "tsx": "^3.12.10",
+    "typescript": "5.2.2"
+  }
 }
