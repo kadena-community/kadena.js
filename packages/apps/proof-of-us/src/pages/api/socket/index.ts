@@ -25,7 +25,7 @@ const ProofOfUsStore = () => {
     const signeesList = store[tokenId]?.signees;
     if (!signeesList) return;
 
-    if (signeesList.find((s) => s.key === account.key)) return;
+    if (signeesList.find((s) => s.cid === account.cid)) return;
 
     store[tokenId].signees = [...signeesList, { ...account, initiator: false }];
   };
@@ -36,7 +36,7 @@ const ProofOfUsStore = () => {
     if (!signeesList) return;
 
     store[tokenId].signees = [
-      ...signeesList.filter((s) => s.key !== account.key),
+      ...signeesList.filter((s) => s.cid !== account.cid),
     ];
   };
 

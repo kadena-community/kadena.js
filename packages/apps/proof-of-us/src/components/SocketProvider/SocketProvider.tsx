@@ -35,8 +35,10 @@ export const SocketContext = createContext<ISocketContext>({
   isConnected: () => false,
   isInitiator: () => false,
   getSigneeAccount: (account: IAccount): IProofOfUsSignee => ({
-    key: '',
+    cid: '',
     name: '',
+    publicKey: '',
+    initiator: false,
   }),
 });
 
@@ -76,10 +78,14 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const addSignee = async ({ tokenId }: { tokenId: string }) => {
     const socket = await connect({ tokenId });
-    socket?.emit('addSignee', {
+    if (!socket || !account) return;
+
+    socket.emit('addSignee', {
       content: {
-        name: account?.name,
-        key: account?.caccount,
+        name: account.name,
+        cid: account.cid,
+        publicKey: account.publicKey,
+        initiator: false,
       },
       to: tokenId,
     });
@@ -107,27 +113,29 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
     socket?.emit('createToken', {
       content: {
         name: account.name,
-        key: account.caccount,
+        cid: account.cid,
+        publicKey: account.publicKey,
+        initiator: false,
       },
       to: tokenId,
     });
   };
 
   const isConnected = useCallback(() => {
-    return !!state?.signees.find((s) => s.key === account?.caccount);
+    return !!state?.signees.find((s) => s.cid === account?.cid);
   }, [state]);
 
   const isInitiator = useCallback(() => {
-    const foundAccount = state?.signees.find(
-      (s) => s.key === account?.caccount,
-    );
+    const foundAccount = state?.signees.find((s) => s.cid === account?.cid);
     return !!foundAccount?.initiator;
   }, [state]);
 
   const getSigneeAccount = (account: IAccount): IProofOfUsSignee => {
     return {
-      key: account?.caccount,
-      name: account?.name,
+      cid: account.cid,
+      name: account.name,
+      publicKey: account.publicKey,
+      initiator: false,
     };
   };
 

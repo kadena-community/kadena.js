@@ -12,15 +12,21 @@ export const proofOfUsData: IProofOfUs[] = [
     signees: [
       {
         name: 'he-man',
-        key: 'k:23424',
+        cid: 'k:23424',
+        publicKey: 'WEBAUTHN-etc',
+        initiator: true,
       },
       {
         name: 'skeletor',
-        key: 'k:4545645g',
+        cid: 'k:4545645g',
+        publicKey: 'WEBAUTHN-234234',
+        initiator: false,
       },
       {
         name: 'orko',
-        key: 'k:23dfgdfg424',
+        cid: 'k:23dfgdfg424',
+        publicKey: 'WEBAUTHN-dsfdfg',
+        initiator: false,
       },
     ],
   },

@@ -29,8 +29,6 @@ interface IError {
   message: string;
 }
 
-interface IProofOfUsSignee {
-  name: string;
-  key: string;
-  initiator?: boolean;
-}
+type IProofOfUsSignee = Pick<IAccount, 'name' | 'publicKey' | 'cid'> & {
+  initiator: boolean;
+};

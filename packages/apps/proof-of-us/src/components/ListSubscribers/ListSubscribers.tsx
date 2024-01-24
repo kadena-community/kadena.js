@@ -13,10 +13,10 @@ export const ListSubscribers: FC = () => {
       <h3>Subscribers</h3>
       <ul>
         {proofOfUs?.signees.map((signee) => (
-          <li key={signee.key}>
+          <li key={signee.cid}>
             {signee.name}
 
-            {isInitiator() && account?.caccount !== signee.key ? (
+            {isInitiator() && account?.cid !== signee.cid ? (
               <button
                 onClick={() =>
                   removeSignee({ tokenId: tokenId.toString(), signee })
