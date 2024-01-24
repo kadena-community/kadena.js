@@ -1,8 +1,7 @@
 ---
 title: Kadena resources
 description:
-  Here are the official links for Kadena's social pages, blog, and developer
-  resources
+  Official links for Kadena whitepapers, blog articles, videos, developer program, and social media.
 menu: Resources
 label: Resources
 order: 7
