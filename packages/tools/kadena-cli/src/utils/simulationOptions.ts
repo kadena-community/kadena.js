@@ -66,4 +66,14 @@ export const simulationOptions = {
       'Default chain id for the simulation (eg. 0).',
     ),
   }),
+
+  simulationMaxTime: createOption({
+    key: 'simulationMaxTime' as const,
+    prompt: simulationPrompts.maxTimePrompt,
+    validation: z.number().optional(),
+    option: new Option(
+      '-t, --simulation-max-time <simulationMaxTime>',
+      'Specify the maximum time in miliseconds the simulation will run.',
+    ),
+  }),
 };
