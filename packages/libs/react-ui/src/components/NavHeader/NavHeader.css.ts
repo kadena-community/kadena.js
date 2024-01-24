@@ -1,7 +1,7 @@
-import { iconFill } from '@components/Icon/IconWrapper.css';
-import { token } from '@theme/themeUtils';
 import { style } from '@vanilla-extract/css';
-import { atoms, tokens, vars } from '../../styles';
+import { atoms, tokens } from '../../styles';
+import { token } from '../../styles/themeUtils';
+import { iconFill } from '../Icon/IconWrapper.css';
 
 export const containerClass = style([
   atoms({
@@ -127,88 +127,8 @@ export const iconButtonClass = style([
   },
 ]);
 
-// TODO review
 export const selectContainerClass = style([
-  atoms({
-    alignItems: 'stretch',
-    display: 'flex',
-    lineHeight: 'lg',
-    overflow: 'hidden',
-    position: 'relative',
-    flexShrink: 0,
-  }),
   {
-    paddingLeft: vars.sizes.$4,
-    paddingRight: vars.sizes.$2,
-    backgroundColor: vars.colors.$gray90,
-    borderRadius: '1px',
-    border: `1px solid ${vars.colors.$gray40}`,
-    selectors: {
-      '&:active': {
-        color: vars.colors.$gray40,
-      },
-    },
-  },
-]);
-
-export const selectContainerClassDisabled = style([
-  {
-    backgroundColor: vars.colors.$gray20,
-    color: vars.colors.$gray100,
-  },
-]);
-
-export const selectIconClass = style([
-  atoms({
-    alignItems: 'center',
-    display: 'flex',
-  }),
-  {
-    color: vars.colors.$gray40,
-    selectors: {
-      '&:active': {
-        color: vars.colors.$gray40,
-      },
-    },
-  },
-]);
-
-export const selectClass = style([
-  atoms({
-    background: 'none',
-    border: 'none',
-    flexGrow: 1,
-    outline: 'none',
-    fontSize: 'base',
-  }),
-  {
-    backgroundColor: 'inherit',
-    color: vars.colors.$gray40,
-    appearance: 'none',
-    padding: `${vars.sizes.$2} 0`,
-    paddingRight: vars.sizes.$8,
-    paddingLeft: vars.sizes.$3,
-  },
-]);
-
-export const chevronIconClass = style([
-  atoms({
-    position: 'absolute',
-    display: 'inline-flex',
-    alignItems: 'center',
-    top: 0,
-    bottom: 0,
-  }),
-  {
-    right: vars.sizes.$1,
-    color: vars.colors.$gray40,
-    marginRight: vars.sizes.$2,
-    pointerEvents: 'none',
-    zIndex: 10,
-    selectors: {
-      '&:active': {
-        color: vars.colors.$gray40,
-      },
-    },
+    border: `1px solid ${token('color.neutral.n60')}`,
   },
 ]);

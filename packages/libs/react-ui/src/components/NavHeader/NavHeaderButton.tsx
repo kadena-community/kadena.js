@@ -1,8 +1,8 @@
-import type { IButtonProps } from '@components/Button';
-import { Button } from '@components/Button';
 import cn from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
+import type { IButtonProps } from '../Button';
+import { Button } from '../Button';
 import { iconButtonClass } from './NavHeader.css';
 
 export interface INavHeaderButtonProps extends IButtonProps {}

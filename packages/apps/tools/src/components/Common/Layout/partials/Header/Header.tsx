@@ -13,6 +13,7 @@ import {
   NavHeaderLink,
   NavHeaderLinkList,
   NavHeaderSelect,
+  SelectItem,
   SystemIcon,
 } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
@@ -99,15 +100,13 @@ const Header: FC<IHeaderProps> = () => {
           icon="Earth"
         >
           {networksData.map((network: INetworkData) => (
-            <option
-              key={network.networkId}
-              value={network.networkId}
-              disabled={network.networkId === 'mainnet01'}
-            >
+            <SelectItem key={network.networkId} textValue={network.networkId}>
               {network.label}
-            </option>
+            </SelectItem>
           ))}
-          <option value="custom">{t('+ add network')}</option>
+          <SelectItem key="custom" textValue="custom">
+            {t('+ add network')}
+          </SelectItem>
         </NavHeaderSelect>
         {/* <div className={walletConnectWrapperStyle}>
         <WalletConnectButton />

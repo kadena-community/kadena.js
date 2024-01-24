@@ -68,7 +68,6 @@ export const listItemClass = style([
       },
       '&[data-disabled="true"]': {
         color: token('color.text.base.@disabled'),
-        backgroundColor: token('color.background.base.@disabled'),
         cursor: 'not-allowed',
       },
       '&[data-focused="true"]': {
