@@ -2,15 +2,13 @@ import { Option, program } from 'commander';
 import { z } from 'zod';
 import {
   account,
-  // contract,
   devnet as devnetPrompts,
   generic,
   genericActionsPrompts,
   keys,
-  // marmalade,
   networks,
   security,
-  simulate as simulatePrompts,
+  tx,
   typescript,
 } from '../prompts/index.js';
 
@@ -32,6 +30,10 @@ import {
 } from '../networks/utils/networkHelpers.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
+import { templateVariables } from '../prompts/tx.js';
+import { services } from '../services/index.js';
+import { defaultTemplates } from '../tx/commands/templates/templates.js';
+import { getTemplateVariables } from '../tx/utils/template.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
 import { removeAfterFirstDot } from './path.util.js';
@@ -196,70 +198,14 @@ export const globalOptions = {
       'Version of the kadena/devnet Docker image to use (e.g. "latest")',
     ),
   }),
-  //Simulate
-  simulateNoAccounts: createOption({
-    key: 'accounts' as const,
-    prompt: simulatePrompts.simulateNoAccountsPrompt,
-    validation: z.number(),
-    option: new Option(
-      '-a, --accounts <accounts>',
-      'Enter the amount of accounts to be created in the simulation.',
-    ),
-  }),
-  simulateTransferInterval: createOption({
-    key: 'interval' as const,
-    prompt: simulatePrompts.simulateTransferIntervalPrompt,
-    validation: z.number(),
-    option: new Option(
-      '-i, --interval <interval>',
-      'Enter the transfer interval in milliseconds.',
-    ).argParser((value) => parseInt(value, 10)),
-  }),
-
-  simulateMaxAmount: createOption({
-    key: 'maxAmount' as const,
-    prompt: simulatePrompts.simulateMaxAmountPrompt,
-    validation: z.number(),
-    option: new Option(
-      '-x, --max-amount <maxAmount>',
-      'Enter the max transfer amount per single transaction (coin).',
-    ),
-  }),
-
-  simulateTokenPool: createOption({
-    key: 'tokenPool' as const,
-    prompt: simulatePrompts.simulateTokenPoolPrompt,
-    validation: z.number(),
-    option: new Option(
-      '-p, --token-pool <tokenPool>',
-      'Enter the total token pool (coin).',
-    ),
-  }),
-  simulateSeed: createOption({
-    key: 'seed' as const,
-    prompt: simulatePrompts.simulateSeedPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-s, --seed <seed>',
-      'Enter the seed for the simulation.',
-    ),
-  }),
-  simulateLogFolder: createOption({
+  // Logs
+  logFolder: createOption({
     key: 'logFolder' as const,
-    prompt: simulatePrompts.simulateLogFolderPrompt,
+    prompt: generic.logFolderPrompt,
     validation: z.string(),
     option: new Option(
       '-l, --log-folder <logFolder>',
-      'Specify the directory where the log file will be generated.',
-    ),
-  }),
-  simulateMaxTime: createOption({
-    key: 'maxTime' as const,
-    prompt: simulatePrompts.simulateMaxTimePrompt,
-    validation: z.number().optional(),
-    option: new Option(
-      '-t, --max-time <maxTime>',
-      'Specify the maximum time in miliseconds the simulation will run.',
+      'Directory where the log file will be generated. (e.g. ./kadena/simulation-logs/',
     ),
   }),
 
@@ -431,7 +377,7 @@ export const globalOptions = {
     option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
     defaultIsOptional: false,
     expand: async (keyWallet: string) => {
-      return await getWallet(keyWallet);
+      return keyWallet === 'all' ? null : await getWallet(keyWallet);
     },
   }),
   securityPassword: createOption({
@@ -557,6 +503,60 @@ export const globalOptions = {
       }
       return keyMessage;
     },
+  }),
+  // TX
+  outFileJson: createOption({
+    key: 'outFile',
+    prompt: tx.outFilePrompt,
+    validation: z.string().optional(),
+    option: new Option(
+      '-o, --out-file <outFile>',
+      'Enter the file name to save the output',
+    ),
+    defaultIsOptional: true,
+    transform(value: string) {
+      if (!value) return null;
+      const file = value.endsWith('.json') ? value : `${value}.json`;
+      return join(process.cwd(), file);
+    },
+  }),
+  selectTemplate: createOption({
+    key: 'template',
+    option: new Option('--template <template>', 'select a template'),
+    validation: z.string(),
+    prompt: tx.selectTemplate,
+    async expand(templateInput: string) {
+      // option 1. --template="send"
+      // option 2. --template="./send.ktpl"
+
+      let template = defaultTemplates[templateInput];
+
+      if (template === undefined) {
+        // not in template list, try to load from file
+        const templatePath = join(process.cwd(), templateInput);
+        const file = await services.filesystem.readFile(templatePath);
+
+        if (file === null) {
+          // not in file either, error
+          throw Error(`Template "${templateInput}" not found`);
+        }
+
+        template = file;
+      }
+
+      const variables = getTemplateVariables(template);
+
+      return { template, variables };
+    },
+  }),
+  templateVariables: createOption({
+    key: 'templateVariables',
+    validation: z.object({}).passthrough(),
+    option: new Option(
+      '--template-variables <templateVariables>',
+      'template variables',
+    ),
+    prompt: templateVariables,
   }),
 } as const;
 

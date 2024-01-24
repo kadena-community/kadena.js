@@ -1,5 +1,5 @@
-import fs from 'fs';
 import path from 'path';
+import { services } from '../../../services/index.js';
 
 export interface IFileData {
   timestamp: number;
@@ -23,13 +23,14 @@ export type TransferType =
 
 export type TokenActionType = 'create' | 'mint' | 'transfer' | undefined;
 
-export function createDir(directory: string): void {
-  if (!fs.existsSync(directory)) {
-    fs.mkdirSync(directory);
-  }
+export async function createDir(directory: string): Promise<void> {
+  await services.filesystem.ensureDirectoryExists(directory);
 }
 
-export function createFile(folder: string, filename: string): string {
+export async function createLogFile(
+  folder: string,
+  filename: string,
+): Promise<string> {
   const exampleData: IFileData = {
     timestamp: 0,
     from: '',
@@ -39,17 +40,17 @@ export function createFile(folder: string, filename: string): string {
     action: undefined,
   };
   const directory = path.join(`${folder}/`);
-  createDir(directory);
+  await createDir(directory);
   const filepath = path.join(directory, filename);
   const headers = `${Object.keys(exampleData).join(',')}\n`;
-  fs.writeFileSync(filepath, headers);
+  await services.filesystem.writeFile(filepath, headers);
   return filepath;
 }
 
-export function appendToFile(
+export async function appendToLogFile(
   filepath: string,
   data: IFileData | IFileError,
-): void {
+): Promise<void> {
   const dataString = Object.values(data).join(',');
-  fs.appendFileSync(filepath, `${dataString}\n`);
+  await services.filesystem.appendFile(filepath, `${dataString}\n`);
 }

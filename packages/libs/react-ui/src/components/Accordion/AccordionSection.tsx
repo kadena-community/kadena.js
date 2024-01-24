@@ -1,8 +1,8 @@
 'use client';
-import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useContext } from 'react';
+import { SystemIcon } from '../Icon';
 import { AccordionContext } from './Accordion.context';
 import {
   accordionButtonClass,

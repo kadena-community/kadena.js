@@ -1,7 +1,8 @@
-import type { IUnsignedCommand } from '@kadena/client';
 import { verifySig } from '@kadena/cryptography-utils';
+import type { BinaryLike } from '../utils/crypto.js';
 import type { EncryptedString } from '../utils/kadenaEncryption.js';
 import { kadenaDecrypt } from '../utils/kadenaEncryption.js';
+import type { ISignatureWithPublicKey } from './utils/sign.js';
 import { signWithKeyPair, signWithSeed } from './utils/sign.js';
 
 /**
@@ -12,15 +13,36 @@ import { signWithKeyPair, signWithSeed } from './utils/sign.js';
  * @returns {Function} A function that takes an unsigned command (`IUnsignedCommand`) and returns an object with an array of signatures.
  */
 export function kadenaSignWithKeyPair(
-  password: string,
+  password: BinaryLike,
   publicKey: string,
   encryptedPrivateKey: EncryptedString,
-): (tx: IUnsignedCommand) => { sigs: { sig: string }[] } {
-  return signWithKeyPair(
-    publicKey,
-    Buffer.from(kadenaDecrypt(password, encryptedPrivateKey)).toString('hex'),
-  );
+): (hash: string) => Promise<ISignatureWithPublicKey> {
+  const decryptedPrivateKey = kadenaDecrypt(password, encryptedPrivateKey);
+  decryptedPrivateKey.catch(() => {
+    console.error('Could not decrypt private key');
+  });
+  return async (hash: string) =>
+    signWithKeyPair(
+      publicKey,
+      Buffer.from(await kadenaDecrypt(password, encryptedPrivateKey)).toString(
+        'hex',
+      ),
+    )(hash);
 }
+
+export function kadenaSignWithSeed(
+  password: BinaryLike,
+  seed: BinaryLike,
+  index: number,
+  derivationPathTemplate?: string,
+): (hash: string) => Promise<ISignatureWithPublicKey>;
+
+export function kadenaSignWithSeed(
+  password: BinaryLike,
+  seed: BinaryLike,
+  index: number[],
+  derivationPathTemplate?: string,
+): (hash: string) => Promise<ISignatureWithPublicKey[]>;
 
 /**
  * Signs a Kadena transaction with a seed and index.
@@ -30,15 +52,33 @@ export function kadenaSignWithKeyPair(
  * @returns {Function} A function that takes an unsigned command (`IUnsignedCommand`) and returns an object with an array of signatures.
  */
 export function kadenaSignWithSeed(
-  password: string,
-  seed: EncryptedString,
-  index: number,
+  password: BinaryLike,
+  seed: BinaryLike,
+  index: number | number[],
   derivationPathTemplate: string = `m'/44'/626'/<index>'`,
-): (tx: IUnsignedCommand) => { sigs: { sig: string }[] } {
-  return signWithSeed(
-    kadenaDecrypt(password, seed),
-    derivationPathTemplate.replace('<index>', index.toString()),
+): (
+  hash: string,
+) => Promise<ISignatureWithPublicKey | ISignatureWithPublicKey[]> {
+  const decryptedSeed = kadenaDecrypt(password, seed);
+  decryptedSeed.catch(() => {
+    console.error('Could not decrypt private key');
+  });
+  if (typeof index === 'number') {
+    return async (hash: string) =>
+      signWithSeed(
+        await decryptedSeed,
+        derivationPathTemplate.replace('<index>', index.toString()),
+      )(hash);
+  }
+  const signers = index.map(
+    (i) => async (hash: string) =>
+      signWithSeed(
+        await decryptedSeed,
+        derivationPathTemplate.replace('<index>', i.toString()),
+      )(hash),
   );
+
+  return (hash: string) => Promise.all(signers.map((signer) => signer(hash)));
 }
 
 /**
@@ -50,12 +90,15 @@ export function kadenaSignWithSeed(
  * @returns {boolean} - Returns true if verification succeeded or false if it failed.
  */
 export function kadenaVerify(
-  message: string,
+  message: BinaryLike,
   publicKey: string,
   signature: string,
 ): boolean {
   // Convert the message, public key, and signature from hex string to Uint8Array
-  const msgUint8Array = Uint8Array.from(Buffer.from(message, 'hex'));
+  const msgUint8Array =
+    typeof message === 'string'
+      ? Uint8Array.from(Buffer.from(message, 'hex'))
+      : new Uint8Array(message);
   const publicKeyUint8Array = Uint8Array.from(Buffer.from(publicKey, 'hex'));
   const signatureUint8Array = Uint8Array.from(Buffer.from(signature, 'hex'));
 

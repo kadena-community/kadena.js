@@ -24,5 +24,6 @@ module.exports = {
     '@kadena-dev/typedef-var': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/no-floating-promises': 'off',
   },
 };

@@ -1,4 +1,4 @@
-import { atoms } from '@theme/atoms.css';
+import { atoms } from '../../styles/atoms.css';
 
 export const fontVariants = {
   main: [atoms({ fontFamily: 'primaryFont' })],

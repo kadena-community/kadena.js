@@ -108,6 +108,19 @@ describe('pactGrammar', () => {
       expect(data.withCapabilities).toEqual(['CAP1', 'CAP2']);
     });
 
+    it("should extract emit-event from the function's body", () => {
+      const pointer = getPointer(
+        '(defun test (a:integer b:boolean) @doc "test doc" (require-capability (CAP1)) (emit-event (EVENT_CAP)))',
+      );
+      const result = defun(pointer);
+      const data = unwrapData(result);
+      if (data === FAILED) {
+        expect(data).not.toEqual(FAILED);
+        return;
+      }
+      expect(data.events).toEqual(['EVENT_CAP']);
+    });
+
     it("should extract external module function calls from the function's body", () => {
       const pointer = getPointer(
         '(defun test (a:integer b:boolean) @doc "test doc" (namespace1.mod1.func1 1) (mod2.func2 "test"))',

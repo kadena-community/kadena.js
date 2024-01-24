@@ -1,8 +1,8 @@
-import type { LogoVariant } from '@components/BrandLogo';
-import Logo, { logoVariants } from '@components/BrandLogo';
-import { Link } from '@components/Link';
 import type { FC, FunctionComponentElement } from 'react';
 import React from 'react';
+import type { LogoVariant } from '../BrandLogo';
+import Logo, { logoVariants } from '../BrandLogo';
+import { Link } from '../Link';
 import {
   containerClass,
   itemsContainerClass,

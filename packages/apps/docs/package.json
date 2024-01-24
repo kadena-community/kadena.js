@@ -16,8 +16,9 @@
     "build:scripts": "tsx ./src/scripts/build.ts",
     "build:storybook": "pnpm run build:scripts && storybook build",
     "chromatic": "chromatic -b build:storybook",
-    "dev": "NODE_OPTIONS=--max-old-space-size=8192 NODE_ENV=development pnpm run build:scripts && concurrently \"next dev\" \"pnpm run dev:docswatch\"",
+    "dev": "NODE_OPTIONS=--max-old-space-size=8192 IGNOREREPO=true NODE_ENV=development pnpm run build:scripts && concurrently \"next dev\" \"pnpm run dev:docswatch\"",
     "dev:docswatch": "NODE_ENV=development tsx ./src/scripts/watchdocs.ts",
+    "dev:full": "NODE_OPTIONS=--max-old-space-size=8192 NODE_ENV=development pnpm run build:scripts && concurrently \"next dev\" \"pnpm run dev:docswatch\"",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",
@@ -29,7 +30,8 @@
     "storybook": "storybook dev -p 6006",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "verify": "tsc --noEmit"
   },
   "dependencies": {
     "@7-docs/edge": "^0.5.1",

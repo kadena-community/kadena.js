@@ -18,7 +18,6 @@ import {
   Table,
   Tabs,
 } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/theme';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -29,7 +28,10 @@ const NonFungibleAccount: React.FC = () => {
     accountName: router.query.account as string,
   };
 
-  const { loading, data, error } = useGetNonFungibleAccountQuery({ variables });
+  const { loading, data, error } = useGetNonFungibleAccountQuery({
+    variables,
+    skip: !router.query.account,
+  });
 
   return (
     <>
@@ -43,7 +45,7 @@ const NonFungibleAccount: React.FC = () => {
         />
       </Stack>
 
-      <Box className={sprinkles({ marginBlockEnd: '$8' })} />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}
@@ -51,16 +53,14 @@ const NonFungibleAccount: React.FC = () => {
         loaderText="Retrieving account information..."
       />
 
-      {data?.nonFungibleAccount &&
-        data?.nonFungibleAccount?.chainAccounts.length === 0 && (
-          <>
-            <Notification intent="info" role="status">
-              We could not find any data on this account. Please check the
-              account name.
-            </Notification>
-            <Box margin="sm" />
-          </>
-        )}
+      {((data?.nonFungibleAccount &&
+        data?.nonFungibleAccount?.chainAccounts.length === 0) ||
+        (!loading && !error && !data?.nonFungibleAccount)) && (
+        <Notification intent="info" role="status">
+          We could not find any data on this account. Please check the account
+          name.
+        </Notification>
+      )}
 
       {data?.nonFungibleAccount && (
         <div>

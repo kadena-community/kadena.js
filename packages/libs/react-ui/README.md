@@ -98,10 +98,10 @@ export const Component = () => {
 We are using [vanilla-extract/css][1] to define our design system and style our
 components. To utilize the same theme variables and utility classes in
 conjunction with [vanilla-extract/css][1] in your own project, you can import
-them via `@kadena/react-ui/theme`:
+them via `@kadena/react-ui/styles`:
 
 ```ts
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { sprinkles, vars } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const exampleClass = style([
@@ -112,6 +112,11 @@ export const exampleClass = style([
   }),
 ]);
 ```
+
+### Global styles
+
+We are overriding some global styles and adding fonts in this library. To make sure fonts are loaded and global styles are applied, you will need to add the `import '@kadena/react-ui/global'` to your app's entry point.
+
 
 ### Dark Theme
 
@@ -125,7 +130,7 @@ You can use "next-themes" to set this up in Next.js projects by wrapping
 `Component` with the `ThemeProvider` in `__app.tsx`
 
 ```js
-import { darkThemeClass } from '@kadena/react-ui/theme';
+import { darkThemeClass } from '@kadena/react-ui';
 import { ThemeProvider } from 'next-themes';
 
 export const MyApp = ({ Component, pageProps }) => {

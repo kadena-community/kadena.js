@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { describe, expect, it } from 'vitest';
 
-import { Tooltip } from '@components/Tooltip';
+import { Tooltip } from '../Tooltip';
 
 describe('Tooltip', () => {
   it('should render the provided children and tooltip when the children are hovered or focused', async () => {

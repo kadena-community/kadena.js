@@ -1,7 +1,7 @@
-import { atoms } from '@theme/atoms.css';
-import { tokens } from '@theme/tokens/contract.css';
 import { style } from '@vanilla-extract/css';
 import { calc } from '@vanilla-extract/css-utils';
+import { atoms } from '../../styles/atoms.css';
+import { tokens } from '../../styles/tokens/contract.css';
 
 export const tagItemClass = style([
   {

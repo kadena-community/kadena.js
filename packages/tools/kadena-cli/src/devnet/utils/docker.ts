@@ -141,11 +141,3 @@ export function updateDevnet(version?: string): void {
   execSync(`docker pull ${image}`);
   console.log(chalk.green(`Updated ${image}`));
 }
-
-export function containerIsRunning(name: string): boolean {
-  const runningContainers = execSync('docker ps --format "{{.Names}}"')
-    .toString()
-    .trim()
-    .split('\n');
-  return runningContainers.includes(name);
-}

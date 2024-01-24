@@ -2,7 +2,8 @@ import {
   Grid,
   GridItem,
   Heading,
-  SelectField,
+  Select,
+  SelectItem,
   Stack,
   TabItem,
   Tabs,
@@ -56,46 +57,46 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
     <Stack flexDirection={'column'}>
       <Grid columns={3}>
         <GridItem>
-          <SelectField
+          <Select
             label={t('Keyboard handler')}
             id="editor-keyboard-handler"
-            ariaLabel={t('Select which keyboard to use for the code editor')}
-            onChange={(e) => {
-              setKeyboardHandler(e.target.value as KeyboardHandler);
+            aria-label={t('Select which keyboard to use for the code editor')}
+            onSelectionChange={(key) => {
+              setKeyboardHandler(key.toString() as KeyboardHandler);
             }}
           >
             {keyboards.map((keyboard) => (
-              <option key={`editor-keyboard-${keyboard}`}>{keyboard}</option>
+              <SelectItem key={keyboard}>{keyboard}</SelectItem>
             ))}
-          </SelectField>
+          </Select>
         </GridItem>
         <GridItem>
-          <SelectField
+          <Select
             label={t('Theme')}
             id="editor-theme-select"
-            ariaLabel={t('Select which theme to use for the code editor')}
-            onChange={(e) => {
-              setTheme(e.target.value as Theme);
+            aria-label={t('Select which theme to use for the code editor')}
+            onSelectionChange={(key) => {
+              setTheme(key.toString() as Theme);
             }}
           >
             {themes.map((theme) => (
-              <option key={`editor-theme-${theme}`}>{theme}</option>
+              <SelectItem key={theme}>{theme}</SelectItem>
             ))}
-          </SelectField>
+          </Select>
         </GridItem>
         <GridItem>
-          <SelectField
+          <Select
             label={t('Mode')}
             id="editor-mode-select"
-            ariaLabel={t('Select which mode to use for the code editor')}
-            onChange={(e) => {
-              setMode(e.target.value as Mode);
+            aria-label={t('Select which mode to use for the code editor')}
+            onSelectionChange={(key) => {
+              setMode(key.toString() as Mode);
             }}
           >
             {modes.map((mode) => (
-              <option key={`editor-mode-${mode}`}>{mode}</option>
+              <SelectItem key={mode}>{mode}</SelectItem>
             ))}
-          </SelectField>
+          </Select>
         </GridItem>
       </Grid>
       <Tabs defaultSelectedKey={moduleToTabId(openedModules[0])}>

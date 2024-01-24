@@ -1,4 +1,5 @@
 etc
+dist
 lib
 temp
 src/chainweaver/vendor/**/*

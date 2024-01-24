@@ -2,23 +2,21 @@ import type { ChainId, ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCreate } from '@kadena/client-utils/coin';
 import { PactNumber } from '@kadena/pactjs';
-import { simulationDefaults } from '../../../../constants/devnets.js';
+import type { IAccount } from '../../../../constants/devnets.js';
 import { stringifyProperty } from '../helper.js';
-import type { IAccount } from '../utils.js';
-import { sender00 } from '../utils.js';
 
 export async function transfer({
   network,
   receiver,
-  chainId = simulationDefaults.DEFAULT_CHAIN_ID,
-  sender = sender00,
-  amount = 100,
+  chainId,
+  sender,
+  amount,
 }: {
   network: { host: string; id: string };
   receiver: IAccount;
-  chainId?: ChainId;
-  sender?: IAccount;
-  amount?: number;
+  chainId: ChainId;
+  sender: IAccount;
+  amount: number;
 }): Promise<ICommandResult> {
   const pactAmount = new PactNumber(amount).toPactDecimal();
 

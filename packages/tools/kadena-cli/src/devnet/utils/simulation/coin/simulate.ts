@@ -1,7 +1,11 @@
 import type { ChainId } from '@kadena/client';
-import { simulationDefaults } from '../../../../constants/devnets.js';
+import type { IAccount } from '../../../../constants/devnets.js';
+import {
+  defaultAccount,
+  simulationDefaults,
+} from '../../../../constants/devnets.js';
 import type { TransferType } from '../file.js';
-import { appendToFile, createFile } from '../file.js';
+import { appendToLogFile, createLogFile } from '../file.js';
 import {
   generateAccount,
   getAccountBalance,
@@ -11,8 +15,6 @@ import {
   seedRandom,
   stringifyProperty,
 } from '../helper.js';
-import type { IAccount } from '../utils.js';
-import { sender00 } from '../utils.js';
 import { crossChainTransfer } from './crosschain-transfer.js';
 import { safeTransfer } from './safe-transfer.js';
 import { transfer } from './transfer.js';
@@ -23,8 +25,6 @@ const simulationTransferOptions: TransferType[] = [
   'safe-transfer',
 ];
 
-export const MARMALADE_TEMPLATE_FOLDER = 'src/devnet/contracts/marmalade-v2';
-
 export interface ISimulationOptions {
   network: { host: string; id: string };
   numberOfAccounts: number;
@@ -32,18 +32,20 @@ export interface ISimulationOptions {
   maxAmount: number;
   tokenPool: number;
   logFolder: string;
+  defaultChain: ChainId;
   seed: string;
   maxTime?: number;
 }
 
 export async function simulateCoin({
   network,
-  numberOfAccounts = 6,
-  transferInterval = 100,
-  maxAmount = 25,
-  tokenPool = 1000000,
+  numberOfAccounts,
+  transferInterval,
+  maxAmount,
+  tokenPool,
   logFolder,
-  seed = Date.now().toString(),
+  seed,
+  defaultChain,
   maxTime,
 }: ISimulationOptions): Promise<void> {
   const accounts: IAccount[] = [];
@@ -62,14 +64,17 @@ export async function simulateCoin({
   }
 
   console.log('Seed value: ', seed);
-  const filepath = createFile(logFolder, `coin-${Date.now()}-${seed}.csv`);
+  const filepath = await createLogFile(
+    logFolder,
+    `coin-${Date.now()}-${seed}.csv`,
+  );
 
   try {
     // Create accounts
     for (let i = 0; i < numberOfAccounts; i++) {
       // This will determine if the account has 1 or 2 keys (even = 1 key, odd = 2 keys)
       const noOfKeys = i % 2 === 0 ? 1 : 2;
-      let account = await generateAccount(noOfKeys);
+      let account = await generateAccount(noOfKeys, defaultChain, network.host);
       console.log(
         `Generated KeyPair\nAccount: ${
           account.account
@@ -87,6 +92,7 @@ export async function simulateCoin({
           : 'transfer';
 
       let result;
+      const sender: IAccount = { ...defaultAccount, chainId: '0' };
 
       if (fundingType === 'cross-chain-transfer') {
         account = {
@@ -94,25 +100,28 @@ export async function simulateCoin({
           chainId: '1',
         };
 
-        const sender: IAccount = { ...sender00, chainId: '0' };
-
         result = await crossChainTransfer({
           network,
           sender,
           receiver: account,
           amount: tokenPool / numberOfAccounts,
+          gasPayer: defaultAccount,
         });
       } else if (fundingType === 'safe-transfer') {
         result = await safeTransfer({
           network,
+          chainId: defaultChain,
           receiver: account,
           amount: tokenPool / numberOfAccounts,
+          sender,
         });
       } else {
         result = await transfer({
           network,
           receiver: account,
+          chainId: defaultChain,
           amount: tokenPool / numberOfAccounts,
+          sender,
         });
       }
 
@@ -122,9 +131,9 @@ export async function simulateCoin({
       }
       accounts.push(account);
 
-      appendToFile(filepath, {
+      await appendToLogFile(filepath, {
         timestamp: Date.now(),
-        from: 'sender00',
+        from: defaultAccount.account,
         to: account.account,
         amount: tokenPool / numberOfAccounts,
         requestKey: result.reqKey,
@@ -149,29 +158,30 @@ export async function simulateCoin({
           await transfer({
             network,
             receiver: account,
+            chainId: defaultChain,
             amount: tokenPool / numberOfAccounts,
+            sender: defaultAccount,
           });
           counter = 0;
         }
 
-        const balance = await getAccountBalance({
-          account: account.account,
-          chainId: account.chainId || simulationDefaults.DEFAULT_CHAIN_ID,
-        });
-
-        // using a random number safety gap to avoid underflowing the account
-        const amountWithSafetyGap = amount + getRandomNumber(seededRandomNo, 1);
-        if (amountWithSafetyGap > parseFloat(balance)) {
-          console.warn(
-            `Insufficient funds for ${account.account}\nFunds necessary: ${amountWithSafetyGap}\nFunds available: ${balance}`,
-          );
-          console.log('Skipping transfer');
+        // If not enough balance, continue
+        if (
+          !(await validateBalance(
+            account,
+            amount,
+            network.host,
+            defaultChain,
+            seededRandomNo,
+          ))
+        ) {
           continue;
         }
 
         // Generate seeded random number based on the previous number
         seededRandomNo = seedRandom(`${seededRandomNo}`);
 
+        // Randomly choose next account
         let nextAccount =
           accounts[getRandomNumber(seededRandomNo, accounts.length)];
 
@@ -188,6 +198,7 @@ export async function simulateCoin({
           transferType === 'cross-chain-transfer' &&
           simulationDefaults.CHAIN_COUNT > 1
         ) {
+          // Make sure the chain id is different
           if (account.chainId === nextAccount.chainId) {
             nextAccount = {
               ...nextAccount,
@@ -214,7 +225,7 @@ export async function simulateCoin({
             gasPayer:
               possibleGasPayer.chainId === nextAccount.chainId
                 ? possibleGasPayer
-                : sender00,
+                : defaultAccount,
           });
         } else {
           // Make sure the chain id is the same if the transfer type is transfer or safe-transfer
@@ -234,7 +245,7 @@ export async function simulateCoin({
               receiver: nextAccount,
               sender: account,
               amount,
-              chainId: account.chainId,
+              chainId: account.chainId || defaultChain,
             });
           }
           if (transferType === 'safe-transfer') {
@@ -243,12 +254,12 @@ export async function simulateCoin({
               receiver: nextAccount,
               sender: account,
               amount,
-              chainId: account.chainId,
+              chainId: account.chainId || defaultChain,
             });
           }
         }
 
-        appendToFile(filepath, {
+        await appendToLogFile(filepath, {
           timestamp: Date.now(),
           from: account.account,
           to: nextAccount.account,
@@ -280,7 +291,33 @@ export async function simulateCoin({
     }
   } catch (error) {
     console.error(error);
-    appendToFile(filepath, { error });
+    await appendToLogFile(filepath, { error });
     throw error;
   }
+}
+
+async function validateBalance(
+  account: IAccount,
+  amount: number,
+  networkHost: string,
+  defaultChain: ChainId,
+  seededRandomNo: number,
+): Promise<boolean> {
+  const balance = await getAccountBalance({
+    account: account.account,
+    chainId: account.chainId || defaultChain,
+    networkHost: networkHost,
+  });
+  // using a random number safety gap to avoid underflowing the account
+  const amountWithSafetyGap = amount + getRandomNumber(seededRandomNo, 1);
+
+  if (amountWithSafetyGap > parseFloat(balance)) {
+    console.warn(
+      `Insufficient funds for ${account.account}\nFunds necessary: ${amountWithSafetyGap}\nFunds available: ${balance}`,
+    );
+    console.log('Skipping transfer');
+    return false;
+  }
+
+  return true;
 }

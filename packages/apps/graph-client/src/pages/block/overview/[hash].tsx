@@ -3,7 +3,7 @@ import {
   useGetBlockFromHashQuery,
   useGetGraphConfigurationQuery,
 } from '@/__generated__/sdk';
-import { centerBlockStyle } from '@/components/common/center-block/styles.css';
+import { centerBlockClass } from '@/components/common/center-block/styles.css';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import {
@@ -11,14 +11,15 @@ import {
   getGraphConfiguration,
 } from '@/graphql/queries.graph';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
-import { Text } from '@components/text';
 import routes from '@constants/routes';
 import {
   Accordion,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+  Heading,
   Link,
+  Notification,
   Stack,
   Table,
 } from '@kadena/react-ui';
@@ -36,6 +37,7 @@ const Block: React.FC = () => {
 
   const { loading, data, error } = useGetBlockFromHashQuery({
     variables: getBlockFromHashVariables,
+    skip: !router.query.hash,
   });
 
   const { data: configData } = useGetGraphConfigurationQuery();
@@ -45,7 +47,7 @@ const Block: React.FC = () => {
   }`;
 
   return (
-    <div className={centerBlockStyle}>
+    <div className={centerBlockClass}>
       <div style={{ maxWidth: '1000px' }}>
         <Stack justifyContent="space-between">
           <Breadcrumbs>
@@ -68,19 +70,16 @@ const Block: React.FC = () => {
           loaderText="Retrieving block data..."
         />
 
+        {!loading && !error && !data?.block && (
+          <Notification intent="info" role="status">
+            We could not find any data on this block. Please check the block
+            hash.
+          </Notification>
+        )}
+
         {data?.block && (
           <>
-            <Text
-              as="h2"
-              css={{
-                display: 'block',
-                color: '$mauve12',
-                fontSize: '$2xl',
-                my: '$4',
-              }}
-            >
-              Block Header
-            </Text>
+            <Heading as="h4">Block Header</Heading>
 
             <Table.Root wordBreak="break-word">
               <Table.Body>
@@ -107,12 +106,12 @@ const Block: React.FC = () => {
                     <strong>Confirmation Depth</strong>
                   </Table.Td>
                   <Table.Td>
-                    {configData?.graphConfiguration?.maximumConfirmationDepth
-                      ? data.block.confirmationDepth ===
-                        configData.graphConfiguration?.maximumConfirmationDepth
-                        ? `> ${data.block.confirmationDepth - 1}`
-                        : data.block.confirmationDepth
-                      : data.block.confirmationDepth}
+                    {!configData?.graphConfiguration
+                      ?.maximumConfirmationDepth ||
+                    data.block.confirmationDepth <
+                      configData.graphConfiguration.maximumConfirmationDepth
+                      ? data.block.confirmationDepth
+                      : `>${data.block.confirmationDepth}`}
                   </Table.Td>
                 </Table.Tr>
               </Table.Body>
@@ -157,17 +156,8 @@ const Block: React.FC = () => {
 
             <Box margin="md" />
 
-            <Text
-              as="h2"
-              css={{
-                display: 'block',
-                color: '$mauve12',
-                fontSize: '$2xl',
-                my: '$4',
-              }}
-            >
-              Block Payload
-            </Text>
+            <Heading as="h4">Block Payload</Heading>
+
             <Table.Root wordBreak="break-word">
               <Table.Body>
                 <Table.Tr>

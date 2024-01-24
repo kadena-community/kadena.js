@@ -1,6 +1,6 @@
-import { atoms } from '@theme/atoms.css';
-import { tokens } from '@theme/index';
 import { style, styleVariants } from '@vanilla-extract/css';
+import { atoms } from '../../styles/atoms.css';
+import { tokens } from '../../styles/index';
 
 export const base = style([
   atoms({
@@ -24,6 +24,7 @@ export const base = style([
       borderBottom: `6px solid ${tokens.kda.foundation.color.background['layer-3'].default}`,
       borderLeft: '6px solid transparent',
     },
+    zIndex: tokens.kda.foundation.zIndex.overlay,
   },
 ]);
 

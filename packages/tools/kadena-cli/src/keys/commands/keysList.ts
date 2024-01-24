@@ -22,9 +22,7 @@ export const createListKeysCommand: (
       for (const wallet of walletNames) {
         await printWalletKeys(await getWallet(wallet));
       }
-    }
-
-    if (config.keyWalletConfig === null) {
+    } else if (config.keyWalletConfig === null) {
       return console.error(
         chalk.red(`Selected wallet "${config.keyWallet}" not found.`),
       );
