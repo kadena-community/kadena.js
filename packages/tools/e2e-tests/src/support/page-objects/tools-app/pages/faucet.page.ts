@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { getI18nInstance } from 'playwright-i18next-fixture';
-import type { IAccount } from '../../../types/types';
+import type { IAccount } from '../../../types/accountTypes';
 import { CardComponent } from '../../react-ui/card.component';
 import { NotificationContainerComponent } from '../../react-ui/notificationContainer.component';
 import { AsideComponent } from '../components/aside.component';
@@ -62,7 +62,7 @@ export class FaucetPage {
     //Form validation is retriggered after setting the chain. Explicitly wait for the Account Name to be visible before pressing fund.
 
     await this._page
-      .getByRole('button', { name: 'Create and Fund Account' })
+      .getByRole('button', { name: this._i18n.t(`Create and Fund Account`) })
       .click();
   }
 }

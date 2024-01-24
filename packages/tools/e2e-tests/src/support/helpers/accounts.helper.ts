@@ -5,7 +5,7 @@ import { transferCreate } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import { sender00Account } from '../fixtures/accounts.fixture';
 import * as constants from '../fixtures/constants';
-import type { IAccount } from '../types/types';
+import type { IAccount } from '../types/accountTypes';
 
 export const generateAccount = async (
   keys: number = 1,

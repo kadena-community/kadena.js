@@ -1,4 +1,4 @@
-import type { IAccount } from '../types/types';
+import type { IAccount } from '../types/accountTypes';
 
 export const sender00Account: IAccount = {
   account: 'sender00',
