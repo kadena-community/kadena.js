@@ -1,4 +1,5 @@
 'use client';
+import { CapturePhoto } from '@/components/CapturePhoto/CapturePhoto';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useAccount } from '@/hooks/account';
 import { useSocket } from '@/hooks/socket';
@@ -38,6 +39,7 @@ const Page: FC<IProps> = ({ params }) => {
           <button onClick={handleRemove}>remove</button>
         )}
       </section>
+      <CapturePhoto />
       scanned Proof Of Us with ID ({params.id})
       <ListSignees />
     </div>

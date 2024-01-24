@@ -1,4 +1,5 @@
 'use client';
+import { CapturePhoto } from '@/components/CapturePhoto/CapturePhoto';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { PROOFOFUS_QR_URL } from '@/constants';
 import { useProofOfUs } from '@/hooks/proofOfUs';
@@ -46,6 +47,7 @@ const Page: FC<IProps> = ({ params }) => {
     <div>
       Proof Of Us with ID ({data.tokenId})
       <section>
+        <CapturePhoto />
         <h2>Communication</h2>
         <ListSignees />
       </section>
