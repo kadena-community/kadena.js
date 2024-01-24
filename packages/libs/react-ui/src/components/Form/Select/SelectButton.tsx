@@ -5,7 +5,7 @@ import React, { forwardRef } from 'react';
 import type { AriaButtonProps } from 'react-aria';
 import { useButton, useHover } from 'react-aria';
 import type { SelectState } from 'react-stately';
-import { rotate180Transition } from '../../../styles';
+import { atoms, rotate180Transition } from '../../../styles';
 import { ChevronDown } from '../../Icon/System/SystemIcon';
 import { selectButtonClass } from './Select.css';
 
@@ -41,9 +41,13 @@ function SelectButtonBase<T extends object>(
       className={classNames(selectButtonClass, props.className)}
       ref={ref}
     >
-      {props.startIcon && <span>{props.startIcon}</span>}
+      {props.startIcon && (
+        <span className={atoms({ marginInlineEnd: 'sm' })}>
+          {props.startIcon}
+        </span>
+      )}
       {props.children}
-      <span>
+      <span className={atoms({ marginInlineStart: 'sm' })}>
         <ChevronDown
           data-open={props.state.isOpen}
           className={rotate180Transition}

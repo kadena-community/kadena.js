@@ -141,6 +141,28 @@ export const Default: Story = {
   },
 };
 
+export const WithIcon: Story = {
+  args: {
+    isDisabled: false,
+    isInvalid: false,
+    isRequired: false,
+    isPositive: false,
+    description: 'Some description',
+    label: 'Select something',
+    placeholder: 'Select an option',
+  },
+  render: (args) => {
+    return (
+      <Select {...args} startIcon={<Account />}>
+        <SelectItem key="option1">Option 1</SelectItem>
+        <SelectItem key="option2">Option 2</SelectItem>
+        <SelectItem key="option3">Option 3</SelectItem>
+        <SelectItem key="option4">Option 4</SelectItem>
+      </Select>
+    );
+  },
+};
+
 export const ComplexItems = () => (
   <Select label="Select an option">
     <SelectItem key="option1" textValue="Option 1">
