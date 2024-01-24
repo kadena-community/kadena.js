@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { atoms } from '../../styles/atoms.css';
-import { Select, SelectItem } from '../Form/Select';
+import { SelectItem } from '../Form/Select';
 import { SystemIcon } from '../Icon';
 import { KadenaLogo } from '../Logo';
 import {
@@ -117,7 +117,7 @@ export const Dynamic: IStory = {
         <NavHeaderSelect
           aria-label="Select Network"
           selectedKey={value}
-          onSelectionChange={(value) => setValue(value)}
+          onSelectionChange={(value: any) => setValue(value)}
           startIcon={<SystemIcon.Earth />}
         >
           {sampleNetworkItems.map((network) => (
