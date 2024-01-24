@@ -5,5 +5,5 @@
     "module": "NodeNext",
     "types": [".kadena/pactjs-generated", "vitest/globals"]
   },
-  "exclude": ["./src/mocks", "src/__tests__/**/*", "src/**/*.test.ts"]
+  "exclude": ["./src/mocks"]
 }
