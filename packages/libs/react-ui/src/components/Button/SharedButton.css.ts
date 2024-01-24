@@ -88,7 +88,7 @@ const focusRing = {
   outlineOffset: tokens.kda.foundation.border.width.normal,
 };
 
-const buttonReset = style({
+export const buttonReset = style({
   position: 'relative',
   appearance: 'button',
   WebkitAppearance: 'button',
@@ -101,7 +101,7 @@ const buttonReset = style({
   /* prevent touch scrolling on buttons */
   touchAction: 'none',
   userSelect: 'none',
-  cursor: 'default',
+  cursor: 'pointer',
   textDecoration: 'none',
   isolation: 'isolate',
   border: 'none',

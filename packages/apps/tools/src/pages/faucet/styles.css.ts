@@ -1,4 +1,4 @@
-import { atoms, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const containerClass = style([
@@ -12,15 +12,15 @@ export const containerClass = style([
 export const inputContainerClass = style([
   atoms({
     display: 'flex',
+    gap: 'md',
   }),
-  {
-    gap: vars.sizes.$4,
-  },
 ]);
 
 export const accountNameContainerClass = style([{ flex: 1 }]);
 
-export const chainSelectContainerClass = style([{ width: vars.sizes.$25 }]);
+export const chainSelectContainerClass = style([
+  { width: tokens.kda.foundation.size.n25 },
+]);
 
 export const buttonContainerClass = style([
   atoms({ display: 'flex', justifyContent: 'flex-end' }),
@@ -31,38 +31,38 @@ export const notificationContainerStyle = style([
 ]);
 
 export const infoBoxStyle = style([
-  sprinkles({
-    fontSize: '$sm',
-    padding: '$4',
-    borderRadius: '$sm',
+  atoms({
+    fontSize: 'sm',
+    padding: 'sm',
+    borderRadius: 'sm',
     display: 'flex',
     flexDirection: 'column',
   }),
 ]);
 
 export const infoTitleStyle = style([
-  sprinkles({
-    fontWeight: '$bold',
+  atoms({
+    fontWeight: 'bodyFont.bold',
   }),
 ]);
 
 export const linksBoxStyle = style([
-  sprinkles({
-    fontSize: '$sm',
-    borderRadius: '$sm',
+  atoms({
+    fontSize: 'sm',
+    borderRadius: 'sm',
     display: 'flex',
     flexDirection: 'column',
   }),
 ]);
 
 export const linkStyle = style([
-  sprinkles({
-    color: '$blue80',
+  atoms({
+    color: 'text.brand.primary.default',
   }),
   {
     selectors: {
       [`&.visited`]: {
-        color: vars.colors.$blue60,
+        color: 'text.brand.primary.default.vi',
       },
     },
   },

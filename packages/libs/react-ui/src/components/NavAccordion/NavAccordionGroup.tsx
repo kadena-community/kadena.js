@@ -1,9 +1,9 @@
 'use client';
-import { accordionButtonClass } from '@components/Accordion/Accordion.css';
-import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC, FunctionComponentElement } from 'react';
 import React, { Children, useState } from 'react';
+import { accordionButtonClass } from '../Accordion/Accordion.css';
+import { SystemIcon } from '../Icon';
 import {
   navAccordionGroupButtonClass,
   navAccordionGroupIconClass,

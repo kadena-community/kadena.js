@@ -1,8 +1,10 @@
 import type { FormStatus } from '@/components/Global';
-import { ChainSelect, FormStatusNotification } from '@/components/Global';
-import AccountNameField, {
+import {
+  AccountNameField,
+  ChainSelect,
+  FormStatusNotification,
   NAME_VALIDATION,
-} from '@/components/Global/AccountNameField';
+} from '@/components/Global';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
@@ -251,16 +253,15 @@ const ExistingAccountFaucetPage: FC = () => {
             <div className={inputContainerClass}>
               <div className={accountNameContainerClass}>
                 <AccountNameField
-                  inputProps={register('name')}
-                  error={errors.name}
+                  {...register('name')}
+                  errorMessage={errors.name?.message}
                   label={t('The account name to fund coins to')}
                 />
               </div>
               <div className={chainSelectContainerClass}>
                 <ChainSelect
-                  onChange={onChainSelectChange}
-                  value={chainID}
-                  ariaLabel="Select Chain ID"
+                  onSelectionChange={onChainSelectChange}
+                  selectedKey={chainID}
                 />
               </div>
             </div>

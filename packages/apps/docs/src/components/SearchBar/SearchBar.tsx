@@ -1,4 +1,4 @@
-import { Input, SystemIcon } from '@kadena/react-ui';
+import { SystemIcon, TextField } from '@kadena/react-ui';
 import type { FC, FormEvent, ForwardedRef, KeyboardEvent } from 'react';
 import React, { forwardRef } from 'react';
 import { searchFormClass } from './styles.css';
@@ -27,18 +27,18 @@ export const SearchBar: FC<IProps> = forwardRef<HTMLInputElement, IProps>(
 
     return (
       <form onSubmit={handleSubmit} className={searchFormClass}>
-        <Input
+        {/* TODO: Replace with SearchField */}
+        <TextField
           id="seachinput"
           onKeyUp={handleKeyUp}
           placeholder="Search"
-          outlined
+          isOutlined
           ref={ref}
           defaultValue={query}
           type="text"
           aria-label="Search"
-        >
-          <MagnifierIcon size="md" />
-        </Input>
+          endAddon={<MagnifierIcon />}
+        />
       </form>
     );
   },

@@ -1,12 +1,12 @@
-import type { Content, Root } from 'mdast-util-from-markdown/lib';
+import type { Node, Parent } from 'mdast';
 
-export const getTypes = <T>(
-  tree: Root | Content,
-  type: string,
-  arr: T[] = [],
-): T[] => {
-  if ('children' in tree) {
-    tree.children.forEach((branch: Content) => {
+function isParent(node: Node): node is Parent {
+  return 'children' in node;
+}
+
+export function getTypes<T>(tree: Node, type: string, arr: T[] = []): T[] {
+  if (isParent(tree)) {
+    tree.children.forEach((branch) => {
       if (branch.type === type) {
         arr.push(branch as unknown as T);
       }
@@ -14,7 +14,7 @@ export const getTypes = <T>(
     });
   }
   return arr;
-};
+}
 
 interface IImportReadMeItemOptions {
   RootOrder: number;

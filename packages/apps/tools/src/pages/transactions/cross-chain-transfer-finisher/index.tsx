@@ -1,15 +1,14 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
-import { FormStatusNotification } from '@/components/Global';
 import {
   AccountNameField,
+  FormItemCard,
+  FormStatusNotification,
   NAME_VALIDATION,
-} from '@/components/Global/AccountNameField';
-import { FormItemCard } from '@/components/Global/FormItemCard';
-import { OptionsModal } from '@/components/Global/OptionsModal';
-import RequestKeyField, {
+  OptionsModal,
   REQUEST_KEY_VALIDATION,
-} from '@/components/Global/RequestKeyField';
+  RequestKeyField,
+} from '@/components/Global';
 import client from '@/constants/client';
 import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
@@ -45,7 +44,7 @@ import {
   Stack,
   SystemIcon,
   TextField,
-  Textarea,
+  TextareaField,
   TrackerCard,
 } from '@kadena/react-ui';
 import Debug from 'debug';
@@ -304,10 +303,6 @@ const CrossChainTransferFinisher: FC = () => {
 
   const isGasStation = watchGasPayer === 'kadena-xchain-gas';
   const isAdvancedOptions = devOption !== 'BASIC';
-  const showInputError =
-    pollResults.error === undefined ? undefined : 'negative';
-  const showInputHelper =
-    pollResults.error !== undefined ? pollResults.error : '';
   const showNotification = Object.keys(finalResults).length > 0;
 
   const formattedSigData = `{
@@ -420,13 +415,14 @@ const CrossChainTransferFinisher: FC = () => {
               <Grid>
                 <GridItem>
                   <RequestKeyField
-                    helperText={showInputHelper}
-                    status={showInputError}
+                    errorMessage={
+                      pollResults.error || errors.requestKey?.message
+                    }
+                    isInvalid={!!pollResults.error}
                     {...register('requestKey')}
                     value={requestKey}
                     onChange={onRequestKeyChange}
                     onKeyUp={onCheckRequestKey}
-                    error={errors.requestKey}
                   />
                 </GridItem>
               </Grid>
@@ -515,18 +511,14 @@ const CrossChainTransferFinisher: FC = () => {
                   <GridItem>
                     <AccountNameField
                       label={t('Gas Payer')}
-                      inputProps={{
-                        ...register('gasPayer', { shouldUnregister: true }),
-                        id: 'gas-payer-account-input',
-                        placeholder: t('Enter Your Account'),
-                      }}
-                      error={
+                      {...register('gasPayer', { shouldUnregister: true })}
+                      id="gas-payer-account-input"
+                      placeholder={t('Enter Your Account')}
+                      isInvalid={!!errors.gasPayer}
+                      errorMessage={
                         !isGasStation
-                          ? {
-                              message: 'Please enter kadena-xchain-gas',
-                              type: 'gas-station',
-                            }
-                          : errors.gasPayer
+                          ? 'Please enter kadena-xchain-gas'
+                          : errors.gasPayer?.message
                       }
                     />
                   </GridItem>
@@ -536,11 +528,11 @@ const CrossChainTransferFinisher: FC = () => {
                   <GridItem>
                     <TextField
                       disabled={!isAdvancedOptions}
-                      helperText={t(
-                        'This input field will only be enabled if the user is in Backend or dApp Developer mode',
+                      description={t(
+                        'This input field will only be enabled if the user is in expert mode',
                       )}
-                      {...register('gasLimit', { shouldUnregister: true })}
                       label={t('Gas Limit')}
+                      {...register('gasLimit', { shouldUnregister: true })}
                       id="gas-limit-input"
                       placeholder={t('Enter Gas Limit')}
                     />
@@ -560,9 +552,9 @@ const CrossChainTransferFinisher: FC = () => {
                 <Grid columns={1}>
                   <GridItem>
                     <div className={textareaContainerStyle}>
-                      <Textarea
-                        readOnly
-                        fontFamily="codeFont"
+                      <TextareaField
+                        isReadOnly
+                        inputFont="code"
                         id="sig-text-area"
                         value={formattedSigData}
                       />

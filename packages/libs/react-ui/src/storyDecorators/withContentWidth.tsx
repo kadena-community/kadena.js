@@ -3,10 +3,10 @@
   More info: https://storybook.js.org/docs/react/writing-stories/decorators
 */
 import type { Decorator } from '@storybook/react';
-import { atoms } from '@theme/atoms.css';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
+import { atoms } from '../styles/atoms.css';
 import { minWidth } from './storyDecorators.css';
 
 interface IWithContentWidthProps {

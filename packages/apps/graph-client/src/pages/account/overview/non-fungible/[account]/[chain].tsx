@@ -17,7 +17,6 @@ import {
   Stack,
   Table,
 } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/theme';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -53,7 +52,7 @@ const FungibleChainAccount: React.FC = () => {
         />
       </Stack>
 
-      <Box className={sprinkles({ marginBlockEnd: '$8' })} />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}

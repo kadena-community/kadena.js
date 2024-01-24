@@ -5,7 +5,6 @@ import { useToolbar } from '@/context/layout-context';
 import {
   homeWrapperClass,
   infoBoxStyle,
-  linkStyle,
 } from '@/pages/home/styles.css';
 import {
   Accordion,
@@ -22,8 +21,8 @@ import {
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
-import Link from 'next/link';
 
+import { linkStyle } from '@/pages/faucet/styles.css';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
 
@@ -38,16 +37,16 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:faucet-description"
           components={[
-            <Link
+            <a
               className={linkStyle}
-              href="/faucet/existing"
               key="faucet-existing-link"
-            />,
-            <Link
-              className={linkStyle}
-              href="/faucet/new"
-              key="faucet-new-link"
-            />,
+              href="/faucet/existing"
+            >
+              {t('faucet-existing-link')}
+            </a>,
+            <a className={linkStyle} key="faucet-new-link" href="/faucet/new">
+              {t('faucet-new-link')}
+            </a>,
           ]}
         />
       ),
@@ -60,19 +59,22 @@ const Home: FC = () => {
           components={[
             <a
               className={linkStyle}
+              key="chainweb-transfer-link"
               href="https://transfer.chainweb.com/"
               target="_blank"
               rel="noreferrer"
-              key="chainweb-transfer-link"
-            />,
-            <strong key="generate-keypair" />,
+            >
+              {t('chainweb-transfer-link')}
+            </a>,
             <a
               className={linkStyle}
               href="https://chainweaver.kadena.network/"
+              key="chainweaver-link"
               target="_blank"
               rel="noreferrer"
-              key="chainweaver-link"
-            />,
+            >
+              {t('chainweaver-link')}
+            </a>,
           ]}
         />
       ),

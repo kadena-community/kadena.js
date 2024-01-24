@@ -1,5 +1,5 @@
-import { randomBytes } from 'crypto';
-import { deriveKeyPair } from './utils/sign';
+import { randomBytes } from '../utils/crypto.js';
+import { deriveKeyPair } from './utils/sign.js';
 /**
  * Generates random key pairs without updating the internal state.
  *

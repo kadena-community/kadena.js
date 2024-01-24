@@ -1,10 +1,9 @@
-import { atoms, sprinkles } from '@kadena/react-ui/theme';
+import { atoms } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const formContentStyle = style([
-  sprinkles({
+  atoms({
     position: 'relative',
-    height: '100%',
   }),
   {
     width: '680px',
@@ -14,8 +13,8 @@ export const formContentStyle = style([
 ]);
 
 export const notificationContainerStyle = style([
-  sprinkles({
-    marginY: '$sm',
+  atoms({
+    marginBlock: 'sm',
   }),
   {
     width: '680px',
@@ -31,30 +30,21 @@ export const notificationLinkStyle = style([
 ]);
 
 export const formButtonStyle = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     flexDirection: 'row-reverse',
-    marginTop: '$4',
-    paddingBottom: '$4',
-    gap: '$8',
+    marginBlockStart: 'md',
+    paddingBlockEnd: 'md',
+    gap: 'xl',
   }),
   {
     width: '680px',
   },
 ]);
 
-export const sidebarLinksStyle = style([
-  sprinkles({
-    width: '100%',
-    marginBottom: '$md',
-    position: 'absolute',
-    bottom: 0,
-  }),
-]);
-
 export const textareaContainerStyle = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    gap: '$sm',
+    gap: 'sm',
   }),
 ]);

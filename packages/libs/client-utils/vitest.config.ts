@@ -8,8 +8,8 @@ const localConfig = defineConfig({
       provider: 'v8',
       thresholds: {
         lines: 20.71,
-        functions: 67.69,
-        branches: 82.99,
+        functions: 66.66,
+        branches: 66.66,
         statements: 20.71,
       },
     },

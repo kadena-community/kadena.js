@@ -1,4 +1,4 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, vars } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const mainContentClass = style([
@@ -8,19 +8,19 @@ export const mainContentClass = style([
 ]);
 
 export const headerButtonGroupClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     justifyContent: 'flex-end',
-    gap: '$2',
+    gap: 'sm',
   }),
 ]);
 
 export const filterItemClass = style([
-  sprinkles({
-    borderRadius: '$sm',
-    paddingY: '$1',
-    paddingX: '$2',
-    marginLeft: '$2',
+  atoms({
+    borderRadius: 'sm',
+    paddingBlock: 'xs',
+    paddingInline: 'sm',
+    marginInlineStart: 'sm',
   }),
   {
     lineHeight: '1',
