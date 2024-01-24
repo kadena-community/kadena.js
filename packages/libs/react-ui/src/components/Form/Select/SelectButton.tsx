@@ -7,7 +7,6 @@ import { useButton, useHover } from 'react-aria';
 import type { SelectState } from 'react-stately';
 import { atoms, rotate180Transition } from '../../../styles';
 import { ChevronDown } from '../../Icon/System/SystemIcon';
-import { startAddon } from '../Form.css';
 import { selectButtonClass } from './Select.css';
 
 export interface ISelectButtonProps<T extends object> extends AriaButtonProps {
