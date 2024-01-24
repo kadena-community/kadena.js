@@ -109,7 +109,7 @@ export const getStaticProps: GetStaticProps = async () => {
       })),
 
       frontmatter: {
-        title: 'Intro to Kadena',
+        title: 'Welcome to Kadena',
         menu: 'Kadena',
         subTitle: 'Build the future on Kadena',
         label: 'Introduction',

@@ -65,8 +65,8 @@ pages:
       glossary:
         url: /glossary
         file: /kadena/glossary.md
-      support:
-        url: /kadena-faq.md
+      kadena-faq:
+        url: /kadena-faq
         file: /kadena/kadena-faq.md
       resources:
         url: /resources
