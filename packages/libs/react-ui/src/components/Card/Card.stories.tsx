@@ -12,7 +12,7 @@ const meta: Meta<ICardProps> = {
   decorators: [withContentWidth, withCenteredStory],
   parameters: {
     status: {
-      type: ['needsRevision'],
+      type: ['releaseCandidate'],
     },
     docs: {
       description: {

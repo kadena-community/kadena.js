@@ -12,6 +12,10 @@ export interface ITreeProps {
   onClose?: () => void;
 }
 
+/**
+ * A component used for grouping items in a tree.
+ * @deprecated This component will be redesigned.
+ */
 export const Tree: FC<ITreeProps> = ({
   title,
   items,

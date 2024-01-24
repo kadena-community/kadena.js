@@ -1,3 +1,6 @@
+// load global styles from @kadena/react-ui
+import '@kadena/react-ui/global';
+
 import Layout from '@/components/common/layout';
 import type { NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';

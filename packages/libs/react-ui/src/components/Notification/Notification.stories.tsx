@@ -30,7 +30,7 @@ const meta: Meta<StoryType> = {
   decorators: [withContentWidth],
   parameters: {
     status: {
-      type: ['inDevelopment'],
+      type: ['releaseCandidate'],
     },
     docs: {
       description: {

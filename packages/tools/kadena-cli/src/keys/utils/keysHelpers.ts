@@ -1,13 +1,17 @@
+import yaml from 'js-yaml';
 import { join } from 'node:path';
 import sanitizeFilename from 'sanitize-filename';
+
 import {
   KEY_EXT,
   KEY_LEGACY_EXT,
+  PLAIN_KEY_DIR,
   WALLET_DIR,
   WALLET_EXT,
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
 import { services } from '../../services/index.js';
+import type { IKeyPair } from './storage.js';
 import { getFilesWithExtension } from './storage.js';
 
 export interface IWalletConfig {
@@ -87,6 +91,54 @@ export async function getWalletContent(
     join(WALLET_DIR, wallet.folder, wallet.wallet),
   );
 }
+
+export type IWalletKey = {
+  alias: string;
+  key: string;
+  index: number;
+  wallet: IWallet;
+} & IKeyPair;
+
+/**
+ * This method throws if key is not found because we expect getWallet to have been used
+ * which means the key must exist on the filesystem
+ * @param wallet result of getWallet
+ * @param key key as present in wallet.keys array
+ * @returns key information
+ */
+export const getWalletKey = async (
+  wallet: IWallet,
+  key: string,
+): Promise<IWalletKey> => {
+  const file = await services.filesystem.readFile(
+    join(WALLET_DIR, wallet.folder, key),
+  );
+  const parsed = yaml.load(file ?? '') as {
+    publicKey?: string;
+    secretKey?: string;
+  };
+
+  if (parsed.publicKey === undefined) {
+    throw new Error(
+      `Public key not found for ${key} in wallet ${wallet.folder}`,
+    );
+  }
+
+  const index =
+    Number(
+      (parsed as { index?: string }).index ??
+        (key.match(/-([0-9]+)\.key$/)?.[1] as string),
+    ) || 0;
+  const alias = key.replace('.key', '').split('-').slice(0, 1).join('-');
+  return {
+    wallet,
+    key,
+    alias,
+    index,
+    publicKey: parsed.publicKey,
+    secretKey: parsed.secretKey,
+  };
+};
 
 /**
  * Fetches all key files (non-legacy) from a specified wallet directory.
@@ -178,6 +230,10 @@ export async function getAllWallets(): Promise<string[]> {
   }
 
   return wallets;
+}
+
+export async function getAllPlainKeys(): Promise<string[]> {
+  return await getFilesWithExtension(PLAIN_KEY_DIR, KEY_EXT);
 }
 
 /**

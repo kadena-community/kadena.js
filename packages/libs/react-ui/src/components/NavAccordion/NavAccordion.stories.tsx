@@ -14,7 +14,7 @@ const meta: Meta<StoryProps> = {
   title: 'Navigation/NavAccordion',
   parameters: {
     status: {
-      type: ['needsRevision'],
+      type: ['deprecated'],
     },
     controls: {
       hideNoControlsWarning: true,

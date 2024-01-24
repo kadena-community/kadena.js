@@ -16,7 +16,7 @@ const meta: Meta<IBoxProps> = {
   decorators: [onLayer2],
   parameters: {
     status: {
-      type: 'stable',
+      type: 'releaseCandidate',
     },
     docs: {
       description: {

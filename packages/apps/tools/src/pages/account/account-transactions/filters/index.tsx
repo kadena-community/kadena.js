@@ -1,5 +1,6 @@
 import { ChainSelect } from '@/components/Global';
-import AccountNameField, {
+import {
+  AccountNameField,
   NAME_VALIDATION,
 } from '@/components/Global/AccountNameField';
 import Routes from '@/constants/routes';
@@ -90,15 +91,14 @@ const CheckTransactions: FC = () => {
             <Grid columns={2}>
               <GridItem>
                 <ChainSelect
-                  onChange={onChainSelectChange}
-                  value={chainID}
-                  ariaLabel="Select Chain ID"
+                  onSelectionChange={onChainSelectChange}
+                  selectedKey={chainID}
                 />
               </GridItem>
               <GridItem>
                 <AccountNameField
-                  inputProps={register('name')}
-                  error={errors.name}
+                  {...register('name')}
+                  errorMessage={errors.name?.message}
                   label={t('Account')}
                 />
               </GridItem>

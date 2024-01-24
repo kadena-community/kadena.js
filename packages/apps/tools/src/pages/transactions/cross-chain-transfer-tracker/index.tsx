@@ -15,7 +15,6 @@ import {
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { FormFieldStatus } from '@kadena/react-ui';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
@@ -68,9 +67,7 @@ const CrossChainTransferTracker: FC = () => {
   const [data, setData] = useState<IStatusData>({});
   const [txError, setTxError] = useState<string>('');
   const [inputError, setInputError] = useState<string>('');
-  const [validRequestKey, setValidRequestKey] = useState<
-    FormFieldStatus | undefined
-  >();
+  const [validRequestKey, setValidRequestKey] = useState<boolean>(false);
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   useDidUpdateEffect(() => {
@@ -94,15 +91,15 @@ const CrossChainTransferTracker: FC = () => {
     //Clear error message when user starts typing
     setInputError('');
     if (!requestKey) {
-      setValidRequestKey(undefined);
+      setValidRequestKey(false);
       return;
     }
 
     if (validateRequestKey(requestKey) === undefined) {
-      setValidRequestKey('negative');
+      setValidRequestKey(true);
       return;
     }
-    setValidRequestKey(undefined);
+    setValidRequestKey(false);
     return;
   };
 
@@ -229,12 +226,11 @@ const CrossChainTransferTracker: FC = () => {
             <Grid>
               <GridItem>
                 <RequestKeyField
-                  helperText={inputError || undefined}
-                  status={validRequestKey}
+                  errorMessage={inputError || errors.requestKey?.message}
+                  isInvalid={validRequestKey}
                   {...register('requestKey')}
                   onKeyUp={checkRequestKey}
                   onChange={onRequestKeyChange}
-                  error={errors.requestKey}
                 />
               </GridItem>
             </Grid>
