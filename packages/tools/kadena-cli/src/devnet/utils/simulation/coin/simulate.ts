@@ -25,8 +25,6 @@ const simulationTransferOptions: TransferType[] = [
   'safe-transfer',
 ];
 
-export const MARMALADE_TEMPLATE_FOLDER = 'src/devnet/contracts/marmalade-v2';
-
 export interface ISimulationOptions {
   network: { host: string; id: string };
   numberOfAccounts: number;
