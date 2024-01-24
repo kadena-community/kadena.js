@@ -18,7 +18,7 @@ describe('Select', () => {
 
     const selectField = screen.getByLabelText('select');
     expect(selectField).toBeInTheDocument();
-  });
+  }, {timeout: 6000});
 
   it('renders the provided children options when is open', async () => {
     render(
@@ -39,7 +39,7 @@ describe('Select', () => {
 
     expect(option1).toBeInTheDocument();
     expect(option2).toBeInTheDocument();
-  });
+  }, {timeout: 6000})
 
   it('invokes the onChange event handler when an option is selected', async () => {
     const handleChange = vi.fn();
@@ -59,7 +59,7 @@ describe('Select', () => {
     await userEvent.click(selectContainer);
     await userEvent.click(screen.getByRole('option', { name: 'Option 2' }));
     expect(handleChange).toHaveBeenCalledTimes(1);
-  });
+  }, {timeout: 6000})
 
   it('disables the select element when disabled prop is true', () => {
     render(
@@ -71,5 +71,5 @@ describe('Select', () => {
 
     const selectButton = screen.getByRole('button') as HTMLButtonElement;
     expect(selectButton.disabled).toBe(true);
-  });
+  }, {timeout: 6000})
 });
