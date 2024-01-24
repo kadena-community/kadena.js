@@ -1,6 +1,6 @@
-import { getTransactionsByRequestKeyQuery } from '@fixtures/graph/testdata/queries/getTransactions';
-import { sendQuery } from '@helpers/graph/request.helper';
+import { getTransactionsByRequestKeyQuery } from '@fixtures/graph/getTransactions';
 import type { APIRequestContext } from '@playwright/test';
+import { sendQuery } from 'src/support/helpers/graph/request.helper';
 
 export async function getBlockHash(
   request: APIRequestContext,

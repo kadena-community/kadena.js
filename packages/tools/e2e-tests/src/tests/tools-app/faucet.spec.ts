@@ -1,9 +1,9 @@
+import { test } from '@fixtures/shared/test.fixture';
 import { expect } from '@playwright/test';
-import { test } from '../../support/fixtures/test.fixture';
 import {
   createAccount,
   generateAccount,
-} from '../../support/helpers/accounts.helper';
+} from '../../support/helpers/client-utils/accounts.helper';
 
 test.beforeEach(async ({ page, toolsApp }) => {
   await test.step('Open Tools and navigate to Faucet', async () => {
@@ -36,14 +36,12 @@ for (const accountType of accountTypes) {
 
   test(`Fund existing ${accountType.type} account`, async ({ toolsApp }) => {
     await test.step('Fund account on chain 0.', async () => {
-      const createdAccount = await createAccount(accountType.NumberOfKeys, '0');
+      const account = await generateAccount(accountType.NumberOfKeys, '0');
+      await createAccount(account);
       await toolsApp.faucetPage.asidePanel.clickPageLink(
         'Fund Existing Account',
       );
-      await toolsApp.faucetPage.fundExistingAccount(
-        createdAccount.account,
-        '0',
-      );
+      await toolsApp.faucetPage.fundExistingAccount(account.account, '0');
       await expect(
         await toolsApp.faucetPage.notificationComponent.getTitle(),
       ).toHaveText('Transaction is being processed...');

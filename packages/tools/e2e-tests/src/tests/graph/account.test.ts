@@ -1,21 +1,22 @@
-import type { IAccountWithSecretKey } from '@fixtures/graph/testdata/constants/accounts';
-import { sender00 } from '@fixtures/graph/testdata/constants/accounts';
-import { getAccountQuery } from '@fixtures/graph/testdata/queries/getAccount';
-import { createAccount, generateAccount } from '@helpers/graph/account.helper';
-import { base64Encode } from '@helpers/graph/cryptography.helper';
-import { sendQuery } from '@helpers/graph/request.helper';
-import { genKeyPair } from '@kadena/cryptography-utils';
+import { sender00Account } from '@constants/accounts.constants';
+import { getAccountQuery } from '@fixtures/graph/getAccount';
+import {
+  createAccount,
+  generateAccount,
+} from '@helpers/client-utils/accounts.helper';
 import { expect, test } from '@playwright/test';
+import { base64Encode } from 'src/support/helpers/graph/cryptography.helper';
+import { sendQuery } from 'src/support/helpers/graph/request.helper';
+import type { IAccount } from 'src/support/types/accountTypes';
 
-let testAccount: IAccountWithSecretKey;
+let testAccount: IAccount;
 let queryResponse: any;
 let accountCreationResult: any;
 
 test('Query: getAccount by AccountName', async ({ request }) => {
   await test.step('Given a test account has been created', async () => {
-    const keyPair = genKeyPair();
-    testAccount = await generateAccount(keyPair, '0');
-    accountCreationResult = await createAccount(testAccount);
+    testAccount = await generateAccount(1, ['0']);
+    accountCreationResult = await createAccount(testAccount, testAccount.chains[0]);
   });
   await test.step('When the getAccountQuery is executed', async () => {
     const query = getAccountQuery(testAccount.account);
@@ -29,7 +30,7 @@ test('Query: getAccount by AccountName', async ({ request }) => {
           balance: 100,
           chainId: '0',
           guard: {
-            keys: [testAccount.publicKey],
+            keys: [testAccount.keys[0].publicKey],
             predicate: 'keys-all',
           },
         },
@@ -50,7 +51,7 @@ test('Query: getAccount by AccountName', async ({ request }) => {
               height: accountCreationResult.metaData?.blockHeight,
               receiverAccount: testAccount.account,
               requestKey: accountCreationResult.reqKey,
-              senderAccount: sender00.account,
+              senderAccount: sender00Account.account,
               transaction: {
                 pactId: null,
               },

@@ -1,5 +1,5 @@
+import { grapHost } from '@constants/network.constants';
 import type { APIRequestContext } from '@playwright/test';
-import { grapHost } from '../../fixtures/graph/testdata/constants/network';
 
 export async function sendQuery(
   request: APIRequestContext,

@@ -12,3 +12,15 @@ export const sender00Account: IAccount = {
   ],
   chainId: '0',
 };
+
+export const devnetMiner: IAccount = {
+  account: 'k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
+  keys: [
+    {
+      publicKey:
+        'f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
+      secretKey: 'dummyValue',
+    },
+  ],
+  chainId: '0',
+};

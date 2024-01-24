@@ -1,25 +1,28 @@
-import type { IAccountWithSecretKey } from '@fixtures/graph/testdata/constants/accounts';
-import {
-  devnetHost,
-  networkId,
-} from '@fixtures/graph/testdata/constants/network';
+import { devnetHost, networkId } from '@constants/network.constants';
 import type { ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transfer, transferCrossChain } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
+import type { IAccount } from 'src/support/types/accountTypes';
 
 export async function transferFunds(
-  source: IAccountWithSecretKey,
-  target: IAccountWithSecretKey,
+  source: IAccount,
+  target: IAccount,
   amount: string,
   chainId: ChainId,
 ): Promise<ICommandResult> {
   const transferTask = await transfer(
     {
-      sender: { account: source.account, publicKeys: [source.publicKey] },
+      sender: {
+        account: source.account,
+        publicKeys: [source.keys[0].publicKey],
+      },
       receiver: target.account,
       amount: amount,
-      gasPayer: { account: source.account, publicKeys: [source.publicKey] },
+      gasPayer: {
+        account: source.account,
+        publicKeys: [source.keys[0].publicKey],
+      },
       chainId: chainId,
     },
     {
@@ -27,7 +30,7 @@ export async function transferFunds(
       defaults: {
         networkId: networkId,
       },
-      sign: createSignWithKeypair([source]),
+      sign: createSignWithKeypair([source.keys[0]]),
     },
   );
   const listen = await transferTask.executeTo('listen');
@@ -36,8 +39,8 @@ export async function transferFunds(
 }
 
 export async function transferFundsCrossChain(
-  source: IAccountWithSecretKey,
-  target: IAccountWithSecretKey,
+  source: IAccount,
+  target: IAccount,
   amount: string,
   sourceChain: ChainId,
   targetChain: ChainId,
@@ -46,12 +49,12 @@ export async function transferFundsCrossChain(
     {
       sender: {
         account: source.account,
-        publicKeys: [source.publicKey],
+        publicKeys: [source.keys[0].publicKey],
       },
       receiver: {
         account: target.account,
         keyset: {
-          keys: [target.publicKey],
+          keys: [target.keys[0].publicKey],
           pred: 'keys-all',
         },
       },
@@ -60,7 +63,7 @@ export async function transferFundsCrossChain(
       targetChainId: targetChain,
       targetChainGasPayer: {
         account: source.account,
-        publicKeys: [source.publicKey],
+        publicKeys: [source.keys[0].publicKey],
       },
     },
     {
@@ -68,7 +71,7 @@ export async function transferFundsCrossChain(
       defaults: {
         networkId: networkId,
       },
-      sign: createSignWithKeypair([source]),
+      sign: createSignWithKeypair([source.keys[0]]),
     },
   );
   const listenContinuation = await transferCrossChainTask.executeTo(
