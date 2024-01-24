@@ -34,7 +34,7 @@ export interface ISimulationOptions {
   logFolder: string;
   defaultChain: ChainId;
   seed: string;
-  maxTime?: number;
+  maxTime: number;
 }
 
 export async function simulateCoin({
@@ -280,7 +280,7 @@ export async function simulateCoin({
 
         const simulatedTime = Date.now() - startTime;
 
-        if (maxTime && simulatedTime > maxTime) {
+        if (simulatedTime > maxTime) {
           console.log(
             `Simulation stopped after ${maxTime}ms. Please wait for the last transactions to complete.`,
           );
