@@ -105,9 +105,18 @@ const Home: FC = () => {
                 </div>
                 <ResourceLinks
                   links={[
-                    { title: 'Pact Language Resources', href: '#' },
-                    { title: 'Whitepaper', href: '#' },
-                    { title: 'KadenaJs', href: '#' },
+                    {
+                      title: 'Pact Language Resources',
+                      href: 'https://www.kadena.io/pact',
+                    },
+                    {
+                      title: 'Whitepapers',
+                      href: 'https://www.kadena.io/whitepapers',
+                    },
+                    {
+                      title: 'Kadena Client',
+                      href: 'https://www.npmjs.com/package/@kadena/client',
+                    },
                   ]}
                 />
               </>

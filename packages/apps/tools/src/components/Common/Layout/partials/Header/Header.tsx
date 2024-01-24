@@ -82,7 +82,7 @@ const Header: FC<IHeaderProps> = () => {
             />
             <HeaderMenuButton
               title={'Application Settings'}
-              icon={'ApplicationBrackets'}
+              icon={'ProgressWrench'}
               onClick={() => handleDevOptionsClick()}
             />
           </div>
