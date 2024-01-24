@@ -5,7 +5,7 @@ import {
   simulationDefaults,
 } from '../../../../constants/devnets.js';
 import type { TransferType } from '../file.js';
-import { appendToLogFile, createFile } from '../file.js';
+import { appendToLogFile, createLogFile } from '../file.js';
 import {
   generateAccount,
   getAccountBalance,
@@ -62,7 +62,10 @@ export async function simulateCoin({
   }
 
   console.log('Seed value: ', seed);
-  const filepath = createFile(logFolder, `coin-${Date.now()}-${seed}.csv`);
+  const filepath = await createLogFile(
+    logFolder,
+    `coin-${Date.now()}-${seed}.csv`,
+  );
 
   try {
     // Create accounts

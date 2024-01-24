@@ -36,13 +36,13 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
           id: 'fast-development',
           host: config.networkConfig.networkHost,
         },
-        maxAmount: config.maxTransferAmount,
-        numberOfAccounts: config.accounts,
-        transferInterval: config.interval,
-        tokenPool: config.tokenPool,
+        maxAmount: config.simulationMaxTransferAmount,
+        numberOfAccounts: config.simulationNumberOfAccounts,
+        transferInterval: config.simulationTransferInterval,
+        tokenPool: config.simulationTokenPool,
         logFolder: config.logFolder,
-        defaultChain: config.defaultChainId,
-        seed: config.seed,
+        defaultChain: config.simulationDefaultChainId,
+        seed: config.simulationSeed,
       });
     } catch (error) {
       console.log(chalk.red(`\n${error.message}\n`));
