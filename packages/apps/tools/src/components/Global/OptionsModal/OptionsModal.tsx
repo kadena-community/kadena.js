@@ -1,6 +1,7 @@
 import {
   modalButtonStyle,
   modalOptionsContentStyle,
+  modalWrapperStyle,
   radioItemWrapperStyle,
   titleTagStyle,
 } from '@/components/Global/OptionsModal/styles.css';
@@ -150,7 +151,7 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
             <div className={modalOptionsContentStyle}>
               {renderOptions()}
 
-              <div className={modalButtonStyle}>
+              <div className={modalWrapperStyle}>
                 <Button
                   title={`${t('Save')}`}
                   onClick={() => {
@@ -158,7 +159,7 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
                     state.close();
                   }}
                   color="primary"
-                  padding={'lg'}
+                  className={modalButtonStyle}
                 >
                   {`${t('Save')}`}
                 </Button>

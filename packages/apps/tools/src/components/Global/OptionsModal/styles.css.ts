@@ -17,13 +17,19 @@ export const titleTagStyle = style([
   }),
 ]);
 
-export const modalButtonStyle = style([
+export const modalWrapperStyle = style([
   atoms({
     width: '100%',
     display: 'flex',
     flexDirection: 'row-reverse',
     fontSize: 'xs',
     marginBlockStart: 'md',
+  }),
+]);
+
+export const modalButtonStyle = style([
+  atoms({
+    paddingInline: 'md',
   }),
 ]);
 
