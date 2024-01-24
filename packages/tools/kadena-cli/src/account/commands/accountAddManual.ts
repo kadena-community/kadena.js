@@ -4,6 +4,7 @@ import type { Command } from 'commander';
 import debug from 'debug';
 import path from 'path';
 import { defaultAccountPath } from '../../constants/account.js';
+import { updateAccountDetailsPrompt } from '../../prompts/account.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
@@ -61,14 +62,7 @@ export const addAccountManualCommand: (
       if (isConfigAreSame) {
         await writeConfigInFile(filePath, newConfig);
       } else {
-        const updateOption = await select({
-          message:
-            'The account details do not match the account details on the chain. Do you want to continue?',
-          choices: [
-            { value: 'userInput', name: 'Add, anyway with user inputs' },
-            { value: 'chain', name: 'Add with values from the chain' },
-          ],
-        });
+        const updateOption = await updateAccountDetailsPrompt();
 
         const updatedConfig = getUpdatedConfig(
           newConfig,

@@ -56,3 +56,13 @@ export const predicatePrompt: IPrompt<string> = async () =>
       { value: 'keys-2', name: 'keys-2' },
     ],
   });
+
+export const updateAccountDetailsPrompt = async (): Promise<string> =>
+  await select({
+    message:
+      'The account details do not match the account details on the chain. Do you want to continue?',
+    choices: [
+      { value: 'userInput', name: 'Add, anyway with user inputs' },
+      { value: 'chain', name: 'Add with values from the chain' },
+    ],
+  });
