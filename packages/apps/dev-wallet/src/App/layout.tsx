@@ -1,6 +1,6 @@
 import { Stack, Text } from '@kadena/react-ui';
 import { FC } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { layout } from './layout.css';
 
 export const Layout: FC = () => {
@@ -15,7 +15,9 @@ export const Layout: FC = () => {
         backgroundColor="base.default"
       >
         <Stack gap="sm" padding="sm">
-          <Text bold>DX-Wallet</Text>
+          <Link to="/">
+            <Text bold>DX-Wallet</Text>
+          </Link>
         </Stack>
       </Stack>
       <Outlet />

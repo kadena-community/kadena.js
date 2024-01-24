@@ -1,6 +1,6 @@
 import { useWallet } from '@/hooks/wallet.context';
 import { Box, Heading } from '@kadena/react-ui';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 export function HomePage() {
   const wallet = useWallet();
@@ -11,6 +11,7 @@ export function HomePage() {
     <main>
       <Box margin="md">
         <Heading variant="h5">Home Page</Heading>
+        <Link to="/backup-recovery-phrase">Back up recovery phrase</Link>
       </Box>
     </main>
   );

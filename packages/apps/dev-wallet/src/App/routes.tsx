@@ -24,7 +24,7 @@ const ProtectedRoute: FC<
     isAllowed: boolean;
     redirectPath?: string;
   }>
-> = ({ isAllowed, redirectPath = '/signin', children }) => {
+> = ({ isAllowed, redirectPath = '/select-profile', children }) => {
   if (!isAllowed) {
     console.log('not allowed, redirecting to', redirectPath);
     return <Navigate to={redirectPath} replace />;
@@ -52,6 +52,7 @@ export const Routes: FC = () => {
         />
         <Route path="/accounts/:account" element={<p>Account</p>} />,
       </Route>
+      <Route path="*" element={<p>Permission Denied!</p>} />
     </Route>,
   );
 

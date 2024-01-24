@@ -17,11 +17,7 @@ import {
 } from 'react';
 
 import { useLocalStorage } from 'usehooks-ts';
-
-interface KeyStore {
-  derivationPathTemplate: string;
-  keys: string[];
-}
+import { IHDKey, KeyStore } from './wallet-repository';
 
 const WalletContext = createContext<{
   createWallet: (
@@ -30,18 +26,19 @@ const WalletContext = createContext<{
     mnemonic: string,
   ) => Promise<void>;
   unlockWallet: (profile: string, password: string) => Promise<void>;
-  createPublicKeys: (quantity?: number) => Promise<string[]>;
+  createPublicKeys: (quantity?: number) => Promise<IHDKey[]>;
   sign: (TXs: IUnsignedCommand[]) => Promise<IUnsignedCommand[]>;
   keyStores: KeyStore[];
   isUnlocked: boolean;
   decryptMnemonic: (password: string) => Promise<string>;
   lockWallet: () => void;
+  profile: string;
 } | null>(null);
 
 export const useWallet = () => {
   const context = useContext(WalletContext);
   if (!context) {
-    throw new Error('useWallet must be used within a CryptoContextProvider');
+    throw new Error('useWallet must be used within a WalletContextProvider');
   }
   return context;
 };
@@ -98,24 +95,39 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!encryptedSeed) {
       throw new Error('Wallet is not unlocked');
     }
-    const keyStore = keyStores.findIndex(
+    const keyStoreIndex = keyStores.findIndex(
       (store) => store.derivationPathTemplate === derivationPathTemplate,
     );
-    const index = keyStore === -1 ? 0 : keyStores[keyStore].keys.length;
-    const newPublicKeys = await kadenaGetPublic(
-      encryptionKey,
-      encryptedSeed,
-      [index, index + quantity - 1],
-      derivationPathTemplate,
+
+    const index =
+      keyStoreIndex === -1 ? 0 : keyStores[keyStoreIndex].keys.length;
+
+    const newPublicKeys = (
+      await kadenaGetPublic(
+        encryptionKey,
+        encryptedSeed,
+        [index, index + quantity - 1],
+        derivationPathTemplate,
+      )
+    ).map(
+      (key, i) =>
+        ({
+          index: index + i,
+          publicKey: key,
+        }) as IHDKey,
     );
-    if (keyStore === -1) {
+
+    if (keyStoreIndex === -1) {
       setKeyStores([
         ...keyStores,
-        { derivationPathTemplate, keys: newPublicKeys },
+        { derivationPathTemplate, keys: newPublicKeys, source: 'hd-wallet' },
       ]);
       return newPublicKeys;
     }
-    keyStores[keyStore].keys = [...keyStores[keyStore].keys, ...newPublicKeys];
+    keyStores[keyStoreIndex].keys = [
+      ...keyStores[keyStoreIndex].keys,
+      ...newPublicKeys,
+    ];
     setKeyStores([...keyStores]);
     return newPublicKeys;
   };
@@ -130,14 +142,19 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
           keyStores.map(async ({ keys, derivationPathTemplate }) => {
             const cmd: IPactCommand = JSON.parse(Tx.cmd);
             const relevantIndexes = cmd.signers
-              .map((signer) => keys.indexOf(signer.pubKey))
-              .filter((index) => index !== -1);
+              .map(
+                (signer) =>
+                  keys.find((key) => key.publicKey === signer.pubKey)?.index,
+              )
+              .filter((index) => index !== undefined) as number[];
+
             const signatures = await kadenaSignWithSeed(
               encryptionKey,
               encryptedSeed,
               relevantIndexes,
               derivationPathTemplate,
             )(Tx.hash);
+
             return signatures;
           }),
         );
@@ -180,6 +197,7 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
         sign,
         decryptMnemonic,
         isUnlocked: Boolean(encryptedSeed),
+        profile: activeProfile,
       }}
     >
       {children}

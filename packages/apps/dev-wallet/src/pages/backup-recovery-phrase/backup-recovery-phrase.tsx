@@ -1,7 +1,25 @@
+import { useWallet } from '@/hooks/wallet.context';
 import { Box, Heading, Text } from '@kadena/react-ui';
 import { Link } from 'react-router-dom';
 
+declare const PasswordCredential: any;
+
 export function BackupRecoveryPhrase() {
+  const supportPasswordCredential = 'PasswordCredential' in window;
+  const wallet = useWallet();
+  const storeRecoveryPhrase: React.MouseEventHandler<HTMLAnchorElement> = (
+    e,
+  ) => {
+    e.preventDefault();
+    if (supportPasswordCredential) {
+      const passwordCredential = new PasswordCredential({
+        id: `${wallet.profile}-dev-wallet-secret`,
+        password: 'my recovery phrase',
+      });
+
+      navigator.credentials.store(passwordCredential);
+    }
+  };
   return (
     <main>
       <Box margin="md">
@@ -19,6 +37,17 @@ export function BackupRecoveryPhrase() {
           Export encrypted phrase
         </Link>
         <br />
+        {supportPasswordCredential && (
+          <>
+            <a
+              onClick={storeRecoveryPhrase}
+              href="/backup-recovery-phrase/export-encrypted"
+            >
+              Store encrypted in password storage
+            </a>
+            <br />
+          </>
+        )}
         <Link to="/">Skip for now</Link>
       </Box>
     </main>
