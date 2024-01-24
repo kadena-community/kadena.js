@@ -1,5 +1,6 @@
 'use client';
 import { ListSubscribers } from '@/components/ListSubscribers/ListSubscribers';
+import { useAccount } from '@/hooks/account';
 import { useSocket } from '@/hooks/socket';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -11,14 +12,17 @@ interface IProps {
 }
 
 const Page: FC<IProps> = ({ params }) => {
-  const { addSignee, removeSignee, isConnected, connect } = useSocket();
+  const { addSignee, removeSignee, isConnected, connect, getSigneeAccount } =
+    useSocket();
+  const { account } = useAccount();
 
   const handleJoin = async () => {
     addSignee({ tokenId: params.id });
   };
 
   const handleRemove = async () => {
-    removeSignee({ tokenId: params.id });
+    if (!account) return;
+    removeSignee({ tokenId: params.id, signee: getSigneeAccount(account) });
   };
 
   useEffect(() => {

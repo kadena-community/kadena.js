@@ -12,12 +12,11 @@ const ProofOfUsStore = () => {
     store[tokenId] = {
       tokenId,
       date: Date.now(),
-      signees: [account],
+      signees: [{ ...account, initiator: true }],
     };
   };
 
   const getProofOfUs = (tokenId: string) => {
-    console.log(store);
     return store[tokenId];
   };
 
@@ -28,7 +27,7 @@ const ProofOfUsStore = () => {
 
     if (signeesList.find((s) => s.key === account.key)) return;
 
-    store[tokenId].signees = [...signeesList, account];
+    store[tokenId].signees = [...signeesList, { ...account, initiator: false }];
   };
 
   const removeSignee = (tokenId: string, account: IProofOfUsSignee) => {

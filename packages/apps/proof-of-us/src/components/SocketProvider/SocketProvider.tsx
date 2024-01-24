@@ -9,22 +9,35 @@ export interface ISocketContext {
   socket?: Socket;
   connect: ({ tokenId }: { tokenId: string }) => Promise<Socket | undefined>;
   disconnect: ({ tokenId }: { tokenId: string }) => void;
-  removeSignee: ({ tokenId }: { tokenId: string }) => Promise<void>;
+  removeSignee: ({
+    tokenId,
+    signee,
+  }: {
+    tokenId: string;
+    signee: IProofOfUsSignee;
+  }) => Promise<void>;
   addSignee: ({ tokenId }: { tokenId: string }) => Promise<void>;
   createToken: ({ tokenId }: { tokenId: string }) => Promise<void>;
   proofOfUs?: IProofOfUs;
   isConnected: () => boolean;
+  isInitiator: () => boolean;
+  getSigneeAccount: (account: IAccount) => IProofOfUsSignee;
 }
 
 export const SocketContext = createContext<ISocketContext>({
   socket: undefined,
   connect: async () => undefined,
   disconnect: () => {},
-  removeSignee: async () => {},
   addSignee: async () => {},
+  removeSignee: async () => {},
   createToken: async () => {},
   proofOfUs: undefined,
   isConnected: () => false,
+  isInitiator: () => false,
+  getSigneeAccount: (account: IAccount): IProofOfUsSignee => ({
+    key: '',
+    name: '',
+  }),
 });
 
 export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -72,13 +85,16 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   };
 
-  const removeSignee = async ({ tokenId }: { tokenId: string }) => {
+  const removeSignee = async ({
+    tokenId,
+    signee,
+  }: {
+    tokenId: string;
+    signee: IProofOfUsSignee;
+  }) => {
     const socket = await connect({ tokenId });
     socket?.emit('removeSignee', {
-      content: {
-        name: account?.name,
-        key: account?.caccount,
-      },
+      content: signee,
       to: tokenId,
     });
   };
@@ -101,6 +117,20 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
     return !!state?.signees.find((s) => s.key === account?.caccount);
   }, [state]);
 
+  const isInitiator = useCallback(() => {
+    const foundAccount = state?.signees.find(
+      (s) => s.key === account?.caccount,
+    );
+    return !!foundAccount?.initiator;
+  }, [state]);
+
+  const getSigneeAccount = (account: IAccount): IProofOfUsSignee => {
+    return {
+      key: account?.caccount,
+      name: account?.name,
+    };
+  };
+
   return (
     <SocketContext.Provider
       value={{
@@ -112,6 +142,8 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
         proofOfUs: state,
         createToken,
         isConnected,
+        isInitiator,
+        getSigneeAccount,
       }}
     >
       {children}

@@ -32,4 +32,5 @@ interface IError {
 interface IProofOfUsSignee {
   name: string;
   key: string;
+  initiator?: boolean;
 }
