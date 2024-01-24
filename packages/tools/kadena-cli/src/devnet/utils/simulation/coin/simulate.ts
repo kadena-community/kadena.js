@@ -161,25 +161,23 @@ export async function simulateCoin({
           counter = 0;
         }
 
-        const balance = await getAccountBalance({
-          account: account.account,
-          chainId: account.chainId || defaultChain,
-          networkHost: network.host,
-        });
-
-        // using a random number safety gap to avoid underflowing the account
-        const amountWithSafetyGap = amount + getRandomNumber(seededRandomNo, 1);
-        if (amountWithSafetyGap > parseFloat(balance)) {
-          console.warn(
-            `Insufficient funds for ${account.account}\nFunds necessary: ${amountWithSafetyGap}\nFunds available: ${balance}`,
-          );
-          console.log('Skipping transfer');
+        // If not enough balance, continue
+        if (
+          !(await validateBalance(
+            account,
+            amount,
+            network.host,
+            defaultChain,
+            seededRandomNo,
+          ))
+        ) {
           continue;
         }
 
         // Generate seeded random number based on the previous number
         seededRandomNo = seedRandom(`${seededRandomNo}`);
 
+        // Randomly choose next account
         let nextAccount =
           accounts[getRandomNumber(seededRandomNo, accounts.length)];
 
@@ -196,6 +194,7 @@ export async function simulateCoin({
           transferType === 'cross-chain-transfer' &&
           simulationDefaults.CHAIN_COUNT > 1
         ) {
+          // Make sure the chain id is different
           if (account.chainId === nextAccount.chainId) {
             nextAccount = {
               ...nextAccount,
@@ -282,4 +281,30 @@ export async function simulateCoin({
     await appendToLogFile(filepath, { error });
     throw error;
   }
+}
+
+async function validateBalance(
+  account: IAccount,
+  amount: number,
+  networkHost: string,
+  defaultChain: ChainId,
+  seededRandomNo: number,
+): Promise<boolean> {
+  const balance = await getAccountBalance({
+    account: account.account,
+    chainId: account.chainId || defaultChain,
+    networkHost: networkHost,
+  });
+  // using a random number safety gap to avoid underflowing the account
+  const amountWithSafetyGap = amount + getRandomNumber(seededRandomNo, 1);
+
+  if (amountWithSafetyGap > parseFloat(balance)) {
+    console.warn(
+      `Insufficient funds for ${account.account}\nFunds necessary: ${amountWithSafetyGap}\nFunds available: ${balance}`,
+    );
+    console.log('Skipping transfer');
+    return false;
+  }
+
+  return true;
 }

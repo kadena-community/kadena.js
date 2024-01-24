@@ -53,5 +53,4 @@ export async function appendToLogFile(
 ): Promise<void> {
   const dataString = Object.values(data).join(',');
   await services.filesystem.appendFile(filepath, `${dataString}\n`);
-  // fs.appendFileSync(filepath, `${dataString}\n`);
 }
