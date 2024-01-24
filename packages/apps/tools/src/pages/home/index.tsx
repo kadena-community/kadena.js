@@ -234,20 +234,9 @@ const Home: FC = () => {
             <Heading as="h3" variant="h5">
               Latest Updates
             </Heading>
-            <p>
-              {/* eslint-disable-next-line react/no-unescaped-entities */}
-              If you're seeking Help click{' '}
-              <span
-                className={helpCenterButtonClass}
-                onClick={handleOpenHelpCenter}
-              >
-                HERE
-              </span>
-            </p>
-            <p>
+            <Box as="p" marginBlockEnd="md">
               Changelog with the latest updates to the Kadena Development Tools.
-            </p>
-            <br />
+            </Box>
             <Table.Root striped>
               <Table.Body>
                 <Table.Tr>
