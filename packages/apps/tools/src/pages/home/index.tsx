@@ -3,7 +3,6 @@ import ResourceLinks from '@/components/Global/ResourceLinks';
 import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
 import {
-  helpCenterButtonClass,
   homeWrapperClass,
   infoBoxStyle,
   linkStyle,
@@ -81,11 +80,6 @@ const Home: FC = () => {
   ];
 
   useToolbar(menuData);
-
-  const handleOpenHelpCenter = (): void => {
-    // @ts-ignore
-    helpCenterRef.openSection(0);
-  };
 
   return (
     <div className={homeWrapperClass}>
