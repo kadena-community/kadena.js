@@ -1,9 +1,10 @@
 'use client';
 import { useAccount } from '@/hooks/account';
-import type { Socket } from 'Socket.IO-client';
-import io from 'Socket.IO-client';
+
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useState } from 'react';
+import type { Socket } from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 export interface ISocketContext {
   socket?: Socket;
