@@ -1,11 +1,12 @@
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import classNames from 'classnames';
-import type { ForwardedRef } from 'react';
+import type { ForwardedRef, ReactNode } from 'react';
 import React, { forwardRef, useRef } from 'react';
 import type { AriaComboBoxProps } from 'react-aria';
 import { useComboBox, useFilter, useHover } from 'react-aria';
 import { useComboBoxState } from 'react-stately';
 
+import { atoms } from '../../../styles';
 import { ListBox } from '../../ListBox';
 import { Popover } from '../../Popover';
 import { formField } from '../Form.css';
@@ -17,6 +18,7 @@ import { ComboboxButton } from './ComboboxButton';
 export interface IComboboxProps<T extends object = any>
   extends AriaComboBoxProps<T> {
   isPositive?: boolean;
+  startIcon?: ReactNode;
   className?: string;
   tag?: string;
   info?: string;
@@ -98,6 +100,11 @@ function ComboBoxBase<T extends object>(
         ref={triggerRef}
         className={comboBoxControlClass}
       >
+        {props.startIcon && (
+          <span className={atoms({ marginInlineEnd: 'sm' })}>
+            {props.startIcon}
+          </span>
+        )}
         <input {...inputProps} ref={inputRef} className={comboBoxInputClass} />
         <ComboboxButton
           {...buttonProps}

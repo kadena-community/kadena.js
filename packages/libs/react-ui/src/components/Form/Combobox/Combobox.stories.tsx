@@ -141,6 +141,28 @@ export const Default: Story = {
   },
 };
 
+export const WithIcon: Story = {
+  args: {
+    isDisabled: false,
+    isInvalid: false,
+    isRequired: false,
+    isPositive: false,
+    description: 'Some description',
+    label: 'Select something',
+    placeholder: 'Select an option',
+  },
+  render: (args) => {
+    return (
+      <Combobox {...args} startIcon={<Account />}>
+        <ComboboxItem key="option1">Option 1</ComboboxItem>
+        <ComboboxItem key="option2">Option 2</ComboboxItem>
+        <ComboboxItem key="option3">Option 3</ComboboxItem>
+        <ComboboxItem key="option4">Option 4</ComboboxItem>
+      </Combobox>
+    );
+  },
+};
+
 export const ComplexItems = () => (
   <Combobox label="Select an option">
     <ComboboxItem key="option1" textValue="Option 1">
