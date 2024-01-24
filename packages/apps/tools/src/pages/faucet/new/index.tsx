@@ -121,10 +121,6 @@ const NewAccountFaucetPage: FC = () => {
     keepPreviousData: true,
   });
 
-  useEffect(() => {
-    setRequestStatus({ status: 'idle' });
-  }, [pubKeys.length]);
-
   const {
     register,
     handleSubmit,
@@ -188,8 +184,18 @@ const NewAccountFaucetPage: FC = () => {
   ];
 
   useEffect(() => {
+    setRequestStatus({ status: 'idle' });
     setValue('name', typeof accountName === 'string' ? accountName : '');
-  }, [accountName, setValue]);
+  }, [pubKeys.length]);
+
+  const currentAccName = getValues('name');
+
+  useEffect(() => {
+    setValue(
+      'name',
+      typeof accountName === 'string' && pubKeys.length > 0 ? accountName : '',
+    );
+  }, [accountName, chainID, currentAccName, setValue]);
 
   useToolbar(menuData, router.pathname);
 
@@ -270,6 +276,7 @@ const NewAccountFaucetPage: FC = () => {
     copyPubKeys.splice(index, 1);
 
     setPubKeys(copyPubKeys);
+    setValue('name', '');
   };
 
   const handleOnClickLink = () => {
