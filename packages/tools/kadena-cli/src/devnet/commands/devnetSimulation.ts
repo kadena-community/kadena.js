@@ -19,6 +19,7 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
     simulationOptions.simulationMaxTransferAmount({ isOptional: true }),
     simulationOptions.simulationDefaultChainId({ isOptional: true }),
     simulationOptions.simulationSeed({ isOptional: true }),
+    simulationOptions.simulationMaxTime({ isOptional: true }),
   ],
   async (config) => {
     try {
@@ -43,6 +44,7 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
         logFolder: config.logFolder,
         defaultChain: config.simulationDefaultChainId,
         seed: config.simulationSeed,
+        maxTime: config.simulationMaxTime,
       });
     } catch (error) {
       console.log(chalk.red(`\n${error.message}\n`));

@@ -70,7 +70,7 @@ export const simulationOptions = {
   simulationMaxTime: createOption({
     key: 'simulationMaxTime' as const,
     prompt: simulationPrompts.maxTimePrompt,
-    validation: z.number().optional(),
+    validation: z.number(),
     option: new Option(
       '-t, --simulation-max-time <simulationMaxTime>',
       'Specify the maximum time in miliseconds the simulation will run.',
