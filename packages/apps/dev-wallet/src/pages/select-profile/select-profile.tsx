@@ -13,7 +13,7 @@ export function SelectProfile() {
         <Heading variant="h5">Select a profile</Heading>
         {wallet.profileList.map((profile) => (
           <div key={profile.uuid}>
-            <Link to={`/unlock-wallet/${profile.name}`}>{profile.name}</Link>
+            <Link to={`/unlock-wallet/${profile.uuid}`}>{profile.name}</Link>
           </div>
         ))}
         <br />

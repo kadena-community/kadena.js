@@ -1,5 +1,5 @@
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
-import { Box, Button, Heading, Input, Text } from '@kadena/react-ui';
+import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
 import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 import { useWallet } from '../../hooks/wallet.context';
@@ -31,9 +31,9 @@ export function CreateWallet() {
         <Text>Enter a password to encrypt the wallet data with that</Text>
         <form onSubmit={handleSubmit(create)}>
           <label htmlFor="profile">Profile name</label>
-          <Input id="profile" type="text" {...register('profile')} />
+          <TextField id="profile" type="text" {...register('profile')} />
           <label htmlFor="password">Password</label>
-          <Input id="password" type="password" {...register('password')} />
+          <TextField id="password" type="password" {...register('password')} />
           <Button type="submit">Create</Button>
         </form>
       </Box>

@@ -1,5 +1,5 @@
 import { useWallet } from '@/hooks/wallet.context';
-import { Box, Button, Heading, Input, Text } from '@kadena/react-ui';
+import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -47,7 +47,7 @@ export function WriteDownRecoveryPhrase() {
         <Heading variant="h5">Enter your password to show the phrase</Heading>
         <form onSubmit={handleSubmit(decryptMnemonic)}>
           <label htmlFor="password">Password</label>
-          <Input id="password" type="password" {...register('password')} />
+          <TextField id="password" type="password" {...register('password')} />
           <Button type="submit">Show Phrase</Button>
         </form>
         {error && <Text variant="base">{error}</Text>}

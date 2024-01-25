@@ -1,5 +1,5 @@
 import { useWallet } from '@/hooks/wallet.context';
-import { Box, Button, Heading, Input, Text } from '@kadena/react-ui';
+import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -29,7 +29,7 @@ export function ConfirmRecoveryPhrase({
         <Heading variant="h5">Confirm you wrote it down</Heading>
         <form onSubmit={handleSubmit(confirm)}>
           <label htmlFor="phrase">Enter phrase in the same order</label>
-          <Input id="phrase" type="phrase" {...register('phrase')} />
+          <TextField id="phrase" type="phrase" {...register('phrase')} />
           <Button type="submit">Confirm</Button>
         </form>
         {error && <Text variant="base">{error}</Text>}

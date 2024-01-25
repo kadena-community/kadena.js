@@ -40,7 +40,7 @@ export const Routes: FC = () => {
       <Route path="/" element={<HomePage />} />
       <Route path="/select-profile" element={<SelectProfile />} />
       <Route path="/create-wallet" element={<CreateWallet />} />
-      <Route path="/unlock-wallet/:profile" element={<UnlockWallet />} />
+      <Route path="/unlock-wallet/:profileId" element={<UnlockWallet />} />
       <Route element={<ProtectedRoute isAllowed={isUnlocked} />}>
         <Route
           path="/backup-recovery-phrase"
