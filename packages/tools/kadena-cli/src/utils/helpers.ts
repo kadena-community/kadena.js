@@ -78,10 +78,13 @@ export function handlePromptError(error: unknown): void {
   if (error instanceof Error) {
     if (error.message.includes('User force closed the prompt')) {
       process.exit(0);
+    } else {
+      console.log(error.message);
     }
+  } else {
+    console.log('Unexpected error executing option', error);
   }
-  console.log('Unexpected error executing option', error);
-  process.exit(0);
+  process.exit(1);
 }
 
 /**
@@ -298,3 +301,7 @@ export function clearCLI(full: boolean = false): void {
 
 // export const skipSymbol = Symbol('skip');
 // export const createSymbol = Symbol('createSymbol');
+
+export const notEmpty = <TValue>(
+  value: TValue | null | undefined,
+): value is TValue => value !== null && value !== undefined;
