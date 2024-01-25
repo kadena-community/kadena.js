@@ -36,8 +36,8 @@ for (const accountType of accountTypes) {
 
   test(`Fund existing ${accountType.type} account`, async ({ toolsApp }) => {
     await test.step('Fund account on chain 0.', async () => {
-      const account = await generateAccount(accountType.NumberOfKeys, '0');
-      await createAccount(account);
+      const account = await generateAccount(accountType.NumberOfKeys, ['0']);
+      await createAccount(account, '0');
       await toolsApp.faucetPage.asidePanel.clickPageLink(
         'Fund Existing Account',
       );
