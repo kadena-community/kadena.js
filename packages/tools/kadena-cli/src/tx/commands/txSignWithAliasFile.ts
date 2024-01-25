@@ -49,7 +49,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
   'sign-with-alias-file',
   'Sign a transaction using your local aliased file containing your keypair.',
   [
-    globalOptions.keyWalletSelectWithAll(),
+    globalOptions.keyWalletSelect(),
     globalOptions.keyAliasSelect(),
     globalOptions.txUnsignedTransactionFile(),
     globalOptions.txTransactionDir({ isOptional: true }),
@@ -58,8 +58,14 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
   async (option) => {
     try {
       const wallet = await option.keyWallet();
+
+      const walletName =
+        typeof wallet.keyWallet === 'string'
+          ? wallet.keyWallet
+          : removeAfterFirstDot(wallet.keyWallet.fileName);
+
       const key = await option.keyAliasSelect({
-        wallet: removeAfterFirstDot(wallet.keyWallet),
+        wallet: walletName,
       });
       const dir = await option.txTransactionDir();
       const file = await option.txUnsignedTransactionFile({
@@ -77,7 +83,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
       });
 
       const keyPair = await readKeyPairAndIndexFromFile(
-        join(WALLET_DIR, removeAfterFirstDot(wallet.keyWallet)),
+        join(WALLET_DIR, walletName),
         key.keyAliasSelect,
       );
 
@@ -90,6 +96,8 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
         false,
         dir.txTransactionDir,
       );
+
+      console.log('command: ', unsignedCommand);
 
       if (unsignedCommand === undefined) {
         throw new Error(
