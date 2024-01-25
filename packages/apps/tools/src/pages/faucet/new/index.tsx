@@ -53,6 +53,7 @@ import { usePersistentChainID } from '@/hooks';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
 import { validatePublicKey } from '@/services/utils/utils';
+import { stripAccountPrefix } from '@/utils/string';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
@@ -256,17 +257,17 @@ const NewAccountFaucetPage: FC = () => {
     requestStatus.status === 'processing' || mainnetSelected;
 
   const addPublicKey = () => {
-    const value = getValues('pubKey');
+    const value = stripAccountPrefix(getValues('pubKey') || '');
 
     const copyPubKeys = [...pubKeys];
-    const isDuplicate = copyPubKeys.includes(value!);
+    const isDuplicate = copyPubKeys.includes(value);
 
     if (isDuplicate) {
       setError('pubKey', { message: t('Duplicate public key') });
       return;
     }
 
-    copyPubKeys.push(value!);
+    copyPubKeys.push(value);
     setPubKeys(copyPubKeys);
     resetField('pubKey');
   };
@@ -398,7 +399,9 @@ const NewAccountFaucetPage: FC = () => {
                       variant="text"
                       onPress={() => {
                         const value = getValues('pubKey');
-                        const valid = validatePublicKey(value || '');
+                        const valid = validatePublicKey(
+                          stripAccountPrefix(value || ''),
+                        );
                         if (valid) {
                           addPublicKey();
                         } else {
