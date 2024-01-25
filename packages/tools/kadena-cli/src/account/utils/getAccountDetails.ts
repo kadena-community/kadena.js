@@ -1,6 +1,10 @@
 import { details } from '@kadena/client-utils/coin';
-import { ChainId } from '@kadena/types';
-import { IAccountConfig, IAccountDetailsResult, Predicate } from '../types.js';
+import type { ChainId } from '@kadena/types';
+import type {
+  IAccountConfig,
+  IAccountDetailsResult,
+  Predicate,
+} from '../types.js';
 
 interface IAccountDetails extends IAccountConfig {
   accountName: string;

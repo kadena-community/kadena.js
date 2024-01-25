@@ -1,4 +1,7 @@
-import { IAccountDetailsResult, IAddAccountManualConfig } from '../types.js';
+import type {
+  IAccountDetailsResult,
+  IAddAccountManualConfig,
+} from '../types.js';
 import { compareConfigAndAccountDetails } from './compareConfigAndAccountDetails.js';
 import { createAccountName } from './createAccountName.js';
 import { getAccountDetailsFromChain } from './getAccountDetails.js';

@@ -1,6 +1,6 @@
 import yaml from 'js-yaml';
 import { services } from '../../services/index.js';
-import { IAddAccountManualConfig } from '../types.js';
+import type { IAddAccountManualConfig } from '../types.js';
 
 export async function writeAlias(
   config: IAddAccountManualConfig,

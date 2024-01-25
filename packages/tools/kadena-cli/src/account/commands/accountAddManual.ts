@@ -1,4 +1,3 @@
-import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
@@ -60,7 +59,7 @@ export const addAccountManualCommand: (
         ),
       );
     } catch (error) {
-      if (error.message.includes('row not found')) {
+      if (error.message.includes('row not found') === true) {
         console.log(
           chalk.red(
             `The account is not on chain yet. To create it on-chain, transfer funds to it from ${config.networkConfig.network} and use "fund" command.`,

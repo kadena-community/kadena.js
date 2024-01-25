@@ -1,4 +1,7 @@
-import { IAccountDetailsResult, IAddAccountManualConfig } from '../types.js';
+import type {
+  IAccountDetailsResult,
+  IAddAccountManualConfig,
+} from '../types.js';
 
 export const validatePublicKeys = (
   publicKeysConfig: string[],

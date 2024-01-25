@@ -1,4 +1,7 @@
-import { IAccountDetailsResult, IAddAccountManualConfig } from '../types.js';
+import type {
+  IAccountDetailsResult,
+  IAddAccountManualConfig,
+} from '../types.js';
 
 export const isEmpty = (value?: string): boolean =>
   value === undefined || value === '' || value === null;
@@ -7,7 +10,7 @@ export const getUpdatedConfig = (
   config: IAddAccountManualConfig,
   accountDetails: IAccountDetailsResult,
   updateOption: string,
-) => {
+): IAddAccountManualConfig => {
   if (updateOption === 'userInput') {
     return config;
   } else {

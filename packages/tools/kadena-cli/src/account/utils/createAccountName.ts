@@ -1,5 +1,5 @@
 import { createPrincipal } from '@kadena/client-utils/built-in';
-import { IAddAccountManualConfig, Predicate } from '../types.js';
+import type { IAddAccountManualConfig, Predicate } from '../types.js';
 
 export async function createAccountName(
   config: IAddAccountManualConfig,

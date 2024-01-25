@@ -9,14 +9,13 @@ import type { IKeyPair } from '@kadena/types';
 import { defaultAccountPath } from '../../constants/account.js';
 import { WALLET_DIR } from '../../constants/config.js';
 import { printWalletKeys } from '../../keys/utils/keysDisplay.js';
-import { IWallet, getWallet } from '../../keys/utils/keysHelpers.js';
+import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { updateAccountDetailsPrompt } from '../../prompts/account.js';
 import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
-import type { IAddAccountManualConfig } from '../types.js';
-import { getUpdatedConfig } from '../utils/addHelpers.js';
+import { getUpdatedConfig, isEmpty } from '../utils/addHelpers.js';
 import { validateAccountDetails } from '../utils/validateAccountDetails.js';
 import { writeConfigInFile } from '../utils/writeConfigInFile.js';
 
@@ -31,7 +30,7 @@ async function getAllPublicKeysFromWallet(
     const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
     publicKeysList.push(parsed?.publicKey || '');
   }
-  return publicKeysList.filter((key) => !!key);
+  return publicKeysList.filter((key) => isEmpty(key));
 }
 
 export const addAccountWalletCommand: (
@@ -100,7 +99,7 @@ export const addAccountWalletCommand: (
         ),
       );
     } catch (error) {
-      if (error.message.includes('row not found')) {
+      if (error.message.includes('row not found') === true) {
         console.log(
           chalk.red(
             `The account is not on chain yet. To create it on-chain, transfer funds to it from ${updatedConfig.networkConfig.network} and use "fund" command.`,
