@@ -211,7 +211,7 @@
   "Application Settings": "Application Settings",
   "form-status-content-processing": "Please wait while the transaction is being processed. Depending on the Network (e.g. Mainnet), this may take up to 10 minutes.",
   "help-request-key-question": "Where can I find the request key?",
-  "help-request-key-content": "You can start a cross chain transfer on Chainweaver and get a request key.",
+  "help-request-key-content": "Each time you start a transfer (using Chainweaver or other wallet) you will be given a request key. With that key you will have the ability to check the transaction status and check its progress (for example using the 'Kadena Block Explorer').",
   "help-gas-settings-question": "What is a gas payer?",
   "help-gas-settings-content": "A gas station is an account that exists only to fund gas payments on behalf of other users under specific conditions. By having a gas station pay user onboarding costs, we remove the friction of acquiring tokens in advance of signup, which allows a user’s first interaction with a dApp to be as easy as filling out a web form.",
   "help-signature-data-question": "How do I use the Signature data?",

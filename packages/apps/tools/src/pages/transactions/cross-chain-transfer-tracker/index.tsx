@@ -65,6 +65,14 @@ const CrossChainTransferTracker: FC = () => {
 
   useToolbar(menuData, router.pathname);
 
+  const helpInfoSections = [
+    {
+      tag: 'request-key',
+      title: t('help-request-key-question'),
+      content: t('help-request-key-content'),
+    },
+  ];
+
   const debug = Debug(
     'kadena-transfer:pages:transfer:cross-chain-transfer-tracker',
   );
@@ -350,13 +358,10 @@ const CrossChainTransferTracker: FC = () => {
         sections={[
           {
             icon: 'Information',
-            title: t('Where can I find the request key?'),
+            title: helpInfoSections[0].title,
             children: (
               <div className={infoBoxStyle}>
-                <span>
-                  You can start a cross chain transfer on Chainweaver and get a
-                  request key.
-                </span>
+                <span>{helpInfoSections[0].content}</span>
               </div>
             ),
           },
