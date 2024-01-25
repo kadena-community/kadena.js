@@ -1,12 +1,19 @@
 export const createStore =
-  (db: IDBDatabase) => (name: string, keyPath?: string, index?: string) => {
+  (db: IDBDatabase) =>
+  (
+    name: string,
+    keyPath?: string,
+    indexes?: Array<{ index: string; unique?: boolean }>,
+  ) => {
     if (!db.objectStoreNames.contains(name)) {
       const store = db.createObjectStore(
         name,
         keyPath ? { keyPath } : undefined,
       );
-      if (index) {
-        store.createIndex(index, index);
+      if (indexes) {
+        indexes.forEach(({ index, unique }) => {
+          store.createIndex(index, index, { unique });
+        });
       }
     }
   };
@@ -15,17 +22,24 @@ export const connect = (name: string, version: number) => {
   if (version < 1 || !Number.isInteger(version)) {
     throw new Error('INVALID_INTEGER: must be a positive integer');
   }
+  let fulfilled = false;
   return new Promise<{ db: IDBDatabase; needsUpgrade: boolean }>(
     (resolve, reject) => {
-      const request = indexedDB.open(name, 1);
+      const request = indexedDB.open(name, version);
       request.onerror = () => {
+        if (fulfilled) return;
+        fulfilled = true;
         reject(request.error);
       };
       request.onsuccess = () => {
+        if (fulfilled) return;
+        fulfilled = true;
         const db = request.result;
         resolve({ db, needsUpgrade: false });
       };
       request.onupgradeneeded = async () => {
+        if (fulfilled) return;
+        fulfilled = true;
         const db = request.result;
         resolve({ db, needsUpgrade: true });
       };
@@ -35,16 +49,16 @@ export const connect = (name: string, version: number) => {
 
 export const getAllItems =
   (db: IDBDatabase) =>
-  <T>(storeName: string, index?: string) => {
+  <T>(storeName: string, filter?: string[] | string, indexName?: string) => {
     return new Promise<T[]>((resolve, reject) => {
       const transaction = db.transaction(storeName, 'readonly');
       const store = transaction.objectStore(storeName);
       let request: IDBRequest<any>;
-      if (index) {
-        const idx = store.index(index);
-        request = idx.getAll();
+      if (indexName) {
+        const idx = store.index(indexName);
+        request = idx.getAll(filter);
       } else {
-        request = store.getAll();
+        request = store.getAll(filter);
       }
       request.onerror = () => {
         reject(request.error);

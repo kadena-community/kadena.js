@@ -114,7 +114,7 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
       encryptedMnemonic,
     );
     const profileKeyStores =
-      await walletRepository.getProfileKeyStores(profileId);
+      await walletRepository.getKeyStoresByProfileId(profileId);
     const mnemonic = new TextDecoder().decode(decryptedMnemonicBuffer);
     const seed = await kadenaMnemonicToSeed(encryptionKey, mnemonic, 'buffer');
     setEncryptedSeed(seed);

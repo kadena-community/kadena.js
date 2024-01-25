@@ -51,8 +51,8 @@ const walletRepository = (db: IDBDatabase) => {
     getProfile: async (id: string): Promise<IProfile> => {
       return getOne('profile', id);
     },
-    getProfileKeyStores: async (id: string): Promise<KeyStore[]> => {
-      return getAll('keyStore', id);
+    getKeyStoresByProfileId: async (profileId: string): Promise<KeyStore[]> => {
+      return getAll('keyStore', profileId, 'profileId');
     },
     addKeyStore: async (keyStore: KeyStore): Promise<void> => {
       return add('keyStore', keyStore);
@@ -89,9 +89,9 @@ export const createWalletRepository = async () => {
     // NOTE: If you change the schema, you need to update the upgrade method
     // below to migrate the data. the current version just creates the database
     const create = createStore(db);
-    create('profile', 'uuid');
+    create('profile', 'uuid', [{ index: 'name', unique: true }]);
     create('network', 'uuid');
-    create('keyStore', 'uuid', 'profileId');
+    create('keyStore', 'uuid', [{ index: 'profileId', unique: false }]);
     create('encryptedValue');
   }
   return walletRepository(db);
