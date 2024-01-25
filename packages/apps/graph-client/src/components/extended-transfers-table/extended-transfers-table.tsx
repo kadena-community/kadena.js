@@ -1,4 +1,7 @@
-import type { GetTransfersQuery } from '@/__generated__/sdk';
+import type {
+  GetTransfersQuery,
+  QueryTransfersConnection,
+} from '@/__generated__/sdk';
 import routes from '@/constants/routes';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
 import {
@@ -22,7 +25,7 @@ interface IVariableType {
 }
 
 interface IExpandedTransfersTableProps {
-  transfers: GetTransfersQuery['transfers'];
+  transfers: QueryTransfersConnection;
   fetchMore: (
     fetchMoreOptions: FetchMoreQueryOptions<IVariableType, DataType> &
       FetchMoreOptions,
@@ -186,6 +189,7 @@ export const ExtendedTransfersTable = (
         <Table.Head>
           <Table.Tr>
             <Table.Th>Chain</Table.Th>
+            <Table.Th>Timestamp</Table.Th>
             <Table.Th>Block Height</Table.Th>
             <Table.Th>Amount</Table.Th>
             <Table.Th>Sender Account</Table.Th>
@@ -212,6 +216,9 @@ export const ExtendedTransfersTable = (
             return (
               <Table.Tr key={index}>
                 <Table.Td>{chainIdDisplay}</Table.Td>
+                <Table.Td>
+                  {new Date(edge.node.creationTime).toLocaleString()}
+                </Table.Td>
                 <Table.Td>{heightDisplay}</Table.Td>
                 <Table.Td>{edge.node.amount}</Table.Td>
                 <Table.Td>

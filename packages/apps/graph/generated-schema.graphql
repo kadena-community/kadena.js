@@ -459,9 +459,10 @@ type Transaction implements Node {
 """A transfer of funds from a fungible between two accounts."""
 type Transfer implements Node {
   amount: Decimal!
+  block: Block!
   blockHash: String!
-  blocks: [Block!]!
   chainId: BigInt!
+  creationTime: DateTime!
 
   """
   The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.

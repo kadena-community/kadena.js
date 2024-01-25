@@ -1,5 +1,5 @@
 import type { NonFungibleChainAccountTransactionsConnection } from '@/__generated__/sdk';
-import { useGetChainNonFungibleAccountQuery } from '@/__generated__/sdk';
+import { useGetNonFungibleChainAccountQuery } from '@/__generated__/sdk';
 import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
@@ -7,7 +7,7 @@ import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { TokenTable } from '@/components/token-table/token-table';
 import { NON_FUNGIBLE_TRANSACTION } from '@/constants/non-fungible';
 import routes from '@/constants/routes';
-import { getChainNonFungibleAccount } from '@/graphql/queries.graph';
+import { getNonFungibleChainAccount } from '@/graphql/queries.graph';
 import {
   Box,
   Breadcrumbs,
@@ -29,7 +29,7 @@ const FungibleChainAccount: React.FC = () => {
     chainId: router.query.chain as string,
   };
 
-  const { loading, data, error } = useGetChainNonFungibleAccountQuery({
+  const { loading, data, error } = useGetNonFungibleChainAccountQuery({
     variables,
     skip: !router.query.account || !router.query.chain,
   });
@@ -49,7 +49,7 @@ const FungibleChainAccount: React.FC = () => {
           <BreadcrumbsItem>Chain</BreadcrumbsItem>
         </Breadcrumbs>
         <GraphQLQueryDialog
-          queries={[{ query: getChainNonFungibleAccount, variables }]}
+          queries={[{ query: getNonFungibleChainAccount, variables }]}
         />
       </Stack>
 

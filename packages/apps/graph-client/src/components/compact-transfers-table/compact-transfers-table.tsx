@@ -79,6 +79,7 @@ export const CompactTransfersTable = (
         <Table.Head>
           <Table.Tr>
             <Table.Th>Chain</Table.Th>
+            <Table.Th>Timestamp</Table.Th>
             <Table.Th>Block Height</Table.Th>
             <Table.Th>Amount</Table.Th>
             <Table.Th>Sender Account</Table.Th>
@@ -115,6 +116,9 @@ export const CompactTransfersTable = (
             return (
               <Table.Tr key={index}>
                 <Table.Td>{chainIdDisplay}</Table.Td>
+                <Table.Td>
+                  {new Date(transfer.creationTime).toLocaleString()}
+                </Table.Td>
                 <Table.Td>{heightDisplay}</Table.Td>
                 <Table.Td>{transfer.amount}</Table.Td>
                 <Table.Td>
