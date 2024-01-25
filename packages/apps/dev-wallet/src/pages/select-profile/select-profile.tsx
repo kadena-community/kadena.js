@@ -1,11 +1,9 @@
-import { useProfile } from '@/hooks/use-profile';
 import { useWallet } from '@/hooks/wallet.context';
 import { Box, Heading, Text } from '@kadena/react-ui';
 import { Link } from 'react-router-dom';
 
 export function SelectProfile() {
   const wallet = useWallet();
-  const [profiles] = useProfile();
   if (wallet.isUnlocked) {
     wallet.lockWallet();
   }
@@ -13,9 +11,9 @@ export function SelectProfile() {
     <main>
       <Box margin="md">
         <Heading variant="h5">Select a profile</Heading>
-        {profiles.map((profile) => (
-          <div key={profile}>
-            <Link to={`/unlock-wallet/${profile}`}>{profile}</Link>
+        {wallet.profileList.map((profile) => (
+          <div key={profile.uuid}>
+            <Link to={`/unlock-wallet/${profile.name}`}>{profile.name}</Link>
           </div>
         ))}
         <br />

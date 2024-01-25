@@ -1,4 +1,3 @@
-import { useProfile } from '@/hooks/use-profile';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { Box, Button, Heading, Input, Text } from '@kadena/react-ui';
 import { useForm } from 'react-hook-form';
@@ -11,7 +10,6 @@ export function CreateWallet() {
     profile: string;
   }>();
   const wallet = useWallet();
-  const [, addProfile] = useProfile();
   async function create({
     profile,
     password,
@@ -21,7 +19,6 @@ export function CreateWallet() {
   }) {
     const mnemonic = kadenaGenMnemonic();
     await wallet.createWallet(profile, password, mnemonic);
-    addProfile(profile);
     console.log('wallet created');
   }
   if (wallet.isUnlocked) {

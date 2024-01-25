@@ -1,23 +1,18 @@
 import {
+  addItem,
   connect,
   createStore,
   getAllItems,
   getOneItem,
-  saveItem,
+  updateItem,
 } from '@/utils/db';
-
-export interface IHDKey {
-  index: number;
-  publicKey: string;
-}
 
 export interface KeyStore {
   uuid: string;
   profileId: string;
-  seedKey: string;
   derivationPathTemplate: string;
   source: 'hd-wallet';
-  keys: IHDKey[];
+  publicKeys: string[];
 }
 
 export interface INetwork {
@@ -35,43 +30,58 @@ export interface INetwork {
 }
 
 export interface IProfile {
-  id: string;
+  uuid: string;
   name: string;
   networks: INetwork[];
-  keyStore: KeyStore[];
+  seedKey: string;
 }
 
 const walletRepository = (db: IDBDatabase) => {
   const getAll = getAllItems(db);
   const getOne = getOneItem(db);
-  const save = saveItem(db);
+  const add = addItem(db);
+  const update = updateItem(db);
   return {
     disconnect: async (): Promise<void> => {
       db.close();
     },
-    getProfileList: async (): Promise<Exclude<IProfile, 'networks'>[]> => {
-      return getAll('profiles');
+    getAllProfiles: async (): Promise<Exclude<IProfile, 'networks'>[]> => {
+      return getAll('profile');
     },
     getProfile: async (id: string): Promise<IProfile> => {
-      return getOne('profiles', id);
+      return getOne('profile', id);
     },
-    saveProfile: async (profile: IProfile): Promise<void> => {
-      return save('profiles', profile);
+    getProfileKeyStores: async (id: string): Promise<KeyStore[]> => {
+      return getAll('keyStore', id);
+    },
+    addKeyStore: async (keyStore: KeyStore): Promise<void> => {
+      return add('keyStore', keyStore);
+    },
+    updateKeyStore: async (keyStore: KeyStore): Promise<void> => {
+      return update('keyStore', keyStore);
+    },
+    addProfile: async (profile: IProfile): Promise<void> => {
+      return add('profile', profile);
+    },
+    updateProfile: async (profile: IProfile): Promise<void> => {
+      return update('profile', profile);
     },
     getNetworkList: async (): Promise<INetwork[]> => {
-      return getAll('networks');
+      return getAll('network');
     },
     getEncryptedValue: async (key: string): Promise<Uint8Array> => {
-      return getOne('encryptedValues', key);
+      return getOne('encryptedValue', key);
     },
-    saveEncryptedValue: async (
+    addEncryptedValue: async (
       key: string,
-      value: Uint8Array,
+      value: string | Uint8Array,
     ): Promise<void> => {
-      return save('encryptedValues', value, key);
+      return add('encryptedValue', value, key);
     },
   };
 };
+
+export type WalletRepository = ReturnType<typeof walletRepository>;
 
 export const createWalletRepository = async () => {
   const { db, needsUpgrade } = await connect('dev-wallet', 1);
@@ -79,10 +89,10 @@ export const createWalletRepository = async () => {
     // NOTE: If you change the schema, you need to update the upgrade method
     // below to migrate the data. the current version just creates the database
     const create = createStore(db);
-    create('profiles', 'uuid');
-    create('networks', 'uuid');
-    create('keyStores', 'uuid');
-    create('encryptedValues');
+    create('profile', 'uuid');
+    create('network', 'uuid');
+    create('keyStore', 'uuid', 'profileId');
+    create('encryptedValue');
   }
   return walletRepository(db);
 };
