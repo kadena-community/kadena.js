@@ -178,8 +178,7 @@ export const ExtendedTransactionsTable = (
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Pagination
             totalPages={totalPages}
-            label="pagination"
-            currentPage={currentPage}
+            selectedPage={currentPage}
             onPageChange={handlePaginationClick}
           />
         </div>
