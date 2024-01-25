@@ -5,9 +5,9 @@ import { readFileSync, readdirSync, writeFileSync } from 'fs';
 import yaml from 'js-yaml';
 import { join, relative } from 'path';
 
-import { downloadGitFiles } from '@utils/download-git-files';
+import { downloadGitFiles } from '@services/git/download-git-files';
+import { flattenFolder } from '@services/git/path';
 import { logger } from '@utils/logger';
-import { flattenFolder } from '@utils/path';
 import { validateObjectProperties } from '@utils/validate-object';
 import type { IAccount } from '../helper';
 import { inspect, listen, signAndAssertTransaction, submit } from '../helper';

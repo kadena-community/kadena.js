@@ -1,36 +1,16 @@
-import chalk from 'chalk';
-import { exec } from 'child_process';
-import { promisify } from 'util';
 import { checkForHeaders } from './checkForHeaders';
 import { copyFavIcons } from './copyFavIcons';
 import { checkAuthors } from './createBlogAuthors';
 import { createSitemap } from './createSitemap';
 import { createSpecs } from './createSpec';
 import { detectBrokenLinks } from './detectBrokenLinks';
+import { fixLocalLinks } from './fixLocalLinks';
 import { createDocsTree } from './getdocstree';
-import { importAllReadmes } from './importReadme';
 import { deleteTempDir } from './importReadme/importRepo';
-import { Spinner } from './spinner';
+import { movePages } from './movePages';
 import type { IScriptResult } from './types';
-
-export const promiseExec = promisify(exec);
-let globalError = false;
-
-const createString = (str: string, start?: boolean): string => {
-  let titleStr = ` END ${chalk.blue(str.toUpperCase())} ====`;
-  let line = '\n\n';
-  if (start) {
-    titleStr = ` START ${chalk.blue(str.toUpperCase())} ====\n\n`;
-    line = '';
-  }
-  const maxLineLength = 70;
-
-  while (line.length + titleStr.length < maxLineLength) {
-    line += `=`;
-  }
-
-  return `${line}${titleStr}`;
-};
+import { initFunc, promiseExec } from './utils/build';
+import { getGlobalError } from './utils/globalError';
 
 const runPrettier = async (): Promise<IScriptResult> => {
   const success: string[] = [];
@@ -49,39 +29,13 @@ const runPrettier = async (): Promise<IScriptResult> => {
   return { errors, success };
 };
 
-const initFunc = async (
-  fnc: () => Promise<IScriptResult>,
-  description: string,
-): Promise<void | number> => {
-  console.log(createString(description, true));
-
-  const spinner = Spinner();
-  spinner.start();
-
-  const { success, errors } = await fnc();
-
-  spinner.stop();
-
-  if (errors.length) {
-    errors.map((error) => {
-      console.warn(chalk.red('⨯'), error);
-    });
-    globalError = true;
-    return (process.exitCode = 1);
-  } else {
-    success.map((successItem) => {
-      console.log(chalk.green('✓'), successItem);
-    });
-  }
-
-  console.log(createString(description));
-};
-
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 (async function (): Promise<void> {
   //starting with a cleanslate, removing the tempdir.
   deleteTempDir();
-  await initFunc(importAllReadmes, 'Import docs from monorepo');
+  await initFunc(movePages, 'Move all pages from docs with config.yaml');
+  await initFunc(fixLocalLinks, 'fix local links from the config.yaml');
+
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(createSpecs, 'Create specs files');
   await initFunc(detectBrokenLinks, 'Detect broken links');
@@ -93,7 +47,7 @@ const initFunc = async (
   //cleanup, removing the tempdir
   deleteTempDir();
 
-  if (globalError) {
+  if (getGlobalError() && process.env.NODE_ENV !== 'development') {
     process.exitCode = 1;
   }
 })();

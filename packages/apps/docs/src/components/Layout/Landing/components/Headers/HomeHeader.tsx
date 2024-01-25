@@ -17,6 +17,7 @@ import React, { useEffect, useState } from 'react';
 import {
   headerClass,
   headerLoadedClass,
+  mostPopularBoxClass,
   searchInputWrapper,
   subheaderClass,
   wrapperClass,
@@ -53,13 +54,13 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
   return (
     <header className={loaderHeaderClass}>
       <div className={wrapperClass}>
-        <Box marginX={{ xs: '$1', sm: '$4' }}>
+        <Box marginInline={{ xs: 'xs', sm: 'md' }}>
           <Grid columns={{ sm: 1, md: 2 }}>
             <GridItem>
               <Heading as="h1" variant="h2">
                 Kadena
               </Heading>
-              <Stack direction="column" gap="$2xs">
+              <Stack flexDirection="column" gap="xxs">
                 <Heading as="h2" variant="h4">
                   Build your <GradientText>own</GradientText> Internet
                 </Heading>
@@ -67,19 +68,14 @@ export const HomeHeader: FC<IProps> = ({ popularPages }) => {
                   Explore our guides and examples to build on Kadena
                 </span>
 
-                <Box marginTop="$5">
-                  <div className={searchInputWrapper}>
-                    <SearchBar onKeyUp={handleKeyPress} />
-                  </div>
+                <Box className={searchInputWrapper}>
+                  <SearchBar onKeyUp={handleKeyPress} />
                 </Box>
               </Stack>
             </GridItem>
             <GridItem>
               {popularPages.length > 0 && (
-                <Box
-                  paddingLeft={{ sm: '$1', lg: '$15', xl: '$32', xxl: '$48' }}
-                  marginRight="$10"
-                >
+                <Box className={mostPopularBoxClass} marginInlineEnd="xxxl">
                   <MostPopular pages={popularPages} title="Most viewed docs" />
                 </Box>
               )}

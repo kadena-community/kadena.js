@@ -1,7 +1,7 @@
-import { Stack } from '@components/Layout';
 import cn from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { Stack } from '../Layout';
 import { footerClass } from './Dialog.css';
 
 export interface IDialogFooterProps {
@@ -15,10 +15,10 @@ export const DialogFooter: FC<IDialogFooterProps> = ({
 }) => {
   return (
     <Stack
-      gap="$md"
+      gap="md"
       justifyContent="flex-end"
       alignItems="center"
-      marginTop="$xl"
+      marginBlockStart="xl"
       className={cn(footerClass, className)}
     >
       {children}

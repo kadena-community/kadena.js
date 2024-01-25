@@ -48,16 +48,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: ['@kadena/client', '@kadena/client-utils']
-
-    services:
-      devnet:
-        image: kadena/devnet
-        options:
-          --memory 7g --cpus 2 --health-cmd "curl --verbose --fail
-          http://localhost:8080/info || exit 1"
-        ports:
-          - 8080:8080
+        package:
+          [
+            '@kadena/client',
+            '@kadena/client-utils',
+            '@kadena/create-kadena-app',
+          ]
 
     steps:
       - uses: actions/checkout@v4
@@ -74,6 +70,11 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
+      - name: Start devnet
+        uses: ./.github/actions/devnet
+        with:
+          migrations: packages/apps/graph/cwd-extra-migrations
+
       - name: Install dependencies
         run: pnpm install
 
@@ -86,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: ['tools', 'docs']
+        app: ['tools', 'docs', 'graph']
 
     steps:
       - uses: actions/checkout@v4
@@ -104,18 +105,25 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
+      - name: Start devnet
+        uses: ./.github/actions/devnet
+        with:
+          migrations: packages/apps/graph/cwd-extra-migrations
+
       - name: Install dependencies
         run: pnpm install
 
       - name: Install browsers
         run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
 
-      # Disable remote caching for this step, otherwise env variables will not be used.
+      # Disable remote caching, we need to explicitly rebuild Apps.
       - name: build dApp
-        run: pnpm turbo build --filter @kadena/${{ matrix.app }}
+        run: pnpm turbo build --filter @kadena/${{ matrix.app }} --force
 
       - name: Run end-to-end tests
-        run: pnpm run test:e2e -- -c playwright.${{ matrix.app }}.config.ts
+        run:
+          pnpm turbo test:e2e --filter @kadena-dev/e2e-tests -- -c
+          playwright.${{ matrix.app }}.config.ts
         env:
           TESTOBJECT: ${{ matrix.app }}
 

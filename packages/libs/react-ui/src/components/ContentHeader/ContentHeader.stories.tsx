@@ -1,9 +1,9 @@
-import type { IContentHeaderProps } from '@components/ContentHeader';
-import { ContentHeader } from '@components/ContentHeader';
-import { SystemIcon } from '@components/Icon';
-import { withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { withContentWidth } from '../../storyDecorators';
+import type { IContentHeaderProps } from '../ContentHeader';
+import { ContentHeader } from '../ContentHeader';
+import { SystemIcon } from '../Icon';
 
 const meta: Meta<
   {

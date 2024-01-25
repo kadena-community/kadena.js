@@ -1,9 +1,16 @@
-import { style } from '@vanilla-extract/css';
+import { atoms } from '@kadena/react-ui/styles';
 
-export const headerStyle = style({
+export const headerClass = atoms({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   flexDirection: 'column',
-  paddingBottom: '2rem',
+  gap: 'md',
+});
+
+export const headerFormClass = atoms({
+  display: 'flex',
+  alignItems: 'flex-end',
+  justifyContent: 'center',
+  gap: 'md',
 });

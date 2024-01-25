@@ -1,7 +1,7 @@
-import type { SystemIcon } from '@components/Icon';
-import { NavFooter } from '@components/NavFooter';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { SystemIcon } from '../Icon';
+import { NavFooter } from '../NavFooter';
 import type { Target } from './NavFooterLink';
 
 const meta: Meta<{
@@ -12,7 +12,7 @@ const meta: Meta<{
   title: 'Navigation/NavFooter',
   parameters: {
     status: {
-      type: ['needsRevision'],
+      type: ['deprecated'],
     },
     docs: {
       description: {

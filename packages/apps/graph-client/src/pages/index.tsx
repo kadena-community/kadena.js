@@ -1,98 +1,132 @@
-import { Box, Stack } from '@kadena/react-ui';
+import { Box, Button, Link, Stack, Table } from '@kadena/react-ui';
 
-import type { QueryTransactionsConnection } from '@/__generated__/sdk';
+import type { Block, QueryTransactionsConnection } from '@/__generated__/sdk';
 import {
+  useGetBlockNodesQuery,
   useGetBlocksSubscription,
-  useGetRecentHeightsQuery,
   useGetTransactionsQuery,
 } from '@/__generated__/sdk';
-import { centerBlockStyle } from '@/components/common/center-block/styles.css';
+import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
-import { getRecentHeights, getTransactions } from '@/graphql/queries.graph';
+import { getBlockNodes, getTransactions } from '@/graphql/queries.graph';
 import { getBlocksSubscription } from '@/graphql/subscriptions.graph';
-import { ChainwebGraph } from '@components/chainweb';
 import routes from '@constants/routes';
-import { useChainTree } from '@context/chain-tree-context';
-import { useParsedBlocks } from '@utils/hooks/use-parsed-blocks';
-import { usePrevious } from '@utils/hooks/use-previous';
-import isEqual from 'lodash.isequal';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Home: React.FC = () => {
-  const {
-    loading: loadingNewBlocks,
-    data: newBlocks,
-    error: newBlocksError,
-  } = useGetBlocksSubscription();
-  const getRecentHeightsVariables = { count: 3 };
-  const { data: recentBlocks, error: recentBlocksError } =
-    useGetRecentHeightsQuery({ variables: getRecentHeightsVariables });
-  const previousNewBlocks = usePrevious(newBlocks);
-  const previousRecentBlocks = usePrevious(recentBlocks);
+  const [subscriptionPaused, setSubscriptionPaused] = useState(false);
+
+  const { data: newBlocksIds, error: newBlockIdsError } =
+    useGetBlocksSubscription({
+      skip: subscriptionPaused,
+    });
+
+  const nodesQueryVariables = {
+    ids: newBlocksIds?.newBlocks as string[],
+  };
+
+  const { data: nodesQueryData, error: nodesQueryError } =
+    useGetBlockNodesQuery({
+      variables: nodesQueryVariables,
+      skip: !newBlocksIds?.newBlocks?.length,
+    });
+
+  const [newBlocks, setNewBlocks] = useState<Block[]>([]);
+
+  useEffect(() => {
+    if (nodesQueryData?.nodes?.length) {
+      const updatedBlocks = [
+        ...(nodesQueryData?.nodes as Block[]),
+        ...(newBlocks || []),
+      ];
+
+      if (updatedBlocks.length > 10) {
+        updatedBlocks.length = 10;
+      }
+
+      setNewBlocks(updatedBlocks);
+    }
+  }, [nodesQueryData?.nodes]);
 
   const getTransactionsVariables = { first: 10 };
-  const { data: txs, error: txError } = useGetTransactionsQuery({
+  const {
+    loading: txLoading,
+    data: txs,
+    error: txError,
+  } = useGetTransactionsQuery({
     variables: getTransactionsVariables,
   });
 
-  const { allBlocks, addBlocks } = useParsedBlocks();
-
-  const { addBlockToChain } = useChainTree();
-
-  useEffect(() => {
-    if (
-      isEqual(previousNewBlocks, newBlocks) === false &&
-      newBlocks?.newBlocks &&
-      newBlocks?.newBlocks?.length > 0
-    ) {
-      newBlocks.newBlocks.forEach(async (block) => {
-        addBlockToChain(block);
-      });
-      addBlocks(newBlocks?.newBlocks);
-    }
-  }, [newBlocks, addBlocks, previousNewBlocks, addBlockToChain]);
-
-  useEffect(() => {
-    if (
-      isEqual(previousRecentBlocks, recentBlocks) === false &&
-      recentBlocks?.completedBlockHeights &&
-      recentBlocks?.completedBlockHeights?.length > 0
-    ) {
-      recentBlocks.completedBlockHeights.forEach(async (block) => {
-        addBlockToChain(block);
-      });
-
-      addBlocks(recentBlocks?.completedBlockHeights);
-    }
-  }, [recentBlocks, addBlocks, previousRecentBlocks, addBlockToChain]);
-
   return (
     <>
-      <Stack justifyContent="flex-end">
+      <Stack justifyContent="space-between">
+        <Button
+          title="Toggle subscription polling."
+          isCompact
+          variant="text"
+          onPress={() => setSubscriptionPaused(!subscriptionPaused)}
+        >
+          {subscriptionPaused ? 'Continue' : 'Pause'}
+        </Button>
+
         <GraphQLQueryDialog
           queries={[
             { query: getBlocksSubscription },
-            { query: getRecentHeights, variables: getRecentHeightsVariables },
+            { query: getBlockNodes, variables: nodesQueryVariables },
             { query: getTransactions, variables: getTransactionsVariables },
           ]}
         />
       </Stack>
 
       <LoaderAndError
-        error={newBlocksError || recentBlocksError || txError}
-        loading={loadingNewBlocks}
+        error={newBlockIdsError || nodesQueryError || txError}
+        loading={txLoading}
         loaderText="Loading..."
       />
 
-      <div className={centerBlockStyle}>
-        {allBlocks && <ChainwebGraph blocks={allBlocks} />}
-      </div>
+      {newBlocks && (
+        <Table.Root wordBreak="break-word" className={compactTableClass}>
+          <Table.Head>
+            <Table.Tr>
+              <Table.Th>Hash</Table.Th>
+              <Table.Th>Creation Time</Table.Th>
+              <Table.Th>Height</Table.Th>
+              <Table.Th>Chain</Table.Th>
+              <Table.Th>Confirmation Depth</Table.Th>
+              <Table.Th>Transactions</Table.Th>
+            </Table.Tr>
+          </Table.Head>
+          <Table.Body>
+            {newBlocks.map((block, index) => {
+              return (
+                <Table.Tr key={index}>
+                  <Table.Td>
+                    <Link
+                      style={{ padding: 0, border: 0 }}
+                      href={`${routes.BLOCK_OVERVIEW}/${block.hash}`}
+                    >
+                      {block.hash}
+                    </Link>
+                  </Table.Td>
+                  <Table.Td>
+                    {new Date(block.creationTime).toLocaleString()}
+                  </Table.Td>
+                  <Table.Td>{block.height}</Table.Td>
+                  <Table.Td>{block.chainId}</Table.Td>
+                  <Table.Td>{block.confirmationDepth}</Table.Td>
+                  <Table.Td>{block.transactions.totalCount}</Table.Td>
+                </Table.Tr>
+              );
+            })}
+          </Table.Body>
+        </Table.Root>
+      )}
 
       {txs?.transactions && (
         <div>
-          <Box marginBottom="$10" />
+          <Box margin="md" />
           <CompactTransactionsTable
             transactions={txs.transactions as QueryTransactionsConnection}
             viewAllHref={`${routes.TRANSACTIONS}`}

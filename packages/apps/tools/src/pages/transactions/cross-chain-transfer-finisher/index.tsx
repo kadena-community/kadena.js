@@ -26,12 +26,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Grid,
   GridItem,
   Heading,
-  IconButton,
   Stack,
+  SystemIcon,
   TextField,
   TrackerCard,
 } from '@kadena/react-ui';
@@ -239,10 +240,6 @@ const CrossChainTransferFinisher: FC = () => {
 
   const isGasStation = watchGasPayer === 'kadena-xchain-gas';
   const isAdvancedOptions = devOption !== 'BASIC';
-  const showInputError =
-    pollResults.error === undefined ? undefined : 'negative';
-  const showInputHelper =
-    pollResults.error !== undefined ? pollResults.error : '';
   const showNotification = Object.keys(finalResults).length > 0;
 
   const formattedSigData = `{
@@ -346,10 +343,10 @@ const CrossChainTransferFinisher: FC = () => {
         ]}
       />
 
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Cross Chain Finisher')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Cross Chain Finisher')}</BreadcrumbsItem>
+      </Breadcrumbs>
 
       <Heading as="h3" transform="capitalize" bold={false}>
         {t('Finish transaction')}
@@ -361,24 +358,25 @@ const CrossChainTransferFinisher: FC = () => {
 
       <form onSubmit={handleSubmit(handleValidateSubmit)}>
         <section className={formContentStyle}>
-          <Stack direction="column">
+          <Stack flexDirection="column">
             <FormItemCard
               heading={t('Search Request')}
               helper={t('Where can I find the request key?')}
               helperHref="#"
               disabled={false}
             >
-              <Box marginBottom="$4" />
+              <Box marginBlockEnd="md" />
               <Grid>
                 <GridItem>
                   <RequestKeyField
-                    helperText={showInputHelper}
-                    status={showInputError}
+                    errorMessage={
+                      pollResults.error || errors.requestKey?.message
+                    }
+                    isInvalid={!!pollResults.error}
                     {...register('requestKey')}
                     value={requestKey}
                     onChange={onRequestKeyChange}
                     onKeyUp={onCheckRequestKey}
-                    error={errors.requestKey}
                   />
                 </GridItem>
               </Grid>
@@ -390,39 +388,35 @@ const CrossChainTransferFinisher: FC = () => {
               helperHref="#"
               disabled={false}
             >
-              <Box marginBottom="$4" />
-              <Grid columns={1}>
+              <Grid columns={1} marginBlockStart="md">
                 <GridItem>
                   <AccountNameField
                     label={t('Gas Payer')}
-                    inputProps={{
-                      ...register('gasPayer', { shouldUnregister: true }),
-                      id: 'gas-payer-account-input',
-                      placeholder: t('Enter Your Account'),
-                    }}
-                    error={errors.gasPayer}
+                    {...register('gasPayer', { shouldUnregister: true })}
+                    id="gas-payer-account-input"
+                    placeholder={t('Enter Your Account')}
+                    isInvalid={!!errors.gasPayer}
+                    errorMessage={errors.gasPayer?.message}
                   />
                 </GridItem>
               </Grid>
 
-              <Box marginBottom="$4" />
-              <Grid columns={2}>
+              <Grid columns={2} marginBlockStart="md">
                 <GridItem>
                   <TextField
                     disabled={true}
                     label={t('Gas Price')}
                     info={t('approx. USD 000.1 ¢')}
-                    leadingTextWidth="$16"
                     {...register('gasPrice', { shouldUnregister: true })}
                     id="gas-price-input"
                     placeholder={t('Enter Gas Price')}
-                    leadingText={t('KDA')}
+                    startAddon={t('KDA')}
                   />
                 </GridItem>
                 <GridItem>
                   <TextField
                     disabled={!isAdvancedOptions}
-                    helperText={t(
+                    description={t(
                       'This input field will only be enabled if the user is in expert mode',
                     )}
                     label={t('Gas Limit')}
@@ -440,20 +434,21 @@ const CrossChainTransferFinisher: FC = () => {
                 helper={t('How do I use the Signature data')}
                 helperHref="#"
               >
-                <Box marginBottom="$4" />
+                <Box marginBlockEnd="md" />
                 <Grid columns={1}>
                   <GridItem>
                     <div className={textareaContainerStyle}>
                       <textarea rows={4} className={textAreaStyle}>
                         {formattedSigData}
                       </textarea>
-                      <IconButton
+                      <Button
                         color="primary"
-                        icon={'ContentCopy'}
-                        onClick={async () => {
+                        icon={<SystemIcon.ContentCopy />}
+                        onPress={async () => {
                           await navigator.clipboard.writeText(formattedSigData);
                         }}
                         title={t('copySigData')}
+                        aria-label={t('copySigData')}
                       />
                     </div>
                   </GridItem>
@@ -463,7 +458,11 @@ const CrossChainTransferFinisher: FC = () => {
           </Stack>
         </section>
         <section className={formButtonStyle}>
-          <Button type="submit" disabled={!isGasStation} icon="TrailingIcon">
+          <Button
+            type="submit"
+            isDisabled={!isGasStation}
+            endIcon={<SystemIcon.TrailingIcon />}
+          >
             {t('Finish Transaction')}
           </Button>
         </section>

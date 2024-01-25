@@ -86,6 +86,7 @@ const functionBody = seq(
   repeat(
     $('requiredCapabilities', seq(id('require-capability'), id('('), $(atom))),
     $('withCapabilities', seq(id('with-capability'), id('('), $(atom))),
+    $('events', seq(id('emit-event'), id('('), $(atom))),
     $(
       'externalFnCalls',
       seq(

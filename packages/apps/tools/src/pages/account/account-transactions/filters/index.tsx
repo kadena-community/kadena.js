@@ -1,5 +1,6 @@
 import { ChainSelect } from '@/components/Global';
-import AccountNameField, {
+import {
+  AccountNameField,
   NAME_VALIDATION,
 } from '@/components/Global/AccountNameField';
 import Routes from '@/constants/routes';
@@ -11,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Card,
   Grid,
@@ -72,12 +74,12 @@ const CheckTransactions: FC = () => {
 
   return (
     <div>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Account')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Transactions')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Filters')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
-      <Box marginBottom="$3" />
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Account')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Filters')}</BreadcrumbsItem>
+      </Breadcrumbs>
+      <Box marginBlockEnd="sm" />
       <Heading bold={false} as="h5">
         {t('Account Transaction Filters')}
       </Heading>
@@ -85,19 +87,18 @@ const CheckTransactions: FC = () => {
         <form onSubmit={handleSubmit(checkTransactionsEvent)}>
           <Card fullWidth>
             <Heading as="h6">Filters</Heading>
-            <Box marginBottom="$4" />
+            <Box marginBlockEnd="md" />
             <Grid columns={2}>
               <GridItem>
                 <ChainSelect
-                  onChange={onChainSelectChange}
-                  value={chainID}
-                  ariaLabel="Select Chain ID"
+                  onSelectionChange={onChainSelectChange}
+                  selectedKey={chainID}
                 />
               </GridItem>
               <GridItem>
                 <AccountNameField
-                  inputProps={register('name')}
-                  error={errors.name}
+                  {...register('name')}
+                  errorMessage={errors.name?.message}
                   label={t('Account')}
                 />
               </GridItem>

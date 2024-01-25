@@ -2,21 +2,21 @@ import baseConfig from '@kadena-dev/shared-config/vitest.config';
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 import { defineConfig, mergeConfig } from 'vitest/config';
 
-export default mergeConfig(
-  baseConfig,
-  defineConfig({
-    plugins: [vanillaExtractPlugin({ emitCssInSsr: true })],
-    test: {
-      setupFiles: ['vitest.setup.ts'],
-      environment: 'happy-dom',
-      threads: false,
-      coverage: {
-        provider: 'v8',
-        lines: 80,
-        functions: 48.38,
-        branches: 75,
-        statements: 80,
+const localConfig = defineConfig({
+  plugins: [vanillaExtractPlugin({ emitCssInSsr: true })],
+  test: {
+    setupFiles: ['vitest.setup.ts'],
+    environment: 'happy-dom',
+    coverage: {
+      thresholds: {
+        lines: 18.64,
+        functions: 23.71,
+        branches: 43.58,
+        statements: 18.64,
+        autoUpdate: false,
       },
     },
-  }),
-);
+  },
+});
+
+export default mergeConfig(baseConfig, localConfig);

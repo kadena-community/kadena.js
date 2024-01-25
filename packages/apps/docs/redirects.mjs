@@ -50,6 +50,11 @@ const redirectsConfig = [
     permanent: true,
   },
   {
+    source: '/kadena/wallets/chainweaver-troubleshooting',
+    destination: '/kadena/wallets/chainweaver/chainweaver-troubleshooting',
+    permanent: true,
+  },
+  {
     source: '/basics/ledger/ledger-user-guide',
     destination: '/kadena/wallets/ledger',
     permanent: true,
@@ -125,6 +130,21 @@ const redirectsConfig = [
     permanent: true,
   },
   {
+    source: '/build/resources/pact-resources',
+    destination: '/build/resources',
+    permanent: true,
+  },
+  {
+    source: '/build/support',
+    destination: '/kadena/support',
+    permanent: true,
+  },
+  {
+    source: '/contribute/contribute',
+    destination: '/contribute',
+    permanent: true,
+  },
+  {
     source: '/contribute/node/overview',
     destination: '/contribute/node',
     permanent: true,
@@ -132,6 +152,17 @@ const redirectsConfig = [
   {
     source: '/contribute/ambassadors/overview',
     destination: '/contribute/ambassadors',
+    permanent: true,
+  },
+  {
+    source: '/pact/reference/pact/reference/functions',
+    destination: '/pact/reference/functions',
+    permanent: true,
+  },
+  {
+    source: '/blogchain/:slug/announcing-kadena-technical-grants.2020-11-25',
+    destination:
+      '/blogchain/:slug/announcing-kadena-technical-grants-2020-11-25',
     permanent: true,
   },
   {
@@ -154,6 +185,12 @@ const redirectsConfig = [
     destination: '/pact/intermediate/:slug',
     permanent: true,
   },
+  {
+    source: '/learn-pact/intro',
+    destination: '/pact/overview',
+    permanent: true,
+  },
+
   /* Pact Reference docs redirects */
   {
     source: '/en/latest',

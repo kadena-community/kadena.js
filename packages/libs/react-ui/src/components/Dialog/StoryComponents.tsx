@@ -1,12 +1,12 @@
-import { Stack } from '@components/Layout';
-import { Link } from '@components/Link';
-import { Text } from '@components/Typography';
 import type { FC } from 'react';
 import React from 'react';
+import { Stack } from '../Layout';
+import { Link } from '../Link';
+import { Text } from '../Typography';
 
 export const ModalContent: FC = () => {
   return (
-    <Stack direction="column" gap="$4">
+    <Stack flexDirection="column" gap="sm">
       <Text>
         When tabbing through links in a modal, the focus should stay in the
         modal and not go to the links on the page itself.

@@ -1,20 +1,20 @@
 import { getClassName } from '@/utils/getClassName';
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { paragraphWrapperClass } from '../Paragraph/styles.css';
 
 export const olListClass = style([
-  sprinkles({
-    paddingY: '$2',
-    marginX: 0,
+  atoms({
     position: 'relative',
-    color: '$neutral4',
+    color: 'text.base.default',
+    paddingBlock: 'sm',
+    marginInline: 'no',
   }),
 ]);
 
 globalStyle(`article ol > li`, {
-  paddingTop: vars.sizes.$2xs,
-  paddingBottom: vars.sizes.$2xs,
+  paddingBlockStart: tokens.kda.foundation.spacing.xxs,
+  paddingBlockEnd: tokens.kda.foundation.spacing.xxs,
 });
 
 globalStyle(
@@ -23,6 +23,6 @@ globalStyle(
   ${getClassName(paragraphWrapperClass)}
   `,
   {
-    marginTop: vars.sizes.$md,
+    marginBlockStart: tokens.kda.foundation.spacing.md,
   },
 );

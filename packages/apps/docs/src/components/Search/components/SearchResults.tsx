@@ -119,10 +119,9 @@ export const SearchResults: FC<IProps> = ({
                   <Stack justifyContent="flex-end">
                     <Link href={`/search?q=${query}`} passHref legacyBehavior>
                       <Button
-                        icon={'TrailingIcon'}
-                        iconAlign="right"
+                        endIcon={<SystemIcon.TrailingIcon />}
                         title="Go to search results"
-                        onClick={state.close}
+                        onPress={state.close}
                       >
                         Go to search results
                       </Button>
@@ -135,7 +134,7 @@ export const SearchResults: FC<IProps> = ({
         </TabItem>
 
         <TabItem key="qa" title="QA Space">
-          <Box marginBottom="$8">
+          <Box marginBlockEnd="xxl">
             <Notification icon={<SystemIcon.AlertBox />} role="none">
               <NotificationHeading>QA search is in beta</NotificationHeading>
               QA search our latest AI vector-based search, designed to provide
@@ -178,7 +177,7 @@ export const SearchResults: FC<IProps> = ({
               return (
                 <div key={`${interaction.input}-${idx}`}>
                   <ReactMarkdown>{interaction?.output}</ReactMarkdown>
-                  <Box marginTop="$8">
+                  <Box marginBlockEnd="xxl">
                     <Heading variant="h4">Sources:</Heading>
                     {metadata.length > 1 && (
                       <BrowseSection>

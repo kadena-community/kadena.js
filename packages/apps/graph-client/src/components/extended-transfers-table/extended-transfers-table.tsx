@@ -1,9 +1,20 @@
-import type { GetTransfersQuery } from '@/__generated__/sdk';
+import type {
+  GetTransfersQuery,
+  QueryTransfersConnection,
+} from '@/__generated__/sdk';
 import routes from '@/constants/routes';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
-import { Box, Link, Pagination, Select, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Link,
+  Pagination,
+  Select,
+  SelectItem,
+  Table,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 type DataType = GetTransfersQuery;
 interface IVariableType {
@@ -14,19 +25,22 @@ interface IVariableType {
 }
 
 interface IExpandedTransfersTableProps {
-  transfers: GetTransfersQuery['transfers'];
+  transfers: QueryTransfersConnection;
   fetchMore: (
     fetchMoreOptions: FetchMoreQueryOptions<IVariableType, DataType> &
       FetchMoreOptions,
   ) => Promise<any>;
 }
 
+const itemsPerPageOptions = [10, 50, 100, 200].map((x) => ({
+  label: x.toString(),
+  value: x,
+}));
+
 export const ExtendedTransfersTable = (
   props: IExpandedTransfersTableProps,
 ): JSX.Element => {
   const { transfers, fetchMore } = props;
-
-  const itemsPerPageOptions = [10, 50, 100, 200];
 
   // Parse the query parameters from the URL using Next.js router
   const router = useRouter();
@@ -35,9 +49,11 @@ export const ExtendedTransfersTable = (
   const urlItemsPerPage = router.query.items;
 
   // Use state to manage itemsPerPage and currentPage
-  const [itemsPerPage, setItemsPerPage] = useState<number>(
+  const [itemsPerPage, setItemsPerPage] = useState<number>(() =>
     urlItemsPerPage &&
-      itemsPerPageOptions.includes(parseInt(urlItemsPerPage as string))
+    itemsPerPageOptions.some(
+      (option) => option.value === parseInt(urlItemsPerPage as string),
+    )
       ? parseInt(urlItemsPerPage as string)
       : 10,
   );
@@ -144,37 +160,35 @@ export const ExtendedTransfersTable = (
 
   return (
     <>
-      <Box marginBottom="$3">
+      <Box margin="sm">
         <div style={{ float: 'left', textAlign: 'center' }}>
           <span style={{ display: 'inline-block' }}>Items per page: </span>
 
           <Select
-            ariaLabel="items-per-page"
+            aria-label="items-per-page"
             id="items-per-page"
-            onChange={(event) => setItemsPerPage(parseInt(event.target.value))}
-            style={{ display: 'inline-block' }}
-            defaultValue={itemsPerPage}
+            onSelectionChange={(key) =>
+              setItemsPerPage(typeof key === 'string' ? parseInt(key) : key)
+            }
+            items={itemsPerPageOptions}
+            defaultSelectedKey={itemsPerPage}
           >
-            {itemsPerPageOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
+            {(item) => <SelectItem key={item.value}>{item.label}</SelectItem>}
           </Select>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Pagination
             totalPages={totalPages}
-            label="pagination"
-            currentPage={currentPage}
+            selectedPage={currentPage}
             onPageChange={handlePaginationClick}
           />
         </div>
       </Box>
-      <Table.Root wordBreak="break-word">
+      <Table.Root wordBreak="break-word" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
             <Table.Th>Chain</Table.Th>
+            <Table.Th>Timestamp</Table.Th>
             <Table.Th>Block Height</Table.Th>
             <Table.Th>Amount</Table.Th>
             <Table.Th>Sender Account</Table.Th>
@@ -201,6 +215,9 @@ export const ExtendedTransfersTable = (
             return (
               <Table.Tr key={index}>
                 <Table.Td>{chainIdDisplay}</Table.Td>
+                <Table.Td>
+                  {new Date(edge.node.creationTime).toLocaleString()}
+                </Table.Td>
                 <Table.Td>{heightDisplay}</Table.Td>
                 <Table.Td>{edge.node.amount}</Table.Td>
                 <Table.Td>

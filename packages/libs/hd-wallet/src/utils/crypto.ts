@@ -1,73 +1,80 @@
-import {
-  createCipheriv,
-  createDecipheriv,
-  pbkdf2Sync,
-  randomBytes,
-} from 'crypto';
+export type BinaryLike = string | ArrayBuffer | Uint8Array;
 
-type BinaryLike = string | NodeJS.ArrayBufferView;
+export const randomBytes = (size: number) =>
+  crypto.getRandomValues(new Uint8Array(size));
 
-/**
- * Derive a cryptographic key from the provided password.
- * @param {string} password - User's password.
- * @returns {Buffer} - Returns the derived cryptographic key.
- */
-function deriveKey(password: string, salt: BinaryLike): Buffer {
-  return pbkdf2Sync(password, salt, 1000, 32, 'sha256');
+// derive string key
+async function deriveKey(password: BinaryLike, salt: BinaryLike) {
+  const algo = {
+    name: 'PBKDF2',
+    hash: 'SHA-256',
+    salt: typeof salt === 'string' ? new TextEncoder().encode(salt) : salt,
+    iterations: 1000,
+  };
+  return crypto.subtle.deriveKey(
+    algo,
+    await crypto.subtle.importKey(
+      'raw',
+      typeof password === 'string'
+        ? new TextEncoder().encode(password)
+        : password,
+      {
+        name: algo.name,
+      },
+      false,
+      ['deriveKey'],
+    ),
+    {
+      name: 'AES-GCM',
+      length: 256,
+    },
+    false,
+    ['encrypt', 'decrypt'],
+  );
 }
 
-/**
- * Encrypt the provided text using AES-256-GCM algorithm.
- * @param {Buffer} text - Text to encrypt.
- * @param {string} password - User's password.
- * @returns {{ cipherText: Buffer; iv: Buffer; tag: Buffer }} - Returns the encrypted text, initialization vector, and authentication tag.
- */
-export function encrypt(
-  text: Buffer,
-  password: string,
+// Encrypt function
+export async function encrypt(
+  text: BinaryLike,
+  password: BinaryLike,
   salt: BinaryLike,
-): { cipherText: Buffer; iv: Buffer; tag: Buffer } {
-  const key = deriveKey(password, salt);
-  const iv = randomBytes(12);
-  const cipher = createCipheriv('aes-256-gcm', key, iv);
-  const cipherText = Buffer.concat([cipher.update(text), cipher.final()]);
-  const tag = cipher.getAuthTag(); // Capture the authentication tag
+) {
+  const algo = {
+    name: 'AES-GCM',
+    length: 256,
+    iv: randomBytes(12),
+  } as const;
   return {
-    cipherText,
-    iv,
-    tag,
+    cipherText: new Uint8Array(
+      await crypto.subtle.encrypt(
+        algo,
+        await deriveKey(password, salt),
+        //   new TextEncoder().encode(text)
+        typeof text === 'string' ? new TextEncoder().encode(text) : text,
+      ),
+    ),
+    iv: algo.iv,
   };
 }
 
-/**
- * Decrypt the provided encrypted text using AES-256-GCM algorithm.
- * @param encrypted - Encrypted text, initialization vector, and authentication tag.
- * @param password - User's password.
- * @returns  Returns the decrypted text or undefined if decryption fails.
- * @internal
- */
-export function decrypt(
-  encrypted: {
-    cipherText: Buffer;
-    iv: Buffer;
-    tag: Buffer;
-  },
-  password: string,
-  salt: BinaryLike,
-): Buffer | undefined {
-  const key = deriveKey(password, salt);
-  const decipher = createDecipheriv('aes-256-gcm', key, encrypted.iv);
-  decipher.setAuthTag(encrypted.tag); // Set the authentication tag
-  try {
-    return Buffer.concat([
-      decipher.update(encrypted.cipherText),
-      decipher.final(),
-    ]);
-  } catch (err) {
-    console.warn('Failed to decrypt');
-    return undefined;
-  }
-}
+type Encrypted = Awaited<ReturnType<typeof encrypt>>;
 
-export const HARDENED_OFFSET = 0x80000000;
-export const harden = (n: number) => HARDENED_OFFSET + n;
+// Decrypt function
+export async function decrypt(
+  encrypted: Encrypted,
+  password: BinaryLike,
+  salt: BinaryLike,
+) {
+  const algo = {
+    name: 'AES-GCM',
+    length: 256,
+    iv: encrypted.iv,
+  };
+  return new Uint8Array(
+    await crypto.subtle.decrypt(
+      algo,
+      await deriveKey(password, salt),
+      encrypted.cipherText,
+    ),
+  );
+}

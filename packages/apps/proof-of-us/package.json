@@ -17,28 +17,33 @@
   },
   "dependencies": {
     "@google-analytics/data": "~3.2.2",
-    "@kadena/fonts": "~0.0.1",
     "@vanilla-extract/css": "1.14.0",
     "next": "13.5.5",
     "next-themes": "~0.2.1",
+    "peerjs": "^1.5.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-qrcode-logo": "^2.9.0",
+    "socket.io": "^4.7.4",
+    "socket.io-client": "^4.7.4"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
+    "@kadena/fonts": "~0.0.1",
     "@rushstack/eslint-config": "~3.3.0",
     "@testing-library/react": "~14.0.0",
     "@types/gtag.js": "~0.0.12",
     "@types/node": "^18.17.14",
     "@types/react": "^18.2.15",
     "@types/react-dom": "18.2.7",
+    "@types/socket.io": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@vanilla-extract/next-plugin": "2.3.2",
-    "@vanilla-extract/vite-plugin": "^3.9.2",
+    "@vanilla-extract/vite-plugin": "^3.9.3",
     "@vanilla-extract/webpack-plugin": "2.3.1",
-    "@vitest/coverage-v8": "^0.34.6",
+    "@vitest/coverage-v8": "^1.1.0",
     "dotenv": "~16.0.3",
     "eslint": "^8.45.0",
     "eslint-import-resolver-typescript": "3.5.5",
@@ -47,7 +52,7 @@
     "next-router-mock": "^0.9.10",
     "prettier": "~3.0.3",
     "typescript": "5.2.2",
-    "vitest": "^0.34.6",
+    "vitest": "^1.1.0",
     "vitest-dom": "^0.1.1"
   }
 }

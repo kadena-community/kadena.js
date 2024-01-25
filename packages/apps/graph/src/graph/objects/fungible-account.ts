@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
-import { getChainFungibleAccount } from '@services/account-service';
+import { getFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -10,12 +10,12 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
 import type {
-  ChainFungibleAccount,
   FungibleAccount,
+  FungibleChainAccount,
 } from '../types/graphql-types';
 import {
-  ChainFungibleAccountName,
   FungibleAccountName,
+  FungibleChainAccountName,
 } from '../types/graphql-types';
 
 export default builder.node(
@@ -23,19 +23,18 @@ export default builder.node(
   {
     description: 'A fungible-specific account.',
     id: {
-      resolve(parent) {
-        return `${FungibleAccountName}/${parent.fungibleName}/${parent.accountName}`;
-      },
-      // Do not use parse here since there is a bug in the pothos relay plugin which can cause incorrect results. Parse the ID directly in the loadOne function.
+      resolve: (parent) =>
+        JSON.stringify([parent.fungibleName, parent.accountName]),
+      parse: (id) => ({
+        fungibleName: JSON.parse(id)[0],
+        accountName: JSON.parse(id)[1],
+      }),
     },
     isTypeOf(source) {
       return (source as any).__typename === FungibleAccountName;
     },
-    async loadOne(id) {
+    async loadOne({ fungibleName, accountName }) {
       try {
-        const fungibleName = id.split('/')[1];
-        const accountName = id.split('/')[2];
-
         return {
           __typename: FungibleAccountName,
           accountName,
@@ -53,14 +52,14 @@ export default builder.node(
       accountName: t.exposeString('accountName'),
       fungibleName: t.exposeString('fungibleName'),
       chainAccounts: t.field({
-        type: [ChainFungibleAccountName],
+        type: [FungibleChainAccountName],
         complexity: COMPLEXITY.FIELD.CHAINWEB_NODE * dotenv.CHAIN_COUNT,
         async resolve(parent) {
           try {
             return (
               await Promise.all(
                 chainIds.map(async (chainId) => {
-                  return await getChainFungibleAccount({
+                  return await getFungibleChainAccount({
                     chainId: chainId,
                     fungibleName: parent.fungibleName,
                     accountName: parent.accountName,
@@ -69,7 +68,7 @@ export default builder.node(
               )
             ).filter(
               (chainAccount) => chainAccount !== null,
-            ) as ChainFungibleAccount[];
+            ) as FungibleChainAccount[];
           } catch (error) {
             throw normalizeError(error);
           }

@@ -1,29 +1,30 @@
 import { getClassName } from '@/utils/getClassName';
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { paragraphWrapperClass } from '../Paragraph/styles.css';
 
 export const ulListClass = style([
-  sprinkles({
-    marginY: 0,
-    marginX: 0,
-    paddingY: '$2',
+  atoms({
     position: 'relative',
-    color: '$neutral4',
+    color: 'text.base.default',
+    marginBlock: 'no',
+    marginInline: 'no',
+    paddingBlock: 'sm',
   }),
+  {},
 ]);
 
 globalStyle(`article ul > li`, {
-  paddingTop: vars.sizes.$2xs,
-  paddingBottom: vars.sizes.$2xs,
+  paddingBlockStart: tokens.kda.foundation.spacing.xxs,
+  paddingBlockEnd: tokens.kda.foundation.spacing.xxs,
 });
 
 globalStyle(
   `article ul +
   ${getClassName(paragraphWrapperClass)},
-  
+
   `,
   {
-    marginTop: vars.sizes.$md,
+    marginBlockStart: tokens.kda.foundation.spacing.md,
   },
 );

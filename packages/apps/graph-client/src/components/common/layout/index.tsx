@@ -16,7 +16,10 @@ export const Layout: FC<IProps> = ({ children, omitHeader }: IProps) => {
     <div className={documentStyle}>
       <Head>
         <title>{appName}</title>
-        <link rel="icon" href="/favicon.png" />
+        <link
+          rel="icon"
+          href="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/icons/internal/default/icon%40128.png"
+        />
       </Head>
 
       {!omitHeader && <Header title={appName} />}

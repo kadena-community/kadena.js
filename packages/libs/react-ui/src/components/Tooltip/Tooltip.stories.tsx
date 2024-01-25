@@ -1,12 +1,12 @@
-import { Button } from '@components/Button';
-import { SystemIcon } from '@components/Icon';
-import { Stack } from '@components/Layout';
-import type { ITooltipProps } from '@components/Tooltip';
-import { Tooltip } from '@components/Tooltip';
-import { onLayer1 } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
-import { atoms } from '@theme/atoms.css';
 import React from 'react';
+import { onLayer1 } from '../../storyDecorators';
+import { atoms } from '../../styles/atoms.css';
+import { Button } from '../Button';
+import { SystemIcon } from '../Icon';
+import { Stack } from '../Layout';
+import type { ITooltipProps } from '../Tooltip';
+import { Tooltip } from '../Tooltip';
 
 const meta: Meta<ITooltipProps> = {
   title: 'Overlays/Tooltip',
@@ -116,7 +116,7 @@ export const TooltipReactNode: Story = {
         delay={delay}
         closeDelay={closeDelay}
         content={
-          <Stack direction="row" gap="$xs" alignItems="center">
+          <Stack flexDirection="row" gap="xs" alignItems="center">
             <SystemIcon.AlertBox />
             <code>I have an icon!</code>
           </Stack>
@@ -167,7 +167,7 @@ export const Controlled: Story = {
 
     return (
       <>
-        <div className={atoms({ marginBottom: 'xxxl' })}>
+        <div className={atoms({ marginBlockEnd: 'xxxl' })}>
           <Button onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? 'Hide Tooltip' : 'Show Tooltip'}
           </Button>

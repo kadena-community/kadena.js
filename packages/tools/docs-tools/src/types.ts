@@ -115,6 +115,7 @@ export interface ILayout {
 export type LevelType = 1 | 2 | 3;
 
 export interface IPageProps {
+  headerMenuItems: IMenuItem[];
   children?: ReactNode;
   menuItems: IMenuItem[];
   aSideMenuTree: ISubHeaderElement[];
@@ -233,3 +234,25 @@ export type Plugin = (
 ) => Promise<ITree | void | IPropsTree>;
 
 export { Root, RootContent };
+
+//config
+
+export type IConfigMenu = string[];
+
+export interface IConfigTreeItem {
+  id: string;
+  url: string;
+  file: string;
+  repo?: string;
+  children?: IConfigTreeItem[];
+  destination?: string;
+}
+export interface IConfig {
+  menu: IConfigMenu;
+  pages: IConfigTreeItem[];
+}
+
+export interface IScriptResult {
+  success: string[];
+  errors: string[];
+}

@@ -1,4 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
+import type { Block } from '@prisma/client';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -7,14 +8,15 @@ import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import type { Guard } from '../types/graphql-types';
-import { ChainFungibleAccountName } from '../types/graphql-types';
-import ChainFungibleAccount from './chain-fungible-account';
+import { FungibleChainAccountName } from '../types/graphql-types';
+import FungibleChainAccount from './fungible-chain-account';
 
 export default builder.prismaNode('Block', {
   description:
     'A unit of information that stores a set of verified transactions.',
   id: { field: 'hash' },
   name: 'Block',
+  select: {},
   fields: (t) => ({
     // database fields
     hash: t.exposeID('hash'),
@@ -33,10 +35,16 @@ export default builder.prismaNode('Block', {
     }),
     predicate: t.exposeString('predicate'),
     minerAccount: t.field({
-      type: ChainFungibleAccount,
+      type: FungibleChainAccount,
       complexity: COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS,
+      select: {
+        chainId: true,
+        minerAccount: true,
+        hash: true,
+        predicate: true,
+      },
       resolve: async (parent) => ({
-        __typename: ChainFungibleAccountName,
+        __typename: FungibleChainAccountName,
         chainId: parent.chainId.toString(),
         accountName: parent.minerAccount,
         fungibleName: 'coin',
@@ -45,6 +53,9 @@ export default builder.prismaNode('Block', {
             await prismaClient.minerKey.findMany({
               where: {
                 blockHash: parent.hash,
+              },
+              select: {
+                key: true,
               },
             })
           )?.map((x) => x.key),
@@ -61,9 +72,13 @@ export default builder.prismaNode('Block', {
       type: 'Block',
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
-      async resolve(__query, parent) {
+      select: {
+        parentBlockHash: true,
+      },
+      async resolve(query, parent) {
         try {
           return await prismaClient.block.findUnique({
+            ...query,
             where: {
               hash: parent.parentBlockHash,
             },
@@ -85,11 +100,14 @@ export default builder.prismaNode('Block', {
           last: args.last,
         }),
       }),
+      select: {
+        hash: true,
+      },
       async totalCount(parent) {
         try {
           return await prismaClient.transaction.count({
             where: {
-              blockHash: parent.hash,
+              blockHash: (parent as Block).hash,
             },
           });
         } catch (error) {
@@ -101,7 +119,7 @@ export default builder.prismaNode('Block', {
           return await prismaClient.transaction.findMany({
             ...query,
             where: {
-              blockHash: parent.hash,
+              blockHash: (parent as Block).hash,
             },
             orderBy: {
               height: 'desc',
@@ -118,6 +136,9 @@ export default builder.prismaNode('Block', {
       complexity:
         COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS *
         dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH,
+      select: {
+        hash: true,
+      },
       async resolve(parent) {
         try {
           return await getConfirmationDepth(parent.hash);
@@ -129,16 +150,16 @@ export default builder.prismaNode('Block', {
   }),
 });
 
-async function getConfirmationDepth(blockhash: string): Promise<number> {
+async function getConfirmationDepth(blockHash: string): Promise<number> {
   const result = await prismaClient.$queryRaw<{ depth: number }[]>`
     WITH RECURSIVE BlockDescendants AS (
-      SELECT hash, parent, 0 AS depth
+      SELECT hash, parent, 0 AS depth, height, chainid
       FROM blocks
-      WHERE hash = ${blockhash}
+      WHERE hash = ${blockHash}
       UNION ALL
-      SELECT b.hash, b.parent, d.depth + 1 AS depth
+      SELECT b.hash, b.parent, d.depth + 1 AS depth, b.height, b.chainid
       FROM BlockDescendants d
-      JOIN blocks b ON d.hash = b.parent
+      JOIN blocks b ON d.hash = b.parent AND b.height = d.height + 1 AND b.chainid = d.chainid
       WHERE d.depth < ${dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH}
     )
     SELECT MAX(depth) AS depth

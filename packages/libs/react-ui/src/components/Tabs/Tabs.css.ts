@@ -1,6 +1,6 @@
-import { atoms } from '@theme/atoms.css';
-import { tokens } from '@theme/tokens/contract.css';
 import { style } from '@vanilla-extract/css';
+import { atoms } from '../../styles/atoms.css';
+import { tokens } from '../../styles/tokens/contract.css';
 
 export const tabsContainerClass = style([
   atoms({
@@ -48,8 +48,8 @@ export const tabItemClass = style([
   atoms({
     border: 'none',
     cursor: 'pointer',
-    paddingY: 'xs',
-    paddingX: 'sm',
+    paddingBlock: 'xs',
+    paddingInline: 'sm',
     fontSize: 'md',
     fontWeight: 'bodyFont.bold',
     backgroundColor: 'transparent',
@@ -94,7 +94,7 @@ export const selectorLine = style([
 
 export const tabContentClass = style([
   atoms({
-    marginY: 'md',
+    marginBlock: 'md',
     fontSize: 'base',
     color: 'text.base.default',
     flex: 1,

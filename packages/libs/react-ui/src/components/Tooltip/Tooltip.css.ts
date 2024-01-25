@@ -1,14 +1,14 @@
-import { atoms } from '@theme/atoms.css';
-import { tokens } from '@theme/index';
 import { style, styleVariants } from '@vanilla-extract/css';
+import { atoms } from '../../styles/atoms.css';
+import { tokens } from '../../styles/index';
 
 export const base = style([
   atoms({
     position: 'absolute',
     backgroundColor: 'layer-3.default',
     fontSize: 'sm',
-    paddingY: 'sm',
-    paddingX: 'md',
+    paddingBlock: 'sm',
+    paddingInline: 'md',
     borderRadius: 'md',
     color: 'text.base.default',
     pointerEvents: 'none',
@@ -24,6 +24,7 @@ export const base = style([
       borderBottom: `6px solid ${tokens.kda.foundation.color.background['layer-3'].default}`,
       borderLeft: '6px solid transparent',
     },
+    zIndex: tokens.kda.foundation.zIndex.overlay,
   },
 ]);
 

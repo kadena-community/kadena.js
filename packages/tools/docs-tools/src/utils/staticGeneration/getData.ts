@@ -1,6 +1,7 @@
 import { readFile } from 'fs/promises';
 import { join } from 'path';
-import type { IMenuData } from '../../types';
+import type { IConfigTreeItem, IMenuData } from '../../types';
+import { getConfig } from '../getConfig';
 
 export const getData = async (): Promise<IMenuData[]> => {
   const menuFilePath = join(process.cwd(), 'src/_generated/menu.json');
@@ -9,7 +10,22 @@ export const getData = async (): Promise<IMenuData[]> => {
     const menuData = JSON.parse(fileData);
     return menuData;
   } catch (e) {
-    console.error(e);
-    throw new Error('Could not load menu data');
+    return Promise.reject('Could not load menu data');
   }
+};
+
+export const getPages = async (): Promise<IConfigTreeItem[]> => {
+  const { pages } = await getConfig();
+
+  const cleanup = (pages: IConfigTreeItem[]): IConfigTreeItem[] => {
+    const innerPages = Object.entries(pages);
+
+    return innerPages.map(([key, page]: [string, IConfigTreeItem]) => {
+      if (page.children) page.children = cleanup(page.children);
+
+      return { ...page, id: key } as IConfigTreeItem;
+    });
+  };
+
+  return cleanup(pages);
 };

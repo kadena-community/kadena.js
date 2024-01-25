@@ -1,15 +1,15 @@
-import type { ITagGroupProps } from '@components/Tag';
-import { Tag, TagGroup, TagItem } from '@components/Tag';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { Stack, SystemIcon } from '..';
+import type { ITagGroupProps } from '../Tag';
+import { Tag, TagGroup, TagItem } from '../Tag';
 
 const meta: Meta<ITagGroupProps> = {
   title: 'Components/TagGroup',
   component: TagGroup,
   parameters: {
     status: {
-      type: ['inDevelopment'],
+      type: ['releaseCandidate'],
     },
     docs: {
       description: {
@@ -134,7 +134,7 @@ export const TagComponent: Story = {
   render: () => {
     return (
       <Tag>
-        <Stack gap="$xs" alignItems="center">
+        <Stack gap="xs" alignItems="center">
           Tag Styles
           <SystemIcon.Edit size="sm" />
         </Stack>

@@ -1,9 +1,16 @@
 import { useEstimateGasLimitQuery } from '@/__generated__/sdk';
+import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
 import { estimateGasLimit } from '@/graphql/queries.graph';
-import { Box, Breadcrumbs, Stack, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Breadcrumbs,
+  BreadcrumbsItem,
+  Stack,
+  Table,
+} from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -20,21 +27,24 @@ const GasEstimation: React.FC = () => {
     transaction: { cmd: cmdString, hash: hashString, sigs: sigsArray },
   };
 
-  const { loading, data, error } = useEstimateGasLimitQuery({ variables });
+  const { loading, data, error } = useEstimateGasLimitQuery({
+    variables,
+    skip: !cmdString || !hashString || !sigsString,
+  });
 
   return (
     <>
       <Stack justifyContent="space-between">
-        <Breadcrumbs.Root>
-          <Breadcrumbs.Item href={`${routes.HOME}`}>Home</Breadcrumbs.Item>
-          <Breadcrumbs.Item>Gas Estimation</Breadcrumbs.Item>
-        </Breadcrumbs.Root>
+        <Breadcrumbs>
+          <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
+          <BreadcrumbsItem>Gas Estimation</BreadcrumbsItem>
+        </Breadcrumbs>
         <GraphQLQueryDialog
           queries={[{ query: estimateGasLimit, variables }]}
         />
       </Stack>
 
-      <Box marginBottom="$8" />
+      <Box margin="md" />
 
       <LoaderAndError
         error={error}
@@ -42,7 +52,7 @@ const GasEstimation: React.FC = () => {
         loaderText="Waiting for gas estimation..."
       />
 
-      <Table.Root wordBreak="break-all">
+      <Table.Root wordBreak="break-all" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
             <Table.Th>Label</Table.Th>

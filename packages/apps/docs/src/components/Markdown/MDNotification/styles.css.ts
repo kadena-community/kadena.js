@@ -1,5 +1,5 @@
 import { getClassName } from '@/utils/getClassName';
-import { vars } from '@kadena/react-ui/theme';
+import { tokens } from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { paragraphWrapperClass } from '../Paragraph/styles.css';
 
@@ -23,7 +23,7 @@ globalStyle(
     ${getClassName(paragraphWrapperClass)}:first-of-type p
     `,
   {
-    marginTop: '0 !important',
+    marginBlockStart: '0 !important',
   },
 );
 
@@ -33,6 +33,6 @@ globalStyle(
     ${getClassName(paragraphWrapperClass)} :not(p:empty)
     `,
   {
-    marginTop: vars.sizes.$5,
+    marginBlockStart: tokens.kda.foundation.size.n5,
   },
 );

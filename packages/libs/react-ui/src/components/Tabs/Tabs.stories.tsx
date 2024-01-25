@@ -1,11 +1,11 @@
-import { Stack } from '@components/Layout';
-import type { ITabsProps } from '@components/Tabs';
-import { TabItem, Tabs } from '@components/Tabs';
-import { Text } from '@components/Typography';
-import { onLayer2 } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import type { Key } from 'react-aria';
+import { onLayer2 } from '../../storyDecorators';
+import { Stack } from '../Layout';
+import type { ITabsProps } from '../Tabs';
+import { TabItem, Tabs } from '../Tabs';
+import { Text } from '../Typography';
 
 interface IExampleTab {
   title: string;
@@ -44,7 +44,7 @@ const meta: Meta<ITabsProps> = {
   component: Tabs,
   decorators: [onLayer2],
   parameters: {
-    status: { type: 'inDevelopment' },
+    status: { type: 'releaseCandidate' },
     docs: {
       description: {
         component:
@@ -143,7 +143,7 @@ export const ControlledTabsStory: Story = {
     const [timePeriod, setTimePeriod] = useState<Key>('jurassic');
 
     return (
-      <Stack direction="column" gap="$lg" width="100%">
+      <Stack flexDirection="column" gap="lg" width="100%">
         <Text>Selected time period: {timePeriod}</Text>
         <Tabs
           aria-label="Mesozoic time periods"

@@ -1,4 +1,11 @@
-import { Box, Button, Dialog, DialogContent, Divider } from '@kadena/react-ui';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  Divider,
+  SystemIcon,
+} from '@kadena/react-ui';
 import type { DocumentNode } from 'graphql';
 import { print } from 'graphql';
 import React, { useState } from 'react';
@@ -20,10 +27,11 @@ export const GraphQLQueryDialog = (
   return (
     <>
       <Button
-        icon="Information"
+        endIcon={<SystemIcon.Information />}
         title="Show the GraphQL query used."
-        variant="compact"
-        onClick={() => setIsOpen(true)}
+        isCompact
+        variant="text"
+        onPress={() => setIsOpen(true)}
       >
         GraphQL
       </Button>
@@ -38,13 +46,13 @@ export const GraphQLQueryDialog = (
             {queries.map((query, index) => (
               <div key={index}>
                 <p>Query #{index + 1}</p>
-                <Box marginBottom="$4" />
+                <Box marginBlockEnd="sm" />
                 <pre>{print(query.query)}</pre>
                 {query.variables && (
                   <>
-                    <Box marginBottom="$4" />
+                    <Box marginBlockEnd="sm" />
                     <p>Variables</p>
-                    <Box marginBottom="$4" />
+                    <Box marginBlockEnd="sm" />
                     <pre>{JSON.stringify(query.variables, null, 2)}</pre>
                   </>
                 )}

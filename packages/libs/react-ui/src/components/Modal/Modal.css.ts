@@ -1,5 +1,5 @@
-import { atoms } from '@theme/atoms.css';
 import { style } from '@vanilla-extract/css';
+import { atoms } from '../../styles/atoms.css';
 
 export const underlayClass = style([
   atoms({

@@ -1,0 +1,99 @@
+<div>
+  <main class="grid">
+    <section class="headerWrapper">
+      <div class="header">
+        <img
+          src="../assets/k-community-icon.png"
+          alt="Kadena Logo"
+          class="logo"
+        />
+        <h1 class="title">Start Interacting with the Kadena Blockchain</h1>
+        <p class="note">
+          This is the Kadena starter template using <strong>Angular</strong>
+          to help you get started on your blockchain development.
+        </p>
+        <p class="note">
+          Use the form below to interact with the Kadena blockchain using
+          <code>&#64;kadena/client</code> and edit
+          <code>src/pages/index.tsx</code> to get started.
+        </p>
+      </div>
+    </section>
+    <section class="contentWrapper">
+      <div class="blockChain">
+        <div class="card">
+          <h4 class="cardTitle">Write to the blockchain</h4>
+          <fieldset class="fieldset">
+            <label for="account" class="fieldLabel">My Account</label>
+            <input
+              id="account"
+              [(ngModel)]="account"
+              placeholder="Please enter a valid k:account"
+              class="input codeFont"
+            />
+          </fieldset>
+          <fieldset class="fieldset">
+            <label for="messageToWrite" class="fieldLabel">Write Message</label>
+            <textarea
+              id="messageToWrite"
+              [(ngModel)]="messageToWrite"
+              [disabled]="account === '' || writeInProgress"
+              class="input"
+            ></textarea>
+          </fieldset>
+          <div class="buttonWrapper">
+            <div class="spinner-container" *ngIf="writeInProgress">
+              <mat-spinner mode="indeterminate" diameter="24"></mat-spinner>
+            </div>
+            <button
+              type="button"
+              (click)="writeMessage()"
+              [disabled]="messageToWrite === '' || writeInProgress"
+              class="button"
+            >
+              Write
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <h4 class="cardTitle">Read from the blockchain</h4>
+          <fieldset class="fieldset">
+            <label for="messageToRead" class="fieldLabel">Read Message</label>
+            <textarea id="messageToRead" disabled class="input">{{
+              messageFromChain
+            }}</textarea>
+          </fieldset>
+          <div class="buttonWrapper">
+            <button
+              type="button"
+              (click)="readMessage()"
+              [disabled]="account === ''"
+              class="button"
+            >
+              Read
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="helperSection">
+        <div class="card noBackground">
+          <h4 class="cardTitle">Resources</h4>
+          <ul class="list">
+            <li>
+              <a href="https://docs.kadena.io/" class="link"
+                >Find in-depth information about Kadena. &rarr;</a
+              >
+            </li>
+            <li>
+              <a
+                class="link"
+                href="https://github.com/kadena-community/kadena.js/tree/main/packages/tools/create-kadena-app/pact"
+                >The smart contract powering this page. &rarr;
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

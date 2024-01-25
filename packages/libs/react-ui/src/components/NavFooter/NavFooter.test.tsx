@@ -1,8 +1,8 @@
-import type { SystemIcon } from '@components/Icon';
-import { NavFooter } from '@components/NavFooter';
 import { render } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, test } from 'vitest';
+import type { SystemIcon } from '../Icon';
+import { NavFooter } from '../NavFooter';
 
 const menuLinks: { label: string; href?: string }[] = [
   {

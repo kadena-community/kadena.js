@@ -31,7 +31,7 @@ export const SearchHeader: FC<IProps> = ({ children }) => {
         <Heading as="h1" variant="h2">
           Search spaces
         </Heading>
-        <Stack direction="column" gap="$2xs">
+        <Stack flexDirection="column" gap="xxs">
           <Heading as="h2" variant="h4">
             Traditional or the <GradientText>new</GradientText> way
           </Heading>

@@ -17,10 +17,13 @@ import {
 import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prisma-client';
 import type {
-  ChainFungibleAccount,
   FungibleAccount,
+  FungibleChainAccount,
   GraphConfiguration,
   Guard,
+  NonFungibleAccount,
+  NonFungibleChainAccount,
+  Token,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -60,9 +63,12 @@ export const builder = new SchemaBuilder<
     Context: IContext;
     Objects: {
       FungibleAccount: FungibleAccount;
-      ChainFungibleAccount: ChainFungibleAccount;
+      FungibleChainAccount: FungibleChainAccount;
       Guard: Guard;
       GraphConfiguration: GraphConfiguration;
+      NonFungibleAccount: NonFungibleAccount;
+      NonFungibleChainAccount: NonFungibleChainAccount;
+      Token: Token;
     };
     Connection: {
       totalCount: number;
@@ -77,14 +83,6 @@ export const builder = new SchemaBuilder<
     TracingPlugin,
   ],
 
-  ...(dotenv.COMPLEXITY_ENABLED && {
-    complexity: {
-      limit: {
-        complexity: dotenv.COMPLEXITY_LIMIT,
-      },
-    },
-  }),
-
   prisma: {
     client: prismaClient,
     dmmf: Prisma.dmmf,
@@ -98,6 +96,14 @@ export const builder = new SchemaBuilder<
     clientMutationId: 'optional',
     cursorType: 'String',
   },
+
+  ...(dotenv.COMPLEXITY_ENABLED && {
+    complexity: {
+      limit: {
+        complexity: dotenv.COMPLEXITY_LIMIT,
+      },
+    },
+  }),
 
   ...(dotenv.TRACING_ENABLED && {
     tracing: {

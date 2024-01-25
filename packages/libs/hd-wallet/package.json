@@ -1,6 +1,6 @@
 {
   "name": "@kadena/hd-wallet",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "HD Wallet; key derivation",
   "repository": {
@@ -11,25 +11,30 @@
   "license": "MIT",
   "contributors": [
     "Javad Khalilian <javad@kadena.io>",
+    "Albert Groothedde <albert@kadena.io>",
     "Danillo Felixdaal <danillo@kadena.io>"
   ],
+  "type": "module",
   "exports": {
-    "./chainweaver": "./lib/chainweaver/index.js"
-  },
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "chainweaver": [
-        "./lib/chainweaver/index.d.ts"
-      ]
+    ".": {
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js",
+      "types": "./dist/hd-wallet.d.ts"
+    },
+    "./chainweaver": {
+      "types": "./lib/esm/chainweaver/index.d.ts",
+      "require": "./lib/cjs/chainweaver/index.js",
+      "import": "./lib/esm/chainweaver/index.js"
     }
   },
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
   "files": [
-    "lib"
+    "lib",
+    "chainweaver"
   ],
   "scripts": {
-    "build": "tsc && cpy ./src/chainweaver/vendor/**/* ./lib/chainweaver/vendor/",
+    "build": "tsc -p tsconfig.cjs.json && tsc && api-extractor run || true && cpy ./src/chainweaver/vendor/**/* ./lib/cjs/chainweaver/vendor/ && cpy ./src/chainweaver/vendor/**/* ./lib/esm/chainweaver/vendor/ && cp ./package.cjs.json ./lib/cjs/package.json",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -39,10 +44,9 @@
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
     "start": "ts-node --transpile-only src/index.ts",
-    "test": "vitest"
+    "test": "vitest run"
   },
   "dependencies": {
-    "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@scure/bip39": "^1.2.1",
     "debug": "~4.3.4",
@@ -58,13 +62,13 @@
     "@rushstack/eslint-config": "~3.3.0",
     "@types/debug": "~4.1.7",
     "@types/node": "^18.17.14",
-    "@vitest/coverage-v8": "^0.34.6",
+    "@vitest/coverage-v8": "^1.1.0",
     "cpy-cli": "^5.0.0",
     "eslint": "^8.45.0",
     "prettier": "~3.0.3",
     "ts-node": "~10.8.2",
     "typescript": "5.2.2",
-    "vitest": "^0.34.6"
+    "vitest": "^1.1.0"
   },
   "publishConfig": {
     "provenance": true

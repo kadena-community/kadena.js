@@ -4,9 +4,10 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  IconButton,
   Stack,
+  SystemIcon,
   Text,
+  ToggleButton,
 } from '@kadena/react-ui';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -38,26 +39,28 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
 
   return (
     <>
-      <Stack direction="column" gap="$sm">
+      <Stack flexDirection="column" gap="sm">
         <Text bold as="p">
           Was this page helpful?
         </Text>
-        <Stack gap="$xs">
-          <IconButton
+        <Stack gap="xs">
+          <ToggleButton
             color="positive"
-            icon="ThumbUpOutline"
-            onClick={handlePageHelpful}
+            icon={<SystemIcon.ThumbUpOutline />}
+            onPress={handlePageHelpful}
             title="Useful"
+            aria-label="Useful"
             variant="alternative"
-            active={isPageHelpful === 'up'}
+            isSelected={isPageHelpful === 'up'}
           />
-          <IconButton
+          <ToggleButton
             color="negative"
-            icon="ThumbDownOutline"
-            onClick={handlePageNotHelpful}
+            icon={<SystemIcon.ThumbDownOutline />}
+            onPress={handlePageNotHelpful}
             title="Not useful"
+            aria-label="Not useful"
             variant="alternative"
-            active={isPageHelpful === 'down'}
+            isSelected={isPageHelpful === 'down'}
           />
         </Stack>
       </Stack>
@@ -69,10 +72,10 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
         <DialogHeader>Thank you for your feedback!</DialogHeader>
         <DialogContent>
           <div className={modalWrapperClass}>
-            <Stack gap="$4" direction="column">
+            <Stack gap="md" flexDirection="column">
               {editLink}
               {editLink ? (
-                <Stack gap="$2" direction="row">
+                <Stack gap="sm" flexDirection="row">
                   <Text>
                     Would you like to contribute to this page by{' '}
                     <Link href={editLink} target="_blank">

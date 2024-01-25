@@ -15,12 +15,13 @@ import {
 } from '@/services/transfer-tracker/get-transfer-status';
 import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { FormFieldStatus } from '@kadena/react-ui';
 import {
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Grid,
   GridItem,
+  Link,
   Notification,
   NotificationButton,
   NotificationFooter,
@@ -66,9 +67,7 @@ const CrossChainTransferTracker: FC = () => {
   const [data, setData] = useState<IStatusData>({});
   const [txError, setTxError] = useState<string>('');
   const [inputError, setInputError] = useState<string>('');
-  const [validRequestKey, setValidRequestKey] = useState<
-    FormFieldStatus | undefined
-  >();
+  const [validRequestKey, setValidRequestKey] = useState<boolean>(false);
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   useDidUpdateEffect(() => {
@@ -92,15 +91,15 @@ const CrossChainTransferTracker: FC = () => {
     //Clear error message when user starts typing
     setInputError('');
     if (!requestKey) {
-      setValidRequestKey(undefined);
+      setValidRequestKey(false);
       return;
     }
 
     if (validateRequestKey(requestKey) === undefined) {
-      setValidRequestKey('negative');
+      setValidRequestKey(true);
       return;
     }
-    setValidRequestKey(undefined);
+    setValidRequestKey(false);
     return;
   };
 
@@ -163,18 +162,18 @@ const CrossChainTransferTracker: FC = () => {
   return (
     <div className={mainContentStyle}>
       <Stack
-        direction="column"
-        paddingTop={'$2'}
-        paddingBottom={'$10'}
-        gap={'$6'}
+        flexDirection="column"
+        paddingBlockStart={'xs'}
+        paddingBlockEnd={'xxxl'}
+        gap={'lg'}
       >
-        <Stack direction="column" gap={'$2'}>
-          <Breadcrumbs.Root>
-            <Breadcrumbs.Item>{t('Transfer')}</Breadcrumbs.Item>
-            <Breadcrumbs.Item>{t('Cross Chain Tracker')}</Breadcrumbs.Item>
-          </Breadcrumbs.Root>
+        <Stack flexDirection="column" gap={'xs'}>
+          <Breadcrumbs>
+            <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
+            <BreadcrumbsItem>{t('Cross Chain Tracker')}</BreadcrumbsItem>
+          </Breadcrumbs>
           <Stack
-            gap={'$6'}
+            gap={'lg'}
             justifyContent={'space-between'}
             alignItems={'flex-end'}
           >
@@ -182,16 +181,14 @@ const CrossChainTransferTracker: FC = () => {
               {t('Track & trace transactions')}
             </div>
             {data.id === StatusId.Pending ? (
-              <Button
+              <Link
                 title={t('Finish Transaction')}
-                as="a"
                 href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
-                icon="Link"
-                iconAlign="right"
+                endIcon={<SystemIcon.Link />}
                 color="positive"
               >
                 {t('Finish Transaction')}
-              </Button>
+              </Link>
             ) : null}
           </Stack>
         </Stack>
@@ -229,12 +226,11 @@ const CrossChainTransferTracker: FC = () => {
             <Grid>
               <GridItem>
                 <RequestKeyField
-                  helperText={inputError || undefined}
-                  status={validRequestKey}
+                  errorMessage={inputError || errors.requestKey?.message}
+                  isInvalid={validRequestKey}
                   {...register('requestKey')}
                   onKeyUp={checkRequestKey}
                   onChange={onRequestKeyChange}
-                  error={errors.requestKey}
                 />
               </GridItem>
             </Grid>
@@ -243,8 +239,7 @@ const CrossChainTransferTracker: FC = () => {
             <Button
               type="submit"
               title={t('Search')}
-              icon="Magnify"
-              iconAlign="right"
+              endIcon={<SystemIcon.Magnify />}
             >
               {t('Search')}
             </Button>

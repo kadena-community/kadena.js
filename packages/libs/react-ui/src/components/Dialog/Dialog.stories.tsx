@@ -1,13 +1,8 @@
-import { Button } from '@components/Button';
-import type { IDialogProps } from '@components/Dialog';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-} from '@components/Dialog';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+import { Button } from '../Button';
+import type { IDialogProps } from '../Dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader } from '../Dialog';
 import { ModalContent } from './StoryComponents';
 
 type DialogStoryProps = IDialogProps & { title: string };
@@ -15,6 +10,9 @@ type DialogStoryProps = IDialogProps & { title: string };
 const meta: Meta<DialogStoryProps> = {
   title: 'Overlays/Dialog',
   parameters: {
+    status: {
+      type: ['releaseCandidate'],
+    },
     docs: {
       description: {
         component: `

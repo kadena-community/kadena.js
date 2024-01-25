@@ -1,7 +1,8 @@
-import type { IIconProps } from '@components/Icon';
-import { ProductIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+
+import { ProductIcon } from '..';
+import type { IIconProps } from '../IconWrapper';
 import { sizeVariants } from '../IconWrapper.css';
 import { gridContainer, gridItem } from '../stories.css';
 

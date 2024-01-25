@@ -1,10 +1,10 @@
 import {
   Button,
   Heading,
-  Input,
   Notification,
   Stack,
   SystemIcon,
+  TextField,
 } from '@kadena/react-ui';
 import type { FC } from 'react';
 import React from 'react';
@@ -27,28 +27,29 @@ export const Subscribe: FC = () => {
 
   return (
     <section data-cy="subscribe">
-      <Stack direction="column" gap="$sm">
+      <Stack flexDirection="column" gap="sm">
         <Heading as="h6">Receive important developer updates</Heading>
 
         {!hasSuccess ? (
           <>
             <form>
-              <Stack gap="$sm" paddingY="$1">
-                <Input
+              <Stack gap="sm" paddingBlock="xs">
+                <TextField
                   id="email"
-                  startIcon={<SystemIcon.At />}
+                  startAddon={<SystemIcon.At />}
                   onChange={handleFormState}
                   placeholder="Email address"
-                  outlined
                   type="email"
+                  isOutlined
                   aria-label="Fill in email address"
                 />
 
                 <Button
-                  disabled={!canSubmit}
+                  type="submit"
+                  isDisabled={!canSubmit}
                   onClick={handleSubscribe}
                   title="Subscribe"
-                  loading={isLoading}
+                  isLoading={isLoading}
                 >
                   Subscribe
                 </Button>

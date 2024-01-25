@@ -1,7 +1,7 @@
-import { atoms } from '@theme/atoms.css';
-import { tokens } from '@theme/tokens/contract.css';
 import { style } from '@vanilla-extract/css';
 import { calc } from '@vanilla-extract/css-utils';
+import { atoms } from '../../styles/atoms.css';
+import { tokens } from '../../styles/tokens/contract.css';
 
 export const tagItemClass = style([
   {
@@ -26,8 +26,8 @@ export const tagClass = style([
     backgroundColor: 'layer-2.default',
     color: 'text.base.default',
     borderRadius: 'xs',
-    paddingY: 'xs',
-    paddingX: 'sm',
+    paddingBlock: 'xs',
+    paddingInline: 'sm',
     display: 'inline-flex',
     alignItems: 'center',
     border: 'hairline',
@@ -40,7 +40,7 @@ export const closeButtonClass = style([
     background: 'none',
     padding: 'xs',
     cursor: 'pointer',
-    marginLeft: 'xs',
+    marginInlineStart: 'xs',
     outline: 'none',
   }),
   {
@@ -59,7 +59,7 @@ export const tagListClass = style([
 
 export const tagGroupLabelClass = style([
   atoms({
-    marginBottom: 'sm',
+    marginBlockEnd: 'sm',
     display: 'block',
   }),
 ]);

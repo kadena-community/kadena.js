@@ -79,6 +79,18 @@ const responsiveProperties = defineProperties({
       'space-between',
     ],
     alignItems: ['flex-start', 'center', 'flex-end', 'stretch'],
+    marginBlock: vars.sizes,
+    marginInline: vars.sizes,
+    marginBlockStart: vars.sizes,
+    marginBlockEnd: vars.sizes,
+    marginInlineStart: vars.sizes,
+    marginInlineEnd: vars.sizes,
+    paddingBlock: vars.sizes,
+    paddingInline: vars.sizes,
+    paddingBlockStart: vars.sizes,
+    paddingBlockEnd: vars.sizes,
+    paddingInlineStart: vars.sizes,
+    paddingInlineEnd: vars.sizes,
     paddingTop: vars.sizes,
     paddingBottom: vars.sizes,
     paddingLeft: vars.sizes,
@@ -141,7 +153,7 @@ const responsiveProperties = defineProperties({
 });
 
 /**
- * @deprecated Use 'atoms' from '@kadena/react-ui/theme'
+ * @deprecated Use 'atoms' from '@kadena/react-ui/styles'
  */
 export const sprinkles = createSprinkles(
   systemProperties,
@@ -150,6 +162,6 @@ export const sprinkles = createSprinkles(
 );
 
 /**
- * @deprecated Use 'Atoms' from '@kadena/react-ui/theme'
+ * @deprecated Use 'Atoms' from '@kadena/react-ui/styles'
  */
 export type Sprinkles = Parameters<typeof sprinkles>[0];

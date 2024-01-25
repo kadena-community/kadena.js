@@ -1,6 +1,5 @@
-import { atoms } from '@theme/atoms.css';
-import { tokens } from '@theme/tokens/contract.css';
 import { style } from '@vanilla-extract/css';
+import { atoms, tokens } from '../../../styles';
 
 export const buttonClass = style([
   atoms({

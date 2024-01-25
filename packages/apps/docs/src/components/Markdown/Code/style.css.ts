@@ -1,23 +1,22 @@
 import { getClassName } from '@/utils/getClassName';
-import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, darkThemeClass, tokens } from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { headerClass } from '../Heading/styles.css';
 import { paragraphWrapperClass } from '../Paragraph/styles.css';
 
 export const inlineCode = style([
-  sprinkles({
-    borderRadius: '$sm',
-    backgroundColor: '$neutral2',
-    marginLeft: '$1',
-    marginRight: '$1',
+  atoms({
+    borderRadius: 'sm',
+    backgroundColor: 'semantic.info.default',
+    color: 'text.semantic.info.default',
+    marginInlineStart: 'xs',
+    marginInlineEnd: 'xs',
+    fontFamily: 'codeFont',
   }),
   {
-    fontFamily: vars.fonts.$mono,
-    color: vars.colors.$primaryContrastInverted,
-    padding: `calc(${vars.sizes.$1} / 4) ${vars.sizes.$1}`,
+    padding: `calc(${tokens.kda.foundation.spacing.xs} / 4) ${tokens.kda.foundation.spacing.xs}`,
     fontSize: 'smaller',
     fontWeight: 'bolder',
-    backgroundColor: vars.colors.$primaryLowContrast,
   },
 ]);
 
@@ -30,8 +29,8 @@ globalStyle(
   h1${getClassName(headerClass)} +
   ${getClassName(paragraphWrapperClass)} ${getClassName(inlineCode)}`,
   {
-    paddingLeft: vars.sizes.$2,
-    paddingRight: vars.sizes.$2,
+    paddingInlineStart: tokens.kda.foundation.spacing.sm,
+    paddingInlineEnd: tokens.kda.foundation.spacing.sm,
   },
 );
 
@@ -43,38 +42,43 @@ globalStyle(
   article ol ${getClassName(inlineCode)}
   `,
   {
-    paddingLeft: vars.sizes.$1,
-    paddingRight: vars.sizes.$1,
-    paddingTop: 0,
-    paddingBottom: 0,
+    paddingInlineStart: tokens.kda.foundation.spacing.xs,
+    paddingInlineEnd: tokens.kda.foundation.spacing.xs,
+    paddingBlockStart: 0,
+    paddingBlockEnd: 0,
   },
 );
 
 export const codeWrapper = style([
-  sprinkles({
-    backgroundColor: '$blue100',
-    fontSize: '$sm',
-    fontFamily: '$mono',
-    lineHeight: '$lg',
-    marginX: 0,
-    marginY: '$10',
+  atoms({
+    fontSize: 'sm',
+    fontFamily: 'codeFont',
+    lineHeight: 'lg',
+    marginInline: 'no',
+    marginBlock: 'xxxl',
+    borderRadius: 'lg',
   }),
   {
-    borderRadius: vars.radii.$lg,
+    backgroundColor: tokens.kda.foundation.color.palette.blue.n100,
     overflow: 'hidden',
     wordBreak: 'break-all',
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        backgroundColor: tokens.kda.foundation.color.palette.blue.n0,
+      },
+    },
   },
 ]);
 
 export const code = style([
-  sprinkles({
+  atoms({
     whiteSpace: 'break-spaces',
-    fontFamily: '$mono',
+    fontFamily: 'codeFont',
     display: 'none',
-    paddingY: '$3',
     position: 'relative',
   }),
   {
+    paddingBlock: tokens.kda.foundation.size.n3,
     counterReset: 'line',
     selectors: {
       [`${darkThemeClass} &[data-theme="dark"], &[data-theme="light"]`]: {
@@ -91,29 +95,32 @@ export const code = style([
         top: 0,
         left: 0,
         bottom: 0,
-        width: vars.sizes.$10,
-        background: vars.colors.$blue90,
+        width: tokens.kda.foundation.spacing.xxxl,
+        background: tokens.kda.foundation.color.palette.blue.n90,
         zIndex: 0,
         opacity: 0.6,
+      },
+
+      [`${darkThemeClass} &::before`]: {
+        backgroundColor: tokens.kda.foundation.color.palette.blue.n10,
       },
     },
   },
 ]);
 
 export const codeLine = style([
-  sprinkles({
+  atoms({
     width: '100%',
-    fontFamily: '$mono',
+    fontFamily: 'codeFont',
     zIndex: 1,
-    paddingRight: '$4',
+    paddingInlineEnd: 'md',
+    display: 'inline-flex',
   }),
   {
-    display: 'inline-flex',
     cursor: 'default',
-
     selectors: {
       '&:hover': {
-        background: vars.colors.$black,
+        background: tokens.kda.foundation.color.neutral.n100,
       },
       '&::marker': {
         content: '',
@@ -125,25 +132,34 @@ export const codeLine = style([
         wordBreak: 'keep-all',
         display: 'inline-flex',
         width: '1rem',
-        marginRight: `${vars.sizes.$4}`,
-        marginLeft: `${vars.sizes.$4}`,
-        marginTop: '3px', //hack, this just aligns the number the best. with vars or display: flex. the alignment is of
+        marginInlineEnd: `${tokens.kda.foundation.spacing.md}`,
+        marginInlineStart: `${tokens.kda.foundation.spacing.md}`,
+        marginBlockStart: '1px', //hack, this just aligns the number the best. with vars or display: flex. the alignment is of
         textAlign: 'right',
-        fontSize: vars.sizes.$sm,
-        color: vars.colors.$white,
+        fontSize: tokens.kda.foundation.typography.fontSize.sm,
+        color: tokens.kda.foundation.color.neutral.n0,
         zIndex: 1,
+      },
+      [`${darkThemeClass} &:hover`]: {
+        background: tokens.kda.foundation.color.neutral.n0,
+      },
+      [`${darkThemeClass} &::before`]: {
+        color: tokens.kda.foundation.color.neutral.n100,
       },
     },
   },
 ]);
 
 globalStyle(`code span`, {
-  fontFamily: vars.fonts.$mono,
+  fontFamily: tokens.kda.foundation.typography.family.codeFont,
   wordBreak: 'break-word',
 });
 
 globalStyle(`code span::selection`, {
-  background: vars.colors.$blue80,
+  background: tokens.kda.foundation.color.palette.blue.n80,
+});
+globalStyle(`${darkThemeClass} code span::selection`, {
+  background: tokens.kda.foundation.color.palette.blue.n20,
 });
 
 globalStyle(
@@ -154,23 +170,23 @@ globalStyle(
   `,
   {
     margin: 0,
-    marginTop: vars.sizes.$md,
-    marginBottom: vars.sizes.$lg,
+    marginBlockStart: tokens.kda.foundation.spacing.md,
+    marginBlockEnd: tokens.kda.foundation.spacing.lg,
   },
 );
 
 export const codeTitle = style([
-  sprinkles({
+  atoms({
     display: 'none',
     alignItems: 'center',
-    fontFamily: '$main',
-    backgroundColor: '$blue70',
-    color: '$white',
-    fontWeight: '$bold',
+    fontFamily: 'bodyFont',
+    fontWeight: 'bodyFont.bold',
     textTransform: 'capitalize',
-    padding: '$2',
+    padding: 'sm',
   }),
   {
+    backgroundColor: tokens.kda.foundation.color.palette.blue.n70,
+    color: tokens.kda.foundation.color.neutral.n0,
     selectors: {
       [`${darkThemeClass} &[data-theme="dark"], &[data-theme="light"]`]: {
         display: 'flex',
@@ -183,15 +199,23 @@ export const codeTitle = style([
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: `0 ${vars.sizes.$2}`,
-        color: vars.colors.$white,
-        backgroundColor: vars.colors.$blue90,
-        borderRadius: vars.radii.$sm,
-        width: vars.sizes.$6,
-        height: vars.sizes.$6,
-        fontFamily: vars.fonts.$mono,
+        margin: `0 ${tokens.kda.foundation.spacing.sm}`,
+        color: tokens.kda.foundation.color.neutral.n0,
+        backgroundColor: tokens.kda.foundation.color.palette.blue.n90,
+        borderRadius: tokens.kda.foundation.radius.sm,
+        width: tokens.kda.foundation.spacing.lg,
+        height: tokens.kda.foundation.spacing.lg,
+        fontFamily: tokens.kda.foundation.typography.family.codeFont,
         fontWeight: 'bold',
         fontSize: 'smaller',
+      },
+      [`${darkThemeClass} &`]: {
+        backgroundColor: tokens.kda.foundation.color.palette.blue.n30,
+        color: tokens.kda.foundation.color.neutral.n100,
+      },
+      [`${darkThemeClass} &[data-language]::before`]: {
+        color: tokens.kda.foundation.color.neutral.n100,
+        backgroundColor: tokens.kda.foundation.color.palette.blue.n10,
       },
       '&[data-language="pact"]::before': {
         content: 'P',

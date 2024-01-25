@@ -1,18 +1,20 @@
 {
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
-    "types": ["node", "@types/gtag.js"],
+    "types": ["node", "@types/gtag.js", "vitest/globals"],
     "paths": {
       "@/*": ["./src/*"]
     },
     "skipLibCheck": true,
+    "module": "ESNext",
     "allowJs": true,
     "noEmit": true,
     "incremental": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve"
   },
+  "include": ["types.d.ts", "./src"],
   "exclude": ["node_modules"]
 }
