@@ -1,11 +1,11 @@
+import { sender00Account } from '@constants/accounts.constants';
+import { devnetHost, networkId } from '@constants/network.constants';
 import type { ChainId, ICommandResult, IKeyPair } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { createPrincipal } from '@kadena/client-utils/built-in';
 import { transferCreate } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
-import { devnetHost, networkId } from '@constants/network.constants';
-import type { IAccount } from '../../types/accountTypes'
-import { sender00Account } from '@constants/accounts.constants';
+import type { IAccount } from '../../types/accountTypes';
 
 export const generateAccount = async (
   keys: number = 1,
@@ -15,43 +15,44 @@ export const generateAccount = async (
   const createdAccount: IAccount = {
     account: '',
     chains: [],
-    keys: []
+    keys: [],
   };
 
   for (const chain of chains) {
-  const account = await createPrincipal(
-    {
-      keyset: {
-        keys: keyPairs.map((keyPair: IKeyPair) => keyPair.publicKey),
+    const account = await createPrincipal(
+      {
+        keyset: {
+          keys: keyPairs.map((keyPair: IKeyPair) => keyPair.publicKey),
+        },
       },
-    },
-    {
-      host: devnetHost,
-      defaults: {
-        networkId: networkId,
-        meta: { chainId: chain },
+      {
+        host: devnetHost,
+        defaults: {
+          networkId: networkId,
+          meta: { chainId: chain },
+        },
       },
-    },
-  );
+    );
 
-  
-  createdAccount.keys = keyPairs
-  createdAccount.account = account
-  createdAccount.chains.push(chain)
-}
+    createdAccount.keys = keyPairs;
+    createdAccount.account = account;
+    createdAccount.chains.push(chain);
+  }
 
-  return createdAccount
+  return createdAccount;
 };
 
 export const createAccount = async (
   account: IAccount,
-  chainId: ChainId
+  chainId: ChainId,
 ): Promise<ICommandResult> => {
   const transferCreateTask = transferCreate(
     {
       sender: {
         account: sender00Account.account,
-        publicKeys: sender00Account.keys.map((keyPair: IKeyPair) => keyPair.publicKey),
+        publicKeys: sender00Account.keys.map(
+          (keyPair: IKeyPair) => keyPair.publicKey,
+        ),
       },
       receiver: {
         account: account.account,
@@ -71,7 +72,7 @@ export const createAccount = async (
       sign: createSignWithKeypair(sender00Account.keys),
     },
   );
-  
+
   const listen = await transferCreateTask.executeTo('listen');
   await transferCreateTask.executeTo();
   return listen;

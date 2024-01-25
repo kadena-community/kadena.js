@@ -16,7 +16,10 @@ let accountCreationResult: any;
 test('Query: getAccount by AccountName', async ({ request }) => {
   await test.step('Given a test account has been created', async () => {
     testAccount = await generateAccount(1, ['0']);
-    accountCreationResult = await createAccount(testAccount, testAccount.chains[0]);
+    accountCreationResult = await createAccount(
+      testAccount,
+      testAccount.chains[0],
+    );
   });
   await test.step('When the getAccountQuery is executed', async () => {
     const query = getAccountQuery(testAccount.account);
