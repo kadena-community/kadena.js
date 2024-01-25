@@ -4,6 +4,9 @@ export const proofOfUsData: IProofOfUs[] = [
     date: 245599529000,
     minted: 4,
     signees: [],
+    avatar: {
+      lines: [],
+    },
   },
   {
     tokenId: '2',
@@ -29,5 +32,8 @@ export const proofOfUsData: IProofOfUs[] = [
         initiator: false,
       },
     ],
+    avatar: {
+      lines: [],
+    },
   },
 ];

@@ -23,6 +23,10 @@ interface IProofOfUs {
   date: number;
   minted?: number;
   signees: IProofOfUsSignee[];
+  avatar: {
+    background?: string;
+    lines: ICanvasPath[];
+  };
 }
 
 interface IError {
@@ -32,3 +36,32 @@ interface IError {
 type IProofOfUsSignee = Pick<IAccount, 'name' | 'publicKey' | 'cid'> & {
   initiator: boolean;
 };
+
+type IExportImageType = 'jpeg' | 'png';
+
+interface IPoint {
+  readonly x: number;
+  readonly y: number;
+}
+
+interface ICanvasPath {
+  readonly paths: IPoint[];
+  readonly strokeWidth: number;
+  readonly strokeColor: string;
+  readonly drawMode: boolean;
+  readonly startTimestamp?: number;
+  readonly endTimestamp?: number;
+}
+
+interface IReactSketchCanvasRef {
+  eraseMode: (_erase: boolean) => void;
+  clearCanvas: () => void;
+  undo: () => void;
+  redo: () => void;
+  exportImage: (imageType: IExportImageType) => Promise<string>;
+  exportSvg: () => Promise<string>;
+  exportPaths: () => Promise<ICanvasPath[]>;
+  loadPaths: (paths: ICanvasPath[]) => void;
+  getSketchingTime: () => Promise<number>;
+  resetCanvas: () => void;
+}

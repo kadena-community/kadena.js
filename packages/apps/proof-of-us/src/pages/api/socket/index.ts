@@ -13,6 +13,9 @@ const ProofOfUsStore = () => {
       tokenId,
       date: Date.now(),
       signees: [{ ...account, initiator: true }],
+      avatar: {
+        lines: [],
+      },
     };
   };
 
@@ -20,8 +23,19 @@ const ProofOfUsStore = () => {
     return store[tokenId];
   };
 
+  const addBackground = (tokenId: string, background: string) => {
+    const avatar = store[tokenId]?.avatar;
+
+    store[tokenId].avatar = { ...avatar, background };
+  };
+
+  const addLines = (tokenId: string, lines: ICanvasPath[] = []) => {
+    const avatar = store[tokenId]?.avatar;
+
+    store[tokenId].avatar = { ...avatar, lines };
+  };
+
   const addSignee = (tokenId: string, account: IProofOfUsSignee) => {
-    console.log(store);
     const signeesList = store[tokenId]?.signees;
     if (!signeesList) return;
 
@@ -31,7 +45,6 @@ const ProofOfUsStore = () => {
   };
 
   const removeSignee = (tokenId: string, account: IProofOfUsSignee) => {
-    console.log(store);
     const signeesList = store[tokenId]?.signees;
     if (!signeesList) return;
 
@@ -40,7 +53,14 @@ const ProofOfUsStore = () => {
     ];
   };
 
-  return { createProofOfUs, getProofOfUs, addSignee, removeSignee };
+  return {
+    createProofOfUs,
+    getProofOfUs,
+    addSignee,
+    removeSignee,
+    addBackground,
+    addLines,
+  };
 };
 
 const store = ProofOfUsStore();
@@ -107,6 +127,26 @@ export default function SocketHandler(
 
     socket.on('addSignee', ({ content, to }) => {
       store.addSignee(to, content);
+      io.to(to)
+        .to(to)
+        .emit('getProofOfUs', {
+          content: store.getProofOfUs(to),
+          from: socket.handshake.auth.tokenId,
+        });
+    });
+
+    socket.on('setBackground', ({ content, to }) => {
+      store.addBackground(to, content.bg);
+      io.to(to)
+        .to(to)
+        .emit('getProofOfUs', {
+          content: store.getProofOfUs(to),
+          from: socket.handshake.auth.tokenId,
+        });
+    });
+
+    socket.on('setLines', ({ content, to }) => {
+      store.addLines(to, content.lines);
       io.to(to)
         .to(to)
         .emit('getProofOfUs', {

@@ -1,13 +1,35 @@
+import { useSocket } from '@/hooks/socket';
+import { useParams } from 'next/navigation';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import ReactSketchCanvas from 'react-canvas-draw';
+import { ReactSketchCanvas } from 'react-sketch-canvas';
 import { modalClass } from './styles.css';
 
 export const CapturePhoto: FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<IReactSketchCanvasRef>(null);
+  const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [bg, setBg] = useState(undefined);
+  const [bg, setBg] = useState<string | undefined>();
+  const { setBackgroundSocket, setLinesSocket, proofOfUs } = useSocket();
+  const { id: tokenId } = useParams();
+
+  useEffect(() => {
+    if (!canvasRef.current || !proofOfUs) return;
+
+    setBg(proofOfUs?.avatar.background);
+    canvasRef.current.clearCanvas();
+    canvasRef.current.loadPaths(proofOfUs.avatar.lines);
+  }, [proofOfUs?.avatar.background, proofOfUs?.avatar.lines]);
+
+  useEffect(() => {
+    if (!canvasWrapperRef.current) return;
+
+    canvasWrapperRef.current.addEventListener('mouseup', async () => {
+      const lines = (await canvasRef.current?.exportPaths()) ?? [];
+      setLinesSocket(tokenId.toString(), lines);
+    });
+  }, [canvasWrapperRef.current]);
 
   useEffect(() => {
     if (!videoRef.current && !isModalOpen) return;
@@ -20,15 +42,16 @@ export const CapturePhoto: FC = () => {
 
   const handleCapture = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();
-    if (!canvasRef.current || !videoRef.current) return;
-    console.log(canvasRef.current);
-    //const canvas = canvasRef.current.querySelector('svg');
-    const context = canvasRef.current.ctx.drawing;
+    if (!videoRef.current) return;
 
-    console.log(videoRef.current, canvasRef.current.innerHTML);
-    //setBg(videoRef.current);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 320;
+    canvas.height = 240;
+    ctx?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
-    context?.drawImage(videoRef.current, 0, 0, 320, 240);
+    setBg(canvas.toDataURL());
+    setBackgroundSocket(tokenId.toString(), canvas.toDataURL());
 
     (videoRef.current?.srcObject as MediaStream)
       ?.getTracks()
@@ -47,13 +70,14 @@ export const CapturePhoto: FC = () => {
     <div>
       <button onClick={handleToggleCaptureModal}>Capture</button>
 
-      <div>
+      <div ref={canvasWrapperRef}>
         <ReactSketchCanvas
-          hideGridX={true}
-          hideGridY={false}
-          canvasWidth={320}
-          canvasHeight={240}
+          width="320"
+          height="240"
+          strokeWidth={4}
+          strokeColor="red"
           ref={canvasRef}
+          backgroundImage={bg}
         />
       </div>
 

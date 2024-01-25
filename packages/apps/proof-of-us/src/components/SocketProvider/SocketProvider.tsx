@@ -1,8 +1,8 @@
 'use client';
 import { useAccount } from '@/hooks/account';
-
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useState } from 'react';
+
 import type { Socket } from 'socket.io-client';
 import { io } from 'socket.io-client';
 
@@ -23,6 +23,8 @@ export interface ISocketContext {
   isConnected: () => boolean;
   isInitiator: () => boolean;
   getSigneeAccount: (account: IAccount) => IProofOfUsSignee;
+  setBackgroundSocket: (tokenId: string, bg: string) => void;
+  setLinesSocket: (tokenId: string, lines?: ICanvasPath[]) => void;
 }
 
 export const SocketContext = createContext<ISocketContext>({
@@ -41,6 +43,8 @@ export const SocketContext = createContext<ISocketContext>({
     publicKey: '',
     initiator: false,
   }),
+  setBackgroundSocket: (tokenId: string, bg: string) => {},
+  setLinesSocket: (tokenId: string, lines: ICanvasPath[] = []) => {},
 });
 
 export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -79,6 +83,7 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const addSignee = async ({ tokenId }: { tokenId: string }) => {
     const socket = await connect({ tokenId });
+
     if (!socket || !account) return;
 
     socket.emit('addSignee', {
@@ -140,6 +145,24 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
     };
   };
 
+  const setBackgroundSocket = (tokenId: string, bg: string) => {
+    socket?.emit('setBackground', {
+      content: {
+        bg,
+      },
+      to: tokenId,
+    });
+  };
+
+  const setLinesSocket = (tokenId: string, lines: ICanvasPath[] = []) => {
+    socket?.emit('setLines', {
+      content: {
+        lines,
+      },
+      to: tokenId,
+    });
+  };
+
   return (
     <SocketContext.Provider
       value={{
@@ -153,6 +176,8 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
         isConnected,
         isInitiator,
         getSigneeAccount,
+        setBackgroundSocket,
+        setLinesSocket,
       }}
     >
       {children}
