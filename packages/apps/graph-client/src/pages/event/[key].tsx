@@ -22,10 +22,16 @@ import {
   Notification,
   Pagination,
   Select,
+  SelectItem,
   Stack,
 } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+
+const itemsPerPageOptions = [10, 20, 50, 100].map((x) => ({
+  label: x.toString(),
+  value: x,
+}));
 
 const Event: React.FC = () => {
   const router = useRouter();
@@ -83,16 +89,17 @@ const Event: React.FC = () => {
 
       setSubscriptionsEvents(updatedEvents);
     }
-  }, [nodesQueryData]);
+  }, [nodesQueryData?.nodes]);
 
   // Pagination
-  const itemsPerPageOptions = [10, 50, 100, 200];
   const urlPage = router.query.page;
   const urlItemsPerPage = router.query.items;
 
-  const [itemsPerPage, setItemsPerPage] = useState<number>(
+  const [itemsPerPage, setItemsPerPage] = useState<number>(() =>
     urlItemsPerPage &&
-      itemsPerPageOptions.includes(parseInt(urlItemsPerPage as string))
+    itemsPerPageOptions.some(
+      (option) => option.value === parseInt(urlItemsPerPage as string),
+    )
       ? parseInt(urlItemsPerPage as string)
       : 10,
   );
@@ -238,24 +245,19 @@ const Event: React.FC = () => {
         <GridItem>
           <Stack justifyContent="space-between">
             <Select
-              ariaLabel="items-per-page"
+              aria-label="items-per-page"
               id="items-per-page"
-              onChange={(event) =>
-                setItemsPerPage(parseInt(event.target.value))
+              onSelectionChange={(key) =>
+                setItemsPerPage(typeof key === 'string' ? parseInt(key) : key)
               }
-              style={{ display: 'inline-block' }}
-              defaultValue={itemsPerPage}
+              defaultSelectedKey={itemsPerPage}
+              items={itemsPerPageOptions}
             >
-              {itemsPerPageOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
+              {(item) => <SelectItem key={item.value}>{item.label}</SelectItem>}
             </Select>
             <Pagination
               totalPages={totalPages}
-              label="pagination"
-              currentPage={currentPage}
+              selectedPage={currentPage}
               onPageChange={handlePaginationClick}
             />
           </Stack>

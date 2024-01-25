@@ -1,3 +1,10 @@
 types
 theme
 storybook-static
+dist
+
+# managed by crackle
+/dist
+/global
+/styles
+# end managed by crackle

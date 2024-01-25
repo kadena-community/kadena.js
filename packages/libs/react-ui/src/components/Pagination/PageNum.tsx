@@ -1,6 +1,6 @@
-import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
+import { Button } from '../Button';
 import { pageNumButtonClass } from './Pagination.css';
 
 interface IPageNumProps {
@@ -11,11 +11,14 @@ interface IPageNumProps {
 
 export const PageNum: FC<IPageNumProps> = ({ number, current, onClick }) => {
   return (
-    <button
-      className={classNames(pageNumButtonClass, { current })}
-      onClick={onClick}
+    <Button
+      variant="text"
+      className={pageNumButtonClass}
+      data-current={current || undefined}
+      aria-current={current || undefined}
+      onPress={onClick}
     >
       {number}
-    </button>
+    </Button>
   );
 };

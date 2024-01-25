@@ -2,17 +2,12 @@ import { createSlug } from '@/utils/createSlug';
 import type { IConfigTreeItem } from '@kadena/docs-tools';
 import {
   getFileExtension,
+  getFileFromNameOfUrl,
   getParentTreeFromPage,
   getUrlNameOfPageFile,
 } from '@kadena/docs-tools';
 import * as fs from 'fs';
-import type {
-  Definition,
-  Heading,
-  Image,
-  Link,
-  Text,
-} from 'mdast-util-from-markdown/lib';
+import type { Definition, Heading, Image, Link, Text } from 'mdast';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';
@@ -24,7 +19,6 @@ import { getFileNameOfPageFile } from './../utils/getFileNameOfPageFile';
 import { splitContentFrontmatter } from './../utils/splitContentFrontmatter';
 import { refactorAbsoluteDocsLink } from './refactorAbsoluteDocsLink';
 import { getCleanedHash } from './utils/getCleanedHash';
-import { getFileFromNameOfUrl } from './utils/getFileFromNameOfUrl';
 import { getLinkHash } from './utils/getLinkHash';
 import { getPageFromPath } from './utils/getPageFromPath';
 import { getUrlofImageFile } from './utils/getUrlofImageFile';
@@ -48,7 +42,7 @@ const fixHashLinks = async (link: string): Promise<string> => {
   const cleanedHashUrl = getCleanedHash(arr[1]);
 
   // get the page to the hashlink
-  const file = getFileFromNameOfUrl(cleanedLink);
+  const file = await getFileFromNameOfUrl(cleanedLink);
 
   if (!file) return `#${createSlug(cleanedHashUrl)}`;
 

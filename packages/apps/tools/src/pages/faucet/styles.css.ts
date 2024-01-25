@@ -1,4 +1,4 @@
-import { atoms, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const containerClass = style([
@@ -12,15 +12,15 @@ export const containerClass = style([
 export const inputContainerClass = style([
   atoms({
     display: 'flex',
+    gap: 'md',
   }),
-  {
-    gap: vars.sizes.$4,
-  },
 ]);
 
 export const accountNameContainerClass = style([{ flex: 1 }]);
 
-export const chainSelectContainerClass = style([{ width: vars.sizes.$25 }]);
+export const chainSelectContainerClass = style([
+  { width: tokens.kda.foundation.size.n30 },
+]);
 
 export const buttonContainerClass = style([
   atoms({ display: 'flex', justifyContent: 'flex-end' }),

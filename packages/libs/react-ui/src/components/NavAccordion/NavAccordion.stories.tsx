@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { atoms } from '@theme/atoms.css';
 import React from 'react';
+import { atoms } from '../../styles/atoms.css';
 import type { INavAccordionProps, INavAccordionSectionProps } from './';
 import { NavAccordion } from './';
 
@@ -14,7 +14,7 @@ const meta: Meta<StoryProps> = {
   title: 'Navigation/NavAccordion',
   parameters: {
     status: {
-      type: ['needsRevision'],
+      type: ['deprecated'],
     },
     controls: {
       hideNoControlsWarning: true,

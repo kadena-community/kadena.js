@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { kadenaGenMnemonic, kadenaMnemonicToSeed } from '..';
+import { kadenaGenMnemonic, kadenaMnemonicToSeed } from '../index.js';
 
-import { kadenaDecrypt } from '../../utils/kadenaEncryption';
+import { kadenaDecrypt } from '../../utils/kadenaEncryption.js';
 
 describe('kadenaGenMnemonic', () => {
   it('should generate a valid mnemonic', () => {

@@ -1,7 +1,7 @@
-import type { IBreadcrumbsProps } from '@components/Breadcrumbs';
-import { ProductIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import type { IBreadcrumbsProps } from '../Breadcrumbs';
+import { ProductIcon } from '../Icon';
 import { Breadcrumbs } from './Breadcrumbs';
 import { BreadcrumbsItem } from './BreadcrumbsItem';
 
@@ -22,7 +22,7 @@ const meta: Meta<
 > = {
   title: 'Navigation/Breadcrumbs',
   parameters: {
-    status: { type: 'needsRevision' },
+    status: { type: 'releaseCandidate' },
     docs: {
       description: {
         component:
@@ -33,7 +33,7 @@ const meta: Meta<
   argTypes: {
     icon: {
       description:
-        'The base icon for the breadcrumb component displayed to the left of the breadcrumb items. is part of the ProductIcon',
+        'An icon displayed to the left of the breadcrumb items. This prop accepts a ReactNode.',
     },
     itemsCount: {
       control: { type: 'range', min: 1, max: 6, step: 1 },

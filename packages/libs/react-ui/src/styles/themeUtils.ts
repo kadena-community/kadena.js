@@ -91,10 +91,8 @@ export function flattenTokens<T extends Record<string, Token>>(
   return flattenObject(tokens, ignoredTokens);
 }
 
-export function token(
-  path: ObjectPathLeaves<typeof tokens.kda.foundation>,
-  fallback?: string,
-): string {
+export type TokenPath = ObjectPathLeaves<typeof tokens.kda.foundation>;
+export function token(path: TokenPath, fallback?: string): string {
   const v = get(tokens.kda.foundation, path);
   if (!isNullOrUndefined(fallback)) {
     return fallbackVar(v, fallback);

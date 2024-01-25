@@ -4,6 +4,7 @@ import { builder } from '../builder';
 export default builder.prismaNode('Signer', {
   description: 'A signer for a specific transaction.',
   id: { field: 'requestKey_orderIndex' },
+  select: {},
   fields: (t) => ({
     //database fields
     address: t.exposeString('address', {
@@ -12,6 +13,9 @@ export default builder.prismaNode('Signer', {
     }),
     capabilities: t.string({
       nullable: true,
+      select: {
+        capabilities: true,
+      },
       resolve({ capabilities }) {
         return nullishOrEmpty(capabilities)
           ? undefined

@@ -1,6 +1,6 @@
-import { withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { withContentWidth } from '../../storyDecorators';
 import { ProductIcon } from '../Icon';
 import type { ILabelValue, ITrackerCardProps } from './TrackerCard';
 import { TrackerCard } from './TrackerCard';

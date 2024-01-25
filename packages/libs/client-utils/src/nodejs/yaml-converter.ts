@@ -29,16 +29,18 @@ interface ITemplateContextReplacedHoles extends ITemplateContext {
   filledYamlString: FilledYamlString;
 }
 
+interface IPublicMeta {
+  chainId: string;
+  sender: string;
+  gasLimit: number;
+  gasPrice: number;
+  ttl: number;
+}
 interface ITemplateTransaction {
   codeFile?: string;
   command: string;
-  publicMeta: {
-    chainId: string;
-    sender: string;
-    gasLimit: number;
-    gasPrice: number;
-    ttl: number;
-  };
+  meta?: IPublicMeta;
+  publicMeta?: IPublicMeta;
   networkId: string;
   data: Record<string, any>;
   signers: Array<{ public: string }>;
@@ -85,95 +87,98 @@ export const getPartsAndHolesInCtx = (
 };
 
 // Responsible for replacing holes with values
-export const replaceHoles = (
-  partsAndHoles: PartsAndHoles,
-  args: Record<string, string | number>,
-) => {
-  const [parts, holes] = partsAndHoles;
-  const allParts = zip(parts, holes);
-  return allParts
-    .map((partOrHole, index) => {
-      if (typeof partOrHole === 'string') {
-        // it's a part
-        return partOrHole;
-      } else {
-        // Currently we are unaware of the difference between {{}} and {{{}}} so we treat them the same: as a literal hole
-        if ('literal' in partOrHole) {
-          // it's a literal hole
-          if (!(partOrHole.literal in args)) {
-            throw new Error(
-              `argument to fill hole for ${partOrHole.literal} is missing in ${
-                allParts[index - 1]
-              }{{${partOrHole.literal}}}${allParts[index + 1]}}`,
-            );
-          }
+export const replaceHoles =
+  (args: Record<string, string | number>) => (partsAndHoles: PartsAndHoles) => {
+    const [parts, holes] = partsAndHoles;
+    const allParts = zip(parts, holes);
+    return allParts
+      .map((partOrHole, index) => {
+        if (typeof partOrHole === 'string') {
+          // it's a part
+          return partOrHole;
+        } else {
+          // Currently we are unaware of the difference between {{}} and {{{}}} so we treat them the same: as a literal hole
+          if ('literal' in partOrHole) {
+            // it's a literal hole
+            if (!(partOrHole.literal in args)) {
+              throw new Error(
+                `argument to fill hole for ${
+                  partOrHole.literal
+                } is missing in ${allParts[index - 1]}{{${
+                  partOrHole.literal
+                }}}${allParts[index + 1]}}`,
+              );
+            }
 
-          return args[partOrHole.literal];
+            return args[partOrHole.literal];
+          }
         }
-      }
-    })
-    .join('');
+      })
+      .join('');
+  };
+
+const loadYaml = (filledYamlString: string) => {
+  return yaml.load(filledYamlString) as ITemplateTransaction;
 };
 
 // Responsible for replacing holes in a context with values
 export const replaceHolesInCtx = (args: Record<string, string | number>) => {
   return (ctx: ITemplateContext): ITemplateContextReplacedHoles => {
     const { tplString } = ctx;
-    return { ...ctx, filledYamlString: replaceHoles(tplString, args) };
+    return { ...ctx, filledYamlString: replaceHoles(args)(tplString) };
   };
 };
+
 export const parseYamlToKdaTx =
   (args: Record<string, string | number>) =>
-  (ctx: ITemplateContextReplacedHoles): ITemplateContextPactCommand => {
+  (
+    ctx: ITemplateContextReplacedHoles,
+  ): ITemplateContextPactCommand['tplTx'] => {
     const { filledYamlString } = ctx;
-    const kdaToolTx = yaml.load(filledYamlString) as ITemplateTransaction;
+    const kdaToolTx = loadYaml(filledYamlString);
 
     if (!('codeFile' in kdaToolTx && kdaToolTx.codeFile)) {
-      return {
-        ...ctx,
-        tplTx: kdaToolTx,
-      };
+      return kdaToolTx;
     }
 
     const { codeFile, ...kdaToolTxWithoutCodeFile } = kdaToolTx;
     const codeWithHoles = readFileSync(join(ctx.cwd, codeFile), 'utf-8');
 
-    const code = replaceHoles(getPartsAndHoles(codeWithHoles), args);
+    const code = replaceHoles(args)(getPartsAndHoles(codeWithHoles));
 
     return {
-      ...ctx,
-      tplTx: {
-        ...kdaToolTxWithoutCodeFile,
-        code,
-      },
+      ...kdaToolTxWithoutCodeFile,
+      code,
     };
   };
 
 // Responsible for converting a kda tool transaction into a kadena client transaction
 export const convertTemplateTxToPactCommand = (
-  ctx: ITemplateContextPactCommand,
+  tplTx: ITemplateContextPactCommand['tplTx'],
 ): IPactCommand => {
-  const { code, data, ...kdaToolTx } = ctx.tplTx;
+  const { data, ...kdaToolTx } = tplTx;
 
   const execPayload: IExecutionPayloadObject = {
     exec: {
       data: data ? data : {},
-      code: code!,
+      code: kdaToolTx.code!,
     },
   };
 
-  const { publicMeta, ...kdaToolTxWithoutMeta } = kdaToolTx;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { publicMeta, meta, code, ...kdaToolTxWithoutMeta } = kdaToolTx;
+  const metadata = meta || publicMeta || ({} as IPublicMeta);
 
   return {
     ...kdaToolTxWithoutMeta,
     payload: execPayload,
     meta: {
-      ...publicMeta,
-      chainId: publicMeta.chainId as ChainId,
+      ...metadata,
+      chainId: metadata.chainId as ChainId,
       creationTime: Math.floor(Date.now() / 1000),
     },
     nonce: kdaToolTx.nonce ? kdaToolTx.nonce : '',
-    signers: kdaToolTx.signers.map(publicToPubkey),
+    signers: (kdaToolTx.signers ?? []).map(publicToPubkey),
     networkId: kdaToolTx.networkId,
   };
 };
@@ -189,6 +194,18 @@ export const createPactCommandFromTemplate = async (
     parseYamlToKdaTx(args),
     convertTemplateTxToPactCommand,
   )(path, cwd);
+};
+
+export const createPactCommandFromStringTemplate = async (
+  template: string,
+  args: Record<string, string | number>,
+): Promise<IPactCommand> => {
+  return asyncPipe(
+    getPartsAndHoles,
+    replaceHoles(args),
+    loadYaml,
+    convertTemplateTxToPactCommand,
+  )(template);
 };
 
 // Responsible for zipping together parts and holes

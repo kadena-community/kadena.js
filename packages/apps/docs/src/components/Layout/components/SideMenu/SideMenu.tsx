@@ -1,7 +1,6 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { IMenuItem } from '@kadena/docs-tools';
-import { Box, Heading, Input, SystemIcon } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/theme';
+import { Box, Heading, SystemIcon, TextField } from '@kadena/react-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC, KeyboardEvent } from 'react';
@@ -66,21 +65,17 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
         </button>
       )}
       <ShowOnMobile>
-        <Box
-          marginInline="md"
-          marginBlockStart="md"
-          className={sprinkles({ marginBlockEnd: '$8' })}
-        >
-          <Input
+        <Box marginInline="md" marginBlockStart="md" marginBlockEnd="xl">
+          {/* TODO: Replace with SearchField */}
+          <TextField
             id="search"
             onKeyUp={handleKeyPress}
             placeholder="Search"
-            outlined
+            isOutlined
             type="text"
             aria-label="Search"
-          >
-            <MagnifierIcon size="md" />
-          </Input>
+            endAddon={<MagnifierIcon />}
+          />
         </Box>
       </ShowOnMobile>
       <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>

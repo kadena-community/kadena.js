@@ -48,7 +48,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: ['@kadena/client', '@kadena/client-utils']
+        package:
+          [
+            '@kadena/client',
+            '@kadena/client-utils',
+            '@kadena/create-kadena-app',
+          ]
 
     steps:
       - uses: actions/checkout@v4
@@ -82,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: ['tools', 'docs']
+        app: ['tools', 'docs', 'graph']
 
     steps:
       - uses: actions/checkout@v4
@@ -100,6 +105,11 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
+      - name: Start devnet
+        uses: ./.github/actions/devnet
+        with:
+          migrations: packages/apps/graph/cwd-extra-migrations
+
       - name: Install dependencies
         run: pnpm install
 
@@ -108,10 +118,12 @@ jobs:
 
       # Disable remote caching, we need to explicitly rebuild Apps.
       - name: build dApp
-        run: pnpm --filter @kadena/${{ matrix.app }}... build
+        run: pnpm turbo build --filter @kadena/${{ matrix.app }} --force
 
       - name: Run end-to-end tests
-        run: pnpm run test:e2e -- -c playwright.${{ matrix.app }}.config.ts
+        run:
+          pnpm turbo test:e2e --filter @kadena-dev/e2e-tests -- -c
+          playwright.${{ matrix.app }}.config.ts
         env:
           TESTOBJECT: ${{ matrix.app }}
 

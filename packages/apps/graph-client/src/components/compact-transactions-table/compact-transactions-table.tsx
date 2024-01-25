@@ -7,9 +7,10 @@ import type {
   QueryTransactionsConnection,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
-import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
+import { Box, ContentHeader, Link, Table } from '@kadena/react-ui';
 import { truncate } from '@utils/truncate';
 import React from 'react';
+import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 interface ICompactTransactionsTableProps {
   viewAllHref?: string;
@@ -41,11 +42,11 @@ export const CompactTransactionsTable = (
         }
       />
       <Box margin="sm" />
-      <Button variant="compact" as="a" href={viewAllHref}>
+      <Link isCompact href={viewAllHref}>
         View all transactions
-      </Button>
+      </Link>
       <Box margin="xs" />
-      <Table.Root wordBreak="break-word">
+      <Table.Root wordBreak="break-word" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
             <Table.Th>Chain</Table.Th>

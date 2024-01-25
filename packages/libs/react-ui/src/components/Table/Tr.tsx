@@ -1,6 +1,8 @@
-import { IconButton } from '@components/IconButton';
+import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
+import { Link, SystemIcon } from '..';
+import { Button } from '../Button/Button';
 import { linkButtonClass, trClass } from './Table.css';
 import { Td } from './Td';
 import { Th } from './Th';
@@ -10,11 +12,12 @@ export interface ITrProps {
   children?: CompoundType<typeof Td> | CompoundType<typeof Th>;
   url?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  className?: string;
 }
 
-export const Tr: FC<ITrProps> = ({ children, url, onClick }) => {
+export const Tr: FC<ITrProps> = ({ children, url, onClick, className }) => {
   return (
-    <tr className={trClass}>
+    <tr className={classNames(trClass, className)}>
       {React.Children.map(children, (child) => {
         if (
           !React.isValidElement(child) ||
@@ -27,15 +30,20 @@ export const Tr: FC<ITrProps> = ({ children, url, onClick }) => {
 
       {url !== undefined ? (
         <td className={linkButtonClass}>
-          <IconButton as="a" href={url} title={url} icon="TrailingIcon" />
+          <Link
+            href={url}
+            title={url}
+            icon={<SystemIcon.TrailingIcon />}
+            aria-label={url}
+          />
         </td>
       ) : onClick !== undefined ? (
         <td className={linkButtonClass}>
-          <IconButton
-            as="button"
+          <Button
             title=""
+            aria-label=""
             onClick={onClick}
-            icon="TrailingIcon"
+            icon={<SystemIcon.TrailingIcon />}
           />
         </td>
       ) : (

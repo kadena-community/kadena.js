@@ -1,5 +1,4 @@
 import { prismaClient } from '@db/prisma-client';
-import type { Event } from '@prisma/client';
 import { createID } from '@utils/global-id';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import type { IContext } from '../builder';
@@ -56,7 +55,12 @@ async function* iteratorFn(
   }
 }
 
-async function getLastEvents(eventName: string, id?: number): Promise<Event[]> {
+async function getLastEvents(
+  eventName: string,
+  id?: number,
+): Promise<
+  { blockHash: string; orderIndex: bigint; requestKey: string; id: number }[]
+> {
   const defaultFilter: Parameters<typeof prismaClient.event.findMany>[0] = {
     orderBy: {
       id: 'desc',
@@ -79,6 +83,12 @@ async function getLastEvents(eventName: string, id?: number): Promise<Event[]> {
       transaction: {
         NOT: [],
       },
+    },
+    select: {
+      id: true,
+      blockHash: true,
+      orderIndex: true,
+      requestKey: true,
     },
   });
 
