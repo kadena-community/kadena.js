@@ -185,7 +185,7 @@ test.describe('Query: getTransactions', async () => {
         events: [
           {
             requestKey: transfer.reqKey,
-            parameterText: `["${sourceAccount.account}","${devnetMiner.account}",4.78e-8]`,
+            parameterText: `["${sourceAccount.account}","${devnetMiner.account}",4.78e-6]`,
             id: base64Encode(
               `Event:["${transfer.metaData?.blockHash}","0","${transfer.reqKey}"]`,
             ),
