@@ -1,5 +1,5 @@
 import { createPrincipal } from '@kadena/client-utils/built-in';
-import type { IAddAccountManualConfig, Predicate } from '../types.js';
+import type { IAddAccountManualConfig } from '../types.js';
 
 export async function createAccountName(
   config: IAddAccountManualConfig,
@@ -16,7 +16,7 @@ export async function createAccountName(
     const accountName = await createPrincipal(
       {
         keyset: {
-          pred: config.predicate as Predicate,
+          pred: config.predicate,
           keys: publicKeys,
         },
       },

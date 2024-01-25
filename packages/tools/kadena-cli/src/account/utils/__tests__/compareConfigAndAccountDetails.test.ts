@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import type { IAccountDetailsResult } from '../../types.js';
 import { compareConfigAndAccountDetails } from '../compareConfigAndAccountDetails.js';
 import { defaultConfigMock } from './mocks.js';
 
@@ -10,7 +11,7 @@ describe('compareConfigAndAccountDetails', () => {
       publicKeys: 'test',
       publicKeysConfig: ['test'],
     };
-    const accountDetails = {
+    const accountDetails: IAccountDetailsResult = {
       publicKeys: ['test'],
       predicate: 'keys-all',
     };
@@ -24,7 +25,7 @@ describe('compareConfigAndAccountDetails', () => {
       publicKeys: 'test',
       publicKeysConfig: ['test'],
     };
-    const accountDetails = {
+    const accountDetails: IAccountDetailsResult = {
       publicKeys: ['test'],
       predicate: 'keys-any',
     };
@@ -38,7 +39,7 @@ describe('compareConfigAndAccountDetails', () => {
       publicKeys: 'test',
       publicKeysConfig: ['test'],
     };
-    const accountDetails = {
+    const accountDetails: IAccountDetailsResult = {
       publicKeys: ['test', 'test2'],
       predicate: 'keys-all',
     };

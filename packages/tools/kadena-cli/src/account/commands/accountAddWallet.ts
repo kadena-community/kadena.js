@@ -28,7 +28,7 @@ async function getAllPublicKeysFromWallet(
       path.join(WALLET_DIR, keyWalletConfig?.folder, key),
     );
     const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
-    publicKeysList.push(parsed?.publicKey || '');
+    publicKeysList.push(parsed?.publicKey ?? '');
   }
   return publicKeysList.filter((key) => isEmpty(key));
 }
@@ -70,7 +70,7 @@ export const addAccountWalletCommand: (
       publicKeysConfig: selectPublicKeys,
     };
 
-    const sanitizedAlias = sanitizeFilename(config.accountAlias).toLowerCase();
+    const sanitizedAlias = sanitizeFilename(config.accountAlias);
     const filePath = path.join(defaultAccountPath, `${sanitizedAlias}.yaml`);
 
     try {

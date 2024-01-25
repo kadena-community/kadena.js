@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import type { IAccountDetailsResult } from '../../types.js';
 import { getUpdatedConfig } from '../addHelpers.js';
 import { defaultConfigMock } from './mocks.js';
 
@@ -10,7 +11,7 @@ describe('getUpdatedConfig', () => {
       publicKeys: 'publicKeys',
       publicKeysConfig: ['publicKeys'],
     };
-    const accountDetails = {
+    const accountDetails: IAccountDetailsResult = {
       publicKeys: ['publicKeys'],
       predicate: 'keys-all',
     };
@@ -26,7 +27,7 @@ describe('getUpdatedConfig', () => {
       publicKeys: 'publicKeys',
       publicKeysConfig: ['publicKeys'],
     };
-    const accountDetails = {
+    const accountDetails: IAccountDetailsResult = {
       publicKeys: ['publicKeys'],
       predicate: 'keys-any',
     };

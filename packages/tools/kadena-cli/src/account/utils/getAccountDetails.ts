@@ -1,5 +1,4 @@
 import { details } from '@kadena/client-utils/coin';
-import type { ChainId } from '@kadena/types';
 import type {
   IAccountConfig,
   IAccountDetailsResult,
@@ -8,6 +7,15 @@ import type {
 
 interface IAccountDetails extends IAccountConfig {
   accountName: string;
+}
+
+interface IKeysGuard {
+  keys: string[];
+  pred: Predicate;
+}
+
+interface IAccountDetailsFromChain {
+  guard: IKeysGuard;
 }
 
 export async function getAccountDetailsFromChain(
@@ -22,16 +30,23 @@ export async function getAccountDetailsFromChain(
     const accountDetails = await details(
       accountName,
       networkId,
-      chainId as ChainId,
+      chainId,
       networkHost,
     );
-    const { guard: { keys = [], pred } = {} } = accountDetails as {
-      guard: { keys: string[]; pred: string };
-    };
+
+    if (accountDetails === undefined) {
+      throw new Error(
+        `Account ${accountName} does not exist on chain ${chainId}`,
+      );
+    }
+
+    const {
+      guard: { keys, pred },
+    } = accountDetails as IAccountDetailsFromChain;
 
     return {
       publicKeys: keys,
-      predicate: pred as Predicate,
+      predicate: pred,
     };
   } catch (e) {
     throw new Error(e.message);

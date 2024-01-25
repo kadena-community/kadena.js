@@ -6,7 +6,7 @@ export type Predicate = 'keys-all' | 'keys-2' | 'keys-any';
 export interface IAccountConfig {
   accountAlias: string;
   fungible: string;
-  predicate: string;
+  predicate: Predicate;
   network: string;
   chainId: ChainId;
   networkConfig: INetworkCreateOptions;
@@ -25,5 +25,5 @@ export interface IAddAccountManualConfig extends IAccountConfig {
 
 export interface IAccountDetailsResult {
   publicKeys: string[];
-  predicate: string;
+  predicate: Predicate;
 }

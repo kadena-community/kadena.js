@@ -1,4 +1,5 @@
 import { input, select } from '@inquirer/prompts';
+import type { Predicate } from '../account/types.js';
 import type { IPrompt } from '../utils/createOption.js';
 
 export const publicKeysPrompt: IPrompt<string> = async () =>
@@ -47,7 +48,7 @@ export const fungiblePrompt: IPrompt<string> = async () =>
     message: 'Enter the name of a fungible:',
   });
 
-export const predicatePrompt: IPrompt<string> = async () =>
+export const predicatePrompt: IPrompt<Predicate> = async () =>
   await select({
     message: 'Select a keyset predicate.',
     choices: [
