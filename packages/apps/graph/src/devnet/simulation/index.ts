@@ -124,9 +124,31 @@ program
   )
   .action(async (args) => {
     flood({
-      iterationsPerSecond: 25,
+      iterationsPerSecond: 2,
       iterations: args.iterations,
       timeout: 100000,
+      chains: [
+        '0',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '10',
+        '11',
+        '12',
+        '13',
+        '14',
+        '15',
+        '16',
+        '17',
+        '18',
+        '19',
+      ],
     });
   });
 
