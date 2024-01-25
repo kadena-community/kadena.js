@@ -8,30 +8,9 @@ import { updateAccountDetailsPrompt } from '../../prompts/account.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
-import type {
-  IAccountDetailsResult,
-  IAddAccountManualConfig,
-} from '../types.js';
+import { getUpdatedConfig } from '../utils/addHelpers.js';
 import { validateAccountDetails } from '../utils/validateAccountDetails.js';
 import { writeConfigInFile } from '../utils/writeConfigInFile.js';
-
-export const getUpdatedConfig = (
-  config: IAddAccountManualConfig,
-  accountDetails: IAccountDetailsResult,
-  updateOption: string,
-) => {
-  if (updateOption === 'userInput') {
-    return config;
-  } else {
-    const updatedConfig = {
-      ...config,
-      publicKeys: accountDetails.publicKeys.join(','),
-      publicKeysConfig: accountDetails.publicKeys,
-      predicate: accountDetails.predicate,
-    };
-    return updatedConfig;
-  }
-};
 
 export const addAccountManualCommand: (
   program: Command,
@@ -56,8 +35,11 @@ export const addAccountManualCommand: (
     const filePath = path.join(defaultAccountPath, `${sanitizedAlias}.yaml`);
 
     try {
-      const [{ config: newConfig, accountDetails }, isConfigAreSame] =
-        await validateAccountDetails(config);
+      const {
+        config: newConfig,
+        accountDetails,
+        isConfigAreSame,
+      } = await validateAccountDetails(config);
 
       if (isConfigAreSame) {
         await writeConfigInFile(filePath, newConfig);
@@ -81,7 +63,7 @@ export const addAccountManualCommand: (
       if (error.message.includes('row not found')) {
         console.log(
           chalk.red(
-            `The account ${config.accountName} is not on chain yet. To create it on-chain, transfer funds to it from ${config.networkConfig.network} and use "fund" command.`,
+            `The account is not on chain yet. To create it on-chain, transfer funds to it from ${config.networkConfig.network} and use "fund" command.`,
           ),
         );
         return;

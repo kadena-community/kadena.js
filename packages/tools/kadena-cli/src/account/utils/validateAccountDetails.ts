@@ -1,20 +1,21 @@
 import { IAccountDetailsResult, IAddAccountManualConfig } from '../types.js';
-import { isEmpty } from './addHelpers.js';
 import { compareConfigAndAccountDetails } from './compareConfigAndAccountDetails.js';
 import { createAccountName } from './createAccountName.js';
 import { getAccountDetailsFromChain } from './getAccountDetails.js';
 
 interface IValidateAccountDetails {
+  isConfigAreSame: boolean;
   config: IAddAccountManualConfig;
   accountDetails: IAccountDetailsResult;
 }
 
 export async function validateAccountDetails(
   config: IAddAccountManualConfig,
-): Promise<[IValidateAccountDetails, boolean]> {
-  const accountName = isEmpty(config.accountName)
-    ? await createAccountName(config)
-    : config.accountName;
+): Promise<IValidateAccountDetails> {
+  const accountName =
+    config.accountName === undefined
+      ? await createAccountName(config)
+      : config.accountName;
 
   const configWithAccountName = {
     ...config,
@@ -30,11 +31,9 @@ export async function validateAccountDetails(
     accountDetails,
   );
 
-  return [
-    {
-      config: configWithAccountName,
-      accountDetails,
-    },
+  return {
+    config: configWithAccountName,
+    accountDetails,
     isConfigAreSame,
-  ];
+  };
 }

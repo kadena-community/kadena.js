@@ -1,13 +1,13 @@
 import { details } from '@kadena/client-utils/coin';
 import { ChainId } from '@kadena/types';
-import {
-  IAccountDetailsResult,
-  IAddAccountManualConfig,
-  Predicate,
-} from '../types.js';
+import { IAccountConfig, IAccountDetailsResult, Predicate } from '../types.js';
+
+interface IAccountDetails extends IAccountConfig {
+  accountName: string;
+}
 
 export async function getAccountDetailsFromChain(
-  config: IAddAccountManualConfig,
+  config: IAccountDetails,
 ): Promise<IAccountDetailsResult> {
   const {
     accountName,

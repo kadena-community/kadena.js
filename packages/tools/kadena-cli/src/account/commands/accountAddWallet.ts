@@ -9,15 +9,30 @@ import type { IKeyPair } from '@kadena/types';
 import { defaultAccountPath } from '../../constants/account.js';
 import { WALLET_DIR } from '../../constants/config.js';
 import { printWalletKeys } from '../../keys/utils/keysDisplay.js';
+import { IWallet, getWallet } from '../../keys/utils/keysHelpers.js';
+import { updateAccountDetailsPrompt } from '../../prompts/account.js';
 import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
-import { IAddAccountManualConfig } from '../types.js';
-import {
-  validateAccountDetails,
-  writeConfigInFile,
-} from '../utils/addHelpers.js';
+import type { IAddAccountManualConfig } from '../types.js';
+import { getUpdatedConfig } from '../utils/addHelpers.js';
+import { validateAccountDetails } from '../utils/validateAccountDetails.js';
+import { writeConfigInFile } from '../utils/writeConfigInFile.js';
+
+async function getAllPublicKeysFromWallet(
+  keyWalletConfig: IWallet,
+): Promise<Array<string>> {
+  const publicKeysList: Array<string> = [];
+  for (const key of keyWalletConfig.keys) {
+    const content = await services.filesystem.readFile(
+      path.join(WALLET_DIR, keyWalletConfig?.folder, key),
+    );
+    const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
+    publicKeysList.push(parsed?.publicKey || '');
+  }
+  return publicKeysList.filter((key) => !!key);
+}
 
 export const addAccountWalletCommand: (
   program: Command,
@@ -43,32 +58,58 @@ export const addAccountWalletCommand: (
       return;
     }
 
-    const publicKeysList: Array<string | undefined> = [];
-    for (const key of keyWalletConfig.keys) {
-      const content = await services.filesystem.readFile(
-        path.join(WALLET_DIR, keyWalletConfig?.folder, key),
-      );
-      const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
-      publicKeysList.push(parsed?.publicKey);
-    }
-
-    publicKeysList.filter((key) => !!key);
+    const publicKeys = await getAllPublicKeysFromWallet(keyWalletConfig);
 
     const selectPublicKeys = await checkbox({
       message: 'Select public keys to add to account',
-      choices: publicKeysList.map((key) => ({ value: key })),
+      choices: publicKeys.map((key) => ({ value: key })),
     });
 
-    (config as unknown as IAddAccountManualConfig).publicKeysConfig =
-      selectPublicKeys as string[];
+    const updatedConfig = {
+      ...config,
+      publicKeys: selectPublicKeys.join(','),
+      publicKeysConfig: selectPublicKeys,
+    };
 
     const sanitizedAlias = sanitizeFilename(config.accountAlias).toLowerCase();
     const filePath = path.join(defaultAccountPath, `${sanitizedAlias}.yaml`);
 
-    const newConfig = await validateAccountDetails(
-      config as unknown as IAddAccountManualConfig,
-    );
+    try {
+      const {
+        config: newConfig,
+        accountDetails,
+        isConfigAreSame,
+      } = await validateAccountDetails(updatedConfig);
 
-    await writeConfigInFile(filePath, newConfig);
+      if (isConfigAreSame) {
+        await writeConfigInFile(filePath, newConfig);
+      } else {
+        const updateOption = await updateAccountDetailsPrompt();
+
+        const updatedConfig = getUpdatedConfig(
+          newConfig,
+          accountDetails,
+          updateOption,
+        );
+
+        await writeConfigInFile(filePath, updatedConfig);
+      }
+      console.log(
+        chalk.green(
+          `\nThe account configuration "${updatedConfig.accountAlias}" has been saved.\n`,
+        ),
+      );
+    } catch (error) {
+      if (error.message.includes('row not found')) {
+        console.log(
+          chalk.red(
+            `The account is not on chain yet. To create it on-chain, transfer funds to it from ${updatedConfig.networkConfig.network} and use "fund" command.`,
+          ),
+        );
+        return;
+      }
+      console.log(chalk.red(`${error.message}`));
+      process.exit(1);
+    }
   },
 );

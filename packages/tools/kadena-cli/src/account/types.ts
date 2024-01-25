@@ -3,12 +3,27 @@ import type { INetworkCreateOptions } from '../networks/utils/networkHelpers.js'
 
 export type Predicate = 'keys-all' | 'keys-2' | 'keys-any';
 
-export interface IAddAccountManualConfig extends INetworkCreateOptions {
+export interface IAccountConfig {
   accountAlias: string;
-  accountName?: string;
   fungible: string;
-  predicate: Predicate;
+  predicate: string;
+  network: string;
   chainId: ChainId;
-  publicKeysConfig: string[];
   networkConfig: INetworkCreateOptions;
+  quiet?: boolean;
+  publicKeys: string;
+  publicKeysConfig: string[];
+}
+
+export interface IAddAccountWalletConfig extends IAccountConfig {
+  keyWallet: string;
+}
+
+export interface IAddAccountManualConfig extends IAccountConfig {
+  accountName?: string;
+}
+
+export interface IAccountDetailsResult {
+  publicKeys: string[];
+  predicate: string;
 }
