@@ -12,7 +12,7 @@ tags: [pact, smart contract, typescript, tutorial]
 
 In the previous tutorial, you built and deployed an election smart contract on the local development network. 
 You then connected the frontend built with the `@kadena/client` library to the development network backend.
-After connecting the frontend to the development network backend, you were able to add a candidate to a `candidates` database table in the Pact `election` module and see the results in the election application website.
+After connecting the frontend to the development network backend, you were able to add a candidate to the `candidates` database table in the Pact `election` module and see the results in the election application website.
 
 In this tutorial, you'll update the `election` module to allow anyone with a Kadena account to cast a vote on a candidate. 
 After you update the backend functionality, you'll modify the frontend to use the development network so that Kadena account holders can vote using the election application website and have their votes recorded on the blockchain, ensuring the security and transparency of the election process.
@@ -318,7 +318,7 @@ To define the database schema and table:
      (deftable votes:{votes-schema})
    ```
 
-1. Create the table outside of the election module by adding the following lines of code at the end of `./pact/election.pact`, after the `election` module definition:
+1. Create the table outside of the election module by adding the following lines of code at the end of `./pact/election.pact`, after the `election` module definition and the `init-candidates` code snippet:
    
    ```pact
    (if (read-msg "init-votes")
@@ -420,12 +420,12 @@ To test that an account can only vote once:
    )
    ```
 
-    This code:
+   This code:
    
-    - Adds the account of the voter as the first parameter of the `vote` function.
-    - Store the result from a new `account-voted` function in the `double-vote` variable and uses that value to prevent an account from voting more than once.
-    - Enforces that no row in the `votes` table is keyed with the account name using the `with-default-read` pattern that you used to prevent voting on a non-existent candidate. 
-    - Inserts a new row into the `votes` table with the account name as the key and the candidate key as the value for the `candidateKey` column every time the `vote` function is called. 
+   - Adds the account of the voter as the first parameter of the `vote` function.
+   - Stores the result from a new `account-voted` function in the `double-vote` variable and uses that value to prevent an account from voting more than once.
+   - Enforces that no row in the `votes` table is keyed with the account name using the `with-default-read` pattern that you used to prevent voting on a non-existent candidate. 
+   - Inserts a new row into the `votes` table with the account name as the key and the candidate key as the value for the `candidateKey` column every time the `vote` function is called. 
     
 4. Add the `account-voted` function to check if an account has already voted:
    
@@ -486,9 +486,9 @@ To demonstrate voting on behalf of another account:
 1. Open the `election-dapp/pact/setup.repl` file in the code editor on your computer.
 2. Add a `voter-keyset` to `env-data` so that this data is loaded in the Pact REPL environment when you load the `election` module:
 
-```pact
-, 'voter-keyset: { "keys": ["voter"], "pred": "keys-all" }
-```
+   ```pact
+   , 'voter-keyset: { "keys": ["voter"], "pred": "keys-all" }
+   ```
 
 1. Load the `coin` module and the interfaces it implements with the following lines of code in the `setup.repl`:
 
@@ -514,7 +514,7 @@ To demonstrate voting on behalf of another account:
    Remember to replace the administrative account name with your own account name.
 
 1. Open the `election-dapp/pact/voting.repl` file in the code editor on your computer.
-2. Add a transaction at the end of the file to cast a vote on behalf of the `voter` account signed by the admin keyset.
+2. Add a transaction at the end of the file to cast a vote on behalf of the `voter` account signed by the `admin keyset`.
 
    ```pact
    (begin-tx "Vote on behalf of another account")
@@ -560,7 +560,7 @@ To demonstrate voting on behalf of another account:
 
    This code uses the `coin.details` function to get the guard for an account by account name. 
    The `details` function of the `coin` module must be imported into the `election` module to be able to use it.
-   In this case, the guard for the account is the `voter-keyset`. 
+   In this case, `voter-keyset` is the guard for the account. 
    By enforcing this guard, you can ensure that the keyset used to sign the `vote` transaction belongs to the account name passed to the function.
 
 1. Apply the capability by wrapping the `update` and `insert` statements in the `vote` function inside a `with-capability` statement as follows:
@@ -598,7 +598,13 @@ To demonstrate voting on behalf of another account:
    Load successful
    ```
 
-   With these changes, one account can't vote on behalf of another account.
+   With these changes, the administrative account can't vote on behalf of another account.
+
+### Verify voting on one's own behalf 
+
+To verify that the voter account can vote on its own behalf:
+
+1. Open the `election-dapp/pact/voting.repl` file in the code editor on your computer.
 
 1. Add a transaction to verify that the `voter` account can vote on its own behalf, leading to an increase of the number of votes on `Candidate A` to 2:
 
@@ -636,7 +642,7 @@ To demonstrate voting on behalf of another account:
    Load successful
    ```
 
-Impressive.
+Impressive!
 You now have a simple smart contract with the basic functionality for conducting an election that allows Kadena account holders to vote on the candidate of their choice.
 With these changes, you're ready to upgrade the `election` module on the development network.
 
@@ -654,7 +660,7 @@ To update the `election` module on the development network:
    - Your administrative account name with the **k:** prefix exists on chain 1.
    - Your administrative account name is funded with KDA on chain 1. 
    
-   You're going to use Chainweaver to sign the transaction that defines the keyset. 
+   You're going to use Chainweaver to sign the transaction that updates the `election` module. 
 
 3. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
 
@@ -667,7 +673,7 @@ To update the `election` module on the development network:
    Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
    You can copy this account name from Chainweaver when viewing the account watch list.
    
-  In addition to the account name and `upgrade`, you must `init-votes` to add `{"init-votes": true}` to the transaction data.
+   In addition to the account name and `upgrade`, you must include `init-votes` in the command to add `{"init-votes": true}` to the transaction data.
    This field is required to allow you to execute the `(create-table votes)` statement from your `election` module.
 
 1. Click **Sign All** in Chainweaver to sign the request.
