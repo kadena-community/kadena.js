@@ -10,7 +10,7 @@ tags: [pact, smart contract, typescript, tutorial]
 
 # Nominate candidates
 
-In [Write a smart contract](/build/guides/elections-dapp-tutorial/06-smart-contracts), you learned about defining Pact modules and created a skeleton `election` module for the smart contract that will become the back-end of the election application. 
+In [Write a smart contract](/build/guides/election-dapp-tutorial/06-smart-contracts), you learned about defining Pact modules and created a skeleton `election` module for the smart contract that will become the back-end of the election application. 
 In this tutorial, you'll update the `election` module with a database table and functions to support the following operations:
 
 - Store a list of candidates and the number of votes each candidate receives.
@@ -691,7 +691,7 @@ To modify the frontend to add candidates from the development network:
    Unlike the transaction for listing candidates, the transaction for adding candidates must be sent to the blockchain, so you must pay a transaction fee—in units of gas—for the resources consumed to process the transaction.
    
    The value of the `senderAccount` field in the metadata specifies the account that pays for gas.
-   This is important to remember because, in the [Add a gas station](/build/guides/election-dapp/add-a-gas-station) tutorial, you'll specify the account of a **gas station** to pay for transactions that are signed by voters.
+   This is important to remember because, in the [Add a gas station](/build/guides/election-dapp-tutorial/09-gas-station) tutorial, you'll specify the account of a **gas station** to pay for transactions that are signed by voters.
    However, the transaction to add a candidate must be signed and paid for by the same account.
 
    ```typescript
