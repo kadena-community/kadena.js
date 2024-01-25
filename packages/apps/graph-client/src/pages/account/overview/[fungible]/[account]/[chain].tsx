@@ -3,6 +3,7 @@ import type {
   FungibleChainAccountTransfersConnection,
 } from '@/__generated__/sdk';
 import { useGetFungibleChainAccountQuery } from '@/__generated__/sdk';
+import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { getFungibleChainAccount } from '@/graphql/queries.graph';
@@ -73,7 +74,7 @@ const ChainAccount: React.FC = () => {
 
       {data?.fungibleChainAccount && (
         <>
-          <Table.Root wordBreak="break-all">
+          <Table.Root wordBreak="break-all" className={compactTableClass}>
             <Table.Body>
               <Table.Tr>
                 <Table.Td>

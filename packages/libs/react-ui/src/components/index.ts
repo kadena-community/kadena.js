@@ -53,10 +53,6 @@ export type {
 } from './Notification';
 export type { IPaginationProps } from './Pagination';
 export type {
-  IProfileSummaryLinkProps,
-  IProfileSummaryRootProps,
-} from './ProfileSummary';
-export type {
   ITBodyProps,
   ITHeadProps,
   ITableProps,
@@ -115,7 +111,6 @@ export {
   NotificationHeading,
 } from './Notification';
 export { Pagination } from './Pagination';
-export { ProfileSummary } from './ProfileSummary';
 export { Table } from './Table';
 export { TabItem, Tabs } from './Tabs';
 export { Tag, TagGroup, TagItem } from './Tag';

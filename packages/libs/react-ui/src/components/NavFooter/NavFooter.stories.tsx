@@ -12,7 +12,7 @@ const meta: Meta<{
   title: 'Navigation/NavFooter',
   parameters: {
     status: {
-      type: ['needsRevision'],
+      type: ['deprecated'],
     },
     docs: {
       description: {

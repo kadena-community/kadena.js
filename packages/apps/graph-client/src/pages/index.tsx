@@ -6,6 +6,7 @@ import {
   useGetBlocksSubscription,
   useGetTransactionsQuery,
 } from '@/__generated__/sdk';
+import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
@@ -86,7 +87,7 @@ const Home: React.FC = () => {
       />
 
       {newBlocks && (
-        <Table.Root wordBreak="break-word">
+        <Table.Root wordBreak="break-word" className={compactTableClass}>
           <Table.Head>
             <Table.Tr>
               <Table.Th>Hash</Table.Th>

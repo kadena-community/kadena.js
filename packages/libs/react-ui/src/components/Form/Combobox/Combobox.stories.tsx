@@ -15,7 +15,7 @@ const meta: Meta<IComboboxProps> = {
   component: Combobox,
   decorators: [withContentWidth, onLayer2],
   parameters: {
-    status: { type: 'inDevelopment' },
+    status: { type: 'releaseCandidate' },
     docs: {
       description: {
         component:
@@ -132,6 +132,28 @@ export const Default: Story = {
   render: (args) => {
     return (
       <Combobox {...args}>
+        <ComboboxItem key="option1">Option 1</ComboboxItem>
+        <ComboboxItem key="option2">Option 2</ComboboxItem>
+        <ComboboxItem key="option3">Option 3</ComboboxItem>
+        <ComboboxItem key="option4">Option 4</ComboboxItem>
+      </Combobox>
+    );
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    isDisabled: false,
+    isInvalid: false,
+    isRequired: false,
+    isPositive: false,
+    description: 'Some description',
+    label: 'Select something',
+    placeholder: 'Select an option',
+  },
+  render: (args) => {
+    return (
+      <Combobox {...args} startIcon={<Account />}>
         <ComboboxItem key="option1">Option 1</ComboboxItem>
         <ComboboxItem key="option2">Option 2</ComboboxItem>
         <ComboboxItem key="option3">Option 3</ComboboxItem>

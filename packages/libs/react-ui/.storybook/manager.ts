@@ -10,5 +10,10 @@ addons.setConfig({
   showToolbar: true,
   sidebar: {
     showRoots: true,
+    filters: {
+      patterns: (item) => {
+        return !item.tags?.includes('hidden');
+      },
+    },
   },
 });

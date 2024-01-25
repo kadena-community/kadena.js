@@ -22,7 +22,7 @@ const meta: Meta<ITextFieldProps> = {
   component: TextField,
   decorators: [withContentWidth, onLayer2],
   parameters: {
-    status: { type: 'inDevelopment' },
+    status: { type: 'releaseCandidate' },
     docs: {
       description: {
         component:
