@@ -4,10 +4,12 @@ import { OptionsModal } from '@/components/Global/OptionsModal';
 import type { Network } from '@/constants/kadena';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
 import type { IMenuItem } from '@/types/Layout';
 import { getHref } from '@/utils/getHref';
 import type { INetworkData } from '@/utils/network';
 import {
+  KadenaLogo,
   NavHeader,
   NavHeaderButton,
   NavHeaderLink,
@@ -16,7 +18,7 @@ import {
   SelectItem,
   SystemIcon,
 } from '@kadena/react-ui';
-import { atoms } from '@kadena/react-ui/styles';
+import { atoms, breakpoints } from '@kadena/react-ui/styles';
 import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
@@ -39,6 +41,9 @@ const Header: FC<IHeaderProps> = () => {
   const { pathname } = useRouter();
 
   const { systemTheme, theme, setTheme } = useTheme();
+
+  const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.sm}`);
+
   const currentTheme = theme === 'system' ? systemTheme : theme;
 
   const [isOpen, setIsOpen] = useState(false);
@@ -67,7 +72,7 @@ const Header: FC<IHeaderProps> = () => {
       <NavHeader
         logo={
           <Link href={'/'}>
-            <Logo />
+            {isMediumScreen ? <Logo /> : <KadenaLogo height={33} />}
           </Link>
         }
         activeHref={pathname}
