@@ -1,5 +1,6 @@
 import { Box, ContentHeader, Table } from '@kadena/react-ui';
 import React from 'react';
+import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 interface NonFungible {
   __typename?: 'Token';
@@ -24,7 +25,7 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
 
       <Box margin="sm" />
 
-      <Table.Root wordBreak="break-word">
+      <Table.Root wordBreak="break-word" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
             <Table.Th>Token Id</Table.Th>

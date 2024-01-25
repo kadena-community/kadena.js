@@ -18,7 +18,7 @@ const Page: FC<IProps> = () => {
   return (
     <div>
       <h2>Analytics</h2>
-      Proof Of Us with ID ({data.id})
+      Proof Of Us with ID ({data.tokenId})
     </div>
   );
 };

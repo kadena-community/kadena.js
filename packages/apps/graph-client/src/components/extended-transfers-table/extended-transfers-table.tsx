@@ -14,6 +14,7 @@ import {
 } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 type DataType = GetTransfersQuery;
 interface IVariableType {
@@ -184,7 +185,7 @@ export const ExtendedTransfersTable = (
           />
         </div>
       </Box>
-      <Table.Root wordBreak="break-word">
+      <Table.Root wordBreak="break-word" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
             <Table.Th>Chain</Table.Th>

@@ -8,12 +8,23 @@ import { thClass } from './Table.css';
 export interface IThProps
   extends Pick<Sprinkles, 'width' | 'minWidth' | 'maxWidth'> {
   children?: React.ReactNode;
+  className?: string;
 }
 
-export const Th: FC<IThProps> = ({ children, width, minWidth, maxWidth }) => {
+export const Th: FC<IThProps> = ({
+  children,
+  width,
+  minWidth,
+  maxWidth,
+  className,
+}) => {
   return (
     <th
-      className={classNames(thClass, sprinkles({ width, minWidth, maxWidth }))}
+      className={classNames(
+        thClass,
+        sprinkles({ width, minWidth, maxWidth }),
+        className,
+      )}
     >
       {children}
     </th>

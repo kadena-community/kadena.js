@@ -5,7 +5,6 @@ import type { FC } from 'react';
 export const AccountInfo: FC = () => {
   const { account, login, logout, isMounted } = useAccount();
 
-  console.log({ isMounted });
   if (!isMounted) return null;
   return (
     <section>

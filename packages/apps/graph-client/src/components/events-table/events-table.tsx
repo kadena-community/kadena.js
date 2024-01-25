@@ -3,6 +3,7 @@ import routes from '@/constants/routes';
 import { formatCode } from '@/utils/formatter';
 import { Table } from '@kadena/react-ui';
 import React from 'react';
+import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 interface IEventsTableProps {
   events?: Event[];
@@ -13,7 +14,7 @@ export const EventsTable = (props: IEventsTableProps): JSX.Element => {
 
   return (
     <>
-      <Table.Root striped wordBreak="break-word">
+      <Table.Root striped wordBreak="break-word" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
             <Table.Th>Block Height</Table.Th>

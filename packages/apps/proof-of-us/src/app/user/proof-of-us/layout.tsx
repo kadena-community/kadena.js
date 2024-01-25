@@ -10,7 +10,6 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const params = useParams();
   const router = useRouter();
 
-  console.log({ params });
   const { data, isLoading, error } = useGetProofOfUs({ id: params.id });
 
   if (isLoading) return <IsLoading />;
@@ -24,10 +23,12 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
     <ProofOfUsContext.Provider value={{ data }}>
       <ul>
         <li>
-          <Link href={`/user/proof-of-us/${data.id}`}>Proof Of Us</Link>
+          <Link href={`/user/proof-of-us/${data.tokenId}`}>Proof Of Us</Link>
         </li>
         <li>
-          <Link href={`/user/proof-of-us/${data.id}/analytics`}>analytics</Link>
+          <Link href={`/user/proof-of-us/${data.tokenId}/analytics`}>
+            analytics
+          </Link>
         </li>
       </ul>
 
