@@ -1,8 +1,10 @@
-import { useWallet } from '@/hooks/wallet.context';
+import { useWallet } from '@/hooks/wallet.hook';
 import { Box, Heading, Text } from '@kadena/react-ui';
 import { Link } from 'react-router-dom';
 
-declare const PasswordCredential: any;
+declare const PasswordCredential: {
+  new (passwordCredentialInit: { id: string; password: string }): Credential;
+};
 
 export function BackupRecoveryPhrase() {
   const supportPasswordCredential = 'PasswordCredential' in window;

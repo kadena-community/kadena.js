@@ -9,7 +9,7 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 
-import { useWallet } from '../hooks/wallet.context';
+import { useWallet } from '../hooks/wallet.hook';
 import { BackupRecoveryPhrase } from '../pages/backup-recovery-phrase/backup-recovery-phrase';
 import { WriteDownRecoveryPhrase } from '../pages/backup-recovery-phrase/write-down/write-down-recovery-phrase';
 import { CreateWallet } from '../pages/create-wallet/create-wallet';

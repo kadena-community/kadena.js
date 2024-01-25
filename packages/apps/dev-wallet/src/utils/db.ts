@@ -53,7 +53,7 @@ export const getAllItems =
     return new Promise<T[]>((resolve, reject) => {
       const transaction = db.transaction(storeName, 'readonly');
       const store = transaction.objectStore(storeName);
-      let request: IDBRequest<any>;
+      let request: IDBRequest;
       if (indexName) {
         const idx = store.index(indexName);
         request = idx.getAll(filter);
@@ -111,7 +111,7 @@ const isExist = async <T>(
   const store = transaction.objectStore(storeName);
   const isDataExist = await getOneItem(db)(
     storeName,
-    key ?? (value as any)[store.keyPath! as string],
+    key ?? (value[store.keyPath! as keyof T] as string),
   )
     .then(() => true)
     .catch(() => false);

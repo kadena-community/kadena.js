@@ -11,7 +11,6 @@ import {
   FC,
   PropsWithChildren,
   createContext,
-  useContext,
   useEffect,
   useState,
 } from 'react';
@@ -23,7 +22,7 @@ import {
   createWalletRepository,
 } from './wallet.repository';
 
-const WalletContext = createContext<{
+export const WalletContext = createContext<{
   createWallet: (
     profile: string,
     password: string,
@@ -39,14 +38,6 @@ const WalletContext = createContext<{
   profile: Omit<IProfile, 'seedKey'> | undefined;
   profileList: Omit<IProfile, 'seedKey' | 'networks'>[];
 } | null>(null);
-
-export const useWallet = () => {
-  const context = useContext(WalletContext);
-  if (!context) {
-    throw new Error('useWallet must be used within a WalletContextProvider');
-  }
-  return context;
-};
 
 export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [activeProfile, setActiveProfile] = useState<IProfile>();

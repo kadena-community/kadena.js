@@ -1,4 +1,4 @@
-import { useWallet } from '@/hooks/wallet.context';
+import { useWallet } from '@/hooks/wallet.hook';
 import { Box, Heading, Text } from '@kadena/react-ui';
 import { Link } from 'react-router-dom';
 
