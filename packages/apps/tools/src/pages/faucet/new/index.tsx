@@ -437,6 +437,20 @@ const NewAccountFaucetPage: FC = () => {
                   isInvalid={!!errors.name}
                   label={t('The account name to fund coins to')}
                   isDisabled
+                  endAddon={
+                    <Button
+                      icon={<SystemIcon.ContentCopy />}
+                      variant="text"
+                      onPress={async () => {
+                        const value = getValues('name');
+                        await navigator.clipboard.writeText(value);
+                      }}
+                      aria-label="Copy Account Name"
+                      title="Copy Account Name"
+                      color="primary"
+                      type="button"
+                    />
+                  }
                 />
               </div>
               <div className={chainSelectContainerClass}>
