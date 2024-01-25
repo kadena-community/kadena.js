@@ -34,8 +34,8 @@ export function isPartiallySignedTransaction(
   command: ICommand | IUnsignedCommand,
 ): boolean {
   return (
-    command.sigs.some((sig) => sig === undefined) &&
-    command.sigs.some((sig) => sig !== undefined)
+    command.sigs.some((sig) => sig === undefined || sig === null) &&
+    command.sigs.some((sig) => sig !== undefined && sig !== null)
   );
 }
 
@@ -202,6 +202,7 @@ export async function signTransactionWithKeyPair(
 
       command = addSignatures(unsignedCommand, ...signatures);
     } else {
+      console.log(keys);
       const signWithKeypair = createSignWithKeypair(keys as IKeyPair[]);
       command = await signWithKeypair(unsignedCommand);
     }
@@ -251,12 +252,12 @@ export async function getTransactionFromFile(
       throw Error(`Failed to read file at path: ${transactionFilePath}`);
     }
     const transaction = JSON.parse(fileContent);
-
     if (signed) {
       tx.ICommandSchema.parse(transaction);
       return transaction as ICommand;
     }
     tx.IUnsignedCommandSchema.parse(transaction);
+
     return transaction as IUnsignedCommand;
   } catch (error) {
     console.error(
@@ -280,23 +281,23 @@ export async function getTransactionFromFile(
  * @throws Error if the signedCommand is undefined, indicating a failure in the signing process.
  */
 export async function assessTransactionSigningStatus(
-  signedCommand: ICommand | IUnsignedCommand | undefined,
+  command: ICommand | IUnsignedCommand | undefined,
 ): Promise<CommandResult<ICommand>> {
-  if (!signedCommand) {
+  if (!command) {
     throw new Error(
       'Error in action: signing failed, please check your transaction.',
     );
   }
 
-  if (isSignedTransaction(signedCommand)) {
+  if (isSignedTransaction(command)) {
     return {
       success: true,
-      data: signedCommand,
+      data: command,
     };
   }
 
-  if (isPartiallySignedTransaction(signedCommand)) {
-    const status = getSignersStatus(signedCommand);
+  if (isPartiallySignedTransaction(command)) {
+    const status = getSignersStatus(command);
 
     const formattedStatus = status
       .map(
@@ -310,8 +311,8 @@ export async function assessTransactionSigningStatus(
     return {
       success: false,
       errors: [
-        `Error in action: transaction partially signed. Please provide the remaining keys.`,
-        `Key status for transaction:\n${formattedStatus}`,
+        `Error in action: transaction partially signed: Please sign the remaining keys.`,
+        `${formattedStatus}`,
       ],
     };
   }

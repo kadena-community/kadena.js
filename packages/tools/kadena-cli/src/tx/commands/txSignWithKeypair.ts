@@ -66,7 +66,7 @@ export const createSignTransactionWithKeypairCommand: (
       });
       const mode = await option.legacy();
 
-      debug.log('create-transaction:action', {
+      debug.log('sign-with-keypair:action', {
         ...key,
         ...dir,
         ...file,

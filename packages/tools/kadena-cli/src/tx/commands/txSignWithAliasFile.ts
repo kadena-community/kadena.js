@@ -14,8 +14,13 @@ import {
 } from '../utils/helpers.js';
 import { saveSignedTransaction } from '../utils/storage.js';
 
-import { readKeyPairAndIndexFromFile } from '../../keys/utils/keysHelpers.js';
+import {
+  readKeyPairAndIndexFromFile,
+  toHexStr,
+} from '../../keys/utils/keysHelpers.js';
 
+import type { EncryptedString } from '@kadena/hd-wallet';
+import { kadenaDecrypt } from '@kadena/hd-wallet';
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
 import { WALLET_DIR } from '../../constants/config.js';
 import type { IKeyPair } from '../../keys/utils/storage.js';
@@ -30,6 +35,7 @@ export const signActionPlain = async (
     if (keyPairs.length === 0) {
       throw new Error('Error signing transaction: no keys found.');
     }
+
     const command = await signTransactionWithKeyPair(
       keyPairs,
       unsignedCommand,
@@ -50,6 +56,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
   'Sign a transaction using your local aliased file containing your keypair.',
   [
     globalOptions.keyWalletSelect(),
+    globalOptions.securityPassword(),
     globalOptions.keyAliasSelect(),
     globalOptions.txUnsignedTransactionFile(),
     globalOptions.txTransactionDir({ isOptional: true }),
@@ -58,6 +65,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
   async (option) => {
     try {
       const wallet = await option.keyWallet();
+      const password = await option.securityPassword();
 
       const walletName =
         typeof wallet.keyWallet === 'string'
@@ -74,7 +82,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
       });
       const mode = await option.legacy();
 
-      debug.log('create-transaction:action', {
+      debug.log('sign-with-key-alias-file:action', {
         ...wallet,
         ...key,
         ...file,
@@ -87,17 +95,29 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
         key.keyAliasSelect,
       );
 
-      if (keyPair === undefined) {
-        throw new Error('Error signing transaction: key pair not found.');
+      if (!keyPair) {
+        throw new Error('Key pair to be used for signing not found.');
       }
+
+      const decrypedKeyPair: IKeyPair = {
+        publicKey: keyPair.publicKey,
+        secretKey:
+          keyPair.secretKey !== undefined
+            ? toHexStr(
+                await kadenaDecrypt(
+                  password.securityPassword,
+                  keyPair.secretKey as EncryptedString,
+                ),
+              )
+            : undefined,
+        index: keyPair.index,
+      };
 
       const unsignedCommand = await getTransactionFromFile(
         file.txUnsignedTransactionFile,
         false,
         dir.txTransactionDir,
       );
-
-      console.log('command: ', unsignedCommand);
 
       if (unsignedCommand === undefined) {
         throw new Error(
@@ -107,7 +127,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
 
       const result = await signActionPlain(
         unsignedCommand,
-        [keyPair],
+        [decrypedKeyPair],
         mode.legacy,
       );
 

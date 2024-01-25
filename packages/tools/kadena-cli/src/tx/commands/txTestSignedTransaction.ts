@@ -51,7 +51,7 @@ export const createTestSignedTransactionCommand: (
   ],
   async (config) => {
     try {
-      debug('test-signed-transaction:action')({ config });
+      debug.log('test-signed-transaction:action')({ config });
 
       const txSignedTransaction = await getTransactionFromFile(
         config.txSignedTransactionFile,

@@ -71,7 +71,7 @@ export const createSignTransactionWithLocalWalletCommand: (
         path: dir.txTransactionDir,
       });
 
-      debug.log('create-transaction:action', {
+      debug.log('sign-with-local-wallet:action', {
         ...keyWalletObj,
         ...password,
         ...file,
