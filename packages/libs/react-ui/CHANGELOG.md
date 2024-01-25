@@ -1,5 +1,11 @@
 # @kadena/react-ui
 
+## 0.7.1
+
+### Patch Changes
+
+- b6a44c813: Update Repository information to enable provenance
+
 ## 0.7.0
 
 ### Minor Changes
