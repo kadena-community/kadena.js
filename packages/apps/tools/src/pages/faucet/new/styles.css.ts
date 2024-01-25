@@ -9,6 +9,7 @@ export const notificationLinkStyle = style([
   atoms({
     fontWeight: 'bodyFont.bold',
     color: 'text.semantic.warning.default',
+    textDecoration: 'underline',
   }),
 ]);
 
