@@ -4,6 +4,7 @@ import {
   useGetGraphConfigurationQuery,
 } from '@/__generated__/sdk';
 import { centerBlockClass } from '@/components/common/center-block/styles.css';
+import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import {
@@ -81,7 +82,7 @@ const Block: React.FC = () => {
           <>
             <Heading as="h4">Block Header</Heading>
 
-            <Table.Root wordBreak="break-word">
+            <Table.Root wordBreak="break-word" className={compactTableClass}>
               <Table.Body>
                 <Table.Tr>
                   <Table.Td>
@@ -122,7 +123,7 @@ const Block: React.FC = () => {
             <Accordion.Root>
               {[
                 <Accordion.Section title="See more" key={'accordion-header'}>
-                  <Table.Root>
+                  <Table.Root className={compactTableClass}>
                     <Table.Body>
                       <Table.Tr>
                         <Table.Td>
@@ -158,7 +159,7 @@ const Block: React.FC = () => {
 
             <Heading as="h4">Block Payload</Heading>
 
-            <Table.Root wordBreak="break-word">
+            <Table.Root wordBreak="break-word" className={compactTableClass}>
               <Table.Body>
                 <Table.Tr>
                   <Table.Td>
@@ -179,7 +180,7 @@ const Block: React.FC = () => {
             <Accordion.Root>
               {[
                 <Accordion.Section title="See more" key={'accordion-payload'}>
-                  <Table.Root>
+                  <Table.Root className={compactTableClass}>
                     <Table.Body>
                       <Table.Tr>
                         <Table.Td>

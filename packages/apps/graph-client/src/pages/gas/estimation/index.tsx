@@ -1,4 +1,5 @@
 import { useEstimateGasLimitQuery } from '@/__generated__/sdk';
+import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
@@ -51,7 +52,7 @@ const GasEstimation: React.FC = () => {
         loaderText="Waiting for gas estimation..."
       />
 
-      <Table.Root wordBreak="break-all">
+      <Table.Root wordBreak="break-all" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
             <Table.Th>Label</Table.Th>
