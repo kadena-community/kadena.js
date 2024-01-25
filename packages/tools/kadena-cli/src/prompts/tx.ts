@@ -3,8 +3,8 @@ import type { IUnsignedCommand } from '@kadena/types';
 import chalk from 'chalk';
 import { z } from 'zod';
 import { getTransactions } from '../tx/utils/helpers.js';
-import { isAlphanumeric } from '../utils/helpers.js';
 
+import { TRANSACTION_FOLDER_NAME } from '../constants/config.js';
 import type { IWalletKey } from '../keys/utils/keysHelpers.js';
 import {
   getAllWallets,
@@ -53,10 +53,11 @@ export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
   return JSON.parse(result) as IUnsignedCommand;
 }
 
-export async function transactionSelectPrompt(
-  signed: boolean,
-): Promise<string> {
-  const existingTransactions: string[] = await getTransactions(signed);
+export const transactionSelectPrompt: IPrompt<string> = async (args) => {
+  const existingTransactions: string[] = await getTransactions(
+    args.signed as boolean,
+    args.path as string,
+  );
 
   if (existingTransactions.length === 0) {
     console.log(chalk.red('No transactions found. Exiting.'));
@@ -69,22 +70,25 @@ export async function transactionSelectPrompt(
   }));
 
   const selectedTransaction = await select({
-    message: 'Select a transaction',
+    message: 'Select a transaction file',
     choices: choices,
   });
 
   return selectedTransaction;
-}
+};
 
 export async function txTransactionDirPrompt(): Promise<string> {
   return await input({
-    message: `Enter your transaction directory (default: './transactions'):`,
+    message: `Enter your transaction directory (default: '${TRANSACTION_FOLDER_NAME}'):`,
     validate: function (input) {
-      if (!isAlphanumeric(input)) {
-        return 'Directories must be alphanumeric! Please enter a directory name.';
+      const validPathRegex = /^$|^\/[A-Za-z0-9._-]+$/;
+
+      if (!validPathRegex.test(input)) {
+        return 'Invalid directory format! Please enter a valid directory path starting with "/"';
       }
       return true;
     },
+    default: `/${TRANSACTION_FOLDER_NAME}`,
   });
 }
 

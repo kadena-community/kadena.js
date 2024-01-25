@@ -12,14 +12,13 @@ import {
   typescript,
 } from '../prompts/index.js';
 
-import { createTransactionOption } from './optionCreator.js';
-
 import type { ChainId } from '@kadena/types';
 import chalk from 'chalk';
 import { join } from 'node:path';
 
 import {
   KEY_EXT,
+  TRANSACTION_FOLDER_NAME,
   WALLET_DIR,
   WALLET_EXT,
   WALLET_LEGACY_EXT,
@@ -119,7 +118,7 @@ export const globalOptions = {
     prompt: security.securityCurrentPasswordPrompt,
     validation: z.string(),
     option: new Option(
-      '-scp, --security-current-password <securityCurrentPassword>',
+      '-c, --security-current-password <securityCurrentPassword>',
       'Enter your current key password',
     ),
   }),
@@ -128,7 +127,7 @@ export const globalOptions = {
     prompt: security.securityNewPasswordPrompt,
     validation: z.string(),
     option: new Option(
-      '-snp, --security-new-password <securityNewPassword>',
+      '-n, --security-new-password <securityNewPassword>',
       'Enter your new key password',
     ),
   }),
@@ -335,6 +334,15 @@ export const globalOptions = {
       'Enter an alias to store your key',
     ),
   }),
+  keyAliasSelect: createOption({
+    key: 'keyAliasSelect',
+    prompt: keys.keyGetAllKeyFilesPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-a, --key-alias-select <keyAliasSelect>',
+      'Enter a alias to select keys from',
+    ),
+  }),
   keyWallet: createOption({
     key: 'keyWallet' as const,
     prompt: keys.keyWallet,
@@ -441,7 +449,7 @@ export const globalOptions = {
     prompt: genericActionsPrompts.actionAskForPassword,
     validation: z.string(),
     option: new Option(
-      '-up, --key-use-password <keyUsePassword>',
+      '-u, --key-use-password <keyUsePassword>',
       'Do you want to use a password to encrypt your key? (yes/no)',
     ),
   }),
@@ -543,16 +551,31 @@ export const globalOptions = {
       'enter your unsigned command to sign',
     ),
   }),
-  // TO-DO: use flexible command
-  txTransaction: createTransactionOption(false),
-  txSignedTransaction: createTransactionOption(true),
+  txUnsignedTransactionFile: createOption({
+    key: 'txUnsignedTransactionFile',
+    prompt: tx.transactionSelectPrompt,
+    validation: tx.IUnsignedCommandSchema,
+    option: new Option(
+      '-u, --tx-unsigned-transaction-file <txUnsignedTransactionFile>',
+      'provide your unsigned transaction file to sign',
+    ),
+  }),
+  txSignedTransactionFile: createOption({
+    key: 'txSignedTransactionFile',
+    prompt: tx.transactionSelectPrompt,
+    validation: tx.ICommandSchema,
+    option: new Option(
+      '-s, --tx-signed-transaction-file <txSignedTransactionFile>',
+      'provide your signed transaction file',
+    ),
+  }),
   txTransactionDir: createOption({
     key: 'txTransactionDir' as const,
     prompt: tx.txTransactionDirPrompt,
     validation: z.string(),
     option: new Option(
       '-d, --tx-transaction-dir <txTransactionDir>',
-      'Enter your transaction directory (default: "./transactions")',
+      `Enter your transaction directory (default: "./${TRANSACTION_FOLDER_NAME}")`,
     ),
   }),
   // TX

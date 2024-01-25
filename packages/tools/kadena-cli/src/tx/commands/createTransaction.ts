@@ -4,7 +4,9 @@ import type { IUnsignedCommand } from '@kadena/client';
 import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
 import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
 
+import chalk from 'chalk';
 import debug from 'debug';
+import { TRANSACTION_PATH } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
@@ -29,7 +31,7 @@ export const createTransaction = async (
   let filePath = null;
   if (outFilePath === null) {
     // write transaction to file
-    const directoryPath = path.join(process.cwd(), './transactions');
+    const directoryPath = TRANSACTION_PATH;
     await services.filesystem.ensureDirectoryExists(directoryPath);
 
     const files = await services.filesystem.readDir(directoryPath);
@@ -66,40 +68,45 @@ export const createTransactionCommandNew = createCommandFlexible(
     globalOptions.outFileJson(),
   ],
   async (option, values) => {
-    const template = await option.template();
-    const templateVariables = await option.templateVariables({
-      values,
-      variables: template.templateConfig.variables,
-    });
-    const outputFile = await option.outFile({
-      values,
-      variables: template.templateConfig.variables,
-    });
+    try {
+      const template = await option.template();
+      const templateVariables = await option.templateVariables({
+        values,
+        variables: template.templateConfig.variables,
+      });
+      const outputFile = await option.outFile({
+        values,
+        variables: template.templateConfig.variables,
+      });
 
-    debug.log('create-transaction:action', {
-      ...template,
-      ...templateVariables,
-      ...outputFile,
-    });
+      debug.log('create-transaction:action', {
+        ...template,
+        ...templateVariables,
+        ...outputFile,
+      });
 
-    if (template.templateConfig.template === undefined) {
-      return console.log('template not found');
+      if (template.templateConfig.template === undefined) {
+        return console.log('template not found');
+      }
+
+      const result = await createTransaction(
+        template.templateConfig.template,
+        templateVariables.templateVariables,
+        outputFile.outFile,
+      );
+      assertCommandError(result);
+
+      console.log(result.data.transaction);
+
+      console.log(
+        `transaction saved to: ./${path.relative(
+          process.cwd(),
+          result.data.filePath,
+        )}`,
+      );
+    } catch (error) {
+      console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
+      process.exit(1);
     }
-
-    const result = await createTransaction(
-      template.templateConfig.template,
-      templateVariables.templateVariables,
-      outputFile.outFile,
-    );
-    assertCommandError(result);
-
-    console.log(result.data.transaction);
-
-    console.log(
-      `transaction saved to: ./${path.relative(
-        process.cwd(),
-        result.data.filePath,
-      )}`,
-    );
   },
 );

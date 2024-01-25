@@ -4,13 +4,18 @@ import debug from 'debug';
 
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
-import { signTransactionWithKeyPair } from '../utils/helpers.js';
+import {
+  assessTransactionSigningStatus,
+  getTransactionFromFile,
+  signTransactionWithKeyPair,
+} from '../utils/helpers.js';
 import { saveSignedTransaction } from '../utils/storage.js';
 
-import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IUnsignedCommand } from '@kadena/types';
+import type { IKeyPair } from '../../keys/utils/storage.js';
+import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 
 export const signActionPlain = async (
   unsignedCommand: IUnsignedCommand,
@@ -18,17 +23,13 @@ export const signActionPlain = async (
   legacy?: boolean,
 ): Promise<CommandResult<ICommand>> => {
   try {
-    const signedCommand = await signTransactionWithKeyPair(
+    const command = await signTransactionWithKeyPair(
       keyPairs,
       unsignedCommand,
       legacy,
     );
 
-    if (!signedCommand) {
-      throw new Error('Error signing transaction: transaction not signed.');
-    }
-
-    return { success: true, data: signedCommand };
+    return assessTransactionSigningStatus(command);
   } catch (error) {
     return {
       success: false,
@@ -46,34 +47,50 @@ export const signActionPlain = async (
 export const createSignTransactionWithKeypairCommand: (
   program: Command,
   version: string,
-) => void = createCommand(
+) => void = createCommandFlexible(
   'sign-with-keypair',
   'Sign a transaction using a keypair.',
   [
-    globalOptions.txTransaction(),
     globalOptions.keyPairs(),
     globalOptions.txTransactionDir({ isOptional: true }),
+    globalOptions.txUnsignedTransactionFile(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
-  async (config) => {
+  async (option) => {
     try {
-      debug('sign-transaction:keypair:action')({ config });
-      const {
-        txTransaction: { unsignedCommand },
-      } = config;
+      const key = await option.keyPairs();
+      const dir = await option.txTransactionDir();
+      const file = await option.txUnsignedTransactionFile({
+        signed: false,
+        path: dir.txTransactionDir,
+      });
+      const mode = await option.legacy();
+
+      debug.log('create-transaction:action', {
+        ...key,
+        ...dir,
+        ...file,
+        ...mode,
+      });
+
+      const txUnsignedTransaction = await getTransactionFromFile(
+        file.txUnsignedTransactionFile,
+        false,
+        dir.txTransactionDir,
+      );
 
       const result = await signActionPlain(
-        unsignedCommand as IUnsignedCommand,
-        config.keyPairs,
-        config.legacy,
+        txUnsignedTransaction,
+        key.keyPairs,
+        mode.legacy,
       );
 
       assertCommandError(result);
 
       await saveSignedTransaction(
         result.data,
-        config.txTransaction.transactionFile,
-        config.txTransactionDir,
+        file.txUnsignedTransactionFile,
+        dir.txTransactionDir,
       );
 
       console.log(chalk.green(`\nTransaction withinsigned successfully.\n`));

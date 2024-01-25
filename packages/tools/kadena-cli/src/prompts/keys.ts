@@ -4,7 +4,9 @@ import { wordlist } from '@scure/bip39/wordlists/english';
 
 import { program } from 'commander';
 import {
+  getAllKeyFilesFromAllWallets,
   getAllWallets,
+  getKeyFilesFromDirectory,
   getKeysFromWallet,
   getLegacyKeysFromWallet,
   getLegacyWallets,
@@ -30,6 +32,28 @@ export async function keyWallet(): Promise<string> {
     },
   });
 }
+
+export const keyGetAllKeyFilesPrompt: IPrompt<string> = async (args) => {
+  let keys: string[] = [];
+
+  if (args.wallet === 'all') {
+    keys = await getAllKeyFilesFromAllWallets();
+  } else {
+    keys = await getKeyFilesFromDirectory(args.wallet as string);
+  }
+
+  const choices = keys.map((key) => ({
+    value: key,
+    name: `${args.wallet}: ${key}`,
+  }));
+
+  const choice = await select({
+    message: 'Select a key file:',
+    choices: choices,
+  });
+
+  return choice;
+};
 
 export async function keyAliasPrompt(): Promise<string> {
   return await input({
@@ -130,7 +154,7 @@ export async function genFromChoicePrompt(): Promise<
 }
 
 async function walletSelectionPrompt(
-  specialOptions: string[] = [], // Array of special options
+  specialOptions: string[] = [],
 ): Promise<string> {
   const existingKeys: string[] = await getAllWallets();
 
@@ -166,44 +190,24 @@ async function walletSelectionPrompt(
   return selectedWallet;
 }
 
-export const keyWalletSelectPrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-): Promise<string> => {
-  return walletSelectionPrompt(); // No special options
-};
+export async function keyWalletSelectPrompt(): Promise<string> {
+  return walletSelectionPrompt();
+}
 
-export const keyWalletSelectAllPrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-): Promise<string> => {
-  return walletSelectionPrompt(['all']); // Include "all" option
-};
+export async function keyWalletSelectAllPrompt(): Promise<string> {
+  return walletSelectionPrompt(['all']);
+}
 
-export const keyWalletSelectNonePrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-): Promise<string> => {
-  return walletSelectionPrompt(['none']); // Include "no wallet" option
-};
+export async function keyWalletSelectNonePrompt(): Promise<string> {
+  return walletSelectionPrompt(['none']);
+}
 
-export const keyWalletSelectAllOrNonePrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-): Promise<string> => {
-  return walletSelectionPrompt(['all', 'none']); // Include both "all" and "no wallet" options
-};
+export async function keyWalletSelectAllOrNonePrompt(): Promise<string> {
+  return walletSelectionPrompt(['all', 'none']);
+}
 
-export const selectDecryptMessagePrompt: IPrompt<string> = async (
-  prev,
-  args,
-  isOptional,
-) => {
-  const walletName = await keyWalletSelectPrompt(prev, args, isOptional);
+export const selectDecryptMessagePrompt: IPrompt<string> = async () => {
+  const walletName = await keyWalletSelectPrompt();
   const keys = (await getKeysFromWallet(walletName)).map((file) => ({
     file,
     type: 'plain' as KeyType,
@@ -253,11 +257,7 @@ export const selectDecryptMessagePrompt: IPrompt<string> = async (
   return selectedKey;
 };
 
-export const keyWalletPrompt: IPrompt<string> = async (
-  prev,
-  args,
-  isOptional,
-) => {
+export async function keyWalletPrompt(): Promise<string> {
   const existingKeys: string[] = await getAllWallets();
 
   const choices = existingKeys.map((key) => ({
@@ -279,16 +279,16 @@ export const keyWalletPrompt: IPrompt<string> = async (
 
   if (selectedWallet === 'createWallet') {
     await program.parseAsync(['', '', 'keys', 'create-wallet']);
-    return keyWalletPrompt(prev, args, isOptional);
+    return keyWalletPrompt();
   }
 
   if (selectedWallet === 'createLegacyWallet') {
     await program.parseAsync(['', '', 'keys', 'create-wallet', '--legacy']);
-    return keyWalletPrompt(prev, args, isOptional);
+    return keyWalletPrompt();
   }
 
   return selectedWallet;
-};
+}
 
 type KeyType = 'plain' | 'plainLegacy' | 'hd' | 'hdLegacy';
 
@@ -297,7 +297,7 @@ export const keyDeleteSelectPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const walletName = await keyWalletSelectPrompt(prev, args, isOptional);
+  const walletName = await keyWalletSelectPrompt();
   const plainKeys = (await getKeysFromWallet(walletName)).map((file) => ({
     file,
     type: 'plain' as KeyType,
@@ -361,11 +361,7 @@ export const keyDeleteSelectPrompt: IPrompt<string> = async (
   return selectedKey;
 };
 
-export const confirmDeleteAllKeysPrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-) => {
+export const confirmDeleteAllKeysPrompt: IPrompt<string> = async () => {
   const message =
     'Are you sure you want to delete ALL key files? ( Warning: This action cannot be undone. Wallets need to be manually selected for deletion. )';
 
@@ -374,24 +370,6 @@ export const confirmDeleteAllKeysPrompt: IPrompt<string> = async (
     choices: [
       { value: 'yes', name: 'Yes, delete all key files' },
       { value: 'no', name: 'No, do not delete any key files' },
-    ],
-  });
-};
-
-export const keyDeletePrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-) => {
-  if (args.defaultValue === undefined) {
-    throw new Error('Key file name is required for the delete prompt.');
-  }
-  const message = `Are you sure you want to delete the key file "${args.defaultValue}"?`;
-  return await select({
-    message,
-    choices: [
-      { value: 'yes', name: 'Yes' },
-      { value: 'no', name: 'No' },
     ],
   });
 };

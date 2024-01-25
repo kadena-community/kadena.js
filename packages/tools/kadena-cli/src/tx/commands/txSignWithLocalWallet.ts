@@ -5,12 +5,17 @@ import debug from 'debug';
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
 import type { EncryptedString } from '@kadena/hd-wallet';
+import { kadenaDecrypt } from '@kadena/hd-wallet';
+import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { removeAfterFirstDot } from '../../utils/path.util.js';
-import { signTransactionWithSeed } from '../utils/helpers.js';
+import {
+  assessTransactionSigningStatus,
+  getTransactionFromFile,
+  signTransactionWithSeed,
+} from '../utils/helpers.js';
 import { saveSignedTransaction } from '../utils/storage.js';
 
 export const signActionHd = async (
@@ -18,20 +23,18 @@ export const signActionHd = async (
   wallet: EncryptedString,
   password: string,
   unsignedCommand: IUnsignedCommand,
+  legacy?: boolean,
 ): Promise<CommandResult<ICommand>> => {
   try {
-    const signedCommand = await signTransactionWithSeed(
+    const command = await signTransactionWithSeed(
       walletName,
       wallet,
       password,
       unsignedCommand,
+      legacy,
     );
 
-    if (!signedCommand) {
-      throw new Error('Error signing transaction: transaction not signed.');
-    }
-
-    return { success: true, data: signedCommand };
+    return assessTransactionSigningStatus(command);
   } catch (error) {
     return {
       success: false,
@@ -49,46 +52,68 @@ export const signActionHd = async (
 export const createSignTransactionWithLocalWalletCommand: (
   program: Command,
   version: string,
-) => void = createCommand(
+) => void = createCommandFlexible(
   'sign-with-local-wallet',
   'Sign a transaction using your local  wallet',
   [
     globalOptions.keyWalletSelect(),
     globalOptions.securityPassword(),
-    globalOptions.txTransaction(),
     globalOptions.txTransactionDir({ isOptional: true }),
-    globalOptions.legacy({ isOptional: true, disableQuestion: true }),
+    globalOptions.txUnsignedTransactionFile(),
   ],
-  async (config) => {
+  async (option) => {
     try {
-      debug('sign-transaction:keypair:action')({ config });
-      const {
-        txTransaction: { unsignedCommand },
-        keyWallet,
-        securityPassword,
-      } = config;
+      const keyWalletObj = await option.keyWallet();
+      const password = await option.securityPassword();
+      const dir = await option.txTransactionDir();
+      const file = await option.txUnsignedTransactionFile({
+        signed: false,
+        path: dir.txTransactionDir,
+      });
+
+      debug.log('create-transaction:action', {
+        ...keyWalletObj,
+        ...password,
+        ...file,
+        ...dir,
+      });
+
+      const txUnsignedTransaction = await getTransactionFromFile(
+        file.txUnsignedTransactionFile,
+        false,
+        dir.txTransactionDir,
+      );
 
       const wallet =
-        typeof keyWallet === 'string' ? keyWallet : keyWallet.wallet;
+        typeof keyWalletObj.keyWallet === 'string'
+          ? keyWalletObj.keyWallet
+          : keyWalletObj.keyWallet.wallet;
 
       const walletName =
-        typeof keyWallet === 'string'
-          ? keyWallet
-          : removeAfterFirstDot(keyWallet.fileName);
+        typeof keyWalletObj.keyWallet === 'string'
+          ? keyWalletObj.keyWallet
+          : removeAfterFirstDot(keyWalletObj.keyWallet.fileName);
+
+      const decryptedMessage = await kadenaDecrypt(
+        password.securityPassword,
+        wallet as EncryptedString,
+      );
+      const isLegacy = decryptedMessage.byteLength >= 128;
 
       const result = await signActionHd(
         walletName,
         wallet as EncryptedString,
-        securityPassword,
-        unsignedCommand as IUnsignedCommand,
+        password.securityPassword,
+        txUnsignedTransaction,
+        isLegacy,
       );
 
       assertCommandError(result);
 
       await saveSignedTransaction(
         result.data,
-        config.txTransaction.transactionFile,
-        config.txTransactionDir,
+        file.txUnsignedTransactionFile,
+        dir.txTransactionDir,
       );
 
       console.log(chalk.green(`\nTransaction withinsigned successfully.\n`));

@@ -1,8 +1,7 @@
 import yaml from 'js-yaml';
-import { join } from 'node:path';
 import sanitizeFilename from 'sanitize-filename';
 
-import { EncryptedString } from '@kadena/hd-wallet';
+import type { EncryptedString } from '@kadena/hd-wallet';
 import {
   KEY_EXT,
   KEY_LEGACY_EXT,
@@ -12,8 +11,11 @@ import {
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
 import { services } from '../../services/index.js';
+
 import type { IKeyPair } from './storage.js';
-import { getFilesWithExtension } from './storage.js';
+import { getFilesWithExtension, readKeyFileContent } from './storage.js';
+
+import { join } from 'path';
 
 export interface IWalletConfig {
   securityPassword: string;
@@ -379,4 +381,117 @@ export function parseKeyPairsInput(input: string): IKeyPair[] {
       return keyValuePairs as IKeyPair;
     });
   }
+}
+
+/**
+ * Retrieves wallet directories, optionally filtering by wallet name.
+ * @param {string} [walletName] - Optional name of the wallet.
+ * @returns {Promise<string[]>}
+ */
+export async function getWalletDirectories(
+  walletName?: string,
+): Promise<string[]> {
+  if (walletName !== undefined) {
+    return [walletName];
+  }
+  return services.filesystem.readDir(WALLET_DIR);
+}
+
+/**
+ * Retrieves key file names from the specified directory.
+ * @param {string} dirName - The name of the directory to search.
+ * @returns {Promise<string[]>}
+ */
+export async function getKeyFilesFromDirectory(
+  dirName: string,
+): Promise<string[]> {
+  const keyFiles = await getKeysFromWallet(dirName);
+  const legacyKeyFiles = await getLegacyKeysFromWallet(dirName);
+  return [...keyFiles, ...legacyKeyFiles];
+}
+
+/**
+ * Reads a key file and extracts the public key, index, and optionally the private key.
+ * @param {string} walletDir - The directory of the wallet.
+ * @param {string} keyFile - The key file name.
+ * @returns {Promise<IKeyPair | undefined>}
+ */
+export async function readKeyPairAndIndexFromFile(
+  walletDir: string,
+  keyFile: string,
+): Promise<IKeyPair | undefined> {
+  const keyContent = (await readKeyFileContent(join(walletDir, keyFile))) as
+    | IKeyPair
+    | undefined;
+
+  if (
+    keyContent !== undefined &&
+    'publicKey' in keyContent &&
+    'index' in keyContent
+  ) {
+    const result: IKeyPair = {
+      publicKey: keyContent.publicKey,
+      index: keyContent.index,
+    };
+
+    if ('secretKey' in keyContent) {
+      result.secretKey = keyContent.secretKey;
+    }
+
+    return result;
+  }
+
+  return undefined;
+}
+/**
+ * Retrieves public keys and their indices from the file system within the specified wallet directories.
+ * @param {string} [walletName] - Optional name of the wallet.
+ * @returns {Promise<Array<IKeyPair>>}
+ */
+export async function getKeyPairAndIndicesFromFileSystem(
+  walletName?: string,
+): Promise<Array<IKeyPair>> {
+  const walletDirs = await getWalletDirectories(walletName);
+  const publicKeysAndIndices: Array<IKeyPair> = [];
+  const encounteredPublicKeys = new Set<string>();
+
+  for (const dirName of walletDirs) {
+    const walletDir = join(WALLET_DIR, dirName);
+    if (!(await services.filesystem.directoryExists(walletDir))) {
+      continue;
+    }
+
+    const keyFiles = await getKeyFilesFromDirectory(dirName);
+
+    const publicKeyPromises = keyFiles.map((keyFile) =>
+      readKeyPairAndIndexFromFile(walletDir, keyFile),
+    );
+    const keys = await Promise.all(publicKeyPromises);
+
+    keys.forEach((key) => {
+      if (key && !encounteredPublicKeys.has(key.publicKey)) {
+        encounteredPublicKeys.add(key.publicKey);
+        publicKeysAndIndices.push(key);
+      }
+    });
+  }
+
+  return publicKeysAndIndices;
+}
+
+/**
+ * Gets all key files from all wallets.
+ * @returns {Promise<string[]>} A promise that resolves to an array of key file paths.
+ */
+export async function getAllKeyFilesFromAllWallets(): Promise<string[]> {
+  await ensureWalletExists();
+  const wallets = await services.filesystem.readDir(WALLET_DIR);
+
+  let allKeys: string[] = [];
+
+  for (const walletName of wallets) {
+    const keys: string[] = await getKeyFilesFromDirectory(walletName);
+    allKeys = [...allKeys, ...keys];
+  }
+  return allKeys;
 }

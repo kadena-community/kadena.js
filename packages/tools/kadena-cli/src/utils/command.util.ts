@@ -27,7 +27,7 @@ export function assertCommandError(
   if (result.success === false) {
     if (ora) ora.fail('Failed');
 
-    if (result.errors.length) {
+    if (result.errors.length > 0) {
       console.log(chalk.red(`${result.errors.join('\n')}\n`));
     }
 

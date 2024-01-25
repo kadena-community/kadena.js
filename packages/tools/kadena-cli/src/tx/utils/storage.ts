@@ -1,7 +1,7 @@
 import type { ICommand } from '@kadena/types';
 import chalk from 'chalk';
 import { join } from 'node:path';
-import { TRANSACTION_DIR } from '../../constants/config.js';
+import { TRANSACTION_PATH } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import { formatDate } from '../../tx/utils/helpers.js';
 
@@ -22,7 +22,7 @@ export async function saveSignedTransaction(
   const storagePath =
     transactionDir !== undefined
       ? `${process.cwd()}/${transactionDir}`
-      : TRANSACTION_DIR;
+      : TRANSACTION_PATH;
 
   const filePath = join(storagePath, newFilename);
 

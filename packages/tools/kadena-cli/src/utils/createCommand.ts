@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import { z } from 'zod';
-import { CLIName } from '../constants/config.js';
+import { CLINAME } from '../constants/config.js';
 import { displayConfig } from './createCommandDisplayHelper.js';
 import type { OptionType, createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
@@ -167,7 +167,7 @@ export function getCommandExecution(
   args: Record<string, unknown>,
 ): string {
   return chalk.yellow(
-    `${CLIName} ${command} ${Object.getOwnPropertyNames(args)
+    `${CLINAME} ${command} ${Object.getOwnPropertyNames(args)
       .map((arg) => {
         let displayValue: string | null = null;
         const value = args[arg];

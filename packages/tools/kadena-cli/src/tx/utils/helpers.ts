@@ -1,6 +1,9 @@
 import type { IPactCommand } from '@kadena/client';
-// import { createSignWithKeypair, Sign } from '@kadena/client';
-import { addSignatures, createSignWithKeypair } from '@kadena/client';
+import {
+  addSignatures,
+  createSignWithKeypair,
+  isSignedTransaction,
+} from '@kadena/client';
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaDecrypt, kadenaSignWithSeed } from '@kadena/hd-wallet';
 import {
@@ -10,20 +13,47 @@ import {
 import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
 import { join } from 'path';
-import { TRANSACTION_DIR, WALLET_DIR } from '../../constants/config.js';
+import { TRANSACTION_PATH } from '../../constants/config.js';
 import {
-  getKeysFromWallet,
-  getLegacyKeysFromWallet,
+  getKeyPairAndIndicesFromFileSystem,
   toHexStr,
 } from '../../keys/utils/keysHelpers.js';
-import type {
-  IKeyPair as IKeyPairLocal,
-  TSeedContent,
-} from '../../keys/utils/storage.js';
-import { readKeyFileContent } from '../../keys/utils/storage.js';
+import type { IKeyPair as IKeyPairLocal } from '../../keys/utils/storage.js';
+
 import { services } from '../../services/index.js';
 
-// TO-DO remove no needed helperfunctions that were created before using the @kadena/client
+import { tx } from '../../prompts/index.js';
+import type { CommandResult } from '../../utils/command.util.js';
+
+/**
+ *
+ * @param command - The command to check.
+ * @returns True if the command is partially signed, false otherwise.
+ */
+export function isPartiallySignedTransaction(
+  command: ICommand | IUnsignedCommand,
+): boolean {
+  return (
+    command.sigs.some((sig) => sig === undefined) &&
+    command.sigs.some((sig) => sig !== undefined)
+  );
+}
+
+/**
+ *
+ * @param command - The command to check the signing status for.
+ * @returns An array of objects, each containing a public key and a boolean indicating whether it has signed.
+ */
+
+export function getSignersStatus(
+  command: ICommand | IUnsignedCommand,
+): Array<{ publicKey: string; isSigned: boolean }> {
+  const parsedCmd = JSON.parse(command.cmd);
+  return parsedCmd.signers.map((signer: { pubKey: string }, index: number) => ({
+    publicKey: signer.pubKey,
+    isSigned: command.sigs[index]?.sig !== undefined,
+  }));
+}
 
 /**
  * Retrieves all transaction file names from the transaction directory based on the signature status.
@@ -31,9 +61,13 @@ import { services } from '../../services/index.js';
  * @returns {Promise<string[]>} A promise that resolves to an array of transaction file names.
  * @throws Throws an error if reading the transaction directory fails.
  */
-export async function getTransactions(signed: boolean): Promise<string[]> {
+export async function getTransactions(
+  signed: boolean,
+  path: string,
+): Promise<string[]> {
   try {
-    const files = await services.filesystem.readDir(TRANSACTION_DIR);
+    const filePath = path ? `${process.cwd()}/${path}` : TRANSACTION_PATH;
+    const files = await services.filesystem.readDir(filePath);
     return files.filter((file) => signed === file.includes('-signed'));
   } catch (error) {
     console.error(`Error reading transaction directory: ${error}`);
@@ -53,22 +87,6 @@ export function formatDate(): string {
   const hours = now.getHours().toString().padStart(2, '0');
   const minutes = now.getMinutes().toString().padStart(2, '0');
   return `${year}-${month}-${day}-${hours}:${minutes}`;
-}
-
-/**
- * Helper function to check if an object is of type ICommand
- * @param {ICommand | IUnsignedCommand} obj - The object to check.
- * @returns {boolean} True if the object is of type ICommand, false otherwise.
- */
-function isCommand(obj: ICommand | IUnsignedCommand): obj is ICommand {
-  return (
-    obj !== undefined &&
-    typeof obj === 'object' &&
-    'cmd' in obj &&
-    'hash' in obj &&
-    'sigs' in obj &&
-    obj.sigs.every((sig) => sig !== undefined && sig !== null)
-  );
 }
 
 /**
@@ -99,12 +117,19 @@ export async function signTransactionWithSeed(
   password: string,
   unsignedCommand: IUnsignedCommand,
   legacy?: boolean,
-): Promise<ICommand | undefined> {
+): Promise<ICommand | IUnsignedCommand | undefined> {
   try {
-    let signedCommand: ICommand | IUnsignedCommand;
+    let command: ICommand | IUnsignedCommand;
     const parsedTransaction = JSON.parse(unsignedCommand.cmd);
     const keys = await getKeyPairAndIndicesFromFileSystem(walletName);
     const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
+
+    if (relevantKeyPairs.length === 0) {
+      throw new Error(
+        'No matching signable keys found between wallet and transaction:',
+      );
+    }
+
     if (legacy === true) {
       const signatures = await Promise.all(
         relevantKeyPairs.map(async (key) => {
@@ -121,7 +146,7 @@ export async function signTransactionWithSeed(
           };
         }),
       );
-      signedCommand = addSignatures(unsignedCommand, ...signatures);
+      command = addSignatures(unsignedCommand, ...signatures);
     } else {
       const signatures = relevantKeyPairs.map((key) => {
         const signWithSeed = kadenaSignWithSeed(
@@ -129,20 +154,22 @@ export async function signTransactionWithSeed(
           wallet,
           key.index as number,
         );
+
         const sigs = signWithSeed(unsignedCommand.hash);
+
         return {
           sig: sigs.sig,
           pubKey: key.publicKey,
         };
       });
-      signedCommand = addSignatures(unsignedCommand, ...signatures);
+
+      command = addSignatures(unsignedCommand, ...signatures);
     }
 
-    if (isCommand(signedCommand)) {
-      return signedCommand;
-    } else {
-      return undefined;
+    if (isSignedTransaction(command)) {
+      return command;
     }
+    return command;
   } catch (error) {
     throw new Error(`Error signing transaction: ${error.message}`);
   }
@@ -152,8 +179,8 @@ export async function signTransactionWithKeyPair(
   keys: IKeyPairLocal[],
   unsignedCommand: IUnsignedCommand,
   legacy?: boolean,
-): Promise<ICommand | undefined> {
-  let signedCommand: ICommand | IUnsignedCommand;
+): Promise<ICommand | IUnsignedCommand | undefined> {
+  let command: ICommand | IUnsignedCommand;
 
   try {
     if (legacy === true) {
@@ -173,147 +200,18 @@ export async function signTransactionWithKeyPair(
         }),
       );
 
-      signedCommand = addSignatures(unsignedCommand, ...signatures);
+      command = addSignatures(unsignedCommand, ...signatures);
     } else {
       const signWithKeypair = createSignWithKeypair(keys as IKeyPair[]);
-      signedCommand = await signWithKeypair(unsignedCommand);
+      command = await signWithKeypair(unsignedCommand);
     }
 
-    if (isCommand(signedCommand)) {
-      return signedCommand;
-    } else {
-      return undefined;
+    if (isSignedTransaction(command)) {
+      return command;
     }
+    return command;
   } catch (error) {
     throw new Error(`Error signing transaction: ${error.message}`);
-  }
-}
-
-/**
- * Retrieves wallet directories, optionally filtering by wallet name.
- * @param {string} [walletName] - Optional name of the wallet.
- * @returns {Promise<string[]>}
- */
-export async function getWalletDirectories(
-  walletName?: string,
-): Promise<string[]> {
-  if (walletName !== undefined) {
-    return [walletName];
-  }
-  return services.filesystem.readDir(WALLET_DIR);
-}
-
-/**
- * Retrieves key file names from the specified directory.
- * @param {string} dirName - The name of the directory to search.
- * @returns {Promise<string[]>}
- */
-export async function getKeyFilesFromDirectory(
-  dirName: string,
-): Promise<string[]> {
-  const keyFiles = await getKeysFromWallet(dirName);
-  const legacyKeyFiles = await getLegacyKeysFromWallet(dirName);
-  return [...keyFiles, ...legacyKeyFiles];
-}
-
-/**
- * Finds and returns a secret key matching any of the provided public keys.
- * @param {string[]} publicKeys - Array of public keys to match.
- * @param {string} walletDir - The wallet directory to search in.
- * @param {string} keyFile - The key file to check.
- * @returns {Promise<{ publicKey: string; secretKey: EncryptedString } | null>}
- */
-export async function getSecretKeyIfMatch(
-  publicKeys: string[],
-  walletDir: string,
-  keyFile: string,
-  // eslint-disable-next-line @rushstack/no-new-null
-): Promise<{ publicKey: string; secretKey: EncryptedString } | null> {
-  const keyContent: TSeedContent | IKeyPairLocal | undefined =
-    await readKeyFileContent(join(walletDir, keyFile));
-  if (
-    keyContent !== undefined &&
-    typeof keyContent !== 'string' &&
-    publicKeys.includes(keyContent.publicKey)
-  ) {
-    return {
-      publicKey: keyContent.publicKey,
-      secretKey: keyContent.secretKey as EncryptedString,
-    };
-  }
-  return null;
-}
-
-/**
- * Finds secret keys corresponding to the provided public keys.
- * @param {string[]} publicKeys - Array of public keys to find secret keys for.
- * @param {string} [walletName] - Optional name of the wallet.
- * @returns {Promise<Map<string, EncryptedString | undefined>>}
- */
-export async function findSecretKeys(
-  publicKeys: string[],
-  walletName?: string,
-): Promise<Map<string, EncryptedString | undefined>> {
-  const walletDirs = await getWalletDirectories(walletName);
-  const secretKeysMap = new Map<string, EncryptedString | undefined>();
-
-  for (const dirName of walletDirs) {
-    const walletDir = join(WALLET_DIR, dirName);
-    if (!(await services.filesystem.directoryExists(walletDir))) {
-      continue;
-    }
-
-    const keyFiles = await getKeyFilesFromDirectory(dirName);
-    const keyPromises = keyFiles.map((keyFile) =>
-      getSecretKeyIfMatch(publicKeys, walletDir, keyFile),
-    );
-    const keys = await Promise.all(keyPromises);
-
-    keys.forEach((key) => {
-      if (key && !secretKeysMap.has(key.publicKey)) {
-        secretKeysMap.set(key.publicKey, key.secretKey);
-      }
-    });
-  }
-
-  return secretKeysMap;
-}
-
-/**
- * Finds key pairs by their public keys.
- * @param {string[]} publicKeys - Array of public keys to find matching key pairs for.
- * @param {string} [walletName] - Optional name of the wallet.
- * @returns {Promise<IKeyPairLocal[]>}
- */
-export async function findKeyPairsByPublicKeys(
-  publicKeys: string[],
-  walletName?: string,
-): Promise<IKeyPairLocal[]> {
-  const keyPairs: IKeyPairLocal[] = [];
-  const secretKeysMap = await findSecretKeys(publicKeys, walletName);
-
-  publicKeys.forEach((publicKey) => {
-    const secretKey = secretKeysMap.get(publicKey);
-    if (secretKey !== undefined) {
-      keyPairs.push({ publicKey, secretKey });
-    }
-  });
-
-  return keyPairs;
-}
-
-/**
- * Extracts public keys from a transaction command string.
- * @param {string} cmd - The transaction command string.
- * @returns {string[]}
- */
-export function extractPublicKeysFromTransactionCmd(cmd: string): string[] {
-  try {
-    const transaction: IPactCommand = JSON.parse(cmd);
-    return transaction.signers.map((signer) => signer.pubKey);
-  } catch (e) {
-    console.error(`Error: ${e}`);
-    return [];
   }
 }
 
@@ -328,86 +226,98 @@ export function getRelevantKeypairs(
 }
 
 /**
- * retrieves key pairs used as signers for a transaction from an HD wallet.
- * @param {string} cmd - The transaction command string.
- * @param {string} [walletName] - Optional name of the wallet.
- * @returns {Promise<IKeyPairLocal[]>}
+ * retrieve transaction from file
+ *
+ * @param {string} transactionFile - The name of the file containing the transaction.
+ * @param {string} path - The path to the directory containing the transaction file.
+ * @param {boolean} signed - A flag indicating whether the transaction is signed.
+ * @returns {Promise<IUnsignedCommand | ICommand>} A promise that resolves to the unsigned or signed transaction.
+ * @throws Will throw an error if the file cannot be read or the transaction cannot be processed.
  */
-export async function getSignersFromTransactionHd(
-  cmd: string,
-  walletName?: string,
-): Promise<IKeyPairLocal[]> {
-  const publicKeys = extractPublicKeysFromTransactionCmd(cmd);
-  const signers = await findKeyPairsByPublicKeys(publicKeys, walletName);
+export async function getTransactionFromFile(
+  transactionFile: string,
+  signed: boolean,
+  path?: string,
+): Promise<IUnsignedCommand | ICommand> {
+  try {
+    const filePath =
+      path !== undefined
+        ? join(process.cwd(), path, transactionFile)
+        : join(TRANSACTION_PATH, transactionFile);
+    const transactionFilePath = join(TRANSACTION_PATH, transactionFile);
+    const fileContent = await services.filesystem.readFile(filePath);
 
-  return signers;
-}
-
-/**
- * Reads a key file and extracts the public key, index, and optionally the private key.
- * @param {string} walletDir - The directory of the wallet.
- * @param {string} keyFile - The key file name.
- * @returns {Promise<IKeyPairLocal | undefined>}
- */
-export async function getKeyPairAndIndexFromFile(
-  walletDir: string,
-  keyFile: string,
-): Promise<IKeyPairLocal | undefined> {
-  const keyContent = (await readKeyFileContent(join(walletDir, keyFile))) as
-    | IKeyPairLocal
-    | undefined;
-
-  if (
-    keyContent !== undefined &&
-    'publicKey' in keyContent &&
-    'index' in keyContent
-  ) {
-    const result: IKeyPairLocal = {
-      publicKey: keyContent.publicKey,
-      index: keyContent.index,
-    };
-
-    if ('secretKey' in keyContent) {
-      result.secretKey = keyContent.secretKey;
+    if (fileContent === null) {
+      throw Error(`Failed to read file at path: ${transactionFilePath}`);
     }
+    const transaction = JSON.parse(fileContent);
 
-    return result;
-  }
-
-  return undefined;
-}
-
-/**
- * Retrieves public keys and their indices from the file system within the specified wallet directories.
- * @param {string} [walletName] - Optional name of the wallet.
- * @returns {Promise<Array<IKeyPairLocal>>}
- */
-export async function getKeyPairAndIndicesFromFileSystem(
-  walletName?: string,
-): Promise<Array<IKeyPairLocal>> {
-  const walletDirs = await getWalletDirectories(walletName);
-  const publicKeysAndIndices: Array<IKeyPairLocal> = [];
-  const encounteredPublicKeys = new Set<string>();
-
-  for (const dirName of walletDirs) {
-    const walletDir = join(WALLET_DIR, dirName);
-    if (!(await services.filesystem.directoryExists(walletDir))) {
-      continue;
+    if (signed) {
+      tx.ICommandSchema.parse(transaction);
+      return transaction as ICommand;
     }
-
-    const keyFiles = await getKeyFilesFromDirectory(dirName);
-    const publicKeyPromises = keyFiles.map((keyFile) =>
-      getKeyPairAndIndexFromFile(walletDir, keyFile),
+    tx.IUnsignedCommandSchema.parse(transaction);
+    return transaction as IUnsignedCommand;
+  } catch (error) {
+    console.error(
+      `Error processing ${
+        signed ? 'signed' : 'unsigned'
+      } transaction file: ${transactionFile}, failed with error: ${error}`,
     );
-    const keys = await Promise.all(publicKeyPromises);
 
-    keys.forEach((key) => {
-      if (key && !encounteredPublicKeys.has(key.publicKey)) {
-        encounteredPublicKeys.add(key.publicKey);
-        publicKeysAndIndices.push(key);
-      }
-    });
+    throw error;
+  }
+}
+
+/**
+ * Assesses the signing status of a transaction and returns a Promise of a response based on its state.
+ *
+ * @param signedCommand - The command object to assess. It can be a signed, partially signed, or undefined command.
+ * @returns A Promise resolving to a CommandResult<ICommand>, indicating the success status and,
+ *          if applicable, either the signed command data or error messages.
+ *          If the command is fully signed, resolves with success and the command data.
+ *          If the command is partially signed or unsigned, resolves with failure and appropriate error messages.
+ * @throws Error if the signedCommand is undefined, indicating a failure in the signing process.
+ */
+export async function assessTransactionSigningStatus(
+  signedCommand: ICommand | IUnsignedCommand | undefined,
+): Promise<CommandResult<ICommand>> {
+  if (!signedCommand) {
+    throw new Error(
+      'Error in action: signing failed, please check your transaction.',
+    );
   }
 
-  return publicKeysAndIndices;
+  if (isSignedTransaction(signedCommand)) {
+    return {
+      success: true,
+      data: signedCommand,
+    };
+  }
+
+  if (isPartiallySignedTransaction(signedCommand)) {
+    const status = getSignersStatus(signedCommand);
+
+    const formattedStatus = status
+      .map(
+        (signerStatus) =>
+          `Public Key: ${signerStatus.publicKey}, Signed: ${
+            signerStatus.isSigned ? 'Yes' : 'No'
+          }`,
+      )
+      .join('\n');
+
+    return {
+      success: false,
+      errors: [
+        `Error in action: transaction partially signed. Please provide the remaining keys.`,
+        `Key status for transaction:\n${formattedStatus}`,
+      ],
+    };
+  }
+
+  return {
+    success: false,
+    errors: ['Error in action: transaction is unsigned.'],
+  };
 }

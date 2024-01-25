@@ -1,38 +1,42 @@
 import chalk from 'chalk';
-import type { Command } from 'commander';
 import debug from 'debug';
+import { join } from 'path';
 
 import type { CommandResult } from '../../utils/command.util.js';
-// import { assertCommandError } from '../../utils/command.util.js';
-import { createCommand } from '../../utils/createCommand.js';
+import { assertCommandError } from '../../utils/command.util.js';
+import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
 import {
-  // getSignersFromTransactionPlain,
+  assessTransactionSigningStatus,
+  getTransactionFromFile,
   signTransactionWithKeyPair,
 } from '../utils/helpers.js';
-// import { saveSignedTransaction } from '../utils/storage.js';
+import { saveSignedTransaction } from '../utils/storage.js';
 
-import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
+import { readKeyPairAndIndexFromFile } from '../../keys/utils/keysHelpers.js';
+
+import type { ICommand, IUnsignedCommand } from '@kadena/types';
+import { WALLET_DIR } from '../../constants/config.js';
+import type { IKeyPair } from '../../keys/utils/storage.js';
+import { removeAfterFirstDot } from '../../utils/path.util.js';
 
 export const signActionPlain = async (
   unsignedCommand: IUnsignedCommand,
   keyPairs: IKeyPair[],
+  legacy?: boolean,
 ): Promise<CommandResult<ICommand>> => {
   try {
     if (keyPairs.length === 0) {
       throw new Error('Error signing transaction: no keys found.');
     }
-    const signedCommand = await signTransactionWithKeyPair(
+    const command = await signTransactionWithKeyPair(
       keyPairs,
       unsignedCommand,
+      legacy,
     );
 
-    if (!signedCommand) {
-      throw new Error('Error signing transaction: transaction not signed.');
-    }
-
-    return { success: true, data: signedCommand };
+    return assessTransactionSigningStatus(command);
   } catch (error) {
     return {
       success: false,
@@ -41,51 +45,73 @@ export const signActionPlain = async (
   }
 };
 
-/**
- * Creates a command for signing a Kadena transaction.
- *
- * @param {Command} program - The commander program.
- * @param {string} version - The version of the command.
- */
-export const createSignTransactionWithAliasFileCommand: (
-  program: Command,
-  version: string,
-) => void = createCommand(
+export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
   'sign-with-alias-file',
   'Sign a transaction using your local aliased file containing your keypair.',
   [
-    // rewrite to flexible command
-    // select wallet
-    // result all => all aliases
-    // result wallet => all aliases in wallet
-    // select alias
-    globalOptions.keyAlias(),
-    // get content from keyAlias file
-    globalOptions.txTransaction(),
+    globalOptions.keyWalletSelectWithAll(),
+    globalOptions.keyAliasSelect(),
+    globalOptions.txUnsignedTransactionFile(),
     globalOptions.txTransactionDir({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
-  async (config) => {
+  async (option) => {
     try {
-      debug('sign-transaction:alias-file:action')({ config });
-      const {
-        txTransaction: { unsignedCommand },
-      } = config;
+      const wallet = await option.keyWallet();
+      const key = await option.keyAliasSelect({
+        wallet: removeAfterFirstDot(wallet.keyWallet),
+      });
+      const dir = await option.txTransactionDir();
+      const file = await option.txUnsignedTransactionFile({
+        signed: false,
+        path: dir.txTransactionDir,
+      });
+      const mode = await option.legacy();
 
-      // const result = await signActionPlain(
-      //   unsignedCommand as IUnsignedCommand,
-      //   [config.keyAlias], // Todo: key alias content ( IKeyPair )
-      // );
+      debug.log('create-transaction:action', {
+        ...wallet,
+        ...key,
+        ...file,
+        ...dir,
+        ...mode,
+      });
 
-      // assertCommandError(result);
+      const keyPair = await readKeyPairAndIndexFromFile(
+        join(WALLET_DIR, removeAfterFirstDot(wallet.keyWallet)),
+        key.keyAliasSelect,
+      );
 
-      // await saveSignedTransaction(
-      //   result.data,
-      //   config.txTransaction.transactionFile,
-      //   config.txTransactionDir
-      // );
+      if (keyPair === undefined) {
+        throw new Error('Error signing transaction: key pair not found.');
+      }
 
-      console.log(chalk.green(`\nTransaction withinsigned successfully.\n`));
+      const unsignedCommand = await getTransactionFromFile(
+        file.txUnsignedTransactionFile,
+        false,
+        dir.txTransactionDir,
+      );
+
+      if (unsignedCommand === undefined) {
+        throw new Error(
+          'Error signing transaction: unsigned transaction not found.',
+        );
+      }
+
+      const result = await signActionPlain(
+        unsignedCommand,
+        [keyPair],
+        mode.legacy,
+      );
+
+      assertCommandError(result);
+
+      await saveSignedTransaction(
+        result.data,
+        file.txUnsignedTransactionFile,
+        dir.txTransactionDir,
+      );
+
+      console.log(chalk.green(`\nTransaction signed successfully.\n`));
     } catch (error) {
       console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
       process.exit(1);
