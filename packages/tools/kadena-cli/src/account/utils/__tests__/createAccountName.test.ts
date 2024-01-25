@@ -9,7 +9,7 @@ describe('createAccountName', () => {
     server.resetHandlers();
   });
 
-  it('should throw error when public keys are empty', async () => {
+  it('should throw an error when public keys are empty', async () => {
     await expect(async () => {
       await createAccountName(defaultConfigMock);
     }).rejects.toThrow(
@@ -35,7 +35,7 @@ describe('createAccountName', () => {
     expect(accountName).toBe('k:publicKey1');
   });
 
-  it('should return error when createPrincipal method throws an error', async () => {
+  it('should throw an error when createPrincipal method throws an error', async () => {
     server.use(
       http.post(
         'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/local',

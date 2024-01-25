@@ -9,7 +9,7 @@ import { defaultConfigMock } from './mocks.js';
 
 describe('writeInConfigFile', () => {
   const root = path.join(__dirname, '../../../../');
-  it('should write in config file', async () => {
+  it('should write "config" in config file', async () => {
     const config = {
       ...defaultConfigMock,
       accountAlias: 'unit-test-alias',
@@ -39,7 +39,7 @@ describe('writeInConfigFile', () => {
     expect(await fs.fileExists(filePath)).toBe(true);
   });
 
-  it('should exit when file already exists', async () => {
+  it('should throw an error when file already exists', async () => {
     const config = {
       ...defaultConfigMock,
       accountAlias: 'unit-test-alias',

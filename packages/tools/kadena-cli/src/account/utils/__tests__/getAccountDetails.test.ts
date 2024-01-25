@@ -24,7 +24,7 @@ describe('getAccountDetailsFromChain', () => {
     expect(result).toStrictEqual(expectedResult);
   });
 
-  it('should throw error when account is not on chain', async () => {
+  it('should throw an error when account is not available on chain', async () => {
     server.use(
       http.post(
         'https://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/local',
