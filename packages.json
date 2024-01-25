@@ -79,7 +79,7 @@
   },
   {
     "name": "@kadena/graph-client",
-    "version": "0.1.9",
+    "version": "0.1.10",
     "private": true,
     "path": "packages/apps/graph-client"
   },
@@ -139,7 +139,7 @@
   },
   {
     "name": "@kadena/react-ui",
-    "version": "0.7.0",
+    "version": "0.7.1",
     "private": false,
     "path": "packages/libs/react-ui"
   },
