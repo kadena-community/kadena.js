@@ -1,6 +1,5 @@
-import { mergeRefs } from '@react-aria/utils';
 import type { FC, ReactElement, ReactNode } from 'react';
-import React, { cloneElement, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useTooltip, useTooltipTrigger } from 'react-aria';
 import type { TooltipTriggerProps } from 'react-stately';
 import { useTooltipTriggerState } from 'react-stately';
@@ -37,11 +36,9 @@ export const Tooltip: FC<ITooltipProps> = ({
 
   return (
     <Box position="relative">
-      {cloneElement(children, {
-        ...triggerProps,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ref: mergeRefs(ref, (children as any).ref),
-      })}
+      <div ref={ref} {...triggerProps}>
+        {children}
+      </div>
 
       {state.isOpen && (
         <span className={tooltipPositionVariants[position]} {...tooltipProps}>
