@@ -2,13 +2,13 @@
   "name": "@kadena/react-ui",
   "version": "0.7.0",
   "description": "A react component library built on Kadena's Design System",
-  "license": "ISC",
-  "author": "KADENA",
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/libs/react-ui"
   },
+  "license": "ISC",
+  "author": "KADENA",
   "contributors": [
     "Eileen Guo <eileen@kadena.io>",
     "Salama Ashoush <salama@kadena.io>",
