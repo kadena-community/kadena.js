@@ -1,4 +1,4 @@
-import { darkThemeClass } from '@kadena/react-ui/theme';
+import { darkThemeClass } from '@kadena/react-ui/styles';
 
 import { themes } from '@storybook/theming';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime'; // next 13

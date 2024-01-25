@@ -4,6 +4,7 @@ import { AccountInfo } from '@/components/AccountInfo/AccountInfo';
 import { AccountProvider } from '@/components/AccountProvider/AccountProvider';
 import { Analytics } from '@/components/Analytics/Analytics';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
+import { SocketProvider } from '@/components/SocketProvider/SocketProvider';
 import { ThemeProvider } from '@/components/ThemeProvider/ThemeProvider';
 import { ToastProvider } from '@/components/ToastProvider/ToastProvider';
 import { Toasts } from '@/components/Toasts/Toasts';
@@ -73,17 +74,19 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
       <body>
         <ToastProvider>
           <AccountProvider>
-            <ThemeProvider>
-              <>
-                <AccountInfo />
-                {children}
+            <SocketProvider>
+              <ThemeProvider>
+                <>
+                  <AccountInfo />
+                  {children}
 
-                <CookieConsent />
+                  <CookieConsent />
 
-                <Toasts />
-                <Analytics />
-              </>
-            </ThemeProvider>
+                  <Toasts />
+                  <Analytics />
+                </>
+              </ThemeProvider>
+            </SocketProvider>
           </AccountProvider>
         </ToastProvider>
       </body>

@@ -6,19 +6,16 @@ import {
   Button,
   Card,
   Heading,
-  IconButton,
   Notification,
   NotificationHeading,
   Stack,
+  SystemIcon,
 } from '@kadena/react-ui';
 
 import {
   hoverTagContainerStyle,
-  iconButtonWrapper,
-  inputWrapperStyle,
   notificationContentStyle,
   notificationLinkStyle,
-  pubKeyInputWrapperStyle,
   pubKeysContainerStyle,
 } from './styles.css';
 
@@ -34,7 +31,7 @@ import {
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
 import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
-import AccountNameField from '@/components/Global/AccountNameField';
+import { AccountNameField } from '@/components/Global/AccountNameField';
 import { HoverTag } from '@/components/Global/HoverTag';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
@@ -55,7 +52,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 interface IFundExistingAccountResponseBody {
@@ -115,6 +112,7 @@ const NewAccountFaucetPage: FC = () => {
     setError,
     getValues,
     resetField,
+    control,
     setValue,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -295,47 +293,52 @@ const NewAccountFaucetPage: FC = () => {
           <Card fullWidth>
             <Heading as="h5">Public Keys</Heading>
             <Box marginBlockEnd="md" />
-
-            <div className={pubKeyInputWrapperStyle}>
-              <div className={inputWrapperStyle}>
+            <Controller
+              name="pubKey"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
                 <PublicKeyField
-                  helperText={errors?.pubKey?.message}
-                  {...register('pubKey', {
-                    onChange: () => {
-                      clearErrors('pubKey');
-                    },
-                  })}
-                  error={errors.pubKey}
-                />
-              </div>
-              <div className={iconButtonWrapper}>
-                <IconButton
-                  icon={'Plus'}
-                  onClick={() => {
-                    const value = getValues('pubKey');
-                    const valid = validatePublicKey(value || '');
-                    if (valid) {
-                      addPublicKey();
-                    } else {
-                      setError('pubKey', {
-                        type: 'custom',
-                        message: t('invalid-pub-key-length'),
-                      });
-                    }
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    clearErrors('pubKey');
                   }}
-                  color="primary"
-                  type="button"
+                  errorMessage={errors?.pubKey?.message}
+                  isInvalid={!!errors.pubKey}
+                  endAddon={
+                    <Button
+                      icon={<SystemIcon.Plus />}
+                      variant="text"
+                      onPress={() => {
+                        const value = getValues('pubKey');
+                        const valid = validatePublicKey(value || '');
+                        if (valid) {
+                          addPublicKey();
+                        } else {
+                          setError('pubKey', {
+                            type: 'custom',
+                            message: t('invalid-pub-key-length'),
+                          });
+                        }
+                      }}
+                      aria-label="Add public key"
+                      title="Add Public Key"
+                      color="primary"
+                      type="button"
+                    />
+                  }
                 />
-              </div>
-            </div>
+              )}
+            />
 
             {pubKeys.length > 0 ? renderPubKeys() : null}
 
             {pubKeys.length > 1 ? (
               <PredKeysSelect
-                onChange={onPredSelectChange}
-                value={pred}
-                ariaLabel="Select Predicate"
+                onSelectionChange={onPredSelectChange}
+                selectedKey={pred}
+                aria-label="Select Predicate"
               />
             ) : null}
           </Card>
@@ -345,28 +348,28 @@ const NewAccountFaucetPage: FC = () => {
             <div className={inputContainerClass}>
               <div className={accountNameContainerClass}>
                 <AccountNameField
-                  inputProps={register('name')}
-                  error={errors.name}
+                  {...register('name')}
+                  isInvalid={!!errors.name}
                   label={t('The account name to fund coins to')}
-                  disabled
+                  isDisabled
                 />
               </div>
               <div className={chainSelectContainerClass}>
                 <ChainSelect
-                  onChange={onChainSelectChange}
-                  value={chainID}
-                  ariaLabel="Select Chain ID"
+                  onSelectionChange={onChainSelectChange}
+                  selectedKey={chainID}
+                  aria-label="Select Chain ID"
                 />
               </div>
             </div>
           </Card>
           <div className={buttonContainerClass}>
             <Button
-              loading={requestStatus.status === 'processing'}
-              icon="TrailingIcon"
-              iconAlign="right"
+              isLoading={requestStatus.status === 'processing'}
+              endIcon={<SystemIcon.TrailingIcon />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-              disabled={disabledButton}
+              isDisabled={disabledButton}
+              type="submit"
             >
               {t('Create and Fund Account', { amount: AMOUNT_OF_COINS_FUNDED })}
             </Button>

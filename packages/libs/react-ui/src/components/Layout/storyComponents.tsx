@@ -1,7 +1,7 @@
-import { Text } from '@components/Typography';
-import { tokens } from '@theme/tokens/contract.css';
 import type { FC } from 'react';
 import React from 'react';
+import { tokens } from '../../styles/tokens/contract.css';
+import { Text } from '../Typography';
 import { Box } from './Box';
 import { Stack } from './Stack';
 

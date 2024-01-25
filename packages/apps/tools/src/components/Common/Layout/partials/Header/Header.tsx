@@ -7,7 +7,7 @@ import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
 import type { IMenuItem } from '@/types/Layout';
 import type { INetworkData } from '@/utils/network';
 import { NavHeader } from '@kadena/react-ui';
-import { breakpoints } from '@kadena/react-ui/theme';
+import { breakpoints } from '@kadena/react-ui/styles';
 import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';

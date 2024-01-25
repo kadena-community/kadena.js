@@ -1,10 +1,11 @@
 import {
   Box,
-  Button,
   Card,
   Grid,
   GridItem,
   Heading,
+  Link as KadenaLink,
+  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 
@@ -57,9 +58,13 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 NFTs.
               </Text>
             </Box>
-            <Button as="a" asChild icon="TrailingIcon">
-              <Link href={'/marmalade/quick-start'}>Get started</Link>
-            </Button>
+            <KadenaLink
+              endIcon={<SystemIcon.TrailingIcon />}
+              variant="contained"
+              href="/marmalade/quick-start"
+            >
+              Get started
+            </KadenaLink>
           </Card>
         </GridItem>
 

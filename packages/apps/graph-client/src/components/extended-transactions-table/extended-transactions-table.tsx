@@ -1,4 +1,11 @@
-import { Box, Link, Pagination, Select, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Link,
+  Pagination,
+  Select,
+  SelectItem,
+  Table,
+} from '@kadena/react-ui';
 
 import type { GetTransactionsQuery } from '@/__generated__/sdk';
 import routes from '@/constants/routes';
@@ -6,6 +13,7 @@ import { formatLisp } from '@/utils/formatter';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 type DataType = GetTransactionsQuery;
 
@@ -24,12 +32,15 @@ interface IExpandedTransactionsTableProps {
   ) => Promise<any>;
 }
 
+const itemsPerPageOptions = [10, 50, 100, 200].map((x) => ({
+  label: x.toString(),
+  value: x,
+}));
+
 export const ExtendedTransactionsTable = (
   props: IExpandedTransactionsTableProps,
 ): JSX.Element => {
   const { transactions, fetchMore } = props;
-
-  const itemsPerPageOptions = [10, 50, 100, 200];
 
   // Parse the query parameters from the URL using Next.js router
   const router = useRouter();
@@ -37,9 +48,11 @@ export const ExtendedTransactionsTable = (
   const urlItemsPerPage = router.query.items;
 
   // Use state to manage itemsPerPage and currentPage
-  const [itemsPerPage, setItemsPerPage] = useState<number>(
+  const [itemsPerPage, setItemsPerPage] = useState<number>(() =>
     urlItemsPerPage &&
-      itemsPerPageOptions.includes(parseInt(urlItemsPerPage as string))
+    itemsPerPageOptions.some(
+      (option) => option.value === parseInt(urlItemsPerPage as string),
+    )
       ? parseInt(urlItemsPerPage as string)
       : 10,
   );
@@ -151,29 +164,26 @@ export const ExtendedTransactionsTable = (
           <span style={{ display: 'inline-block' }}>Items per page: </span>
 
           <Select
-            ariaLabel="items-per-page"
+            aria-label="items-per-page"
             id="items-per-page"
-            onChange={(event) => setItemsPerPage(parseInt(event.target.value))}
-            style={{ display: 'inline-block' }}
-            defaultValue={itemsPerPage}
+            onSelectionChange={(key) =>
+              setItemsPerPage(typeof key === 'string' ? parseInt(key) : key)
+            }
+            defaultSelectedKey={itemsPerPage}
+            items={itemsPerPageOptions}
           >
-            {itemsPerPageOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
+            {(item) => <SelectItem key={item.value}>{item.label}</SelectItem>}
           </Select>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Pagination
             totalPages={totalPages}
-            label="pagination"
-            currentPage={currentPage}
+            selectedPage={currentPage}
             onPageChange={handlePaginationClick}
           />
         </div>
       </Box>
-      <Table.Root wordBreak="break-word">
+      <Table.Root wordBreak="break-word" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
             <Table.Th>Chain</Table.Th>

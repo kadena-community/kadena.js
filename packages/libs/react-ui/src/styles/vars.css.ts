@@ -1,9 +1,9 @@
-import { colorPalette, gradients, hexToRgba } from '@theme/colors';
 import {
   createGlobalTheme,
   createTheme,
   createThemeContract,
 } from '@vanilla-extract/css';
+import { colorPalette, gradients, hexToRgba } from './colors';
 import { tokens } from './tokens/contract.css';
 import { darkThemeValues } from './tokens/dark.css';
 import { lightThemeValues } from './tokens/light.css';
@@ -213,7 +213,7 @@ const oldThemeValues = {
 
 // Creating a contract and exporting with old name
 /**
- * @deprecated Use 'tokens' from '@kadena/react-ui/theme'
+ * @deprecated Use 'tokens' from '@kadena/react-ui'
  */
 export const vars = createThemeContract(oldThemeValues);
 

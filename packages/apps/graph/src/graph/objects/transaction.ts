@@ -7,12 +7,16 @@ import { PRISMA, builder } from '../builder';
 export default builder.prismaNode('Transaction', {
   description: 'A confirmed transaction.',
   id: { field: 'blockHash_requestKey' },
+  select: {},
   fields: (t) => ({
     // database fields
     badResult: t.string({
       description:
         'The JSON stringified error message if the transaction failed.',
       nullable: true,
+      select: {
+        badResult: true,
+      },
       resolve({ badResult }) {
         return nullishOrEmpty(badResult)
           ? undefined
@@ -20,10 +24,12 @@ export default builder.prismaNode('Transaction', {
       },
     }),
     chainId: t.expose('chainId', { type: 'BigInt' }),
-    // code: t.exposeString('code', { nullable: true }),
     code: t.string({
       description:
         'The Pact expressions executed in this transaction when it is an `exec` transaction. For a continuation, this field is `cont`.',
+      select: {
+        code: true,
+      },
       resolve({ code }) {
         return code === null ? JSON.stringify('cont') : JSON.stringify(code);
       },
@@ -32,6 +38,9 @@ export default builder.prismaNode('Transaction', {
       description:
         'The JSON stringified continuation in the case that it is a continuation.',
       nullable: true,
+      select: {
+        continuation: true,
+      },
       resolve({ continuation }) {
         return nullishOrEmpty(continuation)
           ? undefined
@@ -43,6 +52,9 @@ export default builder.prismaNode('Transaction', {
       description:
         'The environment data made available to the transaction. Formatted as raw JSON.',
       nullable: true,
+      select: {
+        data: true,
+      },
       resolve({ data }) {
         return nullishOrEmpty(data) ? undefined : JSON.stringify(data);
       },
@@ -54,6 +66,9 @@ export default builder.prismaNode('Transaction', {
       description:
         'The transaction result when it was successful. Formatted as raw JSON.',
       nullable: true,
+      select: {
+        goodResult: true,
+      },
       resolve({ goodResult }) {
         return nullishOrEmpty(goodResult)
           ? undefined
@@ -71,6 +86,9 @@ export default builder.prismaNode('Transaction', {
     }),
     metadata: t.string({
       nullable: true,
+      select: {
+        metadata: true,
+      },
       resolve({ metadata }) {
         return nullishOrEmpty(metadata) ? undefined : JSON.stringify(metadata);
       },
@@ -112,6 +130,9 @@ export default builder.prismaNode('Transaction', {
       type: 'Block',
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      select: {
+        blockHash: true,
+      },
       async resolve(query, parent) {
         try {
           return await prismaClient.block.findUnique({
@@ -131,6 +152,10 @@ export default builder.prismaNode('Transaction', {
       nullable: true,
       complexity:
         COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      select: {
+        blockHash: true,
+        requestKey: true,
+      },
       async resolve(query, parent) {
         try {
           return await prismaClient.event.findMany({
@@ -152,6 +177,10 @@ export default builder.prismaNode('Transaction', {
       nullable: true,
       complexity:
         COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      select: {
+        blockHash: true,
+        requestKey: true,
+      },
       async resolve(query, parent) {
         try {
           return await prismaClient.transfer.findMany({
@@ -173,6 +202,9 @@ export default builder.prismaNode('Transaction', {
       nullable: true,
       complexity:
         COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      select: {
+        requestKey: true,
+      },
       async resolve(query, parent) {
         try {
           return await prismaClient.signer.findMany({

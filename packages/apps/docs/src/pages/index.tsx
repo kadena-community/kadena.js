@@ -11,8 +11,16 @@ import {
 } from '@/components/Layout/components/articleStyles.css';
 import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
-import { Box, Button, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/theme';
+import {
+  Box,
+  Grid,
+  GridItem,
+  Heading,
+  Link as KandenaLink,
+  Stack,
+  SystemIcon,
+} from '@kadena/react-ui';
+import { sprinkles } from '@kadena/react-ui/styles';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -63,14 +71,14 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   background="contribute"
                 >
                   <Box marginBlock="md">
-                    <Button
-                      as="a"
+                    <KandenaLink
                       href="/build/guides/election-dapp-tutorial"
-                      icon="TrailingIcon"
+                      endIcon={<SystemIcon.TrailingIcon />}
                       color="negative"
+                      variant="contained"
                     >
                       Build your first dApp
-                    </Button>
+                    </KandenaLink>
                   </Box>
                   <BrowseSection marker="none">
                     <Link className={docsCardLink} href="/build/quickstart">

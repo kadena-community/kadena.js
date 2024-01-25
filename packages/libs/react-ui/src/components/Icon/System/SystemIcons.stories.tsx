@@ -1,7 +1,7 @@
-import type { IIconProps } from '@components/Icon';
-import { SystemIcon } from '@components/Icon';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { SystemIcon } from '../../Icon';
+import type { IIconProps } from '../IconWrapper';
 import { sizeVariants } from '../IconWrapper.css';
 import { gridContainer, gridItem } from '../stories.css';
 
@@ -14,7 +14,7 @@ const meta: Meta<{ icon: string } & IIconProps> = {
   title: 'Icons/SystemIcons',
   parameters: {
     status: {
-      type: ['stable'],
+      type: ['needsRevision'],
     },
   },
   argTypes: {

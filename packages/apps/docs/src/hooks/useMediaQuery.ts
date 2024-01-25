@@ -1,4 +1,4 @@
-import { breakpoints } from '@kadena/react-ui/theme';
+import { breakpoints } from '@kadena/react-ui/styles';
 import { useEffect, useState } from 'react';
 
 const useMediaQuery = (queryName: keyof typeof breakpoints): boolean => {

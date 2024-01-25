@@ -13,6 +13,9 @@ export const dotenv: {
   NETWORK_HOST: string;
   NETWORK_ID: string;
   PORT: number;
+  PRISMA_LOGGING_ENABLED: boolean;
+  PRISMA_LOG_TO_FILE: boolean;
+  PRISMA_LOG_FILENAME: string;
   TRACING_ENABLED: boolean;
   TRACING_EXPOSED: boolean;
   TRACING_LOG_FILENAME: string;
@@ -50,6 +53,15 @@ export const dotenv: {
   NETWORK_HOST: or(process.env.NETWORK_HOST, 'http://localhost:8080'),
   NETWORK_ID: or(process.env.NETWORK_ID, 'fast-development'),
   PORT: parseInt(or(process.env.PORT, '4000'), 10),
+  PRISMA_LOGGING_ENABLED: or(
+    process.env.PRISMA_LOGGING_ENABLED?.toLocaleLowerCase() === 'true',
+    false,
+  ),
+  PRISMA_LOG_TO_FILE: or(
+    process.env.PRISMA_LOG_TO_FILE?.toLocaleLowerCase() === 'true',
+    false,
+  ),
+  PRISMA_LOG_FILENAME: or(process.env.PRISMA_LOG_FILENAME, 'prisma.log'),
   TRACING_ENABLED: or(
     process.env.TRACING_ENABLED?.toLocaleLowerCase() === 'true',
     false,

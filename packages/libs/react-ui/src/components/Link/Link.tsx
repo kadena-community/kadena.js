@@ -1,53 +1,104 @@
-import classnames from 'classnames';
-import type { FC, ReactNode } from 'react';
-import React from 'react';
-import { SystemIcon } from '..';
-import { blockLinkClass, linkContainerClass } from './Link.css';
+/* eslint-disable @kadena-dev/no-eslint-disable */
 
-export interface ILinkProps {
-  asChild?: boolean;
-  block?: boolean;
-  children: ReactNode;
-  href?: string;
-  icon?: keyof typeof SystemIcon;
-  iconAlign?: 'left' | 'right';
-  target?: '_blank' | '_self' | '_parent' | '_top';
+import { mergeProps, useObjectRef } from '@react-aria/utils';
+import type { RecipeVariants } from '@vanilla-extract/recipes';
+import classNames from 'classnames';
+import type {
+  ComponentProps,
+  ElementRef,
+  ForwardedRef,
+  ReactNode,
+} from 'react';
+import React, { forwardRef } from 'react';
+import type { AriaLinkOptions, HoverEvents } from 'react-aria';
+import { useFocusRing, useHover, useLink } from 'react-aria';
+import { button } from '../Button/SharedButton.css';
+import { disableLoadingProps } from '../Button/utils';
+import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
+
+type Variants = Omit<NonNullable<RecipeVariants<typeof button>>, 'onlyIcon'>;
+type PickedAriaLinkProps = Omit<AriaLinkOptions, 'elementType'>;
+
+export interface ILinkProps extends PickedAriaLinkProps, HoverEvents, Variants {
+  className?: string;
+  startIcon?: ReactNode;
+  endIcon?: ReactNode;
+  icon?: ReactNode;
+  children?: ReactNode;
+  /**
+   * @deprecated use `onPress` instead to be consistent with React Aria, also keep in mind that `onPress` is not a native event it is a synthetic event created by React Aria
+   * @see https://react-spectrum.adobe.com/react-aria/useButton.html#props
+   */
+  onClick?: ComponentProps<'button'>['onClick'];
+  style?: ComponentProps<'button'>['style'];
+  title?: ComponentProps<'button'>['title'];
 }
 
-export const Link: FC<ILinkProps> = ({
-  asChild = false,
-  block = false,
-  children,
-  icon,
-  iconAlign = 'left',
-  ...restProps
-}) => {
-  const Icon = icon && SystemIcon[icon];
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable react/function-component-definition */
+function BaseLink(
+  props: ILinkProps,
+  forwardedRef: ForwardedRef<ElementRef<'a'>>,
+) {
+  props = disableLoadingProps(props);
+  const ref = useObjectRef(forwardedRef);
+  const { linkProps, isPressed } = useLink(props, ref);
+  const { hoverProps, isHovered } = useHover(props);
+  const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
 
-  const linkClasses = classnames(linkContainerClass, {
-    [blockLinkClass]: block,
-  });
-
-  const getContents = (linkContents: ReactNode): ReactNode => (
+  const onlyIcon = props.icon !== undefined;
+  const content = onlyIcon ? (
+    props.icon
+  ) : (
     <>
-      {Icon && iconAlign === 'left' && <Icon size="md" />}
-      {linkContents}
-      {Icon && iconAlign === 'right' && <Icon size="md" />}
+      {props.startIcon}
+      {props.children}
+      {props.endIcon}
     </>
   );
 
-  if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
-      ...restProps,
-      ...children.props,
-      className: linkClasses,
-      children: getContents(children.props.children),
-    });
-  }
+  const isLoadingAriaLiveLabel = `${
+    typeof props.children === 'string'
+      ? props.children
+      : linkProps['aria-label'] ?? 'is'
+  } loading`.trim();
 
   return (
-    <a className={linkClasses} {...restProps}>
-      {getContents(children)}
+    <a
+      {...mergeProps(linkProps, hoverProps, focusProps)}
+      ref={ref}
+      className={classNames(
+        button({
+          variant: props.variant ?? 'text',
+          color: props.color,
+          isCompact: props.isCompact,
+          isLoading: props.isLoading,
+        }),
+        props.className,
+      )}
+      style={props.style}
+      title={props.title}
+      aria-disabled={props.isLoading || undefined}
+      data-disabled={props.isDisabled || undefined}
+      data-pressed={isPressed || undefined}
+      data-hovered={isHovered || undefined}
+      data-focused={isFocused || undefined}
+      data-focus-visible={isFocusVisible || undefined}
+    >
+      {props.isLoading ? (
+        <>
+          {onlyIcon ? null : 'Loading'}
+          <ProgressCircle
+            aria-hidden="true"
+            aria-label={isLoadingAriaLiveLabel}
+            isIndeterminate
+          />
+        </>
+      ) : (
+        content
+      )}
     </a>
   );
-};
+}
+
+export const Link = forwardRef(BaseLink);

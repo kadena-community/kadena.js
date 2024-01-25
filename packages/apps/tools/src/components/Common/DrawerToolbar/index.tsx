@@ -1,6 +1,5 @@
 import { DrawerIconButton } from '@/components/Common/DrawerToolbar/DrawerIcon';
-import type { SystemIcon } from '@kadena/react-ui';
-import { IconButton } from '@kadena/react-ui';
+import { Button, SystemIcon } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { ForwardRefExoticComponent, ReactNode } from 'react';
 import React, { forwardRef, useCallback, useEffect, useState } from 'react';
@@ -65,10 +64,12 @@ export const DrawerToolbar: ForwardRefExoticComponent<
         <>
           <div className={expandedDrawerTitleClass}>
             {sections[visibleSection].title}
-            <IconButton
+            <Button
               onClick={() => setVisibleSection(null)}
-              icon="Close"
+              icon={<SystemIcon.Close />}
               title="close"
+              aria-label="close"
+              variant="text"
             />
           </div>
           <div className={expandedDrawerContentClass}>

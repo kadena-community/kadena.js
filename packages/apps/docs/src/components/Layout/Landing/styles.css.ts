@@ -1,4 +1,4 @@
-import { responsiveStyle } from '@kadena/react-ui/theme';
+import { responsiveStyle } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 import { $$leftSideWidth, $$pageWidth } from '../global.css';
 

@@ -1,6 +1,7 @@
 import type { FormStatus } from '@/components/Global';
 import { ChainSelect, FormStatusNotification } from '@/components/Global';
-import AccountNameField, {
+import {
+  AccountNameField,
   NAME_VALIDATION,
 } from '@/components/Global/AccountNameField';
 import { menuData } from '@/constants/side-menu-items';
@@ -20,6 +21,7 @@ import {
   Notification,
   NotificationHeading,
   Stack,
+  SystemIcon,
 } from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -178,27 +180,26 @@ const ExistingAccountFaucetPage: FC = () => {
             <div className={inputContainerClass}>
               <div className={accountNameContainerClass}>
                 <AccountNameField
-                  inputProps={register('name')}
-                  error={errors.name}
+                  {...register('name')}
+                  errorMessage={errors.name?.message}
                   label={t('The account name to fund coins to')}
                 />
               </div>
               <div className={chainSelectContainerClass}>
                 <ChainSelect
-                  onChange={onChainSelectChange}
-                  value={chainID}
-                  ariaLabel="Select Chain ID"
+                  onSelectionChange={onChainSelectChange}
+                  selectedKey={chainID}
                 />
               </div>
             </div>
           </Card>
           <div className={buttonContainerClass}>
             <Button
-              loading={requestStatus.status === 'processing'}
-              icon="TrailingIcon"
-              iconAlign="right"
+              isLoading={requestStatus.status === 'processing'}
+              endIcon={<SystemIcon.TrailingIcon />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-              disabled={disabledButton}
+              isDisabled={disabledButton}
+              type="submit"
             >
               {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             </Button>

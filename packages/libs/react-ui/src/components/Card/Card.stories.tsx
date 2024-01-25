@@ -1,18 +1,18 @@
-import { Button } from '@components/Button';
-import type { ICardProps } from '@components/Card';
-import { Card } from '@components/Card';
-import { Stack } from '@components/Layout';
-import { Heading, Text } from '@components/Typography';
-import { withCenteredStory, withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { withCenteredStory, withContentWidth } from '../../storyDecorators';
+import { Button } from '../Button';
+import type { ICardProps } from '../Card';
+import { Card } from '../Card';
+import { Stack } from '../Layout';
+import { Heading, Text } from '../Typography';
 
 const meta: Meta<ICardProps> = {
   title: 'Layout/Card',
   decorators: [withContentWidth, withCenteredStory],
   parameters: {
     status: {
-      type: ['needsRevision'],
+      type: ['releaseCandidate'],
     },
     docs: {
       description: {

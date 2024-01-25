@@ -1,14 +1,14 @@
-import type { IBoxProps } from '@components/Layout/Box';
-import { Box } from '@components/Layout/Box';
-import { onLayer2 } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { onLayer2 } from '../../../storyDecorators';
 import { componentClass, containerClass, itemClass } from '../stories.css';
 import {
   Legend,
   defaultBoxArgs,
   sharedStoryArgTypes,
 } from '../storyComponents';
+import type { IBoxProps } from './Box';
+import { Box } from './Box';
 
 const meta: Meta<IBoxProps> = {
   title: 'Layout/Box',
@@ -16,7 +16,7 @@ const meta: Meta<IBoxProps> = {
   decorators: [onLayer2],
   parameters: {
     status: {
-      type: 'stable',
+      type: 'releaseCandidate',
     },
     docs: {
       description: {

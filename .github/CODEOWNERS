@@ -1,6 +1,6 @@
 # About code owners: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-/.github                                        @ghislain89
+/.github                                        @ghislain89 @albert70g @sstraatemans @javadkh2
 /.changeset
 /common                                         @alber70g
 /pnpm-lock.yaml
@@ -21,5 +21,5 @@
 /packages/tools/eslint-plugin                   @alber70g
 /packages/tools/pactjs-cli                      @alber70g @javadkh2
 /packages/tools/shared-config                   @alber70g
-/packages/tools/e2e-tests                       @ghislain89
-/packages/tools/integration-tests               @ghislain89
+/packages/tools/e2e-tests                       @ghislain89 @sstraatemans @sanderlooijenga @KristinaSpasevska @MRVDH @nil-amrutlal-dept
+/packages/tools/integration-tests               @ghislain89 @sstraatemans @sanderlooijenga @KristinaSpasevska @MRVDH @nil-amrutlal-dept

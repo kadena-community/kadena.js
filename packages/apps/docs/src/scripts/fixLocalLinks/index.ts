@@ -7,13 +7,7 @@ import {
   getUrlNameOfPageFile,
 } from '@kadena/docs-tools';
 import * as fs from 'fs';
-import type {
-  Definition,
-  Heading,
-  Image,
-  Link,
-  Text,
-} from 'mdast-util-from-markdown/lib';
+import type { Definition, Heading, Image, Link, Text } from 'mdast';
 import { toMarkdown } from 'mdast-util-to-markdown';
 import { remark } from 'remark';
 import type { Root } from 'remark-gfm';

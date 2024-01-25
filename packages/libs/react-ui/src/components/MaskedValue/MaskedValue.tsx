@@ -1,7 +1,7 @@
 'use client';
-import { SystemIcon } from '@components/Icon';
 import type { FC } from 'react';
 import React, { useState } from 'react';
+import { SystemIcon } from '../Icon';
 import {
   iconContainer,
   titleContainer,

@@ -1,6 +1,6 @@
 {
   "name": "@kadena/graph",
-  "version": "1.0.6",
+  "version": "0.1.1",
   "description": "GraphQL server, available for running your own GraphQL endpoint. This project uses chainweb-data as the datasource.",
   "repository": {
     "type": "git",
@@ -57,6 +57,7 @@
     "@pothos/plugin-relay": "~3.45.1",
     "@pothos/plugin-tracing": "^0.5.8",
     "@prisma/client": "^5.7.1",
+    "cli-highlight": "^2.1.11",
     "commander": "^11.0.0",
     "dataloader": "^2.2.2",
     "debug": "~4.3.4",

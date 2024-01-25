@@ -7,10 +7,7 @@ import type { ResponsiveInputType } from './Grid.css';
 import { containerColumnVariants, gridContainerClass } from './Grid.css';
 
 export interface IGridProps
-  extends Omit<
-    IBoxProps,
-    'display' | 'flex' | 'alignItems' | 'flexDirection' | 'justifyContent'
-  > {
+  extends Omit<IBoxProps, 'display' | 'flex' | 'flexDirection'> {
   columns?: ResponsiveInputType;
 }
 

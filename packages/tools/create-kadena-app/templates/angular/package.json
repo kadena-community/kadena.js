@@ -1,0 +1,58 @@
+{
+  "name": "angular",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Angular starter project with @kadena/client integration",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/create-kadena-app.git",
+    "directory": "templates/angular"
+  },
+  "license": "ISC",
+  "scripts": {
+    "build": "ng build",
+    "format": "prettier --write .",
+    "ng": "ng",
+    "pactjs:generate:contracts": "pactjs contract-generate --file ./pact/message-store.pact; pactjs contract-generate --file ./pact/root/coin-v5.pact",
+    "start": "ng serve",
+    "test": "ng test",
+    "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
+    "watch": "ng build --watch --configuration development"
+  },
+  "dependencies": {
+    "@angular/animations": "^17.0.2",
+    "@angular/common": "^17.0.2",
+    "@angular/compiler": "^17.0.2",
+    "@angular/core": "^17.0.2",
+    "@angular/forms": "^17.0.2",
+    "@angular/material": "^17.0.0",
+    "@angular/platform-browser": "^17.0.2",
+    "@angular/platform-browser-dynamic": "^17.0.2",
+    "@angular/router": "^17.0.2",
+    "@kadena/client": "^1.6.2",
+    "rxjs": "~7.8.1",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.14.2"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^17.0.0",
+    "@angular/cli": "^17.0.0",
+    "@angular/compiler-cli": "^17.0.2",
+    "@kadena/pactjs-cli": "~1.6.1",
+    "@kadena/types": "^0.5.2",
+    "@types/jasmine": "~5.1.2",
+    "@types/node": "^20.9.0",
+    "jasmine-core": "~5.1.1",
+    "karma": "~6.4.2",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.1",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "prettier": "^3.0.3",
+    "prettier-eslint": "^16.1.2",
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "prettier-plugin-packagejson": "^2.4.6",
+    "typescript": "~5.2.2"
+  }
+}
+
