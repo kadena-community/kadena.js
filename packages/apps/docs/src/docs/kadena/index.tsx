@@ -47,16 +47,10 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               background="marmalade"
             >
               <BrowseSection marker="none">
-                <Link
-                  className={docsCardLink}
-                  href="/kadena/glossary"
-                >
+                <Link className={docsCardLink} href="/kadena/glossary">
                   Glossary
                 </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/kadena/resources"
-                >
+                <Link className={docsCardLink} href="/kadena/resources">
                   Articles, videos, and more
                 </Link>
               </BrowseSection>
