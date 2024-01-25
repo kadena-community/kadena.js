@@ -160,100 +160,140 @@ To attempt to cast a vote with the voter account:
 
 ## Implement gas station interface
 
-The `election-gas-station` will become the second module in your `election` smart contract.
-Create a file `./pact/election-gas-station.pact` with the following content. Replace the
-namespace with your own principal namespace. Just like the `election` module, this module
-will be governed by the `admin-keyset`.
+In this tutorial, you'll add a second Pact module—the `election-gas-station` module—to your `election` smart contract.
 
-```pact
-(namespace 'n_fd020525c953aa002f20fb81a920982b175cdf1a)
+To create the gas station module:
 
-(module election-gas-station GOVERNANCE
-  (defcap GOVERNANCE ()
-    (enforce-keyset "n_fd020525c953aa002f20fb81a920982b175cdf1a.admin-keyset")
-  )
+1. Open the `election-dapp/pact` folder in the code editor on your computer.
 
-  (implements gas-payer-v1)
-)
-```
+2. Create a new `election-gas-station.pact` file in the `pact` folder.
 
-Create a `./pact/election-gas-station.repl` file as follows, to verify that the module
-loads correctly. Run the file.
+3. Add the minimal Pact code required to define a module.
+   
+   Remember that a module definition requires a namespace, a governing owner, and at least one function.
+   In this case, the function you want to add to the module is an implementation of the `gas-payer-v1` interface.
+   Because you're deploying the module in your own principal namespace on the local development network, be sure you replace the namespace and keyset with the principal namespace you defined on the development network.
+   
+   For example:
 
-```pact
-(load "setup.repl")
+   ```pact
+   (namespace 'n_14912521e87a6d387157d526b281bde8422371d1)
+   
+   (module election-gas-station GOVERNANCE
+     (defcap GOVERNANCE ()
+       (enforce-keyset "n_14912521e87a6d387157d526b281bde8422371d1.admin-keyset")
+     )
+   
+     (implements gas-payer-v1)
+   )
+   ```
+   
+   As you can see in this example, the new module—like the `election` module—is governed by your `admin-keyset`.
 
-(begin-tx "Load election gas station module")
-  (load "root/gas-payer-v1.pact")
-  (load "election-gas-station.pact")
-(commit-tx)
-```
+1. Create a `election-gas-station.repl` file in the `pact` folder and add the following lines of code:
+   
+   ```pact
+   (load "setup.repl")
+   
+   (begin-tx "Load election gas station module")
+     (load "root/gas-payer-v1.pact")
+     (load "election-gas-station.pact")
+   (commit-tx)
+   ```
 
-You will notice that the module does not load correctly. Because you merely defined that
-the module should implement the `gas-payer-v1` interface, but you have not actually implemented
-that interface yet, the error
-`Error: found unimplemented member while resolving model constraints: GAS_PAYER` appears.
-You can find the signature of this capability in `./pact/root/gas-payer-v1.pact`. It is
-included in this project, so you can test your module that relies on it, in the Pact
-REPL. This interface is already pre-installed on Devnet, Testnet and Mainnet. Therefore,
-it is not needed to deploy it along with your `election-gas-station` module. The documentation
-inside the `gas-payer-v1` interface file states that `GAS_PAYER` should compose a capability.
-You can include a capability within a capability using the built-in `compose-capability`
-function. Add a capability `ALLOW_GAS` that always returns `true` and compose the `GAS_PAYER`
-capability with it as follows. Then, run `./pact/election-gas-station.repl` again.
+2. Execute the transaction in the Pact REPL running locally or in the Docker container.
 
-```pact
-(defcap GAS_PAYER:bool
-  ( user:string
-    limit:integer
-    price:decimal
-  )
-  (compose-capability (ALLOW_GAS))
-)
+   If the Pact REPL is installed locally, run the following command inside the `pact` folder in the terminal shell:
 
-(defcap ALLOW_GAS () true)
-```
+   ```bash
+   pact election-gas-station.repl -t
+   ```
+   
+   As before, if you don't have the Pact REPL installed locally, you can load the file in the [Pact REPL](http://localhost:8080/ttyd/pact-cli/) with the following command:
 
-The test will now fail with
-`Error: found unimplemented member while resolving model constraints: create-gas-payer-guard`.
-Indeed, there is a function `create-gas-payer-guard` defined in the `gas-payer-v1` interface
-that still needs to be implemented. The documentation inside is a bit cryptic, but it suggests
-to require something like the `GAS_PAYER` capability without the parameters. To achieve this,
-you can leverage the built-in function `create-capability-guard` and pass the `ALLOW_GAS`
-capability into it. The function will return a guard that requires the respective capability.
+   ```pact
+   (load "election-gas-station.repl")
+   ```
 
-```pact
-(namespace 'n_fd020525c953aa002f20fb81a920982b175cdf1a)
+   If you are using the Pact REPL in a browser, you can replace the `pact election-gas-station.repl -t` command with `(load "election-gas-station.repl")` throughout this tutorial.
 
-(module election-gas-station GOVERNANCE
-  (defcap GOVERNANCE ()
-    (enforce-keyset "n_fd020525c953aa002f20fb81a920982b175cdf1a.admin-keyset")
-  )
+   You should see that this transaction fails with an error similar to the following:
 
-  (implements gas-payer-v1)
+   ```bash
+   election-gas-station.pact:3:3:Error: found unimplemented member while resolving model constraints: GAS_PAYER at election-gas-station.pact:3:3: module
+   Load failed
+   ```
+   
+   The `gas-payer-v1` interface you have referenced in your `election-gas-station.pact` file is defined in the `election-dapp/pact/root/gas-payer-v1.pact` file.
+   This file is included in your project so that you can test your module in the Pact REPL.
+   The interface is also pre-installed on the Kadena development, test, and main networks, so you don't need to deploy it when you deploy the `election-gas-station` module.
+   However, you haven't implemented the `gas-payer-v1` interface yet in the `election-gas-station.pact` file.
 
-  (defcap GAS_PAYER:bool
-    ( user:string
-      limit:integer
-      price:decimal
-    )
-    (compose-capability (ALLOW_GAS))
-  )
+1. Open the `election-dapp/pact/root/gas-payer-v1.pact` file in the code editor on your computer and review the signature for the interface.
+   
+   The documentation for the `gas-payer-v1` interface file states that `GAS_PAYER` should compose a capability.
+   You can include a capability within a capability using the built-in `compose-capability` function. 
+   From this documentation, you know that you need to add the `ALLOW_GAS` capability that always returns `true` within the `GAS_PAYER` capability to implement the `gas-payer-v1` interface.
 
-  (defcap ALLOW_GAS () true)
+2. Add the capability `ALLOW_GAS` within the `GAS_PAYER` capability in the `election-gas-station.pact` file with the following lines of code:
+   
+   ```pact
+   (defcap GAS_PAYER:bool
+     ( user:string
+       limit:integer
+       price:decimal
+     )
+     (compose-capability (ALLOW_GAS))
+   )
+     
+   (defcap ALLOW_GAS () true)
+   ```
 
-  (defun create-gas-payer-guard:guard ()
-    (create-capability-guard (ALLOW_GAS))
-  )
-)
-```
+3. Execute the transaction using the `pact` command-line program:
+   
+   ```pact
+   pact election-gas-station.repl -t
+   ```
+   
+   You should see that this transaction fails with an error similar to the following:
 
-Run `./pact/election-gas-station.repl` again and observe that the test loads successfully.
-Now that you have a working implementation of the `gas-payer-v1` interface, you can deploy
-your new module to Devnet so you can test if it can already pay the gas fee for votes
-cast via the election website.
+   ```bash
+   election-gas-station.pact:3:3:Error: found unimplemented member while resolving model constraints: create-gas-payer-guard at election-gas-station.pact:3:3: module
+   Load failed
+   ```
 
-## Deploy to devnet
+   If you review the `gas-payer-v1` interface again, you'll see it defines a `create-gas-payer-guard` function
+   that you haven't implemented yet in your `election-gas-station` module.
+   To implement the required guard, you can use the built-in `create-capability-guard` function and pass the `ALLOW_GAS` capability into it. 
+   The function returns a guard for the `ALLOW_GAS` capability.
+
+4. Add the  `create-capability-guard` function and pass the `ALLOW_GAS` capability into it with the following lines of code:
+   
+   ```pact
+     (defun create-gas-payer-guard:guard ()
+       (create-capability-guard (ALLOW_GAS))
+     )
+   ```
+
+3. Execute the transaction using the `pact` command-line program:
+   
+   ```pact
+   pact election-gas-station.repl -t
+   ```
+   
+   You should see that the transaction succeeds with output similar to the following:
+
+   ```bash
+   election-gas-station.pact:3:3:Trace: Loaded module n_14912521e87a6d387157d526b281bde8422371d1.election-gas-station, hash UKFa_ybmNJeGY1JJHtz4mv5h5QaN6-29WMIa4H6SIz8
+   election-gas-station.repl:6:0:Trace: Commit Tx 3: Load election gas station module
+   Load successful
+   ```
+
+   Now that you have a working implementation of the `gas-payer-v1` interface, you can deploy the new module on the development network to test whether it can pay the transaction fee for votes cast using the election application.
+
+## Deploy on the development networ
+
+To deploy the new module:
 
 Open up a terminal and change the directory to the `./snippets` folder in the root of
 your project. Execute the `./deploy-gas-station.ts` snippet by running the following command.
