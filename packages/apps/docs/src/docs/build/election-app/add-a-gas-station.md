@@ -268,7 +268,7 @@ To create the gas station module:
    To implement the required guard, you can use the built-in `create-capability-guard` function and pass the `ALLOW_GAS` capability into it. 
    The function returns a guard for the `ALLOW_GAS` capability.
 
-4. Add the  `create-capability-guard` function and pass the `ALLOW_GAS` capability into it with the following lines of code:
+4. Add the `create-capability-guard` function and pass the `ALLOW_GAS` capability into it with the following lines of code:
    
    ```pact
      (defun create-gas-payer-guard:guard ()
@@ -276,7 +276,7 @@ To create the gas station module:
      )
    ```
 
-3. Execute the transaction using the `pact` command-line program:
+5. Execute the transaction using the `pact` command-line program:
    
    ```pact
    pact election-gas-station.repl -t
