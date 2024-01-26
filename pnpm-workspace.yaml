@@ -1,3 +1,2 @@
 packages:
   - 'packages/*/*'
-  - 'packages/apps/dev-wallet/*'
