@@ -1,13 +1,15 @@
 ---
-title: FAQ
+title: Kadena FAQ
 description: Answers to commonly asked questions about Kadena.
-menu: Support
-label: FAQ
+menu: Kadena FAQ
+label: Kadena FAQ
 order: 5
 layout: full
 ---
 
 # FAQ
+
+This page answers some of the most frequently asked questions about the Kadena network.
 
 ### What consensus mechanism does Kadena use?
 
