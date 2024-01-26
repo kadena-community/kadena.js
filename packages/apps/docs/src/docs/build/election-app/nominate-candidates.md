@@ -54,7 +54,7 @@ To define the database schema and table:
 
    In this code, `defschema` defines a `candidate-schema` for a database table with two columns: `name` of type string and `votes` of type integer.
 
-1. Create the table outside of the election module by adding the following lines of code at the end of `./pact/election.pact` file, after the closing parenthesis (`)`) of the `election` module definition:
+1. Create the table outside of the election module by adding the following lines of code at the end of the `./pact/election.pact` file, after the closing parenthesis (`)`) of the `election` module definition:
 
    ```pact
    (if (read-msg "init-candidates")
@@ -336,7 +336,7 @@ To add candidates to the database:
    ```   
 
    The key of each row in a table must be unique.
-   You can add a transaction the the `election.repl` file to test that you can't insert a row with a duplicate key.
+   You can add a transaction to the `election.repl` file to test that you can't insert a row with a duplicate key.
    For example:
    
    ```pact
@@ -359,7 +359,7 @@ To add candidates to the database:
    Load successful
    ```
 
-3. Verify you only have three candidates in the table by adding the following assertion to `election-dapp/pact/election.repl`
+3. Verify that you only have three candidates in the table by adding the following assertion to the `election-dapp/pact/election.repl` file:
 
    ```pact
    (begin-tx "List candidates")
@@ -372,7 +372,7 @@ To add candidates to the database:
    (commit-tx)
    ```
 
-2. Execute the transaction using the `pact` command-line program:
+4. Execute the transaction using the `pact` command-line program:
    
    ```pact
    pact election.repl -t
@@ -515,7 +515,7 @@ To update the `election` module on the development network:
    You can copy this account name from Chainweaver when viewing the account watch list. 
   
    In addition to the account name, you pass `upgrade` and `init-candidates` to add`{"init-candidates": true, "upgrade": true}` to the transaction data.
-   These fields are required to allow you to upgrade the module and execute the `(create-table candidates)` statement from your `election` module.
+   These fields are required to allow you to update the module and execute the `(create-table candidates)` statement from your `election` module.
 
 5. Click **Sign All** in Chainweaver to sign the request.
    
@@ -689,7 +689,8 @@ To modify the frontend to add candidates from the development network:
    These lines correspond to the `(env-data)` and `(env-sig)` code you specified in your `./pact/election.repl` file.
    Unlike the transaction for listing candidates, the transaction for adding candidates must be sent to the blockchain, so you must pay a transaction fee—in units of gas—for the resources consumed to process the transaction.
    
-   The value of the `senderAccount` field in the metadata specifies the account that pays for gas. This is important to remember because, in the [Add a gas station](/build/election/add-a-gas-station) tutorial, you'll specify the account of a **gas station** to pay for transactions that are signed by voters.
+   The value of the `senderAccount` field in the metadata specifies the account that pays for gas.
+   This is important to remember because, in the [Add a gas station](/build/election/add-a-gas-station) tutorial, you'll specify the account of a **gas station** to pay for transactions that are signed by voters.
    However, the transaction to add a candidate must be signed and paid for by the same account.
 
    ```typescript

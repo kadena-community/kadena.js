@@ -291,197 +291,396 @@ To create the gas station module:
 
    Now that you have a working implementation of the `gas-payer-v1` interface, you can deploy the new module on the development network to test whether it can pay the transaction fee for votes cast using the election application.
 
-## Deploy on the development networ
+## Deploy the Pact module on the development network
 
-To deploy the new module:
+To deploy the new Pact module on the development network:
 
-Open up a terminal and change the directory to the `./snippets` folder in the root of
-your project. Execute the `./deploy-gas-station.ts` snippet by running the following command.
-Replace `k:account` with your admin account. The content of `./deploy-gas-station.ts` is
-roughly the same as `./deploy-module.ts`, except that it deploys the 
-`./pact/election-gas-station.repl` file.
+1. Verify the development network is currently running on your local computer.
 
-```bash
-npm run deploy-gas-station:devnet -- k:account
-```
+2. Open and unlock the Chainweaver desktop or web application and verify that:
 
-The Chainweaver window usually comes to the foreground as soon as there is a new signing
-request for one of your accounts. If not, manually bring the Chainweaver window
-to the foreground. You will see a modal with details of the signing request.
-Click `Sign All` to sign the request and switch back to your terminal window.
-If everything went well, you will see something similar to the following output.
+   - You're connected to **development network (devnet)** from the network list.
+   - Your administrative account name with the **k:** prefix exists on chain 1.
+   - Your administrative account name is funded with KDA on chain 1. 
+   
+   You're going to use Chainweaver to sign the transaction that deploys the module. 
 
-```bash
-{
-  status: 'success',
-  data: 'Loaded module n_fd020525c953aa002f20fb81a920982b175cdf1a.election-gas-station, hash HM4XCH_oYiXxIx6mjShn2COyOfRhK3u4A37yqomNI0c'
-}
-```
+3. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
 
-Congratulations! You have added a second module to your smart contract. You deployed the
-`election-gas-station` module that is governed by the `admin-keyset` in your principal namespace on your local Devnet.
-If you would now run the `list-modules:devnet` script, you will find your new module in the list
-of deployed modules.
+1. Deploy your `election-gas-station` module on the development network by running a command similar to the following with your administrative account name:
+   
+   ```bash
+   npm run deploy-gas-station:devnet -- k:<your-public-key>
+   ```
+   
+   Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/election/add-admin-account).
+   You can copy this account name from Chainweaver when viewing the account watch list.
 
-```bash
-npm run list-modules:devnet
-```
+    The `election-dapp/deploy-gas-station.ts` script is similar to the `election-dapp/deploy-module.ts` script, except that it deploys the `election-gas-station.pact` module.
 
-## Voting
+   When you run the script, you should see Chainweaver display a QuickSign Request.
+  
+2. Click **Sign All** to sign the request.
+   
+   After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
+   For example, you should see output similar to the following:
 
-Open the file `frontend/src/repositories/vote/DevnetVoteRepository.ts` and in the `vote`
-function change the line `.addSigner(accountKey(account))` into the following.
+   ```bash
+   {
+     gas: 60414,
+     result: {
+       status: 'success',
+       data: 'Loaded module n_14912521e87a6d387157d526b281bde8422371d1.election-gas-station, hash UKFa_ybmNJeGY1JJHtz4mv5h5QaN6-29WMIa4H6SIz8'
+     },
+     reqKey: '0b0yxjVLgKusW5obhDJON6jww1BF0cTfn3O2aiffV7U',
+     logs: 'lYZH-dn07T7PmnxUMf-h4vch8sPoHfz42olDtV153fA',
+     events: [
+       {
+         params: [Array],
+         name: 'TRANSFER',
+         module: [Object],
+         moduleHash: 'M1gabakqkEi_1N8dRKt4z5lEv1kuC_nxLTnyDCuZIK0'
+       }
+     ],
+     metaData: {
+       publicMeta: {
+         creationTime: 1706218447,
+         ttl: 28800,
+         gasLimit: 100000,
+         chainId: '1',
+         gasPrice: 1e-8,
+         sender: 'k:5ec41b89d323398a609ffd54581f2bd6afc706858063e8f3e8bc76dc5c35e2c0'
+       },
+       blockTime: 1706218445726808,
+       prevBlockHash: 'so-M2Qv_sPH9se6OigQEfrznrQgl6H5XTI5xMdXK-TY',
+       blockHeight: 14684
+     },
+     continuation: null,
+     txId: 14728,
+     preflightWarnings: []
+   }
+   {
+     status: 'success',
+     data: 'Loaded module n_14912521e87a6d387157d526b281bde8422371d1.election-gas-station, hash UKFa_ybmNJeGY1JJHtz4mv5h5QaN6-29WMIa4H6SIz8'
+   }
+   ```
 
-```pact
-.addSigner(accountKey(account), (withCapability) => [
-  withCapability(`${NAMESPACE}.election-gas-station.GAS_PAYER`, account, { int: 0 }, { decimal: '0.0' }),
-])
-```
+   With this transaction, you now have two Pact modules in your `election` smart contract. 
 
-This scopes the signature of the account that votes to the `GAS_PAYER` capability. The voter account name and
-zero (unlimited) limits for the amount of gas and the gas price are passed as arguments. Also, change the
-`senderAccount` in the transaction's metadata to `'election-gas-station'`, to indicate that the election
-gas station account will pay the gas fee of the transaction instead of the voter account.
+3. Verify that the `election-gas-station` module is deployed on the development network by running the following command:
 
-Return to the election website and try to vote again with the voter account. The transaction will still fail
-with the error: `Failure: Tx Failed: Insufficient funds`. Apparently, the gas station does not work as it is
-supposed to, yet. The reason is that the gas station module attempts to pay for gas using the `senderAccount`,
-but this account does not exist. It has to be created first. It also needs to have a positive KDA balance.
-Otherwise, the transaction will still fail due to insufficient funds in the gas station account.
+   ```bash
+   npm run list-modules:devnet
+   ```
+
+   You should see your modules listed in output similar to the following:
+
+   ```bash
+   'n_14912521e87a6d387157d526b281bde8422371d1.election',
+   'n_14912521e87a6d387157d526b281bde8422371d1.election-gas-station',
+   ```
+
+## Update the vote function
+
+The next step is to ensure that the signature of the account that votes is within the scope of the `GAS_PAYER` capability. 
+To do this, you'll update the `vote` function to accept the following arguments:
+
+- The voter account name.
+- Zero as the gas limit to allow unlimited gas.
+- Zero as the gas price. 
+
+You'll also change the `senderAccount` in the transaction metadata to use the`'election-gas-station'` module so that the election gas station account pays the transaction fee for voting transactions instead of the voter account.
+
+To update the `vote` function:
+
+1. Open the `frontend/src/repositories/vote/DevnetVoteRepository.ts` file in the code editor on your computer.
+
+2. Update the `vote` function to change the `.addSigner(accountKey(account))` code as follows:
+
+   ```typescript
+   .addSigner(accountKey(account), (withCapability) => [
+     withCapability(`${NAMESPACE}.election-gas-station.GAS_PAYER`, account, { int: 0 }, { decimal: '0.0' }),
+   ])
+   ```
+
+3. Update the `senderAccount` in the transaction metadata to be `'election-gas-station'` as follows: 
+   
+   ```typescript
+   .setMeta({
+      chainId: CHAIN_ID,
+      ttl: 28000,
+      gasLimit: 100000,
+      gasPrice: 0.000001,
+      senderAccount: 'election-gas-station',
+   })
+   ```
+
+   If you have closed the election application you previously had running, restart it using the `devnet` backend, then open `http://localhost:5173` in your browser.
+
+4. Click **Set Account**, copy and paste the voter account name from Chainweaver to vote using that account, then click **Save**.
+5. Click **Vote Now** for a candidate, sign the transaction, then open the Developer Tools for your browser and view the console output.
+
+   In the console, you'll see an error similar to the following:
+   
+   ```console
+   Uncaught (in promise) Error: Validation failed for hash "shH9LgwlSuvMtm2hR-LvxFTYUOOA-iw359d4y45xO7M": Attempt to buy gas failed with: (read coin-table sender): Failure: Tx Failed: read: row not found: election-gas-station
+   ```
+   
+   As this error indicates, the `election-gas-station` account you specified for the `senderAccount` doesn't exist yet.
+   You need to create and fund the account before it can be used by voters.
 
 ## Create the gas station account
 
-Actually, `election-gas-station` is not the most ideal name for the gas station account. As explained in the
-recommended reading, it is more secure to use a principal account name. Whereas your admin and voter accounts
-are guarded by a keyset, the gas station account will be guarded by the `ALLOW_GAS` capability. The gas station
-account is thus an example of a capability guarded account. The built-in Pact function `create-pincipal` can
-automatically create an account name based on a capability guard for you if you pass the capability guard as
-the first and only argument into it. The resulting account name will be prefixed with the `c:` of `capability`.
-Define the gas station account name as a constant at the bottom of the `election-gas-station` module in the
-`./pact/election-gas-station.pact` file.
+To make the gas station account more secure, you can create it using a principal account name and guard access to it by using the `ALLOW_GAS` capability. 
+Because the gas station account is a capability-guarded account, you can use the `create-principal` Pact function to automatically create its account name with a `c:` prefix. 
+You can then define the gas station account name as a constant in the `election-gas-station.pact` file.
 
-```pact
-(defconst GAS_STATION_ACCOUNT (create-principal (create-gas-payer-guard)))
-```
+To create a capability-guarded account:
 
-Update the `./pact/election-gas-station.repl` file as follows to print out the capability guarded gas station
+1. Open the `election-dapp/pact` folder in the code editor on your computer.
+2. Open the `election-gas-station.pact` file and add the following line of code to the end of the module definition:
+
+   ```pact
+   (defconst GAS_STATION_ACCOUNT (create-principal (create-gas-payer-guard)))
+   ```
+
+1. Open the `./pact/election-gas-station.repl` file and update the transaction to display the capability-guarded gas station
 account name when you run the file.
 
-```pact
-(load "setup.repl")
+   ```pact
+   (load "setup.repl")
+   
+   (begin-tx "Load election gas station module")
+     (load "root/gas-payer-v1.pact")
+     (load "election-gas-station.pact")
+     [GAS_STATION_ACCOUNT]
+   (commit-tx)
+   ```
 
-(begin-tx "Load election gas station module")
-  (load "root/gas-payer-v1.pact")
-  (load "election-gas-station.pact")
-  [GAS_STATION_ACCOUNT]
-(commit-tx)
-```
+3. Execute the transaction using the `pact` command-line program:
+   
+   ```pact
+   pact election-gas-station.repl -t
+   ```
+   
+   You should see that the transaction succeeds with output similar to the following:
 
-In the `./pact/election-gas-station.pact` file, you can use the `create-account` function of the
-`coin` module to create the gas station account in a function called `init` in the `election-gas-station`
-module, as follows. The first argument of the function is the account name you just defined and the second
-argument is the guard for the account.
+   ```bash
+   election-gas-station.repl:5:2:Trace: Loading election-gas-station.pact...
+   election-gas-station.pact:1:0:Trace: Namespace set to n_14912521e87a6d387157d526b281bde8422371d1
+   election-gas-station.pact:3:3:Trace: Loaded module n_14912521e87a6d387157d526b281bde8422371d1.election-gas-station, hash -idAeKp54xkfddZ9MIxQw8GCD4jTZ_Ow8pXWR9zwC-k
+   election-gas-station.repl:6:0:Trace: Commit Tx 3: Load election gas station module
+   Load successful
+   ```
 
-```pact
-(defun init ()
-  (coin.create-account GAS_STATION_ACCOUNT (create-gas-payer-guard))
-)
-```
+4. Open the `election-gas-station.pact` file in the code editor on your computer.
 
-Add an if-statement after the module declaration that calls this `init` function if the module is deployed with
-data `{ "init": true }`.
+5. Add an `init` function that uses the `create-account` function from the `coin` module to create the gas station account in the `election-gas-station` module:
+   
+   ```pact
+   (defun init ()
+     (coin.create-account GAS_STATION_ACCOUNT (create-gas-payer-guard))
+   )
+   ```
 
-```pact
-(if (read-msg 'init)
-  [(init)]
-  ["not creating the gas station account"]
-)
-```
+   In this code:
+   
+   - The first argument of the function is the account name you just defined.
+   - The second argument is the guard for the account.
 
-Update `./pact/election-gas-station.repl` to set `init` to true for the next transactions, by adding the following
-code after loading `setup.repl`. Run the file again to verify that the election module still works before you upgrade
-the module on Devnet.
+1. Add an if-statement after the module definition that calls the `init` function if the module is deployed with
+ `{ "init": true }` in the transaction data:
 
-```pact
-(env-data
-  { 'init: true }
-)
-```
+   ```pact
+   (if (read-msg 'init)
+     [(init)]
+     ["not creating the gas station account"]
+   )
+   ```
 
-Open a terminal window and upgrade the `election-gas-station` module on Devnet by executing the following command
-in the `./snippets` folder of your project. Replace `k:account` with your admin account.
+1. Update the `election-gas-station.repl` file to set `init` to true for the next transactions by adding the following
+lines of code after loading the `setup.repl` module:
 
-```bash
-npm run deploy-gas-station:devnet -- k:account upgrade init
-```
+   ```pact
+   (env-data
+     { 'init: true }
+   )
+   ```
+3. Execute the transaction using the `pact` command-line program:
+   
+   ```pact
+   pact election-gas-station.repl -t
+   ```
+   
+   You should see that the transaction succeeds with output similar to the following:
 
-Verify that the gas station account now exists with a 0 KDA balance on Devnet by running the
-following script. Replace `c:account` with the actual gas station account name that you printed by running
-`./pact/election-gas-station.repl`.
+   ```bash
+   election-gas-station.pact:30:0:Trace: ["Write succeeded"]
+   election-gas-station.repl:10:2:Trace: ["c:qjp3-APtX5tTTSvQSMbJ1KZ1hCru238IUirIqN6tkMI"]
+   election-gas-station.repl:11:0:Trace: Commit Tx 3: Load election gas station module
+   Load successful
+   ```
+   
+   If you're successful loading the election-gas-station module in the Pact REPL, you can update the module deployed on the development network.
 
-```bash
-npm run coin-details:devnet -- c:account
-```
+## Update the gas station module
 
-If everything went well, you should see output similar to this.
+To deploy the new Pact module on the development network:
 
-```bash
-{
-  guard: {
-    cgPactId: null,
-    cgArgs: [],
-    cgName: 'n_fd020525c953aa002f20fb81a920982b175cdf1a.election-gas-station.ALLOW_GAS'
-  },
-  balance: 0,
-  account: 'c:Jjn2uym_xGD32ojhWdPjB5mgIbDwgXRRvkWmFl5n4gg'
-}
-```
+1. Verify the development network is currently running on your local computer.
 
-The account details show the capability guard that guards the gas station account and was used to generate
-the `c:` account name. Notice how the `ALLOW_GAS` capability is prefixed with the module name as well as your
-principal namespace. Since the principal namespace is based on your admin keyset, and the principal account
-of the gas station is based on a capability including that principal namespace, it can be concluded that the
-gas station account name you created is unique to your admin account. This makes it impossible for someone else
-with a different keyset to squat your gas station account on another chain. That is how principal accounts in
-principal namespaces provide better security than vanity account names in the `free` namespace.
+2. Open and unlock the Chainweaver desktop or web application and verify that:
+
+   - You're connected to **development network (devnet)** from the network list.
+   - Your administrative account name with the **k:** prefix exists on chain 1.
+   - Your administrative account name is funded with KDA on chain 1. 
+   
+   You're going to use Chainweaver to sign the transaction that updates the module. 
+
+3. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
+
+1. Deploy your `election-gas-station` module on the development network by running a command similar to the following with your administrative account name:
+   
+   ```bash
+   npm run deploy-gas-station:devnet -- k:<your-public-key> upgrade init
+   ```
+   
+   Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/election/add-admin-account).
+   You can copy this account name from Chainweaver when viewing the account watch list.
+
+2. Click **Sign All** to sign the request.
+   
+   After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
+   For example, you should see output similar to the following:
+
+   ```bash
+   { status: 'success', data: [ 'Write succeeded' ] }
+   ```
+
+1. Verify that the gas station account now exists with a 0 KDA balance on development network by running the
+following script. 
+
+   ```bash
+   npm run coin-details:devnet -- c:<capability-guarded-account-name>
+   ```
+   
+   Replace `c:<capability-guarded-account-name>` with the gas station account name displayed when you tested the `election-gas-station.repl` file in the Pact REPL.
+
+   After running the script, you should see output similar to the following:
+
+   ```bash
+   {
+     guard: {
+       cgPactId: null,
+       cgArgs: [],
+       cgName: 'n_14912521e87a6d387157d526b281bde8422371d1.election-gas-station.ALLOW_GAS'
+     },
+     balance: 0,
+     account: 'c:qjp3-APtX5tTTSvQSMbJ1KZ1hCru238IUirIqN6tkMI'
+   }   
+   ```
+   
+   In the account details, you can see that the `ALLOW_GAS` capability is used to guard the gas station account.
+   The `ALLOW_GAS` capability has a prefix that includes your principal namespace and the module name.
+   Because the principal namespace is based on your administrative keyset and the principal account of the gas station is based on a capability including that principal namespace, you know that the gas station account name is unique to your administrative account. 
+   This account naming scheme makes it impossible for someone with a different keyset to use your gas station account on another chain. 
+   As a result, principal accounts in principal namespaces are far more secure than vanity account names in the `free` namespace.
 
 ## Fund the gas station account
 
-Execute the `./transfer.ts` snippet by running the following command to transfer 1 KDA from your admin
-account to the gas station account. Replace `k:account` with your admin account and replace `c:account`
-with the actual account name of your gas station. The transaction
-inside this file is similar to `./transfer-create.ts`, except that it does not use the special
-`sender00` account, but your own election admin account to transfer KDA from. Therefore, the transaction
-needs to be signed with Chainweaver instead of a private key. Also, the `transfer` function of the
-`coin` module is used. This function requires that the receiving account already exists on the
-blockchain and will not create the account if it does not exist like `transfer-create` would.
+Now that you have created and deployed a secure gas station account, you're ready to fund the account to pay transaction fees.
 
-```bash
-npm run transfer:devnet -- k:account c:account 1
+To fund the gas station account:
+
+1. Verify the development network is currently running on your local computer.
+
+2. Open and unlock the Chainweaver desktop or web application and verify that:
+
+   - You're connected to **development network (devnet)** from the network list.
+   - Your administrative account name with the **k:** prefix exists on chain 1.
+   - Your administrative account name is funded with KDA on chain 1. 
+   
+   You're going to use Chainweaver to sign the transaction that funds the gas station account. 
+
+3. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
+4. Transfer one KDA from your administrative account to the gas station account by running the following command:
+   
+   ```bash
+   npm run transfer:devnet -- k:<your-public-key> c:<capability-guarded-account-name> 1
+   ```
+   
+   Remember to replace `k:<your-public-key>` with the **account name** for your administrative account and `c:<capability-guarded-account-name>` with the account name for your gas station. 
+   The `transfer.ts` script is similar to the `transfer-create.ts` script except that this script:
+   
+   - Transfers KDA from your administrative account and must be signed using Chainweaver. Also, 
+   - Requires the receiving account to already exist on the blockchain.
+
+5. Click **Sign All** to sign the request.
+   
+   After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
+   For example, you should see output similar to the following:
+
+   ```bash
+   { status: 'success', data: [ 'Write succeeded' ] }
+   ```
+  
+6. Verify that the election gas station account now has a KDA balance on the development network by running the
+following script again.
+
+   ```bash
+   npm run coin-details:devnet -- c:<capability-guarded-account-name>
+   ```
+
+   Remember to replace `c:<capability-guarded-account-name>` with the account name for your gas station.
+
+   After running the script, you should see output similar to the following:
+
+   ```bash
+   {
+     guard: {
+       cgPactId: null,
+       cgArgs: [],
+       cgName: 'n_14912521e87a6d387157d526b281bde8422371d1.election-gas-station.ALLOW_GAS'
+     },
+     balance: 1,
+     account: 'c:qjp3-APtX5tTTSvQSMbJ1KZ1hCru238IUirIqN6tkMI'
+   }
+   ```
+
+## Modify the senderAccount
+
+Now that you have created a capability-guarded account for the gas station, you need to modify the vote function to use this account.
+
+To modify the `senderAccount` to use the gas station account:
+
+1. Open the `frontend/src/repositories/vote/DevnetVoteRepository.ts` file in the code editor on your computer.
+
+2. Update the `senderAccount` in the transaction metadata to replace `'election-gas-station'` with the `c:<capability-guarded-account-name>` account name for your gas station.
+   
+   For example: 
+   
+   ```typescript
+   .setMeta({
+      chainId: CHAIN_ID,
+      ttl: 28000,
+      gasLimit: 100000,
+      gasPrice: 0.000001,
+      senderAccount: 'c:qjp3-APtX5tTTSvQSMbJ1KZ1hCru238IUirIqN6tkMI',
+   })
+   ```
+
+## Set the scope for signatures
+
+At this point, most of the work required to use a gas station to pay transaction fees is done.
+However, if you attempt to vote in the election application and sign the transaction with the voter account name from Chainweaver, the Developer Tools console output will display an error similar to the following:
+
+```console
+App.tsx:42 Uncaught (in promise) {callStack: Array(0), type: 'TxFailure', message: 'Keyset failure (keys-all): [bbccc99e...]', info: ''}
 ```
 
-Verify that the election gasstation account now has a 1 KDA balance on Devnet by running the
-following script again. Replace `c:account` with the actual account name of your gas station.
+When you added the `ACCOUNT-OWNER` capability to the `election-dapp/pact/election.pact` file, you didn't set the scope for the capability.
 
-```bash
-npm run coin-details:devnet -- c:account
-```
-
-Now, everything should be set to allow voters to vote for free, because the `election-gas-station`
-account can pay the gas fee charged for the voting transaction.
-
-## Vote again
-
-Open the file `frontend/src/repositories/vote/DevnetVoteRepository.ts` and in the `vote`
-function change the value of `senderAccount` from `election-gas-station` to the `c:account` of the gas
-station that you created.
-
-Vist the election website in your browser, set the account to your voter account and vote for one of the
-candidates in the list. Unfortunately, the transaction still fails but this time with a
-different error: `Keyset failure`. This error occurs because the signature is not scoped to
-the `ACCOUNT-OWNER` capability used in `./pact/election.repl`. When you created this capability
-in the previous chapter, you did not scope the signatures to capabilities in `./pact/voting.repl`
-either. So, why was it still possible to vote with the voter account?
+You might recall in the previous tutorial that you tested voting with a transactionb similar to the following in the `voting.repl` file:
 
 ```pact
 (env-sigs
@@ -491,7 +690,7 @@ either. So, why was it still possible to vote with the voter account?
 )
 
 (begin-tx "Vote as voter")
-  (use n_fd020525c953aa002f20fb81a920982b175cdf1a.election)
+  (use n_14912521e87a6d387157d526b281bde8422371d1.election)
   (vote "voter" "1")
   (expect
     "Candidate A has 2 votes"
@@ -501,72 +700,102 @@ either. So, why was it still possible to vote with the voter account?
 (commit-tx)
 ```
 
-The `caps` field in the signature passed to `env-sigs` is an empty array. As a consequence, the
-signature of the transaction is not scoped to any capability and the signer automatically
-approves all capabilities required for the function execution. In the `vote` function of
-`frontend/src/repositories/vote/DevnetVoteRepository.ts` you scoped the signature of the
-transaction to the `GAS_PAYER` capability, but not to the `ACCOUNT-OWNER` capability. When
-you sign for some capabilities but not all capabilities required for execution of a transaction,
-the execution will fail at the point where a capability is required that you did not sign for.
+In this test from the previous tutorial, the `caps` field passed to `env-sigs` is an empty array. 
+As a consequence, the signature of the transaction is not scoped to any capability and the signer automatically
+approves all capabilities required for the function to execute. 
+
+In the `vote` function of `frontend/src/repositories/vote/DevnetVoteRepository.ts` you scoped the signature of the
+transaction to the `GAS_PAYER` capability, but not to the `ACCOUNT-OWNER` capability. 
+If you sign for some capabilities but not for all capabilities required for a transaction to be executed,
+the transaction will fail at the point where a capability is required that you did not sign for.
 Therefore, you need to add a second capability to the array passed to `addSigners` in
 the `vote` function in `frontend/src/repositories/vote/DevnetVoteRepository.ts`.
 
-```typescript
-withCapability(`${NAMESPACE}.election.ACCOUNT-OWNER`, account),
-```
+To set the scope for the `ACCOUNT-OWNER` capability:
 
-Now, try to vote again using the voter account on the election website. Sign the transaction
-and wait for it to complete. If all is well, you will see the number of votes on your favorite
-candidate increase by one. You have successfully exercised your democratic rights on the
-Kadena blockchain!
+1. Open the `frontend/src/repositories/vote/DevnetVoteRepository.ts` file in the code editor on your computer.
 
-## Add rules and guards
+2. Add the `ACCOUNT-OWNER` capability to the `.addSigner` with the following line of code:
+   
+   ```typescript
+   withCapability(`${NAMESPACE}.election.ACCOUNT-OWNER`, account),
+   ```
 
-There are still a few things left to add to the gas station module to make it more secure.
+## Cast a vote
 
-### Transaction gas price limit
+To cast a vote with the voter account:
 
-First, you can enforce an upper limit for the gas price of the transaction to ensure that
-the funds of the gas station account cannot be drained to quickly. Add the following functions
-to retrieve the transaction's gas price from the metadata of the transaction using the
+1. Verify the development network is currently running on your local computer.
+
+2. Open and unlock the Chainweaver desktop or web application and verify that:
+   
+   - You're connected to **development network (devnet)** from the network list.
+   - Your voter account name with the **k:** prefix exists on chain 1.
+   - Your voter account name has no KDA account balance (0) on chain 1.
+  
+
+   If you have closed the election application you previously had running:
+   
+   - Open the `election-dapp/frontend` folder in a terminal shell on your computer.
+   - Install the frontend dependencies by running the `npm install` command.
+   - Start the frontend application configured to use the `devnet` backend by running the `npm run start-devnet` command.
+
+3. Open `http://localhost:5173` in your browser and verify that there's at least one candidate listed.
+4. Click **Set Account**, copy and paste the voter account name from Chainweaver to vote using that account, then click **Save**.
+5.  Click **Vote Now** for a candidate, sign the transaction, and wait for it to complete. 
+
+## Enforce a limit on transaction fees
+
+You now have a functioning gas station for the election application.
+However some additional configuration is required to make the module more secure.
+
+For example, you should enforce an upper limit for transaction fees to help ensure that funds in the gas station account aren't drained too quickly.
+
+To set an upper limit for transaction fees:
+
+1. Open the `election-gas-station.pact` file in the code editor on your computer.
+
+1. Add the following functions to retrieve the transaction gas price from the metadata of the transaction using the
 built-in `chain-data` function and to enforce it to be below a given limit.
 
-```pact
-(defun chain-gas-price ()
-  (at 'gas-price (chain-data))
-)
+   ```pact
+   (defun chain-gas-price ()
+     (at 'gas-price (chain-data))
+   )
+   
+   (defun enforce-below-or-at-gas-price:bool (gasPrice:decimal)
+     (enforce (<= (chain-gas-price) gasPrice)
+       (format "Gas Price must be smaller than or equal to {}" [gasPrice]))
+   )
+   ```
 
-(defun enforce-below-or-at-gas-price:bool (gasPrice:decimal)
-  (enforce (<= (chain-gas-price) gasPrice)
-    (format "Gas Price must be smaller than or equal to {}" [gasPrice]))
-)
-```
+1. Update the `GAS_PAYER` capability by adding `(enforce-below-or-at-gas-price 0.000001)` right before `(compose-capability (ALLOW_GAS))`.
 
-Then, call `(enforce-below-or-at-gas-price 0.000001)` right before `(compose-capability (ALLOW_GAS))`.
+## Limit access to the gas station
 
-### Limit accessibility
+Any module can use your gas station as it is, which can become quite costly if the word spreads. 
+Especially, since any kind of transaction is allowed and heavy transactions cost even more gas than lighter transactions.
 
-Second, any module can use your gas station as it is, which can become quite costly when the
-word spreads. Especially, since any kind of transaction is allowed and heavy transactions cost even
-more gas than lighter transactions.
+There are two types of Pact transactions: `exec` and `cont`. 
 
-There are two types of Pact transactions: `exec` and `cont`. `cont` transaction
-is used for multi-step pacts, while `exec` is for regular transactions. Limit the usage to `exec`
-transactions by adding the following line to the start of the body of the `GAS_PAYER` `defcap`.
+- `cont` transactions enable multi-step pacts.
+- `exec` is for regular transactions. 
+
+You can limit the use to `exec` transactions by adding the following line to the start of the body of the `GAS_PAYER` `defcap`.
 
 ```pact
 (enforce (= "exec" (at "tx-type" (read-msg))) "Can only be used inside an exec")
 ```
 
-An `exec` transaction can contain multiple function calls. Allow only one function call by adding
-the following line after the previous one.
+An `exec` transaction can contain multiple function calls. 
+Allow only one function call by adding the following line after the previous one.
 
 ```pact
 (enforce (= 1 (length (at "exec-code" (read-msg)))) "Can only be used to call one pact function")
 ```
 
-To limit usage of the gas station to pay for gas consumed only by functions defined in your module,
-add the following line. Replace the namespace with your own principal namespace.
+To limit usage of the gas station to pay for gas consumed only by functions defined in your module, add the following line. 
+Replace the namespace with your own principal namespace.
 
 ```pact
 (enforce

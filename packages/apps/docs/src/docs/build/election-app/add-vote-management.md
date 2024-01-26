@@ -423,7 +423,7 @@ To test that an account can only vote once:
    This code:
    
    - Adds the account of the voter as the first parameter of the `vote` function.
-   - Store the result from a new `account-voted` function in the `double-vote` variable and uses that value to prevent an account from voting more than once.
+   - Stores the result from a new `account-voted` function in the `double-vote` variable and uses that value to prevent an account from voting more than once.
    - Enforces that no row in the `votes` table is keyed with the account name using the `with-default-read` pattern that you used to prevent voting on a non-existent candidate. 
    - Inserts a new row into the `votes` table with the account name as the key and the candidate key as the value for the `candidateKey` column every time the `vote` function is called. 
     
@@ -673,10 +673,10 @@ To update the `election` module on the development network:
    Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/election-dapp-tutorial/add-admin-account).
    You can copy this account name from Chainweaver when viewing the account watch list.
    
-   In addition to the account name and `upgrade`, you must `init-votes` to add `{"init-votes": true}` to the transaction data.
+   In addition to the account name and `upgrade`, you must include `init-votes` in the command to add `{"init-votes": true}` to the transaction data.
    This field is required to allow you to execute the `(create-table votes)` statement from your `election` module.
 
-1. Click **Sign All** in Chainweaver to sign the request.
+2. Click **Sign All** in Chainweaver to sign the request.
 
    After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
    For example, you should see output similar to the following:
@@ -685,7 +685,7 @@ To update the `election` module on the development network:
    { status: 'success', data: [ 'TableCreated' ] }
    ```
 
-2. Verify your contract changes in the Chainweaver Module Explorer by refreshing the list of **Deployed Contracts**, then clicking **View** for the `election` module.
+3. Verify your contract changes in the Chainweaver Module Explorer by refreshing the list of **Deployed Contracts**, then clicking **View** for the `election` module.
    
    After you click View, you should see the updated list of functions and capabilities.
    If you click **Open**, you can view the module code in the editor pane and verify that the `election` module deployed on the local development network is what you expect.
