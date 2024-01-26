@@ -165,10 +165,6 @@ export async function signTransactionWithSeed(
 
       command = addSignatures(unsignedCommand, ...signatures);
     }
-
-    if (isSignedTransaction(command)) {
-      return command;
-    }
     return command;
   } catch (error) {
     throw new Error(`Error signing transaction: ${error.message}`);
@@ -202,13 +198,8 @@ export async function signTransactionWithKeyPair(
 
       command = addSignatures(unsignedCommand, ...signatures);
     } else {
-      console.log(keys);
       const signWithKeypair = createSignWithKeypair(keys as IKeyPair[]);
       command = await signWithKeypair(unsignedCommand);
-    }
-
-    if (isSignedTransaction(command)) {
-      return command;
     }
     return command;
   } catch (error) {

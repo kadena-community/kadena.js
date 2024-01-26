@@ -13,15 +13,22 @@ import {
 } from '../utils/helpers.js';
 import { saveSignedTransaction } from '../utils/storage.js';
 
-import type { ICommand, IUnsignedCommand } from '@kadena/types';
+import type { ICommand } from '@kadena/types';
 import type { IKeyPair } from '../../keys/utils/storage.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 
-export const signActionPlain = async (
-  unsignedCommand: IUnsignedCommand,
+export const signTransactionWithKeyPairAction = async (
   keyPairs: IKeyPair[],
+  transactionfileName: string,
+  transactonDirectory: string,
   legacy?: boolean,
 ): Promise<CommandResult<ICommand>> => {
+  const unsignedCommand = await getTransactionFromFile(
+    transactionfileName,
+    false,
+    transactonDirectory,
+  );
+
   try {
     const command = await signTransactionWithKeyPair(
       keyPairs,
@@ -73,15 +80,10 @@ export const createSignTransactionWithKeypairCommand: (
         ...mode,
       });
 
-      const txUnsignedTransaction = await getTransactionFromFile(
-        file.txUnsignedTransactionFile,
-        false,
-        dir.txTransactionDir,
-      );
-
-      const result = await signActionPlain(
-        txUnsignedTransaction,
+      const result = await signTransactionWithKeyPairAction(
         key.keyPairs,
+        file.txUnsignedTransactionFile,
+        dir.txTransactionDir,
         mode.legacy,
       );
 
