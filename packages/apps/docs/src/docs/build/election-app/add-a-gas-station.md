@@ -859,12 +859,12 @@ To update the smart contract and complete the workshop:
 2. Click **Sign All** to sign the request.
    
    After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
-   
+
 3. Verify your contract changes in the Chainweaver Module Explorer by refreshing the list of **Deployed Contracts**, then clicking **View** for the `election-gas-station` module.
    
    After you click View, you should see the updated list of functions and capabilities.
    If you click **Open**, you can view the module code in the editor pane and verify that the `election-gas-station` module deployed on the local development network is what you expect.
-   
+
 ## Next steps
 
 In this tutorial, you learned how to: 
