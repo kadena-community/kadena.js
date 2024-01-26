@@ -1,5 +1,4 @@
 import { FocusableProvider } from '@react-aria/focus';
-import { mergeRefs } from '@react-aria/utils';
 import type { FC, ReactElement, ReactNode } from 'react';
 import React, { cloneElement, useRef } from 'react';
 import { useTooltip, useTooltipTrigger } from 'react-aria';
