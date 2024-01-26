@@ -868,6 +868,11 @@ To update the smart contract and complete the workshop:
 2. Click **Sign All** to sign the request.
    
    After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
+
+3. Verify your contract changes in the Chainweaver Module Explorer by refreshing the list of **Deployed Contracts**, then clicking **View** for the `election-gas-station` module.
+   
+   After you click View, you should see the updated list of functions and capabilities.
+   If you click **Open**, you can view the module code in the editor pane and verify that the `election-gas-station` module deployed on the local development network is what you expect.
    
 ## Next steps
 
@@ -886,3 +891,9 @@ That might be a challenge you want to explore.
 As an alternative, you might want to deploy the election application and smart contract on the Kadena test network, making it available to community members.
 
 We can't wait to see what you build next.
+
+To see the code for the activity you completed in this tutorial, check out the `complete-tutorial` branch from the `election-dapp` repository by running the following command in your terminal shell:
+
+```bash
+git checkout complete-tutorial
+```
