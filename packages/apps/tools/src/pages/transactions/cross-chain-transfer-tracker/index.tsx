@@ -42,7 +42,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { containerClass, notificationContainerStyle } from '../styles.css';
 import {
@@ -155,9 +155,10 @@ const CrossChainTransferTracker: FC = () => {
     register,
     handleSubmit: validateThenSubmit,
     formState: { errors },
+    control,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: { requestKey: router.query.reqKey as string },
+    values: { requestKey: requestKey },
     // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
     resetOptions: {
       keepDirtyValues: true, // keep dirty fields unchanged, but update defaultValues
@@ -238,12 +239,18 @@ const CrossChainTransferTracker: FC = () => {
             <Box marginBlockEnd="md" />
             <Grid>
               <GridItem>
-                <RequestKeyField
-                  errorMessage={inputError || errors.requestKey?.message}
-                  isInvalid={validRequestKey}
-                  {...register('requestKey')}
-                  onKeyUp={checkRequestKey}
-                  onChange={onRequestKeyChange}
+                <Controller
+                  name="requestKey"
+                  control={control}
+                  render={({ field }) => (
+                    <RequestKeyField
+                      errorMessage={errors.requestKey?.message}
+                      isInvalid={!!errors.requestKey}
+                      {...field}
+                      onKeyUp={checkRequestKey}
+                      onChange={onRequestKeyChange}
+                    />
+                  )}
                 />
               </GridItem>
             </Grid>
