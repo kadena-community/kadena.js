@@ -162,7 +162,7 @@ pages:
                 file: /build/guides/election-dapp-tutorial/write-a-smart-contract.md
               nominate-candidates:
                 url: /07-nominate-candidates
-                file: /build/guides/election-dapp-tutorial/07-nominate-candidates.md
+                file: /build/guides/election-dapp-tutorial/nominate-candidates.md
               voting:
                 url: /08-voting
                 file: /build/guides/election-dapp-tutorial/08-voting.md
