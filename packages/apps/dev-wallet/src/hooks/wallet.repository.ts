@@ -5,7 +5,7 @@ import {
   getAllItems,
   getOneItem,
   updateItem,
-} from '@/utils/db';
+} from '@/utils/indexeddb';
 
 export interface KeyStore {
   uuid: string;
@@ -36,7 +36,21 @@ export interface IProfile {
   seedKey: string;
 }
 
-const walletRepository = (db: IDBDatabase) => {
+export interface WalletRepository {
+  disconnect: () => Promise<void>;
+  getAllProfiles: () => Promise<Exclude<IProfile, 'networks'>[]>;
+  getProfile: (id: string) => Promise<IProfile>;
+  getKeyStoresByProfileId: (profileId: string) => Promise<KeyStore[]>;
+  addKeyStore: (keyStore: KeyStore) => Promise<void>;
+  updateKeyStore: (keyStore: KeyStore) => Promise<void>;
+  addProfile: (profile: IProfile) => Promise<void>;
+  updateProfile: (profile: IProfile) => Promise<void>;
+  getNetworkList: () => Promise<INetwork[]>;
+  getEncryptedValue: (key: string) => Promise<Uint8Array>;
+  addEncryptedValue: (key: string, value: string | Uint8Array) => Promise<void>;
+}
+
+export const walletRepository = (db: IDBDatabase): WalletRepository => {
   const getAll = getAllItems(db);
   const getOne = getOneItem(db);
   const add = addItem(db);
@@ -80,8 +94,6 @@ const walletRepository = (db: IDBDatabase) => {
     },
   };
 };
-
-export type WalletRepository = ReturnType<typeof walletRepository>;
 
 export const createWalletRepository = async () => {
   const { db, needsUpgrade } = await connect('dev-wallet', 1);
