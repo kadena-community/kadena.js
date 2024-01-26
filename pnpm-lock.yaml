@@ -308,7 +308,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
       vitest-dom:
         specifier: ^0.1.1
         version: 0.1.1(vitest@1.1.0)
@@ -862,7 +862,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/libs/chainweb-node-client:
     dependencies:
@@ -917,7 +917,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/libs/chainweb-stream-client:
     dependencies:
@@ -966,7 +966,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/libs/chainwebjs:
     dependencies:
@@ -1024,7 +1024,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/libs/client:
     dependencies:
@@ -1234,7 +1234,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/libs/cryptography-utils:
     dependencies:
@@ -1286,7 +1286,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/libs/hd-wallet:
     dependencies:
@@ -1350,7 +1350,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/libs/kadena.js:
     dependencies:
@@ -1365,7 +1365,7 @@ importers:
         version: link:../pactjs
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
+        version: 1.1.0(@types/node@18.17.14)(happy-dom@12.9.1)
       webpack:
         specifier: ~5.88.2
         version: 5.88.2(webpack-cli@4.9.2)
@@ -1454,7 +1454,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/libs/pactjs-generator:
     dependencies:
@@ -1518,7 +1518,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/libs/react-components:
     dependencies:
@@ -1604,6 +1604,9 @@ importers:
       '@kadena/fonts':
         specifier: ~0.0.1
         version: 0.0.1
+      '@react-aria/focus':
+        specifier: ^3.16.0
+        version: 3.16.0(react@18.2.0)
       '@react-aria/utils':
         specifier: ^3.23.0
         version: 3.23.0(react@18.2.0)
@@ -2036,7 +2039,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
       vitest-dom:
         specifier: ^0.1.1
         version: 0.1.1(vitest@1.1.0)
@@ -2186,7 +2189,7 @@ importers:
         version: 6.3.3
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -2359,7 +2362,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/tools/kda-cli:
     dependencies:
@@ -2438,7 +2441,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/tools/lint-package:
     dependencies:
@@ -2624,7 +2627,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/tools/scripts:
     devDependencies:
@@ -2666,7 +2669,7 @@ importers:
         version: 4.2.1(typescript@5.2.2)
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
+        version: 1.1.0(@types/node@18.17.14)(happy-dom@12.9.1)
 
 packages:
 
@@ -8426,6 +8429,7 @@ packages:
 
   /@polka/url@1.0.0-next.23:
     resolution: {integrity: sha512-C16M+IYz0rgRhWZdCmK+h58JMv8vijAA61gmz2rspCSwKwzBebpdcsiUmwrtJRdphuY30i6BSLEOP8ppbNLyLg==}
+    dev: true
 
   /@pothos/core@3.40.1(graphql@16.8.1):
     resolution: {integrity: sha512-NFPZoPqbU8VSP2TDoXg3JyaZMjP6znU5Ruw/t8zxBXrDK762C4tc9d0ABHbGdkc53Ta8V8+g9mLVWHKmAtwFaA==}
@@ -14533,6 +14537,7 @@ packages:
       picocolors: 1.0.0
       sirv: 2.0.3
       vitest: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+    dev: true
 
   /@vitest/utils@1.1.0:
     resolution: {integrity: sha512-z+s510fKmYz4Y41XhNs3vcuFTFhcij2YF7F8VQfMEYAAUfqQh0Zfg7+w9xdgFGhPf3tX3TicAe+8BDITk6ampQ==}
@@ -17546,7 +17551,6 @@ packages:
 
   /css.escape@1.5.1:
     resolution: {integrity: sha512-YUifsXXuknHlUsmlgyY0PKzgPOr7/FjCePfHNt0jxm83wHZi44VDMQ7/fGNkjY3/jV1MC+1CmZbaHzugyeRtpg==}
-    dev: true
 
   /cssesc@3.0.0:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
@@ -19887,6 +19891,7 @@ packages:
 
   /fflate@0.8.1:
     resolution: {integrity: sha512-/exOvEuc+/iaUm105QIiOt4LpBdMTWsXxqR0HDF35vx3fmaKzw7354gTilCh5rkzEt8WYyG//ku3h3nRmd7CHQ==}
+    dev: true
 
   /figures@3.2.0:
     resolution: {integrity: sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==}
@@ -20044,6 +20049,7 @@ packages:
 
   /flatted@3.2.9:
     resolution: {integrity: sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==}
+    dev: true
 
   /flow-parser@0.215.1:
     resolution: {integrity: sha512-qq3rdRToqwesrddyXf+Ml8Tuf7TdoJS+EMbJgC6fHAVoBCXjb4mHelNd3J+jD8ts0bSHX81FG3LN7Qn/dcl6pA==}
@@ -20809,7 +20815,6 @@ packages:
       webidl-conversions: 7.0.0
       whatwg-encoding: 2.0.0
       whatwg-mimetype: 3.0.0
-    dev: true
 
   /hard-rejection@2.1.0:
     resolution: {integrity: sha512-VIZB+ibDhx7ObhAe7OVtoEbuP4h/MuOTHJ+J8h/eBXotJYl0fBgR72xDFCKgIh22OJZIOVNxBMWuhAr10r8HdA==}
@@ -24397,6 +24402,7 @@ packages:
   /mrmime@1.0.1:
     resolution: {integrity: sha512-hzzEagAgDyoU1Q6yg5uI+AorQgdvMCur3FcKf7NhMKWsaYg+RnbTyHRa/9IlLF9rf455MOCtcqqrQQ83pPP7Uw==}
     engines: {node: '>=10'}
+    dev: true
 
   /ms@2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
@@ -28087,6 +28093,7 @@ packages:
       '@polka/url': 1.0.0-next.23
       mrmime: 1.0.1
       totalist: 3.0.1
+    dev: true
 
   /sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
@@ -29320,6 +29327,7 @@ packages:
   /totalist@3.0.1:
     resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
     engines: {node: '>=6'}
+    dev: true
 
   /tough-cookie@4.1.3:
     resolution: {integrity: sha512-aX/y5pVRkfRnfmuX+OdbSdXvPe6ieKX/G2s7e98f4poJHnqH3281gDPm/metm6E/WRamfx7WC4HUqkWHfQHprw==}
@@ -30650,6 +30658,7 @@ packages:
       - sugarss
       - supports-color
       - terser
+    dev: true
 
   /vitest@1.1.0(@types/node@18.17.14)(happy-dom@12.9.1):
     resolution: {integrity: sha512-oDFiCrw7dd3Jf06HoMtSRARivvyjHJaTxikFxuqJjO76U436PqlVw1uLn7a8OSPrhSfMGVaRakKpA2lePdw79A==}
@@ -30707,7 +30716,6 @@ packages:
       - sugarss
       - supports-color
       - terser
-    dev: true
 
   /vitest@1.1.0(@types/node@18.17.14)(jsdom@22.1.0):
     resolution: {integrity: sha512-oDFiCrw7dd3Jf06HoMtSRARivvyjHJaTxikFxuqJjO76U436PqlVw1uLn7a8OSPrhSfMGVaRakKpA2lePdw79A==}
