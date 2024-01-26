@@ -5,7 +5,7 @@ import {
   isSignedTransaction,
 } from '@kadena/client';
 import type { EncryptedString } from '@kadena/hd-wallet';
-import { kadenaDecrypt, kadenaSignWithSeed } from '@kadena/hd-wallet';
+import { kadenaSignWithSeed } from '@kadena/hd-wallet';
 import {
   kadenaSign as legacyKadenaSign,
   kadenaSignFromRootKey as legacyKadenaSignWithSeed,
@@ -14,10 +14,7 @@ import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
 import { join } from 'path';
 import { TRANSACTION_PATH } from '../../constants/config.js';
-import {
-  getKeyPairAndIndicesFromFileSystem,
-  toHexStr,
-} from '../../keys/utils/keysHelpers.js';
+import { getKeyPairAndIndicesFromFileSystem } from '../../keys/utils/keysHelpers.js';
 import type { IKeyPair as IKeyPairLocal } from '../../keys/utils/storage.js';
 
 import { services } from '../../services/index.js';
@@ -90,19 +87,6 @@ export function formatDate(): string {
 }
 
 /**
- * Creates a function to decrypt secret keys using the provided password.
- * @param {string} password - The password used for decryption.
- * @param {EncryptedString} encrypted - The encrypted string to be decrypted.
- * @returns {string}
- */
-export function decryptSecretKeys(
-  password: string,
-  encrypted: EncryptedString,
-): string {
-  return toHexStr(kadenaDecrypt(password, encrypted));
-}
-
-/**
  * Signs a transaction using the provided wallet seed and password.
  *
  * @param wallet - The wallet seed.
@@ -148,20 +132,21 @@ export async function signTransactionWithSeed(
       );
       command = addSignatures(unsignedCommand, ...signatures);
     } else {
-      const signatures = relevantKeyPairs.map((key) => {
-        const signWithSeed = kadenaSignWithSeed(
-          password,
-          wallet,
-          key.index as number,
-        );
+      const signatures = await Promise.all(
+        relevantKeyPairs.map(async (key) => {
+          if (typeof key.index !== 'number') {
+            throw new Error('Key index is not a number');
+          }
 
-        const sigs = signWithSeed(unsignedCommand.hash);
+          const signWithSeed = kadenaSignWithSeed(password, wallet, key.index);
+          const sigs = await signWithSeed(unsignedCommand.hash);
 
-        return {
-          sig: sigs.sig,
-          pubKey: key.publicKey,
-        };
-      });
+          return {
+            sig: sigs.sig,
+            pubKey: key.publicKey,
+          };
+        }),
+      );
 
       command = addSignatures(unsignedCommand, ...signatures);
     }
