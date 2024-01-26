@@ -100,7 +100,8 @@ export const globalOptions = {
   // global
   quiet: createOption({
     key: 'quiet' as const,
-    prompt: ({ quiet }): boolean => quiet === true || quiet === 'true' || false,
+    // quiet is never prompted
+    prompt: () => false,
     validation: z.boolean().optional(),
     option: globalFlags.quiet,
   }),
@@ -631,6 +632,7 @@ export const globalOptions = {
       'template variables',
     ),
     prompt: templateVariables,
+    allowUnknownOptions: true,
   }),
 } as const;
 

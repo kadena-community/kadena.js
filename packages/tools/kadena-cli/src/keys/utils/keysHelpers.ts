@@ -1,4 +1,5 @@
 import yaml from 'js-yaml';
+import { basename, join } from 'node:path';
 import sanitizeFilename from 'sanitize-filename';
 
 import type { EncryptedString } from '@kadena/hd-wallet';
@@ -12,10 +13,9 @@ import {
 } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 
+import { notEmpty } from '../../utils/helpers.js';
 import type { IKeyPair } from './storage.js';
 import { getFilesWithExtension, readKeyFileContent } from './storage.js';
-
-import { join } from 'path';
 
 export interface IWalletConfig {
   securityPassword: string;
@@ -96,12 +96,46 @@ export async function getWalletContent(
   );
 }
 
-export type IWalletKey = {
+export type IPlainKey = IKeyPair & {
   alias: string;
   key: string;
   index: number;
+  legacy: boolean;
+};
+
+export type IWalletKey = IPlainKey & {
   wallet: IWallet;
-} & IKeyPair;
+};
+
+const readKeyFile = async (path: string): Promise<IPlainKey> => {
+  const key = basename(path);
+  const file = await services.filesystem.readFile(path);
+  const parsed = yaml.load(file ?? '') as {
+    publicKey?: string;
+    secretKey?: string;
+  };
+
+  if (parsed.publicKey === undefined) {
+    throw new Error(`Public key not found for key path "${path}"`);
+  }
+
+  const index =
+    Number(
+      (parsed as { index?: string }).index ??
+        (key.match(/-([0-9]+)\.key$/)?.[1] as string),
+    ) || 0;
+  const alias = key.replace('.key', '').split('-').slice(0, 1).join('-');
+  const legacy = key.endsWith(KEY_LEGACY_EXT);
+
+  return {
+    key,
+    alias,
+    index,
+    legacy,
+    publicKey: parsed.publicKey,
+    secretKey: parsed.secretKey,
+  };
+};
 
 /**
  * This method throws if key is not found because we expect getWallet to have been used
@@ -114,34 +148,34 @@ export const getWalletKey = async (
   wallet: IWallet,
   key: string,
 ): Promise<IWalletKey> => {
-  const file = await services.filesystem.readFile(
-    join(WALLET_DIR, wallet.folder, key),
-  );
-  const parsed = yaml.load(file ?? '') as {
-    publicKey?: string;
-    secretKey?: string;
-  };
-
-  if (parsed.publicKey === undefined) {
-    throw new Error(
-      `Public key not found for ${key} in wallet ${wallet.folder}`,
-    );
-  }
-
-  const index =
-    Number(
-      (parsed as { index?: string }).index ??
-        (key.match(/-([0-9]+)\.key$/)?.[1] as string),
-    ) || 0;
-  const alias = key.replace('.key', '').split('-').slice(0, 1).join('-');
+  const plainKey = await readKeyFile(join(WALLET_DIR, wallet.folder, key));
   return {
+    ...plainKey,
     wallet,
-    key,
-    alias,
-    index,
-    publicKey: parsed.publicKey,
-    secretKey: parsed.secretKey,
   };
+};
+
+export const getAllPlainKeys = async (): Promise<IPlainKey[]> => {
+  const keys = await getAllPlainKeyFiles();
+  const result = await Promise.all(
+    keys.map((key) => readKeyFile(join(PLAIN_KEY_DIR, key))),
+  );
+  return result;
+};
+
+export const getAllWalletKeys = async (): Promise<IWalletKey[]> => {
+  const walletNames = await getAllWallets();
+  const wallets = await Promise.all(
+    walletNames.map((wallet) => getWallet(wallet)),
+  );
+  const keys = await Promise.all(
+    wallets
+      .filter(notEmpty)
+      .map((wallet) =>
+        Promise.all(wallet.keys.map((key) => getWalletKey(wallet, key))),
+      ),
+  );
+  return keys.flat();
 };
 
 /**
@@ -236,7 +270,7 @@ export async function getAllWallets(): Promise<string[]> {
   return wallets;
 }
 
-export async function getAllPlainKeys(): Promise<string[]> {
+export async function getAllPlainKeyFiles(): Promise<string[]> {
   return await getFilesWithExtension(PLAIN_KEY_DIR, KEY_EXT);
 }
 

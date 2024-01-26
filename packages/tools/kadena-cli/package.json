@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "build": "pnpm run generate:ts && tsc",
-    "dev": "node --import 'data:text/javascript,import {register} from \"node:module\";import {pathToFileURL} from \"node:url\";register(\"%40swc-node/register/esm\",pathToFileURL(\"./\"));' src/index.ts",
+    "dev": "NODE_ENV=development node --import 'data:text/javascript,import {register} from \"node:module\";import {pathToFileURL} from \"node:url\";register(\"%40swc-node/register/esm\",pathToFileURL(\"./\"));' src/index.ts",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",

@@ -1,12 +1,10 @@
-import path from 'path';
-
 import type { IUnsignedCommand } from '@kadena/client';
 import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
 import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
-
 import chalk from 'chalk';
-import debug from 'debug';
-import { TRANSACTION_PATH } from '../../constants/config.js';
+import path from 'path';
+
+import { IS_DEVELOPMENT, TRANSACTION_PATH } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
@@ -61,9 +59,9 @@ export const createTransaction = async (
 
 export const createTransactionCommandNew = createCommandFlexible(
   'create-transaction',
-  'select a template and crete a transaction',
+  'select a template and create a transaction',
   [
-    globalOptions.selectTemplate(),
+    globalOptions.selectTemplate({ isOptional: false }),
     globalOptions.templateVariables(),
     globalOptions.outFileJson(),
   ],
@@ -79,11 +77,13 @@ export const createTransactionCommandNew = createCommandFlexible(
         variables: template.templateConfig.variables,
       });
 
-      debug.log('create-transaction:action', {
-        ...template,
-        ...templateVariables,
-        ...outputFile,
-      });
+      if (IS_DEVELOPMENT) {
+        console.log('create-transaction:action', {
+          ...template,
+          ...templateVariables,
+          ...outputFile,
+        });
+      }
 
       if (template.templateConfig.template === undefined) {
         return console.log('template not found');
@@ -98,12 +98,10 @@ export const createTransactionCommandNew = createCommandFlexible(
 
       console.log(result.data.transaction);
 
-      console.log(
-        `transaction saved to: ./${path.relative(
-          process.cwd(),
-          result.data.filePath,
-        )}`,
-      );
+      const relativePath = path.relative(process.cwd(), result.data.filePath);
+      console.log(`\ntransaction saved to: ./${relativePath}`);
+
+      return { outFile: relativePath };
     } catch (error) {
       console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
       process.exit(1);

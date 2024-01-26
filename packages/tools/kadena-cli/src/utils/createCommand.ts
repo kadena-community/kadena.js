@@ -70,6 +70,7 @@ export function createCommand<const T extends OptionType[]>(
         // collectResponses
         const questionsMap = options.filter((o) => o.isInQuestions);
 
+        if (!process.stdout.isTTY) args.quiet = true;
         handleQuietOption(`${program.name()} ${name}`, args, questionsMap);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -195,14 +196,14 @@ export function getCommandExecution(
             Object.getPrototypeOf(value) === Object.prototype
           ) {
             return Object.entries(value)
-              .map(([key, value]) => `--${key}=${value}`)
+              .map(([key, value]) => `--${key}="${value}"`)
               .join(' ');
           }
         }
 
         const key = arg.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
 
-        return `--${key} ${
+        return `--${key}=${
           displayValue !== null && displayValue !== undefined
             ? displayValue
             : ''

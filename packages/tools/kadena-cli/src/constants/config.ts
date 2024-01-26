@@ -1,4 +1,4 @@
-// appN name
+// app name
 export const CLINAME: string = 'bin/kadena-cli.js';
 
 // root folders
@@ -23,3 +23,5 @@ export const KEY_EXT: string = '.key';
 export const KEY_LEGACY_EXT: string = '.legacy.key';
 export const PLAIN_KEY_EXT: string = '.key';
 export const PLAIN_KEY_LEGACY_EXT: string = '.legacy.key';
+
+export const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';

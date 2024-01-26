@@ -5,11 +5,10 @@ import { z } from 'zod';
 import { getTransactions } from '../tx/utils/helpers.js';
 
 import { TRANSACTION_FOLDER_NAME } from '../constants/config.js';
-import type { IWalletKey } from '../keys/utils/keysHelpers.js';
+
 import {
-  getAllWallets,
-  getWallet,
-  getWalletKey,
+  getAllPlainKeys,
+  getAllWalletKeys,
 } from '../keys/utils/keysHelpers.js';
 import { defaultTemplates } from '../tx/commands/templates/templates.js';
 import type { IPrompt } from '../utils/createOption.js';
@@ -127,25 +126,6 @@ const getAllAccounts = async (): Promise<string[]> => {
   return [];
 };
 
-const notEmpty = <TValue>(value: TValue | null | undefined): value is TValue =>
-  value !== null && value !== undefined;
-
-const getAllPublicKeys = async (): Promise<IWalletKey[]> => {
-  // Wait for account implementation
-  const walletNames = await getAllWallets();
-  const wallets = await Promise.all(
-    walletNames.map((wallet) => getWallet(wallet)),
-  );
-  const keys = await Promise.all(
-    wallets
-      .filter(notEmpty)
-      .map((wallet) =>
-        Promise.all(wallet.keys.map((key) => getWalletKey(wallet, key))),
-      ),
-  );
-  return keys.flat();
-};
-
 const promptVariableValue = async (key: string): Promise<string> => {
   if (key.startsWith('account-')) {
     // search for account alias
@@ -175,16 +155,21 @@ const promptVariableValue = async (key: string): Promise<string> => {
     return value;
   }
   if (key.startsWith('pk-')) {
-    const keys = await getAllPublicKeys();
+    const walletKeys = await getAllWalletKeys();
+    const plainKeys = await getAllPlainKeys();
 
     const choices = [
       {
         value: '_manual_',
         name: 'Enter public key manually',
       },
-      ...keys.map((key) => ({
-        value: key.key, // TODO: add wallet to key to prevent duplicate errors
+      ...walletKeys.map((key) => ({
+        value: `${key.wallet.wallet}:${key.key}`,
         name: `${key.alias} (wallet ${key.wallet.folder})`,
+      })),
+      ...plainKeys.map((key) => ({
+        value: `plain:${key.key}`,
+        name: `${key.alias} (plain key)`,
       })),
     ];
     const value = await select({
@@ -201,15 +186,17 @@ const promptVariableValue = async (key: string): Promise<string> => {
         },
       });
     }
-    const walletKey = keys.find((x) => x.key === value);
-    if (walletKey === undefined) throw new Error('public key not found');
+    const selectedKey =
+      walletKeys.find((x) => x.key === value) ??
+      plainKeys.find((x) => x.key === value);
+    if (selectedKey === undefined) throw new Error('public key not found');
 
     console.log(
-      `${chalk.green('>')} Key alias ${walletKey.alias} using public key ${
-        walletKey.publicKey
+      `${chalk.green('>')} Key alias ${selectedKey.alias} using public key ${
+        selectedKey.publicKey
       }`,
     );
-    return walletKey.publicKey;
+    return selectedKey.publicKey;
   }
   if (key.startsWith('keyset-')) {
     // search for key alias
