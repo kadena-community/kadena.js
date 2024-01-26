@@ -315,9 +315,8 @@ const CrossChainTransferFinisher: FC = () => {
       <FormStatusNotification
         status="successful"
         title={t('Notification title success')}
-      >
-        {t('XChain transfer has been successfully finalized!')}
-      </FormStatusNotification>
+        body={t('XChain transfer has been successfully finalized!')}
+      />
     ) : (
       <FormStatusNotification status="erroneous" title={t('Transaction error')}>
         {txError.toString()}
