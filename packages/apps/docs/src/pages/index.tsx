@@ -66,14 +66,8 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 <Link className={docsCardLink} href="/build/quickstart">
                   Deploy your first contract - Quick start
                 </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/build/pact/get-started-with-pact"
-                >
-                  Get started with smart contracts
-                </Link>
-                <Link className={docsCardLink} href="/build/election">
-                  Build a simple election application
+                <Link className={docsCardLink} href="/build/pact/get-started-with-pact">
+                  Get started with 
                 </Link>
               </BrowseSection>
             </DocsCard>
@@ -88,10 +82,10 @@ const Home: FC<IProps> = ({ blogPosts }) => {
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/build/pact">
-                  Build with Pact
+                  Smart contracts
                 </Link>
                 <Link className={docsCardLink} href="/build/kadena-client">
-                  Kadena client
+                  Frontend libraries
                 </Link>
                 <Link className={docsCardLink} href="/build/code-templates">
                   Code templates
@@ -115,19 +109,6 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 </Link>
                 <Link className={docsCardLink} href="/deploy/node">
                   Manage a Chainweb node
-                </Link>
-
-                <Link
-                  className={docsCardLink}
-                  href="https://www.kadena.io/chainweb"
-                >
-                  Chainweb consensus protocol
-                </Link>
-                <Link
-                  className={docsCardLink}
-                  href="https://www.kadena.io/pact"
-                >
-                  Pact smart contract language
                 </Link>
               </BrowseSection>
             </DocsCard>
