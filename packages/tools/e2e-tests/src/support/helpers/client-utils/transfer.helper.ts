@@ -2,7 +2,8 @@ import { devnetHost, networkId } from '@constants/network.constants';
 import type { ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transfer, transferCrossChain } from '@kadena/client-utils/coin';
-import type { ChainId } from '@kadena/types';
+import { IEmitterWrapper } from '@kadena/client-utils/lib/core/utils/with-emitter';
+import type { ChainId, ICommand } from '@kadena/types';
 import type { IAccount } from 'src/support/types/accountTypes';
 
 export async function transferFunds(
@@ -79,4 +80,43 @@ export async function transferFundsCrossChain(
   );
   await transferCrossChainTask.executeTo();
   return listenContinuation;
+}
+
+export async function initiateCrossChainTransfer(
+  source: IAccount,
+  target: IAccount,
+  amount: string,
+  sourceChain: ChainId,
+  targetChain: ChainId,
+): IEmitterWrapper<> {
+  const transferCrossChainTask = await transferCrossChain(
+    {
+      sender: {
+        account: source.account,
+        publicKeys: [source.keys[0].publicKey],
+      },
+      receiver: {
+        account: target.account,
+        keyset: {
+          keys: [target.keys[0].publicKey],
+          pred: 'keys-all',
+        },
+      },
+      amount: amount,
+      chainId: sourceChain,
+      targetChainId: targetChain,
+      targetChainGasPayer: {
+        account: source.account,
+        publicKeys: [source.keys[0].publicKey],
+      },
+    },
+    {
+      host: devnetHost,
+      defaults: {
+        networkId: networkId,
+      },
+      sign: createSignWithKeypair([source.keys[0]]),
+    },
+  );
+  return transferCrossChainTask;
 }

@@ -51,7 +51,7 @@ export class FaucetPage {
     await this._card._chain.setValueForListBox(
       'Select Chain ID',
       'Select Chain ID Chain ID',
-      account.chainId,
+      account.chains[0],
     );
 
     await expect(

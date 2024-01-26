@@ -9,6 +9,7 @@ test.beforeEach(async ({ page, toolsApp }) => {
   await test.step('Open Tools and navigate to Faucet', async () => {
     await page.goto('/');
     await toolsApp.homePage.header.setNetwork('devnet');
+    await toolsApp.homePage.header.goToPage('Faucet');
   });
 });
 
@@ -19,9 +20,10 @@ const accountTypes = [
 
 for (const accountType of accountTypes) {
   test(`Create and fund ${accountType.type} account`, async ({ toolsApp }) => {
-    const account = await generateAccount(accountType.NumberOfKeys, '0');
+    const account = await generateAccount(accountType.NumberOfKeys, ['0']);
     await test.step('Create account on chain 0.', async () => {
       await toolsApp.faucetPage.asidePanel.clickPageLink('Fund New Account');
+      console.log('account', account);
       await toolsApp.faucetPage.CreateFundAccount(account);
       await expect(
         await toolsApp.faucetPage.notificationComponent.getTitle(),
