@@ -69,12 +69,12 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                       icon="TrailingIcon"
                       color="negative"
                     >
-                      Build your first dApp
+                      Workshop: Election application
                     </Button>
                   </Box>
                   <BrowseSection marker="none">
                     <Link className={docsCardLink} href="/build/quickstart">
-                      Quick start
+                      Deploy "Hello, World!" - Quick start
                     </Link>
 
                     <a

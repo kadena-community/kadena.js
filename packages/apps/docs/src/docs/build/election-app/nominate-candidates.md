@@ -752,7 +752,7 @@ In this tutorial, you learned how to:
 - Include a `candidates` database table and functions for listing and adding candidates to the table. 
 - Connect the frontend of the election website to the local development network as a backend. 
 
-In the next tutorial, you'll upgrade the `election` module to enables people to cast a vote on a candidate with their Kadena account.
+In the next tutorial, you'll upgrade the `election` module to enable people to cast a vote on a candidate with their Kadena account.
 
 To see the code for the activity you completed in this tutorial and get the starter code for the next tutorial, check out the `08-voting` branch from the `election-dapp` repository by running the following command in your terminal shell:
 
