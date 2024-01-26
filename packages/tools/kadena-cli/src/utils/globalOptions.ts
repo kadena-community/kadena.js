@@ -19,9 +19,7 @@ import { join } from 'node:path';
 import {
   KEY_EXT,
   TRANSACTION_FOLDER_NAME,
-  WALLET_DIR,
   WALLET_EXT,
-  WALLET_LEGACY_EXT,
 } from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
 import {
@@ -42,7 +40,6 @@ import { defaultTemplates } from '../tx/commands/templates/templates.js';
 import { getTemplateVariables } from '../tx/utils/template.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
-import { removeAfterFirstDot } from './path.util.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalFlags = {
@@ -393,19 +390,8 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
     defaultIsOptional: false,
-    transform: async (keyWallet: string) => {
-      if (
-        keyWallet.includes(WALLET_EXT) ||
-        keyWallet.includes(WALLET_LEGACY_EXT)
-      ) {
-        return {
-          wallet: await readKeyFileContent(
-            join(WALLET_DIR, removeAfterFirstDot(keyWallet), keyWallet),
-          ),
-          fileName: keyWallet,
-        };
-      }
-      return keyWallet;
+    expand: async (keyWallet: string) => {
+      return await getWallet(keyWallet);
     },
   }),
   keyWalletSelectWithAll: createOption({

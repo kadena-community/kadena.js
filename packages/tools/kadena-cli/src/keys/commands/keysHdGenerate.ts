@@ -91,25 +91,21 @@ export const createGenerateHdKeysCommand: (
   ],
   async (config) => {
     debug('generate-hdkeys:action')({ config });
-
-    if (typeof config.keyWallet === 'string') {
-      throw Error('Invalid wallet name');
+    if (config.keyWalletConfig === null) {
+      throw new Error(`Wallet: ${config.keyWallet} does not exist.`);
     }
 
     const loadingSpinner = ora('Generating keys..').start();
 
     const result = await generateHdKeys({
-      keyWallet: config.keyWallet.fileName,
+      keyWallet: config.keyWalletConfig.wallet,
       keyIndexOrRange: config.keyIndexOrRange,
       keyGenFromChoice: config.keyGenFromChoice,
       password: config.securityPassword,
       keyAlias: config.keyAlias,
     });
-
     loadingSpinner.succeed('Completed');
-
     assertCommandError(result);
-
     displayGeneratedHdKeys(result.data.keys);
     printStoredHdKeys(
       config.keyAlias,

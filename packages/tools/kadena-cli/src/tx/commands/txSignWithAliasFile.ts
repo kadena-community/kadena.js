@@ -21,23 +21,57 @@ import {
 
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaDecrypt } from '@kadena/hd-wallet';
-import type { ICommand, IUnsignedCommand } from '@kadena/types';
+import type { ICommand } from '@kadena/types';
 import { WALLET_DIR } from '../../constants/config.js';
 import type { IKeyPair } from '../../keys/utils/storage.js';
-import { removeAfterFirstDot } from '../../utils/path.util.js';
 
-export const signActionPlain = async (
-  unsignedCommand: IUnsignedCommand,
-  keyPairs: IKeyPair[],
+export const signTransactionWithAliasFile = async (
+  wallet: string,
+  alias: string,
+  password: string,
+  transactionfileName: string,
+  signed: boolean,
+  transactonDirectory?: string,
   legacy?: boolean,
 ): Promise<CommandResult<ICommand>> => {
   try {
-    if (keyPairs.length === 0) {
-      throw new Error('Error signing transaction: no keys found.');
+    const encryptedKeyPair = (await readKeyPairAndIndexFromFile(
+      join(WALLET_DIR, wallet),
+      alias,
+    )) as IKeyPair;
+
+    if (encryptedKeyPair === undefined) {
+      throw new Error('Keypair to be used for signing not found.');
+    }
+
+    const keyPair: IKeyPair = {
+      publicKey: encryptedKeyPair.publicKey,
+      secretKey:
+        encryptedKeyPair.secretKey !== undefined
+          ? toHexStr(
+              await kadenaDecrypt(
+                password,
+                encryptedKeyPair.secretKey as EncryptedString,
+              ),
+            )
+          : undefined,
+      index: encryptedKeyPair.index,
+    };
+
+    const unsignedCommand = await getTransactionFromFile(
+      transactionfileName,
+      signed,
+      transactonDirectory,
+    );
+
+    if (unsignedCommand === undefined) {
+      throw new Error(
+        'Error signing transaction: unsigned transaction not found.',
+      );
     }
 
     const command = await signTransactionWithKeyPair(
-      keyPairs,
+      [keyPair],
       unsignedCommand,
       legacy,
     );
@@ -66,20 +100,15 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
     try {
       const wallet = await option.keyWallet();
       const password = await option.securityPassword();
-
-      const walletName =
-        typeof wallet.keyWallet === 'string'
-          ? wallet.keyWallet
-          : removeAfterFirstDot(wallet.keyWallet.fileName);
-
       const key = await option.keyAliasSelect({
-        wallet: walletName,
+        wallet: wallet.keyWallet,
       });
       const dir = await option.txTransactionDir();
       const file = await option.txUnsignedTransactionFile({
         signed: false,
         path: dir.txTransactionDir,
       });
+
       const mode = await option.legacy();
 
       debug.log('sign-with-key-alias-file:action', {
@@ -90,44 +119,13 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
         ...mode,
       });
 
-      const keyPair = await readKeyPairAndIndexFromFile(
-        join(WALLET_DIR, walletName),
+      const result = await signTransactionWithAliasFile(
+        wallet.keyWallet,
         key.keyAliasSelect,
-      );
-
-      if (!keyPair) {
-        throw new Error('Key pair to be used for signing not found.');
-      }
-
-      const decrypedKeyPair: IKeyPair = {
-        publicKey: keyPair.publicKey,
-        secretKey:
-          keyPair.secretKey !== undefined
-            ? toHexStr(
-                await kadenaDecrypt(
-                  password.securityPassword,
-                  keyPair.secretKey as EncryptedString,
-                ),
-              )
-            : undefined,
-        index: keyPair.index,
-      };
-
-      const unsignedCommand = await getTransactionFromFile(
+        password.securityPassword,
         file.txUnsignedTransactionFile,
         false,
         dir.txTransactionDir,
-      );
-
-      if (unsignedCommand === undefined) {
-        throw new Error(
-          'Error signing transaction: unsigned transaction not found.',
-        );
-      }
-
-      const result = await signActionPlain(
-        unsignedCommand,
-        [decrypedKeyPair],
         mode.legacy,
       );
 

@@ -1,4 +1,4 @@
-import { createTransactionCommandNew } from './commands/createTransaction.js';
+import { createTransactionCommandNew } from './commands/txCreateTransaction.js';
 import { createSendTransactionCommand } from './commands/txSend.js';
 import { createSignTransactionWithAliasFileCommand } from './commands/txSignWithAliasFile.js';
 import { createSignTransactionWithKeypairCommand } from './commands/txSignWithKeypair.js';

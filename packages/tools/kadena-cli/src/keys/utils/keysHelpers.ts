@@ -66,9 +66,11 @@ export async function getWallet(walletFile: string): Promise<IWallet | null> {
   // const walletName = walletNameParts[0];
   const walletName = sanitizeFilename(walletNameParts[0]).toLocaleLowerCase();
   const walletDir = join(WALLET_DIR, walletName);
+
   const fileExists = await services.filesystem.fileExists(
     join(walletDir, walletFile),
   );
+
   if (!fileExists) return null;
 
   const files = await services.filesystem.readDir(walletDir);

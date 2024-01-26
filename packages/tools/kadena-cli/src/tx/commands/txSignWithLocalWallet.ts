@@ -2,15 +2,16 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 
-import type { ICommand, IUnsignedCommand } from '@kadena/types';
+import type { ICommand } from '@kadena/types';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
 import type { EncryptedString } from '@kadena/hd-wallet';
-import { kadenaDecrypt } from '@kadena/hd-wallet';
+import type { IWallet } from '../../keys/utils/keysHelpers.js';
+import { getWalletContent } from '../../keys/utils/keysHelpers.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
-import { removeAfterFirstDot } from '../../utils/path.util.js';
+
 import {
   assessTransactionSigningStatus,
   getTransactionFromFile,
@@ -19,19 +20,28 @@ import {
 import { saveSignedTransaction } from '../utils/storage.js';
 
 export const signActionHd = async (
-  walletName: string,
-  wallet: EncryptedString,
+  wallet: string,
+  walletConfig: IWallet,
   password: string,
-  unsignedCommand: IUnsignedCommand,
-  legacy?: boolean,
+  transactionfileName: string,
+  signed: boolean,
+  transactonDirectory: string,
 ): Promise<CommandResult<ICommand>> => {
+  const unsignedTransaction = await getTransactionFromFile(
+    transactionfileName,
+    signed,
+    transactonDirectory,
+  );
+
+  const seed = (await getWalletContent(wallet)) as EncryptedString;
+
   try {
     const command = await signTransactionWithSeed(
-      walletName,
       wallet,
+      seed,
       password,
-      unsignedCommand,
-      legacy,
+      unsignedTransaction,
+      walletConfig.legacy,
     );
 
     return assessTransactionSigningStatus(command);
@@ -63,7 +73,7 @@ export const createSignTransactionWithLocalWalletCommand: (
   ],
   async (option) => {
     try {
-      const keyWalletObj = await option.keyWallet();
+      const wallet = await option.keyWallet();
       const password = await option.securityPassword();
       const dir = await option.txTransactionDir();
       const file = await option.txUnsignedTransactionFile({
@@ -72,40 +82,23 @@ export const createSignTransactionWithLocalWalletCommand: (
       });
 
       debug.log('sign-with-local-wallet:action', {
-        ...keyWalletObj,
+        ...wallet,
         ...password,
         ...file,
         ...dir,
       });
 
-      const txUnsignedTransaction = await getTransactionFromFile(
+      if (wallet.keyWalletConfig === null) {
+        throw new Error(`Wallet: ${wallet.keyWallet} does not exist.`);
+      }
+
+      const result = await signActionHd(
+        wallet.keyWallet,
+        wallet.keyWalletConfig,
+        password.securityPassword,
         file.txUnsignedTransactionFile,
         false,
         dir.txTransactionDir,
-      );
-
-      const wallet =
-        typeof keyWalletObj.keyWallet === 'string'
-          ? keyWalletObj.keyWallet
-          : keyWalletObj.keyWallet.wallet;
-
-      const walletName =
-        typeof keyWalletObj.keyWallet === 'string'
-          ? keyWalletObj.keyWallet
-          : removeAfterFirstDot(keyWalletObj.keyWallet.fileName);
-
-      const decryptedMessage = await kadenaDecrypt(
-        password.securityPassword,
-        wallet as EncryptedString,
-      );
-      const isLegacy = decryptedMessage.byteLength >= 128;
-
-      const result = await signActionHd(
-        walletName,
-        wallet as EncryptedString,
-        password.securityPassword,
-        txUnsignedTransaction,
-        isLegacy,
       );
 
       assertCommandError(result);
