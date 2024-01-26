@@ -868,7 +868,11 @@ To update the smart contract and complete the workshop:
 2. Click **Sign All** to sign the request.
    
    After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
+
+3. Verify your contract changes in the Chainweaver Module Explorer by refreshing the list of **Deployed Contracts**, then clicking **View** for the `election-gas-station` module.
    
+   After you click View, you should see the updated list of functions and capabilities.
+   If you click **Open**, you can view the module code in the editor pane and verify that the `election-gas-station` module deployed on the local development network is what you expect.
 
 ## Next steps
 
@@ -877,7 +881,7 @@ In this tutorial, you learned how to:
 - Add a second module to your smart contract.
 - Define a gas station account that pays transaction fees on behalf of other accounts.
 - Restrict access to the gas station account based on conditions you specify in the Pct module.
-- Deploy the gas station module on the development network. 
+- Deploy the gas station module on the development network.
 
 In this workshop, you configured an election application to use the Kadena client to interact with a smart contract deployed on the Kadena blockchain as its backend. 
 The workshop demonstrates the basic functionality for conducting an election online that uses a blockchain to provide more efficient, transparent, and tamper-proof results. 
@@ -887,3 +891,9 @@ That might be a challenge you want to explore.
 As an alternative, you might want to deploy the election application and smart contract on the Kadena test network, making it available to community members.
 
 We can't wait to see what you build next.
+
+To see the code for the activity you completed in this tutorial, check out the `complete-tutorial` branch from the `election-dapp` repository by running the following command in your terminal shell:
+
+```bash
+git checkout complete-tutorial
+```
