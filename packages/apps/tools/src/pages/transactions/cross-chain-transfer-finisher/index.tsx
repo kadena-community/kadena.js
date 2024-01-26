@@ -556,6 +556,7 @@ const CrossChainTransferFinisher: FC = () => {
                         inputFont="code"
                         id="sig-text-area"
                         value={formattedSigData}
+                        aria-label={t('sigData')}
                       />
                       <Button
                         color="primary"
