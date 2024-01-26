@@ -13,7 +13,7 @@ tags: [pact, smart contract, typescript, tutorial]
 Traditional elections have minimal safeguards against fraud, corruption, mishandling of ballots, and intentional or unintentional disruptions.
 Even where voting is available by mail or online, elections can be costly, inefficient, and subject to human error.
 
-By using blockchain technology, elections could be made more convenient, transparent and reliable.
+By using blockchain technology, elections could be made more convenient, transparent, and reliable.
 For example:
 
 - Every vote can be recorded as a public transaction that can't be altered.
@@ -38,20 +38,20 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace).
-- You have the development network running in a Docker container as described in [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain).
-- You are [connected to the development network](/build/guides/election-dapp-tutorial/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
-- You have created and funded an administrative account as described in [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
-- You have created a principal namespace on the development network as described in [Define a namespace](/build/guides/election-dapp-tutorial/define-a-namespace).
-- You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/guides/election-dapp-tutorial/define-keysets).
-- You have created an election Pact module and deployed it as described in [Write a smart contract](/build/guides/election-dapp-tutorial/write-a-smart-contract).
-- You have updated and deployed the election smart contract on the development network as described in [Nominate candidates](/build/guides/election-dapp-tutorial/nominate-candidates) and [Add vote management](/build/guides/election-dapp-tutorial/add-vote-management).
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
+- You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
+- You are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
+- You have created and funded an administrative account as described in [Add an administrator account](/build/election/add-admin-account).
+- You have created a principal namespace on the development network as described in [Define a namespace](/build/election/define-a-namespace).
+- You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/election/define-keysets).
+- You have created an election Pact module and deployed it as described in [Write a smart contract](/build/election/write-a-smart-contract).
+- You have updated and deployed the election smart contract on the development network as described in [Nominate candidates](/build/election/nominate-candidates) and [Add vote management](/build/election/add-vote-management).
 
 ## Create a voter account
 
 In the previous tutorial, you voted with your administrative account. 
 The transaction was successful because the account had sufficient funds to pay the transaction fee. 
-For this tutorial, you need to create a new voter account on development network. 
+For this tutorial, you need to create a new voter account on the development network. 
 Initially, you'll use the voter account to see that voting transactions in the election application require funds.
 
 The steps for creating the voter account are similar to the steps you followed to create your administrative account.
@@ -68,7 +68,7 @@ To create a voter account:
 
 5. Click **Generate Key** to add a new public key to your list of public keys.
 
-6. Click **Add k: Account**  for the new public key to add a new account to the list of accounts you are watching in Chainweaver.
+6. Click **Add k: Account** for the new public key to add a new account to the list of accounts you are watching in Chainweaver.
 
    If you expand the new account, you'll see that no balance exists for the account on any chain and there's no information about the owner or keyset for the account.
 
@@ -81,12 +81,11 @@ To create a voter account:
    
 8. Open the `election-dapp/snippets` folder in a terminal shell on your computer. 
 
-9.  Run the following command to create a new voter account. Replace `k:account` with your voter account.
+9. Run the following command to create a new voter account.
 
    ```bash
    npm run create-account:devnet -- k:<voter-public-key>
    ```
-
 
    Remember that `k:<voter-public-key>` is the default **account name** for the new voter account that you generated keys for.
    You can copy this account name from Chainweaver when viewing the account watch list.
@@ -99,26 +98,26 @@ To create a voter account:
 
 10. Verify that the account was created by checking the account details using the Kadena client:
 
-   ```bash
-   npm run coin-details:devnet -- k:<voter-public-key>
-   ```
+    ```bash
+    npm run coin-details:devnet -- k:<voter-public-key>
+    ```
    
-   After running this command, you should see output similar to the following for the new voter account:
+    After running this command, you should see output similar to the following for the new voter account:
 
-   ```bash
-   {
-     guard: {
-       pred: 'keys-all',
-       keys: [
-         'bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e'
-       ]
-     },
-     balance: 0,
-     account: 'k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e'
-   }
-   ```
+    ```bash
+    {
+      guard: {
+        pred: 'keys-all',
+        keys: [
+          'bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e'
+        ]
+      },
+      balance: 0,
+      account: 'k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e'
+    }
+    ```
 
-   If you view the account in Chainweaver, you'll see similar information for the new account.
+    If you view the account in Chainweaver, you'll see similar information for the new account.
 
 ## Attempt to cast a vote
 
@@ -149,7 +148,9 @@ To attempt to cast a vote with the voter account:
 6. Open `http://localhost:5173` in your browser and verify that there's at least one candidate listed.
 
 7. Click **Set Account**.
-8. Paste your voter account name, then click **Save**.
+
+8. Copy and paste the voter account name from Chainweaver into the election application, then click **Save**.
+
 9. Click **Vote Now** for a candidate, sign the transaction, then open the Developer Tools for your browser and view the console output.
 
    In the console, you'll see an error similar to the following:
@@ -158,7 +159,7 @@ To attempt to cast a vote with the voter account:
    Attempt to buy gas failed with: (enforce (<= amount balance) "...: Failure: Tx Failed: Insufficient funds`, proving that it is indeed not possible to vote with an account that has zero balance.
    ```
 
-## Implement gas station interface
+## Implement the gas payer interface
 
 In this tutorial, you'll add a second Pact module—the `election-gas-station` module—to your `election` smart contract.
 
@@ -582,6 +583,7 @@ following script.
    
    In the account details, you can see that the `ALLOW_GAS` capability is used to guard the gas station account.
    The `ALLOW_GAS` capability has a prefix that includes your principal namespace and the module name.
+   
    Because the principal namespace is based on your administrative keyset and the principal account of the gas station is based on a capability including that principal namespace, you know that the gas station account name is unique to your administrative account. 
    This account naming scheme makes it impossible for someone with a different keyset to use your gas station account on another chain. 
    As a result, principal accounts in principal namespaces are far more secure than vanity account names in the `free` namespace.
@@ -733,7 +735,6 @@ To cast a vote with the voter account:
    - Your voter account name with the **k:** prefix exists on chain 1.
    - Your voter account name has no KDA account balance (0) on chain 1.
   
-
    If you have closed the election application you previously had running:
    
    - Open the `election-dapp/frontend` folder in a terminal shell on your computer.
@@ -741,100 +742,148 @@ To cast a vote with the voter account:
    - Start the frontend application configured to use the `devnet` backend by running the `npm run start-devnet` command.
 
 3. Open `http://localhost:5173` in your browser and verify that there's at least one candidate listed.
+
 4. Click **Set Account**, copy and paste the voter account name from Chainweaver to vote using that account, then click **Save**.
-5.  Click **Vote Now** for a candidate, sign the transaction, and wait for it to complete. 
+
+5. Click **Vote Now** for a candidate, sign the transaction, and wait for it to complete.
+   
+   You should see the vote count for the candidate you voted for incremented by one vote.
+
+   ![View the result after voting](/assets/docs/election-workshop/election-two-votes.png)
 
 ## Enforce a limit on transaction fees
 
 You now have a functioning gas station for the election application.
-However some additional configuration is required to make the module more secure.
-
+However, you want to make some additional changes to make the module more secure.
 For example, you should enforce an upper limit for transaction fees to help ensure that funds in the gas station account aren't drained too quickly.
 
 To set an upper limit for transaction fees:
 
 1. Open the `election-gas-station.pact` file in the code editor on your computer.
 
-1. Add the following functions to retrieve the transaction gas price from the metadata of the transaction using the
-built-in `chain-data` function and to enforce it to be below a given limit.
+2. Add the following function to retrieve the gas price from the metadata of the transaction using the
+built-in `chain-data` function:
 
    ```pact
    (defun chain-gas-price ()
      (at 'gas-price (chain-data))
    )
-   
+   ```
+
+1. Add the following function to force the gas price to be below a specified limit.
+
+   ```pact
    (defun enforce-below-or-at-gas-price:bool (gasPrice:decimal)
      (enforce (<= (chain-gas-price) gasPrice)
        (format "Gas Price must be smaller than or equal to {}" [gasPrice]))
    )
    ```
 
-1. Update the `GAS_PAYER` capability by adding `(enforce-below-or-at-gas-price 0.000001)` right before `(compose-capability (ALLOW_GAS))`.
+2. Update the `GAS_PAYER` capability by adding `(enforce-below-or-at-gas-price 0.000001)` right before `(compose-capability (ALLOW_GAS))`.
+   
+   For example:
 
-## Limit access to the gas station
+   ```pact
+   (enforce-below-or-at-gas-price 0.000001)
+   (compose-capability (ALLOW_GAS))
+   ```
 
-Any module can use your gas station as it is, which can become quite costly if the word spreads. 
-Especially, since any kind of transaction is allowed and heavy transactions cost even more gas than lighter transactions.
+## Set limits on the transactions allowed
 
-There are two types of Pact transactions: `exec` and `cont`. 
+In its current state, any module can use your gas station to pay for any type of transaction, including transactions that involve multiple steps and could be quite costly.
+For example, a cross-chain transfer is a transaction that requires a continuation with part of the transaction taking place on the source chain and completed on the destination chain.
+This type of "continued" transaction requires more computational resources—that is, more gas—than a simple transaction that completes in a single step.
 
-- `cont` transactions enable multi-step pacts.
-- `exec` is for regular transactions. 
+To prevent the gas station account from being depleted by transactions that require multiple steps, you can configure the gas station module to only allow simple transactions, identified by the `exec` transaction type.
+Transactions identified with the `exec` transaction type can contain multiple functions but complete in a single step.
 
-You can limit the use to `exec` transactions by adding the following line to the start of the body of the `GAS_PAYER` `defcap`.
+To set limits on the transactions allowed to access to the gas station account:
 
-```pact
-(enforce (= "exec" (at "tx-type" (read-msg))) "Can only be used inside an exec")
-```
+1. Open the `election-gas-station.pact` file in the code editor on your computer.
 
-An `exec` transaction can contain multiple function calls. 
-Allow only one function call by adding the following line after the previous one.
+2. Restrict the transaction type to only allow `exec` transactions by adding the following line to the start of the `GAS_PAYER` capability definition:
 
-```pact
-(enforce (= 1 (length (at "exec-code" (read-msg)))) "Can only be used to call one pact function")
-```
+   ```pact
+   (enforce (= "exec" (at "tx-type" (read-msg))) "Can only be used inside an exec")
+   ```
+   
+   An `exec` transaction can contain multiple function calls.
+   You can also restrict access to the gas station account by only allowing specific function calls.
 
-To limit usage of the gas station to pay for gas consumed only by functions defined in your module, add the following line. 
-Replace the namespace with your own principal namespace.
+3. Restrict access to only allow one function call by adding the following line to the `GAS_PAYER` capability definition:
 
-```pact
-(enforce
-  (= "(n_fd020525c953aa002f20fb81a920982b175cdf1a.election." (take 52 (at 0 (at "exec-code" (read-msg)))))
-  "Only election module calls are allowed"
-)
-```
+   ```pact
+   (enforce (= 1 (length (at "exec-code" (read-msg)))) "Can only be used to call one pact function")
+   ```
 
-## Final checks
+4. Restrict access to only pay transaction fees for functions defined in the `election` module by adding the following line to the `GAS_PAYER` capability definition:
+   
+   ```pact
+   (enforce
+     (= "(n_14912521e87a6d387157d526b281bde8422371d1.election." (take 52 (at 0 (at "exec-code" (read-msg)))))
+     "Only election module calls are allowed"
+   )
+   ```
 
-Take the time to run the different `.repl` files you created and verify that all tests are still passing.
-If you are up to the challenge, try to add some tests in the Pact REPL to verify the behavior of the
-election gas station on your own. Then, open up a terminal and change the directory to the `./snippets`
-folder in the root of your project. Execute the `./deploy-gas-station.ts` snippet by running the following
-command to upgrade the `election-gas-station` module and complete the project. Replace `k:account` with
-your admin account.
+   Remember to replace the namespace with your own principal namespace.
 
-```bash
-npm run deploy-gas-station:devnet -- k:account upgrade
-```
+## Update the smart contract on the development network
+
+After you've completed the changes to secure the gas station account, you are ready to update the smart contract you have deployed on the development network and complete the workshop.
+
+To update the smart contract and complete the workshop:
+
+1. Open the election-dap/pact folder in a terminal shell on your computer and verify all of your tests you created in the workshop pass using the Pact REPL.
+   
+   - pact/candidates.repl
+   - pact/election-gas-station.repl
+   - pact/keyset.repl
+   - pact/module.repl
+   - pact/namespace.repl
+   - pact/principal-namespace.repl
+   - pact/setup.repl
+
+1. Verify the development network is currently running on your local computer.
+
+2. Open and unlock the Chainweaver desktop or web application and verify that:
+
+   - You're connected to **development network (devnet)** from the network list.
+   - Your administrative account name with the **k:** prefix exists on chain 1.
+   - Your administrative account name is funded with KDA on chain 1. 
+   
+   You're going to use Chainweaver to sign the transaction that updates the module. 
+
+1. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
+
+1. Update your `election-gas-station` module on the development network by running a command similar to the following with your administrative account name:
+   
+   ```bash
+   npm run deploy-gas-station:devnet -- k:<your-public-key> upgrade
+   ```
+   
+   Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/election/add-admin-account).
+   You can copy this account name from Chainweaver when viewing the account watch list.
+   When you run the script, you should see Chainweaver display a QuickSign Request.
+  
+2. Click **Sign All** to sign the request.
+   
+   After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
+   
 
 ## Next steps
 
-In this chapter, you added a second module to your smart contract: the `election-gas-station`. You
-built the gas station from the ground up, secured it and deployed it to Devnet. You learned that
-Kadena's gas station mechanism allows someone else to automatically pay the gas fee for transactions
-of others under certain conditions. This enables voters to vote for free via a website that uses
-a smart contract on the blockchain as its back-end. By completing this project, you are able to
-demonstrate and explain that online elections on the blockchain are more efficient, transparent
-and reliable than traditional elections. The only remaining challenge is that it is currently
-possible to
-vote more than once by simply creating multiple Kadena accounts. To comply with the law, the
-Kadena accounts that are allowed to vote should somehow be linked to the social security numbers
-of citizens of voting age as stored in legacy government systems. Or, perhaps, everyone should
-just get a Kadena account instead of a social security number at birth. Anyway, there are several
-technical and theoretical solutions for such last hurdle. Food for thought.
+In this tutorial, you learned how to: 
 
-As a next step, you could deploy the election website online and deploy the election smart contract
-to Testnet. This will allow anyone to take part in your online election. In the future, more chapters
-will be added to this tutorial, or new tutorials will be created, to teach you how to do that. You can
-also experiment with signing methods other than Chainweaver. If there is anything you feel is missing
-from this tutorial, please let us know, so we can keep improving.
+- Add a second module to your smart contract.
+- Define a gas station account that pays transaction fees on behalf of other accounts.
+- Restrict access to the gas station account based on conditions you specify in the Pct module.
+- Deploy the gas station module on the development network. 
+
+In this workshop, you configured an election application to use the Kadena client to interact with a smart contract deployed on the Kadena blockchain as its backend. 
+The workshop demonstrates the basic functionality for conducting an election online that uses a blockchain to provide more efficient, transparent, and tamper-proof results. 
+However, as you saw in [Add vote management](/build/election/add-vote-management), it's possible for individuals to vote more than once by simply creating additional Kadena accounts.
+That might be a challenge you want to explore.
+
+As an alternative, you might want to deploy the election application and smart contract on the Kadena test network, making it available to community members.
+
+We can't wait to see what you build next.

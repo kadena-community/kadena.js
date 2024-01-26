@@ -765,6 +765,8 @@ finish.
    
    After you vote, the Vote Now button is disabled because the frontend checks if your account has already voted by making a `local` request to the `account-voted` function of the `election` Pact module.
 
+   ![View the result after voting](/assets/docs/election-workshop/election-after-voting.png)
+
 ## Next steps
 
 In this tutorial, you learned how to:

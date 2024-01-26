@@ -52,25 +52,25 @@ pages:
             url: /start-local-blockchain
             file: /build/election-app/start-a-local-blockchain.md
           admin:
-            url: /admin-account
+            url: /add-admin-account
             file: /build/election-app/add-admin-account.md
           namespace:
-            url: /namespace
+            url: /define-a-namespace
             file: /build/election-app/define-a-namespace.md
           keysets:
-            url: /keysets
+            url: /define-keysets
             file: /build/election-app/define-keysets.md
           smartcontract:
-            url: /smart-contract
+            url: /write-a-smart-contract
             file: /build/election-app/write-a-smart-contract.md
           candidates:
-            url: /candidates
+            url: /nominate-candidates
             file: /build/election-app/nominate-candidates.md
           voting:
-            url: /vote-management
+            url: /add-vote-management
             file: /build/election-app/add-vote-management.md
           gasstation:
-            url: /gas-station
+            url: /add-a-gas-station
             file: /build/election-app/add-a-gas-station.md
       faucet:
         url: /faucet
