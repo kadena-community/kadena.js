@@ -54,7 +54,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { containerClass } from '../styles.css';
 import {
@@ -257,7 +257,7 @@ const CrossChainTransferFinisher: FC = () => {
 
   const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (e) => {
-      setRequestKey(e.target.value);
+      // setRequestKey(e.target.value);
       setOpenItem(undefined);
     },
     [],
@@ -284,6 +284,7 @@ const CrossChainTransferFinisher: FC = () => {
     formState: { errors },
     getValues,
     resetField,
+    control,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     values: {
@@ -299,9 +300,15 @@ const CrossChainTransferFinisher: FC = () => {
     },
   });
 
-  const watchGasPayer = watch('gasPayer');
+  const watchRequestKeyField = watch('requestKey');
 
-  const isGasStation = watchGasPayer === 'kadena-xchain-gas';
+  useEffect(() => {
+    setOpenItem(undefined);
+  }, [watchRequestKeyField]);
+
+  // const watchGasPayer = watch('gasPayer');
+
+  // const isGasStation = watchGasPayer === 'kadena-xchain-gas';
   const isAdvancedOptions = devOption !== 'BASIC';
   const showNotification = Object.keys(finalResults).length > 0;
 
@@ -412,15 +419,20 @@ const CrossChainTransferFinisher: FC = () => {
               <Box marginBlockEnd="md" />
               <Grid>
                 <GridItem>
-                  <RequestKeyField
-                    errorMessage={
-                      pollResults.error || errors.requestKey?.message
-                    }
-                    isInvalid={!!pollResults.error}
-                    {...register('requestKey')}
-                    value={requestKey}
-                    onChange={onRequestKeyChange}
-                    onKeyUp={onCheckRequestKey}
+                  <Controller
+                    control={control}
+                    name="requestKey"
+                    render={({ field }) => (
+                      <RequestKeyField
+                        errorMessage={
+                          pollResults.error || errors.requestKey?.message
+                        }
+                        isInvalid={!!pollResults.error || !!errors.requestKey}
+                        {...field}
+                        // onChange={onRequestKeyChange}
+                        onKeyUp={onCheckRequestKey}
+                      />
+                    )}
                   />
                 </GridItem>
               </Grid>
@@ -507,32 +519,45 @@ const CrossChainTransferFinisher: FC = () => {
               >
                 <Grid columns={1} marginBlockStart="md">
                   <GridItem>
-                    <AccountNameField
-                      label={t('Gas Payer')}
-                      {...register('gasPayer', { shouldUnregister: true })}
-                      id="gas-payer-account-input"
-                      placeholder={t('Enter Your Account')}
-                      isInvalid={!!errors.gasPayer}
-                      errorMessage={
-                        !isGasStation
-                          ? 'Please enter kadena-xchain-gas'
-                          : errors.gasPayer?.message
-                      }
+                    <Controller
+                      control={control}
+                      name="gasPayer"
+                      shouldUnregister
+                      render={({ field }) => (
+                        <AccountNameField
+                          label={t('Gas Payer')}
+                          {...field}
+                          id="gas-payer-account-input"
+                          placeholder={t('Enter Your Account')}
+                          isInvalid={!!errors.gasPayer}
+                          errorMessage={errors.gasPayer?.message}
+                        />
+                      )}
                     />
                   </GridItem>
                 </Grid>
 
                 <Grid columns={1} marginBlockStart="md">
                   <GridItem>
-                    <TextField
-                      disabled={!isAdvancedOptions}
-                      description={t(
-                        'This input field will only be enabled if the user is in expert mode',
+                    <Controller
+                      control={control}
+                      name="gasLimit"
+                      shouldUnregister
+                      render={({ field }) => (
+                        <TextField
+                          disabled={!isAdvancedOptions}
+                          description={t(
+                            'This input field will only be enabled if the user is in expert mode',
+                          )}
+                          label={t('Gas Limit')}
+                          {...field}
+                          isInvalid={!!errors.gasLimit}
+                          errorMessage={errors.gasLimit?.message}
+                          value={field.value?.toString() || ''}
+                          id="gas-limit-input"
+                          placeholder={t('Enter Gas Limit')}
+                        />
                       )}
-                      label={t('Gas Limit')}
-                      {...register('gasLimit', { shouldUnregister: true })}
-                      id="gas-limit-input"
-                      placeholder={t('Enter Gas Limit')}
                     />
                   </GridItem>
                 </Grid>

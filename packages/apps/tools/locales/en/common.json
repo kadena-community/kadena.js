@@ -178,7 +178,7 @@
   "Track & trace transactions": "Track & trace transactions",
   "Retry": "Retry",
   "Search": "Search",
-  "XChain transfer has been successfully finalized!": "XChain transfer has been successfully finalized!",
+  "XChain transfer has been successfully finalized!": "Cross Chain transfer has been successfully finalized!",
   "The Faucet is not available on Mainnet": "The Faucet is not available on Mainnet.",
   "faucet-unavailable-warning": "On other networks, the Faucet smart contract must be deployed to fund accounts. In the <0>Module Explorer</0> you can see if it's deployed (search for \"faucet\").",
   "+ add network": "+ add network",
