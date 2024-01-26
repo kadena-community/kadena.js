@@ -165,7 +165,7 @@ pages:
                 file: /build/guides/election-dapp-tutorial/nominate-candidates.md
               voting:
                 url: /08-voting
-                file: /build/guides/election-dapp-tutorial/08-voting.md
+                file: /build/guides/election-dapp-tutorial/add-vote-management.md
               gasstation:
                 url: /09-gas-station
                 file: /build/guides/election-dapp-tutorial/09-gas-station.md
