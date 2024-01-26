@@ -424,7 +424,7 @@ that delivers technically accurate information.
 - Use labeled code fence blocks for code snippets so that they render with
   syntax highlighting and a Copy button. For example:
 
-  ```lisp
+  ```pact
   (namespace 'free)
   (module hello-world GOVERNANCE
     (defcap GOVERNANCE () true)
