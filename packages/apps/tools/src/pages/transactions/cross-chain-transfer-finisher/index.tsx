@@ -52,8 +52,8 @@ import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import type { ChangeEventHandler, FC } from 'react';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import type { FC } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { containerClass } from '../styles.css';
@@ -255,13 +255,13 @@ const CrossChainTransferFinisher: FC = () => {
     }
   };
 
-  const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (e) => {
-      // setRequestKey(e.target.value);
-      setOpenItem(undefined);
-    },
-    [],
-  );
+  // const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+  //   (e) => {
+  //     // setRequestKey(e.target.value);
+  //     setOpenItem(undefined);
+  //   },
+  //   [],
+  // );
 
   useToolbar(menuData, router.pathname);
 
@@ -278,7 +278,6 @@ const CrossChainTransferFinisher: FC = () => {
   }, [router.isReady]);
 
   const {
-    register,
     handleSubmit,
     watch,
     formState: { errors },

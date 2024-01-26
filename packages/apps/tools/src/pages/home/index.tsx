@@ -20,6 +20,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 
 import { linkStyle } from '@/pages/faucet/styles.css';
+import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
 
@@ -34,16 +35,20 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:faucet-description"
           components={[
-            <a
+            <Link
               className={linkStyle}
               key="faucet-existing-link"
               href="/faucet/existing"
             >
               {t('faucet-existing-link')}
-            </a>,
-            <a className={linkStyle} key="faucet-new-link" href="/faucet/new">
+            </Link>,
+            <Link
+              className={linkStyle}
+              key="faucet-new-link"
+              href="/faucet/new"
+            >
               {t('faucet-new-link')}
-            </a>,
+            </Link>,
           ]}
         />
       ),
@@ -54,7 +59,7 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:how-to-keypair"
           components={[
-            <a
+            <Link
               className={linkStyle}
               key="chainweb-transfer-link"
               href="https://transfer.chainweb.com/"
@@ -62,8 +67,8 @@ const Home: FC = () => {
               rel="noreferrer"
             >
               {t('chainweb-transfer-link')}
-            </a>,
-            <a
+            </Link>,
+            <Link
               className={linkStyle}
               href="https://chainweaver.kadena.network/"
               key="chainweaver-link"
@@ -71,7 +76,7 @@ const Home: FC = () => {
               rel="noreferrer"
             >
               {t('chainweaver-link')}
-            </a>,
+            </Link>,
           ]}
         />
       ),

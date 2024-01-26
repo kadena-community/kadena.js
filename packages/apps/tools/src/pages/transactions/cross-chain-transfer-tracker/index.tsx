@@ -82,8 +82,8 @@ const CrossChainTransferTracker: FC = () => {
   );
   const [data, setData] = useState<IStatusData>({});
   const [txError, setTxError] = useState<string>('');
-  const [inputError, setInputError] = useState<string>('');
-  const [validRequestKey, setValidRequestKey] = useState<boolean>(false);
+  const [setInputError] = useState<string>('');
+  const [setValidRequestKey] = useState<boolean>(false);
   const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
     undefined,
   );
@@ -152,7 +152,6 @@ const CrossChainTransferTracker: FC = () => {
   };
 
   const {
-    register,
     handleSubmit: validateThenSubmit,
     formState: { errors },
     control,

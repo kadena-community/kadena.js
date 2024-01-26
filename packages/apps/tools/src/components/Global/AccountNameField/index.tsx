@@ -1,4 +1,3 @@
-import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { ITextFieldProps } from '@kadena/react-ui';
 import { TextField } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
