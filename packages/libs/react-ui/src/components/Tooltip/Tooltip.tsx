@@ -1,3 +1,4 @@
+import { FocusableProvider } from '@react-aria/focus';
 import type { FC, ReactElement, ReactNode } from 'react';
 import React, { useRef } from 'react';
 import { useTooltip, useTooltipTrigger } from 'react-aria';
@@ -36,9 +37,9 @@ export const Tooltip: FC<ITooltipProps> = ({
 
   return (
     <Box position="relative">
-      <div ref={ref} {...triggerProps}>
+      <FocusableProvider ref={ref} {...triggerProps}>
         {children}
-      </div>
+      </FocusableProvider>
 
       {state.isOpen && (
         <span className={tooltipPositionVariants[position]} {...tooltipProps}>
