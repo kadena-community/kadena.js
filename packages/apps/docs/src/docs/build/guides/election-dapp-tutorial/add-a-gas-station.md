@@ -749,7 +749,7 @@ To cast a vote with the voter account:
    
    You should see the vote count for the candidate you voted for incremented by one vote.
 
-   ![View the result after voting](/assets/docs/election-workshop/election-after-voting.png)
+   ![View the result after voting](/assets/docs/election-workshop/election-two-votes.png)
 
 ## Enforce a limit on transaction fees
 
