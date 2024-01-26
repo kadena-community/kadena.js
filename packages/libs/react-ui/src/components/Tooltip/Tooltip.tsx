@@ -1,6 +1,7 @@
 import { FocusableProvider } from '@react-aria/focus';
+import { mergeRefs } from '@react-aria/utils';
 import type { FC, ReactElement, ReactNode } from 'react';
-import React, { useRef } from 'react';
+import React, { cloneElement, useRef } from 'react';
 import { useTooltip, useTooltipTrigger } from 'react-aria';
 import type { TooltipTriggerProps } from 'react-stately';
 import { useTooltipTriggerState } from 'react-stately';
@@ -38,7 +39,9 @@ export const Tooltip: FC<ITooltipProps> = ({
   return (
     <Box position="relative">
       <FocusableProvider ref={ref} {...triggerProps}>
-        {children}
+        {cloneElement(children, {
+          ...triggerProps,
+        })}
       </FocusableProvider>
 
       {state.isOpen && (
