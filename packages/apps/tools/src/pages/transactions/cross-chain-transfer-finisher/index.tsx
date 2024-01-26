@@ -328,9 +328,8 @@ const CrossChainTransferFinisher: FC = () => {
     <FormStatusNotification
       status="processing"
       title={t('form-status-title-processing')}
-    >
-      {t('form-status-content-processing')}
-    </FormStatusNotification>
+      body={t('form-status-content-processing')}
+    />
   );
 
   const handleDevOptionsClick = (): void => {
