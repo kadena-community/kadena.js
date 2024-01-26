@@ -1,5 +1,5 @@
 {
-  "name": "dev-wallet-desktop",
+  "name": "@kadena/-wallet-desktop",
   "description": "Kadena developer wallet",
   "private": true,
   "version": "0.0.0",

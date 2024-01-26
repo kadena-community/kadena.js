@@ -32,7 +32,7 @@ monorepoPackages.push('@kadena/client/fp');
 export const config: UserConfig = {
   plugins: [
     react(),
-    tsconfigPaths(),
+    tsconfigPaths({ root: './' }),
     vanillaExtractPlugin(),
     viteStaticCopy({
       targets: [
