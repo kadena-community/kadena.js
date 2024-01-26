@@ -1,6 +1,6 @@
 {
   "name": "@kadena/graph",
-  "version": "0.1.1",
+  "version": "0.1.2-next.6",
   "description": "GraphQL server, available for running your own GraphQL endpoint. This project uses chainweb-data as the datasource.",
   "repository": {
     "type": "git",
@@ -16,8 +16,16 @@
   "bin": {
     "kadena-graph": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "cwd-extra-migrations",
+    ".env.example",
+    "prisma",
+    "generated-schema.graphql"
+  ],
   "scripts": {
     "build": "pnpm run pactjs:generate:contract:coin && pnpm run pactjs:generate:contract:marmalade && pnpm prisma:generate && tsc",
+    "build:esbuild": "rimraf ./dist && esbuild ./src/index.ts --bundle --outfile=dist/index.cjs --format=cjs --platform=node",
     "deploy:marmalade": "ts-node -T src/devnet/deployment/index.ts deploy:marmalade",
     "devnet": "docker volume create kadena_devnet; docker run --rm -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -v kadena_devnet:/data -v ./cwd-extra-migrations:/cwd-extra-migrations:ro --name devnet kadena/devnet",
     "devnet:update": "docker pull kadena/devnet",
@@ -25,10 +33,13 @@
     "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",
     "fund": "npx ts-node -T src/devnet/simulation/index.ts fund",
+    "postinstall": "npm run prisma:generate",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
+    "prepack": "#ts-node ./src/scripts/build-publish-package.ts",
+    "postpack": "git checkout .",
     "pactjs:generate:contract:coin": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
     "pactjs:generate:contract:faucet": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact;",
     "pactjs:generate:contract:marmalade": "pactjs contract-generate --contract marmalade-v2.ledger --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact;",
@@ -84,7 +95,9 @@
     "@types/node": "^18.17.14",
     "@types/pg": "~8.10.9",
     "@types/seedrandom": "~3.0.8",
+    "esbuild": "^0.19.12",
     "prettier": "~3.0.3",
+    "rimraf": "~5.0.1",
     "ts-node": "~10.8.2",
     "typescript": "5.2.2"
   },
