@@ -16,7 +16,6 @@ import {
   StatusId,
   getTransferStatus,
 } from '@/services/transfer-tracker/get-transfer-status';
-import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Accordion,
@@ -82,8 +81,6 @@ const CrossChainTransferTracker: FC = () => {
   );
   const [data, setData] = useState<IStatusData>({});
   const [txError, setTxError] = useState<string>('');
-  const [setInputError] = useState<string>('');
-  const [setValidRequestKey] = useState<boolean>(false);
   const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
     undefined,
   );
@@ -103,32 +100,11 @@ const CrossChainTransferTracker: FC = () => {
     setData({});
   }, [network]);
 
-  const checkRequestKey = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    e.preventDefault();
-    debug(checkRequestKey.name);
-
-    //Clear error message when user starts typing
-    setInputError('');
-    if (!requestKey) {
-      setValidRequestKey(false);
-      return;
-    }
-
-    if (validateRequestKey(requestKey) === undefined) {
-      setValidRequestKey(true);
-      return;
-    }
-    setValidRequestKey(false);
-    return;
-  };
-
   const handleSubmit = async (data: FormData): Promise<void> => {
     debug(handleSubmit);
 
     router.query.reqKey = data.requestKey;
     await router.push(router);
-
-    setTxError('');
 
     try {
       await getTransferStatus({
@@ -173,7 +149,6 @@ const CrossChainTransferTracker: FC = () => {
 
   useEffect(() => {
     if (errors.requestKey?.message) {
-      setInputError(errors.requestKey.message);
       setTxError('');
     }
   }, [errors.requestKey?.message]);
@@ -246,7 +221,6 @@ const CrossChainTransferTracker: FC = () => {
                       errorMessage={errors.requestKey?.message}
                       isInvalid={!!errors.requestKey}
                       {...field}
-                      onKeyUp={checkRequestKey}
                       onChange={onRequestKeyChange}
                     />
                   )}
