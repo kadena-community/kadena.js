@@ -583,7 +583,10 @@ following script.
    
    In the account details, you can see that the `ALLOW_GAS` capability is used to guard the gas station account.
    The `ALLOW_GAS` capability has a prefix that includes your principal namespace and the module name.
+<<<<<<< HEAD
    
+=======
+>>>>>>> 42ebad323 (Fixes and draft of gas station)
    Because the principal namespace is based on your administrative keyset and the principal account of the gas station is based on a capability including that principal namespace, you know that the gas station account name is unique to your administrative account. 
    This account naming scheme makes it impossible for someone with a different keyset to use your gas station account on another chain. 
    As a result, principal accounts in principal namespaces are far more secure than vanity account names in the `free` namespace.
@@ -682,7 +685,11 @@ App.tsx:42 Uncaught (in promise) {callStack: Array(0), type: 'TxFailure', messag
 
 When you added the `ACCOUNT-OWNER` capability to the `election-dapp/pact/election.pact` file, you didn't set the scope for the capability.
 
+<<<<<<< HEAD
 You might recall in the previous tutorial that you tested voting with a transaction similar to the following in the `voting.repl` file:
+=======
+You might recall in the previous tutorial that you tested voting with a transactionb similar to the following in the `voting.repl` file:
+>>>>>>> 42ebad323 (Fixes and draft of gas station)
 
 ```pact
 (env-sigs
@@ -728,6 +735,7 @@ To set the scope for the `ACCOUNT-OWNER` capability:
 To cast a vote with the voter account:
 
 1. Verify the development network is currently running on your local computer.
+<<<<<<< HEAD
 
 2. Open and unlock the Chainweaver desktop or web application and verify that:
    
@@ -752,17 +760,85 @@ To cast a vote with the voter account:
    ![View the result after voting](/assets/docs/election-workshop/election-two-votes.png)
 
 ## Enforce a limit on transaction fees
+=======
+
+2. Open and unlock the Chainweaver desktop or web application and verify that:
+   
+   - You're connected to **development network (devnet)** from the network list.
+   - Your voter account name with the **k:** prefix exists on chain 1.
+   - Your voter account name has no KDA account balance (0) on chain 1.
+  
+
+   If you have closed the election application you previously had running:
+   
+   - Open the `election-dapp/frontend` folder in a terminal shell on your computer.
+   - Install the frontend dependencies by running the `npm install` command.
+   - Start the frontend application configured to use the `devnet` backend by running the `npm run start-devnet` command.
+
+3. Open `http://localhost:5173` in your browser and verify that there's at least one candidate listed.
+4. Click **Set Account**, copy and paste the voter account name from Chainweaver to vote using that account, then click **Save**.
+5.  Click **Vote Now** for a candidate, sign the transaction, and wait for it to complete. 
+
+## Enforce a limit on transaction fees
 
 You now have a functioning gas station for the election application.
-However, you want to make some additional changes to make the module more secure.
+However some additional configuration is required to make the module more secure.
+
 For example, you should enforce an upper limit for transaction fees to help ensure that funds in the gas station account aren't drained too quickly.
 
 To set an upper limit for transaction fees:
 
 1. Open the `election-gas-station.pact` file in the code editor on your computer.
 
+1. Add the following functions to retrieve the transaction gas price from the metadata of the transaction using the
+built-in `chain-data` function and to enforce it to be below a given limit.
+
+   ```pact
+   (defun chain-gas-price ()
+     (at 'gas-price (chain-data))
+   )
+   
+   (defun enforce-below-or-at-gas-price:bool (gasPrice:decimal)
+     (enforce (<= (chain-gas-price) gasPrice)
+       (format "Gas Price must be smaller than or equal to {}" [gasPrice]))
+   )
+   ```
+
+1. Update the `GAS_PAYER` capability by adding `(enforce-below-or-at-gas-price 0.000001)` right before `(compose-capability (ALLOW_GAS))`.
+
+## Limit access to the gas station
+
+Any module can use your gas station as it is, which can become quite costly if the word spreads. 
+Especially, since any kind of transaction is allowed and heavy transactions cost even more gas than lighter transactions.
+
+There are two types of Pact transactions: `exec` and `cont`. 
+
+- `cont` transactions enable multi-step pacts.
+- `exec` is for regular transactions. 
+
+You can limit the use to `exec` transactions by adding the following line to the start of the body of the `GAS_PAYER` `defcap`.
+>>>>>>> 42ebad323 (Fixes and draft of gas station)
+
+You now have a functioning gas station for the election application.
+However, you want to make some additional changes to make the module more secure.
+For example, you should enforce an upper limit for transaction fees to help ensure that funds in the gas station account aren't drained too quickly.
+
+<<<<<<< HEAD
+To set an upper limit for transaction fees:
+=======
+An `exec` transaction can contain multiple function calls. 
+Allow only one function call by adding the following line after the previous one.
+>>>>>>> 42ebad323 (Fixes and draft of gas station)
+
+1. Open the `election-gas-station.pact` file in the code editor on your computer.
+
+<<<<<<< HEAD
 2. Add the following function to retrieve the gas price from the metadata of the transaction using the
 built-in `chain-data` function:
+=======
+To limit usage of the gas station to pay for gas consumed only by functions defined in your module, add the following line. 
+Replace the namespace with your own principal namespace.
+>>>>>>> 42ebad323 (Fixes and draft of gas station)
 
    ```pact
    (defun chain-gas-price ()

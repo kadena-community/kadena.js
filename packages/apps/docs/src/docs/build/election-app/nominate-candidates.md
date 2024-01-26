@@ -54,7 +54,15 @@ To define the database schema and table:
 
    In this code, `defschema` defines a `candidate-schema` for a database table with two columns: `name` of type string and `votes` of type integer.
 
+<<<<<<< HEAD
 1. Create the table outside of the election module by adding the following lines of code at the end of the `./pact/election.pact` file, after the closing parenthesis (`)`) of the `election` module definition:
+=======
+<<<<<<< HEAD
+3. Create the table outside of the election module by adding the following lines of code at the end of the `./pact/election.pact` file, after the closing parenthesis (`)`) of the  `election` module definition:
+=======
+1. Create the table outside of the election module by adding the following lines of code at the end of the `./pact/election.pact` file, after the closing parenthesis (`)`) of the `election` module definition:
+>>>>>>> 42ebad323 (Fixes and draft of gas station)
+>>>>>>> 8661741ec (Fixes and draft of gas station)
 
    ```pact
    (if (read-msg "init-candidates")
@@ -690,7 +698,6 @@ To modify the frontend to add candidates from the development network:
    Unlike the transaction for listing candidates, the transaction for adding candidates must be sent to the blockchain, so you must pay a transaction fee—in units of gas—for the resources consumed to process the transaction.
    
    The value of the `senderAccount` field in the metadata specifies the account that pays for gas.
-   
    This is important to remember because, in the [Add a gas station](/build/election/add-a-gas-station) tutorial, you'll specify the account of a **gas station** to pay for transactions that are signed by voters.
    However, the transaction to add a candidate must be signed and paid for by the same account.
 
