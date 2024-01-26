@@ -2183,6 +2183,9 @@ importers:
 
   packages/tools/e2e-tests:
     dependencies:
+      '@kadena/chainweb-node-client':
+        specifier: workspace:*
+        version: link:../../libs/chainweb-node-client
       '@kadena/client':
         specifier: workspace:*
         version: link:../../libs/client

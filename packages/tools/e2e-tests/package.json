@@ -20,6 +20,7 @@
     "test:e2e:tools": "playwright test -c playwright.tools.config.ts --ui"
   },
   "dependencies": {
+    "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
     "@kadena/client-utils": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
