@@ -1,8 +1,0 @@
-{
-  "cmd": "{\"networkId\":\"testnet04\",\"signers\":[{\"caps\":[{\"name\":\"coin.TRANSFER\",\"args\":[\"k:e73308865c596aea2aea9e714eb5e9162ab8ef6fe4ee6de06c566316fe8c5c01\",\"k:e73308865c596aea2aea9e714eb5e9162ab8ef6fe4ee6de06c566316fe8c5c02\",1]}],\"pubKey\":\"e73308865c596aea2aea9e714eb5e9162ab8ef6fe4ee6de06c566316fe8c5c01\"},{\"caps\":[{\"name\":\"coin.GAS\",\"args\":[]}],\"pubKey\":\"e73308865c596aea2aea9e714eb5e9162ab8ef6fe4ee6de06c566316fe8c5c02\"}],\"type\":\"exec\",\"payload\":{\"exec\":{\"data\":{},\"code\":\"(coin.transfer \\\"e73308865c596aea2aea9e714eb5e9162ab8ef6fe4ee6de06c566316fe8c5c01\\\" \\\"k:e73308865c596aea2aea9e714eb5e9162ab8ef6fe4ee6de06c566316fe8c5c02\\\" 1)\"}},\"meta\":{\"chainId\":\"1\",\"sender\":\"k:e73308865c596aea2aea9e714eb5e9162ab8ef6fe4ee6de06c566316fe8c5c02\",\"gasLimit\":4600,\"gasPrice\":0.000001,\"ttl\":600,\"creationTime\":1706180192},\"nonce\":\"\"}",
-  "hash": "AQFxIyyMfPcoh2i8iJmWdj3ublB7twLHEK8jd8U_bnw",
-  "sigs": [
-    null,
-    null
-  ]
-}
