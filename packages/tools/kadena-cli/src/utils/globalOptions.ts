@@ -565,7 +565,16 @@ export const globalOptions = {
       `Enter your transaction directory (default: "./${TRANSACTION_FOLDER_NAME}")`,
     ),
   }),
-  // TX
+  // Dapp
+  dappTemplate: createOption({
+    key: 'dappTemplate',
+    prompt: genericActionsPrompts.actionAskForDappTemplate,
+    validation: z.string(),
+    option: new Option(
+      '-t, --dapp-template <dappTemplate>',
+      'Select a dapp template',
+    ),
+  }),
   outFileJson: createOption({
     key: 'outFile',
     prompt: tx.outFilePrompt,
