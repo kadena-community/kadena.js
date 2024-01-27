@@ -31,7 +31,7 @@ export const signTransactionWithAliasFile = async (
   password: string,
   transactionfileName: string,
   signed: boolean,
-  transactonDirectory?: string,
+  transactionDirectory?: string,
   legacy?: boolean,
 ): Promise<CommandResult<ICommand>> => {
   try {
@@ -61,7 +61,7 @@ export const signTransactionWithAliasFile = async (
     const unsignedCommand = await getTransactionFromFile(
       transactionfileName,
       signed,
-      transactonDirectory,
+      transactionDirectory,
     );
 
     if (unsignedCommand === undefined) {

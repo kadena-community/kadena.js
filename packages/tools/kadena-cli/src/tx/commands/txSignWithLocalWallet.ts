@@ -25,19 +25,19 @@ export const signActionHd = async (
   password: string,
   transactionfileName: string,
   signed: boolean,
-  transactonDirectory: string,
+  transactionDirectory: string,
 ): Promise<CommandResult<ICommand>> => {
   const unsignedTransaction = await getTransactionFromFile(
     transactionfileName,
     signed,
-    transactonDirectory,
+    transactionDirectory,
   );
 
   const seed = (await getWalletContent(wallet)) as EncryptedString;
 
   try {
     const command = await signTransactionWithSeed(
-      wallet,
+      walletConfig.folder,
       seed,
       password,
       unsignedTransaction,

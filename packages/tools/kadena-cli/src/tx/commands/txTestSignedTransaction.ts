@@ -6,21 +6,21 @@ import { createClient, isSignedTransaction } from '@kadena/client';
 import type { ICommand } from '@kadena/types';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommand } from '../../utils/createCommand.js';
+import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { getTransactionFromFile } from '../utils/helpers.js';
 import { txDisplayTransaction } from '../utils/txDisplayHelper.js';
 
 export const testTransactionAction = async (
   signedCommand: ICommand,
-  config: {
+  networkConfig: {
     networkHost: string;
     networkId: string;
-    chainId: string;
   },
+  chainId: string,
 ): Promise<CommandResult<{}>> => {
   const client = createClient(
-    `${config.networkHost}/chainweb/0.0/${config.networkId}/chain/${config.chainId}/pact`,
+    `${networkConfig.networkHost}/chainweb/0.0/${networkConfig.networkId}/chain/${chainId}/pact`,
   );
 
   try {
@@ -40,7 +40,7 @@ export const testTransactionAction = async (
 export const createTestSignedTransactionCommand: (
   program: Command,
   version: string,
-) => void = createCommand(
+) => void = createCommandFlexible(
   'test-signed-transaction',
   'test a signed transaction.',
   [
@@ -49,21 +49,35 @@ export const createTestSignedTransactionCommand: (
     globalOptions.network(),
     globalOptions.chainId(),
   ],
-  async (config) => {
+  async (option) => {
     try {
-      debug.log('test-signed-transaction:action')({ config });
+      const networkOption = await option.network();
+      const dir = await option.txTransactionDir();
+      const file = await option.txSignedTransactionFile({
+        signed: true,
+        path: dir.txTransactionDir,
+      });
+      const chainOption = await option.chainId();
+
+      debug.log('sign-with-local-wallet:action', {
+        ...networkOption,
+        ...dir,
+        ...file,
+        ...chainOption,
+      });
 
       const txSignedTransaction = await getTransactionFromFile(
-        config.txSignedTransactionFile,
+        file.txSignedTransactionFile,
         true,
-        config.txTransactionDir,
+        dir.txTransactionDir,
       );
 
       if (isSignedTransaction(txSignedTransaction)) {
-        const result = await testTransactionAction(txSignedTransaction, {
-          ...config.networkConfig,
-          chainId: config.chainId,
-        });
+        const result = await testTransactionAction(
+          txSignedTransaction,
+          networkOption.networkConfig,
+          chainOption.chainId,
+        );
         assertCommandError(result);
         return txDisplayTransaction(result.data, 'txSignedTransaction result:');
       }

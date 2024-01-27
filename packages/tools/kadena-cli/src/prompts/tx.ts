@@ -59,8 +59,7 @@ export const transactionSelectPrompt: IPrompt<string> = async (args) => {
   );
 
   if (existingTransactions.length === 0) {
-    console.log(chalk.red('No transactions found. Exiting.'));
-    process.exit(0);
+    throw new Error('No transactions found. Exiting.');
   }
 
   const choices = existingTransactions.map((transaction) => ({

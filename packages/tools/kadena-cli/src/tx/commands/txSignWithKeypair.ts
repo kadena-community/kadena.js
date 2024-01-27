@@ -20,13 +20,13 @@ import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 export const signTransactionWithKeyPairAction = async (
   keyPairs: IKeyPair[],
   transactionfileName: string,
-  transactonDirectory: string,
+  transactionDirectory: string,
   legacy?: boolean,
 ): Promise<CommandResult<ICommand>> => {
   const unsignedCommand = await getTransactionFromFile(
     transactionfileName,
     false,
-    transactonDirectory,
+    transactionDirectory,
   );
 
   try {
