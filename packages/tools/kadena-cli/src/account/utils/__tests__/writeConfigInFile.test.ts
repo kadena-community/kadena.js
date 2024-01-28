@@ -1,6 +1,6 @@
 import yaml from 'js-yaml';
 import path from 'path';
-import { describe, expect, it } from 'vitest';
+import { assert, describe, expect, it } from 'vitest';
 
 import { defaultAccountPath } from '../../../constants/account.js';
 import { services } from '../../../services/index.js';
@@ -26,7 +26,11 @@ describe('writeInConfigFile', () => {
       await fs.deleteFile(filePath);
     }
     expect(await fs.fileExists(filePath)).toBe(false);
-    await writeConfigInFile(filePath, config);
+
+    const result = await writeConfigInFile(filePath, config);
+
+    assert(result.success);
+
     const fileContent = await fs.readFile(filePath);
     expect(fileContent).toBe(
       yaml.dump({
@@ -39,7 +43,7 @@ describe('writeInConfigFile', () => {
     expect(await fs.fileExists(filePath)).toBe(true);
   });
 
-  it('should throw an error when file already exists', async () => {
+  it('should return false with errors message', async () => {
     const config = {
       ...defaultConfigMock,
       accountAlias: 'unit-test-alias',
@@ -54,11 +58,12 @@ describe('writeInConfigFile', () => {
     // Create a file before writing
     await fs.writeFile(filePath, 'test');
     expect(await fs.fileExists(filePath)).toBe(true);
-    await expect(async () => {
-      await writeConfigInFile(filePath, config);
-    }).rejects.toThrow(
-      `The account configuration "${filePath}" already exists.`,
-    );
+    const result = await writeConfigInFile(filePath, config);
+
+    expect(result).toEqual({
+      success: false,
+      errors: [`The account configuration "${filePath}" already exists.`],
+    });
     // Cleanup the file after test
     await fs.deleteFile(filePath);
   });

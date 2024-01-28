@@ -40,9 +40,9 @@ async function getAllPublicKeysFromWallet(
 const selectPublicKeys = createOption({
   key: 'publicKeys',
   defaultIsOptional: false,
-  async prompt(prev, args) {
+  async prompt(prev) {
     const walletDetails = await getWallet(prev.keyWallet as string);
-    if (walletDetails === null) {
+    if (!walletDetails) {
       console.log(chalk.red(`Wallet ${prev.keyWallet} does not exist.`));
       process.exit(1);
     }

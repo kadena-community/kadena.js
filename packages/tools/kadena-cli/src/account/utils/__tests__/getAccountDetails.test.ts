@@ -24,6 +24,33 @@ describe('getAccountDetailsFromChain', () => {
     expect(result).toStrictEqual(expectedResult);
   });
 
+  it('should throw an error when account details are undefined from chain', async () => {
+    server.use(
+      http.post(
+        'https://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/local',
+        () => {
+          return HttpResponse.json(
+            {
+              result: {
+                data: undefined,
+                status: 'success',
+              },
+            },
+            { status: 200 },
+          );
+        },
+      ),
+    );
+    await expect(async () => {
+      await getAccountDetailsFromChain({
+        ...defaultConfigMock,
+        accountName: 'k:accountName',
+        network: devNetConfigMock.network,
+        networkConfig: devNetConfigMock,
+      });
+    }).rejects.toThrow('Account k:accountName does not exist on chain 1');
+  });
+
   it('should throw an error when account is not available on chain', async () => {
     server.use(
       http.post(
