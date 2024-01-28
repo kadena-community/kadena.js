@@ -1,17 +1,16 @@
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
-import path from 'path';
-import { defaultAccountPath } from '../../constants/account.js';
-import { updateAccountDetailsPrompt } from '../../prompts/account.js';
+import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { sanitizeFilename } from '../../utils/helpers.js';
-import { getUpdatedConfig } from '../utils/addHelpers.js';
-import { validateAccountDetails } from '../utils/validateAccountDetails.js';
-import { writeConfigInFile } from '../utils/writeConfigInFile.js';
+import { addAccount } from '../utils/addAccount.js';
+import {
+  displayAddAccountSuccess,
+  overridePromptCb,
+} from '../utils/addHelpers.js';
 
-export const addAccountManualCommand: (
+export const createAddAccountManualCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
@@ -27,47 +26,15 @@ export const addAccountManualCommand: (
     globalOptions.predicate(),
   ],
 
-  async function addAccount(config): Promise<void> {
-    debug('account-add-manual:action')({ config });
-
-    const sanitizedAlias = sanitizeFilename(config.accountAlias);
-    const filePath = path.join(defaultAccountPath, `${sanitizedAlias}.yaml`);
-
+  async (config): Promise<void> => {
     try {
-      const {
-        config: newConfig,
-        accountDetails,
-        isConfigAreSame,
-      } = await validateAccountDetails(config);
+      debug('account-add-manual:action')({ config });
+      const result = await addAccount(config, overridePromptCb);
 
-      if (isConfigAreSame) {
-        await writeConfigInFile(filePath, newConfig);
-      } else {
-        const updateOption = await updateAccountDetailsPrompt();
-
-        const updatedConfig = getUpdatedConfig(
-          newConfig,
-          accountDetails,
-          updateOption,
-        );
-
-        await writeConfigInFile(filePath, updatedConfig);
-      }
-      console.log(
-        chalk.green(
-          `\nThe account configuration "${config.accountAlias}" has been saved.\n`,
-        ),
-      );
+      assertCommandError(result);
+      displayAddAccountSuccess(config.accountAlias);
     } catch (error) {
-      if (error.message.includes('row not found') === true) {
-        console.log(
-          chalk.red(
-            `The account is not on chain yet. To create it on-chain, transfer funds to it from ${config.networkConfig.network} and use "fund" command.`,
-          ),
-        );
-        return;
-      }
-      console.log(chalk.red(`${error.message}`));
+      console.log(chalk.red(`\n${error.message}\n`));
       process.exit(1);
     }
   },

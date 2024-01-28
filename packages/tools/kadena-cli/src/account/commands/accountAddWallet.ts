@@ -1,23 +1,27 @@
 import { checkbox } from '@inquirer/prompts';
+import type { IKeyPair } from '@kadena/types';
 import chalk from 'chalk';
 import type { Command } from 'commander';
+import { Option } from 'commander';
 import debug from 'debug';
 import yaml from 'js-yaml';
 import path from 'path';
+import { z } from 'zod';
 
-import type { IKeyPair } from '@kadena/types';
-import { defaultAccountPath } from '../../constants/account.js';
 import { WALLET_DIR } from '../../constants/config.js';
-import { printWalletKeys } from '../../keys/utils/keysDisplay.js';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
-import { updateAccountDetailsPrompt } from '../../prompts/account.js';
+import { getWallet } from '../../keys/utils/keysHelpers.js';
 import { services } from '../../services/index.js';
+import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
+import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { sanitizeFilename } from '../../utils/helpers.js';
-import { getUpdatedConfig, isEmpty } from '../utils/addHelpers.js';
-import { validateAccountDetails } from '../utils/validateAccountDetails.js';
-import { writeConfigInFile } from '../utils/writeConfigInFile.js';
+import { addAccount } from '../utils/addAccount.js';
+import {
+  displayAddAccountSuccess,
+  isEmpty,
+  overridePromptCb,
+} from '../utils/addHelpers.js';
 
 async function getAllPublicKeysFromWallet(
   keyWalletConfig: IWallet,
@@ -30,10 +34,36 @@ async function getAllPublicKeysFromWallet(
     const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
     publicKeysList.push(parsed?.publicKey ?? '');
   }
-  return publicKeysList.filter((key) => isEmpty(key));
+  return publicKeysList.filter((key) => !isEmpty(key));
 }
 
-export const addAccountWalletCommand: (
+const selectPublicKeys = createOption({
+  key: 'publicKeys',
+  defaultIsOptional: false,
+  async prompt(prev, args) {
+    const walletDetails = await getWallet(prev.keyWallet as string);
+    if (walletDetails === null) {
+      console.log(chalk.red(`Wallet ${prev.keyWallet} does not exist.`));
+      process.exit(1);
+    }
+    const publicKeysList = await getAllPublicKeysFromWallet(walletDetails);
+
+    return await checkbox({
+      message: 'Select public keys to add to account',
+      choices: publicKeysList.map((key) => ({ value: key })),
+    });
+  },
+  transform(publicKeys: string[]) {
+    return publicKeys.join(',');
+  },
+  validation: z.array(z.string()),
+  option: new Option(
+    '-p, --public-keys <publicKeys>',
+    'Public keys to add to account',
+  ),
+});
+
+export const createAddAccountFromWalletCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
@@ -45,69 +75,26 @@ export const addAccountWalletCommand: (
     globalOptions.fungible(),
     globalOptions.network(),
     globalOptions.chainId(),
+    selectPublicKeys(),
     globalOptions.predicate(),
   ],
 
-  async function addAccount(config): Promise<void> {
-    debug('account-add-manual:action')({ config });
-    const { keyWalletConfig } = config;
-    await printWalletKeys(keyWalletConfig);
-    if (!keyWalletConfig) {
-      console.log(chalk.red(`Wallet ${config.keyWallet} does not exist.`));
-      return;
-    }
-
-    const publicKeys = await getAllPublicKeysFromWallet(keyWalletConfig);
-
-    const selectPublicKeys = await checkbox({
-      message: 'Select public keys to add to account',
-      choices: publicKeys.map((key) => ({ value: key })),
-    });
-
-    const updatedConfig = {
-      ...config,
-      publicKeys: selectPublicKeys.join(','),
-      publicKeysConfig: selectPublicKeys,
-    };
-
-    const sanitizedAlias = sanitizeFilename(config.accountAlias);
-    const filePath = path.join(defaultAccountPath, `${sanitizedAlias}.yaml`);
-
+  async (config): Promise<void> => {
     try {
-      const {
-        config: newConfig,
-        accountDetails,
-        isConfigAreSame,
-      } = await validateAccountDetails(updatedConfig);
+      debug('account-add-wallet:action')({ config });
 
-      if (isConfigAreSame) {
-        await writeConfigInFile(filePath, newConfig);
-      } else {
-        const updateOption = await updateAccountDetailsPrompt();
+      const updatedConfig = {
+        ...config,
+        publicKeysConfig: config.publicKeys.split(','),
+      };
 
-        const updatedConfig = getUpdatedConfig(
-          newConfig,
-          accountDetails,
-          updateOption,
-        );
+      const result = await addAccount(updatedConfig, overridePromptCb);
 
-        await writeConfigInFile(filePath, updatedConfig);
-      }
-      console.log(
-        chalk.green(
-          `\nThe account configuration "${updatedConfig.accountAlias}" has been saved.\n`,
-        ),
-      );
+      assertCommandError(result);
+
+      displayAddAccountSuccess(config.accountAlias);
     } catch (error) {
-      if (error.message.includes('row not found') === true) {
-        console.log(
-          chalk.red(
-            `The account is not on chain yet. To create it on-chain, transfer funds to it from ${updatedConfig.networkConfig.network} and use "fund" command.`,
-          ),
-        );
-        return;
-      }
-      console.log(chalk.red(`${error.message}`));
+      console.log(chalk.red(`\n${error.message}\n`));
       process.exit(1);
     }
   },

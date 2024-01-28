@@ -1,3 +1,9 @@
+import chalk from 'chalk';
+import path from 'path';
+
+import { defaultAccountPath } from '../../constants/account.js';
+import { updateAccountDetailsPrompt } from '../../prompts/account.js';
+import { sanitizeFilename } from '../../utils/helpers.js';
 import type {
   IAccountDetailsResult,
   IAddAccountManualConfig,
@@ -9,9 +15,9 @@ export const isEmpty = (value?: string): boolean =>
 export const getUpdatedConfig = (
   config: IAddAccountManualConfig,
   accountDetails: IAccountDetailsResult,
-  updateOption: string,
+  overrideFromChain: boolean,
 ): IAddAccountManualConfig => {
-  if (updateOption === 'userInput') {
+  if (overrideFromChain === false) {
     return config;
   } else {
     const updatedConfig = {
@@ -23,3 +29,21 @@ export const getUpdatedConfig = (
     return updatedConfig;
   }
 };
+
+export const getFilePath = (fileName: string): string => {
+  const sanitizedAlias = sanitizeFilename(fileName);
+  return path.join(defaultAccountPath, `${sanitizedAlias}.yaml`);
+};
+
+export const displayAddAccountSuccess = (accountAlias: string): void => {
+  console.log(
+    chalk.green(
+      `\nThe account configuration "${accountAlias}" has been saved.\n`,
+    ),
+  );
+};
+
+export async function overridePromptCb(): Promise<boolean> {
+  const updateOption = await updateAccountDetailsPrompt();
+  return updateOption === 'chain';
+}

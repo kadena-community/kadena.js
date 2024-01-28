@@ -1,3 +1,4 @@
+import type { CommandResult } from '../../utils/command.util.js';
 import type {
   IAccountDetailsResult,
   IAddAccountManualConfig,
@@ -6,7 +7,7 @@ import { compareConfigAndAccountDetails } from './compareConfigAndAccountDetails
 import { createAccountName } from './createAccountName.js';
 import { getAccountDetailsFromChain } from './getAccountDetails.js';
 
-interface IValidateAccountDetails {
+export interface IValidateAccountDetailsData {
   isConfigAreSame: boolean;
   config: IAddAccountManualConfig;
   accountDetails: IAccountDetailsResult;
@@ -14,29 +15,47 @@ interface IValidateAccountDetails {
 
 export async function validateAccountDetails(
   config: IAddAccountManualConfig,
-): Promise<IValidateAccountDetails> {
-  const accountName =
-    config.accountName === undefined
-      ? await createAccountName(config)
-      : config.accountName;
+): Promise<CommandResult<IValidateAccountDetailsData>> {
+  try {
+    const accountName =
+      config.accountName === undefined
+        ? await createAccountName(config)
+        : config.accountName;
 
-  const configWithAccountName = {
-    ...config,
-    accountName,
-  };
+    const configWithAccountName = {
+      ...config,
+      accountName,
+    };
 
-  const accountDetails = await getAccountDetailsFromChain(
-    configWithAccountName,
-  );
+    const accountDetails = await getAccountDetailsFromChain(
+      configWithAccountName,
+    );
 
-  const isConfigAreSame = compareConfigAndAccountDetails(
-    configWithAccountName,
-    accountDetails,
-  );
+    const isConfigAreSame = compareConfigAndAccountDetails(
+      configWithAccountName,
+      accountDetails,
+    );
 
-  return {
-    config: configWithAccountName,
-    accountDetails,
-    isConfigAreSame,
-  };
+    return {
+      success: true,
+      data: {
+        config: configWithAccountName,
+        accountDetails,
+        isConfigAreSame,
+      },
+    };
+  } catch (error) {
+    if (error.message.includes('row not found') === true) {
+      return {
+        success: false,
+        errors: [
+          `The account is not on chain yet. To create it on-chain, transfer funds to it from ${config.networkConfig.network} and use "fund" command.`,
+        ],
+      };
+    }
+    return {
+      success: false,
+      errors: [error.message],
+    };
+  }
 }

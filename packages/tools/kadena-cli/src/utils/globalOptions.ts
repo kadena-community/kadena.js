@@ -47,6 +47,7 @@ export const globalOptions = {
   // Account
   accountAlias: createOption({
     key: 'accountAlias' as const,
+    defaultIsOptional: false,
     prompt: account.accountAliasPrompt,
     validation: z.string(),
     option: new Option(

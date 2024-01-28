@@ -15,7 +15,7 @@ describe('getUpdatedConfig', () => {
       publicKeys: ['publicKeys'],
       predicate: 'keys-all',
     };
-    const updateOption = 'userInput';
+    const updateOption = true;
     const result = getUpdatedConfig(config, accountDetails, updateOption);
     expect(result).toEqual(config);
   });
@@ -31,7 +31,7 @@ describe('getUpdatedConfig', () => {
       publicKeys: ['publicKeys'],
       predicate: 'keys-any',
     };
-    const updateOption = 'chain';
+    const updateOption = false;
     const expectedResult = {
       ...config,
       predicate: 'keys-any',
