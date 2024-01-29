@@ -1,5 +1,6 @@
 import {
   ChainId,
+  ICommandResult,
   IKeyPair,
   IPactCommand,
   IPartialPactCommand,
@@ -19,7 +20,7 @@ import { IClientConfig } from '../core/utils/helpers';
 export interface ITransactionBodyInput {
   chainId: ChainId;
   networkId: string;
-  signers: IKeyPair[];
+  signers: string[];
   meta: {
     gasLimit: number;
     chainId: ChainId;
@@ -43,7 +44,7 @@ export const createPactCommand = (inputs: IDeployContractInput) => {
     .setNetworkId(transactionBody.networkId);
 
   transactionBuilder = transactionBody.signers.reduce((builder, signer) => {
-    return builder.addSigner(signer.publicKey);
+    return builder.addSigner(signer);
   }, transactionBuilder);
 
   if (transactionBody.keysets) {
@@ -65,9 +66,7 @@ export const createPactCommand = (inputs: IDeployContractInput) => {
 export const deployContract = (
   inputs: IDeployContractInput,
   config: IClientConfig,
-) => {
-  submitClient(config)(createPactCommand(inputs));
-};
+) => submitClient<ICommandResult>(config)(createPactCommand(inputs));
 
 // export const deployContractCommand1 = async (inputs: IDeployContractInput) => {
 //   const { contractCode, transactionBody } = inputs;
