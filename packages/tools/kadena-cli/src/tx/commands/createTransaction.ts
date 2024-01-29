@@ -26,7 +26,7 @@ export const createTransaction = async (
 
   const transaction = kadenaCreateTransaction(command);
 
-  let filePath = null;
+  let filePath: string | null = null;
   if (outFilePath === null) {
     // write transaction to file
     const directoryPath = path.join(process.cwd(), './transactions');
