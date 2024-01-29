@@ -42,6 +42,7 @@ import {
   NotificationHeading,
   Stack,
   SystemIcon,
+  Text,
   TextField,
   TextareaField,
   TrackerCard,
@@ -69,10 +70,7 @@ const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
   advancedOptions: z.boolean().optional(),
   gasPayer: z.literal('kadena-xchain-gas'),
-  gasLimit: z
-    .string()
-    .optional()
-    .transform((val) => parseInt(val!, 10)),
+  gasLimit: z.number().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -111,6 +109,7 @@ const CrossChainTransferFinisher: FC = () => {
   const [requestKey, setRequestKey] = useState<string>(
     (router.query?.reqKey as string) || '',
   );
+  const [receiverRequestKey, setReceiverRequestKey] = useState<string>('');
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
   const [finalResults, setFinalResults] = useState<ITransferResult>({});
   const [txError, setTxError] = useState('');
@@ -213,6 +212,8 @@ const CrossChainTransferFinisher: FC = () => {
       data.gasPayer,
     );
 
+    setReceiverRequestKey(requestKeyOrError);
+
     if (typeof requestKeyOrError !== 'string') {
       setTxError((requestKeyOrError as { error: string }).error);
       setFinalResults({
@@ -308,25 +309,38 @@ const CrossChainTransferFinisher: FC = () => {
   }`;
 
   const renderNotification =
-    txError.toString() === '' ? (
+    txError.toString() === '' && receiverRequestKey ? (
       <FormStatusNotification
         status="successful"
         title={t('Notification title success')}
-        body={t('XChain transfer has been successfully finalized!')}
-      />
+        body={`${t(
+          'XChain transfer has been successfully finalized!',
+        )} \n Request key: ${receiverRequestKey}`}
+      >
+        <Text as={'p'} bold color={'inherit'}>
+          {`Request key: ${receiverRequestKey}`}
+        </Text>
+      </FormStatusNotification>
     ) : (
       <FormStatusNotification status="erroneous" title={t('Transaction error')}>
         {txError.toString()}
+        <Text as={'p'} bold color={'inherit'}>
+          {`Target Chain Request key: ${receiverRequestKey}`}
+        </Text>
       </FormStatusNotification>
     );
 
-  const renderWaitingNotification = (
+  const renderWaitingNotification = receiverRequestKey ? (
     <FormStatusNotification
       status="processing"
       title={t('form-status-title-processing')}
       body={t('form-status-content-processing')}
-    />
-  );
+    >
+      <Text as={'p'} bold color={'inherit'}>
+        {`Request key: ${receiverRequestKey}`}
+      </Text>
+    </FormStatusNotification>
+  ) : null;
 
   const handleDevOptionsClick = (): void => {
     setOpenModal(true);

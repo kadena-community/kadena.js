@@ -24,7 +24,7 @@ export const notificationContainerStyle = style([
 export const notificationLinkStyle = style([
   atoms({
     fontWeight: 'bodyFont.bold',
-    color: 'text.semantic.warning.default',
+    color: 'inherit',
     cursor: 'pointer',
   }),
 ]);
