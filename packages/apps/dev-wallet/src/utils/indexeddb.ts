@@ -3,7 +3,11 @@ export const createStore =
   (
     name: string,
     keyPath?: string,
-    indexes?: Array<{ index: string; unique?: boolean }>,
+    indexes?: Array<{
+      index: string;
+      indexKeyPath?: string | string[];
+      unique?: boolean;
+    }>,
   ) => {
     if (!db.objectStoreNames.contains(name)) {
       const store = db.createObjectStore(
@@ -11,8 +15,8 @@ export const createStore =
         keyPath ? { keyPath } : undefined,
       );
       if (indexes) {
-        indexes.forEach(({ index, unique }) => {
-          store.createIndex(index, index, { unique });
+        indexes.forEach(({ index, indexKeyPath, unique }) => {
+          store.createIndex(index, indexKeyPath ?? index, { unique });
         });
       }
     }
@@ -45,6 +49,18 @@ export const connect = (name: string, version: number) => {
       };
     },
   );
+};
+
+export const deleteDatabase = (name: string) => {
+  return new Promise<void>((resolve, reject) => {
+    const request = indexedDB.deleteDatabase(name);
+    request.onerror = () => {
+      reject(request.error);
+    };
+    request.onsuccess = () => {
+      resolve();
+    };
+  });
 };
 
 export const getAllItems =

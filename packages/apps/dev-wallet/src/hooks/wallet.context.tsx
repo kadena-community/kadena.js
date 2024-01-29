@@ -1,12 +1,5 @@
-import { IPactCommand, IUnsignedCommand, addSignatures } from '@kadena/client';
-import {
-  kadenaDecrypt,
-  kadenaEncrypt,
-  kadenaGetPublic,
-  kadenaMnemonicToSeed,
-  kadenaSignWithSeed,
-  randomBytes,
-} from '@kadena/hd-wallet';
+import { IUnsignedCommand } from '@kadena/client';
+
 import {
   FC,
   PropsWithChildren,
@@ -16,11 +9,14 @@ import {
 } from 'react';
 
 import {
+  IAccount,
+  IKeyItem,
+  IKeyStore,
   IProfile,
-  KeyStore,
   WalletRepository,
   createWalletRepository,
 } from './wallet.repository';
+import { IWalletService, walletFactory } from './wallet.service';
 
 export const WalletContext = createContext<{
   createWallet: (
@@ -29,26 +25,27 @@ export const WalletContext = createContext<{
     mnemonic: string,
   ) => Promise<void>;
   unlockWallet: (profile: string, password: string) => Promise<void>;
-  createPublicKeys: (quantity?: number) => Promise<string[]>;
+  createPublicKeys: (quantity?: number) => Promise<IKeyItem[]>;
   sign: (TXs: IUnsignedCommand[]) => Promise<IUnsignedCommand[]>;
-  keyStores: KeyStore[];
+  keyStores: IKeyStore[];
   isUnlocked: boolean;
   decryptMnemonic: (password: string) => Promise<string>;
   lockWallet: () => void;
-  profile: Omit<IProfile, 'seedKey'> | undefined;
-  profileList: Omit<IProfile, 'seedKey' | 'networks'>[];
+  profile: Omit<IProfile, 'HDWalletSeedKey'> | undefined;
+  profileList: Omit<IProfile, 'HDWalletSeedKey' | 'networks'>[];
+  // TODO: move account to separate context if needed
+  accounts: IAccount[];
+  createAccount: (account: IAccount) => Promise<void>;
 } | null>(null);
 
 export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [walletRepository, setWalletRepository] = useState<WalletRepository>();
+  const [walletService, setWalletService] = useState<IWalletService>();
+
   const [activeProfile, setActiveProfile] = useState<IProfile>();
   const [profileList, setProfileList] = useState<IProfile[]>([]);
-
-  const [encryptionKey] = useState<Uint8Array>(() => randomBytes(16));
-  const [walletRepository, setWalletRepository] = useState<WalletRepository>();
-
-  const [keyStores, setKeyStores] = useState<KeyStore[]>([]);
-
-  const [encryptedSeed, setEncryptedSeed] = useState<Uint8Array>();
+  const [accounts, setAccounts] = useState<IAccount[]>([]);
+  const [keyStores, setKeyStores] = useState<IKeyStore[]>([]);
 
   useEffect(() => {
     const storePromise = createWalletRepository()
@@ -74,83 +71,72 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!walletRepository) {
       throw new Error('Wallet repository not initialized');
     }
-    const mnemonicKey = crypto.randomUUID();
-    const encryptedMnemonic = await kadenaEncrypt(password, mnemonic, 'buffer');
-    await walletRepository.addEncryptedValue(mnemonicKey, encryptedMnemonic);
+    const service = await walletFactory(walletRepository).createWallet(
+      profileName,
+      password,
+      mnemonic,
+    );
 
-    const profile: IProfile = {
-      uuid: crypto.randomUUID(),
-      name: profileName,
-      networks: [],
-      seedKey: mnemonicKey,
-    };
-
-    await walletRepository.addProfile(profile);
-    setProfileList([...profileList, profile]);
-    const seed = await kadenaMnemonicToSeed(encryptionKey, mnemonic, 'buffer');
-    setEncryptedSeed(seed);
-    setActiveProfile(profile);
+    const profileKeyStores = await service.getKeyStores();
+    setKeyStores(profileKeyStores);
+    setWalletService(service);
+    setActiveProfile(service.getProfile());
+    setProfileList([...profileList, service.getProfile()]);
   };
 
   const unlockWallet = async (profileId: string, password: string) => {
     if (!walletRepository) {
       throw new Error('Wallet repository not initialized');
     }
-    const profile = await walletRepository.getProfile(profileId);
-    const encryptedMnemonic = await walletRepository.getEncryptedValue(
-      profile.seedKey,
-    );
-    const decryptedMnemonicBuffer = await kadenaDecrypt(
+    const service = await walletFactory(walletRepository).unlockWallet(
+      profileId,
       password,
-      encryptedMnemonic,
     );
-    const profileKeyStores =
-      await walletRepository.getKeyStoresByProfileId(profileId);
-    const mnemonic = new TextDecoder().decode(decryptedMnemonicBuffer);
-    const seed = await kadenaMnemonicToSeed(encryptionKey, mnemonic, 'buffer');
-    setEncryptedSeed(seed);
-    setActiveProfile(profile);
+    const profileKeyStores = await service.getKeyStores();
     setKeyStores(profileKeyStores);
+    setWalletService(service);
+    setActiveProfile(service.getProfile());
+  };
+
+  const createKeyStore = async (derivationPathTemplate: string) => {
+    if (!walletService) {
+      throw new Error('Wallet is not unlocked');
+    }
+    const keyStore = await walletService.createKeyStore(derivationPathTemplate);
+    keyStores.push(keyStore);
+    setKeyStores([...keyStores]);
+    return keyStore;
   };
 
   const createPublicKeys = async (
     quantity = 1,
     derivationPathTemplate = `m'/44'/626'/<index>'`,
-  ) => {
-    if (!encryptedSeed || !activeProfile || !walletRepository) {
+  ): Promise<IKeyItem[]> => {
+    if (!walletService) {
       throw new Error('Wallet is not unlocked');
     }
     let keyStore = keyStores.find(
-      (store) => store.derivationPathTemplate === derivationPathTemplate,
+      (store) =>
+        store.derivationPathTemplate === derivationPathTemplate &&
+        store.source === 'hd-wallet',
     );
 
     if (!keyStore) {
-      keyStore = {
-        uuid: crypto.randomUUID(),
-        source: 'hd-wallet',
-        derivationPathTemplate,
-        publicKeys: [],
-        profileId: activeProfile.uuid,
-      };
-      await walletRepository.addKeyStore(keyStore);
-      keyStores.push(keyStore);
+      keyStore = await createKeyStore(derivationPathTemplate);
     }
 
-    const keyIndex = keyStore === undefined ? 0 : keyStore.publicKeys.length;
-
-    const newPublicKeys = await kadenaGetPublic(
-      encryptionKey,
-      encryptedSeed,
-      [keyIndex, keyIndex + quantity - 1],
-      derivationPathTemplate,
+    const newPublicKeys = await walletService.createPublicKeys(
+      quantity,
+      keyStore.uuid,
     );
 
     const updatedKeyStore = {
       ...keyStore,
-      publicKeys: [...keyStore.publicKeys, ...newPublicKeys],
+      publicKeys: [
+        ...keyStore.publicKeys,
+        ...newPublicKeys.map((k) => k.publicKey),
+      ],
     };
-
-    await walletRepository.updateKeyStore(updatedKeyStore);
 
     const updatedKeyStores = keyStores.map((store) => {
       if (store.uuid === updatedKeyStore.uuid) {
@@ -163,66 +149,36 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
     return newPublicKeys;
   };
 
-  const sign = (TXs: IUnsignedCommand[]) => {
-    if (!encryptedSeed) {
+  const createAccount = async (account: IAccount) => {
+    if (!walletService) {
       throw new Error('Wallet is not unlocked');
     }
-    const signedTx = Promise.all(
-      TXs.map(async (Tx) => {
-        const signatures = await Promise.all(
-          keyStores.map(async ({ publicKeys, derivationPathTemplate }) => {
-            const cmd: IPactCommand = JSON.parse(Tx.cmd);
-            const relevantIndexes = cmd.signers
-              .map((signer) =>
-                publicKeys.findIndex(
-                  (publicKey) => publicKey === signer.pubKey,
-                ),
-              )
-              .filter((index) => index !== undefined) as number[];
+    await walletService.createAccount(account);
+    setAccounts([...accounts, account]);
+  };
 
-            const signatures = await kadenaSignWithSeed(
-              encryptionKey,
-              encryptedSeed,
-              relevantIndexes,
-              derivationPathTemplate,
-            )(Tx.hash);
-
-            return signatures;
-          }),
-        );
-        return addSignatures(Tx, ...signatures.flat());
-      }),
-    );
-
-    return signedTx;
+  const sign = (TXs: IUnsignedCommand[]) => {
+    if (!walletService) {
+      throw new Error('Wallet is not unlocked');
+    }
+    return walletService.sign(TXs);
   };
 
   const decryptMnemonic = async (password: string) => {
-    if (!encryptedSeed || !activeProfile || !walletRepository) {
+    if (!walletService) {
       throw new Error('Wallet is not unlocked');
     }
-    const encryptedMnemonic = await walletRepository.getEncryptedValue(
-      activeProfile.seedKey,
-    );
-    if (!encryptedMnemonic) {
-      throw new Error('No wallet found');
-    }
-    const decryptedMnemonicBuffer = await kadenaDecrypt(
-      password,
-      encryptedMnemonic,
-    );
-    const mnemonic = new TextDecoder().decode(decryptedMnemonicBuffer);
-    return mnemonic;
+    return walletService.decryptMnemonic(password);
   };
 
   const lockWallet = () => {
-    setEncryptedSeed(undefined);
+    setWalletService(undefined);
     setActiveProfile(undefined);
   };
 
-  let exposedProfile: Exclude<IProfile, 'seedKey'> | undefined;
+  let exposedProfile: Exclude<IProfile, 'HDWalletSeedKey'> | undefined;
   if (activeProfile) {
-    exposedProfile = { ...activeProfile, seedKey: '' };
+    exposedProfile = { ...activeProfile, HDWalletSeedKey: '' };
   }
 
   return (
@@ -231,13 +187,15 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
         createWallet,
         unlockWallet,
         lockWallet,
-        createPublicKeys,
+        createPublicKeys: createPublicKeys,
         keyStores,
         sign,
         decryptMnemonic,
-        isUnlocked: Boolean(encryptedSeed),
+        isUnlocked: Boolean(walletRepository),
         profile: exposedProfile,
         profileList,
+        accounts,
+        createAccount,
       }}
     >
       {children}
