@@ -13,6 +13,8 @@ export async function addAccount(
     return result;
   }
 
+  const filePath = getFilePath(config.accountAlias);
+
   if (result.data.isConfigAreSame === false) {
     const overrideFromChain = await callback();
     const updatedConfig = getUpdatedConfig(
@@ -20,17 +22,8 @@ export async function addAccount(
       result.data.accountDetails,
       overrideFromChain,
     );
-    const writeResult = await writeConfigInFile(
-      getFilePath(config.accountAlias),
-      updatedConfig,
-    );
-    return writeResult;
+    return writeConfigInFile(filePath, updatedConfig);
   }
 
-  const writeResult = await writeConfigInFile(
-    getFilePath(config.accountAlias),
-    result.data.config,
-  );
-
-  return writeResult;
+  return writeConfigInFile(filePath, result.data.config);
 }
