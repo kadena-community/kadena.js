@@ -78,7 +78,10 @@ const schema = z.object({
     .regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name')
     .optional(),
   gasPayer: NAME_VALIDATION.optional(),
-  gasLimit: z.number().optional(),
+  gasLimit: z
+    .string()
+    .optional()
+    .transform((val) => parseInt(val!, 10)),
   gasPrice: z.string().optional(),
 });
 
