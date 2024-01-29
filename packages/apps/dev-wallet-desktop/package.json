@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "tauri dev",
-    "build": " tauri build"
+    "build": "tauri build"
   },
   "dependencies": {
     "@kadena/dev-wallet": "workspace:*"
