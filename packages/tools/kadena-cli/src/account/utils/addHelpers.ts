@@ -30,7 +30,7 @@ export const getUpdatedConfig = (
   }
 };
 
-export const getFilePath = (fileName: string): string => {
+export const getAccountFilePath = (fileName: string): string => {
   const sanitizedAlias = sanitizeFilename(fileName);
   return path.join(defaultAccountPath, `${sanitizedAlias}.yaml`);
 };

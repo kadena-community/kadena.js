@@ -1,7 +1,7 @@
 import type { Command } from 'commander';
 
 import { createAddAccountManualCommand } from './commands/accountAddManual.js';
-import { createAddAccountFromWalletCommand } from './commands/accountAddWallet.js';
+import { createAddAccountFromWalletCommand } from './commands/accountAddFromWallet.js';
 import { createAccountCommand } from './commands/accountCreate.js';
 import { accountDetailsCommand } from './commands/accountDetails.js';
 import { fundCommand } from './commands/accountFund.js';

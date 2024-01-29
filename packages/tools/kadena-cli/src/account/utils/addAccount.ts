@@ -1,6 +1,6 @@
 import type { CommandResult } from '../../utils/command.util.js';
 import type { IAddAccountManualConfig } from '../types.js';
-import { getFilePath, getUpdatedConfig } from './addHelpers.js';
+import { getAccountFilePath, getUpdatedConfig } from './addHelpers.js';
 import { validateAccountDetails } from './validateAccountDetails.js';
 import { writeConfigInFile } from './writeConfigInFile.js';
 
@@ -13,7 +13,7 @@ export async function addAccount(
     return result;
   }
 
-  const filePath = getFilePath(config.accountAlias);
+  const filePath = getAccountFilePath(config.accountAlias);
 
   if (result.data.isConfigAreSame === false) {
     const overrideFromChain = await callback();

@@ -27,15 +27,10 @@ export const createAddAccountManualCommand: (
   ],
 
   async (config): Promise<void> => {
-    try {
-      debug('account-add-manual:action')({ config });
-      const result = await addAccount(config, overridePromptCb);
+    debug('account-add-manual:action')({ config });
+    const result = await addAccount(config, overridePromptCb);
 
-      assertCommandError(result);
-      displayAddAccountSuccess(config.accountAlias);
-    } catch (error) {
-      console.log(chalk.red(`\n${error.message}\n`));
-      process.exit(1);
-    }
+    assertCommandError(result);
+    displayAddAccountSuccess(config.accountAlias);
   },
 );

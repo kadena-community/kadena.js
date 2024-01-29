@@ -80,22 +80,17 @@ export const createAddAccountFromWalletCommand: (
   ],
 
   async (config): Promise<void> => {
-    try {
-      debug('account-add-wallet:action')({ config });
+    debug('account-add-wallet:action')({ config });
 
-      const updatedConfig = {
-        ...config,
-        publicKeysConfig: config.publicKeys.split(','),
-      };
+    const updatedConfig = {
+      ...config,
+      publicKeysConfig: config.publicKeys.split(','),
+    };
 
-      const result = await addAccount(updatedConfig, overridePromptCb);
+    const result = await addAccount(updatedConfig, overridePromptCb);
 
-      assertCommandError(result);
+    assertCommandError(result);
 
-      displayAddAccountSuccess(config.accountAlias);
-    } catch (error) {
-      console.log(chalk.red(`\n${error.message}\n`));
-      process.exit(1);
-    }
+    displayAddAccountSuccess(config.accountAlias);
   },
 );

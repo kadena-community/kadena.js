@@ -6,12 +6,12 @@ import { server } from '../../../mocks/server.js';
 
 import { services } from '../../../services/index.js';
 import { addAccount } from '../addAccount.js';
-import { getFilePath } from '../addHelpers.js';
+import { getAccountFilePath } from '../addHelpers.js';
 import { defaultConfigMock } from './mocks.js';
 
 describe('addAccount', () => {
   afterEach(async () => {
-    const filePath = getFilePath(defaultConfigMock.accountAlias);
+    const filePath = getAccountFilePath(defaultConfigMock.accountAlias);
     const fs = services.filesystem;
     if (await fs.fileExists(filePath)) {
       await fs.deleteFile(filePath);
@@ -25,7 +25,7 @@ describe('addAccount', () => {
       publicKeys: 'publicKey1,publicKey2',
       publicKeysConfig: ['publicKey1', 'publicKey2'],
     };
-    const filePath = getFilePath(defaultConfigMock.accountAlias);
+    const filePath = getAccountFilePath(defaultConfigMock.accountAlias);
     const overrideConfigPromptCb = vi.fn();
     const result = await addAccount(config, overrideConfigPromptCb);
 
@@ -66,7 +66,7 @@ describe('addAccount', () => {
       publicKeys: 'publicKey1',
       publicKeysConfig: ['publicKey1'],
     };
-    const filePath = getFilePath(config.accountAlias);
+    const filePath = getAccountFilePath(config.accountAlias);
     const overrideConfigPromptCb = vi.fn().mockResolvedValue(false);
     const result = await addAccount(config, overrideConfigPromptCb);
 
