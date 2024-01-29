@@ -29,6 +29,13 @@ export const notificationLinkStyle = style([
   }),
 ]);
 
+export const noticationKeyStyle = style([
+  atoms({
+    fontWeight: 'bodyFont.bold',
+    color: 'inherit',
+  }),
+]);
+
 export const formButtonStyle = style([
   atoms({
     display: 'flex',

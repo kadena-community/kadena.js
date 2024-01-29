@@ -42,7 +42,6 @@ import {
   NotificationHeading,
   Stack,
   SystemIcon,
-  Text,
   TextField,
   TextareaField,
   TrackerCard,
@@ -60,6 +59,7 @@ import { containerClass } from '../styles.css';
 import {
   formButtonStyle,
   formContentStyle,
+  noticationKeyStyle,
   notificationContainerStyle,
   notificationLinkStyle,
   textareaContainerStyle,
@@ -212,8 +212,6 @@ const CrossChainTransferFinisher: FC = () => {
       data.gasPayer,
     );
 
-    setReceiverRequestKey(requestKeyOrError);
-
     if (typeof requestKeyOrError !== 'string') {
       setTxError((requestKeyOrError as { error: string }).error);
       setFinalResults({
@@ -223,6 +221,7 @@ const CrossChainTransferFinisher: FC = () => {
       setProcessingTx(false);
       return;
     }
+    setReceiverRequestKey(requestKeyOrError as string);
 
     const receiverApiHost = getApiHost({
       api: networkData.API,
@@ -317,16 +316,14 @@ const CrossChainTransferFinisher: FC = () => {
           'XChain transfer has been successfully finalized!',
         )} \n Request key: ${receiverRequestKey}`}
       >
-        <Text as={'p'} bold color={'inherit'}>
-          {`Request key: ${receiverRequestKey}`}
-        </Text>
+        <p color={'inherit'}>{`Request key: ${receiverRequestKey}`}</p>
       </FormStatusNotification>
     ) : (
       <FormStatusNotification status="erroneous" title={t('Transaction error')}>
         {txError.toString()}
-        <Text as={'p'} bold color={'inherit'}>
+        <p color={'inherit'}>
           {`Target Chain Request key: ${receiverRequestKey}`}
-        </Text>
+        </p>
       </FormStatusNotification>
     );
 
@@ -336,9 +333,9 @@ const CrossChainTransferFinisher: FC = () => {
       title={t('form-status-title-processing')}
       body={t('form-status-content-processing')}
     >
-      <Text as={'p'} bold color={'inherit'}>
+      <p className={noticationKeyStyle}>
         {`Request key: ${receiverRequestKey}`}
-      </Text>
+      </p>
     </FormStatusNotification>
   ) : null;
 
