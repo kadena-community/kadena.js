@@ -129,7 +129,7 @@ const CrossChainTransferTracker: FC = () => {
 
   const {
     handleSubmit: validateThenSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     control,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -234,6 +234,8 @@ const CrossChainTransferTracker: FC = () => {
               title={t('Search')}
               onPress={() => setOpenItem(undefined)}
               endIcon={<SystemIcon.Magnify />}
+              isLoading={isSubmitting}
+              isDisabled={isSubmitting}
             >
               {t('Search')}
             </Button>
