@@ -149,10 +149,10 @@ pages:
                 url: /start-a-local-blockchain
                 file: /build/guides/election-dapp-tutorial/start-a-local-blockchain.md
               adminaccount:
-                url: /03-admin-account
+                url: /add-admin-account
                 file: /build/guides/election-dapp-tutorial/add-admin-account.md
               namespaces:
-                url: /04-namespaces
+                url: /define-a-namespace
                 file: /build/guides/election-dapp-tutorial/define-a-namespace.md
               keysets:
                 url: /define-keysets
@@ -160,15 +160,17 @@ pages:
               smart-contract:
                 url: /write-a-smart-contract
                 file: /build/guides/election-dapp-tutorial/write-a-smart-contract.md
+                url: /write-a-smart-contract
+                file: /build/guides/election-dapp-tutorial/write-a-smart-contract.md
               nominate-candidates:
-                url: /07-nominate-candidates
+                url: /nominate-candidates
                 file: /build/guides/election-dapp-tutorial/nominate-candidates.md
               voting:
-                url: /08-voting
+                url: /add-vote-management
                 file: /build/guides/election-dapp-tutorial/add-vote-management.md
               gasstation:
-                url: /09-gas-station
-                file: /build/guides/election-dapp-tutorial/09-gas-station.md
+                url: /add-a-gas-station
+                file: /build/guides/election-dapp-tutorial/add-a-gas-station.md
           rotatedrain:
             url: /safe-rotate-and-drain
             file: /build/guides/safe-rotate-and-drain.md
