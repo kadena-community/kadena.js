@@ -2,7 +2,6 @@ import {
   addItem,
   connect,
   createStore,
-  deleteDatabase,
   getAllItems,
   getOneItem,
   updateItem,
