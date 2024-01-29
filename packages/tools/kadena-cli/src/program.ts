@@ -1,7 +1,7 @@
 import { accountCommandFactory } from './account/index.js';
 import { configCommandFactory } from './config/index.js';
 import { contractCommandFactory } from './contract/index.js';
-// import { dappCommandFactory } from './dapp/index.js';
+import { dappCommandFactory } from './dapp/index.js';
 import { devnetCommandFactory } from './devnet/index.js';
 import { keysCommandFactory } from './keys/index.js';
 import { marmaladeCommandFactory } from './marmalade/index.js';
@@ -29,7 +29,7 @@ export function loadProgram(program: Command): Command {
     contractCommandFactory,
     marmaladeCommandFactory,
     typescriptCommandFactory,
-    // dappCommandFactory,
+    dappCommandFactory,
   ]
     .flat()
     .forEach(async (fn) => {

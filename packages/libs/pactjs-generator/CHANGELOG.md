@@ -1,5 +1,11 @@
 # Change Log - @kadena/pactjs-generator
 
+## 1.8.0
+
+### Minor Changes
+
+- 3ed72cddf: Add events to the parse tree
+
 ## 1.7.0
 
 ### Minor Changes

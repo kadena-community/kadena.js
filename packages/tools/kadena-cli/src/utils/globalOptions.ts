@@ -94,7 +94,8 @@ export const globalOptions = {
   // global
   quiet: createOption({
     key: 'quiet' as const,
-    prompt: ({ quiet }): boolean => quiet === true || quiet === 'true' || false,
+    // quiet is never prompted
+    prompt: () => false,
     validation: z.boolean().optional(),
     option: globalFlags.quiet,
   }),
@@ -493,6 +494,17 @@ export const globalOptions = {
       return keyMessage;
     },
   }),
+
+  // Dapp
+  dappTemplate: createOption({
+    key: 'dappTemplate',
+    prompt: genericActionsPrompts.actionAskForDappTemplate,
+    validation: z.string(),
+    option: new Option(
+      '-t, --dapp-template <dappTemplate>',
+      'Select a dapp template',
+    ),
+  }),
   // TX
   outFileJson: createOption({
     key: 'outFile',
@@ -546,6 +558,7 @@ export const globalOptions = {
       'template variables',
     ),
     prompt: templateVariables,
+    allowUnknownOptions: true,
   }),
 } as const;
 

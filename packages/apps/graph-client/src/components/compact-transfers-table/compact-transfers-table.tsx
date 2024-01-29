@@ -7,6 +7,7 @@ import routes from '@constants/routes';
 import { Box, ContentHeader, Link, Table } from '@kadena/react-ui';
 import { truncate } from '@utils/truncate';
 import React from 'react';
+import { compactTableClass } from '../common/compact-table/compact-table.css';
 interface ICompactTransfersTableProps {
   fungibleName: string;
   accountName: string;
@@ -74,10 +75,11 @@ export const CompactTransfersTable = (
         View all transfers
       </Link>
       <Box margin="xs" />
-      <Table.Root wordBreak="break-word">
+      <Table.Root wordBreak="break-word" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
             <Table.Th>Chain</Table.Th>
+            <Table.Th>Timestamp</Table.Th>
             <Table.Th>Block Height</Table.Th>
             <Table.Th>Amount</Table.Th>
             <Table.Th>Sender Account</Table.Th>
@@ -114,6 +116,9 @@ export const CompactTransfersTable = (
             return (
               <Table.Tr key={index}>
                 <Table.Td>{chainIdDisplay}</Table.Td>
+                <Table.Td>
+                  {new Date(transfer.creationTime).toLocaleString()}
+                </Table.Td>
                 <Table.Td>{heightDisplay}</Table.Td>
                 <Table.Td>{transfer.amount}</Table.Td>
                 <Table.Td>

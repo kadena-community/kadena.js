@@ -1,3 +1,4 @@
+import type { QueryTransfersConnection } from '@/__generated__/sdk';
 import { useGetTransfersQuery } from '@/__generated__/sdk';
 import { ExtendedTransfersTable } from '@/components/extended-transfers-table/extended-transfers-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
@@ -62,7 +63,7 @@ const AccountTransfers: React.FC = () => {
 
       {data?.transfers && (
         <ExtendedTransfersTable
-          transfers={data.transfers}
+          transfers={data.transfers as QueryTransfersConnection}
           fetchMore={fetchMore}
         />
       )}

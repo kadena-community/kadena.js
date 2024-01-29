@@ -1,9 +1,11 @@
 'use client';
+import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { PROOFOFUS_QR_URL } from '@/constants';
 import { useProofOfUs } from '@/hooks/proofOfUs';
+import { useSocket } from '@/hooks/socket';
 import { env } from '@/utils/env';
 import type { FC } from 'react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 
 interface IProps {
@@ -14,8 +16,13 @@ interface IProps {
 
 const Page: FC<IProps> = ({ params }) => {
   const qrRef = useRef<QRCode | null>(null);
-
+  const { createToken, socket, disconnect } = useSocket();
   const { data } = useProofOfUs();
+
+  useEffect(() => {
+    disconnect({ tokenId: params.id });
+    createToken({ tokenId: params.id });
+  }, [socket, params.id]);
 
   const handleQRPNGDownload = () => {
     if (!qrRef.current || !data) return;
@@ -27,7 +34,7 @@ const Page: FC<IProps> = ({ params }) => {
       .replace('image/png', 'image/octet-stream');
     const downloadLink = document.createElement('a');
     downloadLink.href = pngUrl;
-    downloadLink.download = `qrcode_${data.id}.png`;
+    downloadLink.download = `qrcode_${data.tokenId}.png`;
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -37,13 +44,17 @@ const Page: FC<IProps> = ({ params }) => {
 
   return (
     <div>
-      Proof Of Us with ID ({data.id})
+      Proof Of Us with ID ({data.tokenId})
+      <section>
+        <h2>Communication</h2>
+        <ListSignees />
+      </section>
       <section>
         <h2>qr code</h2>
         <QRCode
           ecLevel="H"
           ref={qrRef}
-          value={`${env.URL}${PROOFOFUS_QR_URL}/${data.id}`}
+          value={`${env.URL}${PROOFOFUS_QR_URL}/${data.tokenId}`}
           removeQrCodeBehindLogo={true}
           logoImage="/assets/qrlogo.png"
           logoPadding={5}

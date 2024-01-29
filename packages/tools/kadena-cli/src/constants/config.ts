@@ -1,4 +1,4 @@
-export const CLIRootName: string = 'bin/kadena-cli.js';
+export const CLIRootName: string = 'kadena';
 
 export const workPath: string = `${process.cwd()}/.kadena`;
 export const projectRootPath: string = `${process.cwd()}`;
@@ -16,3 +16,5 @@ export const KEY_EXT: string = '.key';
 export const KEY_LEGACY_EXT: string = '.legacy.key';
 export const PLAIN_KEY_EXT: string = '.key';
 export const PLAIN_KEY_LEGACY_EXT: string = '.legacy.key';
+
+export const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
