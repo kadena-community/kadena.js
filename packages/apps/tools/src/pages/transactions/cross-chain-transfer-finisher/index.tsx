@@ -53,7 +53,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { containerClass } from '../styles.css';
@@ -89,6 +89,7 @@ interface IErrorObject {
 }
 
 const CrossChainTransferFinisher: FC = () => {
+  console.log('Render ');
   const debug = Debug(
     'kadena-transfer:pages:transfer:cross-chain-transfer-finisher',
   );
