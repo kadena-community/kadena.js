@@ -193,7 +193,7 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
         createWallet,
         unlockWallet,
         lockWallet,
-        createPublicKeys: createPublicKeys,
+        createPublicKeys,
         keySources: keySources,
         sign,
         decryptMnemonic,
