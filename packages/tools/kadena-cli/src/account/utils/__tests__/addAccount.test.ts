@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 import { HttpResponse, http } from 'msw';
 import { afterEach, assert, describe, expect, it, vi } from 'vitest';
 import { server } from '../../../mocks/server.js';
