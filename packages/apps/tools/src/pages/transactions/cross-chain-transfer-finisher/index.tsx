@@ -71,7 +71,6 @@ const schema = z.object({
   gasPayer: z.literal('kadena-xchain-gas'),
   gasLimit: z
     .string()
-
     .optional()
     .transform((val) => parseInt(val!, 10)),
 });
@@ -305,7 +304,7 @@ const CrossChainTransferFinisher: FC = () => {
 
   const formattedSigData = `{
     "pred": "${pollResults.tx?.receiverGuard.pred}",
-    "sigs": ${pollResults.tx?.receiverGuard.keys.map((key) => `"${key}"`)}"
+    "sigs": ${pollResults.tx?.receiverGuard.keys.map((key) => `"${key}"`)}
   }`;
 
   const renderNotification =
