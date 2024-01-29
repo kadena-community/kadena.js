@@ -93,7 +93,9 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
       password,
     );
     const profileKeyStores = await service.getKeyStores();
+    const profileAccounts = await service.getAccounts();
     setKeyStores(profileKeyStores);
+    setAccounts(profileAccounts);
     setWalletService(service);
     setActiveProfile(service.getProfile());
   };

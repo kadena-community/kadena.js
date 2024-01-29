@@ -25,6 +25,7 @@ const DEFAULT_DERIVATION_PATH_TEMPLATE = `m'/44'/626'/<index>'`;
 export interface IWalletService {
   getProfile: () => IProfile;
   getKeyStores: () => Promise<IKeyStore[]>;
+  getAccounts: () => Promise<IAccount[]>;
   createFirstAccount: (derivationPathTemplate?: string) => Promise<IAccount>;
   createKeyStore: (derivationPathTemplate?: string) => Promise<IKeyStore>;
   createPublicKeys: (
@@ -173,9 +174,14 @@ export function walletService(
     return mnemonic;
   };
 
+  const getAccounts = async () => {
+    return walletRepository.getAccountsByProfileId(profile.uuid);
+  };
+
   return {
     getProfile,
     getKeyStores,
+    getAccounts,
     createFirstAccount,
     createKeyStore,
     createPublicKeys,

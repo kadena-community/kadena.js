@@ -72,6 +72,7 @@ export interface WalletRepository {
   getEncryptedValue: (key: string) => Promise<Uint8Array>;
   addEncryptedValue: (key: string, value: string | Uint8Array) => Promise<void>;
   addAccount: (account: IAccount) => Promise<void>;
+  getAccountsByProfileId: (profileId: string) => Promise<IAccount[]>;
 }
 
 export const walletRepository = (db: IDBDatabase): WalletRepository => {
@@ -124,6 +125,9 @@ export const walletRepository = (db: IDBDatabase): WalletRepository => {
     addAccount: async (account: IAccount): Promise<void> => {
       return add('account', account);
     },
+    getAccountsByProfileId(profileId: string): Promise<IAccount[]> {
+      return getAll('account', profileId, 'profileId');
+    },
   };
 };
 
@@ -153,7 +157,7 @@ export const createWalletRepository = async (): Promise<WalletRepository> => {
     ]);
     create('encryptedValue');
     // TODO: move account to separate repository if needed
-    create('account', 'uuid', [{ index: 'address' }]);
+    create('account', 'uuid', [{ index: 'address' }, { index: 'profileId' }]);
   }
   return walletRepository(db);
 };
