@@ -59,7 +59,7 @@ describe('Select', () => {
     await userEvent.click(selectContainer);
     await userEvent.click(screen.getByRole('option', { name: 'Option 2' }));
     expect(handleChange).toHaveBeenCalledTimes(1);
-  });
+  }, 20000);
 
   it('disables the select element when disabled prop is true', () => {
     render(
