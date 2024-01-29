@@ -12,12 +12,12 @@ import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletContent } from '../../keys/utils/keysHelpers.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 
+import { saveSignedTransaction } from '../utils/storage.js';
 import {
   assessTransactionSigningStatus,
   getTransactionFromFile,
   signTransactionWithSeed,
-} from '../utils/helpers.js';
-import { saveSignedTransaction } from '../utils/storage.js';
+} from '../utils/txHelpers.js';
 
 export const signActionHd = async (
   wallet: string,

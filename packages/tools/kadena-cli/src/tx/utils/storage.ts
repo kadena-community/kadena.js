@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { join } from 'node:path';
 import { TRANSACTION_PATH } from '../../constants/config.js';
 import { services } from '../../services/index.js';
-import { formatDate } from '../../tx/utils/helpers.js';
+import { formatDate } from './txHelpers.js';
 
 /**
  * Saves the signed transaction in the transactions directory.

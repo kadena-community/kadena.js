@@ -6,12 +6,12 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
+import { saveSignedTransaction } from '../utils/storage.js';
 import {
   assessTransactionSigningStatus,
   getTransactionFromFile,
   signTransactionWithKeyPair,
-} from '../utils/helpers.js';
-import { saveSignedTransaction } from '../utils/storage.js';
+} from '../utils/txHelpers.js';
 
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletKey, toHexStr } from '../../keys/utils/keysHelpers.js';

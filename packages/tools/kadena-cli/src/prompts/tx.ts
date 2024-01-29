@@ -2,7 +2,7 @@ import { input, select } from '@inquirer/prompts';
 import type { IUnsignedCommand } from '@kadena/types';
 import chalk from 'chalk';
 import { z } from 'zod';
-import { getTransactions } from '../tx/utils/helpers.js';
+import { getTransactions } from '../tx/utils/txHelpers.js';
 
 import { TRANSACTION_FOLDER_NAME } from '../constants/config.js';
 

@@ -6,12 +6,12 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
+import { saveSignedTransaction } from '../utils/storage.js';
 import {
   assessTransactionSigningStatus,
   getTransactionFromFile,
   signTransactionWithKeyPair,
-} from '../utils/helpers.js';
-import { saveSignedTransaction } from '../utils/storage.js';
+} from '../utils/txHelpers.js';
 
 import type { ICommand } from '@kadena/types';
 import type { IKeyPair } from '../../keys/utils/storage.js';

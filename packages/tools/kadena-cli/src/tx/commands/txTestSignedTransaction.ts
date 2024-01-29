@@ -8,8 +8,8 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { getTransactionFromFile } from '../utils/helpers.js';
 import { txDisplayTransaction } from '../utils/txDisplayHelper.js';
+import { getTransactionFromFile } from '../utils/txHelpers.js';
 
 export const testTransactionAction = async (
   signedCommand: ICommand,
