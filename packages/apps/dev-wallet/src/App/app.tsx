@@ -1,5 +1,5 @@
 import { ThemeProvider } from 'next-themes';
-import { WalletContextProvider } from '../hooks/wallet.context';
+import { WalletContextProvider } from '../wallet/wallet.context';
 import { Routes } from './routes';
 
 function Providers({ children }: { children: React.ReactNode }) {

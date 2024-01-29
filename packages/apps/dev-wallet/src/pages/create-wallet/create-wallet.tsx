@@ -2,7 +2,7 @@ import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
 import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
-import { useWallet } from '../../hooks/wallet.hook';
+import { useWallet } from '../../wallet/wallet.hook';
 
 export function CreateWallet() {
   const { register, handleSubmit } = useForm<{

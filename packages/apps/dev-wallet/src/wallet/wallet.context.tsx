@@ -11,7 +11,7 @@ import {
 import {
   IAccount,
   IKeyItem,
-  IKeyStore,
+  IKeySource,
   IProfile,
   WalletRepository,
   createWalletRepository,
@@ -27,7 +27,7 @@ export const WalletContext = createContext<{
   unlockWallet: (profile: string, password: string) => Promise<void>;
   createPublicKeys: (quantity?: number) => Promise<IKeyItem[]>;
   sign: (TXs: IUnsignedCommand[]) => Promise<IUnsignedCommand[]>;
-  keyStores: IKeyStore[];
+  keySources: IKeySource[];
   isUnlocked: boolean;
   decryptMnemonic: (password: string) => Promise<string>;
   lockWallet: () => void;
@@ -45,7 +45,7 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [activeProfile, setActiveProfile] = useState<IProfile>();
   const [profileList, setProfileList] = useState<IProfile[]>([]);
   const [accounts, setAccounts] = useState<IAccount[]>([]);
-  const [keyStores, setKeyStores] = useState<IKeyStore[]>([]);
+  const [keySources, setKeySources] = useState<IKeySource[]>([]);
 
   useEffect(() => {
     const storePromise = createWalletRepository()
@@ -77,10 +77,10 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
       mnemonic,
     );
 
-    const profileKeyStores = await service.getKeyStores();
+    const profileKeySources = await service.getKeySources();
     const profileAccounts = await service.getAccounts();
     setAccounts(profileAccounts);
-    setKeyStores(profileKeyStores);
+    setKeySources(profileKeySources);
     setWalletService(service);
     setActiveProfile(service.getProfile());
     setProfileList([...profileList, service.getProfile()]);
@@ -94,22 +94,24 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
       profileId,
       password,
     );
-    const profileKeyStores = await service.getKeyStores();
+    const profileKeySources = await service.getKeySources();
     const profileAccounts = await service.getAccounts();
-    setKeyStores(profileKeyStores);
+    setKeySources(profileKeySources);
     setAccounts(profileAccounts);
     setWalletService(service);
     setActiveProfile(service.getProfile());
   };
 
-  const createKeyStore = async (derivationPathTemplate: string) => {
+  const createKeySource = async (derivationPathTemplate: string) => {
     if (!walletService) {
       throw new Error('Wallet is not unlocked');
     }
-    const keyStore = await walletService.createKeyStore(derivationPathTemplate);
-    keyStores.push(keyStore);
-    setKeyStores([...keyStores]);
-    return keyStore;
+    const keySource = await walletService.createKeySource(
+      derivationPathTemplate,
+    );
+    keySources.push(keySource);
+    setKeySources([...keySources]);
+    return keySource;
   };
 
   const createPublicKeys = async (
@@ -119,37 +121,37 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!walletService) {
       throw new Error('Wallet is not unlocked');
     }
-    let keyStore = keyStores.find(
+    let keySource = keySources.find(
       (store) =>
         store.derivationPathTemplate === derivationPathTemplate &&
         store.source === 'hd-wallet',
     );
 
-    if (!keyStore) {
-      keyStore = await createKeyStore(derivationPathTemplate);
+    if (!keySource) {
+      keySource = await createKeySource(derivationPathTemplate);
     }
 
     const newPublicKeys = await walletService.createPublicKeys(
       quantity,
-      keyStore.uuid,
+      keySource.uuid,
     );
 
-    const updatedKeyStore = {
-      ...keyStore,
+    const updatedKeySource = {
+      ...keySource,
       publicKeys: [
-        ...keyStore.publicKeys,
+        ...keySource.publicKeys,
         ...newPublicKeys.map((k) => k.publicKey),
       ],
     };
 
-    const updatedKeyStores = keyStores.map((store) => {
-      if (store.uuid === updatedKeyStore.uuid) {
-        return updatedKeyStore;
+    const updatedKeySources = keySources.map((store) => {
+      if (store.uuid === updatedKeySource.uuid) {
+        return updatedKeySource;
       }
       return store;
     });
 
-    setKeyStores([...updatedKeyStores]);
+    setKeySources([...updatedKeySources]);
     return newPublicKeys;
   };
 
@@ -192,7 +194,7 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
         unlockWallet,
         lockWallet,
         createPublicKeys: createPublicKeys,
-        keyStores,
+        keySources: keySources,
         sign,
         decryptMnemonic,
         isUnlocked: Boolean(walletService),

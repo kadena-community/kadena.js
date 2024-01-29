@@ -11,10 +11,10 @@ import { BuiltInPredicate } from '@kadena/client';
 export interface IKeyItem {
   publicKey: string;
   index: number;
-  keyStoreId: string;
+  keySourceId: string;
 }
 
-export interface IKeyStore {
+export interface IKeySource {
   uuid: string;
   profileId: string;
   derivationPathTemplate: string;
@@ -61,10 +61,10 @@ export interface WalletRepository {
   disconnect: () => Promise<void>;
   getAllProfiles: () => Promise<Exclude<IProfile, 'networks'>[]>;
   getProfile: (id: string) => Promise<IProfile>;
-  getKeyStoresByProfileId: (profileId: string) => Promise<IKeyStore[]>;
-  addKeyStore: (keyStore: IKeyStore) => Promise<void>;
-  getKeyStore: (key: string) => Promise<IKeyStore>;
-  updateKeyStore: (keyStore: IKeyStore) => Promise<void>;
+  getKeySourcesByProfileId: (profileId: string) => Promise<IKeySource[]>;
+  addKeySource: (keySource: IKeySource) => Promise<void>;
+  getKeySource: (key: string) => Promise<IKeySource>;
+  updateKeySource: (keySource: IKeySource) => Promise<void>;
   addProfile: (profile: IProfile) => Promise<void>;
   updateProfile: (profile: IProfile) => Promise<void>;
   getNetworkList: () => Promise<INetwork[]>;
@@ -89,19 +89,19 @@ export const walletRepository = (db: IDBDatabase): WalletRepository => {
     getProfile: async (id: string): Promise<IProfile> => {
       return getOne('profile', id);
     },
-    getKeyStoresByProfileId: async (
+    getKeySourcesByProfileId: async (
       profileId: string,
-    ): Promise<IKeyStore[]> => {
-      return getAll('keyStore', profileId, 'profileId');
+    ): Promise<IKeySource[]> => {
+      return getAll('keySource', profileId, 'profileId');
     },
-    addKeyStore: async (keyStore: IKeyStore): Promise<void> => {
-      return add('keyStore', keyStore);
+    addKeySource: async (keySource: IKeySource): Promise<void> => {
+      return add('keySource', keySource);
     },
-    getKeyStore: async (key: string): Promise<IKeyStore> => {
-      return getOne('keyStore', key);
+    getKeySource: async (key: string): Promise<IKeySource> => {
+      return getOne('keySource', key);
     },
-    updateKeyStore: async (keyStore: IKeyStore): Promise<void> => {
-      return update('keyStore', keyStore);
+    updateKeySource: async (keySource: IKeySource): Promise<void> => {
+      return update('keySource', keySource);
     },
     addProfile: async (profile: IProfile): Promise<void> => {
       return add('profile', profile);
@@ -146,10 +146,10 @@ export const createWalletRepository = async (): Promise<WalletRepository> => {
     const create = createStore(db);
     create('profile', 'uuid', [{ index: 'name', unique: true }]);
     create('network', 'uuid');
-    create('keyStore', 'uuid', [
+    create('keySource', 'uuid', [
       { index: 'profileId', unique: false },
       {
-        index: 'uniqueKeyStore',
+        index: 'uniqueKeySource',
         indexKeyPath: ['profileId', 'derivationPathTemplate', 'source'],
         unique: true,
       },

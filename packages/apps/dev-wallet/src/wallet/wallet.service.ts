@@ -15,7 +15,7 @@ import {
 import {
   IAccount,
   IKeyItem,
-  IKeyStore,
+  IKeySource,
   IProfile,
   WalletRepository,
 } from './wallet.repository';
@@ -24,20 +24,20 @@ const DEFAULT_DERIVATION_PATH_TEMPLATE = `m'/44'/626'/<index>'`;
 
 export interface IWalletService {
   getProfile: () => IProfile;
-  getKeyStores: () => Promise<IKeyStore[]>;
+  getKeySources: () => Promise<IKeySource[]>;
   getAccounts: () => Promise<IAccount[]>;
-  createKAccount: (keyStoreId: string) => Promise<IAccount>;
-  createKeyStore: (derivationPathTemplate?: string) => Promise<IKeyStore>;
+  createKAccount: (keySourceId: string) => Promise<IAccount>;
+  createKeySource: (derivationPathTemplate?: string) => Promise<IKeySource>;
   createPublicKeys: (
     quantity: number | undefined,
-    keyStoreId: string,
+    keySourceId: string,
   ) => Promise<IKeyItem[]>;
   createAccount: (account: IAccount) => Promise<void>;
   sign: (TXs: IUnsignedCommand[]) => Promise<(IUnsignedCommand | ICommand)[]>;
   decryptMnemonic: (password: string) => Promise<string>;
 }
 
-// For now wa just support hd-wallet keyStores; we need to refactor this to support other types of keyStores
+// For now wa just support hd-wallet keySources; we need to refactor this to support other types of keySources
 export function walletService(
   walletRepository: WalletRepository,
   profile: IProfile,
@@ -45,14 +45,14 @@ export function walletService(
   encryptedSeed: Uint8Array,
 ): IWalletService {
   const getProfile = () => profile;
-  const getKeyStores = async () => {
-    const keyStores = await walletRepository.getKeyStoresByProfileId(
+  const getKeySources = async () => {
+    const keySources = await walletRepository.getKeySourcesByProfileId(
       profile.uuid,
     );
-    return keyStores;
+    return keySources;
   };
-  const createKAccount = async (keyStoreId: string) => {
-    const publicKeys = await createPublicKeys(1, keyStoreId);
+  const createKAccount = async (keySourceId: string) => {
+    const publicKeys = await createPublicKeys(1, keySourceId);
 
     const account: IAccount = {
       uuid: crypto.randomUUID(),
@@ -69,44 +69,44 @@ export function walletService(
     return account;
   };
 
-  const createKeyStore = async (
+  const createKeySource = async (
     derivationPathTemplate = DEFAULT_DERIVATION_PATH_TEMPLATE,
   ) => {
-    const keyStore: IKeyStore = {
+    const keySource: IKeySource = {
       uuid: crypto.randomUUID(),
       source: 'hd-wallet',
       derivationPathTemplate,
       publicKeys: [],
       profileId: profile.uuid,
     };
-    await walletRepository.addKeyStore(keyStore);
-    return keyStore;
+    await walletRepository.addKeySource(keySource);
+    return keySource;
   };
 
   const createPublicKeys = async (
     quantity = 1,
-    keyStoreId: string,
+    keySourceId: string,
   ): Promise<IKeyItem[]> => {
-    const keyStore = await walletRepository.getKeyStore(keyStoreId);
+    const keySource = await walletRepository.getKeySource(keySourceId);
 
-    const keyIndex = keyStore.publicKeys.length;
+    const keyIndex = keySource.publicKeys.length;
 
     const newPublicKeys = await kadenaGetPublic(
       encryptionKey,
       encryptedSeed,
       [keyIndex, keyIndex + quantity - 1],
-      keyStore.derivationPathTemplate,
+      keySource.derivationPathTemplate,
     );
 
-    const updatedKeyStore = {
-      ...keyStore,
-      publicKeys: [...keyStore.publicKeys, ...newPublicKeys],
+    const updatedKeySource = {
+      ...keySource,
+      publicKeys: [...keySource.publicKeys, ...newPublicKeys],
     };
 
-    await walletRepository.updateKeyStore(updatedKeyStore);
+    await walletRepository.updateKeySource(updatedKeySource);
     return newPublicKeys.map((publicKey, index) => ({
       publicKey,
-      keyStoreId,
+      keySourceId,
       index: keyIndex + index,
     }));
   };
@@ -120,14 +120,14 @@ export function walletService(
       throw new Error('Wallet is not unlocked');
     }
 
-    const keyStores = await walletRepository.getKeyStoresByProfileId(
+    const keySources = await walletRepository.getKeySourcesByProfileId(
       profile.uuid,
     );
 
     const signedTx = Promise.all(
       TXs.map(async (Tx) => {
         const signatures = await Promise.all(
-          keyStores.map(async ({ publicKeys, derivationPathTemplate }) => {
+          keySources.map(async ({ publicKeys, derivationPathTemplate }) => {
             const cmd: IPactCommand = JSON.parse(Tx.cmd);
             const relevantIndexes = cmd.signers
               .map((signer) =>
@@ -178,10 +178,10 @@ export function walletService(
 
   return {
     getProfile,
-    getKeyStores,
+    getKeySources,
     getAccounts,
     createKAccount,
-    createKeyStore,
+    createKeySource,
     createPublicKeys,
     createAccount,
     sign,
@@ -218,8 +218,8 @@ export const walletFactory = (walletRepository: WalletRepository) => ({
       encryptionKey,
       encryptedSeed,
     );
-    const keyStore = await service.createKeyStore();
-    await service.createKAccount(keyStore.uuid);
+    const keySource = await service.createKeySource();
+    await service.createKAccount(keySource.uuid);
     return service;
   },
 
