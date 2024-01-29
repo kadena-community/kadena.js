@@ -26,7 +26,7 @@ export interface IWalletService {
   getProfile: () => IProfile;
   getKeyStores: () => Promise<IKeyStore[]>;
   getAccounts: () => Promise<IAccount[]>;
-  createFirstAccount: (derivationPathTemplate?: string) => Promise<IAccount>;
+  createKAccount: (keyStoreId: string) => Promise<IAccount>;
   createKeyStore: (derivationPathTemplate?: string) => Promise<IKeyStore>;
   createPublicKeys: (
     quantity: number | undefined,
@@ -51,11 +51,8 @@ export function walletService(
     );
     return keyStores;
   };
-  const createFirstAccount = async (
-    derivationPathTemplate = DEFAULT_DERIVATION_PATH_TEMPLATE,
-  ) => {
-    const keyStore = await createKeyStore(derivationPathTemplate);
-    const publicKeys = await createPublicKeys(1, keyStore.uuid);
+  const createKAccount = async (keyStoreId: string) => {
+    const publicKeys = await createPublicKeys(1, keyStoreId);
 
     const account: IAccount = {
       uuid: crypto.randomUUID(),
@@ -183,7 +180,7 @@ export function walletService(
     getProfile,
     getKeyStores,
     getAccounts,
-    createFirstAccount,
+    createKAccount,
     createKeyStore,
     createPublicKeys,
     createAccount,
@@ -221,7 +218,8 @@ export const walletFactory = (walletRepository: WalletRepository) => ({
       encryptionKey,
       encryptedSeed,
     );
-    await service.createFirstAccount();
+    const keyStore = await service.createKeyStore();
+    await service.createKAccount(keyStore.uuid);
     return service;
   },
 
