@@ -223,6 +223,10 @@ const CrossChainTransferFinisher: FC = () => {
 
     if (typeof requestKeyOrError !== 'string') {
       setTxError((requestKeyOrError as { error: string }).error);
+      setFinalResults({
+        requestKey: data.requestKey,
+        status: (requestKeyOrError as { error: string }).error,
+      });
       setProcessingTx(false);
       return;
     }
