@@ -135,12 +135,12 @@ export const createWalletRepository = async (): Promise<WalletRepository> => {
   const { db, needsUpgrade } = await connect('dev-wallet', 2);
   if (needsUpgrade) {
     if (import.meta.env.DEV) {
-      console.log(
-        'in development we delete the database if schema is changed for now since we are still in early stage of development',
-      );
-      await db.close();
-      await deleteDatabase('dev-wallet');
-      return createWalletRepository();
+      // console.log(
+      //   'in development we delete the database if schema is changed for now since we are still in early stage of development',
+      // );
+      // await db.close();
+      // await deleteDatabase('dev-wallet');
+      // return createWalletRepository();
     }
     // NOTE: If you change the schema, you need to update the upgrade method
     // below to migrate the data. the current version just creates the database

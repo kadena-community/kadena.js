@@ -54,13 +54,14 @@ export function walletService(
   const createFirstAccount = async (
     derivationPathTemplate = DEFAULT_DERIVATION_PATH_TEMPLATE,
   ) => {
-    const publicKeys = await createPublicKeys(1, derivationPathTemplate);
+    const keyStore = await createKeyStore(derivationPathTemplate);
+    const publicKeys = await createPublicKeys(1, keyStore.uuid);
 
     const account: IAccount = {
       uuid: crypto.randomUUID(),
       alias: '',
       profileId: profile.uuid,
-      address: '',
+      address: `k:${publicKeys[0].publicKey}`,
       guard: {
         type: 'keySet',
         pred: 'keys-any',

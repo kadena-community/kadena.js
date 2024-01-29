@@ -78,6 +78,8 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
     );
 
     const profileKeyStores = await service.getKeyStores();
+    const profileAccounts = await service.getAccounts();
+    setAccounts(profileAccounts);
     setKeyStores(profileKeyStores);
     setWalletService(service);
     setActiveProfile(service.getProfile());
@@ -193,7 +195,7 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
         keyStores,
         sign,
         decryptMnemonic,
-        isUnlocked: Boolean(walletRepository),
+        isUnlocked: Boolean(walletService),
         profile: exposedProfile,
         profileList,
         accounts,
