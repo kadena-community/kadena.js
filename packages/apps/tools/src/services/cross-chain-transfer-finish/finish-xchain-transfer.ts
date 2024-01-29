@@ -22,6 +22,7 @@ export async function finishXChainTransfer(
   targetChainId: ChainId,
   networkId: string,
   networskData: INetworkData[],
+  gasLimit: number = 850,
   gasPayer: string = 'kadena-xchain-gas',
 ): Promise<string | { error: string }> {
   debug(finishXChainTransfer.name);
@@ -47,7 +48,7 @@ export async function finishXChainTransfer(
         chainId: targetChainId,
         senderAccount: gasPayer,
         // this needs to be below 850 if you want to use gas-station otherwise the gas-station does
-        gasLimit: 850,
+        gasLimit,
       })
       .createTransaction();
     return (await submit(continuationTransaction as ICommand)).requestKey;

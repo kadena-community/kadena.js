@@ -52,7 +52,7 @@ import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import type { FC } from 'react';
+import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -217,6 +217,7 @@ const CrossChainTransferFinisher: FC = () => {
       pollResults.tx.receiver.chain,
       networkId,
       networksData,
+      data.gasLimit,
       data.gasPayer,
     );
 
