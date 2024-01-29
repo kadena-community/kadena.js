@@ -48,3 +48,9 @@ export const textareaContainerStyle = style([
     gap: 'sm',
   }),
 ]);
+
+export const textareaWrapperStyle = style([
+  atoms({
+    width: '100%',
+  }),
+]);

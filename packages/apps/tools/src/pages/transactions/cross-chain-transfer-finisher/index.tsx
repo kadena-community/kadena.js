@@ -4,7 +4,6 @@ import {
   AccountNameField,
   FormItemCard,
   FormStatusNotification,
-  NAME_VALIDATION,
   OptionsModal,
   REQUEST_KEY_VALIDATION,
   RequestKeyField,
@@ -63,26 +62,18 @@ import {
   notificationContainerStyle,
   notificationLinkStyle,
   textareaContainerStyle,
+  textareaWrapperStyle,
 } from './styles.css';
-
-// @see; https://www.geeksforgeeks.org/how-to-validate-a-domain-name-using-regular-expression/
-const DOMAIN_NAME_REGEX: RegExp =
-  /^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/;
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
   advancedOptions: z.boolean().optional(),
-  server: z
-    .string()
-    .trim()
-    .regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name')
-    .optional(),
-  gasPayer: NAME_VALIDATION.optional(),
+  gasPayer: z.literal('kadena-xchain-gas'),
   gasLimit: z
     .string()
+
     .optional()
     .transform((val) => parseInt(val!, 10)),
-  gasPrice: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -92,7 +83,6 @@ interface IErrorObject {
 }
 
 const CrossChainTransferFinisher: FC = () => {
-  console.log('Render ');
   const debug = Debug(
     'kadena-transfer:pages:transfer:cross-chain-transfer-finisher',
   );
@@ -288,35 +278,28 @@ const CrossChainTransferFinisher: FC = () => {
 
   const {
     handleSubmit,
-    watch,
     formState: { errors },
     getValues,
+    setValue,
     resetField,
     control,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: {
-      server: networkData.API,
-      requestKey: requestKey,
+    defaultValues: {
+      requestKey: router.query?.reqKey as string,
       gasPayer: 'kadena-xchain-gas',
       gasLimit: kadenaConstants.GAS_LIMIT,
-      gasPrice: kadenaConstants.GAS_PRICE.toFixed(8),
     },
     // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
     resetOptions: {
-      keepDirtyValues: true, // keep dirty fields unchanged, but update defaultValues
+      // keepDirtyValues: true, // keep dirty fields unchanged, but update defaultValues
     },
   });
-
-  const watchRequestKeyField = watch('requestKey');
-
   useEffect(() => {
+    setValue('requestKey', requestKey);
     setOpenItem(undefined);
-  }, [watchRequestKeyField]);
+  }, [requestKey, setValue]);
 
-  // const watchGasPayer = watch('gasPayer');
-
-  // const isGasStation = watchGasPayer === 'kadena-xchain-gas';
   const isAdvancedOptions = devOption !== 'BASIC';
   const showNotification = Object.keys(finalResults).length > 0;
 
@@ -564,6 +547,7 @@ const CrossChainTransferFinisher: FC = () => {
                           value={field.value?.toString() || ''}
                           id="gas-limit-input"
                           placeholder={t('Enter Gas Limit')}
+                          type={'number'}
                         />
                       )}
                     />
@@ -584,11 +568,13 @@ const CrossChainTransferFinisher: FC = () => {
                   <GridItem>
                     <div className={textareaContainerStyle}>
                       <TextareaField
+                        autoResize
                         isReadOnly
                         inputFont="code"
                         id="sig-text-area"
                         value={formattedSigData}
                         aria-label={t('sigData')}
+                        className={textareaWrapperStyle}
                       />
                       <Button
                         color="primary"
