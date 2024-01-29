@@ -1,5 +1,6 @@
 import type { NonFungibleAccountTransactionsConnection } from '@/__generated__/sdk';
 import { useGetNonFungibleAccountQuery } from '@/__generated__/sdk';
+import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
@@ -64,7 +65,7 @@ const NonFungibleAccount: React.FC = () => {
 
       {data?.nonFungibleAccount && (
         <div>
-          <Table.Root wordBreak="break-all">
+          <Table.Root wordBreak="break-all" className={compactTableClass}>
             <Table.Body>
               <Table.Tr>
                 <Table.Td>

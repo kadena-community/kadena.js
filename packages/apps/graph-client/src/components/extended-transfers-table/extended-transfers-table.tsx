@@ -1,4 +1,7 @@
-import type { GetTransfersQuery } from '@/__generated__/sdk';
+import type {
+  GetTransfersQuery,
+  QueryTransfersConnection,
+} from '@/__generated__/sdk';
 import routes from '@/constants/routes';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
 import {
@@ -11,6 +14,7 @@ import {
 } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 type DataType = GetTransfersQuery;
 interface IVariableType {
@@ -21,7 +25,7 @@ interface IVariableType {
 }
 
 interface IExpandedTransfersTableProps {
-  transfers: GetTransfersQuery['transfers'];
+  transfers: QueryTransfersConnection;
   fetchMore: (
     fetchMoreOptions: FetchMoreQueryOptions<IVariableType, DataType> &
       FetchMoreOptions,
@@ -175,16 +179,16 @@ export const ExtendedTransfersTable = (
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Pagination
             totalPages={totalPages}
-            label="pagination"
-            currentPage={currentPage}
+            selectedPage={currentPage}
             onPageChange={handlePaginationClick}
           />
         </div>
       </Box>
-      <Table.Root wordBreak="break-word">
+      <Table.Root wordBreak="break-word" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
             <Table.Th>Chain</Table.Th>
+            <Table.Th>Timestamp</Table.Th>
             <Table.Th>Block Height</Table.Th>
             <Table.Th>Amount</Table.Th>
             <Table.Th>Sender Account</Table.Th>
@@ -211,6 +215,9 @@ export const ExtendedTransfersTable = (
             return (
               <Table.Tr key={index}>
                 <Table.Td>{chainIdDisplay}</Table.Td>
+                <Table.Td>
+                  {new Date(edge.node.creationTime).toLocaleString()}
+                </Table.Td>
                 <Table.Td>{heightDisplay}</Table.Td>
                 <Table.Td>{edge.node.amount}</Table.Td>
                 <Table.Td>

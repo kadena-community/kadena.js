@@ -13,6 +13,7 @@ import { formatLisp } from '@/utils/formatter';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 type DataType = GetTransactionsQuery;
 
@@ -177,13 +178,12 @@ export const ExtendedTransactionsTable = (
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Pagination
             totalPages={totalPages}
-            label="pagination"
-            currentPage={currentPage}
+            selectedPage={currentPage}
             onPageChange={handlePaginationClick}
           />
         </div>
       </Box>
-      <Table.Root wordBreak="break-word">
+      <Table.Root wordBreak="break-word" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
             <Table.Th>Chain</Table.Th>

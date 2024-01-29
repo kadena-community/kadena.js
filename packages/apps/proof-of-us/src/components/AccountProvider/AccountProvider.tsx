@@ -80,8 +80,8 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     setIsMounted(true);
     if (!response) return;
 
-    const account = decodeAccount(response);
-    setAccount(account);
+    const acc = decodeAccount(response);
+    setAccount(acc);
   }, [setAccount, decodeAccount, setIsMounted]);
 
   return (
