@@ -27,16 +27,11 @@ export const createSendTransactionCommand: (
   'send a transaction to the network',
   [],
   async (config) => {
-    try {
-      debug('send-transaction:action')({ config });
+    debug('send-transaction:action')({ config });
 
-      const result = await sendTransactionAction('something');
-      assertCommandError(result);
+    const result = await sendTransactionAction('something');
+    assertCommandError(result);
 
-      console.log(chalk.green(`\nSome Logging.\n`));
-    } catch (error) {
-      console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
-      process.exit(1);
-    }
+    console.log(chalk.green(`\nSome Logging.\n`));
   },
 );

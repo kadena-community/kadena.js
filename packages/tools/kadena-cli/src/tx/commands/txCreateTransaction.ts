@@ -1,7 +1,6 @@
 import type { IUnsignedCommand } from '@kadena/client';
 import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
 import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
-import chalk from 'chalk';
 import path from 'path';
 
 import { IS_DEVELOPMENT, TRANSACTION_PATH } from '../../constants/config.js';
@@ -14,6 +13,7 @@ import { globalOptions } from '../../utils/globalOptions.js';
 export const createTransaction = async (
   template: string,
   variables: Record<string, string>,
+  // eslint-disable-next-line @rushstack/no-new-null
   outFilePath: string | null,
 ): Promise<
   CommandResult<{ transaction: IUnsignedCommand; filePath: string }>
@@ -26,7 +26,7 @@ export const createTransaction = async (
 
   const transaction = kadenaCreateTransaction(command);
 
-  let filePath = null;
+  let filePath: string | null = null;
   if (outFilePath === null) {
     // write transaction to file
     const directoryPath = TRANSACTION_PATH;
@@ -66,45 +66,40 @@ export const createTransactionCommandNew = createCommandFlexible(
     globalOptions.outFileJson(),
   ],
   async (option, values) => {
-    try {
-      const template = await option.template();
-      const templateVariables = await option.templateVariables({
-        values,
-        variables: template.templateConfig.variables,
+    const template = await option.template();
+    const templateVariables = await option.templateVariables({
+      values,
+      variables: template.templateConfig.variables,
+    });
+    const outputFile = await option.outFile({
+      values,
+      variables: template.templateConfig.variables,
+    });
+
+    if (IS_DEVELOPMENT) {
+      console.log('create-transaction:action', {
+        ...template,
+        ...templateVariables,
+        ...outputFile,
       });
-      const outputFile = await option.outFile({
-        values,
-        variables: template.templateConfig.variables,
-      });
-
-      if (IS_DEVELOPMENT) {
-        console.log('create-transaction:action', {
-          ...template,
-          ...templateVariables,
-          ...outputFile,
-        });
-      }
-
-      if (template.templateConfig.template === undefined) {
-        return console.log('template not found');
-      }
-
-      const result = await createTransaction(
-        template.templateConfig.template,
-        templateVariables.templateVariables,
-        outputFile.outFile,
-      );
-      assertCommandError(result);
-
-      console.log(result.data.transaction);
-
-      const relativePath = path.relative(process.cwd(), result.data.filePath);
-      console.log(`\ntransaction saved to: ./${relativePath}`);
-
-      return { outFile: relativePath };
-    } catch (error) {
-      console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
-      process.exit(1);
     }
+
+    if (template.templateConfig.template === undefined) {
+      return console.log('template not found');
+    }
+
+    const result = await createTransaction(
+      template.templateConfig.template,
+      templateVariables.templateVariables,
+      outputFile.outFile,
+    );
+    assertCommandError(result);
+
+    console.log(result.data.transaction);
+
+    const relativePath = path.relative(process.cwd(), result.data.filePath);
+    console.log(`\ntransaction saved to: ./${relativePath}`);
+
+    return { outFile: relativePath };
   },
 );

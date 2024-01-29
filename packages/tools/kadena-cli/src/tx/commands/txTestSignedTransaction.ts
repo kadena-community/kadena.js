@@ -50,41 +50,36 @@ export const createTestSignedTransactionCommand: (
     globalOptions.chainId(),
   ],
   async (option) => {
-    try {
-      const networkOption = await option.network();
-      const dir = await option.txTransactionDir();
-      const file = await option.txSignedTransactionFile({
-        signed: true,
-        path: dir.txTransactionDir,
-      });
-      const chainOption = await option.chainId();
+    const networkOption = await option.network();
+    const dir = await option.txTransactionDir();
+    const file = await option.txSignedTransactionFile({
+      signed: true,
+      path: dir.txTransactionDir,
+    });
+    const chainOption = await option.chainId();
 
-      debug.log('sign-with-local-wallet:action', {
-        ...networkOption,
-        ...dir,
-        ...file,
-        ...chainOption,
-      });
+    debug.log('sign-with-local-wallet:action', {
+      ...networkOption,
+      ...dir,
+      ...file,
+      ...chainOption,
+    });
 
-      const txSignedTransaction = await getTransactionFromFile(
-        file.txSignedTransactionFile,
-        true,
-        dir.txTransactionDir,
+    const txSignedTransaction = await getTransactionFromFile(
+      file.txSignedTransactionFile,
+      true,
+      dir.txTransactionDir,
+    );
+
+    if (isSignedTransaction(txSignedTransaction)) {
+      const result = await testTransactionAction(
+        txSignedTransaction,
+        networkOption.networkConfig,
+        chainOption.chainId,
       );
-
-      if (isSignedTransaction(txSignedTransaction)) {
-        const result = await testTransactionAction(
-          txSignedTransaction,
-          networkOption.networkConfig,
-          chainOption.chainId,
-        );
-        assertCommandError(result);
-        return txDisplayTransaction(result.data, 'txSignedTransaction result:');
-      }
-      console.error(chalk.red(`\nErreor: Transaction is not signed \n`));
-    } catch (error) {
-      console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
-      process.exit(1);
+      assertCommandError(result);
+      return txDisplayTransaction(result.data, 'txSignedTransaction result:');
     }
+    console.error(chalk.red(`\nErreor: Transaction is not signed \n`));
   },
 );

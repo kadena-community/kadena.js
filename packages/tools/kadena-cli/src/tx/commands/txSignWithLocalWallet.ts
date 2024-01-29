@@ -37,7 +37,7 @@ export const signActionHd = async (
 
   try {
     const command = await signTransactionWithSeed(
-      walletConfig.folder,
+      walletConfig,
       seed,
       password,
       unsignedTransaction,
@@ -72,47 +72,42 @@ export const createSignTransactionWithLocalWalletCommand: (
     globalOptions.txUnsignedTransactionFile(),
   ],
   async (option) => {
-    try {
-      const wallet = await option.keyWallet();
-      const password = await option.securityPassword();
-      const dir = await option.txTransactionDir();
-      const file = await option.txUnsignedTransactionFile({
-        signed: false,
-        path: dir.txTransactionDir,
-      });
+    const wallet = await option.keyWallet();
+    const password = await option.securityPassword();
+    const dir = await option.txTransactionDir();
+    const file = await option.txUnsignedTransactionFile({
+      signed: false,
+      path: dir.txTransactionDir,
+    });
 
-      debug.log('sign-with-local-wallet:action', {
-        ...wallet,
-        ...password,
-        ...file,
-        ...dir,
-      });
+    debug.log('sign-with-local-wallet:action', {
+      ...wallet,
+      ...password,
+      ...file,
+      ...dir,
+    });
 
-      if (wallet.keyWalletConfig === null) {
-        throw new Error(`Wallet: ${wallet.keyWallet} does not exist.`);
-      }
-
-      const result = await signActionHd(
-        wallet.keyWallet,
-        wallet.keyWalletConfig,
-        password.securityPassword,
-        file.txUnsignedTransactionFile,
-        false,
-        dir.txTransactionDir,
-      );
-
-      assertCommandError(result);
-
-      await saveSignedTransaction(
-        result.data,
-        file.txUnsignedTransactionFile,
-        dir.txTransactionDir,
-      );
-
-      console.log(chalk.green(`\nTransaction withinsigned successfully.\n`));
-    } catch (error) {
-      console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
-      process.exit(1);
+    if (wallet.keyWalletConfig === null) {
+      throw new Error(`Wallet: ${wallet.keyWallet} does not exist.`);
     }
+
+    const result = await signActionHd(
+      wallet.keyWallet,
+      wallet.keyWalletConfig,
+      password.securityPassword,
+      file.txUnsignedTransactionFile,
+      false,
+      dir.txTransactionDir,
+    );
+
+    assertCommandError(result);
+
+    await saveSignedTransaction(
+      result.data,
+      file.txUnsignedTransactionFile,
+      dir.txTransactionDir,
+    );
+
+    console.log(chalk.green(`\nTransaction withinsigned successfully.\n`));
   },
 );

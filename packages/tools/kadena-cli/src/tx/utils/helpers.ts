@@ -14,7 +14,8 @@ import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
 import { join } from 'path';
 import { TRANSACTION_PATH } from '../../constants/config.js';
-import { getKeyPairAndIndicesFromFileSystem } from '../../keys/utils/keysHelpers.js';
+import type { IWallet } from '../../keys/utils/keysHelpers.js';
+import { getWalletKey } from '../../keys/utils/keysHelpers.js';
 import type { IKeyPair as IKeyPairLocal } from '../../keys/utils/storage.js';
 
 import { services } from '../../services/index.js';
@@ -89,15 +90,15 @@ export function formatDate(): string {
 /**
  * Signs a transaction using the provided wallet seed and password.
  *
- * @param wallet - The wallet seed.
+ * @param walletContent - The wallet seed.
  * @param password - The password for the wallet.
  * @param unsignedCommand - The command to be signed.
  * @param legacy - Optional flag for legacy signing method.
  * @returns A promise that resolves to a signed command or undefined.
  */
 export async function signTransactionWithSeed(
-  walletName: string,
-  wallet: EncryptedString,
+  wallet: IWallet,
+  walletContent: EncryptedString,
   password: string,
   unsignedCommand: IUnsignedCommand,
   legacy?: boolean,
@@ -105,7 +106,9 @@ export async function signTransactionWithSeed(
   try {
     let command: ICommand | IUnsignedCommand;
     const parsedTransaction = JSON.parse(unsignedCommand.cmd);
-    const keys = await getKeyPairAndIndicesFromFileSystem(walletName);
+    const keys = await Promise.all(
+      wallet.keys.map((key) => getWalletKey(wallet, key)),
+    );
     const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
 
     if (relevantKeyPairs.length === 0) {
@@ -120,7 +123,7 @@ export async function signTransactionWithSeed(
           const sigUint8Array = await legacyKadenaSignWithSeed(
             password,
             unsignedCommand.cmd,
-            wallet,
+            walletContent,
             key.index as number,
           );
 
@@ -138,7 +141,11 @@ export async function signTransactionWithSeed(
             throw new Error('Key index is not a number');
           }
 
-          const signWithSeed = kadenaSignWithSeed(password, wallet, key.index);
+          const signWithSeed = kadenaSignWithSeed(
+            password,
+            walletContent,
+            key.index,
+          );
           const sigs = await signWithSeed(unsignedCommand.hash);
 
           return {

@@ -503,12 +503,6 @@ export const globalOptions = {
       'use as the namespace of the contract if its not clear in the contract',
     ),
   }),
-  key: createOption({
-    key: 'key' as const,
-    prompt: keys.keyDeleteSelectPrompt,
-    validation: z.string(),
-    option: new Option('-k, --key <key>', 'Select key from keyfile'),
-  }),
   keyMessage: createOption({
     key: 'keyMessage' as const,
     prompt: keys.keyMessagePrompt,
@@ -541,7 +535,7 @@ export const globalOptions = {
   txUnsignedTransactionFile: createOption({
     key: 'txUnsignedTransactionFile',
     prompt: tx.transactionSelectPrompt,
-    validation: tx.IUnsignedCommandSchema,
+    validation: z.string(),
     option: new Option(
       '-u, --tx-unsigned-transaction-file <txUnsignedTransactionFile>',
       'provide your unsigned transaction file to sign',

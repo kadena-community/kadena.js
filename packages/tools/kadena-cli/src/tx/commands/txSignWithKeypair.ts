@@ -64,41 +64,36 @@ export const createSignTransactionWithKeypairCommand: (
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option) => {
-    try {
-      const key = await option.keyPairs();
-      const dir = await option.txTransactionDir();
-      const file = await option.txUnsignedTransactionFile({
-        signed: false,
-        path: dir.txTransactionDir,
-      });
-      const mode = await option.legacy();
+    const key = await option.keyPairs();
+    const dir = await option.txTransactionDir();
+    const file = await option.txUnsignedTransactionFile({
+      signed: false,
+      path: dir.txTransactionDir,
+    });
+    const mode = await option.legacy();
 
-      debug.log('sign-with-keypair:action', {
-        ...key,
-        ...dir,
-        ...file,
-        ...mode,
-      });
+    debug.log('sign-with-keypair:action', {
+      ...key,
+      ...dir,
+      ...file,
+      ...mode,
+    });
 
-      const result = await signTransactionWithKeyPairAction(
-        key.keyPairs,
-        file.txUnsignedTransactionFile,
-        dir.txTransactionDir,
-        mode.legacy,
-      );
+    const result = await signTransactionWithKeyPairAction(
+      key.keyPairs,
+      file.txUnsignedTransactionFile,
+      dir.txTransactionDir,
+      mode.legacy,
+    );
 
-      assertCommandError(result);
+    assertCommandError(result);
 
-      await saveSignedTransaction(
-        result.data,
-        file.txUnsignedTransactionFile,
-        dir.txTransactionDir,
-      );
+    await saveSignedTransaction(
+      result.data,
+      file.txUnsignedTransactionFile,
+      dir.txTransactionDir,
+    );
 
-      console.log(chalk.green(`\nTransaction withinsigned successfully.\n`));
-    } catch (error) {
-      console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
-      process.exit(1);
-    }
+    console.log(chalk.green(`\nTransaction withinsigned successfully.\n`));
   },
 );

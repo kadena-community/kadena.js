@@ -1,6 +1,5 @@
 import chalk from 'chalk';
 import debug from 'debug';
-import { join } from 'path';
 
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
@@ -14,19 +13,16 @@ import {
 } from '../utils/helpers.js';
 import { saveSignedTransaction } from '../utils/storage.js';
 
-import {
-  readKeyPairAndIndexFromFile,
-  toHexStr,
-} from '../../keys/utils/keysHelpers.js';
+import type { IWallet } from '../../keys/utils/keysHelpers.js';
+import { getWalletKey, toHexStr } from '../../keys/utils/keysHelpers.js';
 
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaDecrypt } from '@kadena/hd-wallet';
 import type { ICommand } from '@kadena/types';
-import { WALLET_DIR } from '../../constants/config.js';
 import type { IKeyPair } from '../../keys/utils/storage.js';
 
 export const signTransactionWithAliasFile = async (
-  wallet: string,
+  wallet: IWallet,
   alias: string,
   password: string,
   transactionfileName: string,
@@ -35,10 +31,7 @@ export const signTransactionWithAliasFile = async (
   legacy?: boolean,
 ): Promise<CommandResult<ICommand>> => {
   try {
-    const encryptedKeyPair = (await readKeyPairAndIndexFromFile(
-      join(WALLET_DIR, wallet),
-      alias,
-    )) as IKeyPair;
+    const encryptedKeyPair = await getWalletKey(wallet, alias);
 
     if (encryptedKeyPair === undefined) {
       throw new Error('Keypair to be used for signing not found.');
@@ -97,50 +90,47 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option) => {
-    try {
-      const wallet = await option.keyWallet();
-      const password = await option.securityPassword();
-      const key = await option.keyAliasSelect({
-        wallet: wallet.keyWallet,
-      });
-      const dir = await option.txTransactionDir();
-      const file = await option.txUnsignedTransactionFile({
-        signed: false,
-        path: dir.txTransactionDir,
-      });
+    const wallet = await option.keyWallet();
+    if (!wallet.keyWalletConfig) throw new Error('wallet not found');
 
-      const mode = await option.legacy();
+    const password = await option.securityPassword();
+    const key = await option.keyAliasSelect({
+      wallet: wallet.keyWallet,
+    });
+    const dir = await option.txTransactionDir();
+    const file = await option.txUnsignedTransactionFile({
+      signed: false,
+      path: dir.txTransactionDir,
+    });
 
-      debug.log('sign-with-key-alias-file:action', {
-        ...wallet,
-        ...key,
-        ...file,
-        ...dir,
-        ...mode,
-      });
+    const mode = await option.legacy();
 
-      const result = await signTransactionWithAliasFile(
-        wallet.keyWallet,
-        key.keyAliasSelect,
-        password.securityPassword,
-        file.txUnsignedTransactionFile,
-        false,
-        dir.txTransactionDir,
-        mode.legacy,
-      );
+    debug.log('sign-with-key-alias-file:action', {
+      ...wallet,
+      ...key,
+      ...file,
+      ...dir,
+      ...mode,
+    });
 
-      assertCommandError(result);
+    const result = await signTransactionWithAliasFile(
+      wallet.keyWalletConfig,
+      key.keyAliasSelect,
+      password.securityPassword,
+      file.txUnsignedTransactionFile,
+      false,
+      dir.txTransactionDir,
+      mode.legacy,
+    );
 
-      await saveSignedTransaction(
-        result.data,
-        file.txUnsignedTransactionFile,
-        dir.txTransactionDir,
-      );
+    assertCommandError(result);
 
-      console.log(chalk.green(`\nTransaction signed successfully.\n`));
-    } catch (error) {
-      console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
-      process.exit(1);
-    }
+    await saveSignedTransaction(
+      result.data,
+      file.txUnsignedTransactionFile,
+      dir.txTransactionDir,
+    );
+
+    console.log(chalk.green(`\nTransaction signed successfully.\n`));
   },
 );
