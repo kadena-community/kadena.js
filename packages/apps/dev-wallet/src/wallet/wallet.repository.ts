@@ -114,7 +114,7 @@ export const walletRepository = (db: IDBDatabase): WalletRepository => {
   };
 };
 
-const asyncGuard = <Args extends any[], T>(
+const asyncGuard = <Args extends unknown[], T>(
   fn: (...args: Args) => Promise<T>,
 ) => {
   let promise: Promise<T> | null = null;
