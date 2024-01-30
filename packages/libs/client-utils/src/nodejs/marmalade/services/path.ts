@@ -18,13 +18,13 @@ export async function createDirAndWriteFile(
   writeFileSync(join(dir, fileName), data);
 }
 
-export async function clearDir(dir: string, extension?: string): Promise<void> {
+export function clearDir(dir: string, extension?: string): void {
   const files = readdirSync(dir);
   for (const file of files) {
     const filePath = join(dir, file);
     try {
       if (statSync(filePath).isDirectory()) {
-        await clearDir(filePath, extension); // Recursive call
+        clearDir(filePath, extension); // Recursive call
         rmdirSync(filePath); // Remove the directory itself
       } else if (!extension || file.endsWith(extension)) {
         unlinkSync(filePath);

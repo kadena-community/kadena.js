@@ -1,13 +1,8 @@
-import type {
-  ICommandResult} from '@kadena/client';
-import {
-  createSignWithKeypair,
-  createTransaction,
-} from '@kadena/client';
-import { composePactCommand } from '@kadena/client/fp';
+import type { ICommandResult } from '@kadena/client';
+
 import type { ChainId } from '@kadena/types';
 import { readdirSync } from 'fs';
-import { deployContract } from '../../../built-in/deployContract';
+
 import { submitClient } from '../../../core';
 import type { IAccount, IClientConfig } from '../../../core/utils/helpers';
 import { createPactCommandFromTemplate } from '../../yaml-converter';
@@ -65,7 +60,7 @@ export const deployMarmalade = async ({
     'Downloading marmalade templates and namespace definition files...',
   );
 
-  Promise.all([
+  await Promise.all([
     getMarmaladeTemplates({
       repositoryConfig,
       remoteConfig,

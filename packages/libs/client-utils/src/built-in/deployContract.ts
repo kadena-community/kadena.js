@@ -1,20 +1,6 @@
-import type {
-  ChainId,
-  ICommandResult} from '@kadena/client';
-import {
-  IKeyPair,
-  IPactCommand,
-  IPartialPactCommand,
-  Pact,
-} from '@kadena/client';
-import {
-  addKeyset,
-  addSigner,
-  composePactCommand,
-  execution,
-  setMeta,
-  setNetworkId,
-} from '@kadena/client/fp';
+import type { ChainId, ICommandResult } from '@kadena/client';
+import { Pact } from '@kadena/client';
+
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 

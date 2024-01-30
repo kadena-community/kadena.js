@@ -1,5 +1,3 @@
-import { IAccount } from '../../../core/utils/helpers';
-
 // export interface IMarmaladeRepository {
 //   owner: string;
 //   name: string;
