@@ -1,6 +1,12 @@
 Domain model: conceptual model of the entities that exist. This doesn't
 necessarily mean the interfaces will represent the entities in the same way
 
+Bike shedding: 
+* `sender` vs `gaspayer`
+* `data` for transaction, what does it mean, adds scope
+* use of the word `guard`
+* 
+
 ```mermaid
 
 erDiagram
@@ -29,8 +35,8 @@ erDiagram
 
   Signer {
     PublicKey publicKey
-    Address address
-    SigningScheme Scheme
+    Address address "way back: ecdsa pubkey, address are different"
+    SigningScheme Scheme "no more support for ETH (chainweb node team)"
   }
 
   Signature {
