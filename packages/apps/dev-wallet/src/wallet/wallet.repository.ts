@@ -1,3 +1,4 @@
+import { execInSequence } from '@/utils/helpers';
 import {
   addItem,
   connect,
@@ -114,31 +115,18 @@ export const walletRepository = (db: IDBDatabase): WalletRepository => {
   };
 };
 
-const asyncGuard = <Args extends unknown[], T>(
-  fn: (...args: Args) => Promise<T>,
-) => {
-  let promise: Promise<T> | null = null;
-  return async (...args: Args) => {
-    if (promise) return promise;
-    promise = fn(...args);
-    promise.finally(() => {
-      promise = null;
-    });
-    return promise;
-  };
-};
-
-export const createWalletRepository = asyncGuard(
+// since we create the database in the first call we need to make sure another call does not happen
+// while the database is still being created; so I use execInSequence.
+export const createWalletRepository = execInSequence(
   async (): Promise<WalletRepository> => {
     const DB_NAME = 'dev-wallet';
     const DB_VERSION = 6;
     const result = await connect(DB_NAME, DB_VERSION);
     let { db } = result;
     if (result.needsUpgrade) {
-      console.log('needs upgrade');
       if (import.meta.env.DEV) {
         console.log(
-          'LOG:in development we delete the database if schema is changed for now since we are still in early stage of development',
+          'in development we delete the database if schema is changed for now since we are still in early stage of development',
         );
         db.close();
         console.log('deleting database');
@@ -149,7 +137,6 @@ export const createWalletRepository = asyncGuard(
       }
       // NOTE: If you change the schema, you need to update the upgrade method
       // below to migrate the data. the current version just creates the database
-      console.log('creating object stores');
       const create = createStore(db);
       create('profile', 'uuid', [{ index: 'name', unique: true }]);
       create('network', 'uuid');
