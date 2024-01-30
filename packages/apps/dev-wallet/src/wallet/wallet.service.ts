@@ -18,41 +18,38 @@ import {
   IKeySource,
   IProfile,
   WalletRepository,
-  WalletRepositoryTx,
 } from './wallet.repository';
 
 const DEFAULT_DERIVATION_PATH_TEMPLATE = `m'/44'/626'/<index>'`;
 
 type ServiceProps = {
-  walletRepository: WalletRepository | WalletRepositoryTx;
+  walletRepository: WalletRepository;
   profile: IProfile;
   encryptionKey: Uint8Array;
   encryptedSeed: Uint8Array;
 };
 
-const createTxIfItsNot = (
-  walletRepository: WalletRepository | WalletRepositoryTx,
-) => {
-  const wr: WalletRepositoryTx =
-    'commit' in walletRepository
-      ? walletRepository
-      : walletRepository.createTransactionContext();
-
-  return wr;
-};
-
 const addPublicKeysToKeySource =
-  ({ walletRepository }: Pick<ServiceProps, 'walletRepository'>) =>
+  (props: Pick<ServiceProps, 'profile' | 'walletRepository'>) =>
   async (keySourceId: string, newPublicKeys: string[]): Promise<IKeyItem[]> => {
-    const keySource = await walletRepository.getKeySource(keySourceId);
+    const {
+      walletRepository,
+      profile: { uuid: profileId },
+    } = props;
+    const profile = await walletRepository.getProfile(profileId);
+    const keySource = profile.keySources.find((ks) => ks.uuid === keySourceId);
+    if (!keySource) {
+      throw new Error('KeySource not found');
+    }
     const keyIndex = keySource.publicKeys.length;
 
-    const updatedKeySource = {
-      ...keySource,
-      publicKeys: [...keySource.publicKeys, ...newPublicKeys],
+    keySource.publicKeys = [...keySource.publicKeys, ...newPublicKeys];
+
+    const updatedProfile = {
+      ...profile,
     };
 
-    await walletRepository.updateKeySource(updatedKeySource);
+    await walletRepository.updateProfile(updatedProfile);
     return newPublicKeys.map((publicKey, index) => ({
       publicKey,
       keySourceId: keySource.uuid,
@@ -63,14 +60,19 @@ const addPublicKeysToKeySource =
 const createPublicKeys =
   ({
     walletRepository,
+    profile,
     encryptionKey,
     encryptedSeed,
   }: Pick<
     ServiceProps,
-    'walletRepository' | 'encryptedSeed' | 'encryptionKey'
+    'walletRepository' | 'encryptedSeed' | 'encryptionKey' | 'profile'
   >) =>
   async (quantity = 1, keySourceId: string): Promise<IKeyItem[]> => {
-    const keySource = await walletRepository.getKeySource(keySourceId);
+    const keySource = profile.keySources.find((ks) => ks.uuid === keySourceId);
+
+    if (!keySource) {
+      throw new Error('KeySource not found');
+    }
 
     const keyIndex = keySource.publicKeys.length;
 
@@ -81,82 +83,34 @@ const createPublicKeys =
       keySource.derivationPathTemplate,
     );
 
-    await addPublicKeysToKeySource({ walletRepository })(
+    return addPublicKeysToKeySource({ walletRepository, profile })(
       keySource.uuid,
       newPublicKeys,
     );
-
-    return newPublicKeys.map((publicKey, index) => ({
-      publicKey,
-      keySourceId,
-      index: keyIndex + index,
-    }));
   };
 
 const createKAccount =
-  (props: ServiceProps) => async (keySourceId: string, publicKey: string) => {
-    const { walletRepository, profile } = props;
-    const txBasedRepository = createTxIfItsNot(walletRepository);
-    try {
-      const publicKeys = await addPublicKeysToKeySource({
-        ...props,
-        walletRepository: txBasedRepository,
-      })(keySourceId, [publicKey]);
-
-      const account: IAccount = {
-        uuid: crypto.randomUUID(),
-        alias: '',
-        profileId: profile.uuid,
-        address: `k:${publicKey}`,
-        guard: {
-          type: 'keySet',
-          pred: 'keys-any',
-          publicKeys: publicKeys,
-        },
-      };
-      await txBasedRepository.addAccount(account);
-      // tx commit will happen automatically; if we get here, it means that the transaction was successful
-      return account;
-    } catch (e) {
-      console.log('TRYING TO ABORT', e);
-      txBasedRepository.abort();
-      throw e;
-    }
-  };
-
-const createKeySource =
-  ({
-    walletRepository,
-    profile,
-  }: Pick<ServiceProps, 'profile' | 'walletRepository'>) =>
-  async (derivationPathTemplate = DEFAULT_DERIVATION_PATH_TEMPLATE) => {
-    const keySource: IKeySource = {
+  ({ walletRepository, profile }: ServiceProps) =>
+  async (keyItem: IKeyItem) => {
+    const account: IAccount = {
       uuid: crypto.randomUUID(),
-      source: 'hd-wallet',
-      derivationPathTemplate,
-      publicKeys: [],
+      alias: '',
       profileId: profile.uuid,
+      address: `k:${keyItem.publicKey}`,
+      guard: {
+        type: 'keySet',
+        pred: 'keys-any',
+        publicKeys: [keyItem],
+      },
     };
-    await walletRepository.addKeySource(keySource);
-    return keySource;
+    await walletRepository.addAccount(account);
+    return account;
   };
 
 const createAccount =
   ({ walletRepository }: Pick<ServiceProps, 'walletRepository'>) =>
   async (account: IAccount) => {
     await walletRepository.addAccount(account);
-  };
-
-const getKeySources =
-  ({
-    walletRepository,
-    profile,
-  }: Pick<ServiceProps, 'walletRepository' | 'profile'>) =>
-  async () => {
-    const keySources = await walletRepository.getKeySourcesByProfileId(
-      profile.uuid,
-    );
-    return keySources;
   };
 
 const getAccounts =
@@ -168,46 +122,50 @@ const getAccounts =
     return walletRepository.getAccountsByProfileId(profile.uuid);
   };
 
-const sign =
-  ({ walletRepository, encryptedSeed, encryptionKey, profile }: ServiceProps) =>
-  async (TXs: IUnsignedCommand[]) => {
-    if (!encryptedSeed) {
-      throw new Error('Wallet is not unlocked');
-    }
-
-    const keySources = await walletRepository.getKeySourcesByProfileId(
-      profile.uuid,
-    );
-
-    const signedTx = Promise.all(
-      TXs.map(async (Tx) => {
-        const signatures = await Promise.all(
-          keySources.map(async ({ publicKeys, derivationPathTemplate }) => {
-            const cmd: IPactCommand = JSON.parse(Tx.cmd);
-            const relevantIndexes = cmd.signers
-              .map((signer) =>
-                publicKeys.findIndex(
-                  (publicKey) => publicKey === signer.pubKey,
-                ),
-              )
-              .filter((index) => index !== undefined) as number[];
-
-            const signatures = await kadenaSignWithSeed(
-              encryptionKey,
-              encryptedSeed,
-              relevantIndexes,
-              derivationPathTemplate,
-            )(Tx.hash);
-
-            return signatures;
-          }),
-        );
-        return addSignatures(Tx, ...signatures.flat());
-      }),
-    );
-
-    return signedTx;
+const getProfile =
+  ({
+    walletRepository,
+    profile,
+  }: Pick<ServiceProps, 'walletRepository' | 'profile'>) =>
+  async () => {
+    return walletRepository.getProfile(profile.uuid);
   };
+
+const sign = (props: ServiceProps) => async (TXs: IUnsignedCommand[]) => {
+  const { encryptedSeed, encryptionKey } = props;
+  if (!encryptedSeed) {
+    throw new Error('Wallet is not unlocked');
+  }
+
+  const keySources = (await getProfile(props)()).keySources;
+
+  const signedTx = Promise.all(
+    TXs.map(async (Tx) => {
+      const signatures = await Promise.all(
+        keySources.map(async ({ publicKeys, derivationPathTemplate }) => {
+          const cmd: IPactCommand = JSON.parse(Tx.cmd);
+          const relevantIndexes = cmd.signers
+            .map((signer) =>
+              publicKeys.findIndex((publicKey) => publicKey === signer.pubKey),
+            )
+            .filter((index) => index !== undefined) as number[];
+
+          const signatures = await kadenaSignWithSeed(
+            encryptionKey,
+            encryptedSeed,
+            relevantIndexes,
+            derivationPathTemplate,
+          )(Tx.hash);
+
+          return signatures;
+        }),
+      );
+      return addSignatures(Tx, ...signatures.flat());
+    }),
+  );
+
+  return signedTx;
+};
 
 const decryptMnemonic =
   ({
@@ -216,7 +174,7 @@ const decryptMnemonic =
   }: Pick<ServiceProps, 'walletRepository' | 'profile'>) =>
   async (password: string) => {
     const encryptedMnemonic = await walletRepository.getEncryptedValue(
-      profile.HDWalletSeedKey,
+      profile.seedKey,
     );
     if (!encryptedMnemonic) {
       throw new Error('No wallet found');
@@ -238,49 +196,51 @@ const createProfileAndFirstAccount =
   ) =>
   async (profileName: string, encryptedMnemonic: Uint8Array) => {
     const { walletRepository, encryptionKey, encryptedSeed } = props;
-    const txBasedRepository = createTxIfItsNot(walletRepository);
-    try {
-      const mnemonicKey = crypto.randomUUID();
+    const mnemonicKey = crypto.randomUUID();
 
-      const newPublicKeys = await kadenaGetPublic(
-        encryptionKey,
-        encryptedSeed,
-        1,
-        DEFAULT_DERIVATION_PATH_TEMPLATE,
-      );
+    const newPublicKeys = await kadenaGetPublic(
+      encryptionKey,
+      encryptedSeed,
+      1,
+      DEFAULT_DERIVATION_PATH_TEMPLATE,
+    );
 
-      await txBasedRepository.addEncryptedValue(mnemonicKey, encryptedMnemonic);
+    await walletRepository.addEncryptedValue(mnemonicKey, encryptedMnemonic);
 
-      const profile: IProfile = {
-        uuid: crypto.randomUUID(),
-        name: profileName,
-        networks: [],
-        HDWalletSeedKey: mnemonicKey,
-      };
+    const profileId = crypto.randomUUID();
 
-      const updatedConfig = {
-        ...props,
-        profile,
-        walletRepository: txBasedRepository,
-      };
+    const keySource: IKeySource = {
+      uuid: crypto.randomUUID(),
+      source: 'hd-wallet',
+      derivationPathTemplate: DEFAULT_DERIVATION_PATH_TEMPLATE,
+      publicKeys: [newPublicKeys],
+    };
 
-      await txBasedRepository.addProfile(profile);
+    const profile: IProfile = {
+      uuid: profileId,
+      name: profileName,
+      networks: [],
+      seedKey: mnemonicKey,
+      keySources: [keySource],
+    };
 
-      const keySource = await createKeySource(updatedConfig)();
-      await createKAccount(updatedConfig)(keySource.uuid, newPublicKeys);
-      return profile;
-    } catch (e) {
-      txBasedRepository.abort();
-      throw e;
-    }
+    await walletRepository.addProfile(profile);
+
+    await createKAccount({
+      ...props,
+      profile,
+    })({
+      publicKey: newPublicKeys,
+      keySourceId: keySource.uuid,
+      index: 0,
+    });
+    return profile;
   };
 
 export interface IWalletService {
-  getProfile: () => IProfile;
-  getKeySources: () => Promise<IKeySource[]>;
+  getProfile: () => Promise<IProfile>;
   getAccounts: () => Promise<IAccount[]>;
-  createKAccount: (keySourceId: string, publicKey: string) => Promise<IAccount>;
-  createKeySource: (derivationPathTemplate?: string) => Promise<IKeySource>;
+  createKAccount: (keyItem: IKeyItem) => Promise<IAccount>;
   addPublicKeysToKeySource: (
     keySourceId: string,
     newPublicKeys: string[],
@@ -296,15 +256,10 @@ export interface IWalletService {
 
 // For now wa just support hd-wallet keySources; we need to refactor this to support other types of keySources
 export function walletService(config: ServiceProps): IWalletService {
-  const { profile } = config;
-  const getProfile = () => profile;
-
   return {
-    getProfile,
-    getKeySources: getKeySources(config),
+    getProfile: getProfile(config),
     getAccounts: getAccounts(config),
     createKAccount: createKAccount(config),
-    createKeySource: createKeySource(config),
     addPublicKeysToKeySource: addPublicKeysToKeySource(config),
     createAccount: createAccount(config),
     createPublicKeys: createPublicKeys(config),
@@ -350,7 +305,7 @@ export const walletFactory = (walletRepository: WalletRepository) => ({
     }
     const profile = await walletRepository.getProfile(profileId);
     const encryptedMnemonic = await walletRepository.getEncryptedValue(
-      profile.HDWalletSeedKey,
+      profile.seedKey,
     );
     const decryptedMnemonicBuffer = await kadenaDecrypt(
       password,

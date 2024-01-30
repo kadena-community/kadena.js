@@ -10,13 +10,13 @@ import {
 
 import {
   IAccount,
-  IKeyItem,
-  IKeySource,
   IProfile,
   WalletRepository,
   createWalletRepository,
 } from './wallet.repository';
 import { IWalletService, walletFactory } from './wallet.service';
+
+type ProfileWithAccounts = IProfile & { accounts: IAccount[] };
 
 export const WalletContext = createContext<{
   createWallet: (
@@ -25,27 +25,24 @@ export const WalletContext = createContext<{
     mnemonic: string,
   ) => Promise<void>;
   unlockWallet: (profile: string, password: string) => Promise<void>;
-  createPublicKeys: (quantity?: number) => Promise<IKeyItem[]>;
   sign: (TXs: IUnsignedCommand[]) => Promise<IUnsignedCommand[]>;
-  keySources: IKeySource[];
   isUnlocked: boolean;
   decryptMnemonic: (password: string) => Promise<string>;
   lockWallet: () => void;
-  profile: Omit<IProfile, 'HDWalletSeedKey'> | undefined;
-  profileList: Omit<IProfile, 'HDWalletSeedKey' | 'networks'>[];
-  // TODO: move account to separate context if needed
-  accounts: IAccount[];
-  createAccount: (account: IAccount) => Promise<void>;
+  profile: ProfileWithAccounts | undefined;
+  profileList: Pick<IProfile, 'name' | 'uuid'>[];
 } | null>(null);
 
 export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [walletRepository, setWalletRepository] = useState<WalletRepository>();
   const [walletService, setWalletService] = useState<IWalletService>();
 
-  const [activeProfile, setActiveProfile] = useState<IProfile>();
-  const [profileList, setProfileList] = useState<IProfile[]>([]);
-  const [accounts, setAccounts] = useState<IAccount[]>([]);
-  const [keySources, setKeySources] = useState<IKeySource[]>([]);
+  const [activeProfile, setActiveProfile] = useState<
+    IProfile & { accounts: IAccount[] }
+  >();
+  const [profileList, setProfileList] = useState<
+    Pick<IProfile, 'name' | 'uuid'>[]
+  >([]);
 
   useEffect(() => {
     createWalletRepository()
@@ -77,13 +74,17 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
       mnemonic,
     );
 
-    const profileKeySources = await service.getKeySources();
+    const profile = await service.getProfile();
     const profileAccounts = await service.getAccounts();
-    setAccounts(profileAccounts);
-    setKeySources(profileKeySources);
+    const profileAndAccounts = {
+      ...profile,
+      accounts: profileAccounts,
+    };
     setWalletService(service);
-    setActiveProfile(service.getProfile());
-    setProfileList([...profileList, service.getProfile()]);
+    setActiveProfile(profileAndAccounts);
+    setProfileList(
+      [...profileList, profile].map(({ name, uuid }) => ({ name, uuid })),
+    );
   };
 
   const unlockWallet = async (profileId: string, password: string) => {
@@ -94,73 +95,14 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
       profileId,
       password,
     );
-    const profileKeySources = await service.getKeySources();
+    const profile = await service.getProfile();
     const profileAccounts = await service.getAccounts();
-    setKeySources(profileKeySources);
-    setAccounts(profileAccounts);
-    setWalletService(service);
-    setActiveProfile(service.getProfile());
-  };
-
-  const createKeySource = async (derivationPathTemplate: string) => {
-    if (!walletService) {
-      throw new Error('Wallet is not unlocked');
-    }
-    const keySource = await walletService.createKeySource(
-      derivationPathTemplate,
-    );
-    keySources.push(keySource);
-    setKeySources([...keySources]);
-    return keySource;
-  };
-
-  const createPublicKeys = async (
-    quantity = 1,
-    derivationPathTemplate = `m'/44'/626'/<index>'`,
-  ): Promise<IKeyItem[]> => {
-    if (!walletService) {
-      throw new Error('Wallet is not unlocked');
-    }
-    let keySource = keySources.find(
-      (store) =>
-        store.derivationPathTemplate === derivationPathTemplate &&
-        store.source === 'hd-wallet',
-    );
-
-    if (!keySource) {
-      keySource = await createKeySource(derivationPathTemplate);
-    }
-
-    const newPublicKeys = await walletService.createPublicKeys(
-      quantity,
-      keySource.uuid,
-    );
-
-    const updatedKeySource = {
-      ...keySource,
-      publicKeys: [
-        ...keySource.publicKeys,
-        ...newPublicKeys.map((k) => k.publicKey),
-      ],
+    const profileAndAccounts = {
+      ...profile,
+      accounts: profileAccounts,
     };
-
-    const updatedKeySources = keySources.map((store) => {
-      if (store.uuid === updatedKeySource.uuid) {
-        return updatedKeySource;
-      }
-      return store;
-    });
-
-    setKeySources([...updatedKeySources]);
-    return newPublicKeys;
-  };
-
-  const createAccount = async (account: IAccount) => {
-    if (!walletService) {
-      throw new Error('Wallet is not unlocked');
-    }
-    await walletService.createAccount(account);
-    setAccounts([...accounts, account]);
+    setWalletService(service);
+    setActiveProfile(profileAndAccounts);
   };
 
   const sign = (TXs: IUnsignedCommand[]) => {
@@ -182,9 +124,9 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
     setActiveProfile(undefined);
   };
 
-  let exposedProfile: Exclude<IProfile, 'HDWalletSeedKey'> | undefined;
+  let exposedProfile: ProfileWithAccounts | undefined;
   if (activeProfile) {
-    exposedProfile = { ...activeProfile, HDWalletSeedKey: '' };
+    exposedProfile = { ...activeProfile, seedKey: '' };
   }
 
   return (
@@ -193,15 +135,11 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
         createWallet,
         unlockWallet,
         lockWallet,
-        createPublicKeys,
-        keySources: keySources,
         sign,
         decryptMnemonic,
         isUnlocked: Boolean(walletService),
         profile: exposedProfile,
         profileList,
-        accounts,
-        createAccount,
       }}
     >
       {children}
