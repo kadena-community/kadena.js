@@ -14,7 +14,6 @@ import {
 } from '@kadena/hd-wallet';
 import {
   IAccount,
-  IKeyItem,
   IKeySource,
   IProfile,
   WalletRepository,
@@ -29,88 +28,13 @@ type ServiceProps = {
   encryptedSeed: Uint8Array;
 };
 
-const addPublicKeysToKeySource =
-  (props: Pick<ServiceProps, 'profile' | 'walletRepository'>) =>
-  async (keySourceId: string, newPublicKeys: string[]): Promise<IKeyItem[]> => {
-    const {
-      walletRepository,
-      profile: { uuid: profileId },
-    } = props;
-    const profile = await walletRepository.getProfile(profileId);
-    const keySource = profile.keySources.find((ks) => ks.uuid === keySourceId);
-    if (!keySource) {
-      throw new Error('KeySource not found');
-    }
-    const keyIndex = keySource.publicKeys.length;
-
-    keySource.publicKeys = [...keySource.publicKeys, ...newPublicKeys];
-
-    const updatedProfile = {
-      ...profile,
-    };
-
-    await walletRepository.updateProfile(updatedProfile);
-    return newPublicKeys.map((publicKey, index) => ({
-      publicKey,
-      keySourceId: keySource.uuid,
-      index: keyIndex + index,
-    }));
-  };
-
-const createPublicKeys =
+const getProfile =
   ({
     walletRepository,
     profile,
-    encryptionKey,
-    encryptedSeed,
-  }: Pick<
-    ServiceProps,
-    'walletRepository' | 'encryptedSeed' | 'encryptionKey' | 'profile'
-  >) =>
-  async (quantity = 1, keySourceId: string): Promise<IKeyItem[]> => {
-    const keySource = profile.keySources.find((ks) => ks.uuid === keySourceId);
-
-    if (!keySource) {
-      throw new Error('KeySource not found');
-    }
-
-    const keyIndex = keySource.publicKeys.length;
-
-    const newPublicKeys = await kadenaGetPublic(
-      encryptionKey,
-      encryptedSeed,
-      [keyIndex, keyIndex + quantity - 1],
-      keySource.derivationPathTemplate,
-    );
-
-    return addPublicKeysToKeySource({ walletRepository, profile })(
-      keySource.uuid,
-      newPublicKeys,
-    );
-  };
-
-const createKAccount =
-  ({ walletRepository, profile }: ServiceProps) =>
-  async (keyItem: IKeyItem) => {
-    const account: IAccount = {
-      uuid: crypto.randomUUID(),
-      alias: '',
-      profileId: profile.uuid,
-      address: `k:${keyItem.publicKey}`,
-      guard: {
-        type: 'keySet',
-        pred: 'keys-any',
-        publicKeys: [keyItem],
-      },
-    };
-    await walletRepository.addAccount(account);
-    return account;
-  };
-
-const createAccount =
-  ({ walletRepository }: Pick<ServiceProps, 'walletRepository'>) =>
-  async (account: IAccount) => {
-    await walletRepository.addAccount(account);
+  }: Pick<ServiceProps, 'walletRepository' | 'profile'>) =>
+  async () => {
+    return walletRepository.getProfile(profile.uuid);
   };
 
 const getAccounts =
@@ -122,22 +46,13 @@ const getAccounts =
     return walletRepository.getAccountsByProfileId(profile.uuid);
   };
 
-const getProfile =
-  ({
-    walletRepository,
-    profile,
-  }: Pick<ServiceProps, 'walletRepository' | 'profile'>) =>
-  async () => {
-    return walletRepository.getProfile(profile.uuid);
-  };
-
 const sign = (props: ServiceProps) => async (TXs: IUnsignedCommand[]) => {
-  const { encryptedSeed, encryptionKey } = props;
+  const { encryptedSeed, encryptionKey, profile } = props;
   if (!encryptedSeed) {
     throw new Error('Wallet is not unlocked');
   }
 
-  const keySources = (await getProfile(props)()).keySources;
+  const keySources = profile.keySources;
 
   const signedTx = Promise.all(
     TXs.map(async (Tx) => {
@@ -198,7 +113,7 @@ const createProfileAndFirstAccount =
     const { walletRepository, encryptionKey, encryptedSeed } = props;
     const mnemonicKey = crypto.randomUUID();
 
-    const newPublicKeys = await kadenaGetPublic(
+    const publicKey = await kadenaGetPublic(
       encryptionKey,
       encryptedSeed,
       1,
@@ -213,7 +128,7 @@ const createProfileAndFirstAccount =
       uuid: crypto.randomUUID(),
       source: 'hd-wallet',
       derivationPathTemplate: DEFAULT_DERIVATION_PATH_TEMPLATE,
-      publicKeys: [newPublicKeys],
+      publicKeys: [publicKey],
     };
 
     const profile: IProfile = {
@@ -226,45 +141,43 @@ const createProfileAndFirstAccount =
 
     await walletRepository.addProfile(profile);
 
-    await createKAccount({
-      ...props,
-      profile,
-    })({
-      publicKey: newPublicKeys,
-      keySourceId: keySource.uuid,
-      index: 0,
-    });
+    const account: IAccount = {
+      uuid: crypto.randomUUID(),
+      alias: '',
+      profileId: profile.uuid,
+      address: `k:${publicKey}`,
+      guard: {
+        type: 'keySet',
+        pred: 'keys-any',
+        publicKeys: [
+          {
+            publicKey: publicKey,
+            keySourceId: keySource.uuid,
+            index: 0,
+          },
+        ],
+      },
+    };
+
+    await walletRepository.addAccount(account);
+
     return profile;
   };
 
 export interface IWalletService {
-  getProfile: () => Promise<IProfile>;
-  getAccounts: () => Promise<IAccount[]>;
-  createKAccount: (keyItem: IKeyItem) => Promise<IAccount>;
-  addPublicKeysToKeySource: (
-    keySourceId: string,
-    newPublicKeys: string[],
-  ) => Promise<IKeyItem[]>;
-  createPublicKeys: (
-    quantity: number | undefined,
-    keySourceId: string,
-  ) => Promise<IKeyItem[]>;
-  createAccount: (account: IAccount) => Promise<void>;
   sign: (TXs: IUnsignedCommand[]) => Promise<(IUnsignedCommand | ICommand)[]>;
   decryptMnemonic: (password: string) => Promise<string>;
+  getProfile: () => Promise<IProfile>;
+  getAccounts: () => Promise<IAccount[]>;
 }
 
 // For now wa just support hd-wallet keySources; we need to refactor this to support other types of keySources
 export function walletService(config: ServiceProps): IWalletService {
   return {
-    getProfile: getProfile(config),
-    getAccounts: getAccounts(config),
-    createKAccount: createKAccount(config),
-    addPublicKeysToKeySource: addPublicKeysToKeySource(config),
-    createAccount: createAccount(config),
-    createPublicKeys: createPublicKeys(config),
     sign: sign(config),
     decryptMnemonic: decryptMnemonic(config),
+    getProfile: getProfile(config),
+    getAccounts: getAccounts(config),
   };
 }
 
