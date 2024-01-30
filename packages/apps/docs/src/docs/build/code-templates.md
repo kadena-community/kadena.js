@@ -373,7 +373,6 @@ async function deployContract() {
 }
 ```
 
-
 ## Read state
 
 Read state of a contract.
