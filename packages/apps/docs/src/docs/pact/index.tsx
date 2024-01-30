@@ -53,16 +53,14 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   a blockchain — a true innovation for secure and simple smart
                   contract development. Pact will enable you to create entirely
                   new business models and on-chain services. Learn the basics of
-                  Pact to create a smart contract
+                  Pact to create a smart contract.
                 </Text>
               </Box>
-              <KadenaLink
-                endIcon={<SystemIcon.TrailingIcon />}
+              <Link className={docsCardLink}
                 href="/pact/beginner"
-                variant="contained"
               >
-                Getting started
-              </KadenaLink>
+                Get started with Pact
+              </Link>
             </Card>
           </GridItem>
           <GridItem>
