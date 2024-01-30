@@ -43,17 +43,14 @@ const capSchema = z.object({
 });
 
 const templatePartialMetaSchema = z.object({
-  // Non-optional, TODO: find out if it is optional
-  chainId: z.string().transform((chainId) => chainId as ChainId),
-  creationTime: z
-    .number()
-    .optional()
-    .default(() => Math.floor(Date.now() / 1000)),
-  gasLimit: z.number().optional().default(2300),
-  gasPrice: z.number().optional().default(0.000001),
-  ttl: z.number().optional().default(600),
-  // Non-optional, TODO: find out if it is optional
+  // Could be optional if doing local calls
   sender: z.string(),
+  // Technically optional, not kadena-client's type requires it
+  chainId: z.string().transform((chainId) => chainId as ChainId),
+  creationTime: z.number().optional(),
+  gasLimit: z.number().optional(),
+  gasPrice: z.number().optional(),
+  ttl: z.number().optional(),
 });
 
 const templatePartialSchema = z

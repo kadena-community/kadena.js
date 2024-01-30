@@ -15,7 +15,6 @@ import { fixTemplatePactCommand } from './templates/mapper.js';
 export const createTransaction = async (
   template: string,
   variables: Record<string, string>,
-  // eslint-disable-next-line @rushstack/no-new-null
   outFilePath: string | null,
 ): Promise<
   CommandResult<{ transaction: IUnsignedCommand; filePath: string }>
