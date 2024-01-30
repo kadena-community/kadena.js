@@ -6,10 +6,10 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
-import { saveSignedTransaction } from '../utils/storage.js';
+import { saveSignedTransactions } from '../utils/storage.js';
 import {
   assessTransactionSigningStatus,
-  getTransactionFromFile,
+  getTransactionsFromFile,
   signTransactionWithKeyPair,
 } from '../utils/txHelpers.js';
 
@@ -19,24 +19,31 @@ import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 
 export const signTransactionWithKeyPairAction = async (
   keyPairs: IKeyPair[],
-  transactionfileName: string,
+  transactionfileNames: string[],
   transactionDirectory: string,
   legacy?: boolean,
-): Promise<CommandResult<ICommand>> => {
-  const unsignedCommand = await getTransactionFromFile(
-    transactionfileName,
+): Promise<CommandResult<ICommand[]>> => {
+  const unsignedTransactions = await getTransactionsFromFile(
+    transactionfileNames,
     false,
     transactionDirectory,
   );
 
+  if (unsignedTransactions.length === 0) {
+    return {
+      success: false,
+      errors: ['No unsigned transactions found.'],
+    };
+  }
+
   try {
-    const command = await signTransactionWithKeyPair(
+    const signedCommands = await signTransactionWithKeyPair(
       keyPairs,
-      unsignedCommand,
+      unsignedTransactions,
       legacy,
     );
 
-    return assessTransactionSigningStatus(command);
+    return assessTransactionSigningStatus(signedCommands);
   } catch (error) {
     return {
       success: false,
@@ -51,7 +58,7 @@ export const signTransactionWithKeyPairAction = async (
  * @param {Command} program - The commander program.
  * @param {string} version - The version of the command.
  */
-export const createSignTransactionWithKeypairCommand: (
+export const createSignTransactionWithKeyPairCommand: (
   program: Command,
   version: string,
 ) => void = createCommandFlexible(
@@ -60,13 +67,13 @@ export const createSignTransactionWithKeypairCommand: (
   [
     globalOptions.keyPairs(),
     globalOptions.txTransactionDir({ isOptional: true }),
-    globalOptions.txUnsignedTransactionFile(),
+    globalOptions.txUnsignedTransactionFiles(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option) => {
     const key = await option.keyPairs();
     const dir = await option.txTransactionDir();
-    const file = await option.txUnsignedTransactionFile({
+    const files = await option.txUnsignedTransactionFiles({
       signed: false,
       path: dir.txTransactionDir,
     });
@@ -75,22 +82,22 @@ export const createSignTransactionWithKeypairCommand: (
     debug.log('sign-with-keypair:action', {
       ...key,
       ...dir,
-      ...file,
+      ...files,
       ...mode,
     });
 
     const result = await signTransactionWithKeyPairAction(
       key.keyPairs,
-      file.txUnsignedTransactionFile,
+      files.txUnsignedTransactionFiles,
       dir.txTransactionDir,
       mode.legacy,
     );
 
     assertCommandError(result);
 
-    await saveSignedTransaction(
-      result.data,
-      file.txUnsignedTransactionFile,
+    await saveSignedTransactions(
+      result,
+      files.txUnsignedTransactionFiles,
       dir.txTransactionDir,
     );
 

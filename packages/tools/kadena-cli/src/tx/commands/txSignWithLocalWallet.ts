@@ -12,43 +12,50 @@ import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletContent } from '../../keys/utils/keysHelpers.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 
-import { saveSignedTransaction } from '../utils/storage.js';
+import { saveSignedTransactions } from '../utils/storage.js';
 import {
   assessTransactionSigningStatus,
-  getTransactionFromFile,
-  signTransactionWithSeed,
+  getTransactionsFromFile,
+  signTransactionsWithSeed,
 } from '../utils/txHelpers.js';
 
-export const signActionHd = async (
+export const signTransactionWithLocalWallet = async (
   wallet: string,
   walletConfig: IWallet,
   password: string,
-  transactionfileName: string,
+  transactionfileNames: string[],
   signed: boolean,
   transactionDirectory: string,
-): Promise<CommandResult<ICommand>> => {
-  const unsignedTransaction = await getTransactionFromFile(
-    transactionfileName,
+): Promise<CommandResult<ICommand[]>> => {
+  const unsignedTransactions = await getTransactionsFromFile(
+    transactionfileNames,
     signed,
     transactionDirectory,
   );
 
+  if (unsignedTransactions.length === 0) {
+    return {
+      success: false,
+      errors: ['No unsigned transactions found.'],
+    };
+  }
+
   const seed = (await getWalletContent(wallet)) as EncryptedString;
 
   try {
-    const command = await signTransactionWithSeed(
+    const signedCommands = await signTransactionsWithSeed(
       walletConfig,
       seed,
       password,
-      unsignedTransaction,
+      unsignedTransactions,
       walletConfig.legacy,
     );
 
-    return assessTransactionSigningStatus(command);
+    return assessTransactionSigningStatus(signedCommands);
   } catch (error) {
     return {
       success: false,
-      errors: [`Error in signAction: ${error.message}`],
+      errors: [`Error in signTransactionWithLocalWallet: ${error.message}`],
     };
   }
 };
@@ -69,13 +76,13 @@ export const createSignTransactionWithLocalWalletCommand: (
     globalOptions.keyWalletSelect(),
     globalOptions.securityPassword(),
     globalOptions.txTransactionDir({ isOptional: true }),
-    globalOptions.txUnsignedTransactionFile(),
+    globalOptions.txUnsignedTransactionFiles(),
   ],
   async (option) => {
     const wallet = await option.keyWallet();
     const password = await option.securityPassword();
     const dir = await option.txTransactionDir();
-    const file = await option.txUnsignedTransactionFile({
+    const files = await option.txUnsignedTransactionFiles({
       signed: false,
       path: dir.txTransactionDir,
     });
@@ -83,7 +90,7 @@ export const createSignTransactionWithLocalWalletCommand: (
     debug.log('sign-with-local-wallet:action', {
       ...wallet,
       ...password,
-      ...file,
+      ...files,
       ...dir,
     });
 
@@ -91,20 +98,20 @@ export const createSignTransactionWithLocalWalletCommand: (
       throw new Error(`Wallet: ${wallet.keyWallet} does not exist.`);
     }
 
-    const result = await signActionHd(
+    const result = await signTransactionWithLocalWallet(
       wallet.keyWallet,
       wallet.keyWalletConfig,
       password.securityPassword,
-      file.txUnsignedTransactionFile,
+      files.txUnsignedTransactionFiles,
       false,
       dir.txTransactionDir,
     );
 
     assertCommandError(result);
 
-    await saveSignedTransaction(
-      result.data,
-      file.txUnsignedTransactionFile,
+    await saveSignedTransactions(
+      result,
+      files.txUnsignedTransactionFiles,
       dir.txTransactionDir,
     );
 

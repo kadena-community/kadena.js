@@ -541,12 +541,30 @@ export const globalOptions = {
       'provide your unsigned transaction file to sign',
     ),
   }),
+  txUnsignedTransactionFiles: createOption({
+    key: 'txUnsignedTransactionFiles',
+    prompt: tx.transactionsSelectPrompt,
+    validation: z.array(z.string()),
+    option: new Option(
+      '-u, --tx-unsigned-transaction-files <txUnsignedTransactionFiles>',
+      'provide your unsigned transaction file(s) to sign',
+    ),
+  }),
   txSignedTransactionFile: createOption({
     key: 'txSignedTransactionFile',
     prompt: tx.transactionSelectPrompt,
     validation: tx.ICommandSchema,
     option: new Option(
       '-s, --tx-signed-transaction-file <txSignedTransactionFile>',
+      'provide your signed transaction file',
+    ),
+  }),
+  txSignedTransactionFiles: createOption({
+    key: 'txSignedTransactionFiles',
+    prompt: tx.transactionsSelectPrompt,
+    validation: tx.ICommandSchema,
+    option: new Option(
+      '-s, --tx-signed-transaction-files <txSignedTransactionFiles>',
       'provide your signed transaction file',
     ),
   }),

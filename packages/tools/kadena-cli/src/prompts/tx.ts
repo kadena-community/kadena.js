@@ -1,4 +1,4 @@
-import { input, select } from '@inquirer/prompts';
+import { checkbox, input, select } from '@inquirer/prompts';
 import type { IUnsignedCommand } from '@kadena/types';
 import chalk from 'chalk';
 import { z } from 'zod';
@@ -70,6 +70,30 @@ export const transactionSelectPrompt: IPrompt<string> = async (args) => {
   const selectedTransaction = await select({
     message: 'Select a transaction file',
     choices: choices,
+  });
+
+  return selectedTransaction;
+};
+
+export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
+  const existingTransactions: string[] = await getTransactions(
+    args.signed as boolean,
+    args.path as string,
+  );
+
+  if (existingTransactions.length === 0) {
+    throw new Error('No transactions found. Exiting.');
+  }
+
+  const choices = existingTransactions.map((transaction) => ({
+    value: transaction,
+    name: `Transaction: ${transaction}`,
+  }));
+
+  const selectedTransaction = await checkbox({
+    message: 'Select a transaction file',
+    choices: choices,
+    pageSize: 10,
   });
 
   return selectedTransaction;
@@ -163,11 +187,11 @@ const promptVariableValue = async (key: string): Promise<string> => {
         name: 'Enter public key manually',
       },
       ...walletKeys.map((key) => ({
-        value: `${key.wallet.wallet}:${key.key}`,
+        value: key.key,
         name: `${key.alias} (wallet ${key.wallet.folder})`,
       })),
       ...plainKeys.map((key) => ({
-        value: `plain:${key.key}`,
+        value: key.key,
         name: `${key.alias} (plain key)`,
       })),
     ];
@@ -185,6 +209,7 @@ const promptVariableValue = async (key: string): Promise<string> => {
         },
       });
     }
+
     const selectedKey =
       walletKeys.find((x) => x.key === value) ??
       plainKeys.find((x) => x.key === value);

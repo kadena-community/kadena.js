@@ -104,7 +104,7 @@ export const networkSelectPrompt: IPrompt<string> = async (
   const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
   if (!existingNetworks.length) {
     throw new Error(
-      'No existing networks found. Please create a network first.',
+      'No networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init`.',
     );
   }
   const choices: ICustomNetworkChoice[] = existingNetworks.map((network) => ({

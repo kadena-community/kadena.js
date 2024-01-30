@@ -1,9 +1,0 @@
-{
-  "cmd": "{\"networkId\":\"testnet04\",\"signers\":[{\"caps\":[{\"name\":\"coin.TRANSFER\",\"args\":[\"k:69016659ae91550e26f6cf415af29a571d4c9ea6f5c0ac13d78bfb84728441f0\",\"k:69016659ae91550e26f6cf415af29a571d4c9ea6f5c0ac13d78bfb84728441f1\",1.0]},{\"name\":\"coin.GAS\",\"args\":[]}],\"pubKey\":\"69016659ae91550e26f6cf415af29a571d4c9ea6f5c0ac13d78bfb84728441f0\"}],\"type\":\"exec\",\"payload\":{\"exec\":{\"data\":{},\"code\":\"(coin.transfer \\\"k:69016659ae91550e26f6cf415af29a571d4c9ea6f5c0ac13d78bfb84728441f0\\\" \\\"k:69016659ae91550e26f6cf415af29a571d4c9ea6f5c0ac13d78bfb84728441f1\\\" 1.0)\"}},\"meta\":{\"chainId\":\"1\",\"sender\":\"69016659ae91550e26f6cf415af29a571d4c9ea6f5c0ac13d78bfb84728441f0\",\"gasLimit\":2300,\"gasPrice\":0.000001,\"ttl\":600,\"creationTime\":1706387229},\"nonce\":\"\"}",
-  "hash": "jx5HM0ePN90aVuRWSA6_ZlS1xeIR2HMvgc5FAadgJWw",
-  "sigs": [
-    {
-      "sig": "d209d9bae58c6d0412bfdc83850a2cee1349c7e43958980ff4b240a55de53ab6297cd19a28f06f48ba1b106e9029a1b9a44a20b1063357cae838e866b19ac608"
-    }
-  ]
-}

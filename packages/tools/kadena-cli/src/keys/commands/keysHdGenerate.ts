@@ -1,10 +1,9 @@
 import type { Command } from 'commander';
-import debug from 'debug';
 import ora from 'ora';
 
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommand } from '../../utils/createCommand.js';
+import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import type { IKeysConfig } from '../utils/keySharedKeyGen.js';
 import { generateFromWallet } from '../utils/keySharedKeyGen.js';
@@ -19,11 +18,6 @@ import {
 } from '../utils/keysHelpers.js';
 import type { IKeyPair } from '../utils/storage.js';
 import { saveKeyByAlias } from '../utils/storage.js';
-
-/*
-kadena keys create-wallet --key-wallet "test01" --security-password 12345678 --security-verify-password 12345678
-kadena keys gen-hd --key-wallet "test01.wallet" --key-gen-from-choice "genPublicSecretKey" --key-alias "test" --security-password 12345678 --key-index-or-range "1"
-*/
 
 export const generateHdKeys = async ({
   keyWallet,
@@ -65,13 +59,15 @@ export const generateHdKeys = async ({
 
   const keys = await generateFromWallet(config, shouldGenerateSecretKeys);
 
-  await saveKeyByAlias(
-    keyAlias,
-    keys,
-    wallet.legacy,
-    wallet.wallet,
-    startIndex,
-  );
+  if (keyGenFromChoice !== 'genPublicSecretKeyDec') {
+    await saveKeyByAlias(
+      keyAlias,
+      keys,
+      wallet.legacy,
+      wallet.wallet,
+      startIndex,
+    );
+  }
 
   return { success: true, data: { keys, legacy: wallet.legacy, startIndex } };
 };
@@ -79,7 +75,7 @@ export const generateHdKeys = async ({
 export const createGenerateHdKeysCommand: (
   program: Command,
   version: string,
-) => void = createCommand(
+) => void = createCommandFlexible(
   'gen-hd',
   'generate public/secret key pair(s) from your wallet',
   [
@@ -89,29 +85,41 @@ export const createGenerateHdKeysCommand: (
     globalOptions.securityPassword(),
     globalOptions.keyIndexOrRange({ isOptional: true }),
   ],
-  async (config) => {
-    debug('generate-hdkeys:action')({ config });
-    if (config.keyWalletConfig === null) {
-      throw new Error(`Wallet: ${config.keyWallet} does not exist.`);
+  async (option) => {
+    const { keyWalletConfig, keyWallet } = await option.keyWallet();
+    if (!keyWalletConfig) {
+      throw new Error(`Wallet: ${keyWallet} does not exist.`);
     }
+
+    const { keyIndexOrRange } = await option.keyIndexOrRange();
+    const { keyGenFromChoice } = await option.keyGenFromChoice();
+    const keyAlias =
+      keyGenFromChoice !== 'genPublicSecretKeyDec'
+        ? (await option.keyAlias()).keyAlias
+        : '';
+    const { securityPassword } = await option.securityPassword();
 
     const loadingSpinner = ora('Generating keys..').start();
 
     const result = await generateHdKeys({
-      keyWallet: config.keyWalletConfig.wallet,
-      keyIndexOrRange: config.keyIndexOrRange,
-      keyGenFromChoice: config.keyGenFromChoice,
-      password: config.securityPassword,
-      keyAlias: config.keyAlias,
+      keyWallet: keyWalletConfig.wallet,
+      keyIndexOrRange,
+      keyGenFromChoice,
+      password: securityPassword,
+      keyAlias,
     });
+
     loadingSpinner.succeed('Completed');
     assertCommandError(result);
+
     displayGeneratedHdKeys(result.data.keys);
-    printStoredHdKeys(
-      config.keyAlias,
-      result.data.keys,
-      result.data.legacy,
-      result.data.startIndex,
-    );
+    if (keyGenFromChoice !== 'genPublicSecretKeyDec') {
+      printStoredHdKeys(
+        keyAlias,
+        result.data.keys,
+        result.data.legacy,
+        result.data.startIndex,
+      );
+    }
   },
 );

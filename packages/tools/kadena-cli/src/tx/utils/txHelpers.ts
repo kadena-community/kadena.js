@@ -92,72 +92,69 @@ export function formatDate(): string {
  *
  * @param walletContent - The wallet seed.
  * @param password - The password for the wallet.
- * @param unsignedCommand - The command to be signed.
+ * @param unsignedCommands - The command to be signed.
  * @param legacy - Optional flag for legacy signing method.
  * @returns A promise that resolves to a signed command or undefined.
  */
-export async function signTransactionWithSeed(
+export async function signTransactionsWithSeed(
   wallet: IWallet,
   walletContent: EncryptedString,
   password: string,
-  unsignedCommand: IUnsignedCommand,
+  unsignedTransactions: IUnsignedCommand[],
   legacy?: boolean,
-): Promise<ICommand | IUnsignedCommand | undefined> {
+): Promise<(ICommand | IUnsignedCommand | undefined)[]> {
   try {
-    let command: ICommand | IUnsignedCommand;
-    const parsedTransaction = JSON.parse(unsignedCommand.cmd);
-    const keys = await Promise.all(
-      wallet.keys.map((key) => getWalletKey(wallet, key)),
-    );
-    const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
+    const signedTransactions: (ICommand | IUnsignedCommand | undefined)[] = [];
 
-    if (relevantKeyPairs.length === 0) {
-      throw new Error(
-        'No matching signable keys found between wallet and transaction:',
+    for (const unsignedCommand of unsignedTransactions) {
+      const parsedTransaction = JSON.parse(unsignedCommand.cmd);
+      const keys = await Promise.all(
+        wallet.keys.map((key) => getWalletKey(wallet, key)),
       );
-    }
+      const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
 
-    if (legacy === true) {
+      if (relevantKeyPairs.length === 0) {
+        throw new Error(
+          'No matching signable keys found between wallet and transaction:',
+        );
+      }
+
       const signatures = await Promise.all(
         relevantKeyPairs.map(async (key) => {
-          const sigUint8Array = await legacyKadenaSignWithSeed(
-            password,
-            unsignedCommand.cmd,
-            walletContent,
-            key.index as number,
-          );
-
-          return {
-            sig: Buffer.from(sigUint8Array).toString('hex'),
-            pubKey: key.publicKey,
-          };
-        }),
-      );
-      command = addSignatures(unsignedCommand, ...signatures);
-    } else {
-      const signatures = await Promise.all(
-        relevantKeyPairs.map(async (key) => {
-          if (typeof key.index !== 'number') {
-            throw new Error('Key index is not a number');
+          if (legacy === true) {
+            const sigUint8Array = await legacyKadenaSignWithSeed(
+              password,
+              unsignedCommand.cmd,
+              walletContent,
+              key.index as number,
+            );
+            return {
+              sig: Buffer.from(sigUint8Array).toString('hex'),
+              pubKey: key.publicKey,
+            };
+          } else {
+            if (typeof key.index !== 'number') {
+              throw new Error('Key index not found');
+            }
+            const signWithSeed = kadenaSignWithSeed(
+              password,
+              walletContent,
+              key.index,
+            );
+            const sigs = await signWithSeed(unsignedCommand.hash);
+            return {
+              sig: sigs.sig,
+              pubKey: key.publicKey,
+            };
           }
-
-          const signWithSeed = kadenaSignWithSeed(
-            password,
-            walletContent,
-            key.index,
-          );
-          const sigs = await signWithSeed(unsignedCommand.hash);
-
-          return {
-            sig: sigs.sig,
-            pubKey: key.publicKey,
-          };
         }),
       );
 
-      command = addSignatures(unsignedCommand, ...signatures);
+      const command = addSignatures(unsignedCommand, ...signatures);
+      signedTransactions.push(command);
     }
-    return command;
+
+    return signedTransactions;
   } catch (error) {
     throw new Error(`Error signing transaction: ${error.message}`);
   }
@@ -165,35 +162,47 @@ export async function signTransactionWithSeed(
 
 export async function signTransactionWithKeyPair(
   keys: IKeyPairLocal[],
-  unsignedCommand: IUnsignedCommand,
+  unsignedTransactions: IUnsignedCommand[],
   legacy?: boolean,
-): Promise<ICommand | IUnsignedCommand | undefined> {
-  let command: ICommand | IUnsignedCommand;
-
+): Promise<(ICommand | IUnsignedCommand | undefined)[]> {
   try {
-    if (legacy === true) {
+    const signedTransactions: (ICommand | IUnsignedCommand | undefined)[] = [];
+
+    for (const unsignedCommand of unsignedTransactions) {
       const parsedTransaction = JSON.parse(unsignedCommand.cmd);
       const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
 
-      const signatures = await Promise.all(
-        relevantKeyPairs.map(async (key) => {
-          const sigUint8Array = await legacyKadenaSign(
-            '',
-            unsignedCommand.cmd,
-            key.secretKey as EncryptedString,
-          );
+      if (relevantKeyPairs.length === 0) {
+        throw new Error(
+          'No matching signable keys found between wallet and transaction:',
+        );
+      }
 
-          const sig = Buffer.from(sigUint8Array).toString('hex');
-          return { sig, pubKey: key.publicKey };
-        }),
-      );
+      if (legacy === true) {
+        const signatures = await Promise.all(
+          relevantKeyPairs.map(async (key) => {
+            const sigUint8Array = await legacyKadenaSign(
+              '',
+              unsignedCommand.cmd,
+              key.secretKey as EncryptedString,
+            );
 
-      command = addSignatures(unsignedCommand, ...signatures);
-    } else {
-      const signWithKeypair = createSignWithKeypair(keys as IKeyPair[]);
-      command = await signWithKeypair(unsignedCommand);
+            const sig = Buffer.from(sigUint8Array).toString('hex');
+            return { sig, pubKey: key.publicKey };
+          }),
+        );
+
+        const command = addSignatures(unsignedCommand, ...signatures);
+        signedTransactions.push(command);
+      } else {
+        const signWithKeypair = createSignWithKeypair(
+          relevantKeyPairs as IKeyPair[],
+        );
+        const command = await signWithKeypair(unsignedCommand);
+        signedTransactions.push(command);
+      }
     }
-    return command;
+    return signedTransactions;
   } catch (error) {
     throw new Error(`Error signing transaction: ${error.message}`);
   }
@@ -212,10 +221,10 @@ export function getRelevantKeypairs(
 /**
  * retrieve transaction from file
  *
- * @param {string} transactionFile - The name of the file containing the transaction.
- * @param {string} path - The path to the directory containing the transaction file.
- * @param {boolean} signed - A flag indicating whether the transaction is signed.
- * @returns {Promise<IUnsignedCommand | ICommand>} A promise that resolves to the unsigned or signed transaction.
+ * @param {string} transactionFile
+ * @param {string} path
+ * @param {boolean} signed
+ * @returns {Promise<IUnsignedCommand | ICommand>}
  * @throws Will throw an error if the file cannot be read or the transaction cannot be processed.
  */
 export async function getTransactionFromFile(
@@ -254,54 +263,79 @@ export async function getTransactionFromFile(
 }
 
 /**
- * Assesses the signing status of a transaction and returns a Promise of a response based on its state.
+ * Assesses the signing status of multiple transaction commands and returns a Promise with a response based on their states.
  *
- * @param signedCommand - The command object to assess. It can be a signed, partially signed, or undefined command.
- * @returns A Promise resolving to a CommandResult<ICommand>, indicating the success status and,
- *          if applicable, either the signed command data or error messages.
- *          If the command is fully signed, resolves with success and the command data.
- *          If the command is partially signed or unsigned, resolves with failure and appropriate error messages.
- * @throws Error if the signedCommand is undefined, indicating a failure in the signing process.
+ * @param commands - An array of command objects to assess. Each command can be a signed, partially signed, or undefined command.
+ * @returns A Promise resolving to a CommandResult containing an array of ICommand objects.
+ * @throws Error if the commands array is empty, indicating no commands were provided for assessment.
  */
+
 export async function assessTransactionSigningStatus(
-  command: ICommand | IUnsignedCommand | undefined,
-): Promise<CommandResult<ICommand>> {
-  if (!command) {
+  commands: (ICommand | IUnsignedCommand | undefined)[],
+): Promise<CommandResult<ICommand[]>> {
+  if (commands.length === 0) {
     throw new Error(
-      'Error in action: signing failed, please check your transaction.',
+      'Error in assessTransactionSigningStatus: No commands provided.',
     );
   }
 
-  if (isSignedTransaction(command)) {
-    return {
-      success: true,
-      data: command,
-    };
-  }
+  let allSigned = true;
+  const errors: string[] = [];
+  const signedCommands: ICommand[] = [];
 
-  if (isPartiallySignedTransaction(command)) {
-    const status = getSignersStatus(command);
+  for (const command of commands) {
+    if (!command) {
+      allSigned = false;
+      errors.push('One or more transactions failed to sign.');
+      continue;
+    }
 
-    const formattedStatus = status
-      .map(
-        (signerStatus) =>
-          `Public Key: ${signerStatus.publicKey}, Signed: ${
-            signerStatus.isSigned ? 'Yes' : 'No'
-          }`,
-      )
-      .join('\n');
-
-    return {
-      success: false,
-      errors: [
-        `Error in action: transaction partially signed: Please sign the remaining keys.`,
-        `${formattedStatus}`,
-      ],
-    };
+    if (isSignedTransaction(command)) {
+      signedCommands.push(command);
+    } else {
+      allSigned = false;
+      if (isPartiallySignedTransaction(command)) {
+        const status = getSignersStatus(command);
+        const formattedStatus = status
+          .map(
+            (signerStatus) =>
+              `Public Key: ${signerStatus.publicKey}, Signed: ${
+                signerStatus.isSigned ? 'Yes' : 'No'
+              }`,
+          )
+          .join('\n');
+        errors.push(`Transaction partially signed: ${formattedStatus}`);
+      } else {
+        errors.push('Transaction is unsigned.');
+      }
+    }
   }
 
   return {
-    success: false,
-    errors: ['Error in action: transaction is unsigned.'],
+    success: allSigned,
+    data: signedCommands,
+    errors: errors,
   };
+}
+
+export async function getTransactionsFromFile(
+  transactionFileNames: string[],
+  signed: boolean,
+  transactionDirectory: string,
+): Promise<(IUnsignedCommand | ICommand)[]> {
+  const transactions: (IUnsignedCommand | ICommand)[] = [];
+
+  for (const transactionFileName of transactionFileNames) {
+    const transaction = await getTransactionFromFile(
+      transactionFileName,
+      signed,
+      transactionDirectory,
+    );
+
+    if (transaction !== undefined && transaction !== null) {
+      transactions.push(transaction);
+    }
+  }
+
+  return transactions;
 }

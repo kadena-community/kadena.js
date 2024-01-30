@@ -6,10 +6,10 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
-import { saveSignedTransaction } from '../utils/storage.js';
+import { saveSignedTransactions } from '../utils/storage.js';
 import {
   assessTransactionSigningStatus,
-  getTransactionFromFile,
+  getTransactionsFromFile,
   signTransactionWithKeyPair,
 } from '../utils/txHelpers.js';
 
@@ -25,11 +25,11 @@ export const signTransactionWithAliasFile = async (
   wallet: IWallet,
   alias: string,
   password: string,
-  transactionfileName: string,
+  transactionfileNames: string[],
   signed: boolean,
-  transactionDirectory?: string,
+  transactionDirectory: string,
   legacy?: boolean,
-): Promise<CommandResult<ICommand>> => {
+): Promise<CommandResult<ICommand[]>> => {
   try {
     const encryptedKeyPair = await getWalletKey(wallet, alias);
 
@@ -51,21 +51,22 @@ export const signTransactionWithAliasFile = async (
       index: encryptedKeyPair.index,
     };
 
-    const unsignedCommand = await getTransactionFromFile(
-      transactionfileName,
+    const unsignedTransactions = await getTransactionsFromFile(
+      transactionfileNames,
       signed,
       transactionDirectory,
     );
 
-    if (unsignedCommand === undefined) {
-      throw new Error(
-        'Error signing transaction: unsigned transaction not found.',
-      );
+    if (unsignedTransactions.length === 0) {
+      return {
+        success: false,
+        errors: ['No unsigned transactions found.'],
+      };
     }
 
     const command = await signTransactionWithKeyPair(
       [keyPair],
-      unsignedCommand,
+      unsignedTransactions,
       legacy,
     );
 
@@ -85,7 +86,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
     globalOptions.keyWalletSelect(),
     globalOptions.securityPassword(),
     globalOptions.keyAliasSelect(),
-    globalOptions.txUnsignedTransactionFile(),
+    globalOptions.txUnsignedTransactionFiles(),
     globalOptions.txTransactionDir({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
@@ -98,7 +99,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
       wallet: wallet.keyWallet,
     });
     const dir = await option.txTransactionDir();
-    const file = await option.txUnsignedTransactionFile({
+    const files = await option.txUnsignedTransactionFiles({
       signed: false,
       path: dir.txTransactionDir,
     });
@@ -108,7 +109,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
     debug.log('sign-with-key-alias-file:action', {
       ...wallet,
       ...key,
-      ...file,
+      ...files,
       ...dir,
       ...mode,
     });
@@ -117,7 +118,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
       wallet.keyWalletConfig,
       key.keyAliasSelect,
       password.securityPassword,
-      file.txUnsignedTransactionFile,
+      files.txUnsignedTransactionFiles,
       false,
       dir.txTransactionDir,
       mode.legacy,
@@ -125,9 +126,9 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
 
     assertCommandError(result);
 
-    await saveSignedTransaction(
-      result.data,
-      file.txUnsignedTransactionFile,
+    await saveSignedTransactions(
+      result,
+      files.txUnsignedTransactionFiles,
       dir.txTransactionDir,
     );
 

@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import { join } from 'node:path';
 import { TRANSACTION_PATH } from '../../constants/config.js';
 import { services } from '../../services/index.js';
+import type { CommandResult } from '../../utils/command.util.js';
 import { formatDate } from './txHelpers.js';
 
 /**
@@ -36,5 +37,45 @@ export async function saveSignedTransaction(
   } catch (error) {
     console.error(`Error saving signed transaction:`, error);
     throw error;
+  }
+}
+
+/**
+ * Saves multiple signed transactions
+ *
+ * @param {TransactionResult} result
+ * @param {string[]} transactionFileNames
+ * @param {string} transactionDir
+ * @returns {Promise<void>}
+ * @throws {Error}
+ */
+export async function saveSignedTransactions(
+  result: CommandResult<ICommand[]>,
+  transactionFileNames: string[],
+  transactionDir: string,
+): Promise<void> {
+  if (result.success && result.data !== undefined && result.data.length > 0) {
+    for (let index = 0; index < result.data.length; index++) {
+      const transactionData = result.data[index];
+      try {
+        if (index < transactionFileNames.length) {
+          const originalFilename = transactionFileNames[index];
+          const modifiedFilename = `${originalFilename}-tx-${index}`;
+          await saveSignedTransaction(
+            transactionData,
+            modifiedFilename,
+            transactionDir,
+          );
+        } else {
+          console.error(
+            `Error: No corresponding filename for transaction at index ${index}.`,
+          );
+        }
+      } catch (error) {
+        console.error(`Error saving transaction at index ${index}:`, error);
+      }
+    }
+  } else {
+    console.error('Error: Transaction signing was unsuccessful.');
   }
 }
