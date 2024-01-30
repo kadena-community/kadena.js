@@ -1,8 +1,8 @@
 'use client';
 import { AvatarEditor } from '@/components/AvatarEditor/AvatarEditor';
-import { CapturePhoto } from '@/components/CapturePhoto/CapturePhoto';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useAccount } from '@/hooks/account';
+import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSocket } from '@/hooks/socket';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -14,8 +14,9 @@ interface IProps {
 }
 
 const Page: FC<IProps> = ({ params }) => {
-  const { addSignee, removeSignee, isConnected, connect, getSigneeAccount } =
-    useSocket();
+  const { connect } = useSocket();
+  const { addSignee, removeSignee, getSigneeAccount, isConnected } =
+    useProofOfUs();
   const { account } = useAccount();
 
   const handleJoin = async () => {

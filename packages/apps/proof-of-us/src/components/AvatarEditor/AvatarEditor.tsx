@@ -1,7 +1,8 @@
-import { useSocket } from '@/hooks/socket';
-import deepEqual from 'deep-equal';
-import type { Canvas } from 'fabric';
+import type { IFabricCanvasObject } from '@/fabricTypes';
+import { useAvatar } from '@/hooks/avatar';
+import { useProofOfUs } from '@/hooks/proofOfUs';
 import { fabric } from 'fabric';
+import type { Canvas } from 'fabric/fabric-impl';
 import { useParams } from 'next/navigation';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -11,20 +12,17 @@ export const AvatarEditor: FC = () => {
   const { id: tokenId } = useParams();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const fabricRef = useRef<Canvas>(null);
+  const fabricRef = useRef<Canvas | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [bg, setBg] = useState<string | undefined>();
   const [freeDrawMode, setFreeDrawMode] = useState(false);
-  const { addObject, proofOfUs, setBackgroundSocket } = useSocket();
+  const { addObject, setBackgroundSocket } = useAvatar();
   const canvasElm = canvasRef.current;
+  const { proofOfUs } = useProofOfUs();
 
   useEffect(() => {
-    if (!fabricRef.current) return;
+    if (!fabricRef.current || !proofOfUs) return;
 
-    fabricRef.current.clear();
-    const json = fabricRef.current.toJSON();
-
-    const objs = proofOfUs?.avatar.objects.map((o) => {
+    const objs = proofOfUs.avatar?.objects.map((o) => {
       return {
         ...o,
         isInitLoad: true,
@@ -32,16 +30,14 @@ export const AvatarEditor: FC = () => {
       };
     });
 
-    fabric.Image.fromURL(proofOfUs?.avatar.background, function (img) {
+    fabric.Image.fromURL(proofOfUs.avatar?.background ?? '', function (img) {
       img.scaleToWidth(500);
       img.scaleToHeight(500);
-      fabricRef.current.setBackgroundImage(img);
-      fabricRef.current.requestRenderAll();
+      fabricRef.current?.setBackgroundImage(img, () => {});
+      fabricRef.current?.requestRenderAll();
     });
 
-    //if (!deepEqual(proofOfUs?.avatar.objects, json.objects)) {
-    fabricRef.current.loadFromJSON({ objects: objs });
-    //}
+    fabricRef.current.loadFromJSON({ objects: objs }, () => {});
   }, [proofOfUs]);
 
   useEffect(() => {
@@ -54,7 +50,7 @@ export const AvatarEditor: FC = () => {
   }, [isModalOpen]);
 
   useEffect(() => {
-    if (!canvasElm || fabricRef.current) return;
+    if (!canvasElm) return;
 
     fabricRef.current = new fabric.Canvas(canvasElm, {
       width: 500,
@@ -66,26 +62,33 @@ export const AvatarEditor: FC = () => {
     fabricRef.current.freeDrawingBrush.color = '#000';
 
     fabricRef.current.on('object:added', ({ target }) => {
-      if (!target.isInitLoad) {
-        delete target.isInitLoad;
+      if (!target) return;
+      const innerTarget = target as IFabricCanvasObject;
+      if (!innerTarget.isInitLoad) {
+        delete innerTarget.isInitLoad;
         const newTarget = {
-          ...target.toJSON(),
-          previousState: target.toJSON(),
-        };
-        addObject(tokenId, newTarget);
+          ...innerTarget.toJSON(),
+          previousState: innerTarget.toJSON(),
+        } as unknown as IFabricCanvasObject;
+        addObject(`${tokenId}`, newTarget);
       }
     });
     fabricRef.current.on('object:modified', ({ target }) => {
-      console.log(2222, target.toJSON(), target.previousState);
-      //   if (!target.isInitLoad) {
-      //     delete target.isInitLoad;
-      const { previousState, ...newTarget } = target;
-      addObject(tokenId, newTarget, previousState);
-      //   }
+      if (!target) return;
+      const innerTarget = target as IFabricCanvasObject;
+
+      const { previousState, ...newTarget } = innerTarget;
+      addObject(
+        `${tokenId}`,
+        newTarget as IFabricCanvasObject,
+        previousState as IFabricCanvasObject,
+      );
     });
   }, [canvasElm]);
 
   const handleFreeDraw = () => {
+    if (!fabricRef.current) return;
+
     const newVal = !freeDrawMode;
     fabricRef.current.isDrawingMode = newVal;
     setFreeDrawMode(newVal);
@@ -103,7 +106,7 @@ export const AvatarEditor: FC = () => {
 
   const handleCapture = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();
-    if (!videoRef.current) return;
+    if (!videoRef.current || !fabricRef.current) return;
 
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -114,11 +117,9 @@ export const AvatarEditor: FC = () => {
     fabric.Image.fromURL(canvas.toDataURL(), function (img) {
       img.scaleToWidth(canvas.width);
       img.scaleToHeight(canvas.height);
-      fabricRef.current.setBackgroundImage(img);
-      fabricRef.current.requestRenderAll();
+      fabricRef.current?.setBackgroundImage(img, () => {});
+      fabricRef.current?.requestRenderAll();
     });
-
-    console.log(fabricRef.current);
 
     setBackgroundSocket(tokenId.toString(), canvas.toDataURL());
 

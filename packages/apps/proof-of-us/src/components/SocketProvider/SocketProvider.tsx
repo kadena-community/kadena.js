@@ -1,196 +1,52 @@
 'use client';
-import { useAccount } from '@/hooks/account';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useCallback, useState } from 'react';
-
+import { createContext, useState } from 'react';
 import type { Socket } from 'socket.io-client';
-import { io } from 'socket.io-client';
+import { socket } from '../../socket';
 
 export interface ISocketContext {
   socket?: Socket;
   connect: ({ tokenId }: { tokenId: string }) => Promise<Socket | undefined>;
   disconnect: ({ tokenId }: { tokenId: string }) => void;
-  removeSignee: ({
-    tokenId,
-    signee,
-  }: {
-    tokenId: string;
-    signee: IProofOfUsSignee;
-  }) => Promise<void>;
-  addSignee: ({ tokenId }: { tokenId: string }) => Promise<void>;
-  createToken: ({ tokenId }: { tokenId: string }) => Promise<void>;
-  proofOfUs?: IProofOfUs;
-  isConnected: () => boolean;
-  isInitiator: () => boolean;
-  getSigneeAccount: (account: IAccount) => IProofOfUsSignee;
-  setBackgroundSocket: (tokenId: string, bg: string) => void;
-  setLinesSocket: (tokenId: string, lines?: ICanvasPath[]) => void;
 }
 
 export const SocketContext = createContext<ISocketContext>({
   socket: undefined,
   connect: async () => undefined,
   disconnect: () => {},
-  addSignee: async () => {},
-  removeSignee: async () => {},
-  createToken: async () => {},
-  proofOfUs: undefined,
-  isConnected: () => false,
-  isInitiator: () => false,
-  getSigneeAccount: (account: IAccount): IProofOfUsSignee => ({
-    cid: '',
-    name: '',
-    publicKey: '',
-    initiator: false,
-  }),
-  setBackgroundSocket: (tokenId: string, bg: string) => {},
-  setLinesSocket: (tokenId: string, lines: ICanvasPath[] = []) => {},
 });
 
 export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [socket, setSocket] = useState<Socket>();
-
-  const [state, setState] = useState<IProofOfUs>();
-  const { account } = useAccount();
-
-  const connect = async ({ tokenId }: { tokenId: string }) => {
-    if (socket) return socket;
-
-    await fetch('/api/socket');
-    const sock = io({ autoConnect: false });
-
-    setSocket(sock);
-    sock.auth = { tokenId: tokenId };
-    await sock.connect();
-
-    sock.on('connect', () => {
-      console.log('connected');
-    });
-
-    sock.on('getProofOfUs', ({ content }) => {
-      setState(content);
-    });
-
-    return sock;
-  };
+  const [tokenId, setTokenId] = useState<string>();
 
   const disconnect = ({ tokenId }: { tokenId: string }) => {
     if ((socket?.auth as any)?.tokenId === tokenId) return;
     socket?.close();
-
-    setSocket(undefined);
   };
 
-  const addSignee = async ({ tokenId }: { tokenId: string }) => {
-    const socket = await connect({ tokenId });
+  const connect = async (data: { tokenId: string }) => {
+    if (tokenId && tokenId !== data.tokenId) disconnect(data);
+    if (socket.connected) return socket;
 
-    if (!socket || !account) return;
+    setTokenId(data.tokenId);
+    await fetch('/api/socket');
+    // eslint-disable-next-line require-atomic-updates
+    socket.auth = { tokenId: data.tokenId };
+    socket.connect();
 
-    socket.emit('addSignee', {
-      content: {
-        name: account.name,
-        cid: account.cid,
-        publicKey: account.publicKey,
-        initiator: false,
-      },
-      to: tokenId,
+    socket.on('connect', () => {
+      console.log('connected');
     });
-  };
 
-  const removeSignee = async ({
-    tokenId,
-    signee,
-  }: {
-    tokenId: string;
-    signee: IProofOfUsSignee;
-  }) => {
-    const socket = await connect({ tokenId });
-    socket?.emit('removeSignee', {
-      content: signee,
-      to: tokenId,
-    });
-  };
-
-  const createToken = async ({ tokenId }: { tokenId: string }) => {
-    const socket = await connect({ tokenId });
-
-    if (!socket || !account) return;
-
-    socket?.emit('createToken', {
-      content: {
-        name: account.name,
-        cid: account.cid,
-        publicKey: account.publicKey,
-        initiator: false,
-      },
-      to: tokenId,
-    });
-  };
-
-  const isConnected = useCallback(() => {
-    return !!state?.signees.find((s) => s.cid === account?.cid);
-  }, [state]);
-
-  const isInitiator = useCallback(() => {
-    const foundAccount = state?.signees.find((s) => s.cid === account?.cid);
-    return !!foundAccount?.initiator;
-  }, [state]);
-
-  const getSigneeAccount = (account: IAccount): IProofOfUsSignee => {
-    return {
-      cid: account.cid,
-      name: account.name,
-      publicKey: account.publicKey,
-      initiator: false,
-    };
-  };
-
-  const setBackgroundSocket = (tokenId: string, bg: string) => {
-    socket?.emit('setBackground', {
-      content: {
-        bg,
-      },
-      to: tokenId,
-    });
-  };
-
-  const setLinesSocket = (tokenId: string, lines: ICanvasPath[] = []) => {
-    socket?.emit('setLines', {
-      content: {
-        lines,
-      },
-      to: tokenId,
-    });
-  };
-
-  const addObject = (tokenId: string, newState, previousState) => {
-    console.log(newState, previousState);
-    delete previousState?.previousState;
-    socket?.emit('addObject', {
-      content: {
-        newState,
-        previousState,
-      },
-      to: tokenId,
-    });
+    return socket;
   };
 
   return (
     <SocketContext.Provider
       value={{
-        socket,
+        socket: socket,
         connect,
         disconnect,
-        addSignee,
-        removeSignee,
-        proofOfUs: state,
-        createToken,
-        isConnected,
-        isInitiator,
-        getSigneeAccount,
-        setBackgroundSocket,
-        setLinesSocket,
-        addObject,
       }}
     >
       {children}

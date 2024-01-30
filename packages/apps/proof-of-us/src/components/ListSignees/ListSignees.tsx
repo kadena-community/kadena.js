@@ -1,18 +1,19 @@
 import { useAccount } from '@/hooks/account';
-import { useSocket } from '@/hooks/socket';
+import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useParams } from 'next/navigation';
 import type { FC } from 'react';
 
 export const ListSignees: FC = () => {
   const { id: tokenId } = useParams();
-  const { proofOfUs, isInitiator, removeSignee } = useSocket();
+  const { proofOfUs, isInitiator, removeSignee } = useProofOfUs();
+
   const { account } = useAccount();
 
   return (
     <section>
       <h3>Signees</h3>
       <ul>
-        {proofOfUs?.signees.map((signee) => (
+        {proofOfUs?.signees?.map((signee) => (
           <li key={signee.cid}>
             {signee.name}
 

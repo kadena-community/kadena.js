@@ -72,9 +72,9 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html>
       <body>
-        <ToastProvider>
-          <AccountProvider>
-            <SocketProvider>
+        <SocketProvider>
+          <ToastProvider>
+            <AccountProvider>
               <ThemeProvider>
                 <>
                   <AccountInfo />
@@ -86,9 +86,9 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
                   <Analytics />
                 </>
               </ThemeProvider>
-            </SocketProvider>
-          </AccountProvider>
-        </ToastProvider>
+            </AccountProvider>
+          </ToastProvider>
+        </SocketProvider>
       </body>
     </html>
   );

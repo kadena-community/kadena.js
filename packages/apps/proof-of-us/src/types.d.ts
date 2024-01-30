@@ -1,3 +1,5 @@
+import { IFabricCanvasObject } from './fabricTypes';
+
 interface IAccount {
   name: string;
   waccount: string;
@@ -24,9 +26,8 @@ interface IProofOfUs {
   minted?: number;
   signees: IProofOfUsSignee[];
   avatar: {
-    background?: string;
-    lines: ICanvasPath[];
-    objects: any[];
+    background: string;
+    objects: IFabricCanvasObject[];
   };
 }
 

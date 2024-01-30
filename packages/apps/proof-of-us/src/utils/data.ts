@@ -1,3 +1,5 @@
+import type { IProofOfUs } from '@/types';
+
 export const proofOfUsData: IProofOfUs[] = [
   {
     tokenId: '1',
@@ -5,7 +7,8 @@ export const proofOfUsData: IProofOfUs[] = [
     minted: 4,
     signees: [],
     avatar: {
-      lines: [],
+      background: '',
+      objects: [],
     },
   },
   {
@@ -33,7 +36,8 @@ export const proofOfUsData: IProofOfUs[] = [
       },
     ],
     avatar: {
-      lines: [],
+      background: '',
+      objects: [],
     },
   },
 ];

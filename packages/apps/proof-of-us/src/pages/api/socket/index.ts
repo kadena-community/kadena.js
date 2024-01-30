@@ -1,3 +1,5 @@
+import type { IFabricCanvasObject } from '@/fabricTypes';
+import type { IProofOfUs, IProofOfUsSignee } from '@/types';
 import type { Server as IHTTPServer } from 'http';
 import type { Socket as INetSocket } from 'net';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -14,7 +16,7 @@ const ProofOfUsStore = () => {
       date: Date.now(),
       signees: [{ ...account, initiator: true }],
       avatar: {
-        lines: [],
+        background: '',
         objects: [],
       },
     };
@@ -30,21 +32,20 @@ const ProofOfUsStore = () => {
     store[tokenId].avatar = { ...avatar, background };
   };
 
-  const addLines = (tokenId: string, lines: ICanvasPath[] = []) => {
-    const avatar = store[tokenId]?.avatar;
-
-    store[tokenId].avatar = { ...avatar, lines };
-  };
-  const addObject = (tokenId: string, newState: any, previousState: any) => {
+  const addObject = (
+    tokenId: string,
+    newState: IFabricCanvasObject,
+    previousState: IFabricCanvasObject,
+  ) => {
     const avatar = store[tokenId]?.avatar;
 
     delete newState.previousState;
     delete previousState?.previousState;
 
     if (previousState) {
-      const newObjects = store[tokenId].avatar.objects.map((state, idx) => {
+      const newObjects = avatar.objects.map((state) => {
         delete state.previousState;
-        JSON.stringify(state) === JSON.stringify(previousState)
+        return JSON.stringify(state) === JSON.stringify(previousState)
           ? newState
           : state;
       });
@@ -82,7 +83,7 @@ const ProofOfUsStore = () => {
     addSignee,
     removeSignee,
     addBackground,
-    addLines,
+
     addObject,
   };
 };
@@ -162,17 +163,6 @@ export default function SocketHandler(
     socket.on('setBackground', ({ content, to }) => {
       store.addBackground(to, content.bg);
       io.to(to)
-        .to(to)
-        .emit('getProofOfUs', {
-          content: store.getProofOfUs(to),
-          from: socket.handshake.auth.tokenId,
-        });
-    });
-
-    socket.on('setLines', ({ content, to }) => {
-      store.addLines(to, content.lines);
-      socket
-        .to(to)
         .to(to)
         .emit('getProofOfUs', {
           content: store.getProofOfUs(to),
