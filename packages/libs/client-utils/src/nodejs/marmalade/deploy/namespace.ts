@@ -1,5 +1,5 @@
 import type { ChainId } from '@kadena/types';
-import { readdirSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { deployContract } from '../../../built-in/deployContract';
 import type { IAccount, IClientConfig } from '../../../core/utils/helpers';
@@ -92,7 +92,7 @@ export const deployMarmaladeNamespaces = async ({
 
         const result = await deployContract(
           {
-            contractCode: namespaceFile,
+            contractCode: readFileSync(namespaceFile, 'utf8'),
             transactionBody: {
               chainId,
               keysets,
@@ -113,15 +113,7 @@ export const deployMarmaladeNamespaces = async ({
           clientConfig,
         ).execute();
 
-        if (result?.result.status !== 'success') {
-          throw new Error(
-            `Failed to deploy namespace ${namespace} from file ${namespaceFile}`,
-          );
-        } else {
-          console.log(
-            `Sucessfully deployed namespace ${namespace} from file ${namespaceFile}`,
-          );
-        }
+        console.log(result);
       }),
     );
   }

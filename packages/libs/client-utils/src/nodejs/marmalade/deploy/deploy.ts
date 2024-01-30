@@ -20,6 +20,7 @@ import type {
   IRepositoryConfig,
 } from './config';
 import {
+  defaultAccount,
   defaultArguments,
   defaultClientConfig,
   defaultNamespaceDeployOrder,
@@ -27,8 +28,8 @@ import {
 import { defaultNamespaceConfig, deployMarmaladeNamespaces } from './namespace';
 
 interface IDeployMarmaladeInput {
-  sender: IAccount;
-  chainIds: ChainId[];
+  sender?: IAccount;
+  chainIds?: ChainId[];
   localConfig: ILocalConfig;
   remoteConfig: IRemoteConfig;
   repositoryConfig: IRepositoryConfig;
@@ -39,8 +40,8 @@ interface IDeployMarmaladeInput {
 }
 
 export const deployMarmalade = async ({
-  sender,
-  chainIds,
+  sender = defaultAccount,
+  chainIds = [],
   localConfig,
   remoteConfig,
   repositoryConfig,
@@ -49,57 +50,57 @@ export const deployMarmalade = async ({
   deploymentArguments = defaultArguments,
   clientConfig = defaultClientConfig,
 }: IDeployMarmaladeInput) => {
-  console.log('Preparing directories...');
-  handleDirectorySetup(
-    localConfig.templatePath,
-    localConfig.codeFilesPath,
-    localConfig.namespacePath,
-  );
+  // console.log('Preparing directories...');
+  // handleDirectorySetup(
+  //   localConfig.templatePath,
+  //   localConfig.codeFilesPath,
+  //   localConfig.namespacePath,
+  // );
 
-  console.log(
-    'Downloading marmalade templates and namespace definition files...',
-  );
+  // console.log(
+  //   'Downloading marmalade templates and namespace definition files...',
+  // );
 
-  await Promise.all([
-    getMarmaladeTemplates({
-      repositoryConfig,
-      remoteConfig,
-      localConfig,
-      flatFolder: true,
-    }),
+  // await Promise.all([
+  //   getMarmaladeTemplates({
+  //     repositoryConfig,
+  //     remoteConfig,
+  //     localConfig,
+  //     flatFolder: true,
+  //   }),
 
-    // Get marmalade namespace definition files
-    await getNsCodeFiles({
-      repositoryConfig,
-      remoteConfig,
-      localConfig,
-    }),
-  ]);
+  //   // Get marmalade namespace definition files
+  //   await getNsCodeFiles({
+  //     repositoryConfig,
+  //     remoteConfig,
+  //     localConfig,
+  //   }),
+  // ]);
 
-  console.log('Downloading necessary marmalade code files...');
+  // console.log('Downloading necessary marmalade code files...');
 
-  await getCodeFiles({
-    repositoryConfig,
-    remoteConfig,
-    localConfig,
-  });
+  // await getCodeFiles({
+  //   repositoryConfig,
+  //   remoteConfig,
+  //   localConfig,
+  // });
 
-  console.log('Preparing and adjusting the downloaded files...');
+  // console.log('Preparing and adjusting the downloaded files...');
 
   const templateFiles = readdirSync(localConfig.templatePath).filter((file) =>
     file.endsWith(remoteConfig.templateExtension),
   );
 
-  const codeFiles = readdirSync(localConfig.codeFilesPath).filter((file) =>
-    file.endsWith(remoteConfig.codefileExtension),
-  );
+  // const codeFiles = readdirSync(localConfig.codeFilesPath).filter((file) =>
+  //   file.endsWith(remoteConfig.codefileExtension),
+  // );
 
-  await updateTemplateFilesWithCodeFile(
-    templateFiles,
-    localConfig.templatePath,
-    codeFiles,
-    localConfig.codeFilesPath,
-  );
+  // await updateTemplateFilesWithCodeFile(
+  //   templateFiles,
+  //   localConfig.templatePath,
+  //   codeFiles,
+  //   localConfig.codeFilesPath,
+  // );
 
   /* sort the templates alphabetically so that the contracts are deployed in the correct order
   also taking into account the order provided in the configuration */
@@ -161,18 +162,18 @@ export const deployMarmalade = async ({
         );
 
         const commandResult =
-          await submitClient<ICommandResult>(clientConfig)(
-            pactCommand,
-          ).execute();
+          await submitClient(clientConfig)(pactCommand).execute();
 
-        if (commandResult?.result.status === 'success') {
-          console.log(
-            `Successfully deployed ${templateFile} on chain ${chainId}`,
-          );
-        } else {
-          console.log(`Failed to deploy ${templateFile} on chain ${chainId}`);
-          console.log(commandResult?.result.error);
-        }
+        console.log(commandResult);
+
+        // if (commandResult?.result.status === 'success') {
+        //   console.log(
+        //     `Successfully deployed ${templateFile} on chain ${chainId}`,
+        //   );
+        // } else {
+        //   console.log(`Failed to deploy ${templateFile} on chain ${chainId}`);
+        //   console.log(commandResult?.result.error);
+        // }
       }
     }),
   );

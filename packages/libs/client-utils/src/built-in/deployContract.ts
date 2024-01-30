@@ -53,7 +53,7 @@ export const createPactCommand = (inputs: IDeployContractInput) => {
 export const deployContract = (
   inputs: IDeployContractInput,
   config: IClientConfig,
-) => submitClient<ICommandResult>(config)(createPactCommand(inputs));
+) => submitClient(config)(createPactCommand(inputs));
 
 // export const deployContractCommand1 = async (inputs: IDeployContractInput) => {
 //   const { contractCode, transactionBody } = inputs;
