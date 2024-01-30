@@ -22,7 +22,7 @@ import {
 
 const DEFAULT_DERIVATION_PATH_TEMPLATE = `m'/44'/626'/<index>'`;
 
-type ServiceProps = {
+type WalletContext = {
   walletRepository: WalletRepository;
   profile: IProfile;
   encryptionKey: Uint8Array;
@@ -33,7 +33,7 @@ const getProfile =
   ({
     walletRepository,
     profile,
-  }: Pick<ServiceProps, 'walletRepository' | 'profile'>) =>
+  }: Pick<WalletContext, 'walletRepository' | 'profile'>) =>
   async () => {
     return walletRepository.getProfile(profile.uuid);
   };
@@ -42,54 +42,59 @@ const getAccounts =
   ({
     walletRepository,
     profile,
-  }: Pick<ServiceProps, 'walletRepository' | 'profile'>) =>
+  }: Pick<WalletContext, 'walletRepository' | 'profile'>) =>
   async () => {
     return walletRepository.getAccountsByProfileId(profile.uuid);
   };
 
-const sign = (props: ServiceProps) => async (TXs: IUnsignedCommand[]) => {
-  const { encryptedSeed, encryptionKey, profile } = props;
-  if (!encryptedSeed) {
-    throw new Error('Wallet is not unlocked');
-  }
+const sign =
+  ({
+    encryptedSeed,
+    encryptionKey,
+    profile,
+  }: Pick<WalletContext, 'encryptedSeed' | 'encryptionKey' | 'profile'>) =>
+  async (TXs: IUnsignedCommand[]) => {
+    if (!encryptedSeed) {
+      throw new Error('Wallet is not unlocked');
+    }
 
-  const signedTx = Promise.all(
-    TXs.map(async (Tx) => {
-      const signatures = await Promise.all(
-        profile.keySources.map(
-          async ({ publicKeys, derivationPathTemplate }) => {
-            const cmd: IPactCommand = JSON.parse(Tx.cmd);
-            const relevantIndexes = cmd.signers
-              .map((signer) =>
-                publicKeys.findIndex(
-                  (publicKey) => publicKey === signer.pubKey,
-                ),
-              )
-              .filter((index) => index !== undefined) as number[];
+    const signedTx = Promise.all(
+      TXs.map(async (Tx) => {
+        const signatures = await Promise.all(
+          profile.keySources.map(
+            async ({ publicKeys, derivationPathTemplate }) => {
+              const cmd: IPactCommand = JSON.parse(Tx.cmd);
+              const relevantIndexes = cmd.signers
+                .map((signer) =>
+                  publicKeys.findIndex(
+                    (publicKey) => publicKey === signer.pubKey,
+                  ),
+                )
+                .filter((index) => index !== undefined) as number[];
 
-            const signatures = await kadenaSignWithSeed(
-              encryptionKey,
-              encryptedSeed,
-              relevantIndexes,
-              derivationPathTemplate,
-            )(Tx.hash);
+              const signatures = await kadenaSignWithSeed(
+                encryptionKey,
+                encryptedSeed,
+                relevantIndexes,
+                derivationPathTemplate,
+              )(Tx.hash);
 
-            return signatures;
-          },
-        ),
-      );
-      return addSignatures(Tx, ...signatures.flat());
-    }),
-  );
+              return signatures;
+            },
+          ),
+        );
+        return addSignatures(Tx, ...signatures.flat());
+      }),
+    );
 
-  return signedTx;
-};
+    return signedTx;
+  };
 
 const decryptMnemonic =
   ({
     walletRepository,
     profile,
-  }: Pick<ServiceProps, 'walletRepository' | 'profile'>) =>
+  }: Pick<WalletContext, 'walletRepository' | 'profile'>) =>
   async (password: string) => {
     const encryptedMnemonic = await walletRepository.getEncryptedValue(
       profile.seedKey,
@@ -109,7 +114,7 @@ const createKAccount =
   ({
     profile,
     walletRepository,
-  }: Pick<ServiceProps, 'walletRepository' | 'profile'>) =>
+  }: Pick<WalletContext, 'walletRepository' | 'profile'>) =>
   async (keyItem: IKeyItem) => {
     const account: IAccount = {
       uuid: crypto.randomUUID(),
@@ -128,14 +133,15 @@ const createKAccount =
   };
 
 const createProfile =
-  (
-    props: Pick<
-      ServiceProps,
-      'encryptedSeed' | 'encryptionKey' | 'walletRepository'
-    >,
-  ) =>
+  ({
+    walletRepository,
+    encryptionKey,
+    encryptedSeed,
+  }: Pick<
+    WalletContext,
+    'encryptedSeed' | 'encryptionKey' | 'walletRepository'
+  >) =>
   async (profileName: string, encryptedMnemonic: Uint8Array) => {
-    const { walletRepository, encryptionKey, encryptedSeed } = props;
     const mnemonicKey = crypto.randomUUID();
 
     const publicKey = await kadenaGetPublic(
@@ -177,7 +183,7 @@ export interface IWalletService {
 }
 
 // For now wa just support hd-wallet keySources; we need to refactor this to support other types of keySources
-export function walletService(config: ServiceProps): IWalletService {
+export function walletService(config: WalletContext): IWalletService {
   return {
     sign: sign(config),
     decryptMnemonic: decryptMnemonic(config),
