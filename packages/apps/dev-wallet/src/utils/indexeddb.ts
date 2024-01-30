@@ -54,15 +54,13 @@ export const connect = (name: string, version: number) => {
 export const deleteDatabase = (name: string) => {
   return new Promise<void>((resolve, reject) => {
     const request = indexedDB.deleteDatabase(name);
-    console.log('deleting database', name);
     request.onerror = () => {
       reject(request.error);
     };
     request.onblocked = () => {
-      console.log('close all connections to the database first');
+      console.warn('close all connections to the database first');
     };
     request.onsuccess = async () => {
-      console.log('deleted database successfully', name);
       resolve();
     };
   });
