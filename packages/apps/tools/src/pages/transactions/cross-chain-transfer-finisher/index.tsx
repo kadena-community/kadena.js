@@ -312,16 +312,16 @@ const CrossChainTransferFinisher: FC = () => {
       <FormStatusNotification
         status="successful"
         title={t('Notification title success')}
-        body={`${t(
-          'XChain transfer has been successfully finalized!',
-        )} \n Request key: ${receiverRequestKey}`}
+        body={t('XChain transfer has been successfully finalized!')}
       >
-        <p color={'inherit'}>{`Request key: ${receiverRequestKey}`}</p>
+        <p
+          className={noticationKeyStyle}
+        >{`Request key: ${receiverRequestKey}`}</p>
       </FormStatusNotification>
     ) : (
       <FormStatusNotification status="erroneous" title={t('Transaction error')}>
         {txError.toString()}
-        <p color={'inherit'}>
+        <p className={noticationKeyStyle}>
           {`Target Chain Request key: ${receiverRequestKey}`}
         </p>
       </FormStatusNotification>
@@ -334,7 +334,7 @@ const CrossChainTransferFinisher: FC = () => {
       body={t('form-status-content-processing')}
     >
       <p className={noticationKeyStyle}>
-        {`Request key: ${receiverRequestKey}`}
+        {`Target Chain Request key: ${receiverRequestKey}`}
       </p>
     </FormStatusNotification>
   ) : null;
