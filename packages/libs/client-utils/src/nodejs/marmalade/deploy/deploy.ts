@@ -1,10 +1,16 @@
-import { ChainId } from '@kadena/types';
-import { readdirSync } from 'fs';
-import { IAccount } from '../../../core/utils/helpers';
+import type {
+  ICommandResult} from '@kadena/client';
 import {
-  defaultArguments,
-  defaultNamespaceDeployOrder,
-} from '../utils/defaults';
+  createSignWithKeypair,
+  createTransaction,
+} from '@kadena/client';
+import { composePactCommand } from '@kadena/client/fp';
+import type { ChainId } from '@kadena/types';
+import { readdirSync } from 'fs';
+import { deployContract } from '../../../built-in/deployContract';
+import { submitClient } from '../../../core';
+import type { IAccount, IClientConfig } from '../../../core/utils/helpers';
+import { createPactCommandFromTemplate } from '../../yaml-converter';
 import { handleDirectorySetup } from '../utils/directory';
 import {
   getCodeFiles,
@@ -12,12 +18,17 @@ import {
   getNsCodeFiles,
   updateTemplateFilesWithCodeFile,
 } from '../utils/file';
-import {
+import type {
   ILocalConfig,
   INamespaceConfig,
   IRemoteConfig,
   IRepositoryConfig,
 } from './config';
+import {
+  defaultArguments,
+  defaultClientConfig,
+  defaultNamespaceDeployOrder,
+} from './defaults';
 import { defaultNamespaceConfig, deployMarmaladeNamespaces } from './namespace';
 
 interface IDeployMarmaladeInput {
@@ -29,6 +40,7 @@ interface IDeployMarmaladeInput {
   namespaceConfig?: INamespaceConfig[];
   namespaceDeployOrder?: string[];
   deploymentArguments?: Record<string, any>;
+  clientConfig?: IClientConfig;
 }
 
 export const deployMarmalade = async ({
@@ -40,6 +52,7 @@ export const deployMarmalade = async ({
   namespaceConfig = defaultNamespaceConfig,
   namespaceDeployOrder = defaultNamespaceDeployOrder,
   deploymentArguments = defaultArguments,
+  clientConfig = defaultClientConfig,
 }: IDeployMarmaladeInput) => {
   console.log('Preparing directories...');
   handleDirectorySetup(
@@ -131,10 +144,41 @@ export const deployMarmalade = async ({
         namespaceFilesPath: localConfig.namespacePath,
         fileExtension: remoteConfig.codefileExtension,
         networkId: deploymentArguments.network,
-        clientConfig: {
-          sign:
-        }
+        clientConfig,
       });
+
+      console.log(`Deploying Marmalade Contracts on chain ${chainId}...`);
+
+      for (const templateFile of templateFiles) {
+        console.log(`Deploying ${templateFile}...`);
+
+        /* Assuming that the template file name is the same as the namespace
+        and that the filename contains the namespace*/
+
+        deploymentArguments.marmalade_namespace = templateFile.split('.')[0];
+        // Change the chain id for each chain
+        deploymentArguments.chain = chainId;
+
+        const pactCommand = await createPactCommandFromTemplate(
+          templateFile,
+          deploymentArguments,
+          localConfig.templatePath,
+        );
+
+        const commandResult =
+          await submitClient<ICommandResult>(clientConfig)(
+            pactCommand,
+          ).execute();
+
+        if (commandResult?.result.status === 'success') {
+          console.log(
+            `Successfully deployed ${templateFile} on chain ${chainId}`,
+          );
+        } else {
+          console.log(`Failed to deploy ${templateFile} on chain ${chainId}`);
+          console.log(commandResult?.result.error);
+        }
+      }
     }),
   );
 };
