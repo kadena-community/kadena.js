@@ -71,11 +71,6 @@ export interface WalletRepository {
   getAccountsByProfileId: (profileId: string) => Promise<IAccount[]>;
 }
 
-export interface WalletRepositoryTx
-  extends Omit<WalletRepository, 'createTransactionContext' | 'disconnect'> {
-  abort: () => void;
-}
-
 export const walletRepository = (db: IDBDatabase): WalletRepository => {
   const getAll = getAllItems(db);
   const getOne = getOneItem(db);
