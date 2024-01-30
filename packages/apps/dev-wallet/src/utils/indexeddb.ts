@@ -54,20 +54,26 @@ export const connect = (name: string, version: number) => {
 export const deleteDatabase = (name: string) => {
   return new Promise<void>((resolve, reject) => {
     const request = indexedDB.deleteDatabase(name);
+    console.log('deleting database', name);
     request.onerror = () => {
       reject(request.error);
     };
-    request.onsuccess = () => {
+    request.onblocked = () => {
+      console.log('close all connections to the database first');
+    };
+    request.onsuccess = async () => {
+      console.log('deleted database successfully', name);
       resolve();
     };
   });
 };
 
 export const getAllItems =
-  (db: IDBDatabase) =>
+  (db: IDBDatabase, activeTransaction?: IDBTransaction) =>
   <T>(storeName: string, filter?: string[] | string, indexName?: string) => {
     return new Promise<T[]>((resolve, reject) => {
-      const transaction = db.transaction(storeName, 'readonly');
+      const transaction =
+        activeTransaction ?? db.transaction(storeName, 'readonly');
       const store = transaction.objectStore(storeName);
       let request: IDBRequest;
       if (indexName) {
@@ -86,10 +92,11 @@ export const getAllItems =
   };
 
 export const getOneItem =
-  (db: IDBDatabase) =>
+  (db: IDBDatabase, activeTransaction?: IDBTransaction) =>
   <T>(storeName: string, key: string) => {
     return new Promise<T>((resolve, reject) => {
-      const transaction = db.transaction(storeName, 'readonly');
+      const transaction =
+        activeTransaction ?? db.transaction(storeName, 'readonly');
       const store = transaction.objectStore(storeName);
       const request = store.get(key);
       request.onerror = () => {
@@ -102,10 +109,11 @@ export const getOneItem =
   };
 
 export const addItem =
-  (db: IDBDatabase) =>
+  (db: IDBDatabase, activeTransaction?: IDBTransaction) =>
   <T>(storeName: string, value: T, key?: string) => {
     return new Promise<void>((resolve, reject) => {
-      const transaction = db.transaction(storeName, 'readwrite');
+      const transaction =
+        activeTransaction ?? db.transaction(storeName, 'readwrite');
       const store = transaction.objectStore(storeName);
       const request = store.add(value, key);
       request.onerror = () => {
@@ -117,31 +125,30 @@ export const addItem =
     });
   };
 
-const isExist = async <T>(
-  db: IDBDatabase,
-  storeName: string,
-  value: T,
-  key?: string,
-) => {
-  const transaction = db.transaction(storeName, 'readonly');
-  const store = transaction.objectStore(storeName);
-  const isDataExist = await getOneItem(db)(
-    storeName,
-    key ?? (value[store.keyPath! as keyof T] as string),
-  )
-    .then(() => true)
-    .catch(() => false);
-  return isDataExist;
-};
+const isExist =
+  (db: IDBDatabase, activeTransaction?: IDBTransaction) =>
+  async <T>(storeName: string, value: T, key?: string) => {
+    const transaction =
+      activeTransaction ?? db.transaction(storeName, 'readonly');
+    const store = transaction.objectStore(storeName);
+    const isDataExist = await getOneItem(db)(
+      storeName,
+      key ?? (value[store.keyPath! as keyof T] as string),
+    )
+      .then(() => true)
+      .catch(() => false);
+    return isDataExist;
+  };
 
 export const updateItem =
-  (db: IDBDatabase) =>
+  (db: IDBDatabase, activeTransaction?: IDBTransaction) =>
   <T>(storeName: string, value: T, key?: string) => {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise<void>(async (resolve, reject) => {
-      const transaction = db.transaction(storeName, 'readwrite');
+      const transaction =
+        activeTransaction ?? db.transaction(storeName, 'readwrite');
       const store = transaction.objectStore(storeName);
-      const isDataExist = isExist(db, storeName, value, key);
+      const isDataExist = isExist(db)(storeName, value, key);
       if (!isDataExist) {
         reject(
           new Error(

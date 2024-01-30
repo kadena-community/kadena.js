@@ -48,7 +48,7 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [keySources, setKeySources] = useState<IKeySource[]>([]);
 
   useEffect(() => {
-    const storePromise = createWalletRepository()
+    createWalletRepository()
       .then(async (repository) => {
         setWalletRepository(repository);
         const profiles = await repository.getAllProfiles();
@@ -59,7 +59,7 @@ export const WalletContextProvider: FC<PropsWithChildren> = ({ children }) => {
         console.error(error);
       });
     return () => {
-      storePromise.then((store) => store?.disconnect());
+      // storePromise.then((store) => store?.disconnect());
     };
   }, []);
 

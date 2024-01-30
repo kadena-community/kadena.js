@@ -2,6 +2,7 @@ import {
   addItem,
   connect,
   createStore,
+  deleteDatabase,
   getAllItems,
   getOneItem,
   updateItem,
@@ -59,6 +60,7 @@ export interface IAccount {
 
 export interface WalletRepository {
   disconnect: () => Promise<void>;
+  createTransactionContext: () => WalletRepositoryTx;
   getAllProfiles: () => Promise<Exclude<IProfile, 'networks'>[]>;
   getProfile: (id: string) => Promise<IProfile>;
   getKeySourcesByProfileId: (profileId: string) => Promise<IKeySource[]>;
@@ -74,14 +76,41 @@ export interface WalletRepository {
   getAccountsByProfileId: (profileId: string) => Promise<IAccount[]>;
 }
 
-export const walletRepository = (db: IDBDatabase): WalletRepository => {
-  const getAll = getAllItems(db);
-  const getOne = getOneItem(db);
-  const add = addItem(db);
-  const update = updateItem(db);
+export interface WalletRepositoryTx
+  extends Omit<WalletRepository, 'createTransactionBase' | 'disconnect'> {
+  commit: () => void;
+  abort: () => void;
+}
+
+export const walletRepository = (
+  db: IDBDatabase,
+  activeTransaction?: IDBTransaction,
+): WalletRepository => {
+  const getAll = getAllItems(db, activeTransaction);
+  const getOne = getOneItem(db, activeTransaction);
+  const add = addItem(db, activeTransaction);
+  const update = updateItem(db, activeTransaction);
+
   return {
     disconnect: async (): Promise<void> => {
       db.close();
+    },
+    createTransactionContext: (
+      sources = [
+        'profile',
+        'network',
+        'keySource',
+        'encryptedValue',
+        'account',
+      ],
+    ) => {
+      const tx = db.transaction(sources, 'readwrite');
+      return {
+        ...walletRepository(db, tx),
+        disconnect: async () => {},
+        commit: () => tx.commit(),
+        abort: () => tx.abort(),
+      };
     },
     getAllProfiles: async (): Promise<Exclude<IProfile, 'networks'>[]> => {
       return getAll('profile');
@@ -130,33 +159,56 @@ export const walletRepository = (db: IDBDatabase): WalletRepository => {
   };
 };
 
-export const createWalletRepository = async (): Promise<WalletRepository> => {
-  const { db, needsUpgrade } = await connect('dev-wallet', 2);
-  if (needsUpgrade) {
-    if (import.meta.env.DEV) {
-      // console.log(
-      //   'in development we delete the database if schema is changed for now since we are still in early stage of development',
-      // );
-      // await db.close();
-      // await deleteDatabase('dev-wallet');
-      // return createWalletRepository();
-    }
-    // NOTE: If you change the schema, you need to update the upgrade method
-    // below to migrate the data. the current version just creates the database
-    const create = createStore(db);
-    create('profile', 'uuid', [{ index: 'name', unique: true }]);
-    create('network', 'uuid');
-    create('keySource', 'uuid', [
-      { index: 'profileId', unique: false },
-      {
-        index: 'uniqueKeySource',
-        indexKeyPath: ['profileId', 'derivationPathTemplate', 'source'],
-        unique: true,
-      },
-    ]);
-    create('encryptedValue');
-    // TODO: move account to separate repository if needed
-    create('account', 'uuid', [{ index: 'address' }, { index: 'profileId' }]);
-  }
-  return walletRepository(db);
+const asyncGuard = <Args extends any[], T>(
+  fn: (...args: Args) => Promise<T>,
+) => {
+  let promise: Promise<T> | null = null;
+  return async (...args: Args) => {
+    if (promise) return promise;
+    promise = fn(...args);
+    promise.finally(() => {
+      promise = null;
+    });
+    return promise;
+  };
 };
+
+export const createWalletRepository = asyncGuard(
+  async (): Promise<WalletRepository> => {
+    const DB_NAME = 'dev-wallet';
+    const DB_VERSION = 5;
+    let { db, needsUpgrade } = await connect(DB_NAME, DB_VERSION);
+    if (needsUpgrade) {
+      console.log('needs upgrade');
+      if (import.meta.env.DEV) {
+        console.log(
+          'LOG:in development we delete the database if schema is changed for now since we are still in early stage of development',
+        );
+        db.close();
+        console.log('deleting database');
+        await deleteDatabase(DB_NAME);
+        console.log('creating new database');
+        let { db: newDb } = await connect(DB_NAME, DB_VERSION);
+        db = newDb;
+      }
+      // NOTE: If you change the schema, you need to update the upgrade method
+      // below to migrate the data. the current version just creates the database
+      console.log('creating object stores');
+      const create = createStore(db);
+      create('profile', 'uuid', [{ index: 'name', unique: true }]);
+      create('network', 'uuid');
+      create('keySource', 'uuid', [
+        { index: 'profileId', unique: false },
+        {
+          index: 'uniqueKeySource',
+          indexKeyPath: ['profileId', 'derivationPathTemplate', 'source'],
+          unique: true,
+        },
+      ]);
+      create('encryptedValue');
+      // TODO: move account to separate repository if needed
+      create('account', 'uuid', [{ index: 'address' }, { index: 'profileId' }]);
+    }
+    return walletRepository(db);
+  },
+);
