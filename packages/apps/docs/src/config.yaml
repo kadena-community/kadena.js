@@ -27,9 +27,15 @@ pages:
       consensus:
         url: /consensus
         file: /learn/consensus.md
+<<<<<<< HEAD
       chainweb:
         url: /chainweb
         file: /learn/chainweb-simplified.md
+=======
+      cryptography:
+        url: /cryptography
+        file: /learn/cryptography.md
+>>>>>>> 010334a68 (wip-structure)
       accounts:
         url: /accounts
         file: /learn/accounts-keys.md
