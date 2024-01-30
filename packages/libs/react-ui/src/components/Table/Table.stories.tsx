@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { vars } from '../../styles/vars.css';
 import type { ITableProps } from '../Table';
-import { Table } from '../Table';
+import { Cell, Column, Row, Table, TableBody, TableHeader } from './';
 
 const selectOptions: (keyof typeof vars.sizes | undefined)[] = [
   undefined,
@@ -62,168 +62,180 @@ export const Primary: Story = {
   },
   render: ({ rowCount, columnCount, striped }) => {
     return (
-      <Table.Root striped={striped}>
-        <Table.Head>
-          <Table.Tr>
-            {Array.from(Array(columnCount)).map((id, tdIdx) => {
-              return <Table.Th key={`td${tdIdx}`}>test {tdIdx}</Table.Th>;
-            })}
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-          {Array.from(Array(rowCount)).map((id, idx) => {
-            return (
-              <Table.Tr key={`tr${idx}`}>
-                {Array.from(Array(columnCount)).map((id, tdIdx) => {
-                  return <Table.Td key={`td${tdIdx}`}>test {tdIdx}</Table.Td>;
-                })}
-              </Table.Tr>
-            );
-          })}
-        </Table.Body>
-      </Table.Root>
+      <Table
+        aria-label="Example static collection table"
+        style={{ height: '210px', maxWidth: '400px' }}
+      >
+        <TableHeader>
+          <Column>Name</Column>
+          <Column>Type</Column>
+          <Column>Date Modified</Column>
+        </TableHeader>
+        <TableBody>
+          <Row>
+            <Cell>Games</Cell>
+            <Cell>File folder</Cell>
+            <Cell>6/7/2020</Cell>
+          </Row>
+          <Row>
+            <Cell>Program Files</Cell>
+            <Cell>File folder</Cell>
+            <Cell>4/7/2021</Cell>
+          </Row>
+          <Row>
+            <Cell>bootmgr</Cell>
+            <Cell>System file</Cell>
+            <Cell>11/20/2010</Cell>
+          </Row>
+          <Row>
+            <Cell>log.txt</Cell>
+            <Cell>Text Document</Cell>
+            <Cell>1/18/2016</Cell>
+          </Row>
+        </TableBody>
+      </Table>
     );
   },
 };
 
-export const LinkTable: Story = {
-  name: 'Table with Link',
-  args: {
-    rowCount: 3,
-    columnCount: 5,
-    striped: false,
-  },
-  render: ({ rowCount, columnCount, striped }) => {
-    return (
-      <Table.Root striped={striped}>
-        <Table.Head>
-          <Table.Tr>
-            {Array.from(Array(columnCount + 1)).map((id, tdIdx) => {
-              return tdIdx === columnCount ? (
-                <Table.Th key={`td${tdIdx}`} />
-              ) : (
-                <Table.Th key={`td${tdIdx}`}>test {tdIdx}</Table.Th>
-              );
-            })}
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-          {Array.from(Array(rowCount)).map((id, idx) => {
-            return (
-              <Table.Tr key={`tr${idx}`} url={`#${idx}`}>
-                {Array.from(Array(columnCount)).map((id, tdIdx) => {
-                  return <Table.Td key={`td${tdIdx}`}>test {tdIdx}</Table.Td>;
-                })}
-              </Table.Tr>
-            );
-          })}
-        </Table.Body>
-      </Table.Root>
-    );
-  },
-};
+// export const LinkTable: Story = {
+//   name: 'Table with Link',
+//   args: {
+//     rowCount: 3,
+//     columnCount: 5,
+//     striped: false,
+//   },
+//   render: ({ rowCount, columnCount, striped }) => {
+//     return (
+//       <Table.Root striped={striped}>
+//         <Table.Head>
+//           <Table.Tr>
+//             {Array.from(Array(columnCount + 1)).map((id, tdIdx) => {
+//               return tdIdx === columnCount ? (
+//                 <Table.Th key={`td${tdIdx}`} />
+//               ) : (
+//                 <Table.Th key={`td${tdIdx}`}>test {tdIdx}</Table.Th>
+//               );
+//             })}
+//           </Table.Tr>
+//         </Table.Head>
+//         <Table.Body>
+//           {Array.from(Array(rowCount)).map((id, idx) => {
+//             return (
+//               <Table.Tr key={`tr${idx}`} url={`#${idx}`}>
+//                 {Array.from(Array(columnCount)).map((id, tdIdx) => {
+//                   return <Table.Td key={`td${tdIdx}`}>test {tdIdx}</Table.Td>;
+//                 })}
+//               </Table.Tr>
+//             );
+//           })}
+//         </Table.Body>
+//       </Table.Root>
+//     );
+//   },
+// };
 
-export const StripedTable: Story = {
-  args: {
-    rowCount: 3,
-    columnCount: 5,
-    striped: true,
-  },
-  render: ({ rowCount, columnCount, striped }) => {
-    return (
-      <Table.Root striped={striped}>
-        <Table.Head>
-          <Table.Tr>
-            {Array.from(Array(columnCount)).map((id, tdIdx) => {
-              return <Table.Th key={`td${tdIdx}`}>test {tdIdx}</Table.Th>;
-            })}
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-          {Array.from(Array(rowCount)).map((id, idx) => {
-            return (
-              <Table.Tr key={`tr${idx}`}>
-                {Array.from(Array(columnCount)).map((id, tdIdx) => {
-                  return <Table.Td key={`td${tdIdx}`}>test {tdIdx}</Table.Td>;
-                })}
-              </Table.Tr>
-            );
-          })}
-        </Table.Body>
-      </Table.Root>
-    );
-  },
-};
+// export const StripedTable: Story = {
+//   args: {
+//     rowCount: 3,
+//     columnCount: 5,
+//     striped: true,
+//   },
+//   render: ({ rowCount, columnCount, striped }) => {
+//     return (
+//       <Table.Root striped={striped}>
+//         <Table.Head>
+//           <Table.Tr>
+//             {Array.from(Array(columnCount)).map((id, tdIdx) => {
+//               return <Table.Th key={`td${tdIdx}`}>test {tdIdx}</Table.Th>;
+//             })}
+//           </Table.Tr>
+//         </Table.Head>
+//         <Table.Body>
+//           {Array.from(Array(rowCount)).map((id, idx) => {
+//             return (
+//               <Table.Tr key={`tr${idx}`}>
+//                 {Array.from(Array(columnCount)).map((id, tdIdx) => {
+//                   return <Table.Td key={`td${tdIdx}`}>test {tdIdx}</Table.Td>;
+//                 })}
+//               </Table.Tr>
+//             );
+//           })}
+//         </Table.Body>
+//       </Table.Root>
+//     );
+//   },
+// };
 
-export const EmptyRowsTable: Story = {
-  name: 'Table with Empty Rows',
-  args: {
-    rowCount: 5,
-    columnCount: 3,
-    striped: false,
-  },
-  render: ({ striped }) => {
-    return (
-      <Table.Root striped={striped}>
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Date Time</Table.Th>
-            <Table.Th>Amount</Table.Th>
-            <Table.Th>Sender</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-          <Table.Tr>
-            <Table.Td>March 28, 2023 - 06:23</Table.Td>
-            <Table.Td>10</Table.Td>
-            <Table.Td>1234</Table.Td>
-          </Table.Tr>
-          <Table.Tr></Table.Tr>
-          <Table.Tr></Table.Tr>
-          <Table.Tr>
-            <Table.Td>March 28, 2023 - 06:23</Table.Td>
-            <Table.Td>10</Table.Td>
-            <Table.Td>1234</Table.Td>
-          </Table.Tr>
-          <Table.Tr></Table.Tr>
-        </Table.Body>
-      </Table.Root>
-    );
-  },
-};
+// export const EmptyRowsTable: Story = {
+//   name: 'Table with Empty Rows',
+//   args: {
+//     rowCount: 5,
+//     columnCount: 3,
+//     striped: false,
+//   },
+//   render: ({ striped }) => {
+//     return (
+//       <Table.Root striped={striped}>
+//         <Table.Head>
+//           <Table.Tr>
+//             <Table.Th>Date Time</Table.Th>
+//             <Table.Th>Amount</Table.Th>
+//             <Table.Th>Sender</Table.Th>
+//           </Table.Tr>
+//         </Table.Head>
+//         <Table.Body>
+//           <Table.Tr>
+//             <Table.Td>March 28, 2023 - 06:23</Table.Td>
+//             <Table.Td>10</Table.Td>
+//             <Table.Td>1234</Table.Td>
+//           </Table.Tr>
+//           <Table.Tr></Table.Tr>
+//           <Table.Tr></Table.Tr>
+//           <Table.Tr>
+//             <Table.Td>March 28, 2023 - 06:23</Table.Td>
+//             <Table.Td>10</Table.Td>
+//             <Table.Td>1234</Table.Td>
+//           </Table.Tr>
+//           <Table.Tr></Table.Tr>
+//         </Table.Body>
+//       </Table.Root>
+//     );
+//   },
+// };
 
-export const FixedColumnWidth: Story = {
-  name: 'Table with Fixed Column Width',
-  args: {
-    columnWidth: '$32',
-  },
-  render: ({ columnWidth }) => {
-    return (
-      <Table.Root wordBreak="break-word">
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th width={columnWidth}>Fixed Width</Table.Th>
-            <Table.Th>Other Content</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-          <Table.Tr>
-            <Table.Td>Fixed with content</Table.Td>
-            <Table.Td>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industrys standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </Table.Td>
-          </Table.Tr>
-        </Table.Body>
-      </Table.Root>
-    );
-  },
-};
+// export const FixedColumnWidth: Story = {
+//   name: 'Table with Fixed Column Width',
+//   args: {
+//     columnWidth: '$32',
+//   },
+//   render: ({ columnWidth }) => {
+//     return (
+//       <Table.Root wordBreak="break-word">
+//         <Table.Head>
+//           <Table.Tr>
+//             <Table.Th width={columnWidth}>Fixed Width</Table.Th>
+//             <Table.Th>Other Content</Table.Th>
+//           </Table.Tr>
+//         </Table.Head>
+//         <Table.Body>
+//           <Table.Tr>
+//             <Table.Td>Fixed with content</Table.Td>
+//             <Table.Td>
+//               Lorem Ipsum is simply dummy text of the printing and typesetting
+//               industry. Lorem Ipsum has been the industrys standard dummy text
+//               ever since the 1500s, when an unknown printer took a galley of
+//               type and scrambled it to make a type specimen book. It has
+//               survived not only five centuries, but also the leap into
+//               electronic typesetting, remaining essentially unchanged. It was
+//               popularised in the 1960s with the release of Letraset sheets
+//               containing Lorem Ipsum passages, and more recently with desktop
+//               publishing software like Aldus PageMaker including versions of
+//               Lorem Ipsum.
+//             </Table.Td>
+//           </Table.Tr>
+//         </Table.Body>
+//       </Table.Root>
+//     );
+//   },
+// };
