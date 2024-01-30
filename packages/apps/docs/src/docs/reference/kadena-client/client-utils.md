@@ -1,7 +1,7 @@
 ---
 title: Kadena client utilities
 description:
-  The `@kadena/client-utils` library provides a TypeScript based application programming interface API for interacting with smart contracts and the Kadena network. The library includes helper functions for the `coin` module that you can import using `@kadena/client-utils/coin` and `core` for developing API functions that can be used for any type of smart contract.
+  The `@kadena/client-utils` library provides a TypeScript based application programming interface API for interacting with smart contracts and the Kadena network. The library includes helper functions for the `coin` module that you can import using `@kadena/client-utils/coin` and `core` functions that you can use to develop interfaces for custom contracts.
 menu: Reference
 label: Kadena client
 order: 4
