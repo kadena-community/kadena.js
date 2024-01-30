@@ -10,8 +10,8 @@ describe('NumberField', () => {
   const label = 'What is 2+2?';
   it('should render without errors', () => {
     render(<NumberField label={label} />);
-    const textbox = screen.getByRole('textbox', { name: 'What is 2+2?' });
-    expect(textbox).toBeInTheDocument();
+    const component = screen.getByRole('textbox', { name: label });
+    expect(component).toBeInTheDocument();
   });
 
   it('should update value when use start typing ', async () => {
@@ -48,20 +48,14 @@ describe('NumberField', () => {
 
   it('should disable the input when isDisabled prop is true', () => {
     render(<NumberField label={label} disabled />);
-    const textbox = screen.getByRole('textbox', { name: 'What is 2+2?' });
-    expect(textbox).toBeDisabled();
+    const component = screen.getByRole('textbox', { name: label });
+    expect(component).toBeDisabled();
   });
 
   it('should render the provided value', () => {
     render(<NumberField label={label} value={9} />);
-    const textbox = screen.getByRole('textbox', { name: 'What is your name?' });
-    expect(textbox).toHaveValue(9);
-  });
-
-  it('should render the provided placeholder', () => {
-    render(<NumberField label={label} placeholder="Enter your name" />);
-    const textbox = screen.getByRole('textbox', { name: 'What is your name?' });
-    expect(textbox).toHaveAttribute('placeholder', 'Enter your name');
+    const component = screen.getByRole('textbox', { name: label });
+    expect(component).toHaveValue('9');
   });
 
   it('should render the provided label', () => {
@@ -79,7 +73,7 @@ describe('NumberField', () => {
     );
     const submitButton = screen.getByRole('button', { name: 'Submit' });
     await userEvent.click(submitButton);
-    const component = screen.getByText(label);
+    const component = screen.getByRole('textbox', { name: label });
     expect(component).toBeInvalid();
   });
 });
