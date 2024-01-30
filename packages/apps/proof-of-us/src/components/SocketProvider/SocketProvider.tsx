@@ -163,6 +163,18 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   };
 
+  const addObject = (tokenId: string, newState, previousState) => {
+    console.log(newState, previousState);
+    delete previousState?.previousState;
+    socket?.emit('addObject', {
+      content: {
+        newState,
+        previousState,
+      },
+      to: tokenId,
+    });
+  };
+
   return (
     <SocketContext.Provider
       value={{
@@ -178,6 +190,7 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
         getSigneeAccount,
         setBackgroundSocket,
         setLinesSocket,
+        addObject,
       }}
     >
       {children}

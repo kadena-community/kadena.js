@@ -18,6 +18,9 @@
   "dependencies": {
     "@google-analytics/data": "~3.2.2",
     "@vanilla-extract/css": "1.14.0",
+    "canvas": "^2.11.2",
+    "deep-equal": "^2.2.3",
+    "fabric": "^5.3.0",
     "next": "13.5.5",
     "next-themes": "~0.2.1",
     "react": "^18.2.0",
@@ -34,6 +37,7 @@
     "@kadena/fonts": "~0.0.1",
     "@rushstack/eslint-config": "~3.3.0",
     "@testing-library/react": "~14.0.0",
+    "@types/fabric": "^5.3.6",
     "@types/gtag.js": "~0.0.12",
     "@types/node": "^18.17.14",
     "@types/react": "^18.2.15",

@@ -26,6 +26,7 @@ interface IProofOfUs {
   avatar: {
     background?: string;
     lines: ICanvasPath[];
+    objects: any[];
   };
 }
 

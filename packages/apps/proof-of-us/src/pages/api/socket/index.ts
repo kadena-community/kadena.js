@@ -15,6 +15,7 @@ const ProofOfUsStore = () => {
       signees: [{ ...account, initiator: true }],
       avatar: {
         lines: [],
+        objects: [],
       },
     };
   };
@@ -33,6 +34,28 @@ const ProofOfUsStore = () => {
     const avatar = store[tokenId]?.avatar;
 
     store[tokenId].avatar = { ...avatar, lines };
+  };
+  const addObject = (tokenId: string, newState: any, previousState: any) => {
+    const avatar = store[tokenId]?.avatar;
+
+    delete newState.previousState;
+    delete previousState?.previousState;
+
+    if (previousState) {
+      const newObjects = store[tokenId].avatar.objects.map((state, idx) => {
+        delete state.previousState;
+        JSON.stringify(state) === JSON.stringify(previousState)
+          ? newState
+          : state;
+      });
+      store[tokenId].avatar = { ...avatar, objects: newObjects };
+      return;
+    }
+
+    store[tokenId].avatar = {
+      ...avatar,
+      objects: [...avatar.objects, newState],
+    };
   };
 
   const addSignee = (tokenId: string, account: IProofOfUsSignee) => {
@@ -60,6 +83,7 @@ const ProofOfUsStore = () => {
     removeSignee,
     addBackground,
     addLines,
+    addObject,
   };
 };
 
@@ -147,7 +171,19 @@ export default function SocketHandler(
 
     socket.on('setLines', ({ content, to }) => {
       store.addLines(to, content.lines);
-      io.to(to)
+      socket
+        .to(to)
+        .to(to)
+        .emit('getProofOfUs', {
+          content: store.getProofOfUs(to),
+          from: socket.handshake.auth.tokenId,
+        });
+    });
+
+    socket.on('addObject', ({ content: { newState, previousState }, to }) => {
+      store.addObject(to, newState, previousState);
+      socket
+        .to(to)
         .to(to)
         .emit('getProofOfUs', {
           content: store.getProofOfUs(to),

@@ -1,4 +1,5 @@
 'use client';
+import { AvatarEditor } from '@/components/AvatarEditor/AvatarEditor';
 import { CapturePhoto } from '@/components/CapturePhoto/CapturePhoto';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { PROOFOFUS_QR_URL } from '@/constants';
@@ -47,6 +48,7 @@ const Page: FC<IProps> = ({ params }) => {
     <div>
       Proof Of Us with ID ({data.tokenId})
       <section>
+        <AvatarEditor />
         <CapturePhoto />
         <h2>Communication</h2>
         <ListSignees />

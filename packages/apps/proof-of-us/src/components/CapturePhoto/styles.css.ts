@@ -7,5 +7,3 @@ export const modalClass = style([
     inset: 0,
   },
 ]);
-
-export const notificationWrapperClass = style({});
