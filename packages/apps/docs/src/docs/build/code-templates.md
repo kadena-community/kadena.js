@@ -1,6 +1,6 @@
 ---
 title: Code templates for common use cases
-description: Provides TypeScript and Pact code templates for performing common tasks with the Pact API.
+description: Provides TypeScript and Pact code templates for performing common tasks with Pact and the Kadena client.
 menu: Code templates
 label: Code templates
 order: 3
@@ -12,27 +12,11 @@ tags: [pact, typescript, account, transactions, utils]
 
 You can use the TypeScript and Pact sample code in this section as templates for performing common tasks with the Pact API.
 
-## Accounts                                        |
+## Create a Kadena account
 
-[Create an account](/build/cookbook#create-accounth278621961)                    | Create a KDA account.                        |
-| [Create and fund an account](/build/cookbook#create-and-fund-accounth-216351201) | Create and fund a KDA account.               |
-| [Rotate Keys](/build/cookbook#rotate-keysh-822051431)                         | Update the keyset controlling the account.   |
-| [Get Balance](/build/cookbook#get-balanceh646980562)                          | Get the KDA account balance.                 |
-| **TRANSACTIONS**                                                              |                                              |
-| [Get Transaction Status](/build/cookbook#get-transaction-statush155365598)    | Get transaction status using Tx request key. |
-| **UTILS**                                                                     |                                              |
-| [Deploy contract](/build/cookbook#deploy-contracth59420715)                   | Deploy a Pact smart contract.                |
-| [Read State](/build/cookbook#read-stateh2758023)                              | Read state of a contract.                    |
-| [Verify Signature](/build/cookbook#verify-signatureh1418798545)               | Verify a key pair signature.                 |
+Create a new Kadena account on a chain without transferring any digital assets (KDA) into it.
 
-:::tip For convenience you can find all these scripts in a
-[repository](https://github.com/raduciobanu22/pact-lang-api-cookbook). :::
-
-## Accounts
-
-### Create Account
-
-```typescript title="Create a KDA account"
+```
 const HELP = `Usage example: \n\nnode create-account.js k:{public-key} -- Replace {public-key} with an actual key`;
 
 const Pact = require('pact-lang-api');
@@ -95,7 +79,9 @@ async function createAccount(newAccount) {
 }
 ```
 
-### Create And Fund Account
+## Create and fund a Kadena account
+
+Create and fund a new Kadena account on a chain by transferring any digital assets (KDA) into it.
 
 ```typescript title="reate and fund a KDA account"
 const HELP = `Usage example: \n\nnode transfer-create.js k:{public-key} amount -- Replace {public-key} with an actual key`;
@@ -177,7 +163,9 @@ async function transferCreate(sender, newAccount, amount) {
 }
 ```
 
-### Rotate Keys
+## Rotate keys
+
+Update the keyset controlling the account.
 
 ```typescript title="Update the keyset controlling the account."
 const HELP = 'Usage example: \n\nnode rotate {account} {new-guard}';
@@ -257,7 +245,9 @@ async function rotate(account, newKey) {
 }
 ```
 
-### Get Balance
+## Get an account balance
+
+Get the KDA account balance.
 
 ```typescript title="Get the KDA account balance"
 const HELP = `Usage example: \n\nnode get-balance.js k:{public-key} -- Replace {public-key} with an actual key`;
@@ -307,9 +297,9 @@ async function getBalance(account) {
 }
 ```
 
-## Transactions
+## Get transaction status
 
-### Get Transaction Status
+Get transaction status using Tx request key.
 
 ```typescript title="Get transaction status using Tx request key"
 const HELP = 'Usage example: \n\nnode get-status {request-key}';
@@ -331,9 +321,9 @@ async function getTxStatus(requestKey) {
 }
 ```
 
-## Utils
+## Deploy a contract
 
-### Deploy Contract
+Deploy a Pact smart contract.
 
 ```typescript title="Deploy a Pact smart contract"
 const Pact = require('pact-lang-api');
@@ -383,7 +373,10 @@ async function deployContract() {
 }
 ```
 
-### Read State
+
+## Read state
+
+Read state of a contract.
 
 ```typescript title="Read state of a contract"
 const HELP = 'Usage example: \n\nnode read-state';
@@ -419,7 +412,9 @@ async function getState() {
 }
 ```
 
-### Verify Signature
+## Verify a signature
+
+Verify a key pair signature.
 
 ```typescript title="Verify a key pair signature"
 const Pact = require('pact-lang-api');
