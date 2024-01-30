@@ -26,7 +26,6 @@ type PickedAriaTextFieldProps = Omit<
   'children' | 'inputElementType' | 'onChange' | 'type'
 >;
 export interface ITextFieldProps extends PickedAriaTextFieldProps {
-  // block type number only
   className?: string;
   isPositive?: boolean;
   tag?: string;
@@ -47,7 +46,7 @@ export interface ITextFieldProps extends PickedAriaTextFieldProps {
   endAddon?: ReactNode;
   isOutlined?: boolean;
   inputFont?: 'body' | 'code';
-  type?: Omit<ComponentProps<'input'>['type'], 'number'>;
+  // type?: Omit<ComponentProps<'input'>['type'], 'number'>;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, react/function-component-definition
