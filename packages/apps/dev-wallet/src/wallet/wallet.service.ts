@@ -14,6 +14,7 @@ import {
 } from '@kadena/hd-wallet';
 import {
   IAccount,
+  IKeyItem,
   IKeySource,
   IProfile,
   WalletRepository,
@@ -52,28 +53,30 @@ const sign = (props: ServiceProps) => async (TXs: IUnsignedCommand[]) => {
     throw new Error('Wallet is not unlocked');
   }
 
-  const keySources = profile.keySources;
-
   const signedTx = Promise.all(
     TXs.map(async (Tx) => {
       const signatures = await Promise.all(
-        keySources.map(async ({ publicKeys, derivationPathTemplate }) => {
-          const cmd: IPactCommand = JSON.parse(Tx.cmd);
-          const relevantIndexes = cmd.signers
-            .map((signer) =>
-              publicKeys.findIndex((publicKey) => publicKey === signer.pubKey),
-            )
-            .filter((index) => index !== undefined) as number[];
+        profile.keySources.map(
+          async ({ publicKeys, derivationPathTemplate }) => {
+            const cmd: IPactCommand = JSON.parse(Tx.cmd);
+            const relevantIndexes = cmd.signers
+              .map((signer) =>
+                publicKeys.findIndex(
+                  (publicKey) => publicKey === signer.pubKey,
+                ),
+              )
+              .filter((index) => index !== undefined) as number[];
 
-          const signatures = await kadenaSignWithSeed(
-            encryptionKey,
-            encryptedSeed,
-            relevantIndexes,
-            derivationPathTemplate,
-          )(Tx.hash);
+            const signatures = await kadenaSignWithSeed(
+              encryptionKey,
+              encryptedSeed,
+              relevantIndexes,
+              derivationPathTemplate,
+            )(Tx.hash);
 
-          return signatures;
-        }),
+            return signatures;
+          },
+        ),
       );
       return addSignatures(Tx, ...signatures.flat());
     }),
@@ -102,7 +105,29 @@ const decryptMnemonic =
     return mnemonic;
   };
 
-const createProfileAndFirstAccount =
+const createKAccount =
+  ({
+    profile,
+    walletRepository,
+  }: Pick<ServiceProps, 'walletRepository' | 'profile'>) =>
+  async (keyItem: IKeyItem) => {
+    const account: IAccount = {
+      uuid: crypto.randomUUID(),
+      alias: '',
+      profileId: profile.uuid,
+      address: `k:${keyItem.publicKey}`,
+      guard: {
+        type: 'keySet',
+        pred: 'keys-any',
+        publicKeys: [keyItem],
+      },
+    };
+
+    await walletRepository.addAccount(account);
+    return account;
+  };
+
+const createProfile =
   (
     props: Pick<
       ServiceProps,
@@ -141,26 +166,6 @@ const createProfileAndFirstAccount =
 
     await walletRepository.addProfile(profile);
 
-    const account: IAccount = {
-      uuid: crypto.randomUUID(),
-      alias: '',
-      profileId: profile.uuid,
-      address: `k:${publicKey}`,
-      guard: {
-        type: 'keySet',
-        pred: 'keys-any',
-        publicKeys: [
-          {
-            publicKey: publicKey,
-            keySourceId: keySource.uuid,
-            index: 0,
-          },
-        ],
-      },
-    };
-
-    await walletRepository.addAccount(account);
-
     return profile;
   };
 
@@ -196,11 +201,17 @@ export const walletFactory = (walletRepository: WalletRepository) => ({
 
     const encryptedMnemonic = await kadenaEncrypt(password, mnemonic, 'buffer');
 
-    const profile = await createProfileAndFirstAccount({
+    const profile = await createProfile({
       walletRepository,
       encryptionKey,
       encryptedSeed,
     })(profileName, encryptedMnemonic);
+
+    await createKAccount({ profile, walletRepository })({
+      index: 0,
+      keySourceId: profile.keySources[0].uuid,
+      publicKey: profile.keySources[0].publicKeys[0],
+    });
 
     const service = walletService({
       walletRepository,
