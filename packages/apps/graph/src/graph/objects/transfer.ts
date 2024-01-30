@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
-import type { Transfer } from '@prisma/client';
+import type { Block, Transfer } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
@@ -27,6 +27,29 @@ export default builder.prismaNode('Transfer', {
     receiverAccount: t.exposeString('receiverAccount'),
 
     // computed fields
+    creationTime: t.field({
+      type: 'DateTime',
+      select: {
+        blockHash: true,
+      },
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      async resolve({ blockHash }) {
+        try {
+          return (
+            (await prismaClient.block.findUnique({
+              where: {
+                hash: blockHash,
+              },
+              select: {
+                creationTime: true,
+              },
+            })) as Block
+          ).creationTime;
+        } catch (error) {
+          throw normalizeError(error);
+        }
+      },
+    }),
     crossChainTransfer: t.prismaField({
       description:
         'The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.',
@@ -110,20 +133,20 @@ export default builder.prismaNode('Transfer', {
     }),
 
     // relations
-    blocks: t.prismaField({
-      type: ['Block'],
+    block: t.prismaField({
+      type: 'Block',
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
         blockHash: true,
       },
       async resolve(query, parent) {
         try {
-          return await prismaClient.block.findMany({
+          return (await prismaClient.block.findUnique({
             ...query,
             where: {
               hash: parent.blockHash,
             },
-          });
+          })) as Block;
         } catch (error) {
           throw normalizeError(error);
         }

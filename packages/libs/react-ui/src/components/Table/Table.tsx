@@ -11,15 +11,22 @@ import type { CompoundType } from './types';
 export interface ITableProps extends Pick<Sprinkles, 'wordBreak'> {
   children?: CompoundType<typeof TBody> | CompoundType<typeof THead>;
   striped?: boolean;
+  className?: string;
 }
 
-export const Table: FC<ITableProps> = ({ children, striped, wordBreak }) => {
+export const Table: FC<ITableProps> = ({
+  children,
+  striped,
+  wordBreak,
+  className,
+}) => {
   return (
     <table
       className={classNames(
         tableClass,
         { stripedClass: striped },
         sprinkles({ wordBreak }),
+        className,
       )}
     >
       {React.Children.map(children, (child) => {

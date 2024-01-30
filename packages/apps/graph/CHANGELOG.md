@@ -1,5 +1,20 @@
 # @kadena/graph
 
+## 0.1.1
+
+### Patch Changes
+
+- 9bf1a73cd: Initial release
+- 9cd6d072f: Added documentation on the cross-chain transfer lookup; the
+  reasoning behind the current method
+- Updated dependencies [64dd84ee0]
+- Updated dependencies [bbeef98a6]
+- Updated dependencies [0540b213b]
+- Updated dependencies [3fc8ac86d]
+- Updated dependencies [72f472e58]
+  - @kadena/client-utils@0.3.0
+  - @kadena/client@1.8.0
+
 ## 1.0.7
 
 ### Patch Changes
