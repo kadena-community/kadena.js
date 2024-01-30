@@ -1,5 +1,6 @@
-import { ChainId } from '@kadena/types';
-import { IAccount } from '../../../core/utils/helpers';
+import { createSignWithKeypair } from '@kadena/client';
+import type { ChainId } from '@kadena/types';
+import type { IAccount, IClientConfig } from '../../../core/utils/helpers';
 
 export interface IAccountWithSecretKey extends IAccount {
   secretKey: string;
@@ -15,6 +16,7 @@ export const defaultAccount: IAccountWithSecretKey = {
 
 export const defaultChainId: ChainId = '0';
 export const defaultNetworkId = 'fast-development';
+export const defaultNetworkHost = 'http://localhost:8080';
 
 /* Defines the arguments for the marmalade contracts: these values are going
 to be replaced in the marmalade templates and code files  */
@@ -34,3 +36,14 @@ export const defaultArguments = {
 related to the namespace of the first item are going to be deployed first, then the second,
 and so on  */
 export const defaultNamespaceDeployOrder = ['marmalade-v2', 'marmalade-sale'];
+
+/* By default the client configuration will point to localhost:8080 and use sender00
+  as the default account */
+
+export const defaultClientConfig: IClientConfig = {
+  sign: createSignWithKeypair({
+    publicKey: defaultAccount.publicKeys?.[0] ?? '',
+    secretKey: defaultAccount.secretKey,
+  }),
+  host: defaultNetworkHost,
+};
