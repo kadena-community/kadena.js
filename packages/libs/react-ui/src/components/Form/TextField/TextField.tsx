@@ -49,7 +49,7 @@ export interface ITextFieldProps extends PickedAriaTextFieldProps {
   /*
    * using native the definition from react for type but blocking all other types that we dont want (specifically blocking number)
    */
-  type?: 'text' | 'search' | 'url' | 'tel' | 'email' | 'password' | 'phrase';
+  type?: 'text' | 'search' | 'url' | 'tel' | 'email' | 'password';
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, react/function-component-definition
