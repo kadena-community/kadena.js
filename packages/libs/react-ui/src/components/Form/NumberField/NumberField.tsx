@@ -8,8 +8,9 @@ import type {
   ReactNode,
 } from 'react';
 import React, { forwardRef, useCallback } from 'react';
-import type { AriaTextFieldProps } from 'react-aria';
-import { useFocusRing, useHover, useTextField } from 'react-aria';
+import type { AriaNumberFieldProps } from 'react-aria';
+import { useFocusRing, useHover, useLocale, useNumberField } from 'react-aria';
+import { useNumberFieldState } from 'react-stately';
 import { bodyBaseRegular, codeBaseRegular } from '../../../styles';
 import {
   endAddon,
@@ -21,12 +22,12 @@ import {
 import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
 
-type PickedAriaTextFieldProps = Omit<
-  AriaTextFieldProps,
+type PickedAriaNumberFieldProps = Omit<
+  AriaNumberFieldProps,
   'children' | 'inputElementType' | 'onChange'
 >;
-export interface ITextFieldProps extends PickedAriaTextFieldProps {
-  // block type number only
+export interface INumberFieldProps extends PickedAriaNumberFieldProps {
+  // block type
   className?: string;
   isPositive?: boolean;
   tag?: string;
@@ -36,13 +37,13 @@ export interface ITextFieldProps extends PickedAriaTextFieldProps {
    */
   disabled?: boolean;
   /*
-   * using native onChange handler instead of AriaTextFieldProps.onChange to support uncontrolled form state eg. react-hook-form
+   * using native onChange handler instead of AriaNumberFieldProps.onChange to support uncontrolled form state eg. react-hook-form
    */
   onChange?: ComponentProps<'input'>['onChange'];
   /*
-   * alias for `AriaTextFieldProps.onChange`
+   * alias for `AriaNumberFieldProps.onChange`
    */
-  onValueChange?: (value: string) => void;
+  onValueChange?: (value: number) => void;
   startAddon?: ReactNode;
   endAddon?: ReactNode;
   isOutlined?: boolean;
@@ -50,25 +51,32 @@ export interface ITextFieldProps extends PickedAriaTextFieldProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, react/function-component-definition
-export function TextFieldBase(
-  props: ITextFieldProps,
+export function NumberFieldBase(
+  props: INumberFieldProps,
   forwardedRef: ForwardedRef<ElementRef<'input'>>,
 ) {
   const ref = useObjectRef<ElementRef<'input'>>(forwardedRef);
   const isDisabled = props.isDisabled || props.disabled;
+  const { locale } = useLocale();
+  const state = useNumberFieldState({
+    ...props,
+    onChange: props.onValueChange,
+    locale,
+  });
+
   const {
     labelProps,
     inputProps,
     descriptionProps,
     errorMessageProps,
     ...validation
-  } = useTextField(
+  } = useNumberField(
     {
       ...props,
       onChange: props.onValueChange,
-      inputElementType: 'input',
       isDisabled,
     },
+    state,
     ref,
   );
 
@@ -173,4 +181,4 @@ export function TextFieldBase(
   );
 }
 
-export const TextField = forwardRef(TextFieldBase);
+export const NumberField = forwardRef(NumberFieldBase);

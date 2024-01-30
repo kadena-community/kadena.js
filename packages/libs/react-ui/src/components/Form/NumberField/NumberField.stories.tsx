@@ -5,11 +5,11 @@ import { atoms } from '../../../styles';
 import { Button } from '../../Button';
 import { Plus } from '../../Icon/System/SystemIcon';
 import { Account } from '../../Icon/System/svgs/Account';
-import { Text } from '../../Typography/Text/Text';
+import { NumberField } from './NumberField';
+
 import { CopyButton } from '../ActionButtons/CopyButton';
 import { Form } from '../Form';
-import { TextField } from '../TextField';
-import type { ITextFieldProps } from './TextField';
+import type { INumberFieldProps } from './NumberField';
 
 const formStoryClass = atoms({
   display: 'flex',
@@ -17,16 +17,16 @@ const formStoryClass = atoms({
   gap: 'md',
 });
 
-const meta: Meta<ITextFieldProps> = {
-  title: 'Form/TextField',
-  component: TextField,
+const meta: Meta<INumberFieldProps> = {
+  title: 'Form/NumberField',
+  component: NumberField,
   decorators: [withContentWidth, onLayer2],
   parameters: {
     status: { type: 'releaseCandidate' },
     docs: {
       description: {
         component:
-          'The TextField component is a wrapper around the native input element that provides the ability to add additional information.',
+          'The NumberField component is a wrapper around the native input (type number) element that provides the ability to add additional information.',
       },
     },
   },
@@ -155,24 +155,28 @@ const meta: Meta<ITextFieldProps> = {
         defaultValue: { summary: 'false' },
       },
     },
+    formatOptions: {
+      description:
+        'Allows you to specify the format of the number, such as style with "percent", "exceptZero" or currency with "EUR". Check [aria-number](https://react-spectrum.adobe.com/react-aria/useNumberField.html)',
+    },
   },
 };
 
 export default meta;
 
-type Story = StoryObj<ITextFieldProps>;
+type Story = StoryObj<INumberFieldProps>;
 
-export const TextFieldStory: Story = {
-  name: 'TextField',
+export const NumberFieldStory: Story = {
+  name: 'NumberField',
   args: {
     isDisabled: false,
     tag: 'tag',
     description: 'This is helper text',
     info: '(optional)',
     label: 'Label',
-    id: 'TextFieldStory',
+    id: 'NumberFieldStory',
     placeholder: 'This is a placeholder',
-    value: '',
+    value: 8,
     isInvalid: false,
     isPositive: false,
     isReadOnly: false,
@@ -181,22 +185,22 @@ export const TextFieldStory: Story = {
     inputFont: 'body',
   },
   render: (props) => {
-    const [value, setValue] = useState<string>('');
-    return <TextField {...props} value={value} onValueChange={setValue} />;
+    const [value, setValue] = useState<number | undefined>();
+    return <NumberField {...props} value={value} onValueChange={setValue} />;
   },
 };
 
 export const WithoutLabel: Story = {
   name: 'Without label',
   render: () => {
-    return <TextField placeholder="placeholder" />;
+    return <NumberField placeholder="placeholder" />;
   },
 };
 
 export const WithAddons: Story = {
   name: 'With addons',
   render: () => {
-    const [value, setValue] = useState<string>('');
+    const [value, setValue] = useState<number | undefined>();
 
     return (
       <Form
@@ -206,7 +210,7 @@ export const WithAddons: Story = {
           alert(value);
         }}
       >
-        <TextField
+        <NumberField
           label="With addon"
           value={value}
           onValueChange={setValue}
@@ -219,120 +223,8 @@ export const WithAddons: Story = {
   },
 };
 
-export const NativeValidation: Story = {
-  name: 'Native validation',
-  render: () => {
-    const [email, setEmail] = useState<string>('');
-    const [minMaxLength, setMinMaxLength] = useState<string>('');
-    const [url, setUrl] = useState<string>('');
-    const [pattern, setPattern] = useState<string>('');
-
-    return (
-      <Form
-        className={formStoryClass}
-        onSubmit={(e) => {
-          e.preventDefault();
-          alert(JSON.stringify({ email, minMaxLength, url, pattern }));
-        }}
-      >
-        <Text>
-          Keep in mind that native validation is only triggered when the a form
-          is submitted. for realtime validation use the them `isInvalid` prop.
-        </Text>
-        <TextField
-          isRequired
-          type="email"
-          validationBehavior="native"
-          label="email"
-          value={email}
-          onValueChange={setEmail}
-          placeholder="required (email)"
-          minLength={5}
-          maxLength={10}
-        />
-        <TextField
-          isRequired
-          validationBehavior="native"
-          label="min/max length"
-          value={minMaxLength}
-          onValueChange={setMinMaxLength}
-          placeholder="required (minLength 5, maxLength 10)"
-          minLength={5}
-          maxLength={10}
-        />
-
-        <TextField
-          isRequired
-          type="url"
-          validationBehavior="native"
-          label="url"
-          value={url}
-          onValueChange={setUrl}
-          placeholder="required (url)"
-        />
-
-        <TextField
-          isRequired
-          validationBehavior="native"
-          label="pattern"
-          value={pattern}
-          onValueChange={setPattern}
-          placeholder="required (account address pattern 'starts with k:')"
-          pattern="^k:"
-        />
-
-        <Button type="submit">Submit</Button>
-      </Form>
-    );
-  },
-};
-
-export const ServerValidation: Story = {
-  name: 'Server validation',
-  render: () => {
-    const [value, setValue] = useState<string>('');
-
-    return (
-      <Form
-        className={formStoryClass}
-        onSubmit={(e) => {
-          e.preventDefault();
-          alert(value);
-        }}
-        validationErrors={{
-          test: 'This is an error message from the server',
-        }}
-      >
-        <Text>
-          Server error messages can be provided via the `validationErrors` prop
-          on the Form component. please find more info and examples in the{' '}
-          <a
-            href="https://react-spectrum.adobe.com/react-aria/forms.html?#server-validation"
-            target="_blank"
-            rel="noreferrer"
-          >
-            react-aria docs
-          </a>
-        </Text>
-
-        <TextField
-          validationBehavior="native"
-          name="test"
-          label="min/max length"
-          value={value}
-          onValueChange={setValue}
-          placeholder="required (minLength 5, maxLength 10)"
-          minLength={5}
-          maxLength={10}
-        />
-        <Button type="submit">Submit</Button>
-      </Form>
-    );
-  },
-};
-
-export const CustomValidation: Story = {
-  name: 'Custom validation',
+export const MinValue: Story = {
+  name: 'Minimum value',
   render: () => {
     return (
       <Form
@@ -341,14 +233,10 @@ export const CustomValidation: Story = {
           e.preventDefault();
         }}
       >
-        <TextField
+        <NumberField
           label="Custom validation"
           validationBehavior="aria"
-          validate={(value) => {
-            if (value.length < 5) {
-              return 'Value must be at least 5 characters';
-            }
-          }}
+          minValue={0}
         />
         <Button type="submit">Submit</Button>
       </Form>
@@ -359,8 +247,7 @@ export const CustomValidation: Story = {
 export const CustomErrorMessage: Story = {
   name: 'Custom error message',
   render: () => {
-    const [value, setValue] = useState<string>('');
-    const v = value.toLowerCase();
+    const [value, setValue] = useState<number>();
     return (
       <Form
         className={formStoryClass}
@@ -368,7 +255,7 @@ export const CustomErrorMessage: Story = {
           e.preventDefault();
         }}
       >
-        <TextField
+        <NumberField
           label="Overiding native message"
           validationBehavior="native"
           isRequired
@@ -379,21 +266,19 @@ export const CustomErrorMessage: Story = {
           }}
         />
 
-        <TextField
-          label="What is your favorite crypto token?"
+        <NumberField
+          label="When was the first transaction in the KDA mainnet done?"
           description={
-            v === 'kda' ? 'You are a true believer 🚀' : 'Answer carefully'
+            value === 2019
+              ? 'You are a true believer 🚀'
+              : 'Dont randomly test 😒'
           }
           value={value}
-          isPositive={v === 'kda'}
+          isPositive={value === 2019}
           onValueChange={setValue}
           validationBehavior="aria"
-          isInvalid={!!v && v !== 'kda'}
-          errorMessage={
-            v.startsWith('k')
-              ? 'You are on the right track'
-              : 'Wrong answer think again 🤔'
-          }
+          isInvalid={!!value && value !== 2019}
+          errorMessage={'WOOOPS'}
         />
         <Button type="submit">Submit</Button>
       </Form>
@@ -405,7 +290,7 @@ export const WithCopyButton: Story = {
   name: 'With copy button',
   render: () => {
     return (
-      <TextField
+      <NumberField
         id="with-copy-button"
         label="With copy button"
         endAddon={<CopyButton inputId="with-copy-button" />}
