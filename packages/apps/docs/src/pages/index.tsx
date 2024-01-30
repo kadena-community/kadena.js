@@ -16,7 +16,7 @@ import {
   Grid,
   GridItem,
   Heading,
-  Link as KandenaLink,
+  Link as KadenaLink,
   Stack,
   SystemIcon,
 } from '@kadena/react-ui';
@@ -51,8 +51,8 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   background="whitepapers"
                 >
                   <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/kadena/overview">
-                      What is Kadena?
+                    <Link className={docsCardLink} href="/kadena/why-kadena">
+                      Why Kadena?
                     </Link>
                     <Link className={docsCardLink} href="/kadena/kda">
                       What is the KDA token?
@@ -60,6 +60,12 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     <Link className={docsCardLink} href="/pact">
                       What are Pact smart contracts?
                     </Link>
+                    <a
+                      className={docsCardLink}
+                      href="https://academy.kadena.io"
+                    >
+                      Explore courses in the Kadena Academy
+                    </a>
                   </BrowseSection>
                 </DocsCard>
               </GridItem>
@@ -70,29 +76,21 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   schema="warning"
                   background="contribute"
                 >
-                  <Box marginBlock="md">
-                    <KandenaLink
-                      href="/build/guides/election-dapp-tutorial"
-                      endIcon={<SystemIcon.TrailingIcon />}
-                      color="negative"
-                      variant="contained"
-                    >
-                      Build your first dApp
-                    </KandenaLink>
-                  </Box>
                   <BrowseSection marker="none">
                     <Link className={docsCardLink} href="/build/quickstart">
-                      Quick start
+                      Deploy "Hello, World!" - Quick start
                     </Link>
-
-                    <a
+                    <Link className={docsCardLink} href="/pact/beginner">
+                      Get started with Pact
+                    </Link>
+                    <Link
                       className={docsCardLink}
-                      href="https://academy.kadena.io"
+                      href="/build/guides/election-dapp-tutorial"
                     >
-                      Explore courses in the Kadena Academy
-                    </a>
+                      Builder's workshop: Election application
+                    </Link>
                     <Link className={docsCardLink} href="/build/guides">
-                      Create a smart contract
+                      Builder's workshop: Faucet application
                     </Link>
                   </BrowseSection>
                 </DocsCard>

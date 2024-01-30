@@ -36,20 +36,17 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
             <Box marginBlock="md">
               <Text>
                 Building applications to run on a blockchain doesn&apos;t have
-                to be hard, time-consuming, or expensive. Get started with the
-                basics through hands-on tutorials. Learn how to set up a
-                development network, create and fund a development wallet,
-                deploy a smart contract, and more. Take the first step by
-                clicking Quick start.
+                to be hard, time-consuming, or expensive. 
+                
+                Follow the Quick start to set up a development environment and deploy your first smart contract on Kadena.
               </Text>
             </Box>
-            <Link
-              endIcon={<SystemIcon.TrailingIcon />}
-              variant="contained"
-              href="/build/quickstart"
-            >
-              Quick start
+            <Link className={docsCardLink} href="/build/quickstart">
+                Deploy "Hello, World!" - Quick start
             </Link>
+            <Link className={docsCardLink} href="/pact/beginner">
+                Get started with Pact
+              </Link>
           </Card>
         </GridItem>
         <GridItem>
@@ -66,41 +63,35 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
         <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem>
             <DocsCard
-              label="Quick start"
-              description="Follow the Quick start to set up a development environment and deploy your first smart contract on Kadena."
+              label="Explore the blockchain"
+              description="Add your name to the Memory Wall on the blockchain, see the blockchain in action using a block explorer, and try the dancing parrot game."
               schema="warning"
               background="contribute"
             >
               <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/build/quickstart">
-                  Quick start
-                </Link>
+
                 <Link
                   className={docsCardLink}
                   href="/build/quickstart/memorywall"
                 >
-                  Sign the memory wall
+                  Sign the Memory Wall
                 </Link>
+                <Link 
+                  className={docsCardLink} 
+                  href="https://explorer.chainweb.com/mainnet">
+                  See activity in the Kadena Block Explorer
+                </Link>                
                 <Link
                   className={docsCardLink}
                   href="/build/quickstart/setup-chainweaver"
                 >
-                  Setup Chainweaver
-                </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/build/quickstart/testnet-account-setup"
-                >
-                  Testnet account setup
+                  Set up a wallet
                 </Link>
                 <Link
                   className={docsCardLink}
                   href="/build/quickstart/pacty-parrots"
                 >
-                  Pacty Parrots
-                </Link>
-                <Link className={docsCardLink} href="/build/quickstart/dapp">
-                  Build a Dapp
+                  Play Pacty Parrots
                 </Link>
               </BrowseSection>
             </DocsCard>

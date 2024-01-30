@@ -1,14 +1,14 @@
 ---
-title: A Step-By-Step Guide to Writing Pact Smart Contract
-description: A Step-By-Step Guide to Writing Pact Smart Contract
+title: "Workshop: Faucet application"
+description: Learn how to write a faucet application using the Pact smart contract language.
 menu: Guides
-label: Pact Smart Contract
+label: "Workshop: Faucet application"
 order: 4
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---
 
-# A Step-By-Step Guide to Writing Pact Smart Contract
+# Welcome to the Faucet application workshop
 
 This is a Pact developer tutorial series titled “Real World Pact”, which
 contains tutorials on:

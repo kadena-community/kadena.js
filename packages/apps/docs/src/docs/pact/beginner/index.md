@@ -1,6 +1,6 @@
 ---
-title: Welcome to Pact
-description: Kadena makes blockchain work for everyone.
+title: Get started with Pact
+description: Start your builder's journey on Kadena by learning about the Pact smart contract programming language.
 menu: Beginner
 label: Welcome to Pact
 order: 2

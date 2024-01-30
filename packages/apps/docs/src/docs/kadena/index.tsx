@@ -22,7 +22,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
           <GridItem rowSpan={2}>
             <DocsCard
               label="General"
-              description="Kadena was founded on the idea that blockchain could revolutionize how the world interacts and transacts. But to get to mass adoption, chain technology and the ecosystem connecting it to the business world needed to be reimagined from the ground up. Our founders built a proprietary chain architecture and created the tools to make blockchain work for business – at speed, scale, and energy efficiency previously thought unachievable."
+              description="The philosophy at the heart of the Kadena network is based on the belief that blockchain technology can revolutionize how people communicate and interact with one another, that transactions can be handled safely and securely without a centralized authority, and that transparency and privacy aren't mutually exclusive."
               schema="info"
               background="contribute"
             >
