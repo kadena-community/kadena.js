@@ -1,7 +1,7 @@
 ---
-title: Core concepts
+title: Consensus
 id: concepts
-description: Covers core Kadena concepts.
+description: Learn the basics about consensus models and the Kadena proof-of-work protocol.
 menu: Learn
 label: Core concepts
 order: 3
@@ -9,6 +9,5 @@ layout: full
 tags: [pact, typescript, account, transactions, utils]
 ---
 
-# Why build on a blockchain?
+# Consensus
 
-Not in a subfolder.

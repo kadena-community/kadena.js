@@ -21,12 +21,25 @@ pages:
       why:
         url: /why-kadena
         file: /learn/why-kadena.md
-      concepts:
-        url: /concepts
-        file: /learn/concepts.md
+      consensus:
+        url: /consensus
+        file: /learn/consensus.md
+      cryptography:
+        url: /cryptography
+        file: /learn/cryptography.md
       accounts:
         url: /accounts
         file: /learn/accounts-keys.md
+      glossary:
+        url: /glossary
+        file: /kadena/glossary.md
+      kadena-faq:
+        url: /kadena-faq
+        file: /kadena/kadena-faq.md
+      resources:
+        url: /resources
+        file: /kadena/resources.md
+
   build:
     url: /build
     file: /build/build.md
