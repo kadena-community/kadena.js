@@ -1,6 +1,7 @@
-import {
+import type {
   ChainId,
-  ICommandResult,
+  ICommandResult} from '@kadena/client';
+import {
   IKeyPair,
   IPactCommand,
   IPartialPactCommand,
@@ -15,7 +16,7 @@ import {
   setNetworkId,
 } from '@kadena/client/fp';
 import { submitClient } from '../core';
-import { IClientConfig } from '../core/utils/helpers';
+import type { IClientConfig } from '../core/utils/helpers';
 
 export interface ITransactionBodyInput {
   chainId: ChainId;
@@ -27,8 +28,8 @@ export interface ITransactionBodyInput {
     ttl: number;
     senderAccount: string;
   };
-  keysets: { name: string; pred: string; keys: string[] }[];
-  namespace: { key: string; data: string };
+  keysets?: { name: string; pred: string; keys: string[] }[];
+  namespace?: { key: string; data: string };
 }
 
 export interface IDeployContractInput {

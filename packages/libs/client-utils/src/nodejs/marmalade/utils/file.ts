@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, writeFileSync } from 'fs';
 import yaml from 'js-yaml';
 import { join, relative } from 'path';
-import {
+import type {
   ILocalConfig,
   IRemoteConfig,
   IRepositoryConfig,

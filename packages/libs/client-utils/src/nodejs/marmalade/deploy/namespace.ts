@@ -1,14 +1,10 @@
-import { ChainId } from '@kadena/types';
+import type { ChainId } from '@kadena/types';
 import { readdirSync } from 'fs';
 import { join } from 'path';
 import { deployContract } from '../../../built-in/deployContract';
-import { IAccount, IClientConfig } from '../../../core/utils/helpers';
-import {
-  defaultAccount,
-  defaultChainId,
-  defaultNetworkId,
-} from '../utils/defaults';
-import { INamespaceConfig } from './config';
+import type { IAccount, IClientConfig } from '../../../core/utils/helpers';
+import type { INamespaceConfig } from './config';
+import { defaultAccount, defaultChainId, defaultNetworkId } from './defaults';
 
 export const defaultNamespaceConfig: INamespaceConfig[] = [
   {
