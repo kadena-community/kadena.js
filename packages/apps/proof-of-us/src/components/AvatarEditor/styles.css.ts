@@ -7,3 +7,11 @@ export const canvasClass = style([
     aspectRatio: '1/1',
   },
 ]);
+
+export const modalClass = style([
+  {
+    position: 'absolute',
+    background: 'white',
+    inset: 0,
+  },
+]);

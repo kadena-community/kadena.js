@@ -49,7 +49,6 @@ const Page: FC<IProps> = ({ params }) => {
       Proof Of Us with ID ({data.tokenId})
       <section>
         <AvatarEditor />
-        <CapturePhoto />
         <h2>Communication</h2>
         <ListSignees />
       </section>

@@ -1,4 +1,5 @@
 'use client';
+import { AvatarEditor } from '@/components/AvatarEditor/AvatarEditor';
 import { CapturePhoto } from '@/components/CapturePhoto/CapturePhoto';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useAccount } from '@/hooks/account';
@@ -39,7 +40,7 @@ const Page: FC<IProps> = ({ params }) => {
           <button onClick={handleRemove}>remove</button>
         )}
       </section>
-      <CapturePhoto />
+      <AvatarEditor />
       scanned Proof Of Us with ID ({params.id})
       <ListSignees />
     </div>
