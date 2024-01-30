@@ -27,7 +27,7 @@ bring permissionless interoperability to the Kadena ecosystem via Hyperlane.
 blockchain ecosystem that are not yet available for the Kadena community,
 including:**
 
-1. Opportunities for staking
+1. Ability to import and export tokens and NFTs through the Hyperlane Network
 
 2. Opportunities to use DeFi financial instruments
 
