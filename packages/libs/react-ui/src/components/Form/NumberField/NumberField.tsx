@@ -24,7 +24,7 @@ import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
 
 type PickedAriaNumberFieldProps = Omit<
   AriaNumberFieldProps,
-  'children' | 'inputElementType' | 'onChange'
+  'children' | 'inputElementType' | 'onChange' | 'type'
 >;
 export interface INumberFieldProps extends PickedAriaNumberFieldProps {
   // block type

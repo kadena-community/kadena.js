@@ -186,7 +186,17 @@ export const NumberFieldStory: Story = {
   },
   render: (props) => {
     const [value, setValue] = useState<number | undefined>();
-    return <NumberField {...props} value={value} onValueChange={setValue} />;
+    return (
+      <NumberField
+        {...props}
+        value={value}
+        onValueChange={setValue}
+        formatOptions={{
+          notation: 'standard',
+          compactDisplay: 'long',
+        }}
+      />
+    );
   },
 };
 
@@ -194,6 +204,26 @@ export const WithoutLabel: Story = {
   name: 'Without label',
   render: () => {
     return <NumberField placeholder="placeholder" />;
+  },
+};
+
+export const UsdFormat: Story = {
+  name: 'USD format',
+  render: () => {
+    return (
+      <NumberField
+        label="Tell me your salary"
+        placeholder="placeholder"
+        formatOptions={{
+          style: 'none',
+          useGrouping: false,
+          minimumIntegerDigits: 2,
+          maximumFractionDigits: 2,
+          minimumSignificantDigits: 2,
+          maximumSignificantDigits: 2,
+        }}
+      />
+    );
   },
 };
 
@@ -234,9 +264,9 @@ export const MinValue: Story = {
         }}
       >
         <NumberField
-          label="Custom validation"
+          label="Min value 5"
           validationBehavior="aria"
-          minValue={0}
+          minValue={5}
         />
         <Button type="submit">Submit</Button>
       </Form>
