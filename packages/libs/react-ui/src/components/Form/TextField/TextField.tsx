@@ -23,7 +23,7 @@ import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
 
 type PickedAriaTextFieldProps = Omit<
   AriaTextFieldProps,
-  'children' | 'inputElementType' | 'onChange' | 'type'
+  'children' | 'inputElementType' | 'onChange'
 >;
 export interface ITextFieldProps extends PickedAriaTextFieldProps {
   className?: string;
