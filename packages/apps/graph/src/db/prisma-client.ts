@@ -37,6 +37,7 @@ if (dotenv.PRISMA_LOGGING_ENABLED) {
     console.log('\n   Query:', highlight(e.query));
     console.log('   Params:', highlight(e.params));
     console.log('   Duration:', `${e.duration}ms`);
+    console.log('   Time:', `${new Date().toISOString()}`);
 
     if (dotenv.PRISMA_LOG_TO_FILE) {
       fs.appendFileSync(

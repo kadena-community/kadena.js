@@ -5,11 +5,12 @@ import type { CompoundType } from './types';
 
 export interface ITHeadProps {
   children?: CompoundType<typeof Tr>;
+  className?: string;
 }
 
-export const THead: FC<ITHeadProps> = ({ children }) => {
+export const THead: FC<ITHeadProps> = ({ children, className }) => {
   return (
-    <thead>
+    <thead className={className}>
       {React.Children.map(children, (child) => {
         if (
           !React.isValidElement(child) ||

@@ -2,6 +2,7 @@ import type { FungibleChainAccount } from '@/__generated__/sdk';
 import routes from '@constants/routes';
 import { Box, ContentHeader, Link, Table } from '@kadena/react-ui';
 import React from 'react';
+import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 interface IFungibleChainAccountTableProps {
   fungibleName: string;
@@ -21,7 +22,7 @@ export const FungibleChainAccountTable = (
         description="All chains where this account was found"
       />
       <Box margin="md" />
-      <Table.Root wordBreak="break-all">
+      <Table.Root wordBreak="break-all" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
             <Table.Th>Chain</Table.Th>
