@@ -66,3 +66,5 @@ export const devnetMiner: IAccount = {
     '19',
   ],
 };
+
+export const devnetGasStaton = 'c:zWPXcVXoHwkNTzKhMU02u2tzN_yL6V3-XTEH1uJaVY4';

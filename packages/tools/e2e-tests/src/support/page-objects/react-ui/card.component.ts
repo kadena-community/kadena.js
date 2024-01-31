@@ -4,9 +4,11 @@ import { ListBoxComponent } from './listBox.component';
 export class CardComponent {
   private readonly _page: Page;
   public _chain: ListBoxComponent;
+  private _component: any;
 
-  public constructor(page: Page) {
+  public constructor(page: Page, title: string) {
     this._page = page;
+    this._component = this._page.locator(`div h5:has-text("${title}")`);
     this._chain = new ListBoxComponent(this._page);
   }
 
