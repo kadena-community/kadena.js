@@ -1,5 +1,5 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
-import { ProgressBar } from '@/components/Global/ProgressBar';
+import { ProgressBar } from '@/components/Global';
 import type { Network } from '@/constants/kadena';
 import Routes from '@/constants/routes';
 import { menuData } from '@/constants/side-menu-items';

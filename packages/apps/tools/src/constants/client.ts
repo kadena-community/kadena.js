@@ -1,5 +1,8 @@
+import type { IClient } from '@kadena/client';
 import { createClient } from '@kadena/client';
 
-const client = createClient();
+const client = (apiHost: string): IClient => {
+  return createClient(apiHost);
+};
 
 export default client;

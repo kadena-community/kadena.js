@@ -1,84 +1,47 @@
-import { sprinkles } from '@kadena/react-ui/styles';
+import { atoms } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
-export const mainContentStyle = style([
-  {
-    alignSelf: 'stretch',
-    width: '60%',
-  },
-]);
-
-export const headerTextStyle = style([
-  sprinkles({
-    fontSize: '$3xl',
-    fontWeight: '$normal',
-    fontFamily: '$main',
-    display: 'flex',
-    lineHeight: '$normal',
-  }),
-  {
-    alignSelf: 'stretch',
-  },
-]);
-
-export const accountFormStyle = style([
-  sprinkles({
-    padding: '$4',
-    borderRadius: '$sm',
-    display: 'flex',
-    flexDirection: 'column',
-    paddingBottom: '$10',
-    paddingTop: '$10',
-    paddingRight: '$10',
-    paddingLeft: '$10',
-    backgroundColor: '$gray40',
-  }),
-  {
-    alignSelf: 'stretch',
-  },
-]);
-
 export const formButtonStyle = style([
-  sprinkles({
+  atoms({
     alignItems: 'center',
-    marginTop: '$4',
+    marginBlock: 'md',
     display: 'flex',
     flexDirection: 'row-reverse',
   }),
 ]);
 
-export const formHeaderStyle = style([
-  sprinkles({
-    display: 'flex',
-    paddingTop: '$6',
-    paddingRight: '$10',
-    paddingLeft: '$10',
-    alignItems: 'flex-start',
-    gap: '$2',
-    backgroundColor: '$gray40',
-  }),
-  {
-    alignSelf: 'stretch',
-  },
-]);
-
-export const formHeaderTitleStyle = style([
-  sprinkles({
-    fontSize: '$xl',
-    fontFamily: '$main',
-    fontWeight: '$semiBold',
-    lineHeight: '$normal',
-    color: '$neutral6',
-  }),
-]);
-
 export const infoBoxStyle = style([
-  sprinkles({
-    fontSize: '$base',
-    padding: '$2',
-    borderRadius: '$sm',
+  atoms({
+    fontSize: 'sm',
+    padding: 'md',
+    borderRadius: 'sm',
     display: 'flex',
     flexDirection: 'column',
-    gap: '$6',
   }),
+]);
+
+export const linksBoxStyle = style([
+  atoms({
+    fontSize: 'base',
+    borderRadius: 'sm',
+    display: 'flex',
+    flexDirection: 'column',
+  }),
+]);
+
+export const footerBarStyle = style([
+  atoms({
+    width: '100%',
+    display: 'block',
+    position: 'sticky',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingBlock: 'sm',
+    paddingInlineEnd: 'sm',
+  }),
+  {
+    background: '#FAFAFA70',
+    backdropFilter: 'blur(3px)',
+  },
 ]);

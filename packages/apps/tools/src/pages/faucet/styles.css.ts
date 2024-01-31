@@ -29,3 +29,41 @@ export const buttonContainerClass = style([
 export const notificationContainerStyle = style([
   atoms({ fontSize: 'xs', marginBlock: 'lg' }),
 ]);
+
+export const infoBoxStyle = style([
+  atoms({
+    fontSize: 'sm',
+    padding: 'sm',
+    borderRadius: 'sm',
+    display: 'flex',
+    flexDirection: 'column',
+  }),
+]);
+
+export const infoTitleStyle = style([
+  atoms({
+    fontWeight: 'bodyFont.bold',
+  }),
+]);
+
+export const linksBoxStyle = style([
+  atoms({
+    fontSize: 'sm',
+    borderRadius: 'sm',
+    display: 'flex',
+    flexDirection: 'column',
+  }),
+]);
+
+export const linkStyle = style([
+  atoms({
+    color: 'text.brand.primary.default',
+  }),
+  {
+    selectors: {
+      [`&.visited`]: {
+        color: 'text.brand.primary.default.vi',
+      },
+    },
+  },
+]);
