@@ -104,6 +104,7 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
     message: 'Select a transaction file',
     choices: choices,
     pageSize: 10,
+    required: true,
   });
 
   return selectedTransaction;

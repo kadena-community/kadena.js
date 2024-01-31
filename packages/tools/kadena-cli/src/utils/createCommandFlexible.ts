@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import type { Command } from 'commander';
+import { CommandError } from './command.util.js';
 import { getCommandExecution } from './createCommand.js';
 import type { OptionType } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
@@ -70,6 +71,22 @@ export async function executeOption<Option extends OptionType>(
   };
 }
 
+const printCommandExecution = (
+  command: string,
+  args: Record<string, unknown>,
+  updateArgs?: Record<string, unknown>,
+): void => {
+  // Give the option to update args used in the command by returning an object
+  // Only update args that are already defined
+  if (updateArgs !== undefined && typeof updateArgs === 'object') {
+    for (const [key, value] of Object.entries(updateArgs)) {
+      if (Object.hasOwn(args, key) === true) args[key] = value;
+    }
+  }
+
+  console.log(`\nExecuted: ${getCommandExecution(command, args)}`);
+};
+
 export const createCommandFlexible =
   <
     T extends OptionType[],
@@ -80,7 +97,7 @@ export const createCommandFlexible =
         ) => Promise<Prettify<OptionConfig<Extract<T[number], { key: K }>>>>;
       },
       values: string[],
-    ) => Promise<Record<string, unknown> | void>,
+    ) => Promise<Record<string, unknown> | undefined>,
   >(
     name: string,
     description: string,
@@ -99,9 +116,8 @@ export const createCommandFlexible =
       command.addOption(option.option);
     });
     command.action(async (originalArgs, ...rest) => {
+      let args = { ...originalArgs };
       try {
-        let args = { ...originalArgs };
-
         // Automatically enable quiet mode if not in interactive environment
         if (!process.stdout.isTTY) args.quiet = true;
 
@@ -130,21 +146,12 @@ export const createCommandFlexible =
         const values = rest.flatMap((r) => r.args);
         const result = await action(collectOptionsMap, values);
 
-        // Give the option to update args used in the command by returning an object
-        // Only update args that are already defined
-        if (result !== undefined && typeof result === 'object') {
-          for (const [key, value] of Object.entries(result)) {
-            if (Object.hasOwn(args, key) === true) args[key] = value;
-          }
-        }
-
-        console.log(
-          `\nExecuted: ${getCommandExecution(
-            `${program.name()} ${name}`,
-            args,
-          )}`,
-        );
+        printCommandExecution(`${program.name()} ${name}`, args, result);
       } catch (error) {
+        if (error instanceof CommandError) {
+          printCommandExecution(`${program.name()} ${name}`, args, error.args);
+          process.exit(error.exitCode);
+        }
         console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
         process.exit(1);
       }
