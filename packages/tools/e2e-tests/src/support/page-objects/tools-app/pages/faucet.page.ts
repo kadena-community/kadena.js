@@ -34,6 +34,13 @@ export class FaucetPage {
         name: 'The account name to fund coins to',
       }),
     ).toHaveValue(account);
+
+    await this._card._chain.setValueForListBox(
+      'Select Chain ID',
+      'Select Chain ID Chain ID',
+      chainId,
+    );
+
     await this._page.getByRole('button', { name: 'Fund 100 Coins' }).click();
   }
 
@@ -42,10 +49,12 @@ export class FaucetPage {
       await this._card.setValueForTextbox('Public Key', keyPair.publicKey);
       await this._card.clickButton('Add Public Key');
     }
-    await this._card.setValueForCombobox(
-      this._i18n.t(`Chain ID`),
+    await this._card._chain.setValueForListBox(
+      'Select Chain ID',
+      'Select Chain ID Chain ID',
       account.chainId,
     );
+
     await expect(
       this._page.getByRole('textbox', {
         name: 'The account name to fund coins to',
