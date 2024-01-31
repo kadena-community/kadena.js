@@ -46,7 +46,7 @@ export default class TreeHelper {
       const parentMetaData = await extractMetadataFromMarkdown(parent.path);
       // Validate Menu Items without Children
       if (parent.children?.length === 0) {
-        await this._validateSingleMenuItem(parentMetaData.menu);
+        await this._validateSingleMenuItem(parentMetaData.label);
       } else {
         await this._toggleParent(parentMetaData.menu); // Open Parent before validating children
         for (const child of parent.children!) {
