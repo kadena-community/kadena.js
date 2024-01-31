@@ -24,28 +24,28 @@ export type WalletContextType = {
   encryptedSeed: Uint8Array;
 };
 
-export const getProfile = ({
+export function getProfile({
   walletRepository,
   profile,
-}: Pick<WalletContextType, 'walletRepository' | 'profile'>) => {
+}: Pick<WalletContextType, 'walletRepository' | 'profile'>) {
   return walletRepository.getProfile(profile.uuid);
-};
+}
 
-export const getAccounts = ({
+export function getAccounts({
   walletRepository,
   profile,
-}: Pick<WalletContextType, 'walletRepository' | 'profile'>) => {
+}: Pick<WalletContextType, 'walletRepository' | 'profile'>) {
   return walletRepository.getAccountsByProfileId(profile.uuid);
-};
+}
 
-export const sign = (
+export function sign(
   {
     encryptedSeed,
     encryptionKey,
     profile,
   }: Pick<WalletContextType, 'encryptedSeed' | 'encryptionKey' | 'profile'>,
   TXs: IUnsignedCommand[],
-) => {
+) {
   if (!encryptedSeed) {
     throw new Error('Wallet is not unlocked');
   }
@@ -80,15 +80,15 @@ export const sign = (
   );
 
   return signedTx;
-};
+}
 
-export const decryptMnemonic = async (
+export async function decryptMnemonic(
   {
     walletRepository,
     profile,
   }: Pick<WalletContextType, 'walletRepository' | 'profile'>,
   password: string,
-) => {
+) {
   const encryptedMnemonic = await walletRepository.getEncryptedValue(
     profile.seedKey,
   );
@@ -101,15 +101,15 @@ export const decryptMnemonic = async (
   );
   const mnemonic = new TextDecoder().decode(decryptedMnemonicBuffer);
   return mnemonic;
-};
+}
 
-export const createKAccount = async (
+export async function createKAccount(
   {
     profile,
     walletRepository,
   }: Pick<WalletContextType, 'walletRepository' | 'profile'>,
   keyItem: IKeyItem,
-) => {
+) {
   const account: IAccount = {
     uuid: crypto.randomUUID(),
     alias: '',
@@ -124,9 +124,9 @@ export const createKAccount = async (
 
   await walletRepository.addAccount(account);
   return account;
-};
+}
 
-export const createProfile = async (
+export async function createProfile(
   {
     walletRepository,
     encryptionKey,
@@ -137,7 +137,7 @@ export const createProfile = async (
   >,
   profileName: string,
   encryptedMnemonic: Uint8Array,
-) => {
+) {
   const mnemonicKey = crypto.randomUUID();
 
   const publicKey = await kadenaGetPublic(
@@ -169,7 +169,7 @@ export const createProfile = async (
   await walletRepository.addProfile(profile);
 
   return profile;
-};
+}
 
 export async function createWallet(
   walletRepository: WalletRepository,
