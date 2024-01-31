@@ -168,7 +168,7 @@ export const Controlled: Story = {
     return (
       <>
         <div className={atoms({ marginBlockEnd: 'xxxl' })}>
-          <Button onClick={() => setIsOpen(!isOpen)}>
+          <Button onPress={() => setIsOpen(!isOpen)}>
             {isOpen ? 'Hide Tooltip' : 'Show Tooltip'}
           </Button>
         </div>

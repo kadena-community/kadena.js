@@ -67,10 +67,18 @@ export function createCommand<const T extends OptionType[]>(
 
     command.action(async (args, ...rest) => {
       try {
+        const generalArgs = rest.flatMap((r) => r.args);
+
         // collectResponses
         const questionsMap = options.filter((o) => o.isInQuestions);
 
-        handleQuietOption(`${program.name()} ${name}`, args, questionsMap);
+        if (!process.stdout.isTTY) args.quiet = true;
+        handleQuietOption(
+          `${program.name()} ${name}`,
+          args,
+          questionsMap,
+          generalArgs,
+        );
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const newArgs: any =
@@ -83,6 +91,7 @@ export function createCommand<const T extends OptionType[]>(
           `\nExecuting: ${getCommandExecution(
             `${program.name()} ${name}`,
             newArgs,
+            generalArgs,
           )}`,
         );
 
@@ -120,7 +129,7 @@ export function createCommand<const T extends OptionType[]>(
           console.log('\n');
         }
 
-        await action(config, newArgs);
+        await action(config, generalArgs);
       } catch (error) {
         console.error(error);
         console.error(chalk.red(`Error executing command ${name}: ${error})`));
@@ -134,6 +143,7 @@ export function handleQuietOption(
   command: string,
   args: Record<string, unknown>,
   options: ReturnType<ReturnType<typeof createOption>>[],
+  generalArgs: string[],
 ): void {
   if (args.quiet === true) {
     const missing = options.filter(
@@ -144,6 +154,7 @@ export function handleQuietOption(
         `${chalk.yellow('Missing arguments in: ')}${getCommandExecution(
           `${command}`,
           args,
+          generalArgs,
         )}`,
       );
       console.log(
@@ -165,6 +176,7 @@ export function handleQuietOption(
 export function getCommandExecution(
   command: string,
   args: Record<string, unknown>,
+  generalArgs: string[] = [],
 ): string {
   return chalk.yellow(
     `${CLIRootName} ${command} ${Object.getOwnPropertyNames(args)
@@ -195,20 +207,20 @@ export function getCommandExecution(
             Object.getPrototypeOf(value) === Object.prototype
           ) {
             return Object.entries(value)
-              .map(([key, value]) => `--${key}=${value}`)
+              .map(([key, value]) => `--${key}="${value}"`)
               .join(' ');
           }
         }
 
         const key = arg.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
 
-        return `--${key} ${
+        return `--${key}=${
           displayValue !== null && displayValue !== undefined
             ? displayValue
             : ''
         }`;
       })
       .filter(Boolean)
-      .join(' ')}`,
+      .join(' ')} ${generalArgs.join(' ')}`,
   );
 }

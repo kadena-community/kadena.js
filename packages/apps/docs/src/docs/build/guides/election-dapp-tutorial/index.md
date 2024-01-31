@@ -117,7 +117,7 @@ compare your solution with the finished code at every step along the way.
 - [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account)
 - [Define a namespaces](/build/guides/election-dapp-tutorial/define-a-namespace)
 - [Define keysets](/build/guides/election-dapp-tutorial/define-keysets)
-- [Write the smart contract](/build/guides/election-dapp-tutorial/06-smart-contract)
+- [Write a smart contract](/build/guides/election-dapp-tutorial/write-a-smart-contract)
 - [Nominate candidates](/build/guides/election-dapp-tutorial/07-nominate-candidates)
 - [Add voting management](/build/guides/election-dapp-tutorial/08-voting)
 - [Add a gas station](/build/guides/election-dapp-tutorial/09-gas-station)

@@ -27,11 +27,11 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               background="contribute"
             >
               <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/kadena/overview">
-                  Overview of Kadena
+                <Link className={docsCardLink} href="/kadena/why-kadena">
+                  Why Kadena?
                 </Link>
-                <Link className={docsCardLink} href="/kadena/code-of-conduct">
-                  Code of Conduct
+                <Link className={docsCardLink} href="/kadena/kadena-faq">
+                  Frequently asked questions
                 </Link>
                 <a className={docsCardLink} href="https://kadena.io">
                   Kadena.io
@@ -47,17 +47,11 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               background="marmalade"
             >
               <BrowseSection marker="none">
-                <Link
-                  className={docsCardLink}
-                  href="/kadena/resources/glossary"
-                >
+                <Link className={docsCardLink} href="/kadena/glossary">
                   Glossary
                 </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/kadena/resources/press-kit"
-                >
-                  Press kit
+                <Link className={docsCardLink} href="/kadena/resources">
+                  Articles, videos, and more
                 </Link>
               </BrowseSection>
             </DocsCard>
@@ -72,15 +66,15 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               <BrowseSection marker="none">
                 <Link
                   className={docsCardLink}
-                  href="/kadena/whitepapers/chainweb-layer-1"
+                  href="https://www.kadena.io/chainweb"
                 >
-                  Chainweb layer 1
+                  Chainweb consensus protocol
                 </Link>
                 <Link
                   className={docsCardLink}
-                  href="/kadena/whitepapers/pact-smart-contract-language"
+                  href="https://www.kadena.io/pact"
                 >
-                  Pact Smart Contract
+                  Pact smart contract language
                 </Link>
               </BrowseSection>
             </DocsCard>
@@ -93,7 +87,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
         <BlogPostsStrip
           data={blogPosts}
           link={`/tags/kadena`}
-          linkLabel="More Kadena blogchain..."
+          linkLabel="Learn more about Kadena..."
         />
       </Box>
     </Stack>
@@ -109,7 +103,7 @@ export const getStaticProps: GetStaticProps = async () => {
       })),
 
       frontmatter: {
-        title: 'Intro to Kadena',
+        title: 'Welcome to Kadena',
         menu: 'Kadena',
         subTitle: 'Build the future on Kadena',
         label: 'Introduction',

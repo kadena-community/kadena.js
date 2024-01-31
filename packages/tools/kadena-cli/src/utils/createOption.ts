@@ -30,6 +30,7 @@ export interface IOptionCreatorObject {
   expand?: (value: any) => unknown;
   transform?: (value: any) => unknown;
   defaultIsOptional?: boolean;
+  allowUnknownOptions?: boolean;
 }
 
 export interface IOptionSettings {
