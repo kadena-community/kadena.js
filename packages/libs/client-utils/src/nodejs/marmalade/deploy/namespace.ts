@@ -1,7 +1,7 @@
 import type { ChainId } from '@kadena/types';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
-import { deployContract } from '../../../built-in/deployContract';
+import { deployContract } from '../../../built-in/deploy-contract';
 import type { IAccount, IClientConfig } from '../../../core/utils/helpers';
 import type { INamespaceConfig } from './config';
 import { defaultAccount, defaultChainId, defaultNetworkId } from './defaults';

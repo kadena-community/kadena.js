@@ -54,28 +54,3 @@ export const deployContract = (
   inputs: IDeployContractInput,
   config: IClientConfig,
 ) => submitClient(config)(createPactCommand(inputs));
-
-// export const deployContractCommand1 = async (inputs: IDeployContractInput) => {
-//   const { contractCode, transactionBody } = inputs;
-
-//   // Create an array of functions for adding keysets
-//   const keysetFunctions = transactionBody.keysets.map((keyset) => {
-//     return (command: any) =>
-//       command.addKeyset(keyset.name, keyset.pred, ...keyset.keys);
-//   });
-
-//   let transactionBuilder = composePactCommand(
-//     execution(contractCode),
-//     setMeta(transactionBody.meta),
-//     setNetworkId(transactionBody.networkId),
-//     addSigner(
-//       transactionBody.signers.map((signer) => signer.publicKey),
-//       (signFor) => [signFor('coin.GAS')],
-//     ),
-//     ...keysetFunctions,
-//   );
-
-//   transactionBuilder = transactionBody.signers.reduce((builder, signer) => {
-//     return builder.addSigner(signer.publicKey);
-//   }, transactionBuilder);
-// };
