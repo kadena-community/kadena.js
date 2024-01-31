@@ -1,4 +1,3 @@
-import type { IProofOfUs } from '@/types';
 import { proofOfUsData } from './data';
 
 export const getAllProofOfUs = async (): Promise<IProofOfUs[]> => {

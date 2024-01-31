@@ -1,4 +1,3 @@
-import type { IDataHook, IError, IProofOfUs } from '@/types';
 import { getProofOfUs } from '@/utils/proofOfUs';
 import { useEffect, useState } from 'react';
 

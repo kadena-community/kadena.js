@@ -1,5 +1,3 @@
-import type { IFabricCanvasObject } from '@/fabricTypes';
-import type { IProofOfUs, IProofOfUsSignee } from '@/types';
 import type { Server as IHTTPServer } from 'http';
 import type { Socket as INetSocket } from 'net';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -17,7 +15,6 @@ const ProofOfUsStore = () => {
       signees: [{ ...account, initiator: true }],
       avatar: {
         background: '',
-        objects: [],
       },
     };
   };
@@ -30,35 +27,6 @@ const ProofOfUsStore = () => {
     const avatar = store[tokenId]?.avatar;
 
     store[tokenId].avatar = { ...avatar, background };
-  };
-
-  const addObject = (
-    tokenId: string,
-    newState: IFabricCanvasObject,
-    previousState: IFabricCanvasObject,
-  ) => {
-    const avatar = store[tokenId]?.avatar;
-
-    delete newState.previousState;
-    delete newState.isInitLoad;
-    delete previousState?.previousState;
-    delete previousState?.isInitLoad;
-
-    if (previousState) {
-      const newObjects = avatar.objects.filter((state) => {
-        delete state.previousState;
-        return JSON.stringify(state) === JSON.stringify(previousState)
-          ? newState
-          : state;
-      });
-      store[tokenId].avatar = { ...avatar, objects: [newState] };
-      return;
-    }
-
-    store[tokenId].avatar = {
-      ...avatar,
-      objects: [...avatar.objects, newState],
-    };
   };
 
   const addSignee = (tokenId: string, account: IProofOfUsSignee) => {
@@ -85,8 +53,6 @@ const ProofOfUsStore = () => {
     addSignee,
     removeSignee,
     addBackground,
-
-    addObject,
   };
 };
 
@@ -164,17 +130,6 @@ export default function SocketHandler(
 
     socket.on('setBackground', ({ content, to }) => {
       store.addBackground(to, content.bg);
-      io.to(to)
-        .to(to)
-        .emit('getProofOfUs', {
-          content: store.getProofOfUs(to),
-          from: socket.handshake.auth.tokenId,
-        });
-    });
-
-    socket.on('addObject', ({ content: { newState, previousState }, to }) => {
-      console.log('modified', Boolean(previousState));
-      store.addObject(to, newState, previousState);
       io.to(to)
         .to(to)
         .emit('getProofOfUs', {

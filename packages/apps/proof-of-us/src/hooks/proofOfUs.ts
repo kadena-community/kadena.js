@@ -1,7 +1,6 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import type { IAccount, IProofOfUs, IProofOfUsSignee } from '@/types';
 import { useAccount } from './account';
 import { useGetProofOfUs } from './getProofOfUs';
 import { useSocket } from './socket';

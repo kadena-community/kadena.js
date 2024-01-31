@@ -1,4 +1,3 @@
-import type { IFabricCanvasObject } from '@/fabricTypes';
 import { useSocket } from './socket';
 
 export const useAvatar = () => {
@@ -13,24 +12,7 @@ export const useAvatar = () => {
     });
   };
 
-  const addObject = async (
-    tokenId: string,
-    object: IFabricCanvasObject,
-    previousState?: IFabricCanvasObject,
-  ) => {
-    delete previousState?.previousState;
-
-    socket?.emit('addObject', {
-      content: {
-        newState: object,
-        previousState,
-      },
-      to: tokenId,
-    });
-  };
-
   return {
     setBackgroundSocket,
-    addObject,
   };
 };
