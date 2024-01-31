@@ -1,6 +1,31 @@
 import chalk from 'chalk';
 import type { Ora } from 'ora';
 
+export class CommandError extends Error {
+  public warnings?: string[];
+  public errors: string[];
+  public exitCode: number = 0;
+  public args?: Record<string, unknown>;
+
+  public constructor({
+    errors,
+    warnings,
+    exitCode,
+    args,
+  }: {
+    errors: string[];
+    warnings?: string[];
+    exitCode?: number;
+    args?: Record<string, unknown>;
+  }) {
+    super(`${warnings?.join('\n')}${errors.join('\n')}`);
+    this.errors = errors;
+    this.warnings = warnings;
+    this.exitCode = exitCode ?? 0;
+    this.args = args;
+  }
+}
+
 interface ICommandError {
   success: false;
   errors: string[];
@@ -31,7 +56,11 @@ export function assertCommandError(
       console.log(chalk.red(`${result.errors.join('\n')}\n`));
     }
 
-    process.exit(1);
+    throw new CommandError({
+      errors: result.errors,
+      warnings: result.warnings,
+      exitCode: 1,
+    });
   } else {
     if (ora) ora.succeed('Completed');
   }
