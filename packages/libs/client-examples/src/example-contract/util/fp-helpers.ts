@@ -2,7 +2,7 @@ import { isSignedTransaction } from '@kadena/client';
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
 export const inspect =
-  <T extends any>(tag: string) =>
+  <T>(tag: string) =>
   (data: T): T => {
     console.log(tag, data);
     return data;
