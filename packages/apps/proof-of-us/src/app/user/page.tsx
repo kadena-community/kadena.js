@@ -22,6 +22,7 @@ const Page: FC = () => {
           ))}
         </ul>
       )}
+      <Link href="/user/proof-of-us/new">New Proof</Link>
     </div>
   );
 };
