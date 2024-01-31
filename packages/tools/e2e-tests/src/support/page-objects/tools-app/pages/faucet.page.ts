@@ -61,6 +61,8 @@ export class FaucetPage {
     ).toHaveValue(account.account);
     //Form validation is retriggered after setting the chain. Explicitly wait for the Account Name to be visible before pressing fund.
 
-    await this._page.getByRole('button', { name: 'Fund 100 Coins' }).click();
+    await this._page
+      .getByRole('button', { name: 'Create and Fund Account' })
+      .click();
   }
 }
