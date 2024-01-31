@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { isNumeric } from '../../utils/helpers.js';
 
 const formatLength = 80;
 
@@ -9,6 +10,7 @@ const displaySeparator = (): void => {
 export function txDisplayTransaction(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   obj: any,
+  signedTransactionFiles: string[],
   header: string = '',
   baseIndent: number = 2, // Base indentation level for all lines
 ): void {
@@ -25,7 +27,11 @@ export function txDisplayTransaction(
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const printObject = (key: string, value: any, indentLevel: number): void => {
-    const formattedKey = `${' '.repeat(indentLevel)}${key}:`;
+    const output =
+      isNumeric(key) && parseInt(key, 10) < signedTransactionFiles.length
+        ? signedTransactionFiles[parseInt(key, 10)]
+        : key;
+    const formattedKey = `${' '.repeat(indentLevel)}${output}:`;
 
     if (typeof value === 'object' && value !== null) {
       console.log(chalk.black(formattedKey));
