@@ -105,7 +105,7 @@ export default class TreeHelper {
         .getByTestId(`l1-item`)
         .locator(`[data-testid="l1-link"]:text-is(${JSON.stringify(label)})`),
       `Expected ${label} to be visible on level 1 in the menu.`,
-    ).toBeAttached();
+    ).toBeVisible();
   }
 
   private async _validateMenuItemWithChildren(
