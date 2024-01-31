@@ -1,10 +1,10 @@
 ALTER TABLE
-  public.blocks
+  blocks
 ADD
   COLUMN IF NOT EXISTS id INT;
 
 UPDATE
-  public.blocks
+  blocks
 SET
   id = COALESCE(id, b.rownum)
 FROM
@@ -16,38 +16,38 @@ FROM
           creationtime
       ) AS rownum
     FROM
-      public.blocks
+      blocks
   ) b
 WHERE
-  public.blocks.hash = b.hash
-  AND public.blocks.id IS NULL;
+  blocks.hash = b.hash
+  AND blocks.id IS NULL;
 
 ALTER TABLE
-  public.blocks
+  blocks
 ALTER COLUMN
   id
 SET
   NOT NULL;
 
 ALTER TABLE
-  public.blocks
+  blocks
 ADD
   CONSTRAINT blocks_id_uniq UNIQUE (id);
 
-CREATE SEQUENCE IF NOT EXISTS public.blocks_id_seq OWNED BY public.blocks.id;
+CREATE SEQUENCE IF NOT EXISTS blocks_id_seq OWNED BY blocks.id;
 
 SELECT
   setval(
-    'public.blocks_id_seq',
-    COALESCE(MAX(public.blocks.id), 0) + 1,
+    'blocks_id_seq',
+    COALESCE(MAX(blocks.id), 0) + 1,
     false
   )
 FROM
-  public.blocks;
+  blocks;
 
 ALTER TABLE
-  public.blocks
+  blocks
 ALTER COLUMN
   id
 SET
-  DEFAULT nextval('public.blocks_id_seq');
+  DEFAULT nextval('blocks_id_seq');
