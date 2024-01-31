@@ -106,7 +106,6 @@ export const createGenerateWalletCommand: (
     try {
       debug('create-wallet:action')({ config });
 
-      // compare passwords
       if (config.securityPassword !== config.securityVerifyPassword) {
         console.log(chalk.red(`\nPasswords don't match. Please try again.\n`));
         return process.exit(1);
