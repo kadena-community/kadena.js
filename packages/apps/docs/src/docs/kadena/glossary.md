@@ -9,13 +9,44 @@ layout: full
 
 # Glossary
 
-## Bitcoin
+This glossary defines and explains concepts and terminology that are specific to decentralized computing, blockchain technology, Kadena, or the Kadena ecosystem.
+
+## A
+
+### account
+
+An **account** is an entry in the Kadena `coin` contract ledger—a key-value store—that consists of:
+
+- An account name in the form of a string of 3 to 256 LATIN-1 characters (key).
+- An account value that holds the decimal balance and a keyset that governs the account.
+
+```pact
+key: Account name -> value: { Balance, Keys }
+```
+
+The keyset specifies the signing requirements for the account and consists of one or more public keys and a predicate that indicates the number of keys that must sign a transaction for the account.
+
+### address
+
+In the Ethereum network, an address serves as both an identity and an account. 
+
+The address is derived from the last 20 bytes of the ECDSA public key that controls the account prepended with 0x before the hashed key. 
+For example, you might have an address similar to 0x71C7656EC7ab88b098defB751B7401B5f6d8976F on Ethereum. 
+You must have an address—sometimes referred to as your wallet address—to send or receive funds and to access the funds, you must have the corresponding private key.
+
+Contracts deployed on the Ethereum network also send and receive transactions using an address.
+The functions in the contract are executed when the contract receives a transaction request.
+Contract addresses use the same format as wallet addresses.
+
+## B
+
+### Bitcoin
 
 Bitcoin is the world’s very first cryptocurrency, postulated by ‘Satoshi
 Nakamoto’ (which is typically presumed to be a pseudonym) in a now-famous white
 paper called ‘A Peer-to-Peer Electronic Cash System’ in 2008.
 
-## Blockchain
+### blockchain
 
 A ‘blockchain’ is a distributed digital ledger that’s used to record
 transactions. It’s an immutable database, which means that information can’t be
@@ -33,19 +64,21 @@ transparency and immutability of the blockchain makes it a very reliable and
 trustworthy business resource both for individuals and companies. Kadena is an
 example of a blockchain.
 
-## Bridge
+### bridge
 
 A bridge, in a web3 context, is a protocol which links blockchain systems
 together, allowing users from one system to send assets and information to
 another.
 
-## Consensus Mechanism
+## C
+
+### consensus
 
 A consensus mechanism is a system that validates transactions and encodes new
 information on a blockchain. The most common consensus mechanisms are
 Proof-of-Work (PoW) and Proof-of-Stake (PoS). Kadena uses Proof-of-Work.
 
-## Cryptocurrency
+### cryptocurrency
 
 Cryptocurrency is a digital currency secured on a blockchain. The blockchain
 uses cryptographic proof to secure the currency. This prevents the double
@@ -54,20 +87,16 @@ payments without being used up. This is where the cryptocurrency name derives
 from. Anyone can make a cryptocurrency and they are regulated only by their
 underlying protocol or DAO. KDA is an example of a cryptocurrency.
 
-## Crypto Wallet
+### crypto wallet
 
 A crypto wallet is a software program or physical device that allows you to
 store your crypto and allow for the sending and receiving of crypto
 transactions. A crypto wallet consists of two key pairs: private keys and public
 keys.
 
-## DAO
+## D
 
-Distributed Autonomous Organisation. Generally refers to a method of management
-that has rules coded in software and that has decision making which is not
-centralized or hierarchical.&#x20;
-
-## dApp
+### decentralized application (dApp)
 
 A decentralized application, colloquially called a dapp, is an application
 constructed on the blockchain. Dapps function autonomously, according to the
@@ -75,17 +104,18 @@ stipulations in smart contracts. Like any other application on your phone, dapps
 come with a user interface and are designed to provide some kind of practical
 utility.
 
-## DeFi
+### decentralized finance (DeFi)
 
-Decentralized Finance. Financial services and applications that are not, or
+Financial services and applications that are not, or
 mostly not, controlled centrally, as in Centralized Finance. For example,
 Uniswap is a decentralized exchange, versus Coinbase which is a centralized
 exchange.
 
-## DM
+### distributed autonomous organization (DAO)
 
-Direct message. When contacting someone directly and not in a public group. For
-example, 'I'll send you the spreadsheet link in a DM'.
+Generally, refers to a method of management
+that has rules coded in software and that has decision making which is not
+centralized or hierarchical.&#x20;
 
 ## Gas
 
