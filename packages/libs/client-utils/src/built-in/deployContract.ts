@@ -1,4 +1,4 @@
-import type { ChainId, ICommandResult } from '@kadena/client';
+import type { ChainId } from '@kadena/client';
 import { Pact } from '@kadena/client';
 
 import { submitClient } from '../core';
