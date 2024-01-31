@@ -16,28 +16,34 @@ import type { IPrompt } from '../utils/createOption.js';
 const CommandPayloadStringifiedJSONSchema = z.string();
 const PactTransactionHashSchema = z.string();
 
-export const IPartialCommandSignatureJsonSchema = z.union([
-  z.object({
-    sig: z.union([z.string(), z.null()]),
-  }),
-  z.null(),
-]);
-
 const ISignatureJsonSchema = z.object({
   sig: z.string(),
 });
 
-export const IUnsignedCommandSchema = z.object({
-  cmd: CommandPayloadStringifiedJSONSchema,
-  hash: PactTransactionHashSchema,
-  sigs: z.array(ISignatureJsonSchema.optional()),
-});
+const SignatureOrUndefinedOrNull = z.union([
+  ISignatureJsonSchema,
+  z.undefined(),
+  z.null(),
+]);
 
 export const ICommandSchema = z.object({
   cmd: CommandPayloadStringifiedJSONSchema,
   hash: PactTransactionHashSchema,
   sigs: z.array(ISignatureJsonSchema),
 });
+
+export const IUnsignedCommandSchema = z.object({
+  cmd: CommandPayloadStringifiedJSONSchema,
+  hash: PactTransactionHashSchema,
+  sigs: z.array(SignatureOrUndefinedOrNull),
+});
+
+// export const ISignatureJsonSchema = z.union([
+//   z.object({
+//     sig: z.string(),
+//   }),
+//   z.null(),
+// ]);
 
 export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
   const result = await input({

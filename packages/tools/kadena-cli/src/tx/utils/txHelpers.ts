@@ -246,9 +246,11 @@ export async function getTransactionFromFile(
     }
     const transaction = JSON.parse(fileContent);
     if (signed) {
-      return tx.ICommandSchema.parse(transaction);
+      const result = tx.ICommandSchema.parse(transaction);
+      return result as ICommand;
     }
-    return tx.IUnsignedCommandSchema.parse(transaction);
+    const result = tx.IUnsignedCommandSchema.parse(transaction);
+    return result as IUnsignedCommand;
   } catch (error) {
     console.error(
       `Error processing ${
