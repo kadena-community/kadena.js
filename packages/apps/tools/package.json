@@ -22,7 +22,7 @@
     "verify": "pnpm run generate:contracts && tsc --noEmit"
   },
   "dependencies": {
-    "@hookform/resolvers": "~3.1.1",
+    "@hookform/resolvers": "^3.2.0",
     "@kadena/chainweb-node-client": "workspace:*",
     "@kadena/client": "workspace:*",
     "@kadena/client-utils": "workspace:*",
@@ -40,12 +40,12 @@
     "classnames": "^2.3.1",
     "js-cookie": "~3.0.5",
     "next": "13.5.5",
-    "next-themes": "~0.2.1",
+    "next-themes": "^0.2.1",
     "next-translate": "~2.0.6",
     "react": "^18.2.0",
     "react-ace": "~10.1.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "~7.45.0",
+    "react-hook-form": "^7.45.4",
     "zod": "~3.18.0"
   },
   "devDependencies": {
@@ -65,9 +65,9 @@
     "@types/js-cookie": "~3.0.3",
     "@types/node": "^18.17.14",
     "@types/react": "^18.2.15",
-    "@types/react-dom": "18.2.7",
-    "@typescript-eslint/eslint-plugin": "^5.23.0",
-    "@typescript-eslint/parser": "^5.23.0",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
     "@vanilla-extract/css": "1.14.0",
     "@vanilla-extract/next-plugin": "2.3.2",
     "@vanilla-extract/vite-plugin": "^3.9.3",

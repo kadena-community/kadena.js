@@ -15,6 +15,7 @@ import type { ISigner } from '../composePactCommand/utils/addSigner';
 import { patchCommand } from '../composePactCommand/utils/patchCommand';
 import type { AddCapabilities } from '../composePactCommand/utils/payload';
 import type {
+  BuiltInPredicate,
   IContinuationPayloadObject,
   IPactCommand,
   IPartialPactCommand,
@@ -61,7 +62,7 @@ interface ISetNonce<TCommand> {
 }
 
 interface IAddKeyset<TCommand> {
-  <TKey extends string, PRED extends 'keys-all' | 'keys-any' | 'keys-2'>(
+  <TKey extends string, PRED extends BuiltInPredicate>(
     key: TKey,
     pred: PRED,
     ...publicKeys: string[]

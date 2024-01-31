@@ -47,8 +47,8 @@ export async function kadenaGetPublic(
   indexOrRange: number | [number, number],
   derivationPathTemplate: string = `m'/44'/626'/<index>'`,
 ): Promise<string | string[]> {
-  if (typeof seed !== 'string' || seed === '') {
-    throw new Error('No seed provided.');
+  if (seed === undefined || seed === '') {
+    throw new Error('NO_SEED: No seed provided.');
   }
 
   const seedBuffer = new Uint8Array(await kadenaDecrypt(password, seed));
