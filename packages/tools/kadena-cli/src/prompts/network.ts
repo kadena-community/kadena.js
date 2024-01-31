@@ -11,7 +11,7 @@ export const chainIdPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue as string;
+  const defaultValue = (args.defaultValue as string) || '0';
   return (await getInputPrompt(
     'Enter ChainId (0-19)',
     defaultValue,

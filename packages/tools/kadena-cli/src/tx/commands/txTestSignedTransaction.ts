@@ -94,7 +94,10 @@ export const createTestSignedTransactionCommand: (
     );
 
     assertCommandError(result);
-
-    return txDisplayTransaction(result.data, 'txSignedTransaction result:');
+    return txDisplayTransaction(
+      result.data,
+      files.txSignedTransactionFiles,
+      'txSignedTransaction result:',
+    );
   },
 );
