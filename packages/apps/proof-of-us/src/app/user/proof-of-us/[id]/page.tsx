@@ -5,8 +5,10 @@ import { PROOFOFUS_QR_URL } from '@/constants';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSocket } from '@/hooks/socket';
 import { env } from '@/utils/env';
+import { createTokenId } from '@/utils/marmalade';
+import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 
 interface IProps {
@@ -17,10 +19,22 @@ interface IProps {
 
 const Page: FC<IProps> = ({ params }) => {
   const qrRef = useRef<QRCode | null>(null);
+  const router = useRouter();
   const { socket, connect, disconnect } = useSocket();
   const { createToken, proofOfUs } = useProofOfUs();
+  const [isNew, setIsNew] = useState(false);
+
+  const createNew = async () => {
+    const tokenId = await createTokenId();
+    router.replace(`/user/proof-of-us/${tokenId}`);
+  };
 
   useEffect(() => {
+    if (params.id === 'new') {
+      setIsNew(true);
+      createNew();
+    }
+
     disconnect({ tokenId: params.id });
     createToken({ tokenId: params.id });
   }, [socket, params.id]);
@@ -29,22 +43,6 @@ const Page: FC<IProps> = ({ params }) => {
     connect({ tokenId: '1' });
   }, []);
 
-  const handleQRPNGDownload = () => {
-    if (!qrRef.current || !proofOfUs) return;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const canvas = (qrRef.current as any).canvas.current as HTMLCanvasElement;
-    const pngUrl = canvas
-      .toDataURL('image/png')
-      .replace('image/png', 'image/octet-stream');
-    const downloadLink = document.createElement('a');
-    downloadLink.href = pngUrl;
-    downloadLink.download = `qrcode_${proofOfUs.tokenId}.png`;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-  };
-
   if (!proofOfUs) return;
 
   return (
@@ -52,7 +50,8 @@ const Page: FC<IProps> = ({ params }) => {
       Proof Of Us with ID ({proofOfUs.tokenId})
       <section>
         <ListSignees />
-        <AvatarEditor />
+
+        {!isNew ? <AvatarEditor /> : null}
       </section>
       <section>
         <h2>qr code</h2>
@@ -67,8 +66,6 @@ const Page: FC<IProps> = ({ params }) => {
           qrStyle="dots" // type of qr code, wether you want dotted ones or the square ones
           eyeRadius={10}
         />
-
-        <button onClick={handleQRPNGDownload}>download PNG</button>
       </section>
     </div>
   );
