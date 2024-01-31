@@ -23,7 +23,11 @@ export class FaucetPage {
       'The account name to fund coins to',
       account,
     );
-    await this._card.setValueForCombobox('Select Chain ID', chainId);
+    await this._card._chain.setValueForListBox(
+      'Select Chain ID',
+      'Select Chain ID Chain ID',
+      chainId,
+    );
     await this._page.getByRole('button', { name: 'Fund 100 Coins' }).click();
   }
 }
