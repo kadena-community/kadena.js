@@ -72,6 +72,14 @@ another.
 
 ## C
 
+### capability
+
+Capabilities provide a way to manage permissions and authorize certain actions based on specific conditions and separate from transaction signing. Capabilities are a core feature in the Pact smart contract programming language.
+
+### chain identifier
+
+The numeric identifier for a specific chain in the Kadena network. Currently, the chain identifiers are zero (0) through nineteen (19).
+
 ### consensus
 
 A consensus mechanism is a system that validates transactions and encodes new
@@ -117,20 +125,26 @@ Generally, refers to a method of management
 that has rules coded in software and that has decision making which is not
 centralized or hierarchical.&#x20;
 
-## Gas
+## G
+
+### gas
 
 Gas is a unit of measurement that represents the computational effort required
 to complete a transaction. How much a user spends to complete a transaction is
 determined by the total amount of gas multiplied by the gas price.&#x20;
 
-## Interoperability
+## I
+
+### interoperability
 
 Interoperability refers to the ability of multiple blockchains to cooperate and
 exchange information with one another, enabling virtual assets (such as
 non-fungible tokens \[NFTs]), avatars and other pieces of code to move
 seamlessly from one platform to another.
 
-## Keys
+## K
+
+### keys
 
 Keys are long strings of numbers used to access the Web3 products stored in your
 wallet. There are two forms of keys:
@@ -146,14 +160,29 @@ your PIN code. These keys are randomly generated and so can be hard to memorize.
 Therefore most wallets employ a string of words known as a “seed phrase” to act
 as a passcode to your keys.
 
-## Layer-1
+### keyset
+
+A **keyset** is a Pact construct used to authorize transactions. 
+A keyset consists of one or more **public keys** and a **predicate function** that describes the authorization policy for the keys in the keyset. 
+For example, if a keyset has three public keys and the **keys-all** predicate, then all three keys must sign a transaction for the transaction to be valid. 
+Pact provides three default keyset predicates: 
+
+- keys-all
+- keys-any
+- keys-2
+
+Smart contract module authors can define additional predicates.
+
+## L
+
+### layer-1
 
 (L1) blockchains are the foundations of multi-level blockchain frameworks. They
 can facilitate transactions without support from other blockchain networks. All
 layer 1 blockchains – including Bitcoin and Ethereum – offer their own native
 cryptocurrency as a means of accessing their networks.
 
-## Layer 2
+### layer 2
 
 (L2) blockchains are built on top of layer 1 blockchains, often enhancing the
 latter’s performance and expanding its accessibility. Polygon, for example, is a
@@ -161,7 +190,9 @@ popular layer 2 blockchain that allows users to enjoy the benefits of using the
 Ethereum network without having to go through that network’s relatively slow
 transaction speed and costly fees.
 
-## Mining
+## M
+
+### mining
 
 Mining is the process of validating a transaction in a proof of work blockchain.
 In mining, a large pool of users compete for tokens to see who can solve a
@@ -171,14 +202,18 @@ puzzle scales with the total hash power of the entire network, the hash rate.
 The costs of mining are well documented, both in the exponential increase in
 computing power to continue mining and the detrimental environmental impact.
 
-## NFT
+## N
+
+### namespace
+
+### non-fungible token (NFT)
 
 Non Fungible Token. Tokens that represent something unique, such as crypto art
 or collectibles. They cannot be exchanged for something identical. For example,
 [CryptoPunks ](https://www.larvalabs.com/cryptopunks)and
 [Hashmasks](https://www.thehashmasks.com/gallery).
 
-## Node
+### node
 
 Nodes are the computers used to secure a blockchain network. These are the
 engine of the blockchain, supplying the computing power to maintain it,
@@ -189,7 +224,9 @@ The more nodes a blockchain has, the safer it is. However, this increases the
 computational complexity, amount of energy used, and thus the price for making
 each transaction.
 
-## Oracle
+## O
+
+### oracle
 
 An oracle is any application that provides data from outside the blockchain or
 vice-versa. Blockchains can only access data available on their own chains, and
@@ -203,7 +240,16 @@ how much of that collateral is available. This is because knowledge of the
 collateral amount is off-chain data that has to be translated to data usable by
 the blockchain.
 
-## Smart Contracts
+## R
+
+### Read-eval-print-loop (REPL)
+
+Read-eval-print-loop (REPL) is an interactive shell that enables you to run and test code in a terminal.
+In most cases, a REPL is an interpreter for a specific language or compiler that enables you to write and execute programs from a command-line interface.
+
+## S
+
+### smart contracts
 
 Smart contracts are self-executing contracts formed using a blockchain. A smart
 contract is a program that can automatically execute agreements on the
@@ -212,7 +258,9 @@ of the contract are fulfilled. The blockchain ensures that the contract has been
 considered trustworthy – the validation method and the transparent ledger of
 previous transactions create the necessary trust.
 
-## Tokens
+## T
+
+### tokens
 
 A token is an electronic proof of asset ownership. These are typically split
 into two types. Fungible tokens like Kadena are identical, exchangeable tokens;
@@ -234,7 +282,19 @@ advantage of their utility value.&#x20;
 - **NFTs** that prove ownership over a unique digital asset such as art or a
   venue ticket.
 
-## Trilemma
+## T
+
+### time-to-live (TTL) 
+
+The expiration time—in seconds—for how long a transaction should be considered valid for inclusion in a block after its creation time. 
+In most cases, transactions are processed and included in block in approximately 30 seconds and don't require changes to the default TTL. 
+However, the maximum time a transaction can wait to be included in a block is 48 hours after its initial creation.
+
+### tokenomics
+
+A portmanteau of the words 'token' and 'economics,' tokenomics refers to all the aspects of a cryptocurrency that can impact the price such as total supply, vesting, and utility.
+
+### trilemma
 
 The Trilemma refers to the problem every blockchain has in having to compromise
 on either security, decentralization, or scalability. Coined by Vitalik Buterin,
@@ -252,8 +312,3 @@ interconnected:
 **Kadena’s innovative PoW consensus mechanism called Chainweb makes it the only
 blockchain to have solved the infamous blockchain trilemma.**
 
-## Tokenomics
-
-A portmanteau of the words 'token' and 'economics,' tokenomics refers to all the
-aspects of a cryptocurrency that can impact the price such as total supply,
-vesting, and utility.
