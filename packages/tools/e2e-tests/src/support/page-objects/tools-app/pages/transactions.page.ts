@@ -24,5 +24,22 @@ export class TransactionsPage {
   public async searchForTransaction(txHash: string): Promise<void> {
     await this.searchRequestCard.setValueForTextbox('Request Key', txHash);
     await this._page.getByRole('button', { name: 'Search' }).click();
+    await this.waitForOverview();
+  }
+
+  public async finishTransaction(txHash: string): Promise<void> {
+    await this.searchRequestCard.setValueForTextbox('Request Key', txHash);
+    await this.waitForOverview();
+    await this._page
+      .getByRole('button', { name: 'Finish Transaction' })
+      .click();
+  }
+
+  public async waitForPageLoad(): Promise<void> {
+    await this._page.waitForSelector('h4:text-is("Finish transaction")');
+  }
+
+  public async waitForOverview(): Promise<void> {
+    await this._page.waitForSelector('h5:text-is("Overview")');
   }
 }

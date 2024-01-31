@@ -16,10 +16,9 @@ test.beforeEach(async ({ page, toolsApp }) => {
 });
 
 test(`Tracking a Cross Chain Transfer`, async ({ toolsApp, page }) => {
-  const sourceAccount = await generateAccount(1, ['0', '1']);
+  const sourceAccount = await generateAccount(1, ['0']);
   const targetAccount = await generateAccount(1, ['1']);
   await createAccount(sourceAccount, sourceAccount.chains[0]);
-  await createAccount(sourceAccount, sourceAccount.chains[1]);
   await createAccount(targetAccount, sourceAccount.chains[0]);
   const transferTask = initiateCrossChainTransfer(
     sourceAccount,
@@ -78,15 +77,15 @@ test(`Tracking a Cross Chain Transfer`, async ({ toolsApp, page }) => {
     ).toHaveText(targetAccount.chains[0]);
   });
 
-  await test.step('Complete the Transaction (client-utils)', async () => {
-    await transferTask.executeTo();
-  });
-  await test.step('Search for the transaction', async () => {
-    await page.reload();
-    await toolsApp.transactionsPage.searchForTransaction(submitRes.reqKey);
+  await test.step('Complete the Transaction', async () => {
+    await toolsApp.transactionsPage.aside.clickPageLink(
+      'Cross Chain Transfer Finisher',
+    );
+    await toolsApp.transactionsPage.waitForPageLoad();
+    await toolsApp.transactionsPage.finishTransaction(submitRes.reqKey);
   });
 
-  await test.step('Progress Bar shows that the continuation is pending', async () => {
+  await test.step('Progress Bar shows that the continuation is finished and the transfer complete', async () => {
     await expect(
       await toolsApp.transactionsPage.progressBar.getCheckpointStatus(0),
     ).toHaveCSS('background-color', blue);
