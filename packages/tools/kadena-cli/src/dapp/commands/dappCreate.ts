@@ -15,8 +15,13 @@ export const createDappCommand: (program: Command, version: string) => void =
     [globalOptions.dappTemplate()],
     async (config, args) => {
       debug('dapp-create-command')({ config });
+      if (args[0] === undefined) {
+        console.error(chalk.red('Project name is required'));
+        process.exit(1);
+      }
       const projectDir = join(process.cwd(), args[0]);
       const { dappTemplate } = config;
+
       const folderExists =
         await services.filesystem.directoryExists(projectDir);
 

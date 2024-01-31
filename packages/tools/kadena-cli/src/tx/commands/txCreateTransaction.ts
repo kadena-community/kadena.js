@@ -1,8 +1,7 @@
-import path from 'path';
-
 import type { IUnsignedCommand } from '@kadena/client';
 import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
 import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
+import path from 'path';
 
 import { IS_DEVELOPMENT } from '../../constants/config.js';
 import { services } from '../../services/index.js';
@@ -15,6 +14,7 @@ import { fixTemplatePactCommand } from './templates/mapper.js';
 export const createTransaction = async (
   template: string,
   variables: Record<string, string>,
+  // eslint-disable-next-line @rushstack/no-new-null
   outFilePath: string | null,
 ): Promise<
   CommandResult<{ transaction: IUnsignedCommand; filePath: string }>
