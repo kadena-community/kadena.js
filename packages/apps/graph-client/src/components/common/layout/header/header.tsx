@@ -47,21 +47,20 @@ const Header: FC<IHeaderProps> = (props) => {
       fields: ['cmd', 'hash', 'sigs'],
     },
     {
-      route: routes.NON_FUNGIBLE_ACCOUNT,
-      searchType: SearchType.NonFungibleAccount,
-      fields: ['account'],
-    },
-    {
       route: routes.ACCOUNT_ROOT,
       searchType: SearchType.Account,
-      fields: ['account', 'fungible'],
+      fields: ['account'],
     },
     {
       route: routes.BLOCK_ROOT,
       searchType: SearchType.Block,
       fields: ['hash'],
     },
-    { route: routes.EVENT, searchType: SearchType.Event, fields: ['key'] },
+    {
+      route: routes.EVENT,
+      searchType: SearchType.Event,
+      fields: ['key'],
+    },
     {
       route: routes.TRANSACTIONS,
       searchType: SearchType.Transactions,
@@ -104,11 +103,7 @@ const Header: FC<IHeaderProps> = (props) => {
         break;
       case SearchType.Account:
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.push(`${routes.ACCOUNT}/${secondSearchField}/${searchField}`);
-        break;
-      case SearchType.NonFungibleAccount:
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        router.push(`${routes.NON_FUNGIBLE_ACCOUNT}/${searchField}`);
+        router.push(`${routes.ACCOUNT}/coin/${searchField}`);
         break;
       case SearchType.Event:
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -146,15 +141,9 @@ const Header: FC<IHeaderProps> = (props) => {
     }
 
     if (
-      fieldValue.startsWith('k:') ||
-      fieldValue.startsWith('w:') ||
-      fieldValue.startsWith('K:') ||
-      fieldValue.startsWith('W:')
+      fieldValue.toLocaleLowerCase().startsWith('k:') ||
+      fieldValue.toLocaleLowerCase().startsWith('w:')
     ) {
-      if (searchType === SearchType.NonFungibleAccount) {
-        return;
-      }
-      setSecondSearchField('coin');
       setSearchType(SearchType.Account);
     }
 
@@ -169,21 +158,19 @@ const Header: FC<IHeaderProps> = (props) => {
 
   const handleSearchTypeChange = (selectedKey: string | number) => {
     setSearchType(selectedKey as SearchType);
-    if (selectedKey === SearchType.Transactions) {
-      setDefaultHashOption(SearchType.Transactions);
-    }
-    if (selectedKey === SearchType.Block) {
-      setDefaultHashOption(SearchType.Block);
+
+    switch (selectedKey) {
+      case SearchType.Transactions:
+        setDefaultHashOption(SearchType.Transactions);
+        break;
+      case SearchType.Block:
+        setDefaultHashOption(SearchType.Block);
+        break;
+      case SearchType.GasEstimation:
+        setSecondSearchField('');
+        break;
     }
 
-    if (selectedKey === SearchType.Account) {
-      setSecondSearchField('coin');
-    }
-    if (selectedKey === SearchType.GasEstimation) {
-      setSecondSearchField('');
-    }
-    if (selectedKey === SearchType.NonFungibleAccount) {
-    }
     setSearchField('');
   };
 
@@ -200,9 +187,6 @@ const Header: FC<IHeaderProps> = (props) => {
           >
             <SelectItem key={SearchType.Transactions}>Request Key</SelectItem>
             <SelectItem key={SearchType.Account}>Account</SelectItem>
-            <SelectItem key={SearchType.NonFungibleAccount}>
-              Non-Fungible Account
-            </SelectItem>
             <SelectItem key={SearchType.Event}>Event</SelectItem>
             <SelectItem key={SearchType.Block}>Block</SelectItem>
             <SelectItem key={SearchType.GasEstimation}>
@@ -220,8 +204,7 @@ const Header: FC<IHeaderProps> = (props) => {
             onKeyDown={handleKeyPress}
           />
 
-          {(searchType.startsWith('account') ||
-            searchType.startsWith('gas')) && (
+          {searchType.startsWith('gas') && (
             <TextField
               label={secondSearchTypeLabels[searchType]}
               id="second-search-field"
