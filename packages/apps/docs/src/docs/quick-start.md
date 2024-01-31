@@ -1,6 +1,6 @@
 ---
-title: Quick start
-id: quicksart
+title: "Deploy 'Hello, World!' - Quick start"
+id: quickstart
 description: "Learn how to set up a development environment and deploy your first smart contract on Kadena."
 menu: Build
 label: Quick start

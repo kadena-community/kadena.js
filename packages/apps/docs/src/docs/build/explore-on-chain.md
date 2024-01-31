@@ -1,8 +1,9 @@
 ---
-title: Sign the Memory Wall
-description: Learn Kadena’s core concepts & tools for development in 15 minutes
-menu: Sign the Memory Wall
-label: Sign the Memory Wall
+title: "Onboard: Explore the blockchain"
+description: "Add your name to the Kadena Memory Wall on the public blockchain, see the blockchain in action using a block explorer, and create a wallet on the test network to play a game."
+
+menu: Build
+label: "Onboard: Explore the blockchain"
 order: 1
 layout: full
 tags: [chainweb, chainweaver, tutorial, resources]

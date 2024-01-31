@@ -32,13 +32,13 @@ pages:
         file: /learn/accounts-keys.md
       glossary:
         url: /glossary
-        file: /kadena/glossary.md
+        file: /learn/glossary.md
       kadena-faq:
         url: /kadena-faq
-        file: /kadena/kadena-faq.md
+        file: /learn/kadena-faq.md
       resources:
         url: /resources
-        file: /kadena/resources.md
+        file: /learn/resources.md
 
   build:
     url: /build
