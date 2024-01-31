@@ -6,6 +6,7 @@ to be replaced in the marmalade templates and code files  */
 export const argumentConfig = {
   sender_key: sender00.keys[0].publicKey,
   marmalade_namespace: 'marmalade-v2',
+  marmalade_sale_namespace: 'marmalade-sale',
   is_upgrade: 'false',
   network: dotenv.NETWORK_ID,
   chain: dotenv.SIMULATE_DEFAULT_CHAIN_ID,
