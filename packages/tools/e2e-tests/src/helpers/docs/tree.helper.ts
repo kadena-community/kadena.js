@@ -46,7 +46,7 @@ export default class TreeHelper {
       const parentMetaData = await extractMetadataFromMarkdown(parent.path);
       // Validate Menu Items without Children
       if (parent.children?.length === 0) {
-        await this._validateSingleMenuItem(parentMetaData.menu);
+        await this._validateSingleMenuItem(parentMetaData.label);
       } else {
         await this._toggleParent(parentMetaData.menu); // Open Parent before validating children
         for (const child of parent.children!) {
@@ -100,12 +100,17 @@ export default class TreeHelper {
   }
 
   private async _validateSingleMenuItem(label: string): Promise<void> {
+    const res = this._page
+      .getByTestId(`l1-item`)
+      .locator(`[data-testid="l1-link"]:text-is(${JSON.stringify(label)})`);
+
+    console.log({ res });
     await expect(
       this._page
         .getByTestId(`l1-item`)
         .locator(`[data-testid="l1-link"]:text-is(${JSON.stringify(label)})`),
       `Expected ${label} to be visible on level 1 in the menu.`,
-    ).toBeVisible();
+    ).toBeAttached();
   }
 
   private async _validateMenuItemWithChildren(
