@@ -29,7 +29,14 @@ const ProofOfUsStore = () => {
 
     if (signeesList.find((s) => s.cid === account.cid)) return;
 
-    store[tokenId].signees = [...signeesList, { ...account, initiator: false }];
+    if (!signeesList.length) {
+      store[tokenId].signees[0] = { ...account };
+    } else {
+      store[tokenId].signees[1] = { ...account, initiator: false };
+      store[tokenId].signees.length = 2;
+    }
+
+    store[tokenId].signees = [...signeesList];
   };
 
   const removeSignee = (tokenId: string, account: IProofOfUsSignee) => {
