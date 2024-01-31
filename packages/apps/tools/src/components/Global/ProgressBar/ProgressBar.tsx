@@ -37,6 +37,7 @@ export const ProgressBar: FC<IProgressBarProps> = ({ checkpoints }) => {
               >
                 <div className={classNames(circleLineContainerStyle)}>
                   <div
+                    data-testid="kda-status-indicator"
                     className={classNames(
                       circleStyle,
                       circleColorVariant[checkpoint.status],
