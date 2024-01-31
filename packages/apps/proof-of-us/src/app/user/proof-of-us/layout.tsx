@@ -1,7 +1,6 @@
 'use client';
 import { IsLoading } from '@/components/IsLoading/IsLoading';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 

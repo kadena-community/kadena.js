@@ -5,6 +5,7 @@ const ProofOfUsStore = () => {
     if (store[tokenId]) return;
     store[tokenId] = {
       tokenId,
+      type: 'multi',
       date: Date.now(),
       signees: [{ ...account, initiator: true }],
       avatar: {
