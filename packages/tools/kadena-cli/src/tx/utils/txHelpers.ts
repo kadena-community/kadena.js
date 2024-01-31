@@ -163,6 +163,15 @@ export async function signTransactionsWithSeed(
   }
 }
 
+/**
+ * Signs a set of unsigned transactions using provided key pairs.
+ *
+ * @param keys - An array of key pairs used for signing transactions.
+ * @param unsignedTransactions - An array of transactions that need to be signed.
+ * @param legacy - Optional flag indicating whether to use legacy signing method.
+ * @returns A promise that resolves to an array of either signed transactions, unchanged unsigned transactions, or undefined in case of errors.
+ */
+
 export async function signTransactionWithKeyPair(
   keys: IKeyPairLocal[],
   unsignedTransactions: IUnsignedCommand[],
@@ -342,4 +351,11 @@ export async function getTransactionsFromFile(
   }
 
   return transactions;
+}
+
+export function parseCommaSeparatedInput(commandLineInput: string): string[] {
+  if (commandLineInput.trim() === '') {
+    return [];
+  }
+  return commandLineInput.split(',').map((item) => item.trim());
 }
