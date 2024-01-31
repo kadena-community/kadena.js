@@ -36,7 +36,7 @@ export async function getAccountDetailsFromChain(
 
     if (accountDetails === undefined) {
       throw new Error(
-        `Account ${accountName} does not exist on chain ${chainId}`,
+        `Account details of ${accountName} does not exist on chain ${chainId}`,
       );
     }
 

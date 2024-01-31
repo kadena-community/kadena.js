@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
 import { assertCommandError } from '../../utils/command.util.js';

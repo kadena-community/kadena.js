@@ -17,18 +17,15 @@ describe('validateAccountDetails', () => {
       accountName: undefined,
     };
     const expectedResult = {
-      data: {
-        config: {
-          ...config,
-          accountName: 'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-all',
-        },
-        accountDetails: {
-          publicKeys: ['publicKey1', 'publicKey2'],
-          predicate: 'keys-all',
-        },
-        isConfigAreSame: true,
+      configWithAccountName: {
+        ...config,
+        accountName: 'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-all',
       },
-      success: true,
+      accountDetails: {
+        publicKeys: ['publicKey1', 'publicKey2'],
+        predicate: 'keys-all',
+      },
+      isConfigAreSame: true,
     };
     const result = await validateAccountDetails(config);
     expect(result).toEqual(expectedResult);
@@ -42,18 +39,15 @@ describe('validateAccountDetails', () => {
     };
 
     const expectedResult = {
-      data: {
-        config: {
-          ...config,
-          accountName: 'accountName',
-        },
-        accountDetails: {
-          publicKeys: ['publicKey1', 'publicKey2'],
-          predicate: 'keys-all',
-        },
-        isConfigAreSame: false,
+      configWithAccountName: {
+        ...config,
+        accountName: 'accountName',
       },
-      success: true,
+      accountDetails: {
+        publicKeys: ['publicKey1', 'publicKey2'],
+        predicate: 'keys-all',
+      },
+      isConfigAreSame: false,
     };
 
     const result = await validateAccountDetails(config);
@@ -74,15 +68,9 @@ describe('validateAccountDetails', () => {
       accountName: 'accountName',
     };
 
-    const expectedResult = {
-      errors: [
-        'The account is not on chain yet. To create it on-chain, transfer funds to it from testnet and use "fund" command.',
-      ],
-      success: false,
-    };
-
-    const result = await validateAccountDetails(config);
-    expect(result).toEqual(expectedResult);
+    await expect(async () => {
+      await validateAccountDetails(config);
+    }).rejects.toThrow('row not found in chain');
   });
 
   it('should return error message when chain api calls fails', async () => {
@@ -99,12 +87,8 @@ describe('validateAccountDetails', () => {
       accountName: 'accountName',
     };
 
-    const expectedResult = {
-      errors: ['something went wrong'],
-      success: false,
-    };
-
-    const result = await validateAccountDetails(config);
-    expect(result).toEqual(expectedResult);
+    await expect(async () => {
+      await validateAccountDetails(config);
+    }).rejects.toThrow('something went wrong');
   });
 });

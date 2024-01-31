@@ -48,7 +48,9 @@ describe('getAccountDetailsFromChain', () => {
         network: devNetConfigMock.network,
         networkConfig: devNetConfigMock,
       });
-    }).rejects.toThrow('Account k:accountName does not exist on chain 1');
+    }).rejects.toThrow(
+      'Account details of k:accountName does not exist on chain 1',
+    );
   });
 
   it('should throw an error when account is not available on chain', async () => {

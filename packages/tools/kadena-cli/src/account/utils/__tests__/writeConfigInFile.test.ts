@@ -1,6 +1,6 @@
 import yaml from 'js-yaml';
 import path from 'path';
-import { assert, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { defaultAccountPath } from '../../../constants/account.js';
 import { services } from '../../../services/index.js';
@@ -27,9 +27,7 @@ describe('writeInConfigFile', () => {
     }
     expect(await fs.fileExists(filePath)).toBe(false);
 
-    const result = await writeConfigInFile(filePath, config);
-
-    assert(result.success);
+    await writeConfigInFile(filePath, config);
 
     const fileContent = await fs.readFile(filePath);
     expect(fileContent).toBe(
@@ -58,12 +56,12 @@ describe('writeInConfigFile', () => {
     // Create a file before writing
     await fs.writeFile(filePath, 'test');
     expect(await fs.fileExists(filePath)).toBe(true);
-    const result = await writeConfigInFile(filePath, config);
 
-    expect(result).toEqual({
-      success: false,
-      errors: [`The account configuration "${filePath}" already exists.`],
-    });
+    await expect(async () => {
+      await writeConfigInFile(filePath, config);
+    }).rejects.toThrow(
+      `The account configuration "${filePath}" already exists.`,
+    );
     // Cleanup the file after test
     await fs.deleteFile(filePath);
   });
