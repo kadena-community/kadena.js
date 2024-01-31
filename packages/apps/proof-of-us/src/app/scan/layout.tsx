@@ -1,9 +1,18 @@
 'use client';
 import { useAccount } from '@/hooks/account';
+import { useSocket } from '@/hooks/socket';
+import { useParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
+import { useEffect } from 'react';
 
 const ScanLayout: FC<PropsWithChildren> = ({ children }) => {
   const { account, isMounted, login } = useAccount();
+  const { connect } = useSocket();
+  const { id: tokenId } = useParams();
+
+  useEffect(() => {
+    connect({ tokenId: `${tokenId}` });
+  }, [tokenId]);
 
   if (!isMounted) return null;
   return (
