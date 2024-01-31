@@ -44,8 +44,12 @@ const getAllAccounts = async (): Promise<string[]> => {
 
 const promptVariableValue = async (key: string): Promise<string> => {
   if (key.startsWith('account-')) {
-    // search for account alias
+    // search for account alias - needs account implementation
     const accounts = await getAllAccounts();
+
+    const hasAccount = accounts.length > 0;
+    let value: string | null = null;
+
     const choices = [
       {
         value: '_manual_',
@@ -53,12 +57,14 @@ const promptVariableValue = async (key: string): Promise<string> => {
       },
       ...accounts.map((x) => ({ value: x, name: x })),
     ];
-    const value = await select({
-      message: `Select account alias for template value ${key}:`,
-      choices,
-    });
+    if (hasAccount) {
+      value = await select({
+        message: `Select account alias for template value ${key}:`,
+        choices,
+      });
+    }
 
-    if (value === '_manual_') {
+    if (value === '_manual_' || !hasAccount) {
       return await input({
         message: `Manual entry for account for template value ${key}:`,
         validate: (value) => {
@@ -68,11 +74,15 @@ const promptVariableValue = async (key: string): Promise<string> => {
       });
     }
 
+    if (value === null) throw new Error('account not found');
     return value;
   }
   if (key.startsWith('pk-')) {
     const walletKeys = await getAllWalletKeys();
     const plainKeys = await getAllPlainKeys();
+
+    const hasKeys = walletKeys.length > 0 || plainKeys.length > 0;
+    let value: string | null = null;
 
     const choices = [
       {
@@ -80,20 +90,23 @@ const promptVariableValue = async (key: string): Promise<string> => {
         name: 'Enter public key manually',
       },
       ...walletKeys.map((key) => ({
-        value: `${key.wallet.wallet}:${key.key}`,
+        value: key.publicKey,
         name: `${key.alias} (wallet ${key.wallet.folder})`,
       })),
       ...plainKeys.map((key) => ({
-        value: `plain:${key.key}`,
+        value: key.publicKey,
         name: `${key.alias} (plain key)`,
       })),
     ];
-    const value = await select({
-      message: `Select public key alias for template value ${key}:`,
-      choices,
-    });
 
-    if (value === '_manual_') {
+    if (hasKeys) {
+      value = await select({
+        message: `Select public key alias for template value ${key}:`,
+        choices,
+      });
+    }
+
+    if (value === '_manual_' || !hasKeys) {
       return await input({
         message: `Manual entry for public key for template value ${key}:`,
         validate: (value) => {
@@ -102,20 +115,16 @@ const promptVariableValue = async (key: string): Promise<string> => {
         },
       });
     }
-    const selectedKey =
-      walletKeys.find((x) => x.key === value) ??
-      plainKeys.find((x) => x.key === value);
-    if (selectedKey === undefined) throw new Error('public key not found');
 
-    console.log(
-      `${chalk.green('>')} Key alias ${selectedKey.alias} using public key ${
-        selectedKey.publicKey
-      }`,
-    );
-    return selectedKey.publicKey;
+    if (value === null || value === '_manual_') {
+      throw new Error('public key not found');
+    }
+
+    console.log(`${chalk.green('>')} Using public key ${value}`);
+    return value;
   }
   if (key.startsWith('keyset-')) {
-    // search for key alias
+    // search for key alias - needs account implementation
     const alias = await input({
       message: `Template value for keyset ${key}:`,
       validate: (value) => {
