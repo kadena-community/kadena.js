@@ -9,6 +9,7 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 
+import { useWallet } from '../modules/wallet/wallet.hook';
 import { BackupRecoveryPhrase } from '../pages/backup-recovery-phrase/backup-recovery-phrase';
 import { WriteDownRecoveryPhrase } from '../pages/backup-recovery-phrase/write-down/write-down-recovery-phrase';
 import { CreateWallet } from '../pages/create-wallet/create-wallet';
@@ -16,7 +17,6 @@ import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockWallet } from '../pages/unlock-wallet/unlock-wallet';
 import { getScriptType } from '../utils/window';
-import { useWallet } from '../wallet/wallet.hook';
 import { Layout } from './layout';
 
 const ProtectedRoute: FC<

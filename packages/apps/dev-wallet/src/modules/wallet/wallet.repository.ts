@@ -1,13 +1,10 @@
-import { execInSequence } from '@/utils/helpers';
+import { createDatabaseConnection } from '@/modules/db/db.service';
 import {
   addItem,
-  connect,
-  createStore,
-  deleteDatabase,
   getAllItems,
   getOneItem,
   updateItem,
-} from '@/utils/indexeddb';
+} from '@/modules/db/indexeddb';
 import { BuiltInPredicate } from '@kadena/client';
 
 export interface IKeyItem {
@@ -28,12 +25,9 @@ export interface INetwork {
   networkId: string;
   hosts: Array<{
     url: string;
-    useFor: {
-      submit: boolean;
-      read: boolean;
-      confirmation: boolean;
-    };
-    priority: number;
+    submit: boolean;
+    read: boolean;
+    confirmation: boolean;
   }>;
 }
 
@@ -72,7 +66,7 @@ export interface WalletRepository {
   getAccountsByProfileId: (profileId: string) => Promise<IAccount[]>;
 }
 
-export const walletRepository = (db: IDBDatabase): WalletRepository => {
+const walletRepository = (db: IDBDatabase): WalletRepository => {
   const getAll = getAllItems(db);
   const getOne = getOneItem(db);
   const add = addItem(db);
@@ -115,35 +109,7 @@ export const walletRepository = (db: IDBDatabase): WalletRepository => {
   };
 };
 
-// since we create the database in the first call we need to make sure another call does not happen
-// while the database is still being created; so I use execInSequence.
-export const createWalletRepository = execInSequence(
-  async (): Promise<WalletRepository> => {
-    const DB_NAME = 'dev-wallet';
-    const DB_VERSION = 6;
-    const result = await connect(DB_NAME, DB_VERSION);
-    let { db } = result;
-    if (result.needsUpgrade) {
-      if (import.meta.env.DEV) {
-        console.log(
-          'in development we delete the database if schema is changed for now since we are still in early stage of development',
-        );
-        db.close();
-        console.log('deleting database');
-        await deleteDatabase(DB_NAME);
-        console.log('creating new database');
-        const { db: newDb } = await connect(DB_NAME, DB_VERSION);
-        db = newDb;
-      }
-      // NOTE: If you change the schema, you need to update the upgrade method
-      // below to migrate the data. the current version just creates the database
-      const create = createStore(db);
-      create('profile', 'uuid', [{ index: 'name', unique: true }]);
-      create('network', 'uuid');
-      create('encryptedValue');
-      // TODO: move account to separate repository if needed
-      create('account', 'uuid', [{ index: 'address' }, { index: 'profileId' }]);
-    }
-    return walletRepository(db);
-  },
-);
+export const createWalletRepository = async () => {
+  const db = await createDatabaseConnection();
+  return walletRepository(db);
+};

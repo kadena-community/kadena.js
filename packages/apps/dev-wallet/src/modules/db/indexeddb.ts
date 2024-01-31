@@ -120,6 +120,21 @@ export const addItem =
     });
   };
 
+export const deleteItem =
+  (db: IDBDatabase) => (storeName: string, key: string) => {
+    return new Promise<void>((resolve, reject) => {
+      const transaction = db.transaction(storeName, 'readwrite');
+      const store = transaction.objectStore(storeName);
+      const request = store.delete(key);
+      request.onerror = () => {
+        reject(request.error);
+      };
+      request.onsuccess = () => {
+        resolve();
+      };
+    });
+  };
+
 const isExist =
   (db: IDBDatabase) =>
   async <T>(storeName: string, value: T, key?: string) => {

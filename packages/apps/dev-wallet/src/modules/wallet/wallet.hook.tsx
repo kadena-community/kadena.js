@@ -1,6 +1,7 @@
 import { IUnsignedCommand } from '@kadena/client';
 import { useCallback, useContext } from 'react';
 import { ExtWalletContextType, WalletContext } from './wallet.context';
+import { createWalletRepository } from './wallet.repository';
 import * as WalletService from './wallet.service';
 
 const isUnlocked = (
@@ -12,8 +13,7 @@ const isUnlocked = (
     !ctx.encryptedSeed ||
     !ctx.encryptionKey ||
     !ctx.profile ||
-    !ctx.profileList ||
-    !ctx.walletRepository
+    !ctx.profileList
   ) {
     return false;
   }
@@ -25,13 +25,10 @@ export const useWallet = () => {
   if (!context || !setContext) {
     throw new Error('useWallet must be used within a WalletProvider');
   }
-  const { walletRepository } = context;
 
   const createWallet = useCallback(
     async (profileName: string, password: string, mnemonic: string) => {
-      if (!walletRepository) {
-        throw new Error('Wallet repository not initialized');
-      }
+      const walletRepository = await createWalletRepository();
       const ctx = await WalletService.createWallet(
         walletRepository,
         profileName,
@@ -49,14 +46,12 @@ export const useWallet = () => {
         profileList: [...(profileList ?? []), profileInfo],
       }));
     },
-    [walletRepository, setContext],
+    [setContext],
   );
 
   const unlockWallet = useCallback(
     async (profileId: string, password: string) => {
-      if (!walletRepository) {
-        throw new Error('Wallet repository not initialized');
-      }
+      const walletRepository = await createWalletRepository();
       const ctx = await WalletService.unlockWallet(
         walletRepository,
         profileId,
@@ -71,13 +66,11 @@ export const useWallet = () => {
         profileList,
       }));
     },
-    [walletRepository, setContext],
+    [setContext],
   );
 
   const lockWallet = useCallback(() => {
-    setContext(({ walletRepository }) => ({
-      walletRepository,
-    }));
+    setContext(() => ({}));
   }, [setContext]);
 
   const sign = useCallback(
@@ -95,7 +88,11 @@ export const useWallet = () => {
       if (!isUnlocked(context)) {
         throw new Error('Wallet in not unlocked');
       }
-      return WalletService.decryptMnemonic(context, password);
+      const walletRepository = await createWalletRepository();
+      return WalletService.decryptMnemonic(
+        { ...context, walletRepository },
+        password,
+      );
     },
     [context],
   );
@@ -111,4 +108,12 @@ export const useWallet = () => {
     profileList: context.profileList ?? [],
     accounts: context.accounts ?? [],
   };
+};
+
+export const useWalletContext = () => {
+  const [context] = useContext(WalletContext) ?? [];
+  if (!context) {
+    throw new Error('useWalletContext must be used within a WalletProvider');
+  }
+  return context;
 };
