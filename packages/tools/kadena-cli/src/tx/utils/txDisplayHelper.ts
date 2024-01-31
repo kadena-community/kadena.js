@@ -19,50 +19,35 @@ export function txDisplayTransaction(
   }
 
   if (obj === null || obj === undefined) {
-    console.log(' '.repeat(baseIndent) + chalk.green('null'));
+    console.log('Transaction '.repeat(baseIndent) + chalk.green('null'));
     return;
   }
 
-  if (typeof obj !== 'object' || Array.isArray(obj)) {
-    console.log(
-      ' '.repeat(baseIndent) + chalk.green(JSON.stringify(obj, null, 2)),
-    );
-    return;
-  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const printObject = (key: string, value: any, indentLevel: number): void => {
+    const formattedKey = `${' '.repeat(indentLevel)}${key}:`;
 
-  for (const [key, value] of Object.entries(obj)) {
-    const formattedKey = `${' '.repeat(baseIndent)}${key}:`;
-
-    if (
-      value !== undefined &&
-      value !== null &&
-      typeof value === 'object' &&
-      !Array.isArray(value)
-    ) {
-      console.log(`${chalk.black(formattedKey)}`);
-
-      if (key === 'result' && 'status' in value) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const resultValue = value as { status: string; [key: string]: any };
-        const color =
-          resultValue.status === 'failure' ? chalk.red : chalk.green;
-        console.log(
-          ' '.repeat(baseIndent * 2) +
-            color(JSON.stringify(resultValue, null, 2)),
-        );
-      } else {
-        console.log(
-          ' '.repeat(baseIndent * 2) +
-            chalk.green(JSON.stringify(value, null, 2)),
-        );
+    if (typeof value === 'object' && value !== null) {
+      console.log(chalk.black(formattedKey));
+      for (const [subKey, subValue] of Object.entries(value)) {
+        printObject(subKey, subValue, indentLevel + 2);
       }
     } else {
-      const formattedValue =
+      let formattedValue =
         value !== null && value !== undefined ? value.toString() : 'null';
+
+      if (key === 'status') {
+        const color = value === 'failure' ? chalk.red : chalk.green;
+        formattedValue = color(formattedValue);
+      }
       console.log(
         `${chalk.black(formattedKey)} ${chalk.green(formattedValue)}`,
       );
     }
+  };
+
+  for (const [key, value] of Object.entries(obj)) {
+    printObject(key, value, baseIndent);
   }
 
   displaySeparator();

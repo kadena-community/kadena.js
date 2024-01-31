@@ -64,7 +64,8 @@ export async function getTransactions(
   path: string,
 ): Promise<string[]> {
   try {
-    const filePath = path ? `${process.cwd()}/${path}` : TRANSACTION_PATH;
+    const filePath = path ? join(process.cwd(), path) : TRANSACTION_PATH;
+
     const files = await services.filesystem.readDir(filePath);
     return files.filter((file) => signed === file.includes('-signed'));
   } catch (error) {
@@ -245,12 +246,9 @@ export async function getTransactionFromFile(
     }
     const transaction = JSON.parse(fileContent);
     if (signed) {
-      tx.ICommandSchema.parse(transaction);
-      return transaction as ICommand;
+      return tx.ICommandSchema.parse(transaction);
     }
-    tx.IUnsignedCommandSchema.parse(transaction);
-
-    return transaction as IUnsignedCommand;
+    return tx.IUnsignedCommandSchema.parse(transaction);
   } catch (error) {
     console.error(
       `Error processing ${
