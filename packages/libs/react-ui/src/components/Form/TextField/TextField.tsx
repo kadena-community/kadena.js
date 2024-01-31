@@ -23,7 +23,7 @@ import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
 
 type PickedAriaTextFieldProps = Omit<
   AriaTextFieldProps,
-  'children' | 'inputElementType' | 'onChange' | 'type'
+  'children' | 'inputElementType' | 'onChange'
 >;
 export interface ITextFieldProps extends PickedAriaTextFieldProps {
   className?: string;
@@ -46,10 +46,6 @@ export interface ITextFieldProps extends PickedAriaTextFieldProps {
   endAddon?: ReactNode;
   isOutlined?: boolean;
   inputFont?: 'body' | 'code';
-  /*
-   * using native the definition from react for type but blocking all other types that we dont want (specifically blocking number)
-   */
-  type?: 'text' | 'search' | 'url' | 'tel' | 'email' | 'password';
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, react/function-component-definition

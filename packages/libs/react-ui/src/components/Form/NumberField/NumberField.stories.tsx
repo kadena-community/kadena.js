@@ -215,12 +215,8 @@ export const UsdFormat: Story = {
         label="Tell me your salary"
         placeholder="placeholder"
         formatOptions={{
-          style: 'none',
-          useGrouping: false,
-          minimumIntegerDigits: 2,
-          maximumFractionDigits: 2,
-          minimumSignificantDigits: 2,
-          maximumSignificantDigits: 2,
+          style: 'currency',
+          currency: 'USD',
         }}
       />
     );
