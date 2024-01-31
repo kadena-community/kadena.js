@@ -1,13 +1,13 @@
 import { readFileSync, readdirSync, writeFileSync } from 'fs';
 import yaml from 'js-yaml';
 import { join, relative } from 'path';
+import { downloadGitFiles } from '../../services/download-git-files';
+import { flattenFolder } from '../../services/path';
 import type {
   ILocalConfig,
   IRemoteConfig,
   IRepositoryConfig,
 } from '../deploy/config';
-import { downloadGitFiles } from '../services/download-git-files';
-import { flattenFolder } from '../services/path';
 
 export async function getMarmaladeTemplates({
   repositoryConfig,

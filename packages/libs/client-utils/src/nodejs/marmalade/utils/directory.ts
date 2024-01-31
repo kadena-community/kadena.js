@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync } from 'fs';
-import { clearDir } from '../services/path';
+import { clearDir } from '../../services/path';
 
 export function handleDirectorySetup(
   templateDestinationPath: string,

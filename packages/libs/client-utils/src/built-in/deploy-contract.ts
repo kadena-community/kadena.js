@@ -14,6 +14,7 @@ export interface ITransactionBodyInput {
     ttl: number;
     senderAccount: string;
   };
+  data?: { key: string; value: string };
   keysets?: { name: string; pred: string; keys: string[] }[];
   namespace?: { key: string; data: string };
 }
@@ -44,6 +45,13 @@ export const createPactCommand = (inputs: IDeployContractInput) => {
     transactionBuilder = transactionBuilder.addData(
       transactionBody.namespace.key,
       transactionBody.namespace.data,
+    );
+  }
+
+  if (transactionBody.data) {
+    transactionBuilder = transactionBuilder.addData(
+      transactionBody.data.key,
+      transactionBody.data.value,
     );
   }
 
