@@ -16,7 +16,7 @@ import {
   Grid,
   GridItem,
   Heading,
-  Link as KadenaLink,
+  Link as KandenaLink,
   Stack,
   SystemIcon,
 } from '@kadena/react-ui';
@@ -76,21 +76,27 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   schema="warning"
                   background="contribute"
                 >
-                  <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/build/quickstart">
-                      Deploy "Hello, World!" - Quick start
-                    </Link>
-                    <Link className={docsCardLink} href="/pact/beginner">
-                      Get started with Pact
-                    </Link>
-                    <Link
-                      className={docsCardLink}
-                      href="/build/guides/election-dapp-tutorial"
+                  <Box marginBlock="md">
+                    <KandenaLink
+                      href="/build/quickstart"
+                      endIcon={<SystemIcon.TrailingIcon />}
+                      color="negative"
+                      variant="contained"
                     >
-                      Builder's workshop: Election application
+                      Deploy "Hello, World!" - Quick start
+                    </KandenaLink>
+                  </Box>
+                  <BrowseSection marker="none">
+                    <Link className={docsCardLink} href="/build/guides/election-dapp-tutorial">
+                      Workshop: Election application
                     </Link>
+
                     <Link className={docsCardLink} href="/build/guides">
-                      Builder's workshop: Faucet application
+                      Workshop: Faucet application
+                    </Link>
+
+                    <Link className={docsCardLink} href="/build/marmalade-tutorial">
+                      Workshop: NFT marketplaces
                     </Link>
                   </BrowseSection>
                 </DocsCard>
