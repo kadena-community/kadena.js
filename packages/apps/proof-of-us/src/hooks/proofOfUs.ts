@@ -12,13 +12,26 @@ export const useProofOfUs = () => {
   const [state, setState] = useState<IProofOfUs>();
   const params = useParams();
 
+  const [proofOfUs, setProofOfUs] = useState<IProofOfUs>();
+
   const { data, isLoading, error } = useGetProofOfUs({ id: params.id });
+
+  useEffect(() => {
+    if (!data) return;
+    console.log('nEW PROOF');
+    setProofOfUs({ ...data, ...state } as IProofOfUs);
+  }, [data, state]);
 
   useEffect(() => {
     if (!socket) return;
     socket.on('getProofOfUs', ({ content }) => {
+      console.log('proof', content);
       setState(content);
     });
+
+    return () => {
+      socket.off('getProofOfUs');
+    };
   }, [socket]);
 
   const addSignee = async ({ tokenId }: { tokenId: string }) => {
@@ -87,7 +100,7 @@ export const useProofOfUs = () => {
     isConnected,
     isInitiator,
     getSigneeAccount,
-    proofOfUs: { ...data, ...state },
+    proofOfUs,
     isLoading,
     error,
   };

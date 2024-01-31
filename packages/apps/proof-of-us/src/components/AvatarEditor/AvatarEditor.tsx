@@ -5,7 +5,7 @@ import { fabric } from 'fabric';
 import type { Canvas } from 'fabric/fabric-impl';
 import { useParams } from 'next/navigation';
 import type { FC, MouseEvent } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { canvasClass, modalClass } from './styles.css';
 
 export const AvatarEditor: FC = () => {
@@ -30,6 +30,7 @@ export const AvatarEditor: FC = () => {
       };
     });
 
+    console.log(objs.length);
     fabric.Image.fromURL(proofOfUs.avatar?.background ?? '', function (img) {
       img.scaleToWidth(500);
       img.scaleToHeight(500);
@@ -37,7 +38,25 @@ export const AvatarEditor: FC = () => {
       fabricRef.current?.requestRenderAll();
     });
 
-    fabricRef.current.loadFromJSON({ objects: objs }, () => {});
+    fabricRef.current.loadFromJSON(
+      { objects: objs },
+      fabricRef.current.renderAll.bind(fabricRef.current),
+    );
+
+    //fabricRef.current._objects = objs;
+    // fabricRef.current.loadFromJSON(
+    //   { objects: proofOfUs.avatar?.objects },
+    //   () => {},
+    // );
+    // fabricRef.current.renderOnAddRemove = false;
+    // console.log(333, proofOfUs.avatar?.objects);
+    // fabric.util.enlivenObjects(proofOfUs.avatar?.objects, (objs) => {
+    //   objs.forEach((item) => {
+    //     fabricRef.current.add({ ...item });
+    //   });
+    //   //fabricRef.current.renderAll(); // Make sure to call this once you're ready!
+    //   fabricRef.current.renderOnAddRemove = true;
+    //});
   }, [proofOfUs]);
 
   useEffect(() => {
@@ -61,18 +80,23 @@ export const AvatarEditor: FC = () => {
     fabricRef.current.freeDrawingBrush.width = 4;
     fabricRef.current.freeDrawingBrush.color = '#000';
 
-    fabricRef.current.on('object:added', ({ target }) => {
-      if (!target) return;
-      const innerTarget = target as IFabricCanvasObject;
-      if (!innerTarget.isInitLoad) {
-        delete innerTarget.isInitLoad;
-        const newTarget = {
-          ...innerTarget.toJSON(),
-          previousState: innerTarget.toJSON(),
-        } as unknown as IFabricCanvasObject;
-        addObject(`${tokenId}`, newTarget);
+    fabricRef.current.on('object:added', (e) => {
+      const target = e.target;
+      if (!target || target.isInitLoad) {
+        console.log('init');
+        return;
       }
+
+      // const innerTarget = target as IFabricCanvasObject;
+      // if (!innerTarget.isInitLoad) {
+      delete target.isInitLoad;
+      const newTarget = {
+        ...target.toJSON(),
+        previousState: target.toJSON(),
+      } as unknown as IFabricCanvasObject;
+      addObject(`${tokenId}`, newTarget);
     });
+
     fabricRef.current.on('object:modified', ({ target }) => {
       if (!target) return;
       const innerTarget = target as IFabricCanvasObject;

@@ -19,6 +19,7 @@ export const useAvatar = () => {
     previousState?: IFabricCanvasObject,
   ) => {
     delete previousState?.previousState;
+
     socket?.emit('addObject', {
       content: {
         newState: object,
