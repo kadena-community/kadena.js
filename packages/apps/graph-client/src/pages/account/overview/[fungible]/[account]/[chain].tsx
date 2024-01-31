@@ -71,10 +71,15 @@ const ChainAccount: React.FC = () => {
     skip: !router.query.account || !router.query.chain,
   });
 
-  const search = async () => {
-    await router.push(
-      `${routes.ACCOUNT}/${fungibleField}/${router.query.account}`,
-    );
+  const search = () => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    router.push(`${routes.ACCOUNT}/${fungibleField}/${router.query.account}`);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      search();
+    }
   };
 
   useEffect(() => {
@@ -147,6 +152,7 @@ const ChainAccount: React.FC = () => {
               value={fungibleField}
               onValueChange={(value) => setFungibleField(value)}
               placeholder="coin"
+              onKeyDown={handleKeyPress}
             />
 
             <Button onClick={search}>Search</Button>
