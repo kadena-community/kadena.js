@@ -1,6 +1,9 @@
 import { input, select } from '@inquirer/prompts';
-import type { Predicate } from '../account/types.js';
 import type { IPrompt } from '../utils/createOption.js';
+
+export const predicates = ['keys-all', 'keys-any', 'keys-2'] as const;
+
+export type Predicate = (typeof predicates)[number];
 
 export const publicKeysPrompt: IPrompt<string> = async () =>
   await input({
@@ -51,11 +54,10 @@ export const fungiblePrompt: IPrompt<string> = async () =>
 export const predicatePrompt: IPrompt<Predicate> = async () =>
   await select({
     message: 'Select a keyset predicate.',
-    choices: [
-      { value: 'keys-all', name: 'keys-all' },
-      { value: 'keys-any', name: 'keys-any' },
-      { value: 'keys-2', name: 'keys-2' },
-    ],
+    choices: predicates.map((predicate) => ({
+      value: predicate,
+      name: predicate,
+    })),
   });
 
 export const updateAccountDetailsPrompt = async (): Promise<string> =>
