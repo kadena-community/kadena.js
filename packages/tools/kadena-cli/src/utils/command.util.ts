@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import type { Ora } from 'ora';
 
 export class CommandError extends Error {
-  public warnings?: string[];
+  public warnings: string[];
   public errors: string[];
   public exitCode: number = 0;
   public args?: Record<string, unknown>;
@@ -13,14 +13,14 @@ export class CommandError extends Error {
     exitCode,
     args,
   }: {
-    errors: string[];
+    errors?: string[];
     warnings?: string[];
     exitCode?: number;
     args?: Record<string, unknown>;
   }) {
-    super(`${warnings?.join('\n')}${errors.join('\n')}`);
-    this.errors = errors;
-    this.warnings = warnings;
+    super(`Error:\n${warnings?.join('\n')}${errors?.join('\n')}`);
+    this.errors = errors ?? [];
+    this.warnings = warnings ?? [];
     this.exitCode = exitCode ?? 0;
     this.args = args;
   }

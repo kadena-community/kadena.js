@@ -97,7 +97,7 @@ export const createCommandFlexible =
         ) => Promise<Prettify<OptionConfig<Extract<T[number], { key: K }>>>>;
       },
       values: string[],
-    ) => Promise<Record<string, unknown> | undefined>,
+    ) => Promise<Record<string, unknown> | void>,
   >(
     name: string,
     description: string,
@@ -146,14 +146,18 @@ export const createCommandFlexible =
         const values = rest.flatMap((r) => r.args);
         const result = await action(collectOptionsMap, values);
 
-        printCommandExecution(`${program.name()} ${name}`, args, result);
+        printCommandExecution(
+          `${program.name()} ${name}`,
+          args,
+          result ?? undefined,
+        );
       } catch (error) {
         if (error instanceof CommandError) {
           printCommandExecution(`${program.name()} ${name}`, args, error.args);
-          process.exit(error.exitCode);
+          process.exitCode = error.exitCode;
         }
         console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
-        process.exit(1);
+        process.exitCode = 1;
       }
     });
   };
