@@ -38,6 +38,7 @@ import { templateVariables } from '../prompts/tx.js';
 import { services } from '../services/index.js';
 import { defaultTemplates } from '../tx/commands/templates/templates.js';
 import { getTemplateVariables } from '../tx/utils/template.js';
+import { parseCommaSeparatedInput } from '../tx/utils/txHelpers.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
 
@@ -545,7 +546,7 @@ export const globalOptions = {
   txUnsignedTransactionFile: createOption({
     key: 'txUnsignedTransactionFile',
     prompt: tx.transactionSelectPrompt,
-    validation: z.string(),
+    validation: tx.IUnsignedCommandSchema,
     option: new Option(
       '-u, --tx-unsigned-transaction-file <txUnsignedTransactionFile>',
       'provide your unsigned transaction file to sign',
@@ -559,6 +560,14 @@ export const globalOptions = {
       '-u, --tx-unsigned-transaction-files <txUnsignedTransactionFiles>',
       'provide your unsigned transaction file(s) to sign',
     ),
+    transform: async (
+      txUnsigedTransactionFiles: string | string[],
+    ): Promise<string[]> => {
+      if (typeof txUnsigedTransactionFiles === 'string') {
+        return parseCommaSeparatedInput(txUnsigedTransactionFiles);
+      }
+      return txUnsigedTransactionFiles;
+    },
   }),
   txSignedTransactionFile: createOption({
     key: 'txSignedTransactionFile',
@@ -572,11 +581,19 @@ export const globalOptions = {
   txSignedTransactionFiles: createOption({
     key: 'txSignedTransactionFiles',
     prompt: tx.transactionsSelectPrompt,
-    validation: tx.ICommandSchema,
+    validation: z.union([z.array(z.string()), z.string()]),
     option: new Option(
       '-s, --tx-signed-transaction-files <txSignedTransactionFiles>',
       'provide your signed transaction file',
     ),
+    transform: async (
+      txSignedTransactionFiles: string | string[],
+    ): Promise<string[]> => {
+      if (typeof txSignedTransactionFiles === 'string') {
+        return parseCommaSeparatedInput(txSignedTransactionFiles);
+      }
+      return txSignedTransactionFiles;
+    },
   }),
   txTransactionDir: createOption({
     key: 'txTransactionDir' as const,
