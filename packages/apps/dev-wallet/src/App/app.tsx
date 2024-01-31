@@ -1,5 +1,5 @@
 import { ThemeProvider } from 'next-themes';
-import { WalletContextProvider } from '../wallet/wallet.context';
+import { WalletProvider } from '../wallet/wallet.context';
 import { Routes } from './routes';
 
 function Providers({ children }: { children: React.ReactNode }) {
@@ -12,7 +12,7 @@ function Providers({ children }: { children: React.ReactNode }) {
         light: 'light',
       }}
     >
-      <WalletContextProvider>{children}</WalletContextProvider>
+      <WalletProvider>{children}</WalletProvider>
     </ThemeProvider>
   );
 }

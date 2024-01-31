@@ -8,11 +8,11 @@ export function UnlockWallet() {
   const { register, handleSubmit } = useForm<{ password: string }>();
   const { profileId } = useParams();
   const [error, setError] = useState('');
-  const wallet = useWallet();
-  const profile = wallet.profileList.find((p) => p.uuid === profileId);
+  const { isUnlocked, profileList, unlockWallet } = useWallet();
+  const profile = profileList.find((p) => p.uuid === profileId);
   async function unlock({ password }: { password: string }) {
     try {
-      await wallet.unlockWallet(profile!.uuid, password);
+      await unlockWallet(profile!.uuid, password);
     } catch (e) {
       console.log(e);
       setError("Password doesn't match");
@@ -21,7 +21,7 @@ export function UnlockWallet() {
   if (!profile) {
     return <Navigate to="/select-profile" replace />;
   }
-  if (wallet.isUnlocked) {
+  if (isUnlocked) {
     return <Navigate to="/" replace />;
   }
   return (

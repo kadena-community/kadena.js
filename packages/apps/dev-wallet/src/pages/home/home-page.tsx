@@ -3,12 +3,10 @@ import { Box, Heading, Text } from '@kadena/react-ui';
 import { Link, Navigate } from 'react-router-dom';
 
 export function HomePage() {
-  const wallet = useWallet();
-  if (!wallet.isUnlocked) {
+  const { accounts, isUnlocked } = useWallet();
+  if (!isUnlocked) {
     return <Navigate to="/select-profile" replace />;
   }
-  console.log(wallet.profile?.accounts);
-  const accounts = wallet.profile?.accounts ?? [];
   return (
     <main>
       <Box margin="md">

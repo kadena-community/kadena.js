@@ -9,7 +9,7 @@ export function CreateWallet() {
     password: string;
     profile: string;
   }>();
-  const wallet = useWallet();
+  const { createWallet, isUnlocked } = useWallet();
   async function create({
     profile,
     password,
@@ -18,10 +18,10 @@ export function CreateWallet() {
     password: string;
   }) {
     const mnemonic = kadenaGenMnemonic();
-    await wallet.createWallet(profile, password, mnemonic);
+    await createWallet(profile, password, mnemonic);
     console.log('wallet created');
   }
-  if (wallet.isUnlocked) {
+  if (isUnlocked) {
     return <Navigate to="/backup-recovery-phrase" replace />;
   }
   return (
