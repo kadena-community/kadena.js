@@ -107,7 +107,8 @@ export async function signTransactionsWithSeed(
   try {
     const signedTransactions: (ICommand | IUnsignedCommand | undefined)[] = [];
 
-    for (const unsignedCommand of unsignedTransactions) {
+    for (let i = 0; i < unsignedTransactions.length; i++) {
+      const unsignedCommand = unsignedTransactions[i];
       const parsedTransaction = JSON.parse(unsignedCommand.cmd);
       const keys = await Promise.all(
         wallet.keys.map((key) => getWalletKey(wallet, key)),
@@ -115,9 +116,10 @@ export async function signTransactionsWithSeed(
       const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
 
       if (relevantKeyPairs.length === 0) {
-        throw new Error(
-          'No matching signable keys found between wallet and transaction:',
+        console.error(
+          `\nNo matching signable keys found for transaction at index ${i} between wallet and transaction.\n`,
         );
+        continue;
       }
 
       const signatures = await Promise.all(
@@ -169,14 +171,16 @@ export async function signTransactionWithKeyPair(
   try {
     const signedTransactions: (ICommand | IUnsignedCommand | undefined)[] = [];
 
-    for (const unsignedCommand of unsignedTransactions) {
+    for (let i = 0; i < unsignedTransactions.length; i++) {
+      const unsignedCommand = unsignedTransactions[i];
       const parsedTransaction = JSON.parse(unsignedCommand.cmd);
       const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
 
       if (relevantKeyPairs.length === 0) {
-        throw new Error(
-          'No matching signable keys found between wallet and transaction:',
+        console.error(
+          `\nNo matching signable keys found for transaction at index ${i} between wallet and transaction.\n`,
         );
+        continue;
       }
 
       if (legacy === true) {
