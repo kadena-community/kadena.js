@@ -1,6 +1,7 @@
 import {
   modalButtonStyle,
   modalOptionsContentStyle,
+  modalWrapperStyle,
   radioItemWrapperStyle,
   titleTagStyle,
 } from '@/components/Global/OptionsModal/styles.css';
@@ -74,7 +75,7 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
   const options = Object.entries(devOptions);
   const renderOptions = (): React.JSX.Element => {
     return (
-      <>
+      <Stack gap={'md'} flexDirection={'column'}>
         {options.map((item) => {
           const [key, value] = item;
           const Icon = SystemIcon[value.icon];
@@ -92,7 +93,6 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
                       title="Radio"
                       aria-label="Radio"
                       icon={<SystemIcon.RadioboxMarked />}
-                      color="primary"
                       variant="text"
                       onPress={() => setSelected(key as DevOption)}
                     />
@@ -101,7 +101,6 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
                       title="Radio"
                       aria-label="Radio"
                       icon={<SystemIcon.RadioboxBlank />}
-                      color="primary"
                       variant="text"
                       onPress={() => setSelected(key as DevOption)}
                     />
@@ -110,7 +109,6 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
                     title="Radio"
                     aria-label="Radio"
                     icon={<Icon />}
-                    color="primary"
                     variant="text"
                     onPress={() => setSelected(key as DevOption)}
                   />
@@ -128,7 +126,7 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
             </div>
           );
         })}
-      </>
+      </Stack>
     );
   };
 
@@ -153,7 +151,7 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
             <div className={modalOptionsContentStyle}>
               {renderOptions()}
 
-              <div className={modalButtonStyle}>
+              <div className={modalWrapperStyle}>
                 <Button
                   title={`${t('Save')}`}
                   onClick={() => {
@@ -161,6 +159,7 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
                     state.close();
                   }}
                   color="primary"
+                  className={modalButtonStyle}
                 >
                   {`${t('Save')}`}
                 </Button>

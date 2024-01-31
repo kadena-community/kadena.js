@@ -24,8 +24,15 @@ export const notificationContainerStyle = style([
 export const notificationLinkStyle = style([
   atoms({
     fontWeight: 'bodyFont.bold',
-    color: 'text.semantic.warning.default',
+    color: 'inherit',
     cursor: 'pointer',
+  }),
+]);
+
+export const noticationKeyStyle = style([
+  atoms({
+    fontWeight: 'bodyFont.bold',
+    color: 'inherit',
   }),
 ]);
 
@@ -46,5 +53,11 @@ export const textareaContainerStyle = style([
   atoms({
     display: 'flex',
     gap: 'sm',
+  }),
+]);
+
+export const textareaWrapperStyle = style([
+  atoms({
+    width: '100%',
   }),
 ]);

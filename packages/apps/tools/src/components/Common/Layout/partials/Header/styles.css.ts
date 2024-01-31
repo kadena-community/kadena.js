@@ -9,6 +9,7 @@ export const walletConnectWrapperStyle = style([
 
 export const headerButtonsWrapperStyle = style([
   atoms({
+    display: 'flex',
     marginInlineEnd: 'sm',
   }),
 ]);

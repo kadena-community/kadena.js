@@ -16,7 +16,6 @@ import {
   StatusId,
   getTransferStatus,
 } from '@/services/transfer-tracker/get-transfer-status';
-import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Accordion,
@@ -42,7 +41,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { containerClass, notificationContainerStyle } from '../styles.css';
 import {
@@ -65,6 +64,14 @@ const CrossChainTransferTracker: FC = () => {
 
   useToolbar(menuData, router.pathname);
 
+  const helpInfoSections = [
+    {
+      tag: 'request-key',
+      title: t('help-request-key-question'),
+      content: t('help-request-key-content'),
+    },
+  ];
+
   const debug = Debug(
     'kadena-transfer:pages:transfer:cross-chain-transfer-tracker',
   );
@@ -74,8 +81,6 @@ const CrossChainTransferTracker: FC = () => {
   );
   const [data, setData] = useState<IStatusData>({});
   const [txError, setTxError] = useState<string>('');
-  const [inputError, setInputError] = useState<string>('');
-  const [validRequestKey, setValidRequestKey] = useState<boolean>(false);
   const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
     undefined,
   );
@@ -95,32 +100,11 @@ const CrossChainTransferTracker: FC = () => {
     setData({});
   }, [network]);
 
-  const checkRequestKey = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    e.preventDefault();
-    debug(checkRequestKey.name);
-
-    //Clear error message when user starts typing
-    setInputError('');
-    if (!requestKey) {
-      setValidRequestKey(false);
-      return;
-    }
-
-    if (validateRequestKey(requestKey) === undefined) {
-      setValidRequestKey(true);
-      return;
-    }
-    setValidRequestKey(false);
-    return;
-  };
-
   const handleSubmit = async (data: FormData): Promise<void> => {
     debug(handleSubmit);
 
     router.query.reqKey = data.requestKey;
     await router.push(router);
-
-    setTxError('');
 
     try {
       await getTransferStatus({
@@ -144,12 +128,12 @@ const CrossChainTransferTracker: FC = () => {
   };
 
   const {
-    register,
     handleSubmit: validateThenSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
+    control,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: { requestKey: router.query.reqKey as string },
+    values: { requestKey: requestKey },
     // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
     resetOptions: {
       keepDirtyValues: true, // keep dirty fields unchanged, but update defaultValues
@@ -165,7 +149,6 @@ const CrossChainTransferTracker: FC = () => {
 
   useEffect(() => {
     if (errors.requestKey?.message) {
-      setInputError(errors.requestKey.message);
       setTxError('');
     }
   }, [errors.requestKey?.message]);
@@ -230,12 +213,17 @@ const CrossChainTransferTracker: FC = () => {
             <Box marginBlockEnd="md" />
             <Grid>
               <GridItem>
-                <RequestKeyField
-                  errorMessage={inputError || errors.requestKey?.message}
-                  isInvalid={validRequestKey}
-                  {...register('requestKey')}
-                  onKeyUp={checkRequestKey}
-                  onChange={onRequestKeyChange}
+                <Controller
+                  name="requestKey"
+                  control={control}
+                  render={({ field }) => (
+                    <RequestKeyField
+                      errorMessage={errors.requestKey?.message}
+                      isInvalid={!!errors.requestKey}
+                      {...field}
+                      onChange={onRequestKeyChange}
+                    />
+                  )}
                 />
               </GridItem>
             </Grid>
@@ -246,6 +234,8 @@ const CrossChainTransferTracker: FC = () => {
               title={t('Search')}
               onPress={() => setOpenItem(undefined)}
               endIcon={<SystemIcon.Magnify />}
+              isLoading={isSubmitting}
+              isDisabled={isSubmitting}
             >
               {t('Search')}
             </Button>
@@ -350,13 +340,10 @@ const CrossChainTransferTracker: FC = () => {
         sections={[
           {
             icon: 'Information',
-            title: t('Where can I find the request key?'),
+            title: helpInfoSections[0].title,
             children: (
               <div className={infoBoxStyle}>
-                <span>
-                  You can start a cross chain transfer on Chainweaver and get a
-                  request key.
-                </span>
+                <span>{helpInfoSections[0].content}</span>
               </div>
             ),
           },

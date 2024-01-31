@@ -2,10 +2,7 @@ import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import ResourceLinks from '@/components/Global/ResourceLinks';
 import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
-import {
-  helpCenterButtonClass,
-  homeWrapperClass,
-} from '@/pages/home/styles.css';
+import { homeWrapperClass, infoBoxStyle } from '@/pages/home/styles.css';
 import {
   Accordion,
   Box,
@@ -23,6 +20,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 
 import { linkStyle } from '@/pages/faucet/styles.css';
+import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
 
@@ -37,16 +35,20 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:faucet-description"
           components={[
-            <a
+            <Link
               className={linkStyle}
               key="faucet-existing-link"
               href="/faucet/existing"
             >
               {t('faucet-existing-link')}
-            </a>,
-            <a className={linkStyle} key="faucet-new-link" href="/faucet/new">
+            </Link>,
+            <Link
+              className={linkStyle}
+              key="faucet-new-link"
+              href="/faucet/new"
+            >
               {t('faucet-new-link')}
-            </a>,
+            </Link>,
           ]}
         />
       ),
@@ -57,7 +59,7 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:how-to-keypair"
           components={[
-            <a
+            <Link
               className={linkStyle}
               key="chainweb-transfer-link"
               href="https://transfer.chainweb.com/"
@@ -65,16 +67,16 @@ const Home: FC = () => {
               rel="noreferrer"
             >
               {t('chainweb-transfer-link')}
-            </a>,
-            <a
+            </Link>,
+            <Link
               className={linkStyle}
+              href="https://chainweaver.kadena.network/"
               key="chainweaver-link"
-              href="https://kadena.io/chainweaver-tos/"
               target="_blank"
               rel="noreferrer"
             >
               {t('chainweaver-link')}
-            </a>,
+            </Link>,
           ]}
         />
       ),
@@ -82,11 +84,6 @@ const Home: FC = () => {
   ];
 
   useToolbar(menuData);
-
-  const handleOpenHelpCenter = (): void => {
-    // @ts-ignore
-    helpCenterRef.openSection(0);
-  };
 
   return (
     <div className={homeWrapperClass}>
@@ -101,18 +98,30 @@ const Home: FC = () => {
             title: t('Help Center'),
             children: (
               <>
-                <p>
-                  Blockchain transactions are irreversible. If you make a
-                  mistake, your coins may not be recoverable. Before you
-                  transfer large sums, it is always best to do a small test
-                  transaction first and then send those coins back to the sender
-                  to verify that the receiver account works as expected.
-                </p>
+                <div className={infoBoxStyle}>
+                  <span>
+                    Blockchain transactions are irreversible. If you make a
+                    mistake, your coins may not be recoverable. Before you
+                    transfer large sums, it is always best to do a small test
+                    transaction first and then send those coins back to the
+                    sender to verify that the receiver account works as
+                    expected.
+                  </span>
+                </div>
                 <ResourceLinks
                   links={[
-                    { title: 'Pact Language Resources', href: '#' },
-                    { title: 'Whitepaper', href: '#' },
-                    { title: 'KadenaJs', href: '#' },
+                    {
+                      title: 'Pact Language Resources',
+                      href: 'https://www.kadena.io/pact',
+                    },
+                    {
+                      title: 'Whitepapers',
+                      href: 'https://www.kadena.io/whitepapers',
+                    },
+                    {
+                      title: 'Kadena Client',
+                      href: 'https://www.npmjs.com/package/@kadena/client',
+                    },
                   ]}
                 />
               </>
@@ -232,29 +241,25 @@ const Home: FC = () => {
             <Heading as="h3" variant="h5">
               Latest Updates
             </Heading>
-            <p>
-              {/* eslint-disable-next-line react/no-unescaped-entities */}
-              If you're seeking Help click{' '}
-              <span
-                className={helpCenterButtonClass}
-                onClick={handleOpenHelpCenter}
-              >
-                HERE
-              </span>
-            </p>
-            <p>
+            <Box as="p" marginBlockEnd="md">
               Changelog with the latest updates to the Kadena Development Tools.
-            </p>
-            <br />
+            </Box>
             <Table.Root striped>
               <Table.Body>
                 <Table.Tr>
-                  <Table.Td>July 28, 2023</Table.Td>
-                  <Table.Td>Added the Account Transactions Overview.</Table.Td>
+                  <Table.Td>January 31, 2024</Table.Td>
+                  <Table.Td>
+                    Released version 1.2 of the Tools Website, including the
+                    Transactions module, which has a Cross Chain Transfer
+                    Tracker & Cross Chain Transfer Finisher.
+                  </Table.Td>
                 </Table.Tr>
                 <Table.Tr>
-                  <Table.Td>July 10, 2023</Table.Td>
-                  <Table.Td>Released version 1 of the Tools Website.</Table.Td>
+                  <Table.Td>November 30, 2023</Table.Td>
+                  <Table.Td>
+                    Initial release of the Tools Website, including the Faucet
+                    module.
+                  </Table.Td>
                 </Table.Tr>
               </Table.Body>
             </Table.Root>
