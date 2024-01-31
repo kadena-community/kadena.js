@@ -4,7 +4,6 @@ import {
   AccountNameField,
   FormItemCard,
   FormStatusNotification,
-  NAME_VALIDATION,
   OptionsModal,
   REQUEST_KEY_VALIDATION,
   RequestKeyField,
@@ -222,13 +221,6 @@ const CrossChainTransferFinisher: FC = () => {
       return;
     }
     setReceiverRequestKey(requestKeyOrError as string);
-
-    const receiverApiHost = getApiHost({
-      api: networkData.API,
-      chainId: pollResults.tx.receiver.chain,
-      networkId,
-    });
-    const receiverClient = client(receiverApiHost);
 
     const receiverApiHost = getApiHost({
       api: networkData.API,
