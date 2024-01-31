@@ -17,23 +17,7 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
     return null;
   }
 
-  return (
-    <>
-      <ul>
-        <li>
-          <Link href={`/user/proof-of-us/${proofOfUs.tokenId}`}>
-            Proof Of Us
-          </Link>
-        </li>
-        <li>
-          <Link href={`/user/proof-of-us/${proofOfUs.tokenId}/analytics`}>
-            analytics
-          </Link>
-        </li>
-      </ul>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
 
 export default UserLayout;

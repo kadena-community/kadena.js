@@ -20,6 +20,7 @@ type IDataHook<T> = (...args: any) => {
 
 interface IProofOfUs {
   tokenId: string;
+  type: 'multi' | 'event';
   date: number;
   minted?: number;
   signees: IProofOfUsSignee[];

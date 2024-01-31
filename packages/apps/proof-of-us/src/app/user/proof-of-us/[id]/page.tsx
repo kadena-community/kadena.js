@@ -40,7 +40,7 @@ const Page: FC<IProps> = ({ params }) => {
   }, [socket, params.id]);
 
   useEffect(() => {
-    connect({ tokenId: '1' });
+    connect({ tokenId: params.id });
   }, []);
 
   if (!proofOfUs) return;
