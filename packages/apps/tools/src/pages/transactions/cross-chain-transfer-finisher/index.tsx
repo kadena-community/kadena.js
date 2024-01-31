@@ -68,9 +68,8 @@ import {
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
-  advancedOptions: z.boolean().optional(),
   gasPayer: z.literal('kadena-xchain-gas'),
-  gasLimit: z.number().optional(),
+  gasLimit: z.number().positive(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -288,10 +287,6 @@ const CrossChainTransferFinisher: FC = () => {
       requestKey: router.query?.reqKey as string,
       gasPayer: 'kadena-xchain-gas',
       gasLimit: kadenaConstants.GAS_LIMIT,
-    },
-    // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
-    resetOptions: {
-      // keepDirtyValues: true, // keep dirty fields unchanged, but update defaultValues
     },
   });
   useEffect(() => {
