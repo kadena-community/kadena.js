@@ -552,9 +552,12 @@ const CrossChainTransferFinisher: FC = () => {
                           )}
                           label={t('Gas Limit')}
                           {...field}
+                          value={`${field.value}`}
+                          onChange={(e) =>
+                            field.onChange(parseInt(e.target.value))
+                          }
                           isInvalid={!!errors.gasLimit}
                           errorMessage={errors.gasLimit?.message}
-                          value={field.value?.toString() || ''}
                           id="gas-limit-input"
                           placeholder={t('Enter Gas Limit')}
                           type={'number'}
