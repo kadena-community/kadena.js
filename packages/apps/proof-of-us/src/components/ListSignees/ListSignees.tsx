@@ -8,7 +8,6 @@ export const ListSignees: FC = () => {
   const { id: tokenId } = useParams();
   const { proofOfUs, isInitiator, removeSignee } = useProofOfUs();
 
-  console.log(proofOfUs);
   const { account } = useAccount();
 
   const initiator = proofOfUs?.signees?.find((s) => s.initiator);
@@ -28,13 +27,13 @@ export const ListSignees: FC = () => {
     <section className={wrapperClass}>
       <div>
         <h4>Initiator</h4>
-        {initiator?.name} {isMe(initiator, account) && ' (me)'}
+        {initiator?.displayName} {isMe(initiator, account) && ' (me)'}
       </div>
       <div>
         <h4>Signer</h4>
         {signee && (
           <>
-            {signee?.name}
+            {signee?.displayName}
             {isMe(signee, account) || isInitiator() ? (
               <button onClick={handleRemove}>remove</button>
             ) : null}

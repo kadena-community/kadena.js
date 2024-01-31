@@ -16,19 +16,19 @@ export const proofOfUsData: IProofOfUs[] = [
     minted: 0,
     signees: [
       {
-        name: 'he-man',
+        displayName: 'he-man',
         cid: 'k:23424',
         publicKey: 'WEBAUTHN-etc',
         initiator: true,
       },
       {
-        name: 'skeletor',
+        displayName: 'skeletor',
         cid: 'k:4545645g',
         publicKey: 'WEBAUTHN-234234',
         initiator: false,
       },
       {
-        name: 'orko',
+        displayName: 'orko',
         cid: 'k:23dfgdfg424',
         publicKey: 'WEBAUTHN-dsfdfg',
         initiator: false,

@@ -1,5 +1,5 @@
 interface IAccount {
-  name: string;
+  displayName: string;
   waccount: string;
   caccount: string;
   publicKey: string;
@@ -33,6 +33,6 @@ interface IError {
   message: string;
 }
 
-type IProofOfUsSignee = Pick<IAccount, 'name' | 'publicKey' | 'cid'> & {
+type IProofOfUsSignee = Pick<IAccount, 'displayName' | 'publicKey' | 'cid'> & {
   initiator: boolean;
 };

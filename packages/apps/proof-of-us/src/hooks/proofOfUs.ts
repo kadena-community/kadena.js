@@ -8,35 +8,36 @@ import { useSocket } from './socket';
 export const useProofOfUs = () => {
   const { socket } = useSocket();
   const { account } = useAccount();
-  const [state, setState] = useState<IProofOfUs>();
   const params = useParams();
 
-  const [proofOfUs, setProofOfUs] = useState<IProofOfUs>();
-
   const { data, isLoading, error } = useGetProofOfUs({ id: params.id });
+  const [proofOfUs, setProofOfUs] = useState<IProofOfUs>();
+  const [state, setState] = useState<IProofOfUs>();
 
   useEffect(() => {
     if (!data) return;
-    setProofOfUs({ ...data, ...state } as IProofOfUs);
+    setProofOfUs({ ...data, ...state });
   }, [data, state]);
+
+  const setContent = ({ content }: { content: IProofOfUs }) => {
+    setState(content);
+  };
 
   useEffect(() => {
     if (!socket) return;
-    socket.on('getProofOfUs', ({ content }) => {
-      setState(content);
-    });
+    socket.on('getProofOfUs', setContent);
 
     return () => {
       socket.off('getProofOfUs');
     };
-  }, [socket]);
+  }, []);
 
   const addSignee = async ({ tokenId }: { tokenId: string }) => {
     if (!socket || !account) return;
 
     socket?.emit('addSignee', {
       content: {
-        name: account.name,
+        displayName: account.displayName,
         cid: account.cid,
         publicKey: account.publicKey,
         initiator: false,
@@ -63,7 +64,7 @@ export const useProofOfUs = () => {
 
     socket?.emit('createToken', {
       content: {
-        name: account.name,
+        displayName: account.displayName,
         cid: account.cid,
         publicKey: account.publicKey,
         initiator: false,
@@ -73,18 +74,18 @@ export const useProofOfUs = () => {
   };
 
   const isConnected = () => {
-    return !!state?.signees.find((s) => s.cid === account?.cid);
+    return !!proofOfUs?.signees.find((s) => s.cid === account?.cid);
   };
 
   const isInitiator = () => {
-    const foundAccount = state?.signees.find((s) => s.cid === account?.cid);
+    const foundAccount = proofOfUs?.signees.find((s) => s.cid === account?.cid);
     return !!foundAccount?.initiator;
   };
 
   const getSigneeAccount = (account: IAccount): IProofOfUsSignee => {
     return {
       cid: account.cid,
-      name: account.name,
+      displayName: account.displayName,
       publicKey: account.publicKey,
       initiator: false,
     };

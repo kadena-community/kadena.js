@@ -20,7 +20,7 @@ interface IProps {
 const Page: FC<IProps> = ({ params }) => {
   const qrRef = useRef<QRCode | null>(null);
   const router = useRouter();
-  const { socket, connect, disconnect } = useSocket();
+  const { socket, disconnect } = useSocket();
   const { createToken, proofOfUs } = useProofOfUs();
   const [isNew, setIsNew] = useState(false);
 
@@ -38,10 +38,6 @@ const Page: FC<IProps> = ({ params }) => {
     disconnect({ tokenId: params.id });
     createToken({ tokenId: params.id });
   }, [socket, params.id]);
-
-  useEffect(() => {
-    connect({ tokenId: params.id });
-  }, []);
 
   if (!proofOfUs) return;
 

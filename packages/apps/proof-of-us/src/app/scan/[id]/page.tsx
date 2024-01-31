@@ -3,9 +3,8 @@
 import { Mint } from '@/components/Mint/Mint';
 import { Scan } from '@/components/Scan/Scan';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { useSocket } from '@/hooks/socket';
+
 import type { FC } from 'react';
-import { useEffect } from 'react';
 
 interface IProps {
   params: {
@@ -13,13 +12,8 @@ interface IProps {
   };
 }
 
-const Page: FC<IProps> = ({ params }) => {
-  const { connect } = useSocket();
+const Page: FC<IProps> = () => {
   const { proofOfUs } = useProofOfUs();
-
-  useEffect(() => {
-    connect({ tokenId: params.id });
-  }, []);
 
   if (!proofOfUs) return null;
 
