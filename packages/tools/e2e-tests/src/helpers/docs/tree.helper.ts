@@ -100,11 +100,6 @@ export default class TreeHelper {
   }
 
   private async _validateSingleMenuItem(label: string): Promise<void> {
-    const res = this._page
-      .getByTestId(`l1-item`)
-      .locator(`[data-testid="l1-link"]:text-is(${JSON.stringify(label)})`);
-
-    console.log({ res });
     await expect(
       this._page
         .getByTestId(`l1-item`)
