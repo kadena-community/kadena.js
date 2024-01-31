@@ -1,5 +1,3 @@
-import type { ICommandResult } from '@kadena/client';
-
 import type { ChainId } from '@kadena/types';
 import { readdirSync } from 'fs';
 
@@ -50,40 +48,44 @@ export const deployMarmalade = async ({
   deploymentArguments = defaultArguments,
   clientConfig = defaultClientConfig,
 }: IDeployMarmaladeInput) => {
-  // console.log('Preparing directories...');
-  // handleDirectorySetup(
-  //   localConfig.templatePath,
-  //   localConfig.codeFilesPath,
-  //   localConfig.namespacePath,
-  // );
+  // Merge the default arguments with the provided arguments
+  deploymentArguments = { ...defaultArguments, ...deploymentArguments };
+  console.log(deploymentArguments);
 
-  // console.log(
-  //   'Downloading marmalade templates and namespace definition files...',
-  // );
+  console.log('Preparing directories...');
+  handleDirectorySetup(
+    localConfig.templatePath,
+    localConfig.codeFilesPath,
+    localConfig.namespacePath,
+  );
 
-  // await Promise.all([
-  //   getMarmaladeTemplates({
-  //     repositoryConfig,
-  //     remoteConfig,
-  //     localConfig,
-  //     flatFolder: true,
-  //   }),
+  console.log(
+    'Downloading marmalade templates and namespace definition files...',
+  );
 
-  //   // Get marmalade namespace definition files
-  //   await getNsCodeFiles({
-  //     repositoryConfig,
-  //     remoteConfig,
-  //     localConfig,
-  //   }),
-  // ]);
+  await Promise.all([
+    getMarmaladeTemplates({
+      repositoryConfig,
+      remoteConfig,
+      localConfig,
+      flatFolder: true,
+    }),
 
-  // console.log('Downloading necessary marmalade code files...');
+    // Get marmalade namespace definition files
+    await getNsCodeFiles({
+      repositoryConfig,
+      remoteConfig,
+      localConfig,
+    }),
+  ]);
 
-  // await getCodeFiles({
-  //   repositoryConfig,
-  //   remoteConfig,
-  //   localConfig,
-  // });
+  console.log('Downloading necessary marmalade code files...');
+
+  await getCodeFiles({
+    repositoryConfig,
+    remoteConfig,
+    localConfig,
+  });
 
   // console.log('Preparing and adjusting the downloaded files...');
 
@@ -91,16 +93,16 @@ export const deployMarmalade = async ({
     file.endsWith(remoteConfig.templateExtension),
   );
 
-  // const codeFiles = readdirSync(localConfig.codeFilesPath).filter((file) =>
-  //   file.endsWith(remoteConfig.codefileExtension),
-  // );
+  const codeFiles = readdirSync(localConfig.codeFilesPath).filter((file) =>
+    file.endsWith(remoteConfig.codefileExtension),
+  );
 
-  // await updateTemplateFilesWithCodeFile(
-  //   templateFiles,
-  //   localConfig.templatePath,
-  //   codeFiles,
-  //   localConfig.codeFilesPath,
-  // );
+  await updateTemplateFilesWithCodeFile(
+    templateFiles,
+    localConfig.templatePath,
+    codeFiles,
+    localConfig.codeFilesPath,
+  );
 
   /* sort the templates alphabetically so that the contracts are deployed in the correct order
   also taking into account the order provided in the configuration */
@@ -146,14 +148,15 @@ export const deployMarmalade = async ({
       console.log(`Deploying Marmalade Contracts on chain ${chainId}...`);
 
       for (const templateFile of templateFiles) {
-        console.log(`Deploying ${templateFile}...`);
-
         /* Assuming that the template file name is the same as the namespace
         and that the filename contains the namespace*/
-
         deploymentArguments.marmalade_namespace = templateFile.split('.')[0];
         // Change the chain id for each chain
         deploymentArguments.chain = chainId;
+
+        console.log(
+          `Deploying ${templateFile} for namespace ${deploymentArguments.marmalade_namespace}...`,
+        );
 
         const pactCommand = await createPactCommandFromTemplate(
           templateFile,
@@ -161,19 +164,22 @@ export const deployMarmalade = async ({
           localConfig.templatePath,
         );
 
-        const commandResult =
-          await submitClient(clientConfig)(pactCommand).execute();
+        try {
+          const commandResult =
+            await submitClient(clientConfig)(pactCommand).executeTo('listen');
 
-        console.log(commandResult);
-
-        // if (commandResult?.result.status === 'success') {
-        //   console.log(
-        //     `Successfully deployed ${templateFile} on chain ${chainId}`,
-        //   );
-        // } else {
-        //   console.log(`Failed to deploy ${templateFile} on chain ${chainId}`);
-        //   console.log(commandResult?.result.error);
-        // }
+          if (commandResult.result.status === 'success') {
+            console.log(
+              `Successfully deployed ${templateFile} on chain ${chainId}`,
+            );
+          } else {
+            console.log(
+              `Failed to deploy ${templateFile} on chain ${chainId}. Error: ${commandResult.result.error}`,
+            );
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
     }),
   );

@@ -89,95 +89,46 @@ export const deployMarmaladeNamespaces = async ({
             },
           ];
         }
+        try {
+          console.log(
+            `Deploying namespace file ${config.file} for ${namespace}`,
+          );
 
-        const result = await deployContract(
-          {
-            contractCode: readFileSync(namespaceFile, 'utf8'),
-            transactionBody: {
-              chainId,
-              keysets,
-              namespace: {
-                key: 'ns',
-                data: namespace,
-              },
-              signers: keys,
-              networkId,
-              meta: {
-                gasLimit: 70000,
+          const commandResult = await deployContract(
+            {
+              contractCode: readFileSync(namespaceFile, 'utf8'),
+              transactionBody: {
                 chainId,
-                ttl: 8 * 60 * 60,
-                senderAccount: sender.account,
+                keysets,
+                namespace: {
+                  key: 'ns',
+                  data: namespace,
+                },
+                signers: keys,
+                networkId,
+                meta: {
+                  gasLimit: 70000,
+                  chainId,
+                  ttl: 8 * 60 * 60,
+                  senderAccount: sender.account,
+                },
               },
             },
-          },
-          clientConfig,
-        ).execute();
-
-        console.log(result);
+            clientConfig,
+          ).executeTo('listen');
+          if (commandResult.result.status !== 'success') {
+            throw new Error(
+              `Failed to deploy namespace ${namespace} on chain ${chainId}. Error: ${commandResult.result.error}`,
+            );
+          } else {
+            console.log(
+              `Successfully deployed namespace ${namespace} on chain ${chainId}`,
+            );
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }),
     );
   }
 };
-
-// export async function createPactCommandFromFile(
-//   filepath: string,
-//   {
-//     chainId,
-//     networkId = 'fast-development',
-//     signers = [
-//       {
-//         publicKey: defaultAccount.publicKeys?.[0] ?? '',
-//         secretKey: defaultAccount.secretKey,
-//       },
-//     ],
-//     meta = {
-//       gasLimit: 70000,
-//       chainId,
-//       ttl: 8 * 60 * 60,
-//       senderAccount: defaultAccount.account,
-//     },
-//     keysets,
-//     namespace,
-//   }: {
-//     chainId: ;
-//     networkId?: string;
-//     signers?: IKeyPair[];
-//     meta?: {
-//       gasLimit: number;
-//       chainId: ChainId;
-//       ttl: number;
-//       senderAccount: string;
-//     };
-//     keysets?: { name: string; pred: string; keys: string[] }[];
-//     namespace?: { key: string; data: string };
-//   },
-// ): Promise<ICommand> {
-//   const fileConChainIdtent = readFileSync(filepath, 'utf8');
-
-//   let transactionBuilder = Pact.builder
-//     .execution(fileContent)
-//     .setMeta(meta)
-//     .setNetworkId(networkId);
-
-//   transactionBuilder = signers.reduce((builder, signer) => {
-//     return builder.addSigner(signer.publicKey);
-//   }, transactionBuilder);
-
-//   if (keysets) {
-//     transactionBuilder = keysets.reduce((builder, keyset) => {
-//       return builder.addKeyset(keyset.name, keyset.pred, ...keyset.keys);
-//     }, transactionBuilder);
-//   }
-
-//   if (namespace) {
-//     transactionBuilder = transactionBuilder.addData(
-//       namespace.key,
-//       namespace.data,
-//     );
-//   }
-
-//   const transaction = transactionBuilder.createTransaction();
-
-//   const signedTx = await signAndAssertTransaction(signers)(transaction);
-//   return signedTx;
-// }

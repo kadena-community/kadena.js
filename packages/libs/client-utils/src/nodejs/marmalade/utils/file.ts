@@ -89,6 +89,7 @@ export async function getCodeFiles({
             .join('/'),
         );
 
+        // * Might be needed in the future
         // const codeFilePath = getGitAbsolutePath(
         //   join(templateRemotePath, file),
         //   yamlContent.codeFile,
