@@ -62,8 +62,8 @@ export async function kadenaGenKeypairFromSeed(
   indexOrRange: number | [number, number],
   derivationPathTemplate: string = `m'/44'/626'/<index>'`,
 ): Promise<[string, EncryptedString] | Array<[string, EncryptedString]>> {
-  if (typeof seed !== 'string' || seed === '') {
-    throw new Error('No seed provided.');
+  if (seed === undefined || seed === '') {
+    throw new Error('NO_SEED: No seed provided.');
   }
 
   const seedBuffer = await kadenaDecrypt(password, seed);

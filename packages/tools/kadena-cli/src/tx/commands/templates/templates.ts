@@ -1,11 +1,11 @@
 const transferTemplate = `
 code: |-
-  (coin.transfer "{{{from-acct}}}" "{{{to-acct}}}" {{amount}})
+  (coin.transfer "{{{account-from}}}" "{{{account-to}}}" {{amount}})
 data:
 meta:
   chainId: "{{chain}}"
-  sender: "{{{pk-from}}}"
-  gasLimit: 2300
+  sender: "{{{account-from}}}"
+  gasLimit: 4600
   gasPrice: 0.000001
   ttl: 600
 networkId: {{networkId}}
@@ -13,7 +13,9 @@ signers:
   - public: "{{pk-from}}"
     caps:
       - name: "coin.TRANSFER"
-        args: ["{{{from-acct}}}", "{{{to-acct}}}", {{amount}}]
+        args: ["{{{account-from}}}", "{{{account-to}}}", {{amount}}]
+  - public: "{{pk-from}}"
+    caps:
       - name: "coin.GAS"
         args: []
 type: exec

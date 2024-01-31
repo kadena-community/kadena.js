@@ -3,12 +3,13 @@ import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
 import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
 import path from 'path';
 
-import { IS_DEVELOPMENT, TRANSACTION_PATH } from '../../constants/config.js';
+import { IS_DEVELOPMENT } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { fixTemplatePactCommand } from './templates/mapper.js';
 
 export const createTransaction = async (
   template: string,
@@ -18,43 +19,54 @@ export const createTransaction = async (
 ): Promise<
   CommandResult<{ transaction: IUnsignedCommand; filePath: string }>
 > => {
-  // create transaction
-  const command = await createPactCommandFromStringTemplate(
-    template,
-    variables,
-  );
+  try {
+    // create transaction
+    const command = await createPactCommandFromStringTemplate(
+      template,
+      variables,
+    );
 
-  const transaction = kadenaCreateTransaction(command);
+    // Map from legacy or partial template to full IPactCommand
+    // This method could throw an error
+    const fixed = fixTemplatePactCommand(command);
 
-  let filePath: string | null = null;
-  if (outFilePath === null) {
-    // write transaction to file
-    const directoryPath = TRANSACTION_PATH;
-    await services.filesystem.ensureDirectoryExists(directoryPath);
+    const transaction = kadenaCreateTransaction(fixed);
 
-    const files = await services.filesystem.readDir(directoryPath);
-    let fileNumber = files.length + 1;
-    while (filePath === null) {
-      const checkPath = path.join(
-        directoryPath,
-        `transaction${fileNumber}.json`,
-      );
-      if (!files.includes(checkPath)) {
-        filePath = checkPath;
-        break;
+    let filePath: string | null = null;
+    if (outFilePath === null) {
+      // write transaction to file
+      const directoryPath = path.join(process.cwd(), './transactions');
+      await services.filesystem.ensureDirectoryExists(directoryPath);
+
+      const files = await services.filesystem.readDir(directoryPath);
+      let fileNumber = files.length + 1;
+      while (filePath === null) {
+        const checkPath = path.join(
+          directoryPath,
+          `transaction${fileNumber}.json`,
+        );
+        if (!files.includes(checkPath)) {
+          filePath = checkPath;
+          break;
+        }
+        fileNumber++;
       }
-      fileNumber++;
+    } else {
+      filePath = outFilePath;
     }
-  } else {
-    filePath = outFilePath;
+
+    await services.filesystem.writeFile(
+      filePath,
+      JSON.stringify(transaction, null, 2),
+    );
+
+    return { success: true, data: { transaction, filePath } };
+  } catch (error) {
+    return {
+      success: false,
+      errors: ['Failed to create transaction from template', error.message],
+    };
   }
-
-  await services.filesystem.writeFile(
-    filePath,
-    JSON.stringify(transaction, null, 2),
-  );
-
-  return { success: true, data: { transaction, filePath } };
 };
 
 export const createTransactionCommandNew = createCommandFlexible(
