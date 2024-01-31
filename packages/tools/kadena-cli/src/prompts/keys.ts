@@ -255,8 +255,7 @@ export const confirmDeleteAllKeysPrompt: IPrompt<string> = async () => {
 
 export async function keyPairsPrompt(): Promise<string> {
   return await input({
-    message:
-      'Enter key pairs as a JSON string [{publicKey: xxx, secretKey: xxx}, ...] or as a string publicKey=xxx,secretKey=xxx;...',
+    message: 'Enter key pairs as a string publicKey=xxx,secretKey=xxx;...',
     validate: function (input) {
       try {
         parseKeyPairsInput(input);

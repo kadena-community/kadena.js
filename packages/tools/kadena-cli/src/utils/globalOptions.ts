@@ -295,7 +295,7 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option(
       '-k, --key-pairs <keyPairs>',
-      'Enter key pairs as a JSON string [{publicKey: xxx, secretKey: xxx}, ...] or as a string publicKey=xxx,secretKey=xxx;...',
+      'Enter key pairs as string publicKey=xxx,secretKey=xxx;...',
     ),
     transform: (input) => {
       try {

@@ -122,21 +122,21 @@ export async function signTransactionsWithSeed(
 
       const signatures = await Promise.all(
         relevantKeyPairs.map(async (key) => {
+          if (typeof key.index !== 'number') {
+            throw new Error('Key index not found');
+          }
           if (legacy === true) {
             const sigUint8Array = await legacyKadenaSignWithSeed(
               password,
               unsignedCommand.cmd,
               walletContent,
-              key.index as number,
+              key.index,
             );
             return {
               sig: Buffer.from(sigUint8Array).toString('hex'),
               pubKey: key.publicKey,
             };
           } else {
-            if (typeof key.index !== 'number') {
-              throw new Error('Key index not found');
-            }
             const signWithSeed = kadenaSignWithSeed(
               password,
               walletContent,

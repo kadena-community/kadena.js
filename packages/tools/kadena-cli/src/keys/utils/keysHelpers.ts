@@ -320,55 +320,40 @@ export function extractStartIndex(
   }
 }
 
-/*
- * Parses a string input to extract key pairs in either JSON or custom string format.
+/**
+ * Parses a string input to extract key pairs in a custom string format.
  *
- * @param {string} input - The string input containing the key pairs in either JSON
- *                         array format or custom string format.
+ * @param {string} input - The string input containing the key pairs in the custom string format.
  * @returns {IKeyPair[]} An array of objects, each containing 'publicKey' and 'secretKey'.
- * @throws {Error} If the input is neither valid JSON format nor valid custom string format,
- *                 or if required keys are missing in either format.
+ * @throws {Error} If the input is not in valid custom string format,
+ *                 or if required keys ('publicKey' or 'secretKey') are missing.
  */
-export function parseKeyPairsInput(input: string): IKeyPair[] {
-  try {
-    const keyPairs = JSON.parse(input);
-    if (
-      Array.isArray(keyPairs) &&
-      keyPairs.every(
-        (keyPair) =>
-          typeof keyPair.publicKey === 'string' &&
-          typeof keyPair.secretKey === 'string',
-      )
-    ) {
-      return keyPairs as IKeyPair[];
-    }
-    throw new Error('Invalid JSON format');
-  } catch (error) {
-    return input.split(';').map((pairStr) => {
-      const keyValuePairs = pairStr
-        .trim()
-        .split(',')
-        .reduce((acc: Partial<IKeyPair>, keyValue) => {
-          const [key, value] = keyValue.split('=').map((item) => item.trim());
-          if (key === 'publicKey') {
-            acc.publicKey = value;
-          } else if (key === 'secretKey') {
-            acc.secretKey = value as EncryptedString | string;
-          } else if (key === 'index') {
-            acc.index = parseInt(value);
-          }
-          return acc;
-        }, {});
 
-      if (
-        keyValuePairs.publicKey === undefined ||
-        keyValuePairs.secretKey === undefined
-      ) {
-        throw new Error(
-          'Invalid custom string format. Expected "publicKey=xxx,secretKey=xxx;..."',
-        );
-      }
-      return keyValuePairs as IKeyPair;
-    });
-  }
+export function parseKeyPairsInput(input: string): IKeyPair[] {
+  return input.split(';').map((pairStr) => {
+    const keyValuePairs = pairStr
+      .trim()
+      .split(',')
+      .reduce((acc: Partial<IKeyPair>, keyValue) => {
+        const [key, value] = keyValue.split('=').map((item) => item.trim());
+        if (key === 'publicKey') {
+          acc.publicKey = value;
+        } else if (key === 'secretKey') {
+          acc.secretKey = value as EncryptedString | string;
+        } else if (key === 'index') {
+          acc.index = parseInt(value);
+        }
+        return acc;
+      }, {});
+
+    if (
+      keyValuePairs.publicKey === undefined ||
+      keyValuePairs.secretKey === undefined
+    ) {
+      throw new Error(
+        'Invalid custom string format. Expected "publicKey=xxx,secretKey=xxx;..."',
+      );
+    }
+    return keyValuePairs as IKeyPair;
+  });
 }
