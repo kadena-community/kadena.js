@@ -27,12 +27,14 @@ export default class TreeHelper {
       '..',
       '..',
       '..',
+      '..',
       'apps',
       'docs',
       'src',
       'pages',
     );
     const directory = path.join(baseDir, pageToCheck);
+    console.log(baseDir);
     const exclusioDir = path.join(baseDir, 'pact', 'api');
     const exclusionRegExp = new RegExp(exclusioDir);
     const expectedTree = await dirTree(directory, {
