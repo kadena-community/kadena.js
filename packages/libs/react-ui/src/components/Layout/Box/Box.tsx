@@ -1,11 +1,11 @@
 import classnames from 'classnames';
-import type { ComponentProps, ElementType, ForwardedRef } from 'react';
+import type { ComponentPropsWithRef, ElementType, ForwardedRef } from 'react';
 import React, { createElement } from 'react';
 import type { Atoms } from '../../../styles/atoms.css';
 import { atoms } from '../../../styles/atoms.css';
 
 export interface IBoxProps
-  extends ComponentProps<'div'>,
+  extends ComponentPropsWithRef<'div'>,
     Partial<
       Pick<
         Atoms,

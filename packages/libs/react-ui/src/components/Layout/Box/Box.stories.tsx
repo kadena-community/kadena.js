@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Card } from 'src';
-import { Stack } from '..';
 import { onLayer2 } from '../../../storyDecorators';
 import { componentClass, containerClass, itemClass } from '../stories.css';
 import {
@@ -12,7 +10,7 @@ import {
 import type { IBoxProps } from './Box';
 import { Box } from './Box';
 
-const meta: Meta<IBoxProps> = {
+const meta: Meta<typeof Box> = {
   title: 'Layout/Box',
   component: Box,
   decorators: [onLayer2],
