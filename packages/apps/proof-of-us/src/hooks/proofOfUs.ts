@@ -17,14 +17,12 @@ export const useProofOfUs = () => {
 
   useEffect(() => {
     if (!data) return;
-    console.log('nEW PROOF');
     setProofOfUs({ ...data, ...state } as IProofOfUs);
   }, [data, state]);
 
   useEffect(() => {
     if (!socket) return;
     socket.on('getProofOfUs', ({ content }) => {
-      console.log('proof', content);
       setState(content);
     });
 
