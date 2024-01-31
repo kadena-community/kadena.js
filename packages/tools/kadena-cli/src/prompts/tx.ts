@@ -1,11 +1,129 @@
-import { input, select } from '@inquirer/prompts';
+import { checkbox, input, select } from '@inquirer/prompts';
+import type { IUnsignedCommand } from '@kadena/types';
 import chalk from 'chalk';
+import { z } from 'zod';
+import { getTransactions } from '../tx/utils/txHelpers.js';
+
+import { TRANSACTION_FOLDER_NAME } from '../constants/config.js';
+
 import {
   getAllPlainKeys,
   getAllWalletKeys,
 } from '../keys/utils/keysHelpers.js';
 import { defaultTemplates } from '../tx/commands/templates/templates.js';
 import type { IPrompt } from '../utils/createOption.js';
+
+const CommandPayloadStringifiedJSONSchema = z.string();
+const PactTransactionHashSchema = z.string();
+
+const ISignatureJsonSchema = z.object({
+  sig: z.string(),
+});
+
+const SignatureOrUndefinedOrNull = z.union([
+  ISignatureJsonSchema,
+  z.undefined(),
+  z.null(),
+]);
+
+export const ICommandSchema = z.object({
+  cmd: CommandPayloadStringifiedJSONSchema,
+  hash: PactTransactionHashSchema,
+  sigs: z.array(ISignatureJsonSchema),
+});
+
+export const IUnsignedCommandSchema = z.object({
+  cmd: CommandPayloadStringifiedJSONSchema,
+  hash: PactTransactionHashSchema,
+  sigs: z.array(SignatureOrUndefinedOrNull),
+});
+
+// export const ISignatureJsonSchema = z.union([
+//   z.object({
+//     sig: z.string(),
+//   }),
+//   z.null(),
+// ]);
+
+export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
+  const result = await input({
+    message: `Enter your transaction to sign:`,
+    validate: (inputString) => {
+      try {
+        const parsedInput = JSON.parse(inputString);
+        IUnsignedCommandSchema.parse(parsedInput);
+        return true;
+      } catch (error) {
+        console.log('error', error);
+        return 'Incorrect Format. Please enter a valid Unsigned Command.';
+      }
+    },
+  });
+  return JSON.parse(result) as IUnsignedCommand;
+}
+
+export const transactionSelectPrompt: IPrompt<string> = async (args) => {
+  const existingTransactions: string[] = await getTransactions(
+    args.signed as boolean,
+    args.path as string,
+  );
+
+  if (existingTransactions.length === 0) {
+    throw new Error('No transactions found. Exiting.');
+  }
+
+  const choices = existingTransactions.map((transaction) => ({
+    value: transaction,
+    name: `Transaction: ${transaction}`,
+  }));
+
+  const selectedTransaction = await select({
+    message: 'Select a transaction file',
+    choices: choices,
+  });
+
+  return selectedTransaction;
+};
+
+export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
+  const existingTransactions: string[] = await getTransactions(
+    args.signed as boolean,
+    args.path as string,
+  );
+
+  if (existingTransactions.length === 0) {
+    throw new Error('No transactions found. Exiting.');
+  }
+
+  const choices = existingTransactions.map((transaction) => ({
+    value: transaction,
+    name: `Transaction: ${transaction}`,
+  }));
+
+  const selectedTransaction = await checkbox({
+    message: 'Select a transaction file',
+    choices: choices,
+    pageSize: 10,
+    required: true,
+  });
+
+  return selectedTransaction;
+};
+
+export async function txTransactionDirPrompt(): Promise<string> {
+  return await input({
+    message: `Enter your transaction directory (default: '${TRANSACTION_FOLDER_NAME}'):`,
+    validate: function (input) {
+      const validPathRegex = /^$|^\/[A-Za-z0-9._-]+$/;
+
+      if (!validPathRegex.test(input)) {
+        return 'Invalid directory format! Please enter a valid directory path starting with "/"';
+      }
+      return true;
+    },
+    default: `/${TRANSACTION_FOLDER_NAME}`,
+  });
+}
 
 export const selectTemplate: IPrompt<string> = async () => {
   const defaultTemplateKeys = Object.keys(defaultTemplates);
@@ -115,6 +233,11 @@ const promptVariableValue = async (key: string): Promise<string> => {
         },
       });
     }
+
+    const selectedKey =
+      walletKeys.find((x) => x.key === value) ??
+      plainKeys.find((x) => x.key === value);
+    if (selectedKey === undefined) throw new Error('public key not found');
 
     if (value === null || value === '_manual_') {
       throw new Error('public key not found');

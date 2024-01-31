@@ -1,12 +1,17 @@
 export const proofOfUsData: IProofOfUs[] = [
   {
     tokenId: '1',
+    type: 'multi',
     date: 245599529000,
     minted: 4,
     signees: [],
+    avatar: {
+      background: '',
+    },
   },
   {
     tokenId: '2',
+    type: 'event',
     date: 1365257129000,
     minted: 0,
     signees: [
@@ -29,5 +34,8 @@ export const proofOfUsData: IProofOfUs[] = [
         initiator: false,
       },
     ],
+    avatar: {
+      background: '',
+    },
   },
 ];

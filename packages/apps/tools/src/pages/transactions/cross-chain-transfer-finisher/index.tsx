@@ -1,22 +1,34 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
+import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import {
   AccountNameField,
+  FormItemCard,
+  FormStatusNotification,
+  OptionsModal,
   FormItemCard,
   FormStatusNotification,
   OptionsModal,
   REQUEST_KEY_VALIDATION,
   RequestKeyField,
 } from '@/components/Global';
+  RequestKeyField,
+} from '@/components/Global';
 import client from '@/constants/client';
 import type { Network } from '@/constants/kadena';
+import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
+import { sidebarLinks } from '@/constants/side-links';
 import { sidebarLinks } from '@/constants/side-links';
 import { menuData } from '@/constants/side-menu-items';
 import { useAppContext } from '@/context/app-context';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
+import {
+  infoBoxStyle,
+  linksBoxStyle,
+} from '@/pages/transactions/cross-chain-transfer-tracker/styles.css';
 import {
   infoBoxStyle,
   linksBoxStyle,
@@ -28,8 +40,11 @@ import { getTransferData } from '@/services/cross-chain-transfer-finish/get-tran
 import { validateRequestKey } from '@/services/utils/utils';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
+import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Accordion,
   Accordion,
   Box,
   Breadcrumbs,
@@ -40,29 +55,39 @@ import {
   Heading,
   Notification,
   NotificationHeading,
+  Notification,
+  NotificationHeading,
   Stack,
   SystemIcon,
   TextField,
+  TextareaField,
   TextareaField,
   TrackerCard,
 } from '@kadena/react-ui';
 import Debug from 'debug';
 import Trans from 'next-translate/Trans';
+import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
+import Head from 'next/head';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { containerClass } from '../styles.css';
 import { containerClass } from '../styles.css';
 import {
   formButtonStyle,
   formContentStyle,
   noticationKeyStyle,
+  noticationKeyStyle,
   notificationContainerStyle,
   notificationLinkStyle,
+  notificationLinkStyle,
   textareaContainerStyle,
+  textareaWrapperStyle,
   textareaWrapperStyle,
 } from './styles.css';
 
@@ -106,13 +131,47 @@ const CrossChainTransferFinisher: FC = () => {
     },
   ];
 
+  const helpInfoSections = [
+    {
+      tag: 'request-key',
+      title: t('help-request-key-question'),
+      content: t('help-request-key-content'),
+    },
+    {
+      tag: 'gas-settings',
+      title: t('help-gas-settings-question'),
+      content: t('help-gas-settings-content'),
+    },
+    {
+      tag: 'signature-data',
+      title: t('help-signature-data-question'),
+      content: t('help-signature-data-content'),
+    },
+  ];
+
   const [requestKey, setRequestKey] = useState<string>(
     (router.query?.reqKey as string) || '',
   );
   const [receiverRequestKey, setReceiverRequestKey] = useState<string>('');
+  const [receiverRequestKey, setReceiverRequestKey] = useState<string>('');
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
   const [finalResults, setFinalResults] = useState<ITransferResult>({});
   const [txError, setTxError] = useState('');
+  const [processingTx, setProcessingTx] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
+    undefined,
+  );
+  const [activeInfoTag, setActiveInfoTag] = useState<{
+    tag: string;
+    title: string;
+    content: string;
+  }>(helpInfoSections[0]);
+  const drawerPanelRef = useRef<HTMLElement | null>(null);
+
+  const networkData: INetworkData = networksData.filter(
+    (item) => (network as Network) === item.networkId,
+  )[0];
   const [processingTx, setProcessingTx] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
@@ -133,6 +192,9 @@ const CrossChainTransferFinisher: FC = () => {
     if (!validateRequestKey(reqKey)) {
       return;
     }
+
+    router.query.reqKey = reqKey;
+    await router.push(router);
 
     router.query.reqKey = reqKey;
     await router.push(router);

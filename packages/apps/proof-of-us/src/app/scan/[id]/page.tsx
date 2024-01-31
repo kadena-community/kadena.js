@@ -1,6 +1,8 @@
 'use client';
-import { ListSignees } from '@/components/ListSignees/ListSignees';
-import { useAccount } from '@/hooks/account';
+
+import { Mint } from '@/components/Mint/Mint';
+import { Scan } from '@/components/Scan/Scan';
+import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSocket } from '@/hooks/socket';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -12,34 +14,19 @@ interface IProps {
 }
 
 const Page: FC<IProps> = ({ params }) => {
-  const { addSignee, removeSignee, isConnected, connect, getSigneeAccount } =
-    useSocket();
-  const { account } = useAccount();
-
-  const handleJoin = async () => {
-    addSignee({ tokenId: params.id });
-  };
-
-  const handleRemove = async () => {
-    if (!account) return;
-    removeSignee({ tokenId: params.id, signee: getSigneeAccount(account) });
-  };
+  const { connect } = useSocket();
+  const { proofOfUs } = useProofOfUs();
 
   useEffect(() => {
     connect({ tokenId: params.id });
   }, []);
 
+  if (!proofOfUs) return null;
+
   return (
     <div>
-      <section>
-        {!isConnected() ? (
-          <button onClick={handleJoin}>join</button>
-        ) : (
-          <button onClick={handleRemove}>remove</button>
-        )}
-      </section>
-      scanned Proof Of Us with ID ({params.id})
-      <ListSignees />
+      {proofOfUs.type === 'multi' && <Scan proofOfUs={proofOfUs} />}
+      {proofOfUs.type === 'event' && <Mint proofOfUs={proofOfUs} />}
     </div>
   );
 };
