@@ -235,8 +235,8 @@ const promptVariableValue = async (key: string): Promise<string> => {
     }
 
     const selectedKey =
-      walletKeys.find((x) => x.key === value) ??
-      plainKeys.find((x) => x.key === value);
+      walletKeys.find((x) => x.publicKey === value) ??
+      plainKeys.find((x) => x.publicKey === value);
     if (selectedKey === undefined) throw new Error('public key not found');
 
     if (value === null || value === '_manual_') {
