@@ -3,7 +3,7 @@ import http from 'http';
 export function networkIsAlive(networkHost: string): Promise<boolean> {
   return new Promise((resolve) => {
     http
-      .get(`${networkHost}/coins`, (res) => {
+      .get(`${networkHost}`, (res) => {
         resolve(res.statusCode === 200);
       })
       .on('error', (err) => {

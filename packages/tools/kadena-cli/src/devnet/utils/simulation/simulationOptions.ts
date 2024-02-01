@@ -1,9 +1,9 @@
 import { Option } from 'commander';
 import { z } from 'zod';
-import { createOption } from './createOption.js';
+import { createOption } from '../../../utils/createOption.js';
 
 import type { ChainId } from '@kadena/types';
-import { simulate as simulationPrompts } from '../prompts/index.js';
+import { simulate as simulationPrompts } from '../../../prompts/index.js';
 export const simulationOptions = {
   //Simulation
   simulationNumberOfAccounts: createOption({
