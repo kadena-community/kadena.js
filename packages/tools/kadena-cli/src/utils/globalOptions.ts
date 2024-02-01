@@ -202,6 +202,16 @@ export const globalOptions = {
       'Version of the kadena/devnet Docker image to use (e.g. "latest")',
     ),
   }),
+  // Logs
+  logFolder: createOption({
+    key: 'logFolder' as const,
+    prompt: generic.logFolderPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-l, --log-folder <logFolder>',
+      'Directory where the log file will be generated. (e.g. ./kadena/simulation-logs/',
+    ),
+  }),
   // Network
   networkName: createOption({
     key: 'network' as const,
