@@ -57,7 +57,7 @@ style([
             textDecoration: 'underline',
           },
         },
-      }
+      },
       md: {
         flexDirection: 'row',
       },
