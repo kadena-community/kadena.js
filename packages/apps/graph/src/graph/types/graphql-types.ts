@@ -6,6 +6,16 @@ export interface Guard {
   predicate: 'keys-all' | 'keys-any' | 'keys-two';
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface GasLimitEstimation {
+  amount: number;
+  type: string;
+  usedPreflight: boolean;
+  usedSignatureVerification: boolean;
+  usedTransaction: boolean;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Token {
   id: string;
   balance: number;

@@ -19,6 +19,7 @@ import { prismaClient } from '../db/prisma-client';
 import type {
   FungibleAccount,
   FungibleChainAccount,
+  GasLimitEstimation,
   GraphConfiguration,
   Guard,
   NonFungibleAccount,
@@ -65,8 +66,9 @@ export const builder = new SchemaBuilder<
     Objects: {
       FungibleAccount: FungibleAccount;
       FungibleChainAccount: FungibleChainAccount;
-      Guard: Guard;
+      GasLimitEstimation: GasLimitEstimation;
       GraphConfiguration: GraphConfiguration;
+      Guard: Guard;
       NonFungibleAccount: NonFungibleAccount;
       NonFungibleChainAccount: NonFungibleChainAccount;
       Token: Token;

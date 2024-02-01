@@ -141,6 +141,14 @@ type FungibleChainAccountTransfersConnectionEdge {
   node: Transfer!
 }
 
+type GasLimitEstimation {
+  amount: Int!
+  type: String!
+  usedPreflight: Boolean!
+  usedSignatureVerification: Boolean!
+  usedTransaction: Boolean!
+}
+
 """General information about the graph and chainweb-data."""
 type GraphConfiguration {
   """The maximum number of confirmations calculated on this endpoint."""
@@ -219,12 +227,6 @@ input PactQueryData {
   value: String!
 }
 
-input PactTransaction {
-  cmd: String!
-  hash: String
-  sigs: [String!]
-}
-
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
@@ -262,10 +264,10 @@ type Query {
   fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
 
   """Estimate the gas limit for a transaction."""
-  gasLimitEstimate(transaction: PactTransaction!): Int!
+  gasLimitEstimate(input: String!): GasLimitEstimation!
 
   """Estimate the gas limit for a list of transactions."""
-  gasLimitEstimates(transactions: [PactTransaction!]!): [Int!]!
+  gasLimitEstimates(input: [String!]!): [GasLimitEstimation!]!
 
   """Get the configuration of the graph."""
   graphConfiguration: GraphConfiguration!

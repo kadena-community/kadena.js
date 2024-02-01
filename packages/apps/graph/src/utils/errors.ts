@@ -2,7 +2,7 @@ import {
   PrismaClientInitializationError,
   PrismaClientKnownRequestError,
 } from '@prisma/client/runtime/library';
-import { PactCommandError } from '@services/node-service';
+import { PactCommandError } from '@services/chainweb-node/utils';
 import { GraphQLError } from 'graphql';
 
 /**
