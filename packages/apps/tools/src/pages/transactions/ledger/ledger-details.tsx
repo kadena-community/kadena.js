@@ -1,5 +1,5 @@
 import { AccountHoverTag } from '@/components/Global';
-import { useLedgerPublicKey } from '@/hooks/use-ledger-public-key';
+// import { useLedgerPublicKey } from '@/hooks/use-ledger-public-key';
 import {
   Button,
   Combobox,
@@ -18,8 +18,9 @@ const options = Array.from({ length: 100 }, (_, i) => ({
 const LedgerDetails = () => {
   const [ledgerDetailsExpanded, setLedgerDetailsExpanded] = useState(false);
 
-  const [keyId, setKeyId] = useState<number>();
-  const publicKey = useLedgerPublicKey(keyId);
+  // const [keyId, setKeyId] = useState<number>();
+  // const publicKey = useLedgerPublicKey(keyId);
+  const publicKey: string = '';
 
   return (
     <>
