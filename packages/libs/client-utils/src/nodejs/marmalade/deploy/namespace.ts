@@ -100,9 +100,9 @@ export const deployMarmaladeNamespaces = async ({
               transactionBody: {
                 chainId,
                 keysets,
-                namespace: {
+                data: {
                   key: 'ns',
-                  data: namespace,
+                  value: namespace,
                 },
                 signers: keys,
                 networkId,

@@ -16,7 +16,6 @@ export interface ITransactionBodyInput {
   };
   data?: { key: string; value: string };
   keysets?: { name: string; pred: string; keys: string[] }[];
-  namespace?: { key: string; data: string };
 }
 
 export interface IDeployContractInput {
@@ -39,13 +38,6 @@ export const createPactCommand = (inputs: IDeployContractInput) => {
     transactionBuilder = transactionBody.keysets.reduce((builder, keyset) => {
       return builder.addKeyset(keyset.name, keyset.pred, ...keyset.keys);
     }, transactionBuilder);
-  }
-
-  if (transactionBody.namespace) {
-    transactionBuilder = transactionBuilder.addData(
-      transactionBody.namespace.key,
-      transactionBody.namespace.data,
-    );
   }
 
   if (transactionBody.data) {
