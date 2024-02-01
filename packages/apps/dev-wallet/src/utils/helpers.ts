@@ -3,7 +3,7 @@ export const execInSequence = <Args extends unknown[], T>(
 ) => {
   let taskChain: Promise<T | void> = Promise.resolve();
   return (...args: Args) => {
-    taskChain = taskChain.then(() => fn(...args));
+    taskChain = taskChain.catch(() => undefined).then(() => fn(...args));
     return taskChain as Promise<T>;
   };
 };
