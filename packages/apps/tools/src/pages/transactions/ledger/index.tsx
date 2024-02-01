@@ -1,48 +1,45 @@
-import { ChainSelect } from '@/components/Global';
-import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
-import AccountNameField, {
+import {
+  AccountNameField,
+  ChainSelect,
   NAME_VALIDATION,
-} from '@/components/Global/AccountNameField';
+} from '@/components/Global';
 import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
 import useAccountDetails from '@/hooks/use-account-details';
-import useLedgerApp from '@/hooks/use-ledger-app';
-import { buttonContainerClass } from '@/pages/faucet/existing/styles.css';
+import { buttonContainerClass } from '@/pages/faucet/styles.css';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import { createSignWithLedger } from '@kadena/client';
-import { transfer, transferCrossChain } from '@kadena/client-utils/coin';
+import { transfer } from '@kadena/client-utils/coin';
 import {
   Box,
   Breadcrumbs,
+  BreadcrumbsItem,
   Button,
   Card,
+  FormFieldHeader,
   Heading,
   Notification,
-  Text,
+  Stack,
+  SystemIcon,
   TextField,
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { containerClass } from '../styles.css';
+import LedgerDetails from './ledger-details';
 
 const schema = z.object({
+  sender: NAME_VALIDATION,
+  senderChainId: z.enum(CHAINS),
   receiver: NAME_VALIDATION,
   amount: z.number().positive(),
   receiverChainId: z.enum(CHAINS),
 });
-
-function bufferToHex(buffer: Uint8Array) {
-  return [...buffer]
-    .map((b) => {
-      return b.toString(16).padStart(2, '0');
-    })
-    .join('');
-}
 
 type FormData = z.infer<typeof schema>;
 
@@ -50,62 +47,41 @@ const LedgerPage = () => {
   const router = useRouter();
   useToolbar(menuData, router.pathname);
   const { t } = useTranslation('common');
-  // const [publicKey, connectLedger] = useLedger();
-  const { app, connect } = useLedgerApp();
-  const [publicKey, setPublicKey] = useState<string>();
-
-  useEffect(() => {
-    if (!app) return;
-
-    const keyId = '0';
-
-    const getAddress = async () => {
-      const kdaAddress = await app.getPublicKey(`m/44'/626'/${keyId}'/0/0`);
-
-      console.log('kdaAddress:', {
-        1: bufferToHex(kdaAddress.publicKey),
-        // 2: bufferToHex(kdaAddress2.publicKey),
-      });
-
-      setPublicKey(bufferToHex(kdaAddress.publicKey));
-    };
-
-    // eslint-disable-next-line no-void
-    void getAddress();
-  }, [app]);
-
-  console.log({ publicKey });
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     watch,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { receiverChainId: CHAINS[0] },
+    defaultValues: { senderChainId: CHAINS[0], receiverChainId: CHAINS[0] },
   });
 
   const watchReceiver = watch('receiver');
   const watchReceiverChainId = watch('receiverChainId');
-  const receiver = useAccountDetails(
+  const receiverQuery = useAccountDetails(
     watchReceiver,
     'testnet04',
     watchReceiverChainId,
   );
+  const watchChains = watch(['senderChainId', 'receiverChainId']);
+  const onSameChain = watchChains.every((chain) => chain === watchChains[0]);
+
+  console.log('watchReceiver', {
+    watchReceiver,
+    watchReceiverChainId,
+    watchChains,
+    onSameChain,
+  });
+
+  console.log('receiver', receiverQuery);
+
+  const publicKey: string = ''; // FIXME
 
   const onSubmit = async (data: FormData) => {
     console.log('onsubmit', data);
-    if (!publicKey) {
-      console.log('Missing error key');
-      return;
-    }
-
-    if (!app) {
-      console.log('Make sure to connect your Ledger first!');
-      return;
-    }
 
     const result = await transfer(
       {
@@ -129,10 +105,10 @@ const LedgerPage = () => {
         defaults: { networkId: 'testnet04' },
       },
     )
-      .on('sign', (data) => console.log(data))
-      .on('preflight', (data) => console.log(data))
-      .on('submit', (data) => console.log(data))
-      .on('listen', (data) => console.log(data))
+      .on('sign', (data) => console.log('transfer - sign', data))
+      .on('preflight', (data) => console.log('transfer - preflight', data))
+      .on('submit', (data) => console.log('transfer - submit', data))
+      .on('listen', (data) => console.log('transfer - listen', data))
       .execute();
 
     console.log('result', result);
@@ -143,83 +119,79 @@ const LedgerPage = () => {
       <Head>
         <title>Kadena Developer Tools - Ledger</title>
       </Head>
-      <Breadcrumbs.Root>
-        <Breadcrumbs.Item>{t('Transactions')}</Breadcrumbs.Item>
-        <Breadcrumbs.Item>{t('Ledger')}</Breadcrumbs.Item>
-      </Breadcrumbs.Root>
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Ledger')}</BreadcrumbsItem>
+      </Breadcrumbs>
       <Heading as="h4">{t('Kadena Ledger Transfer')}</Heading>
-      <Notification role="alert">
-        Please visit{' '}
-        <a
-          href="https://support.ledger.com/hc/en-us/articles/7415959614109?docs=true"
-          target="_blank"
-          rel="noreferrer"
-        >
-          the Ledger docs
-        </a>{' '}
-        for more information.
-      </Notification>
+      <Box marginBlockEnd="md">
+        <Notification role="alert">
+          Please visit{' '}
+          <a
+            href="https://support.ledger.com/hc/en-us/articles/7415959614109?docs=true"
+            target="_blank"
+            rel="noreferrer"
+          >
+            the Ledger docs
+          </a>{' '}
+          for more information.
+        </Notification>
+      </Box>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Card fullWidth>
-          <Button
-            color={publicKey ? 'positive' : undefined}
-            onClick={connect}
-            type="button"
-          >
-            {publicKey ? 'Connected!' : 'Connect your Ledger'}
-          </Button>
-          <Box marginBottom={'$4'} />
-          <Heading as="h5">{t('Sender')}</Heading>
-          {/* <TextField
-            disabled
-            inputProps={{
-              value: publicKey,
-              id: 'ledger-public-key',
-              placeholder: 'Connect with your ledger to fetch your key',
-            }}
-            label="Your Ledger public key"
-          /> */}
-          {publicKey ? (
-            <AccountHoverTag value={publicKey.slice(0, 15)} />
-          ) : (
-            <Text as="code">Connect with your ledger to fetch your key</Text>
-          )}
-          <Box marginBottom={'$4'} />
-
-          <Heading as="h5">{t('Receiver')}</Heading>
-          <AccountNameField
-            inputProps={{ ...register('receiver') }}
-            error={errors.receiver}
-          />
-          <Controller
-            name="receiverChainId"
-            control={control}
-            render={({ field }) => <ChainSelect {...field} />}
-          />
-          {/* <ChainSelect
-            {...register('receiverChainId', { value: '13' })}
-          /> */}
-          <TextField
-            inputProps={{
-              ...register('amount', { valueAsNumber: true }),
-              id: 'ledger-transfer-amount',
-            }}
-            status={errors.amount ? 'negative' : undefined}
-            label="Amount"
-            helperText={errors.amount?.message}
-          />
-        </Card>
-        <div className={buttonContainerClass}>
-          <Button
-            // loading={requestStatus.status === 'processing'}
-            icon="TrailingIcon"
-            iconAlign="right"
-            title={t('Sign with Ledger and Transfer')}
-            // disabled={disabledButton}
-          >
-            {t('Sign with Ledger and Transfer')}
-          </Button>
-        </div>
+        <Stack flexDirection="column" gap="lg">
+          <Card fullWidth>
+            <Heading as="h5">{t('Sender')}</Heading>
+            <Box marginBlockEnd="md" />
+            <Stack
+              flexDirection="column"
+              justifyContent="flex-start"
+              alignItems="stretch"
+              gap="sm"
+            >
+              <FormFieldHeader label={t('Account')} />
+              <LedgerDetails />
+              <Controller
+                name="senderChainId"
+                control={control}
+                render={({ field }) => <ChainSelect {...field} />}
+              />
+            </Stack>
+          </Card>
+          <Card fullWidth>
+            <Heading as="h5">{t('Receiver')}</Heading>
+            <AccountNameField
+              {...register('receiver')}
+              errorMessage={errors.receiver?.message}
+            />
+            {/* <AccountDetails query={receiverQuery} /> */}
+            <Controller
+              name="receiverChainId"
+              control={control}
+              render={({ field }) => (
+                <ChainSelect {...field} id="receiverChainId" />
+              )}
+            />
+            <TextField
+              {...register('amount', { valueAsNumber: true })}
+              id="ledger-transfer-amount"
+              label="Amount"
+              isInvalid={!!errors.amount}
+              errorMessage={errors.amount?.message}
+              info="The amount of KDA to transfer."
+            />
+          </Card>
+          <div className={buttonContainerClass}>
+            <Button
+              isLoading={isSubmitting}
+              isDisabled={isSubmitting}
+              endIcon={<SystemIcon.TrailingIcon />}
+              title={t('Sign with Ledger and Transfer')}
+              type="submit"
+            >
+              {t('Sign with Ledger and Transfer')}
+            </Button>
+          </div>
+        </Stack>
       </form>
     </section>
   );
