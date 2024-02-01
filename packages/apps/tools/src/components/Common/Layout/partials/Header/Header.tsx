@@ -51,11 +51,11 @@ const Header: FC<IHeaderProps> = () => {
 
   const openNetworkModal = () => setIsOpen(true);
 
-  const handleOnChange = (e: React.FormEvent<HTMLSelectElement>): void => {
-    if ((e.target as HTMLSelectElement).value === 'custom') {
+  const handleOnChange = (value: Network): void => {
+    if (value === 'custom') {
       return openNetworkModal();
     }
-    setSelectedNetwork((e.target as HTMLSelectElement).value as Network);
+    setSelectedNetwork(value);
   };
 
   const toggleTheme = (): void => {
@@ -80,37 +80,39 @@ const Header: FC<IHeaderProps> = () => {
         <NavHeaderLinkList>
           {menuData.map((item, index) => (
             <NavHeaderLink key={index} asChild>
-              <Link href={getHref(item.href)}>{item.title}</Link>
+              <Link href={getHref(item.href as string)}>{item.title}</Link>
             </NavHeaderLink>
           ))}
         </NavHeaderLinkList>
         <NavHeaderButton
           aria-label="Toggle theme"
           icon={<SystemIcon.ThemeLightDark />}
-          onClick={() => toggleTheme()}
+          onPress={() => toggleTheme()}
           className={atoms({ marginInlineEnd: 'sm' })}
         />
         <NavHeaderButton
           aria-label={'Application Settings'}
           icon={<SystemIcon.ProgressWrench />}
-          onClick={() => handleDevOptionsClick()}
+          onPress={() => handleDevOptionsClick()}
           className={atoms({ marginInlineEnd: 'sm' })}
         />
         <NavHeaderSelect
           id="network-select"
-          ariaLabel={t('Select Network')}
-          value={selectedNetwork as string}
-          onChange={(e) => handleOnChange(e)}
-          icon="Earth"
+          aria-label={t('Select Network')}
+          selectedKey={selectedNetwork as string}
+          onSelectionChange={(value) => handleOnChange(value as Network)}
+          startIcon={<SystemIcon.Earth />}
         >
-          {...networksData.map((network: INetworkData) => (
-            <SelectItem key={network.networkId} textValue={network.networkId}>
-              {network.label}
-            </SelectItem>
-          ))}
-          <SelectItem key="custom" textValue="custom">
-            {t('+ add network')}
-          </SelectItem>
+          {[
+            ...networksData.map((network: INetworkData) => (
+              <SelectItem key={network.networkId} textValue={network.networkId}>
+                {network.label}
+              </SelectItem>
+            )),
+            <SelectItem key="custom" textValue="custom">
+              {t('+ add network')}
+            </SelectItem>,
+          ]}
         </NavHeaderSelect>
         {/* <div className={walletConnectWrapperStyle}>
         <WalletConnectButton />

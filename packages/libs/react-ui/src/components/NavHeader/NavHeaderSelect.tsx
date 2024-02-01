@@ -9,11 +9,12 @@ export interface INavHeaderSelectProps<T extends object = any>
   extends ISelectProps<T> {}
 
 export const NavHeaderSelect: FC<INavHeaderSelectProps> = forwardRef<
-  HTMLSelectElement,
+  HTMLButtonElement,
   INavHeaderSelectProps
 >(function Select({ children, className, ...props }, ref) {
   return (
     <BaseSelect
+      ref={ref}
       {...props}
       className={classNames(className, selectContainerClass)}
     >
