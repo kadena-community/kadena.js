@@ -3,7 +3,7 @@ import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
 import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
 import path from 'path';
 
-import { IS_DEVELOPMENT } from '../../constants/config.js';
+import { IS_DEVELOPMENT, TRANSACTION_PATH } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
@@ -35,14 +35,13 @@ export const createTransaction = async (
     let filePath: string | null = null;
     if (outFilePath === null) {
       // write transaction to file
-      const directoryPath = path.join(process.cwd(), './transactions');
-      await services.filesystem.ensureDirectoryExists(directoryPath);
+      await services.filesystem.ensureDirectoryExists(TRANSACTION_PATH);
 
-      const files = await services.filesystem.readDir(directoryPath);
+      const files = await services.filesystem.readDir(TRANSACTION_PATH);
       let fileNumber = files.length + 1;
       while (filePath === null) {
         const checkPath = path.join(
-          directoryPath,
+          TRANSACTION_PATH,
           `transaction${fileNumber}.json`,
         );
         if (!files.includes(checkPath)) {
@@ -52,6 +51,7 @@ export const createTransaction = async (
         fileNumber++;
       }
     } else {
+      await services.filesystem.ensureDirectoryExists(TRANSACTION_PATH);
       filePath = outFilePath;
     }
 

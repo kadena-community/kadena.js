@@ -1,5 +1,7 @@
-import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
 import { describe, expect, it, vi } from 'vitest';
+
+import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
+
 import { fixTemplatePactCommand } from '../commands/templates/mapper.js';
 import { defaultTemplates } from '../commands/templates/templates.js';
 

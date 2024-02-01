@@ -19,17 +19,18 @@ import { getWalletKey, toHexStr } from '../../keys/utils/keysHelpers.js';
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaDecrypt } from '@kadena/hd-wallet';
 import type { ICommand } from '@kadena/types';
+import { join } from 'node:path';
 import type { IKeyPair } from '../../keys/utils/storage.js';
 
 export const signTransactionWithAliasFile = async (
   wallet: IWallet,
   alias: string,
   password: string,
-  transactionfileNames: string[],
+  /** absolute paths, or relative to process.cwd() if starting with `.` */
+  transactionFileNames: string[],
   signed: boolean,
-  transactionDirectory: string,
   legacy?: boolean,
-): Promise<CommandResult<ICommand[]>> => {
+): Promise<CommandResult<{ commands: ICommand[]; path: string }>> => {
   try {
     const encryptedKeyPair = await getWalletKey(wallet, alias);
 
@@ -52,9 +53,8 @@ export const signTransactionWithAliasFile = async (
     };
 
     const unsignedTransactions = await getTransactionsFromFile(
-      transactionfileNames,
+      transactionFileNames,
       signed,
-      transactionDirectory,
     );
 
     if (unsignedTransactions.length === 0) {
@@ -64,13 +64,24 @@ export const signTransactionWithAliasFile = async (
       };
     }
 
-    const command = await signTransactionWithKeyPair(
+    const commands = await signTransactionWithKeyPair(
       [keyPair],
       unsignedTransactions,
       legacy,
     );
 
-    return assessTransactionSigningStatus(command);
+    const path = await saveSignedTransactions(commands, transactionFileNames);
+    if (path !== null) {
+      const signed = await assessTransactionSigningStatus(commands);
+      if (!signed.success) return signed;
+
+      return { success: true, data: { commands: signed.data, path } };
+    } else {
+      return {
+        success: false,
+        errors: [`Error in signAction: failed to write transaction file`],
+      };
+    }
   } catch (error) {
     return {
       success: false,
@@ -118,20 +129,18 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
       wallet.keyWalletConfig,
       key.keyAliasSelect,
       password.securityPassword,
-      files.txUnsignedTransactionFiles,
+      files.txUnsignedTransactionFiles.map((file) =>
+        join(dir.txTransactionDir, file),
+      ),
       false,
-      dir.txTransactionDir,
       mode.legacy,
     );
 
     assertCommandError(result);
 
-    await saveSignedTransactions(
-      result,
-      files.txUnsignedTransactionFiles,
-      dir.txTransactionDir,
+    console.log(
+      chalk.green(`Signed transaction saved to ${result.data.path}.`),
     );
-
     console.log(chalk.green(`\nTransaction signed successfully.\n`));
   },
 );
