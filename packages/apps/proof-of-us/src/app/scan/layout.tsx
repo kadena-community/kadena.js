@@ -7,11 +7,15 @@ import { useEffect } from 'react';
 
 const ScanLayout: FC<PropsWithChildren> = ({ children }) => {
   const { account, isMounted, login } = useAccount();
-  const { connect } = useSocket();
+  const { connect, disconnect } = useSocket();
   const { id: proofOfUsId } = useParams();
 
   useEffect(() => {
     connect({ proofOfUsId: `${proofOfUsId}` });
+
+    return () => {
+      disconnect({ proofOfUsId: `${proofOfUsId}` });
+    };
   }, [proofOfUsId]);
 
   if (!isMounted) return null;

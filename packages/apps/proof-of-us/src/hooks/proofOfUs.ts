@@ -24,6 +24,14 @@ export const useProofOfUs = () => {
   };
 
   useEffect(() => {
+    if (!state) {
+      socket?.emit('getProofOfUs', {
+        to: params.id,
+      });
+    }
+  }, [state]);
+
+  useEffect(() => {
     if (!socket) return;
     socket.on('getProofOfUs', setContent);
 
@@ -74,7 +82,7 @@ export const useProofOfUs = () => {
   };
 
   const isConnected = () => {
-    return !!proofOfUs?.signees.find((s) => s.cid === account?.cid);
+    return !!proofOfUs?.signees?.find((s) => s.cid === account?.cid);
   };
 
   const isInitiator = () => {

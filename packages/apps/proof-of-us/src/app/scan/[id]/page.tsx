@@ -15,6 +15,8 @@ interface IProps {
 const Page: FC<IProps> = () => {
   const { proofOfUs } = useProofOfUs();
 
+  console.log({ proofOfUs });
+
   if (!proofOfUs) return null;
 
   return (

@@ -9,11 +9,15 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const { account, isMounted, login } = useAccount();
   const router = useRouter();
 
-  const { connect } = useSocket();
+  const { connect, disconnect } = useSocket();
   const { id: proofOfUsId } = useParams();
 
   useEffect(() => {
     connect({ proofOfUsId: `${proofOfUsId}` });
+
+    return () => {
+      disconnect({ proofOfUsId: `${proofOfUsId}` });
+    };
   }, [proofOfUsId]);
 
   useEffect(() => {

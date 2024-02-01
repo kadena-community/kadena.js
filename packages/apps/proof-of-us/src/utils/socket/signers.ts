@@ -31,4 +31,12 @@ export const signeeListeners = (socket: Socket, io: IOServer) => {
         from: socket.handshake.auth.proofOfUsId,
       });
   });
+  socket.on('getProofOfUs', ({ to }) => {
+    io.to(to)
+      .to(to)
+      .emit('getProofOfUs', {
+        content: store.getProofOfUs(to),
+        from: socket.handshake.auth.proofOfUsId,
+      });
+  });
 };
