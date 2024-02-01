@@ -160,8 +160,6 @@ pages:
               smart-contract:
                 url: /write-a-smart-contract
                 file: /build/guides/election-dapp-tutorial/write-a-smart-contract.md
-                url: /write-a-smart-contract
-                file: /build/guides/election-dapp-tutorial/write-a-smart-contract.md
               nominate-candidates:
                 url: /nominate-candidates
                 file: /build/guides/election-dapp-tutorial/nominate-candidates.md
