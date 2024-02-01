@@ -385,7 +385,7 @@ const CrossChainTransferFinisher: FC = () => {
       </Head>
       <Breadcrumbs>
         <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
-        <BreadcrumbsItem>{t('Cross Chain Finisher')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Cross Chain Transfer Finisher')}</BreadcrumbsItem>
       </Breadcrumbs>
       <Heading as="h4">{t('Finish transaction')}</Heading>
 

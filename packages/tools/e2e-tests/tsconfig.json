@@ -8,10 +8,13 @@
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "paths": {
-      "@fixtures/graph/*": ["./src/fixtures/graph/*"],
-      "@fixtures/tools/*": ["./src/fixtures/tools/*"],
-      "@helpers/graph/*": ["./src/helpers/graph/*"],
-      "@helpers/tools/*": ["./src/helpers/tools/*"]
+      "@fixtures/graph/*": ["./src/support/fixtures/graph/*"],
+      "@fixtures/tools/*": ["./src/support/fixtures/tools/*"],
+      "@fixtures/shared/*": ["./src/support/fixtures/shared/*"],
+      "@constants/*": ["./src/support/constants/*"],
+      "@helpers/graph/*": ["src/support/helpers/graph/*"],
+      "@helpers/tools/*": ["src/support/helpers/tools/*"],
+      "@helpers/client-utils/*": ["src/support/helpers/client-utils/*"]
     }
   },
   "include": ["**/*.ts", "/**/*.tsx"]

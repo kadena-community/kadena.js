@@ -1,6 +1,6 @@
 import { test as baseTest } from '@playwright/test';
 import type { I18nPlaywrightFixture } from 'playwright-i18next-fixture';
-import { ToolsAppIndex } from '../page-objects/tools-app/toolsApp.index';
+import { ToolsAppIndex } from '../../page-objects/tools-app/toolsApp.index';
 
 export const test = baseTest.extend<{
   toolsApp: ToolsAppIndex;

@@ -1,4 +1,5 @@
 import type { Locator, Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 
 export class AsideComponent {
   private _page: Page;
@@ -9,7 +10,12 @@ export class AsideComponent {
     this._component = this._page.locator('aside');
   }
 
-  public async clickPageLink(ariaLabel: string): Promise<void> {
+  public async navigateTo(ariaLabel: string): Promise<void> {
     await this._component.getByRole('link', { name: ariaLabel }).click();
+    await expect(
+      this._page
+        .getByRole('navigation', { name: 'Breadcrumbs' })
+        .locator(`a:text-is("${ariaLabel}")`),
+    ).toBeVisible();
   }
 }

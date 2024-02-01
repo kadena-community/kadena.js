@@ -1,16 +1,13 @@
 import type { Locator, Page } from '@playwright/test';
 import { getI18nInstance } from 'playwright-i18next-fixture';
-import { CardComponent } from '../../react-ui/card.component';
 import { NavHeaderComponent } from '../../react-ui/navHeader.component';
 
 export class ToolsHeaderComponent extends NavHeaderComponent {
-  public networkCard: CardComponent;
   private readonly _i18n = getI18nInstance();
 
   public constructor(page: Page) {
     super(page);
     this._page = page;
-    this.networkCard = new CardComponent(page);
   }
 
   public async goToPage(translationKey: string): Promise<void> {
