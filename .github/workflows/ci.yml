@@ -31,11 +31,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install rust dependencies
-        run:
-          sudo apt-get install libgtk-3-dev libsoup2.4-dev javascriptcoregtk-4.1
+        run: sudo apt-get install libgtk-3-dev libsoup2.4-dev javascriptcoregtk-4.1
 
       - name: Install dependencies
         run: pnpm install
@@ -55,9 +54,9 @@ jobs:
       matrix:
         package:
           [
-            '@kadena/client',
-            '@kadena/client-utils',
-            '@kadena/create-kadena-app',
+            "@kadena/client",
+            "@kadena/client-utils",
+            "@kadena/create-kadena-app",
           ]
 
     steps:
@@ -73,7 +72,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Start devnet
         uses: ./.github/actions/devnet
@@ -93,16 +92,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: ['tools', 'docs', 'graph']
-
-    services:
-      devnet:
-        image: kadena/devnet
-        options:
-          --memory 7g --cpus 2 --health-cmd "curl --verbose --fail
-          http://localhost:8080/info || exit 1"
-        ports:
-          - 8080:8080
+        app: ["tools", "docs", "graph"]
 
     steps:
       - uses: actions/checkout@v4
@@ -118,7 +108,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Start devnet
         uses: ./.github/actions/devnet
@@ -128,9 +118,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: build dApp
-        run: pnpm turbo build --filter @kadena/${{ matrix.app }}
-
       - name: Install browsers
         run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
 
@@ -139,8 +126,7 @@ jobs:
         run: pnpm turbo build --filter @kadena/${{ matrix.app }} --force
 
       - name: Run end-to-end tests
-        run:
-          pnpm turbo test:e2e --filter @kadena-dev/e2e-tests -- -c
+        run: pnpm turbo test:e2e --filter @kadena-dev/e2e-tests -- -c
           playwright.${{ matrix.app }}.config.ts
         env:
           TESTOBJECT: ${{ matrix.app }}

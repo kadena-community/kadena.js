@@ -12,7 +12,7 @@ import {
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { formButtonStyle, modalOptionsContentStyle } from './styles.css';
