@@ -1,4 +1,4 @@
-import { Link, SystemIcon } from '@kadena/react-ui';
+import { SystemIcon } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React from 'react';
@@ -29,9 +29,13 @@ export const ResourceLinks: FC<IProps> = ({ links, ...rest }: IProps) => {
       <ul className={linksClass}>
         {links.map((link) => (
           <li key={link.title}>
-            <Link href={link.href} target={link?.target ?? '_blank'}>
+            <a
+              className={linksClass}
+              href={link.href}
+              target={link?.target ?? '_blank'}
+            >
               {link.title}
-            </Link>
+            </a>
           </li>
         ))}
       </ul>

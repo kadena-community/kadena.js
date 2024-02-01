@@ -4,7 +4,6 @@ import {
   AccountNameField,
   FormItemCard,
   FormStatusNotification,
-  NAME_VALIDATION,
   OptionsModal,
   REQUEST_KEY_VALIDATION,
   RequestKeyField,
@@ -54,32 +53,23 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { containerClass } from '../styles.css';
 import {
   formButtonStyle,
   formContentStyle,
+  noticationKeyStyle,
   notificationContainerStyle,
   notificationLinkStyle,
   textareaContainerStyle,
+  textareaWrapperStyle,
 } from './styles.css';
-
-// @see; https://www.geeksforgeeks.org/how-to-validate-a-domain-name-using-regular-expression/
-const DOMAIN_NAME_REGEX: RegExp =
-  /^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/;
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
-  advancedOptions: z.boolean().optional(),
-  server: z
-    .string()
-    .trim()
-    .regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name')
-    .optional(),
-  gasPayer: NAME_VALIDATION.optional(),
-  gasLimit: z.number().optional(),
-  gasPrice: z.string().optional(),
+  gasPayer: z.literal('kadena-xchain-gas'),
+  gasLimit: z.number().positive(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -118,6 +108,7 @@ const CrossChainTransferFinisher: FC = () => {
   const [requestKey, setRequestKey] = useState<string>(
     (router.query?.reqKey as string) || '',
   );
+  const [receiverRequestKey, setReceiverRequestKey] = useState<string>('');
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
   const [finalResults, setFinalResults] = useState<ITransferResult>({});
   const [txError, setTxError] = useState('');
@@ -216,14 +207,20 @@ const CrossChainTransferFinisher: FC = () => {
       pollResults.tx.receiver.chain,
       networkId,
       networksData,
+      data.gasLimit,
       data.gasPayer,
     );
 
     if (typeof requestKeyOrError !== 'string') {
       setTxError((requestKeyOrError as { error: string }).error);
+      setFinalResults({
+        requestKey: data.requestKey,
+        status: (requestKeyOrError as { error: string }).error,
+      });
       setProcessingTx(false);
       return;
     }
+    setReceiverRequestKey(requestKeyOrError as string);
 
     const receiverApiHost = getApiHost({
       api: networkData.API,
@@ -278,60 +275,64 @@ const CrossChainTransferFinisher: FC = () => {
   }, [router.isReady]);
 
   const {
-    register,
     handleSubmit,
-    watch,
     formState: { errors },
     getValues,
+    setValue,
     resetField,
+    control,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: {
-      server: networkData.API,
-      requestKey: requestKey,
+    defaultValues: {
+      requestKey: router.query?.reqKey as string,
       gasPayer: 'kadena-xchain-gas',
       gasLimit: kadenaConstants.GAS_LIMIT,
-      gasPrice: kadenaConstants.GAS_PRICE.toFixed(8),
-    },
-    // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
-    resetOptions: {
-      keepDirtyValues: true, // keep dirty fields unchanged, but update defaultValues
     },
   });
+  useEffect(() => {
+    setValue('requestKey', requestKey);
+    setOpenItem(undefined);
+  }, [requestKey, setValue]);
 
-  const watchGasPayer = watch('gasPayer');
-
-  const isGasStation = watchGasPayer === 'kadena-xchain-gas';
   const isAdvancedOptions = devOption !== 'BASIC';
   const showNotification = Object.keys(finalResults).length > 0;
 
   const formattedSigData = `{
     "pred": "${pollResults.tx?.receiverGuard.pred}",
-    "sigs": ${pollResults.tx?.receiverGuard.keys.map((key) => `"${key}"`)}"
+    "sigs": ${pollResults.tx?.receiverGuard.keys.map((key) => `"${key}"`)}
   }`;
 
   const renderNotification =
-    txError.toString() === '' ? (
+    txError.toString() === '' && receiverRequestKey ? (
       <FormStatusNotification
         status="successful"
         title={t('Notification title success')}
+        body={t('XChain transfer has been successfully finalized!')}
       >
-        {t('XChain transfer has been successfully finalized!')}
+        <p
+          className={noticationKeyStyle}
+        >{`Request key: ${receiverRequestKey}`}</p>
       </FormStatusNotification>
     ) : (
       <FormStatusNotification status="erroneous" title={t('Transaction error')}>
         {txError.toString()}
+        <p className={noticationKeyStyle}>
+          {`Target Chain Request key: ${receiverRequestKey}`}
+        </p>
       </FormStatusNotification>
     );
 
-  const renderWaitingNotification = (
+  const renderWaitingNotification = receiverRequestKey ? (
     <FormStatusNotification
       status="processing"
       title={t('form-status-title-processing')}
+      body={t('form-status-content-processing')}
     >
-      {t('form-status-content-processing')}
+      <p className={noticationKeyStyle}>
+        {`Target Chain Request key: ${receiverRequestKey}`}
+      </p>
     </FormStatusNotification>
-  );
+  ) : null;
 
   const handleDevOptionsClick = (): void => {
     setOpenModal(true);
@@ -414,15 +415,20 @@ const CrossChainTransferFinisher: FC = () => {
               <Box marginBlockEnd="md" />
               <Grid>
                 <GridItem>
-                  <RequestKeyField
-                    errorMessage={
-                      pollResults.error || errors.requestKey?.message
-                    }
-                    isInvalid={!!pollResults.error}
-                    {...register('requestKey')}
-                    value={requestKey}
-                    onChange={onRequestKeyChange}
-                    onKeyUp={onCheckRequestKey}
+                  <Controller
+                    control={control}
+                    name="requestKey"
+                    render={({ field }) => (
+                      <RequestKeyField
+                        errorMessage={
+                          pollResults.error || errors.requestKey?.message
+                        }
+                        isInvalid={!!pollResults.error || !!errors.requestKey}
+                        {...field}
+                        onChange={onRequestKeyChange}
+                        onKeyUp={onCheckRequestKey}
+                      />
+                    )}
                   />
                 </GridItem>
               </Grid>
@@ -509,32 +515,49 @@ const CrossChainTransferFinisher: FC = () => {
               >
                 <Grid columns={1} marginBlockStart="md">
                   <GridItem>
-                    <AccountNameField
-                      label={t('Gas Payer')}
-                      {...register('gasPayer', { shouldUnregister: true })}
-                      id="gas-payer-account-input"
-                      placeholder={t('Enter Your Account')}
-                      isInvalid={!!errors.gasPayer}
-                      errorMessage={
-                        !isGasStation
-                          ? 'Please enter kadena-xchain-gas'
-                          : errors.gasPayer?.message
-                      }
+                    <Controller
+                      control={control}
+                      name="gasPayer"
+                      shouldUnregister
+                      render={({ field }) => (
+                        <AccountNameField
+                          label={t('Gas Payer')}
+                          {...field}
+                          id="gas-payer-account-input"
+                          placeholder={t('Enter Your Account')}
+                          isInvalid={!!errors.gasPayer}
+                          errorMessage={errors.gasPayer?.message}
+                        />
+                      )}
                     />
                   </GridItem>
                 </Grid>
 
                 <Grid columns={1} marginBlockStart="md">
                   <GridItem>
-                    <TextField
-                      disabled={!isAdvancedOptions}
-                      description={t(
-                        'This input field will only be enabled if the user is in expert mode',
+                    <Controller
+                      control={control}
+                      name="gasLimit"
+                      shouldUnregister
+                      render={({ field }) => (
+                        <TextField
+                          disabled={!isAdvancedOptions}
+                          description={t(
+                            'This input field will only be enabled if the user is in expert mode',
+                          )}
+                          label={t('Gas Limit')}
+                          {...field}
+                          value={`${field.value}`}
+                          onChange={(e) =>
+                            field.onChange(parseInt(e.target.value))
+                          }
+                          isInvalid={!!errors.gasLimit}
+                          errorMessage={errors.gasLimit?.message}
+                          id="gas-limit-input"
+                          placeholder={t('Enter Gas Limit')}
+                          type={'number'}
+                        />
                       )}
-                      label={t('Gas Limit')}
-                      {...register('gasLimit', { shouldUnregister: true })}
-                      id="gas-limit-input"
-                      placeholder={t('Enter Gas Limit')}
                     />
                   </GridItem>
                 </Grid>
@@ -553,10 +576,13 @@ const CrossChainTransferFinisher: FC = () => {
                   <GridItem>
                     <div className={textareaContainerStyle}>
                       <TextareaField
+                        autoResize
                         isReadOnly
                         inputFont="code"
                         id="sig-text-area"
                         value={formattedSigData}
+                        aria-label={t('sigData')}
+                        className={textareaWrapperStyle}
                       />
                       <Button
                         color="primary"
@@ -579,6 +605,7 @@ const CrossChainTransferFinisher: FC = () => {
           <Button
             type="submit"
             isDisabled={processingTx}
+            isLoading={processingTx}
             endIcon={<SystemIcon.TrailingIcon />}
           >
             {t('Finish Transaction')}

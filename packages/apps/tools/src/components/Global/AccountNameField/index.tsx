@@ -1,4 +1,3 @@
-import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { ITextFieldProps } from '@kadena/react-ui';
 import { TextField } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
@@ -21,7 +20,6 @@ const BaseAccountNameField = (
   forwardedRef: ForwardedRef<HTMLInputElement>,
 ) => {
   const { t } = useTranslation('common');
-  const { selectedAccount, setSelectedAccount } = useWalletConnectClient();
 
   return (
     <div className={accountInputWrapperStyle}>
@@ -30,8 +28,6 @@ const BaseAccountNameField = (
         inputFont="code"
         placeholder={t('Type Account Name')}
         id="kd-select-account-input"
-        value={selectedAccount as string}
-        onValueChange={setSelectedAccount}
         isInvalid={!!props.errorMessage}
         errorMessage={props.errorMessage}
         ref={forwardedRef}

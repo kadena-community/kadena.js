@@ -189,7 +189,6 @@ const NewAccountFaucetPage: FC = () => {
 
   useEffect(() => {
     setRequestStatus({ status: 'idle' });
-    setValue('name', typeof accountName === 'string' ? accountName : '');
   }, [pubKeys.length]);
 
   const currentAccName = getValues('name');
@@ -199,7 +198,7 @@ const NewAccountFaucetPage: FC = () => {
       'name',
       typeof accountName === 'string' && pubKeys.length > 0 ? accountName : '',
     );
-  }, [accountName, chainID, currentAccName, setValue]);
+  }, [accountName, chainID, currentAccName, setValue, pubKeys.length]);
 
   useToolbar(menuData, router.pathname);
 
@@ -369,7 +368,7 @@ const NewAccountFaucetPage: FC = () => {
               <a
                 className={notificationLinkStyle}
                 target={'_blank'}
-                href={'https://kadena.io/chainweaver-tos/'}
+                href={'https://chainweaver.kadena.network/'}
                 rel="noreferrer"
                 key="chainweaver-link"
               />,
@@ -463,6 +462,20 @@ const NewAccountFaucetPage: FC = () => {
                   isInvalid={!!errors.name}
                   label={t('The account name to fund coins to')}
                   isDisabled
+                  endAddon={
+                    <Button
+                      icon={<SystemIcon.ContentCopy />}
+                      variant="text"
+                      onPress={async () => {
+                        const value = getValues('name');
+                        await navigator.clipboard.writeText(value);
+                      }}
+                      aria-label="Copy Account Name"
+                      title="Copy Account Name"
+                      color="primary"
+                      type="button"
+                    />
+                  }
                 />
               </div>
               <div className={chainSelectContainerClass}>

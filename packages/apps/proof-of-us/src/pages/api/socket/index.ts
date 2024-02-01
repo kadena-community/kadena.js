@@ -1,63 +1,26 @@
+import { avatarListeners } from '@/utils/socket/avatar';
+import { signeeListeners } from '@/utils/socket/signers';
+import { store } from '@/utils/socket/store';
 import type { Server as IHTTPServer } from 'http';
 import type { Socket as INetSocket } from 'net';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { Server as IOServer } from 'socket.io';
 import { Server } from 'socket.io';
 
-const ProofOfUsStore = () => {
-  const store: Record<string, IProofOfUs> = {};
-
-  const createProofOfUs = (tokenId: string, account: IProofOfUsSignee) => {
-    if (store[tokenId]) return;
-    store[tokenId] = {
-      tokenId,
-      date: Date.now(),
-      signees: [{ ...account, initiator: true }],
-    };
-  };
-
-  const getProofOfUs = (tokenId: string) => {
-    return store[tokenId];
-  };
-
-  const addSignee = (tokenId: string, account: IProofOfUsSignee) => {
-    console.log(store);
-    const signeesList = store[tokenId]?.signees;
-    if (!signeesList) return;
-
-    if (signeesList.find((s) => s.cid === account.cid)) return;
-
-    store[tokenId].signees = [...signeesList, { ...account, initiator: false }];
-  };
-
-  const removeSignee = (tokenId: string, account: IProofOfUsSignee) => {
-    console.log(store);
-    const signeesList = store[tokenId]?.signees;
-    if (!signeesList) return;
-
-    store[tokenId].signees = [
-      ...signeesList.filter((s) => s.cid !== account.cid),
-    ];
-  };
-
-  return { createProofOfUs, getProofOfUs, addSignee, removeSignee };
-};
-
-const store = ProofOfUsStore();
-
-interface ISocketServer extends IHTTPServer {
+export interface ISocketServer extends IHTTPServer {
   io?: IOServer | undefined;
 }
 
-interface ISocketWithIO extends INetSocket {
+export interface ISocketWithIO extends INetSocket {
   server: ISocketServer;
 }
 
-interface INextApiResponseWithSocket extends NextApiResponse {
+export interface INextApiResponseWithSocket extends NextApiResponse {
   socket: ISocketWithIO;
 }
 
 export default function SocketHandler(
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   _: NextApiRequest,
   res: INextApiResponseWithSocket,
 ) {
@@ -95,35 +58,8 @@ export default function SocketHandler(
         from: socket.handshake.auth.tokenId,
       });
 
-    socket.on('createToken', ({ content, to }) => {
-      store.createProofOfUs(to, content);
-      io.to(to)
-        .to(to)
-        .emit('getProofOfUs', {
-          content: store.getProofOfUs(to),
-          from: socket.handshake.auth.tokenId,
-        });
-    });
-
-    socket.on('addSignee', ({ content, to }) => {
-      store.addSignee(to, content);
-      io.to(to)
-        .to(to)
-        .emit('getProofOfUs', {
-          content: store.getProofOfUs(to),
-          from: socket.handshake.auth.tokenId,
-        });
-    });
-
-    socket.on('removeSignee', ({ content, to }) => {
-      store.removeSignee(to, content);
-      io.to(to)
-        .to(to)
-        .emit('getProofOfUs', {
-          content: store.getProofOfUs(to),
-          from: socket.handshake.auth.tokenId,
-        });
-    });
+    signeeListeners(socket, io);
+    avatarListeners(socket, io);
   });
 
   console.log('Setting up socket');

@@ -1,3 +1,3 @@
-export const createTokenId = () => {
+export const createTokenId = async () => {
   return 'testtoken';
 };

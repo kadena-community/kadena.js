@@ -49,8 +49,8 @@ import {
   infoBoxStyle,
   infoTitleStyle,
   inputContainerClass,
-  linksBoxStyle,
   linkStyle,
+  linksBoxStyle,
   notificationContainerStyle,
 } from '../styles.css';
 
@@ -151,6 +151,7 @@ const ExistingAccountFaucetPage: FC = () => {
   const onFormSubmit = useCallback(
     async (data: FormData) => {
       setRequestStatus({ status: 'processing' });
+      setOpenItem(undefined);
       setRequestKey('');
 
       try {

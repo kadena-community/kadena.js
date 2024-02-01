@@ -5,7 +5,7 @@ import type { Atoms } from '../../../styles/atoms.css';
 import { atoms } from '../../../styles/atoms.css';
 
 export interface IBoxProps
-  extends ComponentPropsWithRef<ElementType>,
+  extends ComponentPropsWithRef<'div'>,
     Partial<
       Pick<
         Atoms,
