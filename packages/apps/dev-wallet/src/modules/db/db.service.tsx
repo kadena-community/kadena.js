@@ -3,7 +3,7 @@ import { execInSequence } from '@/utils/helpers';
 
 // since we create the database in the first call we need to make sure another call does not happen
 // while the database is still being created; so I use execInSequence.
-const connectionPool = (cb: () => Promise<IDBDatabase>, length: number) => {
+const connectionPool = (cb: () => Promise<IDBDatabase>, length: number = 3) => {
   const pool: IDBDatabase[] = [];
   let turn = 0;
 
@@ -27,11 +27,12 @@ const connectionPool = (cb: () => Promise<IDBDatabase>, length: number) => {
   return getConnection;
 };
 
-const createConnection = async (): Promise<IDBDatabase> => {
-  const DB_NAME = 'dev-wallet';
-  const DB_VERSION = 20;
+const DB_NAME = 'dev-wallet';
+const DB_VERSION = 21;
+
+export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
-  let { db } = result;
+  let db = result.db;
   if (result.needsUpgrade) {
     if (import.meta.env.DEV) {
       console.log(
@@ -48,15 +49,22 @@ const createConnection = async (): Promise<IDBDatabase> => {
     // below to migrate the data. the current version just creates the database
     const create = createStore(db);
     create('profile', 'uuid', [{ index: 'name', unique: true }]);
-    create('network', 'uuid', [{ index: 'networkId', unique: true }]);
     create('encryptedValue');
-    // TODO: move account to separate repository if needed
     create('account', 'uuid', [{ index: 'address' }, { index: 'profileId' }]);
+    create('network', 'uuid', [{ index: 'networkId', unique: true }]);
+  }
+  return db;
+});
+
+const createConnection = async () => {
+  const result = await connect(DB_NAME, DB_VERSION);
+  const db = result.db;
+  if (result.needsUpgrade) {
+    throw new Error('database needs upgrade; call setupDatabase instead');
   }
   return db;
 };
 
 export const createDatabaseConnection = connectionPool(
   execInSequence(createConnection),
-  3,
 );

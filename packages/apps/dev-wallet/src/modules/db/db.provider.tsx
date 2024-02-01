@@ -1,29 +1,46 @@
-import { FC, PropsWithChildren, useEffect, useState } from 'react';
+import { sleep } from '@/utils/helpers';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { addDefaultNetworks } from '../network/network.repository';
-import { createDatabaseConnection } from './db.service';
+import { setupDatabase } from './db.service';
 
-export const DatabaseProvider: FC<PropsWithChildren> = ({ children }) => {
+const renderDefaultError = ({ message }: Error) => (
+  <div>
+    DataBase Error happens; <br /> {message}
+  </div>
+);
+
+export const DatabaseProvider: FC<{
+  children?: ReactNode;
+  fallback?: ReactNode;
+  renderError?: (error: Error) => ReactNode;
+}> = ({
+  children,
+  fallback = 'initializing database',
+  renderError = renderDefaultError,
+}) => {
   const [initialized, setInitialized] = useState(false);
-  const [error, setError] = useState(null);
+  const [errorObject, setErrorObject] = useState<Error>();
 
   useEffect(() => {
     const setupDataBase = async () => {
-      const db = await createDatabaseConnection();
-      setTimeout(async () => {
-        await addDefaultNetworks(db);
-        setInitialized(true);
-      }, 10);
+      console.log('setting up database');
+      const db = await setupDatabase();
+      console.log('database setup done');
+      await sleep(10);
+      await addDefaultNetworks(db);
+      db.close();
+      setInitialized(true);
     };
 
     setupDataBase().catch((e) => {
       console.log(e);
-      setError(e);
+      setErrorObject(e);
     });
   }, []);
 
-  if (error) {
-    return <div>DataBase Error happens</div>;
+  if (errorObject) {
+    return renderError(errorObject);
   }
 
-  return initialized ? children : null;
+  return initialized ? children : fallback;
 };

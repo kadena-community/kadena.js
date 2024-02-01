@@ -7,3 +7,6 @@ export const execInSequence = <Args extends unknown[], T>(
     return taskChain as Promise<T>;
   };
 };
+
+export const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
