@@ -1,4 +1,4 @@
-import { TableState, TreeGridState } from '@react-stately/table';
+import { TableState } from '@react-stately/table';
 import { GridNode } from '@react-types/grid';
 import type { ReactNode } from 'react';
 import React, { useRef } from 'react';
@@ -8,6 +8,9 @@ import {
   useTableColumnHeader,
   useTableHeaderRow,
 } from 'react-aria';
+import { Stack } from '..';
+import { ChevronDown, ChevronUp } from '../Icon/System/SystemIcon';
+import { columnHeader, headerRow } from './Table.css';
 
 interface ITableHeaderRowProps<T> {
   item: GridNode<T>;
@@ -24,7 +27,7 @@ export function TableHeaderRow({
   const { rowProps } = useTableHeaderRow({ node: item }, state, ref);
 
   return (
-    <tr {...rowProps} ref={ref}>
+    <tr className={headerRow} {...rowProps} ref={ref}>
       {children}
     </tr>
   );
@@ -46,36 +49,36 @@ export function TableColumnHeader({
     ref,
   );
   const { isFocusVisible, focusProps } = useFocusRing();
-  const arrowIcon = state.sortDescriptor?.direction === 'ascending' ? '▲' : '▼';
-
+  const ArrowIcon =
+    state.sortDescriptor?.direction === 'ascending' ? ChevronUp : ChevronDown;
   return (
     <th
       {...mergeProps(columnHeaderProps, focusProps)}
       colSpan={column.colspan}
+      className={columnHeader}
       style={{
-        textAlign: column.colspan && column.colspan > 1 ? 'center' : 'left',
-        padding: '5px 10px',
-        outline: 'none',
-        boxShadow: isFocusVisible ? 'inset 0 0 0 2px orange' : 'none',
-        cursor: 'default',
+        width: column.props.width,
+        minWidth: column.props.minWidth,
+        maxWidth: column.props.maxWidth,
       }}
       ref={ref}
+      data-focused={isFocusVisible || undefined}
+      data-multi-column={column.colspan && column.colspan > 1}
     >
-      {column.rendered}
-      {column.props.allowsSorting && (
-        <span
-          aria-hidden="true"
-          style={{
-            padding: '0 2px',
-            visibility:
-              state.sortDescriptor?.column === column.key
-                ? 'visible'
-                : 'hidden',
-          }}
-        >
-          {arrowIcon}
-        </span>
-      )}
+      <Stack flexDirection="row" gap="xs" alignItems="center">
+        {column.rendered}
+        {column.props.allowsSorting && (
+          <ArrowIcon
+            aria-hidden
+            style={{
+              visibility:
+                state.sortDescriptor?.column === column.key
+                  ? 'visible'
+                  : 'hidden',
+            }}
+          />
+        )}
+      </Stack>
     </th>
   );
 }
