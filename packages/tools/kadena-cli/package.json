@@ -57,7 +57,7 @@
     "js-yaml": "~4.1.0",
     "memfs": "~3.5.1",
     "mkdirp": "~1.0.4",
-    "node-fetch": "~2.6.2",
+    "node-fetch": "~3.3.2",
     "ora": "^7.0.1",
     "pact-lang-api": "^4.2.0",
     "rimraf": "~5.0.1",
