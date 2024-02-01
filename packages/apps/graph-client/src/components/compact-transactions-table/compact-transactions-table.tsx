@@ -10,6 +10,7 @@ import routes from '@constants/routes';
 import { Box, ContentHeader, Link, Table } from '@kadena/react-ui';
 import { truncate } from '@utils/truncate';
 import React from 'react';
+import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 interface ICompactTransactionsTableProps {
   viewAllHref?: string;
@@ -45,7 +46,7 @@ export const CompactTransactionsTable = (
         View all transactions
       </Link>
       <Box margin="xs" />
-      <Table.Root wordBreak="break-word">
+      <Table.Root wordBreak="break-word" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
             <Table.Th>Chain</Table.Th>

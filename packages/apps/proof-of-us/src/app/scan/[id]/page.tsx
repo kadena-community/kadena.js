@@ -1,4 +1,11 @@
+'use client';
+
+import { Mint } from '@/components/Mint/Mint';
+import { Scan } from '@/components/Scan/Scan';
+import { useProofOfUs } from '@/hooks/proofOfUs';
+import { useSocket } from '@/hooks/socket';
 import type { FC } from 'react';
+import { useEffect } from 'react';
 
 interface IProps {
   params: {
@@ -7,9 +14,19 @@ interface IProps {
 }
 
 const Page: FC<IProps> = ({ params }) => {
+  const { connect } = useSocket();
+  const { proofOfUs } = useProofOfUs();
+
+  useEffect(() => {
+    connect({ tokenId: params.id });
+  }, []);
+
+  if (!proofOfUs) return null;
+
   return (
     <div>
-      scanned Proof Of Us with ID ({params.id})<section></section>
+      {proofOfUs.type === 'multi' && <Scan proofOfUs={proofOfUs} />}
+      {proofOfUs.type === 'event' && <Mint proofOfUs={proofOfUs} />}
     </div>
   );
 };

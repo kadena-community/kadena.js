@@ -5,6 +5,7 @@
     "rootDir": ".",
     "baseUrl": ".",
     "types": ["node"],
+    "resolveJsonModule": true,
     "moduleResolution": "node",
     "paths": {
       "@fixtures/graph/*": ["./src/fixtures/graph/*"],

@@ -1,13 +1,129 @@
-import { input, select } from '@inquirer/prompts';
+import { checkbox, input, select } from '@inquirer/prompts';
+import type { IUnsignedCommand } from '@kadena/types';
 import chalk from 'chalk';
-import type { IWalletKey } from '../keys/utils/keysHelpers.js';
+import { z } from 'zod';
+import { getTransactions } from '../tx/utils/txHelpers.js';
+
+import { TRANSACTION_FOLDER_NAME } from '../constants/config.js';
+
 import {
-  getAllWallets,
-  getWallet,
-  getWalletKey,
+  getAllPlainKeys,
+  getAllWalletKeys,
 } from '../keys/utils/keysHelpers.js';
 import { defaultTemplates } from '../tx/commands/templates/templates.js';
 import type { IPrompt } from '../utils/createOption.js';
+
+const CommandPayloadStringifiedJSONSchema = z.string();
+const PactTransactionHashSchema = z.string();
+
+const ISignatureJsonSchema = z.object({
+  sig: z.string(),
+});
+
+const SignatureOrUndefinedOrNull = z.union([
+  ISignatureJsonSchema,
+  z.undefined(),
+  z.null(),
+]);
+
+export const ICommandSchema = z.object({
+  cmd: CommandPayloadStringifiedJSONSchema,
+  hash: PactTransactionHashSchema,
+  sigs: z.array(ISignatureJsonSchema),
+});
+
+export const IUnsignedCommandSchema = z.object({
+  cmd: CommandPayloadStringifiedJSONSchema,
+  hash: PactTransactionHashSchema,
+  sigs: z.array(SignatureOrUndefinedOrNull),
+});
+
+// export const ISignatureJsonSchema = z.union([
+//   z.object({
+//     sig: z.string(),
+//   }),
+//   z.null(),
+// ]);
+
+export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
+  const result = await input({
+    message: `Enter your transaction to sign:`,
+    validate: (inputString) => {
+      try {
+        const parsedInput = JSON.parse(inputString);
+        IUnsignedCommandSchema.parse(parsedInput);
+        return true;
+      } catch (error) {
+        console.log('error', error);
+        return 'Incorrect Format. Please enter a valid Unsigned Command.';
+      }
+    },
+  });
+  return JSON.parse(result) as IUnsignedCommand;
+}
+
+export const transactionSelectPrompt: IPrompt<string> = async (args) => {
+  const existingTransactions: string[] = await getTransactions(
+    args.signed as boolean,
+    args.path as string,
+  );
+
+  if (existingTransactions.length === 0) {
+    throw new Error('No transactions found. Exiting.');
+  }
+
+  const choices = existingTransactions.map((transaction) => ({
+    value: transaction,
+    name: `Transaction: ${transaction}`,
+  }));
+
+  const selectedTransaction = await select({
+    message: 'Select a transaction file',
+    choices: choices,
+  });
+
+  return selectedTransaction;
+};
+
+export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
+  const existingTransactions: string[] = await getTransactions(
+    args.signed as boolean,
+    args.path as string,
+  );
+
+  if (existingTransactions.length === 0) {
+    throw new Error('No transactions found. Exiting.');
+  }
+
+  const choices = existingTransactions.map((transaction) => ({
+    value: transaction,
+    name: `Transaction: ${transaction}`,
+  }));
+
+  const selectedTransaction = await checkbox({
+    message: 'Select a transaction file',
+    choices: choices,
+    pageSize: 10,
+    required: true,
+  });
+
+  return selectedTransaction;
+};
+
+export async function txTransactionDirPrompt(): Promise<string> {
+  return await input({
+    message: `Enter your transaction directory (default: '${TRANSACTION_FOLDER_NAME}'):`,
+    validate: function (input) {
+      const validPathRegex = /^$|^\/[A-Za-z0-9._-]+$/;
+
+      if (!validPathRegex.test(input)) {
+        return 'Invalid directory format! Please enter a valid directory path starting with "/"';
+      }
+      return true;
+    },
+    default: `/${TRANSACTION_FOLDER_NAME}`,
+  });
+}
 
 export const selectTemplate: IPrompt<string> = async () => {
   const defaultTemplateKeys = Object.keys(defaultTemplates);
@@ -44,29 +160,14 @@ const getAllAccounts = async (): Promise<string[]> => {
   return [];
 };
 
-const notEmpty = <TValue>(value: TValue | null | undefined): value is TValue =>
-  value !== null && value !== undefined;
-
-const getAllPublicKeys = async (): Promise<IWalletKey[]> => {
-  // Wait for account implementation
-  const walletNames = await getAllWallets();
-  const wallets = await Promise.all(
-    walletNames.map((wallet) => getWallet(wallet)),
-  );
-  const keys = await Promise.all(
-    wallets
-      .filter(notEmpty)
-      .map((wallet) =>
-        Promise.all(wallet.keys.map((key) => getWalletKey(wallet, key))),
-      ),
-  );
-  return keys.flat();
-};
-
 const promptVariableValue = async (key: string): Promise<string> => {
   if (key.startsWith('account-')) {
-    // search for account alias
+    // search for account alias - needs account implementation
     const accounts = await getAllAccounts();
+
+    const hasAccount = accounts.length > 0;
+    let value: string | null = null;
+
     const choices = [
       {
         value: '_manual_',
@@ -74,12 +175,14 @@ const promptVariableValue = async (key: string): Promise<string> => {
       },
       ...accounts.map((x) => ({ value: x, name: x })),
     ];
-    const value = await select({
-      message: `Select account alias for template value ${key}:`,
-      choices,
-    });
+    if (hasAccount) {
+      value = await select({
+        message: `Select account alias for template value ${key}:`,
+        choices,
+      });
+    }
 
-    if (value === '_manual_') {
+    if (value === '_manual_' || !hasAccount) {
       return await input({
         message: `Manual entry for account for template value ${key}:`,
         validate: (value) => {
@@ -89,27 +192,39 @@ const promptVariableValue = async (key: string): Promise<string> => {
       });
     }
 
+    if (value === null) throw new Error('account not found');
     return value;
   }
   if (key.startsWith('pk-')) {
-    const keys = await getAllPublicKeys();
+    const walletKeys = await getAllWalletKeys();
+    const plainKeys = await getAllPlainKeys();
+
+    const hasKeys = walletKeys.length > 0 || plainKeys.length > 0;
+    let value: string | null = null;
 
     const choices = [
       {
         value: '_manual_',
         name: 'Enter public key manually',
       },
-      ...keys.map((key) => ({
-        value: key.key, // TODO: add wallet to key to prevent duplicate errors
+      ...walletKeys.map((key) => ({
+        value: key.publicKey,
         name: `${key.alias} (wallet ${key.wallet.folder})`,
       })),
+      ...plainKeys.map((key) => ({
+        value: key.publicKey,
+        name: `${key.alias} (plain key)`,
+      })),
     ];
-    const value = await select({
-      message: `Select public key alias for template value ${key}:`,
-      choices,
-    });
 
-    if (value === '_manual_') {
+    if (hasKeys) {
+      value = await select({
+        message: `Select public key alias for template value ${key}:`,
+        choices,
+      });
+    }
+
+    if (value === '_manual_' || !hasKeys) {
       return await input({
         message: `Manual entry for public key for template value ${key}:`,
         validate: (value) => {
@@ -118,18 +233,21 @@ const promptVariableValue = async (key: string): Promise<string> => {
         },
       });
     }
-    const walletKey = keys.find((x) => x.key === value);
-    if (walletKey === undefined) throw new Error('public key not found');
 
-    console.log(
-      `${chalk.green('>')} Key alias ${walletKey.alias} using public key ${
-        walletKey.publicKey
-      }`,
-    );
-    return walletKey.publicKey;
+    const selectedKey =
+      walletKeys.find((x) => x.key === value) ??
+      plainKeys.find((x) => x.key === value);
+    if (selectedKey === undefined) throw new Error('public key not found');
+
+    if (value === null || value === '_manual_') {
+      throw new Error('public key not found');
+    }
+
+    console.log(`${chalk.green('>')} Using public key ${value}`);
+    return value;
   }
   if (key.startsWith('keyset-')) {
-    // search for key alias
+    // search for key alias - needs account implementation
     const alias = await input({
       message: `Template value for keyset ${key}:`,
       validate: (value) => {

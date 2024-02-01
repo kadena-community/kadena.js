@@ -19,12 +19,20 @@ type IDataHook<T> = (...args: any) => {
 };
 
 interface IProofOfUs {
-  id: string;
+  tokenId: string;
+  type: 'multi' | 'event';
   date: number;
-  minted: number;
-  signees?: string[];
+  minted?: number;
+  signees: IProofOfUsSignee[];
+  avatar: {
+    background: string;
+  };
 }
 
 interface IError {
   message: string;
 }
+
+type IProofOfUsSignee = Pick<IAccount, 'name' | 'publicKey' | 'cid'> & {
+  initiator: boolean;
+};

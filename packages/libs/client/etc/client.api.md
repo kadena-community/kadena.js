@@ -26,6 +26,9 @@ export const addSignatures: (transaction: IUnsignedCommand, ...signatures: {
     pubKey?: string;
 }[]) => IUnsignedCommand | ICommand;
 
+// @public (undocumented)
+export type BuiltInPredicate = 'keys-all' | 'keys-any' | 'keys-2';
+
 export { ChainId }
 
 // @public

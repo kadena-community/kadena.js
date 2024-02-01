@@ -1,5 +1,14 @@
 # Change Log - @kadena/pactjs-cli
 
+## 1.8.0
+
+### Patch Changes
+
+- Updated dependencies [3ed72cddf]
+- Updated dependencies [0540b213b]
+  - @kadena/pactjs-generator@1.8.0
+  - @kadena/client@1.8.0
+
 ## 1.7.0
 
 ### Minor Changes

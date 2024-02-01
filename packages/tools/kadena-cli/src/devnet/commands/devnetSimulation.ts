@@ -3,9 +3,9 @@ import debug from 'debug';
 import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { simulationOptions } from '../../utils/simulationOptions.js';
 import { networkIsAlive } from '../utils/network.js';
 import { simulateCoin } from '../utils/simulation/coin/simulate.js';
+import { simulationOptions } from '../utils/simulation/simulationOptions.js';
 
 export const simulateCommand: CreateCommandReturnType = createCommand(
   'simulate',

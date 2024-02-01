@@ -1,4 +1,6 @@
+import chalk from 'chalk';
 import type { Command } from 'commander';
+import { CommandError } from './command.util.js';
 import { getCommandExecution } from './createCommand.js';
 import type { OptionType } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
@@ -28,7 +30,7 @@ export async function executeOption<Option extends OptionType>(
   let value = args[option.key];
 
   if (value === undefined) {
-    if (args.quiet !== 'true') {
+    if (args.quiet !== true && args.quiet !== 'true') {
       // @ts-ignore prompt is called with two arguments, it's typings here are wrong
       // but it is hard to fix while other types correct because prompt overwrites itself in createOption
       value = await option.prompt(args, originalArgs);
@@ -69,6 +71,22 @@ export async function executeOption<Option extends OptionType>(
   };
 }
 
+const printCommandExecution = (
+  command: string,
+  args: Record<string, unknown>,
+  updateArgs?: Record<string, unknown>,
+): void => {
+  // Give the option to update args used in the command by returning an object
+  // Only update args that are already defined
+  if (updateArgs !== undefined && typeof updateArgs === 'object') {
+    for (const [key, value] of Object.entries(updateArgs)) {
+      if (Object.hasOwn(args, key) === true) args[key] = value;
+    }
+  }
+
+  console.log(`\nExecuted: ${getCommandExecution(command, args)}`);
+};
+
 export const createCommandFlexible =
   <
     T extends OptionType[],
@@ -79,7 +97,7 @@ export const createCommandFlexible =
         ) => Promise<Prettify<OptionConfig<Extract<T[number], { key: K }>>>>;
       },
       values: string[],
-    ) => Promise<any>,
+    ) => Promise<Record<string, unknown> | void>,
   >(
     name: string,
     description: string,
@@ -87,44 +105,59 @@ export const createCommandFlexible =
     action: C,
   ): any =>
   (program: Command, version: string) => {
-    const command = program
-      .command(name)
-      .description(description)
-      .allowUnknownOption();
+    let command = program.command(name).description(description);
+
+    if (options.some((option) => option.allowUnknownOptions === true)) {
+      command = command.allowUnknownOption(true);
+    }
+
     command.addOption(globalOptions.quiet().option);
     options.forEach((option) => {
       command.addOption(option.option);
     });
     command.action(async (originalArgs, ...rest) => {
       let args = { ...originalArgs };
+      try {
+        // Automatically enable quiet mode if not in interactive environment
+        if (!process.stdout.isTTY) args.quiet = true;
 
-      const collectOptionsMap = options.reduce((acc, option) => {
-        acc[option.key] = async (customArgs = {}) => {
-          try {
-            const { value, config } = await executeOption(
-              option,
-              {
-                ...args,
-                ...customArgs,
-              },
-              originalArgs,
-            );
+        const collectOptionsMap = options.reduce((acc, option) => {
+          acc[option.key] = async (customArgs = {}) => {
+            try {
+              const { value, config } = await executeOption(
+                option,
+                {
+                  ...args,
+                  ...customArgs,
+                },
+                originalArgs,
+              );
 
-            // Keep track of previous args to prompts can use them
-            args = { ...args, [option.key]: value };
-            return config;
-          } catch (error) {
-            handlePromptError(error);
-          }
-        };
-        return acc;
-      }, {} as any);
+              // Keep track of previous args to prompts can use them
+              args = { ...args, [option.key]: value };
+              return config;
+            } catch (error) {
+              handlePromptError(error);
+            }
+          };
+          return acc;
+        }, {} as any);
 
-      const values = rest.flatMap((r) => r.args);
-      await action(collectOptionsMap, values);
+        const values = rest.flatMap((r) => r.args);
+        const result = await action(collectOptionsMap, values);
 
-      console.log(
-        `\nExecuted: ${getCommandExecution(`${program.name()} ${name}`, args)}`,
-      );
+        printCommandExecution(
+          `${program.name()} ${name}`,
+          args,
+          result ?? undefined,
+        );
+      } catch (error) {
+        if (error instanceof CommandError) {
+          printCommandExecution(`${program.name()} ${name}`, args, error.args);
+          process.exitCode = error.exitCode;
+        }
+        console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
+        process.exitCode = 1;
+      }
     });
   };

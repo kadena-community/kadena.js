@@ -1,7 +1,8 @@
 import yaml from 'js-yaml';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import sanitizeFilename from 'sanitize-filename';
 
+import type { EncryptedString } from '@kadena/hd-wallet';
 import {
   KEY_EXT,
   KEY_LEGACY_EXT,
@@ -11,6 +12,8 @@ import {
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
 import { services } from '../../services/index.js';
+
+import { notEmpty } from '../../utils/helpers.js';
 import type { IKeyPair } from './storage.js';
 import { getFilesWithExtension } from './storage.js';
 
@@ -63,9 +66,11 @@ export async function getWallet(walletFile: string): Promise<IWallet | null> {
   // const walletName = walletNameParts[0];
   const walletName = sanitizeFilename(walletNameParts[0]).toLocaleLowerCase();
   const walletDir = join(WALLET_DIR, walletName);
+
   const fileExists = await services.filesystem.fileExists(
     join(walletDir, walletFile),
   );
+
   if (!fileExists) return null;
 
   const files = await services.filesystem.readDir(walletDir);
@@ -84,6 +89,7 @@ export async function getWallet(walletFile: string): Promise<IWallet | null> {
 
 export async function getWalletContent(
   walletPath: string,
+  // eslint-disable-next-line @rushstack/no-new-null
 ): Promise<string | null> {
   const wallet = await getWallet(walletPath);
   if (!wallet) return null;
@@ -92,12 +98,46 @@ export async function getWalletContent(
   );
 }
 
-export type IWalletKey = {
+export type IPlainKey = IKeyPair & {
   alias: string;
   key: string;
   index: number;
+  legacy: boolean;
+};
+
+export type IWalletKey = IPlainKey & {
   wallet: IWallet;
-} & IKeyPair;
+};
+
+const readKeyFile = async (path: string): Promise<IPlainKey> => {
+  const key = basename(path);
+  const file = await services.filesystem.readFile(path);
+  const parsed = yaml.load(file ?? '') as {
+    publicKey?: string;
+    secretKey?: string;
+  };
+
+  if (parsed.publicKey === undefined) {
+    throw new Error(`Public key not found for key path "${path}"`);
+  }
+
+  const index =
+    Number(
+      (parsed as { index?: string }).index ??
+        (key.match(/-([0-9]+)\.key$/)?.[1] as string),
+    ) || 0;
+  const alias = key.replace('.key', '').split('-').slice(0, 1).join('-');
+  const legacy = key.endsWith(KEY_LEGACY_EXT);
+
+  return {
+    key,
+    alias,
+    index,
+    legacy,
+    publicKey: parsed.publicKey,
+    secretKey: parsed.secretKey,
+  };
+};
 
 /**
  * This method throws if key is not found because we expect getWallet to have been used
@@ -110,93 +150,47 @@ export const getWalletKey = async (
   wallet: IWallet,
   key: string,
 ): Promise<IWalletKey> => {
-  const file = await services.filesystem.readFile(
-    join(WALLET_DIR, wallet.folder, key),
-  );
-  const parsed = yaml.load(file ?? '') as {
-    publicKey?: string;
-    secretKey?: string;
-  };
-
-  if (parsed.publicKey === undefined) {
-    throw new Error(
-      `Public key not found for ${key} in wallet ${wallet.folder}`,
-    );
-  }
-
-  const index =
-    Number(
-      (parsed as { index?: string }).index ??
-        (key.match(/-([0-9]+)\.key$/)?.[1] as string),
-    ) || 0;
-  const alias = key.replace('.key', '').split('-').slice(0, 1).join('-');
+  const plainKey = await readKeyFile(join(WALLET_DIR, wallet.folder, key));
   return {
+    ...plainKey,
     wallet,
-    key,
-    alias,
-    index,
-    publicKey: parsed.publicKey,
-    secretKey: parsed.secretKey,
   };
 };
 
-/**
- * Fetches all key files (non-legacy) from a specified wallet directory.
- *
- * This function retrieves all files with the standard key extension (.key by default)
- * from the given wallet directory.
- *
- * @param {string} walletName - The name of the wallet directory to search within.
- * @returns {string[]} An array of plain key filenames without their extensions.
- */
-export async function getKeysFromWallet(walletName: string): Promise<string[]> {
-  return await getFilesWithExtension(join(WALLET_DIR, walletName), KEY_EXT);
-}
-
-/**
- * Fetches all legacy key files from a specified wallet directory.
- *
- * This function retrieves all files with the legacy key extension (e.g., .legacyKey)
- * from the given wallet directory.
- *
- * @param {string} walletName - The name of the wallet directory to search within.
- * @returns {string[]} An array of legacy key filenames without their extensions.
- */
-export async function getLegacyKeysFromWallet(
-  walletName: string,
-): Promise<string[]> {
-  return await getFilesWithExtension(
-    join(WALLET_DIR, walletName),
-    KEY_LEGACY_EXT,
+export const getAllPlainKeys = async (): Promise<IPlainKey[]> => {
+  const keys = await getAllPlainKeyFiles();
+  const result = await Promise.all(
+    keys.map((key) => readKeyFile(join(PLAIN_KEY_DIR, key))),
   );
-}
+  return result;
+};
 
-/**
- * Fetches all standard wallet files from a specified directory.
- *
- * This function retrieves all wallet files (non-legacy) from the given wallet directory.
- *
- * @param {string} walletName - The name of the wallet directory to search within.
- * @returns {string[]} An array of standard wallet filenames without their extensions.
- */
-export async function getWallets(walletName: string): Promise<string[]> {
-  return await getFilesWithExtension(join(WALLET_DIR, walletName), WALLET_EXT);
-}
-
-/**
- * Fetches all legacy wallet files from a specified directory.
- *
- * This function retrieves all legacy wallet files from the given wallet directory.
- *
- * @param {string} walletName - The name of the wallet directory to search within.
- * @returns {string[]} An array of legacy wallet filenames without their extensions.
- */
-export async function getLegacyWallets(walletName: string): Promise<string[]> {
-  return await getFilesWithExtension(
-    join(WALLET_DIR, walletName),
-    WALLET_LEGACY_EXT,
+export const getAllWalletKeys = async (): Promise<IWalletKey[]> => {
+  const walletNames = await getAllWallets();
+  const wallets = await Promise.all(
+    walletNames.map((wallet) => getWallet(wallet)),
   );
-}
+  const keys = await Promise.all(
+    wallets
+      .filter(notEmpty)
+      .map((wallet) =>
+        Promise.all(wallet.keys.map((key) => getWalletKey(wallet, key))),
+      ),
+  );
+  return keys.flat();
+};
+
+export const getAllKeys = async (): Promise<(IPlainKey | IWalletKey)[]> => {
+  return (
+    await Promise.all([getAllPlainKeys(), await getAllWalletKeys()])
+  ).flat();
+};
+
+export const isIWalletKey = (
+  key: IPlainKey | IWalletKey,
+): key is IWalletKey => {
+  return (key as IWalletKey).wallet !== undefined;
+};
 
 /**
  * Fetches all wallet filenames (both standard and legacy) from the main wallet directory, including their extensions.
@@ -232,7 +226,7 @@ export async function getAllWallets(): Promise<string[]> {
   return wallets;
 }
 
-export async function getAllPlainKeys(): Promise<string[]> {
+export async function getAllPlainKeyFiles(): Promise<string[]> {
   return await getFilesWithExtension(PLAIN_KEY_DIR, KEY_EXT);
 }
 
@@ -324,4 +318,42 @@ export function extractStartIndex(
       'Invalid input: Input must be a number or a range tuple of two numbers.',
     );
   }
+}
+
+/**
+ * Parses a string input to extract key pairs in a custom string format.
+ *
+ * @param {string} input - The string input containing the key pairs in the custom string format.
+ * @returns {IKeyPair[]} An array of objects, each containing 'publicKey' and 'secretKey'.
+ * @throws {Error} If the input is not in valid custom string format,
+ *                 or if required keys ('publicKey' or 'secretKey') are missing.
+ */
+
+export function parseKeyPairsInput(input: string): IKeyPair[] {
+  return input.split(';').map((pairStr) => {
+    const keyValuePairs = pairStr
+      .trim()
+      .split(',')
+      .reduce((acc: Partial<IKeyPair>, keyValue) => {
+        const [key, value] = keyValue.split('=').map((item) => item.trim());
+        if (key === 'publicKey') {
+          acc.publicKey = value;
+        } else if (key === 'secretKey') {
+          acc.secretKey = value as EncryptedString | string;
+        } else if (key === 'index') {
+          acc.index = parseInt(value);
+        }
+        return acc;
+      }, {});
+
+    if (
+      keyValuePairs.publicKey === undefined ||
+      keyValuePairs.secretKey === undefined
+    ) {
+      throw new Error(
+        'Invalid custom string format. Expected "publicKey=xxx,secretKey=xxx;..."',
+      );
+    }
+    return keyValuePairs as IKeyPair;
+  });
 }

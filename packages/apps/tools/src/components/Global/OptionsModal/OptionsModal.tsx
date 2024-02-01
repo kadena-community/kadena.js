@@ -1,6 +1,7 @@
 import {
   modalButtonStyle,
   modalOptionsContentStyle,
+  modalWrapperStyle,
   radioItemWrapperStyle,
   titleTagStyle,
 } from '@/components/Global/OptionsModal/styles.css';
@@ -20,7 +21,7 @@ import {
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export interface IDevOption {
   title: string;
@@ -31,10 +32,17 @@ export interface IDevOption {
 
 interface IOptionsModalProps extends IDialogProps {}
 
-export const OptionsModal: FC<IOptionsModalProps> = (props) => {
+export const OptionsModal: FC<IOptionsModalProps> = ({
+  onOpenChange,
+  ...rest
+}) => {
   const { t } = useTranslation('common');
   const { devOption, setDevOption } = useAppContext();
   const [selected, setSelected] = useState(devOption);
+
+  useEffect(() => {
+    setSelected(devOption);
+  }, [devOption]);
 
   const devOptions: {
     [Key in DevOption]: IDevOption;
@@ -67,7 +75,7 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
   const options = Object.entries(devOptions);
   const renderOptions = (): React.JSX.Element => {
     return (
-      <>
+      <Stack gap={'md'} flexDirection={'column'}>
         {options.map((item) => {
           const [key, value] = item;
           const Icon = SystemIcon[value.icon];
@@ -85,21 +93,24 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
                       title="Radio"
                       aria-label="Radio"
                       icon={<SystemIcon.RadioboxMarked />}
-                      color="primary"
+                      variant="text"
+                      onPress={() => setSelected(key as DevOption)}
                     />
                   ) : (
                     <Button
                       title="Radio"
                       aria-label="Radio"
                       icon={<SystemIcon.RadioboxBlank />}
-                      color="primary"
+                      variant="text"
+                      onPress={() => setSelected(key as DevOption)}
                     />
                   )}
                   <Button
                     title="Radio"
                     aria-label="Radio"
                     icon={<Icon />}
-                    color="primary"
+                    variant="text"
+                    onPress={() => setSelected(key as DevOption)}
                   />
                   <Stack flexDirection="column" marginInline="md">
                     <div className={titleTagStyle}>
@@ -115,12 +126,24 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
             </div>
           );
         })}
-      </>
+      </Stack>
     );
   };
 
   return (
-    <Dialog {...props}>
+    <Dialog
+      {...rest}
+      onOpenChange={(isOpen) => {
+        if (typeof onOpenChange === 'function') {
+          onOpenChange(isOpen);
+        }
+
+        if (isOpen === false) {
+          // When closing, reset to its original state
+          setSelected(devOption);
+        }
+      }}
+    >
       {(state) => (
         <>
           <DialogHeader>Settings</DialogHeader>
@@ -128,7 +151,7 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
             <div className={modalOptionsContentStyle}>
               {renderOptions()}
 
-              <div className={modalButtonStyle}>
+              <div className={modalWrapperStyle}>
                 <Button
                   title={`${t('Save')}`}
                   onClick={() => {
@@ -136,6 +159,7 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
                     state.close();
                   }}
                   color="primary"
+                  className={modalButtonStyle}
                 >
                   {`${t('Save')}`}
                 </Button>

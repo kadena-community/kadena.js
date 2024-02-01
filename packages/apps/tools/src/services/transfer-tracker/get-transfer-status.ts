@@ -1,7 +1,7 @@
 import client from '@/constants/client';
 import type { Network } from '@/constants/kadena';
-import { chainNetwork } from '@/constants/network';
 import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import type { ICommand } from '@kadena/client';
 import { Pact } from '@kadena/client';
@@ -106,6 +106,7 @@ export async function getTransferStatus({
         senderAccount: sender.account || t('Not found'),
         senderChain: sender.chain,
         amount,
+        networksData,
         options,
         t,
       });
@@ -116,6 +117,7 @@ export async function getTransferStatus({
         senderChain: sender.chain,
         receiverChain: receiver.chain,
         network,
+        networksData,
         t,
       });
 
@@ -156,6 +158,7 @@ export async function getXChainTransferInfo({
   senderChain,
   receiverChain,
   network,
+  networksData,
   t,
 }: {
   requestKey: string;
@@ -163,20 +166,32 @@ export async function getXChainTransferInfo({
   senderChain: ChainwebChainId;
   receiverChain: ChainwebChainId;
   network: Network;
+  networksData: INetworkData[];
   t: Translate;
 }): Promise<IStatusData> {
   debug(getXChainTransferInfo.name);
   try {
-    const networkId = chainNetwork[network].network;
+    const networkData: INetworkData | undefined = networksData.find(
+      (item) => (network as Network) === item.networkId,
+    );
+
+    if (!networkData) return { error: 'No network found' };
 
     const requestObject = {
       requestKey,
-      networkId,
+      networkId: networkData.networkId,
       chainId: senderChain,
     };
 
-    const proof = await client.pollCreateSpv(requestObject, receiverChain);
-    const status = await client.listen(requestObject);
+    const apiHostSender = getApiHost({
+      api: networkData.API,
+      chainId: senderChain,
+      networkId: networkData.networkId,
+    });
+
+    const { pollCreateSpv, listen } = client(apiHostSender);
+    const proof = await pollCreateSpv(requestObject, receiverChain);
+    const status = await listen(requestObject);
     const pactId = status.continuation!.pactId;
 
     const continuationTransaction = Pact.builder
@@ -186,22 +201,31 @@ export async function getXChainTransferInfo({
         rollback: false,
         step: 1,
       })
-      .setNetworkId(networkId)
+      .setNetworkId(networkData.networkId)
       .setMeta({ chainId: receiverChain })
       .createTransaction();
 
-    const response = await client.dirtyRead(
-      continuationTransaction as ICommand,
-    );
+    const apiHostReceiver = getApiHost({
+      api: networkData.API,
+      chainId: receiverChain,
+      networkId: networkData.networkId,
+    });
+    const { dirtyRead } = client(apiHostReceiver);
+
+    const response = await dirtyRead(continuationTransaction as ICommand);
 
     if ('error' in response?.result) {
-      const error = response.result as unknown as {
-        type: string;
-        message: string;
+      const failed = response.result as unknown as {
+        status: string;
+        error: {
+          type: string;
+          message: string;
+        };
       };
+
       if (
-        String(error.type) === 'EvalError' &&
-        String(error.message).includes('pact completed')
+        String(failed.error.type) === 'EvalError' &&
+        String(failed.error.message).includes('pact completed')
       ) {
         return {
           id: StatusId.Success,
@@ -246,6 +270,7 @@ export async function checkForProof({
   receiverAccount,
   receiverChain,
   amount,
+  networksData,
   options,
   t,
 }: {
@@ -256,6 +281,7 @@ export async function checkForProof({
   receiverAccount: string;
   receiverChain: ChainwebChainId;
   amount: number;
+  networksData: INetworkData[];
   options?: {
     onPoll?: (status: IStatusData) => void;
   };
@@ -265,13 +291,27 @@ export async function checkForProof({
 
   const { onPoll = () => {} } = { ...options };
 
+  const networkData: INetworkData | undefined = networksData.find(
+    (item) => (network as Network) === item.networkId,
+  );
+
+  if (!networkData) return '';
+
+  const apiHostSender = getApiHost({
+    api: networkData.API,
+    chainId: senderChain,
+    networkId: network,
+  });
+
   try {
     let count = 0;
 
-    return client.pollCreateSpv(
+    const { pollCreateSpv } = client(apiHostSender);
+
+    return pollCreateSpv(
       {
         requestKey,
-        networkId: chainNetwork[network].network,
+        networkId: networkData.networkId,
         chainId: senderChain,
       },
       receiverChain,
