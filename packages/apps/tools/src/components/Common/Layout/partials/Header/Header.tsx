@@ -80,7 +80,9 @@ const Header: FC<IHeaderProps> = () => {
         <NavHeaderLinkList>
           {menuData.map((item, index) => (
             <NavHeaderLink key={index} asChild>
-              <Link href={getHref(item.href as string)}>{item.title}</Link>
+              <Link href={getHref(pathname, item.href as string)}>
+                {item.title}
+              </Link>
             </NavHeaderLink>
           ))}
         </NavHeaderLinkList>
