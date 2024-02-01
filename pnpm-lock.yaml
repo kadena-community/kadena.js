@@ -666,7 +666,7 @@ importers:
         version: 5.3.0
       next:
         specifier: 13.5.5
-        version: 13.5.5(@babel/core@7.22.15)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.5(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@13.5.5)(react-dom@18.2.0)(react@18.2.0)
@@ -737,9 +737,6 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^1.1.0
         version: 1.1.0(vitest@1.1.0)
-      akord-js:
-        specifier: link:@types/@akord/akord-js
-        version: link:@types/@akord/akord-js
       dotenv:
         specifier: ~16.0.3
         version: 16.0.3
@@ -14701,7 +14698,7 @@ packages:
       next: '>=12.1.7'
     dependencies:
       '@vanilla-extract/webpack-plugin': 2.3.1(@types/node@18.17.14)(webpack@5.88.2)
-      next: 13.5.5(@babel/core@7.22.15)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.5(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -14786,7 +14783,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@5.5.0)
       loader-utils: 2.0.4
-      webpack: 5.88.2(webpack-cli@4.9.2)
+      webpack: 5.88.2(@swc/core@1.3.80)(esbuild@0.18.20)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -14838,7 +14835,7 @@ packages:
       std-env: 3.6.0
       test-exclude: 6.0.0
       v8-to-istanbul: 9.2.0
-      vitest: 1.1.0(@types/node@18.17.14)(happy-dom@12.9.1)
+      vitest: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -25033,7 +25030,7 @@ packages:
       next: '>=10.0.0'
       react: '>=17.0.0'
     dependencies:
-      next: 13.5.5(@babel/core@7.22.15)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.5(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
     dev: true
 
@@ -25100,6 +25097,7 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+    dev: false
 
   /next@13.5.5(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-LddFJjpfrtrMMw8Q9VLhIURuSidiCNcMQjRqcPtrKd+Fx07MsG7hYndJb/f2d3I+mTbTotsTJfCnn0eZ/YPk8w==}
@@ -29315,6 +29313,7 @@ packages:
       '@babel/core': 7.22.15
       client-only: 0.0.1
       react: 18.2.0
+    dev: false
 
   /styled-jsx@5.1.1(@babel/core@7.23.7)(react@18.2.0):
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
@@ -31220,7 +31219,7 @@ packages:
       dom-accessibility-api: 0.6.3
       lodash-es: 4.17.21
       redent: 4.0.0
-      vitest: 1.1.0(@types/node@18.17.14)(happy-dom@12.9.1)
+      vitest: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
     dev: true
 
   /vitest@1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0):
