@@ -5,6 +5,7 @@ export const proofOfUsData: IProofOfUs[] = [
     date: 245599529000,
     minted: 4,
     signees: [],
+    uri: 'https://arweave.net/YgVgNjeCd-WXln-_c_u6btS_070ZbEf2HzbDj5GPnIo',
     avatar: {
       background: '',
     },

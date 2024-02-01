@@ -1,7 +1,7 @@
 'use client';
 
-import { Mint } from '@/components/Mint/Mint';
-import { Scan } from '@/components/Scan/Scan';
+import { Event } from '@/features/Event/Event';
+import { Multi } from '@/features/Multi/Multi';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 
 import type { FC } from 'react';
@@ -19,8 +19,8 @@ const Page: FC<IProps> = () => {
 
   return (
     <div>
-      {proofOfUs.type === 'multi' && <Scan proofOfUs={proofOfUs} />}
-      {proofOfUs.type === 'event' && <Mint proofOfUs={proofOfUs} />}
+      {proofOfUs.type === 'multi' && <Multi proofOfUs={proofOfUs} />}
+      {proofOfUs.type === 'event' && <Event proofOfUs={proofOfUs} />}
     </div>
   );
 };

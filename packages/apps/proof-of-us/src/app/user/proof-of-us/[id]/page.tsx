@@ -45,6 +45,9 @@ const Page: FC<IProps> = ({ params }) => {
     <div>
       Proof Of Us with ID ({proofOfUs.tokenId})
       <section>
+        <h4>image</h4>
+        <img src={proofOfUs.uri} />
+
         <ListSignees />
 
         {!isNew ? <AvatarEditor /> : null}

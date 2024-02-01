@@ -16,6 +16,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@akord/akord-js": "^4.23.8",
     "@google-analytics/data": "~3.2.2",
     "@vanilla-extract/css": "1.14.0",
     "canvas": "^2.11.2",

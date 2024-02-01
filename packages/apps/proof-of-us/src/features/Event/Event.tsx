@@ -1,17 +1,25 @@
-import { PROOFOFUS_QR_EVENT_URL } from '@/constants';
 import { useAccount } from '@/hooks/account';
-import { useProofOfUs } from '@/hooks/proofOfUs';
-import { env } from '@/utils/env';
+import { getToken } from '@/utils/marmalade';
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface IProps {
   proofOfUs: IProofOfUs;
 }
 
-export const Mint: FC<IProps> = ({ proofOfUs }) => {
+export const Event: FC<IProps> = ({ proofOfUs }) => {
   const [isMinting, setIsMinting] = useState(false);
   const [isMinted, setIsMinted] = useState(false);
+  const { account } = useAccount();
+
+  const init = async () => {
+    const result = await getToken(proofOfUs.tokenId, account);
+    setIsMinted(result);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
 
   const handleMint = () => {
     setIsMinting(true);

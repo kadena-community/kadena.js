@@ -13,7 +13,7 @@ export const AvatarEditor: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricRef = useRef<Canvas | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { setBackgroundSocket } = useAvatar();
+  const { setBackgroundSocket, uploadBackground } = useAvatar();
   const canvasElm = canvasRef.current;
   const { proofOfUs } = useProofOfUs();
 
@@ -21,8 +21,8 @@ export const AvatarEditor: FC = () => {
     if (!fabricRef.current || !proofOfUs) return;
 
     fabric.Image.fromURL(proofOfUs.avatar?.background ?? '', function (img) {
-      img.scaleToWidth(500);
-      img.scaleToHeight(500);
+      img.scaleToWidth(100);
+      img.scaleToHeight(100);
       fabricRef.current?.setBackgroundImage(img, () => {});
       fabricRef.current?.requestRenderAll();
     });
@@ -41,8 +41,8 @@ export const AvatarEditor: FC = () => {
     if (!canvasElm) return;
 
     fabricRef.current = new fabric.Canvas(canvasElm, {
-      width: 500,
-      height: 500,
+      width: 100,
+      height: 100,
     });
 
     fabricRef.current.isDrawingMode = false;
@@ -64,8 +64,8 @@ export const AvatarEditor: FC = () => {
 
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    canvas.width = 500;
-    canvas.height = 500;
+    canvas.width = 100;
+    canvas.height = 100;
     ctx?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
     fabric.Image.fromURL(canvas.toDataURL(), function (img) {
@@ -84,12 +84,19 @@ export const AvatarEditor: FC = () => {
     setIsModalOpen(false);
   };
 
+  const handleUpload = async () => {
+    if (!proofOfUs?.avatar.background) return;
+
+    uploadBackground(tokenId.toString(), proofOfUs?.avatar.background);
+  };
+
   return (
     <section>
       <h2>fabric editor</h2>
       <button onClick={handleToggleCaptureModal}>Capture</button>
 
       <button onClick={clearBackground}>clear background</button>
+      <button onClick={handleUpload}>upload</button>
       <canvas ref={canvasRef} className={canvasClass} />
 
       {isModalOpen && (

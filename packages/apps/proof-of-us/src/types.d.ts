@@ -24,6 +24,7 @@ interface IProofOfUs {
   date: number;
   minted?: number;
   signees: IProofOfUsSignee[];
+  uri?: string;
   avatar: {
     background: string;
   };
@@ -31,6 +32,7 @@ interface IProofOfUs {
 
 interface IError {
   message: string;
+  status?: string;
 }
 
 type IProofOfUsSignee = Pick<IAccount, 'displayName' | 'publicKey' | 'cid'> & {

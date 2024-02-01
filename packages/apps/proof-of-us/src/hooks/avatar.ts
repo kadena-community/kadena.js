@@ -12,7 +12,19 @@ export const useAvatar = () => {
     });
   };
 
+  const uploadBackground = async (tokenId: string, bg: string) => {
+    socket?.emit('uploadBackground', {
+      content: {
+        bg,
+      },
+      to: tokenId,
+    });
+
+    socket?.on('uploadBackgroundStatus', console.log);
+  };
+
   return {
     setBackgroundSocket,
+    uploadBackground,
   };
 };

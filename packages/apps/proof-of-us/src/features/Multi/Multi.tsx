@@ -1,14 +1,14 @@
+import { AvatarEditor } from '@/components/AvatarEditor/AvatarEditor';
+import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useAccount } from '@/hooks/account';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import type { FC } from 'react';
-import { AvatarEditor } from '../AvatarEditor/AvatarEditor';
-import { ListSignees } from '../ListSignees/ListSignees';
 
 interface IProps {
   proofOfUs: IProofOfUs;
 }
 
-export const Scan: FC<IProps> = ({ proofOfUs }) => {
+export const Multi: FC<IProps> = ({ proofOfUs }) => {
   const { addSignee, removeSignee, getSigneeAccount, isConnected } =
     useProofOfUs();
   const { account } = useAccount();
