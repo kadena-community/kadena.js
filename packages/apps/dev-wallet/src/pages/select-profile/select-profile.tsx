@@ -20,6 +20,10 @@ export function SelectProfile() {
         <Link to="/create-wallet">
           <Text bold>Create wallet</Text>
         </Link>
+        <br />
+        <Link to="/networks">
+          <Text bold>Networks</Text>
+        </Link>
       </Box>
     </main>
   );

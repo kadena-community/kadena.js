@@ -1,20 +1,29 @@
-import { useWallet } from '@/modules/wallet/wallet.hook';
+import { useNetwork } from '@/modules/network/network.hook';
 import { Box, Heading, Text } from '@kadena/react-ui';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-export function HomePage() {
-  const { accounts, isUnlocked } = useWallet();
-  if (!isUnlocked) {
-    return <Navigate to="/select-profile" replace />;
-  }
+export function Networks() {
+  const { networks } = useNetwork();
   return (
     <main>
       <Box margin="md">
-        <Heading variant="h5">Home Page</Heading>
-        <Text variant="base">
-          {accounts.length ? accounts[0].address : 'fix the issue'}
-        </Text>
-        <Link to="/backup-recovery-phrase">Back up recovery phrase</Link>
+        <Heading variant="h5">Networks Page</Heading>
+        <Text variant="base">Networks</Text>
+        <ul>
+          {networks.map((network) => (
+            <li key={network.uuid}>
+              <div>
+                <Text>{network.networkId}</Text>
+              </div>
+              <ul>
+                {network.hosts.map(({ url }, index) => (
+                  <li key={`url-${index}`}>{url}</li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+        <Link to="/networks/create">Create network</Link>
       </Box>
     </main>
   );

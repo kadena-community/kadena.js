@@ -6,7 +6,8 @@ import { execInSequence } from '@/utils/helpers';
 const connectionPool = (cb: () => Promise<IDBDatabase>, length: number) => {
   const pool: IDBDatabase[] = [];
   let turn = 0;
-  return async () => {
+
+  const getConnection = async () => {
     if (pool.length < length) {
       const connection = await cb();
       pool.push(connection);
@@ -23,11 +24,12 @@ const connectionPool = (cb: () => Promise<IDBDatabase>, length: number) => {
     turn = turn === length - 1 ? 0 : turn + 1;
     return connection;
   };
+  return getConnection;
 };
 
-export const createConnection = async (): Promise<IDBDatabase> => {
+const createConnection = async (): Promise<IDBDatabase> => {
   const DB_NAME = 'dev-wallet';
-  const DB_VERSION = 6;
+  const DB_VERSION = 20;
   const result = await connect(DB_NAME, DB_VERSION);
   let { db } = result;
   if (result.needsUpgrade) {

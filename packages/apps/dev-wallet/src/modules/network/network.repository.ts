@@ -10,11 +10,12 @@ import { createDatabaseConnection } from '../db/db.service';
 export interface INetwork {
   uuid: string;
   networkId: string;
+  name?: string;
   hosts: Array<{
     url: string;
     submit: boolean;
     read: boolean;
-    confirmation: boolean;
+    confirm: boolean;
   }>;
 }
 
@@ -41,11 +42,14 @@ export const networkRepository = (db: IDBDatabase): NetworkRepository => {
     getNetworkList: async (): Promise<INetwork[]> => {
       return getAll('network');
     },
-    getNetwork: async (networkId: string): Promise<INetwork> => {
-      return getOne('network', networkId);
+    getNetwork: async (uuid: string): Promise<INetwork> => {
+      return getOne('network', uuid);
     },
     addNetwork: async (network: INetwork): Promise<void> => {
-      await add('network', network);
+      await add('network', {
+        ...network,
+        name: network.name ?? network.networkId,
+      });
     },
     updateNetwork: async (network: INetwork): Promise<void> => {
       await update('network', network);
@@ -54,6 +58,42 @@ export const networkRepository = (db: IDBDatabase): NetworkRepository => {
       await deleteOne('network', networkId);
     },
   };
+};
+
+export const addDefaultNetworks = async (db: IDBDatabase) => {
+  const repo = networkRepository(db);
+  const networks = await repo.getNetworkList();
+
+  if (!networks.find((network) => network.networkId === 'mainnet01')) {
+    await repo.addNetwork({
+      uuid: crypto.randomUUID(),
+      networkId: 'mainnet01',
+      name: 'Mainnet',
+      hosts: [
+        {
+          url: 'https://api.chainweb.com',
+          submit: true,
+          read: true,
+          confirm: true,
+        },
+      ],
+    });
+  }
+  if (!networks.find((network) => network.networkId === 'testnet04')) {
+    await repo.addNetwork({
+      uuid: crypto.randomUUID(),
+      networkId: 'testnet04',
+      name: 'Testnet',
+      hosts: [
+        {
+          url: 'https://api.testnet.chainweb.com',
+          submit: true,
+          read: true,
+          confirm: true,
+        },
+      ],
+    });
+  }
 };
 
 export const createNetworkRepository = async () => {

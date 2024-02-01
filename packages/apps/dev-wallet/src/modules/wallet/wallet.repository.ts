@@ -6,6 +6,7 @@ import {
   updateItem,
 } from '@/modules/db/indexeddb';
 import { BuiltInPredicate } from '@kadena/client';
+import { INetwork } from '../network/network.repository';
 
 export interface IKeyItem {
   publicKey: string;
@@ -18,17 +19,6 @@ export interface IKeySource {
   derivationPathTemplate: string;
   source: 'hd-wallet';
   publicKeys: string[];
-}
-
-export interface INetwork {
-  uuid: string;
-  networkId: string;
-  hosts: Array<{
-    url: string;
-    submit: boolean;
-    read: boolean;
-    confirmation: boolean;
-  }>;
 }
 
 export interface IProfile {
@@ -59,7 +49,6 @@ export interface WalletRepository {
   getProfile: (id: string) => Promise<IProfile>;
   addProfile: (profile: IProfile) => Promise<void>;
   updateProfile: (profile: IProfile) => Promise<void>;
-  getNetworkList: () => Promise<INetwork[]>;
   getEncryptedValue: (key: string) => Promise<Uint8Array>;
   addEncryptedValue: (key: string, value: string | Uint8Array) => Promise<void>;
   addAccount: (account: IAccount) => Promise<void>;
@@ -87,9 +76,6 @@ const walletRepository = (db: IDBDatabase): WalletRepository => {
     },
     updateProfile: async (profile: IProfile): Promise<void> => {
       return update('profile', profile);
-    },
-    getNetworkList: async (): Promise<INetwork[]> => {
-      return getAll('network');
     },
     getEncryptedValue: async (key: string): Promise<Uint8Array> => {
       return getOne('encryptedValue', key);

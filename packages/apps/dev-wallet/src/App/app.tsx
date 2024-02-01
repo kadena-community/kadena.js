@@ -1,5 +1,6 @@
+import { DatabaseProvider } from '@/modules/db/db.provider';
 import { ThemeProvider } from 'next-themes';
-import { WalletProvider } from '../modules/wallet/wallet.context';
+import { WalletProvider } from '../modules/wallet/wallet.provider';
 import { Routes } from './routes';
 
 function Providers({ children }: { children: React.ReactNode }) {
@@ -12,7 +13,9 @@ function Providers({ children }: { children: React.ReactNode }) {
         light: 'light',
       }}
     >
-      <WalletProvider>{children}</WalletProvider>
+      <DatabaseProvider>
+        <WalletProvider>{children}</WalletProvider>
+      </DatabaseProvider>
     </ThemeProvider>
   );
 }

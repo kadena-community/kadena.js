@@ -31,15 +31,15 @@ export const WalletContext = createContext<
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   const [contextValue, setContextValue] = useState<ExtWalletContextType>({});
 
-  const fetchProfileList = async () => {
-    const walletRepository = await createWalletRepository();
-    const profileList = (await walletRepository.getAllProfiles()) ?? [];
-    setContextValue({
-      profileList: profileList.map(({ name, uuid }) => ({ name, uuid })),
-    });
-  };
-
   useEffect(() => {
+    const fetchProfileList = async () => {
+      const walletRepository = await createWalletRepository();
+      const profileList = (await walletRepository.getAllProfiles()) ?? [];
+      setContextValue({
+        profileList: profileList.map(({ name, uuid }) => ({ name, uuid })),
+      });
+    };
+
     fetchProfileList();
   }, []);
 
