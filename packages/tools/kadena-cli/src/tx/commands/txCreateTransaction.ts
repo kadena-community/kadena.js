@@ -73,16 +73,21 @@ export const createTransactionCommandNew = createCommandFlexible(
   'create-transaction',
   'select a template and create a transaction',
   [
+    globalOptions.network(),
     globalOptions.selectTemplate({ isOptional: false }),
     globalOptions.templateVariables(),
     globalOptions.outFileJson(),
   ],
   async (option, values) => {
     const template = await option.template();
+    const network = await option.network();
     const templateVariables = await option.templateVariables({
       values,
       variables: template.templateConfig.variables,
+      network: network.network,
+      networkConfig: network.networkConfig,
     });
+
     const outputFile = await option.outFile({
       values,
       variables: template.templateConfig.variables,
