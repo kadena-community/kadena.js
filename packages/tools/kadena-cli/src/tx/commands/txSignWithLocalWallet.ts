@@ -12,6 +12,7 @@ import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletContent } from '../../keys/utils/keysHelpers.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 
+import { join } from 'node:path';
 import { saveSignedTransactions } from '../utils/storage.js';
 import {
   assessTransactionSigningStatus,
@@ -23,14 +24,13 @@ export const signTransactionWithLocalWallet = async (
   wallet: string,
   walletConfig: IWallet,
   password: string,
-  transactionfileNames: string[],
+  /** absolute paths, or relative to process.cwd() if starting with `.` */
+  transactionFileNames: string[],
   signed: boolean,
-  transactionDirectory: string,
-): Promise<CommandResult<ICommand[]>> => {
+): Promise<CommandResult<{ commands: ICommand[]; path: string }>> => {
   const unsignedTransactions = await getTransactionsFromFile(
-    transactionfileNames,
+    transactionFileNames,
     signed,
-    transactionDirectory,
   );
 
   if (unsignedTransactions.length === 0) {
@@ -51,7 +51,21 @@ export const signTransactionWithLocalWallet = async (
       walletConfig.legacy,
     );
 
-    return assessTransactionSigningStatus(signedCommands);
+    const path = await saveSignedTransactions(
+      signedCommands,
+      transactionFileNames,
+    );
+    if (path !== null) {
+      const signed = await assessTransactionSigningStatus(signedCommands);
+      if (!signed.success) return signed;
+
+      return { success: true, data: { commands: signed.data, path } };
+    } else {
+      return {
+        success: false,
+        errors: [`Error in signAction: failed to write transaction file`],
+      };
+    }
   } catch (error) {
     return {
       success: false,
@@ -102,19 +116,17 @@ export const createSignTransactionWithLocalWalletCommand: (
       wallet.keyWallet,
       wallet.keyWalletConfig,
       password.securityPassword,
-      files.txUnsignedTransactionFiles,
+      files.txUnsignedTransactionFiles.map((file) =>
+        join(dir.txTransactionDir, file),
+      ),
       false,
-      dir.txTransactionDir,
     );
 
     assertCommandError(result);
 
-    await saveSignedTransactions(
-      result,
-      files.txUnsignedTransactionFiles,
-      dir.txTransactionDir,
+    console.log(
+      chalk.green(`Signed transaction saved to ${result.data.path}.`),
     );
-
     console.log(chalk.green(`\nTransaction withinsigned successfully.\n`));
   },
 );
