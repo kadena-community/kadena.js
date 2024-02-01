@@ -5,7 +5,7 @@ import { PROOFOFUS_QR_URL } from '@/constants';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSocket } from '@/hooks/socket';
 import { env } from '@/utils/env';
-import { createTokenId } from '@/utils/marmalade';
+import { createProofOfUsID } from '@/utils/marmalade';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -24,9 +24,11 @@ const Page: FC<IProps> = ({ params }) => {
   const { createToken, proofOfUs } = useProofOfUs();
   const [isNew, setIsNew] = useState(false);
 
+  console.log({ proofOfUs });
+
   const createNew = async () => {
-    const tokenId = await createTokenId();
-    router.replace(`/user/proof-of-us/${tokenId}`);
+    const proofOfUsId = await createProofOfUsID();
+    router.replace(`/user/proof-of-us/${proofOfUsId}`);
   };
 
   useEffect(() => {
@@ -35,15 +37,15 @@ const Page: FC<IProps> = ({ params }) => {
       createNew();
     }
 
-    disconnect({ tokenId: params.id });
-    createToken({ tokenId: params.id });
+    disconnect({ proofOfUsId: params.id });
+    createToken({ proofOfUsId: params.id });
   }, [socket, params.id]);
 
   if (!proofOfUs) return;
 
   return (
     <div>
-      Proof Of Us with ID ({proofOfUs.tokenId})
+      Proof Of Us with ID ({proofOfUs.proofOfUsId})
       <section>
         <h4>image</h4>
         <img src={proofOfUs.uri} />
@@ -57,7 +59,7 @@ const Page: FC<IProps> = ({ params }) => {
         <QRCode
           ecLevel="H"
           ref={qrRef}
-          value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.tokenId}`}
+          value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
           removeQrCodeBehindLogo={true}
           logoImage="/assets/qrlogo.png"
           logoPadding={5}

@@ -32,7 +32,7 @@ export const useProofOfUs = () => {
     };
   }, []);
 
-  const addSignee = async ({ tokenId }: { tokenId: string }) => {
+  const addSignee = async ({ proofOfUsId }: { proofOfUsId: string }) => {
     if (!socket || !account) return;
 
     socket?.emit('addSignee', {
@@ -42,24 +42,24 @@ export const useProofOfUs = () => {
         publicKey: account.publicKey,
         initiator: false,
       },
-      to: tokenId,
+      to: proofOfUsId,
     });
   };
 
   const removeSignee = async ({
-    tokenId,
+    proofOfUsId,
     signee,
   }: {
-    tokenId: string;
+    proofOfUsId: string;
     signee: IProofOfUsSignee;
   }) => {
     socket?.emit('removeSignee', {
       content: signee,
-      to: tokenId,
+      to: proofOfUsId,
     });
   };
 
-  const createToken = async ({ tokenId }: { tokenId: string }) => {
+  const createToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
     if (!socket || !account) return;
 
     socket?.emit('createToken', {
@@ -69,7 +69,7 @@ export const useProofOfUs = () => {
         publicKey: account.publicKey,
         initiator: false,
       },
-      to: tokenId,
+      to: proofOfUsId,
     });
   };
 

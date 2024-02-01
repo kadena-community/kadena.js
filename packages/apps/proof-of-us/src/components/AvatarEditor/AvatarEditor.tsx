@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { canvasClass, modalClass } from './styles.css';
 
 export const AvatarEditor: FC = () => {
-  const { id: tokenId } = useParams();
+  const { id: proofOfUsId } = useParams();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricRef = useRef<Canvas | null>(null);
@@ -55,7 +55,7 @@ export const AvatarEditor: FC = () => {
   };
 
   const clearBackground = () => {
-    setBackgroundSocket(tokenId.toString(), '');
+    setBackgroundSocket(proofOfUsId.toString(), '');
   };
 
   const handleCapture = (evt: MouseEvent<HTMLButtonElement>) => {
@@ -75,7 +75,7 @@ export const AvatarEditor: FC = () => {
       fabricRef.current?.requestRenderAll();
     });
 
-    setBackgroundSocket(tokenId.toString(), canvas.toDataURL());
+    setBackgroundSocket(proofOfUsId.toString(), canvas.toDataURL());
 
     (videoRef.current?.srcObject as MediaStream)
       ?.getTracks()
@@ -87,7 +87,7 @@ export const AvatarEditor: FC = () => {
   const handleUpload = async () => {
     if (!proofOfUs?.avatar.background) return;
 
-    uploadBackground(tokenId.toString(), proofOfUs?.avatar.background);
+    uploadBackground(proofOfUsId.toString(), proofOfUs?.avatar.background);
   };
 
   return (

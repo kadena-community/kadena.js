@@ -14,13 +14,13 @@ export const Multi: FC<IProps> = ({ proofOfUs }) => {
   const { account } = useAccount();
 
   const handleJoin = async () => {
-    addSignee({ tokenId: proofOfUs.tokenId });
+    addSignee({ proofOfUsId: proofOfUs.proofOfUsId });
   };
 
   const handleRemove = async () => {
     if (!account) return;
     removeSignee({
-      tokenId: proofOfUs.tokenId,
+      proofOfUsId: proofOfUs.proofOfUsId,
       signee: getSigneeAccount(account),
     });
   };
@@ -34,7 +34,7 @@ export const Multi: FC<IProps> = ({ proofOfUs }) => {
         )}
       </section>
       <AvatarEditor />
-      scanned Proof Of Us with ID ({proofOfUs.tokenId})
+      scanned Proof Of Us with ID ({proofOfUs.proofOfUsId})
       <ListSignees />
     </>
   );

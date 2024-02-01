@@ -14,8 +14,8 @@ const Page: FC = () => {
       {!isLoading && !error && (
         <ul>
           {data.map((proofOfUs) => (
-            <li key={proofOfUs.tokenId}>
-              <Link href={`/user/proof-of-us/${proofOfUs.tokenId}`}>
+            <li key={proofOfUs.proofOfUsId}>
+              <Link href={`/user/proof-of-us/${proofOfUs.proofOfUsId}`}>
                 {new Date(proofOfUs.date).toLocaleDateString()}
               </Link>
             </li>

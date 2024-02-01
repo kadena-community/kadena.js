@@ -20,7 +20,7 @@ const getManifest = (proofOfUs: IProofOfUs, urlId: string): {} => {
 export const upload = async (
   akord: Akord,
   str: string,
-  tokenId: string,
+  proofOfUsId: string,
   proofOfUs: IProofOfUs,
 ): Promise<Record<string, any> | IError> => {
   const base64Image = str.split(';base64,').pop();
@@ -38,13 +38,13 @@ export const upload = async (
   const fileBuffer = Buffer.from(base64Image, 'base64');
   const fileStream = Readable.from(fileBuffer);
 
-  const file = await NodeJs.File.fromReadable(fileStream, tokenId, 'png');
+  const file = await NodeJs.File.fromReadable(fileStream, proofOfUsId, 'png');
   try {
     //image
     const result = await akord.stack.create(
       AKORD_VAULTID,
       file,
-      `${tokenId}.png`,
+      `${proofOfUsId}.png`,
     );
 
     const url = await akord.stack.getUri(result.stackId);
@@ -54,14 +54,14 @@ export const upload = async (
     const manifestStream = Readable.from(manifestBuffer);
     const manifestfile = await NodeJs.File.fromReadable(
       manifestStream,
-      tokenId,
+      proofOfUsId,
       'json',
     );
 
     const manifestresult = await akord.stack.create(
       AKORD_VAULTID,
       manifestfile,
-      `manifest_${tokenId}.json`,
+      `manifest_${proofOfUsId}.json`,
     );
 
     return { result, url, manifestresult };

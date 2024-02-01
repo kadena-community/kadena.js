@@ -1,10 +1,10 @@
 const ProofOfUsStore = () => {
   const store: Record<string, IProofOfUs> = {};
 
-  const createProofOfUs = (tokenId: string, account: IProofOfUsSignee) => {
-    if (store[tokenId]) return;
-    store[tokenId] = {
-      tokenId,
+  const createProofOfUs = (proofOfUsId: string, account: IProofOfUsSignee) => {
+    if (store[proofOfUsId]) return;
+    store[proofOfUsId] = {
+      proofOfUsId,
       type: 'multi',
       date: Date.now(),
       signees: [{ ...account, initiator: true }],
@@ -14,37 +14,37 @@ const ProofOfUsStore = () => {
     };
   };
 
-  const getProofOfUs = (tokenId: string) => {
-    return store[tokenId];
+  const getProofOfUs = (proofOfUsId: string) => {
+    return store[proofOfUsId];
   };
 
-  const addBackground = (tokenId: string, background: string) => {
-    const avatar = store[tokenId]?.avatar;
+  const addBackground = (proofOfUsId: string, background: string) => {
+    const avatar = store[proofOfUsId]?.avatar;
 
-    store[tokenId].avatar = { ...avatar, background };
+    store[proofOfUsId].avatar = { ...avatar, background };
   };
 
-  const addSignee = (tokenId: string, account: IProofOfUsSignee) => {
-    const signeesList = store[tokenId]?.signees;
+  const addSignee = (proofOfUsId: string, account: IProofOfUsSignee) => {
+    const signeesList = store[proofOfUsId]?.signees;
     if (!signeesList) return;
 
     if (signeesList.find((s) => s.cid === account.cid)) return;
 
     if (!signeesList.length) {
-      store[tokenId].signees[0] = { ...account };
+      store[proofOfUsId].signees[0] = { ...account };
     } else {
-      store[tokenId].signees[1] = { ...account, initiator: false };
-      store[tokenId].signees.length = 2;
+      store[proofOfUsId].signees[1] = { ...account, initiator: false };
+      store[proofOfUsId].signees.length = 2;
     }
 
-    store[tokenId].signees = [...signeesList];
+    store[proofOfUsId].signees = [...signeesList];
   };
 
-  const removeSignee = (tokenId: string, account: IProofOfUsSignee) => {
-    const signeesList = store[tokenId]?.signees;
+  const removeSignee = (proofOfUsId: string, account: IProofOfUsSignee) => {
+    const signeesList = store[proofOfUsId]?.signees;
     if (!signeesList) return;
 
-    store[tokenId].signees = [
+    store[proofOfUsId].signees = [
       ...signeesList.filter((s) => s.cid !== account.cid),
     ];
   };

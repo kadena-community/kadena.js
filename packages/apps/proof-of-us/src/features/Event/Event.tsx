@@ -13,7 +13,7 @@ export const Event: FC<IProps> = ({ proofOfUs }) => {
   const { account } = useAccount();
 
   const init = async () => {
-    const result = await getToken(proofOfUs.tokenId, account);
+    const result = await getToken(proofOfUs.proofOfUsId, account);
     setIsMinted(result);
   };
 
@@ -32,7 +32,7 @@ export const Event: FC<IProps> = ({ proofOfUs }) => {
   };
   return (
     <>
-      scanned Proof Of Us with ID ({proofOfUs.tokenId})
+      scanned Proof Of Us with ID ({proofOfUs.proofOfUsId})
       <div>
         {!isMinted ? (
           <button disabled={isMinting} onClick={handleMint}>

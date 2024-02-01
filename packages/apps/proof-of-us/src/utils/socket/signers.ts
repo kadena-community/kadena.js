@@ -8,7 +8,7 @@ export const signeeListeners = (socket: Socket, io: IOServer) => {
       .to(to)
       .emit('getProofOfUs', {
         content: store.getProofOfUs(to),
-        from: socket.handshake.auth.tokenId,
+        from: socket.handshake.auth.proofOfUsId,
       });
   });
 
@@ -18,7 +18,7 @@ export const signeeListeners = (socket: Socket, io: IOServer) => {
       .to(to)
       .emit('getProofOfUs', {
         content: store.getProofOfUs(to),
-        from: socket.handshake.auth.tokenId,
+        from: socket.handshake.auth.proofOfUsId,
       });
   });
 
@@ -28,7 +28,7 @@ export const signeeListeners = (socket: Socket, io: IOServer) => {
       .to(to)
       .emit('getProofOfUs', {
         content: store.getProofOfUs(to),
-        from: socket.handshake.auth.tokenId,
+        from: socket.handshake.auth.proofOfUsId,
       });
   });
 };

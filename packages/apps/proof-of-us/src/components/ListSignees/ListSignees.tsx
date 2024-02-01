@@ -5,7 +5,7 @@ import type { FC } from 'react';
 import { wrapperClass } from './style.css';
 
 export const ListSignees: FC = () => {
-  const { id: tokenId } = useParams();
+  const { id: proofOfUsId } = useParams();
   const { proofOfUs, isInitiator, removeSignee } = useProofOfUs();
 
   const { account } = useAccount();
@@ -20,7 +20,7 @@ export const ListSignees: FC = () => {
 
   const handleRemove = () => {
     if (!signee) return;
-    removeSignee({ tokenId: tokenId.toString(), signee });
+    removeSignee({ proofOfUsId: proofOfUsId.toString(), signee });
   };
 
   return (

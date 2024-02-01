@@ -1,6 +1,6 @@
 export const proofOfUsData: IProofOfUs[] = [
   {
-    tokenId: '1',
+    proofOfUsId: '1',
     type: 'multi',
     date: 245599529000,
     minted: 4,
@@ -11,7 +11,7 @@ export const proofOfUsData: IProofOfUs[] = [
     },
   },
   {
-    tokenId: '2',
+    proofOfUsId: '2',
     type: 'event',
     date: 1365257129000,
     minted: 0,

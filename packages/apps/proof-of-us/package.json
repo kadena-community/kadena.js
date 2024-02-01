@@ -18,6 +18,7 @@
   "dependencies": {
     "@akord/akord-js": "^4.23.8",
     "@google-analytics/data": "~3.2.2",
+    "@kadena/client": "workspace:^",
     "@vanilla-extract/css": "1.14.0",
     "canvas": "^2.11.2",
     "fabric": "^5.3.0",
@@ -27,7 +28,8 @@
     "react-dom": "^18.2.0",
     "react-qrcode-logo": "^2.9.0",
     "socket.io": "^4.7.4",
-    "socket.io-client": "^4.7.4"
+    "socket.io-client": "^4.7.4",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

@@ -6,7 +6,9 @@ export const getAllProofOfUs = async (): Promise<IProofOfUs[]> => {
 export const getProofOfUs = async (
   id: string,
 ): Promise<IProofOfUs | undefined> => {
-  const result = proofOfUsData.find((proofOfUs) => proofOfUs.tokenId === id);
+  const result = proofOfUsData.find(
+    (proofOfUs) => proofOfUs.proofOfUsId === id,
+  );
 
   return {
     ...result,

@@ -10,11 +10,11 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
 
   const { connect } = useSocket();
-  const { id: tokenId } = useParams();
+  const { id: proofOfUsId } = useParams();
 
   useEffect(() => {
-    connect({ tokenId: `${tokenId}` });
-  }, [tokenId]);
+    connect({ proofOfUsId: `${proofOfUsId}` });
+  }, [proofOfUsId]);
 
   useEffect(() => {
     if (!account && isMounted) {

@@ -8,11 +8,11 @@ import { useEffect } from 'react';
 const ScanLayout: FC<PropsWithChildren> = ({ children }) => {
   const { account, isMounted, login } = useAccount();
   const { connect } = useSocket();
-  const { id: tokenId } = useParams();
+  const { id: proofOfUsId } = useParams();
 
   useEffect(() => {
-    connect({ tokenId: `${tokenId}` });
-  }, [tokenId]);
+    connect({ proofOfUsId: `${proofOfUsId}` });
+  }, [proofOfUsId]);
 
   if (!isMounted) return null;
   return (

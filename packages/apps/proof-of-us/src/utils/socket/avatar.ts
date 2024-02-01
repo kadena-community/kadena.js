@@ -11,7 +11,7 @@ export const avatarListeners = (socket: Socket, io: IOServer) => {
       .to(to)
       .emit('getProofOfUs', {
         content: store.getProofOfUs(to),
-        from: socket.handshake.auth.tokenId,
+        from: socket.handshake.auth.proofOfUsId,
       });
   });
 
@@ -26,7 +26,7 @@ export const avatarListeners = (socket: Socket, io: IOServer) => {
             status: 500,
             message: 'missing auth',
           },
-          from: socket.handshake.auth.tokenId,
+          from: socket.handshake.auth.proofOfUsId,
         });
       return;
     }
@@ -43,7 +43,7 @@ export const avatarListeners = (socket: Socket, io: IOServer) => {
 
     io.to(to).to(to).emit('uploadBackgroundStatus', {
       content: result,
-      from: socket.handshake.auth.tokenId,
+      from: socket.handshake.auth.proofOfUsId,
     });
   });
 };

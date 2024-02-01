@@ -3,21 +3,21 @@ import { useSocket } from './socket';
 export const useAvatar = () => {
   const { socket } = useSocket();
 
-  const setBackgroundSocket = async (tokenId: string, bg: string) => {
+  const setBackgroundSocket = async (proofOfUsId: string, bg: string) => {
     socket?.emit('setBackground', {
       content: {
         bg,
       },
-      to: tokenId,
+      to: proofOfUsId,
     });
   };
 
-  const uploadBackground = async (tokenId: string, bg: string) => {
+  const uploadBackground = async (proofOfUsId: string, bg: string) => {
     socket?.emit('uploadBackground', {
       content: {
         bg,
       },
-      to: tokenId,
+      to: proofOfUsId,
     });
 
     socket?.on('uploadBackgroundStatus', console.log);
