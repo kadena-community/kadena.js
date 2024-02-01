@@ -14,19 +14,19 @@ import {
 } from '../utils/txHelpers.js';
 
 import type { ICommand } from '@kadena/types';
+import { join } from 'node:path';
 import type { IKeyPair } from '../../keys/utils/storage.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 
 export const signTransactionWithKeyPairAction = async (
   keyPairs: IKeyPair[],
-  transactionfileNames: string[],
-  transactionDirectory: string,
+  /** absolute paths, or relative to process.cwd() if starting with `.` */
+  transactionFileNames: string[],
   legacy?: boolean,
-): Promise<CommandResult<ICommand[]>> => {
+): Promise<CommandResult<{ commands: ICommand[]; path: string }>> => {
   const unsignedTransactions = await getTransactionsFromFile(
-    transactionfileNames,
+    transactionFileNames,
     false,
-    transactionDirectory,
   );
 
   if (unsignedTransactions.length === 0) {
@@ -43,7 +43,21 @@ export const signTransactionWithKeyPairAction = async (
       legacy,
     );
 
-    return assessTransactionSigningStatus(signedCommands);
+    const path = await saveSignedTransactions(
+      signedCommands,
+      transactionFileNames,
+    );
+    if (path !== null) {
+      const signed = await assessTransactionSigningStatus(signedCommands);
+      if (!signed.success) return signed;
+
+      return { success: true, data: { commands: signed.data, path } };
+    } else {
+      return {
+        success: false,
+        errors: [`Error in signAction: failed to write transaction file`],
+      };
+    }
   } catch (error) {
     return {
       success: false,
@@ -88,19 +102,17 @@ export const createSignTransactionWithKeyPairCommand: (
 
     const result = await signTransactionWithKeyPairAction(
       key.keyPairs,
-      files.txUnsignedTransactionFiles,
-      dir.txTransactionDir,
+      files.txUnsignedTransactionFiles.map((file) =>
+        join(dir.txTransactionDir, file),
+      ),
       mode.legacy,
     );
 
     assertCommandError(result);
 
-    await saveSignedTransactions(
-      result,
-      files.txUnsignedTransactionFiles,
-      dir.txTransactionDir,
+    console.log(
+      chalk.green(`Signed transaction saved to ${result.data.path}.`),
     );
-
     console.log(chalk.green(`\nTransaction withinsigned successfully.\n`));
   },
 );
