@@ -1,7 +1,7 @@
 import { sleep } from '@/utils/helpers';
 import { FC, ReactNode, useEffect, useState } from 'react';
 import { addDefaultNetworks } from '../network/network.repository';
-import { setupDatabase } from './db.service';
+import { closeDatabaseConnections, setupDatabase } from './db.service';
 
 const renderDefaultError = ({ message }: Error) => (
   <div>
@@ -27,15 +27,37 @@ export const DatabaseProvider: FC<{
       const db = await setupDatabase();
       console.log('database setup done');
       await sleep(10);
-      await addDefaultNetworks(db);
-      db.close();
-      setInitialized(true);
+      try {
+        await addDefaultNetworks(db);
+        db.close();
+        setInitialized(true);
+      } catch (e) {
+        db.close();
+        throw e instanceof Error ? e : new Error('error in addDefaultNetworks');
+      }
     };
+
+    const closeConnectionsCallback = () => {
+      if (document.hidden) {
+        // close all connections when app is hidden; since open connections will block other tabs from accessing the database
+        console.log('closing database connections', new Date());
+        closeDatabaseConnections();
+      }
+    };
+
+    document.addEventListener('visibilitychange', closeConnectionsCallback);
 
     setupDataBase().catch((e) => {
       console.log(e);
       setErrorObject(e);
     });
+
+    return () => {
+      document.removeEventListener(
+        'visibilitychange',
+        closeConnectionsCallback,
+      );
+    };
   }, []);
 
   if (errorObject) {

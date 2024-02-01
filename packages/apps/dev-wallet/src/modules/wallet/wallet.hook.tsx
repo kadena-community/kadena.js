@@ -1,7 +1,7 @@
 import { IUnsignedCommand } from '@kadena/client';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext } from 'react';
 import { ExtWalletContextType, WalletContext } from './wallet.provider';
-import { IProfile, createWalletRepository } from './wallet.repository';
+import { createWalletRepository } from './wallet.repository';
 import * as WalletService from './wallet.service';
 
 const isUnlocked = (
