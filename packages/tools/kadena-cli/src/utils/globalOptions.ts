@@ -212,7 +212,6 @@ export const globalOptions = {
       'Directory where the log file will be generated. (e.g. ./kadena/simulation-logs/',
     ),
   }),
-
   // Network
   networkName: createOption({
     key: 'network' as const,
