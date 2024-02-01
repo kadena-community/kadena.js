@@ -1,4 +1,4 @@
-import { getTransactionsByRequestKeyQuery } from '@fixtures/graph/testdata/queries/getTransactions';
+import { getTransactionsByRequestKeyQuery } from '@fixtures/graph/getTransactions';
 import { sendQuery } from '@helpers/graph/request.helper';
 import type { APIRequestContext } from '@playwright/test';
 

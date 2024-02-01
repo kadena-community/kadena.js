@@ -3,8 +3,8 @@ import type {
   ICommandResult,
 } from '@kadena/chainweb-node-client';
 import { Pact, createClient } from '@kadena/client';
+import { signTransaction } from '../deploy/utils';
 import { ADMIN, ADMINS, DOMAIN, NETWORK_ID } from './constants';
-import { signTransaction } from './utils';
 
 export const createNamespace = async ({
   chainId,
