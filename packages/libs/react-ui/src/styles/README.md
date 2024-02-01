@@ -48,8 +48,16 @@ The usage is stright forward, but should be outside the atoms
 style([
   atoms(...),
   {
-    // maybe some more styles
+    // maybe some more outside-atoms styles
     ...responsiveStyle({
+      xs: {
+        flex: '1',
+        selectors: {
+          '&:hover': {
+            textDecoration: 'underline',
+          },
+        },
+      }
       md: {
         flexDirection: 'row',
       },
