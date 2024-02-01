@@ -1,6 +1,6 @@
+import { sendRawQuery } from '@services/chainweb-node/raw-query';
+import { CommandData } from '@services/chainweb-node/utils';
 import { COMPLEXITY } from '@services/complexity';
-import type { CommandData } from '@services/node-service';
-import { sendRawQuery } from '@services/node-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
