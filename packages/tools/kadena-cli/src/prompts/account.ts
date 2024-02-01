@@ -107,7 +107,7 @@ export const accountOverWritePrompt = async (): Promise<boolean> =>
       },
       {
         value: false,
-        name: 'No, prompt for public keys and predicate',
+        name: 'No, use it from user input',
       },
     ],
   });
