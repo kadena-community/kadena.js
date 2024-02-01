@@ -11,7 +11,7 @@ export const simulationOptions = {
     prompt: simulationPrompts.numberOfAccountsPrompt,
     validation: z.number(),
     option: new Option(
-      '-na, --simulation-number-of-accounts <simulationNumberOfAccounts>',
+      '-a, --simulation-number-of-accounts <simulationNumberOfAccounts>',
       'Amount of accounts to be created in the simulation.',
     ),
   }),
@@ -20,7 +20,7 @@ export const simulationOptions = {
     prompt: simulationPrompts.transferIntervalPrompt,
     validation: z.number(),
     option: new Option(
-      '-ti, --simulation-transfer-interval <simulationTransferInterval>',
+      '-t, --simulation-transfer-interval <simulationTransferInterval>',
       'Transfer interval in milliseconds.',
     ).argParser((value) => parseInt(value, 10)),
   }),
@@ -30,7 +30,7 @@ export const simulationOptions = {
     prompt: simulationPrompts.maxTransferAmountPrompt,
     validation: z.number(),
     option: new Option(
-      '-mta, --simulation-max-transfer-amount <simulationMaxTransferAmount>',
+      '-m, --simulation-max-transfer-amount <simulationMaxTransferAmount>',
       'Max transfer amount per single transaction (coin).',
     ),
   }),
@@ -40,7 +40,7 @@ export const simulationOptions = {
     prompt: simulationPrompts.tokenPoolPrompt,
     validation: z.number(),
     option: new Option(
-      '-tp, --simulation-token-pool <simulationTokenPool>',
+      '-p, --simulation-token-pool <simulationTokenPool>',
       'Total token pool (coin).',
     ),
   }),
@@ -62,7 +62,7 @@ export const simulationOptions = {
       return chainId as ChainId;
     },
     option: new Option(
-      '-dc, --simulation-default-chain-id <simulationDefaultChainId>',
+      '-c, --simulation-default-chain-id <simulationDefaultChainId>',
       'Default chain id for the simulation (eg. 0).',
     ),
   }),
