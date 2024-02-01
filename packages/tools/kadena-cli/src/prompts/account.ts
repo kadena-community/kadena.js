@@ -5,9 +5,22 @@ export const predicates = ['keys-all', 'keys-any', 'keys-2'] as const;
 
 export type Predicate = (typeof predicates)[number];
 
-export const publicKeysPrompt: IPrompt<string> = async () =>
+export const publicKeysPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) =>
   await input({
-    message: 'Enter zero or more public keys (comma separated):',
+    message: 'Enter one or more public keys (comma separated).',
+    validate: function (value: string) {
+      if (isOptional && !value) return true;
+
+      if (!value || !value.trim().length) {
+        return 'Please enter public keys';
+      }
+
+      return true;
+    },
   });
 
 export const accountAliasPrompt: IPrompt<string> = async () =>
@@ -60,12 +73,41 @@ export const predicatePrompt: IPrompt<Predicate> = async () =>
     })),
   });
 
-export const updateAccountDetailsPrompt = async (): Promise<string> =>
+export type UpdateAccountType = 'useInput' | 'useFromChain';
+
+const updateAccountDetailsChoices: {
+  value: UpdateAccountType;
+  name: string;
+}[] = [
+  {
+    value: 'useInput',
+    name: 'Add, anyway with user inputs',
+  },
+  {
+    value: 'useFromChain',
+    name: 'Add with values from the chain',
+  },
+];
+
+export const updateAccountDetailsPrompt =
+  async (): Promise<UpdateAccountType> =>
+    await select({
+      message:
+        'The account details do not match the account details on the chain. Do you want to continue?',
+      choices: updateAccountDetailsChoices,
+    });
+
+export const accountOverWritePrompt = async (): Promise<boolean> =>
   await select({
-    message:
-      'The account details do not match the account details on the chain. Do you want to continue?',
+    message: 'Would you like to use the account details on the chain?',
     choices: [
-      { value: 'userInput', name: 'Add, anyway with user inputs' },
-      { value: 'chain', name: 'Add with values from the chain' },
+      {
+        value: true,
+        name: 'Yes, use public keys and predicate from chain',
+      },
+      {
+        value: false,
+        name: 'No, prompt for public keys and predicate',
+      },
     ],
   });

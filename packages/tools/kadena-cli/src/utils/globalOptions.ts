@@ -28,6 +28,7 @@ import {
   ensureNetworksConfiguration,
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
+import { accountOverWritePrompt } from '../prompts/account.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
@@ -51,7 +52,7 @@ export const globalOptions = {
     prompt: account.accountAliasPrompt,
     validation: z.string(),
     option: new Option(
-      '-a, --account-alias <accountAlias>',
+      '-aa, --account-alias <accountAlias>',
       'Enter an alias to store your account',
     ),
   }),
@@ -88,7 +89,10 @@ export const globalOptions = {
       'Public keys (comma separated)',
     ),
     expand: async (publicKeys: string) => {
-      return publicKeys.split(',').map((value) => value.trim());
+      return publicKeys
+        .split(',')
+        .map((value) => value.trim())
+        .filter((key) => !!key);
     },
   }),
   amount: createOption({
@@ -300,6 +304,24 @@ export const globalOptions = {
         });
         const networkName = await externalPrompt.networkNamePrompt();
         return loadNetworkConfig(networkName);
+      }
+    },
+  }),
+  networkSelect: createOption({
+    key: 'network' as const,
+    prompt: networks.networkSelectOnlyPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-n, --network <network>',
+      'Kadena network (e.g. "mainnet")',
+    ),
+    expand: async (network: string) => {
+      try {
+        return loadNetworkConfig(network);
+      } catch (e) {
+        console.log(
+          `\nNo configuration for network "${network}" found. Please configure the network.\n`,
+        );
       }
     },
   }),
@@ -578,6 +600,16 @@ export const globalOptions = {
       const file = value.endsWith('.json') ? value : `${value}.json`;
       return join(process.cwd(), file);
     },
+  }),
+  // account
+  accountOverwrite: createOption({
+    key: 'accountOverwrite',
+    validation: z.boolean(),
+    prompt: accountOverWritePrompt,
+    option: new Option(
+      '-o, --account-overwrite',
+      'Overwrite account details from chain (yes/no)',
+    ),
   }),
 } as const;
 

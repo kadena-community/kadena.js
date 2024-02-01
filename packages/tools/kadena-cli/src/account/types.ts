@@ -11,8 +11,10 @@ export interface IAccountConfig {
   chainId: ChainId;
   networkConfig: INetworkCreateOptions;
   quiet?: boolean;
-  publicKeys: string;
+  publicKeys?: string;
   publicKeysConfig: string[];
+  accountOverwrite: boolean;
+  accountDetailsFromChain?: IAccountDetailsResult;
 }
 
 export interface IAddAccountWalletConfig extends IAccountConfig {
@@ -23,7 +25,13 @@ export interface IAddAccountManualConfig extends IAccountConfig {
   accountName?: string;
 }
 
+export interface IGuard {
+  keys: string[];
+  pred: Predicate;
+}
+
 export interface IAccountDetailsResult {
-  publicKeys: string[];
-  predicate: Predicate;
+  guard: IGuard;
+  account: string;
+  balance?: number;
 }

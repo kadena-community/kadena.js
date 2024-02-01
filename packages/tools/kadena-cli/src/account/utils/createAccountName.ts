@@ -1,37 +1,45 @@
 import { createPrincipal } from '@kadena/client-utils/built-in';
-import type { IAddAccountManualConfig } from '../types.js';
+import type { ChainId } from '@kadena/types';
+import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
+import type { Predicate } from '../types.js';
 
-export async function createAccountName(
-  config: IAddAccountManualConfig,
-): Promise<string> {
-  const publicKeys = config.publicKeysConfig.filter((key: string) => !!key);
+export interface ICreateAccountNameConfig {
+  predicate: Predicate;
+  chainId: ChainId;
+  networkConfig: INetworkCreateOptions;
+  publicKeys: string[];
+}
 
-  if (publicKeys.length === 0) {
-    throw new Error(
-      'No public keys provided to create an account and get the account details.',
-    );
+export async function createAccountName({
+  publicKeys,
+  chainId,
+  predicate,
+  networkConfig,
+}: ICreateAccountNameConfig): Promise<string> {
+  if (publicKeys?.length === 0) {
+    throw new Error('No public keys provided to create an account');
   }
 
   try {
     const accountName = await createPrincipal(
       {
         keyset: {
-          pred: config.predicate,
+          pred: predicate,
           keys: publicKeys,
         },
       },
       {
-        host: config.networkConfig.networkHost,
+        host: networkConfig.networkHost,
         defaults: {
-          networkId: config.networkConfig.networkId,
+          networkId: networkConfig.networkId,
           meta: {
-            chainId: config.chainId,
+            chainId: chainId,
           },
         },
       },
     );
     return accountName;
   } catch (e) {
-    throw new Error('There was an error creating the account.');
+    throw new Error('There was an error creating the account name.');
   }
 }

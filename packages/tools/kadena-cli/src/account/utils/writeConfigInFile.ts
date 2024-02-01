@@ -13,7 +13,7 @@ export async function writeAlias(
     yaml.dump({
       name: accountName,
       fungible,
-      publicKeys: publicKeysConfig.filter((key: string) => !!key),
+      publicKeys: publicKeysConfig,
       predicate,
     }),
   );

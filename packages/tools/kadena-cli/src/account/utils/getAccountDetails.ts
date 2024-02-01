@@ -1,31 +1,20 @@
 import { details } from '@kadena/client-utils/coin';
-import type {
-  IAccountConfig,
-  IAccountDetailsResult,
-  Predicate,
-} from '../types.js';
+import type { ChainId } from '@kadena/types';
+import type { IAccountDetailsResult } from '../types.js';
 
-interface IAccountDetails extends IAccountConfig {
+export interface IGetAccountDetailsParams {
   accountName: string;
+  chainId: ChainId;
+  networkId: string;
+  networkHost: string;
 }
 
-interface IKeysGuard {
-  keys: string[];
-  pred: Predicate;
-}
-
-interface IAccountDetailsFromChain {
-  guard: IKeysGuard;
-}
-
-export async function getAccountDetailsFromChain(
-  config: IAccountDetails,
-): Promise<IAccountDetailsResult> {
-  const {
-    accountName,
-    chainId,
-    networkConfig: { networkId, networkHost },
-  } = config;
+export async function getAccountDetailsFromChain({
+  accountName,
+  chainId,
+  networkId,
+  networkHost,
+}: IGetAccountDetailsParams): Promise<IAccountDetailsResult> {
   try {
     const accountDetails = await details(
       accountName,
@@ -35,20 +24,26 @@ export async function getAccountDetailsFromChain(
     );
 
     if (accountDetails === undefined) {
-      throw new Error(
-        `Account details of ${accountName} does not exist on chain ${chainId}`,
-      );
+      throw new Error(`Account ${accountName}: row not found.`);
     }
 
-    const {
-      guard: { keys, pred },
-    } = accountDetails as IAccountDetailsFromChain;
-
-    return {
-      publicKeys: keys,
-      predicate: pred,
-    };
-  } catch (e) {
-    throw new Error(e.message);
+    return accountDetails as IAccountDetailsResult;
+  } catch (error) {
+    throw new Error(error.message);
   }
 }
+
+export const getAccountDetailsAddManual = async (
+  config: IGetAccountDetailsParams,
+): Promise<IAccountDetailsResult | undefined> => {
+  try {
+    const accountDetails = await getAccountDetailsFromChain(config);
+
+    return accountDetails;
+  } catch (error) {
+    if (error.message.includes('row not found') === true) {
+      return;
+    }
+    throw new Error(error.message);
+  }
+};

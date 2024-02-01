@@ -17,14 +17,18 @@ export const getUpdatedConfig = (
   accountDetails: IAccountDetailsResult,
   overrideFromChain: boolean,
 ): IAddAccountManualConfig => {
-  if (overrideFromChain === false) {
+  if (
+    overrideFromChain === false ||
+    accountDetails === undefined ||
+    accountDetails.guard.keys.length === 0
+  ) {
     return config;
   } else {
     const updatedConfig = {
       ...config,
-      publicKeys: accountDetails.publicKeys.join(','),
-      publicKeysConfig: accountDetails.publicKeys,
-      predicate: accountDetails.predicate,
+      publicKeys: accountDetails.guard.keys.join(','),
+      publicKeysConfig: accountDetails.guard.keys,
+      predicate: accountDetails.guard.pred,
     };
     return updatedConfig;
   }
@@ -45,5 +49,5 @@ export const displayAddAccountSuccess = (accountAlias: string): void => {
 
 export async function overridePromptCb(): Promise<boolean> {
   const updateOption = await updateAccountDetailsPrompt();
-  return updateOption === 'chain';
+  return updateOption === 'useFromChain';
 }

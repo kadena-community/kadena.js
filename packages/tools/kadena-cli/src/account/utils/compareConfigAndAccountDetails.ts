@@ -1,29 +1,27 @@
-import type {
-  IAccountDetailsResult,
-  IAddAccountManualConfig,
-} from '../types.js';
+import type { IAccountDetailsResult, IGuard } from '../types.js';
 
 export const validatePublicKeys = (
   publicKeysConfig: string[],
   keys: string[],
 ): boolean => {
-  const publicKeys = publicKeysConfig.filter((key: string) => !!key);
-
-  const hasSamePublicKeysLength = publicKeys.length === keys.length;
+  const hasSamePublicKeysLength = publicKeysConfig.length === keys.length;
 
   return (
-    hasSamePublicKeysLength && keys.every((key) => publicKeys.includes(key))
+    hasSamePublicKeysLength &&
+    keys.every((key) => publicKeysConfig.includes(key))
   );
 };
 
 export function compareConfigAndAccountDetails(
-  config: IAddAccountManualConfig,
+  configGuard: IGuard,
   accountDetails: IAccountDetailsResult,
 ): boolean {
-  const { publicKeys, predicate } = accountDetails;
-  const isSameKeys = validatePublicKeys(config.publicKeysConfig, publicKeys);
+  const {
+    guard: { keys, pred },
+  } = accountDetails;
+  const isSameKeys = validatePublicKeys(configGuard.keys, keys);
 
-  const isSamePredicate = config.predicate === predicate;
+  const isSamePredicate = configGuard.pred === pred;
 
   return isSameKeys && isSamePredicate;
 }

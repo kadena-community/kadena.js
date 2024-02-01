@@ -137,6 +137,26 @@ export const networkSelectPrompt: IPrompt<string> = async (
   return selectedNetwork;
 };
 
+export const networkSelectOnlyPrompt: IPrompt<string> = async () => {
+  const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
+
+  if (!existingNetworks.length) {
+    throw new Error(
+      'No existing networks found. Please create a network first.',
+    );
+  }
+
+  const choices: ICustomNetworkChoice[] = existingNetworks.map((network) => ({
+    value: network.value,
+    name: network.name,
+  }));
+  const selectedNetwork = await select({
+    message: 'Select a network',
+    choices: choices,
+  });
+  return selectedNetwork;
+};
+
 export const networkDeletePrompt: IPrompt<string> = async (
   previousQuestions,
   args,
