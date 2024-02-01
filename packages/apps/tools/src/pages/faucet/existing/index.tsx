@@ -38,12 +38,14 @@ import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import { sidebarLinks } from '@/constants/side-links';
 import { notificationLinkStyle } from '@/pages/faucet/new/styles.css';
+import { getExplorerLink } from '@/utils/getExplorerLink';
 import Link from 'next/link';
 import {
   accountNameContainerClass,
   buttonContainerClass,
   chainSelectContainerClass,
   containerClass,
+  explorerLinkStyle,
   infoBoxStyle,
   infoTitleStyle,
   inputContainerClass,
@@ -118,7 +120,7 @@ const ExistingAccountFaucetPage: FC = () => {
               key="chainweb-transfer-link"
             />,
             <strong key="generate-keypair" />,
-            <a
+            <Link
               className={linkStyle}
               href="https://chainweaver.kadena.network/"
               target="_blank"
@@ -142,12 +144,14 @@ const ExistingAccountFaucetPage: FC = () => {
     undefined,
   );
   const drawerPanelRef = useRef<HTMLElement | null>(null);
+  const [requestKey, setRequestKey] = useState<string>('');
 
   useToolbar(menuData, router.pathname);
 
   const onFormSubmit = useCallback(
     async (data: FormData) => {
       setRequestStatus({ status: 'processing' });
+      setRequestKey('');
 
       try {
         const result = (await fundExistingAccount(
@@ -157,6 +161,9 @@ const ExistingAccountFaucetPage: FC = () => {
           networksData,
           AMOUNT_OF_COINS_FUNDED,
         )) as IFundExistingAccountResponse;
+
+        const requestKey = Object.keys(result)[0];
+        setRequestKey(requestKey);
 
         const error = Object.values(result).find(
           (response) => response.result.status === 'failure',
@@ -186,6 +193,14 @@ const ExistingAccountFaucetPage: FC = () => {
           message = String(err);
         }
 
+        const requestKey = message
+          ? message.substring(
+              message.indexOf('"') + 1,
+              message.lastIndexOf('"'),
+            )
+          : '';
+        setRequestKey(requestKey);
+
         setRequestStatus({ status: 'erroneous', message });
       }
     },
@@ -195,6 +210,11 @@ const ExistingAccountFaucetPage: FC = () => {
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
   const disabledButton: boolean =
     requestStatus.status === 'processing' || mainnetSelected;
+  const linkToExplorer = `${getExplorerLink(
+    requestKey,
+    selectedNetwork,
+    networksData,
+  )}`;
 
   const handleOnClickLink = () => {
     setOpenItem(undefined);
@@ -276,6 +296,28 @@ const ExistingAccountFaucetPage: FC = () => {
               {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             </Button>
           </div>
+
+          {requestKey !== '' ? (
+            <FormStatusNotification
+              status={'processing'}
+              title={t('Transaction submitted')}
+              body={
+                <Trans
+                  i18nKey="common:link-to-kadena-explorer"
+                  components={[
+                    <Link
+                      className={explorerLinkStyle}
+                      href={linkToExplorer}
+                      target={'_blank'}
+                      key={requestKey}
+                    >
+                      {requestKey}
+                    </Link>,
+                  ]}
+                />
+              }
+            />
+          ) : null}
         </Stack>
       </form>
 

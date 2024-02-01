@@ -67,3 +67,17 @@ export const linkStyle = style([
     },
   },
 ]);
+
+export const explorerLinkStyle = style([
+  atoms({
+    color: 'text.brand.primary.default',
+    textDecoration: 'underline',
+  }),
+  {
+    selectors: {
+      [`&.visited`]: {
+        color: 'text.brand.primary.default.vi',
+      },
+    },
+  },
+]);

@@ -25,6 +25,7 @@ import {
   buttonContainerClass,
   chainSelectContainerClass,
   containerClass,
+  explorerLinkStyle,
   infoBoxStyle,
   infoTitleStyle,
   inputContainerClass,
@@ -53,6 +54,7 @@ import { usePersistentChainID } from '@/hooks';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
 import { validatePublicKey } from '@/services/utils/utils';
+import { getExplorerLink } from '@/utils/getExplorerLink';
 import { stripAccountPrefix } from '@/utils/string';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery } from '@tanstack/react-query';
@@ -105,6 +107,7 @@ const NewAccountFaucetPage: FC = () => {
   const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
     undefined,
   );
+  const [requestKey, setRequestKey] = useState<string>('');
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   const { data: accountName } = useQuery({
@@ -211,6 +214,7 @@ const NewAccountFaucetPage: FC = () => {
       }
 
       setRequestStatus({ status: 'processing' });
+      setRequestKey('');
       try {
         const result = (await fundCreateNewAccount(
           data.name,
@@ -221,6 +225,10 @@ const NewAccountFaucetPage: FC = () => {
           AMOUNT_OF_COINS_FUNDED,
           pred,
         )) as IFundExistingAccountResponse;
+
+        const requestKey = Object.keys(result)[0];
+        setRequestKey(requestKey);
+
         const error = Object.values(result).find(
           (response) => response.result.status === 'failure',
         );
@@ -235,6 +243,7 @@ const NewAccountFaucetPage: FC = () => {
         setOpenItem(undefined);
       } catch (err) {
         let message;
+
         if (isCustomError(err)) {
           const result = err.result;
           const status = result?.status;
@@ -246,6 +255,14 @@ const NewAccountFaucetPage: FC = () => {
         } else {
           message = String(err);
         }
+
+        const requestKey = message
+          ? message.substring(
+              message.indexOf('"') + 1,
+              message.lastIndexOf('"'),
+            )
+          : '';
+        setRequestKey(requestKey);
         setRequestStatus({ status: 'erroneous', message });
       }
     },
@@ -255,6 +272,11 @@ const NewAccountFaucetPage: FC = () => {
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
   const disabledButton: boolean =
     requestStatus.status === 'processing' || mainnetSelected;
+  const linkToExplorer = `${getExplorerLink(
+    requestKey,
+    selectedNetwork,
+    networksData,
+  )}`;
 
   const addPublicKey = () => {
     const value = stripAccountPrefix(getValues('pubKey') || '');
@@ -463,6 +485,28 @@ const NewAccountFaucetPage: FC = () => {
               {t('Create and Fund Account', { amount: AMOUNT_OF_COINS_FUNDED })}
             </Button>
           </div>
+
+          {requestKey !== '' ? (
+            <FormStatusNotification
+              status={'processing'}
+              title={t('Transaction submitted')}
+              body={
+                <Trans
+                  i18nKey="common:link-to-kadena-explorer"
+                  components={[
+                    <Link
+                      className={explorerLinkStyle}
+                      href={linkToExplorer}
+                      target={'_blank'}
+                      key={requestKey}
+                    >
+                      {requestKey}
+                    </Link>,
+                  ]}
+                />
+              }
+            />
+          ) : null}
         </Stack>
       </form>
       <DrawerToolbar
