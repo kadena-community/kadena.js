@@ -5,6 +5,7 @@ import { useToolbar } from '@/context/layout-context';
 import { homeWrapperClass, infoBoxStyle } from '@/pages/home/styles.css';
 import {
   Accordion,
+  AccordionItem,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -234,13 +235,13 @@ const Home: FC = () => {
               {t('Frequently Asked Questions')}
             </Heading>
             <Box marginBlockEnd="md" />
-            <Accordion.Root>
-              {faqs.map((faq) => (
-                <Accordion.Section title={faq.title} key={faq.title}>
+            <Accordion items={faqs}>
+              {(faq) => (
+                <AccordionItem title={faq.title} key={faq.title}>
                   {faq.body}
-                </Accordion.Section>
-              ))}
-            </Accordion.Root>
+                </AccordionItem>
+              )}
+            </Accordion>
           </Card>
           <Card fullWidth>
             <Heading as="h3" variant="h5">

@@ -1,7 +1,5 @@
 export type {
   IAccordionProps,
-  IAccordionRootProps,
-  IAccordionSectionProps,
   IBoxProps,
   IBreadcrumbItemProps,
   IBreadcrumbsProps,
@@ -51,6 +49,7 @@ export type {
 
 export {
   Accordion,
+  AccordionItem,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,

@@ -31,7 +31,6 @@ import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  Accordion,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -648,18 +647,16 @@ const CrossChainTransferFinisher: FC = () => {
             title: t('Resources & Links'),
             children: (
               <div className={linksBoxStyle}>
-                <Accordion.Root>
-                  {sidebarLinks.map((item, index) => (
-                    <MenuLinkButton
-                      title={item.title}
-                      key={`menu-link-${index}`}
-                      href={item.href}
-                      active={item.href === router.pathname}
-                      target="_blank"
-                      onClick={handleOnClickLink}
-                    />
-                  ))}
-                </Accordion.Root>
+                {sidebarLinks.map((item, index) => (
+                  <MenuLinkButton
+                    title={item.title}
+                    key={`menu-link-${index}`}
+                    href={item.href}
+                    active={item.href === router.pathname}
+                    target="_blank"
+                    onClick={handleOnClickLink}
+                  />
+                ))}
               </div>
             ),
           },

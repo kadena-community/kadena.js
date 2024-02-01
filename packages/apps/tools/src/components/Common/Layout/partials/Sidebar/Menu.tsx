@@ -2,7 +2,6 @@ import { MenuButton } from '@/components/Common/Layout/partials/Sidebar/MenuButt
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import { useLayoutContext } from '@/context';
 import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
-import { Accordion } from '@kadena/react-ui';
 import { breakpoints } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
@@ -41,17 +40,15 @@ export const Menu: FC = () => {
           <MenuButton icon={'Close'} onClick={handleCloseMenu} />
         </div>
         <div className={subMenuContentStyle}>
-          <Accordion.Root>
-            {activeMenu?.items?.map((item, index) => (
-              <MenuLinkButton
-                title={item.title}
-                key={`menu-link-${index}`}
-                href={item.href}
-                active={item.href === router.pathname}
-                onClick={handleOnClick}
-              />
-            ))}
-          </Accordion.Root>
+          {activeMenu?.items?.map((item, index) => (
+            <MenuLinkButton
+              title={item.title}
+              key={`menu-link-${index}`}
+              href={item.href}
+              active={item.href === router.pathname}
+              onClick={handleOnClick}
+            />
+          ))}
         </div>
       </>
     </div>

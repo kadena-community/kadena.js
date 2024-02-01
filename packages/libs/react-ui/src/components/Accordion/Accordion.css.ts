@@ -1,70 +1,60 @@
 import { style } from '@vanilla-extract/css';
-import { sprinkles } from '../../styles/sprinkles.css';
-import { vars } from '../../styles/vars.css';
+import { atoms, bodyBaseBold, token } from '../../styles';
 
-export const accordionSectionClass = style([
-  sprinkles({
-    display: 'block',
-    marginBottom: '$4',
-    overflow: 'hidden',
-  }),
-  {
-    borderBottom: `1px solid ${vars.colors.$borderDefault}`,
-    selectors: {
-      '&:last-child': {
-        marginBottom: 0,
-      },
+export const accordionSectionClass = style({
+  display: 'block',
+  marginBlockEnd: token('spacing.md'),
+  overflow: 'hidden',
+  borderBlockEnd: `1px solid ${token('color.border.base.default')}`,
+  selectors: {
+    '&:last-child': {
+      marginBlockEnd: 0,
     },
   },
-]);
-
-export const accordionHeadingTitleClass = style([
-  sprinkles({
-    fontSize: '$base',
-  }),
-]);
+});
 
 export const accordionButtonClass = style([
-  sprinkles({
+  bodyBaseBold,
+  atoms({
+    display: 'flex',
     alignItems: 'center',
     background: 'none',
     border: 'none',
-    color: '$neutral5',
+    color: 'text.subtle.default',
     cursor: 'pointer',
-    display: 'flex',
-    fontSize: '$base',
-    fontWeight: '$semiBold',
     justifyContent: 'space-between',
-    padding: 0,
-    paddingBottom: '$2',
-    paddingRight: '$1',
+    paddingBlockEnd: 'sm',
+    paddingInlineStart: 'xs',
     textAlign: 'left',
     width: '100%',
   }),
 ]);
 
-export const accordionToggleIconClass = style([
-  sprinkles({
-    color: '$neutral5',
+export const accordionToggleIconClass = style({
+  color: token('color.text.subtle.default'),
+  transform: 'rotate(45deg)',
+  transition: 'transform 0.2s ease',
+  selectors: {
+    "&[data-open='true']": {
+      transform: 'rotate(90deg)',
+    },
+  },
+});
+
+export const accordionContentClass = style([
+  atoms({
+    display: 'none',
+    color: 'text.subtle.default',
+    fontSize: 'base',
+    margin: 'no',
+    overflow: 'hidden',
+    paddingBlockEnd: 'sm',
   }),
   {
-    transform: 'rotate(45deg)',
-    transition: 'transform 0.2s ease',
     selectors: {
-      '&.isOpen': {
-        transform: 'rotate(90deg)',
+      "&[data-open='true']": {
+        display: 'block',
       },
     },
   },
-]);
-
-export const accordionContentClass = style([
-  sprinkles({
-    color: '$neutral5',
-    fontSize: '$base',
-    margin: 0,
-    overflow: 'hidden',
-    padding: 0,
-    paddingBottom: '$2',
-  }),
 ]);

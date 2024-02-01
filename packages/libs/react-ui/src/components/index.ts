@@ -1,8 +1,4 @@
-export type {
-  IAccordionProps,
-  IAccordionRootProps,
-  IAccordionSectionProps,
-} from './Accordion';
+export type { IAccordionProps } from './Accordion';
 export type { IBreadcrumbItemProps, IBreadcrumbsProps } from './Breadcrumbs';
 export type { IButtonProps, IToggleButtonProps } from './Button';
 export type { ICardProps } from './Card';
@@ -55,7 +51,7 @@ export type { ITooltipProps } from './Tooltip';
 export type { ILabelValue, ITrackerCardProps } from './TrackerCard/TrackerCard';
 export type { IHeadingProps, ITextProps } from './Typography';
 
-export { Accordion } from './Accordion';
+export { Accordion, AccordionItem } from './Accordion';
 export { Breadcrumbs, BreadcrumbsItem } from './Breadcrumbs';
 export { Button, ToggleButton } from './Button';
 export { Card } from './Card';
