@@ -13,7 +13,7 @@ export const simulationOptions = {
     option: new Option(
       '-a, --simulation-number-of-accounts <simulationNumberOfAccounts>',
       'Amount of accounts to be created in the simulation.',
-    ),
+    ).argParser((value) => parseInt(value, 10)),
   }),
   simulationTransferInterval: createOption({
     key: 'simulationTransferInterval' as const,
@@ -32,7 +32,7 @@ export const simulationOptions = {
     option: new Option(
       '-m, --simulation-max-transfer-amount <simulationMaxTransferAmount>',
       'Max transfer amount per single transaction (coin).',
-    ),
+    ).argParser((value) => parseInt(value, 10)),
   }),
 
   simulationTokenPool: createOption({
@@ -42,7 +42,7 @@ export const simulationOptions = {
     option: new Option(
       '-p, --simulation-token-pool <simulationTokenPool>',
       'Total token pool (coin).',
-    ),
+    ).argParser((value) => parseInt(value, 10)),
   }),
   simulationSeed: createOption({
     key: 'simulationSeed' as const,
