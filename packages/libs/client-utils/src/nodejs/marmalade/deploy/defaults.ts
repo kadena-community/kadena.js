@@ -23,6 +23,7 @@ to be replaced in the marmalade templates and code files  */
 export const defaultArguments = {
   sender_key: defaultAccount.publicKeys?.[0] ?? '',
   marmalade_namespace: 'marmalade-v2',
+  marmalade_sale_namespace: 'marmalade-sale',
   is_upgrade: 'false',
   network: defaultNetworkId,
   chain: defaultChainId,
