@@ -33,6 +33,18 @@ export function TableHeaderRow<T extends object>({
   );
 }
 
+/*
+ * This is a utility function for the width style while the column resizing is not implemented
+ * https://react-spectrum.adobe.com/react-aria/useTable.html#resizable-columns
+ */
+const reg = /^\d+$/;
+function getWidthStyle(width: string | number) {
+  if (typeof width === 'number' || reg.test(width)) {
+    return `${width}px`;
+  }
+  return width;
+}
+
 interface ITableColumnHeaderProps<T> {
   column: GridNode<T>;
   state: TableState<T>;
@@ -51,15 +63,16 @@ export function TableColumnHeader<T extends object>({
   const { isFocusVisible, focusProps } = useFocusRing();
   const ArrowIcon =
     state.sortDescriptor?.direction === 'ascending' ? ChevronUp : ChevronDown;
+
   return (
     <th
       {...mergeProps(columnHeaderProps, focusProps)}
       colSpan={column.colspan}
       className={columnHeader}
       style={{
-        width: column.props.width,
-        minWidth: column.props.minWidth,
-        maxWidth: column.props.maxWidth,
+        width: getWidthStyle(column.props.width),
+        minWidth: getWidthStyle(column.props.minWidth),
+        maxWidth: getWidthStyle(column.props.maxWidth),
       }}
       ref={ref}
       data-focused={isFocusVisible || undefined}

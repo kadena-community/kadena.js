@@ -1,11 +1,16 @@
 import { style } from '@vanilla-extract/css';
 import { atoms, token } from '../../styles';
 
-export const table = style([
+export const tableWrapper = style([
   atoms({
     width: '100%',
+    overflowX: 'auto',
+  }),
+]);
+
+export const table = style([
+  atoms({
     borderRadius: 'sm',
-    overflowX: 'scroll',
     border: 'hairline',
     color: 'text.base.default',
   }),

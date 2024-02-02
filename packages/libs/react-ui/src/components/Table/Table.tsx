@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import type { AriaTableProps } from 'react-aria';
 import { useTable, useTableRowGroup } from 'react-aria';
 import { useTableState } from 'react-stately';
-import { table } from './Table.css';
+import { table, tableWrapper } from './Table.css';
 
 import classNames from 'classnames';
 import { TableCell, TableRow } from './Body';
@@ -20,46 +20,50 @@ export interface ITableProps<T>
 
 // TODO: Implement Selection Cell
 export function Table<T extends object>(props: ITableProps<T>) {
+  const scrollRef = useRef(null);
+
   const state = useTableState({
     ...props,
   });
 
   const ref = useRef(null);
   const { collection } = state;
-  const { gridProps } = useTable(props, state, ref);
+  const { gridProps } = useTable({ ...props, scrollRef }, state, ref);
 
   return (
-    <table
-      {...gridProps}
-      className={classNames(table, props.className, {
-        striped: props.isStriped,
-        compact: props.isCompact,
-      })}
-      ref={ref}
-    >
-      <TableRowGroup type="thead">
-        {collection.headerRows.map((headerRow) => (
-          <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
-            {[...headerRow.childNodes].map((column) => (
-              <TableColumnHeader
-                key={column.key}
-                column={column}
-                state={state}
-              />
-            ))}
-          </TableHeaderRow>
-        ))}
-      </TableRowGroup>
-      <TableRowGroup type="tbody">
-        {[...collection.body.childNodes].map((row) => (
-          <TableRow key={row.key} item={row} state={state}>
-            {[...row.childNodes].map((cell) => (
-              <TableCell key={cell.key} cell={cell} state={state} />
-            ))}
-          </TableRow>
-        ))}
-      </TableRowGroup>
-    </table>
+    <div className={tableWrapper} ref={scrollRef}>
+      <table
+        {...gridProps}
+        className={classNames(table, props.className, {
+          striped: props.isStriped,
+          compact: props.isCompact,
+        })}
+        ref={ref}
+      >
+        <TableRowGroup type="thead">
+          {collection.headerRows.map((headerRow) => (
+            <TableHeaderRow key={headerRow.key} item={headerRow} state={state}>
+              {[...headerRow.childNodes].map((column) => (
+                <TableColumnHeader
+                  key={column.key}
+                  column={column}
+                  state={state}
+                />
+              ))}
+            </TableHeaderRow>
+          ))}
+        </TableRowGroup>
+        <TableRowGroup type="tbody">
+          {[...collection.body.childNodes].map((row) => (
+            <TableRow key={row.key} item={row} state={state}>
+              {[...row.childNodes].map((cell) => (
+                <TableCell key={cell.key} cell={cell} state={state} />
+              ))}
+            </TableRow>
+          ))}
+        </TableRowGroup>
+      </table>
+    </div>
   );
 }
 

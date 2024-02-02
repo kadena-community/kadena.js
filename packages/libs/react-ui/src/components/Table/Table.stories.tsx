@@ -219,14 +219,13 @@ export const FixedWidth: Story = {
     return (
       <Table aria-label="Example table with nested columns">
         <TableHeader>
-          <Column width="60">Px</Column>
-          <Column width="50%">Fixed</Column>
+          <Column width="100">100px</Column>
+          <Column width="50%">50%</Column>
           <Column>Normal</Column>
-          <Column>View</Column>
         </TableHeader>
         <TableBody>
           <Row>
-            <Cell>40</Cell>
+            <Cell>Fixed column width.</Cell>
             <Cell>
               You can pass minWidth, maxWidth, and width props to the Column
               component to control the size of columns.
@@ -242,9 +241,6 @@ export const FixedWidth: Story = {
               containing Lorem Ipsum passages, and more recently with desktop
               publishing software like Aldus PageMaker including versions of
               Lorem Ipsum.
-            </Cell>
-            <Cell>
-              <Button variant="inline" icon={<TrailingIcon />} />
             </Cell>
           </Row>
         </TableBody>
