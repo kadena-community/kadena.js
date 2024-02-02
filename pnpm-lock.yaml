@@ -1753,9 +1753,18 @@ importers:
       '@react-aria/utils':
         specifier: ^3.23.0
         version: 3.23.0(react@18.2.0)
+      '@react-stately/table':
+        specifier: ^3.11.4
+        version: 3.11.4(react@18.2.0)
       '@react-stately/utils':
         specifier: ^3.9.0
         version: 3.9.0(react@18.2.0)
+      '@react-types/grid':
+        specifier: ^3.2.3
+        version: 3.2.3(react@18.2.0)
+      '@react-types/table':
+        specifier: ^3.9.2
+        version: 3.9.2(react@18.2.0)
       '@vanilla-extract/css':
         specifier: 1.14.0
         version: 1.14.0
