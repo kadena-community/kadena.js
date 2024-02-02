@@ -16,7 +16,11 @@ interface ITableRowProps<T> {
   children: ReactNode;
 }
 
-export function TableRow({ item, children, state }: ITableRowProps<object>) {
+export function TableRow<T extends object>({
+  item,
+  children,
+  state,
+}: ITableRowProps<T>) {
   const ref = useRef(null);
   const { rowProps } = useTableRow(
     {
@@ -43,7 +47,10 @@ interface ITableCellProps<T> {
   state: TableState<T>;
 }
 
-export function TableCell({ cell, state }: ITableCellProps<object>) {
+export function TableCell<T extends object>({
+  cell,
+  state,
+}: ITableCellProps<T>) {
   const ref = useRef(null);
   const { gridCellProps } = useTableCell({ node: cell }, state, ref);
   const { isFocusVisible, focusProps } = useFocusRing();

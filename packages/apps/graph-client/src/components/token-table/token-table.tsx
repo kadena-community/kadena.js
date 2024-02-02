@@ -1,4 +1,14 @@
-import { Box, ContentHeader, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Cell,
+  Column,
+  ContentHeader,
+  Row,
+  Table,
+  TableBody,
+  TableHeader,
+} from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import React from 'react';
 import { compactTableClass } from '../common/compact-table/compact-table.css';
 
@@ -25,6 +35,7 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
 
       <Box margin="sm" />
 
+<<<<<<< HEAD
       <Table.Root wordBreak="break-word" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
@@ -34,17 +45,26 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
           </Table.Tr>
         </Table.Head>
         <Table.Body>
+=======
+      <Table className={atoms({ wordBreak: 'break-all' })}>
+        <TableHeader>
+          <Column>Token Id</Column>
+          <Column>Chain</Column>
+          <Column>Balance</Column>
+        </TableHeader>
+        <TableBody>
+>>>>>>> 0e5aaafd1 (updated tools)
           {tokens.map((token, index) => {
             return (
-              <Table.Tr key={index}>
-                <Table.Td>{token.id}</Table.Td>
-                <Table.Td>{token.chainId}</Table.Td>
-                <Table.Td>{token.balance}</Table.Td>
-              </Table.Tr>
+              <Row key={index}>
+                <Cell>{token.id}</Cell>
+                <Cell>{token.chainId}</Cell>
+                <Cell>{token.balance}</Cell>
+              </Row>
             );
           })}
-        </Table.Body>
-      </Table.Root>
+        </TableBody>
+      </Table>
     </>
   );
 };

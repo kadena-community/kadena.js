@@ -5,7 +5,7 @@ export const table = style([
   atoms({
     width: '100%',
     borderRadius: 'sm',
-    overflow: 'hidden',
+    overflowX: 'scroll',
     border: 'hairline',
     color: 'text.base.default',
   }),

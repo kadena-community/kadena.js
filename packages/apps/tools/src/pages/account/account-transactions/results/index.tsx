@@ -13,11 +13,17 @@ import {
   Breadcrumbs,
   BreadcrumbsItem,
   Button,
+  Cell,
+  Column,
   ContentHeader,
   Grid,
   GridItem,
   Heading,
+  Row,
+  SystemIcon,
   Table,
+  TableBody,
+  TableHeader,
   Text,
   TrackerCard,
 } from '@kadena/react-ui';
@@ -240,92 +246,40 @@ const CheckTransactions: FC = () => {
 
       {loadingState ? 'LOADING' : ''}
 
-      <Grid columns={2}>
-        <GridItem>
-          <ContentHeader
-            heading={t('Incoming transactions')}
-            icon={'ArrowCollapseDown'}
-            description="This table is listing all the incoming transaction sorted by date."
-          />
-          <Box marginBlockEnd="xxxl" />
-          <Table.Root>
-            <Table.Head>
-              <Table.Tr>
-                <Table.Th>{t('Date Time')}</Table.Th>
-                <Table.Th>{t('Amount')}</Table.Th>
-                <Table.Th>{t('Sender')}</Table.Th>
-                <Table.Th></Table.Th>
-              </Table.Tr>
-            </Table.Head>
-            <Table.Body>
-              {results.map((result, index) => {
-                const isIncomming = result.toAccount === router.query.account;
+      <ContentHeader
+        heading={t('Transactions')}
+        icon={'History'}
+        description="This table is listing all the incoming and outgoing transactions sorted by date."
+      />
+      <Box marginBlockEnd="xxxl" />
+      <Table>
+        <TableHeader>
+          <Column>{t('Date Time')}</Column>
+          <Column>{t('Amount')}</Column>
+          <Column>{t('Sender')}</Column>
+          <Column>View Transaction</Column>
+        </TableHeader>
+        <TableBody>
+          {results.map((result, index) => {
+            const isIncomming = result.toAccount === router.query.account;
 
-                if (!isIncomming) {
-                  return <Table.Tr key={index}></Table.Tr>;
-                }
-
-                return (
-                  <Table.Tr
-                    key={index}
+            return (
+              <Row key={index}>
+                <Cell>{new Date(result.blockTime).toLocaleString()}</Cell>
+                <Cell>{`${isIncomming ? '+' : '-'} ${result.amount}`}</Cell>
+                <Cell>{displayAccountName(result.fromAccount as string)}</Cell>
+                <Cell>
+                  <Button
+                    variant="text"
+                    icon={<SystemIcon.TrailingIcon />}
                     onClick={() => handleOpenTransactionDetails(result)}
-                  >
-                    <Table.Td>
-                      {new Date(result.blockTime).toLocaleString()}
-                    </Table.Td>
-                    <Table.Td>{result.amount}</Table.Td>
-                    <Table.Td>
-                      {displayAccountName(result.fromAccount as string)}
-                    </Table.Td>
-                  </Table.Tr>
-                );
-              })}
-            </Table.Body>
-          </Table.Root>
-        </GridItem>
-        <GridItem>
-          <ContentHeader
-            heading={t('Outgoing transactions')}
-            icon={'ArrowExpandUp'}
-            description="This table is listing all the outgoing transaction sorted by date."
-          />
-          <Box marginBlockEnd="xxxl" />
-          <Table.Root>
-            <Table.Head>
-              <Table.Tr>
-                <Table.Th>{t('Date Time')}</Table.Th>
-                <Table.Th>{t('Amount')}</Table.Th>
-                <Table.Th>{t('Receiver')}</Table.Th>
-                <Table.Th></Table.Th>
-              </Table.Tr>
-            </Table.Head>
-            <Table.Body>
-              {results.map((result, index) => {
-                const isOutgoing = result.fromAccount === router.query.account;
-
-                if (!isOutgoing) {
-                  return <Table.Tr key={index}></Table.Tr>;
-                }
-
-                return (
-                  <Table.Tr
-                    key={index}
-                    onClick={() => handleOpenTransactionDetails(result)}
-                  >
-                    <Table.Td>
-                      {new Date(result.blockTime).toLocaleString()}
-                    </Table.Td>
-                    <Table.Td>{result.amount}</Table.Td>
-                    <Table.Td>
-                      {displayAccountName(result.toAccount as string)}
-                    </Table.Td>
-                  </Table.Tr>
-                );
-              })}
-            </Table.Body>
-          </Table.Root>
-        </GridItem>
-      </Grid>
+                  />
+                </Cell>
+              </Row>
+            );
+          })}
+        </TableBody>
+      </Table>
     </div>
   );
 };

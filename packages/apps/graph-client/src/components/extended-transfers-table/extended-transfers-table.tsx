@@ -6,12 +6,18 @@ import routes from '@/constants/routes';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
 import {
   Box,
+  Cell,
+  Column,
   Link,
   Pagination,
+  Row,
   Select,
   SelectItem,
   Table,
+  TableBody,
+  TableHeader,
 } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { compactTableClass } from '../common/compact-table/compact-table.css';
@@ -184,6 +190,7 @@ export const ExtendedTransfersTable = (
           />
         </div>
       </Box>
+<<<<<<< HEAD
       <Table.Root wordBreak="break-word" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
@@ -197,6 +204,18 @@ export const ExtendedTransfersTable = (
           </Table.Tr>
         </Table.Head>
         <Table.Body>
+=======
+      <Table className={atoms({ wordBreak: 'break-all' })}>
+        <TableHeader>
+          <Column>Chain</Column>
+          <Column>Block Height</Column>
+          <Column>Amount</Column>
+          <Column>Sender Account</Column>
+          <Column>Receiver Account</Column>
+          <Column>Request key</Column>
+        </TableHeader>
+        <TableBody>
+>>>>>>> 0e5aaafd1 (updated tools)
           {transfers.edges.map((edge, index) => {
             /**  These transfers are going to be added to their crosschain counterpart and
            this way we avoid repeated transfers in the table */
@@ -213,6 +232,7 @@ export const ExtendedTransfersTable = (
               : edge.node.height;
 
             return (
+<<<<<<< HEAD
               <Table.Tr key={index}>
                 <Table.Td>{chainIdDisplay}</Table.Td>
                 <Table.Td>
@@ -221,13 +241,20 @@ export const ExtendedTransfersTable = (
                 <Table.Td>{heightDisplay}</Table.Td>
                 <Table.Td>{edge.node.amount}</Table.Td>
                 <Table.Td>
+=======
+              <Row key={index}>
+                <Cell>{chainIdDisplay}</Cell>
+                <Cell>{heightDisplay}</Cell>
+                <Cell>{edge.node.amount}</Cell>
+                <Cell>
+>>>>>>> 0e5aaafd1 (updated tools)
                   <Link
                     href={`${routes.ACCOUNT}/${router.query.fungible}/${edge.node.senderAccount}`}
                   >
                     {edge.node.senderAccount}
                   </Link>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   {edge.node.receiverAccount ? (
                     <Link
                       href={`${routes.ACCOUNT}/${router.query.fungible}/${edge.node.receiverAccount}`}
@@ -243,8 +270,8 @@ export const ExtendedTransfersTable = (
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
                   )}
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
                     {edge.node.requestKey}
                   </Link>
@@ -258,12 +285,12 @@ export const ExtendedTransfersTable = (
                       </Link>
                     </>
                   )}
-                </Table.Td>
-              </Table.Tr>
+                </Cell>
+              </Row>
             );
           })}
-        </Table.Body>
-      </Table.Root>
+        </TableBody>
+      </Table>
     </>
   );
 };

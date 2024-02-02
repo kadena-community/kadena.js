@@ -14,12 +14,18 @@ import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+  Cell,
+  Column,
   Link,
   Notification,
+  Row,
   Stack,
   SystemIcon,
   Table,
+  TableBody,
+  TableHeader,
 } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -97,6 +103,7 @@ const RequestKey: React.FC = () => {
 
       {transaction && (
         <>
+<<<<<<< HEAD
           <Table.Root
             striped
             wordBreak="break-word"
@@ -111,9 +118,19 @@ const RequestKey: React.FC = () => {
             <Table.Body>
               <Table.Tr>
                 <Table.Td>
+=======
+          <Table isStriped className={atoms({ wordBreak: 'break-all' })}>
+            <TableHeader>
+              <Column width="160">Key</Column>
+              <Column>Value</Column>
+            </TableHeader>
+            <TableBody>
+              <Row>
+                <Cell>
+>>>>>>> 0e5aaafd1 (updated tools)
                   <strong>Status</strong>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   {transaction.badResult && (
                     <Notification
                       intent="negative"
@@ -146,58 +163,58 @@ const RequestKey: React.FC = () => {
                       Unknown transaction status
                     </Notification>
                   )}
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Request Key</strong>
-                </Table.Td>
-                <Table.Td>{transaction.requestKey}</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+                <Cell>{transaction.requestKey}</Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Chain</strong>
-                </Table.Td>
-                <Table.Td>{transaction.chainId}</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+                <Cell>{transaction.chainId}</Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Block</strong>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   <Link
                     href={`${routes.BLOCK_OVERVIEW}/${transaction.block?.hash}`}
                   >
                     {transaction.block?.hash}
                   </Link>
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Code</strong>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   <pre>{formatLisp(JSON.parse(transaction.code))}</pre>
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Transaction Output</strong>
-                </Table.Td>
-                <Table.Td>
-                  <Table.Root>
-                    <Table.Body>
-                      <Table.Tr>
-                        <Table.Td>
+                </Cell>
+                <Cell>
+                  <Table>
+                    <TableBody>
+                      <Row>
+                        <Cell>
                           <strong>Gas</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.gas}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.gas}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Result</strong>
-                        </Table.Td>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>
                           <pre>
                             {transaction.goodResult
                               ? formatCode(transaction.goodResult)
@@ -205,191 +222,191 @@ const RequestKey: React.FC = () => {
                               ? formatCode(transaction.badResult)
                               : 'Unknown'}
                           </pre>
-                        </Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Logs</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.logs}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.logs}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Metadata</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.metadata}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.metadata}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Continuation</strong>
-                        </Table.Td>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>
                           <pre>
                             {transaction.continuation
                               ? formatCode(transaction.continuation)
                               : 'None'}
                           </pre>
-                        </Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Transaction ID</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.transactionId}</Table.Td>
-                      </Table.Tr>
-                    </Table.Body>
-                  </Table.Root>
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.transactionId}</Cell>
+                      </Row>
+                    </TableBody>
+                  </Table>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Events</strong>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   {transaction.events?.map((event, index) => (
-                    <Table.Root key={index}>
-                      <Table.Body>
-                        <Table.Tr>
-                          <Table.Td>
+                    <Table key={index}>
+                      <TableBody>
+                        <Row>
+                          <Cell>
                             <strong>Name</strong>
-                          </Table.Td>
-                          <Table.Td>{event.qualifiedName}</Table.Td>
-                        </Table.Tr>
-                        <Table.Tr>
-                          <Table.Td>
+                          </Cell>
+                          <Cell>{event.qualifiedName}</Cell>
+                        </Row>
+                        <Row>
+                          <Cell>
                             <strong>Parameters</strong>
-                          </Table.Td>
-                          <Table.Td>
+                          </Cell>
+                          <Cell>
                             <pre>{formatCode(event.parameterText)}</pre>
-                          </Table.Td>
-                        </Table.Tr>
-                      </Table.Body>
-                    </Table.Root>
+                          </Cell>
+                        </Row>
+                      </TableBody>
+                    </Table>
                   ))}
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Data</strong>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   <pre>
                     {transaction.data &&
                       JSON.stringify(JSON.parse(transaction.data), null, 4)}
                   </pre>
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Nonce</strong>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   <pre>{transaction.nonce}</pre>
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Meta</strong>
-                </Table.Td>
-                <Table.Td>
-                  <Table.Root>
-                    <Table.Body>
-                      <Table.Tr>
-                        <Table.Td>
+                </Cell>
+                <Cell>
+                  <Table>
+                    <TableBody>
+                      <Row>
+                        <Cell>
                           <strong>Chain</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.chainId}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.chainId}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Sender</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.senderAccount}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.senderAccount}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Gas Price</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.gasPrice}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.gasPrice}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Gas Limit</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.gasLimit}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.gasLimit}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>TTL</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.ttl}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.ttl}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Creation Time</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.creationTime}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.creationTime}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Height</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.height}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.height}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Pact ID</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.pactId}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.pactId}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Proof</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.proof}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.proof}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Rollback</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.rollback}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.rollback}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Step</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.step}</Table.Td>
-                      </Table.Tr>
-                    </Table.Body>
-                  </Table.Root>
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.step}</Cell>
+                      </Row>
+                    </TableBody>
+                  </Table>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Signers</strong>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   {transaction.signers
                     ?.map((signer) => {
                       return signer.publicKey;
                     })
                     .join(', ')}
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Signatures</strong>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   {transaction.signers
                     ?.map((signer) => {
                       return signer.signature;
                     })
                     .join(', ')}
-                </Table.Td>
-              </Table.Tr>
-            </Table.Body>
-          </Table.Root>
+                </Cell>
+              </Row>
+            </TableBody>
+          </Table>
         </>
       )}
     </>

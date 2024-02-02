@@ -10,16 +10,16 @@ import classNames from 'classnames';
 import { TableCell, TableRow } from './Body';
 import { TableColumnHeader, TableHeaderRow } from './Header';
 
-export interface ITableProps
-  extends AriaTableProps<object>,
-    Omit<TableProps<object>, 'selectionMode' | 'draggable'>,
+export interface ITableProps<T>
+  extends AriaTableProps<T>,
+    Omit<TableProps<T>, 'selectionMode' | 'draggable'>,
     Omit<ComponentProps<'table'>, 'children'> {
   isStriped?: boolean;
   isCompact?: boolean;
 }
 
 // TODO: Implement Selection Cell
-export function Table(props: ITableProps) {
+export function Table<T extends object>(props: ITableProps<T>) {
   const state = useTableState({
     ...props,
   });

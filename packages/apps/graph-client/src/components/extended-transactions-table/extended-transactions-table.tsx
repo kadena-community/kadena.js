@@ -1,16 +1,22 @@
 import {
   Box,
+  Cell,
+  Column,
   Link,
   Pagination,
+  Row,
   Select,
   SelectItem,
   Table,
+  TableBody,
+  TableHeader,
 } from '@kadena/react-ui';
 
 import type { GetTransactionsQuery } from '@/__generated__/sdk';
 import routes from '@/constants/routes';
 import { formatLisp } from '@/utils/formatter';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
+import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { compactTableClass } from '../common/compact-table/compact-table.css';
@@ -183,6 +189,7 @@ export const ExtendedTransactionsTable = (
           />
         </div>
       </Box>
+<<<<<<< HEAD
       <Table.Root wordBreak="break-word" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
@@ -194,31 +201,40 @@ export const ExtendedTransactionsTable = (
           </Table.Tr>
         </Table.Head>
         <Table.Body>
+=======
+      <Table className={atoms({ wordBreak: 'break-all' })}>
+        <TableHeader>
+          <Column>Chain</Column>
+          <Column>Timestamp</Column>
+          <Column>Block Height</Column>
+          <Column>Request Key</Column>
+          <Column>Code</Column>
+        </TableHeader>
+        <TableBody>
+>>>>>>> 0e5aaafd1 (updated tools)
           {transactions.edges.map((edge, index) => {
             return (
-              <Table.Tr key={index}>
-                <Table.Td>{edge.node.chainId}</Table.Td>
-                <Table.Td>
-                  {new Date(edge.node.creationTime).toLocaleString()}
-                </Table.Td>
-                <Table.Td>{edge.node.height}</Table.Td>
-                <Table.Td>
+              <Row key={index}>
+                <Cell>{edge.node.chainId}</Cell>
+                <Cell>{new Date(edge.node.creationTime).toLocaleString()}</Cell>
+                <Cell>{edge.node.height}</Cell>
+                <Cell>
                   <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
                     {edge.node.requestKey}
                   </Link>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   {edge.node.code ? (
                     <pre>{formatLisp(JSON.parse(edge.node.code))}</pre>
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
                   )}
-                </Table.Td>
-              </Table.Tr>
+                </Cell>
+              </Row>
             );
           })}
-        </Table.Body>
-      </Table.Root>
+        </TableBody>
+      </Table>
       <span
         style={{ float: 'right' }}
       >{`Page ${currentPage} out of ${totalPages}`}</span>

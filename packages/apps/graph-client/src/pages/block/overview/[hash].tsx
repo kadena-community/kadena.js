@@ -18,12 +18,16 @@ import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+  Cell,
   Heading,
   Link,
   Notification,
+  Row,
   Stack,
   Table,
+  TableBody,
 } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -82,75 +86,89 @@ const Block: React.FC = () => {
           <>
             <Heading as="h4">Block Header</Heading>
 
+<<<<<<< HEAD
             <Table.Root wordBreak="break-word" className={compactTableClass}>
               <Table.Body>
                 <Table.Tr>
                   <Table.Td>
+=======
+            <Table className={atoms({ wordBreak: 'break-all' })}>
+              <TableBody>
+                <Row>
+                  <Cell>
+>>>>>>> 0e5aaafd1 (updated tools)
                     <strong>Chain ID</strong>
-                  </Table.Td>
-                  <Table.Td>{data.block.chainId}</Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                  <Table.Td>
+                  </Cell>
+                  <Cell>{data.block.chainId}</Cell>
+                </Row>
+                <Row>
+                  <Cell>
                     <strong>Height</strong>
-                  </Table.Td>
-                  <Table.Td>{data.block.height}</Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                  <Table.Td>
+                  </Cell>
+                  <Cell>{data.block.height}</Cell>
+                </Row>
+                <Row>
+                  <Cell>
                     <strong>Hash</strong>
-                  </Table.Td>
-                  <Table.Td>{data.block.hash}</Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                  <Table.Td>
+                  </Cell>
+                  <Cell>{data.block.hash}</Cell>
+                </Row>
+                <Row>
+                  <Cell>
                     <strong>Confirmation Depth</strong>
-                  </Table.Td>
-                  <Table.Td>
+                  </Cell>
+                  <Cell>
                     {!configData?.graphConfiguration
                       ?.maximumConfirmationDepth ||
                     data.block.confirmationDepth <
                       configData.graphConfiguration.maximumConfirmationDepth
                       ? data.block.confirmationDepth
                       : `>${data.block.confirmationDepth}`}
-                  </Table.Td>
-                </Table.Tr>
-              </Table.Body>
-            </Table.Root>
+                  </Cell>
+                </Row>
+              </TableBody>
+            </Table>
 
             <Box margin="sm" />
 
             <Accordion.Root>
               {[
                 <Accordion.Section title="See more" key={'accordion-header'}>
+<<<<<<< HEAD
                   <Table.Root className={compactTableClass}>
                     <Table.Body>
                       <Table.Tr>
                         <Table.Td>
+=======
+                  <Table>
+                    <TableBody>
+                      <Row>
+                        <Cell>
+>>>>>>> 0e5aaafd1 (updated tools)
                           <strong>Parent</strong>
-                        </Table.Td>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>
                           <Link
                             href={`${routes.BLOCK_OVERVIEW}/${data.block.parentHash}`}
                           >
                             {data.block.parentHash}
                           </Link>
-                        </Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Pow Hash</strong>
-                        </Table.Td>
-                        <Table.Td>{data.block.powHash}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{data.block.powHash}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Epoch Start</strong>
-                        </Table.Td>
-                        <Table.Td>{data.block.epoch}</Table.Td>
-                      </Table.Tr>
-                    </Table.Body>
-                  </Table.Root>
+                        </Cell>
+                        <Cell>{data.block.epoch}</Cell>
+                      </Row>
+                    </TableBody>
+                  </Table>
                 </Accordion.Section>,
               ]}
             </Accordion.Root>
@@ -159,62 +177,76 @@ const Block: React.FC = () => {
 
             <Heading as="h4">Block Payload</Heading>
 
+<<<<<<< HEAD
             <Table.Root wordBreak="break-word" className={compactTableClass}>
               <Table.Body>
                 <Table.Tr>
                   <Table.Td>
+=======
+            <Table wordBreak="break-word">
+              <TableBody>
+                <Row>
+                  <Cell>
+>>>>>>> 0e5aaafd1 (updated tools)
                     <strong>Payload Hash</strong>
-                  </Table.Td>
-                  <Table.Td>{data.block.payloadHash}</Table.Td>
-                  <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr url={viewAllTransactionsPage}>
-                  <Table.Td>
+                  </Cell>
+                  <Cell>{data.block.payloadHash}</Cell>
+                  <Cell></Cell>
+                </Row>
+                <Row url={viewAllTransactionsPage}>
+                  <Cell>
                     <strong>No. of transactions</strong>
-                  </Table.Td>
-                  <Table.Td>{data.block.transactions.totalCount}</Table.Td>
-                </Table.Tr>
-              </Table.Body>
-            </Table.Root>
+                  </Cell>
+                  <Cell>{data.block.transactions.totalCount}</Cell>
+                </Row>
+              </TableBody>
+            </Table>
             <Box margin="sm" />
             <Accordion.Root>
               {[
                 <Accordion.Section title="See more" key={'accordion-payload'}>
+<<<<<<< HEAD
                   <Table.Root className={compactTableClass}>
                     <Table.Body>
                       <Table.Tr>
                         <Table.Td>
+=======
+                  <Table>
+                    <TableBody>
+                      <Row>
+                        <Cell>
+>>>>>>> 0e5aaafd1 (updated tools)
                           <strong>Payload Hash</strong>
-                        </Table.Td>
-                        <Table.Td>{data.block.payloadHash}</Table.Td>
-                      </Table.Tr>
+                        </Cell>
+                        <Cell>{data.block.payloadHash}</Cell>
+                      </Row>
 
-                      <Table.Tr>
-                        <Table.Td>
+                      <Row>
+                        <Cell>
                           <strong>Miner Keys</strong>
-                        </Table.Td>
-                        <Table.Td>
-                          <Table.Root>
-                            <Table.Body>
+                        </Cell>
+                        <Cell>
+                          <Table>
+                            <TableBody>
                               {data.block.minerAccount.guard.keys?.map(
                                 (minerKey, index) => (
-                                  <Table.Tr key={index}>
-                                    <Table.Td>{minerKey}</Table.Td>
-                                  </Table.Tr>
+                                  <Row key={index}>
+                                    <Cell>{minerKey}</Cell>
+                                  </Row>
                                 ),
                               )}
-                            </Table.Body>
-                          </Table.Root>
-                        </Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                            </TableBody>
+                          </Table>
+                        </Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Predicate</strong>
-                        </Table.Td>
-                        <Table.Td>{data.block.predicate}</Table.Td>
-                      </Table.Tr>
-                    </Table.Body>
-                  </Table.Root>
+                        </Cell>
+                        <Cell>{data.block.predicate}</Cell>
+                      </Row>
+                    </TableBody>
+                  </Table>
                 </Accordion.Section>,
               ]}
             </Accordion.Root>

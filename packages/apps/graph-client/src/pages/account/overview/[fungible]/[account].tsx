@@ -25,15 +25,24 @@ import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+<<<<<<< HEAD
   Button,
   Link,
+=======
+  Cell,
+  Column,
+>>>>>>> 0e5aaafd1 (updated tools)
   Notification,
+  Row,
   Stack,
   TabItem,
   Table,
+  TableBody,
+  TableHeader,
   Tabs,
   TextField,
 } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -120,7 +129,55 @@ const Account: React.FC = () => {
         </Table.Body>
       </Table.Root>
 
+<<<<<<< HEAD
       <Box margin="md" />
+=======
+      {((data?.fungibleAccount &&
+        data?.fungibleAccount?.totalBalance === 0 &&
+        data?.fungibleAccount?.chainAccounts.length === 0) ||
+        (!loading && !error && !data?.fungibleAccount)) && (
+        <Notification intent="info" role="status">
+          We could not find any data on this account. Please check the fungible
+          name and account name.
+        </Notification>
+      )}
+      {data?.fungibleAccount && (
+        <div>
+          <Table className={atoms({ wordBreak: 'break-all' })}>
+            <TableBody>
+              <Row>
+                <Column>
+                  <strong>Account Name</strong>
+                </Column>
+                <Column>{data.fungibleAccount.accountName}</Column>
+              </Row>
+              <Row>
+                <Column>
+                  <strong>Fungible</strong>
+                </Column>
+                <Column>{data.fungibleAccount.fungibleName}</Column>
+              </Row>
+              <Row>
+                <Column>
+                  <strong>Balance</strong>
+                </Column>
+                <Column>{data.fungibleAccount.totalBalance}</Column>
+              </Row>
+            </TableBody>
+          </Table>
+          <Box margin="md" />
+          <Tabs defaultSelectedKey="Chain Accounts">
+            <TabItem title="Chain Accounts" key="Chain Accounts">
+              <Box margin="sm" />
+              <FungibleChainAccountTable
+                fungibleName={router.query.fungible as string}
+                accountName={router.query.account as string}
+                chainAccounts={
+                  data.fungibleAccount.chainAccounts as FungibleChainAccount[]
+                }
+              />
+            </TabItem>
+>>>>>>> 0e5aaafd1 (updated tools)
 
       <Tabs defaultSelectedKey="Fungible">
         <TabItem title="Fungible" key="Fungible">

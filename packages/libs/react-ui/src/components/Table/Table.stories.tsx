@@ -1,11 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { SortDescriptor } from 'react-stately';
-import { Box } from '..';
+import { Button } from '..';
 import { onLayer2 } from '../../storyDecorators';
-import { atoms } from '../../styles';
-import { vars } from '../../styles/vars.css';
-import type { ITableProps } from '../Table';
+import { TrailingIcon } from '../Icon/System/SystemIcon';
 import { Cell, Column, Row, Table, TableBody, TableHeader } from './';
 
 const columns = [
@@ -20,28 +18,28 @@ const rows = [
     name: 'Main',
     date: '6/7/2020',
     type: 'Website',
-    href: 'www.kadena.io',
+    href: 'https://www.kadena.io',
   },
   {
     id: 2,
     name: 'Docs',
     date: '4/7/2021',
     type: 'Documentation',
-    href: 'www.docs.kadena.io',
+    href: 'https://docs.kadena.io',
   },
   {
     id: 3,
     name: 'Tools',
     date: '11/20/2010',
     type: 'Tool',
-    href: 'www.tools.kadena.io',
+    href: 'https://tools.kadena.io/',
   },
   {
     id: 4,
     name: 'Marmalade',
     date: '1/18/2016',
     type: 'Product',
-    href: 'www.marmalade.art',
+    href: 'https://www.marmalade.art',
   },
 ];
 
@@ -56,7 +54,7 @@ const meta: Meta<typeof Table> = {
     docs: {
       description: {
         component:
-          'The Table component renders a table element with a head and body. The table can have a visual distinction between rows with the `striped` prop. The column width can be adjusted via `width`, `minWidth`, and `maxWidth` prop applied to the `Table.Th` subcomponent.',
+          "The Table component is a wrapper around [react-aria's](https://react-spectrum.adobe.com/react-aria/useTable.html) useTable hook.  Here are just a couple of examples but you can check their docs for more. The compound component is composed of the exposed `Table`, `TableHeader`, `TableBody`, `Column`, `Row`, and `Cell` components, check the examples below to see how to use them.",
       },
     },
   },
@@ -215,53 +213,20 @@ export const Sorting: Story = {
   },
 };
 
-export const EmptyRowsTable: Story = {
-  name: 'Table with Empty Rows',
-  render: () => {
-    return (
-      <Table aria-label="Example table with nested columns">
-        <TableHeader>
-          <Column>First Name</Column>
-          <Column>Last Name</Column>
-          <Column>Age</Column>
-          <Column>Birthday</Column>
-        </TableHeader>
-        <TableBody>
-          <Row>
-            <Cell>Sam</Cell>
-            <Cell>Smith</Cell>
-            <Cell>36</Cell>
-            <Cell>May 3</Cell>
-          </Row>
-          <Row>
-            <Cell>Peter</Cell>
-            <Cell>Parker</Cell>
-            <Cell>28</Cell>
-            <Cell>September 7</Cell>
-          </Row>
-          <Row>
-            <Cell>Bruce</Cell>
-            <Cell>Wayne</Cell>
-            <Cell>32</Cell>
-            <Cell>December 18</Cell>
-          </Row>
-        </TableBody>
-      </Table>
-    );
-  },
-};
-
 export const FixedWidth: Story = {
   name: 'Table with Fixed column width',
   render: () => {
     return (
       <Table aria-label="Example table with nested columns">
         <TableHeader>
+          <Column width="60">Px</Column>
           <Column width="50%">Fixed</Column>
           <Column>Normal</Column>
+          <Column>View</Column>
         </TableHeader>
         <TableBody>
           <Row>
+            <Cell>40</Cell>
             <Cell>
               You can pass minWidth, maxWidth, and width props to the Column
               component to control the size of columns.
@@ -277,6 +242,9 @@ export const FixedWidth: Story = {
               containing Lorem Ipsum passages, and more recently with desktop
               publishing software like Aldus PageMaker including versions of
               Lorem Ipsum.
+            </Cell>
+            <Cell>
+              <Button variant="inline" icon={<TrailingIcon />} />
             </Cell>
           </Row>
         </TableBody>

@@ -54,14 +54,7 @@ export type {
 } from './Notification';
 export type { IPaginationProps } from './Pagination';
 export type { IProgressCircleProps } from './ProgressCircle';
-export type {
-  ITBodyProps,
-  ITHeadProps,
-  ITableProps,
-  ITdProps,
-  IThProps,
-  ITrProps,
-} from './Table';
+export type { ITableProps } from './Table';
 export type { ITabItemProps, ITabsProps } from './Tabs';
 export type { ITagGroupProps, ITagItemProps, ITagProps } from './Tag';
 export type { ITooltipProps } from './Tooltip';
@@ -122,7 +115,7 @@ export {
 } from './Notification';
 export { Pagination } from './Pagination';
 export { ProgressCircle } from './ProgressCircle';
-export { Table } from './Table';
+export { Cell, Column, Row, Table, TableBody, TableHeader } from './Table';
 export { TabItem, Tabs } from './Tabs';
 export { Tag, TagGroup, TagItem } from './Tag';
 export { Tooltip } from './Tooltip';

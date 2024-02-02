@@ -18,11 +18,11 @@ interface ITableHeaderRowProps<T> {
   children: ReactNode;
 }
 
-export function TableHeaderRow({
+export function TableHeaderRow<T extends object>({
   item,
   state,
   children,
-}: ITableHeaderRowProps<object>) {
+}: ITableHeaderRowProps<T>) {
   const ref = useRef(null);
   const { rowProps } = useTableHeaderRow({ node: item }, state, ref);
 
@@ -38,10 +38,10 @@ interface ITableColumnHeaderProps<T> {
   state: TableState<T>;
 }
 
-export function TableColumnHeader({
+export function TableColumnHeader<T extends object>({
   column,
   state,
-}: ITableColumnHeaderProps<object>) {
+}: ITableColumnHeaderProps<T>) {
   const ref = useRef(null);
   const { columnHeaderProps } = useTableColumnHeader(
     { node: column },

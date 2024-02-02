@@ -8,9 +8,15 @@ import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+  Cell,
+  Column,
+  Row,
   Stack,
   Table,
+  TableBody,
+  TableHeader,
 } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -52,6 +58,7 @@ const GasEstimation: React.FC = () => {
         loaderText="Waiting for gas estimation..."
       />
 
+<<<<<<< HEAD
       <Table.Root wordBreak="break-all" className={compactTableClass}>
         <Table.Head>
           <Table.Tr>
@@ -70,6 +77,26 @@ const GasEstimation: React.FC = () => {
           </Table.Tr>
         </Table.Body>
       </Table.Root>
+=======
+      <Table className={atoms({ wordBreak: 'break-all' })}>
+        <TableHeader>
+          <Row>
+            <Cell>Label</Cell>
+            <Cell>Value</Cell>
+          </Row>
+        </TableHeader>
+        <TableBody>
+          <Row>
+            <Cell>Cmd</Cell>
+            <Cell>{cmdString}</Cell>
+          </Row>
+          <Row>
+            <Cell>Gas Estimate</Cell>
+            <Cell>{data?.gasLimitEstimate}</Cell>
+          </Row>
+        </TableBody>
+      </Table>
+>>>>>>> 0e5aaafd1 (updated tools)
     </>
   );
 };
