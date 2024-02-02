@@ -24,6 +24,10 @@ export function SelectProfile() {
         <Link to="/networks">
           <Text bold>Networks</Text>
         </Link>
+        <br />
+        <Link to="/import-wallet">
+          <Text bold>Import/Recover wallet</Text>
+        </Link>
       </Box>
     </main>
   );

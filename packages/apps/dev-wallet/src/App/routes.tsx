@@ -9,6 +9,7 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 
+import { ImportWallet } from '@/pages/import-wallet/import-wallet';
 import { CreateNetwork } from '@/pages/networks/create-network';
 import { Networks } from '@/pages/networks/networks';
 import { useWallet } from '../modules/wallet/wallet.hook';
@@ -44,6 +45,7 @@ export const Routes: FC = () => {
       <Route path="/networks" element={<Networks />} />
       <Route path="/networks/create" element={<CreateNetwork />} />
       <Route path="/create-wallet" element={<CreateWallet />} />
+      <Route path="/import-wallet" element={<ImportWallet />} />
       <Route path="/unlock-wallet/:profileId" element={<UnlockWallet />} />
       <Route element={<ProtectedRoute isAllowed={isUnlocked} />}>
         <Route

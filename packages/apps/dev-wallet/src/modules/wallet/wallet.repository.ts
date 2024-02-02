@@ -17,7 +17,7 @@ export interface IKeyItem {
 export interface IKeySource {
   uuid: string;
   derivationPathTemplate: string;
-  source: 'hd-wallet';
+  source: 'hd-wallet' | 'chainweaver';
   publicKeys: string[];
 }
 
@@ -25,8 +25,9 @@ export interface IProfile {
   uuid: string;
   name: string;
   networks: INetwork[];
-  seedKey: string;
   keySources: IKeySource[];
+  // TODO: maybe we should move this to the keySources
+  seedKey: string;
 }
 
 export interface IKeySetGuard {
