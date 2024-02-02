@@ -25,7 +25,9 @@
     "@kadena/client-utils": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/tools": "workspace:*",
-    "eslint-import-resolver-typescript": "3.5.5"
+    "eslint-import-resolver-typescript": "3.5.5",
+    "@kadena/pactjs": "workspace:*",
+    "@kadena/pactjs-cli": "workspace:*"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

@@ -1,4 +1,5 @@
 import { expect, type Page } from '@playwright/test';
+import { NotificationContainerComponent } from 'src/support/page-objects/react-ui/notificationContainer.component';
 import { CardComponent } from '../../../react-ui/card.component';
 import { AsideComponent } from '../../components/aside.component';
 import { ProgressBarComponent } from '../../components/progressBar.component';
@@ -12,6 +13,7 @@ export class CrossChainFinisherPage {
   public receiverCard: TrackerCardComponent;
   public progressBar: ProgressBarComponent;
   public gasSettingsCard: CardComponent;
+  public notificationComponent: NotificationContainerComponent;
 
   public constructor(page: Page) {
     this._page = page;
@@ -21,6 +23,7 @@ export class CrossChainFinisherPage {
     this.receiverCard = new TrackerCardComponent(this._page, 'Receiver');
     this.progressBar = new ProgressBarComponent(this._page);
     this.gasSettingsCard = new CardComponent(this._page, 'Gas Settings');
+    this.notificationComponent = new NotificationContainerComponent(this._page);
   }
 
   public async finishTransaction(): Promise<void> {
