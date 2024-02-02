@@ -51,6 +51,24 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option('-a, --account-name <accountName>', 'Account name'),
   }),
+  accountKdnName: createOption({
+    key: 'accountKdnName' as const,
+    prompt: account.accountKdnNamePrompt,
+    validation: z.string(),
+    option: new Option(
+      '-a, --account-kdn-name <accountName>',
+      'Kadena names name',
+    ),
+  }),
+  accountKdnAddress: createOption({
+    key: 'accountKdnAddress' as const,
+    prompt: account.accountKdnAddressPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-a, --account-kdn-address <accountKdnAddress>',
+      'Kadena names address',
+    ),
+  }),
   publicKeys: createOption({
     key: 'publicKeys' as const,
     prompt: account.publicKeysPrompt,

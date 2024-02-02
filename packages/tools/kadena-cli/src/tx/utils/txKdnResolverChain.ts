@@ -1,86 +1,82 @@
 import type { ChainId, IClient, ICommandResult } from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
+import {
+  KADENANAMES_NAMESPACE_MAINNET_MODULE,
+  KADENANAMES_NAMESPACE_TESTNET_MODULE,
+} from '../../constants/kadenanames.js';
 
-interface INameToAddressResponse {
-  address: string;
-}
-interface IAddressToNameResponse {
-  name: string;
-}
+const chainId: ChainId = '15'; // kadenanames running on chain 15
 
-const client = (networkId: string, chainId: ChainId): IClient =>
-  createClient(`${networkId}/chainweb/0.0/${networkId}/chain/${chainId}/pact`);
+const client = ({
+  networkId,
+  networkHost,
+}: {
+  networkId: string;
+  networkHost: string;
+}): IClient =>
+  createClient(
+    `${networkHost}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+  );
 
 export async function kdnResolveNameToAddress(
   name: string,
+  network: 'testnet' | 'mainnet',
   networkId: string,
-  chainId: ChainId,
+  networkHost: string,
 ): Promise<string | undefined> {
   try {
+    const module =
+      network === 'testnet'
+        ? KADENANAMES_NAMESPACE_TESTNET_MODULE
+        : KADENANAMES_NAMESPACE_MAINNET_MODULE;
     const transaction = Pact.builder
-      .execution(
-        Pact.modules['n_32faa22a75da53789d48dcbcb124a11c8f8651a8.kadena-names'][
-          'get-address'
-        ](name),
-      )
-      .setMeta({ chainId: chainId })
+      .execution(Pact.modules[module]['get-address'](name))
+      .setMeta({ chainId })
       .setNetworkId(networkId)
       .createTransaction();
 
-    const response: ICommandResult = await client(networkId, chainId).local(
-      transaction,
-      {
-        preflight: false,
-        signatureVerification: false,
-      },
-    );
+    const response: ICommandResult = await client({
+      networkId,
+      networkHost,
+    }).local(transaction, {
+      preflight: false,
+      signatureVerification: false,
+    });
 
-    const data = parseChainResponse<INameToAddressResponse>(
-      response,
-      'address',
-    );
-    if (data.address === null) {
-      return undefined;
-    }
-    return data.address;
+    return parseChainResponse<string>(response, 'address');
   } catch (error) {
-    console.error('Error in kdnResolveNameToAddress:', error);
-    throw error;
+    return undefined;
   }
 }
 
 export async function kdnResolveAddressToName(
   address: string,
+  network: 'testnet' | 'mainnet',
   networkId: string,
-  chainId: ChainId,
+  networkHost: string,
 ): Promise<string | undefined> {
   try {
+    const module =
+      network === 'testnet'
+        ? KADENANAMES_NAMESPACE_TESTNET_MODULE
+        : KADENANAMES_NAMESPACE_MAINNET_MODULE;
     const transaction = Pact.builder
-      .execution(
-        Pact.modules['n_32faa22a75da53789d48dcbcb124a11c8f8651a8.kadena-names'][
-          'get-name'
-        ](address),
-      )
-      .setMeta({ chainId: chainId })
+      .execution(Pact.modules[module]['get-name'](address))
+      .setMeta({ chainId })
       .setNetworkId(networkId)
       .createTransaction();
 
-    const response: ICommandResult = await client(networkId, chainId).local(
-      transaction,
-      {
-        preflight: false,
-        signatureVerification: false,
-      },
-    );
+    const response: ICommandResult = await client({
+      networkId,
+      networkHost,
+    }).local(transaction, {
+      preflight: false,
+      signatureVerification: false,
+    });
 
-    const data = parseChainResponse<IAddressToNameResponse>(response, 'name');
-    if (data.name === null) {
-      return undefined;
-    }
-    return data.name;
+    return parseChainResponse<string>(response, 'name');
   } catch (error) {
-    console.error('Error in kdnResolveAddressToName:', error);
-    throw error;
+    return undefined;
   }
 }
 
