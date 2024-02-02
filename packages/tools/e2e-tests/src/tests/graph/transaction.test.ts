@@ -206,7 +206,7 @@ test.describe('Query: getTransactions', async () => {
           },
           {
             requestKey: transfer.reqKey,
-            parameterText: `["0","coin.transfer-crosschain",["${sourceAccount.account}","${targetAccount.account}",{"pred":"keys-all","keys":["${targetAccount.keys[0].publicKey}"]},"1",20]]`,
+            parameterText: `["0","coin.transfer-crosschain",["${sourceAccount.account}","${targetAccount.account}",{"keys":["${targetAccount.keys[0].publicKey}"], "pred":"keys-all"},"1",20]]`,
             id: base64Encode(
               `Event:["${transfer.metaData?.blockHash}","3","${transfer.reqKey}"]`,
             ),
@@ -341,7 +341,7 @@ test.describe('Query: getTransactions', async () => {
           },
           {
             requestKey: transfer.continuation?.pactId,
-            parameterText: `["1","coin.transfer-crosschain",["${sourceAccount.account}","${targetAccount.account}",{"pred":"keys-all","keys":["${targetAccount.keys[0].publicKey}"]},"1",20]]`,
+            parameterText: `["0","coin.transfer-crosschain",["${sourceAccount.account}","${targetAccount.account}",{"keys":["${targetAccount.keys[0].publicKey}"], "pred":"keys-all"},"1",20]]`,
             id: base64Encode(
               `Event:["${continuationBlockHash}","3","${transfer.continuation?.pactId}"]`,
             ),
