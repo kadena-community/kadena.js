@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { onLayer2, withContentWidth } from '../../../storyDecorators';
 import { atoms } from '../../../styles';
 import { Button } from '../../Button';
-import { Plus } from '../../Icon/System/SystemIcon';
 import { Account } from '../../Icon/System/svgs/Account';
 import { NumberField } from './NumberField';
 
@@ -223,8 +222,8 @@ export const UsdFormat: Story = {
   },
 };
 
-export const WithAddons: Story = {
-  name: 'With addons',
+export const WithStartAddon: Story = {
+  name: 'With start addon',
   render: () => {
     const [value, setValue] = useState<number | undefined>();
 
@@ -241,7 +240,6 @@ export const WithAddons: Story = {
           value={value}
           onValueChange={setValue}
           startAddon={<Account />}
-          endAddon={<Button icon={<Plus />} isCompact />}
         />
         <Button type="submit">Submit</Button>
       </Form>

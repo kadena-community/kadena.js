@@ -12,6 +12,8 @@ import type { AriaNumberFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useLocale, useNumberField } from 'react-aria';
 import { useNumberFieldState } from 'react-stately';
 import { bodyBaseRegular, codeBaseRegular } from '../../../styles';
+import { Button } from '../../Button';
+import { ChevronDown, ChevronUp } from '../../Icon/System/SystemIcon';
 import {
   endAddon,
   formField,
@@ -21,6 +23,11 @@ import {
 } from '../Form.css';
 import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
+import {
+  iconClass,
+  numberButtonClass,
+  overwriteVarianClass,
+} from './NumberField.css';
 
 type PickedAriaNumberFieldProps = Omit<
   AriaNumberFieldProps,
@@ -45,7 +52,7 @@ export interface INumberFieldProps extends PickedAriaNumberFieldProps {
    */
   onValueChange?: (value: number) => void;
   startAddon?: ReactNode;
-  endAddon?: ReactNode;
+
   isOutlined?: boolean;
   inputFont?: 'body' | 'code';
 }
@@ -69,6 +76,8 @@ export function NumberFieldBase(
     inputProps,
     descriptionProps,
     errorMessageProps,
+    incrementButtonProps,
+    decrementButtonProps,
     ...validation
   } = useNumberField(
     {
@@ -143,25 +152,25 @@ export function NumberFieldBase(
           data-invalid={validation.isInvalid || undefined}
           data-positive={props.isPositive || undefined}
           data-has-start-addon={!!props.startAddon || undefined}
-          data-has-end-addon={!!props.endAddon || undefined}
           data-outlined={props.isOutlined || undefined}
         />
 
-        {props.endAddon && (
-          <div
-            className={endAddon}
-            ref={(el) => {
-              if (el) {
-                ref.current?.style.setProperty(
-                  '--end-addon-width',
-                  `${el.offsetWidth}px`,
-                );
-              }
-            }}
-          >
-            {props.endAddon}
-          </div>
-        )}
+        <div className={classNames(endAddon, numberButtonClass)}>
+          <Button
+            icon={<ChevronUp size="sm" className={iconClass} />}
+            variant="text"
+            isCompact
+            className={overwriteVarianClass}
+            {...incrementButtonProps}
+          />
+          <Button
+            icon={<ChevronDown size="sm" className={iconClass} />}
+            variant="text"
+            isCompact
+            className={overwriteVarianClass}
+            {...decrementButtonProps}
+          />
+        </div>
       </div>
 
       {props.description && !validation.isInvalid && (
