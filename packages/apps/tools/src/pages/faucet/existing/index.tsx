@@ -301,29 +301,29 @@ const ExistingAccountFaucetPage: FC = () => {
               {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             </Button>
           </div>
-
-          {requestKey !== '' ? (
-            <FormStatusNotification
-              status={'processing'}
-              title={t('Transaction submitted')}
-              body={
-                <Trans
-                  i18nKey="common:link-to-kadena-explorer"
-                  components={[
-                    <Link
-                      className={explorerLinkStyle}
-                      href={linkToExplorer}
-                      target={'_blank'}
-                      key={requestKey}
-                    >
-                      {requestKey}
-                    </Link>,
-                  ]}
-                />
-              }
-            />
-          ) : null}
         </Stack>
+
+        {requestKey !== '' ? (
+          <FormStatusNotification
+            status={'processing'}
+            title={t('Transaction submitted')}
+            body={
+              <Trans
+                i18nKey="common:link-to-kadena-explorer"
+                components={[
+                  <Link
+                    className={explorerLinkStyle}
+                    href={linkToExplorer}
+                    target={'_blank'}
+                    key={requestKey}
+                  >
+                    {requestKey}
+                  </Link>,
+                ]}
+              />
+            }
+          />
+        ) : null}
       </form>
 
       <DrawerToolbar
