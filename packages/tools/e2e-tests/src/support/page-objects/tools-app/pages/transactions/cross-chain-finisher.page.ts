@@ -1,9 +1,10 @@
-import { expect, type Page } from '@playwright/test';
-import { NotificationContainerComponent } from 'src/support/page-objects/react-ui/notificationContainer.component';
-import { CardComponent } from '../../../react-ui/card.component';
-import { AsideComponent } from '../../components/aside.component';
-import { ProgressBarComponent } from '../../components/progressBar.component';
-import { TrackerCardComponent } from '../../components/trackerCard.component';
+import { CardComponent } from '@page-objects/react-ui/card.component';
+import { NotificationContainerComponent } from '@page-objects/react-ui/notificationContainer.component';
+import { AsideComponent } from '@page-objects/tools-app/components/aside.component';
+import { ProgressBarComponent } from '@page-objects/tools-app/components/progressBar.component';
+import { TrackerCardComponent } from '@page-objects/tools-app/components/trackerCard.component';
+import type { Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 
 export class CrossChainFinisherPage {
   private readonly _page: Page;

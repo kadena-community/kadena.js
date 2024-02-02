@@ -4,10 +4,10 @@ import {
   createAccount,
   generateAccount,
 } from '@helpers/client-utils/accounts.helper';
+import { base64Encode } from '@helpers/graph/cryptography.helper';
+import { sendQuery } from '@helpers/graph/request.helper';
 import { expect, test } from '@playwright/test';
-import { base64Encode } from 'src/support/helpers/graph/cryptography.helper';
-import { sendQuery } from 'src/support/helpers/graph/request.helper';
-import type { IAccount } from 'src/support/types/account.types';
+import type { IAccount } from '@testTypes/account.types';
 
 let testAccount: IAccount;
 let queryResponse: any;

@@ -1,12 +1,11 @@
-import { createClient, Pact } from '@kadena/client';
-import type { ChainId } from '@kadena/types';
 import {
   sender00Account,
   xChainGasStation,
-} from '../../constants/accounts.constants';
-import { fundAmount } from '../../constants/amounts.constants';
-import { devnetUrl, networkId } from '../../constants/network.constants';
-import { signTransaction } from '../faucet/deploy/utils';
+} from '@constants/accounts.constants';
+import { fundAmount } from '@constants/amounts.constants';
+import { devnetUrl, networkId } from '@constants/network.constants';
+import { Pact, createClient, createSignWithKeypair } from '@kadena/client';
+import type { ChainId, ICommand } from '@kadena/types';
 
 export const deployGasStation = async (chainId: ChainId) => {
   const pactCommand = `
@@ -56,11 +55,12 @@ export const deployGasStation = async (chainId: ChainId) => {
     ])
     .createTransaction();
 
-  const signedTx = signTransaction(transaction, sender00Account.keys[0]);
+  const signWithKeypair = createSignWithKeypair([sender00Account.keys[0]]);
+  const signedTx = await signWithKeypair(transaction);
 
   const { submit, listen } = createClient(devnetUrl(chainId));
 
-  const requestKeys = await submit(signedTx);
+  const requestKeys = await submit(signedTx as ICommand);
 
   // const transactionDescriptor = await client.submit(signedTx);
   const response = await listen(requestKeys);

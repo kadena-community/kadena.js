@@ -1,11 +1,11 @@
+import { NavHeaderComponent } from '@page-objects/react-ui/navHeader.component';
+import { AsideComponent } from '@page-objects/tools-app/components/aside.component';
+import { FundExistingAccountPage } from '@page-objects/tools-app/pages/faucet/fund-existing-account.page';
+import { FundNewAccountPage } from '@page-objects/tools-app/pages/faucet/fund-new-account.page';
+import { HomePage } from '@page-objects/tools-app/pages/home.page';
+import { CrossChainFinisherPage } from '@page-objects/tools-app/pages/transactions/cross-chain-finisher.page';
+import { CrossChainTrackerPage } from '@page-objects/tools-app/pages/transactions/cross-chain-tracker.page';
 import type { Page } from '@playwright/test';
-import { NavHeaderComponent } from '../react-ui/navHeader.component';
-import { AsideComponent } from './components/aside.component';
-import { FundExistingAccountPage } from './pages/faucet/fund-existing-account.page';
-import { FundNewAccountPage } from './pages/faucet/fund-new-account.page';
-import { HomePage } from './pages/home.page';
-import { CrossChainFinisherPage } from './pages/transactions/cross-chain-finisher.page';
-import { CrossChainTrackerPage } from './pages/transactions/cross-chain-tracker.page';
 
 export class ToolsAppIndex {
   private readonly _page: Page;

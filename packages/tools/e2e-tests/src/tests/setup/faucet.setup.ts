@@ -1,7 +1,7 @@
+import { deployFaucetContract } from '@devnet/faucet/deploy';
+import { deployGuards } from '@devnet/guards/deploy';
+import { deployGasStation } from '@devnet/kadenaXchainGas/deploy';
 import { expect, test as setup } from '@playwright/test';
-import { deployFaucetContract } from 'src/support/smart-contracts/faucet/deploy';
-import { deployGuards } from '../../support/smart-contracts/guards/deploy';
-import { deployGasStation } from '../../support/smart-contracts/kadena-xchain-gas/deploy';
 
 setup('Configure Devnet', async () => {
   await setup.step(
