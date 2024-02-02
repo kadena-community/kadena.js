@@ -15,7 +15,7 @@ export async function saveSignedTransactions(
   commands: (ICommand | IUnsignedCommand)[],
   /** absolute paths, or relative to process.cwd() if starting with `.` */
   transactionFileNames: string[],
-): Promise<string | null> {
+): Promise<string> {
   if (commands !== undefined && commands.length > 0) {
     for (let index = 0; index < commands.length; index++) {
       const transactionData = commands[index];
@@ -36,16 +36,14 @@ export async function saveSignedTransactions(
           );
           return writeFilePath;
         } else {
-          console.error(
-            `Error: No corresponding filename for transaction at index ${index}.`,
+          throw new Error(
+            `No corresponding filename for transaction at index ${index}.`,
           );
         }
       } catch (error) {
-        console.error(`Error saving transaction at index ${index}:`, error);
+        throw new Error(`Saving transaction at index ${index}:`, error);
       }
     }
-  } else {
-    console.error('Error: Transaction signing was unsuccessful.');
   }
-  return null;
+  throw new Error('Transaction signing was unsuccessful.');
 }
