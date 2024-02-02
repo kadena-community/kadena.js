@@ -1,15 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { SortDescriptor } from 'react-stately';
-import { Button } from '..';
 import { onLayer2 } from '../../storyDecorators';
-import { TrailingIcon } from '../Icon/System/SystemIcon';
 import { Cell, Column, Row, Table, TableBody, TableHeader } from './';
 
 const columns = [
-  { name: 'Name', key: 'name' },
-  { name: 'Type', key: 'type' },
-  { name: 'Date Modified', key: 'date' },
+  { name: 'Name', key: 'name', isRowHeader: true },
+  { name: 'Type', key: 'type', isRowHeader: false },
+  { name: 'Date Modified', key: 'date', isRowHeader: false },
 ];
 
 const rows = [
@@ -78,7 +76,9 @@ export const Primary: Story = {
       >
         <TableHeader>
           {columns.map((column) => (
-            <Column key={column.key}>{column.name}</Column>
+            <Column key={column.key} isRowHeader={column.isRowHeader}>
+              {column.name}
+            </Column>
           ))}
         </TableHeader>
         <TableBody>
@@ -101,7 +101,9 @@ export const Striped: Story = {
     return (
       <Table aria-label="Example static striped collection table" isStriped>
         <TableHeader columns={columns}>
-          {(column) => <Column>{column.name}</Column>}
+          {(column) => (
+            <Column isRowHeader={column.isRowHeader}>{column.name}</Column>
+          )}
         </TableHeader>
         <TableBody items={rows}>
           {(item) => (
@@ -123,7 +125,9 @@ export const Compact: Story = {
     return (
       <Table aria-label="Example compact data table" isStriped isCompact>
         <TableHeader columns={columns}>
-          {(column) => <Column>{column.name}</Column>}
+          {(column) => (
+            <Column isRowHeader={column.isRowHeader}>{column.name}</Column>
+          )}
         </TableHeader>
         <TableBody items={rows}>
           {(item) => (
@@ -145,7 +149,9 @@ export const Link: Story = {
     return (
       <Table aria-label="Example link data table">
         <TableHeader columns={columns}>
-          {(column) => <Column>{column.name}</Column>}
+          {(column) => (
+            <Column isRowHeader={column.isRowHeader}>{column.name}</Column>
+          )}
         </TableHeader>
         <TableBody items={rows}>
           {(item) => (
@@ -197,7 +203,11 @@ export const Sorting: Story = {
         onSortChange={sort}
       >
         <TableHeader columns={columns}>
-          {(column) => <Column allowsSorting>{column.name}</Column>}
+          {(column) => (
+            <Column allowsSorting isRowHeader={column.isRowHeader}>
+              {column.name}
+            </Column>
+          )}
         </TableHeader>
         <TableBody items={items}>
           {(item) => (
@@ -219,7 +229,9 @@ export const FixedWidth: Story = {
     return (
       <Table aria-label="Example table with nested columns">
         <TableHeader>
-          <Column width="100">100px</Column>
+          <Column isRowHeader width="100">
+            100px
+          </Column>
           <Column width="50%">50%</Column>
           <Column>Normal</Column>
         </TableHeader>

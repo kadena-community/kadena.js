@@ -191,9 +191,8 @@ const Block: React.FC = () => {
                     <strong>Payload Hash</strong>
                   </Cell>
                   <Cell>{data.block.payloadHash}</Cell>
-                  <Cell></Cell>
                 </Row>
-                <Row url={viewAllTransactionsPage}>
+                <Row href={viewAllTransactionsPage}>
                   <Cell>
                     <strong>No. of transactions</strong>
                   </Cell>
