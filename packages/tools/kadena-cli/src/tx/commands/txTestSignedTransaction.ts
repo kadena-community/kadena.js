@@ -89,7 +89,7 @@ export const createTestSignedTransactionCommand: (
       networkOption.networkConfig,
       chainOption.chainId,
       files.txSignedTransactionFiles.map((file) =>
-        join(dir.txTransactionDir, file),
+        join(process.cwd(), dir.txTransactionDir, file),
       ),
       true,
     );
