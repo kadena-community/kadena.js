@@ -9,6 +9,7 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { txOptions } from '../txOptions.js';
 import { fixTemplatePactCommand } from './templates/mapper.js';
 
 export const createTransaction = async (
@@ -73,15 +74,18 @@ export const createTransactionCommandNew = createCommandFlexible(
   'create-transaction',
   'select a template and create a transaction',
   [
-    globalOptions.selectTemplate({ isOptional: false }),
-    globalOptions.templateVariables(),
+    txOptions.selectTemplate({ isOptional: false }),
+    txOptions.templateData({ isOptional: true }),
+    txOptions.templateVariables(),
     globalOptions.outFileJson(),
   ],
   async (option, values) => {
     const template = await option.template();
+    const templateData = await option.templateData();
     const templateVariables = await option.templateVariables({
       values,
       variables: template.templateConfig.variables,
+      data: templateData.templateDataConfig ?? {},
     });
 
     const outputFile = await option.outFile({

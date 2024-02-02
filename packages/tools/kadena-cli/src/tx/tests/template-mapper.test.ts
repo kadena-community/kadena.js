@@ -46,12 +46,8 @@ describe('template mapper', () => {
                 1,
               ],
             },
+            { name: 'coin.GAS', args: [] },
           ],
-        },
-        {
-          pubKey:
-            '2619fafe33b3128f38a4e4aefe6a5559371b18b6c25ac897aff165ce14b241b3',
-          clist: [{ name: 'coin.GAS', args: [] }],
         },
       ],
       nonce: '',
