@@ -25,6 +25,7 @@ import {
   buttonContainerClass,
   chainSelectContainerClass,
   containerClass,
+  explorerLinkStyle,
   infoBoxStyle,
   infoTitleStyle,
   inputContainerClass,
@@ -50,11 +51,14 @@ import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
+import { pollResult } from '@/services/faucet';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
 import { validatePublicKey } from '@/services/utils/utils';
+import { getExplorerLink } from '@/utils/getExplorerLink';
 import { stripAccountPrefix } from '@/utils/string';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { ITransactionDescriptor } from '@kadena/client';
 import { useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -76,8 +80,6 @@ interface IFundExistingAccountResponseBody {
         };
   };
 }
-interface IFundExistingAccountResponse
-  extends Record<string, IFundExistingAccountResponseBody> {}
 
 const AMOUNT_OF_COINS_FUNDED: number = 100;
 const isCustomError = (error: unknown): error is ICommandResult => {
@@ -105,6 +107,7 @@ const NewAccountFaucetPage: FC = () => {
   const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
     undefined,
   );
+  const [requestKey, setRequestKey] = useState<string>('');
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   const { data: accountName } = useQuery({
@@ -210,8 +213,9 @@ const NewAccountFaucetPage: FC = () => {
       }
 
       setRequestStatus({ status: 'processing' });
+      setRequestKey('');
       try {
-        const result = (await fundCreateNewAccount(
+        const submitResponse = (await fundCreateNewAccount(
           data.name,
           pubKeys,
           chainID,
@@ -219,8 +223,18 @@ const NewAccountFaucetPage: FC = () => {
           networksData,
           AMOUNT_OF_COINS_FUNDED,
           pred,
-        )) as IFundExistingAccountResponse;
-        const error = Object.values(result).find(
+        )) as ITransactionDescriptor;
+
+        setRequestKey(submitResponse.requestKey);
+
+        const pollResponse = (await pollResult(
+          chainID,
+          selectedNetwork,
+          networksData,
+          submitResponse,
+        )) as unknown as IFundExistingAccountResponseBody;
+
+        const error = Object.values(pollResponse).find(
           (response) => response.result.status === 'failure',
         );
         if (error) {
@@ -234,6 +248,7 @@ const NewAccountFaucetPage: FC = () => {
         setOpenItem(undefined);
       } catch (err) {
         let message;
+
         if (isCustomError(err)) {
           const result = err.result;
           const status = result?.status;
@@ -245,6 +260,14 @@ const NewAccountFaucetPage: FC = () => {
         } else {
           message = String(err);
         }
+
+        const requestKey = message
+          ? message.substring(
+              message.indexOf('"') + 1,
+              message.lastIndexOf('"'),
+            )
+          : '';
+        setRequestKey(requestKey);
         setRequestStatus({ status: 'erroneous', message });
       }
     },
@@ -252,8 +275,11 @@ const NewAccountFaucetPage: FC = () => {
   );
 
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
-  const disabledButton: boolean =
-    requestStatus.status === 'processing' || mainnetSelected;
+  const linkToExplorer = `${getExplorerLink(
+    requestKey,
+    selectedNetwork,
+    networksData,
+  )}`;
 
   const addPublicKey = () => {
     const value = stripAccountPrefix(getValues('pubKey') || '');
@@ -468,15 +494,37 @@ const NewAccountFaucetPage: FC = () => {
           <div className={buttonContainerClass}>
             <Button
               isLoading={requestStatus.status === 'processing'}
+              isDisabled={mainnetSelected}
               endIcon={<SystemIcon.TrailingIcon />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-              isDisabled={disabledButton}
               type="submit"
             >
               {t('Create and Fund Account', { amount: AMOUNT_OF_COINS_FUNDED })}
             </Button>
           </div>
         </Stack>
+
+        {requestKey !== '' ? (
+          <FormStatusNotification
+            status={'processing'}
+            title={t('Transaction submitted')}
+            body={
+              <Trans
+                i18nKey="common:link-to-kadena-explorer"
+                components={[
+                  <Link
+                    className={explorerLinkStyle}
+                    href={linkToExplorer}
+                    target={'_blank'}
+                    key={requestKey}
+                  >
+                    {requestKey}
+                  </Link>,
+                ]}
+              />
+            }
+          />
+        ) : null}
       </form>
       <DrawerToolbar
         ref={drawerPanelRef}

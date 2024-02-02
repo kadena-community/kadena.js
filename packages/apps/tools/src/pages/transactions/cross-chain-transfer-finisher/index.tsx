@@ -26,6 +26,7 @@ import { finishXChainTransfer } from '@/services/cross-chain-transfer-finish/fin
 import type { ITransferDataResult } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { getTransferData } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { validateRequestKey } from '@/services/utils/utils';
+import { getExplorerLink } from '@/utils/getExplorerLink';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -50,6 +51,7 @@ import Debug from 'debug';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -59,8 +61,8 @@ import { containerClass } from '../styles.css';
 import {
   formButtonStyle,
   formContentStyle,
-  noticationKeyStyle,
   notificationContainerStyle,
+  notificationKeyStyle,
   notificationLinkStyle,
   textareaContainerStyle,
   textareaWrapperStyle,
@@ -302,6 +304,28 @@ const CrossChainTransferFinisher: FC = () => {
     "sigs": ${pollResults.tx?.receiverGuard.keys.map((key) => `"${key}"`)}
   }`;
 
+  const linkToExplorer = `${getExplorerLink(
+    requestKey,
+    networkData.networkId,
+    networksData,
+  )}`;
+
+  const renderLinkToExplorer = (
+    <p>
+      <span className={notificationKeyStyle}>
+        {t('Target Chain Request key: ')}
+      </span>
+      <Link
+        className={notificationLinkStyle}
+        href={linkToExplorer}
+        target={'_blank'}
+        key={requestKey}
+      >
+        {requestKey}
+      </Link>
+    </p>
+  );
+
   const renderNotification =
     txError.toString() === '' && receiverRequestKey ? (
       <FormStatusNotification
@@ -309,16 +333,12 @@ const CrossChainTransferFinisher: FC = () => {
         title={t('Notification title success')}
         body={t('XChain transfer has been successfully finalized!')}
       >
-        <p
-          className={noticationKeyStyle}
-        >{`Request key: ${receiverRequestKey}`}</p>
+        {renderLinkToExplorer}
       </FormStatusNotification>
     ) : (
       <FormStatusNotification status="erroneous" title={t('Transaction error')}>
         {txError.toString()}
-        <p className={noticationKeyStyle}>
-          {`Target Chain Request key: ${receiverRequestKey}`}
-        </p>
+        {renderLinkToExplorer}
       </FormStatusNotification>
     );
 
@@ -328,9 +348,7 @@ const CrossChainTransferFinisher: FC = () => {
       title={t('form-status-title-processing')}
       body={t('form-status-content-processing')}
     >
-      <p className={noticationKeyStyle}>
-        {`Target Chain Request key: ${receiverRequestKey}`}
-      </p>
+      {renderLinkToExplorer}
     </FormStatusNotification>
   ) : null;
 
@@ -604,7 +622,6 @@ const CrossChainTransferFinisher: FC = () => {
         <section className={formButtonStyle}>
           <Button
             type="submit"
-            isDisabled={processingTx}
             isLoading={processingTx}
             endIcon={<SystemIcon.TrailingIcon />}
           >

@@ -3,6 +3,7 @@ import { env } from '@/utils/env';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ITransactionDescriptor } from '@kadena/client';
 import { createClient, isSignedTransaction, Pact } from '@kadena/client';
 import { genKeyPair, sign } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
@@ -30,7 +31,7 @@ export const fundExistingAccount = async (
   network: Network,
   networksData: INetworkData[],
   amount = 100,
-): Promise<unknown> => {
+): Promise<ITransactionDescriptor> => {
   debug(fundExistingAccount.name);
   const keyPair = genKeyPair();
 
@@ -79,13 +80,33 @@ export const fundExistingAccount = async (
 
   transaction.sigs = [{ sig: signature.sig }];
 
-  const { submit, pollStatus } = createClient(apiHost);
+  const { submit } = createClient(apiHost);
 
   if (!isSignedTransaction(transaction)) {
     throw new Error('Transaction is not signed');
   }
 
-  const requestKeys = await submit(transaction);
+  return await submit(transaction);
+};
 
-  return await pollStatus(requestKeys);
+export const pollResult = async (
+  chainId: ChainwebChainId,
+  network: Network,
+  networksData: INetworkData[],
+  requestKeys: ITransactionDescriptor,
+) => {
+  const networkDto = networksData.find((item) => item.networkId === network);
+
+  if (!networkDto) {
+    throw new Error('Network not found');
+  }
+
+  const apiHost = getApiHost({
+    api: networkDto.API,
+    networkId: networkDto.networkId,
+    chainId,
+  });
+  const { pollStatus } = createClient(apiHost);
+
+  return pollStatus(requestKeys);
 };

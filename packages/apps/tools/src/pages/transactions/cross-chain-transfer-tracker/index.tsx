@@ -234,7 +234,6 @@ const CrossChainTransferTracker: FC = () => {
               onPress={() => setOpenItem(undefined)}
               endIcon={<SystemIcon.Magnify />}
               isLoading={isSubmitting}
-              isDisabled={isSubmitting}
             >
               {t('Search')}
             </Button>
