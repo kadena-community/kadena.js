@@ -160,11 +160,7 @@ const getAllAccounts = async (): Promise<string[]> => {
   return [];
 };
 
-const promptVariableValue = async (
-  key: string,
-  network?: string,
-  networkConfig?: Record<string, unknown>,
-): Promise<string> => {
+const promptVariableValue = async (key: string): Promise<string> => {
   if (key.startsWith('account-')) {
     // search for account alias - needs account implementation
     const accounts = await getAllAccounts();
