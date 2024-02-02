@@ -72,17 +72,11 @@ export const signTransactionWithAliasFile = async (
     );
 
     const path = await saveSignedTransactions(commands, transactionFileNames);
-    if (path !== null) {
-      const signed = await assessTransactionSigningStatus(commands);
-      if (!signed.success) return signed;
 
-      return { success: true, data: { commands: signed.data, path } };
-    } else {
-      return {
-        success: false,
-        errors: [`Error in signAction: failed to write transaction file`],
-      };
-    }
+    const signingStatus = await assessTransactionSigningStatus(commands);
+    if (!signingStatus.success) return signingStatus;
+
+    return { success: true, data: { commands: signingStatus.data, path } };
   } catch (error) {
     return {
       success: false,
