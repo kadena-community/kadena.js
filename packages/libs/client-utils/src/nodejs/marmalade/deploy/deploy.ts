@@ -3,6 +3,7 @@ import { readdirSync } from 'fs';
 
 import { submitClient } from '../../../core';
 import type { IAccount, IClientConfig } from '../../../core/utils/helpers';
+import { deployFromDirectory } from '../../deploy/deploy-from-directory';
 import { createPactCommandFromTemplate } from '../../yaml-converter';
 import { handleDirectorySetup } from '../utils/directory';
 import {
@@ -87,8 +88,7 @@ export const deployMarmalade = async ({
     localConfig,
   });
 
-  // console.log('Preparing and adjusting the downloaded files...');
-
+  // We still need to read the template files and the code files to adjust the codefile paths
   const templateFiles = readdirSync(localConfig.templatePath).filter((file) =>
     file.endsWith(remoteConfig.templateExtension),
   );
@@ -97,35 +97,14 @@ export const deployMarmalade = async ({
     file.endsWith(remoteConfig.codefileExtension),
   );
 
+  console.log('Preparing and adjusting the downloaded files...');
+
   await updateTemplateFilesWithCodeFile(
     templateFiles,
     localConfig.templatePath,
     codeFiles,
     localConfig.codeFilesPath,
   );
-
-  /* sort the templates alphabetically so that the contracts are deployed in the correct order
-  also taking into account the order provided in the configuration */
-
-  templateFiles.sort((a, b) => {
-    const indexA = namespaceDeployOrder.findIndex((order) => a.includes(order));
-    const indexB = namespaceDeployOrder.findIndex((order) => b.includes(order));
-
-    if (indexA === -1 && indexB === -1) {
-      // Neither a nor b are in marmaladeNamespaceOrder, sort alphabetically
-      return a.localeCompare(b);
-    } else if (indexA === -1) {
-      // Only b is in marmaladeNamespaceOrder, b comes first
-      return 1;
-    } else if (indexB === -1) {
-      // Only a is in marmaladeNamespaceOrder, a comes first
-      return -1;
-    } else {
-      // Both a and b are in marmaladeNamespaceOrder, sort based on their positions
-      return indexA - indexB;
-    }
-  });
-
   // If no chain ids are provided, use the default chain id from the argument config
   if (chainIds.length === 0) {
     chainIds = [deploymentArguments.chain];
@@ -144,43 +123,47 @@ export const deployMarmalade = async ({
         networkId: deploymentArguments.network,
         clientConfig,
       });
-
-      console.log(`Deploying Marmalade Contracts on chain ${chainId}...`);
-
-      for (const templateFile of templateFiles) {
-        /* Assuming that the template file name is the same as the namespace
-        and that the filename contains the namespace*/
-        deploymentArguments.marmalade_namespace = templateFile.split('.')[0];
-        // Change the chain id for each chain
-        deploymentArguments.chain = chainId;
-
-        console.log(
-          `Deploying ${templateFile} for namespace ${deploymentArguments.marmalade_namespace}...`,
-        );
-
-        const pactCommand = await createPactCommandFromTemplate(
-          templateFile,
-          deploymentArguments,
-          localConfig.templatePath,
-        );
-
-        try {
-          const commandResult =
-            await submitClient(clientConfig)(pactCommand).executeTo('listen');
-
-          if (commandResult.result.status === 'success') {
-            console.log(
-              `Successfully deployed ${templateFile} on chain ${chainId}`,
-            );
-          } else {
-            console.log(
-              `Failed to deploy ${templateFile} on chain ${chainId}. Error: ${commandResult.result.error}`,
-            );
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      }
     }),
   );
+
+  console.log(`Deploying Marmalade Contracts...`);
+
+  /* sort the templates alphabetically so that the contracts are deployed in the correct order
+  also taking into account the order provided in the configuration */
+
+  const templateSort = (a: string, b: string) => {
+    const indexA = namespaceDeployOrder.findIndex((order) => a.includes(order));
+    const indexB = namespaceDeployOrder.findIndex((order) => b.includes(order));
+
+    if (indexA === -1 && indexB === -1) {
+      // Neither a nor b are in marmaladeNamespaceOrder, sort alphabetically
+      return a.localeCompare(b);
+    } else if (indexA === -1) {
+      // Only b is in marmaladeNamespaceOrder, b comes first
+      return 1;
+    } else if (indexB === -1) {
+      // Only a is in marmaladeNamespaceOrder, a comes first
+      return -1;
+    } else {
+      // Both a and b are in marmaladeNamespaceOrder, sort based on their positions
+      return indexA - indexB;
+    }
+  };
+
+  const templateConfig = {
+    path: localConfig.templatePath,
+    extension: remoteConfig.templateExtension,
+    sort: templateSort,
+    namespaceExtractor: (file: string) => {
+      return file.split('.')[0];
+    },
+    deploymentArguments,
+    codeFilesPath: localConfig.codeFilesPath,
+  };
+
+  await deployFromDirectory({
+    chainIds,
+    templateConfig,
+    clientConfig,
+  });
 };
