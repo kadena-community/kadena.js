@@ -622,7 +622,6 @@ const CrossChainTransferFinisher: FC = () => {
         <section className={formButtonStyle}>
           <Button
             type="submit"
-            isDisabled={processingTx}
             isLoading={processingTx}
             endIcon={<SystemIcon.TrailingIcon />}
           >
