@@ -332,7 +332,7 @@ const NewAccountFaucetPage: FC = () => {
       </Head>
       <Breadcrumbs>
         <BreadcrumbsItem>{t('Faucet')}</BreadcrumbsItem>
-        <BreadcrumbsItem>{t('New')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Fund New Account')}</BreadcrumbsItem>
       </Breadcrumbs>{' '}
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>

@@ -236,7 +236,7 @@ const ExistingAccountFaucetPage: FC = () => {
       </Head>
       <Breadcrumbs>
         <BreadcrumbsItem>{t('Faucet')}</BreadcrumbsItem>
-        <BreadcrumbsItem>{t('Existing')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Fund Existing Account')}</BreadcrumbsItem>
       </Breadcrumbs>
       <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
       <div className={notificationContainerStyle}>
