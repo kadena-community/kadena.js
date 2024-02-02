@@ -24,12 +24,13 @@ export const notificationContainerStyle = style([
 export const notificationLinkStyle = style([
   atoms({
     fontWeight: 'bodyFont.bold',
+    textDecoration: 'underline',
     color: 'inherit',
     cursor: 'pointer',
   }),
 ]);
 
-export const noticationKeyStyle = style([
+export const notificationKeyStyle = style([
   atoms({
     fontWeight: 'bodyFont.bold',
     color: 'inherit',

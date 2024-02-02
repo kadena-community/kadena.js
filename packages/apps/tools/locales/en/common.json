@@ -217,5 +217,6 @@
   "help-signature-data-question": "How do I use the Signature data?",
   "help-signature-data-content": "You can use the signature data exclusively for signing transactions.",
   "Transaction submitted": "Transaction submitted",
-  "link-to-kadena-explorer": "Transaction hash: <0></0>"
+  "link-to-kadena-explorer": "Transaction hash: <0></0>",
+  "Target Chain Request key: ": "Target Chain Request key: "
 }
