@@ -21,6 +21,7 @@ import { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import { logger } from '@utils/logger';
 import { generateAccount, stringifyProperty } from '../helper';
+import { stacker, worker } from './flood1';
 import { transfer } from './transfer';
 
 interface IFloodOptions {
@@ -112,6 +113,10 @@ interface ICreateTransferInput {
   contract?: string;
   transactionsPerCommand: number;
 }
+
+// async function flood({
+
+// })
 
 // export const transferCreateCommand = ({
 //   sender,
@@ -211,3 +216,28 @@ interface ICreateTransferInput {
 //     },
 //   ).executeTo('listen');
 // }
+
+export const flood1 = async (txPerSecond: number) => {
+  const account = await generateAccount();
+  let newStack: Promise<ICommandResult>[] = [];
+  worker(1000);
+
+  while (true) {
+    for (let i = 0; i < 19; i++) {
+      newStack.push(
+        transfer({
+          receiver: account,
+          amount: 1,
+          chainId: i.toString() as ChainId,
+        }),
+      );
+
+      // After 3 loops, timeout for 1 second
+      if (i % 3 === 0) {
+        stacker(newStack);
+        newStack = [];
+        await new Promise((resolve) => setTimeout(resolve, 900));
+      }
+    }
+  }
+};
