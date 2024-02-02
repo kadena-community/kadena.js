@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { atoms, token, tokens } from '../../../styles';
+import { atoms, token } from '../../../styles';
 
 export const numberButtonClass = style([
   atoms({
@@ -12,7 +12,7 @@ export const numberButtonClass = style([
   }),
   {
     borderLeft: `1px solid ${token('color.border.base.bold')}`,
-    paddingLeft: '3px',
+    paddingLeft: '8px',
   },
 ]);
 
