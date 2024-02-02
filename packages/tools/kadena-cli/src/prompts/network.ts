@@ -130,17 +130,11 @@ export const networkSelectPrompt: IPrompt<string> = async (
     });
   }
 
-  // if (prev.allowedNetworks === undefined) {
-  //   choices.push({ value: 'createNetwork', name: 'Create a new network' });
-  // }
   const selectedNetwork = await select({
     message: 'Select a network',
     choices: choices,
   });
-  // if (selectedNetwork === 'createNetwork') {
-  //   await program.parseAsync(['', '', 'networks', 'create']);
-  //   return networkSelectPrompt(prev, args, isOptional);
-  // }
+
   return selectedNetwork;
 };
 
