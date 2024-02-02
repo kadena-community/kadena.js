@@ -5,7 +5,7 @@ import { connect, isConnected, isInstalled } from './koalaCommon';
 import type { IKoalaQuicksignResponse, IKoalaSignFunction } from './koalaTypes';
 
 /**
- * Creates the quicksignWithWalletConnect function with interface {@link ISingleSignFunction}
+ * Creates the quicksignWithKoalaWallet function with interface {@link ISingleSignFunction}
  *
  * @public
  */
