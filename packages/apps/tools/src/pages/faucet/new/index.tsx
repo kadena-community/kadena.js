@@ -275,8 +275,6 @@ const NewAccountFaucetPage: FC = () => {
   );
 
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
-  const disabledButton: boolean =
-    requestStatus.status === 'processing' || mainnetSelected;
   const linkToExplorer = `${getExplorerLink(
     requestKey,
     selectedNetwork,
@@ -496,9 +494,9 @@ const NewAccountFaucetPage: FC = () => {
           <div className={buttonContainerClass}>
             <Button
               isLoading={requestStatus.status === 'processing'}
+              isDisabled={mainnetSelected}
               endIcon={<SystemIcon.TrailingIcon />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-              isDisabled={disabledButton}
               type="submit"
             >
               {t('Create and Fund Account', { amount: AMOUNT_OF_COINS_FUNDED })}
