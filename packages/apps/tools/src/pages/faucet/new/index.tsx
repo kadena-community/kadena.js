@@ -51,12 +51,14 @@ import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
+import { pollResult } from '@/services/faucet';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
 import { validatePublicKey } from '@/services/utils/utils';
 import { getExplorerLink } from '@/utils/getExplorerLink';
 import { stripAccountPrefix } from '@/utils/string';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { ITransactionDescriptor } from '@kadena/client';
 import { useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -78,8 +80,6 @@ interface IFundExistingAccountResponseBody {
         };
   };
 }
-interface IFundExistingAccountResponse
-  extends Record<string, IFundExistingAccountResponseBody> {}
 
 const AMOUNT_OF_COINS_FUNDED: number = 100;
 const isCustomError = (error: unknown): error is ICommandResult => {
@@ -215,7 +215,7 @@ const NewAccountFaucetPage: FC = () => {
       setRequestStatus({ status: 'processing' });
       setRequestKey('');
       try {
-        const result = (await fundCreateNewAccount(
+        const submitResponse = (await fundCreateNewAccount(
           data.name,
           pubKeys,
           chainID,
@@ -223,12 +223,18 @@ const NewAccountFaucetPage: FC = () => {
           networksData,
           AMOUNT_OF_COINS_FUNDED,
           pred,
-        )) as IFundExistingAccountResponse;
+        )) as ITransactionDescriptor;
 
-        const requestKey = Object.keys(result)[0];
-        setRequestKey(requestKey);
+        setRequestKey(submitResponse.requestKey);
 
-        const error = Object.values(result).find(
+        const pollResponse = (await pollResult(
+          chainID,
+          selectedNetwork,
+          networksData,
+          submitResponse,
+        )) as unknown as IFundExistingAccountResponseBody;
+
+        const error = Object.values(pollResponse).find(
           (response) => response.result.status === 'failure',
         );
         if (error) {

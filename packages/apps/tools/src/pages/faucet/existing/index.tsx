@@ -9,7 +9,7 @@ import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
-import { fundExistingAccount } from '@/services/faucet';
+import { fundExistingAccount, pollResult } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
@@ -39,6 +39,7 @@ import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/Menu
 import { sidebarLinks } from '@/constants/side-links';
 import { notificationLinkStyle } from '@/pages/faucet/new/styles.css';
 import { getExplorerLink } from '@/utils/getExplorerLink';
+import type { ITransactionDescriptor } from '@kadena/client';
 import Link from 'next/link';
 import {
   accountNameContainerClass,
@@ -76,9 +77,6 @@ interface IFundExistingAccountResponseBody {
         };
   };
 }
-
-interface IFundExistingAccountResponse
-  extends Record<string, IFundExistingAccountResponseBody> {}
 
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
@@ -155,18 +153,24 @@ const ExistingAccountFaucetPage: FC = () => {
       setRequestKey('');
 
       try {
-        const result = (await fundExistingAccount(
+        const submitResponse = (await fundExistingAccount(
           data.name,
           chainID,
           selectedNetwork,
           networksData,
           AMOUNT_OF_COINS_FUNDED,
-        )) as IFundExistingAccountResponse;
+        )) as ITransactionDescriptor;
 
-        const requestKey = Object.keys(result)[0];
-        setRequestKey(requestKey);
+        setRequestKey(submitResponse.requestKey);
 
-        const error = Object.values(result).find(
+        const pollResponse = (await pollResult(
+          chainID,
+          selectedNetwork,
+          networksData,
+          submitResponse,
+        )) as unknown as IFundExistingAccountResponseBody;
+
+        const error = Object.values(pollResponse).find(
           (response) => response.result.status === 'failure',
         );
 
