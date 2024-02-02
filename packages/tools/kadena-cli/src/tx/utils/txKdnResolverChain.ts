@@ -8,17 +8,12 @@ interface IAddressToNameResponse {
   name: string;
 }
 
-const client = (
-  networkConfig: Record<string, string>,
-  chainId: ChainId,
-): IClient =>
-  createClient(
-    `${networkConfig.networkHost}/chainweb/0.0/${networkConfig.networkId}/chain/${chainId}/pact`,
-  );
+const client = (networkId: string, chainId: ChainId): IClient =>
+  createClient(`${networkId}/chainweb/0.0/${networkId}/chain/${chainId}/pact`);
 
 export async function kdnResolveNameToAddress(
   name: string,
-  networkConfig: Record<string, string>,
+  networkId: string,
   chainId: ChainId,
 ): Promise<string | undefined> {
   try {
@@ -29,10 +24,10 @@ export async function kdnResolveNameToAddress(
         ](name),
       )
       .setMeta({ chainId: chainId })
-      .setNetworkId(networkConfig.networkId)
+      .setNetworkId(networkId)
       .createTransaction();
 
-    const response: ICommandResult = await client(networkConfig, chainId).local(
+    const response: ICommandResult = await client(networkId, chainId).local(
       transaction,
       {
         preflight: false,
@@ -56,7 +51,7 @@ export async function kdnResolveNameToAddress(
 
 export async function kdnResolveAddressToName(
   address: string,
-  networkConfig: Record<string, string>,
+  networkId: string,
   chainId: ChainId,
 ): Promise<string | undefined> {
   try {
@@ -67,10 +62,10 @@ export async function kdnResolveAddressToName(
         ](address),
       )
       .setMeta({ chainId: chainId })
-      .setNetworkId(networkConfig.networkId)
+      .setNetworkId(networkId)
       .createTransaction();
 
-    const response: ICommandResult = await client(networkConfig, chainId).local(
+    const response: ICommandResult = await client(networkId, chainId).local(
       transaction,
       {
         preflight: false,
