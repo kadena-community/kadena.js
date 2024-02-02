@@ -1,8 +1,3 @@
-import { HeaderMenuButton } from '@/components/Common/Layout/partials/Header/HeaderMenuButton';
-import {
-  headerButtonsWrapperStyle,
-  walletConnectWrapperStyle,
-} from '@/components/Common/Layout/partials/Header/styles.css';
 import { AddNetworkModal } from '@/components/Global';
 import { OptionsModal } from '@/components/Global/OptionsModal';
 import type { Network } from '@/constants/kadena';
@@ -12,14 +7,24 @@ import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
 import type { IMenuItem } from '@/types/Layout';
 import { getHref } from '@/utils/getHref';
 import type { INetworkData } from '@/utils/network';
-import { NavHeader } from '@kadena/react-ui';
-import { breakpoints } from '@kadena/react-ui/styles';
+import {
+  KadenaLogo,
+  NavHeader,
+  NavHeaderButton,
+  NavHeaderLink,
+  NavHeaderLinkList,
+  NavHeaderSelect,
+  SelectItem,
+  SystemIcon,
+} from '@kadena/react-ui';
+import { atoms, breakpoints } from '@kadena/react-ui/styles';
 import { useTheme } from 'next-themes';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC, ReactNode } from 'react';
 import React, { useState } from 'react';
+import { Logo } from './Logo';
 
 export interface IHeaderProps {
   logo?: ReactNode;
@@ -33,9 +38,11 @@ const Header: FC<IHeaderProps> = () => {
   const { selectedNetwork, networksData, setSelectedNetwork } =
     useWalletConnectClient();
   const { pathname } = useRouter();
-  const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.sm}`);
 
   const { systemTheme, theme, setTheme } = useTheme();
+
+  const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.sm}`);
+
   const currentTheme = theme === 'system' ? systemTheme : theme;
 
   const [isOpen, setIsOpen] = useState(false);
@@ -43,11 +50,11 @@ const Header: FC<IHeaderProps> = () => {
 
   const openNetworkModal = () => setIsOpen(true);
 
-  const handleOnChange = (e: React.FormEvent<HTMLSelectElement>): void => {
-    if ((e.target as HTMLSelectElement).value === 'custom') {
+  const handleOnChange = (value: Network): void => {
+    if (value === 'custom') {
       return openNetworkModal();
     }
-    setSelectedNetwork((e.target as HTMLSelectElement).value as Network);
+    setSelectedNetwork(value);
   };
 
   const toggleTheme = (): void => {
@@ -61,50 +68,57 @@ const Header: FC<IHeaderProps> = () => {
 
   return (
     <>
-      <NavHeader.Root brand={isMediumScreen ? 'DevTools' : 'Kadena'}>
-        <NavHeader.Navigation activeHref={pathname}>
+      <NavHeader
+        logo={
+          <Link href={'/'}>
+            {isMediumScreen ? <Logo /> : <KadenaLogo height={33} />}
+          </Link>
+        }
+        activeHref={pathname}
+      >
+        <NavHeaderLinkList>
           {menuData.map((item, index) => (
-            <NavHeader.Link
-              key={index}
-              href={getHref(pathname, item.href)}
-              asChild
-            >
-              <Link href={getHref(pathname, item.href)}>{item.title}</Link>
-            </NavHeader.Link>
+            <NavHeaderLink key={index} asChild>
+              <Link href={getHref(pathname, item.href as string)}>
+                {item.title}
+              </Link>
+            </NavHeaderLink>
           ))}
-        </NavHeader.Navigation>
-        <NavHeader.Content>
-          <div className={headerButtonsWrapperStyle}>
-            <HeaderMenuButton
-              title={'Toggle theme'}
-              icon={'ThemeLightDark'}
-              onClick={() => toggleTheme()}
-            />
-            <HeaderMenuButton
-              title={'Application Settings'}
-              icon={'ProgressWrench'}
-              onClick={() => handleDevOptionsClick()}
-            />
-          </div>
-          <NavHeader.Select
-            id="network-select"
-            ariaLabel={t('Select Network')}
-            value={selectedNetwork as string}
-            onChange={(e) => handleOnChange(e)}
-            icon="Earth"
-          >
-            {networksData.map((network: INetworkData) => (
-              <option key={network.networkId} value={network.networkId}>
+        </NavHeaderLinkList>
+        <NavHeaderButton
+          aria-label="Toggle theme"
+          icon={<SystemIcon.ThemeLightDark />}
+          onPress={() => toggleTheme()}
+          className={atoms({ marginInlineEnd: 'sm' })}
+        />
+        <NavHeaderButton
+          aria-label={'Application Settings'}
+          icon={<SystemIcon.ProgressWrench />}
+          onPress={() => handleDevOptionsClick()}
+          className={atoms({ marginInlineEnd: 'sm' })}
+        />
+        <NavHeaderSelect
+          id="network-select"
+          aria-label={t('Select Network')}
+          selectedKey={selectedNetwork as string}
+          onSelectionChange={(value) => handleOnChange(value as Network)}
+          startIcon={<SystemIcon.Earth />}
+        >
+          {[
+            ...networksData.map((network: INetworkData) => (
+              <SelectItem key={network.networkId} textValue={network.networkId}>
                 {network.label}
-              </option>
-            ))}
-            <option value="custom">{t('+ add network')}</option>
-          </NavHeader.Select>
-          <div className={walletConnectWrapperStyle}>
-            {/*<WalletConnectButton />*/}
-          </div>
-        </NavHeader.Content>
-      </NavHeader.Root>
+              </SelectItem>
+            )),
+            <SelectItem key="custom" textValue="custom">
+              {t('+ add network')}
+            </SelectItem>,
+          ]}
+        </NavHeaderSelect>
+        {/* <div className={walletConnectWrapperStyle}>
+        <WalletConnectButton />
+      </div> */}
+      </NavHeader>
       <AddNetworkModal
         isOpen={isOpen}
         onOpenChange={(isOpen) => setIsOpen(isOpen)}

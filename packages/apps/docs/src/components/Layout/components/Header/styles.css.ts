@@ -4,50 +4,23 @@ import {
   responsiveStyle,
   tokens,
 } from '@kadena/react-ui/styles';
-import { style, styleVariants } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 import { $$modalZIndex, $$navMenu, $$pageWidth } from '../../global.css';
 
-export const logoClass = style({
-  zIndex: $$navMenu,
-  maxWidth: tokens.kda.foundation.size.n48,
-  paddingRight: tokens.kda.foundation.spacing.xxxl,
-});
-
-export const headerButtonClass = style([
+export const headerClass = style([
   atoms({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingBlock: 'sm',
-    borderRadius: 'lg',
-    cursor: 'pointer',
-    color: 'text.base.inverse.default',
+    position: 'sticky',
+    top: 0,
   }),
   {
-    width: tokens.kda.foundation.size.n11,
-    border: 0,
-    transition: `opacity 0.2s ease`,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        color: tokens.kda.foundation.color.text.base.default,
-      },
-      [`&:hover`]: {
-        color: tokens.kda.foundation.color.text.subtle.inverse.default,
-        opacity: '.6',
-      },
-      [`${darkThemeClass} &:hover`]: {
-        color: tokens.kda.foundation.color.text.subtle.default,
-        opacity: '.6',
-      },
-    },
+    gridArea: 'header',
+    zIndex: $$navMenu,
   },
 ]);
 
-export const iconButtonClass = style([
-  atoms({
-    backgroundColor: 'transparent',
-  }),
-]);
+globalStyle(`${headerClass} > nav > div`, {
+  maxWidth: $$pageWidth,
+});
 
 export const hamburgerButtonClass = style([
   {
@@ -64,7 +37,7 @@ export const hamburgerButtonClass = style([
     },
 
     ...responsiveStyle({
-      md: {
+      lg: {
         display: 'none',
       },
     }),
@@ -107,25 +80,6 @@ export const searchButtonSlashClass = style([
   },
 ]);
 
-export const headerClass = style([
-  atoms({
-    position: 'sticky',
-    top: 0,
-    backgroundColor: 'layer-1.inverse.default',
-  }),
-  {
-    color: tokens.kda.foundation.color.neutral.n0,
-    gridArea: 'header',
-    zIndex: $$navMenu,
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        backgroundColor:
-          tokens.kda.foundation.color.background['layer-1'].default,
-      },
-    },
-  },
-]);
-
 export const skipNavClass = style([
   atoms({
     position: 'absolute',
@@ -151,119 +105,45 @@ export const skipNavClass = style([
   },
 ]);
 
-export const innerWrapperClass = style([
+export const headerButtonClass = style([
   atoms({
-    position: 'relative',
     display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingInline: 'md',
+    paddingBlock: 'sm',
+    borderRadius: 'lg',
+    cursor: 'pointer',
+    color: 'text.base.inverse.default',
+    flexShrink: 0,
   }),
   {
-    marginInline: 'auto',
-    marginBlock: 0,
-    paddingBlock: tokens.kda.foundation.size.n3,
-    maxWidth: $$pageWidth,
-  },
-]);
-
-export const spacerClass = style({
-  flex: 1,
-});
-
-export const headerIconGroupClass = style([
-  atoms({
-    display: 'flex',
-    gap: {
-      xs: 'sm',
-      lg: 'sm',
+    border: 0,
+    opacity: 0.8,
+    transition: `opacity 0.2s ease`,
+    selectors: {
+      [`&:hover, &:focus-visible`]: {
+        opacity: '1',
+      },
     },
-    marginInlineStart: 'sm',
-  }),
+  },
 ]);
 
-export const socialGroupClass = style({
-  display: 'none',
-  ...responsiveStyle({
-    lg: {
-      display: 'flex',
-    },
-  }),
-});
-
-export const animationBackgroundClass = style([
-  atoms({
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    zIndex: 0,
-    opacity: 0,
-  }),
-]);
-
-export const animationBackgroundShowVariant = styleVariants({
-  show: {
-    opacity: 1,
-  },
-  hide: {
-    opacity: 0,
-  },
-});
-
-export const navClass = style([
-  atoms({
-    display: 'none',
-    alignItems: 'center',
-    zIndex: 1,
-  }),
+export const hideOnTabletClass = style([
   responsiveStyle({
-    md: {
-      display: 'flex',
-      marginTop: '-1px',
-    },
+    xs: { display: 'none' },
+    lg: { display: 'flex' },
   }),
-]);
-
-export const ulClass = style([
-  atoms({
-    display: 'flex',
-    gap: 'md',
-    padding: 'no',
-    width: '100%',
-  }),
-  {
-    listStyle: 'none',
-  },
 ]);
 
 export const navLinkClass = style([
-  atoms({
-    color: 'text.base.inverse.default',
-    fontFamily: 'bodyFont',
-    textDecoration: 'none',
-    borderRadius: 'sm',
-  }),
   {
-    padding: `${tokens.kda.foundation.size.n1} clamp(${tokens.kda.foundation.size.n1}, .5vw, ${tokens.kda.foundation.size.n12})`,
     fontSize: `clamp(${tokens.kda.foundation.size.n3}, 1.4vw, ${tokens.kda.foundation.size.n4})`,
-    selectors: {
-      '&:hover': {
-        color: tokens.kda.foundation.color.text.base.inverse.default,
-        opacity: '.5',
-      },
-      [`${darkThemeClass} &`]: {
-        color: tokens.kda.foundation.color.text.base.default,
-      },
-    },
   },
 ]);
 
-export const hideOnMobileClass = style([
-  atoms({
-    display: 'none',
-  }),
+export const socialsClass = style([
   responsiveStyle({
-    md: {
-      display: 'flex',
-    },
+    xs: { display: 'none' },
+    xl: { display: 'flex' },
   }),
 ]);

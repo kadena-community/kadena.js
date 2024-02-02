@@ -5,6 +5,7 @@ export const iconFill = createVar();
 export const iconContainer = style([
   sprinkles({
     display: 'block',
+    flexShrink: 0,
   }),
   {
     fill: iconFill,

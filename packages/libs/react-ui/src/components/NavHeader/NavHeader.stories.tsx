@@ -1,8 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { logoVariants } from '../BrandLogo';
-import { NavHeader } from './';
-import type { INavHeaderRootProps } from './NavHeader';
+import { atoms } from '../../styles/atoms.css';
+import { SelectItem } from '../Form/Select';
+import { SystemIcon } from '../Icon';
+import { KadenaLogo } from '../Logo';
+import {
+  NavHeader,
+  NavHeaderButton,
+  NavHeaderLink,
+  NavHeaderLinkList,
+} from '../NavHeader';
+import { NavHeaderSelect } from '../NavHeader/NavHeaderSelect';
+import type { INavHeaderProps } from './NavHeader';
 import type { INavHeaderLinkProps } from './NavHeaderLink';
 
 const sampleNavItems: INavHeaderLinkProps[] = [
@@ -29,7 +38,7 @@ const sampleNetworkItems: string[] = ['Mainnet', 'Testnet'];
 type StoryProps = {
   linksCount: number;
   navHeaderActiveLink?: string;
-} & INavHeaderRootProps;
+} & INavHeaderProps;
 
 const meta: Meta<StoryProps> = {
   title: 'Navigation/NavHeader',
@@ -49,16 +58,6 @@ const meta: Meta<StoryProps> = {
     },
   },
   argTypes: {
-    brand: {
-      control: {
-        type: 'select',
-      },
-      description: 'Logo variant',
-      options: ['-', ...logoVariants],
-      table: {
-        defaultValue: { summary: logoVariants[0] },
-      },
-    },
     linksCount: {
       control: { type: 'range', min: 1, max: sampleNavItems.length, step: 1 },
       description: 'Adjust sample navigation items count',
@@ -79,11 +78,10 @@ type IStory = StoryObj<StoryProps>;
 export const Dynamic: IStory = {
   name: 'NavHeader',
   args: {
-    brand: logoVariants[0],
     linksCount: 3,
     navHeaderActiveLink: undefined,
   },
-  render: ({ brand, linksCount, navHeaderActiveLink }) => {
+  render: ({ linksCount, navHeaderActiveLink }) => {
     const activeHref = navHeaderActiveLink
       ? Object.values(sampleNavItems).find(
           (item) => item.children === navHeaderActiveLink,
@@ -92,37 +90,43 @@ export const Dynamic: IStory = {
     const [value, setValue] = useState<string>(sampleNetworkItems[0]);
 
     return (
-      <NavHeader.Root brand={brand}>
-        <NavHeader.Navigation activeHref={activeHref}>
+      <NavHeader
+        logo={
+          <a href="">
+            <KadenaLogo height={40} />
+          </a>
+        }
+        activeHref={activeHref}
+      >
+        <NavHeaderLinkList>
           {sampleNavItems.slice(0, linksCount).map((item, index) => (
-            <NavHeader.Link
+            <NavHeaderLink
               key={index}
               href={item.href}
               onClick={(event) => console.log(item.children, { event })}
             >
               {item.children}
-            </NavHeader.Link>
+            </NavHeaderLink>
           ))}
-        </NavHeader.Navigation>
-        <NavHeader.Content>
-          <NavHeader.Select
-            id="network-select"
-            ariaLabel="Select Network"
-            value={value}
-            onChange={(e) => {
-              console.log('clicked on', e.target.value);
-              setValue(e.target.value);
-            }}
-            icon="Earth"
-          >
-            {sampleNetworkItems.map((network) => (
-              <option key={network} value={network}>
-                {network}
-              </option>
-            ))}
-          </NavHeader.Select>
-        </NavHeader.Content>
-      </NavHeader.Root>
+        </NavHeaderLinkList>
+        <NavHeaderButton icon={<SystemIcon.Account />} />
+        <NavHeaderButton
+          icon={<SystemIcon.ThemeLightDark />}
+          className={atoms({ marginInlineEnd: 'sm' })}
+        />
+        <NavHeaderSelect
+          aria-label="Select Network"
+          selectedKey={value}
+          onSelectionChange={(value: any) => setValue(value)}
+          startIcon={<SystemIcon.Earth />}
+        >
+          {sampleNetworkItems.map((network) => (
+            <SelectItem key={network} textValue={network}>
+              {network}
+            </SelectItem>
+          ))}
+        </NavHeaderSelect>
+      </NavHeader>
     );
   },
 };
