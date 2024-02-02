@@ -1,7 +1,7 @@
-import { expect, type Locator, type Page } from '@playwright/test';
-import { CardComponent } from 'src/support/page-objects/react-ui/card.component';
-import { ProgressBarComponent } from '../../components/progressBar.component';
-import { TrackerCardComponent } from '../../components/trackerCard.component';
+import { CardComponent } from '@page-objects/react-ui/card.component';
+import { ProgressBarComponent } from '@page-objects/tools-app/components/progressBar.component';
+import { TrackerCardComponent } from '@page-objects/tools-app/components/trackerCard.component';
+import type { Locator, Page } from '@playwright/test';
 
 export class CrossChainTrackerPage {
   private readonly _page: Page;

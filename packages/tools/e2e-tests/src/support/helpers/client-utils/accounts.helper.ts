@@ -5,7 +5,7 @@ import { createSignWithKeypair } from '@kadena/client';
 import { createPrincipal } from '@kadena/client-utils/built-in';
 import { transferCreate } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
-import type { IAccount } from '../../types/account.types';
+import type { IAccount } from '@test-types/account.types';
 
 export const generateAccount = async (
   keys: number = 1,

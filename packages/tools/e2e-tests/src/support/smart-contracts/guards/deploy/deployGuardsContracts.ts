@@ -73,6 +73,7 @@ export const deployGuards1Contract = async ({
   // );
 
   // const contract = "(namespace 'util) \n".concat(rawContract);
+  //TODO: We temporarily use a slightly modified version of the contract, the unmodified version would not deploy.
   const contract = fs.readFileSync(
     path.resolve(__dirname, './guards1.pact'),
     'utf-8',

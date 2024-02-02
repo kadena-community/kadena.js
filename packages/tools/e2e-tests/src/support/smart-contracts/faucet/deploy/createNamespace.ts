@@ -1,10 +1,11 @@
+import { sender00Account } from '@constants/accounts.constants';
+import { devnetUrl, networkId } from '@constants/network.constants';
 import type {
   ChainwebChainId,
   ICommandResult,
 } from '@kadena/chainweb-node-client';
-import { Pact, createClient } from '@kadena/client';
-import { signTransaction } from '../deploy/utils';
-import { ADMIN, ADMINS, DOMAIN, NETWORK_ID } from './constants';
+import type { ICommand } from '@kadena/client';
+import { Pact, createClient, createSignWithKeypair } from '@kadena/client';
 
 export const createNamespace = async ({
   chainId,
@@ -37,29 +38,21 @@ export const createNamespace = async ({
 
   const transaction = Pact.builder
     .execution(pactCommand)
-    .addKeyset(
-      keysetName,
-      'keys-any',
-      ...ADMINS.map((admin) => admin.publicKey),
-    )
-    .addSigner(ADMIN.publicKey)
+    .addKeyset(keysetName, 'keys-any', sender00Account.keys[0].publicKey)
+    .addSigner(sender00Account.keys[0].publicKey)
     .setMeta({
       chainId,
-      senderAccount: ADMIN.accountName,
+      senderAccount: sender00Account.account,
     })
-    .setNetworkId(NETWORK_ID)
+    .setNetworkId(networkId)
     .createTransaction();
 
-  const signedTx = signTransaction(transaction, {
-    publicKey: ADMIN.publicKey,
-    secretKey: ADMIN.privateKey,
-  });
+  const signWithKeypair = createSignWithKeypair([sender00Account.keys[0]]);
+  const signedTx = await signWithKeypair(transaction);
 
-  const { submit, listen } = createClient(({ chainId, networkId }) => {
-    return `${DOMAIN}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
-  });
+  const { submit, listen } = createClient(devnetUrl(chainId));
 
-  const requestKeys = await submit(signedTx);
+  const requestKeys = await submit(signedTx as ICommand);
 
   // const transactionDescriptor = await client.submit(signedTx);
   const response = await listen(requestKeys);

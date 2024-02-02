@@ -66,5 +66,14 @@ export const devnetMiner: IAccount = {
     '19',
   ],
 };
-
+export const faucetGasStation: IAccount = {
+  account: 'c:zWPXcVXoHwkNTzKhMU02u2tzN_yL6V3-XTEH1uJaVY4',
+  keys: [
+    {
+      publicKey: 'dummyValue',
+      secretKey: 'dummyValue',
+    },
+  ],
+  chains: ['0', '1'],
+};
 export const xChainGasStation = 'kadena-xchain-gas';

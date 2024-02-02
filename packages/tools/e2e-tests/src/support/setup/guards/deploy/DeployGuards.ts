@@ -4,31 +4,37 @@ import type {
 } from '@kadena/chainweb-node-client';
 import type { ICommand } from '@kadena/client';
 import { Pact, createClient, createSignWithKeypair } from '@kadena/client';
+import { retrieveContractFromChain } from '@kadena/pactjs-cli/src/utils/retrieveContractFromChain';
 
 import { sender00Account } from '@constants/accounts.constants';
-import { devnetUrl, networkId } from '@constants/network.constants';
-import fs from 'fs';
-import path from 'path';
+import {
+  devnetUrl,
+  mainNetHost,
+  networkId,
+} from '@constants/network.constants';
 
-export const deployFaucet = async ({
+export const deployContract = async ({
   chainId,
   upgrade,
-  namespace,
+  namespace = 'util',
 }: {
   chainId: ChainwebChainId;
   upgrade: boolean;
   namespace: string;
 }): Promise<Record<string, ICommandResult>> => {
-  const faucetContract = fs.readFileSync(
-    path.resolve(__dirname, './../testnet-faucet.pact'),
-    'utf-8',
+  const rawContract = await retrieveContractFromChain(
+    'guards',
+    mainNetHost,
+    '1',
+    'mainnet',
   );
 
+  const contract = "(namespace 'util)".concat(rawContract);
+
   const transaction = Pact.builder
-    .execution(faucetContract)
+    .execution(contract)
     .addData('init', !upgrade)
-    .addData('coin-faucet-namespace', namespace)
-    .addData('coin-faucet-admin-keyset-name', `${namespace}.admin-keyset`)
+    .addData('admin-keyset', `${namespace}.admin-keyset`)
     .addSigner(sender00Account.keys[0].publicKey)
     .setMeta({
       chainId,
@@ -45,5 +51,7 @@ export const deployFaucet = async ({
 
   const { submit, pollStatus } = createClient(devnetUrl(chainId));
   const requestKeys = await submit(signedTx as ICommand);
-  return await pollStatus(requestKeys);
+  const status = await pollStatus(requestKeys);
+  console.log(status);
+  return status;
 };
