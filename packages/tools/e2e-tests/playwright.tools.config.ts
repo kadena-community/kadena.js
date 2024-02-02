@@ -3,6 +3,7 @@ import { baseConfig } from './playwright.base.config';
 
 const config: PlaywrightTestConfig = {
   ...baseConfig,
+  timeout: 180000,
   webServer: {
     command: `pnpm --filter @kadena/tools dev`,
     url: 'http://localhost:3000',

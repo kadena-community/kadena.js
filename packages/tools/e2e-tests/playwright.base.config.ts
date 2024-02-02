@@ -20,7 +20,8 @@ export const baseConfig: PlaywrightTestConfig = {
     channel: 'chromium',
     trace: 'retain-on-failure',
   },
-  timeout: 10 * 10000,
+  timeout: 100000,
+  
   expect: {
     timeout: 1 * 30000,
   },
