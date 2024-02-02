@@ -11,7 +11,6 @@ import {
   getAllWalletKeys,
 } from '../keys/utils/keysHelpers.js';
 import { defaultTemplates } from '../tx/commands/templates/templates.js';
-import { kdnResolveNameToAddress } from '../tx/utils/txKdnResolver.js';
 import type { IPrompt } from '../utils/createOption.js';
 
 const CommandPayloadStringifiedJSONSchema = z.string();
@@ -161,11 +160,7 @@ const getAllAccounts = async (): Promise<string[]> => {
   return [];
 };
 
-const promptVariableValue = async (
-  key: string,
-  network?: string,
-  networkConfig?: Record<string, unknown>,
-): Promise<string> => {
+const promptVariableValue = async (key: string): Promise<string> => {
   if (key.startsWith('account-')) {
     // search for account alias - needs account implementation
     const accounts = await getAllAccounts();
@@ -196,20 +191,7 @@ const promptVariableValue = async (
         },
       });
 
-      if (inputValue.endsWith('.kda')) {
-        try {
-          const resolvedAddress = await kdnResolveNameToAddress(inputValue);
-          console.log(
-            `Resolved Kadena Name Address for ${inputValue}: ${resolvedAddress}`,
-          );
-          return resolvedAddress;
-        } catch (error) {
-          console.error('Error resolving Kadena name:', error);
-          return `Failed to resolve Kadena name: ${inputValue}`;
-        }
-      } else {
-        return inputValue;
-      }
+      return inputValue;
     }
 
     if (value === null) throw new Error('account not found');
@@ -293,10 +275,6 @@ export const templateVariables: IPrompt<Record<string, string>> = async (
 ) => {
   const values = args.values as string[] | undefined;
   const variables = args.variables as string[] | undefined;
-  const network = args.network as string | undefined;
-  const networkConfig = args.networkConfig as
-    | Record<string, unknown>
-    | undefined;
 
   if (!values || !variables) return {};
 
@@ -306,11 +284,7 @@ export const templateVariables: IPrompt<Record<string, string>> = async (
     const match = values.find((value) => value.startsWith(`--${variable}=`));
     if (match !== undefined) variableValues[variable] = match.split('=')[1];
     else {
-      variableValues[variable] = await promptVariableValue(
-        variable,
-        network,
-        networkConfig,
-      );
+      variableValues[variable] = await promptVariableValue(variable);
     }
   }
 
