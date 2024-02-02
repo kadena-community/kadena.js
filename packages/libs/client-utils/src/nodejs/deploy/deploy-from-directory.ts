@@ -2,7 +2,7 @@ import { ChainId } from '@kadena/types';
 import { readFileSync, readdirSync } from 'fs';
 import { deployContract } from '../../built-in/deploy-contract';
 import { submitClient } from '../../core';
-import { IAccount, IClientConfig } from '../../core/utils/helpers';
+import { IClientConfig } from '../../core/utils/helpers';
 import { createPactCommandFromTemplate } from '../yaml-converter';
 
 export interface ITransactionBody {
@@ -26,35 +26,32 @@ interface IFilesConfig {
   extension: string;
   /** A sorting function in the case of there being a specific order to them*/
   sort?: (a: string, b: string) => number;
-}
-
-interface ITemplateConfig extends IFilesConfig {
   /** A namespace extracting function if there being different namespaces for each file*/
   namespaceExtractor?: (file: string) => string;
 }
 
+interface ITemplateConfig extends IFilesConfig {
+  deploymentArguments?: Record<string, any>;
+}
+
 interface ICodeFileConfig extends IFilesConfig {
-  transactionBody: ITransactionBody;
+  transactionBodyGenerator: (file: string) => ITransactionBody;
 }
 
 interface IDeployConfig {
-  sender: IAccount;
   /** These multiple / single values provided for chain will overwrite the
    * arguments if provided via the deployArguments object
    */
   chainIds: ChainId[];
   templateConfig?: ITemplateConfig;
   codeFileConfig?: ICodeFileConfig;
-  deployArguments?: Record<string, any>;
   clientConfig: IClientConfig;
 }
 
 export const deployFromDirectory = async ({
-  sender,
   chainIds,
   templateConfig,
   codeFileConfig,
-  deployArguments,
   clientConfig,
 }: IDeployConfig) => {
   if (!templateConfig && !codeFileConfig) {
@@ -90,14 +87,14 @@ export const deployFromDirectory = async ({
       if (templateFiles && templateFiles.length > 0) {
         for (const templateFile of templateFiles) {
           try {
-            deployArguments = deployArguments || {};
+            const deployArguments = templateConfig?.deploymentArguments || {};
 
             if (templateConfig?.namespaceExtractor) {
               const namespace = templateConfig.namespaceExtractor(templateFile);
               deployArguments.namespace = namespace;
             }
 
-            deployArguments.chainId = chainId;
+            deployArguments.chain = chainId;
 
             const command = await createPactCommandFromTemplate(
               templateFile,
@@ -112,11 +109,13 @@ export const deployFromDirectory = async ({
               console.log(
                 `Successfully deployed ${templateFile} on chain ${chainId}`,
               );
+            } else {
+              console.log(
+                `Failed to deploy ${templateFile} on chain ${chainId}. Error: ${commandResult.result.error}`,
+              );
             }
           } catch (error) {
-            console.log(
-              `Failed to deploy ${templateFile} on chain ${chainId}. Error: ${error}`,
-            );
+            console.error(error);
           }
         }
       } else if (
@@ -125,14 +124,22 @@ export const deployFromDirectory = async ({
         codeFileConfig &&
         !templateConfig
       ) {
+        if (!codeFileConfig.transactionBodyGenerator) {
+          throw new Error(
+            'Please provide a transaction body for the code files',
+          );
+        }
+
         for (const codeFile of codeFiles) {
           try {
             const code = readFileSync(codeFile, 'utf8');
+            const transactionBody =
+              codeFileConfig.transactionBodyGenerator(codeFile);
 
             const commandResult = await deployContract(
               {
                 contractCode: code,
-                transactionBody: codeFileConfig?.transactionBody,
+                transactionBody,
               },
               clientConfig,
             ).executeTo('listen');
@@ -140,11 +147,13 @@ export const deployFromDirectory = async ({
               console.log(
                 `Successfully deployed ${codeFile} on chain ${chainId}`,
               );
+            } else {
+              console.log(
+                `Failed to deploy ${codeFile} on chain ${chainId}. Error: ${commandResult.result.error}`,
+              );
             }
           } catch (error) {
-            console.log(
-              `Failed to deploy ${codeFile} on chain ${chainId}. Error: ${error}`,
-            );
+            console.error(error);
           }
         }
       }
