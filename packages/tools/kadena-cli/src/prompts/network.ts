@@ -77,7 +77,6 @@ export const networkOverwritePrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  // Determine which value to use for the message
   const networkName =
     args.defaultValue ?? previousQuestions.network ?? args.network;
 
@@ -102,12 +101,25 @@ export const networkSelectPrompt: IPrompt<string> = async (
   isOptional,
 ) => {
   const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
-  if (!existingNetworks.length) {
+
+  const allowedNetworks =
+    prev.allowedNetworks !== undefined
+      ? (prev.allowedNetworks as string[])
+      : [];
+
+  const filteredNetworks = existingNetworks.filter((network) =>
+    allowedNetworks.length > 0
+      ? allowedNetworks.includes(network.name ?? '')
+      : true,
+  );
+
+  if (!filteredNetworks.length) {
     throw new Error(
       'No networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init`.',
     );
   }
-  const choices: ICustomNetworkChoice[] = existingNetworks.map((network) => ({
+
+  const choices: ICustomNetworkChoice[] = filteredNetworks.map((network) => ({
     value: network.value,
     name: network.name,
   }));
@@ -117,15 +129,18 @@ export const networkSelectPrompt: IPrompt<string> = async (
       name: 'Network is optional. Continue to next step',
     });
   }
-  choices.push({ value: 'createNetwork', name: 'Create a new network' });
+
+  // if (prev.allowedNetworks === undefined) {
+  //   choices.push({ value: 'createNetwork', name: 'Create a new network' });
+  // }
   const selectedNetwork = await select({
     message: 'Select a network',
     choices: choices,
   });
-  if (selectedNetwork === 'createNetwork') {
-    await program.parseAsync(['', '', 'networks', 'create']);
-    return networkSelectPrompt(prev, args, isOptional);
-  }
+  // if (selectedNetwork === 'createNetwork') {
+  //   await program.parseAsync(['', '', 'networks', 'create']);
+  //   return networkSelectPrompt(prev, args, isOptional);
+  // }
   return selectedNetwork;
 };
 
