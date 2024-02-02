@@ -1,6 +1,4 @@
-import type {
-  ChainwebChainId,
-} from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import type { ICommand } from '@kadena/client';
 import { Pact, createClient, createSignWithKeypair } from '@kadena/client';
 import { sender00Account } from '../../../constants/accounts.constants';
@@ -13,6 +11,7 @@ export const createUtilNamespace = async ({
   chainId: ChainwebChainId;
   upgrade: boolean;
 }): Promise<string> => {
+  //TODO: Check if namespace exists before creating.
   if (upgrade) {
     return 'The step "createNamespace" is skipped for upgrades';
   }

@@ -1,6 +1,4 @@
-import type {
-  ChainwebChainId,
-} from '@kadena/chainweb-node-client';
+import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import type { ICommand } from '@kadena/client';
 import { Pact, createClient, createSignWithKeypair } from '@kadena/client';
 import { retrieveContractFromChain } from '@kadena/pactjs-cli/src/utils/retrieveContractFromChain';
@@ -23,6 +21,7 @@ export const deployGaurdsContract = async ({
   upgrade: boolean;
   namespace: string;
 }): Promise<string> => {
+  //TODO: Check if contract is deployed before deploying
   const rawContract = await retrieveContractFromChain(
     'guards',
     mainNetHost,
@@ -63,6 +62,7 @@ export const deployGuards1Contract = async ({
   upgrade: boolean;
   namespace: string;
 }): Promise<string> => {
+  //TODO: Check if contract is deployed before deploying
   // const rawContract = await retrieveContractFromChain(
   //   'guards1',
   //   mainNetHost,
