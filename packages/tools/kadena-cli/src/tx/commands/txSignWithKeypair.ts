@@ -17,6 +17,7 @@ import type { ICommand } from '@kadena/types';
 import { join } from 'node:path';
 import type { IKeyPair } from '../../keys/utils/storage.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { txOptions } from '../txOptions.js';
 
 export const signTransactionWithKeyPairAction = async (
   keyPairs: IKeyPair[],
@@ -80,8 +81,8 @@ export const createSignTransactionWithKeyPairCommand: (
   'Sign a transaction using a keypair.',
   [
     globalOptions.keyPairs(),
-    globalOptions.txTransactionDir({ isOptional: true }),
-    globalOptions.txUnsignedTransactionFiles(),
+    txOptions.txTransactionDir({ isOptional: true }),
+    txOptions.txUnsignedTransactionFiles(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option) => {

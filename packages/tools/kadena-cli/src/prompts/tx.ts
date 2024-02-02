@@ -275,15 +275,23 @@ export const templateVariables: IPrompt<Record<string, string>> = async (
 ) => {
   const values = args.values as string[] | undefined;
   const variables = args.variables as string[] | undefined;
+  const data = args.data as Record<string, string | number>;
 
   if (!values || !variables) return {};
 
   const variableValues = {} as Record<string, string>;
 
   for (const variable of variables) {
+    // Prioritize variables from data file
+    if (Object.hasOwn(data, variable)) {
+      variableValues[variable] = String(data[variable]);
+      continue;
+    }
+    // Find variables in cli arguments
     const match = values.find((value) => value.startsWith(`--${variable}=`));
     if (match !== undefined) variableValues[variable] = match.split('=')[1];
     else {
+      // Prompt for variable value
       variableValues[variable] = await promptVariableValue(variable);
     }
   }
@@ -293,7 +301,14 @@ export const templateVariables: IPrompt<Record<string, string>> = async (
 
 export const outFilePrompt: IPrompt<string | null> = async (args) => {
   const result = await input({
-    message: 'Where do you want to save the output',
+    message: 'Where do you want to save the output:',
   });
-  return result ? result : null;
+  return result ?? null;
+};
+
+export const templateDataPrompt: IPrompt<string | null> = async (args) => {
+  const result = await input({
+    message: 'File path of data to use for template (json or yaml):',
+  });
+  return result ?? null;
 };

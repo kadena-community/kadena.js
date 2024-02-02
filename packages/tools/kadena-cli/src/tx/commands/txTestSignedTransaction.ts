@@ -8,6 +8,7 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { txOptions } from '../txOptions.js';
 import { txDisplayTransaction } from '../utils/txDisplayHelper.js';
 import { getTransactionsFromFile } from '../utils/txHelpers.js';
 
@@ -63,8 +64,8 @@ export const createTestSignedTransactionCommand: (
   'test-signed-transaction',
   'test a signed transaction.',
   [
-    globalOptions.txTransactionDir({ isOptional: true }),
-    globalOptions.txSignedTransactionFiles(),
+    txOptions.txTransactionDir({ isOptional: true }),
+    txOptions.txSignedTransactionFiles(),
     globalOptions.network(),
     globalOptions.chainId(),
   ],

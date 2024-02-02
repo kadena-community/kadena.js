@@ -21,6 +21,7 @@ import { kadenaDecrypt } from '@kadena/hd-wallet';
 import type { ICommand } from '@kadena/types';
 import { join } from 'node:path';
 import type { IKeyPair } from '../../keys/utils/storage.js';
+import { txOptions } from '../txOptions.js';
 
 export const signTransactionWithAliasFile = async (
   wallet: IWallet,
@@ -97,8 +98,8 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
     globalOptions.keyWalletSelect(),
     globalOptions.securityPassword(),
     globalOptions.keyAliasSelect(),
-    globalOptions.txUnsignedTransactionFiles(),
-    globalOptions.txTransactionDir({ isOptional: true }),
+    txOptions.txUnsignedTransactionFiles(),
+    txOptions.txTransactionDir({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option) => {

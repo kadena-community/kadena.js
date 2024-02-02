@@ -13,6 +13,7 @@ import { getWalletContent } from '../../keys/utils/keysHelpers.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 
 import { join } from 'node:path';
+import { txOptions } from '../txOptions.js';
 import { saveSignedTransactions } from '../utils/storage.js';
 import {
   assessTransactionSigningStatus,
@@ -89,8 +90,8 @@ export const createSignTransactionWithLocalWalletCommand: (
   [
     globalOptions.keyWalletSelect(),
     globalOptions.securityPassword(),
-    globalOptions.txTransactionDir({ isOptional: true }),
-    globalOptions.txUnsignedTransactionFiles(),
+    txOptions.txTransactionDir({ isOptional: true }),
+    txOptions.txUnsignedTransactionFiles(),
   ],
   async (option) => {
     const wallet = await option.keyWallet();
