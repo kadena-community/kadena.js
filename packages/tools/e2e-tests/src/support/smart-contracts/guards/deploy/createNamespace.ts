@@ -1,6 +1,5 @@
 import type {
   ChainwebChainId,
-  ICommandResult,
 } from '@kadena/chainweb-node-client';
 import type { ICommand } from '@kadena/client';
 import { Pact, createClient, createSignWithKeypair } from '@kadena/client';
@@ -13,7 +12,7 @@ export const createUtilNamespace = async ({
 }: {
   chainId: ChainwebChainId;
   upgrade: boolean;
-}): Promise<ICommandResult | string> => {
+}): Promise<string> => {
   if (upgrade) {
     return 'The step "createNamespace" is skipped for upgrades';
   }
@@ -44,6 +43,5 @@ export const createUtilNamespace = async ({
 
   const requestKeys = await submit(signedTx as ICommand);
   const response = await listen(requestKeys);
-  console.log(response);
-  return response;
+  return response.result.status;
 };
