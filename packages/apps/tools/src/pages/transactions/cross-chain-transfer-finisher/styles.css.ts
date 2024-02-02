@@ -1,82 +1,63 @@
-import { sprinkles } from '@kadena/react-ui/styles';
+import { atoms } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const formContentStyle = style([
-  sprinkles({
+  atoms({
     position: 'relative',
-    height: '100%',
   }),
   {
     width: '680px',
     height: '65vh',
-    overflow: 'scroll',
+    overflow: 'auto',
   },
 ]);
 
 export const notificationContainerStyle = style([
-  sprinkles({
-    marginY: '$sm',
+  atoms({
+    marginBlock: 'sm',
   }),
   {
     width: '680px',
   },
+]);
+
+export const notificationLinkStyle = style([
+  atoms({
+    fontWeight: 'bodyFont.bold',
+    color: 'inherit',
+    cursor: 'pointer',
+  }),
+]);
+
+export const noticationKeyStyle = style([
+  atoms({
+    fontWeight: 'bodyFont.bold',
+    color: 'inherit',
+  }),
 ]);
 
 export const formButtonStyle = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     flexDirection: 'row-reverse',
-    marginTop: '$4',
-    gap: '$8',
+    marginBlockStart: 'md',
+    paddingBlockEnd: 'md',
+    gap: 'xl',
   }),
   {
     width: '680px',
-  },
-]);
-
-export const sideContentStyle = style([
-  sprinkles({
-    display: 'flex',
-    flexDirection: 'column',
-  }),
-]);
-
-export const formHeaderStyle = style([
-  sprinkles({
-    display: 'flex',
-    paddingTop: '$6',
-    paddingRight: '$10',
-    paddingLeft: '$10',
-    alignItems: 'flex-start',
-    gap: '$2',
-  }),
-  {
-    alignSelf: 'stretch',
-    background: 'rgba(71, 79, 82, 0.4)',
-  },
-]);
-
-export const sidebarLinksStyle = style([
-  sprinkles({
-    width: '100%',
-    marginBottom: '$md',
-    position: 'absolute',
-    bottom: 0,
-  }),
-]);
-
-export const textAreaStyle = style([
-  sprinkles({
-    outline: 'none',
-  }),
-  {
-    width: '-webkit-fill-available',
   },
 ]);
 
 export const textareaContainerStyle = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    gap: '$sm',
+    gap: 'sm',
+  }),
+]);
+
+export const textareaWrapperStyle = style([
+  atoms({
+    width: '100%',
   }),
 ]);

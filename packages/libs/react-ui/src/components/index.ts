@@ -52,6 +52,7 @@ export type {
   INotificationProps,
 } from './Notification';
 export type { IPaginationProps } from './Pagination';
+export type { IProgressCircleProps } from './ProgressCircle';
 export type {
   ITBodyProps,
   ITHeadProps,
@@ -111,6 +112,7 @@ export {
   NotificationHeading,
 } from './Notification';
 export { Pagination } from './Pagination';
+export { ProgressCircle } from './ProgressCircle';
 export { Table } from './Table';
 export { TabItem, Tabs } from './Tabs';
 export { Tag, TagGroup, TagItem } from './Tag';

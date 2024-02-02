@@ -15,14 +15,18 @@ import {
 import type { ChainId } from '@kadena/types';
 import chalk from 'chalk';
 import { join } from 'node:path';
+
 import {
   KEY_EXT,
-  WALLET_DIR,
+  TRANSACTION_FOLDER_NAME,
   WALLET_EXT,
-  WALLET_LEGACY_EXT,
 } from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
-import { getWallet, parseKeyIndexOrRange } from '../keys/utils/keysHelpers.js';
+import {
+  getWallet,
+  parseKeyIndexOrRange,
+  parseKeyPairsInput,
+} from '../keys/utils/keysHelpers.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
 import {
   ensureNetworksConfiguration,
@@ -36,7 +40,6 @@ import { defaultTemplates } from '../tx/commands/templates/templates.js';
 import { getTemplateVariables } from '../tx/utils/template.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
-import { removeAfterFirstDot } from './path.util.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalFlags = {
@@ -113,7 +116,7 @@ export const globalOptions = {
     prompt: security.securityCurrentPasswordPrompt,
     validation: z.string(),
     option: new Option(
-      '-scp, --security-current-password <securityCurrentPassword>',
+      '-c, --security-current-password <securityCurrentPassword>',
       'Enter your current key password',
     ),
   }),
@@ -122,7 +125,7 @@ export const globalOptions = {
     prompt: security.securityNewPasswordPrompt,
     validation: z.string(),
     option: new Option(
-      '-snp, --security-new-password <securityNewPassword>',
+      '-n, --security-new-password <securityNewPassword>',
       'Enter your new key password',
     ),
   }),
@@ -197,6 +200,16 @@ export const globalOptions = {
     option: new Option(
       '-v, --version <version>',
       'Version of the kadena/devnet Docker image to use (e.g. "latest")',
+    ),
+  }),
+  // Logs
+  logFolder: createOption({
+    key: 'logFolder' as const,
+    prompt: generic.logFolderPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-l, --log-folder <logFolder>',
+      'Directory where the log file will be generated. (e.g. ./kadena/simulation-logs/',
     ),
   }),
   // Network
@@ -285,8 +298,41 @@ export const globalOptions = {
       return chainId as ChainId;
     },
   }),
-
   // Keys
+  keyPairs: createOption({
+    key: 'keyPairs',
+    prompt: keys.keyPairsPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-k, --key-pairs <keyPairs>',
+      'Enter key pairs as string publicKey=xxx,secretKey=xxx;...',
+    ),
+    transform: (input) => {
+      try {
+        return parseKeyPairsInput(input);
+      } catch (error) {
+        throw new Error(`Error parsing key pairs: ${error.message}`);
+      }
+    },
+  }),
+  keyPublicKey: createOption({
+    key: 'keyPublicKey' as const,
+    prompt: keys.keyPublicKeyPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-p, --key-public-key <keyPublicKey>',
+      'Enter a public key',
+    ),
+  }),
+  keySecretKey: createOption({
+    key: 'keySecretKey' as const,
+    prompt: keys.keySecretKeyPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-s, --key-secret-key <keySecretKey>',
+      'Enter a secret key',
+    ),
+  }),
   keyAlias: createOption({
     key: 'keyAlias',
     prompt: keys.keyAliasPrompt,
@@ -294,6 +340,15 @@ export const globalOptions = {
     option: new Option(
       '-a, --key-alias <keyAlias>',
       'Enter an alias to store your key',
+    ),
+  }),
+  keyAliasSelect: createOption({
+    key: 'keyAliasSelect',
+    prompt: keys.keyGetAllKeyFilesPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-a, --key-alias-select <keyAliasSelect>',
+      'Enter a alias to select keys from',
     ),
   }),
   keyWallet: createOption({
@@ -345,19 +400,8 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
     defaultIsOptional: false,
-    transform: async (keyWallet: string) => {
-      if (
-        keyWallet.includes(WALLET_EXT) ||
-        keyWallet.includes(WALLET_LEGACY_EXT)
-      ) {
-        return {
-          wallet: await readKeyFileContent(
-            join(WALLET_DIR, removeAfterFirstDot(keyWallet), keyWallet),
-          ),
-          fileName: keyWallet,
-        };
-      }
-      return keyWallet;
+    expand: async (keyWallet: string) => {
+      return await getWallet(keyWallet);
     },
   }),
   keyWalletSelectWithAll: createOption({
@@ -402,7 +446,7 @@ export const globalOptions = {
     prompt: genericActionsPrompts.actionAskForPassword,
     validation: z.string(),
     option: new Option(
-      '-up, --key-use-password <keyUsePassword>',
+      '-u, --key-use-password <keyUsePassword>',
       'Do you want to use a password to encrypt your key? (yes/no)',
     ),
   }),
@@ -469,12 +513,6 @@ export const globalOptions = {
       'use as the namespace of the contract if its not clear in the contract',
     ),
   }),
-  key: createOption({
-    key: 'key' as const,
-    prompt: keys.keyDeleteSelectPrompt,
-    validation: z.string(),
-    option: new Option('-k, --key <key>', 'Select key from keyfile'),
-  }),
   keyMessage: createOption({
     key: 'keyMessage' as const,
     prompt: keys.keyMessagePrompt,
@@ -495,6 +533,60 @@ export const globalOptions = {
     },
   }),
 
+  txUnsignedCommand: createOption({
+    key: 'txUnsignedCommand',
+    prompt: tx.txUnsignedCommandPrompt,
+    validation: tx.IUnsignedCommandSchema,
+    option: new Option(
+      '-m, --tx-unsigned-command <txUnsignedCommand>',
+      'enter your unsigned command to sign',
+    ),
+  }),
+  txUnsignedTransactionFile: createOption({
+    key: 'txUnsignedTransactionFile',
+    prompt: tx.transactionSelectPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-u, --tx-unsigned-transaction-file <txUnsignedTransactionFile>',
+      'provide your unsigned transaction file to sign',
+    ),
+  }),
+  txUnsignedTransactionFiles: createOption({
+    key: 'txUnsignedTransactionFiles',
+    prompt: tx.transactionsSelectPrompt,
+    validation: z.array(z.string()),
+    option: new Option(
+      '-u, --tx-unsigned-transaction-files <txUnsignedTransactionFiles>',
+      'provide your unsigned transaction file(s) to sign',
+    ),
+  }),
+  txSignedTransactionFile: createOption({
+    key: 'txSignedTransactionFile',
+    prompt: tx.transactionSelectPrompt,
+    validation: tx.ICommandSchema,
+    option: new Option(
+      '-s, --tx-signed-transaction-file <txSignedTransactionFile>',
+      'provide your signed transaction file',
+    ),
+  }),
+  txSignedTransactionFiles: createOption({
+    key: 'txSignedTransactionFiles',
+    prompt: tx.transactionsSelectPrompt,
+    validation: tx.ICommandSchema,
+    option: new Option(
+      '-s, --tx-signed-transaction-files <txSignedTransactionFiles>',
+      'provide your signed transaction file',
+    ),
+  }),
+  txTransactionDir: createOption({
+    key: 'txTransactionDir' as const,
+    prompt: tx.txTransactionDirPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-d, --tx-transaction-dir <txTransactionDir>',
+      `Enter your transaction directory (default: "./${TRANSACTION_FOLDER_NAME}")`,
+    ),
+  }),
   // Dapp
   dappTemplate: createOption({
     key: 'dappTemplate',
@@ -505,7 +597,6 @@ export const globalOptions = {
       'Select a dapp template',
     ),
   }),
-  // TX
   outFileJson: createOption({
     key: 'outFile',
     prompt: tx.outFilePrompt,

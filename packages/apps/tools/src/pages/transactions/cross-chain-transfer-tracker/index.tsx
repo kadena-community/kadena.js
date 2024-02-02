@@ -1,9 +1,12 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
-import { FormItemCard } from '@/components/Global/FormItemCard';
-import { ProgressBar } from '@/components/Global/ProgressBar';
-import RequestKeyField, {
+import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
+import {
+  FormItemCard,
+  ProgressBar,
   REQUEST_KEY_VALIDATION,
-} from '@/components/Global/RequestKeyField';
+  RequestKeyField,
+} from '@/components/Global';
+import { sidebarLinks } from '@/constants/side-links';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
@@ -13,14 +16,16 @@ import {
   StatusId,
   getTransferStatus,
 } from '@/services/transfer-tracker/get-transfer-status';
-import { validateRequestKey } from '@/services/utils/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Accordion,
+  Box,
   Breadcrumbs,
   BreadcrumbsItem,
   Button,
   Grid,
   GridItem,
+  Heading,
   Link,
   Notification,
   NotificationButton,
@@ -32,16 +37,18 @@ import {
 } from '@kadena/react-ui';
 import Debug from 'debug';
 import useTranslation from 'next-translate/useTranslation';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { containerClass, notificationContainerStyle } from '../styles.css';
 import {
+  footerBarStyle,
   formButtonStyle,
-  headerTextStyle,
   infoBoxStyle,
-  mainContentStyle,
+  linksBoxStyle,
 } from './styles.css';
 
 const schema = z.object({
@@ -57,6 +64,14 @@ const CrossChainTransferTracker: FC = () => {
 
   useToolbar(menuData, router.pathname);
 
+  const helpInfoSections = [
+    {
+      tag: 'request-key',
+      title: t('help-request-key-question'),
+      content: t('help-request-key-content'),
+    },
+  ];
+
   const debug = Debug(
     'kadena-transfer:pages:transfer:cross-chain-transfer-tracker',
   );
@@ -66,8 +81,9 @@ const CrossChainTransferTracker: FC = () => {
   );
   const [data, setData] = useState<IStatusData>({});
   const [txError, setTxError] = useState<string>('');
-  const [inputError, setInputError] = useState<string>('');
-  const [validRequestKey, setValidRequestKey] = useState<boolean>(false);
+  const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
+    undefined,
+  );
   const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   useDidUpdateEffect(() => {
@@ -84,32 +100,11 @@ const CrossChainTransferTracker: FC = () => {
     setData({});
   }, [network]);
 
-  const checkRequestKey = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-    e.preventDefault();
-    debug(checkRequestKey.name);
-
-    //Clear error message when user starts typing
-    setInputError('');
-    if (!requestKey) {
-      setValidRequestKey(false);
-      return;
-    }
-
-    if (validateRequestKey(requestKey) === undefined) {
-      setValidRequestKey(true);
-      return;
-    }
-    setValidRequestKey(false);
-    return;
-  };
-
   const handleSubmit = async (data: FormData): Promise<void> => {
     debug(handleSubmit);
 
     router.query.reqKey = data.requestKey;
     await router.push(router);
-
-    setTxError('');
 
     try {
       await getTransferStatus({
@@ -133,12 +128,12 @@ const CrossChainTransferTracker: FC = () => {
   };
 
   const {
-    register,
     handleSubmit: validateThenSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
+    control,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: { requestKey: router.query.reqKey as string },
+    values: { requestKey: requestKey },
     // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
     resetOptions: {
       keepDirtyValues: true, // keep dirty fields unchanged, but update defaultValues
@@ -154,83 +149,81 @@ const CrossChainTransferTracker: FC = () => {
 
   useEffect(() => {
     if (errors.requestKey?.message) {
-      setInputError(errors.requestKey.message);
       setTxError('');
     }
   }, [errors.requestKey?.message]);
 
+  const onOpenItemChange = () => {
+    setOpenItem({ item: 0 });
+  };
+
+  const handleOnClickLink = () => {
+    setOpenItem(undefined);
+  };
+
   return (
-    <div className={mainContentStyle}>
+    <section className={containerClass}>
+      <Head>
+        <title>Kadena Developer Tools - Transactions</title>
+      </Head>
+      <Breadcrumbs>
+        <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Cross Chain Transfer Tracker')}</BreadcrumbsItem>
+      </Breadcrumbs>
+      <Heading as="h4">{t('Track & trace transactions')}</Heading>
       <Stack
         flexDirection="column"
-        paddingBlockStart={'xs'}
+        paddingBlockStart={'md'}
         paddingBlockEnd={'xxxl'}
         gap={'lg'}
       >
-        <Stack flexDirection="column" gap={'xs'}>
-          <Breadcrumbs>
-            <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
-            <BreadcrumbsItem>{t('Cross Chain Tracker')}</BreadcrumbsItem>
-          </Breadcrumbs>
-          <Stack
-            gap={'lg'}
-            justifyContent={'space-between'}
-            alignItems={'flex-end'}
-          >
-            <div className={headerTextStyle}>
-              {t('Track & trace transactions')}
-            </div>
-            {data.id === StatusId.Pending ? (
-              <Link
-                title={t('Finish Transaction')}
-                href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
-                endIcon={<SystemIcon.Link />}
-                color="positive"
-              >
-                {t('Finish Transaction')}
-              </Link>
-            ) : null}
-          </Stack>
-        </Stack>
-
         {txError ? (
-          <Notification
-            intent="negative"
-            isDismissable
-            onDismiss={() => {
-              setTxError('');
-            }}
-            icon={<SystemIcon.AlertBox />}
-            role="status"
-          >
-            <NotificationHeading>Warning</NotificationHeading>
-            {txError}
-            <NotificationFooter>
-              <NotificationButton
-                intent="negative"
-                onClick={validateThenSubmit(handleSubmit)}
-                icon={<SystemIcon.Refresh />}
-              >
-                {t('Retry')}
-              </NotificationButton>
-            </NotificationFooter>
-          </Notification>
+          <div className={notificationContainerStyle}>
+            <Notification
+              intent="negative"
+              isDismissable
+              onDismiss={() => {
+                setTxError('');
+              }}
+              icon={<SystemIcon.AlertBox />}
+              role="status"
+            >
+              <NotificationHeading>Warning</NotificationHeading>
+              {txError}
+              <NotificationFooter>
+                <NotificationButton
+                  intent="negative"
+                  onClick={validateThenSubmit(handleSubmit)}
+                  icon={<SystemIcon.Refresh />}
+                >
+                  {t('Retry')}
+                </NotificationButton>
+              </NotificationFooter>
+            </Notification>
+          </div>
         ) : null}
         <form onSubmit={validateThenSubmit(handleSubmit)}>
           <FormItemCard
             heading={t('Search Request')}
             helper={t('Where can I find the request key?')}
             helperHref="#"
+            helperOnClick={() => onOpenItemChange()}
             disabled={false}
           >
+            <Box marginBlockEnd="md" />
             <Grid>
               <GridItem>
-                <RequestKeyField
-                  errorMessage={inputError || errors.requestKey?.message}
-                  isInvalid={validRequestKey}
-                  {...register('requestKey')}
-                  onKeyUp={checkRequestKey}
-                  onChange={onRequestKeyChange}
+                <Controller
+                  name="requestKey"
+                  control={control}
+                  render={({ field }) => (
+                    <RequestKeyField
+                      errorMessage={errors.requestKey?.message}
+                      isInvalid={!!errors.requestKey}
+                      {...field}
+                      onChange={onRequestKeyChange}
+                    />
+                  )}
                 />
               </GridItem>
             </Grid>
@@ -239,7 +232,10 @@ const CrossChainTransferTracker: FC = () => {
             <Button
               type="submit"
               title={t('Search')}
+              onPress={() => setOpenItem(undefined)}
               endIcon={<SystemIcon.Magnify />}
+              isLoading={isSubmitting}
+              isDisabled={isSubmitting}
             >
               {t('Search')}
             </Button>
@@ -247,82 +243,133 @@ const CrossChainTransferTracker: FC = () => {
         </form>
 
         {data.receiverAccount ? (
-          <DrawerToolbar
-            ref={drawerPanelRef}
-            initialOpenItem={0}
-            sections={[
-              {
-                icon: 'Information',
-                title: t('Transfer Information'),
-                children: (
-                  <div className={infoBoxStyle}>
-                    <TrackerCard
-                      variant="vertical"
-                      icon={'QuickStart'}
-                      labelValues={[
-                        {
-                          label: t('Sender'),
-                          value: data.senderAccount || '',
-                          isAccount: true,
-                        },
-                        {
-                          label: t('Chain'),
-                          value: data.senderChain || '',
-                        },
-                      ]}
-                    />
-                    {/*  Progress Bar will only show if the transfer is in progress /
-                    completed.  If an error occurs, the notification will display the
-                    error and no progress bar will show */}
-                    <ProgressBar
-                      checkpoints={[
-                        {
-                          status: 'complete',
-                          title: t('Initiated transaction'),
-                        },
-                        {
-                          status:
-                            data?.id === StatusId.Success
-                              ? 'complete'
-                              : 'pending',
-                          title: data.description || 'An error has occurred',
-                        },
-                        {
-                          status:
-                            data.id === StatusId.Pending
-                              ? 'incomplete'
-                              : 'complete',
-                          title: t('Transfer complete'),
-                        },
-                      ]}
-                    />
-                    <TrackerCard
-                      variant="vertical"
-                      icon={
-                        data?.id === StatusId.Success
-                          ? 'Receiver'
-                          : 'ReceiverInactive'
-                      }
-                      labelValues={[
-                        {
-                          label: t('Receiver'),
-                          value: data.receiverAccount || '',
-                          isAccount: true,
-                        },
-                        {
-                          label: t('Chain'),
-                          value: data.receiverChain || '',
-                        },
-                      ]}
-                    />
-                  </div>
-                ),
-              },
-            ]}
-          />
+          <FormItemCard heading={t('Overview')} disabled={false}>
+            <Grid columns={3} marginBlockStart="md" gap={'md'}>
+              <GridItem>
+                <TrackerCard
+                  variant="vertical"
+                  icon={'QuickStart'}
+                  labelValues={[
+                    {
+                      label: t('Sender'),
+                      value: data.senderAccount || '',
+                      isAccount: true,
+                    },
+                    {
+                      label: t('Chain'),
+                      value: data.senderChain || '',
+                    },
+                  ]}
+                />
+              </GridItem>
+              <GridItem>
+                {/*  Progress Bar will only show if the transfer is in progress /
+                        completed.  If an error occurs, the notification will display the
+                        error and no progress bar will show */}
+                <ProgressBar
+                  checkpoints={[
+                    {
+                      status: 'complete',
+                      title: t('Initiated transaction'),
+                    },
+                    {
+                      status:
+                        data?.id === StatusId.Success ? 'complete' : 'pending',
+                      title: data.description || 'An error has occurred',
+                    },
+                    {
+                      status:
+                        data.id === StatusId.Pending
+                          ? 'incomplete'
+                          : 'complete',
+                      title: t('Transfer complete'),
+                    },
+                  ]}
+                />
+              </GridItem>
+              <GridItem>
+                <TrackerCard
+                  variant="vertical"
+                  icon={
+                    data?.id === StatusId.Success
+                      ? 'Receiver'
+                      : 'ReceiverInactive'
+                  }
+                  labelValues={[
+                    {
+                      label: t('Receiver'),
+                      value: data.receiverAccount || '',
+                      isAccount: true,
+                    },
+                    {
+                      label: t('Chain'),
+                      value: data.receiverChain || '',
+                    },
+                  ]}
+                />
+              </GridItem>
+            </Grid>
+          </FormItemCard>
         ) : null}
       </Stack>
-    </div>
+
+      {data.id === StatusId.Pending ? (
+        <div className={footerBarStyle}>
+          <Stack
+            padding={'xs'}
+            justifyContent={'space-between'}
+            alignItems={'flex-start'}
+            flexDirection={'row-reverse'}
+          >
+            <Link
+              title={t('Finish Transaction')}
+              href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
+              endIcon={<SystemIcon.Link />}
+              color="positive"
+              variant="contained"
+            >
+              {t('Finish Transaction')}
+            </Link>
+          </Stack>
+        </div>
+      ) : null}
+
+      <DrawerToolbar
+        ref={drawerPanelRef}
+        initialOpenItem={openItem}
+        sections={[
+          {
+            icon: 'Information',
+            title: helpInfoSections[0].title,
+            children: (
+              <div className={infoBoxStyle}>
+                <span>{helpInfoSections[0].content}</span>
+              </div>
+            ),
+          },
+          {
+            icon: 'Link',
+            title: t('Resources & Links'),
+            children: (
+              <div className={linksBoxStyle}>
+                <Accordion.Root>
+                  {sidebarLinks.map((item, index) => (
+                    <MenuLinkButton
+                      title={item.title}
+                      key={`menu-link-${index}`}
+                      href={item.href}
+                      active={item.href === router.pathname}
+                      target="_blank"
+                      onClick={handleOnClickLink}
+                    />
+                  ))}
+                </Accordion.Root>
+              </div>
+            ),
+          },
+        ]}
+      />
+    </section>
   );
 };
 
