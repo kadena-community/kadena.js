@@ -1,6 +1,5 @@
 import type {
   ChainwebChainId,
-  ICommandResult,
 } from '@kadena/chainweb-node-client';
 import type { ICommand } from '@kadena/client';
 import { Pact, createClient, createSignWithKeypair } from '@kadena/client';
@@ -23,7 +22,7 @@ export const deployGaurdsContract = async ({
   chainId: ChainwebChainId;
   upgrade: boolean;
   namespace: string;
-}): Promise<Record<string, ICommandResult>> => {
+}): Promise<string> => {
   const rawContract = await retrieveContractFromChain(
     'guards',
     mainNetHost,
@@ -49,11 +48,10 @@ export const deployGaurdsContract = async ({
   const signWithKeypair = createSignWithKeypair([sender00Account.keys[0]]);
   const signedTx = await signWithKeypair(transaction);
 
-  const { submit, pollStatus } = createClient(devnetUrl(chainId));
+  const { submit, listen } = createClient(devnetUrl(chainId));
   const requestKeys = await submit(signedTx as ICommand);
-  const status = await pollStatus(requestKeys);
-  console.log(status);
-  return status;
+  const response = await listen(requestKeys);
+  return response.result.status;
 };
 
 export const deployGuards1Contract = async ({
@@ -64,7 +62,7 @@ export const deployGuards1Contract = async ({
   chainId: ChainwebChainId;
   upgrade: boolean;
   namespace: string;
-}): Promise<Record<string, ICommandResult>> => {
+}): Promise<string> => {
   // const rawContract = await retrieveContractFromChain(
   //   'guards1',
   //   mainNetHost,
@@ -96,9 +94,8 @@ export const deployGuards1Contract = async ({
   const signWithKeypair = createSignWithKeypair([sender00Account.keys[0]]);
   const signedTx = await signWithKeypair(transaction);
 
-  const { submit, pollStatus } = createClient(devnetUrl(chainId));
+  const { submit, listen } = createClient(devnetUrl(chainId));
   const requestKeys = await submit(signedTx as ICommand);
-  const status = await pollStatus(requestKeys);
-  console.log(status);
-  return status;
+  const response = await listen(requestKeys);
+  return response.result.status;
 };

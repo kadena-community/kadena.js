@@ -4,11 +4,12 @@ import {
   deployGaurdsContract,
   deployGuards1Contract,
 } from './deploy/deployGuardsContracts';
+import { expect } from '@playwright/test';
 
 export const deployGuards = async (chainId: ChainId) => {
   // Depends on where you're deploying, whether it's a redeploy or not (on Testnet it's not an upgrade, on (a "fresh") DevNet it is)
   const upgrade = false;
-  await createUtilNamespace({ chainId: chainId, upgrade });
-  await deployGaurdsContract({ chainId, upgrade, namespace: 'util' });
-  await deployGuards1Contract({ chainId, upgrade, namespace: 'util' });
+ expect(await createUtilNamespace({ chainId: chainId, upgrade })).toEqual('success');
+ expect(await deployGaurdsContract({ chainId, upgrade, namespace: 'util' })).toEqual('success');
+ expect(await deployGuards1Contract({ chainId, upgrade, namespace: 'util' })).toEqual('success');
 };
