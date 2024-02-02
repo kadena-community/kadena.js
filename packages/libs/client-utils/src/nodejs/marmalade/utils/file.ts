@@ -7,7 +7,7 @@ import type {
   ILocalConfig,
   IRemoteConfig,
   IRepositoryConfig,
-} from '../deploy/config';
+} from '../deployment/config';
 
 export async function getMarmaladeTemplates({
   repositoryConfig,

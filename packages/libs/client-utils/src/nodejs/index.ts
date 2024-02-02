@@ -4,4 +4,4 @@ export {
   getPartsAndHoles,
 } from './yaml-converter';
 
-export * from './marmalade/deploy';
+export * from './marmalade/deployment';
