@@ -1,4 +1,3 @@
-import { walletConnectWrapperStyle } from '@/components/Common/Layout/partials/Header/styles.css';
 import { AddNetworkModal } from '@/components/Global';
 import { OptionsModal } from '@/components/Global/OptionsModal';
 import type { Network } from '@/constants/kadena';
