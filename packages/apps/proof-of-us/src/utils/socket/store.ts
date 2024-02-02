@@ -49,12 +49,17 @@ const ProofOfUsStore = () => {
     ];
   };
 
+  const closeToken = (proofOfUsId: string) => {
+    delete store[proofOfUsId];
+  };
+
   return {
     createProofOfUs,
     getProofOfUs,
     addSignee,
     removeSignee,
     addBackground,
+    closeToken,
   };
 };
 

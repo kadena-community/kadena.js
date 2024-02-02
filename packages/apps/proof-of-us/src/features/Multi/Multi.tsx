@@ -33,7 +33,6 @@ export const Multi: FC<IProps> = ({ proofOfUs }) => {
           <button onClick={handleRemove}>remove</button>
         )}
       </section>
-      <AvatarEditor />
       scanned Proof Of Us with ID ({proofOfUs.proofOfUsId})
       <ListSignees />
     </>

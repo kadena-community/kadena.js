@@ -6,6 +6,7 @@ import { upload } from './upload';
 
 export const avatarListeners = (socket: Socket, io: IOServer) => {
   socket.on('setBackground', ({ content, to }) => {
+    console.log('setbackground');
     store.addBackground(to, content.bg);
     io.to(to)
       .to(to)

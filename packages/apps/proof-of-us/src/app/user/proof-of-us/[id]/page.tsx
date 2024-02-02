@@ -1,7 +1,9 @@
 'use client';
 import { AvatarEditor } from '@/components/AvatarEditor/AvatarEditor';
-import { ListSignees } from '@/components/ListSignees/ListSignees';
-import { PROOFOFUS_QR_URL } from '@/constants';
+import { DetailView } from '@/components/DetailView/DetailView';
+
+import { ShareView } from '@/components/ShareView/ShareView';
+
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSocket } from '@/hooks/socket';
@@ -10,7 +12,6 @@ import { createProofOfUsID } from '@/utils/marmalade';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { QRCode } from 'react-qrcode-logo';
 
 interface IProps {
   params: {
@@ -19,7 +20,6 @@ interface IProps {
 }
 
 const Page: FC<IProps> = ({ params }) => {
-  const qrRef = useRef<QRCode | null>(null);
   const router = useRouter();
   const { socket, disconnect } = useSocket();
   const { createToken, proofOfUs } = useProofOfUs();
@@ -39,7 +39,10 @@ const Page: FC<IProps> = ({ params }) => {
   }, [socket, params.id]);
 
   const next = () => {
-    setStatus(2);
+    setStatus((v) => v + 1);
+  };
+  const prev = () => {
+    setStatus((v) => v - 1);
   };
 
   const handleUpload = async () => {
@@ -53,31 +56,8 @@ const Page: FC<IProps> = ({ params }) => {
   return (
     <div>
       {status === 1 && <AvatarEditor next={next} />}
-      {status === 2 && (
-        <>
-          Proof Of Us with ID ({proofOfUs.proofOfUsId})
-          <section>
-            <h4>image</h4>
-            <img src={proofOfUs.uri} />
-
-            <ListSignees />
-          </section>
-          <section>
-            <h2>qr code</h2>
-            <QRCode
-              ecLevel="H"
-              ref={qrRef}
-              value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
-              removeQrCodeBehindLogo={true}
-              logoImage="/assets/qrlogo.png"
-              logoPadding={5}
-              quietZone={10}
-              qrStyle="dots" // type of qr code, wether you want dotted ones or the square ones
-              eyeRadius={10}
-            />
-          </section>
-        </>
-      )}
+      {status === 2 && <DetailView next={next} prev={prev} />}
+      {status === 3 && <ShareView next={next} prev={prev} />}
     </div>
   );
 };

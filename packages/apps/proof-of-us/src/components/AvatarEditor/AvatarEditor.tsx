@@ -33,8 +33,8 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     if (!fabricRef.current || !proofOfUs) return;
 
     fabric.Image.fromURL(proofOfUs.avatar?.background ?? '', function (img) {
-      img.scaleToWidth(100);
-      img.scaleToHeight(100);
+      img.scaleToWidth(800);
+      img.scaleToHeight(800);
       fabricRef.current?.setBackgroundImage(img, () => {});
       fabricRef.current?.requestRenderAll();
     });
@@ -57,8 +57,8 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     if (!canvasElm) return;
 
     fabricRef.current = new fabric.Canvas(canvasElm, {
-      width: 100,
-      height: 100,
+      width: 800,
+      height: 800,
     });
 
     fabricRef.current.isDrawingMode = false;
@@ -70,8 +70,8 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    canvas.width = 100;
-    canvas.height = 100;
+    canvas.width = 800;
+    canvas.height = 800;
     ctx?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
     fabric.Image.fromURL(canvas.toDataURL(), function (img) {
@@ -92,14 +92,13 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     <section className={wrapperClass}>
       {!isMounted && <div>loading</div>}
 
+      <canvas ref={canvasRef} className={classnames(hiddenClass)} />
       <div
         className={classnames(
           cameraWrapperClass,
           !isMounted ? hiddenClass : '',
         )}
       >
-        <canvas ref={canvasRef} className={classnames(hiddenClass)} />
-
         <video
           className={classnames(cameraClass, !isMounted ? hiddenClass : '')}
           ref={videoRef}

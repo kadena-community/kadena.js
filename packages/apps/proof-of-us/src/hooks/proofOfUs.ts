@@ -20,6 +20,7 @@ export const useProofOfUs = () => {
   }, [data, state]);
 
   const setContent = ({ content }: { content: IProofOfUs }) => {
+    console.log('setcontent', content);
     setState(content);
   };
 
@@ -39,6 +40,12 @@ export const useProofOfUs = () => {
       socket.off('getProofOfUs');
     };
   }, []);
+
+  const closeToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
+    socket?.emit('closeToken', {
+      to: proofOfUsId,
+    });
+  };
 
   const addSignee = async ({ proofOfUsId }: { proofOfUsId: string }) => {
     if (!socket || !account) return;
@@ -100,6 +107,7 @@ export const useProofOfUs = () => {
   };
 
   return {
+    closeToken,
     addSignee,
     removeSignee,
     createToken,

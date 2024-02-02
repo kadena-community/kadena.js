@@ -2,6 +2,15 @@ import { store } from '@/utils/socket/store';
 import type { Server as IOServer, Socket } from 'socket.io';
 
 export const signeeListeners = (socket: Socket, io: IOServer) => {
+  socket.on('closeToken', ({ content, to }) => {
+    store.closeToken(to);
+    io.to(to)
+      .to(to)
+      .emit('getProofOfUs', {
+        content: undefined,
+        from: socket.handshake.auth.proofOfUsId,
+      });
+  });
   socket.on('createToken', ({ content, to }) => {
     store.createProofOfUs(to, content);
     io.to(to)

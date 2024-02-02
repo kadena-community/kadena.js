@@ -31,6 +31,7 @@ export default function SocketHandler(
   }
 
   const io = new Server(res.socket.server, {
+    maxHttpBufferSize: 1e8,
     cors: {
       origin: 'http://localhost:3000',
     },

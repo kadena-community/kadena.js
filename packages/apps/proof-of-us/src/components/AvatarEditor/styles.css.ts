@@ -4,7 +4,6 @@ export const wrapperClass = style([
   {
     position: 'absolute',
     background: 'white',
-    inset: 0,
   },
 ]);
 
@@ -16,6 +15,7 @@ export const cameraClass = style({
   position: 'absolute',
   inset: 0,
   width: '100vw',
+  maxWidth: '800px',
   height: '100vh',
   objectFit: 'cover',
 });
@@ -23,7 +23,7 @@ export const cameraClass = style({
 export const cameraButton = style({
   position: 'absolute',
   zIndex: 1,
-  bottom: '20px',
+  top: '87vh',
   borderRadius: '50%',
   border: 0,
   width: '10vw',
@@ -33,7 +33,10 @@ export const cameraButton = style({
 
 export const cameraWrapperClass = style({
   position: 'absolute',
-  inset: 0,
+  top: 0,
+  width: '100vw',
+  maxWidth: '800px',
+  height: '100vh',
   display: 'flex',
   justifyContent: 'center',
 });

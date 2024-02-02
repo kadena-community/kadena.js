@@ -23,6 +23,7 @@ export const ListSignees: FC = () => {
     removeSignee({ proofOfUsId: proofOfUsId.toString(), signee });
   };
 
+  console.log(33333, proofOfUs);
   return (
     <section className={wrapperClass}>
       <div>

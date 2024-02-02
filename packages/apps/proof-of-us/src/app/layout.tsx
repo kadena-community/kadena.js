@@ -9,6 +9,7 @@ import { ThemeProvider } from '@/components/ThemeProvider/ThemeProvider';
 import { ToastProvider } from '@/components/ToastProvider/ToastProvider';
 import { Toasts } from '@/components/Toasts/Toasts';
 import type { Metadata } from 'next';
+import { bodyClass, mainWrapperClass } from './style.css';
 
 export async function generateMetadata(): Promise<Metadata> {
   //@TODO get year from somewhere
@@ -71,18 +72,20 @@ export async function generateMetadata(): Promise<Metadata> {
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html>
-      <body>
+      <body className={bodyClass}>
         <ToastProvider>
           <AccountProvider>
             <SocketProvider>
               <ThemeProvider>
                 <>
-                  <AccountInfo />
-                  {children}
+                  <main className={mainWrapperClass}>
+                    <AccountInfo />
+                    {children}
 
-                  <CookieConsent />
+                    <CookieConsent />
 
-                  <Toasts />
+                    <Toasts />
+                  </main>
                   <Analytics />
                 </>
               </ThemeProvider>
