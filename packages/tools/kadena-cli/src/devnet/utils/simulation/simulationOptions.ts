@@ -20,7 +20,7 @@ export const simulationOptions = {
     prompt: simulationPrompts.transferIntervalPrompt,
     validation: z.number(),
     option: new Option(
-      '-t, --simulation-transfer-interval <simulationTransferInterval>',
+      '-i, --simulation-transfer-interval <simulationTransferInterval>',
       'Transfer interval in milliseconds.',
     ).argParser((value) => parseInt(value, 10)),
   }),
@@ -65,5 +65,15 @@ export const simulationOptions = {
       '-c, --simulation-default-chain-id <simulationDefaultChainId>',
       'Default chain id for the simulation (eg. 0).',
     ),
+  }),
+
+  simulationMaxTime: createOption({
+    key: 'simulationMaxTime' as const,
+    prompt: simulationPrompts.maxTimePrompt,
+    validation: z.number(),
+    option: new Option(
+      '-t, --simulation-max-time <simulationMaxTime>',
+      'Specify the maximum time in miliseconds the simulation will run.',
+    ).argParser((value) => parseInt(value, 10)),
   }),
 };
