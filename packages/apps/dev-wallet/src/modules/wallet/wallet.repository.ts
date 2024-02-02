@@ -1,12 +1,12 @@
+import { createDatabaseConnection } from '@/modules/db/db.service';
 import {
   addItem,
-  connect,
-  createStore,
   getAllItems,
   getOneItem,
   updateItem,
-} from '@/utils/indexeddb';
+} from '@/modules/db/indexeddb';
 import { BuiltInPredicate } from '@kadena/client';
+import { INetwork } from '../network/network.repository';
 
 export interface IKeyItem {
   publicKey: string;
@@ -16,31 +16,17 @@ export interface IKeyItem {
 
 export interface IKeySource {
   uuid: string;
-  profileId: string;
   derivationPathTemplate: string;
   source: 'hd-wallet';
   publicKeys: string[];
-}
-
-export interface INetwork {
-  uuid: string;
-  networkId: string;
-  hosts: Array<{
-    url: string;
-    useFor: {
-      submit: boolean;
-      read: boolean;
-      confirmation: boolean;
-    };
-    priority: number;
-  }>;
 }
 
 export interface IProfile {
   uuid: string;
   name: string;
   networks: INetwork[];
-  HDWalletSeedKey: string;
+  seedKey: string;
+  keySources: IKeySource[];
 }
 
 export interface IKeySetGuard {
@@ -61,24 +47,20 @@ export interface WalletRepository {
   disconnect: () => Promise<void>;
   getAllProfiles: () => Promise<Exclude<IProfile, 'networks'>[]>;
   getProfile: (id: string) => Promise<IProfile>;
-  getKeySourcesByProfileId: (profileId: string) => Promise<IKeySource[]>;
-  addKeySource: (keySource: IKeySource) => Promise<void>;
-  getKeySource: (key: string) => Promise<IKeySource>;
-  updateKeySource: (keySource: IKeySource) => Promise<void>;
   addProfile: (profile: IProfile) => Promise<void>;
   updateProfile: (profile: IProfile) => Promise<void>;
-  getNetworkList: () => Promise<INetwork[]>;
   getEncryptedValue: (key: string) => Promise<Uint8Array>;
   addEncryptedValue: (key: string, value: string | Uint8Array) => Promise<void>;
   addAccount: (account: IAccount) => Promise<void>;
   getAccountsByProfileId: (profileId: string) => Promise<IAccount[]>;
 }
 
-export const walletRepository = (db: IDBDatabase): WalletRepository => {
+const walletRepository = (db: IDBDatabase): WalletRepository => {
   const getAll = getAllItems(db);
   const getOne = getOneItem(db);
   const add = addItem(db);
   const update = updateItem(db);
+
   return {
     disconnect: async (): Promise<void> => {
       db.close();
@@ -89,28 +71,11 @@ export const walletRepository = (db: IDBDatabase): WalletRepository => {
     getProfile: async (id: string): Promise<IProfile> => {
       return getOne('profile', id);
     },
-    getKeySourcesByProfileId: async (
-      profileId: string,
-    ): Promise<IKeySource[]> => {
-      return getAll('keySource', profileId, 'profileId');
-    },
-    addKeySource: async (keySource: IKeySource): Promise<void> => {
-      return add('keySource', keySource);
-    },
-    getKeySource: async (key: string): Promise<IKeySource> => {
-      return getOne('keySource', key);
-    },
-    updateKeySource: async (keySource: IKeySource): Promise<void> => {
-      return update('keySource', keySource);
-    },
     addProfile: async (profile: IProfile): Promise<void> => {
       return add('profile', profile);
     },
     updateProfile: async (profile: IProfile): Promise<void> => {
       return update('profile', profile);
-    },
-    getNetworkList: async (): Promise<INetwork[]> => {
-      return getAll('network');
     },
     getEncryptedValue: async (key: string): Promise<Uint8Array> => {
       return getOne('encryptedValue', key);
@@ -130,33 +95,7 @@ export const walletRepository = (db: IDBDatabase): WalletRepository => {
   };
 };
 
-export const createWalletRepository = async (): Promise<WalletRepository> => {
-  const { db, needsUpgrade } = await connect('dev-wallet', 2);
-  if (needsUpgrade) {
-    if (import.meta.env.DEV) {
-      // console.log(
-      //   'in development we delete the database if schema is changed for now since we are still in early stage of development',
-      // );
-      // await db.close();
-      // await deleteDatabase('dev-wallet');
-      // return createWalletRepository();
-    }
-    // NOTE: If you change the schema, you need to update the upgrade method
-    // below to migrate the data. the current version just creates the database
-    const create = createStore(db);
-    create('profile', 'uuid', [{ index: 'name', unique: true }]);
-    create('network', 'uuid');
-    create('keySource', 'uuid', [
-      { index: 'profileId', unique: false },
-      {
-        index: 'uniqueKeySource',
-        indexKeyPath: ['profileId', 'derivationPathTemplate', 'source'],
-        unique: true,
-      },
-    ]);
-    create('encryptedValue');
-    // TODO: move account to separate repository if needed
-    create('account', 'uuid', [{ index: 'address' }, { index: 'profileId' }]);
-  }
+export const createWalletRepository = async () => {
+  const db = await createDatabaseConnection();
   return walletRepository(db);
 };

@@ -57,7 +57,10 @@ export const deleteDatabase = (name: string) => {
     request.onerror = () => {
       reject(request.error);
     };
-    request.onsuccess = () => {
+    request.onblocked = () => {
+      console.warn('close all connections to the database first');
+    };
+    request.onsuccess = async () => {
       resolve();
     };
   });
@@ -80,7 +83,7 @@ export const getAllItems =
         reject(request.error);
       };
       request.onsuccess = () => {
-        resolve(request.result);
+        resolve(request.result ?? []);
       };
     });
   };
@@ -117,22 +120,34 @@ export const addItem =
     });
   };
 
-const isExist = async <T>(
-  db: IDBDatabase,
-  storeName: string,
-  value: T,
-  key?: string,
-) => {
-  const transaction = db.transaction(storeName, 'readonly');
-  const store = transaction.objectStore(storeName);
-  const isDataExist = await getOneItem(db)(
-    storeName,
-    key ?? (value[store.keyPath! as keyof T] as string),
-  )
-    .then(() => true)
-    .catch(() => false);
-  return isDataExist;
-};
+export const deleteItem =
+  (db: IDBDatabase) => (storeName: string, key: string) => {
+    return new Promise<void>((resolve, reject) => {
+      const transaction = db.transaction(storeName, 'readwrite');
+      const store = transaction.objectStore(storeName);
+      const request = store.delete(key);
+      request.onerror = () => {
+        reject(request.error);
+      };
+      request.onsuccess = () => {
+        resolve();
+      };
+    });
+  };
+
+const isExist =
+  (db: IDBDatabase) =>
+  async <T>(storeName: string, value: T, key?: string) => {
+    const transaction = db.transaction(storeName, 'readonly');
+    const store = transaction.objectStore(storeName);
+    const isDataExist = await getOneItem(db)(
+      storeName,
+      key ?? (value[store.keyPath! as keyof T] as string),
+    )
+      .then(() => true)
+      .catch(() => false);
+    return isDataExist;
+  };
 
 export const updateItem =
   (db: IDBDatabase) =>
@@ -141,7 +156,7 @@ export const updateItem =
     return new Promise<void>(async (resolve, reject) => {
       const transaction = db.transaction(storeName, 'readwrite');
       const store = transaction.objectStore(storeName);
-      const isDataExist = isExist(db, storeName, value, key);
+      const isDataExist = isExist(db)(storeName, value, key);
       if (!isDataExist) {
         reject(
           new Error(
