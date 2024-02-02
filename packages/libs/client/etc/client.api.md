@@ -26,6 +26,9 @@ export const addSignatures: (transaction: IUnsignedCommand, ...signatures: {
     pubKey?: string;
 }[]) => IUnsignedCommand | ICommand;
 
+// @public (undocumented)
+export type BuiltInPredicate = 'keys-all' | 'keys-any' | 'keys-2';
+
 export { ChainId }
 
 // @public
@@ -36,6 +39,12 @@ export function createEckoWalletQuicksign(): IEckoSignFunction;
 
 // @public
 export function createEckoWalletSign(): IEckoSignSingleFunction;
+
+// @public
+export function createKoalaWalletQuicksign(): IKoalaSignFunction;
+
+// @public
+export function createKoalaWalletSign(): IKoalaSignSingleFunction;
 
 // @public
 export function createSignWithChainweaver(options?: {
@@ -122,6 +131,16 @@ export interface ICommonEckoFunctions {
 }
 
 // @public
+export interface ICommonKoalaFunctions {
+    // (undocumented)
+    connect: (networkId: string) => Promise<boolean>;
+    // (undocumented)
+    isConnected: (networkId: string) => Promise<boolean>;
+    // (undocumented)
+    isInstalled: () => boolean;
+}
+
+// @public
 export interface IContinuationPayloadObject {
     // (undocumented)
     cont: {
@@ -168,6 +187,14 @@ export interface IExecutionPayloadObject {
 }
 
 export { IKeyPair }
+
+// @public
+export interface IKoalaSignFunction extends ISignFunction, ICommonKoalaFunctions {
+}
+
+// @public
+export interface IKoalaSignSingleFunction extends ISingleSignFunction, ICommonKoalaFunctions {
+}
 
 // @public (undocumented)
 export interface INetworkOptions {
