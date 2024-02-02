@@ -18,9 +18,9 @@ export const deployFaucetContract = async (
     upgrade,
     namespace: faucetNamespace,
   });
-  const fundGasStationResult = await fundGasStation({
+  const response = await fundGasStation({
     chainId: chainId,
     upgrade,
   });
-  return fundGasStationResult;
+  return response.result.status;
 };
