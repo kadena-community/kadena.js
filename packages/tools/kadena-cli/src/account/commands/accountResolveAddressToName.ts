@@ -1,11 +1,11 @@
 import chalk from 'chalk';
 import debug from 'debug';
 
-import { kdnResolveAddressToName } from '../../tx/utils/txKdnResolverChain.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { kdnResolveAddressToName } from '../utils/txKdnResolverChain.js';
 
 export const resolveAddressToName = async (
   address: string,
