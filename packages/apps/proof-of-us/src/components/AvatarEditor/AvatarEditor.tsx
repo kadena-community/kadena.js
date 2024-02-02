@@ -1,19 +1,31 @@
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
+import classnames from 'classnames';
 import { fabric } from 'fabric';
 import type { Canvas } from 'fabric/fabric-impl';
 import { useParams } from 'next/navigation';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { canvasClass, modalClass } from './styles.css';
+import {
+  cameraButton,
+  cameraClass,
+  cameraWrapperClass,
+  hiddenClass,
+  wrapperClass,
+} from './styles.css';
 
-export const AvatarEditor: FC = () => {
+interface IProps {
+  next: () => void;
+}
+
+export const AvatarEditor: FC<IProps> = ({ next }) => {
   const { id: proofOfUsId } = useParams();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricRef = useRef<Canvas | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { setBackgroundSocket, uploadBackground } = useAvatar();
+
+  const [isMounted, setIsMounted] = useState(false);
+  const { setBackgroundSocket } = useAvatar();
   const canvasElm = canvasRef.current;
   const { proofOfUs } = useProofOfUs();
 
@@ -29,13 +41,17 @@ export const AvatarEditor: FC = () => {
   }, [proofOfUs]);
 
   useEffect(() => {
-    if (!videoRef.current && !isModalOpen) return;
+    if (!videoRef.current) return;
 
     navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
       if (!videoRef.current) return;
       videoRef.current.srcObject = stream;
+
+      setTimeout(() => {
+        setIsMounted(true);
+      }, 200);
     });
-  }, [isModalOpen]);
+  }, []);
 
   useEffect(() => {
     if (!canvasElm) return;
@@ -48,17 +64,7 @@ export const AvatarEditor: FC = () => {
     fabricRef.current.isDrawingMode = false;
   }, [canvasElm]);
 
-  const handleToggleCaptureModal = (evt: MouseEvent<HTMLButtonElement>) => {
-    evt.preventDefault();
-
-    setIsModalOpen((v) => !v);
-  };
-
-  const clearBackground = () => {
-    setBackgroundSocket(proofOfUsId.toString(), '');
-  };
-
-  const handleCapture = (evt: MouseEvent<HTMLButtonElement>) => {
+  const handleCapture = async (evt: MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();
     if (!videoRef.current || !fabricRef.current) return;
 
@@ -75,38 +81,34 @@ export const AvatarEditor: FC = () => {
       fabricRef.current?.requestRenderAll();
     });
 
-    setBackgroundSocket(proofOfUsId.toString(), canvas.toDataURL());
-
+    await setBackgroundSocket(proofOfUsId.toString(), canvas.toDataURL());
     (videoRef.current?.srcObject as MediaStream)
       ?.getTracks()
       .forEach((t) => t.stop());
-
-    setIsModalOpen(false);
-  };
-
-  const handleUpload = async () => {
-    if (!proofOfUs?.avatar.background) return;
-
-    uploadBackground(proofOfUsId.toString(), proofOfUs?.avatar.background);
+    next();
   };
 
   return (
-    <section>
-      <h2>fabric editor</h2>
-      <button onClick={handleToggleCaptureModal}>Capture</button>
+    <section className={wrapperClass}>
+      {!isMounted && <div>loading</div>}
 
-      <button onClick={clearBackground}>clear background</button>
-      <button onClick={handleUpload}>upload</button>
-      <canvas ref={canvasRef} className={canvasClass} />
+      <div
+        className={classnames(
+          cameraWrapperClass,
+          !isMounted ? hiddenClass : '',
+        )}
+      >
+        <canvas ref={canvasRef} className={classnames(hiddenClass)} />
 
-      {isModalOpen && (
-        <section className={modalClass}>
-          <video ref={videoRef} id="player" controls autoPlay></video>
-          <button id="capture" onClick={handleCapture}>
-            Capture
-          </button>
-        </section>
-      )}
+        <video
+          className={classnames(cameraClass, !isMounted ? hiddenClass : '')}
+          ref={videoRef}
+          id="player"
+          controls
+          autoPlay
+        ></video>
+        <button className={cameraButton} id="capture" onClick={handleCapture} />
+      </div>
     </section>
   );
 };

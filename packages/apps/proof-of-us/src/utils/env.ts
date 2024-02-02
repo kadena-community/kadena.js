@@ -2,9 +2,9 @@ const TRACKING_ID = process.env.NEXT_PUBLIC_TRACKING_ID;
 const TESTNUMBER = Number(process.env.NEXT_PUBLIC_TESTNUMBER);
 const WALLET_URL = process.env.NEXT_PUBLIC_WALLET_URL;
 const URL = process.env.NEXT_PUBLIC_URL;
-const CHAINID = process.env.NEXT_PUBLIC_CHAINID;
+const CHAINID = process.env.NEXT_PUBLIC_CHAINID ?? '14';
 const NETWORKID = process.env.NEXT_PUBLIC_NETWORKID;
-const NAMESPACE = process.env.NEXT_PUBLIC_CONTRACT_NAMESPACE
+const NAMESPACE = process.env.NEXT_PUBLIC_CONTRACT_NAMESPACE;
 
 if (!TRACKING_ID) console.error('NEXT_PUBLIC_TRACKING_ID is not set');
 if (!TESTNUMBER) console.error('NEXT_PUBLIC_TESTNUMBER is not set');
@@ -21,5 +21,5 @@ export const env = {
   URL,
   CHAINID,
   NETWORKID,
-  NAMESPACE
+  NAMESPACE,
 };

@@ -2,6 +2,7 @@
 import { AvatarEditor } from '@/components/AvatarEditor/AvatarEditor';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { PROOFOFUS_QR_URL } from '@/constants';
+import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSocket } from '@/hooks/socket';
 import { env } from '@/utils/env';
@@ -22,52 +23,61 @@ const Page: FC<IProps> = ({ params }) => {
   const router = useRouter();
   const { socket, disconnect } = useSocket();
   const { createToken, proofOfUs } = useProofOfUs();
-  const [isNew, setIsNew] = useState(false);
+  const { uploadBackground } = useAvatar();
 
-  console.log({ proofOfUs });
-
-  const createNew = async () => {
-    const proofOfUsId = await createProofOfUsID();
-    router.replace(`/user/proof-of-us/${proofOfUsId}`);
-  };
+  const [status, setStatus] = useState(1);
 
   useEffect(() => {
     if (params.id === 'new') {
-      setIsNew(true);
-      createNew();
+      const proofOfUsId = createProofOfUsID();
+      router.replace(`/user/proof-of-us/${proofOfUsId}`);
+      return;
     }
 
     disconnect({ proofOfUsId: params.id });
     createToken({ proofOfUsId: params.id });
   }, [socket, params.id]);
 
+  const next = () => {
+    setStatus(2);
+  };
+
+  const handleUpload = async () => {
+    if (!proofOfUs?.avatar.background) return;
+
+    await uploadBackground(params.id.toString(), proofOfUs?.avatar.background);
+  };
+
   if (!proofOfUs) return;
 
   return (
     <div>
-      Proof Of Us with ID ({proofOfUs.proofOfUsId})
-      <section>
-        <h4>image</h4>
-        <img src={proofOfUs.uri} />
+      {status === 1 && <AvatarEditor next={next} />}
+      {status === 2 && (
+        <>
+          Proof Of Us with ID ({proofOfUs.proofOfUsId})
+          <section>
+            <h4>image</h4>
+            <img src={proofOfUs.uri} />
 
-        <ListSignees />
-
-        {!isNew ? <AvatarEditor /> : null}
-      </section>
-      <section>
-        <h2>qr code</h2>
-        <QRCode
-          ecLevel="H"
-          ref={qrRef}
-          value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
-          removeQrCodeBehindLogo={true}
-          logoImage="/assets/qrlogo.png"
-          logoPadding={5}
-          quietZone={10}
-          qrStyle="dots" // type of qr code, wether you want dotted ones or the square ones
-          eyeRadius={10}
-        />
-      </section>
+            <ListSignees />
+          </section>
+          <section>
+            <h2>qr code</h2>
+            <QRCode
+              ecLevel="H"
+              ref={qrRef}
+              value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
+              removeQrCodeBehindLogo={true}
+              logoImage="/assets/qrlogo.png"
+              logoPadding={5}
+              quietZone={10}
+              qrStyle="dots" // type of qr code, wether you want dotted ones or the square ones
+              eyeRadius={10}
+            />
+          </section>
+        </>
+      )}
     </div>
   );
 };

@@ -1,7 +1,6 @@
 'use client';
 
-import { Event } from '@/features/Event/Event';
-import { Multi } from '@/features/Multi/Multi';
+import { ScanEvent } from '@/features/ScanEvent/ScanEvent';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 
 import type { FC } from 'react';
@@ -15,14 +14,11 @@ interface IProps {
 const Page: FC<IProps> = () => {
   const { proofOfUs } = useProofOfUs();
 
-  console.log({ proofOfUs });
-
   if (!proofOfUs) return null;
 
   return (
     <div>
-      {proofOfUs.type === 'multi' && <Multi proofOfUs={proofOfUs} />}
-      {proofOfUs.type === 'event' && <Event proofOfUs={proofOfUs} />}
+      <ScanEvent proofOfUs={proofOfUs} />
     </div>
   );
 };
