@@ -5,6 +5,18 @@
 GraphQL project, available for running your own GraphQL endpoint. This project
 uses chainweb-data as the datasource.
 
+|     | esm/cjs | dist/src | w/ w/o dependencies |     |
+| --- | ------- | -------- | ------------------- | --- |
+| 7   | 0       | 0        | 0                   |     |
+| 9   | 0       | 1        | 0                   |     |
+| 11  | 1       | 0        | 0                   |     |
+| 13  | 1       | 1        | 0                   |     |
+
+| 8   | 0       | 0        | 1                   |     |
+| 10  | 0       | 1        | 1                   |     |
+| 12  | 1       | 0        | 1                   |     |
+| 14  | 1       | 1        | 1                   |     |
+
 <picture>
   <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
   <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
@@ -16,15 +28,17 @@ uses chainweb-data as the datasource.
 
 A GraphQL endpoint that interacts with chainweb-data and chainweb-node.
 
-- [Kadena GraphQL](#kadena-graphql)
-- [Useful extra's](#useful-extras)
-  - [Connect to the database](#connect-to-the-database)
-  - [Fund an account on the devnet](#fund-an-account-on-the-devnet)
-  - [Simulate traffic on the devnet](#simulate-traffic-on-the-devnet)
-    - [Coin simulation](#coin-simulation)
-    - [Marmalade simulation](#marmalade-simulation)
-  - [Tracing and trace analysis](#tracing-and-trace-analysis)
-  - [Query Complexity](#query-complexity)
+- [@kadena/graph](#kadenagraph)
+  - [Kadena GraphQL](#kadena-graphql)
+- [Getting started](#getting-started)
+  - [Useful extra's](#useful-extras)
+    - [Connect to the database](#connect-to-the-database)
+    - [Fund an account on the devnet](#fund-an-account-on-the-devnet)
+    - [Simulate traffic on the devnet](#simulate-traffic-on-the-devnet)
+      - [Coin simulation](#coin-simulation)
+      - [Marmalade simulation](#marmalade-simulation)
+    - [Tracing and trace analysis](#tracing-and-trace-analysis)
+    - [Query Complexity](#query-complexity)
 
 # Getting started
 
