@@ -99,21 +99,7 @@ const Home: React.FC = () => {
       />
 
       {newBlocks && (
-<<<<<<< HEAD
-        <Table.Root wordBreak="break-word" className={compactTableClass}>
-          <Table.Head>
-            <Table.Tr>
-              <Table.Th>Hash</Table.Th>
-              <Table.Th>Creation Time</Table.Th>
-              <Table.Th>Height</Table.Th>
-              <Table.Th>Chain</Table.Th>
-              <Table.Th>Confirmation Depth</Table.Th>
-              <Table.Th>Transactions</Table.Th>
-            </Table.Tr>
-          </Table.Head>
-          <Table.Body>
-=======
-        <Table className={atoms({ wordBreak: 'break-all' })}>
+        <Table className={atoms({ wordBreak: 'break-all' })} isCompact>
           <TableHeader>
             <Column>Hash</Column>
             <Column>Creation Time</Column>
@@ -123,7 +109,6 @@ const Home: React.FC = () => {
             <Column>Transactions</Column>
           </TableHeader>
           <TableBody>
->>>>>>> 0e5aaafd1 (updated tools)
             {newBlocks.map((block, index) => {
               return (
                 <Row key={index}>

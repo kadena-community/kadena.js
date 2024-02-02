@@ -21,7 +21,6 @@ import {
 import { atoms } from '@kadena/react-ui/styles';
 import { truncate } from '@utils/truncate';
 import React from 'react';
-import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 interface ICompactTransactionsTableProps {
   viewAllHref?: string;
@@ -57,20 +56,7 @@ export const CompactTransactionsTable = (
         View all transactions
       </Link>
       <Box margin="xs" />
-<<<<<<< HEAD
-      <Table.Root wordBreak="break-word" className={compactTableClass}>
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Chain</Table.Th>
-            <Table.Th>Timestamp</Table.Th>
-            <Table.Th>Block Height</Table.Th>
-            <Table.Th>Request Key</Table.Th>
-            <Table.Th>Code</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-=======
-      <Table className={atoms({ wordBreak: 'break-all' })}>
+      <Table className={atoms({ wordBreak: 'break-all' })} isCompact>
         <TableHeader>
           <Column>Chain</Column>
           <Column>Timestamp</Column>
@@ -79,7 +65,6 @@ export const CompactTransactionsTable = (
           <Column>Code</Column>
         </TableHeader>
         <TableBody>
->>>>>>> 0e5aaafd1 (updated tools)
           {transactions.edges.slice(0, 10).map((edge, index) => {
             return (
               <Row key={index}>

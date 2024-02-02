@@ -18,7 +18,6 @@ import {
 import { atoms } from '@kadena/react-ui/styles';
 import { truncate } from '@utils/truncate';
 import React from 'react';
-import { compactTableClass } from '../common/compact-table/compact-table.css';
 interface ICompactTransfersTableProps {
   fungibleName: string;
   accountName: string;
@@ -86,24 +85,10 @@ export const CompactTransfersTable = (
         View all transfers
       </Link>
       <Box margin="xs" />
-<<<<<<< HEAD
-      <Table.Root wordBreak="break-word" className={compactTableClass}>
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Chain</Table.Th>
-            <Table.Th>Timestamp</Table.Th>
-            <Table.Th>Block Height</Table.Th>
-            <Table.Th>Amount</Table.Th>
-            <Table.Th>Sender Account</Table.Th>
-            <Table.Th>Receiver Account</Table.Th>
-            <Table.Th>Request key</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-=======
-      <Table className={atoms({ wordBreak: 'break-all' })}>
+      <Table className={atoms({ wordBreak: 'break-all' })} isCompact>
         <TableHeader>
           <Column>Chain</Column>
+          <Column>Timestamp</Column>
           <Column>Block Height</Column>
           <Column>Amount</Column>
           <Column>Sender Account</Column>
@@ -111,7 +96,6 @@ export const CompactTransfersTable = (
           <Column>Request key</Column>
         </TableHeader>
         <TableBody>
->>>>>>> 0e5aaafd1 (updated tools)
           {transfers.edges.map((edge, index) => {
             let transfer = edge.node;
             let crossChainCounterPart = edge.node.crossChainTransfer;
@@ -138,22 +122,12 @@ export const CompactTransfersTable = (
               : transfer.height;
 
             return (
-<<<<<<< HEAD
-              <Table.Tr key={index}>
-                <Table.Td>{chainIdDisplay}</Table.Td>
-                <Table.Td>
-                  {new Date(transfer.creationTime).toLocaleString()}
-                </Table.Td>
-                <Table.Td>{heightDisplay}</Table.Td>
-                <Table.Td>{transfer.amount}</Table.Td>
-                <Table.Td>
-=======
               <Row key={index}>
                 <Cell>{chainIdDisplay}</Cell>
+                <Cell> {new Date(transfer.creationTime).toLocaleString()}</Cell>
                 <Cell>{heightDisplay}</Cell>
                 <Cell>{transfer.amount}</Cell>
                 <Cell>
->>>>>>> 0e5aaafd1 (updated tools)
                   <Link
                     href={`${routes.ACCOUNT}/${fungibleName}/${transfer.senderAccount}`}
                   >
