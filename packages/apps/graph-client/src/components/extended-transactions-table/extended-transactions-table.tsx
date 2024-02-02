@@ -202,7 +202,7 @@ export const ExtendedTransactionsTable = (
         </Table.Head>
         <Table.Body>
 =======
-      <Table className={atoms({ wordBreak: 'break-all' })}>
+      <Table className={atoms({ wordBreak: 'break-word' })} isCompact>
         <TableHeader>
           <Column>Chain</Column>
           <Column>Timestamp</Column>

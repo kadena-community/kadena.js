@@ -25,13 +25,10 @@ import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
-<<<<<<< HEAD
   Button,
-  Link,
-=======
   Cell,
   Column,
->>>>>>> 0e5aaafd1 (updated tools)
+  Link,
   Notification,
   Row,
   Stack,
@@ -118,66 +115,18 @@ const Account: React.FC = () => {
 
       <Box margin="md" />
 
-      <Table.Root wordBreak="break-all" className={compactTableClass}>
-        <Table.Body>
-          <Table.Tr>
-            <Table.Td>
+      <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+        <TableBody>
+          <Row>
+            <Cell>
               <strong>Account Name</strong>
-            </Table.Td>
-            <Table.Td>{router.query.account}</Table.Td>
-          </Table.Tr>
-        </Table.Body>
-      </Table.Root>
+            </Cell>
+            <Cell>{router.query.account}</Cell>
+          </Row>
+        </TableBody>
+      </Table>
 
-<<<<<<< HEAD
       <Box margin="md" />
-=======
-      {((data?.fungibleAccount &&
-        data?.fungibleAccount?.totalBalance === 0 &&
-        data?.fungibleAccount?.chainAccounts.length === 0) ||
-        (!loading && !error && !data?.fungibleAccount)) && (
-        <Notification intent="info" role="status">
-          We could not find any data on this account. Please check the fungible
-          name and account name.
-        </Notification>
-      )}
-      {data?.fungibleAccount && (
-        <div>
-          <Table className={atoms({ wordBreak: 'break-all' })}>
-            <TableBody>
-              <Row>
-                <Column>
-                  <strong>Account Name</strong>
-                </Column>
-                <Column>{data.fungibleAccount.accountName}</Column>
-              </Row>
-              <Row>
-                <Column>
-                  <strong>Fungible</strong>
-                </Column>
-                <Column>{data.fungibleAccount.fungibleName}</Column>
-              </Row>
-              <Row>
-                <Column>
-                  <strong>Balance</strong>
-                </Column>
-                <Column>{data.fungibleAccount.totalBalance}</Column>
-              </Row>
-            </TableBody>
-          </Table>
-          <Box margin="md" />
-          <Tabs defaultSelectedKey="Chain Accounts">
-            <TabItem title="Chain Accounts" key="Chain Accounts">
-              <Box margin="sm" />
-              <FungibleChainAccountTable
-                fungibleName={router.query.fungible as string}
-                accountName={router.query.account as string}
-                chainAccounts={
-                  data.fungibleAccount.chainAccounts as FungibleChainAccount[]
-                }
-              />
-            </TabItem>
->>>>>>> 0e5aaafd1 (updated tools)
 
       <Tabs defaultSelectedKey="Fungible">
         <TabItem title="Fungible" key="Fungible">
@@ -221,26 +170,26 @@ const Account: React.FC = () => {
           )}
           {fungibleAccountData?.fungibleAccount && (
             <>
-              <Table.Root wordBreak="break-all" className={compactTableClass}>
-                <Table.Body>
-                  <Table.Tr>
-                    <Table.Td>
+              <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+                <TableBody>
+                  <Row>
+                    <Cell>
                       <strong>Fungible</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {fungibleAccountData.fungibleAccount.fungibleName}
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
+                    </Cell>
+                  </Row>
+                  <Row>
+                    <Cell>
                       <strong>Balance</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {fungibleAccountData.fungibleAccount.totalBalance}
-                    </Table.Td>
-                  </Table.Tr>
-                </Table.Body>
-              </Table.Root>
+                    </Cell>
+                  </Row>
+                </TableBody>
+              </Table>
 
               <Box margin="md" />
 
@@ -308,13 +257,13 @@ const Account: React.FC = () => {
 
           {nonFungibleAccountData?.nonFungibleAccount && (
             <div>
-              <Table.Root wordBreak="break-all" className={compactTableClass}>
-                <Table.Body>
-                  <Table.Tr>
-                    <Table.Td>
+              <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+                <TableBody>
+                  <Row>
+                    <Cell>
                       <strong>Chain Accounts</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {nonFungibleAccountData.nonFungibleAccount.chainAccounts.map(
                         (chainAccount) => (
                           <Box key={chainAccount.chainId}>
@@ -326,10 +275,10 @@ const Account: React.FC = () => {
                           </Box>
                         ),
                       )}
-                    </Table.Td>
-                  </Table.Tr>
-                </Table.Body>
-              </Table.Root>
+                    </Cell>
+                  </Row>
+                </TableBody>
+              </Table>
 
               <Box margin="md" />
 

@@ -1,5 +1,4 @@
 import { useEstimateGasLimitQuery } from '@/__generated__/sdk';
-import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
@@ -58,32 +57,10 @@ const GasEstimation: React.FC = () => {
         loaderText="Waiting for gas estimation..."
       />
 
-<<<<<<< HEAD
-      <Table.Root wordBreak="break-all" className={compactTableClass}>
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Label</Table.Th>
-            <Table.Th>Value</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-          <Table.Tr>
-            <Table.Td>Cmd</Table.Td>
-            <Table.Td>{cmdString}</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>Gas Estimate</Table.Td>
-            <Table.Td>{data?.gasLimitEstimate}</Table.Td>
-          </Table.Tr>
-        </Table.Body>
-      </Table.Root>
-=======
-      <Table className={atoms({ wordBreak: 'break-all' })}>
+      <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
         <TableHeader>
-          <Row>
-            <Cell>Label</Cell>
-            <Cell>Value</Cell>
-          </Row>
+          <Column>Label</Column>
+          <Column>Value</Column>
         </TableHeader>
         <TableBody>
           <Row>
@@ -96,7 +73,6 @@ const GasEstimation: React.FC = () => {
           </Row>
         </TableBody>
       </Table>
->>>>>>> 0e5aaafd1 (updated tools)
     </>
   );
 };

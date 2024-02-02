@@ -33,19 +33,7 @@ export const FungibleChainAccountTable = (
         description="All chains where this account was found"
       />
       <Box margin="md" />
-<<<<<<< HEAD
-      <Table.Root wordBreak="break-all" className={compactTableClass}>
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Chain</Table.Th>
-            <Table.Th>Balance</Table.Th>
-            <Table.Th>Guard Predicate</Table.Th>
-            <Table.Th>Guard Keys</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-=======
-      <Table className={atoms({ wordBreak: 'break-all' })}>
+      <Table className={atoms({ wordBreak: 'break-all' })} isCompact>
         <TableHeader>
           <Column>Chain</Column>
           <Column>Balance</Column>
@@ -53,7 +41,6 @@ export const FungibleChainAccountTable = (
           <Column>Guard Keys</Column>
         </TableHeader>
         <TableBody>
->>>>>>> 0e5aaafd1 (updated tools)
           {chainAccounts.map((chainAccount, index) => (
             <Row key={index}>
               <Cell>{chainAccount.chainId}</Cell>

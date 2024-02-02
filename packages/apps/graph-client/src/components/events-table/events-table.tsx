@@ -22,29 +22,14 @@ export const EventsTable = (props: IEventsTableProps): JSX.Element => {
 
   return (
     <>
-<<<<<<< HEAD
-      <Table.Root striped wordBreak="break-word" className={compactTableClass}>
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Block Height</Table.Th>
-            <Table.Th>Chain ID</Table.Th>
-            <Table.Th>Parameters</Table.Th>
-            <Table.Th>Request Key</Table.Th>
-            <Table.Th></Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-=======
-      <Table isStriped className={atoms({ wordBreak: 'break-all' })}>
+      <Table isStriped className={atoms({ wordBreak: 'break-all' })} isCompact>
         <TableHeader>
           <Column>Block Height</Column>
           <Column>Chain ID</Column>
           <Column>Parameters</Column>
           <Column>Request Key</Column>
-          <Column> </Column>
         </TableHeader>
         <TableBody>
->>>>>>> 0e5aaafd1 (updated tools)
           {events.map((event, index) => (
             <Row
               key={index}

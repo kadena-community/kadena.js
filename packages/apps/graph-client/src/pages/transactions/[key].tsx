@@ -3,7 +3,6 @@ import {
   useGetTransactionByRequestKeySubscription,
   useGetTransactionNodeQuery,
 } from '@/__generated__/sdk';
-import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
@@ -103,23 +102,11 @@ const RequestKey: React.FC = () => {
 
       {transaction && (
         <>
-<<<<<<< HEAD
-          <Table.Root
-            striped
-            wordBreak="break-word"
-            className={compactTableClass}
+          <Table
+            isStriped
+            isCompact
+            className={atoms({ wordBreak: 'break-word' })}
           >
-            <Table.Head>
-              <Table.Tr>
-                <Table.Th width="$40">Key</Table.Th>
-                <Table.Th>Value</Table.Th>
-              </Table.Tr>
-            </Table.Head>
-            <Table.Body>
-              <Table.Tr>
-                <Table.Td>
-=======
-          <Table isStriped className={atoms({ wordBreak: 'break-all' })}>
             <TableHeader>
               <Column width="160">Key</Column>
               <Column>Value</Column>
@@ -127,7 +114,6 @@ const RequestKey: React.FC = () => {
             <TableBody>
               <Row>
                 <Cell>
->>>>>>> 0e5aaafd1 (updated tools)
                   <strong>Status</strong>
                 </Cell>
                 <Cell>

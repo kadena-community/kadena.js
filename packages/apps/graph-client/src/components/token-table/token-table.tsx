@@ -35,25 +35,13 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
 
       <Box margin="sm" />
 
-<<<<<<< HEAD
-      <Table.Root wordBreak="break-word" className={compactTableClass}>
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Token Id</Table.Th>
-            <Table.Th>Chain</Table.Th>
-            <Table.Th>Balance</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-=======
-      <Table className={atoms({ wordBreak: 'break-all' })}>
+      <Table className={atoms({ wordBreak: 'break-word' })} isCompact>
         <TableHeader>
           <Column>Token Id</Column>
           <Column>Chain</Column>
           <Column>Balance</Column>
         </TableHeader>
         <TableBody>
->>>>>>> 0e5aaafd1 (updated tools)
           {tokens.map((token, index) => {
             return (
               <Row key={index}>

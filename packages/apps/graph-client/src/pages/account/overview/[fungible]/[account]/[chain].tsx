@@ -23,11 +23,8 @@ import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
-<<<<<<< HEAD
   Button,
-=======
   Cell,
->>>>>>> 0e5aaafd1 (updated tools)
   Grid,
   GridItem,
   Notification,
@@ -35,12 +32,9 @@ import {
   Stack,
   TabItem,
   Table,
-<<<<<<< HEAD
+  TableBody,
   Tabs,
   TextField,
-=======
-  TableBody,
->>>>>>> 0e5aaafd1 (updated tools)
 } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
@@ -128,26 +122,25 @@ const ChainAccount: React.FC = () => {
 
       <Box margin="md" />
 
-      <Table.Root wordBreak="break-all" className={compactTableClass}>
-        <Table.Body>
-          <Table.Tr>
-            <Table.Td>
+      <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+        <TableBody>
+          <Row>
+            <Cell>
               <strong>Account Name</strong>
-            </Table.Td>
-            <Table.Td>{router.query.account}</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>
+            </Cell>
+            <Cell>{router.query.account}</Cell>
+          </Row>
+          <Row>
+            <Cell>
               <strong>Chain</strong>
-            </Table.Td>
-            <Table.Td>{router.query.chain}</Table.Td>
-          </Table.Tr>
-        </Table.Body>
-      </Table.Root>
+            </Cell>
+            <Cell>{router.query.chain}</Cell>
+          </Row>
+        </TableBody>
+      </Table>
 
       <Box margin="md" />
 
-<<<<<<< HEAD
       <Tabs defaultSelectedKey="Fungible">
         <TabItem title="Fungible" key="Fungible">
           <Box margin="sm" />
@@ -188,48 +181,48 @@ const ChainAccount: React.FC = () => {
 
           {fungibleChainAccountData?.fungibleChainAccount && (
             <>
-              <Table.Root wordBreak="break-all" className={compactTableClass}>
-                <Table.Body>
-                  <Table.Tr>
-                    <Table.Td>
+              <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+                <TableBody>
+                  <Row>
+                    <Cell>
                       <strong>Fungible</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {
                         fungibleChainAccountData.fungibleChainAccount
                           .fungibleName
                       }
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
+                    </Cell>
+                  </Row>
+                  <Row>
+                    <Cell>
                       <strong>Balance</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {fungibleChainAccountData.fungibleChainAccount.balance}
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
+                    </Cell>
+                  </Row>
+                  <Row>
+                    <Cell>
                       <strong>Guard Predicate</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {
                         fungibleChainAccountData.fungibleChainAccount.guard
                           .predicate
                       }
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
+                    </Cell>
+                  </Row>
+                  <Row>
+                    <Cell>
                       <strong>Guard Keys</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {fungibleChainAccountData.fungibleChainAccount.guard.keys}
-                    </Table.Td>
-                  </Table.Tr>
-                </Table.Body>
-              </Table.Root>
+                    </Cell>
+                  </Row>
+                </TableBody>
+              </Table>
 
               <Box margin="md" />
 
@@ -284,32 +277,32 @@ const ChainAccount: React.FC = () => {
 
           {nonFungibleChainAccountData?.nonFungibleChainAccount && (
             <>
-              <Table.Root wordBreak="break-all" className={compactTableClass}>
-                <Table.Body>
-                  <Table.Tr>
-                    <Table.Td>
+              <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+                <TableBody>
+                  <Row>
+                    <Cell>
                       <strong>Guard Predicate</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {
                         nonFungibleChainAccountData.nonFungibleChainAccount
                           .guard.predicate
                       }
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
+                    </Cell>
+                  </Row>
+                  <Row>
+                    <Cell>
                       <strong>Guard Keys</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {
                         nonFungibleChainAccountData.nonFungibleChainAccount
                           .guard.keys
                       }
-                    </Table.Td>
-                  </Table.Tr>
-                </Table.Body>
-              </Table.Root>
+                    </Cell>
+                  </Row>
+                </TableBody>
+              </Table>
 
               <Box margin="md" />
 
@@ -341,81 +334,6 @@ const ChainAccount: React.FC = () => {
           )}
         </TabItem>
       </Tabs>
-=======
-      {data?.fungibleChainAccount && (
-        <>
-          <Table className={atoms({ wordBreak: 'break-all' })}>
-            <TableBody>
-              <Row>
-                <Cell>
-                  <strong>Account Name</strong>
-                </Cell>
-                <Cell>{data.fungibleChainAccount.accountName}</Cell>
-              </Row>
-              <Row>
-                <Cell>
-                  <strong>Fungible</strong>
-                </Cell>
-                <Cell>{data.fungibleChainAccount.fungibleName}</Cell>
-              </Row>
-              <Row>
-                <Cell>
-                  <strong>Chain</strong>
-                </Cell>
-                <Cell>{data.fungibleChainAccount.chainId}</Cell>
-              </Row>
-              <Row>
-                <Cell>
-                  <strong>Balance</strong>
-                </Cell>
-                <Cell>{data.fungibleChainAccount.balance}</Cell>
-              </Row>
-              <Row>
-                <Cell>
-                  <strong>Guard Predicate</strong>
-                </Cell>
-                <Cell>{data.fungibleChainAccount.guard.predicate}</Cell>
-              </Row>
-              <Row>
-                <Cell>
-                  <strong>Guard Keys</strong>
-                </Cell>
-                <Cell>{data.fungibleChainAccount.guard.keys}</Cell>
-              </Row>
-            </TableBody>
-          </Table>
-          <Box margin="md" />
-          <Grid columns={2} gap="lg">
-            <GridItem>
-              <CompactTransfersTable
-                fungibleName={router.query.fungible as string}
-                accountName={router.query.account as string}
-                chainId={router.query.chain as string}
-                truncateColumns={true}
-                transfers={
-                  data.fungibleChainAccount
-                    .transfers as FungibleChainAccountTransfersConnection
-                }
-              />
-            </GridItem>
-            <GridItem>
-              <CompactTransactionsTable
-                viewAllHref={`${routes.ACCOUNT_TRANSACTIONS}/${
-                  router.query.fungible as string
-                }/${router.query.account as string}?chain=${
-                  router.query.chain as string
-                }`}
-                truncateColumns={true}
-                transactions={
-                  data.fungibleChainAccount
-                    .transactions as FungibleChainAccountTransactionsConnection
-                }
-              />
-            </GridItem>
-          </Grid>
-        </>
-      )}
->>>>>>> 0e5aaafd1 (updated tools)
     </>
   );
 };

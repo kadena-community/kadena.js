@@ -86,17 +86,10 @@ const Block: React.FC = () => {
           <>
             <Heading as="h4">Block Header</Heading>
 
-<<<<<<< HEAD
-            <Table.Root wordBreak="break-word" className={compactTableClass}>
-              <Table.Body>
-                <Table.Tr>
-                  <Table.Td>
-=======
-            <Table className={atoms({ wordBreak: 'break-all' })}>
+            <Table className={atoms({ wordBreak: 'break-word' })} isCompact>
               <TableBody>
                 <Row>
                   <Cell>
->>>>>>> 0e5aaafd1 (updated tools)
                     <strong>Chain ID</strong>
                   </Cell>
                   <Cell>{data.block.chainId}</Cell>
@@ -134,17 +127,10 @@ const Block: React.FC = () => {
             <Accordion.Root>
               {[
                 <Accordion.Section title="See more" key={'accordion-header'}>
-<<<<<<< HEAD
-                  <Table.Root className={compactTableClass}>
-                    <Table.Body>
-                      <Table.Tr>
-                        <Table.Td>
-=======
-                  <Table>
+                  <Table isCompact>
                     <TableBody>
                       <Row>
                         <Cell>
->>>>>>> 0e5aaafd1 (updated tools)
                           <strong>Parent</strong>
                         </Cell>
                         <Cell>
@@ -177,17 +163,10 @@ const Block: React.FC = () => {
 
             <Heading as="h4">Block Payload</Heading>
 
-<<<<<<< HEAD
-            <Table.Root wordBreak="break-word" className={compactTableClass}>
-              <Table.Body>
-                <Table.Tr>
-                  <Table.Td>
-=======
-            <Table wordBreak="break-word">
+            <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
               <TableBody>
                 <Row>
                   <Cell>
->>>>>>> 0e5aaafd1 (updated tools)
                     <strong>Payload Hash</strong>
                   </Cell>
                   <Cell>{data.block.payloadHash}</Cell>
@@ -204,17 +183,10 @@ const Block: React.FC = () => {
             <Accordion.Root>
               {[
                 <Accordion.Section title="See more" key={'accordion-payload'}>
-<<<<<<< HEAD
-                  <Table.Root className={compactTableClass}>
-                    <Table.Body>
-                      <Table.Tr>
-                        <Table.Td>
-=======
-                  <Table>
+                  <Table isCompact>
                     <TableBody>
                       <Row>
                         <Cell>
->>>>>>> 0e5aaafd1 (updated tools)
                           <strong>Payload Hash</strong>
                         </Cell>
                         <Cell>{data.block.payloadHash}</Cell>

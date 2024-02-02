@@ -190,24 +190,10 @@ export const ExtendedTransfersTable = (
           />
         </div>
       </Box>
-<<<<<<< HEAD
-      <Table.Root wordBreak="break-word" className={compactTableClass}>
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Chain</Table.Th>
-            <Table.Th>Timestamp</Table.Th>
-            <Table.Th>Block Height</Table.Th>
-            <Table.Th>Amount</Table.Th>
-            <Table.Th>Sender Account</Table.Th>
-            <Table.Th>Receiver Account</Table.Th>
-            <Table.Th>Request key</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-=======
-      <Table className={atoms({ wordBreak: 'break-all' })}>
+      <Table className={atoms({ wordBreak: 'break-word' })} isCompact>
         <TableHeader>
           <Column>Chain</Column>
+          <Column>Timestamp</Column>
           <Column>Block Height</Column>
           <Column>Amount</Column>
           <Column>Sender Account</Column>
@@ -215,7 +201,6 @@ export const ExtendedTransfersTable = (
           <Column>Request key</Column>
         </TableHeader>
         <TableBody>
->>>>>>> 0e5aaafd1 (updated tools)
           {transfers.edges.map((edge, index) => {
             /**  These transfers are going to be added to their crosschain counterpart and
            this way we avoid repeated transfers in the table */
@@ -232,22 +217,12 @@ export const ExtendedTransfersTable = (
               : edge.node.height;
 
             return (
-<<<<<<< HEAD
-              <Table.Tr key={index}>
-                <Table.Td>{chainIdDisplay}</Table.Td>
-                <Table.Td>
-                  {new Date(edge.node.creationTime).toLocaleString()}
-                </Table.Td>
-                <Table.Td>{heightDisplay}</Table.Td>
-                <Table.Td>{edge.node.amount}</Table.Td>
-                <Table.Td>
-=======
               <Row key={index}>
                 <Cell>{chainIdDisplay}</Cell>
+                <Cell>{new Date(edge.node.creationTime).toLocaleString()}</Cell>
                 <Cell>{heightDisplay}</Cell>
                 <Cell>{edge.node.amount}</Cell>
                 <Cell>
->>>>>>> 0e5aaafd1 (updated tools)
                   <Link
                     href={`${routes.ACCOUNT}/${router.query.fungible}/${edge.node.senderAccount}`}
                   >
