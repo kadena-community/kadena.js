@@ -17,7 +17,7 @@ export async function createAccountName({
   networkConfig,
 }: ICreateAccountNameConfig): Promise<string> {
   if (publicKeys?.length === 0) {
-    throw new Error('No public keys provided to create an account');
+    throw new Error('No public keys provided to create an account.');
   }
 
   try {

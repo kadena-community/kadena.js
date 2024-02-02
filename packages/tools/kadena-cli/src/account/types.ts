@@ -3,7 +3,7 @@ import type { INetworkCreateOptions } from '../networks/utils/networkHelpers.js'
 
 export type Predicate = 'keys-all' | 'keys-2' | 'keys-any';
 
-export interface IAccountConfig {
+export interface IAddAccountConfig {
   accountAlias: string;
   fungible: string;
   predicate: Predicate;
@@ -15,14 +15,21 @@ export interface IAccountConfig {
   publicKeysConfig: string[];
   accountOverwrite: boolean;
   accountDetailsFromChain?: IAccountDetailsResult;
+  accountName: string;
 }
 
-export interface IAddAccountWalletConfig extends IAccountConfig {
+export interface IAddAccountWalletConfig
+  extends Omit<IAddAccountConfig, 'accountName'> {
   keyWallet: string;
 }
 
-export interface IAddAccountManualConfig extends IAccountConfig {
+export interface IValidateAccountDetailsConfig
+  extends Omit<IAddAccountConfig, 'accountName'> {
   accountName?: string;
+}
+
+export interface IAddAccountManualConfig extends IAddAccountConfig {
+  accountName: string;
 }
 
 export interface IGuard {
@@ -33,5 +40,5 @@ export interface IGuard {
 export interface IAccountDetailsResult {
   guard: IGuard;
   account: string;
-  balance?: number;
+  balance: number;
 }

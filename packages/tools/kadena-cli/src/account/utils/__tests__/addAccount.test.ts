@@ -1,9 +1,9 @@
 /// <reference lib="dom" />
+import yaml from 'js-yaml';
+import { afterEach, assert, describe, expect, it } from 'vitest';
 
-import { HttpResponse, http } from 'msw';
-import { afterEach, assert, describe, expect, it, vi } from 'vitest';
 import { server } from '../../../mocks/server.js';
-
+import type { Predicate } from '../../../prompts/account.js';
 import { services } from '../../../services/index.js';
 import { addAccount } from '../addAccount.js';
 import { getAccountFilePath } from '../addHelpers.js';
@@ -19,59 +19,98 @@ describe('addAccount', () => {
     server.resetHandlers();
   });
 
-  it('should write user config to file alias account details are equal', async () => {
+  it('should write user config to file alias when account details are equal', async () => {
     const config = {
       ...defaultConfigMock,
       publicKeys: 'publicKey1,publicKey2',
       publicKeysConfig: ['publicKey1', 'publicKey2'],
+      accountDetailsFromChain: {
+        guard: {
+          keys: ['publicKey1', 'publicKey2'],
+          pred: 'keys-all' as Predicate,
+        },
+        account: 'accountName',
+        balance: 0,
+      },
     };
     const filePath = getAccountFilePath(defaultConfigMock.accountAlias);
-    const overrideConfigPromptCb = vi.fn();
-    const result = await addAccount(config, overrideConfigPromptCb);
+    const result = await addAccount(config);
 
     assert(result.success);
-    expect(overrideConfigPromptCb).not.toHaveBeenCalled();
     expect(result.data).toEqual(filePath);
+    expect(result.warnings).toEqual([]);
   });
 
-  it('should return error when any chain api calls fails', async () => {
-    server.use(
-      http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/local',
-        () => {
-          return new HttpResponse(null, { status: 500 });
-        },
-        {
-          once: true,
-        },
-      ),
-    );
-
+  it('should write user config to file when account details are undefined', async () => {
     const config = {
       ...defaultConfigMock,
-      publicKeys: 'publicKey1',
-      publicKeysConfig: ['publicKey1'],
+      accountName: 'k:3645365457567ghghdghf6534673',
+      publicKeys: 'publicKey1,publicKey2',
+      publicKeysConfig: ['publicKey1', 'publicKey2'],
+      accountDetailsFromChain: undefined,
     };
-    const overrideConfigPromptCb = vi.fn().mockResolvedValue(false);
-    const result = await addAccount(config, overrideConfigPromptCb);
+    const filePath = getAccountFilePath(defaultConfigMock.accountAlias);
+    const result = await addAccount(config);
 
-    assert(!result.success);
-
-    expect(result.errors).toEqual(['There was an error creating the account.']);
+    assert(result.success);
+    expect(result.data).toEqual(filePath);
+    expect(result.warnings).toEqual([
+      'The account "k:3645365457567ghghdghf6534673" is not on chain yet. To create it on-chain, transfer funds to it from testnet and use "fund" command.',
+    ]);
   });
 
-  it('should call override prompt when userInput and account details are not equal', async () => {
+  it('should write config with account details from chain when accountOverwrite is true', async () => {
     const config = {
       ...defaultConfigMock,
-      publicKeys: 'publicKey1',
-      publicKeysConfig: ['publicKey1'],
+      accountName: 'accountName',
+      publicKeys: 'publicKey1,publicKey2',
+      publicKeysConfig: ['publicKey1', 'publicKey2'],
+      accountDetailsFromChain: {
+        guard: {
+          keys: ['publicKey1'],
+          pred: 'keys-any' as Predicate,
+        },
+        account: 'accountName',
+        balance: 0,
+      },
+      accountOverwrite: true,
+    };
+    const filePath = getAccountFilePath(defaultConfigMock.accountAlias);
+    const result = await addAccount(config);
+
+    const fileContent = await services.filesystem.readFile(filePath);
+
+    assert(result.success);
+    expect(result.data).toEqual(filePath);
+    expect(fileContent).toBe(
+      yaml.dump({
+        name: 'accountName',
+        fungible: 'coin',
+        publicKeys: ['publicKey1'],
+        predicate: 'keys-any',
+      }),
+    );
+    expect(result.warnings).toEqual([]);
+  });
+
+  it('should return error when file already exists', async () => {
+    const config = {
+      ...defaultConfigMock,
+      accountAlias: 'unit-test-alias',
+      accountName: 'accountName',
     };
     const filePath = getAccountFilePath(config.accountAlias);
-    const overrideConfigPromptCb = vi.fn().mockResolvedValue(false);
-    const result = await addAccount(config, overrideConfigPromptCb);
+    const fs = services.filesystem;
+    await fs.writeFile(filePath, 'test');
+    expect(await fs.fileExists(filePath)).toBe(true);
 
-    assert(result.success);
-    expect(overrideConfigPromptCb).toHaveBeenCalledOnce();
-    expect(result.data).toEqual(filePath);
+    const result = await addAccount(config);
+
+    assert(!result.success);
+    expect(result.errors).toEqual([
+      `The account configuration "${filePath}" already exists.`,
+    ]);
+
+    await fs.deleteFile(filePath);
   });
 });

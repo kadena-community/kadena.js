@@ -319,8 +319,8 @@ export const globalOptions = {
       try {
         return loadNetworkConfig(network);
       } catch (e) {
-        console.log(
-          `\nNo configuration for network "${network}" found. Please configure the network.\n`,
+        throw new Error(
+          `No network configuration found for "${network}". Please create a "${network}" network.`,
         );
       }
     },

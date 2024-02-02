@@ -7,6 +7,7 @@ export interface IGetAccountDetailsParams {
   chainId: ChainId;
   networkId: string;
   networkHost: string;
+  fungible: string;
 }
 
 export async function getAccountDetailsFromChain({
@@ -14,6 +15,7 @@ export async function getAccountDetailsFromChain({
   chainId,
   networkId,
   networkHost,
+  fungible,
 }: IGetAccountDetailsParams): Promise<IAccountDetailsResult> {
   try {
     const accountDetails = await details(
@@ -21,6 +23,7 @@ export async function getAccountDetailsFromChain({
       networkId,
       chainId,
       networkHost,
+      fungible,
     );
 
     if (accountDetails === undefined) {

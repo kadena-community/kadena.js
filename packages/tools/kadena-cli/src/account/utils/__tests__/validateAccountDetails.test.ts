@@ -17,13 +17,14 @@ describe('validateAccountDetails', () => {
       accountName: undefined,
     };
     const expectedResult = {
-      configWithAccountName: {
-        ...config,
-        accountName: 'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-all',
-      },
+      accountName: 'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-all',
       accountDetails: {
-        publicKeys: ['publicKey1', 'publicKey2'],
-        predicate: 'keys-all',
+        guard: {
+          keys: ['publicKey1', 'publicKey2'],
+          pred: 'keys-all',
+        },
+        account: 'accountName',
+        balance: 0,
       },
       isConfigAreSame: true,
     };
@@ -39,13 +40,14 @@ describe('validateAccountDetails', () => {
     };
 
     const expectedResult = {
-      configWithAccountName: {
-        ...config,
-        accountName: 'accountName',
-      },
+      accountName: 'accountName',
       accountDetails: {
-        publicKeys: ['publicKey1', 'publicKey2'],
-        predicate: 'keys-all',
+        guard: {
+          keys: ['publicKey1', 'publicKey2'],
+          pred: 'keys-all',
+        },
+        account: 'accountName',
+        balance: 0,
       },
       isConfigAreSame: false,
     };
@@ -54,7 +56,7 @@ describe('validateAccountDetails', () => {
     expect(result).toEqual(expectedResult);
   });
 
-  it('should return error message account not found when account is not found in chain', async () => {
+  it('should return accountDetails as undefined when user data not found in chain', async () => {
     server.use(
       http.post(
         'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/local',
@@ -68,9 +70,14 @@ describe('validateAccountDetails', () => {
       accountName: 'accountName',
     };
 
-    await expect(async () => {
-      await validateAccountDetails(config);
-    }).rejects.toThrow('row not found in chain');
+    const expectedResult = {
+      accountName: 'accountName',
+      accountDetails: undefined,
+      isConfigAreSame: true,
+    };
+
+    const result = await validateAccountDetails(config);
+    expect(result).toEqual(expectedResult);
   });
 
   it('should return error message when chain api calls fails', async () => {

@@ -17,6 +17,7 @@ export const devNetConfigMock: INetworkCreateOptions = {
 
 export const defaultConfigMock: IAddAccountManualConfig = {
   accountAlias: 'accountAlias',
+  accountName: 'accountName',
   fungible: 'coin',
   publicKeysConfig: [],
   publicKeys: '',
@@ -24,4 +25,5 @@ export const defaultConfigMock: IAddAccountManualConfig = {
   chainId: '1',
   ...testNetworkConfigMock,
   networkConfig: testNetworkConfigMock,
+  accountOverwrite: false,
 };

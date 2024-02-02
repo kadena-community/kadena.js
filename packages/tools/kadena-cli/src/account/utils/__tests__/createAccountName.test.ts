@@ -13,16 +13,21 @@ describe('createAccountName', () => {
 
   it('should throw an error when public keys are empty', async () => {
     await expect(async () => {
-      await createAccountName(defaultConfigMock);
-    }).rejects.toThrow(
-      'No public keys provided to create an account and get the account details.',
-    );
+      await createAccountName({
+        publicKeys: [],
+        chainId: defaultConfigMock.chainId,
+        predicate: defaultConfigMock.predicate,
+        networkConfig: defaultConfigMock.networkConfig,
+      });
+    }).rejects.toThrow('No public keys provided to create an account.');
   });
 
   it('should call createPrincipal method and return w:account when multiple public keys are provided', async () => {
     const accountName = await createAccountName({
-      ...defaultConfigMock,
-      publicKeysConfig: ['publicKey1', 'publicKey2'],
+      publicKeys: ['publicKeys1', 'publicKeys2'],
+      chainId: defaultConfigMock.chainId,
+      predicate: defaultConfigMock.predicate,
+      networkConfig: defaultConfigMock.networkConfig,
     });
     expect(accountName).toBe(
       'w:FxlQEvb6qHb50NClEnpwbT2uoJHuAu39GTSwXmASH2k:keys-all',
@@ -31,8 +36,10 @@ describe('createAccountName', () => {
 
   it('should call createPrincipal method and return k:account when only one public key is provided', async () => {
     const accountName = await createAccountName({
-      ...defaultConfigMock,
-      publicKeysConfig: ['publicKey1'],
+      publicKeys: ['publicKey1'],
+      chainId: defaultConfigMock.chainId,
+      predicate: defaultConfigMock.predicate,
+      networkConfig: defaultConfigMock.networkConfig,
     });
     expect(accountName).toBe('k:publicKey1');
   });
@@ -49,9 +56,11 @@ describe('createAccountName', () => {
 
     await expect(async () => {
       await createAccountName({
-        ...defaultConfigMock,
-        publicKeysConfig: ['publicKey1', 'publicKey2'],
+        publicKeys: ['publicKeys1', 'publicKeys2'],
+        chainId: defaultConfigMock.chainId,
+        predicate: defaultConfigMock.predicate,
+        networkConfig: defaultConfigMock.networkConfig,
       });
-    }).rejects.toThrow('There was an error creating the account.');
+    }).rejects.toThrow('There was an error creating the account name.');
   });
 });

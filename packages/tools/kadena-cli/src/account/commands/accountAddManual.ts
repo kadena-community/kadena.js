@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import debug from 'debug';
 import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
 import { assertCommandError } from '../../utils/command.util.js';
@@ -35,21 +34,13 @@ export const createAddAccountManualCommand = createCommandFlexible(
 
     const chainId = (await option.chainId()).chainId;
 
-    if (networkConfig === undefined) {
-      console.log(
-        chalk.red(
-          `\nNo network configuration found for "${network}". Please create a "${network}" network.\n`,
-        ),
-      );
-      return;
-    }
-
     const accountDetailsFromChain = accountName
       ? await getAccountDetailsAddManual({
           accountName,
           networkId: networkConfig.networkId,
           chainId,
           networkHost: networkConfig.networkHost,
+          fungible,
         })
       : undefined;
 
@@ -90,7 +81,9 @@ export const createAddAccountManualCommand = createCommandFlexible(
 
     let newConfig = { ...config };
 
-    // If the account name is not provided, we need to create account name, get account details from chain and compare config and account details from chain are same
+    // If the account name is not provided, we need to create account name,
+    // get account details from chain and
+    // compare config and account details from chain are same
     if (!accountName) {
       const {
         accountName: accountNameFromChain,

@@ -1,8 +1,11 @@
 import { HttpResponse, http } from 'msw';
 import { afterEach, describe, expect, it } from 'vitest';
 import { server } from '../../../mocks/server.js';
-import { getAccountDetailsFromChain } from '../getAccountDetails.js';
-import { defaultConfigMock, devNetConfigMock } from './mocks.js';
+import {
+  getAccountDetailsAddManual,
+  getAccountDetailsFromChain,
+} from '../getAccountDetails.js';
+import { devNetConfigMock } from './mocks.js';
 
 describe('getAccountDetailsFromChain', () => {
   afterEach(() => {
@@ -11,15 +14,20 @@ describe('getAccountDetailsFromChain', () => {
 
   it('should return account details from chain when account is available on chain', async () => {
     const result = await getAccountDetailsFromChain({
-      ...defaultConfigMock,
-      accountName: 'k:accountName',
-      network: devNetConfigMock.network,
-      networkConfig: devNetConfigMock,
+      accountName: 'accountName',
+      chainId: '1',
+      networkId: devNetConfigMock.networkId,
+      networkHost: devNetConfigMock.networkHost,
+      fungible: 'coin',
     });
 
     const expectedResult = {
-      publicKeys: ['publicKey1', 'publicKey2'],
-      predicate: 'keys-all',
+      guard: {
+        keys: ['publicKey1', 'publicKey2'],
+        pred: 'keys-all',
+      },
+      account: 'accountName',
+      balance: 0,
     };
     expect(result).toStrictEqual(expectedResult);
   });
@@ -43,14 +51,13 @@ describe('getAccountDetailsFromChain', () => {
     );
     await expect(async () => {
       await getAccountDetailsFromChain({
-        ...defaultConfigMock,
         accountName: 'k:accountName',
-        network: devNetConfigMock.network,
-        networkConfig: devNetConfigMock,
+        chainId: '1',
+        networkId: devNetConfigMock.networkId,
+        networkHost: devNetConfigMock.networkHost,
+        fungible: 'coin',
       });
-    }).rejects.toThrow(
-      'Account details of k:accountName does not exist on chain 1',
-    );
+    }).rejects.toThrow('Account k:accountName: row not found.');
   });
 
   it('should throw an error when account is not available on chain', async () => {
@@ -64,11 +71,80 @@ describe('getAccountDetailsFromChain', () => {
     );
     await expect(async () => {
       await getAccountDetailsFromChain({
-        ...defaultConfigMock,
         accountName: 'k:accountName',
-        network: devNetConfigMock.network,
-        networkConfig: devNetConfigMock,
+        chainId: '1',
+        networkId: devNetConfigMock.networkId,
+        networkHost: devNetConfigMock.networkHost,
+        fungible: 'coin',
       });
     }).rejects.toThrow('{"error":"row not found"}');
+  });
+});
+
+describe('getAccountDetailsAddManual', () => {
+  afterEach(() => {
+    server.resetHandlers();
+  });
+
+  it('should return account details from chain when account is available on chain', async () => {
+    const result = await getAccountDetailsAddManual({
+      accountName: 'accountName',
+      chainId: '1',
+      networkId: devNetConfigMock.networkId,
+      networkHost: devNetConfigMock.networkHost,
+      fungible: 'coin',
+    });
+
+    const expectedResult = {
+      guard: {
+        keys: ['publicKey1', 'publicKey2'],
+        pred: 'keys-all',
+      },
+      account: 'accountName',
+      balance: 0,
+    };
+    expect(result).toStrictEqual(expectedResult);
+  });
+
+  it('should return undefined when account details throws an error with row not found', async () => {
+    server.use(
+      http.post(
+        'https://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/local',
+        () => {
+          return HttpResponse.json({ error: 'row not found' }, { status: 404 });
+        },
+      ),
+    );
+    const result = await getAccountDetailsAddManual({
+      accountName: 'k:accountName',
+      chainId: '1',
+      networkId: devNetConfigMock.networkId,
+      networkHost: devNetConfigMock.networkHost,
+      fungible: 'coin',
+    });
+    expect(result).toBe(undefined);
+  });
+
+  it('should throw an error when account details throws an error', async () => {
+    server.use(
+      http.post(
+        'https://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/local',
+        () => {
+          return HttpResponse.json(
+            { error: 'something went wrong' },
+            { status: 500 },
+          );
+        },
+      ),
+    );
+    await expect(async () => {
+      await getAccountDetailsAddManual({
+        accountName: 'k:accountName',
+        chainId: '1',
+        networkId: devNetConfigMock.networkId,
+        networkHost: devNetConfigMock.networkHost,
+        fungible: 'coin',
+      });
+    }).rejects.toThrow('{"error":"something went wrong"}');
   });
 });

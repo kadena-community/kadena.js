@@ -5,6 +5,8 @@ export const accountDetailsSuccessData = {
         keys: ['publicKey1', 'publicKey2'],
         pred: 'keys-all',
       },
+      account: 'accountName',
+      balance: 0,
     },
     status: 'success',
   },

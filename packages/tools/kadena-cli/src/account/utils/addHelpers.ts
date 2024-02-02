@@ -2,7 +2,6 @@ import chalk from 'chalk';
 import path from 'path';
 
 import { defaultAccountPath } from '../../constants/account.js';
-import { updateAccountDetailsPrompt } from '../../prompts/account.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 import type {
   IAccountDetailsResult,
@@ -15,10 +14,10 @@ export const isEmpty = (value?: string): boolean =>
 export const getUpdatedConfig = (
   config: IAddAccountManualConfig,
   accountDetails: IAccountDetailsResult,
-  overrideFromChain: boolean,
+  accountOverwriteFromChain: boolean,
 ): IAddAccountManualConfig => {
   if (
-    overrideFromChain === false ||
+    accountOverwriteFromChain === false ||
     accountDetails === undefined ||
     accountDetails.guard.keys.length === 0
   ) {
@@ -46,8 +45,3 @@ export const displayAddAccountSuccess = (accountAlias: string): void => {
     ),
   );
 };
-
-export async function overridePromptCb(): Promise<boolean> {
-  const updateOption = await updateAccountDetailsPrompt();
-  return updateOption === 'useFromChain';
-}
