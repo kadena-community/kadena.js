@@ -1,6 +1,6 @@
 import { ListBoxComponent } from '@page-objects/react-ui/listBox.component';
 import { NavHeaderComponent } from '@page-objects/react-ui/navHeader.component';
-import type { Locator, Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { getI18nInstance } from 'playwright-i18next-fixture';
 
 export class ToolsHeaderComponent extends NavHeaderComponent {
