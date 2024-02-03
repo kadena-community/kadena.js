@@ -20,12 +20,10 @@ export class ToolsHeaderComponent extends NavHeaderComponent {
   }
 
   public async setNetwork(networkLabel: string): Promise<void> {
-    await this.networkListBox
-      .setValueForListBox(
-        'Testnet Select Network',
-        'Select Network',
-        networkLabel,
-      )
-      .click();
+    await this.networkListBox.setValueForListBox(
+      'Testnet Select Network',
+      'Select Network',
+      networkLabel,
+    );
   }
 }
