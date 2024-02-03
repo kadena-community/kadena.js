@@ -26,6 +26,8 @@ export class CrossChainTrackerPage {
   }
 
   public async navToFinishTransaction(): Promise<void> {
-    await this._page.getByRole('link', { name: 'Finish Transaction' }).click();
+    await this._page
+      .getByRole('button', { name: 'Finish Transaction' })
+      .click();
   }
 }

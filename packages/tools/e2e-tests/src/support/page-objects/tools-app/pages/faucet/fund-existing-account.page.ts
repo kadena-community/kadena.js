@@ -7,15 +7,23 @@ import { getI18nInstance } from 'playwright-i18next-fixture';
 
 export class FundExistingAccountPage {
   private readonly _page: Page;
-  public notificationComponent: NotificationContainerComponent;
   public asidePanel: AsideComponent;
   private readonly _i18n = getI18nInstance();
   private _accountCard: CardComponent;
+  public processingNotification: NotificationContainerComponent;
+  public transactionFinishedNotification: NotificationContainerComponent;
 
   public constructor(page: Page) {
     this._page = page;
     this._accountCard = new CardComponent(this._page, 'Account');
-    this.notificationComponent = new NotificationContainerComponent(this._page);
+    this.processingNotification = new NotificationContainerComponent(
+      this._page,
+      'Transaction is being processed...',
+    );
+    this.transactionFinishedNotification = new NotificationContainerComponent(
+      this._page,
+      'Transaction successfully completed',
+    );
     this.asidePanel = new AsideComponent(this._page);
   }
 

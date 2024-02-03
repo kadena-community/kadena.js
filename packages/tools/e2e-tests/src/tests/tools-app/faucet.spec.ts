@@ -8,7 +8,7 @@ import {
 test.beforeEach(async ({ page, toolsApp }) => {
   await test.step('Open Tools and navigate to Faucet', async () => {
     await page.goto('/');
-    await toolsApp.homePage.header.setNetwork('devnet');
+    //await toolsApp.homePage.header.setNetwork('devnet');
     await toolsApp.homePage.header.goToPage('Faucet');
   });
 });
@@ -28,13 +28,13 @@ for (const accountType of accountTypes) {
       console.log('account', account);
       await toolsApp.fundNewAccountPage.CreateFundAccount(account);
       await expect(
-        await toolsApp.fundNewAccountPage.notificationComponent.getTitle(),
-      ).toHaveText('Transaction is being processed...');
+        await toolsApp.fundNewAccountPage.processingNotification.getComponent(),
+      ).toBeVisible();
     });
     await test.step('Account has been created', async () => {
       await expect(
-        await toolsApp.fundNewAccountPage.notificationComponent.getTitle(),
-      ).toHaveText('Transaction successfully completed');
+        await toolsApp.fundNewAccountPage.transactionFinishedNotification.getComponent(),
+      ).toBeVisible();
     });
   });
 
@@ -47,14 +47,15 @@ for (const accountType of accountTypes) {
         account.account,
         '0',
       );
+
       await expect(
-        await toolsApp.fundExistingAccountPage.notificationComponent.getTitle(),
-      ).toHaveText('Transaction is being processed...');
+        await toolsApp.fundNewAccountPage.processingNotification.getComponent(),
+      ).toBeVisible();
     });
     await test.step('Account has been funded', async () => {
       await expect(
-        await toolsApp.fundExistingAccountPage.notificationComponent.getTitle(),
-      ).toHaveText('Transaction successfully completed');
+        await toolsApp.fundNewAccountPage.transactionFinishedNotification.getComponent(),
+      ).toBeVisible();
     });
   });
 }

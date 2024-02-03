@@ -8,17 +8,25 @@ import { AsideComponent } from '../../components/aside.component';
 
 export class FundNewAccountPage {
   private readonly _page: Page;
-  public notificationComponent: NotificationContainerComponent;
   public asidePanel: AsideComponent;
   private readonly _i18n = getI18nInstance();
   private _accountCard: CardComponent;
   private _publicKeysCard: CardComponent;
+  public processingNotification: NotificationContainerComponent;
+  public transactionFinishedNotification: NotificationContainerComponent;
 
   public constructor(page: Page) {
     this._page = page;
     this._accountCard = new CardComponent(this._page, 'Account');
     this._publicKeysCard = new CardComponent(this._page, 'Public Keys');
-    this.notificationComponent = new NotificationContainerComponent(this._page);
+    this.processingNotification = new NotificationContainerComponent(
+      this._page,
+      'Transaction is being processed...',
+    );
+    this.transactionFinishedNotification = new NotificationContainerComponent(
+      this._page,
+      'Transaction successfully completed',
+    );
     this.asidePanel = new AsideComponent(this._page);
   }
 
