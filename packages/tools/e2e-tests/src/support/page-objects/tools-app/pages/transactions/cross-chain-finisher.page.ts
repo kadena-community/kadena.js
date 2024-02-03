@@ -14,7 +14,7 @@ export class CrossChainFinisherPage {
   public receiverCard: TrackerCardComponent;
   public progressBar: ProgressBarComponent;
   public gasSettingsCard: CardComponent;
-  public notificationComponent: NotificationContainerComponent;
+  public succesNotification: NotificationContainerComponent;
 
   public constructor(page: Page) {
     this._page = page;
@@ -24,7 +24,10 @@ export class CrossChainFinisherPage {
     this.receiverCard = new TrackerCardComponent(this._page, 'Receiver');
     this.progressBar = new ProgressBarComponent(this._page);
     this.gasSettingsCard = new CardComponent(this._page, 'Gas Settings');
-    this.notificationComponent = new NotificationContainerComponent(this._page);
+    this.succesNotification = new NotificationContainerComponent(
+      this._page,
+      'Successful transaction',
+    );
   }
 
   public async finishTransaction(): Promise<void> {

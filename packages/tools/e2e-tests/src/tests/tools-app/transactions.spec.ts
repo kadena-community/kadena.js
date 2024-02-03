@@ -27,7 +27,6 @@ test(`Tracking and Finishing a Cross Chain Transfer`, async ({
 
   await test.step('Enable Devnet and navigate to the Cross Chain Transfer Tracker', async () => {
     await page.goto('/');
-    await toolsApp.homePage.header.setNetwork('devnet');
     await toolsApp.homePage.header.goToPage('Transactions');
     await toolsApp.asidePanel.navigateTo('Cross Chain Transfer Tracker');
   });
@@ -76,11 +75,10 @@ test(`Tracking and Finishing a Cross Chain Transfer`, async ({
 
   await test.step('Complete the Transaction', async () => {
     await toolsApp.crossChainTrackerPage.navToFinishTransaction();
-    await toolsApp.crossChainFinisherPage.notificationComponent.close();
     await toolsApp.crossChainFinisherPage.finishTransaction();
     await expect(
-      await toolsApp.crossChainFinisherPage.notificationComponent.getTitle(),
-    ).toHaveText('Successful transaction');
+      await toolsApp.crossChainFinisherPage.succesNotification.getComponent(),
+    ).toBeVisible();
   });
 
   // await test.step('Progress Bar shows that the continuation is finished and the transfer complete', async () => {
