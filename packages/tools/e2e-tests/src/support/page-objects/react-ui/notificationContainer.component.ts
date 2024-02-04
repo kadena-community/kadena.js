@@ -6,9 +6,9 @@ export class NotificationContainerComponent {
 
   public constructor(page: Page, title: string) {
     this._page = page;
-    this.container = this._page.locator('[role="status"]', {
-      has: this._page.locator(`div h5:text-is("${title}")`),
-    });
+    this.container = this._page
+      .getByRole('status')
+      .filter({ has: this._page.locator(`h5:text-is("${title}")`) });
   }
 
   public async getComponent(): Promise<Locator> {
