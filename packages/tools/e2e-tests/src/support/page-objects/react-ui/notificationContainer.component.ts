@@ -21,5 +21,3 @@ export class NotificationContainerComponent {
       .click();
   }
 }
-
-//page.locator('div', { has: page.locator('text="Playwright"') })
