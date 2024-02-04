@@ -1,21 +1,23 @@
+import type { IKeyPair } from '@kadena/types';
 import chalk from 'chalk';
+import yaml from 'js-yaml';
 import path from 'path';
 
 import { defaultAccountPath } from '../../constants/account.js';
+import { WALLET_DIR } from '../../constants/config.js';
+import type { IWallet } from '../../keys/utils/keysHelpers.js';
+import { services } from '../../services/index.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
-import type {
-  IAccountDetailsResult,
-  IAddAccountManualConfig,
-} from '../types.js';
+import type { IAccountDetailsResult, IAddAccountConfig } from '../types.js';
 
 export const isEmpty = (value?: string): boolean =>
   value === undefined || value === '' || value === null;
 
 export const getUpdatedConfig = (
-  config: IAddAccountManualConfig,
+  config: IAddAccountConfig,
   accountDetails: IAccountDetailsResult,
   accountOverwriteFromChain: boolean,
-): IAddAccountManualConfig => {
+): IAddAccountConfig => {
   if (
     accountOverwriteFromChain === false ||
     accountDetails === undefined ||
@@ -45,3 +47,17 @@ export const displayAddAccountSuccess = (accountAlias: string): void => {
     ),
   );
 };
+
+export async function getAllPublicKeysFromKeyWalletConfig(
+  keyWalletConfig: IWallet,
+): Promise<Array<string>> {
+  const publicKeysList: Array<string> = [];
+  for (const key of keyWalletConfig.keys) {
+    const content = await services.filesystem.readFile(
+      path.join(WALLET_DIR, keyWalletConfig?.folder, key),
+    );
+    const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
+    publicKeysList.push(parsed?.publicKey ?? '');
+  }
+  return publicKeysList.filter((key) => !isEmpty(key));
+}

@@ -4,10 +4,10 @@ import { describe, expect, it } from 'vitest';
 
 import { defaultAccountPath } from '../../../constants/account.js';
 import { services } from '../../../services/index.js';
-import { writeConfigInFile } from '../writeConfigInFile.js';
+import { createAccountConfigFile } from '../createAccountConfigFile.js';
 import { defaultConfigMock } from './mocks.js';
 
-describe('writeInConfigFile', () => {
+describe('createAccountConfigFile', () => {
   const root = path.join(__dirname, '../../../../');
   it('should write "config" in config file', async () => {
     const config = {
@@ -27,7 +27,7 @@ describe('writeInConfigFile', () => {
     }
     expect(await fs.fileExists(filePath)).toBe(false);
 
-    await writeConfigInFile(filePath, config);
+    await createAccountConfigFile(filePath, config);
 
     const fileContent = await fs.readFile(filePath);
     expect(fileContent).toBe(
@@ -58,7 +58,7 @@ describe('writeInConfigFile', () => {
     expect(await fs.fileExists(filePath)).toBe(true);
 
     await expect(async () => {
-      await writeConfigInFile(filePath, config);
+      await createAccountConfigFile(filePath, config);
     }).rejects.toThrow(
       `The account configuration "${filePath}" already exists.`,
     );

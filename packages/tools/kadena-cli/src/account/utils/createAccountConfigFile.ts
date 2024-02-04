@@ -1,9 +1,9 @@
 import yaml from 'js-yaml';
 import { services } from '../../services/index.js';
-import type { IAddAccountManualConfig } from '../types.js';
+import type { IAddAccountConfig } from '../types.js';
 
-export async function writeAlias(
-  config: IAddAccountManualConfig,
+export async function writeAccountAlias(
+  config: IAddAccountConfig,
   filePath: string,
 ): Promise<void> {
   const { publicKeysConfig, predicate, accountName, fungible } = config;
@@ -19,15 +19,15 @@ export async function writeAlias(
   );
 }
 
-export async function writeConfigInFile(
+export async function createAccountConfigFile(
   filePath: string,
-  config: IAddAccountManualConfig,
+  config: IAddAccountConfig,
 ): Promise<string> {
   if (await services.filesystem.fileExists(filePath)) {
     throw new Error(`The account configuration "${filePath}" already exists.`);
   }
 
-  await writeAlias(config, filePath);
+  await writeAccountAlias(config, filePath);
 
   return filePath;
 }

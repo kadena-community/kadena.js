@@ -4,9 +4,9 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { defaultConfigMock } from './mocks.js';
 
 import { server } from '../../../mocks/server.js';
-import { validateAccountDetails } from '../validateAccountDetails.js';
+import { validateAndRetrieveAccountDetails } from '../validateAndRetrieveAccountDetails.js';
 
-describe('validateAccountDetails', () => {
+describe('validateAndRetrieveAccountDetails', () => {
   afterEach(() => {
     server.resetHandlers();
   });
@@ -28,7 +28,7 @@ describe('validateAccountDetails', () => {
       },
       isConfigAreSame: true,
     };
-    const result = await validateAccountDetails(config);
+    const result = await validateAndRetrieveAccountDetails(config);
     expect(result).toEqual(expectedResult);
   });
 
@@ -52,7 +52,7 @@ describe('validateAccountDetails', () => {
       isConfigAreSame: false,
     };
 
-    const result = await validateAccountDetails(config);
+    const result = await validateAndRetrieveAccountDetails(config);
     expect(result).toEqual(expectedResult);
   });
 
@@ -76,7 +76,7 @@ describe('validateAccountDetails', () => {
       isConfigAreSame: true,
     };
 
-    const result = await validateAccountDetails(config);
+    const result = await validateAndRetrieveAccountDetails(config);
     expect(result).toEqual(expectedResult);
   });
 
@@ -95,7 +95,7 @@ describe('validateAccountDetails', () => {
     };
 
     await expect(async () => {
-      await validateAccountDetails(config);
+      await validateAndRetrieveAccountDetails(config);
     }).rejects.toThrow('something went wrong');
   });
 });

@@ -1,50 +1,30 @@
 import { checkbox } from '@inquirer/prompts';
-import type { IKeyPair } from '@kadena/types';
 import chalk from 'chalk';
 import { Option } from 'commander';
-import debug from 'debug';
-import yaml from 'js-yaml';
-import path from 'path';
 import { z } from 'zod';
 
-import { WALLET_DIR } from '../../constants/config.js';
+import { IS_DEVELOPMENT } from '../../constants/config.js';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
-import { getWallet } from '../../keys/utils/keysHelpers.js';
 import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
-import { services } from '../../services/index.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { addAccount } from '../utils/addAccount.js';
-import { displayAddAccountSuccess, isEmpty } from '../utils/addHelpers.js';
-import { validateAccountDetails } from '../utils/validateAccountDetails.js';
-
-async function getAllPublicKeysFromWallet(
-  keyWalletConfig: IWallet,
-): Promise<Array<string>> {
-  const publicKeysList: Array<string> = [];
-  for (const key of keyWalletConfig.keys) {
-    const content = await services.filesystem.readFile(
-      path.join(WALLET_DIR, keyWalletConfig?.folder, key),
-    );
-    const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
-    publicKeysList.push(parsed?.publicKey ?? '');
-  }
-  return publicKeysList.filter((key) => !isEmpty(key));
-}
+import {
+  displayAddAccountSuccess,
+  getAllPublicKeysFromKeyWalletConfig,
+  isEmpty,
+} from '../utils/addHelpers.js';
+import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveAccountDetails.js';
 
 const selectPublicKeys = createOption({
   key: 'publicKeys' as const,
   defaultIsOptional: false,
-  async prompt(prev) {
-    const walletDetails = await getWallet(prev.keyWallet as string);
-    if (!walletDetails) {
-      console.log(chalk.red(`Wallet ${prev.keyWallet} does not exist.`));
-      process.exit(1);
-    }
-    const publicKeysList = await getAllPublicKeysFromWallet(walletDetails);
-
+  async prompt(args) {
+    const publicKeysList = await getAllPublicKeysFromKeyWalletConfig(
+      args.keyWalletConfig as IWallet,
+    );
     return await checkbox({
       message: 'Select public keys to add to account',
       choices: publicKeysList.map((key) => ({ value: key })),
@@ -66,7 +46,7 @@ const selectPublicKeys = createOption({
       .map((key: string) => key.trim())
       .filter((key: string) => !isEmpty(key));
   },
-  validation: z.string(),
+  validation: z.array(z.string()),
   option: new Option(
     '-p, --public-keys <publicKeys>',
     'Public keys to add to account',
@@ -75,7 +55,7 @@ const selectPublicKeys = createOption({
 
 export const createAddAccountFromWalletCommand = createCommandFlexible(
   'add-from-wallet',
-  'Add an account from a wallet to the CLI',
+  'Add an account from a key wallet',
   [
     globalOptions.accountAlias(),
     globalOptions.keyWalletSelectWithAll(),
@@ -106,7 +86,10 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
     const fungible = (await option.fungible()).fungible;
     const { network, networkConfig } = await option.network();
     const chainId = (await option.chainId()).chainId;
-    const { publicKeys, publicKeysConfig } = await option.publicKeys();
+    const { publicKeys, publicKeysConfig } = await option.publicKeys({
+      values,
+      keyWalletConfig: keyWallet.keyWalletConfig,
+    });
     const predicate = (await option.predicate()).predicate;
     const config = {
       accountAlias,
@@ -125,7 +108,7 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
     // so we need to create it from the public keys
     // and check if account already exists on chain
     const { accountName, accountDetails, isConfigAreSame } =
-      await validateAccountDetails(config);
+      await validateAndRetrieveAccountDetails(config);
 
     let accountOverwrite = false;
     if (!isConfigAreSame) {
@@ -139,7 +122,9 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
       accountOverwrite,
     };
 
-    debug('account-add-wallet:action')({ config });
+    if (IS_DEVELOPMENT) {
+      console.log('create-account-add-from-wallet:action', updatedConfig);
+    }
 
     const result = await addAccount(updatedConfig);
 

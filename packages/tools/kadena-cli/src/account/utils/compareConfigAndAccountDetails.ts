@@ -1,6 +1,6 @@
 import type { IAccountDetailsResult, IGuard } from '../types.js';
 
-export const validatePublicKeys = (
+export const arePublicKeysEqual = (
   publicKeysConfig: string[],
   keys: string[],
 ): boolean => {
@@ -19,9 +19,9 @@ export function compareConfigAndAccountDetails(
   const {
     guard: { keys, pred },
   } = accountDetails;
-  const isSameKeys = validatePublicKeys(configGuard.keys, keys);
+  const areKeysEqual = arePublicKeysEqual(configGuard.keys, keys);
 
   const isSamePredicate = configGuard.pred === pred;
 
-  return isSameKeys && isSamePredicate;
+  return areKeysEqual && isSamePredicate;
 }

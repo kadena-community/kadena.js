@@ -2,7 +2,7 @@ import { HttpResponse, http } from 'msw';
 import { afterEach, describe, expect, it } from 'vitest';
 import { server } from '../../../mocks/server.js';
 import {
-  getAccountDetailsAddManual,
+  getAccountDetailsForAddAccount,
   getAccountDetailsFromChain,
 } from '../getAccountDetails.js';
 import { devNetConfigMock } from './mocks.js';
@@ -81,13 +81,13 @@ describe('getAccountDetailsFromChain', () => {
   });
 });
 
-describe('getAccountDetailsAddManual', () => {
+describe('getAccountDetailsForAddAccount', () => {
   afterEach(() => {
     server.resetHandlers();
   });
 
   it('should return account details from chain when account is available on chain', async () => {
-    const result = await getAccountDetailsAddManual({
+    const result = await getAccountDetailsForAddAccount({
       accountName: 'accountName',
       chainId: '1',
       networkId: devNetConfigMock.networkId,
@@ -115,7 +115,7 @@ describe('getAccountDetailsAddManual', () => {
         },
       ),
     );
-    const result = await getAccountDetailsAddManual({
+    const result = await getAccountDetailsForAddAccount({
       accountName: 'k:accountName',
       chainId: '1',
       networkId: devNetConfigMock.networkId,
@@ -138,7 +138,7 @@ describe('getAccountDetailsAddManual', () => {
       ),
     );
     await expect(async () => {
-      await getAccountDetailsAddManual({
+      await getAccountDetailsForAddAccount({
         accountName: 'k:accountName',
         chainId: '1',
         networkId: devNetConfigMock.networkId,

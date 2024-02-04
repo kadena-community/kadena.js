@@ -6,7 +6,7 @@ import type {
 import { isEmpty } from './addHelpers.js';
 import { compareConfigAndAccountDetails } from './compareConfigAndAccountDetails.js';
 import { createAccountName } from './createAccountName.js';
-import { getAccountDetailsAddManual } from './getAccountDetails.js';
+import { getAccountDetailsForAddAccount } from './getAccountDetails.js';
 
 export interface IValidateAccountDetailsData {
   isConfigAreSame: boolean;
@@ -14,7 +14,7 @@ export interface IValidateAccountDetailsData {
   accountDetails: IAccountDetailsResult | undefined;
 }
 
-export async function validateAccountDetails(
+export async function validateAndRetrieveAccountDetails(
   config: IValidateAccountDetailsConfig,
 ): Promise<IValidateAccountDetailsData> {
   try {
@@ -28,7 +28,7 @@ export async function validateAccountDetails(
           })
         : config.accountName;
 
-    const accountDetails = await getAccountDetailsAddManual({
+    const accountDetails = await getAccountDetailsForAddAccount({
       accountName,
       chainId: config.chainId,
       networkId: config.networkConfig.networkId,

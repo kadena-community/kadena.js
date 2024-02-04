@@ -18,18 +18,9 @@ export interface IAddAccountConfig {
   accountName: string;
 }
 
-export interface IAddAccountWalletConfig
-  extends Omit<IAddAccountConfig, 'accountName'> {
-  keyWallet: string;
-}
-
 export interface IValidateAccountDetailsConfig
   extends Omit<IAddAccountConfig, 'accountName'> {
   accountName?: string;
-}
-
-export interface IAddAccountManualConfig extends IAddAccountConfig {
-  accountName: string;
 }
 
 export interface IGuard {

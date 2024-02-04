@@ -1,5 +1,5 @@
 import type { INetworkCreateOptions } from '../../../networks/utils/networkHelpers.js';
-import type { IAddAccountManualConfig } from '../../types.js';
+import type { IAddAccountConfig } from '../../types.js';
 
 export const testNetworkConfigMock: INetworkCreateOptions = {
   networkHost: 'https://api.testnet.chainweb.com',
@@ -15,7 +15,7 @@ export const devNetConfigMock: INetworkCreateOptions = {
   network: 'devnet',
 };
 
-export const defaultConfigMock: IAddAccountManualConfig = {
+export const defaultConfigMock: IAddAccountConfig = {
   accountAlias: 'accountAlias',
   accountName: 'accountName',
   fungible: 'coin',

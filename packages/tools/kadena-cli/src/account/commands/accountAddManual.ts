@@ -1,4 +1,4 @@
-import debug from 'debug';
+import { IS_DEVELOPMENT } from '../../constants/config.js';
 import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
@@ -6,8 +6,8 @@ import { globalOptions } from '../../utils/globalOptions.js';
 import type { Predicate } from '../types.js';
 import { addAccount } from '../utils/addAccount.js';
 import { displayAddAccountSuccess } from '../utils/addHelpers.js';
-import { getAccountDetailsAddManual } from '../utils/getAccountDetails.js';
-import { validateAccountDetails } from '../utils/validateAccountDetails.js';
+import { getAccountDetailsForAddAccount } from '../utils/getAccountDetails.js';
+import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveAccountDetails.js';
 
 export const createAddAccountManualCommand = createCommandFlexible(
   'add-manual',
@@ -35,7 +35,7 @@ export const createAddAccountManualCommand = createCommandFlexible(
     const chainId = (await option.chainId()).chainId;
 
     const accountDetailsFromChain = accountName
-      ? await getAccountDetailsAddManual({
+      ? await getAccountDetailsForAddAccount({
           accountName,
           networkId: networkConfig.networkId,
           chainId,
@@ -52,7 +52,7 @@ export const createAddAccountManualCommand = createCommandFlexible(
       ? (await option.accountOverwrite()).accountOverwrite
       : false;
 
-    let publicKeysPrompt = undefined;
+    let publicKeysPrompt;
     let predicate: Predicate = 'keys-all';
 
     // If the user choose not to overwrite the account, we need to ask for the public keys and predicate
@@ -63,7 +63,7 @@ export const createAddAccountManualCommand = createCommandFlexible(
 
     const { publicKeys, publicKeysConfig = [] } = publicKeysPrompt ?? {};
 
-    const validatePublicKeys = publicKeysConfig.filter((key) => !!key);
+    const validPublicKeys = publicKeysConfig.filter((key) => !!key);
 
     const config = {
       accountAlias,
@@ -76,7 +76,7 @@ export const createAddAccountManualCommand = createCommandFlexible(
       networkConfig,
       predicate,
       publicKeys,
-      publicKeysConfig: validatePublicKeys,
+      publicKeysConfig: validPublicKeys,
     };
 
     let newConfig = { ...config };
@@ -89,7 +89,7 @@ export const createAddAccountManualCommand = createCommandFlexible(
         accountName: accountNameFromChain,
         accountDetails,
         isConfigAreSame,
-      } = await validateAccountDetails(config);
+      } = await validateAndRetrieveAccountDetails(config);
 
       if (!isConfigAreSame) {
         accountOverwrite = (await option.accountOverwrite()).accountOverwrite;
@@ -103,7 +103,9 @@ export const createAddAccountManualCommand = createCommandFlexible(
       };
     }
 
-    debug.log('account-add-manual:action', newConfig);
+    if (IS_DEVELOPMENT) {
+      console.log('create-account-add-manual:action', newConfig);
+    }
 
     const result = await addAccount(newConfig);
 

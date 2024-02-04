@@ -73,30 +73,6 @@ export const predicatePrompt: IPrompt<Predicate> = async () =>
     })),
   });
 
-export type UpdateAccountType = 'useInput' | 'useFromChain';
-
-const updateAccountDetailsChoices: {
-  value: UpdateAccountType;
-  name: string;
-}[] = [
-  {
-    value: 'useInput',
-    name: 'Add, anyway with user inputs',
-  },
-  {
-    value: 'useFromChain',
-    name: 'Add with values from the chain',
-  },
-];
-
-export const updateAccountDetailsPrompt =
-  async (): Promise<UpdateAccountType> =>
-    await select({
-      message:
-        'The account details do not match the account details on the chain. Do you want to continue?',
-      choices: updateAccountDetailsChoices,
-    });
-
 export const accountOverWritePrompt = async (): Promise<boolean> =>
   await select({
     message: 'Would you like to use the account details on the chain?',

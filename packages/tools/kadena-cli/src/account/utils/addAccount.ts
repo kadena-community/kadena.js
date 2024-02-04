@@ -1,10 +1,10 @@
 import type { CommandResult } from '../../utils/command.util.js';
-import type { IAddAccountManualConfig } from '../types.js';
+import type { IAddAccountConfig } from '../types.js';
 import { getAccountFilePath, getUpdatedConfig } from './addHelpers.js';
-import { writeConfigInFile } from './writeConfigInFile.js';
+import { createAccountConfigFile } from './createAccountConfigFile.js';
 
 export async function addAccount(
-  config: IAddAccountManualConfig,
+  config: IAddAccountConfig,
 ): Promise<CommandResult<string>> {
   try {
     const filePath = getAccountFilePath(config.accountAlias);
@@ -17,7 +17,7 @@ export async function addAccount(
             config.accountOverwrite,
           );
 
-    const result = await writeConfigInFile(filePath, updatedConfig);
+    const result = await createAccountConfigFile(filePath, updatedConfig);
     return {
       success: true,
       data: result,
