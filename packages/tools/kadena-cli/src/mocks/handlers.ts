@@ -26,6 +26,20 @@ export const handlers: any = [
         return HttpResponse.json(accountDetailsSuccessData, { status: 200 });
 
       const parsedCMD = JSON.parse(data.cmd as string);
+
+      // transfer coin
+      if (parsedCMD.payload.exec.code.includes('coin.transfer') === true) {
+        return HttpResponse.json(
+          {
+            result: {
+              data: 'Write succeeded',
+              status: 'success',
+            },
+          },
+          { status: 200 },
+        );
+      }
+
       if (parsedCMD.payload.exec.code.includes('create-principal') === true) {
         if (parsedCMD.payload.exec.data.ks.keys.length === 1) {
           return HttpResponse.json(
