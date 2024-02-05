@@ -9,6 +9,9 @@ export const useGetProofOfUs: IDataHook<IProofOfUsData | undefined> = ({
   const [data, setData] = useState<IProofOfUsData | undefined>(undefined);
 
   const load = async () => {
+    if (id === 'new') {
+      return;
+    }
     setError(undefined);
     const result = await getProofOfUs(id);
 
