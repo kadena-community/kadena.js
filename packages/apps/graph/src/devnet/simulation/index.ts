@@ -120,36 +120,27 @@ program
   .command('simulate:flood')
   .description('Flood traffic on the devnet')
   .addOption(
-    new Option('-i, --iterations <number>', 'Number of iterations').default(1),
+    new Option(
+      '-tx, --transactions <number>',
+      'Transactions per iteration',
+    ).default(3),
   )
+  .addOption(
+    new Option(
+      '-i, --interval <number>',
+      'Interval between iterations in milliseconds',
+    ).default(1000),
+  )
+  .addOption(
+    new Option(
+      '-t, --totalTx <number>',
+      'Total transactions to be sent before stopping the flood',
+    ).default(1000),
+  )
+
   .action(async (args) => {
-    flood({
-      iterationsPerSecond: 2,
-      iterations: args.iterations,
-      timeout: 100000,
-      chains: [
-        '0',
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        '10',
-        '11',
-        '12',
-        '13',
-        '14',
-        '15',
-        '16',
-        '17',
-        '18',
-        '19',
-      ],
-    });
+    logger.info('Flood config parameters:', args);
+    flood(args.transactions, args.interval, args.totalTx);
   });
 
 program.parse();
