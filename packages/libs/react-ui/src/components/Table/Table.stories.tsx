@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { SortDescriptor } from 'react-stately';
+import type { SortDescriptor } from 'react-stately';
 import { onLayer2 } from '../../storyDecorators';
 import { Cell, Column, Row, Table, TableBody, TableHeader } from './';
 

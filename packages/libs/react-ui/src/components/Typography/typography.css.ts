@@ -1,5 +1,3 @@
-import { style } from '@vanilla-extract/css';
-import { responsiveStyles, token } from 'src/styles';
 import { atoms } from '../../styles/atoms.css';
 
 export const fontVariants = {

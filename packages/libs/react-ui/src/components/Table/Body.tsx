@@ -1,5 +1,5 @@
 import type { TableState, TreeGridState } from '@react-stately/table';
-import { GridNode } from '@react-types/grid';
+import type { GridNode } from '@react-types/grid';
 import type { ReactNode } from 'react';
 import React, { useRef } from 'react';
 import {
