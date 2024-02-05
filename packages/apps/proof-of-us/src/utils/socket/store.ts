@@ -4,48 +4,54 @@ const ProofOfUsStore = () => {
   const createProofOfUs = (proofOfUsId: string, account: IProofOfUsSignee) => {
     if (store[proofOfUsId]) return;
     store[proofOfUsId] = {
-      mintStatus: 'init',
-      proofOfUsId,
-      type: 'multi',
-      date: Date.now(),
-      signees: [{ ...account, initiator: true }],
-      avatar: {
-        background: '',
+      background: '',
+      data: {
+        mintStatus: 'init',
+        proofOfUsId,
+        type: 'multi',
+        date: Date.now(),
+        signees: [{ ...account, initiator: true }],
       },
     };
   };
 
   const getProofOfUs = (proofOfUsId: string) => {
-    return store[proofOfUsId];
+    if (!store[proofOfUsId]) return null;
+    return store[proofOfUsId].data;
   };
 
-  const addBackground = (proofOfUsId: string, background: string) => {
-    const avatar = store[proofOfUsId]?.avatar;
+  const addBackground = (
+    proofOfUsId: string,
+    background: IProofOfUsBackground,
+  ) => {
+    store[proofOfUsId].background = background;
+  };
 
-    store[proofOfUsId].avatar = { ...avatar, background };
+  const getBackground = (proofOfUsId: string) => {
+    return store[proofOfUsId].background;
   };
 
   const addSignee = (proofOfUsId: string, account: IProofOfUsSignee) => {
-    const signeesList = store[proofOfUsId]?.signees;
+    const signeesList = store[proofOfUsId]?.data.signees;
     if (!signeesList) return;
 
     if (signeesList.find((s) => s.cid === account.cid)) return;
 
     if (!signeesList.length) {
-      store[proofOfUsId].signees[0] = { ...account };
+      store[proofOfUsId].data.signees[0] = { ...account };
     } else {
-      store[proofOfUsId].signees[1] = { ...account, initiator: false };
-      store[proofOfUsId].signees.length = 2;
+      store[proofOfUsId].data.signees[1] = { ...account, initiator: false };
+      store[proofOfUsId].data.signees.length = 2;
     }
 
-    store[proofOfUsId].signees = [...signeesList];
+    store[proofOfUsId].data.signees = [...signeesList];
   };
 
   const removeSignee = (proofOfUsId: string, account: IProofOfUsSignee) => {
-    const signeesList = store[proofOfUsId]?.signees;
+    const signeesList = store[proofOfUsId]?.data.signees;
     if (!signeesList) return;
 
-    store[proofOfUsId].signees = [
+    store[proofOfUsId].data.signees = [
       ...signeesList.filter((s) => s.cid !== account.cid),
     ];
   };
@@ -55,13 +61,14 @@ const ProofOfUsStore = () => {
   };
 
   const updateMintStatus = (proofOfUsId: string, mintStatus: IMintStatus) => {
-    store[proofOfUsId].mintStatus = mintStatus;
+    store[proofOfUsId].data.mintStatus = mintStatus;
   };
 
   return {
     updateMintStatus,
     createProofOfUs,
     getProofOfUs,
+    getBackground,
     addSignee,
     removeSignee,
     addBackground,

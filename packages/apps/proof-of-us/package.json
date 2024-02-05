@@ -45,6 +45,7 @@
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/socket.io": "^3.0.2",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@vanilla-extract/next-plugin": "2.3.2",
     "@vanilla-extract/vite-plugin": "^3.9.3",

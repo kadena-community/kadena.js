@@ -4,7 +4,7 @@ import { Readable } from 'stream';
 
 const AKORD_VAULTID = process.env.AKORD_VAULTID;
 
-const getManifest = (proofOfUs: IProofOfUs, urlId: string): {} => {
+const getManifest = (proofOfUs: IProofOfUsData, urlId: string): {} => {
   return {
     name: 'My NFT',
     description: 'This is my non-fungible token.',
@@ -21,7 +21,7 @@ export const upload = async (
   akord: Akord,
   str: string,
   proofOfUsId: string,
-  proofOfUs: IProofOfUs,
+  proofOfUs: IProofOfUsData,
 ): Promise<Record<string, any> | IError> => {
   const base64Image = str.split(';base64,').pop();
   if (!AKORD_VAULTID)

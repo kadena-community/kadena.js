@@ -1,13 +1,15 @@
+import { useAvatar } from '@/hooks/avatar';
 import { useState } from 'react';
 import { useProofOfUs } from './proofOfUs';
 import { useSocket } from './socket';
 
 export const useMintMultiToken = () => {
-  const { proofOfUs } = useProofOfUs();
+  const { proofOfUs, background } = useProofOfUs();
   const { socket } = useSocket();
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [data, setData] = useState('');
+  const { uploadBackground } = useAvatar();
 
   const send = (status: IMintStatus) => {
     if (!proofOfUs) {
@@ -24,6 +26,12 @@ export const useMintMultiToken = () => {
     });
   };
 
+  const handleUpload = async () => {
+    if (!background || !proofOfUs) return;
+
+    await uploadBackground(proofOfUs?.proofOfUsId);
+  };
+
   const mintToken = () => {
     setIsLoading(true);
     setHasError(false);
@@ -34,8 +42,8 @@ export const useMintMultiToken = () => {
       //after upload => upload
       setTimeout(() => {
         send('uploading');
+        handleUpload();
         //after manifest, actual uploadmanifest
-
         setTimeout(() => {
           send('uploading_manifest');
           //after manifest, actual minting

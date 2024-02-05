@@ -26,7 +26,9 @@ type IMintStatus =
   | 'minting'
   | 'error'
   | 'success';
-interface IProofOfUs {
+
+type IProofOfUsBackground = string;
+interface IProofOfUsData {
   mintStatus: IMintStatus;
   tokenId?: string;
   proofOfUsId: string;
@@ -35,9 +37,11 @@ interface IProofOfUs {
   minted?: number;
   signees: IProofOfUsSignee[];
   uri?: string;
-  avatar: {
-    background: string;
-  };
+}
+
+interface IProofOfUs {
+  background: IProofOfUsBackground;
+  data: IProofOfUsData;
 }
 
 interface IError {

@@ -13,7 +13,7 @@ interface IProps {
 
 export const ShareView: FC<IProps> = ({ next, prev }) => {
   const qrRef = useRef<QRCode | null>(null);
-  const { proofOfUs } = useProofOfUs();
+  const { proofOfUs, background } = useProofOfUs();
 
   const handleBack = () => {
     prev();
@@ -28,6 +28,7 @@ export const ShareView: FC<IProps> = ({ next, prev }) => {
 
   if (!proofOfUs) return;
 
+  console.log(proofOfUs);
   const isReady = proofOfUs.signees.length > 1;
   return (
     <section>
@@ -37,6 +38,7 @@ export const ShareView: FC<IProps> = ({ next, prev }) => {
       <ListSignees />
 
       {!isReady ? (
+        <>
         <QRCode
           ecLevel="H"
           ref={qrRef}
@@ -48,8 +50,10 @@ export const ShareView: FC<IProps> = ({ next, prev }) => {
           qrStyle="dots" // type of qr code, wether you want dotted ones or the square ones
           eyeRadius={10}
         />
+        link: {`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
+        </>
       ) : (
-        <img src={proofOfUs.avatar.background} />
+        <img src={background} />
       )}
 
       {isReady && <button onClick={handleSign}>Sign & Upload</button>}

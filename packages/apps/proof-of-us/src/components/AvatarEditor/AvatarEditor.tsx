@@ -27,12 +27,12 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   const [isMounted, setIsMounted] = useState(false);
   const { setBackgroundSocket } = useAvatar();
   const canvasElm = canvasRef.current;
-  const { proofOfUs } = useProofOfUs();
+  const { proofOfUs, background } = useProofOfUs();
 
   useEffect(() => {
     if (!fabricRef.current || !proofOfUs) return;
 
-    fabric.Image.fromURL(proofOfUs.avatar?.background ?? '', function (img) {
+    fabric.Image.fromURL(background ?? '', function (img) {
       img.scaleToWidth(800);
       img.scaleToHeight(800);
       fabricRef.current?.setBackgroundImage(img, () => {});

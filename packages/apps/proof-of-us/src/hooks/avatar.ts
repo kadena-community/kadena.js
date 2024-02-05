@@ -12,11 +12,8 @@ export const useAvatar = () => {
     });
   };
 
-  const uploadBackground = async (proofOfUsId: string, bg: string) => {
+  const uploadBackground = async (proofOfUsId: string) => {
     socket?.emit('uploadBackground', {
-      content: {
-        bg,
-      },
       to: proofOfUsId,
     });
 

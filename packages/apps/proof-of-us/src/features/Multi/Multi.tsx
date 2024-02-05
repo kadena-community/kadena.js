@@ -1,21 +1,19 @@
-import { AvatarEditor } from '@/components/AvatarEditor/AvatarEditor';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
-import { useAccount } from '@/hooks/account';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSignToken } from '@/hooks/signToken';
 import type { FC } from 'react';
 
 interface IProps {
-  proofOfUs: IProofOfUs;
+  proofOfUs: IProofOfUsData;
+  background: IProofOfUsBackground;
 }
 
-export const Multi: FC<IProps> = ({ proofOfUs }) => {
-  const { addSignee, isConnected } = useProofOfUs();
+export const Multi: FC<IProps> = ({ proofOfUs, background }) => {
+  const { isConnected } = useProofOfUs();
   const { signToken, isLoading, hasError } = useSignToken();
-  const { account } = useAccount();
 
   const handleJoin = async () => {
-    signToken(account);
+    signToken();
   };
 
   if (!proofOfUs) return null;
@@ -23,10 +21,13 @@ export const Multi: FC<IProps> = ({ proofOfUs }) => {
   return (
     <>
       <section>
-        <img src={proofOfUs.avatar.background} />
+        <img src={background} />
         <div>status: {proofOfUs?.mintStatus}</div>
         <ListSignees />
         {!isConnected() && <button onClick={handleJoin}>Sign</button>}
+
+        {isLoading && <div>is signing</div>}
+        {hasError && <div>has error signing</div>}
       </section>
     </>
   );

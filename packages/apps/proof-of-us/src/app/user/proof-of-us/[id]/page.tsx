@@ -5,14 +5,12 @@ import { ProcessingView } from '@/components/ProcessingView/ProcessingView';
 
 import { ShareView } from '@/components/ShareView/ShareView';
 
-import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSocket } from '@/hooks/socket';
-import { env } from '@/utils/env';
 import { createProofOfUsID } from '@/utils/marmalade';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface IProps {
   params: {
@@ -24,7 +22,6 @@ const Page: FC<IProps> = ({ params }) => {
   const router = useRouter();
   const { socket, disconnect } = useSocket();
   const { createToken, proofOfUs } = useProofOfUs();
-  const { uploadBackground } = useAvatar();
 
   const [status, setStatus] = useState(1);
 
@@ -36,6 +33,7 @@ const Page: FC<IProps> = ({ params }) => {
     }
 
     disconnect({ proofOfUsId: params.id });
+
     createToken({ proofOfUsId: params.id });
   }, [socket, params.id]);
 
@@ -44,12 +42,6 @@ const Page: FC<IProps> = ({ params }) => {
   };
   const prev = () => {
     setStatus((v) => v - 1);
-  };
-
-  const handleUpload = async () => {
-    if (!proofOfUs?.avatar.background) return;
-
-    await uploadBackground(params.id.toString(), proofOfUs?.avatar.background);
   };
 
   if (!proofOfUs) return;

@@ -1,15 +1,15 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useRouter } from 'next/navigation';
 
-import { useState  } from 'react';
-import type {FC} from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 
 interface IProps {
   next: () => void;
   prev: () => void;
 }
 export const DetailView: FC<IProps> = ({ next, prev }) => {
-  const { proofOfUs, closeToken } = useProofOfUs();
+  const { proofOfUs, background, closeToken } = useProofOfUs();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
   const handleShare = () => {
@@ -34,7 +34,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
       <h3>Details</h3>
       <button onClick={handleRedo}>redo</button>
       <button onClick={handleClose}>delete</button>
-      <img src={proofOfUs.avatar.background} />
+      <img src={background} />
       <button onClick={handleShare}>Share</button>
     </section>
   );

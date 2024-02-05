@@ -1,16 +1,13 @@
 import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
-import { DEVWORLD_TOKENID } from '@/constants';
-import { useAccount } from '@/hooks/account';
 import { useEventToken } from '@/hooks/eventToken';
-import { getToken } from '@/utils/marmalade';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface IProps {
-  proofOfUs: IProofOfUs;
+  proofOfUs: IProofOfUsData;
 }
 
-export const ScanEvent: FC<IProps> = ({ proofOfUs }) => {
+export const ScanEvent: FC<IProps> = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -25,7 +22,6 @@ export const ScanEvent: FC<IProps> = ({ proofOfUs }) => {
     //TODO: this should be an actual minting process
     setTimeout(() => {
       const random = Math.random();
-      console.log(random);
       if (random < 0.5) {
         setIsSuccess(true);
       } else {

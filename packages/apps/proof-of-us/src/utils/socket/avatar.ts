@@ -6,12 +6,18 @@ import { upload } from './upload';
 
 export const avatarListeners = (socket: Socket, io: IOServer) => {
   socket.on('setBackground', ({ content, to }) => {
-    console.log('setbackground');
     store.addBackground(to, content.bg);
     io.to(to)
       .to(to)
       .emit('getProofOfUs', {
         content: store.getProofOfUs(to),
+        from: socket.handshake.auth.proofOfUsId,
+      });
+
+    io.to(to)
+      .to(to)
+      .emit('getProofOfUsBackground', {
+        content: store.getBackground(to),
         from: socket.handshake.auth.proofOfUsId,
       });
   });
@@ -33,6 +39,7 @@ export const avatarListeners = (socket: Socket, io: IOServer) => {
     }
 
     const { wallet } = await Auth.signIn(AKORD_EMAIL, AKORD_PASSWORD);
+    const bg = store.getBackground(to);
     const akord = new Akord(wallet, {
       debug: true,
     });
@@ -40,7 +47,19 @@ export const avatarListeners = (socket: Socket, io: IOServer) => {
     if (!content.bg) return;
 
     const proofOfUs = store.getProofOfUs(to);
-    const result = await upload(akord, content.bg, to, proofOfUs);
+    if (!proofOfUs) {
+      io.to(to)
+        .to(to)
+        .emit('uploadBackgroundStatus', {
+          content: {
+            status: 500,
+            message: 'id not found',
+          },
+          from: socket.handshake.auth.proofOfUsId,
+        });
+      return;
+    }
+    const result = await upload(akord, bg, to, proofOfUs);
 
     io.to(to).to(to).emit('uploadBackgroundStatus', {
       content: result,

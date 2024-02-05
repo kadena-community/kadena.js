@@ -5,7 +5,7 @@ export const useSignToken = () => {
   const { addSignee } = useProofOfUs();
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [data, setData] = useState<IProofOfUs | undefined>(undefined);
+  const [data] = useState<IProofOfUs | undefined>(undefined);
 
   const signToken = () => {
     setIsLoading(true);
