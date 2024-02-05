@@ -40,7 +40,9 @@ export const handlers: any = [
         );
       }
 
+      // create principal
       if (parsedCMD.payload.exec.code.includes('create-principal') === true) {
+        // create principal with only one key
         if (parsedCMD.payload.exec.data.ks.keys.length === 1) {
           return HttpResponse.json(
             {
@@ -56,7 +58,16 @@ export const handlers: any = [
         return HttpResponse.json(createPrincipalSuccessData, { status: 200 });
       }
 
-      return HttpResponse.json(accountDetailsSuccessData, { status: 200 });
+      // default response
+      return HttpResponse.json(
+        {
+          result: {
+            data: 'Write succeeded',
+            status: 'success',
+          },
+        },
+        { status: 200 },
+      );
     },
   ),
 ];
