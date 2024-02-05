@@ -14,7 +14,6 @@ export type {
   IDialogHeaderProps,
   IDialogProps,
   IFormProps,
-  IGradientTextProps,
   IGridItemProps,
   IGridProps,
   IHeadingProps,
@@ -23,14 +22,6 @@ export type {
   ILinkProps,
   IMaskedValueProps,
   IModalProps,
-  INavFooterIconButtonProps,
-  INavFooterLinkProps,
-  INavFooterPanelProps,
-  INavFooterProps,
-  INavFooterRootProps,
-  INavHeaderButtonLinkProps,
-  INavHeaderButtonProps,
-  INavHeaderLinkListProps,
   INavHeaderLinkProps,
   INavHeaderProps,
   INavHeaderSelectProps,
@@ -54,7 +45,6 @@ export type {
   IToggleButtonProps,
   ITooltipProps,
   ITrackerCardProps,
-  ITreeProps,
   MaskOptions,
 } from './components';
 
@@ -79,14 +69,12 @@ export {
   Form,
   FormFieldHeader,
   FormFieldHelper,
-  GradientText,
   Grid,
   GridItem,
   Heading,
   KadenaLogo,
   Link,
   MaskedValue,
-  NavFooter,
   NavHeader,
   NavHeaderButton,
   NavHeaderButtonLink,
@@ -119,9 +107,21 @@ export {
   ToggleButton,
   Tooltip,
   TrackerCard,
-  Tree,
   maskValue,
   useDialog,
+} from './components';
+
+// Deprecated components
+export { GradientText, NavFooter, TableV1, Tree } from './components';
+export type {
+  IGradientTextProps,
+  INavFooterIconButtonProps,
+  INavFooterLinkProps,
+  INavFooterPanelProps,
+  INavFooterProps,
+  INavFooterRootProps,
+  ITableV1Props,
+  ITreeProps,
 } from './components';
 
 // re-exports from 'react-aria'
