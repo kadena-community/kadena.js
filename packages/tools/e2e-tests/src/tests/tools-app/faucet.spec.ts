@@ -25,7 +25,6 @@ for (const accountType of accountTypes) {
       await toolsApp.fundNewAccountPage.asidePanel.navigateTo(
         'Fund New Account',
       );
-      console.log('account', account);
       await toolsApp.fundNewAccountPage.CreateFundAccount(account);
       await expect(
         await toolsApp.fundNewAccountPage.processingNotification.getComponent(),

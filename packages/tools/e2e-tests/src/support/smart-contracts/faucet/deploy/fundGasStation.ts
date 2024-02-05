@@ -20,7 +20,7 @@ export const fundGasStation = async ({
     sender00Account,
     faucetGasStation,
     InitialFunding,
-    '0',
+    chainId,
   );
   return transfer;
 };
