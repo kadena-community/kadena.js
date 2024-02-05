@@ -25,7 +25,7 @@ const selectPublicKeys = createOption({
     const publicKeysList = await getAllPublicKeysFromKeyWalletConfig(
       args.keyWalletConfig as IWallet,
     );
-    return await checkbox({
+    const selectedKeys = await checkbox({
       message: 'Select public keys to add to account',
       choices: publicKeysList.map((key) => ({ value: key })),
       validate: (input) => {
@@ -36,17 +36,15 @@ const selectPublicKeys = createOption({
         return true;
       },
     });
+    return selectedKeys.join(',');
   },
-  transform(publicKeys: string | string[]) {
-    return Array.isArray(publicKeys) ? publicKeys.join(',') : publicKeys;
-  },
-  expand: async (publicKeys: string | string[]): Promise<string[]> => {
-    const keys = Array.isArray(publicKeys) ? publicKeys : publicKeys.split(',');
+  expand: async (publicKeys: string): Promise<string[]> => {
+    const keys = publicKeys.split(',');
     return keys
       .map((key: string) => key.trim())
       .filter((key: string) => !isEmpty(key));
   },
-  validation: z.array(z.string()),
+  validation: z.string(),
   option: new Option(
     '-p, --public-keys <publicKeys>',
     'Public keys to add to account',

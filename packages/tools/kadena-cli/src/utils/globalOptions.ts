@@ -608,7 +608,7 @@ export const globalOptions = {
     prompt: accountOverWritePrompt,
     option: new Option(
       '-o, --account-overwrite',
-      'Overwrite account details from chain (yes/no)',
+      'Overwrite account details from chain',
     ),
   }),
 } as const;

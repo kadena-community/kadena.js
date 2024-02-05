@@ -73,7 +73,7 @@ export const predicatePrompt: IPrompt<Predicate> = async () =>
     })),
   });
 
-export const accountOverWritePrompt = async (): Promise<boolean> =>
+export const accountOverWritePrompt: IPrompt<boolean> = async () =>
   await select({
     message: 'Would you like to use the account details on the chain?',
     choices: [
