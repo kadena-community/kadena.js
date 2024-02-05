@@ -32,13 +32,6 @@ export type { MaskOptions } from './MaskedValue';
 export type { IMaskedValueProps } from './MaskedValue/MaskedValue';
 export type { IModalProps } from './Modal';
 export type {
-  INavFooterIconButtonProps,
-  INavFooterLinkProps,
-  INavFooterPanelProps,
-  INavFooterProps,
-  INavFooterRootProps,
-} from './NavFooter';
-export type {
   INavHeaderButtonLinkProps,
   INavHeaderButtonProps,
   INavHeaderLinkListProps,
@@ -54,24 +47,12 @@ export type {
 } from './Notification';
 export type { IPaginationProps } from './Pagination';
 export type { IProgressCircleProps } from './ProgressCircle';
-export type {
-  ITBodyProps,
-  ITHeadProps,
-  ITableProps,
-  ITdProps,
-  IThProps,
-  ITrProps,
-} from './Table';
+export type { ITableProps } from './Table';
 export type { ITabItemProps, ITabsProps } from './Tabs';
 export type { ITagGroupProps, ITagItemProps, ITagProps } from './Tag';
 export type { ITooltipProps } from './Tooltip';
 export type { ILabelValue, ITrackerCardProps } from './TrackerCard/TrackerCard';
-export type { ITreeProps } from './Tree';
-export type {
-  IGradientTextProps,
-  IHeadingProps,
-  ITextProps,
-} from './Typography';
+export type { IHeadingProps, ITextProps } from './Typography';
 
 export { Accordion } from './Accordion';
 export { Breadcrumbs, BreadcrumbsItem } from './Breadcrumbs';
@@ -105,7 +86,6 @@ export { KadenaLogo } from './Logo';
 export { MaskedValue } from './MaskedValue/MaskedValue';
 export { maskValue } from './MaskedValue/utils';
 export { Modal } from './Modal';
-export { NavFooter } from './NavFooter';
 export {
   NavHeader,
   NavHeaderButton,
@@ -122,10 +102,26 @@ export {
 } from './Notification';
 export { Pagination } from './Pagination';
 export { ProgressCircle } from './ProgressCircle';
-export { Table } from './Table';
+export { Cell, Column, Row, Table, TableBody, TableHeader } from './Table';
 export { TabItem, Tabs } from './Tabs';
 export { Tag, TagGroup, TagItem } from './Tag';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
+export { Heading, Text } from './Typography';
+
+// Deprecated components
+export { NavFooter } from './NavFooter';
+export { TableV1 } from './TableV1';
 export { Tree } from './Tree';
-export { GradientText, Heading, Text } from './Typography';
+export { GradientText } from './Typography';
+
+export type {
+  INavFooterIconButtonProps,
+  INavFooterLinkProps,
+  INavFooterPanelProps,
+  INavFooterProps,
+  INavFooterRootProps,
+} from './NavFooter';
+export type { ITableProps as ITableV1Props } from './TableV1';
+export type { ITreeProps } from './Tree';
+export type { IGradientTextProps } from './Typography';

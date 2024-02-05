@@ -6,15 +6,20 @@ import routes from '@/constants/routes';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
 import {
   Box,
+  Cell,
+  Column,
   Link,
   Pagination,
+  Row,
   Select,
   SelectItem,
   Table,
+  TableBody,
+  TableHeader,
 } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 type DataType = GetTransfersQuery;
 interface IVariableType {
@@ -184,19 +189,17 @@ export const ExtendedTransfersTable = (
           />
         </div>
       </Box>
-      <Table.Root wordBreak="break-word" className={compactTableClass}>
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Chain</Table.Th>
-            <Table.Th>Timestamp</Table.Th>
-            <Table.Th>Block Height</Table.Th>
-            <Table.Th>Amount</Table.Th>
-            <Table.Th>Sender Account</Table.Th>
-            <Table.Th>Receiver Account</Table.Th>
-            <Table.Th>Request key</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
+      <Table className={atoms({ wordBreak: 'break-word' })} isCompact>
+        <TableHeader>
+          <Column>Chain</Column>
+          <Column>Timestamp</Column>
+          <Column>Block Height</Column>
+          <Column>Amount</Column>
+          <Column>Sender Account</Column>
+          <Column>Receiver Account</Column>
+          <Column>Request key</Column>
+        </TableHeader>
+        <TableBody>
           {transfers.edges.map((edge, index) => {
             /**  These transfers are going to be added to their crosschain counterpart and
            this way we avoid repeated transfers in the table */
@@ -213,21 +216,19 @@ export const ExtendedTransfersTable = (
               : edge.node.height;
 
             return (
-              <Table.Tr key={index}>
-                <Table.Td>{chainIdDisplay}</Table.Td>
-                <Table.Td>
-                  {new Date(edge.node.creationTime).toLocaleString()}
-                </Table.Td>
-                <Table.Td>{heightDisplay}</Table.Td>
-                <Table.Td>{edge.node.amount}</Table.Td>
-                <Table.Td>
+              <Row key={index}>
+                <Cell>{chainIdDisplay}</Cell>
+                <Cell>{new Date(edge.node.creationTime).toLocaleString()}</Cell>
+                <Cell>{heightDisplay}</Cell>
+                <Cell>{edge.node.amount}</Cell>
+                <Cell>
                   <Link
                     href={`${routes.ACCOUNT}/${router.query.fungible}/${edge.node.senderAccount}`}
                   >
                     {edge.node.senderAccount}
                   </Link>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   {edge.node.receiverAccount ? (
                     <Link
                       href={`${routes.ACCOUNT}/${router.query.fungible}/${edge.node.receiverAccount}`}
@@ -243,8 +244,8 @@ export const ExtendedTransfersTable = (
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
                   )}
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
                     {edge.node.requestKey}
                   </Link>
@@ -258,12 +259,12 @@ export const ExtendedTransfersTable = (
                       </Link>
                     </>
                   )}
-                </Table.Td>
-              </Table.Tr>
+                </Cell>
+              </Row>
             );
           })}
-        </Table.Body>
-      </Table.Root>
+        </TableBody>
+      </Table>
     </>
   );
 };

@@ -85,6 +85,9 @@ type Token = string | { [key: string]: Token };
 const ignoredTokens = ['@hover', '@focus', '@disabled'] as const;
 type IgnoredToken = (typeof ignoredTokens)[number];
 
+/**
+ * @internal
+ */
 export function flattenTokens<T extends Record<string, Token>>(
   tokens: T,
 ): FlattenObject<T, IgnoredToken> {

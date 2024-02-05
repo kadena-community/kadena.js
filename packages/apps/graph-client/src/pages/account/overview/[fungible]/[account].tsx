@@ -8,7 +8,6 @@ import {
   useGetFungibleAccountQuery,
   useGetNonFungibleAccountQuery,
 } from '@/__generated__/sdk';
-import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { TokenTable } from '@/components/token-table/token-table';
@@ -26,14 +25,20 @@ import {
   Breadcrumbs,
   BreadcrumbsItem,
   Button,
+  Cell,
+  Column,
   Link,
   Notification,
+  Row,
   Stack,
   TabItem,
   Table,
+  TableBody,
+  TableHeader,
   Tabs,
   TextField,
 } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -109,16 +114,20 @@ const Account: React.FC = () => {
 
       <Box margin="md" />
 
-      <Table.Root wordBreak="break-all" className={compactTableClass}>
-        <Table.Body>
-          <Table.Tr>
-            <Table.Td>
+      <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+        <TableHeader>
+          <Column>Label</Column>
+          <Column>Value</Column>
+        </TableHeader>
+        <TableBody>
+          <Row>
+            <Cell>
               <strong>Account Name</strong>
-            </Table.Td>
-            <Table.Td>{router.query.account}</Table.Td>
-          </Table.Tr>
-        </Table.Body>
-      </Table.Root>
+            </Cell>
+            <Cell>{router.query.account}</Cell>
+          </Row>
+        </TableBody>
+      </Table>
 
       <Box margin="md" />
 
@@ -164,26 +173,30 @@ const Account: React.FC = () => {
           )}
           {fungibleAccountData?.fungibleAccount && (
             <>
-              <Table.Root wordBreak="break-all" className={compactTableClass}>
-                <Table.Body>
-                  <Table.Tr>
-                    <Table.Td>
+              <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+                <TableHeader>
+                  <Column>Label</Column>
+                  <Column>Value</Column>
+                </TableHeader>
+                <TableBody>
+                  <Row>
+                    <Cell>
                       <strong>Fungible</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {fungibleAccountData.fungibleAccount.fungibleName}
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
+                    </Cell>
+                  </Row>
+                  <Row>
+                    <Cell>
                       <strong>Balance</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {fungibleAccountData.fungibleAccount.totalBalance}
-                    </Table.Td>
-                  </Table.Tr>
-                </Table.Body>
-              </Table.Root>
+                    </Cell>
+                  </Row>
+                </TableBody>
+              </Table>
 
               <Box margin="md" />
 
@@ -251,13 +264,17 @@ const Account: React.FC = () => {
 
           {nonFungibleAccountData?.nonFungibleAccount && (
             <div>
-              <Table.Root wordBreak="break-all" className={compactTableClass}>
-                <Table.Body>
-                  <Table.Tr>
-                    <Table.Td>
+              <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+                <TableHeader>
+                  <Column>Label</Column>
+                  <Column>Value</Column>
+                </TableHeader>
+                <TableBody>
+                  <Row>
+                    <Cell>
                       <strong>Chain Accounts</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {nonFungibleAccountData.nonFungibleAccount.chainAccounts.map(
                         (chainAccount) => (
                           <Box key={chainAccount.chainId}>
@@ -269,10 +286,10 @@ const Account: React.FC = () => {
                           </Box>
                         ),
                       )}
-                    </Table.Td>
-                  </Table.Tr>
-                </Table.Body>
-              </Table.Root>
+                    </Cell>
+                  </Row>
+                </TableBody>
+              </Table>
 
               <Box margin="md" />
 
