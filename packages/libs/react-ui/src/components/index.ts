@@ -16,6 +16,7 @@ export type {
 export type {
   IComboboxProps,
   IFormProps,
+  INumberFieldProps,
   ISelectProps,
   ITextFieldProps,
   ITextareaFieldProps,
@@ -74,6 +75,7 @@ export {
   Form,
   FormFieldHeader,
   FormFieldHelper,
+  NumberField,
   Select,
   SelectItem,
   TextField,

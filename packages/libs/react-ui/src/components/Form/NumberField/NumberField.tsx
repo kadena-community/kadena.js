@@ -8,9 +8,12 @@ import type {
   ReactNode,
 } from 'react';
 import React, { forwardRef, useCallback } from 'react';
-import type { AriaTextFieldProps } from 'react-aria';
-import { useFocusRing, useHover, useTextField } from 'react-aria';
+import type { AriaNumberFieldProps } from 'react-aria';
+import { useFocusRing, useHover, useLocale, useNumberField } from 'react-aria';
+import { useNumberFieldState } from 'react-stately';
 import { bodyBaseRegular, codeBaseRegular } from '../../../styles';
+import { Button } from '../../Button';
+import { ChevronDown, ChevronUp } from '../../Icon/System/SystemIcon';
 import {
   endAddon,
   formField,
@@ -20,12 +23,18 @@ import {
 } from '../Form.css';
 import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
+import {
+  buttonClass,
+  buttonContainerClass,
+  iconClass,
+} from './NumberField.css';
 
-type PickedAriaTextFieldProps = Omit<
-  AriaTextFieldProps,
-  'children' | 'inputElementType' | 'onChange'
+type PickedAriaNumberFieldProps = Omit<
+  AriaNumberFieldProps,
+  'children' | 'inputElementType' | 'onChange' | 'type'
 >;
-export interface ITextFieldProps extends PickedAriaTextFieldProps {
+export interface INumberFieldProps extends PickedAriaNumberFieldProps {
+  // block type
   className?: string;
   isPositive?: boolean;
   tag?: string;
@@ -35,39 +44,48 @@ export interface ITextFieldProps extends PickedAriaTextFieldProps {
    */
   disabled?: boolean;
   /*
-   * using native onChange handler instead of AriaTextFieldProps.onChange to support uncontrolled form state eg. react-hook-form
+   * using native onChange handler instead of AriaNumberFieldProps.onChange to support uncontrolled form state eg. react-hook-form
    */
   onChange?: ComponentProps<'input'>['onChange'];
   /*
-   * alias for `AriaTextFieldProps.onChange`
+   * alias for `AriaNumberFieldProps.onChange`
    */
-  onValueChange?: (value: string) => void;
+  onValueChange?: (value: number) => void;
   startAddon?: ReactNode;
-  endAddon?: ReactNode;
+
   isOutlined?: boolean;
   inputFont?: 'body' | 'code';
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, react/function-component-definition
-export function TextFieldBase(
-  props: ITextFieldProps,
+export function NumberFieldBase(
+  props: INumberFieldProps,
   forwardedRef: ForwardedRef<ElementRef<'input'>>,
 ) {
   const ref = useObjectRef<ElementRef<'input'>>(forwardedRef);
   const isDisabled = props.isDisabled || props.disabled;
+  const { locale } = useLocale();
+  const state = useNumberFieldState({
+    ...props,
+    onChange: props.onValueChange,
+    locale,
+  });
+
   const {
     labelProps,
     inputProps,
     descriptionProps,
     errorMessageProps,
+    incrementButtonProps,
+    decrementButtonProps,
     ...validation
-  } = useTextField(
+  } = useNumberField(
     {
       ...props,
       onChange: props.onValueChange,
-      inputElementType: 'input',
       isDisabled,
     },
+    state,
     ref,
   );
 
@@ -134,25 +152,25 @@ export function TextFieldBase(
           data-invalid={validation.isInvalid || undefined}
           data-positive={props.isPositive || undefined}
           data-has-start-addon={!!props.startAddon || undefined}
-          data-has-end-addon={!!props.endAddon || undefined}
           data-outlined={props.isOutlined || undefined}
         />
 
-        {props.endAddon && (
-          <div
-            className={endAddon}
-            ref={(el) => {
-              if (el) {
-                ref.current?.style.setProperty(
-                  '--end-addon-width',
-                  `${el.offsetWidth}px`,
-                );
-              }
-            }}
-          >
-            {props.endAddon}
-          </div>
-        )}
+        <div className={classNames(endAddon, buttonContainerClass)}>
+          <Button
+            icon={<ChevronUp size="sm" className={iconClass} />}
+            variant="text"
+            isCompact
+            className={buttonClass}
+            {...incrementButtonProps}
+          />
+          <Button
+            icon={<ChevronDown size="sm" className={iconClass} />}
+            variant="text"
+            isCompact
+            className={buttonClass}
+            {...decrementButtonProps}
+          />
+        </div>
       </div>
 
       {props.description && !validation.isInvalid && (
@@ -172,4 +190,4 @@ export function TextFieldBase(
   );
 }
 
-export const TextField = forwardRef(TextFieldBase);
+export const NumberField = forwardRef(NumberFieldBase);
