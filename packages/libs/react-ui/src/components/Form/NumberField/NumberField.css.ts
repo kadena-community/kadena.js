@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css';
 import { atoms, token } from '../../../styles';
 
-export const numberButtonClass = style([
+export const buttonContainerClass = style([
   atoms({
     display: 'flex',
     flexDirection: 'column',
@@ -22,7 +22,7 @@ export const iconClass = style([
   }),
 ]);
 
-export const overwriteVarianClass = style([
+export const buttonClass = style([
   {
     padding: '0',
   },

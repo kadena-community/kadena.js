@@ -24,9 +24,9 @@ import {
 import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
 import {
+  buttonClass,
+  buttonContainerClass,
   iconClass,
-  numberButtonClass,
-  overwriteVarianClass,
 } from './NumberField.css';
 
 type PickedAriaNumberFieldProps = Omit<
@@ -155,19 +155,19 @@ export function NumberFieldBase(
           data-outlined={props.isOutlined || undefined}
         />
 
-        <div className={classNames(endAddon, numberButtonClass)}>
+        <div className={classNames(endAddon, buttonContainerClass)}>
           <Button
             icon={<ChevronUp size="sm" className={iconClass} />}
             variant="text"
             isCompact
-            className={overwriteVarianClass}
+            className={buttonClass}
             {...incrementButtonProps}
           />
           <Button
             icon={<ChevronDown size="sm" className={iconClass} />}
             variant="text"
             isCompact
-            className={overwriteVarianClass}
+            className={buttonClass}
             {...decrementButtonProps}
           />
         </div>

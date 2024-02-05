@@ -309,16 +309,3 @@ export const CustomErrorMessage: Story = {
     );
   },
 };
-
-export const WithCopyButton: Story = {
-  name: 'With copy button',
-  render: () => {
-    return (
-      <NumberField
-        id="with-copy-button"
-        label="With copy button"
-        endAddon={<CopyButton inputId="with-copy-button" />}
-      />
-    );
-  },
-};
