@@ -1,4 +1,15 @@
-import { Box, Button, Link, Stack, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Button,
+  Cell,
+  Column,
+  Link,
+  Row,
+  Stack,
+  Table,
+  TableBody,
+  TableHeader,
+} from '@kadena/react-ui';
 
 import type { Block, QueryTransactionsConnection } from '@/__generated__/sdk';
 import {
@@ -12,6 +23,7 @@ import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { getBlockNodes, getTransactions } from '@/graphql/queries.graph';
 import { getBlocksSubscription } from '@/graphql/subscriptions.graph';
 import routes from '@constants/routes';
+import { atoms } from '@kadena/react-ui/styles';
 import React, { useEffect, useState } from 'react';
 
 const Home: React.FC = () => {
@@ -86,41 +98,37 @@ const Home: React.FC = () => {
       />
 
       {newBlocks && (
-        <Table.Root wordBreak="break-word">
-          <Table.Head>
-            <Table.Tr>
-              <Table.Th>Hash</Table.Th>
-              <Table.Th>Creation Time</Table.Th>
-              <Table.Th>Height</Table.Th>
-              <Table.Th>Chain</Table.Th>
-              <Table.Th>Confirmation Depth</Table.Th>
-              <Table.Th>Transactions</Table.Th>
-            </Table.Tr>
-          </Table.Head>
-          <Table.Body>
+        <Table className={atoms({ wordBreak: 'break-all' })} isCompact>
+          <TableHeader>
+            <Column>Hash</Column>
+            <Column>Creation Time</Column>
+            <Column>Height</Column>
+            <Column>Chain</Column>
+            <Column>Confirmation Depth</Column>
+            <Column>Transactions</Column>
+          </TableHeader>
+          <TableBody>
             {newBlocks.map((block, index) => {
               return (
-                <Table.Tr key={index}>
-                  <Table.Td>
+                <Row key={index}>
+                  <Cell>
                     <Link
                       style={{ padding: 0, border: 0 }}
                       href={`${routes.BLOCK_OVERVIEW}/${block.hash}`}
                     >
                       {block.hash}
                     </Link>
-                  </Table.Td>
-                  <Table.Td>
-                    {new Date(block.creationTime).toLocaleString()}
-                  </Table.Td>
-                  <Table.Td>{block.height}</Table.Td>
-                  <Table.Td>{block.chainId}</Table.Td>
-                  <Table.Td>{block.confirmationDepth}</Table.Td>
-                  <Table.Td>{block.transactions.totalCount}</Table.Td>
-                </Table.Tr>
+                  </Cell>
+                  <Cell>{new Date(block.creationTime).toLocaleString()}</Cell>
+                  <Cell>{block.height}</Cell>
+                  <Cell>{block.chainId}</Cell>
+                  <Cell>{block.confirmationDepth}</Cell>
+                  <Cell>{block.transactions.totalCount}</Cell>
+                </Row>
               );
             })}
-          </Table.Body>
-        </Table.Root>
+          </TableBody>
+        </Table>
       )}
 
       {txs?.transactions && (

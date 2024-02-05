@@ -1,24 +1,17 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { atoms } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const modalOptionsContentStyle = style([
-  sprinkles({
+  atoms({
     width: '100%',
-    paddingTop: '$xs',
+    paddingBlockStart: 'xs',
   }),
 ]);
 
 export const formButtonStyle = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    marginTop: '$4',
-    gap: '$8',
-  }),
-]);
-
-export const errorMessageStyle = style([
-  sprinkles({
-    marginTop: '$md',
-    color: '$red60',
+    marginBlockStart: 'md',
+    gap: 'xl',
   }),
 ]);

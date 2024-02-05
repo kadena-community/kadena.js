@@ -1,4 +1,9 @@
-import { sendCommand } from './commands/txSend.js';
+import { createTransactionCommandNew } from './commands/txCreateTransaction.js';
+import { createSendTransactionCommand } from './commands/txSend.js';
+import { createSignTransactionWithAliasFileCommand } from './commands/txSignWithAliasFile.js';
+import { createSignTransactionWithKeyPairCommand } from './commands/txSignWithKeypair.js';
+import { createSignTransactionWithLocalWalletCommand } from './commands/txSignWithLocalWallet.js';
+import { createTestSignedTransactionCommand } from './commands/txTestSignedTransaction.js';
 
 import type { Command } from 'commander';
 
@@ -9,5 +14,10 @@ export function txCommandFactory(program: Command, version: string): void {
     .command(SUBCOMMAND_ROOT)
     .description(`Tool for creating and managing transactions`);
 
-  sendCommand(txProgram, version);
+  createSendTransactionCommand(txProgram, version);
+  createSignTransactionWithKeyPairCommand(txProgram, version);
+  createSignTransactionWithAliasFileCommand(txProgram, version);
+  createSignTransactionWithLocalWalletCommand(txProgram, version);
+  createTestSignedTransactionCommand(txProgram, version);
+  createTransactionCommandNew(txProgram, version);
 }

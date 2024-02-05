@@ -1,6 +1,6 @@
-import { withContentWidth } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { withContentWidth } from '../../storyDecorators';
 import type { IMaskedValueProps } from './MaskedValue';
 import { MaskedValue } from './MaskedValue';
 

@@ -1,22 +1,33 @@
-import { sprinkles } from '@kadena/react-ui/theme';
+import { atoms } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const helperStyle = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     flexDirection: 'row-reverse',
-    gap: '$1',
+    gap: 'xs',
     cursor: 'pointer',
-    color: '$neutral5',
+    fontSize: 'xs',
+    color: 'text.base.default',
   }),
 ]);
 
 export const helperTextIconStyle = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     alignItems: 'center',
-    gap: '$1',
+    gap: 'sm',
     cursor: 'pointer',
-    color: '$neutral5',
+    fontSize: 'sm',
+    color: 'text.base.default',
+  }),
+]);
+
+export const helperButtonIconStyle = style([
+  atoms({
+    outline: 'none',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
   }),
 ]);

@@ -1,5 +1,20 @@
 # @kadena/client-utils
 
+## 0.3.0
+
+### Minor Changes
+
+- bbeef98a6: added createPactCommandFromStringTemplate method
+- 3fc8ac86d: add utility function for built-in Pact function 'describe-module'
+- 72f472e58: Add safeTransfer which requires both sender and receiver to sign
+
+### Patch Changes
+
+- 64dd84ee0: Changed the return type for getBalance to string.
+- Updated dependencies [0540b213b]
+  - @kadena/client@1.8.0
+  - @kadena/pactjs-cli@1.8.0
+
 ## 0.2.0
 
 ### Minor Changes

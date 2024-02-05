@@ -1,4 +1,4 @@
-import { atoms, darkThemeClass, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const headerStyle = style([
@@ -10,47 +10,33 @@ export const headerStyle = style([
     zIndex: 1,
   }),
   {
-    height: vars.sizes.$16,
+    height: tokens.kda.foundation.size.n16,
   },
 ]);
 
 export const mainStyle = style([
   atoms({
     width: '100%',
+    backgroundColor: 'base.default',
   }),
   {
     height: '100vh',
-    backgroundColor: '#E3E1E5',
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        backgroundColor: '#272329',
-      },
-    },
   },
 ]);
 
 export const gridItemMainStyle = style([
   atoms({
     width: '100%',
-    height: '100%',
     overflowY: 'scroll',
   }),
   {
-    paddingTop: vars.sizes.$20,
-    paddingBottom: vars.sizes.$16,
-    paddingRight: vars.sizes.$6,
-    paddingLeft: `calc(${vars.sizes.$20} + ${vars.sizes.$2})`,
-    borderRight: `1px solid #E3E1E5`,
+    height: '100vh',
+    paddingTop: tokens.kda.foundation.size.n20,
+    paddingInline: `calc(${tokens.kda.foundation.size.n20} + ${tokens.kda.foundation.size.n2})`,
+    borderRight: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
     selectors: {
-      [`${darkThemeClass} &`]: {
-        borderRight: `1px solid #27232999`,
-      },
-
       '&.isMenuOpen': {
-        paddingLeft: `calc(${vars.sizes.$64} + ${vars.sizes.$20} + ${vars.sizes.$2})`,
-      },
-      [`${darkThemeClass} &.isMenuOpen`]: {
-        borderRight: `1px solid #27232999`,
+        paddingLeft: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n20} + ${tokens.kda.foundation.size.n2})`,
       },
     },
   },
@@ -62,21 +48,18 @@ export const sidebarStyle = style([
     left: 0,
     bottom: 0,
     display: 'flex',
+    backgroundColor: 'layer-1.default',
     overflow: 'hidden',
     zIndex: 1,
   }),
   {
-    width: vars.sizes.$12,
-    top: vars.sizes.$16,
-    backgroundColor: vars.colors.$neutral1,
+    width: tokens.kda.foundation.size.n12,
+    top: tokens.kda.foundation.size.n16,
     transition: 'width 0.1s ease-in',
-    borderRight: `1px solid #E3E1E5`,
+    borderRight: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
     selectors: {
       '&.isMenuOpen': {
-        width: `calc(${vars.sizes.$64} + ${vars.sizes.$10})`,
-      },
-      [`${darkThemeClass} &`]: {
-        borderRight: `1px solid #27232999`,
+        width: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n10})`,
       },
     },
   },

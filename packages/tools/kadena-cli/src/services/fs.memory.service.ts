@@ -58,4 +58,7 @@ export const memoryFileSystemService: IFileSystemService = {
     const result = await fs.readdir(path, { withFileTypes: true });
     return result as unknown as Dirent[];
   },
+  async appendFile(path: string, data: string) {
+    await fs.appendFile(path, data, { encoding: 'utf8' });
+  },
 };

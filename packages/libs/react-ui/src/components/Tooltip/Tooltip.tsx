@@ -1,10 +1,10 @@
-import { Box } from '@components/Layout';
-import { mergeRefs } from '@react-aria/utils';
+import { FocusableProvider } from '@react-aria/focus';
 import type { FC, ReactElement, ReactNode } from 'react';
 import React, { cloneElement, useRef } from 'react';
 import { useTooltip, useTooltipTrigger } from 'react-aria';
 import type { TooltipTriggerProps } from 'react-stately';
 import { useTooltipTriggerState } from 'react-stately';
+import { Box } from '../Layout';
 import { tooltipPositionVariants } from './Tooltip.css';
 export interface ITooltipProps
   extends Omit<TooltipTriggerProps, 'trigger' | 'onOpenChange'> {
@@ -37,11 +37,11 @@ export const Tooltip: FC<ITooltipProps> = ({
 
   return (
     <Box position="relative">
-      {cloneElement(children, {
-        ...triggerProps,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ref: mergeRefs(ref, (children as any).ref),
-      })}
+      <FocusableProvider ref={ref} {...triggerProps}>
+        {cloneElement(children, {
+          ...triggerProps,
+        })}
+      </FocusableProvider>
 
       {state.isOpen && (
         <span className={tooltipPositionVariants[position]} {...tooltipProps}>

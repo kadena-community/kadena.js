@@ -1,5 +1,6 @@
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
+  Accordion,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -14,11 +15,8 @@ import {
 
 import {
   hoverTagContainerStyle,
-  iconButtonWrapper,
-  inputWrapperStyle,
   notificationContentStyle,
   notificationLinkStyle,
-  pubKeyInputWrapperStyle,
   pubKeysContainerStyle,
 } from './styles.css';
 
@@ -27,26 +25,40 @@ import {
   buttonContainerClass,
   chainSelectContainerClass,
   containerClass,
+  explorerLinkStyle,
+  infoBoxStyle,
+  infoTitleStyle,
   inputContainerClass,
+  linksBoxStyle,
+  linkStyle,
   notificationContainerStyle,
 } from '../styles.css';
 
-import type { FormStatus } from '@/components/Global';
-import { ChainSelect, FormStatusNotification } from '@/components/Global';
-import { AccountHoverTag } from '@/components/Global/AccountHoverTag';
-import AccountNameField from '@/components/Global/AccountNameField';
-import { HoverTag } from '@/components/Global/HoverTag';
-import type { PredKey } from '@/components/Global/PredKeysSelect';
-import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
-import { PublicKeyField } from '@/components/Global/PublicKeyField';
+import DrawerToolbar from '@/components/Common/DrawerToolbar';
+import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
+import type { FormStatus, PredKey } from '@/components/Global';
+import {
+  AccountHoverTag,
+  AccountNameField,
+  ChainSelect,
+  FormStatusNotification,
+  HoverTag,
+  PredKeysSelect,
+  PublicKeyField,
+} from '@/components/Global';
+import { sidebarLinks } from '@/constants/side-links';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
+import { pollResult } from '@/services/faucet';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import { fundCreateNewAccount } from '@/services/faucet/fund-create-new';
 import { validatePublicKey } from '@/services/utils/utils';
+import { getExplorerLink } from '@/utils/getExplorerLink';
+import { stripAccountPrefix } from '@/utils/string';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { ITransactionDescriptor } from '@kadena/client';
 import { useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -54,8 +66,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 interface IFundExistingAccountResponseBody {
@@ -68,8 +80,6 @@ interface IFundExistingAccountResponseBody {
         };
   };
 }
-interface IFundExistingAccountResponse
-  extends Record<string, IFundExistingAccountResponseBody> {}
 
 const AMOUNT_OF_COINS_FUNDED: number = 100;
 const isCustomError = (error: unknown): error is ICommandResult => {
@@ -85,7 +95,7 @@ type FormData = z.infer<typeof schema>;
 const NewAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
   const router = useRouter();
-  const { selectedNetwork } = useWalletConnectClient();
+  const { selectedNetwork, networksData } = useWalletConnectClient();
 
   const [chainID, onChainSelectChange] = usePersistentChainID();
   const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
@@ -94,18 +104,26 @@ const NewAccountFaucetPage: FC = () => {
     message?: string;
   }>({ status: 'idle' });
   const [pubKeys, setPubKeys] = useState<string[]>([]);
+  const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
+    undefined,
+  );
+  const [requestKey, setRequestKey] = useState<string>('');
+  const drawerPanelRef = useRef<HTMLElement | null>(null);
 
   const { data: accountName } = useQuery({
-    queryKey: ['accountName', pubKeys, chainID, pred],
+    queryKey: [
+      'accountName',
+      pubKeys,
+      chainID,
+      pred,
+      selectedNetwork,
+      networksData,
+    ],
     queryFn: () => createPrincipal(pubKeys, chainID, pred),
     enabled: pubKeys.length > 0,
     placeholderData: '',
     keepPreviousData: true,
   });
-
-  useEffect(() => {
-    setRequestStatus({ status: 'idle' });
-  }, [pubKeys.length]);
 
   const {
     register,
@@ -115,14 +133,72 @@ const NewAccountFaucetPage: FC = () => {
     setError,
     getValues,
     resetField,
+    control,
     setValue,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
+  const faqs: Array<{ title: string; body: React.ReactNode }> = [
+    {
+      title: t('What can I do with the Faucet?'),
+      body: (
+        <Trans
+          i18nKey="common:faucet-description"
+          components={[
+            <Link
+              className={linkStyle}
+              href="/faucet/existing"
+              key="faucet-existing-link"
+            />,
+            <Link
+              className={linkStyle}
+              href="/faucet/new"
+              key="faucet-new-link"
+            />,
+          ]}
+        />
+      ),
+    },
+    {
+      title: t('How do I generate a key pair?'),
+      body: (
+        <Trans
+          i18nKey="common:how-to-keypair"
+          components={[
+            <a
+              className={linkStyle}
+              href="https://transfer.chainweb.com/"
+              target="_blank"
+              rel="noreferrer"
+              key="chainweb-transfer-link"
+            />,
+            <strong key="generate-keypair" />,
+            <a
+              className={linkStyle}
+              href="https://chainweaver.kadena.network/"
+              target="_blank"
+              rel="noreferrer"
+              key="chainweaver-link"
+            />,
+          ]}
+        />
+      ),
+    },
+  ];
+
   useEffect(() => {
-    setValue('name', typeof accountName === 'string' ? accountName : '');
-  }, [accountName, setValue]);
+    setRequestStatus({ status: 'idle' });
+  }, [pubKeys.length]);
+
+  const currentAccName = getValues('name');
+
+  useEffect(() => {
+    setValue(
+      'name',
+      typeof accountName === 'string' && pubKeys.length > 0 ? accountName : '',
+    );
+  }, [accountName, chainID, currentAccName, setValue, pubKeys.length]);
 
   useToolbar(menuData, router.pathname);
 
@@ -137,15 +213,28 @@ const NewAccountFaucetPage: FC = () => {
       }
 
       setRequestStatus({ status: 'processing' });
+      setRequestKey('');
       try {
-        const result = (await fundCreateNewAccount(
+        const submitResponse = (await fundCreateNewAccount(
           data.name,
           pubKeys,
           chainID,
+          selectedNetwork,
+          networksData,
           AMOUNT_OF_COINS_FUNDED,
           pred,
-        )) as IFundExistingAccountResponse;
-        const error = Object.values(result).find(
+        )) as ITransactionDescriptor;
+
+        setRequestKey(submitResponse.requestKey);
+
+        const pollResponse = (await pollResult(
+          chainID,
+          selectedNetwork,
+          networksData,
+          submitResponse,
+        )) as unknown as IFundExistingAccountResponseBody;
+
+        const error = Object.values(pollResponse).find(
           (response) => response.result.status === 'failure',
         );
         if (error) {
@@ -156,8 +245,10 @@ const NewAccountFaucetPage: FC = () => {
           return;
         }
         setRequestStatus({ status: 'successful' });
+        setOpenItem(undefined);
       } catch (err) {
         let message;
+
         if (isCustomError(err)) {
           const result = err.result;
           const status = result?.status;
@@ -169,28 +260,39 @@ const NewAccountFaucetPage: FC = () => {
         } else {
           message = String(err);
         }
+
+        const requestKey = message
+          ? message.substring(
+              message.indexOf('"') + 1,
+              message.lastIndexOf('"'),
+            )
+          : '';
+        setRequestKey(requestKey);
         setRequestStatus({ status: 'erroneous', message });
       }
     },
-    [chainID, pred, pubKeys, setError, t],
+    [chainID, networksData, pred, pubKeys, selectedNetwork, setError, t],
   );
 
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
-  const disabledButton: boolean =
-    requestStatus.status === 'processing' || mainnetSelected;
+  const linkToExplorer = `${getExplorerLink(
+    requestKey,
+    selectedNetwork,
+    networksData,
+  )}`;
 
   const addPublicKey = () => {
-    const value = getValues('pubKey');
+    const value = stripAccountPrefix(getValues('pubKey') || '');
 
     const copyPubKeys = [...pubKeys];
-    const isDuplicate = copyPubKeys.includes(value!);
+    const isDuplicate = copyPubKeys.includes(value);
 
     if (isDuplicate) {
       setError('pubKey', { message: t('Duplicate public key') });
       return;
     }
 
-    copyPubKeys.push(value!);
+    copyPubKeys.push(value);
     setPubKeys(copyPubKeys);
     resetField('pubKey');
   };
@@ -200,6 +302,11 @@ const NewAccountFaucetPage: FC = () => {
     copyPubKeys.splice(index, 1);
 
     setPubKeys(copyPubKeys);
+    setValue('name', '');
+  };
+
+  const handleOnClickLink = () => {
+    setOpenItem(undefined);
   };
 
   const renderPubKeys = () => (
@@ -212,7 +319,7 @@ const NewAccountFaucetPage: FC = () => {
             deletePublicKey(index);
           }}
           icon="TrashCan"
-          maskOptions={{ headLength: 4 }}
+          maskOptions={{ headLength: 4, character: '.' }}
         />
       ))}
     </div>
@@ -225,7 +332,7 @@ const NewAccountFaucetPage: FC = () => {
       </Head>
       <Breadcrumbs>
         <BreadcrumbsItem>{t('Faucet')}</BreadcrumbsItem>
-        <BreadcrumbsItem>{t('New')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Fund New Account')}</BreadcrumbsItem>
       </Breadcrumbs>{' '}
       <Heading as="h4">{t('Create and Fund New Account')}</Heading>
       <div className={notificationContainerStyle}>
@@ -237,9 +344,12 @@ const NewAccountFaucetPage: FC = () => {
             <Trans
               i18nKey="common:faucet-unavailable-warning"
               components={[
-                <Link
-                  href="/transactions/module-explorer?module=user.coin-faucet&chain=1"
-                  key="link-to-module-explorer"
+                <a
+                  className={notificationLinkStyle}
+                  target={'_blank'}
+                  href="https://chainweaver.kadena.network/contracts"
+                  rel="noreferrer"
+                  key="link-to-module"
                 />,
               ]}
             />
@@ -262,7 +372,7 @@ const NewAccountFaucetPage: FC = () => {
               <a
                 className={notificationLinkStyle}
                 target={'_blank'}
-                href={'https://kadena.io/chainweaver-tos/'}
+                href={'https://chainweaver.kadena.network/'}
                 rel="noreferrer"
                 key="chainweaver-link"
               />,
@@ -295,50 +405,54 @@ const NewAccountFaucetPage: FC = () => {
           <Card fullWidth>
             <Heading as="h5">Public Keys</Heading>
             <Box marginBlockEnd="md" />
-
-            <div className={pubKeyInputWrapperStyle}>
-              <div className={inputWrapperStyle}>
+            <Controller
+              name="pubKey"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
                 <PublicKeyField
-                  helperText={errors?.pubKey?.message}
-                  {...register('pubKey', {
-                    onChange: () => {
-                      clearErrors('pubKey');
-                    },
-                  })}
-                  error={errors.pubKey}
-                />
-              </div>
-              <div className={iconButtonWrapper}>
-                <Button
-                  icon={<SystemIcon.Plus />}
-                  variant="text"
-                  onPress={() => {
-                    const value = getValues('pubKey');
-                    const valid = validatePublicKey(value || '');
-                    if (valid) {
-                      addPublicKey();
-                    } else {
-                      setError('pubKey', {
-                        type: 'custom',
-                        message: t('invalid-pub-key-length'),
-                      });
-                    }
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    clearErrors('pubKey');
                   }}
-                  aria-label="Add public key"
-                  title="Add Public Key"
-                  color="primary"
-                  type="button"
+                  errorMessage={errors?.pubKey?.message}
+                  isInvalid={!!errors.pubKey}
+                  endAddon={
+                    <Button
+                      icon={<SystemIcon.Plus />}
+                      variant="text"
+                      onPress={() => {
+                        const value = getValues('pubKey');
+                        const valid = validatePublicKey(
+                          stripAccountPrefix(value || ''),
+                        );
+                        if (valid) {
+                          addPublicKey();
+                        } else {
+                          setError('pubKey', {
+                            type: 'custom',
+                            message: t('invalid-pub-key-length'),
+                          });
+                        }
+                      }}
+                      aria-label="Add public key"
+                      title="Add Public Key"
+                      color="primary"
+                      type="button"
+                    />
+                  }
                 />
-              </div>
-            </div>
+              )}
+            />
 
             {pubKeys.length > 0 ? renderPubKeys() : null}
 
             {pubKeys.length > 1 ? (
               <PredKeysSelect
-                onChange={onPredSelectChange}
-                value={pred}
-                ariaLabel="Select Predicate"
+                onSelectionChange={onPredSelectChange}
+                selectedKey={pred}
+                aria-label="Select Predicate"
               />
             ) : null}
           </Card>
@@ -348,17 +462,31 @@ const NewAccountFaucetPage: FC = () => {
             <div className={inputContainerClass}>
               <div className={accountNameContainerClass}>
                 <AccountNameField
-                  inputProps={register('name')}
-                  error={errors.name}
+                  {...register('name')}
+                  isInvalid={!!errors.name}
                   label={t('The account name to fund coins to')}
-                  disabled
+                  isDisabled
+                  endAddon={
+                    <Button
+                      icon={<SystemIcon.ContentCopy />}
+                      variant="text"
+                      onPress={async () => {
+                        const value = getValues('name');
+                        await navigator.clipboard.writeText(value);
+                      }}
+                      aria-label="Copy Account Name"
+                      title="Copy Account Name"
+                      color="primary"
+                      type="button"
+                    />
+                  }
                 />
               </div>
               <div className={chainSelectContainerClass}>
                 <ChainSelect
-                  onChange={onChainSelectChange}
-                  value={chainID}
-                  ariaLabel="Select Chain ID"
+                  onSelectionChange={onChainSelectChange}
+                  selectedKey={chainID}
+                  aria-label="Select Chain ID"
                 />
               </div>
             </div>
@@ -366,16 +494,78 @@ const NewAccountFaucetPage: FC = () => {
           <div className={buttonContainerClass}>
             <Button
               isLoading={requestStatus.status === 'processing'}
+              isDisabled={mainnetSelected}
               endIcon={<SystemIcon.TrailingIcon />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-              isDisabled={disabledButton}
               type="submit"
             >
               {t('Create and Fund Account', { amount: AMOUNT_OF_COINS_FUNDED })}
             </Button>
           </div>
         </Stack>
+
+        {requestKey !== '' ? (
+          <FormStatusNotification
+            status={'processing'}
+            title={t('Transaction submitted')}
+            body={
+              <Trans
+                i18nKey="common:link-to-kadena-explorer"
+                components={[
+                  <Link
+                    className={explorerLinkStyle}
+                    href={linkToExplorer}
+                    target={'_blank'}
+                    key={requestKey}
+                  >
+                    {requestKey}
+                  </Link>,
+                ]}
+              />
+            }
+          />
+        ) : null}
       </form>
+      <DrawerToolbar
+        ref={drawerPanelRef}
+        initialOpenItem={openItem}
+        sections={[
+          {
+            icon: 'Information',
+            title: t('Frequently asked questions'),
+            children: (
+              <>
+                {faqs.map((faq) => (
+                  <div className={infoBoxStyle} key={faq.title}>
+                    <p className={infoTitleStyle}>{faq.title}</p>
+                    <p>{faq.body}</p>
+                  </div>
+                ))}
+              </>
+            ),
+          },
+          {
+            icon: 'Link',
+            title: t('Resources & Links'),
+            children: (
+              <div className={linksBoxStyle}>
+                <Accordion.Root>
+                  {sidebarLinks.map((item, index) => (
+                    <MenuLinkButton
+                      title={item.title}
+                      key={`menu-link-${index}`}
+                      href={item.href}
+                      active={item.href === router.pathname}
+                      target="_blank"
+                      onClick={handleOnClickLink}
+                    />
+                  ))}
+                </Accordion.Root>
+              </div>
+            ),
+          },
+        ]}
+      />
     </section>
   );
 };

@@ -14,7 +14,8 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { getWallet, getWalletContent } from '../utils/keysHelpers.js';
+import type { IWallet } from '../utils/keysHelpers.js';
+import { getWalletContent } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
 
 /**
@@ -46,38 +47,38 @@ const confirmOption = createOption({
 });
 
 export const changeWalletPassword = async (
-  keyWallet: string,
+  wallet: string,
+  walletConfig: IWallet,
   currentPassword: string,
   newPassword: string,
 ): Promise<CommandResult<{ filename: string }>> => {
-  const wallet = await getWallet(keyWallet);
-  const walletContent = await getWalletContent(keyWallet);
-  if (wallet === null || walletContent === null) {
-    return { success: false, errors: [`Wallet: ${keyWallet} does not exist.`] };
+  const seed = (await getWalletContent(wallet)) as EncryptedString;
+  if (walletConfig.wallet === null || seed === null) {
+    return {
+      success: false,
+      errors: [`Wallet: ${walletConfig.wallet} does not exist.`],
+    };
   }
 
   let encryptedNewSeed: EncryptedString;
-  if (wallet.legacy === true) {
+  if (walletConfig.legacy === true) {
     encryptedNewSeed = await kadenaChangePassword(
-      walletContent as EncryptedString,
+      seed,
       currentPassword,
       newPassword,
     );
   } else {
-    const decryptedCurrentSeed = kadenaDecrypt(
-      currentPassword,
-      walletContent as EncryptedString,
-    );
-    encryptedNewSeed = kadenaEncrypt(newPassword, decryptedCurrentSeed);
+    const decryptedCurrentSeed = await kadenaDecrypt(currentPassword, seed);
+    encryptedNewSeed = await kadenaEncrypt(newPassword, decryptedCurrentSeed);
   }
 
   await storageService.storeWallet(
     encryptedNewSeed,
-    wallet.folder,
-    wallet.legacy,
+    walletConfig.folder,
+    walletConfig.legacy,
   );
 
-  return { success: true, data: { filename: wallet.wallet } };
+  return { success: true, data: { filename: walletConfig.wallet } };
 };
 
 export const createChangeWalletPasswordCommand: (
@@ -104,25 +105,25 @@ export const createChangeWalletPasswordCommand: (
         return;
       }
 
-      // compare passwords
       if (config.securityNewPassword !== config.securityVerifyPassword) {
         console.log(chalk.red(`\nPasswords don't match. Please try again.\n`));
         process.exit(1);
       }
 
-      if (typeof config.keyWallet === 'string') {
-        throw new Error('Invalid wallet name');
+      if (config.keyWalletConfig === null) {
+        throw new Error('Invalid wallet');
       }
 
       const result = await changeWalletPassword(
-        config.keyWallet.fileName,
+        config.keyWallet,
+        config.keyWalletConfig,
         config.securityCurrentPassword,
         config.securityNewPassword,
       );
       assertCommandError(result);
 
       console.log(chalk.green(`\nWallet password successfully updated..\n`));
-      console.log('filename: ', result.data.filename);
+      console.log('Walletname: ', result.data.filename);
     } catch (error) {
       console.log(chalk.red(`\n${error.message}\n`));
       process.exit(1);

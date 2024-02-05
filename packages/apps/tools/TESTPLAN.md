@@ -15,6 +15,8 @@ This document covers high-level test scenarios for Tools Website and is intended
 - Faucet
   - Users can create new accounts by adding one or multiple public keys and fund 100 coins on all chains on any chain on Testnet.
   - Users can fund existing accounts with 100 coins on any chain on Testnet.
+- Transactions
+  - Users can track a cross chain transfer by providing a valid request key and see transfer info on the page.
 
 ## 3. Test Scenarios
 
@@ -69,6 +71,46 @@ This document covers high-level test scenarios for Tools Website and is intended
 - **Expected Outcome:** The user enters an invalid account name (less than 3 or more than 256 characters) and the input shows error status. The submit button is disabled at this point.
 
 
+### 3.4 [Transactions / Track & Trace]
+
+#### Scenario 1: Get info on completed cross chain transfer
+- **Objective:** User can get info that the cross chain transfer is complete.
+- **Preconditions:** User has a valid request key already created in a specific wallet (like Chainweaver).
+- **Inputs:** User enters a valid request key.
+- **Expected Outcome:** The user enters a valid request key. The user clicks on the search button and sees information that the cross chain transfer was successful to the given account. On the main panel card with sender and receiver are displayed with info on the accounts and chain, as well as a progress bar with all steps completed.
+
+#### Scenario 2: Get info on an incomplete cross chain transfer
+- **Objective:** User can get info that the cross chain transfer is not complete.
+- **Preconditions:** User has a valid request key already created in a specific wallet (like Chainweaver).
+- **Inputs:** User enters a valid request key.
+- **Expected Outcome:** The user enters a valid request key. The user clicks on the search button and sees information that the cross chain transfer was incomplete and funds were not send from sender account to receiver account on different chains. On the main panel card with sender and receiver are displayed with info on the accounts and chain, as well as a progress bar with last two steps not complete. Also, the user will see a 'Finish transaction' link that will redirect to the Cross Chain Transfer Finisher page with the request key prefilled in the input.
+
+#### Scenario 3: Get error on entering invalid request key
+- **Objective:** User cannot get info on the cross chain transfer.
+- **Preconditions:** User has some request key already created in a specific wallet (like Chainweaver).
+- **Inputs:** User enters an invalid request key.
+- **Expected Outcome:** The user enters an invalid request key (non-existent) and the input shows error status. There is no info on the transfer on the main panel.
+
+### 3.5 [Transactions / Cross Chain Transfer Finisher]
+
+#### Scenario 1: Successfully finish an incomplete cross chain transfer
+- **Objective:** User can finish an incomplete cross chain transfer successfully.
+- **Preconditions:** User has a valid request key already created in a specific wallet (like Chainweaver). The transfer is incomplete since the receiving account does not have any funds on the target chain.
+- **Inputs:** User enters a valid request key.
+- **Expected Outcome:** The user enters a valid request key and sees information on the cross chain transfer (sender, receiver, gas station account and network data). The user clicks on 'Finish transaction' button and sees information (a notification at the top of the screen) that the cross chain transfer was successful to the given account.
+
+#### Scenario 2: Get error on entering invalid request key
+- **Objective:** User cannot get info on the cross chain transfer.
+- **Preconditions:** User has some invalid request key.
+- **Inputs:** User enters an invalid request key.
+- **Expected Outcome:** The user enters an invalid request key (non-existent) and the input shows error status. There is no info on the transfer on the main panel.
+
+#### Scenario 3: Get error on an already completed cross chain transfer
+- **Objective:** User can get info that the cross chain transfer is completed.
+- **Preconditions:** User has a valid request key already created in a specific wallet (like Chainweaver).
+- **Inputs:** User enters a valid request key.
+- **Expected Outcome:** The user enters a valid request key and sees information on the cross chain transfer (sender, receiver, gas station account and network data). The user clicks on 'Finish transaction' button and sees information (a notification at the top of the screen) that the cross chain transfer has already been completed.
+
 
 ## 4. Test Data
 
@@ -80,6 +122,17 @@ This document covers high-level test scenarios for Tools Website and is intended
 3.3 [Faucet / Fund existing accounts]
 - Scenario 1: valid account name created on the specific chain
 - Scenario 2: any invalid account name
+
+3.4 [Transactions / Track & Trace]
+- Scenario 1: any valid request key
+- Scenario 2: any valid request key
+- Scenario 3: any invalid request key
+
+3.4 [Transactions / Cross Chain Transfer Finisher]
+- Scenario 1: any valid request key
+- Scenario 2: any invalid request key
+- Scenario 3: any valid request key
+
 
 ## 5. Dependencies
 

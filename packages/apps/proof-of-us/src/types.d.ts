@@ -1,5 +1,5 @@
 interface IAccount {
-  name: string;
+  displayName: string;
   waccount: string;
   caccount: string;
   publicKey: string;
@@ -18,13 +18,37 @@ type IDataHook<T> = (...args: any) => {
   data: T;
 };
 
-interface IProofOfUs {
-  id: string;
+type IMintStatus =
+  | 'init'
+  | 'signing'
+  | 'uploading'
+  | 'uploading_manifest'
+  | 'minting'
+  | 'error'
+  | 'success';
+
+type IProofOfUsBackground = string;
+interface IProofOfUsData {
+  mintStatus: IMintStatus;
+  tokenId?: string;
+  proofOfUsId: string;
+  type: 'multi' | 'event';
   date: number;
-  minted: number;
-  signees?: string[];
+  minted?: number;
+  signees: IProofOfUsSignee[];
+  uri?: string;
+}
+
+interface IProofOfUs {
+  background: IProofOfUsBackground;
+  data: IProofOfUsData;
 }
 
 interface IError {
   message: string;
+  status?: string;
 }
+
+type IProofOfUsSignee = Pick<IAccount, 'displayName' | 'publicKey' | 'cid'> & {
+  initiator: boolean;
+};

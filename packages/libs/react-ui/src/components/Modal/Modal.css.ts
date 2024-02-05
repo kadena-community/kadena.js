@@ -1,5 +1,5 @@
-import { atoms } from '@theme/atoms.css';
 import { style } from '@vanilla-extract/css';
+import { atoms } from '../../styles/atoms.css';
 
 export const underlayClass = style([
   atoms({
@@ -7,7 +7,6 @@ export const underlayClass = style([
     alignItems: 'center',
     justifyContent: 'center',
     position: 'fixed',
-    cursor: 'pointer',
     inset: 0,
   }),
   {

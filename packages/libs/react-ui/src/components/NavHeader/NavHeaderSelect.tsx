@@ -1,63 +1,24 @@
-import { SystemIcon } from '@components/Icon';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { forwardRef } from 'react';
-import {
-  chevronIconClass,
-  selectClass,
-  selectContainerClass,
-  selectContainerClassDisabled,
-  selectIconClass,
-} from './NavHeader.css';
+import type { ISelectProps } from '../Form';
+import { Select as BaseSelect } from '../Form';
+import { selectContainerClass } from './NavHeader.css';
 
-export interface INavHeaderSelectProps
-  extends Omit<
-    React.HTMLAttributes<HTMLSelectElement>,
-    'aria-label' | 'as' | 'className' | 'children' | 'id'
-  > {
-  ariaLabel: string;
-  children: React.ReactNode;
-  disabled?: boolean;
-  icon?: keyof typeof SystemIcon;
-  ref?: React.ForwardedRef<HTMLSelectElement>;
-  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
-  id: string;
-  value?: string;
-}
+export interface INavHeaderSelectProps<T extends object = any>
+  extends ISelectProps<T> {}
 
 export const NavHeaderSelect: FC<INavHeaderSelectProps> = forwardRef<
-  HTMLSelectElement,
+  HTMLButtonElement,
   INavHeaderSelectProps
->(function Select(
-  { ariaLabel, children, disabled = false, icon, ...rest },
-  ref,
-) {
-  const Icon = icon && SystemIcon[icon];
-  const ChevronDown = SystemIcon.ChevronDown;
-
+>(function Select({ children, className, ...props }, ref) {
   return (
-    <div
-      className={classNames(selectContainerClass, {
-        [selectContainerClassDisabled]: disabled,
-      })}
+    <BaseSelect
+      ref={ref}
+      {...props}
+      className={classNames(className, selectContainerClass)}
     >
-      {Icon && (
-        <span className={selectIconClass}>
-          <Icon size="md" />
-        </span>
-      )}
-      <select
-        aria-label={ariaLabel}
-        className={selectClass}
-        disabled={Boolean(disabled)}
-        ref={ref}
-        {...rest}
-      >
-        {children}
-      </select>
-      <span className={chevronIconClass}>
-        <ChevronDown size="md" />
-      </span>
-    </div>
+      {children}
+    </BaseSelect>
   );
 });

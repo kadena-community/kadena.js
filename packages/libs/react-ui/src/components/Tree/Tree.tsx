@@ -1,7 +1,7 @@
 'use client';
-import { TreeItem } from '@components/Tree/TreeItems';
 import type { FC } from 'react';
 import React, { useState } from 'react';
+import { TreeItem } from '../Tree/TreeItems';
 
 export interface ITreeProps {
   title?: React.ReactNode;
@@ -12,6 +12,10 @@ export interface ITreeProps {
   onClose?: () => void;
 }
 
+/**
+ * A component used for grouping items in a tree.
+ * @deprecated This component will be redesigned.
+ */
 export const Tree: FC<ITreeProps> = ({
   title,
   items,

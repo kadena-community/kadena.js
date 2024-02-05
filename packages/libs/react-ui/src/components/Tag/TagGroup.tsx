@@ -1,9 +1,9 @@
-import { Label } from '@components/Typography/Label/Label';
 import type { FC } from 'react';
 import React from 'react';
 import type { AriaTagGroupProps } from 'react-aria';
 import { useTagGroup } from 'react-aria';
 import { useListState } from 'react-stately';
+import { Label } from '../Typography/Label/Label';
 import { InternalTagItem } from './InternalTagItem';
 import { tagGroupLabelClass, tagListClass } from './Tag.css';
 

@@ -18,6 +18,6 @@ export async function kadenaSignFromRootKey(
   index: number,
 ): Promise<Uint8Array> {
   const { secretKey } = await kadenaGenKeypair(password, rootKey, index);
-  const secret = kadenaDecrypt(password, secretKey);
+  const secret = await kadenaDecrypt(password, secretKey);
   return kadenaSign(password, message, secret);
 }

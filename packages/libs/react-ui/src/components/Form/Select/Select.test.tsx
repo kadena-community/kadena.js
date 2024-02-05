@@ -1,91 +1,75 @@
-import { Select } from '@components/Form';
-import { fireEvent, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
+import { Select, SelectItem } from '../Select';
+
+import userEvent from '@testing-library/user-event';
+
+// TODO: add more tests
 
 describe('Select', () => {
   it('renders without errors', () => {
-    const { getByTestId } = render(
-      <Select
-        id="select-without-errors"
-        value="1"
-        onChange={() => {}}
-        ariaLabel="select"
-      >
-        <option value="1">Option 1</option>
-        <option value="2">Option 2</option>
+    render(
+      <Select id="select-without-errors" selectedKey="1" aria-label="select">
+        <SelectItem key="1">Option 1</SelectItem>
+        <SelectItem key="2">Option 2</SelectItem>
       </Select>,
     );
 
-    const selectContainer = getByTestId('kda-select');
-    expect(selectContainer).toBeInTheDocument();
+    const selectField = screen.getByLabelText('select');
+    expect(selectField).toBeInTheDocument();
   });
 
-  it('renders the provided children options', () => {
-    const { getByTestId } = render(
-      <Select
-        id="renders-child-options"
-        value="1"
-        onChange={() => {}}
-        ariaLabel="select"
-      >
-        <option value="1">Option 1</option>
-        <option value="2">Option 2</option>
+  it('renders the provided children options when is open', async () => {
+    render(
+      <Select id="renders-child-options" selectedKey="1" aria-label="select">
+        <SelectItem key="1">Option 1</SelectItem>
+        <SelectItem key="2">Option 2</SelectItem>
       </Select>,
     );
 
-    const selectContainer = getByTestId('kda-select');
-    const selectElement = selectContainer.querySelector('select');
-    const option1 = selectContainer.querySelector('option[value="1"]');
-    const option2 = selectContainer.querySelector('option[value="2"]');
+    const select = screen.getByLabelText('select');
+    await userEvent.click(select);
+    const option1 = screen.getByRole('option', {
+      name: 'Option 1',
+    });
+    const option2 = screen.getByRole('option', {
+      name: 'Option 2',
+    });
 
-    expect(selectElement).toBeInTheDocument();
     expect(option1).toBeInTheDocument();
     expect(option2).toBeInTheDocument();
   });
 
-  it('invokes the onChange event handler when an option is selected', () => {
+  it('invokes the onChange event handler when an option is selected', async () => {
     const handleChange = vi.fn();
-    const { getByTestId } = render(
+    render(
       <Select
         id="on-change-select"
-        value="1"
-        onChange={handleChange}
-        ariaLabel="select"
+        selectedKey="1"
+        onSelectionChange={handleChange}
+        aria-label="select"
       >
-        <option value="1">Option 1</option>
-        <option value="2">Option 2</option>
+        <SelectItem key="1">Option 1</SelectItem>
+        <SelectItem key="2">Option 2</SelectItem>
       </Select>,
     );
 
-    const selectContainer = getByTestId('kda-select');
-    const selectElement = selectContainer.querySelector(
-      'select',
-    ) as HTMLSelectElement;
-
-    fireEvent.change(selectElement, { target: { value: '2' } });
+    const selectContainer = screen.getByLabelText('select');
+    await userEvent.click(selectContainer);
+    await userEvent.click(screen.getByRole('option', { name: 'Option 2' }));
     expect(handleChange).toHaveBeenCalledTimes(1);
-  });
+  }, 20000);
 
   it('disables the select element when disabled prop is true', () => {
-    const { getByTestId } = render(
-      <Select
-        id="disabled-select"
-        value="1"
-        onChange={() => {}}
-        disabled
-        ariaLabel="select"
-      >
-        <option value="1">Option 1</option>
-        <option value="2">Option 2</option>
+    render(
+      <Select selectedKey="1" isDisabled label="Cool label">
+        <SelectItem key="1">Option 1</SelectItem>
+        <SelectItem key="2">Option 2</SelectItem>
       </Select>,
     );
 
-    const selectContainer = getByTestId('kda-select');
-    const selectElement = selectContainer.querySelector(
-      'select',
-    ) as HTMLSelectElement;
-
-    expect(selectElement.disabled).toBe(true);
+    const selectButton = screen.getByRole('button') as HTMLButtonElement;
+    expect(selectButton.disabled).toBe(true);
   });
 });

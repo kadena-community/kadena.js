@@ -121,7 +121,6 @@ export async function ensureNetworksConfiguration(): Promise<void> {
   }
 
   for (const [network, filePath] of Object.entries(networkFiles)) {
-    console.log(network, filePath);
     if (!existsSync(filePath)) {
       await writeNetworks(networkDefaults[network]);
     }

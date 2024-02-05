@@ -1,22 +1,21 @@
-import type { IBoxProps } from '@components/Layout/Box';
-import { Box } from '@components/Layout/Box';
-import { onLayer2 } from '@storyDecorators';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
+import { onLayer2 } from '../../../storyDecorators';
 import { componentClass, containerClass, itemClass } from '../stories.css';
 import {
   Legend,
   defaultBoxArgs,
   sharedStoryArgTypes,
 } from '../storyComponents';
+import { Box } from './Box';
 
-const meta: Meta<IBoxProps> = {
+const meta: Meta<typeof Box> = {
   title: 'Layout/Box',
   component: Box,
   decorators: [onLayer2],
   parameters: {
     status: {
-      type: 'stable',
+      type: 'releaseCandidate',
     },
     docs: {
       description: {
@@ -30,7 +29,7 @@ const meta: Meta<IBoxProps> = {
 };
 
 export default meta;
-type Story = StoryObj<IBoxProps>;
+type Story = StoryObj<typeof Box>;
 
 export const Primary: Story = {
   name: 'Box - Margin',

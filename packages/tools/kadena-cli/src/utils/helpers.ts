@@ -74,6 +74,19 @@ export interface IQuestion<T> {
   ) => Promise<T[keyof T]>;
 }
 
+export function handlePromptError(error: unknown): void {
+  if (error instanceof Error) {
+    if (error.message.includes('User force closed the prompt')) {
+      process.exit(0);
+    } else {
+      console.log(error.message);
+    }
+  } else {
+    console.log('Unexpected error executing option', error);
+  }
+  process.exit(1);
+}
+
 /**
  * Collects user responses for a set of questions, allowing for dynamic configuration based on user input.
  * It iterates through each question, presenting it to the user and collecting the responses.
@@ -92,8 +105,12 @@ export async function collectResponses<T>(
 
   for (const question of questions) {
     if (args[question.key] === undefined) {
-      const response = await question.prompt(responses, args);
-      responses[question.key] = response;
+      try {
+        const response = await question.prompt(responses, args);
+        responses[question.key] = response;
+      } catch (error) {
+        handlePromptError(error);
+      }
     }
   }
 
@@ -284,3 +301,7 @@ export function clearCLI(full: boolean = false): void {
 
 // export const skipSymbol = Symbol('skip');
 // export const createSymbol = Symbol('createSymbol');
+
+export const notEmpty = <TValue>(
+  value: TValue | null | undefined,
+): value is TValue => value !== null && value !== undefined;

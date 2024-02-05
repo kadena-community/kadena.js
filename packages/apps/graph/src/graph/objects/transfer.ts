@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
-import type { Transfer } from '@prisma/client';
+import type { Block, Transfer } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
@@ -27,6 +27,29 @@ export default builder.prismaNode('Transfer', {
     receiverAccount: t.exposeString('receiverAccount'),
 
     // computed fields
+    creationTime: t.field({
+      type: 'DateTime',
+      select: {
+        blockHash: true,
+      },
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      async resolve({ blockHash }) {
+        try {
+          return (
+            (await prismaClient.block.findUnique({
+              where: {
+                hash: blockHash,
+              },
+              select: {
+                creationTime: true,
+              },
+            })) as Block
+          ).creationTime;
+        } catch (error) {
+          throw normalizeError(error);
+        }
+      },
+    }),
     crossChainTransfer: t.prismaField({
       description:
         'The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.',
@@ -91,24 +114,39 @@ export default builder.prismaNode('Transfer', {
         } catch (error) {
           throw normalizeError(error);
         }
+
+        /* Note: Multiple options were tested to find the cross chain counterpart, including using a single raw query.
+        Although it would reduce the complexity, the time it takes is greater than the current method. This is due
+        to raw queries resulting in unmapped responses and the additional processing this requires.
+        In any case, here is the single raw query
+
+          SELECT tr.*
+          FROM transactions AS t1
+          INNER JOIN transactions AS t2
+            ON (t1.pactId = t2.requestKey AND t1.requestKey = ${requestKey})
+            OR (t1.requestKey = t2.pactId AND t1.requestKey = ${requestKey} AND t1.block = ${blockHash})
+          INNER JOIN transfers AS tr ON tr.requestKey = t2.requestKey AND tr.amount = ${amount}
+          LIMIT 1
+        `;
+        */
       },
     }),
 
     // relations
-    blocks: t.prismaField({
-      type: ['Block'],
+    block: t.prismaField({
+      type: 'Block',
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
         blockHash: true,
       },
       async resolve(query, parent) {
         try {
-          return await prismaClient.block.findMany({
+          return (await prismaClient.block.findUnique({
             ...query,
             where: {
               hash: parent.blockHash,
             },
-          });
+          })) as Block;
         } catch (error) {
           throw normalizeError(error);
         }

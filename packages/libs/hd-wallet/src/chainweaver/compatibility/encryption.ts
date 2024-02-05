@@ -1,12 +1,12 @@
 import type { EncryptedString } from '../../index.js';
 import { kadenaEncrypt } from '../../index.js';
 
-export function encryptLegacySecretKey(
+export async function encryptLegacySecretKey(
   password: string,
   secretKey: Uint8Array,
-): EncryptedString {
+): Promise<EncryptedString> {
   const xpub = secretKey.slice(64, 96);
-  const encryptedSecret = kadenaEncrypt(password, secretKey);
+  const encryptedSecret = await kadenaEncrypt(password, secretKey);
   // Add public key to the encrypted secret
   const encrypted = Buffer.from(encryptedSecret, 'base64').toString();
   const publicKey = Buffer.from(xpub).toString('base64');

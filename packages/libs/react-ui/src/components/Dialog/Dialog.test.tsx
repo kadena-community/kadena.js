@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { describe, expect, it } from 'vitest';
 
-import { Dialog, DialogContent, DialogHeader } from '@components/Dialog';
+import { Dialog, DialogContent, DialogHeader } from '../Dialog';
 
 describe('Modal', () => {
   it('should render the provided children', () => {

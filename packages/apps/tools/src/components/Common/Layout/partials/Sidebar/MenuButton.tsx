@@ -21,7 +21,7 @@ export interface IMenuButtonProps
 export const MenuButton: FC<IMenuButtonProps> = ({
   active,
   title,
-  href,
+  href = '#',
   icon,
   rotateClass,
   onClick,
@@ -37,27 +37,26 @@ export const MenuButton: FC<IMenuButtonProps> = ({
       : iconRightStyle;
 
   const button = (
-    <Tooltip isDisabled={!title} position="right" content={title}>
-      <button
-        className={classNames(gridMiniMenuListButtonStyle, rotationClass, {
-          active,
-        })}
-        {...rest}
-        aria-label={title}
-      >
-        <span onClick={onClick}>
-          <Icon size={'sm'} />
-        </span>
-      </button>
-    </Tooltip>
+    <button
+      type="button"
+      className={classNames(gridMiniMenuListButtonStyle, rotationClass, {
+        active,
+      })}
+      {...rest}
+      aria-label={title}
+      onClick={onClick}
+    >
+      <span>
+        <Icon size={'sm'} />
+      </span>
+    </button>
   );
 
-  if (href)
-    return (
+  return (
+    <Tooltip isDisabled={!title} position={'right'} content={title}>
       <Link href={href} target="_self">
         {button}
       </Link>
-    );
-
-  return button;
+    </Tooltip>
+  );
 };

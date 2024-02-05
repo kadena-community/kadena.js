@@ -1,5 +1,5 @@
 import { getFileExtension } from '@kadena/docs-tools';
-import type { Image } from 'mdast-util-from-markdown/lib';
+import type { Image } from 'mdast';
 
 //checks if the given link is a local file
 export const isLocalPageLink = (url: string): boolean => {

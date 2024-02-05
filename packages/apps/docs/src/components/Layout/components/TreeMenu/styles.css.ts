@@ -1,4 +1,4 @@
-import { atoms, tokens } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style, styleVariants } from '@vanilla-extract/css';
 import { $$borderColor } from '../../global.css';
 
@@ -40,7 +40,7 @@ export const linkClass = style([
   {
     selectors: {
       '&:hover': {
-        color: tokens.kda.foundation.color.brand.primary.default,
+        color: tokens.kda.foundation.color.brand.primary.n60,
         textDecoration: 'none',
       },
     },
@@ -157,7 +157,7 @@ export const treeItemButtonClass = style([
     borderLeft: 0,
     selectors: {
       '&:hover': {
-        color: tokens.kda.foundation.color.brand.primary.default,
+        color: tokens.kda.foundation.color.brand.primary.n60,
       },
     },
   },

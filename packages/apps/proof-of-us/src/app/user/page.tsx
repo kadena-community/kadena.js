@@ -14,14 +14,15 @@ const Page: FC = () => {
       {!isLoading && !error && (
         <ul>
           {data.map((proofOfUs) => (
-            <li key={proofOfUs.id}>
-              <Link href={`/user/proof-of-us/${proofOfUs.id}`}>
-                {new Date(proofOfUs.date).toLocaleDateString()}
+            <li key={proofOfUs.data.proofOfUsId}>
+              <Link href={`/user/proof-of-us/${proofOfUs.data.proofOfUsId}`}>
+                {new Date(proofOfUs.data.date).toLocaleDateString()}
               </Link>
             </li>
           ))}
         </ul>
       )}
+      <Link href="/user/proof-of-us/new">New Proof</Link>
     </div>
   );
 };

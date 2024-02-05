@@ -1,70 +1,101 @@
-import { darkThemeClass, sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const gridItemCollapsedSidebarStyle = style([
-  sprinkles({
+  atoms({
     position: 'fixed',
-    right: 0,
-    top: '$16',
     bottom: 0,
-    backgroundColor: '$neutral1',
-    width: '$12',
-    fontSize: '$sm',
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: 'layer-2.default',
+    fontSize: 'sm',
     zIndex: 1,
   }),
   {
-    borderLeft: `solid 1px ${vars.colors.$borderSubtle}`,
+    width: tokens.kda.foundation.size.n12,
+    right: tokens.kda.foundation.size.n12,
+    top: tokens.kda.foundation.size.n16,
+    height: '100vh',
+    borderLeft: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
     transition: 'width 0.1s ease',
     selectors: {
       '&.isOpen': {
-        width: `calc(${vars.sizes.$64} + ${vars.sizes.$35})`,
+        width: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n12})`,
+      },
+    },
+  },
+]);
+
+export const gridItemMiniMenuStyle = style([
+  atoms({
+    height: '100%',
+    flexDirection: 'column',
+    position: 'relative',
+  }),
+  {
+    borderLeft: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
+    transition: 'width 0.1s ease',
+    selectors: {
+      '&.isOpen': {
+        width: `calc(${tokens.kda.foundation.size.n64} + ${tokens.kda.foundation.size.n20})`,
       },
     },
   },
 ]);
 
 export const buttonWrapperClass = style([
-  sprinkles({
+  atoms({
     outline: 'none',
     background: 'none',
     border: 'none',
     cursor: 'pointer',
   }),
   {
-    borderBottom: `solid 1px ${vars.colors.$borderSubtle}`,
+    borderBottom: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
   },
 ]);
 
 export const expandedDrawerTitleClass = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    fontWeight: '$bold',
+    fontWeight: 'bodyFont.bold',
+    backgroundColor: 'layer-1.default',
   }),
   {
-    borderBottom: `1px solid #E3E1E5`,
-    padding: '0.125rem 0.75rem',
+    borderBottom: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
     paddingLeft: '1.25rem',
-    selectors: {
-      [`${darkThemeClass} &`]: {
-        borderBottom: `1px solid #27232999`,
-      },
-    },
   },
 ]);
 
 export const expandedDrawerContentClass = style([
-  sprinkles({
-    paddingTop: '$4',
-    paddingBottom: '$4',
-    paddingLeft: '$6',
-    paddingRight: '$6',
+  atoms({
     display: 'flex',
     flexDirection: 'column',
   }),
   {
     overflowY: 'auto',
-    height: `calc(100% - ${vars.sizes.$20})`,
+    height: `calc(100% - ${tokens.kda.foundation.size.n20})`,
+    zIndex: 99,
+  },
+]);
+
+export const expandedDrawerContentStyle = style([
+  atoms({
+    display: 'flex',
+    flexDirection: 'row',
+    position: 'fixed',
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'layer-1.default',
+    fontSize: 'sm',
+  }),
+  {
+    width: tokens.kda.foundation.size.n12,
+    top: tokens.kda.foundation.size.n16,
+    height: '100vh',
+    overflowY: 'auto',
+    zIndex: 99,
   },
 ]);
