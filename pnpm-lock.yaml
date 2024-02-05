@@ -656,10 +656,10 @@ importers:
         specifier: ~3.2.2
         version: 3.2.2
       '@kadena/client':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../libs/client
       '@kadena/react-ui':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../libs/react-ui
       '@vanilla-extract/css':
         specifier: 1.14.0
