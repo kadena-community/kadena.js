@@ -1,7 +1,7 @@
 # Utils within React UI
 
 In order to make our lives easier we have created a few utilities within UI to
-make styling and accessing tokens easier
+make styling, accessing tokens easier or just reducing boilerplate
 
 ## Functions
 
@@ -23,6 +23,21 @@ boxShadow: `0px 1px 0 0 ${token('color.border.base.default')}`,
 // vs
 boxShadow: `0px 1px 0 0 ${tokens.kda.foundation.color.border.base.default}`,
 ```
+
+### useAsyncFn(...)
+
+```ts
+useAsyncFn<T extends AsyncFn>(
+  fn: T,
+  deps: DependencyList = [],
+  initialState: AsyncFnState<T> = { isLoading: false },
+): AsyncFnReturn<T>
+```
+
+Jus reduces the boilerplate when using async functions. Example can be found in
+CopyButton.tsx
+
+## Styling utils
 
 ### responsiveStyle(...)
 
@@ -57,7 +72,7 @@ style([
             textDecoration: 'underline',
           },
         },
-      },
+      }
       md: {
         flexDirection: 'row',
       },
@@ -68,18 +83,7 @@ style([
 
 A few other useful functions that allow us to skip some boilerplate are:
 
-### useAsyncFn(...)
-
-```ts
-useAsyncFn<T extends AsyncFn>(
-  fn: T,
-  deps: DependencyList = [],
-  initialState: AsyncFnState<T> = { isLoading: false },
-): AsyncFnReturn<T>
-```
-
-Jus reduces the boilerplate when using async functions. Example can be found in
-CopyButton.tsx
+## Animation utils
 
 ### useEnterAnimation(...)
 
