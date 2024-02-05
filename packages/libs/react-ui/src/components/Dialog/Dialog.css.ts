@@ -34,6 +34,9 @@ export const overlayClass = style([
       maxHeight: '75vh',
     },
   }),
+  {
+    cursor: 'default',
+  },
 ]);
 
 export const closeButtonClass = style([
