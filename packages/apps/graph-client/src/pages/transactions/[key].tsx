@@ -189,6 +189,10 @@ const RequestKey: React.FC = () => {
                 </Cell>
                 <Cell>
                   <Table>
+                    <TableHeader>
+                      <Column>Label</Column>
+                      <Column>Value</Column>
+                    </TableHeader>
                     <TableBody>
                       <Row>
                         <Cell>
@@ -251,6 +255,10 @@ const RequestKey: React.FC = () => {
                 <Cell>
                   {transaction.events?.map((event, index) => (
                     <Table key={index}>
+                      <TableHeader>
+                        <Column>Label</Column>
+                        <Column>Value</Column>
+                      </TableHeader>
                       <TableBody>
                         <Row>
                           <Cell>
@@ -296,6 +304,10 @@ const RequestKey: React.FC = () => {
                 </Cell>
                 <Cell>
                   <Table>
+                    <TableHeader>
+                      <Column width="100">Label</Column>
+                      <Column>Value</Column>
+                    </TableHeader>
                     <TableBody>
                       <Row>
                         <Cell>

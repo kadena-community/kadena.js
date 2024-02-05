@@ -18,6 +18,7 @@ import {
   Breadcrumbs,
   BreadcrumbsItem,
   Cell,
+  Column,
   Heading,
   Link,
   Notification,
@@ -25,6 +26,7 @@ import {
   Stack,
   Table,
   TableBody,
+  TableHeader,
 } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 
@@ -86,6 +88,10 @@ const Block: React.FC = () => {
             <Heading as="h4">Block Header</Heading>
 
             <Table className={atoms({ wordBreak: 'break-word' })} isCompact>
+              <TableHeader>
+                <Column>Label</Column>
+                <Column>Value</Column>
+              </TableHeader>
               <TableBody>
                 <Row>
                   <Cell>
@@ -127,6 +133,10 @@ const Block: React.FC = () => {
               {[
                 <Accordion.Section title="See more" key={'accordion-header'}>
                   <Table isCompact>
+                    <TableHeader>
+                      <Column>Label</Column>
+                      <Column>Value</Column>
+                    </TableHeader>
                     <TableBody>
                       <Row>
                         <Cell>
@@ -163,6 +173,10 @@ const Block: React.FC = () => {
             <Heading as="h4">Block Payload</Heading>
 
             <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+              <TableHeader>
+                <Column>Label</Column>
+                <Column>Value</Column>
+              </TableHeader>
               <TableBody>
                 <Row>
                   <Cell>

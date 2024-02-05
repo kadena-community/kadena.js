@@ -38,6 +38,9 @@ export const EventsTable = (props: IEventsTableProps): JSX.Element => {
               <Cell>{event.chainId}</Cell>
               <Cell>
                 <Table>
+                  <TableHeader>
+                    <Column>Values</Column>
+                  </TableHeader>
                   <TableBody>
                     {JSON.parse(event.parameterText).map(
                       (parameter: any, index: number) => (
@@ -47,6 +50,9 @@ export const EventsTable = (props: IEventsTableProps): JSX.Element => {
                               parameter
                             ) : Array.isArray(parameter) ? (
                               <Table>
+                                <TableHeader>
+                                  <Column>Values</Column>
+                                </TableHeader>
                                 <TableBody>
                                   {parameter.map(
                                     (subparameter: any, index: number) => (
