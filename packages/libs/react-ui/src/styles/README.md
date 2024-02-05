@@ -8,7 +8,7 @@ make styling, accessing tokens easier or just reducing boilerplate
 ### token(...)
 
 ```ts
-token(path: TokenPath, fallback?: string);
+token(path: TokenPath, fallback?: string): string
 ```
 
 This functions helps with accessing the token path making it shorter and allows
@@ -34,7 +34,7 @@ useAsyncFn<T extends AsyncFn>(
 ): AsyncFnReturn<T>
 ```
 
-Jus reduces the boilerplate when using async functions. Example can be found in
+Just reduces the boilerplate when using async functions. Example can be found in
 CopyButton.tsx
 
 ## Styling utils
