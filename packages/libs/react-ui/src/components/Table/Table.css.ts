@@ -80,6 +80,9 @@ export const columnHeader = style([
       '&[data-multi-column]': {
         textAlign: 'center',
       },
+      '&[data-sortable]': {
+        cursor: 'pointer',
+      },
     },
   },
 ]);

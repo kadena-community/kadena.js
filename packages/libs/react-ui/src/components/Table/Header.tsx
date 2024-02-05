@@ -77,6 +77,7 @@ export function TableColumnHeader<T extends object>({
       ref={ref}
       data-focused={isFocusVisible || undefined}
       data-multi-column={column.colspan && column.colspan > 1}
+      data-sortable={column.props.allowsSorting || undefined}
     >
       <Stack flexDirection="row" gap="xs" alignItems="center">
         {column.rendered}
