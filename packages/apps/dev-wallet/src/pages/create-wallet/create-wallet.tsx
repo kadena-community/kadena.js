@@ -2,14 +2,14 @@ import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
 import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
-import { useWallet } from '../../wallet/wallet.hook';
+import { useWallet } from '../../modules/wallet/wallet.hook';
 
 export function CreateWallet() {
   const { register, handleSubmit } = useForm<{
     password: string;
     profile: string;
   }>();
-  const wallet = useWallet();
+  const { createWallet, isUnlocked } = useWallet();
   async function create({
     profile,
     password,
@@ -18,10 +18,10 @@ export function CreateWallet() {
     password: string;
   }) {
     const mnemonic = kadenaGenMnemonic();
-    await wallet.createWallet(profile, password, mnemonic);
+    await createWallet(profile, password, mnemonic);
     console.log('wallet created');
   }
-  if (wallet.isUnlocked) {
+  if (isUnlocked) {
     return <Navigate to="/backup-recovery-phrase" replace />;
   }
   return (

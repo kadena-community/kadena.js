@@ -14,19 +14,20 @@ import {
 } from '../utils/txHelpers.js';
 
 import type { ICommand } from '@kadena/types';
+import { join } from 'node:path';
 import type { IKeyPair } from '../../keys/utils/storage.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { txOptions } from '../txOptions.js';
 
 export const signTransactionWithKeyPairAction = async (
   keyPairs: IKeyPair[],
-  transactionfileNames: string[],
-  transactionDirectory: string,
+  /** absolute paths, or relative to process.cwd() if starting with `.` */
+  transactionFileNames: string[],
   legacy?: boolean,
-): Promise<CommandResult<ICommand[]>> => {
+): Promise<CommandResult<{ commands: ICommand[]; path: string }>> => {
   const unsignedTransactions = await getTransactionsFromFile(
-    transactionfileNames,
+    transactionFileNames,
     false,
-    transactionDirectory,
   );
 
   if (unsignedTransactions.length === 0) {
@@ -43,7 +44,15 @@ export const signTransactionWithKeyPairAction = async (
       legacy,
     );
 
-    return assessTransactionSigningStatus(signedCommands);
+    const path = await saveSignedTransactions(
+      signedCommands,
+      transactionFileNames,
+    );
+
+    const signingStatus = await assessTransactionSigningStatus(signedCommands);
+    if (!signingStatus.success) return signingStatus;
+
+    return { success: true, data: { commands: signingStatus.data, path } };
   } catch (error) {
     return {
       success: false,
@@ -66,8 +75,8 @@ export const createSignTransactionWithKeyPairCommand: (
   'Sign a transaction using a keypair.',
   [
     globalOptions.keyPairs(),
-    globalOptions.txTransactionDir({ isOptional: true }),
-    globalOptions.txUnsignedTransactionFiles(),
+    txOptions.txTransactionDir({ isOptional: true }),
+    txOptions.txUnsignedTransactionFiles(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option) => {
@@ -88,19 +97,17 @@ export const createSignTransactionWithKeyPairCommand: (
 
     const result = await signTransactionWithKeyPairAction(
       key.keyPairs,
-      files.txUnsignedTransactionFiles,
-      dir.txTransactionDir,
+      files.txUnsignedTransactionFiles.map((file) =>
+        join(dir.txTransactionDir, file),
+      ),
       mode.legacy,
     );
 
     assertCommandError(result);
 
-    await saveSignedTransactions(
-      result,
-      files.txUnsignedTransactionFiles,
-      dir.txTransactionDir,
+    console.log(
+      chalk.green(`Signed transaction saved to ${result.data.path}.`),
     );
-
     console.log(chalk.green(`\nTransaction withinsigned successfully.\n`));
   },
 );

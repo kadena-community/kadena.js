@@ -7,7 +7,6 @@ export const underlayClass = style([
     alignItems: 'center',
     justifyContent: 'center',
     position: 'fixed',
-    cursor: 'pointer',
     inset: 0,
   }),
   {

@@ -9,7 +9,7 @@ import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
-import { fundExistingAccount } from '@/services/faucet';
+import { fundExistingAccount, pollResult } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
@@ -38,12 +38,15 @@ import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import { sidebarLinks } from '@/constants/side-links';
 import { notificationLinkStyle } from '@/pages/faucet/new/styles.css';
+import { getExplorerLink } from '@/utils/getExplorerLink';
+import type { ITransactionDescriptor } from '@kadena/client';
 import Link from 'next/link';
 import {
   accountNameContainerClass,
   buttonContainerClass,
   chainSelectContainerClass,
   containerClass,
+  explorerLinkStyle,
   infoBoxStyle,
   infoTitleStyle,
   inputContainerClass,
@@ -74,9 +77,6 @@ interface IFundExistingAccountResponseBody {
         };
   };
 }
-
-interface IFundExistingAccountResponse
-  extends Record<string, IFundExistingAccountResponseBody> {}
 
 const ExistingAccountFaucetPage: FC = () => {
   const { t } = useTranslation('common');
@@ -118,7 +118,7 @@ const ExistingAccountFaucetPage: FC = () => {
               key="chainweb-transfer-link"
             />,
             <strong key="generate-keypair" />,
-            <a
+            <Link
               className={linkStyle}
               href="https://chainweaver.kadena.network/"
               target="_blank"
@@ -142,6 +142,7 @@ const ExistingAccountFaucetPage: FC = () => {
     undefined,
   );
   const drawerPanelRef = useRef<HTMLElement | null>(null);
+  const [requestKey, setRequestKey] = useState<string>('');
 
   useToolbar(menuData, router.pathname);
 
@@ -149,17 +150,27 @@ const ExistingAccountFaucetPage: FC = () => {
     async (data: FormData) => {
       setRequestStatus({ status: 'processing' });
       setOpenItem(undefined);
+      setRequestKey('');
 
       try {
-        const result = (await fundExistingAccount(
+        const submitResponse = (await fundExistingAccount(
           data.name,
           chainID,
           selectedNetwork,
           networksData,
           AMOUNT_OF_COINS_FUNDED,
-        )) as IFundExistingAccountResponse;
+        )) as ITransactionDescriptor;
 
-        const error = Object.values(result).find(
+        setRequestKey(submitResponse.requestKey);
+
+        const pollResponse = (await pollResult(
+          chainID,
+          selectedNetwork,
+          networksData,
+          submitResponse,
+        )) as unknown as IFundExistingAccountResponseBody;
+
+        const error = Object.values(pollResponse).find(
           (response) => response.result.status === 'failure',
         );
 
@@ -187,6 +198,14 @@ const ExistingAccountFaucetPage: FC = () => {
           message = String(err);
         }
 
+        const requestKey = message
+          ? message.substring(
+              message.indexOf('"') + 1,
+              message.lastIndexOf('"'),
+            )
+          : '';
+        setRequestKey(requestKey);
+
         setRequestStatus({ status: 'erroneous', message });
       }
     },
@@ -194,8 +213,11 @@ const ExistingAccountFaucetPage: FC = () => {
   );
 
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';
-  const disabledButton: boolean =
-    requestStatus.status === 'processing' || mainnetSelected;
+  const linkToExplorer = `${getExplorerLink(
+    requestKey,
+    selectedNetwork,
+    networksData,
+  )}`;
 
   const handleOnClickLink = () => {
     setOpenItem(undefined);
@@ -214,7 +236,7 @@ const ExistingAccountFaucetPage: FC = () => {
       </Head>
       <Breadcrumbs>
         <BreadcrumbsItem>{t('Faucet')}</BreadcrumbsItem>
-        <BreadcrumbsItem>{t('Existing')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Fund Existing Account')}</BreadcrumbsItem>
       </Breadcrumbs>
       <Heading as="h4">{t('Add Funds to Existing Account')}</Heading>
       <div className={notificationContainerStyle}>
@@ -269,15 +291,37 @@ const ExistingAccountFaucetPage: FC = () => {
           <div className={buttonContainerClass}>
             <Button
               isLoading={requestStatus.status === 'processing'}
+              isDisabled={mainnetSelected}
               endIcon={<SystemIcon.TrailingIcon />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
-              isDisabled={disabledButton}
               type="submit"
             >
               {t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
             </Button>
           </div>
         </Stack>
+
+        {requestKey !== '' ? (
+          <FormStatusNotification
+            status={'processing'}
+            title={t('Transaction submitted')}
+            body={
+              <Trans
+                i18nKey="common:link-to-kadena-explorer"
+                components={[
+                  <Link
+                    className={explorerLinkStyle}
+                    href={linkToExplorer}
+                    target={'_blank'}
+                    key={requestKey}
+                  >
+                    {requestKey}
+                  </Link>,
+                ]}
+              />
+            }
+          />
+        ) : null}
       </form>
 
       <DrawerToolbar

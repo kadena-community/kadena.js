@@ -3,10 +3,12 @@ import debug from 'debug';
 
 import type { ICommandResult } from '@kadena/client';
 import { createClient, isSignedTransaction } from '@kadena/client';
+import { join } from 'node:path';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { txOptions } from '../txOptions.js';
 import { txDisplayTransaction } from '../utils/txDisplayHelper.js';
 import { getTransactionsFromFile } from '../utils/txHelpers.js';
 
@@ -16,18 +18,17 @@ export const testTransactions = async (
     networkId: string;
   },
   chainId: string,
-  transactionfileNames: string[],
+  /** absolute paths, or relative to process.cwd() if starting with `.` */
+  transactionFileNames: string[],
   signed: boolean,
-  transactionDirectory: string,
 ): Promise<CommandResult<ICommandResult[]>> => {
   const client = createClient(
     `${networkConfig.networkHost}/chainweb/0.0/${networkConfig.networkId}/chain/${chainId}/pact`,
   );
 
   const signedTransactions = await getTransactionsFromFile(
-    transactionfileNames,
+    transactionFileNames,
     signed,
-    transactionDirectory,
   );
 
   const successfulCommands: ICommandResult[] = [];
@@ -63,8 +64,8 @@ export const createTestSignedTransactionCommand: (
   'test-signed-transaction',
   'test a signed transaction.',
   [
-    globalOptions.txTransactionDir({ isOptional: true }),
-    globalOptions.txSignedTransactionFiles(),
+    txOptions.txTransactionDir({ isOptional: true }),
+    txOptions.txSignedTransactionFiles(),
     globalOptions.network(),
     globalOptions.chainId(),
   ],
@@ -87,11 +88,17 @@ export const createTestSignedTransactionCommand: (
     const result = await testTransactions(
       networkOption.networkConfig,
       chainOption.chainId,
-      files.txSignedTransactionFiles,
+      files.txSignedTransactionFiles.map((file) =>
+        join(process.cwd(), dir.txTransactionDir, file),
+      ),
       true,
-      dir.txTransactionDir,
     );
+
     assertCommandError(result);
-    return txDisplayTransaction(result.data, 'txSignedTransaction result:');
+    return txDisplayTransaction(
+      result.data,
+      files.txSignedTransactionFiles,
+      'txSignedTransaction result:',
+    );
   },
 );

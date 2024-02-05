@@ -72,3 +72,17 @@ export function defaultChainIdPrompt(): Promise<string> {
     },
   });
 }
+
+export async function maxTimePrompt(): Promise<number> {
+  const maxTime = await input({
+    message: 'Specify the maximum time in miliseconds for the simulation',
+    default: (86400000 * 7).toString(), // 7 days
+    validate: (value) => {
+      if (value === null || value === '') return true;
+      const valid = !isNaN(parseFloat(value));
+      return valid || 'Please enter a number';
+    },
+  });
+
+  return parseInt(maxTime);
+}

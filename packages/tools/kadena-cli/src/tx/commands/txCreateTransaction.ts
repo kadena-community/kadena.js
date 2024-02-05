@@ -3,12 +3,13 @@ import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
 import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
 import path from 'path';
 
-import { IS_DEVELOPMENT } from '../../constants/config.js';
+import { IS_DEVELOPMENT, TRANSACTION_PATH } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { txOptions } from '../txOptions.js';
 import { fixTemplatePactCommand } from './templates/mapper.js';
 
 export const createTransaction = async (
@@ -35,14 +36,13 @@ export const createTransaction = async (
     let filePath: string | null = null;
     if (outFilePath === null) {
       // write transaction to file
-      const directoryPath = path.join(process.cwd(), './transactions');
-      await services.filesystem.ensureDirectoryExists(directoryPath);
+      await services.filesystem.ensureDirectoryExists(TRANSACTION_PATH);
 
-      const files = await services.filesystem.readDir(directoryPath);
+      const files = await services.filesystem.readDir(TRANSACTION_PATH);
       let fileNumber = files.length + 1;
       while (filePath === null) {
         const checkPath = path.join(
-          directoryPath,
+          TRANSACTION_PATH,
           `transaction${fileNumber}.json`,
         );
         if (!files.includes(checkPath)) {
@@ -52,6 +52,7 @@ export const createTransaction = async (
         fileNumber++;
       }
     } else {
+      await services.filesystem.ensureDirectoryExists(TRANSACTION_PATH);
       filePath = outFilePath;
     }
 
@@ -73,16 +74,20 @@ export const createTransactionCommandNew = createCommandFlexible(
   'create-transaction',
   'select a template and create a transaction',
   [
-    globalOptions.selectTemplate({ isOptional: false }),
-    globalOptions.templateVariables(),
+    txOptions.selectTemplate({ isOptional: false }),
+    txOptions.templateData({ isOptional: true }),
+    txOptions.templateVariables(),
     globalOptions.outFileJson(),
   ],
   async (option, values) => {
     const template = await option.template();
+    const templateData = await option.templateData();
     const templateVariables = await option.templateVariables({
       values,
       variables: template.templateConfig.variables,
+      data: templateData.templateDataConfig ?? {},
     });
+
     const outputFile = await option.outFile({
       values,
       variables: template.templateConfig.variables,

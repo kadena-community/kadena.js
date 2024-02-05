@@ -1,4 +1,5 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import type { ITransactionDescriptor } from '@kadena/client';
 import {
   createClient,
   isSignedTransaction,
@@ -38,7 +39,7 @@ export const fundCreateNewAccount = async (
   networksData: INetworkData[],
   amount = 100,
   pred = 'keys-all',
-): Promise<unknown> => {
+): Promise<ITransactionDescriptor> => {
   debug(fundCreateNewAccount.name);
 
   const networkDto = networksData.find((item) => item.networkId === network);
@@ -94,13 +95,11 @@ export const fundCreateNewAccount = async (
 
   transaction.sigs = [{ sig: signature.sig }];
 
-  const { submit, pollStatus } = createClient(apiHost);
+  const { submit } = createClient(apiHost);
 
   if (!isSignedTransaction(transaction)) {
     throw new Error('Transaction is not signed');
   }
 
-  const requestKeys = await submit(transaction);
-
-  return await pollStatus(requestKeys);
+  return await submit(transaction);
 };

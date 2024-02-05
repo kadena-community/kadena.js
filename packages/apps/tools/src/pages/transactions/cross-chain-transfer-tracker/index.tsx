@@ -26,7 +26,6 @@ import {
   Grid,
   GridItem,
   Heading,
-  Link,
   Notification,
   NotificationButton,
   NotificationFooter,
@@ -235,7 +234,6 @@ const CrossChainTransferTracker: FC = () => {
               onPress={() => setOpenItem(undefined)}
               endIcon={<SystemIcon.Magnify />}
               isLoading={isSubmitting}
-              isDisabled={isSubmitting}
             >
               {t('Search')}
             </Button>
@@ -321,15 +319,17 @@ const CrossChainTransferTracker: FC = () => {
             alignItems={'flex-start'}
             flexDirection={'row-reverse'}
           >
-            <Link
+            <Button
               title={t('Finish Transaction')}
-              href={`/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`}
+              onPress={() => {
+                window.location.href = `/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`;
+              }}
               endIcon={<SystemIcon.Link />}
               color="positive"
               variant="contained"
             >
               {t('Finish Transaction')}
-            </Link>
+            </Button>
           </Stack>
         </div>
       ) : null}

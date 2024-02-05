@@ -12,6 +12,8 @@ import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletContent } from '../../keys/utils/keysHelpers.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 
+import { join } from 'node:path';
+import { txOptions } from '../txOptions.js';
 import { saveSignedTransactions } from '../utils/storage.js';
 import {
   assessTransactionSigningStatus,
@@ -23,14 +25,13 @@ export const signTransactionWithLocalWallet = async (
   wallet: string,
   walletConfig: IWallet,
   password: string,
-  transactionfileNames: string[],
+  /** absolute paths, or relative to process.cwd() if starting with `.` */
+  transactionFileNames: string[],
   signed: boolean,
-  transactionDirectory: string,
-): Promise<CommandResult<ICommand[]>> => {
+): Promise<CommandResult<{ commands: ICommand[]; path: string }>> => {
   const unsignedTransactions = await getTransactionsFromFile(
-    transactionfileNames,
+    transactionFileNames,
     signed,
-    transactionDirectory,
   );
 
   if (unsignedTransactions.length === 0) {
@@ -51,7 +52,15 @@ export const signTransactionWithLocalWallet = async (
       walletConfig.legacy,
     );
 
-    return assessTransactionSigningStatus(signedCommands);
+    const path = await saveSignedTransactions(
+      signedCommands,
+      transactionFileNames,
+    );
+
+    const signingStatus = await assessTransactionSigningStatus(signedCommands);
+    if (!signingStatus.success) return signingStatus;
+
+    return { success: true, data: { commands: signingStatus.data, path } };
   } catch (error) {
     return {
       success: false,
@@ -75,8 +84,8 @@ export const createSignTransactionWithLocalWalletCommand: (
   [
     globalOptions.keyWalletSelect(),
     globalOptions.securityPassword(),
-    globalOptions.txTransactionDir({ isOptional: true }),
-    globalOptions.txUnsignedTransactionFiles(),
+    txOptions.txTransactionDir({ isOptional: true }),
+    txOptions.txUnsignedTransactionFiles(),
   ],
   async (option) => {
     const wallet = await option.keyWallet();
@@ -102,19 +111,17 @@ export const createSignTransactionWithLocalWalletCommand: (
       wallet.keyWallet,
       wallet.keyWalletConfig,
       password.securityPassword,
-      files.txUnsignedTransactionFiles,
+      files.txUnsignedTransactionFiles.map((file) =>
+        join(dir.txTransactionDir, file),
+      ),
       false,
-      dir.txTransactionDir,
     );
 
     assertCommandError(result);
 
-    await saveSignedTransactions(
-      result,
-      files.txUnsignedTransactionFiles,
-      dir.txTransactionDir,
+    console.log(
+      chalk.green(`Signed transaction saved to ${result.data.path}.`),
     );
-
     console.log(chalk.green(`\nTransaction withinsigned successfully.\n`));
   },
 );

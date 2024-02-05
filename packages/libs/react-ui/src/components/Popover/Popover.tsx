@@ -57,9 +57,9 @@ function PopoverBase(
   forwardedRef: ForwardedRef<HTMLDivElement>,
 ) {
   const ref = useObjectRef(forwardedRef);
-  let localState = useOverlayTriggerState(props);
-  let state = props.state || localState;
-  let isExiting =
+  const localState = useOverlayTriggerState(props);
+  const state = props.state || localState;
+  const isExiting =
     useExitAnimation(ref, state.isOpen) || props.isExiting || false;
 
   if (state && !state.isOpen && !isExiting) {
@@ -87,7 +87,7 @@ function PopoverInner({
   resizeToTrigger = true,
   ...props
 }: PopoverInnerProps) {
-  let { popoverProps, underlayProps, arrowProps, placement } = usePopover(
+  const { popoverProps, underlayProps, arrowProps, placement } = usePopover(
     {
       ...props,
       offset: props.offset ?? 8,
@@ -96,7 +96,7 @@ function PopoverInner({
     state,
   );
   const ref = props.popoverRef as RefObject<HTMLDivElement>;
-  let isEntering =
+  const isEntering =
     useEnterAnimation(ref, !!placement) || props.isEntering || false;
   const triggerWidth = props.triggerRef?.current?.clientWidth;
   const style = {

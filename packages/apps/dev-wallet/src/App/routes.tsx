@@ -9,6 +9,9 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 
+import { CreateNetwork } from '@/pages/networks/create-network';
+import { Networks } from '@/pages/networks/networks';
+import { useWallet } from '../modules/wallet/wallet.hook';
 import { BackupRecoveryPhrase } from '../pages/backup-recovery-phrase/backup-recovery-phrase';
 import { WriteDownRecoveryPhrase } from '../pages/backup-recovery-phrase/write-down/write-down-recovery-phrase';
 import { CreateWallet } from '../pages/create-wallet/create-wallet';
@@ -16,7 +19,6 @@ import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
 import { UnlockWallet } from '../pages/unlock-wallet/unlock-wallet';
 import { getScriptType } from '../utils/window';
-import { useWallet } from '../wallet/wallet.hook';
 import { Layout } from './layout';
 
 const ProtectedRoute: FC<
@@ -39,6 +41,8 @@ export const Routes: FC = () => {
     <Route element={<Layout />}>
       <Route path="/" element={<HomePage />} />
       <Route path="/select-profile" element={<SelectProfile />} />
+      <Route path="/networks" element={<Networks />} />
+      <Route path="/networks/create" element={<CreateNetwork />} />
       <Route path="/create-wallet" element={<CreateWallet />} />
       <Route path="/unlock-wallet/:profileId" element={<UnlockWallet />} />
       <Route element={<ProtectedRoute isAllowed={isUnlocked} />}>

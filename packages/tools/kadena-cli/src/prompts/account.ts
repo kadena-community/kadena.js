@@ -3,12 +3,22 @@ import type { IPrompt } from '../utils/createOption.js';
 
 export const publicKeysPrompt: IPrompt<string> = async () =>
   await input({
-    message: 'Enter zero or more public keys (comma separated).',
+    message: 'Enter zero or more public keys (comma separated):',
   });
 
 export const accountNamePrompt: IPrompt<string> = async () =>
   await input({
-    message: 'Enter an account name.',
+    message: 'Enter an account name:',
+  });
+
+export const accountKdnAddressPrompt: IPrompt<string> = async () =>
+  await input({
+    message: 'Enter an k:account:',
+  });
+
+export const accountKdnNamePrompt: IPrompt<string> = async () =>
+  await input({
+    message: 'Enter an .kda name:',
   });
 
 export const amountPrompt: IPrompt<string> = async () =>
@@ -22,7 +32,7 @@ export const amountPrompt: IPrompt<string> = async () =>
 export const fungiblePrompt: IPrompt<string> = async () =>
   await input({
     default: 'coin',
-    message: 'Enter the name of a fungible.',
+    message: 'Enter the name of a fungible:',
   });
 
 export const predicatePrompt: IPrompt<string> = async () =>

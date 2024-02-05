@@ -103,9 +103,9 @@ export async function signTransactionsWithSeed(
   password: string,
   unsignedTransactions: IUnsignedCommand[],
   legacy?: boolean,
-): Promise<(ICommand | IUnsignedCommand | undefined)[]> {
+): Promise<(ICommand | IUnsignedCommand)[]> {
   try {
-    const signedTransactions: (ICommand | IUnsignedCommand | undefined)[] = [];
+    const signedTransactions: (ICommand | IUnsignedCommand)[] = [];
 
     for (let i = 0; i < unsignedTransactions.length; i++) {
       const unsignedCommand = unsignedTransactions[i];
@@ -163,13 +163,22 @@ export async function signTransactionsWithSeed(
   }
 }
 
+/**
+ * Signs a set of unsigned transactions using provided key pairs.
+ *
+ * @param keys - An array of key pairs used for signing transactions.
+ * @param unsignedTransactions - An array of transactions that need to be signed.
+ * @param legacy - Optional flag indicating whether to use legacy signing method.
+ * @returns A promise that resolves to an array of either signed transactions, unchanged unsigned transactions, or undefined in case of errors.
+ */
+
 export async function signTransactionWithKeyPair(
   keys: IKeyPairLocal[],
   unsignedTransactions: IUnsignedCommand[],
   legacy?: boolean,
-): Promise<(ICommand | IUnsignedCommand | undefined)[]> {
+): Promise<(ICommand | IUnsignedCommand)[]> {
   try {
-    const signedTransactions: (ICommand | IUnsignedCommand | undefined)[] = [];
+    const signedTransactions: (ICommand | IUnsignedCommand)[] = [];
 
     for (let i = 0; i < unsignedTransactions.length; i++) {
       const unsignedCommand = unsignedTransactions[i];
@@ -233,17 +242,16 @@ export function getRelevantKeypairs(
  * @throws Will throw an error if the file cannot be read or the transaction cannot be processed.
  */
 export async function getTransactionFromFile(
+  /** absolute path, or relative to process.cwd() if starting with `.` */
   transactionFile: string,
   signed: boolean,
-  path?: string,
 ): Promise<IUnsignedCommand | ICommand> {
   try {
-    const filePath =
-      path !== undefined
-        ? join(process.cwd(), path, transactionFile)
-        : join(TRANSACTION_PATH, transactionFile);
-    const transactionFilePath = join(TRANSACTION_PATH, transactionFile);
-    const fileContent = await services.filesystem.readFile(filePath);
+    const transactionFilePath = transactionFile.startsWith('.')
+      ? join(process.cwd(), transactionFile)
+      : transactionFile;
+    // const transactionFilePath = join(TRANSACTION_PATH, transactionFile);
+    const fileContent = await services.filesystem.readFile(transactionFilePath);
 
     if (fileContent === null) {
       throw Error(`Failed to read file at path: ${transactionFilePath}`);
@@ -323,17 +331,16 @@ export async function assessTransactionSigningStatus(
 }
 
 export async function getTransactionsFromFile(
-  transactionFileNames: string[],
+  /** absolute paths, or relative to process.cwd() if starting with `.` */
+  transactionFiles: string[],
   signed: boolean,
-  transactionDirectory: string,
 ): Promise<(IUnsignedCommand | ICommand)[]> {
   const transactions: (IUnsignedCommand | ICommand)[] = [];
 
-  for (const transactionFileName of transactionFileNames) {
+  for (const transactionFileName of transactionFiles) {
     const transaction = await getTransactionFromFile(
       transactionFileName,
       signed,
-      transactionDirectory,
     );
 
     if (transaction !== undefined && transaction !== null) {
@@ -342,4 +349,11 @@ export async function getTransactionsFromFile(
   }
 
   return transactions;
+}
+
+export function parseCommaSeparatedInput(commandLineInput: string): string[] {
+  if (commandLineInput.trim() === '') {
+    return [];
+  }
+  return commandLineInput.split(',').map((item) => item.trim());
 }

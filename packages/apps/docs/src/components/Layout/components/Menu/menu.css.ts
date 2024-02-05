@@ -12,7 +12,7 @@ export const menuClass = style([
   }),
   {
     backgroundColor: tokens.kda.foundation.color.neutral.n0,
-    top: tokens.kda.foundation.size.n17,
+    top: tokens.kda.foundation.size.n16,
     overflow: 'hidden',
     height: `calc(100vh - ${tokens.kda.foundation.size.n13})`,
     gridArea: 'menu',
@@ -25,7 +25,7 @@ export const menuClass = style([
       sm: {
         width: $$leftSideWidth,
       },
-      md: {
+      lg: {
         position: 'sticky',
         top: tokens.kda.foundation.size.n18,
         bottom: 'auto',
@@ -43,7 +43,7 @@ export const menuOpenVariants = styleVariants({
   isClosed: {
     transform: 'translateX(-100%)',
 
-    ...responsiveStyle({ md: { transform: 'translateX(0)' } }),
+    ...responsiveStyle({ lg: { transform: 'translateX(0)' } }),
   },
 });
 
@@ -57,7 +57,7 @@ export const menuInLayoutVariants = styleVariants({
     atoms({
       display: {
         xs: 'block',
-        md: 'none',
+        lg: 'none',
       },
     }),
   ],
@@ -85,7 +85,7 @@ export const menuBackClass = style([
     transition: 'opacity .5s ease, transform .1s ease',
     zIndex: `calc(${$$sideMenu} - 1)`,
 
-    ...responsiveStyle({ md: { opacity: 0, pointerEvents: 'none' } }),
+    ...responsiveStyle({ lg: { opacity: 0, pointerEvents: 'none' } }),
   },
 ]);
 
@@ -94,7 +94,7 @@ export const menuBackOpenVariants = styleVariants({
     transform: 'translateX(0)',
     opacity: 1,
 
-    ...responsiveStyle({ md: { transform: 'translateX(-100%)', opacity: 0 } }),
+    ...responsiveStyle({ lg: { transform: 'translateX(-100%)', opacity: 0 } }),
   },
   isClosed: {
     transform: 'translateX(-100%)',

@@ -16,11 +16,7 @@ import type { ChainId } from '@kadena/types';
 import chalk from 'chalk';
 import { join } from 'node:path';
 
-import {
-  KEY_EXT,
-  TRANSACTION_FOLDER_NAME,
-  WALLET_EXT,
-} from '../constants/config.js';
+import { KEY_EXT, WALLET_EXT } from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
 import {
   getWallet,
@@ -34,10 +30,6 @@ import {
 } from '../networks/utils/networkHelpers.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
-import { templateVariables } from '../prompts/tx.js';
-import { services } from '../services/index.js';
-import { defaultTemplates } from '../tx/commands/templates/templates.js';
-import { getTemplateVariables } from '../tx/utils/template.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
 
@@ -58,6 +50,24 @@ export const globalOptions = {
     prompt: account.accountNamePrompt,
     validation: z.string(),
     option: new Option('-a, --account-name <accountName>', 'Account name'),
+  }),
+  accountKdnName: createOption({
+    key: 'accountKdnName' as const,
+    prompt: account.accountKdnNamePrompt,
+    validation: z.string(),
+    option: new Option(
+      '-a, --account-kdn-name <accountName>',
+      'Kadena names name',
+    ),
+  }),
+  accountKdnAddress: createOption({
+    key: 'accountKdnAddress' as const,
+    prompt: account.accountKdnAddressPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-a, --account-kdn-address <accountKdnAddress>',
+      'Kadena names address',
+    ),
   }),
   publicKeys: createOption({
     key: 'publicKeys' as const,
@@ -533,60 +543,6 @@ export const globalOptions = {
     },
   }),
 
-  txUnsignedCommand: createOption({
-    key: 'txUnsignedCommand',
-    prompt: tx.txUnsignedCommandPrompt,
-    validation: tx.IUnsignedCommandSchema,
-    option: new Option(
-      '-m, --tx-unsigned-command <txUnsignedCommand>',
-      'enter your unsigned command to sign',
-    ),
-  }),
-  txUnsignedTransactionFile: createOption({
-    key: 'txUnsignedTransactionFile',
-    prompt: tx.transactionSelectPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-u, --tx-unsigned-transaction-file <txUnsignedTransactionFile>',
-      'provide your unsigned transaction file to sign',
-    ),
-  }),
-  txUnsignedTransactionFiles: createOption({
-    key: 'txUnsignedTransactionFiles',
-    prompt: tx.transactionsSelectPrompt,
-    validation: z.array(z.string()),
-    option: new Option(
-      '-u, --tx-unsigned-transaction-files <txUnsignedTransactionFiles>',
-      'provide your unsigned transaction file(s) to sign',
-    ),
-  }),
-  txSignedTransactionFile: createOption({
-    key: 'txSignedTransactionFile',
-    prompt: tx.transactionSelectPrompt,
-    validation: tx.ICommandSchema,
-    option: new Option(
-      '-s, --tx-signed-transaction-file <txSignedTransactionFile>',
-      'provide your signed transaction file',
-    ),
-  }),
-  txSignedTransactionFiles: createOption({
-    key: 'txSignedTransactionFiles',
-    prompt: tx.transactionsSelectPrompt,
-    validation: tx.ICommandSchema,
-    option: new Option(
-      '-s, --tx-signed-transaction-files <txSignedTransactionFiles>',
-      'provide your signed transaction file',
-    ),
-  }),
-  txTransactionDir: createOption({
-    key: 'txTransactionDir' as const,
-    prompt: tx.txTransactionDirPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-d, --tx-transaction-dir <txTransactionDir>',
-      `Enter your transaction directory (default: "./${TRANSACTION_FOLDER_NAME}")`,
-    ),
-  }),
   // Dapp
   dappTemplate: createOption({
     key: 'dappTemplate',
@@ -597,6 +553,7 @@ export const globalOptions = {
       'Select a dapp template',
     ),
   }),
+  // common
   outFileJson: createOption({
     key: 'outFile',
     prompt: tx.outFilePrompt,
@@ -611,45 +568,6 @@ export const globalOptions = {
       const file = value.endsWith('.json') ? value : `${value}.json`;
       return join(process.cwd(), file);
     },
-  }),
-  selectTemplate: createOption({
-    key: 'template',
-    option: new Option('--template <template>', 'select a template'),
-    validation: z.string(),
-    prompt: tx.selectTemplate,
-    async expand(templateInput: string) {
-      // option 1. --template="send"
-      // option 2. --template="./send.ktpl"
-
-      let template = defaultTemplates[templateInput];
-
-      if (template === undefined) {
-        // not in template list, try to load from file
-        const templatePath = join(process.cwd(), templateInput);
-        const file = await services.filesystem.readFile(templatePath);
-
-        if (file === null) {
-          // not in file either, error
-          throw Error(`Template "${templateInput}" not found`);
-        }
-
-        template = file;
-      }
-
-      const variables = getTemplateVariables(template);
-
-      return { template, variables };
-    },
-  }),
-  templateVariables: createOption({
-    key: 'templateVariables',
-    validation: z.object({}).passthrough(),
-    option: new Option(
-      '--template-variables <templateVariables>',
-      'template variables',
-    ),
-    prompt: templateVariables,
-    allowUnknownOptions: true,
   }),
 } as const;
 

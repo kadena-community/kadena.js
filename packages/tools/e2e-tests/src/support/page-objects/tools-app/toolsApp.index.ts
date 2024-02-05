@@ -1,24 +1,30 @@
+import { NavHeaderComponent } from '@page-objects/react-ui/navHeader.component';
+import { AsideComponent } from '@page-objects/tools-app/components/aside.component';
+import { FundExistingAccountPage } from '@page-objects/tools-app/pages/faucet/fund-existing-account.page';
+import { FundNewAccountPage } from '@page-objects/tools-app/pages/faucet/fund-new-account.page';
+import { HomePage } from '@page-objects/tools-app/pages/home.page';
+import { CrossChainFinisherPage } from '@page-objects/tools-app/pages/transactions/cross-chain-finisher.page';
+import { CrossChainTrackerPage } from '@page-objects/tools-app/pages/transactions/cross-chain-tracker.page';
 import type { Page } from '@playwright/test';
-import { AccountPage } from './pages/account.page';
-import { FaucetPage } from './pages/faucet.page';
-import { HomePage } from './pages/home.page';
-import { ModuleExplorerPage } from './pages/moduleExplorer.page';
-import { TransactionsPage } from './pages/transactions.page';
 
 export class ToolsAppIndex {
   private readonly _page: Page;
+  public navHeader: NavHeaderComponent;
+  public asidePanel: AsideComponent;
   public homePage: HomePage;
-  public faucetPage: FaucetPage;
-  public transactionsPage: TransactionsPage;
-  public accountPage: AccountPage;
-  public moduleExplorerPage: ModuleExplorerPage;
+  public fundNewAccountPage: FundNewAccountPage;
+  public fundExistingAccountPage: FundExistingAccountPage;
+  public crossChainTrackerPage: CrossChainTrackerPage;
+  public crossChainFinisherPage: CrossChainFinisherPage;
 
   public constructor(page: Page) {
     this._page = page;
+    this.navHeader = new NavHeaderComponent(this._page);
+    this.asidePanel = new AsideComponent(this._page);
     this.homePage = new HomePage(this._page);
-    this.faucetPage = new FaucetPage(this._page);
-    this.transactionsPage = new TransactionsPage(this._page);
-    this.accountPage = new AccountPage(this._page);
-    this.moduleExplorerPage = new ModuleExplorerPage(this._page);
+    this.fundNewAccountPage = new FundNewAccountPage(this._page);
+    this.fundExistingAccountPage = new FundExistingAccountPage(this._page);
+    this.crossChainTrackerPage = new CrossChainTrackerPage(this._page);
+    this.crossChainFinisherPage = new CrossChainFinisherPage(this._page);
   }
 }
