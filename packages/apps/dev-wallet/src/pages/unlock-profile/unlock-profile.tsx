@@ -1,18 +1,31 @@
+import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
 import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
 
-export function UnlockWallet() {
+export function UnlockProfile() {
   const { register, handleSubmit } = useForm<{ password: string }>();
   const { profileId } = useParams();
   const [error, setError] = useState('');
-  const { isUnlocked, profileList, unlockWallet } = useWallet();
+  const { isUnlocked, profileList, unlockProfile, getSecret } = useWallet();
+  const { unlockHDWallet } = useHDWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
   async function unlock({ password }: { password: string }) {
     try {
-      await unlockWallet(profile!.uuid, password);
+      const ctx = await unlockProfile(profile!.uuid, password);
+      if (!ctx) {
+        throw new Error("Password doesn't match");
+      }
+      const keySource = ctx.profile.keySources[0];
+      if (!keySource) {
+        throw new Error('No key source found');
+      }
+      await unlockHDWallet(ctx, 'hd-wallet-slip10', password, {
+        ...keySource,
+        secret: await getSecret(keySource.secret),
+      });
     } catch (e) {
       console.log(e);
       setError("Password doesn't match");
@@ -35,7 +48,7 @@ export function UnlockWallet() {
           <Button type="submit">Unlock</Button>
         </form>
         {error && <Text variant="base">{error}</Text>}
-        <Link to="/create-wallet">Create wallet</Link>
+        <Link to="/create-profile">Create profile</Link>
       </Box>
     </main>
   );

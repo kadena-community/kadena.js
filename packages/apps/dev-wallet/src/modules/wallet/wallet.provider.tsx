@@ -6,6 +6,7 @@ import {
   useState,
 } from 'react';
 
+import { IKeySourceManager } from '../key-source/keySourceService';
 import {
   IAccount,
   IProfile,
@@ -14,8 +15,7 @@ import {
 
 export type ExtWalletContextType = {
   profile?: IProfile;
-  encryptionKey?: Uint8Array;
-  encryptedSeed?: Uint8Array;
+  keySourceManager?: IKeySourceManager;
   accounts?: IAccount[];
   profileList?: Pick<IProfile, 'name' | 'uuid'>[];
 };

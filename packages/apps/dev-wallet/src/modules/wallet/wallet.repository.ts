@@ -11,14 +11,17 @@ import { INetwork } from '../network/network.repository';
 export interface IKeyItem {
   publicKey: string;
   index: number;
-  keySourceId: string;
 }
 
 export interface IKeySource {
   uuid: string;
   derivationPathTemplate: string;
-  source: 'hd-wallet' | 'chainweaver';
-  publicKeys: string[];
+  source: 'hd-wallet-slip10';
+  secret: string;
+  keys: Array<{
+    index: number;
+    publicKey: string;
+  }>;
 }
 
 export interface IProfile {
@@ -27,7 +30,7 @@ export interface IProfile {
   networks: INetwork[];
   keySources: IKeySource[];
   // TODO: maybe we should move this to the keySources
-  seedKey: string;
+  secretId: string;
 }
 
 export interface IKeySetGuard {

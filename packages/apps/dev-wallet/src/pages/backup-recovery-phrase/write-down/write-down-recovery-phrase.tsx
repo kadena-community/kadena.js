@@ -15,7 +15,12 @@ export function WriteDownRecoveryPhrase() {
   async function decryptMnemonic({ password }: { password: string }) {
     setError('');
     try {
-      const mnemonic = await wallet.decryptMnemonic(password);
+      // TODO: this should check the source type of the keySource
+      const secretId = wallet.profile?.keySources[0]?.secret;
+      if (!secretId) {
+        throw new Error('No mnemonic found');
+      }
+      const mnemonic = await wallet.decryptSecret(password, secretId);
       setMnemonic(mnemonic);
     } catch (e) {
       setError("Password doesn't match");
