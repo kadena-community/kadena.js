@@ -81,7 +81,7 @@ export function createSlip10Service(): ISlip10Service {
       context = await createContext(mnemonic);
     },
 
-    createKey: async (keySource: ISlip10KeySource, quantity: number) => {
+    createKey: async (keySource: ISlip10KeySource, quantity: number = 1) => {
       if (!context) {
         throw new Error('Wallet not unlocked');
       }
@@ -89,7 +89,7 @@ export function createSlip10Service(): ISlip10Service {
       const publicKeys = await kadenaGetPublic(
         context.encryptionKey,
         context.encryptedSeed,
-        [startIndex, startIndex + quantity],
+        [startIndex, startIndex + quantity - 1],
         keySource.derivationPathTemplate,
       );
       return publicKeys.map((publicKey, index) => ({
