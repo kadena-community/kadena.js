@@ -7,7 +7,7 @@ import type {
   QueryTransactionsConnection,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
-import { Box, ContentHeader, Link, Table } from '@kadena/react-ui';
+import { Box, ContentHeader, Link, Table, Tooltip } from '@kadena/react-ui';
 import { truncate } from '@utils/truncate';
 import React from 'react';
 import { compactTableClass } from '../common/compact-table/compact-table.css';
@@ -67,22 +67,34 @@ export const CompactTransactionsTable = (
                 <Table.Td>{edge.node.height}</Table.Td>
                 <Table.Td>
                   <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
-                    <span title={edge.node.requestKey}>
-                      {truncateColumns
-                        ? truncate(edge.node.requestKey)
-                        : edge.node.requestKey}
-                    </span>
+                    {truncateColumns ? (
+                      <Tooltip
+                        closeDelay={150}
+                        content={edge.node.requestKey}
+                        delay={500}
+                        position="left"
+                      >
+                        <span>{truncate(edge.node.requestKey)}</span>
+                      </Tooltip>
+                    ) : (
+                      <span>{edge.node.requestKey}</span>
+                    )}
                   </Link>
                 </Table.Td>
                 <Table.Td>
                   {edge.node.code ? (
-                    <span title={edge.node.code}>
-                      {JSON.parse(
-                        truncateColumns
-                          ? truncate(edge.node.code)!
-                          : edge.node.code,
-                      )}
-                    </span>
+                    truncateColumns ? (
+                      <Tooltip
+                        closeDelay={150}
+                        content={edge.node.code}
+                        delay={500}
+                        position="left"
+                      >
+                        <span>{truncate(JSON.parse(edge.node.code))}</span>
+                      </Tooltip>
+                    ) : (
+                      <span>{JSON.parse(edge.node.code)}</span>
+                    )
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
                   )}
