@@ -9,11 +9,16 @@ import {
   Breadcrumbs,
   BreadcrumbsItem,
   Card,
+  Cell,
+  Column,
   Grid,
   GridItem,
   Heading,
+  Row,
   Stack,
   Table,
+  TableBody,
+  TableHeader,
 } from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -244,25 +249,30 @@ const Home: FC = () => {
             <Box as="p" marginBlockEnd="md">
               Changelog with the latest updates to the Kadena Development Tools.
             </Box>
-            <Table.Root striped>
-              <Table.Body>
-                <Table.Tr>
-                  <Table.Td>January 31, 2024</Table.Td>
-                  <Table.Td>
+
+            <Table isStriped>
+              <TableHeader>
+                <Column>Date</Column>
+                <Column>Update</Column>
+              </TableHeader>
+              <TableBody>
+                <Row>
+                  <Cell>January 31, 2024</Cell>
+                  <Cell>
                     Released version 1.2 of the Tools Website, including the
                     Transactions module, which has a Cross Chain Transfer
                     Tracker & Cross Chain Transfer Finisher.
-                  </Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                  <Table.Td>November 30, 2023</Table.Td>
-                  <Table.Td>
+                  </Cell>
+                </Row>
+                <Row>
+                  <Cell>November 30, 2023</Cell>
+                  <Cell>
                     Initial release of the Tools Website, including the Faucet
                     module.
-                  </Table.Td>
-                </Table.Tr>
-              </Table.Body>
-            </Table.Root>
+                  </Cell>
+                </Row>
+              </TableBody>
+            </Table>
           </Card>
         </Stack>
       </div>

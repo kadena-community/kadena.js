@@ -9,7 +9,7 @@ const Page: FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isMounted) return;
+    if (!isMounted || !account) return;
     router.push('/user');
   }, [isMounted]);
 

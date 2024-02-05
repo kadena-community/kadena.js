@@ -7,7 +7,6 @@ import {
   useGetFungibleChainAccountQuery,
   useGetNonFungibleChainAccountQuery,
 } from '@/__generated__/sdk';
-import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { TokenTable } from '@/components/token-table/token-table';
@@ -24,15 +23,21 @@ import {
   Breadcrumbs,
   BreadcrumbsItem,
   Button,
+  Cell,
+  Column,
   Grid,
   GridItem,
   Notification,
+  Row,
   Stack,
   TabItem,
   Table,
+  TableBody,
+  TableHeader,
   Tabs,
   TextField,
 } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -118,22 +123,26 @@ const ChainAccount: React.FC = () => {
 
       <Box margin="md" />
 
-      <Table.Root wordBreak="break-all" className={compactTableClass}>
-        <Table.Body>
-          <Table.Tr>
-            <Table.Td>
+      <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+        <TableHeader>
+          <Column>Label</Column>
+          <Column>Value</Column>
+        </TableHeader>
+        <TableBody>
+          <Row>
+            <Cell>
               <strong>Account Name</strong>
-            </Table.Td>
-            <Table.Td>{router.query.account}</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>
+            </Cell>
+            <Cell>{router.query.account}</Cell>
+          </Row>
+          <Row>
+            <Cell>
               <strong>Chain</strong>
-            </Table.Td>
-            <Table.Td>{router.query.chain}</Table.Td>
-          </Table.Tr>
-        </Table.Body>
-      </Table.Root>
+            </Cell>
+            <Cell>{router.query.chain}</Cell>
+          </Row>
+        </TableBody>
+      </Table>
 
       <Box margin="md" />
 
@@ -177,48 +186,52 @@ const ChainAccount: React.FC = () => {
 
           {fungibleChainAccountData?.fungibleChainAccount && (
             <>
-              <Table.Root wordBreak="break-all" className={compactTableClass}>
-                <Table.Body>
-                  <Table.Tr>
-                    <Table.Td>
+              <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+                <TableHeader>
+                  <Column>Label</Column>
+                  <Column>Value</Column>
+                </TableHeader>
+                <TableBody>
+                  <Row>
+                    <Cell>
                       <strong>Fungible</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {
                         fungibleChainAccountData.fungibleChainAccount
                           .fungibleName
                       }
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
+                    </Cell>
+                  </Row>
+                  <Row>
+                    <Cell>
                       <strong>Balance</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {fungibleChainAccountData.fungibleChainAccount.balance}
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
+                    </Cell>
+                  </Row>
+                  <Row>
+                    <Cell>
                       <strong>Guard Predicate</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {
                         fungibleChainAccountData.fungibleChainAccount.guard
                           .predicate
                       }
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
+                    </Cell>
+                  </Row>
+                  <Row>
+                    <Cell>
                       <strong>Guard Keys</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {fungibleChainAccountData.fungibleChainAccount.guard.keys}
-                    </Table.Td>
-                  </Table.Tr>
-                </Table.Body>
-              </Table.Root>
+                    </Cell>
+                  </Row>
+                </TableBody>
+              </Table>
 
               <Box margin="md" />
 
@@ -273,32 +286,36 @@ const ChainAccount: React.FC = () => {
 
           {nonFungibleChainAccountData?.nonFungibleChainAccount && (
             <>
-              <Table.Root wordBreak="break-all" className={compactTableClass}>
-                <Table.Body>
-                  <Table.Tr>
-                    <Table.Td>
+              <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+                <TableHeader>
+                  <Column>Label</Column>
+                  <Column>Value</Column>
+                </TableHeader>
+                <TableBody>
+                  <Row>
+                    <Cell>
                       <strong>Guard Predicate</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {
                         nonFungibleChainAccountData.nonFungibleChainAccount
                           .guard.predicate
                       }
-                    </Table.Td>
-                  </Table.Tr>
-                  <Table.Tr>
-                    <Table.Td>
+                    </Cell>
+                  </Row>
+                  <Row>
+                    <Cell>
                       <strong>Guard Keys</strong>
-                    </Table.Td>
-                    <Table.Td>
+                    </Cell>
+                    <Cell>
                       {
                         nonFungibleChainAccountData.nonFungibleChainAccount
                           .guard.keys
                       }
-                    </Table.Td>
-                  </Table.Tr>
-                </Table.Body>
-              </Table.Root>
+                    </Cell>
+                  </Row>
+                </TableBody>
+              </Table>
 
               <Box margin="md" />
 

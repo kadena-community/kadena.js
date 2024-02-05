@@ -6,8 +6,12 @@ import { socket } from '../../socket';
 
 export interface ISocketContext {
   socket?: Socket;
-  connect: ({ tokenId }: { tokenId: string }) => Promise<Socket | undefined>;
-  disconnect: ({ tokenId }: { tokenId: string }) => void;
+  connect: ({
+    proofOfUsId,
+  }: {
+    proofOfUsId: string;
+  }) => Promise<Socket | undefined>;
+  disconnect: ({ proofOfUsId }: { proofOfUsId: string }) => void;
 }
 
 export const SocketContext = createContext<ISocketContext>({
@@ -17,21 +21,21 @@ export const SocketContext = createContext<ISocketContext>({
 });
 
 export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [tokenId, setTokenId] = useState<string>();
+  const [proofOfUsId, setProofOfUsId] = useState<string>();
 
-  const disconnect = ({ tokenId }: { tokenId: string }) => {
-    if ((socket?.auth as any)?.tokenId === tokenId) return;
+  const disconnect = ({ proofOfUsId }: { proofOfUsId: string }) => {
+    if ((socket?.auth as any)?.proofOfUsId === proofOfUsId) return;
     socket?.close();
   };
 
-  const connect = async (data: { tokenId: string }) => {
-    if (tokenId && tokenId !== data.tokenId) disconnect(data);
+  const connect = async (data: { proofOfUsId: string }) => {
+    if (proofOfUsId && proofOfUsId !== data.proofOfUsId) disconnect(data);
     if (socket.connected) return socket;
 
-    setTokenId(data.tokenId);
+    setProofOfUsId(data.proofOfUsId);
     await fetch('/api/socket');
     // eslint-disable-next-line require-atomic-updates
-    socket.auth = { tokenId: data.tokenId };
+    socket.auth = { proofOfUsId: data.proofOfUsId };
     socket.connect();
 
     socket.on('connect', () => {
