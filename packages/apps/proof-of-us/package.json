@@ -18,8 +18,8 @@
   "dependencies": {
     "@akord/akord-js": "^4.23.8",
     "@google-analytics/data": "~3.2.2",
-    "@kadena/client": "workspace:^",
-    "@kadena/react-ui": "workspace:^",
+    "@kadena/client": "workspace:*",
+    "@kadena/react-ui": "workspace:*",
     "@vanilla-extract/css": "1.14.0",
     "@vanilla-extract/recipes": "0.5.1",
     "canvas": "^2.11.2",
