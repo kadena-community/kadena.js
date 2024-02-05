@@ -39,18 +39,18 @@ export const ShareView: FC<IProps> = ({ next, prev }) => {
 
       {!isReady ? (
         <>
-        <QRCode
-          ecLevel="H"
-          ref={qrRef}
-          value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
-          removeQrCodeBehindLogo={true}
-          logoImage="/assets/qrlogo.png"
-          logoPadding={5}
-          quietZone={10}
-          qrStyle="dots" // type of qr code, wether you want dotted ones or the square ones
-          eyeRadius={10}
-        />
-        link: {`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
+          <QRCode
+            ecLevel="H"
+            ref={qrRef}
+            value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
+            removeQrCodeBehindLogo={true}
+            logoImage="/assets/qrlogo.png"
+            logoPadding={5}
+            quietZone={10}
+            qrStyle="dots" // type of qr code, wether you want dotted ones or the square ones
+            eyeRadius={10}
+          />
+          link: {`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
         </>
       ) : (
         <img src={background} />
