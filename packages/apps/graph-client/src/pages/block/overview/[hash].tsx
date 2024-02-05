@@ -197,6 +197,10 @@ const Block: React.FC = () => {
               {[
                 <Accordion.Section title="See more" key={'accordion-payload'}>
                   <Table isCompact>
+                    <TableHeader>
+                      <Column>Label</Column>
+                      <Column>Value</Column>
+                    </TableHeader>
                     <TableBody>
                       <Row>
                         <Cell>
@@ -211,6 +215,9 @@ const Block: React.FC = () => {
                         </Cell>
                         <Cell>
                           <Table>
+                            <TableHeader>
+                              <Column>Value</Column>
+                            </TableHeader>
                             <TableBody>
                               {data.block.minerAccount.guard.keys?.map(
                                 (minerKey, index) => (
