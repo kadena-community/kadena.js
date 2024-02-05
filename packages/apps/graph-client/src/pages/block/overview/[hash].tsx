@@ -4,7 +4,6 @@ import {
   useGetGraphConfigurationQuery,
 } from '@/__generated__/sdk';
 import { centerBlockClass } from '@/components/common/center-block/styles.css';
-import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import {

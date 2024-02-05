@@ -8,7 +8,6 @@ import {
   useGetFungibleAccountQuery,
   useGetNonFungibleAccountQuery,
 } from '@/__generated__/sdk';
-import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { TokenTable } from '@/components/token-table/token-table';
@@ -116,6 +115,10 @@ const Account: React.FC = () => {
       <Box margin="md" />
 
       <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+        <TableHeader>
+          <Column>Label</Column>
+          <Column>Value</Column>
+        </TableHeader>
         <TableBody>
           <Row>
             <Cell>
@@ -171,6 +174,10 @@ const Account: React.FC = () => {
           {fungibleAccountData?.fungibleAccount && (
             <>
               <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+                <TableHeader>
+                  <Column>Label</Column>
+                  <Column>Value</Column>
+                </TableHeader>
                 <TableBody>
                   <Row>
                     <Cell>
@@ -258,6 +265,10 @@ const Account: React.FC = () => {
           {nonFungibleAccountData?.nonFungibleAccount && (
             <div>
               <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+                <TableHeader>
+                  <Column>Label</Column>
+                  <Column>Value</Column>
+                </TableHeader>
                 <TableBody>
                   <Row>
                     <Cell>

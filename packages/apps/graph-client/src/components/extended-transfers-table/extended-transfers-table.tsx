@@ -20,7 +20,6 @@ import {
 import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 type DataType = GetTransfersQuery;
 interface IVariableType {

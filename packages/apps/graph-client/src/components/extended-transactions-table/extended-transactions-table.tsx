@@ -19,7 +19,6 @@ import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
 import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 type DataType = GetTransactionsQuery;
 
@@ -189,19 +188,6 @@ export const ExtendedTransactionsTable = (
           />
         </div>
       </Box>
-<<<<<<< HEAD
-      <Table.Root wordBreak="break-word" className={compactTableClass}>
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Chain</Table.Th>
-            <Table.Th>Timestamp</Table.Th>
-            <Table.Th>Block Height</Table.Th>
-            <Table.Th>Request Key</Table.Th>
-            <Table.Th>Code</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-=======
       <Table className={atoms({ wordBreak: 'break-word' })} isCompact>
         <TableHeader>
           <Column>Chain</Column>
@@ -211,7 +197,6 @@ export const ExtendedTransactionsTable = (
           <Column>Code</Column>
         </TableHeader>
         <TableBody>
->>>>>>> 0e5aaafd1 (updated tools)
           {transactions.edges.map((edge, index) => {
             return (
               <Row key={index}>

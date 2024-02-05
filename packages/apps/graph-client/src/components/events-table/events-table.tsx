@@ -11,7 +11,6 @@ import {
 } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import React from 'react';
-import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 interface IEventsTableProps {
   events?: Event[];

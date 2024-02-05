@@ -7,7 +7,6 @@ import {
   useGetFungibleChainAccountQuery,
   useGetNonFungibleChainAccountQuery,
 } from '@/__generated__/sdk';
-import { compactTableClass } from '@/components/common/compact-table/compact-table.css';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import { TokenTable } from '@/components/token-table/token-table';
@@ -25,6 +24,7 @@ import {
   BreadcrumbsItem,
   Button,
   Cell,
+  Column,
   Grid,
   GridItem,
   Notification,
@@ -33,6 +33,7 @@ import {
   TabItem,
   Table,
   TableBody,
+  TableHeader,
   Tabs,
   TextField,
 } from '@kadena/react-ui';
@@ -123,6 +124,10 @@ const ChainAccount: React.FC = () => {
       <Box margin="md" />
 
       <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+        <TableHeader>
+          <Column>Label</Column>
+          <Column>Value</Column>
+        </TableHeader>
         <TableBody>
           <Row>
             <Cell>
@@ -182,6 +187,10 @@ const ChainAccount: React.FC = () => {
           {fungibleChainAccountData?.fungibleChainAccount && (
             <>
               <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+                <TableHeader>
+                  <Column>Label</Column>
+                  <Column>Value</Column>
+                </TableHeader>
                 <TableBody>
                   <Row>
                     <Cell>
@@ -278,6 +287,10 @@ const ChainAccount: React.FC = () => {
           {nonFungibleChainAccountData?.nonFungibleChainAccount && (
             <>
               <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+                <TableHeader>
+                  <Column>Label</Column>
+                  <Column>Value</Column>
+                </TableHeader>
                 <TableBody>
                   <Row>
                     <Cell>
