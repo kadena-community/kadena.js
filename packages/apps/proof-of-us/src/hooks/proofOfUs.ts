@@ -47,8 +47,8 @@ export const useProofOfUs = () => {
     });
   };
 
-  const addSignee = async ({ proofOfUsId }: { proofOfUsId: string }) => {
-    if (!socket || !account) return;
+  const addSignee = async () => {
+    if (!socket || !account || !proofOfUs) return;
 
     socket?.emit('addSignee', {
       content: {
@@ -57,7 +57,7 @@ export const useProofOfUs = () => {
         publicKey: account.publicKey,
         initiator: false,
       },
-      to: proofOfUsId,
+      to: proofOfUs?.proofOfUsId,
     });
   };
 

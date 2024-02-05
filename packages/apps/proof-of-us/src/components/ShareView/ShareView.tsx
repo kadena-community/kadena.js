@@ -19,6 +19,13 @@ export const ShareView: FC<IProps> = ({ next, prev }) => {
     prev();
   };
 
+  const handleSign = () => {
+    next();
+
+    //@OTODO extend addsignee so we know when he actually has signed
+    //atm this is not checked
+  };
+
   if (!proofOfUs) return;
 
   const isReady = proofOfUs.signees.length > 1;
@@ -45,7 +52,7 @@ export const ShareView: FC<IProps> = ({ next, prev }) => {
         <img src={proofOfUs.avatar.background} />
       )}
 
-      {isReady && <button>Sign & Upload</button>}
+      {isReady && <button onClick={handleSign}>Sign & Upload</button>}
     </section>
   );
 };

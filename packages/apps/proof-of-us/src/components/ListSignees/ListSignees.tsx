@@ -1,12 +1,11 @@
 import { useAccount } from '@/hooks/account';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { useParams } from 'next/navigation';
+
 import type { FC } from 'react';
 import { wrapperClass } from './style.css';
 
 export const ListSignees: FC = () => {
-  const { id: proofOfUsId } = useParams();
-  const { proofOfUs, isInitiator, removeSignee } = useProofOfUs();
+  const { proofOfUs } = useProofOfUs();
 
   const { account } = useAccount();
 
@@ -18,12 +17,6 @@ export const ListSignees: FC = () => {
     return signer.cid === account?.cid;
   };
 
-  const handleRemove = () => {
-    if (!signee) return;
-    removeSignee({ proofOfUsId: proofOfUsId.toString(), signee });
-  };
-
-  console.log(33333, proofOfUs);
   return (
     <section className={wrapperClass}>
       <div>
@@ -34,10 +27,7 @@ export const ListSignees: FC = () => {
         <h4>Signer</h4>
         {signee && (
           <>
-            {signee?.displayName}
-            {isMe(signee, account) || isInitiator() ? (
-              <button onClick={handleRemove}>remove</button>
-            ) : null}
+            {signee?.displayName} {isMe(signee, account) && ' (me)'}
           </>
         )}
       </div>

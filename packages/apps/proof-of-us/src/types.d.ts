@@ -18,7 +18,17 @@ type IDataHook<T> = (...args: any) => {
   data: T;
 };
 
+type IMintStatus =
+  | 'init'
+  | 'signing'
+  | 'uploading'
+  | 'uploading_manifest'
+  | 'minting'
+  | 'error'
+  | 'success';
 interface IProofOfUs {
+  mintStatus: IMintStatus;
+  tokenId?: string;
   proofOfUsId: string;
   type: 'multi' | 'event';
   date: number;

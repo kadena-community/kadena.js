@@ -4,6 +4,7 @@ const ProofOfUsStore = () => {
   const createProofOfUs = (proofOfUsId: string, account: IProofOfUsSignee) => {
     if (store[proofOfUsId]) return;
     store[proofOfUsId] = {
+      mintStatus: 'init',
       proofOfUsId,
       type: 'multi',
       date: Date.now(),
@@ -53,7 +54,12 @@ const ProofOfUsStore = () => {
     delete store[proofOfUsId];
   };
 
+  const updateMintStatus = (proofOfUsId: string, mintStatus: IMintStatus) => {
+    store[proofOfUsId].mintStatus = mintStatus;
+  };
+
   return {
+    updateMintStatus,
     createProofOfUs,
     getProofOfUs,
     addSignee,
