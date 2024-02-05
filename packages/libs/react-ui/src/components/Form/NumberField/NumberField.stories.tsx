@@ -6,7 +6,6 @@ import { Button } from '../../Button';
 import { Account } from '../../Icon/System/svgs/Account';
 import { NumberField } from './NumberField';
 
-import { CopyButton } from '../ActionButtons/CopyButton';
 import { Form } from '../Form';
 import type { INumberFieldProps } from './NumberField';
 
