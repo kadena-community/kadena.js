@@ -28,6 +28,7 @@ import {
   ensureNetworksConfiguration,
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
+import { accountOverWritePrompt } from '../prompts/account.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
@@ -45,6 +46,16 @@ export const globalFlags = {
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
   // Account
+  accountAlias: createOption({
+    key: 'accountAlias' as const,
+    defaultIsOptional: false,
+    prompt: account.accountAliasPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-aa, --account-alias <accountAlias>',
+      'Enter an alias to store your account',
+    ),
+  }),
   accountName: createOption({
     key: 'accountName' as const,
     prompt: account.accountNamePrompt,
@@ -78,7 +89,10 @@ export const globalOptions = {
       'Public keys (comma separated)',
     ),
     expand: async (publicKeys: string) => {
-      return publicKeys.split(',').map((value) => value.trim());
+      return publicKeys
+        .split(',')
+        .map((value) => value.trim())
+        .filter((key) => !!key);
     },
   }),
   amount: createOption({
@@ -290,6 +304,24 @@ export const globalOptions = {
         });
         const networkName = await externalPrompt.networkNamePrompt();
         return loadNetworkConfig(networkName);
+      }
+    },
+  }),
+  networkSelect: createOption({
+    key: 'network' as const,
+    prompt: networks.networkSelectOnlyPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-n, --network <network>',
+      'Kadena network (e.g. "mainnet")',
+    ),
+    expand: async (network: string) => {
+      try {
+        return loadNetworkConfig(network);
+      } catch (e) {
+        throw new Error(
+          `No network configuration found for "${network}". Please create a "${network}" network.`,
+        );
       }
     },
   }),
@@ -568,6 +600,16 @@ export const globalOptions = {
       const file = value.endsWith('.json') ? value : `${value}.json`;
       return join(process.cwd(), file);
     },
+  }),
+  // account
+  accountOverwrite: createOption({
+    key: 'accountOverwrite',
+    validation: z.boolean(),
+    prompt: accountOverWritePrompt,
+    option: new Option(
+      '-o, --account-overwrite',
+      'Overwrite account details from chain',
+    ),
   }),
 } as const;
 
