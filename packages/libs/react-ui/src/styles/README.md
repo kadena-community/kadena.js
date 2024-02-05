@@ -15,7 +15,7 @@ This functions helps with accessing the token path making it shorter and allows
 you to pass a fallback in case the path is not matching.
 
 The following example shows how the two would look if you wanted to do the same,
-but the upside for the token method resides in the possility of a second
+but the upside for the token method resides in the possibility of a second
 parameter as fallback
 
 ```ts
@@ -55,9 +55,9 @@ breakpoints = {
 ```
 
 This functions enables to add specific styles specifiying a breakpoint, its best
-ilustrated in with an example
+illustrated in with an example
 
-The usage is stright forward, but should be outside the atoms
+The usage is straight forward, but should be outside the atoms
 
 ```ts
 style([
@@ -94,8 +94,8 @@ useEnterAnimation(
 ): boolean
 ```
 
-Will return true when the ref is entering an animation. Example can be found in
-Popover.tsx
+This function will help with detecting if the ref is entering an animation.
+Example can be found in Popover.tsx
 
 ### useExitAnimation(...)
 
@@ -103,5 +103,5 @@ Popover.tsx
 useExitAnimation(ref: RefObject<HTMLElement>, isOpen: boolean): boolean
 ```
 
-Will return true when the ref is exiting an animation. Example can be found in
-Popover.tsx
+This function will help with detecting if the ref is exiting an animation.
+Example can be found in Popover.tsx
