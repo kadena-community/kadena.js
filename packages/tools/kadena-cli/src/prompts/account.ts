@@ -1,10 +1,6 @@
 import { input, select } from '@inquirer/prompts';
 import type { IPrompt } from '../utils/createOption.js';
 
-export const predicates = ['keys-all', 'keys-any', 'keys-2'] as const;
-
-export type Predicate = (typeof predicates)[number];
-
 export const publicKeysPrompt: IPrompt<string> = async (
   previousQuestions,
   args,
@@ -64,14 +60,46 @@ export const fungiblePrompt: IPrompt<string> = async () =>
     message: 'Enter the name of a fungible:',
   });
 
-export const predicatePrompt: IPrompt<Predicate> = async () =>
-  await select({
+export const predicatePrompt: IPrompt<string> = async () => {
+  const choices = [
+    {
+      value: 'keys-all',
+      name: 'keys-all',
+    },
+    {
+      value: 'keys-any',
+      name: 'keys-any',
+    },
+    {
+      value: 'keys-2',
+      name: 'keys-2',
+    },
+    {
+      value: 'custom',
+      name: 'Custom predicate',
+    },
+  ];
+
+  const selectedPredicate = await select({
     message: 'Select a keyset predicate.',
-    choices: predicates.map((predicate) => ({
-      value: predicate,
-      name: predicate,
-    })),
+    choices: choices,
   });
+
+  if (selectedPredicate === 'custom') {
+    const customPredicate = await input({
+      message: 'Enter your own predicate',
+      validate: function (value: string) {
+        if (!value || !value.trim().length) {
+          return 'Predicate cannot be empty.';
+        }
+        return true;
+      },
+    });
+    return customPredicate.trim();
+  }
+
+  return selectedPredicate;
+};
 
 export const accountOverWritePrompt: IPrompt<boolean> = async () =>
   await select({

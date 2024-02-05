@@ -4,7 +4,7 @@ import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.
 import type { Predicate } from '../types.js';
 
 export interface ICreateAccountNameConfig {
-  predicate: Predicate;
+  predicate: string;
   chainId: ChainId;
   networkConfig: INetworkCreateOptions;
   publicKeys: string[];
@@ -24,7 +24,7 @@ export async function createAccountName({
     const accountName = await createPrincipal(
       {
         keyset: {
-          pred: predicate,
+          pred: predicate as Predicate,
           keys: publicKeys,
         },
       },

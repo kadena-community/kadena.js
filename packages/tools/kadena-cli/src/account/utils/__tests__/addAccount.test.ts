@@ -3,7 +3,6 @@ import yaml from 'js-yaml';
 import { afterEach, assert, describe, expect, it } from 'vitest';
 
 import { server } from '../../../mocks/server.js';
-import type { Predicate } from '../../../prompts/account.js';
 import { services } from '../../../services/index.js';
 import { addAccount } from '../addAccount.js';
 import { getAccountFilePath } from '../addHelpers.js';
@@ -27,7 +26,7 @@ describe('addAccount', () => {
       accountDetailsFromChain: {
         guard: {
           keys: ['publicKey1', 'publicKey2'],
-          pred: 'keys-all' as Predicate,
+          pred: 'keys-all',
         },
         account: 'accountName',
         balance: 0,
@@ -68,7 +67,7 @@ describe('addAccount', () => {
       accountDetailsFromChain: {
         guard: {
           keys: ['publicKey1'],
-          pred: 'keys-any' as Predicate,
+          pred: 'keys-any',
         },
         account: 'accountName',
         balance: 0,

@@ -3,7 +3,6 @@ import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import type { Predicate } from '../types.js';
 import { addAccount } from '../utils/addAccount.js';
 import { displayAddAccountSuccess } from '../utils/addHelpers.js';
 import { getAccountDetailsForAddAccount } from '../utils/getAccountDetails.js';
@@ -53,7 +52,7 @@ export const createAddAccountManualCommand = createCommandFlexible(
       : false;
 
     let publicKeysPrompt;
-    let predicate: Predicate = 'keys-all';
+    let predicate = 'keys-all';
 
     // If the user choose not to overwrite the account, we need to ask for the public keys and predicate
     if (!accountOverwrite) {
