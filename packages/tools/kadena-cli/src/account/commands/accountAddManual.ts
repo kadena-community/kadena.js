@@ -44,11 +44,11 @@ export const createAddAccountManualCommand = createCommandFlexible(
         })
       : undefined;
 
-    const isEmptyAccountDetails =
+    const hasAccountDetails =
       !!accountDetailsFromChain &&
       accountDetailsFromChain.guard.keys.length > 0;
 
-    let accountOverwrite = isEmptyAccountDetails
+    let accountOverwrite = hasAccountDetails
       ? (await option.accountOverwrite()).accountOverwrite
       : false;
 
