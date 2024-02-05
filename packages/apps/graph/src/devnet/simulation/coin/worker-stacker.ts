@@ -1,4 +1,4 @@
-let jobStack: Array<Array<Promise<any>>> = [[]];
+const jobStack: Array<Array<Promise<any>>> = [[]];
 
 export const stacker = (transactionStack: Array<Promise<any>>): void => {
   jobStack.push(transactionStack);

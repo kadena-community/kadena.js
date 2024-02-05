@@ -1,4 +1,4 @@
-import { ChainId, ICommandResult } from '@kadena/client';
+import type { ChainId, ICommandResult } from '@kadena/client';
 import { generateAccount } from '../helper';
 import { transfer } from './transfer';
 import { stacker, worker } from './worker-stacker';
@@ -10,7 +10,10 @@ export const flood = async (
 ) => {
   const account = await generateAccount();
   let newStack: Promise<ICommandResult>[] = [];
-  worker(timeoutBetweenIteration);
+
+  worker(timeoutBetweenIteration).catch((error) => {
+    console.error('Worker failed:', error);
+  });
 
   let count = 0;
   let totalTx = 0;

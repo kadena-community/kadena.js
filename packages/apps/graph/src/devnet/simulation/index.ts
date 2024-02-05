@@ -140,7 +140,7 @@ program
 
   .action(async (args) => {
     logger.info('Flood config parameters:', args);
-    flood(args.transactions, args.interval, args.totalTx);
+    await flood(args.transactions, args.interval, args.totalTx);
   });
 
 program.parse();
