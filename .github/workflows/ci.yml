@@ -142,14 +142,11 @@ jobs:
 
   ci-gate:
     if: always()
-
     needs:
       - build
       - integration-tests
       - end-to-end-tests
-
     runs-on: Ubuntu-latest
-
     steps:
       - name: Decide whether the needed jobs succeeded or failed
         uses: re-actors/alls-green@release/v1
