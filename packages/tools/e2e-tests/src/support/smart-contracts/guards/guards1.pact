@@ -1,16 +1,16 @@
 (namespace 'util) 
 
 (module guards1 AUTONOMOUS
-  "************************WARNING************************\
-  \ This module is currently governed by 'util-ns-admin   \
-  \ and should not be in use until the governance is      \
-  \ replaced with AUTONOMOUS, meaning that the module     \
-  \ will be non-upgradable.                               \
-  \ ******************************************************\
+  "************************NOTE****************************\
+  \ This module was originally governed by 'util-ns-admin   \
+  \ and has been modified to be deployable on newer         \
+  \ versions of chainweb. It is now AUTONOMOUS and will be  \
+  \ non-upgradable.                                         \
+  \ ********************************************************\
   \ Functions for implementing gas guards."
 
 (defcap AUTONOMOUS ()
-  (enforce false "Non-upgradeable"))
+  (enforce true "Non-upgradeable"))
 
   (defun guard-all:guard (guards:[guard])
     "Create a guard that only succeeds if every guard in GUARDS is successfully enforced."
