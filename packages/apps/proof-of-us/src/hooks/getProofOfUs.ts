@@ -1,16 +1,18 @@
 import { getProofOfUs } from '@/utils/proofOfUs';
 import { useEffect, useState } from 'react';
 
-export const useGetProofOfUs: IDataHook<IProofOfUs | undefined> = ({ id }) => {
+export const useGetProofOfUs: IDataHook<IProofOfUsData | undefined> = ({
+  id,
+}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<IError>();
-  const [data, setData] = useState<IProofOfUs | undefined>(undefined);
+  const [data, setData] = useState<IProofOfUsData | undefined>(undefined);
 
   const load = async () => {
     setError(undefined);
     const result = await getProofOfUs(id);
 
-    setData(result);
+    setData(result?.data);
   };
 
   useEffect(() => {

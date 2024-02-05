@@ -1,11 +1,10 @@
 'use client';
 
-import { Mint } from '@/components/Mint/Mint';
-import { Scan } from '@/components/Scan/Scan';
+import { Multi } from '@/features/Multi/Multi';
+import { ScanEvent } from '@/features/ScanEvent/ScanEvent';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { useSocket } from '@/hooks/socket';
+
 import type { FC } from 'react';
-import { useEffect } from 'react';
 
 interface IProps {
   params: {
@@ -13,20 +12,17 @@ interface IProps {
   };
 }
 
-const Page: FC<IProps> = ({ params }) => {
-  const { connect } = useSocket();
-  const { proofOfUs } = useProofOfUs();
-
-  useEffect(() => {
-    connect({ tokenId: params.id });
-  }, []);
+const Page: FC<IProps> = () => {
+  const { proofOfUs, background } = useProofOfUs();
 
   if (!proofOfUs) return null;
 
   return (
     <div>
-      {proofOfUs.type === 'multi' && <Scan proofOfUs={proofOfUs} />}
-      {proofOfUs.type === 'event' && <Mint proofOfUs={proofOfUs} />}
+      {proofOfUs.type === 'multi' && (
+        <Multi proofOfUs={proofOfUs} background={background} />
+      )}
+      {proofOfUs.type === 'event' && <ScanEvent proofOfUs={proofOfUs} />}
     </div>
   );
 };

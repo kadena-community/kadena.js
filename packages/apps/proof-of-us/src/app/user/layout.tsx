@@ -9,12 +9,16 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const { account, isMounted, login } = useAccount();
   const router = useRouter();
 
-  const { connect } = useSocket();
-  const { id: tokenId } = useParams();
+  const { connect, disconnect } = useSocket();
+  const { id: proofOfUsId } = useParams();
 
   useEffect(() => {
-    connect({ tokenId: `${tokenId}` });
-  }, [tokenId]);
+    connect({ proofOfUsId: `${proofOfUsId}` });
+
+    return () => {
+      disconnect({ proofOfUsId: `${proofOfUsId}` });
+    };
+  }, [proofOfUsId]);
 
   useEffect(() => {
     if (!account && isMounted) {

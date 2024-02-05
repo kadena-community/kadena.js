@@ -2,13 +2,27 @@ import { store } from '@/utils/socket/store';
 import type { Server as IOServer, Socket } from 'socket.io';
 
 export const signeeListeners = (socket: Socket, io: IOServer) => {
+  socket.on('updateStatus', ({ content, to }) => {
+    store.updateMintStatus(to, content.mintStatus);
+    io.to(to).to(to).emit('getProofOfUs', {
+      content: undefined,
+      from: socket.handshake.auth.proofOfUsId,
+    });
+  });
+  socket.on('closeToken', ({ content, to }) => {
+    store.closeToken(to);
+    io.to(to).to(to).emit('getProofOfUs', {
+      content: undefined,
+      from: socket.handshake.auth.proofOfUsId,
+    });
+  });
   socket.on('createToken', ({ content, to }) => {
     store.createProofOfUs(to, content);
     io.to(to)
       .to(to)
       .emit('getProofOfUs', {
         content: store.getProofOfUs(to),
-        from: socket.handshake.auth.tokenId,
+        from: socket.handshake.auth.proofOfUsId,
       });
   });
 
@@ -18,7 +32,7 @@ export const signeeListeners = (socket: Socket, io: IOServer) => {
       .to(to)
       .emit('getProofOfUs', {
         content: store.getProofOfUs(to),
-        from: socket.handshake.auth.tokenId,
+        from: socket.handshake.auth.proofOfUsId,
       });
   });
 
@@ -28,7 +42,22 @@ export const signeeListeners = (socket: Socket, io: IOServer) => {
       .to(to)
       .emit('getProofOfUs', {
         content: store.getProofOfUs(to),
-        from: socket.handshake.auth.tokenId,
+        from: socket.handshake.auth.proofOfUsId,
+      });
+  });
+  socket.on('getProofOfUs', ({ to }) => {
+    io.to(to)
+      .to(to)
+      .emit('getProofOfUs', {
+        content: store.getProofOfUs(to),
+        from: socket.handshake.auth.proofOfUsId,
+      });
+
+    io.to(to)
+      .to(to)
+      .emit('getProofOfUsBackground', {
+        content: store.getBackground(to),
+        from: socket.handshake.auth.proofOfUsId,
       });
   });
 };
