@@ -4,7 +4,7 @@ import type {
   Transfer,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
-import { Box, ContentHeader, Link, Table } from '@kadena/react-ui';
+import { Box, ContentHeader, Link, Table, Tooltip } from '@kadena/react-ui';
 import { truncate } from '@utils/truncate';
 import React from 'react';
 import { compactTableClass } from '../common/compact-table/compact-table.css';
@@ -125,11 +125,18 @@ export const CompactTransfersTable = (
                   <Link
                     href={`${routes.ACCOUNT}/${fungibleName}/${transfer.senderAccount}`}
                   >
-                    <span title={transfer.senderAccount}>
-                      {truncateColumns
-                        ? truncate(transfer.senderAccount)
-                        : transfer.senderAccount}
-                    </span>
+                    {truncateColumns ? (
+                      <Tooltip
+                        closeDelay={150}
+                        content={transfer.senderAccount}
+                        delay={500}
+                        position="left"
+                      >
+                        <span>{truncate(transfer.senderAccount)}</span>
+                      </Tooltip>
+                    ) : (
+                      <span>{transfer.senderAccount}</span>
+                    )}
                   </Link>
                 </Table.Td>
                 <Table.Td>
@@ -137,31 +144,54 @@ export const CompactTransfersTable = (
                     <Link
                       href={`${routes.ACCOUNT}/${fungibleName}/${transfer.receiverAccount}`}
                     >
-                      <span title={transfer.receiverAccount}>
-                        {truncateColumns
-                          ? truncate(transfer.receiverAccount)
-                          : transfer.receiverAccount}
-                      </span>
+                      {truncateColumns ? (
+                        <Tooltip
+                          closeDelay={150}
+                          content={transfer.receiverAccount}
+                          delay={500}
+                          position="left"
+                        >
+                          <span>{truncate(transfer.receiverAccount)}</span>
+                        </Tooltip>
+                      ) : (
+                        <span>{transfer.receiverAccount}</span>
+                      )}
                     </Link>
                   ) : (
                     <Link
                       href={`${routes.ACCOUNT}/${fungibleName}/${crossChainCounterPart.receiverAccount}`}
                     >
-                      <span title={crossChainCounterPart.receiverAccount}>
-                        {truncateColumns
-                          ? truncate(crossChainCounterPart.receiverAccount)
-                          : crossChainCounterPart.receiverAccount}
-                      </span>
+                      {truncateColumns ? (
+                        <Tooltip
+                          closeDelay={150}
+                          content={crossChainCounterPart.receiverAccount}
+                          delay={500}
+                          position="left"
+                        >
+                          <span>
+                            {truncate(crossChainCounterPart.receiverAccount)}
+                          </span>
+                        </Tooltip>
+                      ) : (
+                        <span>{crossChainCounterPart.receiverAccount}</span>
+                      )}
                     </Link>
                   )}
                 </Table.Td>
                 <Table.Td>
                   <Link href={`${routes.TRANSACTIONS}/${transfer.requestKey}`}>
-                    <span title={transfer.requestKey}>
-                      {truncateColumns
-                        ? truncate(transfer.requestKey)
-                        : transfer.requestKey}
-                    </span>
+                    {truncateColumns ? (
+                      <Tooltip
+                        closeDelay={150}
+                        content={transfer.requestKey}
+                        delay={500}
+                        position="left"
+                      >
+                        <span>{truncate(transfer.requestKey)}</span>
+                      </Tooltip>
+                    ) : (
+                      <span>{transfer.requestKey}</span>
+                    )}
                   </Link>
                   {crossChainCounterPart && (
                     <>
