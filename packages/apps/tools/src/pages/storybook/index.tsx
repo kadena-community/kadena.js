@@ -12,6 +12,7 @@ import {
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import React, { useState } from 'react';
+import { containerStyle } from './styles.css';
 
 const Storybook = () => {
   const { t } = useTranslation('common');
@@ -30,7 +31,7 @@ const Storybook = () => {
   console.log({ error, accountDetails });
 
   return (
-    <section>
+    <section className={containerStyle}>
       <Head>
         <title>Kadena Developer Tools - Storybook</title>
       </Head>
@@ -39,7 +40,7 @@ const Storybook = () => {
       </Breadcrumbs>
       <Heading as="h4">{t('Storybook')}</Heading>
       <Stack>
-        <Card>
+        <Card fullWidth>
           <Stack flexDirection="column">
             <Heading as="h5">
               <Text as="code">useAccountDetailsQuery</Text>
