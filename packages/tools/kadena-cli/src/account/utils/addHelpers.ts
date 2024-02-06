@@ -3,8 +3,7 @@ import chalk from 'chalk';
 import yaml from 'js-yaml';
 import path from 'path';
 
-import { defaultAccountPath } from '../../constants/account.js';
-import { WALLET_DIR } from '../../constants/config.js';
+import { ACCOUNT_DIR, WALLET_DIR } from '../../constants/config.js';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { services } from '../../services/index.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
@@ -37,7 +36,7 @@ export const getUpdatedConfig = (
 
 export const getAccountFilePath = (fileName: string): string => {
   const sanitizedAlias = sanitizeFilename(fileName);
-  return path.join(defaultAccountPath, `${sanitizedAlias}.yaml`);
+  return path.join(ACCOUNT_DIR, `${sanitizedAlias}.yaml`);
 };
 
 export const displayAddAccountSuccess = (accountAlias: string): void => {

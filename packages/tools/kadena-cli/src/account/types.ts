@@ -33,3 +33,10 @@ export interface IAccountDetailsResult {
   account: string;
   balance: number;
 }
+
+export interface IAccountAliasFile {
+  name: string;
+  fungible: string;
+  publicKeys: string[];
+  predicate: string;
+}

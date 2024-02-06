@@ -1,5 +1,7 @@
 import type { IPrompt } from '../utils/createOption.js';
 import { input, select } from '../utils/prompts.js';
+import { getAllAccounts } from '../account/utils/accountHelpers.js';
+import { truncateText } from '../utils/helpers.js';
 
 export const publicKeysPrompt: IPrompt<string> = async (
   previousQuestions,
@@ -115,3 +117,39 @@ export const accountOverWritePrompt: IPrompt<boolean> = async () =>
       },
     ],
   });
+
+export const accountSelectionPrompt: IPrompt<string> = async () => {
+  const allAccounts = await getAllAccounts();
+
+  const allAccountChoices = allAccounts.map((account) => ({
+    value: account.name,
+    name: truncateText(`${account.alias}-${account.name}`),
+  }));
+
+  const selectedName = await select({
+    message: 'Select an account:',
+    choices: [
+      {
+        value: 'custom',
+        name: 'Enter own account name',
+      },
+      ...allAccountChoices,
+    ],
+  });
+
+  if (selectedName === 'custom') {
+    const accountName = await input({
+      message: 'Please enter the account name:',
+      validate: function (value: string) {
+        if (!value || !value.trim().length) {
+          return 'Account name cannot be empty.';
+        }
+
+        return true;
+      },
+    });
+    return accountName.trim();
+  }
+
+  return selectedName;
+};
