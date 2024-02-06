@@ -151,7 +151,7 @@ jobs:
     runs-on: Ubuntu-latest
 
     steps:
-      - name: Decide whether the needed jobs succeeded or failed
+      - name: Check Required Jobs.
         uses: re-actors/alls-green@release/v1
         with:
           jobs: ${{ toJSON(needs) }}
