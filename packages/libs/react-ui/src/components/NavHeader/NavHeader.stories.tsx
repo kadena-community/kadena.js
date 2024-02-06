@@ -44,7 +44,7 @@ const meta: Meta<StoryProps> = {
   title: 'Navigation/NavHeader',
   parameters: {
     status: {
-      type: ['needsRevision'],
+      type: ['releaseCandidate'],
     },
     controls: {
       hideNoControlsWarning: true,

@@ -31,7 +31,7 @@ const meta: Meta<StoryProps> = {
   title: 'Layout/Accordion',
   parameters: {
     status: {
-      type: 'inDevelopment',
+      type: 'releaseCandidate',
     },
     controls: {
       hideNoControlsWarning: true,

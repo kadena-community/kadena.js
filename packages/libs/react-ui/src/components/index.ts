@@ -112,18 +112,10 @@ export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Heading, Text } from './Typography';
 
 // Deprecated components
-export { NavFooter } from './NavFooter';
 export { TableV1 } from './TableV1';
 export { Tree } from './Tree';
 export { GradientText } from './Typography';
 
-export type {
-  INavFooterIconButtonProps,
-  INavFooterLinkProps,
-  INavFooterPanelProps,
-  INavFooterProps,
-  INavFooterRootProps,
-} from './NavFooter';
 export type { ITableProps as ITableV1Props } from './TableV1';
 export type { ITreeProps } from './Tree';
 export type { IGradientTextProps } from './Typography';
