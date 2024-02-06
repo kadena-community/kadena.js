@@ -57,11 +57,11 @@ export const useWallet = () => {
       keySource,
     );
 
-    const updatedProfile = await WalletService.getProfile(profileId);
+    const keySources = await walletRepository.getProfileKeySources(profileId);
 
     setContext((ctx) => ({
       ...ctx,
-      profile: updatedProfile,
+      keySources,
       accounts: [account],
     }));
   };
