@@ -206,11 +206,20 @@ export const CompactTransfersTable = (
                       <Link
                         href={`${routes.TRANSACTIONS}/${crossChainCounterPart.requestKey}`}
                       >
-                        <span title={crossChainCounterPart.requestKey}>
-                          {truncateColumns
-                            ? truncate(crossChainCounterPart.requestKey)
-                            : crossChainCounterPart.requestKey}
-                        </span>
+                        {truncateColumns ? (
+                          <Tooltip
+                            closeDelay={150}
+                            content={crossChainCounterPart.requestKey}
+                            delay={500}
+                            position="left"
+                          >
+                            <span>
+                              {truncate(crossChainCounterPart.requestKey)}
+                            </span>
+                          </Tooltip>
+                        ) : (
+                          <span>{crossChainCounterPart.requestKey}</span>
+                        )}
                       </Link>
                     </>
                   )}
