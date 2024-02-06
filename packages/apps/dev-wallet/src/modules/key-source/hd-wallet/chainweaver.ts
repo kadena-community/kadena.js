@@ -6,7 +6,7 @@ import {
   kadenaSign,
 } from '@kadena/hd-wallet/chainweaver';
 
-import { IHDChainweaver, hdWalletRepository } from './hd-wallet.repository';
+import { IHDChainweaver, keySourceRepository } from '../key-source.repository';
 
 const createContext = async (password: string) => {
   const encryptionKey = randomBytes(32);
@@ -50,8 +50,8 @@ export function createChainweaverService() {
         password,
         mnemonic,
       );
-      await hdWalletRepository.addEncryptedValue(secretId, encryptedMnemonic);
-      await hdWalletRepository.addEncryptedValue(rootKeyId, encryptedRootKey);
+      await keySourceRepository.addEncryptedValue(secretId, encryptedMnemonic);
+      await keySourceRepository.addEncryptedValue(rootKeyId, encryptedRootKey);
       const keySource: IHDChainweaver = {
         uuid: crypto.randomUUID(),
         profileId,
@@ -60,13 +60,13 @@ export function createChainweaverService() {
         secretId: secretId,
         rootKeyId,
       };
-      await hdWalletRepository.addKeySource(keySource);
+      await keySourceRepository.addKeySource(keySource);
       context = await createContext(password);
       return keySource;
     },
 
     connect: async (password: string, keySource: IHDChainweaver) => {
-      const encryptedRootKey = await hdWalletRepository.getEncryptedValue(
+      const encryptedRootKey = await keySourceRepository.getEncryptedValue(
         keySource.rootKeyId,
       );
       await kadenaDecrypt(password, encryptedRootKey);
@@ -77,13 +77,13 @@ export function createChainweaverService() {
       if (!context) {
         throw new Error('Wallet not unlocked');
       }
-      const keySource = await hdWalletRepository.getKeySource(keySourceId);
+      const keySource = await keySourceRepository.getKeySource(keySourceId);
       if (!keySource || keySource.source !== 'HD-chainweaver') {
         throw new Error('Invalid key source');
       }
       const startIndex = keySource.keys.length;
       const password = await decryptPassword(context);
-      const rootKey = await hdWalletRepository.getEncryptedValue(
+      const rootKey = await keySourceRepository.getEncryptedValue(
         keySource.rootKeyId,
       );
       const publicKeys = await kadenaGenKeypair(password, rootKey, [
@@ -93,7 +93,7 @@ export function createChainweaverService() {
       const newKeys = await Promise.all(
         publicKeys.map(async ({ publicKey, secretKey }, index) => {
           const secretId = crypto.randomUUID();
-          await hdWalletRepository.addEncryptedValue(secretId, secretKey);
+          await keySourceRepository.addEncryptedValue(secretId, secretKey);
           return {
             publicKey: publicKey,
             index: startIndex + index,
@@ -102,7 +102,7 @@ export function createChainweaverService() {
         }),
       );
       keySource.keys.push(...newKeys);
-      await hdWalletRepository.updateKeySource(keySource);
+      await keySourceRepository.updateKeySource(keySource);
       return newKeys;
     },
 
@@ -110,7 +110,7 @@ export function createChainweaverService() {
       if (!context) {
         throw new Error('Wallet not unlocked');
       }
-      const keySource = await hdWalletRepository.getKeySource(keySourceId);
+      const keySource = await keySourceRepository.getKeySource(keySourceId);
       if (!keySource || keySource.source !== 'HD-chainweaver') {
         throw new Error('Invalid key source');
       }
@@ -120,7 +120,9 @@ export function createChainweaverService() {
           .filter((key) => indexes.includes(key.index))
           .map(async (key) => ({
             ...key,
-            secretKey: await hdWalletRepository.getEncryptedValue(key.secretId),
+            secretKey: await keySourceRepository.getEncryptedValue(
+              key.secretId,
+            ),
           })),
       );
 

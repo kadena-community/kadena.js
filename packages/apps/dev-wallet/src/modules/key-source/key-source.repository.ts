@@ -43,7 +43,7 @@ const injectDb = <R extends (...args: any[]) => Promise<any>>(
     return createDatabaseConnection().then((db) => fn(db)(...args));
   }) as R;
 
-const createHDWalletRepository = (): HDWalletRepository => {
+const createKeySourceRepository = (): HDWalletRepository => {
   const getOne = injectDb(getOneItem);
   const add = injectDb(addItem);
   const update = injectDb(updateItem);
@@ -70,4 +70,4 @@ const createHDWalletRepository = (): HDWalletRepository => {
   };
 };
 
-export const hdWalletRepository = createHDWalletRepository();
+export const keySourceRepository = createKeySourceRepository();

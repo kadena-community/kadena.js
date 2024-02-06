@@ -1,4 +1,4 @@
-import { HDWalletKeySource } from '@/modules/key-source/hd-wallet/hd-wallet.repository';
+import { HDWalletKeySource } from '@/modules/key-source/key-source.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
 import { KeySourceType } from '@/modules/wallet/wallet.repository';
 import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';

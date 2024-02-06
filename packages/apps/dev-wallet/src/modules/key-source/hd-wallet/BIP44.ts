@@ -7,7 +7,7 @@ import {
   randomBytes,
 } from '@kadena/hd-wallet';
 
-import { IHDBIP44, hdWalletRepository } from './hd-wallet.repository';
+import { IHDBIP44, keySourceRepository } from '../key-source.repository';
 
 export const DEFAULT_DERIVATION_PATH_TEMPLATE = `m'/44'/626'/<index>'`;
 
@@ -44,7 +44,7 @@ export function createBIP44Service() {
         'buffer',
       );
       const secretId = crypto.randomUUID();
-      await hdWalletRepository.addEncryptedValue(secretId, encryptedMnemonic);
+      await keySourceRepository.addEncryptedValue(secretId, encryptedMnemonic);
       const keySource: IHDBIP44 = {
         uuid: crypto.randomUUID(),
         profileId,
@@ -53,13 +53,13 @@ export function createBIP44Service() {
         keys: [],
         secretId: secretId,
       };
-      await hdWalletRepository.addKeySource(keySource);
+      await keySourceRepository.addKeySource(keySource);
       context = await createContext(mnemonic);
       return keySource;
     },
 
     connect: async (password: string, keySource: IHDBIP44) => {
-      const encryptedMnemonic = await hdWalletRepository.getEncryptedValue(
+      const encryptedMnemonic = await keySourceRepository.getEncryptedValue(
         keySource.secretId,
       );
       const decryptedMnemonicBuffer = await kadenaDecrypt(
@@ -74,7 +74,7 @@ export function createBIP44Service() {
       if (!context) {
         throw new Error('Wallet not unlocked');
       }
-      const keySource = await hdWalletRepository.getKeySource(keySourceId);
+      const keySource = await keySourceRepository.getKeySource(keySourceId);
       if (!keySource || keySource.source !== 'HD-BIP44') {
         throw new Error('Invalid key source');
       }
@@ -90,7 +90,7 @@ export function createBIP44Service() {
         index: startIndex + index,
       }));
       keySource.keys.push(...newKeys);
-      await hdWalletRepository.updateKeySource(keySource);
+      await keySourceRepository.updateKeySource(keySource);
       return newKeys;
     },
 
@@ -98,7 +98,7 @@ export function createBIP44Service() {
       if (!context) {
         throw new Error('Wallet not unlocked');
       }
-      const keySource = await hdWalletRepository.getKeySource(keySourceId);
+      const keySource = await keySourceRepository.getKeySource(keySourceId);
       if (!keySource || keySource.source !== 'HD-BIP44') {
         throw new Error('Invalid key source');
       }

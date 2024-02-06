@@ -1,9 +1,9 @@
 import { IKeySource, KeySourceType } from '@/modules/wallet/wallet.repository';
 import { useCallback } from 'react';
 import { keySourceManager } from '../key-source-manager';
+import { IHDBIP44, IHDChainweaver } from '../key-source.repository';
 import { BIP44Service } from './BIP44';
 import { ChainweaverService } from './chainweaver';
-import { IHDBIP44, IHDChainweaver } from './hd-wallet.repository';
 
 export const useHDWallet = () => {
   const createHDWallet = useCallback(
