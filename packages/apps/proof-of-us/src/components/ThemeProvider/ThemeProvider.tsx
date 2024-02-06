@@ -1,6 +1,5 @@
 'use client';
 
-import { darkThemeClass } from '@kadena/react-ui/styles';
 import { ThemeProvider as NextThemeProvider } from 'next-themes';
 import type { FC, PropsWithChildren } from 'react';
 
@@ -10,11 +9,12 @@ export const ThemeProvider: FC<IProps> = ({ children }) => {
   return (
     <NextThemeProvider
       attribute="class"
-      enableSystem={false}
+      enableSystem={true}
+      defaultTheme="light"
       value={{
-        dark: darkThemeClass,
+        light: 'light',
+        dark: 'dark',
       }}
-      defaultTheme="dark"
     >
       {children}
     </NextThemeProvider>

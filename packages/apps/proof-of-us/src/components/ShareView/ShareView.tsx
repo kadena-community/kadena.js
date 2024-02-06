@@ -28,6 +28,7 @@ export const ShareView: FC<IProps> = ({ next, prev }) => {
 
   if (!proofOfUs) return;
 
+  console.log(proofOfUs);
   const isReady = proofOfUs.signees.length > 1;
   return (
     <section>
