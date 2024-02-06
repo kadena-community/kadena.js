@@ -17,6 +17,7 @@ import {
   Table,
   TableBody,
   TableHeader,
+  Tooltip,
 } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import { truncate } from '@utils/truncate';
@@ -73,22 +74,34 @@ export const CompactTransactionsTable = (
                 <Cell>{edge.node.height}</Cell>
                 <Cell>
                   <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
-                    <span title={edge.node.requestKey}>
-                      {truncateColumns
-                        ? truncate(edge.node.requestKey)
-                        : edge.node.requestKey}
-                    </span>
+                    {truncateColumns ? (
+                      <Tooltip
+                        closeDelay={150}
+                        content={edge.node.requestKey}
+                        delay={500}
+                        position="left"
+                      >
+                        <span>{truncate(edge.node.requestKey)}</span>
+                      </Tooltip>
+                    ) : (
+                      <span>{edge.node.requestKey}</span>
+                    )}
                   </Link>
                 </Cell>
                 <Cell>
                   {edge.node.code ? (
-                    <span title={edge.node.code}>
-                      {JSON.parse(
-                        truncateColumns
-                          ? truncate(edge.node.code)!
-                          : edge.node.code,
-                      )}
-                    </span>
+                    truncateColumns ? (
+                      <Tooltip
+                        closeDelay={150}
+                        content={edge.node.code}
+                        delay={500}
+                        position="left"
+                      >
+                        <span>{truncate(JSON.parse(edge.node.code))}</span>
+                      </Tooltip>
+                    ) : (
+                      <span>{JSON.parse(edge.node.code)}</span>
+                    )
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
                   )}
