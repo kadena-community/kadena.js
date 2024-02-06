@@ -4,6 +4,5 @@
     "lib": ["ES2022"],
     "module": "NodeNext",
     "types": [".kadena/pactjs-generated"]
-  },
-  "exclude": ["./src/mocks"]
+  }
 }
