@@ -7,7 +7,6 @@ import {
   accordionButtonClass,
   accordionContentClass,
   accordionSectionClass,
-  accordionToggleIconClass,
 } from './Accordion.css';
 import { useAccordionItem } from './useAccordionItem';
 
@@ -41,17 +40,9 @@ export function AccordionItem<T>(props: IAccordionItemProps<T>) {
         >
           {item.props.title}
           {isOpen ? (
-            <Close
-              className={accordionToggleIconClass}
-              size="sm"
-              data-open={isOpen}
-            />
+            <Close size="sm" data-open={isOpen} />
           ) : (
-            <Plus
-              size="sm"
-              data-open={isOpen}
-              className={accordionToggleIconClass}
-            />
+            <Plus size="sm" data-open={isOpen} />
           )}
         </button>
       </Heading>

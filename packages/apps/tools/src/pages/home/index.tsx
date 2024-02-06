@@ -235,7 +235,7 @@ const Home: FC = () => {
               {t('Frequently Asked Questions')}
             </Heading>
             <Box marginBlockEnd="md" />
-            <Accordion items={faqs}>
+            <Accordion items={faqs} selectionMode="multiple">
               {(faq) => (
                 <AccordionItem title={faq.title} key={faq.title}>
                   {faq.body}

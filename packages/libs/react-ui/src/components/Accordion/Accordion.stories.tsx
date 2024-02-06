@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Item } from 'react-stately';
 
 import type { IAccordionProps } from './Accordion';
-import { Accordion } from './Accordion';
+import { Accordion, AccordionItem } from './Accordion';
 
 const meta: Meta<IAccordionProps> = {
   title: 'Layout/Accordion',
@@ -40,15 +39,15 @@ export const Dynamic: Story = {
   render: ({ selectionMode = 'single' }) => {
     return (
       <Accordion selectionMode={selectionMode}>
-        <Item key="files" title="Your files">
+        <AccordionItem key="files" title="Your files">
           <p>Files</p>
-        </Item>
-        <Item key="shared" title="Shared with you">
+        </AccordionItem>
+        <AccordionItem key="shared" title="Shared with you">
           <p>Shared</p>
-        </Item>
-        <Item key="last" title="Last item">
+        </AccordionItem>
+        <AccordionItem key="last" title="Last item">
           <p>Last</p>
-        </Item>
+        </AccordionItem>
       </Accordion>
     );
   },

@@ -27,7 +27,7 @@ export interface AccordionItemAria {
   regionProps: DOMAttributes;
 }
 
-//TODO: Replace with `useAccordionItem` from @react-aria/accordion when it fixed.
+//TODO: Replace with `useAccordionItem` from @react-aria/accordion when it is fixed.
 export function useAccordionItem<T>(
   props: AccordionItemAriaProps<T>,
   state: TreeState<T>,

@@ -1,17 +1,16 @@
 import { style } from '@vanilla-extract/css';
 import { atoms, bodyBaseBold, token } from '../../styles';
+import { iconFill } from '../Icon/IconWrapper.css';
 
-export const accordionSectionClass = style({
-  display: 'block',
-  marginBlockEnd: token('spacing.md'),
-  overflow: 'hidden',
-  borderBlockEnd: `1px solid ${token('color.border.base.default')}`,
-  selectors: {
-    '&:last-child': {
-      marginBlockEnd: 0,
-    },
+export const accordionSectionClass = style([
+  atoms({
+    display: 'block',
+    overflow: 'hidden',
+  }),
+  {
+    borderBlockEnd: `1px solid ${token('color.border.base.default')}`,
   },
-});
+]);
 
 export const accordionButtonClass = style([
   bodyBaseBold,
@@ -23,37 +22,34 @@ export const accordionButtonClass = style([
     color: 'text.subtle.default',
     cursor: 'pointer',
     justifyContent: 'space-between',
-    paddingBlockEnd: 'sm',
-    paddingInlineStart: 'xs',
+    paddingBlock: 'sm',
     textAlign: 'left',
     width: '100%',
+    gap: 'sm',
   }),
-]);
-
-export const accordionToggleIconClass = style({
-  color: token('color.text.subtle.default'),
-  transform: 'rotate(45deg)',
-  transition: 'transform 0.2s ease',
-  selectors: {
-    "&[data-open='true']": {
-      transform: 'rotate(90deg)',
+  {
+    color: token('color.text.subtle.default'),
+    vars: {
+      [iconFill]: token('color.text.subtle.default'),
     },
   },
-});
+]);
 
 export const accordionContentClass = style([
   atoms({
-    display: 'none',
+    display: 'grid',
     color: 'text.subtle.default',
     fontSize: 'base',
     margin: 'no',
     overflow: 'hidden',
-    paddingBlockEnd: 'sm',
   }),
   {
+    gridTemplateRows: '0',
+    transition: 'grid-template-rows  0.2s ease',
     selectors: {
       "&[data-open='true']": {
-        display: 'block',
+        gridTemplateRows: '1fr',
+        paddingBlock: token('spacing.sm'),
       },
     },
   },
