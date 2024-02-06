@@ -1,4 +1,5 @@
 import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
+import { Button } from '@/components/Button/Button';
 import { useClaimEventToken } from '@/hooks/data/claimEventToken';
 import type { FC } from 'react';
 
@@ -18,23 +19,18 @@ export const ScanEvent: FC<IProps> = ({ token }) => {
       <div>
         <h2>Attendance @</h2>
 
-        <AttendanceTicket
-          title={token.name}
-          timestamp={token.properties.date}
-        />
+        <AttendanceTicket token={token} />
       </div>
       <div>
         {!hasSuccess && !hasError && !isLoading && (
-          <button disabled={isLoading} onClick={handleClaim}>
-            Claim NFT
-          </button>
+          <Button onPress={handleClaim}>Claim NFT</Button>
         )}
 
         {isLoading && <div>is loading...</div>}
         {hasError && (
           <div>
             what is the error?
-            <button onClick={handleClaim}>Retry NFT</button>
+            <Button onPress={handleClaim}>Retry NFT</Button>
           </div>
         )}
 

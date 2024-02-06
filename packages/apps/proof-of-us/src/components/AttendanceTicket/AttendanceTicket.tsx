@@ -2,15 +2,21 @@ import type { FC } from 'react';
 import { ticketClass } from './style.css';
 
 interface IProps {
-  title: string;
-  timestamp: number;
+  token: IProofOfUsToken;
 }
 
-export const AttendanceTicket: FC<IProps> = ({ title, timestamp }) => {
-  const date = new Date(timestamp);
+export const AttendanceTicket: FC<IProps> = ({ token }) => {
+  const date = new Date(token.properties.date);
   return (
-    <section className={ticketClass}>
-      <h4>{title}</h4>
+    <section
+      className={ticketClass}
+      style={{
+        backgroundImage: `url("${token.image}")`,
+        backgroundColor: token.properties.avatar?.backgroundColor,
+        color: token.properties.avatar?.color,
+      }}
+    >
+      <h4>{token.name}</h4>
 
       <div>
         <h5>Date</h5>

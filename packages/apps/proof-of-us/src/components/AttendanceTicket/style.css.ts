@@ -6,4 +6,7 @@ export const ticketClass = style({
   maxWidth: '800px',
   aspectRatio: '16/9',
   background: 'lightgrey',
+  backgroundRepeat: 'none',
+  backgroundSize: 'cover',
+  borderRadius: '8px',
 });
