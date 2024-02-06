@@ -1,9 +1,9 @@
 import { ChainId } from '@kadena/types';
 import { readFileSync, readdirSync } from 'fs';
-import { deployContract } from '../../built-in/deploy-contract';
-import { submitClient } from '../../core';
-import { IClientConfig } from '../../core/utils/helpers';
-import { createPactCommandFromTemplate } from '../yaml-converter';
+import { deployContract } from '../built-in/deploy-contract';
+import { submitClient } from '../core';
+import { IClientConfig } from '../core/utils/helpers';
+import { createPactCommandFromTemplate } from './yaml-converter';
 
 export interface ITransactionBody {
   chainId: ChainId;

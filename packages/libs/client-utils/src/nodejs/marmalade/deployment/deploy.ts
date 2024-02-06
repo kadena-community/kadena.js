@@ -3,7 +3,7 @@ import { readdirSync } from 'fs';
 
 import { submitClient } from '../../../core';
 import type { IAccount, IClientConfig } from '../../../core/utils/helpers';
-import { deployFromDirectory } from '../../deploy/deploy-from-directory';
+import { deployFromDirectory } from '../../deploy-from-directory';
 import { createPactCommandFromTemplate } from '../../yaml-converter';
 import { handleDirectorySetup } from '../utils/directory';
 import {

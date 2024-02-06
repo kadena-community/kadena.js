@@ -3,7 +3,6 @@ import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { deployContract } from '../../../built-in/deploy-contract';
 import type { IAccount, IClientConfig } from '../../../core/utils/helpers';
-import { deployFromDirectory } from '../../deploy/deploy-from-directory';
 import type { INamespaceConfig } from './config';
 import { defaultAccount, defaultChainId, defaultNetworkId } from './defaults';
 
