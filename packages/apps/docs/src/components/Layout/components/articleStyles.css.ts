@@ -2,6 +2,10 @@ import type { LayoutType } from '@kadena/docs-tools';
 import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
 import { style, styleVariants } from '@vanilla-extract/css';
 
+export const containerClass = style({
+  marginBlockEnd: tokens.kda.foundation.size.n20,
+});
+
 export const articleClass = style([
   atoms({
     width: '100%',
