@@ -1,7 +1,6 @@
 'use client';
 import { AvatarEditor } from '@/components/AvatarEditor/AvatarEditor';
 import { DetailView } from '@/components/DetailView/DetailView';
-import { ProcessingView } from '@/components/ProcessingView/ProcessingView';
 
 import { ShareView } from '@/components/ShareView/ShareView';
 

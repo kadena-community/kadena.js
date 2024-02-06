@@ -5,7 +5,6 @@ import type { FC } from 'react';
 import { SignStatus } from '../SignStatus/SignStatus';
 import { wrapperClass } from './style.css';
 
-
 //TODO:
 //ATM we check the signing status of both users via a websocket.
 //it would be better to directly check the chain for who signed.

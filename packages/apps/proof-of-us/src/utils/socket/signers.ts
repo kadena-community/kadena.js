@@ -37,7 +37,6 @@ export const signeeListeners = (socket: Socket, io: IOServer) => {
   });
 
   socket.on('updateSigneeStatus', ({ content, to }) => {
- 
     store.updateSignee(to, content);
     io.to(to)
       .to(to)
