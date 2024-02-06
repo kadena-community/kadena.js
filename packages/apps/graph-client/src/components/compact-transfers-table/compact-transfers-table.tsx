@@ -14,6 +14,7 @@ import {
   Table,
   TableBody,
   TableHeader,
+  Tooltip,
 } from '@kadena/react-ui';
 import { atoms } from '@kadena/react-ui/styles';
 import { truncate } from '@utils/truncate';
@@ -131,11 +132,18 @@ export const CompactTransfersTable = (
                   <Link
                     href={`${routes.ACCOUNT}/${fungibleName}/${transfer.senderAccount}`}
                   >
-                    <span title={transfer.senderAccount}>
-                      {truncateColumns
-                        ? truncate(transfer.senderAccount)
-                        : transfer.senderAccount}
-                    </span>
+                    {truncateColumns ? (
+                      <Tooltip
+                        closeDelay={150}
+                        content={transfer.senderAccount}
+                        delay={500}
+                        position="left"
+                      >
+                        <span>{truncate(transfer.senderAccount)}</span>
+                      </Tooltip>
+                    ) : (
+                      <span>{transfer.senderAccount}</span>
+                    )}
                   </Link>
                 </Cell>
                 <Cell>
@@ -143,31 +151,54 @@ export const CompactTransfersTable = (
                     <Link
                       href={`${routes.ACCOUNT}/${fungibleName}/${transfer.receiverAccount}`}
                     >
-                      <span title={transfer.receiverAccount}>
-                        {truncateColumns
-                          ? truncate(transfer.receiverAccount)
-                          : transfer.receiverAccount}
-                      </span>
+                      {truncateColumns ? (
+                        <Tooltip
+                          closeDelay={150}
+                          content={transfer.receiverAccount}
+                          delay={500}
+                          position="left"
+                        >
+                          <span>{truncate(transfer.receiverAccount)}</span>
+                        </Tooltip>
+                      ) : (
+                        <span>{transfer.receiverAccount}</span>
+                      )}
                     </Link>
                   ) : (
                     <Link
                       href={`${routes.ACCOUNT}/${fungibleName}/${crossChainCounterPart.receiverAccount}`}
                     >
-                      <span title={crossChainCounterPart.receiverAccount}>
-                        {truncateColumns
-                          ? truncate(crossChainCounterPart.receiverAccount)
-                          : crossChainCounterPart.receiverAccount}
-                      </span>
+                      {truncateColumns ? (
+                        <Tooltip
+                          closeDelay={150}
+                          content={crossChainCounterPart.receiverAccount}
+                          delay={500}
+                          position="left"
+                        >
+                          <span>
+                            {truncate(crossChainCounterPart.receiverAccount)}
+                          </span>
+                        </Tooltip>
+                      ) : (
+                        <span>{crossChainCounterPart.receiverAccount}</span>
+                      )}
                     </Link>
                   )}
                 </Cell>
                 <Cell>
                   <Link href={`${routes.TRANSACTIONS}/${transfer.requestKey}`}>
-                    <span title={transfer.requestKey}>
-                      {truncateColumns
-                        ? truncate(transfer.requestKey)
-                        : transfer.requestKey}
-                    </span>
+                    {truncateColumns ? (
+                      <Tooltip
+                        closeDelay={150}
+                        content={transfer.requestKey}
+                        delay={500}
+                        position="left"
+                      >
+                        <span>{truncate(transfer.requestKey)}</span>
+                      </Tooltip>
+                    ) : (
+                      <span>{transfer.requestKey}</span>
+                    )}
                   </Link>
                   {crossChainCounterPart && (
                     <>
@@ -175,11 +206,20 @@ export const CompactTransfersTable = (
                       <Link
                         href={`${routes.TRANSACTIONS}/${crossChainCounterPart.requestKey}`}
                       >
-                        <span title={crossChainCounterPart.requestKey}>
-                          {truncateColumns
-                            ? truncate(crossChainCounterPart.requestKey)
-                            : crossChainCounterPart.requestKey}
-                        </span>
+                        {truncateColumns ? (
+                          <Tooltip
+                            closeDelay={150}
+                            content={crossChainCounterPart.requestKey}
+                            delay={500}
+                            position="left"
+                          >
+                            <span>
+                              {truncate(crossChainCounterPart.requestKey)}
+                            </span>
+                          </Tooltip>
+                        ) : (
+                          <span>{crossChainCounterPart.requestKey}</span>
+                        )}
                       </Link>
                     </>
                   )}
