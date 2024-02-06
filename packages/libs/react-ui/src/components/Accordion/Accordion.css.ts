@@ -37,19 +37,17 @@ export const accordionButtonClass = style([
 
 export const accordionContentClass = style([
   atoms({
-    display: 'grid',
+    display: 'none',
     color: 'text.subtle.default',
     fontSize: 'base',
     margin: 'no',
     overflow: 'hidden',
+    paddingBlock: 'sm',
   }),
   {
-    gridTemplateRows: '0',
-    transition: 'grid-template-rows  0.2s ease',
     selectors: {
       "&[data-open='true']": {
-        gridTemplateRows: '1fr',
-        paddingBlock: token('spacing.sm'),
+        display: 'block',
       },
     },
   },
