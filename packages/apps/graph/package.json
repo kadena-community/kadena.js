@@ -37,6 +37,7 @@
     "prisma:studio": "prisma studio",
     "simulate:all": "pnpm run simulate:coin & pnpm run simulate:marmalade",
     "simulate:coin": "ts-node -T src/devnet/simulation/index.ts simulate:coin",
+    "simulate:flood": "ts-node -T src/devnet/simulation/index.ts simulate:flood",
     "simulate:marmalade": "ts-node -T src/devnet/simulation/index.ts simulate:marmalade",
     "start": "npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
     "start:generate": "pnpm build && npx ts-node-dev --respawn --no-notify --exit-child src/index.ts",
