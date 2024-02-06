@@ -1,5 +1,17 @@
 # @kadena/client-utils
 
+## 0.4.0
+
+### Minor Changes
+
+- 1b4e49d96: introduce `from` function that allows start a process from a
+  specific event
+
+### Patch Changes
+
+- 172734c8b: enable the utility function 'describeModule' to be used in other
+  packages
+
 ## 0.3.0
 
 ### Minor Changes

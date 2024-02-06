@@ -1,6 +1,6 @@
-# @kadena/proof-of-us
+# @kadena/dev-wallet
 
-## 0.2.1
+## 0.0.2
 
 ### Patch Changes
 
@@ -10,9 +10,3 @@
 - Updated dependencies [5a52cd69b]
 - Updated dependencies [eb12b600e]
   - @kadena/react-ui@0.8.0
-
-## 0.2.0
-
-### Minor Changes
-
-- aa68f7b7f: initial commit for next app
