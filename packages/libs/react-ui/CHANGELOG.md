@@ -1,5 +1,20 @@
 # @kadena/react-ui
 
+## 0.8.0
+
+### Minor Changes
+
+- 52200486f: Adds NumberField component to the form section
+
+### Patch Changes
+
+- bc5ff9ab1: Updated the Pagination component to use the new Button component
+  styles and new tokens
+- 817eff027: Export progressCircle
+- 5a52cd69b: Updated the NavHeader component export structure, components, and
+  styles
+- eb12b600e: Aria accordion component
+
 ## 0.7.1
 
 ### Patch Changes

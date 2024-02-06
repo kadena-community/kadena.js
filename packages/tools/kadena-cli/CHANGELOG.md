@@ -1,5 +1,21 @@
 # @kadena/kadena-cli
 
+## 0.2.0
+
+### Minor Changes
+
+- bf09d1161: Feat: "add-manual" and "add-from-wallet" sub command as part of
+  account command
+- 8ce9095ef: add dapp create command
+
+### Patch Changes
+
+- 9b7efef2a: Add max time option for kadena devnet
+- 095aca720: Added kadena devnet simulate command and auxiliary functionalities
+- Updated dependencies [172734c8b]
+- Updated dependencies [1b4e49d96]
+  - @kadena/client-utils@0.4.0
+
 ## 0.1.0
 
 ### Minor Changes

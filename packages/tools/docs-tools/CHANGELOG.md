@@ -1,5 +1,11 @@
 # @kadena/docs-tools
 
+## 0.2.0
+
+### Minor Changes
+
+- 128b37afa: new branding banner for docs
+
 ## 0.1.0
 
 ### Minor Changes

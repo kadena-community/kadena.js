@@ -1,5 +1,17 @@
 # @kadena/graph
 
+## 0.1.2
+
+### Patch Changes
+
+- 6a4153b1b: Alter migrations to support the correct format for devnet. Also
+  removed unnecessary indexes.
+- 5f89df506: Change default value for branch
+- e6e252cd9: Implement flood functionality
+- Updated dependencies [172734c8b]
+- Updated dependencies [1b4e49d96]
+  - @kadena/client-utils@0.4.0
+
 ## 0.1.1
 
 ### Patch Changes
