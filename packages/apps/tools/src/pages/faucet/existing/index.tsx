@@ -13,7 +13,6 @@ import { fundExistingAccount, pollResult } from '@/services/faucet';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
-  Accordion,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -347,18 +346,16 @@ const ExistingAccountFaucetPage: FC = () => {
             title: t('Resources & Links'),
             children: (
               <div className={linksBoxStyle}>
-                <Accordion.Root>
-                  {sidebarLinks.map((item, index) => (
-                    <MenuLinkButton
-                      title={item.title}
-                      key={`menu-link-${index}`}
-                      href={item.href}
-                      active={item.href === router.pathname}
-                      target="_blank"
-                      onClick={handleOnClickLink}
-                    />
-                  ))}
-                </Accordion.Root>
+                {sidebarLinks.map((item, index) => (
+                  <MenuLinkButton
+                    title={item.title}
+                    key={`menu-link-${index}`}
+                    href={item.href}
+                    active={item.href === router.pathname}
+                    target="_blank"
+                    onClick={handleOnClickLink}
+                  />
+                ))}
               </div>
             ),
           },
