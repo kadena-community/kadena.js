@@ -66,6 +66,9 @@ export const responsiveStyle = ({
     : {}),
 });
 
+/**
+ * @internal usage
+ */
 export const mapToProperty =
   <Property extends keyof Properties<string | number>>(
     property: Property,
