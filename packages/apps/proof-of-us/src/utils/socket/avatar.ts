@@ -22,7 +22,7 @@ export const avatarListeners = (socket: Socket, io: IOServer) => {
       });
   });
 
-  socket.on('uploadBackground', async ({ to }) => {
+  socket.on('uploadBackground', async ({ content, to }) => {
     const AKORD_EMAIL = process.env.AKORD_EMAIL;
     const AKORD_PASSWORD = process.env.AKORD_PASSWORD;
     if (!AKORD_EMAIL || !AKORD_PASSWORD) {
@@ -44,7 +44,7 @@ export const avatarListeners = (socket: Socket, io: IOServer) => {
       debug: true,
     });
 
-    if (!bg) return;
+    if (!content.bg) return;
 
     const proofOfUs = store.getProofOfUs(to);
     if (!proofOfUs) {

@@ -4,5 +4,8 @@ export const mainWrapperClass = style({
   position: 'relative',
   maxWidth: '800px',
   margin: '0 auto',
-  height: '100dvh',
+});
+
+export const bodyClass = style({
+  margin: 0,
 });
