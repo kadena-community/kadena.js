@@ -49,11 +49,11 @@ export const Routes: FC = () => {
       <Route path="/unlock-profile/:profileId" element={<UnlockProfile />} />
       <Route element={<ProtectedRoute isAllowed={isUnlocked} />}>
         <Route
-          path="/backup-recovery-phrase"
+          path="/backup-recovery-phrase/:keySourceId"
           element={<BackupRecoveryPhrase />}
         />
         <Route
-          path="/backup-recovery-phrase/write-down"
+          path="/backup-recovery-phrase/:keySourceId/write-down"
           element={<WriteDownRecoveryPhrase />}
         />
         <Route path="/accounts/:account" element={<p>Account</p>} />,

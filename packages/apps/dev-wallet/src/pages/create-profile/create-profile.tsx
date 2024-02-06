@@ -1,6 +1,8 @@
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
+import { IKeySource } from '@/modules/wallet/wallet.repository';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router-dom';
 import { useWallet } from '../../modules/wallet/wallet.hook';
@@ -11,6 +13,7 @@ export function CreateProfile() {
     profileName: string;
   }>();
   const { createProfile, isUnlocked, createFirstAccount } = useWallet();
+  const [createdKeySource, setCreatedKeySource] = useState<IKeySource>();
   const { createHDWallet } = useHDWallet();
   async function create({
     profileName,
@@ -31,9 +34,15 @@ export function CreateProfile() {
     );
     await createFirstAccount(profile.uuid, keySource);
     console.log('wallet created');
+    setCreatedKeySource(keySource);
   }
-  if (isUnlocked) {
-    return <Navigate to="/backup-recovery-phrase" replace />;
+  if (isUnlocked && createdKeySource) {
+    return (
+      <Navigate
+        to={`/backup-recovery-phrase/${createdKeySource.uuid}`}
+        replace
+      />
+    );
   }
   return (
     <main>

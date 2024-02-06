@@ -9,7 +9,7 @@ import { ConfirmRecoveryPhrase } from './confirm-recovery-phrase';
 
 export function WriteDownRecoveryPhrase() {
   const { register, handleSubmit } = useForm<{ password: string }>();
-  const { profile, decryptSecret } = useWallet();
+  const { keySources, decryptSecret } = useWallet();
   const { keySourceId } = useParams();
   const [mnemonic, setMnemonic] = useState('');
   const [error, setError] = useState('');
@@ -19,9 +19,7 @@ export function WriteDownRecoveryPhrase() {
     setError('');
     try {
       // TODO: this should check the source type of the keySource
-      const keySource = profile?.keySources.find(
-        (ks) => ks.uuid === keySourceId,
-      );
+      const keySource = keySources.find((ks) => ks.uuid === keySourceId);
       if (!keySource) {
         throw new Error('Key source not found');
       }

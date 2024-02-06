@@ -3,13 +3,13 @@ import { useCallback, useContext } from 'react';
 
 import { keySourceManager } from '../key-source/key-source-manager';
 import { ExtWalletContextType, WalletContext } from './wallet.provider';
-import { IKeySource } from './wallet.repository';
+import { IKeySource, walletRepository } from './wallet.repository';
 import * as WalletService from './wallet.service';
 
 const isUnlocked = (
   ctx: ExtWalletContextType,
 ): ctx is Required<ExtWalletContextType> => {
-  if (!ctx || !ctx.profile || !ctx.profileList) {
+  if (!ctx || !ctx.profile || !ctx.profileList || !ctx.keySources) {
     return false;
   }
   return true;
@@ -20,6 +20,15 @@ export const useWallet = () => {
   if (!context || !setContext) {
     throw new Error('useWallet must be used within a WalletProvider');
   }
+
+  const retrieveKeySources = useCallback(
+    async (profileId: string) => {
+      const keySources = await walletRepository.getProfileKeySources(profileId);
+      setContext((ctx) => ({ ...ctx, keySources }));
+      return keySources;
+    },
+    [setContext],
+  );
 
   const createProfile = useCallback(
     async (profileName: string, password: string) => {
@@ -61,14 +70,16 @@ export const useWallet = () => {
     const profile = await WalletService.unlockProfile(profileId, password);
     if (profile) {
       const accounts = await WalletService.getAccounts(profileId);
+      const keySources = await walletRepository.getProfileKeySources(profileId);
       // by default unlock the first key source; we can change this approach later
       setContext(({ profileList }) => ({
         profileList,
         profile,
         accounts,
+        keySources,
       }));
       keySourceManager.reset();
-      return profile;
+      return { profile, keySources };
     }
     return null;
   };
@@ -86,7 +97,7 @@ export const useWallet = () => {
       if (!isUnlocked(context)) {
         throw new Error('Wallet in not unlocked');
       }
-      return WalletService.sign(context.profile, onConnect, TXs);
+      return WalletService.sign(context.keySources, onConnect, TXs);
     },
     [context],
   );
@@ -108,10 +119,12 @@ export const useWallet = () => {
     sign,
     decryptSecret,
     lockProfile,
+    retrieveKeySources,
     isUnlocked: isUnlocked(context),
     profile: context.profile,
     profileList: context.profileList ?? [],
     accounts: context.accounts ?? [],
+    keySources: context.keySources ?? [],
   };
 };
 

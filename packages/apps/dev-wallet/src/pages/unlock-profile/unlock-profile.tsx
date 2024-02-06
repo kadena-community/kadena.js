@@ -17,11 +17,12 @@ export function UnlockProfile() {
       if (!profileId) {
         throw new Error('ProfileId is undefined');
       }
-      const unlockedProfile = await unlockProfile(profileId, password);
-      if (!unlockedProfile) {
+      const result = await unlockProfile(profileId, password);
+      if (!result) {
         throw new Error("Password doesn't match");
       }
-      const keySource = unlockedProfile.keySources[0];
+      // for now we just pick the first key source later we should have a way to select the key source
+      const keySource = result.keySources[0];
       if (!keySource) {
         throw new Error('No key source found');
       }

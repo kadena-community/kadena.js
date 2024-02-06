@@ -29,8 +29,6 @@ export interface IProfile {
   uuid: string;
   name: string;
   networks: INetwork[];
-  keySources: IKeySource[];
-  // TODO: maybe we should move this to the keySources
   secretId: string;
 }
 
@@ -57,6 +55,7 @@ export interface WalletRepository {
   addEncryptedValue: (key: string, value: string | Uint8Array) => Promise<void>;
   addAccount: (account: IAccount) => Promise<void>;
   getAccountsByProfileId: (profileId: string) => Promise<IAccount[]>;
+  getProfileKeySources: (profileId: string) => Promise<IKeySource[]>;
 }
 
 const createWalletRepository = (): WalletRepository => {
@@ -92,6 +91,9 @@ const createWalletRepository = (): WalletRepository => {
     },
     getAccountsByProfileId(profileId: string): Promise<IAccount[]> {
       return getAll('account', profileId, 'profileId');
+    },
+    getProfileKeySources: async (profileId: string): Promise<IKeySource[]> => {
+      return getAll('keySource', profileId, 'profileId');
     },
   };
 };

@@ -19,14 +19,14 @@ export function getAccounts(profileId: string) {
 }
 
 export function sign(
-  profile: IProfile,
+  keySources: IKeySource[],
   onConnect: (keySource: IKeySource) => Promise<void>,
   TXs: IUnsignedCommand[],
 ) {
   const signedTx = Promise.all(
     TXs.map(async (Tx) => {
       const signatures = await Promise.all(
-        profile.keySources.map(async (keySource) => {
+        keySources.map(async (keySource) => {
           const { keys: publicKeys, source } = keySource;
           const cmd: IPactCommand = JSON.parse(Tx.cmd);
           const relevantIndexes = cmd.signers
@@ -78,7 +78,6 @@ export async function createProfile(
     uuid: crypto.randomUUID(),
     name: profileName,
     networks,
-    keySources: [],
     secretId,
   };
   await walletRepository.addProfile(profile);
@@ -100,32 +99,9 @@ export const unlockProfile = async (profileId: string, password: string) => {
   }
 };
 
-export async function storeKeySource(keySource: IKeySource, profileId: string) {
-  const profile = await walletRepository.getProfile(profileId);
-  const keySourceToStore = {
-    ...keySource,
-  };
-  profile.keySources.push(keySourceToStore);
-  await walletRepository.updateProfile(profile);
-}
-
-export async function createKey(
-  profileId: string,
-  keySource: IKeySource,
-  quantity: number,
-) {
-  const profile = await getProfile(profileId);
+export async function createKey(keySource: IKeySource, quantity: number) {
   const service = keySourceManager.get(keySource.source);
   const keys = await service.createKey(keySource.uuid, quantity);
-
-  profile.keySources = profile.keySources.map((source) => {
-    if (source.uuid === keySource.uuid) {
-      return { ...source, keys: [...source.keys, ...keys] };
-    }
-    return source;
-  });
-
-  await walletRepository.updateProfile(profile);
   return keys;
 }
 
@@ -156,8 +132,6 @@ export const createFirstAccount = async (
 
   const service = keySourceManager.get(keySource.source);
   const keys = await service.createKey(keySource.uuid, 1);
-
-  await storeKeySource({ ...keySource, keys }, profileId);
 
   return createKAccount(profileId, keys[0]);
 };
