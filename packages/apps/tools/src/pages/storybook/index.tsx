@@ -25,7 +25,6 @@ const Storybook = () => {
     account: accountName,
     networkId: 'testnet04',
     chainId: '1',
-    refetchOnWindowFocus: false,
   });
 
   console.log({ error, accountDetails });

@@ -1,11 +1,9 @@
 import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
-import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import * as z from 'zod';
 
-interface IParams
-  extends Omit<UseQueryOptions, 'queryKey' | 'queryFn' | 'enabled'> {
+interface IParams {
   account: string;
   networkId: string;
   chainId: ChainId;
@@ -34,17 +32,11 @@ const fetchDetails = async ({
   return parsed;
 };
 
-const useAccountDetailsQuery = ({
-  account,
-  networkId,
-  chainId,
-  ...rest
-}: IParams) => {
+const useAccountDetailsQuery = ({ account, networkId, chainId }: IParams) => {
   return useQuery({
     queryKey: ['account-details', account, networkId, chainId],
     queryFn: () => fetchDetails({ account, networkId, chainId }),
     enabled: !!account,
-    ...(rest as UseQueryOptions),
   });
 };
 
