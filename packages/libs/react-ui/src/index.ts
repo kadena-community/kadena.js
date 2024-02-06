@@ -113,14 +113,9 @@ export {
 } from './components';
 
 // Deprecated components
-export { GradientText, NavFooter, TableV1, Tree } from './components';
+export { GradientText, TableV1, Tree } from './components';
 export type {
   IGradientTextProps,
-  INavFooterIconButtonProps,
-  INavFooterLinkProps,
-  INavFooterPanelProps,
-  INavFooterProps,
-  INavFooterRootProps,
   ITableV1Props,
   ITreeProps,
 } from './components';

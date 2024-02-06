@@ -8,7 +8,7 @@ const meta: Meta<IAccordionProps> = {
   title: 'Layout/Accordion',
   parameters: {
     status: {
-      type: 'inDevelopment',
+      type: 'releaseCandidate',
     },
     controls: {
       hideNoControlsWarning: true,

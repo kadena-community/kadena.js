@@ -47,7 +47,7 @@ const meta: Meta<typeof Table> = {
   decorators: [onLayer2],
   parameters: {
     status: {
-      type: ['inDevelopment'],
+      type: ['releaseCandidate'],
     },
     docs: {
       description: {
