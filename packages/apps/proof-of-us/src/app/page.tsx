@@ -2,7 +2,6 @@
 import { Button } from '@/components/Button/Button';
 import { useAccount } from '@/hooks/account';
 import { Stack } from '@kadena/react-ui';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -27,9 +26,6 @@ const Page: FC = () => {
       <Button variant="primary" onPress={login}>
         Login
       </Button>
-      <Link href={`${process.env.NEXT_PUBLIC_WALLET_URL}/register`}>
-        Register
-      </Link>
     </Stack>
   );
 };

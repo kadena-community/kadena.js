@@ -18,7 +18,10 @@ export const ScanEvent: FC<IProps> = ({ token }) => {
       <div>
         <h2>Attendance @</h2>
 
-        <AttendanceTicket title={token.title} timestamp={token.date} />
+        <AttendanceTicket
+          title={token.name}
+          timestamp={token.properties.date}
+        />
       </div>
       <div>
         {!hasSuccess && !hasError && !isLoading && (

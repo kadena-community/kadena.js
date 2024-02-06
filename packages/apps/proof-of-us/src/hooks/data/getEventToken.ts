@@ -19,9 +19,17 @@ export const useGetEventToken: IDataHook<IProofOfUsToken | undefined> = (
     setTimeout(() => {
       const result: IProofOfUsToken = {
         tokenId: 't:ZlfM7Ugw86DtzuPN-Xas90vJ0NLl6C62qtJ-QlI_Hxc',
-        title: 'Devworld 24',
-        type: 'event',
-        date: 1709197180,
+        image:
+          'https://pbs.twimg.com/profile_images/1643582036551118848/1ga1McZu_400x400.jpg',
+        name: 'Devworld 24',
+        properties: {
+          type: 'event',
+          date: 1709197180,
+          avatar: {
+            backgroundColor: '#4c0e5c',
+            color: '#FFFFFF',
+          },
+        },
       };
       setData(result);
 

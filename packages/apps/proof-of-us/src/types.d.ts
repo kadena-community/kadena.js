@@ -44,9 +44,16 @@ interface IProofOfUsData {
 
 interface IProofOfUsToken {
   tokenId: string;
-  title: string;
-  type: TokenType;
-  date: number;
+  image: string;
+  name: string;
+  properties: {
+    type: TokenType;
+    date: number;
+    avatar?: {
+      backgroundColor: string;
+      color: string;
+    };
+  };
 }
 
 interface IProofOfUs {

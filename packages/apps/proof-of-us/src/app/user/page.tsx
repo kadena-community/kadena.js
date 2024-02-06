@@ -1,7 +1,9 @@
 'use client';
+import { FloatButton } from '@/components/FloatButton/FloatButton';
 import { IsLoading } from '@/components/IsLoading/IsLoading';
+import { List } from '@/components/List/List';
+import { ListItem } from '@/components/List/ListItem';
 import { useGetAllProofOfUs } from '@/hooks/data/getAllProofOfUs';
-import Link from 'next/link';
 import type { FC } from 'react';
 
 const Page: FC = () => {
@@ -13,20 +15,15 @@ const Page: FC = () => {
       {isLoading && <IsLoading />}
       {error && <div>{error.message}</div>}
       {!isLoading && !error && (
-        <ul>
+        <List>
           {data.map(({ token }) => {
             if (!token) return null;
-            return (
-              <li key={token.tokenId}>
-                <Link href={`/user/proof-of-us/t/${token.tokenId}`}>
-                  {new Date(token.date).toLocaleDateString()}
-                </Link>
-              </li>
-            );
+            return <ListItem key={token.tokenId} token={token}></ListItem>;
           })}
-        </ul>
+        </List>
       )}
-      <Link href="/user/proof-of-us/new">New Proof</Link>
+
+      <FloatButton href="/user/proof-of-us/new">+</FloatButton>
     </div>
   );
 };
