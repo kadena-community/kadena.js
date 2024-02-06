@@ -9,12 +9,14 @@ type Inputs = {
   phrase: string;
   name: string;
   password: string;
+  fromChainweaver: boolean;
 };
 
 const defaultValues: Inputs = {
   phrase: '',
   name: '',
   password: '',
+  fromChainweaver: false,
 };
 
 export function ImportWallet() {
@@ -22,23 +24,23 @@ export function ImportWallet() {
   const [error, setError] = useState('');
   const { createProfile, isUnlocked, createFirstAccount } = useWallet();
   const { createHDWallet } = useHDWallet();
-  async function confirm({ phrase, password, name }: Inputs) {
+  async function confirm({ phrase, password, name, fromChainweaver }: Inputs) {
     const is12Words = phrase.trim().split(' ').length === 12;
     if (!is12Words) {
       setError('enter 12 words');
       return;
     }
     try {
-      const { keySourceManager, profile } = await createProfile(name, password);
+      const profile = await createProfile(name, password);
       // for now we only support slip10 so we just create the keySource and the first account by default for it
       // later we should change this flow to be more flexible
       const keySource = await createHDWallet(
-        { keySourceManager },
-        'hd-wallet-slip10', // TODO: support chainweaver
+        profile.uuid,
+        fromChainweaver ? 'HD-chainweaver' : 'HD-BIP44',
         password,
         phrase,
       );
-      await createFirstAccount({ keySourceManager, profile }, keySource);
+      await createFirstAccount(profile.uuid, keySource);
     } catch (e) {
       setError((e as Error).message);
     }
@@ -56,7 +58,11 @@ export function ImportWallet() {
             <TextField id="phrase" type="phrase" {...register('phrase')} />
 
             <Box>
-              <input type="checkbox" id="isChainweaver" />
+              <input
+                type="checkbox"
+                id="isChainweaver"
+                {...register('fromChainweaver')}
+              />
               <label htmlFor="isChainweaver">Import from Chainweaver</label>
             </Box>
 

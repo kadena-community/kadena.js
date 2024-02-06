@@ -1,67 +1,28 @@
 import { IPactCommand, IUnsignedCommand, addSignatures } from '@kadena/client';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
-import { KeySourceWithSecret } from '../key-source/interface';
-import { IKeySourceManager } from '../key-source/keySourceService';
+import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
 import {
   IAccount,
   IKeyItem,
   IKeySource,
   IProfile,
-  WalletRepository,
+  walletRepository,
 } from './wallet.repository';
 
-interface Context {
-  walletRepository: WalletRepository;
-  keySourceManager: IKeySourceManager;
-  profile: IProfile;
+export function getProfile(profileId: string) {
+  return walletRepository.getProfile(profileId);
 }
 
-export function getProfile({
-  walletRepository,
-  profile,
-}: Pick<Context, 'walletRepository' | 'profile'>) {
-  return walletRepository.getProfile(profile.uuid);
+export function getAccounts(profileId: string) {
+  return walletRepository.getAccountsByProfileId(profileId);
 }
-
-export function getAccounts({
-  walletRepository,
-  profile,
-}: Pick<Context, 'walletRepository' | 'profile'>) {
-  return walletRepository.getAccountsByProfileId(profile.uuid);
-}
-
-export const getSecret = async (
-  { walletRepository }: Pick<Context, 'walletRepository'>,
-  secret: string | Uint8Array,
-) => {
-  if (secret === undefined || secret === null) {
-    return new Uint8Array();
-  }
-  if (typeof secret !== 'string') {
-    throw new Error('Secret ket must be a string');
-  }
-  return walletRepository.getEncryptedValue(secret);
-};
-
-const storeSecret = async (
-  { walletRepository }: Pick<Context, 'walletRepository'>,
-  secret: string | Uint8Array,
-) => {
-  if (secret !== null && secret !== undefined && typeof secret !== 'string') {
-    const secretId = crypto.randomUUID();
-    await walletRepository.addEncryptedValue(secretId, secret);
-    return secretId;
-  }
-  return secret;
-};
 
 export function sign(
-  context: Context,
+  profile: IProfile,
   onConnect: (keySource: IKeySource) => Promise<void>,
   TXs: IUnsignedCommand[],
 ) {
-  const { keySourceManager, profile } = context;
   const signedTx = Promise.all(
     TXs.map(async (Tx) => {
       const signatures = await Promise.all(
@@ -76,12 +37,7 @@ export function sign(
             )
             .filter((index) => index !== undefined) as number[];
 
-          if (source !== 'hd-wallet-slip10') {
-            console.warn('Unsupported key source', source);
-            return [];
-          }
-
-          const service = keySourceManager.get(keySource.source);
+          const service = keySourceManager.get(source);
 
           if (!service.isReady()) {
             // call onConnect to connect to the keySource;
@@ -91,10 +47,7 @@ export function sign(
 
           const signatures = await service.sign(
             Tx.hash,
-            {
-              ...keySource,
-              secret: await getSecret(context, keySource.secret),
-            },
+            keySource.uuid,
             relevantIndexes,
           );
 
@@ -109,7 +62,6 @@ export function sign(
 }
 
 export async function createProfile(
-  { walletRepository }: Pick<Context, 'walletRepository'>,
   profileName: string,
   password: string,
   networks: INetwork[],
@@ -133,11 +85,7 @@ export async function createProfile(
   return profile;
 }
 
-export const unlockProfile = async (
-  { walletRepository }: Pick<Context, 'walletRepository'>,
-  profileId: string,
-  password: string,
-) => {
+export const unlockProfile = async (profileId: string, password: string) => {
   try {
     const profile = await walletRepository.getProfile(profileId);
     const secret = await walletRepository.getEncryptedValue(profile.secretId);
@@ -152,39 +100,23 @@ export const unlockProfile = async (
   }
 };
 
-export async function storeKeySource(
-  context: Pick<Context, 'walletRepository'>,
-  keySource: KeySourceWithSecret | IKeySource,
-  profileId: string,
-) {
-  const { walletRepository } = context;
+export async function storeKeySource(keySource: IKeySource, profileId: string) {
   const profile = await walletRepository.getProfile(profileId);
   const keySourceToStore = {
     ...keySource,
-    secret: await storeSecret(context, keySource.secret),
   };
   profile.keySources.push(keySourceToStore);
   await walletRepository.updateProfile(profile);
 }
 
 export async function createKey(
-  context: Context,
-  keySource: KeySourceWithSecret | IKeySource,
+  profileId: string,
+  keySource: IKeySource,
   quantity: number,
 ) {
-  const { walletRepository, keySourceManager: keySourceService } = context;
-  const profile = await getProfile(context);
-  if (keySource.source !== 'hd-wallet-slip10') {
-    throw new Error('Unsupported key source');
-  }
-  const service = keySourceService.get(keySource.source);
-  const keys = await service.createKey(
-    {
-      ...keySource,
-      secret: await getSecret(context, keySource.secret),
-    },
-    quantity,
-  );
+  const profile = await getProfile(profileId);
+  const service = keySourceManager.get(keySource.source);
+  const keys = await service.createKey(keySource.uuid, quantity);
 
   profile.keySources = profile.keySources.map((source) => {
     if (source.uuid === keySource.uuid) {
@@ -197,14 +129,11 @@ export async function createKey(
   return keys;
 }
 
-export async function createKAccount(
-  { profile, walletRepository }: Pick<Context, 'walletRepository' | 'profile'>,
-  keyItem: IKeyItem,
-) {
+export async function createKAccount(profileId: string, keyItem: IKeyItem) {
   const account: IAccount = {
     uuid: crypto.randomUUID(),
     alias: '',
-    profileId: profile.uuid,
+    profileId: profileId,
     address: `k:${keyItem.publicKey}`,
     guard: {
       type: 'keySet',
@@ -218,34 +147,22 @@ export async function createKAccount(
 }
 
 export const createFirstAccount = async (
-  {
-    profile,
-    walletRepository,
-    keySourceManager,
-  }: Pick<Context, 'walletRepository' | 'profile' | 'keySourceManager'>,
-  keySource: KeySourceWithSecret,
+  profileId: string,
+  keySource: IKeySource,
 ) => {
-  if (!keySourceManager || !profile || !walletRepository) {
+  if (!profileId) {
     throw new Error('Wallet not initialized');
   }
 
   const service = keySourceManager.get(keySource.source);
-  const keys = await service.createKey(keySource, 1);
+  const keys = await service.createKey(keySource.uuid, 1);
 
-  await storeKeySource(
-    { walletRepository },
-    { ...keySource, keys },
-    profile.uuid,
-  );
+  await storeKeySource({ ...keySource, keys }, profileId);
 
-  return createKAccount({ profile, walletRepository }, keys[0]);
+  return createKAccount(profileId, keys[0]);
 };
 
-export async function decryptSecret(
-  { walletRepository }: Pick<Context, 'walletRepository'>,
-  password: string,
-  secretId: string,
-) {
+export async function decryptSecret(password: string, secretId: string) {
   const encrypted = await walletRepository.getEncryptedValue(secretId);
   if (!encrypted) {
     throw new Error('No record found');

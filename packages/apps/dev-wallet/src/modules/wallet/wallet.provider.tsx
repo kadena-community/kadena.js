@@ -6,16 +6,10 @@ import {
   useState,
 } from 'react';
 
-import { IKeySourceManager } from '../key-source/keySourceService';
-import {
-  IAccount,
-  IProfile,
-  createWalletRepository,
-} from './wallet.repository';
+import { IAccount, IProfile, walletRepository } from './wallet.repository';
 
 export type ExtWalletContextType = {
   profile?: IProfile;
-  keySourceManager?: IKeySourceManager;
   accounts?: IAccount[];
   profileList?: Pick<IProfile, 'name' | 'uuid'>[];
 };
@@ -33,7 +27,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     const fetchProfileList = async () => {
-      const walletRepository = await createWalletRepository();
       const profileList = (await walletRepository.getAllProfiles()) ?? [];
       setContextValue({
         profileList: profileList.map(({ name, uuid }) => ({ name, uuid })),

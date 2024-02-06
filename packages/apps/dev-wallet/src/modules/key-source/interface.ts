@@ -1,26 +1,19 @@
 import { IKeySource } from '../wallet/wallet.repository';
 
-export type KeySourceWithSecret = Omit<IKeySource, 'secret'> & {
-  secret: Uint8Array;
-};
+export interface ISecretRepository {
+  getEncryptedValue: (key: string) => Promise<Uint8Array>;
+  addEncryptedValue: (key: string, value: string | Uint8Array) => Promise<void>;
+}
 
-export interface IKeySourceService<
-  TSource extends KeySourceWithSecret = KeySourceWithSecret,
-> {
+export interface IKeySourceService {
   isReady: () => boolean;
-  serviceId: (keySource: IKeySource) => string;
   createKey: (
-    keySource: TSource,
+    keySourceId: string,
     quantity: number,
-  ) => Promise<
-    Array<{
-      index: number;
-      publicKey: string;
-    }>
-  >;
+  ) => Promise<IKeySource['keys']>;
   sign(
     message: string,
-    keySource: TSource,
+    keySourceId: string,
     indexes: number[],
   ): Promise<Array<{ sig: string; pubKey: string }>>;
 }

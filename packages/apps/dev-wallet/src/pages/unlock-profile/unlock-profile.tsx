@@ -9,23 +9,23 @@ export function UnlockProfile() {
   const { register, handleSubmit } = useForm<{ password: string }>();
   const { profileId } = useParams();
   const [error, setError] = useState('');
-  const { isUnlocked, profileList, unlockProfile, getSecret } = useWallet();
+  const { isUnlocked, profileList, unlockProfile } = useWallet();
   const { unlockHDWallet } = useHDWallet();
   const profile = profileList.find((p) => p.uuid === profileId);
   async function unlock({ password }: { password: string }) {
     try {
-      const ctx = await unlockProfile(profile!.uuid, password);
-      if (!ctx) {
+      if (!profileId) {
+        throw new Error('ProfileId is undefined');
+      }
+      const unlockedProfile = await unlockProfile(profileId, password);
+      if (!unlockedProfile) {
         throw new Error("Password doesn't match");
       }
-      const keySource = ctx.profile.keySources[0];
+      const keySource = unlockedProfile.keySources[0];
       if (!keySource) {
         throw new Error('No key source found');
       }
-      await unlockHDWallet(ctx, 'hd-wallet-slip10', password, {
-        ...keySource,
-        secret: await getSecret(keySource.secret),
-      });
+      await unlockHDWallet(keySource.source, password, keySource);
     } catch (e) {
       console.log(e);
       setError("Password doesn't match");

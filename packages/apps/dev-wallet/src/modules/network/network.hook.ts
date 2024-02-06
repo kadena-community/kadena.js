@@ -1,18 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
-import { INetwork, createNetworkRepository } from './network.repository';
+import { INetwork, networkRepository } from './network.repository';
 
 export function useNetwork() {
   const [networks, setNetworks] = useState<INetwork[]>([]);
 
   const retrieveNetworks = useCallback(async () => {
-    const networkRepository = await createNetworkRepository();
     const networks = (await networkRepository.getNetworkList()) ?? [];
     setNetworks(networks);
   }, []);
 
   const addNetwork = useCallback(
     async (network: INetwork) => {
-      const networkRepository = await createNetworkRepository();
       await networkRepository.addNetwork(network);
       await retrieveNetworks();
     },
@@ -21,7 +19,6 @@ export function useNetwork() {
 
   const updateNetwork = useCallback(
     async (network: INetwork) => {
-      const networkRepository = await createNetworkRepository();
       await networkRepository.updateNetwork(network);
       await retrieveNetworks();
     },
@@ -30,7 +27,6 @@ export function useNetwork() {
 
   const deleteNetwork = useCallback(
     async (networkId: string) => {
-      const networkRepository = await createNetworkRepository();
       await networkRepository.deleteNetwork(networkId);
       await retrieveNetworks();
     },

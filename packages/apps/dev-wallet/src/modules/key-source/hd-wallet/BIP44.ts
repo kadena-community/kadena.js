@@ -6,20 +6,10 @@ import {
   kadenaSignWithSeed,
   randomBytes,
 } from '@kadena/hd-wallet';
-import { IKeySourceService } from '../interface';
+
+import { IHDBIP44, hdWalletRepository } from './hd-wallet.repository';
 
 export const DEFAULT_DERIVATION_PATH_TEMPLATE = `m'/44'/626'/<index>'`;
-
-export interface ISlip10KeySource {
-  uuid: string;
-  derivationPathTemplate: string;
-  source: 'hd-wallet-slip10';
-  secret: Uint8Array;
-  keys: Array<{
-    index: number;
-    publicKey: string;
-  }>;
-}
 
 const createContext = async (mnemonic: string) => {
   const encryptionKey = randomBytes(32);
@@ -31,16 +21,7 @@ const createContext = async (mnemonic: string) => {
   return { encryptionKey, encryptedSeed };
 };
 
-export interface ISlip10Service extends IKeySourceService<ISlip10KeySource> {
-  register: (
-    mnemonic: string,
-    password: string,
-    derivationPathTemplate?: string,
-  ) => Promise<ISlip10KeySource>;
-  connect: (password: string, keySource: ISlip10KeySource) => Promise<void>;
-}
-
-export function createSlip10Service(): ISlip10Service {
+export function createBIP44Service() {
   let context: {
     encryptionKey: Uint8Array;
     encryptedSeed: Uint8Array;
@@ -48,42 +29,54 @@ export function createSlip10Service(): ISlip10Service {
 
   return {
     isReady: () => Boolean(context),
-    serviceId: (
-      config: Pick<ISlip10KeySource, 'source' | 'derivationPathTemplate'>,
-    ) => `${config.source}:${config.derivationPathTemplate}`,
+    reset: () => {
+      context = null;
+    },
     register: async (
+      profileId: string,
       mnemonic: string,
       password: string,
       derivationPathTemplate: string = DEFAULT_DERIVATION_PATH_TEMPLATE,
-    ): Promise<ISlip10KeySource> => {
+    ): Promise<IHDBIP44> => {
       const encryptedMnemonic = await kadenaEncrypt(
         password,
         mnemonic,
         'buffer',
       );
-      const keySource: ISlip10KeySource = {
+      const secretId = crypto.randomUUID();
+      await hdWalletRepository.addEncryptedValue(secretId, encryptedMnemonic);
+      const keySource: IHDBIP44 = {
         uuid: crypto.randomUUID(),
-        source: 'hd-wallet-slip10',
+        profileId,
+        source: 'HD-BIP44',
         derivationPathTemplate,
         keys: [],
-        secret: encryptedMnemonic,
+        secretId: secretId,
       };
+      await hdWalletRepository.addKeySource(keySource);
       context = await createContext(mnemonic);
       return keySource;
     },
 
-    connect: async (password: string, keySource: ISlip10KeySource) => {
+    connect: async (password: string, keySource: IHDBIP44) => {
+      const encryptedMnemonic = await hdWalletRepository.getEncryptedValue(
+        keySource.secretId,
+      );
       const decryptedMnemonicBuffer = await kadenaDecrypt(
         password,
-        keySource.secret,
+        encryptedMnemonic,
       );
       const mnemonic = new TextDecoder().decode(decryptedMnemonicBuffer);
       context = await createContext(mnemonic);
     },
 
-    createKey: async (keySource: ISlip10KeySource, quantity: number = 1) => {
+    createKey: async (keySourceId: string, quantity: number = 1) => {
       if (!context) {
         throw new Error('Wallet not unlocked');
+      }
+      const keySource = await hdWalletRepository.getKeySource(keySourceId);
+      if (!keySource || keySource.source !== 'HD-BIP44') {
+        throw new Error('Invalid key source');
       }
       const startIndex = keySource.keys.length;
       const publicKeys = await kadenaGetPublic(
@@ -92,15 +85,22 @@ export function createSlip10Service(): ISlip10Service {
         [startIndex, startIndex + quantity - 1],
         keySource.derivationPathTemplate,
       );
-      return publicKeys.map((publicKey, index) => ({
+      const newKeys = publicKeys.map((publicKey, index) => ({
         publicKey,
         index: startIndex + index,
       }));
+      keySource.keys.push(...newKeys);
+      await hdWalletRepository.updateKeySource(keySource);
+      return newKeys;
     },
 
-    sign(message: string, keySource: ISlip10KeySource, indexes: number[]) {
+    async sign(keySourceId: string, message: string, indexes: number[]) {
       if (!context) {
         throw new Error('Wallet not unlocked');
+      }
+      const keySource = await hdWalletRepository.getKeySource(keySourceId);
+      if (!keySource || keySource.source !== 'HD-BIP44') {
+        throw new Error('Invalid key source');
       }
       const { encryptionKey, encryptedSeed } = context;
       return kadenaSignWithSeed(
@@ -112,3 +112,5 @@ export function createSlip10Service(): ISlip10Service {
     },
   };
 }
+
+export type BIP44Service = ReturnType<typeof createBIP44Service>;

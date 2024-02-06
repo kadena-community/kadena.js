@@ -1,4 +1,4 @@
-import { createDatabaseConnection } from '@/modules/db/db.service';
+import { injectDb } from '@/modules/db/db.service';
 import {
   addItem,
   getAllItems,
@@ -13,12 +13,13 @@ export interface IKeyItem {
   index: number;
 }
 
+export type KeySourceType = 'HD-BIP44' | 'HD-chainweaver';
+
 export interface IKeySource {
   uuid: string;
-  derivationPathTemplate: string;
-  source: 'hd-wallet-slip10';
-  secret: string;
+  source: KeySourceType;
   keys: Array<{
+    id?: string;
     index: number;
     publicKey: string;
   }>;
@@ -48,7 +49,6 @@ export interface IAccount {
 }
 
 export interface WalletRepository {
-  disconnect: () => Promise<void>;
   getAllProfiles: () => Promise<Exclude<IProfile, 'networks'>[]>;
   getProfile: (id: string) => Promise<IProfile>;
   addProfile: (profile: IProfile) => Promise<void>;
@@ -59,16 +59,13 @@ export interface WalletRepository {
   getAccountsByProfileId: (profileId: string) => Promise<IAccount[]>;
 }
 
-const walletRepository = (db: IDBDatabase): WalletRepository => {
-  const getAll = getAllItems(db);
-  const getOne = getOneItem(db);
-  const add = addItem(db);
-  const update = updateItem(db);
+const createWalletRepository = (): WalletRepository => {
+  const getAll = injectDb(getAllItems);
+  const getOne = injectDb(getOneItem);
+  const add = injectDb(addItem);
+  const update = injectDb(updateItem);
 
   return {
-    disconnect: async (): Promise<void> => {
-      db.close();
-    },
     getAllProfiles: async (): Promise<Exclude<IProfile, 'networks'>[]> => {
       return getAll('profile');
     },
@@ -99,7 +96,4 @@ const walletRepository = (db: IDBDatabase): WalletRepository => {
   };
 };
 
-export const createWalletRepository = async () => {
-  const db = await createDatabaseConnection();
-  return walletRepository(db);
-};
+export const walletRepository = createWalletRepository();

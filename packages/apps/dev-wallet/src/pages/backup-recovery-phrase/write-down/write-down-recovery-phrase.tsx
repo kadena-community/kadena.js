@@ -1,13 +1,16 @@
+import { HDWalletKeySource } from '@/modules/key-source/hd-wallet/hd-wallet.repository';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { KeySourceType } from '@/modules/wallet/wallet.repository';
 import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ConfirmRecoveryPhrase } from './confirm-recovery-phrase';
 
 export function WriteDownRecoveryPhrase() {
   const { register, handleSubmit } = useForm<{ password: string }>();
-  const wallet = useWallet();
+  const { profile, decryptSecret } = useWallet();
+  const { keySourceId } = useParams();
   const [mnemonic, setMnemonic] = useState('');
   const [error, setError] = useState('');
   const [readyForConfirmation, setReadyForConfirmation] = useState(false);
@@ -16,11 +19,24 @@ export function WriteDownRecoveryPhrase() {
     setError('');
     try {
       // TODO: this should check the source type of the keySource
-      const secretId = wallet.profile?.keySources[0]?.secret;
+      const keySource = profile?.keySources.find(
+        (ks) => ks.uuid === keySourceId,
+      );
+      if (!keySource) {
+        throw new Error('Key source not found');
+      }
+      if (
+        !(['HD-BIP44', 'HD-chainweaver'] as KeySourceType[]).includes(
+          keySource.source,
+        )
+      ) {
+        throw new Error('Unsupported key source');
+      }
+      const secretId = (keySource as HDWalletKeySource).secretId;
       if (!secretId) {
         throw new Error('No mnemonic found');
       }
-      const mnemonic = await wallet.decryptSecret(password, secretId);
+      const mnemonic = await decryptSecret(password, secretId);
       setMnemonic(mnemonic);
     } catch (e) {
       setError("Password doesn't match");

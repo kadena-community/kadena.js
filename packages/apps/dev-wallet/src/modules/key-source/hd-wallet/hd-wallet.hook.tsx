@@ -1,54 +1,60 @@
+import { IKeySource, KeySourceType } from '@/modules/wallet/wallet.repository';
 import { useCallback } from 'react';
-import { KeySourceWithSecret } from '../interface';
-import { IKeySourceManager } from '../keySourceService';
-
-interface HDWalletContext {
-  keySourceManager: IKeySourceManager;
-}
+import { keySourceManager } from '../key-source-manager';
+import { BIP44Service } from './BIP44';
+import { ChainweaverService } from './chainweaver';
+import { IHDBIP44, IHDChainweaver } from './hd-wallet.repository';
 
 export const useHDWallet = () => {
   const createHDWallet = useCallback(
     async (
-      context: HDWalletContext,
-      type: 'hd-wallet-slip10' | 'hd-wallet-chainweaver',
+      profileId: string,
+      type: KeySourceType,
       password: string,
       mnemonic: string,
       derivationPathTemplate?: string,
     ) => {
-      const { keySourceManager } = context;
-      if (!keySourceManager) {
-        throw new Error('Wallet not initialized');
-      }
-      if (type === 'hd-wallet-chainweaver') {
-        if (derivationPathTemplate) {
-          throw new Error('Chainweaver does not support derivation path');
+      switch (type) {
+        case 'HD-BIP44': {
+          const service = keySourceManager.get(type) as BIP44Service;
+          return service.register(
+            profileId,
+            mnemonic,
+            password,
+            derivationPathTemplate,
+          );
         }
-        throw new Error('Chainweaver not supported yet');
+        case 'HD-chainweaver': {
+          if (derivationPathTemplate) {
+            throw new Error('Chainweaver does not support derivation path');
+          }
+          const service = keySourceManager.get(type) as ChainweaverService;
+          return service.register(profileId, mnemonic, password);
+        }
+        default:
+          throw new Error('Unsupported key source type');
       }
-      const keySource = await keySourceManager
-        .get(type)
-        .register(mnemonic, password, derivationPathTemplate);
-
-      return keySource;
     },
     [],
   );
 
   const unlockHDWallet = useCallback(
-    async (
-      context: HDWalletContext,
-      type: 'hd-wallet-slip10' | 'hd-wallet-chainweaver',
-      password: string,
-      keySource: KeySourceWithSecret,
-    ) => {
-      const { keySourceManager } = context;
-      if (type === 'hd-wallet-chainweaver') {
-        throw new Error('Chainweaver not supported yet');
+    async (type: KeySourceType, password: string, keySource: IKeySource) => {
+      switch (type) {
+        case 'HD-BIP44': {
+          const service = keySourceManager.get(type) as BIP44Service;
+          return service.connect(password, keySource as unknown as IHDBIP44);
+        }
+        case 'HD-chainweaver': {
+          const service = keySourceManager.get(type) as ChainweaverService;
+          return service.connect(
+            password,
+            keySource as unknown as IHDChainweaver,
+          );
+        }
+        default:
+          throw new Error('Unsupported key source type');
       }
-      if (!keySourceManager) {
-        throw new Error('Key source manager not initialized');
-      }
-      await keySourceManager.get(type).connect(password, keySource);
     },
     [],
   );

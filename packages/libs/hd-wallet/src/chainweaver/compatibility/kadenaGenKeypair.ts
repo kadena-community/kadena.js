@@ -29,7 +29,7 @@ async function kadenaGenOneKeypair(
  */
 export function kadenaGenKeypair(
   password: string | Uint8Array,
-  rootKey: EncryptedString,
+  rootKey: EncryptedString | Uint8Array,
   index: number,
 ): Promise<{ publicKey: string; secretKey: EncryptedString }>;
 
@@ -41,13 +41,13 @@ export function kadenaGenKeypair(
  */
 export function kadenaGenKeypair(
   password: string | Uint8Array,
-  rootKey: EncryptedString,
+  rootKey: EncryptedString | Uint8Array,
   range: [start: number, end: number],
 ): Promise<{ publicKey: string; secretKey: EncryptedString }[]>;
 
 export async function kadenaGenKeypair(
   password: string | Uint8Array,
-  rootKey: EncryptedString,
+  rootKey: EncryptedString | Uint8Array,
   indexOrRange: number | [start: number, end: number],
 ) {
   const decrypted = await kadenaDecrypt(password, rootKey);

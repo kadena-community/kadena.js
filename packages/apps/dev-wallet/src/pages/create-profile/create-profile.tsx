@@ -20,21 +20,17 @@ export function CreateProfile() {
     password: string;
   }) {
     const mnemonic = kadenaGenMnemonic();
-    const { keySourceManager, profile } = await createProfile(
-      profileName,
-      password,
-    );
+    const profile = await createProfile(profileName, password);
     // for now we only support slip10 so we just create the keySource and the first account by default for it
     // later we should change this flow to be more flexible
     const keySource = await createHDWallet(
-      { keySourceManager },
-      'hd-wallet-slip10',
+      profile.uuid,
+      'HD-BIP44',
       password,
       mnemonic,
     );
-    await createFirstAccount({ keySourceManager, profile }, keySource);
+    await createFirstAccount(profile.uuid, keySource);
     console.log('wallet created');
-    debugger;
   }
   if (isUnlocked) {
     return <Navigate to="/backup-recovery-phrase" replace />;
