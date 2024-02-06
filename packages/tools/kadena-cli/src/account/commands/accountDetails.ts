@@ -1,12 +1,32 @@
-import { details } from '@kadena/client-utils/coin';
-import type { ChainId } from '@kadena/types';
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import debug from 'debug';
+import type { CommandResult } from '../../utils/command.util.js';
+import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import type { IAccountDetailsResult } from '../types.js';
+import type { IGetAccountDetailsParams } from '../utils/getAccountDetails.js';
+import { getAccountDetailsFromChain } from '../utils/getAccountDetails.js';
 
-export const accountDetailsCommand: (
+export async function accountDetails(
+  config: IGetAccountDetailsParams,
+): Promise<CommandResult<IAccountDetailsResult>> {
+  try {
+    const accountDetails = await getAccountDetailsFromChain({ ...config });
+    return {
+      success: true,
+      data: accountDetails,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      errors: [error.message],
+    };
+  }
+}
+
+export const createAccountDetailsCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
@@ -15,26 +35,23 @@ export const accountDetailsCommand: (
   [
     globalOptions.accountName(),
     globalOptions.fungible(),
-    globalOptions.network(),
+    globalOptions.networkSelect(),
     globalOptions.chainId(),
   ],
   async (config) => {
     debug('account-details:action')({ config });
 
-    try {
-      const accountDetails = await details(
-        config.accountName,
-        config.networkConfig.networkId,
-        config.chainId as ChainId,
-        config.networkConfig.networkHost,
-        config.fungible,
-      );
-      console.log(
-        chalk.green(`\nDetails of account "${config.accountName}":\n`),
-      );
-      console.log(accountDetails);
-    } catch (e) {
-      console.log(chalk.red(e.message));
-    }
+    const result = await accountDetails({
+      accountName: config.accountName,
+      chainId: config.chainId,
+      networkId: config.networkConfig.networkId,
+      networkHost: config.networkConfig.networkHost,
+      fungible: config.fungible,
+    });
+
+    assertCommandError(result);
+
+    console.log(chalk.green(`\nDetails of account "${config.accountName}":\n`));
+    console.log(chalk.green(`${JSON.stringify(result.data, null, 2)}`));
   },
 );
