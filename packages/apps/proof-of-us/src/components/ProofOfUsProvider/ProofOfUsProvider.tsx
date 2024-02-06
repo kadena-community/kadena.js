@@ -1,6 +1,5 @@
 'use client';
 import { useAccount } from '@/hooks/account';
-import { useGetProofOfUs } from '@/hooks/getProofOfUs';
 import { useSocket } from '@/hooks/socket';
 import { useParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
@@ -51,18 +50,11 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { socket } = useSocket();
   const { account } = useAccount();
   const params = useParams();
-  const { data, isLoading, error } = useGetProofOfUs({ id: params.id });
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
   const [background, setBackground] = useState<IProofOfUsBackground>('');
-  const [state, setState] = useState<IProofOfUsData>();
-
-  useEffect(() => {
-    if (!data) return;
-    setProofOfUs({ ...data, ...state });
-  }, [data, state]);
 
   const setContent = ({ content }: { content: IProofOfUsData }) => {
-    setState(content);
+    setProofOfUs(content);
   };
 
   const setContentBackground = ({
@@ -74,12 +66,12 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!state) {
+    if (!proofOfUs) {
       socket?.emit('getProofOfUs', {
         to: params.id,
       });
     }
-  }, [state]);
+  }, [proofOfUs]);
 
   useEffect(() => {
     if (!socket) return;
@@ -169,8 +161,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         getSigneeAccount,
         background,
         proofOfUs,
-        isLoading,
-        error,
       }}
     >
       {children}

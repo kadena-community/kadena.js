@@ -13,7 +13,10 @@ export const useGetProofOfUs: IDataHook<IProofOfUsData | undefined> = ({
       return;
     }
     setError(undefined);
-    const result = await getProofOfUs(id);
+    const result = (await getProofOfUs(id)) ?? {
+      background: '',
+      data: {},
+    };
 
     setData(result?.data);
   };
