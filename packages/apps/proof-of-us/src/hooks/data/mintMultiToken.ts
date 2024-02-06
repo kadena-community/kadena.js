@@ -1,7 +1,7 @@
 import { useAvatar } from '@/hooks/avatar';
 import { useState } from 'react';
-import { useProofOfUs } from './proofOfUs';
-import { useSocket } from './socket';
+import { useProofOfUs } from '../proofOfUs';
+import { useSocket } from '../socket';
 
 export const useMintMultiToken = () => {
   const { proofOfUs, background } = useProofOfUs();

@@ -3,12 +3,16 @@ import { proofOfUsData } from './data';
 export const getAllProofOfUs = async (): Promise<IProofOfUs[]> => {
   return proofOfUsData;
 };
-export const getProofOfUs = async (id: string): Promise<IProofOfUs> => {
-  const result =
-    proofOfUsData.find((proofOfUs) => proofOfUs.data.proofOfUsId === id) ??
-    ({ background: '', data: {} } as IProofOfUs);
+export const getProofOfUs = async (id: string): Promise<IProofOfUsToken> => {
+  console.log(proofOfUsData, id);
+  const result = proofOfUsData.find(
+    (proofOfUs) => proofOfUs.token?.tokenId === id,
+  );
+
+  console.log(222, result);
+  const token = result?.token;
 
   return {
-    ...result,
-  } as IProofOfUs;
+    ...token,
+  } as IProofOfUsToken;
 };

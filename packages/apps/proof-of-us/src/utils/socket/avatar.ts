@@ -1,8 +1,7 @@
 import { store } from '@/utils/socket/store';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Akord, Auth } from '@akord/akord-js';
 import type { Server as IOServer, Socket } from 'socket.io';
-
-import { upload } from './upload';
 
 export const avatarListeners = (socket: Socket, io: IOServer) => {
   socket.on('setBackground', ({ content, to }) => {
@@ -38,11 +37,11 @@ export const avatarListeners = (socket: Socket, io: IOServer) => {
       return;
     }
 
-    const { wallet } = await Auth.signIn(AKORD_EMAIL, AKORD_PASSWORD);
+    //const { wallet } = await Auth.signIn(AKORD_EMAIL, AKORD_PASSWORD);
     const bg = store.getBackground(to);
-    const akord = new Akord(wallet, {
-      debug: true,
-    });
+    // const akord = new Akord(wallet, {
+    //   debug: true,
+    // });
 
     if (!bg) return;
 
@@ -59,11 +58,13 @@ export const avatarListeners = (socket: Socket, io: IOServer) => {
         });
       return;
     }
-    const result = await upload(akord, bg, to, proofOfUs);
 
-    io.to(to).to(to).emit('uploadBackgroundStatus', {
-      content: result,
-      from: socket.handshake.auth.proofOfUsId,
-    });
+    //TODO FIX UPLOAD TO AKORD
+    // const result = await upload(akord, bg, to, proofOfUs);
+
+    // io.to(to).to(to).emit('uploadBackgroundStatus', {
+    //   content: result,
+    //   from: socket.handshake.auth.proofOfUsId,
+    // });
   });
 };
