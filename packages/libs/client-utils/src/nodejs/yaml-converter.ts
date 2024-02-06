@@ -183,7 +183,7 @@ export const convertTemplateTxToPactCommand = (
   };
 };
 
-export const createPactCommandFromTemplate = async (
+export const createPactCommandFromTemplate = (
   path: string,
   args: Record<string, string | number>,
   cwd?: string,
@@ -196,7 +196,7 @@ export const createPactCommandFromTemplate = async (
   )(path, cwd);
 };
 
-export const createPactCommandFromStringTemplate = async (
+export const createPactCommandFromStringTemplate = (
   template: string,
   args: Record<string, string | number>,
 ): Promise<IPactCommand> => {
