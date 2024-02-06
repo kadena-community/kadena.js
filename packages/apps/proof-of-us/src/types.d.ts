@@ -67,6 +67,9 @@ interface IError {
   status?: string;
 }
 
+type ISignerStatus = 'init' | 'signing' | 'success' | 'error';
+
 type IProofOfUsSignee = Pick<IAccount, 'displayName' | 'publicKey' | 'cid'> & {
+  signerStatus: ISignerStatus;
   initiator: boolean;
 };
