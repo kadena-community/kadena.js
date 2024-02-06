@@ -139,3 +139,16 @@ jobs:
           name: playwright-report
           path: packages/tools/e2e-tests/playwright-report/
           retention-days: 30
+
+  ci-gate:
+    if: always()
+    needs:
+      - build
+      - integration-tests
+      - end-to-end-tests
+    runs-on: Ubuntu-latest
+    steps:
+      - name: Check required jobs.
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}

@@ -26,7 +26,7 @@ const meta: Meta<ITextFieldProps> = {
     docs: {
       description: {
         component:
-          'The TextField component is a wrapper around the native textarea element that provides the ability to add additional information.',
+          'The TextField component is a wrapper around the native input element that provides the ability to add additional information.',
       },
     },
   },

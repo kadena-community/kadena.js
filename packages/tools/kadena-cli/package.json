@@ -15,7 +15,8 @@
     "Albert Groothedde <albert@kadena.io",
     "Jesse van Muijden <jesse@kadena.io",
     "Jermaine Jong <jermaine@kadena.io",
-    "Javad Khalilian <javad@kadena.io>"
+    "Javad Khalilian <javad@kadena.io>",
+    "Mohamed Ismail <mohamed@kadena.io>"
   ],
   "type": "module",
   "bin": {
@@ -36,7 +37,8 @@
     "generate:kdn": "pactjs contract-generate --contract n_32faa22a75da53789d48dcbcb124a11c8f8651a8.kadena-names --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact && pactjs contract-generate --contract n_32faa22a75da53789d48dcbcb124a11c8f8651a8.herdyracle --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
     "lint": "eslint src --ext .js,.ts --fix",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@inquirer/prompts": "^3.0.4",
@@ -86,7 +88,9 @@
     "@types/node": "^18.17.14",
     "@types/rimraf": "~3.0.2",
     "@types/seedrandom": "~3.0.8",
+    "@vitest/coverage-v8": "^1.1.0",
     "eslint": "^8.45.0",
+    "msw": "^2.0.0",
     "prettier": "~3.0.3",
     "typescript": "5.2.2",
     "vitest": "^1.1.0"
