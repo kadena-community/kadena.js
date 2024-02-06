@@ -21,8 +21,6 @@ export interface IProofOfUsContext {
   isConnected: () => boolean;
   isInitiator: () => boolean;
   getSigneeAccount: (account: IAccount) => IProofOfUsSignee;
-  isLoading: boolean;
-  error: IError | undefined;
 }
 
 export const ProofOfUsContext = createContext<IProofOfUsContext>({
@@ -42,8 +40,6 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
       initiator: false,
     };
   },
-  isLoading: false,
-  error: undefined,
 });
 
 export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {

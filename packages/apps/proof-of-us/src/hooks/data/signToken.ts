@@ -1,5 +1,5 @@
+import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useState } from 'react';
-import { useProofOfUs } from './proofOfUs';
 
 export const useSignToken = () => {
   const { addSignee } = useProofOfUs();

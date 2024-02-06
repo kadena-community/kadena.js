@@ -1,24 +1,19 @@
 import { getProofOfUs } from '@/utils/proofOfUs';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export const useGetProofOfUs: IDataHook<IProofOfUsData | undefined> = ({
-  id,
-}) => {
+export const useGetProofOfUs: IDataHook<IProofOfUsToken | undefined> = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<IError>();
-  const [data, setData] = useState<IProofOfUsData | undefined>(undefined);
+  const [data, setData] = useState<IProofOfUsToken | undefined>(undefined);
+  const { id } = useParams();
 
   const load = async () => {
-    if (id === 'new') {
-      return;
-    }
     setError(undefined);
-    const result = (await getProofOfUs(id)) ?? {
-      background: '',
-      data: {},
-    };
+    const result = await getProofOfUs(`${id}`);
+    console.log({ result });
 
-    setData(result?.data);
+    setData(result);
   };
 
   useEffect(() => {

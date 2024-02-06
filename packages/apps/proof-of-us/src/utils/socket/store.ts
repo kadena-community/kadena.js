@@ -32,7 +32,9 @@ const ProofOfUsStore = () => {
   };
 
   const addSignee = (proofOfUsId: string, account: IProofOfUsSignee) => {
-    const signeesList = store[proofOfUsId]?.data.signees;
+    store[proofOfUsId].data;
+
+    const signeesList = store[proofOfUsId].data.signees;
     if (!signeesList) return;
 
     if (signeesList.find((s) => s.cid === account.cid)) return;

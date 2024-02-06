@@ -1,6 +1,6 @@
 import { ListSignees } from '@/components/ListSignees/ListSignees';
+import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { useSignToken } from '@/hooks/signToken';
 import type { FC } from 'react';
 
 interface IProps {

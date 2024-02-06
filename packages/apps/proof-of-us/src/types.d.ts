@@ -28,20 +28,31 @@ type IMintStatus =
   | 'success';
 
 type IProofOfUsBackground = string;
+
+type TokenType = 'multi' | 'event';
+
 interface IProofOfUsData {
   mintStatus: IMintStatus;
   tokenId?: string;
   proofOfUsId: string;
-  type: 'multi' | 'event';
+  type: TokenType;
   date: number;
   minted?: number;
   signees: IProofOfUsSignee[];
   uri?: string;
 }
 
+interface IProofOfUsToken {
+  tokenId: string;
+  title: string;
+  type: TokenType;
+  date: number;
+}
+
 interface IProofOfUs {
   background: IProofOfUsBackground;
   data: IProofOfUsData;
+  token?: IProofOfUsToken;
 }
 
 interface IError {

@@ -1,4 +1,4 @@
-import { useMintMultiToken } from '@/hooks/mintMultiToken';
+import { useMintMultiToken } from '@/hooks/data/mintMultiToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import Link from 'next/link';
 import type { FC } from 'react';
