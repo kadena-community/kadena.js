@@ -1,4 +1,4 @@
-import { createDatabaseConnection } from '@/modules/db/db.service';
+import { injectDb } from '@/modules/db/db.service';
 import {
   addItem,
   getAllItems,
@@ -11,22 +11,25 @@ import { INetwork } from '../network/network.repository';
 export interface IKeyItem {
   publicKey: string;
   index: number;
-  keySourceId: string;
 }
+
+export type KeySourceType = 'HD-BIP44' | 'HD-chainweaver';
 
 export interface IKeySource {
   uuid: string;
-  derivationPathTemplate: string;
-  source: 'hd-wallet';
-  publicKeys: string[];
+  source: KeySourceType;
+  keys: Array<{
+    id?: string;
+    index: number;
+    publicKey: string;
+  }>;
 }
 
 export interface IProfile {
   uuid: string;
   name: string;
   networks: INetwork[];
-  seedKey: string;
-  keySources: IKeySource[];
+  secretId: string;
 }
 
 export interface IKeySetGuard {
@@ -44,7 +47,6 @@ export interface IAccount {
 }
 
 export interface WalletRepository {
-  disconnect: () => Promise<void>;
   getAllProfiles: () => Promise<Exclude<IProfile, 'networks'>[]>;
   getProfile: (id: string) => Promise<IProfile>;
   addProfile: (profile: IProfile) => Promise<void>;
@@ -53,18 +55,16 @@ export interface WalletRepository {
   addEncryptedValue: (key: string, value: string | Uint8Array) => Promise<void>;
   addAccount: (account: IAccount) => Promise<void>;
   getAccountsByProfileId: (profileId: string) => Promise<IAccount[]>;
+  getProfileKeySources: (profileId: string) => Promise<IKeySource[]>;
 }
 
-const walletRepository = (db: IDBDatabase): WalletRepository => {
-  const getAll = getAllItems(db);
-  const getOne = getOneItem(db);
-  const add = addItem(db);
-  const update = updateItem(db);
+const createWalletRepository = (): WalletRepository => {
+  const getAll = injectDb(getAllItems);
+  const getOne = injectDb(getOneItem);
+  const add = injectDb(addItem);
+  const update = injectDb(updateItem);
 
   return {
-    disconnect: async (): Promise<void> => {
-      db.close();
-    },
     getAllProfiles: async (): Promise<Exclude<IProfile, 'networks'>[]> => {
       return getAll('profile');
     },
@@ -92,10 +92,10 @@ const walletRepository = (db: IDBDatabase): WalletRepository => {
     getAccountsByProfileId(profileId: string): Promise<IAccount[]> {
       return getAll('account', profileId, 'profileId');
     },
+    getProfileKeySources: async (profileId: string): Promise<IKeySource[]> => {
+      return getAll('keySource', profileId, 'profileId');
+    },
   };
 };
 
-export const createWalletRepository = async () => {
-  const db = await createDatabaseConnection();
-  return walletRepository(db);
-};
+export const walletRepository = createWalletRepository();

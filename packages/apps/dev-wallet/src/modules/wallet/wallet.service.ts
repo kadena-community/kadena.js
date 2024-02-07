@@ -1,79 +1,58 @@
 import { IPactCommand, IUnsignedCommand, addSignatures } from '@kadena/client';
-import {
-  kadenaDecrypt,
-  kadenaEncrypt,
-  kadenaGetPublic,
-  kadenaMnemonicToSeed,
-  kadenaSignWithSeed,
-  randomBytes,
-} from '@kadena/hd-wallet';
+import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
+import { keySourceManager } from '../key-source/key-source-manager';
+import { INetwork } from '../network/network.repository';
 import {
   IAccount,
   IKeyItem,
   IKeySource,
   IProfile,
-  WalletRepository,
+  walletRepository,
 } from './wallet.repository';
 
-const DEFAULT_DERIVATION_PATH_TEMPLATE = `m'/44'/626'/<index>'`;
-
-export type WalletContextType = {
-  walletRepository: WalletRepository;
-  profile: IProfile;
-  encryptionKey: Uint8Array;
-  encryptedSeed: Uint8Array;
-};
-
-export function getProfile({
-  walletRepository,
-  profile,
-}: Pick<WalletContextType, 'walletRepository' | 'profile'>) {
-  return walletRepository.getProfile(profile.uuid);
+export function getProfile(profileId: string) {
+  return walletRepository.getProfile(profileId);
 }
 
-export function getAccounts({
-  walletRepository,
-  profile,
-}: Pick<WalletContextType, 'walletRepository' | 'profile'>) {
-  return walletRepository.getAccountsByProfileId(profile.uuid);
+export function getAccounts(profileId: string) {
+  return walletRepository.getAccountsByProfileId(profileId);
 }
 
 export function sign(
-  {
-    encryptedSeed,
-    encryptionKey,
-    profile,
-  }: Pick<WalletContextType, 'encryptedSeed' | 'encryptionKey' | 'profile'>,
+  keySources: IKeySource[],
+  onConnect: (keySource: IKeySource) => Promise<void>,
   TXs: IUnsignedCommand[],
 ) {
-  if (!encryptedSeed) {
-    throw new Error('Wallet is not unlocked');
-  }
-
   const signedTx = Promise.all(
     TXs.map(async (Tx) => {
       const signatures = await Promise.all(
-        profile.keySources.map(
-          async ({ publicKeys, derivationPathTemplate }) => {
-            const cmd: IPactCommand = JSON.parse(Tx.cmd);
-            const relevantIndexes = cmd.signers
-              .map((signer) =>
-                publicKeys.findIndex(
-                  (publicKey) => publicKey === signer.pubKey,
-                ),
-              )
-              .filter((index) => index !== undefined) as number[];
+        keySources.map(async (keySource) => {
+          const { keys: publicKeys, source } = keySource;
+          const cmd: IPactCommand = JSON.parse(Tx.cmd);
+          const relevantIndexes = cmd.signers
+            .map(
+              (signer) =>
+                publicKeys.find((key) => key.publicKey === signer.pubKey)
+                  ?.index,
+            )
+            .filter((index) => index !== undefined) as number[];
 
-            const signatures = await kadenaSignWithSeed(
-              encryptionKey,
-              encryptedSeed,
-              relevantIndexes,
-              derivationPathTemplate,
-            )(Tx.hash);
+          const service = keySourceManager.get(source);
 
-            return signatures;
-          },
-        ),
+          if (!service.isReady()) {
+            // call onConnect to connect to the keySource;
+            // then the ui can prompt the user to unlock the wallet in case of hd-wallet
+            await onConnect(keySource);
+          }
+
+          const signatures = await service.sign(
+            Tx.hash,
+            keySource.uuid,
+            relevantIndexes,
+          );
+
+          return signatures;
+        }),
       );
       return addSignatures(Tx, ...signatures.flat());
     }),
@@ -82,38 +61,55 @@ export function sign(
   return signedTx;
 }
 
-export async function decryptMnemonic(
-  {
-    walletRepository,
-    profile,
-  }: Pick<WalletContextType, 'walletRepository' | 'profile'>,
+export async function createProfile(
+  profileName: string,
   password: string,
+  networks: INetwork[],
 ) {
-  const encryptedMnemonic = await walletRepository.getEncryptedValue(
-    profile.seedKey,
-  );
-  if (!encryptedMnemonic) {
-    throw new Error('No wallet found');
-  }
-  const decryptedMnemonicBuffer = await kadenaDecrypt(
+  const secretId = crypto.randomUUID();
+  // create this in order to verify the password later
+  const secret = await kadenaEncrypt(
     password,
-    encryptedMnemonic,
+    JSON.stringify({ secretId }),
+    'buffer',
   );
-  const mnemonic = new TextDecoder().decode(decryptedMnemonicBuffer);
-  return mnemonic;
+  await walletRepository.addEncryptedValue(secretId, secret);
+  const profile: IProfile = {
+    uuid: crypto.randomUUID(),
+    name: profileName,
+    networks,
+    secretId,
+  };
+  await walletRepository.addProfile(profile);
+  return profile;
 }
 
-export async function createKAccount(
-  {
-    profile,
-    walletRepository,
-  }: Pick<WalletContextType, 'walletRepository' | 'profile'>,
-  keyItem: IKeyItem,
-) {
+export const unlockProfile = async (profileId: string, password: string) => {
+  try {
+    const profile = await walletRepository.getProfile(profileId);
+    const secret = await walletRepository.getEncryptedValue(profile.secretId);
+    const decryptedSecret = await kadenaDecrypt(password, secret);
+    const { secretId } = JSON.parse(new TextDecoder().decode(decryptedSecret));
+    if (secretId === profile.secretId) {
+      return profile;
+    }
+    return null;
+  } catch (e) {
+    return null;
+  }
+};
+
+export async function createKey(keySource: IKeySource, quantity: number) {
+  const service = keySourceManager.get(keySource.source);
+  const keys = await service.createKey(keySource.uuid, quantity);
+  return keys;
+}
+
+export async function createKAccount(profileId: string, keyItem: IKeyItem) {
   const account: IAccount = {
     uuid: crypto.randomUUID(),
     alias: '',
-    profileId: profile.uuid,
+    profileId: profileId,
     address: `k:${keyItem.publicKey}`,
     guard: {
       type: 'keySet',
@@ -126,127 +122,26 @@ export async function createKAccount(
   return account;
 }
 
-export async function createProfile(
-  {
-    walletRepository,
-    encryptionKey,
-    encryptedSeed,
-  }: Pick<
-    WalletContextType,
-    'encryptedSeed' | 'encryptionKey' | 'walletRepository'
-  >,
-  profileName: string,
-  encryptedMnemonic: Uint8Array,
-) {
-  const mnemonicKey = crypto.randomUUID();
-
-  const publicKey = await kadenaGetPublic(
-    encryptionKey,
-    encryptedSeed,
-    1,
-    DEFAULT_DERIVATION_PATH_TEMPLATE,
-  );
-
-  await walletRepository.addEncryptedValue(mnemonicKey, encryptedMnemonic);
-
-  const profileId = crypto.randomUUID();
-
-  const keySource: IKeySource = {
-    uuid: crypto.randomUUID(),
-    source: 'hd-wallet',
-    derivationPathTemplate: DEFAULT_DERIVATION_PATH_TEMPLATE,
-    publicKeys: [publicKey],
-  };
-
-  const profile: IProfile = {
-    uuid: profileId,
-    name: profileName,
-    networks: [],
-    seedKey: mnemonicKey,
-    keySources: [keySource],
-  };
-
-  await walletRepository.addProfile(profile);
-
-  return profile;
-}
-
-export async function createWallet(
-  walletRepository: WalletRepository,
-  profileName: string,
-  password: string,
-  mnemonic: string,
-) {
-  if (!walletRepository) {
-    throw new Error('Wallet repository not initialized');
+export const createFirstAccount = async (
+  profileId: string,
+  keySource: IKeySource,
+) => {
+  if (!profileId) {
+    throw new Error('Wallet not initialized');
   }
 
-  const encryptionKey = randomBytes(32);
-  const encryptedSeed = await kadenaMnemonicToSeed(
-    encryptionKey,
-    mnemonic,
-    'buffer',
-  );
+  const service = keySourceManager.get(keySource.source);
+  const keys = await service.createKey(keySource.uuid, 1);
 
-  const encryptedMnemonic = await kadenaEncrypt(password, mnemonic, 'buffer');
+  return createKAccount(profileId, keys[0]);
+};
 
-  const profile = await createProfile(
-    {
-      walletRepository,
-      encryptionKey,
-      encryptedSeed,
-    },
-    profileName,
-    encryptedMnemonic,
-  );
-
-  await createKAccount(
-    { profile, walletRepository },
-    {
-      index: 0,
-      keySourceId: profile.keySources[0].uuid,
-      publicKey: profile.keySources[0].publicKeys[0],
-    },
-  );
-
-  const context: WalletContextType = {
-    walletRepository,
-    profile,
-    encryptionKey,
-    encryptedSeed,
-  };
-
-  return context;
-}
-
-export async function unlockWallet(
-  walletRepository: WalletRepository,
-  profileId: string,
-  password: string,
-) {
-  const profile = await walletRepository.getProfile(profileId);
-  const encryptedMnemonic = await walletRepository.getEncryptedValue(
-    profile.seedKey,
-  );
-  const decryptedMnemonicBuffer = await kadenaDecrypt(
-    password,
-    encryptedMnemonic,
-  );
-
-  const mnemonic = new TextDecoder().decode(decryptedMnemonicBuffer);
-  const encryptionKey = randomBytes(32);
-  const encryptedSeed = await kadenaMnemonicToSeed(
-    encryptionKey,
-    mnemonic,
-    'buffer',
-  );
-
-  const context: WalletContextType = {
-    walletRepository,
-    profile,
-    encryptionKey,
-    encryptedSeed,
-  };
-
-  return context;
+export async function decryptSecret(password: string, secretId: string) {
+  const encrypted = await walletRepository.getEncryptedValue(secretId);
+  if (!encrypted) {
+    throw new Error('No record found');
+  }
+  const decryptedBuffer = await kadenaDecrypt(password, encrypted);
+  const mnemonic = new TextDecoder().decode(decryptedBuffer);
+  return mnemonic;
 }

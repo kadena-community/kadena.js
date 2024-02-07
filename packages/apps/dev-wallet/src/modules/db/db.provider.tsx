@@ -28,7 +28,7 @@ export const DatabaseProvider: FC<{
       console.log('database setup done');
       await sleep(10);
       try {
-        await addDefaultNetworks(db);
+        await addDefaultNetworks();
         db.close();
         setInitialized(true);
       } catch (e) {

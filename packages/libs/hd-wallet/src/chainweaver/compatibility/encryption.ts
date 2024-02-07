@@ -2,7 +2,7 @@ import type { EncryptedString } from '../../index.js';
 import { kadenaEncrypt } from '../../index.js';
 
 export async function encryptLegacySecretKey(
-  password: string,
+  password: string | Uint8Array,
   secretKey: Uint8Array,
 ): Promise<EncryptedString> {
   const xpub = secretKey.slice(64, 96);
