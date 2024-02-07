@@ -10,7 +10,7 @@ const ProofOfUsStore = () => {
         proofOfUsId,
         type: 'multi',
         date: Date.now(),
-        signees: [{ ...account, initiator: true }],
+        signees: [{ ...account, signerStatus: 'init', initiator: true }],
       },
     };
   };
@@ -28,25 +28,43 @@ const ProofOfUsStore = () => {
   };
 
   const getBackground = (proofOfUsId: string) => {
-    return store[proofOfUsId].background;
+    return store[proofOfUsId]?.background;
   };
 
   const addSignee = (proofOfUsId: string, account: IProofOfUsSignee) => {
-    store[proofOfUsId].data;
-
     const signeesList = store[proofOfUsId].data.signees;
     if (!signeesList) return;
 
     if (signeesList.find((s) => s.cid === account.cid)) return;
 
     if (!signeesList.length) {
-      store[proofOfUsId].data.signees[0] = { ...account };
+      store[proofOfUsId].data.signees[0] = {
+        ...account,
+        signerStatus: !account.signerStatus ? 'signing' : account.signerStatus,
+      };
     } else {
-      store[proofOfUsId].data.signees[1] = { ...account, initiator: false };
+      store[proofOfUsId].data.signees[1] = {
+        ...account,
+        signerStatus: !account.signerStatus ? 'signing' : account.signerStatus,
+        initiator: !account.initiator ? false : account.initiator,
+      };
       store[proofOfUsId].data.signees.length = 2;
     }
 
     store[proofOfUsId].data.signees = [...signeesList];
+  };
+  const updateSignee = (proofOfUsId: string, account: IProofOfUsSignee) => {
+    const signeesList = store[proofOfUsId].data.signees;
+    if (!signeesList) return;
+
+    const newList = signeesList.map((s, idx) => {
+      if (s.cid === account.cid) {
+        return { ...s, signerStatus: account.signerStatus };
+      }
+      return s;
+    });
+
+    store[proofOfUsId].data.signees = [...newList];
   };
 
   const removeSignee = (proofOfUsId: string, account: IProofOfUsSignee) => {
@@ -72,6 +90,7 @@ const ProofOfUsStore = () => {
     getProofOfUs,
     getBackground,
     addSignee,
+    updateSignee,
     removeSignee,
     addBackground,
     closeToken,

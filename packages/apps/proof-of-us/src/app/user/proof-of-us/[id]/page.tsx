@@ -1,7 +1,6 @@
 'use client';
 import { AvatarEditor } from '@/components/AvatarEditor/AvatarEditor';
 import { DetailView } from '@/components/DetailView/DetailView';
-import { ProcessingView } from '@/components/ProcessingView/ProcessingView';
 
 import { ShareView } from '@/components/ShareView/ShareView';
 
@@ -50,8 +49,7 @@ const Page: FC<IProps> = ({ params }) => {
     <div>
       {status === 1 && <AvatarEditor next={next} />}
       {status === 2 && <DetailView next={next} prev={prev} />}
-      {status === 3 && <ShareView next={next} prev={prev} />}
-      {status === 4 && <ProcessingView next={next} prev={prev} />}
+      {status >= 3 && <ShareView next={next} prev={prev} status={status} />}
     </div>
   );
 };

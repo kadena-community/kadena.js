@@ -10,6 +10,7 @@ export interface IProofOfUsContext {
   background: IProofOfUsBackground;
   closeToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
   addSignee: () => Promise<void>;
+  updateSigneeStatus: (status: ISignerStatus) => Promise<void>;
   removeSignee: ({
     proofOfUsId,
     signee,
@@ -28,6 +29,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   background: '',
   closeToken: async () => {},
   addSignee: async () => {},
+  updateSigneeStatus: async (status: ISignerStatus) => {},
   removeSignee: async () => {},
   createToken: async () => {},
   isConnected: () => false,
@@ -38,6 +40,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
       displayName: account.displayName,
       publicKey: account.publicKey,
       initiator: false,
+      signerStatus: 'init',
     };
   },
 });
@@ -83,6 +86,21 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const closeToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
     socket?.emit('closeToken', {
       to: proofOfUsId,
+    });
+  };
+
+  const updateSigneeStatus = async (status: ISignerStatus) => {
+    if (!socket || !account || !proofOfUs) return;
+
+    socket?.emit('updateSigneeStatus', {
+      content: {
+        displayName: account.displayName,
+        cid: account.cid,
+        publicKey: account.publicKey,
+        initiator: false,
+        signerStatus: status,
+      } as IProofOfUsSignee,
+      to: proofOfUs?.proofOfUsId,
     });
   };
 
@@ -142,6 +160,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       displayName: account.displayName,
       publicKey: account.publicKey,
       initiator: false,
+      signerStatus: 'init',
     };
   };
 
@@ -150,6 +169,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       value={{
         closeToken,
         addSignee,
+        updateSigneeStatus,
         removeSignee,
         createToken,
         isConnected,
