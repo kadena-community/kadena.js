@@ -104,20 +104,20 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
     //   conn.send('hi');
     // });
 
-    if (proofOfUsId && proofOfUsId !== data.proofOfUsId) disconnect(data);
-    if (socket.connected) return socket;
+    // if (proofOfUsId && proofOfUsId !== data.proofOfUsId) disconnect(data);
+    // if (socket.connected) return socket;
 
-    setProofOfUsId(data.proofOfUsId);
-    await fetch('/api/socket');
-    // eslint-disable-next-line require-atomic-updates
-    socket.auth = { proofOfUsId: data.proofOfUsId };
-    socket.connect();
+    // setProofOfUsId(data.proofOfUsId);
+    // await fetch('/api/socket');
+    // // eslint-disable-next-line require-atomic-updates
+    // socket.auth = { proofOfUsId: data.proofOfUsId };
+    // socket.connect();
 
-    socket.on('connect', () => {
-      console.log('connected');
-    });
+    // socket.on('connect', () => {
+    //   console.log('connected');
+    // });
 
-    return socket;
+    // return socket;
   };
 
   return (
