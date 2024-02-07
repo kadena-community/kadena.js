@@ -49,6 +49,7 @@ export function createChainweaverService() {
       const encryptedRootKey = await kadenaMnemonicToRootKeypair(
         password,
         mnemonic,
+        'buffer',
       );
       await keySourceRepository.addEncryptedValue(secretId, encryptedMnemonic);
       await keySourceRepository.addEncryptedValue(rootKeyId, encryptedRootKey);
@@ -86,14 +87,17 @@ export function createChainweaverService() {
       const rootKey = await keySourceRepository.getEncryptedValue(
         keySource.rootKeyId,
       );
-      const publicKeys = await kadenaGenKeypair(password, rootKey, [
+      const keys = await kadenaGenKeypair(password, rootKey, [
         startIndex,
         startIndex + quantity - 1,
       ]);
       const newKeys = await Promise.all(
-        publicKeys.map(async ({ publicKey, secretKey }, index) => {
+        keys.map(async ({ publicKey, secretKey }, index) => {
           const secretId = crypto.randomUUID();
-          await keySourceRepository.addEncryptedValue(secretId, secretKey);
+          await keySourceRepository.addEncryptedValue(
+            secretId,
+            new TextEncoder().encode(secretKey),
+          );
           return {
             publicKey: publicKey,
             index: startIndex + index,
