@@ -25,7 +25,7 @@ export default function SocketHandler(
   res: INextApiResponseWithSocket,
 ) {
   if (res.socket.server.io) {
-    console.log('Already set up');
+    console.log('Already set up!');
     res.end();
     return;
   }
