@@ -815,6 +815,9 @@ importers:
       '@ledgerhq/hw-transport-webhid':
         specifier: ^6.28.3
         version: 6.28.3
+      '@ledgerhq/logs':
+        specifier: ^6.12.0
+        version: 6.12.0
       '@tanstack/react-query':
         specifier: ^4.35.3
         version: 4.35.3(react-dom@18.2.0)(react@18.2.0)
