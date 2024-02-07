@@ -6,7 +6,6 @@ import type { Socket as INetSocket } from 'net';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { Server as IOServer } from 'socket.io';
 import { Server } from 'socket.io';
-import { Server as P2PServer } from 'socket.io-p2p-server';
 
 export interface ISocketServer extends IHTTPServer {
   io?: IOServer | undefined;
@@ -37,7 +36,6 @@ export default function SocketHandler(
     addTrailingSlash: false,
   });
   res.socket.server.io = io;
-  io.use(P2PServer);
 
   io.use((socket, next) => {
     const proofOfUsId = socket.handshake.auth.proofOfUsId;

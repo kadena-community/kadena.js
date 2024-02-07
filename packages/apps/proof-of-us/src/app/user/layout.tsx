@@ -13,7 +13,8 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const { id: proofOfUsId } = useParams();
 
   useEffect(() => {
-    connect({ proofOfUsId: `${proofOfUsId}` });
+    console.log(`${proofOfUsId}`);
+    connect({ proofOfUsId: `${proofOfUsId}`, initiator: true });
 
     return () => {
       disconnect({ proofOfUsId: `${proofOfUsId}` });

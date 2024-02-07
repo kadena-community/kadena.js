@@ -12,7 +12,7 @@ const ScanLayout: FC<PropsWithChildren> = ({ children }) => {
   const { id: proofOfUsId } = useParams();
 
   useEffect(() => {
-    connect({ proofOfUsId: `${proofOfUsId}` });
+    connect({ proofOfUsId: `${proofOfUsId}`, initiator: false });
 
     return () => {
       disconnect({ proofOfUsId: `${proofOfUsId}` });
