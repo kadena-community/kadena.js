@@ -147,7 +147,9 @@ const Storybook = () => {
               {ledgerPublicKey ? (
                 <dl>
                   <dt>Public Key</dt>
-                  <dd>{ledgerPublicKey}</dd>
+                  <dd>
+                    <Text as="code">{ledgerPublicKey}</Text>
+                  </dd>
                   <dt>Account name</dt>
                   <dd>
                     <AccountHoverTag value={`k:${ledgerPublicKey}`} />
