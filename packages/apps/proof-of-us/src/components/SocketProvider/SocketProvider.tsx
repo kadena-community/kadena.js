@@ -3,7 +3,7 @@
 import type Peer from 'peerjs';
 import type { DataConnection } from 'peerjs';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useState } from 'react';
+import { createContext } from 'react';
 import type { Socket } from 'socket.io-client';
 import { pouPeer, socket } from '../../socket';
 
@@ -31,7 +31,7 @@ export const SocketContext = createContext<ISocketContext>({
 });
 
 export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [proofOfUsId, setProofOfUsId] = useState<string>();
+  // const [proofOfUsId, setProofOfUsId] = useState<string>();
 
   // const getId = (initiator: boolean, id: string): string => {
   //   return `${id}-${initiator ? 'init' : 'signee'}`;
@@ -118,6 +118,7 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
     // });
 
     // return socket;
+    return undefined;
   };
 
   return (
