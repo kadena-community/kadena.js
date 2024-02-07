@@ -1,13 +1,13 @@
 import TransportWebHID from '@ledgerhq/hw-transport-webhid';
+import { listen } from '@ledgerhq/logs';
 import type { FC } from 'react';
 import React, { createContext, useContext, useState } from 'react';
-// import { listen } from '@ledgerhq/logs';
 
 import type Transport from '@ledgerhq/hw-transport';
 
 const LedgerContext = createContext<{
   transport: Transport | null;
-  connect: () => void;
+  connect: (verboseLogging?: boolean) => void;
 }>({ transport: null, connect: () => {} });
 
 const LedgerContextProvider: FC<{ children: React.ReactNode }> = ({
@@ -15,12 +15,14 @@ const LedgerContextProvider: FC<{ children: React.ReactNode }> = ({
 }) => {
   const [transport, setTransport] = useState<Transport | null>(null);
 
-  const connect = async () => {
+  const connect = async (verboseLogging = false) => {
     try {
       const transport = await TransportWebHID.create();
 
       //listen to the events which are sent by the Ledger packages in order to debug the app
-      // listen((log) => console.log('Ledger listen:', log));
+      if (verboseLogging) {
+        listen((log) => console.log('Ledger listen:', log));
+      }
 
       setTransport(transport);
 
