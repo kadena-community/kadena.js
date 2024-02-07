@@ -15,7 +15,7 @@ export const maskValue = (
   options?: Partial<MaskOptions>,
 ): string => {
   const {
-    character,
+    character: _character,
     maskLength: _maskLength,
     headLength: _headLength,
     tailLength: _tailLength,
@@ -24,9 +24,11 @@ export const maskValue = (
     ...options,
   };
 
-  if (character.length > 1) {
-    throw new Error('Only one character is allowed');
+  if (_character.length > 1) {
+    console.info('Only one character is allowed');
   }
+
+  const character = _character.slice(0, 1);
 
   const maskLength = Math.max(0, _maskLength);
   const headLength = Math.max(0, _headLength);
