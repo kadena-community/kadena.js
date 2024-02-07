@@ -2,6 +2,7 @@ export const proofOfUsData: IProofOfUs[] = [
   {
     background: '',
     data: {
+      status: 0,
       mintStatus: 'error',
       proofOfUsId: '',
       type: 'multi',
@@ -26,6 +27,7 @@ export const proofOfUsData: IProofOfUs[] = [
   {
     background: '',
     data: {
+      status: 0,
       mintStatus: 'error',
       proofOfUsId: '',
       type: 'multi',

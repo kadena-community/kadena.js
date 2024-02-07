@@ -26,6 +26,16 @@ export const signeeListeners = (socket: Socket, io: IOServer) => {
       });
   });
 
+  socket.on('updateStatus', ({ content, to }) => {
+    store.updateStatus(to, content.status);
+    io.to(to)
+      .to(to)
+      .emit('getProofOfUs', {
+        content: store.getProofOfUs(to),
+        from: socket.handshake.auth.proofOfUsId,
+      });
+  });
+
   socket.on('addSignee', ({ content, to }) => {
     store.addSignee(to, content);
     io.to(to)

@@ -25,16 +25,15 @@ export default function SocketHandler(
   res: INextApiResponseWithSocket,
 ) {
   if (res.socket.server.io) {
-    console.log('Already set up');
+    console.log('Already set up!');
     res.end();
     return;
   }
 
   const io = new Server(res.socket.server, {
     maxHttpBufferSize: 1e8,
-    cors: {
-      origin: 'http://localhost:3000',
-    },
+    path: '/api/socket_io',
+    addTrailingSlash: false,
   });
   res.socket.server.io = io;
 

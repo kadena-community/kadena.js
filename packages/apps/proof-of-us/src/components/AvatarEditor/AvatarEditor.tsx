@@ -1,5 +1,6 @@
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
+import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import classnames from 'classnames';
 import { fabric } from 'fabric';
 import type { Canvas } from 'fabric/fabric-impl';
@@ -28,6 +29,13 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   const { setBackgroundSocket } = useAvatar();
   const canvasElm = canvasRef.current;
   const { proofOfUs, background } = useProofOfUs();
+
+  useEffect(() => {
+    // if someone is already signing the pou, you are not allowed to change the photo anymore
+    if (isAlreadySigning(proofOfUs?.signees)) {
+      next();
+    }
+  });
 
   useEffect(() => {
     if (!fabricRef.current || !proofOfUs) return;
@@ -85,6 +93,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     (videoRef.current?.srcObject as MediaStream)
       ?.getTracks()
       .forEach((t) => t.stop());
+
     next();
   };
 
