@@ -1,21 +1,16 @@
 import * as inquirer from '@inquirer/prompts';
 import type ttys from 'ttys';
 
-interface INQUIREROPTIONS {
+interface IInquirerOptions {
   input: typeof ttys.stdin;
   output: typeof process.stderr;
 }
 
-let cache: INQUIREROPTIONS;
-
-const getInquirerOptions = async (): Promise<INQUIREROPTIONS> => {
-  if (cache !== undefined) return cache;
-  // eslint-disable-next-line require-atomic-updates
-  cache = {
-    input: (await import('ttys')).stdin,
+const getInquirerOptions = async (): Promise<IInquirerOptions> => {
+  return {
+    input: (await import('ttys').catch(() => process)).stdin,
     output: process.stderr,
   };
-  return cache;
 };
 
 export const checkbox: typeof inquirer.checkbox = (async (config, context) =>
