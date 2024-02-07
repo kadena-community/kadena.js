@@ -1,8 +1,8 @@
-import { input, select } from '@inquirer/prompts';
 import type { ChainId } from '@kadena/types';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
 import { getExistingNetworks, isAlphabetic } from '../utils/helpers.js';
+import { input, select } from '../utils/prompts.js';
 import { getInputPrompt } from './generic.js'; // Importing getInputPrompt from another file
 
 export const chainIdPrompt: IPrompt<string> = async (

@@ -1,4 +1,3 @@
-import { checkbox, input, select } from '@inquirer/prompts';
 import type { IUnsignedCommand } from '@kadena/types';
 import chalk from 'chalk';
 import { z } from 'zod';
@@ -12,6 +11,7 @@ import {
 } from '../keys/utils/keysHelpers.js';
 import { defaultTemplates } from '../tx/commands/templates/templates.js';
 import type { IPrompt } from '../utils/createOption.js';
+import { checkbox, input, select } from '../utils/prompts.js';
 
 const CommandPayloadStringifiedJSONSchema = z.string();
 const PactTransactionHashSchema = z.string();

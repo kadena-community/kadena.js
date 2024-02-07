@@ -1,4 +1,3 @@
-import { select } from '@inquirer/prompts';
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import { Option } from 'commander';
@@ -14,6 +13,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { select } from '../../utils/prompts.js';
 import type { IWallet } from '../utils/keysHelpers.js';
 import { getWalletContent } from '../utils/keysHelpers.js';
 import * as storageService from '../utils/storage.js';
