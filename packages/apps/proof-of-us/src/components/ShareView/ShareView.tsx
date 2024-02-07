@@ -46,13 +46,13 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
             <>
               <QRCode
                 ecLevel="H"
+                size={500}
                 ref={qrRef}
                 value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
                 removeQrCodeBehindLogo={true}
                 logoImage="/assets/qrlogo.png"
                 logoPadding={5}
                 quietZone={10}
-                qrStyle="dots" // type of qr code, wether you want dotted ones or the square ones
                 eyeRadius={10}
               />
               link: {`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}

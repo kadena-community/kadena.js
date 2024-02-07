@@ -1,3 +1,6 @@
+import { BUILDSTATUS } from '@/constants';
+import { isAlreadySigning } from '../isAlreadySigning';
+
 const ProofOfUsStore = () => {
   const store: Record<string, IProofOfUs> = {};
 
@@ -6,6 +9,7 @@ const ProofOfUsStore = () => {
     store[proofOfUsId] = {
       background: '',
       data: {
+        status: BUILDSTATUS.INIT,
         mintStatus: 'init',
         proofOfUsId,
         type: 'multi',
@@ -24,7 +28,14 @@ const ProofOfUsStore = () => {
     proofOfUsId: string,
     background: IProofOfUsBackground,
   ) => {
+    //check if there are people already signing. it is not possible to set the background
+    if (isAlreadySigning(store[proofOfUsId].data.signees)) return;
+
     store[proofOfUsId].background = background;
+  };
+
+  const updateStatus = (proofOfUsId: string, status: IBuildStatusValues) => {
+    store[proofOfUsId].data.status = status;
   };
 
   const getBackground = (proofOfUsId: string) => {
@@ -94,6 +105,7 @@ const ProofOfUsStore = () => {
     removeSignee,
     addBackground,
     closeToken,
+    updateStatus,
   };
 };
 
