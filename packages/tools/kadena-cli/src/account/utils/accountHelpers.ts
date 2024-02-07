@@ -5,10 +5,13 @@ import { z } from 'zod';
 
 import { ACCOUNT_DIR } from '../../constants/config.js';
 import { services } from '../../services/index.js';
-import { isEmpty } from '../utils/addHelpers.js';
+import { notEmpty } from '../../utils/helpers.js';
 
 interface IAccount {
   name: string;
+  fungible: string;
+  publicKeys: string[];
+  predicate: string;
   alias: string;
 }
 
@@ -25,12 +28,15 @@ const readAccountFromFile = async (accountFile: string): Promise<IAccount> => {
     join(ACCOUNT_DIR, accountFile),
   );
   const account = content !== null ? yaml.load(content) : null;
-  const parsedContent = accountAliasFileSchema.parse(account);
-
-  return {
-    name: parsedContent.name,
-    alias: accountAlias,
-  };
+  try {
+    const parsedContent = accountAliasFileSchema.parse(account);
+    return {
+      ...parsedContent,
+      alias: accountAlias,
+    };
+  } catch (error) {
+    throw new Error(`Error parsing alias file: ${accountFile}. ${error}`);
+  }
 };
 
 export async function ensureAccountExists(): Promise<void> {
@@ -44,9 +50,19 @@ export async function getAllAccounts(): Promise<IAccount[]> {
 
   const files = readdirSync(ACCOUNT_DIR);
 
-  const accountNames = await Promise.all(
-    files.map((file) => readAccountFromFile(file)),
+  const allAccounts = await Promise.all(
+    files.map((file) => readAccountFromFile(file).catch(() => null)),
   );
 
-  return accountNames.flat().filter((account) => !isEmpty(account.name));
+  return allAccounts.flat().filter(notEmpty);
+}
+
+export async function getAllAccountNames(): Promise<
+  {
+    alias: string;
+    name: string;
+  }[]
+> {
+  const allAccountDetails = await getAllAccounts();
+  return allAccountDetails.map(({ alias, name }) => ({ alias, name }));
 }

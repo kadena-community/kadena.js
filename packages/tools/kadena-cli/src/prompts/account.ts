@@ -1,6 +1,6 @@
+import { getAllAccountNames } from '../account/utils/accountHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
 import { input, select } from '../utils/prompts.js';
-import { getAllAccounts } from '../account/utils/accountHelpers.js';
 import { truncateText } from '../utils/helpers.js';
 
 export const publicKeysPrompt: IPrompt<string> = async (
@@ -118,8 +118,8 @@ export const accountOverWritePrompt: IPrompt<boolean> = async () =>
     ],
   });
 
-export const accountSelectionPrompt: IPrompt<string> = async () => {
-  const allAccounts = await getAllAccounts();
+export const accountNameSelectionPrompt: IPrompt<string> = async () => {
+  const allAccounts = await getAllAccountNames();
 
   const allAccountChoices = allAccounts.map((account) => ({
     value: account.name,

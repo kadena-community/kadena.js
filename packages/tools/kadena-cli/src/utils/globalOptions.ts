@@ -28,10 +28,7 @@ import {
   ensureNetworksConfiguration,
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
-import {
-  accountOverWritePrompt,
-  accountSelectionPrompt,
-} from '../prompts/account.js';
+import { accountOverWritePrompt } from '../prompts/account.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
@@ -614,10 +611,10 @@ export const globalOptions = {
       'Overwrite account details from chain',
     ),
   }),
-  accountSelect: createOption({
+  accountNameSelect: createOption({
     key: 'accountName' as const,
     defaultIsOptional: false,
-    prompt: accountSelectionPrompt,
+    prompt: account.accountNameSelectionPrompt,
     validation: z.string(),
     option: new Option('-a, --account-name <accountName>', 'Account name'),
   }),

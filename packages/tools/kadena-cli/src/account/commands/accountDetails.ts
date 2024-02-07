@@ -33,7 +33,7 @@ export const createAccountDetailsCommand: (
   'details',
   'Get details of an account',
   [
-    globalOptions.accountSelect(),
+    globalOptions.accountNameSelect(),
     globalOptions.fungible(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
