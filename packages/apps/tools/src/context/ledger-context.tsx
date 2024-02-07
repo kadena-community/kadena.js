@@ -1,6 +1,6 @@
 import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import type { FC } from 'react';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 // import { listen } from '@ledgerhq/logs';
 
 import type Transport from '@ledgerhq/hw-transport';
