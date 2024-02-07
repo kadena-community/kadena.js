@@ -32,9 +32,6 @@ export default function SocketHandler(
 
   const io = new Server(res.socket.server, {
     maxHttpBufferSize: 1e8,
-    cors: {
-      origin: process.env.NEXT_PUBLIC_URL,
-    },
   });
   res.socket.server.io = io;
 
