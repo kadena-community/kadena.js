@@ -9,6 +9,13 @@ export interface IProofOfUsContext {
   proofOfUs?: IProofOfUsData;
   background: IProofOfUsBackground;
   closeToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
+  updateStatus: ({
+    proofOfUsId,
+    status,
+  }: {
+    proofOfUsId: string;
+    status: IBuildStatusValues;
+  }) => Promise<void>;
   addSignee: () => Promise<void>;
   updateSigneeStatus: (status: ISignerStatus) => Promise<void>;
   removeSignee: ({
@@ -28,6 +35,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   proofOfUs: undefined,
   background: '',
   closeToken: async () => {},
+  updateStatus: async () => {},
   addSignee: async () => {},
   updateSigneeStatus: async (status: ISignerStatus) => {},
   removeSignee: async () => {},
@@ -82,6 +90,21 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       socket.off('getProofOfUsBackground');
     };
   }, []);
+
+  const updateStatus = async ({
+    proofOfUsId,
+    status,
+  }: {
+    proofOfUsId: string;
+    status: IBuildStatusValues;
+  }) => {
+    socket?.emit('updateStatus', {
+      content: {
+        status,
+      },
+      to: proofOfUsId,
+    });
+  };
 
   const closeToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
     socket?.emit('closeToken', {
@@ -177,6 +200,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         getSigneeAccount,
         background,
         proofOfUs,
+        updateStatus,
       }}
     >
       {children}

@@ -16,6 +16,8 @@ export interface IMaskedValueProps {
   defaultVisibility?: boolean;
   startUnmaskedValues?: number;
   endUnmaskedValues?: number;
+  maskCharacter?: string;
+  maskLength?: number;
 }
 
 export const MaskedValue: FC<IMaskedValueProps> = ({
@@ -24,6 +26,8 @@ export const MaskedValue: FC<IMaskedValueProps> = ({
   defaultVisibility = false,
   startUnmaskedValues = 6,
   endUnmaskedValues = 4,
+  maskCharacter = '*',
+  maskLength = 4,
 }): JSX.Element => {
   const [visible, setVisible] = useState(defaultVisibility);
 
@@ -34,6 +38,8 @@ export const MaskedValue: FC<IMaskedValueProps> = ({
   const maskedValue = maskValue(value, {
     headLength: startUnmaskedValues,
     tailLength: endUnmaskedValues,
+    character: maskCharacter,
+    maskLength,
   });
 
   return (

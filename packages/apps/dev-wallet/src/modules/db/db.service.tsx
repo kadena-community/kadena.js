@@ -62,6 +62,7 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
     const create = createStore(db);
     create('profile', 'uuid', [{ index: 'name', unique: true }]);
     create('encryptedValue');
+    create('keySource', 'uuid', [{ index: 'profileId' }]);
     create('account', 'uuid', [{ index: 'address' }, { index: 'profileId' }]);
     create('network', 'uuid', [{ index: 'networkId', unique: true }]);
   }
@@ -79,3 +80,12 @@ const createConnection = async () => {
 
 export const { createDatabaseConnection, closeDatabaseConnections } =
   createConnectionPool(createConnection);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const injectDb = <R extends (...args: any[]) => Promise<any>>(
+  fn: (db: IDBDatabase) => R,
+) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (async (...args: any): Promise<any> => {
+    return createDatabaseConnection().then((db) => fn(db)(...args));
+  }) as R;

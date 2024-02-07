@@ -1,20 +1,15 @@
 import { IUnsignedCommand } from '@kadena/client';
 import { useCallback, useContext } from 'react';
+
+import { keySourceManager } from '../key-source/key-source-manager';
 import { ExtWalletContextType, WalletContext } from './wallet.provider';
-import { createWalletRepository } from './wallet.repository';
+import { IKeySource, walletRepository } from './wallet.repository';
 import * as WalletService from './wallet.service';
 
 const isUnlocked = (
   ctx: ExtWalletContextType,
 ): ctx is Required<ExtWalletContextType> => {
-  if (
-    !ctx ||
-    !ctx.accounts ||
-    !ctx.encryptedSeed ||
-    !ctx.encryptionKey ||
-    !ctx.profile ||
-    !ctx.profileList
-  ) {
+  if (!ctx || !ctx.profile || !ctx.profileList || !ctx.keySources) {
     return false;
   }
   return true;
@@ -26,87 +21,110 @@ export const useWallet = () => {
     throw new Error('useWallet must be used within a WalletProvider');
   }
 
-  const createWallet = useCallback(
-    async (profileName: string, password: string, mnemonic: string) => {
-      const walletRepository = await createWalletRepository();
-      const ctx = await WalletService.createWallet(
-        walletRepository,
+  const retrieveKeySources = useCallback(
+    async (profileId: string) => {
+      const keySources = await walletRepository.getProfileKeySources(profileId);
+      setContext((ctx) => ({ ...ctx, keySources }));
+      return keySources;
+    },
+    [setContext],
+  );
+
+  const createProfile = useCallback(
+    async (profileName: string, password: string) => {
+      const profile = await WalletService.createProfile(
         profileName,
         password,
-        mnemonic,
+        [],
       );
-
-      const profile = await WalletService.getProfile(ctx);
-      const accounts = await WalletService.getAccounts(ctx);
       const profileInfo = { name: profile.name, uuid: profile.uuid };
       setContext(({ profileList }) => ({
-        ...ctx,
         profile,
-        accounts,
         profileList: [...(profileList ?? []), profileInfo],
       }));
+      keySourceManager.reset();
+      return profile;
     },
     [setContext],
   );
 
-  const unlockWallet = useCallback(
-    async (profileId: string, password: string) => {
-      const walletRepository = await createWalletRepository();
-      const ctx = await WalletService.unlockWallet(
-        walletRepository,
-        profileId,
-        password,
-      );
-      const profile = await WalletService.getProfile(ctx);
-      const accounts = await WalletService.getAccounts(ctx);
+  const createFirstAccount = async (
+    profileId: string,
+    keySource: IKeySource,
+  ) => {
+    const account = await WalletService.createFirstAccount(
+      profileId,
+      keySource,
+    );
+
+    const keySources = await walletRepository.getProfileKeySources(profileId);
+
+    setContext((ctx) => ({
+      ...ctx,
+      keySources,
+      accounts: [account],
+    }));
+  };
+
+  const unlockProfile = async (profileId: string, password: string) => {
+    const profile = await WalletService.unlockProfile(profileId, password);
+    if (profile) {
+      const accounts = await WalletService.getAccounts(profileId);
+      const keySources = await walletRepository.getProfileKeySources(profileId);
+      // by default unlock the first key source; we can change this approach later
       setContext(({ profileList }) => ({
-        ...ctx,
+        profileList,
         profile,
         accounts,
-        profileList,
+        keySources,
       }));
-    },
-    [setContext],
-  );
+      keySourceManager.reset();
+      return { profile, keySources };
+    }
+    return null;
+  };
 
-  const lockWallet = useCallback(() => {
-    setContext(() => ({}));
+  const lockProfile = useCallback(() => {
+    keySourceManager.reset();
+    setContext(({ profileList }) => ({ profileList }));
   }, [setContext]);
 
   const sign = useCallback(
-    (TXs: IUnsignedCommand[]) => {
+    async (
+      TXs: IUnsignedCommand[],
+      onConnect: (keySource: IKeySource) => Promise<void> = async () => {},
+    ) => {
       if (!isUnlocked(context)) {
         throw new Error('Wallet in not unlocked');
       }
-      return WalletService.sign(context, TXs);
+      return WalletService.sign(context.keySources, onConnect, TXs);
     },
     [context],
   );
 
-  const decryptMnemonic = useCallback(
-    async (password: string) => {
+  const decryptSecret = useCallback(
+    async (password: string, secretId: string) => {
       if (!isUnlocked(context)) {
         throw new Error('Wallet in not unlocked');
       }
-      const walletRepository = await createWalletRepository();
-      return WalletService.decryptMnemonic(
-        { ...context, walletRepository },
-        password,
-      );
+      return WalletService.decryptSecret(password, secretId);
     },
     [context],
   );
 
   return {
-    createWallet,
-    unlockWallet,
+    createProfile,
+    createFirstAccount,
+    unlockProfile,
     sign,
-    decryptMnemonic,
-    lockWallet,
+    decryptSecret,
+    lockProfile,
+    retrieveKeySources,
     isUnlocked: isUnlocked(context),
     profile: context.profile,
     profileList: context.profileList ?? [],
     accounts: context.accounts ?? [],
+    keySources: context.keySources ?? [],
   };
 };
 

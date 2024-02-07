@@ -8,16 +8,16 @@ import {
 
 import {
   IAccount,
+  IKeySource,
   IProfile,
-  createWalletRepository,
+  walletRepository,
 } from './wallet.repository';
 
 export type ExtWalletContextType = {
   profile?: IProfile;
-  encryptionKey?: Uint8Array;
-  encryptedSeed?: Uint8Array;
   accounts?: IAccount[];
   profileList?: Pick<IProfile, 'name' | 'uuid'>[];
+  keySources?: IKeySource[];
 };
 
 export const WalletContext = createContext<
@@ -33,7 +33,6 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     const fetchProfileList = async () => {
-      const walletRepository = await createWalletRepository();
       const profileList = (await walletRepository.getAllProfiles()) ?? [];
       setContextValue({
         profileList: profileList.map(({ name, uuid }) => ({ name, uuid })),

@@ -1,5 +1,11 @@
 # @kadena/graph
 
+## 0.1.3
+
+### Patch Changes
+
+- ae6b98387: only write schema when `NODE_END=development`
+
 ## 0.1.2
 
 ### Patch Changes

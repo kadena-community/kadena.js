@@ -5,7 +5,7 @@ import {
   getOneItem,
   updateItem,
 } from '@/modules/db/indexeddb';
-import { createDatabaseConnection } from '../db/db.service';
+import { injectDb } from '../db/db.service';
 
 export interface INetwork {
   uuid: string;
@@ -20,7 +20,6 @@ export interface INetwork {
 }
 
 export interface NetworkRepository {
-  disconnect: () => Promise<void>;
   getNetworkList: () => Promise<INetwork[]>;
   getNetwork: (networkId: string) => Promise<INetwork>;
   addNetwork: (network: INetwork) => Promise<void>;
@@ -28,17 +27,14 @@ export interface NetworkRepository {
   deleteNetwork: (networkId: string) => Promise<void>;
 }
 
-export const networkRepository = (db: IDBDatabase): NetworkRepository => {
-  const getAll = getAllItems(db);
-  const getOne = getOneItem(db);
-  const add = addItem(db);
-  const update = updateItem(db);
-  const deleteOne = deleteItem(db);
+const createNetworkRepository = (): NetworkRepository => {
+  const getAll = injectDb(getAllItems);
+  const getOne = injectDb(getOneItem);
+  const add = injectDb(addItem);
+  const update = injectDb(updateItem);
+  const deleteOne = injectDb(deleteItem);
 
   return {
-    disconnect: async (): Promise<void> => {
-      db.close();
-    },
     getNetworkList: async (): Promise<INetwork[]> => {
       return getAll('network');
     },
@@ -59,13 +55,13 @@ export const networkRepository = (db: IDBDatabase): NetworkRepository => {
     },
   };
 };
+export const networkRepository = createNetworkRepository();
 
-export const addDefaultNetworks = async (db: IDBDatabase) => {
-  const repo = networkRepository(db);
-  const networks = await repo.getNetworkList();
+export const addDefaultNetworks = async () => {
+  const networks = await networkRepository.getNetworkList();
 
   if (!networks.find((network) => network.networkId === 'mainnet01')) {
-    await repo.addNetwork({
+    await networkRepository.addNetwork({
       uuid: crypto.randomUUID(),
       networkId: 'mainnet01',
       name: 'Mainnet',
@@ -80,7 +76,7 @@ export const addDefaultNetworks = async (db: IDBDatabase) => {
     });
   }
   if (!networks.find((network) => network.networkId === 'testnet04')) {
-    await repo.addNetwork({
+    await networkRepository.addNetwork({
       uuid: crypto.randomUUID(),
       networkId: 'testnet04',
       name: 'Testnet',
@@ -94,9 +90,4 @@ export const addDefaultNetworks = async (db: IDBDatabase) => {
       ],
     });
   }
-};
-
-export const createNetworkRepository = async () => {
-  const db = await createDatabaseConnection();
-  return networkRepository(db);
 };

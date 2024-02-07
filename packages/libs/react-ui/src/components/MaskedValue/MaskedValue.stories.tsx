@@ -44,6 +44,16 @@ const meta: Meta<IMaskedValueProps> = {
         type: 'number',
       },
     },
+    maskLength: {
+      control: {
+        type: 'number',
+      },
+    },
+    maskCharacter: {
+      control: {
+        type: 'text',
+      },
+    },
   },
 };
 
@@ -59,6 +69,8 @@ export const Primary: Story = {
     defaultVisibility: false,
     startUnmaskedValues: 6,
     endUnmaskedValues: 4,
+    maskCharacter: '*',
+    maskLength: 4,
   },
   render: ({
     title,
@@ -66,6 +78,8 @@ export const Primary: Story = {
     defaultVisibility,
     startUnmaskedValues,
     endUnmaskedValues,
+    maskCharacter,
+    maskLength,
   }) => {
     return (
       <>
@@ -75,6 +89,8 @@ export const Primary: Story = {
           defaultVisibility={defaultVisibility}
           startUnmaskedValues={startUnmaskedValues}
           endUnmaskedValues={endUnmaskedValues}
+          maskCharacter={maskCharacter}
+          maskLength={maskLength}
         />
       </>
     );
