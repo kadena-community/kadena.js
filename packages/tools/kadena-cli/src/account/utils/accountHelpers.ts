@@ -1,10 +1,10 @@
 import yaml from 'js-yaml';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { z } from 'zod';
 
 import { ACCOUNT_DIR } from '../../constants/config.js';
 import { services } from '../../services/index.js';
-import type { IAccountAliasFile } from '../types.js';
 import { isEmpty } from '../utils/addHelpers.js';
 
 interface IAccount {
@@ -12,23 +12,30 @@ interface IAccount {
   alias: string;
 }
 
+const accountAliasFileSchema = z.object({
+  name: z.string(),
+  fungible: z.string(),
+  publicKeys: z.array(z.string()),
+  predicate: z.string(),
+});
+
 const readAccountFromFile = async (accountFile: string): Promise<IAccount> => {
   const accountAlias = accountFile.split('.')[0];
   const content = await services.filesystem.readFile(
     join(ACCOUNT_DIR, accountFile),
   );
-  const account =
-    content !== null ? (yaml.load(content) as IAccountAliasFile) : null;
+  const account = content !== null ? yaml.load(content) : null;
+  const parsedContent = accountAliasFileSchema.parse(account);
+
   return {
-    name: account?.name ?? '',
+    name: parsedContent.name,
     alias: accountAlias,
   };
 };
 
 export async function ensureAccountExists(): Promise<void> {
   if (!(await services.filesystem.directoryExists(ACCOUNT_DIR))) {
-    console.error(`No account created yet. Please create an account first.`);
-    process.exit(1);
+    throw new Error('No account created yet. Please create an account first.');
   }
 }
 
