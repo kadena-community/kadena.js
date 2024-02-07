@@ -1,5 +1,5 @@
 import type { ChainId } from '@kadena/types';
-import { ITransactionBodyInput } from '../deploy-contract';
+import type { ITransactionBodyInput } from '../deploy-contract';
 
 export interface IAccount {
   account: string;

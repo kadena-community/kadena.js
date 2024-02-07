@@ -1,4 +1,5 @@
-import { ChainId, createSignWithKeypair } from '@kadena/client';
+import type { ChainId } from '@kadena/client';
+import { createSignWithKeypair } from '@kadena/client';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { afterEach, describe, expect, it, vi } from 'vitest';

@@ -1,8 +1,8 @@
-import { ChainId } from '@kadena/types';
+import type { ChainId } from '@kadena/types';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { deployContract } from '../built-in/deploy-contract';
-import { IClientConfig } from '../core/utils/helpers';
+import type { IClientConfig } from '../core/utils/helpers';
 import { deployTemplate } from './deploy-template';
 
 export interface ITransactionBody {
