@@ -25,7 +25,7 @@ export const maskValue = (
   };
 
   if (_character.length > 1) {
-    console.info('Only one character is allowed');
+    console.warn('Only one character is allowed');
   }
 
   const character = _character.slice(0, 1);
