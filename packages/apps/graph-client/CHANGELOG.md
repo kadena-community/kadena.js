@@ -1,5 +1,14 @@
 # @kadena/graph-client
 
+## 0.1.12
+
+### Patch Changes
+
+- 3abcf01d2: Added Tooltip in cases where columns can be truncated
+- Updated dependencies [cce6c38de]
+- Updated dependencies [1aa8bfa8d]
+  - @kadena/react-ui@0.8.1
+
 ## 0.1.11
 
 ### Patch Changes
