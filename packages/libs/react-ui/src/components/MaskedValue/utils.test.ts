@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { maskValue } from './utils';
 
 describe('maskValue', () => {
@@ -67,7 +67,9 @@ describe('maskValue', () => {
     );
   });
 
-  it('should throw an error if character is longer than 1', () => {
-    expect(() => maskValue('1234567890', { character: 'toolong' })).toThrow();
+  it('should a log if character is longer than 1', () => {
+    const spy = vi.spyOn(console, 'info');
+    maskValue('1234567890', { character: 'toolong' });
+    expect(spy).toHaveBeenCalledWith('Only one character is allowed');
   });
 });
