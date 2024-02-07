@@ -1,4 +1,4 @@
-import { AccountNameField } from '@/components/Global';
+import { AccountHoverTag, AccountNameField } from '@/components/Global';
 import { useLedgerTransport } from '@/context';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
@@ -148,6 +148,10 @@ const Storybook = () => {
                 <dl>
                   <dt>Public Key</dt>
                   <dd>{ledgerPublicKey}</dd>
+                  <dt>Account name</dt>
+                  <dd>
+                    <AccountHoverTag value={`k:${ledgerPublicKey}`} />
+                  </dd>
                 </dl>
               ) : (
                 <Text>Public key not fetched (yet)</Text>
