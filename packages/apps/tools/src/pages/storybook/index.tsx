@@ -1,12 +1,22 @@
 import { AccountNameField } from '@/components/Global';
+import { useLedgerTransport } from '@/context';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
+import type { DerivationMode } from '@/hooks/use-ledger-public-key';
+import useLedgerPublicKey, {
+  derivationModes,
+} from '@/hooks/use-ledger-public-key';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
   Card,
+  Combobox,
+  ComboboxItem,
   ContentHeader,
   Heading,
+  Select,
+  SelectItem,
   Stack,
+  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
@@ -19,16 +29,32 @@ const Storybook = () => {
 
   const [accountName, setAccountName] = useState<string>('');
   const {
-    error,
+    error: accountError,
     data: accountDetails,
-    isFetching,
+    isFetching: isFetchingAccountDetails,
   } = useAccountDetailsQuery({
     account: accountName,
     networkId: 'testnet04',
     chainId: '1',
   });
 
-  console.log({ error, accountDetails });
+  console.log({ accountError, accountDetails });
+
+  const { connect } = useLedgerTransport();
+
+  const [keyId, setKeyId] = useState<number>(0);
+  const defaultDerivationMode = derivationModes[0];
+  const [derivationMode, setDerivationMode] = useState<DerivationMode>(
+    defaultDerivationMode,
+  );
+
+  const {
+    error: ledgerError,
+    data: ledgerPublicKey,
+    isFetching: isFetchingLedgerPublicKey,
+  } = useLedgerPublicKey({ keyId, derivationMode });
+
+  console.log({ ledgerError, ledgerPublicKey });
 
   return (
     <section className={containerStyle}>
@@ -39,7 +65,7 @@ const Storybook = () => {
         <BreadcrumbsItem>{t('Storybook')}</BreadcrumbsItem>
       </Breadcrumbs>
       <Heading as="h4">{t('Storybook')}</Heading>
-      <Stack>
+      <Stack flexDirection="column" gap="md">
         <Card fullWidth>
           <Stack flexDirection="column">
             <Heading as="h5">
@@ -68,12 +94,72 @@ const Storybook = () => {
                 <Text>User not found (yet)</Text>
               )}
             </>
-            {isFetching && <Text>Loading...</Text>}
-            {error ? (
+            {isFetchingAccountDetails && <Text>Loading...</Text>}
+            {accountError ? (
               <Text>
                 Error:{' '}
-                {error instanceof Error || Object.hasOwn(error, 'message')
-                  ? (error as { message: string }).message
+                {accountError instanceof Error ||
+                Object.hasOwn(accountError, 'message')
+                  ? (accountError as { message: string }).message
+                  : 'Something went wrong'}
+              </Text>
+            ) : null}
+          </Stack>
+        </Card>
+        <Card fullWidth>
+          <Stack flexDirection="column">
+            <Heading as="h5">
+              <Text as="code">useLedgerPublicKey</Text>
+            </Heading>
+            <Stack gap="md">
+              <Combobox
+                allowsCustomValue
+                startIcon={<SystemIcon.KeyIconFilled />}
+                label="Key ID"
+                onInputChange={async (value) => {
+                  console.log('onInputChange', value);
+                  await connect();
+                  setKeyId(parseInt(value, 10));
+                }}
+                defaultItems={Array.from({ length: 100 }, (_, i) => ({
+                  id: `ledger-key-${i}`,
+                  name: `${i}`,
+                }))}
+              >
+                {(item) => <ComboboxItem>{item.name}</ComboboxItem>}
+              </Combobox>
+              <Select
+                defaultSelectedKey={defaultDerivationMode}
+                label="Derivation Mode"
+                items={derivationModes.map((mode) => ({
+                  key: mode,
+                  label: mode,
+                }))}
+                onSelectionChange={(value) => {
+                  setDerivationMode(value as DerivationMode);
+                }}
+              >
+                {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
+              </Select>
+            </Stack>
+            <>
+              <ContentHeader icon="UsbFlashDrive" heading="Ledger Public Key" />
+              {ledgerPublicKey ? (
+                <dl>
+                  <dt>Public Key</dt>
+                  <dd>{ledgerPublicKey}</dd>
+                </dl>
+              ) : (
+                <Text>Public key not fetched (yet)</Text>
+              )}
+            </>
+            {isFetchingLedgerPublicKey && <Text>Loading...</Text>}
+            {ledgerError ? (
+              <Text>
+                Error:{' '}
+                {ledgerError instanceof Error ||
+                Object.hasOwn(ledgerError, 'message')
+                  ? (ledgerError as { message: string }).message
                   : 'Something went wrong'}
               </Text>
             ) : null}
