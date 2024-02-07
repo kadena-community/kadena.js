@@ -1,15 +1,6 @@
-import { createSignWithKeypair } from '@kadena/client';
-import { ChainId } from '@kadena/types';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { IClientConfig } from '../../core/utils/helpers';
-import {
-  ITransactionBodyInput,
-  createPactCommand,
-  deployContract,
-} from '../deploy-contract';
-import { contractCode, input, sourceAccount } from './test-data';
-
-const defaultChainId: ChainId = '0';
+import { createPactCommand } from '../deploy-contract';
+import { contractCode, input } from './test-data';
 
 describe('createPactCommand', () => {
   beforeEach(() => {
