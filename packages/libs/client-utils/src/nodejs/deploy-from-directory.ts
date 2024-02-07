@@ -1,10 +1,9 @@
 import { ChainId } from '@kadena/types';
 import { readFileSync, readdirSync } from 'fs';
+import { join } from 'path';
 import { deployContract } from '../built-in/deploy-contract';
-import { submitClient } from '../core';
 import { IClientConfig } from '../core/utils/helpers';
 import { deployTemplate } from './deploy-template';
-import { createPactCommandFromTemplate } from './yaml-converter';
 
 export interface ITransactionBody {
   chainId: ChainId;
@@ -133,7 +132,10 @@ export const deployFromDirectory = async ({
 
         for (const codeFile of codeFiles) {
           try {
-            const code = readFileSync(codeFile, 'utf8');
+            const code = readFileSync(
+              join(codeFileConfig.path, codeFile),
+              'utf8',
+            );
             const transactionBody =
               codeFileConfig.transactionBodyGenerator(codeFile);
 

@@ -32,8 +32,6 @@ describe('deployContract', () => {
       clientConfig,
     );
 
-    console.log(command);
-
     expect(submitClientSpy).toHaveBeenCalledTimes(1);
     expect(command.execute).toBeInstanceOf(Function);
     expect(command.executeTo).toBeInstanceOf(Function);
