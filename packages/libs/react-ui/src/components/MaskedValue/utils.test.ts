@@ -68,7 +68,7 @@ describe('maskValue', () => {
   });
 
   it('should a log if character is longer than 1', () => {
-    const spy = vi.spyOn(console, 'info');
+    const spy = vi.spyOn(console, 'warn');
     maskValue('1234567890', { character: 'toolong' });
     expect(spy).toHaveBeenCalledWith('Only one character is allowed');
   });
