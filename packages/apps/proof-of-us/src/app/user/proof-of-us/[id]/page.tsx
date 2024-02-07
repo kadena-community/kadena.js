@@ -19,7 +19,7 @@ interface IProps {
 
 const Page: FC<IProps> = ({ params }) => {
   const router = useRouter();
-  const { socket, disconnect } = useSocket();
+  const { socket, disconnect, peer } = useSocket();
   const { createToken, proofOfUs, background, updateStatus } = useProofOfUs();
   const [isMounted, setIsMounted] = useState(false);
 
@@ -55,10 +55,19 @@ const Page: FC<IProps> = ({ params }) => {
     updateStatus({ proofOfUsId: params.id, status: newStatus });
   };
 
-  if (!proofOfUs || !isMounted) return;
+  const handleClick = () => {
+    peer().conn?.send('h1');
+  };
+  //if (!proofOfUs || !isMounted) return;
 
   return (
     <div>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      sdfsdf <button onClick={handleClick}>sdfsf</button>
       {status === 1 && <AvatarEditor next={next} />}
       {status === 2 && <DetailView next={next} prev={prev} />}
       {status >= 3 && <ShareView next={next} prev={prev} status={status} />}

@@ -1,12 +1,18 @@
 'use client';
-import { Peer } from 'peerjs';
+
+import type Peer from 'peerjs';
+import type { DataConnection } from 'peerjs';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useState } from 'react';
 import type { Socket } from 'socket.io-client';
-import { socket } from '../../socket';
+import { pouPeer, socket } from '../../socket';
 
 export interface ISocketContext {
   socket?: Socket;
+  peer: () => {
+    peer?: Peer;
+    conn?: DataConnection;
+  };
   connect: ({
     proofOfUsId,
     initiator,
@@ -19,6 +25,7 @@ export interface ISocketContext {
 
 export const SocketContext = createContext<ISocketContext>({
   socket: undefined,
+  peer: () => ({}),
   connect: async () => undefined,
   disconnect: () => {},
 });
@@ -26,45 +33,75 @@ export const SocketContext = createContext<ISocketContext>({
 export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
   const [proofOfUsId, setProofOfUsId] = useState<string>();
 
+  // const getId = (initiator: boolean, id: string): string => {
+  //   return `${id}-${initiator ? 'init' : 'signee'}`;
+  // };
+
   const disconnect = ({ proofOfUsId }: { proofOfUsId: string }) => {
     if ((socket?.auth as any)?.proofOfUsId === proofOfUsId) return;
+
+    pouPeer.disconnect();
     socket?.close();
   };
 
   const connect = async (data: { proofOfUsId: string; initiator: boolean }) => {
     if (!data.proofOfUsId) return;
-    const peer = new Peer(data.initiator ? 'pou-1' : 'pou-2', {
-      debug: 3,
+    const peer = pouPeer.setup(
+      'f6e0854a-ebc9-4e43-b969-3c797a411d17',
+      data.initiator,
+    );
+
+    peer.on('open', async (id) => {
+      console.log('My peer ID is: ' + id);
     });
-    console.log({ peer }, peer.id, data.initiator);
+    //  const conn = await pouPeer.connect();
+    // conn.on('close', async () => {
+    //   console.log('OPENS IT');
+    //   pouPeer.connect();
+    // });
 
-    const conn = peer.connect(!data.initiator ? 'pou-1' : 'pou-2');
+    //const { conn } = pouPeer.get();
 
-    setTimeout(() => {}, 1000);
+    // conn.on('open', async () => {
+    //   console.log('OPENS IT');
+    // });
 
-    conn.on('open', () => {
-      console.log(33333);
-      conn.send('hi!');
+    // conn.on('data', (data) => {
+    //   // Will print 'hi!'
+    //   console.log(22, data);
+    // });
 
-      conn.on('data', (data) => {
-        // Will print 'hi!'
-        console.log(22, data);
-      });
+    // peer.on('error', function (err) {
+    //   console.log('error', err);
+    // });
+    // peer.on('disconnected', function (conn) {
+    //   peer.reconnect();
+    // });
 
-      conn.send('hi');
-    });
+    // peer.on('connection', function (conn) {
+    //   console.log('CONNECTION', conn.open);
 
-    // conn.send('hi');
+    //   conn.on('data', function (data) {
+    //     console.log('DATA', data);
+    //   });
 
-    // peer.on('connection', (conn) => {
-    //   console.log(222222);
+    //   conn.on('open', () => {
+    //     console.log('OPEN');
+    //   });
+    // });
+
+    // const conn = await pouPeer.connect();
+    // // console.log(222, conn);
+    // conn.on('open', () => {
+    //   console.log(3333311111111);
+    //   conn.send('hi!');
+
     //   conn.on('data', (data) => {
     //     // Will print 'hi!'
-    //     console.log(data);
+    //     console.log(22, data);
     //   });
-    //   conn.on('open', () => {
-    //     conn.send('hello!');
-    //   });
+
+    //   conn.send('hi');
     // });
 
     if (proofOfUsId && proofOfUsId !== data.proofOfUsId) disconnect(data);
@@ -87,6 +124,7 @@ export const SocketProvider: FC<PropsWithChildren> = ({ children }) => {
     <SocketContext.Provider
       value={{
         socket: socket,
+        peer: pouPeer.get,
         connect,
         disconnect,
       }}

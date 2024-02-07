@@ -1,7 +1,8 @@
 'use client';
 
-import { Multi } from '@/features/Multi/Multi';
-import { useProofOfUs } from '@/hooks/proofOfUs';
+//import { Multi } from '@/features/Multi/Multi';
+//import { useProofOfUs } from '@/hooks/proofOfUs';
+import { useSocket } from '@/hooks/socket';
 
 import type { FC } from 'react';
 
@@ -12,13 +13,19 @@ interface IProps {
 }
 
 const Page: FC<IProps> = () => {
-  const { proofOfUs, background } = useProofOfUs();
+  const { peer } = useSocket();
+  // const { proofOfUs, background } = useProofOfUs();
 
-  if (!proofOfUs) return null;
+  // if (!proofOfUs) return null;
 
+  const handleClick = () => {
+    console.log(peer().conn);
+    peer().conn?.send('fack!');
+  };
   return (
     <div>
-      <Multi proofOfUs={proofOfUs} background={background} />
+      <button onClick={handleClick}>EVCHT</button>
+      {/* <Multi proofOfUs={proofOfUs} background={background} /> */}
     </div>
   );
 };

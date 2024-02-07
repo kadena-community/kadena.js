@@ -54,7 +54,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
 });
 
 export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { socket } = useSocket();
+  const { socket, peer } = useSocket();
   const { account } = useAccount();
   const params = useParams();
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
@@ -155,17 +155,23 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const createToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
-    if (!socket || !account) return;
+    if (!account || !peer()) return;
 
-    socket?.emit('createToken', {
-      content: {
-        displayName: account.displayName,
-        cid: account.cid,
-        publicKey: account.publicKey,
-        initiator: false,
-      },
-      to: proofOfUsId,
-    });
+    // const proofOfus = store.createProofOfUs(
+    //   proofOfUsId,
+    //   getSigneeAccount(account),
+    // );
+    // peer.conn?.send({ proofOfus });
+
+    // socket?.emit('createToken', {
+    //   content: {
+    //     displayName: account.displayName,
+    //     cid: account.cid,
+    //     publicKey: account.publicKey,
+    //     initiator: false,
+    //   },
+    //   to: proofOfUsId,
+    // });
   };
 
   const isConnected = () => {
