@@ -45,7 +45,7 @@ export const headerClass = style([
         position: 'absolute',
         inset: 0,
         bottom: `calc(0px - ${tokens.kda.foundation.size.n5})`,
-        background: 'url("/assets/bg-horizontal.webp")',
+        // background: 'url("/assets/bg-horizontal.webp")',
         backgroundRepeat: 'no-repeat',
         backgroundPositionX: 'center',
         backgroundPositionY: '0%',
