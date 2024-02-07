@@ -1,4 +1,4 @@
-import { createDatabaseConnection } from '@/modules/db/db.service';
+import { injectDb } from '@/modules/db/db.service';
 import { addItem, getOneItem, updateItem } from '@/modules/db/indexeddb';
 
 export interface IHDBIP44 {
@@ -35,13 +35,6 @@ export interface HDWalletRepository {
   getEncryptedValue: (key: string) => Promise<Uint8Array>;
   addEncryptedValue: (key: string, value: string | Uint8Array) => Promise<void>;
 }
-
-const injectDb = <R extends (...args: any[]) => Promise<any>>(
-  fn: (db: IDBDatabase) => R,
-) =>
-  (async (...args: any): Promise<any> => {
-    return createDatabaseConnection().then((db) => fn(db)(...args));
-  }) as R;
 
 const createKeySourceRepository = (): HDWalletRepository => {
   const getOne = injectDb(getOneItem);

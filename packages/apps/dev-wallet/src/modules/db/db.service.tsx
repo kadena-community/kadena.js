@@ -81,9 +81,11 @@ const createConnection = async () => {
 export const { createDatabaseConnection, closeDatabaseConnections } =
   createConnectionPool(createConnection);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const injectDb = <R extends (...args: any[]) => Promise<any>>(
   fn: (db: IDBDatabase) => R,
 ) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (async (...args: any): Promise<any> => {
     return createDatabaseConnection().then((db) => fn(db)(...args));
   }) as R;
