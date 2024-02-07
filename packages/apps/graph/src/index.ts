@@ -19,7 +19,9 @@ import { complexityPlugin } from './plugins/complexity';
 import { extensionsPlugin } from './plugins/extensions';
 import { writeSchema } from './utils/write-schema';
 
-writeSchema();
+if (dotenv.NODE_ENV === 'development') {
+  writeSchema();
+}
 
 const schema = builder.toSchema();
 
