@@ -32,7 +32,7 @@ export default function SocketHandler(
 
   const io = new Server(res.socket.server, {
     maxHttpBufferSize: 1e8,
-    path: '/api/socket',
+    path: '/api/socket_io',
     addTrailingSlash: false,
   });
   res.socket.server.io = io;
