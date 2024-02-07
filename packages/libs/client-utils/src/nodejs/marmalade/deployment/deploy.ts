@@ -158,7 +158,6 @@ export const deployMarmalade = async ({
       return file.split('.')[0];
     },
     deploymentArguments,
-    codeFilesPath: localConfig.codeFilesPath,
   };
 
   await deployFromDirectory({
