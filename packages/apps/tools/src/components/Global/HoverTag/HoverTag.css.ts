@@ -1,13 +1,13 @@
-import { sprinkles } from '@kadena/react-ui/styles';
+import { atoms } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const iconButtonClass = style([
-  sprinkles({
+  atoms({
     border: 'none',
     background: 'none',
-    padding: '$1',
+    padding: 'xs',
     cursor: 'pointer',
   }),
 ]);
 
-export const containerClass = style([sprinkles({ display: 'flex' })]);
+export const containerClass = style([atoms({ display: 'flex' })]);

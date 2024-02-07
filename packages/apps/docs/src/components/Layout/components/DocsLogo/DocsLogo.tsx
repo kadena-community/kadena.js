@@ -1,12 +1,12 @@
 import { useTheme } from 'next-themes';
-import type { FC } from 'react';
+import type { ComponentPropsWithRef, FC } from 'react';
 import React, { useEffect, useState } from 'react';
 
-interface IProps {
+interface IProps extends ComponentPropsWithRef<'svg'> {
   overwriteTheme?: 'light' | 'dark';
 }
 
-export const DocsLogo: FC<IProps> = ({ overwriteTheme }) => {
+export const DocsLogo: FC<IProps> = ({ overwriteTheme, ...props }) => {
   const { theme } = useTheme() ?? 'dark';
   const [innerTheme, setInnerTheme] = useState<string | undefined>(
     overwriteTheme,
@@ -25,10 +25,11 @@ export const DocsLogo: FC<IProps> = ({ overwriteTheme }) => {
     return (
       <svg
         width="216"
-        height="44"
-        viewBox="0 0 216 44"
+        height="42"
+        viewBox="0 0 216 42"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        {...props}
       >
         <path
           d="M38.4893 31.4215V12.5754H41.3735V20.4079H41.8195C42.9916 19.1112 45.3246 16.5011 48.8223 12.5754H52.5984C51.1817 14.1359 48.3594 17.2285 44.128 21.8533C45.5956 23.4477 48.525 26.6365 52.9126 31.4215H49.0048C47.8157 30.0891 45.4206 27.4261 41.8195 23.4308H41.3735V31.4215H38.4893Z"

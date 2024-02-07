@@ -1,27 +1,34 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
-import { FormStatusNotification } from '@/components/Global';
+import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import {
   AccountNameField,
-  NAME_VALIDATION,
-} from '@/components/Global/AccountNameField';
-import { FormItemCard } from '@/components/Global/FormItemCard';
-import RequestKeyField, {
+  FormItemCard,
+  FormStatusNotification,
+  OptionsModal,
   REQUEST_KEY_VALIDATION,
-} from '@/components/Global/RequestKeyField';
-import ResourceLinks from '@/components/Global/ResourceLinks';
+  RequestKeyField,
+} from '@/components/Global';
 import client from '@/constants/client';
+import type { Network } from '@/constants/kadena';
 import { kadenaConstants } from '@/constants/kadena';
-import { chainNetwork } from '@/constants/network';
+import { sidebarLinks } from '@/constants/side-links';
 import { menuData } from '@/constants/side-menu-items';
 import { useAppContext } from '@/context/app-context';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { useDidUpdateEffect } from '@/hooks';
+import {
+  infoBoxStyle,
+  linksBoxStyle,
+} from '@/pages/transactions/cross-chain-transfer-tracker/styles.css';
 import type { ITransferResult } from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
 import { finishXChainTransfer } from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
 import type { ITransferDataResult } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { getTransferData } from '@/services/cross-chain-transfer-finish/get-transfer-data';
 import { validateRequestKey } from '@/services/utils/utils';
+import { getExplorerLink } from '@/utils/getExplorerLink';
+import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Box,
@@ -31,42 +38,39 @@ import {
   Grid,
   GridItem,
   Heading,
+  Notification,
+  NotificationHeading,
   Stack,
   SystemIcon,
   TextField,
+  TextareaField,
   TrackerCard,
 } from '@kadena/react-ui';
 import Debug from 'debug';
+import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
+import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { ChangeEventHandler, FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { containerClass } from '../styles.css';
 import {
   formButtonStyle,
   formContentStyle,
   notificationContainerStyle,
-  sidebarLinksStyle,
-  textAreaStyle,
+  notificationKeyStyle,
+  notificationLinkStyle,
   textareaContainerStyle,
+  textareaWrapperStyle,
 } from './styles.css';
-
-// @see; https://www.geeksforgeeks.org/how-to-validate-a-domain-name-using-regular-expression/
-const DOMAIN_NAME_REGEX: RegExp =
-  /^(?!-)[A-Za-z0-9-]+([\-\.]{1}[a-z0-9]+)*\.[A-Za-z]{2,6}$/;
 
 const schema = z.object({
   requestKey: REQUEST_KEY_VALIDATION,
-  advancedOptions: z.boolean().optional(),
-  server: z
-    .string()
-    .trim()
-    .regex(DOMAIN_NAME_REGEX, 'Invalid Domain Name')
-    .optional(),
-  gasPayer: NAME_VALIDATION.optional(),
-  gasLimit: z.number().optional(),
-  gasPrice: z.string().optional(),
+  gasPayer: z.literal('kadena-xchain-gas'),
+  gasLimit: z.number().positive(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -83,24 +87,55 @@ const CrossChainTransferFinisher: FC = () => {
   const router = useRouter();
   const { devOption } = useAppContext();
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
-  const helpCenterRef = useRef<HTMLElement | null>(null);
+
+  const helpInfoSections = [
+    {
+      tag: 'request-key',
+      title: t('help-request-key-question'),
+      content: t('help-request-key-content'),
+    },
+    {
+      tag: 'gas-settings',
+      title: t('help-gas-settings-question'),
+      content: t('help-gas-settings-content'),
+    },
+    {
+      tag: 'signature-data',
+      title: t('help-signature-data-question'),
+      content: t('help-signature-data-content'),
+    },
+  ];
 
   const [requestKey, setRequestKey] = useState<string>(
     (router.query?.reqKey as string) || '',
   );
+  const [receiverRequestKey, setReceiverRequestKey] = useState<string>('');
   const [pollResults, setPollResults] = useState<ITransferDataResult>({});
   const [finalResults, setFinalResults] = useState<ITransferResult>({});
   const [txError, setTxError] = useState('');
+  const [processingTx, setProcessingTx] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [openItem, setOpenItem] = useState<{ item: number } | undefined>(
+    undefined,
+  );
+  const [activeInfoTag, setActiveInfoTag] = useState<{
+    tag: string;
+    title: string;
+    content: string;
+  }>(helpInfoSections[0]);
+  const drawerPanelRef = useRef<HTMLElement | null>(null);
 
-  const handleOpenHelpCenter = (): void => {
-    // @ts-ignore
-    helpCenterRef.openSection(0);
-  };
+  const networkData: INetworkData = networksData.filter(
+    (item) => (network as Network) === item.networkId,
+  )[0];
 
   const checkRequestKey = async (reqKey = requestKey): Promise<void> => {
     if (!validateRequestKey(reqKey)) {
       return;
     }
+
+    router.query.reqKey = reqKey;
+    await router.push(router);
 
     setTxError('');
     setFinalResults({});
@@ -117,7 +152,7 @@ const CrossChainTransferFinisher: FC = () => {
     }
 
     setPollResults(pollResult);
-    handleOpenHelpCenter();
+    setOpenItem(undefined);
     if (pollResults.tx === undefined) {
       return;
     }
@@ -139,7 +174,16 @@ const CrossChainTransferFinisher: FC = () => {
       return;
     }
 
-    const networkId = chainNetwork[network].network;
+    setProcessingTx(true);
+    window.scrollTo(0, 0);
+
+    const networkId = networkData.networkId;
+    const apiHost = getApiHost({
+      api: networkData.API,
+      chainId: pollResults.tx.sender.chain,
+      networkId,
+    });
+    const { pollCreateSpv, listen } = client(apiHost);
 
     const requestObject = {
       requestKey: data.requestKey,
@@ -147,14 +191,12 @@ const CrossChainTransferFinisher: FC = () => {
       chainId: pollResults.tx.sender.chain,
     };
 
-    const proof = await client.pollCreateSpv(
+    const proof = await pollCreateSpv(
       requestObject,
       pollResults.tx.receiver.chain,
     );
-
-    const status = await client.listen(requestObject);
-
-    const pactId = status.continuation!.pactId;
+    const status = await listen(requestObject);
+    const pactId = status.continuation?.pactId ?? '';
 
     const requestKeyOrError = await finishXChainTransfer(
       {
@@ -165,15 +207,31 @@ const CrossChainTransferFinisher: FC = () => {
       },
       pollResults.tx.receiver.chain,
       networkId,
+      networksData,
+      data.gasLimit,
       data.gasPayer,
     );
 
     if (typeof requestKeyOrError !== 'string') {
       setTxError((requestKeyOrError as { error: string }).error);
+      setFinalResults({
+        requestKey: data.requestKey,
+        status: (requestKeyOrError as { error: string }).error,
+      });
+      setProcessingTx(false);
+      return;
     }
+    setReceiverRequestKey(requestKeyOrError as string);
+
+    const receiverApiHost = getApiHost({
+      api: networkData.API,
+      chainId: pollResults.tx.receiver.chain,
+      networkId,
+    });
+    const receiverClient = client(receiverApiHost);
 
     try {
-      const data = await client.listen({
+      const data = await receiverClient.listen({
         requestKey: requestKeyOrError as string,
         networkId,
         chainId: pollResults.tx.receiver.chain,
@@ -186,16 +244,19 @@ const CrossChainTransferFinisher: FC = () => {
         requestKey: data.reqKey,
         status: data.result.status,
       });
+      setProcessingTx(false);
     } catch (tx) {
       debug(tx);
 
       setFinalResults({ ...tx });
+      setProcessingTx(false);
     }
   };
 
   const onRequestKeyChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (e) => {
       setRequestKey(e.target.value);
+      setOpenItem(undefined);
     },
     [],
   );
@@ -210,56 +271,104 @@ const CrossChainTransferFinisher: FC = () => {
     if (reqKey) {
       setRequestKey(reqKey as string);
       await checkRequestKey(reqKey as string);
-      handleOpenHelpCenter();
+      setOpenItem(undefined);
     }
   }, [router.isReady]);
 
   const {
-    register,
     handleSubmit,
-    watch,
     formState: { errors },
     getValues,
+    setValue,
     resetField,
+    control,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    values: {
-      server: chainNetwork[network].server,
-      requestKey: requestKey,
+    defaultValues: {
+      requestKey: router.query?.reqKey as string,
       gasPayer: 'kadena-xchain-gas',
       gasLimit: kadenaConstants.GAS_LIMIT,
-      gasPrice: kadenaConstants.GAS_PRICE.toFixed(8),
-    },
-    // @see https://www.react-hook-form.com/faqs/#Howtoinitializeformvalues
-    resetOptions: {
-      keepDirtyValues: true, // keep dirty fields unchanged, but update defaultValues
     },
   });
+  useEffect(() => {
+    setValue('requestKey', requestKey);
+    setOpenItem(undefined);
+  }, [requestKey, setValue]);
 
-  const watchGasPayer = watch('gasPayer');
-
-  const isGasStation = watchGasPayer === 'kadena-xchain-gas';
   const isAdvancedOptions = devOption !== 'BASIC';
   const showNotification = Object.keys(finalResults).length > 0;
 
   const formattedSigData = `{
     "pred": "${pollResults.tx?.receiverGuard.pred}",
-    "sigs": ${pollResults.tx?.receiverGuard.keys.map((key) => `"${key}"`)}"
+    "sigs": ${pollResults.tx?.receiverGuard.keys.map((key) => `"${key}"`)}
   }`;
 
+  const linkToExplorer = `${getExplorerLink(
+    requestKey,
+    networkData.networkId,
+    networksData,
+  )}`;
+
+  const renderLinkToExplorer = (
+    <p>
+      <span className={notificationKeyStyle}>
+        {t('Target Chain Request key: ')}
+      </span>
+      <Link
+        className={notificationLinkStyle}
+        href={linkToExplorer}
+        target={'_blank'}
+        key={requestKey}
+      >
+        {requestKey}
+      </Link>
+    </p>
+  );
+
   const renderNotification =
-    txError.toString() === '' ? (
+    txError.toString() === '' && receiverRequestKey ? (
       <FormStatusNotification
         status="successful"
-        title={t('Notification title')}
+        title={t('Notification title success')}
+        body={t('XChain transfer has been successfully finalized!')}
       >
-        {t('XChain transfer has been successfully finalized!')}
+        {renderLinkToExplorer}
       </FormStatusNotification>
     ) : (
       <FormStatusNotification status="erroneous" title={t('Transaction error')}>
         {txError.toString()}
+        {renderLinkToExplorer}
       </FormStatusNotification>
     );
+
+  const renderWaitingNotification = receiverRequestKey ? (
+    <FormStatusNotification
+      status="processing"
+      title={t('form-status-title-processing')}
+      body={t('form-status-content-processing')}
+    >
+      {renderLinkToExplorer}
+    </FormStatusNotification>
+  ) : null;
+
+  const handleDevOptionsClick = (): void => {
+    setOpenModal(true);
+  };
+
+  const handleCopySigData = async () => {
+    await navigator.clipboard.writeText(formattedSigData);
+  };
+
+  const onOpenItemChange = (tag: string) => {
+    setOpenItem({ item: 0 });
+    const helpSection = helpInfoSections.find((item) => item.tag === tag);
+    if (!helpSection) return;
+    setActiveInfoTag(helpSection);
+  };
+
+  const handleOnClickLink = () => {
+    setOpenItem(undefined);
+  };
 
   useEffect(() => {
     resetField('requestKey');
@@ -269,186 +378,238 @@ const CrossChainTransferFinisher: FC = () => {
   }, [network, resetField]);
 
   return (
-    <div>
-      <DrawerToolbar
-        ref={helpCenterRef}
-        sections={[
-          {
-            icon: 'HelpCircle',
-            title: t('Pact Information'),
-            children: (
-              <>
-                <TrackerCard
-                  variant="vertical"
-                  labelValues={[
-                    {
-                      label: t('Network'),
-                      value: chainNetwork[network].network,
-                    },
-                    {
-                      label: t('Server'),
-                      value: chainNetwork[network].server,
-                    },
-                  ]}
-                />
-                <TrackerCard
-                  variant="vertical"
-                  icon="QuickStart"
-                  labelValues={[
-                    {
-                      label: t('Sender'),
-                      value: pollResults?.tx?.sender.account,
-                      isAccount: true,
-                    },
-                    {
-                      label: t('Chain'),
-                      value: pollResults?.tx?.sender.chain,
-                    },
-                  ]}
-                />
-                <TrackerCard
-                  variant="vertical"
-                  icon="Gas"
-                  labelValues={[
-                    {
-                      label: t('Gas Payer'),
-                      value: getValues('gasPayer'),
-                      isAccount: false,
-                    },
-                  ]}
-                />
-                <TrackerCard
-                  variant="vertical"
-                  icon="Receiver"
-                  labelValues={[
-                    {
-                      label: t('Receiver'),
-                      value: pollResults?.tx?.receiver.account,
-                      isAccount: true,
-                    },
-                    {
-                      label: t('Chain'),
-                      value: pollResults?.tx?.receiver.chain,
-                    },
-                  ]}
-                />
-                <div className={sidebarLinksStyle}>
-                  <ResourceLinks
-                    links={[{ title: t('Transactions link'), href: '#' }]}
-                  />
-                </div>
-              </>
-            ),
-          },
-        ]}
-      />
-
+    <section className={containerClass}>
+      <Head>
+        <title>Kadena Developer Tools - Transactions</title>
+      </Head>
       <Breadcrumbs>
-        <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
-        <BreadcrumbsItem>{t('Cross Chain Finisher')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Cross Chain Transfer Finisher')}</BreadcrumbsItem>
       </Breadcrumbs>
+      <Heading as="h4">{t('Finish transaction')}</Heading>
 
-      <Heading as="h3" transform="capitalize" bold={false}>
-        {t('Finish transaction')}
-      </Heading>
+      <div className={notificationContainerStyle}>
+        <Notification intent="warning" role="status" isDismissable>
+          <NotificationHeading>{t('Application Settings')}</NotificationHeading>
+          <Trans
+            i18nKey="common:application-settings-warning"
+            components={[
+              <a
+                className={notificationLinkStyle}
+                key="link-open-settings"
+                onClick={handleDevOptionsClick}
+              />,
+            ]}
+          />
+        </Notification>
+      </div>
 
       {showNotification ? (
         <div className={notificationContainerStyle}>{renderNotification}</div>
       ) : null}
 
+      {processingTx ? (
+        <div className={notificationContainerStyle}>
+          {renderWaitingNotification}
+        </div>
+      ) : null}
+
       <form onSubmit={handleSubmit(handleValidateSubmit)}>
         <section className={formContentStyle}>
-          <Stack flexDirection="column">
+          <Stack
+            flexDirection="column"
+            paddingBlockStart={'md'}
+            paddingBlockEnd={'xxxl'}
+            gap={'lg'}
+          >
             <FormItemCard
               heading={t('Search Request')}
               helper={t('Where can I find the request key?')}
               helperHref="#"
               disabled={false}
+              helperOnClick={() => onOpenItemChange('request-key')}
             >
               <Box marginBlockEnd="md" />
               <Grid>
                 <GridItem>
-                  <RequestKeyField
-                    errorMessage={
-                      pollResults.error || errors.requestKey?.message
-                    }
-                    isInvalid={!!pollResults.error}
-                    {...register('requestKey')}
-                    value={requestKey}
-                    onChange={onRequestKeyChange}
-                    onKeyUp={onCheckRequestKey}
-                  />
-                </GridItem>
-              </Grid>
-            </FormItemCard>
-
-            <FormItemCard
-              heading={t('Gas Settings')}
-              helper={t('What is a gas payer?')}
-              helperHref="#"
-              disabled={false}
-            >
-              <Grid columns={1} marginBlockStart="md">
-                <GridItem>
-                  <AccountNameField
-                    label={t('Gas Payer')}
-                    {...register('gasPayer', { shouldUnregister: true })}
-                    id="gas-payer-account-input"
-                    placeholder={t('Enter Your Account')}
-                    isInvalid={!!errors.gasPayer}
-                    errorMessage={errors.gasPayer?.message}
-                  />
-                </GridItem>
-              </Grid>
-
-              <Grid columns={2} marginBlockStart="md">
-                <GridItem>
-                  <TextField
-                    disabled={true}
-                    label={t('Gas Price')}
-                    info={t('approx. USD 000.1 ¢')}
-                    {...register('gasPrice', { shouldUnregister: true })}
-                    id="gas-price-input"
-                    placeholder={t('Enter Gas Price')}
-                    startAddon={t('KDA')}
-                  />
-                </GridItem>
-                <GridItem>
-                  <TextField
-                    disabled={!isAdvancedOptions}
-                    description={t(
-                      'This input field will only be enabled if the user is in expert mode',
+                  <Controller
+                    control={control}
+                    name="requestKey"
+                    render={({ field }) => (
+                      <RequestKeyField
+                        errorMessage={
+                          pollResults.error || errors.requestKey?.message
+                        }
+                        isInvalid={!!pollResults.error || !!errors.requestKey}
+                        {...field}
+                        onChange={onRequestKeyChange}
+                        onKeyUp={onCheckRequestKey}
+                      />
                     )}
-                    label={t('Gas Limit')}
-                    {...register('gasLimit', { shouldUnregister: true })}
-                    id="gas-limit-input"
-                    placeholder={t('Enter Gas Limit')}
                   />
                 </GridItem>
               </Grid>
             </FormItemCard>
 
             {pollResults.tx !== undefined ? (
+              <FormItemCard heading={t('Overview')} disabled={false}>
+                <Grid columns={2} marginBlockStart="md" gap={'md'}>
+                  <GridItem>
+                    <TrackerCard
+                      variant="vertical"
+                      labelValues={[
+                        {
+                          label: t('Network'),
+                          value: networkData.networkId,
+                        },
+                        {
+                          label: t('Server'),
+                          value: networkData.API,
+                        },
+                      ]}
+                    />
+                  </GridItem>
+                  <GridItem>
+                    <TrackerCard
+                      variant="vertical"
+                      icon="Gas"
+                      labelValues={[
+                        {
+                          label: t('Gas Payer'),
+                          value: getValues('gasPayer'),
+                          isAccount: false,
+                        },
+                      ]}
+                    />
+                  </GridItem>
+                </Grid>
+                <Grid columns={2} marginBlockStart="md" gap={'md'}>
+                  <GridItem>
+                    <TrackerCard
+                      variant="vertical"
+                      icon="QuickStart"
+                      labelValues={[
+                        {
+                          label: t('Sender'),
+                          value: pollResults?.tx?.sender.account,
+                          isAccount: true,
+                        },
+                        {
+                          label: t('Chain'),
+                          value: pollResults?.tx?.sender.chain,
+                        },
+                      ]}
+                    />
+                  </GridItem>
+                  <GridItem>
+                    <TrackerCard
+                      variant="vertical"
+                      icon="Receiver"
+                      labelValues={[
+                        {
+                          label: t('Receiver'),
+                          value: pollResults?.tx?.receiver.account,
+                          isAccount: true,
+                        },
+                        {
+                          label: t('Chain'),
+                          value: pollResults?.tx?.receiver.chain,
+                        },
+                      ]}
+                    />
+                  </GridItem>
+                </Grid>
+              </FormItemCard>
+            ) : null}
+
+            {pollResults.tx !== undefined ? (
+              <FormItemCard
+                heading={t('Gas Settings')}
+                helper={t('What is a gas payer?')}
+                helperHref="#"
+                disabled={false}
+                helperOnClick={() => onOpenItemChange('gas-settings')}
+              >
+                <Grid columns={1} marginBlockStart="md">
+                  <GridItem>
+                    <Controller
+                      control={control}
+                      name="gasPayer"
+                      shouldUnregister
+                      render={({ field }) => (
+                        <AccountNameField
+                          label={t('Gas Payer')}
+                          {...field}
+                          id="gas-payer-account-input"
+                          placeholder={t('Enter Your Account')}
+                          isInvalid={!!errors.gasPayer}
+                          errorMessage={errors.gasPayer?.message}
+                        />
+                      )}
+                    />
+                  </GridItem>
+                </Grid>
+
+                <Grid columns={1} marginBlockStart="md">
+                  <GridItem>
+                    <Controller
+                      control={control}
+                      name="gasLimit"
+                      shouldUnregister
+                      render={({ field }) => (
+                        <TextField
+                          disabled={!isAdvancedOptions}
+                          description={t(
+                            'This input field will only be enabled if the user is in expert mode',
+                          )}
+                          label={t('Gas Limit')}
+                          {...field}
+                          value={`${field.value}`}
+                          onChange={(e) =>
+                            field.onChange(parseInt(e.target.value))
+                          }
+                          isInvalid={!!errors.gasLimit}
+                          errorMessage={errors.gasLimit?.message}
+                          id="gas-limit-input"
+                          placeholder={t('Enter Gas Limit')}
+                          type={'number'}
+                        />
+                      )}
+                    />
+                  </GridItem>
+                </Grid>
+              </FormItemCard>
+            ) : null}
+
+            {pollResults.tx !== undefined ? (
               <FormItemCard
                 heading={t('SigData')}
                 helper={t('How do I use the Signature data')}
                 helperHref="#"
+                helperOnClick={() => onOpenItemChange('signature-data')}
               >
                 <Box marginBlockEnd="md" />
                 <Grid columns={1}>
                   <GridItem>
                     <div className={textareaContainerStyle}>
-                      <textarea rows={4} className={textAreaStyle}>
-                        {formattedSigData}
-                      </textarea>
+                      <TextareaField
+                        autoResize
+                        isReadOnly
+                        inputFont="code"
+                        id="sig-text-area"
+                        value={formattedSigData}
+                        aria-label={t('sigData')}
+                        className={textareaWrapperStyle}
+                      />
                       <Button
                         color="primary"
                         icon={<SystemIcon.ContentCopy />}
                         onPress={async () => {
-                          await navigator.clipboard.writeText(formattedSigData);
+                          await handleCopySigData();
                         }}
                         title={t('copySigData')}
                         aria-label={t('copySigData')}
+                        variant="text"
                       />
                     </div>
                   </GridItem>
@@ -460,14 +621,53 @@ const CrossChainTransferFinisher: FC = () => {
         <section className={formButtonStyle}>
           <Button
             type="submit"
-            isDisabled={!isGasStation}
+            isLoading={processingTx}
             endIcon={<SystemIcon.TrailingIcon />}
           >
             {t('Finish Transaction')}
           </Button>
         </section>
       </form>
-    </div>
+
+      <DrawerToolbar
+        ref={drawerPanelRef}
+        initialOpenItem={openItem}
+        sections={[
+          {
+            icon: 'Information',
+            title: activeInfoTag.title,
+            children: (
+              <div className={infoBoxStyle}>
+                <span>{activeInfoTag.content}</span>
+              </div>
+            ),
+          },
+          {
+            icon: 'Link',
+            title: t('Resources & Links'),
+            children: (
+              <div className={linksBoxStyle}>
+                {sidebarLinks.map((item, index) => (
+                  <MenuLinkButton
+                    title={item.title}
+                    key={`menu-link-${index}`}
+                    href={item.href}
+                    active={item.href === router.pathname}
+                    target="_blank"
+                    onClick={handleOnClickLink}
+                  />
+                ))}
+              </div>
+            ),
+          },
+        ]}
+      />
+
+      <OptionsModal
+        isOpen={openModal}
+        onOpenChange={() => setOpenModal(false)}
+      />
+    </section>
   );
 };
 

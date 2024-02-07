@@ -87,7 +87,7 @@ export const FormStatusNotification: FC<IFormStatusNotificationProps> = (
         role="status"
       >
         <NotificationHeading>{title ?? titles[status!]}</NotificationHeading>
-        {body ?? bodies[status!]}
+        <p>{body ?? bodies[status!]}</p>
         {children}
       </Notification>
     </div>

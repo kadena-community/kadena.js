@@ -31,6 +31,7 @@ export default function SocketHandler(
   }
 
   const io = new Server(res.socket.server, {
+    maxHttpBufferSize: 1e8,
     cors: {
       origin: 'http://localhost:3000',
     },
@@ -38,9 +39,9 @@ export default function SocketHandler(
   res.socket.server.io = io;
 
   io.use((socket, next) => {
-    const tokenId = socket.handshake.auth.tokenId;
+    const proofOfUsId = socket.handshake.auth.proofOfUsId;
 
-    if (!tokenId) {
+    if (!proofOfUsId) {
       return next(new Error('invalid token. not found'));
     }
 
@@ -49,13 +50,13 @@ export default function SocketHandler(
 
   io.on('connection', (socket) => {
     console.log('connection');
-    socket.join(socket.handshake.auth.tokenId);
+    socket.join(socket.handshake.auth.proofOfUsId);
 
-    io.to(socket.handshake.auth.tokenId)
-      .to(socket.handshake.auth.tokenId)
+    io.to(socket.handshake.auth.proofOfUsId)
+      .to(socket.handshake.auth.proofOfUsId)
       .emit('getProofOfUs', {
-        content: store.getProofOfUs(socket.handshake.auth.tokenId),
-        from: socket.handshake.auth.tokenId,
+        content: store.getProofOfUs(socket.handshake.auth.proofOfUsId),
+        from: socket.handshake.auth.proofOfUsId,
       });
 
     signeeListeners(socket, io);

@@ -105,7 +105,6 @@ export const buttonReset = style({
   textDecoration: 'none',
   isolation: 'isolate',
   border: 'none',
-  margin: 0,
   ':focus': {
     outline: 'none',
   },

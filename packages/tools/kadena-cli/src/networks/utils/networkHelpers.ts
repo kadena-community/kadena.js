@@ -120,8 +120,9 @@ export async function ensureNetworksConfiguration(): Promise<void> {
     mkdirSync(defaultNetworksPath, { recursive: true });
   }
 
+  if (readdirSync(defaultNetworksPath).length !== 0) return;
+
   for (const [network, filePath] of Object.entries(networkFiles)) {
-    console.log(network, filePath);
     if (!existsSync(filePath)) {
       await writeNetworks(networkDefaults[network]);
     }

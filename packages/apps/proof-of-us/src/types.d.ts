@@ -1,5 +1,5 @@
 interface IAccount {
-  name: string;
+  displayName: string;
   waccount: string;
   caccount: string;
   publicKey: string;
@@ -18,21 +18,58 @@ type IDataHook<T> = (...args: any) => {
   data: T;
 };
 
-interface IProofOfUs {
-  tokenId: string;
-  type: 'multi' | 'event';
+type IMintStatus =
+  | 'init'
+  | 'signing'
+  | 'uploading'
+  | 'uploading_manifest'
+  | 'minting'
+  | 'error'
+  | 'success';
+
+type IProofOfUsBackground = string;
+
+type TokenType = 'multi' | 'event';
+
+interface IProofOfUsData {
+  mintStatus: IMintStatus;
+  tokenId?: string;
+  proofOfUsId: string;
+  type: TokenType;
   date: number;
   minted?: number;
   signees: IProofOfUsSignee[];
-  avatar: {
-    background: string;
+  uri?: string;
+}
+
+interface IProofOfUsToken {
+  tokenId: string;
+  image: string;
+  name: string;
+  properties: {
+    type: TokenType;
+    date: number;
+    avatar?: {
+      backgroundColor: string;
+      color: string;
+    };
   };
+}
+
+interface IProofOfUs {
+  background: IProofOfUsBackground;
+  data: IProofOfUsData;
+  token?: IProofOfUsToken;
 }
 
 interface IError {
   message: string;
+  status?: string;
 }
 
-type IProofOfUsSignee = Pick<IAccount, 'name' | 'publicKey' | 'cid'> & {
+type ISignerStatus = 'init' | 'signing' | 'success' | 'error';
+
+type IProofOfUsSignee = Pick<IAccount, 'displayName' | 'publicKey' | 'cid'> & {
+  signerStatus: ISignerStatus;
   initiator: boolean;
 };

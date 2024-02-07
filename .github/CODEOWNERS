@@ -1,6 +1,6 @@
 # About code owners: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-/.github                                        @ghislain89 @albert70g @sstraatemans @javadkh2
+/.github                                        @ghislain89 @alber70g @sstraatemans @javadkh2
 /.changeset
 /common                                         @alber70g
 /pnpm-lock.yaml

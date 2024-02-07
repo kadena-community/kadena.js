@@ -1,31 +1,30 @@
 import { useMenu } from '@/hooks/useMenu/useMenu';
 import type { IMenuItem, LayoutType } from '@kadena/docs-tools';
-import { SystemIcon } from '@kadena/react-ui';
+import {
+  NavHeader,
+  NavHeaderButtonLink,
+  NavHeaderLink,
+  NavHeaderLinkList,
+  Stack,
+  SystemIcon,
+} from '@kadena/react-ui';
 import classNames from 'classnames';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React from 'react';
 import { globalClass } from '../../global.css';
 import { DocsLogo } from '../DocsLogo/DocsLogo';
 import { HamburgerMenuToggle } from './HamburgerMenuToggle';
-import { NavItemActiveBackground } from './NavItemActiveBackground';
 import { SearchButton } from './SearchButton';
 import { ThemeToggle } from './ThemeToggle';
 import {
-  headerButtonClass,
   headerClass,
-  headerIconGroupClass,
-  hideOnMobileClass,
-  innerWrapperClass,
-  logoClass,
-  navClass,
+  hideOnTabletClass,
   navLinkClass,
   skipNavClass,
-  socialGroupClass,
-  spacerClass,
-  ulClass,
+  socialsClass,
 } from './styles.css';
-import { useHeaderAnimation } from './useHeaderAnimation';
 
 interface IProps {
   menuItems: IMenuItem[];
@@ -33,64 +32,60 @@ interface IProps {
 }
 
 export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
-  const { hasPath, listRef, backgroundRef } = useHeaderAnimation();
   const { toggleMenu, isMenuOpen } = useMenu();
+  const { pathname } = useRouter();
 
   return (
-    <header className={classNames(globalClass, headerClass)}>
+    <div className={classNames(globalClass, headerClass)}>
       <a className={skipNavClass} href="#maincontent">
         Skip to main content
       </a>
-      <div className={innerWrapperClass}>
-        <div className={logoClass}>
-          <Link href="/" passHref aria-label="Go to the home page">
-            <DocsLogo overwriteTheme="dark" />
+
+      <NavHeader
+        logo={
+          <Link href="/" aria-label="Go to the home page">
+            <DocsLogo overwriteTheme="dark" height={32} />
           </Link>
-        </div>
+        }
+        activeHref={pathname}
+      >
+        <NavHeaderLinkList className={hideOnTabletClass}>
+          {menuItems.map((item) => (
+            <NavHeaderLink key={item.root} asChild>
+              <Link href={item.root} className={navLinkClass}>
+                {item.menu}
+              </Link>
+            </NavHeaderLink>
+          ))}
+        </NavHeaderLinkList>
 
-        <div className={hideOnMobileClass}>
-          <NavItemActiveBackground show={hasPath} ref={backgroundRef} />
-          <nav className={navClass}>
-            <ul className={ulClass} ref={listRef}>
-              {menuItems.map((item) => (
-                <li key={item.root}>
-                  <Link href={item.root} className={classNames(navLinkClass)}>
-                    {item.menu}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-        <div className={spacerClass} />
-
-        <section className={classNames(headerIconGroupClass, socialGroupClass)}>
-          <a
+        <Stack justifyContent="flex-end" gap="md" flex={1}>
+          <NavHeaderButtonLink
+            className={socialsClass}
             href="https://twitter.com/kadena_io"
             title="Go to our Twitter"
-            className={classNames(headerButtonClass)}
-          >
-            <SystemIcon.Twitter />
-          </a>
-          <a
+            icon={<SystemIcon.Twitter />}
+          />
+
+          <NavHeaderButtonLink
+            className={socialsClass}
             href="https://github.com/kadena-community"
             title="Go to our Github"
-            className={classNames(headerButtonClass)}
-          >
-            <SystemIcon.Github />
-          </a>
-        </section>
-        <section className={headerIconGroupClass}>
+            icon={<SystemIcon.Github />}
+          />
+
           <ThemeToggle />
-          <div className={hideOnMobileClass}>
+
+          <div className={hideOnTabletClass}>
             <SearchButton />
           </div>
+
           <HamburgerMenuToggle
             toggleMenu={toggleMenu}
             isMenuOpen={isMenuOpen}
           />
-        </section>
-      </div>
-    </header>
+        </Stack>
+      </NavHeader>
+    </div>
   );
 };

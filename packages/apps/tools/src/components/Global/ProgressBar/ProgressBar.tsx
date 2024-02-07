@@ -29,38 +29,37 @@ export const ProgressBar: FC<IProgressBarProps> = ({ checkpoints }) => {
       <div className={progressBarContentStyle}>
         {checkpoints.map((checkpoint, index) => {
           return (
-            <>
-              <div
-                className={checkpointContainerStyle}
-                key={index}
-                data-testid={`kda-checkpoint-container-${index}`}
-              >
-                <div className={classNames(circleLineContainerStyle)}>
+            <div
+              className={checkpointContainerStyle}
+              key={index}
+              data-testid={`kda-checkpoint-container-${index}`}
+            >
+              <div className={classNames(circleLineContainerStyle)}>
+                <div
+                  data-testid="kda-status-indicator"
+                  className={classNames(
+                    circleStyle,
+                    circleColorVariant[checkpoint.status],
+                  )}
+                />
+                {index !== checkpoints.length - 1 ? (
                   <div
                     className={classNames(
-                      circleStyle,
-                      circleColorVariant[checkpoint.status],
+                      lineStyle,
+                      lineColorVariant[checkpoints[index + 1].status],
                     )}
                   />
-                  {index !== checkpoints.length - 1 ? (
-                    <div
-                      className={classNames(
-                        lineStyle,
-                        lineColorVariant[checkpoints[index + 1].status],
-                      )}
-                    />
-                  ) : null}
-                </div>
-                <div
-                  className={classNames(
-                    textContainerStyle,
-                    textColorVariant[checkpoint.status],
-                  )}
-                >
-                  {checkpoint.title}
-                </div>
+                ) : null}
               </div>
-            </>
+              <div
+                className={classNames(
+                  textContainerStyle,
+                  textColorVariant[checkpoint.status],
+                )}
+              >
+                {checkpoint.title}
+              </div>
+            </div>
           );
         })}
       </div>

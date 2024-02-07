@@ -6,6 +6,7 @@ import { docsCardLink } from '@/components/DocsCard/styles.css';
 import { HomeHeader } from '@/components/Layout/Landing/components';
 import {
   articleClass,
+  containerClass,
   contentClass,
   contentClassVariants,
 } from '@/components/Layout/components/articleStyles.css';
@@ -20,7 +21,6 @@ import {
   Stack,
   SystemIcon,
 } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/styles';
 import classNames from 'classnames';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
@@ -41,7 +41,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
         id="maincontent"
       >
         <article className={articleClass}>
-          <Box className={sprinkles({ marginBlockEnd: '$20' })}>
+          <Box className={containerClass}>
             <Grid gap="lg" columns={{ sm: 1, md: 2 }}>
               <GridItem rowSpan={2}>
                 <DocsCard

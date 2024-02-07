@@ -1,8 +1,4 @@
-export type {
-  IAccordionProps,
-  IAccordionRootProps,
-  IAccordionSectionProps,
-} from './Accordion';
+export type { IAccordionProps } from './Accordion';
 export type { IBreadcrumbItemProps, IBreadcrumbsProps } from './Breadcrumbs';
 export type { IButtonProps, IToggleButtonProps } from './Button';
 export type { ICardProps } from './Card';
@@ -16,6 +12,7 @@ export type {
 export type {
   IComboboxProps,
   IFormProps,
+  INumberFieldProps,
   ISelectProps,
   ITextFieldProps,
   ITextareaFieldProps,
@@ -32,17 +29,11 @@ export type { MaskOptions } from './MaskedValue';
 export type { IMaskedValueProps } from './MaskedValue/MaskedValue';
 export type { IModalProps } from './Modal';
 export type {
-  INavFooterIconButtonProps,
-  INavFooterLinkProps,
-  INavFooterPanelProps,
-  INavFooterProps,
-  INavFooterRootProps,
-} from './NavFooter';
-export type {
-  INavHeaderContentProps,
+  INavHeaderButtonLinkProps,
+  INavHeaderButtonProps,
+  INavHeaderLinkListProps,
   INavHeaderLinkProps,
-  INavHeaderNavigationProps,
-  INavHeaderRootProps,
+  INavHeaderProps,
   INavHeaderSelectProps,
 } from './NavHeader';
 export type {
@@ -52,26 +43,15 @@ export type {
   INotificationProps,
 } from './Notification';
 export type { IPaginationProps } from './Pagination';
-export type {
-  ITBodyProps,
-  ITHeadProps,
-  ITableProps,
-  ITdProps,
-  IThProps,
-  ITrProps,
-} from './Table';
+export type { IProgressCircleProps } from './ProgressCircle';
+export type { ITableProps } from './Table';
 export type { ITabItemProps, ITabsProps } from './Tabs';
 export type { ITagGroupProps, ITagItemProps, ITagProps } from './Tag';
 export type { ITooltipProps } from './Tooltip';
 export type { ILabelValue, ITrackerCardProps } from './TrackerCard/TrackerCard';
-export type { ITreeProps } from './Tree';
-export type {
-  IGradientTextProps,
-  IHeadingProps,
-  ITextProps,
-} from './Typography';
+export type { IHeadingProps, ITextProps } from './Typography';
 
-export { Accordion } from './Accordion';
+export { Accordion, AccordionItem } from './Accordion';
 export { Breadcrumbs, BreadcrumbsItem } from './Breadcrumbs';
 export { Button, ToggleButton } from './Button';
 export { Card } from './Card';
@@ -91,6 +71,7 @@ export {
   Form,
   FormFieldHeader,
   FormFieldHelper,
+  NumberField,
   Select,
   SelectItem,
   TextField,
@@ -99,11 +80,18 @@ export {
 export { ProductIcon, SystemIcon } from './Icon';
 export { Box, Grid, GridItem, Stack } from './Layout';
 export { Link } from './Link';
+export { KadenaLogo } from './Logo';
 export { MaskedValue } from './MaskedValue/MaskedValue';
 export { maskValue } from './MaskedValue/utils';
 export { Modal } from './Modal';
-export { NavFooter } from './NavFooter';
-export { NavHeader } from './NavHeader';
+export {
+  NavHeader,
+  NavHeaderButton,
+  NavHeaderButtonLink,
+  NavHeaderLink,
+  NavHeaderLinkList,
+  NavHeaderSelect,
+} from './NavHeader';
 export {
   Notification,
   NotificationButton,
@@ -111,10 +99,19 @@ export {
   NotificationHeading,
 } from './Notification';
 export { Pagination } from './Pagination';
-export { Table } from './Table';
+export { ProgressCircle } from './ProgressCircle';
+export { Cell, Column, Row, Table, TableBody, TableHeader } from './Table';
 export { TabItem, Tabs } from './Tabs';
 export { Tag, TagGroup, TagItem } from './Tag';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
+export { Heading, Text } from './Typography';
+
+// Deprecated components
+export { TableV1 } from './TableV1';
 export { Tree } from './Tree';
-export { GradientText, Heading, Text } from './Typography';
+export { GradientText } from './Typography';
+
+export type { ITableProps as ITableV1Props } from './TableV1';
+export type { ITreeProps } from './Tree';
+export type { IGradientTextProps } from './Typography';
