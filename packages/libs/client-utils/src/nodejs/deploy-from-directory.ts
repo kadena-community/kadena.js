@@ -3,6 +3,7 @@ import { readFileSync, readdirSync } from 'fs';
 import { deployContract } from '../built-in/deploy-contract';
 import { submitClient } from '../core';
 import { IClientConfig } from '../core/utils/helpers';
+import { deployTemplate } from './deploy-template';
 import { createPactCommandFromTemplate } from './yaml-converter';
 
 export interface ITransactionBody {
@@ -69,9 +70,7 @@ export const deployFromDirectory = async ({
     if (templateConfig.sort) {
       templateFiles.sort(templateConfig.sort);
     }
-  }
-
-  if (codeFileConfig) {
+  } else if (codeFileConfig) {
     codeFiles = readdirSync(codeFileConfig!.path).filter((file) =>
       file.endsWith(codeFileConfig!.extension),
     );
@@ -96,14 +95,16 @@ export const deployFromDirectory = async ({
 
             deployArguments.chain = chainId;
 
-            const command = await createPactCommandFromTemplate(
-              templateFile,
-              deployArguments,
-              templateConfig?.path,
+            const command = await deployTemplate(
+              {
+                deployArguments,
+                workingDirectory: templateConfig?.path,
+                templatePath: templateFile,
+              },
+              clientConfig,
             );
 
-            const commandResult =
-              await submitClient(clientConfig)(command).executeTo('listen');
+            const commandResult = await command.executeTo('listen');
 
             if (commandResult.result.status === 'success') {
               console.log(
@@ -136,13 +137,16 @@ export const deployFromDirectory = async ({
             const transactionBody =
               codeFileConfig.transactionBodyGenerator(codeFile);
 
-            const commandResult = await deployContract(
+            const command = deployContract(
               {
                 contractCode: code,
                 transactionBody,
               },
               clientConfig,
-            ).executeTo('listen');
+            );
+
+            const commandResult = await command.executeTo('listen');
+
             if (commandResult.result.status === 'success') {
               console.log(
                 `Successfully deployed ${codeFile} on chain ${chainId}`,
