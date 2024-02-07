@@ -1,10 +1,15 @@
-import { AccountHoverTag, AccountNameField } from '@/components/Global';
+import {
+  AccountHoverTag,
+  AccountNameField,
+  ChainSelect,
+} from '@/components/Global';
 import { useLedgerTransport } from '@/context';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
 import useLedgerPublicKey, {
   derivationModes,
 } from '@/hooks/use-ledger-public-key';
+import { ChainId } from '@kadena/client';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
@@ -28,6 +33,7 @@ const Storybook = () => {
   const { t } = useTranslation('common');
 
   const [accountName, setAccountName] = useState<string>('');
+  const [chainId, setChainId] = useState<ChainId>('0');
   const {
     error: accountError,
     data: accountDetails,
@@ -35,7 +41,7 @@ const Storybook = () => {
   } = useAccountDetailsQuery({
     account: accountName,
     networkId: 'testnet04',
-    chainId: '1',
+    chainId,
   });
 
   console.log({ accountError, accountDetails });
@@ -71,12 +77,18 @@ const Storybook = () => {
             <Heading as="h5">
               <Text as="code">useAccountDetailsQuery</Text>
             </Heading>
-            <AccountNameField
-              label="Account Name"
-              onValueChange={(value) => {
-                setAccountName(value);
-              }}
-            />
+            <Stack gap="md">
+              <AccountNameField
+                label="Account Name"
+                onValueChange={(value) => {
+                  setAccountName(value);
+                }}
+              />
+              <ChainSelect
+                onSelectionChange={(value) => setChainId(value)}
+                selectedKey={chainId}
+              />
+            </Stack>
             <>
               <ContentHeader icon="Account" heading="User Details" />
               {accountDetails ? (
