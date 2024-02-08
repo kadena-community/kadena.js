@@ -25,6 +25,8 @@ export const networkNamePrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
+  console.log('previousQuestions', previousQuestions);
+  console.log('args: ', args);
   const defaultValue = args.defaultValue as string;
   return await input({
     message: 'Enter a network name (e.g. "mainnet")',
