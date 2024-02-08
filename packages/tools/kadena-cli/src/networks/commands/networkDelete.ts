@@ -1,45 +1,43 @@
 import debug from 'debug';
-import { createExternalPrompt } from '../../prompts/generic.js';
-import { networkDeletePrompt } from '../../prompts/network.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { removeNetwork } from '../utils/networkHelpers.js';
 
 import chalk from 'chalk';
 import type { Command } from 'commander';
-import { createCommand } from '../../utils/createCommand.js';
+import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 
 export const deleteNetworksCommand: (
   program: Command,
   version: string,
-) => void = createCommand(
+) => void = createCommandFlexible(
   'delete',
   'Delete network',
-  [globalOptions.network()],
-  async (config) => {
-    debug('network-delete:action')({ config });
-
-    const externalPrompt = createExternalPrompt({
-      networkDeletePrompt,
+  [globalOptions.network(), globalOptions.networkDelete()],
+  async (option) => {
+    const networkData = await option.network();
+    const deleteNetwork = await option.networkDelete({
+      network: networkData.network,
     });
 
-    const shouldDelete = await externalPrompt.networkDeletePrompt(
-      config.network,
-    );
+    debug.log('delete-network:action', {
+      ...networkData,
+      ...deleteNetwork,
+    });
 
-    if (shouldDelete === 'no') {
+    if (deleteNetwork.networkDelete === 'no') {
       console.log(
         chalk.yellow(
-          `\nThe network configuration "${config.network}" will not be deleted.\n`,
+          `\nThe network configuration "${networkData.network}" will not be deleted.\n`,
         ),
       );
       return;
     }
 
-    await removeNetwork(config);
+    await removeNetwork(networkData.networkConfig);
 
     console.log(
       chalk.green(
-        `\nThe network configuration "${config.network}" has been deleted.\n`,
+        `\nThe network configuration "${networkData.network}" has been deleted.\n`,
       ),
     );
   },
