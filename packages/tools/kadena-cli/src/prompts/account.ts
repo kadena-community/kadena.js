@@ -51,7 +51,21 @@ export const accountKdnNamePrompt: IPrompt<string> = async () =>
 export const amountPrompt: IPrompt<string> = async () =>
   await input({
     validate(value: string) {
-      return !isNaN(parseFloat(value.replace(',', '.')));
+      const parsedValue = parseFloat(value.replace(',', '.'));
+
+      if (isNaN(parsedValue)) {
+        return 'Please enter a valid amount.';
+      }
+
+      if (parsedValue <= 0) {
+        return 'Please enter a positive amount.';
+      }
+
+      if (parsedValue > 100) {
+        return 'Please enter an amount less than 100.';
+      }
+
+      return true;
     },
     message: 'Enter an amount.',
   });

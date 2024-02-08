@@ -101,9 +101,10 @@ export const globalOptions = {
     validation: z
       .string({
         /* eslint-disable-next-line @typescript-eslint/naming-convention */
-        invalid_type_error: 'Error: -a, --amount must be a number',
+        invalid_type_error: 'Error: -a, --amount must be a positive number',
       })
-      .min(0),
+      .min(1)
+      .max(100),
     option: new Option('-a, --amount <amount>', 'Amount'),
   }),
   fungible: createOption({
