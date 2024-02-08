@@ -42,6 +42,7 @@ interface IProofOfUsData {
   date: number;
   minted?: number;
   signees: IProofOfUsSignee[];
+  title?: string;
   uri?: string;
 }
 

@@ -21,7 +21,8 @@ export const Multi: FC<IProps> = ({ proofOfUs, background }) => {
   return (
     <>
       <section>
-        <img src={background} />
+        <h3>{proofOfUs.title}</h3>
+        <img src={background} alt="our image" />
         <div>status: {proofOfUs?.mintStatus}</div>
         <ListSignees />
         {!isConnected() && <button onClick={handleJoin}>Sign</button>}

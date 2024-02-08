@@ -27,6 +27,7 @@ export interface IProofOfUsContext {
     signee: IProofOfUsSignee;
   }) => Promise<void>;
   createToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
+  changeTitle: (value: string) => Promise<void>;
   isConnected: () => boolean;
   isInitiator: () => boolean;
   getSigneeAccount: (account: IAccount) => IProofOfUsSignee;
@@ -41,6 +42,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   updateSigneeStatus: async (status: ISignerStatus) => {},
   removeSignee: async () => {},
   createToken: async () => {},
+  changeTitle: async () => {},
   isConnected: () => false,
   isInitiator: () => false,
   getSigneeAccount: (account: IAccount) => {
@@ -113,6 +115,11 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
 
     await store.createProofOfUs(proofOfUsId, getSigneeAccount(account));
   };
+  const changeTitle = async (value: string) => {
+    if (!proofOfUs) return;
+
+    await store.addTitle(proofOfUs, value);
+  };
 
   const isConnected = () => {
     return !!proofOfUs?.signees?.find((s) => s.cid === account?.cid);
@@ -137,6 +144,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         background,
         proofOfUs,
         updateStatus,
+        changeTitle,
       }}
     >
       {children}

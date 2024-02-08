@@ -168,6 +168,12 @@ const ProofOfUsStore = () => {
     });
   };
 
+  const addTitle = async (proofOfUs: IProofOfUsData, value: string) => {
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      title: value,
+    });
+  };
+
   return {
     updateMintStatus,
     createProofOfUs,
@@ -182,6 +188,7 @@ const ProofOfUsStore = () => {
     updateStatus,
     listenProofOfUsData,
     listenProofOfUsBackgroundData,
+    addTitle,
   };
 };
 

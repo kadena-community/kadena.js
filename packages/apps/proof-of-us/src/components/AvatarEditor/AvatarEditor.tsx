@@ -23,7 +23,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
   const canvasElm = canvasRef.current;
-  const { proofOfUs, background } = useProofOfUs();
+  const { proofOfUs } = useProofOfUs();
 
   useEffect(() => {
     // if someone is already signing the pou, you are not allowed to change the photo anymore

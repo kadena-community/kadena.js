@@ -2,7 +2,7 @@ import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useRouter } from 'next/navigation';
 
-import type { FC } from 'react';
+import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
 
 interface IProps {
@@ -10,7 +10,7 @@ interface IProps {
   prev: () => void;
 }
 export const DetailView: FC<IProps> = ({ next, prev }) => {
-  const { proofOfUs, background, closeToken } = useProofOfUs();
+  const { proofOfUs, background, closeToken, changeTitle } = useProofOfUs();
   const { removeBackground } = useAvatar();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
@@ -32,6 +32,11 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
     router.replace('/user');
   };
 
+  const handleTitleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (!proofOfUs) return;
+    changeTitle(e.target.value);
+  };
+
   if (!isMounted) return null;
 
   return (
@@ -40,6 +45,11 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
 
       <button onClick={handleRedo}>redo</button>
       <button onClick={handleClose}>delete</button>
+      <input
+        name="title"
+        onChange={handleTitleChange}
+        value={proofOfUs.title}
+      />
       <img src={background} />
       <button onClick={handleShare}>Share</button>
     </section>
