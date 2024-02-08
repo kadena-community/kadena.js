@@ -2,7 +2,7 @@ import { createPactCommandFromTemplate } from '.';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 
-export interface ITemplateInput {
+interface ITemplateInput {
   deployArguments?: Record<string, any>;
   workingDirectory?: string;
   templatePath: string;

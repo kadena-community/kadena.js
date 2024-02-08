@@ -11,7 +11,7 @@ import {
   defaultNetworkId,
 } from './defaults';
 
-export interface IDeployMarmaladeNamespacesInput {
+interface IDeployMarmaladeNamespacesInput {
   sender?: IAccount;
   chainId?: ChainId;
   networkId?: string;

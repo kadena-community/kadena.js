@@ -5,7 +5,7 @@ import { deployContract } from '../built-in/deploy-contract';
 import type { IClientConfig } from '../core/utils/helpers';
 import { deployTemplate } from './deploy-template';
 
-export interface ITransactionBody {
+interface ITransactionBody {
   chainId: ChainId;
   networkId: string;
   signers: string[];

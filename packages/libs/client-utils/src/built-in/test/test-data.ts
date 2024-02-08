@@ -1,5 +1,4 @@
 import type { ChainId } from '@kadena/types';
-import type { ITransactionBodyInput } from '../deploy-contract';
 
 export interface IAccount {
   account: string;
@@ -22,13 +21,13 @@ export const sourceAccount: IAccountWithSecretKey = {
   secretKey: 'e97b30547784bf05eb71a765b1d45127ed89d9b3c0cf21b71a107efb170eed33',
 };
 
-export const input: ITransactionBodyInput = {
-  chainId: '0',
+export const input = {
+  chainId: '0' as ChainId,
   networkId: 'fast-development',
   signers: [sourceAccount.publicKey],
   meta: {
     gasLimit: 70000,
-    chainId: '0',
+    chainId: '0' as ChainId,
     ttl: 8 * 60 * 60,
     senderAccount: sourceAccount.account,
   },
