@@ -8,7 +8,7 @@ type Block implements Node {
   chainId: BigInt!
 
   """The number of blocks that proceed this block."""
-  confirmationDepth: Int!
+  confirmationDepth: Int! # instead, query for the block height and subtract from the current block height
   creationTime: DateTime!
 
   """
@@ -20,12 +20,26 @@ type Block implements Node {
   id: ID!
   minerAccount: FungibleChainAccount!
   parent: Block
-  parentHash: String!
+  parentHash: String! # not needed, can be queried from the parent block
+                      # genesis block has no parent, but has parentHash,
+                      # better to compare height to genesisHeight 0 for 0-9
+                      # and something else for 10-19
   payloadHash: String!
 
   """The proof of work hash."""
   powHash: String!
-  predicate: String!
+  # weight: Amount of work that was done to mine the block
+  #   cost of faking the block compared to the work done on the block, KDA > Watts > Hashing power + Difficulty
+  #   a proxy for this is the height compared to the latest height (confirmationDepth)
+
+  predicate: String! # get rid of this, can be accessed through minerAccount
+
+  # coinbase transaction is the transaction with the requestKey of the parents' blockHash
+  # this is probably the only case that the requestKey is not the same as the hash of the coinbase transaction
+  # ! do we want to have the coinbase transaction as a field? (Stuart, Doug)
+
+  # add field "events" for all events of this block
+
   transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
 }
 
@@ -237,11 +251,17 @@ type PageInfo {
 scalar PositiveFloat
 
 type Query {
+  # Add a general information query that returns network information
+  # like: genesis heights, upgrade heights (service heights), fork heights, version name, version node
+  #   graph upgrades, extra chains, block delay, etc.
+
   """Retrieve a block by hash."""
   block(hash: String!): Block
 
   """Retrieve blocks by chain and minimal height."""
   blocksFromHeight(chainIds: [String!], startHeight: Int!): [Block!]!
+
+  blocksFromDepth(chainIds: [String!], minConfirmationDepth: Int!): [Block!]!
 
   """Retrieve all completed blocks from a given height."""
   completedBlockHeights(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, heightCount: Int = 3): [Block!]!
@@ -376,6 +396,8 @@ type Subscription {
   """Subscribe to new blocks."""
   newBlocks(chainIds: [Int!]): [ID!]
 
+  newBlocksFromDepth(chainIds: [Int!], minConfirmationDepth: Int!): [ID!]
+
   """
   Listen for a transaction by request key. Returns the ID when it is in a block.
   """
@@ -389,12 +411,52 @@ type Token {
   id: ID!
 }
 
+# Transaction and TransactionResult
+# maybe we want to split them up
+# TX is exec, or cont
+
+# type TransactionWithResult {
+#   transaction: Transaction # actual { cmd, hash, sigs }
+#   result: TransactionResult
+# }
+# Transaction that has a continuation
+# Transactions with defpacts
+#
+
+type Transaction {
+  cmd: Command!
+  cmd: String!
+  hash: String!
+  sigs: [String!]!
+  result: TransactionState!
+}
+
+type Command {
+  payload: Command
+  meta:
+  signers:
+  networkId
+  nonce
+}
+
+union Command = ExecTransaction | ContTransaction
+union TransactionState =  MempoolInfo | TransactionResult
+
+type ExecTransaction {
+  code: string
+  data: string
+}
+
+type MempoolInfo {
+  estimatedBlockHeight: Int!
+}
+
 """A confirmed transaction."""
-type Transaction implements Node {
+type TransactionResult implements Node {
   """The JSON stringified error message if the transaction failed."""
   badResult: String
   block: Block
-  chainId: BigInt!
+  chainId: BigInt! # remove this, can be retrieved from block
 
   """
   The Pact expressions executed in this transaction when it is an `exec` transaction. For a continuation, this field is `cont`.
