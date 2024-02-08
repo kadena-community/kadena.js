@@ -9,7 +9,7 @@ import type { DerivationMode } from '@/hooks/use-ledger-public-key';
 import useLedgerPublicKey, {
   derivationModes,
 } from '@/hooks/use-ledger-public-key';
-import { ChainId } from '@kadena/client';
+import type { ChainId } from '@kadena/client';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
