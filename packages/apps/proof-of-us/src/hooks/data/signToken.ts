@@ -3,7 +3,7 @@ import { wait } from '@/utils/wait';
 import { useState } from 'react';
 
 export const useSignToken = () => {
-  const { updateSigneeStatus, proofOfUs } = useProofOfUs();
+  const { updateSigner, proofOfUs } = useProofOfUs();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [data] = useState<IProofOfUs | undefined>(undefined);
@@ -13,12 +13,12 @@ export const useSignToken = () => {
     setIsLoading(true);
     setHasError(false);
 
-    updateSigneeStatus('signing');
+    updateSigner({ signerStatus: 'signing' }, true);
 
     //@TODO actual signing to wallet
     await wait(5000);
 
-    updateSigneeStatus('success');
+    updateSigner({ signerStatus: 'success' }, true);
 
     setIsLoading(false);
     setHasError(false);

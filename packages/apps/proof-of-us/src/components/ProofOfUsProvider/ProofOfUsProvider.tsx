@@ -18,7 +18,6 @@ export interface IProofOfUsContext {
     status: IBuildStatusValues;
   }) => Promise<void>;
   addSignee: () => Promise<void>;
-  updateSigneeStatus: (status: ISignerStatus) => Promise<void>;
   removeSignee: ({
     proofOfUsId,
     signee,
@@ -31,7 +30,7 @@ export interface IProofOfUsContext {
   isConnected: () => boolean;
   isInitiator: () => boolean;
   getSigneeAccount: (account: IAccount) => IProofOfUsSignee;
-  updateSigner: (value: any) => Promise<void>;
+  updateSigner: (value: any, isOverwrite?: boolean) => Promise<void>;
 }
 
 export const ProofOfUsContext = createContext<IProofOfUsContext>({
@@ -40,7 +39,6 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   closeToken: async () => {},
   updateStatus: async () => {},
   addSignee: async () => {},
-  updateSigneeStatus: async (status: ISignerStatus) => {},
   removeSignee: async () => {},
   createToken: async () => {},
   changeTitle: async () => {},
@@ -83,16 +81,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     await store.closeToken(proofOfUsId);
   };
 
-  const updateSigneeStatus = async (status: ISignerStatus) => {
-    if (!account || !proofOfUs) return;
-
-    await store.updateSignee(
-      proofOfUs.proofOfUsId,
-      getSigneeAccount(account, proofOfUs),
-      status,
-    );
-  };
-
   const addSignee = async () => {
     if (!account || !proofOfUs) return;
 
@@ -124,12 +112,13 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     await store.addTitle(proofOfUs, value);
   };
 
-  const updateSigner = async (value: any) => {
+  const updateSigner = async (value: any, updateSigner: boolean = false) => {
     if (!proofOfUs || !account) return;
     await store.updateSigner(
       proofOfUs,
       getSigneeAccount(account, proofOfUs),
       value,
+      updateSigner,
     );
   };
 
@@ -147,7 +136,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       value={{
         closeToken,
         addSignee,
-        updateSigneeStatus,
         removeSignee,
         createToken,
         isConnected,

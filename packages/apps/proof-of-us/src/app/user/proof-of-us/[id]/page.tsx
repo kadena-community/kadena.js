@@ -26,6 +26,7 @@ const Page: FC<IProps> = ({ params }) => {
   useEffect(() => {
     //init and check in what step you are
     if (!proofOfUs || isMounted) return;
+
     setStatus(proofOfUs.status);
     setIsMounted(true);
   }, [proofOfUs, background]);

@@ -2,6 +2,7 @@ import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useRouter } from 'next/navigation';
 
+import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
@@ -12,7 +13,7 @@ interface IProps {
   prev: () => void;
 }
 export const DetailView: FC<IProps> = ({ next, prev }) => {
-  const { proofOfUs, closeToken, changeTitle } = useProofOfUs();
+  const { proofOfUs, closeToken, changeTitle, background } = useProofOfUs();
   const { removeBackground } = useAvatar();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
@@ -46,18 +47,24 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
     <section>
       <h3>Details</h3>
 
-      <button onClick={handleRedo}>redo</button>
-      <button onClick={handleClose}>delete</button>
-      <input
-        name="title"
-        placeholder="title"
-        onChange={handleTitleChange}
-        defaultValue={proofOfUs.title}
-      />
+      {!isAlreadySigning(proofOfUs.signees) ? (
+        <>
+          <button onClick={handleRedo}>redo</button>
+          <button onClick={handleClose}>delete</button>
+          <input
+            name="title"
+            placeholder="title"
+            onChange={handleTitleChange}
+            defaultValue={proofOfUs.title}
+          />
 
-      <SocialsEditor />
+          <SocialsEditor />
 
-      <ImagePositions />
+          <ImagePositions />
+        </>
+      ) : (
+        <img src={background} />
+      )}
 
       <button onClick={handleShare}>Share</button>
     </section>

@@ -113,33 +113,6 @@ const ProofOfUsStore = () => {
       signees: signeesList,
     });
   };
-  const updateSignee = async (
-    proofOfUsId: string,
-    account: IProofOfUsSignee,
-    signerStatus: ISignerStatus,
-  ) => {
-    const proofOfUs = await getProofOfUs(proofOfUsId);
-    if (!proofOfUs) return;
-
-    const signeesList = Object.keys(proofOfUs.signees).map(
-      (k: any) => proofOfUs.signees[k],
-    );
-    if (!signeesList) return;
-    if (!signeesList.find((s) => s.cid === account.cid)) {
-      signeesList[1] = account;
-    }
-
-    const newList = signeesList.map((s) => {
-      if (s.cid === account.cid) {
-        return { ...account, signerStatus };
-      }
-      return s;
-    });
-
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      signees: newList,
-    });
-  };
 
   const removeSignee = async (
     proofOfUs: IProofOfUsData,
@@ -178,8 +151,9 @@ const ProofOfUsStore = () => {
     proofOfUs: IProofOfUsData,
     account: IProofOfUsSignee,
     value: any,
+    isOverwrite: boolean = false,
   ) => {
-    if (isAlreadySigning(proofOfUs.signees)) return;
+    if (!isOverwrite && isAlreadySigning(proofOfUs.signees)) return;
 
     const newList = proofOfUs.signees.map((a) => {
       if (a.cid === account.cid) {
@@ -199,7 +173,6 @@ const ProofOfUsStore = () => {
     getProofOfUs,
     getBackground,
     addSignee,
-    updateSignee,
     removeSignee,
     addBackground,
     removeBackground,

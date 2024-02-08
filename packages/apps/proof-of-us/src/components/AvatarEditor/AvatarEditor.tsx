@@ -50,6 +50,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   }, [canvasElm]);
 
   const handleCapture = async (evt: MouseEvent<HTMLButtonElement>) => {
+    if (isAlreadySigning(proofOfUs?.signees)) return;
     evt.preventDefault();
 
     if (!videoRef.current) return;
@@ -87,7 +88,13 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
           controls
           autoPlay
         ></video>
-        <button className={cameraButton} id="capture" onClick={handleCapture} />
+        {!isAlreadySigning(proofOfUs?.signees) && (
+          <button
+            className={cameraButton}
+            id="capture"
+            onClick={handleCapture}
+          />
+        )}
       </div>
     </section>
   );
