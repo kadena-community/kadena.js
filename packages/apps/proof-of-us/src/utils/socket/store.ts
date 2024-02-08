@@ -13,6 +13,14 @@ const ProofOfUsStore = () => {
     if (!docRef.exists()) return null;
     return docRef.toJSON() as IProofOfUsData;
   };
+  const getBackground = async (
+    proofOfUsId: string,
+  ): Promise<IProofOfUsData | null> => {
+    const docRef = await get(child(dbRef, `background/${proofOfUsId}`));
+
+    if (!docRef.exists()) return null;
+    return docRef.toJSON() as IProofOfUsData;
+  };
 
   const createProofOfUs = async (
     proofOfUsId: string,
@@ -49,7 +57,7 @@ const ProofOfUsStore = () => {
     const backgroundRef = ref(database, `background/${proofOfUsId}`);
     onValue(backgroundRef, (snapshot) => {
       const data = snapshot.val();
-      setDataCallback(data.background);
+      setDataCallback(data?.background);
     });
   };
 
@@ -158,6 +166,7 @@ const ProofOfUsStore = () => {
     updateMintStatus,
     createProofOfUs,
     getProofOfUs,
+    getBackground,
     addSignee,
     updateSignee,
     removeSignee,

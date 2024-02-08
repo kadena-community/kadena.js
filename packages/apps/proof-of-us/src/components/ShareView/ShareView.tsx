@@ -1,5 +1,6 @@
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { PROOFOFUS_QR_URL } from '@/constants';
+import { useAvatar } from '@/hooks/avatar';
 import { useMintMultiToken } from '@/hooks/data/mintMultiToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { env } from '@/utils/env';
@@ -18,6 +19,7 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
   const { proofOfUs, background } = useProofOfUs();
   const { isLoading, hasError, data, mintToken } = useMintMultiToken();
+  const { uploadBackground } = useAvatar();
 
   const handleBack = () => {
     prev();
@@ -32,11 +34,18 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
     mintToken();
   };
 
+  const handle = () => {
+    if (!proofOfUs) return;
+    uploadBackground(proofOfUs.proofOfUsId);
+  };
+
   if (!proofOfUs) return;
 
   const isReady = proofOfUs.signees[1]?.signerStatus === 'success';
   return (
     <section>
+      <button onClick={handle}>TEST UPLOAD!!</button>
+
       {status === 3 && (
         <>
           <h3>Share</h3>

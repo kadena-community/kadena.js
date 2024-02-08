@@ -12,6 +12,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   const { proofOfUs, background, closeToken } = useProofOfUs();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
+
   const handleShare = () => {
     next();
   };
@@ -32,6 +33,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   return (
     <section>
       <h3>Details</h3>
+
       <button onClick={handleRedo}>redo</button>
       <button onClick={handleClose}>delete</button>
       <img src={background} />
