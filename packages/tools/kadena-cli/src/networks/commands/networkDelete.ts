@@ -15,9 +15,7 @@ export const deleteNetworksCommand: (
   [globalOptions.network(), globalOptions.networkDelete()],
   async (option) => {
     const networkData = await option.network();
-    const deleteNetwork = await option.networkDelete({
-      network: networkData.network,
-    });
+    const deleteNetwork = await option.networkDelete();
 
     debug.log('delete-network:action', {
       ...networkData,
