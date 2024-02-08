@@ -38,6 +38,7 @@ export const DOMAIN: string = 'http://localhost:8080';
 
 export const GAS_STATIONS = {
   DEV_NET: 'c:zWPXcVXoHwkNTzKhMU02u2tzN_yL6V3-XTEH1uJaVY4',
+  TEST_NET: 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA',
 } as const;
 
 export const GAS_STATION = GAS_STATIONS[environment];

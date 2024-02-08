@@ -1,16 +1,24 @@
 import type { ChainId } from '@kadena/client';
-import { createSignWithKeypair } from '@kadena/client';
+import {
+  createSignWithKeypair,
+} from '@kadena/client';
 import { describeModule } from '@kadena/client-utils/built-in';
 import { transfer } from '@kadena/client-utils/coin';
+import { genKeyPair } from '@kadena/cryptography-utils';
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import { Option } from 'commander';
 import debug from 'debug';
 import { z } from 'zod';
 import { FAUCET_MODULE_NAME } from '../../constants/devnets.js';
-import { SENDER_00 } from '../../devnet/faucet/deploy/constants.js';
+import type { IAccount } from '../../devnet/faucet/deploy/constants.js';
+import {
+  GAS_STATIONS,
+  SENDER_00,
+} from '../../devnet/faucet/deploy/constants.js';
 import deployDevNetFaucet from '../../devnet/faucet/deploy/index.js';
 import { networkIsAlive } from '../../devnet/utils/network.js';
+import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 import { loadNetworkConfig } from '../../networks/utils/networkHelpers.js';
 import { actionAskForDeployDevnet } from '../../prompts/genericActionPrompts.js';
 import { networkSelectOnlyPrompt } from '../../prompts/network.js';
@@ -21,16 +29,22 @@ import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { getAccountDetailsForAddAccount } from '../utils/getAccountDetails.js';
 
+const accountByNetWork: { [key: string]: IAccount } = {
+  'fast-development': SENDER_00,
+  development: SENDER_00,
+  testnet04: SENDER_00,
+};
+
+const FAUCET_ACCOUNT = 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA';
+
 export async function fund(config: {
   accountName: string;
   amount: string;
   fungible: string;
-  networkConfig: {
-    networkId: string;
-    networkHost: string;
-  };
+  networkConfig: INetworkCreateOptions;
   chainId: ChainId;
 }): Promise<CommandResult<string>> {
+  const isDevNet = config.networkConfig.networkId === 'fast-development';
   try {
     const isAccountExist = await getAccountDetailsForAddAccount({
       accountName: config.accountName,
@@ -47,26 +61,42 @@ export async function fund(config: {
       };
     }
 
+    const keyPair = genKeyPair();
+
+    const faucetAccount = isDevNet
+      ? accountByNetWork[config.networkConfig.networkId]
+      : {
+          ...keyPair,
+          accountName: GAS_STATIONS.TEST_NET,
+        };
+
+    const gasPayerAccount = isDevNet
+      ? faucetAccount
+      : {
+          accountName: GAS_STATIONS.TEST_NET,
+          publicKey: FAUCET_ACCOUNT,
+        };
+
     const result = await transfer(
       {
         sender: {
-          account: SENDER_00.accountName,
-          publicKeys: [SENDER_00.publicKey],
+          account: faucetAccount.accountName,
+          publicKeys: [faucetAccount.publicKey],
         },
         receiver: config.accountName,
         amount: config.amount,
         chainId: config.chainId,
         contract: config.fungible,
         gasPayer: {
-          account: SENDER_00.accountName,
-          publicKeys: [SENDER_00.publicKey],
+          account: gasPayerAccount.accountName,
+          publicKeys: [gasPayerAccount.publicKey],
         },
       },
       {
         host: config.networkConfig.networkHost,
         sign: createSignWithKeypair({
-          publicKey: SENDER_00.publicKey,
-          secretKey: SENDER_00.secretKey,
+          publicKey: faucetAccount.publicKey,
+          secretKey: faucetAccount.secretKey,
         }),
         defaults: {
           networkId: config.networkConfig.networkId,
@@ -118,7 +148,7 @@ const networkSelect = createOption({
   },
 });
 
-/* bin/kadena-cli.js account fund --account-name="qwqw" --amount="1" --fungible="coin" --network="devnet" --chain-id="1" */
+/* bin/kadena-cli.js account fund --account-name="k:f092d630fececf5c412815bc08831904bf36a5f034e6c99f548026eb447cf01f" --amount="1" --fungible="coin" --network="devnet" --chain-id="1" */
 
 export const createFundCommand: (program: Command, version: string) => void =
   createCommand(
@@ -134,15 +164,6 @@ export const createFundCommand: (program: Command, version: string) => void =
     async (config) => {
       debug('account-fund:action')({ config });
 
-      if (!(await networkIsAlive(config.networkConfig.networkHost))) {
-        console.log(
-          chalk.red(
-            `\nHost "${config.networkConfig.networkHost}" is not running.\n`,
-          ),
-        );
-        return;
-      }
-
       if (config.networkConfig.networkId === 'mainnet01') {
         console.log(
           chalk.red(
@@ -153,6 +174,15 @@ export const createFundCommand: (program: Command, version: string) => void =
       }
 
       if (config.networkConfig.networkId === 'fast-development') {
+        if (!(await networkIsAlive(config.networkConfig.networkHost))) {
+          console.log(
+            chalk.red(
+              `\nHost "${config.networkConfig.networkHost}" is not running.\n`,
+            ),
+          );
+          return;
+        }
+
         const hasModuleAvailable = await describeModule(FAUCET_MODULE_NAME, {
           host: config.networkConfig.networkHost,
           defaults: {
