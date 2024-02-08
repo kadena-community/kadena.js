@@ -8,11 +8,11 @@ order: 1
 layout: full
 
 ---
-# Conventional auction
+# Conventional auction contract
 
 This page outlines the Conventional Auction Contract designed for blockchain-based auction systems. It provides a comprehensive guide to its features, components, and usage.
 
-**Features of Conventional Auction**
+## Features
 
 - **Auction Management**: Set up and manage conventional auctions with start and end dates, and reserve prices.
 - **Bid Handling**: Facilitate the placement and management of bids.
@@ -21,6 +21,7 @@ This page outlines the Conventional Auction Contract designed for blockchain-bas
 - **Auction Finalization**: Rules for concluding the auction and determining the winning bid.
 
 ## Technical specifications
+
 The following sections provide reference information for writing a smart contract to conduct a conventional auction using Marmalade on the Kadena network.
 
 ### Capabilities
