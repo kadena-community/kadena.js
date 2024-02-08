@@ -21,8 +21,8 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   const handleRedo = () => {
     prev();
   };
-  const handleClose = () => {
-    closeToken({ proofOfUsId: proofOfUs.proofOfUsId });
+  const handleClose = async () => {
+    await closeToken({ proofOfUsId: proofOfUs.proofOfUsId });
     setIsMounted(false);
     router.replace('/user');
   };

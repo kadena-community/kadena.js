@@ -1,24 +1,10 @@
 'use client';
 import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import { useAccount } from '@/hooks/account';
-import { useSocket } from '@/hooks/socket';
-import { useParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
-import { useEffect } from 'react';
 
 const ScanLayout: FC<PropsWithChildren> = ({ children }) => {
   const { account, isMounted, login } = useAccount();
-  const { connect } = useSocket();
-  const { id: proofOfUsId } = useParams();
-
-  useEffect(() => {
-    if (!proofOfUsId) return;
-    connect({ proofOfUsId: `${proofOfUsId}`, initiator: false });
-
-    // return () => {
-    //   disconnect({ proofOfUsId: `${proofOfUsId}` });
-    // };
-  }, [proofOfUsId]);
 
   if (!isMounted) return null;
   return (

@@ -1,9 +1,6 @@
 import { store } from '@/utils/socket/store';
-import { useSocket } from './socket';
 
 export const useAvatar = () => {
-  const { socket } = useSocket();
-
   const addBackground = async (
     proofOfUs: IProofOfUsData,
     bg: IProofOfUsBackground,
@@ -13,11 +10,7 @@ export const useAvatar = () => {
   };
 
   const uploadBackground = async (proofOfUsId: string) => {
-    socket?.emit('uploadBackground', {
-      to: proofOfUsId,
-    });
-
-    socket?.on('uploadBackgroundStatus', console.log);
+    //TODO upload
   };
 
   return {

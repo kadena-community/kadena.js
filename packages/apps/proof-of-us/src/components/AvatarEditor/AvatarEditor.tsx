@@ -4,7 +4,6 @@ import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import classnames from 'classnames';
 import { fabric } from 'fabric';
 import type { Canvas } from 'fabric/fabric-impl';
-import { useParams } from 'next/navigation';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -20,7 +19,6 @@ interface IProps {
 }
 
 export const AvatarEditor: FC<IProps> = ({ next }) => {
-  const { id: proofOfUsId } = useParams();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricRef = useRef<Canvas | null>(null);

@@ -1,25 +1,12 @@
 'use client';
 import { useAccount } from '@/hooks/account';
-import { useSocket } from '@/hooks/socket';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { useEffect } from 'react';
 
 const UserLayout: FC<PropsWithChildren> = ({ children }) => {
   const { account, isMounted, login } = useAccount();
   const router = useRouter();
-
-  const { connect } = useSocket();
-  const { id: proofOfUsId } = useParams();
-
-  useEffect(() => {
-    if (!proofOfUsId) return;
-    connect({ proofOfUsId: `${proofOfUsId}`, initiator: true });
-
-    // return () => {
-    //   disconnect({ proofOfUsId: `${proofOfUsId}` });
-    // };
-  }, [proofOfUsId]);
 
   useEffect(() => {
     if (!account && isMounted) {
