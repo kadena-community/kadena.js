@@ -26,7 +26,7 @@ export const manageNetworksCommand: (
   ],
   async (option) => {
     const networkData = await option.network();
-    const networkName = await option.networkName({ name: networkData.network });
+    const networkName = await option.networkName();
     const networkId = await option.networkId();
     const networkHost = await option.networkHost();
     const networkExplorerUrl = await option.networkExplorerUrl();

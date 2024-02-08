@@ -25,9 +25,7 @@ export const networkNamePrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  console.log('previousQuestions', previousQuestions);
-  console.log('args: ', args);
-  const defaultValue = args.defaultValue as string;
+  const defaultValue = (previousQuestions.network as string) || undefined;
   return await input({
     message: 'Enter a network name (e.g. "mainnet")',
     default: defaultValue,
@@ -171,7 +169,7 @@ export const networkDeletePrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  if (args.defaultValue === undefined) {
+  if (previousQuestions.network === undefined) {
     throw new Error('Network name is required for the delete prompt.');
   }
   const message = `Are you sure you want to delete the configuration for network "${args.defaultValue}"?`;
