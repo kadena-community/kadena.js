@@ -4,7 +4,7 @@ import { createAddAccountFromWalletCommand } from './commands/accountAddFromWall
 import { createAddAccountManualCommand } from './commands/accountAddManual.js';
 import { createAccountCommand } from './commands/accountCreate.js';
 import { createAccountDetailsCommand } from './commands/accountDetails.js';
-import { fundCommand } from './commands/accountFund.js';
+import { createFundCommand } from './commands/accountFund.js';
 import { resolveAddressToNameCommand } from './commands/accountResolveAddressToName.js';
 import { resolveNameToAddressCommand } from './commands/accountResolveNameToAddress.js';
 import { transferCreateCommand } from './commands/accountTransferCreate.js';
@@ -19,8 +19,8 @@ export function accountCommandFactory(program: Command, version: string): void {
   createAddAccountManualCommand(accountProgram, version);
   createAddAccountFromWalletCommand(accountProgram, version);
   createAccountCommand(accountProgram, version);
-  fundCommand(accountProgram, version);
   createAccountDetailsCommand(accountProgram, version);
+  createFundCommand(accountProgram, version);
   transferCreateCommand(accountProgram, version);
   resolveNameToAddressCommand(accountProgram, version);
   resolveAddressToNameCommand(accountProgram, version);
