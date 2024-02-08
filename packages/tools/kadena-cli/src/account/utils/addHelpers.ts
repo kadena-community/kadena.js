@@ -9,7 +9,7 @@ import { services } from '../../services/index.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 import type { IAccountDetailsResult, IAddAccountConfig } from '../types.js';
 
-export const isEmpty = (value?: string): boolean =>
+export const isEmpty = (value?: string | null): boolean =>
   value === undefined || value === '' || value === null;
 
 export const getUpdatedConfig = (

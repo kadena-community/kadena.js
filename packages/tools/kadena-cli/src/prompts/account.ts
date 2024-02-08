@@ -1,7 +1,7 @@
 import { getAllAccountNames } from '../account/utils/accountHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
-import { input, select } from '../utils/prompts.js';
 import { truncateText } from '../utils/helpers.js';
+import { input, select } from '../utils/prompts.js';
 
 export const publicKeysPrompt: IPrompt<string> = async (
   previousQuestions,
