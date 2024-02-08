@@ -58,7 +58,6 @@ interface IDeployMarmaladeInput {
  */
 export const deployMarmalade = async ({
   sender = defaultAccount,
-  /* Chains where marmalade will be deployed* */
   chainIds = [defaultChainId],
   localConfig = defaultLocalConfig,
   remoteConfig = defaultRemoteConfig,
