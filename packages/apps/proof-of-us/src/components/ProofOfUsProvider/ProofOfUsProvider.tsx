@@ -28,11 +28,10 @@ export interface IProofOfUsContext {
   }) => Promise<void>;
   createToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
   changeTitle: (value: string) => Promise<void>;
-  addSocial: (value: ISocial) => Promise<void>;
-  removeSocial: (value: ISocial) => Promise<void>;
   isConnected: () => boolean;
   isInitiator: () => boolean;
   getSigneeAccount: (account: IAccount) => IProofOfUsSignee;
+  updateSigner: (value: any) => Promise<void>;
 }
 
 export const ProofOfUsContext = createContext<IProofOfUsContext>({
@@ -45,10 +44,9 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   removeSignee: async () => {},
   createToken: async () => {},
   changeTitle: async () => {},
-  addSocial: async () => {},
-  removeSocial: async () => {},
   isConnected: () => false,
   isInitiator: () => false,
+  updateSigner: async () => {},
   getSigneeAccount: (account: IAccount) => {
     return {
       cid: account.cid,
@@ -88,11 +86,9 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const updateSigneeStatus = async (status: ISignerStatus) => {
     if (!account || !proofOfUs) return;
 
-    const signer = proofOfUs.signees.find((c) => c.cid === account.cid);
-
     await store.updateSignee(
       proofOfUs.proofOfUsId,
-      signer ? signer : getSigneeAccount(account),
+      getSigneeAccount(account, proofOfUs),
       status,
     );
   };
@@ -100,7 +96,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const addSignee = async () => {
     if (!account || !proofOfUs) return;
 
-    await store.addSignee(proofOfUs, getSigneeAccount(account));
+    await store.addSignee(proofOfUs, getSigneeAccount(account, proofOfUs));
   };
 
   const removeSignee = async ({
@@ -116,23 +112,9 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const createToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
     if (!account) return;
-
-    await store.createProofOfUs(proofOfUsId, getSigneeAccount(account));
-  };
-
-  const addSocial = async (value: ISocial) => {
-    if (!account || !proofOfUs) return;
-
-    await store.addSocialToSignee(proofOfUs, getSigneeAccount(account), value);
-  };
-
-  const removeSocial = async (value: ISocial) => {
-    if (!account || !proofOfUs) return;
-
-    await store.removeSocialFromSignee(
-      proofOfUs,
-      getSigneeAccount(account),
-      value,
+    await store.createProofOfUs(
+      proofOfUsId,
+      getSigneeAccount(account, proofOfUs),
     );
   };
 
@@ -140,6 +122,15 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!proofOfUs) return;
 
     await store.addTitle(proofOfUs, value);
+  };
+
+  const updateSigner = async (value: any) => {
+    if (!proofOfUs || !account) return;
+    await store.updateSigner(
+      proofOfUs,
+      getSigneeAccount(account, proofOfUs),
+      value,
+    );
   };
 
   const isConnected = () => {
@@ -159,8 +150,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         updateSigneeStatus,
         removeSignee,
         createToken,
-        addSocial,
-        removeSocial,
         isConnected,
         isInitiator,
         getSigneeAccount,
@@ -168,6 +157,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         proofOfUs,
         updateStatus,
         changeTitle,
+        updateSigner,
       }}
     >
       {children}

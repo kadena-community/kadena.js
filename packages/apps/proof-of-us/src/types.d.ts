@@ -75,12 +75,15 @@ type ISignerStatus = 'init' | 'signing' | 'success' | 'error';
 
 type ISocial = string;
 
+interface ISigneePosition {
+  xPercentage: number;
+  yPercentage: number;
+}
+
 type IProofOfUsSignee = Pick<IAccount, 'displayName' | 'publicKey' | 'cid'> & {
+  label?: string;
   signerStatus: ISignerStatus;
   initiator: boolean;
   socialLinks?: ISocial[];
-  position?: {
-    x: number;
-    y: number;
-  };
+  position?: ISigneePosition;
 };

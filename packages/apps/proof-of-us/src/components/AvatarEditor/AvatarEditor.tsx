@@ -51,6 +51,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   const handleCapture = async (evt: MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();
+
     if (!videoRef.current) return;
 
     const canvas = document.createElement('canvas');

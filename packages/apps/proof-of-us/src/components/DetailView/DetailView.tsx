@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
+import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { SocialsEditor } from '../SocialsEditor/SocialsEditor';
 
 interface IProps {
@@ -11,7 +12,7 @@ interface IProps {
   prev: () => void;
 }
 export const DetailView: FC<IProps> = ({ next, prev }) => {
-  const { proofOfUs, background, closeToken, changeTitle } = useProofOfUs();
+  const { proofOfUs, closeToken, changeTitle } = useProofOfUs();
   const { removeBackground } = useAvatar();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
@@ -49,13 +50,15 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
       <button onClick={handleClose}>delete</button>
       <input
         name="title"
+        placeholder="title"
         onChange={handleTitleChange}
         defaultValue={proofOfUs.title}
       />
 
       <SocialsEditor />
 
-      <img src={background} />
+      <ImagePositions />
+
       <button onClick={handleShare}>Share</button>
     </section>
   );

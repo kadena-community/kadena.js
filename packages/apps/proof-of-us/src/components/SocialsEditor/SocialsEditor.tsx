@@ -1,25 +1,38 @@
 import { useAccount } from '@/hooks/account';
 import { useProofOfUs } from '@/hooks/proofOfUs';
+import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import type { FC, FormEventHandler } from 'react';
 import { useRef } from 'react';
 
 export const SocialsEditor: FC = () => {
-  const { proofOfUs, addSocial, removeSocial } = useProofOfUs();
+  const { proofOfUs, updateSigner } = useProofOfUs();
   const { account } = useAccount();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  if (!proofOfUs || !account) return null;
+  if (!proofOfUs || !account || isAlreadySigning(proofOfUs.signees))
+    return null;
 
   const signer = proofOfUs.signees.find((c) => c.cid === account.cid);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    if (!inputRef.current) return;
-    addSocial(inputRef.current.value);
+    if (!inputRef.current || !signer) return;
+
+    const socials = signer.socialLinks ?? [];
+    const newSigner = {
+      ...signer,
+      socialLinks: [...socials, inputRef.current.value],
+    };
+    updateSigner(newSigner);
     inputRef.current.value = '';
   };
   const handleDelete = (link: ISocial) => {
-    removeSocial(link);
+    if (!signer) return;
+
+    const socials = signer.socialLinks?.filter((l) => l !== link) ?? [];
+    const newSigner = { ...signer, socialLinks: [...socials] };
+
+    updateSigner(newSigner);
   };
 
   return (

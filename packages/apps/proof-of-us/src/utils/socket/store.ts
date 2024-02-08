@@ -136,8 +136,6 @@ const ProofOfUsStore = () => {
       return s;
     });
 
-    console.log({ newList });
-
     await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
       signees: newList,
     });
@@ -169,42 +167,23 @@ const ProofOfUsStore = () => {
   };
 
   const addTitle = async (proofOfUs: IProofOfUsData, value: string) => {
+    if (isAlreadySigning(proofOfUs.signees)) return;
+
     await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
       title: value,
     });
   };
 
-  const addSocialToSignee = async (
+  const updateSigner = async (
     proofOfUs: IProofOfUsData,
     account: IProofOfUsSignee,
-    value: ISocial,
+    value: any,
   ) => {
     if (isAlreadySigning(proofOfUs.signees)) return;
 
     const newList = proofOfUs.signees.map((a) => {
       if (a.cid === account.cid) {
-        const socials = a.socialLinks ?? [];
-        return { ...a, socialLinks: [...socials, value] };
-      }
-      return a;
-    });
-
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      signees: newList,
-    });
-  };
-
-  const removeSocialFromSignee = async (
-    proofOfUs: IProofOfUsData,
-    account: IProofOfUsSignee,
-    value: ISocial,
-  ) => {
-    if (isAlreadySigning(proofOfUs.signees)) return;
-
-    const newList = proofOfUs.signees.map((a) => {
-      if (a.cid === account.cid) {
-        const socials = a.socialLinks?.filter((l) => l !== value) ?? [];
-        return { ...a, socialLinks: [...socials] };
+        return { ...a, ...value };
       }
       return a;
     });
@@ -229,8 +208,7 @@ const ProofOfUsStore = () => {
     listenProofOfUsData,
     listenProofOfUsBackgroundData,
     addTitle,
-    addSocialToSignee,
-    removeSocialFromSignee,
+    updateSigner,
   };
 };
 

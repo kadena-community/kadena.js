@@ -1,3 +1,4 @@
+import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { SocialsEditor } from '@/components/SocialsEditor/SocialsEditor';
 import { useSignToken } from '@/hooks/data/signToken';
@@ -9,7 +10,7 @@ interface IProps {
   background: IProofOfUsBackground;
 }
 
-export const Multi: FC<IProps> = ({ proofOfUs, background }) => {
+export const Multi: FC<IProps> = ({ proofOfUs }) => {
   const { signToken, isLoading, hasError } = useSignToken();
 
   const handleJoin = async () => {
@@ -23,7 +24,7 @@ export const Multi: FC<IProps> = ({ proofOfUs, background }) => {
       <section>
         <h3>{proofOfUs.title}</h3>
         <SocialsEditor />
-        <img src={background} alt="our image" />
+        <ImagePositions />
         <div>status: {proofOfUs?.mintStatus}</div>
         <ListSignees />
         {!isAlreadySigning(proofOfUs.signees) && (
