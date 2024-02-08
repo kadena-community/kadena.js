@@ -26,7 +26,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   const fabricRef = useRef<Canvas | null>(null);
 
   const [isMounted, setIsMounted] = useState(false);
-  const { setBackgroundSocket } = useAvatar();
+  const { addBackground } = useAvatar();
   const canvasElm = canvasRef.current;
   const { proofOfUs, background } = useProofOfUs();
 
@@ -89,7 +89,8 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
       fabricRef.current?.requestRenderAll();
     });
 
-    await setBackgroundSocket(proofOfUsId.toString(), canvas.toDataURL());
+    if (!proofOfUs) return;
+    await addBackground(proofOfUs, canvas.toDataURL());
     (videoRef.current?.srcObject as MediaStream)
       ?.getTracks()
       .forEach((t) => t.stop());

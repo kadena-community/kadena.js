@@ -44,15 +44,15 @@ const Page: FC<IProps> = ({ params }) => {
     createToken({ proofOfUsId: params.id });
   }, [socket, params.id]);
 
-  const next = () => {
+  const next = async () => {
     const newStatus = (status + 1) as IBuildStatusValues;
     setStatus(newStatus);
-    updateStatus({ proofOfUsId: params.id, status: newStatus });
+    await updateStatus({ proofOfUsId: params.id, status: newStatus });
   };
-  const prev = () => {
+  const prev = async () => {
     const newStatus = (status - 1) as IBuildStatusValues;
     setStatus(newStatus);
-    updateStatus({ proofOfUsId: params.id, status: newStatus });
+    await updateStatus({ proofOfUsId: params.id, status: newStatus });
   };
 
   const handleClick = () => {

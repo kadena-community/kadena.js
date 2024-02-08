@@ -1,41 +1,79 @@
 import { BUILDSTATUS } from '@/constants';
+import { child, get, onValue, ref, set } from 'firebase/database';
+import { Dispatch, SetStateAction } from 'react';
+import { database, dbRef } from '../firebase';
 import { isAlreadySigning } from '../isAlreadySigning';
 
 const ProofOfUsStore = () => {
   const store: Record<string, IProofOfUs> = {};
 
-  const createProofOfUs = (proofOfUsId: string, account: IProofOfUsSignee) => {
-    if (store[proofOfUsId]) return;
-    store[proofOfUsId] = {
-      background: '',
-      data: {
-        status: BUILDSTATUS.INIT,
-        mintStatus: 'init',
-        proofOfUsId,
-        type: 'multi',
-        date: Date.now(),
-        signees: [{ ...account, signerStatus: 'init', initiator: true }],
-      },
-    };
-  };
-
-  const getProofOfUs = (proofOfUsId: string) => {
-    if (!store[proofOfUsId]) return null;
-    return store[proofOfUsId].data;
-  };
-
-  const addBackground = (
+  const createProofOfUs = async (
     proofOfUsId: string,
+    account: IProofOfUsSignee,
+  ) => {
+    const proofOfUs = await getProofOfUs(proofOfUsId);
+    if (proofOfUs) return;
+
+    await set(ref(database, `data/${proofOfUsId}`), {
+      status: BUILDSTATUS.INIT,
+      mintStatus: 'init',
+      proofOfUsId,
+      type: 'multi',
+      date: Date.now(),
+      signees: [{ ...account, signerStatus: 'init', initiator: true }],
+    });
+  };
+
+  const getProofOfUs = async (
+    proofOfUsId: string,
+  ): Promise<IProofOfUsData | null> => {
+    const docRef = await get(child(dbRef, `data/${proofOfUsId}`));
+
+    if (!docRef.exists()) return null;
+    return docRef.toJSON() as IProofOfUsData;
+  };
+
+  const listenProofOfUsData = (
+    proofOfUsId: string,
+    setDataCallback: Dispatch<SetStateAction<IProofOfUsData | undefined>>,
+  ) => {
+    const proofOfUsRef = ref(database, `data/${proofOfUsId}`);
+    onValue(proofOfUsRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log('DATA', data);
+      setDataCallback(data);
+    });
+  };
+
+  const listenProofOfUsBackgroundData = (
+    proofOfUsId: string,
+    setDataCallback: Dispatch<SetStateAction<IProofOfUsBackground>>,
+  ) => {
+    const backgroundRef = ref(database, `background/${proofOfUsId}`);
+    onValue(backgroundRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log('DATA', data);
+      setDataCallback(data.background);
+    });
+  };
+
+  const addBackground = async (
+    proofOfUs: IProofOfUsData,
     background: IProofOfUsBackground,
   ) => {
     //check if there are people already signing. it is not possible to set the background
-    if (isAlreadySigning(store[proofOfUsId].data.signees)) return;
-
-    store[proofOfUsId].background = background;
+    //TODO FIX THIS CHECK
+    if (isAlreadySigning(proofOfUs.signees)) return;
+    await set(ref(database, `background/${proofOfUs.proofOfUsId}`), {
+      background,
+    });
   };
 
-  const updateStatus = (proofOfUsId: string, status: IBuildStatusValues) => {
-    store[proofOfUsId].data.status = status;
+  const updateStatus = async (
+    proofOfUsId: string,
+    status: IBuildStatusValues,
+  ) => {
+    await set(ref(database, `data/${proofOfUsId}./status`), status);
   };
 
   const getBackground = (proofOfUsId: string) => {
@@ -106,6 +144,8 @@ const ProofOfUsStore = () => {
     addBackground,
     closeToken,
     updateStatus,
+    listenProofOfUsData,
+    listenProofOfUsBackgroundData,
   };
 };
 

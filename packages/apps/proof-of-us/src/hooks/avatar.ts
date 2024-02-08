@@ -1,15 +1,15 @@
+import { store } from '@/utils/socket/store';
 import { useSocket } from './socket';
 
 export const useAvatar = () => {
   const { socket } = useSocket();
 
-  const setBackgroundSocket = async (proofOfUsId: string, bg: string) => {
-    socket?.emit('setBackground', {
-      content: {
-        bg,
-      },
-      to: proofOfUsId,
-    });
+  const addBackground = async (
+    proofOfUs: IProofOfUsData,
+    bg: IProofOfUsBackground,
+  ) => {
+    if (!proofOfUs) return;
+    await store.addBackground(proofOfUs, bg);
   };
 
   const uploadBackground = async (proofOfUsId: string) => {
@@ -21,7 +21,7 @@ export const useAvatar = () => {
   };
 
   return {
-    setBackgroundSocket,
+    addBackground,
     uploadBackground,
   };
 };

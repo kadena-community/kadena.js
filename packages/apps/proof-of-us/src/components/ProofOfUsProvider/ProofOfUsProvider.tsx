@@ -1,6 +1,9 @@
 'use client';
 import { useAccount } from '@/hooks/account';
 import { useSocket } from '@/hooks/socket';
+import { database } from '@/utils/firebase';
+import { store } from '@/utils/socket/store';
+import { child, get, ref } from 'firebase/database';
 import { useParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
@@ -81,14 +84,8 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [proofOfUs]);
 
   useEffect(() => {
-    if (!socket) return;
-    socket.on('getProofOfUs', setContent);
-    socket.on('getProofOfUsBackground', setContentBackground);
-
-    return () => {
-      socket.off('getProofOfUs');
-      socket.off('getProofOfUsBackground');
-    };
+    store.listenProofOfUsData(`${params.id}`, setProofOfUs);
+    store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
   }, []);
 
   const updateStatus = async ({
@@ -156,11 +153,15 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const createToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
     if (!account || !peer()) return;
+    console.log(11112312313);
 
-    // const proofOfus = store.createProofOfUs(
-    //   proofOfUsId,
-    //   getSigneeAccount(account),
-    // );
+    const proofOfus = await store.createProofOfUs(
+      proofOfUsId,
+      getSigneeAccount(account),
+    );
+
+    console.log(22, proofOfus);
+
     // peer.conn?.send({ proofOfus });
 
     // socket?.emit('createToken', {
