@@ -33,17 +33,17 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   }, []);
 
   useEffect(() => {
-    if (!videoRef.current) return;
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!videoRef.current || !isMounted) return;
 
     navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
       if (!videoRef.current) return;
       videoRef.current.srcObject = stream;
-
-      setTimeout(() => {
-        setIsMounted(true);
-      }, 200);
     });
-  }, []);
+  }, [isMounted]);
 
   useEffect(() => {
     if (!canvasElm) return;
@@ -73,7 +73,6 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   return (
     <section className={wrapperClass}>
       {!isMounted && <div>loading</div>}
-
       <canvas ref={canvasRef} />
       <div
         className={classnames(

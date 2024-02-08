@@ -21,7 +21,7 @@ const Page: FC<IProps> = ({ params }) => {
   const { createToken, proofOfUs, background, updateStatus } = useProofOfUs();
   const [isMounted, setIsMounted] = useState(false);
 
-  const [status, setStatus] = useState<IBuildStatusValues>(1);
+  const [status, setStatus] = useState<IBuildStatusValues>(0);
 
   useEffect(() => {
     //init and check in what step you are
