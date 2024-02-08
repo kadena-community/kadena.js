@@ -58,8 +58,9 @@ under `pact/sale-contracts`. Just create a pull request and we will review your
 sale contract and take care of deployment and whitelisting it in the Policy
 Manager.
 
-Marmalade V2 provides 2 useful sale contracts, which lets token owners easily
-create auctions of their choice: [`conventional-auction`](https://docs.kadena.io/marmalade/auctions/conventional-auction) and [`dutch-auction`](https://docs.kadena.io/marmalade/auctions/dutch-auction). 
+With Marmalade, you can write smart contracts for two different types of auctions, depending on how to want to handle the mechanics of the starting price and bidding:
+- In a [conventional-auction](https://docs.kadena.io/marmalade/auctions#conventional-auction), you set the minimum price and a set period of time for bidding to take place with the ability to cancel the auction if no bids exceed the minimum price.
+- In a [dutch-auction](https://docs.kadena.io/marmalade/auctions#dutch-auction), you set an initial price above the expected market value and gradually reduce the price over a predetermined period of time. 
 
 
 ## Using a Sale Contract
