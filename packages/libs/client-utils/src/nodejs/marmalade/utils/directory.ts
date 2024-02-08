@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync } from 'fs';
 import { clearDir } from '../../services/path';
-import { ILocalConfig } from '../deployment/config';
+import type { ILocalConfig } from '../deployment/config';
 
 export function handleDirectorySetup(
   templateDestinationPath: string,

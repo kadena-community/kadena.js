@@ -48,6 +48,32 @@ interface IDeployConfig {
   clientConfig: IClientConfig;
 }
 
+/**
+ * Deploy marmalade templates or code files to the chain
+ * @alpha
+ * @param chainIds - The chain ids where the template / code files will be deployed
+ * @param templateConfig - The template configuration for the deployment (the namespace and sort functions can be used to define the order and the namespace used for the deployment)
+ * @param codeFileConfig - The code file configuration for the deployment (the transaction body generator function can be used to define the transaction body for each code file)
+ * @param clientConfig - The client configuration for the deployment
+ * @throws - If no template or code files are provided
+ * @example
+ * ```typescript
+ * await deployFromDirectory({
+ *    chainIds: [chainId],
+ *    templateConfig: {
+ *      path: 'path',
+ *      extension: 'yaml',
+ *      sort: () => 1,
+ *      namespaceExtractor: () => 'namespace',
+ *      deploymentArguments: {
+ *        chain: chainId,
+ *      },
+ *    },
+ *    clientConfig,
+ * });
+ * ```
+ *
+ */
 export const deployFromDirectory = async ({
   chainIds,
   templateConfig,

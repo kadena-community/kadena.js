@@ -50,6 +50,39 @@ export const createPactCommand = (inputs: IDeployContractInput) => {
   return transactionBuilder.getCommand();
 };
 
+/**
+ * Deploy contract to the chain
+ * @alpha
+ * @param inputs - The inputs for the deployment
+ * @param config - The client configuration for the deployment
+ * @example
+ * ```typescript
+ * import { deployContract } from '@kadena/client-utils';
+ *
+ * const contractCode = `(coin.transfer "sender" "receiver" 100)`
+ *
+ * const transactionBody = {
+ *    chainId: '0',
+ *    networkId: 'network',
+ *    signers: [' sender'],
+ *    meta: {
+ *      gasLimit: 800,
+ *      chainId: '0',
+ *      ttl: 10000,
+ *      senderAccount: 'senderAccount',
+ *    },
+ * };
+ *
+ * deployContract(
+ *  {
+ *    contractCode,
+ *    transactionBody,
+ *  },
+ *  clientConfig,
+ * );
+ * ```
+ * @returns The result of the deployment
+ */
 export const deployContract = (
   inputs: IDeployContractInput,
   config: IClientConfig,

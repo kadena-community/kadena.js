@@ -1,7 +1,7 @@
 import { createSignWithKeypair } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 import type { IAccount, IClientConfig } from '../../../core/utils/helpers';
-import {
+import type {
   ILocalConfig,
   INamespaceConfig,
   IRemoteConfig,
