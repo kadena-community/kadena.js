@@ -1,15 +1,18 @@
 import { useLedgerTransport } from '@/context';
 import AppKda from '@ledgerhq/hw-app-kda';
+import { useEffect, useState } from 'react';
 
 const useLedgerApp = () => {
   const { transport } = useLedgerTransport();
-  console.log('useLedgerApp', transport);
+  const [app, setApp] = useState<AppKda | null>(null);
 
-  if (transport !== null) {
-    return new AppKda(transport);
-  }
+  useEffect(() => {
+    if (transport !== null) {
+      setApp(new AppKda(transport));
+    }
+  }, [transport]);
 
-  return null;
+  return app;
 };
 
 export default useLedgerApp;
