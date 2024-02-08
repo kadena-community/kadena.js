@@ -2,6 +2,7 @@ import clear from 'clear';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
 import sanitize from 'sanitize-filename';
+import { MAX_CHARACTERS_LENGTH } from '../constants/config.js';
 import { defaultDevnetsPath } from '../constants/devnets.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
@@ -305,3 +306,8 @@ export function clearCLI(full: boolean = false): void {
 export const notEmpty = <TValue>(
   value: TValue | null | undefined,
 ): value is TValue => value !== null && value !== undefined;
+
+export const truncateText = (str: string): string =>
+  str.length > MAX_CHARACTERS_LENGTH
+    ? `${str.substring(0, MAX_CHARACTERS_LENGTH)}...`
+    : str;
