@@ -1,3 +1,4 @@
+import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useRouter } from 'next/navigation';
 
@@ -10,6 +11,7 @@ interface IProps {
 }
 export const DetailView: FC<IProps> = ({ next, prev }) => {
   const { proofOfUs, background, closeToken } = useProofOfUs();
+  const { removeBackground } = useAvatar();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
 
@@ -19,7 +21,9 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
 
   if (!proofOfUs) return null;
 
-  const handleRedo = () => {
+  const handleRedo = async () => {
+    if (!proofOfUs) return;
+    await removeBackground(proofOfUs);
     prev();
   };
   const handleClose = async () => {

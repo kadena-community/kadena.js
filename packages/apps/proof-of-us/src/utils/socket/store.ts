@@ -72,6 +72,12 @@ const ProofOfUsStore = () => {
     });
   };
 
+  const removeBackground = async (proofOfUs: IProofOfUsData) => {
+    //check if there are people already signing. it is not possible to set the background
+    if (isAlreadySigning(proofOfUs.signees)) return;
+    await set(ref(database, `background/${proofOfUs.proofOfUsId}`), null);
+  };
+
   const updateStatus = async (
     proofOfUsId: string,
     status: IBuildStatusValues,
@@ -171,6 +177,7 @@ const ProofOfUsStore = () => {
     updateSignee,
     removeSignee,
     addBackground,
+    removeBackground,
     closeToken,
     updateStatus,
     listenProofOfUsData,

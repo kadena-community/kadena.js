@@ -63,7 +63,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     store.listenProofOfUsData(`${params.id}`, setProofOfUs);
     store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
-  }, []);
+  }, [setProofOfUs, setBackground, params.id]);
 
   const updateStatus = async ({
     proofOfUsId,
