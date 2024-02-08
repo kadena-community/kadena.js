@@ -1,4 +1,3 @@
-import { database } from '@/utils/firebase';
 import { store } from '@/utils/socket/store';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
