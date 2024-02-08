@@ -22,7 +22,7 @@ export default async function handler(
 
   if (!background) {
     return res.status(404).json({
-      message: 'background not found',
+      message: 'background not found!',
     });
   }
 
