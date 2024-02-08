@@ -9,7 +9,7 @@ layout: full
 tags: [pact, typescript, account, transactions, utils]
 ---
 
-# Quick start
+# Deploy your first contract
 
 This *Quick start* introduces a few basic steps for working with Kadena.
 It provides a simplified entry point for anyone interested in trying out or building on Kadena, with step-by-step instructions to guide you on your journey.

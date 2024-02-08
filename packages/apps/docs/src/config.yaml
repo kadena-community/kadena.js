@@ -27,15 +27,12 @@ pages:
       consensus:
         url: /consensus
         file: /learn/consensus.md
-<<<<<<< HEAD
-      chainweb:
-        url: /chainweb
-        file: /learn/chainweb-simplified.md
-=======
       cryptography:
         url: /cryptography
         file: /learn/cryptography.md
->>>>>>> 010334a68 (wip-structure)
+      chainweb:
+        url: /chainweb
+        file: /learn/chainweb-simplified.md
       accounts:
         url: /accounts
         file: /learn/accounts-keys.md
@@ -190,15 +187,7 @@ pages:
             url: /add-vote-management
             file: /build/election-app/add-vote-management.md
           gasstation:
-<<<<<<< HEAD
-<<<<<<< HEAD
             url: /add-a-gas-station
-=======
-            url: /gas-station
->>>>>>> 19639c955 (fix names of files to build)
-=======
-            url: /add-a-gas-station
->>>>>>> 1fa693bd8 (election workshop in the new structure)
             file: /build/election-app/add-a-gas-station.md
       faucet:
         url: /faucet

@@ -158,8 +158,6 @@ Participation in these programs offers several perks, including:
 submitted by individuals that are long serving members of our Discord or
 Telegram communities and/or their prior contributions to those communities.
 
-​
-
 **When should I hear back about my application?**
 
 We expect to approve applications to be an Ambassador no later than a week after
@@ -177,8 +175,6 @@ month will be based on the market value of the KDA Tokens within not more than
 \[48] hours of transfer of the KDA to you. Kadena will determine the market
 value in good faith judgment and we expect to establish that value by reference
 to [https://messari.io/asset/kadena.](https://messari.io/asset/kadena)
-
-​
 
 **When and how will I get paid?**
 
