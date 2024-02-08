@@ -1,7 +1,7 @@
 ---
-title: "Workshop: Build a Faucet application"
-description: "Workshop: Build a Faucet application"
-menu: "Workshop: Faucet application"
+title: "Workshop: Faucet application"
+description: Learn how to write a faucet application using the Pact smart contract language.
+menu: Build
 label: "Workshop: Faucet application"
 order: 4
 layout: full

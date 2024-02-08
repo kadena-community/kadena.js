@@ -1,21 +1,39 @@
 ---
-title: Pact functions
+title: Pact language reference
 description:
-  This document is a reference for the Pact smart-contract language, designed
+  This document is a reference for the Pact smart contract language, designed
   for correct, transactional execution on a high-performance blockchain.
-menu: Pact functions
-label: Pact functions
-order: 1
+menu: "Language reference"
+label: "Language reference"
+order: 2
 layout: full
 tags: ['pact', 'language reference']
 ---
 
-# Pact built-in functions
+# Pact language reference
 
-Pact is a smart contract programming language, specifically designed for
-correct, transactional execution on the [Kadena high-performance blockchain](http://kadena.io). 
-For more information about the design of the Pact, see
-the [Pact white paper](/kadena) or the [pact home page](http://kadena.io/#pactModal).
+Pact is a smart contract programming language, specifically designed for correct, transactional execution on the [Kadena high-performance blockchain](http://kadena.io).
+
+The language reference covers the following topics:
+- [Concepts](/reference/pact/concepts)
+- [Syntax and keywords](/reference/pact/syntax)
+- [General purpose functions](/reference/pact/general-functions)
+- [Database functions](/reference/pact/general-functions)
+- [Time functions](/reference/pact/functions/time)
+- [Operators](/reference/pact/functions/operators)
+- [Keysets](/reference/pact//functions/keysets)
+- [Capabilities](/reference/pact//functions/capabilities)
+- [Simple payment verification (spv)](/reference/pact/functions//spv)
+- [Commitments](/reference/pact/functions/commitments)
+- [Guards](/reference/pact/functions/guards)
+- [Zero knowledge (zk)](/reference/pact/functions/zk)
+- [Repl-only functions](/reference/pact/functions/repl-only-functions)
+- [Property checking](/reference/pact/property-checking)
+- [Properties and invariants](/reference/pact/properties-and-invariants)
+- [Pacts](/reference/pact/pacts)
+- [Pact REPL](/reference/pact/pact-repl-cli)
+
+For information about the design of the Pact programming language, see the [Pact white paper](/kadena) or the [pact home page](http://kadena.io/#pactModal).
 
 ## General purpose functions
 

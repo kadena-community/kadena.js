@@ -1,7 +1,7 @@
 ---
 title: Cryptography
 id: crypto
-description: Learn the what we mean when we say crypto and the role of cryptography in blockchain development and smart contracts.
+description: Learn what we mean when we say crypto and the role of cryptography in blockchain development and smart contracts.
 menu: Learn
 label: Cryptography
 order: 4

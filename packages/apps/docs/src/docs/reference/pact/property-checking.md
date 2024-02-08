@@ -1,28 +1,20 @@
 ---
-title: Pact Property Checking System
+title: Property validation
 description:
   Pact comes equipped with the ability for smart contract authors to express and
   automatically check properties -- or, specifications -- of Pact programs.
-menu: Pact Property Checking System
-label: Pact Property Checking System
+menu: Property validation
+label: Property validation
 order: 7
 layout: full
 tags: ['pact', 'property checking system']
 ---
 
-# Pact Property Checking System
+# Property validation
 
-## What is it?
+The Pact property validation system helps smart contract authors express and automatically check the properties defined in their Pact programs.
 
-Pact comes equipped with the ability for smart contract authors to express and
-automatically check properties -- or, specifications -- of Pact programs.
-
-The Pact property checking system is our response to the current environment of
-chaos and uncertainty in the smart contract programming world. Instead of
-requiring error-prone smart contract authors to try to imagine all possible ways
-an attacker could exploit their smart contract, we can allow them to prove their
-code can't be attacked, all without requiring a background in formal
-verification.
+Instead of requiring smart contract authors to try to imagine all possible ways an attacker could exploit their smart contract, Pact property checking allows contract authors to prove their code can't be attacked, without requiring a background in formal verification.
 
 For example, for an arbitrarily complex Pact program, we might want to
 definitively prove that the program only allows "administrators" of the contract

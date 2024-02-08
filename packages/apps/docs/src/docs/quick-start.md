@@ -1,9 +1,9 @@
 ---
-title: "Deploy 'Hello, World!' - Quick start"
+title: "Deploy your first contract - Quick start"
 id: quickstart
 description: "Learn how to set up a development environment and deploy your first smart contract on Kadena."
 menu: Build
-label: Quick start
+label: "Deploy your first contract"
 order: 1
 layout: full
 tags: [pact, typescript, account, transactions, utils]

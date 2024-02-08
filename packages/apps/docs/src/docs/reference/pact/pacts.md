@@ -1,5 +1,5 @@
 ---
-title: Pacts
+title: Sequenced transactions in pacts
 description:
   The Pact smart contract language features pacts, a form of coroutine that
   allows for orchestrating a sequence of transactions, as might be found in an
@@ -8,14 +8,14 @@ description:
   it enables single-actor process serialization with automatic rollbacks for
   public, trustless two-party escrow with rules preventing early cancel by the
   debtor.
-menu: Pacts
-label: Pacts
+menu: Sequenced pacts
+label: Sequenced pacts
 order: 9
 layout: full
 tags: ['pact', 'pacts', 'feature', 'coroutine']
 ---
 
-# Introduction
+# Sequenced transactions using pacts
 
 The Pact smart contract language features "pacts", a form of _coroutine_ that
 allows for orchestrating a sequence of transactions, as might be found in an
@@ -23,8 +23,6 @@ escrow process. In this document we discuss the two motivating scenarios under
 which pacts find their ideal use-case: for private, confidential transactions it
 enables single-actor process serialization with automatic rollbacks; for public,
 "trustless" two-party escrow with rules preventing early cancel by the debtor.
-
-## Motivation: Sequenced Private Transactions
 
 For private transactions, pacts provide the ability to sequence transactions
 such that they may be modeled as a compound operation, designed to only allow a

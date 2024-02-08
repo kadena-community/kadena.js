@@ -18,16 +18,22 @@ Learn how to set up a development network, create and fund a development wallet,
 
 ## Onboard
 
-If yo're curious about what it's like to interact with a public blockchain, try these introductory applications that enable you to add your name to the Kadena blockchain and play a simple dancing parrot game:
+If you're curious about what it's like to interact with a public blockchain, try these introductory applications in [Explore the blockchain](/build/onboard) that enable you to explore the blockchain as a user and see blockchain activity as it happens.
+In the onboarding experience, you'll:
 
-- [Sign the memory wall]()
-- [Play the dancing parrot game]()
+- Add your name to the Kadena blockchain.
+- View transactions in the block explorer.
+- Create an account wallet.
+- Fund the account wallet.
+- Play and score points.
 
-When you're ready to start building, take the first step with the [Quick start]() to set up a development environment and deploy your first smart contract on Kadena:
+When you're ready to start building, take the first step with the [Deploy your first contract - Quick start](/quickstart) to set up a development environment and deploy your first smart contract on Kadena.
+In the Quick start, you'll learn how to:
 
-- Set up the development environment.
-- Deploy "Hello, World!" on the development network.
-- Update a deployed contract.
+- Set up the development environment on a local computer.
+- Deploy a simple "Hello, World!" smart contract on the development network.
+- Read data from a smart contract without incurring transaction fees.
+- Modify and update a deployed smart contract.
 
 ## Coach
 

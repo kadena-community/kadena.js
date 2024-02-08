@@ -1,16 +1,16 @@
 ---
-title: Pact Rest API
+title: Pact REST API
 description:
   This document is a reference for the Pact smart-contract language, designed
   for correct, transactional execution on a high-performance blockchain.
-menu: Pact Rest API
-label: Pact Rest API
+menu: Pact REST API
+label: Pact REST API
 order: 2
 layout: full
 tags: ['pact', 'rest api', 'pact api', 'pact api reference']
 ---
 
-# Rest API
+# Pact REST API
 
 See [/pact/api](/pact/api) for latest OpenAPI docs.
 

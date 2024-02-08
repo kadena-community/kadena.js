@@ -1,10 +1,10 @@
 ---
-title: Syntax
+title: Syntax and keywords
 description:
   This document is a reference for the Pact smart-contract language, designed
   for correct, transactional execution on a high-performance blockchain.
-menu: Syntax
-label: Syntax
+menu: Syntax and keywords
+label: Syntax and keywords
 order: 4
 layout: full
 tags: ['pact', 'language reference', 'syntax']

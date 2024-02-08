@@ -18,15 +18,18 @@ pages:
       whybuild:
         url: /why-build
         file: /learn/why-build.md
-      why:
+      cryptography:
+        url: /cryptography
+        file: /learn/cryptography.md
+      whykadena:
         url: /why-kadena
         file: /learn/why-kadena.md
       consensus:
         url: /consensus
         file: /learn/consensus.md
-      cryptography:
-        url: /cryptography
-        file: /learn/cryptography.md
+      chainweb:
+        url: /chainweb
+        file: /learn/chainweb-simplified.md
       accounts:
         url: /accounts
         file: /learn/accounts-keys.md
@@ -44,6 +47,9 @@ pages:
     url: /build
     file: /build/build.md
     children:
+      onboard:
+        url: /onboard
+        file: /explore-on-chain.md
       quickstart:
         url: /quickstart
         file: /quick-start.md
@@ -51,10 +57,99 @@ pages:
         url: /pact
         file: /build/pact/build-with-pact.md
         children:
+          get-started:
+            url: /get-started-with-pact
+            file: /build/pact/beginner/get-started-with-pact.md
+          devnet:
+            url: /dev-network
+            file: /build/pact/beginner/dev-network.md
           helloworld:
             url: /hello-world
             file: /build/pact/beginner/hello-world.md
-      electionapp:
+          languagebasics:
+            url: /language-basics
+            file: /build/pact/beginner/language-basics.md
+          modules:
+            url: /modules
+            file: /build/pact/beginner/modules.md
+          keysets:
+            url: /keysets
+            file: /build/pact/beginner/keysets.md
+          schemastables:
+            url: /schemas-and-tables
+            file: /build/pact/beginner/schemas-and-tables.md
+          atomsdk:
+            url: /atom-sdk
+            file: /build/pact/beginner/atom-sdk.md
+          accountstransfers:
+            url: /accounts-and-transfers
+            file: /build/pact/beginner/accounts-and-transfers.md
+          contractinteraction:
+            url: /contract-interaction
+            file: /build/pact/beginner/contract-interaction.md
+          rotatablewallet:
+            url: /rotatable-wallet
+            file: /build/pact/beginner/rotatable-wallet.md
+          loans:
+            url: /loans
+            file: /build/pact/beginner/loans.md
+          testsdk:
+            url: /test-in-the-sdk
+            file: /build/pact/beginner/test-in-the-sdk.md
+          localserver:
+            url: /local-server
+            file: /build/pact/intermediate/deploy-local-server.md
+          pactjavascript:
+            url: /pact-and-javascript
+            file: /build/pact/intermediate/pact-and-javascript.md
+          safetyflow:
+            url: /safety-using-control-flow
+            file: /build/pact/intermediate/safety-using-control-flow.md
+          interfacespact:
+            url: /interfaces-with-pact
+            file: /build/pact/intermediate/interfaces-with-pact.md
+          builtinfunctions:
+            url: /built-in-functions
+            file: /build/pact/intermediate/built-in-functions.md
+      nftmarmalade:
+        url: /nft-marmalade
+        file: /build/nft-marmalade/nft-standard.md
+        children:
+          quickstart:
+            url: /quick-start
+            file: /build/nft-marmalade/quickstart.md
+          ledger:
+            url: /ledger
+            file: /build/nft-marmalade/ledger.md
+          policymanager:
+            url: /policy-manager
+            file: /build/nft-marmalade/policy-manager.md
+          salecontract:
+            url: /sale-contracts
+            file: /build/nft-marmalade/sale-contracts.md
+          concretepolicies:
+            url: /concrete-policies
+            file: /build/nft-marmalade/concrete-policies.md
+            children:
+              collection:
+                url: /collection-policy
+                file: /build/nft-marmalade/concrete-policies/collection-policy.md
+              guard:
+                url: /guard-policy
+                file: /build/nft-marmalade/concrete-policies/guard-policy.md
+              nonfungible:
+                url: /non-fungible-policy
+                file: /build/nft-marmalade/concrete-policies/non-fungible-policy.md
+              royalty:
+                url: /royalty-policy
+                file: /build/nft-marmalade/concrete-policies/royalty-policy.md
+          metadata:
+            url: /metadata
+            file: /build/nft-marmalade/metadata.md
+          storage:
+            url: /storage
+            file: /build/nft-marmalade/storage.md
+      election:
         url: /election
         file: /build/election-app/index.md
         children:
@@ -88,8 +183,8 @@ pages:
       faucet:
         url: /faucet
         file: /faucet-app.md
-      marmalade:
-        url: /marmalade
+      nft-marketplace:
+        url: /nft-marketplace
         file: /build/nft-marketplace.md
   deploy:
     url: /deploy
@@ -101,9 +196,9 @@ pages:
     url: /participate
     file: /participate/participate.md
     children:
-      ambassadors:
-        url: /ambassadors
-        file: /participate/ambassadors.md
+      community:
+        url: /community
+        file: /participate/community.md
       nodeoperators:
         url: /node
         file: /participate/node/index.md
@@ -177,13 +272,16 @@ pages:
     url: /reference
     file: /reference/reference.md
     children:
-      pact:
-        url: /pact-ref
+      pactref:
+        url: /pactref
         file: /reference/pact/pact-ref.md
+      pactsyntax:
+        url: /syntax
+        file: /reference/pact/syntax.md
+      functions:
+        url: /functions
+        file: /reference/pact/general-functions.md
         children:
-          general:
-            url: /general
-            file: /reference/pact/general-functions.md
           database:
             url: /database
             file: /reference/pact/database-functions.md
@@ -217,9 +315,6 @@ pages:
       propertychecking:
         url: /property-checking
         file: /reference/pact/property-checking.md
-      propertiesinvariants:
-        url: /properties-and-invariants
-        file: /reference/pact/properties-and-invariants/index.md
         children:
           numerical:
             url: /numerical
@@ -257,37 +352,28 @@ pages:
           other:
             url: /other
             file: /reference/pact/properties-and-invariants/other.md
-      api:
-        url: /api
-        file: /reference/pact/api/index.tsx
+      pacts:
+        url: /pacts
+        file: /reference/pact/pacts.md  
+      pactrepl:
+        url: /pact-repl
+        file: /reference/pact/pact-repl-cli.md
       pactjs:
         url: /pactjs
-        file: /packages/libs/pactjs/README.md
-        repo: https://github.com/kadena-community/kadena.js
+        file: /reference/pactjs-api.md
+      restapi:
+        url: /rest-api
+        file: /reference/pact/rest-api.md
+      chainweb:
+        url: /chainweb
+        file: /reference/chainweb/chainweb.md
         children:
-          pactjsapi:
-            file: /packages/libs/pactjs/etc/pactjs.api.md
-            repo: https://github.com/kadena-community/kadena.js
-            url: /api
-          pactjsutils:
-            file: /packages/libs/pactjs/etc/pactjs-utils.api.md
-            repo: https://github.com/kadena-community/kadena.js
-            url: /utils
-      pactjscli:
-        file: /packages/tools/pactjs-cli/README.md
-        repo: https://github.com/kadena-community/kadena.js
-        url: /cli
-        children:
-          pactjscliapi:
-            file: /packages/tools/pactjs-cli/etc/pactjs-cli.api.md
-            repo: https://github.com/kadena-community/kadena.js
-            url: /api
-      pactjsgenerator:
-        file: /packages/libs/pactjs-generator/README.md
-        repo: https://github.com/kadena-community/kadena.js
-        url: /pactjs-generator
-        children:
-          pactjsgeneratorapi:
-            file: /packages/libs/pactjs-generator/etc/pactjs-generator.api.md
-            repo: https://github.com/kadena-community/kadena.js
-            url: /api
+          nodeclient:
+            url: /node-client
+            file: /reference/chainweb/chainweb-node.md
+          streamclient:
+            file: /reference/chainweb/chainweb-stream.md
+            url: /stream-client
+          jsbindings:
+            file: /reference/chainweb/chainwebjs.md
+            url: /js-bindings

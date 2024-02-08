@@ -14,23 +14,24 @@ tags: [pact, typescript, account, transactions, utils]
 
 If you're new to cryptocurrency, blockchain technology, and decentralized platforms, start here to learn the basics, including how the internet is evolving in the direction of Web3, the problems of security, scalability, and centralization, and the core concepts and design principles at the heart of the Kadena network and Kadena ecosystem.
 
-These topics focus on blockchain fundamentals, Kadena core concepts, and terminology for anyone interested in blockchain and decentralized application use cases:
+These topics focus on blockchain fundamentals, Kadena core concepts, and terminology for anyone interested in blockchain and decentralized application use cases.
 
-- Blockchain basics
-- Cryptography fundamentals
-- Why build on a blockchain?
-- What is Kadena?
-- Why proof-of-work?
-- Chainweb, simplified
-- How does Kadena work?
-- What is Pact?
-- What is Marmalade?
+# Engage and learn
 
-- About Kadena
-- About the Chainweb protocol
-- About the Kadena community
-- Explore Kadena resources
+This part of the Kadena Docs site is for concepts and foundational information. 
+You should start here to learn the basics about blockchains, cryptography, consensus, Kadena, and more.
 
-## View recent articles
+- [What is a blockchain?](/learn/what-is-a-blockchain)
+- [Why build on a blockchain?](/learn/why-build)
+- [Cryptography](/learn/crypto)
+- [Why Kadena?](/learn/why-kadena)
+- [Consensus](/learn/consensus)
+- [Chainweb and the multiverse](/learn/chainweb-simplified)
+- [Transaction lifecycle](/learn/transaction-lifecycle)
+- [State and storage](/learn/states-and-storage)
+- [Accounts and keys](/learn/accounts-keys)
+- [Smart contracts](/learn/smart-contracts)
+- [Nodes and clients](/learn/nodes-clients)
+- [Glossary](/learn/glossary)
 
-Use keywords to Search, visit the [Kadena Blogchain](https://www.kadena.io/blog), or browse Popular articles to find the topics you're looking for.
+These topics won't make you an expert, but they should give you a good foundation and links to where you can find out more.
