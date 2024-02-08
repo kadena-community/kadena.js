@@ -1,5 +1,5 @@
 import type AppKda from '@ledgerhq/hw-app-kda';
-import { useQuery } from '@tanstack/react-query';
+import { useAsync } from 'react-async-hook';
 import useLedgerApp from './use-ledger-app';
 
 export const derivationModes = [
@@ -34,7 +34,12 @@ const fetchPublicKey = async ({
   keyId,
   derivationMode = 'current',
   app,
-}: IParams & { app: AppKda }): Promise<string> => {
+}: IParams & { app: AppKda | null }): Promise<string | undefined> => {
+  if (app === null) {
+    console.log("Make sure you've connected the Ledger device");
+    return undefined;
+  }
+
   const kdaAddress = await app.getPublicKey(
     getDerivationPath(keyId, derivationMode),
   );
@@ -43,13 +48,11 @@ const fetchPublicKey = async ({
 
 const useLedgerPublicKey = ({ keyId, derivationMode }: IParams) => {
   const app = useLedgerApp();
-  console.log('useLedgerPublicKey', { keyId, app });
 
-  return useQuery({
-    queryKey: ['ledger-public-key', keyId, app, derivationMode],
-    queryFn: () => fetchPublicKey({ keyId, app: app!, derivationMode }),
-    enabled: !!app,
-  });
+  return useAsync(
+    () => fetchPublicKey({ keyId, app, derivationMode }),
+    [app, derivationMode, keyId],
+  );
 };
 
 export default useLedgerPublicKey;
