@@ -48,6 +48,7 @@ export async function downloadGitFiles({
             fileExtension,
             drillDown,
             excludeFolder,
+            githubToken,
           });
         } else if (
           !file.name.endsWith(fileExtension) ||
@@ -56,13 +57,23 @@ export async function downloadGitFiles({
         ) {
           return;
         } else if (file.type === 'file' && file.name.endsWith(fileExtension)) {
-          await donwloadGitFile(file.download_url, file.name, localPath);
+          await donwloadGitFile(
+            file.download_url,
+            file.name,
+            localPath,
+            githubToken,
+          );
         }
       }),
     );
   } else if (gitData instanceof Object) {
     // if gitData is an object, it means that it's a file and we can download it
-    await donwloadGitFile(gitData.download_url, gitData.name, localPath);
+    await donwloadGitFile(
+      gitData.download_url,
+      gitData.name,
+      localPath,
+      githubToken,
+    );
   } else {
     throw new Error('Provided path is not a valid');
   }
@@ -99,8 +110,9 @@ async function donwloadGitFile(
   url: string,
   filename: string,
   path: string,
+  githubToken?: string,
 ): Promise<void> {
-  const content = await getGitData(url, true);
+  const content = await getGitData(url, true, githubToken);
   await createDirAndWriteFile(path, filename, content);
 }
 

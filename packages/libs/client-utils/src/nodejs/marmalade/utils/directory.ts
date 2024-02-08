@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync } from 'fs';
 import { clearDir } from '../../services/path';
+import { ILocalConfig } from '../deployment/config';
 
 export function handleDirectorySetup(
   templateDestinationPath: string,
@@ -26,4 +27,16 @@ export function handleDirectorySetup(
   } else {
     clearDir(nsFilesDestinationPath);
   }
+}
+
+export function deleteLocalFiles(localConfig: ILocalConfig): void {
+  const paths = [
+    localConfig.templatePath,
+    localConfig.codeFilesPath,
+    localConfig.namespacePath,
+  ];
+
+  const uniquePaths = [...new Set(paths)];
+
+  uniquePaths.forEach((path) => clearDir(path));
 }

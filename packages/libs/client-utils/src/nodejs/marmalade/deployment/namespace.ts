@@ -4,19 +4,12 @@ import { join } from 'path';
 import { deployContract } from '../../../built-in/deploy-contract';
 import type { IAccount, IClientConfig } from '../../../core/utils/helpers';
 import type { INamespaceConfig } from './config';
-import { defaultAccount, defaultChainId, defaultNetworkId } from './defaults';
-
-export const defaultNamespaceConfig: INamespaceConfig[] = [
-  {
-    file: 'ns-marmalade.pact',
-    namespaces: ['marmalade-v2', 'marmalade-sale', 'kip', 'util'],
-  },
-  {
-    file: 'ns-contract-admin.pact',
-    namespaces: ['marmalade-v2', 'marmalade-sale'],
-  },
-  { file: 'guards1.pact', namespaces: ['util'] },
-];
+import {
+  defaultAccount,
+  defaultChainId,
+  defaultNamespaceConfig,
+  defaultNetworkId,
+} from './defaults';
 
 export interface IDeployMarmaladeNamespacesInput {
   sender?: IAccount;

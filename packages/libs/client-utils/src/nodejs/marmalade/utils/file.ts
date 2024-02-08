@@ -100,6 +100,7 @@ export async function getCodeFiles({
           path: codeFilePath,
           localPath: localConfig.codeFilesPath,
           fileExtension: remoteConfig.codefileExtension,
+          githubToken: repositoryConfig.githubToken,
         });
       }),
     );
@@ -126,6 +127,7 @@ export async function getNsCodeFiles({
           path,
           localPath: localConfig.namespacePath,
           fileExtension: remoteConfig.codefileExtension,
+          githubToken: repositoryConfig.githubToken,
         });
       }),
     );

@@ -1,6 +1,12 @@
 import { createSignWithKeypair } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 import type { IAccount, IClientConfig } from '../../../core/utils/helpers';
+import {
+  ILocalConfig,
+  INamespaceConfig,
+  IRemoteConfig,
+  IRepositoryConfig,
+} from './config';
 
 export interface IAccountWithSecretKey extends IAccount {
   secretKey: string;
@@ -37,6 +43,41 @@ export const defaultArguments = {
 related to the namespace of the first item are going to be deployed first, then the second,
 and so on  */
 export const defaultNamespaceDeployOrder = ['marmalade-v2', 'marmalade-sale'];
+
+export const defaultNamespaceConfig: INamespaceConfig[] = [
+  {
+    file: 'ns-marmalade.pact',
+    namespaces: ['marmalade-v2', 'marmalade-sale', 'kip', 'util'],
+  },
+  {
+    file: 'ns-contract-admin.pact',
+    namespaces: ['marmalade-v2', 'marmalade-sale'],
+  },
+  { file: 'guards1.pact', namespaces: ['util'] },
+];
+
+/* Default values for repository configuration */
+export const defaultRepositoryConfig: IRepositoryConfig = {
+  owner: 'kadena-io',
+  name: 'marmalade',
+  branch: 'main',
+};
+
+/* Default values for local configuration */
+export const defaultLocalConfig: ILocalConfig = {
+  templatePath: 'temp',
+  codeFilesPath: 'temp',
+  namespacePath: 'temp',
+};
+
+/* Default values for remote configuration */
+export const defaultRemoteConfig: IRemoteConfig = {
+  templatePath: 'pact/yaml',
+  namespacePaths: ['pact/marmalade-ns', 'pact/util'],
+  templateExtension: 'yaml',
+  codefileExtension: 'pact',
+  exclude: ['data', 'sample'],
+};
 
 /* By default the client configuration will point to localhost:8080 and use sender00
   as the default account */
