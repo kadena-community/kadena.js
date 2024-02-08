@@ -1,5 +1,5 @@
-import { input, select } from '@inquirer/prompts';
 import type { IPrompt } from '../utils/createOption.js';
+import { input, select } from '../utils/prompts.js';
 
 export const publicKeysPrompt: IPrompt<string> = async (
   previousQuestions,

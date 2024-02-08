@@ -1,4 +1,3 @@
-import { checkbox } from '@inquirer/prompts';
 import chalk from 'chalk';
 import { Option } from 'commander';
 import { z } from 'zod';
@@ -10,6 +9,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { checkbox } from '../../utils/prompts.js';
 import { addAccount } from '../utils/addAccount.js';
 import {
   displayAddAccountSuccess,
