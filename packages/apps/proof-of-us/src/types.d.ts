@@ -73,7 +73,14 @@ interface IError {
 
 type ISignerStatus = 'init' | 'signing' | 'success' | 'error';
 
+type ISocial = string;
+
 type IProofOfUsSignee = Pick<IAccount, 'displayName' | 'publicKey' | 'cid'> & {
   signerStatus: ISignerStatus;
   initiator: boolean;
+  socialLinks?: ISocial[];
+  position?: {
+    x: number;
+    y: number;
+  };
 };

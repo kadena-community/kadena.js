@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
+import { SocialsEditor } from '../SocialsEditor/SocialsEditor';
 
 interface IProps {
   next: () => void;
@@ -33,6 +34,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   };
 
   const handleTitleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    //TODO: this needs to debounce
     if (!proofOfUs) return;
     changeTitle(e.target.value);
   };
@@ -48,8 +50,11 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
       <input
         name="title"
         onChange={handleTitleChange}
-        value={proofOfUs.title}
+        defaultValue={proofOfUs.title}
       />
+
+      <SocialsEditor />
+
       <img src={background} />
       <button onClick={handleShare}>Share</button>
     </section>

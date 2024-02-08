@@ -28,6 +28,8 @@ export interface IProofOfUsContext {
   }) => Promise<void>;
   createToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
   changeTitle: (value: string) => Promise<void>;
+  addSocial: (value: ISocial) => Promise<void>;
+  removeSocial: (value: ISocial) => Promise<void>;
   isConnected: () => boolean;
   isInitiator: () => boolean;
   getSigneeAccount: (account: IAccount) => IProofOfUsSignee;
@@ -43,6 +45,8 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   removeSignee: async () => {},
   createToken: async () => {},
   changeTitle: async () => {},
+  addSocial: async () => {},
+  removeSocial: async () => {},
   isConnected: () => false,
   isInitiator: () => false,
   getSigneeAccount: (account: IAccount) => {
@@ -115,6 +119,23 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
 
     await store.createProofOfUs(proofOfUsId, getSigneeAccount(account));
   };
+
+  const addSocial = async (value: ISocial) => {
+    if (!account || !proofOfUs) return;
+
+    await store.addSocialToSignee(proofOfUs, getSigneeAccount(account), value);
+  };
+
+  const removeSocial = async (value: ISocial) => {
+    if (!account || !proofOfUs) return;
+
+    await store.removeSocialFromSignee(
+      proofOfUs,
+      getSigneeAccount(account),
+      value,
+    );
+  };
+
   const changeTitle = async (value: string) => {
     if (!proofOfUs) return;
 
@@ -138,6 +159,8 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         updateSigneeStatus,
         removeSignee,
         createToken,
+        addSocial,
+        removeSocial,
         isConnected,
         isInitiator,
         getSigneeAccount,

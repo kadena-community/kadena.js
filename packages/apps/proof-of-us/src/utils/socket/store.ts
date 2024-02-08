@@ -174,6 +174,46 @@ const ProofOfUsStore = () => {
     });
   };
 
+  const addSocialToSignee = async (
+    proofOfUs: IProofOfUsData,
+    account: IProofOfUsSignee,
+    value: ISocial,
+  ) => {
+    if (isAlreadySigning(proofOfUs.signees)) return;
+
+    const newList = proofOfUs.signees.map((a) => {
+      if (a.cid === account.cid) {
+        const socials = a.socialLinks ?? [];
+        return { ...a, socialLinks: [...socials, value] };
+      }
+      return a;
+    });
+
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      signees: newList,
+    });
+  };
+
+  const removeSocialFromSignee = async (
+    proofOfUs: IProofOfUsData,
+    account: IProofOfUsSignee,
+    value: ISocial,
+  ) => {
+    if (isAlreadySigning(proofOfUs.signees)) return;
+
+    const newList = proofOfUs.signees.map((a) => {
+      if (a.cid === account.cid) {
+        const socials = a.socialLinks?.filter((l) => l !== value) ?? [];
+        return { ...a, socialLinks: [...socials] };
+      }
+      return a;
+    });
+
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      signees: newList,
+    });
+  };
+
   return {
     updateMintStatus,
     createProofOfUs,
@@ -189,6 +229,8 @@ const ProofOfUsStore = () => {
     listenProofOfUsData,
     listenProofOfUsBackgroundData,
     addTitle,
+    addSocialToSignee,
+    removeSocialFromSignee,
   };
 };
 
