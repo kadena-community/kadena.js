@@ -311,6 +311,9 @@ pages:
               objectoperators:
                 url: /object-operators
                 file: /pact/reference/properties-and-invariants/object-operators.md
+              logicaloperators:
+                url: /logical-operators
+                file: /pact/reference/properties-and-invariants/logical.md
               listoperators:
                 url: /list-operators
                 file: /pact/reference/properties-and-invariants/list-operators.md

@@ -6,6 +6,8 @@ interface IAccount {
   cid: string;
 }
 
+type IBuildStatusValues = 0 | 1 | 2 | 3 | 4;
+
 type ToastType = 'error' | 'success' | 'info';
 interface IToast {
   type: ToastType;
@@ -33,6 +35,7 @@ type TokenType = 'multi' | 'event';
 
 interface IProofOfUsData {
   mintStatus: IMintStatus;
+  status: IBuildStatusValues;
   tokenId?: string;
   proofOfUsId: string;
   type: TokenType;

@@ -13,7 +13,7 @@ export const Multi: FC<IProps> = ({ proofOfUs, background }) => {
   const { signToken, isLoading, hasError } = useSignToken();
 
   const handleJoin = async () => {
-    signToken();
+    await signToken();
   };
 
   if (!proofOfUs) return null;

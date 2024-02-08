@@ -1,5 +1,12 @@
 # @kadena/react-ui
 
+## 0.8.1
+
+### Patch Changes
+
+- cce6c38de: Added more masking options to the MaskedValue component
+- 1aa8bfa8d: Remove accordion animation
+
 ## 0.8.0
 
 ### Minor Changes

@@ -6,7 +6,7 @@ import { SignStatus } from '../SignStatus/SignStatus';
 import { wrapperClass } from './style.css';
 
 //TODO:
-//ATM we check the signing status of both users via a websocket.
+//ATM we check the signing status of both users via a firebase.
 //it would be better to directly check the chain for who signed.
 export const ListSignees: FC = () => {
   const { proofOfUs } = useProofOfUs();

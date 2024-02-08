@@ -8,11 +8,7 @@ import { accountInputWrapperStyle } from './styles.css';
 
 export const NAME_VALIDATION = z.string().trim().min(3).max(256);
 
-interface IAccountNameFieldProps
-  extends Omit<
-    ITextFieldProps,
-    'errorMessage' | 'validationBehavior' | 'onValueChange'
-  > {
+interface IAccountNameFieldProps extends Omit<ITextFieldProps, 'errorMessage'> {
   errorMessage?: string;
 }
 const BaseAccountNameField = (

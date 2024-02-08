@@ -1,4 +1,3 @@
-import { input, select } from '@inquirer/prompts';
 import { validateMnemonic } from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
 
@@ -15,6 +14,7 @@ import chalk from 'chalk';
 
 import type { IPrompt } from '../utils/createOption.js';
 import { isAlphanumeric } from '../utils/helpers.js';
+import { input, select } from '../utils/prompts.js';
 
 export async function keyWallet(): Promise<string> {
   return await input({

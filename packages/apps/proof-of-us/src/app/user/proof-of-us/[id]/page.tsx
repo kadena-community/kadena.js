@@ -5,7 +5,6 @@ import { DetailView } from '@/components/DetailView/DetailView';
 import { ShareView } from '@/components/ShareView/ShareView';
 
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { useSocket } from '@/hooks/socket';
 import { createProofOfUsID } from '@/utils/marmalade';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
@@ -19,10 +18,17 @@ interface IProps {
 
 const Page: FC<IProps> = ({ params }) => {
   const router = useRouter();
-  const { socket, disconnect } = useSocket();
-  const { createToken, proofOfUs } = useProofOfUs();
+  const { createToken, proofOfUs, background, updateStatus } = useProofOfUs();
+  const [isMounted, setIsMounted] = useState(false);
 
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState<IBuildStatusValues>(1);
+
+  useEffect(() => {
+    //init and check in what step you are
+    if (!proofOfUs || isMounted) return;
+    setStatus(proofOfUs.status);
+    setIsMounted(true);
+  }, [proofOfUs, background]);
 
   useEffect(() => {
     if (params.id === 'new') {
@@ -31,22 +37,27 @@ const Page: FC<IProps> = ({ params }) => {
       return;
     }
 
-    disconnect({ proofOfUsId: params.id });
-
     createToken({ proofOfUsId: params.id });
-  }, [socket, params.id]);
+  }, [params.id]);
 
-  const next = () => {
-    setStatus((v) => v + 1);
+  const next = async () => {
+    const newStatus = (status + 1) as IBuildStatusValues;
+    setStatus(newStatus);
+    await updateStatus({ proofOfUsId: params.id, status: newStatus });
   };
-  const prev = () => {
-    setStatus((v) => v - 1);
+  const prev = async () => {
+    const newStatus = (status - 1) as IBuildStatusValues;
+    setStatus(newStatus);
+    await updateStatus({ proofOfUsId: params.id, status: newStatus });
   };
-
-  if (!proofOfUs) return;
 
   return (
     <div>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
       {status === 1 && <AvatarEditor next={next} />}
       {status === 2 && <DetailView next={next} prev={prev} />}
       {status >= 3 && <ShareView next={next} prev={prev} status={status} />}
