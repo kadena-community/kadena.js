@@ -4,7 +4,6 @@ import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import classnames from 'classnames';
 import { fabric } from 'fabric';
 import type { Canvas } from 'fabric/fabric-impl';
-import { useParams } from 'next/navigation';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -20,13 +19,12 @@ interface IProps {
 }
 
 export const AvatarEditor: FC<IProps> = ({ next }) => {
-  const { id: proofOfUsId } = useParams();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricRef = useRef<Canvas | null>(null);
 
   const [isMounted, setIsMounted] = useState(false);
-  const { setBackgroundSocket } = useAvatar();
+  const { addBackground } = useAvatar();
   const canvasElm = canvasRef.current;
   const { proofOfUs, background } = useProofOfUs();
 
@@ -89,7 +87,8 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
       fabricRef.current?.requestRenderAll();
     });
 
-    await setBackgroundSocket(proofOfUsId.toString(), canvas.toDataURL());
+    if (!proofOfUs) return;
+    await addBackground(proofOfUs, canvas.toDataURL());
     (videoRef.current?.srcObject as MediaStream)
       ?.getTracks()
       .forEach((t) => t.stop());

@@ -1,6 +1,7 @@
 'use client';
 import { useAccount } from '@/hooks/account';
-import { useSocket } from '@/hooks/socket';
+import { getSigneeAccount } from '@/utils/getSigneeAccount';
+import { store } from '@/utils/socket/store';
 import { useParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
@@ -54,41 +55,14 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
 });
 
 export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { socket } = useSocket();
   const { account } = useAccount();
   const params = useParams();
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
   const [background, setBackground] = useState<IProofOfUsBackground>('');
 
-  const setContent = ({ content }: { content: IProofOfUsData }) => {
-    setProofOfUs(content);
-  };
-
-  const setContentBackground = ({
-    content,
-  }: {
-    content: IProofOfUsBackground;
-  }) => {
-    setBackground(content);
-  };
-
   useEffect(() => {
-    if (!proofOfUs) {
-      socket?.emit('getProofOfUs', {
-        to: params.id,
-      });
-    }
-  }, [proofOfUs]);
-
-  useEffect(() => {
-    if (!socket) return;
-    socket.on('getProofOfUs', setContent);
-    socket.on('getProofOfUsBackground', setContentBackground);
-
-    return () => {
-      socket.off('getProofOfUs');
-      socket.off('getProofOfUsBackground');
-    };
+    store.listenProofOfUsData(`${params.id}`, setProofOfUs);
+    store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
   }, []);
 
   const updateStatus = async ({
@@ -98,47 +72,29 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     proofOfUsId: string;
     status: IBuildStatusValues;
   }) => {
-    socket?.emit('updateStatus', {
-      content: {
-        status,
-      },
-      to: proofOfUsId,
-    });
+    await store.updateStatus(proofOfUsId, status);
   };
 
   const closeToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
-    socket?.emit('closeToken', {
-      to: proofOfUsId,
-    });
+    await store.closeToken(proofOfUsId);
   };
 
   const updateSigneeStatus = async (status: ISignerStatus) => {
-    if (!socket || !account || !proofOfUs) return;
+    if (!account || !proofOfUs) return;
 
-    socket?.emit('updateSigneeStatus', {
-      content: {
-        displayName: account.displayName,
-        cid: account.cid,
-        publicKey: account.publicKey,
-        initiator: false,
-        signerStatus: status,
-      } as IProofOfUsSignee,
-      to: proofOfUs?.proofOfUsId,
-    });
+    const signer = proofOfUs.signees.find((c) => c.cid === account.cid);
+
+    await store.updateSignee(
+      proofOfUs.proofOfUsId,
+      signer ? signer : getSigneeAccount(account),
+      status,
+    );
   };
 
   const addSignee = async () => {
-    if (!socket || !account || !proofOfUs) return;
+    if (!account || !proofOfUs) return;
 
-    socket?.emit('addSignee', {
-      content: {
-        displayName: account.displayName,
-        cid: account.cid,
-        publicKey: account.publicKey,
-        initiator: false,
-      },
-      to: proofOfUs?.proofOfUsId,
-    });
+    await store.addSignee(proofOfUs, getSigneeAccount(account));
   };
 
   const removeSignee = async ({
@@ -148,24 +104,14 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     proofOfUsId: string;
     signee: IProofOfUsSignee;
   }) => {
-    socket?.emit('removeSignee', {
-      content: signee,
-      to: proofOfUsId,
-    });
+    if (!proofOfUs) return;
+    await store.removeSignee(proofOfUs, signee);
   };
 
   const createToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
-    if (!socket || !account) return;
+    if (!account) return;
 
-    socket?.emit('createToken', {
-      content: {
-        displayName: account.displayName,
-        cid: account.cid,
-        publicKey: account.publicKey,
-        initiator: false,
-      },
-      to: proofOfUsId,
-    });
+    await store.createProofOfUs(proofOfUsId, getSigneeAccount(account));
   };
 
   const isConnected = () => {
@@ -175,16 +121,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const isInitiator = () => {
     const foundAccount = proofOfUs?.signees.find((s) => s.cid === account?.cid);
     return !!foundAccount?.initiator;
-  };
-
-  const getSigneeAccount = (account: IAccount): IProofOfUsSignee => {
-    return {
-      cid: account.cid,
-      displayName: account.displayName,
-      publicKey: account.publicKey,
-      initiator: false,
-      signerStatus: 'init',
-    };
   };
 
   return (

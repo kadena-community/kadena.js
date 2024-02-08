@@ -2,12 +2,11 @@ import { useAvatar } from '@/hooks/avatar';
 import { wait } from '@/utils/wait';
 import { useState } from 'react';
 import { useProofOfUs } from '../proofOfUs';
-import { useSocket } from '../socket';
+
 import { useSignToken } from './signToken';
 
 export const useMintMultiToken = () => {
   const { proofOfUs, background } = useProofOfUs();
-  const { socket } = useSocket();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [data, setData] = useState('');
@@ -21,12 +20,7 @@ export const useMintMultiToken = () => {
       return;
     }
 
-    socket?.emit('updateStatus', {
-      content: {
-        mintStatus: status,
-      },
-      to: proofOfUs.proofOfUsId,
-    });
+    //TODO fix mintstatus
   };
 
   const handleUpload = async () => {
@@ -38,18 +32,12 @@ export const useMintMultiToken = () => {
   const mintToken = async () => {
     setIsLoading(true);
     setHasError(false);
-    console.log(666666);
     await signToken();
     send('signing');
 
-    console.log(444444);
-
     send('uploading');
-    console.log(555555);
     handleUpload();
     await wait(2000);
-
-    console.log(333333);
 
     send('uploading_manifest');
     await wait(2000);

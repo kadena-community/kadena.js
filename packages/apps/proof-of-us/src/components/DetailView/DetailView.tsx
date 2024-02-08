@@ -12,6 +12,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   const { proofOfUs, background, closeToken } = useProofOfUs();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
+
   const handleShare = () => {
     next();
   };
@@ -21,8 +22,8 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   const handleRedo = () => {
     prev();
   };
-  const handleClose = () => {
-    closeToken({ proofOfUsId: proofOfUs.proofOfUsId });
+  const handleClose = async () => {
+    await closeToken({ proofOfUsId: proofOfUs.proofOfUsId });
     setIsMounted(false);
     router.replace('/user');
   };
@@ -32,6 +33,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   return (
     <section>
       <h3>Details</h3>
+
       <button onClick={handleRedo}>redo</button>
       <button onClick={handleClose}>delete</button>
       <img src={background} />
