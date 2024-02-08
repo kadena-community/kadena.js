@@ -1,14 +1,13 @@
 import type { ChainId } from '@kadena/client';
-import {
-  createSignWithKeypair,
-} from '@kadena/client';
-import { describeModule } from '@kadena/client-utils/built-in';
-import { transfer } from '@kadena/client-utils/coin';
+import { createSignWithKeypair } from '@kadena/client';
+import { createPrincipal, describeModule } from '@kadena/client-utils/built-in';
+import { transfer, transferCreate } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import { Option } from 'commander';
 import debug from 'debug';
+import ora from 'ora';
 import { z } from 'zod';
 import { FAUCET_MODULE_NAME } from '../../constants/devnets.js';
 import type { IAccount } from '../../devnet/faucet/deploy/constants.js';
@@ -53,14 +52,6 @@ export async function fund(config: {
       networkHost: config.networkConfig.networkHost,
       fungible: config.fungible,
     });
-
-    if (!isAccountExist) {
-      return {
-        success: false,
-        errors: [`Account "${config.accountName}" does not exist.`],
-      };
-    }
-
     const keyPair = genKeyPair();
 
     const faucetAccount = isDevNet
@@ -73,9 +64,94 @@ export async function fund(config: {
     const gasPayerAccount = isDevNet
       ? faucetAccount
       : {
-          accountName: GAS_STATIONS.TEST_NET,
+          accountName: 'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA',
           publicKey: FAUCET_ACCOUNT,
         };
+
+    console.log({
+      faucetAccount,
+      gasPayerAccount,
+    });
+
+    if (!isAccountExist) {
+      console.log('Account does not exist');
+      const principal = await createPrincipal(
+        {
+          keyset: {
+            pred: 'keys-all' as 'keys-all' | 'keys-2' | 'keys-any',
+            keys: ['8ad00b72a041ee49cf9658a503f38fc13a7ce7c7366410e0311a790553c72413'],
+          },
+        },
+        {
+          host: config.networkConfig.networkHost,
+          defaults: {
+            networkId: config.networkConfig.networkId,
+            meta: {
+              chainId: config.chainId as ChainId,
+            },
+          },
+        },
+      );
+
+      console.log({
+        principal
+      });
+
+      console.log('herherhejrh');
+
+      console.log({
+        faucetAccount,
+        gasPayerAccount,
+      })
+
+      const result = await transferCreate(
+        {
+          sender: {
+            account: faucetAccount.accountName,
+            publicKeys: [faucetAccount.publicKey],
+          },
+          receiver: {
+            account: config.accountName,
+            keyset: {
+              pred: 'keys-all' as 'keys-all' | 'keys-2' | 'keys-any',
+              keys: ['8ad00b72a041ee49cf9658a503f38fc13a7ce7c7366410e0311a790553c72413'],
+            },
+          },
+          gasPayer: {
+            account: gasPayerAccount.accountName,
+            publicKeys: [gasPayerAccount.publicKey],
+          },
+          chainId: config.chainId as ChainId,
+          amount: config.amount,
+          contract: config.fungible,
+        },
+        {
+          host: config.networkConfig.networkHost,
+          defaults: {
+            networkId: config.networkConfig.networkId,
+            meta: {
+              chainId: config.chainId as ChainId,
+            },
+          },
+          sign: createSignWithKeypair({
+            publicKey: faucetAccount.publicKey,
+            secretKey: faucetAccount.secretKey,
+          }),
+        },
+      )
+      .on('sign', (data) => console.log(data))
+      .on('submit', (data) => console.log(data))
+      .execute();
+
+      console.log({
+        result,
+      });
+
+      return {
+        success: true,
+        data: `Account "${config.accountName}" does not exist.`,
+      };
+    }
 
     const result = await transfer(
       {
@@ -103,7 +179,11 @@ export async function fund(config: {
           meta: { chainId: config.chainId },
         },
       },
-    ).execute();
+    )
+    .on('sign', (data) => console.log({ sign: data}))
+    .on('submit', (data) => console.log({ submit: data}))
+    .on('listen', (data) => console.log({ listen: data}))
+    .execute();
 
     console.log(result);
     return {
@@ -111,7 +191,6 @@ export async function fund(config: {
       data: 'Write succeeded',
     };
   } catch (error) {
-    console.log(error.message);
     return {
       success: false,
       errors: [error.message],
@@ -193,7 +272,7 @@ export const createFundCommand: (program: Command, version: string) => void =
 
         if (hasModuleAvailable === false) {
           console.log(
-            chalk.red(
+            chalk.yellow(
               `\nFaucet module is not available on chain "${config.chainId}" in "${config.network}".\n`,
             ),
           );
@@ -202,6 +281,8 @@ export const createFundCommand: (program: Command, version: string) => void =
           if (deployDevNetPrompt === 'no') {
             return;
           }
+
+          console.log('\nDeploying faucet...\n');
 
           await deployDevNetFaucet([config.chainId])
             .then(() => {
@@ -212,7 +293,6 @@ export const createFundCommand: (program: Command, version: string) => void =
               );
             })
             .catch((e) => {
-              console.error(e);
               console.log(
                 chalk.red(
                   `\nFailed to deploy faucet module on chain "${config.chainId}" in "${config.network}".\n`,
@@ -223,8 +303,10 @@ export const createFundCommand: (program: Command, version: string) => void =
         }
       }
 
-      const result = await fund(config);
+      const loadingSpinner = ora('Funding account...\n').start();
 
+      const result = await fund(config);
+      loadingSpinner.stop();
       assertCommandError(result);
 
       console.log(
