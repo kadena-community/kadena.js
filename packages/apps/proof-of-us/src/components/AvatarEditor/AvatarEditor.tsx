@@ -39,10 +39,12 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   useEffect(() => {
     if (!videoRef.current || !isMounted) return;
 
-    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-      if (!videoRef.current) return;
-      videoRef.current.srcObject = stream;
-    });
+    navigator.mediaDevices
+      .getUserMedia({ audio: false, video: true })
+      .then((stream) => {
+        if (!videoRef.current) return;
+        videoRef.current.srcObject = stream;
+      });
   }, [isMounted]);
 
   useEffect(() => {
@@ -86,6 +88,8 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
           id="player"
           controls
           autoPlay
+          muted
+          playsInline
         ></video>
         {!isAlreadySigning(proofOfUs?.signees) && (
           <button

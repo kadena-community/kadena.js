@@ -16,9 +16,10 @@ const ProofOfUsStore = () => {
   const getBackground = async (
     proofOfUsId: string,
   ): Promise<IProofOfUsBackground | null> => {
+    console.log(2323422234234243);
     const docRef = await get(child(dbRef, `background/${proofOfUsId}`));
 
-    if (!docRef.exists()) return null;
+    if (!docRef.exists()) return { bg: '' };
     const data = docRef.toJSON();
     return (data ?? { bg: '' }) as IProofOfUsBackground;
   };
@@ -57,7 +58,7 @@ const ProofOfUsStore = () => {
   ) => {
     const backgroundRef = ref(database, `background/${proofOfUsId}`);
     onValue(backgroundRef, (snapshot) => {
-      const data = snapshot.val();
+      const data = snapshot.val() ?? { bg: '' };
       setDataCallback(data);
     });
   };
