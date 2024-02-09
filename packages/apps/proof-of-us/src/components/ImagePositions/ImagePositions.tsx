@@ -3,7 +3,12 @@ import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import type { ChangeEventHandler, FC, MouseEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { signeeClass, wrapperClass } from './style.css';
+import {
+  signeeClass,
+  signeeClassWrapper,
+  signeeInputClass,
+  wrapperClass,
+} from './style.css';
 
 interface IProps {}
 
@@ -22,14 +27,33 @@ export const ImagePositions: FC<IProps> = () => {
     setIsLocked(isAlreadySigning(proofOfUs?.signees));
   }, [proofOfUs]);
 
+  const getPosition = <T extends HTMLElement>(
+    elm: T,
+    img: HTMLImageElement,
+    clickPosition: { xPercentage: number; yPercentage: number },
+  ): [number, number] => {
+    const rect = elm.getBoundingClientRect();
+    const maxPosX = img.width - rect.width;
+    const maxPosY = img.height - rect.height;
+    const actualPosX = (clickPosition.xPercentage / 100) * img.width;
+    const actualPosY = (clickPosition.yPercentage / 100) * img.height;
+    const posX = Math.min(Math.max(0, actualPosX), maxPosX);
+    const posY = Math.min(Math.max(0, actualPosY), maxPosY);
+
+    return [posX, posY];
+  };
+
   const setMarkers = () => {
     if (!wrapperRef.current || !imgRef.current || !isMounted) return;
     const wrapper = wrapperRef.current;
     const img = imgRef.current;
 
-    const elms = wrapper.querySelectorAll('button');
+    const elms = wrapper.querySelectorAll('div');
+    const inputs = wrapper.querySelectorAll('input');
 
-    elms.forEach((elm) => {
+    elms.forEach((elm, idx) => {
+      const input = inputs[idx];
+
       const xPercentage: number = parseFloat(
         elm.getAttribute('data-xpercentage') ?? '0',
       );
@@ -38,17 +62,34 @@ export const ImagePositions: FC<IProps> = () => {
       );
 
       if (!xPercentage || !yPercentage) {
-        elm.setAttribute('style', `display: 'none'`);
+        elm.setAttribute('style', `display: none`);
+        input.setAttribute('style', `display: none`);
         return;
       }
 
+      const [xPos, yPos] = getPosition<HTMLDivElement>(elm, img, {
+        xPercentage,
+        yPercentage,
+      });
+
       elm.setAttribute(
         'style',
-        `
-        display: flex;
-        top: ${(yPercentage / 100) * img.height}px;
-        left: ${(xPercentage / 100) * img.width}px;
-      `,
+        `display: flex; top: ${yPos}px; left: ${xPos}px;`,
+      );
+
+      //input
+      const [xPosMarker, yPosMarker] = getPosition<HTMLInputElement>(
+        input,
+        img,
+        {
+          xPercentage,
+          yPercentage,
+        },
+      );
+
+      input.setAttribute(
+        'style',
+        `display: flex; top: ${yPosMarker}px; left: ${xPosMarker}px;`,
       );
     });
   };
@@ -75,6 +116,7 @@ export const ImagePositions: FC<IProps> = () => {
 
   const handleLabelChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     //TODO: this needs to debounce
+
     updateSigner({
       label: e.target.value,
     });
@@ -86,13 +128,6 @@ export const ImagePositions: FC<IProps> = () => {
 
   return (
     <>
-      <input
-        type="text"
-        name="label"
-        placeholder="label"
-        defaultValue={signer?.label}
-        onChange={handleLabelChange}
-      />
       <section ref={wrapperRef} className={wrapperClass}>
         <img
           ref={imgRef}
@@ -100,16 +135,27 @@ export const ImagePositions: FC<IProps> = () => {
           onClick={handleClick}
           onLoad={() => setIsMounted(true)}
         />
-        {proofOfUs?.signees.map((signee, idx) => (
-          <button
-            className={signeeClass}
-            key={signee.cid}
-            data-xpercentage={signee.position?.xPercentage}
-            data-ypercentage={signee.position?.yPercentage}
-            onClick={handleRemove}
-          >
-            {idx}
-          </button>
+        {proofOfUs?.signees.map((s, idx) => (
+          <>
+            <div
+              key={s.cid}
+              className={signeeClassWrapper}
+              data-xpercentage={s.position?.xPercentage}
+              data-ypercentage={s.position?.yPercentage}
+            >
+              <button className={signeeClass} onClick={handleRemove}>
+                {idx}
+              </button>
+            </div>
+            <input
+              className={signeeInputClass}
+              value={s.label}
+              disabled={signer?.cid !== s.cid}
+              type="text"
+              name="label"
+              onChange={handleLabelChange}
+            />
+          </>
         ))}
       </section>
     </>

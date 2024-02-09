@@ -6,10 +6,18 @@ export const wrapperClass = style([
     position: 'relative',
   }),
 ]);
-export const signeeClass = style([
+export const signeeClassWrapper = style([
   atoms({
     position: 'absolute',
     display: 'none',
+    flexDirection: 'column',
+    alignItems: 'center',
+  }),
+  {},
+]);
+export const signeeClass = style([
+  atoms({
+    position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
     cursor: 'pointer',
@@ -22,5 +30,15 @@ export const signeeClass = style([
     marginTop: '-25px',
     marginLeft: '-25px',
     border: 0,
+  },
+]);
+export const signeeInputClass = style([
+  atoms({
+    position: 'absolute',
+  }),
+  {
+    width: '150px',
+    marginTop: '35px',
+    marginLeft: '-25px',
   },
 ]);
