@@ -21,14 +21,13 @@ import { getBalance, transferCrossChain } from "@kadena/client-utils/coin"
   
 The library also exports `core` utilities that you can use to develop your own API functions for any type kind of smart contract.
 
-The client utilities are listed alphabetically in this reference to make they easy to find by name.
-However, you typically call the utilities in the following order to represent the normal workflow:
+The client-utils package contains functions exported into the following modules:
 
-- Open a connection with asyncPipe.
-- Submit a request with submitClient.
-- Check whether the request is likely to succeed with preflightClient.
-- Read the raw response with dirtyReadClient.
-- Complete the transaction with crossChainClient.
+- built-in
+- coin
+- core
+- marmalade
+- nodejs
 
 ## Built-in utilities
 
@@ -37,7 +36,47 @@ The Kadena `client-utils` package includes the following `built-in` helper funct
 - [createPrincipal](#createprincipal)
 - [describeModule](#describemodule)
 
-# Coin module utilities
+### createPrincipal
+
+Use `createPrincipal` to create a principal based on one public key.
+
+#### Basic usage
+
+#### Parameters
+
+#### Return value
+
+#### Example
+
+### describeModule
+
+Use `describeModule` to return detailed information about a specified Pact module.
+
+#### Basic usage
+
+desccribeModule _module_
+
+#### Parameters
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| module | string | Specifies the name of the module to describe.
+
+#### Return values
+
+This function returns the following information:
+
+blessed: string[];
+code: string;
+hash: string;
+interfaces: string[];
+keyset: string;
+name: string;
+
+#### Example
+
+
+## Coin module utilities
 
 The Kadena `client-utils` package provides access the following `coin` module functions:
 
@@ -62,116 +101,82 @@ The Kadena `client-utils` package includes the following `core` helper functions
 - readDirtyClient
 - submitClient
 
-## asyncPipe
+### asyncPipe
 
 Use `asyncPipe` to ...
 
-### Basic usage
+#### Basic usage
 
-### Parameters
+#### Parameters
 
-### Return value
+#### Return value
 
-### Example
+#### Example
 
-## createPrincipal
 
-Use `createPrincipal` to ...
-
-### Basic usage
-
-### Parameters
-
-### Return value
-
-### Example
-
-## crossChainClient
+### crossChainClient
 
 Use `crossChainClient` to ...
 
-### Basic usage
+#### Basic usage
 
-### Parameters
+#### Parameters
 
-### Return value
+#### Return value
 
-### Example
+#### Example
 
-## describeModule
+### dirtyReadClient
 
-Use `describeModule` to return detailed information about a specified Pact module.
+Use `dirtyReadClient` to ...
 
-### Basic usage
+#### Basic usage
 
-desccribeModule _module_
+#### Parameters
 
-### Parameters
+#### Return value
 
-| Parameter | Type | Description
-| --------- | ---- | -----------
-| module | string | Specifies the name of the module to describe.
+#### Example
 
-### Return values
+### estimateGas
 
-This function returns the following information:
+Use `estimateGas` to ...
 
-blessed: string[];
-code: string;
-hash: string;
-interfaces: string[];
-keyset: string;
-name: string;
+#### Basic usage
 
-### Example
+#### Parameters
 
-## dirtyReadClient
+#### Return value
 
-se `dirtyReadClient` to ...
+#### Example
 
-### Basic usage
+### preflightClient
 
-### Parameters
+Use `preflightClient` to prepare a preflight request for a signed transaction to connect to the Kadena blockchain without submitting a transaction. 
+The response to the preflight request contains information about the expected success of the transaction and the how much gas the transaction requires. 
+Preflight requests help to ensure that clients don't send transactions to the blockchain that are likely to fail.
 
-### Return value
+Because you must for pay processing any transaction request even if a transaction fails, you should use a preflight request for any computationally expensive transactions—like deploying a module—before sending the actual transaction to the blockchain.
 
-### Example
+#### Basic usage
 
-## estimateGas
+#### Parameters
 
-se `estimateGas` to ...
+#### Return value
 
-### Basic usage
+#### Example
 
-### Parameters
-
-### Return value
-
-### Example
-
-## preflightClient
-
-se `preflightClient` to ...
-
-### Basic usage
-
-### Parameters
-
-### Return value
-
-### Example
-
-## submitClient
+### submitClient
 
 Use `submitClient` to call the `submit` endpoint on a Chainweb node and return the result for the specified chain, network, and request key.
 
-### Basic usage
+#### Basic usage
 
 ```typescript
 submitClient _chainId_ _networkId_ _requestKey_
 ```
 
-### Parameters
+#### Parameters
 
 You must pass the following arguments to the `submitClient` command:
 
@@ -181,11 +186,11 @@ You must pass the following arguments to the `submitClient` command:
 | `networkId` | string | Specifies the network identifier for the client to connect to. Valid values are development, Testnet, and Mainnet.
 | `requestKey` | string | Specifies the request key to determine if the request was successful.
 
-### Return value
+#### Return value
 
 The `submitClient` call returns the following if successfully executed.
 
-### Example
+#### Example
 
 The following example submits a mock transaction using chainId "1" and the networkId "test-network" to test the submitClient call.
 
@@ -271,3 +276,28 @@ describe('submitClient', () => {
   });
 });
 ```
+
+## Marmalade utilities
+
+### createTokenId
+
+#### Basic usage
+
+#### Parameters
+
+#### Return value
+
+#### Example
+
+
+## Nodejs utilities
+
+### yamlConverter
+
+#### Basic usage
+
+#### Parameters
+
+#### Return value
+
+#### Example
