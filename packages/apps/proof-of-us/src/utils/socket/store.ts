@@ -15,11 +15,12 @@ const ProofOfUsStore = () => {
   };
   const getBackground = async (
     proofOfUsId: string,
-  ): Promise<IProofOfUsData | null> => {
+  ): Promise<IProofOfUsBackground | null> => {
     const docRef = await get(child(dbRef, `background/${proofOfUsId}`));
 
     if (!docRef.exists()) return null;
-    return docRef.toJSON() as IProofOfUsData;
+    const data = docRef.toJSON();
+    return data as IProofOfUsBackground;
   };
 
   const createProofOfUs = async (

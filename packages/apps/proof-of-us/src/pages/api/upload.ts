@@ -1,3 +1,4 @@
+import { getManifest } from '@/utils/getManifest';
 import { store } from '@/utils/socket/store';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Blob, File, NFTStorage } from 'nft.storage';
@@ -16,28 +17,34 @@ export default async function handler(
     });
   }
 
-  // const body = req.body;
-  // const proofOfUsId = body.proofOfUsId;
+  const body = JSON.parse(req.body);
+  const proofOfUsId = body.proofOfUsId;
 
-  // const background = await store.getBackground(proofOfUsId);
+  const background = await store.getBackground(proofOfUsId);
+  const proofOfUs = await store.getProofOfUs(proofOfUsId);
 
-  // if (!background) {
-  //   return res.status(404).json({
-  //     message: 'background not found',
-  //   });
-  // }
+  console.log({ background }, proofOfUsId);
 
-  if (!process.env.NEXT_API_TOKEN) {
+  if (!background?.background) {
+    return res.status(404).json({
+      message: 'background not found',
+    });
+  }
+  if (!proofOfUs) {
+    return res.status(404).json({
+      message: 'proofOfUs not found',
+    });
+  }
+
+  if (!process.env.NFTSTORAGE_API_TOKEN) {
     return res.status(500).json({
       message: 'api token not found',
     });
   }
 
-  const base64Image = process.env.NEXT_BASE64_IMAGE!;
+  const client = new NFTStorage({ token: process.env.NFTSTORAGE_API_TOKEN });
 
-  const client = new NFTStorage({ token: process.env.NEXT_API_TOKEN });
-
-  const mimeType = base64Image.match(
+  const mimeType = background?.background.match(
     /data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/,
   )?.[1];
 
@@ -47,7 +54,7 @@ export default async function handler(
     });
   }
 
-  const blob = base64ToBlob(base64Image, mimeType);
+  const blob = base64ToBlob(background?.background, mimeType);
   const imageFileName = 'image';
 
   const image = await NFTStorage.encodeDirectory([
@@ -58,12 +65,11 @@ export default async function handler(
   console.log('image cid', image.cid.toString());
   console.log('image url', imageUrl);
 
+  const manifest = getManifest(proofOfUs, imageUrl);
+
   const metadataFileName = 'metadata';
   const metadata = await NFTStorage.encodeDirectory([
-    new File(
-      [JSON.stringify({ imageUri: imageUrl }, null, 2)],
-      metadataFileName,
-    ),
+    new File([JSON.stringify(manifest, null, 2)], metadataFileName),
   ]);
 
   const metadataUrl = `https://${metadata.cid.toString()}.ipfs.nftstorage.link/${metadataFileName}`;

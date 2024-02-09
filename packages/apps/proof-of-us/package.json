@@ -16,7 +16,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@akord/akord-js": "^4.23.8",
     "@google-analytics/data": "~3.2.2",
     "@kadena/client": "workspace:*",
     "@kadena/react-ui": "workspace:*",

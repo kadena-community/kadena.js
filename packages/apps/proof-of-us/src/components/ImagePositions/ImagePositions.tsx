@@ -150,7 +150,7 @@ export const ImagePositions: FC<IProps> = () => {
             <input
               className={signeeInputClass}
               value={s.label}
-              disabled={signer?.cid !== s.cid}
+              disabled={signer?.cid !== s.cid || isLocked}
               type="text"
               name="label"
               onChange={handleLabelChange}
