@@ -1,5 +1,6 @@
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { IKeySource } from '@/modules/wallet/wallet.repository';
 import { Box, Button, Heading, Stack, Text, TextField } from '@kadena/react-ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -24,6 +25,7 @@ export function ImportWallet() {
   const [error, setError] = useState('');
   const { createProfile, isUnlocked, createFirstAccount } = useWallet();
   const { createHDWallet } = useHDWallet();
+  const [selectedKeySource, setSelectedKeySource] = useState<IKeySource>();
   async function confirm({ phrase, password, name, fromChainweaver }: Inputs) {
     const is12Words = phrase.trim().split(' ').length === 12;
     if (!is12Words) {
@@ -40,13 +42,16 @@ export function ImportWallet() {
         password,
         phrase,
       );
+      setSelectedKeySource(keySource);
       await createFirstAccount(profile.uuid, keySource);
     } catch (e) {
       setError((e as Error).message);
     }
   }
-  if (isUnlocked) {
-    return <Navigate to="/" replace />;
+  if (isUnlocked && selectedKeySource) {
+    return (
+      <Navigate to={`/account-discovery/${selectedKeySource.uuid}`} replace />
+    );
   }
   return (
     <main>

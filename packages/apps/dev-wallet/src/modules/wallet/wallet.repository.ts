@@ -15,14 +15,16 @@ export interface IKeyItem {
 
 export type KeySourceType = 'HD-BIP44' | 'HD-chainweaver';
 
+export interface IKeyItem {
+  index: number;
+  publicKey: string;
+}
+
 export interface IKeySource {
   uuid: string;
+  profileId: string;
   source: KeySourceType;
-  keys: Array<{
-    id?: string;
-    index: number;
-    publicKey: string;
-  }>;
+  keys: Array<IKeyItem>;
 }
 
 export interface IProfile {
@@ -46,19 +48,14 @@ export interface IAccount {
   guard: IKeySetGuard; // this could be extended to support other guards
 }
 
-export interface WalletRepository {
-  getAllProfiles: () => Promise<Exclude<IProfile, 'networks'>[]>;
-  getProfile: (id: string) => Promise<IProfile>;
-  addProfile: (profile: IProfile) => Promise<void>;
-  updateProfile: (profile: IProfile) => Promise<void>;
-  getEncryptedValue: (key: string) => Promise<Uint8Array>;
-  addEncryptedValue: (key: string, value: string | Uint8Array) => Promise<void>;
-  addAccount: (account: IAccount) => Promise<void>;
-  getAccountsByProfileId: (profileId: string) => Promise<IAccount[]>;
-  getProfileKeySources: (profileId: string) => Promise<IKeySource[]>;
+export interface Token {
+  uuid: string;
+  name: string;
+  networkId: string;
+  contract: string;
 }
 
-const createWalletRepository = (): WalletRepository => {
+const createWalletRepository = () => {
   const getAll = injectDb(getAllItems);
   const getOne = injectDb(getOneItem);
   const add = injectDb(addItem);
@@ -94,6 +91,15 @@ const createWalletRepository = (): WalletRepository => {
     },
     getProfileKeySources: async (profileId: string): Promise<IKeySource[]> => {
       return getAll('keySource', profileId, 'profileId');
+    },
+    getKeySource: async (keySourceId: string): Promise<IKeySource> => {
+      return getOne('keySource', keySourceId);
+    },
+    addToken: async (token: Token): Promise<void> => {
+      return add('token', token);
+    },
+    getTokenList: async (): Promise<Token[]> => {
+      return getAll('token');
     },
   };
 };

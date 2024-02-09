@@ -65,6 +65,7 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
     create('keySource', 'uuid', [{ index: 'profileId' }]);
     create('account', 'uuid', [{ index: 'address' }, { index: 'profileId' }]);
     create('network', 'uuid', [{ index: 'networkId', unique: true }]);
+    create('token', 'uuid', [{ index: 'networkId' }]);
   }
   return db;
 });

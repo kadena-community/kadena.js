@@ -1,5 +1,13 @@
-import { IPactCommand, IUnsignedCommand, addSignatures } from '@kadena/client';
+import {
+  ChainId,
+  IPactCommand,
+  IUnsignedCommand,
+  addSignatures,
+} from '@kadena/client';
+import { discoverAccount } from '@kadena/client-utils/coin';
+import { WithEmitter, withEmitter } from '@kadena/client-utils/core';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
+
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
 import {
@@ -145,3 +153,55 @@ export async function decryptSecret(password: string, secretId: string) {
   const mnemonic = new TextDecoder().decode(decryptedBuffer);
   return mnemonic;
 }
+
+export type IDiscoveredAccount = {
+  chainId: ChainId;
+  result:
+    | undefined
+    | {
+        account: string;
+        balance: string;
+        guard: {
+          keys: string[];
+        };
+      };
+};
+
+export const accountDiscovery = (
+  withEmitter as unknown as WithEmitter<
+    [
+      { event: 'key-retrieved'; data: IKeyItem },
+      { event: 'chain-result'; data: IDiscoveredAccount },
+    ]
+  >
+)(
+  (emit) =>
+    async (networkId: string, keySourceId: string, numberOfKeys = 20) => {
+      const result: Array<{
+        key: IKeyItem;
+        chainResult: IDiscoveredAccount[];
+      }> = [];
+      const keySource = await walletRepository.getKeySource(keySourceId);
+      const keySourceService = keySourceManager.get(keySource.source);
+      for (let i = 0; i < numberOfKeys; i++) {
+        const [key] = await keySourceService.getPublicKey(keySource, i);
+        if (!key) {
+          return;
+        }
+        await emit('key-retrieved')(key);
+        const chainResult = (await discoverAccount(
+          `k:${key.publicKey}`,
+          networkId,
+        )
+          .on('chain-result', async (data) => {
+            console.log('chain-result', data);
+            await emit('chain-result')(data as IDiscoveredAccount);
+          })
+          .execute()) as IDiscoveredAccount[];
+
+        result.push({ key, chainResult });
+      }
+
+      return result;
+    },
+);
