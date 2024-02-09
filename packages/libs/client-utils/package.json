@@ -14,30 +14,25 @@
     "Nil Amrutlal <nil.amrutlal@deptagency.com>"
   ],
   "exports": {
-    "./built-in": "./lib/built-in/index.js",
-    "./coin": "./lib/coin/index.js",
-    "./core": "./lib/core/index.js",
-    "./nodejs": "./lib/nodejs/index.js",
-    "./marmalade": "./lib/marmalade/index.js"
-  },
-  "main": "./lib/core/index.js",
-  "typesVersions": {
-    "*": {
-      "built-in": [
-        "./lib/built-in/index.d.ts"
-      ],
-      "core": [
-        "./lib/core/index.d.ts"
-      ],
-      "coin": [
-        "./lib/coin/index.d.ts"
-      ],
-      "nodejs": [
-        "./lib/nodejs/index.d.ts"
-      ],
-      "marmalade": [
-        "./lib/marmalade/index.d.ts"
-      ]
+    "./built-in": {
+      "default": "./lib/built-in/index.js",
+      "types": "./lib/built-in/index.d.ts"
+    },
+    "./coin": {
+      "default": "./lib/coin/index.js",
+      "types": "./lib/coin/index.d.ts"
+    },
+    "./core": {
+      "default": "./lib/core/index.js",
+      "types": "./lib/core/index.d.ts"
+    },
+    "./nodejs": {
+      "default": "./lib/nodejs/index.js",
+      "types": "./lib/nodejs/index.d.ts"
+    },
+    "./marmalade": {
+      "default": "./lib/marmalade/index.js",
+      "types": "./lib/marmalade/index.d.ts"
     }
   },
   "files": [
@@ -57,6 +52,7 @@
     "dev:ae:built-in": "api-extractor run --local --verbose -c ./config/api-extractor-built-in.json",
     "dev:ae:coin": "api-extractor run --local --verbose -c ./config/api-extractor-coin.json",
     "dev:ae:core": "api-extractor run --local --verbose -c ./config/api-extractor-core.json",
+    "dev:ae": "pnpm run dev:ae:core && pnpm run dev:ae:built-in && pnpm run dev:ae:coin",
     "dev:postinstall": "pnpm run pactjs:generate:contract",
     "format": "pnpm run /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
