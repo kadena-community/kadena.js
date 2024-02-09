@@ -18,7 +18,6 @@ export interface IProofOfUsContext {
     status: IBuildStatusValues;
   }) => Promise<void>;
   addSignee: () => Promise<void>;
-  updateSigneeStatus: (status: ISignerStatus) => Promise<void>;
   removeSignee: ({
     proofOfUsId,
     signee,
@@ -27,22 +26,27 @@ export interface IProofOfUsContext {
     signee: IProofOfUsSignee;
   }) => Promise<void>;
   createToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
+  changeTitle: (value: string) => Promise<void>;
   isConnected: () => boolean;
   isInitiator: () => boolean;
   getSigneeAccount: (account: IAccount) => IProofOfUsSignee;
+  updateSigner: (value: any, isOverwrite?: boolean) => Promise<void>;
 }
 
 export const ProofOfUsContext = createContext<IProofOfUsContext>({
   proofOfUs: undefined,
-  background: '',
+  background: {
+    bg: '',
+  },
   closeToken: async () => {},
   updateStatus: async () => {},
   addSignee: async () => {},
-  updateSigneeStatus: async (status: ISignerStatus) => {},
   removeSignee: async () => {},
   createToken: async () => {},
+  changeTitle: async () => {},
   isConnected: () => false,
   isInitiator: () => false,
+  updateSigner: async () => {},
   getSigneeAccount: (account: IAccount) => {
     return {
       cid: account.cid,
@@ -58,12 +62,14 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { account } = useAccount();
   const params = useParams();
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
-  const [background, setBackground] = useState<IProofOfUsBackground>('');
+  const [background, setBackground] = useState<IProofOfUsBackground>({
+    bg: '',
+  });
 
   useEffect(() => {
     store.listenProofOfUsData(`${params.id}`, setProofOfUs);
     store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
-  }, []);
+  }, [setProofOfUs, setBackground, params.id]);
 
   const updateStatus = async ({
     proofOfUsId,
@@ -79,22 +85,10 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     await store.closeToken(proofOfUsId);
   };
 
-  const updateSigneeStatus = async (status: ISignerStatus) => {
-    if (!account || !proofOfUs) return;
-
-    const signer = proofOfUs.signees.find((c) => c.cid === account.cid);
-
-    await store.updateSignee(
-      proofOfUs.proofOfUsId,
-      signer ? signer : getSigneeAccount(account),
-      status,
-    );
-  };
-
   const addSignee = async () => {
     if (!account || !proofOfUs) return;
 
-    await store.addSignee(proofOfUs, getSigneeAccount(account));
+    await store.addSignee(proofOfUs, getSigneeAccount(account, proofOfUs));
   };
 
   const removeSignee = async ({
@@ -110,8 +104,26 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const createToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
     if (!account) return;
+    await store.createProofOfUs(
+      proofOfUsId,
+      getSigneeAccount(account, proofOfUs),
+    );
+  };
 
-    await store.createProofOfUs(proofOfUsId, getSigneeAccount(account));
+  const changeTitle = async (value: string) => {
+    if (!proofOfUs) return;
+
+    await store.addTitle(proofOfUs, value);
+  };
+
+  const updateSigner = async (value: any, updateSigner: boolean = false) => {
+    if (!proofOfUs || !account) return;
+    await store.updateSigner(
+      proofOfUs,
+      getSigneeAccount(account, proofOfUs),
+      value,
+      updateSigner,
+    );
   };
 
   const isConnected = () => {
@@ -128,7 +140,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       value={{
         closeToken,
         addSignee,
-        updateSigneeStatus,
         removeSignee,
         createToken,
         isConnected,
@@ -137,6 +148,8 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         background,
         proofOfUs,
         updateStatus,
+        changeTitle,
+        updateSigner,
       }}
     >
       {children}

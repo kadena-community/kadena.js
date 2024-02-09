@@ -9,7 +9,12 @@ export const useAvatar = () => {
     await store.addBackground(proofOfUs, bg);
   };
 
+  const removeBackground = async (proofOfUs: IProofOfUsData) => {
+    await store.removeBackground(proofOfUs);
+  };
+
   const uploadBackground = async (proofOfUsId: string) => {
+    console.log('upload', { proofOfUsId });
     await fetch('/api/upload', {
       method: 'POST',
       body: JSON.stringify({
@@ -20,6 +25,7 @@ export const useAvatar = () => {
 
   return {
     addBackground,
+    removeBackground,
     uploadBackground,
   };
 };

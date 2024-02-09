@@ -58,15 +58,9 @@ under `pact/sale-contracts`. Just create a pull request and we will review your
 sale contract and take care of deployment and whitelisting it in the Policy
 Manager.
 
-**Conventional Auction**
+Marmalade V2 provides 2 useful sale contracts, which lets token owners easily
+create auctions of their choice: [`conventional-auction`](https://docs.kadena.io/marmalade/auctions/conventional-auction) and [`dutch-auction`](https://docs.kadena.io/marmalade/auctions/dutch-auction). 
 
-A conventional auction is a sale contract that allows for the sale of a token
-through a conventional auction. The seller can set a reserve price which will
-ensure that the token is not sold below a certain price. The auction will run
-for a set amount of time and the highest bidder will win the auction. If the
-reserve price is not met, the seller can choose to cancel the auction and the
-token will be returned to the seller. The contract is deployed at
-`marmalade-sale.conventional-auction`.
 
 ## Using a Sale Contract
 

@@ -15,11 +15,13 @@ const ProofOfUsStore = () => {
   };
   const getBackground = async (
     proofOfUsId: string,
-  ): Promise<IProofOfUsData | null> => {
+  ): Promise<IProofOfUsBackground | null> => {
+    console.log(2323422234234243);
     const docRef = await get(child(dbRef, `background/${proofOfUsId}`));
 
-    if (!docRef.exists()) return null;
-    return docRef.toJSON() as IProofOfUsData;
+    if (!docRef.exists()) return { bg: '' };
+    const data = docRef.toJSON();
+    return (data ?? { bg: '' }) as IProofOfUsBackground;
   };
 
   const createProofOfUs = async (
@@ -56,8 +58,8 @@ const ProofOfUsStore = () => {
   ) => {
     const backgroundRef = ref(database, `background/${proofOfUsId}`);
     onValue(backgroundRef, (snapshot) => {
-      const data = snapshot.val();
-      setDataCallback(data?.background);
+      const data = snapshot.val() ?? { bg: '' };
+      setDataCallback(data);
     });
   };
 
@@ -67,9 +69,13 @@ const ProofOfUsStore = () => {
   ) => {
     //check if there are people already signing. it is not possible to set the background
     if (isAlreadySigning(proofOfUs.signees)) return;
-    await set(ref(database, `background/${proofOfUs.proofOfUsId}`), {
-      background,
-    });
+    await set(ref(database, `background/${proofOfUs.proofOfUsId}`), background);
+  };
+
+  const removeBackground = async (proofOfUs: IProofOfUsData) => {
+    //check if there are people already signing. it is not possible to set the background
+    if (isAlreadySigning(proofOfUs.signees)) return;
+    await set(ref(database, `background/${proofOfUs.proofOfUsId}`), null);
   };
 
   const updateStatus = async (
@@ -107,35 +113,6 @@ const ProofOfUsStore = () => {
       signees: signeesList,
     });
   };
-  const updateSignee = async (
-    proofOfUsId: string,
-    account: IProofOfUsSignee,
-    signerStatus: ISignerStatus,
-  ) => {
-    const proofOfUs = await getProofOfUs(proofOfUsId);
-    if (!proofOfUs) return;
-
-    const signeesList = Object.keys(proofOfUs.signees).map(
-      (k: any) => proofOfUs.signees[k],
-    );
-    if (!signeesList) return;
-    if (!signeesList.find((s) => s.cid === account.cid)) {
-      signeesList[1] = account;
-    }
-
-    const newList = signeesList.map((s) => {
-      if (s.cid === account.cid) {
-        return { ...account, signerStatus };
-      }
-      return s;
-    });
-
-    console.log({ newList });
-
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      signees: newList,
-    });
-  };
 
   const removeSignee = async (
     proofOfUs: IProofOfUsData,
@@ -162,19 +139,49 @@ const ProofOfUsStore = () => {
     });
   };
 
+  const addTitle = async (proofOfUs: IProofOfUsData, value: string) => {
+    if (isAlreadySigning(proofOfUs.signees)) return;
+
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      title: value,
+    });
+  };
+
+  const updateSigner = async (
+    proofOfUs: IProofOfUsData,
+    account: IProofOfUsSignee,
+    value: any,
+    isOverwrite: boolean = false,
+  ) => {
+    if (!isOverwrite && isAlreadySigning(proofOfUs.signees)) return;
+
+    const newList = proofOfUs.signees.map((a) => {
+      if (a.cid === account.cid) {
+        return { ...a, ...value };
+      }
+      return a;
+    });
+
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      signees: newList,
+    });
+  };
+
   return {
     updateMintStatus,
     createProofOfUs,
     getProofOfUs,
     getBackground,
     addSignee,
-    updateSignee,
     removeSignee,
     addBackground,
+    removeBackground,
     closeToken,
     updateStatus,
     listenProofOfUsData,
     listenProofOfUsBackgroundData,
+    addTitle,
+    updateSigner,
   };
 };
 

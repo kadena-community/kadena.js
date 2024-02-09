@@ -26,7 +26,8 @@ async function* iteratorFn(
   ),
   context: IContext,
 ): AsyncGenerator<string[], void, unknown> {
-  const blockResult = await getLastBlocks(chainIds);
+  const startingTimestamp = new Date().toISOString();
+  const blockResult = await getLastBlocks(chainIds, startingTimestamp);
   let lastBlock;
 
   if (!nullishOrEmpty(blockResult)) {
@@ -35,7 +36,11 @@ async function* iteratorFn(
   }
 
   while (!context.req.socket.destroyed) {
-    const newBlocks = await getLastBlocks(chainIds, lastBlock?.id);
+    const newBlocks = await getLastBlocks(
+      chainIds,
+      startingTimestamp,
+      lastBlock?.id,
+    );
 
     if (!nullishOrEmpty(newBlocks)) {
       lastBlock = newBlocks[0];
@@ -48,6 +53,7 @@ async function* iteratorFn(
 
 async function getLastBlocks(
   chainIds: number[],
+  date: string,
   id?: number,
 ): Promise<{ id: number; hash: string }[]> {
   const defaultFilter: Parameters<typeof prismaClient.block.findMany>[0] = {
@@ -61,7 +67,12 @@ async function getLastBlocks(
       ? { take: 5, ...defaultFilter }
       : {
           take: 100,
-          where: { id: { gt: id } },
+          where: {
+            AND: {
+              id: { gt: id },
+              creationTime: { gt: date },
+            },
+          },
         };
 
   const foundblocks = await prismaClient.block.findMany({
