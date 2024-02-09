@@ -44,6 +44,9 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
       .then((stream) => {
         if (!videoRef.current) return;
         videoRef.current.srcObject = stream;
+      })
+      .catch((e) => {
+        alert('The browser needs permissions for the camera to work');
       });
   }, [isMounted]);
 
