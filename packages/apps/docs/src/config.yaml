@@ -449,6 +449,16 @@ pages:
           royaltypolicy:
             url: /royalty-policy
             file: /marmalade/concrete-policies/royalty-policy.md
+      auctions:
+        url: /auctions
+        file: /marmalade/auctions/index.md
+        children:
+          conventional-auction:
+            url: /conventional-auction
+            file: /marmalade/auctions/conventional-auction.md
+          dutch-auction:
+            url: /dutch-auction
+            file: /marmalade/auctions/dutch-auction.md
       metadata:
         url: /metadata
         file: /marmalade/metadata/index.md
