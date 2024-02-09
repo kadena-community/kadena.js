@@ -1,13 +1,13 @@
 import { store } from '@/utils/socket/store';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-type ResponseData = {
+interface IResponseData {
   message: string;
-};
+}
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>,
+  res: NextApiResponse<IResponseData>,
 ) {
   if (req.method !== 'POST') {
     return res.status(405).json({
