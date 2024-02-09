@@ -29,6 +29,11 @@ import Head from 'next/head';
 import React, { useState } from 'react';
 import { containerStyle } from './styles.css';
 
+const options = Array.from({ length: 10 }, (_, i) => ({
+  id: `ledger-key-${i}`,
+  name: `${i}`,
+}));
+
 const Storybook = () => {
   const { t } = useTranslation('common');
 
@@ -133,12 +138,11 @@ const Storybook = () => {
                   await connect();
                   setKeyId(parseInt(value, 10));
                 }}
-                defaultItems={Array.from({ length: 100 }, (_, i) => ({
-                  id: `ledger-key-${i}`,
-                  name: `${i}`,
-                }))}
+                defaultItems={options}
               >
-                {(item) => <ComboboxItem>{item.name}</ComboboxItem>}
+                {(item) => (
+                  <ComboboxItem key={item.id}>{item.name}</ComboboxItem>
+                )}
               </Combobox>
               <Select
                 defaultSelectedKey={defaultDerivationMode}
