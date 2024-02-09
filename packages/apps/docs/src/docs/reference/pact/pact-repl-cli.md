@@ -11,7 +11,7 @@ tags: ['pact', 'language reference', 'REPL commands']
 
 # Pact command-line interpreter
 
-Use the Pact command-line interpreter to test Pact code and modules in an interactive terminal shell.
+Use the Pact command-line interpreter—also referred to as the Pact read–eval–print-loop (REPL) interactive shell program—to test Pact code and modules in an interactive terminal shell.
 
 ## Basic usage
 
@@ -20,7 +20,8 @@ pact [COMMAND] [option]
 pact [option] FILE
 ```
 
-Depending on the option you provide, FILE can specify the path to a `.pact` file to compile or a `.repl` file to execute.
+Depending on the option you provide, `FILE` can specify the path to a `.pact` file to compile or a `.repl` file to execute.
+You can specify command-line options before or after the file name.
 
 ## Options
 
@@ -52,13 +53,13 @@ You can use the following commands with the `pact` command-line interpreter:
 
 ## Examples
 
-To display usage information for the `add-sig` command, you would run the following command:
+To display usage information for the `add-sig` command, you can run the following command:
 
 ```pact
 pact add-sig --help
 ```
 
-To generate a new public and secret key pair, you would run the following command:
+To generate a new public and secret key pair, you can run the following command:
 
 ```pact
 pact --genkey

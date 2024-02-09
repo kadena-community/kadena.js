@@ -16,29 +16,77 @@ Pact provides the following general purpose built-in functions.
 
 ## CHARSET_ASCII
 
-Constant denoting the ASCII charset.
+Use the `CHARSET_ASCII` constant to indicate the standard ASCII character set.
 
 Constant: &nbsp;&nbsp;`CHARSET_ASCII:integer = 0`
 
 ## CHARSET_LATIN1
 
-Constant denoting the Latin-1 charset ISO-8859-1.
+Use the `CHARSET_LATIN1` constant to indicate the standard Latin-1 (ISO-8859-1) character set.
 
 Constant: &nbsp;&nbsp;`CHARSET_LATIN1:integer = 1`
 
-## at
+Use `at` to retrieve the value at the location specified by an *index* number or by a *key* string in a collection.
+If you specify an *index* number, the collection must be a list of values.
+If you specify a *key* string, the collection must be an object.
 
-_idx_&nbsp;`integer` _list_&nbsp;`[<l>]` _&rarr;_&nbsp;`<a>`
+### Basic syntax
 
-_idx_&nbsp;`string` _object_&nbsp;`object:<{o}>` _&rarr;_&nbsp;`<a>`
+To get a value using the specified index location from a list of values, use the following syntax:
 
-Index LIST at IDX, or get value with key IDX from OBJECT.
+```pact
+at index:integer [list]
+```
 
-```lisp
-pact> (at 1 [1 2 3])
-2
-pact> (at "bar" { "foo": 1, "bar": 2 })
-2
+To get a value using the specified string from an object, use the following syntax:
+
+```pact
+at key:string {object}
+```
+
+### Arguments
+
+Use one of the following argument to define the value you want to retrieve using the `at` Pact function.
+
+| Argument | Type | Description
+| -------- | ---- | -----------
+| `index` | integer | Specifies the location of the information you want to retrieve. If you specify the index as an integer, the function returns the value from that location in a list of values.
+| `key` | string | Specifies the location of the information you want to retrieve. If you specify a `key` string, the function returns the value corresponding to that key from an object.
+
+### Return values
+
+The `at` function returns the value found at the specified index.
+
+### Examples
+
+The following example returns the value found at the index location—starting with 0—from a list of values:
+
+```pact
+(at  3 [20 18 16 14 12 10])
+14
+```
+
+You can use the `at` function to return any type of data from a list.
+For example:
+
+```pact
+(at 1 ["blue","green","red","yellow"])
+"green"
+```
+
+The following example returns the value found at the specified index key from an object:
+
+```pact
+(at "last-name" { "first-name": "maya", "last-name": "tea"})
+"tea"
+```
+
+You can use the `at` function to return any type of data using the specified key from an object.
+For example:
+
+```pact
+(at "chainId" { "networkId": "development", "chainId": 1, "auth": 0})
+1
 ```
 
 ## base64-decode
