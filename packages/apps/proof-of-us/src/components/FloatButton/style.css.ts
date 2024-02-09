@@ -3,7 +3,7 @@ import { style } from '@vanilla-extract/css';
 
 export const floatClass = style([
   atoms({
-    position: 'fixed',
+    position: 'absolute',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -19,6 +19,7 @@ export const floatClass = style([
     width: '50px',
     aspectRatio: '1/1',
     textDecoration: 'none',
+    zIndex: 999,
 
     selectors: {
       '&:hover': {

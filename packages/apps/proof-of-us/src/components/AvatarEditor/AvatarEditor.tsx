@@ -89,7 +89,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
           className={classnames(cameraClass, !isMounted ? hiddenClass : '')}
           ref={videoRef}
           id="player"
-          controls
+          controls={false}
           autoPlay
           muted
           playsInline
