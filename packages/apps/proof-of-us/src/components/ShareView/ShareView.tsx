@@ -7,6 +7,7 @@ import Link from 'next/link';
 import type { FC } from 'react';
 import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
+import { ImagePositions } from '../ImagePositions/ImagePositions';
 
 interface IProps {
   next: () => void;
@@ -16,7 +17,7 @@ interface IProps {
 
 export const ShareView: FC<IProps> = ({ next, prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
-  const { proofOfUs, background } = useProofOfUs();
+  const { proofOfUs } = useProofOfUs();
   const { isLoading, hasError, data, mintToken } = useMintMultiToken();
 
   const handleBack = () => {
@@ -58,7 +59,7 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
               link: {`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
             </>
           ) : (
-            <img src={background} />
+            <ImagePositions />
           )}
           {isReady && <button onClick={handleSign}>Sign & Upload</button>}
         </>
