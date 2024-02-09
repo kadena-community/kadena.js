@@ -1,5 +1,5 @@
 import type AppKda from '@ledgerhq/hw-app-kda';
-import { useAsync } from 'react-async-hook';
+import { useAsync } from 'react-use';
 import useLedgerApp from './use-ledger-app';
 
 export const derivationModes = [
