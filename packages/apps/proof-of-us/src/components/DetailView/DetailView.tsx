@@ -26,10 +26,12 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
 
   const handleRedo = async () => {
     if (!proofOfUs) return;
+    if (!confirm('Are you sure you want to retake the photo?')) return;
     await removeBackground(proofOfUs);
     prev();
   };
   const handleClose = async () => {
+    if (!confirm('Are you sure you want to stop with this token?')) return;
     await closeToken({ proofOfUsId: proofOfUs.proofOfUsId });
     setIsMounted(false);
     router.replace('/user');

@@ -8,6 +8,7 @@ import type { FC } from 'react';
 import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
+import { qrClass } from './style.css';
 
 interface IProps {
   next: () => void;
@@ -45,17 +46,19 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
           <ListSignees />
           {!isReady ? (
             <>
-              <QRCode
-                ecLevel="H"
-                size={500}
-                ref={qrRef}
-                value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
-                removeQrCodeBehindLogo={true}
-                logoImage="/assets/qrlogo.png"
-                logoPadding={5}
-                quietZone={10}
-                eyeRadius={10}
-              />
+              <div className={qrClass}>
+                <QRCode
+                  ecLevel="H"
+                  size={800}
+                  ref={qrRef}
+                  value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
+                  removeQrCodeBehindLogo={true}
+                  logoImage="/assets/qrlogo.png"
+                  logoPadding={5}
+                  quietZone={10}
+                  eyeRadius={10}
+                />
+              </div>
               link: {`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
             </>
           ) : (
