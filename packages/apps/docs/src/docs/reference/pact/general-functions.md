@@ -16,27 +16,18 @@ Pact provides the following general purpose built-in functions.
 
 ## CHARSET_ASCII
 
-<<<<<<< HEAD
 Use the `CHARSET_ASCII` constant to indicate the standard ASCII character set.
-=======
-Constant denoting the ASCII charset.
->>>>>>> 4806fd272 (Restore doc structure WIP)
 
 Constant: &nbsp;&nbsp;`CHARSET_ASCII:integer = 0`
 
 ## CHARSET_LATIN1
 
-<<<<<<< HEAD
 Use the `CHARSET_LATIN1` constant to indicate the standard Latin-1 (ISO-8859-1) character set.
-=======
-Constant denoting the Latin-1 charset ISO-8859-1.
->>>>>>> 4806fd272 (Restore doc structure WIP)
 
 Constant: &nbsp;&nbsp;`CHARSET_LATIN1:integer = 1`
 
 ## at
 
-<<<<<<< HEAD
 Use `at` to retrieve the value at the location specified by an *index* number or by a *key* string in a collection.
 If you specify an *index* number, the collection must be a list of values.
 If you specify a *key* string, the collection must be an object.
@@ -105,21 +96,6 @@ For example:
 
 For property checking, you can use the `at` list operator when specifying an invariant or a property to test your code against.
 
-=======
-_idx_&nbsp;`integer` _list_&nbsp;`[<l>]` _&rarr;_&nbsp;`<a>`
-
-_idx_&nbsp;`string` _object_&nbsp;`object:<{o}>` _&rarr;_&nbsp;`<a>`
-
-Index LIST at IDX, or get value with key IDX from OBJECT.
-
-```lisp
-pact> (at 1 [1 2 3])
-2
-pact> (at "bar" { "foo": 1, "bar": 2 })
-2
-```
-
->>>>>>> 4806fd272 (Restore doc structure WIP)
 ## base64-decode
 
 _string_&nbsp;`string` _&rarr;_&nbsp;`string`
