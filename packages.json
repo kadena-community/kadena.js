@@ -85,7 +85,7 @@
   },
   {
     "name": "@kadena/graph",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "private": false,
     "path": "packages/apps/graph"
   },
@@ -109,7 +109,7 @@
   },
   {
     "name": "@kadena/kadena-cli",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "private": true,
     "path": "packages/tools/kadena-cli"
   },
