@@ -88,10 +88,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 <Link className={docsCardLink} href="/marmalade/architecture">
                   Architecture
                 </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/marmalade/auctions"
-                >
+                <Link className={docsCardLink} href="/marmalade/auctions">
                   Auctions
                 </Link>
                 <Link
@@ -145,10 +142,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               background="whitepapers"
             >
               <BrowseSection marker="none">
-                <Link
-                  className={docsCardLink}
-                  href="/marmalade/auctions"
-                >
+                <Link className={docsCardLink} href="/marmalade/auctions">
                   Auctions Overview
                 </Link>
               </BrowseSection>
