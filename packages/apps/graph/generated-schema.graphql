@@ -237,6 +237,9 @@ type PageInfo {
 scalar PositiveFloat
 
 type Query {
+  """Retrieve an account by public key."""
+  accountByPublicKey(publicKey: String!): FungibleAccount
+
   """Retrieve a block by hash."""
   block(hash: String!): Block
 

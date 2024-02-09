@@ -13,6 +13,7 @@ import './objects/token';
 import './objects/total-count';
 import './objects/transaction';
 import './objects/transfer';
+import './query/account-by-public-key';
 import './query/block';
 import './query/blocks-from-height';
 import './query/chain-fungible-account';
