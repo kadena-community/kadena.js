@@ -26,7 +26,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
 
   const handleRedo = async () => {
     if (!proofOfUs) return;
-    if (!confirm('Are you sure you want to retake the photo?')) return;
+    if (!confirm('Are you sure you want to retake your photo?')) return;
     await removeBackground(proofOfUs);
     prev();
   };
