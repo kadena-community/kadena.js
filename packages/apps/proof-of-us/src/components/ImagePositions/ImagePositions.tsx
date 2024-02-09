@@ -125,6 +125,7 @@ export const ImagePositions: FC<IProps> = () => {
     updateSigner({ position: null });
   };
 
+  console.log(background);
   return (
     <>
       <section ref={wrapperRef} className={wrapperClass}>

@@ -20,7 +20,7 @@ const ProofOfUsStore = () => {
 
     if (!docRef.exists()) return null;
     const data = docRef.toJSON();
-    return data as IProofOfUsBackground;
+    return (data ?? { bg: '' }) as IProofOfUsBackground;
   };
 
   const createProofOfUs = async (
@@ -58,7 +58,7 @@ const ProofOfUsStore = () => {
     const backgroundRef = ref(database, `background/${proofOfUsId}`);
     onValue(backgroundRef, (snapshot) => {
       const data = snapshot.val();
-      setDataCallback(data?.background);
+      setDataCallback(data);
     });
   };
 
