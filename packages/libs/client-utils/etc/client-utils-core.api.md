@@ -386,6 +386,26 @@ export const estimateGas: (command: IPartialPactCommand_2 | ((cmd?: IPartialPact
 }>;
 
 // @alpha (undocumented)
+export interface IEmitterWrapper<T extends Array<{
+    event: string;
+    data: Any;
+}>, Extra extends Array<{
+    event: string;
+    data: Any;
+}>, ExecReturnType> {
+    // (undocumented)
+    execute: () => ExecReturnType;
+    // Warning: (ae-forgotten-export) The symbol "ExecuteTo" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    executeTo: (() => ExecReturnType) & ExecuteTo<[...T]>;
+    // Warning: (ae-forgotten-export) The symbol "OnType" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    on: OnType<[...T, ...Extra], this>;
+}
+
+// @alpha (undocumented)
 export const preflightClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => {
     (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
     event: "sign";
@@ -407,6 +427,63 @@ export const preflightClient: <T = PactValue>(args_0: IClientConfig, args_1?: IC
     event: "preflight";
     data: ILocalCommandResult;
     }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>);
+};
+
+// @alpha (undocumented)
+export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">) => {
+    (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
+    event: "query-result";
+    data: {
+    result: Awaited<T> | undefined;
+    chainId: ChainId | undefined;
+    }[];
+    }], [{
+    event: 'chain-result';
+    data: {
+    result: T;
+    chainId: ChainId;
+    };
+    }], Promise<{
+    result: Awaited<T> | undefined;
+    chainId: ChainId | undefined;
+    }[]>>;
+    from: ((event: "query-result", data: {
+        result: Awaited<T> | undefined;
+        chainId: ChainId | undefined;
+    }[]) => IEmitterWrapper<[{
+    event: "query-result";
+    data: {
+    result: Awaited<T> | undefined;
+    chainId: ChainId | undefined;
+    }[];
+    }], [{
+    event: 'chain-result';
+    data: {
+    result: T;
+    chainId: ChainId;
+    };
+    }], Promise<{
+    result: Awaited<T> | undefined;
+    chainId: ChainId | undefined;
+    }[]>>) & ((event: "chain-result", data: {
+        result: T;
+        chainId: ChainId;
+    }) => IEmitterWrapper<[{
+    event: "query-result";
+    data: {
+    result: Awaited<T> | undefined;
+    chainId: ChainId | undefined;
+    }[];
+    }], [{
+    event: 'chain-result';
+    data: {
+    result: T;
+    chainId: ChainId;
+    };
+    }], Promise<{
+    result: Awaited<T> | undefined;
+    chainId: ChainId | undefined;
+    }[]>>);
 };
 
 // @alpha (undocumented)
@@ -475,9 +552,28 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClie
     }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>);
 };
 
+// Warning: (ae-forgotten-export) The symbol "IEmit" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export type WithEmitter<Extra extends [...Array<{
+    event: string;
+    data: Any;
+}>] = []> = <T extends (emit: IEmit) => Any>(fn: T) => {
+    (...args: Parameters<ReturnType<T>>): IEmitterWrapper<ExtractEventType<ReturnType<T>>, Extra, ReturnType<ReturnType<T>>>;
+    from: StartFrom<[
+    ...ExtractEventType<ReturnType<T>>,
+    ...Extra
+    ], IEmitterWrapper<ExtractEventType<ReturnType<T>>, Extra, ReturnType<ReturnType<T>>>>;
+};
+
+// @alpha (undocumented)
+export const withEmitter: WithEmitter;
+
 // Warnings were encountered during analysis:
 //
-// src/core/client-helpers.ts:41:57 - (ae-forgotten-export) The symbol "IEmitterWrapper" needs to be exported by the entry point index.d.ts
+// src/core/utils/with-emitter.ts:38:36 - (ae-forgotten-export) The symbol "Any" needs to be exported by the entry point index.d.ts
+// src/core/utils/with-emitter.ts:57:3 - (ae-forgotten-export) The symbol "ExtractEventType" needs to be exported by the entry point index.d.ts
+// src/core/utils/with-emitter.ts:64:3 - (ae-forgotten-export) The symbol "StartFrom" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
