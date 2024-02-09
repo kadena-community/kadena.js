@@ -27,6 +27,7 @@ export interface IProofOfUsContext {
   }) => Promise<void>;
   createToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
   changeTitle: (value: string) => Promise<void>;
+  updateBackgroundColor: (value: string) => Promise<void>;
   isConnected: () => boolean;
   isInitiator: () => boolean;
   getSigneeAccount: (account: IAccount) => IProofOfUsSignee;
@@ -44,6 +45,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   removeSignee: async () => {},
   createToken: async () => {},
   changeTitle: async () => {},
+  updateBackgroundColor: async () => {},
   isConnected: () => false,
   isInitiator: () => false,
   updateSigner: async () => {},
@@ -116,6 +118,12 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     await store.addTitle(proofOfUs, value);
   };
 
+  const updateBackgroundColor = async (value: string) => {
+    if (!proofOfUs) return;
+
+    await store.updateBackgroundColor(proofOfUs, value);
+  };
+
   const updateSigner = async (value: any, updateSigner: boolean = false) => {
     if (!proofOfUs || !account) return;
     await store.updateSigner(
@@ -149,6 +157,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         proofOfUs,
         updateStatus,
         changeTitle,
+        updateBackgroundColor,
         updateSigner,
       }}
     >

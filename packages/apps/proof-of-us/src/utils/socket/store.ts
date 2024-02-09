@@ -147,6 +147,17 @@ const ProofOfUsStore = () => {
     });
   };
 
+  const updateBackgroundColor = async (
+    proofOfUs: IProofOfUsData,
+    value: string,
+  ) => {
+    if (isAlreadySigning(proofOfUs.signees)) return;
+
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      backgroundColor: value,
+    });
+  };
+
   const updateSigner = async (
     proofOfUs: IProofOfUsData,
     account: IProofOfUsSignee,
@@ -181,6 +192,7 @@ const ProofOfUsStore = () => {
     listenProofOfUsData,
     listenProofOfUsBackgroundData,
     addTitle,
+    updateBackgroundColor,
     updateSigner,
   };
 };
