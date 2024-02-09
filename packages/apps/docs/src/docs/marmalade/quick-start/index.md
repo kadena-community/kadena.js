@@ -39,7 +39,7 @@ Once located, select "View" to continue.
 
 ![Mint with URI and Guard](/assets/marmalade/mint_1.png)
 
-We will start by adding the required data for toke creation. Click on the
+We will start by adding the required data for token creation. Click on the
 `mint-basic-NFT` function, and filling in the token components listed below.
 
 1. **URI**: Enter the off-chain URI that stores the token metadata.

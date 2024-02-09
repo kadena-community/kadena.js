@@ -33,8 +33,8 @@ For example, the following function is a rule:
 // match with hello
 const hello = rule((pointer: IPointer) => {
   const token = pointer.next();
-  if (toke.value === 'hello') {
-    return toke.value;
+  if (token.value === 'hello') {
+    return token.value;
   }
   return FAILED;
 });
