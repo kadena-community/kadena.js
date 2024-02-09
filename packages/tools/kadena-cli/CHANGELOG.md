@@ -1,5 +1,11 @@
 # @kadena/kadena-cli
 
+## 0.3.0
+
+### Minor Changes
+
+- 737f1c914: Update account get details sub command
+
 ## 0.2.0
 
 ### Minor Changes

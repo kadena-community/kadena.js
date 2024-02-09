@@ -1,5 +1,11 @@
 # @kadena/graph
 
+## 0.1.4
+
+### Patch Changes
+
+- 5d5b91918: use `creationTime` next to `id` to get recent blocks
+
 ## 0.1.3
 
 ### Patch Changes
