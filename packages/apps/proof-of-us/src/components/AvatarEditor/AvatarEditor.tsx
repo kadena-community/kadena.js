@@ -39,10 +39,15 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   useEffect(() => {
     if (!videoRef.current || !isMounted) return;
 
-    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-      if (!videoRef.current) return;
-      videoRef.current.srcObject = stream;
-    });
+    navigator.mediaDevices
+      .getUserMedia({ audio: false, video: true })
+      .then((stream) => {
+        if (!videoRef.current) return;
+        videoRef.current.srcObject = stream;
+      })
+      .catch((e) => {
+        alert('The browser needs permissions for the camera to work');
+      });
   }, [isMounted]);
 
   useEffect(() => {
@@ -62,7 +67,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     ctx?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
     if (!proofOfUs) return;
-    await addBackground(proofOfUs, canvas.toDataURL());
+    await addBackground(proofOfUs, { bg: canvas.toDataURL() });
     (videoRef.current?.srcObject as MediaStream)
       ?.getTracks()
       .forEach((t) => t.stop());
@@ -86,6 +91,8 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
           id="player"
           controls
           autoPlay
+          muted
+          playsInline
         ></video>
         {!isAlreadySigning(proofOfUs?.signees) && (
           <button

@@ -1,6 +1,8 @@
 export const proofOfUsData: IProofOfUs[] = [
   {
-    background: '',
+    background: {
+      bg: '',
+    },
     data: {
       status: 0,
       mintStatus: 'error',
@@ -25,7 +27,9 @@ export const proofOfUsData: IProofOfUs[] = [
     },
   },
   {
-    background: '',
+    background: {
+      bg: '',
+    },
     data: {
       status: 0,
       mintStatus: 'error',

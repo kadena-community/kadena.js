@@ -35,7 +35,9 @@ export interface IProofOfUsContext {
 
 export const ProofOfUsContext = createContext<IProofOfUsContext>({
   proofOfUs: undefined,
-  background: '',
+  background: {
+    bg: '',
+  },
   closeToken: async () => {},
   updateStatus: async () => {},
   addSignee: async () => {},
@@ -60,7 +62,9 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { account } = useAccount();
   const params = useParams();
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
-  const [background, setBackground] = useState<IProofOfUsBackground>('');
+  const [background, setBackground] = useState<IProofOfUsBackground>({
+    bg: '',
+  });
 
   useEffect(() => {
     store.listenProofOfUsData(`${params.id}`, setProofOfUs);

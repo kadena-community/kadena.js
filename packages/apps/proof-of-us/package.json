@@ -16,7 +16,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@akord/akord-js": "^4.23.8",
     "@google-analytics/data": "~3.2.2",
     "@kadena/client": "workspace:*",
     "@kadena/react-ui": "workspace:*",
@@ -26,6 +25,7 @@
     "firebase": "^10.8.0",
     "next": "13.5.5",
     "next-themes": "^0.2.1",
+    "nft.storage": "^7.1.1",
     "react": "^18.2.0",
     "react-aria-components": "^1.0.1",
     "react-dom": "^18.2.0",

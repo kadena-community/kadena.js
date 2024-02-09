@@ -29,7 +29,9 @@ type IMintStatus =
   | 'error'
   | 'success';
 
-type IProofOfUsBackground = string;
+type IProofOfUsBackground = {
+  bg: string;
+};
 
 type TokenType = 'multi' | 'event';
 
