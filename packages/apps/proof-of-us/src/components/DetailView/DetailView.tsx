@@ -1,15 +1,20 @@
+import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useRouter } from 'next/navigation';
 
-import type { FC } from 'react';
+import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
+import { ImagePositions } from '../ImagePositions/ImagePositions';
+import { SocialsEditor } from '../SocialsEditor/SocialsEditor';
 
 interface IProps {
   next: () => void;
   prev: () => void;
 }
 export const DetailView: FC<IProps> = ({ next, prev }) => {
-  const { proofOfUs, background, closeToken } = useProofOfUs();
+  const { proofOfUs, closeToken, changeTitle } = useProofOfUs();
+  const { removeBackground } = useAvatar();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
 
@@ -19,13 +24,23 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
 
   if (!proofOfUs) return null;
 
-  const handleRedo = () => {
+  const handleRedo = async () => {
+    if (!proofOfUs) return;
+    if (!confirm('Are you sure you want to retake your photo?')) return;
+    await removeBackground(proofOfUs);
     prev();
   };
   const handleClose = async () => {
+    if (!confirm('Are you sure you want to stop with this token?')) return;
     await closeToken({ proofOfUsId: proofOfUs.proofOfUsId });
     setIsMounted(false);
     router.replace('/user');
+  };
+
+  const handleTitleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    //TODO: this needs to debounce
+    if (!proofOfUs) return;
+    changeTitle(e.target.value);
   };
 
   if (!isMounted) return null;
@@ -34,9 +49,24 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
     <section>
       <h3>Details</h3>
 
-      <button onClick={handleRedo}>redo</button>
-      <button onClick={handleClose}>delete</button>
-      <img src={background} />
+      {!isAlreadySigning(proofOfUs.signees) ? (
+        <>
+          <button onClick={handleRedo}>redo</button>
+          <button onClick={handleClose}>delete</button>
+          <input
+            name="title"
+            placeholder="title"
+            onChange={handleTitleChange}
+            defaultValue={proofOfUs.title}
+          />
+          <SocialsEditor />
+
+          <ImagePositions />
+        </>
+      ) : (
+        <ImagePositions />
+      )}
+
       <button onClick={handleShare}>Share</button>
     </section>
   );

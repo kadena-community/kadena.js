@@ -42,6 +42,7 @@ interface IProofOfUsData {
   date: number;
   minted?: number;
   signees: IProofOfUsSignee[];
+  title?: string;
   uri?: string;
 }
 
@@ -72,7 +73,17 @@ interface IError {
 
 type ISignerStatus = 'init' | 'signing' | 'success' | 'error';
 
+type ISocial = string;
+
+interface ISigneePosition {
+  xPercentage: number;
+  yPercentage: number;
+}
+
 type IProofOfUsSignee = Pick<IAccount, 'displayName' | 'publicKey' | 'cid'> & {
+  label?: string;
   signerStatus: ISignerStatus;
   initiator: boolean;
+  socialLinks?: ISocial[];
+  position?: ISigneePosition;
 };

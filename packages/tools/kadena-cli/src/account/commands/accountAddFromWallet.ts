@@ -4,7 +4,6 @@ import { z } from 'zod';
 
 import { IS_DEVELOPMENT } from '../../constants/config.js';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
-import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { createOption } from '../../utils/createOption.js';
@@ -66,7 +65,6 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
   ],
 
   async (option, values) => {
-    await ensureNetworksConfiguration();
     const accountAlias = (await option.accountAlias()).accountAlias;
     const keyWallet = await option.keyWallet();
     if (!keyWallet.keyWalletConfig) {
