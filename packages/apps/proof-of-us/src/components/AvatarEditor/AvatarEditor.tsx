@@ -62,7 +62,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     ctx?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
     if (!proofOfUs) return;
-    await addBackground(proofOfUs, canvas.toDataURL());
+    await addBackground(proofOfUs, { bg: canvas.toDataURL() });
     (videoRef.current?.srcObject as MediaStream)
       ?.getTracks()
       .forEach((t) => t.stop());

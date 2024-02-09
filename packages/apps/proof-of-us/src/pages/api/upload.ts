@@ -23,9 +23,7 @@ export default async function handler(
   const background = await store.getBackground(proofOfUsId);
   const proofOfUs = await store.getProofOfUs(proofOfUsId);
 
-  console.log({ background }, proofOfUsId);
-
-  if (!background?.background) {
+  if (!background?.bg) {
     return res.status(404).json({
       message: 'background not found',
     });
@@ -44,7 +42,7 @@ export default async function handler(
 
   const client = new NFTStorage({ token: process.env.NFTSTORAGE_API_TOKEN });
 
-  const mimeType = background?.background.match(
+  const mimeType = background?.bg.match(
     /data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/,
   )?.[1];
 
@@ -54,7 +52,7 @@ export default async function handler(
     });
   }
 
-  const blob = base64ToBlob(background?.background, mimeType);
+  const blob = base64ToBlob(background?.bg, mimeType);
   const imageFileName = 'image';
 
   const image = await NFTStorage.encodeDirectory([

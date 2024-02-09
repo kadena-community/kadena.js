@@ -13,9 +13,8 @@ import {
 interface IProps {}
 
 export const ImagePositions: FC<IProps> = () => {
-  const { proofOfUs, updateSigner } = useProofOfUs();
+  const { proofOfUs, updateSigner, background } = useProofOfUs();
   const { account } = useAccount();
-  const { background } = useProofOfUs();
   const [isMounted, setIsMounted] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
   const [signer, setSigner] = useState<IProofOfUsSignee>();
@@ -131,7 +130,7 @@ export const ImagePositions: FC<IProps> = () => {
       <section ref={wrapperRef} className={wrapperClass}>
         <img
           ref={imgRef}
-          src={background}
+          src={background.bg}
           onClick={handleClick}
           onLoad={() => setIsMounted(true)}
         />

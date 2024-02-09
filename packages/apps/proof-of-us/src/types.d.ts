@@ -30,7 +30,7 @@ type IMintStatus =
   | 'success';
 
 type IProofOfUsBackground = {
-  background: string;
+  bg: string;
 };
 
 type TokenType = 'multi' | 'event';
