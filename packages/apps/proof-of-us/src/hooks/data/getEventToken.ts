@@ -4,7 +4,7 @@ export const useGetEventToken: IDataHook<IProofOfUsToken | undefined> = (
   id: string,
 ) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<IError>();
+  const [hasError, setHasError] = useState<IError>();
   const [data, setData] = useState<IProofOfUsToken | undefined>(undefined);
 
   // const retrieveToken = async () => {
@@ -13,7 +13,7 @@ export const useGetEventToken: IDataHook<IProofOfUsToken | undefined> = (
   // };
 
   const load = async () => {
-    setError(undefined);
+    setHasError(undefined);
     setIsLoading(true);
 
     setTimeout(() => {
@@ -41,5 +41,5 @@ export const useGetEventToken: IDataHook<IProofOfUsToken | undefined> = (
     load();
   }, []);
 
-  return { isLoading, error, data };
+  return { isLoading, hasError, data };
 };
