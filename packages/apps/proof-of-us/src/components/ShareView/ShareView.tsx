@@ -5,7 +5,7 @@ import { useMintMultiToken } from '@/hooks/data/mintMultiToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { env } from '@/utils/env';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
-import { SystemIcon } from '@kadena/react-ui';
+import { CopyButton, SystemIcon, TextField } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import { useRef } from 'react';
@@ -56,11 +56,6 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
               </>
             )}
             label="Share"
-            Append={() => (
-              <>
-                <SystemIcon.Twitter />
-              </>
-            )}
           />
 
           <ListSignees />
@@ -79,7 +74,12 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
                   eyeRadius={10}
                 />
               </div>
-              link: {`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
+              <TextField
+                placeholder="Link"
+                id="linkshare"
+                value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
+                endAddon={<CopyButton inputId="linkshare" />}
+              />
             </>
           ) : (
             <ImagePositions />

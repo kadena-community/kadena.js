@@ -92,7 +92,7 @@ const ProofOfUsStore = () => {
     const signeesList = [...proofOfUs.signees];
     if (!signeesList) return;
 
-    if (signeesList.find((s) => s.cid === account.cid)) return;
+    if (signeesList.find((s) => s.accountName === account.accountName)) return;
 
     if (!signeesList.length) {
       signeesList[0] = {
@@ -122,7 +122,7 @@ const ProofOfUsStore = () => {
     if (!signeesList) return;
 
     await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      signees: signeesList.filter((s) => s.cid !== account.cid),
+      signees: signeesList.filter((s) => s.accountName !== account.accountName),
     });
   };
 
@@ -167,7 +167,7 @@ const ProofOfUsStore = () => {
     if (!isOverwrite && isAlreadySigning(proofOfUs.signees)) return;
 
     const newList = proofOfUs.signees.map((a) => {
-      if (a.cid === account.cid) {
+      if (a.accountName === account.accountName) {
         return { ...a, ...value };
       }
       return a;

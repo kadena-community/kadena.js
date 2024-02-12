@@ -22,7 +22,9 @@ export const ImagePositions: FC<IProps> = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setSigner(proofOfUs?.signees.find((c) => c.cid === account?.cid));
+    setSigner(
+      proofOfUs?.signees.find((c) => c.accountName === account?.accountName),
+    );
     setIsLocked(isAlreadySigning(proofOfUs?.signees));
   }, [proofOfUs]);
 
@@ -137,7 +139,7 @@ export const ImagePositions: FC<IProps> = () => {
         {proofOfUs?.signees.map((s, idx) => (
           <>
             <div
-              key={s.cid}
+              key={s.accountName}
               className={signeeClassWrapper}
               data-xpercentage={s.position?.xPercentage}
               data-ypercentage={s.position?.yPercentage}
@@ -149,7 +151,7 @@ export const ImagePositions: FC<IProps> = () => {
             <input
               className={signeeInputClass}
               value={s.label}
-              disabled={signer?.cid !== s.cid || isLocked}
+              disabled={signer?.accountName !== s.accountName || isLocked}
               type="text"
               name="label"
               onChange={handleLabelChange}

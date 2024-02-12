@@ -5,7 +5,7 @@ import { DetailView } from '@/components/DetailView/DetailView';
 import { ShareView } from '@/components/ShareView/ShareView';
 
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { createProofOfUsID } from '@/utils/marmalade';
+import { createProofOfUsID } from '@/utils/createProofOfUsID';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';

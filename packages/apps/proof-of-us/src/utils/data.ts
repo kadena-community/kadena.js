@@ -21,8 +21,8 @@ export const proofOfUsData: IProofOfUs[] = [
         type: 'event',
         avatar: {
           backgroundColor: '#4c0e5c',
-          color: '#FFFFFF',
         },
+        signees: [],
       },
     },
   },
@@ -40,13 +40,26 @@ export const proofOfUsData: IProofOfUs[] = [
     },
     token: {
       tokenId: '2223423',
-      name: 'us',
+      name: 'having a dinner with friends!',
       image:
         'https://pbs.twimg.com/profile_images/1263771788015738880/Adfm3DNv_400x400.jpg',
 
       properties: {
         type: 'multi',
         date: 1365257129000,
+        avatar: {
+          backgroundColor: '#FFFFFF',
+        },
+        signees: [
+          {
+            label: 'he-man',
+            socialLinks: [
+              'https://linkedin.com/he-main',
+              'https://twitter.com/he-man',
+              'https://x.com/he-man',
+            ],
+          },
+        ],
       },
     },
   },

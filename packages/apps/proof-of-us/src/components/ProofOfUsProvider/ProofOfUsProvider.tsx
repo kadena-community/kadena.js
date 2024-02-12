@@ -51,9 +51,8 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   updateSigner: async () => {},
   getSigneeAccount: (account: IAccount) => {
     return {
-      cid: account.cid,
-      displayName: account.displayName,
-      publicKey: account.publicKey,
+      accountName: account.accountName,
+      alias: account.alias,
       initiator: false,
       signerStatus: 'init',
     };
@@ -135,11 +134,15 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const isConnected = () => {
-    return !!proofOfUs?.signees?.find((s) => s.cid === account?.cid);
+    return !!proofOfUs?.signees?.find(
+      (s) => s.accountName === account?.accountName,
+    );
   };
 
   const isInitiator = () => {
-    const foundAccount = proofOfUs?.signees.find((s) => s.cid === account?.cid);
+    const foundAccount = proofOfUs?.signees.find(
+      (s) => s.accountName === account?.accountName,
+    );
     return !!foundAccount?.initiator;
   };
 
