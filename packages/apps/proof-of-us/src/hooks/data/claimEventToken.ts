@@ -4,6 +4,7 @@ export const useClaimEventToken = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSuccess, setHasSuccess] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [isPending] = useState(false);
 
   //TODO: add params and use actual data
   const claim = () => {
@@ -19,6 +20,7 @@ export const useClaimEventToken = () => {
   };
 
   return {
+    isPending,
     isLoading,
     hasError,
     hasSuccess,

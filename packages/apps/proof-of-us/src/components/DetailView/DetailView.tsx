@@ -2,11 +2,20 @@ import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useRouter } from 'next/navigation';
 
+import { Button } from '@/components/Button/Button';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { SystemIcon } from '@kadena/react-ui';
 import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { SocialsEditor } from '../SocialsEditor/SocialsEditor';
+import { TitleHeader } from '../TitleHeader/TitleHeader';
+import {
+  backButtonClass,
+  closeButtonClass,
+  imageWrapper,
+  titleInputClass,
+} from './style.css';
 
 interface IProps {
   next: () => void;
@@ -47,27 +56,51 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
 
   return (
     <section>
-      <h3>Details</h3>
+      <TitleHeader
+        Prepend={() => (
+          <>
+            {!isAlreadySigning(proofOfUs.signees) && (
+              <button className={backButtonClass} onClick={handleRedo}>
+                <SystemIcon.ArrowCollapseDown />
+              </button>
+            )}
+          </>
+        )}
+        label="Details"
+        Append={() => (
+          <>
+            {!isAlreadySigning(proofOfUs.signees) && (
+              <button className={closeButtonClass} onClick={handleClose}>
+                <SystemIcon.Close />
+              </button>
+            )}
+          </>
+        )}
+      />
 
       {!isAlreadySigning(proofOfUs.signees) ? (
         <>
-          <button onClick={handleRedo}>redo</button>
-          <button onClick={handleClose}>delete</button>
-          <input
-            name="title"
-            placeholder="title"
-            onChange={handleTitleChange}
-            defaultValue={proofOfUs.title}
-          />
-          <SocialsEditor />
+          <div className={imageWrapper}>
+            <ImagePositions />
 
-          <ImagePositions />
+            <input
+              className={titleInputClass}
+              name="title"
+              placeholder="title"
+              onChange={handleTitleChange}
+              defaultValue={proofOfUs.title}
+            />
+          </div>
+
+          <SocialsEditor />
         </>
       ) : (
         <ImagePositions />
       )}
 
-      <button onClick={handleShare}>Share</button>
+      <Button variant="primary" onPress={handleShare}>
+        Share
+      </Button>
     </section>
   );
 };

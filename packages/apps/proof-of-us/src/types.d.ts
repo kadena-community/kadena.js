@@ -38,6 +38,7 @@ type TokenType = 'multi' | 'event';
 interface IProofOfUsData {
   mintStatus: IMintStatus;
   status: IBuildStatusValues;
+  backgroundColor?: string;
   tokenId?: string;
   proofOfUsId: string;
   type: TokenType;

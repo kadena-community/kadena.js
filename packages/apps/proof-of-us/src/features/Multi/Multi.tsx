@@ -1,6 +1,7 @@
 import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { SocialsEditor } from '@/components/SocialsEditor/SocialsEditor';
+import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useSignToken } from '@/hooks/data/signToken';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import type { FC } from 'react';
@@ -22,6 +23,8 @@ export const Multi: FC<IProps> = ({ proofOfUs }) => {
   return (
     <>
       <section>
+        <TitleHeader label="Details" />
+
         <h3>{proofOfUs.title}</h3>
         <SocialsEditor />
         <ImagePositions />

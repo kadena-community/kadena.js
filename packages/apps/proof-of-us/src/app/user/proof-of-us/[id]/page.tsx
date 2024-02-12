@@ -54,11 +54,6 @@ const Page: FC<IProps> = ({ params }) => {
 
   return (
     <div>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
       {status === 1 && <AvatarEditor next={next} />}
       {status === 2 && <DetailView next={next} prev={prev} />}
       {status >= 3 && <ShareView next={next} prev={prev} status={status} />}

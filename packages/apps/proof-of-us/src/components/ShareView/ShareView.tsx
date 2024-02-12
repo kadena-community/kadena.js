@@ -1,13 +1,18 @@
+import { Button } from '@/components/Button/Button';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { PROOFOFUS_QR_URL } from '@/constants';
 import { useMintMultiToken } from '@/hooks/data/mintMultiToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { env } from '@/utils/env';
+import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { SystemIcon } from '@kadena/react-ui';
 import Link from 'next/link';
 import type { FC } from 'react';
 import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
+import { backButtonClass } from '../DetailView/style.css';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
+import { TitleHeader } from '../TitleHeader/TitleHeader';
 import { qrClass } from './style.css';
 
 interface IProps {
@@ -36,15 +41,30 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
 
   if (!proofOfUs) return;
 
-  const isReady = proofOfUs.signees[1]?.signerStatus === 'success';
   return (
     <section>
       {status === 3 && (
         <>
-          <h3>Share</h3>
-          {!isReady && <button onClick={handleBack}>back</button>}
+          <TitleHeader
+            Prepend={() => (
+              <>
+                {!isAlreadySigning(proofOfUs.signees) && (
+                  <button className={backButtonClass} onClick={handleBack}>
+                    <SystemIcon.ArrowCollapseDown />
+                  </button>
+                )}
+              </>
+            )}
+            label="Share"
+            Append={() => (
+              <>
+                <SystemIcon.Twitter />
+              </>
+            )}
+          />
+
           <ListSignees />
-          {!isReady ? (
+          {!isAlreadySigning(proofOfUs.signees) ? (
             <>
               <div className={qrClass}>
                 <QRCode
@@ -64,12 +84,25 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
           ) : (
             <ImagePositions />
           )}
-          {isReady && <button onClick={handleSign}>Sign & Upload</button>}
+          {isAlreadySigning(proofOfUs.signees) && (
+            <Button onPress={handleSign}>Sign & Upload</Button>
+          )}
         </>
       )}
 
       {status === 4 && (
         <>
+          <TitleHeader
+            Prepend={() => (
+              <>
+                <button className={backButtonClass} onClick={handleBack}>
+                  <SystemIcon.ArrowCollapseDown />
+                </button>
+              </>
+            )}
+            label="Sign & Upload Proof"
+          />
+
           <div>status: {proofOfUs.mintStatus}</div>
           <ListSignees />
           {isLoading && <div>...isprocessing</div>}
