@@ -59,7 +59,7 @@ type Story = StoryObj<{
 export const All: Story = {
   name: 'All Icons',
   args: {
-    fontSize: 'sm',
+    fontSize: 'base',
     fill: 'base',
   },
   render: ({ fontSize, fill }) => {
