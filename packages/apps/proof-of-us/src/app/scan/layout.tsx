@@ -10,10 +10,12 @@ const ScanLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <ProofOfUsProvider>
       <section>
-        scan. we need to check if the user is logged in. if not explain that
-        they need to login. before continuing, scanning and signing
         {!account && isMounted ? (
           <section>
+            <p>
+              scan. we need to check if the user is logged in. if not explain
+              that they need to login. before continuing, scanning and signing
+            </p>
             <p>
               You need to be logged in to scan and claim your Proof Of Us
               <button onClick={login}>login</button>

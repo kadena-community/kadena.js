@@ -14,7 +14,6 @@ export const EventThumb: FC<IProps> = ({ token }) => {
         className={eventThumbClass}
         style={{
           backgroundColor: token.properties.avatar?.backgroundColor,
-          color: token.properties.avatar?.color,
         }}
       >
         {getInitial(token.name)}

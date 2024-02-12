@@ -1,5 +1,4 @@
 import { IS_DEVELOPMENT } from '../../constants/config.js';
-import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
@@ -26,8 +25,6 @@ export const createAddAccountManualCommand = createCommandFlexible(
     const accountAlias = (await option.accountAlias()).accountAlias;
     const accountName = (await option.accountName()).accountName;
     const fungible = (await option.fungible()).fungible;
-
-    await ensureNetworksConfiguration();
 
     const { network, networkConfig } = await option.network();
 

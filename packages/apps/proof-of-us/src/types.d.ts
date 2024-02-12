@@ -1,9 +1,14 @@
-interface IAccount {
-  displayName: string;
-  waccount: string;
-  caccount: string;
+interface IAccountCrendential {
+  id?: string;
   publicKey: string;
-  cid: string;
+  type: 'WebAuthn' | 'ED25519';
+}
+
+interface IAccount {
+  accountName: string;
+  alias: string;
+  pendingTxIds: IAccountCrendential[];
+  credentials: string;
 }
 
 type IBuildStatusValues = 0 | 1 | 2 | 3 | 4;
@@ -29,19 +34,23 @@ type IMintStatus =
   | 'error'
   | 'success';
 
-type IProofOfUsBackground = string;
+type IProofOfUsBackground = {
+  bg: string;
+};
 
 type TokenType = 'multi' | 'event';
 
 interface IProofOfUsData {
   mintStatus: IMintStatus;
   status: IBuildStatusValues;
+  backgroundColor?: string;
   tokenId?: string;
   proofOfUsId: string;
   type: TokenType;
   date: number;
   minted?: number;
   signees: IProofOfUsSignee[];
+  title?: string;
   uri?: string;
 }
 
@@ -54,8 +63,8 @@ interface IProofOfUsToken {
     date: number;
     avatar?: {
       backgroundColor: string;
-      color: string;
     };
+    signees?: IProofOfUsTokenSignee[];
   };
 }
 
@@ -72,7 +81,22 @@ interface IError {
 
 type ISignerStatus = 'init' | 'signing' | 'success' | 'error';
 
-type IProofOfUsSignee = Pick<IAccount, 'displayName' | 'publicKey' | 'cid'> & {
+type ISocial = string;
+
+interface ISigneePosition {
+  xPercentage: number;
+  yPercentage: number;
+}
+
+type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
+  label?: string;
   signerStatus: ISignerStatus;
   initiator: boolean;
+  socialLinks?: ISocial[];
+  position?: ISigneePosition;
 };
+
+type IProofOfUsTokenSignee = Pick<
+  IProofOfUsSignee,
+  'label' | 'socialLinks' | 'position'
+>;

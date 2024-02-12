@@ -16,7 +16,7 @@ const Page: FC = () => {
       {error && <div>{error.message}</div>}
       {!isLoading && !error && (
         <List>
-          {data.map(({ token }) => {
+          {data.map((token) => {
             if (!token) return null;
             return <ListItem key={token.tokenId} token={token}></ListItem>;
           })}

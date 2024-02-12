@@ -1,36 +1,20 @@
+import { getProofOfUs } from '@/utils/proofOfUs';
 import { useEffect, useState } from 'react';
 
 export const useGetEventToken: IDataHook<IProofOfUsToken | undefined> = (
   id: string,
 ) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<IError>();
+  const [hasError, setHasError] = useState<IError>();
   const [data, setData] = useState<IProofOfUsToken | undefined>(undefined);
 
-  // const retrieveToken = async () => {
-  //   const result = await getToken(DEVWORLD_TOKENID);
-  //   setToken(result);
-  // };
-
   const load = async () => {
-    setError(undefined);
+    setHasError(undefined);
     setIsLoading(true);
 
-    setTimeout(() => {
-      const result: IProofOfUsToken = {
-        tokenId: 't:ZlfM7Ugw86DtzuPN-Xas90vJ0NLl6C62qtJ-QlI_Hxc',
-        image:
-          'https://pbs.twimg.com/profile_images/1643582036551118848/1ga1McZu_400x400.jpg',
-        name: 'Devworld 24',
-        properties: {
-          type: 'event',
-          date: 1709197180,
-          avatar: {
-            backgroundColor: '#4c0e5c',
-            color: '#FFFFFF',
-          },
-        },
-      };
+    setTimeout(async () => {
+      const result = await getProofOfUs(id);
+
       setData(result);
 
       setIsLoading(false);
@@ -41,5 +25,5 @@ export const useGetEventToken: IDataHook<IProofOfUsToken | undefined> = (
     load();
   }, []);
 
-  return { isLoading, error, data };
+  return { isLoading, hasError, data };
 };

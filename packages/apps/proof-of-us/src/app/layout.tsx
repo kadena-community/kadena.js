@@ -1,6 +1,5 @@
 import { AccountProvider } from '@/components/AccountProvider/AccountProvider';
 import { Analytics } from '@/components/Analytics/Analytics';
-import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Header } from '@/components/Header/Header';
 import { ThemeProvider } from '@/components/ThemeProvider/ThemeProvider';
 import { ToastProvider } from '@/components/ToastProvider/ToastProvider';
@@ -76,11 +75,9 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
           <AccountProvider>
             <ThemeProvider>
               <>
-                <Header />
                 <main className={mainWrapperClass}>
+                  <Header />
                   {children}
-
-                  <CookieConsent />
 
                   <Toasts />
                 </main>

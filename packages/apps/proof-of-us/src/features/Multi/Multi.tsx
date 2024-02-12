@@ -1,6 +1,9 @@
+import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
+import { SocialsEditor } from '@/components/SocialsEditor/SocialsEditor';
+import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useSignToken } from '@/hooks/data/signToken';
-import { useProofOfUs } from '@/hooks/proofOfUs';
+import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import type { FC } from 'react';
 
 interface IProps {
@@ -8,8 +11,7 @@ interface IProps {
   background: IProofOfUsBackground;
 }
 
-export const Multi: FC<IProps> = ({ proofOfUs, background }) => {
-  const { isConnected } = useProofOfUs();
+export const Multi: FC<IProps> = ({ proofOfUs }) => {
   const { signToken, isLoading, hasError } = useSignToken();
 
   const handleJoin = async () => {
@@ -21,10 +23,16 @@ export const Multi: FC<IProps> = ({ proofOfUs, background }) => {
   return (
     <>
       <section>
-        <img src={background} />
+        <TitleHeader label="Details" />
+
+        <h3>{proofOfUs.title}</h3>
+        <SocialsEditor />
+        <ImagePositions />
         <div>status: {proofOfUs?.mintStatus}</div>
         <ListSignees />
-        {!isConnected() && <button onClick={handleJoin}>Sign</button>}
+        {!isAlreadySigning(proofOfUs.signees) && (
+          <button onClick={handleJoin}>Sign</button>
+        )}
 
         {isLoading && <div>is signing</div>}
         {hasError && <div>has error signing</div>}

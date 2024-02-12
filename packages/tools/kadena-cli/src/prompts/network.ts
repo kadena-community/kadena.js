@@ -1,5 +1,8 @@
 import type { ChainId } from '@kadena/types';
+import { readdirSync } from 'fs';
+import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
+import { ensureNetworksConfiguration } from '../networks/utils/networkHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
 import { getExistingNetworks, isAlphabetic } from '../utils/helpers.js';
 import { input, select } from '../utils/prompts.js';
@@ -138,6 +141,10 @@ export const networkSelectPrompt: IPrompt<string> = async (
 };
 
 export const networkSelectOnlyPrompt: IPrompt<string> = async () => {
+  if (readdirSync(defaultNetworksPath).length === 0) {
+    await ensureNetworksConfiguration();
+  }
+
   const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
 
   if (!existingNetworks.length) {

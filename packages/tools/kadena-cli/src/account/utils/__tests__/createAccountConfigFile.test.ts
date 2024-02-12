@@ -2,7 +2,7 @@ import yaml from 'js-yaml';
 import path from 'path';
 import { describe, expect, it } from 'vitest';
 
-import { defaultAccountPath } from '../../../constants/account.js';
+import { ACCOUNT_DIR } from '../../../constants/config.js';
 import { services } from '../../../services/index.js';
 import { createAccountConfigFile } from '../createAccountConfigFile.js';
 import { defaultConfigMock } from './mocks.js';
@@ -15,9 +15,10 @@ describe('createAccountConfigFile', () => {
       accountAlias: 'unit-test-alias',
       accountName: 'accountName',
     };
+
     const filePath = path.join(
       root,
-      defaultAccountPath,
+      ACCOUNT_DIR,
       `${config.accountAlias}.yaml`,
     );
     const fs = services.filesystem;
@@ -49,7 +50,7 @@ describe('createAccountConfigFile', () => {
     };
     const filePath = path.join(
       root,
-      defaultAccountPath,
+      ACCOUNT_DIR,
       `${config.accountAlias}.yaml`,
     );
     const fs = services.filesystem;

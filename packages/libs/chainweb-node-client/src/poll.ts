@@ -21,11 +21,6 @@ export async function poll(
   const request = stringifyAndMakePOSTRequest(requestBody);
   const pollUrl = new URL(`${apiHost}/api/v1/poll`);
 
-  try {
-    const response = await fetch(pollUrl.toString(), request);
-    return await parseResponse<IPollResponse>(response);
-  } catch (error) {
-    console.error('An error occurred while calling poll API:', error);
-    throw error;
-  }
+  const response = await fetch(pollUrl.toString(), request);
+  return parseResponse<IPollResponse>(response);
 }

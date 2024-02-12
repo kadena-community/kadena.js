@@ -12,7 +12,6 @@ export const MultiThumb: FC<IProps> = ({ token }) => {
         className={classNames(multiThumbClass)}
         style={{
           backgroundColor: token.properties.avatar?.backgroundColor,
-          color: token.properties.avatar?.color,
           backgroundImage: `url("${token.image}")`,
         }}
       />

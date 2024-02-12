@@ -5,7 +5,7 @@ import { DetailView } from '@/components/DetailView/DetailView';
 import { ShareView } from '@/components/ShareView/ShareView';
 
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { createProofOfUsID } from '@/utils/marmalade';
+import { createProofOfUsID } from '@/utils/createProofOfUsID';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
@@ -21,11 +21,12 @@ const Page: FC<IProps> = ({ params }) => {
   const { createToken, proofOfUs, background, updateStatus } = useProofOfUs();
   const [isMounted, setIsMounted] = useState(false);
 
-  const [status, setStatus] = useState<IBuildStatusValues>(1);
+  const [status, setStatus] = useState<IBuildStatusValues>(0);
 
   useEffect(() => {
     //init and check in what step you are
     if (!proofOfUs || isMounted) return;
+
     setStatus(proofOfUs.status);
     setIsMounted(true);
   }, [proofOfUs, background]);
@@ -53,11 +54,6 @@ const Page: FC<IProps> = ({ params }) => {
 
   return (
     <div>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
       {status === 1 && <AvatarEditor next={next} />}
       {status === 2 && <DetailView next={next} prev={prev} />}
       {status >= 3 && <ShareView next={next} prev={prev} status={status} />}

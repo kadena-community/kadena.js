@@ -611,6 +611,13 @@ export const globalOptions = {
       'Overwrite account details from chain',
     ),
   }),
+  accountNameSelect: createOption({
+    key: 'accountName' as const,
+    defaultIsOptional: false,
+    prompt: account.accountNameSelectionPrompt,
+    validation: z.string(),
+    option: new Option('-a, --account-name <accountName>', 'Account name'),
+  }),
 } as const;
 
 export type GlobalOptions = typeof globalOptions;

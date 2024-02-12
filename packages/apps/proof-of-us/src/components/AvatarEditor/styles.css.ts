@@ -13,20 +13,19 @@ export const hiddenClass = style({
 
 export const cameraClass = style({
   position: 'absolute',
-  inset: 0,
   width: '100vw',
   maxWidth: '800px',
-  height: '100vh',
+  aspectRatio: '1/1',
   objectFit: 'cover',
 });
 
 export const cameraButton = style({
   position: 'absolute',
   zIndex: 1,
-  top: '87vh',
+  bottom: '2vh',
   borderRadius: '50%',
   border: 0,
-  width: '10vw',
+  width: 'clamp(50px, 10vw, 100px)',
   aspectRatio: '1/1',
   cursor: 'pointer',
 });
@@ -36,7 +35,7 @@ export const cameraWrapperClass = style({
   top: 0,
   width: '100vw',
   maxWidth: '800px',
-  height: '100vh',
+  aspectRatio: '1/1',
   display: 'flex',
   justifyContent: 'center',
 });
