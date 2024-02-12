@@ -140,7 +140,7 @@ const TransactionDetails = (transaction: any) => {
 
         {tx.signers.map((signer) =>
           signer.clist.map((cap) => (
-            <div key={cap}>
+            <div key={cap.name}>
               <TrackerCard
                 variant="horizontal"
                 labelValues={[

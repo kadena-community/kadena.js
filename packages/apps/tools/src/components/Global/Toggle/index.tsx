@@ -5,13 +5,15 @@ import {
   strongStyle,
 } from '@/components/Global/Toggle/styles.css';
 import classNames from 'classnames';
+import type { FC } from 'react';
 import React, { useState } from 'react';
 
-export const Toggle = (
-  label: string,
-  toggled: boolean,
-  onClick: (arg0: boolean) => void,
-) => {
+interface IToggleProps {
+  label: string;
+  toggled: boolean;
+  onClick: (arg0: boolean) => void;
+}
+export const Toggle: FC<IToggleProps> = ({ toggled, label, onClick }) => {
   const [isToggled, toggle] = useState(toggled);
 
   const callback = () => {

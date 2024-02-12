@@ -206,6 +206,7 @@ const TransferPage = () => {
         chainId: data.receiverChainId,
       },
       {
+        // @ts-ignore
         sign: () => {},
         host: ({ networkId, chainId }) =>
           `https://api.testnet.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
@@ -221,8 +222,8 @@ const TransferPage = () => {
     console.log('result', result);
   };
 
-  const setReceiverAccountTab = (tabKey: string) => {
-    setToAccountTab(tabKey);
+  const setReceiverAccountTab = (value: any) => {
+    setToAccountTab(value);
   };
 
   const addPublicKey = () => {
