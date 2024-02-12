@@ -16,6 +16,8 @@ import type { ChainId } from '@kadena/types';
 import chalk from 'chalk';
 import { join } from 'node:path';
 
+import type { IAliasAccountData } from '../account/types.js';
+import { readAccountFromFile } from '../account/utils/accountHelpers.js';
 import { KEY_EXT, WALLET_EXT } from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
 import {
@@ -618,6 +620,20 @@ export const globalOptions = {
     prompt: account.accountNameSelectionPrompt,
     validation: z.string(),
     option: new Option('-a, --account-name <accountName>', 'Account name'),
+  }),
+  accountSelect: createOption({
+    key: 'account' as const,
+    prompt: account.accountSelectPrompt,
+    validation: z.string(),
+    option: new Option('-a, --account <account>', 'Select an account'),
+    expand: async (accountAlias: string): Promise<IAliasAccountData> => {
+      try {
+        const accountDetails = await readAccountFromFile(accountAlias);
+        return accountDetails;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
   }),
 } as const;
 

@@ -28,6 +28,7 @@ export const ADMIN: IAccount = SENDER_00;
 
 export const NAMESPACES = {
   DEV_NET: 'n_34d947e2627143159ea73cdf277138fd571f17ac',
+  TEST_NET: 'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49',
 } as const;
 
 export const NAMESPACE = NAMESPACES[environment];
@@ -42,5 +43,7 @@ export const GAS_STATIONS = {
 } as const;
 
 export const GAS_STATION = GAS_STATIONS[environment];
+
+export const DEFAULT_CONTRACT_NAME = 'coin-faucet';
 
 export const InitialFunding = 10020; // 10000 + 20 gas station fees

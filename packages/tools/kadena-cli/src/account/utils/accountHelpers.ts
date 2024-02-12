@@ -3,19 +3,13 @@ import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import type { ZodError } from 'zod';
 import { z } from 'zod';
+import type { IAliasAccountData } from './../types.js';
 
+import { NO_ACCOUNT_ERROR_MESSAGE } from '../../constants/account.js';
 import { ACCOUNT_DIR } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import { notEmpty } from '../../utils/helpers.js';
 import { isEmpty } from './addHelpers.js';
-
-interface IAccount {
-  name: string;
-  fungible: string;
-  publicKeys: string[];
-  predicate: string;
-  alias: string;
-}
 
 const accountAliasFileSchema = z.object({
   name: z.string(),
@@ -35,8 +29,9 @@ export const formatZodErrors = (errors: ZodError): string => {
     .join('\n');
 };
 
-const readAccountFromFile = async (accountFile: string): Promise<IAccount> => {
-  const accountAlias = accountFile.split('.')[0];
+export const readAccountFromFile = async (
+  accountFile: string,
+): Promise<IAliasAccountData> => {
   const content = await services.filesystem.readFile(
     join(ACCOUNT_DIR, accountFile),
   );
@@ -45,7 +40,7 @@ const readAccountFromFile = async (accountFile: string): Promise<IAccount> => {
     const parsedContent = accountAliasFileSchema.parse(account);
     return {
       ...parsedContent,
-      alias: accountAlias,
+      alias: accountFile,
     };
   } catch (error) {
     if (isEmpty(content)) {
@@ -55,29 +50,23 @@ const readAccountFromFile = async (accountFile: string): Promise<IAccount> => {
     }
 
     const errorMessage = formatZodErrors(error);
-    throw new Error(
-      `Error parsing alias file: ${accountFile} ${errorMessage}`,
-    );
+    throw new Error(`Error parsing alias file: ${accountFile} ${errorMessage}`);
   }
 };
 
 export async function ensureAccountExists(): Promise<void> {
   if (!(await services.filesystem.directoryExists(ACCOUNT_DIR))) {
-    throw new Error('No account created yet. Please create an account first.');
+    throw new Error(NO_ACCOUNT_ERROR_MESSAGE);
   }
 }
 
-export async function getAllAccounts(): Promise<IAccount[]> {
+export async function getAllAccounts(): Promise<IAliasAccountData[]> {
   await ensureAccountExists();
 
   const files = readdirSync(ACCOUNT_DIR);
 
   const allAccounts = await Promise.all(
-    files.map((file) =>
-      readAccountFromFile(file).catch((error) => {
-        throw new Error(error.message);
-      }),
-    ),
+    files.map((file) => readAccountFromFile(file).catch(() => null)),
   );
 
   return allAccounts.flat().filter(notEmpty);

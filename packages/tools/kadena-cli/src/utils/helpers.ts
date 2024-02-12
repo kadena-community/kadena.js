@@ -307,7 +307,22 @@ export const notEmpty = <TValue>(
   value: TValue | null | undefined,
 ): value is TValue => value !== null && value !== undefined;
 
-export const truncateText = (str: string): string =>
-  str.length > MAX_CHARACTERS_LENGTH
-    ? `${str.substring(0, MAX_CHARACTERS_LENGTH)}...`
-    : str;
+export const truncateText = (
+  str: string,
+  maxLength: number = MAX_CHARACTERS_LENGTH,
+): string =>
+  str.length > maxLength ? `${str.substring(0, maxLength - 3)}...` : str;
+
+export const maskStringPreservingStartAndEnd = (
+  str: string,
+  maxLength = 15,
+  maskChar = '.',
+): string => {
+  if (str.length <= maxLength) {
+    return str;
+  } else {
+    const startChars = str.substring(0, (maxLength - 4) / 2);
+    const endChars = str.substring(str.length - (maxLength - 4) / 2);
+    return startChars + maskChar.repeat(4) + endChars;
+  }
+};
