@@ -1,6 +1,6 @@
 import { AccountHoverTag } from '@/components/Global';
 // import { useLedgerPublicKey } from '@/hooks/use-ledger-public-key';
-import transactionDetails from '@/pages/transactions/transfer/transaction-details';
+// import transactionDetails from '@/pages/transactions/transfer/transaction-details';
 import {
   Button,
   Combobox,
@@ -38,7 +38,7 @@ const LedgerDetails = () => {
       >
         Transaction
       </ToggleButton>
-      {transactionDetails ? (
+      {ledgerDetailsExpanded ? (
         <>
           <Combobox
             startIcon={<SystemIcon.KeyIconFilled />}
