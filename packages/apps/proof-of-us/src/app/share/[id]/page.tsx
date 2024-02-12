@@ -16,11 +16,11 @@ export const generateMetadata = async ({
 }: IProps): Promise<Metadata> => {
   const data = await getProofOfUs(params.id);
   return {
-    title: `${data.name ?? 'Welcome'}`,
+    title: `${data.name ?? 'Welcome'} | Immutable Record`,
     description: `${data.name} was a great event`,
     twitter: {
       card: 'summary_large_image',
-      title: `${data.name ?? 'Welcome'}`,
+      title: `${data.name ?? 'Welcome'} | Immutable Record`,
       description: `${data.name} was a great event`,
       creator: getTwitterCreator(data.properties.signees),
       images: [`${data.image}`],

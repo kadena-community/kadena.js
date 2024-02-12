@@ -47,7 +47,16 @@ export const proofOfUsData: IProofOfUs[] = [
       properties: {
         type: 'multi',
         date: 1365257129000,
-        signees: [],
+        signees: [
+          {
+            label: 'he-man',
+            socialLinks: [
+              'https://linkedin.com/he-main',
+              'https://twitter.com/he-man',
+              'https://x.com/he-man',
+            ],
+          },
+        ],
       },
     },
   },
