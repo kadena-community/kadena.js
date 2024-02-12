@@ -70,4 +70,34 @@ export const handlers: any = [
       );
     },
   ),
+
+  http.post(
+    'http://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/send',
+    () => {
+      return HttpResponse.json(
+        {
+          requestKeys: ['requestKey-1', 'requestKey-2'],
+        },
+        { status: 200 },
+      );
+    },
+  ),
+
+  http.post(
+    'http://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/listen',
+    () => {
+      return HttpResponse.json(
+        {
+          result: {
+            reqKey: 'requestKey-1',
+            result: {
+              data: 'Write succeeded',
+              status: 'success',
+            },
+          },
+        },
+        { status: 200 },
+      );
+    },
+  ),
 ];
