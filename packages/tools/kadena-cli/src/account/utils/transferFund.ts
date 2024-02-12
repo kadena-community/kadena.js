@@ -13,12 +13,10 @@ import { DEFAULT_CONTRACT_NAME } from '../../devnet/faucet/deploy/constants.js';
 import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 
 export async function transferFund({
-  receiverAccount,
+  accountName,
   config,
 }: {
-  receiverAccount: {
-    name: string;
-  };
+  accountName: string;
   config: {
     amount: string;
     contract: string;
@@ -31,26 +29,27 @@ export async function transferFund({
     const keyPair = genKeyPair();
     const NAMESPACE = NAMESPACES_MAP[networkConfig.networkId];
     const FAUCET_ACCOUNT = GAS_STATIONS_MAP[networkConfig.networkId];
+    const FAUCET_CONTRACT = `${NAMESPACE}.${DEFAULT_CONTRACT_NAME}`;
 
     const transaction = Pact.builder
       .execution(
         // @ts-ignore
-        Pact.modules[`${NAMESPACE}.${DEFAULT_CONTRACT_NAME}`]['request-coin'](
-          receiverAccount.name,
+        Pact.modules[FAUCET_CONTRACT]['request-coin'](
+          accountName,
           new PactNumber(amount).toPactDecimal(),
         ),
       )
       .addSigner(keyPair.publicKey, (withCapability) => [
         withCapability(
-          `${NAMESPACE}.${DEFAULT_CONTRACT_NAME}.GAS_PAYER`,
-          receiverAccount.name,
+          `${FAUCET_CONTRACT}.GAS_PAYER`,
+          accountName,
           { int: 1 },
           { decimal: '1.0' },
         ),
         withCapability(
           'coin.TRANSFER',
           FAUCET_ACCOUNT,
-          receiverAccount.name,
+          accountName,
           new PactNumber(amount).toPactDecimal(),
         ),
       ])
@@ -58,7 +57,7 @@ export async function transferFund({
       .setNetworkId(networkConfig.networkId)
       .createTransaction();
 
-    const signWithKeyPair = createSignWithKeypair([{ ...keyPair }]);
+    const signWithKeyPair = createSignWithKeypair([keyPair]);
 
     const signedTx = await signWithKeyPair(transaction);
 

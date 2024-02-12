@@ -105,6 +105,7 @@ export const createFundCommand = createCommandFlexible(
           ),
         );
 
+        // TODO: Verify this use case with "ALBERT"
         if (config.accountConfig.fungible !== 'coin') return;
 
         const { deployDevnet } = await option.deployDevnet();

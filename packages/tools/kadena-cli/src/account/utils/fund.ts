@@ -1,3 +1,4 @@
+import type { ICommandResult } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
@@ -16,7 +17,7 @@ export async function fund({
   amount: string;
   networkConfig: INetworkCreateOptions;
   chainId: ChainId;
-}): Promise<CommandResult<string | undefined>> {
+}): Promise<CommandResult<ICommandResult | string>> {
   const accountDetailsFromChain = await getAccountDetailsForAddAccount({
     accountName: accountConfig.name,
     networkId: networkConfig.networkId,
@@ -27,10 +28,8 @@ export async function fund({
 
   try {
     const result = accountDetailsFromChain
-      ? transferFund({
-          receiverAccount: {
-            name: accountConfig.name,
-          },
+      ? await transferFund({
+          accountName: accountConfig.name,
           config: {
             contract: accountConfig.fungible,
             amount,
@@ -39,8 +38,10 @@ export async function fund({
           },
         })
       : await createAndTransferFund({
-          receiverAccount: {
+          account: {
             name: accountConfig.name,
+            publicKeys: accountConfig.publicKeys,
+            predicate: accountConfig.predicate,
           },
           config: {
             ...accountConfig,
@@ -51,11 +52,9 @@ export async function fund({
           },
         });
 
-    console.log({ onChainResult: result });
-
     return {
       success: true,
-      data: 'Write succeeded',
+      data: result,
     };
   } catch (error) {
     return {

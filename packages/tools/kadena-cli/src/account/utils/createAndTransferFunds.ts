@@ -13,49 +13,50 @@ import { DEFAULT_CONTRACT_NAME } from '../../devnet/faucet/deploy/constants.js';
 import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 
 export async function createAndTransferFund({
-  receiverAccount,
+  account,
   config,
 }: {
-  receiverAccount: {
+  account: {
     name: string;
+    publicKeys: string[];
+    predicate: string;
   };
   config: {
     amount: string;
     contract: string;
     chainId: ChainId;
     networkConfig: INetworkCreateOptions;
-    publicKeys: string[];
-    predicate: string;
   };
 }): Promise<ICommandResult | string> {
   try {
     const KEYSET_NAME = 'new_keyset';
-    const { chainId, amount, networkConfig, predicate, publicKeys } = config;
+    const { chainId, amount, networkConfig } = config;
+    const { name: accountName, publicKeys, predicate } = account;
     const keyPair = genKeyPair();
     const NAMESPACE = NAMESPACES_MAP[networkConfig.networkId];
     const FAUCET_ACCOUNT = GAS_STATIONS_MAP[networkConfig.networkId];
+    const FAUCET_CONTRACT = `${NAMESPACE}.${DEFAULT_CONTRACT_NAME}`;
+
     const transaction = Pact.builder
       .execution(
         // @ts-ignore
-        Pact.modules[`${NAMESPACE}.${DEFAULT_CONTRACT_NAME}`][
-          'create-and-request-coin'
-        ](
-          receiverAccount.name,
+        Pact.modules[FAUCET_CONTRACT]['create-and-request-coin'](
+          accountName,
           readKeyset(KEYSET_NAME),
           new PactNumber(amount).toPactDecimal(),
         ),
       )
       .addSigner(keyPair.publicKey, (withCapability) => [
         withCapability(
-          `${NAMESPACE}.${DEFAULT_CONTRACT_NAME}.GAS_PAYER`,
-          receiverAccount.name,
+          `${FAUCET_CONTRACT}.GAS_PAYER`,
+          accountName,
           { int: 1 },
           { decimal: '1.0' },
         ),
         withCapability(
           'coin.TRANSFER',
           FAUCET_ACCOUNT,
-          receiverAccount.name,
+          accountName,
           new PactNumber(amount).toPactDecimal(),
         ),
       ])
@@ -64,7 +65,7 @@ export async function createAndTransferFund({
       .setNetworkId(networkConfig.networkId)
       .createTransaction();
 
-    const signWithKeyPair = createSignWithKeypair([{ ...keyPair }]);
+    const signWithKeyPair = createSignWithKeypair([keyPair]);
 
     const signedTx = await signWithKeyPair(transaction);
 
@@ -76,9 +77,9 @@ export async function createAndTransferFund({
       `${networkConfig.networkHost}/chainweb/0.0/${networkConfig.networkId}/chain/${chainId}/pact`,
     );
 
-    const requestKeys = await submit(signedTx);
+    const transactionDescriptor = await submit(signedTx);
 
-    const response = await listen(requestKeys);
+    const response = await listen(transactionDescriptor);
 
     return response;
   } catch (error) {
