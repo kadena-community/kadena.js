@@ -6,14 +6,14 @@ export const getManifest = (proofOfUs: IProofOfUsData, url: string): {} => {
     description: 'This is my non-fungible token.',
     image: url,
     authors: signees.map((signee) => ({
-      name: signee.label ? signee.label : signee.displayName,
+      name: signee.label ? signee.label : signee.alias,
     })),
     properties: {
       avatar: {
         backgroundColor: proofOfUs.backgroundColor,
       },
       signees: signees.map((signee) => ({
-        name: signee.label ? signee.label : signee.displayName,
+        name: signee.label ? signee.label : signee.alias,
         position: {
           xPercentage: signee.position?.xPercentage,
           yPercentage: signee.position?.yPercentage,

@@ -12,7 +12,9 @@ export const SocialsEditor: FC = () => {
   if (!proofOfUs || !account || isAlreadySigning(proofOfUs.signees))
     return null;
 
-  const signer = proofOfUs.signees.find((c) => c.cid === account.cid);
+  const signer = proofOfUs.signees.find(
+    (c) => c.accountName === account.accountName,
+  );
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();

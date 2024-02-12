@@ -19,7 +19,7 @@ export const AccountInfo: FC = () => {
   if (!isMounted || !account) return null;
   return (
     <div className={avatarWrapperClass}>
-      <button className={avatarClass}>{getInitial(account.displayName)}</button>
+      <button className={avatarClass}>{getInitial(account.alias)}</button>
 
       <ul className={classnames(dropdownClass)}>
         <li>

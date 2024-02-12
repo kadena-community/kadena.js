@@ -1,9 +1,14 @@
-interface IAccount {
-  displayName: string;
-  waccount: string;
-  caccount: string;
+interface IAccountCrendential {
+  id?: string;
   publicKey: string;
-  cid: string;
+  type: 'WebAuthn' | 'ED25519';
+}
+
+interface IAccount {
+  accountName: string;
+  alias: string;
+  pendingTxIds: IAccountCrendential[];
+  credentials: string;
 }
 
 type IBuildStatusValues = 0 | 1 | 2 | 3 | 4;
@@ -83,7 +88,7 @@ interface ISigneePosition {
   yPercentage: number;
 }
 
-type IProofOfUsSignee = Pick<IAccount, 'displayName' | 'publicKey' | 'cid'> & {
+type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   label?: string;
   signerStatus: ISignerStatus;
   initiator: boolean;

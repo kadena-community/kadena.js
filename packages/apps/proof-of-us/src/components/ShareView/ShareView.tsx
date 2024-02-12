@@ -78,7 +78,7 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
                 placeholder="Link"
                 id="linkshare"
                 value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
-                endAddon={<CopyButton inputId="with-copy-button" />}
+                endAddon={<CopyButton inputId="linkshare" />}
               />
             </>
           ) : (
