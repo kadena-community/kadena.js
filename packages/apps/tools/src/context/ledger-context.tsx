@@ -1,8 +1,14 @@
 import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import { listen } from '@ledgerhq/logs';
 import type { FC } from 'react';
-import React, { createContext, useContext } from 'react';
-import { useAsyncCallback } from 'react-async-hook';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { useAsyncFn } from 'react-use';
 
 import type Transport from '@ledgerhq/hw-transport';
 
@@ -16,7 +22,9 @@ const LedgerContext = createContext<{
 const LedgerContextProvider: FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const connectLedger = async (verboseLogging = false) => {
+  const [transport, setTransport] = useState<Transport | null>(null);
+
+  const connectLedger = useCallback(async (verboseLogging = false) => {
     const transport = await TransportWebHID.create();
 
     // listen to the events which are sent by the Ledger packages in order to debug the app
@@ -27,23 +35,29 @@ const LedgerContextProvider: FC<{ children: React.ReactNode }> = ({
     transport.on('disconnect', () => {
       console.log('useLedgerTransport disconnected');
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      reset();
+      // reset(null);
+      setTransport(null);
     });
 
     return transport;
-  };
+  }, []);
 
-  const {
-    result,
-    execute: connect,
-    error,
-    loading,
-    reset,
-  } = useAsyncCallback(connectLedger);
+  const [{ value, error, loading }, connect] = useAsyncFn(connectLedger);
+
+  useEffect(() => {
+    setTransport(value || null);
+  }, [value]);
+
+  console.log('useLedgerTransport', { value, error, loading });
 
   return (
     <LedgerContext.Provider
-      value={{ transport: result || null, connect, error, loading }}
+      value={{
+        transport,
+        connect,
+        error,
+        loading,
+      }}
     >
       {children}
     </LedgerContext.Provider>
