@@ -17,11 +17,6 @@ export async function listen(
   const request = stringifyAndMakePOSTRequest(requestBody);
   const listenUrl = new URL(`${apiHost}/api/v1/listen`);
 
-  try {
-    const response = await fetch(listenUrl.toString(), request);
-    return await parseResponse<ICommandResult>(response);
-  } catch (error) {
-    console.error('An error occurred while calling listen API:', error);
-    throw error;
-  }
+  const response = await fetch(listenUrl.toString(), request);
+  return parseResponse<ICommandResult>(response);
 }
