@@ -4,14 +4,44 @@
 
 ```ts
 
+import type { ChainId } from '@kadena/client';
+import { ICommand } from '@kadena/types';
+import { ICommandResult } from '@kadena/chainweb-node-client';
+import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
-import type { IPactCommand } from '@kadena/client';
+import { IPactCommand } from '@kadena/client';
+import { IPactDecimal } from '@kadena/types';
+import { IPactInt } from '@kadena/types';
 import type { ISignFunction } from '@kadena/client';
+import { ITransactionDescriptor } from '@kadena/client';
+import { PactValue } from '@kadena/types';
+
+// Warning: (ae-forgotten-export) The symbol "IDeployContractInput" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export const createPactCommand: (inputs: IDeployContractInput) => Partial<IPactCommand>;
 
 // Warning: (ae-forgotten-export) The symbol "IClientConfig" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
 export const createPrincipal: (inputs: ICreatePrincipalInput, config: Omit<IClientConfig, 'sign'>) => Promise<string>;
+
+// Warning: (ae-forgotten-export) The symbol "IEmitterWrapper" needs to be exported by the entry point index.d.ts
+//
+// @alpha
+export const deployContract: (inputs: IDeployContractInput, config: IClientConfig) => IEmitterWrapper<[{
+event: "sign";
+data: ICommand;
+}, {
+event: "preflight";
+data: ILocalCommandResult;
+}, {
+event: "submit";
+data: ITransactionDescriptor;
+}, {
+event: "listen";
+data: ICommandResult;
+}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<object> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
 
 // @alpha (undocumented)
 export const describeModule: (module: string, config: Omit<IClientConfig, 'sign'>) => Promise<IDescribeModuleOutput>;
