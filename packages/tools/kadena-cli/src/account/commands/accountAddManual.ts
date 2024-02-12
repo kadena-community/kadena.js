@@ -4,7 +4,7 @@ import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { addAccount } from '../utils/addAccount.js';
 import { displayAddAccountSuccess } from '../utils/addHelpers.js';
-import { getAccountDetailsForAddAccount } from '../utils/getAccountDetails.js';
+import { getAccountDetails } from '../utils/getAccountDetails.js';
 import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveAccountDetails.js';
 
 export const createAddAccountManualCommand = createCommandFlexible(
@@ -31,7 +31,7 @@ export const createAddAccountManualCommand = createCommandFlexible(
     const chainId = (await option.chainId()).chainId;
 
     const accountDetailsFromChain = accountName
-      ? await getAccountDetailsForAddAccount({
+      ? await getAccountDetails({
           accountName,
           networkId: networkConfig.networkId,
           chainId,

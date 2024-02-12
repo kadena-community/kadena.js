@@ -4,7 +4,7 @@ import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.
 import type { CommandResult } from '../../utils/command.util.js';
 import type { IAliasAccountData } from '../types.js';
 import { createAndTransferFund } from './createAndTransferFunds.js';
-import { getAccountDetailsForAddAccount } from './getAccountDetails.js';
+import { getAccountDetails } from './getAccountDetails.js';
 import { transferFund } from './transferFund.js';
 
 export async function fund({
@@ -18,7 +18,7 @@ export async function fund({
   networkConfig: INetworkCreateOptions;
   chainId: ChainId;
 }): Promise<CommandResult<ICommandResult | string>> {
-  const accountDetailsFromChain = await getAccountDetailsForAddAccount({
+  const accountDetailsFromChain = await getAccountDetails({
     accountName: accountConfig.name,
     networkId: networkConfig.networkId,
     chainId: chainId,
