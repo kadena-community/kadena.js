@@ -38,14 +38,13 @@ import {
   FormFieldHeader,
   Heading,
   Notification,
+  NumberField,
   Select,
   SelectItem,
   Stack,
   SystemIcon,
   TabItem,
   Tabs,
-  Text,
-  TextField,
 } from '@kadena/react-ui';
 import { useQuery } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
@@ -66,9 +65,7 @@ const schema = z.object({
   receiver: NAME_VALIDATION,
   amount: z.number().positive(),
   receiverChainId: z.enum(CHAINS),
-  // senderAccountName: z.string(),
-  // receiverAccountName: z.string(),
-  pubKey: z.string(),
+  pubKey: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -85,7 +82,6 @@ const TransferPage = () => {
   const [pubKeys, setPubKeys] = useState<string[]>([]);
   const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
   const [senderPublicKey, setSenderPublicKey] = useState<string>('');
-  // const [transactionDetailsExpanded, setTransactionDetailsExpanded] = useState(false);
 
   const accountFromOptions = ['Ledger', 'WalletConnect'];
   const ledgerOptions = Array.from({ length: 100 }, (_, i) => ({
@@ -96,7 +92,6 @@ const TransferPage = () => {
   console.log(setSenderPublicKey);
 
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
@@ -111,23 +106,49 @@ const TransferPage = () => {
     defaultValues: { senderChainId: CHAINS[0], receiverChainId: CHAINS[0] },
   });
 
-  const {
-    error: senderError,
-    data: senderDetails,
-    isFetching: isFetchingSender,
+  const senderData: {
+    error: unknown | { message: string };
+    data:
+      | {
+          account: string;
+          balance: number;
+          guard: { keys: string[]; pred: string };
+        }
+      | undefined;
+    isFetching: boolean;
   } = useAccountDetailsQuery({
     account: getValues('sender'),
     networkId: 'testnet04',
-    chainId: '1',
+    chainId: getValues('senderChainId'),
   });
 
   console.log('SENDER QUERY: ');
-  console.log('error, details: ', senderError, senderDetails, isFetchingSender);
+  console.log('error, details: ', senderData);
 
-  const {
-    error: receiverError,
-    data: receiverDetails,
-    isFetching: isFetchingReceiver,
+  const watchReceiver = watch('receiver');
+  const watchReceiverChainId = watch('receiverChainId');
+  const watchChains = watch(['senderChainId', 'receiverChainId']);
+  const onSameChain = watchChains.every((chain) => chain === watchChains[0]);
+  const watchAmount = watch('amount');
+
+  console.log('watchReceiver', {
+    watchReceiver,
+    watchReceiverChainId,
+    watchChains,
+    onSameChain,
+    watchAmount,
+  });
+
+  const receiverData: {
+    error: unknown | { message: string };
+    data:
+      | {
+          account: string;
+          balance: number;
+          guard: { keys: string[]; pred: string };
+        }
+      | undefined;
+    isFetching: boolean;
   } = useAccountDetailsQuery({
     account: getValues('receiver'),
     networkId: 'testnet04',
@@ -135,31 +156,7 @@ const TransferPage = () => {
   });
 
   console.log('RECEIVER QUERY: ');
-  console.log(
-    'error, details: ',
-    receiverError,
-    receiverDetails,
-    isFetchingReceiver,
-  );
-
-  const watchReceiver = watch('receiver');
-  const watchReceiverChainId = watch('receiverChainId');
-  // const receiverQuery = useAccountDetails(
-  //   watchReceiver,
-  //   'testnet04',
-  //   watchReceiverChainId,
-  // );
-  const watchChains = watch(['senderChainId', 'receiverChainId']);
-  const onSameChain = watchChains.every((chain) => chain === watchChains[0]);
-
-  console.log('watchReceiver', {
-    watchReceiver,
-    watchReceiverChainId,
-    watchChains,
-    onSameChain,
-  });
-
-  // console.log('receiver', receiverQuery);
+  console.log(receiverData);
 
   const { data: receiverName } = useQuery({
     queryKey: [
@@ -185,7 +182,24 @@ const TransferPage = () => {
     );
   }, [receiverName, watchReceiverChainId, setValue, pubKeys.length]);
 
-  // const publicKey: string = ''; // FIXME
+  const invalidAmount =
+    senderData.data && senderData.data.balance < watchAmount;
+  const invalidAmountMessage = senderData.data
+    ? `Cannot send more than ${senderData.data.balance.toFixed(4)} KDAs.`
+    : '';
+
+  // @ts-ignore
+  if (
+    toAccountTab === 'existing' &&
+    receiverData?.error?.message &&
+    receiverData?.error?.message.includes('row not found')
+  ) {
+    setToAccountTab('new');
+    setValue('pubKey', stripAccountPrefix(getValues('receiver')));
+    setTimeout(() => {
+      setValue('receiver', '');
+    }, 100);
+  }
 
   const onSubmit = async (data: FormData) => {
     console.log('onsubmit', data);
@@ -270,6 +284,49 @@ const TransferPage = () => {
     setLegacyToggleOn(!legacyToggleOn);
   };
 
+  const renderAccountFieldWithChain = (tab: string) => (
+    <Stack flexDirection={'column'} gap={'md'}>
+      <div className={chainSelectContainerClass}>
+        <Controller
+          name="receiverChainId"
+          control={control}
+          render={({ field }) => (
+            <ChainSelect
+              {...field}
+              id="receiverChainId"
+              onSelectionChange={(e) => setValue('receiverChainId', e)}
+            />
+          )}
+        />
+      </div>
+      <Controller
+        name="receiver"
+        control={control}
+        render={({ field }) => (
+          <AccountNameField
+            {...field}
+            isInvalid={!!errors.receiver}
+            label={t('The account name to fund coins to')}
+            isDisabled={tab === 'new'}
+            endAddon={
+              <Button
+                icon={<SystemIcon.ContentCopy />}
+                variant="text"
+                onPress={async () => {
+                  await navigator.clipboard.writeText(field.value);
+                }}
+                aria-label="Copy Account Name"
+                title="Copy Account Name"
+                color="primary"
+                type="button"
+              />
+            }
+          />
+        )}
+      />
+    </Stack>
+  );
+
   return (
     <section className={containerClass}>
       <Head>
@@ -301,7 +358,7 @@ const TransferPage = () => {
           <Stack flexDirection="column" gap="lg">
             {/* SENDER  FLOW */}
             <Card fullWidth>
-              <Heading as={'h5'}>{t('Sender')} </Heading>
+              <Heading as={'h4'}>{t('Sender')} </Heading>
               {/* new */}
 
               <Stack flexDirection={'row'} justifyContent={'space-between'}>
@@ -346,28 +403,32 @@ const TransferPage = () => {
                   </Combobox>
                   {senderPublicKey ? (
                     <AccountHoverTag value={senderPublicKey.slice(0, 15)} />
-                  ) : (
-                    <Text as="code">
-                      Connect with your ledger to fetch your key
-                    </Text>
-                  )}
+                  ) : null}
                 </>
 
-                <div className={chainSelectContainerClass}>
-                  <Controller
-                    name="senderChainId"
-                    control={control}
-                    render={({ field }) => (
-                      <ChainSelect {...field} id="senderChainId" />
-                    )}
-                  />
-                </div>
+                <Stack flexDirection={'row'} justifyContent={'space-between'}>
+                  <div className={chainSelectContainerClass}>
+                    <Controller
+                      name="senderChainId"
+                      control={control}
+                      render={({ field }) => (
+                        <ChainSelect
+                          {...field}
+                          id="senderChainId"
+                          onSelectionChange={(e) =>
+                            setValue('senderChainId', e)
+                          }
+                        />
+                      )}
+                    />
+                  </div>
 
-                <Toggle
-                  label={'is Legacy'}
-                  toggled={legacyToggleOn}
-                  onClick={setLegacyOn}
-                />
+                  <Toggle
+                    label={'is Legacy'}
+                    toggled={legacyToggleOn}
+                    onClick={setLegacyOn}
+                  />
+                </Stack>
 
                 <Controller
                   name="sender"
@@ -383,8 +444,7 @@ const TransferPage = () => {
                           icon={<SystemIcon.ContentCopy />}
                           variant="text"
                           onPress={async () => {
-                            const value = getValues('sender');
-                            await navigator.clipboard.writeText(value);
+                            await navigator.clipboard.writeText(field.value);
                           }}
                           aria-label="Copy Account Name"
                           title="Copy Account Name"
@@ -395,13 +455,24 @@ const TransferPage = () => {
                     />
                   )}
                 />
-                <TextField
-                  {...register('amount', { valueAsNumber: true })}
-                  id="ledger-transfer-amount"
-                  label="Amount"
-                  isInvalid={!!errors.amount}
-                  errorMessage={errors.amount?.message}
-                  info="The amount of KDA to transfer."
+                <Controller
+                  name="amount"
+                  control={control}
+                  render={({ field }) => (
+                    <NumberField
+                      {...field}
+                      id="ledger-transfer-amount"
+                      label="Amount"
+                      onChange={(e) => field.onChange(parseInt(e.target.value))}
+                      isInvalid={!!errors.amount || invalidAmount}
+                      errorMessage={
+                        invalidAmount
+                          ? invalidAmountMessage
+                          : errors.amount?.message
+                      }
+                      info="The amount of KDA to transfer."
+                    />
+                  )}
                 />
               </Stack>
             </Card>
@@ -416,73 +487,12 @@ const TransferPage = () => {
                 onSelectionChange={setReceiverAccountTab}
               >
                 <TabItem key="existing" title="Existing">
-                  <div>
-                    <Controller
-                      name="receiver"
-                      control={control}
-                      render={({ field }) => (
-                        <AccountNameField
-                          {...field}
-                          isInvalid={!!errors.receiver}
-                          label={t('The account name to fund coins to')}
-                          endAddon={
-                            <Button
-                              icon={<SystemIcon.ContentCopy />}
-                              variant="text"
-                              onPress={async () => {
-                                const value = getValues('receiver');
-                                await navigator.clipboard.writeText(value);
-                              }}
-                              aria-label="Copy Account Name"
-                              title="Copy Account Name"
-                              color="primary"
-                              type="button"
-                            />
-                          }
-                        />
-                      )}
-                    />
-                  </div>
-                  <div className={chainSelectContainerClass}>
-                    <Controller
-                      name="receiverChainId"
-                      control={control}
-                      render={({ field }) => (
-                        <ChainSelect {...field} id="receiverChainId" />
-                      )}
-                    />
-                  </div>
+                  {renderAccountFieldWithChain('existing')}
                 </TabItem>
 
                 <TabItem key="new" title="New">
                   <div>
-                    <Controller
-                      name="receiver"
-                      control={control}
-                      render={({ field }) => (
-                        <AccountNameField
-                          {...field}
-                          isInvalid={!!errors.receiver}
-                          label={t('The account name to fund coins to')}
-                          placeholder={'Generated Account Name'}
-                          isDisabled
-                          endAddon={
-                            <Button
-                              icon={<SystemIcon.ContentCopy />}
-                              variant="text"
-                              onPress={async () => {
-                                const value = getValues('receiver');
-                                await navigator.clipboard.writeText(value);
-                              }}
-                              aria-label="Copy Account Name"
-                              title="Copy Account Name"
-                              color="primary"
-                              type="button"
-                            />
-                          }
-                        />
-                      )}
-                    />
+                    {renderAccountFieldWithChain('existing')}
 
                     <Heading as="h5">Public Keys</Heading>
                     <Box marginBlockEnd="md" />
@@ -536,15 +546,6 @@ const TransferPage = () => {
                         aria-label="Select Predicate"
                       />
                     ) : null}
-                  </div>
-                  <div className={chainSelectContainerClass}>
-                    <Controller
-                      name="receiverChainId"
-                      control={control}
-                      render={({ field }) => (
-                        <ChainSelect {...field} id="receiverChainId" />
-                      )}
-                    />
                   </div>
                 </TabItem>
               </Tabs>
