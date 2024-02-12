@@ -16,7 +16,7 @@ const createContext = async (password: string) => {
     password,
     'buffer',
   );
-  return { encryptionKey, encryptedPassword };
+  return { encryptionKey, encryptedPassword, cache: new Map() };
 };
 
 const decryptPassword = async (context: {
@@ -28,12 +28,18 @@ export function createChainweaverService() {
   let context: {
     encryptionKey: Uint8Array;
     encryptedPassword: Uint8Array;
+    cache: Map<string, string>;
   } | null = null;
 
   return {
     isReady: () => Boolean(context),
-    reset: () => {
+    disconnect: () => {
       context = null;
+    },
+    clearCache: () => {
+      if (context) {
+        context.cache = new Map();
+      }
     },
     register: async (
       profileId: string,
@@ -98,8 +104,13 @@ export function createChainweaverService() {
         startIndex + quantity - 1,
       ]);
       const newKeys = await Promise.all(
-        keys.map(async ({ publicKey }, index) => {
+        keys.map(async ({ publicKey, secretKey }, index) => {
           const secretId = crypto.randomUUID();
+          if (context) {
+            // since the process is slow we cache the secret key;
+            // this should be removed when the wallet is locked
+            context.cache.set(secretId, secretKey);
+          }
           return {
             publicKey: publicKey,
             index: startIndex + index,

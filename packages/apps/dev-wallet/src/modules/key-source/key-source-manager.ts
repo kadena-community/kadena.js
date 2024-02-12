@@ -24,8 +24,8 @@ function createKeySourceManager(): IKeySourceManager {
       }
     },
     reset() {
-      createBIP44Service().reset();
-      createChainweaverService().reset();
+      createBIP44Service().disconnect();
+      createChainweaverService().disconnect();
     },
   };
 }

@@ -7,6 +7,7 @@ export interface ISecretRepository {
 
 export interface IKeySourceService {
   isReady: () => boolean;
+  disconnect: () => void | Promise<void>;
   createKey: (keySourceId: string, quantity: number) => Promise<IKeyItem[]>;
   getPublicKey: (
     keySource: IKeySource,

@@ -172,11 +172,24 @@ export const accountDiscovery = (
     [
       { event: 'key-retrieved'; data: IKeyItem },
       { event: 'chain-result'; data: IDiscoveredAccount },
+      {
+        event: 'query-done';
+        data: Array<{
+          key: IKeyItem;
+          chainResult: IDiscoveredAccount[];
+        }>;
+      },
+      { event: 'accounts-saved'; data: IAccount[] },
     ]
   >
 )(
   (emit) =>
-    async (networkId: string, keySourceId: string, numberOfKeys = 20) => {
+    async (
+      networkId: string,
+      keySourceId: string,
+      profileId: string,
+      numberOfKeys = 20,
+    ) => {
       const result: Array<{
         key: IKeyItem;
         chainResult: IDiscoveredAccount[];
@@ -202,6 +215,18 @@ export const accountDiscovery = (
         result.push({ key, chainResult });
       }
 
-      return result;
+      await emit('query-done')(result);
+
+      const accounts = await Promise.all(
+        result
+          .filter(({ chainResult }) =>
+            chainResult.find((r) => r.result && r.result.account),
+          )
+          .map(({ key }) => createKAccount(profileId, key).catch(() => null)),
+      );
+
+      await emit('accounts-saved')(accounts);
+
+      return accounts;
     },
 );
