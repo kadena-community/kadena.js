@@ -3,7 +3,7 @@ title: 'Workshop: Build an election application'
 description:
   Learn how to build a decentralized application that registers votes on the
   Kadena blockchain.
-menu: 'Workshop: Build an election application'
+menu: 'Workshop: Election application'
 label: Welcome
 order: 3
 layout: full
@@ -97,7 +97,7 @@ whether your development environment meets the following basic requirements:
 
 If you have everything you need, let’s start building the election website by
 following the workshop roadmap to get started with
-[Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started).
+[Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace).
 
 ## Workshop roadmap
 
@@ -117,7 +117,7 @@ compare your solution with the finished code at every step along the way.
 - [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account)
 - [Define a namespaces](/build/guides/election-dapp-tutorial/define-a-namespace)
 - [Define keysets](/build/guides/election-dapp-tutorial/define-keysets)
-- [Write the smart contract](/build/guides/election-dapp-tutorial/06-smart-contract)
+- [Write a smart contract](/build/guides/election-dapp-tutorial/write-a-smart-contract)
 - [Nominate candidates](/build/guides/election-dapp-tutorial/07-nominate-candidates)
 - [Add voting management](/build/guides/election-dapp-tutorial/08-voting)
 - [Add a gas station](/build/guides/election-dapp-tutorial/09-gas-station)

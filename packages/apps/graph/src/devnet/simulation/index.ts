@@ -3,6 +3,7 @@ import 'module-alias/register';
 import type { IAccount } from '@devnet/utils';
 import { logger } from '@utils/logger';
 import { Command, Option } from 'commander';
+import { flood } from './coin/flood';
 import { simulateCoin } from './coin/simulate';
 import { transfer } from './coin/transfer';
 import { generateAccount } from './helper';
@@ -113,6 +114,33 @@ program
     } catch (error) {
       console.error(error);
     }
+  });
+
+program
+  .command('simulate:flood')
+  .description('Flood traffic on the devnet')
+  .addOption(
+    new Option(
+      '-tx, --transactions <number>',
+      'Transactions per iteration',
+    ).default(3),
+  )
+  .addOption(
+    new Option(
+      '-i, --interval <number>',
+      'Interval between iterations in milliseconds',
+    ).default(1000),
+  )
+  .addOption(
+    new Option(
+      '-t, --totalTx <number>',
+      'Total transactions to be sent before stopping the flood',
+    ).default(1000),
+  )
+
+  .action(async (args) => {
+    logger.info('Flood config parameters:', args);
+    await flood(args.transactions, args.interval, args.totalTx);
   });
 
 program.parse();

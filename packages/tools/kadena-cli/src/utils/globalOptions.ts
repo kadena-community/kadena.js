@@ -2,38 +2,37 @@ import { Option, program } from 'commander';
 import { z } from 'zod';
 import {
   account,
-  // contract,
   devnet as devnetPrompts,
   generic,
   genericActionsPrompts,
   keys,
-  // marmalade,
   networks,
   security,
+  tx,
   typescript,
 } from '../prompts/index.js';
 
 import type { ChainId } from '@kadena/types';
 import chalk from 'chalk';
 import { join } from 'node:path';
-import {
-  KEY_EXT,
-  WALLET_DIR,
-  WALLET_EXT,
-  WALLET_LEGACY_EXT,
-} from '../constants/config.js';
+
+import { KEY_EXT, WALLET_EXT } from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
-import { getWallet, parseKeyIndexOrRange } from '../keys/utils/keysHelpers.js';
+import {
+  getWallet,
+  parseKeyIndexOrRange,
+  parseKeyPairsInput,
+} from '../keys/utils/keysHelpers.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
 import {
   ensureNetworksConfiguration,
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
+import { accountOverWritePrompt } from '../prompts/account.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
-import { removeAfterFirstDot } from './path.util.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalFlags = {
@@ -47,11 +46,39 @@ export const globalFlags = {
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
   // Account
+  accountAlias: createOption({
+    key: 'accountAlias' as const,
+    defaultIsOptional: false,
+    prompt: account.accountAliasPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-aa, --account-alias <accountAlias>',
+      'Enter an alias to store your account',
+    ),
+  }),
   accountName: createOption({
     key: 'accountName' as const,
     prompt: account.accountNamePrompt,
     validation: z.string(),
     option: new Option('-a, --account-name <accountName>', 'Account name'),
+  }),
+  accountKdnName: createOption({
+    key: 'accountKdnName' as const,
+    prompt: account.accountKdnNamePrompt,
+    validation: z.string(),
+    option: new Option(
+      '-a, --account-kdn-name <accountName>',
+      'Kadena names name',
+    ),
+  }),
+  accountKdnAddress: createOption({
+    key: 'accountKdnAddress' as const,
+    prompt: account.accountKdnAddressPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-a, --account-kdn-address <accountKdnAddress>',
+      'Kadena names address',
+    ),
   }),
   publicKeys: createOption({
     key: 'publicKeys' as const,
@@ -62,7 +89,10 @@ export const globalOptions = {
       'Public keys (comma separated)',
     ),
     expand: async (publicKeys: string) => {
-      return publicKeys.split(',').map((value) => value.trim());
+      return publicKeys
+        .split(',')
+        .map((value) => value.trim())
+        .filter((key) => !!key);
     },
   }),
   amount: createOption({
@@ -91,7 +121,8 @@ export const globalOptions = {
   // global
   quiet: createOption({
     key: 'quiet' as const,
-    prompt: ({ quiet }): boolean => quiet === true || quiet === 'true' || false,
+    // quiet is never prompted
+    prompt: () => false,
     validation: z.boolean().optional(),
     option: globalFlags.quiet,
   }),
@@ -109,7 +140,7 @@ export const globalOptions = {
     prompt: security.securityCurrentPasswordPrompt,
     validation: z.string(),
     option: new Option(
-      '-scp, --security-current-password <securityCurrentPassword>',
+      '-c, --security-current-password <securityCurrentPassword>',
       'Enter your current key password',
     ),
   }),
@@ -118,7 +149,7 @@ export const globalOptions = {
     prompt: security.securityNewPasswordPrompt,
     validation: z.string(),
     option: new Option(
-      '-snp, --security-new-password <securityNewPassword>',
+      '-n, --security-new-password <securityNewPassword>',
       'Enter your new key password',
     ),
   }),
@@ -195,6 +226,16 @@ export const globalOptions = {
       'Version of the kadena/devnet Docker image to use (e.g. "latest")',
     ),
   }),
+  // Logs
+  logFolder: createOption({
+    key: 'logFolder' as const,
+    prompt: generic.logFolderPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-l, --log-folder <logFolder>',
+      'Directory where the log file will be generated. (e.g. ./kadena/simulation-logs/',
+    ),
+  }),
   // Network
   networkName: createOption({
     key: 'network' as const,
@@ -266,6 +307,24 @@ export const globalOptions = {
       }
     },
   }),
+  networkSelect: createOption({
+    key: 'network' as const,
+    prompt: networks.networkSelectOnlyPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-n, --network <network>',
+      'Kadena network (e.g. "mainnet")',
+    ),
+    expand: async (network: string) => {
+      try {
+        return loadNetworkConfig(network);
+      } catch (e) {
+        throw new Error(
+          `No network configuration found for "${network}". Please create a "${network}" network.`,
+        );
+      }
+    },
+  }),
   chainId: createOption({
     key: 'chainId' as const,
     prompt: networks.chainIdPrompt,
@@ -281,8 +340,41 @@ export const globalOptions = {
       return chainId as ChainId;
     },
   }),
-
   // Keys
+  keyPairs: createOption({
+    key: 'keyPairs',
+    prompt: keys.keyPairsPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-k, --key-pairs <keyPairs>',
+      'Enter key pairs as string publicKey=xxx,secretKey=xxx;...',
+    ),
+    transform: (input) => {
+      try {
+        return parseKeyPairsInput(input);
+      } catch (error) {
+        throw new Error(`Error parsing key pairs: ${error.message}`);
+      }
+    },
+  }),
+  keyPublicKey: createOption({
+    key: 'keyPublicKey' as const,
+    prompt: keys.keyPublicKeyPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-p, --key-public-key <keyPublicKey>',
+      'Enter a public key',
+    ),
+  }),
+  keySecretKey: createOption({
+    key: 'keySecretKey' as const,
+    prompt: keys.keySecretKeyPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-s, --key-secret-key <keySecretKey>',
+      'Enter a secret key',
+    ),
+  }),
   keyAlias: createOption({
     key: 'keyAlias',
     prompt: keys.keyAliasPrompt,
@@ -290,6 +382,15 @@ export const globalOptions = {
     option: new Option(
       '-a, --key-alias <keyAlias>',
       'Enter an alias to store your key',
+    ),
+  }),
+  keyAliasSelect: createOption({
+    key: 'keyAliasSelect',
+    prompt: keys.keyGetAllKeyFilesPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-a, --key-alias-select <keyAliasSelect>',
+      'Enter a alias to select keys from',
     ),
   }),
   keyWallet: createOption({
@@ -341,19 +442,8 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
     defaultIsOptional: false,
-    transform: async (keyWallet: string) => {
-      if (
-        keyWallet.includes(WALLET_EXT) ||
-        keyWallet.includes(WALLET_LEGACY_EXT)
-      ) {
-        return {
-          wallet: await readKeyFileContent(
-            join(WALLET_DIR, removeAfterFirstDot(keyWallet), keyWallet),
-          ),
-          fileName: keyWallet,
-        };
-      }
-      return keyWallet;
+    expand: async (keyWallet: string) => {
+      return await getWallet(keyWallet);
     },
   }),
   keyWalletSelectWithAll: createOption({
@@ -398,7 +488,7 @@ export const globalOptions = {
     prompt: genericActionsPrompts.actionAskForPassword,
     validation: z.string(),
     option: new Option(
-      '-up, --key-use-password <keyUsePassword>',
+      '-u, --key-use-password <keyUsePassword>',
       'Do you want to use a password to encrypt your key? (yes/no)',
     ),
   }),
@@ -465,12 +555,6 @@ export const globalOptions = {
       'use as the namespace of the contract if its not clear in the contract',
     ),
   }),
-  key: createOption({
-    key: 'key' as const,
-    prompt: keys.keyDeleteSelectPrompt,
-    validation: z.string(),
-    option: new Option('-k, --key <key>', 'Select key from keyfile'),
-  }),
   keyMessage: createOption({
     key: 'keyMessage' as const,
     prompt: keys.keyMessagePrompt,
@@ -489,6 +573,50 @@ export const globalOptions = {
       }
       return keyMessage;
     },
+  }),
+
+  // Dapp
+  dappTemplate: createOption({
+    key: 'dappTemplate',
+    prompt: genericActionsPrompts.actionAskForDappTemplate,
+    validation: z.string(),
+    option: new Option(
+      '-t, --dapp-template <dappTemplate>',
+      'Select a dapp template',
+    ),
+  }),
+  // common
+  outFileJson: createOption({
+    key: 'outFile',
+    prompt: tx.outFilePrompt,
+    validation: z.string().optional(),
+    option: new Option(
+      '-o, --out-file <outFile>',
+      'Enter the file name to save the output',
+    ),
+    defaultIsOptional: true,
+    transform(value: string) {
+      if (!value) return null;
+      const file = value.endsWith('.json') ? value : `${value}.json`;
+      return join(process.cwd(), file);
+    },
+  }),
+  // account
+  accountOverwrite: createOption({
+    key: 'accountOverwrite',
+    validation: z.boolean(),
+    prompt: accountOverWritePrompt,
+    option: new Option(
+      '-o, --account-overwrite',
+      'Overwrite account details from chain',
+    ),
+  }),
+  accountNameSelect: createOption({
+    key: 'accountName' as const,
+    defaultIsOptional: false,
+    prompt: account.accountNameSelectionPrompt,
+    validation: z.string(),
+    option: new Option('-a, --account-name <accountName>', 'Account name'),
   }),
 } as const;
 

@@ -4,11 +4,11 @@ import type { FC, FunctionComponentElement as FCElement } from 'react';
 import React, { Children, useContext } from 'react';
 import {
   accordionButtonClass,
-  accordionHeadingTitleClass,
   accordionSectionClass,
   accordionToggleIconClass,
 } from '../Accordion/Accordion.css';
 import { SystemIcon } from '../Icon';
+import { Heading } from '../Typography/Heading/Heading';
 import { NavAccordionContext } from './NavAccordion.context';
 import {
   navAccordionListClass,
@@ -17,7 +17,6 @@ import {
 import type { INavAccordionGroupProps } from './NavAccordionGroup';
 import { NavAccordionGroup } from './NavAccordionGroup';
 import type { INavAccordionLinkProps } from './NavAccordionLink';
-
 export interface INavAccordionSectionProps {
   children?:
     | FCElement<INavAccordionGroupProps>[]
@@ -58,7 +57,7 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
         className={classNames([accordionButtonClass])}
         onClick={handleClick}
       >
-        <h3 className={accordionHeadingTitleClass}>{title}</h3>
+        <Heading variant="h3">{title}</Heading>
         <SystemIcon.Close
           className={classNames(accordionToggleIconClass, {
             isOpen,

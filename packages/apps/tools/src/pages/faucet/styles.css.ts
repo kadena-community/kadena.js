@@ -1,4 +1,4 @@
-import { atoms, vars } from '@kadena/react-ui/styles';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const containerClass = style([
@@ -12,15 +12,15 @@ export const containerClass = style([
 export const inputContainerClass = style([
   atoms({
     display: 'flex',
+    gap: 'md',
   }),
-  {
-    gap: vars.sizes.$4,
-  },
 ]);
 
 export const accountNameContainerClass = style([{ flex: 1 }]);
 
-export const chainSelectContainerClass = style([{ width: vars.sizes.$25 }]);
+export const chainSelectContainerClass = style([
+  { width: tokens.kda.foundation.size.n30 },
+]);
 
 export const buttonContainerClass = style([
   atoms({ display: 'flex', justifyContent: 'flex-end' }),
@@ -28,4 +28,56 @@ export const buttonContainerClass = style([
 
 export const notificationContainerStyle = style([
   atoms({ fontSize: 'xs', marginBlock: 'lg' }),
+]);
+
+export const infoBoxStyle = style([
+  atoms({
+    fontSize: 'sm',
+    padding: 'sm',
+    borderRadius: 'sm',
+    display: 'flex',
+    flexDirection: 'column',
+  }),
+]);
+
+export const infoTitleStyle = style([
+  atoms({
+    fontWeight: 'bodyFont.bold',
+  }),
+]);
+
+export const linksBoxStyle = style([
+  atoms({
+    fontSize: 'sm',
+    borderRadius: 'sm',
+    display: 'flex',
+    flexDirection: 'column',
+  }),
+]);
+
+export const linkStyle = style([
+  atoms({
+    color: 'text.brand.primary.default',
+  }),
+  {
+    selectors: {
+      [`&.visited`]: {
+        color: 'text.brand.primary.default.vi',
+      },
+    },
+  },
+]);
+
+export const explorerLinkStyle = style([
+  atoms({
+    color: 'text.brand.primary.default',
+    textDecoration: 'underline',
+  }),
+  {
+    selectors: {
+      [`&.visited`]: {
+        color: 'text.brand.primary.default.vi',
+      },
+    },
+  },
 ]);

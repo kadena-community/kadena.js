@@ -70,3 +70,8 @@ export interface IPartialPactCommand extends AllPartial<IPactCommand> {
     | { exec: Partial<IExecutionPayloadObject['exec']> }
     | { cont: Partial<IContinuationPayloadObject['cont']> };
 }
+
+/**
+ * @public
+ */
+export type BuiltInPredicate = 'keys-all' | 'keys-any' | 'keys-2';

@@ -7,16 +7,15 @@ import {
   defaultBoxArgs,
   sharedStoryArgTypes,
 } from '../storyComponents';
-import type { IBoxProps } from './Box';
 import { Box } from './Box';
 
-const meta: Meta<IBoxProps> = {
+const meta: Meta<typeof Box> = {
   title: 'Layout/Box',
   component: Box,
   decorators: [onLayer2],
   parameters: {
     status: {
-      type: 'stable',
+      type: 'releaseCandidate',
     },
     docs: {
       description: {
@@ -30,7 +29,7 @@ const meta: Meta<IBoxProps> = {
 };
 
 export default meta;
-type Story = StoryObj<IBoxProps>;
+type Story = StoryObj<typeof Box>;
 
 export const Primary: Story = {
   name: 'Box - Margin',

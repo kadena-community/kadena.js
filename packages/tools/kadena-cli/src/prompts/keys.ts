@@ -1,21 +1,20 @@
-import { input, select } from '@inquirer/prompts';
 import { validateMnemonic } from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
 
 import { program } from 'commander';
 import {
+  getAllKeys,
   getAllWallets,
-  getKeysFromWallet,
-  getLegacyKeysFromWallet,
-  getLegacyWallets,
-  getWallets,
+  getWallet,
+  isIWalletKey,
+  parseKeyPairsInput,
 } from '../keys/utils/keysHelpers.js';
 
 import chalk from 'chalk';
-import type { KeyContent } from '../keys/utils/storage.js';
-import { readKeyFileContent } from '../keys/utils/storage.js';
+
 import type { IPrompt } from '../utils/createOption.js';
 import { isAlphanumeric } from '../utils/helpers.js';
+import { input, select } from '../utils/prompts.js';
 
 export async function keyWallet(): Promise<string> {
   return await input({
@@ -29,6 +28,34 @@ export async function keyWallet(): Promise<string> {
   });
 }
 
+export const keyGetAllKeyFilesPrompt: IPrompt<string> = async (args) => {
+  let keys: string[] = [];
+
+  if (args.wallet === 'all') {
+    keys = (await getAllKeys()).map(
+      (file) =>
+        `${file.alias} (${
+          isIWalletKey(file) ? `wallet ${file.wallet}` : 'plain'
+        })`,
+    );
+  } else {
+    const wallet = await getWallet(args.wallet as string);
+    keys = wallet?.keys ?? [];
+  }
+
+  const choices = keys.map((key) => ({
+    value: key,
+    name: `${args.wallet}: ${key}`,
+  }));
+
+  const choice = await select({
+    message: 'Select a key file:',
+    choices: choices,
+  });
+
+  return choice;
+};
+
 export async function keyAliasPrompt(): Promise<string> {
   return await input({
     message: `Enter a alias for your key:`,
@@ -38,6 +65,24 @@ export async function keyAliasPrompt(): Promise<string> {
       }
       return true;
     },
+  });
+}
+
+export async function keyPublicKeyPrompt(): Promise<string> {
+  return await input({
+    message: `Enter a public key:`,
+    validate: function (input) {
+      if (!isAlphanumeric(input)) {
+        return 'Public key must be alphanumeric! Please enter a valid public key.';
+      }
+      return true;
+    },
+  });
+}
+
+export async function keySecretKeyPrompt(): Promise<string> {
+  return await input({
+    message: `Enter a secret key:`,
   });
 }
 
@@ -76,8 +121,8 @@ export async function keyAmountPrompt(): Promise<string> {
 
 export async function keyIndexOrRangePrompt(): Promise<string> {
   return await input({
-    message: `Enter the index or range of indices for key generation (e.g., 5 or 1-5). Default is 1`,
-    default: '1',
+    message: `Enter the index or range of indices for key generation (e.g., 5 or 1-5). Default is 0`,
+    default: '0',
   });
 }
 
@@ -110,7 +155,7 @@ export async function genFromChoicePrompt(): Promise<
 }
 
 async function walletSelectionPrompt(
-  specialOptions: string[] = [], // Array of special options
+  specialOptions: string[] = [],
 ): Promise<string> {
   const existingKeys: string[] = await getAllWallets();
 
@@ -146,98 +191,23 @@ async function walletSelectionPrompt(
   return selectedWallet;
 }
 
-export const keyWalletSelectPrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-): Promise<string> => {
-  return walletSelectionPrompt(); // No special options
-};
+export async function keyWalletSelectPrompt(): Promise<string> {
+  return walletSelectionPrompt();
+}
 
-export const keyWalletSelectAllPrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-): Promise<string> => {
-  return walletSelectionPrompt(['all']); // Include "all" option
-};
+export async function keyWalletSelectAllPrompt(): Promise<string> {
+  return walletSelectionPrompt(['all']);
+}
 
-export const keyWalletSelectNonePrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-): Promise<string> => {
-  return walletSelectionPrompt(['none']); // Include "no wallet" option
-};
+export async function keyWalletSelectNonePrompt(): Promise<string> {
+  return walletSelectionPrompt(['none']);
+}
 
-export const keyWalletSelectAllOrNonePrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-): Promise<string> => {
-  return walletSelectionPrompt(['all', 'none']); // Include both "all" and "no wallet" options
-};
+export async function keyWalletSelectAllOrNonePrompt(): Promise<string> {
+  return walletSelectionPrompt(['all', 'none']);
+}
 
-export const selectDecryptMessagePrompt: IPrompt<string> = async (
-  prev,
-  args,
-  isOptional,
-) => {
-  const walletName = await keyWalletSelectPrompt(prev, args, isOptional);
-  const keys = (await getKeysFromWallet(walletName)).map((file) => ({
-    file,
-    type: 'plain' as KeyType,
-  }));
-  const wallets = (await getWallets(walletName)).map((file) => ({
-    file,
-    type: 'wallet' as KeyType,
-  }));
-
-  const allKeyFiles = [...keys, ...wallets];
-
-  const content = await Promise.all(
-    allKeyFiles.map(({ file }) => readKeyFileContent(file)),
-  );
-
-  const choices = allKeyFiles.reduce(
-    (acc, { file, type }, index) => {
-      const keyContent = content[index];
-      if (keyContent !== undefined) {
-        acc.push({
-          value: file,
-          name: `${file} - ${formatKey(keyContent, type)}`,
-        });
-      }
-      return acc;
-    },
-    [] as { value: string; name: string }[],
-  );
-
-  // Option to enter own key
-  choices.push({
-    value: 'enterOwnMessage',
-    name: 'Enter message to decrypt',
-  });
-
-  const selectedKey = await select({
-    message: 'Select a key',
-    choices: choices,
-  });
-
-  if (selectedKey === 'enterOwnMessage') {
-    return await input({
-      message: `Message to decrypt`,
-    });
-  }
-
-  return selectedKey;
-};
-
-export const keyWalletPrompt: IPrompt<string> = async (
-  prev,
-  args,
-  isOptional,
-) => {
+export async function keyWalletPrompt(): Promise<string> {
   const existingKeys: string[] = await getAllWallets();
 
   const choices = existingKeys.map((key) => ({
@@ -259,93 +229,18 @@ export const keyWalletPrompt: IPrompt<string> = async (
 
   if (selectedWallet === 'createWallet') {
     await program.parseAsync(['', '', 'keys', 'create-wallet']);
-    return keyWalletPrompt(prev, args, isOptional);
+    return keyWalletPrompt();
   }
 
   if (selectedWallet === 'createLegacyWallet') {
     await program.parseAsync(['', '', 'keys', 'create-wallet', '--legacy']);
-    return keyWalletPrompt(prev, args, isOptional);
+    return keyWalletPrompt();
   }
 
   return selectedWallet;
-};
+}
 
-type KeyType = 'plain' | 'plainLegacy' | 'hd' | 'hdLegacy';
-
-export const keyDeleteSelectPrompt: IPrompt<string> = async (
-  prev,
-  args,
-  isOptional,
-) => {
-  const walletName = await keyWalletSelectPrompt(prev, args, isOptional);
-  const plainKeys = (await getKeysFromWallet(walletName)).map((file) => ({
-    file,
-    type: 'plain' as KeyType,
-  }));
-  const plainLegacyKeys = (await getLegacyKeysFromWallet(walletName)).map(
-    (file) => ({
-      file,
-      type: 'plainLegacy' as KeyType,
-    }),
-  );
-  const wallets = (await getWallets(walletName)).map((file) => ({
-    file,
-    type: 'wallet' as KeyType,
-  }));
-  const legacyWallets = (await getLegacyWallets(walletName)).map((file) => ({
-    file,
-    type: 'walletLegacy' as KeyType,
-  }));
-
-  const allKeyFiles = [
-    ...plainKeys,
-    ...plainLegacyKeys,
-    ...wallets,
-    ...legacyWallets,
-  ];
-
-  if (allKeyFiles.length === 0) {
-    console.log(chalk.red('No files found. Exiting.'));
-    process.exit(0);
-  }
-
-  const content = await Promise.all(
-    allKeyFiles.map(({ file }) => readKeyFileContent(file)),
-  );
-
-  const choices = allKeyFiles.reduce(
-    (acc, { file, type }, index) => {
-      const keyContent = content[index];
-      if (keyContent !== undefined) {
-        // no file content
-        acc.push({
-          value: file,
-          name: `${file} - ${formatKey(keyContent, type)}`,
-        });
-      }
-      return acc;
-    },
-    [] as { value: string; name: string }[],
-  );
-
-  choices.push({
-    value: 'all',
-    name: '** Delete all keys ** ',
-  });
-
-  const selectedKey = await select({
-    message: 'Select a key',
-    choices: choices,
-  });
-
-  return selectedKey;
-};
-
-export const confirmDeleteAllKeysPrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-) => {
+export const confirmDeleteAllKeysPrompt: IPrompt<string> = async () => {
   const message =
     'Are you sure you want to delete ALL key files? ( Warning: This action cannot be undone. Wallets need to be manually selected for deletion. )';
 
@@ -358,61 +253,16 @@ export const confirmDeleteAllKeysPrompt: IPrompt<string> = async (
   });
 };
 
-export const keyDeletePrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-) => {
-  if (args.defaultValue === undefined) {
-    throw new Error('Key file name is required for the delete prompt.');
-  }
-  const message = `Are you sure you want to delete the key file "${args.defaultValue}"?`;
-  return await select({
-    message,
-    choices: [
-      { value: 'yes', name: 'Yes' },
-      { value: 'no', name: 'No' },
-    ],
+export async function keyPairsPrompt(): Promise<string> {
+  return await input({
+    message: 'Enter key pairs as a string publicKey=xxx,secretKey=xxx;...',
+    validate: function (input) {
+      try {
+        parseKeyPairsInput(input);
+        return true;
+      } catch (error) {
+        return error.message;
+      }
+    },
   });
-};
-
-/**
- * Formats a key based on its type.
- *
- * @param {KeyContent} keyContent - The content of the key to format.
- * @param {KeyType} type - The type of the key (plain, plainLegacy, hd, hdLegacy).
- * @returns {string} The formatted key as a string.
- * @throws {Error} Throws an error if an invalid key type is provided.
- */
-function formatKey(keyContent: KeyContent, type: KeyType): string {
-  switch (type) {
-    case 'plain':
-    case 'plainLegacy':
-      if (typeof keyContent === 'string') {
-        throw new Error(`Invalid key type for plain key: ${type}`);
-      }
-      return formatTruncated(keyContent.publicKey);
-
-    case 'hd':
-    case 'hdLegacy':
-      if (typeof keyContent !== 'string') {
-        throw new Error(`Invalid key type: ${type}`);
-      }
-      return formatTruncated(keyContent);
-
-    default:
-      throw new Error(`Unrecognized key type: ${type}`);
-  }
-}
-
-/**
- * Truncates a key string to show only the beginning and end, with ellipsis in the middle.
- *
- * @param {string} key - The key string to be truncated.
- * @returns {string} The truncated key string.
- */
-function formatTruncated(key: string): string {
-  const start = key.substring(0, 5);
-  const end = key.substring(key.length - 5);
-  return `${start}..........${end}`;
 }

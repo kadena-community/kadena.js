@@ -1,7 +1,15 @@
 import type { Event } from '@/__generated__/sdk';
 import routes from '@/constants/routes';
 import { formatCode } from '@/utils/formatter';
-import { Table } from '@kadena/react-ui';
+import {
+  Cell,
+  Column,
+  Row,
+  Table,
+  TableBody,
+  TableHeader,
+} from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import React from 'react';
 
 interface IEventsTableProps {
@@ -13,40 +21,43 @@ export const EventsTable = (props: IEventsTableProps): JSX.Element => {
 
   return (
     <>
-      <Table.Root striped wordBreak="break-word">
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Block Height</Table.Th>
-            <Table.Th>Chain ID</Table.Th>
-            <Table.Th>Parameters</Table.Th>
-            <Table.Th>Request Key</Table.Th>
-            <Table.Th></Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
+      <Table isStriped className={atoms({ wordBreak: 'break-all' })} isCompact>
+        <TableHeader>
+          <Column>Block Height</Column>
+          <Column>Chain ID</Column>
+          <Column>Parameters</Column>
+          <Column>Request Key</Column>
+        </TableHeader>
+        <TableBody>
           {events.map((event, index) => (
-            <Table.Tr
+            <Row
               key={index}
-              url={`${routes.TRANSACTIONS}/${event.requestKey}`}
+              href={`${routes.TRANSACTIONS}/${event.requestKey}`}
             >
-              <Table.Td>{event.height}</Table.Td>
-              <Table.Td>{event.chainId}</Table.Td>
-              <Table.Td>
-                <Table.Root>
-                  <Table.Body>
+              <Cell>{event.height}</Cell>
+              <Cell>{event.chainId}</Cell>
+              <Cell>
+                <Table>
+                  <TableHeader>
+                    <Column>Values</Column>
+                  </TableHeader>
+                  <TableBody>
                     {JSON.parse(event.parameterText).map(
                       (parameter: any, index: number) => (
-                        <Table.Tr key={`arguments-${index}`}>
-                          <Table.Td>
+                        <Row key={`arguments-${index}`}>
+                          <Cell>
                             {typeof parameter === 'string' ? (
                               parameter
                             ) : Array.isArray(parameter) ? (
-                              <Table.Root>
-                                <Table.Body>
+                              <Table>
+                                <TableHeader>
+                                  <Column>Values</Column>
+                                </TableHeader>
+                                <TableBody>
                                   {parameter.map(
                                     (subparameter: any, index: number) => (
-                                      <Table.Tr key={`arguments-${index}`}>
-                                        <Table.Td>
+                                      <Row key={`arguments-${index}`}>
+                                        <Cell>
                                           {typeof subparameter === 'string' ? (
                                             subparameter
                                           ) : (
@@ -56,27 +67,27 @@ export const EventsTable = (props: IEventsTableProps): JSX.Element => {
                                               )}
                                             </pre>
                                           )}
-                                        </Table.Td>
-                                      </Table.Tr>
+                                        </Cell>
+                                      </Row>
                                     ),
                                   )}
-                                </Table.Body>
-                              </Table.Root>
+                                </TableBody>
+                              </Table>
                             ) : (
                               JSON.stringify(parameter)
                             )}
-                          </Table.Td>
-                        </Table.Tr>
+                          </Cell>
+                        </Row>
                       ),
                     )}
-                  </Table.Body>
-                </Table.Root>
-              </Table.Td>
-              <Table.Td>{event.requestKey}</Table.Td>
-            </Table.Tr>
+                  </TableBody>
+                </Table>
+              </Cell>
+              <Cell>{event.requestKey}</Cell>
+            </Row>
           ))}
-        </Table.Body>
-      </Table.Root>
+        </TableBody>
+      </Table>
     </>
   );
 };

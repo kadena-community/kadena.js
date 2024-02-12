@@ -12,7 +12,7 @@ import { kadenaGenKeypair } from './kadenaGenKeypair.js';
  * @returns signature
  */
 export async function kadenaSignFromRootKey(
-  password: string,
+  password: string | Uint8Array,
   message: string,
   rootKey: EncryptedString,
   index: number,

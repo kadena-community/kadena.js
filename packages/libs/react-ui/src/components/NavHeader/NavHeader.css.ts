@@ -1,20 +1,28 @@
 import { style } from '@vanilla-extract/css';
-import { atoms, vars } from '../../styles';
+import { atoms, tokens } from '../../styles';
+import { token } from '../../styles/themeUtils';
+import { iconFill } from '../Icon/IconWrapper.css';
 
 export const containerClass = style([
   atoms({
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
-    justifyContent: 'flex-start',
-    position: 'relative',
+    width: '100%',
   }),
   {
-    height: vars.sizes.$16,
-    backgroundColor: vars.colors.$gray90,
-    color: vars.colors.$gray40,
+    height: tokens.kda.foundation.size.n16,
+    backgroundColor: tokens.kda.foundation.color.neutral.n1,
   },
+]);
+
+export const contentClass = style([
+  atoms({
+    position: 'relative',
+    paddingInline: 'sm',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginInline: 'auto',
+    height: '100%',
+  }),
 ]);
 
 export const itemsContainerClass = style([
@@ -22,50 +30,45 @@ export const itemsContainerClass = style([
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'nowrap',
-    width: '100%',
-    height: '100%',
-    justifyContent: 'space-between',
+    flex: 1,
     alignItems: 'center',
+    height: '100%',
+    gap: 'md',
     overflowX: 'auto',
+    paddingInline: 'md',
+    marginInlineStart: 'auto',
   }),
-  {
-    paddingLeft: vars.sizes.$3,
-    selectors: {
-      '&:hover': {
-        textDecoration: 'none',
-      },
-      '&:active': {
-        color: vars.colors.$negativeContrast,
-      },
-    },
-  },
 ]);
 
 export const logoClass = style([
   atoms({
-    display: 'flex',
-    paddingInline: 'md',
-    paddingBlock: 'sm',
+    marginInlineEnd: 'md',
+    marginBlock: 'sm',
+    padding: 'xs',
+    borderRadius: 'sm',
+    flexShrink: 0,
   }),
-]);
-
-export const navWrapperClass = style([
-  atoms({
-    alignItems: 'stretch',
-    display: 'flex',
-    justifyContent: 'center',
-  }),
+  {
+    selectors: {
+      '&:focus-visible': {
+        outline: `${token('border.width.normal')} solid ${token(
+          'color.border.brand.primary.@focus',
+        )}`,
+      },
+    },
+  },
 ]);
 
 export const navListClass = style([
   atoms({
     alignItems: 'stretch',
     display: 'flex',
-    justifyContent: 'center',
+    gap: 'sm',
+    flex: 1,
+    paddingInline: 'no',
   }),
   {
     listStyle: 'none',
-    paddingInlineStart: '1rem',
     zIndex: 1,
   },
 ]);
@@ -77,151 +80,55 @@ export const linkClass = style([
     fontSize: 'sm',
     fontWeight: 'bodyFont.black',
     textDecoration: 'none',
+    borderRadius: 'sm',
+    paddingInline: 'sm',
+    paddingBlock: 'xs',
+    whiteSpace: 'nowrap',
   }),
   {
-    borderRadius: '1px',
-    color: vars.colors.$gray40,
-    marginRight: vars.sizes.$6,
-    margin: `0 ${vars.sizes.$1}`,
-    padding: `${vars.sizes.$1} ${vars.sizes.$2}`,
+    color: token('color.neutral.n70'),
     transition: 'background 0.1s ease, color 0.1s ease',
   },
   {
     selectors: {
-      '&:active': {
-        color: vars.colors.$gray90,
-        textDecoration: 'none',
-      },
       '&:hover': {
-        color: vars.colors.$white,
+        color: token('color.neutral.n100'),
         textDecoration: 'none',
       },
       '&:focus-visible': {
-        color: vars.colors.$blue40,
+        color: token('color.neutral.n100'),
+        outline: `${token('border.width.normal')} solid ${token(
+          'color.border.brand.primary.@focus',
+        )}`,
         textDecoration: 'none',
+      },
+      "&[data-state='active']": {
+        backgroundColor: token('color.neutral.n100'),
+        color: token('color.neutral.n1'),
       },
     },
   },
 ]);
 
-export const activeLinkClass = style([
+export const iconButtonClass = style([
   {
-    backgroundColor: vars.colors.$white,
-    color: vars.colors.$gray90,
+    background: 'none !important',
+    vars: {
+      [iconFill]: `${token('color.neutral.n70')} !important`,
+    },
     selectors: {
-      '&:hover': {
-        color: vars.colors.$gray90,
-        textDecoration: 'none',
-      },
-      '&:focus-visible': {
-        background: vars.colors.$blue40,
-        color: vars.colors.$gray90,
-        textDecoration: 'none',
+      '&:hover, &:focus-visible': {
+        background: 'none',
+        vars: {
+          [iconFill]: `${token('color.neutral.n100')} !important`,
+        },
       },
     },
-  },
-]);
-
-export const childrenClass = style([
-  atoms({
-    display: 'flex',
-  }),
-  {
-    marginRight: vars.sizes.$3,
-  },
-]);
-
-export const glowClass = style([
-  {
-    top: 0,
-    left: 0,
-    pointerEvents: 'none',
-    position: 'absolute',
-    zIndex: 0,
   },
 ]);
 
 export const selectContainerClass = style([
-  atoms({
-    alignItems: 'stretch',
-    display: 'flex',
-    flexGrow: 1,
-    lineHeight: 'lg',
-    overflow: 'hidden',
-    position: 'relative',
-  }),
   {
-    paddingLeft: vars.sizes.$4,
-    paddingRight: vars.sizes.$2,
-    backgroundColor: vars.colors.$gray90,
-    borderRadius: '1px',
-    border: `1px solid ${vars.colors.$gray40}`,
-    selectors: {
-      '&:active': {
-        color: vars.colors.$gray40,
-      },
-    },
-  },
-]);
-
-export const selectContainerClassDisabled = style([
-  {
-    backgroundColor: vars.colors.$gray20,
-    color: vars.colors.$gray100,
-  },
-]);
-
-export const selectIconClass = style([
-  atoms({
-    alignItems: 'center',
-    display: 'flex',
-  }),
-  {
-    color: vars.colors.$gray40,
-    selectors: {
-      '&:active': {
-        color: vars.colors.$gray40,
-      },
-    },
-  },
-]);
-
-export const selectClass = style([
-  atoms({
-    background: 'none',
-    border: 'none',
-    flexGrow: 1,
-    outline: 'none',
-    fontSize: 'base',
-  }),
-  {
-    backgroundColor: 'inherit',
-    color: vars.colors.$gray40,
-    appearance: 'none',
-    padding: `${vars.sizes.$2} 0`,
-    paddingRight: vars.sizes.$8,
-    paddingLeft: vars.sizes.$3,
-  },
-]);
-
-export const chevronIconClass = style([
-  atoms({
-    position: 'absolute',
-    display: 'inline-flex',
-    alignItems: 'center',
-    top: 0,
-    bottom: 0,
-  }),
-  {
-    right: vars.sizes.$1,
-    color: vars.colors.$gray40,
-    marginRight: vars.sizes.$2,
-    pointerEvents: 'none',
-    zIndex: 10,
-    selectors: {
-      '&:active': {
-        color: vars.colors.$gray40,
-      },
-    },
+    border: `1px solid ${token('color.neutral.n60')}`,
   },
 ]);

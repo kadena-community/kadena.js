@@ -8,7 +8,7 @@ const meta: Meta = {
   title: 'Layout/Divider',
   decorators: [withContentWidth],
   parameters: {
-    status: { type: 'stable' },
+    status: { type: 'releaseCandidate' },
     docs: {
       description: {
         component:

@@ -1,4 +1,9 @@
+'use client';
+
+import { Multi } from '@/features/Multi/Multi';
+import { useProofOfUs } from '@/hooks/proofOfUs';
 import type { FC } from 'react';
+import { useEffect } from 'react';
 
 interface IProps {
   params: {
@@ -6,10 +11,20 @@ interface IProps {
   };
 }
 
-const Page: FC<IProps> = ({ params }) => {
+const Page: FC<IProps> = () => {
+  const { proofOfUs, background, addSignee } = useProofOfUs();
+
+  useEffect(() => {
+    if (!proofOfUs) return;
+
+    addSignee();
+  }, [proofOfUs, addSignee]);
+
+  if (!proofOfUs) return null;
+
   return (
     <div>
-      scanned Proof Of Us with ID ({params.id})<section></section>
+      <Multi proofOfUs={proofOfUs} background={background} />
     </div>
   );
 };

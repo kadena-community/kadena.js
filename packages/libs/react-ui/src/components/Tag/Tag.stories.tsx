@@ -9,7 +9,7 @@ const meta: Meta<ITagGroupProps> = {
   component: TagGroup,
   parameters: {
     status: {
-      type: ['inDevelopment'],
+      type: ['releaseCandidate'],
     },
     docs: {
       description: {

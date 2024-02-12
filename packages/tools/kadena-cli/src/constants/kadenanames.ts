@@ -1,0 +1,4 @@
+export const KADENANAMES_NAMESPACE_TESTNET_MODULE =
+  'n_32faa22a75da53789d48dcbcb124a11c8f8651a8.herdyracle';
+export const KADENANAMES_NAMESPACE_MAINNET_MODULE =
+  'n_32faa22a75da53789d48dcbcb124a11c8f8651a8.kadena-names';

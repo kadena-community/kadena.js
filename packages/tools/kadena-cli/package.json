@@ -1,6 +1,6 @@
 {
   "name": "@kadena/kadena-cli",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "private": true,
   "description": "",
   "keywords": [],
@@ -15,7 +15,8 @@
     "Albert Groothedde <albert@kadena.io",
     "Jesse van Muijden <jesse@kadena.io",
     "Jermaine Jong <jermaine@kadena.io",
-    "Javad Khalilian <javad@kadena.io>"
+    "Javad Khalilian <javad@kadena.io>",
+    "Mohamed Ismail <mohamed@kadena.io>"
   ],
   "type": "module",
   "bin": {
@@ -26,15 +27,18 @@
     "lib"
   ],
   "scripts": {
-    "build": "pnpm run generate:ts && tsc",
-    "dev": "node --import 'data:text/javascript,import {register} from \"node:module\";import {pathToFileURL} from \"node:url\";register(\"%40swc-node/register/esm\",pathToFileURL(\"./\"));' src/index.ts",
+    "build": "pnpm run generate:ts && pnpm run generate:kdn && tsc",
+    "fast-build": "pnpm run generate:ts && tsc",
+    "dev": "NODE_ENV=development node --import 'data:text/javascript,import {register} from \"node:module\";import {pathToFileURL} from \"node:url\";register(\"%40swc-node/register/esm\",pathToFileURL(\"./\"));' src/index.ts",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
     "generate:ts": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
+    "generate:kdn": "pactjs contract-generate --contract n_32faa22a75da53789d48dcbcb124a11c8f8651a8.kadena-names --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact && pactjs contract-generate --contract n_32faa22a75da53789d48dcbcb124a11c8f8651a8.herdyracle --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
     "lint": "eslint src --ext .js,.ts --fix",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@inquirer/prompts": "^3.0.4",
@@ -57,11 +61,13 @@
     "js-yaml": "~4.1.0",
     "memfs": "~3.5.1",
     "mkdirp": "~1.0.4",
-    "node-fetch": "~2.6.2",
+    "node-fetch": "~3.3.2",
     "ora": "^7.0.1",
     "pact-lang-api": "^4.2.0",
     "rimraf": "~5.0.1",
     "sanitize-filename": "^1.6.3",
+    "seedrandom": "~3.0.5",
+    "ttys": "^0.0.3",
     "yaml": "~2.1.1",
     "zod": "~3.18.0"
   },
@@ -82,7 +88,10 @@
     "@types/mkdirp": "~1.0.2",
     "@types/node": "^18.17.14",
     "@types/rimraf": "~3.0.2",
+    "@types/seedrandom": "~3.0.8",
+    "@vitest/coverage-v8": "^1.1.0",
     "eslint": "^8.45.0",
+    "msw": "^2.0.0",
     "prettier": "~3.0.3",
     "typescript": "5.2.2",
     "vitest": "^1.1.0"

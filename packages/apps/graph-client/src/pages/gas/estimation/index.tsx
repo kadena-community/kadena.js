@@ -7,9 +7,15 @@ import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+  Cell,
+  Column,
+  Row,
   Stack,
   Table,
+  TableBody,
+  TableHeader,
 } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -51,24 +57,22 @@ const GasEstimation: React.FC = () => {
         loaderText="Waiting for gas estimation..."
       />
 
-      <Table.Root wordBreak="break-all">
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Label</Table.Th>
-            <Table.Th>Value</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-          <Table.Tr>
-            <Table.Td>Cmd</Table.Td>
-            <Table.Td>{cmdString}</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>Gas Estimate</Table.Td>
-            <Table.Td>{data?.gasLimitEstimate}</Table.Td>
-          </Table.Tr>
-        </Table.Body>
-      </Table.Root>
+      <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+        <TableHeader>
+          <Column>Label</Column>
+          <Column>Value</Column>
+        </TableHeader>
+        <TableBody>
+          <Row>
+            <Cell>Cmd</Cell>
+            <Cell>{cmdString}</Cell>
+          </Row>
+          <Row>
+            <Cell>Gas Estimate</Cell>
+            <Cell>{data?.gasLimitEstimate}</Cell>
+          </Row>
+        </TableBody>
+      </Table>
     </>
   );
 };

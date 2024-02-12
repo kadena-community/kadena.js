@@ -3,9 +3,9 @@ import { kadenaDecrypt } from '../../index.js';
 import { kadenaSign as originalKadenaSign } from '../kadena-crypto.js';
 
 export const kadenaSign = async (
-  password: string,
+  password: string | Uint8Array,
   message: string,
-  secretKey: EncryptedString,
+  secretKey: EncryptedString | Uint8Array,
 ): Promise<Uint8Array> => {
   return await originalKadenaSign(
     password,

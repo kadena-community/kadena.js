@@ -1,4 +1,14 @@
-import { Box, ContentHeader, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Cell,
+  Column,
+  ContentHeader,
+  Row,
+  Table,
+  TableBody,
+  TableHeader,
+} from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import React from 'react';
 
 interface NonFungible {
@@ -24,26 +34,24 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
 
       <Box margin="sm" />
 
-      <Table.Root wordBreak="break-word">
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Token Id</Table.Th>
-            <Table.Th>Chain</Table.Th>
-            <Table.Th>Balance</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
+      <Table className={atoms({ wordBreak: 'break-word' })} isCompact>
+        <TableHeader>
+          <Column>Token Id</Column>
+          <Column>Chain</Column>
+          <Column>Balance</Column>
+        </TableHeader>
+        <TableBody>
           {tokens.map((token, index) => {
             return (
-              <Table.Tr key={index}>
-                <Table.Td>{token.id}</Table.Td>
-                <Table.Td>{token.chainId}</Table.Td>
-                <Table.Td>{token.balance}</Table.Td>
-              </Table.Tr>
+              <Row key={index}>
+                <Cell>{token.id}</Cell>
+                <Cell>{token.chainId}</Cell>
+                <Cell>{token.balance}</Cell>
+              </Row>
             );
           })}
-        </Table.Body>
-      </Table.Root>
+        </TableBody>
+      </Table>
     </>
   );
 };

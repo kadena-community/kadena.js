@@ -22,7 +22,7 @@ const meta: Meta<IButtonProps> = {
   title: 'Components/Button',
   component: Button,
   parameters: {
-    status: { type: 'inDevelopment' },
+    status: { type: 'releaseCandidate' },
     controls: {
       hideNoControlsWarning: true,
       sort: 'requiredFirst',

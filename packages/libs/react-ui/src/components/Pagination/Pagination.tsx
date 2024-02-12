@@ -1,37 +1,36 @@
 'use client';
-import type { FC } from 'react';
+import type { ComponentPropsWithRef, FC } from 'react';
 import React, { useState } from 'react';
 import { PageNav } from './PageNav';
 import { PageNum } from './PageNum';
 import { listClass } from './Pagination.css';
 import { paginate } from './paginate';
 
-export interface IPaginationProps {
+export interface IPaginationProps extends ComponentPropsWithRef<'nav'> {
   totalPages: number;
-  currentPage?: number;
-  label: string;
+  selectedPage?: number;
   visiblePageLimit?: number;
-  initialSelectedPage?: number;
+  defaultSelectedPage?: number;
   onPageChange: (page: number) => void;
 }
 
 export const Pagination: FC<IPaginationProps> = ({
   totalPages,
-  currentPage,
-  label,
+  selectedPage,
   visiblePageLimit = 3,
-  initialSelectedPage,
+  defaultSelectedPage,
   onPageChange,
+  ...props
 }) => {
-  const validInitialSelectedPage =
-    initialSelectedPage &&
-    initialSelectedPage <= totalPages &&
-    initialSelectedPage > 0;
+  const validDefaultSelectedPage =
+    defaultSelectedPage &&
+    defaultSelectedPage <= totalPages &&
+    defaultSelectedPage > 0;
 
   const [_page, setPage] = useState(
-    validInitialSelectedPage ? initialSelectedPage : 1,
+    validDefaultSelectedPage ? defaultSelectedPage : 1,
   );
-  const page = currentPage || _page;
+  const page = selectedPage || _page;
   const pages = paginate({
     page,
     total: totalPages,
@@ -46,13 +45,13 @@ export const Pagination: FC<IPaginationProps> = ({
   };
 
   return (
-    <nav aria-label={label}>
+    <nav role="navigation" aria-label="Pagination navigation" {...props}>
       <ul className={listClass}>
         <li>
           <PageNav
             label="Previous"
             direction="prev"
-            disabled={!enablePrevious}
+            isDisabled={!enablePrevious}
             onClick={() => onClick(page - 1)}
           />
         </li>
@@ -70,7 +69,7 @@ export const Pagination: FC<IPaginationProps> = ({
           <PageNav
             label="Next"
             direction="next"
-            disabled={!enableNext}
+            isDisabled={!enableNext}
             onClick={() => onClick(page + 1)}
           />
         </li>

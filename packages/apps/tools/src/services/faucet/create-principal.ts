@@ -19,6 +19,8 @@ export const createPrincipal = async (
 ): Promise<string | Error> => {
   debug(createPrincipal.name);
 
+  if (keys.length === 1) return Promise.resolve(`k:${keys[0]}`);
+
   return createPrincipalUtil(
     {
       keyset: {

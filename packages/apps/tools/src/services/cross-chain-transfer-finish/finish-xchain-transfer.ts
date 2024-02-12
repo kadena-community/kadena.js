@@ -1,4 +1,7 @@
 import client from '@/constants/client';
+import type { Network } from '@/constants/kadena';
+import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
 import type {
   ChainId,
   ICommand,
@@ -18,9 +21,24 @@ export async function finishXChainTransfer(
   continuation: IContinuationPayloadObject['cont'],
   targetChainId: ChainId,
   networkId: string,
+  networskData: INetworkData[],
+  gasLimit: number = 850,
   gasPayer: string = 'kadena-xchain-gas',
 ): Promise<string | { error: string }> {
   debug(finishXChainTransfer.name);
+
+  const networkData: INetworkData | undefined = networskData.find(
+    (item) => (networkId as Network) === item.networkId,
+  );
+
+  if (!networkData) return { error: 'No network found' };
+
+  const apiHost = getApiHost({
+    api: networkData.API,
+    chainId: targetChainId,
+    networkId,
+  });
+  const { submit } = client(apiHost);
 
   try {
     const continuationTransaction = Pact.builder
@@ -30,11 +48,10 @@ export async function finishXChainTransfer(
         chainId: targetChainId,
         senderAccount: gasPayer,
         // this needs to be below 850 if you want to use gas-station otherwise the gas-station does
-        gasLimit: 850,
+        gasLimit,
       })
       .createTransaction();
-    return (await client.submit(continuationTransaction as ICommand))
-      .requestKey;
+    return (await submit(continuationTransaction as ICommand)).requestKey;
   } catch (e) {
     debug(e.message);
     return { error: e.message };

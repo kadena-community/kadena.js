@@ -1,10 +1,17 @@
-interface IAccount {
-  name: string;
-  waccount: string;
-  caccount: string;
+interface IAccountCrendential {
+  id?: string;
   publicKey: string;
-  cid: string;
+  type: 'WebAuthn' | 'ED25519';
 }
+
+interface IAccount {
+  accountName: string;
+  alias: string;
+  pendingTxIds: IAccountCrendential[];
+  credentials: string;
+}
+
+type IBuildStatusValues = 0 | 1 | 2 | 3 | 4;
 
 type ToastType = 'error' | 'success' | 'info';
 interface IToast {
@@ -18,13 +25,78 @@ type IDataHook<T> = (...args: any) => {
   data: T;
 };
 
-interface IProofOfUs {
-  id: string;
+type IMintStatus =
+  | 'init'
+  | 'signing'
+  | 'uploading'
+  | 'uploading_manifest'
+  | 'minting'
+  | 'error'
+  | 'success';
+
+type IProofOfUsBackground = {
+  bg: string;
+};
+
+type TokenType = 'multi' | 'event';
+
+interface IProofOfUsData {
+  mintStatus: IMintStatus;
+  status: IBuildStatusValues;
+  backgroundColor?: string;
+  tokenId?: string;
+  proofOfUsId: string;
+  type: TokenType;
   date: number;
-  minted: number;
-  signees?: string[];
+  minted?: number;
+  signees: IProofOfUsSignee[];
+  title?: string;
+  uri?: string;
+}
+
+interface IProofOfUsToken {
+  tokenId: string;
+  image: string;
+  name: string;
+  properties: {
+    type: TokenType;
+    date: number;
+    avatar?: {
+      backgroundColor: string;
+    };
+    signees?: IProofOfUsTokenSignee[];
+  };
+}
+
+interface IProofOfUs {
+  background: IProofOfUsBackground;
+  data: IProofOfUsData;
+  token?: IProofOfUsToken;
 }
 
 interface IError {
   message: string;
+  status?: string;
 }
+
+type ISignerStatus = 'init' | 'signing' | 'success' | 'error';
+
+type ISocial = string;
+
+interface ISigneePosition {
+  xPercentage: number;
+  yPercentage: number;
+}
+
+type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
+  label?: string;
+  signerStatus: ISignerStatus;
+  initiator: boolean;
+  socialLinks?: ISocial[];
+  position?: ISigneePosition;
+};
+
+type IProofOfUsTokenSignee = Pick<
+  IProofOfUsSignee,
+  'label' | 'socialLinks' | 'position'
+>;

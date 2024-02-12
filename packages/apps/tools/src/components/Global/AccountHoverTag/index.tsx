@@ -18,6 +18,7 @@ export const AccountHoverTag = ({ value }: IAccountHoverTagProps) => {
         }, 1000);
       }}
       tooltipValue={tooltipContent}
+      maskOptions={{ character: '.' }}
     />
   );
 };

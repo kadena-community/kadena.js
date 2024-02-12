@@ -7,7 +7,7 @@ const HARDENED_OFFSET = 0x80000000;
 const harden = (n: number) => HARDENED_OFFSET + n;
 
 async function kadenaGenOneKeypair(
-  password: string,
+  password: string | Uint8Array,
   rootKey: Uint8Array,
   index: number,
 ): Promise<{ publicKey: string; secretKey: EncryptedString }> {
@@ -28,8 +28,8 @@ async function kadenaGenOneKeypair(
  * @param index start from 0; it will be hardened automatically
  */
 export function kadenaGenKeypair(
-  password: string,
-  rootKey: EncryptedString,
+  password: string | Uint8Array,
+  rootKey: EncryptedString | Uint8Array,
   index: number,
 ): Promise<{ publicKey: string; secretKey: EncryptedString }>;
 
@@ -40,14 +40,14 @@ export function kadenaGenKeypair(
  * @param range [start, end] start from 0; it will be hardened automatically
  */
 export function kadenaGenKeypair(
-  password: string,
-  rootKey: EncryptedString,
+  password: string | Uint8Array,
+  rootKey: EncryptedString | Uint8Array,
   range: [start: number, end: number],
 ): Promise<{ publicKey: string; secretKey: EncryptedString }[]>;
 
 export async function kadenaGenKeypair(
-  password: string,
-  rootKey: EncryptedString,
+  password: string | Uint8Array,
+  rootKey: EncryptedString | Uint8Array,
   indexOrRange: number | [start: number, end: number],
 ) {
   const decrypted = await kadenaDecrypt(password, rootKey);

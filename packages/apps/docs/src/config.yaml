@@ -12,9 +12,9 @@ pages:
     url: /kadena
     file: /kadena/index.tsx
     children:
-      overview:
-        url: /overview
-        file: /kadena/overview.md
+      Whykadena:
+        url: /why-kadena
+        file: /kadena/why-kadena.md
       kda:
         url: /kda
         file: /kadena/kda/index.md
@@ -25,16 +25,6 @@ pages:
           kdaconcepts:
             url: /kda-concepts
             file: /kadena/kda/kda-concepts.md
-      whitepapers:
-        url: /whitepapers
-        file: /kadena/whitepapers/index.md
-        children:
-          chainweblayer1:
-            url: /chainweb-layer-1
-            file: /kadena/whitepapers/chainweb-layer-1.md
-          pactsmartcontractlanguage:
-            url: /pact-smart-contract-language
-            file: /kadena/whitepapers/pact-smart-contract-language.md
       wallets:
         url: /wallets
         file: /kadena/wallets/index.md
@@ -52,16 +42,9 @@ pages:
           ledger:
             url: /ledger
             file: /kadena/wallets/ledger/index.md
-      support:
-        url: /support
-        file: /kadena/support/index.md
-        children:
-          developerprogram:
-            url: /developer-program
-            file: /kadena/support/developer-program.md
-          technicalgrants:
-            url: /technical-grants
-            file: /kadena/support/technical-grants.md
+      exchanges:
+        url: /exchanges
+        file: /kadena/exchanges.md
       client:
         file: /packages/libs/client/README.md
         repo: https://github.com/kadena-community/kadena.js
@@ -75,29 +58,22 @@ pages:
         file: /packages/libs/client-examples/README.md
         repo: https://github.com/kadena-community/kadena.js
         url: /client-examples
-      codeofconduct:
-        url: /code-of-conduct
-        file: /kadena/code-of-conduct.md
-      exchanges:
-        url: /exchanges
-        file: /kadena/exchanges.md
       kadenajs:
         file: /packages/libs/kadena.js/README.md
         repo: https://github.com/kadena-community/kadena.js
         url: /kadenajs
+      glossary:
+        url: /glossary
+        file: /kadena/glossary.md
+      kadena-faq:
+        url: /kadena-faq
+        file: /kadena/kadena-faq.md
       resources:
         url: /resources
-        file: /kadena/resources/index.md
-        children:
-          presskit:
-            url: /press-kit
-            file: /kadena/resources/press-kit.md
-          glossary:
-            url: /glossary
-            file: /kadena/resources/glossary.md
-          contentrepository:
-            url: /kadena-content-repository
-            file: /kadena/resources/kadena-content-repository.md
+        file: /kadena/resources.md
+      codeofconduct:
+        url: /code-of-conduct
+        file: /kadena/code-of-conduct.md
   build:
     url: /build
     file: /build/index.tsx
@@ -173,26 +149,26 @@ pages:
                 url: /start-a-local-blockchain
                 file: /build/guides/election-dapp-tutorial/start-a-local-blockchain.md
               adminaccount:
-                url: /03-admin-account
+                url: /add-admin-account
                 file: /build/guides/election-dapp-tutorial/add-admin-account.md
               namespaces:
-                url: /04-namespaces
+                url: /define-a-namespace
                 file: /build/guides/election-dapp-tutorial/define-a-namespace.md
               keysets:
                 url: /define-keysets
                 file: /build/guides/election-dapp-tutorial/define-keysets.md
               smart-contract:
-                url: /06-smart-contract
-                file: /build/guides/election-dapp-tutorial/06-smart-contract.md
+                url: /write-a-smart-contract
+                file: /build/guides/election-dapp-tutorial/write-a-smart-contract.md
               nominate-candidates:
-                url: /07-nominate-candidates
-                file: /build/guides/election-dapp-tutorial/07-nominate-candidates.md
+                url: /nominate-candidates
+                file: /build/guides/election-dapp-tutorial/nominate-candidates.md
               voting:
-                url: /08-voting
-                file: /build/guides/election-dapp-tutorial/08-voting.md
+                url: /add-vote-management
+                file: /build/guides/election-dapp-tutorial/add-vote-management.md
               gasstation:
-                url: /09-gas-station
-                file: /build/guides/election-dapp-tutorial/09-gas-station.md
+                url: /add-a-gas-station
+                file: /build/guides/election-dapp-tutorial/add-a-gas-station.md
           rotatedrain:
             url: /safe-rotate-and-drain
             file: /build/guides/safe-rotate-and-drain.md
@@ -335,6 +311,9 @@ pages:
               objectoperators:
                 url: /object-operators
                 file: /pact/reference/properties-and-invariants/object-operators.md
+              logicaloperators:
+                url: /logical-operators
+                file: /pact/reference/properties-and-invariants/logical.md
               listoperators:
                 url: /list-operators
                 file: /pact/reference/properties-and-invariants/list-operators.md
@@ -470,6 +449,16 @@ pages:
           royaltypolicy:
             url: /royalty-policy
             file: /marmalade/concrete-policies/royalty-policy.md
+      auctions:
+        url: /auctions
+        file: /marmalade/auctions/index.md
+        children:
+          conventional-auction:
+            url: /conventional-auction
+            file: /marmalade/auctions/conventional-auction.md
+          dutch-auction:
+            url: /dutch-auction
+            file: /marmalade/auctions/dutch-auction.md
       metadata:
         url: /metadata
         file: /marmalade/metadata/index.md

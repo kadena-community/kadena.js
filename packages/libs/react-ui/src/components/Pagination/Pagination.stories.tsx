@@ -4,36 +4,21 @@ import { Stack } from '../Layout/Stack';
 import type { IPaginationProps } from '../Pagination';
 import { Pagination } from '../Pagination';
 
-const meta: Meta<
-  {
-    helperText: string;
-    leadingText: string;
-  } & IPaginationProps
-> = {
+const meta: Meta<IPaginationProps> = {
   title: 'Components/Pagination',
   parameters: {
     status: {
-      type: ['inDevelopment'],
+      type: ['releaseCandidate'],
     },
     docs: {
       description: {
         component:
-          'This is a navigation component that is used to visually represent and provide interaction elements for pagination. I provides previous and next buttons as well as a subset of the available pages closest to the selected page.<br><br><i>This component has a controlled and uncontrolled state. When a currentPage is not provided, the component will track state internally.</i>',
+          'This is a navigation component that is used to visually represent and provide interaction elements for pagination. I provides previous and next buttons as well as a subset of the available pages closest to the selected page.<br><br><i>This component has a controlled and uncontrolled state. When a selectedPage is not provided, the component will track state internally.</i>',
       },
     },
   },
   argTypes: {
-    label: {
-      control: {
-        type: 'text',
-      },
-      description:
-        'Text that is passed to the Nav element as an aria-label for accessibility.',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    currentPage: {
+    selectedPage: {
       control: {
         type: 'number',
         min: 1,
@@ -70,7 +55,7 @@ const meta: Meta<
         type: { summary: 'number' },
       },
     },
-    initialSelectedPage: {
+    defaultSelectedPage: {
       control: {
         type: 'number',
         min: 1,
@@ -96,27 +81,24 @@ type Story = StoryObj<IPaginationProps>;
 
 export const Controlled: Story = {
   args: {
-    label: 'Pagination',
     totalPages: 10,
     visiblePageLimit: 3,
-    initialSelectedPage: 2,
-    currentPage: 2,
+    defaultSelectedPage: 2,
+    selectedPage: 2,
   },
   render: ({
     totalPages,
-    label,
     visiblePageLimit,
-    initialSelectedPage,
-    currentPage,
+    defaultSelectedPage,
+    selectedPage,
   }) => {
     return (
       <Stack flexDirection="column" gap="sm">
         <Pagination
           totalPages={totalPages}
-          currentPage={currentPage}
-          label={label}
+          selectedPage={selectedPage}
           visiblePageLimit={visiblePageLimit}
-          initialSelectedPage={initialSelectedPage}
+          defaultSelectedPage={defaultSelectedPage}
           onPageChange={() => console.log('Updating Page')}
         />
       </Stack>
@@ -126,18 +108,16 @@ export const Controlled: Story = {
 
 export const Uncontrolled: Story = {
   args: {
-    label: 'Label',
     totalPages: 10,
     visiblePageLimit: 3,
-    initialSelectedPage: 2,
+    defaultSelectedPage: 2,
   },
-  render: ({ totalPages, label, visiblePageLimit, initialSelectedPage }) => {
+  render: ({ totalPages, visiblePageLimit, defaultSelectedPage }) => {
     return (
       <Pagination
         totalPages={totalPages}
-        label={label}
         visiblePageLimit={visiblePageLimit}
-        initialSelectedPage={initialSelectedPage}
+        defaultSelectedPage={defaultSelectedPage}
         onPageChange={() => console.log('Updating Page')}
       />
     );

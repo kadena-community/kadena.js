@@ -1,4 +1,6 @@
-import { KodeMono } from '@kadena/fonts';
+// load global styles from @kadena/react-ui
+import '@kadena/react-ui/global';
+
 // eslint-disable-next-line import/no-unresolved
 import { Analytics } from '@/components/Analytics/Analytics';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
@@ -16,8 +18,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React, { useEffect } from 'react';
-
-KodeMono();
 
 type ImportedPagePropsType = Omit<IPageProps, 'frontmatter'> & {
   frontmatter: Omit<IPageMeta, 'lastModifiedDate'> & {
