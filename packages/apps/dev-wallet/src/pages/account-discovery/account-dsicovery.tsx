@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useNetwork } from '@/modules/network/network.hook';
+import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
   IDiscoveredAccount,
   accountDiscovery,
@@ -12,6 +13,7 @@ import {
 const NUMBER_OF_KEYS_TO_DISCOVER = 20;
 
 export function AccountDiscovery() {
+  const { profile, retrieveAccounts } = useWallet();
   const { keySourceId } = useParams();
   const [key, setKey] = useState<IKeyItem>();
   const [discoveryStatus, setDiscoveryStatus] = useState<
@@ -23,11 +25,12 @@ export function AccountDiscovery() {
   const { activeNetwork } = useNetwork();
 
   async function start() {
-    if (!activeNetwork || !keySourceId) return;
+    if (!activeNetwork || !keySourceId || !profile) return;
     setDiscoveryStatus('discovering');
     await accountDiscovery(
       activeNetwork.networkId,
       keySourceId,
+      profile.uuid,
       NUMBER_OF_KEYS_TO_DISCOVER,
     )
       .on('key-retrieved', (data: IKeyItem) => {
@@ -37,6 +40,7 @@ export function AccountDiscovery() {
         setAccounts((prev) => [...prev, data]);
       })
       .execute();
+    await retrieveAccounts(profile.uuid);
     setDiscoveryStatus('finished');
   }
 

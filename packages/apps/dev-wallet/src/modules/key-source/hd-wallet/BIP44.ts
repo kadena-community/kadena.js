@@ -29,7 +29,7 @@ export function createBIP44Service() {
   } | null = null;
 
   const isReady = () => Boolean(context);
-  const reset = () => {
+  const disconnect = () => {
     context = null;
   };
 
@@ -85,7 +85,6 @@ export function createBIP44Service() {
       context.encryptionKey,
       context.encryptedSeed,
       [startIndex, startIndex + quantity - 1],
-
       keySource.derivationPathTemplate,
     );
     const newKeys = publicKeys.map((publicKey, index) => ({
@@ -135,7 +134,7 @@ export function createBIP44Service() {
 
   return {
     isReady,
-    reset,
+    disconnect,
     register,
     connect,
     createKey,

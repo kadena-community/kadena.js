@@ -23,7 +23,7 @@ const defaultValues: Inputs = {
 export function ImportWallet() {
   const { register, handleSubmit } = useForm<Inputs>({ defaultValues });
   const [error, setError] = useState('');
-  const { createProfile, isUnlocked, createFirstAccount } = useWallet();
+  const { createProfile, isUnlocked, retrieveKeySources } = useWallet();
   const { createHDWallet } = useHDWallet();
   const [selectedKeySource, setSelectedKeySource] = useState<IKeySource>();
   async function confirm({ phrase, password, name, fromChainweaver }: Inputs) {
@@ -43,7 +43,7 @@ export function ImportWallet() {
         phrase,
       );
       setSelectedKeySource(keySource);
-      await createFirstAccount(profile.uuid, keySource);
+      retrieveKeySources(profile.uuid);
     } catch (e) {
       setError((e as Error).message);
     }

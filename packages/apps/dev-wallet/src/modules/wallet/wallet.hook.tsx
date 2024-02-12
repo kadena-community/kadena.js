@@ -66,23 +66,39 @@ export const useWallet = () => {
     }));
   };
 
-  const unlockProfile = async (profileId: string, password: string) => {
-    const profile = await WalletService.unlockProfile(profileId, password);
-    if (profile) {
+  const retrieveAccounts = useCallback(
+    async (profileId: string) => {
       const accounts = await WalletService.getAccounts(profileId);
-      const keySources = await walletRepository.getProfileKeySources(profileId);
-      // by default unlock the first key source; we can change this approach later
-      setContext(({ profileList }) => ({
-        profileList,
-        profile,
+      console.log('retrieveAccounts', 'profileId', profileId, accounts);
+      setContext((ctx) => ({
+        ...ctx,
         accounts,
-        keySources,
       }));
-      keySourceManager.reset();
-      return { profile, keySources };
-    }
-    return null;
-  };
+    },
+    [setContext],
+  );
+
+  const unlockProfile = useCallback(
+    async (profileId: string, password: string) => {
+      const profile = await WalletService.unlockProfile(profileId, password);
+      if (profile) {
+        const accounts = await WalletService.getAccounts(profileId);
+        const keySources =
+          await walletRepository.getProfileKeySources(profileId);
+        // by default unlock the first key source; we can change this approach later
+        setContext(({ profileList }) => ({
+          profileList,
+          profile,
+          accounts,
+          keySources,
+        }));
+        keySourceManager.reset();
+        return { profile, keySources };
+      }
+      return null;
+    },
+    [setContext],
+  );
 
   const lockProfile = useCallback(() => {
     keySourceManager.reset();
@@ -120,6 +136,7 @@ export const useWallet = () => {
     decryptSecret,
     lockProfile,
     retrieveKeySources,
+    retrieveAccounts,
     isUnlocked: isUnlocked(context),
     profile: context.profile,
     profileList: context.profileList ?? [],
