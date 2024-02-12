@@ -1,5 +1,7 @@
+import { getContrast } from '@/utils/getContrast';
 import type { FC } from 'react';
-import { ticketClass } from './style.css';
+import { useEffect, useState } from 'react';
+import { ticketClass, ticketWrapClass, titleClass } from './style.css';
 
 interface IProps {
   token: IProofOfUsToken;
@@ -7,6 +9,13 @@ interface IProps {
 
 export const AttendanceTicket: FC<IProps> = ({ token }) => {
   const date = new Date(token.properties.date);
+  const [contrastColor, setContrastColor] = useState<string>('white');
+  const color = token.properties.avatar?.backgroundColor;
+
+  useEffect(() => {
+    const color = getContrast(token.properties.avatar?.backgroundColor ?? '');
+    setContrastColor(color);
+  }, [token.properties.avatar?.backgroundColor]);
   return (
     <>
       <svg viewBox="0 0 160 90" width="1">
@@ -20,20 +29,31 @@ export const AttendanceTicket: FC<IProps> = ({ token }) => {
           </clipPath>
         </defs>
       </svg>
-      <section
-        className={ticketClass}
-        style={{
-          backgroundImage: `url("${token.image}")`,
-          backgroundColor: token.properties.avatar?.backgroundColor,
-        }}
-      >
-        <h4>{token.name}</h4>
 
-        <div>
-          <h5>Date</h5>
-          {date.toLocaleDateString()}
-        </div>
-      </section>
+      <div className={ticketWrapClass}>
+        <section
+          className={ticketClass}
+          style={{
+            backgroundImage: `url("${token.image}")`,
+            backgroundColor: token.properties.avatar?.backgroundColor,
+          }}
+        >
+          <h4
+            className={titleClass}
+            style={{
+              color: contrastColor,
+              textShadow: `-1px -1px 0 ${color}, 1px -1px 0 ${color}, -1px 1px 0 ${color}, 1px 1px 0 ${color}`,
+            }}
+          >
+            {token.name}
+          </h4>
+
+          <div style={{ color: contrastColor }}>
+            <h5>Date</h5>
+            {date.toLocaleDateString()}
+          </div>
+        </section>
+      </div>
     </>
   );
 };
