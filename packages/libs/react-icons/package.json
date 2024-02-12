@@ -38,12 +38,17 @@
     "generate:icons": "tsx scripts/generateIcons.ts",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint scripts --ext .js,.ts,.tsx",
     "verify": "tsc --noEmit"
   },
   "dependencies": {
     "react": "^18.2.0"
   },
   "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
@@ -52,6 +57,7 @@
     "@types/node": "^18.17.14",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "eslint": "^8.45.0",
     "giget": "^1.2.1",
     "prettier": "~3.0.3",
     "scule": "^1.3.0",

@@ -3,7 +3,9 @@ import { downloadTemplate } from 'giget';
 import { existsSync } from 'node:fs';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { Options, format, resolveConfig, resolveConfigFile } from 'prettier';
+import type { Options } from 'prettier';
+import { format, resolveConfig, resolveConfigFile } from 'prettier';
+
 import { pascalCase } from 'scule';
 
 const REPO = 'gh:kadena-community/design-system/tokens/foundation/icon#main';
@@ -99,4 +101,6 @@ async function main() {
   console.log(`Wrote ${processed.size} icons successfully!`);
 }
 
-main();
+main()
+  .then(() => console.log('Done'))
+  .catch(console.error);
