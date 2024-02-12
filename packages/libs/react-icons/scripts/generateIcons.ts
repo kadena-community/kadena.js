@@ -71,7 +71,7 @@ async function main() {
           svgProps: {
             // 24px
             fontSize: '1.5em',
-            fill: 'currentColor'
+            fill: 'currentColor',
           },
           typescript: true,
           icon: true,

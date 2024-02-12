@@ -38,8 +38,6 @@
     "generate:icons": "tsx scripts/generateIcons.ts",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
-    "lint:pkg": "lint-package",
-    "lint:src": "eslint src --ext .js,.ts,.tsx",
     "verify": "tsc --noEmit"
   },
   "dependencies": {
