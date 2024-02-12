@@ -1,5 +1,14 @@
 # @kadena/graph
 
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies [5b1d8334e]
+  - @kadena/chainweb-node-client@0.5.3
+  - @kadena/client@1.8.1
+  - @kadena/client-utils@0.4.1
+
 ## 0.1.4
 
 ### Patch Changes
