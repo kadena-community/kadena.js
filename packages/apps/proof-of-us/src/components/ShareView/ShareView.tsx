@@ -56,11 +56,6 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
               </>
             )}
             label="Share"
-            Append={() => (
-              <>
-                <SystemIcon.Twitter />
-              </>
-            )}
           />
 
           <ListSignees />

@@ -1,6 +1,7 @@
 'use client';
 
 import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
+import { SocialShare } from '@/components/SocialShare/SocialShare';
 import { useGetEventToken } from '@/hooks/data/getEventToken';
 
 import type { FC } from 'react';
@@ -19,7 +20,12 @@ const Page: FC<IProps> = ({ params }) => {
       {isLoading && <div>...is loading</div>}
       {error && <div>...error</div>}
 
-      {data && <AttendanceTicket token={data} />}
+      {data && (
+        <>
+          <SocialShare token={data} />
+          <AttendanceTicket token={data} />
+        </>
+      )}
 
       {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
     </div>

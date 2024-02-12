@@ -25,7 +25,6 @@ export const AttendanceTicket: FC<IProps> = ({ token }) => {
         style={{
           backgroundImage: `url("${token.image}")`,
           backgroundColor: token.properties.avatar?.backgroundColor,
-          color: token.properties.avatar?.color,
         }}
       >
         <h4>{token.name}</h4>

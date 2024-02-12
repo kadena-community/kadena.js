@@ -21,8 +21,8 @@ export const proofOfUsData: IProofOfUs[] = [
         type: 'event',
         avatar: {
           backgroundColor: '#4c0e5c',
-          color: '#FFFFFF',
         },
+        signees: [],
       },
     },
   },
@@ -47,6 +47,7 @@ export const proofOfUsData: IProofOfUs[] = [
       properties: {
         type: 'multi',
         date: 1365257129000,
+        signees: [],
       },
     },
   },

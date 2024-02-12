@@ -58,8 +58,8 @@ interface IProofOfUsToken {
     date: number;
     avatar?: {
       backgroundColor: string;
-      color: string;
     };
+    signees?: IProofOfUsTokenSignee[];
   };
 }
 
@@ -90,3 +90,8 @@ type IProofOfUsSignee = Pick<IAccount, 'displayName' | 'publicKey' | 'cid'> & {
   socialLinks?: ISocial[];
   position?: ISigneePosition;
 };
+
+type IProofOfUsTokenSignee = Pick<
+  IProofOfUsSignee,
+  'label' | 'socialLinks' | 'position'
+>;

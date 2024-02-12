@@ -27,7 +27,6 @@ export const useGetEventToken: IDataHook<IProofOfUsToken | undefined> = (
           date: 1709197180,
           avatar: {
             backgroundColor: '#4c0e5c',
-            color: '#FFFFFF',
           },
         },
       };
