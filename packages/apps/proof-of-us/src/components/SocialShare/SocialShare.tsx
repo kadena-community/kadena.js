@@ -9,8 +9,8 @@ interface IProps {
 }
 
 export const SocialShare: FC<IProps> = ({ token }) => {
-  const label = 'Share';
-  const text = 'I shared this content via Web Share';
+  const label = token.name;
+  const text = `${token.name} was a great event`;
   const title = `A new  NFT: `;
   const twitterTitle = `A new  NFT:`;
   const url = `${process.env.NEXT_PUBLIC_URL}/share/${token.tokenId}`;
