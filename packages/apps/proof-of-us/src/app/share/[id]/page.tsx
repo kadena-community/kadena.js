@@ -25,6 +25,14 @@ export const generateMetadata = async ({
       creator: getTwitterCreator(data.properties.signees),
       images: [`${data.image}`],
     },
+    openGraph: {
+      images: [
+        {
+          url: `${data.image}`,
+          alt: getTwitterCreator(data.properties.signees),
+        },
+      ],
+    },
   };
 };
 
