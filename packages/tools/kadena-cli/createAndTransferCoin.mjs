@@ -33,14 +33,12 @@ async function main() {
   const keyPair = genKeyPair();
   const KEYSET_NAME = 'new_keyset';
 
-  const account = 'w:5TxGJNtrbVp1zdQhYnQD8MWyBpATVk1Nq0vjTzfCJmE:keys-all';
+  const account = 'k:bbd29528936ebe93264d0763916238db8b63b56d4ddfdad0c9f809ad047f8eea';
   const amount = 20;
   const chainId = '0';
   const pred = 'keys-all';
   const keys = [
-    'fd84545c9e056af96a7d1af00f495108668120945a97fd7aed29caa538e2c039',
-    '09ab52dfa37b9a0076cbcd4114e1e20975f23bead3471fae23b0ee8414ea782d',
-    '4b9f38ae3a192b2ae38cd0b48134dc5a75b87479d1b48bdc0228b50ef7c1e6dd'
+    'bbd29528936ebe93264d0763916238db8b63b56d4ddfdad0c9f809ad047f8eea'
   ];
 
   const networkDto = {
