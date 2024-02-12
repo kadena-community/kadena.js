@@ -1,6 +1,12 @@
 import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
+export const toggleContainerStyle = style([
+  atoms({
+    display: 'flex',
+    alignItems: 'flex-end',
+  }),
+]);
 export const labelStyle = style([
   atoms({
     position: 'relative',
@@ -57,13 +63,11 @@ export const spanStyle = style([
 
 export const strongStyle = style([
   atoms({
-    position: 'absolute',
     cursor: 'pointer',
+    marginInlineStart: 'md',
   }),
   {
-    left: '100%',
     width: 'max-content',
     lineHeight: '30px',
-    marginLeft: '10px',
   },
 ]);

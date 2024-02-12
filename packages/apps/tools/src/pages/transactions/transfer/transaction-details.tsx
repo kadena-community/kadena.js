@@ -50,29 +50,6 @@ const TransactionDetails = (transaction: any) => {
           },
         ],
       },
-      {
-        pubKey:
-          '332cffee708e0e2b390feb30f81c61d573ff0d8db18f10a218ae9dd34c1cbdc7',
-        scheme: 'ED25519',
-        clist: [
-          {
-            name: 'n_d8cbb935f9cd9d2399a5886bb08caed71f9bad49.coin-faucet.GAS_PAYER',
-            args: [
-              'k:18c12f868e4cb825e2cad57e44aa588f8a1d2f392a2a945b50c51634a5429045',
-              { int: 1 },
-              { decimal: '1.0' },
-            ],
-          },
-          {
-            name: 'coin.TRANSFER',
-            args: [
-              'c:Ecwy85aCW3eogZUnIQxknH8tG8uXHM5QiC__jeI0nWA',
-              'k:18c12f868e4cb825e2cad57e44aa588f8a1d2f392a2a945b50c51634a5429045',
-              { decimal: '100.0' },
-            ],
-          },
-        ],
-      },
     ],
     meta: {
       gasLimit: 2500,

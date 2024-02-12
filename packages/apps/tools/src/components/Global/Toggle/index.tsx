@@ -3,6 +3,7 @@ import {
   labelStyle,
   spanStyle,
   strongStyle,
+  toggleContainerStyle,
 } from '@/components/Global/Toggle/styles.css';
 import classNames from 'classnames';
 import type { FC } from 'react';
@@ -22,16 +23,18 @@ export const Toggle: FC<IToggleProps> = ({ toggled, label, onClick }) => {
   };
 
   return (
-    <label className={labelStyle}>
-      <input
-        type="checkbox"
-        defaultChecked={isToggled}
-        onClick={callback}
-        className={inputStyle}
-        aria-label={'toggle'}
-      />
-      <span className={classNames(spanStyle, { isToggled })} />
+    <div className={toggleContainerStyle}>
+      <label className={labelStyle}>
+        <input
+          type="checkbox"
+          defaultChecked={isToggled}
+          onClick={callback}
+          className={inputStyle}
+          aria-label={'toggle'}
+        />
+        <span className={classNames(spanStyle, { isToggled })} />
+      </label>
       <strong className={strongStyle}>{label}</strong>
-    </label>
+    </div>
   );
 };
