@@ -46,16 +46,16 @@ export const claimAttendanceToken = async (
     .execution(
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.mint-attendance-token 
       "proof-of-us:v2z0VWCNa6OAN9eeGkQ8YoJ2yZNj97Y1-sZyv6sbcEQ" 
-      "${account.accountName}" 
-      (read-keyset 'attendant_guard)
+      "c:GzBzqqDUJL_5JJIEgGldvygP1ScBOMoIa68VM1TI9aY"
+      (n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet.get-account-guard "c:GzBzqqDUJL_5JJIEgGldvygP1ScBOMoIa68VM1TI9aY")
       )`,
     )
-    .addData('attendant_guard', {
-      pred: 'keys-any',
-      keys: [
-        'WEBAUTHN-a50102032620012158200ad0e59b1905c813ae05d03ab5d014d9a2faea845a5f6721b64b9d31f37349f122582069579aa8491b620ca13f2365688b4b889ca4d92076162ba355bf2b8a72ee18de',
-      ],
-    })
+    // .addData('attendant_guard', {
+    //   pred: 'keys-any',
+    //   keys: [
+    //     'WEBAUTHN-a50102032620012158200ad0e59b1905c813ae05d03ab5d014d9a2faea845a5f6721b64b9d31f37349f122582069579aa8491b620ca13f2365688b4b889ca4d92076162ba355bf2b8a72ee18de',
+    //   ],
+    // })
     .setNetworkId('testnet04')
     .setMeta({
       chainId: '1',
@@ -79,7 +79,6 @@ export const claimAttendanceToken = async (
         withCap(
           `${[process.env.NEXT_PUBLIC_NAMESPACE]}.proof-of-us.ATTEND`,
           `proof-of-us:v2z0VWCNa6OAN9eeGkQ8YoJ2yZNj97Y1-sZyv6sbcEQ`,
-          "(read-keyset 'attendant_guard)",
         ),
       ],
     )
