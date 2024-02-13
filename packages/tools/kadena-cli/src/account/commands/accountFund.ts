@@ -6,7 +6,7 @@ import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { fund } from '../utils/fund.js';
 
-/* bin/kadena-cli.js account fund --account="dev.yaml" --amount="20" --network="devnet" --chain-id="0" */
+/* bin/kadena-cli.js account fund --account="testnet.yaml" --amount="20" --network="testnet" --chain-id="0" */
 
 export const createFundCommand = createCommandFlexible(
   'fund',
@@ -18,7 +18,6 @@ export const createFundCommand = createCommandFlexible(
     globalOptions.chainId(),
   ],
   async (option, values) => {
-    debug.log('account-fund:action', { values });
     const { accountConfig } = await option.account();
     const { amount } = await option.amount();
     const { network, networkConfig } = await option.network({

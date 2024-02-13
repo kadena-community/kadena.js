@@ -100,14 +100,23 @@ export const globalOptions = {
   amount: createOption({
     key: 'amount' as const,
     prompt: account.amountPrompt,
-    validation: z
-      .string({
-        /* eslint-disable-next-line @typescript-eslint/naming-convention */
-        invalid_type_error: 'Error: -a, --amount must be a positive number',
-      })
-      .min(1)
-      .max(100),
+    validation: z.string({
+      /* eslint-disable-next-line @typescript-eslint/naming-convention */
+      invalid_type_error: 'Error: -a, --amount must be a positive number',
+    }),
     option: new Option('-a, --amount <amount>', 'Amount'),
+    transform: (amount: string) => {
+      const parsed = parseFloat(amount);
+      if (isNaN(parsed) || parsed <= 0) {
+        throw new Error('Error: -a, --amount must be a positive number');
+      }
+
+      if (parsed > 100) {
+        throw new Error('Error: -a, --amount must be less than 100');
+      }
+
+      return amount;
+    },
   }),
   fungible: createOption({
     key: 'fungible' as const,

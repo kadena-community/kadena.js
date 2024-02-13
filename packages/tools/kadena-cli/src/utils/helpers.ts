@@ -317,12 +317,15 @@ export const maskStringPreservingStartAndEnd = (
   str: string,
   maxLength = 15,
   maskChar = '.',
+  maskCharLength = 4,
 ): string => {
   if (str.length <= maxLength) {
     return str;
   } else {
-    const startChars = str.substring(0, (maxLength - 4) / 2);
-    const endChars = str.substring(str.length - (maxLength - 4) / 2);
-    return startChars + maskChar.repeat(4) + endChars;
+    const startChars = str.substring(0, (maxLength - maskCharLength) / 2);
+    const endChars = str.substring(
+      str.length - (maxLength - maskCharLength) / 2,
+    );
+    return `${startChars}${maskChar.repeat(maskCharLength)}${endChars}`;
   }
 };
