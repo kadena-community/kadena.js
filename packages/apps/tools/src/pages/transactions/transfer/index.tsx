@@ -188,11 +188,12 @@ const TransferPage = () => {
     ? `Cannot send more than ${senderData.data.balance.toFixed(4)} KDAs.`
     : '';
 
-  // @ts-ignore
   if (
     toAccountTab === 'existing' &&
-    receiverData?.error?.message &&
-    receiverData?.error?.message.includes('row not found')
+    receiverData?.error &&
+    (receiverData?.error as { message: string }).message.includes(
+      'row not found',
+    )
   ) {
     setToAccountTab('new');
     setValue('pubKey', stripAccountPrefix(getValues('receiver')));
