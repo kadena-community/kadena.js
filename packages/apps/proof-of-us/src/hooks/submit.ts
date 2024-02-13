@@ -36,7 +36,7 @@ export const useSubmit = () => {
     console.log(222, res);
     setPreview(res);
     setStatus(SubmitStatus.SUBMITABLE);
-  };
+  }c;
 
   useEffect(() => {
     if (!transaction) return;
