@@ -1,3 +1,4 @@
+import type { IUnsignedCommand } from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { proofOfUsData } from './data';
@@ -40,7 +41,7 @@ export const getProofOfUs = async (
 export const claimAttendanceToken = async (
   eventId: string,
   account: IAccount,
-): Promise<string | undefined> => {
+): Promise<IUnsignedCommand | undefined> => {
   const transaction = Pact.builder
     .execution(
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.mint-attendance-token 
@@ -62,6 +63,7 @@ export const claimAttendanceToken = async (
       gasPrice: 0.000001,
     })
     .addSigner(
+      // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
       {
         pubKey:
           'WEBAUTHN-a50102032620012158200ad0e59b1905c813ae05d03ab5d014d9a2faea845a5f6721b64b9d31f37349f122582069579aa8491b620ca13f2365688b4b889ca4d92076162ba355bf2b8a72ee18de',

@@ -2,10 +2,8 @@
 
 import { ScanEvent } from '@/features/ScanEvent/ScanEvent';
 import { useGetEventToken } from '@/hooks/data/getEventToken';
-import { createClient } from '@kadena/client';
 
 import type { FC } from 'react';
-import { useEffect } from 'react';
 
 interface IProps {
   params: {
@@ -14,7 +12,7 @@ interface IProps {
   };
 }
 
-const Page: FC<IProps> = ({ params, searchParams }) => {
+const Page: FC<IProps> = ({ params }) => {
   const eventId = decodeURIComponent(params.id);
 
   // const transactionInit = async () => {

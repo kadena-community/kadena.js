@@ -1,11 +1,6 @@
 import { createClient } from '@kadena/client';
-import type { ReadonlyURLSearchParams } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-interface ISearchProps extends ReadonlyURLSearchParams {
-  transaction: string;
-}
 
 export enum SubmitStatus {
   IDLE = 'idle',
@@ -36,7 +31,7 @@ export const useSubmit = () => {
     console.log(222, res);
     setPreview(res);
     setStatus(SubmitStatus.SUBMITABLE);
-  }c;
+  };
 
   useEffect(() => {
     if (!transaction) return;

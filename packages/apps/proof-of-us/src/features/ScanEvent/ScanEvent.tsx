@@ -16,6 +16,7 @@ export const ScanEvent: FC<IProps> = ({ token, eventId }) => {
   const { isLoading, hasSuccess, hasError, isPending, claim } =
     useClaimEventToken();
   const router = useRouter();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { doSubmit, result, preview, status, SubmitStatus, tx } = useSubmit();
 
   const { account } = useAccount();
