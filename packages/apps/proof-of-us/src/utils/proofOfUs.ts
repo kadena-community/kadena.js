@@ -47,7 +47,7 @@ export const claimAttendanceToken = async (
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.mint-attendance-token 
       "proof-of-us:v2z0VWCNa6OAN9eeGkQ8YoJ2yZNj97Y1-sZyv6sbcEQ" 
       "c:GzBzqqDUJL_5JJIEgGldvygP1ScBOMoIa68VM1TI9aY"
-      (n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet.get-account-guard "c:GzBzqqDUJL_5JJIEgGldvygP1ScBOMoIa68VM1TI9aY")
+      (n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet.get-wallet-guard "c:GzBzqqDUJL_5JJIEgGldvygP1ScBOMoIa68VM1TI9aY")
       )`,
     )
     // .addData('attendant_guard', {
