@@ -29,8 +29,13 @@ export async function createAndTransferFund({
   };
 }): Promise<ICommandResult | string> {
   try {
-    const KEYSET_NAME = 'new_keyset';
     const { chainId, amount, networkConfig } = config;
+
+    if (networkConfig.networkId === 'mainnet01') {
+      throw new Error('Cannot transfer fund on mainnet');
+    }
+
+    const KEYSET_NAME = 'new_keyset';
     const { name: accountName, publicKeys, predicate } = account;
     const keyPair = genKeyPair();
     const NAMESPACE = NAMESPACES_MAP[networkConfig.networkId];
@@ -83,6 +88,6 @@ export async function createAndTransferFund({
 
     return response;
   } catch (error) {
-    throw new Error(`Failed to create an account and transfer fund: ${error}`);
+    throw Error(`Failed to create an account and transfer fund: ${error}`);
   }
 }

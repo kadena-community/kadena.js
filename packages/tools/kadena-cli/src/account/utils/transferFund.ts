@@ -26,6 +26,11 @@ export async function transferFund({
 }): Promise<ICommandResult | string> {
   try {
     const { chainId, amount, networkConfig } = config;
+
+    if (networkConfig.networkId === 'mainnet01') {
+      throw new Error('Cannot transfer fund on mainnet');
+    }
+
     const keyPair = genKeyPair();
     const NAMESPACE = NAMESPACES_MAP[networkConfig.networkId];
     const FAUCET_ACCOUNT = GAS_STATIONS_MAP[networkConfig.networkId];
@@ -75,6 +80,6 @@ export async function transferFund({
 
     return response;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(`Failed to transfer fund : "${error.message}"`);
   }
 }

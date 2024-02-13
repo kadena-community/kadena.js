@@ -18,15 +18,15 @@ export async function fund({
   networkConfig: INetworkCreateOptions;
   chainId: ChainId;
 }): Promise<CommandResult<ICommandResult | string>> {
-  const accountDetailsFromChain = await getAccountDetails({
-    accountName: accountConfig.name,
-    networkId: networkConfig.networkId,
-    chainId: chainId,
-    networkHost: networkConfig.networkHost,
-    fungible: accountConfig.fungible,
-  });
-
   try {
+    const accountDetailsFromChain = await getAccountDetails({
+      accountName: accountConfig.name,
+      networkId: networkConfig.networkId,
+      chainId: chainId,
+      networkHost: networkConfig.networkHost,
+      fungible: accountConfig.fungible,
+    });
+
     const result = accountDetailsFromChain
       ? await transferFund({
           accountName: accountConfig.name,
@@ -51,6 +51,10 @@ export async function fund({
             chainId,
           },
         });
+
+    if (typeof result !== 'string' && result.result.status === 'failure') {
+      throw result.result.error;
+    }
 
     return {
       success: true,
