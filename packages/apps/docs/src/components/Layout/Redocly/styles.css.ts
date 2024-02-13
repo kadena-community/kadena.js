@@ -22,7 +22,7 @@ export const codebackgroundClass = style([
         pointerEvents: 'none',
         inset: 0,
         backgroundColor: tokens.kda.foundation.color.background.base.default,
-        backgroundImage: 'url("/assets/bg-vertical.webp")',
+        // backgroundImage: 'url("/assets/bg-vertical.webp")',
         backgroundRepeat: 'no-repeat',
         backgroundPositionY: '-100px',
         backgroundPositionX: '-100px',

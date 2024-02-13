@@ -31,6 +31,7 @@ export const dotenv: {
   GITHUB_TOKEN: string;
   SIMULATE_DEFAULT_CHAIN_ID: ChainId;
   SIMULATE_LOG_FOLDER_NAME: string;
+  NODE_ENV: string;
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
   COMPLEXITY_LIMIT: parseInt(or(process.env.COMPLEXITY_LIMIT, '500'), 10),
@@ -85,7 +86,7 @@ export const dotenv: {
   ),
   MARMALADE_REPOSITORY_BRANCH: or(
     process.env.MARMALADE_REPOSITORY_BRANCH,
-    'v2',
+    'main',
   ),
   MARMALADE_REMOTE_TEMPLATE_PATH: or(
     process.env.MARMALADE_REMOTE_TEMPLATE_PATH,
@@ -115,6 +116,7 @@ export const dotenv: {
     '0' as ChainId,
   ),
   SIMULATE_LOG_FOLDER_NAME: or(process.env.SIMULATE_LOG_FOLDER_NAME, 'logs'),
+  NODE_ENV: or(process.env.NODE_ENV, 'production'),
 };
 
 function or<T>(value: T | undefined, otherwise: T): T {

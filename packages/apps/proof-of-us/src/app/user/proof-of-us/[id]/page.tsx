@@ -1,15 +1,14 @@
 'use client';
 import { AvatarEditor } from '@/components/AvatarEditor/AvatarEditor';
-import { ListSignees } from '@/components/ListSignees/ListSignees';
-import { PROOFOFUS_QR_URL } from '@/constants';
+import { DetailView } from '@/components/DetailView/DetailView';
+
+import { ShareView } from '@/components/ShareView/ShareView';
+
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { useSocket } from '@/hooks/socket';
-import { env } from '@/utils/env';
-import { createTokenId } from '@/utils/marmalade';
+import { createProofOfUsID } from '@/utils/createProofOfUsID';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { QRCode } from 'react-qrcode-logo';
+import { useEffect, useState } from 'react';
 
 interface IProps {
   params: {
@@ -18,55 +17,46 @@ interface IProps {
 }
 
 const Page: FC<IProps> = ({ params }) => {
-  const qrRef = useRef<QRCode | null>(null);
   const router = useRouter();
-  const { socket, connect, disconnect } = useSocket();
-  const { createToken, proofOfUs } = useProofOfUs();
-  const [isNew, setIsNew] = useState(false);
+  const { createToken, proofOfUs, background, updateStatus } = useProofOfUs();
+  const [isMounted, setIsMounted] = useState(false);
 
-  const createNew = async () => {
-    const tokenId = await createTokenId();
-    router.replace(`/user/proof-of-us/${tokenId}`);
-  };
+  const [status, setStatus] = useState<IBuildStatusValues>(0);
+
+  useEffect(() => {
+    //init and check in what step you are
+    if (!proofOfUs || isMounted) return;
+
+    setStatus(proofOfUs.status);
+    setIsMounted(true);
+  }, [proofOfUs, background]);
 
   useEffect(() => {
     if (params.id === 'new') {
-      setIsNew(true);
-      createNew();
+      const proofOfUsId = createProofOfUsID();
+      router.replace(`/user/proof-of-us/${proofOfUsId}`);
+      return;
     }
 
-    disconnect({ tokenId: params.id });
-    createToken({ tokenId: params.id });
-  }, [socket, params.id]);
+    createToken({ proofOfUsId: params.id });
+  }, [params.id]);
 
-  useEffect(() => {
-    connect({ tokenId: params.id });
-  }, []);
-
-  if (!proofOfUs) return;
+  const next = async () => {
+    const newStatus = (status + 1) as IBuildStatusValues;
+    setStatus(newStatus);
+    await updateStatus({ proofOfUsId: params.id, status: newStatus });
+  };
+  const prev = async () => {
+    const newStatus = (status - 1) as IBuildStatusValues;
+    setStatus(newStatus);
+    await updateStatus({ proofOfUsId: params.id, status: newStatus });
+  };
 
   return (
     <div>
-      Proof Of Us with ID ({proofOfUs.tokenId})
-      <section>
-        <ListSignees />
-
-        {!isNew ? <AvatarEditor /> : null}
-      </section>
-      <section>
-        <h2>qr code</h2>
-        <QRCode
-          ecLevel="H"
-          ref={qrRef}
-          value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.tokenId}`}
-          removeQrCodeBehindLogo={true}
-          logoImage="/assets/qrlogo.png"
-          logoPadding={5}
-          quietZone={10}
-          qrStyle="dots" // type of qr code, wether you want dotted ones or the square ones
-          eyeRadius={10}
-        />
-      </section>
+      {status === 1 && <AvatarEditor next={next} />}
+      {status === 2 && <DetailView next={next} prev={prev} />}
+      {status >= 3 && <ShareView next={next} prev={prev} status={status} />}
     </div>
   );
 };

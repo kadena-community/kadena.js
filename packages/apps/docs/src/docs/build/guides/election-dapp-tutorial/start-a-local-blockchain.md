@@ -1,6 +1,6 @@
 ---
 title: "Start a local blockchain"
-description: "Start the development network blockchain on your local computer and explore the smart contracts avaiable by default."
+description: "Start the development network blockchain on your local computer and explore the smart contracts available by default."
 menu: "Workshop: Election application"
 label: "Start a local blockchain"
 order: 2

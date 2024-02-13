@@ -20,19 +20,11 @@ export const Toolbar: FC = () => {
     setActiveMenuIndex,
     activeMenuIndex,
     isMenuOpen,
-    visibleLinks,
-    setVisibleLinks,
     setIsMenuOpen,
   } = useLayoutContext();
   const { pathname } = useRouter();
 
-  const handleItemClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    index: number,
-  ): void => {
-    event.preventDefault();
-
-    setVisibleLinks(false);
+  const handleItemClick = (index: number): void => {
     if (toolbar[index]?.items?.length) {
       setActiveMenuIndex(index);
       setIsMenuOpen(true);
@@ -41,7 +33,6 @@ export const Toolbar: FC = () => {
 
   const handleOpenDrawer = (): void => {
     if (isMenuOpen) {
-      setVisibleLinks(false);
       setIsMenuOpen(false);
       return setActiveMenuIndex(undefined);
     }
@@ -70,14 +61,6 @@ export const Toolbar: FC = () => {
     return index === activeMenuIndex || isUrlParam;
   };
 
-  const handleLinksClick = (): void => {
-    setActiveMenuIndex(-1);
-    if (!visibleLinks) {
-      setVisibleLinks(true);
-      setIsMenuOpen(true);
-    }
-  };
-
   return (
     <nav className={gridItemMiniMenuStyle}>
       <ul className={classNames(gridMiniMenuListStyle)}>
@@ -85,7 +68,7 @@ export const Toolbar: FC = () => {
           <li key={String(item.title)} className={gridMiniMenuListItemStyle}>
             <MenuButton
               {...item}
-              onClick={(e) => handleItemClick(e, index)}
+              onClick={() => handleItemClick(index)}
               active={isMenuActive(item, index)}
               href={getHref(pathname, item.href)}
             />
@@ -95,16 +78,6 @@ export const Toolbar: FC = () => {
       <ul
         className={classNames(gridMiniMenuListStyle, bottomIconsContainerStyle)}
       >
-        <li key={String('links')} className={gridMiniMenuListItemStyle}>
-          <div>
-            <MenuButton
-              title={'Links'}
-              icon={'Link'}
-              onClick={() => handleLinksClick()}
-              active={visibleLinks}
-            />
-          </div>
-        </li>
         <li key={String('openDrawer')} className={gridMiniMenuListItemStyle}>
           <div>
             <MenuButton

@@ -1,4 +1,5 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
+
 import yaml from 'js-yaml';
 import { join } from 'node:path';
 import {
@@ -12,6 +13,7 @@ import {
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
 import { services } from '../../services/index.js';
+
 import { sanitizeFilename } from '../../utils/helpers.js';
 import { removeAfterFirstDot } from '../../utils/path.util.js';
 
@@ -20,6 +22,7 @@ export type TSeedContent = string;
 export interface IKeyPair {
   publicKey: string;
   secretKey?: EncryptedString | string;
+  index?: number;
 }
 
 export type KeyContent = TSeedContent | IKeyPair;
@@ -39,7 +42,10 @@ export async function savePlainKeyByAlias(
       fileName += ext;
       const filePath = join(PLAIN_KEY_DIR, fileName);
 
-      const data: IKeyPair = { publicKey: keyPair.publicKey };
+      const data: IKeyPair = {
+        publicKey: keyPair.publicKey,
+        index: i,
+      };
       if (keyPair.secretKey !== undefined) {
         data.secretKey = keyPair.secretKey;
       }
@@ -80,13 +86,16 @@ export async function saveKeyByAlias(
   try {
     for (let i = 0; i < keyPairs.length; i++) {
       const keyPair = keyPairs[i];
-      const fileNameIndex = keyPairs.length === 1 ? startIndex : startIndex + i;
-      let fileName = `${sanitizedAlias}${fileNameIndex}`;
+      const keyIndex = keyPairs.length === 1 ? startIndex : startIndex + i;
+      let fileName = `${sanitizedAlias}${keyIndex}`;
       const ext = legacy ? KEY_LEGACY_EXT : KEY_EXT;
       fileName += ext;
       const filePath = join(baseDir, fileName);
 
-      const data: IKeyPair = { publicKey: keyPair.publicKey };
+      const data: IKeyPair = {
+        publicKey: keyPair.publicKey,
+        index: keyIndex,
+      };
       if (keyPair.secretKey !== undefined) {
         data.secretKey = keyPair.secretKey;
       }

@@ -8,7 +8,7 @@ export const containerClass = style([
     backgroundColor: 'semantic.info.default',
   }),
   {
-    top: tokens.kda.foundation.size.n17,
+    top: tokens.kda.foundation.size.n16,
     zIndex: 1000,
   },
 ]);

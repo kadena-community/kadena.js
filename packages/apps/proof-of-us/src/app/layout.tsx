@@ -1,14 +1,13 @@
-import type { FC, PropsWithChildren } from 'react';
-
-import { AccountInfo } from '@/components/AccountInfo/AccountInfo';
 import { AccountProvider } from '@/components/AccountProvider/AccountProvider';
 import { Analytics } from '@/components/Analytics/Analytics';
-import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
-import { SocketProvider } from '@/components/SocketProvider/SocketProvider';
+import { Header } from '@/components/Header/Header';
 import { ThemeProvider } from '@/components/ThemeProvider/ThemeProvider';
 import { ToastProvider } from '@/components/ToastProvider/ToastProvider';
 import { Toasts } from '@/components/Toasts/Toasts';
 import type { Metadata } from 'next';
+import type { FC, PropsWithChildren } from 'react';
+import './global.css';
+import { mainWrapperClass } from './style.css';
 
 export async function generateMetadata(): Promise<Metadata> {
   //@TODO get year from somewhere
@@ -74,19 +73,17 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
       <body>
         <ToastProvider>
           <AccountProvider>
-            <SocketProvider>
-              <ThemeProvider>
-                <>
-                  <AccountInfo />
+            <ThemeProvider>
+              <>
+                <main className={mainWrapperClass}>
+                  <Header />
                   {children}
 
-                  <CookieConsent />
-
                   <Toasts />
-                  <Analytics />
-                </>
-              </ThemeProvider>
-            </SocketProvider>
+                </main>
+                <Analytics />
+              </>
+            </ThemeProvider>
           </AccountProvider>
         </ToastProvider>
       </body>

@@ -1,5 +1,5 @@
-import { select } from '@inquirer/prompts';
 import { services } from '../services/index.js';
+import { select } from '../utils/prompts.js';
 
 export async function actionFileExistShouldUpdate(
   name: string,

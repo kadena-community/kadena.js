@@ -1,74 +1,90 @@
 import { style } from '@vanilla-extract/css';
-import { sprinkles } from '../../styles/sprinkles.css';
-import { darkThemeClass, vars } from '../../styles/vars.css';
+import { atoms, token } from '../../styles';
 
-export const tdClass = style([
-  sprinkles({
-    paddingY: '$3',
-    paddingX: '$4',
-    color: '$neutral5',
+export const tableWrapper = style([
+  atoms({
+    width: '100%',
+    overflowX: 'auto',
+  }),
+]);
+
+export const table = style([
+  atoms({
+    borderRadius: 'sm',
+    border: 'hairline',
+    color: 'text.base.default',
   }),
   {
-    verticalAlign: 'top',
+    borderSpacing: 0,
+    borderColor: token('color.background.base.default'),
   },
 ]);
 
-export const trClass = style([
-  sprinkles({
-    backgroundColor: '$neutral1',
-    height: '$12',
+export const headerRow = style([
+  atoms({
+    backgroundColor: 'base.default',
+  }),
+]);
+
+export const tableRow = style([
+  {
+    backgroundColor: token('color.neutral.n0'),
+    ':hover': {
+      backgroundColor: token('color.background.brand.primary.@hover'),
+    },
+    selectors: {
+      '.striped &:nth-child(even)': {
+        backgroundColor: token('color.background.layer-2.default'),
+      },
+      '.striped &:nth-child(even):hover': {
+        backgroundColor: token('color.background.brand.primary.@hover'),
+      },
+      '&[data-href]': {
+        cursor: 'pointer',
+      },
+      '&[data-focused]': {
+        outline: `solid 2px ${token('color.border.semantic.info.@focus')}`,
+      },
+    },
+  },
+]);
+
+export const baseCell = style([
+  atoms({
+    paddingInline: 'md',
+    paddingBlock: 'sm',
+    outline: 'none',
   }),
   {
     selectors: {
-      '.stripedClass &:nth-child(even)': {
-        background: vars.colors.$neutral2,
+      '.compact &': {
+        paddingInline: token('spacing.sm'),
+        paddingBlock: token('spacing.xs'),
       },
-      '.stripedClass &:hover': {
-        background: vars.colors.$blue10,
-      },
-      [`${darkThemeClass} .stripedClass &:hover`]: {
-        background: vars.colors.$blue100,
+      '&[data-focused]': {
+        boxShadow: `inset 0 0 0 2px ${token(
+          'color.border.semantic.info.@focus',
+        )}`,
       },
     },
   },
 ]);
 
-export const linkButtonClass = style([
-  sprinkles({
-    marginRight: '$2',
-  }),
-  {
-    float: 'right',
-  },
-]);
-
-export const thClass = style([
-  sprinkles({
-    paddingY: '$3',
-    paddingX: '$4',
-    backgroundColor: {
-      lightMode: '$gray30',
-      darkMode: '$gray80',
-    },
-    color: '$neutral6',
+export const columnHeader = style([
+  baseCell,
+  atoms({
     textAlign: 'left',
   }),
-]);
-
-export const tableClass = style([
-  sprinkles({
-    backgroundColor: '$neutral2',
-    width: '100%',
-    borderRadius: '$sm',
-    overflow: 'hidden',
-  }),
   {
-    border: `1px solid ${vars.colors.$gray30}`,
-    borderSpacing: 0,
     selectors: {
-      [`${darkThemeClass} &`]: {
-        border: `1px solid ${vars.colors.$gray60}`,
+      '&[data-multi-column]': {
+        textAlign: 'center',
+      },
+      '&[data-sortable]': {
+        cursor: 'pointer',
       },
     },
   },
 ]);
+
+export const tableDataCell = style([baseCell]);

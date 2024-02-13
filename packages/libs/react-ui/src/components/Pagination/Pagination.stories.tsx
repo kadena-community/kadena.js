@@ -8,7 +8,7 @@ const meta: Meta<IPaginationProps> = {
   title: 'Components/Pagination',
   parameters: {
     status: {
-      type: ['inDevelopment'],
+      type: ['releaseCandidate'],
     },
     docs: {
       description: {

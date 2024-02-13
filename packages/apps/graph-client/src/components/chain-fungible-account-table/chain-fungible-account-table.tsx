@@ -1,8 +1,18 @@
 import type { FungibleChainAccount } from '@/__generated__/sdk';
 import routes from '@constants/routes';
-import { Box, ContentHeader, Link, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Cell,
+  Column,
+  ContentHeader,
+  Link,
+  Row,
+  Table,
+  TableBody,
+  TableHeader,
+} from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import React from 'react';
-import { compactTableClass } from '../common/compact-table/compact-table.css';
 
 interface IFungibleChainAccountTableProps {
   fungibleName: string;
@@ -22,32 +32,30 @@ export const FungibleChainAccountTable = (
         description="All chains where this account was found"
       />
       <Box margin="md" />
-      <Table.Root wordBreak="break-all" className={compactTableClass}>
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Chain</Table.Th>
-            <Table.Th>Balance</Table.Th>
-            <Table.Th>Guard Predicate</Table.Th>
-            <Table.Th>Guard Keys</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
+      <Table className={atoms({ wordBreak: 'break-all' })} isCompact>
+        <TableHeader>
+          <Column>Chain</Column>
+          <Column>Balance</Column>
+          <Column>Guard Predicate</Column>
+          <Column>Guard Keys</Column>
+        </TableHeader>
+        <TableBody>
           {chainAccounts.map((chainAccount, index) => (
-            <Table.Tr key={index}>
-              <Table.Td>{chainAccount.chainId}</Table.Td>
-              <Table.Td>
+            <Row key={index}>
+              <Cell>{chainAccount.chainId}</Cell>
+              <Cell>
                 <Link
                   href={`${routes.ACCOUNT}/${fungibleName}/${accountName}/${chainAccount.chainId}`}
                 >
                   {chainAccount.balance}
                 </Link>
-              </Table.Td>
-              <Table.Td>{chainAccount.guard.predicate}</Table.Td>
-              <Table.Td>{chainAccount.guard.keys.join(', ')}</Table.Td>
-            </Table.Tr>
+              </Cell>
+              <Cell>{chainAccount.guard.predicate}</Cell>
+              <Cell>{chainAccount.guard.keys.join(', ')}</Cell>
+            </Row>
           ))}
-        </Table.Body>
-      </Table.Root>
+        </TableBody>
+      </Table>
     </>
   );
 };

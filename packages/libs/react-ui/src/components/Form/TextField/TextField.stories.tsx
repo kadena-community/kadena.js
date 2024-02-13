@@ -26,7 +26,7 @@ const meta: Meta<ITextFieldProps> = {
     docs: {
       description: {
         component:
-          'The TextField component is a wrapper around the native textarea element that provides the ability to add additional information.',
+          'The TextField component is a wrapper around the native input element that provides the ability to add additional information.',
       },
     },
   },
@@ -182,7 +182,14 @@ export const TextFieldStory: Story = {
   },
   render: (props) => {
     const [value, setValue] = useState<string>('');
-    return <TextField {...props} value={value} onValueChange={setValue} />;
+    return (
+      <TextField
+        type="number"
+        {...props}
+        value={value}
+        onValueChange={setValue}
+      />
+    );
   },
 };
 

@@ -1,5 +1,11 @@
 # Change Log - @kadena/chainweb-node-client
 
+## 0.5.3
+
+### Patch Changes
+
+- 5b1d8334e: delete all console.errors from chainweb-node-client functions
+
 ## 0.5.1
 
 ### Patch Changes

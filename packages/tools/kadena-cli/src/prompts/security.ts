@@ -1,5 +1,5 @@
-import { password } from '@inquirer/prompts';
 import type { IPrompt } from '../utils/createOption.js';
+import { password } from '../utils/prompts.js';
 
 export async function promptForPassword(
   message: string,

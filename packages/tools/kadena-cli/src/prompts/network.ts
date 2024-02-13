@@ -1,9 +1,11 @@
-import { input, select } from '@inquirer/prompts';
 import type { ChainId } from '@kadena/types';
-import { program } from 'commander';
+import { readdirSync } from 'fs';
+import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
+import { ensureNetworksConfiguration } from '../networks/utils/networkHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
 import { getExistingNetworks, isAlphabetic } from '../utils/helpers.js';
+import { input, select } from '../utils/prompts.js';
 import { getInputPrompt } from './generic.js'; // Importing getInputPrompt from another file
 
 export const chainIdPrompt: IPrompt<string> = async (
@@ -11,7 +13,7 @@ export const chainIdPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const defaultValue = args.defaultValue as string;
+  const defaultValue = (args.defaultValue as string) || '0';
   return (await getInputPrompt(
     'Enter ChainId (0-19)',
     defaultValue,
@@ -77,7 +79,6 @@ export const networkOverwritePrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  // Determine which value to use for the message
   const networkName =
     args.defaultValue ?? previousQuestions.network ?? args.network;
 
@@ -102,12 +103,25 @@ export const networkSelectPrompt: IPrompt<string> = async (
   isOptional,
 ) => {
   const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
-  if (!existingNetworks.length) {
+
+  const allowedNetworks =
+    prev.allowedNetworks !== undefined
+      ? (prev.allowedNetworks as string[])
+      : [];
+
+  const filteredNetworks = existingNetworks.filter((network) =>
+    allowedNetworks.length > 0
+      ? allowedNetworks.includes(network.name ?? '')
+      : true,
+  );
+
+  if (!filteredNetworks.length) {
     throw new Error(
-      'No existing networks found. Please create a network first.',
+      'No networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init`.',
     );
   }
-  const choices: ICustomNetworkChoice[] = existingNetworks.map((network) => ({
+
+  const choices: ICustomNetworkChoice[] = filteredNetworks.map((network) => ({
     value: network.value,
     name: network.name,
   }));
@@ -117,15 +131,36 @@ export const networkSelectPrompt: IPrompt<string> = async (
       name: 'Network is optional. Continue to next step',
     });
   }
-  choices.push({ value: 'createNetwork', name: 'Create a new network' });
+
   const selectedNetwork = await select({
     message: 'Select a network',
     choices: choices,
   });
-  if (selectedNetwork === 'createNetwork') {
-    await program.parseAsync(['', '', 'networks', 'create']);
-    return networkSelectPrompt(prev, args, isOptional);
+
+  return selectedNetwork;
+};
+
+export const networkSelectOnlyPrompt: IPrompt<string> = async () => {
+  if (readdirSync(defaultNetworksPath).length === 0) {
+    await ensureNetworksConfiguration();
   }
+
+  const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
+
+  if (!existingNetworks.length) {
+    throw new Error(
+      'No existing networks found. Please create a network first.',
+    );
+  }
+
+  const choices: ICustomNetworkChoice[] = existingNetworks.map((network) => ({
+    value: network.value,
+    name: network.name,
+  }));
+  const selectedNetwork = await select({
+    message: 'Select a network',
+    choices: choices,
+  });
   return selectedNetwork;
 };
 

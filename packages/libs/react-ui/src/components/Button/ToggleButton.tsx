@@ -16,13 +16,13 @@ export interface IToggleButtonProps
   extends PickedAriaToggleButtonProps,
     ISharedButtonProps {}
 
-function ToggleButtonBase(
+const ToggleButtonBase = (
   props: IToggleButtonProps,
   forwardedRef: ForwardedRef<HTMLButtonElement>,
-) {
+) => {
   props = disableLoadingProps(props);
   const ref = useObjectRef(forwardedRef);
-  let state = useToggleState(props);
+  const state = useToggleState(props);
   const { buttonProps, isPressed } = useToggleButton(props, state, ref);
   const { hoverProps, isHovered } = useHover(props);
   const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
@@ -81,6 +81,6 @@ function ToggleButtonBase(
       )}
     </button>
   );
-}
+};
 
 export const ToggleButton = forwardRef(ToggleButtonBase);

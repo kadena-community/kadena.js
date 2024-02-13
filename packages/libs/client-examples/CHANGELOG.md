@@ -1,5 +1,22 @@
 # @kadena/client-examples
 
+## 0.0.13
+
+### Patch Changes
+
+- Updated dependencies [5b1d8334e]
+  - @kadena/chainweb-node-client@0.5.3
+  - @kadena/client@1.8.1
+  - @kadena/client-utils@0.4.1
+
+## 0.0.12
+
+### Patch Changes
+
+- Updated dependencies [172734c8b]
+- Updated dependencies [1b4e49d96]
+  - @kadena/client-utils@0.4.0
+
 ## 0.0.11
 
 ### Patch Changes

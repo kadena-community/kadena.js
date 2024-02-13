@@ -1,5 +1,38 @@
 # @kadena/graph
 
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies [5b1d8334e]
+  - @kadena/chainweb-node-client@0.5.3
+  - @kadena/client@1.8.1
+  - @kadena/client-utils@0.4.1
+
+## 0.1.4
+
+### Patch Changes
+
+- 5d5b91918: use `creationTime` next to `id` to get recent blocks
+
+## 0.1.3
+
+### Patch Changes
+
+- ae6b98387: only write schema when `NODE_END=development`
+
+## 0.1.2
+
+### Patch Changes
+
+- 6a4153b1b: Alter migrations to support the correct format for devnet. Also
+  removed unnecessary indexes.
+- 5f89df506: Change default value for branch
+- e6e252cd9: Implement flood functionality
+- Updated dependencies [172734c8b]
+- Updated dependencies [1b4e49d96]
+  - @kadena/client-utils@0.4.0
+
 ## 0.1.1
 
 ### Patch Changes

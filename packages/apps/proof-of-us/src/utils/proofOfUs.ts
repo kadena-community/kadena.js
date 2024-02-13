@@ -1,18 +1,20 @@
 import { proofOfUsData } from './data';
 
-export const getAllProofOfUs = async (): Promise<IProofOfUs[]> => {
-  return proofOfUsData;
+//TODO: get data from the chain
+
+export const getAllProofOfUs = async (): Promise<IProofOfUsToken[]> => {
+  const tokens = proofOfUsData.map((d) => d.token);
+  const data = tokens.filter((d) => d?.tokenId);
+  return data as IProofOfUsToken[];
 };
-export const getProofOfUs = async (
-  id: string,
-): Promise<IProofOfUs | undefined> => {
-  const result = proofOfUsData.find((proofOfUs) => proofOfUs.tokenId === id);
+export const getProofOfUs = async (id: string): Promise<IProofOfUsToken> => {
+  const result = proofOfUsData.find(
+    (proofOfUs) => proofOfUs.token?.tokenId === id,
+  );
+
+  const token = result?.token;
 
   return {
-    ...result,
-    avatar: {
-      background: '',
-      objects: [],
-    },
-  } as IProofOfUs;
+    ...token,
+  } as IProofOfUsToken;
 };

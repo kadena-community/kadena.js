@@ -9,14 +9,17 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 
+import { ImportWallet } from '@/pages/import-wallet/import-wallet';
+import { CreateNetwork } from '@/pages/networks/create-network';
+import { Networks } from '@/pages/networks/networks';
+import { useWallet } from '../modules/wallet/wallet.hook';
 import { BackupRecoveryPhrase } from '../pages/backup-recovery-phrase/backup-recovery-phrase';
 import { WriteDownRecoveryPhrase } from '../pages/backup-recovery-phrase/write-down/write-down-recovery-phrase';
-import { CreateWallet } from '../pages/create-wallet/create-wallet';
+import { CreateProfile } from '../pages/create-profile/create-profile';
 import { HomePage } from '../pages/home/home-page';
 import { SelectProfile } from '../pages/select-profile/select-profile';
-import { UnlockWallet } from '../pages/unlock-wallet/unlock-wallet';
+import { UnlockProfile } from '../pages/unlock-profile/unlock-profile';
 import { getScriptType } from '../utils/window';
-import { useWallet } from '../wallet/wallet.hook';
 import { Layout } from './layout';
 
 const ProtectedRoute: FC<
@@ -39,15 +42,18 @@ export const Routes: FC = () => {
     <Route element={<Layout />}>
       <Route path="/" element={<HomePage />} />
       <Route path="/select-profile" element={<SelectProfile />} />
-      <Route path="/create-wallet" element={<CreateWallet />} />
-      <Route path="/unlock-wallet/:profileId" element={<UnlockWallet />} />
+      <Route path="/networks" element={<Networks />} />
+      <Route path="/networks/create" element={<CreateNetwork />} />
+      <Route path="/create-profile" element={<CreateProfile />} />
+      <Route path="/import-wallet" element={<ImportWallet />} />
+      <Route path="/unlock-profile/:profileId" element={<UnlockProfile />} />
       <Route element={<ProtectedRoute isAllowed={isUnlocked} />}>
         <Route
-          path="/backup-recovery-phrase"
+          path="/backup-recovery-phrase/:keySourceId"
           element={<BackupRecoveryPhrase />}
         />
         <Route
-          path="/backup-recovery-phrase/write-down"
+          path="/backup-recovery-phrase/:keySourceId/write-down"
           element={<WriteDownRecoveryPhrase />}
         />
         <Route path="/accounts/:account" element={<p>Account</p>} />,

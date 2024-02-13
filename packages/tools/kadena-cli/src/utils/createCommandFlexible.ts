@@ -1,4 +1,6 @@
+import chalk from 'chalk';
 import type { Command } from 'commander';
+import { CommandError } from './command.util.js';
 import { getCommandExecution } from './createCommand.js';
 import type { OptionType } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
@@ -69,6 +71,22 @@ export async function executeOption<Option extends OptionType>(
   };
 }
 
+const printCommandExecution = (
+  command: string,
+  args: Record<string, unknown>,
+  updateArgs?: Record<string, unknown>,
+): void => {
+  // Give the option to update args used in the command by returning an object
+  // Only update args that are already defined
+  if (updateArgs !== undefined && typeof updateArgs === 'object') {
+    for (const [key, value] of Object.entries(updateArgs)) {
+      if (Object.hasOwn(args, key) === true) args[key] = value;
+    }
+  }
+
+  console.log(`\nExecuted: ${getCommandExecution(command, args)}`);
+};
+
 export const createCommandFlexible =
   <
     T extends OptionType[],
@@ -99,45 +117,47 @@ export const createCommandFlexible =
     });
     command.action(async (originalArgs, ...rest) => {
       let args = { ...originalArgs };
+      try {
+        // Automatically enable quiet mode if not in interactive environment
+        if (!process.stdout.isTTY) args.quiet = true;
 
-      // Automatically enable quiet mode if not in interactive environment
-      if (!process.stdout.isTTY) args.quiet = true;
+        const collectOptionsMap = options.reduce((acc, option) => {
+          acc[option.key] = async (customArgs = {}) => {
+            try {
+              const { value, config } = await executeOption(
+                option,
+                {
+                  ...args,
+                  ...customArgs,
+                },
+                originalArgs,
+              );
 
-      const collectOptionsMap = options.reduce((acc, option) => {
-        acc[option.key] = async (customArgs = {}) => {
-          try {
-            const { value, config } = await executeOption(
-              option,
-              {
-                ...args,
-                ...customArgs,
-              },
-              originalArgs,
-            );
+              // Keep track of previous args to prompts can use them
+              args = { ...args, [option.key]: value };
+              return config;
+            } catch (error) {
+              handlePromptError(error);
+            }
+          };
+          return acc;
+        }, {} as any);
 
-            // Keep track of previous args to prompts can use them
-            args = { ...args, [option.key]: value };
-            return config;
-          } catch (error) {
-            handlePromptError(error);
-          }
-        };
-        return acc;
-      }, {} as any);
+        const values = rest.flatMap((r) => r.args);
+        const result = await action(collectOptionsMap, values);
 
-      const values = rest.flatMap((r) => r.args);
-      const result = await action(collectOptionsMap, values);
-
-      // Give the option to update args used in the command by returning an object
-      // Only update args that are already defined
-      if (result !== undefined && typeof result === 'object') {
-        for (const [key, value] of Object.entries(result)) {
-          if (Object.hasOwn(args, key) === true) args[key] = value;
+        printCommandExecution(
+          `${program.name()} ${name}`,
+          args,
+          result ?? undefined,
+        );
+      } catch (error) {
+        if (error instanceof CommandError) {
+          printCommandExecution(`${program.name()} ${name}`, args, error.args);
+          process.exitCode = error.exitCode;
         }
+        console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
+        process.exitCode = 1;
       }
-
-      console.log(
-        `\nExecuted: ${getCommandExecution(`${program.name()} ${name}`, args)}`,
-      );
     });
   };

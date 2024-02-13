@@ -82,13 +82,9 @@ export async function localRaw(
     'signatureVerification',
     signatureVerification.toString(),
   );
-  try {
-    const response = await fetch(localUrlWithQueries.toString(), request);
-    return await parseResponse<IPreflightResult | ICommandResult>(response);
-  } catch (error) {
-    console.error('An error occurred while calling local API:', error);
-    throw error;
-  }
+
+  const response = await fetch(localUrlWithQueries.toString(), request);
+  return parseResponse<IPreflightResult | ICommandResult>(response);
 }
 
 /**

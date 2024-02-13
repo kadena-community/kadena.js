@@ -11,10 +11,15 @@ import React, { forwardRef, useCallback } from 'react';
 import type { AriaTextFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useTextField } from 'react-aria';
 import { bodyBaseRegular, codeBaseRegular } from '../../../styles';
-import { formField, inputContainer } from '../Form.css';
+import {
+  endAddon,
+  formField,
+  input,
+  inputContainer,
+  startAddon,
+} from '../Form.css';
 import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
-import { endAddon, input, startAddon } from './TextField.css';
 
 type PickedAriaTextFieldProps = Omit<
   AriaTextFieldProps,

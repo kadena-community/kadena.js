@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import type { Command } from 'commander';
 import { z } from 'zod';
-import { CLIRootName } from '../constants/config.js';
+import { CLINAME } from '../constants/config.js';
 import { displayConfig } from './createCommandDisplayHelper.js';
 import type { OptionType, createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
@@ -179,46 +179,38 @@ export function getCommandExecution(
   generalArgs: string[] = [],
 ): string {
   return chalk.yellow(
-    `${CLIRootName} ${command} ${Object.getOwnPropertyNames(args)
+    `${CLINAME} ${command} ${Object.getOwnPropertyNames(args)
       .map((arg) => {
         let displayValue: string | null = null;
         const value = args[arg];
-        const argName = arg.toLowerCase();
 
-        if (argName.includes('password')) {
-          if (value === '') {
-            displayValue = '';
-          } else {
-            displayValue = '******';
-          }
-        } else {
-          if (typeof value === 'string') {
-            displayValue = `"${value}"`;
-          } else if (typeof value === 'number') {
-            displayValue = value.toString();
-          } else if (typeof value === 'boolean' && value === false) {
-            return undefined;
-          } else if (value === null) {
-            // if null, leave out from command entirely
-            displayValue = '';
-          } else if (
-            typeof value === 'object' &&
-            value !== null &&
-            Object.getPrototypeOf(value) === Object.prototype
-          ) {
-            return Object.entries(value)
-              .map(([key, value]) => `--${key}="${value}"`)
-              .join(' ');
-          }
+        if (arg.toLowerCase().includes('password')) {
+          displayValue = value === '' ? '' : '******';
+        } else if (Array.isArray(value)) {
+          displayValue = `"${value.join(',')}"`;
+        } else if (typeof value === 'string') {
+          displayValue = `"${value}"`;
+        } else if (
+          typeof value === 'number' ||
+          (typeof value === 'boolean' && value)
+        ) {
+          displayValue = value.toString();
+        } else if (value === null || (typeof value === 'boolean' && !value)) {
+          return undefined;
+        } else if (
+          typeof value === 'object' &&
+          Object.getPrototypeOf(value) === Object.prototype
+        ) {
+          displayValue = Object.entries(value)
+            .map(([key, val]) => `--${key}="${val}"`)
+            .join(' ');
         }
 
         const key = arg.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
 
-        return `--${key}=${
-          displayValue !== null && displayValue !== undefined
-            ? displayValue
-            : ''
-        }`;
+        return displayValue !== null && displayValue !== undefined
+          ? `--${key}=${displayValue}`
+          : '';
       })
       .filter(Boolean)
       .join(' ')} ${generalArgs.join(' ')}`,

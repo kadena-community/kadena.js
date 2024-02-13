@@ -1,6 +1,6 @@
-import { input } from '@inquirer/prompts';
 import type { IPrompt } from '../utils/createOption.js';
 import { isAlphanumeric } from '../utils/helpers.js';
+import { input } from '../utils/prompts.js';
 
 export async function genericFileNamePrompt(type?: string): Promise<string> {
   return await input({
@@ -59,4 +59,11 @@ export function createExternalPrompt<T extends Record<string, IPrompt<any>>>(
     },
     {} as Record<keyof T, (defaultValue?: string) => Promise<string>>,
   );
+}
+
+export function logFolderPrompt(): Promise<string> {
+  return input({
+    message: 'Specify the directory where the log file will be generated',
+    default: `${process.cwd()}/logs/simulate`,
+  });
 }

@@ -1,5 +1,12 @@
 # kadena.js
 
+## 0.1.1
+
+### Patch Changes
+
+- Updated dependencies [5b1d8334e]
+  - @kadena/chainweb-node-client@0.5.3
+
 ## 0.1.0
 
 ### Minor Changes

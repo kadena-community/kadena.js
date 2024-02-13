@@ -79,6 +79,18 @@ brew install kda-cli
 brew update kda-cli
 ```
 
+## installation
+
+To install the executable from this repo:
+
+```sh
+pnpm install
+pnpm build --filter @kadena/kadena-cli
+
+# make sure you're on the project's path
+pnpm link -g
+```
+
 ## list of commands
 
 Each command can be made interactive by not filling in the flags. You can

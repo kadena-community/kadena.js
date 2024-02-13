@@ -23,7 +23,7 @@ export const REQUEST_KEY_VALIDATION = z
     },
   );
 
-const RequestKeyField: FC<ITextFieldProps> = forwardRef<
+export const RequestKeyField: FC<ITextFieldProps> = forwardRef<
   HTMLInputElement,
   ITextFieldProps
 >(function RequestKeyField(props, ref) {
@@ -40,5 +40,3 @@ const RequestKeyField: FC<ITextFieldProps> = forwardRef<
     />
   );
 });
-
-export default RequestKeyField;

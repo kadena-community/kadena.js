@@ -8,11 +8,18 @@ type Any = any;
  */
 export const asyncPipe: IAsyncPipe = (
   first: (...i: Any[]) => Any,
-  ...fns: ((i: Any, input: Any) => Any)[]
+  ...fns: { (i: Any, input: Any): Any; startPoint?: any }[]
 ) =>
   ((...value: Any[]) => {
-    return fns.reduce(
+    const start = fns.findIndex((fn) => 'startPoint' in fn);
+    let fnsList = fns;
+    let startData = value;
+    if (start !== -1) {
+      fnsList = fns.slice(start + 1);
+      startData = [fns[start].startPoint];
+    }
+    return fnsList.reduce(
       (acc, fn) => acc.then((data) => fn(data, value)),
-      Promise.resolve(first(...value)),
+      Promise.resolve(first(...startData)),
     );
   }) as Any;

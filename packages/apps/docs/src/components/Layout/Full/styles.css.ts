@@ -25,7 +25,7 @@ export const asidebackgroundClass = style([
         pointerEvents: 'none',
         inset: 0,
         zIndex: 0,
-        backgroundImage: 'url("/assets/bg-code.webp")',
+        // backgroundImage: 'url("/assets/bg-code.webp")',
         backgroundRepeat: 'no-repeat',
         backgroundPositionY: '-100px',
         backgroundPositionX: `calc(100vw  - (${$$asideMenuWidthMDDefault} + ${$$shadowWidth}))`,

@@ -42,10 +42,12 @@ const capSchema = z.object({
   ),
 });
 
+type Signer = z.output<typeof capSchema>;
+
 const templatePartialMetaSchema = z.object({
   // Could be optional if doing local calls
   sender: z.string(),
-  // Technically optional, not kadena-client's type requires it
+  // Technically optional, but kadena-client's type requires it
   chainId: z.string().transform((chainId) => chainId as ChainId),
   creationTime: z.number().optional(),
   gasLimit: z.number().optional(),
@@ -67,11 +69,24 @@ const templatePartialSchema = z
     nonce: z.string().optional().default(''),
     networkId: z.string().optional().default('mainnet01'),
   })
-  .transform(({ meta, publicMeta, ...transaction }) => {
-    const metaToUse = meta ?? publicMeta;
-    if (metaToUse === undefined)
+  .transform(({ meta, publicMeta, signers, ...transaction }) => {
+    // allow meta or publicMeta to be used
+    const newMeta = meta ?? publicMeta;
+    if (newMeta === undefined) {
       throw new Error('meta or publicMeta must be defined');
-    return { ...transaction, meta: metaToUse };
+    }
+    // merge signers
+    const newSigners = signers.reduce((memo, signer) => {
+      const existing = memo.find((s) => s.pubKey === signer.pubKey);
+      if (existing) {
+        existing.clist = existing.clist.concat(signer.clist);
+      } else {
+        memo.push({ ...signer });
+      }
+      return memo;
+    }, [] as Signer[]);
+
+    return { ...transaction, meta: newMeta, signers: newSigners };
   });
 
 export const fixTemplatePactCommand = (template: unknown): IPactCommand => {

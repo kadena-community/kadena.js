@@ -88,6 +88,9 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 <Link className={docsCardLink} href="/marmalade/architecture">
                   Architecture
                 </Link>
+                <Link className={docsCardLink} href="/marmalade/auctions">
+                  Auctions
+                </Link>
                 <Link
                   className={docsCardLink}
                   href="/marmalade/concrete-policies"
@@ -127,6 +130,20 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                   href="/marmalade/concrete-policies"
                 >
                   Policies Overview
+                </Link>
+              </BrowseSection>
+            </DocsCard>
+          </GridItem>
+          <GridItem>
+            <DocsCard
+              label="Auctions"
+              description=""
+              schema="success"
+              background="whitepapers"
+            >
+              <BrowseSection marker="none">
+                <Link className={docsCardLink} href="/marmalade/auctions">
+                  Auctions Overview
                 </Link>
               </BrowseSection>
             </DocsCard>
