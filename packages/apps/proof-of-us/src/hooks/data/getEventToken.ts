@@ -1,24 +1,30 @@
 import { getProofOfUs } from '@/utils/proofOfUs';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export const useGetEventToken: IDataHook<IProofOfUsToken | undefined> = (
   id: string,
 ) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState<IError>();
-  const [data, setData] = useState<IProofOfUsToken | undefined>(undefined);
+  const [data, setData] = useState<IProofOfUsToken | undefined>();
 
   const load = async () => {
     setHasError(undefined);
     setIsLoading(true);
 
-    setTimeout(async () => {
-      const result = await getProofOfUs(id);
+    const result = await getProofOfUs(id);
 
-      setData(result);
+    console.log(11111, { result });
+    if (!result) {
+      router.push('/404');
+      return;
+    }
 
-      setIsLoading(false);
-    }, 3000);
+    setData(result);
+
+    setIsLoading(false);
   };
 
   useEffect(() => {

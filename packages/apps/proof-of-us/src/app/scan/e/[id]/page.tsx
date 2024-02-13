@@ -2,25 +2,49 @@
 
 import { ScanEvent } from '@/features/ScanEvent/ScanEvent';
 import { useGetEventToken } from '@/hooks/data/getEventToken';
+import { createClient } from '@kadena/client';
 
 import type { FC } from 'react';
+import { useEffect } from 'react';
 
 interface IProps {
   params: {
     id: string;
+    transaction: string;
   };
 }
 
-const Page: FC<IProps> = () => {
-  const { data, isLoading, error } = useGetEventToken();
+const Page: FC<IProps> = ({ params, searchParams }) => {
+  const eventId = decodeURIComponent(params.id);
 
+  // const transactionInit = async () => {
+  //   const client = createClient();
+
+  //   const transactionParam = searchParams.transaction;
+  //   const transactionParamData = transactionParam
+  //     ? Buffer.from(transactionParam, 'base64').toString()
+  //     : null;
+
+  //   const tx = JSON.parse(transactionParamData ?? '{}');
+  //   const txData = JSON.parse(tx.cmd || '{}');
+
+  //   const result = await client.local(tx);
+
+  //   console.log('resulthere:', result);
+  // };
+
+  // useEffect(() => {
+  //   transactionInit();
+  // }, [searchParams.transaction]);
+
+  const { data, isLoading, error } = useGetEventToken(eventId);
   if (!data) return null;
 
   return (
     <div>
       {isLoading && <div>...is loading</div>}
       {error && <div>...error</div>}
-      <ScanEvent token={data} />
+      <ScanEvent token={data} eventId={eventId} />
     </div>
   );
 };
