@@ -12,7 +12,6 @@ export const SocialShare: FC<IProps> = ({ token }) => {
   const label = token.name;
   const text = `${token.name} was a great event`;
   const title = `A new  NFT: `;
-  const twitterTitle = `A new  NFT:`;
   const url = `${process.env.NEXT_PUBLIC_URL}/share/${token.tokenId}`;
 
   const shareDetails = { url, title, text, label };
