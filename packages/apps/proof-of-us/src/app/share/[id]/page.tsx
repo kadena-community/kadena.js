@@ -19,11 +19,9 @@ export const generateMetadata = async ({
     title: `${data.name ?? 'Welcome'} | Immutable Record`,
     description: `${data.name} was a great event`,
     twitter: {
-      card: 'summary_large_image',
+      card: 'summary',
       title: `${data.name ?? 'Welcome'} | Immutable Record`,
-      description: `${data.name} was a great event`,
-      creator: getTwitterCreator(data.properties.signees),
-      images: [`${data.image}`],
+      creator: '@straatemans',
     },
     openGraph: {
       images: [

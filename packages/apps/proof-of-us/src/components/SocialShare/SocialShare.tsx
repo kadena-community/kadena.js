@@ -104,7 +104,7 @@ export const SocialShare: FC<IProps> = ({ token }) => {
                 onClick={() => onShare('twitter', url, title)}
                 target="_blank"
                 rel="noopener noreferrer"
-                href={`https://twitter.com/intent/tweet?url=${url}&text=${twitterTitle}`}
+                href={`https://twitter.com/intent/tweet?url=${url}`}
               >
                 <SystemIcon.Twitter />
               </a>
