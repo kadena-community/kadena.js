@@ -8,14 +8,14 @@ interface IProps {
 }
 
 export const AttendanceTicket: FC<IProps> = ({ token }) => {
-  const date = new Date(token.properties.date);
+  //const date = new Date(token.properties.date);
   const [contrastColor, setContrastColor] = useState<string>('white');
-  const color = token.properties.avatar?.backgroundColor;
+  const color = token.properties?.avatar?.backgroundColor;
 
   useEffect(() => {
-    const color = getContrast(token.properties.avatar?.backgroundColor ?? '');
+    const color = getContrast(token.properties?.avatar?.backgroundColor ?? '');
     setContrastColor(color);
-  }, [token.properties.avatar?.backgroundColor]);
+  }, [token.properties?.avatar?.backgroundColor]);
   return (
     <>
       <svg viewBox="0 0 160 90" width="1">
@@ -35,7 +35,7 @@ export const AttendanceTicket: FC<IProps> = ({ token }) => {
           className={ticketClass}
           style={{
             backgroundImage: `url("${token.image}")`,
-            backgroundColor: token.properties.avatar?.backgroundColor,
+            backgroundColor: token.properties?.avatar?.backgroundColor,
           }}
         >
           <h4
@@ -50,7 +50,6 @@ export const AttendanceTicket: FC<IProps> = ({ token }) => {
 
           <div style={{ color: contrastColor }}>
             <h5>Date</h5>
-            {date.toLocaleDateString()}
           </div>
         </section>
       </div>

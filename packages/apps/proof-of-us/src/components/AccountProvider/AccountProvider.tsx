@@ -43,7 +43,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         const account: IAccount = JSON.parse(
           Buffer.from(userResponse, 'base64').toString(),
         );
-        console.log({ account });
         return account;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {

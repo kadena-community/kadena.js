@@ -1,20 +1,43 @@
 import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
 import { Button } from '@/components/Button/Button';
+import { useAccount } from '@/hooks/account';
 import { useClaimEventToken } from '@/hooks/data/claimEventToken';
+import { useSubmit } from '@/hooks/submit';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
+import { useEffect } from 'react';
 
 interface IProps {
   token: IProofOfUsToken;
+  eventId: string;
 }
 
-export const ScanEvent: FC<IProps> = ({ token }) => {
-  const { isLoading, hasSuccess, hasError, isPending } = useClaimEventToken();
+export const ScanEvent: FC<IProps> = ({ token, eventId }) => {
+  const { isLoading, hasSuccess, hasError, isPending, claim } =
+    useClaimEventToken();
   const router = useRouter();
+  const { doSubmit, result, preview, status, SubmitStatus, tx } = useSubmit();
 
-  const handleClaim = () => {
+  const { account } = useAccount();
+
+  console.log(account);
+
+  useEffect(() => {
+    doSubmit();
+  }, []);
+
+  const handleClaim = async () => {
+    const transaction = await claim(eventId);
+
+    console.log({ transaction });
+
     router.push(
-      `${process.env.NEXT_PUBLIC_WALLET_URL}/claimurl?returnUrl=${process.env.NEXT_PUBLIC_URL}/user/t${token.tokenId}`,
+      `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${Buffer.from(
+        JSON.stringify(transaction),
+      ).toString('base64')}&returnUrl=${
+        process.env.NEXT_PUBLIC_URL
+      }/scan/e/${eventId}
+      `,
     );
   };
 
