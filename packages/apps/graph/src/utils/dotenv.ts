@@ -52,7 +52,7 @@ export const dotenv: {
     10,
   ),
   NETWORK_HOST: or(process.env.NETWORK_HOST, 'http://localhost:8080'),
-  NETWORK_ID: or(process.env.NETWORK_ID, 'fast-development'),
+  NETWORK_ID: or(process.env.NETWORK_ID, 'development'),
   PORT: parseInt(or(process.env.PORT, '4000'), 10),
   PRISMA_LOGGING_ENABLED: or(
     process.env.PRISMA_LOGGING_ENABLED?.toLocaleLowerCase() === 'true',

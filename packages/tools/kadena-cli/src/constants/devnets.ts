@@ -51,6 +51,6 @@ export const defaultAccount = sender00;
  * Provides the default simulation configurations.
  */
 export const simulationDefaults = {
-  NETWORK_ID: 'fast-development',
+  NETWORK_ID: 'development',
   CHAIN_COUNT: 20,
 };

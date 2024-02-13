@@ -20,7 +20,7 @@ export const apiHostGenerator = ({
       return `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${
         chainId ?? '1'
       }/pact`;
-    case 'fast-development':
+    case 'development':
       return `http://localhost:8080/chainweb/0.0/${networkId}/chain/${
         chainId ?? '1'
       }/pact`;

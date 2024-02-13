@@ -6,7 +6,7 @@ import { describeModule } from '../built-in/describe-module';
 const config = {
   host: 'http://127.0.0.1:8080',
   defaults: {
-    networkId: 'fast-development',
+    networkId: 'development',
     meta: { chainId: '0' },
   },
 } as const;

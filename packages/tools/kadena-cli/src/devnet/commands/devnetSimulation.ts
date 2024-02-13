@@ -34,7 +34,7 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
 
       await simulateCoin({
         network: {
-          id: 'fast-development',
+          id: 'development',
           host: config.networkConfig.networkHost,
         },
         maxAmount: config.simulationMaxTransferAmount,
