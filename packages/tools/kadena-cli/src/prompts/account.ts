@@ -132,42 +132,6 @@ export const accountOverWritePrompt: IPrompt<boolean> = async () =>
     ],
   });
 
-export const accountNameSelectionPrompt: IPrompt<string> = async () => {
-  const allAccounts = await getAllAccountNames();
-
-  const allAccountChoices = allAccounts.map((account) => ({
-    value: account.name,
-    name: truncateText(`${account.alias}-${account.name}`),
-  }));
-
-  const selectedName = await select({
-    message: 'Select an account:',
-    choices: [
-      {
-        value: 'custom',
-        name: 'Enter own account name',
-      },
-      ...allAccountChoices,
-    ],
-  });
-
-  if (selectedName === 'custom') {
-    const accountName = await input({
-      message: 'Please enter the account name:',
-      validate: function (value: string) {
-        if (!value || !value.trim().length) {
-          return 'Account name cannot be empty.';
-        }
-
-        return true;
-      },
-    });
-    return accountName.trim();
-  }
-
-  return selectedName;
-};
-
 export const accountSelectPrompt: IPrompt<string> = async () => {
   const allAccounts = await getAllAccountNames();
 
