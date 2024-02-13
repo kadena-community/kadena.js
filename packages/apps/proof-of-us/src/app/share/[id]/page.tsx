@@ -13,8 +13,11 @@ interface IProps {
 
 export const generateMetadata = async ({
   params,
-}: IProps): Promise<Metadata> => {
+}: IProps): Promise<Metadata | undefined> => {
   const data = await getProofOfUs(params.id);
+
+  if (!data) return;
+
   return {
     title: `${data.name ?? 'Welcome'} | Immutable Record`,
     description: `${data.name} was a great event`,
