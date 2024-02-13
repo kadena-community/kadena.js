@@ -190,6 +190,9 @@ pages:
     url: /deploy
     file: /deploy/deploy.md
     children:
+      getstarted:
+        url: /chainweb-get-started
+        file: /deploy/chainweb/chainweb-get-started.md
       compactdb:
         url: /compact-database
         file: /deploy/chainweb/compact-database.md

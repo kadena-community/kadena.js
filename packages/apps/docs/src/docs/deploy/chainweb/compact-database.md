@@ -1,22 +1,27 @@
 ---
 title: Compact a Chainweb node database
-subTitle: "Deploy Chainweb nodes and Pact smart contract applications"
-id: deploy
-description: "Learn how to deploy Chainweb nodes and Pact smart contract applications on the Kadena network."
+description: "Reduce the storage required by the Chainweb node database."
 menu: Deploy
 label: Compact a Chainweb node database
-order: 1
+order: 2
 layout: full
 tags: [pact, chainweb, network, node operator, developer]
 ---
 
-# Compaction User Docs
+# Compact a Chainweb node database
 
-Compaction is the process of clearing out old, inactive Pact state from your chainweb-node’s Pact SQLite database. This is purely for saving (a lot of) disk space, while retaining semantic integrity of your node’s operations. Note that compaction is still experimental, so it’s recommended to create backups of any relevant files. The standard way that a user should run compaction is like so:
+Because a healthy blockchain continuously adds new transactions in new blocks that change the state of the database, managing the storage requirements on individual nodes can be challenging.
 
-1. Get ahold of a `cwtool`  binary, either through a release of `chainweb-node` , or building from source with `cabal`  or `nix` . The [chainweb-node README](https://github.com/kadena-io/chainweb-node#README) documents all the ways you can do this step.
-2. Create a backup of your pact sqlite. This isn’t strictly necessary, but is strongly recommended. For most nodes, there will be a directory `0/sqlite`  with all of the sqlite state.
-3. Run `cwtool compact` , pointing it to your database:
+To address this issue, Chainweb provides the `cwtool compact` command. 
+The `cwtool compact` command enables you to delete historical unused state from the `chainweb-node` Pact SQLite database. 
+Removing old state that isn't required to validate state or reach consensus enables your node to use far less disk space overall while maintaining the semantic integrity of your node operations. 
+
+To compact a Chainweb node database:
+
+1. Open a terminal shell on a computer with access to your `chainweb-node` root directory.
+2. Get ahold of a `cwtool`  binary, either through a release of `chainweb-node` , or building from source with `cabal`  or `nix` . The [chainweb-node README](https://github.com/kadena-io/chainweb-node#README) documents all the ways you can do this step.
+3. Create a backup of your pact sqlite. This isn’t strictly necessary, but is strongly recommended. For most nodes, there will be a directory `0/sqlite`  with all of the sqlite state.
+4. Run `cwtool compact` , pointing it to your database:
 
 ```bash
 cwtool compact \

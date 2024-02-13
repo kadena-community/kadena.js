@@ -93,7 +93,7 @@ If you click **Keys** in the Chainweaver navigation panel,
 
 1. Click **Keys** in the Chainweaver navigation panel.
 2. Click the **Copy to Clipboard** icon next to the public key for your wallet.
-3. Open [fKadena Tools](https://tools.kadena.io/) in your browser.
+3. Open [Kadena Developer Tools](https://tools.kadena.io/) in your browser.
 4. Click **Fund new account**.
 5. Paste the public key you copied from Chainweaver in the **Public Key** field, then click the plus (+).
    

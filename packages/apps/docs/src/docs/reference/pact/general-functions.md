@@ -26,6 +26,8 @@ Use the `CHARSET_LATIN1` constant to indicate the standard Latin-1 (ISO-8859-1) 
 
 Constant: &nbsp;&nbsp;`CHARSET_LATIN1:integer = 1`
 
+## at
+
 Use `at` to retrieve the value at the location specified by an *index* number or by a *key* string in a collection.
 If you specify an *index* number, the collection must be a list of values.
 If you specify a *key* string, the collection must be an object.
@@ -50,12 +52,12 @@ Use one of the following argument to define the value you want to retrieve using
 
 | Argument | Type | Description
 | -------- | ---- | -----------
-| `index` | integer | Specifies the location of the information you want to retrieve. If you specify the index as an integer, the function returns the value from that location in a list of values.
-| `key` | string | Specifies the location of the information you want to retrieve. If you specify a `key` string, the function returns the value corresponding to that key from an object.
+| `index` | integer | Specifies the information you want to retrieve. If you specify an `index` number, the function returns the value from that location in a list of values.
+| `key` | string | Specifies the information you want to retrieve. If you specify a `key` string, the function returns the value corresponding to that key from an object.
 
 ### Return values
 
-The `at` function returns the value found at the specified index.
+The `at` function returns the value found at the specified index or using the specified key.
 
 ### Examples
 

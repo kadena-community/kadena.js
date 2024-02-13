@@ -12,29 +12,42 @@ tags: [pact, chainweb, network, node operator, developer]
 
 There are two main deployment scenarios for the Kadena network:
 
-- Deploying Pact modules and smart contracts on a network.
-- Deploying and managing a node to support the network infrastructure and earn rewards.
+- Deploying and managing a node to support the decentralized network infrastructure and earn rewards.
+- Deploying Pact modules and smart contracts on a chain in the development, test, or main Kadena network.
 
 This part of the documentation covers both scenarios and includes information for two distinct audiences:
 
-- Smart contract developers planning to deploy contracts on the Kadena test network or the Kadena main network.
-- Node operators planning to deploy and manage Chainweb nodes.
+- **Node operators and miners** planning to deploy and manage Chainweb nodes.
+- **Smart contract developers** planning to deploy contracts on the Kadena test network or the Kadena main network.
 
-## Node operators
+## Node operators and miners
 
-Topics for node operators.
+If you plan to deploy one or more Chainweb nodes, see the following topics get started:
 
-## Miners
+- Minimum system requirements
+- Installation options
+- 
 
-Topics for miners.
+If you have previously deployed one or more Chainweb nodes and are responsible for managing ongoing node operations, see the following topics:
+
+- Compact a Chainweb node database
+- Monitor node health
+
+If you want to configure a Chainweb mode to enable mining, see the following topics:
+
+- Mining system requirements
+- Configure the Chainweb node
 
 ## Smart contract developers
 
-Topics for smart contract developers.
+If you're a smart contract developer, you have most likely tested your Pact modules and smart contracts locally using the Pact REPL and deployed them locally on the development network.
+Even after thorough testing on a local development environment, there are some additional steps you should take before attempting to deploy contracts on the Kadena test and main networks.
 
-## Network administrators
+If you are preparing to deploy on the Kadena test or main network, see the following topics:
 
-Topics for DevOps and network management might overlap with node operators.
+- Prepare formal verification
+- Prepare your namespace on the target network
+- 
 
 ## View recent articles
 
