@@ -38,7 +38,7 @@ type IProofOfUsBackground = {
   bg: string;
 };
 
-type TokenType = 'multi' | 'event';
+type TokenType = 'multi' | 'attendance';
 
 interface IProofOfUsData {
   mintStatus: IMintStatus;
