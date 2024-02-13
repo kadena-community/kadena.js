@@ -18,7 +18,7 @@
   "dependencies": {
     "@google-analytics/data": "~3.2.2",
     "@kadena/client": "workspace:*",
-    "@kadena/pactjs": "workspace:^",
+    "@kadena/pactjs": "workspace:*",
     "@kadena/react-ui": "workspace:*",
     "@vanilla-extract/css": "1.14.0",
     "@vanilla-extract/recipes": "0.5.1",
