@@ -33,8 +33,7 @@ export const createAccountDetailsCommand: (
   'details',
   'Get details of an account',
   [
-    globalOptions.accountNameSelect(),
-    globalOptions.fungible(),
+    globalOptions.accountSelect(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
   ],
@@ -42,16 +41,18 @@ export const createAccountDetailsCommand: (
     debug('account-details:action')({ config });
 
     const result = await accountDetails({
-      accountName: config.accountName,
+      accountName: config.accountConfig.name,
       chainId: config.chainId,
       networkId: config.networkConfig.networkId,
       networkHost: config.networkConfig.networkHost,
-      fungible: config.fungible,
+      fungible: config.accountConfig.fungible,
     });
 
     assertCommandError(result);
 
-    console.log(chalk.green(`\nDetails of account "${config.accountName}":\n`));
+    console.log(
+      chalk.green(`\nDetails of account "${config.accountConfig.name}":\n`),
+    );
     console.log(chalk.green(`${JSON.stringify(result.data, null, 2)}`));
   },
 );
