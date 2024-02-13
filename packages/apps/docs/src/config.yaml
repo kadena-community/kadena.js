@@ -189,6 +189,10 @@ pages:
   deploy:
     url: /deploy
     file: /deploy/deploy.md
+    children:
+      compactdb:
+        url: /compact-database
+        file: /deploy/chainweb/compact-database.md
   invest:
     url: /invest
     file: /invest/invest.md

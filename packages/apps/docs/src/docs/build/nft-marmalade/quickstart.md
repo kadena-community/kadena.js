@@ -46,16 +46,16 @@ To authenticate and locate Marmalade contracts:
 
 For this tutorial, you'll create a basic NFT token using the `mint-basic-NFT` function.
 By default, the `mint-basic-NFT` function creates a non-fungible token without any
-rules programmed.
+token policies.
 To create this token, you need to provide some required information.
 
 To create a new token:
 
-1. Click the **mint-basic-NFT** function to display the required fields.
+1. Click **Call** next to the **mint-basic-NFT** function to display the function parameters.
    
-1. Specify the required parameters with the following information:
+2. Specify the required parameters with the following information:
 
-   - **uri**: Type the uniform resource identifier (URI) for the off-chain where you have stored the token metadata.
+   - **uri**: Type the uniform resource identifier (URI) for the off-chain location where you have stored the token metadata.
    - **guard**: Specify the account guard for the minted token.
    
    You can read the keyset information in the transaction data field by adding a `read-keyset` call.
@@ -63,22 +63,22 @@ To create a new token:
 
    ![Mint with URI and Guard](/assets/marmalade/mint_1.png)
 
-1. Click **Next**.
-2. Select an account with funds on the Kadena test network as the **Transaction Sender**.
-1. Click **Advanced**, type `my-keyset` as keyset name, then click **Create**.
-2. Select the public key to use for the `my-keyset` guard, then click **Next**. 
+3. Click **Next**.
+4. Select an account with funds on the Kadena test network as the **Transaction Sender**.
+5. Click **Advanced**, type `my-keyset` as keyset name, then click **Create**.
+6. Select the public key to use for the `my-keyset` guard, then click **Next**. 
    
    ![Add "my-keyset"](/assets/marmalade/mint_gas.png)
 
-1. Select your public key under **Unrestricted Signing**, then click **Next**. 
+7. Select your public key under **Unrestricted Signing**, then click **Next**. 
    
    The public key you select will sign the transaction and pay the transaction fee.
    
    ![Unrestricted Signing](/assets/marmalade/mint_unrestricted_signing.png)
 
-1. On the Preview tab, click **Submit** to submit the transaction.
+8. On the Preview tab, click **Submit** to submit the transaction.
 
-2. Wait for the transaction to finish.
+9. Wait for the transaction to finish.
    
    After the transaction is complete, you've minted your first NFT on the Marmalade platform.
    View the transaction in the [block explorer](explorer.chainweb.com), and find your token information.
