@@ -18,7 +18,7 @@ export const proofOfUsData: IProofOfUs[] = [
         'https://pbs.twimg.com/profile_images/1643582036551118848/1ga1McZu_400x400.jpg',
       properties: {
         date: 1365017129000,
-        type: 'event',
+        type: 'attendance',
         avatar: {
           backgroundColor: '#4c0e5c',
         },

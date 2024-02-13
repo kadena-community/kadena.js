@@ -20,7 +20,7 @@ export const ListItem: FC<IProps> = ({ token }) => {
         className={listItemLinkClass}
         href={`/user/proof-of-us/t/${token.tokenId}`}
       >
-        {token.properties.type === 'event' && <EventThumb token={token} />}
+        {token.properties.type === 'attendance' && <EventThumb token={token} />}
         {token.properties.type === 'multi' && <MultiThumb token={token} />}
         <span className={titleClass}>{token.name}</span>
         <time

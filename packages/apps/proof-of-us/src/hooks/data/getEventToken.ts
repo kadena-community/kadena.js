@@ -16,14 +16,12 @@ export const useGetEventToken: IDataHook<IProofOfUsToken | undefined> = (
 
     const result = await getProofOfUs(id);
 
-    console.log(11111, { result });
     if (!result) {
       router.push('/404');
       return;
     }
 
     setData(result);
-
     setIsLoading(false);
   };
 

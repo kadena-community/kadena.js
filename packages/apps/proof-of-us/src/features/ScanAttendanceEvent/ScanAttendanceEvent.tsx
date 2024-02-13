@@ -1,7 +1,7 @@
 import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
 import { Button } from '@/components/Button/Button';
 import { useAccount } from '@/hooks/account';
-import { useClaimEventToken } from '@/hooks/data/claimEventToken';
+import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
@@ -12,9 +12,9 @@ interface IProps {
   eventId: string;
 }
 
-export const ScanEvent: FC<IProps> = ({ token, eventId }) => {
+export const ScanAttendanceEvent: FC<IProps> = ({ token, eventId }) => {
   const { isLoading, hasSuccess, hasError, isPending, claim } =
-    useClaimEventToken();
+    useClaimAttendanceToken();
   const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { doSubmit, result, preview, status, SubmitStatus, tx } = useSubmit();

@@ -1,6 +1,6 @@
 'use client';
 
-import { ScanEvent } from '@/features/ScanEvent/ScanEvent';
+import { ScanAttendanceEvent } from '@/features/ScanAttendanceEvent/ScanAttendanceEvent';
 import { useGetEventToken } from '@/hooks/data/getEventToken';
 
 import type { FC } from 'react';
@@ -42,7 +42,7 @@ const Page: FC<IProps> = ({ params }) => {
     <div>
       {isLoading && <div>...is loading</div>}
       {error && <div>...error</div>}
-      <ScanEvent token={data} eventId={eventId} />
+      <ScanAttendanceEvent token={data} eventId={eventId} />
     </div>
   );
 };

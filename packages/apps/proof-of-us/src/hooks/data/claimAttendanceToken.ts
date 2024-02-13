@@ -2,7 +2,7 @@ import { claimAttendanceToken } from '@/utils/proofOfUs';
 import { useState } from 'react';
 import { useAccount } from '../account';
 
-export const useClaimEventToken = () => {
+export const useClaimAttendanceToken = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSuccess, setHasSuccess] = useState(false);
   const [hasError, setHasError] = useState(false);
