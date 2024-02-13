@@ -161,7 +161,7 @@ pnpm run simulate:marmalade -a <numberOfAccounts> -i <timeInterval> -mt <maximum
 - maximumMintValue - maximum amount a token can be minted at once (default: 25)
 - seed - seed for random number generation (default: current timestamp)
 
-### Flood devnet
+#### Flood devnet
 
 In the flood command we are able to flood the network with transactions. We can
 alter the configuration via the parameters.
