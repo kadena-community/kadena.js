@@ -8,21 +8,11 @@
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "paths": {
-      "@fixtures/graph/*": ["./src/support/fixtures/graph/*"],
-      "@fixtures/tools/*": ["./src/support/fixtures/tools/*"],
-      "@fixtures/shared/*": ["./src/support/fixtures/shared/*"],
+      "@fixtures/*": ["./src/support/fixtures/*"],
       "@constants/*": ["./src/support/constants/*"],
-      "@helpers/graph/*": ["src/support/helpers/graph/*"],
-      "@helpers/tools/*": ["src/support/helpers/tools/*"],
-      "@helpers/docs/*": ["src/support/helpers/docs/*"],
-      "@helpers/client-utils/*": ["src/support/helpers/client-utils/*"],
-      "@page-objects/react-ui/*": ["./src/support/page-objects/react-ui/*"],
-      "@page-objects/tools-app/*": ["./src/support/page-objects/tools-app/*"],
-      "@devnet/faucet/*": ["./src/support/smart-contracts/faucet/*"],
-      "@devnet/guards/*": ["./src/support/smart-contracts/guards/*"],
-      "@devnet/kadenaXchainGas/*": [
-        "./src/support/smart-contracts/kadena-xchain-gas/*"
-      ],
+      "@helpers/*": ["src/support/helpers/*"],
+      "@page-objects/*": ["./src/support/page-objects/*"],
+      "@devnet/*": ["./src/support/smart-contracts/*"],
       "@test-types/*": ["./src/support/types/*"]
     }
   },
