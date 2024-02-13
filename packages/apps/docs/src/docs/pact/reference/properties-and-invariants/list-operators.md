@@ -15,11 +15,11 @@ tags: ['pact', 'language reference', 'list operators', 'pact operators']
 ## at
 
 ```pact
-(at k l)
+(at k o)
 ```
 
 - takes `k`: `string`
-- takes `l`: [_a_]
+- takes `o`: `{object _a_}`
 - produces _a_
 
 ```pact
@@ -27,8 +27,8 @@ tags: ['pact', 'language reference', 'list operators', 'pact operators']
 ```
 
 - takes `i`: `integer`
-- takes `o`: `list`
-- produces `bool`
+- takes `l`: `[list _a_]`
+- produces _a_
 
 projection
 
