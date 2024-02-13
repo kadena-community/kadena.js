@@ -18,7 +18,7 @@ export const useGetEventToken: IDataHook<IProofOfUsToken | undefined> = (
       setData(result);
 
       setIsLoading(false);
-    }, 3000);
+    }, 100);
   };
 
   useEffect(() => {

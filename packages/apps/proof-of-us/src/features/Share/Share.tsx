@@ -10,6 +10,8 @@ export const Share: FC = () => {
 
   const { data, isLoading, error } = useGetEventToken(params.id);
 
+  console.log({ data });
+
   return (
     <div>
       {isLoading && <div>...is loading</div>}

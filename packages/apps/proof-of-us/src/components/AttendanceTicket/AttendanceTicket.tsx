@@ -8,6 +8,7 @@ interface IProps {
 }
 
 export const AttendanceTicket: FC<IProps> = ({ token }) => {
+  console.log({ token });
   const date = new Date(token.properties.date);
   const [contrastColor, setContrastColor] = useState<string>('white');
   const color = token.properties.avatar?.backgroundColor;
