@@ -265,6 +265,9 @@ type Query {
   """
   fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
 
+  """Retrieve a chain account by public key."""
+  fungibleChainAccountByPublicKey(chainId: String!, publicKey: String!): FungibleChainAccount
+
   """Estimate the gas limit for a transaction."""
   gasLimitEstimate(transaction: PactTransaction!): Int!
 

@@ -16,6 +16,7 @@ import './objects/transfer';
 import './query/block';
 import './query/blocks-from-height';
 import './query/chain-fungible-account';
+import './query/chain-fungible-account-by-public-key';
 import './query/chain-non-fungible-account';
 import './query/completed-block-heights';
 import './query/events';
