@@ -35,7 +35,7 @@ export const createAccountDetailsCommand: (
   [
     globalOptions.accountSelect(),
     globalOptions.networkSelect(),
-    globalOptions.chainId(),
+    globalOptions.chainId({ isOptional: false }),
   ],
   async (config) => {
     debug('account-details:action')({ config });
