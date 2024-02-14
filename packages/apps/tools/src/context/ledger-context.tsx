@@ -1,62 +1,51 @@
 import TransportWebHID from '@ledgerhq/hw-transport-webhid';
-import { listen } from '@ledgerhq/logs';
 import type { FC } from 'react';
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { useAsyncFn } from 'react-use';
+import React, { createContext, useContext, useEffect } from 'react';
 
 import type Transport from '@ledgerhq/hw-transport';
+import { useMutation } from '@tanstack/react-query';
 
 const LedgerContext = createContext<{
-  transport: Transport | null;
-  connect: (verboseLogging?: boolean) => void;
-  error?: Error;
+  transport?: Transport;
+  connect: () => void;
+  error: Error | null;
   loading: boolean;
-}>({ transport: null, connect: () => {}, loading: false });
+}>({ connect: () => {}, loading: false, error: null });
 
 const LedgerContextProvider: FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [transport, setTransport] = useState<Transport | null>(null);
-
-  const connectLedger = useCallback(async (verboseLogging = false) => {
-    const transport = await TransportWebHID.create();
-
-    // listen to the events which are sent by the Ledger packages in order to debug the app
-    if (verboseLogging) {
-      listen((log) => console.log('Ledger listen:', log));
-    }
-
-    transport.on('disconnect', () => {
-      console.log('useLedgerTransport disconnected');
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      // reset(null);
-      setTransport(null);
-    });
-
-    return transport;
-  }, []);
-
-  const [{ value, error, loading }, connect] = useAsyncFn(connectLedger);
+  const { data, reset, mutateAsync, isLoading } = useMutation({
+    mutationFn: async () => {
+      return await TransportWebHID.create();
+    },
+  });
 
   useEffect(() => {
-    setTransport(value || null);
-  }, [value]);
+    if (!data) return;
+    data.on('disconnect', reset);
+    return () => {
+      data.off('disconnect', reset);
+    };
+  }, [data, reset]);
 
-  console.log('useLedgerTransport', { value, error, loading });
+  const mutation = useMutation<Transport, Error>({
+    mutationFn: async () => {
+      if (data) {
+        return data;
+      }
+
+      return await mutateAsync();
+    },
+  });
 
   return (
     <LedgerContext.Provider
       value={{
-        transport,
-        connect,
-        error,
-        loading,
+        transport: mutation.data,
+        connect: mutation.mutate,
+        error: mutation.error,
+        loading: isLoading || mutation.isLoading,
       }}
     >
       {children}
