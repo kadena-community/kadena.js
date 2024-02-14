@@ -6,7 +6,6 @@ import {
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import { accountDetailsLoader } from '../data-loaders/account-details';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
 import type { NonFungibleChainAccount } from '../types/graphql-types';
 import { NonFungibleChainAccountName } from '../types/graphql-types';
