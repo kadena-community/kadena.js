@@ -1,7 +1,8 @@
-import type { IUnsignedCommand } from '@kadena/client';
+import type { ChainId, IUnsignedCommand } from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { proofOfUsData } from './data';
+import { env } from './env';
 
 //TODO: get data from the chain
 
@@ -39,56 +40,79 @@ export const getProofOfUs = async (
 };
 
 export const claimAttendanceToken = async (
-  eventId: string,
+  id: string,
   account: IAccount,
 ): Promise<IUnsignedCommand | undefined> => {
+  const eventId = decodeURIComponent(id);
+  const credential = account.credentials[0];
+
+  if (!credential) {
+    throw new Error('credential of account not found');
+  }
+
   const transaction = Pact.builder
     .execution(
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.mint-attendance-token 
-      "proof-of-us:v2z0VWCNa6OAN9eeGkQ8YoJ2yZNj97Y1-sZyv6sbcEQ" 
-      "c:GzBzqqDUJL_5JJIEgGldvygP1ScBOMoIa68VM1TI9aY"
-      (n_eef68e581f767dd66c4d4c39ed922be944ede505.webauthn-wallet.get-wallet-guard "c:GzBzqqDUJL_5JJIEgGldvygP1ScBOMoIa68VM1TI9aY")
+      "${eventId}" 
+      "${account.accountName}"
+      (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard "${account.accountName}")
       )`,
     )
-    // .addData('attendant_guard', {
-    //   pred: 'keys-any',
-    //   keys: [
-    //     'WEBAUTHN-a50102032620012158200ad0e59b1905c813ae05d03ab5d014d9a2faea845a5f6721b64b9d31f37349f122582069579aa8491b620ca13f2365688b4b889ca4d92076162ba355bf2b8a72ee18de',
-    //   ],
-    // })
-    .addData(
-      'event_id',
-      'proof-of-us:v2z0VWCNa6OAN9eeGkQ8YoJ2yZNj97Y1-sZyv6sbcEQ',
-    )
-    .setNetworkId('testnet04')
+    .addData('event_id', `${eventId}`)
+    .setNetworkId(env.NETWORKID ?? '')
     .setMeta({
-      chainId: '1',
+      chainId: `${env.CHAINID as ChainId}`,
       senderAccount: 'proof-of-us-gas-station',
       gasPrice: 0.000001,
     })
     .addSigner(
       // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
       {
-        pubKey:
-          'WEBAUTHN-a50102032620012158200ad0e59b1905c813ae05d03ab5d014d9a2faea845a5f6721b64b9d31f37349f122582069579aa8491b620ca13f2365688b4b889ca4d92076162ba355bf2b8a72ee18de',
+        pubKey: `${credential.publicKey}`,
         scheme: 'WebAuthn',
       },
       (withCap) => [
         withCap(
           `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us-gas-station.GAS_PAYER`,
-          'k:1c835d4e67917fd25781b11db1c12efbc4296c5c7fe981d35bbcf4a46a53441f',
+          `${process.env.NEXT_PUBLIC_ATTENDANCE_GASPAYER}`,
           new PactNumber(0).toPactInteger(),
           new PactNumber(0).toPactDecimal(),
         ),
         withCap(
           `${[process.env.NEXT_PUBLIC_NAMESPACE]}.proof-of-us.ATTEND`,
-          `proof-of-us:v2z0VWCNa6OAN9eeGkQ8YoJ2yZNj97Y1-sZyv6sbcEQ`,
+          `${eventId}`,
         ),
       ],
     )
     .createTransaction();
 
-  console.log(transaction);
-
   return transaction;
+};
+
+export const hasMintedAttendaceToken = async (
+  eventId: string,
+  account: IAccount,
+): Promise<boolean> => {
+  const transaction = Pact.builder
+    .execution(
+      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.has-minted-attendance-token
+      "${eventId}" 
+      "${account.accountName}"
+      )`,
+    )
+    .addData('event-id', `${eventId}`)
+    .setNetworkId(env.NETWORKID ?? '')
+    .setMeta({
+      chainId: `${env.CHAINID as ChainId}`,
+    })
+    .createTransaction();
+
+  const client = createClient();
+
+  const { result } = await client.local(transaction, {
+    preflight: false,
+    signatureVerification: false,
+  });
+
+  return result.status === 'success';
 };

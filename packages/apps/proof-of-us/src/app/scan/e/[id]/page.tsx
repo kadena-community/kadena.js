@@ -2,8 +2,10 @@
 
 import { ScanAttendanceEvent } from '@/features/ScanAttendanceEvent/ScanAttendanceEvent';
 import { useGetEventToken } from '@/hooks/data/getEventToken';
+import { useHasMintedAttendaceToken } from '@/hooks/data/hasMintedAttendaceToken';
 
 import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 
 interface IProps {
   params: {
@@ -14,28 +16,19 @@ interface IProps {
 
 const Page: FC<IProps> = ({ params }) => {
   const eventId = decodeURIComponent(params.id);
-
-  // const transactionInit = async () => {
-  //   const client = createClient();
-
-  //   const transactionParam = searchParams.transaction;
-  //   const transactionParamData = transactionParam
-  //     ? Buffer.from(transactionParam, 'base64').toString()
-  //     : null;
-
-  //   const tx = JSON.parse(transactionParamData ?? '{}');
-  //   const txData = JSON.parse(tx.cmd || '{}');
-
-  //   const result = await client.local(tx);
-
-  //   console.log('resulthere:', result);
-  // };
-
-  // useEffect(() => {
-  //   transactionInit();
-  // }, [searchParams.transaction]);
-
   const { data, isLoading, error } = useGetEventToken(eventId);
+  const [isMinted, setIsMinted] = useState(false);
+
+  const { hasMinted } = useHasMintedAttendaceToken();
+
+  const init = async () => {
+    const result = await hasMinted(eventId);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
   if (!data) return null;
 
   return (

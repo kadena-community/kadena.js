@@ -1,14 +1,15 @@
+type IAccountCrendentialType = 'WebAuthn' | 'ED25519';
+
 interface IAccountCrendential {
-  id?: string;
   publicKey: string;
-  type: 'WebAuthn' | 'ED25519';
+  type: IAccountCrendentialType;
 }
 
 interface IAccount {
   accountName: string;
   alias: string;
-  pendingTxIds: IAccountCrendential[];
-  credentials: string;
+  pendingTxIds: string[];
+  credentials: IAccountCrendential[];
 }
 
 type IBuildStatusValues = 0 | 1 | 2 | 3 | 4;
@@ -65,6 +66,24 @@ interface IProofOfUsToken {
       backgroundColor: string;
     };
     signees?: IProofOfUsTokenSignee[];
+  };
+}
+
+interface IProofOfUsTokenMeta {
+  description: string;
+  image: string;
+  name: string;
+  properties: {
+    avatar?: {
+      backgroundColor: string;
+    };
+    signees?: IProofOfUsTokenSignee[];
+  };
+
+  authors: string[];
+  collection: {
+    name: string;
+    family: string;
   };
 }
 
