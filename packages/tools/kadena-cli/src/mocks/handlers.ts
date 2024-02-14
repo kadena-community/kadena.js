@@ -27,6 +27,10 @@ export const handlers: any = [
 
       const parsedCMD = JSON.parse(data.cmd as string);
 
+      if (parsedCMD.payload.exec.code.includes('coin.details') === true) {
+        return HttpResponse.json(accountDetailsSuccessData, { status: 200 });
+      }
+
       // transfer coin
       if (parsedCMD.payload.exec.code.includes('coin.transfer') === true) {
         return HttpResponse.json(

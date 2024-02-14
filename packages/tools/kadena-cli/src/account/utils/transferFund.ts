@@ -78,6 +78,10 @@ export async function transferFund({
 
     const response = await listen(requestKeys);
 
+    if (response.result.status === 'failure') {
+      throw response.result.error;
+    }
+
     return response;
   } catch (error) {
     throw new Error(`Failed to transfer fund : "${error.message}"`);

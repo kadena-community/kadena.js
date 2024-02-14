@@ -116,12 +116,15 @@ describe('fund', () => {
   it('should return success false and error message when transfer fund api status returns failure', async () => {
     server.use(
       http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/send',
+        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/listen',
         () => {
           return HttpResponse.json(
             {
               result: {
                 status: 'failure',
+                error: {
+                  message: 'coin can be requested only every 30 minutes',
+                },
               },
             },
             { status: 200 },
@@ -146,7 +149,7 @@ describe('fund', () => {
     expect(result).toStrictEqual({
       success: false,
       errors: [
-        'Failed to transfer fund : "Cannot read properties of undefined (reading \'map\')"',
+        'Failed to transfer fund : "coin can be requested only every 30 minutes"',
       ],
     });
   });
