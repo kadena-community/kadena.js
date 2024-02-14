@@ -30,7 +30,6 @@ import {
 } from '../networks/utils/networkHelpers.js';
 import { accountOverWritePrompt } from '../prompts/account.js';
 import { createExternalPrompt } from '../prompts/generic.js';
-import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
 
