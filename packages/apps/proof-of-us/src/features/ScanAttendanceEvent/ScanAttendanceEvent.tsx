@@ -4,6 +4,7 @@ import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
+import { isAfter, isBefore } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -48,6 +49,21 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     );
   };
 
+  const startDate = new Date(token.startDate * 1000);
+  const endDate = new Date(token.endDate * 1000);
+
+  const hasStarted = isBefore(startDate, Date.now());
+  const hasEnded = isAfter(endDate, Date.now());
+
+  const showClaimButton =
+    hasStarted &&
+    !hasEnded &&
+    !hasSuccess &&
+    !hasError &&
+    !isLoading &&
+    !isMinted &&
+    !isPending;
+
   return (
     <>
       <div>
@@ -56,12 +72,20 @@ export const ScanAttendanceEvent: FC<IProps> = ({
         <AttendanceTicket token={token} />
       </div>
       <div>
-        {!hasSuccess && !hasError && !isLoading && !isPending && (
-          <Button isDisabled={!isMinted} onPress={handleClaim}>
+        {endDate.toLocaleDateString()} {endDate.toLocaleTimeString()}
+        {!hasStarted && (
+          <div>
+            the event has not started yet. please check back{' '}
+            {startDate.toLocaleDateString()} {startDate.toLocaleTimeString()} to
+            claim the nft
+          </div>
+        )}
+        {hasEnded && <div>the event has ended.</div>}
+        {showClaimButton && (
+          <Button isDisabled={isMinted} onPress={handleClaim}>
             Claim NFT
           </Button>
         )}
-
         {isLoading && <MainLoader />}
         {isPending && <div>you are already claiming this token</div>}
         {hasError && (
@@ -70,7 +94,6 @@ export const ScanAttendanceEvent: FC<IProps> = ({
             <Button onPress={handleClaim}>Retry NFT</Button>
           </div>
         )}
-
         {isMinted && <div>claimed the nft</div>}
       </div>
     </>
