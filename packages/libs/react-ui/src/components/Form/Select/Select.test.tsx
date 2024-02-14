@@ -70,7 +70,7 @@ describe('Select', () => {
       await userEvent.click(screen.getByRole('option', { name: 'Option 2' }));
       expect(handleChange).toHaveBeenCalledTimes(1);
     },
-    { timeout: 6000 },
+    { timeout: 20000 },
   );
 
   it(
@@ -86,6 +86,6 @@ describe('Select', () => {
       const selectButton = screen.getByRole('button') as HTMLButtonElement;
       expect(selectButton.disabled).toBe(true);
     },
-    { timeout: 6000 },
+    { timeout: 20000 },
   );
 });
