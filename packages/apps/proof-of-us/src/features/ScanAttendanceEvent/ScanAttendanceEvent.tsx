@@ -1,5 +1,6 @@
 import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
 import { Button } from '@/components/Button/Button';
+import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
@@ -8,11 +9,16 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 
 interface IProps {
-  token: IProofOfUsToken;
+  token: IProofOfUsTokenMeta;
   eventId: string;
+  isMinted: boolean;
 }
 
-export const ScanAttendanceEvent: FC<IProps> = ({ token, eventId }) => {
+export const ScanAttendanceEvent: FC<IProps> = ({
+  token,
+  eventId,
+  isMinted,
+}) => {
   const { isLoading, hasSuccess, hasError, isPending, claim } =
     useClaimAttendanceToken();
   const router = useRouter();
@@ -51,10 +57,12 @@ export const ScanAttendanceEvent: FC<IProps> = ({ token, eventId }) => {
       </div>
       <div>
         {!hasSuccess && !hasError && !isLoading && !isPending && (
-          <Button onPress={handleClaim}>Claim NFT</Button>
+          <Button isDisabled={!isMinted} onPress={handleClaim}>
+            Claim NFT
+          </Button>
         )}
 
-        {isLoading && <div>is loading...</div>}
+        {isLoading && <MainLoader />}
         {isPending && <div>you are already claiming this token</div>}
         {hasError && (
           <div>
@@ -63,7 +71,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({ token, eventId }) => {
           </div>
         )}
 
-        {hasSuccess && <div>claimed the nft</div>}
+        {isMinted && <div>claimed the nft</div>}
       </div>
     </>
   );

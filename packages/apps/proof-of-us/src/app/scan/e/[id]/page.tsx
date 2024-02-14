@@ -1,5 +1,6 @@
 'use client';
 
+import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { ScanAttendanceEvent } from '@/features/ScanAttendanceEvent/ScanAttendanceEvent';
 import { useGetEventToken } from '@/hooks/data/getEventToken';
 import { useHasMintedAttendaceToken } from '@/hooks/data/hasMintedAttendaceToken';
@@ -23,6 +24,7 @@ const Page: FC<IProps> = ({ params }) => {
 
   const init = async () => {
     const result = await hasMinted(eventId);
+    setIsMinted(result);
   };
 
   useEffect(() => {
@@ -33,9 +35,9 @@ const Page: FC<IProps> = ({ params }) => {
 
   return (
     <div>
-      {isLoading && <div>...is loading</div>}
+      {isLoading && <MainLoader />}
       {error && <div>...error</div>}
-      <ScanAttendanceEvent token={data} eventId={eventId} />
+      <ScanAttendanceEvent token={data} eventId={eventId} isMinted={isMinted} />
     </div>
   );
 };

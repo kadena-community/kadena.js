@@ -12,6 +12,7 @@ import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { backButtonClass } from '../DetailView/style.css';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
+import { MainLoader } from '../MainLoader/MainLoader';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 import { qrClass } from './style.css';
 
@@ -105,7 +106,7 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
 
           <div>status: {proofOfUs.mintStatus}</div>
           <ListSignees />
-          {isLoading && <div>...isprocessing</div>}
+          {isLoading && <MainLoader />}
           {hasError && (
             <div>
               there was an error.
