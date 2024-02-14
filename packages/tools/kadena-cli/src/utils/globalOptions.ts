@@ -18,9 +18,9 @@ import { join } from 'node:path';
 
 import type { IAliasAccountData } from '../account/types.js';
 import {
-  fundAmountValidation,
   chainIdValidation,
   formatZodFieldErrors,
+  fundAmountValidation,
   readAccountFromFile,
 } from '../account/utils/accountHelpers.js';
 import { KEY_EXT, WALLET_EXT } from '../constants/config.js';
@@ -117,7 +117,7 @@ export const globalOptions = {
         return amount;
       } catch (error) {
         const errorMessage = formatZodFieldErrors(error);
-        throw new Error(errorMessage);
+        throw new Error(`Error: -m, --amount ${errorMessage}`);
       }
     },
   }),
@@ -350,13 +350,13 @@ export const globalOptions = {
     }),
     option: new Option('-c, --chain-id <chainId>'),
     transform: (chainId: string) => {
-      const parsedChainId = parseInt(chainId, 10);
+      const parsedChainId = parseInt(chainId.trim(), 10);
       try {
         chainIdValidation.parse(parsedChainId);
         return chainId as ChainId;
       } catch (error) {
         const errorMessage = formatZodFieldErrors(error);
-        throw new Error(errorMessage);
+        throw new Error(`Error: -c --chain-id ${errorMessage}`);
       }
     },
   }),

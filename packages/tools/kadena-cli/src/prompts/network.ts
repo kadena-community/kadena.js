@@ -1,5 +1,6 @@
 import type { ChainId } from '@kadena/types';
 import { readdirSync } from 'fs';
+import { chainIdValidation } from '../account/utils/accountHelpers.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
@@ -17,10 +18,19 @@ export const chainIdPrompt: IPrompt<string> = async (
   isOptional,
 ) => {
   const defaultValue = (args.defaultValue as string) || '0';
-  return (await getInputPrompt(
-    'Enter ChainId (0-19)',
-    defaultValue,
-  )) as ChainId;
+  return (await input({
+    message: 'Enter ChainId (0-19)',
+    default: defaultValue,
+    validate: function (input) {
+      const chainId = parseInt(input, 10);
+      const result = chainIdValidation.safeParse(chainId);
+      if (!result.success) {
+        const formatted = result.error.format();
+        return `ChainId: ${formatted._errors[0]}`;
+      }
+      return true;
+    },
+  })) as ChainId;
 };
 
 export const networkNamePrompt: IPrompt<string> = async (

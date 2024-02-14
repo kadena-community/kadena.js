@@ -1,4 +1,7 @@
-import { getAllAccountNames } from '../account/utils/accountHelpers.js';
+import {
+  fundAmountValidation,
+  getAllAccountNames,
+} from '../account/utils/accountHelpers.js';
 import { NO_ACCOUNT_ERROR_MESSAGE } from '../constants/account.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
@@ -55,20 +58,13 @@ export const accountKdnNamePrompt: IPrompt<string> = async () =>
 export const fundAmountPrompt: IPrompt<string> = async () =>
   await input({
     validate(value: string) {
-      const parsedValue = parseFloat(value.replace(',', '.'));
+      const parsedValue = parseFloat(value.trim().replace(',', '.'));
 
-      if (isNaN(parsedValue)) {
-        return 'Please enter a valid amount.';
+      const parseResult = fundAmountValidation.safeParse(parsedValue);
+      if (!parseResult.success) {
+        const formatted = parseResult.error.format();
+        return `Amount: ${formatted._errors[0]}`;
       }
-
-      if (parsedValue <= 0) {
-        return 'Please enter a positive amount.';
-      }
-
-      if (parsedValue > 100) {
-        return 'Please enter an amount less than 100.';
-      }
-
       return true;
     },
     message: 'Enter an amount.',

@@ -90,18 +90,18 @@ export const chainIdValidation = z
     errorMap: (error) => {
       if (error.code === 'too_small') {
         return {
-          message: 'Error: -c, --chain-id must be greater than or equal to 0',
+          message: 'must be greater than or equal to 0',
         };
       }
 
       if (error.code === 'too_big') {
         return {
-          message: 'Error: -c, --chain-id must be less than or equal to 19',
+          message: 'must be less than or equal to 19',
         };
       }
 
       return {
-        message: 'Error: -c, --chain-id must be a number',
+        message: 'must be a number',
       };
     },
   })
@@ -113,25 +113,18 @@ export const fundAmountValidation = z
     errorMap: (error) => {
       if (error.code === 'too_small') {
         return {
-          message:
-            'Error: -m, --amount must be greater than or equal to 0',
+          message: 'must be greater than or equal to 1',
         };
       }
 
       if (error.code === 'too_big') {
         return {
-          message: 'Error: -m, --amount must be less than or equal to 100',
-        };
-      }
-
-      if (error.code === 'invalid_type') {
-        return {
-          message: 'Error: -m, --amount must be a positive number',
+          message: 'must be less than or equal to 100',
         };
       }
 
       return {
-        message: 'Error: -m, --amount must be greater than 0',
+        message: 'must be a positive number (1 - 100)',
       };
     },
   })
