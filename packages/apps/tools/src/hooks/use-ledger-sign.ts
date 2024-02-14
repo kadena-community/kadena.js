@@ -39,31 +39,19 @@ const parseTransactionCommand: (
 
 const pactToLedger = (
   pactCommand: IUnsignedCommand,
-  transferInput: TransferInput,
+  { receiver, amount, targetChainId }: TransferInput,
   derivationPath: string,
 ): TransferCrossChainTxParams => {
   const parsedTransaction = parseTransactionCommand(pactCommand);
 
-  const recipient =
-    typeof transferInput.receiver === 'string'
-      ? transferInput.receiver
-      : transferInput.receiver.account;
-
-  console.log('pactToledger', {
-    parsedTransaction,
-    pactCommand,
-    recipient,
-    amount: transferInput.amount,
-    chainId: parseInt(parsedTransaction.meta.chainId, 10),
-    network: parsedTransaction.networkId,
-  });
+  const recipient = typeof receiver === 'string' ? receiver : receiver.account;
 
   return {
     path: derivationPath,
-    recipient: recipient,
-    amount: transferInput.amount,
+    recipient,
+    amount,
     chainId: parseInt(parsedTransaction.meta.chainId, 10),
-    recipient_chainId: parseInt(transferInput.targetChainId ?? '0', 10),
+    recipient_chainId: parseInt(targetChainId ?? '0', 10),
     network: parsedTransaction.networkId,
   };
 };
