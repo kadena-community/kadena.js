@@ -15,35 +15,20 @@ tags: ['pact', 'language reference', 'list operators', 'pact operators']
 ## at
 
 ```pact
-<<<<<<< HEAD
-(at k o)
-```
-
-- takes `k`: `string`
-- takes `o`: `{object _a_}`
-- produces _a_
-=======
 (at key-field some-object)
 ```
 
 - takes `key-field`: `string`
 - takes `some-obect`: `{object _any type_}`
 - produces _any type_
->>>>>>> 8caccdfea (Change the description of at in properties and invariants)
 
 ```pact
 (at index some-list)
 ```
 
-<<<<<<< HEAD
-- takes `i`: `integer`
-- takes `l`: `[list _a_]`
-- produces _a_
-=======
 - takes `index`: `integer`
 - takes `some-list`: `[list _any type_]`
 - produces _any type_
->>>>>>> 8caccdfea (Change the description of at in properties and invariants)
 
 projection
 
