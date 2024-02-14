@@ -352,6 +352,10 @@ export const getNonFungibleAccount: DocumentNode = gql`
       ...AllNonFungibleAccountFields
       chainAccounts {
         ...CoreNonFungibleChainAccountFields
+        guard {
+          keys
+          predicate
+        }
       }
       nonFungibles {
         balance
@@ -376,6 +380,10 @@ export const getNonFungibleChainAccount: DocumentNode = gql`
   query getNonFungibleChainAccount($accountName: String!, $chainId: String!) {
     nonFungibleChainAccount(accountName: $accountName, chainId: $chainId) {
       ...CoreNonFungibleChainAccountFields
+      guard {
+        keys
+        predicate
+      }
       nonFungibles {
         balance
         id
