@@ -1,4 +1,13 @@
-import { connect, createStore, deleteDatabase } from '@/modules/db/indexeddb';
+import {
+  addItem,
+  connect,
+  createStore,
+  deleteDatabase,
+  deleteItem,
+  getAllItems,
+  getOneItem,
+  updateItem,
+} from '@/modules/db/indexeddb';
 import { execInSequence } from '@/utils/helpers';
 
 // since we create the database in the first call we need to make sure another call does not happen
@@ -40,7 +49,7 @@ const createConnectionPool = (
 };
 
 const DB_NAME = 'dev-wallet';
-const DB_VERSION = 25;
+const DB_VERSION = 28;
 
 export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
@@ -65,7 +74,8 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
     create('keySource', 'uuid', [{ index: 'profileId' }]);
     create('account', 'uuid', [{ index: 'address' }, { index: 'profileId' }]);
     create('network', 'uuid', [{ index: 'networkId', unique: true }]);
-    create('token', 'uuid', [{ index: 'networkId' }]);
+    create('fungible', 'contract', [{ index: 'symbol', unique: true }]);
+    create('accountBalance', 'uuid', [{ index: 'accountId' }]);
   }
   return db;
 });
@@ -90,3 +100,31 @@ export const injectDb = <R extends (...args: any[]) => Promise<any>>(
   (async (...args: any): Promise<any> => {
     return createDatabaseConnection().then((db) => fn(db)(...args));
   }) as R;
+
+export interface IDBService {
+  getAll: <T>(
+    storeName: string,
+    filter?: string | string[] | undefined,
+    indexName?: string | undefined,
+  ) => Promise<T[]>;
+  getOne: <T>(storeName: string, key: string) => Promise<T>;
+  add: <T>(
+    storeName: string,
+    value: T,
+    key?: string | undefined,
+  ) => Promise<void>;
+  update: <T>(
+    storeName: string,
+    value: T,
+    key?: string | undefined,
+  ) => Promise<void>;
+  deleteOne: (storeName: string, key: string) => Promise<void>;
+}
+
+export const dbService: IDBService = {
+  getAll: injectDb(getAllItems),
+  getOne: injectDb(getOneItem),
+  add: injectDb(addItem),
+  update: injectDb(updateItem),
+  deleteOne: injectDb(deleteItem),
+};

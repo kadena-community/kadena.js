@@ -1,13 +1,16 @@
-import { injectDb } from '@/modules/db/db.service';
-import {
-  addItem,
-  getAllItems,
-  getOneItem,
-  updateItem,
-} from '@/modules/db/indexeddb';
-import { BuiltInPredicate } from '@kadena/client';
+import { IDBService, dbService } from '@/modules/db/db.service';
+import { BuiltInPredicate, ChainId } from '@kadena/client';
 
-export interface IKeySetGuard {
+export interface Fungible {
+  title: string;
+  symbol: string;
+  interface: 'fungible-v2';
+  contract: string;
+  chainIds: ChainId[];
+  wrappedFungibleId?: string; // if it's a wrapped token
+}
+
+export interface IKeysetGuard {
   keys: string[];
   pred: BuiltInPredicate;
 }
@@ -17,32 +20,27 @@ export interface IAccount {
   profileId: string;
   alias?: string;
   address: string;
-  guard: IKeySetGuard; // this could be extended to support other guards
-}
-
-export interface Token {
-  uuid: string;
-  name: string;
-  contract: string;
-}
-
-export interface TokenBalance {
-  uuid: string;
-  accountId: string;
-  tokenId: string;
+  keysetGuard: IKeysetGuard;
   networkId: string;
+  contracts: string[];
+}
+
+export interface AccountBalance {
+  uuid: string;
+  fungibleId: string;
+  accountId: string;
   chains: Array<{
     chainId: string;
     balance: string;
   }>;
 }
 
-const createAccountRepository = () => {
-  const getAll = injectDb(getAllItems);
-  const getOne = injectDb(getOneItem);
-  const add = injectDb(addItem);
-  const update = injectDb(updateItem);
-
+const createAccountRepository = ({
+  getAll,
+  getOne,
+  add,
+  update,
+}: IDBService) => {
   return {
     addAccount: async (account: IAccount): Promise<void> => {
       return add('account', account);
@@ -56,7 +54,48 @@ const createAccountRepository = () => {
     getAccountsByProfileId(profileId: string): Promise<IAccount[]> {
       return getAll('account', profileId, 'profileId');
     },
+    addFungible: async (fungible: Fungible): Promise<void> => {
+      return add('fungible', fungible);
+    },
+    getFungible: async (contract: string): Promise<Fungible> => {
+      return getOne('fungible', contract);
+    },
+    getAllFungibles: async (): Promise<Fungible[]> => {
+      return getAll('fungible');
+    },
+    getAccountBalances: async (
+      accountId: string,
+    ): Promise<AccountBalance[]> => {
+      return getAll('accountBalance', accountId, 'accountId');
+    },
+    addAccountBalance: async (
+      accountBalance: AccountBalance,
+    ): Promise<void> => {
+      return add('accountBalance', accountBalance);
+    },
+    updateAccountBalance: async (
+      accountBalance: AccountBalance,
+    ): Promise<void> => {
+      return update('accountBalance', accountBalance);
+    },
   };
 };
 
-export const accountRepository = createAccountRepository();
+export const chainIds = [...Array(20).keys()].map((key) => `${key}` as ChainId);
+
+export const accountRepository = createAccountRepository(dbService);
+
+export async function addDefaultFungibles() {
+  const fungible = await accountRepository.getFungible('coin');
+
+  if (!fungible) {
+    const coin: Fungible = {
+      title: 'Kadena Coin',
+      symbol: 'KDA',
+      interface: 'fungible-v2',
+      contract: 'coin',
+      chainIds,
+    };
+    await accountRepository.addFungible(coin);
+  }
+}

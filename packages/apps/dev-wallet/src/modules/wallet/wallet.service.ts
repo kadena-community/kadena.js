@@ -8,10 +8,10 @@ import { discoverAccount } from '@kadena/client-utils/coin';
 import { WithEmitter, withEmitter } from '@kadena/client-utils/core';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
 
+import { IAccount, accountRepository } from '../account/account.repository';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
 import {
-  IAccount,
   IKeyItem,
   IKeySource,
   IProfile,
@@ -113,36 +113,28 @@ export async function createKey(keySource: IKeySource, quantity: number) {
   return keys;
 }
 
-export async function createKAccount(profileId: string, keyItem: IKeyItem) {
+export async function createKAccount(
+  profileId: string,
+  networkId: string,
+  publicKey: string,
+  contract: string,
+) {
   const account: IAccount = {
     uuid: crypto.randomUUID(),
     alias: '',
     profileId: profileId,
-    address: `k:${keyItem.publicKey}`,
-    guard: {
-      type: 'keySet',
+    address: `k:${publicKey}`,
+    keysetGuard: {
       pred: 'keys-any',
-      publicKeys: [keyItem],
+      keys: [publicKey],
     },
+    networkId,
+    contracts: [contract],
   };
 
-  await walletRepository.addAccount(account);
+  await accountRepository.addAccount(account);
   return account;
 }
-
-export const createFirstAccount = async (
-  profileId: string,
-  keySource: IKeySource,
-) => {
-  if (!profileId) {
-    throw new Error('Wallet not initialized');
-  }
-
-  const service = keySourceManager.get(keySource.source);
-  const keys = await service.createKey(keySource.uuid, 1);
-
-  return createKAccount(profileId, keys[0]);
-};
 
 export async function decryptSecret(password: string, secretId: string) {
   const encrypted = await walletRepository.getEncryptedValue(secretId);
@@ -189,6 +181,7 @@ export const accountDiscovery = (
       keySourceId: string,
       profileId: string,
       numberOfKeys = 20,
+      contract = 'coin',
     ) => {
       const result: Array<{
         key: IKeyItem;
@@ -205,6 +198,8 @@ export const accountDiscovery = (
         const chainResult = (await discoverAccount(
           `k:${key.publicKey}`,
           networkId,
+          undefined,
+          contract,
         )
           .on('chain-result', async (data) => {
             console.log('chain-result', data);
@@ -222,7 +217,11 @@ export const accountDiscovery = (
           .filter(({ chainResult }) =>
             chainResult.find((r) => r.result && r.result.account),
           )
-          .map(({ key }) => createKAccount(profileId, key).catch(() => null)),
+          .map(({ key }) =>
+            createKAccount(profileId, networkId, key.publicKey, contract).catch(
+              () => null,
+            ),
+          ),
       );
 
       await emit('accounts-saved')(accounts);
