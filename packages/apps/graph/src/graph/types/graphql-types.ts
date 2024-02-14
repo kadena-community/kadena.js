@@ -9,10 +9,10 @@ export interface Guard {
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface GasLimitEstimation {
   amount: number;
-  type: string;
+  inputType: string;
   usedPreflight: boolean;
   usedSignatureVerification: boolean;
-  usedTransaction: boolean;
+  transaction: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
