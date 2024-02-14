@@ -1,5 +1,6 @@
 import type { ChainId, IKeyPair } from '@kadena/types';
 import type { IDevnetsCreateOptions } from '../devnet/utils/devnetHelpers.js';
+import { DEV_NET_NETWORK_ID } from './config.js';
 
 export interface IDefaultDevnetOptions {
   [key: string]: IDevnetsCreateOptions;
@@ -51,6 +52,6 @@ export const defaultAccount = sender00;
  * Provides the default simulation configurations.
  */
 export const simulationDefaults = {
-  NETWORK_ID: 'fast-development',
+  NETWORK_ID: DEV_NET_NETWORK_ID,
   CHAIN_COUNT: 20,
 };

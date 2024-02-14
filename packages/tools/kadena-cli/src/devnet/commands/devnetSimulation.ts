@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import debug from 'debug';
+import { DEV_NET_NETWORK_ID } from '../../constants/config.js';
 import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
@@ -34,7 +35,7 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
 
       await simulateCoin({
         network: {
-          id: 'fast-development',
+          id: DEV_NET_NETWORK_ID,
           host: config.networkConfig.networkHost,
         },
         maxAmount: config.simulationMaxTransferAmount,
