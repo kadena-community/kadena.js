@@ -68,15 +68,6 @@ const pactToLedger = (
   };
 };
 
-const ledgerToPact = (
-  ledgerCommand: BuildTransactionResult,
-  pactCommand: ICommand | IUnsignedCommand,
-): ICommand | IUnsignedCommand => {
-  pactCommand.sigs = ledgerCommand.pact_command.sigs;
-
-  return pactCommand;
-};
-
 const isCrossChainInput = (
   transferInput: TransferInput,
 ): transferInput is ICrossChainInput => {
@@ -118,6 +109,15 @@ const signWithLedger = (
   }
 
   return app.signTransferCreateTx(ledgerParams);
+};
+
+const ledgerToPact = (
+  ledgerCommand: BuildTransactionResult,
+  pactCommand: ICommand | IUnsignedCommand,
+): ICommand | IUnsignedCommand => {
+  pactCommand.sigs = ledgerCommand.pact_command.sigs;
+
+  return pactCommand;
 };
 
 const sign = async (
