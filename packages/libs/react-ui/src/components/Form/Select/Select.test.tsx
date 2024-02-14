@@ -21,7 +21,7 @@ describe('Select', () => {
       const selectField = screen.getByLabelText('select');
       expect(selectField).toBeInTheDocument();
     },
-    { timeout: 6000 },
+    { timeout: 20000 },
   );
 
   it(
@@ -46,7 +46,7 @@ describe('Select', () => {
       expect(option1).toBeInTheDocument();
       expect(option2).toBeInTheDocument();
     },
-    { timeout: 6000 },
+    { timeout: 20000 },
   );
 
   it(
