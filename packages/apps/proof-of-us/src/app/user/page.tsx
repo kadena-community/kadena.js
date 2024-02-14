@@ -18,7 +18,9 @@ const Page: FC = () => {
         <List>
           {data.map((token) => {
             if (!token) return null;
-            return <ListItem key={token.tokenId} token={token}></ListItem>;
+            return (
+              <ListItem key={token.properties.eventId} token={token}></ListItem>
+            );
           })}
         </List>
       )}

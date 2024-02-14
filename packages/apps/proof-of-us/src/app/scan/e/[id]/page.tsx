@@ -2,7 +2,7 @@
 
 import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { ScanAttendanceEvent } from '@/features/ScanAttendanceEvent/ScanAttendanceEvent';
-import { useGetEventToken } from '@/hooks/data/getEventToken';
+import { useGetAttendanceToken } from '@/hooks/data/getAttendanceToken';
 import { useHasMintedAttendaceToken } from '@/hooks/data/hasMintedAttendaceToken';
 
 import type { FC } from 'react';
@@ -17,7 +17,7 @@ interface IProps {
 
 const Page: FC<IProps> = ({ params }) => {
   const eventId = decodeURIComponent(params.id);
-  const { data, isLoading, error } = useGetEventToken(eventId);
+  const { data, isLoading, error } = useGetAttendanceToken(eventId);
   const [isMinted, setIsMinted] = useState(false);
 
   const { hasMinted } = useHasMintedAttendaceToken();

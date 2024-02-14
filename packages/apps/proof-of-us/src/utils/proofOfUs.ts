@@ -7,8 +7,7 @@ import { env } from './env';
 //TODO: get data from the chain
 
 export const getAllProofOfUs = async (): Promise<IProofOfUsToken[]> => {
-  const tokens = proofOfUsData.map((d) => d.token);
-  const data = tokens.filter((d) => d?.tokenId);
+  const data = proofOfUsData.filter((d) => d && d['token-id']);
   return data as IProofOfUsToken[];
 };
 export const getProofOfUs = async (
