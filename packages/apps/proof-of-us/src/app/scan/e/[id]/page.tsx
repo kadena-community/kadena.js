@@ -24,6 +24,7 @@ const Page: FC<IProps> = ({ params }) => {
 
   const init = async () => {
     const result = await hasMinted(eventId);
+    console.log({ result });
     setIsMinted(result);
   };
 
