@@ -51,7 +51,12 @@ const Storybook = () => {
 
   console.log({ accountError, accountDetails });
 
-  const { connect } = useLedgerTransport();
+  const {
+    connect,
+    loading: isConnectingToLedger,
+    error: ledgerConnectError,
+    transport,
+  } = useLedgerTransport();
 
   const [keyId, setKeyId] = useState<number>(0);
   const defaultDerivationMode = derivationModes[0];
@@ -61,8 +66,8 @@ const Storybook = () => {
 
   const {
     error: ledgerError,
-    data: ledgerPublicKey,
-    isFetching: isFetchingLedgerPublicKey,
+    value: ledgerPublicKey,
+    loading: isFetchingLedgerPublicKey,
   } = useLedgerPublicKey({ keyId, derivationMode });
 
   console.log({ ledgerError, ledgerPublicKey });
@@ -175,6 +180,8 @@ const Storybook = () => {
                 <Text>Public key not fetched (yet)</Text>
               )}
             </>
+            {isConnectingToLedger && <Text>Connecting ledger...</Text>}
+            {ledgerConnectError && <Text>{ledgerConnectError.message}</Text>}
             {isFetchingLedgerPublicKey && <Text>Loading...</Text>}
             {ledgerError ? (
               <Text>
