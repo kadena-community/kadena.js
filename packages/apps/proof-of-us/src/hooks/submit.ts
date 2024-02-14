@@ -28,18 +28,19 @@ export const useSubmit = () => {
       return setStatus(SubmitStatus.INCOMPLETE);
 
     const res = await client.local(tx);
-    console.log(222, res);
     setPreview(res);
-    setStatus(SubmitStatus.SUBMITABLE);
   };
 
   useEffect(() => {
     if (!transaction) return;
+    setStatus(SubmitStatus.SUBMITABLE);
     processTransaction(transaction);
   }, [transaction]);
 
   const doSubmit = async () => {
     if (!transaction) return;
+
+    console.log(1);
 
     const client = createClient();
 
@@ -47,17 +48,31 @@ export const useSubmit = () => {
 
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
     try {
+      console.log(2);
       const txRes = await client.submit(tx);
       const result = await client.listen(txRes);
 
       console.log({ txRes });
       console.log({ result });
 
-      setStatus(SubmitStatus.SUCCESS);
-      setResult(result);
+      console.log(3);
+
+      if (result.result.status === 'success') {
+        console.log(4);
+        setStatus(SubmitStatus.SUCCESS);
+        setResult(result);
+      } else {
+        console.log(5);
+        setStatus(SubmitStatus.ERROR);
+        setResult({
+          status: 'Could not submit transaction',
+          data: 'Already claimed',
+        });
+      }
     } catch (err: any) {
-      console.log(err);
       setStatus(SubmitStatus.ERROR);
+      console.log(6);
+      console.log(err);
       setResult({
         status: 'Could not submit transaction',
         data: err.toString(),
@@ -65,6 +80,7 @@ export const useSubmit = () => {
     }
   };
 
+  console.log({ status });
   return {
     doSubmit,
     tx,

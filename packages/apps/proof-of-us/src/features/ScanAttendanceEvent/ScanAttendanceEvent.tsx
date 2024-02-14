@@ -37,8 +37,6 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const handleClaim = async () => {
     const transaction = await claim(eventId);
 
-    console.log({ transaction });
-
     router.push(
       `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${Buffer.from(
         JSON.stringify(transaction),
@@ -53,7 +51,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const endDate = new Date(token.endDate * 1000);
 
   const hasStarted = isBefore(startDate, Date.now());
-  const hasEnded = isAfter(endDate, Date.now());
+  const hasEnded = isAfter(Date.now(), endDate);
 
   const showClaimButton =
     hasStarted &&
@@ -66,13 +64,16 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
   return (
     <>
+      {status !== SubmitStatus.IDLE &&
+        status !== SubmitStatus.SUCCESS &&
+        status !== SubmitStatus.ERROR && <MainLoader />}
       <div>
         <h2>Attendance @</h2>
 
+        <div>claimstatus: {status}</div>
         <AttendanceTicket token={token} />
       </div>
       <div>
-        {endDate.toLocaleDateString()} {endDate.toLocaleTimeString()}
         {!hasStarted && (
           <div>
             the event has not started yet. please check back{' '}
