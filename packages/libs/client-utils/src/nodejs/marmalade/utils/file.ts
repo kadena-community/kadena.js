@@ -29,7 +29,6 @@ export async function getMarmaladeTemplates({
       fileExtension: remoteConfig.templateExtension,
       drillDown: true,
       excludeFolder: remoteConfig.exclude || [],
-      githubToken: repositoryConfig.githubToken,
     });
 
     const templateFiles = readdirSync(localConfig.templatePath);
@@ -100,7 +99,6 @@ export async function getCodeFiles({
           path: codeFilePath,
           localPath: localConfig.codeFilesPath,
           fileExtension: remoteConfig.codefileExtension,
-          githubToken: repositoryConfig.githubToken,
         });
       }),
     );
@@ -127,7 +125,6 @@ export async function getNsCodeFiles({
           path,
           localPath: localConfig.namespacePath,
           fileExtension: remoteConfig.codefileExtension,
-          githubToken: repositoryConfig.githubToken,
         });
       }),
     );

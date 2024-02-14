@@ -67,6 +67,11 @@ export async function downloadGitFiles({
       }),
     );
   } else if (gitData instanceof Object) {
+    if (!gitData.download_url) {
+      throw new Error(
+        `An error occurred while downloading the file: ${gitData}`,
+      );
+    }
     // if gitData is an object, it means that it's a file and we can download it
     await donwloadGitFile(
       gitData.download_url,
@@ -91,7 +96,7 @@ export async function getGitData(
   };
 
   if (githubToken && options.headers) {
-    options.headers.Authorization = `token ${process.env.GITHUB_TOKEN}`;
+    options.headers.Authorization = `token ${githubToken}`;
   }
 
   const data = await new Promise((resolve, reject) => {
