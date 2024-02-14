@@ -90,7 +90,7 @@ beforeAll(async () => {
           },
         },
         amount: '100',
-        chainId: '0',
+        chainId,
       },
       fundConfig,
     ).execute(),
@@ -108,7 +108,7 @@ beforeAll(async () => {
           },
         },
         amount: '100',
-        chainId: '0',
+        chainId,
       },
       fundConfig,
     ).execute(),
@@ -159,7 +159,7 @@ describe('createToken', () => {
         withStep((step, trDesc) => {
           expect(step).toBe(3);
           expect(trDesc.networkId).toBe(NetworkIds.fast_development);
-          expect(trDesc.chainId).toBe('0');
+          expect(trDesc.chainId).toBe(chainId);
           expect(trDesc.requestKey).toBeTruthy();
         }),
       )
@@ -224,7 +224,7 @@ describe('mintToken', () => {
         withStep((step, trDesc) => {
           expect(step).toBe(3);
           expect(trDesc.networkId).toBe(NetworkIds.fast_development);
-          expect(trDesc.chainId).toBe('0');
+          expect(trDesc.chainId).toBe(chainId);
           expect(trDesc.requestKey).toBeTruthy();
         }),
       )
@@ -246,7 +246,7 @@ describe('mintToken', () => {
     const balance = await getBalance(
       {
         accountName: sourceAccount.account,
-        chainId: '0',
+        chainId,
         guard: {
           account: sourceAccount.account,
           keyset: {
@@ -291,7 +291,7 @@ describe('getBalance', () => {
     const result = await getBalance(
       {
         accountName: sourceAccount.account,
-        chainId: '0',
+        chainId,
         guard: {
           account: sourceAccount.account,
           keyset: {
@@ -311,7 +311,7 @@ describe('getBalance', () => {
     const task = getBalance(
       {
         accountName: sourceAccount.account,
-        chainId: '0',
+        chainId,
         guard: {
           account: sourceAccount.account,
           keyset: {
@@ -382,7 +382,7 @@ describe('transferCreateToken', () => {
         withStep((step, trDesc) => {
           expect(step).toBe(3);
           expect(trDesc.networkId).toBe(NetworkIds.fast_development);
-          expect(trDesc.chainId).toBe('0');
+          expect(trDesc.chainId).toBe(chainId);
           expect(trDesc.requestKey).toBeTruthy();
         }),
       )
@@ -404,7 +404,7 @@ describe('transferCreateToken', () => {
     const balance = await getBalance(
       {
         accountName: secondaryTargetAccount.account,
-        chainId: '0',
+        chainId: chainId,
         guard: {
           account: secondaryTargetAccount.account,
           keyset: {
