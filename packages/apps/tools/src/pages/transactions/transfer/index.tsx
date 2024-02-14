@@ -1,8 +1,9 @@
-import type { PredKey } from '@/components/Global';
+import type { FormStatus, PredKey } from '@/components/Global';
 import {
   AccountHoverTag,
   AccountNameField,
   ChainSelect,
+  FormStatusNotification,
   HoverTag,
   NAME_VALIDATION,
   PredKeysSelect,
@@ -82,6 +83,10 @@ const TransferPage = () => {
   const [pubKeys, setPubKeys] = useState<string[]>([]);
   const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
   const [senderPublicKey, setSenderPublicKey] = useState<string>('');
+  const [requestStatus, setRequestStatus] = useState<{
+    status: FormStatus;
+    message?: string;
+  }>({ status: 'idle' });
 
   const accountFromOptions = ['Ledger', 'WalletConnect'];
   const ledgerOptions = Array.from({ length: 100 }, (_, i) => ({
@@ -235,6 +240,20 @@ const TransferPage = () => {
       .execute();
 
     console.log('result', result);
+
+    // set request status - FIX THIS WITH SUBMIT
+    // const error = Object.values(result).find(
+    //   (response) => result.status === 'failure',
+    // );
+    // if (result.error) {
+    //   setRequestStatus({
+    //     status: 'erroneous',
+    //     message: error.result.error?.message || t('An error occurred.'),
+    //   });
+    //   return;
+    // }
+
+    setRequestStatus({ status: 'successful' });
   };
 
   const setReceiverAccountTab = (value: any) => {
@@ -577,6 +596,16 @@ const TransferPage = () => {
                 {t('Transfer')}
               </Button>
             </div>
+
+            <FormStatusNotification
+              status={requestStatus.status}
+              statusBodies={{
+                successful: t(
+                  'The coins have been funded to the given account.',
+                ),
+              }}
+              body={requestStatus.message}
+            />
           </Stack>
         </form>
       </Stack>
