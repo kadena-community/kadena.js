@@ -1,9 +1,7 @@
 /* eslint-disable @kadena-dev/no-eslint-disable */
 /* eslint-disable playwright/expect-expect */
 // The expect is performed by validateTree(), so the test does not need one.
-import CookieHelper from '@helpers/docs/cookie.helper';
-import TreeHelper from '@helpers/docs/tree.helper';
-import { test } from '@playwright/test';
+import { test } from '@fixtures/shared/test.fixture';
 
 const pages = [
   'kadena',
@@ -17,12 +15,10 @@ const pages = [
 for (const pageToCheck of pages) {
   test(`Page: ${pageToCheck} - All Markdown files should be present in the menu`, async ({
     page,
+    docsApp,
   }) => {
-    const treeHelper = new TreeHelper(page);
-    const cookieHelper = new CookieHelper(page);
-
     await page.goto(pageToCheck);
-    await cookieHelper.acceptCookies();
-    await treeHelper.validateTree(pageToCheck);
+    await docsApp.cookieConsentComponent.acceptCookies();
+    await docsApp.menuComponent.validateTree(pageToCheck);
   });
 }
