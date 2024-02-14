@@ -42,6 +42,7 @@ type IProofOfUsBackground = {
 type TokenType = 'multi' | 'attendance';
 
 interface IProofOfUsData {
+  eventId: string;
   mintStatus: IMintStatus;
   status: IBuildStatusValues;
   backgroundColor?: string;
@@ -56,24 +57,25 @@ interface IProofOfUsData {
 }
 
 interface IProofOfUsToken {
-  tokenId: string;
-  image: string;
+  'collection-id': string;
+  'ends-at': { int: number };
+  'starts-at': { int: number };
+  'token-id': string;
+  uri: string;
   name: string;
-  properties: {
-    type: TokenType;
-    date: number;
-    avatar?: {
-      backgroundColor: string;
-    };
-    signees?: IProofOfUsTokenSignee[];
-  };
+  status: 'success' | 'failure';
 }
 
 interface IProofOfUsTokenMeta {
+  startDate: int;
+  endDate: int;
   description: string;
   image: string;
   name: string;
   properties: {
+    eventId: string;
+    eventType: TokenType;
+    date: number;
     avatar?: {
       backgroundColor: string;
     };

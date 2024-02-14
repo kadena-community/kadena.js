@@ -10,7 +10,7 @@ import {
 } from './style.css';
 
 interface IProps {
-  token: IProofOfUsToken;
+  token: IProofOfUsTokenMeta;
 }
 
 export const ListItem: FC<IProps> = ({ token }) => {
@@ -18,10 +18,12 @@ export const ListItem: FC<IProps> = ({ token }) => {
     <li className={listItemClass}>
       <Link
         className={listItemLinkClass}
-        href={`/user/proof-of-us/t/${token.tokenId}`}
+        href={`/user/proof-of-us/t/${token.properties.eventId}`}
       >
-        {token.properties.type === 'attendance' && <EventThumb token={token} />}
-        {token.properties.type === 'multi' && <MultiThumb token={token} />}
+        {token.properties.eventType === 'attendance' && (
+          <EventThumb token={token} />
+        )}
+        {token.properties.eventType === 'multi' && <MultiThumb token={token} />}
         <span className={titleClass}>{token.name}</span>
         <time
           className={timeClass}

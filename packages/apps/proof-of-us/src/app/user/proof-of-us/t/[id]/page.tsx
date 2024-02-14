@@ -1,4 +1,5 @@
 import { Share } from '@/features/Share/Share';
+import { fetchManifestData } from '@/utils/fetchManifestData';
 import { getTwitterCreator } from '@/utils/getTwitterCreator';
 import { getProofOfUs } from '@/utils/proofOfUs';
 import type { Metadata } from 'next';
@@ -14,8 +15,8 @@ interface IProps {
 export const generateMetadata = async ({
   params,
 }: IProps): Promise<Metadata | undefined> => {
-  const data = await getProofOfUs(params.id);
-
+  const token = await getProofOfUs(params.id);
+  const data = await fetchManifestData(token);
   if (!data) return;
 
   return {

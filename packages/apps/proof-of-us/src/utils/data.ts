@@ -1,66 +1,15 @@
-export const proofOfUsData: IProofOfUs[] = [
+export const proofOfUsData: IProofOfUsToken[] = [
   {
-    background: {
-      bg: '',
+    'token-id': '"t:YKk6XeUVwr0Kg8UPNAer4gM8dicntSmodqE9yWVkx80"',
+    name: 'DevWorld 24',
+    'collection-id': '11',
+    'ends-at': {
+      int: 1707926416,
     },
-    data: {
-      status: 0,
-      mintStatus: 'error',
-      proofOfUsId: '',
-      type: 'multi',
-      date: 0,
-      signees: [],
+    'starts-at': {
+      int: 1707926416,
     },
-    token: {
-      tokenId: '33333',
-      name: 'DevWorld 24',
-      image:
-        'https://pbs.twimg.com/profile_images/1643582036551118848/1ga1McZu_400x400.jpg',
-      properties: {
-        date: 1365017129000,
-        type: 'attendance',
-        avatar: {
-          backgroundColor: '#4c0e5c',
-        },
-        signees: [],
-      },
-    },
-  },
-  {
-    background: {
-      bg: '',
-    },
-    data: {
-      status: 0,
-      mintStatus: 'error',
-      proofOfUsId: '',
-      type: 'multi',
-      date: 0,
-      signees: [],
-    },
-    token: {
-      tokenId: '2223423',
-      name: 'having a dinner with friends!',
-      image:
-        'https://pbs.twimg.com/profile_images/1263771788015738880/Adfm3DNv_400x400.jpg',
-
-      properties: {
-        type: 'multi',
-        date: 1365257129000,
-        avatar: {
-          backgroundColor: '#FFFFFF',
-        },
-        signees: [
-          {
-            label: 'he-man',
-            socialLinks: [
-              'https://linkedin.com/he-main',
-              'https://twitter.com/he-man',
-              'https://x.com/he-man',
-            ],
-          },
-        ],
-      },
-    },
+    status: 'success',
+    uri: 'https://bafybeigb3hz622qy7d7im6fkchsibgydtkxnxg5jc3xtk4gob2pa5ively.ipfs.nftstorage.link/metadata',
   },
 ];
