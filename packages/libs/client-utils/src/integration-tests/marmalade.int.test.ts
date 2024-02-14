@@ -2,12 +2,15 @@ import type { ChainId } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { beforeAll, describe, expect, it } from 'vitest';
+import { describeModule } from '../built-in';
 import { transferCreate } from '../coin';
+import { IClientConfig } from '../core/utils/helpers';
 import { createToken } from '../marmalade/create-token';
 import { createTokenId } from '../marmalade/create-token-id';
 import { getBalance } from '../marmalade/get-balance';
 import { mintToken } from '../marmalade/mint-token';
 import { transferCreateToken } from '../marmalade/transfer-create-token';
+import { deployMarmalade } from '../nodejs';
 import { NetworkIds } from './support/NetworkIds';
 import { withStepFactory } from './support/helpers';
 import {
@@ -17,8 +20,9 @@ import {
 } from './test-data/accounts';
 
 let tokenId: string | undefined;
+const chainId = '9' as ChainId;
 const inputs = {
-  chainId: '0' as ChainId,
+  chainId,
   precision: 0,
   uri: Date.now().toString(),
   policies: [],
@@ -39,13 +43,38 @@ const config = {
 };
 
 beforeAll(async () => {
-  const fundConfig = {
+  const fundConfig: IClientConfig = {
     host: 'http://127.0.0.1:8080',
     defaults: {
       networkId: 'fast-development',
+      meta: {
+        chainId,
+      },
     },
     sign: createSignWithKeypair([sender00Account]),
   };
+  let marmaladeDeployed = false;
+
+  try {
+    await describeModule('marmalade-v2.ledger', fundConfig);
+    marmaladeDeployed = true;
+  } catch (error) {
+    console.log('Marmalade not deployed, deploying now');
+  }
+
+  if (!marmaladeDeployed) {
+    await deployMarmalade({
+      chainIds: [chainId],
+      repositoryConfig: {
+        owner: 'kadena-io',
+        name: 'marmalade',
+        branch: 'main',
+        githubToken:
+          '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',
+      },
+    });
+  }
+
   const [resultSourceAccount, resultTargetAccount] = await Promise.all([
     transferCreate(
       {
@@ -87,7 +116,7 @@ beforeAll(async () => {
 
   expect(resultSourceAccount).toBe('Write succeeded');
   expect(resultTargetAccount).toBe('Write succeeded');
-}, 30000);
+}, 300000);
 
 describe('createTokenId', () => {
   it('should return a token id', async () => {
