@@ -12,7 +12,7 @@ const collectionId = 'collection:K85ZSH3LUXS3SB_Aokhseap0U6AHyNbSJKGfUM4kbik';
 const creatorPublicKey =
   '1c835d4e67917fd25781b11db1c12efbc4296c5c7fe981d35bbcf4a46a53441f';
 
-const startTime = 1707764678;
+const startTime = 1707897325;
 const endTime = 1707926416;
 const eventName = 'Masters of the Universe';
 

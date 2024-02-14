@@ -2,18 +2,15 @@ import { getProofOfUs } from '@/utils/proofOfUs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export const useGetEventToken: IDataHook<IProofOfUsToken | undefined> = (
+export const useGetEventToken: IDataHook<IProofOfUsTokenMeta | undefined> = (
   id: string,
 ) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState<IError>();
-  const [data, setData] = useState<IProofOfUsToken | undefined>();
+  const [data, setData] = useState<IProofOfUsTokenMeta | undefined>();
 
   const load = async () => {
-    setHasError(undefined);
-    setIsLoading(true);
-
     const result = await getProofOfUs(id);
 
     if (!result) {
@@ -21,11 +18,22 @@ export const useGetEventToken: IDataHook<IProofOfUsToken | undefined> = (
       return;
     }
 
-    setData(result);
-    setIsLoading(false);
+    //load metadata
+    const fetchResult = await fetch(result.uri);
+    const data = (await fetchResult.json()) as IProofOfUsTokenMeta;
+
+    setData(data);
   };
 
   useEffect(() => {
+    if (!data) return;
+
+    setIsLoading(false);
+  }, [data]);
+
+  useEffect(() => {
+    setHasError(undefined);
+    setIsLoading(true);
     load();
   }, []);
 

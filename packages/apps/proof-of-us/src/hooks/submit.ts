@@ -50,6 +50,9 @@ export const useSubmit = () => {
       const txRes = await client.submit(tx);
       const result = await client.listen(txRes);
 
+      console.log({ txRes });
+      console.log({ result });
+
       setStatus(SubmitStatus.SUCCESS);
       setResult(result);
     } catch (err: any) {
