@@ -28,9 +28,9 @@ export const createFundCommand = createCommandFlexible(
   'fund an existing/new account',
   [
     globalOptions.accountSelect(),
-    globalOptions.amount(),
+    globalOptions.amount({ isOptional: false }),
     globalOptions.networkSelect(),
-    globalOptions.chainId(),
+    globalOptions.chainId({ isOptional: false }),
     // deployDevnet(),
   ],
   async (option, values) => {

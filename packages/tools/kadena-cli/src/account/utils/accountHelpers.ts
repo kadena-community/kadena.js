@@ -1,7 +1,7 @@
 import yaml from 'js-yaml';
 import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import type { ZodError } from 'zod';
+import type { ZodError, ZodIssue } from 'zod';
 import { z } from 'zod';
 import type { IAliasAccountData } from './../types.js';
 
@@ -81,3 +81,59 @@ export async function getAllAccountNames(): Promise<
   const allAccountDetails = await getAllAccounts();
   return allAccountDetails.map(({ alias, name }) => ({ alias, name }));
 }
+
+export const formatZodFieldErrors = (error: ZodError): string =>
+  error.errors.map((e: ZodIssue) => e.message).join('\n');
+
+export const chainIdValidation = z
+  .number({
+    errorMap: (error) => {
+      if (error.code === 'too_small') {
+        return {
+          message: 'Error: -c, --chain-id must be greater than or equal to 0',
+        };
+      }
+
+      if (error.code === 'too_big') {
+        return {
+          message: 'Error: -c, --chain-id must be less than or equal to 19',
+        };
+      }
+
+      return {
+        message: 'Error: -c, --chain-id must be a number',
+      };
+    },
+  })
+  .min(0)
+  .max(19);
+
+export const amountValidation = z
+  .number({
+    errorMap: (error) => {
+      if (error.code === 'too_small') {
+        return {
+          message:
+            'Error: -m, --amount must be greater than greater than or equal to 0',
+        };
+      }
+
+      if (error.code === 'too_big') {
+        return {
+          message: 'Error: -m, --amount must be less than or equal to 100',
+        };
+      }
+
+      if (error.code === 'invalid_type') {
+        return {
+          message: 'Error: -m, --amount must be a positive number',
+        };
+      }
+
+      return {
+        message: 'Error: -m, --amount must be greater than 0',
+      };
+    },
+  })
+  .min(1)
+  .max(100);
