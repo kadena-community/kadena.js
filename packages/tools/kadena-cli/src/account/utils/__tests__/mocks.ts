@@ -1,3 +1,4 @@
+import { DEV_NET_NETWORK_ID } from '../../../constants/config.js';
 import type { INetworkCreateOptions } from '../../../networks/utils/networkHelpers.js';
 import type { IAddAccountConfig } from '../../types.js';
 
@@ -11,7 +12,7 @@ export const testNetworkConfigMock: INetworkCreateOptions = {
 export const devNetConfigMock: INetworkCreateOptions = {
   networkHost: 'https://localhost:8080',
   networkExplorerUrl: 'https://localhost:8080/explorer',
-  networkId: 'fast-development',
+  networkId: DEV_NET_NETWORK_ID,
   network: 'devnet',
 };
 

@@ -1,3 +1,4 @@
+import { DEV_NET_NETWORK_ID } from '../constants/config.js';
 /*
   TO-DO:
 
@@ -20,7 +21,7 @@ export const apiHostGenerator = ({
       return `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${
         chainId ?? '1'
       }/pact`;
-    case 'fast-development':
+    case DEV_NET_NETWORK_ID:
       return `http://localhost:8080/chainweb/0.0/${networkId}/chain/${
         chainId ?? '1'
       }/pact`;

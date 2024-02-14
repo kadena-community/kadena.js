@@ -1,5 +1,6 @@
 import { join } from 'path';
 import type { INetworkCreateOptions } from '../networks/utils/networkHelpers.js';
+import { DEV_NET_NETWORK_ID } from './config.js';
 
 export interface IDefaultNetworkOptions {
   [key: string]: INetworkCreateOptions;
@@ -24,7 +25,7 @@ export const networkDefaults: IDefaultNetworkOptions = {
   },
   devnet: {
     network: 'devnet',
-    networkId: 'fast-development',
+    networkId: DEV_NET_NETWORK_ID,
     networkHost: 'http://localhost:8080/',
     networkExplorerUrl: 'http://localhost:8080/explorer',
   },

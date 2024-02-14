@@ -12,7 +12,7 @@ interface IPayloadData {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const handlers: any = [
   http.post(
-    'https://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/local',
+    'https://localhost:8080/chainweb/0.0/development/chain/1/pact/api/v1/local',
     () => {
       return HttpResponse.json(accountDetailsSuccessData, { status: 200 });
     },

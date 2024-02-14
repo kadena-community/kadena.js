@@ -30,3 +30,6 @@ export const PLAIN_KEY_LEGACY_EXT: string = '.legacy.key';
 export const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
 
 export const MAX_CHARACTERS_LENGTH = 80;
+
+// DEV_NET NETWORK ID
+export const DEV_NET_NETWORK_ID = 'development';
