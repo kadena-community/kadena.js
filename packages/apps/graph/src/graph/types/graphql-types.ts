@@ -54,7 +54,6 @@ export interface NonFungibleChainAccount {
   __typename: typeof NonFungibleChainAccountName;
   chainId: string;
   accountName: string;
-  guard: Guard;
   nonFungibles: Token[];
   transactions: Transaction[];
 }
