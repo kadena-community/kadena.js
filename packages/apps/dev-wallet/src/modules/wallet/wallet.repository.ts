@@ -1,11 +1,5 @@
-import { injectDb } from '@/modules/db/db.service';
-import {
-  addItem,
-  getAllItems,
-  getOneItem,
-  updateItem,
-} from '@/modules/db/indexeddb';
-import { BuiltInPredicate } from '@kadena/client';
+import { IDBService, dbService } from '@/modules/db/db.service';
+import { IAccount } from '../account/account.repository';
 import { INetwork } from '../network/network.repository';
 
 export interface IKeyItem {
@@ -34,33 +28,12 @@ export interface IProfile {
   secretId: string;
 }
 
-export interface IKeySetGuard {
-  type: 'keySet';
-  publicKeys: Array<IKeyItem>;
-  pred: BuiltInPredicate;
-}
-
-export interface IAccount {
-  uuid: string;
-  profileId: string;
-  alias?: string;
-  address: string;
-  guard: IKeySetGuard; // this could be extended to support other guards
-}
-
-export interface Token {
-  uuid: string;
-  name: string;
-  networkId: string;
-  contract: string;
-}
-
-const createWalletRepository = () => {
-  const getAll = injectDb(getAllItems);
-  const getOne = injectDb(getOneItem);
-  const add = injectDb(addItem);
-  const update = injectDb(updateItem);
-
+const createWalletRepository = ({
+  getAll,
+  getOne,
+  add,
+  update,
+}: IDBService) => {
   return {
     getAllProfiles: async (): Promise<Exclude<IProfile, 'networks'>[]> => {
       return getAll('profile');
@@ -83,9 +56,6 @@ const createWalletRepository = () => {
     ): Promise<void> => {
       return add('encryptedValue', value, key);
     },
-    addAccount: async (account: IAccount): Promise<void> => {
-      return add('account', account);
-    },
     getAccountsByProfileId(profileId: string): Promise<IAccount[]> {
       return getAll('account', profileId, 'profileId');
     },
@@ -95,13 +65,7 @@ const createWalletRepository = () => {
     getKeySource: async (keySourceId: string): Promise<IKeySource> => {
       return getOne('keySource', keySourceId);
     },
-    addToken: async (token: Token): Promise<void> => {
-      return add('token', token);
-    },
-    getTokenList: async (): Promise<Token[]> => {
-      return getAll('token');
-    },
   };
 };
 
-export const walletRepository = createWalletRepository();
+export const walletRepository = createWalletRepository(dbService);
