@@ -55,7 +55,6 @@ const Storybook = () => {
     connect,
     loading: isConnectingToLedger,
     error: ledgerConnectError,
-    transport,
   } = useLedgerTransport();
 
   const [keyId, setKeyId] = useState<number>(0);

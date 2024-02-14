@@ -7,7 +7,7 @@ const useLedgerApp = () => {
   const [app, setApp] = useState<AppKda | null>(null);
 
   useEffect(() => {
-    if (transport !== null) {
+    if (transport) {
       setApp(new AppKda(transport));
     }
   }, [transport]);
