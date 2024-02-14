@@ -52,7 +52,7 @@ export const accountKdnNamePrompt: IPrompt<string> = async () =>
     message: 'Enter an .kda name:',
   });
 
-export const amountPrompt: IPrompt<string> = async () =>
+export const fundAmountPrompt: IPrompt<string> = async () =>
   await input({
     validate(value: string) {
       const parsedValue = parseFloat(value.replace(',', '.'));

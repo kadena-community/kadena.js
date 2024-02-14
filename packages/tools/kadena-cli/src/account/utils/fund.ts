@@ -17,7 +17,7 @@ export async function fund({
   amount: string;
   networkConfig: INetworkCreateOptions;
   chainId: ChainId;
-}): Promise<CommandResult<ICommandResult | string>> {
+}): Promise<CommandResult<ICommandResult>> {
   try {
     const accountDetailsFromChain = await getAccountDetails({
       accountName: accountConfig.name,

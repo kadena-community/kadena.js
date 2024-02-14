@@ -27,7 +27,7 @@ export async function createAndTransferFund({
     chainId: ChainId;
     networkConfig: INetworkCreateOptions;
   };
-}): Promise<ICommandResult | string> {
+}): Promise<ICommandResult> {
   try {
     const { chainId, amount, networkConfig } = config;
 

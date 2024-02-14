@@ -7,11 +7,8 @@ import {
 } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 
+import { faucetContract } from '../contract/devnet-faucet.js';
 import { DOMAIN, NETWORK_ID, SENDER_00 } from './constants.js';
-
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 export const deployFaucet = async ({
   chainId,
@@ -22,15 +19,6 @@ export const deployFaucet = async ({
   upgrade: boolean;
   namespace: string;
 }): Promise<Record<string, ICommandResult>> => {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const __filename = fileURLToPath(import.meta.url);
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const __dirname = path.dirname(__filename);
-  const faucetContract = fs.readFileSync(
-    path.resolve(__dirname, './../contract/devnet-faucet.pact'),
-    'utf-8',
-  );
-
   const transaction = Pact.builder
     .execution(faucetContract)
     .addData('init', !upgrade)

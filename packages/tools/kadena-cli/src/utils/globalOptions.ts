@@ -102,9 +102,9 @@ export const globalOptions = {
         .filter((key) => !!key);
     },
   }),
-  amount: createOption({
+  fundAmount: createOption({
     key: 'amount' as const,
-    prompt: account.amountPrompt,
+    prompt: account.fundAmountPrompt,
     validation: z.string({
       /* eslint-disable-next-line @typescript-eslint/naming-convention */
       invalid_type_error: 'Error: -m, --amount must be a positive number',
