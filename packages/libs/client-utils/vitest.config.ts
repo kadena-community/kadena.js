@@ -13,7 +13,7 @@ const localConfig = defineConfig({
         // we have integration for this
         'src/core/estimate-gas.ts',
         // its just type
-        'src/interfaces/**/*',
+        'src/interfaces/async-pipe-type.ts',
         // its just type and I have a test for that
         'src/core/utils/types.ts',
         // its a script that generates the asyncPipe type
