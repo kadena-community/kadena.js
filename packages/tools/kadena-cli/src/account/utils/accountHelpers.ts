@@ -108,13 +108,13 @@ export const chainIdValidation = z
   .min(0)
   .max(19);
 
-export const amountValidation = z
+export const fundAmountValidation = z
   .number({
     errorMap: (error) => {
       if (error.code === 'too_small') {
         return {
           message:
-            'Error: -m, --amount must be greater than greater than or equal to 0',
+            'Error: -m, --amount must be greater than or equal to 0',
         };
       }
 

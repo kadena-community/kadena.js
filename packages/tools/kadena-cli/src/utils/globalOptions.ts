@@ -18,7 +18,7 @@ import { join } from 'node:path';
 
 import type { IAliasAccountData } from '../account/types.js';
 import {
-  amountValidation,
+  fundAmountValidation,
   chainIdValidation,
   formatZodFieldErrors,
   readAccountFromFile,
@@ -113,7 +113,7 @@ export const globalOptions = {
     transform: (amount: string) => {
       try {
         const parsedAmount = parseInt(amount, 10);
-        amountValidation.parse(parsedAmount);
+        fundAmountValidation.parse(parsedAmount);
         return amount;
       } catch (error) {
         const errorMessage = formatZodFieldErrors(error);
