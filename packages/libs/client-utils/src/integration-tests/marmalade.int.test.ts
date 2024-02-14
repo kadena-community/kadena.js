@@ -20,7 +20,7 @@ import {
 } from './test-data/accounts';
 
 let tokenId: string | undefined;
-const chainId = '9' as ChainId;
+const chainId = '0' as ChainId;
 const inputs = {
   chainId,
   precision: 0,
@@ -65,13 +65,7 @@ beforeAll(async () => {
   if (!marmaladeDeployed) {
     await deployMarmalade({
       chainIds: [chainId],
-      repositoryConfig: {
-        owner: 'kadena-io',
-        name: 'marmalade',
-        branch: 'main',
-        githubToken:
-          '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',
-      },
+      deleteFilesAfterDeployment: true,
     });
   }
 
