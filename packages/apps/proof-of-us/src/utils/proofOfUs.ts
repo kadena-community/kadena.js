@@ -114,5 +114,7 @@ export const hasMintedAttendaceToken = async (
     signatureVerification: false,
   });
 
+  console.log(transaction, result);
+
   return result.status === 'success';
 };

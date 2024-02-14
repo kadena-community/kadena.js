@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { ticketClass, ticketWrapClass, titleClass } from './style.css';
 
 interface IProps {
-  token: IProofOfUsToken;
+  token: IProofOfUsTokenMeta;
 }
 
 export const AttendanceTicket: FC<IProps> = ({ token }) => {

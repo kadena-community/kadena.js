@@ -20,8 +20,6 @@ export const useHasMintedAttendaceToken = () => {
 
     const result = await hasMintedAttendaceToken(eventId, account);
 
-    setIsLoading(false);
-
     return result;
   };
 
