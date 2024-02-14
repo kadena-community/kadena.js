@@ -30,7 +30,6 @@ import {
 } from '../networks/utils/networkHelpers.js';
 import { accountOverWritePrompt } from '../prompts/account.js';
 import { createExternalPrompt } from '../prompts/generic.js';
-import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
 
@@ -238,11 +237,11 @@ export const globalOptions = {
   }),
   // Network
   networkName: createOption({
-    key: 'network' as const,
+    key: 'networkName' as const,
     prompt: networks.networkNamePrompt,
     validation: z.string(),
     option: new Option(
-      '-n, --network <network>',
+      '-n, --networkName <networkName>',
       'Kadena network (e.g. "mainnet")',
     ),
   }),
@@ -282,6 +281,15 @@ export const globalOptions = {
       'Overwrite existing network configuration (yes/no)',
     ),
   }),
+  networkDelete: createOption({
+    key: 'networkDelete' as const,
+    prompt: networks.networkDeletePrompt,
+    validation: z.string(),
+    option: new Option(
+      '-d, --network-delete <networkDelete>',
+      'Delete the configuration for network (yes/no)',
+    ),
+  }),
   network: createOption({
     key: 'network' as const,
     prompt: networks.networkSelectPrompt,
@@ -299,11 +307,7 @@ export const globalOptions = {
           `\nNo configuration for network "${network}" found. Please configure the network.\n`,
         );
         await program.parseAsync(['', '', 'networks', 'create']);
-        const externalPrompt = createExternalPrompt({
-          networkNamePrompt,
-        });
-        const networkName = await externalPrompt.networkNamePrompt();
-        return loadNetworkConfig(networkName);
+        return loadNetworkConfig(network);
       }
     },
   }),

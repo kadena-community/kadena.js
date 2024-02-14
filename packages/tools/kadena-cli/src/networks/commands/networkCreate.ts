@@ -27,7 +27,10 @@ export const createNetworksCommand: (
   async (config) => {
     debug('network-create:action')({ config });
 
-    const filePath = path.join(defaultNetworksPath, `${config.network}.yaml`);
+    const filePath = path.join(
+      defaultNetworksPath,
+      `${config.networkName}.yaml`,
+    );
 
     if (
       !(await services.filesystem.fileExists(filePath)) &&
@@ -35,7 +38,7 @@ export const createNetworksCommand: (
     ) {
       console.log(
         chalk.yellow(
-          `\nThe existing network configuration "${config.network}" will not be updated.\n`,
+          `\nThe existing network configuration "${config.networkName}" will not be updated.\n`,
         ),
       );
       return;
@@ -45,7 +48,7 @@ export const createNetworksCommand: (
 
     console.log(
       chalk.green(
-        `\nThe network configuration "${config.network}" has been saved.\n`,
+        `\nThe network configuration "${config.networkName}" has been saved.\n`,
       ),
     );
   },

@@ -59,6 +59,7 @@ To organize tests into separate files:
    ```pact
    (load "setup.repl")
    ```
+
 6. Open the `candidates.repl` file and and add the following as the first line in the file:
    
    ```pact
@@ -152,8 +153,7 @@ To prepare a test for incrementing votes:
    
    In this code, the `vote` function takes the `candidateKey` parameter with a of type string: 
   
-   - The `candidateKey` value specifies the key for the row in the `candidates` table to read
-using the built-in `with-read` Pact function. 
+   - The `candidateKey` value specifies the key for the row in the `candidates` table to read using the built-in `with-read` Pact function. 
    - The database column named  `"votes"` is assigned a value from the  `numberOfVotes` variable. 
    
    The `vote` function then calls the built-in `update` Pact function with three arguments to specify:

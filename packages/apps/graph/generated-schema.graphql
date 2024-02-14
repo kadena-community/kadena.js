@@ -192,7 +192,6 @@ type NonFungibleAccountTransactionsConnectionEdge {
 type NonFungibleChainAccount implements Node {
   accountName: String!
   chainId: ID!
-  guard: Guard!
   id: ID!
   nonFungibles: [Token!]!
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleChainAccountTransactionsConnection!
