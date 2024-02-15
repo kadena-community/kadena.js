@@ -47,6 +47,9 @@
       "require": "./dist/system/cjs/index.js"
     }
   },
+  "main": "./dist/system/cjs/index.js",
+  "module": "./dist/system/esm/index.mjs",
+  "types": "./dist/system/cjs/index.d.ts",
   "files": [
     "dist"
   ],
@@ -86,8 +89,5 @@
     "tsx": "^3.12.10",
     "typescript": "5.2.2",
     "unbuild": "^2.0.0"
-  },
-  "main": "./dist/system/cjs/index.js",
-  "module": "./dist/system/esm/index.mjs",
-  "types": "./dist/system/cjs/index.d.ts"
+  }
 }

@@ -4,8 +4,8 @@ import { existsSync } from 'node:fs';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { Options } from 'prettier';
-import { format, resolveConfig, resolveConfigFile } from 'prettier';
 import { pascalCase } from 'scule';
+import { formatCode, getPrettierConfigs } from './utils';
 
 const REPO = 'gh:kadena-community/design-system/builds/tokens#main';
 const SVGS_PATH = join(process.cwd(), 'svgs');
@@ -18,29 +18,6 @@ interface IconToken {
   $name: string;
   $description: string;
   $value: string;
-}
-const defaultPrettierOptions: Options = {
-  parser: 'typescript',
-  printWidth: 80,
-  tabWidth: 2,
-  useTabs: false,
-  semi: true,
-  singleQuote: true,
-  trailingComma: 'all',
-  arrowParens: 'always',
-  proseWrap: 'always',
-};
-async function getPrettierConfigs() {
-  const prettierConfigFile = await resolveConfigFile();
-  let prettierConfig = defaultPrettierOptions;
-  if (prettierConfigFile !== null) {
-    const resolved = await resolveConfig(prettierConfigFile);
-    if (resolved) {
-      prettierConfig = resolved;
-    }
-  }
-  prettierConfig.parser = defaultPrettierOptions.parser;
-  return prettierConfig;
 }
 
 async function transformIcons(
@@ -93,7 +70,7 @@ async function transformIcons(
     }),
   );
   const indexContent = indexEntries.join('\n');
-  const formatted = await format(indexContent, prettierConfig!);
+  const formatted = await formatCode(indexContent, prettierConfig);
   await writeFile(join(outDir, 'index.ts'), formatted);
   console.log(`Wrote ${icons.length} icons to ${OUT_DIR}`);
 }
@@ -121,11 +98,11 @@ function buildIconsArray(group: Record<string, object>, name = '') {
 }
 
 async function main() {
+  const prettierConfig = await getPrettierConfigs();
   await downloadTemplate(REPO, {
     dir: SVGS_PATH,
     forceClean: true,
   });
-  const prettierConfig = await getPrettierConfigs();
   if (existsSync(OUT_DIR)) {
     await rm(OUT_DIR, { force: true, recursive: true });
   }

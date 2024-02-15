@@ -1,5 +1,6 @@
 import { writeFile } from 'node:fs/promises';
 import packageJson from '../package.json';
+import { formatCode, getPrettierConfigs } from './utils';
 
 export async function updatePackageJson(
   groups: string[],
@@ -27,6 +28,10 @@ export async function updatePackageJson(
   packageJson.types = defaultGroupExports.types.require;
   // @ts-ignore
   packageJson.exports = exports;
-
-  await writeFile('package.json', JSON.stringify(packageJson, null, 2));
+  const prettierConfig = await getPrettierConfigs();
+  prettierConfig.parser = 'json';
+  await writeFile(
+    'package.json',
+    await formatCode(JSON.stringify(packageJson), prettierConfig),
+  );
 }
