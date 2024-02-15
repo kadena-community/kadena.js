@@ -21,7 +21,7 @@ import AddPublicKeysSection from '@/components/Global/AddPublicKeysSection';
 import { Toggle } from '@/components/Global/Toggle';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { notificationLinkStyle } from '@/pages/transactions/cross-chain-transfer-finisher/styles.css';
-import TransactionDetails from '@/pages/transactions/transfer/transaction-details';
+// import TransactionDetails from '@/pages/transactions/transfer/transaction-details';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import { stripAccountPrefix } from '@/utils/string';
 import { transfer } from '@kadena/client-utils/coin';
@@ -75,7 +75,7 @@ const TransferPage = () => {
   const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
   // const [senderPublicKey, setSenderPublicKey] = useState<string>('');
   const [initialPublicKey, setInitialPublicKey] = useState<string>('');
-  const [signedTx, setSignedTx] = useState({});
+  const [signedTx, setSignedTx] = useState<any | undefined>(undefined);
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;
     message?: string;
@@ -467,29 +467,31 @@ const TransferPage = () => {
               </Button>
             </div>
 
-            {signedTx ? <TransactionDetails network={selectedNetwork} /> : null}
-
-            <div className={buttonContainerClass}>
-              <Button
-                isLoading={isSubmitting}
-                isDisabled={isSubmitting}
-                endIcon={<SystemIcon.TrailingIcon />}
-                title={t('Transfer')}
-                type="submit"
-              >
-                {t('Transfer')}
-              </Button>
-            </div>
-
-            <FormStatusNotification
-              status={requestStatus.status}
-              statusBodies={{
-                successful: t(
-                  'The coins have been funded to the given account.',
-                ),
-              }}
-              body={requestStatus.message}
-            />
+            {signedTx ? (
+              <>
+                {/*<TransactionDetails transaction={signedTx} />*/}
+                <div className={buttonContainerClass}>
+                  <Button
+                    isLoading={isSubmitting}
+                    isDisabled={isSubmitting}
+                    endIcon={<SystemIcon.TrailingIcon />}
+                    title={t('Transfer')}
+                    type="submit"
+                  >
+                    {t('Transfer')}
+                  </Button>
+                </div>
+                <FormStatusNotification
+                  status={requestStatus.status}
+                  statusBodies={{
+                    successful: t(
+                      'The coins have been funded to the given account.',
+                    ),
+                  }}
+                  body={requestStatus.message}
+                />
+              </>
+            ) : null}
           </Stack>
         </form>
       </Stack>
