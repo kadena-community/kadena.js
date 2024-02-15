@@ -5,12 +5,11 @@ import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { Options } from 'prettier';
 import { format, resolveConfig, resolveConfigFile } from 'prettier';
-
 import { pascalCase } from 'scule';
 
-const REPO = 'gh:kadena-community/design-system/tokens/foundation/icon#main';
+const REPO = 'gh:kadena-community/design-system/builds/tokens#main';
 const SVGS_PATH = join(process.cwd(), 'svgs');
-const SVG_TOKENS_FILE = join(SVGS_PATH, 'svg.tokens.json');
+const ICONS_FILE = join(SVGS_PATH, 'kda-design-system.raw.svg.tokens.json');
 const OUT_DIR = join(process.cwd(), 'src');
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -43,23 +42,19 @@ async function getPrettierConfigs() {
   prettierConfig.parser = defaultPrettierOptions.parser;
   return prettierConfig;
 }
-async function main() {
-  await downloadTemplate(REPO, {
-    dir: SVGS_PATH,
-    forceClean: true,
-  });
-  const prettierConfig = await getPrettierConfigs();
-  const svgTokens = await import(SVG_TOKENS_FILE);
-  const icons = Object.values(svgTokens.kda.foundation.icon) as IconToken[];
-  if (existsSync(OUT_DIR)) {
-    await rm(OUT_DIR, { force: true, recursive: true });
-  }
-  await mkdir(OUT_DIR);
+
+async function transformIcons(
+  icons: IconToken[],
+  out: string,
+  prettierConfig: Options,
+) {
+  const processed = new Set<string>();
+  const outDir = join(OUT_DIR, out);
+  await mkdir(outDir);
   const indexEntries: string[] = [];
-  const processed = new Set();
   await Promise.all(
     icons.map(async (icon) => {
-      const name = pascalCase(`Icon_${icon.$name}`) as string;
+      const name = pascalCase(icon.$name) as string;
       if (processed.has(name.toLowerCase())) {
         console.warn(
           `Skipped proccessing ${icon.$name} because it will result in a duplicate icon ${name}!`,
@@ -74,7 +69,9 @@ async function main() {
             // 24px
             fontSize: '1.5em',
             fill: 'currentColor',
+            height: '1em',
           },
+          dimensions: false,
           typescript: true,
           icon: true,
           prettier: true,
@@ -91,14 +88,56 @@ async function main() {
           componentName: name,
         },
       );
-      await writeFile(join(OUT_DIR, `${name}.tsx`), component);
+      await writeFile(join(outDir, `${name}.tsx`), component);
       indexEntries.push(`export {default as ${name}} from './${name}';`);
     }),
   );
   const indexContent = indexEntries.join('\n');
   const formatted = await format(indexContent, prettierConfig!);
-  await writeFile(join(OUT_DIR, 'index.ts'), formatted);
-  console.log(`Wrote ${processed.size} icons successfully!`);
+  await writeFile(join(outDir, 'index.ts'), formatted);
+  console.log(`Wrote ${icons.length} icons to ${OUT_DIR}`);
+}
+
+function isIconToken(value: any): value is IconToken {
+  return value.$type === 'icon';
+}
+
+function buildIconsArray(group: Record<string, object>, name = '') {
+  const icons: IconToken[] = [];
+  for (const [key, value] of Object.entries(group)) {
+    if (isIconToken(value)) {
+      value.$name = `${name}_${key}` || value.$name;
+      icons.push(value as IconToken);
+    } else {
+      icons.push(
+        ...buildIconsArray(
+          value as Record<string, object>,
+          name ? `${name}_${key}` : key,
+        ),
+      );
+    }
+  }
+  return icons;
+}
+
+async function main() {
+  await downloadTemplate(REPO, {
+    dir: SVGS_PATH,
+    forceClean: true,
+  });
+  const prettierConfig = await getPrettierConfigs();
+  if (existsSync(OUT_DIR)) {
+    await rm(OUT_DIR, { force: true, recursive: true });
+  }
+  await mkdir(OUT_DIR);
+  const svgTokens = await import(ICONS_FILE);
+  const groups = Object.entries(svgTokens.kda.foundation.icon);
+  await Promise.all(
+    groups.map(async ([key, group]) => {
+      const icons = buildIconsArray(group as Record<string, object>);
+      await transformIcons(icons, key, prettierConfig);
+    }),
+  );
 }
 
 main()

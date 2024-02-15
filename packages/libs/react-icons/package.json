@@ -14,18 +14,39 @@
     "Salama Ashoush <salama@kadena.io>"
   ],
   "exports": {
+    "./brand": {
+      "types": {
+        "import": "./dist/brand/esm/index.d.ts",
+        "require": "./dist/brand/cjs/index.d.ts"
+      },
+      "import": "./dist/brand/esm/index.mjs",
+      "require": "./dist/brand/cjs/index.js"
+    },
+    "./product": {
+      "types": {
+        "import": "./dist/product/esm/index.d.ts",
+        "require": "./dist/product/cjs/index.d.ts"
+      },
+      "import": "./dist/product/esm/index.mjs",
+      "require": "./dist/product/cjs/index.js"
+    },
+    "./system": {
+      "types": {
+        "import": "./dist/system/esm/index.d.ts",
+        "require": "./dist/system/cjs/index.d.ts"
+      },
+      "import": "./dist/system/esm/index.mjs",
+      "require": "./dist/system/cjs/index.js"
+    },
     ".": {
       "types": {
-        "import": "./dist/esm/index.d.ts",
-        "require": "./dist/cjs/index.d.ts"
+        "import": "./dist/system/esm/index.d.ts",
+        "require": "./dist/system/cjs/index.d.ts"
       },
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+      "import": "./dist/system/esm/index.mjs",
+      "require": "./dist/system/cjs/index.js"
     }
   },
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.mjs",
-  "types": "./dist/cjs/index.d.ts",
   "files": [
     "dist"
   ],
@@ -65,5 +86,8 @@
     "tsx": "^3.12.10",
     "typescript": "5.2.2",
     "unbuild": "^2.0.0"
-  }
+  },
+  "main": "./dist/system/cjs/index.js",
+  "module": "./dist/system/esm/index.mjs",
+  "types": "./dist/system/cjs/index.d.ts"
 }
