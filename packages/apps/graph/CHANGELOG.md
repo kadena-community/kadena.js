@@ -1,5 +1,11 @@
 # @kadena/graph
 
+## 0.1.7
+
+### Patch Changes
+
+- 357a29456: Created TokenInfo and added object to Token
+
 ## 0.1.6
 
 ### Patch Changes
