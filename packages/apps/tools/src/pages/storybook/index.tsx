@@ -3,7 +3,6 @@ import {
   AccountNameField,
   ChainSelect,
 } from '@/components/Global';
-import { useLedgerTransport } from '@/context';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
 import useLedgerPublicKey, {
@@ -51,13 +50,6 @@ const Storybook = () => {
 
   console.log({ accountError, accountDetails });
 
-  const {
-    connect,
-    loading: isConnectingToLedger,
-    error: ledgerConnectError,
-  } = useLedgerTransport();
-
-  const [keyId, setKeyId] = useState<number>(0);
   const defaultDerivationMode = derivationModes[0];
   const [derivationMode, setDerivationMode] = useState<DerivationMode>(
     defaultDerivationMode,
@@ -184,8 +176,6 @@ const Storybook = () => {
                 <Text>Public key not fetched (yet)</Text>
               )}
             </>
-            {isConnectingToLedger && <Text>Connecting ledger...</Text>}
-            {ledgerConnectError && <Text>{ledgerConnectError.message}</Text>}
             {isFetchingLedgerPublicKey && <Text>Loading...</Text>}
             {ledgerError ? (
               <Text>
