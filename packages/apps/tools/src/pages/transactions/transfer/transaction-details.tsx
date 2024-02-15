@@ -9,6 +9,7 @@ import {
   TrackerCard,
 } from '@kadena/react-ui';
 import type { ICap } from '@kadena/types';
+import useTranslation from 'next-translate/useTranslation';
 import React, { useState } from 'react';
 
 export interface ITransactionDetails {
@@ -17,6 +18,7 @@ export interface ITransactionDetails {
 const TransactionDetails = ({
   transaction,
 }: ITransactionDetails): React.JSX.Element | null => {
+  const { t } = useTranslation('common');
   // const [keyId, setKeyId] = useState<number>();
   // const publicKey = useLedgerPublicKey(keyId);
   const [txDetailsExpanded, setTxDetailsExpanded] = useState<boolean>(false);
@@ -45,7 +47,7 @@ const TransactionDetails = ({
             variant={'vertical'}
             labelValues={[
               {
-                label: 'Raw',
+                label: t('Raw'),
                 value: JSON.stringify(transaction),
               },
             ]}
@@ -57,7 +59,7 @@ const TransactionDetails = ({
             variant="vertical"
             labelValues={[
               {
-                label: 'Code',
+                label: t('Code'),
                 value: (transaction.payload as IExecutionPayloadObject).exec
                   .code,
               },
@@ -69,12 +71,12 @@ const TransactionDetails = ({
           variant="vertical"
           labelValues={[
             {
-              label: 'Network',
+              label: t('Network'),
               value: transaction.networkId,
             },
           ]}
         />
-        <Text>Capabilities</Text>
+        <Text>{t('Capabilities')}</Text>
 
         {transaction.signers
           ? transaction.signers.map((signer: any) =>
@@ -84,17 +86,17 @@ const TransactionDetails = ({
                     variant="horizontal"
                     labelValues={[
                       {
-                        label: 'Name',
+                        label: t('Name'),
                         value: cap.name,
                       },
                       {
-                        label: 'Arguments',
+                        label: t('Arguments'),
                         value: cap.args
                           .map((item) => item.toString())
                           .join(','),
                       },
                       {
-                        label: 'Signer',
+                        label: t('Signer'),
                         value: signer.pubKey,
                       },
                     ]}
