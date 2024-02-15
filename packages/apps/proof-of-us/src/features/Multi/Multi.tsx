@@ -2,6 +2,7 @@ import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { SocialsEditor } from '@/components/SocialsEditor/SocialsEditor';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
+import { useMintMultiToken } from '@/hooks/data/mintMultiToken';
 import { useSignToken } from '@/hooks/data/signToken';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import type { FC } from 'react';
@@ -12,7 +13,8 @@ interface IProps {
 }
 
 export const Multi: FC<IProps> = ({ proofOfUs }) => {
-  const { signToken, isLoading, hasError } = useSignToken();
+  const { signToken } = useSignToken();
+  const { isLoading, hasError, mintToken } = useMintMultiToken();
 
   const handleJoin = async () => {
     await signToken();
@@ -33,6 +35,14 @@ export const Multi: FC<IProps> = ({ proofOfUs }) => {
         {!isAlreadySigning(proofOfUs.signees) && (
           <button onClick={handleJoin}>Sign</button>
         )}
+
+        <button
+          onClick={() => {
+            mintToken();
+          }}
+        >
+          mint
+        </button>
 
         {isLoading && <div>is signing</div>}
         {hasError && <div>has error signing</div>}

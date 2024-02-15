@@ -1,24 +1,28 @@
-export const getManifest = (proofOfUs: IProofOfUsData, url: string): {} => {
+export const createManifest = (proofOfUs: IProofOfUsData, url: string): {} => {
   const signees =
     Object.keys(proofOfUs.signees).map((k: any) => proofOfUs.signees[k]) ?? [];
+
   return {
-    name: 'My NFT',
-    description: 'This is my non-fungible token.',
+    name: proofOfUs.title,
+    description: `${proofOfUs.title} was a great event`,
     image: url,
     authors: signees.map((signee) => ({
       name: signee.label ? signee.label : signee.alias,
     })),
     properties: {
+      date: proofOfUs.date * 1000,
+      eventId: proofOfUs.eventId,
+      eventType: proofOfUs.type,
       avatar: {
         backgroundColor: proofOfUs.backgroundColor,
       },
-      signees: signees.map((signee) => ({
+      signees: signees?.map((signee) => ({
         name: signee.label ? signee.label : signee.alias,
         position: {
           xPercentage: signee.position?.xPercentage,
           yPercentage: signee.position?.yPercentage,
         },
-        socialLinks: signee.socialLinks?.map((link) => link),
+        socialLinks: signee?.socialLinks?.map((link: string) => link),
       })),
     },
     collection: {

@@ -7,11 +7,14 @@ import { env } from '@/utils/env';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { CopyButton, SystemIcon, TextField } from '@kadena/react-ui';
 import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
+
 import type { FC } from 'react';
 import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { backButtonClass } from '../DetailView/style.css';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
+import { MainLoader } from '../MainLoader/MainLoader';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 import { qrClass } from './style.css';
 
@@ -25,14 +28,23 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
   const { proofOfUs } = useProofOfUs();
   const { isLoading, hasError, data, mintToken } = useMintMultiToken();
+  const router = useRouter();
+  const { id } = useParams();
 
   const handleBack = () => {
     prev();
   };
 
   const handleSign = async () => {
-    next();
-    await mintToken();
+    if (!proofOfUs) return;
+    router.push(
+      `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${proofOfUs.tx}&returnUrl=${process.env.NEXT_PUBLIC_URL}/scan/${id}
+      `,
+    );
+
+    return;
+    // next();
+    // await mintToken();
   };
 
   const handleRetry = () => {
@@ -43,6 +55,7 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
 
   return (
     <section>
+      sdsdsdf
       {status === 3 && (
         <>
           <TitleHeader
@@ -89,7 +102,6 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
           )}
         </>
       )}
-
       {status === 4 && (
         <>
           <TitleHeader
@@ -105,7 +117,7 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
 
           <div>status: {proofOfUs.mintStatus}</div>
           <ListSignees />
-          {isLoading && <div>...isprocessing</div>}
+          {isLoading && <MainLoader />}
           {hasError && (
             <div>
               there was an error.

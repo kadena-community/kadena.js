@@ -16,7 +16,6 @@ const ProofOfUsStore = () => {
   const getBackground = async (
     proofOfUsId: string,
   ): Promise<IProofOfUsBackground | null> => {
-    console.log(2323422234234243);
     const docRef = await get(child(dbRef, `background/${proofOfUsId}`));
 
     if (!docRef.exists()) return { bg: '' };
@@ -139,6 +138,12 @@ const ProofOfUsStore = () => {
     });
   };
 
+  const updateTx = async (proofOfUs: IProofOfUsData, tx: string) => {
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      tx,
+    });
+  };
+
   const addTitle = async (proofOfUs: IProofOfUsData, value: string) => {
     if (isAlreadySigning(proofOfUs.signees)) return;
 
@@ -194,6 +199,7 @@ const ProofOfUsStore = () => {
     addTitle,
     updateBackgroundColor,
     updateSigner,
+    updateTx,
   };
 };
 
