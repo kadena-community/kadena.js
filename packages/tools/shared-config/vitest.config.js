@@ -3,8 +3,15 @@ const { defineConfig } = require('vitest/config');
 
 module.exports = defineConfig({
   plugins: [tsconfigPaths({ projects: ['./tsconfig.json'] })],
+
   test: {
-    reporters: ['dot'],
+    deps: {
+      experimentalOptimizer: {
+        enabled: true,
+      },
+    },
+    pool: 'vmThreads',
+    reporters: ['basic'],
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
     globals: false,
     coverage: {
