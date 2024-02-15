@@ -38,10 +38,7 @@ export async function kdnResolveNameToAddress(
     const response: ICommandResult = await client({
       networkId,
       networkHost,
-    }).local(transaction, {
-      preflight: false,
-      signatureVerification: false,
-    });
+    }).dirtyRead(transaction);
 
     return parseChainResponse<string>(response, 'address');
   } catch (error) {
@@ -69,10 +66,7 @@ export async function kdnResolveAddressToName(
     const response: ICommandResult = await client({
       networkId,
       networkHost,
-    }).local(transaction, {
-      preflight: false,
-      signatureVerification: false,
-    });
+    }).dirtyRead(transaction);
 
     return parseChainResponse<string>(response, 'name');
   } catch (error) {

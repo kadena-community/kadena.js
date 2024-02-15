@@ -1,5 +1,19 @@
 # @kadena/graph
 
+## 0.1.7
+
+### Patch Changes
+
+- 357a29456: Created TokenInfo and added object to Token
+
+## 0.1.6
+
+### Patch Changes
+
+- 85b8911fc: Added flood command in readme and changed fungible and non-fungible
+  chain account queries file names
+- 889956dad: Remove coin related data from non-fungible account
+
 ## 0.1.5
 
 ### Patch Changes

@@ -48,20 +48,13 @@ export async function getNonFungibleChainAccount({
   chainId: string;
   accountName: string;
 }): Promise<NonFungibleChainAccount | null> {
-  const [accountDetails, tokenDetails] = await Promise.all([
-    accountDetailsLoader.load({ accountName, chainId, fungibleName: 'coin' }),
-    tokenDetailsLoader.load({ accountName, chainId }),
-  ]);
+  const tokenDetails = await tokenDetailsLoader.load({ accountName, chainId });
 
-  return accountDetails !== null && tokenDetails !== null
+  return tokenDetails !== null && tokenDetails.length !== 0
     ? {
         __typename: NonFungibleChainAccountName,
         chainId,
         accountName,
-        guard: {
-          keys: accountDetails.guard.keys,
-          predicate: accountDetails.guard.pred,
-        },
         nonFungibles: tokenDetails,
         transactions: [],
       }

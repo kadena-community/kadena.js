@@ -25,6 +25,7 @@ import type {
   NonFungibleAccount,
   NonFungibleChainAccount,
   Token,
+  TokenInfo,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -71,6 +72,7 @@ export const builder = new SchemaBuilder<
       NonFungibleAccount: NonFungibleAccount;
       NonFungibleChainAccount: NonFungibleChainAccount;
       Token: Token;
+      TokenInfo: TokenInfo;
     };
     Connection: {
       totalCount: number;

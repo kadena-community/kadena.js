@@ -682,7 +682,7 @@ App.tsx:42 Uncaught (in promise) {callStack: Array(0), type: 'TxFailure', messag
 
 When you added the `ACCOUNT-OWNER` capability to the `election-dapp/pact/election.pact` file, you didn't set the scope for the capability.
 
-You might recall in the previous tutorial that you tested voting with a transactionb similar to the following in the `voting.repl` file:
+You might recall in the previous tutorial that you tested voting with a transaction similar to the following in the `voting.repl` file:
 
 ```pact
 (env-sigs
