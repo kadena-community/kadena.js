@@ -105,6 +105,7 @@ export const globalOptions = {
   fundAmount: createOption({
     key: 'amount' as const,
     prompt: account.fundAmountPrompt,
+    defaultIsOptional: false,
     validation: z.string({
       /* eslint-disable-next-line @typescript-eslint/naming-convention */
       invalid_type_error: 'Error: -m, --amount must be a positive number',
@@ -344,6 +345,7 @@ export const globalOptions = {
   chainId: createOption({
     key: 'chainId' as const,
     prompt: networks.chainIdPrompt,
+    defaultIsOptional: false,
     validation: z.string({
       /* eslint-disable-next-line @typescript-eslint/naming-convention */
       invalid_type_error: 'Error: -c, --chain-id must be a number',
