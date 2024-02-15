@@ -37,7 +37,7 @@ export const Multi: FC<IProps> = ({ proofOfUs }) => {
         )}
 
         {isLoading && <div>is signing</div>}
-        {hasError && <div>has error signing</div>}
+        {hasError && <div>has error signing the token</div>}
       </section>
     </>
   );
