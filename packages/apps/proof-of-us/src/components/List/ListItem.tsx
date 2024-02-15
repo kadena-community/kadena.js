@@ -26,7 +26,6 @@ export const ListItem: FC<IProps> = ({ token }) => {
     refreshInterval: 0,
   });
 
-  console.log(data, isLoading);
   return (
     <li className={listItemClass}>
       {isLoading && <IsLoading />}
