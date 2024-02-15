@@ -1,5 +1,6 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { createManifest } from '@/utils/createManifest';
+import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import { createMultiTokenTransaction } from '@/utils/proofOfUs';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
@@ -54,12 +55,10 @@ export const useSignToken = () => {
       account,
     );
 
-    console.log(4444, transaction);
-
     router.push(
       `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${Buffer.from(
         JSON.stringify(transaction),
-      ).toString('base64')}&returnUrl=${process.env.NEXT_PUBLIC_URL}/scan/${id}
+      ).toString('base64')}&returnUrl=${getReturnHostUrl()}/scan/${id}
       `,
     );
   };

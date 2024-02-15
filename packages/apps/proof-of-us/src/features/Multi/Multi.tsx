@@ -36,14 +36,6 @@ export const Multi: FC<IProps> = ({ proofOfUs }) => {
           <button onClick={handleJoin}>Sign</button>
         )}
 
-        <button
-          onClick={() => {
-            mintToken();
-          }}
-        >
-          mint
-        </button>
-
         {isLoading && <div>is signing</div>}
         {hasError && <div>has error signing</div>}
       </section>

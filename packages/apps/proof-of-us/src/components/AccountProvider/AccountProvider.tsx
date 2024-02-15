@@ -2,6 +2,7 @@
 import { ACCOUNT_COOKIE_NAME } from '@/constants';
 import { useToasts } from '@/hooks/toast';
 import { env } from '@/utils/env';
+import { getReturnUrl } from '@/utils/getReturnUrl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
@@ -32,9 +33,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const getReturnUrl = () => {
-    return `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
-  };
+
 
   const decodeAccount = useCallback(
     (userResponse: string) => {

@@ -1,4 +1,5 @@
 import { fetchManifestData } from '@/utils/fetchManifestData';
+
 import Link from 'next/link';
 import type { FC } from 'react';
 import useSWR from 'swr';
@@ -20,8 +21,6 @@ export const ListItem: FC<IProps> = ({ token }) => {
   const { data, isLoading } = useSWR(token.uri, fetchManifestData, {
     revalidateOnFocus: false,
   });
-
-  console.log({ data });
 
   return (
     <li className={listItemClass}>
