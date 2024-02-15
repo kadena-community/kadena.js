@@ -1,15 +1,16 @@
 import type { IUnsignedCommand } from '@kadena/types';
 import chalk from 'chalk';
 import { z } from 'zod';
-import { getTransactions } from '../tx/utils/txHelpers.js';
 
 import { TRANSACTION_FOLDER_NAME } from '../constants/config.js';
+import { getTransactions } from '../tx/utils/txHelpers.js';
 
 import {
   getAllPlainKeys,
   getAllWalletKeys,
 } from '../keys/utils/keysHelpers.js';
-import { defaultTemplates } from '../tx/commands/templates/templates.js';
+import { services } from '../services/index.js';
+import { getTemplates } from '../tx/commands/templates/templates.js';
 import type { IPrompt } from '../utils/createOption.js';
 import { checkbox, input, select } from '../utils/prompts.js';
 
@@ -63,13 +64,12 @@ export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
 }
 
 export const transactionSelectPrompt: IPrompt<string> = async (args) => {
-  const existingTransactions: string[] = await getTransactions(
-    args.signed as boolean,
-    args.path as string,
-  );
+  const signed = (args.signed as boolean) ?? false;
+  const path = (args.path as string) ?? (args.txTransactionDir as string);
+  const existingTransactions: string[] = await getTransactions(signed, path);
 
   if (existingTransactions.length === 0) {
-    throw new Error('No transactions found. Exiting.');
+    throw new Error('No transactions found.');
   }
 
   const choices = existingTransactions.map((transaction) => ({
@@ -86,13 +86,17 @@ export const transactionSelectPrompt: IPrompt<string> = async (args) => {
 };
 
 export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
-  const existingTransactions: string[] = await getTransactions(
-    args.signed as boolean,
-    args.path as string,
-  );
+  const signed = (args.signed as boolean) ?? true;
+  const path =
+    (args.path as string) ?? (args.directory as string) ?? process.cwd();
+
+  const fileExists = await services.filesystem.fileExists(path);
+  if (fileExists) return [path];
+
+  const existingTransactions: string[] = await getTransactions(signed, path);
 
   if (existingTransactions.length === 0) {
-    throw new Error('No transactions found. Exiting.');
+    throw new Error('No transactions found.');
   }
 
   const choices = existingTransactions.map((transaction) => ({
@@ -110,23 +114,39 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
   return selectedTransaction;
 };
 
-export async function txTransactionDirPrompt(): Promise<string> {
+export async function txDirPrompt(): Promise<string> {
   return await input({
-    message: `Enter your transaction directory (default: '${TRANSACTION_FOLDER_NAME}'):`,
-    validate: function (input) {
-      const validPathRegex = /^$|^\/[A-Za-z0-9._-]+$/;
-
-      if (!validPathRegex.test(input)) {
-        return 'Invalid directory format! Please enter a valid directory path starting with "/"';
+    message: `Enter your directory (default: working directory):`,
+    validate: async (input) => {
+      const dirExists = await services.filesystem.directoryExists(input);
+      if (!dirExists) {
+        return 'Directory or file not found. Please enter a valid directory or file path.';
       }
       return true;
     },
-    default: `/${TRANSACTION_FOLDER_NAME}`,
+    default: `./`,
   });
 }
 
-export const selectTemplate: IPrompt<string> = async () => {
-  const defaultTemplateKeys = Object.keys(defaultTemplates);
+export async function txTransactionDirPrompt(): Promise<string> {
+  return await input({
+    message: `Enter your transaction directory (default: './${TRANSACTION_FOLDER_NAME}'):`,
+    validate: async (input) => {
+      const dirExists = await services.filesystem.directoryExists(input);
+      if (!dirExists) {
+        return 'Directory or file not found. Please enter a valid directory or file path.';
+      }
+      return true;
+    },
+    default: `./${TRANSACTION_FOLDER_NAME}`,
+  });
+}
+
+export const selectTemplate: IPrompt<string> = async (args) => {
+  const stdin = args.stdin as string | undefined;
+  if (stdin && stdin !== '') return '-';
+  const templates = await getTemplates();
+  const defaultTemplateKeys = Object.keys(templates);
 
   const choices = [
     {

@@ -1,6 +1,7 @@
 import z from 'zod';
 
 import type { ChainId, IPactCommand } from '@kadena/client';
+import { formatZodError } from '../../../utils/helpers.js';
 
 const legacyCapSchema = z
   .object({
@@ -94,5 +95,5 @@ export const fixTemplatePactCommand = (template: unknown): IPactCommand => {
   if (parsed.success) {
     return parsed.data;
   }
-  throw new Error(`Failed to parse template:${parsed.error.message}`);
+  throw new Error(`Failed to parse template: ${formatZodError(parsed.error)}`);
 };
