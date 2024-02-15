@@ -63,11 +63,14 @@ const Storybook = () => {
     defaultDerivationMode,
   );
 
-  const {
-    error: ledgerError,
-    value: ledgerPublicKey,
-    loading: isFetchingLedgerPublicKey,
-  } = useLedgerPublicKey({ keyId, derivationMode });
+  const [
+    {
+      error: ledgerError,
+      value: ledgerPublicKey,
+      loading: isFetchingLedgerPublicKey,
+    },
+    getPublicKey,
+  ] = useLedgerPublicKey();
 
   console.log({ ledgerError, ledgerPublicKey });
 
@@ -139,8 +142,10 @@ const Storybook = () => {
                 label="Key ID"
                 onInputChange={async (value) => {
                   console.log('onInputChange', value);
-                  await connect();
-                  setKeyId(parseInt(value, 10));
+                  await getPublicKey({
+                    keyId: parseInt(value, 10),
+                    derivationMode,
+                  });
                 }}
                 defaultItems={options}
               >
