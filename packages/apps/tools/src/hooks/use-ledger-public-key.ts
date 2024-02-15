@@ -1,6 +1,6 @@
-import type AppKda from '@ledgerhq/hw-app-kda';
+import { getTransport } from '@/utils/getTransport';
+import AppKda from '@ledgerhq/hw-app-kda';
 import { useAsync } from 'react-use';
-import useLedgerApp from './use-ledger-app';
 
 export const derivationModes = [
   'current',
@@ -46,13 +46,12 @@ const fetchPublicKey = async ({
   return bufferToHex(kdaAddress.publicKey);
 };
 
-const useLedgerPublicKey = ({ keyId, derivationMode }: IParams) => {
-  const app = useLedgerApp();
-
-  return useAsync(
-    () => fetchPublicKey({ keyId, app, derivationMode }),
-    [app, derivationMode, keyId],
-  );
+const useLedgerPublicKey = () => {
+  return useAsync(async ({ keyId, derivationMode }: IParams) => {
+    const transport = await getTransport();
+    const app = new AppKda(transport);
+    return fetchPublicKey({ keyId, app, derivationMode });
+  });
 };
 
 export default useLedgerPublicKey;

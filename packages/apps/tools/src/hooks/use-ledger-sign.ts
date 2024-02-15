@@ -1,3 +1,4 @@
+import { getTransport } from '@/utils/getTransport';
 import type { IPactCommand } from '@kadena/client';
 import { createTransaction, isSignedTransaction } from '@kadena/client';
 import {
@@ -11,9 +12,7 @@ import type {
   TransferCrossChainTxParams,
 } from '@ledgerhq/hw-app-kda';
 import AppKda from '@ledgerhq/hw-app-kda';
-import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import { useAsyncFn } from 'react-use';
-import useLedgerApp from './use-ledger-app';
 
 type ITransferInput = Parameters<typeof transferCommand>[0];
 type ICreateTransferInput = Parameters<typeof transferCreateCommand>[0];
@@ -109,20 +108,11 @@ const ledgerToPact = (
 };
 
 const sign = async (
-  _app: AppKda | null,
+  app: AppKda,
   transferInput: TransferInput,
   networkId: string,
   derivationPath: string,
 ) => {
-  // const x = pactToLedger(pactCommand);
-  // if (app === null) {
-  //   console.log("Make sure you've connected the Ledger device");
-  //   return undefined;
-  // }
-
-  const transport = await TransportWebHID.create();
-  const app = new AppKda(transport);
-
   const transaction = createTransaction(
     transferInputToPactCommand(transferInput)({ networkId }),
   );
@@ -139,16 +129,19 @@ const sign = async (
   return { pactCommand, isSigned: isSignedTransaction(pactCommand) };
 };
 
-const useLedgerSign = (
-  transferInput: TransferInput,
-  { networkId, derivationPath }: { networkId: string; derivationPath: string },
-) => {
-  // const app = useLedgerApp();
-  const app = null;
-
+const useLedgerSign = () => {
   return useAsyncFn(
-    () => sign(app, transferInput, networkId, derivationPath),
-    [derivationPath, networkId, transferInput],
+    async (
+      transferInput: TransferInput,
+      {
+        networkId,
+        derivationPath,
+      }: { networkId: string; derivationPath: string },
+    ) => {
+      const transport = await getTransport();
+      const app = new AppKda(transport);
+      return sign(app, transferInput, networkId, derivationPath);
+    },
   );
 };
 
