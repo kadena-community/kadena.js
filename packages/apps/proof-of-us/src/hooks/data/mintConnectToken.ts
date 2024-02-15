@@ -5,7 +5,7 @@ import { useProofOfUs } from '../proofOfUs';
 import { createClient } from '@kadena/client';
 import { useSignToken } from './signToken';
 
-export const useMintMultiToken = () => {
+export const useMintConnectToken = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { proofOfUs, background } = useProofOfUs();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

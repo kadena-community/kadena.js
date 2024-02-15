@@ -1,6 +1,6 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { createManifest } from '@/utils/createManifest';
-import { createMultiTokenTransaction } from '@/utils/proofOfUs';
+import { createConnectTokenTransaction } from '@/utils/proofOfUs';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -48,7 +48,7 @@ export const useSignToken = () => {
       return;
     }
 
-    const transaction = await createMultiTokenTransaction(
+    const transaction = await createConnectTokenTransaction(
       manifestData?.url,
       proofOfUs,
       account,

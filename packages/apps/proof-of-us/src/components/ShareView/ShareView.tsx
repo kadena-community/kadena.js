@@ -1,7 +1,7 @@
 import { Button } from '@/components/Button/Button';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { PROOFOFUS_QR_URL } from '@/constants';
-import { useMintMultiToken } from '@/hooks/data/mintMultiToken';
+import { useMintConnectToken } from '@/hooks/data/mintConnectToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { env } from '@/utils/env';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
@@ -27,7 +27,7 @@ interface IProps {
 export const ShareView: FC<IProps> = ({ next, prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
   const { proofOfUs } = useProofOfUs();
-  const { isLoading, hasError, data, mintToken } = useMintMultiToken();
+  const { isLoading, hasError, data, mintToken } = useMintConnectToken();
   const router = useRouter();
   const { id } = useParams();
 

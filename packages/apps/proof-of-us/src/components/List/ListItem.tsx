@@ -3,8 +3,8 @@ import Link from 'next/link';
 import type { FC } from 'react';
 import useSWR from 'swr';
 import { IsLoading } from '../IsLoading/IsLoading';
+import { ConnectThumb } from '../Thumb/ConnectThumb';
 import { EventThumb } from '../Thumb/EventThumb';
-import { MultiThumb } from '../Thumb/MultiThumb';
 import {
   listItemClass,
   listItemLinkClass,
@@ -37,7 +37,9 @@ export const ListItem: FC<IProps> = ({ token }) => {
           {data.properties.eventType === 'attendance' && (
             <EventThumb token={data} />
           )}
-          {data.properties.eventType === 'multi' && <MultiThumb token={data} />}
+          {data.properties.eventType === 'connect' && (
+            <ConnectThumb token={data} />
+          )}
           <span className={titleClass}>{data.name}</span>
           <time
             className={timeClass}

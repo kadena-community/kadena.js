@@ -147,7 +147,7 @@ export const hasMintedAttendaceToken = async (
   return result.status === 'success';
 };
 
-export const createMultiTokenTransaction = async (
+export const createConnectTokenTransaction = async (
   manifestUri: string,
   proofOfUs: IProofOfUsData,
   account: IAccount,

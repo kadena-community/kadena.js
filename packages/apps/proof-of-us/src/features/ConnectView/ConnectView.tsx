@@ -2,7 +2,7 @@ import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { SocialsEditor } from '@/components/SocialsEditor/SocialsEditor';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
-import { useMintMultiToken } from '@/hooks/data/mintMultiToken';
+import { useMintConnectToken } from '@/hooks/data/mintConnectToken';
 import { useSignToken } from '@/hooks/data/signToken';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import type { FC } from 'react';
@@ -12,9 +12,9 @@ interface IProps {
   background: IProofOfUsBackground;
 }
 
-export const Multi: FC<IProps> = ({ proofOfUs }) => {
+export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
   const { signToken } = useSignToken();
-  const { isLoading, hasError, mintToken } = useMintMultiToken();
+  const { isLoading, hasError, mintToken } = useMintConnectToken();
 
   const handleJoin = async () => {
     await signToken();

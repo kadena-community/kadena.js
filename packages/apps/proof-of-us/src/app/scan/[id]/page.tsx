@@ -1,6 +1,6 @@
 'use client';
 
-import { Multi } from '@/features/Multi/Multi';
+import { ConnectView } from '@/features/ConnectView/ConnectView';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -24,7 +24,7 @@ const Page: FC<IProps> = () => {
 
   return (
     <div>
-      <Multi proofOfUs={proofOfUs} background={background} />
+      <ConnectView proofOfUs={proofOfUs} background={background} />
     </div>
   );
 };

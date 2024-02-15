@@ -23,7 +23,7 @@ export const eventThumbClass = style([
   },
 ]);
 
-export const multiThumbClass = style([
+export const connectThumbClass = style([
   atoms({
     display: 'flex',
     justifyContent: 'center',
