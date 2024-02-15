@@ -352,6 +352,7 @@ export const getNonFungibleAccount: DocumentNode = gql`
       ...AllNonFungibleAccountFields
       chainAccounts {
         ...CoreNonFungibleChainAccountFields
+      }
       nonFungibles {
         balance
         id
