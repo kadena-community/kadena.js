@@ -16,6 +16,13 @@ import type { ChainId } from '@kadena/types';
 import chalk from 'chalk';
 import { join } from 'node:path';
 
+import type { IAliasAccountData } from '../account/types.js';
+import {
+  chainIdValidation,
+  formatZodFieldErrors,
+  fundAmountValidation,
+  readAccountFromFile,
+} from '../account/utils/accountHelpers.js';
 import { KEY_EXT, WALLET_EXT } from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
 import {
@@ -94,16 +101,25 @@ export const globalOptions = {
         .filter((key) => !!key);
     },
   }),
-  amount: createOption({
+  fundAmount: createOption({
     key: 'amount' as const,
-    prompt: account.amountPrompt,
-    validation: z
-      .string({
-        /* eslint-disable-next-line @typescript-eslint/naming-convention */
-        invalid_type_error: 'Error: -a, --amount must be a number',
-      })
-      .min(0),
-    option: new Option('-a, --amount <amount>', 'Amount'),
+    prompt: account.fundAmountPrompt,
+    defaultIsOptional: false,
+    validation: z.string({
+      /* eslint-disable-next-line @typescript-eslint/naming-convention */
+      invalid_type_error: 'Error: -m, --amount must be a positive number',
+    }),
+    option: new Option('-m, --amount <amount>', 'Amount'),
+    transform: (amount: string) => {
+      try {
+        const parsedAmount = parseInt(amount, 10);
+        fundAmountValidation.parse(parsedAmount);
+        return amount;
+      } catch (error) {
+        const errorMessage = formatZodFieldErrors(error);
+        throw new Error(`Error: -m, --amount ${errorMessage}`);
+      }
+    },
   }),
   fungible: createOption({
     key: 'fungible' as const,
@@ -314,6 +330,7 @@ export const globalOptions = {
   networkSelect: createOption({
     key: 'network' as const,
     prompt: networks.networkSelectOnlyPrompt,
+    defaultIsOptional: false,
     validation: z.string(),
     option: new Option(
       '-n, --network <network>',
@@ -332,16 +349,21 @@ export const globalOptions = {
   chainId: createOption({
     key: 'chainId' as const,
     prompt: networks.chainIdPrompt,
-    validation: z
-      .string({
-        /* eslint-disable-next-line @typescript-eslint/naming-convention */
-        invalid_type_error: 'Error: -c, --chain-id must be a number',
-      })
-      .min(0)
-      .max(19),
+    defaultIsOptional: false,
+    validation: z.string({
+      /* eslint-disable-next-line @typescript-eslint/naming-convention */
+      invalid_type_error: 'Error: -c, --chain-id must be a number',
+    }),
     option: new Option('-c, --chain-id <chainId>'),
     transform: (chainId: string) => {
-      return chainId as ChainId;
+      const parsedChainId = parseInt(chainId.trim(), 10);
+      try {
+        chainIdValidation.parse(parsedChainId);
+        return chainId as ChainId;
+      } catch (error) {
+        const errorMessage = formatZodFieldErrors(error);
+        throw new Error(`Error: -c --chain-id ${errorMessage}`);
+      }
     },
   }),
   // Keys
@@ -621,6 +643,21 @@ export const globalOptions = {
     prompt: account.accountNameSelectionPrompt,
     validation: z.string(),
     option: new Option('-a, --account-name <accountName>', 'Account name'),
+  }),
+  accountSelect: createOption({
+    key: 'account' as const,
+    prompt: account.accountSelectPrompt,
+    defaultIsOptional: false,
+    validation: z.string(),
+    option: new Option('-a, --account <account>', 'Select an account'),
+    expand: async (accountAlias: string): Promise<IAliasAccountData> => {
+      try {
+        const accountDetails = await readAccountFromFile(accountAlias);
+        return accountDetails;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
   }),
 } as const;
 

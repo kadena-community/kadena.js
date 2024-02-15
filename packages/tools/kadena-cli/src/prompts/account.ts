@@ -1,6 +1,13 @@
-import { getAllAccountNames } from '../account/utils/accountHelpers.js';
+import {
+  fundAmountValidation,
+  getAllAccountNames,
+} from '../account/utils/accountHelpers.js';
+import { NO_ACCOUNT_ERROR_MESSAGE } from '../constants/account.js';
 import type { IPrompt } from '../utils/createOption.js';
-import { truncateText } from '../utils/helpers.js';
+import {
+  maskStringPreservingStartAndEnd,
+  truncateText,
+} from '../utils/helpers.js';
 import { input, select } from '../utils/prompts.js';
 
 export const publicKeysPrompt: IPrompt<string> = async (
@@ -48,10 +55,17 @@ export const accountKdnNamePrompt: IPrompt<string> = async () =>
     message: 'Enter an .kda name:',
   });
 
-export const amountPrompt: IPrompt<string> = async () =>
+export const fundAmountPrompt: IPrompt<string> = async () =>
   await input({
     validate(value: string) {
-      return !isNaN(parseFloat(value.replace(',', '.')));
+      const parsedValue = parseFloat(value.trim().replace(',', '.'));
+
+      const parseResult = fundAmountValidation.safeParse(parsedValue);
+      if (!parseResult.success) {
+        const formatted = parseResult.error.format();
+        return `Amount: ${formatted._errors[0]}`;
+      }
+      return true;
     },
     message: 'Enter an amount.',
   });
@@ -152,4 +166,36 @@ export const accountNameSelectionPrompt: IPrompt<string> = async () => {
   }
 
   return selectedName;
+};
+
+export const accountSelectPrompt: IPrompt<string> = async () => {
+  const allAccounts = await getAllAccountNames();
+
+  if (allAccounts.length === 0) {
+    throw new Error(NO_ACCOUNT_ERROR_MESSAGE);
+  }
+
+  const maxAliasLength = Math.max(
+    ...allAccounts.map(({ alias }) => alias.length),
+  );
+
+  const allAccountChoices = allAccounts.map(({ alias, name }) => {
+    const aliasWithoutExtension = alias.split('.yaml')[0];
+    const maxLength = maxAliasLength < 25 ? maxAliasLength : 25;
+    const paddedAlias = aliasWithoutExtension.padEnd(maxLength, ' ');
+    return {
+      value: alias,
+      name: `${truncateText(
+        paddedAlias,
+        25,
+      )} - ${maskStringPreservingStartAndEnd(name, 20)}`,
+    };
+  });
+
+  const selectedAlias = await select({
+    message: 'Select an account:(alias - account name)',
+    choices: allAccountChoices,
+  });
+
+  return selectedAlias;
 };
