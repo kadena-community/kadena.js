@@ -17,14 +17,14 @@ export const createAddAccountManualCommand = createCommandFlexible(
     globalOptions.networkSelect(),
     globalOptions.chainId(),
     globalOptions.accountOverwrite(),
-    globalOptions.publicKeys({ isOptional: false }),
+    globalOptions.publicKeys(),
     globalOptions.predicate(),
   ],
 
   async (option, values) => {
     const accountAlias = (await option.accountAlias()).accountAlias;
     const accountName = (await option.accountName()).accountName;
-    const fungible = (await option.fungible()).fungible;
+    const fungible = (await option.fungible()).fungible || 'coin';
 
     const { network, networkConfig } = await option.network();
 
@@ -54,10 +54,18 @@ export const createAddAccountManualCommand = createCommandFlexible(
     // If the user choose not to overwrite the account, we need to ask for the public keys and predicate
     if (!accountOverwrite) {
       publicKeysPrompt = await option.publicKeys();
-      predicate = (await option.predicate()).predicate;
+      predicate = (await option.predicate()).predicate || 'keys-all';
     }
 
     const { publicKeys, publicKeysConfig = [] } = publicKeysPrompt ?? {};
+
+    // when --quiet is passed and account details are not in chain
+    // public keys are required to add account
+    if (!hasAccountDetails && !publicKeysConfig.length) {
+      throw new Error(
+        'Missing required argument PublicKeys: "-p, --public-keys <publicKeys>"',
+      );
+    }
 
     const validPublicKeys = publicKeysConfig.filter((key) => !!key);
 

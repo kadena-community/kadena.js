@@ -96,7 +96,7 @@ export const globalOptions = {
     ),
     expand: async (publicKeys: string) => {
       return publicKeys
-        .split(',')
+        ?.split(',')
         .map((value) => value.trim())
         .filter((key) => !!key);
     },
