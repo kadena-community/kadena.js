@@ -4,7 +4,8 @@ const { defineConfig } = require('vitest/config');
 module.exports = defineConfig({
   plugins: [tsconfigPaths({ projects: ['./tsconfig.json'] })],
   test: {
-    include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    reporters: ['dot'],
+    include: ['src/**/*.{test,spec}.{ts,tsx}'],
     globals: false,
     coverage: {
       include: ['src/**'],
@@ -16,7 +17,7 @@ module.exports = defineConfig({
         functions: 90,
         branches: 90,
         statements: 90,
-        autoUpdate: false
+        autoUpdate: false,
       },
     },
   },
