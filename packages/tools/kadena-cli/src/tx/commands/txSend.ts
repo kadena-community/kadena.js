@@ -3,7 +3,6 @@ import type { Command } from 'commander';
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import { createClient, isSignedTransaction } from '@kadena/client';
 import path from 'node:path';
-import { clientSendWrapper } from '../../utils/client.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
@@ -26,17 +25,6 @@ const isFilePaths = (
 };
 interface ISubmitResponse {
   transaction: IAnyCommand;
-  requestKey: string;
-}
-
-const isFilePaths = (
-  transactions: (IUnsignedCommand | ICommand)[] | string[],
-): transactions is string[] => {
-  return typeof transactions[0] === 'string';
-};
-
-interface ISubmitResponse {
-  transaction: IUnsignedCommand | ICommand;
   requestKey: string;
 }
 
@@ -74,7 +62,7 @@ export const sendTransactionAction = async ({
         continue;
       }
 
-      const response = await clientSendWrapper(() => client.submit(command));
+      const response = await client.submit(command);
 
       successfulCommands.push({
         transaction: command,

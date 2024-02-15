@@ -26,7 +26,7 @@ export const PLAIN_KEY_DIR = `${KADENA_DIR}/keys`;
 
 // transactions
 export const TRANSACTION_FOLDER_NAME = 'transactions';
-export const TRANSACTION_PATH = `/${TRANSACTION_FOLDER_NAME}`;
+export const TRANSACTION_PATH = `${KADENA_DIR}/${TRANSACTION_FOLDER_NAME}`;
 
 // templates
 export const TX_TEMPLATE_FOLDER = `${KADENA_DIR}/transaction-templates`;
