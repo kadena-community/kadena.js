@@ -67,6 +67,10 @@ export async function getTokenDetails(
   return result;
 }
 
+/**
+ * Get the chain ids for which the account has tokens
+ *
+ */
 export async function checkAccountChains(accountName: string) {
   const chainIds = new Set<string>();
   const allEvents = await prismaClient.reconcile.findMany({

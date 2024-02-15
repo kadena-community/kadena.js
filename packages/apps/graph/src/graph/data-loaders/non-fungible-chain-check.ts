@@ -5,6 +5,10 @@ interface NonFungibleChainCheck {
   accountName: string;
 }
 
+/**
+ * Check the chains for which the account has non-fungible tokens
+ *
+ */
 export const nonFungibleChainCheck = new DataLoader<
   NonFungibleChainCheck,
   string[]
