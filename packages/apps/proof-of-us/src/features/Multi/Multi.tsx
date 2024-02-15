@@ -14,7 +14,7 @@ interface IProps {
 
 export const Multi: FC<IProps> = ({ proofOfUs }) => {
   const { signToken } = useSignToken();
-  const { isLoading, hasError, mintToken } = useMintMultiToken();
+  const { isLoading, hasError } = useMintMultiToken();
 
   const handleJoin = async () => {
     await signToken();
@@ -35,14 +35,6 @@ export const Multi: FC<IProps> = ({ proofOfUs }) => {
         {!isAlreadySigning(proofOfUs.signees) && (
           <button onClick={handleJoin}>Sign</button>
         )}
-
-        <button
-          onClick={() => {
-            mintToken();
-          }}
-        >
-          mint
-        </button>
 
         {isLoading && <div>is signing</div>}
         {hasError && <div>has error signing</div>}

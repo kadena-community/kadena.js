@@ -1,4 +1,5 @@
 import { fetchManifestData } from '@/utils/fetchManifestData';
+
 import Link from 'next/link';
 import type { FC } from 'react';
 import useSWR from 'swr';
@@ -19,11 +20,6 @@ interface IProps {
 export const ListItem: FC<IProps> = ({ token }) => {
   const { data, isLoading } = useSWR(token.uri, fetchManifestData, {
     revalidateOnFocus: false,
-    revalidateOnMount: false,
-    revalidateOnReconnect: false,
-    refreshWhenOffline: false,
-    refreshWhenHidden: false,
-    refreshInterval: 0,
   });
 
   return (

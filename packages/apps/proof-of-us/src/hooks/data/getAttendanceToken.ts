@@ -12,7 +12,9 @@ export const useGetAttendanceToken: IDataHook<
   const [hasError, setHasError] = useState<IError>();
   const [token, setToken] = useState<IProofOfUsToken | undefined>();
 
-  const { data, isLoading } = useSWR(token?.uri, fetchManifestData);
+  const { data, isLoading } = useSWR(token?.uri, fetchManifestData, {
+    revalidateOnFocus: false,
+  });
 
   const load = async () => {
     const result = await getProofOfUs(id);
