@@ -1,9 +1,7 @@
 import { Button } from '@/components/Button/Button';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
-import { PROOFOFUS_QR_URL } from '@/constants';
 import { useMintMultiToken } from '@/hooks/data/mintMultiToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { env } from '@/utils/env';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { CopyButton, SystemIcon, TextField } from '@kadena/react-ui';
 import Link from 'next/link';

@@ -14,7 +14,7 @@ interface IProps {
 
 export const Multi: FC<IProps> = ({ proofOfUs }) => {
   const { signToken } = useSignToken();
-  const { isLoading, hasError, mintToken } = useMintMultiToken();
+  const { isLoading, hasError } = useMintMultiToken();
 
   const handleJoin = async () => {
     await signToken();
