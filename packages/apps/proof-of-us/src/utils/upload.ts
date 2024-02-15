@@ -26,10 +26,6 @@ interface INFTUrl {
 export const createImageUrl = async (
   bg: string,
 ): Promise<INFTUrl | undefined> => {
-  if (!process.env.NFTSTORAGE_API_TOKEN) {
-    return;
-  }
-
   const mimeType = bg.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/)?.[1];
 
   if (!mimeType) {

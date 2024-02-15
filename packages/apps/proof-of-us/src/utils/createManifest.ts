@@ -2,7 +2,6 @@ export const createManifest = (proofOfUs: IProofOfUsData, url: string): {} => {
   const signees =
     Object.keys(proofOfUs.signees).map((k: any) => proofOfUs.signees[k]) ?? [];
 
-  console.log(signees);
   return {
     name: proofOfUs.title,
     description: `${proofOfUs.title} was a great event`,

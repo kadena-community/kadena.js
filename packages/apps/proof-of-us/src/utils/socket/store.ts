@@ -138,6 +138,12 @@ const ProofOfUsStore = () => {
     });
   };
 
+  const updateTx = async (proofOfUs: IProofOfUsData, tx: string) => {
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      tx,
+    });
+  };
+
   const addTitle = async (proofOfUs: IProofOfUsData, value: string) => {
     if (isAlreadySigning(proofOfUs.signees)) return;
 
@@ -193,6 +199,7 @@ const ProofOfUsStore = () => {
     addTitle,
     updateBackgroundColor,
     updateSigner,
+    updateTx,
   };
 };
 

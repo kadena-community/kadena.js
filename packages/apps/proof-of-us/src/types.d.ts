@@ -42,6 +42,7 @@ type IProofOfUsBackground = {
 type TokenType = 'multi' | 'attendance';
 
 interface IProofOfUsData {
+  tx: IUnsignedCommand;
   eventId: string;
   mintStatus: IMintStatus;
   status: IBuildStatusValues;

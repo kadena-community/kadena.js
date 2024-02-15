@@ -1,55 +1,69 @@
 import { useAvatar } from '@/hooks/avatar';
-import { wait } from '@/utils/wait';
 import { useState } from 'react';
 import { useProofOfUs } from '../proofOfUs';
 
+import { createClient } from '@kadena/client';
 import { useSignToken } from './signToken';
 
 export const useMintMultiToken = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { proofOfUs, background } = useProofOfUs();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [hasError, setHasError] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, setData] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { uploadBackground } = useAvatar();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { signToken } = useSignToken();
 
-  const send = (status: IMintStatus) => {
-    if (!proofOfUs) {
-      setIsLoading(false);
-      setHasError(true);
-      return;
-    }
+  // const send = (status: IMintStatus) => {
+  //   if (!proofOfUs) {
+  //     setIsLoading(false);
+  //     setHasError(true);
+  //     return;
+  //   }
 
-    //TODO fix mintstatus
-  };
+  //   //TODO fix mintstatus
+  // };
 
-  const handleUpload = async () => {
-    if (!background || !proofOfUs) return;
+  // const handleUpload = async () => {
+  //   if (!background || !proofOfUs) return;
 
-    await uploadBackground(proofOfUs?.proofOfUsId);
-  };
+  //   await uploadBackground(proofOfUs?.proofOfUsId);
+  // };
 
   const mintToken = async () => {
-    setIsLoading(true);
-    setHasError(false);
-    await signToken();
-    send('signing');
+    if (!proofOfUs?.tx) return;
 
-    send('uploading');
-    handleUpload();
-    await wait(2000);
+    const client = createClient();
+    const tx = JSON.parse(Buffer.from(proofOfUs.tx, 'base64').toString());
 
-    send('uploading_manifest');
-    await wait(2000);
+    const fixedTx = { cmd: JSON.parse(tx.cmd) };
+    console.log(222, fixedTx);
+    console.log(34, tx);
+    const res = await client.local(tx);
+    console.log(111, res);
 
-    send('minting');
-    await wait(2000);
+    //console.log(1, res);
 
-    send('success');
-    setData('success');
-
-    console.log('am I getting here!!');
-    setIsLoading(false);
+    // setIsLoading(true);
+    // setHasError(false);
+    // await signToken();
+    // send('signing');
+    // send('uploading');
+    // handleUpload();
+    // await wait(2000);
+    // send('uploading_manifest');
+    // await wait(2000);
+    // send('minting');
+    // await wait(2000);
+    // send('success');
+    // setData('success');
+    // console.log('am I getting here!!');
+    // setIsLoading(false);
   };
 
   return { isLoading, hasError, data, mintToken };
