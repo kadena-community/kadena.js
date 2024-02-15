@@ -11,7 +11,7 @@ import { services } from '../../services/index.js';
 import { notEmpty } from '../../utils/helpers.js';
 import { isEmpty } from './addHelpers.js';
 
-const accountAliasFileSchema = z.object({
+export const accountAliasFileSchema = z.object({
   name: z.string(),
   fungible: z.string(),
   publicKeys: z.array(z.string()),
