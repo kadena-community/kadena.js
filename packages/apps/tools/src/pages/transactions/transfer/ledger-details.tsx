@@ -1,64 +1,32 @@
 import { AccountHoverTag } from '@/components/Global';
 // import { useLedgerPublicKey } from '@/hooks/use-ledger-public-key';
-// import transactionDetails from '@/pages/transactions/transfer/transaction-details';
-import {
-  Button,
-  Combobox,
-  ComboboxItem,
-  SystemIcon,
-  Text,
-  ToggleButton,
-} from '@kadena/react-ui';
-import React, { useState } from 'react';
+import { Combobox, ComboboxItem, SystemIcon } from '@kadena/react-ui';
+import React from 'react';
 
 const options = Array.from({ length: 100 }, (_, i) => ({
   label: `${i}`,
   value: i,
 }));
 
-const LedgerDetails = () => {
-  const [ledgerDetailsExpanded, setLedgerDetailsExpanded] = useState(false);
-
+const LedgerDetails = (): React.JSX.Element => {
   // const [keyId, setKeyId] = useState<number>();
   // const publicKey = useLedgerPublicKey(keyId);
   const publicKey: string = '';
 
   return (
     <>
-      <ToggleButton
-        isSelected={ledgerDetailsExpanded}
-        onChange={setLedgerDetailsExpanded}
-        startIcon={
-          ledgerDetailsExpanded ? (
-            <SystemIcon.ChevronUp />
-          ) : (
-            <SystemIcon.ChevronDown />
-          )
-        }
+      <Combobox
+        startIcon={<SystemIcon.KeyIconFilled />}
+        allowsCustomValue
+        defaultItems={options}
       >
-        Transaction
-      </ToggleButton>
-      {ledgerDetailsExpanded ? (
-        <>
-          <Combobox
-            startIcon={<SystemIcon.KeyIconFilled />}
-            allowsCustomValue
-            defaultItems={options}
-          >
-            {(item) => (
-              <ComboboxItem key={`ledger-key-${item.value}`}>
-                {item.label}
-              </ComboboxItem>
-            )}
-          </Combobox>
-          {publicKey ? (
-            <AccountHoverTag value={publicKey.slice(0, 15)} />
-          ) : (
-            <Text as="code">Connect with your ledger to fetch your key</Text>
-          )}
-          <Button>Verify</Button>
-        </>
-      ) : null}
+        {(item) => (
+          <ComboboxItem key={`ledger-key-${item.value}`}>
+            {item.label}
+          </ComboboxItem>
+        )}
+      </Combobox>
+      {publicKey ? <AccountHoverTag value={publicKey.slice(0, 15)} /> : null}
     </>
   );
 };

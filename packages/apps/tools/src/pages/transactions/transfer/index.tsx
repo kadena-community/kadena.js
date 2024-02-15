@@ -1,17 +1,13 @@
 import type { FormStatus, PredKey } from '@/components/Global';
 import {
-  AccountHoverTag,
   AccountNameField,
   ChainSelect,
   FormStatusNotification,
-  HoverTag,
   NAME_VALIDATION,
   PredKeysSelect,
-  PublicKeyField,
 } from '@/components/Global';
 import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
-// import useAccountDetails from '@/hooks/use-account-details';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 
 import {
@@ -21,21 +17,19 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CHAINS } from '@kadena/chainweb-node-client';
 // import { createSignWithLedger } from '@kadena/client';
+import AddPublicKeysSection from '@/components/Global/AddPublicKeysSection';
+import { Toggle } from '@/components/Global/Toggle';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
-import { pubKeysContainerStyle } from '@/pages/faucet/new/styles.css';
 import { notificationLinkStyle } from '@/pages/transactions/cross-chain-transfer-finisher/styles.css';
+import TransactionDetails from '@/pages/transactions/transfer/transaction-details';
 import { createPrincipal } from '@/services/faucet/create-principal';
-import { validatePublicKey } from '@/services/utils/utils';
 import { stripAccountPrefix } from '@/utils/string';
 import { transfer } from '@kadena/client-utils/coin';
 import {
-  Box,
   Breadcrumbs,
   BreadcrumbsItem,
   Button,
   Card,
-  Combobox,
-  ComboboxItem,
   FormFieldHeader,
   Heading,
   Notification,
@@ -56,9 +50,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { containerClass } from '../styles.css';
-// import LedgerDetails from './ledger-details';
-import { Toggle } from '@/components/Global/Toggle';
-import TransactionDetails from '@/pages/transactions/transfer/transaction-details';
+import LedgerDetails from './ledger-details';
 
 const schema = z.object({
   sender: NAME_VALIDATION,
@@ -66,7 +58,6 @@ const schema = z.object({
   receiver: NAME_VALIDATION,
   amount: z.number().positive(),
   receiverChainId: z.enum(CHAINS),
-  pubKey: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -82,29 +73,24 @@ const TransferPage = () => {
 
   const [pubKeys, setPubKeys] = useState<string[]>([]);
   const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
-  const [senderPublicKey, setSenderPublicKey] = useState<string>('');
+  // const [senderPublicKey, setSenderPublicKey] = useState<string>('');
+  const [initialPublicKey, setInitialPublicKey] = useState<string>('');
+  const [signedTx, setSignedTx] = useState({});
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;
     message?: string;
   }>({ status: 'idle' });
 
   const accountFromOptions = ['Ledger', 'WalletConnect'];
-  const ledgerOptions = Array.from({ length: 100 }, (_, i) => ({
-    label: `${i}`,
-    value: i,
-  }));
 
-  console.log(setSenderPublicKey);
+  console.log(setSignedTx);
 
   const {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
     getValues,
-    setError,
-    resetField,
     setValue,
-    clearErrors,
     watch,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -126,9 +112,6 @@ const TransferPage = () => {
     networkId: 'testnet04',
     chainId: getValues('senderChainId'),
   });
-
-  console.log('SENDER QUERY: ');
-  console.log('error, details: ', senderData);
 
   const watchReceiver = watch('receiver');
   const watchReceiverChainId = watch('receiverChainId');
@@ -159,9 +142,6 @@ const TransferPage = () => {
     networkId: 'testnet04',
     chainId: getValues('receiverChainId'),
   });
-
-  console.log('RECEIVER QUERY: ');
-  console.log(receiverData);
 
   const { data: receiverName } = useQuery({
     queryKey: [
@@ -201,7 +181,7 @@ const TransferPage = () => {
     )
   ) {
     setToAccountTab('new');
-    setValue('pubKey', stripAccountPrefix(getValues('receiver')));
+    setInitialPublicKey(stripAccountPrefix(getValues('receiver')));
     setTimeout(() => {
       setValue('receiver', '');
     }, 100);
@@ -260,45 +240,7 @@ const TransferPage = () => {
     setToAccountTab(value);
   };
 
-  const addPublicKey = () => {
-    const value = stripAccountPrefix(getValues('pubKey') || '');
-
-    const copyPubKeys = [...pubKeys];
-    const isDuplicate = copyPubKeys.includes(value);
-
-    if (isDuplicate) {
-      setError('pubKey', { message: t('Duplicate public key') });
-      return;
-    }
-
-    copyPubKeys.push(value);
-    setPubKeys(copyPubKeys);
-    resetField('pubKey');
-  };
-
-  const deletePublicKey = (index: number) => {
-    const copyPubKeys = [...pubKeys];
-    copyPubKeys.splice(index, 1);
-
-    setPubKeys(copyPubKeys);
-    setValue('receiver', '');
-  };
-
-  const renderPubKeys = () => (
-    <div className={pubKeysContainerStyle}>
-      {pubKeys.map((key, index) => (
-        <HoverTag
-          key={`public-key-${key}`}
-          value={key}
-          onIconButtonClick={() => {
-            deletePublicKey(index);
-          }}
-          icon="TrashCan"
-          maskOptions={{ headLength: 4, character: '.' }}
-        />
-      ))}
-    </div>
-  );
+  const deletePublicKey = () => setValue('receiver', '');
 
   const setLegacyOn = () => {
     setLegacyToggleOn(!legacyToggleOn);
@@ -379,7 +321,6 @@ const TransferPage = () => {
             {/* SENDER  FLOW */}
             <Card fullWidth>
               <Heading as={'h4'}>{t('Sender')} </Heading>
-              {/* new */}
 
               <Stack flexDirection={'row'} justifyContent={'space-between'}>
                 <Select
@@ -408,23 +349,7 @@ const TransferPage = () => {
                 gap="sm"
               >
                 <FormFieldHeader label={t('Account')} />
-                {/*<LedgerDetails />*/}
-                <>
-                  <Combobox
-                    startIcon={<SystemIcon.KeyIconFilled />}
-                    allowsCustomValue
-                    defaultItems={ledgerOptions}
-                  >
-                    {(item) => (
-                      <ComboboxItem key={`ledger-key-${item.value}`}>
-                        {item.label}
-                      </ComboboxItem>
-                    )}
-                  </Combobox>
-                  {senderPublicKey ? (
-                    <AccountHoverTag value={senderPublicKey.slice(0, 15)} />
-                  ) : null}
-                </>
+                <LedgerDetails />
 
                 <Stack flexDirection={'row'} justifyContent={'space-between'}>
                   <div className={chainSelectContainerClass}>
@@ -442,7 +367,6 @@ const TransferPage = () => {
                       )}
                     />
                   </div>
-
                   <Toggle
                     label={'is Legacy'}
                     toggled={legacyToggleOn}
@@ -499,8 +423,7 @@ const TransferPage = () => {
 
             {/* RECEIVER FLOW */}
             <Card fullWidth>
-              <FormFieldHeader label={t('Receiver')} />
-
+              <Heading as={'h4'}>{t('Receiver')} </Heading>
               <Tabs
                 aria-label="receiver-account-tabs"
                 selectedKey={toAccountTab}
@@ -511,54 +434,13 @@ const TransferPage = () => {
                 </TabItem>
 
                 <TabItem key="new" title="New">
-                  <div>
-                    {renderAccountFieldWithChain('existing')}
-
-                    <Heading as="h5">Public Keys</Heading>
-                    <Box marginBlockEnd="md" />
-                    <Controller
-                      name="pubKey"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <PublicKeyField
-                          {...field}
-                          onChange={(e) => {
-                            field.onChange(e);
-                            clearErrors('pubKey');
-                          }}
-                          errorMessage={errors?.pubKey?.message}
-                          isInvalid={!!errors.pubKey}
-                          endAddon={
-                            <Button
-                              icon={<SystemIcon.Plus />}
-                              variant="text"
-                              onPress={() => {
-                                const value = getValues('pubKey');
-                                const valid = validatePublicKey(
-                                  stripAccountPrefix(value || ''),
-                                );
-                                if (valid) {
-                                  addPublicKey();
-                                } else {
-                                  setError('pubKey', {
-                                    type: 'custom',
-                                    message: t('invalid-pub-key-length'),
-                                  });
-                                }
-                              }}
-                              aria-label="Add public key"
-                              title="Add Public Key"
-                              color="primary"
-                              type="button"
-                            />
-                          }
-                        />
-                      )}
+                  <Stack flexDirection={'column'} gap={'md'}>
+                    <AddPublicKeysSection
+                      publicKeys={pubKeys}
+                      deletePubKey={deletePublicKey}
+                      setPublicKeys={setPubKeys}
+                      initialPublicKey={initialPublicKey}
                     />
-
-                    {pubKeys.length > 0 ? renderPubKeys() : null}
-
                     {pubKeys.length > 1 ? (
                       <PredKeysSelect
                         onSelectionChange={onPredSelectChange}
@@ -566,7 +448,9 @@ const TransferPage = () => {
                         aria-label="Select Predicate"
                       />
                     ) : null}
-                  </div>
+
+                    {renderAccountFieldWithChain('existing')}
+                  </Stack>
                 </TabItem>
               </Tabs>
             </Card>
@@ -583,7 +467,7 @@ const TransferPage = () => {
               </Button>
             </div>
 
-            <TransactionDetails network={selectedNetwork} />
+            {signedTx ? <TransactionDetails network={selectedNetwork} /> : null}
 
             <div className={buttonContainerClass}>
               <Button
