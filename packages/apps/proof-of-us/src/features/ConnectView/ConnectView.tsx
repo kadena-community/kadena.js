@@ -30,19 +30,18 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
         <h3>{proofOfUs.title}</h3>
         <SocialsEditor />
         <ImagePositions />
-        <div>status: {proofOfUs?.mintStatus}</div>
-        <ListSignees />
-        {!isAlreadySigning(proofOfUs.signees) && (
-          <button onClick={handleJoin}>Sign</button>
-        )}
-
         <button
           onClick={() => {
             mintToken();
           }}
         >
-          mint
+          Sign temporary
         </button>
+        <div>status: {proofOfUs?.mintStatus}</div>
+        <ListSignees />
+        {!isAlreadySigning(proofOfUs.signees) && (
+          <button onClick={handleJoin}>Sign</button>
+        )}
 
         {isLoading && <div>is signing</div>}
         {hasError && <div>has error signing</div>}

@@ -24,6 +24,7 @@ export const useSubmit = () => {
 
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
     setTx(tx);
+
     if (tx.sigs.filter((x: any) => x === null).length)
       return setStatus(SubmitStatus.INCOMPLETE);
 

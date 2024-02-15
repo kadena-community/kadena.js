@@ -163,19 +163,22 @@ export const createConnectTokenTransaction = async (
     throw new Error('credential of account not found');
   }
 
+  const collectionId = 'collection:K85ZSH3LUXS3SB_Aokhseap0U6AHyNbSJKGfUM4kbik';
+
   const transaction = Pact.builder
     .execution(
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.create-and-mint-connection-token
         "${eventId}"
       "${manifestUri}"
-      (read-msg 'connection-guards)
+      (map (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard) ["c:xwzrJU084XjqkLlYgdno8ZUaKmrPPVsmVbCwPcdjj1g" "c:xyIFb906xRXLy77XrU-AjE7FpxmWij1GLA7oHMxVml4"])
       )`,
     )
     .addData('connection-guards', [
-      'WEBAUTHN-a50102032620012158200ad0e59b1905c813ae05d03ab5d014d9a2faea845a5f6721b64b9d31f37349f122582069579aa8491b620ca13f2365688b4b889ca4d92076162ba355bf2b8a72ee18de',
-      credential.publicKey,
+      'c:xwzrJU084XjqkLlYgdno8ZUaKmrPPVsmVbCwPcdjj1g',
+      'c:xyIFb906xRXLy77XrU-AjE7FpxmWij1GLA7oHMxVml4',
     ])
     .addData('event_id', eventId)
+    .addData('collection_id', collectionId)
     .addData('uri', manifestUri)
     .setNetworkId(env.NETWORKID ?? '')
     .setMeta({
@@ -187,16 +190,28 @@ export const createConnectTokenTransaction = async (
     .addSigner(
       // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
       {
-        pubKey: `${credential.publicKey}`,
+        pubKey:
+          'WEBAUTHN-a5010203262001215820b6239e70171da2cb539a458b82fb4572ed1a6547515279661f2183266f39efa122582095836852aacd83a8655aa38ab8dae2f6dc4f1b3add271b7eada3b3254333d943',
         scheme: 'WebAuthn',
       },
       (withCap) => [
-        withCap('CONNECT', eventId, manifestUri),
+        withCap(
+          `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.CONNECT`,
+          `${eventId}`,
+          `${manifestUri}`,
+        ),
         withCap(
           `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us-gas-station.GAS_PAYER`,
           `${process.env.NEXT_PUBLIC_ATTENDANCE_GASPAYER}`,
           new PactNumber(0).toPactInteger(),
           new PactNumber(0).toPactDecimal(),
+        ),
+        withCap(
+          `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.TOKEN_CREATION`,
+          `${eventId}`,
+        ),
+        withCap(
+          `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.COLLECTION_OPERATOR`,
         ),
       ],
     )
@@ -204,10 +219,24 @@ export const createConnectTokenTransaction = async (
       // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
       {
         pubKey:
-          'WEBAUTHN-a50102032620012158200ad0e59b1905c813ae05d03ab5d014d9a2faea845a5f6721b64b9d31f37349f122582069579aa8491b620ca13f2365688b4b889ca4d92076162ba355bf2b8a72ee18de',
+          'WEBAUTHN-a50102032620012158205599ee57b82bb2414a9689ff80a4b2462d5c2ce081cbeb33cfc3b8e50dbd038a225820fe4a73319de0291d5c1159256a00eef53009c7862dd5e5472adc17cacca9db3a',
         scheme: 'WebAuthn',
       },
-      (withCap) => [withCap('CONNECT', eventId, manifestUri)],
+      (withCap) => [
+        withCap(
+          `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.CONNECT`,
+          `${eventId}`,
+          `${manifestUri}`,
+        ),
+
+        withCap(
+          `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.TOKEN_CREATION`,
+          `${eventId}`,
+        ),
+        withCap(
+          `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.COLLECTION_OPERATOR`,
+        ),
+      ],
     )
     .createTransaction();
 

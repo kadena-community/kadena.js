@@ -55,7 +55,6 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
 
   return (
     <section>
-      sdsdsdf
       {status === 3 && (
         <>
           <TitleHeader
