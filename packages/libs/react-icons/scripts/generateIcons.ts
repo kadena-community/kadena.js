@@ -12,6 +12,8 @@ const REPO = 'gh:kadena-community/design-system/tokens/foundation/icon#main';
 const SVGS_PATH = join(process.cwd(), 'svgs');
 const SVG_TOKENS_FILE = join(SVGS_PATH, 'svg.tokens.json');
 const OUT_DIR = join(process.cwd(), 'src');
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 interface IconToken {
   $type: 'icon';
   $name: string;
@@ -32,15 +34,13 @@ const defaultPrettierOptions: Options = {
 async function getPrettierConfigs() {
   const prettierConfigFile = await resolveConfigFile();
   let prettierConfig = defaultPrettierOptions;
-  if (prettierConfigFile) {
+  if (prettierConfigFile !== null) {
     const resolved = await resolveConfig(prettierConfigFile);
     if (resolved) {
       prettierConfig = resolved;
     }
   }
-  if (prettierConfig && !prettierConfig?.parser) {
-    prettierConfig.parser = defaultPrettierOptions.parser;
-  }
+  prettierConfig.parser = defaultPrettierOptions.parser;
   return prettierConfig;
 }
 async function main() {

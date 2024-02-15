@@ -2,7 +2,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as Icons from '@kadena/react-icons';
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import React, { ComponentType, SVGProps, useState } from 'react';
+import { useFilter } from 'react-aria';
+import { TextField } from '..';
 import { atoms, tokens } from '../../styles';
 
 const iconColors = {
@@ -56,6 +58,7 @@ type Story = StoryObj<{
   fill: IconColor;
 }>;
 
+const allIcons = Object.entries(Icons);
 export const All: Story = {
   name: 'All Icons',
   args: {
@@ -63,22 +66,45 @@ export const All: Story = {
     fill: 'base',
   },
   render: ({ fontSize, fill }) => {
+    const { contains } = useFilter({ sensitivity: 'base', usage: 'search' });
+    const [search, setSearch] = useState('');
     return (
       <div
         className={atoms({
           display: 'flex',
-          flexWrap: 'wrap',
-          flex: 1,
-          gap: 'sm',
+          flexDirection: 'column',
+          gap: 'md',
+          width: '100%',
         })}
       >
-        {Object.entries(Icons).map(([key, Icon]) => (
-          <Icon
-            key={key}
-            fontSize={icoSizes[fontSize]}
-            fill={iconColors[fill]}
-          />
-        ))}
+        <TextField
+          label="Search"
+          placeholder="Search for an icon by name"
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
+        />
+        <div
+          className={atoms({
+            display: 'flex',
+            flexWrap: 'wrap',
+            flex: 1,
+            gap: 'sm',
+          })}
+        >
+          {allIcons
+            .filter(([key]) =>
+              contains(key.toLowerCase(), search.toLowerCase()),
+            )
+            .map(([key, Icon]) => (
+              <Icon
+                key={key}
+                fontSize={icoSizes[fontSize]}
+                fill={iconColors[fill]}
+                title={key}
+              />
+            ))}
+        </div>
       </div>
     );
   },
