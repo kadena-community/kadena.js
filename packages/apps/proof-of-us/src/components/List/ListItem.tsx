@@ -26,6 +26,7 @@ export const ListItem: FC<IProps> = ({ token }) => {
     refreshInterval: 0,
   });
 
+  console.log(data, isLoading);
   return (
     <li className={listItemClass}>
       {isLoading && <IsLoading />}
@@ -38,7 +39,7 @@ export const ListItem: FC<IProps> = ({ token }) => {
             <EventThumb token={data} />
           )}
           {data.properties.eventType === 'multi' && <MultiThumb token={data} />}
-          <span className={titleClass}>{token.name}</span>
+          <span className={titleClass}>{data.name}</span>
           <time
             className={timeClass}
             dateTime={new Date(data.properties.date).toLocaleDateString()}
