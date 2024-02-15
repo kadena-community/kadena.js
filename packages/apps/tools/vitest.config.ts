@@ -1,6 +1,6 @@
 import baseConfig from '@kadena-dev/shared-config/vitest.config';
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
-import { defineConfig, mergeConfig } from 'vitest/config';
+import { UserConfig, defineConfig, mergeConfig } from 'vitest/config';
 
 const localConfig = defineConfig({
   plugins: [vanillaExtractPlugin({ emitCssInSsr: true })],
@@ -19,4 +19,4 @@ const localConfig = defineConfig({
   },
 });
 
-export default mergeConfig(baseConfig, localConfig);
+export default mergeConfig(baseConfig as UserConfig, localConfig as UserConfig);
