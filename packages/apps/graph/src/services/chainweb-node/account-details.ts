@@ -1,7 +1,7 @@
 import { details } from '@kadena/client-utils/coin';
-import { ChainId } from '@kadena/types';
+import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
-import { Guard } from '../../graph/types/graphql-types';
+import type { Guard } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions

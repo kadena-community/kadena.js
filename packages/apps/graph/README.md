@@ -217,7 +217,7 @@ following rules:
 You can get the gas limit estimation for any transaction by using the `gasLimitEstimate` query. The input accepts a JSON object and based on the parameters passed it will determine what type of format it is and return the gas limit estimation. The following types are supported:
 
 - `full-transaction`: A complete transaction object. Required parameters: `cmd`, `hash` and `sigs`.
-- `parsed-command`: A JSON stringified command. Required parameters: `cmd`. It also optionally accepts `sigs`.
+- `stringified-command`: A JSON stringified command. Required parameters: `cmd`. It also optionally accepts `sigs`.
 - `full-command`: A full command. Required parameters: `payload`, `meta` and `signers`.
 - `partial-command`: A partial command. Required parameters: `payload` and either `meta` or `signers`. In case `meta` is not given, but `signers` is given, you can also add `chainId` as a parameter.
 - `payload`: A just the payload of a command. Required parameters: `payload` and `chainId`.
