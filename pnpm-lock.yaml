@@ -37,7 +37,7 @@ importers:
         version: 3.12.10
       turbo:
         specifier: ^1.10.15
-        version: 1.10.16
+        version: 1.12.4
 
   packages/apps/dev-wallet:
     dependencies:
@@ -155,7 +155,7 @@ importers:
         version: 4.2.1(typescript@5.2.2)(vite@4.4.8)
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
+        version: 1.2.2(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/apps/dev-wallet-desktop:
     dependencies:
@@ -361,7 +361,7 @@ importers:
         version: 2.3.1(@types/node@18.17.14)(webpack@5.88.2)
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       chalk:
         specifier: ^5.2.0
         version: 5.3.0
@@ -436,10 +436,10 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@1.1.0)
+        version: 0.1.1(vitest@1.2.2)
 
   packages/apps/graph:
     dependencies:
@@ -678,7 +678,7 @@ importers:
         version: 10.8.0
       next:
         specifier: 13.5.5
-        version: 13.5.5(@babel/core@7.22.15)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.5(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@13.5.5)(react-dom@18.2.0)(react@18.2.0)
@@ -751,7 +751,7 @@ importers:
         version: 2.3.1(@types/node@18.17.14)(webpack@5.88.2)
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       dotenv:
         specifier: ~16.0.3
         version: 16.0.3
@@ -784,10 +784,10 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(happy-dom@12.9.1)
+        version: 1.2.2(@types/node@18.17.14)(happy-dom@12.9.1)
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@1.1.0)
+        version: 0.1.1(vitest@1.2.2)
 
   packages/apps/tools:
     dependencies:
@@ -935,7 +935,7 @@ importers:
         version: 3.9.3(@types/node@18.17.14)(ts-node@10.8.2)(vite@4.4.8)
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       '@walletconnect/types':
         specifier: ~2.8.1
         version: 2.8.1
@@ -965,10 +965,10 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(happy-dom@12.9.1)
+        version: 1.2.2(@types/node@18.17.14)(happy-dom@12.9.1)
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@1.1.0)
+        version: 0.1.1(vitest@1.2.2)
 
   packages/libs/bootstrap-lib:
     dependencies:
@@ -1008,7 +1008,7 @@ importers:
         version: 18.17.14
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
@@ -1020,7 +1020,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
 
   packages/libs/chainweb-node-client:
     dependencies:
@@ -1060,7 +1060,7 @@ importers:
         version: 18.17.14
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
@@ -1075,7 +1075,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
 
   packages/libs/chainweb-stream-client:
     dependencies:
@@ -1112,7 +1112,7 @@ importers:
         version: 18.17.14
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
@@ -1124,7 +1124,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
 
   packages/libs/chainwebjs:
     dependencies:
@@ -1167,7 +1167,7 @@ importers:
         version: 18.17.14
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
@@ -1182,7 +1182,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
 
   packages/libs/client:
     dependencies:
@@ -1234,7 +1234,7 @@ importers:
         version: 18.17.14
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       '@walletconnect/types':
         specifier: ~2.8.1
         version: 2.8.1
@@ -1258,7 +1258,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
+        version: 1.2.2(@types/node@18.17.14)(jsdom@22.1.0)
 
   packages/libs/client-examples:
     dependencies:
@@ -1377,7 +1377,7 @@ importers:
         version: 0.29.5
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       eslint:
         specifier: ^8.45.0
         version: 8.48.0
@@ -1392,7 +1392,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
 
   packages/libs/cryptography-utils:
     dependencies:
@@ -1432,7 +1432,7 @@ importers:
         version: 18.17.14
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
@@ -1444,7 +1444,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
 
   packages/libs/hd-wallet:
     dependencies:
@@ -1499,7 +1499,7 @@ importers:
         version: 18.17.14
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       cpy-cli:
         specifier: ^5.0.0
         version: 5.0.0
@@ -1517,7 +1517,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
 
   packages/libs/kadena.js:
     dependencies:
@@ -1532,7 +1532,7 @@ importers:
         version: link:../pactjs
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
+        version: 1.2.2(@types/node@18.17.14)(jsdom@22.1.0)
       webpack:
         specifier: ~5.88.2
         version: 5.88.2(webpack-cli@4.9.2)
@@ -1557,7 +1557,7 @@ importers:
         version: 3.3.0(eslint@8.45.0)(typescript@5.2.2)
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
@@ -1609,7 +1609,7 @@ importers:
         version: 18.17.14
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
@@ -1621,7 +1621,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
 
   packages/libs/pactjs-generator:
     dependencies:
@@ -1664,7 +1664,7 @@ importers:
         version: 18.17.14
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       chokidar:
         specifier: ^3.5.3
         version: 3.5.3
@@ -1685,7 +1685,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
 
   packages/libs/react-components:
     dependencies:
@@ -1930,10 +1930,10 @@ importers:
         version: 2.3.1(@types/node@18.17.14)(webpack@5.88.2)
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       '@vitest/ui':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       babel-plugin-module-resolver:
         specifier: ^5.0.0
         version: 5.0.0
@@ -1984,10 +1984,10 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@1.1.0)
+        version: 0.1.1(vitest@1.2.2)
 
   packages/libs/types:
     devDependencies:
@@ -2185,7 +2185,7 @@ importers:
         version: 3.0.2
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       date-fns:
         specifier: ~2.30.0
         version: 2.30.0
@@ -2215,10 +2215,10 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
       vitest-dom:
         specifier: ^0.1.1
-        version: 0.1.1(vitest@1.1.0)
+        version: 0.1.1(vitest@1.2.2)
 
   packages/tools/e2e-tests:
     dependencies:
@@ -2380,7 +2380,7 @@ importers:
         version: 6.3.3
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -2553,7 +2553,7 @@ importers:
         version: 3.0.8
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       eslint:
         specifier: ^8.45.0
         version: 8.53.0
@@ -2568,7 +2568,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
 
   packages/tools/kda-cli:
     dependencies:
@@ -2629,7 +2629,7 @@ importers:
         version: 18.2.15
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       chalk:
         specifier: ^5.2.0
         version: 5.2.0
@@ -2647,7 +2647,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
 
   packages/tools/lint-package:
     dependencies:
@@ -2821,7 +2821,7 @@ importers:
         version: 3.0.2
       '@vitest/coverage-v8':
         specifier: ^1.1.0
-        version: 1.1.0(vitest@1.1.0)
+        version: 1.2.2(vitest@1.2.2)
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
@@ -2833,7 +2833,7 @@ importers:
         version: 5.2.2
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+        version: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
 
   packages/tools/scripts:
     devDependencies:
@@ -2875,7 +2875,7 @@ importers:
         version: 4.2.1(typescript@5.2.2)(vite@4.4.8)
       vitest:
         specifier: ^1.1.0
-        version: 1.1.0(@types/node@18.17.14)(jsdom@22.1.0)
+        version: 1.2.2(@types/node@18.17.14)(jsdom@22.1.0)
 
 packages:
 
@@ -8860,8 +8860,8 @@ packages:
       - domexception
     dev: true
 
-  /@polka/url@1.0.0-next.23:
-    resolution: {integrity: sha512-C16M+IYz0rgRhWZdCmK+h58JMv8vijAA61gmz2rspCSwKwzBebpdcsiUmwrtJRdphuY30i6BSLEOP8ppbNLyLg==}
+  /@polka/url@1.0.0-next.24:
+    resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
 
   /@pothos/core@3.40.1(graphql@16.8.1):
     resolution: {integrity: sha512-NFPZoPqbU8VSP2TDoXg3JyaZMjP6znU5Ruw/t8zxBXrDK762C4tc9d0ABHbGdkc53Ta8V8+g9mLVWHKmAtwFaA==}
@@ -15167,7 +15167,7 @@ packages:
       next: '>=12.1.7'
     dependencies:
       '@vanilla-extract/webpack-plugin': 2.3.1(@types/node@18.17.14)(webpack@5.88.2)
-      next: 13.5.5(@babel/core@7.22.15)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.5(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -15274,7 +15274,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@5.5.0)
       loader-utils: 2.0.4
-      webpack: 5.88.2(webpack-cli@4.9.2)
+      webpack: 5.88.2(@swc/core@1.3.80)(esbuild@0.18.20)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -15308,8 +15308,8 @@ packages:
       - '@swc/helpers'
     dev: true
 
-  /@vitest/coverage-v8@1.1.0(vitest@1.1.0):
-    resolution: {integrity: sha512-kHQRk70vTdXAyQY2C0vKOHPyQD/R6IUzcGdO4vCuyr4alE5Yg1+Sk2jSdjlIrTTXdcNEs+ReWVM09mmSFJpzyQ==}
+  /@vitest/coverage-v8@1.2.2(vitest@1.2.2):
+    resolution: {integrity: sha512-IHyKnDz18SFclIEEAHb9Y4Uxx0sPKC2VO1kdDCs1BF6Ip4S8rQprs971zIsooLUn7Afs71GRxWMWpkCGZpRMhw==}
     peerDependencies:
       vitest: ^1.0.0
     dependencies:
@@ -15321,60 +15321,61 @@ packages:
       istanbul-lib-source-maps: 4.0.1
       istanbul-reports: 3.1.6
       magic-string: 0.30.5
-      magicast: 0.3.2
+      magicast: 0.3.3
       picocolors: 1.0.0
       std-env: 3.6.0
       test-exclude: 6.0.0
       v8-to-istanbul: 9.2.0
-      vitest: 1.1.0(@types/node@18.17.14)(happy-dom@12.9.1)
+      vitest: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@vitest/expect@1.1.0:
-    resolution: {integrity: sha512-9IE2WWkcJo2BR9eqtY5MIo3TPmS50Pnwpm66A6neb2hvk/QSLfPXBz2qdiwUOQkwyFuuXEUj5380CbwfzW4+/w==}
+  /@vitest/expect@1.2.2:
+    resolution: {integrity: sha512-3jpcdPAD7LwHUUiT2pZTj2U82I2Tcgg2oVPvKxhn6mDI2On6tfvPQTjAI4628GUGDZrCm4Zna9iQHm5cEexOAg==}
     dependencies:
-      '@vitest/spy': 1.1.0
-      '@vitest/utils': 1.1.0
+      '@vitest/spy': 1.2.2
+      '@vitest/utils': 1.2.2
       chai: 4.3.10
 
-  /@vitest/runner@1.1.0:
-    resolution: {integrity: sha512-zdNLJ00pm5z/uhbWF6aeIJCGMSyTyWImy3Fcp9piRGvueERFlQFbUwCpzVce79OLm2UHk9iwaMSOaU9jVHgNVw==}
+  /@vitest/runner@1.2.2:
+    resolution: {integrity: sha512-JctG7QZ4LSDXr5CsUweFgcpEvrcxOV1Gft7uHrvkQ+fsAVylmWQvnaAr/HDp3LAH1fztGMQZugIheTWjaGzYIg==}
     dependencies:
-      '@vitest/utils': 1.1.0
+      '@vitest/utils': 1.2.2
       p-limit: 5.0.0
       pathe: 1.1.1
 
-  /@vitest/snapshot@1.1.0:
-    resolution: {integrity: sha512-5O/wyZg09V5qmNmAlUgCBqflvn2ylgsWJRRuPrnHEfDNT6tQpQ8O1isNGgo+VxofISHqz961SG3iVvt3SPK/QQ==}
+  /@vitest/snapshot@1.2.2:
+    resolution: {integrity: sha512-SmGY4saEw1+bwE1th6S/cZmPxz/Q4JWsl7LvbQIky2tKE35US4gd0Mjzqfr84/4OD0tikGWaWdMja/nWL5NIPA==}
     dependencies:
       magic-string: 0.30.5
       pathe: 1.1.1
       pretty-format: 29.7.0
 
-  /@vitest/spy@1.1.0:
-    resolution: {integrity: sha512-sNOVSU/GE+7+P76qYo+VXdXhXffzWZcYIPQfmkiRxaNCSPiLANvQx5Mx6ZURJ/ndtEkUJEpvKLXqAYTKEY+lTg==}
+  /@vitest/spy@1.2.2:
+    resolution: {integrity: sha512-k9Gcahssw8d7X3pSLq3e3XEu/0L78mUkCjivUqCQeXJm9clfXR/Td8+AP+VC1O6fKPIDLcHDTAmBOINVuv6+7g==}
     dependencies:
       tinyspy: 2.2.0
 
-  /@vitest/ui@1.1.0(vitest@1.1.0):
-    resolution: {integrity: sha512-7yU1QRFBplz0xJqcgt+agcbrNFdBmLo8UUppdKkFmYx+Ih0+yMYQOyr7kOB+YoggJY/p5ZzXxdbiOz7NBX2y+w==}
+  /@vitest/ui@1.2.2(vitest@1.2.2):
+    resolution: {integrity: sha512-CG+5fa8lyoBr+9i+UZGS31Qw81v33QlD10uecHxN2CLJVN+jLnqx4pGzGvFFeJ7jSnUCT0AlbmVWY6fU6NJZmw==}
     peerDependencies:
       vitest: ^1.0.0
     dependencies:
-      '@vitest/utils': 1.1.0
+      '@vitest/utils': 1.2.2
       fast-glob: 3.3.2
       fflate: 0.8.1
       flatted: 3.2.9
       pathe: 1.1.1
       picocolors: 1.0.0
-      sirv: 2.0.3
-      vitest: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+      sirv: 2.0.4
+      vitest: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
 
-  /@vitest/utils@1.1.0:
-    resolution: {integrity: sha512-z+s510fKmYz4Y41XhNs3vcuFTFhcij2YF7F8VQfMEYAAUfqQh0Zfg7+w9xdgFGhPf3tX3TicAe+8BDITk6ampQ==}
+  /@vitest/utils@1.2.2:
+    resolution: {integrity: sha512-WKITBHLsBHlpjnDQahr+XK6RE7MiAsgrIkr0pGhQ9ygoxBfUeG0lUG5iLlzqjmKSlBv3+j5EGsriBzh+C3Tq9g==}
     dependencies:
       diff-sequences: 29.6.3
+      estree-walker: 3.0.3
       loupe: 2.3.7
       pretty-format: 29.7.0
 
@@ -16075,8 +16076,8 @@ packages:
     engines: {node: '>=0.4.0'}
     dev: false
 
-  /acorn-walk@8.3.1:
-    resolution: {integrity: sha512-TgUZgYvqZprrl7YldZNoa9OciCAyZR+Ejm9eXzKCmjsF5IKp/wgQ7Z/ZpjpGTIUPwrHQIcYeI8qDh4PsEwxMbw==}
+  /acorn-walk@8.3.2:
+    resolution: {integrity: sha512-cjkyv4OtNCIeqhHrfS81QWXoCBPExR/J62oyEqepVw8WaQeSqpW2uhuLPh1m9eWhDuOo/jUXVTlifvesOWp/4A==}
     engines: {node: '>=0.4.0'}
 
   /acorn@7.4.1:
@@ -20361,7 +20362,6 @@ packages:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
     dependencies:
       '@types/estree': 1.0.1
-    dev: false
 
   /esutils@2.0.3:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
@@ -24046,8 +24046,8 @@ packages:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  /magicast@0.3.2:
-    resolution: {integrity: sha512-Fjwkl6a0syt9TFN0JSYpOybxiMCkYNEeOTnOTNRbjphirLakznZXAqrXgj/7GG3D1dvETONNwrBfinvAbpunDg==}
+  /magicast@0.3.3:
+    resolution: {integrity: sha512-ZbrP1Qxnpoes8sz47AM0z08U+jW6TyRgZzcWy3Ma3vDhJttwMwAFDMMQFobwdBxByBD46JYmxRzeF7w2+wJEuw==}
     dependencies:
       '@babel/parser': 7.23.6
       '@babel/types': 7.23.6
@@ -25372,7 +25372,7 @@ packages:
       webpack: ^5.0.0
     dependencies:
       schema-utils: 4.2.0
-      webpack: 5.88.2(webpack-cli@4.9.2)
+      webpack: 5.88.2(@swc/core@1.3.80)(esbuild@0.18.20)
     dev: true
 
   /minimalistic-assert@1.0.1:
@@ -25577,6 +25577,11 @@ packages:
 
   /mrmime@1.0.1:
     resolution: {integrity: sha512-hzzEagAgDyoU1Q6yg5uI+AorQgdvMCur3FcKf7NhMKWsaYg+RnbTyHRa/9IlLF9rf455MOCtcqqrQQ83pPP7Uw==}
+    engines: {node: '>=10'}
+    dev: false
+
+  /mrmime@2.0.0:
+    resolution: {integrity: sha512-eu38+hdgojoyq63s+yTpN4XMBdt5l8HhMhc4VKLO9KM5caLIBvUm4thi7fFaxyTmCKeNnXZ5pAlBwCUnhA09uw==}
     engines: {node: '>=10'}
 
   /ms@2.0.0:
@@ -25793,7 +25798,7 @@ packages:
       next: '>=10.0.0'
       react: '>=17.0.0'
     dependencies:
-      next: 13.5.5(@babel/core@7.22.15)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.5(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
     dev: true
 
@@ -25860,6 +25865,7 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+    dev: false
 
   /next@13.5.5(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-LddFJjpfrtrMMw8Q9VLhIURuSidiCNcMQjRqcPtrKd+Fx07MsG7hYndJb/f2d3I+mTbTotsTJfCnn0eZ/YPk8w==}
@@ -29460,12 +29466,12 @@ packages:
       semver: 7.5.4
     dev: true
 
-  /sirv@2.0.3:
-    resolution: {integrity: sha512-O9jm9BsID1P+0HOi81VpXPoDxYP374pkOLzACAoyUQ/3OUVndNpsz6wMnY2z+yOxzbllCKZrM+9QrWsv4THnyA==}
+  /sirv@2.0.4:
+    resolution: {integrity: sha512-94Bdh3cC2PKrbgSOUqTiGPWVZeSiXfKOVZNJniWoqrWrRkB1CJzBU3NEbiTsPcYy1lDsANA/THzS+9WBiy5nfQ==}
     engines: {node: '>= 10'}
     dependencies:
-      '@polka/url': 1.0.0-next.23
-      mrmime: 1.0.1
+      '@polka/url': 1.0.0-next.24
+      mrmime: 2.0.0
       totalist: 3.0.1
 
   /sisteransi@1.0.5:
@@ -30132,6 +30138,7 @@ packages:
       '@babel/core': 7.22.15
       client-only: 0.0.1
       react: 18.2.0
+    dev: false
 
   /styled-jsx@5.1.1(@babel/core@7.23.7)(react@18.2.0):
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
@@ -30644,8 +30651,8 @@ packages:
   /tinybench@2.5.1:
     resolution: {integrity: sha512-65NKvSuAVDP/n4CqH+a9w2kTlLReS9vhsAP06MWx+/89nMinJyB2icyl58RIcqCmIggpojIGeuJGhjU1aGMBSg==}
 
-  /tinypool@0.8.1:
-    resolution: {integrity: sha512-zBTCK0cCgRROxvs9c0CGK838sPkeokNGdQVUUwHAbynHFlmyJYj825f/oRs528HaIJ97lo0pLIlDUzwN+IorWg==}
+  /tinypool@0.8.2:
+    resolution: {integrity: sha512-SUszKYe5wgsxnNOVlBYO6IC+8VGWdVGZWAqUxp3UErNBtptZvWbwyUOyzNL59zigz2rCA92QiL3wvG+JDSdJdQ==}
     engines: {node: '>=14.0.0'}
 
   /tinyspy@2.2.0:
@@ -30840,7 +30847,7 @@ packages:
       '@tsconfig/node16': 1.0.4
       '@types/node': 18.17.14
       acorn: 8.11.2
-      acorn-walk: 8.3.1
+      acorn-walk: 8.3.2
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.2
@@ -30968,64 +30975,64 @@ packages:
     engines: {node: '>= 0.6.0'}
     dev: false
 
-  /turbo-darwin-64@1.10.16:
-    resolution: {integrity: sha512-+Jk91FNcp9e9NCLYlvDDlp2HwEDp14F9N42IoW3dmHI5ZkGSXzalbhVcrx3DOox3QfiNUHxzWg4d7CnVNCuuMg==}
+  /turbo-darwin-64@1.12.4:
+    resolution: {integrity: sha512-dBwFxhp9isTa9RS/fz2gDVk5wWhKQsPQMozYhjM7TT4jTrnYn0ZJMzr7V3B/M/T8QF65TbniW7w1gtgxQgX5Zg==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64@1.10.16:
-    resolution: {integrity: sha512-jqGpFZipIivkRp/i+jnL8npX0VssE6IAVNKtu573LXtssZdV/S+fRGYA16tI46xJGxSAivrZ/IcgZrV6Jk80bw==}
+  /turbo-darwin-arm64@1.12.4:
+    resolution: {integrity: sha512-1Uo5iI6xsJ1j9ObsqxYRsa3W26mEbUe6fnj4rQYV6kDaqYD54oAMJ6hM53q9rB8JvFxwdrUXGp3PwTw9A0qqkA==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64@1.10.16:
-    resolution: {integrity: sha512-PpqEZHwLoizQ6sTUvmImcRmACyRk9EWLXGlqceogPZsJ1jTRK3sfcF9fC2W56zkSIzuLEP07k5kl+ZxJd8JMcg==}
+  /turbo-linux-64@1.12.4:
+    resolution: {integrity: sha512-ONg2aSqKP7LAQOg7ysmU5WpEQp4DGNxSlAiR7um+LKtbmC/UxogbR5+T+Uuq6zGuQ5kJyKjWJ4NhtvUswOqBsA==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64@1.10.16:
-    resolution: {integrity: sha512-TMjFYz8to1QE0fKVXCIvG/4giyfnmqcQIwjdNfJvKjBxn22PpbjeuFuQ5kNXshUTRaTJihFbuuCcb5OYFNx4uw==}
+  /turbo-linux-arm64@1.12.4:
+    resolution: {integrity: sha512-9FPufkwdgfIKg/9jj87Cdtftw8o36y27/S2vLN7FTR2pp9c0MQiTBOLVYadUr1FlShupddmaMbTkXEhyt9SdrA==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64@1.10.16:
-    resolution: {integrity: sha512-+jsf68krs0N66FfC4/zZvioUap/Tq3sPFumnMV+EBo8jFdqs4yehd6+MxIwYTjSQLIcpH8KoNMB0gQYhJRLZzw==}
+  /turbo-windows-64@1.12.4:
+    resolution: {integrity: sha512-2mOtxHW5Vjh/5rDVu/aFwsMzI+chs8XcEuJHlY1sYOpEymYTz+u6AXbnzRvwZFMrLKr7J7fQOGl+v96sLKbNdA==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64@1.10.16:
-    resolution: {integrity: sha512-sKm3hcMM1bl0B3PLG4ifidicOGfoJmOEacM5JtgBkYM48ncMHjkHfFY7HrJHZHUnXM4l05RQTpLFoOl/uIo2HQ==}
+  /turbo-windows-arm64@1.12.4:
+    resolution: {integrity: sha512-nOY5wae9qnxPOpT1fRuYO0ks6dTwpKMPV6++VkDkamFDLFHUDVM/9kmD2UTeh1yyrKnrZksbb9zmShhmfj1wog==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo@1.10.16:
-    resolution: {integrity: sha512-2CEaK4FIuSZiP83iFa9GqMTQhroW2QryckVqUydmg4tx78baftTOS0O+oDAhvo9r9Nit4xUEtC1RAHoqs6ZEtg==}
+  /turbo@1.12.4:
+    resolution: {integrity: sha512-yUJ7elEUSToiGwFZogXpYKJpQ0BvaMbkEuQECIWtkBLcmWzlMOt6bActsIm29oN83mRU0WbzGt4e8H1KHWedhg==}
     hasBin: true
     optionalDependencies:
-      turbo-darwin-64: 1.10.16
-      turbo-darwin-arm64: 1.10.16
-      turbo-linux-64: 1.10.16
-      turbo-linux-arm64: 1.10.16
-      turbo-windows-64: 1.10.16
-      turbo-windows-arm64: 1.10.16
+      turbo-darwin-64: 1.12.4
+      turbo-darwin-arm64: 1.12.4
+      turbo-linux-64: 1.12.4
+      turbo-linux-arm64: 1.12.4
+      turbo-windows-64: 1.12.4
+      turbo-windows-arm64: 1.12.4
     dev: true
 
   /tweetnacl@0.14.5:
@@ -31923,8 +31930,8 @@ packages:
       - terser
     dev: true
 
-  /vite-node@1.1.0(@types/node@18.17.14):
-    resolution: {integrity: sha512-jV48DDUxGLEBdHCQvxL1mEh7+naVy+nhUUUaPAZLd3FJgXuxQiewHcfeZebbJ6onDqNGkP4r3MhQ342PRlG81Q==}
+  /vite-node@1.2.2(@types/node@18.17.14):
+    resolution: {integrity: sha512-1as4rDTgVWJO3n1uHmUYqq7nsFgINQ9u+mRcXpjeOMJUmviqNKjcZB7UfRZrlM7MjYXMKpuWp5oGkjaFLnjawg==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     dependencies:
@@ -32042,7 +32049,7 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
 
-  /vitest-dom@0.1.1(vitest@1.1.0):
+  /vitest-dom@0.1.1(vitest@1.2.2):
     resolution: {integrity: sha512-n/bonR2hcRHCE5hlzG/P0yTXTUXx/gPtsaeUWP86ADfwo/+dHDpnTTV14qY7+kevsUbOZFYECu77MXY7AA0QSA==}
     peerDependencies:
       vitest: '>=0.31.0'
@@ -32053,11 +32060,11 @@ packages:
       dom-accessibility-api: 0.6.3
       lodash-es: 4.17.21
       redent: 4.0.0
-      vitest: 1.1.0(@types/node@18.17.14)(happy-dom@12.9.1)
+      vitest: 1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2)
     dev: true
 
-  /vitest@1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0):
-    resolution: {integrity: sha512-oDFiCrw7dd3Jf06HoMtSRARivvyjHJaTxikFxuqJjO76U436PqlVw1uLn7a8OSPrhSfMGVaRakKpA2lePdw79A==}
+  /vitest@1.2.2(@types/node@18.17.14)(@vitest/ui@1.2.2):
+    resolution: {integrity: sha512-d5Ouvrnms3GD9USIK36KG8OZ5bEvKEkITFtnGv56HFaSlbItJuYr7hv2Lkn903+AvRAgSixiamozUVfORUekjw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -32082,13 +32089,13 @@ packages:
         optional: true
     dependencies:
       '@types/node': 18.17.14
-      '@vitest/expect': 1.1.0
-      '@vitest/runner': 1.1.0
-      '@vitest/snapshot': 1.1.0
-      '@vitest/spy': 1.1.0
-      '@vitest/ui': 1.1.0(vitest@1.1.0)
-      '@vitest/utils': 1.1.0
-      acorn-walk: 8.3.1
+      '@vitest/expect': 1.2.2
+      '@vitest/runner': 1.2.2
+      '@vitest/snapshot': 1.2.2
+      '@vitest/spy': 1.2.2
+      '@vitest/ui': 1.2.2(vitest@1.2.2)
+      '@vitest/utils': 1.2.2
+      acorn-walk: 8.3.2
       cac: 6.7.14
       chai: 4.3.10
       debug: 4.3.4(supports-color@5.5.0)
@@ -32100,9 +32107,9 @@ packages:
       std-env: 3.6.0
       strip-literal: 1.3.0
       tinybench: 2.5.1
-      tinypool: 0.8.1
+      tinypool: 0.8.2
       vite: 5.0.10(@types/node@18.17.14)
-      vite-node: 1.1.0(@types/node@18.17.14)
+      vite-node: 1.2.2(@types/node@18.17.14)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
       - less
@@ -32113,8 +32120,8 @@ packages:
       - supports-color
       - terser
 
-  /vitest@1.1.0(@types/node@18.17.14)(happy-dom@12.9.1):
-    resolution: {integrity: sha512-oDFiCrw7dd3Jf06HoMtSRARivvyjHJaTxikFxuqJjO76U436PqlVw1uLn7a8OSPrhSfMGVaRakKpA2lePdw79A==}
+  /vitest@1.2.2(@types/node@18.17.14)(happy-dom@12.9.1):
+    resolution: {integrity: sha512-d5Ouvrnms3GD9USIK36KG8OZ5bEvKEkITFtnGv56HFaSlbItJuYr7hv2Lkn903+AvRAgSixiamozUVfORUekjw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -32139,12 +32146,12 @@ packages:
         optional: true
     dependencies:
       '@types/node': 18.17.14
-      '@vitest/expect': 1.1.0
-      '@vitest/runner': 1.1.0
-      '@vitest/snapshot': 1.1.0
-      '@vitest/spy': 1.1.0
-      '@vitest/utils': 1.1.0
-      acorn-walk: 8.3.1
+      '@vitest/expect': 1.2.2
+      '@vitest/runner': 1.2.2
+      '@vitest/snapshot': 1.2.2
+      '@vitest/spy': 1.2.2
+      '@vitest/utils': 1.2.2
+      acorn-walk: 8.3.2
       cac: 6.7.14
       chai: 4.3.10
       debug: 4.3.4(supports-color@5.5.0)
@@ -32157,9 +32164,9 @@ packages:
       std-env: 3.6.0
       strip-literal: 1.3.0
       tinybench: 2.5.1
-      tinypool: 0.8.1
+      tinypool: 0.8.2
       vite: 5.0.10(@types/node@18.17.14)
-      vite-node: 1.1.0(@types/node@18.17.14)
+      vite-node: 1.2.2(@types/node@18.17.14)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
       - less
@@ -32171,8 +32178,8 @@ packages:
       - terser
     dev: true
 
-  /vitest@1.1.0(@types/node@18.17.14)(jsdom@22.1.0):
-    resolution: {integrity: sha512-oDFiCrw7dd3Jf06HoMtSRARivvyjHJaTxikFxuqJjO76U436PqlVw1uLn7a8OSPrhSfMGVaRakKpA2lePdw79A==}
+  /vitest@1.2.2(@types/node@18.17.14)(jsdom@22.1.0):
+    resolution: {integrity: sha512-d5Ouvrnms3GD9USIK36KG8OZ5bEvKEkITFtnGv56HFaSlbItJuYr7hv2Lkn903+AvRAgSixiamozUVfORUekjw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -32197,12 +32204,12 @@ packages:
         optional: true
     dependencies:
       '@types/node': 18.17.14
-      '@vitest/expect': 1.1.0
-      '@vitest/runner': 1.1.0
-      '@vitest/snapshot': 1.1.0
-      '@vitest/spy': 1.1.0
-      '@vitest/utils': 1.1.0
-      acorn-walk: 8.3.1
+      '@vitest/expect': 1.2.2
+      '@vitest/runner': 1.2.2
+      '@vitest/snapshot': 1.2.2
+      '@vitest/spy': 1.2.2
+      '@vitest/utils': 1.2.2
+      acorn-walk: 8.3.2
       cac: 6.7.14
       chai: 4.3.10
       debug: 4.3.4(supports-color@5.5.0)
@@ -32215,9 +32222,9 @@ packages:
       std-env: 3.6.0
       strip-literal: 1.3.0
       tinybench: 2.5.1
-      tinypool: 0.8.1
+      tinypool: 0.8.2
       vite: 5.0.10(@types/node@18.17.14)
-      vite-node: 1.1.0(@types/node@18.17.14)
+      vite-node: 1.2.2(@types/node@18.17.14)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
       - less
