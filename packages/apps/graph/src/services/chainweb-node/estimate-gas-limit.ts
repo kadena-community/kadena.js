@@ -1,11 +1,22 @@
-import { local } from '@kadena/chainweb-node-client';
-import { ChainId, createClient, createTransaction } from '@kadena/client';
-import { composePactCommand, execution } from '@kadena/client/fp';
+import {
+  ChainId,
+  IUnsignedCommand,
+  createClient,
+  createTransaction,
+} from '@kadena/client';
+import { composePactCommand } from '@kadena/client/fp';
 import { hash as hashFunction } from '@kadena/cryptography-utils';
 import { dotenv } from '@utils/dotenv';
 import { GasLimitEstimation } from '../../graph/types/graphql-types';
 
-export class GasLimitEstimationError extends Error {}
+export class GasLimitEstimationError extends Error {
+  originalError?: Error;
+
+  constructor(message: string, originalError?: Error) {
+    super(message);
+    this.originalError = originalError;
+  }
+}
 
 type GasLimitEstimationInput = {
   cmd?: string;
@@ -34,6 +45,7 @@ type FullTransactionInput = BaseInput & {
 type ParsedCommandInput = BaseInput & {
   type: 'parsed-command';
   cmd: string;
+  sigs?: string[];
   networkId?: string;
 };
 
@@ -50,6 +62,7 @@ type PartialCommandInput = BaseInput & {
   payload: any;
   meta?: any;
   signers?: any[];
+  chainId?: ChainId;
   networkId?: string;
 };
 
@@ -57,12 +70,14 @@ type PayloadInput = BaseInput & {
   type: 'payload';
   payload: any;
   chainId: ChainId;
+  networkId?: string;
 };
 
 type CodeInput = BaseInput & {
   type: 'code';
   code: string;
   chainId: ChainId;
+  networkId?: string;
 };
 
 type UserInput =
@@ -73,7 +88,7 @@ type UserInput =
   | PayloadInput
   | CodeInput;
 
-function inputParser(input: string): GasLimitEstimationInput {
+function jsonParseInput(input: string): GasLimitEstimationInput {
   try {
     return JSON.parse(input);
   } catch (e) {
@@ -101,14 +116,17 @@ function determineInputType(input: GasLimitEstimationInput): UserInput {
   } else if ('payload' in input && 'meta' in input && 'signers' in input) {
     return {
       type: 'full-command',
-      preflight: 'networkId' in input ? true : false, // Investigate the combination with networkId for preflight=true
+      preflight: 'networkId' in input ? true : false,
       signatureVerification: false,
       ...input,
     } as FullCommandInput;
-  } else if ('payload' in input && ('meta' in input || 'signers' in input)) {
+  } else if (
+    'payload' in input &&
+    ('meta' in input || ('signers' in input && 'chainId' in input))
+  ) {
     return {
       type: 'partial-command',
-      preflight: 'networkId' in input ? true : false, // Investigate the combination with networkId for preflight=true
+      preflight: 'networkId' in input ? true : false,
       signatureVerification: false,
       ...input,
     } as PartialCommandInput;
@@ -136,7 +154,7 @@ function determineInputType(input: GasLimitEstimationInput): UserInput {
 export const estimateGasLimit = async (
   rawInput: string,
 ): Promise<GasLimitEstimation> => {
-  const paredInput = inputParser(rawInput);
+  const paredInput = jsonParseInput(rawInput);
   const input = determineInputType(paredInput);
 
   const returnValue: GasLimitEstimation = {
@@ -147,135 +165,98 @@ export const estimateGasLimit = async (
     transaction: '',
   };
 
-  if (input.type === 'full-transaction') {
-    const transaction = {
-      cmd: input.cmd,
-      hash: input.hash,
-      sigs: input.sigs.map((s) => ({ sig: s })),
-    };
+  let transaction: IUnsignedCommand;
+  let configuration;
 
-    const configuration = {
-      preflight: input.preflight,
-      signatureVerification: input.signatureVerification,
-    };
+  switch (input.type) {
+    case 'full-transaction':
+      transaction = {
+        cmd: input.cmd,
+        hash: input.hash,
+        sigs: input.sigs.map((s) => ({ sig: s })),
+      };
+      break;
+    case 'parsed-command':
+      transaction = {
+        cmd: input.cmd,
+        hash: hashFunction(input.cmd),
+        sigs: input.sigs?.map((s) => ({ sig: s })) || [],
+      };
+      break;
+    case 'full-command':
+      transaction = createTransaction(
+        composePactCommand(
+          { payload: input.payload },
+          { meta: input.meta },
+          { signers: input.signers },
+          { networkId: input.networkId || dotenv.NETWORK_ID },
+        )(),
+      );
+      break;
+    case 'partial-command':
+      if (!input.meta && 'chainId' in input) {
+        input.meta = { chainId: input.chainId };
+      }
 
-    const result = await createClient(
-      ({ chainId }) =>
-        `${dotenv.NETWORK_HOST}/chainweb/0.0/${
-          input.networkId || dotenv.NETWORK_ID
-        }/chain/${chainId}/pact`,
-    ).local(transaction, configuration);
-
-    returnValue.amount = result.gas;
-    returnValue.transaction = JSON.stringify(input);
-  } else if (input.type === 'parsed-command') {
-    const transaction = {
-      cmd: input.cmd,
-      hash: hashFunction(input.cmd),
-      sigs: [],
-    };
-
-    const configuration = {
-      preflight: input.preflight,
-      signatureVerification: input.signatureVerification,
-    };
-
-    const result = await createClient(
-      ({ chainId }) =>
-        `${dotenv.NETWORK_HOST}/chainweb/0.0/${
-          input.networkId || dotenv.NETWORK_ID
-        }/chain/${chainId}/pact`,
-    ).local(transaction, configuration);
-
-    returnValue.amount = result.gas;
-    returnValue.transaction = JSON.stringify(input);
-  } else if (input.type === 'full-command') {
-    const transaction = createTransaction(
-      composePactCommand(
-        { payload: input.payload },
-        { meta: input.meta },
-        { signers: input.signers },
-        { networkId: input.networkId || dotenv.NETWORK_ID },
-      )(),
-    );
-
-    const configuration = {
-      preflight: input.preflight,
-      signatureVerification: input.signatureVerification,
-    };
-
-    const result = await createClient(
-      ({ chainId }) =>
-        `${dotenv.NETWORK_HOST}/chainweb/0.0/${
-          input.networkId || dotenv.NETWORK_ID
-        }/chain/${chainId}/pact`,
-    ).local(transaction, configuration);
-
-    returnValue.amount = result.gas;
-    returnValue.transaction = JSON.stringify(transaction);
-  } else if (input.type === 'partial-command') {
-    const transaction = createTransaction(
-      composePactCommand(
-        { payload: input.payload },
-        { meta: input.meta },
-        { signers: input.signers },
-        { networkId: input.networkId || dotenv.NETWORK_ID },
-      )(),
-    );
-
-    const configuration = {
-      preflight: input.preflight,
-      signatureVerification: input.signatureVerification,
-    };
-
-    const result = await createClient(
-      ({ chainId }) =>
-        `${dotenv.NETWORK_HOST}/chainweb/0.0/${
-          input.networkId || dotenv.NETWORK_ID
-        }/chain/${chainId}/pact`,
-    ).local(transaction, configuration);
-
-    returnValue.amount = result.gas;
-    returnValue.transaction = JSON.stringify(transaction);
-  } else if (input.type === 'payload') {
-    const transaction = createTransaction(
-      composePactCommand(
-        { payload: input.payload },
-        { meta: { chainId: input.chainId } },
-      )(),
-    );
-
-    const configuration = {
-      preflight: input.preflight,
-      signatureVerification: input.signatureVerification,
-    };
-
-    const result = await createClient(
-      ({ chainId }) =>
-        `${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
-    ).local(transaction, configuration);
-
-    returnValue.amount = result.gas;
-    returnValue.transaction = JSON.stringify(transaction);
-  } else if (input.type === 'code') {
-    const transaction = createTransaction(
-      composePactCommand(execution(input.code), {
-        meta: { chainId: input.chainId },
-      })(),
-    );
-
-    const hostUrl = `${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${input.chainId}/pact`;
-
-    const configuration = {
-      preflight: input.preflight,
-      signatureVerification: input.signatureVerification,
-    };
-
-    const result = await local(transaction, hostUrl, configuration);
-
-    returnValue.amount = result.gas;
-    returnValue.transaction = JSON.stringify(transaction);
+      transaction = createTransaction(
+        composePactCommand(
+          { payload: input.payload },
+          { meta: input.meta },
+          { signers: input.signers },
+          { networkId: input.networkId || dotenv.NETWORK_ID },
+        )(),
+      );
+      break;
+    case 'payload':
+      transaction = createTransaction(
+        composePactCommand(
+          { payload: input.payload },
+          { meta: { chainId: input.chainId } },
+        )(),
+      );
+      break;
+    case 'code':
+      transaction = createTransaction(
+        composePactCommand(
+          {
+            payload: {
+              exec: {
+                code: input.code,
+                data: {},
+              },
+            },
+          },
+          { meta: { chainId: input.chainId } },
+        )(),
+      );
+      break;
+    default:
+      throw new GasLimitEstimationError(
+        'Something went wrong generating the transaction.',
+      );
   }
 
-  return returnValue;
+  configuration = {
+    preflight: input.preflight,
+    signatureVerification: input.signatureVerification,
+  };
+
+  try {
+    const result = await createClient(
+      ({ chainId }) =>
+        `${dotenv.NETWORK_HOST}/chainweb/0.0/${
+          input.networkId || dotenv.NETWORK_ID
+        }/chain/${chainId}/pact`,
+    ).local(transaction, configuration);
+
+    returnValue.amount = result.gas;
+    returnValue.transaction = JSON.stringify(transaction);
+
+    return returnValue;
+  } catch (error) {
+    throw new GasLimitEstimationError(
+      'Chainweb Node was unable to estimate the gas limit for the transaction. Please check your input and try again.',
+      error,
+    );
+  }
 };
