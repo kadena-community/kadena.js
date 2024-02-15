@@ -9,7 +9,7 @@ Icons have been created from the design system repository with the following con
 1. The default fill color is set to `currentColor`.
 2. The dimensions for width and height are established at `1em`, while the default `fontSize` is `1.5em`.
 3. These icons are compiled into a distinct package, which is designed without knowledge of the design tokens. This approach ensures that properties such as fill and fontSize remain generic, eliminating circular dependencies between the `@kadena/react-ui` and allowing the icons to be universally compatible with any build-system and react styling solutions.
-4. All icons names are prefixed with `Icon` to avoid invalid icon names, eg `123` will become `Icon123`.
+4. Icons are grouped in different folders and package entries eg `@kadena/react-icons/system`.
 
 ### Install
 

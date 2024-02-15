@@ -59,7 +59,7 @@
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
-    "generate:icons": "tsx scripts/generateIcons.ts",
+    "generate:icons": "tsx scripts/generateIcons.ts && pnpm build && pnpm run format:src",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
