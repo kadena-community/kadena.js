@@ -14,6 +14,14 @@ const nextConfig = {
     // config.infrastructureLogging = { debug: /PackFileCache/ };
     return config;
   },
+  async rewrites() {
+    return [
+      {
+        source: '/graph',
+        destination: 'https://graph.kadena.network/graphql'
+      },
+    ];
+  },
 };
 
 export default withVanillaExtract(nextConfig);
