@@ -138,7 +138,7 @@ You must also be an active member of Kadena [Telegram](https://t.me/kadena_io) o
 - Grants for community led events are given on an as-needed basis -- you can
   inquire more once you have been accepted
 
-## Ambassador privilege
+## Ambassador privileges
 
 Participation in these programs offers several perks, including:
 

@@ -57,11 +57,12 @@ Use one of the following argument to define the value you want to retrieve using
 
 ### Return values
 
-The `at` function returns the value found at the specified index or using the specified key.
+The `at` function returns the value found at the specified *index* or using the specified *key*.
+The return value can be any data type.
 
 ### Examples
 
-The following example returns the value found at the index location—starting with 0—from a list of values:
+The following example returns the value found at the *index* location—starting with 0—from a list of values:
 
 ```pact
 (at  3 [20 18 16 14 12 10])
@@ -76,20 +77,24 @@ For example:
 "green"
 ```
 
-The following example returns the value found at the specified index key from an object:
+The following example returns the value found at the specified *key* from an object:
 
 ```pact
 (at "last-name" { "first-name": "maya", "last-name": "tea"})
 "tea"
 ```
 
-You can use the `at` function to return any type of data using the specified key from an object.
+You can use the `at` function to return any type of data using the specified *key* from an object.
 For example:
 
 ```pact
 (at "chainId" { "networkId": "development", "chainId": 1, "auth": 0})
 1
 ```
+
+### Property checking
+
+For property checking, you can use the `at` list operator when specifying an invariant or a property to test your code against.
 
 ## base64-decode
 
