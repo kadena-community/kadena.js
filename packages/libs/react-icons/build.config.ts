@@ -1,6 +1,5 @@
 import { readdirSync } from 'fs';
 import { BuildEntry, defineBuildConfig } from 'unbuild';
-import { updatePackageJson } from './scripts/updatePackageJson';
 const iconsGroups = readdirSync('./src');
 const entries: BuildEntry[] = iconsGroups.flatMap((group) => [
   {
@@ -21,12 +20,7 @@ const entries: BuildEntry[] = iconsGroups.flatMap((group) => [
 
 export default defineBuildConfig({
   entries,
-  // Change outDir, default is 'dist'
   outDir: 'dist',
   clean: true,
-  // Generates .d.ts declaration file
   declaration: true,
-  hooks: {
-    'build:done': async () => updatePackageJson(iconsGroups, 'system'),
-  },
 });

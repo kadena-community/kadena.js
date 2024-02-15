@@ -5,6 +5,7 @@ import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { Options } from 'prettier';
 import { pascalCase } from 'scule';
+import { updatePackageJson } from './updatePackageJson';
 import { formatCode, getPrettierConfigs } from './utils';
 
 const REPO = 'gh:kadena-community/design-system/builds/tokens#main';
@@ -114,6 +115,10 @@ async function main() {
       const icons = buildIconsArray(group as Record<string, object>);
       await transformIcons(icons, key, prettierConfig);
     }),
+  );
+  await updatePackageJson(
+    groups.map(([key]) => key),
+    'system',
   );
 }
 

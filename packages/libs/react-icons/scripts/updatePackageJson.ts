@@ -32,6 +32,6 @@ export async function updatePackageJson(
   prettierConfig.parser = 'json';
   await writeFile(
     'package.json',
-    await formatCode(JSON.stringify(packageJson), prettierConfig),
+    await formatCode(JSON.stringify(packageJson, null, 2), prettierConfig),
   );
 }
