@@ -2,6 +2,7 @@ import {
   PrismaClientInitializationError,
   PrismaClientKnownRequestError,
 } from '@prisma/client/runtime/library';
+import { GasLimitEstimationError } from '@services/chainweb-node/estimate-gas-limit';
 import { PactCommandError } from '@services/chainweb-node/utils';
 import { GraphQLError } from 'graphql';
 
@@ -69,6 +70,18 @@ export function normalizeError(error: any): GraphQLError {
         type: error.pactError?.type || 'UnknownType',
         message: error.pactError?.message || error.message,
         description,
+      },
+    });
+  }
+
+  if (error instanceof GasLimitEstimationError) {
+    return new GraphQLError('Gas Limit Estimation Error', {
+      extensions: {
+        type: error.name,
+        message: error.originalError?.message || error.message,
+        description:
+          'Chainweb Node was unable to estimate the gas limit for the transaction. Please check your input and try again.',
+        ...(error.originalError && { data: error.originalError.stack }),
       },
     });
   }
