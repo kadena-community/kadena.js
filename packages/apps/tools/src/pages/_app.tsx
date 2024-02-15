@@ -2,11 +2,7 @@
 import '@kadena/react-ui/global';
 
 import { Layout } from '@/components/Common';
-import {
-  AppContextProvider,
-  LayoutContextProvider,
-  LedgerContextProvider,
-} from '@/context';
+import { AppContextProvider, LayoutContextProvider } from '@/context';
 import { WalletConnectClientContextProvider } from '@/context/connect-wallet-context';
 import '@/resources/styles/globals.css';
 import { KodeMono } from '@kadena/fonts';
@@ -37,17 +33,15 @@ const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
         }}
       >
         <RouterProvider navigate={router.push}>
-          <LedgerContextProvider>
-            <WalletConnectClientContextProvider>
-              <AppContextProvider>
-                <LayoutContextProvider>
-                  <Layout>
-                    <Component {...pageProps} />
-                  </Layout>
-                </LayoutContextProvider>
-              </AppContextProvider>
-            </WalletConnectClientContextProvider>
-          </LedgerContextProvider>
+          <WalletConnectClientContextProvider>
+            <AppContextProvider>
+              <LayoutContextProvider>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </LayoutContextProvider>
+            </AppContextProvider>
+          </WalletConnectClientContextProvider>
         </RouterProvider>
       </ThemeProvider>
     </QueryClientProvider>
