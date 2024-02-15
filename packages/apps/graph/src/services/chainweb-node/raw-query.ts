@@ -1,7 +1,8 @@
 import { dirtyReadClient } from '@kadena/client-utils/core';
-import { ChainId } from '@kadena/types';
+import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
-import { CommandData, PactCommandError } from './utils';
+import type { CommandData } from './utils';
+import { PactCommandError } from './utils';
 
 export async function sendRawQuery(
   code: string,

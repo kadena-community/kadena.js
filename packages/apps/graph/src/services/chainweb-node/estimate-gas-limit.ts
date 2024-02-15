@@ -1,13 +1,9 @@
-import {
-  ChainId,
-  IUnsignedCommand,
-  createClient,
-  createTransaction,
-} from '@kadena/client';
+import type { ChainId, IUnsignedCommand } from '@kadena/client';
+import { createClient, createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 import { hash as hashFunction } from '@kadena/cryptography-utils';
 import { dotenv } from '@utils/dotenv';
-import { GasLimitEstimation } from '../../graph/types/graphql-types';
+import type { GasLimitEstimation } from '../../graph/types/graphql-types';
 
 export class GasLimitEstimationError extends Error {
   originalError?: Error;
@@ -18,7 +14,7 @@ export class GasLimitEstimationError extends Error {
   }
 }
 
-type GasLimitEstimationInput = {
+interface GasLimitEstimationInput {
   cmd?: string;
   hash?: string;
   sigs?: string[];
@@ -27,7 +23,7 @@ type GasLimitEstimationInput = {
   signers?: string[];
   chainId?: ChainId;
   code?: string;
-};
+}
 
 interface BaseInput {
   preflight: boolean;
@@ -42,8 +38,8 @@ type FullTransactionInput = BaseInput & {
   networkId?: string;
 };
 
-type ParsedCommandInput = BaseInput & {
-  type: 'parsed-command';
+type StringifiedCommandInput = BaseInput & {
+  type: 'stringified-command';
   cmd: string;
   sigs?: string[];
   networkId?: string;
@@ -82,7 +78,7 @@ type CodeInput = BaseInput & {
 
 type UserInput =
   | FullTransactionInput
-  | ParsedCommandInput
+  | StringifiedCommandInput
   | FullCommandInput
   | PartialCommandInput
   | PayloadInput
@@ -108,11 +104,11 @@ function determineInputType(input: GasLimitEstimationInput): UserInput {
     } as FullTransactionInput;
   } else if ('cmd' in input) {
     return {
-      type: 'parsed-command',
+      type: 'stringified-command',
       preflight: true,
       signatureVerification: false,
       ...input,
-    } as ParsedCommandInput;
+    } as StringifiedCommandInput;
   } else if ('payload' in input && 'meta' in input && 'signers' in input) {
     return {
       type: 'full-command',
@@ -176,7 +172,7 @@ export const estimateGasLimit = async (
         sigs: input.sigs.map((s) => ({ sig: s })),
       };
       break;
-    case 'parsed-command':
+    case 'stringified-command':
       transaction = {
         cmd: input.cmd,
         hash: hashFunction(input.cmd),
