@@ -39,30 +39,19 @@ export const useSubmit = () => {
 
   const doSubmit = async () => {
     if (!transaction) return;
-
-    console.log(1);
-
     const client = createClient();
 
     setStatus(SubmitStatus.LOADING);
 
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
     try {
-      console.log(2);
       const txRes = await client.submit(tx);
       const result = await client.listen(txRes);
 
-      console.log({ txRes });
-      console.log({ result });
-
-      console.log(3);
-
       if (result.result.status === 'success') {
-        console.log(4);
         setStatus(SubmitStatus.SUCCESS);
         setResult(result);
       } else {
-        console.log(5);
         setStatus(SubmitStatus.ERROR);
         setResult({
           status: 'Could not submit transaction',
@@ -71,7 +60,6 @@ export const useSubmit = () => {
       }
     } catch (err: any) {
       setStatus(SubmitStatus.ERROR);
-      console.log(6);
       console.log(err);
       setResult({
         status: 'Could not submit transaction',
@@ -80,7 +68,10 @@ export const useSubmit = () => {
     }
   };
 
-  console.log({ status });
+  const isStatusLoading =
+    status !== SubmitStatus.IDLE &&
+    status !== SubmitStatus.SUCCESS &&
+    status !== SubmitStatus.ERROR;
   return {
     doSubmit,
     tx,
@@ -88,5 +79,6 @@ export const useSubmit = () => {
     result,
     status,
     SubmitStatus,
+    isStatusLoading,
   };
 };

@@ -50,6 +50,7 @@ export const AttendanceTicket: FC<IProps> = ({ token }) => {
 
           <div style={{ color: contrastColor }}>
             <h5>Date</h5>
+            {new Date(token.properties.date * 1000).toLocaleDateString()}
           </div>
         </section>
       </div>

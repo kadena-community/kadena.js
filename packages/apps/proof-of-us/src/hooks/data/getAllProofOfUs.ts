@@ -1,34 +1,24 @@
-import { fetchManifestData } from '@/utils/fetchManifestData';
 import { getAllProofOfUs } from '@/utils/proofOfUs';
 import { useEffect, useState } from 'react';
 
-export const useGetAllProofOfUs: IDataHook<IProofOfUsTokenMeta[]> = () => {
+export const useGetAllProofOfUs: IDataHook<IProofOfUsToken[]> = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<IError>();
-  const [data, setData] = useState<IProofOfUsTokenMeta[]>([]);
+  const [data, setData] = useState<IProofOfUsToken[]>([]);
 
   const load = async () => {
     const result = await getAllProofOfUs();
 
-    const promises = result.map((token) => {
-      return fetchManifestData(token);
-    });
-
-    const data = await Promise.all(promises);
-    const filteredData = data.filter(
-      (d) => d !== undefined,
-    ) as IProofOfUsTokenMeta[];
-
-    setData(filteredData);
+    setData(result);
   };
 
   useEffect(() => {
     load();
-  }, [setError, setIsLoading, setData]);
+  }, [setError, setIsLoading]);
 
   return {
     isLoading,
     error,
-    data,
+    data: data ?? [],
   };
 };

@@ -7,7 +7,6 @@ import type { FC } from 'react';
 
 export const Share: FC = () => {
   const params = useParams();
-
   const { data, isLoading, error } = useGetAttendanceToken(params.id);
 
   return (
@@ -15,7 +14,7 @@ export const Share: FC = () => {
       {isLoading && <div>...is loading</div>}
       {error && <div>...error</div>}
 
-      {data && (
+      {data?.name && (
         <>
           <SocialShare token={data} />
           <AttendanceTicket token={data} />

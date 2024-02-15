@@ -2,14 +2,17 @@ import { fetchManifestData } from '@/utils/fetchManifestData';
 import { getProofOfUs } from '@/utils/proofOfUs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
 export const useGetAttendanceToken: IDataHook<
   IProofOfUsTokenMeta | undefined
 > = (id: string) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isTokenLoading, setIsTokenLoading] = useState(false);
   const [hasError, setHasError] = useState<IError>();
-  const [data, setData] = useState<IProofOfUsTokenMeta | undefined>();
+  const [token, setToken] = useState<IProofOfUsToken | undefined>();
+
+  const { data, isLoading } = useSWR(token?.uri, fetchManifestData);
 
   const load = async () => {
     const result = await getProofOfUs(id);
@@ -18,32 +21,30 @@ export const useGetAttendanceToken: IDataHook<
       router.push('/404');
       return;
     }
-    const data = await fetchManifestData(result);
 
-    if (!data) {
-      console.error('no data found');
-      router.replace('/404');
-      return;
-    }
-
-    setData({
-      ...data,
-      startDate: result['starts-at'].int,
-      endDate: result['ends-at'].int,
-    });
+    setToken(result);
   };
 
   useEffect(() => {
     if (!data) return;
 
-    setIsLoading(false);
+    setIsTokenLoading(false);
   }, [data]);
 
   useEffect(() => {
     setHasError(undefined);
-    setIsLoading(true);
+    setIsTokenLoading(true);
     load();
   }, []);
 
-  return { isLoading, hasError, data };
+  const startDate = token && token['starts-at'].int;
+  const endDate = token && token['ends-at'].int;
+
+  const newData = data ? { ...data, startDate, endDate } : undefined;
+
+  return {
+    isLoading: isLoading || isTokenLoading,
+    hasError,
+    data: newData,
+  };
 };

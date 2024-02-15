@@ -15,7 +15,6 @@ export const useClaimAttendanceToken = () => {
       setHasError(true);
       return;
     }
-    console.log(account);
     setIsLoading(true);
     setHasError(false);
     setHasSuccess(false);

@@ -1,8 +1,6 @@
-import { AccountProvider } from '@/components/AccountProvider/AccountProvider';
 import { Analytics } from '@/components/Analytics/Analytics';
 import { Header } from '@/components/Header/Header';
-import { ThemeProvider } from '@/components/ThemeProvider/ThemeProvider';
-import { ToastProvider } from '@/components/ToastProvider/ToastProvider';
+import { Providers } from '@/components/Providers/Providers';
 import { Toasts } from '@/components/Toasts/Toasts';
 import type { Metadata } from 'next';
 import type { FC, PropsWithChildren } from 'react';
@@ -71,21 +69,17 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html>
       <body>
-        <ToastProvider>
-          <AccountProvider>
-            <ThemeProvider>
-              <>
-                <main className={mainWrapperClass}>
-                  <Header />
-                  {children}
+        <Providers>
+          <>
+            <main className={mainWrapperClass}>
+              <Header />
+              {children}
 
-                  <Toasts />
-                </main>
-                <Analytics />
-              </>
-            </ThemeProvider>
-          </AccountProvider>
-        </ToastProvider>
+              <Toasts />
+            </main>
+            <Analytics />
+          </>
+        </Providers>
       </body>
     </html>
   );

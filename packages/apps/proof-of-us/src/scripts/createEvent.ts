@@ -53,10 +53,7 @@ const createEventId = async () => {
 };
 
 const createEvent = async () => {
-  console.log(1, process.env.NFTSTORAGE_API_TOKEN);
   const eventId = await createEventId();
-
-  console.log(eventId);
 
   const proofOfUs = {
     eventId,

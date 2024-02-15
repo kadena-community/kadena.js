@@ -42,11 +42,9 @@ export const useMintMultiToken = () => {
     send('uploading_manifest');
     await wait(2000);
 
-    console.log(22222);
     send('minting');
     await wait(2000);
 
-    console.log(11111);
     send('success');
     setData('success');
 

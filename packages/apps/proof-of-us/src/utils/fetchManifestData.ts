@@ -1,8 +1,8 @@
 export const fetchManifestData = async (
-  token?: IProofOfUsToken,
+  uri?: string,
 ): Promise<IProofOfUsTokenMeta | undefined> => {
-  if (!token || !token.uri) return;
-  const result = await fetch(token.uri);
+  if (!uri) return;
+  const result = await fetch(uri);
   const data = (await result.json()) as IProofOfUsTokenMeta;
 
   return data;

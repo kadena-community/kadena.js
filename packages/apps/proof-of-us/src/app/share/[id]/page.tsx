@@ -16,7 +16,7 @@ export const generateMetadata = async ({
   params,
 }: IProps): Promise<Metadata | undefined> => {
   const token = await getProofOfUs(params.id);
-  const data = await fetchManifestData(token);
+  const data = await fetchManifestData(token?.uri);
 
   if (!data) return;
 

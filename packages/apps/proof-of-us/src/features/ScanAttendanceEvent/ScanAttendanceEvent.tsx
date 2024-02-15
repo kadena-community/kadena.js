@@ -1,7 +1,6 @@
 import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
 import { Button } from '@/components/Button/Button';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
-import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
 import { isAfter, isBefore } from 'date-fns';
@@ -23,12 +22,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const { isLoading, hasSuccess, hasError, isPending, claim } =
     useClaimAttendanceToken();
   const router = useRouter();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { doSubmit, result, preview, status, SubmitStatus, tx } = useSubmit();
-
-  const { account } = useAccount();
-
-  console.log(account);
+  const { doSubmit, status, isStatusLoading } = useSubmit();
 
   useEffect(() => {
     doSubmit();
@@ -64,9 +58,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
   return (
     <>
-      {status !== SubmitStatus.IDLE &&
-        status !== SubmitStatus.SUCCESS &&
-        status !== SubmitStatus.ERROR && <MainLoader />}
+      {isStatusLoading && <MainLoader />}
       <div>
         <h2>Attendance @</h2>
 

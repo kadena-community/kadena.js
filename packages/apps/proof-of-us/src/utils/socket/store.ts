@@ -16,7 +16,6 @@ const ProofOfUsStore = () => {
   const getBackground = async (
     proofOfUsId: string,
   ): Promise<IProofOfUsBackground | null> => {
-    console.log(2323422234234243);
     const docRef = await get(child(dbRef, `background/${proofOfUsId}`));
 
     if (!docRef.exists()) return { bg: '' };

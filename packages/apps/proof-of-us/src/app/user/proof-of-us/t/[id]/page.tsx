@@ -5,7 +5,6 @@ import { getProofOfUs } from '@/utils/proofOfUs';
 import type { Metadata } from 'next';
 
 import type { FC } from 'react';
-
 interface IProps {
   params: {
     id: string;
@@ -16,7 +15,7 @@ export const generateMetadata = async ({
   params,
 }: IProps): Promise<Metadata | undefined> => {
   const token = await getProofOfUs(params.id);
-  const data = await fetchManifestData(token);
+  const data = await fetchManifestData(token?.uri);
   if (!data) return;
 
   return {
