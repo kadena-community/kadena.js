@@ -219,5 +219,15 @@
   "help-signature-data-content": "You can use the signature data exclusively for signing transactions.",
   "Transaction submitted": "Transaction submitted",
   "link-to-kadena-explorer": "Request Key: <0></0>",
-  "Target Chain Request key: ": "Target Chain Request key: "
+  "Target Chain Request key: ": "Target Chain Request key: ",
+  "ledger-info-notification": "Please visit <0>the Ledger Docs</0> for more information.",
+  "Find your key": "Find your key",
+  "is Legacy": "is Legacy",
+  "The amount of KDA to transfer.": "The amount of KDA to transfer.",
+  "Raw": "Raw",
+  "Code": "Code",
+  "Capabilities": "Capabilities",
+  "Name": "Name",
+  "Arguments": "Arguments",
+  "Signer": "Signer"
 }

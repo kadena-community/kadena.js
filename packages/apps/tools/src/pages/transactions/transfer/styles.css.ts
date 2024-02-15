@@ -1,47 +1,19 @@
-import { atoms } from '@kadena/react-ui/styles';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
-export const formButtonStyle = style([
+export const notificationLinkStyle = style([
   atoms({
-    alignItems: 'center',
-    marginBlock: 'md',
-    display: 'flex',
-    flexDirection: 'row-reverse',
+    fontWeight: 'bodyFont.bold',
+    textDecoration: 'underline',
+    color: 'inherit',
+    cursor: 'pointer',
   }),
 ]);
 
-export const infoBoxStyle = style([
-  atoms({
-    fontSize: 'sm',
-    padding: 'md',
-    borderRadius: 'sm',
-    display: 'flex',
-    flexDirection: 'column',
-  }),
+export const chainSelectContainerClass = style([
+  { width: tokens.kda.foundation.size.n56 },
 ]);
 
-export const linksBoxStyle = style([
-  atoms({
-    fontSize: 'base',
-    borderRadius: 'sm',
-    display: 'flex',
-    flexDirection: 'column',
-  }),
-]);
-
-export const footerBarStyle = style([
-  atoms({
-    width: '100%',
-    display: 'block',
-    position: 'sticky',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingBlock: 'sm',
-    paddingInlineEnd: 'sm',
-  }),
-  {
-    background: '#FAFAFA70',
-    backdropFilter: 'blur(3px)',
-  },
+export const buttonContainerClass = style([
+  atoms({ display: 'flex', justifyContent: 'flex-end' }),
 ]);

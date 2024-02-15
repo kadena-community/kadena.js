@@ -10,17 +10,17 @@ import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 
-import {
-  buttonContainerClass,
-  chainSelectContainerClass,
-} from '@/pages/faucet/styles.css';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CHAINS } from '@kadena/chainweb-node-client';
 // import { createSignWithLedger } from '@kadena/client';
 import AddPublicKeysSection from '@/components/Global/AddPublicKeysSection';
 import { Toggle } from '@/components/Global/Toggle';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
-import { notificationLinkStyle } from '@/pages/transactions/cross-chain-transfer-finisher/styles.css';
+import {
+  buttonContainerClass,
+  chainSelectContainerClass,
+  notificationLinkStyle,
+} from './styles.css';
 // import TransactionDetails from '@/pages/transactions/transfer/transaction-details';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import { stripAccountPrefix } from '@/utils/string';
@@ -42,6 +42,7 @@ import {
   Tabs,
 } from '@kadena/react-ui';
 import { useQuery } from '@tanstack/react-query';
+import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -305,16 +306,19 @@ const TransferPage = () => {
         paddingBlockEnd={'xxxl'}
         gap={'lg'}
       >
-        <Notification role="alert">
-          Please visit{' '}
-          <a
-            href="https://support.ledger.com/hc/en-us/articles/7415959614109?docs=true"
-            target="_blank"
-            rel="noreferrer"
-          >
-            the Ledger docs
-          </a>{' '}
-          for more information.
+        <Notification intent="info" role="alert">
+          <Trans
+            i18nKey="common:ledger-info-notification"
+            components={[
+              <a
+                className={notificationLinkStyle}
+                target={'_blank'}
+                href="https://support.ledger.com/hc/en-us/articles/7415959614109?docs=true"
+                rel="noreferrer"
+                key="link-to-ledger-docs"
+              />,
+            ]}
+          />
         </Notification>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack flexDirection="column" gap="lg">
@@ -338,7 +342,7 @@ const TransferPage = () => {
                   target={'_blank'}
                   key={'key'}
                 >
-                  Find your key
+                  {t('Find your key')}
                 </Link>
               </Stack>
 
@@ -368,7 +372,7 @@ const TransferPage = () => {
                     />
                   </div>
                   <Toggle
-                    label={'is Legacy'}
+                    label={t('is Legacy')}
                     toggled={legacyToggleOn}
                     onClick={setLegacyOn}
                   />
@@ -406,7 +410,7 @@ const TransferPage = () => {
                     <NumberField
                       {...field}
                       id="ledger-transfer-amount"
-                      label="Amount"
+                      label={t('Amount')}
                       onChange={(e) => field.onChange(parseInt(e.target.value))}
                       isInvalid={!!errors.amount || invalidAmount}
                       errorMessage={
@@ -414,7 +418,7 @@ const TransferPage = () => {
                           ? invalidAmountMessage
                           : errors.amount?.message
                       }
-                      info="The amount of KDA to transfer."
+                      info={t('The amount of KDA to transfer.')}
                     />
                   )}
                 />
