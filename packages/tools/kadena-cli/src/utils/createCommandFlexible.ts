@@ -46,7 +46,7 @@ export async function executeOption<Option extends OptionType>(
     option.isOptional ? option.validation.optional() : option.validation
   ).safeParse(value);
   if (validate.success === false) {
-    console.warn(`Invalid value for ${option.key}: ${value}`);
+    log.warning(`Invalid value for ${option.key}: ${value}`);
   }
 
   const newConfig = { [option.key]: value } as OptionConfig<Option>;
@@ -176,7 +176,6 @@ export const createCommandFlexible =
           process.exitCode = error.exitCode;
           return;
         }
-        console.log(error);
         log.error(`\nAn error occurred: ${error.message}\n`);
         process.exitCode = 1;
       }
