@@ -2,8 +2,8 @@ import { isAbsolute, join } from 'node:path';
 
 const ENV_KADNEA_DIR = process.env.ENV_KADNEA_DIR;
 
-// app name
-export const CLINAME = 'bin/kadena-cli.js';
+// app executable (for development run `npm link` or use the dev command)
+export const CLINAME = 'kadena';
 
 // root folders
 export const WORKING_DIRECTORY = process.cwd();
