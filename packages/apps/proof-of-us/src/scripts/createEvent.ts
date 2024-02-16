@@ -20,7 +20,7 @@ Ghislain: dde39b7430db47ea354ec4b895535b58466c4c47ee620e44bce48f7648a4cc59
 Steven: 1c835d4e67917fd25781b11db1c12efbc4296c5c7fe981d35bbcf4a46a53441f
 */
 const creatorPublicKey =
-  'dde39b7430db47ea354ec4b895535b58466c4c47ee620e44bce48f7648a4cc59';
+  '1c835d4e67917fd25781b11db1c12efbc4296c5c7fe981d35bbcf4a46a53441f';
 
 // This account will be used to send the creation tx, must be different from the creatorPublicKey
 /*
@@ -29,13 +29,13 @@ Ghislain: f896955bc5ad89e40512ebe8cb4e61b3bc0c7205daf67c1bd648924c203c61c5
 Steven: 805b2e339ca8dedb16c4132f149a0f2e4c0d5527cf9eae10aebc133a0339905f
 */
 const senderPubKey =
-  'f896955bc5ad89e40512ebe8cb4e61b3bc0c7205daf67c1bd648924c203c61c5';
+  '805b2e339ca8dedb16c4132f149a0f2e4c0d5527cf9eae10aebc133a0339905f';
 
 //proof-of-us:4kMC4g88M0GOvtFMwWYkuMB-DUXY3LEuShgoYmf74j4
 const namespace = 'n_31cd1d224d06ca2b327f1b03f06763e305099250';
 const collectionId = 'collection:K85ZSH3LUXS3SB_Aokhseap0U6AHyNbSJKGfUM4kbik';
 const startTime = Math.round(addMinutes(new Date(), 2).getTime() / 1000);
-const endTime = Math.round(addHours(new Date(), 2).getTime() / 1000);
+const endTime = Math.round(addHours(new Date(), 200).getTime() / 1000);
 const eventName = 'Greyskull';
 const eventType: TokenType = 'attendance';
 const imageBase64Str =
@@ -128,13 +128,6 @@ const createEvent = async () => {
 
     .createTransaction();
 
-  console.log({ unsignedTx });
-
-  //   const result = await client.local(transaction, {
-  //     preflight: false,
-  //     signatureVerification: false,
-  //   });
-
   const signWithChainweaver = createSignWithChainweaver();
   const signedTx = await signWithChainweaver(unsignedTx);
 
@@ -146,8 +139,6 @@ const createEvent = async () => {
   console.log(`CREATE-TOKEN requestKey: ${polldata.requestKey}`);
 
   const { result } = await kadenaClient.listen(polldata);
-
-  console.log(result);
 
   if (result.status !== 'success') {
     console.log('ERROR');

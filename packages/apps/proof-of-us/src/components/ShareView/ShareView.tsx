@@ -1,6 +1,5 @@
 import { Button } from '@/components/Button/Button';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
-import { useMintMultiToken } from '@/hooks/data/mintMultiToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { CopyButton, SystemIcon, TextField } from '@kadena/react-ui';
@@ -13,7 +12,6 @@ import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { backButtonClass } from '../DetailView/style.css';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
-import { MainLoader } from '../MainLoader/MainLoader';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 import { qrClass } from './style.css';
 
@@ -26,7 +24,6 @@ interface IProps {
 export const ShareView: FC<IProps> = ({ next, prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
   const { proofOfUs } = useProofOfUs();
-  const { isLoading, hasError, data, mintToken } = useMintMultiToken();
   const router = useRouter();
   const { id } = useParams();
 
@@ -42,21 +39,13 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
       }&returnUrl=${getReturnHostUrl()}/scan/${id}
       `,
     );
-
     return;
-    // next();
-    // await mintToken();
-  };
-
-  const handleRetry = () => {
-    mintToken();
   };
 
   if (!proofOfUs) return;
 
   return (
     <section>
-      sdsdsdf
       {status === 3 && (
         <>
           <TitleHeader
@@ -119,16 +108,9 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
 
           <div>status: {proofOfUs.mintStatus}</div>
           <ListSignees />
-          {isLoading && <MainLoader />}
-          {hasError && (
-            <div>
-              there was an error.
-              <button onClick={handleRetry}>retry</button>
-            </div>
-          )}
+
           {proofOfUs.mintStatus === 'success' && (
             <div>
-              success {data}
               <Link href="/user">dashboard</Link>
               <Link href={`/user/proof-of-us/${proofOfUs?.tokenId}`}>
                 go to proof
