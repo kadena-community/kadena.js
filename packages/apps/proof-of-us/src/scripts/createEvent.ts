@@ -1,8 +1,8 @@
 import {
   Pact,
   createClient,
+  createSignWithChainweaver,
   isSignedTransaction,
-  signWithChainweaver,
 } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { addHours, addMinutes } from 'date-fns';
@@ -14,12 +14,26 @@ import { createManifest } from '../utils/createManifest';
 
 dotenv.config();
 
-//proof-of-us:4kMC4g88M0GOvtFMwWYkuMB-DUXY3LEuShgoYmf74j4
-const namespace = 'n_31cd1d224d06ca2b327f1b03f06763e305099250';
-const collectionId = 'collection:K85ZSH3LUXS3SB_Aokhseap0U6AHyNbSJKGfUM4kbik';
+// This account will be used to create the event, must be added to the keyset on testnet. Ask Jermaine
+/* Often used keys:
+Ghislain: dde39b7430db47ea354ec4b895535b58466c4c47ee620e44bce48f7648a4cc59
+Steven: 1c835d4e67917fd25781b11db1c12efbc4296c5c7fe981d35bbcf4a46a53441f
+*/
 const creatorPublicKey =
   '1c835d4e67917fd25781b11db1c12efbc4296c5c7fe981d35bbcf4a46a53441f';
 
+// This account will be used to send the creation tx, must be different from the creatorPublicKey
+/*
+Often used keys:
+Ghislain: f896955bc5ad89e40512ebe8cb4e61b3bc0c7205daf67c1bd648924c203c61c5
+Steven: 805b2e339ca8dedb16c4132f149a0f2e4c0d5527cf9eae10aebc133a0339905f
+*/
+const senderPubKey =
+  '805b2e339ca8dedb16c4132f149a0f2e4c0d5527cf9eae10aebc133a0339905f';
+
+//proof-of-us:4kMC4g88M0GOvtFMwWYkuMB-DUXY3LEuShgoYmf74j4
+const namespace = 'n_31cd1d224d06ca2b327f1b03f06763e305099250';
+const collectionId = 'collection:K85ZSH3LUXS3SB_Aokhseap0U6AHyNbSJKGfUM4kbik';
 const startTime = Math.round(addMinutes(new Date(), 2).getTime() / 1000);
 const endTime = Math.round(addHours(new Date(), 200).getTime() / 1000);
 const eventName = 'Greyskull';
@@ -66,6 +80,7 @@ const createEvent = async () => {
   };
 
   const imageData = await createImageUrl(imageBase64Str);
+  console.log(imageData);
 
   if (!imageData) {
     console.log('ERROR!  no imagedata');
@@ -81,7 +96,7 @@ const createEvent = async () => {
     return;
   }
 
-  const transaction = Pact.builder
+  const unsignedTx = Pact.builder
     .execution(
       `(${namespace}.proof-of-us.create-event
             "${collectionId}" "${eventName}"
@@ -99,36 +114,28 @@ const createEvent = async () => {
     .setNetworkId('testnet04')
     .setMeta({
       chainId: '1',
-      senderAccount:
-        'k:805b2e339ca8dedb16c4132f149a0f2e4c0d5527cf9eae10aebc133a0339905f',
+      senderAccount: `k:${senderPubKey}`,
     })
-    .addSigner(
-      '805b2e339ca8dedb16c4132f149a0f2e4c0d5527cf9eae10aebc133a0339905f',
-      (withCap) => [
-        withCap(
-          `${namespace}.proof-of-us-gas-station.GAS_PAYER`,
-          'k:1c835d4e67917fd25781b11db1c12efbc4296c5c7fe981d35bbcf4a46a53441f',
-          new PactNumber(2500).toPactInteger(),
-          new PactNumber(1).toPactDecimal(),
-        ),
-      ],
-    )
+    .addSigner(senderPubKey, (withCap) => [
+      withCap(
+        `${namespace}.proof-of-us-gas-station.GAS_PAYER`,
+        `k:${creatorPublicKey}`,
+        new PactNumber(2500).toPactInteger(),
+        new PactNumber(1).toPactDecimal(),
+      ),
+    ])
     .addSigner(creatorPublicKey)
 
     .createTransaction();
 
-  console.log({ transaction });
+  const signWithChainweaver = createSignWithChainweaver();
+  const signedTx = await signWithChainweaver(unsignedTx);
 
-  //   const result = await client.local(transaction, {
-  //     preflight: false,
-  //     signatureVerification: false,
-  //   });
+  console.log(signedTx);
 
-  const signed: any = await signWithChainweaver(transaction);
+  if (!isSignedTransaction(signedTx)) throw Error('Not a signed transaction');
 
-  if (!isSignedTransaction(signed)) throw Error('Not a signed transaction');
-
-  const polldata = await kadenaClient.submit(signed);
+  const polldata = await kadenaClient.submit(signedTx);
   console.log(`CREATE-TOKEN requestKey: ${polldata.requestKey}`);
 
   const { result } = await kadenaClient.listen(polldata);

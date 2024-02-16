@@ -38,7 +38,7 @@ import {
 import { accountOverWritePrompt } from '../prompts/account.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { createOption } from './createOption.js';
-import { ensureDevnetsConfiguration } from './helpers.js';
+import { ensureDevnetsConfiguration, isNotEmptyString } from './helpers.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalFlags = {
@@ -257,9 +257,17 @@ export const globalOptions = {
     prompt: networks.networkNamePrompt,
     validation: z.string(),
     option: new Option(
-      '-n, --networkName <networkName>',
+      '-n, --network-name <networkName>',
       'Kadena network (e.g. "mainnet")',
     ),
+    transform: (networkName: string) => {
+      const trimmedNetworkName = networkName.trim();
+      if (isNotEmptyString(trimmedNetworkName)) {
+        return trimmedNetworkName;
+      }
+
+      throw new Error('Network name is required');
+    },
   }),
   networkId: createOption({
     key: 'networkId' as const,
@@ -269,6 +277,9 @@ export const globalOptions = {
       '-nid, --network-id <networkId>',
       'Kadena network Id (e.g. "mainnet01")',
     ),
+    transform: (networkId: string) => {
+      return networkId.trim();
+    },
   }),
   networkHost: createOption({
     key: 'networkHost' as const,
@@ -278,6 +289,19 @@ export const globalOptions = {
       '-h, --network-host <networkHost>',
       'Kadena network host (e.g. "https://api.chainweb.com")',
     ),
+    transform: (value: string) => {
+      // when it's optional and it's empty string and we don't want to validate it
+      if (isNotEmptyString(value)) {
+        const parse = z.string().url().safeParse(value.trim());
+        if (!parse.success) {
+          throw new Error(
+            'Network host: Invalid URL. Please enter a valid URL.',
+          );
+        }
+      }
+
+      return value.trim();
+    },
   }),
   networkExplorerUrl: createOption({
     key: 'networkExplorerUrl' as const,

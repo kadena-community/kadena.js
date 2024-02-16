@@ -3,6 +3,7 @@ import { Button } from '@/components/Button/Button';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
+import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import { isAfter, isBefore } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
@@ -34,9 +35,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     router.push(
       `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${Buffer.from(
         JSON.stringify(transaction),
-      ).toString('base64')}&returnUrl=${
-        process.env.NEXT_PUBLIC_URL
-      }/scan/e/${eventId}
+      ).toString('base64')}&returnUrl=${getReturnHostUrl()}/scan/e/${eventId}
       `,
     );
   };

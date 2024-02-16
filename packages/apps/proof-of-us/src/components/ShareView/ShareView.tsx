@@ -1,13 +1,12 @@
 import { Button } from '@/components/Button/Button';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
-import { PROOFOFUS_QR_URL } from '@/constants';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { env } from '@/utils/env';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { CopyButton, SystemIcon, TextField } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 
+import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import type { FC } from 'react';
 import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
@@ -35,7 +34,9 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
   const handleSign = async () => {
     if (!proofOfUs) return;
     router.push(
-      `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${proofOfUs.tx}&returnUrl=${process.env.NEXT_PUBLIC_URL}/scan/${id}
+      `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${
+        proofOfUs.tx
+      }&returnUrl=${getReturnHostUrl()}/scan/${id}
       `,
     );
     return;
@@ -68,7 +69,7 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
                   ecLevel="H"
                   size={800}
                   ref={qrRef}
-                  value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
+                  value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
                   removeQrCodeBehindLogo={true}
                   logoImage="/assets/qrlogo.png"
                   logoPadding={5}
@@ -79,7 +80,8 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
               <TextField
                 placeholder="Link"
                 id="linkshare"
-                value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
+                aria-label="share"
+                value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
                 endAddon={<CopyButton inputId="linkshare" />}
               />
             </>

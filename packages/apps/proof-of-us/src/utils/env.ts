@@ -12,7 +12,6 @@ if (!WALLET_URL) console.error('NEXT_PUBLIC_WALLET_URL is not set');
 if (!URL) console.error('NEXT_PUBLIC_URL is not set');
 if (!CHAINID) console.error('NEXT_PUBLIC_CHAINID is not set');
 if (!NETWORKID) console.error('NEXT_PUBLIC_NETWORKID is not set');
-if (!NAMESPACE) console.error('NEXT_PUBLIC_CONTRACT_NAMESPACE is not set');
 
 export const env = {
   TRACKING_ID,
