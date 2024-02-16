@@ -1,14 +1,15 @@
+type IAccountCrendentialType = 'WebAuthn' | 'ED25519';
+
 interface IAccountCrendential {
-  id?: string;
   publicKey: string;
-  type: 'WebAuthn' | 'ED25519';
+  type: IAccountCrendentialType;
 }
 
 interface IAccount {
   accountName: string;
   alias: string;
-  pendingTxIds: IAccountCrendential[];
-  credentials: string;
+  pendingTxIds: string[];
+  credentials: IAccountCrendential[];
 }
 
 type IBuildStatusValues = 0 | 1 | 2 | 3 | 4;
@@ -38,9 +39,11 @@ type IProofOfUsBackground = {
   bg: string;
 };
 
-type TokenType = 'multi' | 'event';
+type TokenType = 'connect' | 'attendance';
 
 interface IProofOfUsData {
+  tx: IUnsignedCommand;
+  eventId: string;
   mintStatus: IMintStatus;
   status: IBuildStatusValues;
   backgroundColor?: string;
@@ -55,16 +58,35 @@ interface IProofOfUsData {
 }
 
 interface IProofOfUsToken {
-  tokenId: string;
+  'collection-id': string;
+  'ends-at': { int: number };
+  'starts-at': { int: number };
+  'token-id': string;
+  uri: string;
+  name: string;
+  status: 'success' | 'failure';
+}
+
+interface IProofOfUsTokenMeta {
+  startDate: int;
+  endDate: int;
+  description: string;
   image: string;
   name: string;
   properties: {
-    type: TokenType;
+    eventId: string;
+    eventType: TokenType;
     date: number;
     avatar?: {
       backgroundColor: string;
     };
     signees?: IProofOfUsTokenSignee[];
+  };
+
+  authors: string[];
+  collection: {
+    name: string;
+    family: string;
   };
 }
 
@@ -94,6 +116,7 @@ type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   initiator: boolean;
   socialLinks?: ISocial[];
   position?: ISigneePosition;
+  publicKey: string;
 };
 
 type IProofOfUsTokenSignee = Pick<

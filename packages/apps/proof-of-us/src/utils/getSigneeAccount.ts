@@ -6,6 +6,7 @@ export const getSigneeAccount = (
     (c) => c.accountName === account.accountName,
   );
 
+  const credential = account.credentials[0];
   if (signer) return signer;
 
   return {
@@ -13,5 +14,6 @@ export const getSigneeAccount = (
     alias: account.alias,
     initiator: false,
     signerStatus: 'init',
+    publicKey: credential.publicKey,
   };
 };

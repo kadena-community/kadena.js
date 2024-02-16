@@ -1,5 +1,5 @@
-import chalk from 'chalk';
 import type { Ora } from 'ora';
+import { log } from './logger.js';
 
 export class CommandError extends Error {
   public warnings: string[];
@@ -18,7 +18,7 @@ export class CommandError extends Error {
     exitCode?: number;
     args?: Record<string, unknown>;
   }) {
-    super(`Error:\n${warnings?.join('\n')}${errors?.join('\n')}`);
+    super(`Error:\n${(warnings ?? []).join('\n')}${(errors ?? []).join('\n')}`);
     this.errors = errors ?? [];
     this.warnings = warnings ?? [];
     this.exitCode = exitCode ?? 0;
@@ -46,14 +46,14 @@ export function assertCommandError(
   ora?: Ora,
 ): asserts result is Extract<CommandResult<unknown>, { success: true }> {
   if (result.warnings && result.warnings.length) {
-    console.log(chalk.yellow(`${result.warnings.join('\n')}\n`));
+    log.warning(`${result.warnings.join('\n')}\n`);
   }
 
   if (result.success === false) {
     if (ora) ora.fail('Failed');
 
     if (result.errors.length > 0) {
-      console.log(chalk.red(`${result.errors.join('\n')}\n`));
+      log.error(`${result.errors.join('\n')}\n`);
     }
 
     throw new CommandError({

@@ -54,7 +54,7 @@ export const useToolbar = (
       const index = menuData.indexOf(activeMenu);
       setActiveMenuIndex(index);
     }
-  }, []);
+  }, [pathName, setActiveMenuIndex, setToolbar, toolbar]);
 };
 
 const LayoutContextProvider = (props: PropsWithChildren): JSX.Element => {

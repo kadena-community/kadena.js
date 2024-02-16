@@ -2,10 +2,10 @@ import { HttpResponse, http } from 'msw';
 import { afterEach, describe, expect, it } from 'vitest';
 import { server } from '../../../mocks/server.js';
 import {
-  getAccountDetailsForAddAccount,
+  getAccountDetails,
   getAccountDetailsFromChain,
 } from '../getAccountDetails.js';
-import { devNetConfigMock } from './mocks.js';
+import { devNetConfigMock, testNetworkConfigMock } from './mocks.js';
 
 describe('getAccountDetailsFromChain', () => {
   afterEach(() => {
@@ -35,7 +35,7 @@ describe('getAccountDetailsFromChain', () => {
   it('should throw an error when account details are undefined from chain', async () => {
     server.use(
       http.post(
-        'https://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/local',
+        'https://localhost:8080/chainweb/0.0/fast-development/chain/2/pact/api/v1/local',
         () => {
           return HttpResponse.json(
             {
@@ -52,7 +52,7 @@ describe('getAccountDetailsFromChain', () => {
     await expect(async () => {
       await getAccountDetailsFromChain({
         accountName: 'k:accountName',
-        chainId: '1',
+        chainId: '2',
         networkId: devNetConfigMock.networkId,
         networkHost: devNetConfigMock.networkHost,
         fungible: 'coin',
@@ -63,7 +63,7 @@ describe('getAccountDetailsFromChain', () => {
   it('should throw an error when account is not available on chain', async () => {
     server.use(
       http.post(
-        'https://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/local',
+        'https://localhost:8080/chainweb/0.0/fast-development/chain/2/pact/api/v1/local',
         () => {
           return HttpResponse.json({ error: 'row not found' }, { status: 404 });
         },
@@ -72,7 +72,7 @@ describe('getAccountDetailsFromChain', () => {
     await expect(async () => {
       await getAccountDetailsFromChain({
         accountName: 'k:accountName',
-        chainId: '1',
+        chainId: '2',
         networkId: devNetConfigMock.networkId,
         networkHost: devNetConfigMock.networkHost,
         fungible: 'coin',
@@ -81,13 +81,13 @@ describe('getAccountDetailsFromChain', () => {
   });
 });
 
-describe('getAccountDetailsForAddAccount', () => {
+describe('getAccountDetails', () => {
   afterEach(() => {
     server.resetHandlers();
   });
 
   it('should return account details from chain when account is available on chain', async () => {
-    const result = await getAccountDetailsForAddAccount({
+    const result = await getAccountDetails({
       accountName: 'accountName',
       chainId: '1',
       networkId: devNetConfigMock.networkId,
@@ -109,17 +109,17 @@ describe('getAccountDetailsForAddAccount', () => {
   it('should return undefined when account details throws an error with row not found', async () => {
     server.use(
       http.post(
-        'https://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/local',
+        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/10/pact/api/v1/local',
         () => {
           return HttpResponse.json({ error: 'row not found' }, { status: 404 });
         },
       ),
     );
-    const result = await getAccountDetailsForAddAccount({
+    const result = await getAccountDetails({
       accountName: 'k:accountName',
-      chainId: '1',
-      networkId: devNetConfigMock.networkId,
-      networkHost: devNetConfigMock.networkHost,
+      chainId: '10',
+      networkId: testNetworkConfigMock.networkId,
+      networkHost: testNetworkConfigMock.networkHost,
       fungible: 'coin',
     });
     expect(result).toBe(undefined);
@@ -138,7 +138,7 @@ describe('getAccountDetailsForAddAccount', () => {
       ),
     );
     await expect(async () => {
-      await getAccountDetailsForAddAccount({
+      await getAccountDetails({
         accountName: 'k:accountName',
         chainId: '1',
         networkId: devNetConfigMock.networkId,

@@ -6,6 +6,5 @@ export default builder.objectType('TokenInfo', {
     supply: t.exposeInt('supply'),
     precision: t.exposeInt('precision'),
     uri: t.exposeString('uri'),
-    policies: t.exposeStringList('policies'),
   }),
 });

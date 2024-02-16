@@ -9,6 +9,7 @@ export default builder.objectType('Token', {
     id: t.exposeID('id'),
     balance: t.exposeInt('balance'),
     chainId: t.exposeString('chainId'),
+    version: t.exposeString('version'),
     info: t.field({
       type: 'TokenInfo',
       nullable: true,

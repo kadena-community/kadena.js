@@ -1,27 +1,66 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { wait } from '@/utils/wait';
-import { useState } from 'react';
+import { createManifest } from '@/utils/createManifest';
+import { getReturnHostUrl } from '@/utils/getReturnUrl';
+import { createConnectTokenTransaction } from '@/utils/proofOfUs';
+import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useAccount } from '../account';
 
 export const useSignToken = () => {
-  const { updateSigner, proofOfUs } = useProofOfUs();
+  const { updateSigner, proofOfUs, background, addTx } = useProofOfUs();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [data] = useState<IProofOfUs | undefined>(undefined);
+  const { id } = useParams();
+  const { account } = useAccount();
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const transaction = searchParams.get('transaction');
+    if (!transaction) return;
+
+    addTx(transaction);
+    updateSigner({ signerStatus: 'success' }, true);
+
+    setIsLoading(false);
+    setHasError(false);
+    //router.replace(`/scan/${id}`);
+  }, [searchParams]);
 
   const signToken = async () => {
-    if (!proofOfUs) return;
+    if (!proofOfUs || !account) return;
     setIsLoading(true);
     setHasError(false);
 
     updateSigner({ signerStatus: 'signing' }, true);
 
-    //@TODO actual signing to wallet
-    await wait(5000);
+    const imageData = await createImageUrl(background.bg);
+    if (!imageData) {
+      console.error('no image found');
+      return;
+    }
+    const manifest = createManifest(proofOfUs, imageData.url);
+    const manifestData = await createMetaDataUrl(manifest);
+    if (!manifestData) {
+      console.error('no manifestData found');
+      return;
+    }
 
-    updateSigner({ signerStatus: 'success' }, true);
+    const transaction = await createConnectTokenTransaction(
+      manifestData?.url,
+      proofOfUs,
+      account,
+    );
 
-    setIsLoading(false);
-    setHasError(false);
+    router.push(
+      `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${Buffer.from(
+        JSON.stringify(transaction),
+      ).toString('base64')}&returnUrl=${getReturnHostUrl()}/scan/${id}
+      `,
+    );
   };
 
   return { isLoading, hasError, data, signToken };

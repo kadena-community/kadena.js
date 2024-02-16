@@ -27,6 +27,10 @@ export const handlers: any = [
 
       const parsedCMD = JSON.parse(data.cmd as string);
 
+      if (parsedCMD.payload.exec.code.includes('coin.details') === true) {
+        return HttpResponse.json(accountDetailsSuccessData, { status: 200 });
+      }
+
       // transfer coin
       if (parsedCMD.payload.exec.code.includes('coin.transfer') === true) {
         return HttpResponse.json(
@@ -64,6 +68,66 @@ export const handlers: any = [
           result: {
             data: 'Write succeeded',
             status: 'success',
+          },
+        },
+        { status: 200 },
+      );
+    },
+  ),
+
+  http.post(
+    'https://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/send',
+    () => {
+      return HttpResponse.json(
+        {
+          requestKeys: ['requestKey-1', 'requestKey-2'],
+        },
+        { status: 200 },
+      );
+    },
+  ),
+
+  http.post(
+    'https://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/listen',
+    () => {
+      return HttpResponse.json(
+        {
+          result: {
+            reqKey: 'requestKey-1',
+            result: {
+              data: 'Write succeeded',
+              status: 'success',
+            },
+          },
+        },
+        { status: 200 },
+      );
+    },
+  ),
+
+  http.post(
+    'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/send',
+    () => {
+      return HttpResponse.json(
+        {
+          requestKeys: ['requestKey-1', 'requestKey-2'],
+        },
+        { status: 200 },
+      );
+    },
+  ),
+
+  http.post(
+    'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/listen',
+    () => {
+      return HttpResponse.json(
+        {
+          result: {
+            reqKey: 'requestKey-1',
+            result: {
+              data: 'Write succeeded',
+              status: 'success',
+            },
           },
         },
         { status: 200 },

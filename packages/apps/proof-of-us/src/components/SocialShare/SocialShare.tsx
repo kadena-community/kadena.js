@@ -5,7 +5,7 @@ import type { FC, MouseEvent } from 'react';
 import { useEffect, useState } from 'react';
 
 interface IProps {
-  token: IProofOfUsToken;
+  token: IProofOfUsTokenMeta;
 }
 
 export const SocialShare: FC<IProps> = ({ token }) => {
@@ -13,7 +13,7 @@ export const SocialShare: FC<IProps> = ({ token }) => {
   const text = `${token.name} was a great event`;
   const title = `A new  NFT: `;
   const twitterTitle = `A new  NFT:`;
-  const url = `${process.env.NEXT_PUBLIC_URL}/share/${token.tokenId}`;
+  const url = `${process.env.NEXT_PUBLIC_URL}/share/${token.properties.eventId}`;
 
   const shareDetails = { url, title, text, label };
   const [isShowed, setIsShowed] = useState(false);

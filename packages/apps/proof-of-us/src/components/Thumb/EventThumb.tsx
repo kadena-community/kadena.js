@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { eventThumbClass, thumbWrapClass } from './style.css';
 
 interface IProps {
-  token: IProofOfUsToken;
+  token: IProofOfUsTokenMeta;
 }
 export const EventThumb: FC<IProps> = ({ token }) => {
   const getInitial = (str: string) => {

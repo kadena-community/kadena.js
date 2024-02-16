@@ -9,9 +9,14 @@ export const listClass = style({
 
 export const listItemClass = style([
   atoms({
+    position: 'relative',
     display: 'block',
     width: '100%',
   }),
+  {
+    minHeight: '50px',
+    borderBottom: '1px solid white',
+  },
 ]);
 export const titleClass = style([
   atoms({
