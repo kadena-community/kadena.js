@@ -24,6 +24,7 @@ type IDataHook<T> = (...args: any) => {
   isLoading: boolean;
   error?: IError;
   data: T;
+  token?: any;
 };
 
 type IMintStatus =
@@ -39,7 +40,7 @@ type IProofOfUsBackground = {
   bg: string;
 };
 
-type TokenType = 'multi' | 'attendance';
+type TokenType = 'connect' | 'attendance';
 
 interface IProofOfUsData {
   tx: IUnsignedCommand;
@@ -116,6 +117,7 @@ type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   initiator: boolean;
   socialLinks?: ISocial[];
   position?: ISigneePosition;
+  publicKey: string;
 };
 
 type IProofOfUsTokenSignee = Pick<

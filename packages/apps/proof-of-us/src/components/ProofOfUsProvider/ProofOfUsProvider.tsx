@@ -57,6 +57,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
       alias: account.alias,
       initiator: false,
       signerStatus: 'init',
+      publicKey: '',
     };
   },
 });

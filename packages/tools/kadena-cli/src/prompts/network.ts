@@ -1,5 +1,6 @@
 import type { ChainId } from '@kadena/types';
 import { readdirSync } from 'fs';
+import { z } from 'zod';
 import { chainIdValidation } from '../account/utils/accountHelpers.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
@@ -8,7 +9,11 @@ import {
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
-import { getExistingNetworks, isAlphabetic } from '../utils/helpers.js';
+import {
+  getExistingNetworks,
+  isAlphabetic,
+  isNotEmptyString,
+} from '../utils/helpers.js';
 import { input, select } from '../utils/prompts.js';
 import { getInputPrompt } from './generic.js'; // Importing getInputPrompt from another file
 
@@ -57,9 +62,18 @@ export const networkIdPrompt: IPrompt<string> = async (
   isOptional,
 ) => {
   const defaultValue = args.defaultValue as string;
+  const validate = function (input: string): string | boolean {
+    if (isOptional) return true;
+
+    if (!isNotEmptyString(input.trim())) return 'Network id is required.';
+
+    return true;
+  };
+
   return await getInputPrompt(
     'Enter a network id (e.g. "mainnet01")',
     defaultValue,
+    validate,
   );
 };
 
@@ -69,9 +83,21 @@ export const networkHostPrompt: IPrompt<string> = async (
   isOptional,
 ) => {
   const defaultValue = args.defaultValue as string;
+  const validate = function (input: string): string | boolean {
+    if (isOptional && !isNotEmptyString(input.trim())) return true;
+
+    const parse = z.string().url().safeParse(input);
+
+    if (!parse.success)
+      return 'Network host: Invalid URL. Please enter a valid URL.';
+
+    return true;
+  };
+
   return await getInputPrompt(
     'Enter Kadena network host (e.g. "https://api.chainweb.com")',
     defaultValue,
+    validate,
   );
 };
 
@@ -93,7 +119,7 @@ export const networkOverwritePrompt: IPrompt<string> = async (
   isOptional,
 ) => {
   const networkName =
-    args.defaultValue ?? previousQuestions.network ?? args.network;
+    args.defaultValue ?? previousQuestions.networkName ?? args.networkName;
 
   if (networkName === undefined) {
     throw new Error('Network name is required for the overwrite prompt.');

@@ -3,7 +3,6 @@ import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
 import sanitize from 'sanitize-filename';
 import type { ZodError } from 'zod';
-
 import { MAX_CHARACTERS_LENGTH } from '../constants/config.js';
 import { defaultDevnetsPath } from '../constants/devnets.js';
 import { defaultNetworksPath } from '../constants/networks.js';

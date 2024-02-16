@@ -14,14 +14,25 @@ export async function genericFileNamePrompt(type?: string): Promise<string> {
   });
 }
 
+type ValidateFn = (input: string) => string | boolean;
+
 export async function getInputPrompt(
   message: string,
   defaultValue?: string,
+  validate?: ValidateFn,
 ): Promise<string> {
-  const promptConfig: { message: string; default?: string } = { message };
+  const promptConfig: {
+    message: string;
+    default?: string;
+    validate?: ValidateFn;
+  } = { message };
 
   if (defaultValue !== undefined) {
     promptConfig.default = defaultValue;
+  }
+
+  if (validate !== undefined) {
+    promptConfig.validate = validate;
   }
 
   return await input(promptConfig);

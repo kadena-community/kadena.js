@@ -3,10 +3,13 @@ import { style } from '@vanilla-extract/css';
 
 export const headerClass = style([
   atoms({
+    position: 'sticky',
     paddingBlock: 'md',
     display: 'flex',
+    top: 0,
   }),
   {
+    zIndex: 100,
     backgroundColor: 'rgba(0,0,0,.5)',
   },
 ]);
