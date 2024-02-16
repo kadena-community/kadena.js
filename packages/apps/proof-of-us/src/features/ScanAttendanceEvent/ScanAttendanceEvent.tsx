@@ -73,7 +73,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
           </div>
         )}
         {hasEnded && <div>the event has ended.</div>}
-        {showClaimButton && (
+        {showClaimButton && !isMinted && (
           <Button isDisabled={isMinted} onPress={handleClaim}>
             Claim NFT
           </Button>
