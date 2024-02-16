@@ -2,13 +2,10 @@ import type { Command } from 'commander';
 
 import { createAddAccountFromWalletCommand } from './commands/accountAddFromWallet.js';
 import { createAddAccountManualCommand } from './commands/accountAddManual.js';
-import { createAccountCommand } from './commands/accountCreate.js';
-import { accountDetailsCommand } from './commands/accountDetails.js';
-import { fundCommand } from './commands/accountFund.js';
-import { getBalanceCommand } from './commands/accountGetBalance.js';
+import { createAccountDetailsCommand } from './commands/accountDetails.js';
+import { createFundCommand } from './commands/accountFund.js';
 import { resolveAddressToNameCommand } from './commands/accountResolveAddressToName.js';
 import { resolveNameToAddressCommand } from './commands/accountResolveNameToAddress.js';
-import { transferCreateCommand } from './commands/accountTransferCreate.js';
 
 const SUBCOMMAND_ROOT: 'account' = 'account';
 
@@ -19,11 +16,8 @@ export function accountCommandFactory(program: Command, version: string): void {
 
   createAddAccountManualCommand(accountProgram, version);
   createAddAccountFromWalletCommand(accountProgram, version);
-  createAccountCommand(accountProgram, version);
-  fundCommand(accountProgram, version);
-  accountDetailsCommand(accountProgram, version);
-  getBalanceCommand(accountProgram, version);
-  transferCreateCommand(accountProgram, version);
+  createAccountDetailsCommand(accountProgram, version);
+  createFundCommand(accountProgram, version);
   resolveNameToAddressCommand(accountProgram, version);
   resolveAddressToNameCommand(accountProgram, version);
 }

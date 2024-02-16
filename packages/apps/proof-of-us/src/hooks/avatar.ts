@@ -1,27 +1,30 @@
-import { useSocket } from './socket';
+import { store } from '@/utils/socket/store';
 
 export const useAvatar = () => {
-  const { socket } = useSocket();
+  const addBackground = async (
+    proofOfUs: IProofOfUsData,
+    bg: IProofOfUsBackground,
+  ) => {
+    if (!proofOfUs) return;
+    await store.addBackground(proofOfUs, bg);
+  };
 
-  const setBackgroundSocket = async (proofOfUsId: string, bg: string) => {
-    socket?.emit('setBackground', {
-      content: {
-        bg,
-      },
-      to: proofOfUsId,
-    });
+  const removeBackground = async (proofOfUs: IProofOfUsData) => {
+    await store.removeBackground(proofOfUs);
   };
 
   const uploadBackground = async (proofOfUsId: string) => {
-    socket?.emit('uploadBackground', {
-      to: proofOfUsId,
+    await fetch('/api/upload', {
+      method: 'POST',
+      body: JSON.stringify({
+        proofOfUsId,
+      }),
     });
-
-    socket?.on('uploadBackgroundStatus', console.log);
   };
 
   return {
-    setBackgroundSocket,
+    addBackground,
+    removeBackground,
     uploadBackground,
   };
 };

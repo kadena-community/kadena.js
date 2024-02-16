@@ -10,6 +10,14 @@ export interface Token {
   id: string;
   balance: number;
   chainId: number;
+  info?: TokenInfo;
+}
+
+export interface TokenInfo {
+  supply: number;
+  precision: number;
+  uri: string;
+  policies: string[];
 }
 
 export const FungibleChainAccountName: 'FungibleChainAccount' =
@@ -54,7 +62,6 @@ export interface NonFungibleChainAccount {
   __typename: typeof NonFungibleChainAccountName;
   chainId: string;
   accountName: string;
-  guard: Guard;
   nonFungibles: Token[];
   transactions: Transaction[];
 }

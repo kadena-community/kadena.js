@@ -1,15 +1,14 @@
-import { checkbox } from '@inquirer/prompts';
 import chalk from 'chalk';
 import { Option } from 'commander';
 import { z } from 'zod';
 
 import { IS_DEVELOPMENT } from '../../constants/config.js';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
-import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { checkbox } from '../../utils/prompts.js';
 import { addAccount } from '../utils/addAccount.js';
 import {
   displayAddAccountSuccess,
@@ -56,7 +55,7 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
   'Add an account from a key wallet',
   [
     globalOptions.accountAlias(),
-    globalOptions.keyWalletSelectWithAll(),
+    globalOptions.keyWalletSelect(),
     globalOptions.fungible(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
@@ -66,7 +65,6 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
   ],
 
   async (option, values) => {
-    await ensureNetworksConfiguration();
     const accountAlias = (await option.accountAlias()).accountAlias;
     const keyWallet = await option.keyWallet();
     if (!keyWallet.keyWalletConfig) {
@@ -81,14 +79,14 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
       return;
     }
 
-    const fungible = (await option.fungible()).fungible;
+    const fungible = (await option.fungible()).fungible || 'coin';
     const { network, networkConfig } = await option.network();
     const chainId = (await option.chainId()).chainId;
     const { publicKeys, publicKeysConfig } = await option.publicKeys({
       values,
       keyWalletConfig: keyWallet.keyWalletConfig,
     });
-    const predicate = (await option.predicate()).predicate;
+    const predicate = (await option.predicate()).predicate || 'keys-all';
     const config = {
       accountAlias,
       keyWallet,

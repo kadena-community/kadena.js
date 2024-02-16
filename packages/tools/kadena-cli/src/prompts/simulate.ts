@@ -1,4 +1,4 @@
-import { input } from '@inquirer/prompts';
+import { input } from '../utils/prompts.js';
 
 export async function numberOfAccountsPrompt(): Promise<number> {
   const noAccounts = await input({

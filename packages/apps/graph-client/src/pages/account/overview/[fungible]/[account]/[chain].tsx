@@ -297,10 +297,8 @@ const ChainAccount: React.FC = () => {
                       <strong>Guard Predicate</strong>
                     </Cell>
                     <Cell>
-                      {
-                        nonFungibleChainAccountData.nonFungibleChainAccount
-                          .guard.predicate
-                      }
+                      nonFungibleChainAccountData.nonFungibleChainAccount
+                      .guard.predicate
                     </Cell>
                   </Row>
                   <Row>
@@ -308,10 +306,8 @@ const ChainAccount: React.FC = () => {
                       <strong>Guard Keys</strong>
                     </Cell>
                     <Cell>
-                      {
-                        nonFungibleChainAccountData.nonFungibleChainAccount
-                          .guard.keys
-                      }
+                      nonFungibleChainAccountData.nonFungibleChainAccount
+                      .guard.keys
                     </Cell>
                   </Row>
                 </TableBody>

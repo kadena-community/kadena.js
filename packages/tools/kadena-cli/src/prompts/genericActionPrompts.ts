@@ -1,5 +1,5 @@
-import { select } from '@inquirer/prompts';
 import { services } from '../services/index.js';
+import { select } from '../utils/prompts.js';
 
 export async function actionFileExistShouldUpdate(
   name: string,
@@ -49,4 +49,9 @@ export async function actionAskForDappTemplate(): Promise<string> {
       { value: 'vuejs', name: 'Vue JS' },
     ],
   });
+}
+
+export async function actionAskForDeployDevnet(): Promise<boolean> {
+  const deploy = await actionHelper('Do you wish to deploy faucet module?');
+  return deploy === 'yes';
 }

@@ -10,7 +10,7 @@ tags: [pact, smart contract, typescript, tutorial]
 
 # Nominate candidates
 
-In [Write a smart contract](/build/guides/election-dapp-tutorial/06-smart-contracts), you learned about defining Pact modules and created a skeleton `election` module for the smart contract that will become the back-end of the election application. 
+In [Write a smart contract](/build/guides/election-dapp-tutorial/write-a-smart-contract), you learned about defining Pact modules and created a skeleton `election` module for the smart contract that will become the back-end of the election application. 
 In this tutorial, you'll update the `election` module with a database table and functions to support the following operations:
 
 - Store a list of candidates and the number of votes each candidate receives.
@@ -608,7 +608,7 @@ To modify the frontend to list candidates from the development network:
     
 1. Remove the `@ts-ignore` comment and notice that the name of your module cannot be found in `Pact.modules`.
     
-    To fix this problem, you must generate types for your Pact module that can be picked up by the Kadena client (`@kadena/client` library).
+   To fix this problem, you must generate types for your Pact module that can be picked up by the Kadena client (`@kadena/client` library).
 
 4. Open a terminal, change to the `election-dapp/frontend` directory, then generate types for your `election` module by running the following command:
    
@@ -655,12 +655,12 @@ To modify the frontend to add candidates from the development network:
 
 3. Review the `addCandidate` function.
    
-  In the fist line, the function receives a candidate object and the account of the transaction sender.
-
+   In the fist line, the function receives a candidate object and the account of the transaction sender.
+   
    ```typescript
    const addCandidate = async (candidate: ICandidate, sender: string = ''): Promise<void> => {
    ```
-
+   
    You provide this information using a form on the website.
    
    The next lines start constructing the transaction:

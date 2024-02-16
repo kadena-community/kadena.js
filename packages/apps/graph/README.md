@@ -110,7 +110,7 @@ psql -h localhost -U devnet
 ### Fund an account on the devnet
 
 ```sh
-npm run fund -- -k <key> -a <amount>
+pnpm run fund -- -k <key> -a <amount>
 ```
 
 - key - public key to fund (default: will generate a new account)
@@ -137,7 +137,7 @@ order. The simulation is also responsible for creating differents transactions
 types such as transfers, cross-chain transfers, and safe transfers.
 
 ```sh
-npm run simulate:coin -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <tokenPool> -s <seed>
+pnpm run simulate:coin -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <tokenPool> -s <seed>
 ```
 
 - numberOfAccounts - number of accounts to be created in the devnet (default: 6)
@@ -153,13 +153,26 @@ transfered between accounts at a random order. The simulation is also
 responsible for creating differents tokens along its course.
 
 ```sh
-npm run simulate:marmalade -a <numberOfAccounts> -i <timeInterval> -mt <maximumMintValue> -s <seed>
+pnpm run simulate:marmalade -a <numberOfAccounts> -i <timeInterval> -mt <maximumMintValue> -s <seed>
 ```
 
 - numberOfAccounts - number of accounts to be created in the devnet (default: 8)
 - timeInterval - frequency of transactions in miliseconds (default: 100)
 - maximumMintValue - maximum amount a token can be minted at once (default: 25)
 - seed - seed for random number generation (default: current timestamp)
+
+#### Flood devnet
+
+In the flood command we are able to flood the network with transactions. We can
+alter the configuration via the parameters.
+
+```sh
+pnpm run simulate:flood -tx <transactions> -i <interval> -t <totalTx>
+```
+
+- transactions - amount of transactions per iteration
+- interval - time interval between iterations
+- totalTx - total number of transactions before command stops
 
 ### Tracing and trace analysis
 

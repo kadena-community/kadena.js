@@ -7,4 +7,9 @@ export const containerClass = style([
   },
 ]);
 
-export const notificationWrapperClass = style({});
+export const notificationWrapperClass = style([
+  {
+    marginInline: 'auto',
+    maxWidth: '100%',
+  },
+]);

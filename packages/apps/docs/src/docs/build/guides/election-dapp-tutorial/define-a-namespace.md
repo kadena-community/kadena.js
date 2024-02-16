@@ -92,39 +92,36 @@ To write a simple transaction in Pact:
    terminal shell:
 
    ```bash
-   pact namespace.repl -t
+   pact namespace.repl --trace
    ```
 
-After you execute the file, you should see the following output:
+   After you execute the file, you should see the following output:
+   
+   ```bash
+   namespace.repl:1:0:Trace: Begin Tx 0: Define a namespace called 'election
+   namespace.repl:4:0:Trace: Commit Tx 0: Define a namespace called 'election
+   Load successful
+   ```
 
-```bash
-namespace.repl:1:0:Trace: Begin Tx 0: Define a namespace called 'election
-namespace.repl:4:0:Trace: Commit Tx 0: Define a namespace called 'election
-Load successful
-```
+   If you don't have `pact` installed locally, you can open the
+   [pact-cli](http://localhost:8080/ttyd/pact-cli/) from the Docker container.
+   However, to use the `pact-cli` in the development network, you must mount the `pact` folder in the container. To mount the `pact` folder, start the development network with the following command:
 
-If you don't have `pact` installed locally, you can open the
-[pact-cli](http://localhost:8080/ttyd/pact-cli/) from the Docker container.
-However, to use the `pact-cli` in the development network, you must mount the
-`pact` folder in the container. To mount the `pact` folder, start the
-development network with the following command:
+   ```docker
+   docker run --interactive --tty --publish 8080:8080 \
+    --volume ./pact:/pact-cli:ro kadena/devnet:latest
+   ```
+   
+   After you start the development network with the `pact` folder mounted, you can
+   load the `namespace.repl` file in the [pact-cli](http://localhost:8080/ttyd/pact-cli/) with the following command:
 
-```docker
-docker run --interactive --tty --publish 8080:8080 \
- --volume ./pact:/pact-cli:ro kadena/devnet:latest
-```
-
-After you start the development network with the `pact` folder mounted, you can
-load the `namespace.repl` file in the
-[pact-cli](http://localhost:8080/ttyd/pact-cli/) with the following command:
-
-```pact
-(load "namespace.repl")
-```
-
-If you are using the pact-cli in a browser, you can replace the
-`pact namespace.repl -t` command with `(load "namespace.repl")` throughout this
-tutorial.
+   ```pact
+   (load "namespace.repl")
+   ```
+   
+   If you are using the pact-cli in a browser, you can replace the
+   `pact namespace.repl -t` command with `(load "namespace.repl")` throughout this
+   tutorial.
 
 ## Use Pact built-in functions
 
@@ -287,23 +284,21 @@ To test modifying the election application namespace:
    pact namespace.repl -t
    ```
 
-You'll see that the update transaction succeeds with output similar to the
-following:
-
-```bash
-namespace.repl:1:0:Trace: Setting transaction data
-namespace.repl:12:0:Trace: Begin Tx 0: Define a namespace called 'election
-namespace.repl:15:0:Trace: Expect: success: Test whether a namespace can be defined
-namespace.repl:20:0:Trace: Commit Tx 0: Define a namespace called 'election
-namespace.repl:21:0:Trace: Setting transaction signatures/caps
-namespace.repl:26:0:Trace: Begin Tx 1: Update the 'election' namespace
-namespace.repl:29:0:Trace: Expect: success: An admin can modify the namespace to change the keyset governing the namespace
-namespace.repl:34:0:Trace: Commit Tx 1: Update the 'election' namespace
-Load successful
-```
-
-After this second transaction is successful, the `admin-keyset` no longer
-governs the `election` namespace.
+   You'll see that the update transaction succeeds with output similar to the following:
+   
+   ```bash
+   namespace.repl:1:0:Trace: Setting transaction data
+   namespace.repl:12:0:Trace: Begin Tx 0: Define a namespace called 'election
+   namespace.repl:15:0:Trace: Expect: success: Test whether a namespace can be defined
+   namespace.repl:20:0:Trace: Commit Tx 0: Define a namespace called 'election
+   namespace.repl:21:0:Trace: Setting transaction signatures/caps
+   namespace.repl:26:0:Trace: Begin Tx 1: Update the 'election' namespace
+   namespace.repl:29:0:Trace: Expect: success: An admin can modify the namespace to change the keyset governing the namespace
+   namespace.repl:34:0:Trace: Commit Tx 1: Update the 'election' namespace
+   Load successful
+   ```
+   
+   After this second transaction is successful, the `admin-keyset` no longer governs the `election` namespace.
 
 ### Verify the admin-keyset doesn't govern the namespace
 
@@ -528,10 +523,9 @@ To create your principal namespace on the development network:
    - Your administrative account name with the **k:** prefix exists on chain 1.
    - Your administrative account name is funded with KDA on chain 1.
 
-![Verify your administrative account in Chainweaver](/assets/docs/election-workshop/funded-account.png)
-
-You're going to use Chainweaver to sign the transaction that creates the
-principal namespace.
+   ![Verify your administrative account in Chainweaver](/assets/docs/election-workshop/funded-account.png)
+   
+   You're going to use Chainweaver to sign the transaction that creates the principal namespace.
 
 3. Open the `election-dapp/snippets/principal-namespace.ts` file in your code
    editor.
@@ -587,19 +581,19 @@ principal namespace.
    npm run create-namespace:devnet -- k:<your-public-key>
    ```
 
-Remember that `k:<your-public-key>` is the default **account name** for your
-administrative account that you funded in
-[Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
-You can copy this account name from Chainweaver when viewing the account watch
-list.
+   Remember that `k:<your-public-key>` is the default **account name** for your
+   administrative account that you funded in
+   [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
+   You can copy this account name from Chainweaver when viewing the account watch
+   list.
 
-When you run the script, you should see Chainweaver display a QuickSign Request.
-For example:
-
-![Sample QuickSign request](/assets/docs/election-workshop/quicksign-request.png)
-
-If you don't see the request automatically, select Chainweaver to bring it to
-the foreground.
+   When you run the script, you should see Chainweaver display a QuickSign Request.
+   For example:
+   
+   ![Sample QuickSign request](/assets/docs/election-workshop/quicksign-request.png)
+   
+   If you don't see the request automatically, select Chainweaver to bring it to
+   the foreground.
 
 1. Click **Sign All** to sign the request.
 

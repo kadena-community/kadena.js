@@ -192,7 +192,6 @@ type NonFungibleAccountTransactionsConnectionEdge {
 type NonFungibleChainAccount implements Node {
   accountName: String!
   chainId: ID!
-  guard: Guard!
   id: ID!
   nonFungibles: [Token!]!
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleChainAccountTransactionsConnection!
@@ -387,6 +386,15 @@ type Token {
   balance: Int!
   chainId: Int!
   id: ID!
+  info: TokenInfo
+}
+
+"""Information related to a token."""
+type TokenInfo {
+  policies: [String!]!
+  precision: Int!
+  supply: Int!
+  uri: String!
 }
 
 """A confirmed transaction."""

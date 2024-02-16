@@ -10,9 +10,9 @@ tags: [account, keyset, namespace, governance, authorization, tutorial]
 
 # Define keysets
 
-As you learned in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account) and [Define a namespace](/build/guides/election-dapp-tutorial/04-namespaces), keysets determine rules for signing transaction and controlling the accounts that can access and update the namespaces where you deploy smart contracts. 
+As you learned in [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account) and [Define a namespace](/build/guides/election-dapp-tutorial/define-a-namespace), keysets determine rules for signing transaction and controlling the accounts that can access and update the namespaces where you deploy smart contracts. 
 This tutorial demonstrates how to define the `admin-keyset` in the principal
-namespace that you created in [Define a namespace](/build/guides/election-dapp-tutorial/04-namespaces) using the public key of the administrative account you created in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account). 
+namespace that you created in [Define a namespace](/build/guides/election-dapp-tutorial/define-a-namespace) using the public key of the administrative account you created in [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account). 
 
 After you define the `admin-keyset` in your principal namespace, you'll be able to use it to authorize your administrative account to submit specific types of transactions for the election application you're building.
 For example, you'll be able to authorize transactions that deploy and upgrade the election smart contract and that nominate the candidates that other accounts can vote on.
@@ -23,11 +23,11 @@ Before you start this tutorial, verify the following basic requirements:
 
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
-- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git election-dapp) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace) and have checked out the `01-getting-started` branch.
+- You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace) and have checked out the `01-getting-started` branch.
 - You have the development network running in a Docker container as described in [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain).
 - You are [connected to the development network](/build/guides/election-dapp-tutorial/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
-- You have created and funded an administrative account as described in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
-- You have created a principal namespace on the development network as described in [Define a namespace](/build/guides/election-dapp-tutorial/04-namespaces).
+- You have created and funded an administrative account as described in [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
+- You have created a principal namespace on the development network as described in [Define a namespace](/build/guides/election-dapp-tutorial/define-a-namespace).
 
 ## Write a transaction to define a keyset
 
@@ -437,9 +437,9 @@ To define your keyset on the development network:
    npm run define-keyset:devnet -- k:<your-public-key>
    ```
    
-  Remember that `k:<your-public-key>` is the default **account name** for your administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
-  You can copy this account name from Chainweaver when viewing the account watch list.
-  When you run the script, you should see Chainweaver display a QuickSign Request.
+   Remember that `k:<your-public-key>` is the default **account name** for your administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
+   You can copy this account name from Chainweaver when viewing the account watch list.
+   When you run the script, you should see Chainweaver display a QuickSign Request.
   
 1. Click **Sign All** to sign the request.
    

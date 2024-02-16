@@ -1,10 +1,6 @@
-import { AccountProvider } from '@/components/AccountProvider/AccountProvider';
 import { Analytics } from '@/components/Analytics/Analytics';
-import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Header } from '@/components/Header/Header';
-import { SocketProvider } from '@/components/SocketProvider/SocketProvider';
-import { ThemeProvider } from '@/components/ThemeProvider/ThemeProvider';
-import { ToastProvider } from '@/components/ToastProvider/ToastProvider';
+import { Providers } from '@/components/Providers/Providers';
 import { Toasts } from '@/components/Toasts/Toasts';
 import type { Metadata } from 'next';
 import type { FC, PropsWithChildren } from 'react';
@@ -73,25 +69,17 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html>
       <body>
-        <ToastProvider>
-          <AccountProvider>
-            <SocketProvider>
-              <ThemeProvider>
-                <>
-                  <Header />
-                  <main className={mainWrapperClass}>
-                    {children}
+        <Providers>
+          <>
+            <main className={mainWrapperClass}>
+              <Header />
+              {children}
 
-                    <CookieConsent />
-
-                    <Toasts />
-                  </main>
-                  <Analytics />
-                </>
-              </ThemeProvider>
-            </SocketProvider>
-          </AccountProvider>
-        </ToastProvider>
+              <Toasts />
+            </main>
+            <Analytics />
+          </>
+        </Providers>
       </body>
     </html>
   );

@@ -5,8 +5,7 @@ import { DetailView } from '@/components/DetailView/DetailView';
 import { ShareView } from '@/components/ShareView/ShareView';
 
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { useSocket } from '@/hooks/socket';
-import { createProofOfUsID } from '@/utils/marmalade';
+import { createProofOfUsID } from '@/utils/createProofOfUsID';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
@@ -19,15 +18,15 @@ interface IProps {
 
 const Page: FC<IProps> = ({ params }) => {
   const router = useRouter();
-  const { socket, disconnect } = useSocket();
   const { createToken, proofOfUs, background, updateStatus } = useProofOfUs();
   const [isMounted, setIsMounted] = useState(false);
 
-  const [status, setStatus] = useState<IBuildStatusValues>(1);
+  const [status, setStatus] = useState<IBuildStatusValues>(0);
 
   useEffect(() => {
     //init and check in what step you are
     if (!proofOfUs || isMounted) return;
+
     setStatus(proofOfUs.status);
     setIsMounted(true);
   }, [proofOfUs, background]);
@@ -39,23 +38,19 @@ const Page: FC<IProps> = ({ params }) => {
       return;
     }
 
-    disconnect({ proofOfUsId: params.id });
-
     createToken({ proofOfUsId: params.id });
-  }, [socket, params.id]);
+  }, [params.id]);
 
-  const next = () => {
+  const next = async () => {
     const newStatus = (status + 1) as IBuildStatusValues;
     setStatus(newStatus);
-    updateStatus({ proofOfUsId: params.id, status: newStatus });
+    await updateStatus({ proofOfUsId: params.id, status: newStatus });
   };
-  const prev = () => {
+  const prev = async () => {
     const newStatus = (status - 1) as IBuildStatusValues;
     setStatus(newStatus);
-    updateStatus({ proofOfUsId: params.id, status: newStatus });
+    await updateStatus({ proofOfUsId: params.id, status: newStatus });
   };
-
-  if (!proofOfUs || !isMounted) return;
 
   return (
     <div>

@@ -1,9 +1,15 @@
-interface IAccount {
-  displayName: string;
-  waccount: string;
-  caccount: string;
+type IAccountCrendentialType = 'WebAuthn' | 'ED25519';
+
+interface IAccountCrendential {
   publicKey: string;
-  cid: string;
+  type: IAccountCrendentialType;
+}
+
+interface IAccount {
+  accountName: string;
+  alias: string;
+  pendingTxIds: string[];
+  credentials: IAccountCrendential[];
 }
 
 type IBuildStatusValues = 0 | 1 | 2 | 3 | 4;
@@ -29,33 +35,58 @@ type IMintStatus =
   | 'error'
   | 'success';
 
-type IProofOfUsBackground = string;
+type IProofOfUsBackground = {
+  bg: string;
+};
 
-type TokenType = 'multi' | 'event';
+type TokenType = 'multi' | 'attendance';
 
 interface IProofOfUsData {
+  tx: IUnsignedCommand;
+  eventId: string;
   mintStatus: IMintStatus;
   status: IBuildStatusValues;
+  backgroundColor?: string;
   tokenId?: string;
   proofOfUsId: string;
   type: TokenType;
   date: number;
   minted?: number;
   signees: IProofOfUsSignee[];
+  title?: string;
   uri?: string;
 }
 
 interface IProofOfUsToken {
-  tokenId: string;
+  'collection-id': string;
+  'ends-at': { int: number };
+  'starts-at': { int: number };
+  'token-id': string;
+  uri: string;
+  name: string;
+  status: 'success' | 'failure';
+}
+
+interface IProofOfUsTokenMeta {
+  startDate: int;
+  endDate: int;
+  description: string;
   image: string;
   name: string;
   properties: {
-    type: TokenType;
+    eventId: string;
+    eventType: TokenType;
     date: number;
     avatar?: {
       backgroundColor: string;
-      color: string;
     };
+    signees?: IProofOfUsTokenSignee[];
+  };
+
+  authors: string[];
+  collection: {
+    name: string;
+    family: string;
   };
 }
 
@@ -72,7 +103,22 @@ interface IError {
 
 type ISignerStatus = 'init' | 'signing' | 'success' | 'error';
 
-type IProofOfUsSignee = Pick<IAccount, 'displayName' | 'publicKey' | 'cid'> & {
+type ISocial = string;
+
+interface ISigneePosition {
+  xPercentage: number;
+  yPercentage: number;
+}
+
+type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
+  label?: string;
   signerStatus: ISignerStatus;
   initiator: boolean;
+  socialLinks?: ISocial[];
+  position?: ISigneePosition;
 };
+
+type IProofOfUsTokenSignee = Pick<
+  IProofOfUsSignee,
+  'label' | 'socialLinks' | 'position'
+>;

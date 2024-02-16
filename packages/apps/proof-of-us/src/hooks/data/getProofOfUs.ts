@@ -11,8 +11,6 @@ export const useGetProofOfUs: IDataHook<IProofOfUsToken | undefined> = () => {
   const load = async () => {
     setError(undefined);
     const result = await getProofOfUs(`${id}`);
-    console.log({ result });
-
     setData(result);
   };
 

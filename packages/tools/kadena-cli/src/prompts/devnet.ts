@@ -1,4 +1,3 @@
-import { input, select } from '@inquirer/prompts';
 import { program } from 'commander';
 import path from 'path';
 import { defaultDevnetsPath } from '../constants/devnets.js';
@@ -6,6 +5,7 @@ import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import { services } from '../services/index.js';
 import type { IPrompt } from '../utils/createOption.js';
 import { getExistingDevnets } from '../utils/helpers.js';
+import { input, select } from '../utils/prompts.js';
 
 export const devnetOverwritePrompt: IPrompt<string> = async (
   previousQuestions,

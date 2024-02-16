@@ -1,12 +1,26 @@
-import { AccountNameField } from '@/components/Global';
+import {
+  AccountHoverTag,
+  AccountNameField,
+  ChainSelect,
+} from '@/components/Global';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
+import type { DerivationMode } from '@/hooks/use-ledger-public-key';
+import useLedgerPublicKey, {
+  derivationModes,
+} from '@/hooks/use-ledger-public-key';
+import type { ChainId } from '@kadena/client';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
   Card,
+  Combobox,
+  ComboboxItem,
   ContentHeader,
   Heading,
+  Select,
+  SelectItem,
   Stack,
+  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
@@ -14,21 +28,43 @@ import Head from 'next/head';
 import React, { useState } from 'react';
 import { containerStyle } from './styles.css';
 
+const options = Array.from({ length: 10 }, (_, i) => ({
+  id: `ledger-key-${i}`,
+  name: `${i}`,
+}));
+
 const Storybook = () => {
   const { t } = useTranslation('common');
 
   const [accountName, setAccountName] = useState<string>('');
+  const [chainId, setChainId] = useState<ChainId>('0');
   const {
-    error,
+    error: accountError,
     data: accountDetails,
-    isFetching,
+    isFetching: isFetchingAccountDetails,
   } = useAccountDetailsQuery({
     account: accountName,
     networkId: 'testnet04',
-    chainId: '1',
+    chainId,
   });
 
-  console.log({ error, accountDetails });
+  console.log({ accountError, accountDetails });
+
+  const defaultDerivationMode = derivationModes[0];
+  const [derivationMode, setDerivationMode] = useState<DerivationMode>(
+    defaultDerivationMode,
+  );
+
+  const [
+    {
+      error: ledgerError,
+      value: ledgerPublicKey,
+      loading: isFetchingLedgerPublicKey,
+    },
+    getPublicKey,
+  ] = useLedgerPublicKey();
+
+  console.log({ ledgerError, ledgerPublicKey });
 
   return (
     <section className={containerStyle}>
@@ -39,18 +75,24 @@ const Storybook = () => {
         <BreadcrumbsItem>{t('Storybook')}</BreadcrumbsItem>
       </Breadcrumbs>
       <Heading as="h4">{t('Storybook')}</Heading>
-      <Stack>
+      <Stack flexDirection="column" gap="md">
         <Card fullWidth>
           <Stack flexDirection="column">
             <Heading as="h5">
               <Text as="code">useAccountDetailsQuery</Text>
             </Heading>
-            <AccountNameField
-              label="Account Name"
-              onValueChange={(value) => {
-                setAccountName(value);
-              }}
-            />
+            <Stack gap="md">
+              <AccountNameField
+                label="Account Name"
+                onValueChange={(value) => {
+                  setAccountName(value);
+                }}
+              />
+              <ChainSelect
+                onSelectionChange={(value) => setChainId(value)}
+                selectedKey={chainId}
+              />
+            </Stack>
             <>
               <ContentHeader icon="Account" heading="User Details" />
               {accountDetails ? (
@@ -68,12 +110,79 @@ const Storybook = () => {
                 <Text>User not found (yet)</Text>
               )}
             </>
-            {isFetching && <Text>Loading...</Text>}
-            {error ? (
+            {isFetchingAccountDetails && <Text>Loading...</Text>}
+            {accountError ? (
               <Text>
                 Error:{' '}
-                {error instanceof Error || Object.hasOwn(error, 'message')
-                  ? (error as { message: string }).message
+                {accountError instanceof Error ||
+                Object.hasOwn(accountError, 'message')
+                  ? (accountError as { message: string }).message
+                  : 'Something went wrong'}
+              </Text>
+            ) : null}
+          </Stack>
+        </Card>
+        <Card fullWidth>
+          <Stack flexDirection="column">
+            <Heading as="h5">
+              <Text as="code">useLedgerPublicKey</Text>
+            </Heading>
+            <Stack gap="md">
+              <Combobox
+                allowsCustomValue
+                startIcon={<SystemIcon.KeyIconFilled />}
+                label="Key ID"
+                onInputChange={async (value) => {
+                  console.log('onInputChange', value);
+                  await getPublicKey({
+                    keyId: parseInt(value, 10),
+                    derivationMode,
+                  });
+                }}
+                defaultItems={options}
+              >
+                {(item) => (
+                  <ComboboxItem key={item.id}>{item.name}</ComboboxItem>
+                )}
+              </Combobox>
+              <Select
+                defaultSelectedKey={defaultDerivationMode}
+                label="Derivation Mode"
+                items={derivationModes.map((mode) => ({
+                  key: mode,
+                  label: mode,
+                }))}
+                onSelectionChange={(value) => {
+                  setDerivationMode(value as DerivationMode);
+                }}
+              >
+                {(item) => <SelectItem key={item.key}>{item.label}</SelectItem>}
+              </Select>
+            </Stack>
+            <>
+              <ContentHeader icon="UsbFlashDrive" heading="Ledger Public Key" />
+              {ledgerPublicKey ? (
+                <dl>
+                  <dt>Public Key</dt>
+                  <dd>
+                    <Text as="code">{ledgerPublicKey}</Text>
+                  </dd>
+                  <dt>Account name</dt>
+                  <dd>
+                    <AccountHoverTag value={`k:${ledgerPublicKey}`} />
+                  </dd>
+                </dl>
+              ) : (
+                <Text>Public key not fetched (yet)</Text>
+              )}
+            </>
+            {isFetchingLedgerPublicKey && <Text>Loading...</Text>}
+            {ledgerError ? (
+              <Text>
+                Error:{' '}
+                {ledgerError instanceof Error ||
+                Object.hasOwn(ledgerError, 'message')
+                  ? (ledgerError as { message: string }).message
                   : 'Something went wrong'}
               </Text>
             ) : null}

@@ -32,6 +32,9 @@
     "@kadena/pactjs-generator": "workspace:*",
     "@kadena/react-components": "workspace:*",
     "@kadena/react-ui": "workspace:*",
+    "@ledgerhq/hw-app-kda": "git+ssh://git@github.com:obsidiansystems/hw-app-kda",
+    "@ledgerhq/hw-transport-webhid": "^6.28.3",
+    "@ledgerhq/logs": "^6.12.0",
     "@tanstack/react-query": "^4.35.3",
     "@walletconnect/modal": "~2.6.1",
     "@walletconnect/sign-client": "~2.8.1",
@@ -46,6 +49,7 @@
     "react-ace": "~10.1.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.4",
+    "react-use": "^17.4.0",
     "zod": "~3.18.0"
   },
   "devDependencies": {
@@ -55,6 +59,7 @@
     "@kadena-dev/shared-config": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
+    "@ledgerhq/hw-transport": "^6.30.3",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
     "@tanstack/eslint-plugin-query": "^4.34.1",

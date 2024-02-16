@@ -1,8 +1,8 @@
 'use client';
 import { FloatButton } from '@/components/FloatButton/FloatButton';
-import { IsLoading } from '@/components/IsLoading/IsLoading';
 import { List } from '@/components/List/List';
 import { ListItem } from '@/components/List/ListItem';
+import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { useGetAllProofOfUs } from '@/hooks/data/getAllProofOfUs';
 import type { FC } from 'react';
 
@@ -12,13 +12,13 @@ const Page: FC = () => {
   return (
     <div>
       <h2>List of your Proof Of Us</h2>
-      {isLoading && <IsLoading />}
+      {isLoading && <MainLoader />}
       {error && <div>{error.message}</div>}
       {!isLoading && !error && (
         <List>
-          {data.map(({ token }) => {
+          {data.map((token) => {
             if (!token) return null;
-            return <ListItem key={token.tokenId} token={token}></ListItem>;
+            return <ListItem key={token.uri} token={token}></ListItem>;
           })}
         </List>
       )}

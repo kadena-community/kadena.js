@@ -16,6 +16,13 @@ import type { ChainId } from '@kadena/types';
 import chalk from 'chalk';
 import { join } from 'node:path';
 
+import type { IAliasAccountData } from '../account/types.js';
+import {
+  chainIdValidation,
+  formatZodFieldErrors,
+  fundAmountValidation,
+  readAccountFromFile,
+} from '../account/utils/accountHelpers.js';
 import { KEY_EXT, WALLET_EXT } from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
 import {
@@ -30,7 +37,6 @@ import {
 } from '../networks/utils/networkHelpers.js';
 import { accountOverWritePrompt } from '../prompts/account.js';
 import { createExternalPrompt } from '../prompts/generic.js';
-import { networkNamePrompt } from '../prompts/network.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration } from './helpers.js';
 
@@ -90,21 +96,30 @@ export const globalOptions = {
     ),
     expand: async (publicKeys: string) => {
       return publicKeys
-        .split(',')
+        ?.split(',')
         .map((value) => value.trim())
         .filter((key) => !!key);
     },
   }),
-  amount: createOption({
+  fundAmount: createOption({
     key: 'amount' as const,
-    prompt: account.amountPrompt,
-    validation: z
-      .string({
-        /* eslint-disable-next-line @typescript-eslint/naming-convention */
-        invalid_type_error: 'Error: -a, --amount must be a number',
-      })
-      .min(0),
-    option: new Option('-a, --amount <amount>', 'Amount'),
+    prompt: account.fundAmountPrompt,
+    defaultIsOptional: false,
+    validation: z.string({
+      /* eslint-disable-next-line @typescript-eslint/naming-convention */
+      invalid_type_error: 'Error: -m, --amount must be a positive number',
+    }),
+    option: new Option('-m, --amount <amount>', 'Amount'),
+    transform: (amount: string) => {
+      try {
+        const parsedAmount = parseInt(amount, 10);
+        fundAmountValidation.parse(parsedAmount);
+        return amount;
+      } catch (error) {
+        const errorMessage = formatZodFieldErrors(error);
+        throw new Error(`Error: -m, --amount ${errorMessage}`);
+      }
+    },
   }),
   fungible: createOption({
     key: 'fungible' as const,
@@ -238,11 +253,11 @@ export const globalOptions = {
   }),
   // Network
   networkName: createOption({
-    key: 'network' as const,
+    key: 'networkName' as const,
     prompt: networks.networkNamePrompt,
     validation: z.string(),
     option: new Option(
-      '-n, --network <network>',
+      '-n, --networkName <networkName>',
       'Kadena network (e.g. "mainnet")',
     ),
   }),
@@ -282,6 +297,15 @@ export const globalOptions = {
       'Overwrite existing network configuration (yes/no)',
     ),
   }),
+  networkDelete: createOption({
+    key: 'networkDelete' as const,
+    prompt: networks.networkDeletePrompt,
+    validation: z.string(),
+    option: new Option(
+      '-d, --network-delete <networkDelete>',
+      'Delete the configuration for network (yes/no)',
+    ),
+  }),
   network: createOption({
     key: 'network' as const,
     prompt: networks.networkSelectPrompt,
@@ -299,17 +323,14 @@ export const globalOptions = {
           `\nNo configuration for network "${network}" found. Please configure the network.\n`,
         );
         await program.parseAsync(['', '', 'networks', 'create']);
-        const externalPrompt = createExternalPrompt({
-          networkNamePrompt,
-        });
-        const networkName = await externalPrompt.networkNamePrompt();
-        return loadNetworkConfig(networkName);
+        return loadNetworkConfig(network);
       }
     },
   }),
   networkSelect: createOption({
     key: 'network' as const,
     prompt: networks.networkSelectOnlyPrompt,
+    defaultIsOptional: false,
     validation: z.string(),
     option: new Option(
       '-n, --network <network>',
@@ -328,16 +349,21 @@ export const globalOptions = {
   chainId: createOption({
     key: 'chainId' as const,
     prompt: networks.chainIdPrompt,
-    validation: z
-      .string({
-        /* eslint-disable-next-line @typescript-eslint/naming-convention */
-        invalid_type_error: 'Error: -c, --chain-id must be a number',
-      })
-      .min(0)
-      .max(19),
+    defaultIsOptional: false,
+    validation: z.string({
+      /* eslint-disable-next-line @typescript-eslint/naming-convention */
+      invalid_type_error: 'Error: -c, --chain-id must be a number',
+    }),
     option: new Option('-c, --chain-id <chainId>'),
     transform: (chainId: string) => {
-      return chainId as ChainId;
+      const parsedChainId = parseInt(chainId.trim(), 10);
+      try {
+        chainIdValidation.parse(parsedChainId);
+        return chainId as ChainId;
+      } catch (error) {
+        const errorMessage = formatZodFieldErrors(error);
+        throw new Error(`Error: -c --chain-id ${errorMessage}`);
+      }
     },
   }),
   // Keys
@@ -610,6 +636,21 @@ export const globalOptions = {
       '-o, --account-overwrite',
       'Overwrite account details from chain',
     ),
+  }),
+  accountSelect: createOption({
+    key: 'account' as const,
+    prompt: account.accountSelectPrompt,
+    defaultIsOptional: false,
+    validation: z.string(),
+    option: new Option('-a, --account <account>', 'Select an account'),
+    expand: async (accountAlias: string): Promise<IAliasAccountData> => {
+      try {
+        const accountDetails = await readAccountFromFile(accountAlias);
+        return accountDetails;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
   }),
 } as const;
 

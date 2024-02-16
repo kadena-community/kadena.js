@@ -1,6 +1,6 @@
 import { deployFaucetContract } from '@devnet/faucet/deploy';
 import { deployGuards } from '@devnet/guards/deploy';
-import { deployGasStation } from '@devnet/kadenaXchainGas/deploy';
+import { deployGasStation } from '@devnet/kadena-xchain-gas/deploy';
 import { expect, test as setup } from '@playwright/test';
 
 setup('Configure Devnet', async () => {

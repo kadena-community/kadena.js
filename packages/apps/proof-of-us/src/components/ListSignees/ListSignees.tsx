@@ -6,7 +6,7 @@ import { SignStatus } from '../SignStatus/SignStatus';
 import { wrapperClass } from './style.css';
 
 //TODO:
-//ATM we check the signing status of both users via a websocket.
+//ATM we check the signing status of both users via a firebase.
 //it would be better to directly check the chain for who signed.
 export const ListSignees: FC = () => {
   const { proofOfUs } = useProofOfUs();
@@ -18,7 +18,7 @@ export const ListSignees: FC = () => {
 
   const isMe = (signer?: IProofOfUsSignee, account?: IAccount) => {
     if (!signer || !account) return false;
-    return signer.cid === account?.cid;
+    return signer.accountName === account?.accountName;
   };
 
   return (
@@ -26,7 +26,7 @@ export const ListSignees: FC = () => {
       <div>
         <h4>Initiator</h4>
         <SignStatus status={initiator?.signerStatus} />
-        {initiator?.displayName} {isMe(initiator, account) && ' (me)'}
+        {initiator?.alias} {isMe(initiator, account) && ' (me)'}
       </div>
       <div>
         <h4>Signer</h4>
@@ -34,7 +34,7 @@ export const ListSignees: FC = () => {
 
         {signee && (
           <>
-            {signee?.displayName} {isMe(signee, account) && ' (me)'}
+            {signee?.alias} {isMe(signee, account) && ' (me)'}
           </>
         )}
       </div>
