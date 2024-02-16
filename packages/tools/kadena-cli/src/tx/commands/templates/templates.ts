@@ -19,6 +19,7 @@ signers:
         args: ["{{{account-from}}}", "{{{account-to}}}", {{amount}}]
       - name: "coin.GAS"
         args: []
+networkId: "{{network-id}}"
 type: exec
 `;
 
@@ -44,6 +45,7 @@ signers:
     caps:
       - name: "coin.TRANSFER"
         args: [{{{account-to}}}, {{{account-from}}}, 0.000000000001]
+networkId: "{{network-id}}"
 type: exec
 `;
 

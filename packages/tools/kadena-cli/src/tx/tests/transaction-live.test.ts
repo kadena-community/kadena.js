@@ -20,9 +20,9 @@ describe('template to live test', () => {
       'account-from': `k:${publicKey}`,
       'account-to': targetAccount,
       amount: '1.0',
-      chain: '1',
+      'chain-id': '1',
       'pk-from': publicKey,
-      networkId: 'testnet04',
+      'network-id': 'testnet04',
     };
 
     await services.filesystem.ensureDirectoryExists(process.cwd());
