@@ -21,20 +21,14 @@ import React from 'react';
 
 const GasEstimation: React.FC = () => {
   const router = useRouter();
-  const { cmd, hash, sigs } = router.query;
-
-  const cmdString = cmd as string;
-  const hashString = hash as string;
-  const sigsString = sigs as string;
-  const sigsArray = sigsString ? sigsString.split(',') : [];
 
   const variables = {
-    transaction: { cmd: cmdString, hash: hashString, sigs: sigsArray },
+    input: router.query.input as string,
   };
 
   const { loading, data, error } = useEstimateGasLimitQuery({
     variables,
-    skip: !cmdString || !hashString || !sigsString,
+    skip: !router.query.input,
   });
 
   return (
@@ -42,7 +36,7 @@ const GasEstimation: React.FC = () => {
       <Stack justifyContent="space-between">
         <Breadcrumbs>
           <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
-          <BreadcrumbsItem>Gas Estimation</BreadcrumbsItem>
+          <BreadcrumbsItem>Gas Limit Estimation</BreadcrumbsItem>
         </Breadcrumbs>
         <GraphQLQueryDialog
           queries={[{ query: estimateGasLimit, variables }]}
@@ -54,22 +48,40 @@ const GasEstimation: React.FC = () => {
       <LoaderAndError
         error={error}
         loading={loading}
-        loaderText="Waiting for gas estimation..."
+        loaderText="Waiting for gas limit estimation..."
       />
 
       <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
         <TableHeader>
-          <Column>Label</Column>
+          <Column>Type</Column>
           <Column>Value</Column>
         </TableHeader>
         <TableBody>
           <Row>
-            <Cell>Cmd</Cell>
-            <Cell>{cmdString}</Cell>
+            <Cell>Input</Cell>
+            <Cell>{router.query.input}</Cell>
           </Row>
           <Row>
-            <Cell>Gas Estimate</Cell>
-            <Cell>{data?.gasLimitEstimate}</Cell>
+            <Cell>Gas Limit Estimate</Cell>
+            <Cell>{data?.gasLimitEstimate.amount}</Cell>
+          </Row>
+          <Row>
+            <Cell>The detected input type</Cell>
+            <Cell>{data?.gasLimitEstimate.inputType}</Cell>
+          </Row>
+          <Row>
+            <Cell>Was preflight used</Cell>
+            <Cell>{data?.gasLimitEstimate.usedPreflight.toString()}</Cell>
+          </Row>
+          <Row>
+            <Cell>Was signature verification used</Cell>
+            <Cell>
+              {data?.gasLimitEstimate.usedSignatureVerification.toString()}
+            </Cell>
+          </Row>
+          <Row>
+            <Cell>The transaction that was generated and used</Cell>
+            <Cell>{data?.gasLimitEstimate.transaction}</Cell>
           </Row>
         </TableBody>
       </Table>

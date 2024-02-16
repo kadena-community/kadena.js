@@ -337,8 +337,14 @@ export const getEvents: DocumentNode = gql`
 `;
 
 export const estimateGasLimit: DocumentNode = gql`
-  query estimateGasLimit($transaction: PactTransaction!) {
-    gasLimitEstimate(transaction: $transaction)
+  query estimateGasLimit($input: String!) {
+    gasLimitEstimate(input: $input) {
+      amount
+      inputType
+      usedPreflight
+      usedSignatureVerification
+      transaction
+    }
   }
 `;
 
