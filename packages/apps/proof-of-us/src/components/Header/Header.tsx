@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { FC } from 'react';
 import { AccountInfo } from '../AccountInfo/AccountInfo';
 import { CookieConsent } from '../CookieConsent/CookieConsent';
@@ -8,7 +9,9 @@ export const Header: FC = () => {
     <>
       <header className={headerClass}>
         <div className={WrapperClass}>
-          <div className={logoWrapperClass}>Proof....</div>
+          <div className={logoWrapperClass}>
+            <Link href="/user">Proof....</Link>
+          </div>
           <AccountInfo />
         </div>
       </header>

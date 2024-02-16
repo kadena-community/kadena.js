@@ -71,8 +71,8 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
       <body>
         <Providers>
           <>
+            <Header />
             <main className={mainWrapperClass}>
-              <Header />
               {children}
 
               <Toasts />
