@@ -19,6 +19,14 @@ export async function accountDetails(
       data: accountDetails,
     };
   } catch (error) {
+    if (error.message.includes('row not found') === true) {
+      return {
+        success: false,
+        errors: [
+          `Account is not available on chain "${config.chainId}" of networkId "${config.networkId}"`,
+        ],
+      };
+    }
     return {
       success: false,
       errors: [error.message],
