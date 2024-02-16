@@ -40,7 +40,10 @@ export const createDecryptCommand: (program: Command, version: string) => void =
   createCommand(
     'decrypt',
     'decrypt message',
-    [globalOptions.keyMessage(), globalOptions.securityCurrentPassword()],
+    [
+      globalOptions.keyMessage({ isOptional: false }),
+      globalOptions.securityCurrentPassword({ isOptional: false }),
+    ],
     async (config) => {
       debug('decrypt:action')({ config });
 
@@ -48,9 +51,7 @@ export const createDecryptCommand: (program: Command, version: string) => void =
         throw new Error('Missing keyMessage');
       }
 
-      console.log(
-        chalk.yellow(`You are about to decrypt this this message.\n`),
-      );
+      console.log(chalk.yellow(`You are about to decrypt this message.\n`));
 
       const result = await decrypt(
         config.securityCurrentPassword,

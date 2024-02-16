@@ -520,7 +520,7 @@ export const globalOptions = {
     prompt: security.securityPasswordVerifyPrompt,
     validation: z.string(),
     option: new Option(
-      '-p, --security-verify-password <securityVerifyPassword>',
+      '--security-verify-password <securityVerifyPassword>',
       'Enter a password to verify with password',
     ),
   }),

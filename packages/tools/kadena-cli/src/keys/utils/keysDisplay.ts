@@ -13,6 +13,7 @@ import {
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
 import { services } from '../../services/index.js';
+import { sanitizeFilename } from '../../utils/helpers.js';
 import type { IWallet } from './keysHelpers.js';
 import type { IKeyPair } from './storage.js';
 
@@ -111,10 +112,11 @@ export function printStoredKeys(
   console.log(chalk.green(message));
   console.log('\n');
 
+  const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
+
   for (let index = 0; index < keyPairs.length; index++) {
-    const fileNameIndex =
-      keyPairs.length === 1 ? startIndex : startIndex + index;
-    const fileName = `${alias}${fileNameIndex}${ext}`;
+    const fileNameIndex = index > 0 ? `-${index}` : '';
+    const fileName = `${sanitizedAlias}${fileNameIndex}${ext}`;
     console.log(chalk.green(`- ${fileName}`));
   }
 }

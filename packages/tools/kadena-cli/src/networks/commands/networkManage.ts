@@ -18,7 +18,7 @@ export const manageNetworksCommand: (
   'update',
   'Manage networks',
   [
-    globalOptions.network(),
+    globalOptions.network({ isOptional: false }),
     globalOptions.networkExplorerUrl(),
     globalOptions.networkHost(),
     globalOptions.networkId(),
