@@ -143,10 +143,10 @@ type FungibleChainAccountTransfersConnectionEdge {
 
 type GasLimitEstimation {
   amount: Int!
-  type: String!
+  inputType: String!
+  transaction: String!
   usedPreflight: Boolean!
   usedSignatureVerification: Boolean!
-  usedTransaction: Boolean!
 }
 
 """General information about the graph and chainweb-data."""
