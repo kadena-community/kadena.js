@@ -233,7 +233,7 @@ const TransferPage = () => {
       : receiverData.data?.account ?? '',
     chainId: getValues('senderChainId'),
     amount: String(getValues('amount')),
-    targetChainId: onSameChain ? getValues('receiverChainId') : undefined,
+    targetChainId: !onSameChain ? getValues('receiverChainId') : undefined,
   };
 
   const [{ error: signLedgerError, loading: isFetchingSigning }, signTx] =
@@ -449,7 +449,7 @@ const TransferPage = () => {
                       {...field}
                       id="ledger-transfer-amount"
                       label={t('Amount')}
-                      onChange={(e) => field.onChange(parseInt(e.target.value))}
+                      onValueChange={field.onChange}
                       isInvalid={!!errors.amount || invalidAmount}
                       errorMessage={
                         invalidAmount
