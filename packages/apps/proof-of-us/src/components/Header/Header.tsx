@@ -1,8 +1,8 @@
+import Link from 'next/link';
 import type { FC } from 'react';
 import { AccountInfo } from '../AccountInfo/AccountInfo';
 import { CookieConsent } from '../CookieConsent/CookieConsent';
 import { WrapperClass, headerClass, logoWrapperClass } from './style.css';
-import Link from 'next/link';
 
 export const Header: FC = () => {
   return (
@@ -11,7 +11,7 @@ export const Header: FC = () => {
         <div className={WrapperClass}>
           <div className={logoWrapperClass}>
             <Link href="/user">Proof....</Link>
-            </div>
+          </div>
           <AccountInfo />
         </div>
       </header>
