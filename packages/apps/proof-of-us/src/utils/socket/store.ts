@@ -34,7 +34,7 @@ const ProofOfUsStore = () => {
       status: BUILDSTATUS.INIT,
       mintStatus: 'init',
       proofOfUsId,
-      type: 'multi',
+      type: 'connect',
       date: Date.now(),
       signees: [{ ...account, signerStatus: 'init', initiator: true }],
     });

@@ -20,4 +20,16 @@ export function txCommandFactory(program: Command, version: string): void {
   createSignTransactionWithLocalWalletCommand(txProgram, version);
   createTestSignedTransactionCommand(txProgram, version);
   createTransactionCommandNew(txProgram, version);
+
+  // const command = txProgram.command('test').description('testing');
+  // command.addOption(new Option('-t, --test'));
+  // command.addArgument(new Argument('[file]'));
+  // command.action(async (originalArgs, ...rest) => {
+  //   console.log('originalArgs', originalArgs, typeof originalArgs);
+  //   console.log('rest', rest);
+  //   console.log(
+  //     'mapped',
+  //     rest.flatMap((r) => r.args),
+  //   );
+  // });
 }

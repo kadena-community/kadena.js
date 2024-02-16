@@ -1,10 +1,9 @@
-import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { TRANSACTION_PATH } from '../../constants/config.js';
+import { services } from '../../services/index.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { defaultTemplates } from '../commands/templates/templates.js';
 import { createTransaction } from '../commands/txCreateTransaction.js';
-import { signTransactionWithKeyPairAction } from '../commands/txSignWithKeypair.js';
+import { signTransactionFileWithKeyPairAction } from '../commands/txSignWithKeypair.js';
 import { testTransactions } from '../commands/txTestSignedTransaction.js';
 
 const publicKey =
@@ -26,17 +25,18 @@ describe('template to live test', () => {
       networkId: 'testnet04',
     };
 
+    await services.filesystem.ensureDirectoryExists(process.cwd());
     const transaction = await createTransaction(
       defaultTemplates.transfer,
       variables,
-      join(TRANSACTION_PATH, 'transaction-test.json'),
+      'transaction-test.json',
     );
     assertCommandError(transaction);
 
-    const signed = await signTransactionWithKeyPairAction(
-      [{ publicKey, secretKey }],
-      [transaction.data.filePath],
-    );
+    const signed = await signTransactionFileWithKeyPairAction({
+      files: [transaction.data.filePath],
+      keyPairs: [{ publicKey, secretKey }],
+    });
     assertCommandError(signed);
 
     // console.dir(JSON.parse(signed.data.commasnds[0].cmd), { depth: Infinity });
@@ -48,7 +48,7 @@ describe('template to live test', () => {
         networkId: 'testnet04',
       },
       '1',
-      [signed.data.path],
+      [signed.data.commands[0].path],
       true,
     );
     assertCommandError(test);

@@ -3,7 +3,7 @@ import debug from 'debug';
 
 import type { ICommandResult } from '@kadena/client';
 import { createClient, isSignedTransaction } from '@kadena/client';
-import { join } from 'node:path';
+import path from 'node:path';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
@@ -85,12 +85,14 @@ export const createTestSignedTransactionCommand: (
       ...chainOption,
     });
 
+    const absolutePaths = files.txSignedTransactionFiles.map((file) =>
+      path.resolve(path.join(dir.txTransactionDir, file)),
+    );
+
     const result = await testTransactions(
       networkOption.networkConfig,
       chainOption.chainId,
-      files.txSignedTransactionFiles.map((file) =>
-        join(process.cwd(), dir.txTransactionDir, file),
-      ),
+      absolutePaths,
       true,
     );
 

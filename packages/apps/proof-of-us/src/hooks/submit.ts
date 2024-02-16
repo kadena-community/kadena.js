@@ -24,6 +24,7 @@ export const useSubmit = () => {
 
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
     setTx(tx);
+
     if (tx.sigs.filter((x: any) => x === null).length)
       return setStatus(SubmitStatus.INCOMPLETE);
 
@@ -70,6 +71,8 @@ export const useSubmit = () => {
 
   const isStatusLoading =
     status !== SubmitStatus.IDLE &&
+    status !== SubmitStatus.INCOMPLETE &&
+    status !== SubmitStatus.SUBMITABLE &&
     status !== SubmitStatus.SUCCESS &&
     status !== SubmitStatus.ERROR;
   return {

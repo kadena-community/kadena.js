@@ -13,15 +13,15 @@ import {
 import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
 import { join } from 'path';
-import { TRANSACTION_PATH } from '../../constants/config.js';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletKey } from '../../keys/utils/keysHelpers.js';
 import type { IKeyPair as IKeyPairLocal } from '../../keys/utils/storage.js';
-
-import { services } from '../../services/index.js';
-
 import { tx } from '../../prompts/index.js';
+import { ICommandSchema, IUnsignedCommandSchema } from '../../prompts/tx.js';
+import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
+import { notEmpty } from '../../utils/helpers.js';
+import { log } from '../../utils/logger.js';
 
 /**
  *
@@ -61,15 +61,29 @@ export function getSignersStatus(
  */
 export async function getTransactions(
   signed: boolean,
-  path: string,
+  directory: string,
 ): Promise<string[]> {
   try {
-    const filePath = path ? join(process.cwd(), path) : TRANSACTION_PATH;
+    const files = await services.filesystem.readDir(directory);
+    // Since naming convention is not enforced, we need to check the content of the files
+    const transactionFiles = (
+      await Promise.all(
+        files.map(async (filePath) => {
+          if (!filePath.endsWith('.json')) return null;
+          const content = await services.filesystem.readFile(filePath);
+          if (content === null) return null;
+          // signed=false can still return already signed transactions
+          const schema = signed ? ICommandSchema : IUnsignedCommandSchema;
+          const parsed = schema.safeParse(JSON.parse(content));
+          if (parsed.success) return filePath;
+          return null;
+        }),
+      )
+    ).filter(notEmpty);
 
-    const files = await services.filesystem.readDir(filePath);
-    return files.filter((file) => signed === file.includes('-signed'));
+    return transactionFiles;
   } catch (error) {
-    console.error(`Error reading transaction directory: ${error}`);
+    log.error(`Error reading transaction directory: ${error}`);
     throw error;
   }
 }
@@ -250,7 +264,7 @@ export async function getTransactionFromFile(
     const transactionFilePath = transactionFile.startsWith('.')
       ? join(process.cwd(), transactionFile)
       : transactionFile;
-    // const transactionFilePath = join(TRANSACTION_PATH, transactionFile);
+
     const fileContent = await services.filesystem.readFile(transactionFilePath);
 
     if (fileContent === null) {
@@ -258,11 +272,10 @@ export async function getTransactionFromFile(
     }
     const transaction = JSON.parse(fileContent);
     if (signed) {
-      const result = tx.ICommandSchema.parse(transaction);
-      return result as ICommand;
+      return tx.ICommandSchema.parse(transaction);
     }
     const result = tx.IUnsignedCommandSchema.parse(transaction);
-    return result as IUnsignedCommand;
+    return result as IUnsignedCommand; // typecast because `IUnsignedCommand` uses undefined instead of null
   } catch (error) {
     console.error(
       `Error processing ${

@@ -39,7 +39,7 @@ type IProofOfUsBackground = {
   bg: string;
 };
 
-type TokenType = 'multi' | 'attendance';
+type TokenType = 'connect' | 'attendance';
 
 interface IProofOfUsData {
   tx: IUnsignedCommand;
@@ -116,6 +116,7 @@ type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   initiator: boolean;
   socialLinks?: ISocial[];
   position?: ISigneePosition;
+  publicKey: string;
 };
 
 type IProofOfUsTokenSignee = Pick<

@@ -35,7 +35,7 @@ const senderPubKey =
 const namespace = 'n_31cd1d224d06ca2b327f1b03f06763e305099250';
 const collectionId = 'collection:K85ZSH3LUXS3SB_Aokhseap0U6AHyNbSJKGfUM4kbik';
 const startTime = Math.round(addMinutes(new Date(), 2).getTime() / 1000);
-const endTime = Math.round(addHours(new Date(), 2).getTime() / 1000);
+const endTime = Math.round(addHours(new Date(), 200).getTime() / 1000);
 const eventName = 'Greyskull';
 const eventType: TokenType = 'attendance';
 const imageBase64Str =
@@ -128,13 +128,6 @@ const createEvent = async () => {
 
     .createTransaction();
 
-  console.log({ unsignedTx });
-
-  //   const result = await client.local(transaction, {
-  //     preflight: false,
-  //     signatureVerification: false,
-  //   });
-
   const signWithChainweaver = createSignWithChainweaver();
   const signedTx = await signWithChainweaver(unsignedTx);
 
@@ -146,8 +139,6 @@ const createEvent = async () => {
   console.log(`CREATE-TOKEN requestKey: ${polldata.requestKey}`);
 
   const { result } = await kadenaClient.listen(polldata);
-
-  console.log(result);
 
   if (result.status !== 'success') {
     console.log('ERROR');

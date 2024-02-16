@@ -23,7 +23,7 @@ export const Layout: FC<IProps> = ({ children }: IProps) => {
       setActiveMenuIndex(undefined);
       setIsMenuOpen(false);
     }
-  }, []);
+  }, [setActiveMenuIndex, setIsMenuOpen]);
 
   return (
     <div data-testid="layout-container">
