@@ -34,42 +34,46 @@ export const generateHdKeys = async ({
 }): Promise<
   CommandResult<{ keys: IKeyPair[]; legacy: boolean; startIndex: number }>
 > => {
-  const wallet = await getWallet(keyWallet);
+  try {
+    const wallet = await getWallet(keyWallet);
 
-  if (!wallet) {
-    return {
-      success: false,
-      errors: [`The wallet "${keyWallet}" does not exist.`],
-    };
+    if (!wallet) {
+      return {
+        success: false,
+        errors: [`The wallet "${keyWallet}" does not exist.`],
+      };
+    }
+
+    const shouldGenerateSecretKeys =
+      keyGenFromChoice === 'genPublicSecretKey' ||
+      keyGenFromChoice === 'genPublicSecretKeyDec';
+
+    const startIndex = extractStartIndex(keyIndexOrRange);
+
+    const config = {
+      keyWallet: await getWalletContent(keyWallet),
+      securityPassword: password,
+      keyGenFromChoice,
+      keyIndexOrRange,
+      legacy: wallet.legacy,
+    } as IKeysConfig;
+
+    const keys = await generateFromWallet(config, shouldGenerateSecretKeys);
+
+    if (keyGenFromChoice !== 'genPublicSecretKeyDec') {
+      await saveKeyByAlias(
+        keyAlias,
+        keys,
+        wallet.legacy,
+        wallet.wallet,
+        startIndex,
+      );
+    }
+
+    return { success: true, data: { keys, legacy: wallet.legacy, startIndex } };
+  } catch (error) {
+    return { success: false, errors: [error.message] };
   }
-
-  const shouldGenerateSecretKeys =
-    keyGenFromChoice === 'genPublicSecretKey' ||
-    keyGenFromChoice === 'genPublicSecretKeyDec';
-
-  const startIndex = extractStartIndex(keyIndexOrRange);
-
-  const config = {
-    keyWallet: await getWalletContent(keyWallet),
-    securityPassword: password,
-    keyGenFromChoice,
-    keyIndexOrRange,
-    legacy: wallet.legacy,
-  } as IKeysConfig;
-
-  const keys = await generateFromWallet(config, shouldGenerateSecretKeys);
-
-  if (keyGenFromChoice !== 'genPublicSecretKeyDec') {
-    await saveKeyByAlias(
-      keyAlias,
-      keys,
-      wallet.legacy,
-      wallet.wallet,
-      startIndex,
-    );
-  }
-
-  return { success: true, data: { keys, legacy: wallet.legacy, startIndex } };
 };
 
 export const createGenerateHdKeysCommand: (
@@ -109,8 +113,7 @@ export const createGenerateHdKeysCommand: (
       keyAlias,
     });
 
-    loadingSpinner.succeed('Completed');
-    assertCommandError(result);
+    assertCommandError(result, loadingSpinner);
 
     displayGeneratedHdKeys(result.data.keys);
     if (keyGenFromChoice !== 'genPublicSecretKeyDec') {
