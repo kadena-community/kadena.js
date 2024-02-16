@@ -1,7 +1,0 @@
-{
-  "cmd": "{\"payload\":{\"exec\":{\"code\":\"(coin.transfer \\\"k:123\\\" \\\"k:123\\\" 1)\",\"data\":{}}},\"nonce\":\"\",\"networkId\":\"mainnet01\",\"meta\":{\"sender\":\"k:123\",\"chainId\":\"1\",\"creationTime\":1708083333,\"gasLimit\":2300,\"gasPrice\":0.000001,\"ttl\":600},\"signers\":[{\"pubKey\":\"2619fafe33b3128f38a4e4aefe6a5559371b18b6c25ac897aff165ce14b241b3\",\"clist\":[{\"name\":\"coin.TRANSFER\",\"args\":[\"k:123\",\"k:123\",1]},{\"name\":\"coin.GAS\",\"args\":[]}]}]}",
-  "hash": "e9iSqhdzQpt3AECR8rEMH3S011KfUqH4Agpvr7P-Y00",
-  "sigs": [
-    null
-  ]
-}
