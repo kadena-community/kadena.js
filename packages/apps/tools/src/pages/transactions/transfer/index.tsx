@@ -24,8 +24,10 @@ import {
 import { createPrincipal } from '@/services/faucet/create-principal';
 import { stripAccountPrefix } from '@/utils/string';
 // import { transfer } from '@kadena/client-utils/coin';
+import type { DerivationMode } from '@/hooks/use-ledger-public-key';
 import useLedgerPublicKey, {
   derivationModes,
+  getDerivationPath,
 } from '@/hooks/use-ledger-public-key';
 import { useLedgerSign } from '@/hooks/use-ledger-sign';
 import type { ISubmitTxResponseBody } from '@/services/transfer/submit-transaction';
@@ -88,7 +90,7 @@ const TransferPage = () => {
     message?: string;
   }>({ status: 'idle' });
   const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
-  const derivationMode = legacyToggleOn
+  const derivationMode: DerivationMode = legacyToggleOn
     ? derivationModes[1]
     : derivationModes[0];
 
@@ -244,7 +246,7 @@ const TransferPage = () => {
   const handleSignTransaction = async () => {
     const { isSigned, pactCommand } = await signTx(transferInput, {
       networkId: selectedNetwork,
-      derivationPath: derivationMode,
+      derivationPath: getDerivationPath(keyId!, derivationMode),
     });
     console.log('isSigned', isSigned);
     console.log('pact command', pactCommand);
