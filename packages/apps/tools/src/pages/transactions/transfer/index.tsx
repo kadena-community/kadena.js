@@ -120,7 +120,7 @@ const TransferPage = () => {
     isFetching: boolean;
   } = useAccountDetailsQuery({
     account: getValues('sender'),
-    networkId: 'testnet04',
+    networkId: selectedNetwork,
     chainId: getValues('senderChainId'),
   });
 
@@ -163,7 +163,7 @@ const TransferPage = () => {
     isFetching: boolean;
   } = useAccountDetailsQuery({
     account: getValues('receiver'),
-    networkId: 'testnet04',
+    networkId: selectedNetwork,
     chainId: getValues('receiverChainId'),
   });
 
@@ -243,7 +243,7 @@ const TransferPage = () => {
 
   const handleSignTransaction = async () => {
     const { isSigned, pactCommand } = await signTx(transferInput, {
-      networkId: 'Testnet04',
+      networkId: selectedNetwork,
       derivationPath: derivationMode,
     });
     console.log('isSigned', isSigned);
