@@ -1,4 +1,5 @@
-import { Pact, type ChainId } from '@kadena/client';
+import type { ChainId } from '@kadena/client';
+import { Pact } from '@kadena/client';
 import { dirtyReadClient } from '@kadena/client-utils/core';
 import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
 import { dotenv } from '@utils/dotenv';
