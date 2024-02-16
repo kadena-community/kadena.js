@@ -34,12 +34,7 @@ const fetchPublicKey = async ({
   keyId,
   derivationMode = 'current',
   app,
-}: IParams & { app: AppKda | null }): Promise<string | undefined> => {
-  if (app === null) {
-    console.log("Make sure you've connected the Ledger device");
-    return undefined;
-  }
-
+}: IParams & { app: AppKda }): Promise<string | undefined> => {
   const kdaAddress = await app.getPublicKey(
     getDerivationPath(keyId, derivationMode),
   );
