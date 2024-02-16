@@ -2,7 +2,6 @@ import type { IUnsignedCommand } from '@kadena/types';
 import chalk from 'chalk';
 import { z } from 'zod';
 
-import { TRANSACTION_FOLDER_NAME } from '../constants/config.js';
 import { getTransactions } from '../tx/utils/txHelpers.js';
 
 import {
@@ -65,7 +64,7 @@ export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
 
 export const transactionSelectPrompt: IPrompt<string> = async (args) => {
   const signed = (args.signed as boolean) ?? false;
-  const path = (args.path as string) ?? (args.txTransactionDir as string);
+  const path = (args.path as string) ?? (args.directory as string);
   const existingTransactions: string[] = await getTransactions(signed, path);
 
   if (existingTransactions.length === 0) {
@@ -125,20 +124,6 @@ export async function txDirPrompt(): Promise<string> {
       return true;
     },
     default: `./`,
-  });
-}
-
-export async function txTransactionDirPrompt(): Promise<string> {
-  return await input({
-    message: `Enter your transaction directory (default: './${TRANSACTION_FOLDER_NAME}'):`,
-    validate: async (input) => {
-      const dirExists = await services.filesystem.directoryExists(input);
-      if (!dirExists) {
-        return 'Directory or file not found. Please enter a valid directory or file path.';
-      }
-      return true;
-    },
-    default: `./${TRANSACTION_FOLDER_NAME}`,
   });
 }
 

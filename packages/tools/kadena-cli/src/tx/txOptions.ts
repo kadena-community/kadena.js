@@ -3,7 +3,6 @@ import { Option } from 'commander';
 import { load as loadYaml } from 'js-yaml';
 import { join } from 'node:path';
 import { z } from 'zod';
-import { TRANSACTION_FOLDER_NAME } from '../constants/config.js';
 import { tx } from '../prompts/index.js';
 import { templateDataPrompt, templateVariables } from '../prompts/tx.js';
 import { services } from '../services/index.js';
@@ -151,15 +150,6 @@ export const txOptions = {
       }
       return txSignedTransactionFiles;
     },
-  }),
-  txTransactionDir: createOption({
-    key: 'txTransactionDir' as const,
-    prompt: tx.txTransactionDirPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-d, --tx-transaction-dir <txTransactionDir>',
-      `Enter your transaction directory (default: "./${TRANSACTION_FOLDER_NAME}")`,
-    ),
   }),
   directory: createOption({
     key: 'directory' as const,

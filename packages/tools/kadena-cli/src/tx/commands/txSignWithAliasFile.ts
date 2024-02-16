@@ -120,8 +120,8 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
     globalOptions.keyWalletSelect(),
     globalOptions.securityPassword(),
     globalOptions.keyAliasSelect(),
+    txOptions.directory({ disableQuestion: true }),
     txOptions.txUnsignedTransactionFiles(),
-    txOptions.txTransactionDir({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option, values, stdin) => {
@@ -152,19 +152,19 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
           legacy: mode.legacy,
         });
       } else {
-        const dir = await option.txTransactionDir();
+        const directory = (await option.directory()).directory ?? process.cwd();
         const files = await option.txUnsignedTransactionFiles({
           signed: false,
-          path: dir.txTransactionDir,
+          path: directory,
         });
         const absolutePaths = files.txUnsignedTransactionFiles.map((file) =>
-          path.resolve(path.join(dir.txTransactionDir, file)),
+          path.resolve(path.join(directory, file)),
         );
         log.debug('sign-with-key-alias-file:action', {
           ...wallet,
           ...key,
           ...files,
-          ...dir,
+          directory,
           ...mode,
         });
         return await signTransactionFileWithAliasFile({

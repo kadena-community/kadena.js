@@ -1,19 +1,19 @@
 import { isAbsolute, join } from 'node:path';
 
-const ENV_KADNEA_DIR = process.env.ENV_KADNEA_DIR;
+const ENV_KADENA_DIR = process.env.KADENA_DIR;
 
-// app name
-export const CLINAME = 'bin/kadena-cli.js';
+// app executable (for development run `npm link` or use the dev command)
+export const CLINAME = 'kadena';
 
 // root folders
 export const WORKING_DIRECTORY = process.cwd();
 const DEFAULT_KADENA_DIR = join(WORKING_DIRECTORY, '.kadena');
 
 export const KADENA_DIR = (() => {
-  if (ENV_KADNEA_DIR !== undefined) {
-    return isAbsolute(ENV_KADNEA_DIR)
-      ? ENV_KADNEA_DIR
-      : join(WORKING_DIRECTORY, ENV_KADNEA_DIR);
+  if (ENV_KADENA_DIR !== undefined) {
+    return isAbsolute(ENV_KADENA_DIR)
+      ? ENV_KADENA_DIR
+      : join(WORKING_DIRECTORY, ENV_KADENA_DIR);
   }
   return DEFAULT_KADENA_DIR;
 })();
@@ -23,10 +23,6 @@ export const WALLET_DIR = `${KADENA_DIR}/wallets`;
 
 // plain key path
 export const PLAIN_KEY_DIR = `${KADENA_DIR}/keys`;
-
-// transactions
-export const TRANSACTION_FOLDER_NAME = 'transactions';
-export const TRANSACTION_PATH = `${KADENA_DIR}/${TRANSACTION_FOLDER_NAME}`;
 
 // templates
 export const TX_TEMPLATE_FOLDER = `${KADENA_DIR}/transaction-templates`;
