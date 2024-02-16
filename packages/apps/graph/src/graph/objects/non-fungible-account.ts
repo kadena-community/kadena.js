@@ -51,7 +51,7 @@ export default builder.node(
               accountName: parent.accountName,
             });
 
-            return chainIds.map(async (chainId) => {
+            return chainIds.map((chainId) => {
               return {
                 __typename: NonFungibleChainAccountName,
                 chainId,
