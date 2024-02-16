@@ -1,5 +1,4 @@
 import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
-import { Pact } from '@kadena/client';
 import { dirtyReadClient } from '@kadena/client-utils/core';
 import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
 import { dotenv } from '@utils/dotenv';
@@ -9,7 +8,6 @@ interface TokenInfo {
   precision: number;
   uri: string;
   id: string;
-  policies: string[];
 }
 
 export const getTokenInfo = async (
@@ -17,7 +15,11 @@ export const getTokenInfo = async (
   chainId: ChainId,
 ): Promise<TokenInfo | undefined> => {
   const command = composePactCommand(
-    execution(Pact.modules['marmalade-v2.ledger']['get-token-info'](tokenId)),
+    execution(`(bind
+      (marmalade-v2.ledger.get-token-info "${tokenId}")
+      { "id" := id, "precision":= precision, "supply" := supply, "uri" := uri }
+      { "id" : id, "precision": precision, "supply" : supply, "uri" : uri }
+    )`),
     setMeta({
       chainId,
     }),
