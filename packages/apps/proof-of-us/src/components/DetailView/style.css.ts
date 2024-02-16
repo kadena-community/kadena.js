@@ -22,7 +22,6 @@ export const imageWrapper = style([
 ]);
 export const titleInputClass = style([
   atoms({
-    position: 'absolute',
     fontSize: '2xl',
   }),
   {
@@ -30,4 +29,9 @@ export const titleInputClass = style([
     left: '10px',
     zIndex: 2,
   },
+]);
+export const titleErrorClass = style([
+  atoms({
+    color: 'icon.semantic.warning.default',
+  }),
 ]);
