@@ -2358,6 +2358,9 @@ importers:
       '@kadena/pactjs-cli':
         specifier: workspace:*
         version: link:../pactjs-cli
+      '@kadena/react-ui':
+        specifier: workspace:*
+        version: link:../../libs/react-ui
       '@kadena/tools':
         specifier: workspace:*
         version: link:../../apps/tools

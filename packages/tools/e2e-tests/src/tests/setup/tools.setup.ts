@@ -1,9 +1,10 @@
 import { deployFaucetContract } from '@devnet/faucet/deploy';
 import { deployGuards } from '@devnet/guards/deploy';
 import { deployGasStation } from '@devnet/kadena-xchain-gas/deploy';
-import { expect, test as setup } from '@playwright/test';
+import { test as setup } from '@fixtures/shared/test.fixture';
+import { expect } from '@playwright/test';
 
-setup('Configure Devnet', async () => {
+setup('Configure Devnet For Tools', async () => {
   await setup.step(
     'Deploy Guards Contracts & Gas Station on chain 0',
     async () => {

@@ -3,10 +3,10 @@ import { expect } from '@playwright/test';
 
 test(`MultiContext in 1 test`, async ({ personA, personB, page }) => {
   await test.step('A: Open the devworld page', async () => {
-    await personA.page.goto('devworld.kadena.io');
+    await personA.page.goto('https://devworld.kadena.io');
   });
   await test.step('B: Open the devworld page', async () => {
-    await personB.page.goto('spyrekey.kadena.io');
+    await personB.page.goto('https://spirekey.kadena.io');
     expect(true).toBeTruthy();
   });
 });
