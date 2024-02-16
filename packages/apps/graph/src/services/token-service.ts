@@ -59,6 +59,7 @@ export async function getTokenDetails(
         chainId: event.chainId
           ? parseInt(event.chainId.toString())
           : parseInt(dotenv.SIMULATE_DEFAULT_CHAIN_ID.toString()),
+        version: event.version!,
       });
       processedTokens.add(tokenChainIdKey);
     }
