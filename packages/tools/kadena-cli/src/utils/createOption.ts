@@ -27,8 +27,8 @@ export interface IOptionCreatorObject {
   prompt: IPrompt<any>;
   validation: z.ZodSchema;
   option: Option;
-  expand?: (value: any) => unknown;
-  transform?: (value: any) => unknown;
+  expand?: (value: any, args: Record<string, unknown>) => unknown;
+  transform?: (value: any, args: Record<string, unknown>) => unknown;
   defaultIsOptional?: boolean;
   allowUnknownOptions?: boolean;
 }
@@ -42,7 +42,7 @@ export interface IOptionSettings {
 export function createOption<const T extends IOptionCreatorObject>(data: T) {
   return (settings?: IOptionSettings) => {
     const isOptional = settings?.isOptional ?? data.defaultIsOptional ?? true;
-    const isInQuestions = settings?.disableQuestion ?? true;
+    const isInQuestions = settings?.disableQuestion !== true ?? true;
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const prompt: T['prompt'] = (responses, args) =>
       data.prompt(responses, args, isOptional);

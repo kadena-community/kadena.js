@@ -601,6 +601,16 @@ export type Token = {
   balance: Scalars['Int']['output'];
   chainId: Scalars['Int']['output'];
   id: Scalars['ID']['output'];
+  info?: Maybe<TokenInfo>;
+  version: Scalars['String']['output'];
+};
+
+/** Information related to a token. */
+export type TokenInfo = {
+  __typename?: 'TokenInfo';
+  precision: Scalars['Int']['output'];
+  supply: Scalars['Int']['output'];
+  uri: Scalars['String']['output'];
 };
 
 /** A confirmed transaction. */

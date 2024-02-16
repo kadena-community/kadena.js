@@ -1,7 +1,11 @@
+import { fetchManifestData } from '@/utils/fetchManifestData';
+
 import Link from 'next/link';
 import type { FC } from 'react';
+import useSWR from 'swr';
+import { IsLoading } from '../IsLoading/IsLoading';
+import { ConnectThumb } from '../Thumb/ConnectThumb';
 import { EventThumb } from '../Thumb/EventThumb';
-import { MultiThumb } from '../Thumb/MultiThumb';
 import {
   listItemClass,
   listItemLinkClass,
@@ -14,22 +18,33 @@ interface IProps {
 }
 
 export const ListItem: FC<IProps> = ({ token }) => {
+  const { data, isLoading } = useSWR(token.uri, fetchManifestData, {
+    revalidateOnFocus: false,
+  });
+
   return (
     <li className={listItemClass}>
-      <Link
-        className={listItemLinkClass}
-        href={`/user/proof-of-us/t/${token.tokenId}`}
-      >
-        {token.properties.type === 'event' && <EventThumb token={token} />}
-        {token.properties.type === 'multi' && <MultiThumb token={token} />}
-        <span className={titleClass}>{token.name}</span>
-        <time
-          className={timeClass}
-          dateTime={new Date(token.properties.date).toLocaleDateString()}
+      {isLoading && <IsLoading />}
+      {data && (
+        <Link
+          className={listItemLinkClass}
+          href={`/user/proof-of-us/t/${data.properties.eventId}`}
         >
-          {new Date(token.properties.date).toLocaleDateString()}
-        </time>
-      </Link>
+          {data.properties.eventType === 'attendance' && (
+            <EventThumb token={data} />
+          )}
+          {data.properties.eventType === 'connect' && (
+            <ConnectThumb token={data} />
+          )}
+          <span className={titleClass}>{data.name}</span>
+          <time
+            className={timeClass}
+            dateTime={new Date(data.properties.date).toLocaleDateString()}
+          >
+            {new Date(data.properties.date).toLocaleDateString()}
+          </time>
+        </Link>
+      )}
     </li>
   );
 };

@@ -15,18 +15,25 @@ export const decrypt = async (
   password: string,
   keyMessage: EncryptedString,
 ): Promise<CommandResult<{ value: string }>> => {
-  const decryptedMessage = await kadenaDecrypt(password, keyMessage);
+  try {
+    const decryptedMessage = await kadenaDecrypt(password, keyMessage);
 
-  const isLegacy = decryptedMessage.byteLength >= 128;
+    const isLegacy = decryptedMessage.byteLength >= 128;
 
-  if (isLegacy === true) {
+    if (isLegacy === true) {
+      return {
+        success: false,
+        errors: [`Decryption is not available for legacy keys.`],
+      };
+    }
+
+    return { success: true, data: { value: toHexStr(decryptedMessage) } };
+  } catch (error) {
     return {
       success: false,
-      errors: [`Decryption is not available for legacy keys.`],
+      errors: [error.message],
     };
   }
-
-  return { success: true, data: { value: toHexStr(decryptedMessage) } };
 };
 
 export const createDecryptCommand: (program: Command, version: string) => void =
@@ -42,7 +49,7 @@ export const createDecryptCommand: (program: Command, version: string) => void =
       }
 
       console.log(
-        chalk.yellow(`\nYou are about to decrypt this this message.\n`),
+        chalk.yellow(`You are about to decrypt this this message.\n`),
       );
 
       const result = await decrypt(

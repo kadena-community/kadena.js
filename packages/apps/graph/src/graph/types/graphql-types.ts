@@ -10,6 +10,16 @@ export interface Token {
   id: string;
   balance: number;
   chainId: number;
+  info?: TokenInfo;
+  version: string;
+}
+
+export interface TokenInfo {
+  supply: number;
+  precision: number;
+  uri: string;
+  // TODO: figure out what to do with weird pact-arrays
+  // policies: string[];
 }
 
 export const FungibleChainAccountName: 'FungibleChainAccount' =

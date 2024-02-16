@@ -8,16 +8,17 @@ export const useGetAllProofOfUs: IDataHook<IProofOfUsToken[]> = () => {
 
   const load = async () => {
     const result = await getAllProofOfUs();
+
     setData(result);
   };
 
   useEffect(() => {
     load();
-  }, [setError, setIsLoading, setData]);
+  }, [setError, setIsLoading]);
 
   return {
     isLoading,
     error,
-    data,
+    data: data ?? [],
   };
 };

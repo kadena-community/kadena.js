@@ -11,5 +11,14 @@ module.exports = {
   rules: {
     '@kadena-dev/typedef-var': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@rushstack/no-new-null': 'off',
+    'no-void': 'off',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': [
+      'error',
+      {
+        additionalHooks: '(useAsync|useAsyncCallback)',
+      },
+    ],
   },
 };

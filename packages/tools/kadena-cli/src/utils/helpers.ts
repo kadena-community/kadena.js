@@ -2,6 +2,7 @@ import clear from 'clear';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
 import sanitize from 'sanitize-filename';
+import type { ZodError } from 'zod';
 import { MAX_CHARACTERS_LENGTH } from '../constants/config.js';
 import { defaultDevnetsPath } from '../constants/devnets.js';
 import { defaultNetworksPath } from '../constants/networks.js';
@@ -307,7 +308,47 @@ export const notEmpty = <TValue>(
   value: TValue | null | undefined,
 ): value is TValue => value !== null && value !== undefined;
 
-export const truncateText = (str: string): string =>
-  str.length > MAX_CHARACTERS_LENGTH
-    ? `${str.substring(0, MAX_CHARACTERS_LENGTH)}...`
-    : str;
+export const truncateText = (
+  str: string,
+  maxLength: number = MAX_CHARACTERS_LENGTH,
+): string =>
+  str.length > maxLength ? `${str.substring(0, maxLength - 3)}...` : str;
+
+export const maskStringPreservingStartAndEnd = (
+  str: string,
+  maxLength = 15,
+  maskChar = '.',
+  maskCharLength = 4,
+): string => {
+  if (str.length <= maxLength) {
+    return str;
+  } else {
+    const startChars = str.substring(0, (maxLength - maskCharLength) / 2);
+    const endChars = str.substring(
+      str.length - (maxLength - maskCharLength) / 2,
+    );
+    return `${startChars}${maskChar.repeat(maskCharLength)}${endChars}`;
+  }
+};
+
+export const isNotEmptyString = (value: unknown): value is string =>
+  value !== null && value !== undefined && value !== '';
+
+/**
+ * Prints zod error issues in format
+ * ```code
+ * {key}: [issues by key]\n
+ * ...repeat
+ * ```
+ */
+export const formatZodError = (error: ZodError): string => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const format = error.format() as any;
+  const formatted = Object.keys(format)
+    .map((key) => {
+      if (key === '_errors') return null;
+      return `${key}: ${format[key]?._errors.join(', ')}`;
+    })
+    .filter(notEmpty);
+  return formatted.join('\n');
+};

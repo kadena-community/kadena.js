@@ -10,6 +10,7 @@ import './objects/non-fungible-account';
 import './objects/non-fungible-chain-account';
 import './objects/signer';
 import './objects/token';
+import './objects/token-info';
 import './objects/total-count';
 import './objects/transaction';
 import './objects/transfer';

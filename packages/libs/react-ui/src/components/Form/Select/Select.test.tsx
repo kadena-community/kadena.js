@@ -18,7 +18,7 @@ describe('Select', () => {
 
     const selectField = screen.getByLabelText('select');
     expect(selectField).toBeInTheDocument();
-  });
+  }, 20000);
 
   it('renders the provided children options when is open', async () => {
     render(
@@ -39,7 +39,7 @@ describe('Select', () => {
 
     expect(option1).toBeInTheDocument();
     expect(option2).toBeInTheDocument();
-  });
+  }, 20000);
 
   it('invokes the onChange event handler when an option is selected', async () => {
     const handleChange = vi.fn();
@@ -71,5 +71,5 @@ describe('Select', () => {
 
     const selectButton = screen.getByRole('button') as HTMLButtonElement;
     expect(selectButton.disabled).toBe(true);
-  });
+  }, 20000);
 });

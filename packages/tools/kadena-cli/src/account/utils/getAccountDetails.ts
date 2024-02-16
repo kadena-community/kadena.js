@@ -36,7 +36,7 @@ export async function getAccountDetailsFromChain({
   }
 }
 
-export const getAccountDetailsForAddAccount = async (
+export const getAccountDetails = async (
   config: IGetAccountDetailsParams,
 ): Promise<IAccountDetailsResult | undefined> => {
   try {
