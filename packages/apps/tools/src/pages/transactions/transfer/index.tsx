@@ -14,7 +14,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CHAINS } from '@kadena/chainweb-node-client';
 // import { createSignWithLedger } from '@kadena/client';
 import AddPublicKeysSection from '@/components/Global/AddPublicKeysSection';
-import { Toggle } from '@/components/Global/Toggle';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import {
   buttonContainerClass,
@@ -24,13 +23,19 @@ import {
 // import TransactionDetails from '@/pages/transactions/transfer/transaction-details';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import { stripAccountPrefix } from '@/utils/string';
-import { transfer } from '@kadena/client-utils/coin';
+// import { transfer } from '@kadena/client-utils/coin';
+import useLedgerPublicKey, {
+  derivationModes,
+} from '@/hooks/use-ledger-public-key';
+import { useLedgerSign } from '@/hooks/use-ledger-sign';
+import type { ISubmitTxResponseBody } from '@/services/transfer/submit-transaction';
+import { pollResult, submitTx } from '@/services/transfer/submit-transaction';
+import type { ITransactionDescriptor } from '@kadena/client';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
   Button,
   Card,
-  FormFieldHeader,
   Heading,
   Notification,
   NumberField,
@@ -70,10 +75,11 @@ const TransferPage = () => {
   const { selectedNetwork, networksData } = useWalletConnectClient();
 
   const [toAccountTab, setToAccountTab] = useState('existing');
+  const [keyId, setKeyId] = useState<number>();
   const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
 
   const [pubKeys, setPubKeys] = useState<string[]>([]);
-  const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
+  // const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
   // const [senderPublicKey, setSenderPublicKey] = useState<string>('');
   const [initialPublicKey, setInitialPublicKey] = useState<string>('');
   const [signedTx, setSignedTx] = useState<any | undefined>(undefined);
@@ -81,10 +87,14 @@ const TransferPage = () => {
     status: FormStatus;
     message?: string;
   }>({ status: 'idle' });
+  const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
+  const derivationMode = legacyToggleOn
+    ? derivationModes[1]
+    : derivationModes[0];
 
   const accountFromOptions = ['Ledger', 'WalletConnect'];
 
-  console.log(setSignedTx);
+  console.log(keyId);
 
   const {
     handleSubmit,
@@ -114,19 +124,32 @@ const TransferPage = () => {
     chainId: getValues('senderChainId'),
   });
 
-  const watchReceiver = watch('receiver');
+  const [
+    {
+      error: ledgerError,
+      value: ledgerPublicKey,
+      loading: isFetchingLedgerPublicKey,
+    },
+    getPublicKey,
+  ] = useLedgerPublicKey();
+
+  console.log(
+    'ledger stuff',
+    ledgerError,
+    ledgerPublicKey,
+    isFetchingLedgerPublicKey,
+  );
+
+  useEffect(() => {
+    if (ledgerPublicKey) {
+      setValue('sender', `k:${ledgerPublicKey}`);
+    }
+  }, [ledgerPublicKey, setValue]);
+
   const watchReceiverChainId = watch('receiverChainId');
   const watchChains = watch(['senderChainId', 'receiverChainId']);
   const onSameChain = watchChains.every((chain) => chain === watchChains[0]);
   const watchAmount = watch('amount');
-
-  console.log('watchReceiver', {
-    watchReceiver,
-    watchReceiverChainId,
-    watchChains,
-    onSameChain,
-    watchAmount,
-  });
 
   const receiverData: {
     error: unknown | { message: string };
@@ -174,13 +197,13 @@ const TransferPage = () => {
     ? `Cannot send more than ${senderData.data.balance.toFixed(4)} KDAs.`
     : '';
 
-  if (
-    toAccountTab === 'existing' &&
+  const isReceiverAccountInvalid =
     receiverData?.error &&
     (receiverData?.error as { message: string }).message.includes(
       'row not found',
-    )
-  ) {
+    );
+
+  if (toAccountTab === 'existing' && isReceiverAccountInvalid) {
     setToAccountTab('new');
     setInitialPublicKey(stripAccountPrefix(getValues('receiver')));
     setTimeout(() => {
@@ -188,63 +211,79 @@ const TransferPage = () => {
     }, 100);
   }
 
-  const onSubmit = async (data: FormData) => {
-    console.log('onsubmit', data);
-
-    const result = await transfer(
-      {
-        sender: { account: `k:${pubKeys[0]}`, publicKeys: [...pubKeys] },
-        receiver: data.receiver,
-        // receiver: {
-        //   account: data.receiver,
-        //   // keyset: {
-        //   //   keys: string[];
-        //   //   pred: 'keys-all' | 'keys-2' | 'keys-any';
-        //   // };
-        // },
-        amount: `${data.amount}`,
-        // targetChainId: data.receiverChainId,
-        chainId: data.receiverChainId,
-      },
-      {
-        // @ts-ignore
-        sign: () => {},
-        host: ({ networkId, chainId }) =>
-          `https://api.testnet.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
-        defaults: { networkId: 'testnet04' },
-      },
-    )
-      .on('sign', (data) => console.log('transfer - sign', data))
-      .on('preflight', (data) => console.log('transfer - preflight', data))
-      .on('submit', (data) => console.log('transfer - submit', data))
-      .on('listen', (data) => console.log('transfer - listen', data))
-      .execute();
-
-    console.log('result', result);
-
-    // set request status - FIX THIS WITH SUBMIT
-    // const error = Object.values(result).find(
-    //   (response) => result.status === 'failure',
-    // );
-    // if (result.error) {
-    //   setRequestStatus({
-    //     status: 'erroneous',
-    //     message: error.result.error?.message || t('An error occurred.'),
-    //   });
-    //   return;
-    // }
-
-    setRequestStatus({ status: 'successful' });
-  };
-
   const setReceiverAccountTab = (value: any) => {
     setToAccountTab(value);
   };
 
   const deletePublicKey = () => setValue('receiver', '');
 
-  const setLegacyOn = () => {
-    setLegacyToggleOn(!legacyToggleOn);
+  const transferInput = {
+    sender: {
+      account: senderData.data?.account ?? '',
+      publicKeys: ledgerPublicKey ? [ledgerPublicKey] : [],
+    },
+    receiver: isReceiverAccountInvalid
+      ? {
+          account: receiverData.data?.account ?? '',
+          keyset: {
+            keys: pubKeys,
+            pred: pred,
+          },
+        }
+      : receiverData.data?.account ?? '',
+    chainId: getValues('senderChainId'),
+    amount: String(getValues('amount')),
+    targetChainId: onSameChain ? getValues('receiverChainId') : undefined,
+  };
+
+  const [{ error: signLedgerError, loading: isFetchingSigning }, signTx] =
+    useLedgerSign();
+
+  console.log(signLedgerError, isFetchingSigning);
+
+  const handleSignTransaction = async () => {
+    const { isSigned, pactCommand } = await signTx(transferInput, {
+      networkId: 'Testnet04',
+      derivationPath: derivationMode,
+    });
+    console.log('isSigned', isSigned);
+    console.log('pact command', pactCommand);
+    if (isSigned) {
+      setSignedTx(pactCommand);
+    }
+  };
+
+  const onSubmit = async (data: FormData) => {
+    console.log('onsubmit', data);
+
+    const submitResponse = (await submitTx(
+      signedTx,
+      getValues('receiverChainId'),
+      selectedNetwork,
+      networksData,
+    )) as ITransactionDescriptor;
+
+    console.log(submitResponse);
+
+    const pollResponse = pollResult(
+      getValues('receiverChainId'),
+      selectedNetwork,
+      networksData,
+      submitResponse,
+    ) as unknown as ISubmitTxResponseBody;
+    console.log(pollResponse);
+
+    const error = Object.values(pollResponse).find(
+      (response) => response.result.status === 'failure',
+    );
+    if (error) {
+      setRequestStatus({
+        status: 'erroneous',
+        message: error.response.error?.message || t('An error occurred.'),
+      });
+      return;
+    }
+    setRequestStatus({ status: 'successful' });
   };
 
   const renderAccountFieldWithChain = (tab: string) => (
@@ -350,10 +389,14 @@ const TransferPage = () => {
                 flexDirection="column"
                 justifyContent="flex-start"
                 alignItems="stretch"
-                gap="sm"
+                gap="md"
               >
-                <FormFieldHeader label={t('Account')} />
-                <LedgerDetails />
+                <LedgerDetails
+                  getPublicKey={getPublicKey}
+                  setKeyId={setKeyId}
+                  legacyToggleOn={legacyToggleOn}
+                  setLegacyToggleOn={setLegacyToggleOn}
+                />
 
                 <Stack flexDirection={'row'} justifyContent={'space-between'}>
                   <div className={chainSelectContainerClass}>
@@ -371,11 +414,6 @@ const TransferPage = () => {
                       )}
                     />
                   </div>
-                  <Toggle
-                    label={t('is Legacy')}
-                    toggled={legacyToggleOn}
-                    onClick={setLegacyOn}
-                  />
                 </Stack>
 
                 <Controller
@@ -466,6 +504,7 @@ const TransferPage = () => {
                 endIcon={<SystemIcon.TrailingIcon />}
                 title={t('Sign')}
                 type="button"
+                onClick={handleSignTransaction}
               >
                 {t('Sign')}
               </Button>

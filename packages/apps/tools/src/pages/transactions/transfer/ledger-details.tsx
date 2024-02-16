@@ -1,32 +1,70 @@
 import { AccountHoverTag } from '@/components/Global';
 // import { useLedgerPublicKey } from '@/hooks/use-ledger-public-key';
-import { Combobox, ComboboxItem, SystemIcon } from '@kadena/react-ui';
+import { Toggle } from '@/components/Global/Toggle';
+import { derivationModes } from '@/hooks/use-ledger-public-key';
+import { Combobox, ComboboxItem, Stack, SystemIcon } from '@kadena/react-ui';
+import useTranslation from 'next-translate/useTranslation';
 import React from 'react';
 
-const options = Array.from({ length: 100 }, (_, i) => ({
-  label: `${i}`,
-  value: i,
+const options = Array.from({ length: 10 }, (_, i) => ({
+  id: `ledger-key-${i}`,
+  name: `${i}`,
 }));
 
-const LedgerDetails = (): React.JSX.Element => {
-  // const [keyId, setKeyId] = useState<number>();
+export interface ILedgerDetails {
+  getPublicKey: any;
+  setKeyId: any;
+  legacyToggleOn: boolean;
+  setLegacyToggleOn: any;
+}
+
+const LedgerDetails = ({
+  getPublicKey,
+  setKeyId,
+  legacyToggleOn,
+  setLegacyToggleOn,
+}: ILedgerDetails): React.JSX.Element => {
+  const { t } = useTranslation('common');
+
   // const publicKey = useLedgerPublicKey(keyId);
   const publicKey: string = '';
+  // const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
+  const derivationMode = legacyToggleOn
+    ? derivationModes[1]
+    : derivationModes[0];
+
+  const setLegacyOn = () => {
+    setLegacyToggleOn(!legacyToggleOn);
+  };
+
+  console.log('derivation mode:', derivationMode);
 
   return (
     <>
-      <Combobox
-        startIcon={<SystemIcon.KeyIconFilled />}
-        allowsCustomValue
-        defaultItems={options}
-      >
-        {(item) => (
-          <ComboboxItem key={`ledger-key-${item.value}`}>
-            {item.label}
-          </ComboboxItem>
-        )}
-      </Combobox>
-      {publicKey ? <AccountHoverTag value={publicKey.slice(0, 15)} /> : null}
+      <Stack flexDirection={'row'} justifyContent={'space-between'}>
+        <Combobox
+          allowsCustomValue
+          startIcon={<SystemIcon.KeyIconFilled />}
+          label="Key ID"
+          onInputChange={async (value) => {
+            console.log('onInputChange', value);
+            await getPublicKey({
+              keyId: parseInt(value, 10),
+              derivationMode,
+            });
+            setKeyId(value);
+          }}
+          defaultItems={options}
+        >
+          {(item) => <ComboboxItem key={item.id}>{item.name}</ComboboxItem>}
+        </Combobox>
+        <Toggle
+          label={t('is Legacy')}
+          toggled={legacyToggleOn}
+          onClick={setLegacyOn}
+        />
+        {publicKey ? <AccountHoverTag value={publicKey.slice(0, 15)} /> : null}
+      </Stack>
     </>
   );
 };
