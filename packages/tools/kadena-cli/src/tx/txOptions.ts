@@ -1,4 +1,5 @@
 import { Option } from 'commander';
+
 import { load as loadYaml } from 'js-yaml';
 import { join } from 'node:path';
 import { z } from 'zod';
@@ -7,7 +8,9 @@ import { tx } from '../prompts/index.js';
 import { templateDataPrompt, templateVariables } from '../prompts/tx.js';
 import { services } from '../services/index.js';
 import { createOption } from '../utils/createOption.js';
-import { defaultTemplates } from './commands/templates/templates.js';
+import { isNotEmptyString } from '../utils/helpers.js';
+import { log } from '../utils/logger.js';
+import { getTemplate } from './commands/templates/templates.js';
 import { getTemplateVariables } from './utils/template.js';
 import { parseCommaSeparatedInput } from './utils/txHelpers.js';
 
@@ -17,11 +20,19 @@ export const txOptions = {
     option: new Option('--template <template>', 'select a template'),
     validation: z.string(),
     prompt: tx.selectTemplate,
-    async expand(templateInput: string) {
-      // option 1. --template="send"
-      // option 2. --template="./send.ktpl"
+    async expand(templateInput: string, args) {
+      // option 1. --template="transfer.yaml"
+      // option 2. --template="./transfer.ktpl"
+      // option 3. cat send.yaml | kadena tx create-transaction
 
-      let template = defaultTemplates[templateInput];
+      let template: string;
+
+      if (templateInput === '-' && isNotEmptyString(args.stdin)) {
+        log.debug('using stdin');
+        template = args.stdin;
+      } else {
+        template = await getTemplate(templateInput);
+      }
 
       if (template === undefined) {
         // not in template list, try to load from file
@@ -148,6 +159,15 @@ export const txOptions = {
     option: new Option(
       '-d, --tx-transaction-dir <txTransactionDir>',
       `Enter your transaction directory (default: "./${TRANSACTION_FOLDER_NAME}")`,
+    ),
+  }),
+  directory: createOption({
+    key: 'directory' as const,
+    prompt: tx.txDirPrompt,
+    validation: z.string().optional(),
+    option: new Option(
+      '--directory <directory>',
+      `Enter your directory (default: working directory)`,
     ),
   }),
 };

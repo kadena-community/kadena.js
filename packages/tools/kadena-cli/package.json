@@ -28,17 +28,17 @@
   ],
   "scripts": {
     "build": "pnpm run generate:ts && pnpm run generate:kdn && tsc",
+    "dev": "NODE_ENV=development node --import @swc-node/register/esm-register src/index.ts",
     "fast-build": "pnpm run generate:ts && tsc",
-    "dev": "NODE_ENV=development node --import 'data:text/javascript,import {register} from \"node:module\";import {pathToFileURL} from \"node:url\";register(\"%40swc-node/register/esm\",pathToFileURL(\"./\"));' src/index.ts",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
-    "generate:ts": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
     "generate:kdn": "pactjs contract-generate --contract n_32faa22a75da53789d48dcbcb124a11c8f8651a8.kadena-names --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact && pactjs contract-generate --contract n_32faa22a75da53789d48dcbcb124a11c8f8651a8.herdyracle --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
+    "generate:ts": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
     "lint": "eslint src --ext .js,.ts --fix",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@inquirer/prompts": "^3.0.4",
@@ -78,7 +78,7 @@
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
-    "@swc-node/register": "^1.6.8",
+    "@swc-node/register": "^1.8.0",
     "@types/clear": "^0.1.2",
     "@types/cross-spawn": "~6.0.2",
     "@types/debug": "~4.1.7",

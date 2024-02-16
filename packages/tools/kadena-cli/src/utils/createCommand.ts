@@ -2,10 +2,13 @@ import chalk from 'chalk';
 import type { Command } from 'commander';
 import { z } from 'zod';
 import { CLINAME } from '../constants/config.js';
+import { CommandError } from './command.util.js';
 import { displayConfig } from './createCommandDisplayHelper.js';
 import type { OptionType, createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
 import { collectResponses } from './helpers.js';
+import { log } from './logger.js';
+import { readStdin } from './stdin.js';
 import type { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
 
 type AsOption<T> = T extends {
@@ -55,6 +58,7 @@ export function createCommand<const T extends OptionType[]>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     args?: any,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    stdin?: string,
   ) => any,
 ): (program: Command, version: string) => void {
   return async (program: Command, version: string) => {
@@ -67,12 +71,14 @@ export function createCommand<const T extends OptionType[]>(
 
     command.action(async (args, ...rest) => {
       try {
+        const stdin = await readStdin();
         const generalArgs = rest.flatMap((r) => r.args);
 
         // collectResponses
         const questionsMap = options.filter((o) => o.isInQuestions);
 
-        if (!process.stdout.isTTY) args.quiet = true;
+        if (!process.stderr.isTTY) args.quiet = true;
+
         handleQuietOption(
           `${program.name()} ${name}`,
           args,
@@ -111,7 +117,10 @@ export function createCommand<const T extends OptionType[]>(
         for (const option of options) {
           if ('expand' in option) {
             if (typeof option.expand === 'function') {
-              const expanded = await option.expand(newArgs[option.key]);
+              const expanded = await option.expand(
+                newArgs[option.key],
+                newArgs,
+              );
               if (expanded !== undefined) {
                 config[`${option.key}Config`] = expanded;
               }
@@ -119,7 +128,10 @@ export function createCommand<const T extends OptionType[]>(
           }
           if ('transform' in option) {
             if (typeof option.transform === 'function') {
-              config[option.key] = await option.transform(newArgs[option.key]);
+              config[option.key] = await option.transform(
+                newArgs[option.key],
+                newArgs,
+              );
             }
           }
         }
@@ -129,11 +141,15 @@ export function createCommand<const T extends OptionType[]>(
           console.log('\n');
         }
 
-        await action(config, generalArgs);
+        await action(config, generalArgs, stdin ?? undefined);
       } catch (error) {
-        console.error(error);
-        console.error(chalk.red(`Error executing command ${name}: ${error})`));
-        process.exit(1);
+        if (error instanceof CommandError) {
+          process.exitCode = error.exitCode;
+          return;
+        }
+        log.debug(error);
+        log.error(`Error executing command ${name}: ${error}`);
+        process.exitCode = 1;
       }
     });
   };
@@ -178,41 +194,39 @@ export function getCommandExecution(
   args: Record<string, unknown>,
   generalArgs: string[] = [],
 ): string {
-  return chalk.yellow(
-    `${CLINAME} ${command} ${Object.getOwnPropertyNames(args)
-      .map((arg) => {
-        let displayValue: string | null = null;
-        const value = args[arg];
+  return `${CLINAME} ${command} ${Object.getOwnPropertyNames(args)
+    .map((arg) => {
+      let displayValue: string | null = null;
+      const value = args[arg];
 
-        if (arg.toLowerCase().includes('password')) {
-          displayValue = value === '' ? '' : '******';
-        } else if (Array.isArray(value)) {
-          displayValue = `"${value.join(',')}"`;
-        } else if (typeof value === 'string') {
-          displayValue = `"${value}"`;
-        } else if (
-          typeof value === 'number' ||
-          (typeof value === 'boolean' && value)
-        ) {
-          displayValue = value.toString();
-        } else if (value === null || (typeof value === 'boolean' && !value)) {
-          return undefined;
-        } else if (
-          typeof value === 'object' &&
-          Object.getPrototypeOf(value) === Object.prototype
-        ) {
-          displayValue = Object.entries(value)
-            .map(([key, val]) => `--${key}="${val}"`)
-            .join(' ');
-        }
+      if (arg.toLowerCase().includes('password')) {
+        displayValue = value === '' ? '' : '******';
+      } else if (Array.isArray(value)) {
+        displayValue = `"${value.join(',')}"`;
+      } else if (typeof value === 'string') {
+        displayValue = `"${value}"`;
+      } else if (
+        typeof value === 'number' ||
+        (typeof value === 'boolean' && value)
+      ) {
+        displayValue = value.toString();
+      } else if (value === null || (typeof value === 'boolean' && !value)) {
+        return undefined;
+      } else if (
+        typeof value === 'object' &&
+        Object.getPrototypeOf(value) === Object.prototype
+      ) {
+        return Object.entries(value)
+          .map(([key, val]) => `--${key}="${val}"`)
+          .join(' ');
+      }
 
-        const key = arg.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
+      const key = arg.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
 
-        return displayValue !== null && displayValue !== undefined
-          ? `--${key}=${displayValue}`
-          : '';
-      })
-      .filter(Boolean)
-      .join(' ')} ${generalArgs.join(' ')}`,
-  );
+      return displayValue !== null && displayValue !== undefined
+        ? `--${key}=${displayValue}`
+        : '';
+    })
+    .filter(Boolean)
+    .join(' ')} ${generalArgs.join(' ')}`;
 }
