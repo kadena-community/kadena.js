@@ -4,11 +4,16 @@ import {
   networkFiles,
 } from '../../constants/networks.js';
 
-import { mergeConfigs, sanitizeFilename } from '../../utils/helpers.js';
+import {
+  formatZodError,
+  mergeConfigs,
+  sanitizeFilename,
+} from '../../utils/helpers.js';
 
 import { existsSync, mkdirSync, readFileSync, readdirSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
+import { z } from 'zod';
 import { services } from '../../services/index.js';
 
 export interface ICustomNetworkChoice {
@@ -31,6 +36,13 @@ export interface INetworksCreateOptions {
   networkHost: string;
   networkExplorerUrl: string;
 }
+
+const networkSchema = z.object({
+  network: z.string(),
+  networkId: z.string(),
+  networkHost: z.string().url(),
+  networkExplorerUrl: z.string().optional(),
+});
 
 /**
  * Writes the given network setting to the networks folder
@@ -67,6 +79,15 @@ export async function writeNetworks(
   const networkConfig = mergeConfigs(existingConfig, options);
 
   await services.filesystem.ensureDirectoryExists(networkFilePath);
+
+  const parsed = networkSchema.safeParse(networkConfig);
+
+  if (!parsed.success) {
+    throw new Error(
+      `Failed to write network config: ${formatZodError(parsed.error)}`,
+    );
+  }
+
   await services.filesystem.writeFile(
     networkFilePath,
     yaml.dump(networkConfig),
