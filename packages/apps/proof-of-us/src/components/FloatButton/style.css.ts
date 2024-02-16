@@ -3,7 +3,7 @@ import { style } from '@vanilla-extract/css';
 
 export const floatClass = style([
   atoms({
-    position: 'absolute',
+    position: 'fixed',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

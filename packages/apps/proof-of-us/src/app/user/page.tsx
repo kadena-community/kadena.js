@@ -20,6 +20,12 @@ const Page: FC = () => {
           {data.map((token: Token) => (
             <ListItem key={token.id} token={token} />
           ))}
+          {data.map((token: Token) => (
+            <ListItem key={token.id} token={token} />
+          ))}
+          {data.map((token: Token) => (
+            <ListItem key={token.id} token={token} />
+          ))}
         </List>
       )}
 

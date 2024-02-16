@@ -29,7 +29,7 @@ interface ITempToken extends Token {
 export const ListItem: FC<IProps> = ({ token }) => {
   //@todo fix the tokenURI. it is now missing from the graph
   const uri =
-    (token as ITempToken).info.uri ??
+    (token as ITempToken).info?.uri ??
     'https://bafybeiemmkua6swmnvx4toqnhhmqavqkm4z5zltkiuj4yuq3kwnm576esq.ipfs.nftstorage.link/metadata';
   const { data, isLoading } = useSWR(uri, fetchManifestData, {
     revalidateOnFocus: false,
