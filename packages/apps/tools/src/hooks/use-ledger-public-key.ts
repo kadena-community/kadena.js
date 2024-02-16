@@ -22,7 +22,10 @@ function bufferToHex(buffer: Uint8Array) {
     .join('');
 }
 
-const getDerivationPath = (keyId: number, derivationMode: DerivationMode) => {
+export const getDerivationPath = (
+  keyId: number,
+  derivationMode: DerivationMode,
+) => {
   switch (derivationMode) {
     case 'legacy':
       return `m/44'/626'/0'/0/${keyId}`;
