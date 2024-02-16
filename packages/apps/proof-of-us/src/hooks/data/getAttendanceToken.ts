@@ -48,5 +48,6 @@ export const useGetAttendanceToken: IDataHook<
     isLoading: isLoading || isTokenLoading,
     hasError,
     data: newData,
+    token,
   };
 };

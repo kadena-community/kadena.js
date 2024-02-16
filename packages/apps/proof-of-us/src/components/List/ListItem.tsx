@@ -1,5 +1,6 @@
 import { fetchManifestData } from '@/utils/fetchManifestData';
 
+import type { Token } from '@/__generated__/sdk';
 import Link from 'next/link';
 import type { FC } from 'react';
 import useSWR from 'swr';
@@ -14,11 +15,23 @@ import {
 } from './style.css';
 
 interface IProps {
-  token: IProofOfUsToken;
+  token: Token;
+}
+
+interface ITempToken extends Token {
+  info: {
+    precision: number;
+    uri: string;
+    supply: number;
+  };
 }
 
 export const ListItem: FC<IProps> = ({ token }) => {
-  const { data, isLoading } = useSWR(token.uri, fetchManifestData, {
+  //@todo fix the tokenURI. it is now missing from the graph
+  const uri =
+    (token as ITempToken).info.uri ??
+    'https://bafybeiemmkua6swmnvx4toqnhhmqavqkm4z5zltkiuj4yuq3kwnm576esq.ipfs.nftstorage.link/metadata';
+  const { data, isLoading } = useSWR(uri, fetchManifestData, {
     revalidateOnFocus: false,
   });
 

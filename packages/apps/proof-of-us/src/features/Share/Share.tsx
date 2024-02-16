@@ -7,7 +7,7 @@ import type { FC } from 'react';
 
 export const Share: FC = () => {
   const params = useParams();
-  const { data, isLoading, error } = useGetAttendanceToken(params.id);
+  const { data, isLoading, error, token } = useGetAttendanceToken(params.id);
 
   return (
     <div>
@@ -22,6 +22,7 @@ export const Share: FC = () => {
       )}
 
       {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+      {token && <pre>{JSON.stringify(token, null, 2)}</pre>}
     </div>
   );
 };
