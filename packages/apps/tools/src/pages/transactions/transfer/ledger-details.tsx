@@ -26,9 +26,7 @@ const LedgerDetails = ({
 }: ILedgerDetails): React.JSX.Element => {
   const { t } = useTranslation('common');
 
-  // const publicKey = useLedgerPublicKey(keyId);
   const publicKey: string = '';
-  // const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
   const derivationMode = legacyToggleOn
     ? derivationModes[1]
     : derivationModes[0];
@@ -36,8 +34,6 @@ const LedgerDetails = ({
   const setLegacyOn = () => {
     setLegacyToggleOn(!legacyToggleOn);
   };
-
-  console.log('derivation mode:', derivationMode);
 
   return (
     <>
