@@ -64,29 +64,29 @@ export const createTestSignedTransactionCommand: (
   'test-signed-transaction',
   'test a signed transaction.',
   [
-    txOptions.txTransactionDir({ isOptional: true }),
+    txOptions.directory({ isOptional: true }),
     txOptions.txSignedTransactionFiles(),
     globalOptions.network(),
     globalOptions.chainId(),
   ],
   async (option) => {
     const networkOption = await option.network();
-    const dir = await option.txTransactionDir();
+    const directory = (await option.directory()).directory ?? process.cwd();
     const files = await option.txSignedTransactionFiles({
       signed: true,
-      path: dir.txTransactionDir,
+      path: directory,
     });
     const chainOption = await option.chainId();
 
     debug.log('sign-with-local-wallet:action', {
       ...networkOption,
-      ...dir,
+      directory,
       ...files,
       ...chainOption,
     });
 
     const absolutePaths = files.txSignedTransactionFiles.map((file) =>
-      path.resolve(path.join(dir.txTransactionDir, file)),
+      path.resolve(path.join(directory, file)),
     );
 
     const result = await testTransactions(

@@ -7,27 +7,50 @@ code: |-
   (coin.transfer "{{{account-from}}}" "{{{account-to}}}" {{amount}})
 data:
 meta:
-  chainId: "{{chain}}"
+  chainId: "{{chain-id}}"
   sender: "{{{account-from}}}"
-  gasLimit: 4600
+  gasLimit: 2300
   gasPrice: 0.000001
   ttl: 600
-networkId: {{networkId}}
 signers:
   - public: "{{pk-from}}"
     caps:
       - name: "coin.TRANSFER"
         args: ["{{{account-from}}}", "{{{account-to}}}", {{amount}}]
-  - public: "{{pk-from}}"
-    caps:
       - name: "coin.GAS"
         args: []
+type: exec
+`;
+
+const safeTransferTemplate = `
+code: |-
+  (coin.transfer "{{{account-from}}}" "{{{account-to}}}" {{amount}}))
+  (coin.transfer "{{{account-to}}}" "{{{account-from}}}" 0.000000000001)
+data:
+publicMeta:
+  chainId: "{{chain-id}}"
+  sender: {{{account-from}}}
+  gasLimit: 2000
+  gasPrice: 0.00000001
+  ttl: 7200
+signers:
+  - public: {{pk-from}}
+    caps:
+      - name: "coin.TRANSFER"
+        args: [{{{account-from}}}, {{{account-to}}}, {{amount}}]
+      - name: "coin.GAS"
+        args: []
+  - public: {{pk-to}}
+    caps:
+      - name: "coin.TRANSFER"
+        args: [{{{account-to}}}, {{{account-from}}}, 0.000000000001]
 type: exec
 `;
 
 /** Only exported to be used in tests, otherwise use getTemplate() */
 export const defaultTemplates = {
   transfer: transferTemplate,
+  'safe-transfer': safeTransferTemplate,
 } as Record<string, string>;
 
 export const writeTemplatesToDisk = async (): Promise<void> => {

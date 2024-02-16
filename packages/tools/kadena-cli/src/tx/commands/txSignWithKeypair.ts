@@ -97,7 +97,7 @@ export const createSignTransactionWithKeyPairCommand: (
   'Sign a transaction using a keypair.',
   [
     globalOptions.keyPairs(),
-    txOptions.txTransactionDir({ isOptional: true }),
+    txOptions.directory({ disableQuestion: true }),
     txOptions.txUnsignedTransactionFiles(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
@@ -119,17 +119,17 @@ export const createSignTransactionWithKeyPairCommand: (
           legacy: mode.legacy,
         });
       } else {
-        const dir = await option.txTransactionDir();
+        const directory = (await option.directory()).directory ?? process.cwd();
         const files = await option.txUnsignedTransactionFiles({
           signed: false,
-          path: dir.txTransactionDir,
+          path: directory,
         });
         const absolutePaths = files.txUnsignedTransactionFiles.map((file) =>
-          path.resolve(path.join(dir.txTransactionDir, file)),
+          path.resolve(path.join(directory, file)),
         );
         log.debug('sign-with-keypair:action', {
           ...key,
-          ...dir,
+          directory,
           ...files,
           ...mode,
         });
