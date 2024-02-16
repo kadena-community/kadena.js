@@ -47,6 +47,12 @@ export const useMintConnectToken = () => {
     const res = await client.local(tx);
     console.log(111, res);
 
+    const txRes = await client.submit(tx);
+    const result = await client.listen(txRes);
+
+    console.log({ txRes });
+    console.log({ result });
+
     //console.log(1, res);
 
     // setIsLoading(true);

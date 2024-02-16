@@ -14,6 +14,7 @@ export const useAvatar = () => {
   };
 
   const uploadBackground = async (proofOfUsId: string) => {
+    console.log('uploadBackground');
     await fetch('/api/upload', {
       method: 'POST',
       body: JSON.stringify({

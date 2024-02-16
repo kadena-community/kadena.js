@@ -1,39 +1,8 @@
 import type { ChainId, IUnsignedCommand } from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
-import { addMinutes } from 'date-fns';
 import { proofOfUsData } from './data';
 import { env } from './env';
-
-const client = createClient();
-
-const createEventId = async (proofOfUs: IProofOfUsData) => {
-  const startTime = addMinutes(new Date(proofOfUs.date), 1);
-  const endTime = addMinutes(new Date(proofOfUs.date), 2);
-
-  const transaction = Pact.builder
-    .execution(
-      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.create-event-id "${
-        proofOfUs.title
-      }" ${startTime.getTime()} ${endTime.getTime()}
-       
-        )`,
-    )
-    .setNetworkId('testnet04')
-    .setMeta({
-      chainId: '1',
-    })
-    .createTransaction();
-
-  const result = await client.local(transaction, {
-    preflight: false,
-    signatureVerification: false,
-  });
-
-  return result.result.status === 'success'
-    ? (result.result.data as string)
-    : null;
-};
 
 export const getAllProofOfUs = async (): Promise<IProofOfUsToken[]> => {
   const data = proofOfUsData.filter((d) => d && d['token-id']);
@@ -153,7 +122,7 @@ export const createConnectTokenTransaction = async (
   account: IAccount,
 ): Promise<IUnsignedCommand | undefined> => {
   const credential = account.credentials[0];
-  const eventId = await createEventId(proofOfUs);
+  const eventId = process.env.NEXT_PUBLIC_CONNECTION_EVENTID;
 
   if (!eventId) {
     throw new Error('eventId not found');
@@ -173,10 +142,7 @@ export const createConnectTokenTransaction = async (
       (map (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard) ["c:xwzrJU084XjqkLlYgdno8ZUaKmrPPVsmVbCwPcdjj1g" "c:xyIFb906xRXLy77XrU-AjE7FpxmWij1GLA7oHMxVml4"])
       )`,
     )
-    .addData('connection-guards', [
-      'c:xwzrJU084XjqkLlYgdno8ZUaKmrPPVsmVbCwPcdjj1g',
-      'c:xyIFb906xRXLy77XrU-AjE7FpxmWij1GLA7oHMxVml4',
-    ])
+
     .addData('event_id', eventId)
     .addData('collection_id', collectionId)
     .addData('uri', manifestUri)
@@ -185,6 +151,7 @@ export const createConnectTokenTransaction = async (
       chainId: `${env.CHAINID as ChainId}`,
       senderAccount: 'proof-of-us-gas-station',
       gasPrice: 0.000001,
+      gasLimit: 10000,
     })
 
     .addSigner(
@@ -206,13 +173,6 @@ export const createConnectTokenTransaction = async (
           new PactNumber(0).toPactInteger(),
           new PactNumber(0).toPactDecimal(),
         ),
-        withCap(
-          `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.TOKEN_CREATION`,
-          `${eventId}`,
-        ),
-        withCap(
-          `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.COLLECTION_OPERATOR`,
-        ),
       ],
     )
     .addSigner(
@@ -227,14 +187,6 @@ export const createConnectTokenTransaction = async (
           `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.CONNECT`,
           `${eventId}`,
           `${manifestUri}`,
-        ),
-
-        withCap(
-          `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.TOKEN_CREATION`,
-          `${eventId}`,
-        ),
-        withCap(
-          `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.COLLECTION_OPERATOR`,
         ),
       ],
     )

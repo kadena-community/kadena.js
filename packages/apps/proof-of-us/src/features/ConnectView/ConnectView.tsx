@@ -1,9 +1,12 @@
 import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
+import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { SocialsEditor } from '@/components/SocialsEditor/SocialsEditor';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
+import { useAvatar } from '@/hooks/avatar';
 import { useMintConnectToken } from '@/hooks/data/mintConnectToken';
 import { useSignToken } from '@/hooks/data/signToken';
+import { useSubmit } from '@/hooks/submit';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import type { FC } from 'react';
 
@@ -15,15 +18,30 @@ interface IProps {
 export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
   const { signToken } = useSignToken();
   const { isLoading, hasError, mintToken } = useMintConnectToken();
+  const { doSubmit, isStatusLoading } = useSubmit();
+  const { uploadBackground } = useAvatar();
 
   const handleJoin = async () => {
     await signToken();
+  };
+
+  const handleMint = async () => {
+    if (!proofOfUs) return;
+    // mintToken();
+
+    console.log(1111, 'test');
+    Promise.all([doSubmit(), uploadBackground(proofOfUs.proofOfUsId)]).then(
+      (values) => {
+        console.log(values);
+      },
+    );
   };
 
   if (!proofOfUs) return null;
 
   return (
     <>
+      {isStatusLoading && <MainLoader />}
       <section>
         <TitleHeader label="Details" />
 
@@ -32,7 +50,7 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
         <ImagePositions />
         <button
           onClick={() => {
-            mintToken();
+            handleMint();
           }}
         >
           Sign temporary
@@ -42,9 +60,6 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
         {!isAlreadySigning(proofOfUs.signees) && (
           <button onClick={handleJoin}>Sign</button>
         )}
-
-        {isLoading && <div>is signing</div>}
-        {hasError && <div>has error signing</div>}
       </section>
     </>
   );

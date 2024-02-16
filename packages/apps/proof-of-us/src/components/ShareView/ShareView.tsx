@@ -9,6 +9,8 @@ import { CopyButton, SystemIcon, TextField } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 
+import { useAvatar } from '@/hooks/avatar';
+import { useSubmit } from '@/hooks/submit';
 import type { FC } from 'react';
 import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
@@ -30,6 +32,8 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
   const { isLoading, hasError, data, mintToken } = useMintConnectToken();
   const router = useRouter();
   const { id } = useParams();
+  const { doSubmit, isStatusLoading } = useSubmit();
+  const { uploadBackground } = useAvatar();
 
   const handleBack = () => {
     prev();
@@ -47,8 +51,19 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
     // await mintToken();
   };
 
-  const handleRetry = () => {
-    mintToken();
+  const handleRetry = async () => {
+    if (!proofOfUs) return;
+    // mintToken();
+
+    console.log(1111, 'test');
+    Promise.all([doSubmit(), uploadBackground(proofOfUs.proofOfUsId)]).then(
+      (values) => {
+        console.log(values);
+      },
+    );
+
+    // doSubmit();
+    // uploadBackground(proofOfUs.proofOfUsId);
   };
 
   if (!proofOfUs) return;

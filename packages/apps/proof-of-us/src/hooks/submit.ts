@@ -39,6 +39,7 @@ export const useSubmit = () => {
   }, [transaction]);
 
   const doSubmit = async () => {
+    console.log(55, transaction);
     if (!transaction) return;
     const client = createClient();
 
@@ -69,8 +70,11 @@ export const useSubmit = () => {
     }
   };
 
+  console.log({ status });
   const isStatusLoading =
     status !== SubmitStatus.IDLE &&
+    status !== SubmitStatus.INCOMPLETE &&
+    status !== SubmitStatus.SUBMITABLE &&
     status !== SubmitStatus.SUCCESS &&
     status !== SubmitStatus.ERROR;
   return {
