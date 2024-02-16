@@ -18,6 +18,7 @@ export default builder.objectType('Token', {
           const tokenInfo = await getTokenInfo(
             parent.id,
             parent.chainId.toString() as ChainId,
+            parent.version,
           );
 
           if (!tokenInfo) {
