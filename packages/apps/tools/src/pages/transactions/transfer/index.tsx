@@ -144,7 +144,7 @@ const TransferPage = () => {
     if (ledgerPublicKey) {
       setValue('sender', `k:${ledgerPublicKey}`);
     }
-  }, [ledgerPublicKey, setValue]);
+  }, [ledgerPublicKey, legacyToggleOn, setValue]);
 
   const watchReceiverChainId = watch('receiverChainId');
   const watchChains = watch(['senderChainId', 'receiverChainId']);
