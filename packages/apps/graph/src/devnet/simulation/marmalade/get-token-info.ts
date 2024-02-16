@@ -25,26 +25,26 @@ export const getTokenInfo = async (
   let executionCmd;
 
   if (version === 'v1') {
-    executionCmd = execution(
-      Pact.modules['marmalade.ledger']['get-policy-info'](tokenId),
-    );
-    // executionCmd = execution(`(bind
-    //     (marmalade.ledger.get-policy-info "${tokenId}")
-    //     {"token" := token }
-    //     (bind
-    //         token
-    //         { "id" := id, "precision":= precision, "supply":= supply, "manifest":= manifest }
-    //         { "id": id, "precision": precision, "supply": supply, "uri":
-    //             (format
-    //                 "data:{},{}"
-    //                 [
-    //                   (at 'scheme (at 'uri manifest))
-    //                   (at 'data (at 'uri manifest))
-    //                 ]
-    //             )
-    //         }
-    //     )
-    // )`);
+    // executionCmd = execution(
+    //   Pact.modules['marmalade.ledger']['get-policy-info'](tokenId),
+    // );
+    executionCmd = execution(`(bind
+        (marmalade.ledger.get-policy-info "${tokenId}")
+        {"token" := token }
+        (bind
+            token
+            { "id" := id, "precision":= precision, "supply":= supply, "manifest":= manifest }
+            { "id": id, "precision": precision, "supply": supply, "uri":
+                (format
+                    "data:{},{}"
+                    [
+                      (at 'scheme (at 'uri manifest))
+                      (at 'data (at 'uri manifest))
+                    ]
+                )
+            }
+        )
+    )`);
   } else {
     executionCmd = execution(
       Pact.modules['marmalade-v2.ledger']['get-token-info'](tokenId),
@@ -71,21 +71,21 @@ export const getTokenInfo = async (
     },
   };
 
-  let tokenInfo = await dirtyReadClient<any>(config)(command).execute();
+  const tokenInfo = await dirtyReadClient<any>(config)(command).execute();
 
   if (!tokenInfo) {
     return undefined;
   }
 
-  if (version === 'v1') {
-    if ('token' in tokenInfo) {
-      tokenInfo = tokenInfo.token;
-    }
+  // if (version === 'v1') {
+  //   if ('token' in tokenInfo) {
+  //     tokenInfo = tokenInfo.token;
+  //   }
 
-    if ('manifest' in tokenInfo) {
-      tokenInfo.uri = `data:${tokenInfo.manifest.uri.scheme},${tokenInfo.manifest.uri.data}`;
-    }
-  }
+  //   if ('manifest' in tokenInfo) {
+  //     tokenInfo.uri = `data:${tokenInfo.manifest.uri.scheme},${tokenInfo.manifest.uri.data}`;
+  //   }
+  // }
 
   if ('precision' in tokenInfo) {
     if (
