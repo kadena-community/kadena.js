@@ -1,24 +1,23 @@
-import { getAllProofOfUs } from '@/utils/proofOfUs';
-import { useEffect, useState } from 'react';
+import type { Token } from '@/__generated__/sdk';
+import { useGetTokensQuery } from '@/__generated__/sdk';
+import { useAccount } from '../account';
 
-export const useGetAllProofOfUs: IDataHook<IProofOfUsToken[]> = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<IError>();
-  const [data, setData] = useState<IProofOfUsToken[]>([]);
+export const useGetAllProofOfUs: IDataHook<Token[]> = () => {
+  const { account } = useAccount();
+  if (!account) {
+    throw new Error('no account found');
+  }
+  const { data, loading: isLoading } = useGetTokensQuery({
+    variables: {
+      accountName: account.accountName,
+    },
+  });
 
-  const load = async () => {
-    const result = await getAllProofOfUs();
-
-    setData(result);
-  };
-
-  useEffect(() => {
-    load();
-  }, [setError, setIsLoading]);
+  const tokensArray = data?.nonFungibleAccount?.nonFungibles ?? [];
 
   return {
     isLoading,
-    error,
-    data: data ?? [],
+    data: tokensArray as Token[],
+    error: undefined,
   };
 };

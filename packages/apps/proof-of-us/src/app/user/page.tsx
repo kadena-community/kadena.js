@@ -1,4 +1,5 @@
 'use client';
+import type { Token } from '@/__generated__/sdk';
 import { FloatButton } from '@/components/FloatButton/FloatButton';
 import { List } from '@/components/List/List';
 import { ListItem } from '@/components/List/ListItem';
@@ -16,10 +17,9 @@ const Page: FC = () => {
       {error && <div>{error.message}</div>}
       {!isLoading && !error && (
         <List>
-          {data.map((token) => {
-            if (!token) return null;
-            return <ListItem key={token.uri} token={token}></ListItem>;
-          })}
+          {data.map((token: Token) => (
+            <ListItem key={token.id} token={token} />
+          ))}
         </List>
       )}
 

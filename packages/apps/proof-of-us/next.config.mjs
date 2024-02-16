@@ -18,7 +18,7 @@ const nextConfig = {
     return [
       {
         source: '/graph',
-        destination: 'https://graph.kadena.network/graphql'
+        destination: 'https://graph.testnet.kadena.network/graphql',
       },
     ];
   },

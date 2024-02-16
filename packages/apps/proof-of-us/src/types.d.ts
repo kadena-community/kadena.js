@@ -24,6 +24,7 @@ type IDataHook<T> = (...args: any) => {
   isLoading: boolean;
   error?: IError;
   data: T;
+  token?: any;
 };
 
 type IMintStatus =
