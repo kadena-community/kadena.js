@@ -111,8 +111,6 @@ export const hasMintedAttendaceToken = async (
     signatureVerification: false,
   });
 
-  console.log(transaction, result);
-
   return result.status === 'success';
 };
 
@@ -122,24 +120,35 @@ export const createConnectTokenTransaction = async (
   account: IAccount,
 ): Promise<IUnsignedCommand | undefined> => {
   const credential = account.credentials[0];
-  const eventId = process.env.NEXT_PUBLIC_CONNECTION_EVENTID;
+  const eventId = process.env.NEXT_PUBLIC_CONNECTION_EVENTID ?? '';
+  const collectionId = process.env.NEXT_PUBLIC_CONNECTION_COLLECTIONID ?? '';
 
   if (!eventId) {
     throw new Error('eventId not found');
+  }
+
+  if (!collectionId) {
+    throw new Error('collectionId not found');
   }
 
   if (!credential) {
     throw new Error('credential of account not found');
   }
 
-  const collectionId = 'collection:K85ZSH3LUXS3SB_Aokhseap0U6AHyNbSJKGfUM4kbik';
+  if (proofOfUs.signees.length < 2) {
+    throw new Error('You need at least 2 signers');
+  }
 
-  const transaction = Pact.builder
+  const guardString = proofOfUs.signees.reduce((acc: string, val) => {
+    return `${acc} "${val.accountName}"`;
+  }, '');
+
+  const transactionBuilder = Pact.builder
     .execution(
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.create-and-mint-connection-token
         "${eventId}"
       "${manifestUri}"
-      (map (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard) ["c:xwzrJU084XjqkLlYgdno8ZUaKmrPPVsmVbCwPcdjj1g" "c:xyIFb906xRXLy77XrU-AjE7FpxmWij1GLA7oHMxVml4"])
+      (map (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard) [${guardString}])
       )`,
     )
 
@@ -152,45 +161,49 @@ export const createConnectTokenTransaction = async (
       senderAccount: 'proof-of-us-gas-station',
       gasPrice: 0.000001,
       gasLimit: 10000,
-    })
+    });
 
-    .addSigner(
-      // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
-      {
-        pubKey:
-          'WEBAUTHN-a5010203262001215820b6239e70171da2cb539a458b82fb4572ed1a6547515279661f2183266f39efa122582095836852aacd83a8655aa38ab8dae2f6dc4f1b3add271b7eada3b3254333d943',
-        scheme: 'WebAuthn',
-      },
-      (withCap) => [
-        withCap(
-          `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.CONNECT`,
-          `${eventId}`,
-          `${manifestUri}`,
-        ),
-        withCap(
-          `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us-gas-station.GAS_PAYER`,
-          `${process.env.NEXT_PUBLIC_ATTENDANCE_GASPAYER}`,
-          new PactNumber(0).toPactInteger(),
-          new PactNumber(0).toPactDecimal(),
-        ),
-      ],
-    )
-    .addSigner(
-      // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
-      {
-        pubKey:
-          'WEBAUTHN-a50102032620012158205599ee57b82bb2414a9689ff80a4b2462d5c2ce081cbeb33cfc3b8e50dbd038a225820fe4a73319de0291d5c1159256a00eef53009c7862dd5e5472adc17cacca9db3a',
-        scheme: 'WebAuthn',
-      },
-      (withCap) => [
-        withCap(
-          `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.CONNECT`,
-          `${eventId}`,
-          `${manifestUri}`,
-        ),
-      ],
-    )
-    .createTransaction();
+  proofOfUs.signees.forEach((signee, idx) => {
+    if (idx === 0) {
+      transactionBuilder.addSigner(
+        // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
+        {
+          pubKey: signee.publicKey,
+          scheme: 'WebAuthn',
+        },
+        (withCap) => [
+          withCap(
+            `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us-gas-station.GAS_PAYER`,
+            `${process.env.NEXT_PUBLIC_ATTENDANCE_GASPAYER}`,
+            new PactNumber(0).toPactInteger(),
+            new PactNumber(0).toPactDecimal(),
+          ),
+          withCap(
+            `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.CONNECT`,
+            `${eventId}`,
+            `${manifestUri}`,
+          ),
+        ],
+      );
+    } else {
+      transactionBuilder.addSigner(
+        // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
+        {
+          pubKey: signee.publicKey,
+          scheme: 'WebAuthn',
+        },
+        (withCap) => [
+          withCap(
+            `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.CONNECT`,
+            `${eventId}`,
+            `${manifestUri}`,
+          ),
+        ],
+      );
+    }
+  });
+
+  const transaction = transactionBuilder.createTransaction();
 
   return transaction;
 };

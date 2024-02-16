@@ -21,7 +21,7 @@ const creatorPublicKey =
   '1c835d4e67917fd25781b11db1c12efbc4296c5c7fe981d35bbcf4a46a53441f';
 
 const startTime = Math.round(addMinutes(new Date(), 2).getTime() / 1000);
-const endTime = Math.round(addHours(new Date(), 2).getTime() / 1000);
+const endTime = Math.round(addHours(new Date(), 200).getTime() / 1000);
 const eventName = 'Greyskull';
 const eventType: TokenType = 'attendance';
 const imageBase64Str =
@@ -126,16 +126,12 @@ const createEvent = async () => {
 
   const signed: any = await signWithChainweaver(transaction);
 
-  console.log(signed);
-
   if (!isSignedTransaction(signed)) throw Error('Not a signed transaction');
 
   const polldata = await kadenaClient.submit(signed);
   console.log(`CREATE-TOKEN requestKey: ${polldata.requestKey}`);
 
   const { result } = await kadenaClient.listen(polldata);
-
-  console.log(result);
 
   if (result.status !== 'success') {
     console.log('ERROR');

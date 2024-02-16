@@ -54,8 +54,6 @@ export const useSignToken = () => {
       account,
     );
 
-    console.log(4444, transaction);
-
     router.push(
       `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${Buffer.from(
         JSON.stringify(transaction),

@@ -12,7 +12,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IResponseData>,
 ) {
-  console.log(11111111);
   if (req.method !== 'POST') {
     return res.status(405).json({
       message: 'method not allowed',

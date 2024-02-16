@@ -4,7 +4,6 @@ import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { SocialsEditor } from '@/components/SocialsEditor/SocialsEditor';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useAvatar } from '@/hooks/avatar';
-import { useMintConnectToken } from '@/hooks/data/mintConnectToken';
 import { useSignToken } from '@/hooks/data/signToken';
 import { useSubmit } from '@/hooks/submit';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
@@ -17,7 +16,6 @@ interface IProps {
 
 export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
   const { signToken } = useSignToken();
-  const { isLoading, hasError, mintToken } = useMintConnectToken();
   const { doSubmit, isStatusLoading } = useSubmit();
   const { uploadBackground } = useAvatar();
 
@@ -27,9 +25,6 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
 
   const handleMint = async () => {
     if (!proofOfUs) return;
-    // mintToken();
-
-    console.log(1111, 'test');
     Promise.all([doSubmit(), uploadBackground(proofOfUs.proofOfUsId)]).then(
       (values) => {
         console.log(values);

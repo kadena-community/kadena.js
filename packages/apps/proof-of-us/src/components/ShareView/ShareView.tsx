@@ -1,7 +1,6 @@
 import { Button } from '@/components/Button/Button';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { PROOFOFUS_QR_URL } from '@/constants';
-import { useMintConnectToken } from '@/hooks/data/mintConnectToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { env } from '@/utils/env';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
@@ -9,14 +8,11 @@ import { CopyButton, SystemIcon, TextField } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 
-import { useAvatar } from '@/hooks/avatar';
-import { useSubmit } from '@/hooks/submit';
 import type { FC } from 'react';
 import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { backButtonClass } from '../DetailView/style.css';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
-import { MainLoader } from '../MainLoader/MainLoader';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 import { qrClass } from './style.css';
 
@@ -29,11 +25,8 @@ interface IProps {
 export const ShareView: FC<IProps> = ({ next, prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
   const { proofOfUs } = useProofOfUs();
-  const { isLoading, hasError, data, mintToken } = useMintConnectToken();
   const router = useRouter();
   const { id } = useParams();
-  const { doSubmit, isStatusLoading } = useSubmit();
-  const { uploadBackground } = useAvatar();
 
   const handleBack = () => {
     prev();
@@ -45,25 +38,7 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
       `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${proofOfUs.tx}&returnUrl=${process.env.NEXT_PUBLIC_URL}/scan/${id}
       `,
     );
-
     return;
-    // next();
-    // await mintToken();
-  };
-
-  const handleRetry = async () => {
-    if (!proofOfUs) return;
-    // mintToken();
-
-    console.log(1111, 'test');
-    Promise.all([doSubmit(), uploadBackground(proofOfUs.proofOfUsId)]).then(
-      (values) => {
-        console.log(values);
-      },
-    );
-
-    // doSubmit();
-    // uploadBackground(proofOfUs.proofOfUsId);
   };
 
   if (!proofOfUs) return;
@@ -131,16 +106,9 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
 
           <div>status: {proofOfUs.mintStatus}</div>
           <ListSignees />
-          {isLoading && <MainLoader />}
-          {hasError && (
-            <div>
-              there was an error.
-              <button onClick={handleRetry}>retry</button>
-            </div>
-          )}
+
           {proofOfUs.mintStatus === 'success' && (
             <div>
-              success {data}
               <Link href="/user">dashboard</Link>
               <Link href={`/user/proof-of-us/${proofOfUs?.tokenId}`}>
                 go to proof
