@@ -1,8 +1,9 @@
 'use client';
 
+import ScanLayout from '@/components/ScanLayout/ScanLayout';
 import { ConnectView } from '@/features/ConnectView/ConnectView';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import type { FC } from 'react';
+import { NextPage, NextPageContext } from 'next';
 import { useEffect } from 'react';
 
 interface IProps {
@@ -11,7 +12,7 @@ interface IProps {
   };
 }
 
-const Page: FC<IProps> = () => {
+const Page: NextPage<IProps> = () => {
   const { proofOfUs, background, addSignee } = useProofOfUs();
 
   useEffect(() => {
@@ -23,10 +24,18 @@ const Page: FC<IProps> = () => {
   if (!proofOfUs) return null;
 
   return (
-    <div>
-      <ConnectView proofOfUs={proofOfUs} background={background} />
-    </div>
+    <ScanLayout>
+      <div>
+        <ConnectView proofOfUs={proofOfUs} background={background} />
+      </div>
+    </ScanLayout>
   );
+};
+
+Page.getInitialProps = async (ctx: NextPageContext): Promise<IProps> => {
+  return {
+    params: { id: `${ctx.query.id}` },
+  };
 };
 
 export default Page;

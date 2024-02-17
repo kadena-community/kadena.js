@@ -1,11 +1,12 @@
 'use client';
 
 import { MainLoader } from '@/components/MainLoader/MainLoader';
+import ScanLayout from '@/components/ScanLayout/ScanLayout';
 import { ScanAttendanceEvent } from '@/features/ScanAttendanceEvent/ScanAttendanceEvent';
 import { useGetAttendanceToken } from '@/hooks/data/getAttendanceToken';
 import { useHasMintedAttendaceToken } from '@/hooks/data/hasMintedAttendaceToken';
+import { NextPage, NextPageContext } from 'next';
 
-import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 
 interface IProps {
@@ -14,8 +15,7 @@ interface IProps {
     transaction: string;
   };
 }
-
-const Page: FC<IProps> = ({ params }) => {
+const Page: NextPage<IProps> = ({ params }) => {
   const eventId = decodeURIComponent(params.id);
   const { data, isLoading, error } = useGetAttendanceToken(eventId);
   const [isMinted, setIsMinted] = useState(false);
@@ -34,12 +34,24 @@ const Page: FC<IProps> = ({ params }) => {
   if (!data) return null;
 
   return (
-    <div>
-      {isLoading && <MainLoader />}
-      {error && <div>...error</div>}
-      <ScanAttendanceEvent token={data} eventId={eventId} isMinted={isMinted} />
-    </div>
+    <ScanLayout>
+      <div>
+        {isLoading && <MainLoader />}
+        {error && <div>...error</div>}
+        <ScanAttendanceEvent
+          token={data}
+          eventId={eventId}
+          isMinted={isMinted}
+        />
+      </div>
+    </ScanLayout>
   );
+};
+
+Page.getInitialProps = async (ctx: NextPageContext): Promise<IProps> => {
+  return {
+    params: { id: `${ctx.query.id}`, transaction: `${ctx.query.transaction}` },
+  };
 };
 
 export default Page;

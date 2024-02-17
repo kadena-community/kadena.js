@@ -1,13 +1,15 @@
 'use client';
 import { AvatarEditor } from '@/components/AvatarEditor/AvatarEditor';
 import { DetailView } from '@/components/DetailView/DetailView';
+import ProofOfUsAdminLayout from '@/components/ProofOfUsAdminLayout/ProofOfUsAdminLayout';
 
 import { ShareView } from '@/components/ShareView/ShareView';
 
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { createProofOfUsID } from '@/utils/createProofOfUsID';
+import { NextPage, NextPageContext } from 'next';
 import { useRouter } from 'next/navigation';
-import type { FC } from 'react';
+
 import { useEffect, useState } from 'react';
 
 interface IProps {
@@ -16,7 +18,7 @@ interface IProps {
   };
 }
 
-const Page: FC<IProps> = ({ params }) => {
+const Page: NextPage<IProps> = ({ params }) => {
   const router = useRouter();
   const { createToken, proofOfUs, background, updateStatus } = useProofOfUs();
   const [isMounted, setIsMounted] = useState(false);
@@ -25,6 +27,7 @@ const Page: FC<IProps> = ({ params }) => {
 
   useEffect(() => {
     //init and check in what step you are
+    console.log(222, { proofOfUs });
     if (!proofOfUs || isMounted) return;
 
     setStatus(proofOfUs.status);
@@ -32,7 +35,7 @@ const Page: FC<IProps> = ({ params }) => {
   }, [proofOfUs, background]);
 
   useEffect(() => {
-    if (params.id === 'new') {
+    if (params?.id === 'new') {
       const proofOfUsId = createProofOfUsID();
       router.replace(`/user/proof-of-us/${proofOfUsId}`);
       return;
@@ -53,12 +56,18 @@ const Page: FC<IProps> = ({ params }) => {
   };
 
   return (
-    <div>
-      {status === 1 && <AvatarEditor next={next} />}
-      {status === 2 && <DetailView next={next} prev={prev} />}
-      {status >= 3 && <ShareView next={next} prev={prev} status={status} />}
-    </div>
+    <ProofOfUsAdminLayout>
+      <div>
+        {status === 1 && <AvatarEditor next={next} />}
+        {status === 2 && <DetailView next={next} prev={prev} />}
+        {status >= 3 && <ShareView next={next} prev={prev} status={status} />}
+      </div>
+    </ProofOfUsAdminLayout>
   );
+};
+
+Page.getInitialProps = async (ctx: NextPageContext): Promise<IProps> => {
+  return { params: { id: `${ctx.query.id}` } };
 };
 
 export default Page;

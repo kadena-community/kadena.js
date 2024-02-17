@@ -1,4 +1,3 @@
-'use client';
 import { useAccount } from '@/hooks/account';
 import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';

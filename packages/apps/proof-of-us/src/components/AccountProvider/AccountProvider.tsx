@@ -33,6 +33,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  console.log(1111111);
   const decodeAccount = useCallback(
     (userResponse: string) => {
       if (!userResponse) return;
