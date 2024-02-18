@@ -1,3 +1,4 @@
+import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import { Share } from '@/features/Share/Share';
 
 import type { FC } from 'react';
@@ -9,7 +10,11 @@ interface IProps {
 }
 
 const Page: FC<IProps> = () => {
-  return <Share />;
+  return (
+    <ProofOfUsProvider>
+      <Share />;
+    </ProofOfUsProvider>
+  );
 };
 
 export default Page;
