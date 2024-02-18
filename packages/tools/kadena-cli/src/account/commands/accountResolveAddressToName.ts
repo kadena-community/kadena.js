@@ -38,9 +38,12 @@ export const resolveAddressToName = async (
 };
 
 export const resolveAddressToNameCommand = createCommandFlexible(
-  'resolve-address-to-name',
+  'address-to-name',
   'Resolve a k:address to a .kda name (kadenanames)',
-  [globalOptions.network(), globalOptions.accountKdnAddress()],
+  [
+    globalOptions.network({ isOptional: false }),
+    globalOptions.accountKdnAddress(),
+  ],
   async (option) => {
     const kadena = await option.network({
       allowedNetworks: ['mainnet', 'testnet'],
