@@ -39,7 +39,7 @@ export const resolveAddressToName = async (
 
 export const resolveAddressToNameCommand = createCommandFlexible(
   'resolve-address-to-name',
-  'Resolve a k:address to a .kda name',
+  'Resolve a k:address to a .kda name (kadenanames)',
   [globalOptions.network(), globalOptions.accountKdnAddress()],
   async (option) => {
     const kadena = await option.network({
