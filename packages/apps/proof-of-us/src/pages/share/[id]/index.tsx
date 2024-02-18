@@ -3,6 +3,7 @@ import { Share } from '@/features/Share/Share';
 import { fetchManifestData } from '@/utils/fetchManifestData';
 import { getProofOfUs } from '@/utils/proofOfUs';
 import type { GetServerSidePropsContext, NextPage } from 'next';
+import Head from 'next/head';
 interface IProps {
   params: {
     id: string;
