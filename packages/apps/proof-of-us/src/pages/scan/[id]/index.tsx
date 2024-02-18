@@ -1,9 +1,7 @@
-'use client';
-
 import ScanLayout from '@/components/ScanLayout/ScanLayout';
 import { ConnectView } from '@/features/ConnectView/ConnectView';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { NextPage, NextPageContext } from 'next';
+import type { NextPage, NextPageContext } from 'next';
 import { useEffect } from 'react';
 
 interface IProps {

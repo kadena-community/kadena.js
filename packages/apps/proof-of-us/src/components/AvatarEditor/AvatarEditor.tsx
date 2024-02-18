@@ -22,7 +22,6 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
-  const canvasElm = canvasRef.current;
   const { proofOfUs, updateBackgroundColor } = useProofOfUs();
 
   useEffect(() => {
@@ -34,7 +33,13 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+
+    return () => {
+      (videoRef.current?.srcObject as MediaStream)
+        ?.getTracks()
+        .forEach((t) => t.stop());
+    };
+  }, [videoRef.current]);
 
   useEffect(() => {
     if (!videoRef.current || !isMounted) return;
@@ -49,10 +54,6 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
         alert('The browser needs permissions for the camera to work');
       });
   }, [isMounted]);
-
-  useEffect(() => {
-    if (!canvasElm) return;
-  }, [canvasElm]);
 
   const handleCapture = async (evt: MouseEvent<HTMLButtonElement>) => {
     if (isAlreadySigning(proofOfUs?.signees)) return;

@@ -7,7 +7,8 @@ import type { FC } from 'react';
 
 export const Share: FC = () => {
   const params = useParams();
-  const { data, isLoading, error, token } = useGetAttendanceToken(params.id);
+
+  const { data, isLoading, error, token } = useGetAttendanceToken(params?.id);
 
   return (
     <div>

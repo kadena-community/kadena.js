@@ -1,12 +1,9 @@
-'use client';
-
 import { MainLoader } from '@/components/MainLoader/MainLoader';
 import ScanLayout from '@/components/ScanLayout/ScanLayout';
 import { ScanAttendanceEvent } from '@/features/ScanAttendanceEvent/ScanAttendanceEvent';
 import { useGetAttendanceToken } from '@/hooks/data/getAttendanceToken';
 import { useHasMintedAttendaceToken } from '@/hooks/data/hasMintedAttendaceToken';
-import { NextPage, NextPageContext } from 'next';
-
+import type { NextPage, NextPageContext } from 'next';
 import { useEffect, useState } from 'react';
 
 interface IProps {

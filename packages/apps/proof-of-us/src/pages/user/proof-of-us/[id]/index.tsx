@@ -1,15 +1,10 @@
-'use client';
 import { AvatarEditor } from '@/components/AvatarEditor/AvatarEditor';
 import { DetailView } from '@/components/DetailView/DetailView';
-import ProofOfUsAdminLayout from '@/components/ProofOfUsAdminLayout/ProofOfUsAdminLayout';
-
 import { ShareView } from '@/components/ShareView/ShareView';
-
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { createProofOfUsID } from '@/utils/createProofOfUsID';
-import { NextPage, NextPageContext } from 'next';
+import type { NextPage, NextPageContext } from 'next';
 import { useRouter } from 'next/navigation';
-
 import { useEffect, useState } from 'react';
 
 interface IProps {
@@ -27,7 +22,6 @@ const Page: NextPage<IProps> = ({ params }) => {
 
   useEffect(() => {
     //init and check in what step you are
-    console.log(222, { proofOfUs });
     if (!proofOfUs || isMounted) return;
 
     setStatus(proofOfUs.status);
@@ -56,13 +50,11 @@ const Page: NextPage<IProps> = ({ params }) => {
   };
 
   return (
-    <ProofOfUsAdminLayout>
-      <div>
-        {status === 1 && <AvatarEditor next={next} />}
-        {status === 2 && <DetailView next={next} prev={prev} />}
-        {status >= 3 && <ShareView next={next} prev={prev} status={status} />}
-      </div>
-    </ProofOfUsAdminLayout>
+    <div>
+      {status === 1 && <AvatarEditor next={next} />}
+      {status === 2 && <DetailView next={next} prev={prev} />}
+      {status >= 3 && <ShareView next={next} prev={prev} status={status} />}
+    </div>
   );
 };
 

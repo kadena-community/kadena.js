@@ -4,7 +4,7 @@ import type { NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { AnimatePresence } from 'framer-motion';
 import { ThemeProvider } from 'next-themes';
-import { useContext, useRef, type FC, type PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { SWRConfig } from 'swr';
 import { AccountProvider } from '../AccountProvider/AccountProvider';
 import { ProofOfUsProvider } from '../ProofOfUsProvider/ProofOfUsProvider';

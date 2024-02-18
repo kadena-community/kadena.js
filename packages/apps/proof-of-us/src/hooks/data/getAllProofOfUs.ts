@@ -4,14 +4,9 @@ import { useAccount } from '../account';
 
 export const useGetAllProofOfUs: IDataHook<Token[]> = () => {
   const { account } = useAccount();
-  if (!account)
-    return {
-      data: [],
-      isLoading: false,
-    };
   const { data, loading: isLoading } = useGetTokensQuery({
     variables: {
-      accountName: account.accountName,
+      accountName: account?.accountName ?? '',
     },
   });
 

@@ -17,6 +17,7 @@ export const useGetAttendanceToken: IDataHook<
   });
 
   const load = async () => {
+    if (!id) return;
     const result = await getProofOfUs(id);
 
     if (!result) {
@@ -37,7 +38,7 @@ export const useGetAttendanceToken: IDataHook<
     setHasError(undefined);
     setIsTokenLoading(true);
     load();
-  }, []);
+  }, [id]);
 
   const startDate = token && token['starts-at'].int;
   const endDate = token && token['ends-at'].int;
