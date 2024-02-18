@@ -29,6 +29,11 @@ export const cameraButton = style({
   aspectRatio: '1/1',
   cursor: 'pointer',
 });
+export const cameraButtonWrapperClass = style({
+  position: 'fixed',
+  right: '50%',
+  bottom: '2vh',
+});
 
 export const cameraWrapperClass = style({
   position: 'absolute',
