@@ -30,7 +30,7 @@ export async function kdnResolveNameToAddress(
         ? KADENANAMES_NAMESPACE_TESTNET_MODULE
         : KADENANAMES_NAMESPACE_MAINNET_MODULE;
     const transaction = Pact.builder
-      .execution(Pact.modules[module]['get-address'](name))
+      .execution(Pact.modules[module]['get-address'](name.trim()))
       .setMeta({ chainId })
       .setNetworkId(networkId)
       .createTransaction();
@@ -58,7 +58,7 @@ export async function kdnResolveAddressToName(
         ? KADENANAMES_NAMESPACE_TESTNET_MODULE
         : KADENANAMES_NAMESPACE_MAINNET_MODULE;
     const transaction = Pact.builder
-      .execution(Pact.modules[module]['get-name'](address))
+      .execution(Pact.modules[module]['get-name'](address.trim()))
       .setMeta({ chainId })
       .setNetworkId(networkId)
       .createTransaction();
