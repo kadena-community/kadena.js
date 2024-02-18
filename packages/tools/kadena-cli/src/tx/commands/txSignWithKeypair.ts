@@ -94,7 +94,7 @@ export const createSignTransactionWithKeyPairCommand: (
   version: string,
 ) => void = createCommandFlexible(
   'sign-with-keypair',
-  'Sign a transaction using a keypair.',
+  'Sign a transaction using a keypair.\nThe transaction can be passed via stdin.\nThe signed transaction fill be saved to file.',
   [
     globalOptions.keyPairs(),
     txOptions.directory({ disableQuestion: true }),

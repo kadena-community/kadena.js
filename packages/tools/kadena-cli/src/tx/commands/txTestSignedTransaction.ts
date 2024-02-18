@@ -62,9 +62,9 @@ export const createTestSignedTransactionCommand: (
   version: string,
 ) => void = createCommandFlexible(
   'test-signed-transaction',
-  'test a signed transaction.',
+  'Test a signed transaction on testnet.',
   [
-    txOptions.directory({ isOptional: true }),
+    txOptions.directory({ disableQuestion: true }),
     txOptions.txSignedTransactionFiles(),
     globalOptions.network(),
     globalOptions.chainId(),

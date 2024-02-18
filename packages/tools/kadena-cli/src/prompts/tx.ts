@@ -129,7 +129,7 @@ export async function txDirPrompt(): Promise<string> {
 
 export const selectTemplate: IPrompt<string> = async (args) => {
   const stdin = args.stdin as string | undefined;
-  if (stdin && stdin !== '') return '-';
+  if (stdin !== undefined && stdin !== '') return '-';
   const templates = await getTemplates();
   const defaultTemplateKeys = Object.keys(templates);
 
