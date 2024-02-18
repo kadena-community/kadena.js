@@ -28,7 +28,7 @@ export const MyApp = ({
       <>
         <Header />
         <main className={mainWrapperClass}>
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence mode="popLayout" initial={false}>
             <Component {...pageProps} key={router.asPath} />
           </AnimatePresence>
           <Toasts />

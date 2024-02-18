@@ -56,9 +56,9 @@ export const ListItem: FC<IProps> = ({ token }) => {
           <span className={titleClass}>{data.name}</span>
           <time
             className={timeClass}
-            dateTime={new Date(data.properties.date).toLocaleDateString()}
+            dateTime={new Date(data.properties.date).toDateString()}
           >
-            {new Date(data.properties.date).toLocaleDateString()}
+            {new Date(data.properties.date).toDateString()}
           </time>
         </Link>
       )}

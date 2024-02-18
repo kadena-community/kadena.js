@@ -19,7 +19,9 @@ const Page: NextPage<IProps> = ({ params }) => {
   );
 };
 
-Page.getInitialProps = async (ctx: NextPageContext): Promise<IProps> => {
+export const getServerSideProps = async (
+  ctx: NextPageContext,
+): Promise<IProps> => {
   return {
     params: { id: `${ctx.query.id}` },
   };

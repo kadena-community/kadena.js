@@ -12,7 +12,6 @@ export const useGetAttendanceToken: IDataHook<
   const [hasError, setHasError] = useState<IError>();
   const [token, setToken] = useState<IProofOfUsToken | undefined>();
 
-  console.log(token);
   const { data, isLoading } = useSWR(token?.uri, fetchManifestData, {
     revalidateOnFocus: false,
   });
