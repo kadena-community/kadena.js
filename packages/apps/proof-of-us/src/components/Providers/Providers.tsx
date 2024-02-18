@@ -2,7 +2,7 @@
 import { localStorageProvider } from '@/utils/localStorageProvider';
 import type { NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { AnimatePresence } from 'framer-motion';
+
 import { ThemeProvider } from 'next-themes';
 import type { FC, PropsWithChildren } from 'react';
 import { SWRConfig } from 'swr';
@@ -22,16 +22,14 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 
 export const Providers: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <AnimatePresence>
-      <SWRConfig value={{ provider: localStorageProvider }}>
-        <ApolloProvider client={client}>
-          <ToastProvider>
-            <AccountProvider>
-              <ThemeProvider>{children}</ThemeProvider>
-            </AccountProvider>
-          </ToastProvider>
-        </ApolloProvider>
-      </SWRConfig>
-    </AnimatePresence>
+    <SWRConfig value={{ provider: localStorageProvider }}>
+      <ApolloProvider client={client}>
+        <ToastProvider>
+          <AccountProvider>
+            <ThemeProvider>{children}</ThemeProvider>
+          </AccountProvider>
+        </ToastProvider>
+      </ApolloProvider>
+    </SWRConfig>
   );
 };

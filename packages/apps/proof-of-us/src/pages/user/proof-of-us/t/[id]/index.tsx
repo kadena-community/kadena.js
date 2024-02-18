@@ -1,14 +1,23 @@
-import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
+import UserLayout from '@/components/UserLayout/UserLayout';
 import { Share } from '@/features/Share/Share';
+import type { NextPage, NextPageContext } from 'next';
 
-import type { FC } from 'react';
+interface IProps {
+  params: {
+    id: string;
+  };
+}
 
-const Page: FC = () => {
+const Page: NextPage<IProps> = ({ params }) => {
   return (
-    <ProofOfUsProvider>
-      <Share />
-    </ProofOfUsProvider>
+    <UserLayout>
+      <Share eventId={params.id} />
+    </UserLayout>
   );
+};
+
+Page.getInitialProps = async (ctx: NextPageContext): Promise<IProps> => {
+  return { params: { id: `${ctx.query.id}` } };
 };
 
 export default Page;

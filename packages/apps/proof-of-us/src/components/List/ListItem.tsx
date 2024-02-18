@@ -1,3 +1,4 @@
+'use client';
 import type { Token } from '@/__generated__/sdk';
 import { fetchManifestData } from '@/utils/fetchManifestData';
 import { motion } from 'framer-motion';
@@ -28,9 +29,7 @@ interface ITempToken extends Token {
 
 export const ListItem: FC<IProps> = ({ token }) => {
   //@todo fix the tokenURI. it is now missing from the graph
-  const uri =
-    (token as ITempToken).info?.uri ??
-    'https://bafybeiemmkua6swmnvx4toqnhhmqavqkm4z5zltkiuj4yuq3kwnm576esq.ipfs.nftstorage.link/metadata';
+  const uri = (token as ITempToken).info?.uri;
   const { data, isLoading } = useSWR(uri, fetchManifestData, {
     revalidateOnFocus: false,
   });

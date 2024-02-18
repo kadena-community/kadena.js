@@ -37,7 +37,7 @@ export const mainWrapperClass = style({
   margin: '0 auto',
   paddingBlock: '20px',
   paddingBlockStart: '80px',
-  paddingInline: '20px',
+
   overflowY: 'scroll',
   overflowX: 'hidden',
 });

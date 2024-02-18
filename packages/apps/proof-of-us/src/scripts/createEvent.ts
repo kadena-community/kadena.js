@@ -71,16 +71,18 @@ const createEvent = async () => {
 
   const proofOfUs = {
     eventId,
-    eventType,
+    type: eventType,
     title: eventName,
     mintStatus: 'init',
+    avatar: {
+      backgroundColor: '#941212',
+    },
     status: 3,
     signees: [],
     date: startTime,
   };
 
   const imageData = await createImageUrl(imageBase64Str);
-  console.log(imageData);
 
   if (!imageData) {
     console.log('ERROR!  no imagedata');
@@ -89,6 +91,7 @@ const createEvent = async () => {
 
   // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
   const manifest = createManifest(proofOfUs, imageData.url);
+
   const metadata = await createMetaDataUrl(manifest);
 
   if (!metadata) {

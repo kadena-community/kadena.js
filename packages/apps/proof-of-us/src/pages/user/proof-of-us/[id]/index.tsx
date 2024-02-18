@@ -1,4 +1,5 @@
 import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
+import UserLayout from '@/components/UserLayout/UserLayout';
 import { CreateProofOfUs } from '@/features/CreateProofOfUs/CreateProofOfUs';
 import type { NextPage, NextPageContext } from 'next';
 
@@ -10,9 +11,11 @@ interface IProps {
 
 const Page: NextPage<IProps> = ({ params }) => {
   return (
-    <ProofOfUsProvider>
-      <CreateProofOfUs params={params} />
-    </ProofOfUsProvider>
+    <UserLayout>
+      <ProofOfUsProvider>
+        <CreateProofOfUs params={params} />
+      </ProofOfUsProvider>
+    </UserLayout>
   );
 };
 

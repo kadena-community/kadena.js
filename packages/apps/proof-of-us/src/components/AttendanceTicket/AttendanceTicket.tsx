@@ -1,8 +1,8 @@
 import { getContrast } from '@/utils/getContrast';
+import { motion } from 'framer-motion';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { ticketClass, ticketWrapClass, titleClass } from './style.css';
-
 interface IProps {
   token: IProofOfUsTokenMeta;
 }
@@ -31,7 +31,8 @@ export const AttendanceTicket: FC<IProps> = ({ token }) => {
       </svg>
 
       <div className={ticketWrapClass}>
-        <section
+        <motion.div
+          layoutId="proof-of-us:jQ9ZFi5VDifZ_LekqHCGrP5EdgKTgU7WhrYkIWNPMe8"
           className={ticketClass}
           style={{
             backgroundImage: `url("${token.image}")`,
@@ -52,7 +53,7 @@ export const AttendanceTicket: FC<IProps> = ({ token }) => {
             <h5>Date</h5>
             {new Date(token.properties.date * 1000).toLocaleDateString()}
           </div>
-        </section>
+        </motion.div>
       </div>
     </>
   );

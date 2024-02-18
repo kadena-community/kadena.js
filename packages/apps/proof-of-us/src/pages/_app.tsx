@@ -11,6 +11,7 @@ import type { AppProps } from 'next/app';
 
 import { Header } from '@/components/Header/Header';
 import { mainWrapperClass } from '@/styles/global.css';
+import { AnimatePresence } from 'framer-motion';
 import type { FC } from 'react';
 import React from 'react';
 
@@ -18,23 +19,23 @@ export const MyApp = ({
   // eslint-disable-next-line @typescript-eslint/naming-convention
   Component,
   pageProps,
+  router,
 }: AppProps & {
   Component: FC;
 }): JSX.Element => {
   return (
-    <>
-      <Providers>
-        <>
-          <Header />
-          <main className={mainWrapperClass}>
-            <Component {...pageProps} />
-
-            <Toasts />
-          </main>
-          <Analytics />
-        </>
-      </Providers>
-    </>
+    <Providers>
+      <>
+        <Header />
+        <main className={mainWrapperClass}>
+          <AnimatePresence mode="popLayout">
+            <Component {...pageProps} key={router.asPath} />
+          </AnimatePresence>
+          <Toasts />
+        </main>
+        <Analytics />
+      </>
+    </Providers>
   );
 };
 
