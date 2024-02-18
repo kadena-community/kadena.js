@@ -52,7 +52,7 @@ export const accountKdnAddressPrompt: IPrompt<string> = async () =>
 
 export const accountKdnNamePrompt: IPrompt<string> = async () =>
   await input({
-    message: 'Enter an .kda name:',
+    message: 'Enter an kadena name:',
   });
 
 export const fundAmountPrompt: IPrompt<string> = async () =>
