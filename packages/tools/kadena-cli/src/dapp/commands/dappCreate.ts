@@ -11,7 +11,7 @@ import { globalOptions } from '../../utils/globalOptions.js';
 export const createDappCommand: (program: Command, version: string) => void =
   createCommand(
     'create',
-    'create a new dapp project',
+    'Create a new dapp project',
     [globalOptions.dappTemplate()],
     async (config, args) => {
       debug('dapp-create-command')({ config });

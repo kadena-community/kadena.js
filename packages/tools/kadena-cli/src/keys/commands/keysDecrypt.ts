@@ -39,7 +39,7 @@ export const decrypt = async (
 export const createDecryptCommand: (program: Command, version: string) => void =
   createCommand(
     'decrypt',
-    'decrypt message',
+    'Decrypt message',
     [
       globalOptions.keyMessage({ isOptional: false }),
       globalOptions.securityCurrentPassword({ isOptional: false }),

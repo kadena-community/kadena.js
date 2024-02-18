@@ -12,7 +12,7 @@ export const createListKeysCommand: (
   version: string,
 ) => void = createCommand(
   'list',
-  'list key(s)',
+  'List key(s)',
   [globalOptions.keyWalletSelectWithAll()],
   async (config) => {
     debug('list-keys:action')({ config });

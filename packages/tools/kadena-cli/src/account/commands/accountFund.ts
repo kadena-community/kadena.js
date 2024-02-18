@@ -25,7 +25,7 @@ import { fund } from '../utils/fund.js';
 
 export const createFundCommand = createCommandFlexible(
   'fund',
-  'fund an existing/new account',
+  'Fund an existing/new account',
   [
     globalOptions.accountSelect(),
     globalOptions.fundAmount(),

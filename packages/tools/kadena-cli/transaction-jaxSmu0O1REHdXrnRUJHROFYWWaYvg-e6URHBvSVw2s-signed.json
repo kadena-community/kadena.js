@@ -1,0 +1,9 @@
+{
+  "cmd": "{\"payload\":{\"exec\":{\"code\":\"(coin.transfer \\\"k:5d7e356133a895ad26e184755484a3311cf85dc5af5feea9688b7c3a466d63a5\\\" \\\"k:5d7e356133a895ad26e184755484a3311cf85dc5af5feea9688b7c3a466d63a4\\\" 5)\",\"data\":{}}},\"nonce\":\"\",\"networkId\":\"testnet04\",\"meta\":{\"sender\":\"k:5d7e356133a895ad26e184755484a3311cf85dc5af5feea9688b7c3a466d63a5\",\"chainId\":\"1\",\"creationTime\":1708261102,\"gasLimit\":2300,\"gasPrice\":0.000001,\"ttl\":600},\"signers\":[{\"pubKey\":\"5d7e356133a895ad26e184755484a3311cf85dc5af5feea9688b7c3a466d63a5\",\"clist\":[{\"name\":\"coin.TRANSFER\",\"args\":[\"k:5d7e356133a895ad26e184755484a3311cf85dc5af5feea9688b7c3a466d63a5\",\"k:5d7e356133a895ad26e184755484a3311cf85dc5af5feea9688b7c3a466d63a4\",5]},{\"name\":\"coin.GAS\",\"args\":[]}]}]}",
+  "hash": "jaxSmu0O1REHdXrnRUJHROFYWWaYvg-e6URHBvSVw2s",
+  "sigs": [
+    {
+      "sig": "343e91cdf30103162ce0e54170a8e5a163d9ea473ab29bb3d13b73c9996bffcacf7ae9c8acdabe64fc639afb06945ddddc51948f5150d0e640f666c3ce03a60a"
+    }
+  ]
+}
