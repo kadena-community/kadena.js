@@ -135,8 +135,6 @@ const createEvent = async () => {
   const signWithChainweaver = createSignWithChainweaver();
   const signedTx = await signWithChainweaver(unsignedTx);
 
-  console.log(signedTx);
-
   if (!isSignedTransaction(signedTx)) throw Error('Not a signed transaction');
 
   const polldata = await kadenaClient.submit(signedTx);
@@ -147,9 +145,14 @@ const createEvent = async () => {
   if (result.status !== 'success') {
     console.log('ERROR');
     return;
+  } else {
+    console.log(`\n\nTOKEN CREATED!`, result.data);
+    console.log(
+      'Scan URL:',
+      `https://devworld.kadena.io/scan/e/${result.data}`,
+    );
+    console.log(`\n\n`);
   }
-
-  console.log(`TOKEN CREATED!`);
 
   console.log('start upload');
 
