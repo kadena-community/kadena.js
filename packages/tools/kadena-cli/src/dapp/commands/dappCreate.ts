@@ -16,7 +16,11 @@ export const createDappCommand: (program: Command, version: string) => void =
     async (config, args) => {
       debug('dapp-create-command')({ config });
       if (args[0] === undefined) {
-        console.error(chalk.red('Project name is required'));
+        console.error(
+          chalk.red(
+            'Project name is required, e.g. `kadena dapp create my-dapp`',
+          ),
+        );
         process.exit(1);
       }
       const projectDir = join(process.cwd(), args[0]);
