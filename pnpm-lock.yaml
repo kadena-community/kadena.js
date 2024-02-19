@@ -762,8 +762,8 @@ importers:
         specifier: ^6.0.0
         version: 6.21.0(@typescript-eslint/parser@6.21.0)(eslint@8.45.0)(typescript@5.2.2)
       '@vanilla-extract/next-plugin':
-        specifier: 2.3.2
-        version: 2.3.2(@types/node@18.17.14)(next@13.5.5)(webpack@5.88.2)
+        specifier: 2.1.2
+        version: 2.1.2(@types/node@18.17.14)(next@13.5.5)(webpack@5.88.2)
       '@vanilla-extract/vite-plugin':
         specifier: ^3.9.3
         version: 3.9.3(@types/node@18.17.14)(ts-node@10.8.2)(vite@4.4.8)
@@ -15173,6 +15173,26 @@ packages:
       - sugarss
       - supports-color
       - terser
+    dev: true
+
+  /@vanilla-extract/next-plugin@2.1.2(@types/node@18.17.14)(next@13.5.5)(webpack@5.88.2):
+    resolution: {integrity: sha512-k8P2opwu9uGIhWNu1GaTBKdvKRK412/Z9ov0DC82am4JKCqTLo6aWH6UnCodnfI3KqTLKgdqdG3ekrFUpDlR9g==}
+    peerDependencies:
+      next: '>=12.0.5'
+    dependencies:
+      '@vanilla-extract/webpack-plugin': 2.3.1(@types/node@18.17.14)(webpack@5.88.2)
+      browserslist: 4.22.2
+      next: 13.5.5(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - webpack
     dev: true
 
   /@vanilla-extract/next-plugin@2.3.2(@types/node@18.17.14)(next@13.5.5)(webpack@5.88.2):

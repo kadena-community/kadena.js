@@ -7,6 +7,7 @@ const nextConfig = {
   reactStrictMode: false,
   transpilePackages: ['@kadena/react-ui'],
   webpack: (config) => {
+    config.optimization.splitChunks = false;
     config.externals.push({
       'utf-8-validate': 'commonjs utf-8-validate',
       bufferutil: 'commonjs bufferutil',
