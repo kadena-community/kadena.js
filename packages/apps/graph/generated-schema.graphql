@@ -384,7 +384,7 @@ type Subscription {
 """The token identifier and its balance."""
 type Token {
   balance: Int!
-  chainId: Int!
+  chainId: String!
   id: ID!
   info: TokenInfo
   version: String!
