@@ -2,6 +2,7 @@ import type {
   FungibleChainAccountTransactionsConnection,
   FungibleChainAccountTransfersConnection,
   NonFungibleChainAccountTransactionsConnection,
+  Token,
 } from '@/__generated__/sdk';
 import {
   useGetFungibleChainAccountQuery,
@@ -320,7 +321,7 @@ const ChainAccount: React.FC = () => {
                   <TokenTable
                     tokens={
                       nonFungibleChainAccountData.nonFungibleChainAccount
-                        .nonFungibles
+                        .nonFungibles as Token[]
                     }
                   />
                 </GridItem>
