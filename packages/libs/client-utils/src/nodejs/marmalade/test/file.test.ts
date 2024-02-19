@@ -4,7 +4,6 @@ import { join, relative } from 'path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { downloadGitFiles } from '../../services/download-git-files';
 import { flattenFolder } from '../../services/path';
-import { IRemoteConfig } from '../deployment/config';
 import {
   getCodeFiles,
   getMarmaladeTemplates,
