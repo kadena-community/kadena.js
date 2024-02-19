@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Kadena JS monorepo",
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "scripts": {
     "build": "turbo run build",
     "format": "pnpm run /^format:.*/",

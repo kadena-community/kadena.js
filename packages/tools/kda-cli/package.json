@@ -11,7 +11,7 @@
     "dev",
     "tools"
   ],
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "type": "module",
   "types": "dist/kda-cli.d.ts",
   "bin": {
