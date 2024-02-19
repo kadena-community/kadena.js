@@ -1,12 +1,12 @@
 import path from 'path';
 import { assert, describe, expect, it } from 'vitest';
+import { getWallet } from '../../keys/utils/keysHelpers.js';
 import { services } from '../../services/index.js';
 import {
   deleteAllWallets,
   deleteWallet,
-} from '../commands/keysDeleteWallet.js';
-import { generateWallet } from '../commands/keysWalletGenerate.js';
-import { getWallet } from '../utils/keysHelpers.js';
+} from '../commands/walletsDeleteWallet.js';
+import { generateWallet } from '../commands/walletsWalletGenerate.js';
 
 const root = path.join(__dirname, '../../../');
 

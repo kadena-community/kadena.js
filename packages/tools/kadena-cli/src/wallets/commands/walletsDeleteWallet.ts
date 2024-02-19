@@ -3,6 +3,8 @@ import { Option } from 'commander';
 import { z } from 'zod';
 
 import { WALLET_DIR } from '../../constants/config.js';
+import type { IWallet } from '../../keys/utils/keysHelpers.js';
+import { getWallet } from '../../keys/utils/keysHelpers.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
@@ -11,8 +13,6 @@ import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { select } from '../../utils/prompts.js';
-import type { IWallet } from '../utils/keysHelpers.js';
-import { getWallet } from '../utils/keysHelpers.js';
 
 export const deleteWallet = async (
   wallet: string,

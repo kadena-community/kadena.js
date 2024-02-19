@@ -2,7 +2,7 @@ import path from 'path';
 import { assert, describe, expect, it } from 'vitest';
 import { services } from '../../services/index.js';
 import { isValidEncryptedValue } from '../../utils/test.util.js';
-import { generateWallet } from '../commands/keysWalletGenerate.js';
+import { generateWallet } from '../commands/walletsWalletGenerate.js';
 
 const root = path.join(__dirname, '../../../');
 
