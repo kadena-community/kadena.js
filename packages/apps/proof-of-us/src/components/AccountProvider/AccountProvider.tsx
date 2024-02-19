@@ -43,7 +43,6 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         return account;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
-        console.log('LOGIN ERROR');
         addToast({
           type: 'error',
           message: e.message,
