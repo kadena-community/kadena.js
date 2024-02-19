@@ -1,10 +1,10 @@
-import { log } from './logger.js';
-
 export type TableRow = string[];
 export type TableHeader = string[];
 
-export function displayTable(header: TableHeader, rows: TableRow[]): void {
-  // Determine the maximum width of each column
+export function displayTable(
+  header: TableHeader,
+  rows: TableRow[],
+): { header: string; seperator: string; body: string } {
   const columnWidths = header.map((_, index) =>
     Math.max(
       ...[header[index], ...rows.map((row) => row[index])].map(
@@ -16,13 +16,15 @@ export function displayTable(header: TableHeader, rows: TableRow[]): void {
   const formatRow = (row: TableRow): string =>
     row.map((item, index) => item.padEnd(columnWidths[index], ' ')).join(' | ');
 
-  log.info(log.color.green(formatRow(header)));
+  const headerString = formatRow(header);
 
-  log.info(
-    log.color.green(columnWidths.map((width) => '-'.repeat(width)).join('-+-')),
-  );
+  const seperator = columnWidths.map((width) => '-'.repeat(width)).join('-+-');
 
-  rows.forEach((row) => {
-    log.info(formatRow(row));
-  });
+  const body = rows.map(formatRow).join('\n');
+
+  return {
+    header: headerString,
+    seperator,
+    body: body,
+  };
 }
