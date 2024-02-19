@@ -43,6 +43,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
         return account;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
+        console.log('LOGIN ERROR');
         addToast({
           type: 'error',
           message: e.message,
@@ -64,21 +65,23 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     const userResponse = searchParams.get('user');
-    setIsMounted(true);
+
     if (!userResponse) return;
 
     localStorage.setItem(ACCOUNT_COOKIE_NAME, userResponse);
     const account = decodeAccount(userResponse);
     setAccount(account);
+    setIsMounted(true);
   }, [searchParams, setAccount, decodeAccount, setIsMounted]);
 
   useEffect(() => {
     const userResponse = localStorage.getItem(ACCOUNT_COOKIE_NAME);
-    setIsMounted(true);
+
     if (!userResponse) return;
 
     const acc = decodeAccount(userResponse);
     setAccount(acc);
+    setIsMounted(true);
   }, [setAccount, decodeAccount, setIsMounted]);
 
   return (
