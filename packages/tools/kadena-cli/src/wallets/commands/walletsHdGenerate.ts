@@ -1,23 +1,23 @@
 import type { Command } from 'commander';
 import ora from 'ora';
 
+import {
+  displayGeneratedHdKeys,
+  printStoredHdKeys,
+} from '../../keys/utils/keysDisplay.js';
+import {
+  extractStartIndex,
+  getWallet,
+  getWalletContent,
+} from '../../keys/utils/keysHelpers.js';
+import type { IKeyPair } from '../../keys/utils/storage.js';
+import { saveKeyByAlias } from '../../keys/utils/storage.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import type { IKeysConfig } from '../utils/keySharedKeyGen.js';
 import { generateFromWallet } from '../utils/keySharedKeyGen.js';
-import {
-  displayGeneratedHdKeys,
-  printStoredHdKeys,
-} from '../utils/keysDisplay.js';
-import {
-  extractStartIndex,
-  getWallet,
-  getWalletContent,
-} from '../utils/keysHelpers.js';
-import type { IKeyPair } from '../utils/storage.js';
-import { saveKeyByAlias } from '../utils/storage.js';
 
 export const generateHdKeys = async ({
   keyWallet,

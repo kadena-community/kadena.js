@@ -1,8 +1,8 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaDecrypt, kadenaGenKeypairFromSeed } from '@kadena/hd-wallet';
 import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
-import { toHexStr } from './keysHelpers.js';
-import type { IKeyPair } from './storage.js';
+import { toHexStr } from '../../keys/utils/keysHelpers.js';
+import type { IKeyPair } from '../../keys/utils/storage.js';
 
 export interface IKeysConfig {
   keyGenFromChoice: string;
