@@ -1,6 +1,6 @@
 {
   "name": "@kadena/kadena-cli",
-  "version": "0.3.1",
+  "version": "0.0.1",
   "private": true,
   "description": "",
   "keywords": [],
@@ -16,7 +16,8 @@
     "Jesse van Muijden <jesse@kadena.io",
     "Jermaine Jong <jermaine@kadena.io",
     "Javad Khalilian <javad@kadena.io>",
-    "Mohamed Ismail <mohamed@kadena.io>"
+    "Mohamed Ismail <mohamed@kadena.io>",
+    "Bart Huijgen <bart@kadena.io>"
   ],
   "type": "module",
   "bin": {
