@@ -40,11 +40,14 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     if (!videoRef.current || !isMounted) return;
 
     navigator.mediaDevices
-      .getUserMedia({ audio: false, video: {
+      .getUserMedia({
+        audio: false,
+        video: {
           width: { min: 720 },
           height: { max: 800 },
-          aspectRatio: { ideal: 1 }
-        }})
+          aspectRatio: { ideal: 1 },
+        },
+      })
       .then((stream) => {
         if (!videoRef.current) return;
         videoRef.current.srcObject = stream;
@@ -69,10 +72,17 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     canvas.width = 800;
     canvas.height = 800;
     ctx?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-    const offsetY = (videoRef.current.videoWidth - videoRef.current.videoHeight) / 2;
+    const offsetY =
+      (videoRef.current.videoWidth - videoRef.current.videoHeight) / 2;
 
     //get color
-    ctx?.drawImage(videoRef.current,  -offsetY, 0, canvas.width + offsetY * 2, canvas.height);
+    ctx?.drawImage(
+      videoRef.current,
+      -offsetY,
+      0,
+      canvas.width + offsetY * 2,
+      canvas.height,
+    );
     const color = `rgba(${ctx?.getImageData(0, 0, 1, 1).data.join(',')})`;
 
     if (!proofOfUs) return;
