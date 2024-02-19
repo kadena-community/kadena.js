@@ -1,5 +1,4 @@
 import type { IUnsignedCommand } from '@kadena/types';
-import chalk from 'chalk';
 import { z } from 'zod';
 
 import { getTransactions } from '../tx/utils/txHelpers.js';
@@ -252,7 +251,7 @@ const promptVariableValue = async (key: string): Promise<string> => {
       throw new Error('public key not found');
     }
 
-    log.info(`${chalk.green('>')} Using public key ${value}`);
+    log.info(`${log.color.green('>')} Using public key ${value}`);
     return value;
   }
   if (key.startsWith('keyset-')) {

@@ -1,6 +1,5 @@
 // import { createTokenId } from '@kadena/client-utils/marmalade';
 // import type { Command } from 'commander';
-// import debug from 'debug';
 // import { createCommand } from '../../utils/createCommand.js';
 // import { globalOptions } from '../../utils/globalOptions.js';
 
@@ -10,7 +9,7 @@
 //     'mint a new NFT on Marmalade',
 //     [globalOptions.network()],
 //     async (config) => {
-//       debug('marmalade-mint:action')({ config });
+//       log.debug('marmalade-mint:action', { config });
 //       const tokenIdReponse = createTokenId(
 //         {
 //           account: {

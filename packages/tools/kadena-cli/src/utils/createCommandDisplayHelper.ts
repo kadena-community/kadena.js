@@ -1,24 +1,23 @@
-import chalk from 'chalk';
 import { log } from './logger.js';
 
 export const formatLength: 80 = 80;
 
 export const displaySeparator = (): void => {
-  log.info(chalk.green('-'.repeat(formatLength)));
+  log.info(log.color.green('-'.repeat(formatLength)));
 };
 
 export const formatConfig = (key: string, value?: string | number): string => {
   let valueDisplay;
   if (value === undefined) {
-    valueDisplay = chalk.red('Not Set');
+    valueDisplay = log.color.red('Not Set');
   } else if (key.toLowerCase().includes('password')) {
     if (value === '') {
       valueDisplay = 'no password set';
     } else {
-      valueDisplay = chalk.red('******');
+      valueDisplay = log.color.red('******');
     }
   } else {
-    valueDisplay = chalk.green(value.toString());
+    valueDisplay = log.color.green(value.toString());
   }
   const keyValue = `${key} : ${valueDisplay}`;
   const remainingWidth =

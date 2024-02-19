@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
 import { z } from 'zod';
 import { CLINAME } from '../constants/config.js';
@@ -180,9 +179,7 @@ export function handleQuietOption(
           .map((m) => `- ${m.key} (${m.option.flags})\n`)
           .join('')}`,
       );
-      log.warning(
-        chalk.yellow('Remove the --quiet flag to enable interactive prompts\n'),
-      );
+      log.warning('Remove the --quiet flag to enable interactive prompts\n');
       process.exit(1);
     }
   }

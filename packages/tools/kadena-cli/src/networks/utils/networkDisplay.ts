@@ -9,8 +9,6 @@ import type {
   INetworkCreateOptions,
 } from './networkHelpers.js';
 
-import chalk from 'chalk';
-
 import { existsSync, readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
@@ -27,14 +25,14 @@ export function displayNetworkConfig(
   const formatLength = 80; // Maximum width for the display
 
   const displaySeparator = (): void => {
-    log.info(chalk.green('-'.padEnd(formatLength, '-')));
+    log.info(log.color.green('-'.padEnd(formatLength, '-')));
   };
 
   const formatConfig = (key: string, value?: string): string => {
     const valueDisplay =
       value !== undefined && value.trim() !== ''
-        ? chalk.green(value)
-        : chalk.red('Not Set');
+        ? log.color.green(value)
+        : log.color.red('Not Set');
     const keyValue = `${key}: ${valueDisplay}`;
     const remainingWidth =
       formatLength - keyValue.length > 0 ? formatLength - keyValue.length : 0;
@@ -55,7 +53,7 @@ export function displayNetworksConfig(): void {
   const formatLength = 80; // Maximum width for the display
 
   const displaySeparator = (): void => {
-    log.info(chalk.green('-'.padEnd(formatLength, '-')));
+    log.info(log.color.green('-'.padEnd(formatLength, '-')));
   };
 
   const formatConfig = (
@@ -64,10 +62,12 @@ export function displayNetworksConfig(): void {
     isDefault?: boolean,
   ): string => {
     const valueDisplay =
-      (value?.trim() ?? '') !== '' ? chalk.green(value!) : chalk.red('Not Set');
+      (value?.trim() ?? '') !== ''
+        ? log.color.green(value!)
+        : log.color.red('Not Set');
 
     const defaultIndicator =
-      isDefault === true ? chalk.yellow(' (Using defaults)') : '';
+      isDefault === true ? log.color.yellow(' (Using defaults)') : '';
     const keyValue = `${key}: ${valueDisplay}${defaultIndicator}`;
     const remainingWidth =
       formatLength - keyValue.length > 0 ? formatLength - keyValue.length : 0;

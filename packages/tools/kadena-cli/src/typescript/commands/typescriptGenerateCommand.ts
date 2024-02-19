@@ -1,8 +1,6 @@
-import debug from 'debug';
 import { join } from 'path';
 
 import { generateDts, pactParser } from '@kadena/pactjs-generator';
-import chalk from 'chalk';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
@@ -31,15 +29,15 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
     globalOptions.chainId(),
   ],
   async (config) => {
-    debug('typescript-contract-generate:action')({ config });
+    log.debug('typescript-contract-generate:action', { config });
 
     if (!config.typescriptFile === !config.typescriptContract) {
-      log.info(chalk.red(`\nEither file or contract must be specified.\n`));
+      log.error(`\nEither file or contract must be specified.\n`);
     }
 
     if (config.typescriptContractConfig.length > 0) {
       log.info(
-        chalk.green(
+        log.color.green(
           `Generating types for pact contracts from chainweb for ${config.typescriptContractConfig.join(
             ',',
           )}`,
@@ -49,7 +47,7 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
 
     if (config.typescriptFileConfig.length > 0) {
       log.info(
-        chalk.green(
+        log.color.green(
           `Generating types for pact contracts from files for ${config.typescriptFileConfig.join(
             ',',
           )}`,
@@ -59,12 +57,12 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
 
     const packageJson = findPackageJson();
 
-    log.info(chalk.green(`Using package.json at ${packageJson}.`));
+    log.info(log.color.green(`Using package.json at ${packageJson}.`));
 
     const targetDirectory = getTargetDirectory(packageJson);
 
     log.info(
-      chalk.green(
+      log.color.green(
         config.typescriptClean
           ? `Cleaning ${targetDirectory}.`
           : `Using directory ${targetDirectory}.`,
@@ -74,7 +72,7 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
     prepareTargetDirectory(targetDirectory, !!config.typescriptClean);
 
     const getContract = async (name: string): Promise<string> => {
-      log.info(chalk.green(`Fetching ${name}.`));
+      log.info(log.color.green(`Fetching ${name}.`));
 
       const content = await retrieveContractFromChain(
         name,
@@ -103,10 +101,10 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
 
     Object.keys(modules).map((name) => {
       if (['', undefined, null].includes(modules[name].namespace)) {
-        log.info(
-          chalk.yellow(`\n
+        log.warning(
+          `\n
             WARNING: No namespace found for module "${name}". You can pass --namespace as a fallback.
-          \n`),
+          \n`,
         );
       }
       moduleDtss.set(name, generateDts(modules[name]));
@@ -142,7 +140,7 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
       }
     });
 
-    log.info(chalk.green(`\nTypescript types have been generated.\n`));
+    log.info(log.color.green(`\nTypescript types have been generated.\n`));
 
     const defaultPackageJsonPath: string = join(
       targetDirectory,
@@ -151,7 +149,7 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
 
     if (!existsSync(defaultPackageJsonPath)) {
       log.info(
-        chalk.green(
+        log.color.green(
           `Writing default package.json to ${defaultPackageJsonPath}`,
         ),
       );
@@ -176,28 +174,26 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
     );
 
     if (tsconfigPath === undefined || tsconfigPath.length === 0) {
-      log.info(
-        chalk.yellow(
-          `\nCould not find tsconfig.json, skipping types verification.\n`,
-        ),
+      log.warning(
+        `\nCould not find tsconfig.json, skipping types verification.\n`,
       );
       return;
     }
 
-    log.info(chalk.green(`\nVerifying tsconfig.json at \`${tsconfigPath}\``));
+    log.info(
+      log.color.green(`\nVerifying tsconfig.json at \`${tsconfigPath}\``),
+    );
 
     const tsconfig: string = readFileSync(tsconfigPath, 'utf8');
 
     if (!tsconfig.includes('.kadena/pactjs-generated')) {
-      log.info(
-        chalk.yellow(
-          `\n!!! WARNING: You have not added .kadena/pactjs-generated to tsconfig.json. Add it now.
+      log.warning(
+        `\n!!! WARNING: You have not added .kadena/pactjs-generated to tsconfig.json. Add it now.
 { "compilerOptions": { "types": [".kadena/pactjs-generated"] } }`,
-        ),
       );
       return;
     }
 
-    log.info(chalk.green(`\nThe tsconfig.json file is valid.\n`));
+    log.info(log.color.green(`\nThe tsconfig.json file is valid.\n`));
   },
 );

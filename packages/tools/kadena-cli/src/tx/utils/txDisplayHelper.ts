@@ -1,11 +1,10 @@
-import chalk from 'chalk';
 import { isNumeric } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 
 const formatLength = 80;
 
 const displaySeparator = (): void => {
-  log.info(chalk.green('-'.padEnd(formatLength, '-')));
+  log.info(log.color.green('-'.padEnd(formatLength, '-')));
 };
 
 export function txDisplayTransaction(
@@ -17,12 +16,12 @@ export function txDisplayTransaction(
 ): void {
   if (header !== '') {
     displaySeparator();
-    log.info(`  ${chalk.black(header.padEnd(formatLength - 2))}`);
+    log.info(`  ${log.color.black(header.padEnd(formatLength - 2))}`);
     displaySeparator();
   }
 
   if (obj === null || obj === undefined) {
-    log.info('Transaction '.repeat(baseIndent) + chalk.green('null'));
+    log.info('Transaction '.repeat(baseIndent) + log.color.green('null'));
     return;
   }
 
@@ -35,7 +34,7 @@ export function txDisplayTransaction(
     const formattedKey = `${' '.repeat(indentLevel)}${output}:`;
 
     if (typeof value === 'object' && value !== null) {
-      log.info(chalk.black(formattedKey));
+      log.info(log.color.black(formattedKey));
       for (const [subKey, subValue] of Object.entries(value)) {
         printObject(subKey, subValue, indentLevel + 2);
       }
@@ -44,10 +43,12 @@ export function txDisplayTransaction(
         value !== null && value !== undefined ? value.toString() : 'null';
 
       if (key === 'status') {
-        const color = value === 'failure' ? chalk.red : chalk.green;
+        const color = value === 'failure' ? log.color.red : log.color.green;
         formattedValue = color(formattedValue);
       }
-      log.info(`${chalk.black(formattedKey)} ${chalk.green(formattedValue)}`);
+      log.info(
+        `${log.color.black(formattedKey)} ${log.color.green(formattedValue)}`,
+      );
     }
   };
 

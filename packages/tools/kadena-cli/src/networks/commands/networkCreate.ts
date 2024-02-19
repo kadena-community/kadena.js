@@ -1,5 +1,4 @@
 import type { Command } from 'commander';
-import debug from 'debug';
 import path from 'path';
 
 import { defaultNetworksPath } from '../../constants/networks.js';
@@ -23,7 +22,7 @@ export const createNetworksCommand: (
     globalOptions.networkOverwrite(),
   ],
   async (config) => {
-    debug('network-create:action')({ config });
+    log.debug('network-create:action', { config });
 
     const filePath = path.join(
       defaultNetworksPath,
