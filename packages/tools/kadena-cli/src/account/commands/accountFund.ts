@@ -59,6 +59,13 @@ export const createFundCommand = createCommandFlexible(
       return;
     }
 
+    if (accountConfig.fungible.trim() !== 'coin') {
+      console.log(
+        chalk.red(`\nYou can't fund an account other than "coin" fungible.\n`),
+      );
+      return;
+    }
+
     // if (networkConfig.networkId === 'fast-development') {
     //   if (!(await networkIsAlive(networkConfig.networkHost))) {
     //     console.log(
