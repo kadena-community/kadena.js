@@ -55,9 +55,7 @@ export const getTokenUri = async (id: string): Promise<string | undefined> => {
     signatureVerification: false,
   });
 
-  return result.status === 'success'
-    ? (result.data as IProofOfUsToken)
-    : undefined;
+  return result.status === 'success' ? (result.data as string) : undefined;
 };
 
 export const claimAttendanceToken = async (
