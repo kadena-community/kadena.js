@@ -45,7 +45,7 @@ export const ListItem: FC<IProps> = ({ token }) => {
       {data && (
         <Link
           className={listItemLinkClass}
-          href={`/user/proof-of-us/t/${data.properties.eventId}`}
+          href={`/user/proof-of-us/t/${token.id}`}
         >
           {data.properties.eventType === 'attendance' && (
             <EventThumb token={data} />

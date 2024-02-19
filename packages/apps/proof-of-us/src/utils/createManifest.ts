@@ -10,7 +10,7 @@ export const createManifest = (proofOfUs: IProofOfUsData, url: string): {} => {
       name: signee.label ? signee.label : signee.alias,
     })),
     properties: {
-      date: proofOfUs.date * 1000,
+      date: proofOfUs.date,
       eventId: proofOfUs.eventId,
       eventType: proofOfUs.type,
       avatar: {
