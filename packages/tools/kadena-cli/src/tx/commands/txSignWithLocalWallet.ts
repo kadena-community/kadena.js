@@ -102,7 +102,7 @@ export const createSignTransactionWithLocalWalletCommand: (
   version: string,
 ) => void = createCommandFlexible(
   'sign-with-local-wallet',
-  'Sign a transaction using your local  wallet',
+  'Sign a transaction using your local wallet.\nThe transaction can be passed via stdin.\nThe signed transaction fill be saved to file.',
   [
     globalOptions.keyWalletSelect(),
     globalOptions.securityPassword(),
@@ -136,7 +136,7 @@ export const createSignTransactionWithLocalWalletCommand: (
           signed: false,
         });
       } else {
-        const directory = (await option.directory()).directory ?? process.cwd();
+        const { directory } = await option.directory();
         const { txUnsignedTransactionFiles } =
           await option.txUnsignedTransactionFiles({
             signed: false,

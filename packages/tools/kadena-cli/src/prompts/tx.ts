@@ -113,23 +113,24 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
   return selectedTransaction;
 };
 
-export async function txDirPrompt(): Promise<string> {
-  return await input({
-    message: `Enter your directory (default: working directory):`,
-    validate: async (input) => {
-      const dirExists = await services.filesystem.directoryExists(input);
-      if (!dirExists) {
-        return 'Directory or file not found. Please enter a valid directory or file path.';
-      }
-      return true;
-    },
-    default: `./`,
-  });
-}
+// We don't want to prompt dir, but the flag is still available
+// export async function txDirPrompt(): Promise<string> {
+//   return await input({
+//     message: `Enter your directory (default: working directory):`,
+//     validate: async (input) => {
+//       const dirExists = await services.filesystem.directoryExists(input);
+//       if (!dirExists) {
+//         return 'Directory or file not found. Please enter a valid directory or file path.';
+//       }
+//       return true;
+//     },
+//     default: `./`,
+//   });
+// }
 
 export const selectTemplate: IPrompt<string> = async (args) => {
   const stdin = args.stdin as string | undefined;
-  if (stdin && stdin !== '') return '-';
+  if (stdin !== undefined && stdin !== '') return '-';
   const templates = await getTemplates();
   const defaultTemplateKeys = Object.keys(templates);
 

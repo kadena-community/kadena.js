@@ -94,7 +94,7 @@ export const createSignTransactionWithKeyPairCommand: (
   version: string,
 ) => void = createCommandFlexible(
   'sign-with-keypair',
-  'Sign a transaction using a keypair.',
+  'Sign a transaction using a keypair.\nThe transaction can be passed via stdin.\nThe signed transaction fill be saved to file.',
   [
     globalOptions.keyPairs(),
     txOptions.directory({ disableQuestion: true }),
@@ -119,7 +119,7 @@ export const createSignTransactionWithKeyPairCommand: (
           legacy: mode.legacy,
         });
       } else {
-        const directory = (await option.directory()).directory ?? process.cwd();
+        const { directory } = await option.directory();
         const files = await option.txUnsignedTransactionFiles({
           signed: false,
           path: directory,

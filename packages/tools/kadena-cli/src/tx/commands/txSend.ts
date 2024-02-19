@@ -105,7 +105,7 @@ export const createSendTransactionCommand: (
     if (stdin !== undefined) {
       commands.push(await parseTransactionsFromStdin(stdin));
     } else {
-      const directory = (await option.directory()).directory ?? process.cwd();
+      const { directory } = await option.directory();
       const { txSignedTransactionFiles } =
         await option.txSignedTransactionFiles();
       const absolutePaths = txSignedTransactionFiles.map((file) =>
