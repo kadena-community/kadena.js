@@ -2,10 +2,12 @@ import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import classnames from 'classnames';
+import { motion } from 'framer-motion';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import {
   cameraButton,
+  cameraButtonWrapperClass,
   cameraClass,
   cameraWrapperClass,
   hiddenClass,
@@ -22,7 +24,6 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
-  const canvasElm = canvasRef.current;
   const { proofOfUs, updateBackgroundColor } = useProofOfUs();
 
   useEffect(() => {
@@ -34,13 +35,26 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+
+    return () => {
+      (videoRef.current?.srcObject as MediaStream)
+        ?.getTracks()
+        .forEach((t) => t.stop());
+    };
+  }, [videoRef.current]);
 
   useEffect(() => {
     if (!videoRef.current || !isMounted) return;
 
     navigator.mediaDevices
-      .getUserMedia({ audio: false, video: true })
+      .getUserMedia({
+        audio: false,
+        video: {
+          width: { min: 720 },
+          height: { max: 800 },
+          aspectRatio: { ideal: 1 },
+        },
+      })
       .then((stream) => {
         if (!videoRef.current) return;
         videoRef.current.srcObject = stream;
@@ -49,10 +63,6 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
         alert('The browser needs permissions for the camera to work');
       });
   }, [isMounted]);
-
-  useEffect(() => {
-    if (!canvasElm) return;
-  }, [canvasElm]);
 
   const handleCapture = async (evt: MouseEvent<HTMLButtonElement>) => {
     if (isAlreadySigning(proofOfUs?.signees)) return;
@@ -65,9 +75,17 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     canvas.width = 800;
     canvas.height = 800;
     ctx?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    const offsetY =
+      (videoRef.current.videoWidth - videoRef.current.videoHeight) / 2;
 
     //get color
-    ctx?.drawImage(videoRef.current, 0, 0, 1, 1);
+    ctx?.drawImage(
+      videoRef.current,
+      -offsetY,
+      0,
+      canvas.width + offsetY * 2,
+      canvas.height,
+    );
     const color = `rgba(${ctx?.getImageData(0, 0, 1, 1).data.join(',')})`;
 
     if (!proofOfUs) return;
@@ -82,32 +100,40 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   };
 
   return (
-    <section className={wrapperClass}>
-      {!isMounted && <div>loading</div>}
-      <canvas ref={canvasRef} />
-      <div
-        className={classnames(
-          cameraWrapperClass,
-          !isMounted ? hiddenClass : '',
-        )}
-      >
-        <video
-          className={classnames(cameraClass, !isMounted ? hiddenClass : '')}
-          ref={videoRef}
-          id="player"
-          controls={false}
-          autoPlay
-          muted
-          playsInline
-        ></video>
-        {!isAlreadySigning(proofOfUs?.signees) && (
+    <>
+      <section className={wrapperClass}>
+        {!isMounted && <div>loading</div>}
+        <canvas ref={canvasRef} />
+        <div
+          className={classnames(
+            cameraWrapperClass,
+            !isMounted ? hiddenClass : '',
+          )}
+        >
+          <video
+            className={classnames(cameraClass, !isMounted ? hiddenClass : '')}
+            ref={videoRef}
+            id="player"
+            controls={false}
+            autoPlay
+            muted
+            playsInline
+          ></video>
+        </div>
+      </section>
+      {!isAlreadySigning(proofOfUs?.signees) && (
+        <motion.div
+          layout
+          className={cameraButtonWrapperClass}
+          layoutId="floatButton"
+        >
           <button
             className={cameraButton}
             id="capture"
             onClick={handleCapture}
           />
-        )}
-      </div>
-    </section>
+        </motion.div>
+      )}
+    </>
   );
 };

@@ -91,7 +91,7 @@ export const createSendTransactionCommand: (
   version: string,
 ) => void = createCommandFlexible(
   'send',
-  'send a transaction to the network',
+  'Send a transaction to the network',
   [
     txOptions.directory({ disableQuestion: true }),
     txOptions.txSignedTransactionFiles(),

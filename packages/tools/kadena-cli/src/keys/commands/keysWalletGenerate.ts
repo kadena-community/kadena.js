@@ -95,7 +95,7 @@ export const createGenerateWalletCommand: (
   version: string,
 ) => void = createCommand(
   'create-wallet',
-  'create your local wallet',
+  'Create your local wallet',
   [
     globalOptions.keyWallet({ isOptional: false }),
     globalOptions.securityPassword({ isOptional: false }),

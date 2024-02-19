@@ -1,14 +1,13 @@
 import { getContrast } from '@/utils/getContrast';
+import { motion } from 'framer-motion';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { ticketClass, ticketWrapClass, titleClass } from './style.css';
-
 interface IProps {
   token: IProofOfUsTokenMeta;
 }
 
 export const AttendanceTicket: FC<IProps> = ({ token }) => {
-  //const date = new Date(token.properties.date);
   const [contrastColor, setContrastColor] = useState<string>('white');
   const color = token.properties?.avatar?.backgroundColor;
 
@@ -31,7 +30,8 @@ export const AttendanceTicket: FC<IProps> = ({ token }) => {
       </svg>
 
       <div className={ticketWrapClass}>
-        <section
+        <motion.div
+          layoutId="proof-of-us:jQ9ZFi5VDifZ_LekqHCGrP5EdgKTgU7WhrYkIWNPMe8"
           className={ticketClass}
           style={{
             backgroundImage: `url("${token.image}")`,
@@ -50,9 +50,9 @@ export const AttendanceTicket: FC<IProps> = ({ token }) => {
 
           <div style={{ color: contrastColor }}>
             <h5>Date</h5>
-            {new Date(token.properties.date * 1000).toLocaleDateString()}
+            {new Date(token.properties.date).toDateString()}
           </div>
-        </section>
+        </motion.div>
       </div>
     </>
   );

@@ -81,7 +81,7 @@ export const createGenerateHdKeysCommand: (
   version: string,
 ) => void = createCommandFlexible(
   'gen-hd',
-  'generate public/secret key pair(s) from your wallet',
+  'Generate public/secret key pair(s) from your wallet',
   [
     globalOptions.keyWalletSelect(),
     globalOptions.keyGenFromChoice(),

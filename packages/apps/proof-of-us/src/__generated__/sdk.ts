@@ -22,7 +22,7 @@ export type Incremental<T> =
     };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
-export interface Scalars {
+export type Scalars = {
   ID: { input: string; output: string };
   String: { input: string; output: string };
   Boolean: { input: boolean; output: boolean };
@@ -36,7 +36,7 @@ export interface Scalars {
   Decimal: { input: any; output: any };
   /** Floats that will have a value greater than 0. */
   PositiveFloat: { input: any; output: any };
-}
+};
 
 /** A unit of information that stores a set of verified transactions. */
 export type Block = Node & {
@@ -61,25 +61,25 @@ export type Block = Node & {
 };
 
 /** A unit of information that stores a set of verified transactions. */
-export interface BlockTransactionsArgs {
+export type BlockTransactionsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-}
+};
 
-export interface BlockTransactionsConnection {
+export type BlockTransactionsConnection = {
   __typename?: 'BlockTransactionsConnection';
   edges: Array<BlockTransactionsConnectionEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
-}
+};
 
-export interface BlockTransactionsConnectionEdge {
+export type BlockTransactionsConnectionEdge = {
   __typename?: 'BlockTransactionsConnectionEdge';
   cursor: Scalars['String']['output'];
   node: Transaction;
-}
+};
 
 /** An event emitted by the execution of a smart-contract function. */
 export type Event = Node & {
@@ -114,46 +114,46 @@ export type FungibleAccount = Node & {
 };
 
 /** A fungible-specific account. */
-export interface FungibleAccountTransactionsArgs {
+export type FungibleAccountTransactionsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-}
+};
 
 /** A fungible-specific account. */
-export interface FungibleAccountTransfersArgs {
+export type FungibleAccountTransfersArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-}
+};
 
-export interface FungibleAccountTransactionsConnection {
+export type FungibleAccountTransactionsConnection = {
   __typename?: 'FungibleAccountTransactionsConnection';
   edges: Array<FungibleAccountTransactionsConnectionEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
-}
+};
 
-export interface FungibleAccountTransactionsConnectionEdge {
+export type FungibleAccountTransactionsConnectionEdge = {
   __typename?: 'FungibleAccountTransactionsConnectionEdge';
   cursor: Scalars['String']['output'];
   node: Transaction;
-}
+};
 
-export interface FungibleAccountTransfersConnection {
+export type FungibleAccountTransfersConnection = {
   __typename?: 'FungibleAccountTransfersConnection';
   edges: Array<FungibleAccountTransfersConnectionEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
-}
+};
 
-export interface FungibleAccountTransfersConnectionEdge {
+export type FungibleAccountTransfersConnectionEdge = {
   __typename?: 'FungibleAccountTransfersConnectionEdge';
   cursor: Scalars['String']['output'];
   node: Transfer;
-}
+};
 
 /** A fungible specific chain-account. */
 export type FungibleChainAccount = Node & {
@@ -169,62 +169,62 @@ export type FungibleChainAccount = Node & {
 };
 
 /** A fungible specific chain-account. */
-export interface FungibleChainAccountTransactionsArgs {
+export type FungibleChainAccountTransactionsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-}
+};
 
 /** A fungible specific chain-account. */
-export interface FungibleChainAccountTransfersArgs {
+export type FungibleChainAccountTransfersArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-}
+};
 
-export interface FungibleChainAccountTransactionsConnection {
+export type FungibleChainAccountTransactionsConnection = {
   __typename?: 'FungibleChainAccountTransactionsConnection';
   edges: Array<FungibleChainAccountTransactionsConnectionEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
-}
+};
 
-export interface FungibleChainAccountTransactionsConnectionEdge {
+export type FungibleChainAccountTransactionsConnectionEdge = {
   __typename?: 'FungibleChainAccountTransactionsConnectionEdge';
   cursor: Scalars['String']['output'];
   node: Transaction;
-}
+};
 
-export interface FungibleChainAccountTransfersConnection {
+export type FungibleChainAccountTransfersConnection = {
   __typename?: 'FungibleChainAccountTransfersConnection';
   edges: Array<FungibleChainAccountTransfersConnectionEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
-}
+};
 
-export interface FungibleChainAccountTransfersConnectionEdge {
+export type FungibleChainAccountTransfersConnectionEdge = {
   __typename?: 'FungibleChainAccountTransfersConnectionEdge';
   cursor: Scalars['String']['output'];
   node: Transfer;
-}
+};
 
 /** General information about the graph and chainweb-data. */
-export interface GraphConfiguration {
+export type GraphConfiguration = {
   __typename?: 'GraphConfiguration';
   /** The maximum number of confirmations calculated on this endpoint. */
   maximumConfirmationDepth: Scalars['Int']['output'];
   /** The lowest block-height that is indexed in this endpoint. */
   minimumBlockHeight?: Maybe<Scalars['BigInt']['output']>;
-}
+};
 
 /** Guard for an account. */
-export interface Guard {
+export type Guard = {
   __typename?: 'Guard';
   keys: Array<Scalars['String']['output']>;
   predicate: Scalars['String']['output'];
-}
+};
 
 /** The account of the miner that solved a block. */
 export type MinerKey = Node & {
@@ -235,9 +235,9 @@ export type MinerKey = Node & {
   key: Scalars['String']['output'];
 };
 
-export interface Node {
+export type Node = {
   id: Scalars['ID']['output'];
-}
+};
 
 /** A non-fungible-specific account. */
 export type NonFungibleAccount = Node & {
@@ -250,25 +250,25 @@ export type NonFungibleAccount = Node & {
 };
 
 /** A non-fungible-specific account. */
-export interface NonFungibleAccountTransactionsArgs {
+export type NonFungibleAccountTransactionsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-}
+};
 
-export interface NonFungibleAccountTransactionsConnection {
+export type NonFungibleAccountTransactionsConnection = {
   __typename?: 'NonFungibleAccountTransactionsConnection';
   edges: Array<NonFungibleAccountTransactionsConnectionEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
-}
+};
 
-export interface NonFungibleAccountTransactionsConnectionEdge {
+export type NonFungibleAccountTransactionsConnectionEdge = {
   __typename?: 'NonFungibleAccountTransactionsConnectionEdge';
   cursor: Scalars['String']['output'];
   node: Transaction;
-}
+};
 
 /** A chain and non-fungible-specific account. */
 export type NonFungibleChainAccount = Node & {
@@ -281,52 +281,52 @@ export type NonFungibleChainAccount = Node & {
 };
 
 /** A chain and non-fungible-specific account. */
-export interface NonFungibleChainAccountTransactionsArgs {
+export type NonFungibleChainAccountTransactionsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-}
+};
 
-export interface NonFungibleChainAccountTransactionsConnection {
+export type NonFungibleChainAccountTransactionsConnection = {
   __typename?: 'NonFungibleChainAccountTransactionsConnection';
   edges: Array<NonFungibleChainAccountTransactionsConnectionEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
-}
+};
 
-export interface NonFungibleChainAccountTransactionsConnectionEdge {
+export type NonFungibleChainAccountTransactionsConnectionEdge = {
   __typename?: 'NonFungibleChainAccountTransactionsConnectionEdge';
   cursor: Scalars['String']['output'];
   node: Transaction;
-}
+};
 
-export interface PactQuery {
+export type PactQuery = {
   chainId: Scalars['String']['input'];
   code: Scalars['String']['input'];
   data?: InputMaybe<Array<PactQueryData>>;
-}
+};
 
-export interface PactQueryData {
+export type PactQueryData = {
   key: Scalars['String']['input'];
   value: Scalars['String']['input'];
-}
+};
 
-export interface PactTransaction {
+export type PactTransaction = {
   cmd: Scalars['String']['input'];
   hash?: InputMaybe<Scalars['String']['input']>;
   sigs?: InputMaybe<Array<Scalars['String']['input']>>;
-}
+};
 
-export interface PageInfo {
+export type PageInfo = {
   __typename?: 'PageInfo';
   endCursor?: Maybe<Scalars['String']['output']>;
   hasNextPage: Scalars['Boolean']['output'];
   hasPreviousPage: Scalars['Boolean']['output'];
   startCursor?: Maybe<Scalars['String']['output']>;
-}
+};
 
-export interface Query {
+export type Query = {
   __typename?: 'Query';
   /** Retrieve a block by hash. */
   block?: Maybe<Block>;
@@ -370,87 +370,87 @@ export interface Query {
   transfer?: Maybe<Transfer>;
   /** Retrieve transfers. */
   transfers: QueryTransfersConnection;
-}
+};
 
-export interface QueryBlockArgs {
+export type QueryBlockArgs = {
   hash: Scalars['String']['input'];
-}
+};
 
-export interface QueryBlocksFromHeightArgs {
+export type QueryBlocksFromHeightArgs = {
   chainIds?: InputMaybe<Array<Scalars['String']['input']>>;
   startHeight: Scalars['Int']['input'];
-}
+};
 
-export interface QueryCompletedBlockHeightsArgs {
+export type QueryCompletedBlockHeightsArgs = {
   chainIds?: InputMaybe<Array<Scalars['String']['input']>>;
   completedHeights?: InputMaybe<Scalars['Boolean']['input']>;
   heightCount?: InputMaybe<Scalars['Int']['input']>;
-}
+};
 
-export interface QueryEventArgs {
+export type QueryEventArgs = {
   blockHash: Scalars['String']['input'];
   orderIndex: Scalars['Int']['input'];
   requestKey: Scalars['String']['input'];
-}
+};
 
-export interface QueryEventsArgs {
+export type QueryEventsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   qualifiedEventName: Scalars['String']['input'];
-}
+};
 
-export interface QueryFungibleAccountArgs {
+export type QueryFungibleAccountArgs = {
   accountName: Scalars['String']['input'];
   fungibleName: Scalars['String']['input'];
-}
+};
 
-export interface QueryFungibleChainAccountArgs {
+export type QueryFungibleChainAccountArgs = {
   accountName: Scalars['String']['input'];
   chainId: Scalars['String']['input'];
   fungibleName: Scalars['String']['input'];
-}
+};
 
-export interface QueryGasLimitEstimateArgs {
+export type QueryGasLimitEstimateArgs = {
   transaction: PactTransaction;
-}
+};
 
-export interface QueryGasLimitEstimatesArgs {
+export type QueryGasLimitEstimatesArgs = {
   transactions: Array<PactTransaction>;
-}
+};
 
-export interface QueryNodeArgs {
+export type QueryNodeArgs = {
   id: Scalars['ID']['input'];
-}
+};
 
-export interface QueryNodesArgs {
+export type QueryNodesArgs = {
   ids: Array<Scalars['ID']['input']>;
-}
+};
 
-export interface QueryNonFungibleAccountArgs {
+export type QueryNonFungibleAccountArgs = {
   accountName: Scalars['String']['input'];
-}
+};
 
-export interface QueryNonFungibleChainAccountArgs {
+export type QueryNonFungibleChainAccountArgs = {
   accountName: Scalars['String']['input'];
   chainId: Scalars['String']['input'];
-}
+};
 
-export interface QueryPactQueriesArgs {
+export type QueryPactQueriesArgs = {
   pactQuery: Array<PactQuery>;
-}
+};
 
-export interface QueryPactQueryArgs {
+export type QueryPactQueryArgs = {
   pactQuery: PactQuery;
-}
+};
 
-export interface QueryTransactionArgs {
+export type QueryTransactionArgs = {
   blockHash: Scalars['String']['input'];
   requestKey: Scalars['String']['input'];
-}
+};
 
-export interface QueryTransactionsArgs {
+export type QueryTransactionsArgs = {
   accountName?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
@@ -460,25 +460,25 @@ export interface QueryTransactionsArgs {
   fungibleName?: InputMaybe<Scalars['String']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   requestKey?: InputMaybe<Scalars['String']['input']>;
-}
+};
 
-export interface QueryTransactionsByPublicKeyArgs {
+export type QueryTransactionsByPublicKeyArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   publicKey: Scalars['String']['input'];
-}
+};
 
-export interface QueryTransferArgs {
+export type QueryTransferArgs = {
   blockHash: Scalars['String']['input'];
   chainId: Scalars['String']['input'];
   moduleHash: Scalars['String']['input'];
   orderIndex: Scalars['Int']['input'];
   requestKey: Scalars['String']['input'];
-}
+};
 
-export interface QueryTransfersArgs {
+export type QueryTransfersArgs = {
   accountName?: InputMaybe<Scalars['String']['input']>;
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
@@ -486,59 +486,59 @@ export interface QueryTransfersArgs {
   first?: InputMaybe<Scalars['Int']['input']>;
   fungibleName?: InputMaybe<Scalars['String']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-}
+};
 
-export interface QueryEventsConnection {
+export type QueryEventsConnection = {
   __typename?: 'QueryEventsConnection';
   edges: Array<QueryEventsConnectionEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
-}
+};
 
-export interface QueryEventsConnectionEdge {
+export type QueryEventsConnectionEdge = {
   __typename?: 'QueryEventsConnectionEdge';
   cursor: Scalars['String']['output'];
   node: Event;
-}
+};
 
-export interface QueryTransactionsByPublicKeyConnection {
+export type QueryTransactionsByPublicKeyConnection = {
   __typename?: 'QueryTransactionsByPublicKeyConnection';
   edges: Array<QueryTransactionsByPublicKeyConnectionEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
-}
+};
 
-export interface QueryTransactionsByPublicKeyConnectionEdge {
+export type QueryTransactionsByPublicKeyConnectionEdge = {
   __typename?: 'QueryTransactionsByPublicKeyConnectionEdge';
   cursor: Scalars['String']['output'];
   node: Transaction;
-}
+};
 
-export interface QueryTransactionsConnection {
+export type QueryTransactionsConnection = {
   __typename?: 'QueryTransactionsConnection';
   edges: Array<QueryTransactionsConnectionEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
-}
+};
 
-export interface QueryTransactionsConnectionEdge {
+export type QueryTransactionsConnectionEdge = {
   __typename?: 'QueryTransactionsConnectionEdge';
   cursor: Scalars['String']['output'];
   node: Transaction;
-}
+};
 
-export interface QueryTransfersConnection {
+export type QueryTransfersConnection = {
   __typename?: 'QueryTransfersConnection';
   edges: Array<QueryTransfersConnectionEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
-}
+};
 
-export interface QueryTransfersConnectionEdge {
+export type QueryTransfersConnectionEdge = {
   __typename?: 'QueryTransfersConnectionEdge';
   cursor: Scalars['String']['output'];
   node: Transfer;
-}
+};
 
 /** A signer for a specific transaction. */
 export type Signer = Node & {
@@ -556,7 +556,7 @@ export type Signer = Node & {
   signature: Scalars['String']['output'];
 };
 
-export interface Subscription {
+export type Subscription = {
   __typename?: 'Subscription';
   /** Listen for events by qualifiedName (e.g. `coin.TRANSFER`). */
   events?: Maybe<Array<Scalars['ID']['output']>>;
@@ -564,37 +564,37 @@ export interface Subscription {
   newBlocks?: Maybe<Array<Scalars['ID']['output']>>;
   /** Listen for a transaction by request key. Returns the ID when it is in a block. */
   transaction?: Maybe<Scalars['ID']['output']>;
-}
+};
 
-export interface SubscriptionEventsArgs {
+export type SubscriptionEventsArgs = {
   qualifiedEventName: Scalars['String']['input'];
-}
+};
 
-export interface SubscriptionNewBlocksArgs {
+export type SubscriptionNewBlocksArgs = {
   chainIds?: InputMaybe<Array<Scalars['Int']['input']>>;
-}
+};
 
-export interface SubscriptionTransactionArgs {
+export type SubscriptionTransactionArgs = {
   requestKey: Scalars['String']['input'];
-}
+};
 
 /** The token identifier and its balance. */
-export interface Token {
+export type Token = {
   __typename?: 'Token';
   balance: Scalars['Int']['output'];
   chainId: Scalars['Int']['output'];
   id: Scalars['ID']['output'];
   info?: Maybe<TokenInfo>;
   version: Scalars['String']['output'];
-}
+};
 
 /** Information related to a token. */
-export interface TokenInfo {
+export type TokenInfo = {
   __typename?: 'TokenInfo';
   precision: Scalars['Int']['output'];
   supply: Scalars['Int']['output'];
   uri: Scalars['String']['output'];
-}
+};
 
 /** A confirmed transaction. */
 export type Transaction = Node & {
@@ -667,15 +667,20 @@ export type GetTokensQueryVariables = Exact<{
   accountName: Scalars['String']['input'];
 }>;
 
-export interface GetTokensQuery {
+export type GetTokensQuery = {
   __typename?: 'Query';
   nonFungibleAccount?: {
     __typename?: 'NonFungibleAccount';
     accountName: string;
     id: string;
-    nonFungibles: Array<{ __typename?: 'Token'; balance: number; id: string }>;
+    nonFungibles: Array<{
+      __typename?: 'Token';
+      balance: number;
+      id: string;
+      info?: { __typename?: 'TokenInfo'; uri: string } | null;
+    }>;
   } | null;
-}
+};
 
 export const GetTokensDocument = gql`
   query GetTokens($accountName: String!) {
@@ -685,6 +690,9 @@ export const GetTokensDocument = gql`
       nonFungibles {
         balance
         id
+        info {
+          uri
+        }
       }
     }
   }

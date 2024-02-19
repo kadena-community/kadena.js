@@ -25,7 +25,7 @@ import { fund } from '../utils/fund.js';
 
 export const createFundCommand = createCommandFlexible(
   'fund',
-  'fund an existing/new account',
+  'Fund an existing/new account',
   [
     globalOptions.accountSelect(),
     globalOptions.fundAmount(),
@@ -55,6 +55,13 @@ export const createFundCommand = createCommandFlexible(
         chalk.red(
           `\nNetwork "${network}" of id "${networkConfig.networkId}" is not supported.\n`,
         ),
+      );
+      return;
+    }
+
+    if (accountConfig.fungible.trim() !== 'coin') {
+      console.log(
+        chalk.red(`\nYou can't fund an account other than "coin" fungible.\n`),
       );
       return;
     }

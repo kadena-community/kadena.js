@@ -2,6 +2,7 @@
 import { localStorageProvider } from '@/utils/localStorageProvider';
 import type { NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+
 import { ThemeProvider } from 'next-themes';
 import type { FC, PropsWithChildren } from 'react';
 import { SWRConfig } from 'swr';
