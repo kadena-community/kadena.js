@@ -24,10 +24,15 @@ export const createTransaction = async (
   CommandResult<{ transaction: IUnsignedCommand; filePath: string }>
 > => {
   try {
-    const updatedVariables = {
-      ...variables,
-      amount: new PactNumber(variables.amount).toPactDecimal().decimal,
-    };
+    // convert decimal-amount to pact decimal
+    const updatedVariables = variables['decimal-amount']
+      ? {
+          ...variables,
+          'decimal-amount': new PactNumber(
+            variables['decimal-amount'],
+          ).toPactDecimal().decimal,
+        }
+      : variables;
 
     // create transaction
     const command = await createPactCommandFromStringTemplate(

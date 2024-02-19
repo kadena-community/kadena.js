@@ -4,7 +4,7 @@ import { services } from '../../../services/index.js';
 
 const transferTemplate = `
 code: |-
-  (coin.transfer "{{{account-from}}}" "{{{account-to}}}" {{amount}})
+  (coin.transfer "{{{account-from}}}" "{{{account-to}}}" {{decimal-amount}})
 data:
 meta:
   chainId: "{{chain-id}}"
@@ -16,7 +16,7 @@ signers:
   - public: "{{pk-from}}"
     caps:
       - name: "coin.TRANSFER"
-        args: ["{{{account-from}}}", "{{{account-to}}}", {{amount}}]
+        args: ["{{{account-from}}}", "{{{account-to}}}", {{decimal-amount}}]
       - name: "coin.GAS"
         args: []
 networkId: "{{network-id}}"
@@ -25,7 +25,7 @@ type: exec
 
 const safeTransferTemplate = `
 code: |-
-  (coin.transfer "{{{account-from}}}" "{{{account-to}}}" {{amount}}))
+  (coin.transfer "{{{account-from}}}" "{{{account-to}}}" {{decimal-amount}}))
   (coin.transfer "{{{account-to}}}" "{{{account-from}}}" 0.000000000001)
 data:
 publicMeta:
@@ -38,7 +38,7 @@ signers:
   - public: {{pk-from}}
     caps:
       - name: "coin.TRANSFER"
-        args: [{{{account-from}}}, {{{account-to}}}, {{amount}}]
+        args: [{{{account-from}}}, {{{account-to}}}, {{decimal-amount}}]
       - name: "coin.GAS"
         args: []
   - public: {{pk-to}}
