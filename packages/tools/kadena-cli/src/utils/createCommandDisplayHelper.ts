@@ -1,9 +1,10 @@
 import chalk from 'chalk';
+import { log } from './logger.js';
 
 export const formatLength: 80 = 80;
 
 export const displaySeparator = (): void => {
-  console.log(chalk.green('-'.repeat(formatLength)));
+  log.info(chalk.green('-'.repeat(formatLength)));
 };
 
 export const formatConfig = (key: string, value?: string | number): string => {
@@ -44,7 +45,7 @@ export const displayConfig = (
       displayValue = '';
     }
 
-    console.log(formatConfig(indentation + key, displayValue));
+    log.info(formatConfig(indentation + key, displayValue));
 
     if (isObject) {
       displayConfig(

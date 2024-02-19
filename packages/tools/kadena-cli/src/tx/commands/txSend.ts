@@ -7,6 +7,7 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
 import { parseTransactionsFromStdin } from '../utils/input.js';
 import { getTransactionsFromFile } from '../utils/txHelpers.js';
@@ -124,7 +125,7 @@ export const createSendTransactionCommand: (
     });
     assertCommandError(result);
 
-    console.log(
+    log.info(
       result.data.transactions
         .map(
           (transaction) =>

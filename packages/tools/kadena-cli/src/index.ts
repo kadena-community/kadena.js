@@ -16,4 +16,5 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch(console.error);
+// eslint-disable-next-line no-console
+main().catch((error) => console.error(error));

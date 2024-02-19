@@ -15,6 +15,7 @@ import {
 import { services } from '../../services/index.js';
 
 import { sanitizeFilename } from '../../utils/helpers.js';
+import { log } from '../../utils/logger.js';
 import { removeAfterFirstDot } from '../../utils/path.util.js';
 
 export type TSeedContent = string;
@@ -57,7 +58,7 @@ export async function savePlainKeyByAlias(
       );
     }
   } catch (error) {
-    console.error(`Error saving plain key file:`, error);
+    log.error(`Error saving plain key file:`, error);
   }
 }
 /**
@@ -106,7 +107,7 @@ export async function saveKeyByAlias(
       );
     }
   } catch (error) {
-    console.error(`Error saving key file:`, error);
+    log.error(`Error saving key file:`, error);
   }
 }
 
@@ -182,7 +183,7 @@ export async function getFilesWithExtension(
       return filename.toLowerCase().endsWith(extension);
     });
   } catch (error) {
-    console.error(`Error reading directory for extension ${extension}:`, error);
+    log.error(`Error reading directory for extension ${extension}:`, error);
     return [];
   }
 }

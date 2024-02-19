@@ -1,10 +1,9 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
-import debug from 'debug';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import type { IAccountDetailsResult } from '../types.js';
 import type { IGetAccountDetailsParams } from '../utils/getAccountDetails.js';
 import { getAccountDetailsFromChain } from '../utils/getAccountDetails.js';
@@ -46,7 +45,7 @@ export const createAccountDetailsCommand: (
     globalOptions.chainId({ isOptional: false }),
   ],
   async (config) => {
-    debug('account-details:action')({ config });
+    log.debug('account-details:action', { config });
 
     const result = await accountDetails({
       accountName: config.accountConfig.name,
@@ -58,9 +57,9 @@ export const createAccountDetailsCommand: (
 
     assertCommandError(result);
 
-    console.log(
-      chalk.green(`\nDetails of account "${config.accountConfig.name}":\n`),
+    log.info(
+      log.color.green(`\nDetails of account "${config.accountConfig.name}":\n`),
     );
-    console.log(chalk.green(`${JSON.stringify(result.data, null, 2)}`));
+    log.info(log.color.green(`${JSON.stringify(result.data, null, 2)}`));
   },
 );

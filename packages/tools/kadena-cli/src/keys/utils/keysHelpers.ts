@@ -14,6 +14,7 @@ import {
 import { services } from '../../services/index.js';
 
 import { notEmpty } from '../../utils/helpers.js';
+import { log } from '../../utils/logger.js';
 import type { IKeyPair } from './storage.js';
 import { getFilesWithExtension } from './storage.js';
 
@@ -36,7 +37,7 @@ export interface IWallet {
  */
 export async function ensureWalletExists(): Promise<void> {
   if (!(await services.filesystem.directoryExists(WALLET_DIR))) {
-    console.error(`No Wallet created yet. Please create a wallet first.`);
+    log.error(`No Wallet created yet. Please create a wallet first.`);
     process.exit(1);
   }
 }
@@ -57,7 +58,8 @@ export async function getWallet(walletFile: string): Promise<IWallet | null> {
     walletNameParts.length === 2 && walletNameParts[1] === 'wallet';
 
   if (!isRegular && !isLegacy) {
-    console.trace(
+    log.debug(new Error('Invalid wallet file given to getWallet'));
+    log.warning(
       `Invalid wallet file given to getWallet: "${walletFile}", expected full file name`,
     );
     return null;

@@ -1,6 +1,4 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
-import debug from 'debug';
 
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaDecrypt } from '@kadena/hd-wallet';
@@ -9,6 +7,7 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { toHexStr } from '../utils/keysHelpers.js';
 
 export const decrypt = async (
@@ -45,13 +44,13 @@ export const createDecryptCommand: (program: Command, version: string) => void =
       globalOptions.securityCurrentPassword({ isOptional: false }),
     ],
     async (config) => {
-      debug('decrypt:action')({ config });
+      log.debug('decrypt:action', { config });
 
       if (config.keyMessage === undefined) {
         throw new Error('Missing keyMessage');
       }
 
-      console.log(chalk.yellow(`You are about to decrypt this message.\n`));
+      log.warning(`You are about to decrypt this message.\n`);
 
       const result = await decrypt(
         config.securityCurrentPassword,
@@ -60,7 +59,7 @@ export const createDecryptCommand: (program: Command, version: string) => void =
 
       assertCommandError(result);
 
-      console.log(chalk.green(`\nDecrypted message: ${result.data.value}`));
-      console.log(chalk.yellow(`\nPlease store it in a safe place.\n`));
+      log.info(log.color.green(`\nDecrypted message: ${result.data.value}`));
+      log.info(log.color.yellow(`\nPlease store it in a safe place.\n`));
     },
   );

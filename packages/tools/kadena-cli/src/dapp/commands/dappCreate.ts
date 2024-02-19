@@ -1,12 +1,11 @@
-import chalk from 'chalk';
 import { spawnSync } from 'child_process';
 import type { Command } from 'commander';
-import debug from 'debug';
 import { join } from 'path';
 
 import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 
 export const createDappCommand: (program: Command, version: string) => void =
   createCommand(
@@ -14,10 +13,10 @@ export const createDappCommand: (program: Command, version: string) => void =
     'Create a new dapp project',
     [globalOptions.dappTemplate()],
     async (config, args) => {
-      debug('dapp-create-command')({ config });
+      log.debug('dapp-create-command', { config });
       if (args[0] === undefined) {
-        console.error(
-          chalk.red(
+        log.error(
+          log.color.red(
             'Project name is required, e.g. `kadena dapp create my-dapp`',
           ),
         );
@@ -30,7 +29,7 @@ export const createDappCommand: (program: Command, version: string) => void =
         await services.filesystem.directoryExists(projectDir);
 
       if (folderExists) {
-        console.error(chalk.red(`Project directory ${args[0]} already exists`));
+        log.error(`Project directory ${args[0]} already exists`);
         process.exit(1);
       }
 

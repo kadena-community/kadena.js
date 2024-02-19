@@ -1,7 +1,7 @@
-import { IS_DEVELOPMENT } from '../../constants/config.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { addAccount } from '../utils/addAccount.js';
 import { displayAddAccountSuccess } from '../utils/addHelpers.js';
 import { getAccountDetails } from '../utils/getAccountDetails.js';
@@ -107,9 +107,7 @@ export const createAddAccountManualCommand = createCommandFlexible(
       };
     }
 
-    if (IS_DEVELOPMENT) {
-      console.log('create-account-add-manual:action', newConfig);
-    }
+    log.debug('create-account-add-manual:action', newConfig);
 
     const result = await addAccount(newConfig);
 

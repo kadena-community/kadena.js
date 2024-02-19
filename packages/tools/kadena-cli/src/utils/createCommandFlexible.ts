@@ -108,8 +108,8 @@ export const createCommandFlexible =
     description: string,
     options: T,
     action: C,
-  ): any =>
-  (program: Command, version: string) => {
+  ): ((program: Command, version: string) => void) =>
+  (program) => {
     let command = program.command(name).description(description);
     let allowsUnknownOptions = false;
 
@@ -156,6 +156,7 @@ export const createCommandFlexible =
             }
           };
           return acc;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         }, {} as any);
 
         const values = rest.flatMap((r) => r.args);

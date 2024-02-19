@@ -4,6 +4,7 @@ import {
   defaultAccount,
   simulationDefaults,
 } from '../../../../constants/devnets.js';
+import { log } from '../../../../utils/logger.js';
 import type { TransferType } from '../file.js';
 import { appendToLogFile, createLogFile } from '../file.js';
 import {
@@ -52,18 +53,18 @@ export async function simulateCoin({
 
   // Parameters validation
   if (tokenPool < maxAmount) {
-    console.error(
+    log.error(
       'The max transfer amount cant be greater than the total token pool',
     );
     return;
   }
 
   if (numberOfAccounts <= 1) {
-    console.error('Number of accounts must be greater than 1');
+    log.error('Number of accounts must be greater than 1');
     return;
   }
 
-  console.log('Seed value: ', seed);
+  log.info('Seed value: ', seed);
   const filepath = await createLogFile(
     logFolder,
     `coin-${Date.now()}-${seed}.csv`,
@@ -75,7 +76,7 @@ export async function simulateCoin({
       // This will determine if the account has 1 or 2 keys (even = 1 key, odd = 2 keys)
       const noOfKeys = i % 2 === 0 ? 1 : 2;
       let account = await generateAccount(noOfKeys, defaultChain, network.host);
-      console.log(
+      log.info(
         `Generated KeyPair\nAccount: ${
           account.account
         }\nPublic Key: ${stringifyProperty(
@@ -147,6 +148,7 @@ export async function simulateCoin({
 
     const startTime = Date.now();
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       // Transfer between accounts
       for (let i = 0; i < accounts.length; i++) {
@@ -210,7 +212,7 @@ export async function simulateCoin({
           }
 
           if (account.chainId === nextAccount.chainId) {
-            console.warn('Skipping cross chain transfer to same chain');
+            log.warning('Skipping cross chain transfer to same chain');
             continue;
           }
 
@@ -234,7 +236,7 @@ export async function simulateCoin({
           }
 
           if (isEqualChainAccounts(account, nextAccount)) {
-            console.warn('Skipping transfer to self');
+            log.warning('Skipping transfer to self');
             continue;
           }
 
@@ -264,7 +266,7 @@ export async function simulateCoin({
           from: account.account,
           to: nextAccount.account,
           amount,
-          requestKey: result?.reqKey || '',
+          requestKey: result?.reqKey ?? '',
           action: transferType,
         });
 
@@ -281,7 +283,7 @@ export async function simulateCoin({
         const simulatedTime = Date.now() - startTime;
 
         if (simulatedTime > maxTime) {
-          console.log(
+          log.info(
             `Simulation stopped after ${maxTime}ms. Please wait for the last transactions to complete.`,
           );
           return;
@@ -290,7 +292,7 @@ export async function simulateCoin({
       counter++;
     }
   } catch (error) {
-    console.error(error);
+    log.error(error);
     await appendToLogFile(filepath, { error });
     throw error;
   }
@@ -312,10 +314,10 @@ async function validateBalance(
   const amountWithSafetyGap = amount + getRandomNumber(seededRandomNo, 1);
 
   if (amountWithSafetyGap > parseFloat(balance)) {
-    console.warn(
+    log.warning(
       `Insufficient funds for ${account.account}\nFunds necessary: ${amountWithSafetyGap}\nFunds available: ${balance}`,
     );
-    console.log('Skipping transfer');
+    log.info('Skipping transfer');
     return false;
   }
 

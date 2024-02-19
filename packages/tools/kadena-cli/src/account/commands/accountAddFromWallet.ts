@@ -1,13 +1,12 @@
-import chalk from 'chalk';
 import { Option } from 'commander';
 import { z } from 'zod';
 
-import { IS_DEVELOPMENT } from '../../constants/config.js';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { checkbox } from '../../utils/prompts.js';
 import { addAccount } from '../utils/addAccount.js';
 import {
@@ -68,14 +67,12 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
     const accountAlias = (await option.accountAlias()).accountAlias;
     const keyWallet = await option.keyWallet();
     if (!keyWallet.keyWalletConfig) {
-      console.log(chalk.red(`Wallet ${keyWallet.keyWallet} does not exist.`));
+      log.error(`Wallet ${keyWallet.keyWallet} does not exist.`);
       return;
     }
 
     if (!keyWallet.keyWalletConfig.keys.length) {
-      console.log(
-        chalk.red(`Wallet ${keyWallet.keyWallet} does not contain any keys.`),
-      );
+      log.error(`Wallet ${keyWallet.keyWallet} does not contain any keys.`);
       return;
     }
 
@@ -118,9 +115,7 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
       accountOverwrite,
     };
 
-    if (IS_DEVELOPMENT) {
-      console.log('create-account-add-from-wallet:action', updatedConfig);
-    }
+    log.debug('create-account-add-from-wallet:action', updatedConfig);
 
     const result = await addAccount(updatedConfig);
 
