@@ -2,10 +2,12 @@ import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import classnames from 'classnames';
+import { motion } from 'framer-motion';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import {
   cameraButton,
+  cameraButtonWrapperClass,
   cameraClass,
   cameraWrapperClass,
   hiddenClass,
@@ -22,7 +24,6 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
-  const canvasElm = canvasRef.current;
   const { proofOfUs, updateBackgroundColor } = useProofOfUs();
 
   useEffect(() => {
@@ -34,7 +35,13 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+
+    return () => {
+      (videoRef.current?.srcObject as MediaStream)
+        ?.getTracks()
+        .forEach((t) => t.stop());
+    };
+  }, [videoRef.current]);
 
   useEffect(() => {
     if (!videoRef.current || !isMounted) return;
@@ -56,10 +63,6 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
         alert('The browser needs permissions for the camera to work');
       });
   }, [isMounted]);
-
-  useEffect(() => {
-    if (!canvasElm) return;
-  }, [canvasElm]);
 
   const handleCapture = async (evt: MouseEvent<HTMLButtonElement>) => {
     if (isAlreadySigning(proofOfUs?.signees)) return;
@@ -97,32 +100,40 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   };
 
   return (
-    <section className={wrapperClass}>
-      {!isMounted && <div>loading</div>}
-      <canvas ref={canvasRef} />
-      <div
-        className={classnames(
-          cameraWrapperClass,
-          !isMounted ? hiddenClass : '',
-        )}
-      >
-        <video
-          className={classnames(cameraClass, !isMounted ? hiddenClass : '')}
-          ref={videoRef}
-          id="player"
-          controls={false}
-          autoPlay
-          muted
-          playsInline
-        ></video>
-        {!isAlreadySigning(proofOfUs?.signees) && (
+    <>
+      <section className={wrapperClass}>
+        {!isMounted && <div>loading</div>}
+        <canvas ref={canvasRef} />
+        <div
+          className={classnames(
+            cameraWrapperClass,
+            !isMounted ? hiddenClass : '',
+          )}
+        >
+          <video
+            className={classnames(cameraClass, !isMounted ? hiddenClass : '')}
+            ref={videoRef}
+            id="player"
+            controls={false}
+            autoPlay
+            muted
+            playsInline
+          ></video>
+        </div>
+      </section>
+      {!isAlreadySigning(proofOfUs?.signees) && (
+        <motion.div
+          layout
+          className={cameraButtonWrapperClass}
+          layoutId="floatButton"
+        >
           <button
             className={cameraButton}
             id="capture"
             onClick={handleCapture}
           />
-        )}
-      </div>
-    </section>
+        </motion.div>
+      )}
+    </>
   );
 };

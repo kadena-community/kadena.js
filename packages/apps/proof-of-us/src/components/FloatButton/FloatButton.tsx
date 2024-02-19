@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import type { FC, PropsWithChildren } from 'react';
 import { floatClass } from './style.css';
@@ -8,8 +9,8 @@ interface IProps extends PropsWithChildren {
 
 export const FloatButton: FC<IProps> = ({ href, children }) => {
   return (
-    <Link className={floatClass} href={href}>
-      {children}
-    </Link>
+    <motion.div layout layoutId="floatButton" className={floatClass}>
+      <Link href={href}>{children}</Link>
+    </motion.div>
   );
 };
