@@ -6,31 +6,30 @@ import { env } from '@/utils/env';
 import type { FC } from 'react';
 
 interface IProps {
-  eventId: string;
-  token?: IProofOfUsToken;
-  proofOfUs?: IProofOfUsTokenMeta;
+  tokenId: string;
+  data?: IProofOfUsTokenMeta;
 }
-export const Share: FC<IProps> = ({ token, proofOfUs }) => {
+export const Share: FC<IProps> = ({ tokenId, data }) => {
+  if (!data) return null;
   return (
     <div>
-      {proofOfUs?.name && (
+      {data.name && (
         <>
-          <SocialShare token={proofOfUs} />
-          <AttendanceTicket token={proofOfUs} />
+          <SocialShare data={data} tokenId={tokenId} />
+          <AttendanceTicket data={data} />
         </>
       )}
 
       <div>
         find your token on the chain:{' '}
         <a
-          href={`https://explorer.chainweb.com/${env.NETWORKNAME}/eventsearch?q=${token?.['token-id']}`}
+          href={`https://explorer.chainweb.com/${env.NETWORKNAME}/eventsearch?q=${tokenId}`}
           target="_blank"
         >
           click here
         </a>
       </div>
-      {proofOfUs && <pre>{JSON.stringify(proofOfUs, null, 2)}</pre>}
-      {token && <pre>{JSON.stringify(token, null, 2)}</pre>}
+      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
     </div>
   );
 };

@@ -10,13 +10,13 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 
 interface IProps {
-  token: IProofOfUsTokenMeta;
+  data: IProofOfUsTokenMeta;
   eventId: string;
   isMinted: boolean;
 }
 
 export const ScanAttendanceEvent: FC<IProps> = ({
-  token,
+  data,
   eventId,
   isMinted,
 }) => {
@@ -40,8 +40,8 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     );
   };
 
-  const startDate = new Date(token.startDate * 1000);
-  const endDate = new Date(token.endDate * 1000);
+  const startDate = new Date(data.startDate * 1000);
+  const endDate = new Date(data.endDate * 1000);
 
   const hasStarted = isBefore(startDate, Date.now());
   const hasEnded = isAfter(Date.now(), endDate);
@@ -62,7 +62,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
         <h2>Attendance @</h2>
 
         <div>claimstatus: {status}</div>
-        <AttendanceTicket token={token} />
+        <AttendanceTicket data={data} />
       </div>
       <div>
         {!hasStarted && (
