@@ -298,7 +298,7 @@ const Home: FC = () => {
                   <li>
                     <a
                       className={linkStyle}
-                      href="https://docs.kadena.io/kadena/client"
+                      href="https://docs.kadena.io/pact/reference/functions"
                       target="_blank"
                       rel="noreferrer"
                     >
