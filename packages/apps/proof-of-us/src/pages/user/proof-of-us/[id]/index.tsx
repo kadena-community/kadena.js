@@ -21,8 +21,8 @@ const Page: NextPage<IProps> = ({ params }) => {
 
 export const getServerSideProps = async (
   ctx: NextPageContext,
-): Promise<IProps> => {
-  return { params: { id: `${ctx.query.id}` } };
+): Promise<{ props: IProps }> => {
+  return { props: { params: { id: `${ctx.query.id}` } } };
 };
 
 export default Page;
