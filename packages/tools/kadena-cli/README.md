@@ -398,7 +398,7 @@ kadena account add-from-wallet [arguments]
 example:
 
 ```
-kadena account add-from-wallet --account-alias="myalias" --key-wallet="mywallet.wallet" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="6a49b8d28ed2fa76c06017c916d0e8451dea449eb9e23d8489e5cff0467dd291" --predicate="keys-all"
+kadena account add-from-wallet --account-alias="myalias" --key-wallet="mywallet.wallet" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="publickey" --predicate="keys-all"
 ```
 
 ---
