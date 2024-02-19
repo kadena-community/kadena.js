@@ -53,7 +53,7 @@
     "@kadena/client": "workspace:^",
     "@kadena/client-utils": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
-    "@kadena/hd-wallet": "workspace:0.3.0",
+    "@kadena/hd-wallet": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-cli": "workspace:^",
     "@kadena/pactjs-generator": "workspace:*",
