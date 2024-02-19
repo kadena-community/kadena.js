@@ -24,7 +24,7 @@ describe('deploy-from-directory', () => {
     ]),
   };
 
-  describe('deploying templates', () => {
+  describe('deploying templates', async () => {
     const templateConfig = {
       path: 'src/nodejs/test/aux-files/deploy-from-directory/template/',
       extension: 'yaml',
@@ -152,6 +152,34 @@ describe('deploy-from-directory', () => {
         clientConfig,
       });
 
+      expect(deployTemplateSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it('should throw an error if no template or code files are provided', async () => {
+      await expect(
+        deployFromDirectory({
+          chainIds: [chainId],
+          clientConfig,
+        }),
+      ).rejects.toThrow('Please provide a template or a code files directory');
+    });
+
+    it('should catch and log the error if one occurs', async () => {
+      const deployTemplateSpy = vi
+        .spyOn(deployTemplate, 'deployTemplate')
+        .mockImplementation(() => {
+          throw new Error('test error');
+        });
+
+      const consoleSpy = vi.spyOn(console, 'error');
+
+      await deployFromDirectory({
+        chainIds: [chainId],
+        templateConfig,
+        clientConfig,
+      });
+
+      expect(consoleSpy).toHaveBeenCalledTimes(2);
       expect(deployTemplateSpy).toHaveBeenCalledTimes(2);
     });
   });
