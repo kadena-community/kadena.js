@@ -9,7 +9,7 @@
 
 <!-- genericHeader end -->
 
-- [@kadena/kadena-cli](#kadena/kadena-cli)
+- [@kadena/kadena-cli](#kadenakadena-cli)
 - [KADENA CLI](#kadena-cli)
   - [installation from npm](#installation-from-npm)
   - [list of commands](#list-of-commands)
@@ -22,7 +22,7 @@
   - [kadena account](#kadena-account)
   - [kadena tx](#kadena-tx)
   - [kadena dapp](#kadena-dapp)
-  - [Supported Templates](#supported-templates)
+    - [Supported Templates](#supported-templates)
 
 <hr>
 
@@ -109,7 +109,7 @@ Tool to create and manage networks
 kadena networks update [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                        |
+| **Arguments & Options** | **Description**                        |
 | ----------------------- | --------------------------------------- |
 | --network-name          | Update the name of the network          |
 | --network-id            | Update the id of the network            |
@@ -128,7 +128,7 @@ kadena networks update --network-name="mainnet" --network-id="mainnet01" --netwo
 kadena networks create [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                     |
+| **Arguments & Options** | **Description**                     |
 | ----------------------- | ------------------------------------ |
 | --network-name          | Set the name of the network          |
 | --network-id            | Set the id of the network            |
@@ -148,7 +148,7 @@ kadena networks create --network-name="mainnet" --network-id="mainnet01" --netwo
 kadena networks delete [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                 |
+| **Arguments & Options** | **Description**                 |
 | ----------------------- | -------------------------------- |
 | --network               | Select name of network to delete |
 | --network-delete        | Confirm deletion of network      |
@@ -182,7 +182,7 @@ Tool to generate and manage keys
 kadena keys create-wallet [arguments]
 ```
 
-| **Arguments & Options**    | ** Description**                               |
+| **Arguments & Options**    | **Description**                               |
 | -------------------------- | ---------------------------------------------- |
 | --key-wallet               | Set the name of the wallet                     |
 | --security-password        | Set the password for the wallet                |
@@ -203,7 +203,7 @@ password will be hidden after entry: --security-password=_
 kadena keys import-wallet [arguments]
 ```
 
-| **Arguments & Options**    | ** Description**                               |
+| **Arguments & Options**    | **Description**                               |
 | -------------------------- | ---------------------------------------------- |
 | --key-mnemonic             | 12 word mnemnoc phrase                         |
 | --security-new-password    | Set the password for the wallet                |
@@ -225,7 +225,7 @@ password will be hidden after entry: --security-new-password=_
 kadena keys gen-hd [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                                                                    |
+| **Arguments & Options** | **Description**                                                                    |
 | ----------------------- | ----------------------------------------------------------------------------------- |
 | --key-wallet            | Provide the name of the wallet                                                      |
 | --key-index-or-range    | Set index or range of indices for key generation (e.g., 5 or 1-5)                   |
@@ -266,7 +266,7 @@ password will be hidden after entry: --security-password=\*
 kadena keys gen-plain [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                            |
+| **Arguments & Options** | **Description**                            |
 | ----------------------- | ------------------------------------------- |
 | --key-alias             | Set alias of the key to store on filesystem |
 | --key-amount            | Set the amount of keys to generate          |
@@ -283,7 +283,7 @@ kadena keys gen-plain --key-alias="myalias" --key-amount="5"
 kadena keys change-wallet-password [arguments]
 ```
 
-| **Arguments & Options**     | ** Description**                                   |
+| **Arguments & Options**     | **Description**                                   |
 | --------------------------- | -------------------------------------------------- |
 | --key-wallet                | Provide the name of the wallet                     |
 | --security-current-password | Provide the current password of the wallet         |
@@ -306,7 +306,7 @@ password will be hidden after entry: --security-current-password=_
 kadena keys delete-wallet [arguments]
 ```
 
-| **Arguments & Options** | ** Description**              |
+| **Arguments & Options** | **Description**              |
 | ----------------------- | ----------------------------- |
 | --key-wallet            | Select the name of the wallet |
 | --confirm               | Confirm deletion of wallet    |
@@ -329,7 +329,7 @@ kadena keys delete-wallet --key-wallet="all" --confirm=true
 kadena keys decrypt [arguments]
 ```
 
-| **Arguments & Options**     | ** Description**                    |
+| **Arguments & Options**     | **Description**                    |
 | --------------------------- | ----------------------------------- |
 | --key-message               | Provide encrypted Message           |
 | --security-current-password | Provide password to decrypt message |
@@ -349,13 +349,13 @@ password will be hidden after entry: --security-current-password=\*
 Tool to manage / fund accounts of fungibles (e.g. coin')
 
 | **Parameter**   | **Description**                                  | **Required** | **Default value** |
-| --------------- | ------------------------------------------------ | ------------ | ----------------- | --- |
+| --------------- | ------------------------------------------------ | ------------ | ----------------- |
 | add-manual      | Add an existing account to the CLI               | No           |                   |
 | add-from-wallet | Add an account from a key wallet                 | No           |                   |
 | details         | Get details of an account                        | No           |                   |
 | fund            | Fund a existing/new account                      | No           |                   |
 | name-to-address | Resolve a .kda name to a k:address (kadenanames) | No           |                   |
-| address-to-name | Resolve a k:address to a .kda name (kadenanames) |              | No                |     |
+| address-to-name | Resolve a k:address to a .kda name (kadenanames) | No           |                   |
 
 ---
 
@@ -363,7 +363,7 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 kadena account add-manual [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                             |
+| **Arguments & Options** | **Description**                             |
 | ----------------------- | -------------------------------------------- |
 | --account-alias         | Set alias for account                        |
 | --account-name          | Set account name                             |
@@ -385,7 +385,7 @@ kadena account add-manual --account-alias="myalias" --account-name="myaccountnam
 kadena account add-from-wallet [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                             |
+| **Arguments & Options** | **Description**                             |
 | ----------------------- | -------------------------------------------- |
 | --account-alias         | Set alias for account                        |
 | --key-wallet            | Provide the name of the wallet               |
@@ -407,7 +407,7 @@ kadena account add-from-wallet --account-alias="myalias" --key-wallet="mywallet.
 kadena account details [arguments]
 ```
 
-| **Arguments & Options** | ** Description**               |
+| **Arguments & Options** | **Description**               |
 | ----------------------- | ------------------------------ |
 | --account               | Provide alias for account      |
 | --network               | Name of the network to be used |
@@ -425,7 +425,7 @@ kadena account details --account="myalias.yaml" --network="mainnet" --chain-id="
 kadena account fund [arguments]
 ```
 
-| **Arguments & Options** | ** Description**               |
+| **Arguments & Options** | **Description**               |
 | ----------------------- | ------------------------------ |
 | --account               | Provide alias for account      |
 | --amount                | Amount to fund                 |
@@ -444,7 +444,7 @@ kadena account fund --account="myalias.yaml" --amount="10" --network="testnet" -
 kadena account fund [arguments]
 ```
 
-| **Arguments & Options** | ** Description**               |
+| **Arguments & Options** | **Description**               |
 | ----------------------- | ------------------------------ |
 | --account               | Provide alias for account      |
 | --amount                | Amount to fund                 |
@@ -463,7 +463,7 @@ kadena account fund --account="myalias.yaml" --amount="10" --network="testnet" -
 kadena account account name-to-address [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                          |
+| **Arguments & Options** | **Description**                          |
 | ----------------------- | ----------------------------------------- |
 | --network               | Name of the network to be used            |
 | --account-kdn-name      | Provide .kda name to resolve to k:account |
@@ -480,7 +480,7 @@ kadena account name-to-address --network="mainnet" --account-kdn-name="kadena.kd
 kadena account account name-to-address [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                          |
+| **Arguments & Options** | **Description**                          |
 | ----------------------- | ----------------------------------------- |
 | --network               | Name of the network to be used            |
 | --account-kdn-address   | Provide k:account to resolve to .kda name |
@@ -512,7 +512,7 @@ Tool for creating and managing transactions
 kadena tx create-transaction [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                               |
+| **Arguments & Options** | **Description**                               |
 | ----------------------- | ---------------------------------------------- |
 | --template              | Select template                                |
 | --template-data         | Provide File path of data to use for template  |
@@ -532,7 +532,7 @@ kadena tx create-transaction --template="transfer.yaml" --template-data="path" (
 kadena tx create-transaction [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                               |
+| **Arguments & Options** | **Description**                               |
 | ----------------------- | ---------------------------------------------- |
 | --template              | Select template                                |
 | --template-data         | Provide File path of data to use for template  |
@@ -552,7 +552,7 @@ kadena tx create-transaction --template="transfer.yaml" --template-data="path" (
 kadena tx sign-with-keypair [arguments]
 ```
 
-| **Arguments & Options**         | ** Description**                                                        |
+| **Arguments & Options**         | **Description**                                                        |
 | ------------------------------- | ----------------------------------------------------------------------- |
 | --key-pairs                     | Provide publickey and secretKey (or list seperated my semicolon)        |
 | --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma seperated list) |
@@ -569,7 +569,7 @@ kadena tx sign-with-keypair --key-pairs="publicKey=xxx,secretKey=xxx" --tx-unsig
 kadena tx sign-with-alias-file [arguments]
 ```
 
-| **Arguments & Options**         | ** Description**                                                        |
+| **Arguments & Options**         | **Description**                                                        |
 | ------------------------------- | ----------------------------------------------------------------------- |
 | --key-wallet                    | Provode the name of the wallet                                          |
 | --security-password             | Provide the password for the wallet                                     |
@@ -590,7 +590,7 @@ password will be hidden after entry: --security-password=\*
 kadena tx sign-with-local-wallet [arguments]
 ```
 
-| **Arguments & Options**         | ** Description**                                                        |
+| **Arguments & Options**         | **Description**                                                        |
 | ------------------------------- | ----------------------------------------------------------------------- |
 | --key-wallet                    | Provode the name of the wallet                                          |
 | --security-password             | Provide the password for the wallet                                     |
@@ -611,7 +611,7 @@ password will be hidden after entry: --security-password=\*
 kadena tx test-signed-transaction [arguments]
 ```
 
-| **Arguments & Options**       | ** Description**                                                      |
+| **Arguments & Options**       | **Description**                                                      |
 | ----------------------------- | --------------------------------------------------------------------- |
 | --network                     | Name of the network to be used                                        |
 | --directory                   | Provide the directory for the signed transaction                      |
@@ -630,7 +630,7 @@ kadena tx test-signed-transaction --network="testnet" --directory="./" --tx-sign
 kadena tx send [arguments]
 ```
 
-| **Arguments & Options**       | ** Description**                                                      |
+| **Arguments & Options**       | **Description**                                                      |
 | ----------------------------- | --------------------------------------------------------------------- |
 | --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma seperated list) |
 | --network                     | Name of the network to be used                                        |
@@ -656,7 +656,7 @@ Tool for creating dapp projects
 kadena dapp create [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                         |
+| **Arguments & Options** | **Description**                         |
 | ----------------------- | ---------------------------------------- |
 | project-directory       | Specify the project directory [Required] |
 | --dapp-template         | Select template: vuejs, nextjs, angular  |
