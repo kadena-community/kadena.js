@@ -43,7 +43,7 @@ export async function printWalletKeys(wallet: IWallet | null): Promise<void> {
 
     if (parsed) {
       rows.push([
-        key, // Filename
+        key,
         parsed.publicKey || 'N/A',
         parsed.secretKey !== undefined
           ? maskStringPreservingStartAndEnd(parsed.secretKey, 65)
