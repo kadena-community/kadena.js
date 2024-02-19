@@ -9,86 +9,40 @@
 
 <!-- genericHeader end -->
 
-- [@kadena/kadena-cli](#kadenakadena-cli)
+- [@kadena/kadena-cli](#kadena/kadena-cli)
 - [KADENA CLI](#kadena-cli)
-  - [installation from brew](#installation-from-brew)
-  - [update from brew](#update-from-brew)
+  - [installation from npm](#installation-from-npm)
   - [list of commands](#list-of-commands)
     - [list of root commands and flags](#list-of-root-commands-and-flags)
     - [Command specific help](#command-specific-help)
   - [Subjects](#subjects)
-  - [kda config](#kda-config)
-  - [kda keys (kda tool)](#kda-keys-kda-tool)
-    - [kda keys create](#kda-keys-create)
-    - [kda keys list](#kda-keys-list)
-  - [kda tx](#kda-tx)
-  - [kda typescript](#kda-typescript)
-    - [generate](#generate)
-  - [kda contract](#kda-contract)
-    - [retrieve](#retrieve)
-    - [deploy](#deploy)
-  - [kda account](#kda-account)
-  - [kda devnet](#kda-devnet)
-  - [kda marmalade](#kda-marmalade)
-  - [kda dapp](#kda-dapp)
+  - [kadena config](#kadena-config)
+  - [kadena networks](#kadena-networks)
+  - [kadena keys](#kadena-keys)
+  - [kadena account](#kadena-account)
+  - [kadena tx](#kadena-tx)
+  - [kadena dapp](#kadena-dapp)
+  - [Supported Templates](#supported-templates)
 
 <hr>
 
 # KADENA CLI
 
-Initial setup for Kadena CLI
+Command Line Interface
 
-This document is a representation of the features of kadena CLI, each feature is
-linked to a scenario that fully displays each step that will be transformed into
-commander steps This document is WIP.
+Welcome to the Kadena CLI guide, your all-encompassing manual for mastering the
+Kadena command-line interface. This document is designed to unveil the full
+suite of commands available through Kadena CLI, providing you with the insights
+necessary to harness its potential fully.
 
-Example code:
+Kadena CLI has one primary entry-point command: kadena, dedicated to application
+development, offering tools and commands tailored for building and managing
+Kadena-based applications.
 
-```ts
-const { Command } = require('commander');
-const program = new Command();
+## installation from npm
 
-program
-  .name('string-util')
-  .description('CLI to some JavaScript string utilities')
-  .version('0.8.0');
-
-program
-  .command('split')
-  .description('Split a string into substrings and display as an array')
-  .argument('<string>', 'string to split')
-  .option('--first', 'display just the first substring')
-  .option('-s, --separator <char>', 'separator character', ',')
-  .action((str, options) => {
-    const limit = options.first ? 1 : undefined;
-    console.log(str.split(options.separator, limit));
-  });
-
-program.parse();
-```
-
-## installation from brew
-
-```bash
-brew install kda-cli
-```
-
-## update from brew
-
-```bash
-brew update kda-cli
-```
-
-## installation
-
-To install the executable from this repo:
-
-```sh
-pnpm install
-pnpm build --filter @kadena/kadena-cli
-
-# make sure you're on the project's path
-pnpm link -g
+```pnpm
+pnpm install -g @kadena/kadena-cli
 ```
 
 ## list of commands
@@ -98,41 +52,39 @@ prefill a question by filling the flag
 
 ### list of root commands and flags
 
-|           | description                                                              |
-| --------- | ------------------------------------------------------------------------ |
-| config    | configuration of the cli. E.g. network, config directory                 |
-| update    | update the kda-cli itself                                                |
-| --help    | display help information                                                 |
-| --version | display version information                                              |
-| --[no-]ci | disable all interactive questions (for use in CI) (KDA_CLI_CI_MODE=true) |
+|           | description                                              |
+| --------- | -------------------------------------------------------- |
+| config    | configuration of the cli. E.g. network, config directory |
+| --help    | display help information                                 |
+| --version | display version information                              |
 
 ### Command specific help
 
-To get help on a `subject` use `kda <subject> --help`
+To get help on a `subject` use `kadena <subject> --help`
 
 ## Subjects
 
 Each command is structured as
-`kda <subject> [...<subject>] <verb> [--flags] [args]` apart from some root
+`kadena <subject> [...<subject>] <verb> [--flags] [args]` apart from some root
 level defaults.
 
 Available subjects
 
-| subject    | description                                                                     |
-| ---------- | ------------------------------------------------------------------------------- |
-| keys       | working with keys: generating, listing, disabling, removing                     |
-| tx         | working with transactions: creating and filling templates, sending transactions |
-| typescript | generation of type-definitions for client side projects                         |
-| contract   | working with contracts: generate, retrieving from chain, deployment             |
-| account    | working with any fungible account. Defaults to coin                             |
-| devnet     | starting, stopping, restarting and configuring local devnet                     |
-| marmalade  | working with NFTs                                                               |
+| subject  | description                                              |
+| -------- | -------------------------------------------------------- |
+| networks | Tool to create and manage networks                       |
+| account  | Tool to manage / fund accounts of fungibles (e.g 'coin') |
+| keys     | Tool to generate and manage keys                         |
+| tx       | Tool for creating and managing transactions              |
+| dapp     | Tool for managing dapp projects                          |
 
-## kda config
+---
 
-init creates a .kadena/ folder with a config.yaml containing the init command
-ask for context / devnet/testnet/mainnet/local/custom | if already exists |
-overwrite
+## kadena config
+
+Tool for setting up and managing the CLI configuration
+
+init creates a .kadena/ folder with default networks devnet/mainnet/testnet
 
 | **Parameter** | **Description**            | **Required** | **Default value** |
 | ------------- | -------------------------- | ------------ | ----------------- |
@@ -140,266 +92,593 @@ overwrite
 
 ---
 
+## kadena networks
+
+Tool to create and manage networks
+
+| **Parameter** | **Description**             | **Required** | **Default value** |
+| ------------- | --------------------------- | ------------ | ----------------- |
+| list          | List all available networks | No           |                   |
+| update        | Manage networks             | No           |                   |
+| create        | Create new networks         | No           |                   |
+| delete        | Delete existing networks    | No           |                   |
+
+---
+
+```
+kadena networks update [arguments]
+```
+
+| **Arguments & Options** | ** Description**                        |
+| ----------------------- | --------------------------------------- |
+| --network-name          | Update the name of the network          |
+| --network-id            | Update the id of the network            |
+| --network-host          | Update the host for the network         |
+| --network-explorer-url  | Update the explorer url for the network |
+
 example:
 
-```yaml
-profiles:
-  default:
-    private_key: 'efbadbadxx'
-    public_key: 'badbadbadxx'
-    account: 'k:xx'
-    rest_url: 'https://devnet'
+```
+kadena networks update --network-name="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/
 ```
 
-## kda keys (kda tool)
+---
 
-### kda keys create
-
-| **Parameter** | **Description**                             | **Required** | **Default value** |
-| ------------- | ------------------------------------------- | ------------ | ----------------- |
-| hd            | HD Key Format                               | No           |                   |
-|               | The second format is a 12-word recovery     |              |                   |
-|               | phrase compatible with Chainweaver HD key   |              |                   |
-|               | generation. This format consists of all 12  |              |                   |
-|               | words on a single line, each word separated |              |                   |
-|               | by a single space.                          |              |                   |
-|               | [acid baby cage dad earn face gain hair ice |              |                   |
-|               | jar keen lab]                               |              |                   |
-|               |                                             |              |                   |
-| plain         | plain The first is a plain ED25519 key      | No           |                   |
-|               | format compatible with Pact which is a YAML |              |                   |
-|               | file with two fields: public and secret.    |              |                   |
-|               | public: 40c1e2e86cc3974cc29b8953e....       |              |                   |
-|               | secret: badbadbadbadbadbadbadbadba...       |              |                   |
-| list-keys     | List available keys                         | No           |                   |
-
-**Generate to file**
-
-```bash
-kda keys plain > filename.kda
+```
+kadena networks create [arguments]
 ```
 
-### kda keys list
+| **Arguments & Options** | ** Description**                     |
+| ----------------------- | ------------------------------------ |
+| --network-name          | Set the name of the network          |
+| --network-id            | Set the id of the network            |
+| --network-host          | Set the host for the network         |
+| --network-explorer-url  | Set the explorer url for the network |
+| --network-overwrite     | Confirm overwrite configuration      |
 
-## kda tx
+example:
 
-Sign and send
-
-| **Parameter**   | **Description**                                       | **Required**          | **Default value** |
-| --------------- | ----------------------------------------------------- | --------------------- | ----------------- |
-| transfer        | Transfer                                              | No                    |                   |
-| transfer-create | Transfer and create account when account non existent | No                    |                   |
-| sign            |                                                       | Yes                   |                   |
-| --combine-signs | Signatures from multiple wallets                      | When sign is provided |                   |
-| --sign          | Sign transactions                                     | When sign is provided |                   |
-| --wallet-sign   | Send transactions to a wallet for signing             | When sign is provided |                   |
-| local           | Send transaction to /local                            |                       |                   |
-| --preflight     | (true/false) run gas calculations                     |                       |                   |
-| --verifySig     | (true/false) verify signatures                        |                       |                   |
-| preflight       | (true/false) preflight and verifySig false            |                       |                   |
-| send            | Send transactions the network /send                   |                       |                   |
-
-## kda typescript
-
-### generate
-
-Generate Typescript definitions based on a contract
-
-| **Parameter**        | **Description**                                                          | **Required**                | **Default value** |
-| -------------------- | ------------------------------------------------------------------------ | --------------------------- | ----------------- |
-| -c, --clean          | Clean existing generated files                                           | No                          |                   |
-| -i, --caps-interface | Custom name for the interface of the caps. Can be used                   | No                          |                   |
-|                      | to create a type definition with a limited set of capabilities.          |                             |                   |
-| -f, --file           | Generate d.ts from Pact contract file                                    | If --contract is ommitted   |                   |
-| --contract           | Generate d.ts from Pact contract from the blockchain                     | If --file is ommitted       |                   |
-| --api                | The API to use for retrieving the contract                               | When --contract is provided |                   |
-|                      | (e.g. [https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact][1]) |                             |                   |
-| --chain              | The chainId to retrieve the contract from                                | When --contract is provided | 0                 |
-| --network            | The networkId to retrieve the contract from (e.g. testnet)               | When --contract is provided | mainnet           |
-
-**Generate from file**
-
-```bash
-kda typescript generate --file ./myContract.pact
+```
+kadena networks create --network-name="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/ --network-overwrite="yes"
 ```
 
-**Generate from chain**
+---
 
-```bash
-kda typescript generate --contract free.coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact --chain 0 --network testnet04
+```
+kadena networks delete [arguments]
 ```
 
-## kda contract
+| **Arguments & Options** | ** Description**                 |
+| ----------------------- | -------------------------------- |
+| --network               | Select name of network to delete |
+| --network-delete        | Confirm deletion of network      |
 
-Commands to work with smart-contracts
+example:
 
-### retrieve
-
-Retrieve a contract from an API using a /local call
-
-| **Parameter** | **Description**                                                          | **Required** | **Default value**             |
-| ------------- | ------------------------------------------------------------------------ | ------------ | ----------------------------- |
-| retrieve      |                                                                          |              |
-| -m --module   | The module you want to retrieve (e.g. "coin")                            | Yes          |                               |
-| -o, --out     | File to write the contract to (e.g. ./myContract.pact)                   | Yes          |                               |
-| -a, --api     | API to fetch the contract from                                           | Yes          | [https://api.chainweb.com][2] |
-|               | (e.g. [https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact][1]) |              |                               |
-| -n, --network | Network to retrieve from (e.g. testnet)                                  | No           | mainnet                       |
-| create        |                                                                          |              |                               |
-| --principled  | create a smart contract on a principled namespace                        |              |                               |
-| --keys        |                                                                          |              |
-
-### deploy
-
-Deploy / upgrade a smart contract to chain x
-
-| **Parameter** | **Description**                              | **Required**            | **Default value** |
-| ------------- | -------------------------------------------- | ----------------------- | ----------------- |
-| deploy        | deploy / upgrade a smart contract to chain x | Yes                     |                   |
-| --chain       | select chain for deployment                  | When deploy is provided |                   |
-| --env         | select chain for deployment                  | No                      | defaults to conf  |
-
-Retrieve a contract from chain
-
-```bash
-kda contract --out ./myContract.pact
+```
+kadena networks delete --network="mainnet" --network-delete="yes"
 ```
 
-## kda account
+---
 
-Tasks to do with an account in a `fungible` smart contract. Defaults to `coin`
-smart contract
+## kadena keys
 
-| **Parameter** | **Description**                      | **Required** | **Default value** |
-| ------------- | ------------------------------------ | ------------ | ----------------- |
-| fund          | Fund an account in devnet or testnet | No           |                   |
+Tool to generate and manage keys
 
-## kda devnet
+| **Parameter**          | **Description**                                | **Required** | **Default value** |
+| ---------------------- | ---------------------------------------------- | ------------ | ----------------- |
+| create-wallet          | List all available networks                    | No           |                   |
+| import-wallet          | Import ( restore ) wallet from mnemonic phrase | No           |                   |
+| gen-hd                 | Generate key pair(s) from your wallet          | No           |                   |
+| gen-plain              | Generate plain key pair(s)                     | No           |                   |
+| change-wallet-password | Update the password for your wallet            | No           |                   |
+| delete-wallet          | Delete existing wallet from local env          | No           |                   |
+| decrypt                | Decrypt encrypted messsage                     | No           |                   |
+| list                   | List available key(s)                          | No           |                   |
 
-These tasks are from the kda-cli from kadena.js they need to be adjusted to the
-new devnet interface
+---
 
-| **Parameter** | **Description** | **Required** | **Default value** |
-| ------------- | --------------- | ------------ | ----------------- |
-| rerun         | Rerun devnet    | No           |                   |
-| start         | Start devnet    | No           |                   |
-| stop          | Stop devnet     | No           |                   |
-
-## kda marmalade
-
-| **Parameter** | **Description**            | **Required**            | **Default value** |
-| ------------- | -------------------------- | ----------------------- | ----------------- |
-| mint          |                            | No                      |                   |
-| --single      | Mint a single NFT          | When mint is provided   |                   |
-| --collection  | Mint a collection of NFT's | When mint is provided   |                   |
-| deploy        |                            | No                      |                   |
-| --nftstorage  | Deploy to NFT storage      | When deploy is provided |                   |
-
-## kda dapp
-
-Tool to create a starter project with @kadena/client integration
-
-It enables you to quickly start a new application that has Kadena Blockchain
-integration set up and ready to go. The application supports Typescript and
-makes use of `@kadena/client`
-
-The application is backed by a [**smart contract**][1] written in Pact that is
-included for convenience and also deployed on the Kadena Blockchain, so you have
-a working application from the start.
-
-The two most common blockchain use cases are covered in this starter app:
-
-- Reading a message from the chain (requires no transaction).
-- Writing a message on the chain, which includes signing and sending a
-  transaction on chain and waiting for it to be mined.
-
-[Chainweaver][2] is used for signing transactions, since it's the Official
-Kadena wallet for advanced blockchain usage and smart contract development.
-
-## Supported Templates
-
-Create Kadena App supports a number of well known and widely used frameworks to
-choose from when starting a new project. The following project templates are
-currently available:
-
-- [Nextjs][3]
-- [Vuejs][4] - _(Under development, coming soon)_
-- [Angular][5] - _(Under development, coming soon)_
-
-Usage: kda dapp generate [options]
-
-| **Parameter** | **Description** | **Required** | **Default value** | |
--------------- | ----------------------- | ------------ | -----------------z | |
-dapp | | Yes | | | -n, --name | Project name | No | | | -t, --template | Project
-template to use | No | |
-
-### Options:
-
-- `name` determines the name of the project but also the folder on the
-  filesystem that will contain the project. The same general operating system
-  folder name rules apply and are being validated.
-- `template` determines the template being used for the project that is being
-  created. Valid values are:
-  - nextjs
-  - vuejs
-  - angular
-- `help` displays the help menu
-
-## The Pact smart contract
-
-The smart contract is called `cka-message-store` and can be found [here][6]. The
-folder contains two files `message-store.pact` which is the smart contract
-written in Pact but also `message-store.repl` which contains a supporting test
-suite. The contract is also deployed on testnet chain 0 as
-`free.cka-message-store`.
-
-The two main functions of the contract are `read-message` and `write-message`
-which are shown below:
-
-```pact
-(defun read-message (account:string)
-  "Read a message for a specific account"
-
-  (with-default-read messages account
-    { "message": "You haven't written any message yet" }
-    { "message" := message }
-    message
-  )
-)
+```
+kadena keys create-wallet [arguments]
 ```
 
-Reading a message is unrestricted, so everyone can access the smart contract and
-read the message a user has written, given the acount is provided.
+| **Arguments & Options**    | ** Description**                               |
+| -------------------------- | ---------------------------------------------- |
+| --key-wallet               | Set the name of the wallet                     |
+| --security-password        | Set the password for the wallet                |
+| --security-verify-password | Set the password for the wallet (verification) |
 
-```pact
-(defun write-message (account:string message:string)
-  "Write a message"
+example:
 
-  (enforce (<= (length message) 150) "Message can be a maximum of 150 characters long")
-
-  ;; Try to acquire the `ACCOUNT-OWNER` capability which checks
-  ;; that the transaction owner is also the owner of the KDA account provided as parameter to our `write-messages` function.
-  (with-capability (ACCOUNT-OWNER account)
-    (write messages account { "message" : message })
-  )
-)
+```
+kadena keys create-wallet --key-wallet="kadenawallet" --security-password=1245678 --security-verify-password=1245678
 ```
 
-Writing a message is guarded by a capability `ACCOUNT-OWNER`, so only the
-account owner kan write a message.
+password will be hidden after entry: --security-password=_
+--security-verify-password=_
 
-The contract contains a single table `messages` that stores the messages for all
-users.
+---
 
-This readme doesn't aim to be a tutorial for Pact therefore we aren't going into
-the complete details of the contract nor the Pact language. For more detailed
-info on Pact development visit the **Build** section on [docs.kadena.io][7].
+```
+kadena keys import-wallet [arguments]
+```
 
-[1]: ##The-Pact-smart-contract
-[2]: https://docs.kadena.io/basics/chainweaver/chainweaver-user-guide
-[3]: https://nextjs.org/
-[4]: https://vuejs.org/
-[5]: https://angular.io/
-[6]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/create-kadena-app/pact
-[7]: https://docs.kadena.io/
+| **Arguments & Options**    | ** Description**                               |
+| -------------------------- | ---------------------------------------------- |
+| --key-mnemonic             | 12 word mnemnoc phrase                         |
+| --security-new-password    | Set the password for the wallet                |
+| --security-verify-password | Set the password for the wallet (verification) |
+| --key-wallet               | Set the name of the wallet                     |
+
+example:
+
+```
+kadena keys import-wallet --key-mnemonic="male more sugar violin accuse panel kick nose sign alarm stool inmate" --security-new-password=12345678 --security-verify-password=12345678 --key-wallet="mywalletname"
+```
+
+password will be hidden after entry: --security-new-password=_
+--security-verify-password=_
+
+---
+
+```
+kadena keys gen-hd [arguments]
+```
+
+| **Arguments & Options** | ** Description**                                                                    |
+| ----------------------- | ----------------------------------------------------------------------------------- |
+| --key-wallet            | Provide the name of the wallet                                                      |
+| --key-index-or-range    | Set index or range of indices for key generation (e.g., 5 or 1-5)                   |
+| --security-password     | Set the password for the wallet                                                     |
+| --key-gen-from-choice   | Select generation type: genPublicKey (publicKey only), genPublicSecretKey           |
+|                         | (publickey and secretKey), genPublicSecretKeyDec (publicKey and SecretKey Decrypted |
+
+example generating public keys using a range
+
+```
+kadena keys gen-hd --key-wallet="kadenawallet.wallet" --key-index-or-range="0-5" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
+```
+
+example generating a public key using a index
+
+```
+kadena keys gen-hd --key-wallet="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
+```
+
+example generating a public and secret key using a index
+
+```
+kadena keys gen-hd --key-wallet="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKey" --key-alias="myalias" --security-password=12345678
+```
+
+example generating a public and decrypted secret key using a index (will not be
+stored on filesystem)
+
+```
+kadena keys gen-hd --key-wallet="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKeyDec" --security-password=12345678
+```
+
+password will be hidden after entry: --security-password=\*
+
+---
+
+```
+kadena keys gen-plain [arguments]
+```
+
+| **Arguments & Options** | ** Description**                            |
+| ----------------------- | ------------------------------------------- |
+| --key-alias             | Set alias of the key to store on filesystem |
+| --key-amount            | Set the amount of keys to generate          |
+
+example
+
+```
+kadena keys gen-plain --key-alias="myalias" --key-amount="5"
+```
+
+---
+
+```
+kadena keys change-wallet-password [arguments]
+```
+
+| **Arguments & Options**     | ** Description**                                   |
+| --------------------------- | -------------------------------------------------- |
+| --key-wallet                | Provide the name of the wallet                     |
+| --security-current-password | Provide the current password of the wallet         |
+| --security-new-password     | Set the new password for the wallet                |
+| --security-verify-password  | Set the new password for the wallet (verification) |
+| --confirm                   | Confirm password change                            |
+
+example:
+
+```
+kadena keys change-wallet-password --key-wallet="kadenawallet.wallet" --security-current-password=12345678 --security-new-password=12345678 --security-verify-password=1234567 --confirm=true
+```
+
+password will be hidden after entry: --security-current-password=_
+--security-new-password=_ --security-verify-password=\*
+
+---
+
+```
+kadena keys delete-wallet [arguments]
+```
+
+| **Arguments & Options** | ** Description**              |
+| ----------------------- | ----------------------------- |
+| --key-wallet            | Select the name of the wallet |
+| --confirm               | Confirm deletion of wallet    |
+
+example single wallet deletion:
+
+```
+kadena keys delete-wallet --key-wallet="kadenawallet.wallet" --confirm=true
+```
+
+example deletion of all wallets:
+
+```
+kadena keys delete-wallet --key-wallet="all" --confirm=true
+```
+
+---
+
+```
+kadena keys decrypt [arguments]
+```
+
+| **Arguments & Options**     | ** Description**                    |
+| --------------------------- | ----------------------------------- |
+| --key-message               | Provide encrypted Message           |
+| --security-current-password | Provide password to decrypt message |
+
+example:
+
+```
+kadena keys decrypt --key-message="encryptedmessage" --security-current-password=12345678
+```
+
+password will be hidden after entry: --security-current-password=\*
+
+---
+
+## kadena account
+
+Tool to manage / fund accounts of fungibles (e.g. coin')
+
+| **Parameter**   | **Description**                                  | **Required** | **Default value** |
+| --------------- | ------------------------------------------------ | ------------ | ----------------- | --- |
+| add-manual      | Add an existing account to the CLI               | No           |                   |
+| add-from-wallet | Add an account from a key wallet                 | No           |                   |
+| details         | Get details of an account                        | No           |                   |
+| fund            | Fund a existing/new account                      | No           |                   |
+| name-to-address | Resolve a .kda name to a k:address (kadenanames) | No           |                   |
+| address-to-name | Resolve a k:address to a .kda name (kadenanames) |              | No                |     |
+
+---
+
+```
+kadena account add-manual [arguments]
+```
+
+| **Arguments & Options** | ** Description**                             |
+| ----------------------- | -------------------------------------------- |
+| --account-alias         | Set alias for account                        |
+| --account-name          | Set account name                             |
+| --fungible              | Fungible e.g coin                            |
+| --network               | Name of the network to be used               |
+| --chain-id              | Chain to be used                             |
+| --public-keys           | Comma seperated list of public keys          |
+| --predicate             | keys-all, keys-any, keys-2, Custom predicate |
+
+example:
+
+```
+kadena account add-manual --account-alias="myalias" --account-name="myaccountname" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="mypublickey" --predicate="keys-all"
+```
+
+---
+
+```
+kadena account add-from-wallet [arguments]
+```
+
+| **Arguments & Options** | ** Description**                             |
+| ----------------------- | -------------------------------------------- |
+| --account-alias         | Set alias for account                        |
+| --key-wallet            | Provide the name of the wallet               |
+| --fungible              | Fungible e.g coin                            |
+| --network               | Name of the network to be used               |
+| --chain-id              | Chain to be used                             |
+| --public-keys           | Comma seperated list of public keys          |
+| --predicate             | keys-all, keys-any, keys-2, Custom predicate |
+
+example:
+
+```
+kadena account add-from-wallet --account-alias="myalias" --key-wallet="mywallet.wallet" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="6a49b8d28ed2fa76c06017c916d0e8451dea449eb9e23d8489e5cff0467dd291" --predicate="keys-all"
+```
+
+---
+
+```
+kadena account details [arguments]
+```
+
+| **Arguments & Options** | ** Description**               |
+| ----------------------- | ------------------------------ |
+| --account               | Provide alias for account      |
+| --network               | Name of the network to be used |
+| --chain-id              | Chain to be used               |
+
+example:
+
+```
+kadena account details --account="myalias.yaml" --network="mainnet" --chain-id="1"
+```
+
+---
+
+```
+kadena account fund [arguments]
+```
+
+| **Arguments & Options** | ** Description**               |
+| ----------------------- | ------------------------------ |
+| --account               | Provide alias for account      |
+| --amount                | Amount to fund                 |
+| --network               | Name of the network to be used |
+| --chain-id              | Chain to be used               |
+
+example:
+
+```
+kadena account fund --account="myalias.yaml" --amount="10" --network="testnet" --chain-id="1"
+```
+
+---
+
+```
+kadena account fund [arguments]
+```
+
+| **Arguments & Options** | ** Description**               |
+| ----------------------- | ------------------------------ |
+| --account               | Provide alias for account      |
+| --amount                | Amount to fund                 |
+| --network               | Name of the network to be used |
+| --chain-id              | Chain to be used               |
+
+example:
+
+```
+kadena account fund --account="myalias.yaml" --amount="10" --network="testnet" --chain-id="1"
+```
+
+---
+
+```
+kadena account account name-to-address [arguments]
+```
+
+| **Arguments & Options** | ** Description**                          |
+| ----------------------- | ----------------------------------------- |
+| --network               | Name of the network to be used            |
+| --account-kdn-name      | Provide .kda name to resolve to k:account |
+
+example:
+
+```
+kadena account name-to-address --network="mainnet" --account-kdn-name="kadena.kda"
+```
+
+---
+
+```
+kadena account account name-to-address [arguments]
+```
+
+| **Arguments & Options** | ** Description**                          |
+| ----------------------- | ----------------------------------------- |
+| --network               | Name of the network to be used            |
+| --account-kdn-address   | Provide k:account to resolve to .kda name |
+
+example:
+
+```
+kadena account address-to-name --network="mainnet" --account-kdn-address="k:account"
+```
+
+---
+
+## kadena tx
+
+Tool for creating and managing transactions
+
+| **Parameter**           | **Description**                                  | **Required** | **Default value** |
+| ----------------------- | ------------------------------------------------ | ------------ | ----------------- |
+| send                    | Send a transaction to the network                | No           |                   |
+| sign-with-keypair       | Sign a traqnsaction using a keypair              | No           |                   |
+| sign-with-alias-file    | Sign a transaction using your local aliased file | No           |                   |
+| sign-with-local-wallet  | Sign a transaction using your local wallet       | No           |                   |
+| test-signed-transaction | Test a signed transaction                        | No           |                   |
+| create-transaction      | Select a template and create a transaction       | No           |                   |
+
+---
+
+```
+kadena tx create-transaction [arguments]
+```
+
+| **Arguments & Options** | ** Description**                               |
+| ----------------------- | ---------------------------------------------- |
+| --template              | Select template                                |
+| --template-data         | Provide File path of data to use for template  |
+| --network-id            | Provide the network id                         |
+| --out-file              | Provide path to save output                    |
+| --xx                    | Args are created onl the fly based on template |
+
+example:
+
+```
+kadena tx create-transaction --template="transfer.yaml" --template-data="path" (--account-from="k:account" --account-to="k:toaccount" --amount="1" --chain-id="1" --pk-from="publicKey") --network-id="testnet04" --out-file="transaction-(request-key).json"
+```
+
+---
+
+```
+kadena tx create-transaction [arguments]
+```
+
+| **Arguments & Options** | ** Description**                               |
+| ----------------------- | ---------------------------------------------- |
+| --template              | Select template                                |
+| --template-data         | Provide File path of data to use for template  |
+| --network-id            | Provide the network id                         |
+| --out-file              | Provide path to save output                    |
+| --xx                    | Args are created onl the fly based on template |
+
+example:
+
+```
+kadena tx create-transaction --template="transfer.yaml" --template-data="path" (--account-from="k:account" --account-to="k:toaccount" --amount="1" --chain-id="1" --pk-from="publicKey") --network-id="testnet04" --out-file="transaction-(request-key).json"
+```
+
+---
+
+```
+kadena tx sign-with-keypair [arguments]
+```
+
+| **Arguments & Options**         | ** Description**                                                        |
+| ------------------------------- | ----------------------------------------------------------------------- |
+| --key-pairs                     | Provide publickey and secretKey (or list seperated my semicolon)        |
+| --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma seperated list) |
+
+example:
+
+```
+kadena tx sign-with-keypair --key-pairs="publicKey=xxx,secretKey=xxx" --tx-unsigned-transaction-files="transaction-(request-key).json"
+```
+
+---
+
+```
+kadena tx sign-with-alias-file [arguments]
+```
+
+| **Arguments & Options**         | ** Description**                                                        |
+| ------------------------------- | ----------------------------------------------------------------------- |
+| --key-wallet                    | Provode the name of the wallet                                          |
+| --security-password             | Provide the password for the wallet                                     |
+| --key-alias-select              | Select a aliased file                                                   |
+| --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma seperated list) |
+
+example:
+
+```
+kadena tx sign-with-alias-file --key-wallet="mywallet.wallet" --security-password=1234567 --key-alias-select="mywalletalias.key" --tx-unsigned-transaction-files="transaction-(request-key).json,transaction-(request-key).json"
+```
+
+password will be hidden after entry: --security-password=\*
+
+---
+
+```
+kadena tx sign-with-local-wallet [arguments]
+```
+
+| **Arguments & Options**         | ** Description**                                                        |
+| ------------------------------- | ----------------------------------------------------------------------- |
+| --key-wallet                    | Provode the name of the wallet                                          |
+| --security-password             | Provide the password for the wallet                                     |
+| --key-alias-select              | Select a aliased file                                                   |
+| --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma seperated list) |
+
+example:
+
+```
+kadena tx sign-with-local-wallet --key-wallet="mywallet.wallet" --security-password=12345678 --tx-unsigned-transaction-files="transaction-(request-key)-signed.json"
+```
+
+password will be hidden after entry: --security-password=\*
+
+---
+
+```
+kadena tx test-signed-transaction [arguments]
+```
+
+| **Arguments & Options**       | ** Description**                                                      |
+| ----------------------------- | --------------------------------------------------------------------- |
+| --network                     | Name of the network to be used                                        |
+| --directory                   | Provide the directory for the signed transaction                      |
+| --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma seperated list) |
+| --chain-id                    | Chain to be used                                                      |
+
+example:
+
+```
+kadena tx test-signed-transaction --network="testnet" --directory="./" --tx-signed-transaction-files="transaction-(request-key)-signed.json" --chain-id="1"
+```
+
+---
+
+```
+kadena tx send [arguments]
+```
+
+| **Arguments & Options**       | ** Description**                                                      |
+| ----------------------------- | --------------------------------------------------------------------- |
+| --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma seperated list) |
+| --network                     | Name of the network to be used                                        |
+| --chain-id                    | Chain to be used                                                      |
+
+example:
+
+```
+kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --network="testnet" --chain-id="1"
+```
+
+---
+
+## kadena dapp
+
+Tool for creating dapp projects
+
+| **Parameter** | **Description**           | **Required** | **Default value** |
+| ------------- | ------------------------- | ------------ | ----------------- |
+| create        | Create a new Dapp project | No           |                   |
+
+```
+kadena dapp create [arguments]
+```
+
+| **Arguments & Options** | ** Description**                         |
+| ----------------------- | ---------------------------------------- |
+| project-directory       | Specify the project directory [Required] |
+| --dapp-template         | Select template: vuejs, nextjs, angular  |
+
+example:
+
+```
+kadena dapp create --dapp-template="vuejs" danillo
+```
+
+---
+
+### Supported Templates
+
+It supports a number of well known and widely used frameworks to choose from
+when starting a new project. The following project templates are currently
+available:
+
+- [Nextjs][1]
+- [Vuejs][2]
+- [Angular][3]
+
+[1]: https://nextjs.org/
+[2]: https://vuejs.org/
+[3]: https://angular.io/
