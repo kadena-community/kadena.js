@@ -1,6 +1,7 @@
 import type { IUnsignedCommand } from '@kadena/client';
 import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
 import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
+import { PactNumber } from '@kadena/pactjs';
 import path from 'path';
 
 import { WORKING_DIRECTORY } from '../../constants/config.js';
@@ -23,10 +24,15 @@ export const createTransaction = async (
   CommandResult<{ transaction: IUnsignedCommand; filePath: string }>
 > => {
   try {
+    const updatedVariables = {
+      ...variables,
+      amount: new PactNumber(variables.amount).toPactDecimal().decimal,
+    };
+
     // create transaction
     const command = await createPactCommandFromStringTemplate(
       template,
-      variables,
+      updatedVariables,
     );
 
     // Map from legacy or partial template to full IPactCommand

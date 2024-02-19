@@ -66,7 +66,7 @@ export const createTestSignedTransactionCommand: (
   [
     txOptions.directory({ isOptional: true }),
     txOptions.txSignedTransactionFiles(),
-    globalOptions.network(),
+    globalOptions.network({ isOptional: false }),
     globalOptions.chainId(),
   ],
   async (option) => {
