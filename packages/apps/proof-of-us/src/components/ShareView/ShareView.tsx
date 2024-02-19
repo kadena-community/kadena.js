@@ -3,7 +3,7 @@ import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
-import { MonoArrowBack, MonoArrowDown } from '@kadena/react-icons';
+import { MonoArrowBack, MonoArrowDownward } from '@kadena/react-icons';
 import { CopyButton, TextField } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -99,7 +99,7 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
             Prepend={() => (
               <>
                 <button onClick={handleBack}>
-                  <MonoArrowDown />
+                  <MonoArrowDownward />
                 </button>
               </>
             )}
