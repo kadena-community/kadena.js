@@ -136,7 +136,7 @@ export const createSignTransactionWithLocalWalletCommand: (
           signed: false,
         });
       } else {
-        const directory = (await option.directory()).directory ?? process.cwd();
+        const { directory } = await option.directory();
         const { txUnsignedTransactionFiles } =
           await option.txUnsignedTransactionFiles({
             signed: false,

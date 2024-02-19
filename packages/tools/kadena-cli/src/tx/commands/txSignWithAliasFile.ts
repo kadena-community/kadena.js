@@ -152,7 +152,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
           legacy: mode.legacy,
         });
       } else {
-        const directory = (await option.directory()).directory ?? process.cwd();
+        const { directory } = await option.directory();
         const files = await option.txUnsignedTransactionFiles({
           signed: false,
           path: directory,

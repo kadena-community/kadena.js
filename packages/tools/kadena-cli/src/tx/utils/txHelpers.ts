@@ -1,3 +1,5 @@
+import { isAbsolute, join } from 'node:path';
+
 import type { IPactCommand } from '@kadena/client';
 import {
   addSignatures,
@@ -12,7 +14,6 @@ import {
 } from '@kadena/hd-wallet/chainweaver';
 import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
-import { join } from 'path';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletKey } from '../../keys/utils/keysHelpers.js';
 import type { IKeyPair as IKeyPairLocal } from '../../keys/utils/storage.js';
@@ -68,14 +69,15 @@ export async function getTransactions(
     // Since naming convention is not enforced, we need to check the content of the files
     const transactionFiles = (
       await Promise.all(
-        files.map(async (filePath) => {
-          if (!filePath.endsWith('.json')) return null;
+        files.map(async (fileName) => {
+          if (!fileName.endsWith('.json')) return null;
+          const filePath = join(directory, fileName);
           const content = await services.filesystem.readFile(filePath);
           if (content === null) return null;
           // signed=false can still return already signed transactions
           const schema = signed ? ICommandSchema : IUnsignedCommandSchema;
           const parsed = schema.safeParse(JSON.parse(content));
-          if (parsed.success) return filePath;
+          if (parsed.success) return fileName;
           return null;
         }),
       )
@@ -261,9 +263,9 @@ export async function getTransactionFromFile(
   signed: boolean,
 ): Promise<IUnsignedCommand | ICommand> {
   try {
-    const transactionFilePath = transactionFile.startsWith('.')
-      ? join(process.cwd(), transactionFile)
-      : transactionFile;
+    const transactionFilePath = isAbsolute(transactionFile)
+      ? transactionFile
+      : join(process.cwd(), transactionFile);
 
     const fileContent = await services.filesystem.readFile(transactionFilePath);
 

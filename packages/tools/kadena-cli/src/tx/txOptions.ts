@@ -153,11 +153,18 @@ export const txOptions = {
   }),
   directory: createOption({
     key: 'directory' as const,
-    prompt: tx.txDirPrompt,
+    // Directory is an optional flag, and never prompted
+    prompt: () => null,
     validation: z.string().optional(),
     option: new Option(
       '--directory <directory>',
       `Enter your directory (default: working directory)`,
     ),
+    transform(value: string) {
+      if (typeof value !== 'string' || value === '') {
+        return process.cwd();
+      }
+      return value;
+    },
   }),
 };

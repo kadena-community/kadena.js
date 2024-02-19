@@ -76,7 +76,7 @@ export interface IQuestion<T> {
   ) => Promise<T[keyof T]>;
 }
 
-export function handlePromptError(error: unknown): void {
+export function handlePromptError(error: unknown): never {
   if (error instanceof Error) {
     if (error.message.includes('User force closed the prompt')) {
       process.exit(0);
