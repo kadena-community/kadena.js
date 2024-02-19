@@ -2,6 +2,7 @@
   "name": "@kadena/kadena-cli",
   "version": "0.0.1-alpha.0",
   "description": "Kadena CLI tool to interact with the Kadena blockchain (manage keys, transactions, etc.)",
+  "private": false,
   "keywords": [
     "Kadena",
     "CLI",
@@ -13,7 +14,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",
-    "directory": "packages/libs/kadena-cli"
+    "directory": "packages/tools/kadena-cli"
   },
   "license": "ISC",
   "contributors": [
