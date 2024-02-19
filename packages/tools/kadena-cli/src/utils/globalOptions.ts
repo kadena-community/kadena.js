@@ -35,7 +35,6 @@ import {
   ensureNetworksConfiguration,
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
-import { accountOverWritePrompt } from '../prompts/account.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration, isNotEmptyString } from './helpers.js';
@@ -655,7 +654,7 @@ export const globalOptions = {
   accountOverwrite: createOption({
     key: 'accountOverwrite',
     validation: z.boolean(),
-    prompt: accountOverWritePrompt,
+    prompt: account.accountOverWritePrompt,
     option: new Option(
       '-o, --account-overwrite',
       'Overwrite account details from chain',

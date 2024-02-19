@@ -77,7 +77,7 @@ export const createTransaction = async (
 
 export const createTransactionCommandNew = createCommandFlexible(
   'create-transaction',
-  'select a template and create a transaction',
+  'Select a template and create a transaction',
   [
     txOptions.selectTemplate({ isOptional: false }),
     txOptions.templateData({ isOptional: true }),
