@@ -2536,7 +2536,7 @@ importers:
         specifier: workspace:*
         version: link:../../libs/cryptography-utils
       '@kadena/hd-wallet':
-        specifier: workspace:*
+        specifier: workspace:0.3.0
         version: link:../../libs/hd-wallet
       '@kadena/pactjs':
         specifier: workspace:*
