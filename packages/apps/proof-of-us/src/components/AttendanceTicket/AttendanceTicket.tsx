@@ -4,17 +4,17 @@ import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { ticketClass, ticketWrapClass, titleClass } from './style.css';
 interface IProps {
-  token: IProofOfUsTokenMeta;
+  data: IProofOfUsTokenMeta;
 }
 
-export const AttendanceTicket: FC<IProps> = ({ token }) => {
+export const AttendanceTicket: FC<IProps> = ({ data }) => {
   const [contrastColor, setContrastColor] = useState<string>('white');
-  const color = token.properties?.avatar?.backgroundColor;
+  const color = data.properties?.avatar?.backgroundColor;
 
   useEffect(() => {
-    const color = getContrast(token.properties?.avatar?.backgroundColor ?? '');
+    const color = getContrast(data.properties?.avatar?.backgroundColor ?? '');
     setContrastColor(color);
-  }, [token.properties?.avatar?.backgroundColor]);
+  }, [data.properties?.avatar?.backgroundColor]);
   return (
     <>
       <svg viewBox="0 0 160 90" width="1">
@@ -34,8 +34,8 @@ export const AttendanceTicket: FC<IProps> = ({ token }) => {
           layoutId="proof-of-us:jQ9ZFi5VDifZ_LekqHCGrP5EdgKTgU7WhrYkIWNPMe8"
           className={ticketClass}
           style={{
-            backgroundImage: `url("${token.image}")`,
-            backgroundColor: token.properties?.avatar?.backgroundColor,
+            backgroundImage: `url("${data.image}")`,
+            backgroundColor: data.properties?.avatar?.backgroundColor,
           }}
         >
           <h4
@@ -45,12 +45,12 @@ export const AttendanceTicket: FC<IProps> = ({ token }) => {
               textShadow: `-1px -1px 0 ${color}, 1px -1px 0 ${color}, -1px 1px 0 ${color}, 1px 1px 0 ${color}`,
             }}
           >
-            {token.name}
+            {data.name}
           </h4>
 
           <div style={{ color: contrastColor }}>
             <h5>Date</h5>
-            {new Date(token.properties.date).toDateString()}
+            {new Date(data.properties.date).toDateString()}
           </div>
         </motion.div>
       </div>

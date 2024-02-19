@@ -8,14 +8,13 @@ interface IProps {
   params: {
     id: string;
   };
-  token?: IProofOfUsToken;
-  proofOfUs?: IProofOfUsTokenMeta;
+  data?: IProofOfUsTokenMeta;
 }
 
-const Page: NextPage<IProps> = ({ params, token, proofOfUs }) => {
+const Page: NextPage<IProps> = ({ params, data }) => {
   return (
     <UserLayout>
-      <Share eventId={params.id} token={token} proofOfUs={proofOfUs} />
+      <Share tokenId={params.id} data={data} />
     </UserLayout>
   );
 };
@@ -27,9 +26,8 @@ export const getServerSideProps = async (
 
   const uri = await getTokenUri(id);
   const data = await fetchManifestData(uri);
-  const newData = data ? { ...data } : undefined;
   return {
-    props: { params: { id: `${ctx.query.id}` }, proofOfUs: newData },
+    props: { params: { id: `${ctx.query.id}` }, data },
   };
 };
 

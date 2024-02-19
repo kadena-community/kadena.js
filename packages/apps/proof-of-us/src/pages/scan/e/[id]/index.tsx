@@ -36,7 +36,7 @@ const Page: NextPage<IProps> = ({ params }) => {
         {isLoading && <MainLoader />}
         {error && <div>...error</div>}
         <ScanAttendanceEvent
-          token={data}
+          data={data}
           eventId={eventId}
           isMinted={isMinted}
         />

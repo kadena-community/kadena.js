@@ -5,15 +5,16 @@ import type { FC, MouseEvent } from 'react';
 import { useEffect, useState } from 'react';
 
 interface IProps {
-  token: IProofOfUsTokenMeta;
+  data: IProofOfUsTokenMeta;
+  tokenId?: string;
 }
 
-export const SocialShare: FC<IProps> = ({ token }) => {
-  const label = token.name;
-  const text = `${token.name} was a great event`;
-  const title = `A new  NFT: `;
-  const twitterTitle = `A new  NFT:`;
-  const url = `${process.env.NEXT_PUBLIC_URL}/share/${token.properties.eventId}`;
+export const SocialShare: FC<IProps> = ({ data, tokenId }) => {
+  const label = data.name;
+  const text = `${data.name} | Proof Of Us (Powered by Kadena)`;
+  const title = `${data?.name} | Proof Of Us (Powered by Kadena)`;
+  const twitterTitle = `${data?.name} | Proof Of Us (Powered by Kadena)`;
+  const url = `${process.env.NEXT_PUBLIC_URL}/share/${tokenId}`;
 
   const shareDetails = { url, title, text, label };
   const [isShowed, setIsShowed] = useState(false);
