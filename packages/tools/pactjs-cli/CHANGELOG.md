@@ -1,5 +1,12 @@
 # Change Log - @kadena/pactjs-cli
 
+## 1.8.1
+
+### Patch Changes
+
+- @kadena/client@1.8.1
+- @kadena/pactjs-generator@1.8.1
+
 ## 1.8.0
 
 ### Patch Changes

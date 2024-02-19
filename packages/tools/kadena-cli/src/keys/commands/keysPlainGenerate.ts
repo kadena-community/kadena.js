@@ -74,9 +74,9 @@ export const createGeneratePlainKeysCommand: (
   version: string,
 ) => void = createCommand(
   'gen-plain',
-  'generate plain public/secret key pair(s)',
+  'Generate plain public/secret key pair(s)',
   [
-    globalOptions.keyAlias(),
+    globalOptions.keyAlias({ isOptional: false }),
     globalOptions.keyAmount({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],

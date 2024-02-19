@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/Button/Button';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
+
 import { SystemIcon } from '@kadena/react-ui';
 import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
@@ -14,6 +15,7 @@ import {
   backButtonClass,
   closeButtonClass,
   imageWrapper,
+  titleErrorClass,
   titleInputClass,
 } from './style.css';
 
@@ -26,8 +28,14 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   const { removeBackground } = useAvatar();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
+  const [titleError, setTitleError] = useState<string>('');
 
   const handleShare = () => {
+    if (!proofOfUs?.title) {
+      setTitleError('Title is empty');
+      return;
+    }
+
     next();
   };
 
@@ -49,7 +57,11 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   const handleTitleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     //TODO: this needs to debounce
     if (!proofOfUs) return;
-    changeTitle(e.target.value);
+    const value = e.target.value;
+    if (!value) {
+      setTitleError('Title is empty');
+    }
+    changeTitle(value);
   };
 
   if (!isMounted) return null;
@@ -82,15 +94,15 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         <>
           <div className={imageWrapper}>
             <ImagePositions />
-
-            <input
-              className={titleInputClass}
-              name="title"
-              placeholder="title"
-              onChange={handleTitleChange}
-              defaultValue={proofOfUs.title}
-            />
           </div>
+
+          <input
+            className={titleInputClass}
+            name="title"
+            placeholder="title"
+            onChange={handleTitleChange}
+            defaultValue={proofOfUs.title}
+          />
 
           <SocialsEditor />
         </>
@@ -101,6 +113,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
       <Button variant="primary" onPress={handleShare}>
         Share
       </Button>
+      {titleError && <div className={titleErrorClass}>{titleError}</div>}
     </section>
   );
 };

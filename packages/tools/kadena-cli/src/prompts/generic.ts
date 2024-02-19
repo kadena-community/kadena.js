@@ -1,12 +1,12 @@
 import type { IPrompt } from '../utils/createOption.js';
-import { isAlphanumeric } from '../utils/helpers.js';
+import { isValidFilename } from '../utils/helpers.js';
 import { input } from '../utils/prompts.js';
 
 export async function genericFileNamePrompt(type?: string): Promise<string> {
   return await input({
     message: `Enter a filename${type !== '' ? ` for your ${type}` : ''}`,
     validate: function (input) {
-      if (!isAlphanumeric(input)) {
+      if (!isValidFilename(input)) {
         return 'Filenames must be alphabetic! Please enter a valid name.';
       }
       return true;
@@ -14,14 +14,25 @@ export async function genericFileNamePrompt(type?: string): Promise<string> {
   });
 }
 
+type ValidateFn = (input: string) => string | boolean;
+
 export async function getInputPrompt(
   message: string,
   defaultValue?: string,
+  validate?: ValidateFn,
 ): Promise<string> {
-  const promptConfig: { message: string; default?: string } = { message };
+  const promptConfig: {
+    message: string;
+    default?: string;
+    validate?: ValidateFn;
+  } = { message };
 
   if (defaultValue !== undefined) {
     promptConfig.default = defaultValue;
+  }
+
+  if (validate !== undefined) {
+    promptConfig.validate = validate;
   }
 
   return await input(promptConfig);

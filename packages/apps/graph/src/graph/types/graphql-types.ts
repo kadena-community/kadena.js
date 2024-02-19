@@ -9,7 +9,17 @@ export interface Guard {
 export interface Token {
   id: string;
   balance: number;
-  chainId: number;
+  chainId: string;
+  info?: TokenInfo;
+  version: string;
+}
+
+export interface TokenInfo {
+  supply: number;
+  precision: number;
+  uri: string;
+  // TODO: figure out what to do with weird pact-arrays
+  // policies: string[];
 }
 
 export const FungibleChainAccountName: 'FungibleChainAccount' =
@@ -54,7 +64,6 @@ export interface NonFungibleChainAccount {
   __typename: typeof NonFungibleChainAccountName;
   chainId: string;
   accountName: string;
-  guard: Guard;
   nonFungibles: Token[];
   transactions: Transaction[];
 }

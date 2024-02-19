@@ -1,9 +1,15 @@
 {
   "name": "@kadena/kadena-cli",
-  "version": "0.3.0",
-  "private": true,
-  "description": "",
-  "keywords": [],
+  "version": "0.0.1-alpha.0",
+  "description": "Kadena CLI tool to interact with the Kadena blockchain (manage keys, transactions, etc.)",
+  "keywords": [
+    "Kadena",
+    "CLI",
+    "Contracts",
+    "Transactions",
+    "Wallet",
+    "Sign"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",
@@ -16,29 +22,30 @@
     "Jesse van Muijden <jesse@kadena.io",
     "Jermaine Jong <jermaine@kadena.io",
     "Javad Khalilian <javad@kadena.io>",
-    "Mohamed Ismail <mohamed@kadena.io>"
+    "Mohamed Ismail <mohamed@kadena.io>",
+    "Bart Huijgen <bart@kadena.io>"
   ],
   "type": "module",
   "bin": {
-    "kadena": "./bin/kadena-cli.js"
+    "kadena": "./lib/index.js"
   },
   "files": [
-    "dist",
-    "lib"
+    "lib",
+    "bin"
   ],
   "scripts": {
     "build": "pnpm run generate:ts && pnpm run generate:kdn && tsc",
+    "dev": "NODE_ENV=development node --import @swc-node/register/esm-register src/index.ts",
     "fast-build": "pnpm run generate:ts && tsc",
-    "dev": "NODE_ENV=development node --import 'data:text/javascript,import {register} from \"node:module\";import {pathToFileURL} from \"node:url\";register(\"%40swc-node/register/esm\",pathToFileURL(\"./\"));' src/index.ts",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier config src --write",
-    "generate:ts": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
     "generate:kdn": "pactjs contract-generate --contract n_32faa22a75da53789d48dcbcb124a11c8f8651a8.kadena-names --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact && pactjs contract-generate --contract n_32faa22a75da53789d48dcbcb124a11c8f8651a8.herdyracle --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
+    "generate:ts": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact",
     "lint": "eslint src --ext .js,.ts --fix",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@inquirer/prompts": "^3.0.4",
@@ -50,25 +57,18 @@
     "@kadena/pactjs-cli": "workspace:^",
     "@kadena/pactjs-generator": "workspace:*",
     "@scure/bip39": "^1.2.1",
-    "cardano-crypto.js": "https://github.com/kadena-io/cardano-crypto.js.git#jam@chainweaver-keygen",
     "chalk": "^5.2.0",
     "clear": "^0.1.0",
     "commander": "^11.0.0",
-    "cross-fetch": "~3.1.5",
-    "cross-spawn": "~7.0.3",
     "debug": "~4.3.4",
-    "ed25519-keygen": "^0.4.8",
     "js-yaml": "~4.1.0",
     "memfs": "~3.5.1",
     "mkdirp": "~1.0.4",
-    "node-fetch": "~3.3.2",
     "ora": "^7.0.1",
-    "pact-lang-api": "^4.2.0",
     "rimraf": "~5.0.1",
     "sanitize-filename": "^1.6.3",
     "seedrandom": "~3.0.5",
     "ttys": "^0.0.3",
-    "yaml": "~2.1.1",
     "zod": "~3.18.0"
   },
   "devDependencies": {
@@ -78,12 +78,10 @@
     "@kadena/types": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
     "@rushstack/heft": "~0.50.6",
-    "@swc-node/register": "^1.6.8",
+    "@swc-node/register": "^1.8.0",
     "@types/clear": "^0.1.2",
-    "@types/cross-spawn": "~6.0.2",
     "@types/debug": "~4.1.7",
     "@types/heft-jest": "~1.0.6",
-    "@types/isomorphic-fetch": "~0.0.36",
     "@types/js-yaml": "4.0.9",
     "@types/mkdirp": "~1.0.2",
     "@types/node": "^18.17.14",

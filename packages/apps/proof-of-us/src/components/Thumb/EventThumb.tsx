@@ -1,23 +1,26 @@
+import { motion } from 'framer-motion';
 import type { FC } from 'react';
 import { eventThumbClass, thumbWrapClass } from './style.css';
 
 interface IProps {
-  token: IProofOfUsToken;
+  token: IProofOfUsTokenMeta;
 }
 export const EventThumb: FC<IProps> = ({ token }) => {
   const getInitial = (str: string) => {
     return str.slice(0, 1);
   };
+
   return (
     <span className={thumbWrapClass}>
-      <div
+      <motion.div
+        layoutId={token.properties.eventId}
         className={eventThumbClass}
         style={{
-          backgroundColor: token.properties.avatar?.backgroundColor,
+          backgroundColor: 'green',
         }}
       >
         {getInitial(token.name)}
-      </div>
+      </motion.div>
     </span>
   );
 };

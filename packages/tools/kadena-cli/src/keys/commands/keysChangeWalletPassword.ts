@@ -86,7 +86,7 @@ export const createChangeWalletPasswordCommand: (
   version: string,
 ) => void = createCommand(
   'change-wallet-password',
-  'update the password for your wallet',
+  'Update the password for your wallet',
   [
     globalOptions.keyWalletSelect(),
     globalOptions.securityCurrentPassword({ isOptional: false }),

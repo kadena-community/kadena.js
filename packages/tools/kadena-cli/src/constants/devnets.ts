@@ -54,3 +54,6 @@ export const simulationDefaults = {
   NETWORK_ID: 'fast-development',
   CHAIN_COUNT: 20,
 };
+
+export const FAUCET_MODULE_NAME =
+  'n_34d947e2627143159ea73cdf277138fd571f17ac.coin-faucet';

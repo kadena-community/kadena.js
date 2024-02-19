@@ -437,9 +437,9 @@ To define your keyset on the development network:
    npm run define-keyset:devnet -- k:<your-public-key>
    ```
    
-  Remember that `k:<your-public-key>` is the default **account name** for your administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
-  You can copy this account name from Chainweaver when viewing the account watch list.
-  When you run the script, you should see Chainweaver display a QuickSign Request.
+   Remember that `k:<your-public-key>` is the default **account name** for your administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
+   You can copy this account name from Chainweaver when viewing the account watch list.
+   When you run the script, you should see Chainweaver display a QuickSign Request.
   
 1. Click **Sign All** to sign the request.
    

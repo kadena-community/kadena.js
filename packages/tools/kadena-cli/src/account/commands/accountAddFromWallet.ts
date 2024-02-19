@@ -55,7 +55,7 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
   'Add an account from a key wallet',
   [
     globalOptions.accountAlias(),
-    globalOptions.keyWalletSelectWithAll(),
+    globalOptions.keyWalletSelect(),
     globalOptions.fungible(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
@@ -79,14 +79,14 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
       return;
     }
 
-    const fungible = (await option.fungible()).fungible;
+    const fungible = (await option.fungible()).fungible || 'coin';
     const { network, networkConfig } = await option.network();
     const chainId = (await option.chainId()).chainId;
     const { publicKeys, publicKeysConfig } = await option.publicKeys({
       values,
       keyWalletConfig: keyWallet.keyWalletConfig,
     });
-    const predicate = (await option.predicate()).predicate;
+    const predicate = (await option.predicate()).predicate || 'keys-all';
     const config = {
       accountAlias,
       keyWallet,

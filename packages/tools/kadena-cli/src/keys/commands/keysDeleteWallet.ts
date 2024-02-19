@@ -72,7 +72,7 @@ export const createDeleteKeysCommand: (
   version: string,
 ) => void = createCommand(
   'delete-wallet',
-  'delete wallet from your local storage',
+  'Delete wallet from your local storage',
   [globalOptions.keyWalletSelectWithAll(), confirmDelete()],
   async (config) => {
     if (config.confirm !== true) {

@@ -1,28 +1,26 @@
 'use client';
 import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
 import { SocialShare } from '@/components/SocialShare/SocialShare';
-import { useGetEventToken } from '@/hooks/data/getEventToken';
-import { useParams } from 'next/navigation';
+
 import type { FC } from 'react';
 
-export const Share: FC = () => {
-  const params = useParams();
-
-  const { data, isLoading, error } = useGetEventToken(params.id);
-
+interface IProps {
+  eventId: string;
+  token?: IProofOfUsToken;
+  proofOfUs?: IProofOfUsTokenMeta;
+}
+export const Share: FC<IProps> = ({ token, proofOfUs }) => {
   return (
     <div>
-      {isLoading && <div>...is loading</div>}
-      {error && <div>...error</div>}
-
-      {data && (
+      {proofOfUs?.name && (
         <>
-          <SocialShare token={data} />
-          <AttendanceTicket token={data} />
+          <SocialShare token={proofOfUs} />
+          <AttendanceTicket token={proofOfUs} />
         </>
       )}
 
-      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+      {proofOfUs && <pre>{JSON.stringify(proofOfUs, null, 2)}</pre>}
+      {token && <pre>{JSON.stringify(token, null, 2)}</pre>}
     </div>
   );
 };

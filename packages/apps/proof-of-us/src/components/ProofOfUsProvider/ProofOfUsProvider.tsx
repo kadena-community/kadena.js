@@ -26,6 +26,7 @@ export interface IProofOfUsContext {
     signee: IProofOfUsSignee;
   }) => Promise<void>;
   createToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
+  addTx: (tx: string) => Promise<void>;
   changeTitle: (value: string) => Promise<void>;
   updateBackgroundColor: (value: string) => Promise<void>;
   isConnected: () => boolean;
@@ -49,18 +50,21 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   isConnected: () => false,
   isInitiator: () => false,
   updateSigner: async () => {},
+  addTx: async () => {},
   getSigneeAccount: (account: IAccount) => {
     return {
       accountName: account.accountName,
       alias: account.alias,
       initiator: false,
       signerStatus: 'init',
+      publicKey: '',
     };
   },
 });
 
 export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { account } = useAccount();
+
   const params = useParams();
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
   const [background, setBackground] = useState<IProofOfUsBackground>({
@@ -68,9 +72,10 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   });
 
   useEffect(() => {
+    if (!params?.id) return;
     store.listenProofOfUsData(`${params.id}`, setProofOfUs);
     store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
-  }, [setProofOfUs, setBackground, params.id]);
+  }, [setProofOfUs, setBackground, params]);
 
   const updateStatus = async ({
     proofOfUsId,
@@ -146,6 +151,12 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     return !!foundAccount?.initiator;
   };
 
+  const addTx = async (tx: string) => {
+    if (!proofOfUs || !account) return;
+
+    await store.updateTx(proofOfUs, tx);
+  };
+
   return (
     <ProofOfUsContext.Provider
       value={{
@@ -162,6 +173,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         changeTitle,
         updateBackgroundColor,
         updateSigner,
+        addTx,
       }}
     >
       {children}

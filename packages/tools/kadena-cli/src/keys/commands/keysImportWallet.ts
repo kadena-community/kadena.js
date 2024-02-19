@@ -72,7 +72,7 @@ export const createImportWalletCommand: (
   version: string,
 ) => void = createCommand(
   'import-wallet',
-  'import (restore) wallet from mnemonic phrase',
+  'Import (restore) wallet from mnemonic phrase',
   [
     globalOptions.keyMnemonic(),
     globalOptions.securityNewPassword({ isOptional: false }),

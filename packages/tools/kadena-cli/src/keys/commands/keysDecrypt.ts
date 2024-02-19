@@ -15,25 +15,35 @@ export const decrypt = async (
   password: string,
   keyMessage: EncryptedString,
 ): Promise<CommandResult<{ value: string }>> => {
-  const decryptedMessage = await kadenaDecrypt(password, keyMessage);
+  try {
+    const decryptedMessage = await kadenaDecrypt(password, keyMessage);
 
-  const isLegacy = decryptedMessage.byteLength >= 128;
+    const isLegacy = decryptedMessage.byteLength >= 128;
 
-  if (isLegacy === true) {
+    if (isLegacy === true) {
+      return {
+        success: false,
+        errors: [`Decryption is not available for legacy keys.`],
+      };
+    }
+
+    return { success: true, data: { value: toHexStr(decryptedMessage) } };
+  } catch (error) {
     return {
       success: false,
-      errors: [`Decryption is not available for legacy keys.`],
+      errors: [error.message],
     };
   }
-
-  return { success: true, data: { value: toHexStr(decryptedMessage) } };
 };
 
 export const createDecryptCommand: (program: Command, version: string) => void =
   createCommand(
     'decrypt',
-    'decrypt message',
-    [globalOptions.keyMessage(), globalOptions.securityCurrentPassword()],
+    'Decrypt message',
+    [
+      globalOptions.keyMessage({ isOptional: false }),
+      globalOptions.securityCurrentPassword({ isOptional: false }),
+    ],
     async (config) => {
       debug('decrypt:action')({ config });
 
@@ -41,9 +51,7 @@ export const createDecryptCommand: (program: Command, version: string) => void =
         throw new Error('Missing keyMessage');
       }
 
-      console.log(
-        chalk.yellow(`\nYou are about to decrypt this this message.\n`),
-      );
+      console.log(chalk.yellow(`You are about to decrypt this message.\n`));
 
       const result = await decrypt(
         config.securityCurrentPassword,

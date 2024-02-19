@@ -137,9 +137,8 @@ export const ImagePositions: FC<IProps> = () => {
           onLoad={() => setIsMounted(true)}
         />
         {proofOfUs?.signees.map((s, idx) => (
-          <>
+          <span key={s.accountName}>
             <div
-              key={s.accountName}
               className={signeeClassWrapper}
               data-xpercentage={s.position?.xPercentage}
               data-ypercentage={s.position?.yPercentage}
@@ -156,7 +155,7 @@ export const ImagePositions: FC<IProps> = () => {
               name="label"
               onChange={handleLabelChange}
             />
-          </>
+          </span>
         ))}
       </section>
     </>
