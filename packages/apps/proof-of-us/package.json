@@ -25,6 +25,7 @@
     "@graphql-yoga/apollo-link": "~3.0.3",
     "@kadena/client": "workspace:*",
     "@kadena/pactjs": "workspace:*",
+    "@kadena/react-icons": "workspace:*",
     "@kadena/react-ui": "workspace:*",
     "@vanilla-extract/css": "1.14.0",
     "@vanilla-extract/recipes": "0.5.1",

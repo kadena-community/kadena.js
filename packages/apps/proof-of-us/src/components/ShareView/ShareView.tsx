@@ -1,16 +1,16 @@
 import { Button } from '@/components/Button/Button';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useProofOfUs } from '@/hooks/proofOfUs';
+import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
-import { CopyButton, SystemIcon, TextField } from '@kadena/react-ui';
+import { MonoArrowBack, MonoArrowDown } from '@kadena/react-icons';
+import { CopyButton, TextField } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-
-import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import type { FC } from 'react';
 import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
-import { backButtonClass } from '../DetailView/style.css';
+import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 import { qrClass } from './style.css';
@@ -52,9 +52,9 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
             Prepend={() => (
               <>
                 {!isAlreadySigning(proofOfUs.signees) && (
-                  <button className={backButtonClass} onClick={handleBack}>
-                    <SystemIcon.ArrowCollapseDown />
-                  </button>
+                  <IconButton onClick={handleBack}>
+                    <MonoArrowBack />
+                  </IconButton>
                 )}
               </>
             )}
@@ -98,8 +98,8 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
           <TitleHeader
             Prepend={() => (
               <>
-                <button className={backButtonClass} onClick={handleBack}>
-                  <SystemIcon.ArrowCollapseDown />
+                <button onClick={handleBack}>
+                  <MonoArrowDown />
                 </button>
               </>
             )}

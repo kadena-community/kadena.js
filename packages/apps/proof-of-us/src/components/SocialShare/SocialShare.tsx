@@ -1,8 +1,16 @@
 import type { EVENT_NAMES } from '@/utils/analytics';
 import { analyticsEvent } from '@/utils/analytics';
-import { SystemIcon } from '@kadena/react-ui';
+import {
+  MonoAddLink,
+  MonoCheck,
+  MonoIosShare,
+  MonoLogoLinkedin,
+  MonoLogoX,
+  MonoThumbUpOffAlt,
+} from '@kadena/react-icons';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useState } from 'react';
+import { IconButton } from '../IconButton/IconButton';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
@@ -92,13 +100,17 @@ export const SocialShare: FC<IProps> = ({ data, tokenId }) => {
 
   return (
     <div>
-      <button onClick={handleClick}>sociallink</button>
+      <IconButton aria-label="share to the socials" onClick={handleClick}>
+        <MonoIosShare />
+      </IconButton>
 
       {isShowed ? (
         <>
           <ul>
             <li>
-              <button onClick={onFacebookShare}>facebookicon</button>
+              <IconButton onClick={onFacebookShare}>
+                <MonoThumbUpOffAlt />
+              </IconButton>
             </li>
             <li>
               <a
@@ -107,7 +119,7 @@ export const SocialShare: FC<IProps> = ({ data, tokenId }) => {
                 rel="noopener noreferrer"
                 href={`https://twitter.com/intent/tweet?url=${url}&text=${twitterTitle}`}
               >
-                <SystemIcon.Twitter />
+                <MonoLogoX />
               </a>
             </li>
             <li>
@@ -117,19 +129,19 @@ export const SocialShare: FC<IProps> = ({ data, tokenId }) => {
                 rel="noopener noreferrer"
                 href={`https://linkedin.com/share/?url=${url}&text=${title}`}
               >
-                <SystemIcon.Linkedin />
+                <MonoLogoLinkedin />
               </a>
             </li>
             <li>
-              <button onClick={onCopyToClipboard}>
-                <SystemIcon.Link />
-              </button>
+              <IconButton onClick={onCopyToClipboard}>
+                <MonoAddLink />
+              </IconButton>
             </li>
           </ul>
           {isCopied ? (
             <div>
               <br />
-              <SystemIcon.Check /> Copied!
+              <MonoCheck /> Copied!
             </div>
           ) : null}
         </>
