@@ -1,8 +1,7 @@
 {
   "name": "@kadena/hd-wallet",
   "version": "0.3.0",
-  "private": true,
-  "description": "HD Wallet; key derivation",
+  "description": "Key derivation based on Hierarchical Deterministic (HD)/Mnemonic keys and BIP32, for Kadena",
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",
@@ -76,8 +75,5 @@
     "ts-node": "~10.8.2",
     "typescript": "5.2.2",
     "vitest": "^1.1.0"
-  },
-  "publishConfig": {
-    "provenance": true
   }
 }
