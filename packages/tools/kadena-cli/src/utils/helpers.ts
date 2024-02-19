@@ -244,17 +244,22 @@ export function isAlphabetic(str: string): boolean {
 }
 
 /**
- * Checks if a string contains only alphabetic characters and numbers.
+ * Checks if a string contains only characters valid in filenames
  *
  * @param {string} str - The input string that needs to be checked.
- * @returns {boolean} - Returns `true` if the string is alphanumeric, otherwise returns `false`.
+ * @returns {boolean} - Returns `true` if the string is valid
  *
  * @example
- * const isAlnum = isAlphanumeric("abc123"); // Outputs: true
+ * const isValid = isValidFilename("abc-123"); // Outputs: true
  */
-export function isAlphanumeric(str: string): boolean {
-  const regex = /^[A-Za-z0-9]+$/;
-  return regex.test(str);
+export function isValidFilename(str: string): boolean {
+  str = str.trim();
+  if (str.length === 0) return false;
+
+  // Based on https://superuser.com/a/358861
+  const regex = /[\\\/:*?"<>|]/;
+
+  return !regex.test(str);
 }
 
 /**

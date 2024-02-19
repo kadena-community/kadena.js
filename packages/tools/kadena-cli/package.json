@@ -1,9 +1,15 @@
 {
   "name": "@kadena/kadena-cli",
-  "version": "0.0.1",
-  "private": true,
-  "description": "",
-  "keywords": [],
+  "version": "0.0.1-alpha.0",
+  "description": "Kadena CLI tool to interact with the Kadena blockchain (manage keys, transactions, etc.)",
+  "keywords": [
+    "Kadena",
+    "CLI",
+    "Contracts",
+    "Transactions",
+    "Wallet",
+    "Sign"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",
@@ -21,11 +27,11 @@
   ],
   "type": "module",
   "bin": {
-    "kadena": "./bin/kadena-cli.js"
+    "kadena": "./lib/index.js"
   },
   "files": [
-    "dist",
-    "lib"
+    "lib",
+    "bin"
   ],
   "scripts": {
     "build": "pnpm run generate:ts && pnpm run generate:kdn && tsc",
