@@ -40,13 +40,19 @@ export const MyApp = ({
             content="Proof Of Us (Powered by Kadena)"
           />
           <meta name="twitter:description" content="Share your moments" />
-          <meta name="twitter:image" content="/assets/test.jpg" />
+          <meta
+            name="twitter:image"
+            content={`${process.env.NEXT_PUBLIC_URL}/assets/test.jpg`}
+          />
           {/* <!-- Open Graph / Facebook --> */}
           <meta property="og:type" content="website" />
           <meta property="og:url" content="" />
           <meta property="og:title" content="Proof Of Us (Powered by Kadena)" />
           <meta property="og:description" content="Share your moments" />
-          <meta property="og:image" content="/assets/test.jpg" />
+          <meta
+            property="og:image"
+            content={`${process.env.NEXT_PUBLIC_URL}/assets/test.jpg`}
+          />
 
           <link rel="icon" href="/assets/favicons/icon@32.png" sizes="32x32" />
           <link

@@ -13,9 +13,11 @@ interface IProps {
 
 const Page: NextPage<IProps> = ({ params, token, proofOfUs }) => {
   return (
-    <ProofOfUsProvider>
-      <Share eventId={params.id} token={token} proofOfUs={proofOfUs} />;
-    </ProofOfUsProvider>
+    <>
+      <ProofOfUsProvider>
+        <Share eventId={params.id} token={token} proofOfUs={proofOfUs} />;
+      </ProofOfUsProvider>
+    </>
   );
 };
 
