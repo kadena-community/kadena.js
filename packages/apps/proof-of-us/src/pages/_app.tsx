@@ -46,7 +46,7 @@ export const MyApp = ({
           />
           {/* <!-- Open Graph / Facebook --> */}
           <meta property="og:type" content="website" />
-          <meta property="og:url" content="" />
+          <meta property="og:url" content={`${process.env.NEXT_PUBLIC_URL}`} />
           <meta property="og:title" content="Proof Of Us (Powered by Kadena)" />
           <meta property="og:description" content="Share your moments" />
           <meta
