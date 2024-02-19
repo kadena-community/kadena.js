@@ -5,13 +5,12 @@ import '@kadena/react-ui/global';
 import { Analytics } from '@/components/Analytics/Analytics';
 import { Providers } from '@/components/Providers/Providers';
 import { Toasts } from '@/components/Toasts/Toasts';
-import Head from 'next/head';
-
-import type { AppProps } from 'next/app';
 
 import { Header } from '@/components/Header/Header';
 import { mainWrapperClass } from '@/styles/global.css';
 import { AnimatePresence } from 'framer-motion';
+import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import type { FC } from 'react';
 import React from 'react';
 
@@ -28,28 +27,63 @@ export const MyApp = ({
       <>
         <Head>
           <title>Proof Of Us (Powered by Kadena)</title>
-          <meta name="title" content="Proof Of Us (Powered by Kadena)" />
-          <meta name="description" content="Share your moments" />
           <meta content="text/html; charset=UTF-8" name="Content-Type" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          {/* <!-- Twitter --> */}
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:url" content="" />
           <meta
+            key="title"
+            name="title"
+            content="Proof Of Us (Powered by Kadena)"
+          />
+          <meta
+            key="description"
+            name="description"
+            content="Share your moments"
+          />
+          {/* <!-- Twitter --> */}
+          <meta
+            key="twitter:card"
+            name="twitter:card"
+            content="summary_large_image"
+          />
+          <meta
+            key="twitter:url"
+            name="twitter:url"
+            content={`${process.env.NEXT_PUBLIC_URL}`}
+          />
+          <meta
+            key="twitter:title"
             name="twitter:title"
             content="Proof Of Us (Powered by Kadena)"
           />
-          <meta name="twitter:description" content="Share your moments" />
           <meta
+            key="twitter:description"
+            name="twitter:description"
+            content="Share your moments"
+          />
+          <meta
+            key="twitter:image"
             name="twitter:image"
             content={`${process.env.NEXT_PUBLIC_URL}/assets/test.jpg`}
           />
           {/* <!-- Open Graph / Facebook --> */}
-          <meta property="og:type" content="website" />
-          <meta property="og:url" content={`${process.env.NEXT_PUBLIC_URL}`} />
-          <meta property="og:title" content="Proof Of Us (Powered by Kadena)" />
-          <meta property="og:description" content="Share your moments" />
+          <meta key="og:type" property="og:type" content="website" />
           <meta
+            key="og:url"
+            property="og:url"
+            content={`${process.env.NEXT_PUBLIC_URL}`}
+          />
+          <meta
+            key="og:title"
+            property="og:title"
+            content="Proof Of Us (Powered by Kadena)"
+          />
+          <meta
+            key="og:description"
+            property="og:description"
+            content="Share your moments"
+          />
+          <meta
+            key="og:image"
             property="og:image"
             content={`${process.env.NEXT_PUBLIC_URL}/assets/test.jpg`}
           />

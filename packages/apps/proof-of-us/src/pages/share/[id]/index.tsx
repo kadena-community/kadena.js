@@ -17,26 +17,53 @@ const Page: NextPage<IProps> = ({ params, token, proofOfUs }) => {
   return (
     <>
       <Head>
+        <title>{proofOfUs?.name} | Proof Of Us (Powered by Kadena)</title>
         <meta
+          key="title"
+          name="title"
+          content={`${proofOfUs?.name} | Proof Of Us (Powered by Kadena)`}
+        />
+        <meta
+          key="description"
+          name="description"
+          content={proofOfUs?.description}
+        />
+        <meta
+          key="twitter:title"
           name="twitter:title"
           content={`${proofOfUs?.name} | Proof Of Us (Powered by Kadena)`}
         />
-        <meta name="twitter:description" content={proofOfUs?.description} />
         <meta
+          key="twitter:description"
+          name="twitter:description"
+          content={proofOfUs?.description}
+        />
+        <meta
+          key="og:title"
           property="og:title"
           content={`${proofOfUs?.name} | Proof Of Us (Powered by Kadena)`}
         />
-        <meta property="og:description" content={proofOfUs?.description} />
         <meta
+          key="og:description"
+          property="og:description"
+          content={proofOfUs?.description}
+        />
+        <meta
+          key="twitter:url"
           name="twitter:url"
           content={`${process.env.NEXT_PUBLIC_URL}/share/${params.id}`}
         />
         <meta
+          key="og:url"
           property="og:url"
           content={`${process.env.NEXT_PUBLIC_URL}/share/${params.id}`}
         />
-        <meta name="twitter:image" content={proofOfUs?.image} />
-        <meta property="og:image" content={proofOfUs?.image} />
+        <meta
+          key="twitter:image"
+          name="twitter:image"
+          content={proofOfUs?.image}
+        />
+        <meta key="og:image" property="og:image" content={proofOfUs?.image} />
       </Head>
       <ProofOfUsProvider>
         <Share eventId={params.id} token={token} proofOfUs={proofOfUs} />;
