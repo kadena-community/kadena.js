@@ -4,7 +4,7 @@ import { PactNumber } from '@kadena/pactjs';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { describeModule } from '../built-in';
 import { transferCreate } from '../coin';
-import { IClientConfig } from '../core/utils/helpers';
+import type { IClientConfig } from '../core/utils/helpers';
 import { createToken } from '../marmalade/create-token';
 import { createTokenId } from '../marmalade/create-token-id';
 import { getBalance } from '../marmalade/get-balance';
