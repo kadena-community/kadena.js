@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync } from 'fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { clearDir } from '../../services/path';
-import { handleDirectorySetup } from '../utils/directory';
+import { deleteLocalFiles, handleDirectorySetup } from '../utils/directory';
 
 // Mock the fs and path modules
 vi.mock('fs', () => ({
@@ -48,5 +48,34 @@ describe('handleDirectorySetup', () => {
     expect(existsSync).toHaveBeenCalledTimes(2);
     expect(clearDir).toHaveBeenCalledTimes(2);
     expect(mkdirSync).not.toHaveBeenCalled();
+  });
+});
+describe('deleteLocalFiles', () => {
+  it('should call clearDir with the correct paths', () => {
+    const localConfig = {
+      templatePath: 'templatePath',
+      codeFilesPath: 'codeFilesPath',
+      namespacePath: 'namespacePath',
+    };
+
+    deleteLocalFiles(localConfig);
+
+    expect(clearDir).toHaveBeenCalledTimes(3);
+    expect(clearDir).toHaveBeenCalledWith('templatePath');
+    expect(clearDir).toHaveBeenCalledWith('codeFilesPath');
+    expect(clearDir).toHaveBeenCalledWith('namespacePath');
+  });
+
+  it('should not call clearDir with duplicate paths', () => {
+    const localConfig = {
+      templatePath: 'templatePath',
+      codeFilesPath: 'templatePath',
+      namespacePath: 'templatePath',
+    };
+
+    deleteLocalFiles(localConfig);
+
+    expect(clearDir).toHaveBeenCalledTimes(1);
+    expect(clearDir).toHaveBeenCalledWith('templatePath');
   });
 });

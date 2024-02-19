@@ -17,7 +17,7 @@ export async function downloadGitFiles({
   name: string;
   path: string;
   branch: string;
-  localPath: string;
+  localPath?: string;
   fileExtension: string;
   drillDown?: boolean;
   excludeFolder?: string[];

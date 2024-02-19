@@ -1,12 +1,22 @@
-import { readdirSync } from 'fs';
+import { readFileSync, readdirSync, writeFileSync } from 'fs';
+import yaml from 'js-yaml';
+import { join, relative } from 'path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { downloadGitFiles } from '../../services/download-git-files';
 import { flattenFolder } from '../../services/path';
-import { getMarmaladeTemplates, getNsCodeFiles } from '../utils/file';
+import { IRemoteConfig } from '../deployment/config';
+import {
+  getCodeFiles,
+  getMarmaladeTemplates,
+  getNsCodeFiles,
+  updateTemplateFilesWithCodeFile,
+} from '../utils/file';
 
 // Mock the fs and path modules
 vi.mock('fs', () => ({
   readdirSync: vi.fn(),
+  readFileSync: vi.fn(),
+  writeFileSync: vi.fn(),
 }));
 vi.mock('../../services/path', () => ({
   flattenFolder: vi.fn(),
@@ -19,6 +29,7 @@ vi.mock('../../services/download-git-files', () => ({
 afterEach(() => {
   vi.clearAllMocks();
 });
+
 const repositoryConfig = {
   owner: 'owner',
   name: 'name',
@@ -122,5 +133,112 @@ describe('getNsCodeFiles', () => {
       branch: 'branch',
       owner: 'owner',
     });
+  });
+});
+describe('getCodeFiles', () => {
+  it('should throw an error if no template files are found', async () => {
+    //@ts-ignore
+    readdirSync.mockReturnValue([]);
+
+    await expect(
+      getCodeFiles({
+        repositoryConfig,
+        remoteConfig,
+        localConfig,
+      }),
+    ).rejects.toThrow('No template files found');
+  });
+
+  it('should call downloadGitFiles with the correct arguments', async () => {
+    //@ts-ignore
+    readdirSync.mockReturnValue(['file1', 'file2']);
+    //@ts-ignore
+    readFileSync.mockReturnValue('codeFile: file');
+
+    const loadSpy = vi
+      .spyOn(yaml, 'load')
+      .mockReturnValue({ codeFile: 'file' });
+
+    //@ts-ignore
+    await getCodeFiles({
+      repositoryConfig,
+      remoteConfig,
+      localConfig,
+    });
+
+    expect(downloadGitFiles).toHaveBeenCalledTimes(2);
+    expect(downloadGitFiles).toHaveBeenCalledWith({
+      ...repositoryConfig,
+      path: 'pact/file',
+      localPath: localConfig.codeFilesPath,
+      fileExtension: remoteConfig.codefileExtension,
+    });
+    expect(loadSpy).toHaveBeenCalledTimes(2);
+  });
+});
+describe('getNsCodeFiles', () => {
+  it('should call downloadGitFiles with the correct arguments', async () => {
+    const multipleNsRemoteConfig = {
+      ...remoteConfig,
+      namespacePaths: ['path1', 'path2'],
+    };
+
+    await getNsCodeFiles({
+      repositoryConfig,
+      remoteConfig: multipleNsRemoteConfig,
+      localConfig,
+    });
+
+    expect(downloadGitFiles).toHaveBeenCalledTimes(2);
+    expect(downloadGitFiles).toHaveBeenCalledWith({
+      ...repositoryConfig,
+      path: 'path1',
+      localPath: localConfig.namespacePath,
+      fileExtension: remoteConfig.codefileExtension,
+    });
+    expect(downloadGitFiles).toHaveBeenCalledWith({
+      ...repositoryConfig,
+      path: 'path2',
+      localPath: localConfig.namespacePath,
+      fileExtension: remoteConfig.codefileExtension,
+    });
+  });
+});
+
+describe('updateTemplateFilesWithCodeFile', () => {
+  it('should throw an error if code file is not found', async () => {
+    //@ts-ignore
+    readFileSync.mockReturnValue('codeFile: file');
+    //@ts-ignore
+    yaml.load.mockReturnValue({ codeFile: 'file' });
+
+    await expect(
+      updateTemplateFilesWithCodeFile(
+        ['templateFile'],
+        'templateDirectory',
+        ['codeFile'],
+        'codeFileDirectory',
+      ),
+    ).rejects.toThrow('Code file file not found');
+  });
+
+  it('should call writeFileSync with the correct arguments', async () => {
+    //@ts-ignore
+    readFileSync.mockReturnValue('codeFile: file');
+    //@ts-ignore
+    yaml.load.mockReturnValue({ codeFile: 'file' });
+
+    await updateTemplateFilesWithCodeFile(
+      ['templateFile'],
+      'templateDirectory',
+      ['file'],
+      'codeFileDirectory',
+    );
+
+    expect(writeFileSync).toHaveBeenCalledWith(
+      join('templateDirectory', 'templateFile'),
+      'codeFile: ' +
+        relative('templateDirectory', join('codeFileDirectory', 'file')),
+    );
   });
 });

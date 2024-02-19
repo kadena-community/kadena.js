@@ -43,7 +43,6 @@ describe('flattenFolder', async () => {
     const statSyncSpy = vi.spyOn(fs, 'statSync');
     const renameSyncSpy = vi.spyOn(fs, 'renameSync');
 
-    // Call the function with test values
     await flattenFolder(basePath, fileExtensions, currentPath);
 
     expect(readdirSyncSpy).toHaveBeenNthCalledWith(1, currentPath);
@@ -59,6 +58,50 @@ describe('flattenFolder', async () => {
       2,
       `${currentPath}/file2.txt`,
       `${currentPath}.file2.txt`,
+    );
+  });
+
+  it('should make recursive call if a directory is found', async () => {
+    const basePath = '/test/path';
+    const fileExtensions = ['.txt'];
+    const currentPath = '/test/path/subfolder';
+
+    readdirSync
+      //@ts-ignore
+      .mockImplementationOnce(() => ['directory'])
+      .mockImplementationOnce(() => ['file1.txt']);
+
+    statSync
+      //@ts-ignore
+      .mockImplementationOnce(() => ({ isDirectory: () => true }))
+      .mockImplementationOnce(() => ({ isDirectory: () => false }));
+    //@ts-ignore
+    rmdirSync.mockImplementation(() => {});
+    //@ts-ignore
+    renameSync.mockImplementation(() => {});
+
+    const readdirSyncSpy = vi.spyOn(fs, 'readdirSync');
+    const statSyncSpy = vi.spyOn(fs, 'statSync');
+    const renameSyncSpy = vi.spyOn(fs, 'renameSync');
+    const rmDirSpry = vi.spyOn(fs, 'rmdirSync');
+
+    await flattenFolder(basePath, fileExtensions, currentPath);
+
+    expect(readdirSyncSpy).toHaveBeenNthCalledWith(1, currentPath);
+    expect(readdirSyncSpy).toHaveBeenNthCalledWith(
+      2,
+      `${currentPath}/directory`,
+    );
+    expect(statSyncSpy).toHaveBeenNthCalledWith(1, `${currentPath}/directory`);
+    expect(statSyncSpy).toHaveBeenNthCalledWith(
+      2,
+      `${currentPath}/directory/file1.txt`,
+    );
+    expect(rmDirSpry).toHaveBeenNthCalledWith(1, `${currentPath}/directory`);
+    expect(renameSyncSpy).toHaveBeenNthCalledWith(
+      1,
+      `${currentPath}/directory/file1.txt`,
+      `${currentPath}.directory.file1.txt`,
     );
   });
 });
@@ -95,7 +138,6 @@ describe('clearDir', async () => {
     const extension = '.txt';
 
     //@ts-ignore
-    //@ts-ignore
     readdirSync.mockImplementation(() => ['file1.txt', 'file2.txt']);
     //@ts-ignore
     statSync.mockImplementation(() => ({ isDirectory: () => false }));
@@ -104,7 +146,43 @@ describe('clearDir', async () => {
       throw new Error('error');
     });
 
+    vi.spyOn(console, 'error');
+
     clearDir(dir, extension);
+
+    expect(console.error).toHaveBeenCalledWith(
+      `Error processing file ${dir}/file1.txt: Error: error`,
+    );
+    expect(console.error).toHaveBeenCalledWith(
+      `Error processing file ${dir}/file2.txt: Error: error`,
+    );
+  });
+
+  it('should make recursive call if filepath is directory', async () => {
+    const dir = '/test/path';
+    const extension = '.txt';
+
+    readdirSync
+      //@ts-ignore
+      .mockImplementationOnce(() => ['file1.txt', 'directory1'])
+      .mockImplementationOnce(() => ['file2.txt']);
+
+    statSync
+      //@ts-ignore
+      .mockImplementationOnce(() => ({ isDirectory: () => false }))
+      .mockImplementationOnce(() => ({ isDirectory: () => true }));
+    //@ts-ignore
+    unlinkSync.mockImplementation(() => {});
+
+    clearDir(dir, extension);
+
+    expect(readdirSync).toHaveBeenNthCalledWith(1, dir);
+    expect(readdirSync).toHaveBeenNthCalledWith(2, `${dir}/directory1`);
+    expect(unlinkSync).toHaveBeenNthCalledWith(1, `${dir}/file1.txt`);
+    expect(unlinkSync).toHaveBeenNthCalledWith(
+      2,
+      `${dir}/directory1/file2.txt`,
+    );
   });
 });
 
@@ -122,7 +200,6 @@ describe('createDirAndWriteFile', async () => {
     const mkdirSyncSpy = vi.spyOn(fs, 'mkdirSync');
     const writeFileSyncSpy = vi.spyOn(fs, 'writeFileSync');
 
-    // Call the function with test values
     await createDirAndWriteFile(dir, fileName, data);
 
     expect(mkdirSyncSpy).toHaveBeenNthCalledWith(1, dir, { recursive: true });

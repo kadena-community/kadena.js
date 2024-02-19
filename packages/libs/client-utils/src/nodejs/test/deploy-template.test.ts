@@ -84,4 +84,24 @@ describe('deploy-template', () => {
       __dirname,
     );
   });
+  it('should call createPactCommandFromTemplate with an empty object', async () => {
+    const createPactCommandFromTemplateSpy = vi
+      .spyOn(yamlConverter, 'createPactCommandFromTemplate')
+      .mockResolvedValueOnce({} as IPactCommand);
+
+    await deployTemplate(
+      {
+        templatePath: testFile,
+        workingDirectory: __dirname,
+      },
+      clientConfig,
+    );
+
+    expect(createPactCommandFromTemplateSpy).toHaveBeenCalledTimes(1);
+    expect(createPactCommandFromTemplateSpy).toHaveBeenCalledWith(
+      testFile,
+      {},
+      __dirname,
+    );
+  });
 });
