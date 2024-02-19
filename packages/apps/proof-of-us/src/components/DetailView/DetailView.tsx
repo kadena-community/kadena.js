@@ -1,23 +1,16 @@
+import { Button } from '@/components/Button/Button';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { useRouter } from 'next/navigation';
-
-import { Button } from '@/components/Button/Button';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
-
-import { SystemIcon } from '@kadena/react-ui';
+import { MonoArrowBack, MonoClose } from '@kadena/react-icons';
+import { useRouter } from 'next/navigation';
 import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
+import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { SocialsEditor } from '../SocialsEditor/SocialsEditor';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
-import {
-  backButtonClass,
-  closeButtonClass,
-  imageWrapper,
-  titleErrorClass,
-  titleInputClass,
-} from './style.css';
+import { imageWrapper, titleErrorClass, titleInputClass } from './style.css';
 
 interface IProps {
   next: () => void;
@@ -72,9 +65,9 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         Prepend={() => (
           <>
             {!isAlreadySigning(proofOfUs.signees) && (
-              <button className={backButtonClass} onClick={handleRedo}>
-                <SystemIcon.ArrowCollapseDown />
-              </button>
+              <IconButton onClick={handleRedo}>
+                <MonoArrowBack />
+              </IconButton>
             )}
           </>
         )}
@@ -82,9 +75,9 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         Append={() => (
           <>
             {!isAlreadySigning(proofOfUs.signees) && (
-              <button className={closeButtonClass} onClick={handleClose}>
-                <SystemIcon.Close />
-              </button>
+              <IconButton onClick={handleClose}>
+                <MonoClose />
+              </IconButton>
             )}
           </>
         )}

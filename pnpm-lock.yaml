@@ -664,6 +664,9 @@ importers:
       '@kadena/pactjs':
         specifier: workspace:*
         version: link:../../libs/pactjs
+      '@kadena/react-icons':
+        specifier: workspace:*
+        version: link:../../libs/react-icons
       '@kadena/react-ui':
         specifier: workspace:*
         version: link:../../libs/react-ui
