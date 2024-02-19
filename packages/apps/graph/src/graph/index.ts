@@ -3,6 +3,7 @@ import './objects/block';
 import './objects/event';
 import './objects/fungible-account';
 import './objects/fungible-chain-account';
+import './objects/gas-limit-estimation';
 import './objects/graph-configuration';
 import './objects/guard';
 import './objects/miner-key';

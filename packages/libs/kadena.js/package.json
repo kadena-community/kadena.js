@@ -18,7 +18,7 @@
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/libs/kadena.js"
   },
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "author": "Randynamic",
   "contributors": [
     {

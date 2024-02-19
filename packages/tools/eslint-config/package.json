@@ -7,7 +7,7 @@
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/tools/eslint-config"
   },
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "files": [
     "mixins",
     "profile"

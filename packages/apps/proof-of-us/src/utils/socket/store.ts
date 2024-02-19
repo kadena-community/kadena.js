@@ -34,6 +34,7 @@ const ProofOfUsStore = () => {
       status: BUILDSTATUS.INIT,
       mintStatus: 'init',
       proofOfUsId,
+      eventId: process.env.NEXT_PUBLIC_CONNECTION_EVENTID,
       type: 'connect',
       date: Date.now(),
       signees: [{ ...account, signerStatus: 'init', initiator: true }],

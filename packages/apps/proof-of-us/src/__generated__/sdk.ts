@@ -210,6 +210,15 @@ export type FungibleChainAccountTransfersConnectionEdge = {
   node: Transfer;
 };
 
+export type GasLimitEstimation = {
+  __typename?: 'GasLimitEstimation';
+  amount: Scalars['Int']['output'];
+  inputType: Scalars['String']['output'];
+  transaction: Scalars['String']['output'];
+  usedPreflight: Scalars['Boolean']['output'];
+  usedSignatureVerification: Scalars['Boolean']['output'];
+};
+
 /** General information about the graph and chainweb-data. */
 export type GraphConfiguration = {
   __typename?: 'GraphConfiguration';
@@ -312,12 +321,6 @@ export type PactQueryData = {
   value: Scalars['String']['input'];
 };
 
-export type PactTransaction = {
-  cmd: Scalars['String']['input'];
-  hash?: InputMaybe<Scalars['String']['input']>;
-  sigs?: InputMaybe<Array<Scalars['String']['input']>>;
-};
-
 export type PageInfo = {
   __typename?: 'PageInfo';
   endCursor?: Maybe<Scalars['String']['output']>;
@@ -343,9 +346,9 @@ export type Query = {
   /** Retrieve an account by its name and fungible, such as coin, on a specific chain. */
   fungibleChainAccount?: Maybe<FungibleChainAccount>;
   /** Estimate the gas limit for a transaction. */
-  gasLimitEstimate: Scalars['Int']['output'];
+  gasLimitEstimate: GasLimitEstimation;
   /** Estimate the gas limit for a list of transactions. */
-  gasLimitEstimates: Array<Scalars['Int']['output']>;
+  gasLimitEstimates: Array<GasLimitEstimation>;
   /** Get the configuration of the graph. */
   graphConfiguration: GraphConfiguration;
   /** Get the height of the block with the highest height. */
@@ -413,11 +416,11 @@ export type QueryFungibleChainAccountArgs = {
 };
 
 export type QueryGasLimitEstimateArgs = {
-  transaction: PactTransaction;
+  input: Scalars['String']['input'];
 };
 
 export type QueryGasLimitEstimatesArgs = {
-  transactions: Array<PactTransaction>;
+  input: Array<Scalars['String']['input']>;
 };
 
 export type QueryNodeArgs = {
@@ -582,7 +585,7 @@ export type SubscriptionTransactionArgs = {
 export type Token = {
   __typename?: 'Token';
   balance: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
+  chainId: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   info?: Maybe<TokenInfo>;
   version: Scalars['String']['output'];

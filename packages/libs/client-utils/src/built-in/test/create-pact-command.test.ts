@@ -14,8 +14,22 @@ describe('createPactCommand', () => {
   it('should return a pact command with the correct structure', async () => {
     const command = createPactCommand({ contractCode, transactionBody: input });
 
+    console.log(command);
     expect(command).toEqual({
-      payload: { exec: { code: '(+ 1 1)', data: {} } },
+      payload: {
+        exec: {
+          code: '(+ 1 1)',
+          data: {
+            'test-key': 'test-value',
+            'test-keyset': {
+              keys: [
+                '5a2afbc4564b76b2c27ce5a644cab643c43663835ea0be22433b209d3351f937',
+              ],
+              pred: 'keys-all',
+            },
+          },
+        },
+      },
       nonce: 'kjs:nonce:1698278400000',
       signers: [
         {

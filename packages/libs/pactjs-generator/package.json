@@ -7,7 +7,7 @@
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/libs/pactjs-generator"
   },
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "contributors": [
     "Albert Groothedde <albert@kadena.io>",
     "Javad Khalilian <javad@kadena.io>"

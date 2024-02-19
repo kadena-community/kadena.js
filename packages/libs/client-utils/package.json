@@ -7,7 +7,7 @@
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/libs/client-utils"
   },
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "contributors": [
     "Javad Khalilian <javad@kadena.io>",
     "Albert Groothedde <albert@kadena.io>",

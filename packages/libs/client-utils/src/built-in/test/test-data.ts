@@ -31,5 +31,13 @@ export const input = {
     ttl: 8 * 60 * 60,
     senderAccount: sourceAccount.account,
   },
+  keysets: [
+    {
+      name: 'test-keyset',
+      pred: 'keys-all',
+      keys: [sourceAccount.publicKey],
+    },
+  ],
+  data: { key: 'test-key', value: 'test-value' },
 };
 export const contractCode = '(+ 1 1)';
