@@ -14,7 +14,7 @@ export const ticketClass = style([
     width: '100vw',
     maxWidth: '800px',
     aspectRatio: '16/9',
-    background: 'lightgrey',
+    background: 'green',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     backgroundSize: 'cover',

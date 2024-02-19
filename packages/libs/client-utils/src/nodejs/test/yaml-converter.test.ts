@@ -3,13 +3,16 @@ import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   convertTemplateTxToPactCommand,
-  createPactCommandFromStringTemplate,
-  createPactCommandFromTemplate,
   getPartsAndHolesInCtx,
   parseYamlToKdaTx,
   replaceHoles,
   replaceHolesInCtx,
 } from '../yaml-converter';
+
+import {
+  createPactCommandFromStringTemplate,
+  createPactCommandFromTemplate,
+} from '../';
 
 describe('yaml-converter', () => {
   beforeEach(() => {

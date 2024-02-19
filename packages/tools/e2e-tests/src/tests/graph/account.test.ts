@@ -7,7 +7,7 @@ import {
 import { base64Encode } from '@helpers/graph/cryptography.helper';
 import { sendQuery } from '@helpers/graph/request.helper';
 import { expect, test } from '@playwright/test';
-import type { IAccount } from '@testTypes/account.types';
+import type { IAccount } from '@test-types/account.types';
 
 let testAccount: IAccount;
 let queryResponse: any;

@@ -2,6 +2,7 @@ import type {
   FungibleChainAccountTransactionsConnection,
   FungibleChainAccountTransfersConnection,
   NonFungibleChainAccountTransactionsConnection,
+  Token,
 } from '@/__generated__/sdk';
 import {
   useGetFungibleChainAccountQuery,
@@ -297,10 +298,8 @@ const ChainAccount: React.FC = () => {
                       <strong>Guard Predicate</strong>
                     </Cell>
                     <Cell>
-                      {
-                        nonFungibleChainAccountData.nonFungibleChainAccount
-                          .guard.predicate
-                      }
+                      nonFungibleChainAccountData.nonFungibleChainAccount
+                      .guard.predicate
                     </Cell>
                   </Row>
                   <Row>
@@ -308,10 +307,8 @@ const ChainAccount: React.FC = () => {
                       <strong>Guard Keys</strong>
                     </Cell>
                     <Cell>
-                      {
-                        nonFungibleChainAccountData.nonFungibleChainAccount
-                          .guard.keys
-                      }
+                      nonFungibleChainAccountData.nonFungibleChainAccount
+                      .guard.keys
                     </Cell>
                   </Row>
                 </TableBody>
@@ -324,7 +321,7 @@ const ChainAccount: React.FC = () => {
                   <TokenTable
                     tokens={
                       nonFungibleChainAccountData.nonFungibleChainAccount
-                        .nonFungibles
+                        .nonFungibles as Token[]
                     }
                   />
                 </GridItem>

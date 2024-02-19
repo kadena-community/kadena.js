@@ -1,12 +1,10 @@
 import { prismaClient } from '@db/prisma-client';
-import { getNonFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import { accountDetailsLoader } from '../data-loaders/account-details';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
 import type { NonFungibleChainAccount } from '../types/graphql-types';
 import { NonFungibleChainAccountName } from '../types/graphql-types';
@@ -27,10 +25,13 @@ export default builder.node(
     },
     async loadOne({ chainId, accountName }) {
       try {
-        return getNonFungibleChainAccount({
+        return {
+          __typename: NonFungibleChainAccountName,
           chainId,
           accountName,
-        });
+          nonFungibles: [],
+          transactions: [],
+        };
       } catch (error) {
         throw normalizeError(error);
       }
@@ -38,26 +39,6 @@ export default builder.node(
     fields: (t) => ({
       chainId: t.exposeID('chainId'),
       accountName: t.exposeString('accountName'),
-      guard: t.field({
-        type: 'Guard',
-        complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
-        async resolve(parent) {
-          try {
-            const accountDetails = await accountDetailsLoader.load({
-              fungibleName: 'coin',
-              accountName: parent.accountName,
-              chainId: parent.chainId,
-            });
-
-            return {
-              keys: accountDetails.guard.keys,
-              predicate: accountDetails.guard.pred,
-            };
-          } catch (error) {
-            throw normalizeError(error);
-          }
-        },
-      }),
       nonFungibles: t.field({
         type: ['Token'],
         complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,

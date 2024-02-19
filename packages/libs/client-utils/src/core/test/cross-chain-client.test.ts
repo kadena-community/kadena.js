@@ -8,7 +8,7 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import { crossChainClient } from '../client-helpers';
+import { crossChainClient } from '../';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const calls = (...fns: Array<(...args: any) => any>) => {

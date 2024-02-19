@@ -3,7 +3,6 @@ import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 
-import type { INetworkCreateOptions } from '../utils/networkHelpers.js';
 import { writeNetworks } from '../utils/networkHelpers.js';
 
 import chalk from 'chalk';
@@ -19,15 +18,18 @@ export const createNetworksCommand: (
   'Create network',
   [
     globalOptions.networkName({ isOptional: false }),
-    globalOptions.networkId(),
-    globalOptions.networkHost(),
+    globalOptions.networkId({ isOptional: false }),
+    globalOptions.networkHost({ isOptional: false }),
     globalOptions.networkExplorerUrl(),
     globalOptions.networkOverwrite(),
   ],
   async (config) => {
     debug('network-create:action')({ config });
 
-    const filePath = path.join(defaultNetworksPath, `${config.network}.yaml`);
+    const filePath = path.join(
+      defaultNetworksPath,
+      `${config.networkName}.yaml`,
+    );
 
     if (
       !(await services.filesystem.fileExists(filePath)) &&
@@ -35,17 +37,24 @@ export const createNetworksCommand: (
     ) {
       console.log(
         chalk.yellow(
-          `\nThe existing network configuration "${config.network}" will not be updated.\n`,
+          `\nThe existing network configuration "${config.networkName}" will not be updated.\n`,
         ),
       );
       return;
     }
 
-    await writeNetworks(config as unknown as INetworkCreateOptions);
+    const networkConfig = {
+      network: config.networkName,
+      networkId: config.networkId,
+      networkHost: config.networkHost,
+      networkExplorerUrl: config.networkExplorerUrl,
+    };
+
+    await writeNetworks(networkConfig);
 
     console.log(
       chalk.green(
-        `\nThe network configuration "${config.network}" has been saved.\n`,
+        `\nThe network configuration "${config.networkName}" has been saved.\n`,
       ),
     );
   },

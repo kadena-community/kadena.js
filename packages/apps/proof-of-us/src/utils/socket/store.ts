@@ -16,7 +16,6 @@ const ProofOfUsStore = () => {
   const getBackground = async (
     proofOfUsId: string,
   ): Promise<IProofOfUsBackground | null> => {
-    console.log(2323422234234243);
     const docRef = await get(child(dbRef, `background/${proofOfUsId}`));
 
     if (!docRef.exists()) return { bg: '' };
@@ -35,7 +34,8 @@ const ProofOfUsStore = () => {
       status: BUILDSTATUS.INIT,
       mintStatus: 'init',
       proofOfUsId,
-      type: 'multi',
+      eventId: process.env.NEXT_PUBLIC_CONNECTION_EVENTID,
+      type: 'connect',
       date: Date.now(),
       signees: [{ ...account, signerStatus: 'init', initiator: true }],
     });
@@ -139,6 +139,12 @@ const ProofOfUsStore = () => {
     });
   };
 
+  const updateTx = async (proofOfUs: IProofOfUsData, tx: string) => {
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      tx,
+    });
+  };
+
   const addTitle = async (proofOfUs: IProofOfUsData, value: string) => {
     if (isAlreadySigning(proofOfUs.signees)) return;
 
@@ -194,6 +200,7 @@ const ProofOfUsStore = () => {
     addTitle,
     updateBackgroundColor,
     updateSigner,
+    updateTx,
   };
 };
 

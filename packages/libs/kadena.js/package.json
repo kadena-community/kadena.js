@@ -1,6 +1,6 @@
 {
   "name": "kadena.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "A practical util library for JavaScript programmers who are building on the Kadena blockchain",
   "keywords": [
@@ -18,7 +18,7 @@
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/libs/kadena.js"
   },
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "author": "Randynamic",
   "contributors": [
     {

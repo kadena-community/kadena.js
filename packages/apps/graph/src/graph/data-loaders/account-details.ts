@@ -1,4 +1,4 @@
-import { getAccountDetails } from '@services/node-service';
+import { getAccountDetails } from '@services/chainweb-node/account-details';
 import DataLoader from 'dataloader';
 
 interface AccountDetailsKey {

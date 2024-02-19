@@ -1,5 +1,14 @@
 # @kadena/kadena-cli
 
+## 0.3.1
+
+### Patch Changes
+
+- @kadena/client@1.8.1
+- @kadena/client-utils@0.4.1
+- @kadena/pactjs-cli@1.8.1
+- @kadena/pactjs-generator@1.8.1
+
 ## 0.3.0
 
 ### Minor Changes

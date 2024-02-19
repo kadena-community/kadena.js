@@ -6,7 +6,7 @@ import type {
 import { isEmpty } from './addHelpers.js';
 import { compareConfigAndAccountDetails } from './compareConfigAndAccountDetails.js';
 import { createAccountName } from './createAccountName.js';
-import { getAccountDetailsForAddAccount } from './getAccountDetails.js';
+import { getAccountDetails } from './getAccountDetails.js';
 
 export interface IValidateAccountDetailsData {
   isConfigAreSame: boolean;
@@ -28,7 +28,7 @@ export async function validateAndRetrieveAccountDetails(
           })
         : config.accountName;
 
-    const accountDetails = await getAccountDetailsForAddAccount({
+    const accountDetails = await getAccountDetails({
       accountName,
       chainId: config.chainId,
       networkId: config.networkConfig.networkId,

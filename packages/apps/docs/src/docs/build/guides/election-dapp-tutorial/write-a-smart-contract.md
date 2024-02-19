@@ -264,6 +264,8 @@ When you defined the `election` module, you specified the keyset used to govern 
 Every change to the module requires the upgrade transaction to be signed with that keyset. 
 To test that upgrades works as expected, you can try upgrading the Pact module with the correct keyset and with an incorrect keyset.
 
+### Upgrade using the correct keyset
+
 To test upgrading with the correct keyset:
 
 1. Open the `election-dapp/pact/module.repl` file in the code editor on your computer.
@@ -312,14 +314,16 @@ To test upgrading with the correct keyset:
    
     You should see output similar to the following that indicates you were able to call the updated `list-candidates` function and that the function returned a list with numbers:
 
-   ```bash
-   module.repl:82:0:Trace: Begin Tx 6: Call updated list-candidates function
-   module.repl:85:4:Trace: Expect: success: list-candidates returns a list with numbers
-   module.repl:90:0:Trace: Commit Tx 6: Call updated list-candidates function
-   Load successful
-   ```
+    ```bash
+    module.repl:82:0:Trace: Begin Tx 6: Call updated list-candidates function
+    module.repl:85:4:Trace: Expect: success: list-candidates returns a list with numbers
+    module.repl:90:0:Trace: Commit Tx 6: Call updated list-candidates function
+    Load successful
+    ```
 
-Yo can't use `expect-failure` in the Pact REPL to test module definitions, but you can simulate an unauthorized user attempting to update a module.
+### Upgrade using an incorrect keyset
+
+You can't use `expect-failure` in the Pact REPL to test module definitions, but you can simulate an unauthorized user attempting to update a module.
 
 To test upgrading with an incorrect keyset:
 
@@ -351,7 +355,7 @@ To test upgrading with an incorrect keyset:
    (commit-tx)
    ```
 
-   2. Execute the transaction using the `pact` command-line program:
+2. Execute the transaction using the `pact` command-line program:
    
    ```pact
    pact module.repl -t
@@ -416,8 +420,8 @@ To modify governance for the module:
    ```
    
    You should see output similar to the following that indicates you successfully upgraded the `election` module to be governed by a capability:
-
-   ```
+   
+   ```bash
    module.repl:106:0:Trace: Begin Tx 7: Refactor governance of the module
    module.repl:109:4:Trace: Loaded module election, hash QIk-zRAVReFt6NAFNhdEjXOVYRhqlKsGDH8q0-gB0sA
    module.repl:114:0:Trace: Commit Tx 7: Refactor governance of the module
@@ -467,13 +471,13 @@ To deploy the Pact module on the development network:
    
    You'll notice several differences between this script and the previous scripts you've used. 
    For example, in this script, the Pact code is read from your `election.pact` module rather than passed as a string or a function call to an existing module like `Pact.modules.coin`. 
-
+   
    ```typescript
    async function main(account: string, upgrade: boolean) {
      const transaction = Pact.builder
        .execution(fs.readFileSync('../pact/election.pact', 'utf8'))
    ```
-
+   
    You'll also see that the metadata for the transaction specifies a gas limit and gas price:
    
    ```typescript
@@ -481,14 +485,14 @@ To deploy the Pact module on the development network:
    gasPrice: 0.00000001,
    ```
   
-  Deploying a Pact module is a relatively expensive type of transaction because of the resources required to update the blockchain.
-  The transaction will fail if the gas limit is set too low. 
-  
-  After the code used to sign the transaction, the script sends a **preflight request** for the signed transaction to the blockchain using the Kadena client. 
-  The response to the preflight request contains information about the expected success of the transaction and the how much gas the transaction requires. 
-  The preflight request helps to ensure that the script doesn't send a transaction to the blockchain that is likely to fail.
-  
-  Because you must for pay processing any transaction request even if a transaction fails, you should use a preflight request for any computationally expensive transactions—like deploying a module—before sending the actual transaction to the blockchain.
+   Deploying a Pact module is a relatively expensive type of transaction because of the resources required to update the blockchain.
+   The transaction will fail if the gas limit is set too low. 
+     
+   After the code used to sign the transaction, the script sends a **preflight request** for the signed transaction to the blockchain using the Kadena client. 
+   The response to the preflight request contains information about the expected success of the transaction and the how much gas the transaction requires. 
+   The preflight request helps to ensure that the script doesn't send a transaction to the blockchain that is likely to fail.
+   
+   Because you must for pay processing any transaction request even if a transaction fails, you should use a preflight request for any computationally expensive transactions—like deploying a module—before sending the actual transaction to the blockchain.
 
 1. Deploy your election module on the development network by running a command similar to the following with your administrative account name:
    
@@ -496,9 +500,9 @@ To deploy the Pact module on the development network:
    npm run deploy-module:devnet -- k:<your-public-key>
    ```
    
-  Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
-  You can copy this account name from Chainweaver when viewing the account watch list.
-  When you run the script, you should see Chainweaver display a QuickSign Request.
+   Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
+   You can copy this account name from Chainweaver when viewing the account watch list.
+   When you run the script, you should see Chainweaver display a QuickSign Request.
   
 1. Click **Sign All** to sign the request.
    
