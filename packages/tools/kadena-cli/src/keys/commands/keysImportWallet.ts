@@ -1,6 +1,4 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
-import debug from 'debug';
 import ora from 'ora';
 import path from 'path';
 
@@ -12,6 +10,7 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { displayStoredWallet } from '../utils/keysDisplay.js';
 import type { IWallet } from '../utils/keysHelpers.js';
 import { getWallet } from '../utils/keysHelpers.js';
@@ -82,11 +81,11 @@ export const createImportWalletCommand: (
   ],
   async (config) => {
     try {
-      debug('import-wallet:action')({ config });
+      log.debug('import-wallet:action', { config });
 
       // compare passwords
       if (config.securityNewPassword !== config.securityVerifyPassword) {
-        console.log(chalk.red(`\nPasswords don't match. Please try again.\n`));
+        log.error(`\nPasswords don't match. Please try again.\n`);
         process.exit(1);
       }
 
@@ -103,7 +102,7 @@ export const createImportWalletCommand: (
 
       displayStoredWallet(config.keyWallet, result.data.wallet.legacy);
     } catch (error) {
-      console.log(chalk.red(`\n${error.message}\n`));
+      log.error(`\n${error.message}\n`);
       process.exit(1);
     }
   },

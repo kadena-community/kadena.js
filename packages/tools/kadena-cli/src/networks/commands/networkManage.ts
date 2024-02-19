@@ -1,9 +1,8 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
-import debug from 'debug';
 
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { removeNetwork, writeNetworks } from '../utils/networkHelpers.js';
 
 /**
@@ -31,7 +30,7 @@ export const manageNetworksCommand: (
     const networkHost = await option.networkHost();
     const networkExplorerUrl = await option.networkExplorerUrl();
 
-    debug.log('manage-networks', {
+    log.debug('manage-networks', {
       networkExplorerUrl,
       networkHost,
       networkId,
@@ -49,8 +48,8 @@ export const manageNetworksCommand: (
       await removeNetwork(networkData.networkConfig);
     }
 
-    console.log(
-      chalk.green(
+    log.info(
+      log.color.green(
         `\nThe network configuration "${networkData.network}" has been updated.\n`,
       ),
     );

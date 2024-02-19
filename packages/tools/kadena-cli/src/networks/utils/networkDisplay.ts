@@ -14,6 +14,7 @@ import chalk from 'chalk';
 import { existsSync, readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
+import { log } from '../../utils/logger.js';
 
 /**
  * Displays the network configuration in a formatted manner.
@@ -23,11 +24,10 @@ import path from 'path';
 export function displayNetworkConfig(
   networkConfig: INetworkCreateOptions,
 ): void {
-  const log = console.log;
   const formatLength = 80; // Maximum width for the display
 
   const displaySeparator = (): void => {
-    log(chalk.green('-'.padEnd(formatLength, '-')));
+    log.info(chalk.green('-'.padEnd(formatLength, '-')));
   };
 
   const formatConfig = (key: string, value?: string): string => {
@@ -42,19 +42,20 @@ export function displayNetworkConfig(
   };
 
   displaySeparator();
-  log(formatConfig('Network', networkConfig.network));
-  log(formatConfig('Network ID', networkConfig.networkId));
-  log(formatConfig('Network Host', networkConfig.networkHost));
-  log(formatConfig('Network Explorer URL', networkConfig.networkExplorerUrl));
+  log.info(formatConfig('Network', networkConfig.network));
+  log.info(formatConfig('Network ID', networkConfig.networkId));
+  log.info(formatConfig('Network Host', networkConfig.networkHost));
+  log.info(
+    formatConfig('Network Explorer URL', networkConfig.networkExplorerUrl),
+  );
   displaySeparator();
 }
 
 export function displayNetworksConfig(): void {
-  const log = console.log;
   const formatLength = 80; // Maximum width for the display
 
   const displaySeparator = (): void => {
-    log(chalk.green('-'.padEnd(formatLength, '-')));
+    log.info(chalk.green('-'.padEnd(formatLength, '-')));
   };
 
   const formatConfig = (
@@ -86,10 +87,12 @@ export function displayNetworksConfig(): void {
       : networkDefaults[value];
 
     displaySeparator();
-    log(formatConfig('Network', value, !fileExists));
-    log(formatConfig('Network ID', networkConfig.networkId, !fileExists));
-    log(formatConfig('Network Host', networkConfig.networkHost, !fileExists));
-    log(
+    log.info(formatConfig('Network', value, !fileExists));
+    log.info(formatConfig('Network ID', networkConfig.networkId, !fileExists));
+    log.info(
+      formatConfig('Network Host', networkConfig.networkHost, !fileExists),
+    );
+    log.info(
       formatConfig(
         'Network Explorer URL',
         networkConfig.networkExplorerUrl,
@@ -102,10 +105,10 @@ export function displayNetworksConfig(): void {
     if (!existingNetworks.some(({ value }) => value === network)) {
       const networkConfig = networkDefaults[network];
       displaySeparator();
-      log(formatConfig('Network', network, true)); // as it is a standard network and does not exist in existingNetworks
-      log(formatConfig('Network ID', networkConfig.networkId, true));
-      log(formatConfig('Network Host', networkConfig.networkHost, true));
-      log(
+      log.info(formatConfig('Network', network, true)); // as it is a standard network and does not exist in existingNetworks
+      log.info(formatConfig('Network ID', networkConfig.networkId, true));
+      log.info(formatConfig('Network Host', networkConfig.networkHost, true));
+      log.info(
         formatConfig(
           'Network Explorer URL',
           networkConfig.networkExplorerUrl,

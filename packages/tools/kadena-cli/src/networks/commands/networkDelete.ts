@@ -1,10 +1,9 @@
-import debug from 'debug';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { removeNetwork } from '../utils/networkHelpers.js';
 
-import chalk from 'chalk';
 import type { Command } from 'commander';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { log } from '../../utils/logger.js';
 
 export const deleteNetworksCommand: (
   program: Command,
@@ -17,14 +16,14 @@ export const deleteNetworksCommand: (
     const networkData = await option.network();
     const deleteNetwork = await option.networkDelete();
 
-    debug.log('delete-network:action', {
+    log.debug('delete-network:action', {
       ...networkData,
       ...deleteNetwork,
     });
 
     if (deleteNetwork.networkDelete === 'no') {
-      console.log(
-        chalk.yellow(
+      log.info(
+        log.color.yellow(
           `\nThe network configuration "${networkData.network}" will not be deleted.\n`,
         ),
       );
@@ -33,8 +32,8 @@ export const deleteNetworksCommand: (
 
     await removeNetwork(networkData.networkConfig);
 
-    console.log(
-      chalk.green(
+    log.info(
+      log.color.green(
         `\nThe network configuration "${networkData.network}" has been deleted.\n`,
       ),
     );

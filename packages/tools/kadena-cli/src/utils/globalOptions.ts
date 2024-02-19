@@ -13,7 +13,6 @@ import {
 } from '../prompts/index.js';
 
 import type { ChainId } from '@kadena/types';
-import chalk from 'chalk';
 import { join } from 'node:path';
 
 import type { IAliasAccountData } from '../account/types.js';
@@ -38,6 +37,7 @@ import {
 import { createExternalPrompt } from '../prompts/generic.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration, isNotEmptyString } from './helpers.js';
+import { log } from './logger.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalFlags = {
@@ -178,10 +178,8 @@ export const globalOptions = {
       try {
         return loadDevnetConfig(devnet);
       } catch (e) {
-        console.log(
-          chalk.yellow(
-            `\nNo devnet "${devnet}" found. Please create the devnet.\n`,
-          ),
+        log.warning(
+          `\nNo devnet "${devnet}" found. Please create the devnet.\n`,
         );
         await program.parseAsync(['', '', 'devnet', 'create']);
         const externalPrompt = createExternalPrompt({
@@ -342,7 +340,7 @@ export const globalOptions = {
       try {
         return loadNetworkConfig(network);
       } catch (e) {
-        console.log(
+        log.info(
           `\nNo configuration for network "${network}" found. Please configure the network.\n`,
         );
         await program.parseAsync(['', '', 'networks', 'create']);

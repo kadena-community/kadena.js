@@ -8,6 +8,7 @@ import { defaultDevnetsPath } from '../constants/devnets.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
+import { log } from './logger.js';
 
 /**
  * Assigns a value to an object's property if the value is neither undefined nor an empty string.
@@ -81,10 +82,10 @@ export function handlePromptError(error: unknown): never {
     if (error.message.includes('User force closed the prompt')) {
       process.exit(0);
     } else {
-      console.log(error.message);
+      log.error(error.message);
     }
   } else {
-    console.log('Unexpected error executing option', error);
+    log.error('Unexpected error executing option', error);
   }
   process.exit(1);
 }
@@ -171,7 +172,7 @@ export function getExistingNetworks(): ICustomNetworkChoice[] {
       name: path.basename(filename.toLowerCase(), '.yaml'),
     }));
   } catch (error) {
-    console.error('Error reading networks directory:', error);
+    log.error('Error reading networks directory:', error);
     return [];
   }
 }
@@ -187,7 +188,7 @@ export async function getConfiguration(
       name: path.basename(filename.toLowerCase(), '.yaml'),
     }));
   } catch (error) {
-    console.error(`Error reading ${configurationPath} directory:`, error);
+    log.error(`Error reading ${configurationPath} directory:`, error);
     return [];
   }
 }

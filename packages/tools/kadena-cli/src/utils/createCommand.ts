@@ -59,6 +59,7 @@ export function createCommand<const T extends OptionType[]>(
     args?: any,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     stdin?: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ) => any,
 ): (program: Command, version: string) => void {
   return async (program: Command, version: string) => {
@@ -93,7 +94,7 @@ export function createCommand<const T extends OptionType[]>(
             : // eslint-disable-next-line @typescript-eslint/no-explicit-any
               await collectResponses<any>(args, questionsMap as any);
 
-        console.log(
+        log.info(
           `\nExecuting: ${getCommandExecution(
             `${program.name()} ${name}`,
             newArgs,
@@ -138,7 +139,7 @@ export function createCommand<const T extends OptionType[]>(
 
         if (Object.keys(config).length > 0) {
           displayConfig(config);
-          console.log('\n');
+          log.info('\n');
         }
 
         await action(config, generalArgs, stdin ?? undefined);
@@ -166,22 +167,20 @@ export function handleQuietOption(
       (option) => option.isOptional === false && args[option.key] === undefined,
     );
     if (missing.length) {
-      console.log(
-        `${chalk.yellow('Missing arguments in: ')}${getCommandExecution(
+      log.warning(
+        `${'Missing arguments in: '}${getCommandExecution(
           `${command}`,
           args,
           generalArgs,
         )}`,
       );
-      console.log(
-        chalk.red(
-          `\nMissing required arguments:\n${missing
-            .map((m) => options.find((q) => q.key === m.key)!)
-            .map((m) => `- ${m.key} (${m.option.flags})\n`)
-            .join('')}`,
-        ),
+      log.error(
+        `\nMissing required arguments:\n${missing
+          .map((m) => options.find((q) => q.key === m.key)!)
+          .map((m) => `- ${m.key} (${m.option.flags})\n`)
+          .join('')}`,
       );
-      console.log(
+      log.warning(
         chalk.yellow('Remove the --quiet flag to enable interactive prompts\n'),
       );
       process.exit(1);

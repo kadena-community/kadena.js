@@ -132,7 +132,7 @@ export async function signTransactionsWithSeed(
       const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
 
       if (relevantKeyPairs.length === 0) {
-        console.error(
+        log.error(
           `\nNo matching signable keys found for transaction at index ${i} between wallet and transaction.\n`,
         );
         continue;
@@ -202,7 +202,7 @@ export async function signTransactionWithKeyPair(
       const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
 
       if (relevantKeyPairs.length === 0) {
-        console.error(
+        log.error(
           `\nNo matching signable keys found for transaction at index ${i} between wallet and transaction.\n`,
         );
         continue;
@@ -279,7 +279,7 @@ export async function getTransactionFromFile(
     const result = tx.IUnsignedCommandSchema.parse(transaction);
     return result as IUnsignedCommand; // typecast because `IUnsignedCommand` uses undefined instead of null
   } catch (error) {
-    console.error(
+    log.error(
       `Error processing ${
         signed ? 'signed' : 'unsigned'
       } transaction file: ${transactionFile}, failed with error: ${error}`,

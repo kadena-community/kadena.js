@@ -1,4 +1,5 @@
 import http from 'http';
+import { log } from '../../utils/logger.js';
 
 export function networkIsAlive(networkHost: string): Promise<boolean> {
   return new Promise((resolve) => {
@@ -7,7 +8,7 @@ export function networkIsAlive(networkHost: string): Promise<boolean> {
         resolve(res.statusCode === 200);
       })
       .on('error', (err) => {
-        console.error(`Error checking network: ${err.message}`);
+        log.error(`Error checking network: ${err.message}`);
         resolve(false);
       });
   });

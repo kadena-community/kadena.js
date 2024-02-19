@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { log } from './logger.js';
 
 let stdin: string | null = null;
 
@@ -9,7 +10,7 @@ export async function readStdin(): Promise<string | null> {
   }
 
   if (!process.stderr.isTTY) {
-    console.log('stdin is not a TTY - refusing to use STDIN');
+    log.error('stdin is not a TTY - refusing to use STDIN');
     return null;
   }
 

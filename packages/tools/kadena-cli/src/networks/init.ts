@@ -1,10 +1,11 @@
+import { log } from '../utils/logger.js';
 import { ensureNetworksConfiguration } from './utils/networkHelpers.js';
 
 async function initNetworks(): Promise<void> {
   try {
     await ensureNetworksConfiguration();
   } catch (error) {
-    console.error(
+    log.error(
       'An error occurred during network configuration initialization:',
       error,
     );

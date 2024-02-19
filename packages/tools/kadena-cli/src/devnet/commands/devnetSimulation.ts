@@ -1,8 +1,7 @@
-import chalk from 'chalk';
-import debug from 'debug';
 import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { networkIsAlive } from '../utils/network.js';
 import { simulateCoin } from '../utils/simulation/coin/simulate.js';
 import { simulationOptions } from '../utils/simulation/simulationOptions.js';
@@ -23,10 +22,10 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
   ],
   async (config) => {
     try {
-      debug('devnet-simulate:action')({ config });
+      log.debug('devnet-simulate:action', { config });
 
       if (!(await networkIsAlive(config.networkConfig.networkHost))) {
-        console.log(
+        log.info(
           'Network is not reachable. Please check if the provided host is exposed.',
         );
         return;
@@ -47,7 +46,7 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
         maxTime: config.simulationMaxTime,
       });
     } catch (error) {
-      console.log(chalk.red(`\n${error.message}\n`));
+      log.error(`\n${error.message}\n`);
       process.exit(1);
     }
   },

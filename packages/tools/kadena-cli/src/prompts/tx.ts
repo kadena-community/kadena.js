@@ -11,6 +11,7 @@ import {
 import { services } from '../services/index.js';
 import { getTemplates } from '../tx/commands/templates/templates.js';
 import type { IPrompt } from '../utils/createOption.js';
+import { log } from '../utils/logger.js';
 import { checkbox, input, select } from '../utils/prompts.js';
 
 const CommandPayloadStringifiedJSONSchema = z.string();
@@ -54,7 +55,7 @@ export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
         IUnsignedCommandSchema.parse(parsedInput);
         return true;
       } catch (error) {
-        console.log('error', error);
+        log.info('error', error);
         return 'Incorrect Format. Please enter a valid Unsigned Command.';
       }
     },
@@ -251,7 +252,7 @@ const promptVariableValue = async (key: string): Promise<string> => {
       throw new Error('public key not found');
     }
 
-    console.log(`${chalk.green('>')} Using public key ${value}`);
+    log.info(`${chalk.green('>')} Using public key ${value}`);
     return value;
   }
   if (key.startsWith('keyset-')) {
@@ -263,7 +264,7 @@ const promptVariableValue = async (key: string): Promise<string> => {
         return true;
       },
     });
-    console.log('keyset alias', alias);
+    log.info('keyset alias', alias);
     return alias;
   }
 
