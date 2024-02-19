@@ -3,6 +3,8 @@ import {
   networkDefaults,
 } from '../../constants/networks.js';
 
+import { log } from '../../utils/logger.js';
+
 import { getExistingNetworks } from '../../utils/helpers.js';
 import type {
   ICustomNetworkChoice,
@@ -13,7 +15,6 @@ import { existsSync, readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
 import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
-import { displayTable } from '../../utils/tableDisplay.js';
 
 export function displayNetworksConfig(): void {
   const header: TableHeader = [
@@ -50,5 +51,5 @@ export function displayNetworksConfig(): void {
       ]);
     });
 
-  displayTable(header, rows);
+  log.infoTable(header, rows);
 }
