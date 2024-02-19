@@ -43,6 +43,7 @@ export const useSignToken = () => {
       return;
     }
     const manifest = createManifest(proofOfUs, imageData.url);
+
     const manifestData = await createMetaDataUrl(manifest);
     if (!manifestData) {
       console.error('no manifestData found');

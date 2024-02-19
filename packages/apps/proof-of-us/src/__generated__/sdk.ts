@@ -1,41 +1,28 @@
-import * as Apollo from '@apollo/client';
 import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
-export type MakeEmpty<
-  T extends { [key: string]: unknown },
-  K extends keyof T,
-> = { [_ in K]?: never };
-export type Incremental<T> =
-  | T
-  | {
-      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
-    };
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string };
-  String: { input: string; output: string };
-  Boolean: { input: boolean; output: boolean };
-  Int: { input: number; output: number };
-  Float: { input: number; output: number };
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
   /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
-  BigInt: { input: any; output: any };
+  BigInt: { input: any; output: any; }
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  DateTime: { input: any; output: any };
+  DateTime: { input: any; output: any; }
   /** Floats that will have a value of 0 or more. */
-  Decimal: { input: any; output: any };
+  Decimal: { input: any; output: any; }
   /** Floats that will have a value greater than 0. */
-  PositiveFloat: { input: any; output: any };
+  PositiveFloat: { input: any; output: any; }
 };
 
 /** A unit of information that stores a set of verified transactions. */
@@ -59,6 +46,7 @@ export type Block = Node & {
   predicate: Scalars['String']['output'];
   transactions: BlockTransactionsConnection;
 };
+
 
 /** A unit of information that stores a set of verified transactions. */
 export type BlockTransactionsArgs = {
@@ -113,6 +101,7 @@ export type FungibleAccount = Node & {
   transfers: FungibleAccountTransfersConnection;
 };
 
+
 /** A fungible-specific account. */
 export type FungibleAccountTransactionsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
@@ -120,6 +109,7 @@ export type FungibleAccountTransactionsArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
 };
+
 
 /** A fungible-specific account. */
 export type FungibleAccountTransfersArgs = {
@@ -168,6 +158,7 @@ export type FungibleChainAccount = Node & {
   transfers: FungibleChainAccountTransfersConnection;
 };
 
+
 /** A fungible specific chain-account. */
 export type FungibleChainAccountTransactionsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
@@ -175,6 +166,7 @@ export type FungibleChainAccountTransactionsArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
 };
+
 
 /** A fungible specific chain-account. */
 export type FungibleChainAccountTransfersArgs = {
@@ -208,6 +200,15 @@ export type FungibleChainAccountTransfersConnectionEdge = {
   __typename?: 'FungibleChainAccountTransfersConnectionEdge';
   cursor: Scalars['String']['output'];
   node: Transfer;
+};
+
+export type GasLimitEstimation = {
+  __typename?: 'GasLimitEstimation';
+  amount: Scalars['Int']['output'];
+  inputType: Scalars['String']['output'];
+  transaction: Scalars['String']['output'];
+  usedPreflight: Scalars['Boolean']['output'];
+  usedSignatureVerification: Scalars['Boolean']['output'];
 };
 
 /** General information about the graph and chainweb-data. */
@@ -249,6 +250,7 @@ export type NonFungibleAccount = Node & {
   transactions: NonFungibleAccountTransactionsConnection;
 };
 
+
 /** A non-fungible-specific account. */
 export type NonFungibleAccountTransactionsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
@@ -279,6 +281,7 @@ export type NonFungibleChainAccount = Node & {
   nonFungibles: Array<Token>;
   transactions: NonFungibleChainAccountTransactionsConnection;
 };
+
 
 /** A chain and non-fungible-specific account. */
 export type NonFungibleChainAccountTransactionsArgs = {
@@ -312,12 +315,6 @@ export type PactQueryData = {
   value: Scalars['String']['input'];
 };
 
-export type PactTransaction = {
-  cmd: Scalars['String']['input'];
-  hash?: InputMaybe<Scalars['String']['input']>;
-  sigs?: InputMaybe<Array<Scalars['String']['input']>>;
-};
-
 export type PageInfo = {
   __typename?: 'PageInfo';
   endCursor?: Maybe<Scalars['String']['output']>;
@@ -343,9 +340,9 @@ export type Query = {
   /** Retrieve an account by its name and fungible, such as coin, on a specific chain. */
   fungibleChainAccount?: Maybe<FungibleChainAccount>;
   /** Estimate the gas limit for a transaction. */
-  gasLimitEstimate: Scalars['Int']['output'];
+  gasLimitEstimate: GasLimitEstimation;
   /** Estimate the gas limit for a list of transactions. */
-  gasLimitEstimates: Array<Scalars['Int']['output']>;
+  gasLimitEstimates: Array<GasLimitEstimation>;
   /** Get the configuration of the graph. */
   graphConfiguration: GraphConfiguration;
   /** Get the height of the block with the highest height. */
@@ -372,14 +369,17 @@ export type Query = {
   transfers: QueryTransfersConnection;
 };
 
+
 export type QueryBlockArgs = {
   hash: Scalars['String']['input'];
 };
+
 
 export type QueryBlocksFromHeightArgs = {
   chainIds?: InputMaybe<Array<Scalars['String']['input']>>;
   startHeight: Scalars['Int']['input'];
 };
+
 
 export type QueryCompletedBlockHeightsArgs = {
   chainIds?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -387,11 +387,13 @@ export type QueryCompletedBlockHeightsArgs = {
   heightCount?: InputMaybe<Scalars['Int']['input']>;
 };
 
+
 export type QueryEventArgs = {
   blockHash: Scalars['String']['input'];
   orderIndex: Scalars['Int']['input'];
   requestKey: Scalars['String']['input'];
 };
+
 
 export type QueryEventsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
@@ -401,10 +403,12 @@ export type QueryEventsArgs = {
   qualifiedEventName: Scalars['String']['input'];
 };
 
+
 export type QueryFungibleAccountArgs = {
   accountName: Scalars['String']['input'];
   fungibleName: Scalars['String']['input'];
 };
+
 
 export type QueryFungibleChainAccountArgs = {
   accountName: Scalars['String']['input'];
@@ -412,43 +416,53 @@ export type QueryFungibleChainAccountArgs = {
   fungibleName: Scalars['String']['input'];
 };
 
+
 export type QueryGasLimitEstimateArgs = {
-  transaction: PactTransaction;
+  input: Scalars['String']['input'];
 };
 
+
 export type QueryGasLimitEstimatesArgs = {
-  transactions: Array<PactTransaction>;
+  input: Array<Scalars['String']['input']>;
 };
+
 
 export type QueryNodeArgs = {
   id: Scalars['ID']['input'];
 };
 
+
 export type QueryNodesArgs = {
   ids: Array<Scalars['ID']['input']>;
 };
 
+
 export type QueryNonFungibleAccountArgs = {
   accountName: Scalars['String']['input'];
 };
+
 
 export type QueryNonFungibleChainAccountArgs = {
   accountName: Scalars['String']['input'];
   chainId: Scalars['String']['input'];
 };
 
+
 export type QueryPactQueriesArgs = {
   pactQuery: Array<PactQuery>;
 };
+
 
 export type QueryPactQueryArgs = {
   pactQuery: PactQuery;
 };
 
+
 export type QueryTransactionArgs = {
   blockHash: Scalars['String']['input'];
   requestKey: Scalars['String']['input'];
 };
+
 
 export type QueryTransactionsArgs = {
   accountName?: InputMaybe<Scalars['String']['input']>;
@@ -462,6 +476,7 @@ export type QueryTransactionsArgs = {
   requestKey?: InputMaybe<Scalars['String']['input']>;
 };
 
+
 export type QueryTransactionsByPublicKeyArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
@@ -470,6 +485,7 @@ export type QueryTransactionsByPublicKeyArgs = {
   publicKey: Scalars['String']['input'];
 };
 
+
 export type QueryTransferArgs = {
   blockHash: Scalars['String']['input'];
   chainId: Scalars['String']['input'];
@@ -477,6 +493,7 @@ export type QueryTransferArgs = {
   orderIndex: Scalars['Int']['input'];
   requestKey: Scalars['String']['input'];
 };
+
 
 export type QueryTransfersArgs = {
   accountName?: InputMaybe<Scalars['String']['input']>;
@@ -566,13 +583,16 @@ export type Subscription = {
   transaction?: Maybe<Scalars['ID']['output']>;
 };
 
+
 export type SubscriptionEventsArgs = {
   qualifiedEventName: Scalars['String']['input'];
 };
 
+
 export type SubscriptionNewBlocksArgs = {
   chainIds?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
+
 
 export type SubscriptionTransactionArgs = {
   requestKey: Scalars['String']['input'];
@@ -582,7 +602,7 @@ export type SubscriptionTransactionArgs = {
 export type Token = {
   __typename?: 'Token';
   balance: Scalars['Int']['output'];
-  chainId: Scalars['Int']['output'];
+  chainId: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   info?: Maybe<TokenInfo>;
   version: Scalars['String']['output'];
@@ -667,36 +687,25 @@ export type GetTokensQueryVariables = Exact<{
   accountName: Scalars['String']['input'];
 }>;
 
-export type GetTokensQuery = {
-  __typename?: 'Query';
-  nonFungibleAccount?: {
-    __typename?: 'NonFungibleAccount';
-    accountName: string;
-    id: string;
-    nonFungibles: Array<{
-      __typename?: 'Token';
-      balance: number;
-      id: string;
-      info?: { __typename?: 'TokenInfo'; uri: string } | null;
-    }>;
-  } | null;
-};
+
+export type GetTokensQuery = { __typename?: 'Query', nonFungibleAccount?: { __typename?: 'NonFungibleAccount', accountName: string, id: string, nonFungibles: Array<{ __typename?: 'Token', balance: number, id: string, info?: { __typename?: 'TokenInfo', uri: string } | null }> } | null };
+
 
 export const GetTokensDocument = gql`
-  query GetTokens($accountName: String!) {
-    nonFungibleAccount(accountName: $accountName) {
-      accountName
+    query GetTokens($accountName: String!) {
+  nonFungibleAccount(accountName: $accountName) {
+    accountName
+    id
+    nonFungibles {
+      balance
       id
-      nonFungibles {
-        balance
-        id
-        info {
-          uri
-        }
+      info {
+        uri
       }
     }
   }
-`;
+}
+    `;
 
 /**
  * __useGetTokensQuery__
@@ -714,47 +723,19 @@ export const GetTokensDocument = gql`
  *   },
  * });
  */
-export function useGetTokensQuery(
-  baseOptions: Apollo.QueryHookOptions<GetTokensQuery, GetTokensQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTokensQuery, GetTokensQueryVariables>(
-    GetTokensDocument,
-    options,
-  );
-}
-export function useGetTokensLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetTokensQuery,
-    GetTokensQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTokensQuery, GetTokensQueryVariables>(
-    GetTokensDocument,
-    options,
-  );
-}
-export function useGetTokensSuspenseQuery(
-  baseOptions?: Apollo.SuspenseQueryHookOptions<
-    GetTokensQuery,
-    GetTokensQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<GetTokensQuery, GetTokensQueryVariables>(
-    GetTokensDocument,
-    options,
-  );
-}
+export function useGetTokensQuery(baseOptions: Apollo.QueryHookOptions<GetTokensQuery, GetTokensQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTokensQuery, GetTokensQueryVariables>(GetTokensDocument, options);
+      }
+export function useGetTokensLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTokensQuery, GetTokensQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTokensQuery, GetTokensQueryVariables>(GetTokensDocument, options);
+        }
+export function useGetTokensSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetTokensQuery, GetTokensQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetTokensQuery, GetTokensQueryVariables>(GetTokensDocument, options);
+        }
 export type GetTokensQueryHookResult = ReturnType<typeof useGetTokensQuery>;
-export type GetTokensLazyQueryHookResult = ReturnType<
-  typeof useGetTokensLazyQuery
->;
-export type GetTokensSuspenseQueryHookResult = ReturnType<
-  typeof useGetTokensSuspenseQuery
->;
-export type GetTokensQueryResult = Apollo.QueryResult<
-  GetTokensQuery,
-  GetTokensQueryVariables
->;
+export type GetTokensLazyQueryHookResult = ReturnType<typeof useGetTokensLazyQuery>;
+export type GetTokensSuspenseQueryHookResult = ReturnType<typeof useGetTokensSuspenseQuery>;
+export type GetTokensQueryResult = Apollo.QueryResult<GetTokensQuery, GetTokensQueryVariables>;

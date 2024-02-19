@@ -1,7 +1,7 @@
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { Share } from '@/features/Share/Share';
 import { fetchManifestData } from '@/utils/fetchManifestData';
-import { getProofOfUs } from '@/utils/proofOfUs';
+import { getTokenUri } from '@/utils/proofOfUs';
 import type { GetServerSidePropsContext, NextPage } from 'next';
 
 interface IProps {
@@ -25,15 +25,11 @@ export const getServerSideProps = async (
 ): Promise<{ props: IProps }> => {
   const id = `${ctx.query.id}`;
 
-  const token = await getProofOfUs(id);
-  const data = await fetchManifestData(token?.uri);
-
-  const startDate = token && token['starts-at'].int;
-  const endDate = token && token['ends-at'].int;
-  const newData = data ? { ...data, startDate, endDate } : undefined;
-
+  const uri = await getTokenUri(id);
+  const data = await fetchManifestData(uri);
+  const newData = data ? { ...data } : undefined;
   return {
-    props: { params: { id: `${ctx.query.id}` }, token, proofOfUs: newData },
+    props: { params: { id: `${ctx.query.id}` }, proofOfUs: newData },
   };
 };
 

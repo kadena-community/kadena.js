@@ -36,6 +36,30 @@ export const getProofOfUs = async (
     : undefined;
 };
 
+export const getTokenUri = async (id: string): Promise<string | undefined> => {
+  const client = createClient();
+
+  const transaction = Pact.builder
+    .execution(
+      `(marmalade-v2.ledger.get-uri "${decodeURIComponent(id)}"
+      )`,
+    )
+    .setNetworkId('testnet04')
+    .setMeta({
+      chainId: '1',
+    })
+    .createTransaction();
+
+  const { result } = await client.local(transaction, {
+    preflight: false,
+    signatureVerification: false,
+  });
+
+  return result.status === 'success'
+    ? (result.data as IProofOfUsToken)
+    : undefined;
+};
+
 export const claimAttendanceToken = async (
   id: string,
   account: IAccount,
