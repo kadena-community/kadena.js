@@ -19,7 +19,7 @@ describe('template to live test', () => {
     const variables = {
       'account-from': `k:${publicKey}`,
       'account-to': targetAccount,
-      amount: '1.0',
+      'decimal-amount': '1.0',
       'chain-id': '1',
       'pk-from': publicKey,
       'network-id': 'testnet04',
