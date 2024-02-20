@@ -16,10 +16,47 @@ import {
   sanitizeFilename,
 } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
-import type { IWallet } from './keysHelpers.js';
+import type { IPlainKey, IWallet } from './keysHelpers.js';
 import type { IKeyPair } from './storage.js';
 
 import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
+import { getAllPlainKeys } from './keysHelpers.js';
+
+export async function printPlainKeys(): Promise<void> {
+  const plainKeys: IPlainKey[] = await getAllPlainKeys();
+
+  const header: TableHeader = [
+    'Alias',
+    'Index',
+    'Legacy',
+    'Public Key',
+    'Secret Key',
+  ];
+  const rows: TableRow[] = [];
+
+  if (plainKeys.length === 0) {
+    log.info('No plain keys');
+    return;
+  }
+
+  for (const key of plainKeys) {
+    rows.push([
+      key.alias || 'N/A',
+      key.index !== undefined ? key.index.toString() : 'N/A',
+      key.legacy ? 'Yes' : 'No',
+      key.publicKey || 'N/A',
+      key.secretKey !== undefined
+        ? maskStringPreservingStartAndEnd(key.secretKey, 65)
+        : 'N/A',
+    ]);
+  }
+
+  if (rows.length > 0) {
+    log.infoTable(header, rows);
+  } else {
+    log.info('No valid keys found');
+  }
+}
 
 export async function printWalletKeys(wallet: IWallet | null): Promise<void> {
   if (!wallet) return;

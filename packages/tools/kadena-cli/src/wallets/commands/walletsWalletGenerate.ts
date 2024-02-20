@@ -93,7 +93,7 @@ export const createGenerateWalletCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'create-wallet',
+  'create',
   'Create your local wallet',
   [
     globalOptions.keyWallet({ isOptional: false }),
