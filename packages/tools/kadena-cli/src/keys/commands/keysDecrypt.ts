@@ -59,10 +59,10 @@ export const createDecryptCommand: (program: Command, version: string) => void =
 
       assertCommandError(result);
 
-      const headers = ['Decrypted Message'];
+      const header = ['Decrypted Message'];
       const rows = [[result.data.value]];
 
-      log.infoTable(headers, rows);
+      log.output(log.generateTableString(header, rows));
       log.info(log.color.yellow(`\nPlease store it in a safe place.\n`));
     },
   );

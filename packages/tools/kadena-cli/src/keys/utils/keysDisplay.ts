@@ -52,7 +52,7 @@ export async function printPlainKeys(): Promise<void> {
   }
 
   if (rows.length > 0) {
-    log.infoTable(header, rows);
+    log.output(log.generateTableString(header, rows));
   } else {
     log.info('No valid keys found');
   }
@@ -92,7 +92,7 @@ export async function printWalletKeys(wallet: IWallet | null): Promise<void> {
 
   if (rows.length > 0) {
     log.info(`\nWallet: ${wallet.folder}${wallet.legacy ? ' (legacy)' : ''}`);
-    log.infoTable(header, rows);
+    log.output(log.generateTableString(header, rows));
   } else {
     log.info(`\nWallet: ${wallet.folder}${wallet.legacy ? ' (legacy)' : ''}`);
     log.info('No valid keys found');
@@ -172,7 +172,7 @@ export function printStoredKeys(
       : 'The Plain Key Pair is stored within your keys folder under the filename(s):';
 
     log.info(log.color.green(message));
-    log.infoTable(header, rows);
+    log.output(log.generateTableString(header, rows));
   } else {
     log.info('No keys found.');
   }
@@ -233,7 +233,7 @@ export function displayGeneratedKeys(
   log.info(log.color.green(messagePrefix));
 
   if (rows.length > 0) {
-    log.infoTable(header, rows);
+    log.output(log.generateTableString(header, rows));
   } else {
     log.info('No keys to display.');
   }
@@ -244,7 +244,7 @@ export function displayGeneratedWallet(words: string): void {
   const header: TableHeader = ['Mnemonic Phrase'];
   const rows: TableRow[] = [[words]];
 
-  log.infoTable(header, rows);
+  log.output(log.generateTableString(header, rows));
 
   log.info(
     log.color.yellow(
@@ -264,6 +264,6 @@ export function displayStoredWallet(
   const header: TableHeader = ['Wallet Storage Location'];
   const rows: TableRow[] = [[walletPath]];
 
-  log.infoTable(header, rows);
+  log.output(log.generateTableString(header, rows));
   log.info('\n');
 }
