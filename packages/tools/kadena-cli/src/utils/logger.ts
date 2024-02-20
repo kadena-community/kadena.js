@@ -166,7 +166,7 @@ class Logger {
     //const styledHeader = this.color.bold(headerString);
     this._log(LEVELS[level], [header]);
     this._log(LEVELS[level], [seperator]);
-    this._log(LEVELS.info, [body]);
+    this._log(LEVELS.output, [body]);
   }
 }
 
