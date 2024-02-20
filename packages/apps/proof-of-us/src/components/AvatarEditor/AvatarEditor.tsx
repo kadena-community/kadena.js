@@ -18,11 +18,9 @@ interface IProps {
 
 export const AvatarEditor: FC<IProps> = ({ next }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
-  const canvasElm = canvasRef.current;
   const { proofOfUs, updateBackgroundColor } = useProofOfUs();
 
   useEffect(() => {
@@ -49,10 +47,6 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
         alert('The browser needs permissions for the camera to work');
       });
   }, [isMounted]);
-
-  useEffect(() => {
-    if (!canvasElm) return;
-  }, [canvasElm]);
 
   const handleCapture = async (evt: MouseEvent<HTMLButtonElement>) => {
     if (isAlreadySigning(proofOfUs?.signees)) return;
@@ -84,7 +78,6 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   return (
     <section className={wrapperClass}>
       {!isMounted && <div>loading</div>}
-      <canvas ref={canvasRef} />
       <div
         className={classnames(
           cameraWrapperClass,

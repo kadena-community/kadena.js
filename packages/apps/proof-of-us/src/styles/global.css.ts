@@ -28,7 +28,6 @@ export const mainWrapperClass = style({
   width: '100%',
   height: '100dvh',
   margin: '0 auto',
-  paddingBlockEnd: '20px',
 
   overflowY: 'scroll',
   overflowX: 'hidden',

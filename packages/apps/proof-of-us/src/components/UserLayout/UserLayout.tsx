@@ -19,7 +19,7 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <motion.div
-      style={{ position: 'absolute', width: '100%' }}
+      style={{ position: 'relative', width: '100%' }}
       initial={{ x: 300, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: 300, opacity: 0 }}
