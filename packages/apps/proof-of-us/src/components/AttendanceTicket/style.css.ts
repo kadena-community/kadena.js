@@ -10,15 +10,15 @@ export const ticketClass = style([
     borderRadius: 'md',
   }),
   {
-    position: 'relative',
-    width: '100vw',
     maxWidth: '800px',
     aspectRatio: '16/9',
     background: 'green',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     backgroundSize: 'cover',
-    clipPath: 'url(#path)',
+    maskImage: "url('/assets/attendance-mask-large.png')",
+    maskRepeat: 'no-repeat',
+    maskSize: '97%',
   },
 ]);
 
@@ -30,5 +30,15 @@ export const titleClass = style([
     textOverflow: 'ellipsis',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
+  },
+]);
+
+export const ticketBorderClass = style([
+  atoms({
+    position: 'absolute',
+  }),
+  {
+    width: '97%',
+    zIndex: 10,
   },
 ]);

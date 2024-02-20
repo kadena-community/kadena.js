@@ -6,8 +6,8 @@ import Link from 'next/link';
 import type { FC } from 'react';
 import useSWR from 'swr';
 import { IsLoading } from '../IsLoading/IsLoading';
+import { AttendanceThumb } from '../Thumb/AttendanceThumb';
 import { ConnectThumb } from '../Thumb/ConnectThumb';
-import { EventThumb } from '../Thumb/EventThumb';
 import {
   listItemClass,
   listItemLinkClass,
@@ -48,7 +48,7 @@ export const ListItem: FC<IProps> = ({ token }) => {
           href={`/user/proof-of-us/t/${token.id}`}
         >
           {data.properties.eventType === 'attendance' && (
-            <EventThumb token={data} />
+            <AttendanceThumb token={data} />
           )}
           {data.properties.eventType === 'connect' && (
             <ConnectThumb token={data} />

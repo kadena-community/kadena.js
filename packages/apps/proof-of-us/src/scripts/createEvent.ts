@@ -75,9 +75,7 @@ const createEvent = async () => {
     type: eventType,
     title: eventName,
     mintStatus: 'init',
-    avatar: {
-      backgroundColor: '#941212',
-    },
+    backgroundColor: '#941212',
     status: 3,
     signees: [],
     date: startTime * 1000,

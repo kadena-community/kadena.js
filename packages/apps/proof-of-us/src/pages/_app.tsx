@@ -104,7 +104,6 @@ export const MyApp = ({
           {/* Apple touch icon */}
           <link rel="apple-touch-icon" href="/assets/favicons/icon@192.png" />
         </Head>
-        <Header />
         <main className={mainWrapperClass}>
           <AnimatePresence mode="popLayout" initial={false}>
             <Component {...pageProps} key={router.asPath} />

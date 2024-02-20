@@ -1,22 +1,16 @@
 import '@kadena/react-ui/global';
 import { atoms } from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
+import { deviceColors } from './tokens.css';
 
 globalStyle('body', {
   color: 'white',
-  backgroundColor: '#081320',
+  backgroundColor: deviceColors.kadenaBlack,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
   backgroundAttachment: 'fixed',
-  '@media': {
-    '(orientation: portrait)': {
-      backgroundImage: `url("/assets/bg-portrait.png")`,
-    },
-    '(orientation: landscape)': {
-      backgroundImage: `url("/assets/bg-landscape.jpg")`,
-    },
-  },
+  marginInline: '20px',
 });
 
 globalStyle('a', {
@@ -29,7 +23,6 @@ globalStyle('a:hover', {
 });
 
 export const mainWrapperClass = style({
-  position: 'absolute',
   top: 0,
   maxWidth: '800px',
   width: '100%',

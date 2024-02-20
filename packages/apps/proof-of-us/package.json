@@ -6,6 +6,7 @@
     "build": "next build",
     "create-event": "ts-node -T ./src/scripts/createEvent.ts",
     "dev": "concurrently --kill-others \"npm:next:dev\" \"npm:generate:sdk:watch\"",
+    "dev:save": "next dev  --experimental-https",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:src": "prettier . --cache --write",
