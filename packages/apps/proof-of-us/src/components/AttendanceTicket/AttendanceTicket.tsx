@@ -2,7 +2,7 @@ import { getContrast } from '@/utils/getContrast';
 import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   dateClass,
   dateTitleClass,
@@ -16,14 +16,9 @@ interface IProps {
 }
 
 export const AttendanceTicket: FC<IProps> = ({ data }) => {
-  console.log({ data });
   const color = data.properties?.avatar?.backgroundColor ?? 'white';
-  const [contrastColor, setContrastColor] = useState<string>(color);
+  const contrastColor = useMemo(() => getContrast(color), [color]);
 
-  useEffect(() => {
-    const inverseColor = getContrast(color);
-    setContrastColor(inverseColor);
-  }, [data.properties?.avatar?.backgroundColor]);
   return (
     <motion.div
       layoutId="proof-of-us:jQ9ZFi5VDifZ_LekqHCGrP5EdgKTgU7WhrYkIWNPMe8"
