@@ -89,7 +89,7 @@ const createEvent = async () => {
   }
 
   // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
-  const manifest = createManifest(proofOfUs, imageData.url);
+  const manifest = await createManifest(proofOfUs, imageData.url);
 
   const metadata = await createMetaDataUrl(manifest);
 

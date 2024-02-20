@@ -2,6 +2,7 @@ import { createGlobalTheme } from '@vanilla-extract/css';
 
 export const deviceColors = {
   kadenaBlack: '#020E1B',
+  kadenaFont: 'white',
   purple: '#893DE7',
   pink: '#C82269',
   red: '#D31510',

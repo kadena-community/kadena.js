@@ -49,7 +49,7 @@ export default async function handler(
     });
   }
 
-  const manifest = createManifest(proofOfUs, imageData.url);
+  const manifest = await createManifest(proofOfUs, imageData.url);
   const metadata = await createMetaDataUrl(manifest);
 
   if (!metadata) {

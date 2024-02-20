@@ -6,6 +6,7 @@ import { List } from '@/components/List/List';
 import { ListItem } from '@/components/List/ListItem';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
+import { Text } from '@/components/Typography/Text';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { useAccount } from '@/hooks/account';
 import { useGetAllProofOfUs } from '@/hooks/data/getAllProofOfUs';
@@ -58,7 +59,7 @@ const Page: FC = () => {
                   gap="md"
                   width="100%"
                 >
-                  <div>Proofs ({data.length})</div>
+                  <Text bold>Proofs ({data.length})</Text>
                   <List>
                     {data.map((token: Token) => (
                       <ListItem key={token.id} token={token} />

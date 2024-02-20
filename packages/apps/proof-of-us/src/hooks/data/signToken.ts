@@ -42,7 +42,7 @@ export const useSignToken = () => {
       console.error('no image found');
       return;
     }
-    const manifest = createManifest(proofOfUs, imageData.url);
+    const manifest = await createManifest(proofOfUs, imageData.url);
 
     const manifestData = await createMetaDataUrl(manifest);
     if (!manifestData) {
