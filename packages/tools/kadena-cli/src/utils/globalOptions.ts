@@ -664,11 +664,15 @@ export const globalOptions = {
     defaultIsOptional: false,
     validation: z.string(),
     option: new Option('-a, --account <account>', 'Select an account'),
-    expand: async (accountAlias: string): Promise<IAliasAccountData> => {
+    expand: async (accountAlias: string): Promise<IAliasAccountData | null> => {
       try {
         const accountDetails = await readAccountFromFile(accountAlias);
         return accountDetails;
       } catch (error) {
+        if (error.message.includes('file not exist') === true) {
+          return null;
+        }
+
         throw new Error(error.message);
       }
     },

@@ -132,7 +132,11 @@ export const accountOverWritePrompt: IPrompt<boolean> = async () =>
     ],
   });
 
-export const accountSelectPrompt: IPrompt<string> = async () => {
+export const accountSelectPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
   const allAccounts = await getAllAccountNames();
 
   if (allAccounts.length === 0) {
@@ -156,10 +160,30 @@ export const accountSelectPrompt: IPrompt<string> = async () => {
     };
   });
 
+  if (previousQuestions.isAllowManualInput) {
+    allAccountChoices.unshift({
+      value: 'custom',
+      name: 'Enter an account name manually:',
+    });
+  }
+
   const selectedAlias = await select({
     message: 'Select an account:(alias - account name)',
     choices: allAccountChoices,
   });
 
+  if (selectedAlias === 'custom') {
+    const accountName = await input({
+      message: 'Please enter the account name:',
+      validate: function (value: string) {
+        if (!value || !value.trim().length) {
+          return 'Account name cannot be empty.';
+        }
+
+        return true;
+      },
+    });
+    return accountName.trim();
+  }
   return selectedAlias;
 };
