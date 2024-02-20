@@ -4,8 +4,8 @@ export type TableHeader = string[];
 export function displayTable(
   header: TableHeader,
   rows: TableRow[],
-  includeHorizontalSeparator: boolean = false,
-  includeVerticalSeparator: boolean = false,
+  includeHorizontalSeparator: boolean,
+  includeVerticalSeparator: boolean,
 ): { header: string; separator: string; body: string } {
   const columnWidths = header.map((_, index) =>
     Math.max(

@@ -164,9 +164,16 @@ class Logger {
   public infoTable(
     headers: TableHeader,
     rows: TableRow[],
-    level: LevelKey = 'header',
+    level: LevelKey = 'output',
+    includeHorizontalSeparator: boolean = false,
+    includeVerticalSeparator: boolean = false,
   ): void {
-    const { header, separator, body } = displayTable(headers, rows, true);
+    const { header, separator, body } = displayTable(
+      headers,
+      rows,
+      includeHorizontalSeparator,
+      includeVerticalSeparator,
+    );
 
     //const styledHeader = this.color.bold(headerString);
     this._log(LEVELS[level], [header]);
