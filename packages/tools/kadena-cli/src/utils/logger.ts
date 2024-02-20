@@ -141,21 +141,27 @@ class Logger {
   public error(...args: unknown[]): void {
     this._log(LEVELS.error, args);
   }
+
   public warning(...args: unknown[]): void {
     this._log(LEVELS.warning, args);
   }
+
   public output(...args: unknown[]): void {
     this._log(LEVELS.output, args);
   }
+
   public info(...args: unknown[]): void {
     this._log(LEVELS.info, args);
   }
+
   public debug(...args: unknown[]): void {
     this._log(LEVELS.debug, args);
   }
+
   public verbose(...args: unknown[]): void {
     this._log(LEVELS.verbose, args);
   }
+
   public infoTable(
     headers: TableHeader,
     rows: TableRow[],
