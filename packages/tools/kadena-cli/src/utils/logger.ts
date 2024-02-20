@@ -177,7 +177,9 @@ class Logger {
 
     //const styledHeader = this.color.bold(headerString);
     this._log(LEVELS[level], [header]);
-    this._log(LEVELS[level], [separator]);
+    if (separator !== '') {
+      this._log(LEVELS[level], [separator]);
+    }
     this._log(LEVELS[level], [body]);
   }
 }
