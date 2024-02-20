@@ -39,6 +39,8 @@ builder.queryField('events', (t) =>
     edgesNullable: false,
     args: {
       qualifiedEventName: t.arg.string({ required: true }),
+      chainId: t.arg.string(),
+      parametersFilter: t.arg.string(),
     },
     type: 'Event',
     cursor: 'blockHash_orderIndex_requestKey',
@@ -69,6 +71,12 @@ builder.queryField('events', (t) =>
             transaction: {
               NOT: [],
             },
+            ...(args.chainId && {
+              chainId: parseInt(args.chainId),
+            }),
+            ...(args.parametersFilter && {
+              parameters: JSON.parse(args.parametersFilter),
+            }),
           },
           orderBy: {
             id: 'desc',
