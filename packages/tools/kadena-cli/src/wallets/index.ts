@@ -1,6 +1,7 @@
 import { createChangeWalletPasswordCommand } from './commands/walletsChangeWalletPassword.js';
 import { createGenerateHdKeysCommand } from './commands/walletsHdGenerate.js';
 import { createImportWalletCommand } from './commands/walletsImportWallet.js';
+import { createListWalletsCommand } from './commands/walletsList.js';
 import { createGenerateWalletCommand } from './commands/walletsWalletGenerate.js';
 
 import type { Command } from 'commander';
@@ -15,4 +16,5 @@ export function walletsCommandFactory(program: Command, version: string): void {
   createImportWalletCommand(walletsProgram, version);
   createGenerateHdKeysCommand(walletsProgram, version);
   createChangeWalletPasswordCommand(walletsProgram, version);
+  createListWalletsCommand(walletsProgram, version);
 }
