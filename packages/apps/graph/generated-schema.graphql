@@ -75,6 +75,7 @@ type Event implements Node {
   """
   orderIndex: BigInt!
   parameterText: String!
+  parameters: String
 
   """
   The full eventname, containing module and eventname, e.g. coin.TRANSFER
@@ -261,7 +262,7 @@ type Query {
   event(blockHash: String!, orderIndex: Int!, requestKey: String!): Event
 
   """Retrieve events."""
-  events(after: String, before: String, first: Int, last: Int, qualifiedEventName: String!): QueryEventsConnection!
+  events(after: String, before: String, chainId: String, first: Int, last: Int, parametersFilter: String, qualifiedEventName: String!): QueryEventsConnection!
 
   """
   Retrieve an fungible specific account by its name and fungible, such as coin.
@@ -388,7 +389,7 @@ type Signer implements Node {
 
 type Subscription {
   """Listen for events by qualifiedName (e.g. `coin.TRANSFER`)."""
-  events(qualifiedEventName: String!): [ID!]
+  events(chainId: String, parametersFilter: String, qualifiedEventName: String!): [ID!]
 
   """Subscribe to new blocks."""
   newBlocks(chainIds: [Int!]): [ID!]
