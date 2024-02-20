@@ -9,7 +9,7 @@ import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveA
 
 export const createAddAccountManualCommand = createCommandFlexible(
   'add-manual',
-  'Add an existing account to the CLI',
+  'Add an existing account locally to the CLI',
   [
     globalOptions.accountAlias(),
     globalOptions.accountName(),
