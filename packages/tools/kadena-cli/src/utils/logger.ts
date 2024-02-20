@@ -127,6 +127,27 @@ class Logger {
     this.level = level;
   }
 
+  public generateTableString(
+    headers: TableHeader,
+    rows: TableRow[],
+    includeHorizontalSeparator: boolean = false,
+    includeVerticalSeparator: boolean = false,
+  ): string {
+    const { header, separator, body } = displayTable(
+      headers,
+      rows,
+      includeHorizontalSeparator,
+      includeVerticalSeparator,
+    );
+
+    const coloredHeader = this.color.green(header);
+    const tableString =
+      separator.length > 0
+        ? `${coloredHeader}\n${separator}\n${body}`
+        : `${coloredHeader}\n${body}`;
+    return tableString;
+  }
+
   public get color(): ChalkInstance {
     return this._chalk;
   }
@@ -159,28 +180,6 @@ class Logger {
 
   public verbose(...args: unknown[]): void {
     this._log(LEVELS.verbose, args);
-  }
-
-  public infoTable(
-    headers: TableHeader,
-    rows: TableRow[],
-    level: LevelKey = 'output',
-    includeHorizontalSeparator: boolean = false,
-    includeVerticalSeparator: boolean = false,
-  ): void {
-    const { header, separator, body } = displayTable(
-      headers,
-      rows,
-      includeHorizontalSeparator,
-      includeVerticalSeparator,
-    );
-
-    //const styledHeader = this.color.bold(headerString);
-    this._log(LEVELS[level], [header]);
-    if (separator !== '') {
-      this._log(LEVELS[level], [separator]);
-    }
-    this._log(LEVELS[level], [body]);
   }
 }
 

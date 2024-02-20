@@ -51,5 +51,5 @@ export function displayNetworksConfig(): void {
       ]);
     });
 
-  log.infoTable(header, rows);
+  log.output(log.generateTableString(header, rows));
 }
