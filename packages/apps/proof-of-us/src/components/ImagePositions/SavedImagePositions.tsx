@@ -1,16 +1,6 @@
-import { useAccount } from '@/hooks/account';
-import { useProofOfUs } from '@/hooks/proofOfUs';
-import { isAlreadySigning } from '@/utils/isAlreadySigning';
-import Image from 'next/image';
-import type { ChangeEventHandler, FC, MouseEventHandler } from 'react';
-import { useEffect, useRef, useState } from 'react';
-import {
-  imageWrapper,
-  signeeClass,
-  signeeClassWrapper,
-  signeeInputClass,
-  wrapperClass,
-} from './style.css';
+import type { FC } from 'react';
+import { useEffect, useRef } from 'react';
+import { imageWrapper } from './style.css';
 
 interface IProps {
   data: IProofOfUsTokenMeta;

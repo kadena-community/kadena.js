@@ -1,5 +1,4 @@
 import '@kadena/react-ui/global';
-import { atoms } from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { deviceColors } from './tokens.css';
 

@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { metalistClass } from './style.css';
 
 export const MetaList: FC<PropsWithChildren> = ({ children }) => (

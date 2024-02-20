@@ -57,7 +57,7 @@ const Page: FC = () => {
                 <Text bold>Create Your First Proof</Text>
 
                 <p className={secondaryTextClass}>
-                  Welcome to the "Proof Of Us" dApp.
+                  Welcome to the &quot;Proof Of Us&quot; dApp.
                   <br />
                   With this tool, you can make your moments immutable.
                   <br />

@@ -30,67 +30,74 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
   };
   return (
     <UserLayout>
-      <TitleHeader
-        label={data.name}
-        Append={() => (
-          <>
-            <SocialShare data={data} tokenId={tokenId} />
-            <IconButton onClick={handleClose}>
-              <MonoClose />
-            </IconButton>
-          </>
-        )}
-      />
-
-      <SavedImagePositions data={data} />
-      <Stack
-        flexDirection="column"
-        style={{
-          position: 'relative',
-          height: '100px',
-          width: '100vw',
-          zIndex: 2,
-        }}
-      >
-        <Heading as="h6">Signees</Heading>
-        <Heading as="h6">Metadata</Heading>
-        <MetaList>
-          <MetaTerm>block explorer</MetaTerm>
-          <MetaDetails>
-            <a
-              href={`https://explorer.chainweb.com/${env.NETWORKNAME}/eventsearch?q=${tokenId}`}
-              target="_blank"
-            >
-              click here
-            </a>
-          </MetaDetails>
-
-          <MetaTerm>name</MetaTerm>
-          <MetaDetails>{data.name}</MetaDetails>
-          <MetaTerm>description</MetaTerm>
-          <MetaDetails>{data.description}</MetaDetails>
-
-          <MetaTerm>event Date</MetaTerm>
-          <MetaDetails>
-            {new Date(data.properties.date).toLocaleDateString()}
-          </MetaDetails>
-          <MetaTerm>image</MetaTerm>
-          <MetaDetails>
-            <a href={data.image} target="_blank">
-              click here
-            </a>
-          </MetaDetails>
-          {metadataUri && (
+      <Stack display="flex" paddingInline="md" width="100%">
+        <TitleHeader
+          label={data.name}
+          Append={() => (
             <>
-              <MetaTerm>all meta data</MetaTerm>
-              <MetaDetails>
-                <a href={metadataUri} target="_blank">
-                  click here
-                </a>
-              </MetaDetails>
+              <SocialShare data={data} tokenId={tokenId} />
+              <IconButton onClick={handleClose}>
+                <MonoClose />
+              </IconButton>
             </>
           )}
-        </MetaList>
+        />
+      </Stack>
+      <Stack
+        flexDirection="column"
+        style={{ position: 'fixed', top: 0, zIndex: -1 }}
+      >
+        <SavedImagePositions data={data} />
+
+        <Stack
+          flexDirection="column"
+          style={{
+            position: 'relative',
+            height: '100px',
+            width: '100vw',
+            zIndex: 2,
+          }}
+        >
+          <Heading as="h6">Signees</Heading>
+          <Heading as="h6">Metadata</Heading>
+          <MetaList>
+            <MetaTerm>block explorer</MetaTerm>
+            <MetaDetails>
+              <a
+                href={`https://explorer.chainweb.com/${env.NETWORKNAME}/eventsearch?q=${tokenId}`}
+                target="_blank"
+              >
+                click here
+              </a>
+            </MetaDetails>
+
+            <MetaTerm>name</MetaTerm>
+            <MetaDetails>{data.name}</MetaDetails>
+            <MetaTerm>description</MetaTerm>
+            <MetaDetails>{data.description}</MetaDetails>
+
+            <MetaTerm>event Date</MetaTerm>
+            <MetaDetails>
+              {new Date(data.properties.date).toLocaleDateString()}
+            </MetaDetails>
+            <MetaTerm>image</MetaTerm>
+            <MetaDetails>
+              <a href={data.image} target="_blank">
+                click here
+              </a>
+            </MetaDetails>
+            {metadataUri && (
+              <>
+                <MetaTerm>all meta data</MetaTerm>
+                <MetaDetails>
+                  <a href={metadataUri} target="_blank">
+                    click here
+                  </a>
+                </MetaDetails>
+              </>
+            )}
+          </MetaList>
+        </Stack>
       </Stack>
     </UserLayout>
   );
