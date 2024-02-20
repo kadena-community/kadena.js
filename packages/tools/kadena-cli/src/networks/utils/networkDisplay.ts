@@ -26,30 +26,24 @@ export function displayNetworksConfig(): void {
   const rows: TableRow[] = [];
 
   const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
-  const standardNetworks: string[] = ['mainnet', 'testnet'];
+  existingNetworks.forEach(({ value }) => {
+    const networkFilePath = path.join(defaultNetworksPath, `${value}.yaml`);
+    const fileExists = existsSync(networkFilePath);
+    const networkConfig: INetworkCreateOptions = fileExists
+      ? (yaml.load(
+          readFileSync(networkFilePath, 'utf8'),
+        ) as INetworkCreateOptions)
+      : networkDefaults[value] !== undefined
+      ? networkDefaults[value]
+      : ({} as INetworkCreateOptions);
 
-  existingNetworks
-    .concat(
-      standardNetworks.map((network) => ({ label: network, value: network })),
-    )
-    .forEach(({ value }) => {
-      const networkFilePath = path.join(defaultNetworksPath, `${value}.yaml`);
-      const fileExists = existsSync(networkFilePath);
-      const networkConfig: INetworkCreateOptions = fileExists
-        ? (yaml.load(
-            readFileSync(networkFilePath, 'utf8'),
-          ) as INetworkCreateOptions)
-        : networkDefaults[value] !== undefined
-        ? networkDefaults[value]
-        : ({} as INetworkCreateOptions);
-
-      rows.push([
-        value,
-        networkConfig.networkId || 'Not Set',
-        networkConfig.networkHost || 'Not Set',
-        networkConfig.networkExplorerUrl || 'Not Set',
-      ]);
-    });
+    rows.push([
+      value,
+      networkConfig.networkId || 'Not Set',
+      networkConfig.networkHost || 'Not Set',
+      networkConfig.networkExplorerUrl || 'Not Set',
+    ]);
+  });
 
   log.output(log.generateTableString(header, rows));
 }
