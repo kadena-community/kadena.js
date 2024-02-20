@@ -230,7 +230,7 @@ Every type accepts an optional parameter called `networkId` to override the defa
 
 Some columns in the database are of type `jsonb`. To query these columns, you can supply a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
 
-An example of such a filter parameter value could be: `{ params: "{\"array_starts_with\": \"k:97636f47cede6f22f78e2b5ad9e50d11e4e805d414be40b87d3e2cf781998f27\"}" }`, in which case, the `params` column is a `jsonb` type column which is filtered to only include rows where the value contains an array that has the string `k:97636f47cede6f22f78e2b5ad9e50d11e4e805d414be40b87d3e2cf781998f27` on index 0.
+An example of such a filter parameter value could be: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`, in which case, the `parameters` column is a `jsonb` type column which is filtered to only include rows where the value contains an array that has the string `k:abcdefg` on index 0.
 
 Queries that allow such filters:
 
