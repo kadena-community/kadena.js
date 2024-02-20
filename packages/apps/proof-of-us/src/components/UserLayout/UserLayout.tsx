@@ -29,7 +29,14 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
         damping: 20,
       }}
     >
-      <Stack paddingInline="md">{children}</Stack>
+      <Stack
+        paddingInline="sm"
+        display="flex"
+        flexDirection="column"
+        width="100%"
+      >
+        {children}
+      </Stack>
     </motion.div>
   );
 };

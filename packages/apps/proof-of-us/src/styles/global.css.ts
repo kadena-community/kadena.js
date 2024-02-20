@@ -22,6 +22,7 @@ globalStyle('a:hover', {
 });
 
 export const mainWrapperClass = style({
+  position: 'relative',
   top: 0,
   maxWidth: '800px',
   width: '100%',
