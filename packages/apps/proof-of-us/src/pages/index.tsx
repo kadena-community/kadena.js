@@ -2,6 +2,7 @@
 import { Button } from '@/components/Button/Button';
 import { useAccount } from '@/hooks/account';
 import { Stack } from '@kadena/react-ui';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -22,9 +23,18 @@ const Page: FC = () => {
       alignItems="center"
       height="100%"
       gap="xl"
+      paddingInline="md"
     >
+      <Stack flex={1} alignItems="center">
+        <Image
+          src="/assets/logo.svg"
+          alt="Proof of Us (Powered by Kandena)"
+          width="241"
+          height="117"
+        />
+      </Stack>
       <Button variant="primary" onPress={login}>
-        Login
+        Connect
       </Button>
     </Stack>
   );

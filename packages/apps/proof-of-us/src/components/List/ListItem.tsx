@@ -1,19 +1,16 @@
 'use client';
 import type { Token } from '@/__generated__/sdk';
 import { fetchManifestData } from '@/utils/fetchManifestData';
+import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import type { FC } from 'react';
 import useSWR from 'swr';
 import { IsLoading } from '../IsLoading/IsLoading';
+import { AttendanceThumb } from '../Thumb/AttendanceThumb';
 import { ConnectThumb } from '../Thumb/ConnectThumb';
-import { EventThumb } from '../Thumb/EventThumb';
-import {
-  listItemClass,
-  listItemLinkClass,
-  timeClass,
-  titleClass,
-} from './style.css';
+import { Text } from '../Typography/Text';
+import { listItemClass, listItemLinkClass } from './style.css';
 
 interface IProps {
   token: Token;
@@ -48,18 +45,20 @@ export const ListItem: FC<IProps> = ({ token }) => {
           href={`/user/proof-of-us/t/${token.id}`}
         >
           {data.properties.eventType === 'attendance' && (
-            <EventThumb token={data} />
+            <AttendanceThumb token={data} />
           )}
           {data.properties.eventType === 'connect' && (
             <ConnectThumb token={data} />
           )}
-          <span className={titleClass}>{data.name}</span>
-          <time
-            className={timeClass}
-            dateTime={new Date(data.properties.date).toDateString()}
-          >
-            {new Date(data.properties.date).toDateString()}
-          </time>
+          <Stack display="flex" flexDirection="column" gap="xs">
+            <Text transform="capitalize" bold>
+              {data.name}
+            </Text>
+            <Text variant="small">
+              {data.properties.eventName ??
+                new Date(data.properties.date).toDateString()}
+            </Text>
+          </Stack>
         </Link>
       )}
     </motion.li>

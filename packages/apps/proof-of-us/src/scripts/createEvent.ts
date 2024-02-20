@@ -75,9 +75,7 @@ const createEvent = async () => {
     type: eventType,
     title: eventName,
     mintStatus: 'init',
-    avatar: {
-      backgroundColor: '#941212',
-    },
+    backgroundColor: '#941212',
     status: 3,
     signees: [],
     date: startTime * 1000,
@@ -91,7 +89,7 @@ const createEvent = async () => {
   }
 
   // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
-  const manifest = createManifest(proofOfUs, imageData.url);
+  const manifest = await createManifest(proofOfUs, imageData.url);
 
   const metadata = await createMetaDataUrl(manifest);
 
