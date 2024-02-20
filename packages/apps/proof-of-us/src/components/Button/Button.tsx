@@ -13,7 +13,7 @@ interface Props extends ButtonProps, Variants {
 }
 
 const BaseButton = (props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
-  const { children, className, variant, progress = 0, ...restProps } = props;
+  const { children, variant, progress = 0, ...restProps } = props;
 
   return (
     <AriaButton

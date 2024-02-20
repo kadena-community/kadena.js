@@ -12,12 +12,8 @@ export const attendanceThumbClass = style([
     marginInlineEnd: 'md',
   }),
   {
-    borderRadius: '3px',
-    width: '50px',
+    width: '48px',
     aspectRatio: '1/1',
-    maskImage: "url('/assets/attendance-mask-small.svg')",
-    maskRepeat: 'no-repeat',
-    maskSize: '100%',
   },
 ]);
 
@@ -37,15 +33,5 @@ export const connectThumbClass = style([
     backgroundRepeat: 'none',
     backgroundPosition: 'center',
     backgroundSize: 'contain',
-  },
-]);
-
-export const attendanceBorderClass = style([
-  atoms({
-    position: 'absolute',
-  }),
-  {
-    width: '50px',
-    zIndex: 10,
   },
 ]);

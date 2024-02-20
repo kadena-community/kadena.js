@@ -19,7 +19,7 @@ import type { FC } from 'react';
 const Page: FC = () => {
   const { data, isLoading, error } = useGetAllProofOfUs();
   const router = useRouter();
-  const { account, logout, isMounted } = useAccount();
+  const { logout } = useAccount();
 
   const handleNew = () => {
     router.push('/user/proof-of-us/new');

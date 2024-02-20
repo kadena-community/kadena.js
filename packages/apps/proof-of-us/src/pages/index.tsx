@@ -25,7 +25,7 @@ const Page: FC = () => {
       gap="xl"
       paddingInline="md"
     >
-      <Stack flex="1" alignItems="center">
+      <Stack flex={1} alignItems="center">
         <Image
           src="/assets/logo.svg"
           alt="Proof of Us (Powered by Kandena)"
