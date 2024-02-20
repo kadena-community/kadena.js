@@ -166,12 +166,12 @@ class Logger {
     rows: TableRow[],
     level: LevelKey = 'header',
   ): void {
-    const { header, seperator, body } = displayTable(headers, rows);
+    const { header, separator, body } = displayTable(headers, rows, true);
 
     //const styledHeader = this.color.bold(headerString);
     this._log(LEVELS[level], [header]);
-    this._log(LEVELS[level], [seperator]);
-    this._log(LEVELS.output, [body]);
+    this._log(LEVELS[level], [separator]);
+    this._log(LEVELS[level], [body]);
   }
 }
 

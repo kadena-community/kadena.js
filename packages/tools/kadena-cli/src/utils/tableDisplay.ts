@@ -4,7 +4,9 @@ export type TableHeader = string[];
 export function displayTable(
   header: TableHeader,
   rows: TableRow[],
-): { header: string; seperator: string; body: string } {
+  includeHorizontalSeparator: boolean = false,
+  includeVerticalSeparator: boolean = false,
+): { header: string; separator: string; body: string } {
   const columnWidths = header.map((_, index) =>
     Math.max(
       ...[header[index], ...rows.map((row) => row[index])].map(
@@ -14,17 +16,25 @@ export function displayTable(
   );
 
   const formatRow = (row: TableRow): string =>
-    row.map((item, index) => item.padEnd(columnWidths[index], ' ')).join(' | ');
+    row.length === 0
+      ? ''
+      : row
+          .map((item, index) => String(item).padEnd(columnWidths[index], ' '))
+          .join(includeVerticalSeparator ? ' | ' : ' ');
 
   const headerString = formatRow(header);
 
-  const seperator = columnWidths.map((width) => '-'.repeat(width)).join('-+-');
+  const separator = includeHorizontalSeparator
+    ? columnWidths
+        .map((width) => '-'.repeat(width))
+        .join(includeVerticalSeparator ? '-+-' : ' ')
+    : '';
 
   const body = rows.map(formatRow).join('\n');
 
   return {
     header: headerString,
-    seperator,
-    body: body,
+    separator,
+    body,
   };
 }
