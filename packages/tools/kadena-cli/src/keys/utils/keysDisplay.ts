@@ -61,7 +61,7 @@ export async function printPlainKeys(): Promise<void> {
 export async function printWalletKeys(wallet: IWallet | null): Promise<void> {
   if (!wallet) return;
 
-  const header: TableHeader = ['Filename', 'Public Key', 'Secret Key'];
+  const header: TableHeader = ['Filename', 'Index', 'Public Key', 'Secret Key'];
   const rows: TableRow[] = [];
 
   if (wallet.keys.length === 0) {
@@ -81,6 +81,7 @@ export async function printWalletKeys(wallet: IWallet | null): Promise<void> {
     if (parsed) {
       rows.push([
         key,
+        parsed.index !== undefined ? parsed.index.toString() : 'N/A',
         parsed.publicKey || 'N/A',
         parsed.secretKey !== undefined
           ? maskStringPreservingStartAndEnd(parsed.secretKey, 65)
