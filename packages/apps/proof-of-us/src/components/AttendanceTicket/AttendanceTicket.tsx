@@ -16,11 +16,13 @@ interface IProps {
 }
 
 export const AttendanceTicket: FC<IProps> = ({ data }) => {
-  const [contrastColor, setContrastColor] = useState<string>('white');
+  console.log({ data });
+  const color = data.properties?.avatar?.backgroundColor ?? 'white';
+  const [contrastColor, setContrastColor] = useState<string>(color);
 
   useEffect(() => {
-    const color = getContrast(data.properties?.avatar?.backgroundColor ?? '');
-    setContrastColor(color);
+    const inverseColor = getContrast(color);
+    setContrastColor(inverseColor);
   }, [data.properties?.avatar?.backgroundColor]);
   return (
     <motion.div
@@ -40,6 +42,7 @@ export const AttendanceTicket: FC<IProps> = ({ data }) => {
         className={titleClass}
         style={{
           color: contrastColor,
+          textShadow: `1px 1px 0px ${color}`,
         }}
       >
         {data.name}
@@ -48,7 +51,7 @@ export const AttendanceTicket: FC<IProps> = ({ data }) => {
       <Stack
         flexDirection="column"
         className={dateWrapperClass}
-        style={{ color: contrastColor }}
+        style={{ color: contrastColor, textShadow: `1px 1px 0px ${color}` }}
       >
         <h5 className={dateTitleClass}>Date</h5>
         <span className={dateClass}>

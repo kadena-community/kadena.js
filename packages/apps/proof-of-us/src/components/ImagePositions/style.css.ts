@@ -42,3 +42,13 @@ export const signeeInputClass = style([
     marginLeft: '-25px',
   },
 ]);
+
+export const imageWrapper = style([
+  {
+    width: '100%',
+    overflowY: 'hidden',
+    maxWidth: '800px',
+    aspectRatio: '1/1',
+    zIndex: 2,
+  },
+]);

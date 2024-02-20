@@ -34,22 +34,8 @@ export const mainWrapperClass = style({
   overflowX: 'hidden',
 });
 
-export const centerClass = style([
-  atoms({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  }),
-  {
-    height: '50vh',
-  },
-]);
-export const emptyListLinkClass = style([
-  atoms({
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'sm',
-    fontWeight: 'bodyFont.bold',
-    fontSize: 'xl',
-  }),
-]);
+export const secondaryTextClass = style({
+  color: deviceColors.kadenaFont,
+  opacity: '.8',
+  textAlign: 'center',
+});

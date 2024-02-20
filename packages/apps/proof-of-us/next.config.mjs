@@ -16,7 +16,15 @@ const nextConfig = {
     // config.infrastructureLogging = { debug: /PackFileCache/ };
     return config;
   },
-
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.ipfs.nftstorage.link',
+        port: '',
+      },
+    ],
+  },
   async rewrites() {
     return [
       {
