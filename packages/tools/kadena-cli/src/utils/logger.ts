@@ -77,7 +77,7 @@ export const defaultTransport: Transport = (record) => {
     [LEVELS.error]: stdErrChalk.red,
     [LEVELS.warning]: stdErrChalk.yellow,
     [LEVELS.output]: stdErrChalk.white,
-    [LEVELS.info]: stdErrChalk.gray,
+    [LEVELS.info]: stdErrChalk.white,
     [LEVELS.debug]: stdErrChalk.gray,
     [LEVELS.verbose]: stdErrChalk.gray,
   } as Record<number, ChalkInstance>;
