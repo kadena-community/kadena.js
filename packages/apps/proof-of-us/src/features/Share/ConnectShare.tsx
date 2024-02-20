@@ -30,7 +30,12 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
   };
   return (
     <UserLayout>
-      <Stack display="flex" paddingInline="md" width="100%">
+      <Stack
+        display="flex"
+        paddingInline="md"
+        width="100%"
+        style={{ height: '60px' }}
+      >
         <TitleHeader
           label={data.name}
           Append={() => (
@@ -45,7 +50,12 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
       </Stack>
       <Stack
         flexDirection="column"
-        style={{ position: 'fixed', top: 0, zIndex: -1 }}
+        style={{
+          position: 'relative',
+          marginBlockStart: '-60px',
+          top: 0,
+          zIndex: -1,
+        }}
       >
         <SavedImagePositions data={data} />
 

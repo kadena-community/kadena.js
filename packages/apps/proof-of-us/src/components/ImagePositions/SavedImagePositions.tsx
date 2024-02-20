@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
-import { imageWrapper } from './style.css';
+import { gradientClass, imageWrapper } from './style.css';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
@@ -70,7 +70,9 @@ export const SavedImagePositions: FC<IProps> = ({ data }) => {
   return (
     <>
       <section ref={wrapperRef} className={imageWrapper}>
-        <img src={data.image} sizes="100vw" alt="image for our connect" />
+        <img src={data.image} style={{ opacity: '.5' }} />
+
+        <div className={gradientClass} />
 
         {/*         
         {data?.properties?.signees.map((s, idx) => (
