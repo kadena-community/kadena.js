@@ -82,7 +82,7 @@ export const createChangeWalletPasswordCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'change-wallet-password',
+  'change-password',
   'Update the password for your wallet',
   [
     globalOptions.keyWalletSelect(),

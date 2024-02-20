@@ -70,7 +70,7 @@ export const createDeleteKeysCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'delete-wallet',
+  'delete',
   'Delete wallet from your local storage',
   [globalOptions.keyWalletSelectWithAll(), confirmDelete()],
   async (config) => {
