@@ -5,6 +5,9 @@ import { style } from '@vanilla-extract/css';
 export const listClass = style({
   listStyle: 'none',
   paddingInline: 0,
+  width: '100%',
+  overflowY: 'scroll',
+  height: 'calc(100vh - 170px)',
 });
 
 export const listItemClass = style([

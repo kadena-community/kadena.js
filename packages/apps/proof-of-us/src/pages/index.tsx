@@ -23,6 +23,7 @@ const Page: FC = () => {
       alignItems="center"
       height="100%"
       gap="xl"
+      paddingInline="md"
     >
       <Stack flex="1" alignItems="center">
         <Image

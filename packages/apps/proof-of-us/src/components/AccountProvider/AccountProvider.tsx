@@ -60,6 +60,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const logout = useCallback(() => {
     localStorage.removeItem(ACCOUNT_COOKIE_NAME);
     setAccount(undefined);
+    router.replace('/');
   }, []);
 
   useEffect(() => {

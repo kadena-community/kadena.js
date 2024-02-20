@@ -6,7 +6,7 @@ export const headerClass = style([
     display: 'flex',
     alignItems: 'center',
     gap: 'md',
-    paddingBlock: 'md',
+    paddingBlock: 'sm',
   }),
 ]);
 export const spacerClass = style([

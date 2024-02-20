@@ -10,7 +10,6 @@ globalStyle('body', {
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
   backgroundAttachment: 'fixed',
-  marginInline: '20px',
 });
 
 globalStyle('a', {
@@ -28,8 +27,7 @@ export const mainWrapperClass = style({
   width: '100%',
   height: '100dvh',
   margin: '0 auto',
-  paddingBlock: '20px',
-  paddingBlockStart: '80px',
+  paddingBlockEnd: '20px',
 
   overflowY: 'scroll',
   overflowX: 'hidden',

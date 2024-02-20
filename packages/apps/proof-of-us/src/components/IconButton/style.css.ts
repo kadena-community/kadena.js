@@ -5,4 +5,6 @@ export const buttonClass = style({
   background: 'transparent',
   color: 'white',
   cursor: 'pointer',
+  padding: '10px',
+  paddingInlineEnd: 0,
 });
