@@ -28,8 +28,7 @@
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/tools": "workspace:*",
-    "eslint-import-resolver-typescript": "3.5.5",
-    "@kadena/react-ui": "workspace:*"
+    "eslint-import-resolver-typescript": "3.5.5"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

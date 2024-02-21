@@ -1,5 +1,4 @@
 import { test as setup } from '@fixtures/shared/test.fixture';
-import { maskAccount } from '@helpers/spirekey/mask.helper';
 import { expect } from '@playwright/test';
 import path from 'path';
 
@@ -23,12 +22,8 @@ for (const alias of aliases) {
 
       await setup.step(`Register new account for ${alias.name}`, async () => {
         await spirekeyApp.welcomePage.clickRegister();
-        const account = await spirekeyApp.registerPage.register(alias.name);
-        const maskedAccount = await maskAccount(account);
-
-        await expect(spirekeyApp.accountPage.getAccountName()).toHaveText(
-          maskedAccount,
-        );
+        const result = await spirekeyApp.registerPage.register(alias.name);
+        expect(result.status).toBe('success');
       });
       await page.context().storageState({ path: storageStatePath });
     },

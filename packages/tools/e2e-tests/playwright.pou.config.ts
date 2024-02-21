@@ -1,5 +1,4 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
-import { devices } from '@playwright/test';
 import { baseConfig } from './playwright.base.config';
 
 const config: PlaywrightTestConfig = {
@@ -27,7 +26,11 @@ const config: PlaywrightTestConfig = {
       name: 'proof-of-us',
       testDir: 'src/tests/proof-of-us/',
       use: {
-        ...devices['iPhone 14 Pro'],
+        viewport: { width: 393, height: 852 },
+        deviceScaleFactor: 3,
+        isMobile: true,
+        hasTouch: true,
+        defaultBrowserType: 'chromium',
       },
     },
   ],

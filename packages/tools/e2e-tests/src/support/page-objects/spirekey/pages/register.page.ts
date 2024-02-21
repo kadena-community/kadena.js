@@ -40,7 +40,10 @@ export class RegisterPage {
     await this._completeButton.click();
   }
 
-  public async register(alias: string): Promise<string> {
+  public async register(alias: string): Promise<{
+    status: string;
+    data: string;
+  }> {
     await this.setAlias(alias);
     await this.next();
     await this.selectTestnet();
@@ -50,15 +53,18 @@ export class RegisterPage {
     await this.setDesktop();
     await this.next();
     await this.complete();
-    const account = await this.waitForAccountCreation();
-    return account;
+    const result = await this.waitForAccountCreation();
+    return result;
   }
 
-  public async waitForAccountCreation(): Promise<string> {
+  public async waitForAccountCreation(): Promise<{
+    status: string;
+    data: string;
+  }> {
     const response = await this._page.waitForResponse(
       (resp) => resp.url().includes('listen') && resp.status() === 200,
     );
     const json = await response.json();
-    return json.result.data;
+    return json.result;
   }
 }
