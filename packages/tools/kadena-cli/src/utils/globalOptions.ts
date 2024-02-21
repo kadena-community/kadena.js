@@ -30,10 +30,7 @@ import {
   parseKeyPairsInput,
 } from '../keys/utils/keysHelpers.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
-import {
-  ensureNetworksConfiguration,
-  loadNetworkConfig,
-} from '../networks/utils/networkHelpers.js';
+import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration, isNotEmptyString } from './helpers.js';
