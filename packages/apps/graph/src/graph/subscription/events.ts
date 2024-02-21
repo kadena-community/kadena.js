@@ -1,6 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
 import { createID } from '@utils/global-id';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
+import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
 import GQLEvent from '../objects/event';
@@ -108,7 +109,11 @@ async function getLastEvents(
         chainId: parseInt(chainId),
       }),
       ...(parametersFilter && {
-        parameters: JSON.parse(parametersFilter),
+        parameters: parsePrismaJsonColumn(parametersFilter, {
+          subscription: 'events',
+          queryParameter: 'parametersFilter',
+          column: 'parameters',
+        }),
       }),
     },
     select: {
