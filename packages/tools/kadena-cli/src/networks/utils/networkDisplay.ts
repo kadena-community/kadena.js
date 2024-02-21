@@ -39,9 +39,9 @@ export function displayNetworksConfig(): void {
 
     rows.push([
       value,
-      networkConfig.networkId || 'Not Set',
-      networkConfig.networkHost || 'Not Set',
-      networkConfig.networkExplorerUrl || 'Not Set',
+      networkConfig.networkId ?? 'Not Set',
+      networkConfig.networkHost ?? 'Not Set',
+      networkConfig.networkExplorerUrl ?? 'Not Set',
     ]);
   });
 
