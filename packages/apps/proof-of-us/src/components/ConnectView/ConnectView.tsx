@@ -3,11 +3,9 @@ import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { SocialsEditor } from '@/components/SocialsEditor/SocialsEditor';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
-import { useAvatar } from '@/hooks/avatar';
 import { useSignToken } from '@/hooks/data/signToken';
 import { useSubmit } from '@/hooks/submit';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
-import { useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
 
 interface IProps {
@@ -17,8 +15,7 @@ interface IProps {
 
 export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
   const { signToken } = useSignToken();
-  const { doSubmit, isStatusLoading } = useSubmit();
-  const { uploadBackground } = useAvatar();
+  const { isStatusLoading } = useSubmit();
 
   const handleJoin = async () => {
     await signToken();

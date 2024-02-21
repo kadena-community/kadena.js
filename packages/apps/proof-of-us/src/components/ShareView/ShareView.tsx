@@ -7,7 +7,7 @@ import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
 import { MonoArrowBack, MonoArrowDownward } from '@kadena/react-icons';
 import { CopyButton, TextField } from '@kadena/react-ui';
 import Link from 'next/link';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
@@ -22,11 +22,9 @@ interface IProps {
   status: number;
 }
 
-export const ShareView: FC<IProps> = ({ next, prev, status }) => {
+export const ShareView: FC<IProps> = ({ prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
   const { proofOfUs, updateStatus } = useProofOfUs();
-  const router = useRouter();
-  const { id } = useParams();
   const { signToken } = useSignToken();
   const searchParams = useSearchParams();
 

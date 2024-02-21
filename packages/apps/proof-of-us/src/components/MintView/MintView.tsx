@@ -1,22 +1,12 @@
 import { Button } from '@/components/Button/Button';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useAvatar } from '@/hooks/avatar';
-import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSubmit } from '@/hooks/submit';
-import { getReturnHostUrl } from '@/utils/getReturnUrl';
-import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
-import { MonoArrowBack, MonoArrowDownward } from '@kadena/react-icons';
-import { CopyButton, TextField } from '@kadena/react-ui';
-import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
 import type { FC } from 'react';
-import { useEffect, useRef } from 'react';
-import { QRCode } from 'react-qrcode-logo';
-import { IconButton } from '../IconButton/IconButton';
-import { ImagePositions } from '../ImagePositions/ImagePositions';
+import { useEffect } from 'react';
+import { MainLoader } from '../MainLoader/MainLoader';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
-import { qrClass } from './style.css';
 
 interface IProps {
   next: () => void;
@@ -24,11 +14,9 @@ interface IProps {
   status: number;
 }
 
-export const MintView: FC<IProps> = ({ prev, status }) => {
-  const { proofOfUs, updateStatus } = useProofOfUs();
-  const router = useRouter();
-  const { id } = useParams();
-  const { doSubmit, isStatusLoading } = useSubmit();
+export const MintView: FC<IProps> = ({ prev }) => {
+  const { proofOfUs } = useProofOfUs();
+  const { doSubmit, isStatusLoading, status, result } = useSubmit();
   const { uploadBackground } = useAvatar();
 
   const handleMint = async () => {
@@ -43,6 +31,7 @@ export const MintView: FC<IProps> = ({ prev, status }) => {
 
   useEffect(() => {
     if (!proofOfUs) return;
+
     if (!proofOfUs.tx) {
       throw new Error('no tx is found');
     }
@@ -56,6 +45,18 @@ export const MintView: FC<IProps> = ({ prev, status }) => {
     <section>
       <>
         <TitleHeader label="Minting" />
+
+        <div>isloading: {isStatusLoading.toString()}</div>
+
+        {isStatusLoading && <MainLoader />}
+        {status === 'error' && (
+          <div>
+            <pre>{JSON.stringify(result, null, 2)}</pre>
+            <Button onPress={handleMint}>Retry</Button>
+          </div>
+        )}
+
+        {status === 'success' && <div>Hurray!!!</div>}
 
         <ListSignees />
       </>

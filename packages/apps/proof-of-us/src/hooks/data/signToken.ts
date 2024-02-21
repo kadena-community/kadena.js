@@ -3,7 +3,7 @@ import { createManifest } from '@/utils/createManifest';
 import { getReturnUrl } from '@/utils/getReturnUrl';
 import { createConnectTokenTransaction } from '@/utils/proofOfUs';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAccount } from '../account';
 
@@ -13,7 +13,6 @@ export const useSignToken = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [data] = useState<IProofOfUs | undefined>(undefined);
-  const { id } = useParams();
   const { account } = useAccount();
   const router = useRouter();
 
