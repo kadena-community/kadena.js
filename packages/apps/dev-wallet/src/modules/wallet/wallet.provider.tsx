@@ -6,12 +6,8 @@ import {
   useState,
 } from 'react';
 
-import {
-  IAccount,
-  IKeySource,
-  IProfile,
-  walletRepository,
-} from './wallet.repository';
+import { IAccount } from '../account/account.repository';
+import { IKeySource, IProfile, walletRepository } from './wallet.repository';
 
 export type ExtWalletContextType = {
   profile?: IProfile;

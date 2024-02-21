@@ -1,6 +1,5 @@
 import { IDBService, dbService } from '@/modules/db/db.service';
-import { IAccount } from '../account/account.repository';
-import { INetwork } from '../network/network.repository';
+import type { INetwork } from '../network/network.repository';
 
 export interface IKeyItem {
   publicKey: string;
@@ -55,9 +54,6 @@ const createWalletRepository = ({
       value: string | Uint8Array,
     ): Promise<void> => {
       return add('encryptedValue', value, key);
-    },
-    getAccountsByProfileId(profileId: string): Promise<IAccount[]> {
-      return getAll('account', profileId, 'profileId');
     },
     getProfileKeySources: async (profileId: string): Promise<IKeySource[]> => {
       return getAll('keySource', profileId, 'profileId');
