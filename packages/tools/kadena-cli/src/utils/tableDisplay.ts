@@ -7,6 +7,7 @@ export function displayTable(
   includeHorizontalSeparator: boolean,
   includeVerticalSeparator: boolean,
 ): { header: string; separator: string; body: string } {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   const columnWidths = header.map((_, index) =>
     Math.max(
       ...[header[index], ...rows.map((row) => row[index])].map(

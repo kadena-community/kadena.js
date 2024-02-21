@@ -20,13 +20,13 @@ import type { IKeysConfig } from '../utils/keySharedKeyGen.js';
 import { generateFromWallet } from '../utils/keySharedKeyGen.js';
 
 export const generateHdKeys = async ({
-  walletWallet,
+  walletName,
   keyIndexOrRange,
   keyGenFromChoice,
   password,
   keyAlias,
 }: {
-  walletWallet: string;
+  walletName: string;
   keyIndexOrRange: number | [number, number];
   keyGenFromChoice: 'genPublicSecretKey' | 'genPublicSecretKeyDec' | string;
   password: string;
@@ -35,12 +35,12 @@ export const generateHdKeys = async ({
   CommandResult<{ keys: IKeyPair[]; legacy: boolean; startIndex: number }>
 > => {
   try {
-    const wallet = await getWallet(walletWallet);
+    const wallet = await getWallet(walletName);
 
     if (!wallet) {
       return {
         success: false,
-        errors: [`The wallet "${walletWallet}" does not exist.`],
+        errors: [`The wallet "${walletName}" does not exist.`],
       };
     }
 
@@ -51,7 +51,7 @@ export const generateHdKeys = async ({
     const startIndex = extractStartIndex(keyIndexOrRange);
 
     const config = {
-      walletWallet: await getWalletContent(walletWallet),
+      walletName: await getWalletContent(walletName),
       securityPassword: password,
       keyGenFromChoice,
       keyIndexOrRange,
@@ -83,16 +83,16 @@ export const createGenerateHdKeysCommand: (
   'generate-keys',
   'Generate public/secret key pair(s) from your wallet',
   [
-    globalOptions.walletWalletSelect(),
+    globalOptions.walletSelect(),
     globalOptions.keyGenFromChoice(),
     globalOptions.keyAlias(),
     globalOptions.securityPassword(),
     globalOptions.keyIndexOrRange({ isOptional: true }),
   ],
   async (option) => {
-    const { walletWalletConfig, walletWallet } = await option.walletWallet();
-    if (!walletWalletConfig) {
-      throw new Error(`Wallet: ${walletWallet} does not exist.`);
+    const { walletNameConfig, walletName } = await option.walletName();
+    if (!walletNameConfig) {
+      throw new Error(`Wallet: ${walletName} does not exist.`);
     }
 
     const { keyIndexOrRange } = await option.keyIndexOrRange();
@@ -106,7 +106,7 @@ export const createGenerateHdKeysCommand: (
     const loadingSpinner = ora('Generating keys..').start();
 
     const result = await generateHdKeys({
-      walletWallet: walletWalletConfig.wallet,
+      walletName: walletNameConfig.wallet,
       keyIndexOrRange,
       keyGenFromChoice,
       password: securityPassword,

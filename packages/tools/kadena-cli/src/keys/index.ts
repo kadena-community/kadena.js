@@ -1,4 +1,3 @@
-import { createDecryptCommand } from './commands/keysDecrypt.js';
 import { createListKeysCommand } from './commands/keysList.js';
 import { createGeneratePlainKeysCommand } from './commands/keysPlainGenerate.js';
 
@@ -11,6 +10,5 @@ export function keysCommandFactory(program: Command, version: string): void {
     .command(SUBCOMMAND_ROOT)
     .description(`Tool to generate and manage keys`);
   createGeneratePlainKeysCommand(keysProgram, version);
-  createDecryptCommand(keysProgram, version);
   createListKeysCommand(keysProgram, version);
 }

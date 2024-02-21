@@ -117,7 +117,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
   'sign-with-alias-file',
   'Sign a transaction using your local aliased file containing your keypair.\nThe transaction can be passed via stdin.\nThe signed transaction will be saved to file.',
   [
-    globalOptions.walletWalletSelect(),
+    globalOptions.walletSelect(),
     globalOptions.securityPassword(),
     globalOptions.keyAliasSelect(),
     txOptions.directory({ disableQuestion: true }),
@@ -125,12 +125,12 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option, values, stdin) => {
-    const wallet = await option.walletWallet();
-    if (!wallet.walletWalletConfig) throw new Error('wallet not found');
+    const wallet = await option.walletName();
+    if (!wallet.walletNameConfig) throw new Error('wallet not found');
 
     const password = await option.securityPassword();
     const key = await option.keyAliasSelect({
-      wallet: wallet.walletWallet,
+      wallet: wallet.walletName,
     });
     const mode = await option.legacy();
 
@@ -146,7 +146,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
         return await signTransactionWithAliasFile({
           alias: key.keyAliasSelect,
           signed: false,
-          wallet: wallet.walletWalletConfig!,
+          wallet: wallet.walletNameConfig!,
           password: password.securityPassword,
           commands: [command],
           legacy: mode.legacy,
@@ -170,7 +170,7 @@ export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
         return await signTransactionFileWithAliasFile({
           alias: key.keyAliasSelect,
           signed: false,
-          wallet: wallet.walletWalletConfig!,
+          wallet: wallet.walletNameConfig!,
           password: password.securityPassword,
           files: absolutePaths,
           legacy: mode.legacy,

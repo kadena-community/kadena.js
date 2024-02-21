@@ -22,7 +22,7 @@ describe('generate hd keys command', () => {
       keyGenFromChoice: 'genPublicSecretKey',
       keyIndexOrRange: 1,
       password: walletPassword,
-      walletWallet: wallet.data.wallet.wallet,
+      walletName: wallet.data.wallet.wallet,
     });
     assert(keys.success);
 
@@ -52,7 +52,7 @@ describe('generate hd keys command', () => {
       keyGenFromChoice: 'genPublicSecretKey',
       keyIndexOrRange: [1, 3],
       password: walletPassword,
-      walletWallet: wallet.data.wallet.wallet,
+      walletName: wallet.data.wallet.wallet,
     });
     assert(keys.success);
 

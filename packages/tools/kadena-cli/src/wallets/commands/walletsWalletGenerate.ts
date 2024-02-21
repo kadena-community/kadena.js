@@ -96,7 +96,7 @@ export const createGenerateWalletCommand: (
   'add',
   'Add a new local wallet',
   [
-    globalOptions.walletWallet({ isOptional: false }),
+    globalOptions.walletName({ isOptional: false }),
     globalOptions.securityPassword({ isOptional: false }),
     globalOptions.securityVerifyPassword({ isOptional: false }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
@@ -111,7 +111,7 @@ export const createGenerateWalletCommand: (
       }
 
       const result = await generateWallet(
-        config.walletWallet,
+        config.walletName,
         config.securityPassword,
         config.legacy,
       );
@@ -119,7 +119,7 @@ export const createGenerateWalletCommand: (
       assertCommandError(result);
 
       displayGeneratedWallet(result.data.mnemonic);
-      displayStoredWallet(config.walletWallet, config.legacy);
+      displayStoredWallet(config.walletName, config.legacy);
     } catch (error) {
       log.error(`\n${error.message}\n`);
       process.exit(1);

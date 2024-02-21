@@ -189,14 +189,14 @@ kadena wallets add [arguments]
 
 | **Arguments & Options**    | ** Description**                               |
 | -------------------------- | ---------------------------------------------- |
-| --wallet-wallet            | Set the name of the wallet                     |
+| --wallet-name              | Set the name of the wallet                     |
 | --security-password        | Set the password for the wallet                |
 | --security-verify-password | Set the password for the wallet (verification) |
 
 example:
 
 ```
-kadena wallets add --wallet-wallet="kadenawallet" --security-password=1245678 --security-verify-password=1245678
+kadena wallets add --wallet-name="kadenawallet" --security-password=1245678 --security-verify-password=1245678
 ```
 
 password will be hidden after entry: --security-password=\*
@@ -213,7 +213,7 @@ kadena wallets import [arguments]
 | --key-mnemonic             | 12 word mnemnoc phrase                         |
 | --security-new-password    | Set the password for the wallet                |
 | --security-verify-password | Set the password for the wallet (verification) |
-| --wallet-wallet            | Set the name of the wallet                     |
+| --wallet-name              | Set the name of the wallet                     |
 
 example:
 
@@ -232,7 +232,7 @@ kadena wallets generate-keys [arguments]
 
 | **Arguments & Options** | ** Description**                                                                    |
 | ----------------------- | ----------------------------------------------------------------------------------- |
-| --wallet-wallet         | Provide the name of the wallet                                                      |
+| --wallet-name           | Provide the name of the wallet                                                      |
 | --key-index-or-range    | Set index or range of indices for key generation (e.g., 5 or 1-5)                   |
 | --security-password     | Set the password for the wallet                                                     |
 | --key-gen-from-choice   | Select generation type: genPublicKey (publicKey only), genPublicSecretKey           |
@@ -241,26 +241,26 @@ kadena wallets generate-keys [arguments]
 example generating public keys using a range
 
 ```
-kadena wallets generate --wallet-wallet="kadenawallet.wallet" --key-index-or-range="0-5" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
+kadena wallets generate --wallet-name="kadenawallet.wallet" --key-index-or-range="0-5" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
 ```
 
 example generating a public key using a index
 
 ```
-kadena wallets generated --wallet-wallet="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
+kadena wallets generated --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
 ```
 
 example generating a public and secret key using a index
 
 ```
-kadena wallets generate --wallet-wallet="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKey" --key-alias="myalias" --security-password=12345678
+kadena wallets generate --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKey" --key-alias="myalias" --security-password=12345678
 ```
 
 example generating a public and decrypted secret key using a index (will not be
 stored on filesystem)
 
 ```
-kadena keys wallets generate --wallet-wallet="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKeyDec" --security-password=12345678
+kadena keys wallets generate --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKeyDec" --security-password=12345678
 ```
 
 password will be hidden after entry: --security-password=\*
@@ -273,7 +273,7 @@ kadena wallets change-password [arguments]
 
 | **Arguments & Options**     | ** Description**                                   |
 | --------------------------- | -------------------------------------------------- |
-| --wallet-wallet             | Provide the name of the wallet                     |
+| --wallet-name               | Provide the name of the wallet                     |
 | --security-current-password | Provide the current password of the wallet         |
 | --security-new-password     | Set the new password for the wallet                |
 | --security-verify-password  | Set the new password for the wallet (verification) |
@@ -282,7 +282,7 @@ kadena wallets change-password [arguments]
 example:
 
 ```
-kadena wallets change-password --wallet-wallet="kadenawallet.wallet" --security-current-password=12345678 --security-new-password=12345678 --security-verify-password=1234567 --confirm=true
+kadena wallets change-password --wallet-name="kadenawallet.wallet" --security-current-password=12345678 --security-new-password=12345678 --security-verify-password=1234567 --confirm=true
 ```
 
 password will be hidden after entry: --security-current-password=\*
@@ -296,19 +296,19 @@ kadena wallets delete [arguments]
 
 | **Arguments & Options** | ** Description**              |
 | ----------------------- | ----------------------------- |
-| --wallet-wallet         | Select the name of the wallet |
+| --wallet-name           | Select the name of the wallet |
 | --confirm               | Confirm deletion of wallet    |
 
 example single wallet deletion:
 
 ```
-kadena wallets delete --wallet-wallet="kadenawallet.wallet" --confirm=true
+kadena wallets delete --wallet-name="kadenawallet.wallet" --confirm=true
 ```
 
 example deletion of all wallets:
 
 ```
-kadena wallets delete --wallet-wallet="all" --confirm=true
+kadena wallets delete --wallet-name="all" --confirm=true
 ```
 
 ---
@@ -319,19 +319,38 @@ kadena wallets list [arguments]
 
 | **Arguments & Options** | ** Description**           |
 | ----------------------- | -------------------------- |
-| --wallet-wallet         | Set the name of the wallet |
+| --wallet-name           | Set the name of the wallet |
 
 example for listing specific wallet:
 
 ```
-kadena wallets list --wallet-wallet="walletname"
+kadena wallets list --wallet-name="walletname"
 ```
 
 example for listing all wallets:
 
 ```
-kadena wallets list --wallet-wallet="all"
+kadena wallets list --wallet-name="all"
 ```
+
+---
+
+```
+kadena wallets decrypt [arguments]
+```
+
+| **Arguments & Options**     | ** Description**                    |
+| --------------------------- | ----------------------------------- |
+| --key-message               | Provide encrypted Message           |
+| --security-current-password | Provide password to decrypt message |
+
+example:
+
+```
+kadena wallets decrypt --key-message="encryptedmessage" --security-current-password=12345678
+```
+
+password will be hidden after entry: --security-current-password=\*
 
 ---
 
@@ -365,25 +384,6 @@ kadena keys generate --key-alias="myalias" --key-amount="5"
 ---
 
 ```
-kadena keys decrypt [arguments]
-```
-
-| **Arguments & Options**     | ** Description**                    |
-| --------------------------- | ----------------------------------- |
-| --key-message               | Provide encrypted Message           |
-| --security-current-password | Provide password to decrypt message |
-
-example:
-
-```
-kadena keys decrypt --key-message="encryptedmessage" --security-current-password=12345678
-```
-
-password will be hidden after entry: --security-current-password=\*
-
----
-
-```
 kadena keys list
 ```
 
@@ -393,7 +393,7 @@ kadena keys list
 example for listing all keys
 
 ```
-kadena kets list"
+kadena keys list"
 ```
 
 ## kadena account
