@@ -21,7 +21,7 @@ export async function accountDetails(
       return {
         success: false,
         errors: [
-          `Account is not available on chain "${config.chainId}" of networkId "${config.networkId}"`,
+          `Account "${config.accountName}" is not available on chain "${config.chainId}" of networkId "${config.networkId}"`,
         ],
       };
     }

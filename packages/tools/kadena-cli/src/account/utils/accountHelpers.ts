@@ -34,7 +34,7 @@ export const readAccountFromFile = async (
 ): Promise<IAliasAccountData> => {
   const filePath = join(ACCOUNT_DIR, accountFile);
   if (!(await services.filesystem.fileExists(filePath))) {
-    throw new Error('file not exist');
+    throw new Error(`Account alias "${accountFile}" file not exist`);
   }
 
   const content = await services.filesystem.readFile(filePath);
