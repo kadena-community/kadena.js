@@ -20,7 +20,7 @@ export const getProofOfUs = async (
       }.proof-of-us.get-event "${decodeURIComponent(id)}"
       )`,
     )
-    .setNetworkId('testnet04')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
       chainId: '1',
     })
@@ -44,7 +44,7 @@ export const getTokenInfo = async (id: string): Promise<string | undefined> => {
       `(marmalade-v2.ledger.get-token-info "${decodeURIComponent(id)}"
       )`,
     )
-    .setNetworkId('testnet04')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
       chainId: '1',
     })
@@ -66,7 +66,7 @@ export const getTokenUri = async (id: string): Promise<string | undefined> => {
       `(marmalade-v2.ledger.get-uri "${decodeURIComponent(id)}"
       )`,
     )
-    .setNetworkId('testnet04')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
       chainId: '1',
     })

@@ -10,6 +10,7 @@ import dotenv from 'dotenv';
 import { NFTStorage } from 'nft.storage';
 import { createImageUrl, createMetaDataUrl } from '../utils/upload';
 
+import { env } from '@/utils/env';
 import { createManifest } from '../utils/createManifest';
 
 dotenv.config();
@@ -51,7 +52,7 @@ const createEventId = async () => {
        
         )`,
     )
-    .setNetworkId('testnet04')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
       chainId: '1',
     })
@@ -113,7 +114,7 @@ const createEvent = async () => {
       pred: 'keys-any',
       keys: [creatorPublicKey],
     })
-    .setNetworkId('testnet04')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
       chainId: '1',
       senderAccount: `k:${senderPubKey}`,

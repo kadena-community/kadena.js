@@ -7,6 +7,7 @@ import { useAvatar } from '@/hooks/avatar';
 import { useSignToken } from '@/hooks/data/signToken';
 import { useSubmit } from '@/hooks/submit';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
 
 interface IProps {
@@ -23,15 +24,6 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
     await signToken();
   };
 
-  const handleMint = async () => {
-    if (!proofOfUs) return;
-    Promise.all([doSubmit(), uploadBackground(proofOfUs.proofOfUsId)]).then(
-      (values) => {
-        console.log(values);
-      },
-    );
-  };
-
   if (!proofOfUs) return null;
 
   return (
@@ -43,13 +35,7 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
         <h3>{proofOfUs.title}</h3>
         <SocialsEditor />
         <ImagePositions />
-        <button
-          onClick={() => {
-            handleMint();
-          }}
-        >
-          Sign temporary
-        </button>
+
         <div>status: {proofOfUs?.mintStatus}</div>
         <ListSignees />
         {!isAlreadySigning(proofOfUs.signees) && (

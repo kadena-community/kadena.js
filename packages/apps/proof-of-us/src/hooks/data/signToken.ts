@@ -1,6 +1,6 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { createManifest } from '@/utils/createManifest';
-import { getReturnHostUrl } from '@/utils/getReturnUrl';
+import { getReturnUrl } from '@/utils/getReturnUrl';
 import { createConnectTokenTransaction } from '@/utils/proofOfUs';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
@@ -8,7 +8,8 @@ import { useEffect, useState } from 'react';
 import { useAccount } from '../account';
 
 export const useSignToken = () => {
-  const { updateSigner, proofOfUs, background, addTx } = useProofOfUs();
+  const { updateSigner, proofOfUs, background, addTx, hasSigned } =
+    useProofOfUs();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [data] = useState<IProofOfUs | undefined>(undefined);
@@ -18,24 +19,8 @@ export const useSignToken = () => {
 
   const searchParams = useSearchParams();
 
-  useEffect(() => {
-    const transaction = searchParams.get('transaction');
-    if (!transaction) return;
-
-    addTx(transaction);
-    updateSigner({ signerStatus: 'success' }, true);
-
-    setIsLoading(false);
-    setHasError(false);
-    //router.replace(`/scan/${id}`);
-  }, [searchParams]);
-
-  const signToken = async () => {
+  const createTx = async () => {
     if (!proofOfUs || !account) return;
-    setIsLoading(true);
-    setHasError(false);
-
-    updateSigner({ signerStatus: 'signing' }, true);
 
     const imageData = await createImageUrl(background.bg);
     if (!imageData) {
@@ -56,10 +41,38 @@ export const useSignToken = () => {
       account,
     );
 
+    return transaction;
+  };
+
+  useEffect(() => {
+    const transaction = searchParams.get('transaction');
+    if (!transaction || hasSigned()) return;
+    addTx(transaction);
+
+    updateSigner({ signerStatus: 'success' }, true);
+
+    setIsLoading(false);
+    setHasError(false);
+    router.replace(getReturnUrl());
+  }, [searchParams]);
+
+  const signToken = async () => {
+    if (!proofOfUs || !account) return;
+    setIsLoading(true);
+    setHasError(false);
+
+    updateSigner({ signerStatus: 'signing' }, true);
+
+    let transaction = proofOfUs.tx;
+    if (!transaction) {
+      const data = await createTx();
+      transaction = Buffer.from(JSON.stringify(data)).toString('base64');
+    }
+
     router.push(
-      `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${Buffer.from(
-        JSON.stringify(transaction),
-      ).toString('base64')}&returnUrl=${getReturnHostUrl()}/scan/${id}
+      `${
+        process.env.NEXT_PUBLIC_WALLET_URL
+      }/sign?transaction=${transaction}&returnUrl=${getReturnUrl()}
       `,
     );
   };

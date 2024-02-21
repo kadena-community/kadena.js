@@ -1,14 +1,15 @@
 import { Button } from '@/components/Button/Button';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
+import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
-import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
 import { MonoArrowBack, MonoArrowDownward } from '@kadena/react-icons';
 import { CopyButton, TextField } from '@kadena/react-ui';
 import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
@@ -23,9 +24,11 @@ interface IProps {
 
 export const ShareView: FC<IProps> = ({ next, prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
-  const { proofOfUs } = useProofOfUs();
+  const { proofOfUs, updateStatus } = useProofOfUs();
   const router = useRouter();
   const { id } = useParams();
+  const { signToken } = useSignToken();
+  const searchParams = useSearchParams();
 
   const handleBack = () => {
     prev();
@@ -33,14 +36,17 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
 
   const handleSign = async () => {
     if (!proofOfUs) return;
-    router.push(
-      `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${
-        proofOfUs.tx
-      }&returnUrl=${getReturnHostUrl()}/scan/${id}
-      `,
-    );
+    signToken();
+
     return;
   };
+
+  useEffect(() => {
+    const transaction = searchParams.get('transaction');
+    if (!transaction || !proofOfUs) return;
+
+    updateStatus({ proofOfUsId: proofOfUs.proofOfUsId, status: 4 });
+  }, []);
 
   if (!proofOfUs) return;
 
@@ -88,7 +94,7 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
           ) : (
             <ImagePositions />
           )}
-          {isAlreadySigning(proofOfUs.signees) && (
+          {isSignedOnce(proofOfUs.signees) && (
             <Button onPress={handleSign}>Sign & Upload</Button>
           )}
         </>
