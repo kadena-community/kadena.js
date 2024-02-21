@@ -12,10 +12,10 @@ import { log } from '../../utils/logger.js';
 
 export const decrypt = async (
   password: string,
-  keyMessage: EncryptedString,
+  message: EncryptedString,
 ): Promise<CommandResult<{ value: string }>> => {
   try {
-    const decryptedMessage = await kadenaDecrypt(password, keyMessage);
+    const decryptedMessage = await kadenaDecrypt(password, message);
 
     const isLegacy = decryptedMessage.byteLength >= 128;
 
@@ -47,7 +47,7 @@ export const createDecryptCommand: (program: Command, version: string) => void =
       log.debug('decrypt:action', { config });
 
       if (config.message === undefined) {
-        throw new Error('Missing keyMessage');
+        throw new Error('Missing message');
       }
 
       log.warning(`You are about to decrypt this message.\n`);
@@ -59,7 +59,10 @@ export const createDecryptCommand: (program: Command, version: string) => void =
 
       assertCommandError(result);
 
-      log.info(log.color.green(`\nDecrypted message: ${result.data.value}`));
+      const header = ['Decrypted Message'];
+      const rows = [[result.data.value]];
+
+      log.output(log.generateTableString(header, rows));
       log.info(log.color.yellow(`\nPlease store it in a safe place.\n`));
     },
   );
