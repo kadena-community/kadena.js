@@ -13,18 +13,22 @@ const config: PlaywrightTestConfig = {
   // },
   projects: [
     {
-      use: {
-        ...devices['iPhone 14 Pro Max"'],
-      },
       name: 'pou-setup',
       testMatch: 'setup/pou.setup.ts',
+      use: {
+        viewport: { width: 393, height: 852 },
+        deviceScaleFactor: 3,
+        isMobile: true,
+        hasTouch: true,
+        defaultBrowserType: 'chromium',
+      },
     },
     {
-      use: {
-        ...devices['iPhone 14 Pro Max"'],
-      },
       name: 'proof-of-us',
       testDir: 'src/tests/proof-of-us/',
+      use: {
+        ...devices['iPhone 14 Pro'],
+      },
     },
   ],
 };
