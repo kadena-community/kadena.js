@@ -41,10 +41,10 @@ export async function printPlainKeys(): Promise<void> {
 
   for (const key of plainKeys) {
     rows.push([
-      key.alias || 'N/A',
+      key.alias ?? 'N/A',
       key.index !== undefined ? key.index.toString() : 'N/A',
       key.legacy ? 'Yes' : 'No',
-      key.publicKey || 'N/A',
+      key.publicKey ?? 'N/A',
       key.secretKey !== undefined
         ? maskStringPreservingStartAndEnd(key.secretKey, 65)
         : 'N/A',
@@ -89,7 +89,7 @@ export async function printWalletKeys(wallet: IWallet | null): Promise<void> {
         key,
         parsed.index !== undefined ? parsed.index.toString() : 'N/A',
         key.includes('legacy') ? 'Yes' : 'No',
-        parsed.publicKey || 'N/A',
+        parsed.publicKey ?? 'N/A',
         parsed.secretKey !== undefined
           ? maskStringPreservingStartAndEnd(parsed.secretKey, 65)
           : 'N/A',
@@ -230,7 +230,7 @@ export function displayGeneratedKeys(
 ): void {
   const header: TableHeader = ['Public Key', 'Secret Key'];
   const rows: TableRow[] = keyPairs.map((keyPair) => [
-    keyPair.publicKey || 'N/A',
+    keyPair.publicKey ?? 'N/A',
     keyPair.secretKey !== undefined
       ? maskStringPreservingStartAndEnd(keyPair.secretKey, 65)
       : 'N/A',
