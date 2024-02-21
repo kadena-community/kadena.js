@@ -148,9 +148,6 @@ type GasLimitEstimation {
 
 """General information about the graph and chainweb-data."""
 type GraphConfiguration {
-  """The maximum number of confirmations calculated on this endpoint."""
-  maximumConfirmationDepth: Int!
-
   """The lowest block-height that is indexed in this endpoint."""
   minimumBlockHeight: BigInt
 }
