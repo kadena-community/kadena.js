@@ -76,7 +76,7 @@ export const createImportWalletCommand: (
     globalOptions.keyMnemonic(),
     globalOptions.securityNewPassword({ isOptional: false }),
     globalOptions.securityVerifyPassword({ isOptional: false }),
-    globalOptions.keyWallet(),
+    globalOptions.walletWallet(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
@@ -92,7 +92,7 @@ export const createImportWalletCommand: (
       const loading = ora('Generating..').start();
 
       const result = await importWallet({
-        walletName: config.keyWallet,
+        walletName: config.walletWallet,
         mnemonic: config.keyMnemonic,
         password: config.securityNewPassword,
         legacy: config.legacy,
@@ -100,7 +100,7 @@ export const createImportWalletCommand: (
 
       assertCommandError(result, loading);
 
-      displayStoredWallet(config.keyWallet, result.data.wallet.legacy);
+      displayStoredWallet(config.walletWallet, result.data.wallet.legacy);
     } catch (error) {
       log.error(`\n${error.message}\n`);
       process.exit(1);

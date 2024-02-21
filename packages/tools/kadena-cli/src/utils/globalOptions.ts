@@ -10,6 +10,7 @@ import {
   security,
   tx,
   typescript,
+  wallets,
 } from '../prompts/index.js';
 
 import type { ChainId } from '@kadena/types';
@@ -437,12 +438,12 @@ export const globalOptions = {
       'Enter a alias to select keys from',
     ),
   }),
-  keyWallet: createOption({
-    key: 'keyWallet' as const,
-    prompt: keys.keyWallet,
+  walletWallet: createOption({
+    key: 'walletWallet' as const,
+    prompt: wallets.walletWallet,
     validation: z.string(),
     option: new Option(
-      '-w, --key-wallet <keyWallet>',
+      '-w, --wallet-walletname <walletWallet>',
       'Enter you wallet names',
     ),
   }),
@@ -480,24 +481,30 @@ export const globalOptions = {
       'Choose an action for generating keys',
     ),
   }),
-  keyWalletSelect: createOption({
-    key: 'keyWallet',
-    prompt: keys.keyWalletSelectPrompt,
+  walletWalletSelect: createOption({
+    key: 'walletWallet',
+    prompt: wallets.walletWalletSelectPrompt,
     validation: z.string(),
-    option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
+    option: new Option(
+      '-w, --wallet-walletname <walletWallet>',
+      'Enter your wallet',
+    ),
     defaultIsOptional: false,
-    expand: async (keyWallet: string) => {
-      return await getWallet(keyWallet);
+    expand: async (walletWallet: string) => {
+      return await getWallet(walletWallet);
     },
   }),
-  keyWalletSelectWithAll: createOption({
-    key: 'keyWallet',
-    prompt: keys.keyWalletSelectAllPrompt,
+  walletWalletSelectWithAll: createOption({
+    key: 'walletWallet',
+    prompt: wallets.walletWalletSelectAllPrompt,
     validation: z.string(),
-    option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
+    option: new Option(
+      '-w, --wallet-walletname <walletWallet>',
+      'Enter your wallet',
+    ),
     defaultIsOptional: false,
-    expand: async (keyWallet: string) => {
-      return keyWallet === 'all' ? null : await getWallet(keyWallet);
+    expand: async (walletWallet: string) => {
+      return walletWallet === 'all' ? null : await getWallet(walletWallet);
     },
   }),
   securityPassword: createOption({

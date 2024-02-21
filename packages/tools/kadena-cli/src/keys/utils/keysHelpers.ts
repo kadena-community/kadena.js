@@ -20,7 +20,7 @@ import { getFilesWithExtension } from './storage.js';
 
 export interface IWalletConfig {
   securityPassword: string;
-  keyWallet: string;
+  walletWallet: string;
   legacy?: boolean;
 }
 

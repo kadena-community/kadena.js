@@ -15,18 +15,6 @@ import { isValidFilename } from '../utils/helpers.js';
 import { log } from '../utils/logger.js';
 import { input, select } from '../utils/prompts.js';
 
-export async function keyWallet(): Promise<string> {
-  return await input({
-    message: `Enter your wallet name:`,
-    validate: function (input) {
-      if (!isValidFilename(input)) {
-        return 'Wallet must be alphanumeric! Please enter a valid name.';
-      }
-      return true;
-    },
-  });
-}
-
 export const keyGetAllKeyFilesPrompt: IPrompt<string> = async (args) => {
   let keys: string[] = [];
 
@@ -186,55 +174,6 @@ async function walletSelectionPrompt(
     message: 'Select a wallet',
     choices: choices,
   });
-
-  return selectedWallet;
-}
-
-export async function keyWalletSelectPrompt(): Promise<string> {
-  return walletSelectionPrompt();
-}
-
-export async function keyWalletSelectAllPrompt(): Promise<string> {
-  return walletSelectionPrompt(['all']);
-}
-
-export async function keyWalletSelectNonePrompt(): Promise<string> {
-  return walletSelectionPrompt(['none']);
-}
-
-export async function keyWalletSelectAllOrNonePrompt(): Promise<string> {
-  return walletSelectionPrompt(['all', 'none']);
-}
-
-export async function keyWalletPrompt(): Promise<string> {
-  const existingKeys: string[] = await getAllWallets();
-
-  const choices = existingKeys.map((key) => ({
-    value: key,
-    name: `alias: ${key}`,
-  }));
-
-  // Option to create a new key
-  choices.push({ value: 'createWallet', name: 'Create a new wallet' });
-  choices.push({
-    value: 'createLegacyWallet',
-    name: 'Create a new legacy wallet',
-  });
-
-  const selectedWallet = await select({
-    message: 'Select a wallet',
-    choices: choices,
-  });
-
-  if (selectedWallet === 'createWallet') {
-    await program.parseAsync(['', '', 'keys', 'create-wallet']);
-    return keyWalletPrompt();
-  }
-
-  if (selectedWallet === 'createLegacyWallet') {
-    await program.parseAsync(['', '', 'keys', 'create-wallet', '--legacy']);
-    return keyWalletPrompt();
-  }
 
   return selectedWallet;
 }

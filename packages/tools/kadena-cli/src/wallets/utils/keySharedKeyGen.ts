@@ -7,7 +7,7 @@ import type { IKeyPair } from '../../keys/utils/storage.js';
 export interface IKeysConfig {
   keyGenFromChoice: string;
   keyAlias: string;
-  keyWallet?: EncryptedString;
+  walletWallet?: EncryptedString;
   keyMnemonic?: string;
   securityPassword: string;
   keyAmount?: number;
@@ -44,7 +44,7 @@ async function handlePublicSecretKeysFrom(
 }
 
 function validateConfigForSecretKeyGeneration(config: IKeysConfig): void {
-  if (!config.keyWallet) {
+  if (!config.walletWallet) {
     throw new Error('Wallet is required for this option.');
   }
   if (
@@ -105,17 +105,17 @@ async function generateSingleKeyPair(
   let publicKey: string;
   let secretKey: string | undefined;
 
-  const keyWallet = config.keyWallet as EncryptedString;
+  const walletWallet = config.walletWallet as EncryptedString;
 
   if (config.legacy === true) {
     const { publicKey: _publicKey, secretKey: _secretKey } =
-      await kadenaGenKeypair(config.securityPassword, keyWallet, index);
+      await kadenaGenKeypair(config.securityPassword, walletWallet, index);
     publicKey = _publicKey;
     secretKey = _secretKey;
   } else {
     const [publicKeyString, secretKeyString] = await kadenaGenKeypairFromSeed(
       config.securityPassword,
-      keyWallet,
+      walletWallet,
       index,
     );
     publicKey = publicKeyString;
