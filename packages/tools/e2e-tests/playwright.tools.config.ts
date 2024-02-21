@@ -17,15 +17,15 @@ const config: PlaywrightTestConfig = {
   },
   projects: [
     {
-      name: 'setup',
-      testMatch: 'setup/faucet.setup.ts',
+      name: 'tools-setup',
+      testMatch: 'setup/tools.setup.ts',
     },
     {
       name: 'tools',
       testDir: 'src/tests/tools-app/',
-      dependencies: ['setup'],
+      dependencies: ['tools-setup'],
       use: {
-        storageState: './src/support/page-objects/tools-app/storageState.json',
+        storageState: './src/tests/setup/.storagestate/tools-devnet.json',
       },
     },
   ],

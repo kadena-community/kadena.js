@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 
-export default class CookieHelper {
+export default class CookieConsentComponent {
   private readonly _page: Page;
   private _consentBar: Locator;
   private _acceptButton: Locator;
