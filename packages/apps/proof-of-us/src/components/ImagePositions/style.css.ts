@@ -60,7 +60,6 @@ export const gradientClass = style([
     bottom: '80px',
     width: '100%',
     height: '80px',
-    zIndex: 10,
     background: `linear-gradient(0deg, ${deviceColors.kadenaBlack}FF 5%, ${deviceColors.kadenaBlack}00 100%)`,
   },
 ]);

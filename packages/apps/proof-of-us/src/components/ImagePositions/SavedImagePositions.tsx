@@ -32,7 +32,7 @@ export const SavedImagePositions: FC<IProps> = ({ data }) => {
     const wrapper = wrapperRef.current;
     const img = imgRef.current;
 
-    const elms = wrapper.querySelectorAll('div');
+    const elms = wrapper.querySelectorAll<HTMLDivElement>('div[data-position]');
     elms.forEach((elm, idx) => {
       const xPercentage: number = parseFloat(
         elm.getAttribute('data-xpercentage') ?? '0',
@@ -40,11 +40,6 @@ export const SavedImagePositions: FC<IProps> = ({ data }) => {
       const yPercentage: number = parseFloat(
         elm.getAttribute('data-ypercentage') ?? '0',
       );
-
-      if (!xPercentage || !yPercentage) {
-        elm.setAttribute('style', `display: none`);
-        return;
-      }
 
       const [xPos, yPos] = getPosition<HTMLDivElement>(elm, img, {
         xPercentage,
@@ -65,13 +60,18 @@ export const SavedImagePositions: FC<IProps> = ({ data }) => {
     return () => {
       window.removeEventListener('resize', setMarkers);
     };
-  }, [wrapperRef, imgRef, data.properties?.signees]);
+  }, [wrapperRef.current, imgRef.current, data.properties?.signees]);
 
   return (
     <>
       <section ref={wrapperRef} className={imageWrapper}>
-        <img ref={imgRef} src={data.image} style={{ opacity: '.5' }} />
-        <div className={gradientClass}>sdfsdsfdf</div>
+        <img
+          ref={imgRef}
+          src={data.image}
+          style={{ opacity: '.5' }}
+          onLoad={setMarkers}
+        />
+        <div className={gradientClass} />
 
         {data?.properties?.signees?.map((s, idx) => {
           const position = s.position;
