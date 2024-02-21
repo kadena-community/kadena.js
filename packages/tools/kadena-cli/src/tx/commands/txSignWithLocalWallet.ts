@@ -104,16 +104,16 @@ export const createSignTransactionWithLocalWalletCommand: (
   'sign-with-local-wallet',
   'Sign a transaction using your local wallet.\nThe transaction can be passed via stdin.\nThe signed transaction fill be saved to file.',
   [
-    globalOptions.keyWalletSelect(),
+    globalOptions.walletWalletSelect(),
     globalOptions.securityPassword(),
     txOptions.directory({ disableQuestion: true }),
     txOptions.txUnsignedTransactionFiles(),
   ],
   async (option, values, stdin) => {
-    const wallet = await option.keyWallet();
+    const wallet = await option.walletWallet();
 
-    if (wallet.keyWalletConfig === null) {
-      throw new Error(`Wallet: ${wallet.keyWallet} does not exist.`);
+    if (wallet.walletWalletConfig === null) {
+      throw new Error(`Wallet: ${wallet.walletWallet} does not exist.`);
     }
 
     const password = await option.securityPassword();
@@ -129,8 +129,8 @@ export const createSignTransactionWithLocalWalletCommand: (
         });
 
         return await signTransactionWithLocalWallet({
-          wallet: wallet.keyWallet,
-          walletConfig: wallet.keyWalletConfig!,
+          wallet: wallet.walletWallet,
+          walletConfig: wallet.walletWalletConfig!,
           password: password.securityPassword,
           commands: [command],
           signed: false,
@@ -153,8 +153,8 @@ export const createSignTransactionWithLocalWalletCommand: (
         });
 
         return await signTransactionFilesWithLocalWallet({
-          wallet: wallet.keyWallet,
-          walletConfig: wallet.keyWalletConfig!,
+          wallet: wallet.walletWallet,
+          walletConfig: wallet.walletWalletConfig!,
           password: password.securityPassword,
           files: files,
           signed: false,

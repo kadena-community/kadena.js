@@ -33,9 +33,9 @@ const confirmDelete = createOption({
   key: 'confirm',
   defaultIsOptional: false,
   async prompt(args) {
-    if (typeof args.keyWallet !== 'string') return false;
+    if (typeof args.walletWallet !== 'string') return false;
 
-    if (args.keyWallet === 'all') {
+    if (args.walletWallet === 'all') {
       return await select({
         message: 'Are you sure you want to delete ALL wallets',
         choices: [
@@ -45,7 +45,7 @@ const confirmDelete = createOption({
       });
     }
 
-    const walletData = await getWallet(args.keyWallet);
+    const walletData = await getWallet(args.walletWallet);
 
     if (!walletData) return false;
 
@@ -55,7 +55,7 @@ const confirmDelete = createOption({
         : '';
 
     return await select({
-      message: `Are you sure you want to delete the wallet: "${args.keyWallet}"${keysText}?`,
+      message: `Are you sure you want to delete the wallet: "${args.walletWallet}"${keysText}?`,
       choices: [
         { value: true, name: 'Yes' },
         { value: false, name: 'No' },
@@ -66,13 +66,13 @@ const confirmDelete = createOption({
   option: new Option('--confirm', 'Confirm wallet deletion'),
 });
 
-export const createDeleteKeysCommand: (
+export const createDeleteWalletsCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
   'delete',
-  'Delete wallet from your local storage',
-  [globalOptions.keyWalletSelectWithAll(), confirmDelete()],
+  'Delete wallet from your local filesystem',
+  [globalOptions.walletWalletSelectWithAll(), confirmDelete()],
   async (config) => {
     if (config.confirm !== true) {
       log.warning('\nNo wallets were deleted.\n');
@@ -81,23 +81,23 @@ export const createDeleteKeysCommand: (
 
     try {
       log.debug('delete-wallet:action', { config });
-      if (config.keyWallet === 'all') {
+      if (config.walletWallet === 'all') {
         const result = await deleteAllWallets();
         assertCommandError(result);
         log.info(log.color.green('\nAll wallets have been deleted.\n'));
       } else {
-        if (config.keyWalletConfig === null) {
-          throw new Error(`Wallet: ${config.keyWallet} does not exist.`);
+        if (config.walletWalletConfig === null) {
+          throw new Error(`Wallet: ${config.walletWallet} does not exist.`);
         }
 
         const result = await deleteWallet(
-          config.keyWallet,
-          config.keyWalletConfig,
+          config.walletWallet,
+          config.walletWalletConfig,
         );
         assertCommandError(result);
         log.info(
           log.color.green(
-            `\nThe wallet: "${config.keyWallet}" and associated key files have been deleted.\n`,
+            `\nThe wallet: "${config.walletWallet}" and associated key files have been deleted.\n`,
           ),
         );
       }

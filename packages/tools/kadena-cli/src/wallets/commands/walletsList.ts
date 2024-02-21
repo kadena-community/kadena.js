@@ -12,19 +12,19 @@ export const createListWalletsCommand: (
 ) => void = createCommand(
   'list',
   'List wallet(s)',
-  [globalOptions.keyWalletSelectWithAll()],
+  [globalOptions.walletWalletSelectWithAll()],
   async (config) => {
     log.debug('list-keys:action', { config });
 
-    if (config.keyWallet === 'all') {
+    if (config.walletWallet === 'all') {
       const walletNames = await getAllWallets();
       for (const wallet of walletNames) {
         await printWalletKeys(await getWallet(wallet));
       }
-    } else if (config.keyWalletConfig === null) {
-      return log.error(`Selected wallet "${config.keyWallet}" not found.`);
+    } else if (config.walletWalletConfig === null) {
+      return log.error(`Selected wallet "${config.walletWallet}" not found.`);
     }
 
-    await printWalletKeys(config.keyWalletConfig);
+    await printWalletKeys(config.walletWalletConfig);
   },
 );

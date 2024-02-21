@@ -11,7 +11,7 @@ import { checkbox } from '../../utils/prompts.js';
 import { addAccount } from '../utils/addAccount.js';
 import {
   displayAddAccountSuccess,
-  getAllPublicKeysFromKeyWalletConfig,
+  getAllPublicKeysFromWalletWalletConfig,
   isEmpty,
 } from '../utils/addHelpers.js';
 import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveAccountDetails.js';
@@ -20,8 +20,8 @@ const selectPublicKeys = createOption({
   key: 'publicKeys' as const,
   defaultIsOptional: false,
   async prompt(args) {
-    const publicKeysList = await getAllPublicKeysFromKeyWalletConfig(
-      args.keyWalletConfig as IWallet,
+    const publicKeysList = await getAllPublicKeysFromWalletWalletConfig(
+      args.walletWalletConfig as IWallet,
     );
     const selectedKeys = await checkbox({
       message: 'Select public keys to add to account',
@@ -54,7 +54,7 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
   'Add an local account from a key wallet',
   [
     globalOptions.accountAlias(),
-    globalOptions.keyWalletSelect(),
+    globalOptions.walletWalletSelect(),
     globalOptions.fungible(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
@@ -65,14 +65,14 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
 
   async (option, values) => {
     const accountAlias = (await option.accountAlias()).accountAlias;
-    const keyWallet = await option.keyWallet();
-    if (!keyWallet.keyWalletConfig) {
-      log.error(`Wallet ${keyWallet.keyWallet} does not exist.`);
+    const wallet = await option.walletWallet();
+    if (!wallet.walletWalletConfig) {
+      log.error(`Wallet ${wallet.walletWallet} does not exist.`);
       return;
     }
 
-    if (!keyWallet.keyWalletConfig.keys.length) {
-      log.error(`Wallet ${keyWallet.keyWallet} does not contain any keys.`);
+    if (!wallet.walletWalletConfig.keys.length) {
+      log.error(`Wallet ${wallet.walletWallet} does not contain any keys.`);
       return;
     }
 
@@ -81,12 +81,12 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
     const chainId = (await option.chainId()).chainId;
     const { publicKeys, publicKeysConfig } = await option.publicKeys({
       values,
-      keyWalletConfig: keyWallet.keyWalletConfig,
+      walletWalletConfig: wallet.walletWalletConfig,
     });
     const predicate = (await option.predicate()).predicate || 'keys-all';
     const config = {
       accountAlias,
-      keyWallet,
+      wallet,
       fungible,
       network,
       networkConfig,
