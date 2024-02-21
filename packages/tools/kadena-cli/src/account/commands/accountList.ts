@@ -15,7 +15,7 @@ async function generateAccountTabularData(config: {
   accountConfig: IAliasAccountData | undefined;
 }): Promise<{ header: string[]; data: string[][] } | undefined> {
   const header = [
-    'Alias',
+    'Account Alias',
     'Account Name',
     'Public Key(s)',
     'Predicate',
@@ -69,6 +69,8 @@ export const createAccountListCommand: (
       return log.error(`Selected account "${config.account}" not found.`);
     }
 
-    log.output(log.generateTableString(tabularData.header, tabularData.data));
+    log.output(
+      log.generateTableString(tabularData.header, tabularData.data, true, true),
+    );
   },
 );
