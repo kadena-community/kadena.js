@@ -8,7 +8,9 @@ import type { EncryptedString } from '@kadena/hd-wallet';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletContent } from '../../keys/utils/keysHelpers.js';
 
+import type { CommandOption } from '../../utils/createCommandFlexible.js';
 import { log } from '../../utils/logger.js';
+import type { options } from '../commands/txSignOptions.js';
 import { parseTransactionsFromStdin } from './input.js';
 import { saveSignedTransactions } from './storage.js';
 import {
@@ -88,9 +90,9 @@ export const signTransactionFilesWithLocalWallet = async (data: {
 };
 
 export async function signWithLocalWallet(
-  option,
-  values,
-  stdin,
+  option: CommandOption<typeof options>,
+  values: string[],
+  stdin?: string,
 ): Promise<void> {
   const wallet = await option.walletName();
 
