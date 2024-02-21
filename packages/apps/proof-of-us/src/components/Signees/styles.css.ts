@@ -14,6 +14,9 @@ export const listClass = style([
 ]);
 export const itemClass = style([
   atoms({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     flex: 1,
     padding: 'md',
   }),

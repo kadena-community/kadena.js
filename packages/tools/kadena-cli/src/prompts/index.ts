@@ -11,3 +11,4 @@ export * as security from './security.js';
 export * as simulate from './simulate.js';
 export * as tx from './tx.js';
 export * as typescript from './typescript.js';
+export * as wallets from './wallets.js';

@@ -18,12 +18,6 @@ import { log } from '../../utils/logger.js';
 import type { IKeyPair } from './storage.js';
 import { getFilesWithExtension } from './storage.js';
 
-export interface IWalletConfig {
-  securityPassword: string;
-  keyWallet: string;
-  legacy?: boolean;
-}
-
 export interface IWallet {
   folder: string;
   legacy: boolean;

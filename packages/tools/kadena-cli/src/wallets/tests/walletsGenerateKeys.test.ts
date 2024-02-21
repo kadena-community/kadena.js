@@ -1,6 +1,6 @@
 import { assert, describe, expect, it } from 'vitest';
-import { generateHdKeys } from '../commands/keysHdGenerate.js';
-import { importWallet } from '../commands/keysImportWallet.js';
+import { generateHdKeys } from '../commands/walletsHdGenerate.js';
+import { importWallet } from '../commands/walletsImportWallet.js';
 
 describe('generate hd keys command', () => {
   it('should generate hd keys correctly correctly', async () => {
@@ -22,7 +22,7 @@ describe('generate hd keys command', () => {
       keyGenFromChoice: 'genPublicSecretKey',
       keyIndexOrRange: 1,
       password: walletPassword,
-      keyWallet: wallet.data.wallet.wallet,
+      walletName: wallet.data.wallet.wallet,
     });
     assert(keys.success);
 
@@ -52,7 +52,7 @@ describe('generate hd keys command', () => {
       keyGenFromChoice: 'genPublicSecretKey',
       keyIndexOrRange: [1, 3],
       password: walletPassword,
-      keyWallet: wallet.data.wallet.wallet,
+      walletName: wallet.data.wallet.wallet,
     });
     assert(keys.success);
 

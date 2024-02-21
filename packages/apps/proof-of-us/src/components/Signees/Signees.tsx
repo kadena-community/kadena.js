@@ -18,6 +18,7 @@ export const Signees: FC<IProps> = ({ signees, authors }) => {
                 name={signee.name}
                 accountName={signee.accountName}
                 idx={idx}
+                socialLink={signee.socialLink}
               />
             ))
           : authors.map((author, idx) => (

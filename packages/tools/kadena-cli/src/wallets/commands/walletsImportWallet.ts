@@ -6,16 +6,16 @@ import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaMnemonicToSeed } from '@kadena/hd-wallet';
 import { kadenaMnemonicToRootKeypair as legacykadenaMnemonicToRootKeypair } from '@kadena/hd-wallet/chainweaver';
 
+import { displayStoredWallet } from '../../keys/utils/keysDisplay.js';
+import type { IWallet } from '../../keys/utils/keysHelpers.js';
+import { getWallet } from '../../keys/utils/keysHelpers.js';
+import * as storageService from '../../keys/utils/storage.js';
+import { addWalletExtension } from '../../keys/utils/storage.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
-import { displayStoredWallet } from '../utils/keysDisplay.js';
-import type { IWallet } from '../utils/keysHelpers.js';
-import { getWallet } from '../utils/keysHelpers.js';
-import * as storageService from '../utils/storage.js';
-import { addWalletExtension } from '../utils/storage.js';
 
 /**
 kadena keys import-wallet --key-mnemonic "catch ridge print million media eternal sleep heavy inject before captain lazy" --security-new-password 12345678 --security-verify-password 12345678 --key-wallet "test"
@@ -70,13 +70,13 @@ export const createImportWalletCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'import-wallet',
+  'import',
   'Import (restore) wallet from mnemonic phrase',
   [
     globalOptions.keyMnemonic(),
     globalOptions.securityNewPassword({ isOptional: false }),
     globalOptions.securityVerifyPassword({ isOptional: false }),
-    globalOptions.keyWallet(),
+    globalOptions.walletName(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
@@ -92,7 +92,7 @@ export const createImportWalletCommand: (
       const loading = ora('Generating..').start();
 
       const result = await importWallet({
-        walletName: config.keyWallet,
+        walletName: config.walletName,
         mnemonic: config.keyMnemonic,
         password: config.securityNewPassword,
         legacy: config.legacy,
@@ -100,7 +100,7 @@ export const createImportWalletCommand: (
 
       assertCommandError(result, loading);
 
-      displayStoredWallet(config.keyWallet, result.data.wallet.legacy);
+      displayStoredWallet(config.walletName, result.data.wallet.legacy);
     } catch (error) {
       log.error(`\n${error.message}\n`);
       process.exit(1);

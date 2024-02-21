@@ -116,14 +116,14 @@ type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   name?: string;
   signerStatus: ISignerStatus;
   initiator: boolean;
-  socialLinks?: ISocial[];
+  socialLink?: ISocial;
   position?: ISigneePosition;
   publicKey: string;
 };
 
 type IProofOfUsTokenSignee = Pick<
   IProofOfUsSignee,
-  'accountName' | 'socialLinks' | 'position'
+  'accountName' | 'socialLink' | 'position'
 > & {
   name: string;
 };

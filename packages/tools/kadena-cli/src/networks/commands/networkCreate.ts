@@ -12,8 +12,8 @@ export const createNetworksCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'create',
-  'Create network',
+  'add',
+  'Add local network configuration',
   [
     globalOptions.networkName({ isOptional: false }),
     globalOptions.networkId({ isOptional: false }),
