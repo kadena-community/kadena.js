@@ -1,27 +1,58 @@
+import { getContrast } from '@/utils/getContrast';
+import { Stack } from '@kadena/react-ui';
+import { motion } from 'framer-motion';
 import type { FC } from 'react';
-import { ticketClass } from './style.css';
-
+import { useMemo } from 'react';
+import {
+  dateClass,
+  dateTitleClass,
+  dateWrapperClass,
+  ticketBorderClass,
+  ticketClass,
+  titleClass,
+} from './style.css';
 interface IProps {
-  token: IProofOfUsToken;
+  data: IProofOfUsTokenMeta;
 }
 
-export const AttendanceTicket: FC<IProps> = ({ token }) => {
-  const date = new Date(token.properties.date);
+export const AttendanceTicket: FC<IProps> = ({ data }) => {
+  const color = data.properties?.avatar?.backgroundColor ?? 'white';
+  const contrastColor = useMemo(() => getContrast(color), [color]);
+
   return (
-    <section
+    <motion.div
+      layoutId="proof-of-us:jQ9ZFi5VDifZ_LekqHCGrP5EdgKTgU7WhrYkIWNPMe8"
       className={ticketClass}
       style={{
-        backgroundImage: `url("${token.image}")`,
-        backgroundColor: token.properties.avatar?.backgroundColor,
-        color: token.properties.avatar?.color,
+        backgroundImage: `url("${data.image}")`,
+        backgroundColor: data.properties?.avatar?.backgroundColor,
       }}
     >
-      <h4>{token.name}</h4>
+      <img
+        className={ticketBorderClass}
+        src="/assets/attendance-border-large.svg"
+      />
 
-      <div>
-        <h5>Date</h5>
-        {date.toLocaleDateString()}
-      </div>
-    </section>
+      <h4
+        className={titleClass}
+        style={{
+          color: contrastColor,
+          textShadow: `1px 1px 0px ${color}`,
+        }}
+      >
+        {data.name}
+      </h4>
+
+      <Stack
+        flexDirection="column"
+        className={dateWrapperClass}
+        style={{ color: contrastColor, textShadow: `1px 1px 0px ${color}` }}
+      >
+        <h5 className={dateTitleClass}>Date</h5>
+        <span className={dateClass}>
+          {new Date(data.properties.date).toDateString()}
+        </span>
+      </Stack>
+    </motion.div>
   );
 };

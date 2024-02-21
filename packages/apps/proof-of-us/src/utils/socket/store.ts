@@ -16,7 +16,6 @@ const ProofOfUsStore = () => {
   const getBackground = async (
     proofOfUsId: string,
   ): Promise<IProofOfUsBackground | null> => {
-    console.log(2323422234234243);
     const docRef = await get(child(dbRef, `background/${proofOfUsId}`));
 
     if (!docRef.exists()) return { bg: '' };
@@ -35,7 +34,8 @@ const ProofOfUsStore = () => {
       status: BUILDSTATUS.INIT,
       mintStatus: 'init',
       proofOfUsId,
-      type: 'multi',
+      eventId: process.env.NEXT_PUBLIC_CONNECTION_EVENTID,
+      type: 'connect',
       date: Date.now(),
       signees: [{ ...account, signerStatus: 'init', initiator: true }],
     });
@@ -92,7 +92,7 @@ const ProofOfUsStore = () => {
     const signeesList = [...proofOfUs.signees];
     if (!signeesList) return;
 
-    if (signeesList.find((s) => s.cid === account.cid)) return;
+    if (signeesList.find((s) => s.accountName === account.accountName)) return;
 
     if (!signeesList.length) {
       signeesList[0] = {
@@ -122,7 +122,7 @@ const ProofOfUsStore = () => {
     if (!signeesList) return;
 
     await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      signees: signeesList.filter((s) => s.cid !== account.cid),
+      signees: signeesList.filter((s) => s.accountName !== account.accountName),
     });
   };
 
@@ -139,11 +139,28 @@ const ProofOfUsStore = () => {
     });
   };
 
+  const updateTx = async (proofOfUs: IProofOfUsData, tx: string) => {
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      tx,
+    });
+  };
+
   const addTitle = async (proofOfUs: IProofOfUsData, value: string) => {
     if (isAlreadySigning(proofOfUs.signees)) return;
 
     await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
       title: value,
+    });
+  };
+
+  const updateBackgroundColor = async (
+    proofOfUs: IProofOfUsData,
+    value: string,
+  ) => {
+    if (isAlreadySigning(proofOfUs.signees)) return;
+
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      backgroundColor: value,
     });
   };
 
@@ -156,7 +173,7 @@ const ProofOfUsStore = () => {
     if (!isOverwrite && isAlreadySigning(proofOfUs.signees)) return;
 
     const newList = proofOfUs.signees.map((a) => {
-      if (a.cid === account.cid) {
+      if (a.accountName === account.accountName) {
         return { ...a, ...value };
       }
       return a;
@@ -181,7 +198,9 @@ const ProofOfUsStore = () => {
     listenProofOfUsData,
     listenProofOfUsBackgroundData,
     addTitle,
+    updateBackgroundColor,
     updateSigner,
+    updateTx,
   };
 };
 

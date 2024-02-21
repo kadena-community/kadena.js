@@ -18,12 +18,10 @@ interface IProps {
 
 export const AvatarEditor: FC<IProps> = ({ next }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
-  const canvasElm = canvasRef.current;
-  const { proofOfUs } = useProofOfUs();
+  const { proofOfUs, updateBackgroundColor } = useProofOfUs();
 
   useEffect(() => {
     // if someone is already signing the pou, you are not allowed to change the photo anymore
@@ -50,10 +48,6 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
       });
   }, [isMounted]);
 
-  useEffect(() => {
-    if (!canvasElm) return;
-  }, [canvasElm]);
-
   const handleCapture = async (evt: MouseEvent<HTMLButtonElement>) => {
     if (isAlreadySigning(proofOfUs?.signees)) return;
     evt.preventDefault();
@@ -66,8 +60,14 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     canvas.height = 800;
     ctx?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
+    //get color
+    ctx?.drawImage(videoRef.current, 0, 0, 1, 1);
+    const color = `rgba(${ctx?.getImageData(0, 0, 1, 1).data.join(',')})`;
+
     if (!proofOfUs) return;
+
     await addBackground(proofOfUs, { bg: canvas.toDataURL() });
+    await updateBackgroundColor(color);
     (videoRef.current?.srcObject as MediaStream)
       ?.getTracks()
       .forEach((t) => t.stop());
@@ -78,7 +78,6 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   return (
     <section className={wrapperClass}>
       {!isMounted && <div>loading</div>}
-      <canvas ref={canvasRef} />
       <div
         className={classnames(
           cameraWrapperClass,
@@ -89,7 +88,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
           className={classnames(cameraClass, !isMounted ? hiddenClass : '')}
           ref={videoRef}
           id="player"
-          controls
+          controls={false}
           autoPlay
           muted
           playsInline

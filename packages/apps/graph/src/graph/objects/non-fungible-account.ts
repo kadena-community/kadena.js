@@ -1,18 +1,14 @@
 import { prismaClient } from '@db/prisma-client';
-import { getNonFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
 } from '@services/complexity';
-import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
+import { nonFungibleChainCheck } from '../data-loaders/non-fungible-chain-check';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
-import type {
-  NonFungibleAccount,
-  NonFungibleChainAccount,
-} from '../types/graphql-types';
+import type { NonFungibleAccount } from '../types/graphql-types';
 import {
   NonFungibleAccountName,
   NonFungibleChainAccountName,
@@ -51,18 +47,19 @@ export default builder.node(
           dotenv.CHAIN_COUNT,
         async resolve(parent) {
           try {
-            return (
-              await Promise.all(
-                chainIds.map((chainId) => {
-                  return getNonFungibleChainAccount({
-                    chainId: chainId,
-                    accountName: parent.accountName,
-                  });
-                }),
-              )
-            ).filter(
-              (chainAccount) => chainAccount !== null,
-            ) as NonFungibleChainAccount[];
+            const chainIds = await nonFungibleChainCheck.load({
+              accountName: parent.accountName,
+            });
+
+            return chainIds.map((chainId) => {
+              return {
+                __typename: NonFungibleChainAccountName,
+                chainId,
+                accountName: parent.accountName,
+                nonFungibles: [],
+                transactions: [],
+              };
+            });
           } catch (error) {
             throw normalizeError(error);
           }
@@ -83,7 +80,6 @@ export default builder.node(
           }
         },
       }),
-
       transactions: t.prismaConnection({
         type: 'Transaction',
         cursor: 'blockHash_requestKey',

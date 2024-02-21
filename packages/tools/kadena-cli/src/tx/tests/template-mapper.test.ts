@@ -16,11 +16,11 @@ describe('template mapper', () => {
           'k:2619fafe33b3128f38a4e4aefe6a5559371b18b6c25ac897aff165ce14b241b3',
         'account-to':
           'k:2619fafe33b3128f38a4e4aefe6a5559371b18b6c25ac897aff165ce14b241b4',
-        amount: '1.0',
-        chain: '0',
+        'decimal-amount': '1.0',
+        'chain-id': '0',
         'pk-from':
           '2619fafe33b3128f38a4e4aefe6a5559371b18b6c25ac897aff165ce14b241b3',
-        networkId: 'testnet04',
+        'network-id': 'testnet04',
       },
     );
 
@@ -55,7 +55,7 @@ describe('template mapper', () => {
       meta: {
         chainId: '0',
         creationTime: 1698278400,
-        gasLimit: 4600,
+        gasLimit: 2300,
         gasPrice: 0.000001,
         ttl: 600,
         sender:

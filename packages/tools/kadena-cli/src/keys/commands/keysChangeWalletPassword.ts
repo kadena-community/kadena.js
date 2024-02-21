@@ -1,7 +1,5 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
 import { Option } from 'commander';
-import debug from 'debug';
 import { z } from 'zod';
 
 import type { EncryptedString } from '@kadena/hd-wallet';
@@ -13,6 +11,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { select } from '../../utils/prompts.js';
 import type { IWallet } from '../utils/keysHelpers.js';
 import { getWalletContent } from '../utils/keysHelpers.js';
@@ -30,10 +29,8 @@ const confirmOption = createOption({
   validation: z.boolean(),
   option: new Option('--confirm', 'Confirm changing wallet password'),
   async prompt() {
-    console.log(
-      chalk.yellow(
-        `\nYou are about to update the password for this wallet. If you lose your password the wallet can not be recovered.\n`,
-      ),
+    log.warning(
+      `\nYou are about to update the password for this wallet. If you lose your password the wallet can not be recovered.\n`,
     );
 
     return await select({
@@ -86,7 +83,7 @@ export const createChangeWalletPasswordCommand: (
   version: string,
 ) => void = createCommand(
   'change-wallet-password',
-  'update the password for your wallet',
+  'Update the password for your wallet',
   [
     globalOptions.keyWalletSelect(),
     globalOptions.securityCurrentPassword({ isOptional: false }),
@@ -96,17 +93,15 @@ export const createChangeWalletPasswordCommand: (
   ],
   async (config) => {
     try {
-      debug('change-wallet-password:action')({ config });
+      log.debug('change-wallet-password:action', { config });
 
       if (config.confirm !== true) {
-        console.log(
-          chalk.red(`\nWallet password won't be updated. Exiting..\n`),
-        );
+        log.error(`\nWallet password won't be updated. Exiting..\n`);
         return;
       }
 
       if (config.securityNewPassword !== config.securityVerifyPassword) {
-        console.log(chalk.red(`\nPasswords don't match. Please try again.\n`));
+        log.error(`\nPasswords don't match. Please try again.\n`);
         process.exit(1);
       }
 
@@ -122,10 +117,10 @@ export const createChangeWalletPasswordCommand: (
       );
       assertCommandError(result);
 
-      console.log(chalk.green(`\nWallet password successfully updated..\n`));
-      console.log('Walletname: ', result.data.filename);
+      log.info(log.color.green(`\nWallet password successfully updated..\n`));
+      log.info('Walletname: ', result.data.filename);
     } catch (error) {
-      console.log(chalk.red(`\n${error.message}\n`));
+      log.error(`\n${error.message}\n`);
       process.exit(1);
     }
   },

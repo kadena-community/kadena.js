@@ -19,11 +19,13 @@ import { prismaClient } from '../db/prisma-client';
 import type {
   FungibleAccount,
   FungibleChainAccount,
+  GasLimitEstimation,
   GraphConfiguration,
   Guard,
   NonFungibleAccount,
   NonFungibleChainAccount,
   Token,
+  TokenInfo,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -64,11 +66,13 @@ export const builder = new SchemaBuilder<
     Objects: {
       FungibleAccount: FungibleAccount;
       FungibleChainAccount: FungibleChainAccount;
-      Guard: Guard;
+      GasLimitEstimation: GasLimitEstimation;
       GraphConfiguration: GraphConfiguration;
+      Guard: Guard;
       NonFungibleAccount: NonFungibleAccount;
       NonFungibleChainAccount: NonFungibleChainAccount;
       Token: Token;
+      TokenInfo: TokenInfo;
     };
     Connection: {
       totalCount: number;

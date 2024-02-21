@@ -1,58 +1,56 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
-import debug from 'debug';
-import {
-  networkExplorerUrlPrompt,
-  networkHostPrompt,
-  networkIdPrompt,
-  networkNamePrompt,
-} from '../../prompts/network.js';
 
-import { createExternalPrompt } from '../../prompts/generic.js';
-import { createCommand } from '../../utils/createCommand.js';
+import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { removeNetwork, writeNetworks } from '../utils/networkHelpers.js';
 
+/**
+ * Creates a command to generate wallets.
+ * @param {Command} program - The commander program.
+ * @param {string} version - The version of the program.
+ */
 export const manageNetworksCommand: (
   program: Command,
   version: string,
-) => void = createCommand(
+) => void = createCommandFlexible(
   'update',
   'Manage networks',
-  [globalOptions.network()],
-  async (config) => {
-    debug('network-manage:action')({ config });
+  [
+    globalOptions.network({ isOptional: false }),
+    globalOptions.networkExplorerUrl(),
+    globalOptions.networkHost(),
+    globalOptions.networkId(),
+    globalOptions.networkName(),
+  ],
+  async (option) => {
+    const networkData = await option.network();
+    const networkName = await option.networkName();
+    const networkId = await option.networkId();
+    const networkHost = await option.networkHost();
+    const networkExplorerUrl = await option.networkExplorerUrl();
 
-    const externalPrompts = createExternalPrompt({
-      networkExplorerUrlPrompt,
-      networkHostPrompt,
-      networkIdPrompt,
-      networkNamePrompt,
+    log.debug('manage-networks', {
+      networkExplorerUrl,
+      networkHost,
+      networkId,
+      networkName,
     });
-
-    const network = await externalPrompts.networkNamePrompt(config.network);
 
     await writeNetworks({
-      network: network,
-      networkId: await externalPrompts.networkIdPrompt(
-        config.networkConfig.networkId,
-      ),
-      networkHost: await externalPrompts.networkHostPrompt(
-        config.networkConfig.networkHost,
-      ),
-      networkExplorerUrl: await externalPrompts.networkExplorerUrlPrompt(
-        config.networkConfig.networkExplorerUrl,
-      ),
+      network: networkName.networkName,
+      networkId: networkId.networkId,
+      networkHost: networkHost.networkHost,
+      networkExplorerUrl: networkExplorerUrl.networkExplorerUrl,
     });
 
-    if (network !== config.network) {
-      // name of network has changed, delete old network
-      await removeNetwork(config);
+    if (networkData.network !== networkName.networkName) {
+      await removeNetwork(networkData.networkConfig);
     }
 
-    console.log(
-      chalk.green(
-        `\nThe network configuration "${config.network}" has been updated.\n`,
+    log.info(
+      log.color.green(
+        `\nThe network configuration "${networkData.network}" has been updated.\n`,
       ),
     );
   },

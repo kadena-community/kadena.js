@@ -1,45 +1,40 @@
-import debug from 'debug';
-import { createExternalPrompt } from '../../prompts/generic.js';
-import { networkDeletePrompt } from '../../prompts/network.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { removeNetwork } from '../utils/networkHelpers.js';
 
-import chalk from 'chalk';
 import type { Command } from 'commander';
-import { createCommand } from '../../utils/createCommand.js';
+import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { log } from '../../utils/logger.js';
 
 export const deleteNetworksCommand: (
   program: Command,
   version: string,
-) => void = createCommand(
+) => void = createCommandFlexible(
   'delete',
   'Delete network',
-  [globalOptions.network()],
-  async (config) => {
-    debug('network-delete:action')({ config });
+  [globalOptions.network({ isOptional: false }), globalOptions.networkDelete()],
+  async (option) => {
+    const networkData = await option.network();
+    const deleteNetwork = await option.networkDelete();
 
-    const externalPrompt = createExternalPrompt({
-      networkDeletePrompt,
+    log.debug('delete-network:action', {
+      ...networkData,
+      ...deleteNetwork,
     });
 
-    const shouldDelete = await externalPrompt.networkDeletePrompt(
-      config.network,
-    );
-
-    if (shouldDelete === 'no') {
-      console.log(
-        chalk.yellow(
-          `\nThe network configuration "${config.network}" will not be deleted.\n`,
+    if (deleteNetwork.networkDelete === 'no') {
+      log.info(
+        log.color.yellow(
+          `\nThe network configuration "${networkData.network}" will not be deleted.\n`,
         ),
       );
       return;
     }
 
-    await removeNetwork(config);
+    await removeNetwork(networkData.networkConfig);
 
-    console.log(
-      chalk.green(
-        `\nThe network configuration "${config.network}" has been deleted.\n`,
+    log.info(
+      log.color.green(
+        `\nThe network configuration "${networkData.network}" has been deleted.\n`,
       ),
     );
   },

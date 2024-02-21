@@ -2,6 +2,7 @@
 import { ACCOUNT_COOKIE_NAME } from '@/constants';
 import { useToasts } from '@/hooks/toast';
 import { env } from '@/utils/env';
+import { getReturnUrl } from '@/utils/getReturnUrl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
@@ -32,16 +33,12 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const getReturnUrl = () => {
-    return `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
-  };
-
   const decodeAccount = useCallback(
-    (response: string) => {
-      if (!response) return;
+    (userResponse: string) => {
+      if (!userResponse) return;
       try {
         const account: IAccount = JSON.parse(
-          Buffer.from(response, 'base64').toString(),
+          Buffer.from(userResponse, 'base64').toString(),
         );
         return account;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,25 +60,28 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   const logout = useCallback(() => {
     localStorage.removeItem(ACCOUNT_COOKIE_NAME);
     setAccount(undefined);
+    router.replace('/');
   }, []);
 
   useEffect(() => {
-    const response = searchParams.get('response');
-    setIsMounted(true);
-    if (!response) return;
+    const userResponse = searchParams.get('user');
 
-    localStorage.setItem(ACCOUNT_COOKIE_NAME, response);
-    const account = decodeAccount(response);
+    if (!userResponse) return;
+
+    localStorage.setItem(ACCOUNT_COOKIE_NAME, userResponse);
+    const account = decodeAccount(userResponse);
     setAccount(account);
+    setIsMounted(true);
   }, [searchParams, setAccount, decodeAccount, setIsMounted]);
 
   useEffect(() => {
-    const response = localStorage.getItem(ACCOUNT_COOKIE_NAME);
-    setIsMounted(true);
-    if (!response) return;
+    const userResponse = localStorage.getItem(ACCOUNT_COOKIE_NAME);
 
-    const acc = decodeAccount(response);
+    if (!userResponse) return;
+
+    const acc = decodeAccount(userResponse);
     setAccount(acc);
+    setIsMounted(true);
   }, [setAccount, decodeAccount, setIsMounted]);
 
   return (

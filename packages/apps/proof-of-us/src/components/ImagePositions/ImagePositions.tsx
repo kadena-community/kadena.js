@@ -22,7 +22,9 @@ export const ImagePositions: FC<IProps> = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setSigner(proofOfUs?.signees.find((c) => c.cid === account?.cid));
+    setSigner(
+      proofOfUs?.signees.find((c) => c.accountName === account?.accountName),
+    );
     setIsLocked(isAlreadySigning(proofOfUs?.signees));
   }, [proofOfUs]);
 
@@ -117,7 +119,7 @@ export const ImagePositions: FC<IProps> = () => {
     //TODO: this needs to debounce
 
     updateSigner({
-      label: e.target.value,
+      name: e.target.value,
     });
   };
 
@@ -125,7 +127,6 @@ export const ImagePositions: FC<IProps> = () => {
     updateSigner({ position: null });
   };
 
-  console.log(background);
   return (
     <>
       <section ref={wrapperRef} className={wrapperClass}>
@@ -136,9 +137,8 @@ export const ImagePositions: FC<IProps> = () => {
           onLoad={() => setIsMounted(true)}
         />
         {proofOfUs?.signees.map((s, idx) => (
-          <>
+          <span key={s.accountName}>
             <div
-              key={s.cid}
               className={signeeClassWrapper}
               data-xpercentage={s.position?.xPercentage}
               data-ypercentage={s.position?.yPercentage}
@@ -149,13 +149,13 @@ export const ImagePositions: FC<IProps> = () => {
             </div>
             <input
               className={signeeInputClass}
-              value={s.label}
-              disabled={signer?.cid !== s.cid || isLocked}
+              value={s.name}
+              disabled={signer?.accountName !== s.accountName || isLocked}
               type="text"
               name="label"
               onChange={handleLabelChange}
             />
-          </>
+          </span>
         ))}
       </section>
     </>

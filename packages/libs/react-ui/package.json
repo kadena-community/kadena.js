@@ -7,7 +7,7 @@
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/libs/react-ui"
   },
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "author": "KADENA",
   "contributors": [
     "Eileen Guo <eileen@kadena.io>",
@@ -107,6 +107,7 @@
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
+    "@kadena/react-icons": "workspace:*",
     "@react-types/shared": "^3.22.0",
     "@rushstack/eslint-config": "~3.3.0",
     "@storybook/addon-a11y": "^7.4.0",

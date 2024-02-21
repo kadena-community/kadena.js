@@ -1,13 +1,18 @@
+import { Button } from '@/components/Button/Button';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
-import { PROOFOFUS_QR_URL } from '@/constants';
-import { useMintMultiToken } from '@/hooks/data/mintMultiToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { env } from '@/utils/env';
+import { getReturnHostUrl } from '@/utils/getReturnUrl';
+import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { MonoArrowBack, MonoArrowDownward } from '@kadena/react-icons';
+import { CopyButton, TextField } from '@kadena/react-ui';
 import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useRef } from 'react';
 import { QRCode } from 'react-qrcode-logo';
+import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
+import { TitleHeader } from '../TitleHeader/TitleHeader';
 import { qrClass } from './style.css';
 
 interface IProps {
@@ -19,39 +24,52 @@ interface IProps {
 export const ShareView: FC<IProps> = ({ next, prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
   const { proofOfUs } = useProofOfUs();
-  const { isLoading, hasError, data, mintToken } = useMintMultiToken();
+  const router = useRouter();
+  const { id } = useParams();
 
   const handleBack = () => {
     prev();
   };
 
   const handleSign = async () => {
-    next();
-    await mintToken();
-  };
-
-  const handleRetry = () => {
-    mintToken();
+    if (!proofOfUs) return;
+    router.push(
+      `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${
+        proofOfUs.tx
+      }&returnUrl=${getReturnHostUrl()}/scan/${id}
+      `,
+    );
+    return;
   };
 
   if (!proofOfUs) return;
 
-  const isReady = proofOfUs.signees[1]?.signerStatus === 'success';
   return (
     <section>
       {status === 3 && (
         <>
-          <h3>Share</h3>
-          {!isReady && <button onClick={handleBack}>back</button>}
+          <TitleHeader
+            Prepend={() => (
+              <>
+                {!isAlreadySigning(proofOfUs.signees) && (
+                  <IconButton onClick={handleBack}>
+                    <MonoArrowBack />
+                  </IconButton>
+                )}
+              </>
+            )}
+            label="Share"
+          />
+
           <ListSignees />
-          {!isReady ? (
+          {!isAlreadySigning(proofOfUs.signees) ? (
             <>
               <div className={qrClass}>
                 <QRCode
                   ecLevel="H"
                   size={800}
                   ref={qrRef}
-                  value={`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
+                  value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
                   removeQrCodeBehindLogo={true}
                   logoImage="/assets/qrlogo.png"
                   logoPadding={5}
@@ -59,29 +77,40 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
                   eyeRadius={10}
                 />
               </div>
-              link: {`${env.URL}${PROOFOFUS_QR_URL}/${proofOfUs.proofOfUsId}`}
+              <TextField
+                placeholder="Link"
+                id="linkshare"
+                aria-label="share"
+                value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
+                endAddon={<CopyButton inputId="linkshare" />}
+              />
             </>
           ) : (
             <ImagePositions />
           )}
-          {isReady && <button onClick={handleSign}>Sign & Upload</button>}
+          {isAlreadySigning(proofOfUs.signees) && (
+            <Button onPress={handleSign}>Sign & Upload</Button>
+          )}
         </>
       )}
-
       {status === 4 && (
         <>
+          <TitleHeader
+            Prepend={() => (
+              <>
+                <button onClick={handleBack}>
+                  <MonoArrowDownward />
+                </button>
+              </>
+            )}
+            label="Sign & Upload Proof"
+          />
+
           <div>status: {proofOfUs.mintStatus}</div>
           <ListSignees />
-          {isLoading && <div>...isprocessing</div>}
-          {hasError && (
-            <div>
-              there was an error.
-              <button onClick={handleRetry}>retry</button>
-            </div>
-          )}
+
           {proofOfUs.mintStatus === 'success' && (
             <div>
-              success {data}
               <Link href="/user">dashboard</Link>
               <Link href={`/user/proof-of-us/${proofOfUs?.tokenId}`}>
                 go to proof

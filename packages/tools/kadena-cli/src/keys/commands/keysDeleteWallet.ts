@@ -1,7 +1,5 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
 import { Option } from 'commander';
-import debug from 'debug';
 import { z } from 'zod';
 
 import { WALLET_DIR } from '../../constants/config.js';
@@ -11,6 +9,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { select } from '../../utils/prompts.js';
 import type { IWallet } from '../utils/keysHelpers.js';
 import { getWallet } from '../utils/keysHelpers.js';
@@ -72,20 +71,20 @@ export const createDeleteKeysCommand: (
   version: string,
 ) => void = createCommand(
   'delete-wallet',
-  'delete wallet from your local storage',
+  'Delete wallet from your local storage',
   [globalOptions.keyWalletSelectWithAll(), confirmDelete()],
   async (config) => {
     if (config.confirm !== true) {
-      console.log(chalk.yellow('\nNo wallets were deleted.\n'));
+      log.warning('\nNo wallets were deleted.\n');
       return;
     }
 
     try {
-      debug('delete-wallet:action')({ config });
+      log.debug('delete-wallet:action', { config });
       if (config.keyWallet === 'all') {
         const result = await deleteAllWallets();
         assertCommandError(result);
-        console.log(chalk.green('\nAll wallets have been deleted.\n'));
+        log.info(log.color.green('\nAll wallets have been deleted.\n'));
       } else {
         if (config.keyWalletConfig === null) {
           throw new Error(`Wallet: ${config.keyWallet} does not exist.`);
@@ -96,14 +95,14 @@ export const createDeleteKeysCommand: (
           config.keyWalletConfig,
         );
         assertCommandError(result);
-        console.log(
-          chalk.green(
+        log.info(
+          log.color.green(
             `\nThe wallet: "${config.keyWallet}" and associated key files have been deleted.\n`,
           ),
         );
       }
     } catch (error) {
-      console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
+      log.error(`\nAn error occurred: ${error.message}\n`);
       process.exit(1);
     }
   },

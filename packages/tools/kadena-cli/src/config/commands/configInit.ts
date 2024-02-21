@@ -1,7 +1,6 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
-import debug from 'debug';
 import { createCommand } from '../../utils/createCommand.js';
+import { log } from '../../utils/logger.js';
 
 export const createConfigInitCommand: (
   program: Command,
@@ -11,14 +10,14 @@ export const createConfigInitCommand: (
   'Initialize default configuration of the Kadena CLI',
   [],
   async (config) => {
-    debug('init:action')(config);
+    log.debug('init:action', config);
 
     await import('../../networks/init.js');
-    console.log(chalk.green('Configured default networks.'));
+    log.info(log.color.green('Configured default networks.'));
 
     await import('../../devnet/init.js');
-    console.log(chalk.green('Configured default devnets.'));
+    log.info(log.color.green('Configured default devnets.'));
 
-    console.log(chalk.green('Configuration complete!'));
+    log.info(log.color.green('Configuration complete!'));
   },
 );

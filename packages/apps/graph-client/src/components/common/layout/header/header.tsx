@@ -14,10 +14,6 @@ import {
   SearchType,
   searchTypeLabels,
   searchTypePlaceholders,
-  secondSearchFieldPlaceholders,
-  secondSearchTypeLabels,
-  thirdSeachTypeLabels,
-  thirdSearchFieldPlaceholders,
 } from '@/constants/search';
 import { headerClass, headerFormClass } from './styles.css';
 
@@ -34,8 +30,6 @@ const Header: FC<IHeaderProps> = (props) => {
     SearchType.Transactions,
   );
   const [searchField, setSearchField] = useState<string>('');
-  const [secondSearchField, setSecondSearchField] = useState<string>('');
-  const [thirdSearchField, setThirdSearchField] = useState<string>('');
   const [defaultHashOption, setDefaultHashOption] = useState<SearchType>(
     SearchType.Transactions,
   );
@@ -44,7 +38,7 @@ const Header: FC<IHeaderProps> = (props) => {
     {
       route: routes.GAS_ESTIMATION,
       searchType: SearchType.GasEstimation,
-      fields: ['cmd', 'hash', 'sigs'],
+      fields: ['input'],
     },
     {
       route: routes.ACCOUNT_ROOT,
@@ -68,16 +62,9 @@ const Header: FC<IHeaderProps> = (props) => {
     },
   ];
 
-  const setSearchFields = (
-    searchType: SearchType,
-    searchField?: string,
-    secondSearchField?: string,
-    thirdSearchField?: string,
-  ) => {
+  const setSearchFields = (searchType: SearchType, searchField?: string) => {
     setSearchType(searchType);
     setSearchField(searchField || '');
-    setSecondSearchField(secondSearchField || '');
-    setThirdSearchField(thirdSearchField || '');
   };
 
   React.useEffect(() => {
@@ -117,11 +104,7 @@ const Header: FC<IHeaderProps> = (props) => {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         router.push({
           pathname: `${routes.GAS_ESTIMATION}`,
-          query: {
-            cmd: searchField,
-            hash: secondSearchField,
-            sigs: thirdSearchField,
-          },
+          query: { input: searchField },
         });
     }
   };
@@ -166,9 +149,6 @@ const Header: FC<IHeaderProps> = (props) => {
       case SearchType.Block:
         setDefaultHashOption(SearchType.Block);
         break;
-      case SearchType.GasEstimation:
-        setSecondSearchField('');
-        break;
     }
 
     setSearchField('');
@@ -204,27 +184,6 @@ const Header: FC<IHeaderProps> = (props) => {
             onKeyDown={handleKeyPress}
           />
 
-          {searchType.startsWith('gas') && (
-            <TextField
-              label={secondSearchTypeLabels[searchType]}
-              id="second-search-field"
-              value={secondSearchField}
-              placeholder={secondSearchFieldPlaceholders[searchType]}
-              onValueChange={setSecondSearchField}
-              onKeyDown={handleKeyPress}
-            />
-          )}
-
-          {searchType.startsWith('gas') && (
-            <TextField
-              label={thirdSeachTypeLabels[searchType]}
-              id="third-search-field"
-              value={thirdSearchField}
-              placeholder={thirdSearchFieldPlaceholders[searchType]}
-              onValueChange={setThirdSearchField}
-              onKeyDown={handleKeyPress}
-            />
-          )}
           <Button onClick={search}>Search</Button>
         </div>
       </header>

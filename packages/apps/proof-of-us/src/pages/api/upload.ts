@@ -1,7 +1,8 @@
-import { getManifest } from '@/utils/getManifest';
+import { createManifest } from '@/utils/createManifest';
 import { store } from '@/utils/socket/store';
+import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Blob, File, NFTStorage } from 'nft.storage';
+import { NFTStorage } from 'nft.storage';
 
 interface IResponseData {
   message: string;
@@ -40,44 +41,28 @@ export default async function handler(
     });
   }
 
-  const client = new NFTStorage({ token: process.env.NFTSTORAGE_API_TOKEN });
+  const imageData = await createImageUrl(background.bg);
 
-  const mimeType = background?.bg.match(
-    /data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/,
-  )?.[1];
-
-  if (!mimeType) {
+  if (!imageData) {
     return res.status(500).json({
-      message: 'invalid meme type',
+      message: 'image data could not be created',
     });
   }
 
-  const blob = base64ToBlob(background?.bg, mimeType);
-  const imageFileName = 'image';
+  const manifest = await createManifest(proofOfUs, imageData.url);
+  const metadata = await createMetaDataUrl(manifest);
 
-  const image = await NFTStorage.encodeDirectory([
-    createFileFromBlob(blob, imageFileName),
-  ]);
-  const imageUrl = `https://${image.cid.toString()}.ipfs.nftstorage.link/${imageFileName}`;
+  if (!metadata) {
+    return res.status(500).json({
+      message: 'metadata data could not be created',
+    });
+  }
 
-  console.log('image cid', image.cid.toString());
-  console.log('image url', imageUrl);
-
-  const manifest = getManifest(proofOfUs, imageUrl);
-
-  const metadataFileName = 'metadata';
-  const metadata = await NFTStorage.encodeDirectory([
-    new File([JSON.stringify(manifest, null, 2)], metadataFileName),
-  ]);
-
-  const metadataUrl = `https://${metadata.cid.toString()}.ipfs.nftstorage.link/${metadataFileName}`;
-
-  console.log('metadata cid', metadata.cid.toString());
-  console.log('metadata url', metadataUrl);
+  const client = new NFTStorage({ token: process.env.NFTSTORAGE_API_TOKEN });
 
   const results = await Promise.allSettled([
-    client.storeCar(image.car),
-    client.storeCar(metadata.car),
+    client.storeCar(imageData.data.car),
+    client.storeCar(metadata.data.car),
   ]);
 
   const failed = results.filter((result) => result.status === 'rejected');
@@ -93,26 +78,13 @@ export default async function handler(
   res.status(200).json({
     message: JSON.stringify(
       {
-        imageCid: image.cid.toString(),
-        imageUrl,
-        metadataCid: metadata.cid.toString(),
-        metadataUrl,
+        imageCid: imageData.data.cid.toString(),
+        imageUrl: imageData.url,
+        metadataCid: metadata.data.cid.toString(),
+        metadataUrl: metadata.url,
       },
       null,
       2,
     ),
   });
-}
-
-function base64ToBlob(base64: string, mimeType: string) {
-  const bytes = atob(base64.split(',')[1]);
-  const arr = new Uint8Array(bytes.length);
-  for (let i = 0; i < bytes.length; i++) {
-    arr[i] = bytes.charCodeAt(i);
-  }
-  return new Blob([arr], { type: mimeType });
-}
-
-function createFileFromBlob(blob: Blob, fileName: string) {
-  return new File([blob], fileName, { type: blob.type });
 }

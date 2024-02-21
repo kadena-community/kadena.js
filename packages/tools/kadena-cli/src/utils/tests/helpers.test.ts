@@ -66,16 +66,28 @@ describe('isNumeric', () => {
 
 describe('isAlphanumeric', () => {
   it('should return true for alphanumeric strings', () => {
-    expect(helpers.isAlphanumeric('abc123')).toBe(true);
+    expect(helpers.isValidFilename('abc123')).toBe(true);
   });
 
-  it('should return false for non-alphanumeric strings', () => {
-    expect(helpers.isAlphanumeric('abc123!')).toBe(false);
-    expect(helpers.isAlphanumeric(' ')).toBe(false);
+  it('returns false for invalid filenames', () => {
+    const filenames = [
+      '',
+      ' ',
+      'test<file.txt',
+      'test>file.txt',
+      'test:file.txt',
+      'test"file.txt',
+      'test/file.txt',
+      'test\\file.txt',
+      'test|file.txt',
+      'test?file.txt',
+      'test*file.txt',
+    ];
+    filenames.map((name) => expect(helpers.isValidFilename(name)).toBe(false));
   });
 
   it('should return false for empty string', () => {
-    expect(helpers.isAlphanumeric('')).toBe(false);
+    expect(helpers.isValidFilename('')).toBe(false);
   });
 });
 

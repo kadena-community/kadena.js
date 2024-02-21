@@ -97,3 +97,5 @@ temp
 /packages/*/*/test-results
 /packages/*/*/playwright-report
 
+# cache-sh
+.cache-sh

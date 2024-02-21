@@ -1,7 +1,7 @@
 import { validateMnemonic } from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
-
 import { program } from 'commander';
+
 import {
   getAllKeys,
   getAllWallets,
@@ -10,17 +10,16 @@ import {
   parseKeyPairsInput,
 } from '../keys/utils/keysHelpers.js';
 
-import chalk from 'chalk';
-
 import type { IPrompt } from '../utils/createOption.js';
-import { isAlphanumeric } from '../utils/helpers.js';
+import { isValidFilename } from '../utils/helpers.js';
+import { log } from '../utils/logger.js';
 import { input, select } from '../utils/prompts.js';
 
 export async function keyWallet(): Promise<string> {
   return await input({
     message: `Enter your wallet name:`,
     validate: function (input) {
-      if (!isAlphanumeric(input)) {
+      if (!isValidFilename(input)) {
         return 'Wallet must be alphanumeric! Please enter a valid name.';
       }
       return true;
@@ -60,7 +59,7 @@ export async function keyAliasPrompt(): Promise<string> {
   return await input({
     message: `Enter a alias for your key:`,
     validate: function (input) {
-      if (!isAlphanumeric(input)) {
+      if (!isValidFilename(input)) {
         return 'Alias must be alphanumeric! Please enter a valid name.';
       }
       return true;
@@ -72,7 +71,7 @@ export async function keyPublicKeyPrompt(): Promise<string> {
   return await input({
     message: `Enter a public key:`,
     validate: function (input) {
-      if (!isAlphanumeric(input)) {
+      if (!isValidFilename(input)) {
         return 'Public key must be alphanumeric! Please enter a valid public key.';
       }
       return true;
@@ -160,7 +159,7 @@ async function walletSelectionPrompt(
   const existingKeys: string[] = await getAllWallets();
 
   if (existingKeys.length === 0 && !specialOptions.includes('none')) {
-    console.log(chalk.red('No wallets found. Exiting.'));
+    log.error('No wallets found. Exiting.');
     process.exit(0);
   }
 

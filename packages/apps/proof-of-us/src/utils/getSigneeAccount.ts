@@ -2,15 +2,18 @@ export const getSigneeAccount = (
   account: IAccount,
   proofOfUs?: IProofOfUsData,
 ): IProofOfUsSignee => {
-  const signer = proofOfUs?.signees.find((c) => c.cid === account.cid);
+  const signer = proofOfUs?.signees.find(
+    (c) => c.accountName === account.accountName,
+  );
 
+  const credential = account.credentials[0];
   if (signer) return signer;
 
   return {
-    cid: account.cid,
-    displayName: account.displayName,
-    publicKey: account.publicKey,
+    accountName: account.accountName,
+    alias: account.alias,
     initiator: false,
     signerStatus: 'init',
+    publicKey: credential.publicKey,
   };
 };

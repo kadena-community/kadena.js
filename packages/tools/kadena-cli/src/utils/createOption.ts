@@ -15,20 +15,16 @@ export type IPrompt<T> = (
   isOptional: boolean,
 ) => T | Promise<T>;
 
-// Should be used by OptionType but that causes issues in createCommandFlexible
-// See @ts-ignore comment there for details
-// type IPromptCreator<T> = (
-//   responses: Record<string, unknown>,
-//   args: Record<string, unknown>,
-// ) => T;
-
 export interface IOptionCreatorObject {
   key: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   prompt: IPrompt<any>;
   validation: z.ZodSchema;
   option: Option;
-  expand?: (value: any) => unknown;
-  transform?: (value: any) => unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  expand?: (value: any, args: Record<string, unknown>) => unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  transform?: (value: any, args: Record<string, unknown>) => unknown;
   defaultIsOptional?: boolean;
   allowUnknownOptions?: boolean;
 }
@@ -42,7 +38,7 @@ export interface IOptionSettings {
 export function createOption<const T extends IOptionCreatorObject>(data: T) {
   return (settings?: IOptionSettings) => {
     const isOptional = settings?.isOptional ?? data.defaultIsOptional ?? true;
-    const isInQuestions = settings?.disableQuestion ?? true;
+    const isInQuestions = settings?.disableQuestion !== true ?? true;
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const prompt: T['prompt'] = (responses, args) =>
       data.prompt(responses, args, isOptional);
@@ -62,5 +58,6 @@ export type OptionType = Omit<
   ReturnType<ReturnType<typeof createOption>>,
   'prompt'
 > & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   prompt: IPrompt<any>;
 };

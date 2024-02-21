@@ -1,0 +1,24 @@
+import type { SVGProps } from 'react';
+import * as React from 'react';
+interface SVGRProps {
+  title?: string;
+  titleId?: string;
+}
+const MonoAssistantPhoto = (
+  { title, titleId, ...props }: SVGProps<SVGSVGElement> & SVGRProps,
+) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    data-style="mono"
+    viewBox="0 0 24 24"
+    fontSize="1.5em"
+    fill="currentColor"
+    height="1em"
+    aria-labelledby={titleId}
+    {...props}
+  >
+    {title ? <title id={titleId}>{title}</title> : null}
+    <path d="M14.4 6 14 4H5v17h2v-7h5.6l.4 2h7V6z" />
+  </svg>
+);
+export default MonoAssistantPhoto;

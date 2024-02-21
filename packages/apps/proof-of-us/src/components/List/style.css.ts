@@ -1,17 +1,23 @@
-import { customTokens } from '@/styles/tokens.css';
 import { atoms } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const listClass = style({
   listStyle: 'none',
   paddingInline: 0,
+  width: '100%',
+  overflowY: 'scroll',
+  height: 'calc(100vh - 180px)',
 });
 
 export const listItemClass = style([
   atoms({
+    position: 'relative',
     display: 'block',
     width: '100%',
   }),
+  {
+    minHeight: '50px',
+  },
 ]);
 export const titleClass = style([
   atoms({
@@ -19,22 +25,17 @@ export const titleClass = style([
   }),
   { flex: 1 },
 ]);
-export const timeClass = style([
-  atoms({
-    fontSize: 'xs',
-  }),
-  { opacity: '.7' },
-]);
+
 export const listItemLinkClass = style([
   atoms({
     display: 'flex',
     alignItems: 'center',
     width: '100%',
-    paddingInline: 'sm',
-    paddingBlock: 'md',
+    padding: 'md',
+    marginBlock: 'sm',
   }),
   {
-    borderBottom: `1px solid ${customTokens.color.border}`,
+    backgroundColor: 'rgba(255,255,255, .04)',
     textDecoration: 'none',
     selectors: {
       '&:hover': {

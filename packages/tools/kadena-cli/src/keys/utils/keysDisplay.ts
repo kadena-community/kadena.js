@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 import yaml from 'js-yaml';
 import path from 'path';
 
@@ -13,6 +11,8 @@ import {
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
 import { services } from '../../services/index.js';
+import { sanitizeFilename } from '../../utils/helpers.js';
+import { log } from '../../utils/logger.js';
 import type { IWallet } from './keysHelpers.js';
 import type { IKeyPair } from './storage.js';
 
@@ -22,8 +22,8 @@ export async function printWalletKeys(wallet: IWallet | null): Promise<void> {
 
   const formatLength = 80;
 
-  console.log(
-    chalk.black.bgGreen(
+  log.info(
+    log.color.black.bgGreen(
       `\n${` Wallet: ${wallet.folder}${
         wallet.legacy ? ' (legacy)' : ''
       }`.padEnd(formatLength)}\n`,
@@ -31,21 +31,21 @@ export async function printWalletKeys(wallet: IWallet | null): Promise<void> {
   );
 
   if (wallet.keys.length === 0) {
-    return console.log('No keys');
+    return log.info('No keys');
   }
 
-  console.log(chalk.yellow('-'.padEnd(formatLength, '-')));
+  log.info(log.color.yellow('-'.padEnd(formatLength, '-')));
   for (const key of wallet.keys) {
     const content = await services.filesystem.readFile(
       path.join(WALLET_DIR, wallet.folder, key),
     );
     const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
-    console.log(chalk.yellow(`Filename: ${key}`));
-    console.log(`Public Key: ${parsed?.publicKey}`);
+    log.info(log.color.yellow(`Filename: ${key}`));
+    log.info(`Public Key: ${parsed?.publicKey}`);
     if (typeof parsed?.secretKey === 'string') {
-      console.log(`Secret Key: ${parsed.secretKey}`);
+      log.info(`Secret Key: ${parsed.secretKey}`);
     }
-    console.log(chalk.yellow('-'.padEnd(formatLength, '-')));
+    log.info(log.color.yellow('-'.padEnd(formatLength, '-')));
   }
 }
 
@@ -108,14 +108,15 @@ export function printStoredKeys(
     ? 'The HD Key Pair is stored within your keys folder under the filename(s):'
     : 'The Plain Key Pair is stored within your keys folder under the filename(s):';
 
-  console.log(chalk.green(message));
-  console.log('\n');
+  log.info(log.color.green(message));
+  log.info('\n');
+
+  const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
 
   for (let index = 0; index < keyPairs.length; index++) {
-    const fileNameIndex =
-      keyPairs.length === 1 ? startIndex : startIndex + index;
-    const fileName = `${alias}${fileNameIndex}${ext}`;
-    console.log(chalk.green(`- ${fileName}`));
+    const fileNameIndex = index > 0 ? `-${index}` : '';
+    const fileName = `${sanitizedAlias}${fileNameIndex}${ext}`;
+    log.info(log.color.green(`- ${fileName}`));
   }
 }
 
@@ -164,21 +165,21 @@ export function displayGeneratedKeys(
 ): void {
   const messagePrefix = legacy === true ? message[0] : message[1];
 
-  console.log(
-    chalk.green(`${messagePrefix}${JSON.stringify(keyPairs, null, 2)}`),
+  log.info(
+    log.color.green(`${messagePrefix}${JSON.stringify(keyPairs, null, 2)}`),
   );
-  console.log('\n');
+  log.info('\n');
 }
 
 export function displayGeneratedWallet(words: string): void {
-  console.log(chalk.green(`Mnemonic phrase: ${words}`));
+  log.info(log.color.green(`Mnemonic phrase: ${words}`));
 
-  console.log(
-    chalk.yellow(
+  log.info(
+    log.color.yellow(
       `Please store the key phrase in a safe place. You will need it to recover your keys.`,
     ),
   );
-  console.log('\n');
+  log.info('\n');
 }
 
 export function displayStoredWallet(
@@ -187,10 +188,10 @@ export function displayStoredWallet(
 ): void {
   const extension: string = isLegacy === true ? WALLET_LEGACY_EXT : WALLET_EXT;
 
-  console.log(
-    chalk.green(
+  log.info(
+    log.color.green(
       `Your wallet was stored at: ${WALLET_DIR}/${walletName}/${walletName}${extension}`,
     ),
   );
-  console.log('\n');
+  log.info('\n');
 }

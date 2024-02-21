@@ -1,13 +1,13 @@
 {
   "name": "@kadena/client",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "Core library for building Pact expressions to send to the blockchain in js. Makes use of .kadena/pactjs-generated",
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/libs/client"
   },
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "contributors": [
     "Albert Groothedde <albert@kadena.io>",
     "Javad Khalilian <javad@kadena.io>",

@@ -1,13 +1,12 @@
-import chalk from 'chalk';
 import { Option } from 'commander';
 import { z } from 'zod';
 
-import { IS_DEVELOPMENT } from '../../constants/config.js';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { checkbox } from '../../utils/prompts.js';
 import { addAccount } from '../utils/addAccount.js';
 import {
@@ -55,7 +54,7 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
   'Add an account from a key wallet',
   [
     globalOptions.accountAlias(),
-    globalOptions.keyWalletSelectWithAll(),
+    globalOptions.keyWalletSelect(),
     globalOptions.fungible(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
@@ -68,25 +67,23 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
     const accountAlias = (await option.accountAlias()).accountAlias;
     const keyWallet = await option.keyWallet();
     if (!keyWallet.keyWalletConfig) {
-      console.log(chalk.red(`Wallet ${keyWallet.keyWallet} does not exist.`));
+      log.error(`Wallet ${keyWallet.keyWallet} does not exist.`);
       return;
     }
 
     if (!keyWallet.keyWalletConfig.keys.length) {
-      console.log(
-        chalk.red(`Wallet ${keyWallet.keyWallet} does not contain any keys.`),
-      );
+      log.error(`Wallet ${keyWallet.keyWallet} does not contain any keys.`);
       return;
     }
 
-    const fungible = (await option.fungible()).fungible;
+    const fungible = (await option.fungible()).fungible || 'coin';
     const { network, networkConfig } = await option.network();
     const chainId = (await option.chainId()).chainId;
     const { publicKeys, publicKeysConfig } = await option.publicKeys({
       values,
       keyWalletConfig: keyWallet.keyWalletConfig,
     });
-    const predicate = (await option.predicate()).predicate;
+    const predicate = (await option.predicate()).predicate || 'keys-all';
     const config = {
       accountAlias,
       keyWallet,
@@ -118,9 +115,7 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
       accountOverwrite,
     };
 
-    if (IS_DEVELOPMENT) {
-      console.log('create-account-add-from-wallet:action', updatedConfig);
-    }
+    log.debug('create-account-add-from-wallet:action', updatedConfig);
 
     const result = await addAccount(updatedConfig);
 

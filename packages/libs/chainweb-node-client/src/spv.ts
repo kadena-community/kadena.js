@@ -17,11 +17,7 @@ export async function spv(
 ): Promise<SPVResponse | Response> {
   const request = stringifyAndMakePOSTRequest(requestBody);
   const spvUrl = new URL(`${apiHost}/spv`);
-  try {
-    const response = await fetch(spvUrl.toString(), request);
-    return await parseResponseTEXT(response);
-  } catch (error) {
-    console.error('An error occurred while calling spv API:', error);
-    throw error;
-  }
+
+  const response = await fetch(spvUrl.toString(), request);
+  return parseResponseTEXT(response);
 }

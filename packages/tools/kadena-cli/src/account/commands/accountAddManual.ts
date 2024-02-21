@@ -1,10 +1,10 @@
-import { IS_DEVELOPMENT } from '../../constants/config.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { addAccount } from '../utils/addAccount.js';
 import { displayAddAccountSuccess } from '../utils/addHelpers.js';
-import { getAccountDetailsForAddAccount } from '../utils/getAccountDetails.js';
+import { getAccountDetails } from '../utils/getAccountDetails.js';
 import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveAccountDetails.js';
 
 export const createAddAccountManualCommand = createCommandFlexible(
@@ -17,21 +17,21 @@ export const createAddAccountManualCommand = createCommandFlexible(
     globalOptions.networkSelect(),
     globalOptions.chainId(),
     globalOptions.accountOverwrite(),
-    globalOptions.publicKeys({ isOptional: false }),
+    globalOptions.publicKeys(),
     globalOptions.predicate(),
   ],
 
   async (option, values) => {
     const accountAlias = (await option.accountAlias()).accountAlias;
     const accountName = (await option.accountName()).accountName;
-    const fungible = (await option.fungible()).fungible;
+    const fungible = (await option.fungible()).fungible || 'coin';
 
     const { network, networkConfig } = await option.network();
 
     const chainId = (await option.chainId()).chainId;
 
     const accountDetailsFromChain = accountName
-      ? await getAccountDetailsForAddAccount({
+      ? await getAccountDetails({
           accountName,
           networkId: networkConfig.networkId,
           chainId,
@@ -54,10 +54,18 @@ export const createAddAccountManualCommand = createCommandFlexible(
     // If the user choose not to overwrite the account, we need to ask for the public keys and predicate
     if (!accountOverwrite) {
       publicKeysPrompt = await option.publicKeys();
-      predicate = (await option.predicate()).predicate;
+      predicate = (await option.predicate()).predicate || 'keys-all';
     }
 
     const { publicKeys, publicKeysConfig = [] } = publicKeysPrompt ?? {};
+
+    // when --quiet is passed and account details are not in chain
+    // public keys are required to add account
+    if (!hasAccountDetails && !publicKeysConfig.length) {
+      throw new Error(
+        'Missing required argument PublicKeys: "-p, --public-keys <publicKeys>"',
+      );
+    }
 
     const validPublicKeys = publicKeysConfig.filter((key) => !!key);
 
@@ -99,9 +107,7 @@ export const createAddAccountManualCommand = createCommandFlexible(
       };
     }
 
-    if (IS_DEVELOPMENT) {
-      console.log('create-account-add-manual:action', newConfig);
-    }
+    log.debug('create-account-add-manual:action', newConfig);
 
     const result = await addAccount(newConfig);
 

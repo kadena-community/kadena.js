@@ -20,11 +20,6 @@ export async function send(
   const request = stringifyAndMakePOSTRequest(requestBody);
   const sendUrl = new URL(`${apiHost}/api/v1/send`);
 
-  try {
-    const response = await fetch(sendUrl.toString(), request);
-    return await parseResponse<SendResponse>(response);
-  } catch (error) {
-    console.error('An error occurred while calling send API:', error);
-    throw error;
-  }
+  const response = await fetch(sendUrl.toString(), request);
+  return parseResponse<SendResponse>(response);
 }

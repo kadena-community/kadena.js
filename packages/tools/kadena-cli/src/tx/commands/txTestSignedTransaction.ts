@@ -1,13 +1,13 @@
 import type { Command } from 'commander';
-import debug from 'debug';
 
 import type { ICommandResult } from '@kadena/client';
 import { createClient, isSignedTransaction } from '@kadena/client';
-import { join } from 'node:path';
+import path from 'node:path';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
 import { txDisplayTransaction } from '../utils/txDisplayHelper.js';
 import { getTransactionsFromFile } from '../utils/txHelpers.js';
@@ -62,35 +62,37 @@ export const createTestSignedTransactionCommand: (
   version: string,
 ) => void = createCommandFlexible(
   'test-signed-transaction',
-  'test a signed transaction.',
+  'Test a signed transaction on testnet.',
   [
-    txOptions.txTransactionDir({ isOptional: true }),
+    txOptions.directory({ disableQuestion: true }),
     txOptions.txSignedTransactionFiles(),
-    globalOptions.network(),
+    globalOptions.network({ isOptional: false }),
     globalOptions.chainId(),
   ],
   async (option) => {
     const networkOption = await option.network();
-    const dir = await option.txTransactionDir();
+    const directory = (await option.directory()).directory ?? process.cwd();
     const files = await option.txSignedTransactionFiles({
       signed: true,
-      path: dir.txTransactionDir,
+      path: directory,
     });
     const chainOption = await option.chainId();
 
-    debug.log('sign-with-local-wallet:action', {
+    log.debug('sign-with-local-wallet:action', {
       ...networkOption,
-      ...dir,
+      directory,
       ...files,
       ...chainOption,
     });
 
+    const absolutePaths = files.txSignedTransactionFiles.map((file) =>
+      path.resolve(path.join(directory, file)),
+    );
+
     const result = await testTransactions(
       networkOption.networkConfig,
       chainOption.chainId,
-      files.txSignedTransactionFiles.map((file) =>
-        join(process.cwd(), dir.txTransactionDir, file),
-      ),
+      absolutePaths,
       true,
     );
 

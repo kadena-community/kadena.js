@@ -1,6 +1,4 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
-import debug from 'debug';
 import { join } from 'path';
 
 import { kadenaGenMnemonic, kadenaMnemonicToSeed } from '@kadena/hd-wallet';
@@ -15,6 +13,7 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import {
   displayGeneratedWallet,
   displayStoredWallet,
@@ -95,7 +94,7 @@ export const createGenerateWalletCommand: (
   version: string,
 ) => void = createCommand(
   'create-wallet',
-  'create your local wallet',
+  'Create your local wallet',
   [
     globalOptions.keyWallet({ isOptional: false }),
     globalOptions.securityPassword({ isOptional: false }),
@@ -104,10 +103,10 @@ export const createGenerateWalletCommand: (
   ],
   async (config) => {
     try {
-      debug('create-wallet:action')({ config });
+      log.debug('create-wallet:action', { config });
 
       if (config.securityPassword !== config.securityVerifyPassword) {
-        console.log(chalk.red(`\nPasswords don't match. Please try again.\n`));
+        log.error(`\nPasswords don't match. Please try again.\n`);
         return process.exit(1);
       }
 
@@ -122,7 +121,7 @@ export const createGenerateWalletCommand: (
       displayGeneratedWallet(result.data.mnemonic);
       displayStoredWallet(config.keyWallet, config.legacy);
     } catch (error) {
-      console.error(chalk.red(`\n${error.message}\n`));
+      log.error(`\n${error.message}\n`);
       process.exit(1);
     }
   },

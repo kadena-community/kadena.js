@@ -1,12 +1,16 @@
+import { Button } from '@/components/Button/Button';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { useRouter } from 'next/navigation';
-
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { MonoArrowBack, MonoClose } from '@kadena/react-icons';
+import { useRouter } from 'next/navigation';
 import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
+import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { SocialsEditor } from '../SocialsEditor/SocialsEditor';
+import { TitleHeader } from '../TitleHeader/TitleHeader';
+import { imageWrapper, titleErrorClass, titleInputClass } from './style.css';
 
 interface IProps {
   next: () => void;
@@ -17,8 +21,14 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   const { removeBackground } = useAvatar();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
+  const [titleError, setTitleError] = useState<string>('');
 
   const handleShare = () => {
+    if (!proofOfUs?.title) {
+      setTitleError('Title is empty');
+      return;
+    }
+
     next();
   };
 
@@ -40,34 +50,63 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   const handleTitleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     //TODO: this needs to debounce
     if (!proofOfUs) return;
-    changeTitle(e.target.value);
+    const value = e.target.value;
+    if (!value) {
+      setTitleError('Title is empty');
+    }
+    changeTitle(value);
   };
 
   if (!isMounted) return null;
 
   return (
     <section>
-      <h3>Details</h3>
+      <TitleHeader
+        Prepend={() => (
+          <>
+            {!isAlreadySigning(proofOfUs.signees) && (
+              <IconButton onClick={handleRedo}>
+                <MonoArrowBack />
+              </IconButton>
+            )}
+          </>
+        )}
+        label="Details"
+        Append={() => (
+          <>
+            {!isAlreadySigning(proofOfUs.signees) && (
+              <IconButton onClick={handleClose}>
+                <MonoClose />
+              </IconButton>
+            )}
+          </>
+        )}
+      />
 
       {!isAlreadySigning(proofOfUs.signees) ? (
         <>
-          <button onClick={handleRedo}>redo</button>
-          <button onClick={handleClose}>delete</button>
+          <div className={imageWrapper}>
+            <ImagePositions />
+          </div>
+
           <input
+            className={titleInputClass}
             name="title"
             placeholder="title"
             onChange={handleTitleChange}
             defaultValue={proofOfUs.title}
           />
-          <SocialsEditor />
 
-          <ImagePositions />
+          <SocialsEditor />
         </>
       ) : (
         <ImagePositions />
       )}
 
-      <button onClick={handleShare}>Share</button>
+      <Button variant="primary" onPress={handleShare}>
+        Share
+      </Button>
+      {titleError && <div className={titleErrorClass}>{titleError}</div>}
     </section>
   );
 };

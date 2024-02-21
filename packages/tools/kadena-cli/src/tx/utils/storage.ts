@@ -1,49 +1,38 @@
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
-import { join, parse } from 'node:path';
+import path from 'node:path';
+import { WORKING_DIRECTORY } from '../../constants/config.js';
 import { services } from '../../services/index.js';
-import { formatDate, isPartiallySignedTransaction } from './txHelpers.js';
+import { isPartiallySignedTransaction } from './txHelpers.js';
+
+interface ISavedTransaction {
+  command: ICommand | IUnsignedCommand;
+  filePath: string;
+}
 
 /**
  * Saves multiple signed transactions
- *
- * @param {TransactionResult} result
- * @param {string[]} transactionFileNames
- * @returns {Promise<void>}
- * @throws {Error}
  */
 export async function saveSignedTransactions(
   commands: (ICommand | IUnsignedCommand)[],
-  /** absolute paths, or relative to process.cwd() if starting with `.` */
-  transactionFileNames: string[],
-): Promise<string> {
-  if (commands !== undefined && commands.length > 0) {
-    for (let index = 0; index < commands.length; index++) {
-      const transactionData = commands[index];
-      const isPartial = isPartiallySignedTransaction(transactionData);
-      try {
-        if (index < transactionFileNames.length) {
-          const originalPath = parse(transactionFileNames[index]);
-          const originalFilename = originalPath.name;
-          const dateSuffix = formatDate();
-          const state = isPartial ? 'partial' : 'signed';
-          const writeFilePath = join(
-            originalPath.dir,
-            `${originalFilename}-tx-${index}-${dateSuffix}-${state}.json`,
-          );
-          await services.filesystem.writeFile(
-            writeFilePath,
-            JSON.stringify(transactionData, null, 2),
-          );
-          return writeFilePath;
-        } else {
-          throw new Error(
-            `No corresponding filename for transaction at index ${index}.`,
-          );
-        }
-      } catch (error) {
-        throw new Error(`Saving transaction at index ${index}:`, error);
-      }
-    }
+  directory?: string,
+): Promise<ISavedTransaction[]> {
+  const result: ISavedTransaction[] = [];
+  for (let index = 0; index < commands.length; index++) {
+    const command = commands[index];
+
+    const isPartial = isPartiallySignedTransaction(command);
+    const state = isPartial ? 'partial' : 'signed';
+    const fileDir = directory ?? WORKING_DIRECTORY;
+    const filePath = path.join(
+      fileDir,
+      `transaction-${command.hash}-${state}.json`,
+    );
+
+    await services.filesystem.writeFile(
+      filePath,
+      JSON.stringify(command, null, 2),
+    );
+    result.push({ command, filePath });
   }
-  throw new Error('Transaction signing was unsuccessful.');
+  return result;
 }

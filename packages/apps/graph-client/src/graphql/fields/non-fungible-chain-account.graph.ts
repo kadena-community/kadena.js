@@ -14,10 +14,6 @@ export const ALL_NON_FUNGIBLE_CHAIN_ACCOUNT_FIELDS: DocumentNode = gql`
   fragment AllNonFungibleChainAccountFields on NonFungibleChainAccount {
     ...CoreNonFungibleChainAccountFields
     accountName
-    guard {
-      keys
-      predicate
-    }
     nonFungibles {
       balance
       id

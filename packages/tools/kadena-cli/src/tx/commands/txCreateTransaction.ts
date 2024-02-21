@@ -1,16 +1,19 @@
 import type { IUnsignedCommand } from '@kadena/client';
 import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
 import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
+import { PactNumber } from '@kadena/pactjs';
 import path from 'path';
 
-import { IS_DEVELOPMENT, TRANSACTION_PATH } from '../../constants/config.js';
+import { WORKING_DIRECTORY } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
 import { fixTemplatePactCommand } from './templates/mapper.js';
+import { writeTemplatesToDisk } from './templates/templates.js';
 
 export const createTransaction = async (
   template: string,
@@ -21,10 +24,20 @@ export const createTransaction = async (
   CommandResult<{ transaction: IUnsignedCommand; filePath: string }>
 > => {
   try {
+    // convert decimal-amount to pact decimal
+    const updatedVariables = variables['decimal-amount']
+      ? {
+          ...variables,
+          'decimal-amount': new PactNumber(
+            variables['decimal-amount'],
+          ).toPactDecimal().decimal,
+        }
+      : variables;
+
     // create transaction
     const command = await createPactCommandFromStringTemplate(
       template,
-      variables,
+      updatedVariables,
     );
 
     // Map from legacy or partial template to full IPactCommand
@@ -35,26 +48,29 @@ export const createTransaction = async (
 
     let filePath: string | null = null;
     if (outFilePath === null) {
-      // write transaction to file
-      await services.filesystem.ensureDirectoryExists(TRANSACTION_PATH);
-
-      const files = await services.filesystem.readDir(TRANSACTION_PATH);
-      let fileNumber = files.length + 1;
-      while (filePath === null) {
-        const checkPath = path.join(
-          TRANSACTION_PATH,
-          `transaction${fileNumber}.json`,
-        );
-        if (!files.includes(checkPath)) {
-          filePath = checkPath;
-          break;
-        }
-        fileNumber++;
-      }
+      filePath = path.join(
+        WORKING_DIRECTORY,
+        `transaction-${transaction.hash}.json`,
+      );
+    } else if (outFilePath === '-') {
+      // "-" means print to stdout, which is always done anyways. So just don't write a file.
+      return { success: true, data: { transaction, filePath: '-' } };
     } else {
-      await services.filesystem.ensureDirectoryExists(TRANSACTION_PATH);
       filePath = outFilePath;
     }
+
+    // template dir
+    // ./.kadena/transaction-templates
+
+    // kadena tx create-transaction ./kadena/transaction-templates/transfer.yaml
+
+    // --to-file
+
+    // sign:
+    // do not prompt but allow --directory (otherwise working directory)
+
+    // output suggestion
+    // ./{templateName}-{timestamp}-{hash}.json
 
     await services.filesystem.writeFile(
       filePath,
@@ -72,15 +88,17 @@ export const createTransaction = async (
 
 export const createTransactionCommandNew = createCommandFlexible(
   'create-transaction',
-  'select a template and create a transaction',
+  'Select a template and create a transaction.\nThe template can be passed via stdin.\nThe transaction will be saved to file.',
   [
     txOptions.selectTemplate({ isOptional: false }),
     txOptions.templateData({ isOptional: true }),
     txOptions.templateVariables(),
     globalOptions.outFileJson(),
   ],
-  async (option, values) => {
-    const template = await option.template();
+  async (option, values, stdin) => {
+    await writeTemplatesToDisk();
+    const template = await option.template({ stdin });
+
     const templateData = await option.templateData();
     const templateVariables = await option.templateVariables({
       values,
@@ -93,16 +111,14 @@ export const createTransactionCommandNew = createCommandFlexible(
       variables: template.templateConfig.variables,
     });
 
-    if (IS_DEVELOPMENT) {
-      console.log('create-transaction:action', {
-        ...template,
-        ...templateVariables,
-        ...outputFile,
-      });
-    }
+    log.debug('create-transaction:action', {
+      ...template,
+      ...templateVariables,
+      ...outputFile,
+    });
 
     if (template.templateConfig.template === undefined) {
-      return console.log('template not found');
+      return log.error('template not found');
     }
 
     const result = await createTransaction(
@@ -112,10 +128,10 @@ export const createTransactionCommandNew = createCommandFlexible(
     );
     assertCommandError(result);
 
-    console.log(result.data.transaction);
+    log.output(JSON.stringify(result.data.transaction, null, 2));
 
-    const relativePath = path.relative(process.cwd(), result.data.filePath);
-    console.log(`\ntransaction saved to: ./${relativePath}`);
+    const relativePath = path.relative(WORKING_DIRECTORY, result.data.filePath);
+    log.info(`\ntransaction saved to: ./${relativePath}`);
 
     return { outFile: relativePath };
   },

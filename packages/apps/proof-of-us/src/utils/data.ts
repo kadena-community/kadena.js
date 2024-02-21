@@ -1,53 +1,41 @@
-export const proofOfUsData: IProofOfUs[] = [
+export const proofOfUsData: IProofOfUsToken[] = [
   {
-    background: {
-      bg: '',
+    'token-id': 't:YKk6XeUVwr0Kg8UPNAer4gM8dicntSmodqE9yWVkx80',
+    name: 'DevWorld 24',
+    'collection-id': '11',
+    'ends-at': {
+      int: 1707926416,
     },
-    data: {
-      status: 0,
-      mintStatus: 'error',
-      proofOfUsId: '',
-      type: 'multi',
-      date: 0,
-      signees: [],
+    'starts-at': {
+      int: 1707926416,
     },
-    token: {
-      tokenId: '33333',
-      name: 'DevWorld 24',
-      image:
-        'https://pbs.twimg.com/profile_images/1643582036551118848/1ga1McZu_400x400.jpg',
-      properties: {
-        date: 1365017129000,
-        type: 'event',
-        avatar: {
-          backgroundColor: '#4c0e5c',
-          color: '#FFFFFF',
-        },
-      },
-    },
+    status: 'success',
+    uri: 'https://bafybeigb3hz622qy7d7im6fkchsibgydtkxnxg5jc3xtk4gob2pa5ively.ipfs.nftstorage.link/metadata',
   },
   {
-    background: {
-      bg: '',
+    'token-id': 't:YKk6XeUVwr0Kg8UPNAer4gM8dicntSmodqE9yWVkx80',
+    name: 'DevWorld 24',
+    'collection-id': '11',
+    'ends-at': {
+      int: 1707926416,
     },
-    data: {
-      status: 0,
-      mintStatus: 'error',
-      proofOfUsId: '',
-      type: 'multi',
-      date: 0,
-      signees: [],
+    'starts-at': {
+      int: 1707926416,
     },
-    token: {
-      tokenId: '2223423',
-      name: 'us',
-      image:
-        'https://pbs.twimg.com/profile_images/1263771788015738880/Adfm3DNv_400x400.jpg',
-
-      properties: {
-        type: 'multi',
-        date: 1365257129000,
-      },
+    status: 'success',
+    uri: 'https://bafybeicigtjdkgb7gui64jc74smnkwuwesgustbbsmpqpux5vume4kocze.ipfs.nftstorage.link/metadata',
+  },
+  {
+    'token-id': 't:ZvMEin1f41YH-6yH28EZ9adlTiZtAb4amPvHL4iyQ1w',
+    name: 'DevWorld 24',
+    'collection-id': '11',
+    'ends-at': {
+      int: 1707926416,
     },
+    'starts-at': {
+      int: 1707926416,
+    },
+    status: 'success',
+    uri: 'https://bafybeidf35pthln7zgnmnuagz2mb3x7c2ib2nowdvk7bsxd4k7uk55jldy.ipfs.nftstorage.link/metadata',
   },
 ];
