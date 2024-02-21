@@ -160,7 +160,7 @@ export const accountSelectPrompt: IPrompt<string> = async (
     };
   });
 
-  if (previousQuestions.isAllowManualInput) {
+  if (previousQuestions.isAllowManualInput === true) {
     allAccountChoices.unshift({
       value: 'custom',
       name: 'Enter an account name manually:',

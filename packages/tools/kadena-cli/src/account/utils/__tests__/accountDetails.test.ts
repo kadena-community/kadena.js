@@ -48,7 +48,7 @@ describe('accountDetails', () => {
     });
     assert(!result.success);
     expect(result.errors).toEqual([
-      'Account is not available on chain "1" of networkId "fast-development"',
+      'Account "k:accountName" is not available on chain "1" of networkId "fast-development"',
     ]);
   });
 });
