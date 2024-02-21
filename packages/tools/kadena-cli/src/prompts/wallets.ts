@@ -1,5 +1,3 @@
-import { program } from 'commander';
-
 import { getAllWallets } from '../keys/utils/keysHelpers.js';
 
 import { isValidFilename } from '../utils/helpers.js';
@@ -69,37 +67,4 @@ export async function walletSelectNonePrompt(): Promise<string> {
 
 export async function walletSelectAllOrNonePrompt(): Promise<string> {
   return walletSelectionPrompt(['all', 'none']);
-}
-
-export async function walletWalletPrompt(): Promise<string> {
-  const existingKeys: string[] = await getAllWallets();
-
-  const choices = existingKeys.map((key) => ({
-    value: key,
-    name: `alias: ${key}`,
-  }));
-
-  // Option to create a new key
-  choices.push({ value: 'createWallet', name: 'Create a new wallet' });
-  choices.push({
-    value: 'createLegacyWallet',
-    name: 'Create a new legacy wallet',
-  });
-
-  const selectedWallet = await select({
-    message: 'Select a wallet',
-    choices: choices,
-  });
-
-  if (selectedWallet === 'createWallet') {
-    await program.parseAsync(['', '', 'keys', 'create-wallet']);
-    return walletWalletPrompt();
-  }
-
-  if (selectedWallet === 'createLegacyWallet') {
-    await program.parseAsync(['', '', 'keys', 'create-wallet', '--legacy']);
-    return walletWalletPrompt();
-  }
-
-  return selectedWallet;
 }
