@@ -483,7 +483,7 @@ export const globalOptions = {
   }),
   walletSelect: createOption({
     key: 'walletName',
-    prompt: wallets.walletWalletSelectPrompt,
+    prompt: wallets.walletSelectPrompt,
     validation: z.string(),
     option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,
@@ -491,9 +491,9 @@ export const globalOptions = {
       return await getWallet(walletName);
     },
   }),
-  walletWalletSelectWithAll: createOption({
+  walletNameSelectWithAll: createOption({
     key: 'walletName',
-    prompt: wallets.walletWalletSelectAllPrompt,
+    prompt: wallets.walletSelectAllPrompt,
     validation: z.string(),
     option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,

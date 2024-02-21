@@ -55,19 +55,19 @@ async function walletSelectionPrompt(
   return selectedWallet;
 }
 
-export async function walletWalletSelectPrompt(): Promise<string> {
+export async function walletSelectPrompt(): Promise<string> {
   return walletSelectionPrompt();
 }
 
-export async function walletWalletSelectAllPrompt(): Promise<string> {
+export async function walletSelectAllPrompt(): Promise<string> {
   return walletSelectionPrompt(['all']);
 }
 
-export async function walletWalletSelectNonePrompt(): Promise<string> {
+export async function walletSelectNonePrompt(): Promise<string> {
   return walletSelectionPrompt(['none']);
 }
 
-export async function walletWalletSelectAllOrNonePrompt(): Promise<string> {
+export async function walletSelectAllOrNonePrompt(): Promise<string> {
   return walletSelectionPrompt(['all', 'none']);
 }
 
