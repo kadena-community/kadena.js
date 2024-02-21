@@ -65,12 +65,7 @@ export const SavedImagePositions: FC<IProps> = ({ data }) => {
   return (
     <>
       <section ref={wrapperRef} className={imageWrapper}>
-        <img
-          ref={imgRef}
-          src={data.image}
-          style={{ opacity: '.5' }}
-          onLoad={setMarkers}
-        />
+        <img ref={imgRef} src={data.image} onLoad={setMarkers} />
         <div className={gradientClass} />
 
         {data?.properties?.signees?.map((s, idx) => {
