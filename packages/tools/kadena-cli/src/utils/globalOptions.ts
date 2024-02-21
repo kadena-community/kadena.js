@@ -677,7 +677,10 @@ export const globalOptions = {
     prompt: account.accountSelectAllPrompt,
     defaultIsOptional: false,
     validation: z.string(),
-    option: new Option('-a, --account <account>', 'Enter your account'),
+    option: new Option(
+      '-a, --account-alias <account>',
+      'Enter your account alias file',
+    ),
     expand: async (
       accountAlias: string,
     ): Promise<IAliasAccountData | undefined> => {
