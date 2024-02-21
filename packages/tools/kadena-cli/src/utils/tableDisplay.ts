@@ -11,6 +11,8 @@ export function displayTable(
   const columnWidths = header.map((_, index) =>
     Math.max(
       ...[header[index], ...rows.map((row) => row[index])].map((item) => {
+        // If the cell has multiple lines,
+        // we can split the content and get the max length to avoid extra padding
         const splitItem = item.split('\n');
         return Math.max(...splitItem.map((item) => item.length));
       }),
@@ -61,6 +63,7 @@ export function displayTable(
         const contentRow = [];
         for (let colIndex = 0; colIndex < maxColumns; colIndex++) {
           // If the cell data is undefined, pad it with empty strings
+          // so that when we print the row with empty cells it aligns with the header
           const cellData =
             rowStrings[colIndex][rowIndex] ??
             ' '.repeat(columnWidths[colIndex]);
