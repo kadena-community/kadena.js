@@ -13,13 +13,13 @@ import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
-import { parseTransactionsFromStdin } from '../utils/input.js';
-import { saveSignedTransactions } from '../utils/storage.js';
+import { parseTransactionsFromStdin } from './input.js';
+import { saveSignedTransactions } from './storage.js';
 import {
   assessTransactionSigningStatus,
   getTransactionsFromFile,
   signTransactionWithKeyPair,
-} from '../utils/txHelpers.js';
+} from './txHelpers.js';
 
 export const signTransactionWithAliasFile = async ({
   alias,
@@ -113,18 +113,8 @@ export const signTransactionFileWithAliasFile = async (data: {
   });
 };
 
-export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
-  'sign-with-alias-file',
-  'Sign a transaction using your local aliased file containing your keypair.\nThe transaction can be passed via stdin.\nThe signed transaction will be saved to file.',
-  [
-    globalOptions.walletSelect(),
-    globalOptions.securityPassword(),
-    globalOptions.keyAliasSelect(),
-    txOptions.directory({ disableQuestion: true }),
-    txOptions.txUnsignedTransactionFiles(),
-    globalOptions.legacy({ isOptional: true, disableQuestion: true }),
-  ],
-  async (option, values, stdin) => {
+
+export async function signWithAliasFile(option, values, stdin): Promise<void> {
     const wallet = await option.walletName();
     if (!wallet.walletNameConfig) throw new Error('wallet not found');
 
