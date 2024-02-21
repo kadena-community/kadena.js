@@ -3,17 +3,17 @@ import { Box, Heading, Text } from '@kadena/react-ui';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useNetwork } from '@/modules/network/network.hook';
-import { useWallet } from '@/modules/wallet/wallet.hook';
 import {
   IDiscoveredAccount,
   accountDiscovery,
-} from '@/modules/wallet/wallet.service';
+} from '@/modules/account/account.service';
+import { useNetwork } from '@/modules/network/network.hook';
+import { useWallet } from '@/modules/wallet/wallet.hook';
 
 const NUMBER_OF_KEYS_TO_DISCOVER = 20;
 
 export function AccountDiscovery() {
-  const { profile, retrieveAccounts } = useWallet();
+  const { profile, retrieveAccounts, keySources } = useWallet();
   const { keySourceId } = useParams();
   const [key, setKey] = useState<IKeyItem>();
   const [discoveryStatus, setDiscoveryStatus] = useState<
@@ -25,11 +25,12 @@ export function AccountDiscovery() {
   const { activeNetwork } = useNetwork();
 
   async function start() {
-    if (!activeNetwork || !keySourceId || !profile) return;
+    const keySource = keySources.find((ks) => ks.uuid === keySourceId);
+    if (!activeNetwork || !keySource || !profile) return;
     setDiscoveryStatus('discovering');
     await accountDiscovery(
       activeNetwork.networkId,
-      keySourceId,
+      keySource,
       profile.uuid,
       NUMBER_OF_KEYS_TO_DISCOVER,
     )

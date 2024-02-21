@@ -20,19 +20,15 @@ export interface IAccount {
   profileId: string;
   alias?: string;
   address: string;
-  keysetGuard: IKeysetGuard;
+  initialGuard: IKeysetGuard;
   networkId: string;
-  contracts: string[];
-}
-
-export interface AccountBalance {
-  uuid: string;
-  fungibleId: string;
-  accountId: string;
+  contract: string;
   chains: Array<{
     chainId: string;
     balance: string;
+    guard: IKeysetGuard;
   }>;
+  overallBalance: string;
 }
 
 const createAccountRepository = ({
@@ -62,21 +58,6 @@ const createAccountRepository = ({
     },
     getAllFungibles: async (): Promise<Fungible[]> => {
       return getAll('fungible');
-    },
-    getAccountBalances: async (
-      accountId: string,
-    ): Promise<AccountBalance[]> => {
-      return getAll('accountBalance', accountId, 'accountId');
-    },
-    addAccountBalance: async (
-      accountBalance: AccountBalance,
-    ): Promise<void> => {
-      return add('accountBalance', accountBalance);
-    },
-    updateAccountBalance: async (
-      accountBalance: AccountBalance,
-    ): Promise<void> => {
-      return update('accountBalance', accountBalance);
     },
   };
 };

@@ -25,7 +25,7 @@ const createNetworkRepository = ({
   getOne,
   add,
   update,
-  deleteOne,
+  remove,
 }: IDBService): NetworkRepository => {
   return {
     getNetworkList: async (): Promise<INetwork[]> => {
@@ -44,7 +44,7 @@ const createNetworkRepository = ({
       await update('network', network);
     },
     deleteNetwork: async (networkId: string): Promise<void> => {
-      await deleteOne('network', networkId);
+      await remove('network', networkId);
     },
   };
 };
