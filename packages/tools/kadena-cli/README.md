@@ -42,6 +42,12 @@ Kadena-based applications.
 
 ## installation from npm
 
+```npm
+npm install -g @kadena/kadena-cli
+```
+
+## installation from pnpm
+
 ```pnpm
 pnpm install -g @kadena/kadena-cli
 ```
