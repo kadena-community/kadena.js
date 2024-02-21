@@ -56,6 +56,15 @@ builder.queryField('events', (t) =>
         return await prismaClient.event.count({
           where: {
             qualifiedName: args.qualifiedEventName,
+            transaction: {
+              NOT: [],
+            },
+            ...(args.chainId && {
+              chainId: parseInt(args.chainId),
+            }),
+            ...(args.parametersFilter && {
+              parameters: JSON.parse(args.parametersFilter),
+            }),
           },
         });
       } catch (error) {
