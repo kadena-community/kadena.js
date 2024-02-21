@@ -1,4 +1,3 @@
-import Table from 'cli-table3';
 import type { Command } from 'commander';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
