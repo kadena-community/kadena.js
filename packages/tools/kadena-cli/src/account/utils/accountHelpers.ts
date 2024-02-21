@@ -32,9 +32,12 @@ export const formatZodErrors = (errors: ZodError): string => {
 export const readAccountFromFile = async (
   accountFile: string,
 ): Promise<IAliasAccountData> => {
-  const content = await services.filesystem.readFile(
-    join(ACCOUNT_DIR, accountFile),
-  );
+  const filePath = join(ACCOUNT_DIR, accountFile);
+  if (!(await services.filesystem.fileExists(filePath))) {
+    throw new Error(`Account alias "${accountFile}" file not exist`);
+  }
+
+  const content = await services.filesystem.readFile(filePath);
   const account = content !== null ? yaml.load(content) : null;
   try {
     const parsedContent = accountAliasFileSchema.parse(account);
