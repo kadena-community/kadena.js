@@ -38,9 +38,9 @@ export const SocialsEditor: FC = () => {
     (c) => c.accountName === account.accountName,
   );
 
-  const getSocial = (url: string): ISocial | undefined => {
+  const getSocial = (url?: string): ISocial | undefined => {
+    if (!url) return;
     const foundSocial = supportedSocials.find((s) => url.startsWith(s.name));
-
     return foundSocial;
   };
 
@@ -49,51 +49,32 @@ export const SocialsEditor: FC = () => {
     setError('');
     if (!inputRef.current || !signer) return;
 
-    const socials = signer.socialLinks ?? [];
     const value = inputRef.current.value;
-
     const socialType = getSocial(value);
-    if (!socialType) {
+
+    if (!socialType && value) {
       setError(`${value} is not a valid social link`);
       return;
     }
 
     const newSigner = {
       ...signer,
-      socialLinks: [...socials, value],
+      socialLink: value,
     };
     updateSigner(newSigner);
-    inputRef.current.value = '';
   };
-  const handleDelete = (link: string) => {
-    if (!signer) return;
 
-    const socials = signer.socialLinks?.filter((l) => l !== link) ?? [];
-    const newSigner = { ...signer, socialLinks: [...socials] };
-
-    updateSigner(newSigner);
-  };
+  const socialType = getSocial(signer?.socialLink);
+  const Icon = socialType?.Icon;
 
   return (
     <section>
       <h4>Socials</h4>
-      <ul className={listClass}>
-        {signer?.socialLinks?.map((link) => {
-          const socialType = getSocial(link);
-          if (!socialType) return null;
-          const Icon = socialType.Icon;
-          return (
-            <li key={link} className={liClass}>
-              {link} <Icon />
-              <button onClick={() => handleDelete(link)}>delete</button>
-            </li>
-          );
-        })}
-      </ul>
 
       <form onSubmit={handleSubmit}>
-        <input ref={inputRef} name="new" />
+        <input ref={inputRef} name="new" defaultValue={signer?.socialLink} />
         <button type="submit">add</button>
+        {Icon && <Icon />}
         <div>{error}</div>
       </form>
     </section>
