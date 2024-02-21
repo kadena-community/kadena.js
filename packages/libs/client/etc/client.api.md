@@ -34,11 +34,17 @@ export { ChainId }
 // @public
 export const createClient: ICreateClient;
 
-// @public
-export function createEckoWalletQuicksign(): IEckoSignFunction;
+// @public @deprecated
+export const createEckoWalletQuicksign: typeof createQuicksignWithEckoWallet;
+
+// @public @deprecated
+export const createEckoWalletSign: typeof createSignWithEckoWallet;
 
 // @public
-export function createEckoWalletSign(): IEckoSignSingleFunction;
+export function createQuicksignWithEckoWallet(): IEckoSignFunction;
+
+// @public
+export function createQuicksignWithWalletConnect(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignFunction;
 
 // @public
 export function createSignWithChainweaver(options?: {
@@ -46,7 +52,13 @@ export function createSignWithChainweaver(options?: {
 }): ISignFunction;
 
 // @public
+export function createSignWithEckoWallet(): IEckoSignSingleFunction;
+
+// @public
 export const createSignWithKeypair: ICreateSignWithKeypair;
+
+// @public
+export function createSignWithWalletConnect(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISingleSignFunction;
 
 // @public
 export const createTransaction: (pactCommand: IPartialPactCommand) => IUnsignedCommand;
@@ -54,11 +66,11 @@ export const createTransaction: (pactCommand: IPartialPactCommand) => IUnsignedC
 // @public
 export const createTransactionBuilder: (initial?: IPartialPactCommand) => ITransactionBuilder;
 
-// @public
-export function createWalletConnectQuicksign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignFunction;
+// @public @deprecated
+export const createWalletConnectQuicksign: typeof createQuicksignWithWalletConnect;
 
-// @public
-export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISingleSignFunction;
+// @public @deprecated
+export const createWalletConnectSign: typeof createSignWithWalletConnect;
 
 // @public
 export const getHostUrl: (hostBaseUrl: string) => ({ networkId, chainId }: INetworkOptions) => string;

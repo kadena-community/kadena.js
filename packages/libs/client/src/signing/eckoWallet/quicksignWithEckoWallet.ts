@@ -5,11 +5,11 @@ import { connect, isConnected, isInstalled } from './eckoCommon';
 import type { IEckoQuicksignResponse, IEckoSignFunction } from './eckoTypes';
 
 /**
- * Creates the quicksignWithWalletConnect function with interface {@link ISingleSignFunction}
+ * Creates the quicksignWithEckoWallet function with interface {@link ISingleSignFunction}
  *
  * @public
  */
-export function createEckoWalletQuicksign(): IEckoSignFunction {
+export function createQuicksignWithEckoWallet(): IEckoSignFunction {
   const quicksignWithEckoWallet: IEckoSignFunction = (async (
     transactionList: IUnsignedCommand | Array<IUnsignedCommand | ICommand>,
   ) => {
@@ -88,3 +88,11 @@ export function createEckoWalletQuicksign(): IEckoSignFunction {
 
   return quicksignWithEckoWallet;
 }
+
+/**
+ * Creates the quicksignWithEckoWallet function with interface {@link ISingleSignFunction}
+ *
+ * @deprecated Use {@link createQuicksignWithEckoWallet} instead
+ * @public
+ */
+export const createEckoWalletQuicksign = createQuicksignWithEckoWallet;

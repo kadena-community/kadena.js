@@ -21,7 +21,7 @@ declare global {
  *
  * @public
  */
-export function createEckoWalletSign(): IEckoSignSingleFunction {
+export function createSignWithEckoWallet(): IEckoSignSingleFunction {
   const signWithEckoWallet: IEckoSignSingleFunction = async (transaction) => {
     const parsedTransaction = parseTransactionCommand(transaction);
     const signingRequest = pactCommandToSigningRequest(parsedTransaction);
@@ -49,3 +49,14 @@ export function createEckoWalletSign(): IEckoSignSingleFunction {
 
   return signWithEckoWallet;
 }
+
+/**
+ * Creates the signWithEckoWallet function with interface {@link ISingleSignFunction}
+ *
+ * @remarks
+ * It is preferred to use the {@link createQuicksignWithEckoWallet} function
+ *
+ * @deprecated Use {@link createSignWithEckoWallet} instead
+ * @public
+ */
+export const createEckoWalletSign = createSignWithEckoWallet;

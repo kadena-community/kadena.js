@@ -4,7 +4,7 @@ import type {
   IPactCommand,
 } from '../../../interfaces/IPactCommand';
 import { createTransaction } from '../../../utils/createTransaction';
-import { createWalletConnectSign } from '../signWithWalletConnect';
+import { createSignWithWalletConnect } from '../signWithWalletConnect';
 import type { TWalletConnectChainId } from '../walletConnectTypes';
 
 import type Client from '@walletconnect/sign-client';
@@ -58,7 +58,7 @@ describe('signWithWalletConnect', () => {
       ),
     };
 
-    const signWithWalletConnect = createWalletConnectSign(
+    const signWithWalletConnect = createSignWithWalletConnect(
       client as unknown as Client,
       session,
       walletConnectChainId,
@@ -115,7 +115,7 @@ describe('signWithWalletConnect', () => {
       ),
     };
 
-    const signWithWalletConnect = createWalletConnectSign(
+    const signWithWalletConnect = createSignWithWalletConnect(
       client as unknown as Client,
       session,
       walletConnectChainId,
@@ -140,7 +140,7 @@ describe('signWithWalletConnect', () => {
       ),
     };
 
-    const signWithWalletConnect = createWalletConnectSign(
+    const signWithWalletConnect = createSignWithWalletConnect(
       client as unknown as Client,
       session,
       walletConnectChainId,
@@ -182,7 +182,7 @@ describe('signWithWalletConnect', () => {
       ),
     };
 
-    const signWithWalletConnect = createWalletConnectSign(
+    const signWithWalletConnect = createSignWithWalletConnect(
       client as unknown as Client,
       session,
       walletConnectChainId,
