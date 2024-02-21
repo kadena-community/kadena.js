@@ -2,7 +2,7 @@ import { getContrast } from '@/utils/getContrast';
 import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import {
   dateClass,
   dateTitleClass,
@@ -16,12 +16,9 @@ interface IProps {
 }
 
 export const AttendanceTicket: FC<IProps> = ({ data }) => {
-  const [contrastColor, setContrastColor] = useState<string>('white');
+  const color = data.properties?.avatar?.backgroundColor ?? 'white';
+  const contrastColor = useMemo(() => getContrast(color), [color]);
 
-  useEffect(() => {
-    const color = getContrast(data.properties?.avatar?.backgroundColor ?? '');
-    setContrastColor(color);
-  }, [data.properties?.avatar?.backgroundColor]);
   return (
     <motion.div
       layoutId="proof-of-us:jQ9ZFi5VDifZ_LekqHCGrP5EdgKTgU7WhrYkIWNPMe8"
@@ -40,6 +37,7 @@ export const AttendanceTicket: FC<IProps> = ({ data }) => {
         className={titleClass}
         style={{
           color: contrastColor,
+          textShadow: `1px 1px 0px ${color}`,
         }}
       >
         {data.name}
@@ -48,7 +46,7 @@ export const AttendanceTicket: FC<IProps> = ({ data }) => {
       <Stack
         flexDirection="column"
         className={dateWrapperClass}
-        style={{ color: contrastColor }}
+        style={{ color: contrastColor, textShadow: `1px 1px 0px ${color}` }}
       >
         <h5 className={dateTitleClass}>Date</h5>
         <span className={dateClass}>

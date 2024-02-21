@@ -25,7 +25,7 @@ export const createManifest = async (
     description: `${proofOfUs.title} was a great event`,
     image: url,
     authors: signees.map((signee) => ({
-      name: signee.label ? signee.label : signee.alias,
+      name: signee.name ? signee.name : signee.alias,
     })),
     properties: {
       date: proofOfUs.date,
@@ -35,14 +35,23 @@ export const createManifest = async (
       avatar: {
         backgroundColor: proofOfUs.backgroundColor,
       },
-      signees: signees?.map((signee) => ({
-        name: signee.label ? signee.label : signee.alias,
-        position: {
-          xPercentage: signee.position?.xPercentage,
-          yPercentage: signee.position?.yPercentage,
-        },
-        socialLinks: signee?.socialLinks?.map((link: string) => link),
-      })),
+      signees: signees?.map((signee) => {
+        const links = signee.socialLinks?.length
+          ? Object.keys(signee?.socialLinks).map((k: any) => {
+              if (!signee?.socialLinks) return undefined;
+              return signee?.socialLinks[k];
+            })
+          : [];
+        return {
+          name: signee.name ? signee.name : signee.alias,
+          accountName: signee.accountName,
+          position: {
+            xPercentage: signee.position?.xPercentage,
+            yPercentage: signee.position?.yPercentage,
+          },
+          socialLinks: links,
+        };
+      }),
     },
     collection: {
       name: 'Proof Of Us',

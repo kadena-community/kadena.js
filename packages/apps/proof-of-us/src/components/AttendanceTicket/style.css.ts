@@ -8,13 +8,13 @@ export const ticketClass = style([
   }),
   {
     aspectRatio: '16/9',
-    background: 'green',
+    background: 'transparent',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     backgroundSize: 'cover',
     maskImage: "url('/assets/attendance-mask-large.png')",
     maskRepeat: 'no-repeat',
-    maskSize: '97%',
+    maskSize: '100%',
   },
 ]);
 
@@ -40,7 +40,7 @@ export const ticketBorderClass = style([
     position: 'absolute',
   }),
   {
-    width: '97%',
+    width: '100%',
     zIndex: 10,
   },
 ]);

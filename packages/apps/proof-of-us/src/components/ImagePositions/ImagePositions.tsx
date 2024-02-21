@@ -119,7 +119,7 @@ export const ImagePositions: FC<IProps> = () => {
     //TODO: this needs to debounce
 
     updateSigner({
-      label: e.target.value,
+      name: e.target.value,
     });
   };
 
@@ -149,7 +149,7 @@ export const ImagePositions: FC<IProps> = () => {
             </div>
             <input
               className={signeeInputClass}
-              value={s.label}
+              value={s.name}
               disabled={signer?.accountName !== s.accountName || isLocked}
               type="text"
               name="label"

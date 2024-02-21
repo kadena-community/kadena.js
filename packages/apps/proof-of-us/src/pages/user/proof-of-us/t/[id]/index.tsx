@@ -9,12 +9,13 @@ interface IProps {
     id: string;
   };
   data?: IProofOfUsTokenMeta;
+  metadataUri?: string;
 }
 
-const Page: NextPage<IProps> = ({ params, data }) => {
+const Page: NextPage<IProps> = ({ params, data, metadataUri }) => {
   return (
     <UserLayout>
-      <Share tokenId={params.id} data={data} />
+      <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
     </UserLayout>
   );
 };
@@ -27,7 +28,7 @@ export const getServerSideProps = async (
   const uri = await getTokenUri(id);
   const data = await fetchManifestData(uri);
   return {
-    props: { params: { id: `${ctx.query.id}` }, data },
+    props: { params: { id: `${ctx.query.id}` }, data, metadataUri: uri },
   };
 };
 
