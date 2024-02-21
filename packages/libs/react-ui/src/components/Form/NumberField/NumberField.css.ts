@@ -24,6 +24,8 @@ export const iconClass = style([
 
 export const buttonClass = style([
   {
-    padding: '0',
+    padding: '0 8px',
+    // Clickable area
+    margin: '0 -8px',
   },
 ]);
