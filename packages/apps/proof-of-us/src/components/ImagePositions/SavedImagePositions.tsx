@@ -1,6 +1,12 @@
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
-import { gradientClass, imageWrapper } from './style.css';
+import { SigneePosition } from '../Signees/SigneePosition';
+import {
+  gradientClass,
+  imageWrapper,
+  signeeClass,
+  signeeClassWrapper,
+} from './style.css';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
@@ -32,7 +38,6 @@ export const SavedImagePositions: FC<IProps> = ({ data }) => {
     const img = imgRef.current;
 
     const elms = wrapper.querySelectorAll('div');
-
     elms.forEach((elm, idx) => {
       const xPercentage: number = parseFloat(
         elm.getAttribute('data-xpercentage') ?? '0',
@@ -70,22 +75,15 @@ export const SavedImagePositions: FC<IProps> = ({ data }) => {
   return (
     <>
       <section ref={wrapperRef} className={imageWrapper}>
-        <img src={data.image} style={{ opacity: '.5' }} />
+        <img ref={imgRef} src={data.image} style={{ opacity: '.5' }} />
+        <div className={gradientClass}>sdfsdsfdf</div>
 
-        <div className={gradientClass} />
-
-        {/*         
-        {data?.properties?.signees.map((s, idx) => (
-          <span key={s.name}>
-            <div
-              className={signeeClassWrapper}
-              data-xpercentage={s.position?.xPercentage}
-              data-ypercentage={s.position?.yPercentage}
-            >
-              <button className={signeeClass}>{idx}</button>
-            </div>
-          </span>
-        ))} */}
+        {data?.properties?.signees?.map((s, idx) => {
+          const position = s.position;
+          if (!position || !position?.xPercentage || !position.yPercentage)
+            return null;
+          return <SigneePosition key={s.name} position={position} idx={idx} />;
+        })}
       </section>
     </>
   );

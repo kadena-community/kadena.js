@@ -51,7 +51,6 @@ export const bulletClass = style([
     width: '1.2rem',
     height: '1.2rem',
     aspectRatio: '1/1',
-    background: 'rgba(255, 0, 0, 0.42)',
 
     selectors: {
       '&:before': {
@@ -62,6 +61,44 @@ export const bulletClass = style([
         borderRadius: '50%',
         width: '.8rem',
         height: '.8rem',
+        aspectRatio: '1/1',
+      },
+      '&[data-position="0"]': {
+        background: 'rgba(255, 0, 0, 0.42)',
+      },
+      '&[data-position="1"]': {
+        background: 'rgba(255, 199, 0, 0.42)',
+      },
+      '&[data-position="0"]:before': {
+        background: 'rgba(255, 0, 0, 0.42)',
+      },
+      '&[data-position="1"]:before': {
+        background: 'rgba(255, 199, 0, 0.42)',
+      },
+    },
+  },
+]);
+
+export const bulletPositionClass = style([
+  atoms({
+    position: 'absolute',
+    borderRadius: 'round',
+  }),
+  {
+    width: '4.5rem',
+    height: '4.5rem',
+    aspectRatio: '1/1',
+    zIndex: 100,
+
+    selectors: {
+      '&:before': {
+        display: 'block',
+        margin: '.5rem',
+        border: '4px solid white',
+        content: '',
+        borderRadius: '50%',
+        width: '3.5rem',
+        height: '3.5rem',
         aspectRatio: '1/1',
       },
       '&[data-position="0"]': {
