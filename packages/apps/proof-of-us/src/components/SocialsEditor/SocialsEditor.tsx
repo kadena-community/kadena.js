@@ -4,7 +4,6 @@ import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { MonoLogoLinkedin, MonoLogoX } from '@kadena/react-icons';
 import type { FC, FormEventHandler } from 'react';
 import { useRef, useState } from 'react';
-import { liClass, listClass } from './style.css';
 
 interface ISocial {
   name: string;
