@@ -673,7 +673,7 @@ export const globalOptions = {
     },
   }),
   accountSelectWithAll: createOption({
-    key: 'account' as const,
+    key: 'accountAlias' as const,
     prompt: account.accountSelectAllPrompt,
     defaultIsOptional: false,
     validation: z.string(),

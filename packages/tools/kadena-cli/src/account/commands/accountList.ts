@@ -9,10 +9,10 @@ import { log } from '../../utils/logger.js';
 import type { IAliasAccountData } from '../types.js';
 import { getAllAccounts } from '../utils/accountHelpers.js';
 
-async function generateAccountTabularData(config: {
-  account: string;
-  accountConfig: IAliasAccountData | undefined;
-}): Promise<{ header: string[]; data: string[][] } | undefined> {
+function generateTabularData(accounts: IAliasAccountData[]): {
+  header: string[];
+  data: string[][];
+} {
   const header = [
     'Account Alias',
     'Account Name',
@@ -20,36 +20,34 @@ async function generateAccountTabularData(config: {
     'Predicate',
     'Fungible',
   ];
-  const data = [];
 
-  if (config.account === 'all') {
-    const allAccounts = await getAllAccounts();
-    for (const account of allAccounts) {
-      data.push([
-        truncateText(account.alias, 32),
-        maskStringPreservingStartAndEnd(account.name, 32),
-        account.publicKeys
-          .map((key) => maskStringPreservingStartAndEnd(key, 24))
-          .join('\n'),
-        account.predicate,
-        account.fungible,
-      ]);
-    }
-  } else if (!config.accountConfig) {
-    return;
+  const data = accounts.map((account) => [
+    truncateText(account.alias, 32),
+    maskStringPreservingStartAndEnd(account.name, 32),
+    account.publicKeys
+      .map((key) => maskStringPreservingStartAndEnd(key, 24))
+      .join('\n'),
+    account.predicate,
+    account.fungible,
+  ]);
+
+  return {
+    header,
+    data,
+  };
+}
+
+async function accountList(config: {
+  accountAlias: string;
+  accountAliasConfig: IAliasAccountData | undefined;
+}): Promise<IAliasAccountData[] | undefined> {
+  if (config.accountAlias === 'all') {
+    return await getAllAccounts();
+  } else if (config.accountAliasConfig) {
+    return [config.accountAliasConfig];
   } else {
-    data.push([
-      truncateText(config.accountConfig.alias, 40),
-      maskStringPreservingStartAndEnd(config.accountConfig.name, 24),
-      config.accountConfig.publicKeys
-        .map((key) => maskStringPreservingStartAndEnd(key, 24))
-        .join('\n'),
-      config.accountConfig.predicate,
-      config.accountConfig.fungible,
-    ]);
+    return;
   }
-
-  return { header, data };
 }
 
 export const createAccountListCommand: (
@@ -62,11 +60,13 @@ export const createAccountListCommand: (
   async (config) => {
     log.debug('account-list:action', { config });
 
-    const tabularData = await generateAccountTabularData(config);
+    const accounts = await accountList(config);
 
-    if (!tabularData) {
-      return log.error(`Selected account "${config.account}" not found.`);
+    if (!accounts) {
+      return log.error(`Selected account "${config.accountAlias}" not found.`);
     }
+
+    const tabularData = generateTabularData(accounts);
 
     log.output(
       log.generateTableString(tabularData.header, tabularData.data, true, true),
