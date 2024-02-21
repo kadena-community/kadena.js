@@ -1,6 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
 import { COMPLEXITY } from '@services/complexity';
-import { dotenv } from '@utils/dotenv';
 import { builder } from '../builder';
 
 const getLowestBlockHeigth = async (): Promise<bigint> => {
@@ -23,8 +22,6 @@ builder.queryField('graphConfiguration', (t) =>
     complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
     async resolve() {
       return {
-        maximumConfirmationDepth:
-          dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH,
         minimumBlockHeight: await getLowestBlockHeigth(),
       };
     },
