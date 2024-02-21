@@ -33,9 +33,9 @@ const confirmDelete = createOption({
   key: 'confirm',
   defaultIsOptional: false,
   async prompt(args) {
-    if (typeof args.walletWallet !== 'string') return false;
+    if (typeof args.walletName !== 'string') return false;
 
-    if (args.walletWallet === 'all') {
+    if (args.walletName === 'all') {
       return await select({
         message: 'Are you sure you want to delete ALL wallets',
         choices: [
@@ -45,7 +45,7 @@ const confirmDelete = createOption({
       });
     }
 
-    const walletData = await getWallet(args.walletWallet);
+    const walletData = await getWallet(args.walletName);
 
     if (!walletData) return false;
 
@@ -55,7 +55,7 @@ const confirmDelete = createOption({
         : '';
 
     return await select({
-      message: `Are you sure you want to delete the wallet: "${args.walletWallet}"${keysText}?`,
+      message: `Are you sure you want to delete the wallet: "${args.walletName}"${keysText}?`,
       choices: [
         { value: true, name: 'Yes' },
         { value: false, name: 'No' },
@@ -81,23 +81,23 @@ export const createDeleteWalletsCommand: (
 
     try {
       log.debug('delete-wallet:action', { config });
-      if (config.walletWallet === 'all') {
+      if (config.walletName === 'all') {
         const result = await deleteAllWallets();
         assertCommandError(result);
         log.info(log.color.green('\nAll wallets have been deleted.\n'));
       } else {
-        if (config.walletWalletConfig === null) {
-          throw new Error(`Wallet: ${config.walletWallet} does not exist.`);
+        if (config.walletNameConfig === null) {
+          throw new Error(`Wallet: ${config.walletName} does not exist.`);
         }
 
         const result = await deleteWallet(
-          config.walletWallet,
-          config.walletWalletConfig,
+          config.walletName,
+          config.walletNameConfig,
         );
         assertCommandError(result);
         log.info(
           log.color.green(
-            `\nThe wallet: "${config.walletWallet}" and associated key files have been deleted.\n`,
+            `\nThe wallet: "${config.walletName}" and associated key files have been deleted.\n`,
           ),
         );
       }

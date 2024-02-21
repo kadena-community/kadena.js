@@ -16,15 +16,15 @@ export const createListWalletsCommand: (
   async (config) => {
     log.debug('list-keys:action', { config });
 
-    if (config.walletWallet === 'all') {
+    if (config.walletName === 'all') {
       const walletNames = await getAllWallets();
       for (const wallet of walletNames) {
         await printWalletKeys(await getWallet(wallet));
       }
-    } else if (config.walletWalletConfig === null) {
-      return log.error(`Selected wallet "${config.walletWallet}" not found.`);
+    } else if (config.walletNameConfig === null) {
+      return log.error(`Selected wallet "${config.walletName}" not found.`);
     }
 
-    await printWalletKeys(config.walletWalletConfig);
+    await printWalletKeys(config.walletNameConfig);
   },
 );

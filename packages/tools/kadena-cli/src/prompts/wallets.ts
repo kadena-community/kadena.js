@@ -6,7 +6,7 @@ import { isValidFilename } from '../utils/helpers.js';
 import { log } from '../utils/logger.js';
 import { input, select } from '../utils/prompts.js';
 
-export async function walletWallet(): Promise<string> {
+export async function walletNamePrompt(): Promise<string> {
   return await input({
     message: `Enter your wallet name:`,
     validate: function (input) {

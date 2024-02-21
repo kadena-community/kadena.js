@@ -438,13 +438,13 @@ export const globalOptions = {
       'Enter a alias to select keys from',
     ),
   }),
-  walletWallet: createOption({
-    key: 'walletWallet' as const,
-    prompt: wallets.walletWallet,
+  walletName: createOption({
+    key: 'walletName' as const,
+    prompt: wallets.walletNamePrompt,
     validation: z.string(),
     option: new Option(
-      '-w, --wallet-walletname <walletWallet>',
-      'Enter you wallet names',
+      '-w, --wallet-name <walletName>',
+      'Enter you wallet name',
     ),
   }),
   keyIndexOrRange: createOption({
@@ -481,30 +481,24 @@ export const globalOptions = {
       'Choose an action for generating keys',
     ),
   }),
-  walletWalletSelect: createOption({
-    key: 'walletWallet',
+  walletSelect: createOption({
+    key: 'walletName',
     prompt: wallets.walletWalletSelectPrompt,
     validation: z.string(),
-    option: new Option(
-      '-w, --wallet-walletname <walletWallet>',
-      'Enter your wallet',
-    ),
+    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,
-    expand: async (walletWallet: string) => {
-      return await getWallet(walletWallet);
+    expand: async (walletName: string) => {
+      return await getWallet(walletName);
     },
   }),
   walletWalletSelectWithAll: createOption({
-    key: 'walletWallet',
+    key: 'walletName',
     prompt: wallets.walletWalletSelectAllPrompt,
     validation: z.string(),
-    option: new Option(
-      '-w, --wallet-walletname <walletWallet>',
-      'Enter your wallet',
-    ),
+    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,
-    expand: async (walletWallet: string) => {
-      return walletWallet === 'all' ? null : await getWallet(walletWallet);
+    expand: async (walletName: string) => {
+      return walletName === 'all' ? null : await getWallet(walletName);
     },
   }),
   securityPassword: createOption({
@@ -606,23 +600,20 @@ export const globalOptions = {
       'use as the namespace of the contract if its not clear in the contract',
     ),
   }),
-  keyMessage: createOption({
-    key: 'keyMessage' as const,
-    prompt: keys.keyMessagePrompt,
+  message: createOption({
+    key: 'message' as const,
+    prompt: generic.messagePrompt,
     validation: z.string(),
-    option: new Option(
-      '-n, --key-message <keyMessage>',
-      'Enter message to decrypt',
-    ),
-    transform: async (keyMessage: string) => {
-      if (keyMessage.includes(WALLET_EXT) || keyMessage.includes(KEY_EXT)) {
-        const keyFileContent = await readKeyFileContent(keyMessage);
+    option: new Option('-m, --message <message>', 'Enter message to decrypt'),
+    transform: async (message: string) => {
+      if (message.includes(WALLET_EXT) || message.includes(KEY_EXT)) {
+        const keyFileContent = await readKeyFileContent(message);
         if (typeof keyFileContent === 'string') {
           return keyFileContent;
         }
         return keyFileContent?.secretKey;
       }
-      return keyMessage;
+      return message;
     },
   }),
 

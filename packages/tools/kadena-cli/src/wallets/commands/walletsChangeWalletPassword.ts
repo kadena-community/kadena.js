@@ -85,7 +85,7 @@ export const createChangeWalletPasswordCommand: (
   'change-password',
   'Update the password for your wallet',
   [
-    globalOptions.walletWalletSelect(),
+    globalOptions.walletSelect(),
     globalOptions.securityCurrentPassword({ isOptional: false }),
     globalOptions.securityNewPassword({ isOptional: false }),
     globalOptions.securityVerifyPassword({ isOptional: false }),
@@ -105,13 +105,13 @@ export const createChangeWalletPasswordCommand: (
         process.exit(1);
       }
 
-      if (config.walletWalletConfig === null) {
+      if (config.walletNameConfig === null) {
         throw new Error('Invalid wallet');
       }
 
       const result = await changeWalletPassword(
-        config.walletWallet,
-        config.walletWalletConfig,
+        config.walletName,
+        config.walletNameConfig,
         config.securityCurrentPassword,
         config.securityNewPassword,
       );
