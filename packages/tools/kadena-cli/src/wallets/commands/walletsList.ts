@@ -12,7 +12,7 @@ export const createListWalletsCommand: (
 ) => void = createCommand(
   'list',
   'List wallet(s)',
-  [globalOptions.walletWalletSelectWithAll()],
+  [globalOptions.walletNameSelectWithAll()],
   async (config) => {
     log.debug('list-keys:action', { config });
 

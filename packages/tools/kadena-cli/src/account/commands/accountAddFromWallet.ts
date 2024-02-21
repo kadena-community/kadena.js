@@ -11,7 +11,7 @@ import { checkbox } from '../../utils/prompts.js';
 import { addAccount } from '../utils/addAccount.js';
 import {
   displayAddAccountSuccess,
-  getAllPublicKeysFromWalletWalletConfig,
+  getAllPublicKeysFromWalletConfig,
   isEmpty,
 } from '../utils/addHelpers.js';
 import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveAccountDetails.js';
@@ -20,7 +20,7 @@ const selectPublicKeys = createOption({
   key: 'publicKeys' as const,
   defaultIsOptional: false,
   async prompt(args) {
-    const publicKeysList = await getAllPublicKeysFromWalletWalletConfig(
+    const publicKeysList = await getAllPublicKeysFromWalletConfig(
       args.walletNameConfig as IWallet,
     );
     const selectedKeys = await checkbox({

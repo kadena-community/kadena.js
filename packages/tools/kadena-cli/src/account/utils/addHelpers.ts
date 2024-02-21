@@ -47,7 +47,7 @@ export const displayAddAccountSuccess = (accountAlias: string): void => {
   );
 };
 
-export async function getAllPublicKeysFromWalletWalletConfig(
+export async function getAllPublicKeysFromWalletConfig(
   walletWalletConfig: IWallet,
 ): Promise<Array<string>> {
   const publicKeysList: Array<string> = [];
