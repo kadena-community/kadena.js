@@ -12,7 +12,9 @@ export const buttonContainerClass = style([
   }),
   {
     borderLeft: `1px solid ${token('color.border.base.bold')}`,
-    paddingLeft: '8px',
+    position: 'absolute',
+    borderRadius: `0 ${token('spacing.sm')} ${token('spacing.sm')} 0`,
+    right: 0,
   },
 ]);
 
@@ -25,7 +27,5 @@ export const iconClass = style([
 export const buttonClass = style([
   {
     padding: '0 8px',
-    // Clickable area
-    margin: '0 -8px',
   },
 ]);
