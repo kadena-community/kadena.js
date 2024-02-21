@@ -1,12 +1,7 @@
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
 import { SigneePosition } from '../Signees/SigneePosition';
-import {
-  gradientClass,
-  imageWrapper,
-  signeeClass,
-  signeeClassWrapper,
-} from './style.css';
+import { gradientClass, imageWrapper } from './style.css';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
