@@ -672,6 +672,27 @@ export const globalOptions = {
       }
     },
   }),
+  accountSelectWithAll: createOption({
+    key: 'account' as const,
+    prompt: account.accountSelectAllPrompt,
+    defaultIsOptional: false,
+    validation: z.string(),
+    option: new Option('-a, --account <account>', 'Enter your account'),
+    expand: async (
+      accountAlias: string,
+    ): Promise<IAliasAccountData | undefined> => {
+      try {
+        if (accountAlias === 'all') {
+          return;
+        }
+
+        const accountDetails = await readAccountFromFile(accountAlias);
+        return accountDetails;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+  }),
 } as const;
 
 export type GlobalOptions = typeof globalOptions;

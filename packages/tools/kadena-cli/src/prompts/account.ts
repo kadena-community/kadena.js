@@ -132,11 +132,9 @@ export const accountOverWritePrompt: IPrompt<boolean> = async () =>
     ],
   });
 
-export const accountSelectPrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-) => {
+export const accountSelectionPrompt = async (
+  options: string[] = [],
+): Promise<string> => {
   const allAccounts = await getAllAccountNames();
 
   if (allAccounts.length === 0) {
@@ -147,7 +145,7 @@ export const accountSelectPrompt: IPrompt<string> = async (
     ...allAccounts.map(({ alias }) => alias.length),
   );
 
-  const allAccountChoices = allAccounts.map(({ alias, name }) => {
+  const accountChoices = allAccounts.map(({ alias, name }) => {
     const aliasWithoutExtension = alias.split('.yaml')[0];
     const maxLength = maxAliasLength < 25 ? maxAliasLength : 25;
     const paddedAlias = aliasWithoutExtension.padEnd(maxLength, ' ');
@@ -160,8 +158,15 @@ export const accountSelectPrompt: IPrompt<string> = async (
     };
   });
 
-  if (previousQuestions.isAllowManualInput === true) {
-    allAccountChoices.unshift({
+  if (options.includes('all')) {
+    accountChoices.unshift({
+      value: 'all',
+      name: 'All accounts',
+    });
+  }
+
+  if (options.includes('allowManualInput')) {
+    accountChoices.unshift({
       value: 'custom',
       name: 'Enter an account name manually:',
     });
@@ -169,7 +174,7 @@ export const accountSelectPrompt: IPrompt<string> = async (
 
   const selectedAlias = await select({
     message: 'Select an account:(alias - account name)',
-    choices: allAccountChoices,
+    choices: accountChoices,
   });
 
   if (selectedAlias === 'custom') {
@@ -185,5 +190,18 @@ export const accountSelectPrompt: IPrompt<string> = async (
     });
     return accountName.trim();
   }
+
   return selectedAlias;
+};
+
+export const accountSelectPrompt: IPrompt<string> = async (
+  previousQuestions,
+) => {
+  const options =
+    previousQuestions.isAllowManualInput === true ? ['allowManualInput'] : [];
+  return accountSelectionPrompt(options);
+};
+
+export const accountSelectAllPrompt: IPrompt<string> = async () => {
+  return accountSelectionPrompt(['all']);
 };
