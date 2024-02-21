@@ -9,7 +9,7 @@ export async function walletNamePrompt(): Promise<string> {
     message: `Enter your wallet name:`,
     validate: function (input) {
       if (!isValidFilename(input)) {
-        return 'Wallet must be alphanumeric! Please enter a valid name.';
+        return `Name is used as a filename. Do not use these characters: \\ / : * ? " < > |. Please choose a different name without these characters.`;
       }
       return true;
     },
@@ -17,7 +17,7 @@ export async function walletNamePrompt(): Promise<string> {
 }
 
 async function walletSelectionPrompt(
-  specialOptions: string[] = [],
+  specialOptions: ('none' | 'all')[] = [],
 ): Promise<string> {
   const existingKeys: string[] = await getAllWallets();
 

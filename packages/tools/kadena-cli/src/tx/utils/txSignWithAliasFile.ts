@@ -143,31 +143,30 @@ export async function signWithAliasFile(
         commands: [command],
         legacy: mode.legacy,
       });
-    } else {
-      const { directory } = await option.directory();
-      const files = await option.txUnsignedTransactionFiles({
-        signed: false,
-        path: directory,
-      });
-      const absolutePaths = files.txUnsignedTransactionFiles.map((file) =>
-        path.resolve(path.join(directory, file)),
-      );
-      log.debug('sign-with-key-alias-file:action', {
-        ...wallet,
-        ...key,
-        ...files,
-        directory,
-        ...mode,
-      });
-      return await signTransactionFileWithAliasFile({
-        alias: key.keyAliasSelect,
-        signed: false,
-        wallet: wallet.walletNameConfig!,
-        password: password.securityPassword,
-        files: absolutePaths,
-        legacy: mode.legacy,
-      });
     }
+    const { directory } = await option.directory();
+    const files = await option.txUnsignedTransactionFiles({
+      signed: false,
+      path: directory,
+    });
+    const absolutePaths = files.txUnsignedTransactionFiles.map((file) =>
+      path.resolve(path.join(directory, file)),
+    );
+    log.debug('sign-with-key-alias-file:action', {
+      ...wallet,
+      ...key,
+      ...files,
+      directory,
+      ...mode,
+    });
+    return await signTransactionFileWithAliasFile({
+      alias: key.keyAliasSelect,
+      signed: false,
+      wallet: wallet.walletNameConfig!,
+      password: password.securityPassword,
+      files: absolutePaths,
+      legacy: mode.legacy,
+    });
   })();
 
   assertCommandError(result);
