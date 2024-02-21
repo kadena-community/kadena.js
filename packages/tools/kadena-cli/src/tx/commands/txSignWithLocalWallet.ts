@@ -102,7 +102,7 @@ export const createSignTransactionWithLocalWalletCommand: (
   version: string,
 ) => void = createCommandFlexible(
   'sign-with-local-wallet',
-  'Sign a transaction using your local wallet.\nThe transaction can be passed via stdin.\nThe signed transaction fill be saved to file.',
+  'Sign a transaction using your local wallet.\nThe transaction can be passed via stdin.\nThe signed transaction will be saved to file.',
   [
     globalOptions.walletWalletSelect(),
     globalOptions.securityPassword(),
