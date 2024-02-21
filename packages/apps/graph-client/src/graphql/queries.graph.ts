@@ -106,7 +106,18 @@ export const getBlockFromHash: DocumentNode = gql`
       confirmationDepth
       minerAccount {
         guard {
+          predicate
           keys
+        }
+      }
+      parent {
+        hash
+      }
+      events {
+        edges {
+          node {
+            ...AllEventFields
+          }
         }
       }
     }

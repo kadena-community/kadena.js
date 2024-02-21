@@ -15,18 +15,28 @@ type Block implements Node {
   The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.
   """
   epoch: DateTime!
+  events(after: String, before: String, first: Int, last: Int): BlockEventsConnection!
   hash: ID!
   height: BigInt!
   id: ID!
   minerAccount: FungibleChainAccount!
   parent: Block
-  parentHash: String!
   payloadHash: String!
 
   """The proof of work hash."""
   powHash: String!
-  predicate: String!
   transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
+}
+
+type BlockEventsConnection {
+  edges: [BlockEventsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type BlockEventsConnectionEdge {
+  cursor: String!
+  node: Event!
 }
 
 type BlockTransactionsConnection {

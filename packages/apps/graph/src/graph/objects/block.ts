@@ -28,12 +28,10 @@ export default builder.prismaNode('Block', {
         'The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.',
     }),
     height: t.expose('height', { type: 'BigInt' }),
-    parentHash: t.exposeString('parentBlockHash'),
     payloadHash: t.exposeString('payloadHash'),
     powHash: t.exposeString('powHash', {
       description: 'The proof of work hash.',
     }),
-    predicate: t.exposeString('predicate'),
     minerAccount: t.field({
       type: FungibleChainAccount,
       complexity: COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS,
@@ -123,6 +121,47 @@ export default builder.prismaNode('Block', {
             },
             orderBy: {
               height: 'desc',
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
+      },
+    }),
+
+    events: t.prismaConnection({
+      type: 'Event',
+      cursor: 'blockHash_orderIndex_requestKey',
+      edgesNullable: false,
+      complexity: (args) => ({
+        field: getDefaultConnectionComplexity({
+          first: args.first,
+          last: args.last,
+        }),
+      }),
+      select: {
+        hash: true,
+      },
+      async totalCount(parent) {
+        try {
+          return await prismaClient.event.count({
+            where: {
+              blockHash: (parent as Block).hash,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
+      },
+      async resolve(query, parent) {
+        try {
+          return await prismaClient.event.findMany({
+            ...query,
+            where: {
+              blockHash: (parent as Block).hash,
+            },
+            orderBy: {
+              orderIndex: 'asc',
             },
           });
         } catch (error) {
