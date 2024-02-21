@@ -36,7 +36,7 @@
   ],
   "scripts": {
     "build": "pnpm run generate:ts && pnpm run generate:kdn && tsc",
-    "dev": "NODE_ENV=development node --import @swc-node/register/esm-register src/index.ts",
+    "dev": "NODE_ENV=development KADENA_LOG=debug node --import @swc-node/register/esm-register src/index.ts",
     "fast-build": "pnpm run generate:ts && tsc",
     "format": "pnpm run /^format:.*/",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",

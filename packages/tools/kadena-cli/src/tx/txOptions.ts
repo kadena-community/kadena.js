@@ -57,6 +57,7 @@ export const txOptions = {
     option: new Option('--template-data <templateData>', 'template data file'),
     prompt: templateDataPrompt,
     async expand(filePath) {
+      if (filePath === undefined) return null;
       const absolutePath = join(process.cwd(), filePath);
       const exists = await services.filesystem.fileExists(absolutePath);
       const file = await services.filesystem.readFile(
@@ -88,6 +89,31 @@ export const txOptions = {
     ),
     prompt: templateVariables,
     allowUnknownOptions: true,
+    // TODO:
+    // Transform repeats the same logic as in the prompt
+    // This is because prompt can be skipped entirely if quiet=true
+    // But prompt still needs the logic to prevent prompting known variables
+    transform: async (value, args) => {
+      const variableValues: Record<string, string> = value ?? {};
+      const { values, variables, data } = args as {
+        values: string[];
+        variables: string[];
+        data: any;
+      };
+      for (const variable of variables) {
+        // Prioritize variables from data file
+        if (Object.hasOwn(data, variable)) {
+          variableValues[variable] = String(data[variable]);
+          continue;
+        }
+        // Find variables in cli arguments
+        const match = values.find((value) =>
+          value.startsWith(`--${variable}=`),
+        );
+        if (match !== undefined) variableValues[variable] = match.split('=')[1];
+      }
+      return variableValues;
+    },
   }),
 
   txUnsignedCommand: createOption({
