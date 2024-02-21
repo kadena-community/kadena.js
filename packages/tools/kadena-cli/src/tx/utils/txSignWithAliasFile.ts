@@ -9,10 +9,9 @@ import { getWalletKey, toHexStr } from '../../keys/utils/keysHelpers.js';
 import type { IKeyPair } from '../../keys/utils/storage.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
-import { globalOptions } from '../../utils/globalOptions.js';
+import type { CommandOption } from '../../utils/createCommandFlexible.js';
 import { log } from '../../utils/logger.js';
-import { txOptions } from '../txOptions.js';
+import type { options } from '../commands/txSignOptions.js';
 import { parseTransactionsFromStdin } from './input.js';
 import { saveSignedTransactions } from './storage.js';
 import {
@@ -113,68 +112,70 @@ export const signTransactionFileWithAliasFile = async (data: {
   });
 };
 
+export async function signWithAliasFile(
+  option: CommandOption<typeof options>,
+  values: string[],
+  stdin?: string,
+): Promise<void> {
+  const wallet = await option.walletName();
+  if (!wallet.walletNameConfig) throw new Error('wallet not found');
 
-export async function signWithAliasFile(option, values, stdin): Promise<void> {
-    const wallet = await option.walletName();
-    if (!wallet.walletNameConfig) throw new Error('wallet not found');
+  const password = await option.securityPassword();
+  const key = await option.keyAliasSelect({
+    wallet: wallet.walletName,
+  });
+  const mode = await option.legacy();
 
-    const password = await option.securityPassword();
-    const key = await option.keyAliasSelect({
-      wallet: wallet.walletName,
-    });
-    const mode = await option.legacy();
-
-    const result = await (async () => {
-      if (stdin !== undefined) {
-        const command = await parseTransactionsFromStdin(stdin);
-        log.debug('sign-with-key-alias-file:action', {
-          ...wallet,
-          ...key,
-          ...mode,
-          command,
-        });
-        return await signTransactionWithAliasFile({
-          alias: key.keyAliasSelect,
-          signed: false,
-          wallet: wallet.walletNameConfig!,
-          password: password.securityPassword,
-          commands: [command],
-          legacy: mode.legacy,
-        });
-      } else {
-        const { directory } = await option.directory();
-        const files = await option.txUnsignedTransactionFiles({
-          signed: false,
-          path: directory,
-        });
-        const absolutePaths = files.txUnsignedTransactionFiles.map((file) =>
-          path.resolve(path.join(directory, file)),
-        );
-        log.debug('sign-with-key-alias-file:action', {
-          ...wallet,
-          ...key,
-          ...files,
-          directory,
-          ...mode,
-        });
-        return await signTransactionFileWithAliasFile({
-          alias: key.keyAliasSelect,
-          signed: false,
-          wallet: wallet.walletNameConfig!,
-          password: password.securityPassword,
-          files: absolutePaths,
-          legacy: mode.legacy,
-        });
-      }
-    })();
-
-    assertCommandError(result);
-
-    if (result.data.commands.length === 1) {
-      log.output(JSON.stringify(result.data.commands[0], null, 2));
+  const result = await (async () => {
+    if (stdin !== undefined) {
+      const command = await parseTransactionsFromStdin(stdin);
+      log.debug('sign-with-key-alias-file:action', {
+        ...wallet,
+        ...key,
+        ...mode,
+        command,
+      });
+      return await signTransactionWithAliasFile({
+        alias: key.keyAliasSelect,
+        signed: false,
+        wallet: wallet.walletNameConfig!,
+        password: password.securityPassword,
+        commands: [command],
+        legacy: mode.legacy,
+      });
+    } else {
+      const { directory } = await option.directory();
+      const files = await option.txUnsignedTransactionFiles({
+        signed: false,
+        path: directory,
+      });
+      const absolutePaths = files.txUnsignedTransactionFiles.map((file) =>
+        path.resolve(path.join(directory, file)),
+      );
+      log.debug('sign-with-key-alias-file:action', {
+        ...wallet,
+        ...key,
+        ...files,
+        directory,
+        ...mode,
+      });
+      return await signTransactionFileWithAliasFile({
+        alias: key.keyAliasSelect,
+        signed: false,
+        wallet: wallet.walletNameConfig!,
+        password: password.securityPassword,
+        files: absolutePaths,
+        legacy: mode.legacy,
+      });
     }
-    result.data.commands.forEach((tx) => {
-      log.info(`Signed transaction saved to ${tx.path}`);
-    });
-  },
-);
+  })();
+
+  assertCommandError(result);
+
+  if (result.data.commands.length === 1) {
+    log.output(JSON.stringify(result.data.commands[0], null, 2));
+  }
+  result.data.commands.forEach((tx) => {
+    log.info(`Signed transaction saved to ${tx.path}`);
+  });
+}

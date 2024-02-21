@@ -5,7 +5,9 @@ import type { ICommand, IUnsignedCommand } from '@kadena/types';
 import type { IKeyPair } from '../../keys/utils/storage.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
+import type { CommandOption } from '../../utils/createCommandFlexible.js';
 import { log } from '../../utils/logger.js';
+import type { options } from '../commands/txSignOptions.js';
 import { parseTransactionsFromStdin } from './input.js';
 import { saveSignedTransactions } from './storage.js';
 import {
@@ -85,7 +87,11 @@ export const signTransactionFileWithKeyPairAction = async (data: {
  * @param {Command} program - The commander program.
  * @param {string} version - The version of the command.
  */
-export async function signWithKeypair(option, values, stdin): Promise<void> {
+export async function signWithKeypair(
+  option: CommandOption<typeof options>,
+  values: string[],
+  stdin?: string,
+): Promise<void> {
   const key = await option.keyPairs();
   const mode = await option.legacy();
 
