@@ -115,7 +115,7 @@ export const signTransactionFileWithAliasFile = async (data: {
 
 export const createSignTransactionWithAliasFileCommand = createCommandFlexible(
   'sign-with-alias-file',
-  'Sign a transaction using your local aliased file containing your keypair.\nThe transaction can be passed via stdin.\nThe signed transaction fill be saved to file.',
+  'Sign a transaction using your local aliased file containing your keypair.\nThe transaction can be passed via stdin.\nThe signed transaction will be saved to file.',
   [
     globalOptions.walletWalletSelect(),
     globalOptions.securityPassword(),
