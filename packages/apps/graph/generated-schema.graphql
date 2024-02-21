@@ -6,9 +6,6 @@ scalar BigInt
 """A unit of information that stores a set of verified transactions."""
 type Block implements Node {
   chainId: BigInt!
-
-  """The number of blocks that proceed this block."""
-  confirmationDepth: Int!
   creationTime: DateTime!
 
   """
@@ -241,6 +238,9 @@ type Query {
   """Retrieve a block by hash."""
   block(hash: String!): Block
 
+  """Retrieve blocks by chain and minimal depth."""
+  blocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
+
   """Retrieve blocks by chain and minimal height."""
   blocksFromHeight(chainIds: [String!], startHeight: Int!): [Block!]!
 
@@ -376,6 +376,9 @@ type Subscription {
 
   """Subscribe to new blocks."""
   newBlocks(chainIds: [Int!]): [ID!]
+
+  """Subscribe to new blocks from a specific depth."""
+  newBlocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [ID!]
 
   """
   Listen for a transaction by request key. Returns the ID when it is in a block.
