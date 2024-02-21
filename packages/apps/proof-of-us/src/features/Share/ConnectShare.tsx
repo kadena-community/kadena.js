@@ -4,6 +4,7 @@ import { SavedImagePositions } from '@/components/ImagePositions/SavedImagePosit
 import { MetaDetails } from '@/components/MetaList/MetaDetails';
 import { MetaList } from '@/components/MetaList/MetaList';
 import { MetaTerm } from '@/components/MetaList/MetaTerm';
+import { Signees } from '@/components/Signees/Signees';
 import { SocialShare } from '@/components/SocialShare/SocialShare';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { Heading } from '@/components/Typography/Heading';
@@ -61,6 +62,7 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
 
         <Stack
           flexDirection="column"
+          paddingInline="md"
           style={{
             position: 'relative',
             height: '100px',
@@ -69,6 +71,7 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
           }}
         >
           <Heading as="h6">Signees</Heading>
+          <Signees signees={data.properties.signees} authors={data.authors} />
           <Heading as="h6">Metadata</Heading>
           <MetaList>
             <MetaTerm>block explorer</MetaTerm>

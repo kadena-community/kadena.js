@@ -2,7 +2,7 @@ import { getContrast } from '@/utils/getContrast';
 import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';
 import type { FC } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import {
   dateClass,
   dateTitleClass,
