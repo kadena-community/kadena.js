@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mockPrompts, runCommand } from '../../utils/test.util.js';
 
-describe('tx create-transaction', () => {
+describe('tx add', () => {
   it('Prompts values and writes the transaction file', async () => {
     mockPrompts({
       input: {
@@ -15,7 +15,7 @@ describe('tx create-transaction', () => {
       },
     });
 
-    const logs = await runCommand(['tx', 'create-transaction']);
+    const logs = await runCommand(['tx', 'add']);
     expect(logs.includes('transaction saved to')).toEqual(true);
   });
 });
