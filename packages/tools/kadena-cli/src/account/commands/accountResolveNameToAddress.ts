@@ -3,6 +3,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { accountOptions } from '../accountOptions.js';
 import { kdnResolveNameToAddress } from '../utils/txKdnResolverChain.js';
 
 export const resolveNameToAddress = async (
@@ -39,7 +40,7 @@ export const resolveNameToAddressCommand = createCommandFlexible(
   'Resolve a .kda name to a k:address (kadenanames)',
   [
     globalOptions.network({ isOptional: false }),
-    globalOptions.accountKdnName(),
+    accountOptions.accountKdnName(),
   ],
   async (option) => {
     const kadena = await option.network({
