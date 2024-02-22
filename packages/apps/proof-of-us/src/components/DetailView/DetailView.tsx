@@ -8,7 +8,6 @@ import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
 import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
-import { SocialsEditor } from '../SocialsEditor/SocialsEditor';
 import { TextField } from '../TextField/TextField';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 import { imageWrapper, titleErrorClass } from './style.css';
@@ -96,8 +95,6 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
             onChange={handleTitleChange}
             defaultValue={proofOfUs.title}
           />
-
-          <SocialsEditor />
         </>
       ) : (
         <ImagePositions />

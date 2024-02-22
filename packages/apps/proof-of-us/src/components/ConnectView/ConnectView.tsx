@@ -1,7 +1,6 @@
 import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
-import { SocialsEditor } from '@/components/SocialsEditor/SocialsEditor';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useSignToken } from '@/hooks/data/signToken';
 import { useSubmit } from '@/hooks/submit';
@@ -30,7 +29,6 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
         <TitleHeader label="Details" />
 
         <h3>{proofOfUs.title}</h3>
-        <SocialsEditor />
         <ImagePositions />
 
         <div>status: {proofOfUs?.mintStatus}</div>

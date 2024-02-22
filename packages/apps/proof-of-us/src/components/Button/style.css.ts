@@ -12,3 +12,8 @@ export const buttonClass = style([
     width: '100%',
   },
 ]);
+
+export const secondaryClass = style({
+  color: deviceColors.kadenaFont,
+  border: `1px solid ${deviceColors.kadenaFont}`,
+});
