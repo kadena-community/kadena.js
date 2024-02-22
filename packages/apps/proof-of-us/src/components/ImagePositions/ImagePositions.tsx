@@ -5,7 +5,8 @@ import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import type { FC, MouseEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Modal } from '../Modal/Modal';
-import { signeeClass, signeeClassWrapper, wrapperClass } from './style.css';
+import { SigneePosition } from '../Signees/SigneePosition';
+import { imageClass, wrapperClass } from './style.css';
 
 interface IProps {}
 
@@ -47,7 +48,7 @@ export const ImagePositions: FC<IProps> = () => {
     const wrapper = wrapperRef.current;
     const img = imgRef.current;
 
-    const elms = wrapper.querySelectorAll('div');
+    const elms = wrapper.querySelectorAll('button');
 
     elms.forEach((elm) => {
       const xPercentage: number = parseFloat(
@@ -62,7 +63,7 @@ export const ImagePositions: FC<IProps> = () => {
         return;
       }
 
-      const [xPos, yPos] = getPosition<HTMLDivElement>(elm, img, {
+      const [xPos, yPos] = getPosition<HTMLButtonElement>(elm, img, {
         xPercentage,
         yPercentage,
       });
@@ -108,23 +109,20 @@ export const ImagePositions: FC<IProps> = () => {
       )}
       <section ref={wrapperRef} className={wrapperClass}>
         <img
+          className={imageClass}
           ref={imgRef}
           src={background.bg}
           onClick={handleClick}
           onLoad={() => setIsMounted(true)}
         />
         {proofOfUs?.signees.map((s, idx) => (
-          <span key={s.accountName}>
-            <div
-              className={signeeClassWrapper}
-              data-xpercentage={s.position?.xPercentage}
-              data-ypercentage={s.position?.yPercentage}
-            >
-              <button className={signeeClass} onClick={handleRemove}>
-                {idx}
-              </button>
-            </div>
-          </span>
+          <SigneePosition
+            variant="small"
+            key={s.accountName}
+            position={s?.position}
+            onClick={handleRemove}
+            idx={idx}
+          />
         ))}
       </section>
     </>

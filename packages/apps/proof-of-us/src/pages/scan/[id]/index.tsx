@@ -1,5 +1,5 @@
 import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
-import ScanLayout from '@/components/ScanLayout/ScanLayout';
+import UserLayout from '@/components/UserLayout/UserLayout';
 import { ConnectPage } from '@/features/ConnectPage/ConnectPage';
 import type { NextPage, NextPageContext } from 'next';
 
@@ -12,9 +12,9 @@ interface IProps {
 const Page: NextPage<IProps> = ({ params }) => {
   return (
     <ProofOfUsProvider>
-      <ScanLayout>
+      <UserLayout>
         <ConnectPage params={params} />
-      </ScanLayout>
+      </UserLayout>
     </ProofOfUsProvider>
   );
 };

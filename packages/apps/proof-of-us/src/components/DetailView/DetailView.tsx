@@ -2,12 +2,18 @@ import { Button } from '@/components/Button/Button';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
-import { MonoArrowBack, MonoClose } from '@kadena/react-icons';
+import {
+  MonoArrowBack,
+  MonoClose,
+  MonoQrCodeScanner,
+} from '@kadena/react-icons';
+import { Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/navigation';
 import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
 import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
+import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { TextField } from '../TextField/TextField';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 import { imageWrapper, titleErrorClass } from './style.css';
@@ -60,7 +66,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   if (!isMounted) return null;
 
   return (
-    <section>
+    <ScreenHeight>
       <TitleHeader
         Prepend={() => (
           <>
@@ -100,10 +106,11 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         <ImagePositions />
       )}
 
+      <Stack flex={1} />
       <Button variant="primary" onPress={handleShare}>
-        Share
+        Share <MonoQrCodeScanner />
       </Button>
       {titleError && <div className={titleErrorClass}>{titleError}</div>}
-    </section>
+    </ScreenHeight>
   );
 };

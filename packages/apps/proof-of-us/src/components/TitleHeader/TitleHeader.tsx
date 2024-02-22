@@ -11,7 +11,6 @@ interface IProps {
 export const TitleHeader: FC<IProps> = ({ label, Prepend, Append }) => {
   return (
     <Stack
-      flex={1}
       display="flex"
       alignItems="center"
       gap="md"

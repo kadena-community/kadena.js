@@ -5,9 +5,10 @@ import { style } from '@vanilla-extract/css';
 export const textClass = style([
   atoms({
     padding: 'md',
-    borderRadius: 'md',
+    borderRadius: 'sm',
     width: '100%',
     fontSize: 'base',
+    fontWeight: 'bodyFont.bold',
   }),
   {
     color: deviceColors.kadenaFont,

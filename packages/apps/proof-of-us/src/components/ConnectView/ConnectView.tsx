@@ -1,11 +1,15 @@
 import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
-import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useSignToken } from '@/hooks/data/signToken';
 import { useSubmit } from '@/hooks/submit';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { MonoSignature } from '@kadena/react-icons';
+import { Stack } from '@kadena/react-ui';
 import type { FC } from 'react';
+import { Button } from '../Button/Button';
+import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
+import { TextField } from '../TextField/TextField';
 
 interface IProps {
   proofOfUs: IProofOfUsData;
@@ -23,20 +27,27 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
   if (!proofOfUs) return null;
 
   return (
-    <>
+    <ScreenHeight>
       {isStatusLoading && <MainLoader />}
-      <section>
-        <TitleHeader label="Details" />
 
-        <h3>{proofOfUs.title}</h3>
-        <ImagePositions />
+      <TitleHeader label="Details" />
 
-        <div>status: {proofOfUs?.mintStatus}</div>
-        <ListSignees />
-        {!isAlreadySigning(proofOfUs.signees) && (
-          <button onClick={handleJoin}>Sign</button>
-        )}
-      </section>
-    </>
+      <ImagePositions />
+
+      <div>status: {proofOfUs?.mintStatus}</div>
+
+      <TextField
+        name="title"
+        placeholder="Title"
+        disabled
+        defaultValue={proofOfUs.title}
+      />
+      <Stack flex={1} />
+      {!isAlreadySigning(proofOfUs.signees) && (
+        <Button onPress={handleJoin}>
+          Sign <MonoSignature />
+        </Button>
+      )}
+    </ScreenHeight>
   );
 };

@@ -4,7 +4,12 @@ import { style } from '@vanilla-extract/css';
 
 export const buttonClass = style([
   atoms({
-    padding: 'md',
+    display: 'flex',
+    gap: 'md',
+    paddingInline: 'sm',
+    paddingBlock: 'md',
+    justifyContent: 'center',
+    alignItems: 'center',
   }),
   {
     color: deviceColors.kadenaBlack,
