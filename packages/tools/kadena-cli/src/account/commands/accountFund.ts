@@ -23,7 +23,7 @@ import { fund } from '../utils/fund.js';
 
 /* bin/kadena-cli.js account fund --account="testnet.yaml" --amount="20" --network="testnet" --chain-id="0" */
 
-export const createFundCommand = createCommandFlexible(
+export const createAccountFundCommand = createCommandFlexible(
   'fund',
   'Fund an existing/new account',
   [

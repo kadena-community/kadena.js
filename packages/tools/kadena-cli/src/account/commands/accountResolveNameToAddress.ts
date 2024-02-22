@@ -35,7 +35,7 @@ export const resolveNameToAddress = async (
   }
 };
 
-export const resolveNameToAddressCommand = createCommandFlexible(
+export const createResolveNameToAddressCommand = createCommandFlexible(
   'name-to-address',
   'Resolve a .kda name to a k:address (kadenanames)',
   [
