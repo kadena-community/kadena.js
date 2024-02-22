@@ -12,7 +12,7 @@ export const deviceColors = {
   violet: '#5258E4',
   lightPurple: '#ACAFFF',
   lightBlue: '#96CEFD',
-  green: '#AAD816',
+  green: '#27BB36',
   yellow: '#E8C600',
   salmon: '#FFB7A9',
   skin: '#FFB2CE',

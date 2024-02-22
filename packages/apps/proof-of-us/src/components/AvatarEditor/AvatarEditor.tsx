@@ -8,6 +8,7 @@ import {
   cameraButton,
   cameraClass,
   cameraWrapperClass,
+  canvasClass,
   hiddenClass,
   wrapperClass,
 } from './styles.css';
@@ -18,6 +19,7 @@ interface IProps {
 
 export const AvatarEditor: FC<IProps> = ({ next }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
@@ -41,7 +43,37 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
       .getUserMedia({ audio: false, video: true })
       .then((stream) => {
         if (!videoRef.current) return;
+        if (!canvasRef.current) return;
+
         videoRef.current.srcObject = stream;
+        const containerWidth = (videoRef.current.parentNode as HTMLElement)
+          ?.offsetWidth;
+        const containerHeight = (videoRef.current.parentNode as HTMLElement)
+          ?.offsetHeight;
+
+        canvasRef.current.width = containerWidth * 0.9;
+        canvasRef.current.height = containerWidth * 0.9;
+        const topIndent = 30;
+        const context = canvasRef.current.getContext('2d');
+        function updateCanvas() {
+          if (!videoRef.current) return;
+          if (!canvasRef.current) return;
+
+          const newWidth =
+            (videoRef.current.videoWidth * containerHeight) /
+            videoRef.current.videoHeight;
+
+          context?.drawImage(
+            videoRef.current,
+            canvasRef.current.width / 2 - newWidth / 2,
+            -topIndent,
+            newWidth,
+            containerHeight,
+          );
+
+          window.requestAnimationFrame(updateCanvas);
+        }
+        requestAnimationFrame(updateCanvas);
       })
       .catch((e) => {
         alert('The browser needs permissions for the camera to work');
@@ -53,20 +85,16 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     evt.preventDefault();
 
     if (!videoRef.current) return;
+    if (!canvasRef.current) return;
 
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 800;
-    canvas.height = 800;
-    ctx?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    const context = canvasRef.current.getContext('2d');
 
-    //get color
-    ctx?.drawImage(videoRef.current, 0, 0, 1, 1);
-    const color = `rgba(${ctx?.getImageData(0, 0, 1, 1).data.join(',')})`;
+    // get color
+    const color = `rgba(${context?.getImageData(0, 0, 1, 1).data.join(',')})`;
 
     if (!proofOfUs) return;
 
-    await addBackground(proofOfUs, { bg: canvas.toDataURL() });
+    await addBackground(proofOfUs, { bg: canvasRef.current.toDataURL() });
     await updateBackgroundColor(color);
     (videoRef.current?.srcObject as MediaStream)
       ?.getTracks()
@@ -84,6 +112,10 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
           !isMounted ? hiddenClass : '',
         )}
       >
+        <canvas
+          ref={canvasRef}
+          className={classnames(canvasClass, !isMounted ? hiddenClass : '')}
+        ></canvas>
         <video
           className={classnames(cameraClass, !isMounted ? hiddenClass : '')}
           ref={videoRef}

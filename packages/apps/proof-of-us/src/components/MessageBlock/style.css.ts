@@ -8,6 +8,15 @@ export const errorWrapperClass = style([
   }),
   {
     backgroundColor: deviceColors.backgroundTransparentColor,
-    border: `1px solid  ${deviceColors.red}`,
+
+    wordWrap: 'break-word',
+    selectors: {
+      '&[data-type="error"]': {
+        border: `1px solid  ${deviceColors.red}`,
+      },
+      '&[data-type="success"]': {
+        border: `1px solid  ${deviceColors.green}`,
+      },
+    },
   },
 ]);

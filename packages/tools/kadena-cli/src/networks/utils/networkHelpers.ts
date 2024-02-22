@@ -10,7 +10,7 @@ import {
   sanitizeFilename,
 } from '../../utils/helpers.js';
 
-import { existsSync, mkdirSync, readFileSync, readdirSync } from 'fs';
+import { existsSync, readFileSync, readdirSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
 import { z } from 'zod';
@@ -137,12 +137,10 @@ export function loadNetworkConfig(
 }
 
 export async function ensureNetworksConfiguration(): Promise<void> {
-  if (!existsSync(defaultNetworksPath)) {
-    mkdirSync(defaultNetworksPath, { recursive: true });
-  }
+  await services.filesystem.ensureDirectoryExists(defaultNetworksPath);
 
   for (const [network, filePath] of Object.entries(networkFiles)) {
-    if (!existsSync(filePath)) {
+    if (!(await services.filesystem.fileExists(filePath))) {
       await writeNetworks(networkDefaults[network]);
     }
   }

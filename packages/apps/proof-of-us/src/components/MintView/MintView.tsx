@@ -12,8 +12,8 @@ import { Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
-import { ErrorBlock } from '../ErrorBlock/ErrorBlock';
 import { IconButton } from '../IconButton/IconButton';
+import { MessageBlock } from '../MessageBlock/MessageBlock';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 import { Heading } from '../Typography/Heading';
@@ -29,6 +29,10 @@ export const MintView: FC<IProps> = ({ prev }) => {
   const { doSubmit, isStatusLoading, status, result } = useSubmit();
   const { uploadBackground } = useAvatar();
   const router = useRouter();
+
+  const handleGoToProof = async () => {
+    alert('we need to implement this');
+  };
 
   const handleMint = async () => {
     if (!proofOfUs) return;
@@ -85,9 +89,9 @@ export const MintView: FC<IProps> = ({ prev }) => {
             <Stack flex={1} />
             <Stack flexDirection="column" gap="md">
               <Heading as="h6">Transaction Failed</Heading>
-              <ErrorBlock>
-                <pre>{JSON.stringify(result, null, 2)}</pre>
-              </ErrorBlock>
+              <MessageBlock variant="error">
+                {JSON.stringify(result, null, 2)}
+              </MessageBlock>
               <Stack gap="md">
                 <Button variant="secondary" onPress={handleClose}>
                   Dashboard
@@ -107,6 +111,20 @@ export const MintView: FC<IProps> = ({ prev }) => {
             </Stack>
             <ListSignees />
             <Stack flex={1} />
+            <Stack flexDirection="column" gap="md">
+              <Heading as="h6">Transaction Success</Heading>
+              <MessageBlock variant="success">
+                {JSON.stringify(result, null, 2)}
+              </MessageBlock>
+              <Stack gap="md">
+                <Button variant="secondary" onPress={handleClose}>
+                  Dashboard
+                </Button>
+                <Button variant="primary" onPress={handleGoToProof}>
+                  Proof Detauls
+                </Button>
+              </Stack>
+            </Stack>
           </>
         )}
       </>
