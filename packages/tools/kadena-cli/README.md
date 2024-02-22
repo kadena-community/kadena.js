@@ -29,6 +29,18 @@
 
 # KADENA CLI
 
+The Kadena CLI embodies our commitment to simplicity, power, and flexibility for
+developers. It's crafted to streamline your development process, offering direct
+and efficient access to Kadena's blockchain capabilities. This tool caters to
+the pragmatic needs of developers by providing a straightforward, command-line
+interface that integrates seamlessly into your workflow, allowing you to focus
+on building robust, innovative applications without the overhead of unnecessary
+complexity. Our philosophy centers on empowering developers with the tools they
+need to unlock the full potential of the kadena blockchain, in a clear and
+concise manner.
+
+# KADENA GUIDE
+
 Command Line Interface
 
 Welcome to the Kadena CLI guide, your all-encompassing manual for mastering the
@@ -661,7 +673,7 @@ kadena tx sign [arguments]
 example:
 
 ```
-kadena tx sign-with-local-wallet --key-wallet="mywallet.wallet" --security-password=12345678 --tx-unsigned-transaction-files="transaction-(request-key)-signed.json"
+kadena tx sign --tx-sign-with="localWallet"  --key-wallet="mywallet.wallet" --security-password=12345678 --tx-unsigned-transaction-files="transaction-(request-key)-signed.json"
 ```
 
 password will be hidden after entry: --security-password=\*
@@ -725,7 +737,7 @@ kadena dapp add [arguments]
 example:
 
 ```
-kadena dapp add --dapp-template="vuejs" danillo
+kadena dapp add --dapp-template="vuejs" kadena-dapp
 ```
 
 ---
