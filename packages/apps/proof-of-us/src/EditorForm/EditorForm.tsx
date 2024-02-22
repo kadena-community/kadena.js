@@ -1,7 +1,7 @@
 import { Button } from '@/components/Button/Button';
 import { TextField } from '@/components/TextField/TextField';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { SocialIcons, getSocial } from '@/pages/user/getSocial';
+import { SocialIcons, getSocial } from '@/utils/getSocial';
 import { Stack } from '@kadena/react-ui';
 import type { ChangeEventHandler, FC, FormEventHandler } from 'react';
 import { useEffect, useState } from 'react';
