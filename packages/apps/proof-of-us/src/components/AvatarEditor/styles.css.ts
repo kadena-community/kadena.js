@@ -81,4 +81,5 @@ export const canvasClass = style({
   zIndex: '1',
   border: '2px solid rgba(255, 255, 255, 0.40)',
   borderRadius: '8px',
+  boxSizing: 'border-box',
 });

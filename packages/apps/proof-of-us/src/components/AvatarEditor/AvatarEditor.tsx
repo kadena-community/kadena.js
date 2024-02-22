@@ -19,7 +19,7 @@ interface IProps {
 
 export const AvatarEditor: FC<IProps> = ({ next }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
@@ -46,8 +46,8 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
         if (!canvasRef.current) return;
 
         videoRef.current.srcObject = stream;
-        const containerWidth = videoRef.current.parentNode?.offsetWidth;
-        const containerHeight = videoRef.current.parentNode?.offsetHeight;
+        const containerWidth = (videoRef.current.parentNode as HTMLElement)?.offsetWidth;
+        const containerHeight = (videoRef.current.parentNode as HTMLElement)?.offsetHeight;
 
         canvasRef.current.width = containerWidth * 0.9;
         canvasRef.current.height = containerWidth * 0.9;
@@ -55,7 +55,9 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
         const context = canvasRef.current.getContext('2d');
         function updateCanvas() {
           if (!videoRef.current) return;
-          let newWidth = (videoRef.current.videoWidth * containerHeight) / videoRef.current.videoHeight;
+          if (!canvasRef.current) return;
+
+          const newWidth = (videoRef.current.videoWidth * containerHeight) / videoRef.current.videoHeight;
 
           context?.drawImage(videoRef.current,
             (canvasRef.current.width / 2) - (newWidth / 2),
