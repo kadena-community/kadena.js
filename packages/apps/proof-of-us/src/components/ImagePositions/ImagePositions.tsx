@@ -1,14 +1,12 @@
+import { EditorForm } from '@/EditorForm/EditorForm';
 import { useAccount } from '@/hooks/account';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
-import type { ChangeEventHandler, FC, MouseEventHandler } from 'react';
+import type { FC, MouseEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import {
-  signeeClass,
-  signeeClassWrapper,
-  signeeInputClass,
-  wrapperClass,
-} from './style.css';
+import { Modal } from '../Modal/Modal';
+import { SigneePosition } from '../Signees/SigneePosition';
+import { imageClass, wrapperClass } from './style.css';
 
 interface IProps {}
 
@@ -20,6 +18,7 @@ export const ImagePositions: FC<IProps> = () => {
   const [signer, setSigner] = useState<IProofOfUsSignee>();
   const imgRef = useRef<HTMLImageElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
 
   useEffect(() => {
     setSigner(
@@ -49,12 +48,9 @@ export const ImagePositions: FC<IProps> = () => {
     const wrapper = wrapperRef.current;
     const img = imgRef.current;
 
-    const elms = wrapper.querySelectorAll('div');
-    const inputs = wrapper.querySelectorAll('input');
+    const elms = wrapper.querySelectorAll('button');
 
-    elms.forEach((elm, idx) => {
-      const input = inputs[idx];
-
+    elms.forEach((elm) => {
       const xPercentage: number = parseFloat(
         elm.getAttribute('data-xpercentage') ?? '0',
       );
@@ -64,11 +60,10 @@ export const ImagePositions: FC<IProps> = () => {
 
       if (!xPercentage || !yPercentage) {
         elm.setAttribute('style', `display: none`);
-        input.setAttribute('style', `display: none`);
         return;
       }
 
-      const [xPos, yPos] = getPosition<HTMLDivElement>(elm, img, {
+      const [xPos, yPos] = getPosition<HTMLButtonElement>(elm, img, {
         xPercentage,
         yPercentage,
       });
@@ -76,21 +71,6 @@ export const ImagePositions: FC<IProps> = () => {
       elm.setAttribute(
         'style',
         `display: flex; top: ${yPos}px; left: ${xPos}px;`,
-      );
-
-      //input
-      const [xPosMarker, yPosMarker] = getPosition<HTMLInputElement>(
-        input,
-        img,
-        {
-          xPercentage,
-          yPercentage,
-        },
-      );
-
-      input.setAttribute(
-        'style',
-        `display: flex; top: ${yPosMarker}px; left: ${xPosMarker}px;`,
       );
     });
   };
@@ -106,6 +86,7 @@ export const ImagePositions: FC<IProps> = () => {
 
   const handleClick: MouseEventHandler<HTMLImageElement> = (e) => {
     if (!imgRef.current || isLocked) return;
+    setIsEditorOpen(true);
 
     // Calculate the coordinates relative to the image
     const rect = imgRef.current.getBoundingClientRect();
@@ -115,47 +96,33 @@ export const ImagePositions: FC<IProps> = () => {
     updateSigner({ position: { xPercentage, yPercentage } });
   };
 
-  const handleLabelChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    //TODO: this needs to debounce
-
-    updateSigner({
-      label: e.target.value,
-    });
-  };
-
   const handleRemove = () => {
     updateSigner({ position: null });
   };
 
   return (
     <>
+      {isEditorOpen && (
+        <Modal label="Add details" onClose={() => setIsEditorOpen(false)}>
+          <EditorForm signer={signer} onClose={() => setIsEditorOpen(false)} />
+        </Modal>
+      )}
       <section ref={wrapperRef} className={wrapperClass}>
         <img
+          className={imageClass}
           ref={imgRef}
           src={background.bg}
           onClick={handleClick}
           onLoad={() => setIsMounted(true)}
         />
         {proofOfUs?.signees.map((s, idx) => (
-          <span key={s.accountName}>
-            <div
-              className={signeeClassWrapper}
-              data-xpercentage={s.position?.xPercentage}
-              data-ypercentage={s.position?.yPercentage}
-            >
-              <button className={signeeClass} onClick={handleRemove}>
-                {idx}
-              </button>
-            </div>
-            <input
-              className={signeeInputClass}
-              value={s.label}
-              disabled={signer?.accountName !== s.accountName || isLocked}
-              type="text"
-              name="label"
-              onChange={handleLabelChange}
-            />
-          </span>
+          <SigneePosition
+            variant="small"
+            key={s.accountName}
+            position={s?.position}
+            onClick={handleRemove}
+            idx={idx}
+          />
         ))}
       </section>
     </>

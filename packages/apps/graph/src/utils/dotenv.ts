@@ -9,7 +9,6 @@ export const dotenv: {
   COMPLEXITY_ENABLED: boolean;
   COMPLEXITY_EXPOSED: boolean;
   DATABASE_URL: string;
-  MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH: number;
   NETWORK_HOST: string;
   NETWORK_ID: string;
   PORT: number;
@@ -46,10 +45,6 @@ export const dotenv: {
   DATABASE_URL: or(
     process.env.DATABASE_URL,
     'postgresql://devnet@localhost:5432/devnet?pool_timeout=0',
-  ),
-  MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH: parseInt(
-    or(process.env.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH, '7'),
-    10,
   ),
   NETWORK_HOST: or(process.env.NETWORK_HOST, 'http://localhost:8080'),
   NETWORK_ID: or(process.env.NETWORK_ID, 'fast-development'),

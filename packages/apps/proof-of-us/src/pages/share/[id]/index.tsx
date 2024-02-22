@@ -10,9 +10,10 @@ interface IProps {
     id: string;
   };
   data?: IProofOfUsTokenMeta;
+  metadataUri?: string;
 }
 
-const Page: NextPage<IProps> = ({ params, data }) => {
+const Page: NextPage<IProps> = ({ params, data, metadataUri }) => {
   if (!data) return null;
   return (
     <>
@@ -58,7 +59,7 @@ const Page: NextPage<IProps> = ({ params, data }) => {
         <meta key="og:image" property="og:image" content={data.image} />
       </Head>
       <ProofOfUsProvider>
-        <Share tokenId={params.id} data={data} />;
+        <Share tokenId={params.id} data={data} metadataUri={metadataUri} />;
       </ProofOfUsProvider>
     </>
   );
@@ -73,7 +74,7 @@ export const getServerSideProps = async (
   const data = await fetchManifestData(uri);
 
   return {
-    props: { params: { id: `${ctx.query.id}` }, data },
+    props: { params: { id: `${ctx.query.id}` }, data, metadataUri: uri },
   };
 };
 

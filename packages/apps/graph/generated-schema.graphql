@@ -6,27 +6,34 @@ scalar BigInt
 """A unit of information that stores a set of verified transactions."""
 type Block implements Node {
   chainId: BigInt!
-
-  """The number of blocks that proceed this block."""
-  confirmationDepth: Int!
   creationTime: DateTime!
 
   """
   The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.
   """
   epoch: DateTime!
+  events(after: String, before: String, first: Int, last: Int): BlockEventsConnection!
   hash: ID!
   height: BigInt!
   id: ID!
   minerAccount: FungibleChainAccount!
   parent: Block
-  parentHash: String!
   payloadHash: String!
 
   """The proof of work hash."""
   powHash: String!
-  predicate: String!
   transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
+}
+
+type BlockEventsConnection {
+  edges: [BlockEventsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type BlockEventsConnectionEdge {
+  cursor: String!
+  node: Event!
 }
 
 type BlockTransactionsConnection {
@@ -65,6 +72,7 @@ type Event implements Node {
   """
   orderIndex: BigInt!
   parameterText: String!
+  parameters: String
 
   """
   The full eventname, containing module and eventname, e.g. coin.TRANSFER
@@ -151,9 +159,6 @@ type GasLimitEstimation {
 
 """General information about the graph and chainweb-data."""
 type GraphConfiguration {
-  """The maximum number of confirmations calculated on this endpoint."""
-  maximumConfirmationDepth: Int!
-
   """The lowest block-height that is indexed in this endpoint."""
   minimumBlockHeight: BigInt
 }
@@ -241,6 +246,9 @@ type Query {
   """Retrieve a block by hash."""
   block(hash: String!): Block
 
+  """Retrieve blocks by chain and minimal depth."""
+  blocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
+
   """Retrieve blocks by chain and minimal height."""
   blocksFromHeight(chainIds: [String!], startHeight: Int!): [Block!]!
 
@@ -251,17 +259,23 @@ type Query {
   event(blockHash: String!, orderIndex: Int!, requestKey: String!): Event
 
   """Retrieve events."""
-  events(after: String, before: String, first: Int, last: Int, qualifiedEventName: String!): QueryEventsConnection!
+  events(after: String, before: String, chainId: String, first: Int, last: Int, parametersFilter: String, qualifiedEventName: String!): QueryEventsConnection!
 
   """
   Retrieve an fungible specific account by its name and fungible, such as coin.
   """
   fungibleAccount(accountName: String!, fungibleName: String!): FungibleAccount
 
+  """Retrieve an account by public key."""
+  fungibleAccountByPublicKey(publicKey: String!): FungibleAccount
+
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
   fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
+
+  """Retrieve a chain account by public key."""
+  fungibleChainAccountByPublicKey(chainId: String!, publicKey: String!): FungibleChainAccount
 
   """Estimate the gas limit for a transaction."""
   gasLimitEstimate(input: String!): GasLimitEstimation!
@@ -372,10 +386,13 @@ type Signer implements Node {
 
 type Subscription {
   """Listen for events by qualifiedName (e.g. `coin.TRANSFER`)."""
-  events(qualifiedEventName: String!): [ID!]
+  events(chainId: String, parametersFilter: String, qualifiedEventName: String!): [ID!]
 
   """Subscribe to new blocks."""
   newBlocks(chainIds: [Int!]): [ID!]
+
+  """Subscribe to new blocks from a specific depth."""
+  newBlocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [ID!]
 
   """
   Listen for a transaction by request key. Returns the ID when it is in a block.

@@ -30,6 +30,7 @@ export const useSubmit = () => {
 
     const res = await client.local(tx);
     setPreview(res);
+    console.log(res);
   };
 
   useEffect(() => {
@@ -38,13 +39,15 @@ export const useSubmit = () => {
     processTransaction(transaction);
   }, [transaction]);
 
-  const doSubmit = async () => {
-    if (!transaction) return;
+  const doSubmit = async (txArg?: string) => {
+    const innerTransaction = txArg ?? transaction;
+    if (!innerTransaction) return;
     const client = createClient();
 
     setStatus(SubmitStatus.LOADING);
 
-    const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
+    const tx = JSON.parse(Buffer.from(innerTransaction, 'base64').toString());
+
     try {
       const txRes = await client.submit(tx);
       const result = await client.listen(txRes);

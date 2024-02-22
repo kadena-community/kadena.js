@@ -18,6 +18,11 @@ export type OptionConfig<Option extends OptionType> = {
     }
   : {});
 
+type PromptFn = (
+  args: Record<string, unknown>,
+  originalArgs: Record<string, unknown>,
+) => unknown;
+
 export async function executeOption<Option extends OptionType>(
   option: Option,
   args: Record<string, unknown> = {},
@@ -32,9 +37,7 @@ export async function executeOption<Option extends OptionType>(
 
   if (value === undefined && option.isInQuestions) {
     if (args.quiet !== true && args.quiet !== 'true') {
-      // @ts-ignore prompt is called with two arguments, it's typings here are wrong
-      // but it is hard to fix while other types correct because prompt overwrites itself in createOption
-      value = await option.prompt(args, originalArgs);
+      value = await (option.prompt as PromptFn)(args, originalArgs);
     } else if (option.isOptional === false) {
       throw new Error(
         `Missing required argument: ${option.key} (${option.option.flags})`,
@@ -90,15 +93,17 @@ const printCommandExecution = (
   );
 };
 
+export type CommandOption<T extends OptionType[]> = {
+  [K in T[number]['key']]: (
+    customArgs?: Record<string, unknown>,
+  ) => Promise<Prettify<OptionConfig<Extract<T[number], { key: K }>>>>;
+};
+
 export const createCommandFlexible =
   <
     T extends OptionType[],
     C extends (
-      option: {
-        [K in T[number]['key']]: (
-          customArgs?: Record<string, unknown>,
-        ) => Promise<Prettify<OptionConfig<Extract<T[number], { key: K }>>>>;
-      },
+      option: CommandOption<T>,
       /** command arguments */
       values: string[],
       stdin?: string,
@@ -110,7 +115,15 @@ export const createCommandFlexible =
     action: C,
   ): ((program: Command, version: string) => void) =>
   (program) => {
-    let command = program.command(name).description(description);
+    // anything after the first newline is only shown on the command specific help page
+    const [_description, ...helpText] = description.split('\n');
+    let command = program.command(name).description(_description);
+    if (helpText.length > 0) {
+      command.configureHelp({
+        commandDescription: () =>
+          `${[_description, '', ...helpText].join('\n')}`,
+      });
+    }
     let allowsUnknownOptions = false;
 
     if (options.some((option) => option.allowUnknownOptions === true)) {

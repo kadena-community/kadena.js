@@ -10,6 +10,7 @@ import {
   security,
   tx,
   typescript,
+  wallets,
 } from '../prompts/index.js';
 
 import type { ChainId } from '@kadena/types';
@@ -30,10 +31,7 @@ import {
   parseKeyPairsInput,
 } from '../keys/utils/keysHelpers.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
-import {
-  ensureNetworksConfiguration,
-  loadNetworkConfig,
-} from '../networks/utils/networkHelpers.js';
+import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { createOption } from './createOption.js';
 import { ensureDevnetsConfiguration, isNotEmptyString } from './helpers.js';
@@ -336,7 +334,7 @@ export const globalOptions = {
       'Kadena network (e.g. "mainnet")',
     ),
     expand: async (network: string) => {
-      await ensureNetworksConfiguration();
+      // await ensureNetworksConfiguration();
       try {
         return loadNetworkConfig(network);
       } catch (e) {
@@ -440,13 +438,13 @@ export const globalOptions = {
       'Enter a alias to select keys from',
     ),
   }),
-  keyWallet: createOption({
-    key: 'keyWallet' as const,
-    prompt: keys.keyWallet,
+  walletName: createOption({
+    key: 'walletName' as const,
+    prompt: wallets.walletNamePrompt,
     validation: z.string(),
     option: new Option(
-      '-w, --key-wallet <keyWallet>',
-      'Enter you wallet names',
+      '-w, --wallet-name <walletName>',
+      'Enter you wallet name',
     ),
   }),
   keyIndexOrRange: createOption({
@@ -483,24 +481,24 @@ export const globalOptions = {
       'Choose an action for generating keys',
     ),
   }),
-  keyWalletSelect: createOption({
-    key: 'keyWallet',
-    prompt: keys.keyWalletSelectPrompt,
+  walletSelect: createOption({
+    key: 'walletName',
+    prompt: wallets.walletSelectPrompt,
     validation: z.string(),
-    option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
+    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,
-    expand: async (keyWallet: string) => {
-      return await getWallet(keyWallet);
+    expand: async (walletName: string) => {
+      return await getWallet(walletName);
     },
   }),
-  keyWalletSelectWithAll: createOption({
-    key: 'keyWallet',
-    prompt: keys.keyWalletSelectAllPrompt,
+  walletNameSelectWithAll: createOption({
+    key: 'walletName',
+    prompt: wallets.walletSelectAllPrompt,
     validation: z.string(),
-    option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
+    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,
-    expand: async (keyWallet: string) => {
-      return keyWallet === 'all' ? null : await getWallet(keyWallet);
+    expand: async (walletName: string) => {
+      return walletName === 'all' ? null : await getWallet(walletName);
     },
   }),
   securityPassword: createOption({
@@ -602,23 +600,20 @@ export const globalOptions = {
       'use as the namespace of the contract if its not clear in the contract',
     ),
   }),
-  keyMessage: createOption({
-    key: 'keyMessage' as const,
-    prompt: keys.keyMessagePrompt,
+  message: createOption({
+    key: 'message' as const,
+    prompt: generic.messagePrompt,
     validation: z.string(),
-    option: new Option(
-      '-n, --key-message <keyMessage>',
-      'Enter message to decrypt',
-    ),
-    transform: async (keyMessage: string) => {
-      if (keyMessage.includes(WALLET_EXT) || keyMessage.includes(KEY_EXT)) {
-        const keyFileContent = await readKeyFileContent(keyMessage);
+    option: new Option('-m, --message <message>', 'Enter message to decrypt'),
+    transform: async (message: string) => {
+      if (message.includes(WALLET_EXT) || message.includes(KEY_EXT)) {
+        const keyFileContent = await readKeyFileContent(message);
         if (typeof keyFileContent === 'string') {
           return keyFileContent;
         }
         return keyFileContent?.secretKey;
       }
-      return keyMessage;
+      return message;
     },
   }),
 
@@ -664,8 +659,36 @@ export const globalOptions = {
     defaultIsOptional: false,
     validation: z.string(),
     option: new Option('-a, --account <account>', 'Select an account'),
-    expand: async (accountAlias: string): Promise<IAliasAccountData> => {
+    expand: async (accountAlias: string): Promise<IAliasAccountData | null> => {
       try {
+        const accountDetails = await readAccountFromFile(accountAlias);
+        return accountDetails;
+      } catch (error) {
+        if (error.message.includes('file not exist') === true) {
+          return null;
+        }
+
+        throw new Error(error.message);
+      }
+    },
+  }),
+  accountSelectWithAll: createOption({
+    key: 'accountAlias' as const,
+    prompt: account.accountSelectAllPrompt,
+    defaultIsOptional: false,
+    validation: z.string(),
+    option: new Option(
+      '-a, --account-alias <account>',
+      'Enter your account alias file',
+    ),
+    expand: async (
+      accountAlias: string,
+    ): Promise<IAliasAccountData | undefined> => {
+      try {
+        if (accountAlias === 'all') {
+          return;
+        }
+
         const accountDetails = await readAccountFromFile(accountAlias);
         return accountDetails;
       } catch (error) {
