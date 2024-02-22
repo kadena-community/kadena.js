@@ -35,6 +35,11 @@ export interface IContinuationPayloadObject {
  */
 export type ICapabilityItem = ICap;
 
+/**
+ * @public
+ */
+export type SignerScheme = 'ED25519' | 'ETH' | 'WebAuthn';
+
 // TODO: update filed types based on @Kadena/types
 /**
  * The non-serialized transaction payload
@@ -54,7 +59,7 @@ export interface IPactCommand {
   signers: Array<{
     pubKey: string;
     address?: string;
-    scheme?: 'ED25519' | 'ETH';
+    scheme?: SignerScheme;
     clist?: ICap[];
   }>;
   networkId: string;
