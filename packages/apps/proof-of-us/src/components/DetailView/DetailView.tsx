@@ -2,7 +2,11 @@ import { Button } from '@/components/Button/Button';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
-import { MonoArrowBack, MonoClose } from '@kadena/react-icons';
+import {
+  MonoArrowBack,
+  MonoClose,
+  MonoQrCodeScanner,
+} from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/navigation';
 import type { ChangeEventHandler, FC } from 'react';
@@ -61,7 +65,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   if (!isMounted) return null;
 
   return (
-    <Stack flexDirection="column" as="section" paddingInline="md">
+    <Stack flexDirection="column" as="section" paddingInline="md" gap="md">
       <TitleHeader
         Prepend={() => (
           <>
@@ -102,7 +106,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
       )}
 
       <Button variant="primary" onPress={handleShare}>
-        Share
+        Share <MonoQrCodeScanner />
       </Button>
       {titleError && <div className={titleErrorClass}>{titleError}</div>}
     </Stack>
