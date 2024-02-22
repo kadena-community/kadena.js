@@ -1,4 +1,5 @@
 import { useAccount } from '@/hooks/account';
+import { Stack } from '@kadena/react-ui';
 import type { FC, PropsWithChildren } from 'react';
 import { ProofOfUsProvider } from '../ProofOfUsProvider/ProofOfUsProvider';
 
@@ -8,7 +9,7 @@ const ScanLayout: FC<PropsWithChildren> = ({ children }) => {
   if (!isMounted) return null;
   return (
     <ProofOfUsProvider>
-      <section>
+      <Stack as="section" paddingInline="md">
         {!account && isMounted ? (
           <section>
             <p>
@@ -23,7 +24,7 @@ const ScanLayout: FC<PropsWithChildren> = ({ children }) => {
         ) : (
           <section>{children}</section>
         )}
-      </section>
+      </Stack>
     </ProofOfUsProvider>
   );
 };

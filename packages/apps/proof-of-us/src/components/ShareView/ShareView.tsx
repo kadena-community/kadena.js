@@ -5,7 +5,7 @@ import { useProofOfUs } from '@/hooks/proofOfUs';
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
 import { MonoArrowBack, MonoArrowDownward } from '@kadena/react-icons';
-import { CopyButton, TextField } from '@kadena/react-ui';
+import { CopyButton, Stack } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
@@ -14,6 +14,8 @@ import { QRCode } from 'react-qrcode-logo';
 import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
+
+import { TextField } from '../TextField/TextField';
 import { qrClass } from './style.css';
 
 interface IProps {
@@ -49,7 +51,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
   if (!proofOfUs) return;
 
   return (
-    <section>
+    <Stack as="section" flexDirection="column" paddingInline="md">
       {status === 3 && (
         <>
           <TitleHeader
@@ -65,7 +67,6 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
             label="Share"
           />
 
-          <ListSignees />
           {!isAlreadySigning(proofOfUs.signees) ? (
             <>
               <div className={qrClass}>
@@ -88,9 +89,13 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                 value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
                 endAddon={<CopyButton inputId="linkshare" />}
               />
+              <ListSignees />
             </>
           ) : (
-            <ImagePositions />
+            <>
+              <ImagePositions />
+              <ListSignees />
+            </>
           )}
           {isSignedOnce(proofOfUs.signees) && (
             <Button onPress={handleSign}>Sign & Upload</Button>
@@ -123,6 +128,6 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
           )}
         </>
       )}
-    </section>
+    </Stack>
   );
 };
