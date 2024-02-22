@@ -81,3 +81,9 @@ export function logFolderPrompt(): Promise<string> {
     default: `${process.cwd()}/logs/simulate`,
   });
 }
+
+export async function messagePrompt(): Promise<string> {
+  return await input({
+    message: `Enter message to decrypt:`,
+  });
+}

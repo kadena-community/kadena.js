@@ -8,18 +8,18 @@ import {
 } from '@kadena/hd-wallet/chainweaver';
 
 import { WALLET_DIR } from '../../constants/config.js';
+import {
+  displayGeneratedWallet,
+  displayStoredWallet,
+} from '../../keys/utils/keysDisplay.js';
+import { getWallet } from '../../keys/utils/keysHelpers.js';
+import * as storageService from '../../keys/utils/storage.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
-import {
-  displayGeneratedWallet,
-  displayStoredWallet,
-} from '../utils/keysDisplay.js';
-import { getWallet } from '../utils/keysHelpers.js';
-import * as storageService from '../utils/storage.js';
 
 /**
  * Generates a new key for the wallet.
@@ -93,10 +93,10 @@ export const createGenerateWalletCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'create-wallet',
-  'Create your local wallet',
+  'add',
+  'Add a new local wallet',
   [
-    globalOptions.keyWallet({ isOptional: false }),
+    globalOptions.walletName({ isOptional: false }),
     globalOptions.securityPassword({ isOptional: false }),
     globalOptions.securityVerifyPassword({ isOptional: false }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
@@ -111,7 +111,7 @@ export const createGenerateWalletCommand: (
       }
 
       const result = await generateWallet(
-        config.keyWallet,
+        config.walletName,
         config.securityPassword,
         config.legacy,
       );
@@ -119,7 +119,7 @@ export const createGenerateWalletCommand: (
       assertCommandError(result);
 
       displayGeneratedWallet(result.data.mnemonic);
-      displayStoredWallet(config.keyWallet, config.legacy);
+      displayStoredWallet(config.walletName, config.legacy);
     } catch (error) {
       log.error(`\n${error.message}\n`);
       process.exit(1);

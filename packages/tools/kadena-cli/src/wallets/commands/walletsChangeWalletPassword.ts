@@ -6,6 +6,9 @@ import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
 import { kadenaChangePassword } from '@kadena/hd-wallet/chainweaver';
 
+import type { IWallet } from '../../keys/utils/keysHelpers.js';
+import { getWalletContent } from '../../keys/utils/keysHelpers.js';
+import * as storageService from '../../keys/utils/storage.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
@@ -13,9 +16,6 @@ import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { select } from '../../utils/prompts.js';
-import type { IWallet } from '../utils/keysHelpers.js';
-import { getWalletContent } from '../utils/keysHelpers.js';
-import * as storageService from '../utils/storage.js';
 
 /**
 kadena keys delete-wallet --key-wallet "test01.wallet" --confirm-delete
@@ -82,10 +82,10 @@ export const createChangeWalletPasswordCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'change-wallet-password',
+  'change-password',
   'Update the password for your wallet',
   [
-    globalOptions.keyWalletSelect(),
+    globalOptions.walletSelect(),
     globalOptions.securityCurrentPassword({ isOptional: false }),
     globalOptions.securityNewPassword({ isOptional: false }),
     globalOptions.securityVerifyPassword({ isOptional: false }),
@@ -105,13 +105,13 @@ export const createChangeWalletPasswordCommand: (
         process.exit(1);
       }
 
-      if (config.keyWalletConfig === null) {
+      if (config.walletNameConfig === null) {
         throw new Error('Invalid wallet');
       }
 
       const result = await changeWalletPassword(
-        config.keyWallet,
-        config.keyWalletConfig,
+        config.walletName,
+        config.walletNameConfig,
         config.securityCurrentPassword,
         config.securityNewPassword,
       );

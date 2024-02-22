@@ -47,13 +47,13 @@ export const displayAddAccountSuccess = (accountAlias: string): void => {
   );
 };
 
-export async function getAllPublicKeysFromKeyWalletConfig(
-  keyWalletConfig: IWallet,
+export async function getAllPublicKeysFromWalletConfig(
+  walletNameConfig: IWallet,
 ): Promise<Array<string>> {
   const publicKeysList: Array<string> = [];
-  for (const key of keyWalletConfig.keys) {
+  for (const key of walletNameConfig.keys) {
     const content = await services.filesystem.readFile(
-      path.join(WALLET_DIR, keyWalletConfig?.folder, key),
+      path.join(WALLET_DIR, walletNameConfig?.folder, key),
     );
     const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
     publicKeysList.push(parsed?.publicKey ?? '');

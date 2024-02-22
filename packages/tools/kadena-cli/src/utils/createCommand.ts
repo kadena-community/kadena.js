@@ -94,7 +94,7 @@ export function createCommand<const T extends OptionType[]>(
               await collectResponses<any>(args, questionsMap as any);
 
         log.info(
-          `\nExecuting: ${getCommandExecution(
+          `Executing: ${getCommandExecution(
             `${program.name()} ${name}`,
             newArgs,
             generalArgs,

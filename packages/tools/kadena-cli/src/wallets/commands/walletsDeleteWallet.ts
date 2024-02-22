@@ -3,6 +3,8 @@ import { Option } from 'commander';
 import { z } from 'zod';
 
 import { WALLET_DIR } from '../../constants/config.js';
+import type { IWallet } from '../../keys/utils/keysHelpers.js';
+import { getWallet } from '../../keys/utils/keysHelpers.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
@@ -11,8 +13,6 @@ import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { select } from '../../utils/prompts.js';
-import type { IWallet } from '../utils/keysHelpers.js';
-import { getWallet } from '../utils/keysHelpers.js';
 
 export const deleteWallet = async (
   wallet: string,
@@ -33,9 +33,9 @@ const confirmDelete = createOption({
   key: 'confirm',
   defaultIsOptional: false,
   async prompt(args) {
-    if (typeof args.keyWallet !== 'string') return false;
+    if (typeof args.walletName !== 'string') return false;
 
-    if (args.keyWallet === 'all') {
+    if (args.walletName === 'all') {
       return await select({
         message: 'Are you sure you want to delete ALL wallets',
         choices: [
@@ -45,7 +45,7 @@ const confirmDelete = createOption({
       });
     }
 
-    const walletData = await getWallet(args.keyWallet);
+    const walletData = await getWallet(args.walletName);
 
     if (!walletData) return false;
 
@@ -55,7 +55,7 @@ const confirmDelete = createOption({
         : '';
 
     return await select({
-      message: `Are you sure you want to delete the wallet: "${args.keyWallet}"${keysText}?`,
+      message: `Are you sure you want to delete the wallet: "${args.walletName}"${keysText}?`,
       choices: [
         { value: true, name: 'Yes' },
         { value: false, name: 'No' },
@@ -66,13 +66,13 @@ const confirmDelete = createOption({
   option: new Option('--confirm', 'Confirm wallet deletion'),
 });
 
-export const createDeleteKeysCommand: (
+export const createDeleteWalletsCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'delete-wallet',
-  'Delete wallet from your local storage',
-  [globalOptions.keyWalletSelectWithAll(), confirmDelete()],
+  'delete',
+  'Delete wallet from your local filesystem',
+  [globalOptions.walletNameSelectWithAll(), confirmDelete()],
   async (config) => {
     if (config.confirm !== true) {
       log.warning('\nNo wallets were deleted.\n');
@@ -81,23 +81,23 @@ export const createDeleteKeysCommand: (
 
     try {
       log.debug('delete-wallet:action', { config });
-      if (config.keyWallet === 'all') {
+      if (config.walletName === 'all') {
         const result = await deleteAllWallets();
         assertCommandError(result);
         log.info(log.color.green('\nAll wallets have been deleted.\n'));
       } else {
-        if (config.keyWalletConfig === null) {
-          throw new Error(`Wallet: ${config.keyWallet} does not exist.`);
+        if (config.walletNameConfig === null) {
+          throw new Error(`Wallet: ${config.walletName} does not exist.`);
         }
 
         const result = await deleteWallet(
-          config.keyWallet,
-          config.keyWalletConfig,
+          config.walletName,
+          config.walletNameConfig,
         );
         assertCommandError(result);
         log.info(
           log.color.green(
-            `\nThe wallet: "${config.keyWallet}" and associated key files have been deleted.\n`,
+            `\nThe wallet: "${config.walletName}" and associated key files have been deleted.\n`,
           ),
         );
       }

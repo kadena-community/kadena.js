@@ -43,7 +43,7 @@ export function displayDevnetConfig(devnetConfig: IDevnetsCreateOptions): void {
     ),
   );
   log.info(
-    formatConfig('Pact folder mount', devnetConfig.mountPactFolder || 'N/A'),
+    formatConfig('Pact folder mount', devnetConfig.mountPactFolder ?? 'N/A'),
   );
   log.info(formatConfig('kadena/devnet version', devnetConfig.version));
   displaySeparator();
@@ -95,7 +95,7 @@ export async function displayDevnetsConfig(): Promise<void> {
       ),
     );
     log.info(
-      formatConfig('Pact folder mount', devnetConfig.mountPactFolder || 'N/A'),
+      formatConfig('Pact folder mount', devnetConfig.mountPactFolder ?? 'N/A'),
     );
     log.info(formatConfig('kadena/devnet version', devnetConfig.version));
   });

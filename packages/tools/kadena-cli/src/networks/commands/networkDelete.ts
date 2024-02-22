@@ -10,7 +10,7 @@ export const deleteNetworksCommand: (
   version: string,
 ) => void = createCommandFlexible(
   'delete',
-  'Delete network',
+  'Delete local network',
   [globalOptions.network({ isOptional: false }), globalOptions.networkDelete()],
   async (option) => {
     const networkData = await option.network();
