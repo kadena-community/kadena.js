@@ -10,8 +10,10 @@ import {
 import { services } from '../services/index.js';
 import { getTemplates } from '../tx/commands/templates/templates.js';
 import type { IPrompt } from '../utils/createOption.js';
+import { maskStringPreservingStartAndEnd } from '../utils/helpers.js';
 import { log } from '../utils/logger.js';
 import { checkbox, input, select } from '../utils/prompts.js';
+import { tableFormatPrompt } from '../utils/tableDisplay.js';
 
 const CommandPayloadStringifiedJSONSchema = z.string();
 const PactTransactionHashSchema = z.string();
@@ -95,7 +97,7 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
   const existingTransactions: string[] = await getTransactions(signed, path);
 
   if (existingTransactions.length === 0) {
-    throw new Error('No transactions found.');
+    throw new Error(`No ${signed ? 'signed ' : ''}transactions found.`);
   }
 
   const choices = existingTransactions.map((transaction) => ({
@@ -215,20 +217,30 @@ const promptVariableValue = async (key: string): Promise<string> => {
         value: '_manual_',
         name: 'Enter public key manually',
       },
-      ...walletKeys.map((key) => ({
-        value: key.publicKey,
-        name: `${key.alias} (wallet ${key.wallet.folder})`,
-      })),
-      ...plainKeys.map((key) => ({
-        value: key.publicKey,
-        name: `${key.alias} (plain key)`,
-      })),
+      ...tableFormatPrompt([
+        ...walletKeys.map((key) => ({
+          value: key.publicKey,
+          name: [
+            key.alias,
+            maskStringPreservingStartAndEnd(key.publicKey),
+            `(wallet ${key.wallet.folder})`,
+          ],
+        })),
+        ...plainKeys.map((key) => ({
+          value: key.publicKey,
+          name: [
+            key.alias,
+            maskStringPreservingStartAndEnd(key.publicKey),
+            `(plain key)`,
+          ],
+        })),
+      ]),
     ];
 
     if (hasKeys) {
       value = await select({
         message: `Select public key alias for template value ${key}:`,
-        choices,
+        choices: choices,
       });
     }
 
