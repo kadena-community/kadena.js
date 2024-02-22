@@ -8,6 +8,12 @@ import {
 
 import { IKeySource } from '@/modules/wallet/wallet.repository';
 import { IHDChainweaver, keySourceRepository } from '../key-source.repository';
+import { getNextAvailableIndex } from './utils';
+
+interface IKeyPair {
+  publicKey: string;
+  secretKey: string;
+}
 
 const createContext = async (password: string) => {
   const encryptionKey = randomBytes(32);
@@ -28,11 +34,11 @@ export function createChainweaverService() {
   let context: {
     encryptionKey: Uint8Array;
     encryptedPassword: Uint8Array;
-    cache: Map<string, string>;
+    cache: Map<string, IKeyPair>;
   } | null = null;
 
   return {
-    isReady: () => Boolean(context),
+    isConnected: () => Boolean(context),
     disconnect: () => {
       context = null;
     },
@@ -84,7 +90,6 @@ export function createChainweaverService() {
     getPublicKey: async (
       keySource: IKeySource | IHDChainweaver,
       startIndex: number,
-      quantity: number = 1,
     ) => {
       if (!context) {
         throw new Error('Wallet not unlocked');
@@ -99,29 +104,16 @@ export function createChainweaverService() {
       const rootKey = await keySourceRepository.getEncryptedValue(
         keySource.rootKeyId,
       );
-      const keys = await kadenaGenKeypair(password, rootKey, [
-        startIndex,
-        startIndex + quantity - 1,
-      ]);
-      const newKeys = await Promise.all(
-        keys.map(async ({ publicKey, secretKey }, index) => {
-          const secretId = crypto.randomUUID();
-          if (context) {
-            // since the process is slow we cache the secret key;
-            // this should be removed when the wallet is locked
-            context.cache.set(secretId, secretKey);
-          }
-          return {
-            publicKey: publicKey,
-            index: startIndex + index,
-            secretId,
-          };
-        }),
-      );
-      return newKeys;
+      const key = await kadenaGenKeypair(password, rootKey, startIndex);
+      context.cache.set(`${keySource.uuid}-${startIndex}`, key);
+      const newKey = {
+        publicKey: key.publicKey,
+        index: startIndex,
+      };
+      return newKey;
     },
 
-    createKey: async (keySourceId: string, quantity: number = 1) => {
+    createKey: async (keySourceId: string, index?: number) => {
       if (!context) {
         throw new Error('Wallet not unlocked');
       }
@@ -129,32 +121,37 @@ export function createChainweaverService() {
       if (!keySource || keySource.source !== 'HD-chainweaver') {
         throw new Error('Invalid key source');
       }
-      const startIndex = keySource.keys.length;
+      const keyIndex =
+        index ?? getNextAvailableIndex(keySource.keys.map((k) => k.index));
+
+      const found = keySource.keys.find(
+        (key) => key.index === keyIndex && key.publicKey,
+      );
+      if (found) {
+        return found;
+      }
+
       const password = await decryptPassword(context);
       const rootKey = await keySourceRepository.getEncryptedValue(
         keySource.rootKeyId,
       );
-      const keys = await kadenaGenKeypair(password, rootKey, [
-        startIndex,
-        startIndex + quantity - 1,
-      ]);
-      const newKeys = await Promise.all(
-        keys.map(async ({ publicKey, secretKey }, index) => {
-          const secretId = crypto.randomUUID();
-          await keySourceRepository.addEncryptedValue(
-            secretId,
-            new TextEncoder().encode(secretKey),
-          );
-          return {
-            publicKey: publicKey,
-            index: startIndex + index,
-            secretId,
-          };
-        }),
+      const key = context.cache.has(`${keySourceId}-${keyIndex}`)
+        ? (context.cache.get(`${keySourceId}-${keyIndex}`) as IKeyPair)
+        : await kadenaGenKeypair(password, rootKey, keyIndex);
+
+      const secretId = crypto.randomUUID();
+      await keySourceRepository.addEncryptedValue(
+        secretId,
+        new TextEncoder().encode(key.secretKey),
       );
-      keySource.keys.push(...newKeys);
+      const newKey = {
+        publicKey: key.publicKey,
+        index: keyIndex,
+        secretId,
+      };
+      keySource.keys.push(newKey);
       await keySourceRepository.updateKeySource(keySource);
-      return newKeys;
+      return newKey;
     },
 
     async sign(keySourceId: string, message: string, indexes: number[]) {

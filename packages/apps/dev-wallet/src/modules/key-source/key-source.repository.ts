@@ -25,6 +25,17 @@ export interface IHDChainweaver {
   }>;
 }
 
+export interface IWebAuthn {
+  uuid: string;
+  profileId: string;
+  source: 'webauthn';
+  keys: Array<{
+    index: number;
+    id: string;
+    publicKey: string;
+  }>;
+}
+
 export type HDWalletKeySource = IHDBIP44 | IHDChainweaver;
 
 export interface HDWalletRepository {

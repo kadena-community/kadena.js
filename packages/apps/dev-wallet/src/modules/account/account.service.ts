@@ -81,8 +81,9 @@ export const accountDiscovery = (
     ) => {
       const keySourceService = keySourceManager.get(keySource.source);
       const accounts: IAccount[] = [];
+      const usedKeys: IKeyItem[] = [];
       for (let i = 0; i < numberOfKeys; i++) {
-        const [key] = await keySourceService.getPublicKey(keySource, i);
+        const key = await keySourceService.getPublicKey(keySource, i);
         if (!key) {
           return;
         }
@@ -100,6 +101,7 @@ export const accountDiscovery = (
           .execute()) as IDiscoveredAccount[];
 
         if (chainResult.filter(({ result }) => Boolean(result)).length > 0) {
+          usedKeys.push(key);
           accounts.push({
             uuid: crypto.randomUUID(),
             profileId,
@@ -130,13 +132,19 @@ export const accountDiscovery = (
 
       await emit('query-done')(accounts);
 
+      console.log('usedKeys', usedKeys);
+
+      // store keys; key creation needs to be in sequence so I used a for loop instead of Promise.all
+      for (const key of usedKeys) {
+        await keySourceService.createKey(keySource.uuid, key.index);
+      }
+
       // store accounts
       await Promise.all(
-        accounts.map(async (account) => {
-          await accountRepository.addAccount(account);
-        }),
+        accounts.map(async (account) => accountRepository.addAccount(account)),
       );
 
+      keySourceService.clearCache();
       await emit('accounts-saved')(accounts);
 
       return accounts;
