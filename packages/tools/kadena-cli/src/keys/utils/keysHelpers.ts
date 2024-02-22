@@ -111,7 +111,7 @@ const readKeyFile = async (path: string): Promise<IPlainKey> => {
       (parsed as { index?: string }).index ??
         (key.match(/-([0-9]+)\.key$/)?.[1] as string),
     ) || 0;
-  const alias = key.replace('.key', '').split('-').slice(0, 1).join('-');
+  const alias = key; // use to be base name, for now use entire filename
   const legacy = key.endsWith(KEY_LEGACY_EXT);
 
   return {
