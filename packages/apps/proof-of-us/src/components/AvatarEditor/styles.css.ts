@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
-export const wrapperClass = style([{}]);
+export const wrapperClass = style([{
+}]);
 
 export const hiddenClass = style({
   display: 'none',

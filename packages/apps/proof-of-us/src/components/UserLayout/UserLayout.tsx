@@ -30,7 +30,6 @@ const UserLayout: FC<PropsWithChildren> = ({ children }) => {
       }}
     >
       <Stack
-        paddingInline="sm"
         display="flex"
         flexDirection="column"
         width="100%"
