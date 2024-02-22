@@ -122,3 +122,16 @@ export const bulletPositionClass = style([
     },
   },
 ]);
+
+export const smallClass = style({
+  width: '2rem',
+  height: '2rem',
+  selectors: {
+    '&:before': {
+      border: '1px solid white',
+      margin: '.425rem',
+      width: '1.2rem',
+      height: '1.2rem',
+    },
+  },
+});

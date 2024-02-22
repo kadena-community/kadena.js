@@ -117,6 +117,7 @@ export const ImagePositions: FC<IProps> = () => {
         />
         {proofOfUs?.signees.map((s, idx) => (
           <SigneePosition
+            variant="small"
             key={s.accountName}
             position={s?.position}
             onClick={handleRemove}

@@ -1,13 +1,20 @@
+import classNames from 'classnames';
 import type { FC } from 'react';
-import { bulletPositionClass } from './styles.css';
+import { bulletPositionClass, smallClass } from './styles.css';
 
 interface IProps {
   position?: ISigneePosition;
   idx: number;
   onClick?: () => void;
+  variant?: 'default' | 'small';
 }
 
-export const SigneePosition: FC<IProps> = ({ position, idx, onClick }) => {
+export const SigneePosition: FC<IProps> = ({
+  position,
+  idx,
+  onClick,
+  variant = 'default',
+}) => {
   const handleClick = () => {
     if (onClick) onClick();
   };
@@ -17,7 +24,10 @@ export const SigneePosition: FC<IProps> = ({ position, idx, onClick }) => {
     <button
       onClick={handleClick}
       data-position={idx}
-      className={bulletPositionClass}
+      className={classNames(
+        bulletPositionClass,
+        variant === 'small' && smallClass,
+      )}
       data-xpercentage={position?.xPercentage}
       data-ypercentage={position?.yPercentage}
     ></button>

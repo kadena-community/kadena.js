@@ -13,6 +13,7 @@ import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
 import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
+import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { TextField } from '../TextField/TextField';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 import { imageWrapper, titleErrorClass } from './style.css';
@@ -65,7 +66,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   if (!isMounted) return null;
 
   return (
-    <Stack flexDirection="column" as="section" paddingInline="md" gap="md">
+    <ScreenHeight>
       <TitleHeader
         Prepend={() => (
           <>
@@ -105,10 +106,11 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         <ImagePositions />
       )}
 
+      <Stack flex={1} />
       <Button variant="primary" onPress={handleShare}>
         Share <MonoQrCodeScanner />
       </Button>
       {titleError && <div className={titleErrorClass}>{titleError}</div>}
-    </Stack>
+    </ScreenHeight>
   );
 };
