@@ -32,7 +32,6 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
         <ImagePositions />
 
         <div>status: {proofOfUs?.mintStatus}</div>
-        <ListSignees />
         {!isAlreadySigning(proofOfUs.signees) && (
           <button onClick={handleJoin}>Sign</button>
         )}

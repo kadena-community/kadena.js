@@ -3,6 +3,7 @@ import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { MonoArrowBack, MonoClose } from '@kadena/react-icons';
+import { Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/navigation';
 import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
@@ -60,7 +61,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   if (!isMounted) return null;
 
   return (
-    <section>
+    <Stack flexDirection="column" as="section" paddingInline="md">
       <TitleHeader
         Prepend={() => (
           <>
@@ -104,6 +105,6 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         Share
       </Button>
       {titleError && <div className={titleErrorClass}>{titleError}</div>}
-    </section>
+    </Stack>
   );
 };

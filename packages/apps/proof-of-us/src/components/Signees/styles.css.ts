@@ -86,8 +86,11 @@ export const bulletPositionClass = style([
   atoms({
     position: 'absolute',
     borderRadius: 'round',
+    margin: 'no',
+    padding: 'no',
   }),
   {
+    border: 0,
     width: '4.5rem',
     height: '4.5rem',
     aspectRatio: '1/1',
