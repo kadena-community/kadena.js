@@ -661,7 +661,7 @@ kadena tx sign [arguments]
 example:
 
 ```
-kadena tx sign-with-local-wallet --key-wallet="mywallet.wallet" --security-password=12345678 --tx-unsigned-transaction-files="transaction-(request-key)-signed.json"
+kadena tx sign --tx-sign-with="localWallet"  --key-wallet="mywallet.wallet" --security-password=12345678 --tx-unsigned-transaction-files="transaction-(request-key)-signed.json"
 ```
 
 password will be hidden after entry: --security-password=\*
@@ -725,7 +725,7 @@ kadena dapp add [arguments]
 example:
 
 ```
-kadena dapp add --dapp-template="vuejs" danillo
+kadena dapp add --dapp-template="vuejs" kadena-dapp
 ```
 
 ---
