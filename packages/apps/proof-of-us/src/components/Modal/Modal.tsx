@@ -12,22 +12,22 @@ interface IProps extends PropsWithChildren {
 }
 
 export const Modal: FC<IProps> = ({ label, children, onClose }) => {
-  const backRef = useRef<HTMLButtonElement>(null);
+  const backRef = useRef<HTMLDivElement>(null);
 
-  const handleClose: MouseEventHandler<HTMLButtonElement> = (evt) => {
+  const handleClose: MouseEventHandler<HTMLDivElement> = (evt) => {
     evt.preventDefault();
-
+    console.log(evt);
     if (evt.target !== backRef.current) return;
     onClose();
   };
   return (
-    <button ref={backRef} className={backgroundClass} onClick={handleClose}>
+    <div ref={backRef} className={backgroundClass} onClick={handleClose}>
       <section className={dialogClass}>
         <Stack paddingBlock="md">
           <Heading as="h6">{label}</Heading>
         </Stack>
         {children}
       </section>
-    </button>
+    </div>
   );
 };

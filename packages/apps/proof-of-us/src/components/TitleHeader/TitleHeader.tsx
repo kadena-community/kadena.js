@@ -1,6 +1,6 @@
 import { Stack } from '@kadena/react-ui';
 import type { FC } from 'react';
-import { spacerClass, titleClass } from './style.css';
+import { titleClass } from './style.css';
 
 interface IProps {
   label: string;
@@ -10,17 +10,10 @@ interface IProps {
 
 export const TitleHeader: FC<IProps> = ({ label, Prepend, Append }) => {
   return (
-    <Stack
-      display="flex"
-      alignItems="center"
-      gap="md"
-      paddingBlock="sm"
-      paddingInlineEnd="md"
-      width="100%"
-    >
+    <Stack display="flex" alignItems="center" gap="md" paddingBlock="sm">
       {Prepend && <Prepend />}
       <h2 className={titleClass}>{label}</h2>
-      <span className={spacerClass} />
+      <Stack flex={1} />
       {Append && <Append />}
     </Stack>
   );

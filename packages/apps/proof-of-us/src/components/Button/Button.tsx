@@ -6,10 +6,11 @@ import type { ButtonProps } from 'react-aria-components';
 import { Button as AriaButton } from 'react-aria-components';
 import type { Variants } from './SharedButton.css';
 import { button, progressIndicator } from './SharedButton.css';
-import { buttonClass, secondaryClass } from './style.css';
+import { buttonClass, secondaryClass, tertiaryClass } from './style.css';
 
-interface Props extends ButtonProps, Variants {
+interface Props extends ButtonProps {
   progress?: number;
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'progress';
 }
 
 const BaseButton = (props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
@@ -19,9 +20,10 @@ const BaseButton = (props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
     <AriaButton
       ref={ref}
       className={cn(
-        button({ variant }),
+        button({ variant: variant as Variants['variant'] }),
         buttonClass,
         variant === 'secondary' && secondaryClass,
+        variant === 'tertiary' && tertiaryClass,
       )}
       {...restProps}
     >

@@ -3,10 +3,20 @@ import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSubmit } from '@/hooks/submit';
+import {
+  MonoAccessTimeFilled,
+  MonoChecklist,
+  MonoClose,
+} from '@kadena/react-icons';
+import { Stack } from '@kadena/react-ui';
+import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
-import { MainLoader } from '../MainLoader/MainLoader';
+import { IconButton } from '../IconButton/IconButton';
+import { MessageBlock } from '../MessageBlock/MessageBlock';
+import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
+import { Heading } from '../Typography/Heading';
 
 interface IProps {
   next: () => void;
@@ -18,6 +28,11 @@ export const MintView: FC<IProps> = ({ prev }) => {
   const { proofOfUs } = useProofOfUs();
   const { doSubmit, isStatusLoading, status, result } = useSubmit();
   const { uploadBackground } = useAvatar();
+  const router = useRouter();
+
+  const handleGoToProof = async () => {
+    alert('we need to implement this');
+  };
 
   const handleMint = async () => {
     if (!proofOfUs) return;
@@ -35,31 +50,84 @@ export const MintView: FC<IProps> = ({ prev }) => {
     if (!proofOfUs.tx) {
       throw new Error('no tx is found');
     }
-    console.log('minting');
     handleMint();
   }, [proofOfUs?.tx]);
+
+  const handleClose = () => {
+    router.push('/user');
+  };
 
   if (!proofOfUs) return;
 
   return (
-    <section>
+    <ScreenHeight>
       <>
-        <TitleHeader label="Minting" />
+        <TitleHeader
+          label={proofOfUs.title ?? ''}
+          Append={() => (
+            <IconButton onClick={handleClose}>
+              <MonoClose />
+            </IconButton>
+          )}
+        />
 
-        <div>isloading: {isStatusLoading.toString()}</div>
-
-        {isStatusLoading && <MainLoader />}
+        {isStatusLoading && (
+          <>
+            <Stack justifyContent="center" paddingBlock="xxxl">
+              <MonoAccessTimeFilled fontSize="8rem" />
+            </Stack>
+            <ListSignees />
+            <Stack flex={1} />
+          </>
+        )}
         {status === 'error' && (
-          <div>
-            <pre>{JSON.stringify(result, null, 2)}</pre>
-            <Button onPress={handleMint}>Retry</Button>
-          </div>
+          <>
+            <Stack justifyContent="center" paddingBlock="xxxl">
+              <MonoClose fontSize="8rem" />
+            </Stack>
+
+            <Stack flex={1} />
+            <Stack flexDirection="column" gap="md">
+              <Heading as="h6">Transaction Failed</Heading>
+              <MessageBlock variant="error">
+                {JSON.stringify(result, null, 2)}
+              </MessageBlock>
+              <Stack gap="md">
+                <Button variant="secondary" onPress={handleClose}>
+                  Dashboard
+                </Button>
+                <Button variant="tertiary" onPress={handleMint}>
+                  Retry
+                </Button>
+              </Stack>
+            </Stack>
+          </>
         )}
 
-        {status === 'success' && <div>Hurray!!!</div>}
-
-        <ListSignees />
+        {status === 'success' && (
+          <>
+            <Stack justifyContent="center" paddingBlock="xxxl">
+              <MonoChecklist fontSize="8rem" />
+            </Stack>
+            <ListSignees />
+            <Stack flex={1} />
+            <Stack flexDirection="column" gap="md">
+              <Heading as="h6">Transaction Success</Heading>
+              <MessageBlock variant="success">
+                {JSON.stringify(result, null, 2)}
+              </MessageBlock>
+              <Stack gap="md">
+                <Button variant="secondary" onPress={handleClose}>
+                  Dashboard
+                </Button>
+                <Button variant="primary" onPress={handleGoToProof}>
+                  Proof Detauls
+                </Button>
+              </Stack>
+            </Stack>
+          </>
+        )}
       </>
-    </section>
+    </ScreenHeight>
   );
 };

@@ -22,3 +22,7 @@ export const secondaryClass = style({
   color: deviceColors.kadenaFont,
   border: `1px solid ${deviceColors.kadenaFont}`,
 });
+export const tertiaryClass = style({
+  border: '0',
+  backgroundColor: deviceColors.orange,
+});
