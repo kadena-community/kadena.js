@@ -95,6 +95,16 @@ export const accountOptions = {
       }
     },
   }),
+  accountMultiSelect: createOption({
+    key: 'account' as const,
+    prompt: account.accountSelectMultiplePrompt,
+    defaultIsOptional: false,
+    validation: z.string(),
+    option: new Option(
+      '-a, --account-aliases <account>',
+      'Enter an alias account(s) separated by a comma',
+    ),
+  }),
   fundAmount: createOption({
     key: 'amount' as const,
     prompt: account.fundAmountPrompt,
@@ -114,5 +124,14 @@ export const accountOptions = {
         throw new Error(`Error: -m, --amount ${errorMessage}`);
       }
     },
+  }),
+  accountDeleteConfirmation: createOption({
+    key: 'accountDeleteConfirmation',
+    validation: z.boolean(),
+    prompt: account.accountDeleteConfirmationPrompt,
+    option: new Option(
+      '-d, --account-delete-confirmation',
+      'Confirm account deletion',
+    ),
   }),
 };
