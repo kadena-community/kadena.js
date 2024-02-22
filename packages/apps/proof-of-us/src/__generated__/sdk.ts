@@ -42,8 +42,6 @@ export type Scalars = {
 export type Block = Node & {
   __typename?: 'Block';
   chainId: Scalars['BigInt']['output'];
-  /** The number of blocks that proceed this block. */
-  confirmationDepth: Scalars['Int']['output'];
   creationTime: Scalars['DateTime']['output'];
   /** The moment the difficulty is adjusted to maintain a block validation time of 30 seconds. */
   epoch: Scalars['DateTime']['output'];
@@ -243,8 +241,6 @@ export type GasLimitEstimation = {
 /** General information about the graph and chainweb-data. */
 export type GraphConfiguration = {
   __typename?: 'GraphConfiguration';
-  /** The maximum number of confirmations calculated on this endpoint. */
-  maximumConfirmationDepth: Scalars['Int']['output'];
   /** The lowest block-height that is indexed in this endpoint. */
   minimumBlockHeight?: Maybe<Scalars['BigInt']['output']>;
 };
@@ -354,6 +350,8 @@ export type Query = {
   __typename?: 'Query';
   /** Retrieve a block by hash. */
   block?: Maybe<Block>;
+  /** Retrieve blocks by chain and minimal depth. */
+  blocksFromDepth?: Maybe<Array<Block>>;
   /** Retrieve blocks by chain and minimal height. */
   blocksFromHeight: Array<Block>;
   /** Retrieve all completed blocks from a given height. */
@@ -402,6 +400,11 @@ export type Query = {
 
 export type QueryBlockArgs = {
   hash: Scalars['String']['input'];
+};
+
+export type QueryBlocksFromDepthArgs = {
+  chainIds: Array<Scalars['String']['input']>;
+  minimumDepth: Scalars['Int']['input'];
 };
 
 export type QueryBlocksFromHeightArgs = {
@@ -601,6 +604,8 @@ export type Subscription = {
   events?: Maybe<Array<Scalars['ID']['output']>>;
   /** Subscribe to new blocks. */
   newBlocks?: Maybe<Array<Scalars['ID']['output']>>;
+  /** Subscribe to new blocks from a specific depth. */
+  newBlocksFromDepth?: Maybe<Array<Scalars['ID']['output']>>;
   /** Listen for a transaction by request key. Returns the ID when it is in a block. */
   transaction?: Maybe<Scalars['ID']['output']>;
 };
@@ -613,6 +618,11 @@ export type SubscriptionEventsArgs = {
 
 export type SubscriptionNewBlocksArgs = {
   chainIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+export type SubscriptionNewBlocksFromDepthArgs = {
+  chainIds: Array<Scalars['String']['input']>;
+  minimumDepth: Scalars['Int']['input'];
 };
 
 export type SubscriptionTransactionArgs = {

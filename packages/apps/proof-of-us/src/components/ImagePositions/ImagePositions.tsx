@@ -1,14 +1,11 @@
+import { EditorForm } from '@/EditorForm/EditorForm';
 import { useAccount } from '@/hooks/account';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
-import type { ChangeEventHandler, FC, MouseEventHandler } from 'react';
+import type { FC, MouseEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import {
-  signeeClass,
-  signeeClassWrapper,
-  signeeInputClass,
-  wrapperClass,
-} from './style.css';
+import { Modal } from '../Modal/Modal';
+import { signeeClass, signeeClassWrapper, wrapperClass } from './style.css';
 
 interface IProps {}
 
@@ -20,6 +17,7 @@ export const ImagePositions: FC<IProps> = () => {
   const [signer, setSigner] = useState<IProofOfUsSignee>();
   const imgRef = useRef<HTMLImageElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
 
   useEffect(() => {
     setSigner(
@@ -50,11 +48,8 @@ export const ImagePositions: FC<IProps> = () => {
     const img = imgRef.current;
 
     const elms = wrapper.querySelectorAll('div');
-    const inputs = wrapper.querySelectorAll('input');
 
-    elms.forEach((elm, idx) => {
-      const input = inputs[idx];
-
+    elms.forEach((elm) => {
       const xPercentage: number = parseFloat(
         elm.getAttribute('data-xpercentage') ?? '0',
       );
@@ -64,7 +59,6 @@ export const ImagePositions: FC<IProps> = () => {
 
       if (!xPercentage || !yPercentage) {
         elm.setAttribute('style', `display: none`);
-        input.setAttribute('style', `display: none`);
         return;
       }
 
@@ -76,21 +70,6 @@ export const ImagePositions: FC<IProps> = () => {
       elm.setAttribute(
         'style',
         `display: flex; top: ${yPos}px; left: ${xPos}px;`,
-      );
-
-      //input
-      const [xPosMarker, yPosMarker] = getPosition<HTMLInputElement>(
-        input,
-        img,
-        {
-          xPercentage,
-          yPercentage,
-        },
-      );
-
-      input.setAttribute(
-        'style',
-        `display: flex; top: ${yPosMarker}px; left: ${xPosMarker}px;`,
       );
     });
   };
@@ -106,6 +85,7 @@ export const ImagePositions: FC<IProps> = () => {
 
   const handleClick: MouseEventHandler<HTMLImageElement> = (e) => {
     if (!imgRef.current || isLocked) return;
+    setIsEditorOpen(true);
 
     // Calculate the coordinates relative to the image
     const rect = imgRef.current.getBoundingClientRect();
@@ -115,20 +95,17 @@ export const ImagePositions: FC<IProps> = () => {
     updateSigner({ position: { xPercentage, yPercentage } });
   };
 
-  const handleLabelChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    //TODO: this needs to debounce
-
-    updateSigner({
-      name: e.target.value,
-    });
-  };
-
   const handleRemove = () => {
     updateSigner({ position: null });
   };
 
   return (
     <>
+      {isEditorOpen && (
+        <Modal label="Add details" onClose={() => setIsEditorOpen(false)}>
+          <EditorForm signer={signer} onClose={() => setIsEditorOpen(false)} />
+        </Modal>
+      )}
       <section ref={wrapperRef} className={wrapperClass}>
         <img
           ref={imgRef}
@@ -147,14 +124,6 @@ export const ImagePositions: FC<IProps> = () => {
                 {idx}
               </button>
             </div>
-            <input
-              className={signeeInputClass}
-              value={s.name}
-              disabled={signer?.accountName !== s.accountName || isLocked}
-              type="text"
-              name="label"
-              onChange={handleLabelChange}
-            />
           </span>
         ))}
       </section>
