@@ -35,7 +35,7 @@ export function sign(
 
           const service = keySourceManager.get(source);
 
-          if (!service.isReady()) {
+          if (!service.isConnected()) {
             // call onConnect to connect to the keySource;
             // then the ui can prompt the user to unlock the wallet in case of hd-wallet
             await onConnect(keySource);
@@ -95,10 +95,10 @@ export const unlockProfile = async (profileId: string, password: string) => {
   }
 };
 
-export async function createKey(keySource: IKeySource, quantity: number) {
+export async function createKey(keySource: IKeySource) {
   const service = keySourceManager.get(keySource.source);
-  const keys = await service.createKey(keySource.uuid, quantity);
-  return keys;
+  const key = await service.createKey(keySource.uuid);
+  return key;
 }
 
 export async function decryptSecret(password: string, secretId: string) {

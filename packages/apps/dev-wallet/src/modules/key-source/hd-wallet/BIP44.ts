@@ -9,6 +9,7 @@ import {
 
 import { IKeySource } from '@/modules/wallet/wallet.repository';
 import { IHDBIP44, keySourceRepository } from '../key-source.repository';
+import { getNextAvailableIndex } from './utils';
 
 export const DEFAULT_DERIVATION_PATH_TEMPLATE = `m'/44'/626'/<index>'`;
 
@@ -28,7 +29,7 @@ export function createBIP44Service() {
     encryptedSeed: Uint8Array;
   } | null = null;
 
-  const isReady = () => Boolean(context);
+  const isConnected = () => Boolean(context);
   const disconnect = () => {
     context = null;
   };
@@ -70,7 +71,6 @@ export function createBIP44Service() {
   const getPublicKey = async (
     keySource: IKeySource | IHDBIP44,
     startIndex: number,
-    quantity: number = 1,
   ) => {
     if (!context) {
       throw new Error('Wallet not unlocked');
@@ -81,20 +81,20 @@ export function createBIP44Service() {
     ) {
       throw new Error('Invalid key source');
     }
-    const publicKeys = await kadenaGetPublic(
+    const publicKey = await kadenaGetPublic(
       context.encryptionKey,
       context.encryptedSeed,
-      [startIndex, startIndex + quantity - 1],
+      startIndex,
       keySource.derivationPathTemplate,
     );
-    const newKeys = publicKeys.map((publicKey, index) => ({
+    const newKey = {
       publicKey,
-      index: startIndex + index,
-    }));
-    return newKeys;
+      index: startIndex,
+    };
+    return newKey;
   };
 
-  const createKey = async (keySourceId: string, quantity: number = 1) => {
+  const createKey = async (keySourceId: string, index?: number) => {
     if (!context) {
       throw new Error('Wallet not unlocked');
     }
@@ -102,13 +102,21 @@ export function createBIP44Service() {
     if (!keySource || keySource.source !== 'HD-BIP44') {
       throw new Error('Invalid key source');
     }
-    const startIndex = keySource.keys.length;
+    const keyIndex =
+      index ?? getNextAvailableIndex(keySource.keys.map((k) => k.index));
 
-    const newKeys = await getPublicKey(keySource, startIndex, quantity);
+    const found = keySource.keys.find(
+      (key) => key.index === keyIndex && key.publicKey,
+    );
+    if (found) {
+      return found;
+    }
 
-    keySource.keys.push(...newKeys);
+    const newKey = await getPublicKey(keySource, keyIndex);
+
+    keySource.keys.push(newKey);
     await keySourceRepository.updateKeySource(keySource);
-    return newKeys;
+    return newKey;
   };
 
   const sign = async (
@@ -133,13 +141,14 @@ export function createBIP44Service() {
   };
 
   return {
-    isReady,
+    isConnected,
     disconnect,
     register,
     connect,
     createKey,
     getPublicKey,
     sign,
+    clearCache: () => {},
   };
 }
 

@@ -38,13 +38,9 @@ export function CreateProfile() {
       mnemonic,
     );
 
-    const key = await createKey(keySource, 1);
+    const key = await createKey(keySource);
 
-    await createKAccount(
-      profile.uuid,
-      activeNetwork.networkId,
-      key[0].publicKey,
-    );
+    await createKAccount(profile.uuid, activeNetwork.networkId, key.publicKey);
     console.log('wallet created');
     setCreatedKeySource(keySource);
   }

@@ -64,7 +64,7 @@ export const Routes: FC = () => {
         ,
         <Route path="/accounts/:account" element={<p>Account</p>} />,
       </Route>
-      <Route path="*" element={<p>Permission Denied!</p>} />
+      <Route path="*" element={<p>Not found!</p>} />
     </Route>,
   );
 
