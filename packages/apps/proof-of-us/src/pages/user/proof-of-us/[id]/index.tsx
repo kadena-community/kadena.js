@@ -11,11 +11,11 @@ interface IProps {
 
 const Page: NextPage<IProps> = ({ params }) => {
   return (
-    <UserLayout>
+    // <UserLayout>
       <ProofOfUsProvider>
         <CreateProofOfUs params={params} />
       </ProofOfUsProvider>
-    </UserLayout>
+    // </UserLayout>
   );
 };
 

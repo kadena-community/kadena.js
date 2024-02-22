@@ -44,4 +44,40 @@ export const cameraButtonWrapperClass = style({
   bottom: '2vh',
 });
 
-export const cameraWrapperClass = style({});
+export const cameraWrapperClass = style({
+  position: 'relative',
+  overflow: 'hidden',
+
+  ':before': {
+    content: '',
+    display: 'block',
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    zIndex: 1,
+    background: 'rgba(0, 0, 0, 0.60)',
+  },
+
+  ':after': {
+    content: '',
+    display: 'block',
+    width: '100%',
+    height: '100%',
+    top: '0',
+    position: 'absolute',
+    background: 'linear-gradient(359deg, #020E1B 3.84%, rgba(2, 14, 27, 0.00) 88.76%)',
+  }
+});
+
+export const canvasClass = style({
+  position: 'absolute',
+  width: '94vw',
+  height: '94vw',
+  maxWidth: '780px',
+  transform: 'translateX(-50%)',
+  left: '50%',
+  top: '30px',
+  zIndex: '1',
+  border: '2px solid rgba(255, 255, 255, 0.40)',
+  borderRadius: '8px',
+});
