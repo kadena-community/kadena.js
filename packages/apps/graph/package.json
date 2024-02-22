@@ -64,7 +64,7 @@
     "dataloader": "^2.2.2",
     "debug": "~4.3.4",
     "dotenv": "~16.0.3",
-    "eslint": "^8.45.0",
+    "eslint": "^8.56.0",
     "graphql": "~16.8.1",
     "graphql-scalars": "~1.22.4",
     "graphql-yoga": "~5.0.2",
@@ -80,15 +80,15 @@
     "@kadena-dev/shared-config": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
     "@kadena/types": "workspace:*",
-    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/eslint-config": "~3.6.4",
     "@types/debug": "~4.1.7",
     "@types/js-yaml": "4.0.9",
     "@types/node": "^18.17.14",
     "@types/pg": "~8.10.9",
     "@types/seedrandom": "~3.0.8",
-    "prettier": "~3.0.3",
+    "prettier": "~3.2.5",
     "ts-node": "~10.8.2",
-    "typescript": "5.2.2"
+    "typescript": "5.3.3"
   },
   "_moduleAliases": {
     "@db": "src/db",

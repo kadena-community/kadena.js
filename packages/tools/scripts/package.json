@@ -14,7 +14,7 @@
     "chalk": "^5.2.0",
     "enquirer": "^2.4.1",
     "fast-glob": "^3.3.1",
-    "prettier": "~3.0.3"
+    "prettier": "~3.2.5"
   },
   "engines": {
     "node": ">=18",

@@ -28,7 +28,7 @@
     "@graphql-yoga/apollo-link": "~3.0.3",
     "@kadena/react-ui": "workspace:*",
     "@parcel/watcher": "^2.1.0",
-    "eslint": "^8.45.0",
+    "eslint": "^8.56.0",
     "graphql": "~16.8.1",
     "next": "13.5.5",
     "react": "^18.2.0",
@@ -43,14 +43,14 @@
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
     "@kadena/pactjs-cli": "workspace:*",
-    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/eslint-config": "~3.6.4",
     "@types/node": "^18.17.14",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vanilla-extract/css": "1.14.0",
     "@vanilla-extract/next-plugin": "2.3.2",
     "concurrently": "^7.2.2",
-    "prettier": "~3.0.3",
-    "typescript": "5.2.2"
+    "prettier": "~3.2.5",
+    "typescript": "5.3.3"
   }
 }
