@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const buttonClass = style({
   border: 0,
@@ -6,5 +6,15 @@ export const buttonClass = style({
   color: 'white',
   cursor: 'pointer',
   padding: '10px',
-  paddingInlineEnd: 0,
+
+  selectors: {
+    '&:last-child': {
+      paddingInlineEnd: 0,
+    },
+  },
+});
+
+globalStyle(`${buttonClass} > svg`, {
+  minWidth: '24px',
+  aspectRatio: '1/1',
 });

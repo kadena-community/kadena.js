@@ -15,7 +15,7 @@ interface IProps {
 export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
   const { updateSigner } = useProofOfUs();
   const [error, setError] = useState<string>('');
-  const formRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const [socialIcon, setSocialIcon] = useState<
     keyof typeof SocialIcons | undefined
   >(undefined);
@@ -80,6 +80,7 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
           placeholder="Label"
           name="label"
           defaultValue={signer?.name}
+          maxLength={35}
         />
         <Stack position="relative">
           <TextField
