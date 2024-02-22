@@ -1,7 +1,6 @@
 import { style } from '@vanilla-extract/css';
 
-export const wrapperClass = style([{
-}]);
+export const wrapperClass = style([{}]);
 
 export const hiddenClass = style({
   display: 'none',
@@ -66,8 +65,9 @@ export const cameraWrapperClass = style({
     height: '100%',
     top: '0',
     position: 'absolute',
-    background: 'linear-gradient(359deg, #020E1B 3.84%, rgba(2, 14, 27, 0.00) 88.76%)',
-  }
+    background:
+      'linear-gradient(359deg, #020E1B 3.84%, rgba(2, 14, 27, 0.00) 88.76%)',
+  },
 });
 
 export const canvasClass = style({
