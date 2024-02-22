@@ -1,6 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
+import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import { builder } from '../builder';
 
 builder.queryField('event', (t) =>
@@ -39,6 +40,8 @@ builder.queryField('events', (t) =>
     edgesNullable: false,
     args: {
       qualifiedEventName: t.arg.string({ required: true }),
+      chainId: t.arg.string(),
+      parametersFilter: t.arg.string(),
     },
     type: 'Event',
     cursor: 'blockHash_orderIndex_requestKey',
@@ -54,6 +57,19 @@ builder.queryField('events', (t) =>
         return await prismaClient.event.count({
           where: {
             qualifiedName: args.qualifiedEventName,
+            transaction: {
+              NOT: [],
+            },
+            ...(args.chainId && {
+              chainId: parseInt(args.chainId),
+            }),
+            ...(args.parametersFilter && {
+              parameters: parsePrismaJsonColumn(args.parametersFilter, {
+                query: 'events',
+                queryParameter: 'parametersFilter',
+                column: 'parameters',
+              }),
+            }),
           },
         });
       } catch (error) {
@@ -69,6 +85,16 @@ builder.queryField('events', (t) =>
             transaction: {
               NOT: [],
             },
+            ...(args.chainId && {
+              chainId: parseInt(args.chainId),
+            }),
+            ...(args.parametersFilter && {
+              parameters: parsePrismaJsonColumn(args.parametersFilter, {
+                query: 'events',
+                queryParameter: 'parametersFilter',
+                column: 'parameters',
+              }),
+            }),
           },
           orderBy: {
             id: 'desc',

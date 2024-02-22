@@ -61,7 +61,7 @@ export const createTestSignedTransactionCommand: (
   program: Command,
   version: string,
 ) => void = createCommandFlexible(
-  'test-signed-transaction',
+  'test',
   'Test a signed transaction on testnet.',
   [
     txOptions.directory({ disableQuestion: true }),

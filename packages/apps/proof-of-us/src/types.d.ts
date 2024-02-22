@@ -85,7 +85,7 @@ interface IProofOfUsTokenMeta {
     signees?: IProofOfUsTokenSignee[];
   };
 
-  authors: string[];
+  authors: { name: string }[];
   collection: {
     name: string;
     family: string;
@@ -113,15 +113,17 @@ interface ISigneePosition {
 }
 
 type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
-  label?: string;
+  name?: string;
   signerStatus: ISignerStatus;
   initiator: boolean;
-  socialLinks?: ISocial[];
+  socialLink?: ISocial;
   position?: ISigneePosition;
   publicKey: string;
 };
 
 type IProofOfUsTokenSignee = Pick<
   IProofOfUsSignee,
-  'label' | 'socialLinks' | 'position'
->;
+  'accountName' | 'socialLink' | 'position'
+> & {
+  name: string;
+};

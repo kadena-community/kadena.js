@@ -31,6 +31,7 @@ export interface IProofOfUsContext {
   updateBackgroundColor: (value: string) => Promise<void>;
   isConnected: () => boolean;
   isInitiator: () => boolean;
+  hasSigned: () => boolean;
   getSigneeAccount: (account: IAccount) => IProofOfUsSignee;
   updateSigner: (value: any, isOverwrite?: boolean) => Promise<void>;
 }
@@ -49,6 +50,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   updateBackgroundColor: async () => {},
   isConnected: () => false,
   isInitiator: () => false,
+  hasSigned: () => false,
   updateSigner: async () => {},
   addTx: async () => {},
   getSigneeAccount: (account: IAccount) => {
@@ -138,6 +140,14 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     );
   };
 
+  const hasSigned = (): boolean => {
+    const signee = proofOfUs?.signees?.find(
+      (s) => s.accountName === account?.accountName,
+    );
+
+    return signee?.signerStatus === 'success';
+  };
+
   const isConnected = () => {
     return !!proofOfUs?.signees?.find(
       (s) => s.accountName === account?.accountName,
@@ -174,6 +184,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         updateBackgroundColor,
         updateSigner,
         addTx,
+        hasSigned,
       }}
     >
       {children}

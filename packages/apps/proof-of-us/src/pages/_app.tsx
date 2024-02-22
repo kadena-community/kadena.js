@@ -3,6 +3,7 @@ import '@kadena/react-ui/global';
 
 // eslint-disable-next-line import/no-unresolved
 import { Analytics } from '@/components/Analytics/Analytics';
+import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Providers } from '@/components/Providers/Providers';
 import { Toasts } from '@/components/Toasts/Toasts';
 import { mainWrapperClass } from '@/styles/global.css';
@@ -103,6 +104,7 @@ export const MyApp = ({
           <link rel="apple-touch-icon" href="/assets/favicons/icon@192.png" />
         </Head>
         <main className={mainWrapperClass}>
+          <CookieConsent />
           <AnimatePresence mode="popLayout" initial={false}>
             <Component {...pageProps} key={router.asPath} />
           </AnimatePresence>

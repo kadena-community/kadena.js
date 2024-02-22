@@ -4,10 +4,12 @@ import { configCommandFactory } from './config/index.js';
 import { dappCommandFactory } from './dapp/index.js';
 // import { devnetCommandFactory } from './devnet/index.js';
 import { keysCommandFactory } from './keys/index.js';
+import { walletsCommandFactory } from './wallets/index.js';
 // import { marmaladeCommandFactory } from './marmalade/index.js';
 import { networksCommandFactory } from './networks/index.js';
 import { txCommandFactory } from './tx/index.js';
 // import { typescriptCommandFactory } from './typescript/index.js';
+import { versionCommand } from './version/index.js';
 
 import type { Command } from 'commander';
 import { readFileSync } from 'node:fs';
@@ -23,6 +25,7 @@ export function loadProgram(program: Command): Command {
     configCommandFactory,
     networksCommandFactory,
     // devnetCommandFactory,
+    walletsCommandFactory,
     keysCommandFactory,
     accountCommandFactory,
     txCommandFactory,
@@ -30,6 +33,7 @@ export function loadProgram(program: Command): Command {
     // marmaladeCommandFactory,
     // typescriptCommandFactory,
     dappCommandFactory,
+    versionCommand,
   ]
     .flat()
     .forEach(async (fn) => {

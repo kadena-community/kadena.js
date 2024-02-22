@@ -87,8 +87,8 @@ export const createTransaction = async (
 };
 
 export const createTransactionCommandNew = createCommandFlexible(
-  'create-transaction',
-  'Select a template and create a transaction.\nThe template can be passed via stdin.\nThe transaction will be saved to file.',
+  'add',
+  'Select a template and add a transaction.\nThe template can be passed via stdin.\nThe transaction will be saved to file.',
   [
     txOptions.selectTemplate({ isOptional: false }),
     txOptions.templateData({ isOptional: true }),

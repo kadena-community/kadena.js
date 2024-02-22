@@ -1,14 +1,14 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { assert, describe, expect, it } from 'vitest';
-import { decrypt } from '../commands/keysDecrypt.js';
+import { decrypt } from '../commands/walletsDecrypt.js';
 
 describe('decrypt command', () => {
   it('should decrypt a message correctly', async () => {
-    const keyMessage =
+    const message =
       'R0hiSzI4aEZxa2ZJSnI1UGZxQTkwZz09LmxidlJXZzNsbndsQmIrVEkudkZ0bEduYVp6MzJuVTlvdWlZRUpFWG9DbmVQTWdxNi9vdWd0VnhWZFpKOHJMZ2t3eGZJUlNCU2txNDhDZ3pvKzgvbHdPWGtYZkVLUVAxK1pVOElCVERKMXp4dnlzSVkrN2FGWGduMHQ0MjQ9';
     const password = '12345678';
 
-    const output = await decrypt(password, keyMessage as EncryptedString);
+    const output = await decrypt(password, message as EncryptedString);
 
     assert(output.success);
 

@@ -1,6 +1,7 @@
-import type { BlockTransactionsConnection } from '@/__generated__/sdk';
+import type { BlockTransactionsConnection, Event } from '@/__generated__/sdk';
 import { useGetBlockFromHashQuery } from '@/__generated__/sdk';
 import { centerBlockClass } from '@/components/common/center-block/styles.css';
+import { EventsTable } from '@/components/events-table/events-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import {
@@ -17,6 +18,7 @@ import {
   BreadcrumbsItem,
   Cell,
   Column,
+  ContentHeader,
   Heading,
   Link,
   Notification,
@@ -126,9 +128,9 @@ const Block: React.FC = () => {
                       </Cell>
                       <Cell>
                         <Link
-                          href={`${routes.BLOCK_OVERVIEW}/${data.block.parentHash}`}
+                          href={`${routes.BLOCK_OVERVIEW}/${data.block.parent?.hash}`}
                         >
-                          {data.block.parentHash}
+                          {data.block.parent?.hash}
                         </Link>
                       </Cell>
                     </Row>
@@ -214,7 +216,7 @@ const Block: React.FC = () => {
                       <Cell>
                         <strong>Predicate</strong>
                       </Cell>
-                      <Cell>{data.block.predicate}</Cell>
+                      <Cell>{data.block.minerAccount.guard.predicate}</Cell>
                     </Row>
                   </TableBody>
                 </Table>
@@ -231,6 +233,22 @@ const Block: React.FC = () => {
                 }
                 description="All transactions present in this block"
               />
+            )}
+
+            <Box margin="md" />
+
+            {data.block.events.edges.length && (
+              <>
+                <ContentHeader
+                  heading="Events"
+                  icon="KIcon"
+                  description="All events of this block"
+                />
+                <Box margin="sm" />
+                <EventsTable
+                  events={data.block.events.edges.map((x) => x.node) as Event[]}
+                />
+              </>
             )}
           </>
         )}

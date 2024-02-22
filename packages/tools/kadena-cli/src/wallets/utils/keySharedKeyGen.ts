@@ -1,13 +1,13 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { kadenaDecrypt, kadenaGenKeypairFromSeed } from '@kadena/hd-wallet';
 import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
-import { toHexStr } from './keysHelpers.js';
-import type { IKeyPair } from './storage.js';
+import { toHexStr } from '../../keys/utils/keysHelpers.js';
+import type { IKeyPair } from '../../keys/utils/storage.js';
 
 export interface IKeysConfig {
   keyGenFromChoice: string;
   keyAlias: string;
-  keyWallet?: EncryptedString;
+  walletName?: EncryptedString;
   keyMnemonic?: string;
   securityPassword: string;
   keyAmount?: number;
@@ -44,7 +44,7 @@ async function handlePublicSecretKeysFrom(
 }
 
 function validateConfigForSecretKeyGeneration(config: IKeysConfig): void {
-  if (!config.keyWallet) {
+  if (!config.walletName) {
     throw new Error('Wallet is required for this option.');
   }
   if (
@@ -105,17 +105,17 @@ async function generateSingleKeyPair(
   let publicKey: string;
   let secretKey: string | undefined;
 
-  const keyWallet = config.keyWallet as EncryptedString;
+  const walletName = config.walletName as EncryptedString;
 
   if (config.legacy === true) {
     const { publicKey: _publicKey, secretKey: _secretKey } =
-      await kadenaGenKeypair(config.securityPassword, keyWallet, index);
+      await kadenaGenKeypair(config.securityPassword, walletName, index);
     publicKey = _publicKey;
     secretKey = _secretKey;
   } else {
     const [publicKeyString, secretKeyString] = await kadenaGenKeypairFromSeed(
       config.securityPassword,
-      keyWallet,
+      walletName,
       index,
     );
     publicKey = publicKeyString;

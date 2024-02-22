@@ -104,7 +104,18 @@ export const getBlockFromHash: DocumentNode = gql`
       }
       minerAccount {
         guard {
+          predicate
           keys
+        }
+      }
+      parent {
+        hash
+      }
+      events {
+        edges {
+          node {
+            ...AllEventFields
+          }
         }
       }
     }

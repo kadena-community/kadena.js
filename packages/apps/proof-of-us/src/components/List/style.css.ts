@@ -6,7 +6,7 @@ export const listClass = style({
   paddingInline: 0,
   width: '100%',
   overflowY: 'scroll',
-  height: 'calc(100vh - 170px)',
+  height: 'calc(100vh - 180px)',
 });
 
 export const listItemClass = style([

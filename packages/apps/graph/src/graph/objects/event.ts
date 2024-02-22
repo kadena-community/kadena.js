@@ -1,6 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
+import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { builder } from '../builder';
 
 export default builder.prismaNode('Event', {
@@ -24,6 +25,17 @@ export default builder.prismaNode('Event', {
     moduleName: t.exposeString('moduleName'),
     name: t.exposeString('name'),
     parameterText: t.exposeString('parameterText'),
+    parameters: t.string({
+      nullable: true,
+      select: {
+        parameters: true,
+      },
+      resolve({ parameters }) {
+        return nullishOrEmpty(parameters)
+          ? undefined
+          : JSON.stringify(parameters);
+      },
+    }),
     qualifiedName: t.exposeString('qualifiedName', {
       description:
         'The full eventname, containing module and eventname, e.g. coin.TRANSFER',
