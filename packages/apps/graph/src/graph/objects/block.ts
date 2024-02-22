@@ -4,7 +4,6 @@ import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
 } from '@services/complexity';
-import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import type { Guard } from '../types/graphql-types';
@@ -169,45 +168,5 @@ export default builder.prismaNode('Block', {
         }
       },
     }),
-
-    confirmationDepth: t.int({
-      description: 'The number of blocks that proceed this block.',
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS *
-        dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH,
-      select: {
-        hash: true,
-      },
-      async resolve(parent) {
-        try {
-          return await getConfirmationDepth(parent.hash);
-        } catch (error) {
-          throw normalizeError(error);
-        }
-      },
-    }),
   }),
 });
-
-async function getConfirmationDepth(blockHash: string): Promise<number> {
-  const result = await prismaClient.$queryRaw<{ depth: number }[]>`
-    WITH RECURSIVE BlockDescendants AS (
-      SELECT hash, parent, 0 AS depth, height, chainid
-      FROM blocks
-      WHERE hash = ${blockHash}
-      UNION ALL
-      SELECT b.hash, b.parent, d.depth + 1 AS depth, b.height, b.chainid
-      FROM BlockDescendants d
-      JOIN blocks b ON d.hash = b.parent AND b.height = d.height + 1 AND b.chainid = d.chainid
-      WHERE d.depth < ${dotenv.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH}
-    )
-    SELECT MAX(depth) AS depth
-    FROM BlockDescendants;
-  `;
-
-  if (result.length && result[0].depth) {
-    return Number(result[0].depth);
-  } else {
-    return 0;
-  }
-}

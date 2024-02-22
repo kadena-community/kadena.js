@@ -1,8 +1,5 @@
 import type { BlockTransactionsConnection, Event } from '@/__generated__/sdk';
-import {
-  useGetBlockFromHashQuery,
-  useGetGraphConfigurationQuery,
-} from '@/__generated__/sdk';
+import { useGetBlockFromHashQuery } from '@/__generated__/sdk';
 import { centerBlockClass } from '@/components/common/center-block/styles.css';
 import { EventsTable } from '@/components/events-table/events-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
@@ -48,8 +45,6 @@ const Block: React.FC = () => {
     variables: getBlockFromHashVariables,
     skip: !router.query.hash,
   });
-
-  const { data: configData } = useGetGraphConfigurationQuery();
 
   const viewAllTransactionsPage: string = `${routes.BLOCK_TRANSACTIONS}/${
     router.query.hash as string
@@ -113,19 +108,6 @@ const Block: React.FC = () => {
                     <strong>Hash</strong>
                   </Cell>
                   <Cell>{data.block.hash}</Cell>
-                </Row>
-                <Row>
-                  <Cell>
-                    <strong>Confirmation Depth</strong>
-                  </Cell>
-                  <Cell>
-                    {!configData?.graphConfiguration
-                      ?.maximumConfirmationDepth ||
-                    data.block.confirmationDepth <
-                      configData.graphConfiguration.maximumConfirmationDepth
-                      ? data.block.confirmationDepth
-                      : `>${data.block.confirmationDepth}`}
-                  </Cell>
                 </Row>
               </TableBody>
             </Table>

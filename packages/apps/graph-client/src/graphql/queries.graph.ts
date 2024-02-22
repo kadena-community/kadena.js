@@ -48,7 +48,6 @@ export const getBlockNodes: DocumentNode = gql`
         hash
         chainId
         creationTime
-        confirmationDepth
         transactions {
           totalCount
         }
@@ -103,7 +102,6 @@ export const getBlockFromHash: DocumentNode = gql`
           }
         }
       }
-      confirmationDepth
       minerAccount {
         guard {
           predicate
@@ -133,7 +131,6 @@ export const getLastBlock: DocumentNode = gql`
 export const getGraphConfiguration: DocumentNode = gql`
   query getGraphConfiguration {
     graphConfiguration {
-      maximumConfirmationDepth
       minimumBlockHeight
     }
   }
