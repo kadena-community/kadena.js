@@ -68,8 +68,6 @@ export const createAccountListCommand: (
 
     const tabularData = generateTabularData(accounts);
 
-    log.output(
-      log.generateTableString(tabularData.header, tabularData.data, true, true),
-    );
+    log.output(log.generateTableString(tabularData.header, tabularData.data));
   },
 );
