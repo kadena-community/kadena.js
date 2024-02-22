@@ -6,7 +6,7 @@ export const deviceColors = {
   purple: '#893DE7',
   pink: '#C82269',
   red: '#D31510',
-  orange: '#856600',
+  orange: '#FFC700',
   darkGreen: '#577400',
   blue: '#0265DC',
   violet: '#5258E4',

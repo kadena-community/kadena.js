@@ -3,14 +3,20 @@ import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSubmit } from '@/hooks/submit';
-import { MonoClose } from '@kadena/react-icons';
+import {
+  MonoAccessTimeFilled,
+  MonoChecklist,
+  MonoClose,
+} from '@kadena/react-icons';
+import { Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
+import { ErrorBlock } from '../ErrorBlock/ErrorBlock';
 import { IconButton } from '../IconButton/IconButton';
-import { MainLoader } from '../MainLoader/MainLoader';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
+import { Heading } from '../Typography/Heading';
 
 interface IProps {
   next: () => void;
@@ -38,9 +44,9 @@ export const MintView: FC<IProps> = ({ prev }) => {
     if (!proofOfUs) return;
 
     if (!proofOfUs.tx) {
-      //throw new Error('no tx is found');
+      throw new Error('no tx is found');
     }
-    //handleMint();
+    handleMint();
   }, [proofOfUs?.tx]);
 
   const handleClose = () => {
@@ -61,19 +67,48 @@ export const MintView: FC<IProps> = ({ prev }) => {
           )}
         />
 
-        <div>isloading: {isStatusLoading.toString()}</div>
-
-        {isStatusLoading && <MainLoader />}
+        {isStatusLoading && (
+          <>
+            <Stack justifyContent="center" paddingBlock="xxxl">
+              <MonoAccessTimeFilled fontSize="8rem" />
+            </Stack>
+            <ListSignees />
+            <Stack flex={1} />
+          </>
+        )}
         {status === 'error' && (
-          <div>
-            <pre>{JSON.stringify(result, null, 2)}</pre>
-            <Button onPress={handleMint}>Retry</Button>
-          </div>
+          <>
+            <Stack justifyContent="center" paddingBlock="xxxl">
+              <MonoClose fontSize="8rem" />
+            </Stack>
+
+            <Stack flex={1} />
+            <Stack flexDirection="column" gap="md">
+              <Heading as="h6">Transaction Failed</Heading>
+              <ErrorBlock>
+                <pre>{JSON.stringify(result, null, 2)}</pre>
+              </ErrorBlock>
+              <Stack gap="md">
+                <Button variant="secondary" onPress={handleClose}>
+                  Dashboard
+                </Button>
+                <Button variant="tertiary" onPress={handleMint}>
+                  Retry
+                </Button>
+              </Stack>
+            </Stack>
+          </>
         )}
 
-        {status === 'success' && <div>Hurray!!!</div>}
-
-        <ListSignees />
+        {status === 'success' && (
+          <>
+            <Stack justifyContent="center" paddingBlock="xxxl">
+              <MonoChecklist fontSize="8rem" />
+            </Stack>
+            <ListSignees />
+            <Stack flex={1} />
+          </>
+        )}
       </>
     </ScreenHeight>
   );
