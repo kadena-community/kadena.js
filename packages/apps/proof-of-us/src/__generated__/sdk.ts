@@ -42,22 +42,27 @@ export type Scalars = {
 export type Block = Node & {
   __typename?: 'Block';
   chainId: Scalars['BigInt']['output'];
-  /** The number of blocks that proceed this block. */
-  confirmationDepth: Scalars['Int']['output'];
   creationTime: Scalars['DateTime']['output'];
   /** The moment the difficulty is adjusted to maintain a block validation time of 30 seconds. */
   epoch: Scalars['DateTime']['output'];
+  events: BlockEventsConnection;
   hash: Scalars['ID']['output'];
   height: Scalars['BigInt']['output'];
   id: Scalars['ID']['output'];
   minerAccount: FungibleChainAccount;
   parent?: Maybe<Block>;
-  parentHash: Scalars['String']['output'];
   payloadHash: Scalars['String']['output'];
   /** The proof of work hash. */
   powHash: Scalars['String']['output'];
-  predicate: Scalars['String']['output'];
   transactions: BlockTransactionsConnection;
+};
+
+/** A unit of information that stores a set of verified transactions. */
+export type BlockEventsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** A unit of information that stores a set of verified transactions. */
@@ -66,6 +71,19 @@ export type BlockTransactionsArgs = {
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type BlockEventsConnection = {
+  __typename?: 'BlockEventsConnection';
+  edges: Array<BlockEventsConnectionEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type BlockEventsConnectionEdge = {
+  __typename?: 'BlockEventsConnectionEdge';
+  cursor: Scalars['String']['output'];
+  node: Event;
 };
 
 export type BlockTransactionsConnection = {
@@ -95,6 +113,7 @@ export type Event = Node & {
   /** The order index of this event, in the case that there are multiple events. */
   orderIndex: Scalars['BigInt']['output'];
   parameterText: Scalars['String']['output'];
+  parameters?: Maybe<Scalars['String']['output']>;
   /** The full eventname, containing module and eventname, e.g. coin.TRANSFER */
   qualifiedName: Scalars['String']['output'];
   requestKey: Scalars['String']['output'];
@@ -222,8 +241,6 @@ export type GasLimitEstimation = {
 /** General information about the graph and chainweb-data. */
 export type GraphConfiguration = {
   __typename?: 'GraphConfiguration';
-  /** The maximum number of confirmations calculated on this endpoint. */
-  maximumConfirmationDepth: Scalars['Int']['output'];
   /** The lowest block-height that is indexed in this endpoint. */
   minimumBlockHeight?: Maybe<Scalars['BigInt']['output']>;
 };
@@ -333,6 +350,8 @@ export type Query = {
   __typename?: 'Query';
   /** Retrieve a block by hash. */
   block?: Maybe<Block>;
+  /** Retrieve blocks by chain and minimal depth. */
+  blocksFromDepth?: Maybe<Array<Block>>;
   /** Retrieve blocks by chain and minimal height. */
   blocksFromHeight: Array<Block>;
   /** Retrieve all completed blocks from a given height. */
@@ -343,8 +362,12 @@ export type Query = {
   events: QueryEventsConnection;
   /** Retrieve an fungible specific account by its name and fungible, such as coin. */
   fungibleAccount?: Maybe<FungibleAccount>;
+  /** Retrieve an account by public key. */
+  fungibleAccountByPublicKey?: Maybe<FungibleAccount>;
   /** Retrieve an account by its name and fungible, such as coin, on a specific chain. */
   fungibleChainAccount?: Maybe<FungibleChainAccount>;
+  /** Retrieve a chain account by public key. */
+  fungibleChainAccountByPublicKey?: Maybe<FungibleChainAccount>;
   /** Estimate the gas limit for a transaction. */
   gasLimitEstimate: GasLimitEstimation;
   /** Estimate the gas limit for a list of transactions. */
@@ -379,6 +402,11 @@ export type QueryBlockArgs = {
   hash: Scalars['String']['input'];
 };
 
+export type QueryBlocksFromDepthArgs = {
+  chainIds: Array<Scalars['String']['input']>;
+  minimumDepth: Scalars['Int']['input'];
+};
+
 export type QueryBlocksFromHeightArgs = {
   chainIds?: InputMaybe<Array<Scalars['String']['input']>>;
   startHeight: Scalars['Int']['input'];
@@ -399,8 +427,10 @@ export type QueryEventArgs = {
 export type QueryEventsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
+  chainId?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  parametersFilter?: InputMaybe<Scalars['String']['input']>;
   qualifiedEventName: Scalars['String']['input'];
 };
 
@@ -409,10 +439,19 @@ export type QueryFungibleAccountArgs = {
   fungibleName: Scalars['String']['input'];
 };
 
+export type QueryFungibleAccountByPublicKeyArgs = {
+  publicKey: Scalars['String']['input'];
+};
+
 export type QueryFungibleChainAccountArgs = {
   accountName: Scalars['String']['input'];
   chainId: Scalars['String']['input'];
   fungibleName: Scalars['String']['input'];
+};
+
+export type QueryFungibleChainAccountByPublicKeyArgs = {
+  chainId: Scalars['String']['input'];
+  publicKey: Scalars['String']['input'];
 };
 
 export type QueryGasLimitEstimateArgs = {
@@ -565,16 +604,25 @@ export type Subscription = {
   events?: Maybe<Array<Scalars['ID']['output']>>;
   /** Subscribe to new blocks. */
   newBlocks?: Maybe<Array<Scalars['ID']['output']>>;
+  /** Subscribe to new blocks from a specific depth. */
+  newBlocksFromDepth?: Maybe<Array<Scalars['ID']['output']>>;
   /** Listen for a transaction by request key. Returns the ID when it is in a block. */
   transaction?: Maybe<Scalars['ID']['output']>;
 };
 
 export type SubscriptionEventsArgs = {
+  chainId?: InputMaybe<Scalars['String']['input']>;
+  parametersFilter?: InputMaybe<Scalars['String']['input']>;
   qualifiedEventName: Scalars['String']['input'];
 };
 
 export type SubscriptionNewBlocksArgs = {
   chainIds?: InputMaybe<Array<Scalars['Int']['input']>>;
+};
+
+export type SubscriptionNewBlocksFromDepthArgs = {
+  chainIds: Array<Scalars['String']['input']>;
+  minimumDepth: Scalars['Int']['input'];
 };
 
 export type SubscriptionTransactionArgs = {

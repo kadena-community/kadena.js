@@ -2,6 +2,8 @@ import type { ChalkInstance } from 'chalk';
 import { Chalk } from 'chalk';
 import { formatWithOptions } from 'node:util';
 import z from 'zod';
+import type { TableHeader, TableRow } from '../utils/tableDisplay.js';
+import { displayTable } from '../utils/tableDisplay.js';
 
 /**
  * Custom logging class for kadena-cli
@@ -46,9 +48,10 @@ const LEVELS = {
   error: 0,
   warning: 1,
   output: 2,
-  info: 3,
-  debug: 4,
-  verbose: 5,
+  header: 3,
+  info: 4,
+  debug: 5,
+  verbose: 6,
 } as const;
 
 type Levels = typeof LEVELS;
@@ -125,6 +128,27 @@ class Logger {
     this.level = level;
   }
 
+  public generateTableString(
+    headers: TableHeader,
+    rows: TableRow[],
+    includeHorizontalSeparator: boolean = false,
+    includeVerticalSeparator: boolean = false,
+  ): string {
+    const { header, separator, body } = displayTable(
+      headers,
+      rows,
+      includeHorizontalSeparator,
+      includeVerticalSeparator,
+    );
+
+    const coloredHeader = this.color.green(header);
+    const tableString =
+      separator.length > 0
+        ? `${coloredHeader}\n${separator}\n${body}`
+        : `${coloredHeader}\n${body}`;
+    return tableString;
+  }
+
   public get color(): ChalkInstance {
     return this._chalk;
   }
@@ -138,18 +162,23 @@ class Logger {
   public error(...args: unknown[]): void {
     this._log(LEVELS.error, args);
   }
+
   public warning(...args: unknown[]): void {
     this._log(LEVELS.warning, args);
   }
+
   public output(...args: unknown[]): void {
     this._log(LEVELS.output, args);
   }
+
   public info(...args: unknown[]): void {
     this._log(LEVELS.info, args);
   }
+
   public debug(...args: unknown[]): void {
     this._log(LEVELS.debug, args);
   }
+
   public verbose(...args: unknown[]): void {
     this._log(LEVELS.verbose, args);
   }

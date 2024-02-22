@@ -1,6 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
 import { createID } from '@utils/global-id';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
+import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
 import GQLEvent from '../objects/event';
@@ -10,11 +11,18 @@ builder.subscriptionField('events', (t) =>
     description: 'Listen for events by qualifiedName (e.g. `coin.TRANSFER`).',
     args: {
       qualifiedEventName: t.arg.string({ required: true }),
+      chainId: t.arg.string(),
+      parametersFilter: t.arg.string(),
     },
     type: ['ID'],
     nullable: true,
     subscribe: (__root, args, context) =>
-      iteratorFn(args.qualifiedEventName, context),
+      iteratorFn(
+        args.qualifiedEventName,
+        context,
+        args.chainId,
+        args.parametersFilter,
+      ),
     resolve: (parent) => parent,
   }),
 );
@@ -22,8 +30,15 @@ builder.subscriptionField('events', (t) =>
 async function* iteratorFn(
   qualifiedEventName: string,
   context: IContext,
+  chainId?: string | null,
+  parametersFilter?: string | null,
 ): AsyncGenerator<string[] | undefined, void, unknown> {
-  const eventResult = await getLastEvents(qualifiedEventName);
+  const eventResult = await getLastEvents(
+    qualifiedEventName,
+    undefined,
+    chainId,
+    parametersFilter,
+  );
   let lastEvent;
 
   if (!nullishOrEmpty(eventResult)) {
@@ -38,7 +53,12 @@ async function* iteratorFn(
   }
 
   while (!context.req.socket.destroyed) {
-    const newEvents = await getLastEvents(qualifiedEventName, lastEvent?.id);
+    const newEvents = await getLastEvents(
+      qualifiedEventName,
+      lastEvent?.id,
+      chainId,
+      parametersFilter,
+    );
 
     if (!nullishOrEmpty(newEvents)) {
       lastEvent = newEvents[0];
@@ -58,6 +78,8 @@ async function* iteratorFn(
 async function getLastEvents(
   eventName: string,
   id?: number,
+  chainId?: string | null,
+  parametersFilter?: string | null,
 ): Promise<
   { blockHash: string; orderIndex: bigint; requestKey: string; id: number }[]
 > {
@@ -83,6 +105,16 @@ async function getLastEvents(
       transaction: {
         NOT: [],
       },
+      ...(chainId && {
+        chainId: parseInt(chainId),
+      }),
+      ...(parametersFilter && {
+        parameters: parsePrismaJsonColumn(parametersFilter, {
+          subscription: 'events',
+          queryParameter: 'parametersFilter',
+          column: 'parameters',
+        }),
+      }),
     },
     select: {
       id: true,

@@ -33,12 +33,19 @@ export const createFundCommand = createCommandFlexible(
     // deployDevnet(),
   ],
   async (option, values) => {
-    const { accountConfig } = await option.account();
+    const { account, accountConfig } = await option.account();
     const { amount } = await option.amount();
     const { network, networkConfig } = await option.network({
       allowedNetworkIds: ['testnet04'],
     });
     const { chainId } = await option.chainId();
+
+    if (!accountConfig) {
+      log.error(
+        `\nAccount details are missing. Please check selected "${account}" account alias file.\n`,
+      );
+      return;
+    }
 
     const config = {
       accountConfig,

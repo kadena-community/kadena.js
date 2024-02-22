@@ -36,12 +36,6 @@ export const createManifest = async (
         backgroundColor: proofOfUs.backgroundColor,
       },
       signees: signees?.map((signee) => {
-        const links = signee.socialLinks?.length
-          ? Object.keys(signee?.socialLinks).map((k: any) => {
-              if (!signee?.socialLinks) return undefined;
-              return signee?.socialLinks[k];
-            })
-          : [];
         return {
           name: signee.name ? signee.name : signee.alias,
           accountName: signee.accountName,
@@ -49,7 +43,7 @@ export const createManifest = async (
             xPercentage: signee.position?.xPercentage,
             yPercentage: signee.position?.yPercentage,
           },
-          socialLinks: links,
+          socialLink: signee.socialLink,
         };
       }),
     },

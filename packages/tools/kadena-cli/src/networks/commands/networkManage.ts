@@ -15,7 +15,7 @@ export const manageNetworksCommand: (
   version: string,
 ) => void = createCommandFlexible(
   'update',
-  'Manage networks',
+  'Update local networks',
   [
     globalOptions.network({ isOptional: false }),
     globalOptions.networkExplorerUrl(),

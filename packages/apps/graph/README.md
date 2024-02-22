@@ -27,6 +27,7 @@ A GraphQL endpoint that interacts with chainweb-data and chainweb-node.
   - [Tracing and trace analysis](#tracing-and-trace-analysis)
   - [Query Complexity](#query-complexity)
   - [Gas Limit Estimations](#gas-limit-estimations)
+  - [Prisma JSON field queries](#prisma-json-field-queries)
 
 # Getting started
 
@@ -224,3 +225,13 @@ You can get the gas limit estimation for any transaction by using the `gasLimitE
 - `code`: The code of an execution. Required parameters: `code` and `chainId`.
 
 Every type accepts an optional parameter called `networkId` to override the default value from the environment variables.
+
+### Prisma JSON field queries
+
+Some columns in the database are of type `jsonb`. To query these columns, you can supply a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
+
+An example of such a filter parameter value could be: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`, in which case, the `parameters` column is a `jsonb` type column which is filtered to only include rows where the value contains an array that has the string `k:abcdefg` on index 0.
+
+Queries that allow such filters:
+
+- `parametersFilter` on the `events` query and `events` subscription.

@@ -8,9 +8,9 @@ import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
 import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
-import { SocialsEditor } from '../SocialsEditor/SocialsEditor';
+import { TextField } from '../TextField/TextField';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
-import { imageWrapper, titleErrorClass, titleInputClass } from './style.css';
+import { imageWrapper, titleErrorClass } from './style.css';
 
 interface IProps {
   next: () => void;
@@ -89,15 +89,12 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
             <ImagePositions />
           </div>
 
-          <input
-            className={titleInputClass}
+          <TextField
             name="title"
-            placeholder="title"
+            placeholder="Title"
             onChange={handleTitleChange}
             defaultValue={proofOfUs.title}
           />
-
-          <SocialsEditor />
         </>
       ) : (
         <ImagePositions />

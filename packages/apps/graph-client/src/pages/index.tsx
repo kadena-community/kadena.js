@@ -104,7 +104,6 @@ const Home: React.FC = () => {
             <Column>Creation Time</Column>
             <Column>Height</Column>
             <Column>Chain</Column>
-            <Column>Confirmation Depth</Column>
             <Column>Transactions</Column>
           </TableHeader>
           <TableBody>
@@ -122,7 +121,6 @@ const Home: React.FC = () => {
                   <Cell>{new Date(block.creationTime).toLocaleString()}</Cell>
                   <Cell>{block.height}</Cell>
                   <Cell>{block.chainId}</Cell>
-                  <Cell>{block.confirmationDepth}</Cell>
                   <Cell>{block.transactions.totalCount}</Cell>
                 </Row>
               );

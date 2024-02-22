@@ -193,4 +193,13 @@ export const txOptions = {
       return value;
     },
   }),
+  txSignWith: createOption({
+    key: 'txSignWith',
+    prompt: tx.selectSignMethodPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-s, --tx-sign-with <txSignWith>',
+      'Select a signing method',
+    ),
+  }),
 };

@@ -318,3 +318,25 @@ export const templateDataPrompt: IPrompt<string | null> = async (args) => {
   });
   return result ?? null;
 };
+
+export async function selectSignMethodPrompt(): Promise<
+  'localWallet' | 'aliasFile' | 'keyPair'
+> {
+  return await select({
+    message: 'Select an action',
+    choices: [
+      {
+        value: 'localWallet',
+        name: 'Sign with local wallet',
+      },
+      {
+        value: 'aliasFile',
+        name: 'Sign with aliased file',
+      },
+      {
+        value: 'keyPair',
+        name: 'Sign with key pair',
+      },
+    ],
+  });
+}

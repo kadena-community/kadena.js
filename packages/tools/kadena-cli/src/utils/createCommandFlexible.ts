@@ -93,15 +93,17 @@ const printCommandExecution = (
   );
 };
 
+export type CommandOption<T extends OptionType[]> = {
+  [K in T[number]['key']]: (
+    customArgs?: Record<string, unknown>,
+  ) => Promise<Prettify<OptionConfig<Extract<T[number], { key: K }>>>>;
+};
+
 export const createCommandFlexible =
   <
     T extends OptionType[],
     C extends (
-      option: {
-        [K in T[number]['key']]: (
-          customArgs?: Record<string, unknown>,
-        ) => Promise<Prettify<OptionConfig<Extract<T[number], { key: K }>>>>;
-      },
+      option: CommandOption<T>,
       /** command arguments */
       values: string[],
       stdin?: string,
@@ -113,7 +115,15 @@ export const createCommandFlexible =
     action: C,
   ): ((program: Command, version: string) => void) =>
   (program) => {
-    let command = program.command(name).description(description);
+    // anything after the first newline is only shown on the command specific help page
+    const [_description, ...helpText] = description.split('\n');
+    let command = program.command(name).description(_description);
+    if (helpText.length > 0) {
+      command.configureHelp({
+        commandDescription: () =>
+          `${[_description, '', ...helpText].join('\n')}`,
+      });
+    }
     let allowsUnknownOptions = false;
 
     if (options.some((option) => option.allowUnknownOptions === true)) {

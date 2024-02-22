@@ -10,11 +10,16 @@ import {
 interface IProps {
   name: string;
   accountName?: string;
-  socialLinks?: string[];
+  socialLink?: ISocial;
   idx: number;
 }
 
-export const SigneeItem: FC<IProps> = ({ name, accountName, idx }) => {
+export const SigneeItem: FC<IProps> = ({
+  name,
+  accountName,
+  idx,
+  socialLink,
+}) => {
   return (
     <li className={itemClass}>
       <Stack display="flex" style={{ minWidth: '0' }}>
@@ -24,6 +29,13 @@ export const SigneeItem: FC<IProps> = ({ name, accountName, idx }) => {
         </div>
       </Stack>
       <Stack>{accountName}</Stack>
+      {socialLink && (
+        <Stack justifyContent="center">
+          <a href="{socialLink}" target="_blank">
+            Social Link
+          </a>
+        </Stack>
+      )}
     </li>
   );
 };

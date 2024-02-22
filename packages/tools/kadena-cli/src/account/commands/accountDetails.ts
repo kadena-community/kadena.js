@@ -1,7 +1,6 @@
-import type { Command } from 'commander';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommand } from '../../utils/createCommand.js';
+import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import type { IAccountDetailsResult } from '../types.js';
@@ -22,7 +21,7 @@ export async function accountDetails(
       return {
         success: false,
         errors: [
-          `Account is not available on chain "${config.chainId}" of networkId "${config.networkId}"`,
+          `Account "${config.accountName}" is not available on chain "${config.chainId}" of networkId "${config.networkId}"`,
         ],
       };
     }
@@ -33,33 +32,49 @@ export async function accountDetails(
   }
 }
 
-export const createAccountDetailsCommand: (
-  program: Command,
-  version: string,
-) => void = createCommand(
+export const createAccountDetailsCommand = createCommandFlexible(
   'details',
   'Get details of an account',
   [
     globalOptions.accountSelect(),
     globalOptions.networkSelect(),
     globalOptions.chainId({ isOptional: false }),
+    globalOptions.fungible({ isOptional: true }),
   ],
-  async (config) => {
-    log.debug('account-details:action', { config });
+  async (option, values) => {
+    const { account, accountConfig } = await option.account({
+      isAllowManualInput: true,
+    });
+
+    let fungible = accountConfig?.fungible ?? 'coin';
+    const accountName = accountConfig?.name ?? account;
+
+    if (!accountConfig) {
+      fungible = (await option.fungible()).fungible;
+    }
+
+    const { networkConfig } = await option.network();
+    const { chainId } = await option.chainId();
+
+    log.debug('account-details:action', {
+      account,
+      accountConfig,
+      chainId,
+      networkConfig,
+      fungible,
+    });
 
     const result = await accountDetails({
-      accountName: config.accountConfig.name,
-      chainId: config.chainId,
-      networkId: config.networkConfig.networkId,
-      networkHost: config.networkConfig.networkHost,
-      fungible: config.accountConfig.fungible,
+      accountName: accountName,
+      chainId: chainId,
+      networkId: networkConfig.networkId,
+      networkHost: networkConfig.networkHost,
+      fungible: fungible,
     });
 
     assertCommandError(result);
 
-    log.info(
-      log.color.green(`\nDetails of account "${config.accountConfig.name}":\n`),
-    );
+    log.info(log.color.green(`\nDetails of account "${account}":\n`));
     log.info(log.color.green(`${JSON.stringify(result.data, null, 2)}`));
   },
 );
