@@ -4,7 +4,7 @@ import { useProofOfUs } from '@/hooks/proofOfUs';
 import { SocialIcons, getSocial } from '@/utils/getSocial';
 import { Stack } from '@kadena/react-ui';
 import type { ChangeEventHandler, FC, FormEventHandler } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { iconClass } from './style.css';
 
 interface IProps {
@@ -15,6 +15,7 @@ interface IProps {
 export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
   const { updateSigner } = useProofOfUs();
   const [error, setError] = useState<string>('');
+  const formRef = useRef<HTMLInputElement>(null);
   const [socialIcon, setSocialIcon] = useState<
     keyof typeof SocialIcons | undefined
   >(undefined);
@@ -25,6 +26,14 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
     if (!socialType) return;
     setSocialIcon(socialType.icon);
   }, [signer]);
+
+  useEffect(() => {
+    if (!formRef.current) return;
+
+    const firstElm = formRef.current.querySelectorAll('input')[0];
+    if (!firstElm) return;
+    firstElm.focus();
+  }, [formRef.current]);
 
   const handleSaveEditor: FormEventHandler<HTMLFormElement> = (evt) => {
     evt.preventDefault();
@@ -64,7 +73,7 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
   };
 
   return (
-    <form onSubmit={handleSaveEditor}>
+    <form onSubmit={handleSaveEditor} ref={formRef}>
       <Stack flexDirection="column" gap="md">
         <TextField
           aria-label="Label"
