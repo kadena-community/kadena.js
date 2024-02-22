@@ -3,7 +3,7 @@ title: Chainweaver User Guide
 description: Chainweaver User Guide
 menu: Chainweaver
 label: User Guide
-order: 2
+order: 3
 layout: full
 ---
 

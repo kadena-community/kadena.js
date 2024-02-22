@@ -18,6 +18,26 @@ started.
 
 ## Software Wallets
 
+### Kadena SpireKey (WebAuthN)
+
+The official implementation of the draft
+[KIP-00XX SpireConnect](https://github.com/kadena-community/webauthn-wallet/blob/main/KIP-00XX.md)
+to work with the WebAuthN enabled wallet Kadena SpireKey
+
+[User Guide](/kadena/wallets/kadena-spirekey/user-guide)
+
+[Kadena SpireKey](https://webauthn-wallet.vercel.app/)
+
+#### Example implementations
+
+##### [Cookie Web Shop](https://webauthn-wallet.vercel.app/v1/example/webshop)
+
+[Source Code](https://github.com/kadena-community/webauthn-wallet/blob/main/src/app/v1/example/webshop/page.tsx)
+
+##### [Proof of Us](https://devworld.kadena.io/)
+
+[Source Code](https://github.com/kadena-community/kadena.js/blob/main/packages/apps/proof-of-us/)
+
 ### Chainweaver
 
 Official Kadena wallet for advanced blockchain usage and smart contract
