@@ -262,7 +262,7 @@ const Home: FC = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Quick start (Deploy your first contract)')}
+                      {t('Deploy your first contract')}
                     </a>
                   </li>
                   <li>
@@ -272,7 +272,7 @@ const Home: FC = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Smart contracts (Get started with Pact)')}
+                      {t('Get started with Pact')}
                     </a>
                   </li>
                   <li>
@@ -282,7 +282,7 @@ const Home: FC = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('NFT marketplace (NFTs and Marmalade)')}
+                      {t('NFTs and Marmalade')}
                     </a>
                   </li>
                   <li>
@@ -292,7 +292,7 @@ const Home: FC = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Frontend libraries (Kadena client)')}
+                      {t('Kadena client')}
                     </a>
                   </li>
                   <li>
