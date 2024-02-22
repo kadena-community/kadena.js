@@ -1,4 +1,3 @@
-import { deviceColors } from '@/styles/tokens.css';
 import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
