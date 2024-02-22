@@ -19,7 +19,7 @@ import z from 'zod';
 
 interface IRecord {
   date: Date;
-  level: number;
+  level: LevelValue;
   args: unknown[];
 }
 type Transport = (record: IRecord, log: Logger) => void;
@@ -77,7 +77,7 @@ export const defaultTransport: Transport = (record) => {
     [LEVELS.info]: stdErrChalk.white,
     [LEVELS.debug]: stdErrChalk.gray,
     [LEVELS.verbose]: stdErrChalk.gray,
-  } as Record<number, ChalkInstance>;
+  } as Record<LevelValue, ChalkInstance>;
   const COLOR = LEVEL_COLORS[record.level] ?? stdErrChalk.white;
 
   // If level "output", write to stdout
@@ -128,7 +128,7 @@ class Logger {
     return this._chalk;
   }
 
-  private _log(level: number, args: unknown[]): void {
+  private _log(level: LevelValue, args: unknown[]): void {
     if (this.level >= level) {
       this._transport({ date: new Date(), level, args }, this);
     }

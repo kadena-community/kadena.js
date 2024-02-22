@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { mockPrompts, runCommand } from '../../utils/test.util.js';
 
-describe('prompt test', () => {
-  it('test', async () => {
+describe('tx create-transaction', () => {
+  it('Prompts values and writes the transaction file', async () => {
     mockPrompts({
       input: {
         'account-from': 'k:123',

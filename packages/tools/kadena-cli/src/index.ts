@@ -2,7 +2,7 @@
 import { readStdin } from './utils/stdin.js';
 
 async function main(): Promise<void> {
-  // stdin must be read before the "commander" package is loaded
+  // stdin must be read before the "commander" or "chalk" packages are loaded
   await readStdin();
 
   const { Command } = await import('commander');

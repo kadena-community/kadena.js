@@ -95,7 +95,7 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
   const existingTransactions: string[] = await getTransactions(signed, path);
 
   if (existingTransactions.length === 0) {
-    throw new Error('No transactions found.');
+    throw new Error(`No ${signed ? 'signed ' : ''}transactions found.`);
   }
 
   const choices = existingTransactions.map((transaction) => ({

@@ -40,7 +40,7 @@ export const mockPrompts = (data: {
   select?: Record<string, string>;
   password?: Record<string, string>;
   input?: Record<string, string>;
-  checkbox?: Record<string, string[]>;
+  checkbox?: Record<string, number[]>;
   verbose?: boolean;
 }): void => {
   vi.spyOn(prompts, 'select').mockImplementation((async (args) => {
@@ -81,13 +81,18 @@ export const mockPrompts = (data: {
 
   vi.spyOn(prompts, 'checkbox').mockImplementation((async (args) => {
     const message = (await args.message) as string;
+    const choices = args.choices.filter((x) => x.type !== 'separator');
+
     // eslint-disable-next-line no-console, @typescript-eslint/strict-boolean-expressions
     if (data.verbose) console.log(`checkbox: ${message}`);
     if (!data.checkbox) return [];
     const match = Object.entries(data.checkbox).filter((x) =>
       message.includes(x[0]),
     );
-    if (match.length > 0) return match[0][1];
+
+    if (match.length > 0) {
+      return match[0][1].map((i) => (choices[i] as any).value);
+    }
     return [];
   }) as typeof prompts.checkbox);
 };

@@ -360,3 +360,11 @@ export const formatZodError = (error: ZodError): string => {
     .filter(notEmpty);
   return formatted.join('\n');
 };
+
+export const safeJsonParse = <T extends unknown>(value: string): T | null => {
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    return null;
+  }
+};
