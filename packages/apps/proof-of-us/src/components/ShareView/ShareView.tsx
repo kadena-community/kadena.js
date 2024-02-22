@@ -15,6 +15,7 @@ import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 
+import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { TextField } from '../TextField/TextField';
 import { qrClass } from './style.css';
 
@@ -51,7 +52,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
   if (!proofOfUs) return;
 
   return (
-    <Stack as="section" flexDirection="column" paddingInline="md">
+    <ScreenHeight>
       {status === 3 && (
         <>
           <TitleHeader
@@ -128,6 +129,6 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
           )}
         </>
       )}
-    </Stack>
+    </ScreenHeight>
   );
 };

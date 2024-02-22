@@ -16,6 +16,7 @@ export const TitleHeader: FC<IProps> = ({ label, Prepend, Append }) => {
       gap="md"
       paddingBlock="sm"
       paddingInlineEnd="md"
+      width="100%"
     >
       {Prepend && <Prepend />}
       <h2 className={titleClass}>{label}</h2>
