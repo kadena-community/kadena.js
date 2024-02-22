@@ -91,6 +91,7 @@ export const mockPrompts = (data: {
     );
 
     if (match.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return match[0][1].map((i) => (choices[i] as any).value);
     }
     return [];

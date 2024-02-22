@@ -10,7 +10,7 @@ import {
   sanitizeFilename,
 } from '../../utils/helpers.js';
 
-import { existsSync, mkdirSync, readFileSync, readdirSync } from 'fs';
+import { existsSync, readFileSync, readdirSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
 import { z } from 'zod';

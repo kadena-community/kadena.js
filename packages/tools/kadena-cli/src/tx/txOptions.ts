@@ -98,7 +98,7 @@ export const txOptions = {
       const { values, variables, data } = args as {
         values: string[];
         variables: string[];
-        data: any;
+        data: Record<string, unknown>;
       };
       for (const variable of variables) {
         // Prioritize variables from data file
