@@ -2,6 +2,7 @@ import type { Command } from 'commander';
 
 import { createAddAccountFromWalletCommand } from './commands/accountAddFromWallet.js';
 import { createAddAccountManualCommand } from './commands/accountAddManual.js';
+import { createAccountDeleteCommand } from './commands/accountDelete.js';
 import { createAccountDetailsCommand } from './commands/accountDetails.js';
 import { createFundCommand } from './commands/accountFund.js';
 import { createAccountListCommand } from './commands/accountList.js';
@@ -17,6 +18,7 @@ export function accountCommandFactory(program: Command, version: string): void {
 
   createAddAccountManualCommand(accountProgram, version);
   createAddAccountFromWalletCommand(accountProgram, version);
+  createAccountDeleteCommand(accountProgram, version);
   createAccountDetailsCommand(accountProgram, version);
   createAccountListCommand(accountProgram, version);
   createFundCommand(accountProgram, version);

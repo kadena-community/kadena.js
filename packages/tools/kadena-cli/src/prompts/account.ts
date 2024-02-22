@@ -8,7 +8,7 @@ import {
   maskStringPreservingStartAndEnd,
   truncateText,
 } from '../utils/helpers.js';
-import { input, select } from '../utils/prompts.js';
+import { checkbox, input, select } from '../utils/prompts.js';
 
 export const publicKeysPrompt: IPrompt<string> = async (
   previousQuestions,
@@ -204,4 +204,65 @@ export const accountSelectPrompt: IPrompt<string> = async (
 
 export const accountSelectAllPrompt: IPrompt<string> = async () => {
   return accountSelectionPrompt(['all']);
+}
+
+export const accountSelectMultiplePrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const allAccounts = await getAllAccountNames();
+  if (allAccounts.length === 0) {
+    throw new Error(NO_ACCOUNT_ERROR_MESSAGE);
+  }
+
+  const maxAliasLength = Math.max(
+    ...allAccounts.map(({ alias }) => alias.length),
+  );
+
+  const allAccountChoices = allAccounts.map(({ alias, name }) => {
+    const aliasWithoutExtension = alias.split('.yaml')[0];
+    const maxLength = maxAliasLength < 25 ? maxAliasLength : 25;
+    const paddedAlias = aliasWithoutExtension.padEnd(maxLength, ' ');
+    return {
+      value: alias,
+      name: `${truncateText(
+        paddedAlias,
+        25,
+      )} - ${maskStringPreservingStartAndEnd(name, 20)}`,
+    };
+  });
+
+  const selectedAliases = await checkbox({
+    message: 'Select an account:(alias - account name)',
+    choices: allAccountChoices,
+  });
+
+  return selectedAliases.join(',');
+};
+
+export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const selectedAccounts = previousQuestions.account ?? undefined;
+
+  if (selectedAccounts === 0) {
+    throw new Error('No accounts selected');
+  }
+
+  return await select({
+    message: `Are you sure you want to delete the ${selectedAccounts} alias account?`,
+    choices: [
+      {
+        value: true,
+        name: 'Yes',
+      },
+      {
+        value: false,
+        name: 'No',
+      },
+    ],
+  });
 };
