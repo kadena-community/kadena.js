@@ -18,19 +18,21 @@ export type ExWrappedData<
 
 export type IsWrappedData<T> = T extends IWrappedData ? T : never;
 
-export type UnwrappedData<T> = T extends IWrappedData<infer D, infer N>
-  ? N extends string
-    ? { [Key in N]: D }
-    : D
-  : T;
+export type UnwrappedData<T> =
+  T extends IWrappedData<infer D, infer N>
+    ? N extends string
+      ? { [Key in N]: D }
+      : D
+    : T;
 
-export type UnwrappedObjects<T> = T extends IWrappedData<infer D, infer N>
-  ? N extends string
-    ? { [Key in N]: D }
-    : D extends {}
-    ? D
-    : never
-  : never;
+export type UnwrappedObjects<T> =
+  T extends IWrappedData<infer D, infer N>
+    ? N extends string
+      ? { [Key in N]: D }
+      : D extends {}
+        ? D
+        : never
+    : never;
 
 export interface IWrapData {
   <T, N extends string | undefined = undefined>(

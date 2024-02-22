@@ -17,7 +17,7 @@ export async function printTransactionsLocal(
     return tx.local(apiHost);
   });
   const localReponses = await Promise.all(localRequests);
-  localReponses.map(async (response) => {
+  localReponses.map((response) => {
     console.log(response);
   });
 }

@@ -38,8 +38,8 @@ export const getPageConfig = async ({
   const blogData = Array.isArray(blogPosts)
     ? await getBlogPosts(blogPosts)
     : blogPosts
-    ? await getBlogPosts()
-    : null;
+      ? await getBlogPosts()
+      : null;
   const popularData = popularPages
     ? await getMostPopularPages(popularPages)
     : null;

@@ -16,7 +16,7 @@ export async function pollRequestsAndWaitForEachPromiseExample(): Promise<void> 
   });
 
   // await for each individual request
-  Object.entries(results.requests).map(([requestKey, promise]) =>
+  for (const [requestKey, promise] of Object.entries(results.requests)) {
     promise
       .then((data) => {
         console.log('the request ', requestKey, 'result:', data);
@@ -28,6 +28,6 @@ export async function pollRequestsAndWaitForEachPromiseExample(): Promise<void> 
           'error:',
           error,
         );
-      }),
-  );
+      });
+  }
 }

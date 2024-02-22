@@ -209,8 +209,8 @@ const RequestKey: React.FC = () => {
                             {transaction.goodResult
                               ? formatCode(transaction.goodResult)
                               : transaction.badResult
-                              ? formatCode(transaction.badResult)
-                              : 'Unknown'}
+                                ? formatCode(transaction.badResult)
+                                : 'Unknown'}
                           </pre>
                         </Cell>
                       </Row>
