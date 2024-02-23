@@ -9,5 +9,12 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@kadena/bootstrap-lib", "@kadena/tools", "@kadena-dev/e2e-tests", "@kadena/docs"]
+  "ignore": [
+  "@kadena/bootstrap-lib", 
+  "@kadena/tools", 
+  "@kadena-dev/e2e-base", 
+  "@kadena-dev/e2e-docs", 
+  "@kadena-dev/e2e-tools", 
+  "@kadena-dev/e2e-graph", 
+  "@kadena/docs"]
 }

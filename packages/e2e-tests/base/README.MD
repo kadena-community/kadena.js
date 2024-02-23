@@ -1,6 +1,6 @@
 <!-- genericHeader start -->
 
-# @kadena-dev/e2e-tests
+# @kadena-dev/e2e-base
 
 <picture>
   <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
