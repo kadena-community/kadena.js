@@ -96,12 +96,12 @@ export const accountOptions = {
     },
   }),
   accountMultiSelect: createOption({
-    key: 'account' as const,
+    key: 'accountAlias' as const,
     prompt: account.accountSelectMultiplePrompt,
     defaultIsOptional: false,
     validation: z.string(),
     option: new Option(
-      '-a, --account-aliases <account>',
+      '-a, --account-alias <account>',
       'Enter an alias account(s) separated by a comma',
     ),
   }),

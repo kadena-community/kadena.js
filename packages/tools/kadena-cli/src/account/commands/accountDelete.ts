@@ -12,7 +12,7 @@ async function removeAccount(
   const nonDeletedFiles = [];
   const aliases = accountAlias.split(',');
   for (const alias of aliases) {
-    const filePath = join(ACCOUNT_DIR, alias);
+    const filePath = join(ACCOUNT_DIR, alias.trim());
     if (await services.filesystem.fileExists(filePath)) {
       await services.filesystem.deleteFile(filePath);
       deletedFiles.push(alias);
@@ -31,27 +31,29 @@ export const createAccountDeleteCommand = createCommandFlexible(
     accountOptions.accountDeleteConfirmation(),
   ],
   async (option) => {
-    const { account } = await option.account();
+    const { accountAlias } = await option.accountAlias();
+
+    if (!accountAlias || accountAlias.trim().length === 0) {
+      log.error('Account alias is not provided');
+      return;
+    }
+
     const { accountDeleteConfirmation } =
       await option.accountDeleteConfirmation({
-        account,
+        accountAlias,
       });
 
     log.debug('delete-account:action', {
-      account,
+      accountAlias,
       accountDeleteConfirmation,
     });
 
     if (accountDeleteConfirmation === false) {
-      log.info(
-        log.color.yellow(
-          `\nThe account alias "${account}" will not be deleted.\n`,
-        ),
-      );
+      log.info(log.color.yellow(`\nThe account alias will not be deleted.\n`));
       return;
     }
 
-    const [deletedFiles, nonDeletedFiles] = await removeAccount(account);
+    const [deletedFiles, nonDeletedFiles] = await removeAccount(accountAlias);
 
     if (deletedFiles.length) {
       log.info(
