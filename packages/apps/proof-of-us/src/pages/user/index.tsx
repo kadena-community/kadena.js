@@ -4,8 +4,8 @@ import { Button } from '@/components/Button/Button';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { List } from '@/components/List/List';
 import { ListItem } from '@/components/List/ListItem';
-import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
+import { ScreenHeight } from '@/components/ScreenHeight/ScreenHeight';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { Text } from '@/components/Typography/Text';
 import UserLayout from '@/components/UserLayout/UserLayout';
@@ -28,16 +28,12 @@ const Page: FC = () => {
   };
 
   return (
-    <LoginBoundry>
-      <UserLayout>
+    <UserLayout>
+      <ScreenHeight>
         {isLoading && <MainLoader />}
         {error && <div>{error.message}</div>}
 
-        <Stack
-          style={{ height: '90dvh' }}
-          paddingInline="md"
-          flexDirection="column"
-        >
+        <Stack flexDirection="column" flex={1}>
           <TitleHeader
             label="Dashboard"
             Append={() => (
@@ -72,12 +68,16 @@ const Page: FC = () => {
                   </p>
                 </Stack>
               ) : (
-                <>
+                <Stack flexDirection="column" flex={1} gap="md">
                   <Stack
                     display="flex"
                     flexDirection="column"
                     gap="md"
                     width="100%"
+                    style={{
+                      flex: '1 1 0',
+                      overflowY: 'scroll',
+                    }}
                   >
                     <Text bold>Proofs ({data.length})</Text>
                     <List>
@@ -85,14 +85,14 @@ const Page: FC = () => {
                         <ListItem key={token.id} token={token} />
                       ))}
                     </List>
-                    <Button onPress={handleNew}>Create Proof</Button>
                   </Stack>
-                </>
+                  <Button onPress={handleNew}>Create Proof</Button>
+                </Stack>
               ))}
           </Stack>
         </Stack>
-      </UserLayout>
-    </LoginBoundry>
+      </ScreenHeight>
+    </UserLayout>
   );
 };
 

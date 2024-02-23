@@ -40,7 +40,11 @@ export const useSignToken = () => {
       account,
     );
 
-    return transaction;
+    return {
+      transaction: transaction,
+      manifestUri: manifestData?.url,
+      imageUri: imageData.url,
+    };
   };
 
   useEffect(() => {
@@ -64,8 +68,17 @@ export const useSignToken = () => {
 
     let transaction = proofOfUs.tx;
     if (!transaction) {
-      const data = await createTx();
-      transaction = Buffer.from(JSON.stringify(data)).toString('base64');
+      const transactionData = await createTx();
+      if (!transactionData) return;
+
+      transaction = Buffer.from(
+        JSON.stringify(transactionData.transaction),
+      ).toString('base64');
+
+      updateSigner({
+        manifestUri: transactionData.manifestUri,
+        imageUri: transactionData.imageUri,
+      });
     }
 
     router.push(

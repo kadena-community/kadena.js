@@ -58,43 +58,6 @@ export const getTokenInfo = async (id: string): Promise<string | undefined> => {
   return result.status === 'success' ? (result.data as string) : undefined;
 };
 
-//TODO: data is hardcoded
-export const createTokenId = async (
-  proofOfUs: IProofOfUsData,
-): Promise<string | undefined> => {
-  const client = createClient();
-
-  const guardString = proofOfUs.signees.reduce((acc: string, val) => {
-    return `${acc} "${val.accountName}"`;
-  }, '');
-
-  const manifestUri =
-    'https://bafybeidw7xgbijagtu7vinvvjllrz3srsjam5entjlfvur2uqyab3f6s2a.ipfs.nftstorage.link/metadata';
-
-  const transaction = Pact.builder
-    .execution(
-      `(marmalade-v2.ledger.create-token-id 
-        {'precision: 0,'policies: [marmalade-v2.collection-policy-v1 proof-of-us], 'uri: "${manifestUri}"}
-      (map (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard) [${guardString}])
-      )`,
-    )
-    .setNetworkId(env.NETWORKID)
-    .setMeta({
-      chainId: '1',
-    })
-    .createTransaction();
-
-  const { result } = await client.local(transaction, {
-    preflight: false,
-    signatureVerification: false,
-  });
-
-  console.log({ transaction });
-  console.log({ result });
-
-  return result.status === 'success' ? (result.data as string) : undefined;
-};
-
 export const getTokenUri = async (id: string): Promise<string | undefined> => {
   const client = createClient();
 
