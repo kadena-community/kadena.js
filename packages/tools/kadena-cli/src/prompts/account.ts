@@ -204,7 +204,7 @@ export const accountSelectPrompt: IPrompt<string> = async (
 
 export const accountSelectAllPrompt: IPrompt<string> = async () => {
   return accountSelectionPrompt(['all']);
-}
+};
 
 export const accountSelectMultiplePrompt: IPrompt<string> = async (
   previousQuestions,
@@ -246,14 +246,17 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
   args,
   isOptional,
 ) => {
-  const selectedAccounts = previousQuestions.account ?? undefined;
+  const selectedAccounts = previousQuestions.accountAlias as string;
 
-  if (selectedAccounts === 0) {
-    throw new Error('No accounts selected');
-  }
+  const selectedAccountsLength = selectedAccounts.split(',').length;
+
+  const selectedAccountMessage =
+    selectedAccountsLength > 1
+      ? 'all the selected aliases accounts'
+      : `the ${previousQuestions.account} alias account`;
 
   return await select({
-    message: `Are you sure you want to delete the ${selectedAccounts} alias account?`,
+    message: `Are you sure you want to delete ${selectedAccountMessage}?`,
     choices: [
       {
         value: true,
