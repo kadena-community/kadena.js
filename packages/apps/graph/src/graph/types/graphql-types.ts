@@ -127,13 +127,13 @@ export interface Meta {
 // eslint-disable-next-line @typescript-eslint/naming-convention
 
 export interface TransactionResult {
-  badResult: string;
-  continuation: string;
+  badResult: string | null;
+  continuation: string | null;
   gas: bigint;
-  goodResult: string;
+  goodResult: string | null;
   height: bigint;
   logs: string | null;
-  metadata: string;
+  metadata: string | null;
   eventCount: bigint | null;
   transactionId: bigint | null;
 }

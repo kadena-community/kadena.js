@@ -67,13 +67,17 @@ export default builder.prismaNode('Transaction', {
       },
       resolve(parent) {
         return {
-          badResult: JSON.stringify(parent.badResult),
-          continuation: JSON.stringify(parent.continuation),
+          badResult: parent.badResult ? JSON.stringify(parent.badResult) : null,
+          continuation: parent.continuation
+            ? JSON.stringify(parent.continuation)
+            : null,
           gas: parent.gas,
-          goodResult: JSON.stringify(parent.goodResult),
+          goodResult: parent.goodResult
+            ? JSON.stringify(parent.goodResult)
+            : null,
           height: parent.height,
           logs: parent.logs,
-          metadata: JSON.stringify(parent.metadata),
+          metadata: parent.metadata ? JSON.stringify(parent.metadata) : null,
           eventCount: parent.eventCount,
           transactionId: parent.transactionId,
         };

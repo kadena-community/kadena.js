@@ -54,16 +54,35 @@ type BlockTransactionsConnectionEdge {
 type Cmd {
   meta: Meta
   networkId: String!
-  nonce: String!
+  nonce: String
   payload: Payload!
 }
 
 """The payload of an cont transaction."""
 type ContPayload {
+  """
+  The environment data made available to the transaction. Formatted as raw JSON.
+  """
   data: String!
+
+  """
+  In the case of a cross-chain transaction; A unique id when a pact (defpact) is initiated. See the "Pact execution scope and pact-id" explanation in the docs for more information.
+  """
   pactId: String
+
+  """
+  In the case of a cross-chain transaction; the proof provided to continue the cross-chain transaction.
+  """
   proof: String
+
+  """
+  In the case of a cross-chain transaction; Whether or not this transaction can be rolled back.
+  """
   rollback: Boolean
+
+  """
+  The step-number when this is an execution of a `defpact`, aka multi-step transaction.
+  """
   step: Int
 }
 
@@ -104,7 +123,14 @@ type Event implements Node {
 
 """The payload of an exec transaction."""
 type ExecPayload {
+  """
+  The Pact expressions executed in this transaction when it is an `exec` transaction.
+  """
   code: String
+
+  """
+  The environment data made available to the transaction. Formatted as raw JSON.
+  """
   data: String!
 }
 
@@ -466,14 +492,25 @@ type Transaction implements Node {
 
 """The result of a transaction."""
 type TransactionResult {
-  badResult: String!
-  continuation: String!
+  """The transaction result when it was successful. Formatted as raw JSON."""
+  badResult: String
+
+  """
+  The JSON stringified continuation in the case that it is a continuation.
+  """
+  continuation: String
   eventCount: BigInt
   gas: BigInt!
-  goodResult: String!
+
+  """The transaction result when it was successful. Formatted as raw JSON."""
+  goodResult: String
+
+  """The height of the block this transaction belongs to."""
   height: BigInt!
+
+  """Identifier to retrieve the logs for the execution of the transaction."""
   logs: String
-  metadata: String!
+  metadata: String
   transactionId: BigInt
 }
 

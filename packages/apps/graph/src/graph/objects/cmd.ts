@@ -19,6 +19,6 @@ export default builder.objectType('Cmd', {
     }),
 
     networkId: t.exposeString('networkId'),
-    nonce: t.exposeString('nonce'),
+    nonce: t.exposeString('nonce', { nullable: true }),
   }),
 });
