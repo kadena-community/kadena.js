@@ -1,5 +1,5 @@
+import { baseConfig } from '@kadena-dev/e2e-base/playwright.config';
 import type { PlaywrightTestConfig } from '@playwright/test';
-import { baseConfig } from './playwright.base.config';
 
 const config: PlaywrightTestConfig = {
   ...baseConfig,
@@ -25,7 +25,7 @@ const config: PlaywrightTestConfig = {
       testDir: 'src/tests/tools-app/',
       dependencies: ['setup'],
       use: {
-        storageState: './src/support/page-objects/tools-app/storageState.json',
+        storageState: './setup/storageState.json',
       },
     },
   ],
