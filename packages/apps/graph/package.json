@@ -67,12 +67,14 @@
     "eslint": "^8.45.0",
     "graphql": "~16.8.1",
     "graphql-scalars": "~1.22.4",
+    "graphql-ws": "^5.15.0",
     "graphql-yoga": "~5.0.2",
     "js-yaml": "~4.1.0",
     "json-bigint-patch": "~0.0.8",
     "module-alias": "^2.2.3",
     "prisma": "^5.7.1",
-    "seedrandom": "~3.0.5"
+    "seedrandom": "~3.0.5",
+    "ws": "^8.16.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -86,6 +88,7 @@
     "@types/node": "^18.17.14",
     "@types/pg": "~8.10.9",
     "@types/seedrandom": "~3.0.8",
+    "@types/ws": "^8.5.10",
     "prettier": "~3.0.3",
     "ts-node": "~10.8.2",
     "typescript": "5.2.2"

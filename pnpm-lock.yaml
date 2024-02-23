@@ -503,6 +503,9 @@ importers:
       graphql-scalars:
         specifier: ~1.22.4
         version: 1.22.4(graphql@16.8.1)
+      graphql-ws:
+        specifier: ^5.15.0
+        version: 5.15.0(graphql@16.8.1)
       graphql-yoga:
         specifier: ~5.0.2
         version: 5.0.2(graphql@16.8.1)
@@ -521,6 +524,9 @@ importers:
       seedrandom:
         specifier: ~3.0.5
         version: 3.0.5
+      ws:
+        specifier: ^8.16.0
+        version: 8.16.0
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -555,6 +561,9 @@ importers:
       '@types/seedrandom':
         specifier: ~3.0.8
         version: 3.0.8
+      '@types/ws':
+        specifier: ^8.5.10
+        version: 8.5.10
       prettier:
         specifier: ~3.0.3
         version: 3.0.3
@@ -569,7 +578,7 @@ importers:
     dependencies:
       '@apollo/client':
         specifier: ~3.8.8
-        version: 3.8.8(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 3.8.8(graphql-ws@5.15.0)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
       '@graphql-yoga/apollo-link':
         specifier: ~3.0.3
         version: 3.0.3(@apollo/client@3.8.8)(@types/node@18.17.14)(graphql@16.8.1)
@@ -585,6 +594,9 @@ importers:
       graphql:
         specifier: ~16.8.1
         version: 16.8.1
+      graphql-ws:
+        specifier: ^5.15.0
+        version: 5.15.0(graphql@16.8.1)
       next:
         specifier: 13.5.5
         version: 13.5.5(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
@@ -651,7 +663,7 @@ importers:
     dependencies:
       '@apollo/client':
         specifier: ~3.8.8
-        version: 3.8.8(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 3.8.8(graphql-ws@5.15.0)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
       '@google-analytics/data':
         specifier: ~3.2.2
         version: 3.2.2
@@ -3181,7 +3193,7 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.19
 
-  /@apollo/client@3.8.8(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0):
+  /@apollo/client@3.8.8(graphql-ws@5.15.0)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-omjd9ryGDkadZrKW6l5ktUAdS4SNaFOccYQ4ZST0HLW83y8kQaSZOCTNlpkoBUK8cv6qP8+AxOKwLm2ho8qQ+Q==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
@@ -3204,6 +3216,7 @@ packages:
       '@wry/trie': 0.5.0
       graphql: 16.8.1
       graphql-tag: 2.12.6(graphql@16.8.1)
+      graphql-ws: 5.15.0(graphql@16.8.1)
       hoist-non-react-statics: 3.3.2
       optimism: 0.18.0
       prop-types: 15.8.1
@@ -6759,7 +6772,7 @@ packages:
       '@apollo/client': ^3.5.9
       graphql: ^15.2.0 || ^16.0.0
     dependencies:
-      '@apollo/client': 3.8.8(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
+      '@apollo/client': 3.8.8(graphql-ws@5.15.0)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
       '@graphql-tools/utils': 10.0.11(graphql@16.8.1)
       graphql: 16.8.1
       tslib: 2.6.2
@@ -6774,7 +6787,7 @@ packages:
       '@graphql-tools/utils': 10.0.11(graphql@16.8.1)
       '@types/ws': 8.5.10
       graphql: 16.8.1
-      graphql-ws: 5.14.3(graphql@16.8.1)
+      graphql-ws: 5.15.0(graphql@16.8.1)
       isomorphic-ws: 5.0.0(ws@8.15.1)
       tslib: 2.6.2
       ws: 8.15.1
@@ -7137,7 +7150,7 @@ packages:
       '@apollo/client': ^3.5.9
       graphql: ^15.2.0 || ^16.0.0
     dependencies:
-      '@apollo/client': 3.8.8(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
+      '@apollo/client': 3.8.8(graphql-ws@5.15.0)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
       '@graphql-tools/executor-apollo-link': 1.0.0(@apollo/client@3.8.8)(graphql@16.8.1)
       '@graphql-tools/executor-http': 1.0.5(@types/node@18.17.14)(graphql@16.8.1)
       graphql: 16.8.1
@@ -8509,6 +8522,7 @@ packages:
     dependencies:
       is-glob: 4.0.3
       micromatch: 4.0.5
+      napi-wasm: 1.1.0
     dev: false
     bundledDependencies:
       - napi-wasm
@@ -15548,7 +15562,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@5.5.0)
       loader-utils: 2.0.4
-      webpack: 5.88.2(@swc/core@1.3.80)(esbuild@0.18.20)
+      webpack: 5.88.2(webpack-cli@4.9.2)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -21836,14 +21850,13 @@ packages:
       graphql: 16.8.1
       tslib: 2.6.2
 
-  /graphql-ws@5.14.3(graphql@16.8.1):
-    resolution: {integrity: sha512-F/i2xNIVbaEF2xWggID0X/UZQa2V8kqKDPO8hwmu53bVOcTL7uNkxnexeEgSCVxYBQUTUNEI8+e4LO1FOhKPKQ==}
+  /graphql-ws@5.15.0(graphql@16.8.1):
+    resolution: {integrity: sha512-xWGAtm3fig9TIhSaNsg0FaDZ8Pyn/3re3RFlP4rhQcmjRDIPpk1EhRuNB+YSJtLzttyuToaDiNhwT1OMoGnJnw==}
     engines: {node: '>=10'}
     peerDependencies:
       graphql: '>=0.11 <=16'
     dependencies:
       graphql: 16.8.1
-    dev: true
 
   /graphql-yoga@5.0.2(graphql@16.8.1):
     resolution: {integrity: sha512-+r0aZ5sBQaWTFEwmDdPR+XcsYaIIh40IA34F7rhnyY57KXgs18ZkCZ9NPvfi6XEuqkHEvc2PFox05c5NRSJ26g==}
@@ -22496,7 +22509,7 @@ packages:
       type-fest: 0.12.0
       widest-line: 4.0.1
       wrap-ansi: 8.1.0
-      ws: 8.13.0
+      ws: 8.15.1
       yoga-wasm-web: 0.3.3
     transitivePeerDependencies:
       - bufferutil
@@ -23618,7 +23631,7 @@ packages:
       whatwg-encoding: 2.0.0
       whatwg-mimetype: 3.0.0
       whatwg-url: 12.0.1
-      ws: 8.13.0
+      ws: 8.15.1
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -25928,6 +25941,10 @@ packages:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /napi-wasm@1.1.0:
+    resolution: {integrity: sha512-lHwIAJbmLSjF9VDRm9GoVOy9AGp3aIvkjv+Kvz9h16QR3uSVYH78PNQUnT2U4X53mhlnV2M7wrhibQ3GHicDmg==}
+    dev: false
 
   /native-abort-controller@1.0.4(abort-controller@3.0.0):
     resolution: {integrity: sha512-zp8yev7nxczDJMoP6pDxyD20IU0T22eX8VwN2ztDccKvSZhRaV33yP1BGwKSZfXuqWUzsXopVFjBdau9OOAwMQ==}
@@ -33266,18 +33283,6 @@ packages:
         optional: true
     dev: false
 
-  /ws@8.13.0:
-    resolution: {integrity: sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-
   /ws@8.15.1:
     resolution: {integrity: sha512-W5OZiCjXEmk0yZ66ZN82beM5Sz7l7coYxpRkzS+p9PP+ToQry8szKh+61eNktr7EA9DOwvFGhfC605jDHbP6QQ==}
     engines: {node: '>=10.0.0'}
@@ -33289,7 +33294,19 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
-    dev: true
+
+  /ws@8.16.0:
+    resolution: {integrity: sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dev: false
 
   /xml-name-validator@4.0.0:
     resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}
