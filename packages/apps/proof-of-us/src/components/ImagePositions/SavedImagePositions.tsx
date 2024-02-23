@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
 import { SigneePosition } from '../Signees/SigneePosition';
-import { gradientClass, imageWrapper } from './style.css';
+import { gradientClass, imageWrapper, savedImageClass } from './style.css';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
@@ -65,7 +65,12 @@ export const SavedImagePositions: FC<IProps> = ({ data }) => {
   return (
     <>
       <section ref={wrapperRef} className={imageWrapper}>
-        <img ref={imgRef} src={data.image} onLoad={setMarkers} />
+        <img
+          ref={imgRef}
+          src={data.image}
+          onLoad={setMarkers}
+          className={savedImageClass}
+        />
         <div className={gradientClass} />
 
         {data?.properties?.signees?.map((s, idx) => {
