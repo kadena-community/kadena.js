@@ -1,5 +1,5 @@
+import { baseConfig } from '@kadena-dev/e2e-base/playwright.config';
 import type { PlaywrightTestConfig } from '@playwright/test';
-import { baseConfig } from './playwright.base.config';
 
 const config: PlaywrightTestConfig = {
   ...baseConfig,
