@@ -13,19 +13,14 @@ test.beforeEach(async ({ page, toolsApp }) => {
   });
 });
 
-// const accountTypes = [
-//   { type: 'k:', NumberOfKeys: 1 },
-//   { type: 'w:', NumberOfKeys: 2 },
-// ];
+const accountTypes = [
+  { type: 'k:', NumberOfKeys: 1 },
+  { type: 'w:', NumberOfKeys: 2 },
+];
 
-interface AccountTypes {
-  type: string;
-  numberOfKeys: number;
-}
-
-export const createFundAccount = ({ type, numberOfKeys }: AccountTypes) => {
-  return test(`Create and fund ${type} account`, async ({ toolsApp }) => {
-    const account = await generateAccount(numberOfKeys, ['0']);
+for (const accountType of accountTypes) {
+  test(`Create and fund ${accountType.type} account`, async ({ toolsApp }) => {
+    const account = await generateAccount(accountType.NumberOfKeys, ['0']);
     await test.step('Create account on chain 0.', async () => {
       await toolsApp.fundNewAccountPage.asidePanel.navigateTo(
         'Fund New Account',
@@ -41,12 +36,10 @@ export const createFundAccount = ({ type, numberOfKeys }: AccountTypes) => {
       ).toBeVisible();
     });
   });
-};
 
-export const fundExistingAccount = ({ type, numberOfKeys }: AccountTypes) => {
-  return test(`Fund existing ${type} account`, async ({ toolsApp }) => {
+  test(`Fund existing ${accountType.type} account`, async ({ toolsApp }) => {
     await test.step('Fund account on chain 0.', async () => {
-      const account = await generateAccount(numberOfKeys, ['0']);
+      const account = await generateAccount(accountType.NumberOfKeys, ['0']);
       await createAccount(account, '0');
       await toolsApp.asidePanel.navigateTo('Fund Existing Account');
       await toolsApp.fundExistingAccountPage.fundExistingAccount(
@@ -64,4 +57,4 @@ export const fundExistingAccount = ({ type, numberOfKeys }: AccountTypes) => {
       ).toBeVisible();
     });
   });
-};
+}
