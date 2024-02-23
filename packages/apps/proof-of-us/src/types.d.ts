@@ -44,6 +44,8 @@ type TokenType = 'connect' | 'attendance';
 
 interface IProofOfUsData {
   tx: IUnsignedCommand;
+  manifestUri: string;
+  imageUri: string;
   eventId: string;
   mintStatus: IMintStatus;
   status: IBuildStatusValues;
