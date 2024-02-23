@@ -1,4 +1,4 @@
-import type { ChainId, IUnsignedCommand } from '@kadena/client';
+import type { IUnsignedCommand } from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { proofOfUsData } from './data';
@@ -22,7 +22,7 @@ export const getProofOfUs = async (
     )
     .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: '1',
+      chainId: `${env.CHAINID}`,
     })
     .createTransaction();
 
@@ -35,6 +35,30 @@ export const getProofOfUs = async (
     ? (result.data as IProofOfUsToken)
     : undefined;
 };
+export const getTokenId = async (
+  eventId: string,
+  uri: string,
+): Promise<string | undefined> => {
+  const client = createClient();
+
+  const transaction = Pact.builder
+    .execution(
+      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.retrieve-connection-token-id "${eventId}" "${uri}"
+      )`,
+    )
+    .setNetworkId(env.NETWORKID)
+    .setMeta({
+      chainId: `${env.CHAINID}`,
+    })
+    .createTransaction();
+
+  const { result } = await client.local(transaction, {
+    preflight: false,
+    signatureVerification: false,
+  });
+
+  return result.status === 'success' ? (result.data as string) : undefined;
+};
 
 export const getTokenInfo = async (id: string): Promise<string | undefined> => {
   const client = createClient();
@@ -46,7 +70,7 @@ export const getTokenInfo = async (id: string): Promise<string | undefined> => {
     )
     .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: '1',
+      chainId: `${env.CHAINID}`,
     })
     .createTransaction();
 
@@ -68,7 +92,7 @@ export const getTokenUri = async (id: string): Promise<string | undefined> => {
     )
     .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: '1',
+      chainId: `${env.CHAINID}`,
     })
     .createTransaction();
 
@@ -100,9 +124,9 @@ export const claimAttendanceToken = async (
       )`,
     )
     .addData('event_id', `${eventId}`)
-    .setNetworkId(env.NETWORKID ?? '')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: `${env.CHAINID as ChainId}`,
+      chainId: `${env.CHAINID}`,
       senderAccount: 'proof-of-us-gas-station',
       gasPrice: 0.000001,
     })
@@ -142,9 +166,9 @@ export const hasMintedAttendaceToken = async (
       )`,
     )
     .addData('event-id', `${eventId}`)
-    .setNetworkId(env.NETWORKID ?? '')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: `${env.CHAINID as ChainId}`,
+      chainId: `${env.CHAINID}`,
     })
     .createTransaction();
 
@@ -199,9 +223,9 @@ export const createConnectTokenTransaction = async (
     .addData('event_id', eventId)
     .addData('collection_id', collectionId)
     .addData('uri', manifestUri)
-    .setNetworkId(env.NETWORKID ?? '')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: `${env.CHAINID as ChainId}`,
+      chainId: `${env.CHAINID}`,
       senderAccount: 'proof-of-us-gas-station',
       gasPrice: 0.000001,
       gasLimit: 10000,
@@ -248,6 +272,9 @@ export const createConnectTokenTransaction = async (
   });
 
   const transaction = transactionBuilder.createTransaction();
+
+  console.log(env.CHAINID, env.NETWORKID);
+  console.log({ transaction });
 
   return transaction;
 };

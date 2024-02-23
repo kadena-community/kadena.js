@@ -183,6 +183,11 @@ const ProofOfUsStore = () => {
       signees: newList,
     });
   };
+  const updateProofOfUs = async (proofOfUs: IProofOfUsData, value: any) => {
+    const newProof = { ...proofOfUs, ...value };
+
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), newProof);
+  };
 
   return {
     updateMintStatus,
@@ -200,6 +205,7 @@ const ProofOfUsStore = () => {
     addTitle,
     updateBackgroundColor,
     updateSigner,
+    updateProofOfUs,
     updateTx,
   };
 };

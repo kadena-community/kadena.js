@@ -29,6 +29,7 @@ export const useSubmit = () => {
       return setStatus(SubmitStatus.INCOMPLETE);
 
     const res = await client.local(tx);
+    console.log({ res });
     setPreview(res);
     console.log(res);
   };
@@ -43,14 +44,16 @@ export const useSubmit = () => {
     const innerTransaction = txArg ?? transaction;
     if (!innerTransaction) return;
     const client = createClient();
+    client.getStatus;
 
     setStatus(SubmitStatus.LOADING);
 
     const tx = JSON.parse(Buffer.from(innerTransaction, 'base64').toString());
-
     try {
       const txRes = await client.submit(tx);
+      console.log({ txRes });
       const result = await client.listen(txRes);
+      console.log({ result });
 
       if (result.result.status === 'success') {
         setStatus(SubmitStatus.SUCCESS);

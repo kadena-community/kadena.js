@@ -30,10 +30,6 @@ export const MintView: FC<IProps> = ({ prev }) => {
   const { uploadBackground } = useAvatar();
   const router = useRouter();
 
-  const handleGoToProof = async () => {
-    alert('we need to implement this');
-  };
-
   const handleMint = async () => {
     if (!proofOfUs) return;
     Promise.all([
@@ -52,6 +48,10 @@ export const MintView: FC<IProps> = ({ prev }) => {
     }
     handleMint();
   }, [proofOfUs?.tx]);
+
+  const handleGoToProof = async () => {
+    alert('we need to implement this');
+  };
 
   const handleClose = () => {
     router.push('/user');

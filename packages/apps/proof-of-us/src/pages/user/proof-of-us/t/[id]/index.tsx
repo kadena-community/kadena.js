@@ -17,7 +17,9 @@ const Page: NextPage<IProps> = ({ params, data, metadataUri }) => {
   return (
     <LoginBoundry>
       <UserLayout>
-        <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
+        {data && (
+          <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
+        )}
       </UserLayout>
     </LoginBoundry>
   );
@@ -30,6 +32,7 @@ export const getServerSideProps = async (
 
   const uri = await getTokenUri(id);
   const data = await fetchManifestData(uri);
+
   return {
     props: { params: { id: `${ctx.query.id}` }, data, metadataUri: uri },
   };

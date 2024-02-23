@@ -12,7 +12,6 @@ export const ListSignees: FC = () => {
   const initiator = proofOfUs?.signees?.find((s) => s.initiator);
   const signee = proofOfUs?.signees?.find((s) => !s.initiator);
 
-  console.log(proofOfUs?.signees);
   return (
     <Stack flexDirection="column" gap="md">
       <Heading as="h6">Signees</Heading>

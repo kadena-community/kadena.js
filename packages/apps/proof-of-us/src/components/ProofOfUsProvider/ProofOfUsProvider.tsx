@@ -34,6 +34,7 @@ export interface IProofOfUsContext {
   hasSigned: () => boolean;
   getSigneeAccount: (account: IAccount) => IProofOfUsSignee;
   updateSigner: (value: any, isOverwrite?: boolean) => Promise<void>;
+  updateProofOfUs: (value: any) => Promise<void>;
 }
 
 export const ProofOfUsContext = createContext<IProofOfUsContext>({
@@ -52,6 +53,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   isInitiator: () => false,
   hasSigned: () => false,
   updateSigner: async () => {},
+  updateProofOfUs: async () => {},
   addTx: async () => {},
   getSigneeAccount: (account: IAccount) => {
     return {
@@ -139,6 +141,10 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       updateSigner,
     );
   };
+  const updateProofOfUs = async (value: any) => {
+    if (!proofOfUs || !account) return;
+    await store.updateProofOfUs(proofOfUs, value);
+  };
 
   const hasSigned = (): boolean => {
     const signee = proofOfUs?.signees?.find(
@@ -182,6 +188,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         updateStatus,
         changeTitle,
         updateBackgroundColor,
+        updateProofOfUs,
         updateSigner,
         addTx,
         hasSigned,

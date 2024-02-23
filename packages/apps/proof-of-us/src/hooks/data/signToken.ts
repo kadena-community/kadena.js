@@ -1,15 +1,21 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { createManifest } from '@/utils/createManifest';
 import { getReturnUrl } from '@/utils/getReturnUrl';
-import { createConnectTokenTransaction } from '@/utils/proofOfUs';
+import { createConnectTokenTransaction, getTokenId } from '@/utils/proofOfUs';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAccount } from '../account';
 
 export const useSignToken = () => {
-  const { updateSigner, proofOfUs, background, addTx, hasSigned } =
-    useProofOfUs();
+  const {
+    updateSigner,
+    proofOfUs,
+    background,
+    addTx,
+    hasSigned,
+    updateProofOfUs,
+  } = useProofOfUs();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [data] = useState<IProofOfUs | undefined>(undefined);
@@ -27,7 +33,6 @@ export const useSignToken = () => {
       return;
     }
     const manifest = await createManifest(proofOfUs, imageData.url);
-
     const manifestData = await createMetaDataUrl(manifest);
     if (!manifestData) {
       console.error('no manifestData found');
@@ -40,23 +45,36 @@ export const useSignToken = () => {
       account,
     );
 
+    const tokenId = await getTokenId(
+      process.env.NEXT_PUBLIC_CONNECTION_EVENTID ?? '',
+      manifestData.url,
+    );
+
     return {
       transaction: transaction,
       manifestUri: manifestData?.url,
       imageUri: imageData.url,
+      tokenId,
     };
   };
 
-  useEffect(() => {
+  const sign = async () => {
     const transaction = searchParams.get('transaction');
-    if (!transaction || hasSigned()) return;
-    addTx(transaction);
 
-    updateSigner({ signerStatus: 'success' }, true);
+    if (!transaction || hasSigned()) return;
+
+    await addTx(transaction);
+
+    await updateSigner({ signerStatus: 'success' }, true);
 
     setIsLoading(false);
     setHasError(false);
+
     router.replace(getReturnUrl());
+  };
+
+  useEffect(() => {
+    sign();
   }, [searchParams]);
 
   const signToken = async () => {
@@ -64,18 +82,21 @@ export const useSignToken = () => {
     setIsLoading(true);
     setHasError(false);
 
-    updateSigner({ signerStatus: 'signing' }, true);
+    await updateSigner({ signerStatus: 'signing' }, true);
 
     let transaction = proofOfUs.tx;
     if (!transaction) {
       const transactionData = await createTx();
+
       if (!transactionData) return;
 
       transaction = Buffer.from(
         JSON.stringify(transactionData.transaction),
       ).toString('base64');
 
-      updateSigner({
+      await updateProofOfUs({
+        requestKey: transactionData.transaction?.hash,
+        tokenId: transactionData.tokenId,
         manifestUri: transactionData.manifestUri,
         imageUri: transactionData.imageUri,
       });

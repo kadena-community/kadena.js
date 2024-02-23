@@ -1,3 +1,5 @@
+import type { ChainId } from '@kadena/client';
+
 const TRACKING_ID = process.env.NEXT_PUBLIC_TRACKING_ID;
 const TESTNUMBER = Number(process.env.NEXT_PUBLIC_TESTNUMBER);
 const WALLET_URL = process.env.NEXT_PUBLIC_WALLET_URL;
@@ -20,7 +22,7 @@ export const env = {
   TESTNUMBER,
   WALLET_URL,
   URL,
-  CHAINID: CHAINID ?? '1',
+  CHAINID: (CHAINID ?? '1') as ChainId,
   NETWORKID: NETWORKID ?? 'testnet04',
   NAMESPACE,
   NETWORKNAME,
