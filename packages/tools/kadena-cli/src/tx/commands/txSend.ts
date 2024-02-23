@@ -3,6 +3,7 @@ import path from 'node:path';
 
 import type { ICommand, IUnsignedCommand } from '@kadena/client';
 import { createClient, isSignedTransaction } from '@kadena/client';
+import ora from 'ora';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
@@ -97,12 +98,14 @@ export const createSendTransactionCommand: (
     const { networkConfig } = await option.network();
     const { chainId } = await option.chainId();
 
+    const loader = ora('Sending transaction...\n').start();
+
     const result = await sendTransactionAction({
       ...networkConfig,
       chainId: chainId,
       transactions: commands,
     });
-    assertCommandError(result);
+    assertCommandError(result, loader);
 
     log.info(
       result.data.transactions
