@@ -59,6 +59,8 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
     const value = e.target.value;
     if (!value) {
       setTitleError('Title is empty');
+    } else {
+      setTitleError('');
     }
     changeTitle(value);
   };
