@@ -12,7 +12,7 @@ import { getWallet } from '../../keys/utils/keysHelpers.js';
 import * as storageService from '../../keys/utils/storage.js';
 import { addWalletExtension } from '../../keys/utils/storage.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { assertCommandError } from '../../utils/command.util.js';
+import { CommandError, assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
@@ -76,30 +76,27 @@ export const createImportWalletCommand: (
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
-    try {
-      log.debug('import-wallet:action', { config });
+    log.debug('import-wallet:action', { config });
 
-      // compare passwords
-      if (config.securityNewPassword !== config.securityVerifyPassword) {
-        log.error(`\nPasswords don't match. Please try again.\n`);
-        process.exit(1);
-      }
-
-      const loading = ora('Generating..').start();
-
-      const result = await importWallet({
-        walletName: config.walletName,
-        mnemonic: config.keyMnemonic,
-        password: config.securityNewPassword,
-        legacy: config.legacy,
+    // compare passwords
+    if (config.securityNewPassword !== config.securityVerifyPassword) {
+      throw new CommandError({
+        errors: [`Passwords don't match. Please try again.`],
+        exitCode: 1,
       });
-
-      assertCommandError(result, loading);
-
-      displayStoredWallet(config.walletName, result.data.wallet.legacy);
-    } catch (error) {
-      log.error(`\n${error.message}\n`);
-      process.exit(1);
     }
+
+    const loading = ora('Generating..').start();
+
+    const result = await importWallet({
+      walletName: config.walletName,
+      mnemonic: config.keyMnemonic,
+      password: config.securityNewPassword,
+      legacy: config.legacy,
+    });
+
+    assertCommandError(result, loading);
+
+    displayStoredWallet(config.walletName, result.data.wallet.legacy);
   },
 );

@@ -1,5 +1,5 @@
 import type { Command } from 'commander';
-import { CommandError } from './command.util.js';
+import { CommandError, printCommandError } from './command.util.js';
 import { getCommandExecution } from './createCommand.js';
 import type { OptionType } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
@@ -186,6 +186,7 @@ export const createCommandFlexible =
         );
       } catch (error) {
         if (error instanceof CommandError) {
+          printCommandError(error);
           printCommandExecution(`${program.name()} ${name}`, args, error.args);
           process.exitCode = error.exitCode;
           return;

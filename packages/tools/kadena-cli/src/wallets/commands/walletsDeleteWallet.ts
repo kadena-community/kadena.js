@@ -7,7 +7,7 @@ import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWallet } from '../../keys/utils/keysHelpers.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { assertCommandError } from '../../utils/command.util.js';
+import { CommandError, assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
@@ -79,31 +79,29 @@ export const createDeleteWalletsCommand: (
       return;
     }
 
-    try {
-      log.debug('delete-wallet:action', { config });
-      if (config.walletName === 'all') {
-        const result = await deleteAllWallets();
-        assertCommandError(result);
-        log.info(log.color.green('\nAll wallets have been deleted.\n'));
-      } else {
-        if (config.walletNameConfig === null) {
-          throw new Error(`Wallet: ${config.walletName} does not exist.`);
-        }
-
-        const result = await deleteWallet(
-          config.walletName,
-          config.walletNameConfig,
-        );
-        assertCommandError(result);
-        log.info(
-          log.color.green(
-            `\nThe wallet: "${config.walletName}" and associated key files have been deleted.\n`,
-          ),
-        );
+    log.debug('delete-wallet:action', { config });
+    if (config.walletName === 'all') {
+      const result = await deleteAllWallets();
+      assertCommandError(result);
+      log.info(log.color.green('\nAll wallets have been deleted.\n'));
+    } else {
+      if (config.walletNameConfig === null) {
+        throw new CommandError({
+          errors: [`Wallet: ${config.walletName} does not exist.`],
+          exitCode: 1,
+        });
       }
-    } catch (error) {
-      log.error(`\nAn error occurred: ${error.message}\n`);
-      process.exit(1);
+
+      const result = await deleteWallet(
+        config.walletName,
+        config.walletNameConfig,
+      );
+      assertCommandError(result);
+      log.info(
+        log.color.green(
+          `\nThe wallet: "${config.walletName}" and associated key files have been deleted.\n`,
+        ),
+      );
     }
   },
 );

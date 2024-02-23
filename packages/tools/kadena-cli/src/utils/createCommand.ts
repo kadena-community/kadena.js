@@ -1,7 +1,7 @@
 import type { Command } from 'commander';
 import { z } from 'zod';
 import { CLINAME } from '../constants/config.js';
-import { CommandError } from './command.util.js';
+import { CommandError, printCommandError } from './command.util.js';
 import { displayConfig } from './createCommandDisplayHelper.js';
 import type { OptionType, createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
@@ -144,6 +144,7 @@ export function createCommand<const T extends OptionType[]>(
         await action(config, generalArgs, stdin ?? undefined);
       } catch (error) {
         if (error instanceof CommandError) {
+          printCommandError(error);
           process.exitCode = error.exitCode;
           return;
         }
@@ -180,7 +181,7 @@ export function handleQuietOption(
           .join('')}`,
       );
       log.warning('Remove the --quiet flag to enable interactive prompts\n');
-      process.exit(1);
+      throw new CommandError({ exitCode: 1 });
     }
   }
 }

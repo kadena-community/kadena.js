@@ -11,6 +11,6 @@ export const listNetworksCommand: (program: Command, version: string) => void =
     [],
     async (config) => {
       log.debug('network-list:action', { config });
-      displayNetworksConfig();
+      await displayNetworksConfig();
     },
   );

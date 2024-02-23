@@ -16,7 +16,7 @@ import { getWallet } from '../../keys/utils/keysHelpers.js';
 import * as storageService from '../../keys/utils/storage.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { assertCommandError } from '../../utils/command.util.js';
+import { CommandError, assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
@@ -102,27 +102,22 @@ export const createGenerateWalletCommand: (
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
-    try {
-      log.debug('create-wallet:action', { config });
+    log.debug('create-wallet:action', { config });
 
-      if (config.securityPassword !== config.securityVerifyPassword) {
-        log.error(`\nPasswords don't match. Please try again.\n`);
-        return process.exit(1);
-      }
-
-      const result = await generateWallet(
-        config.walletName,
-        config.securityPassword,
-        config.legacy,
-      );
-
-      assertCommandError(result);
-
-      displayGeneratedWallet(result.data.mnemonic);
-      displayStoredWallet(config.walletName, config.legacy);
-    } catch (error) {
-      log.error(`\n${error.message}\n`);
-      process.exit(1);
+    if (config.securityPassword !== config.securityVerifyPassword) {
+      log.error(`\nPasswords don't match. Please try again.\n`);
+      throw new CommandError({ exitCode: 1 });
     }
+
+    const result = await generateWallet(
+      config.walletName,
+      config.securityPassword,
+      config.legacy,
+    );
+
+    assertCommandError(result);
+
+    displayGeneratedWallet(result.data.mnemonic);
+    displayStoredWallet(config.walletName, config.legacy);
   },
 );

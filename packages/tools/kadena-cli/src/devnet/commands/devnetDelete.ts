@@ -37,37 +37,30 @@ export const deleteDevnetCommand: CreateCommandReturnType = createCommand(
       return;
     }
 
-    try {
-      removeDevnet(config.name);
-      log.info(log.color.green(`Removed devnet container: ${config.name}`));
+    removeDevnet(config.name);
+    log.info(log.color.green(`Removed devnet container: ${config.name}`));
 
-      const configuration = await getDevnetConfiguration(config.name);
+    const configuration = await getDevnetConfiguration(config.name);
 
-      if (configuration?.useVolume === true) {
-        removeVolume(config.name);
-        log.info(
-          log.color.green(`Removed volume: ${dockerVolumeName(config.name)}`),
-        );
-      }
-
+    if (configuration?.useVolume === true) {
+      removeVolume(config.name);
       log.info(
-        log.color.green(
-          `Successfully removed devnet container for configuration: ${config.name}`,
-        ),
+        log.color.green(`Removed volume: ${dockerVolumeName(config.name)}`),
       );
-
-      await removeDevnetConfiguration(config);
-
-      log.info(
-        log.color.green(
-          `Successfully removed devnet configuration: ${config.name}`,
-        ),
-      );
-    } catch (e) {
-      log.error(
-        'Something went wrong during the removal of the devnet container.',
-      );
-      return;
     }
+
+    log.info(
+      log.color.green(
+        `Successfully removed devnet container for configuration: ${config.name}`,
+      ),
+    );
+
+    await removeDevnetConfiguration(config);
+
+    log.info(
+      log.color.green(
+        `Successfully removed devnet configuration: ${config.name}`,
+      ),
+    );
   },
 );

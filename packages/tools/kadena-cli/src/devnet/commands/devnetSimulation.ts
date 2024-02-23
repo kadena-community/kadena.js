@@ -21,33 +21,28 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
     simulationOptions.simulationMaxTime({ isOptional: true }),
   ],
   async (config) => {
-    try {
-      log.debug('devnet-simulate:action', { config });
+    log.debug('devnet-simulate:action', { config });
 
-      if (!(await networkIsAlive(config.networkConfig.networkHost))) {
-        log.info(
-          'Network is not reachable. Please check if the provided host is exposed.',
-        );
-        return;
-      }
-
-      await simulateCoin({
-        network: {
-          id: 'fast-development',
-          host: config.networkConfig.networkHost,
-        },
-        maxAmount: config.simulationMaxTransferAmount,
-        numberOfAccounts: config.simulationNumberOfAccounts,
-        transferInterval: config.simulationTransferInterval,
-        tokenPool: config.simulationTokenPool,
-        logFolder: config.logFolder,
-        defaultChain: config.simulationDefaultChainId,
-        seed: config.simulationSeed,
-        maxTime: config.simulationMaxTime,
-      });
-    } catch (error) {
-      log.error(`\n${error.message}\n`);
-      process.exit(1);
+    if (!(await networkIsAlive(config.networkConfig.networkHost))) {
+      log.info(
+        'Network is not reachable. Please check if the provided host is exposed.',
+      );
+      return;
     }
+
+    await simulateCoin({
+      network: {
+        id: 'fast-development',
+        host: config.networkConfig.networkHost,
+      },
+      maxAmount: config.simulationMaxTransferAmount,
+      numberOfAccounts: config.simulationNumberOfAccounts,
+      transferInterval: config.simulationTransferInterval,
+      tokenPool: config.simulationTokenPool,
+      logFolder: config.logFolder,
+      defaultChain: config.simulationDefaultChainId,
+      seed: config.simulationSeed,
+      maxTime: config.simulationMaxTime,
+    });
   },
 );

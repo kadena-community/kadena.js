@@ -3,6 +3,7 @@ import type { Command } from 'commander';
 import { join } from 'path';
 
 import { services } from '../../services/index.js';
+import { CommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
@@ -15,12 +16,12 @@ export const createDappCommand: (program: Command, version: string) => void =
     async (config, args) => {
       log.debug('dapp-create-command', { config });
       if (args[0] === undefined) {
-        log.error(
-          log.color.red(
+        throw new CommandError({
+          errors: [
             'Project name is required, e.g. `kadena dapp create my-dapp`',
-          ),
-        );
-        process.exit(1);
+          ],
+          exitCode: 1,
+        });
       }
       const projectDir = join(process.cwd(), args[0]);
       const { dappTemplate } = config;
@@ -29,8 +30,10 @@ export const createDappCommand: (program: Command, version: string) => void =
         await services.filesystem.directoryExists(projectDir);
 
       if (folderExists) {
-        log.error(`Project directory ${args[0]} already exists`);
-        process.exit(1);
+        throw new CommandError({
+          errors: [`Project directory ${args[0]} already exists`],
+          exitCode: 1,
+        });
       }
 
       const cmd = 'npx';

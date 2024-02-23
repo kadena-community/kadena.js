@@ -10,7 +10,7 @@ import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletContent } from '../../keys/utils/keysHelpers.js';
 import * as storageService from '../../keys/utils/storage.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { assertCommandError } from '../../utils/command.util.js';
+import { CommandError, assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
@@ -86,36 +86,30 @@ export const createChangeWalletPasswordCommand: (
     confirmOption(),
   ],
   async (config) => {
-    try {
-      log.debug('change-wallet-password:action', { config });
+    log.debug('change-wallet-password:action', { config });
 
-      if (config.confirm !== true) {
-        log.error(`\nWallet password won't be updated. Exiting..\n`);
-        return;
-      }
-
-      if (config.securityNewPassword !== config.securityVerifyPassword) {
-        log.error(`\nPasswords don't match. Please try again.\n`);
-        process.exit(1);
-      }
-
-      if (config.walletNameConfig === null) {
-        throw new Error('Invalid wallet');
-      }
-
-      const result = await changeWalletPassword(
-        config.walletName,
-        config.walletNameConfig,
-        config.securityCurrentPassword,
-        config.securityNewPassword,
-      );
-      assertCommandError(result);
-
-      log.info(log.color.green(`\nWallet password successfully updated..\n`));
-      log.info('Walletname: ', result.data.filename);
-    } catch (error) {
-      log.error(`\n${error.message}\n`);
-      process.exit(1);
+    if (config.confirm !== true) {
+      return log.error(`\nWallet password won't be updated. Exiting..\n`);
     }
+    if (config.securityNewPassword !== config.securityVerifyPassword) {
+      throw new CommandError({
+        errors: ["Passwords don't match. Please try again."],
+        exitCode: 1,
+      });
+    }
+    if (config.walletNameConfig === null) {
+      throw new CommandError({ errors: ['Invalid wallet'], exitCode: 1 });
+    }
+
+    const result = await changeWalletPassword(
+      config.walletName,
+      config.walletNameConfig,
+      config.securityCurrentPassword,
+      config.securityNewPassword,
+    );
+    assertCommandError(result);
+
+    log.info(log.color.green(`\nWallet password successfully updated..\n`));
+    log.info('Walletname: ', result.data.filename);
   },
 );
