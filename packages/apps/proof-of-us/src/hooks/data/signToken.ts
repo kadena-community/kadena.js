@@ -49,7 +49,6 @@ export const useSignToken = () => {
       process.env.NEXT_PUBLIC_CONNECTION_EVENTID ?? '',
       manifestData.url,
     );
-
     return {
       transaction: transaction,
       manifestUri: manifestData?.url,
@@ -87,7 +86,6 @@ export const useSignToken = () => {
     let transaction = proofOfUs.tx;
     if (!transaction) {
       const transactionData = await createTx();
-
       if (!transactionData) return;
 
       transaction = Buffer.from(
