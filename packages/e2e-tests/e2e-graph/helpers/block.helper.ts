@@ -1,6 +1,6 @@
 import type { APIRequestContext } from '@playwright/test';
-import { sendQuery } from '../helpers/request.helper';
 import { getTransactionsByRequestKeyQuery } from '../queries/getTransactions';
+import { sendQuery } from './request.helper';
 
 export async function getBlockHash(
   request: APIRequestContext,
