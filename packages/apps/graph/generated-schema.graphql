@@ -50,6 +50,23 @@ type BlockTransactionsConnectionEdge {
   node: Transaction!
 }
 
+"""A transaction cmd."""
+type Cmd {
+  meta: Meta
+  networkId: String!
+  nonce: String!
+  payload: Payload!
+}
+
+"""The payload of an cont transaction."""
+type ContPayload {
+  data: String!
+  pactId: String
+  proof: String
+  rollback: Boolean
+  step: Int
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
@@ -83,6 +100,12 @@ type Event implements Node {
   qualifiedName: String!
   requestKey: String!
   transaction: Transaction
+}
+
+"""The payload of an exec transaction."""
+type ExecPayload {
+  code: String
+  data: String!
 }
 
 """A fungible-specific account."""
@@ -175,6 +198,16 @@ type Guard {
   predicate: String!
 }
 
+"""The metadata of a transaction."""
+type Meta {
+  chainId: String!
+  creationTime: DateTime!
+  gasLimit: BigInt!
+  gasPrice: Int!
+  sender: String!
+  ttl: BigInt!
+}
+
 """The account of the miner that solved a block."""
 type MinerKey implements Node {
   block: Block!
@@ -244,6 +277,9 @@ type PageInfo {
   hasPreviousPage: Boolean!
   startCursor: String
 }
+
+"""The payload of a transaction."""
+union Payload = ContPayload | ExecPayload
 
 """Floats that will have a value greater than 0."""
 scalar PositiveFloat
@@ -418,69 +454,27 @@ type TokenInfo {
 
 """A confirmed transaction."""
 type Transaction implements Node {
-  """The JSON stringified error message if the transaction failed."""
-  badResult: String
   block: Block
-  chainId: BigInt!
-
-  """
-  The Pact expressions executed in this transaction when it is an `exec` transaction. For a continuation, this field is `cont`.
-  """
-  code: String!
-
-  """
-  The JSON stringified continuation in the case that it is a continuation.
-  """
-  continuation: String
-  creationTime: DateTime!
-
-  """
-  The environment data made available to the transaction. Formatted as raw JSON.
-  """
-  data: String
-  eventCount: BigInt
+  cmd: Cmd!
   events: [Event!]
-  gas: BigInt!
-  gasLimit: BigInt!
-  gasPrice: Float!
-
-  """The transaction result when it was successful. Formatted as raw JSON."""
-  goodResult: String
-
-  """The height of the block this transaction belongs to."""
-  height: BigInt!
+  hash: String!
   id: ID!
-
-  """Identifier to retrieve the logs for the execution of the transaction."""
-  logs: String
-  metadata: String
-  nonce: String
-
-  """
-  In the case of a cross-chain transaction; A unique id when a pact (defpact) is initiated. See the "Pact execution scope and pact-id" explanation in the docs for more information.
-  """
-  pactId: String
-
-  """
-  In the case of a cross-chain transaction; the proof provided to continue the cross-chain transaction.
-  """
-  proof: String
-  requestKey: String!
-
-  """
-  In the case of a cross-chain transaction; Whether or not this transaction can be rolled back.
-  """
-  rollback: Boolean
-  senderAccount: String
+  result: TransactionResult!
   signers: [Signer!]
-
-  """
-  The step-number when this is an execution of a `defpact`, aka multi-step transaction.
-  """
-  step: BigInt
-  transactionId: BigInt
   transfers: [Transfer!]
-  ttl: BigInt!
+}
+
+"""The result of a transaction."""
+type TransactionResult {
+  badResult: String!
+  continuation: String!
+  eventCount: BigInt
+  gas: BigInt!
+  goodResult: String!
+  height: BigInt!
+  logs: String
+  metadata: String!
+  transactionId: BigInt
 }
 
 """A transfer of funds from a fungible between two accounts."""

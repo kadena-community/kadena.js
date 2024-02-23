@@ -17,15 +17,20 @@ import {
 import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prisma-client';
 import type {
+  Cmd,
+  ContPayload,
+  ExecPayload,
   FungibleAccount,
   FungibleChainAccount,
   GasLimitEstimation,
   GraphConfiguration,
   Guard,
+  Meta,
   NonFungibleAccount,
   NonFungibleChainAccount,
   Token,
   TokenInfo,
+  TransactionResult,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -73,6 +78,11 @@ export const builder = new SchemaBuilder<
       NonFungibleChainAccount: NonFungibleChainAccount;
       Token: Token;
       TokenInfo: TokenInfo;
+      Cmd: Cmd;
+      Meta: Meta;
+      ExecPayload: ExecPayload;
+      ContPayload: ContPayload;
+      TransactionResult: TransactionResult;
     };
     Connection: {
       totalCount: number;
