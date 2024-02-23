@@ -16,7 +16,7 @@ export const accountOptions = {
     prompt: account.accountAliasPrompt,
     validation: z.string(),
     option: new Option(
-      '-aa, --account-alias <accountAlias>',
+      '--account-alias <accountAlias>',
       'Enter an alias to store your account',
     ),
   }),
@@ -126,12 +126,10 @@ export const accountOptions = {
     },
   }),
   accountDeleteConfirmation: createOption({
-    key: 'accountDeleteConfirmation',
+    key: 'confirm',
+    defaultIsOptional: false,
     validation: z.boolean(),
     prompt: account.accountDeleteConfirmationPrompt,
-    option: new Option(
-      '-d, --account-delete-confirmation',
-      'Confirm account deletion',
-    ),
+    option: new Option('-c, --confirm', 'Confirm account deletion'),
   }),
 };
