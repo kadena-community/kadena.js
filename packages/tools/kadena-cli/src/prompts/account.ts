@@ -253,7 +253,7 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
   const selectedAccountMessage =
     selectedAccountsLength > 1
       ? 'all the selected aliases accounts'
-      : `the ${previousQuestions.account} alias account`;
+      : `the ${selectedAccounts} alias account`;
 
   return await select({
     message: `Are you sure you want to delete ${selectedAccountMessage}?`,

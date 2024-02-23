@@ -4,6 +4,7 @@ import { services } from '../../services/index.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
+import { isEmpty } from '../utils/addHelpers.js';
 
 async function removeAccount(
   accountAlias: string,
@@ -28,27 +29,26 @@ export const createAccountDeleteCommand = createCommandFlexible(
   'Delete local account',
   [
     accountOptions.accountMultiSelect(),
-    accountOptions.accountDeleteConfirmation(),
+    accountOptions.accountDeleteConfirmation({ isOptional: false }),
   ],
   async (option) => {
     const { accountAlias } = await option.accountAlias();
 
-    if (!accountAlias || accountAlias.trim().length === 0) {
-      log.error('Account alias is not provided');
+    if (isEmpty(accountAlias) || accountAlias.trim().length === 0) {
+      log.error('Account alias is not provided or Invalid.');
       return;
     }
 
-    const { accountDeleteConfirmation } =
-      await option.accountDeleteConfirmation({
-        accountAlias,
-      });
+    const { confirm } = await option.confirm({
+      accountAlias,
+    });
 
     log.debug('delete-account:action', {
       accountAlias,
-      accountDeleteConfirmation,
+      confirm,
     });
 
-    if (accountDeleteConfirmation === false) {
+    if (confirm === false) {
       log.info(log.color.yellow(`\nThe account alias will not be deleted.\n`));
       return;
     }
