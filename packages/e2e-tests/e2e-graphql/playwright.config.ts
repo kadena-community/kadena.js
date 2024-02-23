@@ -11,7 +11,7 @@ const config: PlaywrightTestConfig = {
   projects: [
     {
       name: 'graph',
-      testDir: 'src/tests/graph/',
+      testDir: 'tests/',
     },
   ],
 };
