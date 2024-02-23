@@ -3,7 +3,7 @@ import type { ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transfer, transferCrossChain } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
-import type { IAccount } from 'src/support/types/account.types';
+import type { IAccount } from '@test-types/account.types';
 
 export async function transferFunds(
   source: IAccount,
