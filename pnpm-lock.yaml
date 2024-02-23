@@ -1096,9 +1096,6 @@ importers:
       '@kadena/types':
         specifier: workspace:*
         version: link:../../libs/types
-      '@playwright/browser-chromium':
-        specifier: ^1.41.1
-        version: 1.41.2
       '@playwright/test':
         specifier: ^1.41.1
         version: 1.41.2
@@ -1132,6 +1129,9 @@ importers:
       '@kadena/docs':
         specifier: workspace:*
         version: link:../../apps/docs
+      '@playwright/test':
+        specifier: ^1.41.1
+        version: 1.41.2
     devDependencies:
       '@kadena-dev/e2e-base':
         specifier: workspace:*
@@ -1154,12 +1154,6 @@ importers:
       '@kadena/types':
         specifier: workspace:*
         version: link:../../libs/types
-      '@playwright/browser-chromium':
-        specifier: ^1.41.1
-        version: 1.41.2
-      '@playwright/test':
-        specifier: ^1.41.1
-        version: 1.41.2
       '@rushstack/eslint-config':
         specifier: ~3.3.0
         version: 3.3.0(eslint@8.53.0)(typescript@5.2.2)
@@ -1221,9 +1215,6 @@ importers:
       '@kadena/types':
         specifier: workspace:*
         version: link:../../libs/types
-      '@playwright/browser-chromium':
-        specifier: ^1.41.1
-        version: 1.41.2
       '@playwright/test':
         specifier: ^1.41.1
         version: 1.41.2
@@ -1260,9 +1251,6 @@ importers:
       '@kadena/tools':
         specifier: workspace:*
         version: link:../../apps/tools
-      '@playwright/browser-chromium':
-        specifier: ^1.41.1
-        version: 1.41.2
       '@playwright/test':
         specifier: ^1.41.1
         version: 1.41.2
@@ -8998,13 +8986,6 @@ packages:
       open: 9.1.0
       picocolors: 1.0.0
       tslib: 2.6.2
-
-  /@playwright/browser-chromium@1.41.2:
-    resolution: {integrity: sha512-vzobqNg2K6cJPyXCVaUxq8uDV54l3pEJvkO58XK0CBV2nl9IBySXvEqcgwsQc8PmQ930yVDrz0oCrMR6H/Qv3A==}
-    engines: {node: '>=16'}
-    requiresBuild: true
-    dependencies:
-      playwright-core: 1.41.2
 
   /@playwright/test@1.41.2:
     resolution: {integrity: sha512-qQB9h7KbibJzrDpkXkYvsmiDJK14FULCCZgEcoe2AvFAS64oCirWTwzTlAYEbKaRxWs5TFesE1Na6izMv3HfGg==}

@@ -127,6 +127,10 @@ jobs:
         if: matrix.app != 'docs'
         run: pnpm turbo build --filter @kadena/${{ matrix.app }}
 
+      - name: Install browsers
+        run:
+          pnpm --filter @kadena-dev/e2e-${{ matrix.app }} run install:chromium
+
       - name: Run end-to-end tests
         run: pnpm turbo test:e2e --filter @kadena-dev/e2e-${{ matrix.app }}
 
