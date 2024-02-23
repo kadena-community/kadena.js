@@ -23,7 +23,8 @@ interface IProps {
   prev: () => void;
 }
 export const DetailView: FC<IProps> = ({ next, prev }) => {
-  const { proofOfUs, closeToken, changeTitle } = useProofOfUs();
+  const { proofOfUs, closeToken, changeTitle, updateProofOfUs } =
+    useProofOfUs();
   const { removeBackground } = useAvatar();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
@@ -53,7 +54,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
     router.replace('/user');
   };
 
-  const handleTitleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleTitleChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
     //TODO: this needs to debounce
     if (!proofOfUs) return;
     const value = e.target.value;
@@ -62,7 +63,10 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
     } else {
       setTitleError('');
     }
-    changeTitle(value);
+
+    await updateProofOfUs({
+      title: changeTitle(value),
+    });
   };
 
   if (!isMounted) return null;

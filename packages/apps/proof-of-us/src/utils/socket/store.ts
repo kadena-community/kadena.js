@@ -139,29 +139,8 @@ const ProofOfUsStore = () => {
     });
   };
 
-  const addTitle = async (proofOfUs: IProofOfUsData, value: string) => {
-    if (isAlreadySigning(proofOfUs.signees)) return;
-
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      title: value,
-    });
-  };
-
-  const updateBackgroundColor = async (
-    proofOfUs: IProofOfUsData,
-    value: string,
-  ) => {
-    if (isAlreadySigning(proofOfUs.signees)) return;
-
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      backgroundColor: value,
-    });
-  };
-
   const updateProofOfUs = async (proofOfUs: IProofOfUsData, value: any) => {
     const newProof = { ...proofOfUs, ...value };
-
-    console.log({ newProof });
 
     await update(ref(database, `data/${proofOfUs.proofOfUsId}`), newProof);
   };
@@ -179,8 +158,6 @@ const ProofOfUsStore = () => {
     updateStatus,
     listenProofOfUsData,
     listenProofOfUsBackgroundData,
-    addTitle,
-    updateBackgroundColor,
     updateProofOfUs,
   };
 };
