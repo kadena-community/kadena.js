@@ -99,14 +99,25 @@ export type CommandOption<T extends OptionType[]> = {
   ) => Promise<Prettify<OptionConfig<Extract<T[number], { key: K }>>>>;
 };
 
+interface ICommandData {
+  /** Arguments parsed from the command line */
+  values: string[];
+  /** content passed to stdin */
+  stdin?: string;
+  /** Automatically fetch all options in order of the options array and merge the results */
+  collect: <T extends CommandOption<OptionType[]>>(
+    options: T,
+  ) => Promise<{
+    [K in keyof T]: Awaited<ReturnType<T[K]>>;
+  }>;
+}
+
 export const createCommandFlexible =
   <
     T extends OptionType[],
     C extends (
       option: CommandOption<T>,
-      /** command arguments */
-      values: string[],
-      stdin?: string,
+      data: ICommandData,
     ) => Promise<Record<string, unknown> | void>,
   >(
     name: string,
@@ -149,7 +160,8 @@ export const createCommandFlexible =
         // Automatically enable quiet mode if not in interactive environment
         if (!process.stderr.isTTY) args.quiet = true;
 
-        const collectOptionsMap = options.reduce((acc, option) => {
+        const optionIndex = new Map<unknown, number>();
+        const collectOptionsMap = options.reduce((acc, option, index) => {
           acc[option.key] = async (customArgs = {}) => {
             try {
               const { value, config } = await executeOption(
@@ -168,16 +180,32 @@ export const createCommandFlexible =
               handlePromptError(error);
             }
           };
+          optionIndex.set(acc[option.key], index);
           return acc;
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         }, {} as any);
 
         const values = rest.flatMap((r) => r.args);
-        const result = await action(
-          collectOptionsMap,
+        const result = await action(collectOptionsMap, {
           values,
-          stdin ?? undefined,
-        );
+          stdin: stdin ?? undefined,
+          collect: async (optionObject) => {
+            const options = Object.entries(optionObject);
+            options.sort(
+              (a, b) =>
+                (optionIndex.get(a[1]) ?? 0) - (optionIndex.get(b[1]) ?? 0),
+            );
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            let result = {} as any;
+            for (const option of options) {
+              result = {
+                ...result,
+                ...(await option[1]()),
+              };
+            }
+            return result;
+          },
+        });
 
         printCommandExecution(
           `${program.name()} ${name}`,

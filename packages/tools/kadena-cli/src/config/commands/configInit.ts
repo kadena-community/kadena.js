@@ -2,18 +2,18 @@ import type { Command } from 'commander';
 import { devnetDefaults } from '../../constants/devnets.js';
 import { writeDevnet } from '../../devnet/utils/devnetHelpers.js';
 import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
-import { createCommand } from '../../utils/createCommand.js';
+import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { log } from '../../utils/logger.js';
 
 export const createConfigInitCommand: (
   program: Command,
   version: string,
-) => void = createCommand(
+) => void = createCommandFlexible(
   'init',
   'Initialize default configuration of the Kadena CLI',
   [],
-  async (config) => {
-    log.debug('init:action', config);
+  async () => {
+    log.debug('config init');
 
     await ensureNetworksConfiguration();
     log.info(log.color.green('Configured default networks.'));

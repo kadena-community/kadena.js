@@ -1,5 +1,5 @@
 import type { Command } from 'commander';
-import { createCommand } from '../../utils/createCommand.js';
+import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import {
   maskStringPreservingStartAndEnd,
@@ -53,17 +53,21 @@ async function accountList(config: {
 export const createAccountListCommand: (
   program: Command,
   version: string,
-) => void = createCommand(
+) => void = createCommandFlexible(
   'list',
   'List all available accounts',
   [globalOptions.accountSelectWithAll()],
-  async (config) => {
-    log.debug('account-list:action', { config });
+  async (option) => {
+    const accountAlias = await option.accountAlias();
 
-    const accounts = await accountList(config);
+    log.debug('account-list:action', { ...accountAlias });
+
+    const accounts = await accountList(accountAlias);
 
     if (!accounts) {
-      return log.error(`Selected account "${config.accountAlias}" not found.`);
+      return log.error(
+        `Selected account "${accountAlias.accountAlias}" not found.`,
+      );
     }
 
     const tabularData = generateTabularData(accounts);
