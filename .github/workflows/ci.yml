@@ -120,8 +120,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # Disable remote caching, we need to explicitly rebuild Apps due to env vars or incomplete caches
-      - name: build dApp
+      # Due to how docs is built, we need to explicitly rebuild to generate the correct menu structure.
+      - name: build Docs
+        if: matrix.app == 'docs'
+        run: pnpm turbo build --filter @kadena/${{ matrix.app }} --force
+
+      - name: build dApps
+        if: matrix.app != 'docs'
         run: pnpm turbo build --filter @kadena/${{ matrix.app }}
 
       - name: Run end-to-end tests
