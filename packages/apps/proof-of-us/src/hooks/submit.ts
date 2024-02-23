@@ -44,7 +44,6 @@ export const useSubmit = () => {
     const innerTransaction = txArg ?? transaction;
     if (!innerTransaction) return;
     const client = createClient();
-    client.getStatus;
 
     setStatus(SubmitStatus.LOADING);
 
