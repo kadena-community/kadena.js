@@ -139,12 +139,6 @@ const ProofOfUsStore = () => {
     });
   };
 
-  const updateTx = async (proofOfUs: IProofOfUsData, tx: string) => {
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      tx,
-    });
-  };
-
   const addTitle = async (proofOfUs: IProofOfUsData, value: string) => {
     if (isAlreadySigning(proofOfUs.signees)) return;
 
@@ -164,27 +158,10 @@ const ProofOfUsStore = () => {
     });
   };
 
-  const updateSigner = async (
-    proofOfUs: IProofOfUsData,
-    account: IProofOfUsSignee,
-    value: any,
-    isOverwrite: boolean = false,
-  ) => {
-    if (!isOverwrite && isAlreadySigning(proofOfUs.signees)) return;
-
-    const newList = proofOfUs.signees.map((a) => {
-      if (a.accountName === account.accountName) {
-        return { ...a, ...value };
-      }
-      return a;
-    });
-
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      signees: newList,
-    });
-  };
   const updateProofOfUs = async (proofOfUs: IProofOfUsData, value: any) => {
     const newProof = { ...proofOfUs, ...value };
+
+    console.log({ newProof });
 
     await update(ref(database, `data/${proofOfUs.proofOfUsId}`), newProof);
   };
@@ -204,9 +181,7 @@ const ProofOfUsStore = () => {
     listenProofOfUsBackgroundData,
     addTitle,
     updateBackgroundColor,
-    updateSigner,
     updateProofOfUs,
-    updateTx,
   };
 };
 

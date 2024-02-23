@@ -11,7 +11,8 @@ import { imageClass, wrapperClass } from './style.css';
 interface IProps {}
 
 export const ImagePositions: FC<IProps> = () => {
-  const { proofOfUs, updateSigner, background } = useProofOfUs();
+  const { proofOfUs, updateSigner, background, updateProofOfUs } =
+    useProofOfUs();
   const { account } = useAccount();
   const [isMounted, setIsMounted] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
@@ -84,7 +85,7 @@ export const ImagePositions: FC<IProps> = () => {
     };
   }, [wrapperRef, imgRef, proofOfUs?.signees, isMounted]);
 
-  const handleClick: MouseEventHandler<HTMLImageElement> = (e) => {
+  const handleClick: MouseEventHandler<HTMLImageElement> = async (e) => {
     if (!imgRef.current || isLocked) return;
     setIsEditorOpen(true);
 
@@ -93,11 +94,17 @@ export const ImagePositions: FC<IProps> = () => {
     const xPercentage = ((e.clientX - rect.left) / imgRef.current.width) * 100;
     const yPercentage = ((e.clientY - rect.top) / imgRef.current.height) * 100;
 
-    updateSigner({ position: { xPercentage, yPercentage } });
+    await updateProofOfUs({
+      signees: updateSigner({
+        position: { xPercentage, yPercentage },
+      }),
+    });
   };
 
-  const handleRemove = () => {
-    updateSigner({ position: null });
+  const handleRemove = async () => {
+    await updateProofOfUs({
+      signees: updateSigner({ position: null }),
+    });
   };
 
   return (

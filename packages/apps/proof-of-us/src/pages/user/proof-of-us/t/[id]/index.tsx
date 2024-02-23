@@ -17,9 +17,7 @@ const Page: NextPage<IProps> = ({ params, data, metadataUri }) => {
   return (
     <LoginBoundry>
       <UserLayout>
-        {data && (
-          <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
-        )}
+        <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
       </UserLayout>
     </LoginBoundry>
   );

@@ -22,7 +22,10 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
   const { isStatusLoading } = useSubmit();
 
   const handleJoin = async () => {
-    await signToken();
+    //TODO FIX for the isAlreadySigning changes to quick
+    setTimeout(() => {
+      signToken();
+    }, 500);
   };
 
   if (!proofOfUs) return null;
@@ -32,7 +35,6 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
       {isStatusLoading && <MainLoader />}
 
       <TitleHeader label={proofOfUs.title ?? ''} />
-
       <ImagePositions />
       <ListSignees />
       <Stack flex={1} />

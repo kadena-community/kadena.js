@@ -13,7 +13,7 @@ interface IProps {
 }
 
 export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
-  const { updateSigner } = useProofOfUs();
+  const { updateSigner, updateProofOfUs } = useProofOfUs();
   const [error, setError] = useState<string>('');
   const formRef = useRef<HTMLFormElement>(null);
   const [socialIcon, setSocialIcon] = useState<
@@ -35,7 +35,7 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
     firstElm.focus();
   }, [formRef.current]);
 
-  const handleSaveEditor: FormEventHandler<HTMLFormElement> = (evt) => {
+  const handleSaveEditor: FormEventHandler<HTMLFormElement> = async (evt) => {
     evt.preventDefault();
     setError('');
 
@@ -51,9 +51,11 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
     }
     setSocialIcon(socialType?.icon);
 
-    updateSigner({
-      name: label,
-      socialLink,
+    await updateProofOfUs({
+      signees: updateSigner({
+        name: label,
+        socialLink,
+      }),
     });
 
     onClose();

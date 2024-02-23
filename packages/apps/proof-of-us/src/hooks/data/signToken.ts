@@ -8,14 +8,8 @@ import { useEffect, useState } from 'react';
 import { useAccount } from '../account';
 
 export const useSignToken = () => {
-  const {
-    updateSigner,
-    proofOfUs,
-    background,
-    addTx,
-    hasSigned,
-    updateProofOfUs,
-  } = useProofOfUs();
+  const { updateSigner, proofOfUs, background, hasSigned, updateProofOfUs } =
+    useProofOfUs();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [data] = useState<IProofOfUs | undefined>(undefined);
@@ -62,9 +56,10 @@ export const useSignToken = () => {
 
     if (!transaction || hasSigned()) return;
 
-    await addTx(transaction);
-
-    await updateSigner({ signerStatus: 'success' }, true);
+    await updateProofOfUs({
+      tx: transaction,
+      signees: updateSigner({ signerStatus: 'success' }, true),
+    });
 
     setIsLoading(false);
     setHasError(false);
@@ -81,8 +76,6 @@ export const useSignToken = () => {
     setIsLoading(true);
     setHasError(false);
 
-    await updateSigner({ signerStatus: 'signing' }, true);
-
     let transaction = proofOfUs.tx;
     if (!transaction) {
       const transactionData = await createTx();
@@ -97,6 +90,11 @@ export const useSignToken = () => {
         tokenId: transactionData.tokenId,
         manifestUri: transactionData.manifestUri,
         imageUri: transactionData.imageUri,
+        signees: updateSigner({ signerStatus: 'signing' }, true),
+      });
+    } else {
+      await updateProofOfUs({
+        signees: updateSigner({ signerStatus: 'signing' }, true),
       });
     }
 

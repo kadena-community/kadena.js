@@ -11,6 +11,7 @@ export const wrapperClass = style([
 
 export const savedImageClass = style([
   atoms({
+    position: 'absolute',
     width: '100%',
   }),
 ]);
@@ -37,10 +38,11 @@ export const imageWrapper = style([
 ]);
 export const gradientClass = style([
   {
-    position: 'relative',
-    bottom: '80px',
+    position: 'absolute',
+    bottom: '0',
     width: '100%',
     height: '80px',
     background: `linear-gradient(0deg, ${deviceColors.kadenaBlack}FF 5%, ${deviceColors.kadenaBlack}00 100%)`,
+    zIndex: 2,
   },
 ]);
