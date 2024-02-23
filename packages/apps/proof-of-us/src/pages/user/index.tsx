@@ -33,11 +33,7 @@ const Page: FC = () => {
         {isLoading && <MainLoader />}
         {error && <div>{error.message}</div>}
 
-        <Stack
-          style={{ height: '90dvh' }}
-          paddingInline="md"
-          flexDirection="column"
-        >
+        <Stack flexDirection="column" flex={1}>
           <TitleHeader
             label="Dashboard"
             Append={() => (
@@ -72,12 +68,16 @@ const Page: FC = () => {
                   </p>
                 </Stack>
               ) : (
-                <>
+                <Stack flexDirection="column" flex={1} gap="md">
                   <Stack
                     display="flex"
                     flexDirection="column"
                     gap="md"
                     width="100%"
+                    style={{
+                      flex: '1 1 0',
+                      overflowY: 'scroll',
+                    }}
                   >
                     <Text bold>Proofs ({data.length})</Text>
                     <List>
@@ -85,9 +85,9 @@ const Page: FC = () => {
                         <ListItem key={token.id} token={token} />
                       ))}
                     </List>
-                    <Button onPress={handleNew}>Create Proof</Button>
                   </Stack>
-                </>
+                  <Button onPress={handleNew}>Create Proof</Button>
+                </Stack>
               ))}
           </Stack>
         </Stack>
