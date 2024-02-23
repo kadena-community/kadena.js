@@ -1,3 +1,4 @@
+import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
 import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { ConnectPage } from '@/features/ConnectPage/ConnectPage';
@@ -12,9 +13,11 @@ interface IProps {
 const Page: NextPage<IProps> = ({ params }) => {
   return (
     <ProofOfUsProvider>
-      <UserLayout>
-        <ConnectPage params={params} />
-      </UserLayout>
+      <LoginBoundry>
+        <UserLayout>
+          <ConnectPage params={params} />
+        </UserLayout>
+      </LoginBoundry>
     </ProofOfUsProvider>
   );
 };

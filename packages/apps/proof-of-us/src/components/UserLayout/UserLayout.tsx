@@ -1,22 +1,8 @@
-import { useAccount } from '@/hooks/account';
 import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
-import { useEffect } from 'react';
 
 const UserLayout: FC<PropsWithChildren> = ({ children }) => {
-  const { account, isMounted, login } = useAccount();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!account && isMounted) {
-      login();
-    }
-  }, [account, isMounted, router, login]);
-
-  if (!account) return null;
-
   return (
     <motion.div
       style={{ position: 'absolute', width: '100%' }}
