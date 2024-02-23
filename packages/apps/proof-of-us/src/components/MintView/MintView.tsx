@@ -121,7 +121,7 @@ export const MintView: FC<IProps> = ({ prev }) => {
                   Dashboard
                 </Button>
                 <Button variant="primary" onPress={handleGoToProof}>
-                  Proof Detauls
+                  Proof Details
                 </Button>
               </Stack>
             </Stack>
