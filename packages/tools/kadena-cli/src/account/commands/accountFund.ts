@@ -11,6 +11,7 @@ import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 // import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { accountOptions } from '../accountOptions.js';
 import { fund } from '../utils/fund.js';
 
 // const deployDevnet = createOption({
@@ -26,8 +27,8 @@ export const createFundCommand = createCommandFlexible(
   'fund',
   'Fund an existing/new account',
   [
-    globalOptions.accountSelect(),
-    globalOptions.fundAmount(),
+    accountOptions.accountSelect(),
+    accountOptions.fundAmount(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
     // deployDevnet(),

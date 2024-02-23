@@ -1,11 +1,11 @@
 import type { Command } from 'commander';
 import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
 import {
   maskStringPreservingStartAndEnd,
   truncateText,
 } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
+import { accountOptions } from '../accountOptions.js';
 import type { IAliasAccountData } from '../types.js';
 import { getAllAccounts } from '../utils/accountHelpers.js';
 
@@ -56,7 +56,7 @@ export const createAccountListCommand: (
 ) => void = createCommand(
   'list',
   'List all available accounts',
-  [globalOptions.accountSelectWithAll()],
+  [accountOptions.accountSelectWithAll()],
   async (config) => {
     log.debug('account-list:action', { config });
 
