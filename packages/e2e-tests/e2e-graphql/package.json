@@ -3,7 +3,6 @@
   "version": "0.0.2",
   "private": true,
   "scripts": {
-    "build": "echo 'No build required'",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -13,7 +12,6 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "test": "echo 'No test required'",
     "test:e2e": "playwright test",
     "test:e2e:docs": "playwright test -c playwright.docs.config.ts",
     "test:e2e:graph": "playwright test -c playwright.graph.config.ts",

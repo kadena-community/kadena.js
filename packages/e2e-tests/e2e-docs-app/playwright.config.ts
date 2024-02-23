@@ -12,7 +12,7 @@ const config: PlaywrightTestConfig = {
   projects: [
     {
       name: 'docs',
-      testDir: 'tests/docs-app/',
+      testDir: 'tests',
     },
   ],
 };
