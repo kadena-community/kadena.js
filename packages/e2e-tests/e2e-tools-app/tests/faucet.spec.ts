@@ -18,10 +18,10 @@ test.beforeEach(async ({ page, toolsApp }) => {
 //   { type: 'w:', NumberOfKeys: 2 },
 // ];
 
-type AccountTypes = {
+interface AccountTypes {
   type: string;
   numberOfKeys: number;
-};
+}
 
 export const createFundAccount = ({ type, numberOfKeys }: AccountTypes) => {
   return test(`Create and fund ${type} account`, async ({ toolsApp }) => {
