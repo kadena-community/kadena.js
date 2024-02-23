@@ -1,21 +1,21 @@
-import { devnetMiner } from '@constants/accounts.constants';
-import { transferAmount } from '@constants/amounts.constants';
-import { coinModuleHash } from '@constants/coin.constants';
-import { getTransactionsQuery } from '@fixtures/graph/getTransactions';
+import { devnetMiner } from '@kadena-dev/e2e-base/src/constants/accounts.constants';
+import { transferAmount } from '@kadena-dev/e2e-base/src/constants/amounts.constants';
+import { coinModuleHash } from '@kadena-dev/e2e-base/src/constants/coin.constants';
 import {
   createAccount,
   generateAccount,
-} from '@helpers/client-utils/accounts.helper';
+} from '@kadena-dev/e2e-base/src/helpers/client-utils/accounts.helper';
 import {
   transferFunds,
   transferFundsCrossChain,
-} from '@helpers/client-utils/transfer.helper';
+} from '@kadena-dev/e2e-base/src/helpers/client-utils/transfer.helper';
+import type { IAccount } from '@kadena-dev/e2e-base/src/types/account.types';
 import type { ICommandResult } from '@kadena/client';
 import { expect, test } from '@playwright/test';
-import { getBlockHash } from 'src/support/helpers/graph/block.helper';
-import { base64Encode } from 'src/support/helpers/graph/cryptography.helper';
-import { sendQuery } from 'src/support/helpers/graph/request.helper';
-import type { IAccount } from 'src/support/types/account.types';
+import { getBlockHash } from '../helpers/block.helper';
+import { base64Encode } from '../helpers/cryptography.helper';
+import { sendQuery } from '../helpers/request.helper';
+import { getTransactionsQuery } from '../queries/getTransactions';
 
 test.describe('Query: getTransactions', async () => {
   test('Query: getTransactions - Same Chain Transfer', async ({ request }) => {

@@ -1,9 +1,9 @@
-import { test } from '@fixtures/shared/test.fixture';
-import { expect } from '@playwright/test';
+import { test } from '@kadena-dev/e2e-base/src/fixtures/shared/test.fixture';
 import {
   createAccount,
   generateAccount,
-} from '../../support/helpers/client-utils/accounts.helper';
+} from '@kadena-dev/e2e-base/src/helpers/client-utils/accounts.helper';
+import { expect } from '@playwright/test';
 
 test.beforeEach(async ({ page, toolsApp }) => {
   await test.step('Open Tools and navigate to Faucet', async () => {
@@ -13,14 +13,19 @@ test.beforeEach(async ({ page, toolsApp }) => {
   });
 });
 
-const accountTypes = [
-  { type: 'k:', NumberOfKeys: 1 },
-  { type: 'w:', NumberOfKeys: 2 },
-];
+// const accountTypes = [
+//   { type: 'k:', NumberOfKeys: 1 },
+//   { type: 'w:', NumberOfKeys: 2 },
+// ];
 
-for (const accountType of accountTypes) {
-  test(`Create and fund ${accountType.type} account`, async ({ toolsApp }) => {
-    const account = await generateAccount(accountType.NumberOfKeys, ['0']);
+type AccountTypes = {
+  type: string;
+  numberOfKeys: number;
+};
+
+export const createFundAccount = ({ type, numberOfKeys }: AccountTypes) => {
+  return test(`Create and fund ${type} account`, async ({ toolsApp }) => {
+    const account = await generateAccount(numberOfKeys, ['0']);
     await test.step('Create account on chain 0.', async () => {
       await toolsApp.fundNewAccountPage.asidePanel.navigateTo(
         'Fund New Account',
@@ -36,10 +41,12 @@ for (const accountType of accountTypes) {
       ).toBeVisible();
     });
   });
+};
 
-  test(`Fund existing ${accountType.type} account`, async ({ toolsApp }) => {
+export const fundExistingAccount = ({ type, numberOfKeys }: AccountTypes) => {
+  return test(`Fund existing ${type} account`, async ({ toolsApp }) => {
     await test.step('Fund account on chain 0.', async () => {
-      const account = await generateAccount(accountType.NumberOfKeys, ['0']);
+      const account = await generateAccount(numberOfKeys, ['0']);
       await createAccount(account, '0');
       await toolsApp.asidePanel.navigateTo('Fund Existing Account');
       await toolsApp.fundExistingAccountPage.fundExistingAccount(
@@ -57,4 +64,4 @@ for (const accountType of accountTypes) {
       ).toBeVisible();
     });
   });
-}
+};

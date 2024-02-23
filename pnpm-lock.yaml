@@ -1051,6 +1051,265 @@ importers:
         specifier: ^0.1.1
         version: 0.1.1(vitest@1.1.0)
 
+  packages/e2e-tests/base:
+    dependencies:
+      '@kadena/chainweb-node-client':
+        specifier: workspace:*
+        version: link:../../libs/chainweb-node-client
+      '@kadena/client':
+        specifier: workspace:*
+        version: link:../../libs/client
+      '@kadena/client-utils':
+        specifier: workspace:*
+        version: link:../../libs/client-utils
+      '@kadena/cryptography-utils':
+        specifier: workspace:*
+        version: link:../../libs/cryptography-utils
+      '@kadena/pactjs':
+        specifier: workspace:*
+        version: link:../../libs/pactjs
+      '@kadena/pactjs-cli':
+        specifier: workspace:*
+        version: link:../../tools/pactjs-cli
+      '@kadena/tools':
+        specifier: workspace:*
+        version: link:../../apps/tools
+      eslint-import-resolver-typescript:
+        specifier: 3.5.5
+        version: 3.5.5(@typescript-eslint/parser@5.59.11)(eslint-plugin-import@2.27.5)(eslint@8.53.0)
+    devDependencies:
+      '@kadena-dev/eslint-config':
+        specifier: workspace:*
+        version: link:../../tools/eslint-config
+      '@kadena-dev/eslint-plugin':
+        specifier: workspace:*
+        version: link:../../tools/eslint-plugin
+      '@kadena-dev/lint-package':
+        specifier: workspace:*
+        version: link:../../tools/lint-package
+      '@kadena-dev/markdown':
+        specifier: workspace:*
+        version: link:../../tools/markdown
+      '@kadena-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../tools/shared-config
+      '@kadena/types':
+        specifier: workspace:*
+        version: link:../../libs/types
+      '@playwright/browser-chromium':
+        specifier: ^1.41.1
+        version: 1.41.2
+      '@playwright/test':
+        specifier: ^1.41.1
+        version: 1.41.2
+      '@rushstack/eslint-config':
+        specifier: ~3.3.0
+        version: 3.3.0(eslint@8.53.0)(typescript@5.2.2)
+      '@types/node':
+        specifier: ^18.17.14
+        version: 18.17.14
+      directory-tree:
+        specifier: 3.5.1
+        version: 3.5.1
+      eslint:
+        specifier: ^8.45.0
+        version: 8.53.0
+      eslint-plugin-playwright:
+        specifier: 0.16.0
+        version: 0.16.0(eslint@8.53.0)
+      parse-md:
+        specifier: 2.0.5
+        version: 2.0.5
+      playwright-i18next-fixture:
+        specifier: ^1.0.0
+        version: 1.0.0(@playwright/test@1.41.2)
+      prettier:
+        specifier: ~3.0.3
+        version: 3.0.3
+
+  packages/e2e-tests/e2e-docs-app:
+    dependencies:
+      '@kadena/docs':
+        specifier: workspace:*
+        version: link:../../apps/docs
+    devDependencies:
+      '@kadena-dev/e2e-base':
+        specifier: workspace:*
+        version: link:../base
+      '@kadena-dev/eslint-config':
+        specifier: workspace:*
+        version: link:../../tools/eslint-config
+      '@kadena-dev/eslint-plugin':
+        specifier: workspace:*
+        version: link:../../tools/eslint-plugin
+      '@kadena-dev/lint-package':
+        specifier: workspace:*
+        version: link:../../tools/lint-package
+      '@kadena-dev/markdown':
+        specifier: workspace:*
+        version: link:../../tools/markdown
+      '@kadena-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../tools/shared-config
+      '@kadena/types':
+        specifier: workspace:*
+        version: link:../../libs/types
+      '@playwright/browser-chromium':
+        specifier: ^1.41.1
+        version: 1.41.2
+      '@playwright/test':
+        specifier: ^1.41.1
+        version: 1.41.2
+      '@rushstack/eslint-config':
+        specifier: ~3.3.0
+        version: 3.3.0(eslint@8.53.0)(typescript@5.2.2)
+      '@types/node':
+        specifier: ^18.17.14
+        version: 18.17.14
+      eslint:
+        specifier: ^8.45.0
+        version: 8.53.0
+      eslint-plugin-playwright:
+        specifier: 0.16.0
+        version: 0.16.0(eslint@8.53.0)
+      prettier:
+        specifier: ~3.0.3
+        version: 3.0.3
+
+  packages/e2e-tests/e2e-graphql:
+    dependencies:
+      '@kadena/chainweb-node-client':
+        specifier: workspace:*
+        version: link:../../libs/chainweb-node-client
+      '@kadena/client':
+        specifier: workspace:*
+        version: link:../../libs/client
+      '@kadena/client-utils':
+        specifier: workspace:*
+        version: link:../../libs/client-utils
+      '@kadena/cryptography-utils':
+        specifier: workspace:*
+        version: link:../../libs/cryptography-utils
+      '@kadena/graph':
+        specifier: workspace:*
+        version: link:../../apps/graph
+      '@kadena/pactjs':
+        specifier: workspace:*
+        version: link:../../libs/pactjs
+      '@kadena/pactjs-cli':
+        specifier: workspace:*
+        version: link:../../tools/pactjs-cli
+    devDependencies:
+      '@kadena-dev/e2e-base':
+        specifier: workspace:*
+        version: link:../base
+      '@kadena-dev/eslint-config':
+        specifier: workspace:*
+        version: link:../../tools/eslint-config
+      '@kadena-dev/eslint-plugin':
+        specifier: workspace:*
+        version: link:../../tools/eslint-plugin
+      '@kadena-dev/lint-package':
+        specifier: workspace:*
+        version: link:../../tools/lint-package
+      '@kadena-dev/markdown':
+        specifier: workspace:*
+        version: link:../../tools/markdown
+      '@kadena-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../tools/shared-config
+      '@kadena/types':
+        specifier: workspace:*
+        version: link:../../libs/types
+      '@playwright/browser-chromium':
+        specifier: ^1.41.1
+        version: 1.41.2
+      '@playwright/test':
+        specifier: ^1.41.1
+        version: 1.41.2
+      '@rushstack/eslint-config':
+        specifier: ~3.3.0
+        version: 3.3.0(eslint@8.53.0)(typescript@5.2.2)
+      '@types/node':
+        specifier: ^18.17.14
+        version: 18.17.14
+      directory-tree:
+        specifier: 3.5.1
+        version: 3.5.1
+      eslint:
+        specifier: ^8.45.0
+        version: 8.53.0
+      eslint-import-resolver-typescript:
+        specifier: 3.5.5
+        version: 3.5.5(@typescript-eslint/parser@5.59.11)(eslint-plugin-import@2.27.5)(eslint@8.53.0)
+      eslint-plugin-playwright:
+        specifier: 0.16.0
+        version: 0.16.0(eslint@8.53.0)
+      parse-md:
+        specifier: 2.0.5
+        version: 2.0.5
+      playwright-i18next-fixture:
+        specifier: ^1.0.0
+        version: 1.0.0(@playwright/test@1.41.2)
+      prettier:
+        specifier: ~3.0.3
+        version: 3.0.3
+
+  packages/e2e-tests/e2e-tools-app:
+    dependencies:
+      '@kadena/tools':
+        specifier: workspace:*
+        version: link:../../apps/tools
+    devDependencies:
+      '@kadena-dev/e2e-base':
+        specifier: workspace:*
+        version: link:../base
+      '@kadena-dev/eslint-config':
+        specifier: workspace:*
+        version: link:../../tools/eslint-config
+      '@kadena-dev/eslint-plugin':
+        specifier: workspace:*
+        version: link:../../tools/eslint-plugin
+      '@kadena-dev/lint-package':
+        specifier: workspace:*
+        version: link:../../tools/lint-package
+      '@kadena-dev/markdown':
+        specifier: workspace:*
+        version: link:../../tools/markdown
+      '@kadena-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../tools/shared-config
+      '@kadena/types':
+        specifier: workspace:*
+        version: link:../../libs/types
+      '@playwright/browser-chromium':
+        specifier: ^1.41.1
+        version: 1.41.2
+      '@playwright/test':
+        specifier: ^1.41.1
+        version: 1.41.2
+      '@rushstack/eslint-config':
+        specifier: ~3.3.0
+        version: 3.3.0(eslint@8.53.0)(typescript@5.2.2)
+      '@types/node':
+        specifier: ^18.17.14
+        version: 18.17.14
+      eslint:
+        specifier: ^8.45.0
+        version: 8.53.0
+      eslint-import-resolver-typescript:
+        specifier: 3.5.5
+        version: 3.5.5(@typescript-eslint/parser@5.59.11)(eslint-plugin-import@2.27.5)(eslint@8.53.0)
+      eslint-plugin-playwright:
+        specifier: 0.16.0
+        version: 0.16.0(eslint@8.53.0)
+      playwright-i18next-fixture:
+        specifier: ^1.0.0
+        version: 1.0.0(@playwright/test@1.41.2)
+      prettier:
+        specifier: ~3.0.3
+        version: 3.0.3
+
   packages/libs/bootstrap-lib:
     dependencies:
       '@kadena/cryptography-utils':
@@ -2376,79 +2635,6 @@ importers:
       vitest-dom:
         specifier: ^0.1.1
         version: 0.1.1(vitest@1.1.0)
-
-  packages/tools/e2e-tests:
-    dependencies:
-      '@kadena/chainweb-node-client':
-        specifier: workspace:*
-        version: link:../../libs/chainweb-node-client
-      '@kadena/client':
-        specifier: workspace:*
-        version: link:../../libs/client
-      '@kadena/client-utils':
-        specifier: workspace:*
-        version: link:../../libs/client-utils
-      '@kadena/cryptography-utils':
-        specifier: workspace:*
-        version: link:../../libs/cryptography-utils
-      '@kadena/pactjs':
-        specifier: workspace:*
-        version: link:../../libs/pactjs
-      '@kadena/pactjs-cli':
-        specifier: workspace:*
-        version: link:../pactjs-cli
-      '@kadena/tools':
-        specifier: workspace:*
-        version: link:../../apps/tools
-      eslint-import-resolver-typescript:
-        specifier: 3.5.5
-        version: 3.5.5(@typescript-eslint/parser@5.59.11)(eslint-plugin-import@2.27.5)(eslint@8.45.0)
-    devDependencies:
-      '@kadena-dev/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@kadena-dev/eslint-plugin':
-        specifier: workspace:*
-        version: link:../eslint-plugin
-      '@kadena-dev/lint-package':
-        specifier: workspace:*
-        version: link:../lint-package
-      '@kadena-dev/markdown':
-        specifier: workspace:*
-        version: link:../markdown
-      '@kadena-dev/shared-config':
-        specifier: workspace:*
-        version: link:../shared-config
-      '@kadena/types':
-        specifier: workspace:*
-        version: link:../../libs/types
-      '@playwright/test':
-        specifier: ^1.41.1
-        version: 1.41.2
-      '@rushstack/eslint-config':
-        specifier: ~3.3.0
-        version: 3.3.0(eslint@8.45.0)(typescript@5.2.2)
-      '@types/node':
-        specifier: ^18.17.14
-        version: 18.17.14
-      directory-tree:
-        specifier: 3.5.1
-        version: 3.5.1
-      eslint:
-        specifier: ^8.45.0
-        version: 8.45.0
-      eslint-plugin-playwright:
-        specifier: 0.16.0
-        version: 0.16.0(eslint@8.45.0)
-      parse-md:
-        specifier: 2.0.5
-        version: 2.0.5
-      playwright-i18next-fixture:
-        specifier: ^1.0.0
-        version: 1.0.0(@playwright/test@1.41.2)
-      prettier:
-        specifier: ~3.0.3
-        version: 3.0.3
 
   packages/tools/eslint-config:
     dependencies:
@@ -5769,7 +5955,6 @@ packages:
     dependencies:
       eslint: 8.53.0
       eslint-visitor-keys: 3.4.3
-    dev: true
 
   /@eslint-community/regexpp@4.8.0:
     resolution: {integrity: sha512-JylOEEzDiOryeUnFbQz+oViCXS0KsvR1mvHkoMiu5+UiBvy+RYX7tzlIIIEstF/gVa2tj9AQXk3dgnxv6KxhFg==}
@@ -5823,7 +6008,6 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@eslint/js@8.44.0:
     resolution: {integrity: sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==}
@@ -5837,7 +6021,6 @@ packages:
   /@eslint/js@8.53.0:
     resolution: {integrity: sha512-Kn7K8dx/5U6+cT1yEhpX1w4PCSg0M+XyRILPgvwcEBjerFWCwQj5sbr3/VmxqV0JGHCBCzyd6LxypEuehypY1w==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dev: true
 
   /@etchteam/storybook-addon-status@4.2.4(@types/react-dom@18.2.7)(@types/react@18.2.15):
     resolution: {integrity: sha512-WkSz82WPqcqOBjB6MkLED4kIZU6jX61skBDh+/D8cedvSEQnPhQVMfxO0fnnzwhDsbqR7IXpPQPGx3hHPpi54A==}
@@ -7239,7 +7422,6 @@ packages:
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@humanwhocodes/config-array@0.5.0:
     resolution: {integrity: sha512-FagtKFz74XrTl7y6HCzQpwDfXP0yhxe9lHLD1UZxjvZIcbyRz8zTFF/yYNfSfzU414eDwZ1SrO0Qvtyf+wFMQg==}
@@ -7261,7 +7443,6 @@ packages:
 
   /@humanwhocodes/object-schema@2.0.1:
     resolution: {integrity: sha512-dvuCeX5fC9dXgJn9t+X5atfmgQAzUOWqS1254Gh0m6i8wKd10ebXkfNKiRK+1GWi/yTvvLDHpoxLr0xxxeslWw==}
-    dev: true
 
   /@img/sharp-darwin-arm64@0.33.1:
     resolution: {integrity: sha512-esr2BZ1x0bo+wl7Gx2hjssYhjrhUsD88VQulI0FrG8/otRQUOxLWHMBd1Y1qo2Gfg2KUvXNpT0ASnV9BzJCexw==}
@@ -8817,6 +8998,14 @@ packages:
       open: 9.1.0
       picocolors: 1.0.0
       tslib: 2.6.2
+
+  /@playwright/browser-chromium@1.41.2:
+    resolution: {integrity: sha512-vzobqNg2K6cJPyXCVaUxq8uDV54l3pEJvkO58XK0CBV2nl9IBySXvEqcgwsQc8PmQ930yVDrz0oCrMR6H/Qv3A==}
+    engines: {node: '>=16'}
+    requiresBuild: true
+    dependencies:
+      playwright-core: 1.41.2
+    dev: true
 
   /@playwright/test@1.41.2:
     resolution: {integrity: sha512-qQB9h7KbibJzrDpkXkYvsmiDJK14FULCCZgEcoe2AvFAS64oCirWTwzTlAYEbKaRxWs5TFesE1Na6izMv3HfGg==}
@@ -14831,7 +15020,6 @@ packages:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /@typescript-eslint/parser@5.62.0(eslint@8.45.0)(typescript@5.2.2):
     resolution: {integrity: sha512-VlJEV0fOQ7BExOsHYAGrgbEiZoi8D+Bl2+f6V2RrXerRSylnp+ZBHmPvaIa8cz0Ajx7WO7Z5RqfgYg7ED1nRhA==}
@@ -19816,6 +20004,30 @@ packages:
       - eslint-import-resolver-node
       - eslint-import-resolver-webpack
       - supports-color
+    dev: true
+
+  /eslint-import-resolver-typescript@3.5.5(@typescript-eslint/parser@5.59.11)(eslint-plugin-import@2.27.5)(eslint@8.53.0):
+    resolution: {integrity: sha512-TdJqPHs2lW5J9Zpe17DZNQuDnox4xo2o+0tE7Pggain9Rbc19ik8kFtXdxZ250FVx2kF4vlt2RSf4qlUpG7bhw==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    peerDependencies:
+      eslint: '*'
+      eslint-plugin-import: '*'
+    dependencies:
+      debug: 4.3.4(supports-color@5.5.0)
+      enhanced-resolve: 5.15.0
+      eslint: 8.53.0
+      eslint-module-utils: 2.8.0(@typescript-eslint/parser@5.59.11)(eslint-import-resolver-node@0.3.7)(eslint-import-resolver-typescript@3.5.5)(eslint@8.53.0)
+      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.59.11)(eslint-import-resolver-typescript@3.5.5)(eslint@8.53.0)
+      get-tsconfig: 4.7.2
+      globby: 13.2.2
+      is-core-module: 2.13.0
+      is-glob: 4.0.3
+      synckit: 0.8.5
+    transitivePeerDependencies:
+      - '@typescript-eslint/parser'
+      - eslint-import-resolver-node
+      - eslint-import-resolver-webpack
+      - supports-color
 
   /eslint-import-resolver-typescript@3.5.5(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-node@0.3.7)(eslint-plugin-import@2.27.5)(eslint@8.45.0):
     resolution: {integrity: sha512-TdJqPHs2lW5J9Zpe17DZNQuDnox4xo2o+0tE7Pggain9Rbc19ik8kFtXdxZ250FVx2kF4vlt2RSf4qlUpG7bhw==}
@@ -19889,6 +20101,36 @@ packages:
       eslint: 8.45.0
       eslint-import-resolver-node: 0.3.7
       eslint-import-resolver-typescript: 3.5.5(@typescript-eslint/parser@5.59.11)(eslint-plugin-import@2.27.5)(eslint@8.45.0)
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /eslint-module-utils@2.8.0(@typescript-eslint/parser@5.59.11)(eslint-import-resolver-node@0.3.7)(eslint-import-resolver-typescript@3.5.5)(eslint@8.53.0):
+    resolution: {integrity: sha512-aWajIYfsqCKRDgUfjEXNN/JlrzauMuSEy5sbd7WXbtW3EH6A6MpwEh42c7qD+MqQo9QMJ6fWLAeIJynx0g6OAw==}
+    engines: {node: '>=4'}
+    peerDependencies:
+      '@typescript-eslint/parser': '*'
+      eslint: '*'
+      eslint-import-resolver-node: '*'
+      eslint-import-resolver-typescript: '*'
+      eslint-import-resolver-webpack: '*'
+    peerDependenciesMeta:
+      '@typescript-eslint/parser':
+        optional: true
+      eslint:
+        optional: true
+      eslint-import-resolver-node:
+        optional: true
+      eslint-import-resolver-typescript:
+        optional: true
+      eslint-import-resolver-webpack:
+        optional: true
+    dependencies:
+      '@typescript-eslint/parser': 5.59.11(eslint@8.53.0)(typescript@5.2.2)
+      debug: 3.2.7
+      eslint: 8.53.0
+      eslint-import-resolver-node: 0.3.7
+      eslint-import-resolver-typescript: 3.5.5(@typescript-eslint/parser@5.59.11)(eslint-plugin-import@2.27.5)(eslint@8.53.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -19981,6 +20223,39 @@ packages:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
       - supports-color
+    dev: true
+
+  /eslint-plugin-import@2.27.5(@typescript-eslint/parser@5.59.11)(eslint-import-resolver-typescript@3.5.5)(eslint@8.53.0):
+    resolution: {integrity: sha512-LmEt3GVofgiGuiE+ORpnvP+kAm3h6MLZJ4Q5HCyHADofsb4VzXFsRiWj3c0OFiV+3DWFh0qg3v9gcPlfc3zRow==}
+    engines: {node: '>=4'}
+    peerDependencies:
+      '@typescript-eslint/parser': '*'
+      eslint: ^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8
+    peerDependenciesMeta:
+      '@typescript-eslint/parser':
+        optional: true
+    dependencies:
+      '@typescript-eslint/parser': 5.59.11(eslint@8.53.0)(typescript@5.2.2)
+      array-includes: 3.1.6
+      array.prototype.flat: 1.3.1
+      array.prototype.flatmap: 1.3.1
+      debug: 3.2.7
+      doctrine: 2.1.0
+      eslint: 8.53.0
+      eslint-import-resolver-node: 0.3.7
+      eslint-module-utils: 2.8.0(@typescript-eslint/parser@5.59.11)(eslint-import-resolver-node@0.3.7)(eslint-import-resolver-typescript@3.5.5)(eslint@8.53.0)
+      has: 1.0.3
+      is-core-module: 2.12.1
+      is-glob: 4.0.3
+      minimatch: 3.1.2
+      object.values: 1.1.6
+      resolve: 1.22.2
+      semver: 6.3.1
+      tsconfig-paths: 3.14.2
+    transitivePeerDependencies:
+      - eslint-import-resolver-typescript
+      - eslint-import-resolver-webpack
+      - supports-color
 
   /eslint-plugin-import@2.27.5(@typescript-eslint/parser@6.21.0)(eslint-import-resolver-typescript@3.5.5)(eslint@8.45.0):
     resolution: {integrity: sha512-LmEt3GVofgiGuiE+ORpnvP+kAm3h6MLZJ4Q5HCyHADofsb4VzXFsRiWj3c0OFiV+3DWFh0qg3v9gcPlfc3zRow==}
@@ -20038,7 +20313,7 @@ packages:
       object.fromentries: 2.0.6
       semver: 6.3.1
 
-  /eslint-plugin-playwright@0.16.0(eslint@8.45.0):
+  /eslint-plugin-playwright@0.16.0(eslint@8.53.0):
     resolution: {integrity: sha512-DcHpF0SLbNeh9MT4pMzUGuUSnJ7q5MWbP8sSEFIMS6j7Ggnduq8ghNlfhURgty4c1YFny7Ge9xYTO1FSAoV2Vw==}
     peerDependencies:
       eslint: '>=7'
@@ -20047,7 +20322,7 @@ packages:
       eslint-plugin-jest:
         optional: true
     dependencies:
-      eslint: 8.45.0
+      eslint: 8.53.0
     dev: true
 
   /eslint-plugin-promise@6.0.1(eslint@8.45.0):
@@ -20444,7 +20719,6 @@ packages:
       text-table: 0.2.0
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /espree@6.2.1:
     resolution: {integrity: sha512-ysCxRQY3WaXJz9tdbWOwuWr5Y/XrPTGX9Kiz3yoUXwW0VZ4w30HTkQLaGx/+ttFjF8i+ACbArnB4ce68a9m5hw==}

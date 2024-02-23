@@ -1,4 +1,4 @@
-import { grapHost } from '@constants/network.constants';
+import { grapHost } from '@kadena-dev/e2e-base/src/constants/network.constants';
 import type { APIRequestContext } from '@playwright/test';
 
 export async function sendQuery(
