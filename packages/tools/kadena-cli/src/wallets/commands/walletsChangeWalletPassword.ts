@@ -17,12 +17,6 @@ import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { select } from '../../utils/prompts.js';
 
-/**
-kadena keys delete-wallet --key-wallet "test01.wallet" --confirm-delete
-kadena keys create-wallet --key-wallet "test01" --security-password 12345678 --security-verify-password 12345678
-kadena keys change-wallet-password --key-wallet "test01.wallet" --security-current-password 12345678 --security-new-password 87654321 --security-verify-password 87654321 --confirm
-*/
-
 const confirmOption = createOption({
   key: 'confirm',
   defaultIsOptional: false,
