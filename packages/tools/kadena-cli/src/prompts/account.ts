@@ -150,7 +150,7 @@ export const accountSelectionPrompt = async (
     const maxLength = maxAliasLength < 25 ? maxAliasLength : 25;
     const paddedAlias = aliasWithoutExtension.padEnd(maxLength, ' ');
     return {
-      value: alias,
+      value: aliasWithoutExtension,
       name: `${truncateText(
         paddedAlias,
         25,
@@ -225,7 +225,7 @@ export const accountSelectMultiplePrompt: IPrompt<string> = async (
     const maxLength = maxAliasLength < 25 ? maxAliasLength : 25;
     const paddedAlias = aliasWithoutExtension.padEnd(maxLength, ' ');
     return {
-      value: alias,
+      value: aliasWithoutExtension,
       name: `${truncateText(
         paddedAlias,
         25,
