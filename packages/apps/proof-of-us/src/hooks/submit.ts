@@ -30,7 +30,6 @@ export const useSubmit = () => {
 
     const res = await client.local(tx);
     setPreview(res);
-    console.log(res);
   };
 
   useEffect(() => {
@@ -47,7 +46,6 @@ export const useSubmit = () => {
     setStatus(SubmitStatus.LOADING);
 
     const tx = JSON.parse(Buffer.from(innerTransaction, 'base64').toString());
-
     try {
       const txRes = await client.submit(tx);
       const result = await client.listen(txRes);
@@ -73,7 +71,6 @@ export const useSubmit = () => {
   };
 
   const isStatusLoading =
-    status !== SubmitStatus.IDLE &&
     status !== SubmitStatus.INCOMPLETE &&
     status !== SubmitStatus.SUBMITABLE &&
     status !== SubmitStatus.SUCCESS &&

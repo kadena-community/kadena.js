@@ -30,6 +30,7 @@ export const getServerSideProps = async (
 
   const uri = await getTokenUri(id);
   const data = await fetchManifestData(uri);
+
   return {
     props: { params: { id: `${ctx.query.id}` }, data, metadataUri: uri },
   };

@@ -1,6 +1,6 @@
 import { deviceColors } from '@/styles/tokens.css';
 import { atoms } from '@kadena/react-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const buttonClass = style([
   atoms({
@@ -15,6 +15,11 @@ export const buttonClass = style([
     color: deviceColors.kadenaBlack,
     textTransform: 'uppercase',
     width: '100%',
+    selectors: {
+      '&:hover': {
+        opacity: '.8',
+      },
+    },
   },
 ]);
 
@@ -25,4 +30,8 @@ export const secondaryClass = style({
 export const tertiaryClass = style({
   border: '0',
   backgroundColor: deviceColors.orange,
+});
+
+globalStyle(`${buttonClass} a`, {
+  textDecoration: 'none',
 });

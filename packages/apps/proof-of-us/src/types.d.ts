@@ -44,6 +44,8 @@ type TokenType = 'connect' | 'attendance';
 
 interface IProofOfUsData {
   tx: IUnsignedCommand;
+  tokenId: string;
+  requestKey: string;
   manifestUri: string;
   imageUri: string;
   eventId: string;

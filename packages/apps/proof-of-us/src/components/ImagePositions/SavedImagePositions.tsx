@@ -32,7 +32,7 @@ export const SavedImagePositions: FC<IProps> = ({ data }) => {
     const wrapper = wrapperRef.current;
     const img = imgRef.current;
 
-    const elms = wrapper.querySelectorAll<HTMLDivElement>('div[data-position]');
+    const elms = wrapper.querySelectorAll<HTMLDivElement>('[data-position]');
     elms.forEach((elm, idx) => {
       const xPercentage: number = parseFloat(
         elm.getAttribute('data-xpercentage') ?? '0',
@@ -77,7 +77,14 @@ export const SavedImagePositions: FC<IProps> = ({ data }) => {
           const position = s.position;
           if (!position || !position?.xPercentage || !position.yPercentage)
             return null;
-          return <SigneePosition key={s.name} position={position} idx={idx} />;
+          return (
+            <SigneePosition
+              variant="small"
+              key={s.name}
+              position={position}
+              idx={idx}
+            />
+          );
         })}
       </section>
     </>

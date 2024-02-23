@@ -7,7 +7,6 @@ interface IProps {
   authors: { name: string }[];
 }
 export const Signees: FC<IProps> = ({ signees, authors }) => {
-  console.log({ signees, authors });
   return (
     <section className={wrapperClass}>
       {signees
