@@ -1,8 +1,12 @@
 import { Stack } from '@kadena/react-ui';
+import classNames from 'classnames';
 import type { FC } from 'react';
 import {
   bulletClass,
+  ellipsClass,
   itemClass,
+  nameClass,
+  overflowClass,
   titleClass,
   titleClassWrapper,
 } from './styles.css';
@@ -21,14 +25,17 @@ export const SigneeItem: FC<IProps> = ({
   socialLink,
 }) => {
   return (
-    <li className={itemClass}>
-      <Stack display="flex" style={{ minWidth: '0' }}>
+    <Stack
+      className={itemClass}
+      flexDirection="column"
+      alignItems="center"
+      gap="sm"
+    >
+      <Stack width="100%">
         <div className={bulletClass} data-position={idx} />
-        <div className={titleClassWrapper}>
-          <div className={titleClass}>{name}</div>
-        </div>
+        <div className={classNames(titleClass, ellipsClass)}>{name}</div>
       </Stack>
-      <Stack>{accountName}</Stack>
+      <div className={classNames(nameClass, ellipsClass)}>{accountName}</div>
       {socialLink && (
         <Stack justifyContent="center">
           <a href="{socialLink}" target="_blank">
@@ -36,6 +43,6 @@ export const SigneeItem: FC<IProps> = ({
           </a>
         </Stack>
       )}
-    </li>
+    </Stack>
   );
 };

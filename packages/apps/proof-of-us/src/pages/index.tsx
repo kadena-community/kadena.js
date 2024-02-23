@@ -15,7 +15,9 @@ const Page: FC = () => {
   useEffect(() => {
     if (!isMounted || !account) return;
     router.push('/user');
-  }, [isMounted]);
+  }, [isMounted, account]);
+
+  if (!isMounted) return null;
 
   return (
     <ScreenHeight>

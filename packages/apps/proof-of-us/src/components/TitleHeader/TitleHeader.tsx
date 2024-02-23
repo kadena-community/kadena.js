@@ -10,7 +10,13 @@ interface IProps {
 
 export const TitleHeader: FC<IProps> = ({ label, Prepend, Append }) => {
   return (
-    <Stack display="flex" alignItems="center" gap="md" paddingBlock="sm">
+    <Stack
+      display="flex"
+      alignItems="center"
+      gap="md"
+      paddingBlock="sm"
+      width="100%"
+    >
       {Prepend && <Prepend />}
       <h2 className={titleClass}>{label}</h2>
       <Stack flex={1} />

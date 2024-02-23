@@ -1,5 +1,6 @@
 import { useAccount } from '@/hooks/account';
 import { deviceColors } from '@/styles/tokens.css';
+import { getSigneeName } from '@/utils/getSigneeName';
 import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
@@ -14,11 +15,6 @@ interface IProps {
 const isMe = (signer?: IProofOfUsSignee, account?: IAccount) => {
   if (!signer || !account) return false;
   return signer.accountName === account?.accountName;
-};
-
-const getName = (signee?: IProofOfUsSignee): string => {
-  if (!signee) return 'Pending';
-  return signee.name ? signee.name : signee.alias;
 };
 
 const getAccount = (signee?: IProofOfUsSignee): string => {
@@ -47,7 +43,7 @@ export const Signee: FC<IProps> = ({ signee }) => {
     >
       <SignStatus status={signee?.signerStatus} />
       <Text className={classNames(nameClass, ellipsClass)} bold>
-        {getName(signee)} {isMe(signee, account) && ' (me)'}
+        {getSigneeName(signee)} {isMe(signee, account) && ' (me)'}
       </Text>
       <Text className={classNames(accountClass, ellipsClass)}>
         {getAccount(signee)}
