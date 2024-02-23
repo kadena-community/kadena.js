@@ -59,7 +59,7 @@ const Page: NextPage<IProps> = ({ params, data, metadataUri }) => {
         <meta key="og:image" property="og:image" content={data.image} />
       </Head>
       <ProofOfUsProvider>
-        <Share tokenId={params.id} data={data} metadataUri={metadataUri} />;
+        <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
       </ProofOfUsProvider>
     </>
   );
