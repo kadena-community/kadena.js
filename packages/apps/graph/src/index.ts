@@ -14,7 +14,7 @@ import { useServer } from 'graphql-ws/lib/use/ws';
 import { createYoga } from 'graphql-yoga';
 import 'json-bigint-patch';
 import { createServer } from 'node:http';
-import { Socket } from 'node:net';
+import type { Socket } from 'node:net';
 import { WebSocketServer } from 'ws';
 import './graph';
 import { builder } from './graph/builder';

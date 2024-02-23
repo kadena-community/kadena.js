@@ -1,12 +1,7 @@
-import type { Transaction } from '@/__generated__/sdk';
-import {
-  useGetTransactionByRequestKeySubscription,
-  useGetTransactionNodeQuery,
-} from '@/__generated__/sdk';
+import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
-import { getTransactionNode } from '@/graphql/queries.graph';
 import { getTransactionByRequestKey } from '@/graphql/subscriptions.graph';
 import { formatCode, formatLisp } from '@/utils/formatter';
 import {
@@ -44,20 +39,7 @@ const RequestKey: React.FC = () => {
     skip: !router.query.key,
   });
 
-  const nodeQueryVariables = {
-    id: transactionSubscriptionData?.transaction as string,
-  };
-
-  const {
-    loading: nodeQueryLoading,
-    data: nodeQueryData,
-    error: nodeQueryError,
-  } = useGetTransactionNodeQuery({
-    variables: nodeQueryVariables,
-    skip: !transactionSubscriptionData?.transaction,
-  });
-
-  const transaction = nodeQueryData?.node as Transaction;
+  const transaction = transactionSubscriptionData?.transaction;
 
   return (
     <>
@@ -75,10 +57,6 @@ const RequestKey: React.FC = () => {
               query: getTransactionByRequestKey,
               variables: transactionSubscriptionVariables,
             },
-            {
-              query: getTransactionNode,
-              variables: nodeQueryVariables,
-            },
           ]}
         />
       </Stack>
@@ -92,10 +70,10 @@ const RequestKey: React.FC = () => {
       />
       {!transactionSubscriptionLoading &&
         !transactionSubscriptionError &&
-        nodeQueryLoading && (
+        transactionSubscriptionLoading && (
           <LoaderAndError
-            error={nodeQueryError}
-            loading={nodeQueryLoading}
+            error={transactionSubscriptionError}
+            loading={transactionSubscriptionLoading}
             loaderText="Waiting for transaction to come in..."
           />
         )}

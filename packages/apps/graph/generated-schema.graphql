@@ -386,18 +386,18 @@ type Signer implements Node {
 
 type Subscription {
   """Listen for events by qualifiedName (e.g. `coin.TRANSFER`)."""
-  events(chainId: String, parametersFilter: String, qualifiedEventName: String!): [ID!]
+  events(chainId: String, parametersFilter: String, qualifiedEventName: String!): [Event!]
 
   """Subscribe to new blocks."""
-  newBlocks(chainIds: [Int!]): [ID!]
+  newBlocks(chainIds: [Int!]): [Block!]
 
   """Subscribe to new blocks from a specific depth."""
-  newBlocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [ID!]
+  newBlocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
 
   """
   Listen for a transaction by request key. Returns the ID when it is in a block.
   """
-  transaction(requestKey: String!): ID
+  transaction(requestKey: String!): Transaction
 }
 
 """The token identifier and its balance."""

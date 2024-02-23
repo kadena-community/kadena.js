@@ -1,20 +1,55 @@
 import type { DocumentNode } from '@apollo/client';
 import { gql } from '@apollo/client';
+import { ALL_EVENT_FIELDS, CORE_EVENT_FIELDS } from './fields/event.graph';
+import { ALL_TRANSACTION_FIELDS } from './fields/transaction.graph';
 
 export const getBlocksSubscription: DocumentNode = gql`
   subscription getBlocks {
-    newBlocks
+    newBlocks {
+      height
+      hash
+      chainId
+      creationTime
+      transactions {
+        totalCount
+      }
+    }
   }
 `;
 
 export const getTransactionByRequestKey: DocumentNode = gql`
+  ${ALL_TRANSACTION_FIELDS}
+  ${CORE_EVENT_FIELDS}
+
   subscription getTransactionByRequestKey($requestKey: String!) {
-    transaction(requestKey: $requestKey)
+    transaction(requestKey: $requestKey) {
+      ...AllTransactionFields
+      block {
+        hash
+      }
+      events {
+        ...CoreEventFields
+      }
+      signers {
+        publicKey
+        signature
+      }
+    }
   }
 `;
 
 export const getEventsByName: DocumentNode = gql`
+  ${ALL_EVENT_FIELDS}
+
   subscription getEventsByName($qualifiedEventName: String!) {
-    events(qualifiedEventName: $qualifiedEventName)
+    events(qualifiedEventName: $qualifiedEventName) {
+      ...AllEventFields
+      block {
+        id
+      }
+      transaction {
+        requestKey
+      }
+    }
   }
 `;
