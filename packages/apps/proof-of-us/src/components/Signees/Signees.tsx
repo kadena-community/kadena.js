@@ -3,7 +3,7 @@ import { SigneeItem } from './SigneeItem';
 import { wrapperClass } from './styles.css';
 
 interface IProps {
-  signees?: IProofOfUsSignee[];
+  signees?: IProofOfUsTokenSignee[];
   authors: { name: string }[];
 }
 export const Signees: FC<IProps> = ({ signees, authors }) => {
@@ -13,8 +13,8 @@ export const Signees: FC<IProps> = ({ signees, authors }) => {
       {signees
         ? signees.map((signee, idx) => (
             <SigneeItem
-              key={signee.label}
-              name={signee.label}
+              key={signee.name}
+              name={signee.name}
               accountName={signee.accountName}
               idx={idx}
               socialLink={signee.socialLink}

@@ -52,6 +52,7 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
       </Stack>
       <Stack
         flexDirection="column"
+        width="100%"
         style={{
           position: 'relative',
           marginBlockStart: '-60px',

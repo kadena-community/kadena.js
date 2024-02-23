@@ -70,7 +70,10 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     const userResponse = searchParams.get('user');
 
-    if (!userResponse) return;
+    if (!userResponse) {
+      setIsMounted(true);
+      return;
+    }
 
     localStorage.setItem(ACCOUNT_COOKIE_NAME, userResponse);
     const account = decodeAccount(userResponse);

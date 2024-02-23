@@ -6,13 +6,11 @@ import {
   ellipsClass,
   itemClass,
   nameClass,
-  overflowClass,
   titleClass,
-  titleClassWrapper,
 } from './styles.css';
 
 interface IProps {
-  name: string;
+  name?: string;
   accountName?: string;
   socialLink?: ISocial;
   idx: number;

@@ -9,9 +9,16 @@ export const wrapperClass = style([
   {},
 ]);
 
+export const savedImageClass = style([
+  atoms({
+    width: '100%',
+  }),
+]);
+
 export const imageClass = style([
   atoms({
     borderRadius: 'lg',
+    width: '100%',
   }),
   {
     border: `2px solid ${deviceColors.borderColor}`,

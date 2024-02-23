@@ -1,7 +1,6 @@
 import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
-
 export const itemClass = style([
   atoms({
     padding: 'md',
@@ -27,12 +26,6 @@ export const itemClass = style([
   },
 ]);
 
-export const titleClassWrapper = style([
-  {
-    flex: '1 1 100%',
-    minWidth: '0',
-  },
-]);
 export const titleClass = style([
   atoms({
     width: '100%',
