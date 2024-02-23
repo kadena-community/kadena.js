@@ -120,19 +120,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Install browsers
-        run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
-
-      # Disable remote caching, we need to explicitly rebuild Apps.
+      # Disable remote caching, we need to explicitly rebuild Apps due to env vars or incomplete caches
       - name: build dApp
         run: pnpm turbo build --filter @kadena/${{ matrix.app }}
 
       - name: Run end-to-end tests
-        run:
-          pnpm turbo test:e2e --filter @kadena-dev/e2e-tests -- -c
-          playwright.${{ matrix.app }}.config.ts
-        env:
-          TESTOBJECT: ${{ matrix.app }}
+        run: pnpm turbo test:e2e --filter @kadena-dev/e2e-${{ matrix.app }}
 
       - uses: actions/upload-artifact@v3
         if: always()

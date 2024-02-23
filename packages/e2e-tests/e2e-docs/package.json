@@ -1,6 +1,6 @@
 {
-  "name": "@kadena-dev/e2e-tools-app",
-  "version": "0.0.2",
+  "name": "@kadena-dev/e2e-docs",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "format": "pnpm run --sequential /^format:.*/",
@@ -14,7 +14,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@kadena/tools": "workspace:*"
+    "@kadena/docs": "workspace:*"
   },
   "devDependencies": {
     "@kadena-dev/e2e-base": "workspace:*",
@@ -29,9 +29,7 @@
     "@rushstack/eslint-config": "~3.3.0",
     "@types/node": "^18.17.14",
     "eslint": "^8.45.0",
-    "eslint-import-resolver-typescript": "3.5.5",
     "eslint-plugin-playwright": "0.16.0",
-    "playwright-i18next-fixture": "^1.0.0",
     "prettier": "~3.0.3"
   }
 }

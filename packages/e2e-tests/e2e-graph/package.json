@@ -1,5 +1,5 @@
 {
-  "name": "@kadena-dev/e2e-graphql",
+  "name": "@kadena-dev/e2e-graph",
   "version": "0.0.2",
   "private": true,
   "scripts": {
