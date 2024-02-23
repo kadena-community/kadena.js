@@ -102,23 +102,21 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
+      - name: Start devnet
+        uses: ./.github/actions/devnet
+        with:
+          migrations: packages/apps/graph/cwd-extra-migrations
+
       - uses: pnpm/action-setup@v2
         with:
           version: 8
+          run_install: true
 
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: 'pnpm'
-
-      - name: Start devnet
-        uses: ./.github/actions/devnet
-        with:
-          migrations: packages/apps/graph/cwd-extra-migrations
-
-      - name: Install dependencies
-        run: pnpm install
 
       # Due to how docs is built, we need to explicitly rebuild to generate the correct menu structure.
       - name: build Docs
