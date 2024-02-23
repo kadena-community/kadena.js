@@ -13,7 +13,7 @@ async function removeAccount(
   const nonDeletedFiles = [];
   const aliases = accountAlias.split(',');
   for (const alias of aliases) {
-    const filePath = join(ACCOUNT_DIR, alias.trim());
+    const filePath = join(ACCOUNT_DIR, `${alias.trim()}.yaml`);
     if (await services.filesystem.fileExists(filePath)) {
       await services.filesystem.deleteFile(filePath);
       deletedFiles.push(alias);
