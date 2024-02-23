@@ -55,7 +55,7 @@ export const globalOptions = {
     prompt: account.accountAliasPrompt,
     validation: z.string(),
     option: new Option(
-      '-aa, --account-alias <accountAlias>',
+      '--account-alias <accountAlias>',
       'Enter an alias to store your account',
     ),
   }),
@@ -269,7 +269,7 @@ export const globalOptions = {
     prompt: networks.networkIdPrompt,
     validation: z.string(),
     option: new Option(
-      '-nid, --network-id <networkId>',
+      '--network-id <networkId>',
       'Kadena network Id (e.g. "mainnet01")',
     ),
     transform: (networkId: string) => {

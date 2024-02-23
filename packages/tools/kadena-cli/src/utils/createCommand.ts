@@ -201,11 +201,10 @@ export function getCommandExecution(
         displayValue = `"${value.join(',')}"`;
       } else if (typeof value === 'string') {
         displayValue = `"${value}"`;
-      } else if (
-        typeof value === 'number' ||
-        (typeof value === 'boolean' && value)
-      ) {
+      } else if (typeof value === 'number') {
         displayValue = value.toString();
+      } else if (typeof value === 'boolean' && value) {
+        return arg.length === 1 ? `-${arg}` : `--${arg}`;
       } else if (value === null || (typeof value === 'boolean' && !value)) {
         return undefined;
       } else if (
