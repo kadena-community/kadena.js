@@ -1,13 +1,13 @@
-import { sender00Account } from '@constants/accounts.constants';
-import { getAccountQuery } from '@fixtures/graph/getAccount';
+import { sender00Account } from '@kadena-dev/e2e-base/src/constants/accounts.constants';
 import {
   createAccount,
   generateAccount,
-} from '@helpers/client-utils/accounts.helper';
-import { base64Encode } from '@helpers/graph/cryptography.helper';
-import { sendQuery } from '@helpers/graph/request.helper';
+} from '@kadena-dev/e2e-base/src/helpers/client-utils/accounts.helper';
+import type { IAccount } from '@kadena-dev/e2e-base/src/types/account.types';
 import { expect, test } from '@playwright/test';
-import type { IAccount } from '@test-types/account.types';
+import { base64Encode } from '../helpers/cryptography.helper';
+import { sendQuery } from '../helpers/request.helper';
+import { getAccountQuery } from '../queries/getAccount';
 
 let testAccount: IAccount;
 let queryResponse: any;
