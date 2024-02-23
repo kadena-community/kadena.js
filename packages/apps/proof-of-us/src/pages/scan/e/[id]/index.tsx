@@ -1,3 +1,4 @@
+import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import { ScreenHeight } from '@/components/ScreenHeight/ScreenHeight';
@@ -35,18 +36,20 @@ const Page: NextPage<IProps> = ({ params }) => {
 
   return (
     <ProofOfUsProvider>
-      <UserLayout>
-        <ScreenHeight>
-          <TitleHeader label="Attendance @" />
-          {isLoading && <MainLoader />}
-          {error && <div>...error</div>}
-          <ScanAttendanceEvent
-            data={data}
-            eventId={eventId}
-            isMinted={isMinted}
-          />
-        </ScreenHeight>
-      </UserLayout>
+      <LoginBoundry>
+        <UserLayout>
+          <ScreenHeight>
+            <TitleHeader label="Attendance @" />
+            {isLoading && <MainLoader />}
+            {error && <div>...error</div>}
+            <ScanAttendanceEvent
+              data={data}
+              eventId={eventId}
+              isMinted={isMinted}
+            />
+          </ScreenHeight>
+        </UserLayout>
+      </LoginBoundry>
     </ProofOfUsProvider>
   );
 };

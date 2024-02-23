@@ -4,6 +4,7 @@ import { Button } from '@/components/Button/Button';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { List } from '@/components/List/List';
 import { ListItem } from '@/components/List/ListItem';
+import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { Text } from '@/components/Typography/Text';
@@ -27,69 +28,71 @@ const Page: FC = () => {
   };
 
   return (
-    <UserLayout>
-      {isLoading && <MainLoader />}
-      {error && <div>{error.message}</div>}
+    <LoginBoundry>
+      <UserLayout>
+        {isLoading && <MainLoader />}
+        {error && <div>{error.message}</div>}
 
-      <Stack
-        style={{ height: '90dvh' }}
-        paddingInline="md"
-        flexDirection="column"
-      >
-        <TitleHeader
-          label="Dashboard"
-          Append={() => (
-            <IconButton onClick={logout}>
-              <MonoLogout />
-            </IconButton>
-          )}
-        />
-        <Stack flex={1}>
-          {!isLoading &&
-            !error &&
-            (data.length === 0 ? (
-              <Stack
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <MonoGroup fontSize="8rem" />
-                <Text bold>Create Your First Proof</Text>
-
-                <p className={secondaryTextClass}>
-                  Welcome to the &quot;Proof Of Us&quot; dApp.
-                  <br />
-                  With this tool, you can make your moments immutable.
-                  <br />
-                  <Link
-                    style={{ fontWeight: 'bold' }}
-                    href="/user/proof-of-us/new"
-                  >
-                    Go check it out!
-                  </Link>
-                </p>
-              </Stack>
-            ) : (
-              <>
+        <Stack
+          style={{ height: '90dvh' }}
+          paddingInline="md"
+          flexDirection="column"
+        >
+          <TitleHeader
+            label="Dashboard"
+            Append={() => (
+              <IconButton onClick={logout}>
+                <MonoLogout />
+              </IconButton>
+            )}
+          />
+          <Stack flex={1}>
+            {!isLoading &&
+              !error &&
+              (data.length === 0 ? (
                 <Stack
-                  display="flex"
                   flexDirection="column"
-                  gap="md"
-                  width="100%"
+                  justifyContent="center"
+                  alignItems="center"
                 >
-                  <Text bold>Proofs ({data.length})</Text>
-                  <List>
-                    {data.map((token: Token) => (
-                      <ListItem key={token.id} token={token} />
-                    ))}
-                  </List>
-                  <Button onPress={handleNew}>Create Proof</Button>
+                  <MonoGroup fontSize="8rem" />
+                  <Text bold>Create Your First Proof</Text>
+
+                  <p className={secondaryTextClass}>
+                    Welcome to the &quot;Proof Of Us&quot; dApp.
+                    <br />
+                    With this tool, you can make your moments immutable.
+                    <br />
+                    <Link
+                      style={{ fontWeight: 'bold' }}
+                      href="/user/proof-of-us/new"
+                    >
+                      Go check it out!
+                    </Link>
+                  </p>
                 </Stack>
-              </>
-            ))}
+              ) : (
+                <>
+                  <Stack
+                    display="flex"
+                    flexDirection="column"
+                    gap="md"
+                    width="100%"
+                  >
+                    <Text bold>Proofs ({data.length})</Text>
+                    <List>
+                      {data.map((token: Token) => (
+                        <ListItem key={token.id} token={token} />
+                      ))}
+                    </List>
+                    <Button onPress={handleNew}>Create Proof</Button>
+                  </Stack>
+                </>
+              ))}
+          </Stack>
         </Stack>
-      </Stack>
-    </UserLayout>
+      </UserLayout>
+    </LoginBoundry>
   );
 };
 
