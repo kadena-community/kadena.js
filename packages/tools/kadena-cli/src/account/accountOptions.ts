@@ -61,9 +61,7 @@ export const accountOptions = {
     option: new Option('-a, --account <account>', 'Select an account'),
     expand: async (accountAlias: string): Promise<IAliasAccountData | null> => {
       try {
-        const accountDetails = await readAccountFromFile(
-          `${accountAlias}.yaml`,
-        );
+        const accountDetails = await readAccountFromFile(accountAlias);
         return accountDetails;
       } catch (error) {
         if (error.message.includes('file not exist') === true) {
@@ -90,9 +88,7 @@ export const accountOptions = {
           return;
         }
 
-        const accountDetails = await readAccountFromFile(
-          `${accountAlias}.yaml`,
-        );
+        const accountDetails = await readAccountFromFile(accountAlias);
         return accountDetails;
       } catch (error) {
         throw new Error(error.message);
