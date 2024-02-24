@@ -23,7 +23,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
-  const { proofOfUs, updateBackgroundColor } = useProofOfUs();
+  const { proofOfUs, updateProofOfUs, updateBackgroundColor } = useProofOfUs();
 
   useEffect(() => {
     // if someone is already signing the pou, you are not allowed to change the photo anymore
@@ -95,7 +95,10 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     if (!proofOfUs) return;
 
     await addBackground(proofOfUs, { bg: canvasRef.current.toDataURL() });
-    await updateBackgroundColor(color);
+    await updateProofOfUs({
+      backgroundColor: updateBackgroundColor(color),
+    });
+
     (videoRef.current?.srcObject as MediaStream)
       ?.getTracks()
       .forEach((t) => t.stop());

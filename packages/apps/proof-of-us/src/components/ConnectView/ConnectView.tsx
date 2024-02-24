@@ -1,8 +1,6 @@
 import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
-import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useSignToken } from '@/hooks/data/signToken';
-import { useSubmit } from '@/hooks/submit';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { MonoSignature } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
@@ -19,7 +17,6 @@ interface IProps {
 
 export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
   const { signToken } = useSignToken();
-  const { isStatusLoading } = useSubmit();
 
   const handleJoin = async () => {
     //TODO FIX for the isAlreadySigning changes to quick
@@ -32,8 +29,6 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
 
   return (
     <ScreenHeight>
-      {isStatusLoading && <MainLoader />}
-
       <TitleHeader label={proofOfUs.title ?? ''} />
       <ImagePositions />
       <ListSignees />

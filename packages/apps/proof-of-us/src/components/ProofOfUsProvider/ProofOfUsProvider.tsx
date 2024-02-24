@@ -27,8 +27,8 @@ export interface IProofOfUsContext {
     signee: IProofOfUsSignee;
   }) => Promise<void>;
   createToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
-  changeTitle: (value: string) => Promise<void>;
-  updateBackgroundColor: (value: string) => Promise<void>;
+  changeTitle: (value: string) => string;
+  updateBackgroundColor: (value: string) => string;
   isConnected: () => boolean;
   isInitiator: () => boolean;
   hasSigned: () => boolean;
@@ -46,8 +46,8 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   addSignee: async () => {},
   removeSignee: async () => {},
   createToken: async () => {},
-  changeTitle: async () => {},
-  updateBackgroundColor: async () => {},
+  changeTitle: () => '',
+  updateBackgroundColor: () => '',
   isConnected: () => false,
   isInitiator: () => false,
   hasSigned: () => false,
@@ -111,16 +111,15 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     );
   };
 
-  const changeTitle = async (value: string) => {
-    if (!proofOfUs) return;
-
-    await store.addTitle(proofOfUs, value);
+  const changeTitle = (value: string) => {
+    if (isAlreadySigning(proofOfUs?.signees)) return proofOfUs?.title ?? '';
+    return value;
   };
 
-  const updateBackgroundColor = async (value: string) => {
-    if (!proofOfUs) return;
-
-    await store.updateBackgroundColor(proofOfUs, value);
+  const updateBackgroundColor = (value: string) => {
+    if (isAlreadySigning(proofOfUs?.signees))
+      return proofOfUs?.backgroundColor ?? '';
+    return value;
   };
 
   const updateSigner = (value: any, isOverwrite: boolean = false) => {

@@ -17,7 +17,6 @@ export const useListen = () => {
 
     try {
       const result = await client.listen(txRes);
-      console.log({ result });
 
       if (result.result.status === 'success') {
         setStatus(SubmitStatus.SUCCESS);
