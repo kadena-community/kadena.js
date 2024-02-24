@@ -1,4 +1,5 @@
 import type { Command } from 'commander';
+import { parse } from 'node:path';
 import { createCommand } from '../../utils/createCommand.js';
 import {
   maskStringPreservingStartAndEnd,
@@ -22,7 +23,7 @@ function generateTabularData(accounts: IAliasAccountData[]): {
   ];
 
   const data = accounts.map((account) => [
-    truncateText(account.alias, 32),
+    truncateText(parse(account.alias).name, 32),
     maskStringPreservingStartAndEnd(account.name, 32),
     account.publicKeys
       .map((key) => maskStringPreservingStartAndEnd(key, 24))

@@ -1,3 +1,4 @@
+import { parse } from 'node:path';
 import {
   fundAmountValidation,
   getAllAccountNames,
@@ -132,21 +133,17 @@ export const accountOverWritePrompt: IPrompt<boolean> = async () =>
     ],
   });
 
-export const accountSelectionPrompt = async (
-  options: string[] = [],
-): Promise<string> => {
+export const getAllAccountChoices = async (): Promise<
+  { value: string; name: string }[]
+> => {
   const allAccounts = await getAllAccountNames();
-
-  if (allAccounts.length === 0) {
-    throw new Error(NO_ACCOUNT_ERROR_MESSAGE);
-  }
 
   const maxAliasLength = Math.max(
     ...allAccounts.map(({ alias }) => alias.length),
   );
 
-  const accountChoices = allAccounts.map(({ alias, name }) => {
-    const aliasWithoutExtension = alias.split('.yaml')[0];
+  return allAccounts.map(({ alias, name }) => {
+    const aliasWithoutExtension = parse(alias).name;
     const maxLength = maxAliasLength < 25 ? maxAliasLength : 25;
     const paddedAlias = aliasWithoutExtension.padEnd(maxLength, ' ');
     return {
@@ -157,16 +154,26 @@ export const accountSelectionPrompt = async (
       )} - ${maskStringPreservingStartAndEnd(name, 20)}`,
     };
   });
+};
+
+export const accountSelectionPrompt = async (
+  options: string[] = [],
+): Promise<string> => {
+  const allAccountChoices = await getAllAccountChoices();
+
+  if (allAccountChoices.length === 0 && !options.includes('allowManualInput')) {
+    throw new Error(NO_ACCOUNT_ERROR_MESSAGE);
+  }
 
   if (options.includes('all')) {
-    accountChoices.unshift({
+    allAccountChoices.unshift({
       value: 'all',
       name: 'All accounts',
     });
   }
 
   if (options.includes('allowManualInput')) {
-    accountChoices.unshift({
+    allAccountChoices.unshift({
       value: 'custom',
       name: 'Enter an account name manually:',
     });
@@ -174,7 +181,7 @@ export const accountSelectionPrompt = async (
 
   const selectedAlias = await select({
     message: 'Select an account:(alias - account name)',
-    choices: accountChoices,
+    choices: allAccountChoices,
   });
 
   if (selectedAlias === 'custom') {
@@ -211,27 +218,7 @@ export const accountSelectMultiplePrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const allAccounts = await getAllAccountNames();
-  if (allAccounts.length === 0) {
-    throw new Error(NO_ACCOUNT_ERROR_MESSAGE);
-  }
-
-  const maxAliasLength = Math.max(
-    ...allAccounts.map(({ alias }) => alias.length),
-  );
-
-  const allAccountChoices = allAccounts.map(({ alias, name }) => {
-    const aliasWithoutExtension = alias.split('.yaml')[0];
-    const maxLength = maxAliasLength < 25 ? maxAliasLength : 25;
-    const paddedAlias = aliasWithoutExtension.padEnd(maxLength, ' ');
-    return {
-      value: aliasWithoutExtension,
-      name: `${truncateText(
-        paddedAlias,
-        25,
-      )} - ${maskStringPreservingStartAndEnd(name, 20)}`,
-    };
-  });
+  const allAccountChoices = await getAllAccountChoices();
 
   const selectedAliases = await checkbox({
     message: 'Select an account:(alias - account name)',
