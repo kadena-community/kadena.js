@@ -55,7 +55,6 @@ export const ListItem: FC<IProps> = ({ token, proofOfUsData }) => {
     loadData(data, proofOfUsData);
   }, [data, proofOfUsData, loadData]);
 
-  console.log({ innerData, proofOfUsData });
   return (
     <motion.li
       className={listItemClass}

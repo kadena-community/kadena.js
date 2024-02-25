@@ -103,7 +103,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
       isDataAlreadyLocal(proofOfUs)
     )
       return;
-
     setMintingTokens((v) => [...v, proofOfUs]);
   };
 
@@ -124,7 +123,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     return newArray;
   };
 
-  console.log('suc', filterDoubles(successMints));
   return (
     <TokenContext.Provider
       value={{

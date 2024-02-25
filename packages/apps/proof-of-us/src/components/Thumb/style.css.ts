@@ -23,7 +23,7 @@ export const connectThumbClass = style([
     justifyContent: 'center',
     alignItems: 'center',
     fontWeight: 'bodyFont.bold',
-    fontSize: 'xl',
+    fontSize: 'md',
     marginInlineEnd: 'md',
   }),
   {
