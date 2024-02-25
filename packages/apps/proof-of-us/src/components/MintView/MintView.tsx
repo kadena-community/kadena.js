@@ -1,22 +1,17 @@
-import { Button } from '@/components/Button/Button';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSubmit } from '@/hooks/submit';
-import {
-  MonoAccessTimeFilled,
-  MonoChecklist,
-  MonoClose,
-} from '@kadena/react-icons';
+import { MonoAccessTimeFilled, MonoClose } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { IconButton } from '../IconButton/IconButton';
-import { MessageBlock } from '../MessageBlock/MessageBlock';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
+import { ErrorStatus } from '../Status/ErrorStatus';
+import { SuccessStatus } from '../Status/SuccessStatus';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
-import { Heading } from '../Typography/Heading';
 
 interface IProps {
   next: () => void;
@@ -54,10 +49,6 @@ export const MintView: FC<IProps> = () => {
     handleMint();
   }, [proofOfUs?.tx]);
 
-  const handleGoToProof = async () => {
-    alert('we need to implement this');
-  };
-
   const handleClose = () => {
     router.push('/user');
   };
@@ -86,51 +77,18 @@ export const MintView: FC<IProps> = () => {
           </>
         )}
         {status === 'error' && (
-          <>
-            <Stack justifyContent="center" paddingBlock="xxxl">
-              <MonoClose fontSize="8rem" />
-            </Stack>
-
-            <Stack flex={1} />
-            <Stack flexDirection="column" gap="md">
-              <Heading as="h6">Transaction Failed</Heading>
-              <MessageBlock variant="error">
-                {JSON.stringify(result, null, 2)}
-              </MessageBlock>
-              <Stack gap="md">
-                <Button variant="secondary" onPress={handleClose}>
-                  Dashboard
-                </Button>
-                <Button variant="tertiary" onPress={handleMint}>
-                  Retry
-                </Button>
-              </Stack>
-            </Stack>
-          </>
+          <ErrorStatus handleClose={handleClose} handleMint={handleMint}>
+            {JSON.stringify(result, null, 2)}
+          </ErrorStatus>
         )}
 
         {status === 'success' && (
-          <>
-            <Stack justifyContent="center" paddingBlock="xxxl">
-              <MonoChecklist fontSize="8rem" />
-            </Stack>
-            <ListSignees />
-            <Stack flex={1} />
-            <Stack flexDirection="column" gap="md">
-              <Heading as="h6">Transaction Success</Heading>
-              <MessageBlock variant="success">
-                {JSON.stringify(result, null, 2)}
-              </MessageBlock>
-              <Stack gap="md">
-                <Button variant="secondary" onPress={handleClose}>
-                  Dashboard
-                </Button>
-                <Button variant="primary" onPress={handleGoToProof}>
-                  Proof Details
-                </Button>
-              </Stack>
-            </Stack>
-          </>
+          <SuccessStatus
+            handleClose={handleClose}
+            href={`/user/proof-of-us/t/${proofOfUs.tokenId}/${proofOfUs.requestKey}`}
+          >
+            {JSON.stringify(result, null, 2)}
+          </SuccessStatus>
         )}
       </>
     </ScreenHeight>

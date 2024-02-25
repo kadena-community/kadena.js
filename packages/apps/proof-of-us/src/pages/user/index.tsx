@@ -27,7 +27,6 @@ const Page: FC = () => {
     router.push('/user/proof-of-us/new');
   };
 
-  console.log({ tokens });
   return (
     <UserLayout>
       <ScreenHeight>
