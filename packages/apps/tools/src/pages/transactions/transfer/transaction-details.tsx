@@ -1,5 +1,8 @@
-// import { useLedgerPublicKey } from '@/hooks/use-ledger-public-key';
-import type { IExecutionPayloadObject } from '@kadena/client';
+import type {
+  ICommand,
+  IExecutionPayloadObject,
+  IPactCommand,
+} from '@kadena/client';
 import {
   Card,
   Stack,
@@ -13,19 +16,18 @@ import useTranslation from 'next-translate/useTranslation';
 import React, { useState } from 'react';
 
 export interface ITransactionDetails {
-  transaction: any;
+  transactions: { cmds: ICommand[] };
 }
 const TransactionDetails = ({
-  transaction,
+  transactions,
 }: ITransactionDetails): React.JSX.Element | null => {
   const { t } = useTranslation('common');
-  // const [keyId, setKeyId] = useState<number>();
-  // const publicKey = useLedgerPublicKey(keyId);
+
   const [txDetailsExpanded, setTxDetailsExpanded] = useState<boolean>(false);
 
-  if (!transaction) return null;
+  if (!transactions || !transactions.cmds.length) return null;
+  const transaction = JSON.parse(transactions.cmds[0].cmd) as IPactCommand;
 
-  // @ts-ignore
   return (
     <Card fullWidth={true}>
       <Stack flexDirection={'column'} gap={'sm'}>

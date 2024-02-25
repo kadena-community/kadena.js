@@ -10,29 +10,30 @@ import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { CHAINS } from '@kadena/chainweb-node-client';
-// import { createSignWithLedger } from '@kadena/client';
 import AddPublicKeysSection from '@/components/Global/AddPublicKeysSection';
+import client from '@/constants/client';
+import type { Network } from '@/constants/kadena';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
-import {
-  buttonContainerClass,
-  chainSelectContainerClass,
-  notificationLinkStyle,
-} from './styles.css';
-// import TransactionDetails from '@/pages/transactions/transfer/transaction-details';
-import { createPrincipal } from '@/services/faucet/create-principal';
-import { stripAccountPrefix } from '@/utils/string';
-// import { transfer } from '@kadena/client-utils/coin';
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
 import useLedgerPublicKey, {
   derivationModes,
   getDerivationPath,
 } from '@/hooks/use-ledger-public-key';
 import { useLedgerSign } from '@/hooks/use-ledger-sign';
+import { finishXChainTransfer } from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
+import { createPrincipal } from '@/services/faucet/create-principal';
 import type { ISubmitTxResponseBody } from '@/services/transfer/submit-transaction';
-import { pollResult, submitTx } from '@/services/transfer/submit-transaction';
-import type { ITransactionDescriptor } from '@kadena/client';
+import {
+  listenResult,
+  pollResult,
+  submitTx,
+} from '@/services/transfer/submit-transaction';
+import type { INetworkData } from '@/utils/network';
+import { getApiHost } from '@/utils/network';
+import { stripAccountPrefix } from '@/utils/string';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { CHAINS } from '@kadena/chainweb-node-client';
+import type { ICommand, ITransactionDescriptor } from '@kadena/client';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
@@ -47,6 +48,7 @@ import {
   SystemIcon,
   TabItem,
   Tabs,
+  Text,
 } from '@kadena/react-ui';
 import { useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
@@ -59,6 +61,12 @@ import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { containerClass } from '../styles.css';
 import LedgerDetails from './ledger-details';
+import {
+  buttonContainerClass,
+  chainSelectContainerClass,
+  notificationLinkStyle,
+} from './styles.css';
+import TransactionDetails from './transaction-details';
 
 const schema = z.object({
   sender: NAME_VALIDATION,
@@ -74,17 +82,14 @@ const TransferPage = () => {
   const router = useRouter();
   useToolbar(menuData, router.pathname);
   const { t } = useTranslation('common');
-  const { selectedNetwork, networksData } = useWalletConnectClient();
-
+  const { selectedNetwork: network, networksData } = useWalletConnectClient();
   const [toAccountTab, setToAccountTab] = useState('existing');
   const [keyId, setKeyId] = useState<number>();
   const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
 
   const [pubKeys, setPubKeys] = useState<string[]>([]);
-  // const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
-  // const [senderPublicKey, setSenderPublicKey] = useState<string>('');
   const [initialPublicKey, setInitialPublicKey] = useState<string>('');
-  const [signedTx, setSignedTx] = useState<any | undefined>(undefined);
+  const [signedTx, setSignedTx] = useState<{ cmds: ICommand[] }>({ cmds: [] });
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;
     message?: string;
@@ -94,14 +99,19 @@ const TransferPage = () => {
     ? derivationModes[1]
     : derivationModes[0];
 
-  const accountFromOptions = ['Ledger', 'WalletConnect'];
+  const [waitSigning, setWaitSigning] = useState<boolean>(false);
+  const [receiverRequestKey, setReceiverRequestKey] = useState<string>('');
 
-  console.log(keyId);
+  const networkData: INetworkData = networksData.filter(
+    (item) => (network as Network) === item.networkId,
+  )[0];
+
+  const accountFromOptions = ['Ledger', 'WalletConnect'];
 
   const {
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     getValues,
     setValue,
     watch,
@@ -122,25 +132,14 @@ const TransferPage = () => {
     isFetching: boolean;
   } = useAccountDetailsQuery({
     account: getValues('sender'),
-    networkId: selectedNetwork,
+    networkId: network,
     chainId: getValues('senderChainId'),
   });
 
-  const [
-    {
-      error: ledgerError,
-      value: ledgerPublicKey,
-      loading: isFetchingLedgerPublicKey,
-    },
-    getPublicKey,
-  ] = useLedgerPublicKey();
+  const [{ error: ledgerError, value: ledgerPublicKey }, getPublicKey] =
+    useLedgerPublicKey();
 
-  console.log(
-    'ledger stuff',
-    ledgerError,
-    ledgerPublicKey,
-    isFetchingLedgerPublicKey,
-  );
+  console.log('Ledger error: ', ledgerError);
 
   useEffect(() => {
     if (ledgerPublicKey) {
@@ -165,7 +164,7 @@ const TransferPage = () => {
     isFetching: boolean;
   } = useAccountDetailsQuery({
     account: getValues('receiver'),
-    networkId: selectedNetwork,
+    networkId: network,
     chainId: getValues('receiverChainId'),
   });
 
@@ -175,7 +174,7 @@ const TransferPage = () => {
       pubKeys,
       watchReceiverChainId,
       pred,
-      selectedNetwork,
+      network,
       networksData,
     ],
     queryFn: () => createPrincipal(pubKeys, watchReceiverChainId, pred),
@@ -185,13 +184,21 @@ const TransferPage = () => {
   });
 
   useEffect(() => {
-    setValue(
-      'receiver',
-      typeof receiverName === 'string' && pubKeys.length > 0
-        ? receiverName
-        : '',
-    );
-  }, [receiverName, watchReceiverChainId, setValue, pubKeys.length]);
+    if (toAccountTab === 'new') {
+      setValue(
+        'receiver',
+        typeof receiverName === 'string' && pubKeys.length > 0
+          ? receiverName
+          : '',
+      );
+    }
+  }, [
+    receiverName,
+    watchReceiverChainId,
+    setValue,
+    toAccountTab,
+    pubKeys.length,
+  ]);
 
   const invalidAmount =
     senderData.data && senderData.data.balance < watchAmount;
@@ -199,13 +206,7 @@ const TransferPage = () => {
     ? `Cannot send more than ${senderData.data.balance.toFixed(4)} KDAs.`
     : '';
 
-  const isReceiverAccountInvalid =
-    receiverData?.error &&
-    (receiverData?.error as { message: string }).message.includes(
-      'row not found',
-    );
-
-  if (toAccountTab === 'existing' && isReceiverAccountInvalid) {
+  if (toAccountTab === 'existing' && receiverData?.error) {
     setToAccountTab('new');
     setInitialPublicKey(stripAccountPrefix(getValues('receiver')));
     setTimeout(() => {
@@ -223,57 +224,64 @@ const TransferPage = () => {
     sender: {
       account: senderData.data?.account ?? '',
       publicKeys: ledgerPublicKey ? [ledgerPublicKey] : [],
+      pred: senderData.data?.guard.pred,
     },
-    receiver: isReceiverAccountInvalid
-      ? {
-          account: receiverData.data?.account ?? '',
-          keyset: {
-            keys: pubKeys,
-            pred: pred,
-          },
-        }
-      : receiverData.data?.account ?? '',
+    receiver: receiverData.data?.account ?? '',
     chainId: getValues('senderChainId'),
     amount: String(getValues('amount')),
-    targetChainId: !onSameChain ? getValues('receiverChainId') : undefined,
   };
+  if (!onSameChain) {
+    // @ts-ignore
+    transferInput.targetChainId = getValues('receiverChainId');
+  }
 
-  const [{ error: signLedgerError, loading: isFetchingSigning }, signTx] =
-    useLedgerSign();
+  if (receiverData?.error) {
+    // @ts-ignore
+    transferInput.receiver = {
+      account: getValues('receiver'),
+      keyset: {
+        keys: pubKeys,
+        pred: pred,
+      },
+    };
+  }
 
-  console.log(signLedgerError, isFetchingSigning);
+  const [{}, signTx] = useLedgerSign();
 
-  const handleSignTransaction = async () => {
+  const handleSignTransaction = async (event: any) => {
+    setWaitSigning(true);
     const { isSigned, pactCommand } = await signTx(transferInput, {
-      networkId: selectedNetwork,
+      networkId: network,
       derivationPath: getDerivationPath(keyId!, derivationMode),
     });
-    console.log('isSigned', isSigned);
-    console.log('pact command', pactCommand);
+
     if (isSigned) {
-      setSignedTx(pactCommand);
+      setWaitSigning(false);
+      return setSignedTx({ cmds: [pactCommand as ICommand] });
     }
   };
 
-  const onSubmit = async (data: FormData) => {
-    console.log('onsubmit', data);
-
+  const onSubmit = async () => {
     const submitResponse = (await submitTx(
-      signedTx,
-      getValues('receiverChainId'),
-      selectedNetwork,
+      signedTx.cmds,
+      getValues('senderChainId'),
+      network,
       networksData,
-    )) as ITransactionDescriptor;
+    )) as ITransactionDescriptor[];
 
-    console.log(submitResponse);
+    if (!submitResponse) {
+      return setRequestStatus({
+        status: 'erroneous',
+        message: t('An error occurred.'),
+      });
+    }
 
-    const pollResponse = pollResult(
-      getValues('receiverChainId'),
-      selectedNetwork,
+    const pollResponse = (await pollResult(
+      getValues('senderChainId'),
+      network,
       networksData,
-      submitResponse,
-    ) as unknown as ISubmitTxResponseBody;
-    console.log(pollResponse);
+      submitResponse[0],
+    )) as unknown as ISubmitTxResponseBody;
 
     const error = Object.values(pollResponse).find(
       (response) => response.result.status === 'failure',
@@ -286,6 +294,81 @@ const TransferPage = () => {
       return;
     }
     setRequestStatus({ status: 'successful' });
+
+    if (!onSameChain) {
+      console.log('This is cross chain transfer - waiting for SPV proof');
+
+      const apiHost = getApiHost({
+        api: networkData.API,
+        chainId: getValues('senderChainId'),
+        networkId: network,
+      });
+      const { pollCreateSpv, listen } = client(apiHost);
+
+      const requestObject = {
+        requestKey: submitResponse[0].requestKey,
+        networkId: network,
+        chainId: getValues('senderChainId'),
+      };
+
+      const proof = await pollCreateSpv(
+        requestObject,
+        getValues('receiverChainId'),
+      );
+
+      const status = await listen(requestObject);
+      const pactId = status.continuation?.pactId ?? '';
+
+      const requestKeyOrError = await finishXChainTransfer(
+        {
+          pactId,
+          proof,
+          rollback: false,
+          step: 1,
+        },
+        getValues('receiverChainId'),
+        network,
+        networksData,
+        850,
+        'kadena-xchain-gas',
+      );
+
+      if (typeof requestKeyOrError !== 'string') {
+        setRequestStatus({
+          status: 'erroneous',
+          message: error.response.error?.message || t('An error occurred.'),
+        });
+        return;
+      }
+      setReceiverRequestKey(requestKeyOrError as string);
+
+      try {
+        const pollResponseTarget = await listenResult(
+          getValues('receiverChainId'),
+          network,
+          networksData,
+          {
+            requestKey: requestKeyOrError,
+            networkId: network,
+            chainId: getValues('receiverChainId'),
+          },
+        );
+
+        if (pollResponseTarget.result.status === 'success') {
+          return setRequestStatus({ status: 'successful' });
+        }
+        setRequestStatus({
+          status: 'erroneous',
+          message: t('An error occurred.'),
+        });
+      } catch (e) {
+        setRequestStatus({
+          status: 'erroneous',
+          message: error.response.error?.message || t('An error occurred.'),
+        });
+        return;
+      }
+    }
   };
 
   const renderAccountFieldWithChain = (tab: string) => (
@@ -425,6 +508,13 @@ const TransferPage = () => {
                     <AccountNameField
                       {...field}
                       isInvalid={!!errors.sender}
+                      errorMessage={
+                        senderData.error
+                          ? 'Account not found on selected Chain'
+                          : errors.sender
+                          ? errors.sender.message
+                          : undefined
+                      }
                       label={t('The account name to fund coins to')}
                       // isDisabled
                       endAddon={
@@ -443,6 +533,16 @@ const TransferPage = () => {
                     />
                   )}
                 />
+
+                {senderData.isFetching ? (
+                  <Stack flexDirection={'row'}>
+                    <SystemIcon.Information />
+                    <Text as={'span'} color={'emphasize'}>
+                      Fetching sender account data..
+                    </Text>
+                  </Stack>
+                ) : null}
+
                 <Controller
                   name="amount"
                   control={control}
@@ -451,7 +551,8 @@ const TransferPage = () => {
                       {...field}
                       id="ledger-transfer-amount"
                       label={t('Amount')}
-                      onValueChange={field.onChange}
+                      onChange={(e) => field.onChange(parseInt(e.target.value))}
+                      isDisabled={!!senderData.error}
                       isInvalid={!!errors.amount || invalidAmount}
                       errorMessage={
                         invalidAmount
@@ -475,6 +576,14 @@ const TransferPage = () => {
               >
                 <TabItem key="existing" title="Existing">
                   {renderAccountFieldWithChain('existing')}
+                  {receiverData.isFetching ? (
+                    <Stack flexDirection={'row'}>
+                      <SystemIcon.Information />
+                      <Text as={'span'} color={'emphasize'}>
+                        Fetching receiver account data..
+                      </Text>
+                    </Stack>
+                  ) : null}
                 </TabItem>
 
                 <TabItem key="new" title="New">
@@ -494,6 +603,15 @@ const TransferPage = () => {
                     ) : null}
 
                     {renderAccountFieldWithChain('existing')}
+
+                    {receiverData.isFetching ? (
+                      <Stack flexDirection={'row'}>
+                        <SystemIcon.Information />
+                        <Text as={'span'} color={'emphasize'}>
+                          Fetching receiver account data..
+                        </Text>
+                      </Stack>
+                    ) : null}
                   </Stack>
                 </TabItem>
               </Tabs>
@@ -501,24 +619,24 @@ const TransferPage = () => {
 
             <div className={buttonContainerClass}>
               <Button
-                isLoading={isSubmitting}
-                isDisabled={isSubmitting}
+                isLoading={receiverData.isFetching}
+                // isDisabled={isSubmitting}
                 endIcon={<SystemIcon.TrailingIcon />}
                 title={t('Sign')}
                 type="button"
-                onClick={handleSignTransaction}
+                onClick={(event) => handleSignTransaction(event)}
               >
                 {t('Sign')}
               </Button>
             </div>
 
-            {signedTx ? (
+            {signedTx.cmds.length ? (
               <>
-                {/*<TransactionDetails transaction={signedTx} />*/}
+                <TransactionDetails transactions={signedTx} />
                 <div className={buttonContainerClass}>
                   <Button
-                    isLoading={isSubmitting}
-                    isDisabled={isSubmitting}
+                    isLoading={waitSigning}
+                    isDisabled={waitSigning}
                     endIcon={<SystemIcon.TrailingIcon />}
                     title={t('Transfer')}
                     type="submit"
@@ -535,6 +653,7 @@ const TransferPage = () => {
                   }}
                   body={requestStatus.message}
                 />
+                <Text>Target chain request key: {receiverRequestKey}</Text>
               </>
             ) : null}
           </Stack>
