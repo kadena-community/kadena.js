@@ -29,7 +29,9 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   const [successMints, setSuccessMints] = useState<IProofOfUsData[]>([]);
 
   useEffect(() => {
-    const rawMintingTokensData = JSON.stringify(mintingTokens ?? []);
+    const rawMintingTokensData = JSON.stringify(
+      filterDoubles(mintingTokens) ?? [],
+    );
     localStorage.setItem('mintingTokens', rawMintingTokensData);
   }, [mintingTokens]);
 
@@ -43,7 +45,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     window.addEventListener('storage', storageListener);
-
     return () => {
       window.removeEventListener('storage', storageListener);
     };
@@ -106,7 +107,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     setMintingTokens((v) => [...v, proofOfUs]);
   };
 
-  const filterDoubles = (tokens: IProofOfUsData[]): IProofOfUsData[] => {
+  function filterDoubles(tokens: IProofOfUsData[]): IProofOfUsData[] {
     const newArray = [];
     const uniqueObject: Record<string, IProofOfUsData> = {};
 
@@ -120,7 +121,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     }
 
     return newArray;
-  };
+  }
 
   return (
     <TokenContext.Provider
