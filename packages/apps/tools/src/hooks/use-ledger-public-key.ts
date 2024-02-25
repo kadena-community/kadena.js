@@ -9,6 +9,9 @@ export const derivationModes = [
 ] as const;
 export type DerivationMode = (typeof derivationModes)[number];
 
+export const predicates = ['keys-all', 'keys-any', 'keys-2'] as const;
+export type Predicate = (typeof predicates)[number];
+
 interface IParams {
   keyId: number;
   derivationMode?: DerivationMode;

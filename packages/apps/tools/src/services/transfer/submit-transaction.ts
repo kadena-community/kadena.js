@@ -7,11 +7,6 @@ import type { ChainId, ICommand, ITransactionDescriptor } from '@kadena/client';
 import { createClient } from '@kadena/client';
 import Debug from 'debug';
 
-export interface ITransferResult {
-  requestKey?: string;
-  status?: string;
-}
-
 export interface ISubmitTxResponseBody {
   result: {
     status: string;
@@ -26,11 +21,12 @@ export interface ISubmitTxResponseBody {
 const debug = Debug('kadena-transfer:services:finish-xchain-transfer');
 
 export async function submitTx(
-  pactCommand: ICommand,
-  targetChainId: ChainId,
+  commands: ICommand[],
+  chainId: ChainId,
   networkId: string,
   networskData: INetworkData[],
-): Promise<ITransferResult | { error: string }> {
+  targetChainId?: ChainId,
+): Promise<any> {
   debug(submitTx.name);
 
   const networkData: INetworkData | undefined = networskData.find(
@@ -41,13 +37,13 @@ export async function submitTx(
 
   const apiHost = getApiHost({
     api: networkData.API,
-    chainId: targetChainId,
+    chainId,
     networkId,
   });
   const { submit } = client(apiHost);
 
   try {
-    return await submit(pactCommand);
+    return await submit(commands);
   } catch (e) {
     debug(e.message);
     return { error: e.message };
@@ -73,5 +69,27 @@ export const pollResult = async (
   });
   const { pollStatus } = createClient(apiHost);
 
-  return pollStatus(requestKeys);
+  return await pollStatus(requestKeys);
+};
+
+export const listenResult = async (
+  chainId: ChainwebChainId,
+  network: Network,
+  networksData: INetworkData[],
+  requestKeys: ITransactionDescriptor,
+) => {
+  const networkDto = networksData.find((item) => item.networkId === network);
+
+  if (!networkDto) {
+    throw new Error('Network not found');
+  }
+
+  const apiHost = getApiHost({
+    api: networkDto.API,
+    networkId: networkDto.networkId,
+    chainId,
+  });
+  const { listen } = createClient(apiHost);
+
+  return await listen(requestKeys);
 };
