@@ -601,13 +601,13 @@ export type Signer = Node & {
 export type Subscription = {
   __typename?: 'Subscription';
   /** Listen for events by qualifiedName (e.g. `coin.TRANSFER`). */
-  events?: Maybe<Array<Scalars['ID']['output']>>;
+  events?: Maybe<Array<Event>>;
   /** Subscribe to new blocks. */
-  newBlocks?: Maybe<Array<Scalars['ID']['output']>>;
+  newBlocks?: Maybe<Array<Block>>;
   /** Subscribe to new blocks from a specific depth. */
-  newBlocksFromDepth?: Maybe<Array<Scalars['ID']['output']>>;
+  newBlocksFromDepth?: Maybe<Array<Block>>;
   /** Listen for a transaction by request key. Returns the ID when it is in a block. */
-  transaction?: Maybe<Scalars['ID']['output']>;
+  transaction?: Maybe<Transaction>;
 };
 
 export type SubscriptionEventsArgs = {

@@ -73,8 +73,8 @@ interface IProofOfUsToken {
 }
 
 interface IProofOfUsTokenMeta {
-  startDate: int;
-  endDate: int;
+  startDate?: int;
+  endDate?: int;
   description: string;
   image: string;
   name: string;

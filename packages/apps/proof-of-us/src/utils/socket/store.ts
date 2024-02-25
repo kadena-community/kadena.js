@@ -43,7 +43,7 @@ const ProofOfUsStore = () => {
 
   const listenProofOfUsData = (
     proofOfUsId: string,
-    setDataCallback: Dispatch<SetStateAction<IProofOfUsData | undefined>>,
+    setDataCallback: (proofOfUs: IProofOfUsData | undefined) => void,
   ) => {
     const proofOfUsRef = ref(database, `data/${proofOfUsId}`);
     onValue(proofOfUsRef, (snapshot) => {

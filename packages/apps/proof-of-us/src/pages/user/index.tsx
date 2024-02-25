@@ -10,7 +10,7 @@ import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { Text } from '@/components/Typography/Text';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { useAccount } from '@/hooks/account';
-import { useGetAllProofOfUs } from '@/hooks/data/getAllProofOfUs';
+import { useTokens } from '@/hooks/tokens';
 import { secondaryTextClass } from '@/styles/global.css';
 import { MonoGroup, MonoLogout } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 
 const Page: FC = () => {
-  const { data, isLoading, error } = useGetAllProofOfUs();
+  const { tokens, isLoading, error } = useTokens();
   const router = useRouter();
   const { logout } = useAccount();
 
@@ -27,6 +27,7 @@ const Page: FC = () => {
     router.push('/user/proof-of-us/new');
   };
 
+  console.log({ tokens });
   return (
     <UserLayout>
       <ScreenHeight>
@@ -45,7 +46,7 @@ const Page: FC = () => {
           <Stack flex={1}>
             {!isLoading &&
               !error &&
-              (data.length === 0 ? (
+              (tokens.length === 0 ? (
                 <Stack
                   flexDirection="column"
                   justifyContent="center"
@@ -79,11 +80,20 @@ const Page: FC = () => {
                       overflowY: 'scroll',
                     }}
                   >
-                    <Text bold>Proofs ({data.length})</Text>
+                    <Text bold>Proofs ({tokens.length})</Text>
                     <List>
-                      {data.map((token: Token) => (
-                        <ListItem key={token.id} token={token} />
-                      ))}
+                      {[...tokens].map((token: Token | IProofOfUsData) => {
+                        if ('id' in token) {
+                          return <ListItem key={token.id} token={token} />;
+                        }
+
+                        return (
+                          <ListItem
+                            key={token.proofOfUsId}
+                            proofOfUsData={token}
+                          />
+                        );
+                      })}
                     </List>
                   </Stack>
                   <Button onPress={handleNew}>Create Proof</Button>

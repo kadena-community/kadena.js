@@ -1,10 +1,12 @@
 'use client';
 import type { Token } from '@/__generated__/sdk';
+import { createManifest } from '@/utils/createManifest';
 import { fetchManifestData } from '@/utils/fetchManifestData';
 import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import type { FC } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useSWR from 'swr';
 import { IsLoading } from '../IsLoading/IsLoading';
 import { AttendanceThumb } from '../Thumb/AttendanceThumb';
@@ -13,24 +15,47 @@ import { Text } from '../Typography/Text';
 import { listItemClass, listItemLinkClass } from './style.css';
 
 interface IProps {
-  token: Token;
+  token?: Token;
+  proofOfUsData?: IProofOfUsData;
 }
 
-interface ITempToken extends Token {
-  info: {
-    precision: number;
-    uri: string;
-    supply: number;
-  };
-}
-
-export const ListItem: FC<IProps> = ({ token }) => {
-  //@todo fix the tokenURI. it is now missing from the graph
-  const uri = (token as ITempToken).info?.uri;
-  const { data, isLoading } = useSWR(uri, fetchManifestData, {
+export const ListItem: FC<IProps> = ({ token, proofOfUsData }) => {
+  const [uri, setUri] = useState<string | undefined>();
+  const { data } = useSWR(uri ? uri : null, fetchManifestData, {
     revalidateOnFocus: false,
   });
+  const [innerData, setInnerData] = useState<IProofOfUsTokenMeta | undefined>();
 
+  useEffect(() => {
+    if (token) {
+      setUri(token.info?.uri);
+      return;
+    }
+  }, [token]);
+
+  const loadData = useCallback(
+    async (
+      data: IProofOfUsTokenMeta | undefined,
+      proofOfUsData: IProofOfUsData | undefined,
+    ) => {
+      if (proofOfUsData && 'signees' in proofOfUsData) {
+        const manifestData = await createManifest(
+          proofOfUsData,
+          proofOfUsData?.imageUri,
+        );
+        setInnerData(manifestData);
+      } else {
+        setInnerData(data);
+      }
+    },
+    [],
+  );
+
+  useEffect(() => {
+    loadData(data, proofOfUsData);
+  }, [data, proofOfUsData, loadData]);
+
+  console.log({ innerData, proofOfUsData });
   return (
     <motion.li
       className={listItemClass}
@@ -38,25 +63,31 @@ export const ListItem: FC<IProps> = ({ token }) => {
       animate={{ opacity: 1, left: 0 }}
       exit={{ opacity: 0, left: '500px' }}
     >
-      {isLoading && <IsLoading />}
-      {data && (
+      {!innerData && <IsLoading />}
+      {innerData && (
         <Link
           className={listItemLinkClass}
-          href={`/user/proof-of-us/t/${token.id}`}
+          href={`/user/proof-of-us/t/${token?.id}`}
         >
-          {data.properties.eventType === 'attendance' && (
-            <AttendanceThumb token={data} />
+          {innerData.properties.eventType === 'attendance' && (
+            <AttendanceThumb token={innerData} />
           )}
-          {data.properties.eventType === 'connect' && (
-            <ConnectThumb token={data} />
+          {innerData.properties.eventType === 'connect' && (
+            <ConnectThumb
+              token={innerData}
+              isMinted={
+                proofOfUsData?.mintStatus === 'success' ||
+                proofOfUsData?.mintStatus === undefined
+              }
+            />
           )}
           <Stack display="flex" flexDirection="column" gap="xs">
             <Text transform="capitalize" bold>
-              {data.name}
+              {innerData.name}
             </Text>
             <Text variant="small">
-              {data.properties.eventName ??
-                new Date(data.properties.date).toDateString()}
+              {innerData.properties.eventName ??
+                new Date(innerData.properties.date).toDateString()}
             </Text>
           </Stack>
         </Link>
