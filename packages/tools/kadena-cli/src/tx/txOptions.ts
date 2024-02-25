@@ -1,13 +1,15 @@
 import { Option } from 'commander';
+
 import { load as loadYaml } from 'js-yaml';
 import { join } from 'node:path';
 import { z } from 'zod';
-import { TRANSACTION_FOLDER_NAME } from '../constants/config.js';
 import { tx } from '../prompts/index.js';
 import { templateDataPrompt, templateVariables } from '../prompts/tx.js';
 import { services } from '../services/index.js';
 import { createOption } from '../utils/createOption.js';
-import { defaultTemplates } from './commands/templates/templates.js';
+import { isNotEmptyString } from '../utils/helpers.js';
+import { log } from '../utils/logger.js';
+import { getTemplate } from './commands/templates/templates.js';
 import { getTemplateVariables } from './utils/template.js';
 import { parseCommaSeparatedInput } from './utils/txHelpers.js';
 
@@ -17,11 +19,19 @@ export const txOptions = {
     option: new Option('--template <template>', 'select a template'),
     validation: z.string(),
     prompt: tx.selectTemplate,
-    async expand(templateInput: string) {
-      // option 1. --template="send"
-      // option 2. --template="./send.ktpl"
+    async expand(templateInput: string, args) {
+      // option 1. --template="transfer.yaml"
+      // option 2. --template="./transfer.ktpl"
+      // option 3. cat send.yaml | kadena tx create-transaction
 
-      let template = defaultTemplates[templateInput];
+      let template: string;
+
+      if (templateInput === '-' && isNotEmptyString(args.stdin)) {
+        log.debug('using stdin');
+        template = args.stdin;
+      } else {
+        template = await getTemplate(templateInput);
+      }
 
       if (template === undefined) {
         // not in template list, try to load from file
@@ -47,6 +57,7 @@ export const txOptions = {
     option: new Option('--template-data <templateData>', 'template data file'),
     prompt: templateDataPrompt,
     async expand(filePath) {
+      if (filePath === undefined) return null;
       const absolutePath = join(process.cwd(), filePath);
       const exists = await services.filesystem.fileExists(absolutePath);
       const file = await services.filesystem.readFile(
@@ -78,6 +89,31 @@ export const txOptions = {
     ),
     prompt: templateVariables,
     allowUnknownOptions: true,
+    // TODO:
+    // Transform repeats the same logic as in the prompt
+    // This is because prompt can be skipped entirely if quiet=true
+    // But prompt still needs the logic to prevent prompting known variables
+    transform: async (value, args) => {
+      const variableValues: Record<string, string> = value ?? {};
+      const { values, variables, data } = args as {
+        values: string[];
+        variables: string[];
+        data: Record<string, unknown>;
+      };
+      for (const variable of variables) {
+        // Prioritize variables from data file
+        if (Object.hasOwn(data, variable)) {
+          variableValues[variable] = String(data[variable]);
+          continue;
+        }
+        // Find variables in cli arguments
+        const match = values.find((value) =>
+          value.startsWith(`--${variable}=`),
+        );
+        if (match !== undefined) variableValues[variable] = match.split('=')[1];
+      }
+      return variableValues;
+    },
   }),
 
   txUnsignedCommand: createOption({
@@ -141,13 +177,29 @@ export const txOptions = {
       return txSignedTransactionFiles;
     },
   }),
-  txTransactionDir: createOption({
-    key: 'txTransactionDir' as const,
-    prompt: tx.txTransactionDirPrompt,
+  directory: createOption({
+    key: 'directory' as const,
+    // Directory is an optional flag, and never prompted
+    prompt: () => null,
+    validation: z.string().optional(),
+    option: new Option(
+      '--directory <directory>',
+      `Enter your directory (default: working directory)`,
+    ),
+    transform(value: string) {
+      if (typeof value !== 'string' || value === '') {
+        return process.cwd();
+      }
+      return value;
+    },
+  }),
+  txSignWith: createOption({
+    key: 'txSignWith',
+    prompt: tx.selectSignMethodPrompt,
     validation: z.string(),
     option: new Option(
-      '-d, --tx-transaction-dir <txTransactionDir>',
-      `Enter your transaction directory (default: "./${TRANSACTION_FOLDER_NAME}")`,
+      '-s, --tx-sign-with <txSignWith>',
+      'Select a signing method',
     ),
   }),
 };

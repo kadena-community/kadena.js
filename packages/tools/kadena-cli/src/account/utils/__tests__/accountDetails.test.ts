@@ -47,6 +47,8 @@ describe('accountDetails', () => {
       fungible: 'coin',
     });
     assert(!result.success);
-    expect(result.errors).toEqual(['{"error":"row not found"}']);
+    expect(result.errors).toEqual([
+      'Account "k:accountName" is not available on chain "1" of networkId "fast-development"',
+    ]);
   });
 });

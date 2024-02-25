@@ -24,6 +24,7 @@ type IDataHook<T> = (...args: any) => {
   isLoading: boolean;
   error?: IError;
   data: T;
+  token?: any;
 };
 
 type IMintStatus =
@@ -39,10 +40,14 @@ type IProofOfUsBackground = {
   bg: string;
 };
 
-type TokenType = 'multi' | 'attendance';
+type TokenType = 'connect' | 'attendance';
 
 interface IProofOfUsData {
   tx: IUnsignedCommand;
+  tokenId: string;
+  requestKey: string;
+  manifestUri: string;
+  imageUri: string;
   eventId: string;
   mintStatus: IMintStatus;
   status: IBuildStatusValues;
@@ -74,6 +79,7 @@ interface IProofOfUsTokenMeta {
   image: string;
   name: string;
   properties: {
+    eventName: string;
     eventId: string;
     eventType: TokenType;
     date: number;
@@ -83,7 +89,7 @@ interface IProofOfUsTokenMeta {
     signees?: IProofOfUsTokenSignee[];
   };
 
-  authors: string[];
+  authors: { name: string }[];
   collection: {
     name: string;
     family: string;
@@ -111,14 +117,17 @@ interface ISigneePosition {
 }
 
 type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
-  label?: string;
+  name?: string;
   signerStatus: ISignerStatus;
   initiator: boolean;
-  socialLinks?: ISocial[];
+  socialLink?: ISocial;
   position?: ISigneePosition;
+  publicKey: string;
 };
 
 type IProofOfUsTokenSignee = Pick<
   IProofOfUsSignee,
-  'label' | 'socialLinks' | 'position'
->;
+  'accountName' | 'socialLink' | 'position'
+> & {
+  name: string;
+};

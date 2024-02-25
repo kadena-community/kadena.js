@@ -4,7 +4,7 @@
   "private": true,
   "description": "Demonstrates common use cases for @kadena/client and @kadena/pact-cli for smart contracts",
   "keywords": [],
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "author": "",
   "main": "index.js",
   "scripts": {

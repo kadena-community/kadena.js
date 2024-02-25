@@ -54,31 +54,41 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const login = useCallback(() => {
-    router.push(`${env.WALLET_URL}/login?returnUrl=${getReturnUrl()}`);
+    router.push(
+      `${env.WALLET_URL}/login?returnUrl=${getReturnUrl()}&networkId=${
+        env.NETWORKID
+      }&optimistic=true`,
+    );
   }, [router]);
 
   const logout = useCallback(() => {
     localStorage.removeItem(ACCOUNT_COOKIE_NAME);
     setAccount(undefined);
+    router.replace('/');
   }, []);
 
   useEffect(() => {
     const userResponse = searchParams.get('user');
-    setIsMounted(true);
-    if (!userResponse) return;
+
+    if (!userResponse) {
+      setIsMounted(true);
+      return;
+    }
 
     localStorage.setItem(ACCOUNT_COOKIE_NAME, userResponse);
     const account = decodeAccount(userResponse);
     setAccount(account);
+    setIsMounted(true);
   }, [searchParams, setAccount, decodeAccount, setIsMounted]);
 
   useEffect(() => {
     const userResponse = localStorage.getItem(ACCOUNT_COOKIE_NAME);
-    setIsMounted(true);
+
     if (!userResponse) return;
 
     const acc = decodeAccount(userResponse);
     setAccount(acc);
+    setIsMounted(true);
   }, [setAccount, decodeAccount, setIsMounted]);
 
   return (

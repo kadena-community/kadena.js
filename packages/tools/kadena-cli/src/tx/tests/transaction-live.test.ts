@@ -1,11 +1,10 @@
-import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { TRANSACTION_PATH } from '../../constants/config.js';
+import { services } from '../../services/index.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { defaultTemplates } from '../commands/templates/templates.js';
 import { createTransaction } from '../commands/txCreateTransaction.js';
-import { signTransactionWithKeyPairAction } from '../commands/txSignWithKeypair.js';
 import { testTransactions } from '../commands/txTestSignedTransaction.js';
+import { signTransactionFileWithKeyPairAction } from '../utils/txSignWithKeypair.js';
 
 const publicKey =
   '2619fafe33b3128f38a4e4aefe6a5559371b18b6c25ac897aff165ce14b241b3';
@@ -20,23 +19,24 @@ describe('template to live test', () => {
     const variables = {
       'account-from': `k:${publicKey}`,
       'account-to': targetAccount,
-      amount: '1.0',
-      chain: '1',
+      'decimal-amount': '0.01',
+      'chain-id': '1',
       'pk-from': publicKey,
-      networkId: 'testnet04',
+      'network-id': 'testnet04',
     };
 
+    await services.filesystem.ensureDirectoryExists(process.cwd());
     const transaction = await createTransaction(
       defaultTemplates.transfer,
       variables,
-      join(TRANSACTION_PATH, 'transaction-test.json'),
+      'transaction-test.json',
     );
     assertCommandError(transaction);
 
-    const signed = await signTransactionWithKeyPairAction(
-      [{ publicKey, secretKey }],
-      [transaction.data.filePath],
-    );
+    const signed = await signTransactionFileWithKeyPairAction({
+      files: [transaction.data.filePath],
+      keyPairs: [{ publicKey, secretKey }],
+    });
     assertCommandError(signed);
 
     // console.dir(JSON.parse(signed.data.commasnds[0].cmd), { depth: Infinity });
@@ -48,7 +48,7 @@ describe('template to live test', () => {
         networkId: 'testnet04',
       },
       '1',
-      [signed.data.path],
+      [signed.data.commands[0].path],
       true,
     );
     assertCommandError(test);

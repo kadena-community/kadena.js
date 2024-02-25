@@ -10,18 +10,15 @@ import {
   security,
   tx,
   typescript,
+  wallets,
 } from '../prompts/index.js';
 
 import type { ChainId } from '@kadena/types';
-import chalk from 'chalk';
 import { join } from 'node:path';
 
-import type { IAliasAccountData } from '../account/types.js';
 import {
   chainIdValidation,
   formatZodFieldErrors,
-  fundAmountValidation,
-  readAccountFromFile,
 } from '../account/utils/accountHelpers.js';
 import { KEY_EXT, WALLET_EXT } from '../constants/config.js';
 import { loadDevnetConfig } from '../devnet/utils/devnetHelpers.js';
@@ -31,14 +28,11 @@ import {
   parseKeyPairsInput,
 } from '../keys/utils/keysHelpers.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
-import {
-  ensureNetworksConfiguration,
-  loadNetworkConfig,
-} from '../networks/utils/networkHelpers.js';
-import { accountOverWritePrompt } from '../prompts/account.js';
+import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { createOption } from './createOption.js';
-import { ensureDevnetsConfiguration } from './helpers.js';
+import { ensureDevnetsConfiguration, isNotEmptyString } from './helpers.js';
+import { log } from './logger.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalFlags = {
@@ -51,41 +45,6 @@ export const globalFlags = {
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
-  // Account
-  accountAlias: createOption({
-    key: 'accountAlias' as const,
-    defaultIsOptional: false,
-    prompt: account.accountAliasPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-aa, --account-alias <accountAlias>',
-      'Enter an alias to store your account',
-    ),
-  }),
-  accountName: createOption({
-    key: 'accountName' as const,
-    prompt: account.accountNamePrompt,
-    validation: z.string(),
-    option: new Option('-a, --account-name <accountName>', 'Account name'),
-  }),
-  accountKdnName: createOption({
-    key: 'accountKdnName' as const,
-    prompt: account.accountKdnNamePrompt,
-    validation: z.string(),
-    option: new Option(
-      '-a, --account-kdn-name <accountName>',
-      'Kadena names name',
-    ),
-  }),
-  accountKdnAddress: createOption({
-    key: 'accountKdnAddress' as const,
-    prompt: account.accountKdnAddressPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-a, --account-kdn-address <accountKdnAddress>',
-      'Kadena names address',
-    ),
-  }),
   publicKeys: createOption({
     key: 'publicKeys' as const,
     prompt: account.publicKeysPrompt,
@@ -99,26 +58,6 @@ export const globalOptions = {
         ?.split(',')
         .map((value) => value.trim())
         .filter((key) => !!key);
-    },
-  }),
-  fundAmount: createOption({
-    key: 'amount' as const,
-    prompt: account.fundAmountPrompt,
-    defaultIsOptional: false,
-    validation: z.string({
-      /* eslint-disable-next-line @typescript-eslint/naming-convention */
-      invalid_type_error: 'Error: -m, --amount must be a positive number',
-    }),
-    option: new Option('-m, --amount <amount>', 'Amount'),
-    transform: (amount: string) => {
-      try {
-        const parsedAmount = parseInt(amount, 10);
-        fundAmountValidation.parse(parsedAmount);
-        return amount;
-      } catch (error) {
-        const errorMessage = formatZodFieldErrors(error);
-        throw new Error(`Error: -m, --amount ${errorMessage}`);
-      }
     },
   }),
   fungible: createOption({
@@ -179,10 +118,8 @@ export const globalOptions = {
       try {
         return loadDevnetConfig(devnet);
       } catch (e) {
-        console.log(
-          chalk.yellow(
-            `\nNo devnet "${devnet}" found. Please create the devnet.\n`,
-          ),
+        log.warning(
+          `\nNo devnet "${devnet}" found. Please create the devnet.\n`,
         );
         await program.parseAsync(['', '', 'devnet', 'create']);
         const externalPrompt = createExternalPrompt({
@@ -257,9 +194,17 @@ export const globalOptions = {
     prompt: networks.networkNamePrompt,
     validation: z.string(),
     option: new Option(
-      '-n, --networkName <networkName>',
+      '-n, --network-name <networkName>',
       'Kadena network (e.g. "mainnet")',
     ),
+    transform: (networkName: string) => {
+      const trimmedNetworkName = networkName.trim();
+      if (isNotEmptyString(trimmedNetworkName)) {
+        return trimmedNetworkName;
+      }
+
+      throw new Error('Network name is required');
+    },
   }),
   networkId: createOption({
     key: 'networkId' as const,
@@ -269,6 +214,9 @@ export const globalOptions = {
       '-nid, --network-id <networkId>',
       'Kadena network Id (e.g. "mainnet01")',
     ),
+    transform: (networkId: string) => {
+      return networkId.trim();
+    },
   }),
   networkHost: createOption({
     key: 'networkHost' as const,
@@ -278,6 +226,19 @@ export const globalOptions = {
       '-h, --network-host <networkHost>',
       'Kadena network host (e.g. "https://api.chainweb.com")',
     ),
+    transform: (value: string) => {
+      // when it's optional and it's empty string and we don't want to validate it
+      if (isNotEmptyString(value)) {
+        const parse = z.string().url().safeParse(value.trim());
+        if (!parse.success) {
+          throw new Error(
+            'Network host: Invalid URL. Please enter a valid URL.',
+          );
+        }
+      }
+
+      return value.trim();
+    },
   }),
   networkExplorerUrl: createOption({
     key: 'networkExplorerUrl' as const,
@@ -315,11 +276,11 @@ export const globalOptions = {
       'Kadena network (e.g. "mainnet")',
     ),
     expand: async (network: string) => {
-      await ensureNetworksConfiguration();
+      // await ensureNetworksConfiguration();
       try {
         return loadNetworkConfig(network);
       } catch (e) {
-        console.log(
+        log.info(
           `\nNo configuration for network "${network}" found. Please configure the network.\n`,
         );
         await program.parseAsync(['', '', 'networks', 'create']);
@@ -419,13 +380,13 @@ export const globalOptions = {
       'Enter a alias to select keys from',
     ),
   }),
-  keyWallet: createOption({
-    key: 'keyWallet' as const,
-    prompt: keys.keyWallet,
+  walletName: createOption({
+    key: 'walletName' as const,
+    prompt: wallets.walletNamePrompt,
     validation: z.string(),
     option: new Option(
-      '-w, --key-wallet <keyWallet>',
-      'Enter you wallet names',
+      '-w, --wallet-name <walletName>',
+      'Enter you wallet name',
     ),
   }),
   keyIndexOrRange: createOption({
@@ -462,24 +423,24 @@ export const globalOptions = {
       'Choose an action for generating keys',
     ),
   }),
-  keyWalletSelect: createOption({
-    key: 'keyWallet',
-    prompt: keys.keyWalletSelectPrompt,
+  walletSelect: createOption({
+    key: 'walletName',
+    prompt: wallets.walletSelectPrompt,
     validation: z.string(),
-    option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
+    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,
-    expand: async (keyWallet: string) => {
-      return await getWallet(keyWallet);
+    expand: async (walletName: string) => {
+      return await getWallet(walletName);
     },
   }),
-  keyWalletSelectWithAll: createOption({
-    key: 'keyWallet',
-    prompt: keys.keyWalletSelectAllPrompt,
+  walletNameSelectWithAll: createOption({
+    key: 'walletName',
+    prompt: wallets.walletSelectAllPrompt,
     validation: z.string(),
-    option: new Option('-w, --key-wallet <keyWallet>', 'Enter your wallet'),
+    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,
-    expand: async (keyWallet: string) => {
-      return keyWallet === 'all' ? null : await getWallet(keyWallet);
+    expand: async (walletName: string) => {
+      return walletName === 'all' ? null : await getWallet(walletName);
     },
   }),
   securityPassword: createOption({
@@ -496,7 +457,7 @@ export const globalOptions = {
     prompt: security.securityPasswordVerifyPrompt,
     validation: z.string(),
     option: new Option(
-      '-p, --security-verify-password <securityVerifyPassword>',
+      '--security-verify-password <securityVerifyPassword>',
       'Enter a password to verify with password',
     ),
   }),
@@ -581,23 +542,20 @@ export const globalOptions = {
       'use as the namespace of the contract if its not clear in the contract',
     ),
   }),
-  keyMessage: createOption({
-    key: 'keyMessage' as const,
-    prompt: keys.keyMessagePrompt,
+  message: createOption({
+    key: 'message' as const,
+    prompt: generic.messagePrompt,
     validation: z.string(),
-    option: new Option(
-      '-n, --key-message <keyMessage>',
-      'Enter message to decrypt',
-    ),
-    transform: async (keyMessage: string) => {
-      if (keyMessage.includes(WALLET_EXT) || keyMessage.includes(KEY_EXT)) {
-        const keyFileContent = await readKeyFileContent(keyMessage);
+    option: new Option('-m, --message <message>', 'Enter message to decrypt'),
+    transform: async (message: string) => {
+      if (message.includes(WALLET_EXT) || message.includes(KEY_EXT)) {
+        const keyFileContent = await readKeyFileContent(message);
         if (typeof keyFileContent === 'string') {
           return keyFileContent;
         }
         return keyFileContent?.secretKey;
       }
-      return keyMessage;
+      return message;
     },
   }),
 
@@ -625,31 +583,6 @@ export const globalOptions = {
       if (!value) return null;
       const file = value.endsWith('.json') ? value : `${value}.json`;
       return join(process.cwd(), file);
-    },
-  }),
-  // account
-  accountOverwrite: createOption({
-    key: 'accountOverwrite',
-    validation: z.boolean(),
-    prompt: accountOverWritePrompt,
-    option: new Option(
-      '-o, --account-overwrite',
-      'Overwrite account details from chain',
-    ),
-  }),
-  accountSelect: createOption({
-    key: 'account' as const,
-    prompt: account.accountSelectPrompt,
-    defaultIsOptional: false,
-    validation: z.string(),
-    option: new Option('-a, --account <account>', 'Select an account'),
-    expand: async (accountAlias: string): Promise<IAliasAccountData> => {
-      try {
-        const accountDetails = await readAccountFromFile(accountAlias);
-        return accountDetails;
-      } catch (error) {
-        throw new Error(error.message);
-      }
     },
   }),
 } as const;

@@ -2,11 +2,14 @@ import clear from 'clear';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
 import sanitize from 'sanitize-filename';
+import type { ZodError } from 'zod';
 import { MAX_CHARACTERS_LENGTH } from '../constants/config.js';
 import { defaultDevnetsPath } from '../constants/devnets.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
+import { CommandError } from './command.util.js';
+import { log } from './logger.js';
 
 /**
  * Assigns a value to an object's property if the value is neither undefined nor an empty string.
@@ -75,17 +78,18 @@ export interface IQuestion<T> {
   ) => Promise<T[keyof T]>;
 }
 
-export function handlePromptError(error: unknown): void {
+export function handlePromptError(error: unknown): never {
   if (error instanceof Error) {
     if (error.message.includes('User force closed the prompt')) {
       process.exit(0);
     } else {
-      console.log(error.message);
+      log.debug(error);
+      log.error(error.message);
     }
   } else {
-    console.log('Unexpected error executing option', error);
+    log.error('Unexpected error executing option', error);
   }
-  process.exit(1);
+  throw new CommandError({ errors: [], exitCode: 1 });
 }
 
 /**
@@ -170,7 +174,7 @@ export function getExistingNetworks(): ICustomNetworkChoice[] {
       name: path.basename(filename.toLowerCase(), '.yaml'),
     }));
   } catch (error) {
-    console.error('Error reading networks directory:', error);
+    log.error('Error reading networks directory:', error);
     return [];
   }
 }
@@ -186,7 +190,7 @@ export async function getConfiguration(
       name: path.basename(filename.toLowerCase(), '.yaml'),
     }));
   } catch (error) {
-    console.error(`Error reading ${configurationPath} directory:`, error);
+    log.error(`Error reading ${configurationPath} directory:`, error);
     return [];
   }
 }
@@ -243,17 +247,22 @@ export function isAlphabetic(str: string): boolean {
 }
 
 /**
- * Checks if a string contains only alphabetic characters and numbers.
+ * Checks if a string contains only characters valid in filenames
  *
  * @param {string} str - The input string that needs to be checked.
- * @returns {boolean} - Returns `true` if the string is alphanumeric, otherwise returns `false`.
+ * @returns {boolean} - Returns `true` if the string is valid
  *
  * @example
- * const isAlnum = isAlphanumeric("abc123"); // Outputs: true
+ * const isValid = isValidFilename("abc-123"); // Outputs: true
  */
-export function isAlphanumeric(str: string): boolean {
-  const regex = /^[A-Za-z0-9]+$/;
-  return regex.test(str);
+export function isValidFilename(str: string): boolean {
+  str = str.trim();
+  if (str.length === 0) return false;
+
+  // Based on https://superuser.com/a/358861
+  const regex = /[\\\/:*?"<>|]/;
+
+  return !regex.test(str);
 }
 
 /**
@@ -327,5 +336,35 @@ export const maskStringPreservingStartAndEnd = (
       str.length - (maxLength - maskCharLength) / 2,
     );
     return `${startChars}${maskChar.repeat(maskCharLength)}${endChars}`;
+  }
+};
+
+export const isNotEmptyString = (value: unknown): value is string =>
+  value !== null && value !== undefined && value !== '';
+
+/**
+ * Prints zod error issues in format
+ * ```code
+ * {key}: [issues by key]\n
+ * ...repeat
+ * ```
+ */
+export const formatZodError = (error: ZodError): string => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const format = error.format() as any;
+  const formatted = Object.keys(format)
+    .map((key) => {
+      if (key === '_errors') return null;
+      return `${key}: ${format[key]?._errors.join(', ')}`;
+    })
+    .filter(notEmpty);
+  return formatted.join('\n');
+};
+
+export const safeJsonParse = <T extends unknown>(value: string): T | null => {
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    return null;
   }
 };

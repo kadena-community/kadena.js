@@ -1,10 +1,11 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
 import { CommandError } from './command.util.js';
 import { getCommandExecution } from './createCommand.js';
 import type { OptionType } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
 import { handlePromptError } from './helpers.js';
+import { log } from './logger.js';
+import { readStdin } from './stdin.js';
 import type { Fn, Prettify } from './typeUtilities.js';
 
 export type OptionConfig<Option extends OptionType> = {
@@ -16,6 +17,11 @@ export type OptionConfig<Option extends OptionType> = {
       [P in `${Option['key']}Config`]: Awaited<ReturnType<Option['expand']>>;
     }
   : {});
+
+type PromptFn = (
+  args: Record<string, unknown>,
+  originalArgs: Record<string, unknown>,
+) => unknown;
 
 export async function executeOption<Option extends OptionType>(
   option: Option,
@@ -29,11 +35,9 @@ export async function executeOption<Option extends OptionType>(
 > {
   let value = args[option.key];
 
-  if (value === undefined) {
+  if (value === undefined && option.isInQuestions) {
     if (args.quiet !== true && args.quiet !== 'true') {
-      // @ts-ignore prompt is called with two arguments, it's typings here are wrong
-      // but it is hard to fix while other types correct because prompt overwrites itself in createOption
-      value = await option.prompt(args, originalArgs);
+      value = await (option.prompt as PromptFn)(args, originalArgs);
     } else if (option.isOptional === false) {
       throw new Error(
         `Missing required argument: ${option.key} (${option.option.flags})`,
@@ -45,13 +49,13 @@ export async function executeOption<Option extends OptionType>(
     option.isOptional ? option.validation.optional() : option.validation
   ).safeParse(value);
   if (validate.success === false) {
-    console.warn(`Invalid value for ${option.key}: ${value}`);
+    log.warning(`Invalid value for ${option.key}: ${value}`);
   }
 
   const newConfig = { [option.key]: value } as OptionConfig<Option>;
   if ('expand' in option) {
     if (typeof option.expand === 'function') {
-      const expanded = await option.expand(value);
+      const expanded = await option.expand(value, args);
       if (expanded !== undefined && expanded !== null) {
         // @ts-ignore
         newConfig[`${option.key}Config`] = expanded;
@@ -61,7 +65,7 @@ export async function executeOption<Option extends OptionType>(
   if ('transform' in option) {
     if (typeof option.transform === 'function') {
       // @ts-ignore
-      newConfig[option.key] = await option.transform(value);
+      newConfig[option.key] = await option.transform(value, args);
     }
   }
 
@@ -84,31 +88,47 @@ const printCommandExecution = (
     }
   }
 
-  console.log(`\nExecuted: ${getCommandExecution(command, args)}`);
+  log.info(
+    log.color.yellow(`\nExecuted: ${getCommandExecution(command, args)}`),
+  );
+};
+
+export type CommandOption<T extends OptionType[]> = {
+  [K in T[number]['key']]: (
+    customArgs?: Record<string, unknown>,
+  ) => Promise<Prettify<OptionConfig<Extract<T[number], { key: K }>>>>;
 };
 
 export const createCommandFlexible =
   <
     T extends OptionType[],
     C extends (
-      option: {
-        [K in T[number]['key']]: (
-          customArgs?: Record<string, unknown>,
-        ) => Promise<Prettify<OptionConfig<Extract<T[number], { key: K }>>>>;
-      },
+      option: CommandOption<T>,
+      /** command arguments */
       values: string[],
+      stdin?: string,
     ) => Promise<Record<string, unknown> | void>,
   >(
     name: string,
     description: string,
     options: T,
     action: C,
-  ): any =>
-  (program: Command, version: string) => {
-    let command = program.command(name).description(description);
+  ): ((program: Command, version: string) => void) =>
+  (program) => {
+    // anything after the first newline is only shown on the command specific help page
+    const [_description, ...helpText] = description.split('\n');
+    let command = program.command(name).description(_description);
+    if (helpText.length > 0) {
+      command.configureHelp({
+        commandDescription: () =>
+          `${[_description, '', ...helpText].join('\n')}`,
+      });
+    }
+    let allowsUnknownOptions = false;
 
     if (options.some((option) => option.allowUnknownOptions === true)) {
       command = command.allowUnknownOption(true);
+      allowsUnknownOptions = true;
     }
 
     command.addOption(globalOptions.quiet().option);
@@ -116,10 +136,18 @@ export const createCommandFlexible =
       command.addOption(option.option);
     });
     command.action(async (originalArgs, ...rest) => {
+      // args outside try-catch to be able to use it in catch
       let args = { ...originalArgs };
+
       try {
+        const stdin = await readStdin();
+
+        if (allowsUnknownOptions) {
+          log.debug(`Command ${name} allows unknown options`);
+        }
+
         // Automatically enable quiet mode if not in interactive environment
-        if (!process.stdout.isTTY) args.quiet = true;
+        if (!process.stderr.isTTY) args.quiet = true;
 
         const collectOptionsMap = options.reduce((acc, option) => {
           acc[option.key] = async (customArgs = {}) => {
@@ -141,10 +169,15 @@ export const createCommandFlexible =
             }
           };
           return acc;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         }, {} as any);
 
         const values = rest.flatMap((r) => r.args);
-        const result = await action(collectOptionsMap, values);
+        const result = await action(
+          collectOptionsMap,
+          values,
+          stdin ?? undefined,
+        );
 
         printCommandExecution(
           `${program.name()} ${name}`,
@@ -155,8 +188,9 @@ export const createCommandFlexible =
         if (error instanceof CommandError) {
           printCommandExecution(`${program.name()} ${name}`, args, error.args);
           process.exitCode = error.exitCode;
+          return;
         }
-        console.error(chalk.red(`\nAn error occurred: ${error.message}\n`));
+        log.error(`\nAn error occurred: ${error.message}\n`);
         process.exitCode = 1;
       }
     });

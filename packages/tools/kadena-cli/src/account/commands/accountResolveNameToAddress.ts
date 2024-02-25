@@ -1,10 +1,9 @@
-import chalk from 'chalk';
-import debug from 'debug';
-
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
+import { accountOptions } from '../accountOptions.js';
 import { kdnResolveNameToAddress } from '../utils/txKdnResolverChain.js';
 
 export const resolveNameToAddress = async (
@@ -37,16 +36,19 @@ export const resolveNameToAddress = async (
 };
 
 export const resolveNameToAddressCommand = createCommandFlexible(
-  'resolve-name-to-address',
-  'Resolve an .kda name (with kadenanames) to a k:address',
-  [globalOptions.network(), globalOptions.accountKdnName()],
+  'name-to-address',
+  'Resolve a .kda name to a k:address (kadenanames)',
+  [
+    globalOptions.network({ isOptional: false }),
+    accountOptions.accountKdnName(),
+  ],
   async (option) => {
     const kadena = await option.network({
       allowedNetworks: ['mainnet', 'testnet'],
     });
     const kadenaName = await option.accountKdnName();
 
-    debug.log('resolve-address-to-name', {
+    log.debug('resolve-address-to-name', {
       ...kadena,
       ...kadenaName,
     });
@@ -60,6 +62,6 @@ export const resolveNameToAddressCommand = createCommandFlexible(
 
     assertCommandError(result);
 
-    console.log(chalk.green(`address: ${result.data.commands}`));
+    log.info(log.color.green(`address: ${result.data.commands}`));
   },
 );

@@ -1,7 +1,5 @@
 // import { describeModule } from '@kadena/client-utils/built-in';
-import chalk from 'chalk';
 // import { Option } from 'commander';
-import debug from 'debug';
 import ora from 'ora';
 // import { z } from 'zod';
 // import { FAUCET_MODULE_NAME } from '../../constants/devnets.js';
@@ -12,6 +10,8 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 // import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
+import { accountOptions } from '../accountOptions.js';
 import { fund } from '../utils/fund.js';
 
 // const deployDevnet = createOption({
@@ -25,21 +25,28 @@ import { fund } from '../utils/fund.js';
 
 export const createFundCommand = createCommandFlexible(
   'fund',
-  'fund an existing/new account',
+  'Fund an existing/new account',
   [
-    globalOptions.accountSelect(),
-    globalOptions.fundAmount(),
+    accountOptions.accountSelect(),
+    accountOptions.fundAmount(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
     // deployDevnet(),
   ],
   async (option, values) => {
-    const { accountConfig } = await option.account();
+    const { account, accountConfig } = await option.account();
     const { amount } = await option.amount();
     const { network, networkConfig } = await option.network({
       allowedNetworkIds: ['testnet04'],
     });
     const { chainId } = await option.chainId();
+
+    if (!accountConfig) {
+      log.error(
+        `\nAccount details are missing. Please check selected "${account}" account alias file.\n`,
+      );
+      return;
+    }
 
     const config = {
       accountConfig,
@@ -48,14 +55,17 @@ export const createFundCommand = createCommandFlexible(
       networkConfig,
     };
 
-    debug.log('account-fund:action', config);
+    log.debug('account-fund:action', config);
 
     if (['mainnet01', 'fast-development'].includes(networkConfig.networkId)) {
-      console.log(
-        chalk.red(
-          `\nNetwork "${network}" of id "${networkConfig.networkId}" is not supported.\n`,
-        ),
+      log.error(
+        `\nNetwork "${network}" of id "${networkConfig.networkId}" is not supported.\n`,
       );
+      return;
+    }
+
+    if (accountConfig.fungible.trim() !== 'coin') {
+      log.error(`\nYou can't fund an account other than "coin" fungible.\n`);
       return;
     }
 
@@ -113,8 +123,8 @@ export const createFundCommand = createCommandFlexible(
     const result = await fund(config);
     assertCommandError(result, loader);
 
-    console.log(
-      chalk.green(
+    log.info(
+      log.color.green(
         `"${accountConfig.name}" account funded with "${amount}" ${accountConfig.fungible} on chain ${chainId} in ${networkConfig.networkId} network.`,
       ),
     );

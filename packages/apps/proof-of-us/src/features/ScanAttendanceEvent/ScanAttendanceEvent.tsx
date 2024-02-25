@@ -3,20 +3,20 @@ import { Button } from '@/components/Button/Button';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
-import { getReturnHostUrl } from '@/utils/getReturnUrl';
+import { getReturnUrl } from '@/utils/getReturnUrl';
 import { isAfter, isBefore } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 
 interface IProps {
-  token: IProofOfUsTokenMeta;
+  data: IProofOfUsTokenMeta;
   eventId: string;
   isMinted: boolean;
 }
 
 export const ScanAttendanceEvent: FC<IProps> = ({
-  token,
+  data,
   eventId,
   isMinted,
 }) => {
@@ -35,13 +35,13 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     router.push(
       `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${Buffer.from(
         JSON.stringify(transaction),
-      ).toString('base64')}&returnUrl=${getReturnHostUrl()}/scan/e/${eventId}
+      ).toString('base64')}&returnUrl=${getReturnUrl()}
       `,
     );
   };
 
-  const startDate = new Date(token.startDate * 1000);
-  const endDate = new Date(token.endDate * 1000);
+  const startDate = new Date(data.startDate * 1000);
+  const endDate = new Date(data.endDate * 1000);
 
   const hasStarted = isBefore(startDate, Date.now());
   const hasEnded = isAfter(Date.now(), endDate);
@@ -59,10 +59,8 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     <>
       {isStatusLoading && <MainLoader />}
       <div>
-        <h2>Attendance @</h2>
-
         <div>claimstatus: {status}</div>
-        <AttendanceTicket token={token} />
+        <AttendanceTicket data={data} />
       </div>
       <div>
         {!hasStarted && (
@@ -73,7 +71,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
           </div>
         )}
         {hasEnded && <div>the event has ended.</div>}
-        {showClaimButton && (
+        {showClaimButton && !isMinted && (
           <Button isDisabled={isMinted} onPress={handleClaim}>
             Claim NFT
           </Button>

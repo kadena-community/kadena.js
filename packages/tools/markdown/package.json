@@ -3,7 +3,7 @@
   "version": "1.0.2",
   "private": true,
   "description": "Kadena monorepo Remark plugins",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "type": "module",
   "main": "lib/index.js",
   "bin": {

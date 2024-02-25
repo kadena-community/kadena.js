@@ -17,6 +17,7 @@
 /packages/libs/pactjs-generator                 @alber70g @javadkh2
 /packages/libs/react-ui                         @eileenmguo @sstraatemans @salamaashoush
 /packages/libs/types                            @alber70g
+/packages/libs/toolbox                          @alber70g @salamaashoush
 /packages/tools/eslint-config                   @alber70g
 /packages/tools/eslint-plugin                   @alber70g
 /packages/tools/pactjs-cli                      @alber70g @javadkh2

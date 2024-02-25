@@ -9,7 +9,7 @@ import {
 globalStyle('html, body', {
   margin: 0,
   backgroundColor: tokens.kda.foundation.color.neutral.n0,
-  overscrollBehavior: 'none',
+  overscrollBehaviorY: 'none',
 });
 
 globalStyle('a', {

@@ -1,6 +1,5 @@
 import {
   Event,
-  useGetEventNodesQuery,
   useGetEventsByNameSubscription,
   useGetEventsQuery,
 } from '@/__generated__/sdk';
@@ -9,7 +8,7 @@ import { ErrorBox } from '@/components/error-box/error-box';
 import { EventsTable } from '@/components/events-table/events-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
-import { getEventNodes, getEvents } from '@/graphql/queries.graph';
+import { getEvents } from '@/graphql/queries.graph';
 import { getEventsByName } from '@/graphql/subscriptions.graph';
 import routes from '@constants/routes';
 import {
@@ -65,21 +64,12 @@ const Event: React.FC = () => {
     variables: getEventsByNameSubscriptionVariables,
   });
 
-  const nodesQueryVariables = {
-    ids: eventsSubscriptionData?.events as string[],
-  };
-
-  const { data: nodesQueryData } = useGetEventNodesQuery({
-    variables: nodesQueryVariables,
-    skip: !eventsSubscriptionData?.events?.length,
-  });
-
   const [subscriptionsEvents, setSubscriptionsEvents] = useState<Event[]>([]);
 
   useEffect(() => {
-    if (nodesQueryData?.nodes?.length) {
+    if (eventsSubscriptionData?.events?.length) {
       const updatedEvents = [
-        ...(nodesQueryData?.nodes as Event[]),
+        ...(eventsSubscriptionData?.events as Event[]),
         ...subscriptionsEvents,
       ];
 
@@ -89,7 +79,7 @@ const Event: React.FC = () => {
 
       setSubscriptionsEvents(updatedEvents);
     }
-  }, [nodesQueryData?.nodes]);
+  }, [eventsSubscriptionData?.events]);
 
   // Pagination
   const urlPage = router.query.page;
@@ -221,10 +211,6 @@ const Event: React.FC = () => {
             {
               query: getEventsByName,
               variables: getEventsByNameSubscriptionVariables,
-            },
-            {
-              query: getEventNodes,
-              variables: nodesQueryVariables,
             },
           ]}
         />

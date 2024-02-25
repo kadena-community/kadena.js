@@ -24,6 +24,7 @@ export const useSubmit = () => {
 
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
     setTx(tx);
+
     if (tx.sigs.filter((x: any) => x === null).length)
       return setStatus(SubmitStatus.INCOMPLETE);
 
@@ -37,13 +38,14 @@ export const useSubmit = () => {
     processTransaction(transaction);
   }, [transaction]);
 
-  const doSubmit = async () => {
-    if (!transaction) return;
+  const doSubmit = async (txArg?: string) => {
+    const innerTransaction = txArg ?? transaction;
+    if (!innerTransaction) return;
     const client = createClient();
 
     setStatus(SubmitStatus.LOADING);
 
-    const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
+    const tx = JSON.parse(Buffer.from(innerTransaction, 'base64').toString());
     try {
       const txRes = await client.submit(tx);
       const result = await client.listen(txRes);
@@ -69,7 +71,8 @@ export const useSubmit = () => {
   };
 
   const isStatusLoading =
-    status !== SubmitStatus.IDLE &&
+    status !== SubmitStatus.INCOMPLETE &&
+    status !== SubmitStatus.SUBMITABLE &&
     status !== SubmitStatus.SUCCESS &&
     status !== SubmitStatus.ERROR;
   return {

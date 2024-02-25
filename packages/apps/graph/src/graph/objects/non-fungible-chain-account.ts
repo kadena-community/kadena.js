@@ -1,5 +1,4 @@
 import { prismaClient } from '@db/prisma-client';
-import { getNonFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -26,10 +25,13 @@ export default builder.node(
     },
     async loadOne({ chainId, accountName }) {
       try {
-        return getNonFungibleChainAccount({
+        return {
+          __typename: NonFungibleChainAccountName,
           chainId,
           accountName,
-        });
+          nonFungibles: [],
+          transactions: [],
+        };
       } catch (error) {
         throw normalizeError(error);
       }

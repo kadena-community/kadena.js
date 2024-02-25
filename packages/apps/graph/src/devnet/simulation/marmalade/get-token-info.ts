@@ -1,4 +1,4 @@
-import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
+import type { ChainId } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { dirtyReadClient } from '@kadena/client-utils/core';
 import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
@@ -9,15 +9,56 @@ interface TokenInfo {
   precision: number;
   uri: string;
   id: string;
-  policies: string[];
 }
 
 export const getTokenInfo = async (
   tokenId: string,
   chainId: ChainId,
+  version: string,
 ): Promise<TokenInfo | undefined> => {
+  if (version !== 'v1' && version !== 'v2') {
+    throw new Error(
+      `Invalid version found for token ${tokenId}. Got ${version} but expected v1 or v2.`,
+    );
+  }
+
+  let executionCmd;
+
+  if (version === 'v1') {
+    // executionCmd = execution(
+    //   Pact.modules['marmalade.ledger']['get-policy-info'](tokenId),
+    // );
+    executionCmd = execution(`(bind
+        (marmalade.ledger.get-policy-info "${tokenId}")
+        {"token" := token }
+        (bind
+            token
+            { "id" := id, "precision":= precision, "supply":= supply, "manifest":= manifest }
+            { "id": id, "precision": precision, "supply": supply, "uri":
+                (format
+                    "data:{},{}"
+                    [
+                      (at 'scheme (at 'uri manifest))
+                      (at 'data (at 'uri manifest))
+                    ]
+                )
+            }
+        )
+    )`);
+  } else {
+    executionCmd = execution(
+      Pact.modules['marmalade-v2.ledger']['get-token-info'](tokenId),
+    );
+    // executionCmd = execution(`(bind
+    //    (marmalade-v2.ledger.get-token-info "${tokenId}")
+    //    { "id" := id, "precision":= precision, "supply" := supply, "uri" := uri }
+    //    { "id" : id, "precision": precision, "supply" : supply, "uri" : uri }
+    //  )`);
+  }
+
   const command = composePactCommand(
-    execution(Pact.modules['marmalade-v2.ledger']['get-token-info'](tokenId)),
+    executionCmd,
+
     setMeta({
       chainId,
     }),
@@ -30,14 +71,21 @@ export const getTokenInfo = async (
     },
   };
 
-  const tokenInfo =
-    await dirtyReadClient<
-      PactReturnType<IPactModules['marmalade-v2.ledger']['get-token-info']>
-    >(config)(command).execute();
+  const tokenInfo = await dirtyReadClient<any>(config)(command).execute();
 
   if (!tokenInfo) {
     return undefined;
   }
+
+  // if (version === 'v1') {
+  //   if ('token' in tokenInfo) {
+  //     tokenInfo = tokenInfo.token;
+  //   }
+
+  //   if ('manifest' in tokenInfo) {
+  //     tokenInfo.uri = `data:${tokenInfo.manifest.uri.scheme},${tokenInfo.manifest.uri.data}`;
+  //   }
+  // }
 
   if ('precision' in tokenInfo) {
     if (

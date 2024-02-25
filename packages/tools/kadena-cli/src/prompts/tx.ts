@@ -1,17 +1,19 @@
 import type { IUnsignedCommand } from '@kadena/types';
-import chalk from 'chalk';
 import { z } from 'zod';
-import { getTransactions } from '../tx/utils/txHelpers.js';
 
-import { TRANSACTION_FOLDER_NAME } from '../constants/config.js';
+import { getTransactions } from '../tx/utils/txHelpers.js';
 
 import {
   getAllPlainKeys,
   getAllWalletKeys,
 } from '../keys/utils/keysHelpers.js';
-import { defaultTemplates } from '../tx/commands/templates/templates.js';
+import { services } from '../services/index.js';
+import { getTemplates } from '../tx/commands/templates/templates.js';
 import type { IPrompt } from '../utils/createOption.js';
+import { maskStringPreservingStartAndEnd } from '../utils/helpers.js';
+import { log } from '../utils/logger.js';
 import { checkbox, input, select } from '../utils/prompts.js';
+import { tableFormatPrompt } from '../utils/tableDisplay.js';
 
 const CommandPayloadStringifiedJSONSchema = z.string();
 const PactTransactionHashSchema = z.string();
@@ -54,7 +56,7 @@ export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
         IUnsignedCommandSchema.parse(parsedInput);
         return true;
       } catch (error) {
-        console.log('error', error);
+        log.info('error', error);
         return 'Incorrect Format. Please enter a valid Unsigned Command.';
       }
     },
@@ -63,13 +65,12 @@ export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
 }
 
 export const transactionSelectPrompt: IPrompt<string> = async (args) => {
-  const existingTransactions: string[] = await getTransactions(
-    args.signed as boolean,
-    args.path as string,
-  );
+  const signed = (args.signed as boolean) ?? false;
+  const path = (args.path as string) ?? (args.directory as string);
+  const existingTransactions: string[] = await getTransactions(signed, path);
 
   if (existingTransactions.length === 0) {
-    throw new Error('No transactions found. Exiting.');
+    throw new Error('No transactions found.');
   }
 
   const choices = existingTransactions.map((transaction) => ({
@@ -86,13 +87,17 @@ export const transactionSelectPrompt: IPrompt<string> = async (args) => {
 };
 
 export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
-  const existingTransactions: string[] = await getTransactions(
-    args.signed as boolean,
-    args.path as string,
-  );
+  const signed = (args.signed as boolean) ?? true;
+  const path =
+    (args.path as string) ?? (args.directory as string) ?? process.cwd();
+
+  const fileExists = await services.filesystem.fileExists(path);
+  if (fileExists) return [path];
+
+  const existingTransactions: string[] = await getTransactions(signed, path);
 
   if (existingTransactions.length === 0) {
-    throw new Error('No transactions found. Exiting.');
+    throw new Error(`No ${signed ? 'signed ' : ''}transactions found.`);
   }
 
   const choices = existingTransactions.map((transaction) => ({
@@ -110,23 +115,26 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
   return selectedTransaction;
 };
 
-export async function txTransactionDirPrompt(): Promise<string> {
-  return await input({
-    message: `Enter your transaction directory (default: '${TRANSACTION_FOLDER_NAME}'):`,
-    validate: function (input) {
-      const validPathRegex = /^$|^\/[A-Za-z0-9._-]+$/;
+// We don't want to prompt dir, but the flag is still available
+// export async function txDirPrompt(): Promise<string> {
+//   return await input({
+//     message: `Enter your directory (default: working directory):`,
+//     validate: async (input) => {
+//       const dirExists = await services.filesystem.directoryExists(input);
+//       if (!dirExists) {
+//         return 'Directory or file not found. Please enter a valid directory or file path.';
+//       }
+//       return true;
+//     },
+//     default: `./`,
+//   });
+// }
 
-      if (!validPathRegex.test(input)) {
-        return 'Invalid directory format! Please enter a valid directory path starting with "/"';
-      }
-      return true;
-    },
-    default: `/${TRANSACTION_FOLDER_NAME}`,
-  });
-}
-
-export const selectTemplate: IPrompt<string> = async () => {
-  const defaultTemplateKeys = Object.keys(defaultTemplates);
+export const selectTemplate: IPrompt<string> = async (args) => {
+  const stdin = args.stdin as string | undefined;
+  if (stdin !== undefined && stdin !== '') return '-';
+  const templates = await getTemplates();
+  const defaultTemplateKeys = Object.keys(templates);
 
   const choices = [
     {
@@ -209,20 +217,30 @@ const promptVariableValue = async (key: string): Promise<string> => {
         value: '_manual_',
         name: 'Enter public key manually',
       },
-      ...walletKeys.map((key) => ({
-        value: key.publicKey,
-        name: `${key.alias} (wallet ${key.wallet.folder})`,
-      })),
-      ...plainKeys.map((key) => ({
-        value: key.publicKey,
-        name: `${key.alias} (plain key)`,
-      })),
+      ...tableFormatPrompt([
+        ...walletKeys.map((key) => ({
+          value: key.publicKey,
+          name: [
+            key.alias,
+            maskStringPreservingStartAndEnd(key.publicKey),
+            `(wallet ${key.wallet.folder})`,
+          ],
+        })),
+        ...plainKeys.map((key) => ({
+          value: key.publicKey,
+          name: [
+            key.alias,
+            maskStringPreservingStartAndEnd(key.publicKey),
+            `(plain key)`,
+          ],
+        })),
+      ]),
     ];
 
     if (hasKeys) {
       value = await select({
         message: `Select public key alias for template value ${key}:`,
-        choices,
+        choices: choices,
       });
     }
 
@@ -245,7 +263,7 @@ const promptVariableValue = async (key: string): Promise<string> => {
       throw new Error('public key not found');
     }
 
-    console.log(`${chalk.green('>')} Using public key ${value}`);
+    log.info(`${log.color.green('>')} Using public key ${value}`);
     return value;
   }
   if (key.startsWith('keyset-')) {
@@ -257,7 +275,7 @@ const promptVariableValue = async (key: string): Promise<string> => {
         return true;
       },
     });
-    console.log('keyset alias', alias);
+    log.info('keyset alias', alias);
     return alias;
   }
 
@@ -312,3 +330,25 @@ export const templateDataPrompt: IPrompt<string | null> = async (args) => {
   });
   return result ?? null;
 };
+
+export async function selectSignMethodPrompt(): Promise<
+  'localWallet' | 'aliasFile' | 'keyPair'
+> {
+  return await select({
+    message: 'Select an action',
+    choices: [
+      {
+        value: 'localWallet',
+        name: 'Sign with local wallet',
+      },
+      {
+        value: 'aliasFile',
+        name: 'Sign with aliased file',
+      },
+      {
+        value: 'keyPair',
+        name: 'Sign with key pair',
+      },
+    ],
+  });
+}

@@ -1,20 +1,23 @@
 import { Button } from '@/components/Button/Button';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
-import { useMintMultiToken } from '@/hooks/data/mintMultiToken';
+import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { isAlreadySigning } from '@/utils/isAlreadySigning';
-import { CopyButton, SystemIcon, TextField } from '@kadena/react-ui';
-import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
-
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
+import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
+import { MonoArrowBack, MonoArrowDownward } from '@kadena/react-icons';
+import { CopyButton } from '@kadena/react-ui';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
-import { backButtonClass } from '../DetailView/style.css';
+import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
-import { MainLoader } from '../MainLoader/MainLoader';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
+
+import { useAccount } from '@/hooks/account';
+import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
+import { TextField } from '../TextField/TextField';
 import { qrClass } from './style.css';
 
 interface IProps {
@@ -23,12 +26,14 @@ interface IProps {
   status: number;
 }
 
-export const ShareView: FC<IProps> = ({ next, prev, status }) => {
+export const ShareView: FC<IProps> = ({ prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
-  const { proofOfUs } = useProofOfUs();
-  const { isLoading, hasError, data, mintToken } = useMintMultiToken();
+  const [isMounted, setIsMounted] = useState(false);
+  const { proofOfUs, updateStatus, isInitiator } = useProofOfUs();
+  const { account } = useAccount();
+  const { signToken } = useSignToken();
   const router = useRouter();
-  const { id } = useParams();
+  const searchParams = useSearchParams();
 
   const handleBack = () => {
     prev();
@@ -36,43 +41,47 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
 
   const handleSign = async () => {
     if (!proofOfUs) return;
-    router.push(
-      `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${
-        proofOfUs.tx
-      }&returnUrl=${getReturnHostUrl()}/scan/${id}
-      `,
-    );
+    signToken();
 
     return;
-    // next();
-    // await mintToken();
   };
 
-  const handleRetry = () => {
-    mintToken();
-  };
+  //check that the account is also really the initiator.
+  //other accounts have no business here and are probably looking for the scan view
+  useEffect(() => {
+    if (!isInitiator()) {
+      router.replace(`/scan/${proofOfUs?.proofOfUsId}`);
+      return;
+    }
+    setIsMounted(true);
+  }, [proofOfUs, account]);
 
-  if (!proofOfUs) return;
+  useEffect(() => {
+    const transaction = searchParams.get('transaction');
+    if (!transaction || !proofOfUs) return;
+
+    updateStatus({ proofOfUsId: proofOfUs.proofOfUsId, status: 4 });
+  }, []);
+
+  if (!proofOfUs || !account || !isMounted) return;
 
   return (
-    <section>
-      sdsdsdf
+    <ScreenHeight>
       {status === 3 && (
         <>
           <TitleHeader
             Prepend={() => (
               <>
                 {!isAlreadySigning(proofOfUs.signees) && (
-                  <button className={backButtonClass} onClick={handleBack}>
-                    <SystemIcon.ArrowCollapseDown />
-                  </button>
+                  <IconButton onClick={handleBack}>
+                    <MonoArrowBack />
+                  </IconButton>
                 )}
               </>
             )}
             label="Share"
           />
 
-          <ListSignees />
           {!isAlreadySigning(proofOfUs.signees) ? (
             <>
               <div className={qrClass}>
@@ -95,11 +104,15 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
                 value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
                 endAddon={<CopyButton inputId="linkshare" />}
               />
+              <ListSignees />
             </>
           ) : (
-            <ImagePositions />
+            <>
+              <ImagePositions />
+              <ListSignees />
+            </>
           )}
-          {isAlreadySigning(proofOfUs.signees) && (
+          {isSignedOnce(proofOfUs.signees) && (
             <Button onPress={handleSign}>Sign & Upload</Button>
           )}
         </>
@@ -109,8 +122,8 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
           <TitleHeader
             Prepend={() => (
               <>
-                <button className={backButtonClass} onClick={handleBack}>
-                  <SystemIcon.ArrowCollapseDown />
+                <button onClick={handleBack}>
+                  <MonoArrowDownward />
                 </button>
               </>
             )}
@@ -119,16 +132,9 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
 
           <div>status: {proofOfUs.mintStatus}</div>
           <ListSignees />
-          {isLoading && <MainLoader />}
-          {hasError && (
-            <div>
-              there was an error.
-              <button onClick={handleRetry}>retry</button>
-            </div>
-          )}
+
           {proofOfUs.mintStatus === 'success' && (
             <div>
-              success {data}
               <Link href="/user">dashboard</Link>
               <Link href={`/user/proof-of-us/${proofOfUs?.tokenId}`}>
                 go to proof
@@ -137,6 +143,6 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
           )}
         </>
       )}
-    </section>
+    </ScreenHeight>
   );
 };

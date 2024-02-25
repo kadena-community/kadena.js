@@ -1,31 +1,28 @@
+import type { Command } from 'commander';
+import path from 'path';
+
 import { defaultNetworksPath } from '../../constants/networks.js';
 import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-
-import type { INetworkCreateOptions } from '../utils/networkHelpers.js';
+import { log } from '../../utils/logger.js';
 import { writeNetworks } from '../utils/networkHelpers.js';
-
-import chalk from 'chalk';
-import type { Command } from 'commander';
-import debug from 'debug';
-import path from 'path';
 
 export const createNetworksCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'create',
-  'Create network',
+  'add',
+  'Add local network configuration',
   [
     globalOptions.networkName({ isOptional: false }),
-    globalOptions.networkId(),
-    globalOptions.networkHost(),
+    globalOptions.networkId({ isOptional: false }),
+    globalOptions.networkHost({ isOptional: false }),
     globalOptions.networkExplorerUrl(),
     globalOptions.networkOverwrite(),
   ],
   async (config) => {
-    debug('network-create:action')({ config });
+    log.debug('network-create:action', { config });
 
     const filePath = path.join(
       defaultNetworksPath,
@@ -36,18 +33,23 @@ export const createNetworksCommand: (
       !(await services.filesystem.fileExists(filePath)) &&
       config.networkOverwrite === 'no'
     ) {
-      console.log(
-        chalk.yellow(
-          `\nThe existing network configuration "${config.networkName}" will not be updated.\n`,
-        ),
+      log.warning(
+        `\nThe existing network configuration "${config.networkName}" will not be updated.\n`,
       );
       return;
     }
 
-    await writeNetworks(config as unknown as INetworkCreateOptions);
+    const networkConfig = {
+      network: config.networkName,
+      networkId: config.networkId,
+      networkHost: config.networkHost,
+      networkExplorerUrl: config.networkExplorerUrl,
+    };
 
-    console.log(
-      chalk.green(
+    await writeNetworks(networkConfig);
+
+    log.info(
+      log.color.green(
         `\nThe network configuration "${config.networkName}" has been saved.\n`,
       ),
     );

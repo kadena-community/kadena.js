@@ -1,7 +1,8 @@
-import { IS_DEVELOPMENT } from '../../constants/config.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
+import { accountOptions } from '../accountOptions.js';
 import { addAccount } from '../utils/addAccount.js';
 import { displayAddAccountSuccess } from '../utils/addHelpers.js';
 import { getAccountDetails } from '../utils/getAccountDetails.js';
@@ -9,14 +10,14 @@ import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveA
 
 export const createAddAccountManualCommand = createCommandFlexible(
   'add-manual',
-  'Add an existing account to the CLI',
+  'Add an existing account locally to the CLI',
   [
-    globalOptions.accountAlias(),
-    globalOptions.accountName(),
+    accountOptions.accountAlias(),
+    accountOptions.accountName(),
     globalOptions.fungible(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
-    globalOptions.accountOverwrite(),
+    accountOptions.accountOverwrite(),
     globalOptions.publicKeys(),
     globalOptions.predicate(),
   ],
@@ -107,9 +108,7 @@ export const createAddAccountManualCommand = createCommandFlexible(
       };
     }
 
-    if (IS_DEVELOPMENT) {
-      console.log('create-account-add-manual:action', newConfig);
-    }
+    log.debug('create-account-add-manual:action', newConfig);
 
     const result = await addAccount(newConfig);
 

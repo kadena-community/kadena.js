@@ -34,7 +34,8 @@ const ProofOfUsStore = () => {
       status: BUILDSTATUS.INIT,
       mintStatus: 'init',
       proofOfUsId,
-      type: 'multi',
+      eventId: process.env.NEXT_PUBLIC_CONNECTION_EVENTID,
+      type: 'connect',
       date: Date.now(),
       signees: [{ ...account, signerStatus: 'init', initiator: true }],
     });
@@ -138,49 +139,10 @@ const ProofOfUsStore = () => {
     });
   };
 
-  const updateTx = async (proofOfUs: IProofOfUsData, tx: string) => {
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      tx,
-    });
-  };
+  const updateProofOfUs = async (proofOfUs: IProofOfUsData, value: any) => {
+    const newProof = { ...proofOfUs, ...value };
 
-  const addTitle = async (proofOfUs: IProofOfUsData, value: string) => {
-    if (isAlreadySigning(proofOfUs.signees)) return;
-
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      title: value,
-    });
-  };
-
-  const updateBackgroundColor = async (
-    proofOfUs: IProofOfUsData,
-    value: string,
-  ) => {
-    if (isAlreadySigning(proofOfUs.signees)) return;
-
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      backgroundColor: value,
-    });
-  };
-
-  const updateSigner = async (
-    proofOfUs: IProofOfUsData,
-    account: IProofOfUsSignee,
-    value: any,
-    isOverwrite: boolean = false,
-  ) => {
-    if (!isOverwrite && isAlreadySigning(proofOfUs.signees)) return;
-
-    const newList = proofOfUs.signees.map((a) => {
-      if (a.accountName === account.accountName) {
-        return { ...a, ...value };
-      }
-      return a;
-    });
-
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      signees: newList,
-    });
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), newProof);
   };
 
   return {
@@ -196,10 +158,7 @@ const ProofOfUsStore = () => {
     updateStatus,
     listenProofOfUsData,
     listenProofOfUsBackgroundData,
-    addTitle,
-    updateBackgroundColor,
-    updateSigner,
-    updateTx,
+    updateProofOfUs,
   };
 };
 

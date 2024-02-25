@@ -7,6 +7,14 @@ import {
 
 const chainId: ChainId = '15'; // kadenanames running on chain 15
 
+function ensureKdaExtension(name: string): string {
+  const lowerCaseName = name.toLowerCase();
+  if (!lowerCaseName.endsWith('.kda')) {
+    return `${lowerCaseName}.kda`;
+  }
+  return lowerCaseName;
+}
+
 const client = ({
   networkId,
   networkHost,
@@ -30,7 +38,9 @@ export async function kdnResolveNameToAddress(
         ? KADENANAMES_NAMESPACE_TESTNET_MODULE
         : KADENANAMES_NAMESPACE_MAINNET_MODULE;
     const transaction = Pact.builder
-      .execution(Pact.modules[module]['get-address'](name))
+      .execution(
+        Pact.modules[module]['get-address'](ensureKdaExtension(name.trim())),
+      )
       .setMeta({ chainId })
       .setNetworkId(networkId)
       .createTransaction();
@@ -58,7 +68,7 @@ export async function kdnResolveAddressToName(
         ? KADENANAMES_NAMESPACE_TESTNET_MODULE
         : KADENANAMES_NAMESPACE_MAINNET_MODULE;
     const transaction = Pact.builder
-      .execution(Pact.modules[module]['get-name'](address))
+      .execution(Pact.modules[module]['get-name'](address.trim()))
       .setMeta({ chainId })
       .setNetworkId(networkId)
       .createTransaction();

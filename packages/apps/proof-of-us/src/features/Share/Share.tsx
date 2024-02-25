@@ -1,27 +1,27 @@
 'use client';
-import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
-import { SocialShare } from '@/components/SocialShare/SocialShare';
-import { useGetAttendanceToken } from '@/hooks/data/getAttendanceToken';
-import { useParams } from 'next/navigation';
 import type { FC } from 'react';
+import { AttendanceShare } from './AttendanceShare';
+import { ConnectShare } from './ConnectShare';
 
-export const Share: FC = () => {
-  const params = useParams();
-  const { data, isLoading, error } = useGetAttendanceToken(params.id);
-
+interface IProps {
+  tokenId: string;
+  data?: IProofOfUsTokenMeta;
+  metadataUri?: string;
+}
+export const Share: FC<IProps> = ({ tokenId, data, metadataUri }) => {
+  if (!data) return null;
   return (
-    <div>
-      {isLoading && <div>...is loading</div>}
-      {error && <div>...error</div>}
-
-      {data?.name && (
-        <>
-          <SocialShare token={data} />
-          <AttendanceTicket token={data} />
-        </>
+    <>
+      {data.properties.eventType === 'attendance' && (
+        <AttendanceShare
+          data={data}
+          tokenId={tokenId}
+          metadataUri={metadataUri}
+        />
       )}
-
-      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
-    </div>
+      {data.properties.eventType === 'connect' && (
+        <ConnectShare data={data} tokenId={tokenId} metadataUri={metadataUri} />
+      )}
+    </>
   );
 };

@@ -1,5 +1,4 @@
 import type { IKeyPair } from '@kadena/types';
-import chalk from 'chalk';
 import yaml from 'js-yaml';
 import path from 'path';
 
@@ -7,6 +6,7 @@ import { ACCOUNT_DIR, WALLET_DIR } from '../../constants/config.js';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { services } from '../../services/index.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
+import { log } from '../../utils/logger.js';
 import type { IAccountDetailsResult, IAddAccountConfig } from '../types.js';
 
 export const isEmpty = (value?: string | null): boolean =>
@@ -40,20 +40,20 @@ export const getAccountFilePath = (fileName: string): string => {
 };
 
 export const displayAddAccountSuccess = (accountAlias: string): void => {
-  console.log(
-    chalk.green(
+  log.info(
+    log.color.green(
       `\nThe account configuration "${accountAlias}" has been saved.\n`,
     ),
   );
 };
 
-export async function getAllPublicKeysFromKeyWalletConfig(
-  keyWalletConfig: IWallet,
+export async function getAllPublicKeysFromWalletConfig(
+  walletNameConfig: IWallet,
 ): Promise<Array<string>> {
   const publicKeysList: Array<string> = [];
-  for (const key of keyWalletConfig.keys) {
+  for (const key of walletNameConfig.keys) {
     const content = await services.filesystem.readFile(
-      path.join(WALLET_DIR, keyWalletConfig?.folder, key),
+      path.join(WALLET_DIR, walletNameConfig?.folder, key),
     );
     const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
     publicKeysList.push(parsed?.publicKey ?? '');

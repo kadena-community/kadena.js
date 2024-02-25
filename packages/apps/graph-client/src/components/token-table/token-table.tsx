@@ -1,3 +1,4 @@
+import type { Token } from '@/__generated__/sdk';
 import {
   Box,
   Cell,
@@ -11,14 +12,8 @@ import {
 import { atoms } from '@kadena/react-ui/styles';
 import React from 'react';
 
-interface NonFungible {
-  __typename?: 'Token';
-  balance: number;
-  id: string;
-  chainId: number;
-}
 interface ITokenTableProps {
-  tokens: NonFungible[];
+  tokens: Token[];
 }
 
 export const TokenTable = (props: ITokenTableProps): JSX.Element => {

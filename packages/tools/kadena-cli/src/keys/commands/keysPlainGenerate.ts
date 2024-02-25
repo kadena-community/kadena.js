@@ -1,7 +1,5 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
 import { randomBytes } from 'crypto';
-import debug from 'debug';
 
 import { kadenaEncrypt, kadenaKeyPairsFromRandom } from '@kadena/hd-wallet';
 import { kadenaGenKeypair } from '@kadena/hd-wallet/chainweaver';
@@ -10,6 +8,7 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import {
   displayGeneratedPlainKeys,
   printStoredPlainKeys,
@@ -73,16 +72,16 @@ export const createGeneratePlainKeysCommand: (
   program: Command,
   version: string,
 ) => void = createCommand(
-  'gen-plain',
-  'generate plain public/secret key pair(s)',
+  'generate',
+  'Generate random public/secret key pair(s)',
   [
-    globalOptions.keyAlias(),
+    globalOptions.keyAlias({ isOptional: false }),
     globalOptions.keyAmount({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (config) => {
     try {
-      debug('generate-plain:action')({ config });
+      log.debug('generate-plain:action', { config });
 
       const amount =
         config.keyAmount !== undefined && config.keyAmount !== null
@@ -100,7 +99,7 @@ export const createGeneratePlainKeysCommand: (
       displayGeneratedPlainKeys(result.data.keys);
       printStoredPlainKeys(config.keyAlias, result.data.keys, config.legacy);
     } catch (error) {
-      console.log(chalk.red(`\n${error.message}\n`));
+      log.error(`\n${error.message}\n`);
       process.exit(1);
     }
   },

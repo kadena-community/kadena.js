@@ -4,8 +4,8 @@ import { retrieveContract } from './retrieveContract.js';
 
 import type { Command } from 'commander';
 import { Option } from 'commander';
-import debug from 'debug';
 import { z } from 'zod';
+import { log } from '../utils/logger.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
 const Options = z.object({
@@ -65,12 +65,12 @@ export function retrieveCommand(program: Command, version: string): void {
         .default(1),
     )
     .action(async (args: TOptions) => {
-      debug('retrieve-contract:action')({ args });
+      log.debug('retrieve-contract:action', { args });
       try {
         Options.parse(args);
       } catch (e) {
         processZodErrors(program, e, args);
       }
-      await retrieveContract(program, version)(args).catch(console.error);
+      await retrieveContract(program, version)(args).catch(log.error);
     });
 }

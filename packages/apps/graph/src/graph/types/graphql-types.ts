@@ -6,18 +6,30 @@ export interface Guard {
   predicate: 'keys-all' | 'keys-any' | 'keys-two';
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface GasLimitEstimation {
+  amount: number;
+  inputType: string;
+  usedPreflight: boolean;
+  usedSignatureVerification: boolean;
+  transaction: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Token {
   id: string;
   balance: number;
-  chainId: number;
+  chainId: string;
   info?: TokenInfo;
+  version: string;
 }
 
 export interface TokenInfo {
   supply: number;
   precision: number;
   uri: string;
-  policies: string[];
+  // TODO: figure out what to do with weird pact-arrays
+  // policies: string[];
 }
 
 export const FungibleChainAccountName: 'FungibleChainAccount' =
@@ -50,7 +62,6 @@ export interface FungibleAccount {
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface GraphConfiguration {
-  maximumConfirmationDepth: number;
   minimumBlockHeight: bigint;
 }
 
