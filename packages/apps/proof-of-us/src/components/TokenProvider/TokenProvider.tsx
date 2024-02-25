@@ -62,7 +62,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
       }
     } catch (e) {
       console.error(data.requestKey, e);
-      // removeMintingToken(requestKey);
+      removeMintingToken(data.requestKey);
     }
   }
 
@@ -111,7 +111,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     const uniqueObject: Record<string, IProofOfUsData> = {};
 
     for (const token of tokens) {
-      // Extract the title
       const id = token.proofOfUsId;
       uniqueObject[id] = token;
     }
