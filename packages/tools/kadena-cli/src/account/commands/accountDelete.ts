@@ -1,6 +1,8 @@
 import { join } from 'path';
 import { ACCOUNT_DIR } from '../../constants/config.js';
 import { services } from '../../services/index.js';
+import type { CommandResult } from '../../utils/command.util.js';
+import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
@@ -8,7 +10,7 @@ import { isEmpty } from '../utils/addHelpers.js';
 
 async function removeAccount(
   accountAlias: string,
-): Promise<[string[], string[]]> {
+): Promise<CommandResult<string[]>> {
   const deletedFiles = [];
   const nonDeletedFiles = [];
   const aliases = accountAlias.split(',');
@@ -21,7 +23,19 @@ async function removeAccount(
       nonDeletedFiles.push(alias);
     }
   }
-  return [deletedFiles, nonDeletedFiles];
+
+  const warnings =
+    nonDeletedFiles.length === 1
+      ? `\nThe account alias ${nonDeletedFiles[0]} not exist`
+      : `\nThe following account aliases does not exist:\n${nonDeletedFiles.join(
+          '\n',
+        )}`;
+
+  return {
+    data: deletedFiles,
+    success: true,
+    warnings: [warnings],
+  };
 }
 
 export const createAccountDeleteCommand = createCommandFlexible(
@@ -53,24 +67,12 @@ export const createAccountDeleteCommand = createCommandFlexible(
       return;
     }
 
-    const [deletedFiles, nonDeletedFiles] = await removeAccount(accountAlias);
-
-    if (deletedFiles.length) {
+    const result = await removeAccount(accountAlias);
+    assertCommandError(result);
+    if (result.data.length > 0) {
       log.info(
         log.color.green(
-          `\nThe account alias "${deletedFiles.join(
-            ', ',
-          )}" file(s) has been deleted.\n`,
-        ),
-      );
-    }
-
-    if (nonDeletedFiles.length) {
-      log.info(
-        log.color.yellow(
-          `\nThe account configuration "${nonDeletedFiles.join(
-            ', ',
-          )}" file(s) does not exist.\n`,
+          `\nAccount alias "${accountAlias}" has been deleted.\n`,
         ),
       );
     }

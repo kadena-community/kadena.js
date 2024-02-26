@@ -1,6 +1,6 @@
 import yaml from 'js-yaml';
 import { readdirSync } from 'node:fs';
-import { basename, extname, join } from 'node:path';
+import { extname, join } from 'node:path';
 import type { ZodError, ZodIssue } from 'zod';
 import { z } from 'zod';
 import type { IAliasAccountData } from './../types.js';
