@@ -4,7 +4,12 @@ import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
 import { accountRepository } from '../account/account.repository';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
-import { IKeySource, IProfile, walletRepository } from './wallet.repository';
+import {
+  IKeyItem,
+  IKeySource,
+  IProfile,
+  walletRepository,
+} from './wallet.repository';
 
 export function getProfile(profileId: string) {
   return walletRepository.getProfile(profileId);
@@ -55,6 +60,21 @@ export function sign(
   );
 
   return signedTx;
+}
+
+export function getRelevantKeys(
+  keySources: IKeySource[],
+  Tx: IUnsignedCommand,
+) {
+  return keySources.flatMap((keySource) => {
+    const { keys } = keySource;
+    const cmd: IPactCommand = JSON.parse(Tx.cmd);
+    const publicKeys = cmd.signers
+      .map((signer) => keys.find((key) => key.publicKey === signer.pubKey))
+      .filter((index) => index !== undefined) as Array<IKeyItem>;
+
+    return { ...keySource, keys: publicKeys };
+  });
 }
 
 export async function createProfile(
