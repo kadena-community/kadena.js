@@ -29,7 +29,7 @@ For complete reference information for the Pact smart contract programming langu
 
 - [Deploy your first contract - Quick start](/build/quickstart) introduces blockchain and Kadena concepts for new developers using a simple "Hello, World!" smart contract you can deploy on a local development network.
 - [Pact developer tutorials](/tutorials) provide step-by-step examples and workshops from fundamental concepts to advanced topics:
-- [Pact local queries](/build/guides/pact-local-api-queries) demonstrate how to use local API endpoints to test smart contracts using Mainnet data (community contribution).
+- [Pact local queries](/build/guides/pact-local-api-queries) demonstrate how to use local Chainweb API endpoints to test smart contracts using Mainnet data (community contribution).
 - [Safe rotate and drain](/build/guides/safe-rotate-and-drain)(example) demonstrates how to rotate an account’s key and transfer the account balance to another account (xommunity contribution).
 - [Safe transfer](/build/guides/safe-transfer) (example) demonstrates how to perform a safe transfer by requiring the recipient to also sign and return some KDA in a single transaction (community contribution).
 - [Deploy a module to the Kadena test network using command line](https://gist.github.com/LindaOrtega/1c219f887d9782c6745dbd827bdbfb4d) (example): (Community contribution)

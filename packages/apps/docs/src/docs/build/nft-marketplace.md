@@ -176,7 +176,7 @@ token/NFT. The `create-manifest` function takes the URI and data as parameters
 and returns the manifest of the token.
 
 ```typescript title=" "
-(create-manifest uri datum) ;; function call
+(create-manifest uri data) ;; function call
 ```
 
 ## Token Creation and Minting

@@ -82,7 +82,7 @@ To create a new key pair and account:
 ## Transfer coins to create an account
 
 An account must have funds before it can be used on any Kadena blockchain.
-To interact with the Kadena main public network (`mainnet`), you typically buy KDA as a digital asset through an exchange then transfer the KDA to the Kadena account you want to fund.
+To interact with the Kadena main public network (`mainnet`), you typically buy KDA as a digital asset through an exchange, and then transfer the KDA to the Kadena account you want to fund.
 For the Kadena test network (`testnet`), you can submit a request to [transfer 20 KDA](https://faucet.testnet.chainweb.com/) to a specified account for testing purposes.
 
 To interact with the local development network (`devnet`), you can either:

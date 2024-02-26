@@ -10,13 +10,13 @@ tags: [pact, typescript, account, transactions, utils]
 
 # Code templates
 
-You can use the TypeScript and Pact sample code in this section as templates for performing common tasks with the Pact API.
+You can use the TypeScript and Pact sample code in this section as templates for performing common tasks with the Kadena client libraries and Pact API.
 
 ## Create a Kadena account
 
 Create a new Kadena account on a chain without transferring any digital assets (KDA) into it.
 
-```
+```typescript title="Create a new account."
 const HELP = `Usage example: \n\nnode create-account.js k:{public-key} -- Replace {public-key} with an actual key`;
 
 const Pact = require('pact-lang-api');
@@ -81,9 +81,9 @@ async function createAccount(newAccount) {
 
 ## Create and fund a Kadena account
 
-Create and fund a new Kadena account on a chain by transferring any digital assets (KDA) into it.
+Create and fund a new Kadena account on a chain by transferring digital assets (KDA) into it.
 
-```typescript title="reate and fund a KDA account"
+```typescript title="Create and fund a Kadena account."
 const HELP = `Usage example: \n\nnode transfer-create.js k:{public-key} amount -- Replace {public-key} with an actual key`;
 
 const Pact = require('pact-lang-api');
@@ -301,7 +301,7 @@ async function getBalance(account) {
 
 Get transaction status using Tx request key.
 
-```typescript title="Get transaction status using Tx request key"
+```typescript title="Get transaction status using the transaction request key."
 const HELP = 'Usage example: \n\nnode get-status {request-key}';
 const Pact = require('pact-lang-api');
 const NETWORK_ID = 'testnet04';
@@ -378,7 +378,7 @@ async function deployContract() {
 
 Read state of a contract.
 
-```typescript title="Read state of a contract"
+```typescript title="Read the state of a contract."
 const HELP = 'Usage example: \n\nnode read-state';
 const Pact = require('pact-lang-api');
 const NETWORK_ID = 'testnet04';
@@ -416,7 +416,7 @@ async function getState() {
 
 Verify a key pair signature.
 
-```typescript title="Verify a key pair signature"
+```typescript title="Verify a key pair signature."
 const Pact = require('pact-lang-api');
 
 const KEY_PAIR = Pact.crypto.genKeyPair();
@@ -437,4 +437,104 @@ function verifySig() {
     ? console.log('Signature is valid!')
     : console.log('Signature is invalid!');
 }
+```
+
+# Safe transfers
+
+With many cryptocurrencies, users risk losing their funds if they make a mistake typing the public key they are transferring funds to because their private key can't access the funds after they are transferred using the incorrect public key.
+
+Pact allows you to construct transfer transactions that guarantee:
+
+- Someone possesses the correct private key.
+- The private key will be able to access the funds being transferred. 
+
+To provide this guarantee, you can construct a single transaction to execute two separate transfer operations:
+
+- One transfer from `alice` to `bob` for the desired amount plus a small amount extra coins for a test transfer.
+- One transfer from `bob` to `alice` to return the extra coins used to verify the account owner.
+
+This type of transaction must be signed by both the `alice` and `bob` accounts and each signature must have the appropriate `coin.TRANSFER` capability. 
+It's especially important to construct this type of transaction when you are using the `transfer-create` function because that is when you are defining the new account's keyset.
+
+In this example:
+
+- The public key for the account `alice` is `6be2f485a7af75fedb4b7f153a903f7e6000ca4aa501179c91a2450b777bd2a7`.
+- The public key for `bob` is `368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca`.
+
+```pact title="Transfer coins in a safe transaction."
+code: |-
+  (coin.transfer-create "alice" "bob" (read-keyset "ks") 200.1)
+  (coin.transfer "bob" "alice" 0.1)
+data:
+  ks:
+    keys: [368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca]
+    pred: "keys-all"
+publicMeta:
+  chainId: "0"
+  sender: alice
+  gasLimit: 1200
+  gasPrice: 0.00001
+  ttl: 7200
+networkId: "mainnet01"
+signers:
+  - public: 6be2f485a7af75fedb4b7f153a903f7e6000ca4aa501179c91a2450b777bd2a7
+    caps:
+      - name: "coin.TRANSFER"
+        args: ["alice", "bob", 200.1]
+      - name: "coin.GAS"
+        args: []
+  - public: 368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca
+    caps:
+      - name: "coin.TRANSFER"
+        args: ["bob", "alice", 0.1]
+type: exec
+```
+
+## Safe rotate and drain
+
+This sample code illustrates how to rotate keys and transfer funds in a single transaction.
+In this example, the account named `rotest` is owned by the public key
+`2993f795d133fa5d0fd877a641cabc8b28cd36147f666988cacbaa4379d1ff93`.
+The transaction code:
+- Rotates ownership to the public key `dea647009295dc015ba6e6359b85bafe09d2ce935a03c3bf83f775442d539025`.
+- Transfers the whole balance from  the `rotest` account to the `croesus` account. - Pays the transaction fee from the `croesus` account to drain the `rotest` account balance to zero. 
+
+This transaction must be signed by both the key that owns the `rotest` account at the beginning and the key that owns the `croesus` at the end.
+Because the transfer out of the `rotest` account occurs after the key is rotated, the transaction must be signed by the key you are rotating to. 
+With this transaction, it's impossible to accidentally rotate to an incorrect key and lose control of the `rotest` account.
+
+```pact title="Rotate keys and drain an account."
+code: |-
+  (use coin)
+  (let* ((acct:string "rotest")
+         (bal:decimal (coin.get-balance acct))
+        )
+    (coin.rotate acct (read-keyset "ks"))
+    (coin.transfer acct
+      "croesus"
+      bal)
+  )
+data:
+  ks:
+    keys: [dea647009295dc015ba6e6359b85bafe09d2ce935a03c3bf83f775442d539025]
+    pred: "keys-all"
+publicMeta:
+  chainId: "0"
+  sender: croesus
+  gasLimit: 800
+  gasPrice: 0.00001
+  ttl: 86400
+networkId: "testnet04"
+signers:
+  - public: 2993f795d133fa5d0fd877a641cabc8b28cd36147f666988cacbaa4379d1ff93
+    caps:
+      - name: coin.GAS
+        args: []
+      - name: coin.ROTATE
+        args: ["rotest"]
+  - public: dea647009295dc015ba6e6359b85bafe09d2ce935a03c3bf83f775442d539025
+    caps:
+      - name: coin.TRANSFER
+        args: ["rotest","croesus",100]
+type: exec
 ```

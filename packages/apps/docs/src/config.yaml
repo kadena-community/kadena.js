@@ -149,6 +149,12 @@ pages:
           storage:
             url: /storage
             file: /build/nft-marmalade/storage.md
+      frontend:
+        url: /frontend
+        file: /build/frontend.md
+      templates:
+        url: /templates
+        file: /build/code-templates.md
       election:
         url: /election
         file: /build/election-app/index.md
@@ -199,6 +205,13 @@ pages:
   invest:
     url: /invest
     file: /invest/invest.md
+    children:
+      exchanges:
+        url: /exchanges
+        file: /invest/exchanges.md
+      wallets:
+        url: /wallets
+        file: /invest/wallets.md
   participate:
     url: /participate
     file: /participate/participate.md

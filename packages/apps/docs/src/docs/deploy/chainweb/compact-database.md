@@ -12,13 +12,13 @@ tags: [pact, chainweb, network, node operator, developer]
 
 Because a healthy blockchain continuously adds new transactions in new blocks that change the state of the database, managing the storage requirements on individual nodes can be challenging.
 
-To address this issue, Chainweb provides the `cwtool compact` command. 
+To address this storage issue, Chainweb provides the `cwtool compact` command. 
 The `cwtool compact` command enables you to delete historical unused state from the `chainweb-node` Pact SQLite database. 
-Removing old state that isn't required to validate state or reach consensus enables your node to use far less disk space overall while maintaining the semantic integrity of your node operations. 
+Removing old state that isn't required to validate transactions or reach consensus enables your node to use far less disk space overall while maintaining the semantic integrity of node operations. 
 
 To compact a Chainweb node database:
 
-1. Open a terminal shell on a computer with access to your `chainweb-node` root directory.
+1. Open a terminal shell on a computer with access to your `chainweb-node` root directory for your node.
 2. Get ahold of a `cwtool`  binary, either through a release of `chainweb-node` , or building from source with `cabal`  or `nix` . The [chainweb-node README](https://github.com/kadena-io/chainweb-node#README) documents all the ways you can do this step.
 3. Create a backup of your pact sqlite. This isn’t strictly necessary, but is strongly recommended. For most nodes, there will be a directory `0/sqlite`  with all of the sqlite state.
 4. Run `cwtool compact` , pointing it to your database:

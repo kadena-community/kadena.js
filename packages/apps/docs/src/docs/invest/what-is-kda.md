@@ -10,8 +10,6 @@ layout: full
 
 # What is KDA?
 
-## What does the KDA token do?
-
 KDA is a digital currency that is used to pay for compute on the Kadena public
 chain. Similar to ETH on Ethereum, KDA on Kadena is the manner by which miners
 are compensated for mining blocks on the network and is the transaction fee that
