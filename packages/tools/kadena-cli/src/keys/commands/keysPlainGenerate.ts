@@ -79,8 +79,9 @@ export const createGeneratePlainKeysCommand: (
     globalOptions.keyAmount({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
-  async (config) => {
-    log.debug('generate-plain:action', { config });
+  async (option, { collect }) => {
+    const config = await collect(option);
+    log.debug('generate-plain:action', config);
 
     const amount =
       config.keyAmount !== undefined && config.keyAmount !== null

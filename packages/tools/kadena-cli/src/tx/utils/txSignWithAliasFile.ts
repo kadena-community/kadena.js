@@ -9,7 +9,7 @@ import { getWalletKey, toHexStr } from '../../keys/utils/keysHelpers.js';
 import type { IKeyPair } from '../../keys/utils/storage.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import type { CommandOption } from '../../utils/createCommandFlexible.js';
+import type { CommandOption } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
 import type { options } from '../commands/txSignOptions.js';
 import { parseTransactionsFromStdin } from './input.js';

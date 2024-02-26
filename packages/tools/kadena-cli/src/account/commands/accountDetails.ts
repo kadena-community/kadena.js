@@ -1,6 +1,6 @@
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import type { IAccountDetailsResult } from '../types.js';
@@ -32,7 +32,7 @@ export async function accountDetails(
   }
 }
 
-export const createAccountDetailsCommand = createCommandFlexible(
+export const createAccountDetailsCommand = createCommand(
   'details',
   'Get details of an account',
   [
@@ -41,7 +41,7 @@ export const createAccountDetailsCommand = createCommandFlexible(
     globalOptions.chainId({ isOptional: false }),
     globalOptions.fungible({ isOptional: true }),
   ],
-  async (option, values) => {
+  async (option) => {
     const { account, accountConfig } = await option.account({
       isAllowManualInput: true,
     });

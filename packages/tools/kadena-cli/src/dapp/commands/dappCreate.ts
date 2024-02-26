@@ -4,17 +4,18 @@ import { join } from 'path';
 
 import { services } from '../../services/index.js';
 import { CommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 
 export const createDappCommand: (program: Command, version: string) => void =
-  createCommandFlexible(
+  createCommand(
     'add',
     'Add a new dapp project',
     [globalOptions.dappTemplate()],
-    async (option, values) => {
-      // log.debug('dapp-create-command', { config });
-      const { dappTemplate } = await option.dappTemplate();
+    async (option, { values }) => {
+      const config = await option.dappTemplate();
+      log.debug('dapp-create-command', config);
 
       if (values[0] === undefined) {
         throw new CommandError({
@@ -43,7 +44,7 @@ export const createDappCommand: (program: Command, version: string) => void =
         '-n',
         values[0],
         '-t',
-        dappTemplate,
+        config.dappTemplate,
       ];
       spawnSync(cmd, cmdArgs, { stdio: 'inherit' });
     },

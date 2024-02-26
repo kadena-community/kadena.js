@@ -101,8 +101,9 @@ export const createGenerateWalletCommand: (
     globalOptions.securityVerifyPassword({ isOptional: false }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
-  async (config) => {
-    log.debug('create-wallet:action', { config });
+  async (option, { collect }) => {
+    const config = await collect(option);
+    log.debug('create-wallet:action', config);
 
     if (config.securityPassword !== config.securityVerifyPassword) {
       log.error(`\nPasswords don't match. Please try again.\n`);

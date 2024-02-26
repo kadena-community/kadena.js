@@ -6,7 +6,6 @@ import {
 } from '../utils/devnetHelpers.js';
 
 import { createExternalPrompt } from '../../prompts/generic.js';
-import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
 import {
@@ -16,12 +15,13 @@ import {
   removeVolume,
 } from '../utils/docker.js';
 
-export const deleteDevnetCommand: CreateCommandReturnType = createCommand(
+export const deleteDevnetCommand = createCommand(
   'delete',
   'Delete devnet',
   [globalOptions.devnetSelect()],
-  async (config) => {
-    log.debug('devnet-delete:action', { config });
+  async (option) => {
+    const config = await option.name();
+    log.debug('devnet-delete:action', config);
 
     guardDocker();
 

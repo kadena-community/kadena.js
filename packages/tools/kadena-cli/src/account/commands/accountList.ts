@@ -1,5 +1,5 @@
 import type { Command } from 'commander';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import {
   maskStringPreservingStartAndEnd,
@@ -53,7 +53,7 @@ async function accountList(config: {
 export const createAccountListCommand: (
   program: Command,
   version: string,
-) => void = createCommandFlexible(
+) => void = createCommand(
   'list',
   'List all available accounts',
   [globalOptions.accountSelectWithAll()],

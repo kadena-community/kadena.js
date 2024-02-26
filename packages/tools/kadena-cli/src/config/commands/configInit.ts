@@ -2,13 +2,13 @@ import type { Command } from 'commander';
 import { devnetDefaults } from '../../constants/devnets.js';
 import { writeDevnet } from '../../devnet/utils/devnetHelpers.js';
 import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
 
 export const createConfigInitCommand: (
   program: Command,
   version: string,
-) => void = createCommandFlexible(
+) => void = createCommand(
   'init',
   'Initialize default configuration of the Kadena CLI',
   [],

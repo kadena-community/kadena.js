@@ -85,8 +85,9 @@ export const createChangeWalletPasswordCommand: (
     globalOptions.securityVerifyPassword({ isOptional: false }),
     confirmOption(),
   ],
-  async (config) => {
-    log.debug('change-wallet-password:action', { config });
+  async (option, { collect }) => {
+    const config = await collect(option);
+    log.debug('change-wallet-password:action', config);
 
     if (config.confirm !== true) {
       return log.error(`\nWallet password won't be updated. Exiting..\n`);

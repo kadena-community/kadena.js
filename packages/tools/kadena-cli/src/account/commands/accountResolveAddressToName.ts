@@ -1,6 +1,6 @@
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { kdnResolveAddressToName } from '../utils/txKdnResolverChain.js';
@@ -35,7 +35,7 @@ export const resolveAddressToName = async (
   }
 };
 
-export const resolveAddressToNameCommand = createCommandFlexible(
+export const resolveAddressToNameCommand = createCommand(
   'address-to-name',
   'Resolve a k:address to a .kda name (kadenanames)',
   [

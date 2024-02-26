@@ -73,13 +73,14 @@ export const createDeleteWalletsCommand: (
   'delete',
   'Delete wallet from your local filesystem',
   [globalOptions.walletNameSelectWithAll(), confirmDelete()],
-  async (config) => {
+  async (option, { collect }) => {
+    const config = await collect(option);
     if (config.confirm !== true) {
       log.warning('\nNo wallets were deleted.\n');
       return;
     }
 
-    log.debug('delete-wallet:action', { config });
+    log.debug('delete-wallet:action', config);
     if (config.walletName === 'all') {
       const result = await deleteAllWallets();
       assertCommandError(result);

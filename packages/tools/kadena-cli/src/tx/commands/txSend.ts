@@ -6,7 +6,7 @@ import { createClient, isSignedTransaction } from '@kadena/client';
 import ora from 'ora';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
@@ -71,7 +71,7 @@ export const sendTransactionAction = async ({
 export const createSendTransactionCommand: (
   program: Command,
   version: string,
-) => void = createCommandFlexible(
+) => void = createCommand(
   'send',
   'Send a transaction to the network',
   [
@@ -80,7 +80,7 @@ export const createSendTransactionCommand: (
     globalOptions.network(),
     globalOptions.chainId(),
   ],
-  async (option, values, stdin) => {
+  async (option, { stdin }) => {
     const commands: IUnsignedCommand[] = [];
 
     if (stdin !== undefined) {

@@ -75,8 +75,9 @@ export const createImportWalletCommand: (
     globalOptions.walletName(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
-  async (config) => {
-    log.debug('import-wallet:action', { config });
+  async (option, { collect }) => {
+    const config = await collect(option);
+    log.debug('import-wallet:action', config);
 
     // compare passwords
     if (config.securityNewPassword !== config.securityVerifyPassword) {

@@ -193,6 +193,9 @@ export const globalOptions = {
     prompt: devnetPrompts.devnetNamePrompt,
     validation: z.string(),
     option: new Option('-n, --name <name>', 'Devnet name (e.g. "devnet")'),
+    expand: async (name: string) => {
+      return { foo: 'bar' };
+    },
   }),
   devnetPort: createOption({
     key: 'port' as const,

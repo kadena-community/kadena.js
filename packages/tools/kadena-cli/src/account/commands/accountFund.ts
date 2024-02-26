@@ -7,7 +7,7 @@ import ora from 'ora';
 // import { networkIsAlive } from '../../devnet/utils/network.js';
 // import { actionAskForDeployDevnet } from '../../prompts/genericActionPrompts.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 // import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
@@ -22,7 +22,7 @@ import { fund } from '../utils/fund.js';
 
 /* bin/kadena-cli.js account fund --account="testnet.yaml" --amount="20" --network="testnet" --chain-id="0" */
 
-export const createFundCommand = createCommandFlexible(
+export const createFundCommand = createCommand(
   'fund',
   'Fund an existing/new account',
   [
@@ -32,7 +32,7 @@ export const createFundCommand = createCommandFlexible(
     globalOptions.chainId(),
     // deployDevnet(),
   ],
-  async (option, values) => {
+  async (option) => {
     const { account, accountConfig } = await option.account();
     const { amount } = await option.amount();
     const { network, networkConfig } = await option.network({

@@ -1,5 +1,5 @@
 import type { Command } from 'commander';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { signWithAliasFile } from '../utils/txSignWithAliasFile.js';
 import { signWithKeypair } from '../utils/txSignWithKeypair.js';
 import { signWithLocalWallet } from '../utils/txSignWithLocalWallet.js';
@@ -12,11 +12,11 @@ import { options } from './txSignOptions.js';
  * @param {string} version - The version of the command.
  */
 export const createSignCommand: (program: Command, version: string) => void =
-  createCommandFlexible(
+  createCommand(
     'sign',
     'Sign a transaction using your local wallet/aliased file/keypair.\nThe transaction can be passed via stdin.\nThe signed transaction will be saved to file.',
     options,
-    async (option, values, stdin) => {
+    async (option, { stdin, values }) => {
       const signMethod = await option.txSignWith();
       if (signMethod.txSignWith === 'localWallet') {
         return signWithLocalWallet(option, values, stdin);

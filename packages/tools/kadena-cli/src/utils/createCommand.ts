@@ -1,186 +1,260 @@
 import type { Command } from 'commander';
-import { z } from 'zod';
 import { CLINAME } from '../constants/config.js';
 import { CommandError, printCommandError } from './command.util.js';
-import { displayConfig } from './createCommandDisplayHelper.js';
 import type { OptionType, createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
-import { collectResponses } from './helpers.js';
+import { handlePromptError } from './helpers.js';
 import { log } from './logger.js';
 import { readStdin } from './stdin.js';
-import type { Combine2, First, Prettify, Pure, Tail } from './typeUtilities.js';
+import type { FlattenObject, Fn, Prettify } from './typeUtilities.js';
 
-type AsOption<T> = T extends {
-  key: infer K;
-  prompt: infer R;
-  transform?: infer Tr;
+export type OptionConfig<Option extends OptionType> = {
+  [P in Option['key']]: Option['transform'] extends Fn
+    ? Awaited<ReturnType<Option['transform']>>
+    : Awaited<ReturnType<Option['prompt']>>;
+} & (Option['expand'] extends Fn
+  ? {
+      [P in `${Option['key']}Config`]: Awaited<ReturnType<Option['expand']>>;
+    }
+  : {});
+
+type PromptFn = (
+  args: Record<string, unknown>,
+  originalArgs: Record<string, unknown>,
+) => unknown;
+
+export async function executeOption<Option extends OptionType>(
+  option: Option,
+  args: Record<string, unknown> = {},
+  originalArgs: Record<string, unknown> = {},
+): Promise<
+  Prettify<{
+    value: unknown;
+    config: OptionConfig<Option>;
+  }>
+> {
+  let value = args[option.key];
+
+  if (value === undefined && option.isInQuestions) {
+    if (args.quiet !== true && args.quiet !== 'true') {
+      value = await (option.prompt as PromptFn)(args, originalArgs);
+    } else if (option.isOptional === false) {
+      // Should have been handled earlier, but just in case
+      throw new Error(
+        `Missing required argument: ${option.key} (${option.option.flags})`,
+      );
+    }
+  }
+
+  const validate = (
+    option.isOptional ? option.validation.optional() : option.validation
+  ).safeParse(value);
+  if (validate.success === false) {
+    log.warning(`Invalid value for ${option.key}: ${value}`);
+  }
+
+  const newConfig = { [option.key]: value } as OptionConfig<Option>;
+  if ('expand' in option) {
+    if (typeof option.expand === 'function') {
+      const expanded = await option.expand(value, args);
+      if (expanded !== undefined && expanded !== null) {
+        // @ts-ignore
+        newConfig[`${option.key}Config`] = expanded;
+      }
+    }
+  }
+  if ('transform' in option) {
+    if (typeof option.transform === 'function') {
+      // @ts-ignore
+      newConfig[option.key] = await option.transform(value, args);
+    }
+  }
+
+  return {
+    value: value,
+    config: newConfig,
+  };
 }
-  ? K extends string
-    ? {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        [P in K]: Tr extends (...args: any[]) => unknown
-          ? Awaited<ReturnType<Tr>>
-          : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          R extends (...args: any[]) => unknown
-          ? Awaited<ReturnType<R>>
-          : Awaited<R>;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } & (T extends { expand: (...args: any[]) => infer Ex }
-        ? {
-            [P in `${K}Config`]: Pure<Ex>;
-          }
-        : {})
-    : never
-  : never;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Combine<Tuple extends any[]> = Tuple extends [infer one]
-  ? AsOption<one>
-  : Combine2<
-      AsOption<First<Tuple>>,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      Tail<Tuple> extends any[] ? Combine<Tail<Tuple>> : {}
-    >;
+const printCommandExecution = (
+  command: string,
+  args: Record<string, unknown>,
+  updateArgs?: Record<string, unknown>,
+  values?: string[],
+): void => {
+  // Give the option to update args used in the command by returning an object
+  // Only update args that are already defined
+  if (updateArgs !== undefined && typeof updateArgs === 'object') {
+    for (const [key, value] of Object.entries(updateArgs)) {
+      if (Object.hasOwn(args, key) === true) args[key] = value;
+    }
+  }
 
-export type CreateCommandReturnType = (
-  program: Command,
-  version: string,
-) => void;
+  log.info(
+    log.color.yellow(
+      `\nExecuted: ${getCommandExecution(command, args, values)}`,
+    ),
+  );
+};
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function createCommand<const T extends OptionType[]>(
-  name: string,
-  description: string,
-  options: [...T],
-  action: (
-    finalConfig: Prettify<Combine<T> & { quiet?: boolean }>,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    args?: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    stdin?: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ) => any,
-): (program: Command, version: string) => void {
-  return async (program: Command, version: string) => {
-    const command = program.command(name).description(description);
+export type CommandOption<T extends OptionType[]> = {
+  [K in T[number]['key']]: (
+    customArgs?: Record<string, unknown>,
+  ) => Promise<Prettify<OptionConfig<Extract<T[number], { key: K }>>>>;
+};
+
+interface ICommandData {
+  /** Arguments parsed from the command line */
+  values: string[];
+  /** content passed to stdin */
+  stdin?: string;
+  /** Automatically fetch all options in order of the options array and merge the results */
+  collect: <T extends CommandOption<OptionType[]>>(
+    options: T,
+  ) => Promise<
+    FlattenObject<{
+      [K in keyof T]: Awaited<ReturnType<T[K]>>;
+    }>
+  >;
+}
+
+export const createCommand =
+  <
+    T extends OptionType[],
+    C extends (
+      option: CommandOption<T>,
+      data: ICommandData,
+    ) => Promise<Record<string, unknown> | void>,
+  >(
+    name: string,
+    description: string,
+    options: T,
+    action: C,
+  ): ((program: Command, version: string) => void) =>
+  (program) => {
+    // anything after the first newline is only shown on the command specific help page
+    const [_description, ...helpText] = description.split('\n');
+    let command = program.command(name).description(_description);
+    if (helpText.length > 0) {
+      command.configureHelp({
+        commandDescription: () =>
+          `${[_description, '', ...helpText].join('\n')}`,
+      });
+    }
+    let allowsUnknownOptions = false;
+
+    if (options.some((option) => option.allowUnknownOptions === true)) {
+      command = command.allowUnknownOption(true);
+      allowsUnknownOptions = true;
+    }
 
     command.addOption(globalOptions.quiet().option);
     options.forEach((option) => {
       command.addOption(option.option);
     });
+    command.action(async (originalArgs, ...rest) => {
+      // args outside try-catch to be able to use it in catch
+      let args = { ...originalArgs };
+      const values = rest.flatMap((r) => r.args);
 
-    command.action(async (args, ...rest) => {
       try {
         const stdin = await readStdin();
-        const generalArgs = rest.flatMap((r) => r.args);
 
-        // collectResponses
-        const questionsMap = options.filter((o) => o.isInQuestions);
+        if (allowsUnknownOptions) {
+          log.debug(`Command ${name} allows unknown options`);
+        }
 
+        // Automatically enable quiet mode if not in interactive environment
         if (!process.stderr.isTTY) args.quiet = true;
 
-        handleQuietOption(
+        handleQuietOption(args, options);
+
+        const optionIndex = new Map<unknown, number>();
+        const collectOptionsMap = options.reduce((acc, option, index) => {
+          acc[option.key] = async (customArgs = {}) => {
+            try {
+              const { value, config } = await executeOption(
+                option,
+                {
+                  ...args,
+                  ...customArgs,
+                },
+                originalArgs,
+              );
+
+              // Keep track of previous args to prompts can use them
+              args = { ...args, [option.key]: value };
+              return config;
+            } catch (error) {
+              handlePromptError(error);
+            }
+          };
+          optionIndex.set(acc[option.key], index);
+          return acc;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        }, {} as any);
+
+        const result = await action(collectOptionsMap, {
+          values,
+          stdin: stdin ?? undefined,
+          collect: async (optionObject) => {
+            const options = Object.entries(optionObject);
+            options.sort(
+              (a, b) =>
+                (optionIndex.get(a[1]) ?? 0) - (optionIndex.get(b[1]) ?? 0),
+            );
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            let result = {} as any;
+            for (const option of options) {
+              result = {
+                ...result,
+                ...(await option[1]()),
+              };
+            }
+            return result;
+          },
+        });
+
+        printCommandExecution(
           `${program.name()} ${name}`,
           args,
-          questionsMap,
-          generalArgs,
+          result ?? undefined,
+          values,
         );
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const newArgs: any =
-          args.quiet === true
-            ? args
-            : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              await collectResponses<any>(args, questionsMap as any);
-
-        log.info(
-          `Executing: ${getCommandExecution(
-            `${program.name()} ${name}`,
-            newArgs,
-            generalArgs,
-          )}`,
-        );
-
-        // zod validation
-        const zodValidationObject = options.reduce(
-          (zObject, { key, validation }) => {
-            zObject[key] = validation;
-            return zObject;
-          },
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          {} as Record<string, any>,
-        );
-
-        z.object(zodValidationObject).parse(newArgs);
-
-        const config = { ...newArgs };
-        for (const option of options) {
-          if ('expand' in option) {
-            if (typeof option.expand === 'function') {
-              const expanded = await option.expand(
-                newArgs[option.key],
-                newArgs,
-              );
-              if (expanded !== undefined) {
-                config[`${option.key}Config`] = expanded;
-              }
-            }
-          }
-          if ('transform' in option) {
-            if (typeof option.transform === 'function') {
-              config[option.key] = await option.transform(
-                newArgs[option.key],
-                newArgs,
-              );
-            }
-          }
-        }
-
-        if (Object.keys(config).length > 0) {
-          displayConfig(config);
-          log.info('\n');
-        }
-
-        await action(config, generalArgs, stdin ?? undefined);
       } catch (error) {
         if (error instanceof CommandError) {
           printCommandError(error);
+          printCommandExecution(
+            `${program.name()} ${name}`,
+            args,
+            error.args,
+            values,
+          );
           process.exitCode = error.exitCode;
           return;
         }
-        log.debug(error);
-        log.error(`Error executing command ${name}: ${error}`);
+        log.error(`\nAn error occurred: ${error.message}\n`);
         process.exitCode = 1;
       }
     });
   };
-}
 
 export function handleQuietOption(
-  command: string,
   args: Record<string, unknown>,
   options: ReturnType<ReturnType<typeof createOption>>[],
-  generalArgs: string[],
 ): void {
   if (args.quiet === true) {
     const missing = options.filter(
       (option) => option.isOptional === false && args[option.key] === undefined,
     );
     if (missing.length) {
-      log.warning(
-        `${'Missing arguments in: '}${getCommandExecution(
-          `${command}`,
-          args,
-          generalArgs,
-        )}`,
-      );
       log.error(
         `\nMissing required arguments:\n${missing
           .map((m) => options.find((q) => q.key === m.key)!)
           .map((m) => `- ${m.key} (${m.option.flags})\n`)
           .join('')}`,
       );
-      log.warning('Remove the --quiet flag to enable interactive prompts\n');
+      log.warning('Remove the --quiet flag to enable interactive prompts');
       throw new CommandError({ exitCode: 1 });
     }
   }

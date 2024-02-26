@@ -2,7 +2,6 @@ import { join } from 'path';
 
 import { generateDts, pactParser } from '@kadena/pactjs-generator';
 import { services } from '../../services/index.js';
-import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { notEmpty } from '../../utils/helpers.js';
@@ -17,7 +16,7 @@ import { writeModulesJson } from '../utils/files.js';
 import { retrieveContractFromChain } from '../utils/retrieveContractFromChain.js';
 import { shallowFindFile } from '../utils/shallowFindFile.js';
 
-export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
+export const typescriptGenerateCommand = createCommand(
   'generate',
   'Generate typescript definitions based on a smart contract',
   [
@@ -29,8 +28,9 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
     globalOptions.network(),
     globalOptions.chainId(),
   ],
-  async (config) => {
-    log.debug('typescript-contract-generate:action', { config });
+  async (option, { collect }) => {
+    const config = await collect(option);
+    log.debug('typescript-contract-generate:action', config);
 
     if (!config.typescriptFile === !config.typescriptContract) {
       log.error(`\nEither file or contract must be specified.\n`);
