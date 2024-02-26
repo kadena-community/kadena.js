@@ -1,9 +1,11 @@
 import { Button } from '@/components/Button/Button';
+import { Modal } from '@/components/Modal/Modal';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import {
   MonoArrowBack,
+  MonoCheck,
   MonoClose,
   MonoQrCodeScanner,
 } from '@kadena/react-icons';
@@ -16,18 +18,26 @@ import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { TextField } from '../TextField/TextField';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
-import { imageWrapper, titleErrorClass } from './style.css';
+import {
+  checkClass,
+  imageWrapper,
+  infoTextClass,
+  titleErrorClass,
+} from './style.css';
 
 interface IProps {
   next: () => void;
   prev: () => void;
 }
+
 export const DetailView: FC<IProps> = ({ next, prev }) => {
-  const { proofOfUs, closeToken, changeTitle } = useProofOfUs();
+  const { proofOfUs, closeToken, changeTitle, updateProofOfUs } =
+    useProofOfUs();
   const { removeBackground } = useAvatar();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
   const [titleError, setTitleError] = useState<string>('');
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(true);
 
   const handleShare = () => {
     if (!proofOfUs?.title) {
@@ -53,14 +63,19 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
     router.replace('/user');
   };
 
-  const handleTitleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleTitleChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
     //TODO: this needs to debounce
     if (!proofOfUs) return;
     const value = e.target.value;
     if (!value) {
       setTitleError('Title is empty');
+    } else {
+      setTitleError('');
     }
-    changeTitle(value);
+
+    await updateProofOfUs({
+      title: changeTitle(value),
+    });
   };
 
   if (!isMounted) return null;
@@ -111,6 +126,17 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         Share <MonoQrCodeScanner />
       </Button>
       {titleError && <div className={titleErrorClass}>{titleError}</div>}
+      {isInfoModalOpen && (
+        <Modal label="Tap to Tag" onClose={() => setIsInfoModalOpen(false)}>
+          <p className={infoTextClass}>
+            Tag yourself on the picture by tapping anywhere on the photo
+          </p>
+          <Button onPress={() => setIsInfoModalOpen(false)}>
+            Capisce
+            <MonoCheck className={checkClass} />
+          </Button>
+        </Modal>
+      )}
     </ScreenHeight>
   );
 };

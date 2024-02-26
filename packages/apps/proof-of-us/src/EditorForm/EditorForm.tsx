@@ -5,7 +5,7 @@ import { SocialIcons, getSocial } from '@/utils/getSocial';
 import { Stack } from '@kadena/react-ui';
 import type { ChangeEventHandler, FC, FormEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { iconClass } from './style.css';
+import { iconClass, mobileInputClass } from './style.css';
 
 interface IProps {
   signer?: IProofOfUsSignee;
@@ -13,7 +13,7 @@ interface IProps {
 }
 
 export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
-  const { updateSigner } = useProofOfUs();
+  const { updateSigner, updateProofOfUs } = useProofOfUs();
   const [error, setError] = useState<string>('');
   const formRef = useRef<HTMLFormElement>(null);
   const [socialIcon, setSocialIcon] = useState<
@@ -35,7 +35,7 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
     firstElm.focus();
   }, [formRef.current]);
 
-  const handleSaveEditor: FormEventHandler<HTMLFormElement> = (evt) => {
+  const handleSaveEditor: FormEventHandler<HTMLFormElement> = async (evt) => {
     evt.preventDefault();
     setError('');
 
@@ -51,9 +51,11 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
     }
     setSocialIcon(socialType?.icon);
 
-    updateSigner({
-      name: label,
-      socialLink,
+    await updateProofOfUs({
+      signees: updateSigner({
+        name: label,
+        socialLink,
+      }),
     });
 
     onClose();
@@ -81,6 +83,7 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
           name="label"
           defaultValue={signer?.name}
           maxLength={35}
+          className={mobileInputClass}
         />
         <Stack position="relative">
           <TextField
@@ -89,6 +92,7 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
             placeholder="Social Media Uri"
             name="socialLink"
             defaultValue={signer?.socialLink}
+            className={mobileInputClass}
           />
           {socialIcon && (
             <span className={iconClass}>{renderIcon(socialIcon)}</span>

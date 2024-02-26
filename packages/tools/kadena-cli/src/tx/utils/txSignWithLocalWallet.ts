@@ -52,6 +52,11 @@ export const signTransactionWithLocalWallet = async ({
       walletConfig.legacy,
     );
 
+    // Quietly return if no commands were signed, `signTransactionsWithSeed` already outputs an error.
+    if (signedCommands.length === 0) {
+      return { success: true, data: { commands: [] } };
+    }
+
     const savedTransactions = await saveSignedTransactions(signedCommands);
 
     const signingStatus = await assessTransactionSigningStatus(signedCommands);

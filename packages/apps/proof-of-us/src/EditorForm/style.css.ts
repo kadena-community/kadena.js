@@ -17,3 +17,7 @@ export const iconClass = style([
     color: deviceColors.kadenaFont,
   },
 ]);
+
+export const mobileInputClass = style({
+  fontWeight: '400',
+});

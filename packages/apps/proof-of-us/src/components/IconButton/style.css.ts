@@ -8,6 +8,9 @@ export const buttonClass = style({
   padding: '10px',
 
   selectors: {
+    '&:first-child': {
+      paddingInlineStart: 0,
+    },
     '&:last-child': {
       paddingInlineEnd: 0,
     },

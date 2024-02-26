@@ -4,19 +4,23 @@ import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
-import { MonoArrowBack, MonoArrowDownward } from '@kadena/react-icons';
-import { CopyButton } from '@kadena/react-ui';
+import {
+  MonoArrowBack,
+  MonoArrowDownward,
+  MonoCheck,
+} from '@kadena/react-icons';
+import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 
+import { useAccount } from '@/hooks/account';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
-import { TextField } from '../TextField/TextField';
 import { qrClass } from './style.css';
 
 interface IProps {
@@ -27,8 +31,14 @@ interface IProps {
 
 export const ShareView: FC<IProps> = ({ prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
-  const { proofOfUs, updateStatus } = useProofOfUs();
+  const qrContainerRef = useRef<HTMLDivElement>(null);
+
+  const [isMounted, setIsMounted] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const { proofOfUs, updateStatus, isInitiator } = useProofOfUs();
+  const { account } = useAccount();
   const { signToken } = useSignToken();
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   const handleBack = () => {
@@ -42,6 +52,16 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
     return;
   };
 
+  //check that the account is also really the initiator.
+  //other accounts have no business here and are probably looking for the scan view
+  useEffect(() => {
+    if (!isInitiator()) {
+      router.replace(`/scan/${proofOfUs?.proofOfUsId}`);
+      return;
+    }
+    setIsMounted(true);
+  }, [proofOfUs, account]);
+
   useEffect(() => {
     const transaction = searchParams.get('transaction');
     if (!transaction || !proofOfUs) return;
@@ -49,7 +69,14 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
     updateStatus({ proofOfUsId: proofOfUs.proofOfUsId, status: 4 });
   }, []);
 
-  if (!proofOfUs) return;
+  if (!proofOfUs || !account || !isMounted) return;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(
+      `${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`,
+    );
+    setIsCopied(true);
+  };
 
   return (
     <ScreenHeight>
@@ -70,10 +97,14 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
           {!isAlreadySigning(proofOfUs.signees) ? (
             <>
-              <div className={qrClass}>
+              <div
+                className={qrClass}
+                ref={qrContainerRef}
+                onClick={handleCopy}
+              >
                 <QRCode
                   ecLevel="H"
-                  size={800}
+                  size={qrContainerRef.current?.offsetWidth || 300}
                   ref={qrRef}
                   value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
                   removeQrCodeBehindLogo={true}
@@ -83,13 +114,12 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                   eyeRadius={10}
                 />
               </div>
-              <TextField
-                placeholder="Link"
-                id="linkshare"
-                aria-label="share"
-                value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
-                endAddon={<CopyButton inputId="linkshare" />}
-              />
+              <Button onPress={handleCopy}>Click to copy link</Button>
+              {isCopied ? (
+                <Stack>
+                  Copied! <MonoCheck />
+                </Stack>
+              ) : null}
               <ListSignees />
             </>
           ) : (

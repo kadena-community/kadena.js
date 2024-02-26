@@ -24,24 +24,25 @@ interface IProps {
   status: number;
 }
 
-export const MintView: FC<IProps> = ({ prev }) => {
+export const MintView: FC<IProps> = () => {
   const { proofOfUs } = useProofOfUs();
   const { doSubmit, isStatusLoading, status, result } = useSubmit();
   const { uploadBackground } = useAvatar();
   const router = useRouter();
 
-  const handleGoToProof = async () => {
-    alert('we need to implement this');
-  };
-
   const handleMint = async () => {
     if (!proofOfUs) return;
-    Promise.all([
-      doSubmit(proofOfUs.tx),
-      uploadBackground(proofOfUs.proofOfUsId),
-    ]).then((values) => {
-      console.log(values);
-    });
+
+    try {
+      await uploadBackground(proofOfUs.proofOfUsId);
+    } catch (e) {
+      console.error('UPLOAD ERR');
+    }
+    try {
+      await doSubmit(proofOfUs.tx);
+    } catch (e) {
+      console.error('SUBMIT ERR');
+    }
   };
 
   useEffect(() => {
@@ -52,6 +53,10 @@ export const MintView: FC<IProps> = ({ prev }) => {
     }
     handleMint();
   }, [proofOfUs?.tx]);
+
+  const handleGoToProof = async () => {
+    alert('we need to implement this');
+  };
 
   const handleClose = () => {
     router.push('/user');

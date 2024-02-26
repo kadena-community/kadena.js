@@ -1,6 +1,7 @@
 'use client';
 import { useAccount } from '@/hooks/account';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
+import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { store } from '@/utils/socket/store';
 import { useParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
@@ -26,14 +27,13 @@ export interface IProofOfUsContext {
     signee: IProofOfUsSignee;
   }) => Promise<void>;
   createToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
-  addTx: (tx: string) => Promise<void>;
-  changeTitle: (value: string) => Promise<void>;
-  updateBackgroundColor: (value: string) => Promise<void>;
+  changeTitle: (value: string) => string;
+  updateBackgroundColor: (value: string) => string;
   isConnected: () => boolean;
   isInitiator: () => boolean;
   hasSigned: () => boolean;
-  getSigneeAccount: (account: IAccount) => IProofOfUsSignee;
-  updateSigner: (value: any, isOverwrite?: boolean) => Promise<void>;
+  updateSigner: (value: any, isOverwrite?: boolean) => IProofOfUsSignee[];
+  updateProofOfUs: (value: any) => Promise<void>;
 }
 
 export const ProofOfUsContext = createContext<IProofOfUsContext>({
@@ -46,22 +46,15 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   addSignee: async () => {},
   removeSignee: async () => {},
   createToken: async () => {},
-  changeTitle: async () => {},
-  updateBackgroundColor: async () => {},
+  changeTitle: () => '',
+  updateBackgroundColor: () => '',
   isConnected: () => false,
   isInitiator: () => false,
   hasSigned: () => false,
-  updateSigner: async () => {},
-  addTx: async () => {},
-  getSigneeAccount: (account: IAccount) => {
-    return {
-      accountName: account.accountName,
-      alias: account.alias,
-      initiator: false,
-      signerStatus: 'init',
-      publicKey: '',
-    };
+  updateSigner: () => {
+    return [];
   },
+  updateProofOfUs: async () => {},
 });
 
 export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -118,26 +111,36 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     );
   };
 
-  const changeTitle = async (value: string) => {
-    if (!proofOfUs) return;
-
-    await store.addTitle(proofOfUs, value);
+  const changeTitle = (value: string) => {
+    if (isAlreadySigning(proofOfUs?.signees)) return proofOfUs?.title ?? '';
+    return value;
   };
 
-  const updateBackgroundColor = async (value: string) => {
-    if (!proofOfUs) return;
-
-    await store.updateBackgroundColor(proofOfUs, value);
+  const updateBackgroundColor = (value: string) => {
+    if (isAlreadySigning(proofOfUs?.signees))
+      return proofOfUs?.backgroundColor ?? '';
+    return value;
   };
 
-  const updateSigner = async (value: any, updateSigner: boolean = false) => {
+  const updateSigner = (value: any, isOverwrite: boolean = false) => {
+    if (!proofOfUs) return [];
+    if (!account) return proofOfUs.signees;
+
+    if (!isOverwrite && isAlreadySigning(proofOfUs.signees))
+      return proofOfUs.signees;
+
+    const newList: IProofOfUsSignee[] = proofOfUs.signees.map((a) => {
+      if (a.accountName === account.accountName) {
+        return { ...a, ...value };
+      }
+      return a;
+    });
+
+    return newList;
+  };
+  const updateProofOfUs = async (value: any) => {
     if (!proofOfUs || !account) return;
-    await store.updateSigner(
-      proofOfUs,
-      getSigneeAccount(account, proofOfUs),
-      value,
-      updateSigner,
-    );
+    await store.updateProofOfUs(proofOfUs, value);
   };
 
   const hasSigned = (): boolean => {
@@ -161,12 +164,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     return !!foundAccount?.initiator;
   };
 
-  const addTx = async (tx: string) => {
-    if (!proofOfUs || !account) return;
-
-    await store.updateTx(proofOfUs, tx);
-  };
-
   return (
     <ProofOfUsContext.Provider
       value={{
@@ -176,14 +173,13 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         createToken,
         isConnected,
         isInitiator,
-        getSigneeAccount,
         background,
         proofOfUs,
         updateStatus,
         changeTitle,
         updateBackgroundColor,
+        updateProofOfUs,
         updateSigner,
-        addTx,
         hasSigned,
       }}
     >

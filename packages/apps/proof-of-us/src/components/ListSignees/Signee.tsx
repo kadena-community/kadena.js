@@ -28,7 +28,7 @@ export const Signee: FC<IProps> = ({ signee }) => {
   const getSuccessStyle = (signee?: IProofOfUsSignee) => {
     if (signee?.signerStatus === 'success') {
       return {
-        borderColor: deviceColors.darkGreen,
+        borderColor: deviceColors.green,
       };
     }
     return {};

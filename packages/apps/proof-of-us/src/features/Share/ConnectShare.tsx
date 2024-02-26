@@ -13,6 +13,7 @@ import UserLayout from '@/components/UserLayout/UserLayout';
 import { env } from '@/utils/env';
 import { MonoClose } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
+import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 
 import type { FC } from 'react';
@@ -68,7 +69,7 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
           flexDirection="column"
           paddingInline="md"
         >
-          <Heading as="h6">Signees</Heading>
+          <Heading as="h5">Signees</Heading>
 
           <Signees signees={data.properties.signees} authors={data.authors} />
           <Heading as="h6">Metadata</Heading>
@@ -90,7 +91,7 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
 
             <MetaTerm>event Date</MetaTerm>
             <MetaDetails>
-              {new Date(data.properties.date).toLocaleDateString()}
+              {format(data.properties.date, 'dd MMMM yyyy')}
             </MetaDetails>
             <MetaTerm>image</MetaTerm>
             <MetaDetails>

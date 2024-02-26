@@ -16,15 +16,14 @@ export const Modal: FC<IProps> = ({ label, children, onClose }) => {
 
   const handleClose: MouseEventHandler<HTMLDivElement> = (evt) => {
     evt.preventDefault();
-    console.log(evt);
     if (evt.target !== backRef.current) return;
     onClose();
   };
   return (
     <div ref={backRef} className={backgroundClass} onClick={handleClose}>
       <section className={dialogClass}>
-        <Stack paddingBlock="md">
-          <Heading as="h6">{label}</Heading>
+        <Stack paddingBlockEnd="md">
+          <Heading as="h5">{label}</Heading>
         </Stack>
         {children}
       </section>

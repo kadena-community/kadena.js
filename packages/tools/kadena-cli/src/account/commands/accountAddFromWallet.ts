@@ -8,6 +8,7 @@ import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { checkbox } from '../../utils/prompts.js';
+import { accountOptions } from '../accountOptions.js';
 import { addAccount } from '../utils/addAccount.js';
 import {
   displayAddAccountSuccess,
@@ -53,14 +54,14 @@ export const createAddAccountFromWalletCommand = createCommand(
   'add-from-wallet',
   'Add an local account from a key wallet',
   [
-    globalOptions.accountAlias(),
+    accountOptions.accountAlias(),
     globalOptions.walletSelect(),
     globalOptions.fungible(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
     selectPublicKeys(),
     globalOptions.predicate(),
-    globalOptions.accountOverwrite(),
+    accountOptions.accountOverwrite(),
   ],
 
   async (option, values) => {

@@ -1,4 +1,4 @@
-import type { ChainId, IUnsignedCommand } from '@kadena/client';
+import type { IUnsignedCommand } from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { proofOfUsData } from './data';
@@ -22,7 +22,7 @@ export const getProofOfUs = async (
     )
     .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: '1',
+      chainId: `${env.CHAINID}`,
     })
     .createTransaction();
 
@@ -35,18 +35,20 @@ export const getProofOfUs = async (
     ? (result.data as IProofOfUsToken)
     : undefined;
 };
-
-export const getTokenInfo = async (id: string): Promise<string | undefined> => {
+export const getTokenId = async (
+  eventId: string,
+  uri: string,
+): Promise<string | undefined> => {
   const client = createClient();
 
   const transaction = Pact.builder
     .execution(
-      `(marmalade-v2.ledger.get-token-info "${decodeURIComponent(id)}"
+      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.retrieve-connection-token-id "${eventId}" "${uri}"
       )`,
     )
     .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: '1',
+      chainId: `${env.CHAINID}`,
     })
     .createTransaction();
 
@@ -58,29 +60,17 @@ export const getTokenInfo = async (id: string): Promise<string | undefined> => {
   return result.status === 'success' ? (result.data as string) : undefined;
 };
 
-//TODO: data is hardcoded
-export const createTokenId = async (
-  proofOfUs: IProofOfUsData,
-): Promise<string | undefined> => {
+export const getTokenInfo = async (id: string): Promise<string | undefined> => {
   const client = createClient();
-
-  const guardString = proofOfUs.signees.reduce((acc: string, val) => {
-    return `${acc} "${val.accountName}"`;
-  }, '');
-
-  const manifestUri =
-    'https://bafybeidw7xgbijagtu7vinvvjllrz3srsjam5entjlfvur2uqyab3f6s2a.ipfs.nftstorage.link/metadata';
 
   const transaction = Pact.builder
     .execution(
-      `(marmalade-v2.ledger.create-token-id 
-        {'precision: 0,'policies: [marmalade-v2.collection-policy-v1 proof-of-us], 'uri: "${manifestUri}"}
-      (map (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard) [${guardString}])
+      `(marmalade-v2.ledger.get-token-info "${decodeURIComponent(id)}"
       )`,
     )
     .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: '1',
+      chainId: `${env.CHAINID}`,
     })
     .createTransaction();
 
@@ -88,9 +78,6 @@ export const createTokenId = async (
     preflight: false,
     signatureVerification: false,
   });
-
-  console.log({ transaction });
-  console.log({ result });
 
   return result.status === 'success' ? (result.data as string) : undefined;
 };
@@ -105,7 +92,7 @@ export const getTokenUri = async (id: string): Promise<string | undefined> => {
     )
     .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: '1',
+      chainId: `${env.CHAINID}`,
     })
     .createTransaction();
 
@@ -137,9 +124,9 @@ export const claimAttendanceToken = async (
       )`,
     )
     .addData('event_id', `${eventId}`)
-    .setNetworkId(env.NETWORKID ?? '')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: `${env.CHAINID as ChainId}`,
+      chainId: `${env.CHAINID}`,
       senderAccount: 'proof-of-us-gas-station',
       gasPrice: 0.000001,
     })
@@ -179,9 +166,9 @@ export const hasMintedAttendaceToken = async (
       )`,
     )
     .addData('event-id', `${eventId}`)
-    .setNetworkId(env.NETWORKID ?? '')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: `${env.CHAINID as ChainId}`,
+      chainId: `${env.CHAINID}`,
     })
     .createTransaction();
 
@@ -236,9 +223,9 @@ export const createConnectTokenTransaction = async (
     .addData('event_id', eventId)
     .addData('collection_id', collectionId)
     .addData('uri', manifestUri)
-    .setNetworkId(env.NETWORKID ?? '')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: `${env.CHAINID as ChainId}`,
+      chainId: `${env.CHAINID}`,
       senderAccount: 'proof-of-us-gas-station',
       gasPrice: 0.000001,
       gasLimit: 10000,
@@ -285,6 +272,9 @@ export const createConnectTokenTransaction = async (
   });
 
   const transaction = transactionBuilder.createTransaction();
+
+  console.log(env.CHAINID, env.NETWORKID);
+  console.log({ transaction });
 
   return transaction;
 };

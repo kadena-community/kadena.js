@@ -3,6 +3,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { accountOptions } from '../accountOptions.js';
 import { kdnResolveAddressToName } from '../utils/txKdnResolverChain.js';
 
 export const resolveAddressToName = async (
@@ -40,7 +41,7 @@ export const resolveAddressToNameCommand = createCommand(
   'Resolve a k:address to a .kda name (kadenanames)',
   [
     globalOptions.network({ isOptional: false }),
-    globalOptions.accountKdnAddress(),
+    accountOptions.accountKdnAddress(),
   ],
   async (option) => {
     const kadena = await option.network({

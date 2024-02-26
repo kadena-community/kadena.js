@@ -44,6 +44,10 @@ type TokenType = 'connect' | 'attendance';
 
 interface IProofOfUsData {
   tx: IUnsignedCommand;
+  tokenId: string;
+  requestKey: string;
+  manifestUri: string;
+  imageUri: string;
   eventId: string;
   mintStatus: IMintStatus;
   status: IBuildStatusValues;
@@ -119,6 +123,10 @@ type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   socialLink?: ISocial;
   position?: ISigneePosition;
   publicKey: string;
+};
+
+type IAccountLeaderboard = Pick<IAccount, 'alias' | 'accountName'> & {
+  tokenCount: number;
 };
 
 type IProofOfUsTokenSignee = Pick<

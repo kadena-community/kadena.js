@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
-import { createID } from '@utils/global-id';
+import type { Block } from '@prisma/client';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import type { IContext } from '../builder';
 import { PRISMA, builder } from '../builder';
@@ -8,7 +8,7 @@ import GQLBlock from '../objects/block';
 builder.subscriptionField('newBlocksFromDepth', (t) =>
   t.field({
     description: 'Subscribe to new blocks from a specific depth.',
-    type: ['ID'],
+    type: [GQLBlock],
     args: {
       minimumDepth: t.arg.int({ required: true }),
       chainIds: t.arg.stringList({ required: true }),
@@ -24,7 +24,7 @@ async function* iteratorFn(
   chainIds: string[],
   minimumDepth: number,
   context: IContext,
-): AsyncGenerator<string[], void, unknown> {
+): AsyncGenerator<Block[], void, unknown> {
   const startingTimestamp = new Date().toISOString();
   const blockResult = await getLastBlocksWithDepth(
     chainIds,
@@ -35,7 +35,7 @@ async function* iteratorFn(
 
   if (!nullishOrEmpty(blockResult)) {
     lastBlock = blockResult[0];
-    yield [createID(GQLBlock.name, lastBlock.hash)];
+    yield [lastBlock];
   }
   while (!context.req.socket.destroyed) {
     const newBlocks = await getLastBlocksWithDepth(
@@ -47,7 +47,7 @@ async function* iteratorFn(
 
     if (!nullishOrEmpty(newBlocks)) {
       lastBlock = newBlocks[0];
-      yield newBlocks.map((block) => createID(GQLBlock.name, block.hash));
+      yield newBlocks;
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -59,7 +59,7 @@ async function getLastBlocksWithDepth(
   minimumDepth: number,
   date: string,
   id?: number,
-): Promise<{ id: number; hash: string }[]> {
+): Promise<Block[]> {
   const blocksArray = await Promise.all(
     chainIds.map(async (chainId) => {
       const latestBlock = await prismaClient.block.findFirst({
@@ -68,9 +68,6 @@ async function getLastBlocksWithDepth(
         },
         orderBy: {
           height: 'desc',
-        },
-        select: {
-          height: true,
         },
       });
 
