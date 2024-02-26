@@ -51,7 +51,7 @@ export default builder.prismaNode('Transaction', {
               sender: parent.senderAccount,
             },
             payload: {
-              code: parent.code,
+              code: JSON.stringify(parent.code),
               data: parent.data ? JSON.stringify(parent.data) : '',
               pactId: parent.pactId,
               step: Number(parent.step),
