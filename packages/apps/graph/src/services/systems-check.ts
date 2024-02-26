@@ -77,7 +77,7 @@ export async function runSystemsCheck() {
               },
             },
             {
-              title: 'Checking if the mempool and reachable.',
+              title: 'Checking if the mempool is reachable.',
               skip: () =>
                 'Skipping: There is currently no mempool implementation.',
               task: async () => {},
