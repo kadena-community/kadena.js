@@ -20,7 +20,7 @@
   - [kadena networks](#kadena-networks)
   - [kadena wallets](#kadena-wallets)
   - [kadena keys](#kadena-keys)
-  - [kadena account](#kadena-account)
+  - [kadena accounts](#kadena-accounts)
   - [kadena tx](#kadena-tx)
   - [kadena dapp](#kadena-dapp)
   - [Supported Templates](#supported-templates)
@@ -409,7 +409,7 @@ example for listing all keys
 kadena keys list"
 ```
 
-## kadena account
+## kadena accounts
 
 Tool to manage / fund accounts of fungibles (e.g. coin')
 
@@ -428,7 +428,7 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 ---
 
 ```
-kadena account add-manual [arguments]
+kadena accounts add-manual [arguments]
 ```
 
 | **Arguments & Options** | ** Description**                             | **Required** |
@@ -444,13 +444,13 @@ kadena account add-manual [arguments]
 example:
 
 ```
-kadena account add-manual --account-alias="myalias" --account-name="myaccountname" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="mypublickey" --predicate="keys-all"
+kadena accounts add-manual --account-alias="myalias" --account-name="myaccountname" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="mypublickey" --predicate="keys-all"
 ```
 
 ---
 
 ```
-kadena account add-from-wallet [arguments]
+kadena accounts add-from-wallet [arguments]
 ```
 
 | **Arguments & Options** | ** Description**                             | **Required** |
@@ -466,13 +466,13 @@ kadena account add-from-wallet [arguments]
 example:
 
 ```
-kadena account add-from-wallet --account-alias="myalias" --key-wallet="mywallet.wallet" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="publickey" --predicate="keys-all"
+kadena accounts add-from-wallet --account-alias="myalias" --key-wallet="mywallet.wallet" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="publickey" --predicate="keys-all"
 ```
 
 ---
 
 ```
-kadena account details [arguments]
+kadena accounts details [arguments]
 ```
 
 | **Arguments & Options** | ** Description**               | **Required** |
@@ -484,32 +484,13 @@ kadena account details [arguments]
 example:
 
 ```
-kadena account details --account="myalias.yaml" --network="mainnet" --chain-id="1"
+kadena accounts details --account="myalias.yaml" --network="mainnet" --chain-id="1"
 ```
 
 ---
 
 ```
-kadena account fund [arguments]
-```
-
-| **Arguments & Options** | ** Description**               | **Required** |
-| ----------------------- | ------------------------------ | ------------ |
-| --account               | Provide alias for account      |              |
-| --amount                | Amount to fund                 |              |
-| --network               | Name of the network to be used |              |
-| --chain-id              | Chain to be used               |              |
-
-example:
-
-```
-kadena account fund --account="myalias.yaml" --amount="10" --network="testnet" --chain-id="1"
-```
-
----
-
-```
-kadena account fund [arguments]
+kadena accounts fund [arguments]
 ```
 
 | **Arguments & Options** | ** Description**               | **Required** |
@@ -522,13 +503,32 @@ kadena account fund [arguments]
 example:
 
 ```
-kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="1"
+kadena accounts fund --account="myalias.yaml" --amount="10" --network="testnet" --chain-id="1"
 ```
 
 ---
 
 ```
-kadena account account name-to-address [arguments]
+kadena accounts fund [arguments]
+```
+
+| **Arguments & Options** | ** Description**               | **Required** |
+| ----------------------- | ------------------------------ | ------------ |
+| --account               | Provide alias for account      |              |
+| --amount                | Amount to fund                 |              |
+| --network               | Name of the network to be used |              |
+| --chain-id              | Chain to be used               |              |
+
+example:
+
+```
+kadena accounts fund --account="myalias" --amount="10" --network="testnet" --chain-id="1"
+```
+
+---
+
+```
+kadena accounts name-to-address [arguments]
 ```
 
 | **Arguments & Options** | ** Description**                          | **Required** |
@@ -539,13 +539,13 @@ kadena account account name-to-address [arguments]
 example:
 
 ```
-kadena account name-to-address --network="mainnet" --account-kdn-name="kadena.kda"
+kadena accounts name-to-address --network="mainnet" --account-kdn-name="kadena.kda"
 ```
 
 ---
 
 ```
-kadena account name-to-address [arguments]
+kadena accounts name-to-address [arguments]
 ```
 
 | **Arguments & Options** | ** Description**                          | **Required** |
@@ -556,13 +556,13 @@ kadena account name-to-address [arguments]
 example:
 
 ```
-kadena account address-to-name --network="mainnet" --account-kdn-address="k:account"
+kadena accounts address-to-name --network="mainnet" --account-kdn-address="k:account"
 ```
 
 ---
 
 ```
-kadena account list [arguments]
+kadena accounts list [arguments]
 ```
 
 | **Arguments & Options** | ** Description**                |
@@ -572,19 +572,19 @@ kadena account list [arguments]
 example for listing specific account:
 
 ```
-kadena account list --account-alias="accountAlias"
+kadena accounts list --account-alias="accountAlias"
 ```
 
 example for listing all accounts:
 
 ```
-kadena account list --account-alias="all"
+kadena accounts list --account-alias="all"
 ```
 
 ---
 
 ```
-kadena account delete [arguments]
+kadena accounts delete [arguments]
 ```
 
 | **Arguments & Options** | ** Description**                |
@@ -595,13 +595,13 @@ kadena account delete [arguments]
 example for delete a specific account:
 
 ```
-kadena account delete --account-alias="accountAlias" --confirm
+kadena accounts delete --account-alias="accountAlias" --confirm
 ```
 
 example for delete multiple accounts: (comma separated list of account alias)
 
 ```
-kadena account delete --account-alias="accountAlias_1,devnetAlias" --confirm
+kadena accounts delete --account-alias="accountAlias_1,devnetAlias" --confirm
 ```
 
 ## kadena tx
