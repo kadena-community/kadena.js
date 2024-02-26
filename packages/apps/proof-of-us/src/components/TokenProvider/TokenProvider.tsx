@@ -117,7 +117,9 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     }
     // eslint-disable-next-line guard-for-in
     for (const i in uniqueObject) {
-      newArray.push(uniqueObject[i]);
+      //check if the item is not already in the data.
+      const foundInData = data.find((d) => d.id === uniqueObject[i].requestKey);
+      if (!foundInData) newArray.push(uniqueObject[i]);
     }
 
     return newArray;
