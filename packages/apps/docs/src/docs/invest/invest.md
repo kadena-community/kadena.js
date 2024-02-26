@@ -10,7 +10,6 @@ layout: landing page
 tags: [pact, typescript, account, transactions, utils]
 ---
 
-<<<<<<< HEAD
 The native Kadena token is listed on exchanges as KDA.
 KDA is a digital currency that is used to pay for the resources used to process transaction on the Kadena public blockchain. 
 Similar to ETH on Ethereum, users pay transaction fees to have their transactions included in a block using KDA.
@@ -30,9 +29,6 @@ For information about getting, managing, and moving KDA tokens, see the followin
 
 - [Exchanges](/invest/exchanges)
 - [Wallets](/invest/wallets)
-=======
-Topics about KDA, Chainweb, Block explorers, Exchanges.
->>>>>>> 4806fd272 (Restore doc structure WIP)
 
 ## View recent articles
 
