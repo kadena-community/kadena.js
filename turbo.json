@@ -9,16 +9,16 @@
     "test": {
       "dependsOn": ["build"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
-      "outputMode": "errors-only"
+      "outputMode": "new-only"
     },
     "test:integration": {
       "dependsOn": ["build"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
-      "outputMode": "errors-only"
+      "outputMode": "new-only"
     },
     "test:e2e": {
       "inputs": ["test/**/*.ts", "test/**/*.tsx"],
-      "outputMode": "errors-only"
+      "outputMode": "new-only"
     },
     "lint": {
       "dependsOn": ["build"],
