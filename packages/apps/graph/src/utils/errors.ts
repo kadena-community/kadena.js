@@ -55,8 +55,9 @@ export function normalizeError(error: any): GraphQLError {
 
   if (error instanceof PrismaClientValidationError) {
     if (error.message.includes('Unknown argument')) {
-      error.message =
-        'Unknown argument' + error.message.split('Unknown argument')[1];
+      error.message = `Unknown argument${
+        error.message.split('Unknown argument')[1]
+      }`;
     }
 
     return new GraphQLError('Prisma Client Validation Error', {
