@@ -6,7 +6,14 @@ import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { useLeaderboard } from '@/hooks/data/leaderboard';
 import { Stack } from '@kadena/react-ui';
+import { motion } from 'framer-motion';
 import type { FC } from 'react';
+
+const spring = {
+  type: 'spring',
+  damping: 9,
+  stiffness: 120,
+};
 
 const Page: FC = () => {
   const { data } = useLeaderboard();
@@ -18,9 +25,9 @@ const Page: FC = () => {
           <Stack flex={1}>
             <List>
               {data.map((account) => (
-                <li key={account.accountName}>
+                <motion.li key={account.accountName} layout transition={spring}>
                   {account.alias} ({account.tokenCount})
-                </li>
+                </motion.li>
               ))}
             </List>
           </Stack>
