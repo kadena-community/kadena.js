@@ -255,6 +255,7 @@ export const getEvents: DocumentNode = gql`
 
   query getEvents(
     $qualifiedEventName: String!
+    $parametersFilter: String
     $after: String
     $before: String
     $first: Int
@@ -262,6 +263,7 @@ export const getEvents: DocumentNode = gql`
   ) {
     events(
       qualifiedEventName: $qualifiedEventName
+      parametersFilter: $parametersFilter
       after: $after
       before: $before
       first: $first
