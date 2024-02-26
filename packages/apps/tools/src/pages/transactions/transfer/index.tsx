@@ -377,11 +377,14 @@ const TransferPage = () => {
         <Controller
           name="receiverChainId"
           control={control}
-          render={({ field }) => (
+          render={({ field: { onChange, value, ...rest } }) => (
             <ChainSelect
-              {...field}
+              {...rest}
+              selectedKey={value}
               id="receiverChainId"
-              onSelectionChange={(e) => setValue('receiverChainId', e)}
+              onSelectionChange={(chainId) => onChange(chainId)}
+              isInvalid={!!errors.receiverChainId}
+              errorMessage={errors.receiverChainId?.message}
             />
           )}
         />
@@ -488,13 +491,14 @@ const TransferPage = () => {
                     <Controller
                       name="senderChainId"
                       control={control}
-                      render={({ field }) => (
+                      render={({ field: { onChange, value, ...rest } }) => (
                         <ChainSelect
-                          {...field}
+                          {...rest}
+                          selectedKey={value}
                           id="senderChainId"
-                          onSelectionChange={(e) =>
-                            setValue('senderChainId', e)
-                          }
+                          onSelectionChange={(chainId) => onChange(chainId)}
+                          isInvalid={!!errors.senderChainId}
+                          errorMessage={errors.senderChainId?.message}
                         />
                       )}
                     />
