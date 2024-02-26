@@ -66,4 +66,4 @@ export type PactLiteral =
 export type PactValue =
   | PactLiteral
   | Array<PactValue>
-  | Record<string, unknown>;
+  | { [Key: string]: PactValue };
