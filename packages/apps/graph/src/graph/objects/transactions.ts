@@ -37,6 +37,7 @@ export default builder.prismaNode('Transaction', {
             where: {
               requestKey: parent.requestKey,
             },
+            take: PRISMA.DEFAULT_SIZE,
           });
 
           return {
@@ -159,29 +160,6 @@ export default builder.prismaNode('Transaction', {
             where: {
               requestKey: parent.requestKey,
               blockHash: parent.blockHash,
-            },
-            take: PRISMA.DEFAULT_SIZE,
-          });
-        } catch (error) {
-          throw normalizeError(error);
-        }
-      },
-    }),
-
-    signers: t.prismaField({
-      type: ['Signer'],
-      nullable: true,
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
-      select: {
-        requestKey: true,
-      },
-      async resolve(query, parent) {
-        try {
-          return await prismaClient.signer.findMany({
-            ...query,
-            where: {
-              requestKey: parent.requestKey,
             },
             take: PRISMA.DEFAULT_SIZE,
           });
