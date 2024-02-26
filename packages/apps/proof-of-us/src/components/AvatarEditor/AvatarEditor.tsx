@@ -117,7 +117,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   const handleClose = async () => {
     if (!confirm('Are you sure you want to stop with this token?')) return;
-    await closeToken({ proofOfUsId: proofOfUs.proofOfUsId });
+    if (proofOfUs) await closeToken({ proofOfUsId: proofOfUs.proofOfUsId });
     setIsMounted(false);
     router.replace('/user');
   };
