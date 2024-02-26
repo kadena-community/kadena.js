@@ -33,7 +33,7 @@ import { getApiHost } from '@/utils/network';
 import { stripAccountPrefix } from '@/utils/string';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CHAINS } from '@kadena/chainweb-node-client';
-import type { ICommand, ITransactionDescriptor } from '@kadena/client';
+import type { ITransactionDescriptor } from '@kadena/client';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
@@ -89,7 +89,6 @@ const TransferPage = () => {
 
   const [pubKeys, setPubKeys] = useState<string[]>([]);
   const [initialPublicKey, setInitialPublicKey] = useState<string>('');
-  const [signedTx, setSignedTx] = useState<{ cmds: ICommand[] }>({ cmds: [] });
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;
     message?: string;
@@ -99,7 +98,6 @@ const TransferPage = () => {
     ? derivationModes[1]
     : derivationModes[0];
 
-  const [waitSigning, setWaitSigning] = useState<boolean>(false);
   const [receiverRequestKey, setReceiverRequestKey] = useState<string>('');
 
   const networkData: INetworkData = networksData.filter(
@@ -220,50 +218,44 @@ const TransferPage = () => {
 
   const deletePublicKey = () => setValue('receiver', '');
 
-  const transferInput = {
-    sender: {
-      account: senderData.data?.account ?? '',
-      publicKeys: ledgerPublicKey ? [ledgerPublicKey] : [],
-      pred: senderData.data?.guard.pred,
-    },
-    receiver: receiverData.data?.account ?? '',
-    chainId: getValues('senderChainId'),
-    amount: String(getValues('amount')),
-  };
-  if (!onSameChain) {
-    // @ts-ignore
-    transferInput.targetChainId = getValues('receiverChainId');
-  }
+  const [ledgerSignState, signTx] = useLedgerSign();
 
-  if (receiverData?.error) {
-    // @ts-ignore
-    transferInput.receiver = {
-      account: getValues('receiver'),
-      keyset: {
-        keys: pubKeys,
-        pred: pred,
+
+  const handleSignTransaction = async (data: FormData) => {
+    const transferInput = {
+      sender: {
+        account: senderData.data?.account ?? '',
+        publicKeys: ledgerPublicKey ? [ledgerPublicKey] : [],
+        pred: senderData.data?.guard.pred,
       },
+      receiver: receiverData.data?.account ?? '',
+      chainId: data.senderChainId,
+      amount: String(data.amount),
     };
-  }
+    if (!onSameChain) {
+      // @ts-ignore
+      transferInput.targetChainId = data.receiverChainId;
+    }
 
-  const [{}, signTx] = useLedgerSign();
-
-  const handleSignTransaction = async (event: any) => {
-    setWaitSigning(true);
-    const { isSigned, pactCommand } = await signTx(transferInput, {
+    if (receiverData?.error) {
+      // @ts-ignore
+      transferInput.receiver = {
+        account: data.receiver,
+        keyset: {
+          keys: pubKeys,
+          pred: pred,
+        },
+      };
+    }
+    await signTx(transferInput, {
       networkId: network,
       derivationPath: getDerivationPath(keyId!, derivationMode),
     });
-
-    if (isSigned) {
-      setWaitSigning(false);
-      return setSignedTx({ cmds: [pactCommand as ICommand] });
-    }
   };
 
   const onSubmit = async () => {
     const submitResponse = (await submitTx(
-      signedTx.cmds,
+      [ledgerSignState.value!.pactCommand],
       getValues('senderChainId'),
       network,
       networksData,
@@ -448,7 +440,7 @@ const TransferPage = () => {
             ]}
           />
         </Notification>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(handleSignTransaction)}>
           <Stack flexDirection="column" gap="lg">
             {/* SENDER  FLOW */}
             <Card fullWidth>
@@ -635,41 +627,45 @@ const TransferPage = () => {
                 // isDisabled={isSubmitting}
                 endIcon={<SystemIcon.TrailingIcon />}
                 title={t('Sign')}
-                type="button"
-                onClick={(event) => handleSignTransaction(event)}
+                type="submit"
               >
                 {t('Sign')}
               </Button>
             </div>
-
-            {signedTx.cmds.length ? (
-              <>
-                <TransactionDetails transactions={signedTx} />
-                <div className={buttonContainerClass}>
-                  <Button
-                    isLoading={waitSigning}
-                    isDisabled={waitSigning}
-                    endIcon={<SystemIcon.TrailingIcon />}
-                    title={t('Transfer')}
-                    type="submit"
-                  >
-                    {t('Transfer')}
-                  </Button>
-                </div>
-                <FormStatusNotification
-                  status={requestStatus.status}
-                  statusBodies={{
-                    successful: t(
-                      'The coins have been funded to the given account.',
-                    ),
-                  }}
-                  body={requestStatus.message}
-                />
-                <Text>Target chain request key: {receiverRequestKey}</Text>
-              </>
-            ) : null}
           </Stack>
         </form>
+
+        <Stack flexDirection="column" gap="lg">
+          {ledgerSignState.value ? (
+            <>
+              <TransactionDetails
+                transactions={{ cmds: [ledgerSignState.value.pactCommand] }}
+              />
+              <div className={buttonContainerClass}>
+                <Button
+                  isLoading={ledgerSignState.loading}
+                  isDisabled={ledgerSignState.loading}
+                  endIcon={<SystemIcon.TrailingIcon />}
+                  title={t('Transfer')}
+                  // type="submit"
+                  onPress={onSubmit}
+                >
+                  {t('Transfer')}
+                </Button>
+              </div>
+              <FormStatusNotification
+                status={requestStatus.status}
+                statusBodies={{
+                  successful: t(
+                    'The coins have been funded to the given account.',
+                  ),
+                }}
+                body={requestStatus.message}
+              />
+              <Text>Target chain request key: {receiverRequestKey}</Text>
+            </>
+          ) : null}
+        </Stack>
       </Stack>
     </section>
   );
