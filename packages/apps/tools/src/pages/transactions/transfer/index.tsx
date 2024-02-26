@@ -551,12 +551,12 @@ const TransferPage = () => {
                 <Controller
                   name="amount"
                   control={control}
-                  render={({ field }) => (
+                  render={({ field: { onChange, ...rest } }) => (
                     <NumberField
-                      {...field}
+                      {...rest}
                       id="ledger-transfer-amount"
                       label={t('Amount')}
-                      onChange={(e) => field.onChange(parseInt(e.target.value))}
+                      onValueChange={(value) => onChange(value)}
                       isDisabled={!!senderData.error}
                       isInvalid={!!errors.amount || invalidAmount}
                       errorMessage={
