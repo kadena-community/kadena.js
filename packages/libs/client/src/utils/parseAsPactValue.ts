@@ -19,10 +19,10 @@ export function parseAsPactValue(
   switch (typeof input) {
     case 'object': {
       if ('decimal' in input) {
-        return new PactNumber(input.decimal).toDecimal();
+        return new PactNumber(input.decimal as string).toDecimal();
       }
       if ('int' in input) {
-        return new PactNumber(input.int).toInteger();
+        return new PactNumber(input.int as string).toInteger();
       }
       if (isDate(input)) {
         const isoTime = `${input.toISOString().split('.')[0]}Z`;
@@ -33,7 +33,9 @@ export function parseAsPactValue(
       }
 
       return `{${Object.entries(input)
-        .map(([key, value]) => `"${key}": ${parseAsPactValue(value)}`)
+        .map(
+          ([key, value]) => `"${key}": ${parseAsPactValue(value as PactValue)}`,
+        )
         .join(', ')}}`;
     }
     case 'number':
