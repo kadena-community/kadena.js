@@ -18,7 +18,16 @@ export default builder.objectType('Cmd', {
       },
     }),
 
-    networkId: t.exposeString('networkId'),
+    signers: t.prismaField({
+      type: ['Signer'],
+      resolve(__query, parent) {
+        return parent.signers;
+      },
+    }),
+
+    networkId: t.exposeString('networkId', {
+      description: 'The network id of the environment.',
+    }),
     nonce: t.exposeString('nonce', { nullable: true }),
   }),
 });

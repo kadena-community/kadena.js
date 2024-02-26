@@ -18,7 +18,7 @@ import './objects/total-count';
 // import './objects/transaction';
 import './objects/cmd';
 import './objects/transaction-result';
-import './objects/transactions1';
+import './objects/transactions';
 import './objects/transfer';
 import './query/block';
 import './query/blocks-from-height';

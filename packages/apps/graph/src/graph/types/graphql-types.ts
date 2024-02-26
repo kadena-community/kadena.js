@@ -1,5 +1,4 @@
-import type { Transaction, Transfer } from '@prisma/client';
-import { JsonValue } from '@prisma/client/runtime/library';
+import type { Signer, Transaction, Transfer } from '@prisma/client';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Guard {
@@ -94,7 +93,7 @@ export interface NonFungibleAccount {
 export interface Cmd {
   payload: ExecPayload | ContPayload;
   meta: Meta;
-  // signers: Signer[];
+  signers: Signer[];
   networkId: string;
   nonce: string;
 }
@@ -137,11 +136,3 @@ export interface TransactionResult {
   eventCount: bigint | null;
   transactionId: bigint | null;
 }
-
-// // eslint-disable-next-line @typescript-eslint/naming-convention
-// export interface Signer {
-//   publicKey: string;
-//   address: string | null;
-//   scheme: string | null;
-//   clist: JsonValue;
-// }

@@ -21,7 +21,7 @@ builder.objectType('ContPayload', {
   fields: (t) => ({
     pactId: t.exposeString('pactId', {
       description:
-        'In the case of a cross-chain transaction; A unique id when a pact (defpact) is initiated. See the "Pact execution scope and pact-id" explanation in the docs for more information.',
+        'A unique id when a pact (defpact) is initiated. See the "Pact execution scope and pact-id" explanation in the docs for more information.',
       nullable: true,
     }),
     step: t.exposeInt('step', {
@@ -30,8 +30,7 @@ builder.objectType('ContPayload', {
       nullable: true,
     }),
     rollback: t.exposeBoolean('rollback', {
-      description:
-        'In the case of a cross-chain transaction; Whether or not this transaction can be rolled back.',
+      description: 'Whether or not this transaction can be rolled back.',
       nullable: true,
     }),
     data: t.exposeString('data', {
@@ -40,7 +39,7 @@ builder.objectType('ContPayload', {
     }),
     proof: t.exposeString('proof', {
       description:
-        'In the case of a cross-chain transaction; the proof provided to continue the cross-chain transaction.',
+        'The proof provided to continue the cross-chain transaction.',
       nullable: true,
     }),
   }),

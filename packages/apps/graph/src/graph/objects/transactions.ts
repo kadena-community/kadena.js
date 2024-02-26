@@ -12,6 +12,8 @@ export default builder.prismaNode('Transaction', {
   fields: (t) => ({
     hash: t.exposeString('requestKey'),
     cmd: t.field({
+      complexity:
+        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
       type: 'Cmd',
       select: {
         senderAccount: true,
@@ -30,26 +32,37 @@ export default builder.prismaNode('Transaction', {
         requestKey: true,
       },
       async resolve(parent) {
-        return {
-          nonce: parent.nonce,
-          meta: {
-            chainId: parent.chainId.toString(),
-            gasLimit: parent.gasLimit,
-            gasPrice: parent.gasPrice,
-            ttl: parent.ttl,
-            creationTime: parent.creationTime,
-            sender: parent.senderAccount,
-          },
-          payload: {
-            code: parent.code,
-            data: parent.data ? JSON.stringify(parent.data) : '',
-            pactId: parent.pactId,
-            step: Number(parent.step),
-            rollback: parent.rollback,
-            proof: parent.proof,
-          },
-          networkId: dotenv.NETWORK_ID,
-        };
+        try {
+          const signers = await prismaClient.signer.findMany({
+            where: {
+              requestKey: parent.requestKey,
+            },
+          });
+
+          return {
+            nonce: parent.nonce,
+            meta: {
+              chainId: parent.chainId.toString(),
+              gasLimit: parent.gasLimit,
+              gasPrice: parent.gasPrice,
+              ttl: parent.ttl,
+              creationTime: parent.creationTime,
+              sender: parent.senderAccount,
+            },
+            payload: {
+              code: parent.code,
+              data: parent.data ? JSON.stringify(parent.data) : '',
+              pactId: parent.pactId,
+              step: Number(parent.step),
+              rollback: parent.rollback,
+              proof: parent.proof,
+            },
+            signers,
+            networkId: dotenv.NETWORK_ID,
+          };
+        } catch (error) {
+          throw normalizeError(error);
+        }
       },
     }),
     result: t.field({

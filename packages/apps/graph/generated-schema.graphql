@@ -53,9 +53,12 @@ type BlockTransactionsConnectionEdge {
 """A transaction cmd."""
 type Cmd {
   meta: Meta
+
+  """The network id of the environment."""
   networkId: String!
   nonce: String
   payload: Payload!
+  signers: [Signer!]!
 }
 
 """The payload of an cont transaction."""
@@ -66,18 +69,14 @@ type ContPayload {
   data: String!
 
   """
-  In the case of a cross-chain transaction; A unique id when a pact (defpact) is initiated. See the "Pact execution scope and pact-id" explanation in the docs for more information.
+  A unique id when a pact (defpact) is initiated. See the "Pact execution scope and pact-id" explanation in the docs for more information.
   """
   pactId: String
 
-  """
-  In the case of a cross-chain transaction; the proof provided to continue the cross-chain transaction.
-  """
+  """The proof provided to continue the cross-chain transaction."""
   proof: String
 
-  """
-  In the case of a cross-chain transaction; Whether or not this transaction can be rolled back.
-  """
+  """Whether or not this transaction can be rolled back."""
   rollback: Boolean
 
   """
