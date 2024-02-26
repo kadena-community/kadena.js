@@ -228,7 +228,7 @@ type Meta {
   chainId: String!
   creationTime: DateTime!
   gasLimit: BigInt!
-  gasPrice: Int!
+  gasPrice: Float!
   sender: String!
   ttl: BigInt!
 }
