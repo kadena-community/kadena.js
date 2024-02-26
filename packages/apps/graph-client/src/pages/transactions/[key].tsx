@@ -366,25 +366,41 @@ const RequestKey: React.FC = () => {
                         <Cell>
                           <strong>Pact ID</strong>
                         </Cell>
-                        <Cell>{transaction.pactId}</Cell>
+                        <Cell>
+                          {transaction.cmd.payload.__typename === 'ContPayload'
+                            ? transaction.cmd.payload.pactId
+                            : ''}
+                        </Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>Proof</strong>
                         </Cell>
-                        <Cell>{transaction.proof}</Cell>
+                        <Cell>
+                          {transaction.cmd.payload.__typename === 'ContPayload'
+                            ? transaction.cmd.payload.proof
+                            : ''}
+                        </Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>Rollback</strong>
                         </Cell>
-                        <Cell>{transaction.rollback}</Cell>
+                        <Cell>
+                          {transaction.cmd.payload.__typename === 'ContPayload'
+                            ? transaction.cmd.payload.rollback
+                            : ''}
+                        </Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>Step</strong>
                         </Cell>
-                        <Cell>{transaction.step}</Cell>
+                        <Cell>
+                          {transaction.cmd.payload.__typename === 'ContPayload'
+                            ? transaction.cmd.payload.step
+                            : ''}
+                        </Cell>
                       </Row>
                     </TableBody>
                   </Table>
@@ -395,7 +411,7 @@ const RequestKey: React.FC = () => {
                   <strong>Signers</strong>
                 </Cell>
                 <Cell>
-                  {transaction.signers
+                  {transaction.cmd.signers
                     ?.map((signer) => {
                       return signer.publicKey;
                     })
@@ -407,7 +423,7 @@ const RequestKey: React.FC = () => {
                   <strong>Signatures</strong>
                 </Cell>
                 <Cell>
-                  {transaction.signers
+                  {transaction.cmd.signers
                     ?.map((signer) => {
                       return signer.signature;
                     })
