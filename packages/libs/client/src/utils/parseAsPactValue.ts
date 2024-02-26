@@ -14,7 +14,7 @@ export function parseAsPactValue(
   input: PactValue | (() => string) | Literal,
 ): string {
   if (input instanceof Literal) {
-    return input.toJSON();
+    return input.getValue();
   }
   switch (typeof input) {
     case 'object': {
