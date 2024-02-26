@@ -12,7 +12,6 @@ export default builder.objectType('Cmd', {
     }),
     meta: t.field({
       type: 'Meta',
-      nullable: true,
       resolve(parent) {
         return parent.meta;
       },
@@ -20,6 +19,7 @@ export default builder.objectType('Cmd', {
 
     signers: t.prismaField({
       type: ['Signer'],
+      nullable: true,
       resolve(__query, parent) {
         return parent.signers;
       },
@@ -28,6 +28,6 @@ export default builder.objectType('Cmd', {
     networkId: t.exposeString('networkId', {
       description: 'The network id of the environment.',
     }),
-    nonce: t.exposeString('nonce', { nullable: true }),
+    nonce: t.exposeString('nonce'),
   }),
 });

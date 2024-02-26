@@ -52,13 +52,13 @@ type BlockTransactionsConnectionEdge {
 
 """A transaction cmd."""
 type Cmd {
-  meta: Meta
+  meta: Meta!
 
   """The network id of the environment."""
   networkId: String!
-  nonce: String
+  nonce: String!
   payload: Payload!
-  signers: [Signer!]!
+  signers: [Signer!]
 }
 
 """The payload of an cont transaction."""
@@ -485,7 +485,6 @@ type Transaction implements Node {
   hash: String!
   id: ID!
   result: TransactionResult!
-  signers: [Signer!]
   transfers: [Transfer!]
 }
 
