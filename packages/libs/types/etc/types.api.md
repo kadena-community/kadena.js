@@ -261,7 +261,7 @@ export type PactPayload = {
 export type PactTransactionHash = IBase64Url;
 
 // @alpha
-export type PactValue = PactLiteral | Array<PactValue> | Record<string, any>;
+export type PactValue = PactLiteral | Array<PactValue> | Record<string, unknown>;
 
 // @alpha (undocumented)
 export type Proof = IBase64Url | undefined;
