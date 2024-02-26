@@ -5,3 +5,7 @@ next-env.d.ts
 .env
 
 certificates
+
+# generated files
+src/__generated__
+!src/__generated__/.gitkeep

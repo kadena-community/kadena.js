@@ -14,7 +14,8 @@ export const TitleHeader: FC<IProps> = ({ label, Prepend, Append }) => {
       display="flex"
       alignItems="center"
       gap="md"
-      paddingBlock="sm"
+      paddingBlockStart="xl"
+      paddingBlockEnd="md"
       width="100%"
     >
       {Prepend && <Prepend />}
