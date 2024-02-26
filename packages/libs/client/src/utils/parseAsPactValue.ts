@@ -12,9 +12,9 @@ const isDate = (obj: unknown): obj is Date => {
  */
 export function parseAsPactValue(
   input: PactValue | (() => string) | Literal,
-): string | number | boolean {
+): string {
   if (input instanceof Literal) {
-    return input.getValue();
+    return input.toJSON();
   }
   switch (typeof input) {
     case 'object': {
@@ -28,8 +28,13 @@ export function parseAsPactValue(
         const isoTime = `${input.toISOString().split('.')[0]}Z`;
         return `(time "${isoTime}")`;
       }
-      // to prevent from creating [object Object]
-      return JSON.stringify(input);
+      if (Array.isArray(input)) {
+        return `[${input.map(parseAsPactValue).join(' ')}]`;
+      }
+
+      return `{${Object.entries(input)
+        .map(([key, value]) => `"${key}": ${parseAsPactValue(value)}`)
+        .join(', ')}}`;
     }
     case 'number':
       throw new Error(
@@ -40,7 +45,7 @@ export function parseAsPactValue(
     case 'function':
       return input();
     case 'boolean':
-      return input;
+      return input.toString();
     default:
       return input;
   }

@@ -58,6 +58,7 @@ export const literal = (value: string): Literal => {
 };
 
 const literalRegex: RegExp = /"Literal\(([^\)]*)\)"/gi;
+const literalRegexWithoutQuote: RegExp = /Literal\(([^\)]*)\)/gi;
 /**
  * unpack all of the Literal(string) to string
  * @internal
@@ -65,7 +66,9 @@ const literalRegex: RegExp = /"Literal\(([^\)]*)\)"/gi;
 export function unpackLiterals(value: string): string {
   // literal object is already unpacked if they are direct argument of a function.
   // but if they are inside a json object, they are not unpacked since the toJSON method packs them as Literal(string)
-  return value.replace(literalRegex, (__, literal) => literal);
+  return value
+    .replace(literalRegex, (__, literal) => literal)
+    .replace(literalRegexWithoutQuote, (__, literal) => literal);
 }
 
 /**
