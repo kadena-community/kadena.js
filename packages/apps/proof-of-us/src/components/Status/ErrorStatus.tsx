@@ -23,7 +23,9 @@ export const ErrorStatus: FC<IProps> = ({
       <Stack flex={1} />
       <Stack flexDirection="column" gap="md">
         <Heading as="h6">Transaction Failed</Heading>
-        <MessageBlock variant="error">{children}</MessageBlock>
+        <MessageBlock title="Error" variant="error">
+          {children}
+        </MessageBlock>
         <Stack gap="md">
           {handleClose && (
             <Button variant="secondary" onPress={handleClose}>

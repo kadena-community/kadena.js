@@ -20,8 +20,10 @@ export const SuccessStatus: FC<IProps> = ({ children, handleClose, href }) => {
       <ListSignees />
       <Stack flex={1} />
       <Stack flexDirection="column" gap="md">
-        <Heading as="h6">Transaction Success</Heading>
-        <MessageBlock variant="success">{children}</MessageBlock>
+        <Heading as="h6">Transaction Completed</Heading>
+        <MessageBlock title="Success" variant="success">
+          {children}
+        </MessageBlock>
         <Stack gap="md">
           {handleClose && (
             <Button variant="secondary" onPress={handleClose}>

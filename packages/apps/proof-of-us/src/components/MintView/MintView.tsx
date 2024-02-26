@@ -87,7 +87,7 @@ export const MintView: FC<IProps> = () => {
             handleClose={handleClose}
             href={`/user/proof-of-us/t/${proofOfUs.tokenId}/${proofOfUs.requestKey}`}
           >
-            {JSON.stringify(result, null, 2)}
+            View the created Proof or create a new one.
           </SuccessStatus>
         )}
       </>
