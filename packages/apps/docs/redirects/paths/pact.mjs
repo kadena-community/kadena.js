@@ -25,7 +25,7 @@ export const pactPathUrlRedirects = [
     permanent: true,
   },
   {
-    source: ':slug/learn-pact/intermediate/deploy-to-a-local-server',
+    source: '/:slug/learn-pact/intermediate/deploy-to-a-local-server',
     destination: '/pact/intermediate',
     permanent: true,
   },

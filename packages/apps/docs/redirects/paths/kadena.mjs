@@ -1,5 +1,10 @@
 export const kadenaPathUrlRedirects = [
   {
+    source: '/kda/what-is-kda',
+    destination: '/kadena/kda',
+    permanent: true,
+  },
+  {
     source: '/kadena/whitepapers/:slug',
     destination: '/kadena/resources#whitepapersh1562907056',
     permanent: true,

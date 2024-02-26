@@ -5,6 +5,11 @@ export const basicsPathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/basics/whitepapers',
+    destination: '/kadena/resources',
+    permanent: true,
+  },
+  {
     source: '/basics/key-concepts',
     destination: '/build/quickstart',
     permanent: true,
@@ -21,6 +26,11 @@ export const basicsPathUrlRedirects = [
   },
   {
     source: '/basics/kda/what-is-kda',
+    destination: '/kadena/kda/',
+    permanent: true,
+  },
+  {
+    source: '/basics/kda/kda',
     destination: '/kadena/kda/',
     permanent: true,
   },
