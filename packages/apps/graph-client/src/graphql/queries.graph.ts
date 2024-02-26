@@ -31,9 +31,11 @@ export const getTransactionNode: DocumentNode = gql`
         events {
           ...CoreEventFields
         }
-        signers {
-          publicKey
-          signature
+        cmd {
+          signers {
+            publicKey
+            signature
+          }
         }
       }
     }
@@ -68,7 +70,7 @@ export const getEventNodes: DocumentNode = gql`
           id
         }
         transaction {
-          requestKey
+          hash
         }
       }
     }
@@ -171,7 +173,13 @@ export const getFungibleAccount: DocumentNode = gql`
               ...CoreTransferFields
             }
             transaction {
-              pactId
+              cmd {
+                payload {
+                  ... on ContPayload {
+                    pactId
+                  }
+                }
+              }
             }
           }
         }
@@ -212,7 +220,13 @@ export const getFungibleChainAccount: DocumentNode = gql`
               ...CoreTransferFields
             }
             transaction {
-              pactId
+              cmd {
+                payload {
+                  ... on ContPayload {
+                    pactId
+                  }
+                }
+              }
             }
           }
         }
@@ -258,9 +272,11 @@ export const getTransactions: DocumentNode = gql`
           block {
             hash
           }
-          signers {
-            publicKey
-            signature
+          cmd {
+            signers {
+              publicKey
+              signature
+            }
           }
         }
       }
@@ -305,7 +321,13 @@ export const getTransfers: DocumentNode = gql`
             ...CoreTransferFields
           }
           transaction {
-            pactId
+            cmd {
+              payload {
+                ... on ContPayload {
+                  pactId
+                }
+              }
+            }
           }
         }
       }
