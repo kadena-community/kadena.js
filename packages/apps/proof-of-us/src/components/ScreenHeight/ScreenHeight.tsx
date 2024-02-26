@@ -8,7 +8,7 @@ export const ScreenHeight: FC<PropsWithChildren> = ({ children }) => {
       className={totalScreenHeightClass}
       flexDirection="column"
       as="section"
-      paddingInline="md"
+      paddingInline="lg"
       gap="md"
     >
       {children}

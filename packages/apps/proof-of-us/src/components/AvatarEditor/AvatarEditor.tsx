@@ -1,7 +1,11 @@
+import { IconButton } from '@/components/IconButton/IconButton';
+import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { MonoClose } from '@kadena/react-icons';
 import classnames from 'classnames';
+import Link from 'next/link';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -9,6 +13,7 @@ import {
   cameraClass,
   cameraWrapperClass,
   canvasClass,
+  headerClass,
   hiddenClass,
   wrapperClass,
 } from './styles.css';
@@ -53,8 +58,9 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
         canvasRef.current.width = containerWidth * 0.9;
         canvasRef.current.height = containerWidth * 0.9;
-        const topIndent = 30;
+        const topIndent = 100;
         const context = canvasRef.current.getContext('2d');
+
         function updateCanvas() {
           if (!videoRef.current) return;
           if (!canvasRef.current) return;
@@ -73,6 +79,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
           window.requestAnimationFrame(updateCanvas);
         }
+
         requestAnimationFrame(updateCanvas);
       })
       .catch((e) => {
@@ -108,6 +115,18 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   return (
     <section className={wrapperClass}>
+      <div className={headerClass}>
+        <TitleHeader
+          label="Say Cheese"
+          Append={() => (
+            <Link href="/user">
+              <IconButton>
+                <MonoClose />
+              </IconButton>
+            </Link>
+          )}
+        />
+      </div>
       {!isMounted && <div>loading</div>}
       <div
         className={classnames(
