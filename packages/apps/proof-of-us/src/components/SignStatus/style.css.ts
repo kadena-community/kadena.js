@@ -17,6 +17,6 @@ export const animateClass = style([
 
 export const checkClass = style([
   {
-    color: deviceColors.darkGreen,
+    color: deviceColors.green,
   },
 ]);

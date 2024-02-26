@@ -69,7 +69,7 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
           flexDirection="column"
           paddingInline="md"
         >
-          <Heading as="h6">Signees</Heading>
+          <Heading as="h5">Signees</Heading>
 
           <Signees signees={data.properties.signees} authors={data.authors} />
           <Heading as="h6">Metadata</Heading>

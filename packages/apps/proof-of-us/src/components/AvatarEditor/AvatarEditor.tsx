@@ -1,7 +1,11 @@
+import { IconButton } from '@/components/IconButton/IconButton';
+import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { MonoClose } from '@kadena/react-icons';
 import classnames from 'classnames';
+import { useRouter } from 'next/navigation';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -9,6 +13,7 @@ import {
   cameraClass,
   cameraWrapperClass,
   canvasClass,
+  headerClass,
   hiddenClass,
   wrapperClass,
 } from './styles.css';
@@ -23,7 +28,9 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
-  const { proofOfUs, updateProofOfUs, updateBackgroundColor } = useProofOfUs();
+  const { proofOfUs, updateProofOfUs, updateBackgroundColor, closeToken } =
+    useProofOfUs();
+  const router = useRouter();
 
   useEffect(() => {
     // if someone is already signing the pou, you are not allowed to change the photo anymore
@@ -53,8 +60,9 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
         canvasRef.current.width = containerWidth * 0.9;
         canvasRef.current.height = containerWidth * 0.9;
-        const topIndent = 30;
+        const topIndent = 100;
         const context = canvasRef.current.getContext('2d');
+
         function updateCanvas() {
           if (!videoRef.current) return;
           if (!canvasRef.current) return;
@@ -73,6 +81,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
           window.requestAnimationFrame(updateCanvas);
         }
+
         requestAnimationFrame(updateCanvas);
       })
       .catch((e) => {
@@ -106,8 +115,27 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     next();
   };
 
+  const handleClose = async () => {
+    if (!confirm('Are you sure you want to stop with this token?')) return;
+    await closeToken({ proofOfUsId: proofOfUs.proofOfUsId });
+    setIsMounted(false);
+    router.replace('/user');
+  };
+
   return (
     <section className={wrapperClass}>
+      <div className={headerClass}>
+        <TitleHeader
+          label="Say Cheese"
+          Append={() => (
+            <>
+              <IconButton onClick={handleClose}>
+                <MonoClose />
+              </IconButton>
+            </>
+          )}
+        />
+      </div>
       {!isMounted && <div>loading</div>}
       <div
         className={classnames(
