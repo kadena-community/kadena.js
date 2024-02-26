@@ -430,7 +430,7 @@ export const preflightClient: <T = PactValue>(args_0: IClientConfig, args_1?: IC
 };
 
 // @alpha (undocumented)
-export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">) => {
+export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">, args_1?: IClient | undefined) => {
     (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
     event: "query-result";
     data: {
