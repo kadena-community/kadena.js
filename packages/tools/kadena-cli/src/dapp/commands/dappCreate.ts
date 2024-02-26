@@ -9,8 +9,8 @@ import { log } from '../../utils/logger.js';
 
 export const createDappCommand: (program: Command, version: string) => void =
   createCommand(
-    'create',
-    'Create a new dapp project',
+    'add',
+    'Add a new dapp project',
     [globalOptions.dappTemplate()],
     async (config, args) => {
       log.debug('dapp-create-command', { config });

@@ -21,6 +21,7 @@ import './objects/transaction-result';
 import './objects/transactions';
 import './objects/transfer';
 import './query/block';
+import './query/blocks-from-depth';
 import './query/blocks-from-height';
 import './query/completed-block-heights';
 import './query/events';
@@ -39,6 +40,7 @@ import './query/transactions';
 import './query/transfers';
 import './subscription/events';
 import './subscription/new-blocks';
+import './subscription/new-blocks-from-depth';
 import './subscription/transaction';
 
 builder.queryType({});

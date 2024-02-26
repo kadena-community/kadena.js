@@ -1,13 +1,19 @@
+import { IconButton } from '@/components/IconButton/IconButton';
+import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { MonoClose } from '@kadena/react-icons';
 import classnames from 'classnames';
+import Link from 'next/link';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import {
   cameraButton,
   cameraClass,
   cameraWrapperClass,
+  canvasClass,
+  headerClass,
   hiddenClass,
   wrapperClass,
 } from './styles.css';
@@ -18,10 +24,11 @@ interface IProps {
 
 export const AvatarEditor: FC<IProps> = ({ next }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
-  const { proofOfUs, updateBackgroundColor } = useProofOfUs();
+  const { proofOfUs, updateProofOfUs, updateBackgroundColor } = useProofOfUs();
 
   useEffect(() => {
     // if someone is already signing the pou, you are not allowed to change the photo anymore
@@ -41,7 +48,39 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
       .getUserMedia({ audio: false, video: true })
       .then((stream) => {
         if (!videoRef.current) return;
+        if (!canvasRef.current) return;
+
         videoRef.current.srcObject = stream;
+        const containerWidth = (videoRef.current.parentNode as HTMLElement)
+          ?.offsetWidth;
+        const containerHeight = (videoRef.current.parentNode as HTMLElement)
+          ?.offsetHeight;
+
+        canvasRef.current.width = containerWidth * 0.9;
+        canvasRef.current.height = containerWidth * 0.9;
+        const topIndent = 100;
+        const context = canvasRef.current.getContext('2d');
+
+        function updateCanvas() {
+          if (!videoRef.current) return;
+          if (!canvasRef.current) return;
+
+          const newWidth =
+            (videoRef.current.videoWidth * containerHeight) /
+            videoRef.current.videoHeight;
+
+          context?.drawImage(
+            videoRef.current,
+            canvasRef.current.width / 2 - newWidth / 2,
+            -topIndent,
+            newWidth,
+            containerHeight,
+          );
+
+          window.requestAnimationFrame(updateCanvas);
+        }
+
+        requestAnimationFrame(updateCanvas);
       })
       .catch((e) => {
         alert('The browser needs permissions for the camera to work');
@@ -53,21 +92,20 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     evt.preventDefault();
 
     if (!videoRef.current) return;
+    if (!canvasRef.current) return;
 
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 800;
-    canvas.height = 800;
-    ctx?.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    const context = canvasRef.current.getContext('2d');
 
-    //get color
-    ctx?.drawImage(videoRef.current, 0, 0, 1, 1);
-    const color = `rgba(${ctx?.getImageData(0, 0, 1, 1).data.join(',')})`;
+    // get color
+    const color = `rgba(${context?.getImageData(0, 0, 1, 1).data.join(',')})`;
 
     if (!proofOfUs) return;
 
-    await addBackground(proofOfUs, { bg: canvas.toDataURL() });
-    await updateBackgroundColor(color);
+    await addBackground(proofOfUs, { bg: canvasRef.current.toDataURL() });
+    await updateProofOfUs({
+      backgroundColor: updateBackgroundColor(color),
+    });
+
     (videoRef.current?.srcObject as MediaStream)
       ?.getTracks()
       .forEach((t) => t.stop());
@@ -77,6 +115,18 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   return (
     <section className={wrapperClass}>
+      <div className={headerClass}>
+        <TitleHeader
+          label="Say Cheese"
+          Append={() => (
+            <Link href="/user">
+              <IconButton>
+                <MonoClose />
+              </IconButton>
+            </Link>
+          )}
+        />
+      </div>
       {!isMounted && <div>loading</div>}
       <div
         className={classnames(
@@ -84,6 +134,10 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
           !isMounted ? hiddenClass : '',
         )}
       >
+        <canvas
+          ref={canvasRef}
+          className={classnames(canvasClass, !isMounted ? hiddenClass : '')}
+        ></canvas>
         <video
           className={classnames(cameraClass, !isMounted ? hiddenClass : '')}
           ref={videoRef}

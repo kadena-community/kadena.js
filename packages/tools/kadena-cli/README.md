@@ -29,6 +29,18 @@
 
 # KADENA CLI
 
+The Kadena CLI embodies our commitment to simplicity, power, and flexibility for
+developers. It's crafted to streamline your development process, offering direct
+and efficient access to Kadena's blockchain capabilities. This tool caters to
+the pragmatic needs of developers by providing a straightforward, command-line
+interface that integrates seamlessly into your workflow, allowing you to focus
+on building robust, innovative applications without the overhead of unnecessary
+complexity. Our philosophy centers on empowering developers with the tools they
+need to unlock the full potential of the kadena blockchain, in a clear and
+concise manner.
+
+# KADENA GUIDE
+
 Command Line Interface
 
 Welcome to the Kadena CLI guide, your all-encompassing manual for mastering the
@@ -79,7 +91,7 @@ Available subjects
 
 | subject  | description                                                     |
 | -------- | --------------------------------------------------------------- |
-| networks | Tool to create and manage networks                              |
+| networks | Tool to add and manage networks                                 |
 | account  | Tool to manage / fund accounts of fungibles (e.g 'coin')        |
 | keys     | Tool to generate and manage random keys                         |
 | wallets  | Tool to generate / manage wallets and generate keys from wallet |
@@ -102,13 +114,13 @@ init creates a .kadena/ folder with default networks devnet/mainnet/testnet
 
 ## kadena networks
 
-Tool to create and manage networks
+Tool to add and manage networks
 
 | **Subcommand** | **Description**             | **Default value** |
 | -------------- | --------------------------- | ----------------- |
 | list           | List all available networks |                   |
 | update         | Manage networks             |                   |
-| create         | Create new networks         |                   |
+| add            | Add new networks            |                   |
 | delete         | Delete existing networks    |                   |
 
 ---
@@ -133,7 +145,7 @@ kadena networks update --network-name="mainnet" --network-id="mainnet01" --netwo
 ---
 
 ```
-kadena networks create [arguments]
+kadena networks add [arguments]
 ```
 
 | **Arguments & Options** | ** Description**                     | ** Required ** |
@@ -147,7 +159,7 @@ kadena networks create [arguments]
 example:
 
 ```
-kadena networks create --network-name="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/ --network-overwrite="yes"
+kadena networks add --network-name="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/ --network-overwrite="yes"
 ```
 
 ---
@@ -405,13 +417,12 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 | --------------- | ------------------------------------------------ | ----------------- |
 | add-manual      | Add an existing account to the CLI               |                   |
 | add-from-wallet | Add an account from a key wallet                 |                   |
-| create          | Create account on chain(nr) for token \*WIP      |                   |
+| create          | create account on chain(nr) for token \*WIP      |                   |
 | details         | Get details of an account                        |                   |
 | fund            | Fund a existing/new account                      |                   |
 | name-to-address | Resolve a .kda name to a k:address (kadenanames) |                   |
 | address-to-name | Resolve a k:address to a .kda name (kadenanames) |                   |
-| address-to-name | Resolve a k:address to a .kda name (kadenanames) |                   |
-| list            | List available account(s) \*WIP                  |                   |
+| list            | List available account(s)                        |                   |
 
 ---
 
@@ -533,7 +544,7 @@ kadena account name-to-address --network="mainnet" --account-kdn-name="kadena.kd
 ---
 
 ```
-kadena account account name-to-address [arguments]
+kadena account name-to-address [arguments]
 ```
 
 | **Arguments & Options** | ** Description**                          | **Required** |
@@ -549,23 +560,46 @@ kadena account address-to-name --network="mainnet" --account-kdn-address="k:acco
 
 ---
 
+```
+kadena account list [arguments]
+```
+
+| **Arguments & Options** | ** Description**                |
+| ----------------------- | ------------------------------- |
+| --account-alias         | Provide the name of the account |
+
+example for listing specific accpimt:
+
+```
+kadena account list --account-alias="accountAlias"
+```
+
+example for listing all accounts:
+
+```
+kadena account list --account-alias="all"
+```
+
+---
+
 ## kadena tx
 
 Tool for creating and managing transactions
 
-| **Subcommand**          | **Description**                                  | **Default value** |
-| ----------------------- | ------------------------------------------------ | ----------------- |
-| send                    | Send a transaction to the network                |                   |
-| sign-with-keypair       | Sign a traqnsaction using a keypair              |                   |
-| sign-with-alias-file    | Sign a transaction using your local aliased file |                   |
-| sign-with-local-wallet  | Sign a transaction using your local wallet       |                   |
-| test-signed-transaction | Test a signed transaction                        |                   |
-| create-transaction      | Select a template and create a transaction       |                   |
+| **Subcommand** | **Description**                                  | **Default value** |
+| -------------- | ------------------------------------------------ | ----------------- |
+| send           | Send a transaction to the network                |                   |
+| sign           | Sign a transaction using a keypair,              |                   |
+|                | Sign a transaction using your local aliased file |                   |
+|                | Sign a transaction using your local wallet       |                   |
+|                |                                                  |                   |
+| test           | Test a signed transaction                        |                   |
+| add            | Select a template and add a transaction          |                   |
 
 ---
 
 ```
-kadena tx create-transaction [arguments]
+kadena tx add [arguments]
 ```
 
 | **Arguments & Options** | ** Description**                               | **Required** |
@@ -579,55 +613,37 @@ kadena tx create-transaction [arguments]
 example:
 
 ```
-kadena tx create-transaction --template="transfer.yaml" --template-data="path" (--account-from="k:account" --account-to="k:toaccount" --amount="1" --chain-id="1" --pk-from="publicKey") --network-id="testnet04" --out-file="transaction-(request-key).json"
+kadena tx add --template="transfer.yaml" --template-data="path" (--account-from="k:account" --account-to="k:toaccount" --amount="1" --chain-id="1" --pk-from="publicKey") --network-id="testnet04" --out-file="transaction-(request-key).json"
 ```
 
 ---
 
 ```
-kadena tx create-transaction [arguments]
-```
-
-| **Arguments & Options** | ** Description**                               | **Required** |
-| ----------------------- | ---------------------------------------------- | ------------ |
-| --template              | Select template                                |              |
-| --template-data         | Provide File path of data to use for template  |              |
-| --network-id            | Provide the network id                         |              |
-| --out-file              | Provide path to save output                    |              |
-| --xx                    | Args are created onl the fly based on template |              |
-
-example:
-
-```
-kadena tx create-transaction --template="transfer.yaml" --template-data="path" (--account-from="k:account" --account-to="k:toaccount" --amount="1" --chain-id="1" --pk-from="publicKey") --network-id="testnet04" --out-file="transaction-(request-key).json"
-```
-
----
-
-```
-kadena tx sign-with-keypair [arguments]
+kadena tx sign [arguments]
 ```
 
 | **Arguments & Options**         | ** Description**                                                        | **Required** |
 | ------------------------------- | ----------------------------------------------------------------------- | ------------ |
+| --tx-sign-with="aliasFile"      | Provide signing method                                                  | Yes          |
 | --key-pairs                     | Provide publickey and secretKey (or list seperated my semicolon)        |              |
 | --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma seperated list) |              |
 
 example:
 
 ```
-kadena tx sign-with-keypair --key-pairs="publicKey=xxx,secretKey=xxx" --tx-unsigned-transaction-files="transaction-(request-key).json"
+kadena tx sign --tx-sign-with="keyPair" --key-pairs="publicKey=xxx,secretKey=xxx" --tx-unsigned-transaction-files="transaction-(request-key).json"
 ```
 
 ---
 
 ```
-kadena tx sign-with-alias-file [arguments]
+kadena kadena sign [arguments]
 ```
 
 | **Arguments & Options**         | ** Description**                                                        | **Required** |
 | ------------------------------- | ----------------------------------------------------------------------- | ------------ |
-| --key-wallet                    | Provode the name of the wallet                                          |              |
+| --tx-sign-with="aliasFile"      | Provide signing method                                                  | Yes          |
+| --key-wallet                    | Provide the name of the wallet                                          |              |
 | --security-password             | Provide the password for the wallet                                     |              |
 | --key-alias-select              | Select a aliased file                                                   |              |
 | --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma seperated list) |              |
@@ -635,7 +651,7 @@ kadena tx sign-with-alias-file [arguments]
 example:
 
 ```
-kadena tx sign-with-alias-file --key-wallet="mywallet.wallet" --security-password=1234567 --key-alias-select="mywalletalias.key" --tx-unsigned-transaction-files="transaction-(request-key).json,transaction-(request-key).json"
+kadena sign --tx-sign-with="aliasFile" --key-wallet="mywallet.wallet" --security-password=1234567 --key-alias-select="mywalletalias.key" --tx-unsigned-transaction-files="transaction-(request-key).json,transaction-(request-key).json"
 ```
 
 password will be hidden after entry: --security-password=\*
@@ -643,11 +659,12 @@ password will be hidden after entry: --security-password=\*
 ---
 
 ```
-kadena tx sign-with-local-wallet [arguments]
+kadena tx sign [arguments]
 ```
 
 | **Arguments & Options**         | ** Description**                                                        | **Required** |
 | ------------------------------- | ----------------------------------------------------------------------- | ------------ |
+| --tx-sign-with="localWallet"    | Provide signing method                                                  | Yes          |
 | --key-wallet                    | Provode the name of the wallet                                          |              |
 | --security-password             | Provide the password for the wallet                                     |              |
 | --key-alias-select              | Select a aliased file                                                   |              |
@@ -656,7 +673,7 @@ kadena tx sign-with-local-wallet [arguments]
 example:
 
 ```
-kadena tx sign-with-local-wallet --key-wallet="mywallet.wallet" --security-password=12345678 --tx-unsigned-transaction-files="transaction-(request-key)-signed.json"
+kadena tx sign --tx-sign-with="localWallet"  --key-wallet="mywallet.wallet" --security-password=12345678 --tx-unsigned-transaction-files="transaction-(request-key)-signed.json"
 ```
 
 password will be hidden after entry: --security-password=\*
@@ -704,12 +721,12 @@ kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0T
 
 Tool for creating dapp projects
 
-| **Subcommand** | **Description**           | **Default value** |
-| -------------- | ------------------------- | ----------------- |
-| create         | Create a new Dapp project |                   |
+| **Subcommand** | **Description**        | **Default value** |
+| -------------- | ---------------------- | ----------------- |
+| add            | add a new Dapp project |                   |
 
 ```
-kadena dapp create [arguments]
+kadena dapp add [arguments]
 ```
 
 | **Arguments & Options** | ** Description**                         | **Required** |
@@ -720,7 +737,7 @@ kadena dapp create [arguments]
 example:
 
 ```
-kadena dapp create --dapp-template="vuejs" danillo
+kadena dapp add --dapp-template="vuejs" kadena-dapp
 ```
 
 ---

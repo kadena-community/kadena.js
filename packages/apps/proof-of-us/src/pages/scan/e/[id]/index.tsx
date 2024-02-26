@@ -1,5 +1,9 @@
+import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
-import ScanLayout from '@/components/ScanLayout/ScanLayout';
+import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
+import { ScreenHeight } from '@/components/ScreenHeight/ScreenHeight';
+import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
+import UserLayout from '@/components/UserLayout/UserLayout';
 import { ScanAttendanceEvent } from '@/features/ScanAttendanceEvent/ScanAttendanceEvent';
 import { useGetAttendanceToken } from '@/hooks/data/getAttendanceToken';
 import { useHasMintedAttendaceToken } from '@/hooks/data/hasMintedAttendaceToken';
@@ -31,17 +35,22 @@ const Page: NextPage<IProps> = ({ params }) => {
   if (!data) return null;
 
   return (
-    <ScanLayout>
-      <div>
-        {isLoading && <MainLoader />}
-        {error && <div>...error</div>}
-        <ScanAttendanceEvent
-          data={data}
-          eventId={eventId}
-          isMinted={isMinted}
-        />
-      </div>
-    </ScanLayout>
+    <ProofOfUsProvider>
+      <LoginBoundry>
+        <UserLayout>
+          <ScreenHeight>
+            <TitleHeader label="Attendance @" />
+            {isLoading && <MainLoader />}
+            {error && <div>...error</div>}
+            <ScanAttendanceEvent
+              data={data}
+              eventId={eventId}
+              isMinted={isMinted}
+            />
+          </ScreenHeight>
+        </UserLayout>
+      </LoginBoundry>
+    </ProofOfUsProvider>
   );
 };
 

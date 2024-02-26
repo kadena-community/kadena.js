@@ -8,6 +8,7 @@ import { defaultDevnetsPath } from '../constants/devnets.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
+import { CommandError } from './command.util.js';
 import { log } from './logger.js';
 
 /**
@@ -82,12 +83,13 @@ export function handlePromptError(error: unknown): never {
     if (error.message.includes('User force closed the prompt')) {
       process.exit(0);
     } else {
+      log.debug(error);
       log.error(error.message);
     }
   } else {
     log.error('Unexpected error executing option', error);
   }
-  process.exit(1);
+  throw new CommandError({ errors: [], exitCode: 1 });
 }
 
 /**
@@ -357,4 +359,12 @@ export const formatZodError = (error: ZodError): string => {
     })
     .filter(notEmpty);
   return formatted.join('\n');
+};
+
+export const safeJsonParse = <T extends unknown>(value: string): T | null => {
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    return null;
+  }
 };

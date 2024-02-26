@@ -87,6 +87,40 @@ const Home: FC = () => {
         />
       ),
     },
+    {
+      title: t('How do I create an account?'),
+      body: (
+        <Trans
+          i18nKey="common:how-to-keys-accounts"
+          components={[
+            <Link
+              className={linkStyle}
+              key="chainweb-transfer-link"
+              href="https://chainweaver.kadena.network/"
+              target="_blank"
+              rel="noreferrer"
+            />,
+          ]}
+        />
+      ),
+    },
+    {
+      title: t('How do I select a network and chain?'),
+      body: (
+        <Trans
+          i18nKey="common:how-to-networks"
+          components={[
+            <Link
+              className={linkStyle}
+              key="chainweb-transfer-link"
+              href="https://docs.kadena.io/build/guides/election-dapp-tutorial/start-a-local-blockchain"
+              target="_blank"
+              rel="noreferrer"
+            />,
+          ]}
+        />
+      ),
+    },
   ];
 
   useToolbar(menuData);
@@ -145,16 +179,21 @@ const Home: FC = () => {
           {t('Kadena Developer Tools')}
         </Heading>
         <Heading bold={false} as="h2" variant="h5" color="default">
-          {t(
-            "We're constantly adding new Developer Tools to make it easier for our builders to utilize all Kadena has to offer.",
-          )}
+          <p>
+            {t(
+              'Set up your development environment and get the latest Developer Tools to build your application on the Kadena network.',
+            )}
+          </p>
+          <p>
+            {t('Select a network to get started or explore the documentation.')}
+          </p>
         </Heading>
         <Stack flexDirection="column" gap="lg" marginBlockStart="lg">
           <Card fullWidth>
             <Grid columns={2}>
               <GridItem>
                 <Heading as="h3" variant="h5">
-                  {t('General Links')}
+                  {t('New to Kadena')}
                 </Heading>
                 <Box marginBlockEnd="md" />
                 <ul>
@@ -165,34 +204,54 @@ const Home: FC = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Overview of Kadena')}
+                      {t('Welcome to Kadena')}
                     </a>
                   </li>
                   <li>
                     <a
                       className={linkStyle}
-                      href="https://docs.kadena.io/kadena/kda/manage-kda"
+                      href="https://docs.kadena.io/kadena/why-kadena"
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Manage your KDA')}
+                      {t('Why Kadena?')}
                     </a>
                   </li>
                   <li>
                     <a
                       className={linkStyle}
-                      href="https://kadena.io/grants/"
+                      href="https://docs.kadena.io/blogchain/2022/the-story-of-kadenas-proof-of-work-blockchain-2022-10-13"
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Contribute to the network')}
+                      {t('Proof of work consensus')}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/kadena/kda/kda-concepts"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Accounts and keys')}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/kadena/wallets/chainweaver#networksh1378111525"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Networks and nodes')}
                     </a>
                   </li>
                 </ul>
               </GridItem>
               <GridItem>
                 <Heading as="h3" variant="h5">
-                  {t('Developers Links')}
+                  {t('For Developers')}
                 </Heading>
                 <Box marginBlockEnd="md" />
                 <ul>
@@ -203,7 +262,7 @@ const Home: FC = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Quick start')}
+                      {t('Deploy your first contract')}
                     </a>
                   </li>
                   <li>
@@ -213,17 +272,37 @@ const Home: FC = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Pact language resources')}
+                      {t('Get started with Pact')}
                     </a>
                   </li>
                   <li>
                     <a
                       className={linkStyle}
-                      href="https://docs.kadena.io/build/guides/election-dapp-tutorial"
+                      href="https://docs.kadena.io/marmalade"
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Build your first dApp')}
+                      {t('NFTs and Marmalade')}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/kadena/client"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Kadena client')}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/pact/reference/functions"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Pact functions')}
                     </a>
                   </li>
                 </ul>

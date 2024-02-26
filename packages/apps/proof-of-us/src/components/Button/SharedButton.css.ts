@@ -27,10 +27,6 @@ export const button = recipe({
           borderRadius: 'inherit',
           padding: '1px',
           border: '1px solid transparent',
-          background:
-            'linear-gradient(0deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.1)) border-box',
-          mask: 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
-          maskComposite: 'xor, exclude',
         },
       },
     },

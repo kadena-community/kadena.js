@@ -1,3 +1,4 @@
+import { deviceColors } from '@/styles/tokens.css';
 import { keyframes, style } from '@vanilla-extract/css';
 
 const rotate = keyframes({
@@ -16,6 +17,6 @@ export const animateClass = style([
 
 export const checkClass = style([
   {
-    color: 'green',
+    color: deviceColors.green,
   },
 ]);

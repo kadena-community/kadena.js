@@ -3,6 +3,7 @@ import { ACCOUNT_COOKIE_NAME } from '@/constants';
 import { useToasts } from '@/hooks/toast';
 import { env } from '@/utils/env';
 import { getReturnUrl } from '@/utils/getReturnUrl';
+import { store } from '@/utils/socket/store';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
@@ -54,7 +55,11 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   const login = useCallback(() => {
-    router.push(`${env.WALLET_URL}/login?returnUrl=${getReturnUrl()}`);
+    router.push(
+      `${env.WALLET_URL}/login?returnUrl=${getReturnUrl()}&networkId=${
+        env.NETWORKID
+      }&optimistic=true`,
+    );
   }, [router]);
 
   const logout = useCallback(() => {
@@ -63,15 +68,25 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     router.replace('/');
   }, []);
 
-  useEffect(() => {
+  const loginResponse = useCallback(async () => {
     const userResponse = searchParams.get('user');
 
-    if (!userResponse) return;
+    if (!userResponse) {
+      setIsMounted(true);
+      return;
+    }
 
     localStorage.setItem(ACCOUNT_COOKIE_NAME, userResponse);
     const account = decodeAccount(userResponse);
+
+    store.saveAlias(account);
+
     setAccount(account);
     setIsMounted(true);
+  }, [setAccount, setIsMounted, searchParams, decodeAccount]);
+
+  useEffect(() => {
+    loginResponse();
   }, [searchParams, setAccount, decodeAccount, setIsMounted]);
 
   useEffect(() => {

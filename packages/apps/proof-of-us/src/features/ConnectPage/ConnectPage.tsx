@@ -20,9 +20,5 @@ export const ConnectPage: FC<IProps> = () => {
 
   if (!proofOfUs) return null;
 
-  return (
-    <div>
-      <ConnectView proofOfUs={proofOfUs} background={background} />
-    </div>
-  );
+  return <ConnectView proofOfUs={proofOfUs} background={background} />;
 };

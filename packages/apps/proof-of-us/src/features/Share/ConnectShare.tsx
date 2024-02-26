@@ -5,6 +5,7 @@ import { MetaDetails } from '@/components/MetaList/MetaDetails';
 import { MetaList } from '@/components/MetaList/MetaList';
 import { MetaTerm } from '@/components/MetaList/MetaTerm';
 import { Signees } from '@/components/Signees/Signees';
+import { overflowClass } from '@/components/Signees/styles.css';
 import { SocialShare } from '@/components/SocialShare/SocialShare';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { Heading } from '@/components/Typography/Heading';
@@ -12,6 +13,7 @@ import UserLayout from '@/components/UserLayout/UserLayout';
 import { env } from '@/utils/env';
 import { MonoClose } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
+import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 
 import type { FC } from 'react';
@@ -51,6 +53,7 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
       </Stack>
       <Stack
         flexDirection="column"
+        width="100%"
         style={{
           position: 'relative',
           marginBlockStart: '-60px',
@@ -61,16 +64,13 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
         <SavedImagePositions data={data} />
 
         <Stack
+          gap="md"
+          className={overflowClass}
           flexDirection="column"
           paddingInline="md"
-          style={{
-            position: 'relative',
-            height: '100px',
-            width: '100vw',
-            zIndex: 2,
-          }}
         >
-          <Heading as="h6">Signees</Heading>
+          <Heading as="h5">Signees</Heading>
+
           <Signees signees={data.properties.signees} authors={data.authors} />
           <Heading as="h6">Metadata</Heading>
           <MetaList>
@@ -91,7 +91,7 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
 
             <MetaTerm>event Date</MetaTerm>
             <MetaDetails>
-              {new Date(data.properties.date).toLocaleDateString()}
+              {format(data.properties.date, 'dd MMMM yyyy')}
             </MetaDetails>
             <MetaTerm>image</MetaTerm>
             <MetaDetails>

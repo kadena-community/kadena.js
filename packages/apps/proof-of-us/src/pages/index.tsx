@@ -1,5 +1,6 @@
 'use client';
 import { Button } from '@/components/Button/Button';
+import { ScreenHeight } from '@/components/ScreenHeight/ScreenHeight';
 import { useAccount } from '@/hooks/account';
 import { Stack } from '@kadena/react-ui';
 import Image from 'next/image';
@@ -14,18 +15,13 @@ const Page: FC = () => {
   useEffect(() => {
     if (!isMounted || !account) return;
     router.push('/user');
-  }, [isMounted]);
+  }, [isMounted, account]);
+
+  if (!isMounted) return null;
 
   return (
-    <Stack
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      height="100%"
-      gap="xl"
-      paddingInline="md"
-    >
-      <Stack flex={1} alignItems="center">
+    <ScreenHeight>
+      <Stack flex={1} width="100%" justifyContent="center" alignItems="center">
         <Image
           src="/assets/logo.svg"
           alt="Proof of Us (Powered by Kandena)"
@@ -33,10 +29,11 @@ const Page: FC = () => {
           height="117"
         />
       </Stack>
+
       <Button variant="primary" onPress={login}>
         Connect
       </Button>
-    </Stack>
+    </ScreenHeight>
   );
 };
 

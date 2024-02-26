@@ -3,6 +3,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { accountOptions } from '../accountOptions.js';
 import type { IAccountDetailsResult } from '../types.js';
 import type { IGetAccountDetailsParams } from '../utils/getAccountDetails.js';
 import { getAccountDetailsFromChain } from '../utils/getAccountDetails.js';
@@ -36,7 +37,7 @@ export const createAccountDetailsCommand = createCommandFlexible(
   'details',
   'Get details of an account',
   [
-    globalOptions.accountSelect(),
+    accountOptions.accountSelect(),
     globalOptions.networkSelect(),
     globalOptions.chainId({ isOptional: false }),
     globalOptions.fungible({ isOptional: true }),

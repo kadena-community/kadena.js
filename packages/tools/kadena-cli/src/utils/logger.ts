@@ -21,7 +21,7 @@ import { displayTable } from '../utils/tableDisplay.js';
 
 interface IRecord {
   date: Date;
-  level: number;
+  level: LevelValue;
   args: unknown[];
 }
 type Transport = (record: IRecord, log: Logger) => void;
@@ -73,15 +73,16 @@ const stdErrChalk = new Chalk({ level: stderrColorsEnabled ? 2 : 0 });
 
 export const defaultTransport: Transport = (record) => {
   // Give color to logs
+  const NO_COLOR = (line: string): string => line;
   const LEVEL_COLORS = {
     [LEVELS.error]: stdErrChalk.red,
     [LEVELS.warning]: stdErrChalk.yellow,
-    [LEVELS.output]: stdErrChalk.gray,
-    [LEVELS.info]: stdErrChalk.gray,
+    [LEVELS.output]: NO_COLOR,
+    [LEVELS.info]: NO_COLOR,
     [LEVELS.debug]: stdErrChalk.gray,
     [LEVELS.verbose]: stdErrChalk.gray,
-  } as Record<number, ChalkInstance>;
-  const COLOR = LEVEL_COLORS[record.level] ?? stdErrChalk.white;
+  } as Record<LevelValue, ChalkInstance>;
+  const COLOR = LEVEL_COLORS[record.level] ?? NO_COLOR;
 
   // If level "output", write to stdout
   if (record.level === LEVELS.output) {
@@ -152,7 +153,7 @@ class Logger {
     return this._chalk;
   }
 
-  private _log(level: number, args: unknown[]): void {
+  private _log(level: LevelValue, args: unknown[]): void {
     if (this.level >= level) {
       this._transport({ date: new Date(), level, args }, this);
     }

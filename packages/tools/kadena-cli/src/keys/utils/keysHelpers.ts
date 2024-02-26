@@ -26,17 +26,6 @@ export interface IWallet {
 }
 
 /**
- * Ensures that the wallet directory exists. If the directory does not exist,
- * the process is terminated and exits.
- */
-export async function ensureWalletExists(): Promise<void> {
-  if (!(await services.filesystem.directoryExists(WALLET_DIR))) {
-    log.error(`No Wallet created yet. Please create a wallet first.`);
-    process.exit(1);
-  }
-}
-
-/**
  * Helper method to get all information about a wallet
  * @param wallet wallet name without extension
  * @returns
@@ -122,7 +111,7 @@ const readKeyFile = async (path: string): Promise<IPlainKey> => {
       (parsed as { index?: string }).index ??
         (key.match(/-([0-9]+)\.key$/)?.[1] as string),
     ) || 0;
-  const alias = key.replace('.key', '').split('-').slice(0, 1).join('-');
+  const alias = key; // use to be base name, for now use entire filename
   const legacy = key.endsWith(KEY_LEGACY_EXT);
 
   return {
@@ -197,7 +186,9 @@ export const isIWalletKey = (
  * @returns {string[]} An array of all wallet filenames with their extensions.
  */
 export async function getAllWallets(): Promise<string[]> {
-  await ensureWalletExists();
+  if (!(await services.filesystem.directoryExists(WALLET_DIR))) {
+    return [];
+  }
 
   const walletDirs = await services.filesystem.readDir(WALLET_DIR);
 

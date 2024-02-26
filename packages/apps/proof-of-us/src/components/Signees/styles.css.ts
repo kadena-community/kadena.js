@@ -1,48 +1,36 @@
-import { atoms } from '@kadena/react-ui/styles';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
-export const listClass = style([
-  atoms({
-    display: 'flex',
-    padding: 'no',
-    width: '100%',
-    marginBlockEnd: 'md',
-  }),
-  {
-    listStyle: 'none',
-  },
-]);
 export const itemClass = style([
   atoms({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    flex: 1,
     padding: 'md',
   }),
   {
+    flex: '1 1 50%',
+    width: '50%',
     selectors: {
       '&:first-child': {
         background: 'rgba(255,255,255,.1)',
+        borderTopLeftRadius: tokens.kda.foundation.radius.md,
+        borderBottomLeftRadius: tokens.kda.foundation.radius.md,
+        border: '1px solid rgba(255,255,255,.2)',
+        borderInlineEnd: '0',
       },
       '&:last-child': {
         background: 'rgba(255,255,255,.2)',
+        borderTopRightRadius: tokens.kda.foundation.radius.md,
+        borderBottomRightRadius: tokens.kda.foundation.radius.md,
+        border: '1px solid rgba(255,255,255,.2)',
       },
     },
   },
 ]);
-export const titleClassWrapper = style([
-  {
-    flex: '1 1 100%',
-    minWidth: '0',
-  },
-]);
+
 export const titleClass = style([
-  {
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-  },
+  atoms({
+    width: '100%',
+    fontWeight: 'bodyFont.bold',
+  }),
 ]);
 
 export const bulletClass = style([
@@ -86,8 +74,11 @@ export const bulletPositionClass = style([
   atoms({
     position: 'absolute',
     borderRadius: 'round',
+    margin: 'no',
+    padding: 'no',
   }),
   {
+    border: 0,
     width: '4.5rem',
     height: '4.5rem',
     aspectRatio: '1/1',
@@ -119,3 +110,44 @@ export const bulletPositionClass = style([
     },
   },
 ]);
+
+export const smallClass = style({
+  width: '2rem',
+  height: '2rem',
+  selectors: {
+    '&:before': {
+      border: '1px solid white',
+      margin: '.425rem',
+      width: '1.2rem',
+      height: '1.2rem',
+    },
+  },
+});
+
+export const wrapperClass = style([
+  atoms({}),
+  {
+    display: 'flex',
+    width: '100%',
+  },
+]);
+
+export const nameClass = style([
+  {
+    width: '100%',
+    fontFamily: 'Kode Mono',
+    opacity: '.6',
+  },
+]);
+
+export const ellipsClass = style([
+  {
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+  },
+]);
+
+export const overflowClass = style({
+  overflowY: 'scroll',
+});

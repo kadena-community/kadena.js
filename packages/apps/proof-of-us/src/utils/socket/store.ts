@@ -63,6 +63,25 @@ const ProofOfUsStore = () => {
     });
   };
 
+  const listenLeaderboard = (
+    setDataCallback: Dispatch<SetStateAction<IAccountLeaderboard[]>>,
+  ) => {
+    const accountsRef = ref(database, `accounts`);
+    onValue(accountsRef, (snapshot) => {
+      const data = snapshot.val();
+
+      if (!data) return [];
+
+      console.log({ data });
+
+      const dataArray = Object.entries(data)
+        .map(([key, value]) => value as IAccountLeaderboard)
+        .sort((a, b) => (a.tokenCount < b.tokenCount ? 1 : -1));
+
+      setDataCallback(dataArray);
+    });
+  };
+
   const addBackground = async (
     proofOfUs: IProofOfUsData,
     background: IProofOfUsBackground,
@@ -139,49 +158,37 @@ const ProofOfUsStore = () => {
     });
   };
 
-  const updateTx = async (proofOfUs: IProofOfUsData, tx: string) => {
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      tx,
-    });
+  const updateProofOfUs = async (proofOfUs: IProofOfUsData, value: any) => {
+    const newProof = { ...proofOfUs, ...value };
+
+    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), newProof);
   };
 
-  const addTitle = async (proofOfUs: IProofOfUsData, value: string) => {
-    if (isAlreadySigning(proofOfUs.signees)) return;
+  const getAllAccounts = async (): Promise<IAccountLeaderboard[] | null> => {
+    const docRef = await get(child(dbRef, `accounts`));
 
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      title: value,
-    });
+    if (!docRef.exists()) return [];
+    const data = docRef.toJSON();
+    if (!data) return [];
+    const newData = Object.entries(data).map(([key, value]) => value);
+    return (newData ?? []) as IAccountLeaderboard[];
   };
 
-  const updateBackgroundColor = async (
-    proofOfUs: IProofOfUsData,
-    value: string,
-  ) => {
-    if (isAlreadySigning(proofOfUs.signees)) return;
+  const saveAlias = async (account: IAccount | undefined) => {
+    if (!account) return;
+    const accData = { alias: account.alias, accountName: account.accountName };
 
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      backgroundColor: value,
-    });
+    await update(ref(database, `accounts/${account.accountName}`), accData);
   };
-
-  const updateSigner = async (
-    proofOfUs: IProofOfUsData,
-    account: IProofOfUsSignee,
-    value: any,
-    isOverwrite: boolean = false,
-  ) => {
-    if (!isOverwrite && isAlreadySigning(proofOfUs.signees)) return;
-
-    const newList = proofOfUs.signees.map((a) => {
-      if (a.accountName === account.accountName) {
-        return { ...a, ...value };
-      }
-      return a;
-    });
-
-    await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-      signees: newList,
-    });
+  const saveLeaderboardAccounts = async (accounts: IAccountLeaderboard[]) => {
+    const obj = accounts.reduce(
+      (acc: Record<string, IAccountLeaderboard>, val: IAccountLeaderboard) => {
+        acc[val.accountName] = val;
+        return acc;
+      },
+      {},
+    );
+    await update(ref(database, `accounts`), obj);
   };
 
   return {
@@ -197,10 +204,11 @@ const ProofOfUsStore = () => {
     updateStatus,
     listenProofOfUsData,
     listenProofOfUsBackgroundData,
-    addTitle,
-    updateBackgroundColor,
-    updateSigner,
-    updateTx,
+    listenLeaderboard,
+    updateProofOfUs,
+    saveAlias,
+    getAllAccounts,
+    saveLeaderboardAccounts,
   };
 };
 

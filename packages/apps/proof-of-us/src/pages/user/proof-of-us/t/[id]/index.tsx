@@ -1,3 +1,4 @@
+import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { Share } from '@/features/Share/Share';
 import { fetchManifestData } from '@/utils/fetchManifestData';
@@ -14,9 +15,11 @@ interface IProps {
 
 const Page: NextPage<IProps> = ({ params, data, metadataUri }) => {
   return (
-    <UserLayout>
-      <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
-    </UserLayout>
+    <LoginBoundry>
+      <UserLayout>
+        <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
+      </UserLayout>
+    </LoginBoundry>
   );
 };
 
@@ -27,6 +30,7 @@ export const getServerSideProps = async (
 
   const uri = await getTokenUri(id);
   const data = await fetchManifestData(uri);
+
   return {
     props: { params: { id: `${ctx.query.id}` }, data, metadataUri: uri },
   };

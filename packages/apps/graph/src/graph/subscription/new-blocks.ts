@@ -1,6 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
+import type { Block } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
-import { createID } from '@utils/global-id';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
@@ -12,7 +12,7 @@ builder.subscriptionField('newBlocks', (t) =>
     args: {
       chainIds: t.arg.intList({ required: false }),
     },
-    type: ['ID'],
+    type: [GQLBlock],
     nullable: true,
     subscribe: (__root, args, context) =>
       iteratorFn(args.chainIds as number[] | undefined, context),
@@ -25,14 +25,14 @@ async function* iteratorFn(
     (__, i) => i,
   ),
   context: IContext,
-): AsyncGenerator<string[], void, unknown> {
+): AsyncGenerator<Block[], void, unknown> {
   const startingTimestamp = new Date().toISOString();
   const blockResult = await getLastBlocks(chainIds, startingTimestamp);
   let lastBlock;
 
   if (!nullishOrEmpty(blockResult)) {
     lastBlock = blockResult[0];
-    yield [createID(GQLBlock.name, lastBlock.hash)];
+    yield [lastBlock];
   }
 
   while (!context.req.socket.destroyed) {
@@ -44,7 +44,7 @@ async function* iteratorFn(
 
     if (!nullishOrEmpty(newBlocks)) {
       lastBlock = newBlocks[0];
-      yield newBlocks.map((block) => createID(GQLBlock.name, block.hash));
+      yield newBlocks;
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -55,7 +55,7 @@ async function getLastBlocks(
   chainIds: number[],
   date: string,
   id?: number,
-): Promise<{ id: number; hash: string }[]> {
+): Promise<Block[]> {
   const defaultFilter: Parameters<typeof prismaClient.block.findMany>[0] = {
     orderBy: {
       id: 'desc',
@@ -78,10 +78,6 @@ async function getLastBlocks(
   const foundblocks = await prismaClient.block.findMany({
     ...extendedFilter,
     where: { ...extendedFilter.where, chainId: { in: chainIds } },
-    select: {
-      id: true,
-      hash: true,
-    },
   });
 
   return foundblocks.sort((a, b) => b.id - a.id);

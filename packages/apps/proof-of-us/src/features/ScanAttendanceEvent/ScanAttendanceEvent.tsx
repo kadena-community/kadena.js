@@ -59,8 +59,6 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     <>
       {isStatusLoading && <MainLoader />}
       <div>
-        <h2>Attendance @</h2>
-
         <div>claimstatus: {status}</div>
         <AttendanceTicket data={data} />
       </div>
