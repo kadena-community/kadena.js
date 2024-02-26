@@ -71,6 +71,7 @@
     "graphql-yoga": "~5.0.2",
     "js-yaml": "~4.1.0",
     "json-bigint-patch": "~0.0.8",
+    "listr2": "~8.0.2",
     "module-alias": "^2.2.3",
     "prisma": "^5.7.1",
     "seedrandom": "~3.0.5",

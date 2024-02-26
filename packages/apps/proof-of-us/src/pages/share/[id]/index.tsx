@@ -1,4 +1,3 @@
-import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import { Share } from '@/features/Share/Share';
 import { fetchManifestData } from '@/utils/fetchManifestData';
 import { getTokenUri } from '@/utils/proofOfUs';
@@ -58,9 +57,7 @@ const Page: NextPage<IProps> = ({ params, data, metadataUri }) => {
         <meta key="twitter:image" name="twitter:image" content={data.image} />
         <meta key="og:image" property="og:image" content={data.image} />
       </Head>
-      <ProofOfUsProvider>
-        <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
-      </ProofOfUsProvider>
+      <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
     </>
   );
 };
