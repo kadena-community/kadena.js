@@ -25,7 +25,10 @@ export const query =
     );
 
 export const queryAllChains =
-  <T = PactValue>({ host, defaults }: Omit<IClientConfig, 'sign'>) =>
+  <T = PactValue>(
+    { host, defaults }: Omit<IClientConfig, 'sign'>,
+    client = getClient(host),
+  ) =>
   (emit: IEmit) =>
     asyncPipe(
       composePactCommand(defaults ?? {}),
@@ -34,9 +37,10 @@ export const queryAllChains =
       (command: IPartialPactCommand) => {
         return Promise.all(
           chainIds.map((chainId) => {
-            return query<T>({ host, defaults: { meta: { chainId } } })(emit)(
-              command,
-            );
+            return query<T>(
+              { host, defaults: { meta: { chainId } } },
+              client,
+            )(emit)(command);
           }),
         );
       },
