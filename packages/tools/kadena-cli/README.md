@@ -595,13 +595,13 @@ kadena account delete [arguments]
 example for delete a specific account:
 
 ```
-kadena account list --account-alias="accountAlias" --confirm="yes"
+kadena account delete --account-alias="accountAlias" --confirm
 ```
 
 example for delete multiple accounts: (comma separated list of account alias)
 
 ```
-kadena account list --account-alias="accountAlias_1,devnetAlias" --confirm="yes"
+kadena account delete --account-alias="accountAlias_1,devnetAlias" --confirm
 ```
 
 ## kadena tx
