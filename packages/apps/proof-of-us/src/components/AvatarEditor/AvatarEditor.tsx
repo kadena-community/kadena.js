@@ -5,7 +5,7 @@ import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { MonoClose } from '@kadena/react-icons';
 import classnames from 'classnames';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -28,9 +28,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
-  const { proofOfUs, updateProofOfUs, updateBackgroundColor, closeToken } =
-    useProofOfUs();
-  const router = useRouter();
+  const { proofOfUs, updateProofOfUs, updateBackgroundColor } = useProofOfUs();
 
   useEffect(() => {
     // if someone is already signing the pou, you are not allowed to change the photo anymore
@@ -115,24 +113,17 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     next();
   };
 
-  const handleClose = async () => {
-    if (!confirm('Are you sure you want to stop with this token?')) return;
-    if (proofOfUs) await closeToken({ proofOfUsId: proofOfUs.proofOfUsId });
-    setIsMounted(false);
-    router.replace('/user');
-  };
-
   return (
     <section className={wrapperClass}>
       <div className={headerClass}>
         <TitleHeader
           label="Say Cheese"
           Append={() => (
-            <>
-              <IconButton onClick={handleClose}>
+            <Link href="/user">
+              <IconButton>
                 <MonoClose />
               </IconButton>
-            </>
+            </Link>
           )}
         />
       </div>
