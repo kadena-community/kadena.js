@@ -1,240 +1,116 @@
 ---
-title: Welcome to Pact
-description: Kadena makes blockchain work for everyone.
-menu: Beginner
-label: Welcome to Pact
+title: Get started with Pact
+description: Start your builder's journey on Kadena by learning about the Pact smart contract programming language.
+menu: Pact
+label: Get started with Pact
 order: 2
 layout: full
 tags: ['pact', 'pact tutorial', 'pact beginner', 'pact introduction']
 ---
 
-# Welcome to Pact
+# Get started with Pact
 
-Welcome to the Pact smart contract programming language!
+Pact is an open-source programming language designed specifically for writing **smart contracts** and developing applications to run on a blockchain.
 
-In this tutorial, you’ll learn about Pact, get introduced to its core features,
-and take your first steps toward becoming a Pact smart contract developer.
+There are unique challenges involved in writing smart contracts and building solutions that can run safely and perform well in a resource-constrained environment like a blockchain. 
+Pact was built with these challenges in mind to help developers create programs that overcome them.
 
-**Topics covered in this tutorial**
+Before you get to writing code in Pact, you should know a little about the languages that inspired the design choices used in Pact and about the key features that make Pact particularly well-suited for writing smart contracts.
 
-- Introduction to Pact
-- Pact Key Features
-- Learn More About Pact
+## Key features of Pact
 
-The goal is to familiarize you with what Pact is, how its used, and some
-critical decisions that influenced the design of this new language.
+Pact reflects many of the same approaches to writing smart contracts that are used in other programming languages—such as Solidity or Rust—but with a goal of making contracts less error-prone and less vulnerable to exploits and attacks. 
+You'll find Pact similar to general-purpose, Turing-complete languages in its syntax, function declarations, module definitions, and imperative style. 
+However, Pact has several features that make it a safe and performant language for blockchain applications, including the following:
 
-:::note Key Takeaway
+- Turing incomplete contracts
+- Human readable code
+- Upgradable contracts
+- Formal verification
+- Sequenced transactions using **pacts**
 
-Pact is the safest, most user-friendly language for smart contracts. It’s
-designed for security and performance. It is Turing incomplete, human readable,
-supports upgradable contracts, and formal verification to make high performant
-and secure smart contracts.
+![Key features of Pact smart contract](/assets/docs/1-pact-smart-contract.png)
 
-:::
+### Turing incomplete contracts
 
-## Welcome to Pact Tutorial
+Programming languages that are Turing complete can execute any possible set of instructions, and, for many languages, Turing completeness is extremely important. 
+However, unrestrained computation can be costly in a resource-constrained environment like a blockchain. 
+Programs that require significant computational overhead can even affect the ongoing progress of the blockchain by preventing new transactions from being executed.
+Because of these risks, Pact smart contracts are intentionally Turing *incomplete*.
 
-https://www.youtube.com/watch?v=BedEHtwLLes
+Pact enforces deliberate constraints on its computational ability to support "just enough" transactional activity and ensure the security of its smart contracts.
+For example, Pact doesn't allow unbounded looping or recursion. 
+If Pact detects recursion, it fails immediately. 
+Looping is also only supported in special circumstances. 
+These constraints reduce costs and improve network performance. 
 
-Subscribe to our
-[YouTube channel](https://www.youtube.com/channel/UCB6-MaxD2hlcGLL70ukHotA) to
-access the latest Pact tutorials.
+Because Pact is intentionally Turing incomplete, some of the most costly bugs discovered in other platforms aren't even possible with Pact. 
 
-## Introduction to Pact
+For more information about Turing incompleteness, see [Turing Completeness and Smart Contract Security](/blogchain/2019/turing-completeness-and-smart-contract-security-2019-02-11)
 
-Pact is an open-source programming language for writing **smart contracts**.
+### Human readable on-chain
 
-It’s designed from the ground up to support the unique challenges of developing
-solutions to run on a blockchain. Pact empowers developers to create robust and
-high-performance logic for transactions. It facilitates execution of
-mission-critical business operations quickly and effectively.
-
-![1-pact-smart-contract](/assets/docs/1-pact-smart-contract.png)
-
-Pact is designed with safety in mind. Its design is informed by existing
-approaches to smart contracts as well as stored procedure languages like SQL and
-LISP. Pact resembles a general-purpose, Turing-complete language. It includes
-LISP-like syntax, user functions, modules, and imperative style.
-
-### Pact Smart Contracts
-
-Pact smart contracts contain three core elements: the code module, keysets, and
-tables.
-
-The table below briefly introduces each of these core elements.
-
-|             |                                                                                                                                                    |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Module**  | A module defines the logic of a smart contract. It contains functions, pact definitions, tables, and schemas.                                      |
-| **Keysets** | Includes relevant documentation links and allows you to load code into the REPL, refresh the REPL, or deploy smart contract.                       |
-| **Tables**  | Tables store data generated by Pact modules. These tables have a “key-row” structure and support schemas as well as a versioned, columnar history. |
-
-Each of these elements support a wide range of functionality. This ensures that
-you have the tools you need to create robust solutions for real-world problems.
-
-## Pact Key Features
-
-There are many valuable features make Pact such a safe and high-performance
-language. Here are a few that we’ll focus on throughout this tutorial.
-
-**Pact Key Features**
-
-- Turing Incomplete
-- Human Readable
-- Upgradable Contracts
-- Formal Verification
-- Type Inference
-- Total Governance
-- RDBMS Integration
-- Pacts
-
-### Turing Incomplete
-
-Pact contracts are Turing incomplete.
-
-A Turing complete language has the power to run any possible program. In some
-languages, Turing completeness is an extremely important feature. For smart
-contracts, it’s an incredibly dangerous feature. For that reason, Pact is
-designed to be Turing incomplete which places deliberate constraints on its
-computational ability. This supports its design goal of “just enough” power for
-transactional blockchain solutions and helps ensure the security of its smart
-contracts.
-
-The first restriction in Pact is that there is no unbounded looping or
-recursion. Pact detects recursion and fails immediately. Looping is also only
-supported in special circumstances. The key benefits of this are to reduce cost
-and improve performance. This feature makes some of the most infamous and costly
-bugs discovered in other platforms not even possible with Pact. For more
-information on this topic, see our blog post -
-
-[Turing Completeness and Smart Contract Security](/blogchain/2019/turing-completeness-and-smart-contract-security-2019-02-11)
-
-### Human Readable
-
-Pact smart contracts are human readable.
-
-All Pact code gets stored as written in a **human-readable** form on the ledger.
-Pact smart contracts install directly onto the blockchain. This allows you to
-review the running code as it was written and be sure of exactly what it's
+All Pact code gets stored in a **human-readable** form directly on the blockchain. 
+Because the contract is a human-readable part of the public record, anyone can review the running code and be sure of exactly what it's
 doing.
 
-This is important because smart contracts solve business problems that require
-both technical and non-technical expertise. Building the best smart contract
-solution requires everyone to understand and contribute to the development of
-the smart contract.
+This feature is important because smart contracts solve business problems that require both technical and non-technical expertise. 
+Building the best smart contract solution requires everyone to understand and contribute to the development of the smart contract.
 
-For that reason, Pact was built to be simple to read and write. This simplicity
-helps provide complete transparency for the logic within its smart contracts.
-This approach also encourages shorter programs. The code executes directly on
-the ledger where it can be read easily by anyone. As a result, Pact is easy to
-understand.
+Pact is designed to be simple to read and write. 
+This simplicity helps provide complete transparency for the logic within its smart contracts.
+This approach also encourages shorter programs that are easier to understand.
 
-For example, here’s a “Hello World” smart contract using Pact.
+### Upgradable contracts
 
-```pact title=" "
+You can update Pact contracts after they are deployed, so you can revise and improve your smart contracts over time. 
+For example, you can offer new features and fix bugs as you iterate throughout the development process.
 
-(module helloWorld 'admin-keyset
-  (defun hello (name)
-    (format "Hello {}!" [name]))
-)
-(hello "world")
+Pact tooling also simplifies the process of testing and upgrading contracts, with compiler and runtime errors that offer detailed information about code execution and an interactive read-eval-print-loop (REPL) interpreter shell that enables you to define environmental settings and execute transactions in incremental steps.
 
-```
+### Formal verification
 
-Without having learned anything about the Pact language, you can already start
-to see how it works. With these few simple lines of code, you see a fully
-functioning Pact “Hello World” smart contract.
+Formal verification involves proving that a system or program mathematically satisfies the specification defined for its correct behavior. 
+Formal verification is most often used to protect mission-critical environments like nuclear power plants or air and space autopilot systems. 
 
-Once written, smart contracts are deployed to a blockchain. In Pact, the code on
-the blockchain is the same as the code that was written. Maintaining this code
-means that no matter when you see the code it will always be as it was written.
-This allows you to understand the code so you can continue to moderate and
-improve your application over time.
+Pact supports formal verification using Z3, an open-source tool developed by Microsoft.
+With this tool, you can define specifications for correct behavior, then automatically check and mathematically verify that your code does not contain bugs in every smart contract you write with Pact.
 
-### Upgradable Contracts
+For more information about formal  verification, see [Pact Formal Verification: Making Blockchain Smart Contracts Safer](/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11).
 
-Pact contracts are upgradable.
 
-Upgradable contracts allow you to revise and improve your smart contracts over
-time. This allows you to offer new features and fix bugs as you continue
-developing your smart contract. None of this is possible with other smart
-contract languages, and it’s a powerful feature when building impactful
-applications for your business.
+### Sequenced transactions using pacts
 
-Pact's tooling ecosystem further amplifies the simplicity of upgrading
-contracts. Compiler and runtime errors offer detailed information, with stack
-traces and function documentation to ensure you’re making the best version of
-your smart contract.
+One of the key features of the Pact programming language is support for coroutines—called **pacts**—that can start and stop at critical points during the execution of a multi-step transaction. 
+With pacts, you can define the steps to be executed by different entities as sequential operations on the blockchain.
 
-Pact’s iterative development process is also supported by a feature-rich REPL
-helping you to improve and deploy new smart contracts rapidly. It includes
-features such as incremental transaction execution and environment and database
-inspection.
+For example, pacts are used to define multi-step operations like cross-chain transfers where a **burn** operation takes place on the first chain and a **mint** operation takes place on the second chain.
+For a non-fungible token marketplace, you might use a `sale` pact with two steps:
 
-### Formal Verification
+- The **offer** operation signed by the seller.
+- The **buy** operation signed by the buyer.
 
-Pact comes equipped with a powerful validation tool suite in the form of
+The pact definition enables each participant to only run a subset of functions while preserving the integrity of the transaction as a while in the contract.
 
-> [formal verification](/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11).
-> Pact uses Z3, an open-source tool developed by Microsoft, to mathematically
-> verify and test for bugs present in the code.
+## Pact Smart contracts
 
-This means that Pact allows smart contract authors to express, automatically
-check, and formally verify that their code does not contain any bugs. Formal
-verification is the same system used to protect mission-critical environments
-like nuclear power plants or air and space autopilot systems. You now have this
-same high level of security in every smart contract you write with Pact.
+Pact smart contracts consist of the following core components: 
 
-Formal verification is a huge topic that’s been covered well in the Kadena blog.
-See the blog post -
+| Component | Description |
+| --------- | ----------- |
+| **Module**  | A module defines the logic of a smart contract. The module contains the functions, pact definitions, tables, and schemas required to describe the business logic for the contract. |
+| **Keysets** | One or more keysets specify who has access to different parts of the smart contract and who can update the contract as the contract owner. |
+| **Tables**  | Tables store data generated by Pact modules. These tables have a “key-row” structure and support schemas and a versioned, columnar history that enables the contracts to be updated. |
 
-[Pact Formal Verification: Making Blockchain Smart Contracts Safer](/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
-for more information on this topic.
+Each of these components support a wide range of functionality. This ensures that
+you have the tools you need to create robust solutions for real-world problems.
 
-### Type Inference
+## Next steps
 
-Pact includes type inference.
+Now that you've learned a little about the Pact smart contract programming language—including some its key features and the core components defined in a smart contract—you're ready to get started with a simple "Hello, World!" contract.
 
-This feature makes it possible for code to be strongly-typed without declaring
-type information. It also has the added benefit of limiting run-time type
-enforcement. Developers can use a typecheck to add “just enough types”.
-Typecheck eliminates warnings and only enforces types at runtime where needed.
+For the next steps, you'll:
 
-### Total Governance
-
-Similar to RDBMS systems, Pact offers the benefit of total governance. This
-benefit allows changes to commit to the database only if the code runs
-successfully. Any errors roll back changes, abort execution, and avoid costly
-mistakes.
-
-### RDBMS Integration
-
-Pact is also designed to allow direct integration with an industrial RDBMS. This
-design is helpful in cases that need efficient publication of historical data.
-
-### Confidential Computing with “Pacts”
-
-The Pact programming language comes from one of its key features, known as
-“Pacts”. “Pacts” solve a significant blockchain problem in privacy-preserving
-blockchains. To maintain privacy on a blockchain, participants can only run a
-subset of smart contracts. In these cases, the databases of each of the
-participants become disjointed.
-
-Pact solves this problem using coroutines. Coroutines are functions that can
-start and stop at critical points in a function’s execution. These coroutines
-are called pacts. They define the steps to be executed by different entities as
-sequential transactions on the blockchain.
-
-## Learn More
-
-The features described in this post are only a few of the crucial features that
-make Pact such a powerful language for writing smart contracts. There are many
-resources available to help you learn more about Pact. Here are a list of
-resources you can use to get started.
-
-**Where to go next**
-
-- Join the
-  [Discord Channel](https://discordapp.com/channels/502858632178958377/502858632178958380)
-  for community discussion.
+- Set up a local development network.
+- Explore the Chainweaver development environment.
+- Run simple command in the interactive Pact REPL interpreter.
