@@ -71,6 +71,7 @@ export const useSubmit = () => {
   };
 
   const isStatusLoading =
+    status !== SubmitStatus.IDLE &&
     status !== SubmitStatus.INCOMPLETE &&
     status !== SubmitStatus.SUBMITABLE &&
     status !== SubmitStatus.SUCCESS &&
