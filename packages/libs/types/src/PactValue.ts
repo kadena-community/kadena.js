@@ -63,7 +63,4 @@ export type PactLiteral =
  * TODO: add module reference type type.
  * @alpha
  */
-export type PactValue =
-  | PactLiteral
-  | Array<PactValue>
-  | { [Key: string]: PactValue };
+export type PactValue = PactLiteral | Array<PactValue> | Record<string, any>;
