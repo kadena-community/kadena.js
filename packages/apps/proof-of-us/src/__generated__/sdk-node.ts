@@ -1,5 +1,5 @@
-import * as Apollo from '@apollo/client';
-import { gql } from '@apollo/client';
+import { GraphQLClient, RequestOptions } from 'graphql-request';
+import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -20,7 +20,7 @@ export type Incremental<T> =
   | {
       [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
     };
-const defaultOptions = {} as const;
+type GraphQLClientRequestHeaders = RequestOptions['requestHeaders'];
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string };
@@ -749,63 +749,40 @@ export const GetTokensDocument = gql`
   }
 `;
 
-/**
- * __useGetTokensQuery__
- *
- * To run a query within a React component, call `useGetTokensQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTokensQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTokensQuery({
- *   variables: {
- *      accountName: // value for 'accountName'
- *   },
- * });
- */
-export function useGetTokensQuery(
-  baseOptions: Apollo.QueryHookOptions<GetTokensQuery, GetTokensQueryVariables>,
+export type SdkFunctionWrapper = <T>(
+  action: (requestHeaders?: Record<string, string>) => Promise<T>,
+  operationName: string,
+  operationType?: string,
+  variables?: any,
+) => Promise<T>;
+
+const defaultWrapper: SdkFunctionWrapper = (
+  action,
+  _operationName,
+  _operationType,
+  _variables,
+) => action();
+
+export function getSdk(
+  client: GraphQLClient,
+  withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTokensQuery, GetTokensQueryVariables>(
-    GetTokensDocument,
-    options,
-  );
+  return {
+    GetTokens(
+      variables: GetTokensQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders,
+    ): Promise<GetTokensQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetTokensQuery>(GetTokensDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        'GetTokens',
+        'query',
+        variables,
+      );
+    },
+  };
 }
-export function useGetTokensLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetTokensQuery,
-    GetTokensQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTokensQuery, GetTokensQueryVariables>(
-    GetTokensDocument,
-    options,
-  );
-}
-export function useGetTokensSuspenseQuery(
-  baseOptions?: Apollo.SuspenseQueryHookOptions<
-    GetTokensQuery,
-    GetTokensQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<GetTokensQuery, GetTokensQueryVariables>(
-    GetTokensDocument,
-    options,
-  );
-}
-export type GetTokensQueryHookResult = ReturnType<typeof useGetTokensQuery>;
-export type GetTokensLazyQueryHookResult = ReturnType<
-  typeof useGetTokensLazyQuery
->;
-export type GetTokensSuspenseQueryHookResult = ReturnType<
-  typeof useGetTokensSuspenseQuery
->;
-export type GetTokensQueryResult = Apollo.QueryResult<
-  GetTokensQuery,
-  GetTokensQueryVariables
->;
+export type Sdk = ReturnType<typeof getSdk>;

@@ -125,6 +125,10 @@ type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   publicKey: string;
 };
 
+type IAccountLeaderboard = Pick<IAccount, 'alias' | 'accountName'> & {
+  tokenCount: number;
+};
+
 type IProofOfUsTokenSignee = Pick<
   IProofOfUsSignee,
   'accountName' | 'socialLink' | 'position'
