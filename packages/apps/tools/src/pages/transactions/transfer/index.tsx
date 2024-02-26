@@ -220,7 +220,6 @@ const TransferPage = () => {
 
   const [ledgerSignState, signTx] = useLedgerSign();
 
-
   const handleSignTransaction = async (data: FormData) => {
     const transferInput = {
       sender: {
