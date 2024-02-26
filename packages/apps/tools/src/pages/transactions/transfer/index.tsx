@@ -622,6 +622,13 @@ const TransferPage = () => {
               </Tabs>
             </Card>
 
+            {ledgerSignState.error && (
+              <FormStatusNotification
+                status="erroneous"
+                body={ledgerSignState.error.message}
+              />
+            )}
+
             <div className={buttonContainerClass}>
               <Button
                 isLoading={receiverData.isFetching}
