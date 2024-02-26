@@ -43,7 +43,7 @@ export default builder.prismaNode('Transaction', {
           return {
             nonce: parent.nonce,
             meta: {
-              chainId: parent.chainId.toString(),
+              chainId: parent.chainId,
               gasLimit: parent.gasLimit,
               gasPrice: parent.gasPrice,
               ttl: parent.ttl,

@@ -116,7 +116,7 @@ export interface ContPayload {
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Meta {
   sender: string;
-  chainId: string;
+  chainId: bigint;
   gasLimit: bigint;
   gasPrice: number;
   ttl: bigint;

@@ -225,7 +225,7 @@ type Guard {
 
 """The metadata of a transaction."""
 type Meta {
-  chainId: String!
+  chainId: BigInt!
   creationTime: DateTime!
   gasLimit: BigInt!
   gasPrice: Float!
