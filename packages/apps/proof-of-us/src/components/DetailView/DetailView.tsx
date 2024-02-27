@@ -11,7 +11,7 @@ import {
 } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/navigation';
-import type { ChangeEventHandler, FC } from 'react';
+import type { ChangeEventHandler, FC, MouseEventHandler } from 'react';
 import { useState } from 'react';
 import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
@@ -78,6 +78,11 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
     });
   };
 
+  const handleCloseModal: MouseEventHandler<HTMLButtonElement> = (evt) => {
+    evt.preventDefault();
+    setIsInfoModalOpen(false);
+  };
+
   if (!isMounted) return null;
 
   return (
@@ -131,7 +136,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
           <p className={infoTextClass}>
             Tag yourself on the picture by tapping anywhere on the photo
           </p>
-          <Button onPress={() => setIsInfoModalOpen(false)}>
+          <Button onClick={handleCloseModal}>
             Capisce
             <MonoCheck className={checkClass} />
           </Button>

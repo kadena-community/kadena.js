@@ -100,12 +100,7 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
         </Stack>
         {error && <div>{error}</div>}
         <Stack gap="md">
-          <Button
-            variant="secondary"
-            onPress={() => {
-              onClose();
-            }}
-          >
+          <Button variant="secondary" onClick={onClose}>
             Cancel
           </Button>
           <Button type="submit">Save</Button>
