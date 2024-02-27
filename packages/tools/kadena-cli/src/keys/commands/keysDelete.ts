@@ -70,7 +70,8 @@ export const createDeleteKeysCommand: (
   'delete',
   'Delete key(s) from your local filesystem',
   [keysOptions.keysFiles(), confirmDelete()],
-  async (config) => {
+  async (option, { collect }) => {
+    const config = await collect(option);
     if (config.confirm !== true) {
       log.warning('\nNo key(s) were deleted.\n');
       return;
