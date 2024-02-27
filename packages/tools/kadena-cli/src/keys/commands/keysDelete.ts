@@ -36,25 +36,18 @@ const confirmDelete = createOption({
   async prompt(args) {
     if (typeof args.keyFiles !== 'string') return false;
 
-    if (args.keyAlias === 'all') {
-      return await select({
-        message: 'Are you sure you want to delete ALL keys',
-        choices: [
-          { value: true, name: 'Yes, delete all keys' },
-          { value: false, name: 'No, do not delete any keys' },
-        ],
-      });
-    }
-
-    const keyText =
-      args.keyAlias === 'all'
-        ? 'Are you sure you want to delete ALL keys'
-        : `Are you sure you want to delete the key: "${args.keyFiles}"`;
+    const message =
+      args.keyFiles === 'all'
+        ? 'Are you sure you want to delete ALL keys?'
+        : `Are you sure you want to delete the key: "${args.keyFiles}"?`;
 
     return await select({
-      message: keyText,
+      message,
       choices: [
-        { value: true, name: 'Yes' },
+        {
+          value: true,
+          name: args.keyFiles === 'all' ? 'Yes, delete all keys' : 'Yes',
+        },
         { value: false, name: 'No' },
       ],
     });
