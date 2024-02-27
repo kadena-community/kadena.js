@@ -10,28 +10,30 @@ import type { TransferCrossChainTxParams } from '@ledgerhq/hw-app-kda';
 import AppKda from '@ledgerhq/hw-app-kda';
 import { useAsyncFn } from 'react-use';
 
-type ITransferInput = Parameters<typeof transferCommand>[0];
-type ICreateTransferInput = Parameters<typeof transferCreateCommand>[0];
-type ICrossChainInput = Parameters<typeof createCrossChainCommand>[0];
-
-type TransferInput = Omit<ICrossChainInput, 'targetChainId' | 'receiver'> & {
-  targetChainId?: ICrossChainInput['targetChainId'];
-  receiver: ITransferInput['receiver'] | ICreateTransferInput['receiver'];
-};
+export type ITransferInput = Parameters<typeof transferCommand>[0];
+export type ICreateTransferInput = Parameters<typeof transferCreateCommand>[0];
+export type ICrossChainInput = Parameters<typeof createCrossChainCommand>[0];
+export type TransferInput =
+  | ITransferInput
+  | ICreateTransferInput
+  | ICrossChainInput;
 
 const pactToLedger = (
-  { receiver, amount, targetChainId, chainId }: TransferInput,
+  input: TransferInput,
   derivationPath: string,
   networkId: Network,
 ): TransferCrossChainTxParams => {
+  const { receiver, amount, chainId } = input;
   const recipient = typeof receiver === 'string' ? receiver : receiver.account;
+  const recipient_chainId =
+    'targetChainId' in input ? input.targetChainId : '0';
 
   return {
     path: derivationPath,
     recipient,
     amount,
     chainId: parseInt(chainId, 10),
-    recipient_chainId: parseInt(targetChainId ?? '0', 10),
+    recipient_chainId: parseInt(recipient_chainId, 10),
     network: networkId,
   };
 };
@@ -39,7 +41,7 @@ const pactToLedger = (
 const isCrossChainInput = (
   transferInput: TransferInput,
 ): transferInput is ICrossChainInput => {
-  return !!transferInput.targetChainId;
+  return 'targetChainId' in transferInput;
 };
 
 const isTransferInput = (
