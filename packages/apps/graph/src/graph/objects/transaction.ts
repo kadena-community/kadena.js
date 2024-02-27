@@ -4,6 +4,8 @@ import { COMPLEXITY } from '@services/complexity';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { PRISMA, builder } from '../builder';
+import TransactionCommand from './transaction-command';
+import TransactionResult from './transaction-result';
 
 export default builder.prismaNode(Prisma.ModelName.Transaction, {
   description: 'A confirmed transaction.',
@@ -15,7 +17,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     cmd: t.field({
       complexity:
         COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
-      type: 'TransactionCommand',
+      type: TransactionCommand,
       select: {
         senderAccount: true,
         chainId: true,
@@ -68,7 +70,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
       },
     }),
     result: t.field({
-      type: 'TransactionResult',
+      type: TransactionResult,
       select: {
         badResult: true,
         continuation: true,
