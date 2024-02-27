@@ -1,10 +1,10 @@
 import { join } from 'path';
 
 import { generateDts, pactParser } from '@kadena/pactjs-generator';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
-import type { CreateCommandReturnType } from '../../utils/createCommand.js';
+import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import {
   TARGET_PACKAGE,
@@ -16,7 +16,7 @@ import { writeModulesJson } from '../utils/files.js';
 import { retrieveContractFromChain } from '../utils/retrieveContractFromChain.js';
 import { shallowFindFile } from '../utils/shallowFindFile.js';
 
-export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
+export const typescriptGenerateCommand = createCommand(
   'generate',
   'Generate typescript definitions based on a smart contract',
   [
@@ -28,8 +28,9 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
     globalOptions.network(),
     globalOptions.chainId(),
   ],
-  async (config) => {
-    log.debug('typescript-contract-generate:action', { config });
+  async (option, { collect }) => {
+    const config = await collect(option);
+    log.debug('typescript-contract-generate:action', config);
 
     if (!config.typescriptFile === !config.typescriptContract) {
       log.error(`\nEither file or contract must be specified.\n`);
@@ -55,7 +56,7 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
       );
     }
 
-    const packageJson = findPackageJson();
+    const packageJson = await findPackageJson();
 
     log.info(log.color.green(`Using package.json at ${packageJson}.`));
 
@@ -69,7 +70,7 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
       ),
     );
 
-    prepareTargetDirectory(targetDirectory, !!config.typescriptClean);
+    await prepareTargetDirectory(targetDirectory, !!config.typescriptClean);
 
     const getContract = async (name: string): Promise<string> => {
       log.info(log.color.green(`Fetching ${name}.`));
@@ -84,9 +85,13 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
       return content ?? '';
     };
 
-    const files: string[] = config.typescriptFileConfig.map((file: string) =>
-      readFileSync(join(process.cwd(), file), 'utf-8'),
-    );
+    const files = (
+      await Promise.all(
+        config.typescriptFileConfig.map((file: string) =>
+          services.filesystem.readFile(join(process.cwd(), file)),
+        ),
+      )
+    ).filter(notEmpty);
 
     const modules = await pactParser({
       contractNames: config.typescriptContractConfig,
@@ -110,7 +115,7 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
       moduleDtss.set(name, generateDts(modules[name]));
     });
 
-    moduleDtss.forEach((dts, moduleName) => {
+    for (const [moduleName, dts] of moduleDtss) {
       const targetFilePath: string = join(
         targetDirectory,
         `${moduleName}.d.ts`,
@@ -122,23 +127,23 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
 
       // always overwrite existing file
       log.info(`Writing to new file ${targetFilePath}`);
-      writeFileSync(targetFilePath, dts);
+      await services.filesystem.writeFile(targetFilePath, dts);
 
       // if indexPath exists, append export to existing file
-      if (existsSync(indexPath)) {
+      const indexDts = await services.filesystem.readFile(indexPath);
+      if (indexDts !== null) {
         log.info(`Appending to existing file ${indexPath}`);
-        const indexDts: string = readFileSync(indexPath, 'utf8');
         // Append the export to the file if it's not already there.
         if (!indexDts.includes(exportStatement)) {
           const separator = indexDts.endsWith('\n') ? '' : '\n';
           const newIndexDts = [indexDts, exportStatement].join(separator);
-          writeFileSync(indexPath, newIndexDts);
+          await services.filesystem.writeFile(indexPath, newIndexDts);
         }
       } else {
         log.info(`Writing to new file ${indexPath}`);
-        writeFileSync(indexPath, exportStatement);
+        await services.filesystem.writeFile(indexPath, exportStatement);
       }
-    });
+    }
 
     log.info(log.color.green(`\nTypescript types have been generated.\n`));
 
@@ -147,13 +152,13 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
       'package.json',
     );
 
-    if (!existsSync(defaultPackageJsonPath)) {
+    if (!(await services.filesystem.fileExists(defaultPackageJsonPath))) {
       log.info(
         log.color.green(
           `Writing default package.json to ${defaultPackageJsonPath}`,
         ),
       );
-      writeFileSync(
+      await services.filesystem.writeFile(
         defaultPackageJsonPath,
         JSON.stringify(
           {
@@ -168,7 +173,7 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
       );
     }
 
-    const tsconfigPath: string | undefined = shallowFindFile(
+    const tsconfigPath = await shallowFindFile(
       join(process.cwd()),
       'tsconfig.json',
     );
@@ -184,9 +189,9 @@ export const typescriptGenerateCommand: CreateCommandReturnType = createCommand(
       log.color.green(`\nVerifying tsconfig.json at \`${tsconfigPath}\``),
     );
 
-    const tsconfig: string = readFileSync(tsconfigPath, 'utf8');
+    const tsconfig = await services.filesystem.readFile(tsconfigPath);
 
-    if (!tsconfig.includes('.kadena/pactjs-generated')) {
+    if (tsconfig === null || !tsconfig.includes('.kadena/pactjs-generated')) {
       log.warning(
         `\n!!! WARNING: You have not added .kadena/pactjs-generated to tsconfig.json. Add it now.
 { "compilerOptions": { "types": [".kadena/pactjs-generated"] } }`,

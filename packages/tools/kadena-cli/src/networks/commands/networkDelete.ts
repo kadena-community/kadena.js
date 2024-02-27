@@ -2,13 +2,13 @@ import { globalOptions } from '../../utils/globalOptions.js';
 import { removeNetwork } from '../utils/networkHelpers.js';
 
 import type { Command } from 'commander';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
 
 export const deleteNetworksCommand: (
   program: Command,
   version: string,
-) => void = createCommandFlexible(
+) => void = createCommand(
   'delete',
   'Delete local network',
   [globalOptions.network({ isOptional: false }), globalOptions.networkDelete()],

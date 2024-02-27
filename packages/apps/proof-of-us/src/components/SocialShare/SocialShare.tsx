@@ -19,9 +19,9 @@ interface IProps {
 
 export const SocialShare: FC<IProps> = ({ data, tokenId }) => {
   const label = data.name;
-  const text = `${data.name} | Proof Of Us (Powered by Kadena)`;
+  const text = `${data.name} | Proof Of Us #devworld2024`;
   const title = `${data?.name} | Proof Of Us (Powered by Kadena)`;
-  const twitterTitle = `${data?.name} | Proof Of Us (Powered by Kadena)`;
+  const twitterTitle = `${data?.name} @kadena_io on @devworld_conf #devworldkadena`;
   const url = `${process.env.NEXT_PUBLIC_URL}/share/${tokenId}`;
 
   const shareDetails = { url, title, text, label };

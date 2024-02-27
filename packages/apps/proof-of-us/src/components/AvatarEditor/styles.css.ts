@@ -12,6 +12,7 @@ export const cameraClass = style({
   height: '100vh',
   maxWidth: '800px',
   objectFit: 'cover',
+  transform: 'scaleX(-1)',
 });
 
 export const cameraButton = style({

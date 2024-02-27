@@ -17,6 +17,8 @@ import {
 import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prisma-client';
 import type {
+  ContinuationPayload,
+  ExecutionPayload,
   FungibleAccount,
   FungibleChainAccount,
   GasLimitEstimation,
@@ -26,6 +28,9 @@ import type {
   NonFungibleChainAccount,
   Token,
   TokenInfo,
+  TransactionCommand,
+  TransactionMeta,
+  TransactionResult,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -73,6 +78,11 @@ export const builder = new SchemaBuilder<
       NonFungibleChainAccount: NonFungibleChainAccount;
       Token: Token;
       TokenInfo: TokenInfo;
+      TransactionCommand: TransactionCommand;
+      TransactionMeta: TransactionMeta;
+      ExecutionPayload: ExecutionPayload;
+      ContinuationPayload: ContinuationPayload;
+      TransactionResult: TransactionResult;
     };
     Connection: {
       totalCount: number;

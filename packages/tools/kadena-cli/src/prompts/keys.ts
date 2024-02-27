@@ -3,14 +3,43 @@ import { wordlist } from '@scure/bip39/wordlists/english';
 
 import {
   getAllKeys,
+  getAllPlainKeys,
   getWallet,
   isIWalletKey,
   parseKeyPairsInput,
 } from '../keys/utils/keysHelpers.js';
 
 import type { IPrompt } from '../utils/createOption.js';
-import { isValidFilename } from '../utils/helpers.js';
+import {
+  isValidFilename,
+  maskStringPreservingStartAndEnd,
+} from '../utils/helpers.js';
 import { input, select } from '../utils/prompts.js';
+
+export const keyGetAllPlainFilesPrompt: IPrompt<string> = async () => {
+  const choices = (await getAllPlainKeys()).map((data) => {
+    return {
+      value: data.key,
+      name: `${data.key}: ${maskStringPreservingStartAndEnd(data.publicKey)}`,
+    };
+  });
+
+  if (choices.length === 0) {
+    throw new Error('No plain keys found');
+  }
+
+  choices.unshift({
+    value: 'all',
+    name: 'All keys',
+  });
+
+  const choice = await select({
+    message: 'Select a key file:',
+    choices: choices,
+  });
+
+  return choice;
+};
 
 export const keyGetAllKeyFilesPrompt: IPrompt<string> = async (args) => {
   let keys: string[] = [];

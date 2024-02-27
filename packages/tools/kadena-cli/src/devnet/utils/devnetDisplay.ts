@@ -1,9 +1,9 @@
 import { defaultDevnetsPath, devnetDefaults } from '../../constants/devnets.js';
 import { getExistingDevnets } from '../../utils/helpers.js';
 
-import { existsSync, readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
+import { services } from '../../services/index.js';
 import { log } from '../../utils/logger.js';
 import type {
   ICustomDevnetsChoice,
@@ -76,14 +76,13 @@ export async function displayDevnetsConfig(): Promise<void> {
 
   const existingDevnets: ICustomDevnetsChoice[] = await getExistingDevnets();
 
-  existingDevnets.forEach(({ value }) => {
+  for (const { value } of existingDevnets) {
     const devnetFilePath = path.join(defaultDevnetsPath, `${value}.yaml`);
-    const fileExists = existsSync(devnetFilePath);
-    const devnetConfig = fileExists
-      ? (yaml.load(
-          readFileSync(devnetFilePath, 'utf8'),
-        ) as IDevnetsCreateOptions)
-      : devnetDefaults[value];
+    const fileContent = await services.filesystem.readFile(devnetFilePath);
+    const devnetConfig =
+      fileContent !== null
+        ? (yaml.load(fileContent) as IDevnetsCreateOptions)
+        : devnetDefaults[value];
 
     displaySeparator();
     log.info(formatConfig('Name', devnetConfig.name));
@@ -98,7 +97,7 @@ export async function displayDevnetsConfig(): Promise<void> {
       formatConfig('Pact folder mount', devnetConfig.mountPactFolder ?? 'N/A'),
     );
     log.info(formatConfig('kadena/devnet version', devnetConfig.version));
-  });
+  }
 
   displaySeparator();
 }

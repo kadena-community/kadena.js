@@ -3,11 +3,22 @@ import { gql } from '@apollo/client';
 
 export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
   fragment CoreTransactionFields on Transaction {
-    chainId
-    code
-    creationTime
-    height
-    requestKey
+    hash
+    cmd {
+      meta {
+        chainId
+        creationTime
+      }
+
+      payload {
+        ... on ExecutionPayload {
+          code
+        }
+      }
+    }
+    result {
+      height
+    }
   }
 `;
 
@@ -17,24 +28,49 @@ export const ALL_TRANSACTION_FIELDS: DocumentNode = gql`
   fragment AllTransactionFields on Transaction {
     ...CoreTransactionFields
     id
-    badResult
-    continuation
-    data
-    gas
-    gasLimit
-    gasPrice
-    goodResult
-    logs
-    metadata
-    nonce
-    eventCount
-    pactId
-    proof
-    rollback
-    senderAccount
-    step
-    ttl
-    transactionId
+
+    cmd {
+      meta {
+        gasLimit
+        gasPrice
+        sender
+        ttl
+      }
+
+      payload {
+        ... on ExecutionPayload {
+          code
+          data
+        }
+        ... on ContinuationPayload {
+          pactId
+          step
+          rollback
+          data
+          proof
+        }
+      }
+
+      signers {
+        publicKey
+        signature
+        capabilities
+      }
+
+      networkId
+      nonce
+    }
+
+    result {
+      badResult
+      continuation
+      gas
+      goodResult
+      logs
+      metadata
+      eventCount
+      transactionId
+    }
 
     # block {}
     # events {}

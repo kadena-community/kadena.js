@@ -69,38 +69,43 @@ export const CompactTransactionsTable = (
           {transactions.edges.slice(0, 10).map((edge, index) => {
             return (
               <Row key={index}>
-                <Cell>{edge.node.chainId}</Cell>
-                <Cell>{new Date(edge.node.creationTime).toLocaleString()}</Cell>
-                <Cell>{edge.node.height}</Cell>
+                <Cell>{edge.node.hash}</Cell>
                 <Cell>
-                  <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
+                  {new Date(edge.node.cmd.meta.creationTime).toLocaleString()}
+                </Cell>
+                <Cell>{edge.node.result.height}</Cell>
+                <Cell>
+                  <Link href={`${routes.TRANSACTIONS}/${edge.node.hash}`}>
                     {truncateColumns ? (
                       <Tooltip
                         closeDelay={150}
-                        content={edge.node.requestKey}
+                        content={edge.node.hash}
                         delay={500}
                         position="left"
                       >
-                        <span>{truncate(edge.node.requestKey)}</span>
+                        <span>{truncate(edge.node.hash)}</span>
                       </Tooltip>
                     ) : (
-                      <span>{edge.node.requestKey}</span>
+                      <span>{edge.node.hash}</span>
                     )}
                   </Link>
                 </Cell>
                 <Cell>
-                  {edge.node.code ? (
+                  {edge.node.cmd.payload.__typename === 'ExecutionPayload' &&
+                  edge.node.cmd.payload.code ? (
                     truncateColumns ? (
                       <Tooltip
                         closeDelay={150}
-                        content={edge.node.code}
+                        content={edge.node.cmd.payload.code}
                         delay={500}
                         position="left"
                       >
-                        <span>{truncate(JSON.parse(edge.node.code))}</span>
+                        <span>
+                          {truncate(JSON.parse(edge.node.cmd.payload.code))}
+                        </span>
                       </Tooltip>
                     ) : (
-                      <span>{JSON.parse(edge.node.code)}</span>
+                      <span>{JSON.parse(edge.node.cmd.payload.code)}</span>
                     )
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>

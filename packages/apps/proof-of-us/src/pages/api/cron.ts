@@ -1,4 +1,5 @@
 import { getSdk } from '@/__generated__/sdk-node';
+import { env } from '@/utils/env';
 import { store } from '@/utils/socket/store';
 import { GraphQLClient } from 'graphql-request';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -18,9 +19,7 @@ export default async function handler(
     });
   }
 
-  const client = new GraphQLClient(
-    'https://graph.testnet.kadena.network/graphql',
-  );
+  const client = new GraphQLClient(env.GRAHQLURL);
 
   const promises = Object.entries(accounts).map(([key, value]) =>
     getSdk(client).GetTokens({

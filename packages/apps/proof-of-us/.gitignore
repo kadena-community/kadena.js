@@ -2,6 +2,8 @@ node_modules/
 .next
 next-env.d.ts
 .env.local
+.env.prod
+.env.dev
 .env
 
 certificates

@@ -46,3 +46,24 @@ export const gradientClass = style([
     zIndex: 2,
   },
 ]);
+export const tagInfoWrapperClass = style([
+  {
+    position: 'absolute',
+    top: '0',
+    width: '100%',
+  },
+]);
+export const tagInfoClass = style([
+  atoms({
+    fontSize: 'xs',
+    margin: 'sm',
+    paddingBlock: 'sm',
+    paddingInline: 'md',
+  }),
+  {
+    flex: 1,
+    backgroundColor: `${deviceColors.orange}1f`,
+    backdropFilter: 'blur(10px)',
+    textShadow: `1px 1px 0 ${deviceColors.kadenaBlack}45`,
+  },
+]);

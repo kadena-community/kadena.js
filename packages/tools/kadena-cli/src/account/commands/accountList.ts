@@ -57,13 +57,17 @@ export const createAccountListCommand: (
   'list',
   'List all available accounts',
   [accountOptions.accountSelectWithAll()],
-  async (config) => {
-    log.debug('account-list:action', { config });
+  async (option) => {
+    const accountAlias = await option.accountAlias();
 
-    const accounts = await accountList(config);
+    log.debug('account-list:action', accountAlias);
+
+    const accounts = await accountList(accountAlias);
 
     if (!accounts) {
-      return log.error(`Selected account "${config.accountAlias}" not found.`);
+      return log.error(
+        `Selected account "${accountAlias.accountAlias}" not found.`,
+      );
     }
 
     const tabularData = generateTabularData(accounts);
