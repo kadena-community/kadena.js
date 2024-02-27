@@ -94,7 +94,11 @@ const printCommandExecution = (
     }
   }
 
-  log.info(log.color.gray(`\n${getCommandExecution(command, args, values)}`));
+  log.info(
+    log.color.gray(
+      `\nExecuted:\n${getCommandExecution(command, args, values)}`,
+    ),
+  );
 };
 
 export type CommandOption<T extends OptionType[]> = {
