@@ -36,9 +36,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [mintingTokens]);
 
   const storageListener = (event: StorageEvent) => {
-    console.log('storage', console.log(event));
     if (event.key === 'mintingTokens') {
-      console.log('huh');
       setMintingTokens(getMintingTokensFromLocalStorage());
     }
   };

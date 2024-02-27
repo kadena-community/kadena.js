@@ -35,7 +35,7 @@ export const useGetAttendanceToken: IDataHook<
 
   useEffect(() => {
     setHasError(undefined);
-    setIsTokenLoading(true);
+    // setIsTokenLoading(true);
     load();
   }, [id]);
 
