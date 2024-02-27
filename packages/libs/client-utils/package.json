@@ -15,32 +15,38 @@
   ],
   "exports": {
     ".": {
-      "nodejs": "./lib/index.js",
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
       "default": "./lib/index.js",
       "types": "./lib/index.d.ts"
     },
     "./built-in": {
-      "/": "./lib/built-in/index.js",
+      "import": "./lib/built-in/index.js",
+      "require": "./lib/built-in/index.js",
       "default": "./lib/built-in/index.js",
       "types": "./lib/built-in/index.d.ts"
     },
     "./coin": {
-      "/": "./lib/coin/index.js",
+      "import": "./lib/coin/index.js",
+      "require": "./lib/coin/index.js",
       "default": "./lib/coin/index.js",
       "types": "./lib/coin/index.d.ts"
     },
     "./core": {
-      "/": "./lib/core/index.js",
+      "import": "./lib/core/index.js",
+      "require": "./lib/core/index.js",
       "default": "./lib/core/index.js",
       "types": "./lib/core/index.d.ts"
     },
     "./nodejs": {
-      "/": "./lib/nodejs/index.js",
+      "import": "./lib/nodejs/index.js",
+      "require": "./lib/nodejs/index.js",
       "default": "./lib/nodejs/index.js",
       "types": "./lib/nodejs/index.d.ts"
     },
     "./marmalade": {
-      "/": "./lib/marmalade/index.js",
+      "import": "./lib/marmalade/index.js",
+      "require": "./lib/marmalade/index.js",
       "default": "./lib/marmalade/index.js",
       "types": "./lib/marmalade/index.d.ts"
     }

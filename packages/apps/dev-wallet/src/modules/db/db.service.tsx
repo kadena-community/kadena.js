@@ -106,6 +106,7 @@ const injectDb = <R extends (...args: any[]) => Promise<any>>(
   }) as R;
 
 type EventTypes = 'add' | 'update' | 'delete';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Listener = (type: EventTypes, storeName: string, ...data: any[]) => void;
 export interface IDBService {
   getAll: <T>(
@@ -141,6 +142,7 @@ export const createDbService = () => {
   };
   const notify =
     (event: EventTypes) =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (storeName: string, ...rest: any[]) => {
       listeners.forEach((cb) => cb(event, storeName, ...rest));
     };
