@@ -20,7 +20,7 @@ const nextConfig = {
     return [
       {
         source: '/graph',
-        destination: process.env.NEXT_PUBLIC_GRAHQLURL,
+        destination: process.env.NEXT_PUBLIC_GRAHQLURL ?? '',
       },
     ];
   },
