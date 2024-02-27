@@ -75,7 +75,7 @@ const ProofOfUsStore = () => {
       console.log({ data });
 
       const getAccountName = (str: string) =>
-        `${str.substring(0, 6)} ... ${str.substring(str.length - 4)}`;
+        `${str.substring(0, 6)}...${str.substring(str.length - 4)}`;
 
       const dataArray = Object.entries(
         data as Record<string, IAccountLeaderboard>,

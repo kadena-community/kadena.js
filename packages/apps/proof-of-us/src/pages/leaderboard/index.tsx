@@ -46,10 +46,13 @@ const Page: FC = () => {
             >
               <List>
                 <motion.li
-                  key={winner.accountName}
                   layout
+                  key={winner.accountName}
+                  layoutId={winner.accountName}
                   transition={spring}
                   className={cn(listItemClass, winnerClass)}
+                  exit={spring}
+                  initial={spring}
                 >
                   <Stack
                     display="inline-flex"
@@ -76,9 +79,12 @@ const Page: FC = () => {
                 {rest.map((account) => (
                   <motion.li
                     key={account.accountName}
+                    layoutId={account.accountName}
                     layout
                     transition={spring}
                     className={listItemClass}
+                    exit={spring}
+                    initial={spring}
                   >
                     <Stack
                       display="inline-flex"
