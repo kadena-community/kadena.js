@@ -91,6 +91,9 @@ export const accountOptions = {
         const accountDetails = await readAccountFromFile(accountAlias);
         return accountDetails;
       } catch (error) {
+        if (error.message.includes('file not exist') === true) {
+          return;
+        }
         throw new Error(error.message);
       }
     },

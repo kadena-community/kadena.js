@@ -18,7 +18,7 @@ async function deleteAccountDir(): Promise<CommandResult<null>> {
   } catch (error) {
     return {
       success: false,
-      errors: ['Failed to delete all keys'],
+      errors: ['Failed to delete all account aliases.'],
     };
   }
 }
@@ -53,9 +53,14 @@ export const createAccountDeleteCommand = createCommand(
     accountOptions.accountDeleteConfirmation({ isOptional: false }),
   ],
   async (option) => {
-    const { accountAlias } = await option.accountAlias();
+    const { accountAlias, accountAliasConfig } = await option.accountAlias();
 
-    if (isEmpty(accountAlias) || accountAlias.trim().length === 0) {
+    if (!accountAliasConfig) {
+      log.error(`\nAccount alias "${accountAlias}" does not exist.\n`);
+      return;
+    }
+
+    if (isEmpty(accountAlias.trim())) {
       log.error('\nAccount alias is not provided or Invalid.\n');
       return;
     }
