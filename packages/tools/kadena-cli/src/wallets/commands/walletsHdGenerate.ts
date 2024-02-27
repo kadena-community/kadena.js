@@ -14,7 +14,7 @@ import type { IKeyPair } from '../../keys/utils/storage.js';
 import { saveKeyByAlias } from '../../keys/utils/storage.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import type { IKeysConfig } from '../utils/keySharedKeyGen.js';
 import { generateFromWallet } from '../utils/keySharedKeyGen.js';
@@ -79,7 +79,7 @@ export const generateHdKeys = async ({
 export const createGenerateHdKeysCommand: (
   program: Command,
   version: string,
-) => void = createCommandFlexible(
+) => void = createCommand(
   'generate-keys',
   'Generate public/secret key pair(s) from your wallet',
   [

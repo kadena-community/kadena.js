@@ -24,7 +24,6 @@ export const useGetAttendanceToken: IDataHook<
       router.push('/404');
       return;
     }
-
     setToken(result);
   };
 

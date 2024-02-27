@@ -14,14 +14,14 @@ const getEventData = async (
 export const createManifest = async (
   proofOfUs: IProofOfUsData,
   url: string,
-) => {
+): Promise<IProofOfUsTokenMeta> => {
   const signees =
     Object.keys(proofOfUs.signees).map((k: any) => proofOfUs.signees[k]) ?? [];
 
   const eventData = await getEventData(proofOfUs.eventId);
 
   return {
-    name: proofOfUs.title,
+    name: proofOfUs.title ?? '',
     description: `${proofOfUs.title} was a great event`,
     image: url,
     authors: signees.map((signee) => ({
@@ -29,23 +29,24 @@ export const createManifest = async (
     })),
     properties: {
       date: proofOfUs.date,
-      eventName: eventData?.name,
+      eventName: eventData?.name ?? '',
       eventId: proofOfUs.eventId,
       eventType: proofOfUs.type,
       avatar: {
-        backgroundColor: proofOfUs.backgroundColor,
+        backgroundColor: proofOfUs.backgroundColor ?? '',
       },
-      signees: signees?.map((signee) => {
-        return {
-          name: signee.name ? signee.name : signee.alias,
-          accountName: signee.accountName,
-          position: {
-            xPercentage: signee.position?.xPercentage,
-            yPercentage: signee.position?.yPercentage,
-          },
-          socialLink: signee.socialLink,
-        };
-      }),
+      signees:
+        signees?.map((signee) => {
+          return {
+            name: signee.name ? signee.name : signee.alias,
+            accountName: signee.accountName,
+            position: {
+              xPercentage: signee.position?.xPercentage,
+              yPercentage: signee.position?.yPercentage,
+            },
+            socialLink: signee.socialLink,
+          } as IProofOfUsTokenSignee;
+        }) ?? [],
     },
     collection: {
       name: 'Proof Of Us',

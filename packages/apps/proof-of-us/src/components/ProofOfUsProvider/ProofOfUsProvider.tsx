@@ -1,11 +1,12 @@
 'use client';
 import { useAccount } from '@/hooks/account';
+import { useTokens } from '@/hooks/tokens';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { store } from '@/utils/socket/store';
 import { useParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 
 export interface IProofOfUsContext {
   proofOfUs?: IProofOfUsData;
@@ -59,18 +60,28 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
 
 export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { account } = useAccount();
-
+  const { addMintingData } = useTokens();
   const params = useParams();
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
   const [background, setBackground] = useState<IProofOfUsBackground>({
     bg: '',
   });
 
+  const listenToProofOfUsData = useCallback(
+    (data: IProofOfUsData | undefined) => {
+      if (data?.tokenId && data.requestKey) {
+        addMintingData(data);
+      }
+      setProofOfUs(data);
+    },
+    [setProofOfUs],
+  );
+
   useEffect(() => {
     if (!params?.id) return;
-    store.listenProofOfUsData(`${params.id}`, setProofOfUs);
+    store.listenProofOfUsData(`${params.id}`, listenToProofOfUsData);
     store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
-  }, [setProofOfUs, setBackground, params]);
+  }, [listenToProofOfUsData, setBackground, params]);
 
   const updateStatus = async ({
     proofOfUsId,

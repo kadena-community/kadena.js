@@ -31,6 +31,9 @@ type OnType<
   }[number]
 >;
 
+/**
+ * @alpha
+ */
 export interface IEmitterWrapper<
   T extends Array<{ event: string; data: Any }>,
   Extra extends Array<{ event: string; data: Any }>,
@@ -41,6 +44,11 @@ export interface IEmitterWrapper<
   executeTo: (() => ExecReturnType) & ExecuteTo<[...T]>;
 }
 
+type ExtractEventType<T> = T extends { _event_type: infer U } ? U : any;
+
+/**
+ * @alpha
+ */
 export type WithEmitter<
   Extra extends [...Array<{ event: string; data: Any }>] = [],
 > = <T extends (emit: IEmit) => Any>(
@@ -49,20 +57,23 @@ export type WithEmitter<
   (
     ...args: Parameters<ReturnType<T>>
   ): IEmitterWrapper<
-    ReturnType<T>['_event_type'],
+    ExtractEventType<ReturnType<T>>,
     Extra,
     ReturnType<ReturnType<T>>
   >;
   from: StartFrom<
-    [...ReturnType<T>['_event_type'], ...Extra],
+    [...ExtractEventType<ReturnType<T>>, ...Extra],
     IEmitterWrapper<
-      ReturnType<T>['_event_type'],
+      ExtractEventType<ReturnType<T>>,
       Extra,
       ReturnType<ReturnType<T>>
     >
   >;
 };
 
+/**
+ * @alpha
+ */
 export const withEmitter: WithEmitter = (fn) => {
   const createListener = (
     args: Any[],

@@ -1,7 +1,12 @@
+import { IconButton } from '@/components/IconButton/IconButton';
+import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { MonoClose } from '@kadena/react-icons';
 import classnames from 'classnames';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -9,6 +14,7 @@ import {
   cameraClass,
   cameraWrapperClass,
   canvasClass,
+  headerClass,
   hiddenClass,
   wrapperClass,
 } from './styles.css';
@@ -20,7 +26,7 @@ interface IProps {
 export const AvatarEditor: FC<IProps> = ({ next }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
+  const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
   const { proofOfUs, updateProofOfUs, updateBackgroundColor } = useProofOfUs();
@@ -53,8 +59,11 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
         canvasRef.current.width = containerWidth * 0.9;
         canvasRef.current.height = containerWidth * 0.9;
-        const topIndent = 30;
+        const topIndent = 100;
         const context = canvasRef.current.getContext('2d');
+        context?.translate(canvasRef.current.width, 0);
+        context?.scale(-1, 1);
+
         function updateCanvas() {
           if (!videoRef.current) return;
           if (!canvasRef.current) return;
@@ -73,12 +82,21 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
           window.requestAnimationFrame(updateCanvas);
         }
+
         requestAnimationFrame(updateCanvas);
       })
       .catch((e) => {
         alert('The browser needs permissions for the camera to work');
       });
   }, [isMounted]);
+
+  useEffect(() => {
+    return () => {
+      const src = videoRef.current?.srcObject as MediaStream;
+      if (!src) return;
+      src.getTracks().forEach((t) => t.stop());
+    };
+  }, [pathname]);
 
   const handleCapture = async (evt: MouseEvent<HTMLButtonElement>) => {
     if (isAlreadySigning(proofOfUs?.signees)) return;
@@ -108,6 +126,18 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
 
   return (
     <section className={wrapperClass}>
+      <div className={headerClass}>
+        <TitleHeader
+          label="Say Cheese"
+          Append={() => (
+            <Link href="/user">
+              <IconButton>
+                <MonoClose />
+              </IconButton>
+            </Link>
+          )}
+        />
+      </div>
       {!isMounted && <div>loading</div>}
       <div
         className={classnames(

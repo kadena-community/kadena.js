@@ -108,7 +108,13 @@ export const getFungibleAccount: DocumentNode = gql`
               ...CoreTransferFields
             }
             transaction {
-              pactId
+              cmd {
+                payload {
+                  ... on ContPayload {
+                    pactId
+                  }
+                }
+              }
             }
           }
         }
@@ -149,7 +155,13 @@ export const getFungibleChainAccount: DocumentNode = gql`
               ...CoreTransferFields
             }
             transaction {
-              pactId
+              cmd {
+                payload {
+                  ... on ContPayload {
+                    pactId
+                  }
+                }
+              }
             }
           }
         }
@@ -195,9 +207,11 @@ export const getTransactions: DocumentNode = gql`
           block {
             hash
           }
-          signers {
-            publicKey
-            signature
+          cmd {
+            signers {
+              publicKey
+              signature
+            }
           }
         }
       }
@@ -242,7 +256,13 @@ export const getTransfers: DocumentNode = gql`
             ...CoreTransferFields
           }
           transaction {
-            pactId
+            cmd {
+              payload {
+                ... on ContPayload {
+                  pactId
+                }
+              }
+            }
           }
         }
       }
@@ -255,6 +275,7 @@ export const getEvents: DocumentNode = gql`
 
   query getEvents(
     $qualifiedEventName: String!
+    $parametersFilter: String
     $after: String
     $before: String
     $first: Int
@@ -262,6 +283,7 @@ export const getEvents: DocumentNode = gql`
   ) {
     events(
       qualifiedEventName: $qualifiedEventName
+      parametersFilter: $parametersFilter
       after: $after
       before: $before
       first: $first

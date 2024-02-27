@@ -3,6 +3,7 @@ import { Button } from '@/components/Button/Button';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
+import { useTokens } from '@/hooks/tokens';
 import { getReturnUrl } from '@/utils/getReturnUrl';
 import { isAfter, isBefore } from 'date-fns';
 import { useRouter } from 'next/navigation';
@@ -24,6 +25,9 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     useClaimAttendanceToken();
   const router = useRouter();
   const { doSubmit, status, isStatusLoading } = useSubmit();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //TODO listen to minting addMintingData
+  useTokens();
 
   useEffect(() => {
     doSubmit();
@@ -31,6 +35,10 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
   const handleClaim = async () => {
     const transaction = await claim(eventId);
+    console.log({ transaction });
+
+    //const d = { ...data, requestKey: transaction?.hash };
+    //addMintingData(d);
 
     router.push(
       `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${Buffer.from(
@@ -55,6 +63,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     !isMinted &&
     !isPending;
 
+  console.log({ isStatusLoading, status });
   return (
     <>
       {isStatusLoading && <MainLoader />}

@@ -73,8 +73,8 @@ interface IProofOfUsToken {
 }
 
 interface IProofOfUsTokenMeta {
-  startDate: int;
-  endDate: int;
+  startDate?: int;
+  endDate?: int;
   description: string;
   image: string;
   name: string;
@@ -123,6 +123,10 @@ type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   socialLink?: ISocial;
   position?: ISigneePosition;
   publicKey: string;
+};
+
+type IAccountLeaderboard = Pick<IAccount, 'alias' | 'accountName'> & {
+  tokenCount: number;
 };
 
 type IProofOfUsTokenSignee = Pick<

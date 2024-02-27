@@ -41,9 +41,8 @@ export const useSubmit = () => {
   const doSubmit = async (txArg?: string) => {
     const innerTransaction = txArg ?? transaction;
     if (!innerTransaction) return;
-    const client = createClient();
-
     setStatus(SubmitStatus.LOADING);
+    const client = createClient();
 
     const tx = JSON.parse(Buffer.from(innerTransaction, 'base64').toString());
     try {
@@ -71,6 +70,7 @@ export const useSubmit = () => {
   };
 
   const isStatusLoading =
+    status !== SubmitStatus.IDLE &&
     status !== SubmitStatus.INCOMPLETE &&
     status !== SubmitStatus.SUBMITABLE &&
     status !== SubmitStatus.SUCCESS &&

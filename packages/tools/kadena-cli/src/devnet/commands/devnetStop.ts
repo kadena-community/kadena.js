@@ -1,16 +1,16 @@
 import { globalOptions } from '../../utils/globalOptions.js';
 
-import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
 import { guardDocker, stopDevnet } from '../utils/docker.js';
 
-export const stopDevnetCommand: CreateCommandReturnType = createCommand(
+export const stopDevnetCommand = createCommand(
   'stop',
   'Stop devnet',
   [globalOptions.devnetSelect()],
-  async (config) => {
-    log.debug('devnet-stop:action', { config });
+  async (option) => {
+    const config = await option.name();
+    log.debug('devnet-stop:action', config);
 
     guardDocker();
 

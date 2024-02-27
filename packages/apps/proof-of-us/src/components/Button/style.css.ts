@@ -34,4 +34,9 @@ export const tertiaryClass = style({
 
 globalStyle(`${buttonClass} a`, {
   textDecoration: 'none',
+  color: deviceColors.kadenaBlack,
+});
+
+globalStyle(`${secondaryClass} a`, {
+  color: deviceColors.kadenaFont,
 });

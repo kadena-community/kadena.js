@@ -1,5 +1,5 @@
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
@@ -8,7 +8,7 @@ import { displayAddAccountSuccess } from '../utils/addHelpers.js';
 import { getAccountDetails } from '../utils/getAccountDetails.js';
 import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveAccountDetails.js';
 
-export const createAddAccountManualCommand = createCommandFlexible(
+export const createAddAccountManualCommand = createCommand(
   'add-manual',
   'Add an existing account locally to the CLI',
   [
@@ -22,7 +22,7 @@ export const createAddAccountManualCommand = createCommandFlexible(
     globalOptions.predicate(),
   ],
 
-  async (option, values) => {
+  async (option) => {
     const accountAlias = (await option.accountAlias()).accountAlias;
     const accountName = (await option.accountName()).accountName;
     const fungible = (await option.fungible()).fungible || 'coin';

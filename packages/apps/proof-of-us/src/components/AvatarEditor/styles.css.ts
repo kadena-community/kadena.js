@@ -12,12 +12,13 @@ export const cameraClass = style({
   height: '100vh',
   maxWidth: '800px',
   objectFit: 'cover',
+  transform: 'scaleX(-1)',
 });
 
 export const cameraButton = style({
   position: 'absolute',
   zIndex: 1,
-  bottom: '8vh',
+  bottom: '15vh',
   borderRadius: '50%',
   border: 0,
   width: '48px',
@@ -77,9 +78,17 @@ export const canvasClass = style({
   maxWidth: '780px',
   transform: 'translateX(-50%)',
   left: '50%',
-  top: '30px',
+  top: '100px',
   zIndex: '1',
   border: '2px solid rgba(255, 255, 255, 0.40)',
   borderRadius: '8px',
   boxSizing: 'border-box',
+});
+
+export const headerClass = style({
+  position: 'absolute',
+  width: '90vw',
+  zIndex: '2',
+  left: '50%',
+  transform: 'translate(-50%)',
 });

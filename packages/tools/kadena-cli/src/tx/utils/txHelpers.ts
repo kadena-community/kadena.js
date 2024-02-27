@@ -301,9 +301,7 @@ export async function assessTransactionSigningStatus(
   commands: (ICommand | IUnsignedCommand | undefined)[],
 ): Promise<CommandResult<ICommand[]>> {
   if (commands.length === 0) {
-    throw new Error(
-      'Error in assessTransactionSigningStatus: No commands provided.',
-    );
+    throw new Error('No commands provided.');
   }
 
   let allSigned = true;

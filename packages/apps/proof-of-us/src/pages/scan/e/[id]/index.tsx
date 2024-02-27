@@ -1,6 +1,5 @@
 import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
-import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import { ScreenHeight } from '@/components/ScreenHeight/ScreenHeight';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import UserLayout from '@/components/UserLayout/UserLayout';
@@ -35,22 +34,20 @@ const Page: NextPage<IProps> = ({ params }) => {
   if (!data) return null;
 
   return (
-    <ProofOfUsProvider>
-      <LoginBoundry>
-        <UserLayout>
-          <ScreenHeight>
-            <TitleHeader label="Attendance @" />
-            {isLoading && <MainLoader />}
-            {error && <div>...error</div>}
-            <ScanAttendanceEvent
-              data={data}
-              eventId={eventId}
-              isMinted={isMinted}
-            />
-          </ScreenHeight>
-        </UserLayout>
-      </LoginBoundry>
-    </ProofOfUsProvider>
+    <LoginBoundry>
+      <UserLayout>
+        <ScreenHeight>
+          <TitleHeader label="Attendance @" />
+          {isLoading && <MainLoader />}
+          {error && <div>...error</div>}
+          <ScanAttendanceEvent
+            data={data}
+            eventId={eventId}
+            isMinted={isMinted}
+          />
+        </ScreenHeight>
+      </UserLayout>
+    </LoginBoundry>
   );
 };
 

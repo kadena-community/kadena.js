@@ -43,7 +43,7 @@ const ProofOfUsStore = () => {
 
   const listenProofOfUsData = (
     proofOfUsId: string,
-    setDataCallback: Dispatch<SetStateAction<IProofOfUsData | undefined>>,
+    setDataCallback: (proofOfUs: IProofOfUsData | undefined) => void,
   ) => {
     const proofOfUsRef = ref(database, `data/${proofOfUsId}`);
     onValue(proofOfUsRef, (snapshot) => {
@@ -60,6 +60,25 @@ const ProofOfUsStore = () => {
     onValue(backgroundRef, (snapshot) => {
       const data = snapshot.val() ?? { bg: '' };
       setDataCallback(data);
+    });
+  };
+
+  const listenLeaderboard = (
+    setDataCallback: Dispatch<SetStateAction<IAccountLeaderboard[]>>,
+  ) => {
+    const accountsRef = ref(database, `accounts`);
+    onValue(accountsRef, (snapshot) => {
+      const data = snapshot.val();
+
+      if (!data) return [];
+
+      console.log({ data });
+
+      const dataArray = Object.entries(data)
+        .map(([key, value]) => value as IAccountLeaderboard)
+        .sort((a, b) => (a.tokenCount < b.tokenCount ? 1 : -1));
+
+      setDataCallback(dataArray);
     });
   };
 
@@ -145,6 +164,33 @@ const ProofOfUsStore = () => {
     await update(ref(database, `data/${proofOfUs.proofOfUsId}`), newProof);
   };
 
+  const getAllAccounts = async (): Promise<IAccountLeaderboard[] | null> => {
+    const docRef = await get(child(dbRef, `accounts`));
+
+    if (!docRef.exists()) return [];
+    const data = docRef.toJSON();
+    if (!data) return [];
+    const newData = Object.entries(data).map(([key, value]) => value);
+    return (newData ?? []) as IAccountLeaderboard[];
+  };
+
+  const saveAlias = async (account: IAccount | undefined) => {
+    if (!account) return;
+    const accData = { alias: account.alias, accountName: account.accountName };
+
+    await update(ref(database, `accounts/${account.accountName}`), accData);
+  };
+  const saveLeaderboardAccounts = async (accounts: IAccountLeaderboard[]) => {
+    const obj = accounts.reduce(
+      (acc: Record<string, IAccountLeaderboard>, val: IAccountLeaderboard) => {
+        acc[val.accountName] = val;
+        return acc;
+      },
+      {},
+    );
+    await update(ref(database, `accounts`), obj);
+  };
+
   return {
     updateMintStatus,
     createProofOfUs,
@@ -158,7 +204,11 @@ const ProofOfUsStore = () => {
     updateStatus,
     listenProofOfUsData,
     listenProofOfUsBackgroundData,
+    listenLeaderboard,
     updateProofOfUs,
+    saveAlias,
+    getAllAccounts,
+    saveLeaderboardAccounts,
   };
 };
 

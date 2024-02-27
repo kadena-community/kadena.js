@@ -9,6 +9,7 @@ moduleAlias.addAliases({
   '@devnet': `${__dirname}/devnet`,
 });
 
+import { runSystemsCheck } from '@services/systems-check';
 import { dotenv } from '@utils/dotenv';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { createYoga } from 'graphql-yoga';
@@ -93,6 +94,15 @@ httpServer.on('connection', (socket) => {
   httpServer.once('close', () => sockets.delete(socket));
 });
 
-httpServer.listen(dotenv.PORT, () => {
-  console.info(`Server is running on http://localhost:${dotenv.PORT}/graphql`);
-});
+runSystemsCheck()
+  .then(() => {
+    httpServer.listen(dotenv.PORT, () => {
+      console.info(
+        `\nServer is running on http://localhost:${dotenv.PORT}/graphql\n`,
+      );
+    });
+  })
+  .catch(() => {
+    console.log('\nSystem checks failed. Unable to start the graph server.\n');
+    process.exit(1);
+  });

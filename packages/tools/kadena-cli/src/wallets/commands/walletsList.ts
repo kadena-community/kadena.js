@@ -13,8 +13,9 @@ export const createListWalletsCommand: (
   'list',
   'List wallet(s)',
   [globalOptions.walletNameSelectWithAll()],
-  async (config) => {
-    log.debug('list-keys:action', { config });
+  async (option) => {
+    const config = await option.walletName();
+    log.debug('list-keys:action', config);
 
     if (config.walletName === 'all') {
       const walletNames = await getAllWallets();

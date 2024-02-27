@@ -8,7 +8,7 @@ import type { EncryptedString } from '@kadena/hd-wallet';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletContent } from '../../keys/utils/keysHelpers.js';
 
-import type { CommandOption } from '../../utils/createCommandFlexible.js';
+import type { CommandOption } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
 import type { options } from '../commands/txSignOptions.js';
 import { parseTransactionsFromStdin } from './input.js';
@@ -51,6 +51,11 @@ export const signTransactionWithLocalWallet = async ({
       commands,
       walletConfig.legacy,
     );
+
+    // Quietly return if no commands were signed, `signTransactionsWithSeed` already outputs an error.
+    if (signedCommands.length === 0) {
+      return { success: true, data: { commands: [] } };
+    }
 
     const savedTransactions = await saveSignedTransactions(signedCommands);
 
