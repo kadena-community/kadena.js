@@ -51,7 +51,7 @@ export const ImagePositions: FC<IProps> = () => {
     const wrapper = wrapperRef.current;
     const img = imgRef.current;
 
-    const elms = wrapper.querySelectorAll('[data-position]');
+    const elms = wrapper.querySelectorAll<HTMLElement>('[data-position]');
 
     elms.forEach((elm) => {
       const xPercentage: number = parseFloat(
@@ -66,7 +66,7 @@ export const ImagePositions: FC<IProps> = () => {
         return;
       }
 
-      const [xPos, yPos] = getPosition<HTMLButtonElement>(elm, img, {
+      const [xPos, yPos] = getPosition<HTMLElement>(elm, img, {
         xPercentage,
         yPercentage,
       });

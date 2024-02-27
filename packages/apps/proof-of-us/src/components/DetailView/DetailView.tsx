@@ -11,14 +11,8 @@ import {
 } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/navigation';
-import type {
-  ChangeEventHandler,
-  FC,
-  MouseEvent,
-  MouseEventHandler,
-} from 'react';
+import type { ChangeEventHandler, FC, MouseEventHandler } from 'react';
 import { useState } from 'react';
-import type { PressEvent } from 'react-aria-components';
 import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
