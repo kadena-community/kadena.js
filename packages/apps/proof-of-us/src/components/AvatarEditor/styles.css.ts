@@ -1,3 +1,4 @@
+import { customTokens } from '@/styles/tokens.css';
 import { style } from '@vanilla-extract/css';
 
 export const wrapperClass = style([{}]);
@@ -24,7 +25,7 @@ export const cameraButton = style({
   width: '48px',
   aspectRatio: '1/1',
   cursor: 'pointer',
-  backgroundColor: '#42CEA0',
+  backgroundColor: customTokens.color.accent,
   transform: 'translateX(-50%)',
   left: '50%',
 
