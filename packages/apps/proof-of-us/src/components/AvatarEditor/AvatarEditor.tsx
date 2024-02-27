@@ -60,6 +60,8 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
         canvasRef.current.height = containerWidth * 0.9;
         const topIndent = 100;
         const context = canvasRef.current.getContext('2d');
+        context?.translate(canvasRef.current.width, 0);
+        context?.scale(-1, 1);
 
         function updateCanvas() {
           if (!videoRef.current) return;

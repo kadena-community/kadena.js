@@ -1,6 +1,6 @@
 import { Box } from '@kadena/react-ui';
 import cn from 'classnames';
-import type { ForwardedRef } from 'react';
+import type { ForwardedRef, MouseEventHandler } from 'react';
 import { forwardRef } from 'react';
 import type { ButtonProps } from 'react-aria-components';
 import { Button as AriaButton } from 'react-aria-components';
@@ -9,6 +9,7 @@ import { button, progressIndicator } from './SharedButton.css';
 import { buttonClass, secondaryClass, tertiaryClass } from './style.css';
 
 interface Props extends ButtonProps {
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   progress?: number;
   variant?: 'primary' | 'secondary' | 'tertiary' | 'progress';
 }
