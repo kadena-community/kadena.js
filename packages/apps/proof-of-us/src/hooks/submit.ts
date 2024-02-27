@@ -39,9 +39,9 @@ export const useSubmit = () => {
   }, [transaction]);
 
   const doSubmit = async (txArg?: string) => {
-    setStatus(SubmitStatus.LOADING);
     const innerTransaction = txArg ?? transaction;
     if (!innerTransaction) return;
+    setStatus(SubmitStatus.LOADING);
     const client = createClient();
 
     const tx = JSON.parse(Buffer.from(innerTransaction, 'base64').toString());

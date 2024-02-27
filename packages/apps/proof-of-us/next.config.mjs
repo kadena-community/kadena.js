@@ -20,7 +20,7 @@ const nextConfig = {
     return [
       {
         source: '/graph',
-        destination: 'https://graph.testnet.kadena.network/graphql',
+        destination: `https://graph.${process.env.NEXT_PUBLIC_NETWORKNAME}.kadena.network/graphql`,
       },
     ];
   },
