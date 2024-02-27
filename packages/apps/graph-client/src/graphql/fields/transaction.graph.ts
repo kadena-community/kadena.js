@@ -11,7 +11,7 @@ export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
       }
 
       payload {
-        ... on ExecPayload {
+        ... on ExecutionPayload {
           code
         }
       }
@@ -38,11 +38,11 @@ export const ALL_TRANSACTION_FIELDS: DocumentNode = gql`
       }
 
       payload {
-        ... on ExecPayload {
+        ... on ExecutionPayload {
           code
           data
         }
-        ... on ContPayload {
+        ... on ContinuationPayload {
           pactId
           step
           rollback
