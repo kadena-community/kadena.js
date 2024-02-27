@@ -1,5 +1,6 @@
 import { builder } from './builder';
 import './objects/block';
+import './objects/cmd';
 import './objects/event';
 import './objects/fungible-account';
 import './objects/fungible-chain-account';
@@ -15,10 +16,8 @@ import './objects/signer';
 import './objects/token';
 import './objects/token-info';
 import './objects/total-count';
-// import './objects/transaction';
-import './objects/cmd';
+import './objects/transaction';
 import './objects/transaction-result';
-import './objects/transactions';
 import './objects/transfer';
 import './query/block';
 import './query/blocks-from-depth';

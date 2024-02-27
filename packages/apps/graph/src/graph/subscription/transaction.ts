@@ -2,7 +2,7 @@ import { prismaClient } from '@db/prisma-client';
 import type { Transaction } from '@prisma/client';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
-import GQLTransaction from '../objects/transactions';
+import GQLTransaction from '../objects/transaction';
 
 builder.subscriptionField('transaction', (t) =>
   t.field({
