@@ -21,7 +21,7 @@ export const TagInfo: FC<IProps> = ({ handleClose }) => {
             gap="sm"
             style={{ color: deviceColors.orange }}
           >
-            <MonoInfo fontSize="sm" /> Tag yor photo
+            <MonoInfo fontSize="sm" /> Tag your photo
             <Stack flex={1} />
             <IconButton onClick={handleClose}>
               <MonoClose fontSize="sm" />
