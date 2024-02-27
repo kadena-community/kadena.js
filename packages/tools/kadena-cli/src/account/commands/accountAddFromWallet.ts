@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
@@ -50,7 +50,7 @@ const selectPublicKeys = createOption({
   ),
 });
 
-export const createAddAccountFromWalletCommand = createCommandFlexible(
+export const createAddAccountFromWalletCommand = createCommand(
   'add-from-wallet',
   'Add an local account from a key wallet',
   [

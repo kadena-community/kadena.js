@@ -116,7 +116,7 @@ export const globalOptions = {
     expand: async (devnet: string) => {
       await ensureDevnetsConfiguration();
       try {
-        return loadDevnetConfig(devnet);
+        return await loadDevnetConfig(devnet);
       } catch (e) {
         log.warning(
           `\nNo devnet "${devnet}" found. Please create the devnet.\n`,
@@ -126,7 +126,7 @@ export const globalOptions = {
           devnetPrompt: devnetPrompts.devnetPrompt,
         });
         const devnetName = await externalPrompt.devnetPrompt();
-        return loadDevnetConfig(devnetName);
+        return await loadDevnetConfig(devnetName);
       }
     },
   }),
@@ -135,6 +135,9 @@ export const globalOptions = {
     prompt: devnetPrompts.devnetNamePrompt,
     validation: z.string(),
     option: new Option('-n, --name <name>', 'Devnet name (e.g. "devnet")'),
+    expand: async (name: string) => {
+      return { foo: 'bar' };
+    },
   }),
   devnetPort: createOption({
     key: 'port' as const,
@@ -211,7 +214,7 @@ export const globalOptions = {
     prompt: networks.networkIdPrompt,
     validation: z.string(),
     option: new Option(
-      '-nid, --network-id <networkId>',
+      '--network-id <networkId>',
       'Kadena network Id (e.g. "mainnet01")',
     ),
     transform: (networkId: string) => {
@@ -278,13 +281,13 @@ export const globalOptions = {
     expand: async (network: string) => {
       // await ensureNetworksConfiguration();
       try {
-        return loadNetworkConfig(network);
+        return await loadNetworkConfig(network);
       } catch (e) {
         log.info(
           `\nNo configuration for network "${network}" found. Please configure the network.\n`,
         );
         await program.parseAsync(['', '', 'networks', 'create']);
-        return loadNetworkConfig(network);
+        return await loadNetworkConfig(network);
       }
     },
   }),
@@ -299,7 +302,7 @@ export const globalOptions = {
     ),
     expand: async (network: string) => {
       try {
-        return loadNetworkConfig(network);
+        return await loadNetworkConfig(network);
       } catch (e) {
         throw new Error(
           `No network configuration found for "${network}". Please create a "${network}" network.`,

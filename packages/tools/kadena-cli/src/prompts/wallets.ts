@@ -1,7 +1,7 @@
 import { getAllWallets } from '../keys/utils/keysHelpers.js';
+import { CommandError } from '../utils/command.util.js';
 
 import { isValidFilename } from '../utils/helpers.js';
-import { log } from '../utils/logger.js';
 import { input, select } from '../utils/prompts.js';
 
 export async function walletNamePrompt(): Promise<string> {
@@ -22,8 +22,11 @@ async function walletSelectionPrompt(
   const existingKeys: string[] = await getAllWallets();
 
   if (existingKeys.length === 0 && !specialOptions.includes('none')) {
-    log.error('No wallets found. Exiting.');
-    process.exit(0);
+    throw new CommandError({
+      errors: [
+        'No wallets found. use "kadena wallets add" to add a new wallet.',
+      ],
+    });
   }
 
   const choices = existingKeys.map((key) => ({
@@ -59,12 +62,4 @@ export async function walletSelectPrompt(): Promise<string> {
 
 export async function walletSelectAllPrompt(): Promise<string> {
   return walletSelectionPrompt(['all']);
-}
-
-export async function walletSelectNonePrompt(): Promise<string> {
-  return walletSelectionPrompt(['none']);
-}
-
-export async function walletSelectAllOrNonePrompt(): Promise<string> {
-  return walletSelectionPrompt(['all', 'none']);
 }

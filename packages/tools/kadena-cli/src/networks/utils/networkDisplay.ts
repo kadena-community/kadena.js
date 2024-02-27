@@ -11,12 +11,12 @@ import type {
   INetworkCreateOptions,
 } from './networkHelpers.js';
 
-import { existsSync, readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
+import { services } from '../../services/index.js';
 import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
 
-export function displayNetworksConfig(): void {
+export async function displayNetworksConfig(): Promise<void> {
   const header: TableHeader = [
     'Network',
     'Network ID',
@@ -25,17 +25,16 @@ export function displayNetworksConfig(): void {
   ];
   const rows: TableRow[] = [];
 
-  const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
-  existingNetworks.forEach(({ value }) => {
+  const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
+  for (const { value } of existingNetworks) {
     const networkFilePath = path.join(defaultNetworksPath, `${value}.yaml`);
-    const fileExists = existsSync(networkFilePath);
-    const networkConfig: INetworkCreateOptions = fileExists
-      ? (yaml.load(
-          readFileSync(networkFilePath, 'utf8'),
-        ) as INetworkCreateOptions)
-      : networkDefaults[value] !== undefined
-      ? networkDefaults[value]
-      : ({} as INetworkCreateOptions);
+    const fileContent = await services.filesystem.readFile(networkFilePath);
+    const networkConfig: INetworkCreateOptions =
+      fileContent !== null
+        ? (yaml.load(fileContent) as INetworkCreateOptions)
+        : networkDefaults[value] !== undefined
+        ? networkDefaults[value]
+        : ({} as INetworkCreateOptions);
 
     rows.push([
       value,
@@ -43,7 +42,7 @@ export function displayNetworksConfig(): void {
       networkConfig.networkHost ?? 'Not Set',
       networkConfig.networkExplorerUrl ?? 'Not Set',
     ]);
-  });
+  }
 
   log.output(log.generateTableString(header, rows));
 }

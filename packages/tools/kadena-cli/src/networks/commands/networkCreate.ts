@@ -21,8 +21,9 @@ export const createNetworksCommand: (
     globalOptions.networkExplorerUrl(),
     globalOptions.networkOverwrite(),
   ],
-  async (config) => {
-    log.debug('network-create:action', { config });
+  async (option, { collect }) => {
+    const config = await collect(option);
+    log.debug('network-create:action', config);
 
     const filePath = path.join(
       defaultNetworksPath,

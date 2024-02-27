@@ -10,7 +10,6 @@ import {
   sanitizeFilename,
 } from '../../utils/helpers.js';
 
-import { existsSync, readFileSync, readdirSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
 import { z } from 'zod';
@@ -113,27 +112,17 @@ export async function removeNetwork(
   await services.filesystem.deleteFile(networkFilePath);
 }
 
-export function checkHasNetworksConfiguration(): boolean {
-  if (!existsSync(defaultNetworksPath)) {
-    return false;
-  }
-
-  const files = readdirSync(defaultNetworksPath);
-  return files.some((file) => path.extname(file).toLowerCase() === '.yaml');
-}
-
-export function loadNetworkConfig(
+export async function loadNetworkConfig(
   network: string,
-): INetworksCreateOptions | never {
+): Promise<INetworksCreateOptions> {
   const networkFilePath = path.join(defaultNetworksPath, `${network}.yaml`);
 
-  if (!existsSync(networkFilePath)) {
+  const file = await services.filesystem.readFile(networkFilePath);
+  if (file === null) {
     throw new Error('Network configuration file not found.');
   }
 
-  return yaml.load(
-    readFileSync(networkFilePath, 'utf8'),
-  ) as INetworksCreateOptions;
+  return yaml.load(file) as INetworksCreateOptions;
 }
 
 export async function ensureNetworksConfiguration(): Promise<void> {

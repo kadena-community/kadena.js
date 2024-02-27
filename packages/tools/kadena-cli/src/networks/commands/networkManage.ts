@@ -1,6 +1,6 @@
 import type { Command } from 'commander';
 
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { removeNetwork, writeNetworks } from '../utils/networkHelpers.js';
@@ -13,7 +13,7 @@ import { removeNetwork, writeNetworks } from '../utils/networkHelpers.js';
 export const manageNetworksCommand: (
   program: Command,
   version: string,
-) => void = createCommandFlexible(
+) => void = createCommand(
   'update',
   'Update local networks',
   [

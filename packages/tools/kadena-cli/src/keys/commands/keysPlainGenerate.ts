@@ -79,28 +79,24 @@ export const createGeneratePlainKeysCommand: (
     globalOptions.keyAmount({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
-  async (config) => {
-    try {
-      log.debug('generate-plain:action', { config });
+  async (option, { collect }) => {
+    const config = await collect(option);
+    log.debug('generate-plain:action', config);
 
-      const amount =
-        config.keyAmount !== undefined && config.keyAmount !== null
-          ? config.keyAmount
-          : defaultAmount;
+    const amount =
+      config.keyAmount !== undefined && config.keyAmount !== null
+        ? config.keyAmount
+        : defaultAmount;
 
-      const result = await generatePlainKeys(
-        config.keyAlias,
-        amount,
-        config.legacy,
-      );
+    const result = await generatePlainKeys(
+      config.keyAlias,
+      amount,
+      config.legacy,
+    );
 
-      assertCommandError(result);
+    assertCommandError(result);
 
-      displayGeneratedPlainKeys(result.data.keys);
-      printStoredPlainKeys(config.keyAlias, result.data.keys, config.legacy);
-    } catch (error) {
-      log.error(`\n${error.message}\n`);
-      process.exit(1);
-    }
+    displayGeneratedPlainKeys(result.data.keys);
+    printStoredPlainKeys(config.keyAlias, result.data.keys, config.legacy);
   },
 );
