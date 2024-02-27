@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
-import type { Block, Prisma } from '@prisma/client';
+import type { Block } from '@prisma/client';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -98,22 +98,30 @@ export default builder.prismaNode('Block', {
         }),
       }),
       select: {
-        transactions: true,
+        hash: true,
       },
       async totalCount(parent) {
         try {
-          return (
-            parent as Prisma.BlockGetPayload<{ select: { transactions: true } }>
-          ).transactions.length;
+          return await prismaClient.transaction.count({
+            where: {
+              blockHash: (parent as Block).hash,
+            },
+          });
         } catch (error) {
           throw normalizeError(error);
         }
       },
-      async resolve(__query, parent) {
+      async resolve(query, parent) {
         try {
-          return (
-            parent as Prisma.BlockGetPayload<{ select: { transactions: true } }>
-          ).transactions;
+          return await prismaClient.transaction.findMany({
+            ...query,
+            where: {
+              blockHash: (parent as Block).hash,
+            },
+            orderBy: {
+              height: 'desc',
+            },
+          });
         } catch (error) {
           throw normalizeError(error);
         }
@@ -131,22 +139,30 @@ export default builder.prismaNode('Block', {
         }),
       }),
       select: {
-        events: true,
+        hash: true,
       },
       async totalCount(parent) {
         try {
-          return (
-            parent as Prisma.BlockGetPayload<{ select: { events: true } }>
-          ).events.length;
+          return await prismaClient.event.count({
+            where: {
+              blockHash: (parent as Block).hash,
+            },
+          });
         } catch (error) {
           throw normalizeError(error);
         }
       },
-      async resolve(__query, parent) {
+      async resolve(query, parent) {
         try {
-          return (
-            parent as Prisma.BlockGetPayload<{ select: { events: true } }>
-          ).events;
+          return await prismaClient.event.findMany({
+            ...query,
+            where: {
+              blockHash: (parent as Block).hash,
+            },
+            orderBy: {
+              orderIndex: 'asc',
+            },
+          });
         } catch (error) {
           throw normalizeError(error);
         }
