@@ -30,9 +30,11 @@ export const getTransactionByRequestKey: DocumentNode = gql`
       events {
         ...CoreEventFields
       }
-      signers {
-        publicKey
-        signature
+      cmd {
+        signers {
+          publicKey
+          signature
+        }
       }
     }
   }
@@ -54,7 +56,7 @@ export const getEventsByName: DocumentNode = gql`
         id
       }
       transaction {
-        requestKey
+        hash
       }
     }
   }
