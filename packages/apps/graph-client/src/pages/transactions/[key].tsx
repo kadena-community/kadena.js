@@ -160,8 +160,8 @@ const RequestKey: React.FC = () => {
                 </Cell>
                 <Cell>
                   <pre>
-                    {transaction.cmd.payload.__typename === 'ExecPayload' &&
-                    transaction.cmd.payload.code
+                    {transaction.cmd.payload.__typename ===
+                      'ExecutionPayload' && transaction.cmd.payload.code
                       ? formatLisp(JSON.parse(transaction.cmd.payload.code))
                       : 'Cont'}
                   </pre>
@@ -345,7 +345,8 @@ const RequestKey: React.FC = () => {
                           <strong>Pact ID</strong>
                         </Cell>
                         <Cell>
-                          {transaction.cmd.payload.__typename === 'ContPayload'
+                          {transaction.cmd.payload.__typename ===
+                          'ContinuationPayload'
                             ? transaction.cmd.payload.pactId
                             : ''}
                         </Cell>
@@ -355,7 +356,8 @@ const RequestKey: React.FC = () => {
                           <strong>Proof</strong>
                         </Cell>
                         <Cell>
-                          {transaction.cmd.payload.__typename === 'ContPayload'
+                          {transaction.cmd.payload.__typename ===
+                          'ContinuationPayload'
                             ? transaction.cmd.payload.proof
                             : ''}
                         </Cell>
@@ -365,7 +367,8 @@ const RequestKey: React.FC = () => {
                           <strong>Rollback</strong>
                         </Cell>
                         <Cell>
-                          {transaction.cmd.payload.__typename === 'ContPayload'
+                          {transaction.cmd.payload.__typename ===
+                          'ContinuationPayload'
                             ? transaction.cmd.payload.rollback
                             : ''}
                         </Cell>
@@ -375,7 +378,8 @@ const RequestKey: React.FC = () => {
                           <strong>Step</strong>
                         </Cell>
                         <Cell>
-                          {transaction.cmd.payload.__typename === 'ContPayload'
+                          {transaction.cmd.payload.__typename ===
+                          'ContinuationPayload'
                             ? transaction.cmd.payload.step
                             : ''}
                         </Cell>

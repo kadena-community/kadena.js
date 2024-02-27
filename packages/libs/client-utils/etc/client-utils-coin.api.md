@@ -104,7 +104,7 @@ data: ITransactionDescriptor;
 }, {
 event: "listen";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<object> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]> | Promise<Record<string, any>>>;
 
 // @alpha (undocumented)
 export const safeTransferCommand: ({ sender, receiver, amount, gasPayer, chainId, contract, }: ISafeTransferInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;

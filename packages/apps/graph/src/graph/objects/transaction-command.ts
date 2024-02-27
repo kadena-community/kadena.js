@@ -2,7 +2,7 @@ import { builder } from '../builder';
 import Payload from './transaction-payload';
 
 export default builder.objectType('TransactionCommand', {
-  description: 'A transaction cmd.',
+  description: 'A transaction command.',
   fields: (t) => ({
     payload: t.field({
       type: Payload,

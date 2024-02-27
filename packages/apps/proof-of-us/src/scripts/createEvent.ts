@@ -48,7 +48,7 @@ const createEventId = async () => {
   const transaction = Pact.builder
     .execution(
       `(${namespace}.proof-of-us.create-event-id "${eventName}" ${startTime} ${endTime}
-       
+
         )`,
     )
     .setNetworkId(process.env.NEXT_PUBLIC_NETWORKID ?? '')
@@ -139,7 +139,9 @@ const createEvent = async () => {
   const polldata = await kadenaClient.submit(signedTx);
   console.log(`CREATE-TOKEN requestKey: ${polldata.requestKey}`);
 
-  const { result } = await kadenaClient.listen(polldata);
+  const { result } = (await kadenaClient.pollStatus(polldata))[
+    polldata.requestKey
+  ];
 
   if (result.status !== 'success') {
     console.log('ERROR');

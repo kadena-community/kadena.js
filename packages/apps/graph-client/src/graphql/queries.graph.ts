@@ -110,7 +110,7 @@ export const getFungibleAccount: DocumentNode = gql`
             transaction {
               cmd {
                 payload {
-                  ... on ContPayload {
+                  ... on ContinuationPayload {
                     pactId
                   }
                 }
@@ -157,7 +157,7 @@ export const getFungibleChainAccount: DocumentNode = gql`
             transaction {
               cmd {
                 payload {
-                  ... on ContPayload {
+                  ... on ContinuationPayload {
                     pactId
                   }
                 }
@@ -258,7 +258,7 @@ export const getTransfers: DocumentNode = gql`
           transaction {
             cmd {
               payload {
-                ... on ContPayload {
+                ... on ContinuationPayload {
                   pactId
                 }
               }
