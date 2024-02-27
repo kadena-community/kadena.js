@@ -19,9 +19,7 @@ export default async function handler(
     });
   }
 
-  const client = new GraphQLClient(
-    `https://graph.${env.NETWORKNAME}.kadena.network/graphql`,
-  );
+  const client = new GraphQLClient(env.GRAHQLURL);
 
   const promises = Object.entries(accounts).map(([key, value]) =>
     getSdk(client).GetTokens({
