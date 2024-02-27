@@ -47,7 +47,7 @@ export const useSubmit = () => {
     const tx = JSON.parse(Buffer.from(innerTransaction, 'base64').toString());
     try {
       const txRes = await client.submit(tx);
-      const result = await client.listen(txRes);
+      const result = (await client.pollStatus(txRes))[txRes.requestKey];
 
       if (result.result.status === 'success') {
         setStatus(SubmitStatus.SUCCESS);
