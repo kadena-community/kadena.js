@@ -3,7 +3,7 @@ import { createGeneratePlainKeysCommand } from './commands/keysPlainGenerate.js'
 
 import type { Command } from 'commander';
 
-const SUBCOMMAND_ROOT: 'keys' = 'keys';
+const SUBCOMMAND_ROOT: 'key' = 'key';
 
 export function keysCommandFactory(program: Command, version: string): void {
   const keysProgram = program
