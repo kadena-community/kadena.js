@@ -95,7 +95,7 @@ const RequestKey: React.FC = () => {
                   <strong>Status</strong>
                 </Cell>
                 <Cell>
-                  {transaction.badResult && (
+                  {transaction.result.badResult && (
                     <Notification
                       intent="negative"
                       icon={<SystemIcon.Close />}
@@ -104,14 +104,14 @@ const RequestKey: React.FC = () => {
                       Transaction failed with status:{' '}
                       <pre>
                         {JSON.stringify(
-                          JSON.parse(transaction.badResult),
+                          JSON.parse(transaction.result.badResult),
                           null,
                           4,
                         )}
                       </pre>
                     </Notification>
                   )}
-                  {transaction.goodResult && (
+                  {transaction.result.goodResult && (
                     <Notification
                       intent="positive"
                       icon={<SystemIcon.Check />}
@@ -119,27 +119,28 @@ const RequestKey: React.FC = () => {
                     >
                       Transaction succeeded with status:
                       <br />
-                      <pre>{formatCode(transaction.goodResult)}</pre>
+                      <pre>{formatCode(transaction.result.goodResult)}</pre>
                     </Notification>
                   )}
-                  {!transaction.goodResult && !transaction.badResult && (
-                    <Notification intent="warning" role="status">
-                      Unknown transaction status
-                    </Notification>
-                  )}
+                  {!transaction.result.goodResult &&
+                    !transaction.result.badResult && (
+                      <Notification intent="warning" role="status">
+                        Unknown transaction status
+                      </Notification>
+                    )}
                 </Cell>
               </Row>
               <Row>
                 <Cell>
                   <strong>Request Key</strong>
                 </Cell>
-                <Cell>{transaction.requestKey}</Cell>
+                <Cell>{transaction.hash}</Cell>
               </Row>
               <Row>
                 <Cell>
                   <strong>Chain</strong>
                 </Cell>
-                <Cell>{transaction.chainId}</Cell>
+                <Cell>{transaction.cmd.meta.chainId}</Cell>
               </Row>
               <Row>
                 <Cell>
@@ -158,7 +159,12 @@ const RequestKey: React.FC = () => {
                   <strong>Code</strong>
                 </Cell>
                 <Cell>
-                  <pre>{formatLisp(JSON.parse(transaction.code))}</pre>
+                  <pre>
+                    {transaction.cmd.payload.__typename === 'ExecPayload' &&
+                    transaction.cmd.payload.code
+                      ? formatLisp(JSON.parse(transaction.cmd.payload.code))
+                      : 'Cont'}
+                  </pre>
                 </Cell>
               </Row>
               <Row>
@@ -176,7 +182,7 @@ const RequestKey: React.FC = () => {
                         <Cell>
                           <strong>Gas</strong>
                         </Cell>
-                        <Cell>{transaction.gas}</Cell>
+                        <Cell>{transaction.result.gas}</Cell>
                       </Row>
                       <Row>
                         <Cell>
@@ -184,10 +190,10 @@ const RequestKey: React.FC = () => {
                         </Cell>
                         <Cell>
                           <pre>
-                            {transaction.goodResult
-                              ? formatCode(transaction.goodResult)
-                              : transaction.badResult
-                              ? formatCode(transaction.badResult)
+                            {transaction.result.goodResult
+                              ? formatCode(transaction.result.goodResult)
+                              : transaction.result.badResult
+                              ? formatCode(transaction.result.badResult)
                               : 'Unknown'}
                           </pre>
                         </Cell>
@@ -196,13 +202,13 @@ const RequestKey: React.FC = () => {
                         <Cell>
                           <strong>Logs</strong>
                         </Cell>
-                        <Cell>{transaction.logs}</Cell>
+                        <Cell>{transaction.result.logs}</Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>Metadata</strong>
                         </Cell>
-                        <Cell>{transaction.metadata}</Cell>
+                        <Cell>{transaction.result.metadata}</Cell>
                       </Row>
                       <Row>
                         <Cell>
@@ -210,8 +216,8 @@ const RequestKey: React.FC = () => {
                         </Cell>
                         <Cell>
                           <pre>
-                            {transaction.continuation
-                              ? formatCode(transaction.continuation)
+                            {transaction.result.continuation
+                              ? formatCode(transaction.result.continuation)
                               : 'None'}
                           </pre>
                         </Cell>
@@ -220,7 +226,7 @@ const RequestKey: React.FC = () => {
                         <Cell>
                           <strong>Transaction ID</strong>
                         </Cell>
-                        <Cell>{transaction.transactionId}</Cell>
+                        <Cell>{transaction.result.transactionId}</Cell>
                       </Row>
                     </TableBody>
                   </Table>
@@ -263,8 +269,13 @@ const RequestKey: React.FC = () => {
                 </Cell>
                 <Cell>
                   <pre>
-                    {transaction.data &&
-                      JSON.stringify(JSON.parse(transaction.data), null, 4)}
+                    {/* {transaction.cmd.payload.data &&
+                      JSON.stringify(JSON.parse(transaction.cmd.payload.data), null, 4)} */}
+                    {JSON.stringify(
+                      JSON.parse(transaction.cmd.payload.data),
+                      null,
+                      4,
+                    )}
                   </pre>
                 </Cell>
               </Row>
@@ -273,7 +284,7 @@ const RequestKey: React.FC = () => {
                   <strong>Nonce</strong>
                 </Cell>
                 <Cell>
-                  <pre>{transaction.nonce}</pre>
+                  <pre>{transaction.cmd.nonce}</pre>
                 </Cell>
               </Row>
               <Row>
@@ -291,67 +302,83 @@ const RequestKey: React.FC = () => {
                         <Cell>
                           <strong>Chain</strong>
                         </Cell>
-                        <Cell>{transaction.chainId}</Cell>
+                        <Cell>{transaction.cmd.meta.chainId}</Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>Sender</strong>
                         </Cell>
-                        <Cell>{transaction.senderAccount}</Cell>
+                        <Cell>{transaction.cmd.meta.sender}</Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>Gas Price</strong>
                         </Cell>
-                        <Cell>{transaction.gasPrice}</Cell>
+                        <Cell>{transaction.cmd.meta.gasPrice}</Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>Gas Limit</strong>
                         </Cell>
-                        <Cell>{transaction.gasLimit}</Cell>
+                        <Cell>{transaction.cmd.meta.gasLimit}</Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>TTL</strong>
                         </Cell>
-                        <Cell>{transaction.ttl}</Cell>
+                        <Cell>{transaction.cmd.meta.ttl}</Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>Creation Time</strong>
                         </Cell>
-                        <Cell>{transaction.creationTime}</Cell>
+                        <Cell>{transaction.cmd.meta.creationTime}</Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>Height</strong>
                         </Cell>
-                        <Cell>{transaction.height}</Cell>
+                        <Cell>{transaction.result.height}</Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>Pact ID</strong>
                         </Cell>
-                        <Cell>{transaction.pactId}</Cell>
+                        <Cell>
+                          {transaction.cmd.payload.__typename === 'ContPayload'
+                            ? transaction.cmd.payload.pactId
+                            : ''}
+                        </Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>Proof</strong>
                         </Cell>
-                        <Cell>{transaction.proof}</Cell>
+                        <Cell>
+                          {transaction.cmd.payload.__typename === 'ContPayload'
+                            ? transaction.cmd.payload.proof
+                            : ''}
+                        </Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>Rollback</strong>
                         </Cell>
-                        <Cell>{transaction.rollback}</Cell>
+                        <Cell>
+                          {transaction.cmd.payload.__typename === 'ContPayload'
+                            ? transaction.cmd.payload.rollback
+                            : ''}
+                        </Cell>
                       </Row>
                       <Row>
                         <Cell>
                           <strong>Step</strong>
                         </Cell>
-                        <Cell>{transaction.step}</Cell>
+                        <Cell>
+                          {transaction.cmd.payload.__typename === 'ContPayload'
+                            ? transaction.cmd.payload.step
+                            : ''}
+                        </Cell>
                       </Row>
                     </TableBody>
                   </Table>
@@ -362,7 +389,7 @@ const RequestKey: React.FC = () => {
                   <strong>Signers</strong>
                 </Cell>
                 <Cell>
-                  {transaction.signers
+                  {transaction.cmd.signers
                     ?.map((signer) => {
                       return signer.publicKey;
                     })
@@ -374,7 +401,7 @@ const RequestKey: React.FC = () => {
                   <strong>Signatures</strong>
                 </Cell>
                 <Cell>
-                  {transaction.signers
+                  {transaction.cmd.signers
                     ?.map((signer) => {
                       return signer.signature;
                     })

@@ -53,7 +53,7 @@ export const CompactTransfersTable = (
     transfer: Transfer,
     crossChainTransfer: Transfer,
   ): XChainTransfer => {
-    if (transfer.transaction?.pactId) {
+    if (transfer.transaction?.cmd.payload.__typename === 'ContPayload') {
       // This means that the transfer on this chain is the finishing one
       return {
         startingTransfer: crossChainTransfer,
@@ -104,7 +104,10 @@ export const CompactTransfersTable = (
             if (!chainId) {
               /**  These transfers are going to be added to their crosschain counterpart and
              this way we avoid repeated transfers in the table */
-              if (transfer.transaction?.pactId) return <></>;
+              if (
+                transfer.transaction?.cmd.payload.__typename === 'ContPayload'
+              )
+                return <></>;
             } else {
               if (crossChainCounterPart) {
                 const { startingTransfer, finishingTransfer } =
