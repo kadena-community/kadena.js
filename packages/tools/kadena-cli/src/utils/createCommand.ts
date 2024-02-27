@@ -189,7 +189,6 @@ export const createCommand =
 
               // Keep track of previous args to prompts can use them
               args = { ...args, [option.key]: value };
-              console.log({ prompted, _prompted, option: option.key });
               prompted = prompted || _prompted;
               return config;
             } catch (error) {
