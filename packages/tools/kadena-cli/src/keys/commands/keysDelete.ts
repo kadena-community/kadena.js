@@ -77,29 +77,25 @@ export const createDeleteKeysCommand: (
       return;
     }
 
-    try {
-      log.debug('delete-keys:action', { config });
-      if (config.keyFiles === 'all') {
-        const result = await deleteAllKeys();
-        assertCommandError(result);
-        log.info(log.color.green('\nAll keys have been deleted.\n'));
-      } else {
-        if (config.keyFiles === null) {
-          throw new Error(`Key: ${config.keyFiles} does not exist.`);
-        }
-
-        const result = await deleteKey(config.keyFiles);
-        assertCommandError(result);
-
-        const keyText =
-          config.keyFiles === 'all'
-            ? 'all keys have been deleted'
-            : `the key: "${config.keyFiles}" has been deleted`;
-
-        log.info(log.color.green(`\n${keyText}\n`));
+    log.debug('delete-keys:action', { config });
+    if (config.keyFiles === 'all') {
+      const result = await deleteAllKeys();
+      assertCommandError(result);
+      log.info(log.color.green('\nAll keys have been deleted.\n'));
+    } else {
+      if (config.keyFiles === null) {
+        throw new Error(`Key: ${config.keyFiles} does not exist.`);
       }
-    } catch (error) {
-      log.error(`\nAn error occurred: ${error.message}\n`);
+
+      const result = await deleteKey(config.keyFiles);
+      assertCommandError(result);
+
+      const keyText =
+        config.keyFiles === 'all'
+          ? 'all keys have been deleted'
+          : `the key: "${config.keyFiles}" has been deleted`;
+
+      log.info(log.color.green(`\n${keyText}\n`));
     }
   },
 );
