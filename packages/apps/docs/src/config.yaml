@@ -386,6 +386,9 @@ pages:
     url: /chainweb
     file: /chainweb/index.tsx
     children:
+      compact:
+        url: /compact-database
+        file: /chainweb/compact-a-database.md
       nodeclient:
         file: /packages/libs/chainweb-node-client/README.md
         url: /node-client
