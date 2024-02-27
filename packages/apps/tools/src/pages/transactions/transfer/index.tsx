@@ -504,7 +504,11 @@ const TransferPage = () => {
                   )}
                 />
 
-                <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
+                <Stack
+                  flexDirection={'row'}
+                  justifyContent={'space-between'}
+                  alignItems={'center'}
+                >
                   <div className={chainSelectContainerClass}>
                     <Controller
                       name="senderChainId"
@@ -521,7 +525,13 @@ const TransferPage = () => {
                       )}
                     />
                   </div>
-                  {senderData.isFetching ? (<Text>Fetching account balance...</Text>) : senderData.data ? (<Text>{senderData.data?.balance} KDA</Text>) : (<Text>No funds on selected chain.</Text>)}
+                  {senderData.isFetching ? (
+                    <Text>Fetching account balance...</Text>
+                  ) : senderData.data ? (
+                    <Text>{senderData.data?.balance} KDA</Text>
+                  ) : (
+                    <Text>No funds on selected chain.</Text>
+                  )}
                 </Stack>
 
                 <Controller
