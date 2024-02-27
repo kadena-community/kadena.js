@@ -1,10 +1,13 @@
 import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
 import { Button } from '@/components/Button/Button';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
+import { Text } from '@/components/Typography/Text';
+import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
 import { useTokens } from '@/hooks/tokens';
 import { getReturnUrl } from '@/utils/getReturnUrl';
+import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
@@ -24,10 +27,25 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const { isLoading, hasSuccess, hasError, isPending, claim } =
     useClaimAttendanceToken();
   const router = useRouter();
-  const { doSubmit, status, isStatusLoading } = useSubmit();
+
+  const { account, isMounted, login } = useAccount();
+  const { doSubmit, isStatusLoading } = useSubmit();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   //TODO listen to minting addMintingData
   useTokens();
+
+  // const checkHasClaimed = useCallback(
+  //   async (eventId: string, accountName: string) => {
+  //     const result = await hasClaimed(eventId, accountName);
+  //     setHasMinted(result);
+  //   },
+  //   [setHasMinted],
+  // );
+
+  // useEffect(() => {
+  //   if (!account) return;
+  //   checkHasClaimed(eventId, account.accountName);
+  // }, []);
 
   useEffect(() => {
     doSubmit();
@@ -35,6 +53,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
   const handleClaim = async () => {
     const transaction = await claim(eventId);
+
     console.log({ transaction });
 
     //const d = { ...data, requestKey: transaction?.hash };
@@ -61,40 +80,48 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     !hasError &&
     !isLoading &&
     !isMinted &&
-    !isPending;
+    !isPending &&
+    account;
 
-  console.log({ isStatusLoading, status });
   return (
     <>
       {isStatusLoading && <MainLoader />}
-      <div>
-        <div>claimstatus: {status}</div>
+      <Stack flexDirection="column" flex={1}>
         <AttendanceTicket data={data} />
-      </div>
-      <div>
-        {!hasStarted && (
-          <div>
-            the event has not started yet. please check back{' '}
-            {startDate.toLocaleDateString()} {startDate.toLocaleTimeString()} to
-            claim the nft
-          </div>
-        )}
-        {hasEnded && <div>the event has ended.</div>}
-        {showClaimButton && !isMinted && (
-          <Button isDisabled={isMinted} onPress={handleClaim}>
-            Claim NFT
-          </Button>
-        )}
-        {isLoading && <MainLoader />}
-        {isPending && <div>you are already claiming this token</div>}
-        {hasError && (
-          <div>
-            what is the error?
-            <Button onPress={handleClaim}>Retry NFT</Button>
-          </div>
-        )}
-        {isMinted && <div>claimed the nft</div>}
-      </div>
+
+        <Stack flex={1} />
+        <Stack>
+          {!hasStarted && (
+            <div>
+              the event has not started yet. please check back{' '}
+              {startDate.toLocaleDateString()} {startDate.toLocaleTimeString()}{' '}
+              to claim the nft
+            </div>
+          )}
+          {hasEnded && <div>the event has ended.</div>}
+
+          {showClaimButton && <Button onPress={handleClaim}>Claim NFT</Button>}
+          {isLoading && <MainLoader />}
+          {hasError && (
+            <div>
+              what is the error?
+              <Button onPress={handleClaim}>Retry NFT</Button>
+            </div>
+          )}
+
+          {!account && isMounted && (
+            <Stack width="100%">
+              <Button onClick={login}>Login to mint</Button>
+            </Stack>
+          )}
+          {isMinted && (
+            <Stack width="100%" flexDirection="column">
+              <Text>you are already claiming this token</Text>
+              <Button>Go to dashboard</Button>
+            </Stack>
+          )}
+        </Stack>
+      </Stack>
     </>
   );
 };

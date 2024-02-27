@@ -1,5 +1,6 @@
+import { getReturnUrl } from '@/utils/getReturnUrl';
 import { createClient } from '@kadena/client';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export enum SubmitStatus {
@@ -18,6 +19,7 @@ export const useSubmit = () => {
   const [status, setStatus] = useState(SubmitStatus.IDLE);
   const [tx, setTx] = useState<any>(null);
   const [preview, setPreview] = useState<any>(null);
+  const router = useRouter();
 
   const processTransaction = async (transaction: string) => {
     const client = createClient();
@@ -47,7 +49,8 @@ export const useSubmit = () => {
     const tx = JSON.parse(Buffer.from(innerTransaction, 'base64').toString());
     try {
       const txRes = await client.submit(tx);
-      const result = (await client.pollStatus(txRes))[txRes.requestKey];
+      const result = await client.listen(txRes);
+      router.replace(getReturnUrl());
 
       if (result.result.status === 'success') {
         setStatus(SubmitStatus.SUCCESS);
@@ -59,6 +62,7 @@ export const useSubmit = () => {
           data: 'Already claimed',
         });
       }
+      router.replace(getReturnUrl());
     } catch (err: any) {
       setStatus(SubmitStatus.ERROR);
       console.log(err);
