@@ -2,6 +2,7 @@ import type { Command } from 'commander';
 
 import { createAddAccountFromWalletCommand } from './commands/accountAddFromWallet.js';
 import { createAddAccountManualCommand } from './commands/accountAddManual.js';
+import { createAccountCreateCommand } from './commands/accountCreate.js';
 import { createAccountDeleteCommand } from './commands/accountDelete.js';
 import { createAccountDetailsCommand } from './commands/accountDetails.js';
 import { createAccountFundCommand } from './commands/accountFund.js';
@@ -16,6 +17,7 @@ export function accountCommandFactory(program: Command, version: string): void {
     .command(SUBCOMMAND_ROOT)
     .description(`Tool to manage accounts of fungibles (e.g. 'coin')`);
 
+  createAccountCreateCommand(accountProgram, version);
   createAddAccountManualCommand(accountProgram, version);
   createAddAccountFromWalletCommand(accountProgram, version);
   createAccountDeleteCommand(accountProgram, version);
