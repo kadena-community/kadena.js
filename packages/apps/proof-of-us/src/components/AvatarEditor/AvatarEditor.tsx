@@ -6,6 +6,7 @@ import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { MonoClose } from '@kadena/react-icons';
 import classnames from 'classnames';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -25,7 +26,7 @@ interface IProps {
 export const AvatarEditor: FC<IProps> = ({ next }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
+  const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
   const { addBackground } = useAvatar();
   const { proofOfUs, updateProofOfUs, updateBackgroundColor } = useProofOfUs();
@@ -88,6 +89,14 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
         alert('The browser needs permissions for the camera to work');
       });
   }, [isMounted]);
+
+  useEffect(() => {
+    return () => {
+      const src = videoRef.current?.srcObject as MediaStream;
+      if (!src) return;
+      src.getTracks().forEach((t) => t.stop());
+    };
+  }, [pathname]);
 
   const handleCapture = async (evt: MouseEvent<HTMLButtonElement>) => {
     if (isAlreadySigning(proofOfUs?.signees)) return;
