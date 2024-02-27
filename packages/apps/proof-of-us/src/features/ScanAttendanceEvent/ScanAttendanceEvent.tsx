@@ -11,7 +11,7 @@ import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
@@ -24,7 +24,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   eventId,
   isMinted,
 }) => {
-  const { isLoading, hasSuccess, hasError, isPending, claim, hasClaimed } =
+  const { isLoading, hasSuccess, hasError, isPending, claim } =
     useClaimAttendanceToken();
   const router = useRouter();
 
