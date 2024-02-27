@@ -17,3 +17,7 @@ export const chainSelectContainerClass = style([
 export const buttonContainerClass = style([
   atoms({ display: 'flex', justifyContent: 'flex-end' }),
 ]);
+
+export const tooltipInfoContainer = style([atoms({ marginBlockEnd: 'sm' })]);
+
+export const marginBottomOnError = style([atoms({ marginBlockEnd: 'xxl' })]);

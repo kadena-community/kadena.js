@@ -239,6 +239,8 @@
   "Chainweaver wallet": "Chainweaver wallet",
   "how-to-keys-accounts": "To create keys and accounts in your <0>Chainweaver wallet</0>: 1. Click Keys in the Chainweaver navigation panel.You'll see that a public key has already been generated for your account.  2. Click Add k: Account. Under Balance (KDA), notice that the account displays Does not exist. In Kadena, keys are used to sign transactions but they don't hold funds to pay transaction fees. Keys must be linked to an authorization account—a guardian or guard—that holds funds and identifies who can sign transactions and transfer funds.",
   "how-to-networks": "You can choose the Network in the top navigation bar between the default \"Testnet\" and \"Mainnet\" initially. You also have the option to add a custom network (like the local devnet) and you have the instructions on how to to that <0>HERE</0>. Choosing the chain is connected to the available operations that you can perform and you'll have the option available when doing one",
+  "ledger tooltip content": "Change ledger key. You can use any number (from the pre-defined 100).",
+  "how-to-networks": "You can choose the Network in the top navigation bar between the default \"Testnet\" and \"Mainnet\" initially. You also have the option to add a custom network (like the local devnet) and you have the instructions on how to to that <0>HERE</0>. Choosing the chain is connected to the available operations that you can perform and you'll have the option available when doing one",
   "Target Chain Request key: ": "Target Chain Request key: ",
   "ledger-info-notification": "Please visit <0>the Ledger Docs</0> for more information.",
   "Find your key": "Find your key",
