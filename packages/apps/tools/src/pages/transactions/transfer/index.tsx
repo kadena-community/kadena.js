@@ -19,6 +19,11 @@ import useLedgerPublicKey, {
   derivationModes,
   getDerivationPath,
 } from '@/hooks/use-ledger-public-key';
+import type {
+  ICreateTransferInput,
+  ICrossChainInput,
+  TransferInput,
+} from '@/hooks/use-ledger-sign';
 import { useLedgerSign } from '@/hooks/use-ledger-sign';
 import { finishXChainTransfer } from '@/services/cross-chain-transfer-finish/finish-xchain-transfer';
 import { createPrincipal } from '@/services/faucet/create-principal';
@@ -83,7 +88,9 @@ const TransferPage = () => {
   useToolbar(menuData, router.pathname);
   const { t } = useTranslation('common');
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
-  const [toAccountTab, setToAccountTab] = useState('existing');
+  const [toAccountTab, setToAccountTab] = useState<'new' | 'existing'>(
+    'existing',
+  );
   const [keyId, setKeyId] = useState<number>();
   const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
 
@@ -221,31 +228,45 @@ const TransferPage = () => {
   const [ledgerSignState, signTx] = useLedgerSign();
 
   const handleSignTransaction = async (data: FormData) => {
-    const transferInput = {
+    let transferInput: TransferInput;
+
+    transferInput = {
       sender: {
         account: senderData.data?.account ?? '',
         publicKeys: ledgerPublicKey ? [ledgerPublicKey] : [],
-        pred: senderData.data?.guard.pred,
       },
       receiver: receiverData.data?.account ?? '',
       chainId: data.senderChainId,
       amount: String(data.amount),
     };
-    if (!onSameChain) {
-      // @ts-ignore
-      transferInput.targetChainId = data.receiverChainId;
-    }
 
-    if (receiverData?.error) {
-      // @ts-ignore
-      transferInput.receiver = {
-        account: data.receiver,
-        keyset: {
-          keys: pubKeys,
-          pred: pred,
+    if (!onSameChain) {
+      const xChainTransferInput: ICrossChainInput = {
+        ...transferInput,
+        receiver: {
+          account: transferInput.receiver || data.receiver,
+          keyset: {
+            keys: receiverData.data?.guard.keys || pubKeys,
+            pred: (receiverData.data?.guard.pred as PredKey) || pred,
+          },
+        },
+        targetChainId: data.receiverChainId,
+      };
+      transferInput = xChainTransferInput;
+    } else if (toAccountTab === 'new') {
+      const createTransferInput: ICreateTransferInput = {
+        ...transferInput,
+        receiver: {
+          account: data.receiver,
+          keyset: {
+            keys: pubKeys,
+            pred: pred,
+          },
         },
       };
+      transferInput = createTransferInput;
     }
+
     await signTx(transferInput, {
       networkId: network,
       derivationPath: getDerivationPath(keyId!, derivationMode),
@@ -593,7 +614,7 @@ const TransferPage = () => {
                       />
                     ) : null}
 
-                    {renderAccountFieldWithChain('existing')}
+                    {renderAccountFieldWithChain('new')}
 
                     {receiverData.isFetching ? (
                       <Stack flexDirection={'row'}>
@@ -617,7 +638,7 @@ const TransferPage = () => {
 
             <div className={buttonContainerClass}>
               <Button
-                isLoading={receiverData.isFetching}
+                isLoading={receiverData.isFetching || ledgerSignState.loading}
                 // isDisabled={isSubmitting}
                 endIcon={<SystemIcon.TrailingIcon />}
                 title={t('Sign')}
@@ -641,7 +662,6 @@ const TransferPage = () => {
                   isDisabled={ledgerSignState.loading}
                   endIcon={<SystemIcon.TrailingIcon />}
                   title={t('Transfer')}
-                  // type="submit"
                   onPress={onSubmit}
                 >
                   {t('Transfer')}
