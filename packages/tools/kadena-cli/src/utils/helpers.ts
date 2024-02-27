@@ -373,3 +373,47 @@ export const safeJsonParse = <T extends unknown>(value: string): T | null => {
     return null;
   }
 };
+
+export const passwordPromptTransform =
+  // prettier-ignore
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  (flag: string) =>
+    async (
+      passwordFile: string | { _password: string },
+      args: Record<string, unknown>,
+    ): Promise<string> => {
+      const password =
+        typeof passwordFile === 'string'
+          ? passwordFile === '-'
+            ? (args.stdin as string | null)
+            : await services.filesystem.readFile(passwordFile)
+          : passwordFile._password;
+
+      if (password === null) {
+        throw new CommandError({
+          errors: [`Password file not found: ${passwordFile}`],
+          exitCode: 1,
+        });
+      }
+
+      const trimmedPassword = password.trim();
+
+      if (typeof passwordFile !== 'string') {
+        log.info(`You can use the ${flag} flag to provide a password.`);
+      }
+
+      if (trimmedPassword.length < 8) {
+        throw new CommandError({
+          errors: ['Password should be at least 8 characters long.'],
+          exitCode: 1,
+        });
+      }
+
+      if (trimmedPassword.includes('\n')) {
+        log.warning(
+          'Password contains new line characters. Make sure you are using the correct password.',
+        );
+      }
+
+      return trimmedPassword;
+    };

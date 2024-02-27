@@ -16,7 +16,7 @@ import { getWallet } from '../../keys/utils/keysHelpers.js';
 import * as storageService from '../../keys/utils/storage.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { CommandError, assertCommandError } from '../../utils/command.util.js';
+import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
@@ -97,22 +97,16 @@ export const createGenerateWalletCommand: (
   'Add a new local wallet',
   [
     globalOptions.walletName({ isOptional: false }),
-    globalOptions.securityPassword({ isOptional: false }),
-    globalOptions.securityVerifyPassword({ isOptional: false }),
+    globalOptions.passwordFile({ isOptional: false }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option, { collect }) => {
     const config = await collect(option);
     log.debug('create-wallet:action', config);
 
-    if (config.securityPassword !== config.securityVerifyPassword) {
-      log.error(`\nPasswords don't match. Please try again.\n`);
-      throw new CommandError({ exitCode: 1 });
-    }
-
     const result = await generateWallet(
       config.walletName,
-      config.securityPassword,
+      config.passwordFile,
       config.legacy,
     );
 

@@ -105,7 +105,7 @@ export async function signWithLocalWallet(
     throw new Error(`Wallet: ${wallet.walletName} does not exist.`);
   }
 
-  const password = await option.securityPassword();
+  const password = await option.passwordFile();
 
   const result = await (async () => {
     if (stdin !== undefined) {
@@ -120,7 +120,7 @@ export async function signWithLocalWallet(
       return await signTransactionWithLocalWallet({
         wallet: wallet.walletName,
         walletConfig: wallet.walletNameConfig!,
-        password: password.securityPassword,
+        password: password.passwordFile,
         commands: [command],
         signed: false,
       });
@@ -144,7 +144,7 @@ export async function signWithLocalWallet(
       return await signTransactionFilesWithLocalWallet({
         wallet: wallet.walletName,
         walletConfig: wallet.walletNameConfig!,
-        password: password.securityPassword,
+        password: password.passwordFile,
         files: files,
         signed: false,
       });
