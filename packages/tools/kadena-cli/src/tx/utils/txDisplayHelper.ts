@@ -21,11 +21,7 @@ export async function printTx(transactions: string[]): Promise<void> {
     rows.push([key ?? 'N/A', key.includes('signed') === true ? 'Yes' : 'No']);
   }
 
-  if (rows.length > 0) {
-    log.output(log.generateTableString(header, rows));
-  } else {
-    log.info('No transactions found');
-  }
+  log.output(log.generateTableString(header, rows));
 }
 
 export function txDisplayTransaction(
