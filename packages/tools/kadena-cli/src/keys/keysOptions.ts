@@ -9,7 +9,7 @@ export const keysOptions = {
     prompt: keys.keyGetAllPlainFilesPrompt,
     validation: z.string(),
     option: new Option(
-      '-s, --key-files <keyFiles>',
+      '-k, --key-files <keyFiles>',
       'select key file(s) to delete',
     ),
   }),
