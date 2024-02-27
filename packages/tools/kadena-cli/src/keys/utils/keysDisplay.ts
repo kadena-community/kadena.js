@@ -35,7 +35,7 @@ export async function printPlainKeys(): Promise<void> {
   const rows: TableRow[] = [];
 
   if (plainKeys.length === 0) {
-    log.info('No plain keys');
+    log.info('No plain keys found');
     return;
   }
 
