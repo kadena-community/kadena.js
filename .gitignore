@@ -99,3 +99,6 @@ temp
 
 # cache-sh
 .cache-sh
+
+# TS build info
+*.tsbuildinfo
