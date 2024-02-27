@@ -3,7 +3,7 @@ import { CLINAME } from '../constants/config.js';
 import { CommandError, printCommandError } from './command.util.js';
 import type { OptionType, createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
-import { handlePromptError } from './helpers.js';
+import { handlePromptError, notEmpty } from './helpers.js';
 import { log } from './logger.js';
 import { readStdin } from './stdin.js';
 import type { FlattenObject, Fn, Prettify } from './typeUtilities.js';
@@ -122,6 +122,16 @@ interface ICommandData {
   >;
 }
 
+const generateBugReportLink = (command: string, error: string): string => {
+  const platform = encodeURIComponent(process.platform);
+  const browser = encodeURIComponent(`Node.JS ${process.version}`);
+  const reproduction = encodeURIComponent(`Executed command:\n${command}`);
+  const description = encodeURIComponent(
+    `Describe the issue:\n\n\nError stacktrace:\n${error}`,
+  );
+  return `https://github.com/kadena-community/kadena.js/issues/new?assignees=&labels=bug&projects=&template=001-bug_report.yml&os=${platform}&browser=${browser}&description=${description}&reproduction=${reproduction}`;
+};
+
 export const createCommand =
   <
     T extends OptionType[],
@@ -185,6 +195,7 @@ export const createCommand =
               } = await executeOption(
                 option,
                 {
+                  stdin: stdin,
                   ...args,
                   ...customArgs,
                 },
@@ -248,6 +259,12 @@ export const createCommand =
           return;
         }
         log.error(`\nAn error occurred: ${error.message}\n`);
+        log.info(
+          `Is this a bug? Let us know:\n${generateBugReportLink(
+            getCommandExecution(`${program.name()} ${name}`, args, values),
+            error.stack ?? error.message,
+          )}`,
+        );
         process.exitCode = 1;
       }
     });
@@ -284,9 +301,7 @@ export function getCommandExecution(
       let displayValue: string | null = null;
       const value = args[arg];
 
-      if (arg.toLowerCase().includes('password')) {
-        displayValue = value === '' ? '' : '******';
-      } else if (Array.isArray(value)) {
+      if (Array.isArray(value)) {
         displayValue = `"${value.join(',')}"`;
       } else if (typeof value === 'string') {
         displayValue = `"${value}"`;
@@ -301,7 +316,11 @@ export function getCommandExecution(
         Object.getPrototypeOf(value) === Object.prototype
       ) {
         return Object.entries(value)
-          .map(([key, val]) => `--${key}="${val}"`)
+          .map(([key, val]) =>
+            // Do not show keys starting with _ (used for password)
+            !key.startsWith('_') ? `--${key}="${val}"` : null,
+          )
+          .filter(notEmpty)
           .join(' ');
       }
 
