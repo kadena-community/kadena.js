@@ -1,11 +1,14 @@
 import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
 import { Button } from '@/components/Button/Button';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
+import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
 import { useTokens } from '@/hooks/tokens';
 import { getReturnUrl } from '@/utils/getReturnUrl';
+import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -24,7 +27,8 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const { isLoading, hasSuccess, hasError, isPending, claim } =
     useClaimAttendanceToken();
   const router = useRouter();
-  const { doSubmit, status, isStatusLoading } = useSubmit();
+  const { account, isMounted, login } = useAccount();
+  const { doSubmit, isStatusLoading } = useSubmit();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   //TODO listen to minting addMintingData
   useTokens();
@@ -61,17 +65,17 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     !hasError &&
     !isLoading &&
     !isMinted &&
-    !isPending;
+    !isPending &&
+    account;
 
-  console.log({ isStatusLoading, status });
   return (
-    <>
+    <Stack flexDirection="column" flex={1}>
       {isStatusLoading && <MainLoader />}
-      <div>
-        <div>claimstatus: {status}</div>
-        <AttendanceTicket data={data} />
-      </div>
-      <div>
+
+      <AttendanceTicket data={data} />
+
+      <Stack flex={1} />
+      <Stack>
         {!hasStarted && (
           <div>
             the event has not started yet. please check back{' '}
@@ -80,6 +84,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
           </div>
         )}
         {hasEnded && <div>the event has ended.</div>}
+
         {showClaimButton && !isMinted && (
           <Button isDisabled={isMinted} onPress={handleClaim}>
             Claim NFT
@@ -94,7 +99,13 @@ export const ScanAttendanceEvent: FC<IProps> = ({
           </div>
         )}
         {isMinted && <div>claimed the nft</div>}
-      </div>
-    </>
+
+        {!account && isMounted && (
+          <Stack width="100%">
+            <Button onClick={login}>Login to mint</Button>
+          </Stack>
+        )}
+      </Stack>
+    </Stack>
   );
 };

@@ -34,20 +34,18 @@ const Page: NextPage<IProps> = ({ params }) => {
   if (!data) return null;
 
   return (
-    <LoginBoundry>
-      <UserLayout>
-        <ScreenHeight>
-          <TitleHeader label="Attendance @" />
-          {isLoading && <MainLoader />}
-          {error && <div>...error</div>}
-          <ScanAttendanceEvent
-            data={data}
-            eventId={eventId}
-            isMinted={isMinted}
-          />
-        </ScreenHeight>
-      </UserLayout>
-    </LoginBoundry>
+    <UserLayout>
+      <ScreenHeight>
+        <TitleHeader label="Attendance @" />
+        {isLoading && <MainLoader />}
+        {error && <div>...error</div>}
+        <ScanAttendanceEvent
+          data={data}
+          eventId={eventId}
+          isMinted={isMinted}
+        />
+      </ScreenHeight>
+    </UserLayout>
   );
 };
 
