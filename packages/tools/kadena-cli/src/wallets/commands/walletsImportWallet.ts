@@ -12,7 +12,7 @@ import { getWallet } from '../../keys/utils/keysHelpers.js';
 import * as storageService from '../../keys/utils/storage.js';
 import { addWalletExtension } from '../../keys/utils/storage.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { CommandError, assertCommandError } from '../../utils/command.util.js';
+import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
@@ -70,8 +70,7 @@ export const createImportWalletCommand: (
   'Import (restore) wallet from mnemonic phrase',
   [
     globalOptions.keyMnemonic(),
-    globalOptions.securityNewPassword({ isOptional: false }),
-    globalOptions.securityVerifyPassword({ isOptional: false }),
+    globalOptions.passwordFile({ isOptional: false }),
     globalOptions.walletName(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
@@ -79,20 +78,12 @@ export const createImportWalletCommand: (
     const config = await collect(option);
     log.debug('import-wallet:action', config);
 
-    // compare passwords
-    if (config.securityNewPassword !== config.securityVerifyPassword) {
-      throw new CommandError({
-        errors: [`Passwords don't match. Please try again.`],
-        exitCode: 1,
-      });
-    }
-
     const loading = ora('Generating..').start();
 
     const result = await importWallet({
       walletName: config.walletName,
       mnemonic: config.keyMnemonic,
-      password: config.securityNewPassword,
+      password: config.passwordFile,
       legacy: config.legacy,
     });
 

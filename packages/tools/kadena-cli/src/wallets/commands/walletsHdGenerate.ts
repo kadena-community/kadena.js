@@ -86,7 +86,7 @@ export const createGenerateHdKeysCommand: (
     globalOptions.walletSelect(),
     globalOptions.keyGenFromChoice(),
     globalOptions.keyAlias(),
-    globalOptions.securityPassword(),
+    globalOptions.passwordFile(),
     globalOptions.keyIndexOrRange({ isOptional: true }),
   ],
   async (option) => {
@@ -101,7 +101,7 @@ export const createGenerateHdKeysCommand: (
       keyGenFromChoice !== 'genPublicSecretKeyDec'
         ? (await option.keyAlias()).keyAlias
         : '';
-    const { securityPassword } = await option.securityPassword();
+    const { passwordFile } = await option.passwordFile();
 
     const loadingSpinner = ora('Generating keys..').start();
 
@@ -109,7 +109,7 @@ export const createGenerateHdKeysCommand: (
       walletName: walletNameConfig.wallet,
       keyIndexOrRange,
       keyGenFromChoice,
-      password: securityPassword,
+      password: passwordFile,
       keyAlias,
     });
 

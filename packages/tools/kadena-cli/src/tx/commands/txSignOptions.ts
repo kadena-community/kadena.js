@@ -5,7 +5,7 @@ export const options = [
   txOptions.txSignWith(),
   // sign with local wallet
   globalOptions.walletSelect(),
-  globalOptions.securityPassword(),
+  globalOptions.passwordFile(),
   txOptions.directory({ disableQuestion: true }),
   txOptions.txUnsignedTransactionFiles(),
 
