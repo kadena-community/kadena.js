@@ -389,7 +389,7 @@ type Subscription {
   events(chainId: String, parametersFilter: String, qualifiedEventName: String!): [Event!]
 
   """Subscribe to new blocks."""
-  newBlocks(chainIds: [Int!]): [Block!]
+  newBlocks(chainIds: [String!]): [Block!]
 
   """Subscribe to new blocks from a specific depth."""
   newBlocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]

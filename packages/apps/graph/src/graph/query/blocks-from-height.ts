@@ -23,18 +23,14 @@ builder.queryField('blocksFromHeight', (t) =>
         return await prismaClient.block.findMany({
           ...query,
           where: {
-            AND: [
-              {
-                height: {
-                  gte: startHeight,
-                },
+            height: {
+              gte: startHeight,
+            },
+            ...(chainIds?.length && {
+              chainId: {
+                in: chainIds.map((x) => parseInt(x)),
               },
-              {
-                chainId: {
-                  in: chainIds?.map((x) => parseInt(x)),
-                },
-              },
-            ],
+            }),
           },
           orderBy: {
             height: 'asc',

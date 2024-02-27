@@ -1,10 +1,11 @@
 import { prismaClient } from '@db/prisma-client';
+import { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { PRISMA, builder } from '../builder';
 
-export default builder.prismaNode('Transaction', {
+export default builder.prismaNode(Prisma.ModelName.Transaction, {
   description: 'A confirmed transaction.',
   id: { field: 'blockHash_requestKey' },
   select: {},
@@ -127,7 +128,7 @@ export default builder.prismaNode('Transaction', {
 
     // relations
     block: t.prismaField({
-      type: 'Block',
+      type: Prisma.ModelName.Block,
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
@@ -148,7 +149,7 @@ export default builder.prismaNode('Transaction', {
     }),
 
     events: t.prismaField({
-      type: ['Event'],
+      type: [Prisma.ModelName.Event],
       nullable: true,
       complexity:
         COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
@@ -173,7 +174,7 @@ export default builder.prismaNode('Transaction', {
     }),
 
     transfers: t.prismaField({
-      type: ['Transfer'],
+      type: [Prisma.ModelName.Transfer],
       nullable: true,
       complexity:
         COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
@@ -198,7 +199,7 @@ export default builder.prismaNode('Transaction', {
     }),
 
     signers: t.prismaField({
-      type: ['Signer'],
+      type: [Prisma.ModelName.Signer],
       nullable: true,
       complexity:
         COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
