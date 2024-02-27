@@ -2,6 +2,7 @@ import { Option } from 'commander';
 import { z } from 'zod';
 import { account } from '../prompts/index.js';
 import { createOption } from '../utils/createOption.js';
+import { log } from '../utils/logger.js';
 import type { IAliasAccountData } from './types.js';
 import {
   formatZodFieldErrors,
@@ -64,10 +65,8 @@ export const accountOptions = {
         const accountDetails = await readAccountFromFile(accountAlias);
         return accountDetails;
       } catch (error) {
-        if (error.message.includes('file not exist') === true) {
-          return null;
-        }
-        throw new Error(error.message);
+        log.debug(`Error in accountSelect expand`, error);
+        return null;
       }
     },
   }),
