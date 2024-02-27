@@ -8,7 +8,6 @@ import { useTokens } from '@/hooks/tokens';
 import { getReturnUrl } from '@/utils/getReturnUrl';
 import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -69,43 +68,44 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     account;
 
   return (
-    <Stack flexDirection="column" flex={1}>
+    <>
       {isStatusLoading && <MainLoader />}
+      <Stack flexDirection="column" flex={1}>
+        <AttendanceTicket data={data} />
 
-      <AttendanceTicket data={data} />
+        <Stack flex={1} />
+        <Stack>
+          {!hasStarted && (
+            <div>
+              the event has not started yet. please check back{' '}
+              {startDate.toLocaleDateString()} {startDate.toLocaleTimeString()}{' '}
+              to claim the nft
+            </div>
+          )}
+          {hasEnded && <div>the event has ended.</div>}
 
-      <Stack flex={1} />
-      <Stack>
-        {!hasStarted && (
-          <div>
-            the event has not started yet. please check back{' '}
-            {startDate.toLocaleDateString()} {startDate.toLocaleTimeString()} to
-            claim the nft
-          </div>
-        )}
-        {hasEnded && <div>the event has ended.</div>}
+          {showClaimButton && !isMinted && (
+            <Button isDisabled={isMinted} onPress={handleClaim}>
+              Claim NFT
+            </Button>
+          )}
+          {isLoading && <MainLoader />}
+          {isPending && <div>you are already claiming this token</div>}
+          {hasError && (
+            <div>
+              what is the error?
+              <Button onPress={handleClaim}>Retry NFT</Button>
+            </div>
+          )}
+          {isMinted && <div>claimed the nft</div>}
 
-        {showClaimButton && !isMinted && (
-          <Button isDisabled={isMinted} onPress={handleClaim}>
-            Claim NFT
-          </Button>
-        )}
-        {isLoading && <MainLoader />}
-        {isPending && <div>you are already claiming this token</div>}
-        {hasError && (
-          <div>
-            what is the error?
-            <Button onPress={handleClaim}>Retry NFT</Button>
-          </div>
-        )}
-        {isMinted && <div>claimed the nft</div>}
-
-        {!account && isMounted && (
-          <Stack width="100%">
-            <Button onClick={login}>Login to mint</Button>
-          </Stack>
-        )}
+          {!account && isMounted && (
+            <Stack width="100%">
+              <Button onClick={login}>Login to mint</Button>
+            </Stack>
+          )}
+        </Stack>
       </Stack>
-    </Stack>
+    </>
   );
 };

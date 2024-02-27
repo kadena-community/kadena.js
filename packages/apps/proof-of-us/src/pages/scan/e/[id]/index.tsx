@@ -1,4 +1,3 @@
-import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { ScreenHeight } from '@/components/ScreenHeight/ScreenHeight';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';

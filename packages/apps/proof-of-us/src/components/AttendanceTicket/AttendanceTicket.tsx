@@ -21,7 +21,7 @@ export const AttendanceTicket: FC<IProps> = ({ data }) => {
 
   return (
     <motion.div
-      layoutId="proof-of-us:jQ9ZFi5VDifZ_LekqHCGrP5EdgKTgU7WhrYkIWNPMe8"
+      layoutId={data.image}
       className={ticketClass}
       style={{
         backgroundImage: `url("${data.image}")`,
