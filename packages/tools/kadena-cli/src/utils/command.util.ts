@@ -64,9 +64,10 @@ export function assertCommandError(
 
 export function printCommandError(error: CommandError): void {
   if (error.warnings.length > 0) {
-    log.warning(`${error.warnings.join('\n')}\n`);
+    log.warning(`${error.warnings.join('\n')}`);
   }
   if (error.errors.length > 0) {
-    log.error(`${error.errors.join('\n')}\n`);
+    if (error.warnings.length > 0) log.error('');
+    log.error(`${error.errors.join('\n')}`);
   }
 }
