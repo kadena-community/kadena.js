@@ -16,7 +16,7 @@ export const useListen = () => {
     };
 
     try {
-      const result = await client.listen(txRes);
+      const result = (await client.pollStatus(txRes))[txRes.requestKey];
 
       if (result.result.status === 'success') {
         setStatus(SubmitStatus.SUCCESS);
