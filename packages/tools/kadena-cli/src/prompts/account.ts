@@ -238,7 +238,9 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
   const selectedAccountsLength = selectedAccounts.split(',').length;
 
   const selectedAccountMessage =
-    selectedAccountsLength > 1
+    previousQuestions.accountAlias === 'all'
+      ? 'all the accounts'
+      : selectedAccountsLength > 1
       ? 'all the selected aliases accounts'
       : `the ${selectedAccounts} alias account`;
 
