@@ -51,6 +51,7 @@ body:
         - '@kadena/cryptography-utils'
         - '@kadena/pactjs'
         - '@kadena/pactjs-generator'
+        - '@kadena/kadena-cli'
         - Other... (please describe in bug report)
     validations:
       required: false
