@@ -3,7 +3,7 @@ import { ACCOUNT_DIR } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
 import { isEmpty } from '../utils/addHelpers.js';
@@ -38,7 +38,7 @@ async function removeAccount(
   };
 }
 
-export const createAccountDeleteCommand = createCommandFlexible(
+export const createAccountDeleteCommand = createCommand(
   'delete',
   'Delete local account',
   [
