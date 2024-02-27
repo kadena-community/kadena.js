@@ -26,8 +26,8 @@ async function removeAccount(
 
   const warnings =
     nonDeletedFiles.length === 1
-      ? `\nThe account alias ${nonDeletedFiles[0]} not exist`
-      : `\nThe following account aliases does not exist:\n${nonDeletedFiles.join(
+      ? `\nThe account alias "${nonDeletedFiles[0]}" does not exist`
+      : `\nThe following account aliases do not exist:\n${nonDeletedFiles.join(
           '\n',
         )}`;
 
