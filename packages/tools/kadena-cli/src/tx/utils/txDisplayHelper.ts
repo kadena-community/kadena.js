@@ -1,11 +1,32 @@
 import { isNumeric } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
+import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
 
 const formatLength = 80;
 
 const displaySeparator = (): void => {
   log.info(log.color.green('-'.padEnd(formatLength, '-')));
 };
+
+export async function printTx(transactions: string[]): Promise<void> {
+  const header: TableHeader = ['Filename', 'Signed'];
+  const rows: TableRow[] = [];
+
+  if (transactions.length === 0) {
+    log.info('No transactions found');
+    return;
+  }
+
+  for (const key of transactions) {
+    rows.push([key ?? 'N/A', key.includes('signed') === true ? 'Yes' : 'No']);
+  }
+
+  if (rows.length > 0) {
+    log.output(log.generateTableString(header, rows));
+  } else {
+    log.info('No transactions found');
+  }
+}
 
 export function txDisplayTransaction(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
