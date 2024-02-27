@@ -1,31 +1,60 @@
 ---
-title: Kadena SpireKey User Guide
-description: Integrate Kadena SpireKey in your dApp
+title: Authentication and authorization with Kadena SpireKey
+description: Provide authentication and authorization services by implementing Kadena SpireKey in your decentralized application.
 menu: Kadena SpireKey
-label: Kadena SpireKey User Guide
+label: Kadena SpireKey
 order: 2
 layout: full
 ---
 
-# Kadena SpireKey User Guide
+# Authentication and authorization with Kadena SpireKey
 
----
+Kadena SpireKey is an innovative approach to authenticating users and authorizing transactions in Web3 and decentralized applications. 
+Kadena SpireKey leverages the OAuth protocol and the Web Authentication (WebAuthN) API to provide a secure backend that simplifies the end user experience.
+With Kadena SpireKey, users can connect to a wallet and sign transactions using methods that feel familiar to them.
+For example, an application might present a QR code for them to scan to approve a transaction or send a link to a device that enables them to authenticate using facial recognition or a fingerprint.
 
-- [Kadena SpireKey User Guide](#kadena-spirekey-user-guide)
-  - [Short Introduction](#short-introduction)
-  - [Conceptual Overview](#conceptual-overview)
-    - [Create account in Kadena SpireKey](#create-account-in-kadena-spirekey)
-    - [Login with Kadena SpireKey](#login-with-kadena-spirekey)
-    - [Sign Transaction from dApp](#sign-transaction-from-dapp)
-  - [Specification](#specification)
-    - [OAuth authenticate](#oauth-authenticate)
-      - [Authentication request](#authentication-request)
-      - [Authentication Response](#authentication-response)
-    - [Kadena SpireKey Sign](#kadena-spirekey-sign)
-      - [Sign Request](#sign-request)
-      - [Sign Response](#sign-response)
+By integrating Kadena SpireKey with your applications, you can allow your users to authenticate and sign transactions without using passwords or managing public and private keys and by using any method that supports passkeys, including Apple ID, Google Accounts, or hardware security keys.
 
-## Short Introduction
+If you're building decentralized applications, implementing Kadena SpireKey can help bring down the barriers to adoption by providing a more secure authentication and authorization process with fewer steps and a more familiar flow.
+
+By making transactions easier and more secure, Kadena SpireKey can improve how people interact with digital services and make Web3 more accessible and practical for everyday use.
+
+As an introduction to Kadena SpireKey, this guide explain how you can do the following:
+- Connect your application to a Kadena SpireKey wallet.
+- Retrieve the available accounts for a user.
+- Sign a transaction with a Kadena SpireKey signature.
+
+
+## How Kadena SpireKey works
+
+Before you add Kadena SpireKey authentication and authorization services to your applications you should be familiar with the basics of how it works and the underlying technology that it relies on.
+
+At its core, Kadena SpireKey is based on the [OAuth](https://oauth.net/2/) protocol.
+The OAuth protocol is the recognized open industry standard for designing authentication and authorization work flows.
+The OAuth standard is what enables users to authenticate using identity providers like Google, Facebook, GitHub, and others.
+
+If you're familiar with the OAuth 2.0 protocol, you know that it defines four roles:
+
+- The **resource owner** is responsible for granting access to a requested resource.
+- The **resource server** is responsible for accepting and responding to resource requests using **access tokens**.
+- The **client** is any application making a resource requests on behalf of the resource owner and with its authorization. 
+- The **authorization server** is responsible for issuing access tokens to the client after authenticating the resource owner and obtaining authorization.
+
+The following diagram provides a simplified overview of the workflow between these roles.
+
+![OAuth Flow](image.png)
+
+The workflow for Kadena SpireKey is similar.
+In Kadena SpireKey, your decentralized application is the client application hosted on the resource server, for example, on the Kadena public network.
+To work with your application, users register on the network using Kadena SpireKey.
+Kadena SpireKey then acts as the authorization server and uses WebAuthN to grant access tokens. 
+After users are authenticated by WebAuthN, your application can use the account information to construct transactions. 
+The transactions passed back to users are signed by Kadena SpireKey using whatever method you choose to implement in your application.
+
+With this overview in mind, let's look at how you can integrate Kadena SpireKey with your application.
+
+
 
 In this document you will learn how to **connect** your dApp to Kadena SpireKey,
 **retrieve the available accounts** and sign with WebAuthN via the Kadena
@@ -52,13 +81,16 @@ The similarities are:
 Let's take a look in how the flow would be for a **dApp** and **Kadena
 Spirekey**
 
-1. The user creates an account on Kadena SpireKey by authenticating with
-   WebAuthN
-2. The user login with Kadena SpireKey from the dApp
-3. The user wants to sign a transaction created by the dApp
+## Integrate with Kadena SpireKey
 
-### Create account in Kadena SpireKey
+There are three basic integration points between a decentralized application and Kadena SpireKey.
+To integrate with Kadena SpireKey, your application needs to enable users to perform the following steps:
 
+ - Register at least one account on Kadena SpireKey by authenticating using a Web Authentication (WebAuthN) method.
+- Log in using a Kadena SpireKey account with authentication provided by a Web Authentication (WebAuthN) method.
+- Sign transactions created by the application using a Kadena SpireKey account with authentication provided by Kadena keysets and WebAuthN.
+### Register an account in Kadena SpireKey
+The following diagram illustrates the process for registering an account using Kadena SpireKey.
 ```mermaid
 sequenceDiagram
   participant u as User
@@ -77,8 +109,9 @@ sequenceDiagram
   end
 ```
 
-### Login with Kadena SpireKey
+### Log in with Kadena SpireKey
 
+The following diagram illustrates the process for logging in with a Kadena SpireKey account.
 ```mermaid
 sequenceDiagram
   participant u as User
@@ -91,8 +124,9 @@ sequenceDiagram
     d->>u: logged in with `base-64-user`
 ```
 
-### Sign Transaction from dApp
+### Sign a transaction from the application
 
+The following diagram illustrates the process for signing a transaction using a Kadena SpireKey account.
 ```mermaid
 sequenceDiagram
   participant u as User
@@ -125,7 +159,9 @@ spirekey.kadena.io/login?returnUrl=dapp.com/auth
   - `returnUrl` the url where the user will be redirected to after
     authentication.
 
-#### Authentication Response
+### Authentication response
+
+Your application receives a response with the following payload:
 
 ```
 yourdapp.com/auth?user=base-64-user
@@ -147,10 +183,15 @@ yourdapp.com/auth?user=base-64-user
       The `user` object, can already be used to prepare transactions for the
       user.
 
-### Kadena SpireKey Sign
+## Sign request and response
 
-#### Sign Request
+To sign transactions for your application, your application must send the transaction to the Kadena SpireKey endpoint and receive a response.
 
+### Sign request
+
+Send a request to the Kadena SpireKey `sign` endpoint using the following format:
+
+https://spirekey.kadena.io/sign?transaction=tx-base64&returnUrl=your-dapp.com/auth
 ```
 spirekey.kadena.io/sign?transaction=tx-base64&returnUrl=dapp.com/auth
 ```
@@ -164,7 +205,9 @@ spirekey.kadena.io/sign?transaction=tx-base64&returnUrl=dapp.com/auth
     transaction, even when there are pending transactions.  
     The response will include `pendingTxIds`.
 
-#### Sign Response
+### Sign response
+
+Your application receives a response with the following payload:
 
 ```
 yourdapp.com/auth?transaction=base-64-signed-transaction
