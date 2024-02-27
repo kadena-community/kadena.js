@@ -8,12 +8,18 @@ import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
 import { isEmpty } from '../utils/addHelpers.js';
 
+async function getAllAccountAliases(): Promise<string[]> {
+  const files = await services.filesystem.readDir(ACCOUNT_DIR);
+  return files.map((file) => file.replace('.yaml', ''));
+}
+
 async function removeAccount(
   accountAlias: string,
 ): Promise<CommandResult<string[]>> {
   const deletedFiles = [];
   const nonDeletedFiles = [];
-  const aliases = accountAlias.split(',');
+  const aliases =
+    accountAlias === 'all' ? await getAllAccountAliases() : [accountAlias];
   for (const alias of aliases) {
     const filePath = join(ACCOUNT_DIR, `${alias.trim()}.yaml`);
     if (await services.filesystem.fileExists(filePath)) {
@@ -25,7 +31,9 @@ async function removeAccount(
   }
 
   const warnings =
-    nonDeletedFiles.length === 1
+    nonDeletedFiles.length === 0
+      ? ''
+      : nonDeletedFiles.length === 1
       ? `\nThe account alias "${nonDeletedFiles[0]}" does not exist`
       : `\nThe following account aliases do not exist:\n${nonDeletedFiles.join(
           '\n',
@@ -42,7 +50,7 @@ export const createAccountDeleteCommand = createCommand(
   'delete',
   'Delete local account',
   [
-    accountOptions.accountMultiSelect(),
+    accountOptions.accountSelectWithAll(),
     accountOptions.accountDeleteConfirmation({ isOptional: false }),
   ],
   async (option) => {
@@ -63,7 +71,7 @@ export const createAccountDeleteCommand = createCommand(
     });
 
     if (confirm === false) {
-      log.info(log.color.yellow(`\nThe account alias will not be deleted.\n`));
+      log.info(log.color.yellow(`The account alias will not be deleted.`));
       return;
     }
 
@@ -71,9 +79,7 @@ export const createAccountDeleteCommand = createCommand(
     assertCommandError(result);
     if (result.data.length > 0) {
       log.info(
-        log.color.green(
-          `\nAccount alias "${accountAlias}" has been deleted.\n`,
-        ),
+        log.color.green(`Account alias "${accountAlias}" has been deleted.`),
       );
     }
   },

@@ -598,10 +598,10 @@ example for delete a specific account:
 kadena account delete --account-alias="accountAlias" --confirm
 ```
 
-example for delete multiple accounts: (comma separated list of account alias)
+example for delete all accounts:
 
 ```
-kadena account delete --account-alias="accountAlias_1,devnetAlias" --confirm
+kadena account delete --account-alias="all" --confirm
 ```
 
 ## kadena tx
