@@ -201,7 +201,7 @@ const TransferPage = () => {
   const invalidAmount =
     senderData.data && senderData.data.balance < watchAmount;
   const invalidAmountMessage = senderData.data
-    ? `Cannot send more than ${senderData.data.balance.toFixed(4)} KDAs.`
+    ? `Cannot send more than ${senderData.data.balance.toFixed(4)} KDA.`
     : '';
 
   if (toAccountTab === 'existing' && receiverData?.error) {
@@ -364,22 +364,6 @@ const TransferPage = () => {
 
   const renderAccountFieldWithChain = (tab: string) => (
     <Stack flexDirection={'column'} gap={'md'}>
-      <div className={chainSelectContainerClass}>
-        <Controller
-          name="receiverChainId"
-          control={control}
-          render={({ field: { onChange, value, ...rest } }) => (
-            <ChainSelect
-              {...rest}
-              selectedKey={value}
-              id="receiverChainId"
-              onSelectionChange={(chainId) => onChange(chainId)}
-              isInvalid={!!errors.receiverChainId}
-              errorMessage={errors.receiverChainId?.message}
-            />
-          )}
-        />
-      </div>
       <Controller
         name="receiver"
         control={control}
@@ -406,6 +390,22 @@ const TransferPage = () => {
           />
         )}
       />
+      <div className={chainSelectContainerClass}>
+        <Controller
+          name="receiverChainId"
+          control={control}
+          render={({ field: { onChange, value, ...rest } }) => (
+            <ChainSelect
+              {...rest}
+              selectedKey={value}
+              id="receiverChainId"
+              onSelectionChange={(chainId) => onChange(chainId)}
+              isInvalid={!!errors.receiverChainId}
+              errorMessage={errors.receiverChainId?.message}
+            />
+          )}
+        />
+      </div>
     </Stack>
   );
 
@@ -478,25 +478,6 @@ const TransferPage = () => {
                   setLegacyToggleOn={setLegacyToggleOn}
                 />
 
-                <Stack flexDirection={'row'} justifyContent={'space-between'}>
-                  <div className={chainSelectContainerClass}>
-                    <Controller
-                      name="senderChainId"
-                      control={control}
-                      render={({ field: { onChange, value, ...rest } }) => (
-                        <ChainSelect
-                          {...rest}
-                          selectedKey={value}
-                          id="senderChainId"
-                          onSelectionChange={(chainId) => onChange(chainId)}
-                          isInvalid={!!errors.senderChainId}
-                          errorMessage={errors.senderChainId?.message}
-                        />
-                      )}
-                    />
-                  </div>
-                </Stack>
-
                 <Controller
                   name="sender"
                   control={control}
@@ -504,13 +485,6 @@ const TransferPage = () => {
                     <AccountNameField
                       {...field}
                       isInvalid={!!errors.sender}
-                      errorMessage={
-                        senderData.error
-                          ? 'Account not found on selected Chain'
-                          : errors.sender
-                          ? errors.sender.message
-                          : undefined
-                      }
                       label={t('The account name to fund coins to')}
                       // isDisabled
                       endAddon={
@@ -530,14 +504,25 @@ const TransferPage = () => {
                   )}
                 />
 
-                {senderData.isFetching ? (
-                  <Stack flexDirection={'row'}>
-                    <SystemIcon.Information />
-                    <Text as={'span'} color={'emphasize'}>
-                      Fetching sender account data..
-                    </Text>
-                  </Stack>
-                ) : null}
+                <Stack flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
+                  <div className={chainSelectContainerClass}>
+                    <Controller
+                      name="senderChainId"
+                      control={control}
+                      render={({ field: { onChange, value, ...rest } }) => (
+                        <ChainSelect
+                          {...rest}
+                          selectedKey={value}
+                          id="senderChainId"
+                          onSelectionChange={(chainId) => onChange(chainId)}
+                          isInvalid={!!errors.senderChainId}
+                          errorMessage={errors.senderChainId?.message}
+                        />
+                      )}
+                    />
+                  </div>
+                  {senderData.isFetching ? (<Text>Fetching account balance...</Text>) : senderData.data ? (<Text>{senderData.data?.balance} KDA</Text>) : (<Text>No funds on selected chain.</Text>)}
+                </Stack>
 
                 <Controller
                   name="amount"
