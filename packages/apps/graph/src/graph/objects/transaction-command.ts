@@ -1,7 +1,7 @@
 import { builder } from '../builder';
-import Payload from './payload';
+import Payload from './transaction-payload';
 
-export default builder.objectType('Cmd', {
+export default builder.objectType('TransactionCommand', {
   description: 'A transaction cmd.',
   fields: (t) => ({
     payload: t.field({
@@ -11,7 +11,7 @@ export default builder.objectType('Cmd', {
       },
     }),
     meta: t.field({
-      type: 'Meta',
+      type: 'TransactionMeta',
       resolve(parent) {
         return parent.meta;
       },

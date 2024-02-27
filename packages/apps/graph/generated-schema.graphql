@@ -47,19 +47,8 @@ type BlockTransactionsConnectionEdge {
   node: Transaction!
 }
 
-"""A transaction cmd."""
-type Cmd {
-  meta: Meta!
-
-  """The network id of the environment."""
-  networkId: String!
-  nonce: String!
-  payload: Payload!
-  signers: [Signer!]
-}
-
 """The payload of an cont transaction."""
-type ContPayload {
+type ContinuationPayload {
   """
   The environment data made available to the transaction. Formatted as raw JSON.
   """
@@ -118,7 +107,7 @@ type Event implements Node {
 }
 
 """The payload of an exec transaction."""
-type ExecPayload {
+type ExecutionPayload {
   """
   The Pact expressions executed in this transaction when it is an `exec` transaction.
   """
@@ -217,16 +206,6 @@ type Guard {
   predicate: String!
 }
 
-"""The metadata of a transaction."""
-type Meta {
-  chainId: BigInt!
-  creationTime: DateTime!
-  gasLimit: BigInt!
-  gasPrice: Float!
-  sender: String!
-  ttl: BigInt!
-}
-
 """The account of the miner that solved a block."""
 type MinerKey implements Node {
   block: Block!
@@ -296,9 +275,6 @@ type PageInfo {
   hasPreviousPage: Boolean!
   startCursor: String
 }
-
-"""The payload of a transaction."""
-union Payload = ContPayload | ExecPayload
 
 """Floats that will have a value greater than 0."""
 scalar PositiveFloat
@@ -480,13 +456,37 @@ type TokenInfo {
 """A confirmed transaction."""
 type Transaction implements Node {
   block: Block
-  cmd: Cmd!
+  cmd: TransactionCommand!
   events: [Event!]
   hash: String!
   id: ID!
   result: TransactionResult!
   transfers: [Transfer!]
 }
+
+"""A transaction cmd."""
+type TransactionCommand {
+  meta: TransactionMeta!
+
+  """The network id of the environment."""
+  networkId: String!
+  nonce: String!
+  payload: TransactionPayload!
+  signers: [Signer!]
+}
+
+"""The metadata of a transaction."""
+type TransactionMeta {
+  chainId: BigInt!
+  creationTime: DateTime!
+  gasLimit: BigInt!
+  gasPrice: Float!
+  sender: String!
+  ttl: BigInt!
+}
+
+"""The payload of a transaction."""
+union TransactionPayload = ContinuationPayload | ExecutionPayload
 
 """The result of a transaction."""
 type TransactionResult {

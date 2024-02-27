@@ -89,22 +89,22 @@ export interface NonFungibleAccount {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface Cmd {
-  payload: ExecPayload | ContPayload;
-  meta: Meta;
+export interface TransactionCommand {
+  payload: ExecutionPayload | ContinuationPayload;
+  meta: TransactionMeta;
   signers: Signer[];
   networkId: string;
   nonce: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface ExecPayload {
+export interface ExecutionPayload {
   code: string | null;
   data: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface ContPayload {
+export interface ContinuationPayload {
   pactId: string | null;
   step: number | null;
   rollback: boolean | null;
@@ -113,7 +113,7 @@ export interface ContPayload {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface Meta {
+export interface TransactionMeta {
   sender: string;
   chainId: bigint;
   gasLimit: bigint;

@@ -14,7 +14,7 @@ export default builder.prismaNode('Transaction', {
     cmd: t.field({
       complexity:
         COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
-      type: 'Cmd',
+      type: 'TransactionCommand',
       select: {
         senderAccount: true,
         chainId: true,

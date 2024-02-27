@@ -1,6 +1,6 @@
 import { builder } from '../builder';
 
-builder.objectType('ExecPayload', {
+builder.objectType('ExecutionPayload', {
   description: 'The payload of an exec transaction.',
   fields: (t) => ({
     code: t.exposeString('code', {
@@ -15,7 +15,7 @@ builder.objectType('ExecPayload', {
   }),
 });
 
-builder.objectType('ContPayload', {
+builder.objectType('ContinuationPayload', {
   description: 'The payload of an cont transaction.',
   fields: (t) => ({
     pactId: t.exposeString('pactId', {
@@ -44,9 +44,9 @@ builder.objectType('ContPayload', {
   }),
 });
 
-export default builder.unionType('Payload', {
+export default builder.unionType('TransactionPayload', {
   description: 'The payload of a transaction.',
-  types: ['ExecPayload', 'ContPayload'],
+  types: ['ExecutionPayload', 'ContinuationPayload'],
   resolveType(payload) {
     if ('pactId' in payload) {
       if (payload.pactId === null) {
