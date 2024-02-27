@@ -12,6 +12,7 @@ import UserLayout from '@/components/UserLayout/UserLayout';
 import { useAccount } from '@/hooks/account';
 import { useTokens } from '@/hooks/tokens';
 import { secondaryTextClass } from '@/styles/global.css';
+import { env } from '@/utils/env';
 import { MonoGroup, MonoLogout } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
@@ -27,6 +28,7 @@ const Page: FC = () => {
     router.push('/user/proof-of-us/new');
   };
 
+  console.log(env.NETWORKID);
   return (
     <UserLayout>
       <ScreenHeight>
