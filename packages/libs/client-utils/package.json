@@ -14,33 +14,33 @@
     "Nil Amrutlal <nil.amrutlal@deptagency.com>"
   ],
   "exports": {
+    ".": {
+      "nodejs": "./lib/index.js",
+      "default": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
     "./built-in": {
-      "require": "./lib/built-in/index.js",
-      "import": "./lib/built-in/index.js",
+      "/": "./lib/built-in/index.js",
       "default": "./lib/built-in/index.js",
       "types": "./lib/built-in/index.d.ts"
     },
     "./coin": {
-      "require": "./lib/coin/index.js",
-      "import": "./lib/coin/index.js",
+      "/": "./lib/coin/index.js",
       "default": "./lib/coin/index.js",
       "types": "./lib/coin/index.d.ts"
     },
     "./core": {
-      "require": "./lib/core/index.js",
-      "import": "./lib/core/index.js",
+      "/": "./lib/core/index.js",
       "default": "./lib/core/index.js",
       "types": "./lib/core/index.d.ts"
     },
     "./nodejs": {
-      "require": "./lib/nodejs/index.js",
-      "import": "./lib/nodejs/index.js",
+      "/": "./lib/nodejs/index.js",
       "default": "./lib/nodejs/index.js",
       "types": "./lib/nodejs/index.d.ts"
     },
     "./marmalade": {
-      "require": "./lib/marmalade/index.js",
-      "import": "./lib/marmalade/index.js",
+      "/": "./lib/marmalade/index.js",
       "default": "./lib/marmalade/index.js",
       "types": "./lib/marmalade/index.d.ts"
     }
