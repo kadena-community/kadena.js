@@ -33,13 +33,8 @@ function createKeySourceManager(): IKeySourceManager {
       }
     },
     reset() {
-<<<<<<< HEAD
       bip44?.disconnect();
       chainweaver?.disconnect();
-=======
-      createBIP44Service().disconnect();
-      createChainweaverService().disconnect();
->>>>>>> main
     },
   };
 }
