@@ -12,7 +12,7 @@ export const ticketClass = style([
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     backgroundSize: 'cover',
-    maskImage: "url('/assets/attendance-mask-large.png')",
+    maskImage: "url('/assets/attendance-mask-large.svg')",
     maskRepeat: 'no-repeat',
     maskSize: '100%',
   },

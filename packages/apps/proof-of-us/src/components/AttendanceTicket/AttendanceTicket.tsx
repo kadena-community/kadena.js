@@ -11,6 +11,7 @@ import {
   ticketClass,
   titleClass,
 } from './style.css';
+
 interface IProps {
   data: IProofOfUsTokenMeta;
 }
@@ -42,17 +43,18 @@ export const AttendanceTicket: FC<IProps> = ({ data }) => {
       >
         {data.name}
       </h4>
-
-      <Stack
-        flexDirection="column"
-        className={dateWrapperClass}
-        style={{ color: contrastColor, textShadow: `1px 1px 0px ${color}` }}
-      >
-        <h5 className={dateTitleClass}>Date</h5>
-        <span className={dateClass}>
-          {new Date(data.properties.date).toDateString()}
-        </span>
-      </Stack>
+      {data.properties.date && (
+        <Stack
+          flexDirection="column"
+          className={dateWrapperClass}
+          style={{ color: contrastColor, textShadow: `1px 1px 0px ${color}` }}
+        >
+          <h5 className={dateTitleClass}>Date</h5>
+          <span className={dateClass}>
+            {new Date(data.properties.date).toDateString()}
+          </span>
+        </Stack>
+      )}
     </motion.div>
   );
 };
