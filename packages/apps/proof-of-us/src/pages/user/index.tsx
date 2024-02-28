@@ -1,5 +1,4 @@
 'use client';
-import type { Token } from '@/__generated__/sdk';
 import { Button } from '@/components/Button/Button';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { List } from '@/components/List/List';
@@ -12,7 +11,6 @@ import UserLayout from '@/components/UserLayout/UserLayout';
 import { useAccount } from '@/hooks/account';
 import { useTokens } from '@/hooks/tokens';
 import { secondaryTextClass } from '@/styles/global.css';
-import { env } from '@/utils/env';
 import { MonoGroup, MonoLogout } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
@@ -20,7 +18,7 @@ import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 
 const Page: FC = () => {
-  const { tokens, isLoading, error } = useTokens();
+  const { tokens, isLoading } = useTokens();
   const router = useRouter();
   const { logout } = useAccount();
 
@@ -28,26 +26,23 @@ const Page: FC = () => {
     router.push('/user/proof-of-us/new');
   };
 
-  console.log(env.NETWORKID);
   return (
     <UserLayout>
       <ScreenHeight>
         {isLoading && <MainLoader />}
-        {error && <div>{error.message}</div>}
 
-        <Stack flexDirection="column" flex={1}>
-          <TitleHeader
-            label="Dashboard"
-            Append={() => (
-              <IconButton onClick={logout}>
-                <MonoLogout />
-              </IconButton>
-            )}
-          />
-          <Stack flex={1}>
-            {!isLoading &&
-              !error &&
-              (tokens.length === 0 ? (
+        {tokens && (
+          <Stack flexDirection="column" flex={1}>
+            <TitleHeader
+              label="Dashboard"
+              Append={() => (
+                <IconButton onClick={logout}>
+                  <MonoLogout />
+                </IconButton>
+              )}
+            />
+            <Stack flex={1}>
+              {tokens.length === 0 ? (
                 <Stack
                   flexDirection="column"
                   justifyContent="center"
@@ -83,27 +78,22 @@ const Page: FC = () => {
                   >
                     <Text bold>Proofs ({tokens.length})</Text>
                     <List>
-                      {[...tokens].map(
-                        (token: Token | IProofOfUsTokenMetaWithkey) => {
-                          if ('id' in token) {
-                            return <ListItem key={token.id} token={token} />;
-                          }
-
-                          return (
-                            <ListItem
-                              key={`${token.tokenId}${token.requestKey}`}
-                              proofOfUsData={token}
-                            />
-                          );
-                        },
-                      )}
+                      {tokens.map((token: IProofOfUsData) => {
+                        return (
+                          <ListItem
+                            key={`${token.proofOfUsId}`}
+                            proofOfUsData={token}
+                          />
+                        );
+                      })}
                     </List>
                   </Stack>
                   <Button onPress={handleNew}>Create Proof</Button>
                 </Stack>
-              ))}
+              )}
+            </Stack>
           </Stack>
-        </Stack>
+        )}
       </ScreenHeight>
     </UserLayout>
   );

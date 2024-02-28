@@ -5,12 +5,11 @@ import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
-import { useTokens } from '@/hooks/tokens';
 import { getReturnUrl } from '@/utils/getReturnUrl';
 import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 
@@ -29,12 +28,10 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     useClaimAttendanceToken();
   const router = useRouter();
 
-  const searchParams = useSearchParams();
   const { account, isMounted, login } = useAccount();
   const { doSubmit, isStatusLoading } = useSubmit();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   //TODO listen to minting addMintingData
-  const { addMintingData } = useTokens();
 
   // const checkHasClaimed = useCallback(
   //   async (eventId: string, accountName: string) => {
@@ -50,16 +47,16 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   // }, []);
 
   useEffect(() => {
-    const transaction = searchParams.get('transaction') ?? '';
-    if (!transaction) return;
-    const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
+    //const transaction = searchParams.get('transaction') ?? '';
+    // if (!transaction) return;
+    //const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
     //console.log({ transaction, tx });
-    const d = {
-      ...data,
-      requestKey: tx.hash,
-      mintStatus: 'init',
-    } as IProofOfUsTokenMetaWithkey;
-    addMintingData(d);
+    // const d = {
+    //   ...data,
+    //   requestKey: tx.hash,
+    //   mintStatus: 'init',
+    // } as IProofOfUsTokenMetaWithkey;
+    //addMintingData(d);
     doSubmit();
   }, []);
 

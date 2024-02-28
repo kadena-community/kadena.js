@@ -2,6 +2,12 @@ export const getSigneeAccount = (
   account: IAccount,
   proofOfUs?: IProofOfUsData,
 ): IProofOfUsSignee => {
+  console.log('signer', proofOfUs);
+
+  // const signees = Object.entries(proofOfUs?.signees ?? []).map(
+  //   ([key, value]) => value,
+  // );
+
   const signer = proofOfUs?.signees.find(
     (c) => c.accountName === account.accountName,
   );
