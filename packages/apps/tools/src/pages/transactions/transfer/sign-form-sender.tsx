@@ -17,11 +17,13 @@ import Link from 'next/link';
 import { AccountNameField } from '@/components/Global/AccountNameField';
 import { ChainSelect } from '@/components/Global/ChainSelect';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
 import useLedgerPublicKey, {
   derivationModes,
 } from '@/hooks/use-ledger-public-key';
+import type { ChainId } from '@kadena/types';
 import useTranslation from 'next-translate/useTranslation';
 import { Controller, useFormContext } from 'react-hook-form';
 import LedgerDetails from './ledger-details';
@@ -30,26 +32,25 @@ import { chainSelectContainerClass, notificationLinkStyle } from './styles.css';
 
 const accountFromOptions = ['Ledger', 'WalletConnect'] as const;
 
-export const SignFormSender = () => {
+export const SignFormSender = ({
+  onDataUpdate,
+  onKeyIdUpdate,
+  onDerivationUpdate,
+  onChainUpdate,
+}: {
+  onDataUpdate: (data: AccountDetails) => void;
+  onKeyIdUpdate: (keyId: number) => void;
+  onDerivationUpdate: (derivationMode: DerivationMode) => void;
+  onChainUpdate: (chainId: ChainId) => void;
+}) => {
   const { t } = useTranslation('common');
   const {
-    register,
     control,
     formState: { errors },
     getValues,
     watch,
     setValue,
   } = useFormContext<FormData>();
-
-  const [{ error: ledgerError, value: ledgerPublicKey }, getPublicKey] =
-    useLedgerPublicKey();
-
-  const [keyId, setKeyId] = useState<number>();
-
-  const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
-  const derivationMode: DerivationMode = legacyToggleOn
-    ? derivationModes[1]
-    : derivationModes[0];
 
   const { selectedNetwork: network } = useWalletConnectClient();
 
@@ -58,6 +59,12 @@ export const SignFormSender = () => {
     networkId: network,
     chainId: getValues('senderChainId'),
   });
+
+  useEffect(() => {
+    if (senderData.isSuccess) {
+      onDataUpdate(senderData.data);
+    }
+  }, [onDataUpdate, senderData.data, senderData.isSuccess]);
 
   const watchAmount = watch('amount');
 
@@ -68,11 +75,23 @@ export const SignFormSender = () => {
     ? `Cannot send more than ${senderData.data.balance.toFixed(4)} KDA.`
     : '';
 
+  const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
+
+  const [{ value: ledgerPublicKey }, getPublicKey] = useLedgerPublicKey();
+
   useEffect(() => {
     if (ledgerPublicKey) {
       setValue('sender', `k:${ledgerPublicKey}`);
     }
-  }, [ledgerPublicKey, legacyToggleOn, setValue]);
+  }, [ledgerPublicKey, setValue]);
+
+  const derivationMode: DerivationMode = legacyToggleOn
+    ? derivationModes[1]
+    : derivationModes[0];
+
+  useEffect(() => {
+    onDerivationUpdate(derivationMode);
+  }, [derivationMode, onDerivationUpdate]);
 
   return (
     <Card fullWidth>
@@ -106,7 +125,7 @@ export const SignFormSender = () => {
       >
         <LedgerDetails
           getPublicKey={getPublicKey}
-          setKeyId={setKeyId}
+          setKeyId={onKeyIdUpdate}
           legacyToggleOn={legacyToggleOn}
           setLegacyToggleOn={setLegacyToggleOn}
         />
@@ -151,7 +170,10 @@ export const SignFormSender = () => {
                   {...rest}
                   selectedKey={value}
                   id="senderChainId"
-                  onSelectionChange={(chainId) => onChange(chainId)}
+                  onSelectionChange={(chainId) => {
+                    onChange(chainId);
+                    onChainUpdate(chainId);
+                  }}
                   isInvalid={!!errors.senderChainId}
                   errorMessage={errors.senderChainId?.message}
                 />

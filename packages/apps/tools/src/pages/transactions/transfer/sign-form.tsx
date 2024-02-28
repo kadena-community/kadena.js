@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { Button, Stack, SystemIcon } from '@kadena/react-ui';
 
 import { NAME_VALIDATION } from '@/components/Global/AccountNameField';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
+import type { DerivationMode } from '@/hooks/use-ledger-public-key';
 import useLedgerPublicKey, {
   getDerivationPath,
 } from '@/hooks/use-ledger-public-key';
@@ -23,6 +24,10 @@ import { buttonContainerClass } from './styles.css';
 
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 
+import type { AccountDetails } from '@/hooks/use-account-details-query';
+import { stripAccountPrefix } from '@/utils/string';
+import type { ChainId } from '@kadena/types';
+import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { z } from 'zod';
 import { SignFormReceiver } from './sign-form-receiver';
 import { SignFormSender } from './sign-form-sender';
@@ -37,7 +42,15 @@ const schema = z.object({
 
 export type FormData = z.infer<typeof schema>;
 
-export const SignForm = () => {
+export const SignForm = ({
+  onSuccess,
+  onSenderChainUpdate,
+  onReceiverChainUpdate,
+}: {
+  onSuccess: (pactCommandObject: PactCommandObject) => void;
+  onSenderChainUpdate: (chainId: ChainId) => void;
+  onReceiverChainUpdate: (chainId: ChainId) => void;
+}) => {
   const { t } = useTranslation('common');
 
   const [ledgerSignState, signTx] = useLedgerSign();
@@ -49,20 +62,48 @@ export const SignForm = () => {
 
   const { selectedNetwork: network } = useWalletConnectClient();
 
-  const [{ value: ledgerPublicKey }] = useLedgerPublicKey();
-
   const watchChains = methods.watch(['senderChainId', 'receiverChainId']);
   const onSameChain = watchChains.every((chain) => chain === watchChains[0]);
+
+  const senderDataRef = useRef<AccountDetails>();
+  const onSenderDataUpdate = (data: AccountDetails) => {
+    senderDataRef.current = data;
+  };
+
+  const receiverDataRef = useRef<AccountDetails>();
+  const onReceiverDataUpdate = (data: AccountDetails) => {
+    receiverDataRef.current = data;
+  };
+
+  const pubKeys = useRef<string[]>([]);
+  const onPubKeysUpdate = (keys: string[]) => {
+    pubKeys.current = keys;
+  };
+
+  const pred = useRef<PredKey>();
+  const onPredicateUpdate = (predicate: PredKey) => {
+    pred.current = predicate;
+  };
+
+  const keyId = useRef<number>();
+  const onKeyIdUpdate = (id: number) => {
+    keyId.current = id;
+  };
+
+  const derivationMode = useRef<DerivationMode>();
+  const onDerivationUpdate = (mode: DerivationMode) => {
+    derivationMode.current = mode;
+  };
 
   const handleSignTransaction = async (data: FormData) => {
     let transferInput: TransferInput;
 
     transferInput = {
       sender: {
-        account: senderData.data?.account ?? '',
-        publicKeys: ledgerPublicKey ? [ledgerPublicKey] : [],
+        account: senderDataRef.current?.account ?? '',
+        publicKeys: [stripAccountPrefix(data.sender)],
       },
-      receiver: receiverData.data?.account ?? '',
+      receiver: receiverDataRef.current?.account ?? '',
       chainId: data.senderChainId,
       amount: String(data.amount),
     };
@@ -73,31 +114,39 @@ export const SignForm = () => {
         receiver: {
           account: transferInput.receiver || data.receiver,
           keyset: {
-            keys: receiverData.data?.guard.keys || pubKeys,
-            pred: (receiverData.data?.guard.pred as PredKey) || pred,
+            keys: receiverDataRef.current?.guard.keys || pubKeys.current,
+            pred:
+              (receiverDataRef.current?.guard.pred as PredKey) || pred.current!,
           },
         },
         targetChainId: data.receiverChainId,
       };
       transferInput = xChainTransferInput;
-    } else if (toAccountTab === 'new') {
+    } else if (!receiverDataRef.current) {
       const createTransferInput: ICreateTransferInput = {
         ...transferInput,
         receiver: {
           account: data.receiver,
           keyset: {
-            keys: pubKeys,
-            pred: pred,
+            keys: pubKeys.current,
+            pred: pred.current!,
           },
         },
       };
       transferInput = createTransferInput;
     }
 
-    await signTx(transferInput, {
+    const { isSigned, pactCommand } = await signTx(transferInput, {
       networkId: network,
-      derivationPath: getDerivationPath(keyId!, derivationMode),
+      derivationPath: getDerivationPath(
+        keyId.current!,
+        derivationMode.current!,
+      ),
     });
+
+    if (isSigned) {
+      onSuccess(pactCommand);
+    }
   };
 
   return (
@@ -105,10 +154,20 @@ export const SignForm = () => {
       <form onSubmit={methods.handleSubmit(handleSignTransaction)}>
         <Stack flexDirection="column" gap="lg">
           {/* SENDER  FLOW */}
-          <SignFormSender />
+          <SignFormSender
+            onDataUpdate={onSenderDataUpdate}
+            onKeyIdUpdate={onKeyIdUpdate}
+            onDerivationUpdate={onDerivationUpdate}
+            onChainUpdate={onSenderChainUpdate}
+          />
 
           {/* RECEIVER FLOW */}
-          <SignFormReceiver />
+          <SignFormReceiver
+            onDataUpdate={onReceiverDataUpdate}
+            onPubKeysUpdate={onPubKeysUpdate}
+            onPredicateUpdate={onPredicateUpdate}
+            onChainUpdate={onReceiverChainUpdate}
+          />
 
           {ledgerSignState.error && (
             <FormStatusNotification
@@ -119,7 +178,8 @@ export const SignForm = () => {
 
           <div className={buttonContainerClass}>
             <Button
-              isLoading={receiverData.isFetching || ledgerSignState.loading}
+              // isLoading={receiverData.isFetching || ledgerSignState.loading}
+              isLoading={ledgerSignState.loading}
               // isDisabled={isSubmitting}
               endIcon={<SystemIcon.TrailingIcon />}
               title={t('Sign')}

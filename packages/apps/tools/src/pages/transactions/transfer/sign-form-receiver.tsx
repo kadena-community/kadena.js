@@ -20,6 +20,7 @@ import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
 import { chainSelectContainerClass } from './styles.css';
 
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 import { stripAccountPrefix } from '@/utils/string';
 import { useQuery } from '@tanstack/react-query';
@@ -27,8 +28,19 @@ import useTranslation from 'next-translate/useTranslation';
 import type { FormData } from './sign-form';
 
 import { createPrincipal } from '@/services/faucet/create-principal';
+import type { ChainId } from '@kadena/types';
 
-export const SignFormReceiver = () => {
+export const SignFormReceiver = ({
+  onDataUpdate,
+  onPubKeysUpdate,
+  onPredicateUpdate,
+  onChainUpdate,
+}: {
+  onDataUpdate: (data: AccountDetails) => void;
+  onPubKeysUpdate: (pubKeys: string[]) => void;
+  onPredicateUpdate: (pred: PredKey) => void;
+  onChainUpdate: (chainId: ChainId) => void;
+}) => {
   const { t } = useTranslation('common');
 
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
@@ -46,6 +58,12 @@ export const SignFormReceiver = () => {
     networkId: network,
     chainId: getValues('receiverChainId'),
   });
+
+  useEffect(() => {
+    if (receiverData.isSuccess) {
+      onDataUpdate(receiverData.data);
+    }
+  }, [onDataUpdate, receiverData.data, receiverData.isSuccess]);
 
   const renderAccountFieldWithChain = (tab: string) => (
     <Stack flexDirection={'column'} gap={'md'}>
@@ -84,7 +102,10 @@ export const SignFormReceiver = () => {
               {...rest}
               selectedKey={value}
               id="receiverChainId"
-              onSelectionChange={(chainId) => onChange(chainId)}
+              onSelectionChange={(chainId) => {
+                onChange(chainId);
+                onChainUpdate(chainId);
+              }}
               isInvalid={!!errors.receiverChainId}
               errorMessage={errors.receiverChainId?.message}
             />
@@ -175,12 +196,18 @@ export const SignFormReceiver = () => {
             <AddPublicKeysSection
               publicKeys={pubKeys}
               deletePubKey={deletePublicKey}
-              setPublicKeys={setPubKeys}
+              setPublicKeys={(keys) => {
+                setPubKeys(keys);
+                onPubKeysUpdate(keys);
+              }}
               initialPublicKey={initialPublicKey}
             />
             {pubKeys.length > 1 ? (
               <PredKeysSelect
-                onSelectionChange={onPredSelectChange}
+                onSelectionChange={(pred) => {
+                  onPredSelectChange(pred);
+                  onPredicateUpdate(pred);
+                }}
                 selectedKey={pred}
                 aria-label="Select Predicate"
               />
