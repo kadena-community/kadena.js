@@ -33,7 +33,7 @@ export function sign(
             )
             .filter((index) => index !== undefined) as number[];
 
-          const service = await keySourceManager.get(source);
+          const service = keySourceManager.get(source);
 
           if (!service.isConnected()) {
             // call onConnect to connect to the keySource;
@@ -96,7 +96,7 @@ export const unlockProfile = async (profileId: string, password: string) => {
 };
 
 export async function createKey(keySource: IKeySource) {
-  const service = await keySourceManager.get(keySource.source);
+  const service = keySourceManager.get(keySource.source);
   const key = await service.createKey(keySource.uuid);
   return key;
 }
