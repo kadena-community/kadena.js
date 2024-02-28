@@ -12,6 +12,7 @@ import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 
+import { CHAINS } from '@kadena/chainweb-node-client';
 import type { ChainId } from '@kadena/types';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { useRouter } from 'next/router';
@@ -33,8 +34,8 @@ const TransferPage = () => {
     setData(pactCommandObject);
   }, []);
 
-  const [receiverChainId, setReceiverChainId] = useState<ChainId>();
-  const [senderChainId, setSenderChainId] = useState<ChainId>();
+  const [receiverChainId, setReceiverChainId] = useState<ChainId>(CHAINS[0]);
+  const [senderChainId, setSenderChainId] = useState<ChainId>(CHAINS[0]);
 
   return (
     <section className={containerClass}>

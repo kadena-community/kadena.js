@@ -25,8 +25,8 @@ import { buttonContainerClass } from './styles.css';
 
 interface ISubmitTransactionProps {
   data: PactCommandObject | null;
-  senderChainId?: ChainId;
-  receiverChainId?: ChainId;
+  senderChainId: ChainId;
+  receiverChainId: ChainId;
 }
 
 export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
@@ -55,7 +55,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
   const onSubmit = async () => {
     const submitResponse = (await submitTx(
       [data],
-      senderChainId!,
+      senderChainId,
       network,
       networksData,
     )) as ITransactionDescriptor[];
@@ -68,7 +68,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
     }
 
     const pollResponse = (await pollResult(
-      senderChainId!,
+      senderChainId,
       network,
       networksData,
       submitResponse[0],
@@ -91,7 +91,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
 
       const apiHost = getApiHost({
         api: networkData.API,
-        chainId: senderChainId!,
+        chainId: senderChainId,
         networkId: network,
       });
       const { pollCreateSpv, listen } = client(apiHost);
@@ -99,10 +99,10 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
       const requestObject = {
         requestKey: submitResponse[0].requestKey,
         networkId: network,
-        chainId: senderChainId!,
+        chainId: senderChainId,
       };
 
-      const proof = await pollCreateSpv(requestObject, receiverChainId!);
+      const proof = await pollCreateSpv(requestObject, receiverChainId);
 
       const status = await listen(requestObject);
       const pactId = status.continuation?.pactId ?? '';
@@ -114,7 +114,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
           rollback: false,
           step: 1,
         },
-        receiverChainId!,
+        receiverChainId,
         network,
         networksData,
         850,
@@ -132,13 +132,13 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
 
       try {
         const pollResponseTarget = await listenResult(
-          receiverChainId!,
+          receiverChainId,
           network,
           networksData,
           {
             requestKey: requestKeyOrError,
             networkId: network,
-            chainId: receiverChainId!,
+            chainId: receiverChainId,
           },
         );
 
