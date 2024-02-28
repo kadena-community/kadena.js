@@ -9,7 +9,7 @@ import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import { writeDevnet } from '../devnet/utils/devnetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
-import { CommandError } from './command.util.js';
+import { CommandError, printCommandError } from './command.util.js';
 import { log } from './logger.js';
 
 /**
@@ -80,7 +80,9 @@ export interface IQuestion<T> {
 }
 
 export function handlePromptError(error: unknown): never {
-  if (error instanceof Error) {
+  if (error instanceof CommandError) {
+    printCommandError(error);
+  } else if (error instanceof Error) {
     if (error.message.includes('User force closed the prompt')) {
       // Usually NEVER process.exit, this one is an exception since it us the uses's intention
       process.exit(0);

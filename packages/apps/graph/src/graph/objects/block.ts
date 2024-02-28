@@ -1,5 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Block } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -10,11 +11,10 @@ import type { Guard } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
 import FungibleChainAccount from './fungible-chain-account';
 
-export default builder.prismaNode('Block', {
+export default builder.prismaNode(Prisma.ModelName.Block, {
   description:
     'A unit of information that stores a set of verified transactions.',
   id: { field: 'hash' },
-  name: 'Block',
   select: {},
   fields: (t) => ({
     // database fields
@@ -66,7 +66,7 @@ export default builder.prismaNode('Block', {
 
     // computed fields
     parent: t.prismaField({
-      type: 'Block',
+      type: Prisma.ModelName.Block,
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
@@ -88,7 +88,7 @@ export default builder.prismaNode('Block', {
 
     // relations
     transactions: t.prismaConnection({
-      type: 'Transaction',
+      type: Prisma.ModelName.Transaction,
       cursor: 'blockHash_requestKey',
       edgesNullable: false,
       complexity: (args) => ({
@@ -129,7 +129,7 @@ export default builder.prismaNode('Block', {
     }),
 
     events: t.prismaConnection({
-      type: 'Event',
+      type: Prisma.ModelName.Event,
       cursor: 'blockHash_orderIndex_requestKey',
       edgesNullable: false,
       complexity: (args) => ({

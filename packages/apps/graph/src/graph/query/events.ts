@@ -1,8 +1,10 @@
 import { prismaClient } from '@db/prisma-client';
+import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import { builder } from '../builder';
+import Event from '../objects/event';
 
 builder.queryField('event', (t) =>
   t.prismaField({
@@ -13,7 +15,7 @@ builder.queryField('event', (t) =>
       orderIndex: t.arg.int({ required: true }),
       requestKey: t.arg.string({ required: true }),
     },
-    type: 'Event',
+    type: Event,
     complexity: getDefaultConnectionComplexity(),
     async resolve(query, __parent, args) {
       try {
@@ -43,7 +45,7 @@ builder.queryField('events', (t) =>
       chainId: t.arg.string(),
       parametersFilter: t.arg.string(),
     },
-    type: 'Event',
+    type: Prisma.ModelName.Event,
     cursor: 'blockHash_orderIndex_requestKey',
     complexity: (args) => ({
       field: getDefaultConnectionComplexity({

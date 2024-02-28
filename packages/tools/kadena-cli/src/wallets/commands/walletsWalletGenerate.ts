@@ -48,7 +48,7 @@ async function generateKey(
 export const generateWallet = async (
   walletName: string,
   password: string,
-  legacy: boolean,
+  legacy = false,
 ): Promise<
   CommandResult<{
     mnemonic: string;

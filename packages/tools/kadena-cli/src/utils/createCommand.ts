@@ -31,12 +31,15 @@ export async function executeOption<Option extends OptionType>(
   Prettify<{
     value: unknown;
     config: OptionConfig<Option>;
+    prompted: boolean;
   }>
 > {
   let value = args[option.key];
+  let prompted = false;
 
   if (value === undefined && option.isInQuestions) {
     if (args.quiet !== true && args.quiet !== 'true') {
+      prompted = true;
       value = await (option.prompt as PromptFn)(args, originalArgs);
     } else if (option.isOptional === false) {
       // Should have been handled earlier, but just in case
@@ -73,6 +76,7 @@ export async function executeOption<Option extends OptionType>(
   return {
     value: value,
     config: newConfig,
+    prompted,
   };
 }
 
@@ -91,8 +95,8 @@ const printCommandExecution = (
   }
 
   log.info(
-    log.color.yellow(
-      `\nExecuted: ${getCommandExecution(command, args, values)}`,
+    log.color.gray(
+      `\nExecuted:\n${getCommandExecution(command, args, values)}`,
     ),
   );
 };
@@ -156,6 +160,7 @@ export const createCommand =
       // args outside try-catch to be able to use it in catch
       let args = { ...originalArgs };
       const values = rest.flatMap((r) => r.args);
+      let prompted = false;
 
       try {
         const stdin = await readStdin();
@@ -173,7 +178,11 @@ export const createCommand =
         const collectOptionsMap = options.reduce((acc, option, index) => {
           acc[option.key] = async (customArgs = {}) => {
             try {
-              const { value, config } = await executeOption(
+              const {
+                value,
+                config,
+                prompted: _prompted,
+              } = await executeOption(
                 option,
                 {
                   ...args,
@@ -184,6 +193,7 @@ export const createCommand =
 
               // Keep track of previous args to prompts can use them
               args = { ...args, [option.key]: value };
+              prompted = prompted || _prompted;
               return config;
             } catch (error) {
               handlePromptError(error);
@@ -215,21 +225,25 @@ export const createCommand =
           },
         });
 
-        printCommandExecution(
-          `${program.name()} ${name}`,
-          args,
-          result ?? undefined,
-          values,
-        );
-      } catch (error) {
-        if (error instanceof CommandError) {
-          printCommandError(error);
+        if (prompted) {
           printCommandExecution(
             `${program.name()} ${name}`,
             args,
-            error.args,
+            result ?? undefined,
             values,
           );
+        }
+      } catch (error) {
+        if (error instanceof CommandError) {
+          printCommandError(error);
+          if (prompted) {
+            printCommandExecution(
+              `${program.name()} ${name}`,
+              args,
+              error.args,
+              values,
+            );
+          }
           process.exitCode = error.exitCode;
           return;
         }
