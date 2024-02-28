@@ -2,7 +2,7 @@ import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSubmit } from '@/hooks/submit';
-import { MonoAccessTimeFilled, MonoClose } from '@kadena/react-icons';
+import { MonoClose } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { IconButton } from '../IconButton/IconButton';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { ErrorStatus } from '../Status/ErrorStatus';
+import { LoadingStatus } from '../Status/LoadingStatus';
 import { SuccessStatus } from '../Status/SuccessStatus';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 
@@ -69,9 +70,7 @@ export const MintView: FC<IProps> = () => {
 
         {isStatusLoading && (
           <>
-            <Stack justifyContent="center" paddingBlock="xxxl">
-              <MonoAccessTimeFilled fontSize="8rem" />
-            </Stack>
+            <LoadingStatus />
             <ListSignees />
             <Stack flex={1} />
           </>

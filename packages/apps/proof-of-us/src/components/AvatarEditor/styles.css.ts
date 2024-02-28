@@ -1,3 +1,4 @@
+import { customTokens } from '@/styles/tokens.css';
 import { style } from '@vanilla-extract/css';
 
 export const wrapperClass = style([{}]);
@@ -20,22 +21,41 @@ export const cameraButton = style({
   zIndex: 1,
   bottom: '15vh',
   borderRadius: '50%',
-  border: 0,
-  width: '48px',
-  aspectRatio: '1/1',
   cursor: 'pointer',
-  backgroundColor: '#42CEA0',
   transform: 'translateX(-50%)',
   left: '50%',
+  border: '4px solid rgba(66, 206, 160, 0.5)',
+  width: '73px',
+  height: '73px',
+  backgroundColor: 'transparent',
 
-  ':before': {
+  '::before': {
     position: 'absolute',
     content: '',
-    border: '4px solid rgba(66, 206, 160, 0.5)',
     borderRadius: '50%',
-    width: '73px',
-    height: '73px',
+    width: '48px',
+    height: '48px',
+    backgroundColor: customTokens.color.accent,
     transform: 'translate(-50%, -50%)',
+    left: '50%',
+    top: '50%',
+    transition: 'all 0.2s',
+  },
+
+  selectors: {
+    '&:active::before': {
+      backgroundColor: '#38af8a',
+      width: '45px',
+      height: '45px',
+    },
+
+    '&:hover::before': {
+      backgroundColor: '#38af8a',
+    },
+
+    '&:focus::before': {
+      backgroundColor: '#38af8a',
+    },
   },
 });
 

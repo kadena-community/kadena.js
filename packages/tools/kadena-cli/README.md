@@ -423,6 +423,7 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 | name-to-address | Resolve a .kda name to a k:address (kadenanames) |                   |
 | address-to-name | Resolve a k:address to a .kda name (kadenanames) |                   |
 | list            | List available account(s)                        |                   |
+| delete          | Delete existing account(s)                       |                   |
 
 ---
 
@@ -521,7 +522,7 @@ kadena account fund [arguments]
 example:
 
 ```
-kadena account fund --account="myalias.yaml" --amount="10" --network="testnet" --chain-id="1"
+kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="1"
 ```
 
 ---
@@ -568,7 +569,7 @@ kadena account list [arguments]
 | ----------------------- | ------------------------------- |
 | --account-alias         | Provide the name of the account |
 
-example for listing specific accpimt:
+example for listing specific account:
 
 ```
 kadena account list --account-alias="accountAlias"
@@ -581,6 +582,27 @@ kadena account list --account-alias="all"
 ```
 
 ---
+
+```
+kadena account delete [arguments]
+```
+
+| **Arguments & Options** | ** Description**                |
+| ----------------------- | ------------------------------- |
+| --account-alias         | Provide the name of the account |
+| --confirm               | Confirm deletion of account     |
+
+example for delete a specific account:
+
+```
+kadena account delete --account-alias="accountAlias" --confirm
+```
+
+example for delete all accounts:
+
+```
+kadena account delete --account-alias="all" --confirm
+```
 
 ## kadena tx
 
