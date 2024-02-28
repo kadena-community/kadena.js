@@ -12,7 +12,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "pactjs:generate:contract": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact",
+    "pactjs:generate:contract": "pactjs contract-generate --contract coin --api hhttps://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact",
     "test": "echo 'No test required'",
     "test:integration": "vitest run -w"
   },
