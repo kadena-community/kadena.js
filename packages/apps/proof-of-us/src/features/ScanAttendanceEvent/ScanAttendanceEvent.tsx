@@ -55,7 +55,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const handleClaim = async () => {
     const transaction = await claim(eventId);
 
-    console.log({ transaction });
+    console.log({ data, transaction });
 
     //const d = { ...data, requestKey: transaction?.hash };
     //addMintingData(d);

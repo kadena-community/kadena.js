@@ -96,6 +96,12 @@ interface IProofOfUsTokenMeta {
   };
 }
 
+interface IProofOfUsTokenMetaWithkey extends IProofOfUsTokenMeta {
+  requestKey: string;
+  tokenId: string;
+  mintStatus: 'success' | 'init' | undefined;
+}
+
 interface IProofOfUs {
   background: IProofOfUsBackground;
   data: IProofOfUsData;

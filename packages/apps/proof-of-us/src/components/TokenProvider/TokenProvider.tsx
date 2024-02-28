@@ -7,8 +7,8 @@ import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
 
 export interface ITokenContext {
-  addMintingData: (proofOfUs: IProofOfUsData) => void;
-  tokens: (IProofOfUsData | Token)[];
+  addMintingData: (proofOfUs: IProofOfUsTokenMetaWithkey) => void;
+  tokens: (IProofOfUsTokenMetaWithkey | Token)[];
   isLoading: boolean;
   error?: IError;
 }
@@ -23,10 +23,12 @@ const kadenaClient = getClient();
 
 export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data, isLoading, error } = useGetAllProofOfUs();
-  const [mintingTokens, setMintingTokens] = useState<IProofOfUsData[]>(
-    getMintingTokensFromLocalStorage(),
-  );
-  const [successMints, setSuccessMints] = useState<IProofOfUsData[]>([]);
+  const [mintingTokens, setMintingTokens] = useState<
+    IProofOfUsTokenMetaWithkey[]
+  >(getMintingTokensFromLocalStorage());
+  const [successMints, setSuccessMints] = useState<
+    IProofOfUsTokenMetaWithkey[]
+  >([]);
 
   useEffect(() => {
     const rawMintingTokensData = JSON.stringify(
@@ -48,7 +50,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     };
   }, []);
 
-  async function listenForMinting(data: IProofOfUsData) {
+  async function listenForMinting(data: IProofOfUsTokenMetaWithkey) {
     try {
       const result = (
         await kadenaClient.pollStatus({
@@ -75,7 +77,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     setMintingTokens(newTokens);
   }
 
-  function getMintingTokensFromLocalStorage(): IProofOfUsData[] {
+  function getMintingTokensFromLocalStorage(): IProofOfUsTokenMetaWithkey[] {
     if (typeof window === 'undefined') {
       return [];
     }
@@ -84,7 +86,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const mintingTokensData = JSON.parse(
       rawMintingTokensData,
-    ) as IProofOfUsData[];
+    ) as IProofOfUsTokenMetaWithkey[];
     mintingTokensData.forEach((data) => {
       listenForMinting(data);
     });
@@ -92,27 +94,31 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     return mintingTokensData;
   }
 
-  const isDataAlreadyLocal = (proofOfUs: IProofOfUsData): boolean => {
+  const isDataAlreadyLocal = (
+    proofOfUs: IProofOfUsTokenMetaWithkey,
+  ): boolean => {
     return !!mintingTokens.find(
-      (data) => data.proofOfUsId === proofOfUs.proofOfUsId,
+      (data) => data.requestKey === proofOfUs.requestKey,
     );
   };
 
-  const addMintingData = (proofOfUs: IProofOfUsData) => {
+  const addMintingData = (proofOfUs: IProofOfUsTokenMetaWithkey) => {
     if (
       (!proofOfUs.tokenId && !proofOfUs.requestKey) ||
       isDataAlreadyLocal(proofOfUs)
     )
       return;
-    setMintingTokens((v) => [...v, proofOfUs]);
+    setMintingTokens((v) => [...v, { ...proofOfUs, mintStatus: 'init' }]);
   };
 
-  function filterDoubles(tokens: IProofOfUsData[]): IProofOfUsData[] {
+  function filterDoubles(
+    tokens: IProofOfUsTokenMetaWithkey[],
+  ): IProofOfUsTokenMetaWithkey[] {
     const newArray = [];
-    const uniqueObject: Record<string, IProofOfUsData> = {};
+    const uniqueObject: Record<string, IProofOfUsTokenMetaWithkey> = {};
 
     for (const token of tokens) {
-      const id = token.proofOfUsId;
+      const id = token.requestKey;
       uniqueObject[id] = token;
     }
     // eslint-disable-next-line guard-for-in

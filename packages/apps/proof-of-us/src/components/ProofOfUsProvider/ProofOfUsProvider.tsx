@@ -1,6 +1,7 @@
 'use client';
 import { useAccount } from '@/hooks/account';
 import { useTokens } from '@/hooks/tokens';
+import { createManifest } from '@/utils/createManifest';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { store } from '@/utils/socket/store';
@@ -68,9 +69,15 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   });
 
   const listenToProofOfUsData = useCallback(
-    (data: IProofOfUsData | undefined) => {
+    async (data: IProofOfUsData | undefined) => {
       if (data?.tokenId && data.requestKey) {
-        addMintingData(data);
+        const manifest = await createManifest(data, data.imageUri);
+        addMintingData({
+          ...manifest,
+          tokenId: data?.tokenId,
+          requestKey: data.requestKey,
+          mintStatus: 'init',
+        });
       }
       setProofOfUs(data);
     },

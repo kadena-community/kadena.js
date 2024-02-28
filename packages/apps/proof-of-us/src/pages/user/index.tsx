@@ -83,18 +83,20 @@ const Page: FC = () => {
                   >
                     <Text bold>Proofs ({tokens.length})</Text>
                     <List>
-                      {[...tokens].map((token: Token | IProofOfUsData) => {
-                        if ('id' in token) {
-                          return <ListItem key={token.id} token={token} />;
-                        }
+                      {[...tokens].map(
+                        (token: Token | IProofOfUsTokenMetaWithkey) => {
+                          if ('id' in token) {
+                            return <ListItem key={token.id} token={token} />;
+                          }
 
-                        return (
-                          <ListItem
-                            key={token.proofOfUsId}
-                            proofOfUsData={token}
-                          />
-                        );
-                      })}
+                          return (
+                            <ListItem
+                              key={`${token.tokenId}${token.requestKey}`}
+                              proofOfUsData={token}
+                            />
+                          );
+                        },
+                      )}
                     </List>
                   </Stack>
                   <Button onPress={handleNew}>Create Proof</Button>

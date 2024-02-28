@@ -1,6 +1,5 @@
 'use client';
 import type { Token } from '@/__generated__/sdk';
-import { createManifest } from '@/utils/createManifest';
 import { fetchManifestData } from '@/utils/fetchManifestData';
 import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';
@@ -16,7 +15,7 @@ import { listItemClass, listItemLinkClass } from './style.css';
 
 interface IProps {
   token?: Token;
-  proofOfUsData?: IProofOfUsData;
+  proofOfUsData?: IProofOfUsTokenMetaWithkey;
 }
 
 export const ListItem: FC<IProps> = ({ token, proofOfUsData }) => {
@@ -36,14 +35,10 @@ export const ListItem: FC<IProps> = ({ token, proofOfUsData }) => {
   const loadData = useCallback(
     async (
       data: IProofOfUsTokenMeta | undefined,
-      proofOfUsData: IProofOfUsData | undefined,
+      proofOfUsData: IProofOfUsTokenMeta | undefined,
     ) => {
       if (proofOfUsData && 'signees' in proofOfUsData) {
-        const manifestData = await createManifest(
-          proofOfUsData,
-          proofOfUsData?.imageUri,
-        );
-        setInnerData(manifestData);
+        setInnerData(proofOfUsData);
       } else {
         setInnerData(data);
       }
