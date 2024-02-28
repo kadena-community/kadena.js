@@ -1,4 +1,5 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
+import { idToColor } from '@/utils/id-to-color';
 import { Box, Heading, Stack, SystemIcon, Text } from '@kadena/react-ui';
 import { Link } from 'react-router-dom';
 import InitialsAvatar from './initials';
@@ -64,21 +65,4 @@ export function SelectProfile() {
       </Box>
     </main>
   );
-}
-
-function idToColor(id: string) {
-  let hash = 0;
-  // Process every other character to reduce iterations
-  for (let i = 0; i < id.length; i += 2) {
-    hash = id.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  // Convert the hash to a 6 digit hexadecimal color
-  let color = '#';
-  for (let i = 0; i < 3; i++) {
-    const value = (hash >> (i * 8)) & 0xff;
-    color += ('00' + value.toString(16)).substr(-2);
-  }
-
-  return color;
 }
