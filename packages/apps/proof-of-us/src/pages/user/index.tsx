@@ -11,7 +11,7 @@ import UserLayout from '@/components/UserLayout/UserLayout';
 import { useAccount } from '@/hooks/account';
 import { useTokens } from '@/hooks/tokens';
 import { secondaryTextClass } from '@/styles/global.css';
-import { MonoGroup, MonoLogout } from '@kadena/react-icons';
+import { MonoGroup, MonoLogout, MonoMilitaryTech } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -36,9 +36,14 @@ const Page: FC = () => {
             <TitleHeader
               label="Dashboard"
               Append={() => (
-                <IconButton onClick={logout}>
-                  <MonoLogout />
-                </IconButton>
+                <>
+                  <Link href="/leaderboard">
+                    <MonoMilitaryTech />
+                  </Link>
+                  <IconButton onClick={logout}>
+                    <MonoLogout />
+                  </IconButton>
+                </>
               )}
             />
             <Stack flex={1} width="100%">

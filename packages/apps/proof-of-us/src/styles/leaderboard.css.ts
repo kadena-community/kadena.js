@@ -1,6 +1,7 @@
 import { customTokens } from '@/styles/tokens.css';
 import { style } from '@vanilla-extract/css';
 
+export const winnerListClass = style({});
 export const listItemClass = style({
   display: 'flex',
   counterIncrement: 'leaderboard',
@@ -16,18 +17,19 @@ export const listItemClass = style({
   marginRight: '-20px',
 
   ':before': {
-    position: 'relative',
+    position: 'absolute',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
     fontFamily: 'Kode Mono',
-    height: '40px',
-    width: '40px',
+    height: '32px',
+    width: '32px',
     content: 'counter(leaderboard)',
     fontSize: '20px',
     fontWeight: '700',
-    top: '0',
-    left: '-30px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    left: '15px',
     backgroundColor: '#FFFFFF',
     color: '#000000',
     borderRadius: '50%',
@@ -37,10 +39,26 @@ export const listItemClass = style({
 export const winnerClass = style({
   paddingLeft: '34px',
   ':before': {
-    background: 'url(/assets/winner.svg)',
+    background: 'url(/assets/winner3.svg)',
     backgroundSize: 'contain',
+    height: '45px',
+    width: '45px',
+    left: '8px',
+  },
+});
+
+export const firstPlaceClass = style({
+  ':before': {
+    background: 'url(/assets/winner1.svg)',
     height: '54px',
     width: '54px',
+    left: '3px',
+  },
+});
+
+export const secondPlaceClass = style({
+  ':before': {
+    background: 'url(/assets/winner2.svg)',
   },
 });
 
@@ -53,18 +71,17 @@ export const amountClass = style({
 
   selectors: {
     [`${winnerClass} &`]: {
+      color: '#FFD600',
+    },
+    [`${firstPlaceClass} &`]: {
       fontSize: '20px',
     },
   },
 });
 
 export const itemsContainerClass = style({
-  width: 'calc(100% - 40px)',
-  selectors: {
-    [`${winnerClass} &`]: {
-      width: 'calc(100% - 54px)',
-    },
-  },
+  width: '100%',
+  paddingLeft: '35px',
 });
 
 export const sectionTitleClass = style({
