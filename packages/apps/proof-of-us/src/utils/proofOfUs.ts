@@ -1,6 +1,7 @@
 import type { IUnsignedCommand } from '@kadena/client';
-import { Pact, createClient } from '@kadena/client';
+import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
+import { getClient } from './client';
 import { proofOfUsData } from './data';
 import { env } from './env';
 
@@ -11,7 +12,7 @@ export const getAllProofOfUs = async (): Promise<IProofOfUsToken[]> => {
 export const getProofOfUs = async (
   id: string,
 ): Promise<IProofOfUsToken | undefined> => {
-  const client = createClient();
+  const client = getClient();
 
   const transaction = Pact.builder
     .execution(
@@ -35,12 +36,11 @@ export const getProofOfUs = async (
     ? (result.data as IProofOfUsToken)
     : undefined;
 };
-
 export const getTokenId = async (
   eventId: string,
   uri: string,
 ): Promise<string | undefined> => {
-  const client = createClient();
+  const client = getClient();
 
   const transaction = Pact.builder
     .execution(
@@ -57,11 +57,12 @@ export const getTokenId = async (
     preflight: false,
     signatureVerification: false,
   });
+
   return result.status === 'success' ? (result.data as string) : undefined;
 };
 
 export const getTokenInfo = async (id: string): Promise<string | undefined> => {
-  const client = createClient();
+  const client = getClient();
 
   const transaction = Pact.builder
     .execution(
@@ -83,7 +84,7 @@ export const getTokenInfo = async (id: string): Promise<string | undefined> => {
 };
 
 export const getTokenUri = async (id: string): Promise<string | undefined> => {
-  const client = createClient();
+  const client = getClient();
 
   const transaction = Pact.builder
     .execution(
@@ -172,7 +173,7 @@ export const hasMintedAttendaceToken = async (
     })
     .createTransaction();
 
-  const client = createClient();
+  const client = getClient();
 
   const { result } = await client.local(transaction, {
     preflight: false,
@@ -229,6 +230,7 @@ export const createConnectTokenTransaction = async (
       senderAccount: 'proof-of-us-gas-station',
       gasPrice: 0.000001,
       gasLimit: 10000,
+      ttl: 30000,
     });
 
   proofOfUs.signees.forEach((signee, idx) => {
@@ -272,9 +274,6 @@ export const createConnectTokenTransaction = async (
   });
 
   const transaction = transactionBuilder.createTransaction();
-
-  console.log(env.CHAINID, env.NETWORKID);
-  console.log({ transaction });
 
   return transaction;
 };

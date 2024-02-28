@@ -1,5 +1,5 @@
+import { getClient } from '@/utils/client';
 import { env } from '@/utils/env';
-import { createClient } from '@kadena/client';
 import { useState } from 'react';
 import { SubmitStatus } from './submit';
 
@@ -8,7 +8,7 @@ export const useListen = () => {
   const [result, setResult] = useState<any>({});
 
   const listen = async (requestKey: string) => {
-    const client = createClient();
+    const client = getClient();
     const txRes = {
       chainId: env.CHAINID,
       networkId: env.NETWORKID,
