@@ -37,7 +37,7 @@ export const ListItem: FC<IProps> = ({ token, proofOfUsData }) => {
       data: IProofOfUsTokenMeta | undefined,
       proofOfUsData: IProofOfUsTokenMeta | undefined,
     ) => {
-      if (proofOfUsData && 'signees' in proofOfUsData) {
+      if (proofOfUsData && 'properties' in proofOfUsData) {
         setInnerData(proofOfUsData);
       } else {
         setInnerData(data);
@@ -50,9 +50,15 @@ export const ListItem: FC<IProps> = ({ token, proofOfUsData }) => {
     loadData(data, proofOfUsData);
   }, [data, proofOfUsData, loadData]);
 
-  const link = !proofOfUsData
-    ? `/user/proof-of-us/t/${token?.id}`
-    : `/user/proof-of-us/t/${proofOfUsData.tokenId}/${proofOfUsData.requestKey}`;
+  const getLink = () => {
+    if (!proofOfUsData) return `/user/proof-of-us/t/${token?.id}`;
+
+    if (!proofOfUsData.tokenId) {
+      return `/scan/e/${proofOfUsData.properties.eventId}`;
+    } else {
+      return `/user/proof-of-us/t/${proofOfUsData.tokenId}/${proofOfUsData.requestKey}`;
+    }
+  };
 
   return (
     <motion.li
@@ -63,9 +69,15 @@ export const ListItem: FC<IProps> = ({ token, proofOfUsData }) => {
     >
       {!innerData && <IsLoading />}
       {innerData && (
-        <Link className={listItemLinkClass} href={link}>
+        <Link className={listItemLinkClass} href={getLink()}>
           {innerData.properties.eventType === 'attendance' && (
-            <AttendanceThumb token={innerData} />
+            <AttendanceThumb
+              token={innerData}
+              isMinted={
+                proofOfUsData?.mintStatus === 'success' ||
+                proofOfUsData?.mintStatus === undefined
+              }
+            />
           )}
           {innerData.properties.eventType === 'connect' && (
             <ConnectThumb

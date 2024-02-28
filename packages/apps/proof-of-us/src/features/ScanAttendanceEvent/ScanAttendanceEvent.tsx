@@ -33,7 +33,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const { doSubmit, isStatusLoading } = useSubmit();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   //TODO listen to minting addMintingData
-  useTokens();
+  const { addMintingData } = useTokens();
 
   // const checkHasClaimed = useCallback(
   //   async (eventId: string, accountName: string) => {
@@ -54,11 +54,14 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
   const handleClaim = async () => {
     const transaction = await claim(eventId);
+    if (!transaction) return;
 
-    console.log({ data, transaction });
-
-    //const d = { ...data, requestKey: transaction?.hash };
-    //addMintingData(d);
+    const d = {
+      ...data,
+      requestKey: transaction.hash,
+      mintStatus: 'init',
+    } as IProofOfUsTokenMetaWithkey;
+    addMintingData(d);
 
     router.push(
       `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${Buffer.from(

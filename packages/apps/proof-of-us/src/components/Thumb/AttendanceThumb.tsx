@@ -1,14 +1,32 @@
+import { getContrast } from '@/utils/getContrast';
+import { MonoDownloading } from '@kadena/react-icons';
 import { motion } from 'framer-motion';
 import type { FC } from 'react';
-import { attendanceThumbClass } from './style.css';
+import {
+  attendanceBackgroundClass,
+  attendanceLoaderClass,
+  attendanceThumbClass,
+} from './style.css';
 
 interface IProps {
   token: IProofOfUsTokenMeta;
+  isMinted?: boolean;
 }
-export const AttendanceThumb: FC<IProps> = ({ token }) => {
+export const AttendanceThumb: FC<IProps> = ({ token, isMinted }) => {
+  const invertColor = getContrast(
+    token.properties.avatar?.backgroundColor ?? '#000',
+  );
+
   return (
-    <motion.div layoutId={token.image} className={attendanceThumbClass}>
+    <motion.div
+      layoutId={token.image}
+      className={attendanceThumbClass}
+      style={{
+        color: invertColor,
+      }}
+    >
       <svg
+        className={attendanceBackgroundClass}
         width="50"
         height="50"
         viewBox="0 0 50 50"
@@ -43,6 +61,16 @@ export const AttendanceThumb: FC<IProps> = ({ token }) => {
           mask="url(#path-1-outside-1_2765_234)"
         />
       </svg>
+      {!isMinted && (
+        <div
+          className={attendanceLoaderClass}
+          style={{
+            color: invertColor,
+          }}
+        >
+          <MonoDownloading fontSize="md" />
+        </div>
+      )}
     </motion.div>
   );
 };
