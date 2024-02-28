@@ -21,3 +21,26 @@ export const buttonContainerClass = style([
 export const tooltipInfoContainer = style([atoms({ marginBlockEnd: 'sm' })]);
 
 export const marginBottomOnError = style([atoms({ marginBlockEnd: 'xxl' })]);
+
+export const infoNotificationColor = style([
+  atoms({
+    textTransform: 'uppercase',
+    fontWeight: 'bodyFont.black',
+    color: 'inherit',
+  }),
+]);
+
+export const linkStyle = style([
+  atoms({
+    color: 'text.brand.primary.default',
+    textDecoration: 'underline',
+    marginInline: 'sm',
+  }),
+  {
+    selectors: {
+      [`&.visited`]: {
+        color: 'text.brand.primary.default.vi',
+      },
+    },
+  },
+]);

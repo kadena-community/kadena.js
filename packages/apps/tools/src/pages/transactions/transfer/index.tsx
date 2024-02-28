@@ -18,8 +18,9 @@ import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 import { containerClass } from '../styles.css';
-import { SignForm } from './sign-form';
 import { notificationLinkStyle } from './styles.css';
+
+import { SignForm } from './sign-form';
 import { SubmitTransaction } from './submit-transaction';
 
 const TransferPage = () => {

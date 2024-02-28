@@ -18,7 +18,7 @@ import React, { useState } from 'react';
 export interface ITransactionDetails {
   transactions: { cmds: ICommand[] };
 }
-const TransactionDetails = ({
+export const SubmitTransactionDetails = ({
   transactions,
 }: ITransactionDetails): React.JSX.Element | null => {
   const { t } = useTranslation('common');
@@ -111,5 +111,3 @@ const TransactionDetails = ({
     </Card>
   );
 };
-
-export default TransactionDetails;
