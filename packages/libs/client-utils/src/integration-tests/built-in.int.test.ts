@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { createPrincipal } from '../built-in/create-principal';
-import { describeModule } from '../built-in/describe-module';
+import { createPrincipal } from '../built-in/create-principal.js';
+import { describeModule } from '../built-in/describe-module.js';
 
 const config = {
   host: 'http://127.0.0.1:8080',

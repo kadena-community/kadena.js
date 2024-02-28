@@ -8,8 +8,8 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
-import { crossChainClient } from '../core/client-helpers';
-import type { IClientConfig } from '../core/utils/helpers';
+import { crossChainClient } from '../core/client-helpers.js';
+import type { IClientConfig } from '../core/utils/helpers.js';
 
 interface ICrossChainInput {
   sender: { account: string; publicKeys: string[] };

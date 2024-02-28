@@ -15,8 +15,8 @@ import {
 } from '@kadena/client/fp';
 
 import type { PactValue } from '@kadena/types';
-import { asyncPipe } from './utils/asyncPipe';
-import type { IAccount, IClientConfig, IEmit } from './utils/helpers';
+import { asyncPipe } from './utils/asyncPipe.js';
+import type { IAccount, IClientConfig, IEmit } from './utils/helpers.js';
 import {
   checkSuccess,
   extractResult,
@@ -24,7 +24,7 @@ import {
   safeSign,
   throwIfFails,
   withInput,
-} from './utils/helpers';
+} from './utils/helpers.js';
 
 const requestSpvProof =
   (targetChainId: ChainId, client: IClient, onPoll: (id: string) => void) =>

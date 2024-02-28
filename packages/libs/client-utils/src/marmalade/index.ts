@@ -1,1 +1,1 @@
-export * from './create-token-id';
+export * from './create-token-id.js';

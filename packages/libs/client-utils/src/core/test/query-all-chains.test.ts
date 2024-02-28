@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { IClient } from '@kadena/client';
 import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
-import { queryAllChainsClient } from '..';
+import { queryAllChainsClient } from '../index.js';
 
 describe('queryAllChainsClient', () => {
   beforeEach(() => {

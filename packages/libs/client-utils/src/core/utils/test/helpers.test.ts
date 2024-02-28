@@ -11,7 +11,7 @@ import {
   throwIfFails,
   validateSign,
   withInput,
-} from '../helpers';
+} from '../helpers.js';
 
 describe('inspect', () => {
   it('returns the value passed in', () => {

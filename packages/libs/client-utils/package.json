@@ -13,6 +13,7 @@
     "Albert Groothedde <albert@kadena.io>",
     "Nil Amrutlal <nil.amrutlal@deptagency.com>"
   ],
+  "type": "module",
   "exports": {
     ".": {
       "types": "./lib/esm/index.d.ts",
@@ -87,7 +88,7 @@
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
-    "generate-pipe-type": "ts-node src/scripts/create-async-pipe-type.ts 30",
+    "generate-pipe-type": "ts-node-esm --project tsconfig.esm.json src/scripts/create-async-pipe-type.ts 30",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",

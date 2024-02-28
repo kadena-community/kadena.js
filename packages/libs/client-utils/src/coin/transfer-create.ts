@@ -8,8 +8,8 @@ import {
   setMeta,
 } from '@kadena/client/fp';
 
-import { submitClient } from '../core/client-helpers';
-import type { IClientConfig } from '../core/utils/helpers';
+import { submitClient } from '../core/client-helpers.js';
+import type { IClientConfig } from '../core/utils/helpers.js';
 
 interface ICreateTransferInput {
   sender: { account: string; publicKeys: string[] };

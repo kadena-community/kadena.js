@@ -9,16 +9,16 @@ import {
   transfer,
   transferCreate,
   transferCrossChain,
-} from '../coin';
+} from '../coin/index.js';
 
-import { safeTransfer } from '../coin/safe-transfer';
-import { NetworkIds } from './support/NetworkIds';
-import { withStepFactory } from './support/helpers';
+import { safeTransfer } from '../coin/safe-transfer.js';
+import { NetworkIds } from './support/NetworkIds.js';
+import { withStepFactory } from './support/helpers.js';
 import {
   sender00Account,
   sourceAccount,
   targetAccount,
-} from './test-data/accounts';
+} from './test-data/accounts.js';
 
 const accountOne = {
   ...sourceAccount,

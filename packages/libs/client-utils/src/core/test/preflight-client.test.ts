@@ -8,7 +8,7 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import { preflightClient } from '../';
+import { preflightClient } from '../index.js';
 
 describe('preflightClient', () => {
   beforeEach(() => {

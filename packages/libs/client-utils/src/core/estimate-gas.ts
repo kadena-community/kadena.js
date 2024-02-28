@@ -2,9 +2,9 @@ import type { IPartialPactCommand } from '@kadena/client';
 import { createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 
-import { asyncPipe } from './utils/asyncPipe';
-import type { IClientConfig } from './utils/helpers';
-import { getClient, throwIfFails } from './utils/helpers';
+import { asyncPipe } from './utils/asyncPipe.js';
+import type { IClientConfig } from './utils/helpers.js';
+import { getClient, throwIfFails } from './utils/helpers.js';
 
 /**
  * estimate gas for a command

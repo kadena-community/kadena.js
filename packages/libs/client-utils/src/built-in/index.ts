@@ -1,2 +1,2 @@
-export * from './create-principal';
-export * from './describe-module';
+export * from './create-principal.js';
+export * from './describe-module.js';

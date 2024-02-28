@@ -7,7 +7,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import type { Assert, First, IfAny, Prettify, Tail } from '../types';
+import type { Assert, First, IfAny, Prettify, Tail } from '../types.js';
 
 const if_any_should_return_second_arg_if_first_arg_is_any: Assert<
   IfAny<any, 1, false>,

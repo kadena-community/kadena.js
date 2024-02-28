@@ -8,9 +8,9 @@ import {
 } from '@kadena/client/fp';
 
 import { PactNumber } from '@kadena/pactjs';
-import { submitClient } from '../core/client-helpers';
-import type { IClientConfig } from '../core/utils/helpers';
-import { transferCommand } from './transfer';
+import { submitClient } from '../core/client-helpers.js';
+import type { IClientConfig } from '../core/utils/helpers.js';
+import { transferCommand } from './transfer.js';
 
 interface ISafeTransferInput {
   sender: { account: string; publicKeys: string[] };

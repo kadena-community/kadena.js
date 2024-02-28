@@ -11,8 +11,7 @@ import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
 import type { IPactCommand } from '@kadena/client';
-import { IPartialPactCommand } from '@kadena/client/lib/interfaces/IPactCommand';
-import type { IPartialPactCommand as IPartialPactCommand_2 } from '@kadena/client';
+import { IPartialPactCommand } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
 import type { PactValue } from '@kadena/types';
@@ -380,7 +379,7 @@ export const dirtyReadClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign"
 };
 
 // @alpha
-export const estimateGas: (command: IPartialPactCommand_2 | ((cmd?: IPartialPactCommand_2 | (() => IPartialPactCommand_2)) => IPartialPactCommand_2), host?: IClientConfig['host'], client?: IClient) => Promise<{
+export const estimateGas: (command: IPartialPactCommand | ((cmd?: IPartialPactCommand | (() => IPartialPactCommand)) => IPartialPactCommand), host?: IClientConfig['host'], client?: IClient) => Promise<{
     gasLimit: number;
     gasPrice: number;
 }>;

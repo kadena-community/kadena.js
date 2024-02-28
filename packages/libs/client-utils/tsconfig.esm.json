@@ -2,9 +2,9 @@
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
+    "module": "NodeNext",
     "outDir": "lib/esm",
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
     "types": ["node", ".kadena/pactjs-generated"]
   },
   "include": ["./src", "./src/**/*"],

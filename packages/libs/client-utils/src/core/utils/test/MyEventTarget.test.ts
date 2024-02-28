@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { MyEventTarget } from '../MyEventTarget';
+import { MyEventTarget } from '../MyEventTarget.js';
 
 describe('MyEventTarget', () => {
   it("dispatches the event to the event's listeners", async () => {

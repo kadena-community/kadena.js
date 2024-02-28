@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { IClient } from '@kadena/client';
 import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
-import { dirtyReadClient } from '../';
+import { dirtyReadClient } from '../index.js';
 
 describe('dirtyReadClient', () => {
   beforeEach(() => {

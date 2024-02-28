@@ -1,4 +1,4 @@
-import type { IAccount, IAccountWithSecretKey } from '../support/interfaces';
+import type { IAccount, IAccountWithSecretKey } from '../support/interfaces.js';
 
 // the pre-funded account that will be used to fund other accounts
 export const sender00Account: IAccountWithSecretKey = {

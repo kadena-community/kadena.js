@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
-import { transferCreate, transferCreateCommand } from '../coin';
+import { transferCreate, transferCreateCommand } from '../coin/index.js';
 
 import type { IPactCommand } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { composePactCommand, setNetworkId } from '@kadena/client/fp';
-import { estimateGas } from '../core/estimate-gas';
-import { sender00Account, sourceAccount } from './test-data/accounts';
+import { estimateGas } from '../core/estimate-gas.js';
+import { sender00Account, sourceAccount } from './test-data/accounts.js';
 
 const accountOne = {
   ...sourceAccount,

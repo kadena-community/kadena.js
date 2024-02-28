@@ -2,15 +2,15 @@ import { createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 
 import type { PactValue } from '@kadena/types';
-import { asyncPipe } from './utils/asyncPipe';
-import type { IClientConfig, IEmit } from './utils/helpers';
+import { asyncPipe } from './utils/asyncPipe.js';
+import type { IClientConfig, IEmit } from './utils/helpers.js';
 import {
   checkSuccess,
   extractResult,
   getClient,
   safeSign,
   throwIfFails,
-} from './utils/helpers';
+} from './utils/helpers.js';
 
 export const submitAndListen =
   <T = PactValue>(

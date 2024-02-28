@@ -1,7 +1,7 @@
 import { addKeyset, execution } from '@kadena/client/fp';
 import { pipe } from 'ramda';
-import { dirtyReadClient } from '../core/client-helpers';
-import type { IClientConfig } from '../core/utils/helpers';
+import { dirtyReadClient } from '../core/client-helpers.js';
+import type { IClientConfig } from '../core/utils/helpers.js';
 
 /**
  * @alpha

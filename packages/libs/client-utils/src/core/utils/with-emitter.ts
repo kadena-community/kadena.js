@@ -1,7 +1,7 @@
-import { MyEventTarget } from './MyEventTarget';
-import type { IEmit } from './helpers';
-import { asyncLock } from './helpers';
-import type { Any, UnionToIntersection } from './types';
+import { MyEventTarget } from './MyEventTarget.js';
+import type { IEmit } from './helpers.js';
+import { asyncLock } from './helpers.js';
+import type { Any, UnionToIntersection } from './types.js';
 
 type ExecuteTo<T extends Array<{ event: string; data: Any }>> =
   UnionToIntersection<

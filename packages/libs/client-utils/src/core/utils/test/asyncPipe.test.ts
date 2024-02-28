@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { asyncPipe } from '../asyncPipe';
+import { asyncPipe } from '../asyncPipe.js';
 
 describe('asyncPipe', () => {
   it('pipes functions together and returns a single function', async () => {

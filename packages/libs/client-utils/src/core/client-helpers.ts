@@ -2,16 +2,16 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import type { ChainId } from '@kadena/client';
 
-import { crossChain } from './cross-chain';
-import { preflight } from './preflight';
-import { dirtyRead } from './read-dirty';
-import { submitAndListen } from './submit-and-listen';
-import type { IAccount } from './utils/helpers';
-import type { WithEmitter } from './utils/with-emitter';
-import { withEmitter } from './utils/with-emitter';
+import { crossChain } from './cross-chain.js';
+import { preflight } from './preflight.js';
+import { dirtyRead } from './read-dirty.js';
+import { submitAndListen } from './submit-and-listen.js';
+import type { IAccount } from './utils/helpers.js';
+import type { WithEmitter } from './utils/with-emitter.js';
+import { withEmitter } from './utils/with-emitter.js';
 
 import type { PactValue } from '@kadena/types';
-import { queryAllChains } from './query-all-chains';
+import { queryAllChains } from './query-all-chains.js';
 
 /**
  * @alpha

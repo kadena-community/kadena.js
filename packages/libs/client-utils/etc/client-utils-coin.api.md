@@ -13,7 +13,7 @@ import type { INetworkOptions } from '@kadena/client';
 import type { IPactCommand } from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
 import { IPactInt } from '@kadena/types';
-import { IPartialPactCommand } from '@kadena/client/lib/interfaces/IPactCommand';
+import { IPartialPactCommand } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
 import { PactValue } from '@kadena/types';

@@ -3,9 +3,9 @@ import { createTransaction } from '@kadena/client';
 import { composePactCommand, setMeta } from '@kadena/client/fp';
 
 import type { PactValue } from '@kadena/types';
-import { asyncPipe } from './utils/asyncPipe';
-import type { IClientConfig, IEmit } from './utils/helpers';
-import { extractResult, getClient } from './utils/helpers';
+import { asyncPipe } from './utils/asyncPipe.js';
+import type { IClientConfig, IEmit } from './utils/helpers.js';
+import { extractResult, getClient } from './utils/helpers.js';
 
 const chainIds = [...Array(20).keys()].map((key) => `${key}` as ChainId);
 

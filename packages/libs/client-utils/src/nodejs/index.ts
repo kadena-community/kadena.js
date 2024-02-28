@@ -2,4 +2,4 @@ export {
   createPactCommandFromStringTemplate,
   createPactCommandFromTemplate,
   getPartsAndHoles,
-} from './yaml-converter';
+} from './yaml-converter.js';

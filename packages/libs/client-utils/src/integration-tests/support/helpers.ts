@@ -1,4 +1,4 @@
-import type { Any } from '../../core/utils/types';
+import type { Any } from '../../core/utils/types.js';
 
 export const withStepFactory = () => {
   let step = 0;

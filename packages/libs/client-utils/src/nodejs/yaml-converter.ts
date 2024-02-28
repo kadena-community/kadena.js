@@ -6,7 +6,7 @@ import type {
 import { readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import { join } from 'path';
-import { asyncPipe } from '../core/utils/asyncPipe';
+import { asyncPipe } from '../core/utils/asyncPipe.js';
 
 interface ITplHoleTriple {
   literal: string;

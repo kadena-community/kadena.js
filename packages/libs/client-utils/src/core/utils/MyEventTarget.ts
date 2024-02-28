@@ -1,4 +1,4 @@
-import type { Any } from './types';
+import type { Any } from './types.js';
 
 // the default EventTarget does not throw errors when dispatching events
 // also the default EventTarget does not support async event listeners

@@ -8,7 +8,7 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import { submitClient } from '../';
+import { submitClient } from '../index.js';
 
 describe('submitClient', () => {
   beforeEach(() => {

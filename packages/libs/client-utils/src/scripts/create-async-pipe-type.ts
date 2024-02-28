@@ -2,6 +2,8 @@ import { writeFile } from 'fs/promises';
 import path from 'path';
 import * as prettier from 'prettier';
 
+const __dirname = path.resolve();
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function createAsyncPipeOverload(length: number) {
   const genericTypes: string[] = [];
@@ -60,7 +62,7 @@ const type = createAsyncPipeType(
 
 async function run() {
   return writeFile(
-    path.join(__dirname, '..', 'interfaces', 'async-pipe-type.ts'),
+    path.join(__dirname, 'src', 'interfaces', 'async-pipe-type.ts'),
     await prettier.format(type, { parser: 'typescript' }),
     'utf-8',
   );

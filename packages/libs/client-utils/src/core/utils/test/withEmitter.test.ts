@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { asyncPipe } from '../asyncPipe';
-import { withEmitter } from '../with-emitter';
+import { asyncPipe } from '../asyncPipe.js';
+import { withEmitter } from '../with-emitter.js';
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 

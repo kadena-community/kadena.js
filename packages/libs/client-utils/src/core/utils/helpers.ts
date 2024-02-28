@@ -9,7 +9,7 @@ import type {
 import { createClient, getHostUrl, isSignedTransaction } from '@kadena/client';
 import type { PactValue } from '@kadena/types';
 
-import type { Any } from './types';
+import type { Any } from './types.js';
 
 export const inspect =
   <T extends Any>(tag: string) =>

@@ -7,12 +7,12 @@ import {
   parseYamlToKdaTx,
   replaceHoles,
   replaceHolesInCtx,
-} from '../yaml-converter';
+} from '../yaml-converter.js';
 
 import {
   createPactCommandFromStringTemplate,
   createPactCommandFromTemplate,
-} from '../';
+} from '../index.js';
 
 describe('yaml-converter', () => {
   beforeEach(() => {
