@@ -1,4 +1,5 @@
-import { Prisma, Transaction } from '@prisma/client';
+import type { Transaction } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';

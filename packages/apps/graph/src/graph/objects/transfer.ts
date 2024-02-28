@@ -4,7 +4,7 @@ import { Prisma } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
-import { PRISMA, builder } from '../builder';
+import { builder } from '../builder';
 
 export default builder.prismaNode(Prisma.ModelName.Transfer, {
   description: 'A transfer of funds from a fungible between two accounts.',
