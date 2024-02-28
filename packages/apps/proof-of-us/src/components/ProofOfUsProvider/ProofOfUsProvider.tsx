@@ -1,6 +1,5 @@
 'use client';
 import { useAccount } from '@/hooks/account';
-import { useTokens } from '@/hooks/tokens';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { store } from '@/utils/socket/store';
@@ -60,7 +59,6 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
 
 export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { account } = useAccount();
-  const { addMintingData } = useTokens();
   const params = useParams();
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
   const [background, setBackground] = useState<IProofOfUsBackground>({
@@ -68,20 +66,42 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   });
 
   const listenToProofOfUsData = useCallback(
-    (data: IProofOfUsData | undefined) => {
-      if (data?.tokenId && data.requestKey) {
-        addMintingData(data);
+    async (data: IProofOfUsData | undefined) => {
+      let innerData: IProofOfUsData | undefined | null = data;
+      if (!innerData && params && params.id !== 'new') {
+        innerData = await store.getProofOfUs(`${params.id}`);
+        if (!innerData) return;
+        innerData.proofOfUsId = `${params?.id}`;
       }
-      setProofOfUs(data);
+
+      if (!innerData) return;
+      if (!Array.isArray(innerData.signees)) {
+        innerData.signees = Object.entries(innerData.signees).map(
+          ([key, value]) => value,
+        ) as IProofOfUsSignee[];
+      }
+
+      if (innerData?.tokenId && innerData.requestKey) {
+        //const manifest = await createManifest(innerData, innerData.imageUri);
+        // addMintingData({
+        //   ...manifest,
+        //   tokenId: innerData?.tokenId,
+        //   requestKey: innerData.requestKey,
+        //   mintStatus: 'init',
+        // });
+      }
+
+      if (!innerData) return;
+      setProofOfUs(innerData);
     },
     [setProofOfUs],
   );
 
   useEffect(() => {
-    if (!params?.id) return;
-    store.listenProofOfUsData(`${params.id}`, listenToProofOfUsData);
+    if (!params?.id || !account) return;
+    store.listenProofOfUsData(`${params.id}`, account, listenToProofOfUsData);
     store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
-  }, [listenToProofOfUsData, setBackground, params]);
+  }, [listenToProofOfUsData, setBackground, params, account]);
 
   const updateStatus = async ({
     proofOfUsId,
@@ -90,16 +110,17 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     proofOfUsId: string;
     status: IBuildStatusValues;
   }) => {
-    await store.updateStatus(proofOfUsId, status);
+    if (!proofOfUs) return;
+    await store.updateStatus(proofOfUsId, proofOfUs, status);
   };
 
   const closeToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
-    await store.closeToken(proofOfUsId);
+    if (!proofOfUs) return;
+    await store.closeToken(proofOfUsId, proofOfUs);
   };
 
   const addSignee = async () => {
     if (!account || !proofOfUs) return;
-
     await store.addSignee(proofOfUs, getSigneeAccount(account, proofOfUs));
   };
 

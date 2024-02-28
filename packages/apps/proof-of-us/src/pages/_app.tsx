@@ -62,7 +62,7 @@ export const MyApp = ({
           <meta
             key="twitter:image"
             name="twitter:image"
-            content={`${process.env.NEXT_PUBLIC_URL}/assets/test.jpg`}
+            content={`${process.env.NEXT_PUBLIC_URL}/assets/proof-of-us-logo.png`}
           />
           {/* <!-- Open Graph / Facebook --> */}
           <meta key="og:type" property="og:type" content="website" />
@@ -84,7 +84,7 @@ export const MyApp = ({
           <meta
             key="og:image"
             property="og:image"
-            content={`${process.env.NEXT_PUBLIC_URL}/assets/test.jpg`}
+            content={`${process.env.NEXT_PUBLIC_URL}/assets/proof-of-us-logo.png`}
           />
 
           <link rel="icon" href="/assets/favicons/icon@32.png" sizes="32x32" />

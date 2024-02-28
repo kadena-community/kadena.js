@@ -58,7 +58,7 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
           position: 'relative',
           marginBlockStart: '-60px',
           top: 0,
-          zIndex: -1,
+          zIndex: 100,
         }}
       >
         <SavedImagePositions data={data} />
@@ -68,6 +68,7 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
           className={overflowClass}
           flexDirection="column"
           paddingInline="md"
+          style={{ position: 'relative' }}
         >
           <Heading as="h5">Signees</Heading>
 

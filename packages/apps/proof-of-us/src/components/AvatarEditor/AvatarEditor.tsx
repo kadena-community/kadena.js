@@ -43,6 +43,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   }, []);
 
   useEffect(() => {
+    if (!proofOfUs) return;
     if (!videoRef.current || !isMounted) return;
 
     navigator.mediaDevices
@@ -88,7 +89,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
       .catch((e) => {
         alert('The browser needs permissions for the camera to work');
       });
-  }, [isMounted]);
+  }, [isMounted, proofOfUs]);
 
   useEffect(() => {
     return () => {
@@ -113,6 +114,8 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
     if (!proofOfUs) return;
 
     await addBackground(proofOfUs, { bg: canvasRef.current.toDataURL() });
+
+    console.log('update in avatareditor');
     await updateProofOfUs({
       backgroundColor: updateBackgroundColor(color),
     });

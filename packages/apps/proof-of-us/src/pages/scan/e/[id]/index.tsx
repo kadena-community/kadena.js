@@ -44,6 +44,7 @@ const Page: NextPage<IProps> = ({ params }) => {
           data={data}
           eventId={eventId}
           isMinted={isMinted}
+          handleIsMinted={setIsMinted}
         />
       </ScreenHeight>
     </UserLayout>

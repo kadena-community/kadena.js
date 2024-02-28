@@ -42,7 +42,9 @@ export const useGetAttendanceToken: IDataHook<
   const startDate = token && token['starts-at'].int;
   const endDate = token && token['ends-at'].int;
 
-  const newData = data ? { ...data, startDate, endDate } : undefined;
+  const newData = data
+    ? { ...data, startDate, endDate, manifestUri: token?.uri }
+    : undefined;
 
   return {
     isLoading: isLoading || isTokenLoading,

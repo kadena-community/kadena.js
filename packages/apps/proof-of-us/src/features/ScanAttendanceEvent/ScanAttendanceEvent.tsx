@@ -4,66 +4,97 @@ import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
-import { useSubmit } from '@/hooks/submit';
-import { useTokens } from '@/hooks/tokens';
+import { SubmitStatus, useSubmit } from '@/hooks/submit';
 import { getReturnUrl } from '@/utils/getReturnUrl';
+import { getSigneeAccount } from '@/utils/getSigneeAccount';
+import { store } from '@/utils/socket/store';
 import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import type { FC } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import type { Dispatch, FC, SetStateAction } from 'react';
 import { useEffect } from 'react';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
   eventId: string;
   isMinted: boolean;
+  handleIsMinted: Dispatch<SetStateAction<boolean>>;
 }
 
 export const ScanAttendanceEvent: FC<IProps> = ({
   data,
   eventId,
   isMinted,
+  handleIsMinted,
 }) => {
   const { isLoading, hasSuccess, hasError, isPending, claim } =
     useClaimAttendanceToken();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const { account, isMounted, login } = useAccount();
-  const { doSubmit, isStatusLoading } = useSubmit();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  //TODO listen to minting addMintingData
-  useTokens();
+  const { doSubmit, isStatusLoading, status } = useSubmit();
 
-  // const checkHasClaimed = useCallback(
-  //   async (eventId: string, accountName: string) => {
-  //     const result = await hasClaimed(eventId, accountName);
-  //     setHasMinted(result);
-  //   },
-  //   [setHasMinted],
-  // );
+  const getProof = (
+    data: IProofOfUsTokenMeta,
+    account: IAccount,
+    transaction: string,
+  ): IProofOfUsData => {
+    const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
 
-  // useEffect(() => {
-  //   if (!account) return;
-  //   checkHasClaimed(eventId, account.accountName);
-  // }, []);
+    const proof: IProofOfUsData = {
+      proofOfUsId: data.properties.eventId,
+      type: 'attendance',
+      requestKey: tx.hash,
+      title: data.name,
+      signees: [{ ...getSigneeAccount(account), initiator: true }],
+      mintStatus: 'init',
+      imageUri: data.image,
+      date: Date.now(),
+      eventId: data.properties.eventId,
+      backgroundColor: data.properties.avatar?.backgroundColor,
+      tx: transaction,
+      status: 4,
+      manifestUri: data.manifestUri,
+    };
+
+    return proof;
+  };
 
   useEffect(() => {
+    if (status === SubmitStatus.SUCCESS) {
+      handleIsMinted(true);
+    }
+  }, [status]);
+
+  useEffect(() => {
+    const transaction = searchParams.get('transaction') ?? '';
+    if (!transaction || !account) return;
+
+    const proof = getProof(data, account, transaction);
+    console.log('update in scanattendance');
+    store.updateProofOfUs(proof, proof);
+
     doSubmit();
-  }, []);
+  }, [account, searchParams]);
 
   const handleClaim = async () => {
     const transaction = await claim(eventId);
+    if (!transaction || !account) return;
 
-    console.log({ transaction });
+    const bufferedTx = Buffer.from(JSON.stringify(transaction)).toString(
+      'base64',
+    );
 
-    //const d = { ...data, requestKey: transaction?.hash };
-    //addMintingData(d);
+    const proof = getProof(data, account, bufferedTx);
+    console.log('update in scanattendance claim');
+    store.updateProofOfUs(proof, proof);
 
     router.push(
-      `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${Buffer.from(
-        JSON.stringify(transaction),
-      ).toString('base64')}&returnUrl=${getReturnUrl()}
+      `${
+        process.env.NEXT_PUBLIC_WALLET_URL
+      }/sign?transaction=${bufferedTx}&returnUrl=${getReturnUrl()}
       `,
     );
   };
@@ -101,7 +132,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
           )}
           {hasEnded && <div>the event has ended.</div>}
 
-          {showClaimButton && (
+          {showClaimButton && !isMinted && (
             <Stack flex={1} gap="md">
               <Button>
                 <Link href="/user">Go to dashboard</Link>
