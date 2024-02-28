@@ -21,15 +21,15 @@ import { getApiHost } from '@/utils/network';
 import type { ChainId, ITransactionDescriptor } from '@kadena/client';
 
 import { explorerLinkStyle } from '@/pages/faucet/styles.css';
-import { getExplorerLink } from '@/utils/getExplorerLink';
-import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
-import Trans from 'next-translate/Trans';
-import Link from 'next/link';
 import {
   buttonContainerClass,
   infoNotificationColor,
   linkStyle,
-} from './styles.css';
+} from '@/pages/transactions/transfer/styles.css';
+import { getExplorerLink } from '@/utils/getExplorerLink';
+import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
+import Trans from 'next-translate/Trans';
+import Link from 'next/link';
 
 interface ISubmitTransactionProps {
   data: PactCommandObject | null;

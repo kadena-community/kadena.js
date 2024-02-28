@@ -252,5 +252,6 @@
   "ledger tooltip content": "Change ledger key. You can use any number (from the pre-defined 100).",
   "link-to-tracker": "Track the transaction <0>HERE</0>",
   "link-to-finisher": "You can stay on this page to automatically finalize the transfer, or you can copy <0>this link</0> to finish manually.",
-  "cross-chain-transfer-initiated": "You're about to make a Cross Chain Transfer."
+  "cross-chain-transfer-initiated": "You're about to make a Cross Chain Transfer.",
+  "fetching-receiver-data": "Fetching receiver account data.."
 }

@@ -18,7 +18,7 @@ import { CHAINS } from '@kadena/chainweb-node-client';
 import useTranslation from 'next-translate/useTranslation';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { buttonContainerClass } from './styles.css';
+import { buttonContainerClass } from '@/pages/transactions/transfer/styles.css';
 
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 
