@@ -18,7 +18,7 @@ const schema = z.object({
   }),
 });
 
-type AccountDetails = z.infer<typeof schema>;
+export type AccountDetails = z.infer<typeof schema>;
 
 const fetchDetails = async ({
   account,
