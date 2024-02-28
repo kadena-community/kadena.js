@@ -15,58 +15,52 @@
   ],
   "exports": {
     ".": {
-      "import": "./lib/index.js",
-      "require": "./lib/index.js",
-      "default": "./lib/index.js",
-      "types": "./lib/index.d.ts"
+      "types": "./lib/esm/index.d.ts",
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
     },
     "./built-in": {
-      "import": "./lib/built-in/index.js",
-      "require": "./lib/built-in/index.js",
-      "default": "./lib/built-in/index.js",
-      "types": "./lib/built-in/index.d.ts"
+      "types": "./lib/esm/built-in/index.d.ts",
+      "import": "./lib/esm/built-in/index.js",
+      "require": "./lib/cjs/built-in/index.js"
     },
     "./coin": {
-      "import": "./lib/coin/index.js",
-      "require": "./lib/coin/index.js",
-      "default": "./lib/coin/index.js",
-      "types": "./lib/coin/index.d.ts"
+      "types": "./lib/esm/coin/index.d.ts",
+      "import": "./lib/esm/coin/index.js",
+      "require": "./lib/cjs/coin/index.js"
     },
     "./core": {
-      "import": "./lib/core/index.js",
-      "require": "./lib/core/index.js",
-      "default": "./lib/core/index.js",
-      "types": "./lib/core/index.d.ts"
+      "types": "./lib/esm/core/index.d.ts",
+      "import": "./lib/esm/core/index.js",
+      "require": "./lib/cjs/core/index.js"
     },
     "./nodejs": {
-      "import": "./lib/nodejs/index.js",
-      "require": "./lib/nodejs/index.js",
-      "default": "./lib/nodejs/index.js",
-      "types": "./lib/nodejs/index.d.ts"
+      "types": "./lib/esm/nodejs/index.d.ts",
+      "import": "./lib/esm/nodejs/index.js",
+      "require": "./lib/cjs/nodejs/index.js"
     },
     "./marmalade": {
-      "import": "./lib/marmalade/index.js",
-      "require": "./lib/marmalade/index.js",
-      "default": "./lib/marmalade/index.js",
-      "types": "./lib/marmalade/index.d.ts"
+      "types": "./lib/esm/marmalade/index.d.ts",
+      "import": "./lib/esm/marmalade/index.js",
+      "require": "./lib/cjs/marmalade/index.js"
     }
   },
   "typesVersions": {
     "*": {
       "built-in": [
-        "./lib/built-in/index.d.ts"
+        "./lib/esm/built-in/index.d.ts"
       ],
       "core": [
-        "./lib/core/index.d.ts"
+        "./lib/esm/core/index.d.ts"
       ],
       "coin": [
-        "./lib/coin/index.d.ts"
+        "./lib/esm/coin/index.d.ts"
       ],
       "nodejs": [
-        "./lib/nodejs/index.d.ts"
+        "./lib/esm/nodejs/index.d.ts"
       ],
       "marmalade": [
-        "./lib/marmalade/index.d.ts"
+        "./lib/esm/marmalade/index.d.ts"
       ]
     }
   },
@@ -83,7 +77,7 @@
     "ae:built-in": "api-extractor run --verbose -c ./config/api-extractor-built-in.json",
     "ae:coin": "api-extractor run --verbose -c ./config/api-extractor-coin.json",
     "ae:core": "api-extractor run --verbose -c ./config/api-extractor-core.json",
-    "build": "pnpm run pactjs:generate:contract && pnpm run generate-pipe-type && tsc && pnpm run ae",
+    "build": "pnpm run pactjs:generate:contract && pnpm run generate-pipe-type && tsc -p tsconfig.esm.json && tsc -p tsconfig.json && pnpm run ae",
     "dev:ae": "pnpm run dev:ae:core && pnpm run dev:ae:built-in && pnpm run dev:ae:coin",
     "dev:ae:built-in": "api-extractor run --local --verbose -c ./config/api-extractor-built-in.json",
     "dev:ae:coin": "api-extractor run --local --verbose -c ./config/api-extractor-coin.json",

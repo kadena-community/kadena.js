@@ -1,0 +1,12 @@
+{
+  "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "outDir": "lib/esm",
+    "moduleResolution": "Node",
+    "types": ["node", ".kadena/pactjs-generated"]
+  },
+  "include": ["./src", "./src/**/*"],
+  "exclude": ["**/vendor/**/*"]
+}
