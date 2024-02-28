@@ -1,6 +1,6 @@
 import yaml from 'js-yaml';
 import { readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { extname, join } from 'node:path';
 import type { ZodError, ZodIssue } from 'zod';
 import { z } from 'zod';
 import type { IAliasAccountData } from './../types.js';
@@ -32,7 +32,11 @@ export const formatZodErrors = (errors: ZodError): string => {
 export const readAccountFromFile = async (
   accountFile: string,
 ): Promise<IAliasAccountData> => {
-  const filePath = join(ACCOUNT_DIR, accountFile);
+  const ext = extname(accountFile);
+  const fileWithExt =
+    !ext || ext !== '.yaml' ? `${accountFile}.yaml` : accountFile;
+  const filePath = join(ACCOUNT_DIR, fileWithExt);
+
   if (!(await services.filesystem.fileExists(filePath))) {
     throw new Error(`Account alias "${accountFile}" file not exist`);
   }
@@ -43,7 +47,7 @@ export const readAccountFromFile = async (
     const parsedContent = accountAliasFileSchema.parse(account);
     return {
       ...parsedContent,
-      alias: accountFile,
+      alias: fileWithExt,
     };
   } catch (error) {
     if (isEmpty(content)) {

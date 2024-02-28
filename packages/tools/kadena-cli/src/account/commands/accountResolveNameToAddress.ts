@@ -35,7 +35,7 @@ export const resolveNameToAddress = async (
   }
 };
 
-export const resolveNameToAddressCommand = createCommand(
+export const createResolveNameToAddressCommand = createCommand(
   'name-to-address',
   'Resolve a .kda name to a k:address (kadenanames)',
   [
