@@ -2,7 +2,7 @@ import { createSignWithKeypair } from '@kadena/client';
 import { createAccount } from '@kadena/client-utils/coin';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import type { ChainId } from '@kadena/types';
-import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
+import { networkDefaults } from '../../constants/networks.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { isNotEmptyString } from '../../utils/helpers.js';
 import type { Predicate } from '../types.js';
@@ -16,13 +16,6 @@ interface ICreateAccountInput {
   fungible: string;
 }
 
-const networkConfig: INetworkCreateOptions = {
-  networkHost: 'https://api.chainweb.com',
-  networkId: 'mainnet01',
-  network: 'mainnet',
-  networkExplorerUrl: 'https://explorer.chainweb.com/mainnet01',
-};
-
 export async function createAccountOnMainnet({
   accountName,
   publicKeys,
@@ -31,6 +24,7 @@ export async function createAccountOnMainnet({
   fungible = 'coin',
 }: ICreateAccountInput): Promise<CommandResult<string | undefined>> {
   try {
+    const networkConfig = networkDefaults.mainnet;
     const account = isNotEmptyString(accountName)
       ? accountName
       : await createAccountName({
