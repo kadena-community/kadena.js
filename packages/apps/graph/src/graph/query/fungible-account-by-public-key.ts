@@ -60,6 +60,12 @@ builder.queryField('fungibleAccountByPublicKey', (t) =>
 async function getAccountNameByPublicKey(
   publicKey: string,
 ): Promise<string | undefined> {
+  const regex = /^[a-zA-Z0-9]+$/;
+
+  if (publicKey.length !== 64 || !regex.test(publicKey)) {
+    throw new Error('Invalid public key');
+  }
+
   const searchPubKey = `%${publicKey}%`;
 
   const result = (await prismaClient.$queryRaw`
