@@ -1,8 +1,8 @@
 'use client';
 import type { Token } from '@/__generated__/sdk';
 import { useGetAllProofOfUs } from '@/hooks/data/getAllProofOfUs';
+import { getClient } from '@/utils/client';
 import { env } from '@/utils/env';
-import { createClient } from '@kadena/client';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
 
@@ -19,7 +19,7 @@ export const TokenContext = createContext<ITokenContext>({
   isLoading: false,
 });
 
-const kadenaClient = createClient();
+const kadenaClient = getClient();
 
 export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data, isLoading, error } = useGetAllProofOfUs();

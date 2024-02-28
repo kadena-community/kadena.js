@@ -37,4 +37,13 @@ const Page: FC = () => {
   );
 };
 
+export const getServerSideProps = async () => {
+  return {
+    redirect: {
+      permanent: false,
+      destination: `/scan/e/${process.env.NEXT_PUBLIC_CONNECTION_EVENTID}`,
+    },
+  };
+};
+
 export default Page;
