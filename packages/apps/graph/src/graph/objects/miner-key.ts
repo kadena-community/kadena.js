@@ -1,4 +1,3 @@
-import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
