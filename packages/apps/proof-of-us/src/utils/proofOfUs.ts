@@ -157,13 +157,13 @@ export const claimAttendanceToken = async (
 
 export const hasMintedAttendaceToken = async (
   eventId: string,
-  account: IAccount,
+  accountName: string,
 ): Promise<boolean> => {
   const transaction = Pact.builder
     .execution(
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.has-minted-attendance-token
       "${eventId}" 
-      "${account.accountName}"
+      "${accountName}"
       )`,
     )
     .addData('event-id', `${eventId}`)

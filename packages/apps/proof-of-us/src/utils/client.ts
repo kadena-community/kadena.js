@@ -1,5 +1,6 @@
 import type { ChainId } from '@kadena/client';
 import { createClient } from '@kadena/client';
+import { env } from './env';
 
 const apiHostGenerator = ({
   networkId,
@@ -8,19 +9,12 @@ const apiHostGenerator = ({
   networkId: string;
   chainId: ChainId;
 }): string => {
-  switch (networkId) {
-    case 'fast-development':
-      return `http://127.0.0.1:8080/chainweb/0.0/${networkId}/chain/${
-        chainId as ChainId
-      }/pact`;
-    default:
-      return `http://127.0.0.1:8080/chainweb/0.0/${networkId}/chain/${
-        chainId as ChainId
-      }/pact`;
-  }
+  return `https://api.chainweb.com/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
 };
 
 export const getClient = () => {
-  const client = createClient(apiHostGenerator);
+  const client = createClient(
+    apiHostGenerator({ networkId: env.NETWORKID, chainId: env.CHAINID }),
+  );
   return client;
 };
