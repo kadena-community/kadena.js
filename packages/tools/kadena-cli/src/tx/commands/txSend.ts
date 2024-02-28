@@ -1,51 +1,58 @@
 import type { Command } from 'commander';
 import path from 'node:path';
 
-import type { ICommand, IUnsignedCommand } from '@kadena/client';
+import type { ChainId, ICommand, IUnsignedCommand } from '@kadena/client';
 import { createClient, isSignedTransaction } from '@kadena/client';
 import ora from 'ora';
+import type {
+  ICustomNetworkChoice,
+  INetworkCreateOptions,
+} from '../../networks/utils/networkHelpers.js';
+import { loadNetworkConfig } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
+import { getExistingNetworks } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
 import { parseTransactionsFromStdin } from '../utils/input.js';
-import { getTransactionsFromFile } from '../utils/txHelpers.js';
+import {
+  extractCommandData,
+  getTransactionsFromFile,
+} from '../utils/txHelpers.js';
 
 interface ISubmitResponse {
   transaction: IUnsignedCommand | ICommand;
   requestKey: string;
 }
 
-export const sendTransactionAction = async ({
-  chainId,
-  networkHost,
-  networkId,
-  transactions,
-}: {
-  networkId: string;
-  networkHost: string;
-  chainId: string;
-  /** Command object of filepath to JSON file with command object */
-  transactions: (IUnsignedCommand | ICommand)[];
-}): Promise<CommandResult<{ transactions: ISubmitResponse[] }>> => {
-  const client = createClient(
-    `${networkHost}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
-  );
+interface INetworkDetails extends INetworkCreateOptions {
+  chainId: ChainId;
+}
 
+export const sendTransactionAction = async ({
+  transactionsWithDetails,
+}: {
+  transactionsWithDetails: {
+    command: ICommand | IUnsignedCommand;
+    details: INetworkDetails;
+  }[];
+}): Promise<CommandResult<{ transactions: ISubmitResponse[] }>> => {
   const successfulCommands: ISubmitResponse[] = [];
   const errors: string[] = [];
 
-  for (const command of transactions) {
+  for (const { command, details } of transactionsWithDetails) {
     try {
       if (!isSignedTransaction(command)) {
         errors.push(`Invalid signed transaction: ${JSON.stringify(command)}`);
         continue;
       }
 
-      const response = await client.submit(command);
+      const client = createClient(
+        `${details.networkHost}/chainweb/0.0/${details.networkId}/chain/${details.chainId}/pact`,
+      );
 
+      const response = await client.submit(command);
       successfulCommands.push({
         transaction: command,
         requestKey: response.requestKey,
@@ -55,7 +62,7 @@ export const sendTransactionAction = async ({
     }
   }
 
-  if (errors.length === transactions.length) {
+  if (errors.length === transactionsWithDetails.length) {
     return { success: false, errors };
   } else if (errors.length > 0) {
     return {
@@ -77,11 +84,10 @@ export const createSendTransactionCommand: (
   [
     txOptions.directory({ disableQuestion: true }),
     txOptions.txSignedTransactionFiles(),
-    globalOptions.network(),
-    globalOptions.chainId(),
+    txOptions.txTransactionNetwork(),
   ],
   async (option, { stdin }) => {
-    const commands: IUnsignedCommand[] = [];
+    const commands: (IUnsignedCommand | ICommand)[] = [];
 
     if (stdin !== undefined) {
       commands.push(await parseTransactionsFromStdin(stdin));
@@ -95,25 +101,71 @@ export const createSendTransactionCommand: (
       commands.push(...(await getTransactionsFromFile(absolutePaths, true)));
     }
 
-    const { networkConfig } = await option.network();
-    const { chainId } = await option.chainId();
-
-    const loader = ora('Sending transaction...\n').start();
-
-    const result = await sendTransactionAction({
-      ...networkConfig,
-      chainId: chainId,
-      transactions: commands,
+    const networkForTransactions = await option.txTransactionNetwork({
+      commands,
     });
-    assertCommandError(result, loader);
+    const transactionsWithDetails: {
+      command: ICommand | IUnsignedCommand;
+      details: INetworkDetails;
+    }[] = [];
 
-    log.info(
-      result.data.transactions
-        .map(
-          (transaction) =>
-            `Transaction: ${transaction.transaction.hash} submitted with request key: ${transaction.requestKey}`,
-        )
-        .join('\n\n'),
-    );
+    const existingNetworks: ICustomNetworkChoice[] =
+      await getExistingNetworks();
+
+    for (let index = 0; index < commands.length; index++) {
+      const command = commands[index];
+      const network = networkForTransactions.txTransactionNetwork[index];
+
+      if (!existingNetworks.some((item) => item.value === network)) {
+        log.error(
+          `Network "${network}" does not exist. Please create it using "kadena network create" command, the transaction "${
+            index + 1
+          }" with hash "${command.hash}" will not be sent.`,
+        );
+        continue;
+      }
+
+      const networkDetails = await loadNetworkConfig(network);
+      const commandData = extractCommandData(command);
+
+      if (commandData.networkId === networkDetails.networkId) {
+        transactionsWithDetails.push({
+          command,
+          details: {
+            chainId: commandData.chainId as ChainId,
+            ...networkDetails,
+          },
+        });
+      } else {
+        log.error(
+          `Network ID: "${commandData.networkId}" in transaction command ${
+            index + 1
+          } does not match the Network ID: "${
+            networkDetails.networkId
+          }" from the provided network "${network}", transaction with hash "${
+            command.hash
+          }" will not be sent.`,
+        );
+      }
+    }
+
+    if (transactionsWithDetails.length > 0) {
+      const loader = ora('Sending transactions...\n').start();
+      const result = await sendTransactionAction({ transactionsWithDetails });
+      assertCommandError(result, loader);
+
+      if (result.success) {
+        log.info(
+          result.data.transactions
+            .map(
+              ({ transaction, requestKey }) =>
+                `Transaction: ${transaction.hash} submitted with request key: ${requestKey}`,
+            )
+            .join('\n\n'),
+        );
+      }
+    } else {
+      log.info('No transactions to send.');
+    }
   },
 );
