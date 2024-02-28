@@ -15,34 +15,34 @@
   ],
   "exports": {
     ".": {
+      "types": "./lib/esm/index.d.ts",
       "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js",
-      "types": "./lib/esm/index.d.ts"
+      "require": "./lib/cjs/index.js"
     },
     "./built-in": {
+      "types": "./lib/esm/built-in/index.d.ts",
       "import": "./lib/esm/built-in/index.js",
-      "require": "./lib/cjs/built-in/index.js",
-      "types": "./lib/esm/built-in/index.d.ts"
+      "require": "./lib/cjs/built-in/index.js"
     },
     "./coin": {
+      "types": "./lib/esm/coin/index.d.ts",
       "import": "./lib/esm/coin/index.js",
-      "require": "./lib/cjs/coin/index.js",
-      "types": "./lib/esm/coin/index.d.ts"
+      "require": "./lib/cjs/coin/index.js"
     },
     "./core": {
+      "types": "./lib/esm/core/index.d.ts",
       "import": "./lib/esm/core/index.js",
-      "require": "./lib/cjs/core/index.js",
-      "types": "./lib/esm/core/index.d.ts"
+      "require": "./lib/cjs/core/index.js"
     },
     "./nodejs": {
+      "types": "./lib/esm/nodejs/index.d.ts",
       "import": "./lib/esm/nodejs/index.js",
-      "require": "./lib/cjs/nodejs/index.js",
-      "types": "./lib/esm/nodejs/index.d.ts"
+      "require": "./lib/cjs/nodejs/index.js"
     },
     "./marmalade": {
+      "types": "./lib/esm/marmalade/index.d.ts",
       "import": "./lib/esm/marmalade/index.js",
-      "require": "./lib/cjs/marmalade/index.js",
-      "types": "./lib/esm/marmalade/index.d.ts"
+      "require": "./lib/cjs/marmalade/index.js"
     }
   },
   "typesVersions": {
