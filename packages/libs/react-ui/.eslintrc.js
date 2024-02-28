@@ -10,7 +10,6 @@ module.exports = {
     'react/prop-types': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     'react/function-component-definition': 'off',
-    'react/react-in-jsx-scope': 'off',
   },
   parserOptions: {
     tsconfigRootDir: __dirname,

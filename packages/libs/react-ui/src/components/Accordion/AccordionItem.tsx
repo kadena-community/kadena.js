@@ -1,5 +1,6 @@
-import { useRef } from 'react';
 import { useAccordionItem } from '@react-aria/accordion';
+import classNames from 'classnames';
+import React, { useRef } from 'react';
 import { mergeProps, useFocusRing, useHover } from 'react-aria';
 import type { Node, TreeState } from 'react-stately';
 import { Plus } from '../Icon/System/SystemIcon';
@@ -13,7 +14,6 @@ import {
   defaultIconClass,
   rotatedIconClass,
 } from './Accordion.css';
-import classNames from 'classnames';
 
 interface IAccordionItemProps<T> {
   item: Node<T>;

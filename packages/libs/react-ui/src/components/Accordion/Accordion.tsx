@@ -2,7 +2,7 @@ import type { AriaAccordionProps } from '@react-aria/accordion';
 import { useAccordion } from '@react-aria/accordion';
 import { useObjectRef } from '@react-aria/utils';
 import type { ForwardedRef, ReactElement } from 'react';
-import { forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import type { TreeProps } from 'react-stately';
 import { useTreeState } from 'react-stately';
 import { AccordionItem } from './AccordionItem';

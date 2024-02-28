@@ -51,11 +51,7 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist",
-    "global",
-    "styles"
-  ],
+  "files": ["dist", "global", "styles"],
   "scripts": {
     "build": "crackle package --clean --fix",
     "build:storybook": "storybook build",
@@ -135,7 +131,6 @@
     "@vanilla-extract/webpack-plugin": "2.3.1",
     "@vitest/coverage-v8": "^1.1.0",
     "@vitest/ui": "^1.1.0",
-    "@vitejs/plugin-react": "^4.2.1",
     "babel-plugin-module-resolver": "^5.0.0",
     "chromatic": "6.20.0",
     "copyfiles": "2.4.1",

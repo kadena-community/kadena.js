@@ -1,13 +1,9 @@
 import baseConfig from '@kadena-dev/shared-config/vitest.config';
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 import { defineConfig, mergeConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react'
 
 const localConfig = defineConfig({
-  plugins: [vanillaExtractPlugin({ emitCssInSsr: true }), react()],
-  resolve: {
-    dedupe: ['react', 'react-dom'],
-  },
+  plugins: [vanillaExtractPlugin({ emitCssInSsr: true })],
   test: {
     setupFiles: ['vitest.setup.ts'],
     environment: 'happy-dom',
