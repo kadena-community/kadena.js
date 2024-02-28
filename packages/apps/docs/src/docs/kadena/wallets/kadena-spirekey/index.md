@@ -213,7 +213,7 @@ https://your-dapp.com/auth?user=base-64-user
     - `id`: `string` (optional) - The WebAuthn Credential ID. Omitted when
       `type=ED25519`
   - `accountName`: `string` - the c-account of the user
-  - `name`: `string` - Alias the user provided when creating the account in
+  - `alias`: `string` - Alias the user provided when creating the account in
     Kadena SpireKey
   - `pendingTxIds`: `Array<string>` - List of transaction Request Keys. One of:
     - Account Creation Transaction id: the account is being minted, and the dapp
