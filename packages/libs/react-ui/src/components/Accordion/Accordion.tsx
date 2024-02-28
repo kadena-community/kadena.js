@@ -1,8 +1,8 @@
 import type { AriaAccordionProps } from '@react-aria/accordion';
 import { useAccordion } from '@react-aria/accordion';
 import { useObjectRef } from '@react-aria/utils';
-import type { ForwardedRef } from 'react';
-import React, { forwardRef } from 'react';
+import type { ForwardedRef, ReactElement } from 'react';
+import { forwardRef } from 'react';
 import type { TreeProps } from 'react-stately';
 import { useTreeState } from 'react-stately';
 import { AccordionItem } from './AccordionItem';
@@ -15,17 +15,30 @@ function BaseAccordion<T extends object>(
   props: IAccordionProps<T>,
   forwardedRef: ForwardedRef<HTMLDivElement>,
 ) {
-  const state = useTreeState<T>({
+  // we need to pass hasChildItems: false to the AccordionItem due to:
+  // https://github.com/adobe/react-spectrum/issues/3882
+  const newProps = {
     ...props,
-    selectionMode: props.selectionMode ?? 'single',
-  });
+    children: (props.children as ReactElement[]).map((child: ReactElement) => ({
+      ...child,
+      props: { ...child.props, hasChildItems: false },
+    })),
+  };
   const ref = useObjectRef(forwardedRef);
-  const { accordionProps } = useAccordion(props, state, ref);
+  const state = useTreeState<T>(newProps);
+  const { accordionProps } = useAccordion(newProps, state, ref);
+
   return (
     <div ref={ref} {...accordionProps}>
-      {[...state.collection].map((item) => (
-        <AccordionItem<T> key={item.key} item={item} state={state} />
-      ))}
+      {[...state.collection].map((item) => {
+        return (
+          <AccordionItem<T>
+            key={item.key || item.props.title}
+            item={item}
+            state={state}
+          />
+        );
+      })}
     </div>
   );
 }

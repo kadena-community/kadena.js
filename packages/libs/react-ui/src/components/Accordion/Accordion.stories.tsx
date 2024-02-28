@@ -21,31 +21,21 @@ const meta: Meta<IAccordionProps> = {
       },
     },
   },
-  argTypes: {
-    selectionMode: {
-      description: 'The selection mode for the Accordion component.',
-      defaultValue: 'single',
-      control: {
-        type: 'select',
-        options: ['single', 'multiple', 'none'],
-      },
-    },
-  },
 };
 
 type Story = StoryObj<IAccordionProps>;
 export const Dynamic: Story = {
   name: 'Accordion',
-  render: ({ selectionMode = 'single' }) => {
+  render: () => {
     return (
-      <Accordion selectionMode={selectionMode}>
-        <AccordionItem key="files" title="Your files">
+      <Accordion>
+        <AccordionItem title="Your files">
           <p>Files</p>
         </AccordionItem>
-        <AccordionItem key="shared" title="Shared with you">
+        <AccordionItem title="Shared with you">
           <p>Shared</p>
         </AccordionItem>
-        <AccordionItem key="last" title="Last item">
+        <AccordionItem title="Last item">
           <p>Last</p>
         </AccordionItem>
       </Accordion>

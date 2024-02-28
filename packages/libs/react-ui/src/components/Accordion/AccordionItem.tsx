@@ -1,14 +1,19 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
+import { useAccordionItem } from '@react-aria/accordion';
 import { mergeProps, useFocusRing, useHover } from 'react-aria';
 import type { Node, TreeState } from 'react-stately';
-import { Close, Plus } from '../Icon/System/SystemIcon';
+import { Plus } from '../Icon/System/SystemIcon';
 import { Heading } from '../Typography/Heading/Heading';
 import {
   accordionButtonClass,
   accordionContentClass,
+  accordionContentOpenClass,
+  accordionContentWrapperClass,
   accordionSectionClass,
+  defaultIconClass,
+  rotatedIconClass,
 } from './Accordion.css';
-import { useAccordionItem } from './useAccordionItem';
+import classNames from 'classnames';
 
 interface IAccordionItemProps<T> {
   item: Node<T>;
@@ -19,7 +24,7 @@ export function AccordionItem<T>(props: IAccordionItemProps<T>) {
   const ref = useRef<HTMLButtonElement>(null);
   const { state, item } = props;
   const { buttonProps, regionProps } = useAccordionItem<T>(props, state, ref);
-  const isOpen = state.selectionManager.isSelected(item.key);
+  const isOpen = state.expandedKeys.has(item.key);
   const isDisabled = state.disabledKeys.has(item.key);
   const { hoverProps } = useHover({ isDisabled });
   const { focusProps } = useFocusRing({
@@ -32,26 +37,30 @@ export function AccordionItem<T>(props: IAccordionItemProps<T>) {
       data-open={isOpen}
       data-disabled={isDisabled}
     >
-      <Heading variant="h3">
+      <Heading as="h3">
         <button
           {...mergeProps(hoverProps, buttonProps, focusProps)}
           ref={ref}
           className={accordionButtonClass}
         >
           {item.props.title}
-          {isOpen ? (
-            <Close size="sm" data-open={isOpen} />
-          ) : (
-            <Plus size="sm" data-open={isOpen} />
-          )}
+          <Plus
+            size="sm"
+            data-open={isOpen}
+            className={isOpen ? rotatedIconClass : defaultIconClass}
+          />
         </button>
       </Heading>
       <div
         {...regionProps}
-        className={accordionContentClass}
+        className={classNames(accordionContentClass, {
+          [accordionContentOpenClass]: isOpen,
+        })}
         data-open={isOpen}
       >
-        {item.props.children}
+        <div className={accordionContentWrapperClass}>
+          {item.props.children}
+        </div>
       </div>
     </section>
   );
