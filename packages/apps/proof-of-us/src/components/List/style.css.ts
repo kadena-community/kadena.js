@@ -3,7 +3,7 @@ import { style } from '@vanilla-extract/css';
 
 export const listClass = style({
   listStyle: 'none',
-  paddingInline: '20px',
+  paddingInline: '0',
   width: '100%',
   overflowY: 'scroll',
   flex: 1,

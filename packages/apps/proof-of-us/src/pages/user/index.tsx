@@ -41,7 +41,7 @@ const Page: FC = () => {
                 </IconButton>
               )}
             />
-            <Stack flex={1}>
+            <Stack flex={1} width="100%">
               {tokens.length === 0 ? (
                 <Stack
                   flexDirection="column"

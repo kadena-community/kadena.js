@@ -18,6 +18,7 @@ export const useSignToken = () => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
+  const transaction = searchParams.get('transaction');
 
   const createTx = async () => {
     if (!proofOfUs || !account) return;
@@ -53,10 +54,11 @@ export const useSignToken = () => {
   };
 
   const sign = async () => {
-    const transaction = searchParams.get('transaction');
+    console.log('transaction', transaction, hasSigned());
     if (!transaction || hasSigned()) return;
 
     const signees = updateSigner({ signerStatus: 'success' }, true);
+    console.log(9999999, signees);
     await updateProofOfUs({
       tx: transaction,
       status: haveAllSigned(signees) ? 4 : 3,
@@ -66,12 +68,12 @@ export const useSignToken = () => {
     setIsLoading(false);
     setHasError(false);
 
-    router.replace(getReturnUrl());
+    //router.replace(getReturnUrl());
   };
 
   useEffect(() => {
     sign();
-  }, [searchParams]);
+  }, [searchParams, transaction]);
 
   const signToken = async () => {
     if (!proofOfUs || !account) return;
@@ -95,7 +97,6 @@ export const useSignToken = () => {
         signees: updateSigner({ signerStatus: 'signing' }, true),
       });
     } else {
-      console.log(1111);
       await updateProofOfUs({
         signees: updateSigner({ signerStatus: 'signing' }, true),
       });
