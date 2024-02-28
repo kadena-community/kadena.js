@@ -51,6 +51,7 @@ export const tagInfoWrapperClass = style([
     position: 'absolute',
     top: '0',
     width: '100%',
+    background: 'linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.00) 91.67%)',
   },
 ]);
 export const tagInfoClass = style([
@@ -62,8 +63,9 @@ export const tagInfoClass = style([
   }),
   {
     flex: 1,
-    backgroundColor: `${deviceColors.orange}1f`,
+    backgroundColor: 'rgba(112, 83, 0, 0.20)',
     backdropFilter: 'blur(10px)',
     textShadow: `1px 1px 0 ${deviceColors.kadenaBlack}45`,
+    borderRadius: '8px',
   },
 ]);

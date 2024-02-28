@@ -13,7 +13,7 @@ interface IProps {
 
 export const TagInfo: FC<IProps> = ({ handleClose }) => {
   return (
-    <Stack className={tagInfoWrapperClass}>
+    <Stack className={tagInfoWrapperClass} borderRadius="lg">
       <div className={tagInfoClass}>
         <Heading as="h6">
           <Stack

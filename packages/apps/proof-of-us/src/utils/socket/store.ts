@@ -74,10 +74,18 @@ const ProofOfUsStore = () => {
 
       console.log({ data });
 
-      const dataArray = Object.entries(data)
-        .map(([key, value]) => value as IAccountLeaderboard)
-        .sort((a, b) => (a.tokenCount < b.tokenCount ? 1 : -1));
+      const getAccountName = (str: string) =>
+        `${str.substring(0, 6)}...${str.substring(str.length - 4)}`;
 
+      const dataArray = Object.entries(
+        data as Record<string, IAccountLeaderboard>,
+      )
+        .map(([key, value]) => ({
+          accountName: getAccountName(value.accountName),
+          alias: value.alias,
+          tokenCount: value.tokenCount || 0,
+        }))
+        .sort((a, b) => (a.tokenCount < b.tokenCount ? 1 : -1));
       setDataCallback(dataArray);
     });
   };
