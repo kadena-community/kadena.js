@@ -1,0 +1,204 @@
+import React, { useEffect, useState } from 'react';
+
+import { AccountNameField } from '@/components/Global/AccountNameField';
+import {
+  Button,
+  Card,
+  Heading,
+  Stack,
+  SystemIcon,
+  TabItem,
+  Tabs,
+  Text,
+} from '@kadena/react-ui';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import AddPublicKeysSection from '@/components/Global/AddPublicKeysSection';
+import { ChainSelect } from '@/components/Global/ChainSelect';
+import type { PredKey } from '@/components/Global/PredKeysSelect';
+import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
+import { chainSelectContainerClass } from './styles.css';
+
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
+import { stripAccountPrefix } from '@/utils/string';
+import { useQuery } from '@tanstack/react-query';
+import useTranslation from 'next-translate/useTranslation';
+import type { FormData } from './sign-form';
+
+import { createPrincipal } from '@/services/faucet/create-principal';
+
+export const SignFormReceiver = () => {
+  const { t } = useTranslation('common');
+
+  const { selectedNetwork: network, networksData } = useWalletConnectClient();
+
+  const {
+    control,
+    formState: { errors },
+    getValues,
+    watch,
+    setValue,
+  } = useFormContext<FormData>();
+
+  const receiverData = useAccountDetailsQuery({
+    account: getValues('receiver'),
+    networkId: network,
+    chainId: getValues('receiverChainId'),
+  });
+
+  const renderAccountFieldWithChain = (tab: string) => (
+    <Stack flexDirection={'column'} gap={'md'}>
+      <Controller
+        name="receiver"
+        control={control}
+        render={({ field }) => (
+          <AccountNameField
+            {...field}
+            isInvalid={!!errors.receiver}
+            errorMessage={errors.receiver?.message}
+            label={t('The account name to fund coins to')}
+            isDisabled={tab === 'new'}
+            endAddon={
+              <Button
+                icon={<SystemIcon.ContentCopy />}
+                variant="text"
+                onPress={async () => {
+                  await navigator.clipboard.writeText(field.value);
+                }}
+                aria-label="Copy Account Name"
+                title="Copy Account Name"
+                color="primary"
+                type="button"
+              />
+            }
+          />
+        )}
+      />
+      <div className={chainSelectContainerClass}>
+        <Controller
+          name="receiverChainId"
+          control={control}
+          render={({ field: { onChange, value, ...rest } }) => (
+            <ChainSelect
+              {...rest}
+              selectedKey={value}
+              id="receiverChainId"
+              onSelectionChange={(chainId) => onChange(chainId)}
+              isInvalid={!!errors.receiverChainId}
+              errorMessage={errors.receiverChainId?.message}
+            />
+          )}
+        />
+      </div>
+    </Stack>
+  );
+
+  const [toAccountTab, setToAccountTab] = useState<'new' | 'existing'>(
+    'existing',
+  );
+
+  const [pubKeys, setPubKeys] = useState<string[]>([]);
+
+  const [initialPublicKey, setInitialPublicKey] = useState<string>('');
+
+  const deletePublicKey = () => setValue('receiver', '');
+
+  const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
+
+  if (toAccountTab === 'existing' && receiverData?.error) {
+    setToAccountTab('new');
+    setInitialPublicKey(stripAccountPrefix(getValues('receiver')));
+    setTimeout(() => {
+      setValue('receiver', '');
+    }, 100);
+  }
+
+  const watchReceiverChainId = watch('receiverChainId');
+
+  const { data: receiverName } = useQuery({
+    queryKey: [
+      'receiverName',
+      pubKeys,
+      watchReceiverChainId,
+      pred,
+      network,
+      networksData,
+    ],
+    queryFn: () => createPrincipal(pubKeys, watchReceiverChainId, pred),
+    enabled: pubKeys.length > 0,
+    placeholderData: '',
+    keepPreviousData: true,
+  });
+
+  useEffect(() => {
+    if (toAccountTab === 'new') {
+      setValue(
+        'receiver',
+        typeof receiverName === 'string' && pubKeys.length > 0
+          ? receiverName
+          : '',
+      );
+    }
+  }, [
+    receiverName,
+    watchReceiverChainId,
+    setValue,
+    toAccountTab,
+    pubKeys.length,
+  ]);
+
+  return (
+    <Card fullWidth>
+      <Heading as={'h4'}>{t('Receiver')} </Heading>
+      <Tabs
+        aria-label="receiver-account-tabs"
+        selectedKey={toAccountTab}
+        onSelectionChange={(value) =>
+          setToAccountTab(value as 'new' | 'existing')
+        }
+      >
+        <TabItem key="existing" title="Existing">
+          {renderAccountFieldWithChain('existing')}
+          {receiverData.isFetching ? (
+            <Stack flexDirection={'row'}>
+              <SystemIcon.Information />
+              <Text as={'span'} color={'emphasize'}>
+                Fetching receiver account data..
+              </Text>
+            </Stack>
+          ) : null}
+        </TabItem>
+
+        <TabItem key="new" title="New">
+          <Stack flexDirection={'column'} gap={'md'}>
+            <AddPublicKeysSection
+              publicKeys={pubKeys}
+              deletePubKey={deletePublicKey}
+              setPublicKeys={setPubKeys}
+              initialPublicKey={initialPublicKey}
+            />
+            {pubKeys.length > 1 ? (
+              <PredKeysSelect
+                onSelectionChange={onPredSelectChange}
+                selectedKey={pred}
+                aria-label="Select Predicate"
+              />
+            ) : null}
+
+            {renderAccountFieldWithChain('new')}
+
+            {receiverData.isFetching ? (
+              <Stack flexDirection={'row'}>
+                <SystemIcon.Information />
+                <Text as={'span'} color={'emphasize'}>
+                  Fetching receiver account data..
+                </Text>
+              </Stack>
+            ) : null}
+          </Stack>
+        </TabItem>
+      </Tabs>
+    </Card>
+  );
+};
