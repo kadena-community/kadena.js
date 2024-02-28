@@ -10,7 +10,7 @@ import { getReturnUrl } from '@/utils/getReturnUrl';
 import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 
@@ -29,6 +29,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     useClaimAttendanceToken();
   const router = useRouter();
 
+  const searchParams = useSearchParams();
   const { account, isMounted, login } = useAccount();
   const { doSubmit, isStatusLoading } = useSubmit();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -49,19 +50,22 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   // }, []);
 
   useEffect(() => {
+    const transaction = searchParams.get('transaction') ?? '';
+    if (!transaction) return;
+    const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
+    //console.log({ transaction, tx });
+    const d = {
+      ...data,
+      requestKey: tx.hash,
+      mintStatus: 'init',
+    } as IProofOfUsTokenMetaWithkey;
+    addMintingData(d);
     doSubmit();
   }, []);
 
   const handleClaim = async () => {
     const transaction = await claim(eventId);
     if (!transaction) return;
-
-    const d = {
-      ...data,
-      requestKey: transaction.hash,
-      mintStatus: 'init',
-    } as IProofOfUsTokenMetaWithkey;
-    addMintingData(d);
 
     router.push(
       `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${Buffer.from(
