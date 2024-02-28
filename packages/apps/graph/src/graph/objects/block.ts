@@ -98,30 +98,22 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
         }),
       }),
       select: {
-        hash: true,
+        transactions: true,
       },
       async totalCount(parent) {
         try {
-          return await prismaClient.transaction.count({
-            where: {
-              blockHash: (parent as Block).hash,
-            },
-          });
+          return (
+            parent as Prisma.BlockGetPayload<{ select: { transactions: true } }>
+          ).transactions.length;
         } catch (error) {
           throw normalizeError(error);
         }
       },
-      async resolve(query, parent) {
+      async resolve(__query, parent) {
         try {
-          return await prismaClient.transaction.findMany({
-            ...query,
-            where: {
-              blockHash: (parent as Block).hash,
-            },
-            orderBy: {
-              height: 'desc',
-            },
-          });
+          return (
+            parent as Prisma.BlockGetPayload<{ select: { transactions: true } }>
+          ).transactions;
         } catch (error) {
           throw normalizeError(error);
         }
@@ -139,30 +131,22 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
         }),
       }),
       select: {
-        hash: true,
+        events: true,
       },
       async totalCount(parent) {
         try {
-          return await prismaClient.event.count({
-            where: {
-              blockHash: (parent as Block).hash,
-            },
-          });
+          return (
+            parent as Prisma.BlockGetPayload<{ select: { events: true } }>
+          ).events.length;
         } catch (error) {
           throw normalizeError(error);
         }
       },
       async resolve(query, parent) {
         try {
-          return await prismaClient.event.findMany({
-            ...query,
-            where: {
-              blockHash: (parent as Block).hash,
-            },
-            orderBy: {
-              orderIndex: 'asc',
-            },
-          });
+          return (
+            parent as Prisma.BlockGetPayload<{ select: { events: true } }>
+          ).events;
         } catch (error) {
           throw normalizeError(error);
         }

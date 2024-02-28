@@ -105,16 +105,11 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
-        blockHash: true,
+        block: true,
       },
-      async resolve(query, parent) {
+      async resolve(__query, parent) {
         try {
-          return await prismaClient.block.findUnique({
-            ...query,
-            where: {
-              hash: parent.blockHash,
-            },
-          });
+          return parent.block;
         } catch (error) {
           throw normalizeError(error);
         }
@@ -124,22 +119,13 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     events: t.prismaField({
       type: [Prisma.ModelName.Event],
       nullable: true,
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
-        blockHash: true,
-        requestKey: true,
+        events: true,
       },
-      async resolve(query, parent) {
+      async resolve(__query, parent) {
         try {
-          return await prismaClient.event.findMany({
-            ...query,
-            where: {
-              requestKey: parent.requestKey,
-              blockHash: parent.blockHash,
-            },
-            take: PRISMA.DEFAULT_SIZE,
-          });
+          return parent.events;
         } catch (error) {
           throw normalizeError(error);
         }
@@ -149,22 +135,13 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     transfers: t.prismaField({
       type: [Prisma.ModelName.Transfer],
       nullable: true,
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
-        blockHash: true,
-        requestKey: true,
+        transfers: true,
       },
-      async resolve(query, parent) {
+      async resolve(__query, parent) {
         try {
-          return await prismaClient.transfer.findMany({
-            ...query,
-            where: {
-              requestKey: parent.requestKey,
-              blockHash: parent.blockHash,
-            },
-            take: PRISMA.DEFAULT_SIZE,
-          });
+          return parent.transfers;
         } catch (error) {
           throw normalizeError(error);
         }
