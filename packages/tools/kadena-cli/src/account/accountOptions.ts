@@ -93,6 +93,33 @@ export const accountOptions = {
       'Enter an alias account(s) separated by a comma',
     ),
   }),
+  publicKeys: createOption({
+    key: 'publicKeys' as const,
+    prompt: account.publicKeysPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-k, --public-keys <publicKeys>',
+      'Public keys (comma separated)',
+    ),
+    expand: async (publicKeys: string) => {
+      return publicKeys
+        ?.split(',')
+        .map((value) => value.trim())
+        .filter((key) => !!key);
+    },
+  }),
+  fungible: createOption({
+    key: 'fungible' as const,
+    prompt: account.fungiblePrompt,
+    validation: z.string(),
+    option: new Option('-f, --fungible <fungible>', 'Fungible'),
+  }),
+  predicate: createOption({
+    key: 'predicate' as const,
+    prompt: account.predicatePrompt,
+    validation: z.string(),
+    option: new Option('-p, --predicate <predicate>', 'Keyset predicate'),
+  }),
   fundAmount: createOption({
     key: 'amount' as const,
     prompt: account.fundAmountPrompt,

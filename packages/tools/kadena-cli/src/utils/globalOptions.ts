@@ -1,7 +1,6 @@
 import { Option, program } from 'commander';
 import { z } from 'zod';
 import {
-  account,
   generic,
   genericActionsPrompts,
   keys,
@@ -42,33 +41,6 @@ export const globalFlags = {
 
 // eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
-  publicKeys: createOption({
-    key: 'publicKeys' as const,
-    prompt: account.publicKeysPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-p, --public-keys <publicKeys>',
-      'Public keys (comma separated)',
-    ),
-    expand: async (publicKeys: string) => {
-      return publicKeys
-        ?.split(',')
-        .map((value) => value.trim())
-        .filter((key) => !!key);
-    },
-  }),
-  fungible: createOption({
-    key: 'fungible' as const,
-    prompt: account.fungiblePrompt,
-    validation: z.string(),
-    option: new Option('-f, --fungible <fungible>', 'Fungible'),
-  }),
-  predicate: createOption({
-    key: 'predicate' as const,
-    prompt: account.predicatePrompt,
-    validation: z.string(),
-    option: new Option('-p, --predicate <predicate>', 'Keyset predicate'),
-  }),
   // global
   quiet: createOption({
     key: 'quiet' as const,
