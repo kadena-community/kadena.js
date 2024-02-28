@@ -4,6 +4,7 @@ import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import type { FC } from 'react';
+import { AttendanceThumb } from '../Thumb/AttendanceThumb';
 import { ConnectThumb } from '../Thumb/ConnectThumb';
 import { Text } from '../Typography/Text';
 import { listItemClass, listItemLinkClass } from './style.css';
@@ -16,8 +17,12 @@ export const ListItem: FC<IProps> = ({ proofOfUsData }) => {
   if (!proofOfUsData) return null;
 
   const getLink = () => {
-    if (proofOfUsData?.mintStatus === 'success')
-      return `/user/proof-of-us/t/${proofOfUsData.tokenId}`;
+    if (proofOfUsData?.mintStatus === 'success') {
+      if (proofOfUsData.type === 'attendance')
+        return `/user/proof-of-us/t/${proofOfUsData.tokenId}`;
+      if (proofOfUsData.type === 'connect')
+        return `/user/proof-of-us/t/${proofOfUsData.tokenId}/${proofOfUsData.requestKey}`;
+    }
 
     if (!proofOfUsData.tokenId) {
       return `/scan/e/${proofOfUsData.eventId}`;
@@ -35,23 +40,25 @@ export const ListItem: FC<IProps> = ({ proofOfUsData }) => {
     >
       {proofOfUsData && (
         <Link className={listItemLinkClass} href={getLink()}>
-          {/* {innerData.properties.eventType === 'attendance' && (
+          {proofOfUsData.type === 'attendance' && (
             <AttendanceThumb
-              token={innerData}
+              token={proofOfUsData}
               isMinted={
                 proofOfUsData?.mintStatus === 'success' ||
                 proofOfUsData?.mintStatus === undefined
               }
             />
-          )} */}
+          )}
 
-          <ConnectThumb
-            token={proofOfUsData}
-            isMinted={
-              proofOfUsData?.mintStatus === 'success' ||
-              proofOfUsData?.mintStatus === undefined
-            }
-          />
+          {proofOfUsData.type === 'connect' && (
+            <ConnectThumb
+              token={proofOfUsData}
+              isMinted={
+                proofOfUsData?.mintStatus === 'success' ||
+                proofOfUsData?.mintStatus === undefined
+              }
+            />
+          )}
 
           <Stack display="flex" flexDirection="column" gap="xs">
             <Text transform="capitalize" bold>

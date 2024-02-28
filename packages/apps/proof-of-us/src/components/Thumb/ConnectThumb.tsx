@@ -10,6 +10,8 @@ interface IProps {
 }
 export const ConnectThumb: FC<IProps> = ({ token, isMinted = true }) => {
   const invertColor = getContrast(token.backgroundColor ?? '#000');
+
+  console.log({ isMinted, token });
   return (
     <div
       className={classNames(connectThumbClass)}

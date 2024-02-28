@@ -46,7 +46,7 @@ interface IProofOfUsData {
   tx: IUnsignedCommand;
   tokenId: string;
   requestKey: string;
-  manifestUri: string;
+  manifestUri?: string;
   imageUri: string;
   eventId: string;
   mintStatus: IMintStatus;
@@ -73,6 +73,7 @@ interface IProofOfUsToken {
 }
 
 interface IProofOfUsTokenMeta {
+  manifestUri?: string;
   startDate?: int;
   endDate?: int;
   description: string;

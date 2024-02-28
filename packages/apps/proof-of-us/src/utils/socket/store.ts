@@ -48,7 +48,7 @@ const ProofOfUsStore = () => {
   };
 
   const filterProof = (data: IProofOfUsData): boolean => {
-    return !!(data.tokenId && data.requestKey);
+    return !!data.requestKey;
   };
   const listenToUser = (
     account: IAccount,
@@ -57,7 +57,10 @@ const ProofOfUsStore = () => {
     const proofOfUsRef = ref(database, `/proofs/${account.accountName}`);
     onValue(proofOfUsRef, (snapshot) => {
       const data = snapshot.val();
-
+      if (!data) {
+        setDataCallback([]);
+        return;
+      }
       const arr = (Object.entries(data).map(([key, value]) => value) ??
         []) as IProofOfUsData[];
 
