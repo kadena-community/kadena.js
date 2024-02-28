@@ -1,6 +1,7 @@
 import { IPactCommand, IUnsignedCommand, addSignatures } from '@kadena/client';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
 
+import { idToColor } from '@/utils/id-to-color';
 import { accountRepository } from '../account/account.repository';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
@@ -70,12 +71,16 @@ export async function createProfile(
     'buffer',
   );
   await walletRepository.addEncryptedValue(secretId, secret);
+  const uuid = crypto.randomUUID();
+
   const profile: IProfile = {
-    uuid: crypto.randomUUID(),
+    uuid,
     name: profileName,
     networks,
     secretId,
+    hashColor: idToColor(uuid),
   };
+
   await walletRepository.addProfile(profile);
   return profile;
 }
