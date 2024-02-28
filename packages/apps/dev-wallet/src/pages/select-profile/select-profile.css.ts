@@ -7,14 +7,14 @@ export const statusOutlineColor = createVar();
 
 export const cardClass = style([
   atoms({
-    borderRadius: 'sm',
+    borderRadius: 'md',
     padding: 'md',
     textAlign: 'center',
     fontFamily: 'bodyFont',
   }),
   {
     border: '2px solid #FFA500',
-    boxShadow: `0px 4px8px 0 ${token('color.border.base.default')}`,
+    boxShadow: `0px 4px 8px 0 ${token('color.border.base.default')}`,
   },
 ]);
 
