@@ -73,7 +73,6 @@ const ProofOfUsStore = () => {
     account: IAccount,
     setDataCallback: (proofOfUs: IProofOfUsData | undefined) => void,
   ) => {
-    console.log({ account, proofOfUsId });
     const proofOfUsRef = ref(
       database,
       `proofs/${account.accountName}/${proofOfUsId}`,
@@ -103,8 +102,6 @@ const ProofOfUsStore = () => {
       const data = snapshot.val();
 
       if (!data) return [];
-
-      console.log({ data });
 
       const getAccountName = (str: string) =>
         `${str.substring(0, 6)}...${str.substring(str.length - 4)}`;

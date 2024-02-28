@@ -97,6 +97,7 @@ export const ImagePositions: FC<IProps> = () => {
     const xPercentage = ((e.clientX - rect.left) / imgRef.current.width) * 100;
     const yPercentage = ((e.clientY - rect.top) / imgRef.current.height) * 100;
 
+    console.log('update in imageposition click');
     await updateProofOfUs({
       signees: updateSigner({
         position: { xPercentage, yPercentage },
@@ -105,6 +106,7 @@ export const ImagePositions: FC<IProps> = () => {
   };
 
   const handleRemove = async () => {
+    console.log('update in imageposition remove');
     await updateProofOfUs({
       signees: updateSigner({ position: null }),
     });

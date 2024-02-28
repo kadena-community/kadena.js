@@ -54,11 +54,10 @@ export const useSignToken = () => {
   };
 
   const sign = async () => {
-    console.log('transaction', transaction, hasSigned());
     if (!transaction || hasSigned()) return;
 
     const signees = updateSigner({ signerStatus: 'success' }, true);
-    console.log(9999999, signees);
+    console.log('update in signtoken sign');
     await updateProofOfUs({
       tx: transaction,
       status: haveAllSigned(signees) ? 4 : 3,
@@ -89,6 +88,7 @@ export const useSignToken = () => {
         JSON.stringify(transactionData.transaction),
       ).toString('base64');
 
+      console.log('update in signtoken signtoken');
       await updateProofOfUs({
         requestKey: transactionData.transaction?.hash,
         tokenId: transactionData.tokenId,
@@ -97,6 +97,7 @@ export const useSignToken = () => {
         signees: updateSigner({ signerStatus: 'signing' }, true),
       });
     } else {
+      console.log('update in signtoken else');
       await updateProofOfUs({
         signees: updateSigner({ signerStatus: 'signing' }, true),
       });

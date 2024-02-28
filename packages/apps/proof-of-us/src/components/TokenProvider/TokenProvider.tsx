@@ -80,10 +80,19 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     const token = tokens?.find((t) => t.proofOfUsId === listener.proofOfUsId);
     if (!token) return;
 
-    store.updateProofOfUs(token, {
-      tokenId,
-      mintStatus,
-    });
+    const signees = token.signees.map((s) => ({
+      ...s,
+      signerStatus: 'success',
+    })) as IProofOfUsSignee[];
+
+    console.log('update in tokenprovider', signees);
+    store.updateProofOfUs(
+      { ...token, signees },
+      {
+        tokenId,
+        mintStatus,
+      },
+    );
   };
   const listenAll = async () => {
     for (let i = 0; i < listeners.length; i++) {

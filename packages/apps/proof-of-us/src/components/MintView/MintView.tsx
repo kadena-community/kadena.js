@@ -37,6 +37,8 @@ export const MintView: FC<IProps> = () => {
     }
     try {
       const signees = updateSigner({ signerStatus: 'success' }, true);
+
+      console.log('update in mintview');
       await updateProofOfUs({
         status: haveAllSigned(signees) ? 4 : 3,
         signees: signees,
