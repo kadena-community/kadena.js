@@ -293,3 +293,5 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
     </Stack>
   );
 };
+
+export default SubmitTransaction;
