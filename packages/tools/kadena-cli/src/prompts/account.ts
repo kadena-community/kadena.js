@@ -1,9 +1,5 @@
 import { parse } from 'node:path';
-import {
-  fundAmountValidation,
-  getAllAccountNames,
-} from '../account/utils/accountHelpers.js';
-import { NO_ACCOUNT_ERROR_MESSAGE } from '../constants/account.js';
+import { fundAmountValidation, getAllAccountNames } from '../account/utils/accountHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   maskStringPreservingStartAndEnd,
@@ -160,11 +156,6 @@ export const accountSelectionPrompt = async (
   options: string[] = [],
 ): Promise<string> => {
   const allAccountChoices = await getAllAccountChoices();
-
-  if (allAccountChoices.length === 0 && !options.includes('allowManualInput')) {
-    throw new Error(NO_ACCOUNT_ERROR_MESSAGE);
-  }
-
   if (options.includes('all')) {
     allAccountChoices.unshift({
       value: 'all',
@@ -206,11 +197,13 @@ export const accountSelectPrompt: IPrompt<string> = async (
 ) => {
   const options =
     previousQuestions.isAllowManualInput === true ? ['allowManualInput'] : [];
-  return accountSelectionPrompt(options);
+  return await accountSelectionPrompt(options);
 };
 
-export const accountSelectAllPrompt: IPrompt<string> = async () => {
-  return accountSelectionPrompt(['all']);
+export const accountSelectAllPrompt: IPrompt<string> = async (
+  previousQuestions,
+) => {
+  return await accountSelectionPrompt(['all']);
 };
 
 export const accountSelectMultiplePrompt: IPrompt<string> = async (
@@ -219,7 +212,6 @@ export const accountSelectMultiplePrompt: IPrompt<string> = async (
   isOptional,
 ) => {
   const allAccountChoices = await getAllAccountChoices();
-
   const selectedAliases = await checkbox({
     message: 'Select an account:(alias - account name)',
     choices: allAccountChoices,

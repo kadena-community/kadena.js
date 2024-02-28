@@ -1,4 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
+import { Prisma } from '@prisma/client';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -8,6 +9,7 @@ import { builder } from '../builder';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
 import type { NonFungibleChainAccount } from '../types/graphql-types';
 import { NonFungibleChainAccountName } from '../types/graphql-types';
+import Token from './token';
 
 export default builder.node(
   builder.objectRef<NonFungibleChainAccount>(NonFungibleChainAccountName),
@@ -40,7 +42,7 @@ export default builder.node(
       chainId: t.exposeID('chainId'),
       accountName: t.exposeString('accountName'),
       nonFungibles: t.field({
-        type: ['Token'],
+        type: [Token],
         complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
         async resolve(parent) {
           try {
@@ -56,7 +58,7 @@ export default builder.node(
         },
       }),
       transactions: t.prismaConnection({
-        type: 'Transaction',
+        type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
         complexity: (args) => ({
