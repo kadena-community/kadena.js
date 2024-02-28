@@ -8,7 +8,7 @@
     "module": "ESNext",
     "declarationDir": "types",
     "outDir": "dist/esm",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "allowJs": true,
     "moduleResolution": "Bundler",
     "removeComments": true
