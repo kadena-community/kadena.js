@@ -12,6 +12,8 @@ import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 
+import type { ChainId } from '@kadena/types';
+import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 import { containerClass } from '../styles.css';
@@ -24,10 +26,15 @@ const TransferPage = () => {
   useToolbar(menuData, router.pathname);
   const { t } = useTranslation('common');
 
-  const [data, setData] = useState(null);
-  const onSignSuccess = useCallback((signData) => {
-    setData(signData);
+  const [data, setData] = useState<PactCommandObject | null>(null);
+  const onSignSuccess = useCallback<
+    (pactCommandObject: PactCommandObject) => void
+  >((pactCommandObject) => {
+    setData(pactCommandObject);
   }, []);
+
+  const [receiverChainId, setReceiverChainId] = useState<ChainId>();
+  const [senderChainId, setSenderChainId] = useState<ChainId>();
 
   return (
     <section className={containerClass}>
@@ -60,8 +67,16 @@ const TransferPage = () => {
           />
         </Notification>
 
-        <SignForm onSignSuccess={onSignSuccess} />
-        <SubmitTransaction data={data} />
+        <SignForm
+          onSuccess={onSignSuccess}
+          onSenderChainUpdate={setSenderChainId}
+          onReceiverChainUpdate={setReceiverChainId}
+        />
+        <SubmitTransaction
+          data={data}
+          receiverChainId={receiverChainId}
+          senderChainId={senderChainId}
+        />
       </Stack>
     </section>
   );

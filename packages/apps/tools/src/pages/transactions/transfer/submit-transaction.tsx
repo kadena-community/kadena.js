@@ -1,6 +1,6 @@
 import type { FormStatus } from '@/components/Global/FormStatusNotification';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
-import { Button, Stack, Text } from '@kadena/react-ui';
+import { Button, Stack, SystemIcon, Text } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useState } from 'react';
@@ -18,16 +18,21 @@ import {
 } from '@/services/transfer/submit-transaction';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
-import type { ITransactionDescriptor } from '@kadena/client';
+import type { ChainId, ITransactionDescriptor } from '@kadena/client';
 
+import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { buttonContainerClass } from './styles.css';
 
 interface ISubmitTransactionProps {
-  transaction?: any;
+  data: PactCommandObject | null;
+  senderChainId?: ChainId;
+  receiverChainId?: ChainId;
 }
 
 export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
-  transaction,
+  data,
+  senderChainId,
+  receiverChainId,
 }) => {
   const { t } = useTranslation('common');
 
@@ -43,14 +48,14 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
 
   const [receiverRequestKey, setReceiverRequestKey] = useState<string>('');
 
-  if (!transaction) {
+  if (!data) {
     return null;
   }
 
   const onSubmit = async () => {
     const submitResponse = (await submitTx(
-      [ledgerSignState.value!.pactCommand],
-      getValues('senderChainId'),
+      [data],
+      senderChainId!,
       network,
       networksData,
     )) as ITransactionDescriptor[];
@@ -63,7 +68,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
     }
 
     const pollResponse = (await pollResult(
-      getValues('senderChainId'),
+      senderChainId!,
       network,
       networksData,
       submitResponse[0],
@@ -81,12 +86,12 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
     }
     setRequestStatus({ status: 'successful' });
 
-    if (!onSameChain) {
+    if (receiverChainId !== senderChainId) {
       console.log('This is cross chain transfer - waiting for SPV proof');
 
       const apiHost = getApiHost({
         api: networkData.API,
-        chainId: getValues('senderChainId'),
+        chainId: senderChainId!,
         networkId: network,
       });
       const { pollCreateSpv, listen } = client(apiHost);
@@ -94,13 +99,10 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
       const requestObject = {
         requestKey: submitResponse[0].requestKey,
         networkId: network,
-        chainId: getValues('senderChainId'),
+        chainId: senderChainId!,
       };
 
-      const proof = await pollCreateSpv(
-        requestObject,
-        getValues('receiverChainId'),
-      );
+      const proof = await pollCreateSpv(requestObject, receiverChainId!);
 
       const status = await listen(requestObject);
       const pactId = status.continuation?.pactId ?? '';
@@ -112,7 +114,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
           rollback: false,
           step: 1,
         },
-        getValues('receiverChainId'),
+        receiverChainId!,
         network,
         networksData,
         850,
@@ -130,13 +132,13 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
 
       try {
         const pollResponseTarget = await listenResult(
-          getValues('receiverChainId'),
+          receiverChainId!,
           network,
           networksData,
           {
             requestKey: requestKeyOrError,
             networkId: network,
-            chainId: getValues('receiverChainId'),
+            chainId: receiverChainId!,
           },
         );
 
@@ -159,30 +161,26 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
 
   return (
     <Stack flexDirection="column" gap="lg">
-      <>
-        <TransactionDetails
-          transactions={{ cmds: [ledgerSignState.value.pactCommand] }}
-        />
-        <div className={buttonContainerClass}>
-          <Button
-            isLoading={ledgerSignState.loading}
-            isDisabled={ledgerSignState.loading}
-            endIcon={<SystemIcon.TrailingIcon />}
-            title={t('Transfer')}
-            onPress={onSubmit}
-          >
-            {t('Transfer')}
-          </Button>
-        </div>
-        <FormStatusNotification
-          status={requestStatus.status}
-          statusBodies={{
-            successful: t('The coins have been funded to the given account.'),
-          }}
-          body={requestStatus.message}
-        />
-        <Text>Target chain request key: {receiverRequestKey}</Text>
-      </>
+      <TransactionDetails transactions={{ cmds: [data] }} />
+      <div className={buttonContainerClass}>
+        <Button
+          // isLoading={ledgerSignState.loading}
+          // isDisabled={ledgerSignState.loading}
+          endIcon={<SystemIcon.TrailingIcon />}
+          title={t('Transfer')}
+          onPress={onSubmit}
+        >
+          {t('Transfer')}
+        </Button>
+      </div>
+      <FormStatusNotification
+        status={requestStatus.status}
+        statusBodies={{
+          successful: t('The coins have been funded to the given account.'),
+        }}
+        body={requestStatus.message}
+      />
+      <Text>Target chain request key: {receiverRequestKey}</Text>
     </Stack>
   );
 };
