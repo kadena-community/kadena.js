@@ -35,7 +35,6 @@ export const getProofOfUs = async (
     ? (result.data as IProofOfUsToken)
     : undefined;
 };
-
 export const getTokenId = async (
   eventId: string,
   uri: string,
@@ -57,6 +56,7 @@ export const getTokenId = async (
     preflight: false,
     signatureVerification: false,
   });
+
   return result.status === 'success' ? (result.data as string) : undefined;
 };
 
@@ -156,13 +156,13 @@ export const claimAttendanceToken = async (
 
 export const hasMintedAttendaceToken = async (
   eventId: string,
-  accountName: string,
+  account: IAccount,
 ): Promise<boolean> => {
   const transaction = Pact.builder
     .execution(
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.has-minted-attendance-token
       "${eventId}" 
-      "${accountName}"
+      "${account.accountName}"
       )`,
     )
     .addData('event-id', `${eventId}`)
@@ -229,6 +229,7 @@ export const createConnectTokenTransaction = async (
       senderAccount: 'proof-of-us-gas-station',
       gasPrice: 0.000001,
       gasLimit: 10000,
+      ttl: 30000
     });
 
   proofOfUs.signees.forEach((signee, idx) => {
