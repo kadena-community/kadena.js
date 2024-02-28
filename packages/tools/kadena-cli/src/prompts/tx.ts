@@ -1,6 +1,6 @@
-import type { IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IUnsignedCommand } from '@kadena/types';
+import chalk from 'chalk';
 import { z } from 'zod';
-
 import { getTransactions } from '../tx/utils/txHelpers.js';
 
 import {
@@ -15,6 +15,7 @@ import { maskStringPreservingStartAndEnd } from '../utils/helpers.js';
 import { log } from '../utils/logger.js';
 import { checkbox, input, select } from '../utils/prompts.js';
 import { tableFormatPrompt } from '../utils/tableDisplay.js';
+import { networkSelectPrompt } from './network.js';
 
 const CommandPayloadStringifiedJSONSchema = z.string();
 const PactTransactionHashSchema = z.string();
@@ -359,3 +360,25 @@ export async function selectSignMethodPrompt(): Promise<
     ],
   });
 }
+
+export const txTransactionNetworks: IPrompt<string[]> = async (
+  args: Record<string, unknown>,
+) => {
+  const commands: (IUnsignedCommand | ICommand)[] = args.commands as (
+    | IUnsignedCommand
+    | ICommand
+  )[];
+
+  const networkPerTransaction: string[] = [];
+  for (const [index] of commands.entries()) {
+    const network = await networkSelectPrompt(
+      {},
+      { networkText: `Select network for transaction ${index + 1}:` },
+      false,
+    );
+
+    networkPerTransaction.push(network);
+  }
+
+  return networkPerTransaction;
+};
