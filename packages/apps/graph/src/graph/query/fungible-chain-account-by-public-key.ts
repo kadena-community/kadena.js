@@ -36,43 +36,30 @@ builder.queryField('fungibleChainAccountByPublicKey', (t) =>
   }),
 );
 
-export async function getChainAccountNameByPublicKey(
+async function getChainAccountNameByPublicKey(
   publicKey: string,
   chainId: string,
 ): Promise<string | undefined> {
-  const result = await prismaClient.transaction.findFirst({
-    where: {
-      AND: [
-        {
-          code: {
-            contains: 'transfer-create',
-          },
-        },
-        {
-          chainId: parseInt(chainId),
-        },
-        {
-          data: {
-            path: ['account-guard', 'keys'],
-            array_contains: publicKey,
-          },
-        },
-        {
-          data: {
-            path: ['account-guard', 'pred'],
-            not: '',
-          },
-        },
-      ],
-    },
-    select: {
-      transfers: {
-        select: { receiverAccount: true },
-        orderBy: { amount: 'desc' },
-        take: 1,
-      },
-    },
-  });
+  const searchPubKey = `%${publicKey}%`;
 
-  return result?.transfers[0].receiverAccount;
+  const result = (await prismaClient.$queryRaw`
+    SELECT to_acct
+    FROM transfers AS tr
+    INNER JOIN transactions AS tx
+      ON tx.block = tr.block AND tx.requestkey = tr.requestkey
+    WHERE
+      tx.data::text LIKE ${searchPubKey}
+      AND tx.chainid = ${BigInt(chainId)}
+      AND
+        (tx.code LIKE '%coin.transfer-create%'
+        OR tx.code LIKE '%coin.create-account%')
+    ORDER BY tr.amount DESC
+    LIMIT 1
+  `) as { to_acct: string }[];
+
+  if (result.length === 0) {
+    return undefined;
+  }
+
+  return result[0].to_acct;
 }
