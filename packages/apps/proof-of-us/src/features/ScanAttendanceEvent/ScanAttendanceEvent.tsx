@@ -4,7 +4,7 @@ import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
-import { useSubmit } from '@/hooks/submit';
+import { SubmitStatus, useSubmit } from '@/hooks/submit';
 import { getReturnUrl } from '@/utils/getReturnUrl';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
 import { store } from '@/utils/socket/store';
@@ -12,19 +12,21 @@ import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import type { FC } from 'react';
+import type { Dispatch, FC, SetStateAction } from 'react';
 import { useEffect } from 'react';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
   eventId: string;
   isMinted: boolean;
+  handleIsMinted: Dispatch<SetStateAction<boolean>>;
 }
 
 export const ScanAttendanceEvent: FC<IProps> = ({
   data,
   eventId,
   isMinted,
+  handleIsMinted,
 }) => {
   const { isLoading, hasSuccess, hasError, isPending, claim } =
     useClaimAttendanceToken();
@@ -32,7 +34,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const searchParams = useSearchParams();
 
   const { account, isMounted, login } = useAccount();
-  const { doSubmit, isStatusLoading } = useSubmit();
+  const { doSubmit, isStatusLoading, status } = useSubmit();
 
   const getProof = (
     data: IProofOfUsTokenMeta,
@@ -59,6 +61,12 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
     return proof;
   };
+
+  useEffect(() => {
+    if (status === SubmitStatus.SUCCESS) {
+      handleIsMinted(true);
+    }
+  }, [status]);
 
   useEffect(() => {
     const transaction = searchParams.get('transaction') ?? '';
@@ -124,7 +132,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
           )}
           {hasEnded && <div>the event has ended.</div>}
 
-          {showClaimButton && (
+          {showClaimButton && !isMinted && (
             <Stack flex={1} gap="md">
               <Button>
                 <Link href="/user">Go to dashboard</Link>
