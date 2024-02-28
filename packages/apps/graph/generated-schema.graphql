@@ -464,7 +464,7 @@ type Transaction implements Node {
   transfers: [Transfer!]
 }
 
-"""A transaction cmd."""
+"""A transaction command."""
 type TransactionCommand {
   meta: TransactionMeta!
 
