@@ -8,7 +8,7 @@ import { createCommand } from '../../utils/createCommand.js';
 import { isNotEmptyString } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
-import { getAllAccounts } from '../utils/accountHelpers.js';
+import { ensureAccountAliasFilesExists } from '../utils/accountHelpers.js';
 
 async function deleteAccountDir(): Promise<CommandResult<null>> {
   try {
@@ -55,14 +55,12 @@ export const createAccountDeleteCommand = createCommand(
     accountOptions.accountDeleteConfirmation({ isOptional: false }),
   ],
   async (option) => {
-    const allAccounts = await getAllAccounts();
-    if (allAccounts.length === 0) {
+    const isAccountAliasesExist = await ensureAccountAliasFilesExists();
+    if (!isAccountAliasesExist) {
       return log.error(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
     }
 
-    const { accountAlias } = await option.accountAlias({
-      accounts: allAccounts,
-    });
+    const { accountAlias } = await option.accountAlias();
 
     if (!isNotEmptyString(accountAlias.trim())) {
       return log.error('\nAccount alias is not provided or invalid.\n');

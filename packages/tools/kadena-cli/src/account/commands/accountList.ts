@@ -11,6 +11,7 @@ import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
 import type { IAliasAccountData } from '../types.js';
 import {
+  ensureAccountAliasFilesExists,
   getAllAccounts,
   readAccountFromFile,
 } from '../utils/accountHelpers.js';
@@ -47,8 +48,12 @@ async function accountList(
   accountAlias: string,
 ): Promise<IAliasAccountData[] | undefined> {
   try {
-    const account = await readAccountFromFile(accountAlias);
-    return [account];
+    if (accountAlias === 'all') {
+      return await getAllAccounts();
+    }  else {
+      const account = await readAccountFromFile(accountAlias);
+      return [account];
+    }
   } catch (error) {
     return;
   }
@@ -62,15 +67,13 @@ export const createAccountListCommand: (
   'List all available accounts',
   [accountOptions.accountSelectWithAll()],
   async (option) => {
-    const allAccounts = await getAllAccounts();
+    const isAccountAliasesExist = await ensureAccountAliasFilesExists();
 
-    if (allAccounts.length === 0) {
+    if (!isAccountAliasesExist) {
       return log.error(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
     }
 
-    const { accountAlias } = await option.accountAlias({
-      accounts: allAccounts,
-    });
+    const { accountAlias } = await option.accountAlias();
 
     log.debug('account-list:action', accountAlias);
 
@@ -78,8 +81,7 @@ export const createAccountListCommand: (
       return log.error('No account alias is selected');
     }
 
-    const accountsDetails =
-      accountAlias === 'all' ? allAccounts : await accountList(accountAlias);
+    const accountsDetails = await accountList(accountAlias);
 
     if (!accountsDetails || accountsDetails.length === 0) {
       return log.error(`Selected account alias "${accountAlias}" not found.`);

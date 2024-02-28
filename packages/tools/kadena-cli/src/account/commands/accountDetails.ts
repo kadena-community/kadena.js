@@ -1,4 +1,3 @@
-import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
@@ -7,7 +6,6 @@ import { maskStringPreservingStartAndEnd } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
 import type { IAccountDetailsResult } from '../types.js';
-import { getAllAccounts } from '../utils/accountHelpers.js';
 import type { IGetAccountDetailsParams } from '../utils/getAccountDetails.js';
 import { getAccountDetailsFromChain } from '../utils/getAccountDetails.js';
 
@@ -65,13 +63,7 @@ export const createAccountDetailsCommand = createCommand(
     globalOptions.fungible({ isOptional: true }),
   ],
   async (option) => {
-    const allAccounts = await getAllAccounts();
-    if (allAccounts.length === 0) {
-      return log.error(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
-    }
-
     const { account, accountConfig } = await option.account({
-      accounts: allAccounts,
       isAllowManualInput: true,
     });
 

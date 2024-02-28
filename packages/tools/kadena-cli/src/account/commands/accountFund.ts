@@ -13,7 +13,7 @@ import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
-import { getAllAccounts } from '../utils/accountHelpers.js';
+import { ensureAccountAliasFilesExists } from '../utils/accountHelpers.js';
 import { fund } from '../utils/fund.js';
 
 // const deployDevnet = createOption({
@@ -36,8 +36,9 @@ export const createAccountFundCommand = createCommand(
     // deployDevnet(),
   ],
   async (option) => {
-    const allAccounts = await getAllAccounts();
-    if (allAccounts.length === 0) {
+    const isAccountAliasesExist = await ensureAccountAliasFilesExists();
+
+    if (!isAccountAliasesExist) {
       return log.error(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
     }
 

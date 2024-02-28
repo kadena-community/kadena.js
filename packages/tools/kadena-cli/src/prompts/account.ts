@@ -1,6 +1,5 @@
 import { parse } from 'node:path';
-import type { IAliasAccountData } from '../account/types.js';
-import { fundAmountValidation } from '../account/utils/accountHelpers.js';
+import { fundAmountValidation, getAllAccountNames } from '../account/utils/accountHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   maskStringPreservingStartAndEnd,
@@ -130,12 +129,16 @@ export const accountOverWritePrompt: IPrompt<boolean> = async () =>
     ],
   });
 
-export const getAccountChoices = async (
-  accounts: IAliasAccountData[],
-): Promise<{ value: string; name: string }[]> => {
-  const maxAliasLength = Math.max(...accounts.map(({ alias }) => alias.length));
+export const getAllAccountChoices = async (): Promise<
+  { value: string; name: string }[]
+> => {
+  const allAccounts = await getAllAccountNames();
 
-  return accounts.map(({ alias, name }) => {
+  const maxAliasLength = Math.max(
+    ...allAccounts.map(({ alias }) => alias.length),
+  );
+
+  return allAccounts.map(({ alias, name }) => {
     const aliasWithoutExtension = parse(alias).name;
     const maxLength = maxAliasLength < 25 ? maxAliasLength : 25;
     const paddedAlias = aliasWithoutExtension.padEnd(maxLength, ' ');
@@ -151,18 +154,17 @@ export const getAccountChoices = async (
 
 export const accountSelectionPrompt = async (
   options: string[] = [],
-  accounts: IAliasAccountData[] = [],
 ): Promise<string> => {
-  const choices = await getAccountChoices(accounts);
+  const allAccountChoices = await getAllAccountChoices();
   if (options.includes('all')) {
-    choices.unshift({
+    allAccountChoices.unshift({
       value: 'all',
       name: 'All accounts',
     });
   }
 
   if (options.includes('allowManualInput')) {
-    choices.unshift({
+    allAccountChoices.unshift({
       value: 'custom',
       name: 'Enter an account name manually:',
     });
@@ -170,7 +172,7 @@ export const accountSelectionPrompt = async (
 
   const selectedAlias = await select({
     message: 'Select an account:(alias - account name)',
-    choices: choices,
+    choices: allAccountChoices,
   });
 
   if (selectedAlias === 'custom') {
@@ -195,19 +197,13 @@ export const accountSelectPrompt: IPrompt<string> = async (
 ) => {
   const options =
     previousQuestions.isAllowManualInput === true ? ['allowManualInput'] : [];
-  return await accountSelectionPrompt(
-    options,
-    previousQuestions.accounts as IAliasAccountData[],
-  );
+  return await accountSelectionPrompt(options);
 };
 
 export const accountSelectAllPrompt: IPrompt<string> = async (
   previousQuestions,
 ) => {
-  return await accountSelectionPrompt(
-    ['all'],
-    previousQuestions.accounts as IAliasAccountData[],
-  );
+  return await accountSelectionPrompt(['all']);
 };
 
 export const accountSelectMultiplePrompt: IPrompt<string> = async (
@@ -215,12 +211,10 @@ export const accountSelectMultiplePrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const choices = await getAccountChoices(
-    previousQuestions.accounts as IAliasAccountData[],
-  );
+  const allAccountChoices = await getAllAccountChoices();
   const selectedAliases = await checkbox({
     message: 'Select an account:(alias - account name)',
-    choices,
+    choices: allAccountChoices,
   });
 
   return selectedAliases.join(',');
