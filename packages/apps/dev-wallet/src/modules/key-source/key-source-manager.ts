@@ -1,40 +1,31 @@
 import { IKeySource } from '../wallet/wallet.repository';
+import { createBIP44Service } from './hd-wallet/BIP44';
+import { createChainweaverService } from './hd-wallet/chainweaver';
 import { IKeySourceService } from './interface';
 
 export interface IKeySourceManager {
-  get(source: IKeySource['source']): Promise<IKeySourceService>;
+  get(source: IKeySource['source']): IKeySourceService;
   reset(): void;
 }
 
 function createKeySourceManager(): IKeySourceManager {
-  let bip44: IKeySourceService;
-  let chainweaver: IKeySourceService;
+  const bip44 = createBIP44Service();
+  const chainweaver = createChainweaverService();
   return {
-    async get(
-      source: 'HD-BIP44' | 'HD-chainweaver',
-    ): Promise<IKeySourceService> {
+    get(source: 'HD-BIP44' | 'HD-chainweaver'): IKeySourceService {
       switch (source) {
         case 'HD-BIP44':
-          if (bip44) return bip44;
-          return import('./hd-wallet/BIP44').then((module) => {
-            bip44 = module.createBIP44Service();
-            return bip44;
-          });
-
+          return bip44;
         case 'HD-chainweaver':
-          if (chainweaver) return chainweaver;
-          return import('./hd-wallet/chainweaver').then((module) => {
-            chainweaver = module.createChainweaverService();
-            return chainweaver;
-          });
+          return chainweaver;
 
         default:
           throw new Error(`Key source service not found for ${source}`);
       }
     },
     reset() {
-      bip44?.disconnect();
-      chainweaver?.disconnect();
+      createBIP44Service().disconnect();
+      createChainweaverService().disconnect();
     },
   };
 }
