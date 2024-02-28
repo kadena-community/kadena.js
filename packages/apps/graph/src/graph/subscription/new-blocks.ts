@@ -1,6 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Block } from '@prisma/client';
-import { dotenv } from '@utils/dotenv';
+import { chainIds as defaultChainIds } from '@utils/chains';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
@@ -10,20 +10,21 @@ builder.subscriptionField('newBlocks', (t) =>
   t.field({
     description: 'Subscribe to new blocks.',
     args: {
-      chainIds: t.arg.intList({ required: false }),
+      chainIds: t.arg.stringList({ required: false }),
     },
     type: [GQLBlock],
     nullable: true,
     subscribe: (__root, args, context) =>
-      iteratorFn(args.chainIds as number[] | undefined, context),
+      iteratorFn(
+        args.chainIds?.length ? args.chainIds : defaultChainIds,
+        context,
+      ),
     resolve: (parent) => parent,
   }),
 );
 
 async function* iteratorFn(
-  chainIds: number[] = Array.from(new Array(dotenv.CHAIN_COUNT)).map(
-    (__, i) => i,
-  ),
+  chainIds: string[],
   context: IContext,
 ): AsyncGenerator<Block[], void, unknown> {
   const startingTimestamp = new Date().toISOString();
@@ -52,7 +53,7 @@ async function* iteratorFn(
 }
 
 async function getLastBlocks(
-  chainIds: number[],
+  chainIds: string[],
   date: string,
   id?: number,
 ): Promise<Block[]> {
@@ -77,7 +78,10 @@ async function getLastBlocks(
 
   const foundblocks = await prismaClient.block.findMany({
     ...extendedFilter,
-    where: { ...extendedFilter.where, chainId: { in: chainIds } },
+    where: {
+      ...extendedFilter.where,
+      chainId: { in: chainIds.map((x) => parseInt(x)) },
+    },
   });
 
   return foundblocks.sort((a, b) => b.id - a.id);
