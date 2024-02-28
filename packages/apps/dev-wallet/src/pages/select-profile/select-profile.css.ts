@@ -14,7 +14,7 @@ export const cardClass = style([
   }),
   {
     border: '2px solid #FFA500',
-    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)' /* Card shadow */,
+    boxShadow: `0px 4px8px 0 ${token('color.border.base.default')}`,
   },
 ]);
 
