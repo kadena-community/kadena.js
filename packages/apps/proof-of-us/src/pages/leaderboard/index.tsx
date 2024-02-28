@@ -17,9 +17,11 @@ import {
   winnerClass,
   winnerListClass,
 } from '@/styles/leaderboard.css';
+import { MonoArrowBack } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import cn from 'classnames';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import type { FC } from 'react';
 
 const spring = {
@@ -38,7 +40,14 @@ const Page: FC = () => {
       <ScreenHeight>
         <Stack flexDirection="column" flex={1} className={listCounterClass}>
           <Stack marginBlockEnd="lg">
-            <TitleHeader label="Leaderboard" />
+            <TitleHeader
+              Prepend={() => (
+                <Link href="/user">
+                  <MonoArrowBack />
+                </Link>
+              )}
+              label="Leaderboard"
+            />
           </Stack>
           <Heading as="h6">The Platinum Connector</Heading>
           {winnerList && (
