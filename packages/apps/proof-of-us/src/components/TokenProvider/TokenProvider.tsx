@@ -116,6 +116,17 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
             'success',
           );
         }
+        if (
+          promises[1] &&
+          promises[1][listener.requestKey] &&
+          promises[1][listener.requestKey].result?.status === 'failure'
+        ) {
+          updateToken(
+            promises[1][listener.requestKey].result.data,
+            listener,
+            'error',
+          );
+        }
         if (promises[0]) {
           removeMintingToken(listener);
         }
