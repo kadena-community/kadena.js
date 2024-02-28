@@ -23,12 +23,15 @@ import type { DerivationMode } from '@/hooks/use-ledger-public-key';
 import useLedgerPublicKey, {
   derivationModes,
 } from '@/hooks/use-ledger-public-key';
+import {
+  chainSelectContainerClass,
+  notificationLinkStyle,
+} from '@/pages/transactions/transfer/styles.css';
 import type { ChainId } from '@kadena/types';
 import useTranslation from 'next-translate/useTranslation';
 import { Controller, useFormContext } from 'react-hook-form';
 import { LedgerDetails } from './ledger-details';
 import type { FormData } from './sign-form';
-import { chainSelectContainerClass, notificationLinkStyle } from './styles.css';
 
 const accountFromOptions = ['Ledger', 'WalletConnect'] as const;
 

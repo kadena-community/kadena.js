@@ -20,8 +20,8 @@ import React, { useCallback, useState } from 'react';
 import { containerClass } from '../styles.css';
 import { notificationLinkStyle } from './styles.css';
 
-import { SignForm } from './sign-form';
-import { SubmitTransaction } from './submit-transaction';
+import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
+import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
 
 const TransferPage = () => {
   const router = useRouter();

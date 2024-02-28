@@ -109,7 +109,7 @@
   },
   {
     "name": "@kadena/kadena-cli",
-    "version": "0.0.1-alpha.1",
+    "version": "0.0.1-alpha.4",
     "private": false,
     "path": "packages/tools/kadena-cli"
   },
@@ -144,6 +144,12 @@
     "path": "packages/apps/proof-of-us"
   },
   {
+    "name": "@kadena/react-components",
+    "version": "0.1.2",
+    "private": true,
+    "path": "packages/libs/react-icons"
+  },
+  {
     "name": "@kadena/react-icons",
     "version": "0.0.1",
     "private": true,
@@ -154,6 +160,12 @@
     "version": "0.8.1",
     "private": false,
     "path": "packages/libs/react-ui"
+  },
+  {
+    "name": "@kadena/toolbox",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/libs/toolbox"
   },
   {
     "name": "@kadena/toolbox",

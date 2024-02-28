@@ -243,6 +243,7 @@
   "link-to-tracker": "Track the transaction <0>HERE</0>",
   "link-to-finisher": "You can stay on this page to automatically finalize the transfer, or you can copy <0>this link</0> to finish manually.",
   "cross-chain-transfer-initiated": "You're about to make a Cross Chain Transfer.",
+  "fetching-receiver-data": "Fetching receiver account data..",
   "ledger tooltip content": "Change ledger key. You can use any number (from the pre-defined 100).",
   "how-to-networks": "You can choose the Network in the top navigation bar between the default \"Testnet\" and \"Mainnet\" initially. You also have the option to add a custom network (like the local devnet) and you have the instructions on how to to that <0>HERE</0>. Choosing the chain is connected to the available operations that you can perform and you'll have the option available when doing one",
   "Target Chain Request key: ": "Target Chain Request key: ",

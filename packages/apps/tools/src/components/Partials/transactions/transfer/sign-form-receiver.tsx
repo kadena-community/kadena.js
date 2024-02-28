@@ -17,7 +17,7 @@ import AddPublicKeysSection from '@/components/Global/AddPublicKeysSection';
 import { ChainSelect } from '@/components/Global/ChainSelect';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
-import { chainSelectContainerClass } from './styles.css';
+import { chainSelectContainerClass } from '@/pages/transactions/transfer/styles.css';
 
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { AccountDetails } from '@/hooks/use-account-details-query';
@@ -216,10 +216,10 @@ export const SignFormReceiver = ({
             {renderAccountFieldWithChain('new')}
 
             {receiverData.isFetching ? (
-              <Stack flexDirection={'row'}>
+              <Stack flexDirection={'row'} marginBlockStart={'md'}>
                 <SystemIcon.Information />
                 <Text as={'span'} color={'emphasize'}>
-                  Fetching receiver account data..
+                  {t('fetching-receiver-data')}
                 </Text>
               </Stack>
             ) : null}
