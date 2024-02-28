@@ -1,14 +1,19 @@
 import type { Command } from 'commander';
 import { parse } from 'node:path';
+import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
 import { createCommand } from '../../utils/createCommand.js';
 import {
+  isNotEmptyString,
   maskStringPreservingStartAndEnd,
   truncateText,
 } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
 import type { IAliasAccountData } from '../types.js';
-import { getAllAccounts } from '../utils/accountHelpers.js';
+import {
+  getAllAccounts,
+  readAccountFromFile,
+} from '../utils/accountHelpers.js';
 
 function generateTabularData(accounts: IAliasAccountData[]): {
   header: string[];
@@ -38,15 +43,13 @@ function generateTabularData(accounts: IAliasAccountData[]): {
   };
 }
 
-async function accountList(config: {
-  accountAlias: string;
-  accountAliasConfig: IAliasAccountData | undefined;
-}): Promise<IAliasAccountData[] | undefined> {
-  if (config.accountAlias === 'all') {
-    return await getAllAccounts();
-  } else if (config.accountAliasConfig) {
-    return [config.accountAliasConfig];
-  } else {
+async function accountList(
+  accountAlias: string,
+): Promise<IAliasAccountData[] | undefined> {
+  try {
+    const account = await readAccountFromFile(accountAlias);
+    return [account];
+  } catch (error) {
     return;
   }
 }
@@ -59,19 +62,30 @@ export const createAccountListCommand: (
   'List all available accounts',
   [accountOptions.accountSelectWithAll()],
   async (option) => {
-    const accountAlias = await option.accountAlias();
+    const allAccounts = await getAllAccounts();
+
+    if (allAccounts.length === 0) {
+      return log.error(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
+    }
+
+    const { accountAlias } = await option.accountAlias({
+      accounts: allAccounts,
+    });
 
     log.debug('account-list:action', accountAlias);
 
-    const accounts = await accountList(accountAlias);
-
-    if (!accounts) {
-      return log.error(
-        `Selected account "${accountAlias.accountAlias}" not found.`,
-      );
+    if (!isNotEmptyString(accountAlias)) {
+      return log.error('No account alias is selected');
     }
 
-    const tabularData = generateTabularData(accounts);
+    const accountsDetails =
+      accountAlias === 'all' ? allAccounts : await accountList(accountAlias);
+
+    if (!accountsDetails || accountsDetails.length === 0) {
+      return log.error(`Selected account alias "${accountAlias}" not found.`);
+    }
+
+    const tabularData = generateTabularData(accountsDetails);
 
     log.output(log.generateTableString(tabularData.header, tabularData.data));
   },

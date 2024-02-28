@@ -1,12 +1,14 @@
 import { join } from 'path';
+import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
 import { ACCOUNT_DIR } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
+import { isNotEmptyString } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
-import { isEmpty } from '../utils/addHelpers.js';
+import { getAllAccounts } from '../utils/accountHelpers.js';
 
 async function deleteAccountDir(): Promise<CommandResult<null>> {
   try {
@@ -53,16 +55,17 @@ export const createAccountDeleteCommand = createCommand(
     accountOptions.accountDeleteConfirmation({ isOptional: false }),
   ],
   async (option) => {
-    const { accountAlias, accountAliasConfig } = await option.accountAlias();
-
-    if (!accountAliasConfig) {
-      log.error(`\nAccount alias "${accountAlias}" does not exist.\n`);
-      return;
+    const allAccounts = await getAllAccounts();
+    if (allAccounts.length === 0) {
+      return log.error(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
     }
 
-    if (isEmpty(accountAlias.trim())) {
-      log.error('\nAccount alias is not provided or Invalid.\n');
-      return;
+    const { accountAlias } = await option.accountAlias({
+      accounts: allAccounts,
+    });
+
+    if (!isNotEmptyString(accountAlias.trim())) {
+      return log.error('\nAccount alias is not provided or invalid.\n');
     }
 
     const { confirm } = await option.confirm({

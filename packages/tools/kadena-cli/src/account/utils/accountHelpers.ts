@@ -1,11 +1,10 @@
 import yaml from 'js-yaml';
-import { readdirSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import type { ZodError, ZodIssue } from 'zod';
 import { z } from 'zod';
 import type { IAliasAccountData } from './../types.js';
 
-import { NO_ACCOUNT_ERROR_MESSAGE } from '../../constants/account.js';
+import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
 import { ACCOUNT_DIR } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import { notEmpty } from '../../utils/helpers.js';
@@ -63,14 +62,16 @@ export const readAccountFromFile = async (
 
 export async function ensureAccountExists(): Promise<void> {
   if (!(await services.filesystem.directoryExists(ACCOUNT_DIR))) {
-    throw new Error(NO_ACCOUNT_ERROR_MESSAGE);
+    throw new Error(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
   }
 }
 
 export async function getAllAccounts(): Promise<IAliasAccountData[]> {
-  await ensureAccountExists();
+  if (!(await services.filesystem.directoryExists(ACCOUNT_DIR))) {
+    return [];
+  }
 
-  const files = readdirSync(ACCOUNT_DIR);
+  const files = await services.filesystem.readDir(ACCOUNT_DIR);
 
   const allAccounts = await Promise.all(
     files.map((file) => readAccountFromFile(file).catch(() => null)),
