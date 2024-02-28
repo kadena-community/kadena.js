@@ -211,3 +211,5 @@ export const SignFormSender = ({
     </Card>
   );
 };
+
+export default SignFormSender;

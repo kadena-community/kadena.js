@@ -191,3 +191,5 @@ export const SignForm = ({
     </FormProvider>
   );
 };
+
+export default SignForm;
