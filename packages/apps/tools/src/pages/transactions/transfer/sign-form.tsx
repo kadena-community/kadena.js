@@ -6,9 +6,7 @@ import { NAME_VALIDATION } from '@/components/Global/AccountNameField';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
-import useLedgerPublicKey, {
-  getDerivationPath,
-} from '@/hooks/use-ledger-public-key';
+import { getDerivationPath } from '@/hooks/use-ledger-public-key';
 import type {
   ICreateTransferInput,
   ICrossChainInput,
