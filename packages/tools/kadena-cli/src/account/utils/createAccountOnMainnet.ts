@@ -60,9 +60,7 @@ export async function createAccountOnMainnet({
         },
         sign: createSignWithKeypair([keyPair]),
       },
-    )
-      .on('submit', (data) => data)
-      .execute();
+    ).execute();
 
     return {
       success: true,
