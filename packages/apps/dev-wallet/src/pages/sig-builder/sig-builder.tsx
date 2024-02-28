@@ -4,13 +4,14 @@ import {
   IUnsignedCommand,
 } from '@kadena/client';
 
-import { Box, Heading, Text } from '@kadena/react-ui';
+import { Wizard } from '@/Components/Wizard/Wizard';
+import { Box, Button, Heading, Text } from '@kadena/react-ui';
 import { useState } from 'react';
 import { codeArea } from './style.css';
 
 type requestScheme =
   | 'invalid'
-  | 'quickSingRequest'
+  | 'quickSignRequest'
   | 'signingRequest'
   | 'PactCommand';
 
@@ -18,13 +19,10 @@ function determineSchema(input: string): requestScheme {
   let json;
   try {
     // TODO: pase YAML as well
-    json = JSON.parse(
-      input.replace(/\\\\"/g, '<ACTUAL>').replace(/\\"/g, '"'),
-    ).replace(/<ACTUAL>/g, '\\"');
-    console.log('json', json);
+    json = JSON.parse(input);
     if ('cmd' in json) {
       JSON.parse(json.cmd);
-      return 'quickSingRequest';
+      return 'quickSignRequest';
     }
     if ('code' in json) {
       return 'signingRequest';
@@ -33,22 +31,10 @@ function determineSchema(input: string): requestScheme {
       return 'PactCommand';
     }
   } catch (e) {
-    console.log(e, 'input', input);
-    (window as any).__input = input;
     return 'invalid';
   }
   return 'invalid';
 }
-
-// const cmdToTxObject = (cmd: string): IUnsignedCommand => {
-//   const hash = blakeHash(cmd);
-//   const command: IPactCommand = JSON.parse(cmd);
-//   return {
-//     cmd,
-//     hash,
-//     sigs: Array.from(Array(command.signers?.length ?? 0)),
-//   };
-// };
 
 const signingRequestToPactCommand = (
   signingRequest: ISigningRequest,
@@ -73,16 +59,18 @@ const signingRequestToPactCommand = (
 
 export function SigBuilder() {
   const [schema, setSchema] = useState<requestScheme>();
+  const [input, setInput] = useState<string>('');
   const [pactCommand, setPactCommand] = useState<IPartialPactCommand>();
   const [unsignedTx, setUnsignedTx] = useState<IUnsignedCommand>();
   const [capsWithoutSigners, setCapsWithoutSigners] = useState<
     ISigningRequest['caps']
   >([]);
+
   function processSig(sig: string) {
+    setInput(sig);
     const schema = determineSchema(sig);
-    setSchema(schema);
     switch (schema) {
-      case 'quickSingRequest': {
+      case 'quickSignRequest': {
         const parsed: IUnsignedCommand = JSON.parse(sig);
         setPactCommand(JSON.parse(parsed.cmd));
         setUnsignedTx(parsed);
@@ -110,30 +98,111 @@ export function SigBuilder() {
         setCapsWithoutSigners([]);
         break;
     }
+    setSchema(schema);
   }
-
-  console.log('capsWithoutSigners', capsWithoutSigners);
-  console.log('unsignedTx', unsignedTx);
 
   return (
     <main>
-      <Heading variant="h5">Paste SigData, CommandSigData, or Payload</Heading>
-      <textarea
-        className={codeArea}
-        onChange={(e) => {
-          e.preventDefault();
-          processSig(e.target.value);
-        }}
-      />
-      <Box>
-        {schema && <Text>{`Schema: ${schema}`}</Text>}
-        {pactCommand && (
-          <div>
-            <Heading variant="h5">Pact Command</Heading>
-            <pre>{JSON.stringify(pactCommand, null, 2)}</pre>
-          </div>
-        )}
-      </Box>
+      <Wizard>
+        <Wizard.Render>
+          {({ step, goTo }) => (
+            <Box>
+              <Button
+                variant="text"
+                isDisabled={step < 0}
+                onPress={() => goTo(0)}
+              >{`Paste Data`}</Button>
+              {schema !== 'quickSignRequest' && (
+                <Button
+                  variant="text"
+                  isDisabled={step < 1}
+                  onPress={() => goTo(1)}
+                >{`Edit Transaction`}</Button>
+              )}
+              <Button
+                variant="text"
+                isDisabled={step < 2}
+                onPress={() => goTo(2)}
+              >{`Review Transaction`}</Button>
+              <Button
+                variant="text"
+                isDisabled={step < 3}
+                onPress={() => goTo(3)}
+              >{`Sign Transaction`}</Button>
+            </Box>
+          )}
+        </Wizard.Render>
+        <Wizard.Step>
+          {({ goTo }) => (
+            <>
+              <Heading variant="h5">
+                Paste SigData, CommandSigData, or Payload
+              </Heading>
+              <textarea
+                value={input}
+                className={codeArea}
+                onChange={(e) => {
+                  e.preventDefault();
+                  processSig(e.target.value);
+                }}
+              />
+              <Box>{schema && <Text>{`Schema: ${schema}`}</Text>}</Box>
+              <Box>
+                <Box>
+                  {schema === 'quickSignRequest' && (
+                    <>
+                      <Button onPress={() => goTo(2)}>
+                        Review Transaction
+                      </Button>
+                    </>
+                  )}
+                  {(schema === 'PactCommand' ||
+                    schema === 'signingRequest') && (
+                    <Button onPress={() => goTo(1)}>Edit Transaction</Button>
+                  )}
+                </Box>
+              </Box>
+            </>
+          )}
+        </Wizard.Step>
+        <Wizard.Step>
+          {({ back, next }) => (
+            <>
+              <Heading variant="h5">Edit Transaction</Heading>
+              <pre>{JSON.stringify(pactCommand, null, 2)}</pre>
+              {capsWithoutSigners && (
+                <pre>{JSON.stringify(capsWithoutSigners, null, 2)}</pre>
+              )}
+              <Button onPress={() => back()} variant="text">
+                Back to Input
+              </Button>
+              <Button onPress={() => next()}>Review Transaction</Button>
+            </>
+          )}
+        </Wizard.Step>
+        <Wizard.Step>
+          {({ back, goTo }) => (
+            <>
+              <Heading variant="h5">Review Transaction</Heading>
+              <Heading variant="h6">Transaction</Heading>
+              <pre>{JSON.stringify(unsignedTx, null, 2)}</pre>
+              <Heading variant="h6">Pact Command</Heading>
+              <pre>{JSON.stringify(pactCommand, null, 2)}</pre>
+              {schema !== 'quickSignRequest' ? (
+                <Button onPress={() => back()} variant="text">
+                  Back to Edit Transaction
+                </Button>
+              ) : (
+                <Button onPress={() => goTo(0)} variant="text">
+                  Back to Input
+                </Button>
+              )}
+
+              <Button>Sign Transaction</Button>
+            </>
+          )}
+        </Wizard.Step>
+      </Wizard>
     </main>
   );
 }
