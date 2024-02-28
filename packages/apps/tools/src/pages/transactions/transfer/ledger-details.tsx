@@ -30,7 +30,7 @@ export interface ILedgerDetails {
   setLegacyToggleOn: any;
 }
 
-const LedgerDetails = ({
+export const LedgerDetails = ({
   getPublicKey,
   setKeyId,
   legacyToggleOn,
@@ -94,5 +94,3 @@ const LedgerDetails = ({
     </>
   );
 };
-
-export default LedgerDetails;

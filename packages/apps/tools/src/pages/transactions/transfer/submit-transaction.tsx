@@ -1,10 +1,10 @@
 import type { FormStatus } from '@/components/Global/FormStatusNotification';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
-import { Button, Stack, SystemIcon, Text } from '@kadena/react-ui';
+import { Button, Stack, SystemIcon } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useState } from 'react';
-import TransactionDetails from './transaction-details';
+import { SubmitTransactionDetails } from './submit-transaction-details';
 
 import client from '@/constants/client';
 import type { Network } from '@/constants/kadena';
@@ -20,8 +20,16 @@ import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import type { ChainId, ITransactionDescriptor } from '@kadena/client';
 
+import { explorerLinkStyle } from '@/pages/faucet/styles.css';
+import { getExplorerLink } from '@/utils/getExplorerLink';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
-import { buttonContainerClass } from './styles.css';
+import Trans from 'next-translate/Trans';
+import Link from 'next/link';
+import {
+  buttonContainerClass,
+  infoNotificationColor,
+  linkStyle,
+} from './styles.css';
 
 interface ISubmitTransactionProps {
   data: PactCommandObject | null;
@@ -46,7 +54,9 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
     (item) => (network as Network) === item.networkId,
   )[0];
 
+  const [requestKey, setRequestKey] = useState<string>('');
   const [receiverRequestKey, setReceiverRequestKey] = useState<string>('');
+  const onSameChain = senderChainId === receiverChainId;
 
   if (!data) {
     return null;
@@ -67,6 +77,8 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
       });
     }
 
+    setRequestKey(submitResponse[0].requestKey);
+
     const pollResponse = (await pollResult(
       senderChainId,
       network,
@@ -86,7 +98,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
     }
     setRequestStatus({ status: 'successful' });
 
-    if (receiverChainId !== senderChainId) {
+    if (!onSameChain) {
       console.log('This is cross chain transfer - waiting for SPV proof');
 
       const apiHost = getApiHost({
@@ -159,28 +171,125 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
     }
   };
 
+  const linkToExplorer = `${getExplorerLink(
+    requestKey,
+    network,
+    networksData,
+  )}`;
+
+  const linkToTracker = `/transactions/cross-chain-transfer-tracker?reqKey=${requestKey}`;
+
+  const linkToFinisher = `/transactions/cross-chain-transfer-finisher?reqKey=${receiverRequestKey}`;
+
+  const origin =
+    typeof window !== 'undefined' && window.location.origin
+      ? window.location.origin
+      : '';
+  const completeLinkToFinisher = `${origin}/transactions/cross-chain-transfer-finisher?reqKey=${receiverRequestKey}`;
+
   return (
     <Stack flexDirection="column" gap="lg">
-      <TransactionDetails transactions={{ cmds: [data] }} />
-      <div className={buttonContainerClass}>
-        <Button
-          // isLoading={ledgerSignState.loading}
-          // isDisabled={ledgerSignState.loading}
-          endIcon={<SystemIcon.TrailingIcon />}
-          title={t('Transfer')}
-          onPress={onSubmit}
-        >
-          {t('Transfer')}
-        </Button>
-      </div>
-      <FormStatusNotification
-        status={requestStatus.status}
-        statusBodies={{
-          successful: t('The coins have been funded to the given account.'),
-        }}
-        body={requestStatus.message}
-      />
-      <Text>Target chain request key: {receiverRequestKey}</Text>
+      <>
+        <SubmitTransactionDetails transactions={{ cmds: [data] }} />
+        <div className={buttonContainerClass}>
+          <Button
+            // isLoading={ledgerSignState.loading}
+            // isDisabled={ledgerSignState.loading}
+            endIcon={<SystemIcon.TrailingIcon />}
+            title={t('Transfer')}
+            onPress={onSubmit}
+          >
+            {t('Transfer')}
+          </Button>
+        </div>
+        {requestKey !== '' ? (
+          <FormStatusNotification
+            status={'processing'}
+            title={t('Transaction submitted')}
+          >
+            <Stack flexDirection={'row'} alignItems={'center'}>
+              <Trans
+                i18nKey="common:link-to-kadena-explorer"
+                components={[
+                  <Link
+                    className={linkStyle}
+                    href={linkToExplorer}
+                    target={'_blank'}
+                    key={requestKey}
+                  >
+                    {requestKey}
+                  </Link>,
+                ]}
+              />
+              <Button
+                color="primary"
+                icon={<SystemIcon.ContentCopy />}
+                onPress={async () => {
+                  await navigator.clipboard.writeText(requestKey);
+                }}
+                title={t('copy request Key')}
+                aria-label={t('copy request Key')}
+                variant="text"
+              />
+            </Stack>
+
+            <Trans
+              i18nKey="common:link-to-tracker"
+              components={[
+                <Link
+                  className={linkStyle}
+                  href={linkToTracker}
+                  target={'_blank'}
+                  key={requestKey}
+                />,
+              ]}
+            />
+
+            {!onSameChain ? (
+              <Stack flexDirection={'column'} marginBlockStart={'xl'}>
+                <div className={infoNotificationColor}>
+                  {t('cross-chain-transfer-initiated')}
+                </div>
+                <Stack>
+                  <span>
+                    <Trans
+                      i18nKey="common:link-to-finisher"
+                      components={[
+                        <Link
+                          className={explorerLinkStyle}
+                          href={linkToFinisher}
+                          target={'_blank'}
+                          key={requestKey}
+                        />,
+                      ]}
+                    />
+                  </span>
+
+                  <Button
+                    color="primary"
+                    icon={<SystemIcon.ContentCopy />}
+                    onPress={async () => {
+                      await navigator.clipboard.writeText(
+                        completeLinkToFinisher,
+                      );
+                    }}
+                    title={t('copy link to finisher')}
+                    aria-label={t('copy link to finisher')}
+                    variant="text"
+                  />
+                </Stack>
+              </Stack>
+            ) : null}
+          </FormStatusNotification>
+        ) : null}
+        <FormStatusNotification
+          status={requestStatus.status}
+          statusBodies={{
+            successful: t('The coins have been funded to the given account.'),
+          }}
+          body={requestStatus.message}
+        />
+      </>
     </Stack>
   );
 };

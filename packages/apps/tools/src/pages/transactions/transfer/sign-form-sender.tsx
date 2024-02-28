@@ -26,7 +26,7 @@ import useLedgerPublicKey, {
 import type { ChainId } from '@kadena/types';
 import useTranslation from 'next-translate/useTranslation';
 import { Controller, useFormContext } from 'react-hook-form';
-import LedgerDetails from './ledger-details';
+import { LedgerDetails } from './ledger-details';
 import type { FormData } from './sign-form';
 import { chainSelectContainerClass, notificationLinkStyle } from './styles.css';
 
