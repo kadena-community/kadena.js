@@ -1,5 +1,4 @@
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
-import chalk from 'chalk';
 import { z } from 'zod';
 import { getTransactions } from '../tx/utils/txHelpers.js';
 
