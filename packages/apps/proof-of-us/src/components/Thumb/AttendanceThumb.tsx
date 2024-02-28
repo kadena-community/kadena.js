@@ -7,10 +7,7 @@ interface IProps {
 }
 export const AttendanceThumb: FC<IProps> = ({ token }) => {
   return (
-    <motion.div
-      layoutId={token.properties.eventId}
-      className={attendanceThumbClass}
-    >
+    <motion.div layoutId={token.image} className={attendanceThumbClass}>
       <svg
         width="50"
         height="50"

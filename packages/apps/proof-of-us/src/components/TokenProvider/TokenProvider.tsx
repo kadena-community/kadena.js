@@ -36,9 +36,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [mintingTokens]);
 
   const storageListener = (event: StorageEvent) => {
-    console.log('storage', console.log(event));
     if (event.key === 'mintingTokens') {
-      console.log('huh');
       setMintingTokens(getMintingTokensFromLocalStorage());
     }
   };
@@ -52,11 +50,13 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
 
   async function listenForMinting(data: IProofOfUsData) {
     try {
-      const result = await kadenaClient.listen({
-        requestKey: data.requestKey,
-        chainId: env.CHAINID,
-        networkId: env.NETWORKID,
-      });
+      const result = (
+        await kadenaClient.pollStatus({
+          requestKey: data.requestKey,
+          chainId: env.CHAINID,
+          networkId: env.NETWORKID,
+        })
+      )[data.requestKey];
       if (result.result.status === 'success') {
         removeMintingToken(data.requestKey);
         setSuccessMints((v) => [...v, { ...data, mintStatus: 'success' }]);

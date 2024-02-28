@@ -5,6 +5,7 @@
 ```ts
 
 import type { ChainId } from '@kadena/client';
+import { ChainId as ChainId_2 } from '@kadena/types';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
 import { ILocalCommandResult } from '@kadena/chainweb-node-client';
@@ -48,6 +49,24 @@ export const createCrossChainCommand: ({ sender, receiver, amount, targetChainId
 export const details: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => Promise<undefined> | Promise<object>;
 
 // @alpha (undocumented)
+export const discoverAccount: (account: string, networkId: string, host?: IClientConfig['host'], contract?: string) => IEmitterWrapper<[{
+event: "query-result";
+data: {
+result: object | undefined;
+chainId: ChainId_2 | undefined;
+}[];
+}], [{
+event: "chain-result";
+data: {
+result: object;
+chainId: ChainId_2;
+};
+}], Promise<{
+result: object | undefined;
+chainId: ChainId_2 | undefined;
+}[]>>;
+
+// @alpha (undocumented)
 export const getBalance: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => Promise<string | undefined>;
 
 // Warning: (ae-forgotten-export) The symbol "IRotateCommandInput" needs to be exported by the entry point index.d.ts
@@ -85,7 +104,7 @@ data: ITransactionDescriptor;
 }, {
 event: "listen";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<object> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]> | Promise<Record<string, any>>>;
 
 // @alpha (undocumented)
 export const safeTransferCommand: ({ sender, receiver, amount, gasPayer, chainId, contract, }: ISafeTransferInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;

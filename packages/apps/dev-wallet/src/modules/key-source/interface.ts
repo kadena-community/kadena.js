@@ -1,4 +1,4 @@
-import { IKeySource } from '../wallet/wallet.repository';
+import { IKeyItem, IKeySource } from '../wallet/wallet.repository';
 
 export interface ISecretRepository {
   getEncryptedValue: (key: string) => Promise<Uint8Array>;
@@ -6,14 +6,15 @@ export interface ISecretRepository {
 }
 
 export interface IKeySourceService {
-  isReady: () => boolean;
-  createKey: (
-    keySourceId: string,
-    quantity: number,
-  ) => Promise<IKeySource['keys']>;
+  isConnected: () => boolean;
+  disconnect: () => void | Promise<void>;
+  createKey: (keySourceId: string, index?: number) => Promise<IKeyItem>;
   sign(
     message: string,
     keySourceId: string,
     indexes: number[],
   ): Promise<Array<{ sig: string; pubKey: string }>>;
+
+  getPublicKey: (keySource: IKeySource, index: number) => Promise<IKeyItem>;
+  clearCache: () => void | Promise<void>;
 }

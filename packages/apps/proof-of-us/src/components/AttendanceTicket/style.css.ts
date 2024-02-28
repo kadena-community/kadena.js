@@ -21,7 +21,7 @@ export const ticketClass = style([
 export const titleClass = style([
   atoms({
     position: 'absolute',
-    fontWeight: 'headingFont.regular',
+    fontWeight: 'headingFont.bold',
     textTransform: 'capitalize',
   }),
   {

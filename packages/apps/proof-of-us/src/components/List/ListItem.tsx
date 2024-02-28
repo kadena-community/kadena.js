@@ -55,6 +55,10 @@ export const ListItem: FC<IProps> = ({ token, proofOfUsData }) => {
     loadData(data, proofOfUsData);
   }, [data, proofOfUsData, loadData]);
 
+  const link = !proofOfUsData
+    ? `/user/proof-of-us/t/${token?.id}`
+    : `/user/proof-of-us/t/${proofOfUsData.tokenId}/${proofOfUsData.requestKey}`;
+
   return (
     <motion.li
       className={listItemClass}
@@ -64,10 +68,7 @@ export const ListItem: FC<IProps> = ({ token, proofOfUsData }) => {
     >
       {!innerData && <IsLoading />}
       {innerData && (
-        <Link
-          className={listItemLinkClass}
-          href={`/user/proof-of-us/t/${token?.id}`}
-        >
+        <Link className={listItemLinkClass} href={link}>
           {innerData.properties.eventType === 'attendance' && (
             <AttendanceThumb token={innerData} />
           )}
