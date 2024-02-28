@@ -1,5 +1,5 @@
+import { getClient } from '@/utils/client';
 import { getReturnUrl } from '@/utils/getReturnUrl';
-import { createClient } from '@kadena/client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -22,7 +22,7 @@ export const useSubmit = () => {
   const router = useRouter();
 
   const processTransaction = async (transaction: string) => {
-    const client = createClient();
+    const client = getClient();
 
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
     setTx(tx);
@@ -44,7 +44,7 @@ export const useSubmit = () => {
     const innerTransaction = txArg ?? transaction;
     if (!innerTransaction) return;
     setStatus(SubmitStatus.LOADING);
-    const client = createClient();
+    const client = getClient();
 
     const tx = JSON.parse(Buffer.from(innerTransaction, 'base64').toString());
     try {
