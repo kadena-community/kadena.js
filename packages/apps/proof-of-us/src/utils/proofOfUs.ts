@@ -275,8 +275,5 @@ export const createConnectTokenTransaction = async (
 
   const transaction = transactionBuilder.createTransaction();
 
-  console.log(env.CHAINID, env.NETWORKID);
-  console.log({ transaction });
-
   return transaction;
 };

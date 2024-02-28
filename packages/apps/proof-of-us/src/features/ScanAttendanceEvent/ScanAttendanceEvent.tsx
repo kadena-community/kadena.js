@@ -1,7 +1,7 @@
 import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
 import { Button } from '@/components/Button/Button';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
-import { Text } from '@/components/Typography/Text';
+import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
@@ -9,6 +9,7 @@ import { useTokens } from '@/hooks/tokens';
 import { getReturnUrl } from '@/utils/getReturnUrl';
 import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -100,13 +101,26 @@ export const ScanAttendanceEvent: FC<IProps> = ({
           )}
           {hasEnded && <div>the event has ended.</div>}
 
-          {showClaimButton && <Button onPress={handleClaim}>Claim NFT</Button>}
+          {showClaimButton && (
+            <Stack flex={1} gap="md">
+              <Button>
+                <Link href="/user">Go to dashboard</Link>
+              </Button>
+              <Button onPress={handleClaim}>Claim NFT</Button>
+            </Stack>
+          )}
           {isLoading && <MainLoader />}
           {hasError && (
-            <div>
-              what is the error?
-              <Button onPress={handleClaim}>Retry NFT</Button>
-            </div>
+            <Stack width="100%" flexDirection="column" gap="md">
+              <MessageBlock title="Error" variant="error">
+                There was an issue with minting
+              </MessageBlock>
+              <Stack flex={1} gap="md">
+                <Button>
+                  <Link href="/user">Go to dashboard</Link>
+                </Button>
+              </Stack>
+            </Stack>
           )}
 
           {!account && isMounted && (
@@ -115,9 +129,13 @@ export const ScanAttendanceEvent: FC<IProps> = ({
             </Stack>
           )}
           {isMinted && (
-            <Stack width="100%" flexDirection="column">
-              <Text>you are already claiming this token</Text>
-              <Button>Go to dashboard</Button>
+            <Stack width="100%" flexDirection="column" gap="md">
+              <MessageBlock title="Success" variant="success">
+                The token is minted
+              </MessageBlock>
+              <Button>
+                <Link href="/user">Go to dashboard</Link>
+              </Button>
             </Stack>
           )}
         </Stack>
