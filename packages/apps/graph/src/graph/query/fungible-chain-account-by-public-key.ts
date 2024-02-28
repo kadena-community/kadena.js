@@ -42,6 +42,12 @@ async function getChainAccountNameByPublicKey(
 ): Promise<string | undefined> {
   const searchPubKey = `%${publicKey}%`;
 
+  const regex = /^[a-zA-Z0-9]+$/;
+
+  if (publicKey.length !== 64 || !regex.test(publicKey)) {
+    throw new Error('Invalid public key');
+  }
+
   const result = (await prismaClient.$queryRaw`
     SELECT to_acct
     FROM transfers AS tr
