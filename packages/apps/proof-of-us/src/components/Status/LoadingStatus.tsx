@@ -1,6 +1,10 @@
+import {
+  kadenaSpinner,
+  kadenaSpinnerDivDot,
+  kadenaSpinnerDivRing,
+} from '@/styles/loader.css';
 import { Stack } from '@kadena/react-ui';
 import type { FC } from 'react';
-import { kadenaSpinner, kadenaSpinnerDivDot, kadenaSpinnerDivRing } from '@/styles/loader.css';
 
 export const LoadingStatus: FC = () => {
   return (
