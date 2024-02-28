@@ -122,6 +122,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const addSignee = async () => {
     if (!account || !proofOfUs) return;
 
+    console.log('start assignee', proofOfUs);
     await store.addSignee(proofOfUs, getSigneeAccount(account, proofOfUs));
   };
 
@@ -156,12 +157,16 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const updateSigner = (value: any, isOverwrite: boolean = false) => {
+    console.log('updatesigner 1');
     if (!proofOfUs) return [];
+    console.log('updatesigner 2');
     if (!account) return proofOfUs.signees;
 
+    console.log('updatesigner 3', isAlreadySigning(proofOfUs.signees));
     if (!isOverwrite && isAlreadySigning(proofOfUs.signees))
       return proofOfUs.signees;
 
+    console.log('updatesigner 3');
     const newList: IProofOfUsSignee[] = proofOfUs.signees.map((a) => {
       if (a.accountName === account.accountName) {
         return { ...a, ...value };
@@ -169,6 +174,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       return a;
     });
 
+    console.log('updatesigner 4', newList);
     return newList;
   };
   const updateProofOfUs = async (value: any) => {

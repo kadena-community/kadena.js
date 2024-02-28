@@ -72,13 +72,17 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     setListeners(filtered);
   };
 
-  const updateToken = async (tokenId: string, listener: IListener) => {
+  const updateToken = async (
+    tokenId: string,
+    listener: IListener,
+    mintStatus: 'error' | 'success',
+  ) => {
     const token = tokens?.find((t) => t.proofOfUsId === listener.proofOfUsId);
     if (!token) return;
 
     store.updateProofOfUs(token, {
       tokenId,
-      mintStatus: 'success',
+      mintStatus,
     });
   };
   const listenAll = async () => {
@@ -97,13 +101,18 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
           promises[1][listener.requestKey] &&
           promises[1][listener.requestKey].result?.status === 'success'
         ) {
-          updateToken(promises[1][listener.requestKey].result.data, listener);
+          updateToken(
+            promises[1][listener.requestKey].result.data,
+            listener,
+            'success',
+          );
         }
         if (promises[0]) {
           removeMintingToken(listener);
         }
       } catch (e) {
         console.error(e);
+        updateToken('', listener, 'error');
         removeMintingToken(listener);
       }
     }

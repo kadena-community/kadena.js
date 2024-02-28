@@ -48,7 +48,7 @@ const ProofOfUsStore = () => {
   };
 
   const filterProof = (data: IProofOfUsData): boolean => {
-    return !!data.requestKey;
+    return !!(data.requestKey && data.mintStatus !== 'error');
   };
   const listenToUser = (
     account: IAccount,
@@ -142,14 +142,18 @@ const ProofOfUsStore = () => {
     proofOfUs: IProofOfUsData,
     status: IBuildStatusValues,
   ) => {
+    console.log('updatestatus', proofOfUs);
     const signees = proofOfUs.signees;
+
+    const newProof = { ...proofOfUs, status };
     const promises = signees.map((s) => {
-      return update(ref(database, `proofs/${s.accountName}/${proofOfUsId}`), {
-        status,
-      });
+      return update(
+        ref(database, `proofs/${s.accountName}/${proofOfUs.proofOfUsId}`),
+        newProof,
+      );
     });
     promises.push(
-      update(ref(database, `data/${proofOfUsId}`), {
+      update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
         status,
       }),
     );
@@ -161,6 +165,7 @@ const ProofOfUsStore = () => {
     proofOfUs: IProofOfUsData,
     account: IProofOfUsSignee,
   ) => {
+    console.log('addsignee', proofOfUs);
     const signeesList = [...proofOfUs.signees];
     if (!signeesList) return;
 
@@ -181,14 +186,12 @@ const ProofOfUsStore = () => {
       signeesList.length = 2;
     }
 
-    console.log({ signeesList });
+    const newProof = { ...proofOfUs, signees: signeesList };
 
     const promises = signeesList.map((s) => {
       return update(
         ref(database, `proofs/${s.accountName}/${proofOfUs.proofOfUsId}`),
-        {
-          signees: signeesList,
-        },
+        newProof,
       );
     });
 
@@ -205,6 +208,7 @@ const ProofOfUsStore = () => {
     proofOfUs: IProofOfUsData,
     account: IProofOfUsSignee,
   ) => {
+    console.log('removesignee', proofOfUs);
     const signeesList = proofOfUs.signees;
     if (!signeesList) return;
 
@@ -212,12 +216,12 @@ const ProofOfUsStore = () => {
       (s) => s.accountName !== account.accountName,
     );
 
+    const newProof = { ...proofOfUs, signees: signees };
+
     const promises = signees.map((s) => {
       return update(
         ref(database, `proofs/${s.accountName}/${proofOfUs.proofOfUsId}`),
-        {
-          signees: signees,
-        },
+        newProof,
       );
     });
 
@@ -244,13 +248,14 @@ const ProofOfUsStore = () => {
     proofOfUs: IProofOfUsData,
     mintStatus: IMintStatus,
   ) => {
+    console.log('updatemint', proofOfUs);
     const signees = proofOfUs.signees;
+    const newProof = { ...proofOfUs, signees: signees };
+
     const promises = signees.map((s) => {
       return update(
         ref(database, `proofs/${s.accountName}/${proofOfUs.proofOfUsId}`),
-        {
-          mintStatus,
-        },
+        newProof,
       );
     });
     promises.push(
@@ -265,7 +270,10 @@ const ProofOfUsStore = () => {
   const updateProofOfUs = async (proofOfUs: IProofOfUsData, value: any) => {
     const newProof = { ...proofOfUs, ...value };
 
+    console.log('updateproof', value, newProof);
+
     const signees = newProof.signees;
+
     const promises = signees.map((s: IProofOfUsSignee) => {
       return update(
         ref(database, `proofs/${s.accountName}/${newProof.proofOfUsId}`),

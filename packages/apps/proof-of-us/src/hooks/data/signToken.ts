@@ -1,6 +1,7 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { createManifest } from '@/utils/createManifest';
 import { getReturnUrl } from '@/utils/getReturnUrl';
+import { haveAllSigned } from '@/utils/isAlreadySigning';
 import { createConnectTokenTransaction, getTokenId } from '@/utils/proofOfUs';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -53,12 +54,13 @@ export const useSignToken = () => {
 
   const sign = async () => {
     const transaction = searchParams.get('transaction');
-
     if (!transaction || hasSigned()) return;
 
+    const signees = updateSigner({ signerStatus: 'success' }, true);
     await updateProofOfUs({
       tx: transaction,
-      signees: updateSigner({ signerStatus: 'success' }, true),
+      status: haveAllSigned(signees) ? 4 : 3,
+      signees: signees,
     });
 
     setIsLoading(false);
@@ -93,6 +95,7 @@ export const useSignToken = () => {
         signees: updateSigner({ signerStatus: 'signing' }, true),
       });
     } else {
+      console.log(1111);
       await updateProofOfUs({
         signees: updateSigner({ signerStatus: 'signing' }, true),
       });
