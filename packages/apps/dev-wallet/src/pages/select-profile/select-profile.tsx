@@ -21,26 +21,24 @@ export function SelectProfile() {
           gap={'sm'}
           flexWrap="wrap"
         >
-          {profileList.map((profile) => {
-            return (
-              <div key={profile.uuid}>
-                <Link
-                  to={`/unlock-profile/${profile.uuid}`}
-                  style={{ textDecoration: 'none' }}
+          {profileList.map((profile) => (
+            <div key={profile.uuid}>
+              <Link
+                to={`/unlock-profile/${profile.uuid}`}
+                style={{ textDecoration: 'none' }}
+              >
+                <div
+                  className={cardClass}
+                  style={{ backgroundColor: profile.hashColor }}
                 >
-                  <div
-                    className={cardClass}
-                    style={{ backgroundColor: idToColor(profile.uuid) }}
-                  >
-                    <div className={imgClass}>
-                      <InitialsAvatar name={profile.name} />
-                    </div>
-                    <div className={aliasClass}> {profile.name}</div>
+                  <div className={imgClass}>
+                    <InitialsAvatar name={profile.name} />
                   </div>
-                </Link>
-              </div>
-            );
-          })}
+                  <div className={aliasClass}> {profile.name}</div>
+                </div>
+              </Link>
+            </div>
+          ))}
           <Link to="/create-profile" style={{ textDecoration: 'none' }}>
             <div className={cardClass}>
               <div className={imgClass}>

@@ -25,6 +25,7 @@ export interface IProfile {
   name: string;
   networks: INetwork[];
   secretId: string;
+  hashColor: string;
 }
 
 const createWalletRepository = ({
