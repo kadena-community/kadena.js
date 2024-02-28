@@ -229,3 +229,5 @@ export const SignFormReceiver = ({
     </Card>
   );
 };
+
+export default SignFormReceiver;
