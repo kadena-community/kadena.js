@@ -5,9 +5,10 @@ import { gradientClass, imageWrapper, savedImageClass } from './style.css';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
+  image: string;
 }
 
-export const SavedImagePositions: FC<IProps> = ({ data }) => {
+export const SavedImagePositions: FC<IProps> = ({ data, image }) => {
   const imgRef = useRef<HTMLImageElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -67,7 +68,7 @@ export const SavedImagePositions: FC<IProps> = ({ data }) => {
       <section ref={wrapperRef} className={imageWrapper}>
         <img
           ref={imgRef}
-          src={data.image}
+          src={image}
           onLoad={setMarkers}
           className={savedImageClass}
         />

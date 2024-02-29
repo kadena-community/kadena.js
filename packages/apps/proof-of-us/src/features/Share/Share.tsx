@@ -7,8 +7,9 @@ interface IProps {
   tokenId: string;
   data?: IProofOfUsTokenMeta;
   metadataUri?: string;
+  image: string;
 }
-export const Share: FC<IProps> = ({ tokenId, data, metadataUri }) => {
+export const Share: FC<IProps> = ({ tokenId, data, metadataUri, image }) => {
   if (!data) return null;
   return (
     <>
@@ -17,10 +18,16 @@ export const Share: FC<IProps> = ({ tokenId, data, metadataUri }) => {
           data={data}
           tokenId={tokenId}
           metadataUri={metadataUri}
+          image={image}
         />
       )}
       {data.properties.eventType === 'connect' && (
-        <ConnectShare data={data} tokenId={tokenId} metadataUri={metadataUri} />
+        <ConnectShare
+          data={data}
+          tokenId={tokenId}
+          metadataUri={metadataUri}
+          image={image}
+        />
       )}
     </>
   );

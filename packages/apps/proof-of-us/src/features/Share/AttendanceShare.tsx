@@ -20,8 +20,14 @@ interface IProps {
   tokenId: string;
   data?: IProofOfUsTokenMeta;
   metadataUri?: string;
+  image: string;
 }
-export const AttendanceShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
+export const AttendanceShare: FC<IProps> = ({
+  tokenId,
+  data,
+  metadataUri,
+  image,
+}) => {
   const router = useRouter();
 
   if (!data) return null;
@@ -43,7 +49,7 @@ export const AttendanceShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
             </>
           )}
         />
-        <AttendanceTicket data={data} />
+        <AttendanceTicket data={data} image={image} />
         <Stack flexDirection="column">
           <Heading as="h6">Metadata</Heading>
           <MetaList>

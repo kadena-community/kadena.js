@@ -22,8 +22,14 @@ interface IProps {
   tokenId: string;
   data?: IProofOfUsTokenMeta;
   metadataUri?: string;
+  image: string;
 }
-export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
+export const ConnectShare: FC<IProps> = ({
+  tokenId,
+  data,
+  metadataUri,
+  image,
+}) => {
   const router = useRouter();
 
   if (!data) return null;
@@ -43,7 +49,7 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
           label={data.name}
           Append={() => (
             <>
-              <SocialShare data={data} tokenId={tokenId} />
+              <SocialShare data={data} tokenId={tokenId}  />
               <IconButton onClick={handleClose}>
                 <MonoClose />
               </IconButton>
@@ -61,7 +67,7 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
           zIndex: 100,
         }}
       >
-        <SavedImagePositions data={data} />
+        <SavedImagePositions data={data} image={image} />
 
         <Stack
           gap="md"

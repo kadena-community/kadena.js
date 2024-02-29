@@ -31,6 +31,7 @@
     "@vanilla-extract/css": "1.14.0",
     "@vanilla-extract/recipes": "0.5.1",
     "classnames": "^2.3.1",
+    "cross-fetch": "~3.1.5",
     "date-fns": "~2.30.0",
     "firebase": "^10.8.0",
     "firebase-functions": "^4.7.0",

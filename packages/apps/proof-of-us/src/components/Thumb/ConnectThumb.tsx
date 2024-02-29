@@ -16,7 +16,6 @@ export const ConnectThumb: FC<IProps> = ({ token, isMinted = true }) => {
       className={classNames(connectThumbClass)}
       style={{
         backgroundColor: token.backgroundColor,
-        backgroundImage: isMinted ? `url("${token.imageUri}")` : '',
         color: invertColor,
       }}
     >

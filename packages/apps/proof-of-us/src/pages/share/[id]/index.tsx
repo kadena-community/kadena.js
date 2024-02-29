@@ -1,5 +1,6 @@
 import { Share } from '@/features/Share/Share';
 import { fetchManifestData } from '@/utils/fetchManifestData';
+import { getImageString } from '@/utils/getImageString';
 import { getTokenUri } from '@/utils/proofOfUs';
 import type { GetServerSidePropsContext, NextPage } from 'next';
 import Head from 'next/head';
@@ -10,9 +11,10 @@ interface IProps {
   };
   data?: IProofOfUsTokenMeta;
   metadataUri?: string;
+  image: string;
 }
 
-const Page: NextPage<IProps> = ({ params, data, metadataUri }) => {
+const Page: NextPage<IProps> = ({ params, data, metadataUri, image }) => {
   if (!data) return null;
   return (
     <>
@@ -57,7 +59,12 @@ const Page: NextPage<IProps> = ({ params, data, metadataUri }) => {
         <meta key="twitter:image" name="twitter:image" content={data.image} />
         <meta key="og:image" property="og:image" content={data.image} />
       </Head>
-      <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
+      <Share
+        tokenId={params.id}
+        data={data}
+        metadataUri={metadataUri}
+        image={image}
+      />
     </>
   );
 };
@@ -70,8 +77,16 @@ export const getServerSideProps = async (
   const uri = await getTokenUri(id);
   const data = await fetchManifestData(uri);
 
+  //image
+  const base64_body = await getImageString(data?.image);
+
   return {
-    props: { params: { id: `${ctx.query.id}` }, data, metadataUri: uri },
+    props: {
+      params: { id: `${ctx.query.id}` },
+      data,
+      metadataUri: uri,
+      image: base64_body,
+    },
   };
 };
 

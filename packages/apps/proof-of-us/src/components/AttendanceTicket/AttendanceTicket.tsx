@@ -14,9 +14,10 @@ import {
 
 interface IProps {
   data: IProofOfUsTokenMeta;
+  image: string;
 }
 
-export const AttendanceTicket: FC<IProps> = ({ data }) => {
+export const AttendanceTicket: FC<IProps> = ({ data, image }) => {
   const color = data.properties?.avatar?.backgroundColor ?? 'white';
   const contrastColor = useMemo(() => getContrast(color), [color]);
 
@@ -25,7 +26,7 @@ export const AttendanceTicket: FC<IProps> = ({ data }) => {
       layoutId={data.image}
       className={ticketClass}
       style={{
-        backgroundImage: `url("/assets/devworld1.png")`,
+        backgroundImage: `url("${image}")`,
         backgroundColor: data.properties?.avatar?.backgroundColor,
       }}
     >
