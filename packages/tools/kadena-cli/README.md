@@ -71,11 +71,49 @@ prefill a question by filling the flag
 
 ### list of root commands and flags
 
-|           | description                                              |
-| --------- | -------------------------------------------------------- |
-| config    | configuration of the cli. E.g. network, config directory |
-| --help    | display help information                                 |
-| --version | display version information                              |
+|           | description                 |
+| --------- | --------------------------- |
+| --help    | display help information    |
+| --version | display version information |
+
+### list global commands and flags
+
+|          | description                                       |
+| -------- | ------------------------------------------------- |
+| --quiet  | Eliminating interactive prompts and confirmations |
+| --legacy | Output legacu format                              |
+
+## Quiet Mode
+
+The Quiet Mode feature of the Kadena CLI can be used to streamline the
+automation of tasks, specifically targeting environments where interactive input
+is impractical, such as continuous integration (CI) systems. By activating Quiet
+Mode, the CLI suppresses interactive prompts and skips confirmations, allowing
+commands to execute uninterrupted. This mode ensures that automated processes
+can run smoothly and efficiently, without the need for manual intervention.
+
+```
+kadena [command] --quiet
+kadena [command] -q
+```
+
+---
+
+## Legacy Mode
+
+Legacy Mode offers a bridge for users requiring compatibility with the
+previously used crypto algo, particularly for commands related to wallets, keys,
+and transactions. This mode ensures the output format aligns with earlier
+standards, facilitating seamless integration with existing workflows and tools
+such as Chainweaver. It's especially useful when interacting with systems that
+rely on the legacy format for processing or when maintaining backward
+compatibility is critical.
+
+```
+kadena [command] --legacy
+```
+
+---
 
 ### Command specific help
 
