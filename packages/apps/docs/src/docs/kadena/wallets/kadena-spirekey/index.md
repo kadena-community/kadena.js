@@ -171,8 +171,11 @@ https://spirekey.kadena.io/login?returnUrl=https://your-dapp.com/auth
 - host `https://spirekey.kadena.io`
 - path `/login`
 - query-string parameters
-  - `returnUrl` the url where the user will be redirected to after
+  - `returnUrl`: `string` - the url where the user will be redirected to after
     authentication.
+  - `optimistic`: `boolean` - when `true`, Kadena SpireKey will return a signed
+    transaction, even when there are pending transactions.  
+     The response will include `pendingTxIds`.
 
 ### Authentication response
 
