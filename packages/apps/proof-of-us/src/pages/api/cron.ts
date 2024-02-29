@@ -15,7 +15,7 @@ export default async function handler(
   const accounts = await store.getAllAccounts();
   if (!accounts) {
     return res.status(404).json({
-      message: 'no accounts found',
+      message: 'no accounts found!',
     });
   }
 
