@@ -1,3 +1,4 @@
+import fetch from 'cross-fetch';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 interface IResponseData {
