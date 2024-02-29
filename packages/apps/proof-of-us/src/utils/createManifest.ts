@@ -1,4 +1,4 @@
-import { fetchManifestData } from './fetchManifestData';
+import { fetchManifestDataApi } from './fetchManifestData';
 import { getProofOfUs } from './proofOfUs';
 
 const getEventData = async (
@@ -6,7 +6,9 @@ const getEventData = async (
 ): Promise<IProofOfUsTokenMeta | undefined> => {
   const event = await getProofOfUs(eventId);
   if (!event) return;
-  const data = await fetchManifestData(event?.uri);
+
+  console.log(event.uri);
+  const data = await fetchManifestDataApi(event?.uri);
 
   return data;
 };
