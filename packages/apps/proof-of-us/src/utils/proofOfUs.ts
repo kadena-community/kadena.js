@@ -132,7 +132,6 @@ export const claimAttendanceToken = async (
       gasPrice: 0.000001,
     })
     .addSigner(
-      // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
       {
         pubKey: `${credential.publicKey}`,
         scheme: 'WebAuthn',
@@ -236,7 +235,6 @@ export const createConnectTokenTransaction = async (
   proofOfUs.signees.forEach((signee, idx) => {
     if (idx === 0) {
       transactionBuilder.addSigner(
-        // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
         {
           pubKey: signee.publicKey,
           scheme: 'WebAuthn',
@@ -257,7 +255,6 @@ export const createConnectTokenTransaction = async (
       );
     } else {
       transactionBuilder.addSigner(
-        // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
         {
           pubKey: signee.publicKey,
           scheme: 'WebAuthn',
