@@ -1,9 +1,7 @@
 import { atoms, token } from '@kadena/react-ui/styles';
-import { createVar, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 
-export type FormFieldStatus = 'disabled' | 'positive' | 'warning' | 'negative';
-export const statusColor = createVar();
-export const statusOutlineColor = createVar();
+const borderColor = token('color.accent.brand.secondary');
 
 export const cardClass = style([
   atoms({
@@ -13,7 +11,7 @@ export const cardClass = style([
     fontFamily: 'bodyFont',
   }),
   {
-    border: '2px solid #FFA500',
+    border: `2px solid ${borderColor}`,
     boxShadow: `0px 4px 8px 0 ${token('color.border.base.default')}`,
   },
 ]);
@@ -24,14 +22,13 @@ export const imgClass = style([
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
-    borderRadius: 'md',
+    borderRadius: 'xxl',
+    marginBlockEnd: 'md',
   }),
   {
     width: '100px',
     height: '100px',
-    border: `${token('border.normal')} solid ${token(
-      'color.accent.semantic.info',
-    )} `,
+    border: `2px solid ${borderColor}`,
   },
 ]);
 export const aliasClass = style([

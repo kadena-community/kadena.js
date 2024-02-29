@@ -78,7 +78,7 @@ export async function createProfile(
     name: profileName,
     networks,
     secretId,
-    hashColor: idToColor(uuid),
+    accentColor: idToColor(uuid),
   };
 
   await walletRepository.addProfile(profile);
