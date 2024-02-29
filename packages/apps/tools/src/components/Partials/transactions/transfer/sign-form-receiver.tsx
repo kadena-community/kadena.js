@@ -13,10 +13,10 @@ import {
 } from '@kadena/react-ui';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import AddPublicKeysSection from '@/components/Global/AddPublicKeysSection';
 import { ChainSelect } from '@/components/Global/ChainSelect';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
 import { PredKeysSelect } from '@/components/Global/PredKeysSelect';
+import { AddPublicKeysSection } from '@/components/Partials/transactions/transfer/add-public-keys';
 import { chainSelectContainerClass } from '@/pages/transactions/transfer/styles.css';
 
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
@@ -70,6 +70,7 @@ export const SignFormReceiver = ({
       <Controller
         name="receiver"
         control={control}
+        defaultValue={''}
         render={({ field }) => (
           <AccountNameField
             {...field}
@@ -129,10 +130,14 @@ export const SignFormReceiver = ({
 
   if (toAccountTab === 'existing' && receiverData?.error) {
     setToAccountTab('new');
-    setInitialPublicKey(stripAccountPrefix(getValues('receiver')));
+    setInitialPublicKey('');
+    setPubKeys([stripAccountPrefix(getValues('receiver'))]);
+  }
+
+  if (toAccountTab === 'new' && receiverData?.data) {
     setTimeout(() => {
-      setValue('receiver', '');
-    }, 100);
+      setToAccountTab('existing');
+    }, 500);
   }
 
   const watchReceiverChainId = watch('receiverChainId');
@@ -182,7 +187,7 @@ export const SignFormReceiver = ({
         <TabItem key="existing" title="Existing">
           {renderAccountFieldWithChain('existing')}
           {receiverData.isFetching ? (
-            <Stack flexDirection={'row'}>
+            <Stack flexDirection={'row'} marginBlockStart={'md'}>
               <SystemIcon.Information />
               <Text as={'span'} color={'emphasize'}>
                 Fetching receiver account data..

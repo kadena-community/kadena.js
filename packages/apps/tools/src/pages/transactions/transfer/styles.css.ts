@@ -18,9 +18,11 @@ export const buttonContainerClass = style([
   atoms({ display: 'flex', justifyContent: 'flex-end' }),
 ]);
 
-export const tooltipInfoContainer = style([atoms({ marginBlockEnd: 'sm' })]);
+export const tooltipInfoContainer = style([
+  atoms({ paddingBlockStart: 'xxl' }),
+]);
 
-export const marginBottomOnError = style([atoms({ marginBlockEnd: 'xxl' })]);
+export const marginBottomOnError = style([atoms({ marginBlockEnd: 'sm' })]);
 
 export const infoNotificationColor = style([
   atoms({
