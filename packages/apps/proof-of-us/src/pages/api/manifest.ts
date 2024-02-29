@@ -1,8 +1,7 @@
-import fetch from 'cross-fetch';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 interface IResponseData {
-  message: string;
+  message: any;
 }
 
 export default async function handler(
@@ -15,8 +14,7 @@ export default async function handler(
     });
   }
 
-  const body = JSON.parse(req.body);
-  const uri = body.uri as string;
+  const uri = req.body.uri as string;
 
   if (!uri) {
     return res.status(404).json({
@@ -25,15 +23,7 @@ export default async function handler(
   }
 
   const result = await fetch(uri);
-  const data = (await result.json()) as IProofOfUsTokenMeta;
+  const json = await result.json();
 
-  res.status(200).json({
-    message: JSON.stringify(
-      {
-        data,
-      },
-      null,
-      2,
-    ),
-  });
+  res.status(200).json(json);
 }
