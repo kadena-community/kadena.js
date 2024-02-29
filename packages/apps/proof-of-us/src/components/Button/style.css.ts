@@ -34,6 +34,7 @@ export const tertiaryClass = style({
 
 globalStyle(`${buttonClass} a`, {
   textDecoration: 'none',
+  display: 'block',
   color: deviceColors.kadenaBlack,
 });
 
