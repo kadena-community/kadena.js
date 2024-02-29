@@ -136,9 +136,9 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
           {showClaimButton && !isMinted && (
             <Stack flex={1} gap="md">
-              <Button>
-                <Link href="/user">Go to dashboard</Link>
-              </Button>
+              <Link href="/user">
+                <Button>Go to dashboard</Button>
+              </Link>
               <Button onPress={handleClaim}>Claim NFT</Button>
             </Stack>
           )}
@@ -149,9 +149,9 @@ export const ScanAttendanceEvent: FC<IProps> = ({
                 There was an issue with minting
               </MessageBlock>
               <Stack flex={1} gap="md">
-                <Button>
-                  <Link href="/user">Go to dashboard</Link>
-                </Button>
+                <Link href="/user">
+                  <Button>Go to dashboard</Button>
+                </Link>
               </Stack>
             </Stack>
           )}
@@ -166,9 +166,9 @@ export const ScanAttendanceEvent: FC<IProps> = ({
               <MessageBlock title="Success" variant="success">
                 The token is minted
               </MessageBlock>
-              <Button>
-                <Link href="/user">Go to dashboard</Link>
-              </Button>
+              <Link href="/user">
+                <Button>Go to dashboard</Button>
+              </Link>
             </Stack>
           )}
         </Stack>

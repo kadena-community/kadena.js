@@ -36,18 +36,15 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
         </Button>
       ) : (
         <Stack gap="md">
-          <Button variant="secondary">
-            <Link href="/user">Dashboard</Link>
-          </Button>
-
+          <Link href="/user">
+            <Button variant="secondary">Dashboard</Button>
+          </Link>
           {proofOfUs.tokenId && (
-            <Button>
-              <Link
-                href={`/user/proof-of-us/t/${proofOfUs.tokenId}/${proofOfUs.requestKey}`}
-              >
-                Go to Proof
-              </Link>
-            </Button>
+            <Link
+              href={`/user/proof-of-us/t/${proofOfUs.tokenId}/${proofOfUs.requestKey}`}
+            >
+              <Button>Go to Proof</Button>
+            </Link>
           )}
         </Stack>
       )}

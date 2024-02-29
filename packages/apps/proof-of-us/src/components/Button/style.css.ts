@@ -33,6 +33,7 @@ export const tertiaryClass = style({
 });
 
 globalStyle(`${buttonClass} a`, {
+  display: 'block',
   textDecoration: 'none',
   color: deviceColors.kadenaBlack,
 });
