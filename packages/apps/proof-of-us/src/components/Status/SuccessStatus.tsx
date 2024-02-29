@@ -32,9 +32,9 @@ export const SuccessStatus: FC<IProps> = ({ children, handleClose, href }) => {
           )}
 
           {href && (
-            <Button variant="primary">
-              <Link href={href}>Go to Proof</Link>
-            </Button>
+            <Link href={href}>
+              <Button variant="primary">Go to Proof</Button>
+            </Link>
           )}
         </Stack>
       </Stack>
