@@ -68,10 +68,11 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const listenToProofOfUsData = useCallback(
     async (data: IProofOfUsData | undefined) => {
       let innerData: IProofOfUsData | undefined | null = data;
+
       if (!innerData && params && params.id !== 'new') {
         innerData = await store.getProofOfUs(`${params.id}`);
         if (!innerData) return;
-        innerData.proofOfUsId = `${params?.id}`;
+        innerData = { ...innerData, proofOfUsId: `${params?.id}` };
       }
 
       if (!innerData) return;
@@ -80,28 +81,29 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
           ([key, value]) => value,
         ) as IProofOfUsSignee[];
       }
-
-      if (innerData?.tokenId && innerData.requestKey) {
-        //const manifest = await createManifest(innerData, innerData.imageUri);
-        // addMintingData({
-        //   ...manifest,
-        //   tokenId: innerData?.tokenId,
-        //   requestKey: innerData.requestKey,
-        //   mintStatus: 'init',
-        // });
-      }
-
       if (!innerData) return;
-      setProofOfUs(innerData);
+      setProofOfUs({ ...innerData });
     },
-    [setProofOfUs],
+    [setProofOfUs, params?.id],
   );
 
   useEffect(() => {
     if (!params?.id || !account) return;
-    store.listenProofOfUsData(`${params.id}`, account, listenToProofOfUsData);
-    store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
-  }, [listenToProofOfUsData, setBackground, params, account]);
+    const unListen = store.listenProofOfUsData(
+      `${params.id}`,
+      account,
+      listenToProofOfUsData,
+    );
+    const unListen2 = store.listenProofOfUsBackgroundData(
+      `${params.id}`,
+      setBackground,
+    );
+
+    return () => {
+      unListen();
+      unListen2();
+    };
+  }, [params?.id, account]);
 
   const updateStatus = async ({
     proofOfUsId,
