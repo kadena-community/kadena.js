@@ -78,10 +78,9 @@ prefill a question by filling the flag
 
 ### list global commands and flags
 
-|          | description                                       |
-| -------- | ------------------------------------------------- |
-| --quiet  | Eliminating interactive prompts and confirmations |
-| --legacy | Output legacu format                              |
+|         | description                                       |
+| ------- | ------------------------------------------------- |
+| --quiet | Eliminating interactive prompts and confirmations |
 
 ## Quiet Mode
 
@@ -108,6 +107,14 @@ standards, facilitating seamless integration with existing workflows and tools
 such as Chainweaver. It's especially useful when interacting with systems that
 rely on the legacy format for processing or when maintaining backward
 compatibility is critical.
+
+Legacy mode is available for
+
+```
+kadena wallet add
+kadena keys generate
+kadena tx sign
+```
 
 ```
 kadena [command] --legacy
