@@ -92,7 +92,11 @@ export const getTokenInfo = async (
       typeof tokenInfo.precision === 'object' &&
       tokenInfo.precision !== null
     ) {
-      tokenInfo.precision = (tokenInfo.precision as { int: number }).int;
+      if ('int' in tokenInfo.precision) {
+        tokenInfo.precision = tokenInfo.precision.int;
+      } else if ('decimal' in tokenInfo.precision) {
+        tokenInfo.precision = tokenInfo.precision.decimal;
+      }
     }
   }
 
