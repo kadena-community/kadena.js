@@ -1,9 +1,5 @@
-import { createManifest } from '@/utils/createManifest';
-import { store } from '@/utils/socket/store';
-import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import fetch from 'cross-fetch';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { NFTStorage } from 'nft.storage';
 
 interface IResponseData {
   message: string;
