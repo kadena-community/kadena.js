@@ -728,13 +728,13 @@ kadena tx send [arguments]
 | **Arguments & Options**       | ** Description**                                                      | **Required** |
 | ----------------------------- | --------------------------------------------------------------------- | ------------ |
 | --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma seperated list) |              |
-| --network                     | Name of the network to be used                                        |              |
-| --chain-id                    | Chain to be used                                                      |              |
+| --tx-transaction-network      | Kadena networks comma seperated list in order of transaction          |              |
+|                               | (e.g. "mainnet, testnet, devnet, ...")                                |              |
 
 example:
 
 ```
-kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --network="testnet" --chain-id="1"
+kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --tx-transaction-network "mainnet, testnet"
 ```
 
 ---
