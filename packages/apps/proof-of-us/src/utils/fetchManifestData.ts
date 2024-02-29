@@ -11,14 +11,20 @@ export const fetchManifestData = async (
 export const fetchManifestDataApi = async (
   uri?: string,
 ): Promise<IProofOfUsTokenMeta | undefined> => {
+  console.log(uri, 'fetchManifestDataApi');
   if (!uri) return;
+
+  console.log('start fetch');
   const result = await fetch('/api/manifest', {
     method: 'POST',
     body: JSON.stringify({
       uri,
     }),
   });
-  const data = (await result.json()) as IProofOfUsTokenMeta;
+  const text = await result.text();
+  console.log('end fetch');
+  console.log('result', text);
+  const data = JSON.parse(text) as IProofOfUsTokenMeta;
 
   return data;
 };

@@ -8,6 +8,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IResponseData>,
 ) {
+  console.log('method', req.method);
   if (req.method !== 'POST') {
     return res.status(405).json({
       message: 'method not allowed',
@@ -16,6 +17,7 @@ export default async function handler(
 
   const uri = req.body.uri as string;
 
+  console.log(uri, 'uri1');
   if (!uri) {
     return res.status(404).json({
       message: 'uri not found',
