@@ -83,30 +83,6 @@ implement in your application.
 With this overview in mind, let's look at how you can integrate Kadena SpireKey
 with your application.
 
-In this document you will learn how to **connect** your dApp to Kadena SpireKey,
-**retrieve the available accounts** and sign with WebAuthn via the Kadena
-SpireKey Wallet
-
-## Conceptual Overview
-
-From a dApp, we want to access the account that is available on the Kadena
-SpireKey Wallet. With this information, we can then construct transactions.
-These transactions need to be signed by Kadena SpireKey.
-
-We're all familiar with OAuth. OAuth enables the user to authenticate with a
-third-party authentication provider like Google, Facebook, Github and many more.
-
-![OAuth Flow](image.png)
-
-The similarities are:
-
-- the **dApp** is the **Client Application**
-- **Kadena SpireKey** works as a delegate for **Authorization Server** and in
-  turn accesses **WebAuthn** to grant access
-- the **dApp** is hosted by the **Resource Server**
-
-Let's take a look in how the flow would be for a **dApp** and **Kadena
-Spirekey**
 
 ## Integrate with Kadena SpireKey
 
@@ -120,6 +96,7 @@ enable users to perform the following steps:
 - Sign transactions created by the application using a Kadena SpireKey account.
 
 ### Register an account in Kadena SpireKey
+
 
 The following diagram illustrates the process for registering an account using
 Kadena SpireKey.
@@ -179,13 +156,13 @@ sequenceDiagram
     d->>k: send transaction
 ```
 
-## Specification
+## Authentication request and response
 
-### OAuth authenticate
+To authenticate users for your application, your application must send a GET request to the Kadena SpireKey `login` endpoint and receive a response.
 
-#### Authentication request
+### Authentication request
 
-A GET request needs to be send to Kadena SpireKey
+Send a GET request to Kadena SpireKey using the HTTPS protocol.
 
 ```
 https://spirekey.kadena.io/login?returnUrl=https://your-dapp.com/auth
