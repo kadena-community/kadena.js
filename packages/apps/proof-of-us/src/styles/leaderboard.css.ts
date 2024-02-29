@@ -1,40 +1,42 @@
 import { customTokens } from '@/styles/tokens.css';
+import { atoms } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const winnerListClass = style({});
-export const listItemClass = style({
-  display: 'flex',
-  counterIncrement: 'leaderboard',
-  position: 'relative',
-  paddingLeft: '42px',
-  borderRadius: '2px',
-  background: 'rgba(255, 255, 255, 0.1)',
-  marginBottom: '8px',
-  paddingBottom: '8px',
-  paddingTop: '8px',
-  paddingRight: '10px',
-  marginLeft: '-20px',
-  marginRight: '-20px',
+export const listItemClass = style([
+  atoms({
+    marginBlockEnd: 'md',
+    paddingBlock: 'md',
+    paddingInlineEnd: 'md',
+  }),
+  {
+    display: 'flex',
+    counterIncrement: 'leaderboard',
+    position: 'relative',
+    paddingLeft: '42px',
+    borderRadius: '2px',
+    background: 'rgba(255, 255, 255, 0.1)',
 
-  ':before': {
-    position: 'absolute',
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'Kode Mono',
-    height: '32px',
-    width: '32px',
-    content: 'counter(leaderboard)',
-    fontSize: '20px',
-    fontWeight: '700',
-    top: '50%',
-    transform: 'translateY(-50%)',
-    left: '15px',
-    backgroundColor: '#FFFFFF',
-    color: '#000000',
-    borderRadius: '50%',
+    ':before': {
+      position: 'absolute',
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: 'Kode Mono',
+      height: '32px',
+      width: '32px',
+      content: 'counter(leaderboard)',
+      fontSize: '20px',
+      fontWeight: '700',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      left: '15px',
+      backgroundColor: '#FFFFFF',
+      color: '#000000',
+      borderRadius: '50%',
+    },
   },
-});
+]);
 
 export const winnerClass = style({
   paddingLeft: '34px',
