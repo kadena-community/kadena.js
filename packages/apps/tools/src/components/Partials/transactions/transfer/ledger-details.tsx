@@ -49,48 +49,51 @@ export const LedgerDetails = ({
   };
 
   return (
-    <>
-      <Stack flexDirection={'row'} justifyContent={'space-between'}>
-        <Stack alignItems={'flex-end'} gap={'md'}>
-          <Combobox
-            allowsCustomValue
-            startIcon={<SystemIcon.KeyIconFilled />}
-            label="Key Index"
-            onInputChange={async (value) => {
-              await getPublicKey({
-                keyId: parseInt(value, 10),
-                derivationMode,
-              });
+    <Stack
+      flexDirection={'row'}
+      justifyContent={'space-between'}
+      alignItems={'flex-end'}
+      marginBlockStart={'md'}
+    >
+      <Stack gap={'md'}>
+        <Combobox
+          allowsCustomValue
+          startIcon={<SystemIcon.KeyIconFilled />}
+          label="Key Index"
+          onInputChange={async (value) => {
+            await getPublicKey({
+              keyId: parseInt(value, 10),
+              derivationMode,
+            });
 
-              if (isNaN(+value)) return setErrorLedgerKey(true);
-              setKeyId(value);
-              setErrorLedgerKey(false);
-            }}
-            defaultItems={options}
-            isInvalid={errorLedgerKey}
-            errorMessage={errorLedgerKey ? 'Enter number from 1 to 99' : ''}
-          >
-            {(item) => <ComboboxItem key={item.id}>{item.name}</ComboboxItem>}
-          </Combobox>
-          <div
-            className={classNames(
-              tooltipInfoContainer,
-              errorLedgerKey ? marginBottomOnError : null,
-            )}
-          >
-            <Tooltip content={t('ledger tooltip content')} position={'top'}>
-              <SystemIcons.Information />
-            </Tooltip>
-          </div>
-        </Stack>
-
-        <Toggle
-          label={t('is Legacy')}
-          toggled={legacyToggleOn}
-          onClick={setLegacyOn}
-        />
-        {publicKey ? <AccountHoverTag value={publicKey.slice(0, 15)} /> : null}
+            if (isNaN(+value)) return setErrorLedgerKey(true);
+            setKeyId(value);
+            setErrorLedgerKey(false);
+          }}
+          defaultItems={options}
+          isInvalid={errorLedgerKey}
+          errorMessage={errorLedgerKey ? 'Enter number from 1 to 99' : ''}
+        >
+          {(item) => <ComboboxItem key={item.id}>{item.name}</ComboboxItem>}
+        </Combobox>
+        <div
+          className={classNames(
+            tooltipInfoContainer,
+            errorLedgerKey ? marginBottomOnError : null,
+          )}
+        >
+          <Tooltip content={t('ledger tooltip content')} position={'top'}>
+            <SystemIcons.Information />
+          </Tooltip>
+        </div>
       </Stack>
-    </>
+
+      <Toggle
+        label={t('is Legacy')}
+        toggled={legacyToggleOn}
+        onClick={setLegacyOn}
+      />
+      {publicKey ? <AccountHoverTag value={publicKey.slice(0, 15)} /> : null}
+    </Stack>
   );
 };

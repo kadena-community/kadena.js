@@ -96,7 +96,6 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
       });
       return;
     }
-    setRequestStatus({ status: 'successful' });
 
     if (!onSameChain) {
       console.log('This is cross chain transfer - waiting for SPV proof');
@@ -169,6 +168,8 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         return;
       }
     }
+
+    return setRequestStatus({ status: 'successful' });
   };
 
   const linkToExplorer = `${getExplorerLink(

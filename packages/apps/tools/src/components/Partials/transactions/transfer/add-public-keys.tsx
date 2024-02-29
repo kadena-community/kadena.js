@@ -1,7 +1,5 @@
 import { Button, Stack, SystemIcon } from '@kadena/react-ui';
 
-import { pubKeysContainerStyle } from './styles.css';
-
 import { HoverTag, PublicKeyField } from '@/components/Global';
 import { validatePublicKey } from '@/services/utils/utils';
 import { stripAccountPrefix } from '@/utils/string';
@@ -23,7 +21,7 @@ const schema = z.object({
 });
 type FormData = z.infer<typeof schema>;
 
-const AddPublicKeysSection = ({
+export const AddPublicKeysSection = ({
   publicKeys,
   setPublicKeys,
   deletePubKey,
@@ -36,7 +34,7 @@ const AddPublicKeysSection = ({
     clearErrors,
     setError,
     getValues,
-    resetField,
+    setValue,
     control,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -58,7 +56,7 @@ const AddPublicKeysSection = ({
 
     copyPubKeys.push(value);
     setPublicKeys(copyPubKeys);
-    resetField('pubKey');
+    setValue('pubKey', '');
   };
 
   const deletePublicKey = (index: number) => {
@@ -66,11 +64,18 @@ const AddPublicKeysSection = ({
     copyPubKeys.splice(index, 1);
 
     setPublicKeys(copyPubKeys);
+    setValue('pubKey', '');
     deletePubKey();
+    clearErrors('pubKey');
   };
 
   const renderPubKeys = () => (
-    <div className={pubKeysContainerStyle}>
+    <Stack
+      flexDirection={'column'}
+      marginBlock={'sm'}
+      gap={'sm'}
+      flexWrap={'wrap'}
+    >
       {publicKeys.map((key, index) => (
         <HoverTag
           key={`public-key-${key}`}
@@ -82,7 +87,7 @@ const AddPublicKeysSection = ({
           maskOptions={{ headLength: 4, character: '.' }}
         />
       ))}
-    </div>
+    </Stack>
   );
 
   return (
@@ -134,4 +139,3 @@ const AddPublicKeysSection = ({
     </section>
   );
 };
-export default AddPublicKeysSection;
