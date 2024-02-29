@@ -118,8 +118,8 @@ export const claimAttendanceToken = async (
 
   const transaction = Pact.builder
     .execution(
-      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.mint-attendance-token 
-      "${eventId}" 
+      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.mint-attendance-token
+      "${eventId}"
       "${account.accountName}"
       (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard "${account.accountName}")
       )`,
@@ -132,7 +132,6 @@ export const claimAttendanceToken = async (
       gasPrice: 0.000001,
     })
     .addSigner(
-      // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
       {
         pubKey: `${credential.publicKey}`,
         scheme: 'WebAuthn',
@@ -162,7 +161,7 @@ export const hasMintedAttendaceToken = async (
   const transaction = Pact.builder
     .execution(
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.has-minted-attendance-token
-      "${eventId}" 
+      "${eventId}"
       "${accountName}"
       )`,
     )
@@ -236,7 +235,6 @@ export const createConnectTokenTransaction = async (
   proofOfUs.signees.forEach((signee, idx) => {
     if (idx === 0) {
       transactionBuilder.addSigner(
-        // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
         {
           pubKey: signee.publicKey,
           scheme: 'WebAuthn',
@@ -257,7 +255,6 @@ export const createConnectTokenTransaction = async (
       );
     } else {
       transactionBuilder.addSigner(
-        // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
         {
           pubKey: signee.publicKey,
           scheme: 'WebAuthn',
