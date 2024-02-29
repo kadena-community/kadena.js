@@ -22,7 +22,11 @@ export default async function handler(
     });
   }
 
-  const result = await fetch(uri);
+  const result = await fetch(uri, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
   const json = await result.json();
 
   res.status(200).json(json);
