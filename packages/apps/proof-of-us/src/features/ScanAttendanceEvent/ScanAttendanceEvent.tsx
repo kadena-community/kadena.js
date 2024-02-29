@@ -122,7 +122,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
         <AttendanceTicket data={data} />
 
         <Stack flex={1} />
-        <Stack>
+        <Stack flexDirection="column">
           {!hasStarted && (
             <div>
               the event has not started yet. please check back{' '}

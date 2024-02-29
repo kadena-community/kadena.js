@@ -1,11 +1,11 @@
-import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { ScreenHeight } from '@/components/ScreenHeight/ScreenHeight';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { ScanAttendanceEvent } from '@/features/ScanAttendanceEvent/ScanAttendanceEvent';
 import { useAccount } from '@/hooks/account';
-import { useGetAttendanceToken } from '@/hooks/data/getAttendanceToken';
 import { useHasMintedAttendaceToken } from '@/hooks/data/hasMintedAttendaceToken';
+import { fetchManifestData } from '@/utils/fetchManifestData';
+import { getProofOfUs } from '@/utils/proofOfUs';
 import type { NextPage, NextPageContext } from 'next';
 import { useEffect, useState } from 'react';
 
@@ -14,10 +14,11 @@ interface IProps {
     id: string;
     transaction: string;
   };
+  data?: IProofOfUsTokenMeta;
 }
-const Page: NextPage<IProps> = ({ params }) => {
+const Page: NextPage<IProps> = ({ params, data }) => {
   const eventId = decodeURIComponent(params.id);
-  const { data, isLoading, error } = useGetAttendanceToken(eventId);
+  //const { data, isLoading, error } = useGetAttendanceToken(eventId);
   const { account } = useAccount();
   const [isMinted, setIsMinted] = useState(false);
 
@@ -38,8 +39,7 @@ const Page: NextPage<IProps> = ({ params }) => {
     <UserLayout>
       <ScreenHeight>
         <TitleHeader label="Attendance @" />
-        {isLoading && <MainLoader />}
-        {error && <div>...error</div>}
+
         <ScanAttendanceEvent
           data={data}
           eventId={eventId}
@@ -54,12 +54,25 @@ const Page: NextPage<IProps> = ({ params }) => {
 export const getServerSideProps = async (
   ctx: NextPageContext,
 ): Promise<{ props: IProps }> => {
+  const eventId = decodeURIComponent(`${ctx.query.id}`);
+  const token = await getProofOfUs(eventId);
+
+  const data = await fetchManifestData(token?.uri);
+
+  const startDate = token && token['starts-at'].int;
+  const endDate = token && token['ends-at'].int;
+
+  const newData = data
+    ? { ...data, startDate, endDate, manifestUri: token?.uri }
+    : undefined;
+
   return {
     props: {
       params: {
         id: `${ctx.query.id}`,
         transaction: `${ctx.query.transaction}`,
       },
+      data: newData,
     },
   };
 };
