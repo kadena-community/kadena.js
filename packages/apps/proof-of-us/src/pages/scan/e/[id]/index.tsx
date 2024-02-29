@@ -5,6 +5,7 @@ import { ScanAttendanceEvent } from '@/features/ScanAttendanceEvent/ScanAttendan
 import { useAccount } from '@/hooks/account';
 import { useHasMintedAttendaceToken } from '@/hooks/data/hasMintedAttendaceToken';
 import { fetchManifestData } from '@/utils/fetchManifestData';
+import { getImageString } from '@/utils/getImageString';
 import { getProofOfUs } from '@/utils/proofOfUs';
 import type { NextPage, NextPageContext } from 'next';
 import { useEffect, useState } from 'react';
@@ -15,8 +16,9 @@ interface IProps {
     transaction: string;
   };
   data?: IProofOfUsTokenMeta;
+  image: string;
 }
-const Page: NextPage<IProps> = ({ params, data }) => {
+const Page: NextPage<IProps> = ({ params, data, image }) => {
   const eventId = decodeURIComponent(params.id);
   //const { data, isLoading, error } = useGetAttendanceToken(eventId);
   const { account } = useAccount();
@@ -45,6 +47,7 @@ const Page: NextPage<IProps> = ({ params, data }) => {
           eventId={eventId}
           isMinted={isMinted}
           handleIsMinted={setIsMinted}
+          image={image}
         />
       </ScreenHeight>
     </UserLayout>
@@ -66,6 +69,9 @@ export const getServerSideProps = async (
     ? { ...data, startDate, endDate, manifestUri: token?.uri }
     : undefined;
 
+  //image
+  const base64_body = await getImageString(data?.image);
+
   return {
     props: {
       params: {
@@ -73,6 +79,7 @@ export const getServerSideProps = async (
         transaction: `${ctx.query.transaction}`,
       },
       data: newData,
+      image: base64_body,
     },
   };
 };

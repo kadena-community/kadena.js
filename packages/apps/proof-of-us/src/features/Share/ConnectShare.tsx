@@ -49,7 +49,7 @@ export const ConnectShare: FC<IProps> = ({
           label={data.name}
           Append={() => (
             <>
-              <SocialShare data={data} tokenId={tokenId}  />
+              <SocialShare data={data} tokenId={tokenId} />
               <IconButton onClick={handleClose}>
                 <MonoClose />
               </IconButton>

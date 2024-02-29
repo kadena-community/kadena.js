@@ -20,6 +20,7 @@ interface IProps {
   eventId: string;
   isMinted: boolean;
   handleIsMinted: Dispatch<SetStateAction<boolean>>;
+  image: string;
 }
 
 export const ScanAttendanceEvent: FC<IProps> = ({
@@ -27,6 +28,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   eventId,
   isMinted,
   handleIsMinted,
+  image,
 }) => {
   const { isLoading, hasSuccess, hasError, isPending, claim } =
     useClaimAttendanceToken();
@@ -119,7 +121,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     <>
       {isStatusLoading && <MainLoader />}
       <Stack flexDirection="column" flex={1}>
-        <AttendanceTicket data={data} />
+        <AttendanceTicket data={data} image={image} />
 
         <Stack flex={1} />
         <Stack flexDirection="column">
