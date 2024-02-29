@@ -25,7 +25,7 @@ export const AttendanceTicket: FC<IProps> = ({ data }) => {
       layoutId={data.image}
       className={ticketClass}
       style={{
-        backgroundImage: `url("${data.image}")`,
+        backgroundImage: `url("/assets/devworld1.png")`,
         backgroundColor: data.properties?.avatar?.backgroundColor,
       }}
     >
