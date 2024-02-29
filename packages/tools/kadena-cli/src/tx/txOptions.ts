@@ -218,4 +218,12 @@ export const txOptions = {
       'Select a signing method',
     ),
   }),
+  txPoll: createOption({
+    key: 'txPoll' as const,
+    prompt: ({ poll }): boolean => {
+      return poll === true || poll === 'true' || false;
+    },
+    validation: z.boolean().optional(),
+    option: new Option('-p, --poll', 'Poll for transaction status'),
+  }),
 };

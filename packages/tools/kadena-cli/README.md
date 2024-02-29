@@ -108,7 +108,7 @@ such as Chainweaver. It's especially useful when interacting with systems that
 rely on the legacy format for processing or when maintaining backward
 compatibility is critical.
 
-Legacy mode is available for
+Legacy mode is available for:
 
 ```
 kadena wallet add
@@ -250,6 +250,7 @@ kadena wallet add [arguments]
 | --wallet-name              | Set the name of the wallet                     |                |
 | --security-password        | Set the password for the wallet                |                |
 | --security-verify-password | Set the password for the wallet (verification) |                |
+| --legacy                   | Generate legacy wallet                         |                |
 
 example:
 
@@ -299,26 +300,26 @@ kadena wallet generate-keys [arguments]
 example generating public keys using a range
 
 ```
-kadena wallet generate --wallet-name="kadenawallet.wallet" --key-index-or-range="0-5" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0-5" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
 ```
 
 example generating a public key using a index
 
 ```
-kadena wallet generated --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
 ```
 
 example generating a public and secret key using a index
 
 ```
-kadena wallet generate --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKey" --key-alias="myalias" --security-password=12345678
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKey" --key-alias="myalias" --security-password=12345678
 ```
 
 example generating a public and decrypted secret key using a index (will not be
 stored on filesystem)
 
 ```
-kadena wallet generate --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKeyDec" --security-password=12345678
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKeyDec" --security-password=12345678
 ```
 
 password will be hidden after entry: --security-password=\*
@@ -432,11 +433,16 @@ kadena key generate [arguments]
 | ----------------------- | ------------------------------------------- |
 | --key-alias             | Set alias of the key to store on filesystem |
 | --key-amount            | Set the amount of keys to generate          |
+| --legacy                | Generate legacy keys                        |
 
 example
 
 ```
 kadena key generate --key-alias="myalias" --key-amount="5"
+```
+
+```
+kadena key generate --key-alias="myalias" --key-amount="5" --legacy
 ```
 
 ---
@@ -775,11 +781,16 @@ kadena tx send [arguments]
 | --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma seperated list) |              |
 | --tx-transaction-network      | Kadena networks comma seperated list in order of transaction          |              |
 |                               | (e.g. "mainnet, testnet, devnet, ...")                                |              |
+| --poll                        | Poll status of sent transactions                                      |              |
 
 example:
 
 ```
 kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --tx-transaction-network "mainnet, testnet"
+```
+
+```
+kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --tx-transaction-network "mainnet, testnet" --poll
 ```
 
 ---
