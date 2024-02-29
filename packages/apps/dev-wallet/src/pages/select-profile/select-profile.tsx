@@ -1,5 +1,4 @@
 import { useWallet } from '@/modules/wallet/wallet.hook';
-import { idToColor } from '@/utils/id-to-color';
 import { Box, Heading, Stack, SystemIcon, Text } from '@kadena/react-ui';
 import { Link } from 'react-router-dom';
 import InitialsAvatar from './initials';
@@ -29,7 +28,7 @@ export function SelectProfile() {
               >
                 <div
                   className={cardClass}
-                  style={{ backgroundColor: profile.hashColor }}
+                  style={{ backgroundColor: profile.accentColor }}
                 >
                   <div className={imgClass}>
                     <InitialsAvatar name={profile.name} />
