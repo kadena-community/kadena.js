@@ -20,6 +20,10 @@ globalStyle('a:hover', {
   textDecoration: 'none',
 });
 
+globalStyle('a:has(button)', {
+  textDecoration: 'none',
+});
+
 export const mainWrapperClass = style({
   position: 'relative',
   top: 0,
