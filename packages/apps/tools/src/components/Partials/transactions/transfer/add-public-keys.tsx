@@ -1,13 +1,15 @@
-import { Button, Stack, SystemIcon } from '@kadena/react-ui';
+import {
+  Button,
+  FormFieldHeader,
+  Stack,
+  SystemIcon,
+  TextField,
+} from '@kadena/react-ui';
 
-import { HoverTag, PublicKeyField } from '@/components/Global';
 import { validatePublicKey } from '@/services/utils/utils';
 import { stripAccountPrefix } from '@/utils/string';
-import { zodResolver } from '@hookform/resolvers/zod';
 import useTranslation from 'next-translate/useTranslation';
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import * as z from 'zod';
+import React, { useState } from 'react';
 
 export interface IAddPublicKeysSection {
   publicKeys: string[];
@@ -15,11 +17,6 @@ export interface IAddPublicKeysSection {
   deletePubKey: () => void;
   initialPublicKey?: string;
 }
-
-const schema = z.object({
-  pubKey: z.string().optional(),
-});
-type FormData = z.infer<typeof schema>;
 
 export const AddPublicKeysSection = ({
   publicKeys,
@@ -29,34 +26,23 @@ export const AddPublicKeysSection = ({
 }: IAddPublicKeysSection): React.JSX.Element => {
   const { t } = useTranslation('common');
 
-  const {
-    formState: { errors },
-    clearErrors,
-    setError,
-    getValues,
-    setValue,
-    control,
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      pubKey: initialPublicKey ?? '',
-    },
-  });
+  const [publicKey, setPublicKey] = useState<string>(initialPublicKey || '');
+  const [error, setError] = useState<string>('');
 
-  const addPublicKey = () => {
-    const value = stripAccountPrefix(getValues('pubKey') || '');
+  const addPublicKey = (key: string) => {
+    const value = stripAccountPrefix(key || '');
 
     const copyPubKeys = [...publicKeys];
     const isDuplicate = copyPubKeys.includes(value);
 
     if (isDuplicate) {
-      setError('pubKey', { message: t('Duplicate public key') });
+      setError(t('Duplicate public key'));
       return;
     }
 
     copyPubKeys.push(value);
     setPublicKeys(copyPubKeys);
-    setValue('pubKey', '');
+    setPublicKey('');
   };
 
   const deletePublicKey = (index: number) => {
@@ -64,9 +50,9 @@ export const AddPublicKeysSection = ({
     copyPubKeys.splice(index, 1);
 
     setPublicKeys(copyPubKeys);
-    setValue('pubKey', '');
+    setPublicKey('');
     deletePubKey();
-    clearErrors('pubKey');
+    setError('');
   };
 
   const renderPubKeys = () => (
@@ -77,14 +63,22 @@ export const AddPublicKeysSection = ({
       flexWrap={'wrap'}
     >
       {publicKeys.map((key, index) => (
-        <HoverTag
-          key={`public-key-${key}`}
+        <TextField
+          inputFont="code"
+          key={`public-key-${index}`}
+          id={`public-key-${index}`}
           value={key}
-          onIconButtonClick={() => {
-            deletePublicKey(index);
-          }}
-          icon="TrashCan"
-          maskOptions={{ headLength: 4, character: '.' }}
+          endAddon={
+            <Button
+              icon={<SystemIcon.TrashCan />}
+              variant="text"
+              onPress={() => deletePublicKey(index)}
+              aria-label="Add public key"
+              title="Add Public Key"
+              color="primary"
+              type="button"
+            />
+          }
         />
       ))}
     </Stack>
@@ -93,48 +87,42 @@ export const AddPublicKeysSection = ({
   return (
     <section>
       <Stack flexDirection="column" gap="md">
-        <Controller
-          name="pubKey"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <PublicKeyField
-              {...field}
-              onChange={(e) => {
-                field.onChange(e);
-                clearErrors('pubKey');
-              }}
-              errorMessage={errors?.pubKey?.message}
-              isInvalid={!!errors.pubKey}
-              endAddon={
-                <Button
-                  icon={<SystemIcon.Plus />}
-                  variant="text"
-                  onPress={() => {
-                    const value = getValues('pubKey');
-                    const valid = validatePublicKey(
-                      stripAccountPrefix(value || ''),
-                    );
-                    if (valid) {
-                      addPublicKey();
-                    } else {
-                      setError('pubKey', {
-                        type: 'custom',
-                        message: t('invalid-pub-key-length'),
-                      });
-                    }
-                  }}
-                  aria-label="Add public key"
-                  title="Add Public Key"
-                  color="primary"
-                  type="button"
-                />
-              }
-            />
-          )}
-        />
-
+        <FormFieldHeader label={t('Public Key(s)')} />
         {publicKeys.length > 0 ? renderPubKeys() : null}
+
+        <TextField
+          id="public-key-input"
+          inputFont="code"
+          placeholder={t('Enter Public Key')}
+          value={publicKey}
+          onChange={(e) => {
+            setError('');
+            setPublicKey(e.target.value);
+          }}
+          errorMessage={error}
+          isInvalid={!!error}
+        />
+        <Stack flexDirection={'row-reverse'}>
+          <Button
+            endIcon={<SystemIcon.Plus />}
+            onPress={() => {
+              const value = publicKey;
+              const valid = validatePublicKey(stripAccountPrefix(value || ''));
+              console.log('is valid', value);
+              if (valid) {
+                addPublicKey(value);
+              } else {
+                setError(t('invalid-pub-key-length'));
+              }
+            }}
+            aria-label="Add public key"
+            title="Add Public Key"
+            color="primary"
+            type="button"
+          >
+            {t('Add public key')}
+          </Button>
+        </Stack>
       </Stack>
     </section>
   );

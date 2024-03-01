@@ -131,7 +131,9 @@ export const SignFormReceiver = ({
   if (toAccountTab === 'existing' && receiverData?.error) {
     setToAccountTab('new');
     setInitialPublicKey('');
-    setPubKeys([stripAccountPrefix(getValues('receiver'))]);
+    if (getValues('receiver').startsWith('k:')) {
+      setPubKeys([stripAccountPrefix(getValues('receiver'))]);
+    }
   }
 
   if (toAccountTab === 'new' && receiverData?.data) {
@@ -190,7 +192,7 @@ export const SignFormReceiver = ({
             <Stack flexDirection={'row'} marginBlockStart={'md'}>
               <SystemIcon.Information />
               <Text as={'span'} color={'emphasize'}>
-                Fetching receiver account data..
+                {t('fetching-data')}
               </Text>
             </Stack>
           ) : null}
@@ -224,7 +226,7 @@ export const SignFormReceiver = ({
               <Stack flexDirection={'row'} marginBlockStart={'md'}>
                 <SystemIcon.Information />
                 <Text as={'span'} color={'emphasize'}>
-                  {t('fetching-receiver-data')}
+                  {t('fetching-data')}
                 </Text>
               </Stack>
             ) : null}
