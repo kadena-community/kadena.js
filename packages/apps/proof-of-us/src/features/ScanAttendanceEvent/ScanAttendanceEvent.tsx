@@ -122,15 +122,42 @@ export const ScanAttendanceEvent: FC<IProps> = ({
         <AttendanceTicket data={data} />
 
         <Stack flex={1} />
-        <Stack>
+        <Stack flexDirection="column">
           {!hasStarted && (
             <div>
-              the event has not started yet. please check back{' '}
-              {startDate.toLocaleDateString()} {startDate.toLocaleTimeString()}{' '}
-              to claim the nft
+              <Stack flexDirection="column" flex={1} gap="md">
+                <MessageBlock title={''}>
+                  {' '}
+                  the event has not started yet. please check back{' '}
+                  {startDate.toLocaleDateString()}{' '}
+                  {startDate.toLocaleTimeString()} to claim the nft
+                </MessageBlock>
+                <Stack gap="md">
+                  {!isMinted && (
+                    <Stack flex={1}>
+                      <Link href="/user">
+                        <Button>Go to dashboard</Button>
+                      </Link>
+                    </Stack>
+                  )}
+                </Stack>
+              </Stack>
             </div>
           )}
-          {hasEnded && <div>the event has ended.</div>}
+          {hasEnded && (
+            <Stack flexDirection="column" flex={1} gap="md">
+              <MessageBlock title={''}>The event has ended.</MessageBlock>
+              <Stack gap="md">
+                {!isMinted && (
+                  <Stack flex={1}>
+                    <Link href="/user">
+                      <Button>Go to dashboard</Button>
+                    </Link>
+                  </Stack>
+                )}
+              </Stack>
+            </Stack>
+          )}
 
           {showClaimButton && !isMinted && (
             <Stack flex={1} gap="md">

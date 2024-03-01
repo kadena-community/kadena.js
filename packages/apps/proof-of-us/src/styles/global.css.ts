@@ -40,4 +40,5 @@ export const secondaryTextClass = style({
 
 globalStyle('a:has(button)', {
   textDecoration: 'none',
+  flex: 1,
 });
