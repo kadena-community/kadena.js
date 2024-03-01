@@ -1,15 +1,13 @@
 import { useAccount } from '@/hooks/account';
-import { useRouter } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { useEffect } from 'react';
 
 export const LoginBoundry: FC<PropsWithChildren> = ({ children }) => {
-  const { account, isMounted } = useAccount();
-  const router = useRouter();
+  const { account, isMounted, login } = useAccount();
 
   useEffect(() => {
     if (!account && isMounted) {
-      router.replace('/');
+      login();
     }
   }, [account, isMounted]);
   return <>{children}</>;

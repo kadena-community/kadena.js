@@ -1,5 +1,5 @@
 import { BUILDSTATUS } from '@/constants';
-import { child, get, onValue, ref, set, update } from 'firebase/database';
+import { child, get, off, onValue, ref, set, update } from 'firebase/database';
 import type { Dispatch, SetStateAction } from 'react';
 import { database, dbRef } from '../firebase';
 import { isAlreadySigning } from '../isAlreadySigning';
@@ -81,6 +81,8 @@ const ProofOfUsStore = () => {
       const data = snapshot.val();
       setDataCallback(data);
     });
+
+    return () => off(proofOfUsRef);
   };
 
   const listenProofOfUsBackgroundData = (
@@ -92,6 +94,8 @@ const ProofOfUsStore = () => {
       const data = snapshot.val() ?? { bg: '' };
       setDataCallback(data);
     });
+
+    return () => off(backgroundRef);
   };
 
   const listenLeaderboard = (
