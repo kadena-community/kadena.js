@@ -48,16 +48,9 @@ export const LedgerDetails = ({
         <NumberField
           startAddon={<SystemIcon.KeyIconFilled />}
           label="Key Index"
-          onChange={async (event) => {
-            const value = event.target.value;
-            await getPublicKey({
-              keyId: parseInt(value, 10),
-              derivationMode,
-            });
-
-            if (isNaN(+value)) return setErrorLedgerKey(true);
+          onValueChange={async (value) => {
+            await getPublicKey({ keyId: value, derivationMode });
             setKeyId(value);
-            setErrorLedgerKey(false);
           }}
           isInvalid={errorLedgerKey}
           errorMessage={errorLedgerKey ? 'Enter number from 1 to 99' : ''}
