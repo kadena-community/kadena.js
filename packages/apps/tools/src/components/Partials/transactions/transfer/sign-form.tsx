@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-import { Button, Stack, SystemIcon } from '@kadena/react-ui';
+import { Button, Notification, Stack, SystemIcon } from '@kadena/react-ui';
 
 import { NAME_VALIDATION } from '@/components/Global/AccountNameField';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
@@ -172,6 +172,12 @@ export const SignForm = ({
               status="erroneous"
               body={ledgerSignState.error.message}
             />
+          )}
+
+          {ledgerSignState.loading && (
+            <Notification role="alert">
+              {t('Waiting for ledger signature…')}
+            </Notification>
           )}
 
           <div className={buttonContainerClass}>

@@ -256,5 +256,6 @@
   "fetching-data": "Fetching account data..",
   "Public Key(s)": "Public Key(s)",
   "Add public key": "Add public key",
-  "No funds on selected chain.": "No funds on selected chain."
+  "No funds on selected chain.": "No funds on selected chain.",
+  "Waiting for ledger signature": "Waiting for ledger signature"
 }
