@@ -17,7 +17,7 @@ const runPrettier = async (): Promise<IScriptResult> => {
   const errors: string[] = [];
 
   const { stderr } = await promiseExec(
-    `prettier ./public/sitemap.xml --write && prettier ./src/pages --write  && prettier ./src/_generated/**/*.json --write`,
+    `prettier ./src/pages --write  && prettier ./src/_generated/**/*.json --write`,
   );
 
   if (stderr) {
