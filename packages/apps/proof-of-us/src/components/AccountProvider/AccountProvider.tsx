@@ -83,6 +83,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
     setAccount(account);
     setIsMounted(true);
+    router.replace(getReturnUrl());
   }, [setAccount, setIsMounted, searchParams, decodeAccount]);
 
   useEffect(() => {

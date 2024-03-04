@@ -80,9 +80,8 @@ export const createChangeWalletPasswordCommand: (
   'Update the password for your wallet',
   [
     globalOptions.walletSelect(),
-    globalOptions.securityCurrentPassword({ isOptional: false }),
-    globalOptions.securityNewPassword({ isOptional: false }),
-    globalOptions.securityVerifyPassword({ isOptional: false }),
+    globalOptions.currentPasswordFile({ isOptional: false }),
+    globalOptions.newPasswordFile({ isOptional: false }),
     confirmOption(),
   ],
   async (option, { collect }) => {
@@ -92,12 +91,7 @@ export const createChangeWalletPasswordCommand: (
     if (config.confirm !== true) {
       return log.error(`\nWallet password won't be updated. Exiting..\n`);
     }
-    if (config.securityNewPassword !== config.securityVerifyPassword) {
-      throw new CommandError({
-        errors: ["Passwords don't match. Please try again."],
-        exitCode: 1,
-      });
-    }
+
     if (config.walletNameConfig === null) {
       throw new CommandError({ errors: ['Invalid wallet'], exitCode: 1 });
     }
@@ -105,8 +99,8 @@ export const createChangeWalletPasswordCommand: (
     const result = await changeWalletPassword(
       config.walletName,
       config.walletNameConfig,
-      config.securityCurrentPassword,
-      config.securityNewPassword,
+      config.currentPasswordFile,
+      config.newPasswordFile,
     );
     assertCommandError(result);
 

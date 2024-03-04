@@ -211,7 +211,7 @@ export const ExtendedTransactionsTable = (
                   </Link>
                 </Cell>
                 <Cell>
-                  {edge.node.cmd.payload.__typename === 'ExecPayload' &&
+                  {edge.node.cmd.payload.__typename === 'ExecutionPayload' &&
                   edge.node.cmd.payload.code ? (
                     <pre>
                       {formatLisp(JSON.parse(edge.node.cmd.payload.code))}

@@ -2,7 +2,8 @@ import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSubmit } from '@/hooks/submit';
-import { MonoAccessTimeFilled, MonoClose } from '@kadena/react-icons';
+import { haveAllSigned } from '@/utils/isAlreadySigning';
+import { MonoClose } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
@@ -10,6 +11,7 @@ import { useEffect } from 'react';
 import { IconButton } from '../IconButton/IconButton';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { ErrorStatus } from '../Status/ErrorStatus';
+import { LoadingStatus } from '../Status/LoadingStatus';
 import { SuccessStatus } from '../Status/SuccessStatus';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 
@@ -20,7 +22,7 @@ interface IProps {
 }
 
 export const MintView: FC<IProps> = () => {
-  const { proofOfUs } = useProofOfUs();
+  const { proofOfUs, updateSigner, updateProofOfUs } = useProofOfUs();
   const { doSubmit, isStatusLoading, status, result } = useSubmit();
   const { uploadBackground } = useAvatar();
   const router = useRouter();
@@ -34,6 +36,14 @@ export const MintView: FC<IProps> = () => {
       console.error('UPLOAD ERR');
     }
     try {
+      const signees = updateSigner({ signerStatus: 'success' }, true);
+
+      console.log('update in mintview');
+      await updateProofOfUs({
+        status: haveAllSigned(signees) ? 4 : 3,
+        signees: signees,
+      });
+
       await doSubmit(proofOfUs.tx);
     } catch (e) {
       console.error('SUBMIT ERR');
@@ -69,9 +79,7 @@ export const MintView: FC<IProps> = () => {
 
         {isStatusLoading && (
           <>
-            <Stack justifyContent="center" paddingBlock="xxxl">
-              <MonoAccessTimeFilled fontSize="8rem" />
-            </Stack>
+            <LoadingStatus />
             <ListSignees />
             <Stack flex={1} />
           </>

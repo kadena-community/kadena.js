@@ -9,9 +9,11 @@ import ora from 'ora';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 // import { createOption } from '../../utils/createOption.js';
+import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
+import { ensureAccountAliasFilesExists } from '../utils/accountHelpers.js';
 import { fund } from '../utils/fund.js';
 
 // const deployDevnet = createOption({
@@ -23,7 +25,7 @@ import { fund } from '../utils/fund.js';
 
 /* bin/kadena-cli.js account fund --account="testnet.yaml" --amount="20" --network="testnet" --chain-id="0" */
 
-export const createFundCommand = createCommand(
+export const createAccountFundCommand = createCommand(
   'fund',
   'Fund an existing/new account',
   [
@@ -34,6 +36,12 @@ export const createFundCommand = createCommand(
     // deployDevnet(),
   ],
   async (option) => {
+    const isAccountAliasesExist = await ensureAccountAliasFilesExists();
+
+    if (!isAccountAliasesExist) {
+      return log.error(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
+    }
+
     const { account, accountConfig } = await option.account();
     const { amount } = await option.amount();
     const { network, networkConfig } = await option.network({

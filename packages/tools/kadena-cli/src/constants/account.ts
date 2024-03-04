@@ -13,5 +13,5 @@ export const NAMESPACES_MAP: { [key: string]: string } = {
   testnet04: NAMESPACES.TEST_NET,
 };
 
-export const NO_ACCOUNT_ERROR_MESSAGE =
-  'No valid accounts found. To create an account use `account add-manual` or `account add-from-wallet` command.';
+export const NO_ACCOUNTS_FOUND_ERROR_MESSAGE =
+  'No account aliases found. To add an account use `account add-manual` or `account add-from-wallet` command.';

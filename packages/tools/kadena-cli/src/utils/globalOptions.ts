@@ -31,7 +31,11 @@ import { readKeyFileContent } from '../keys/utils/storage.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { createExternalPrompt } from '../prompts/generic.js';
 import { createOption } from './createOption.js';
-import { ensureDevnetsConfiguration, isNotEmptyString } from './helpers.js';
+import {
+  ensureDevnetsConfiguration,
+  isNotEmptyString,
+  passwordPromptTransform,
+} from './helpers.js';
 import { log } from './logger.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
@@ -89,23 +93,35 @@ export const globalOptions = {
     option: globalFlags.legacy,
   }),
   // security
-  securityCurrentPassword: createOption({
-    key: 'securityCurrentPassword' as const,
-    prompt: security.securityCurrentPasswordPrompt,
-    validation: z.string(),
+  passwordFile: createOption({
+    key: 'passwordFile' as const,
+    prompt: security.passwordFilePrompt,
+    validation: z.string().or(z.object({ _password: z.string() })),
     option: new Option(
-      '-c, --security-current-password <securityCurrentPassword>',
-      'Enter your current key password',
+      '--password-file <passwordFile>',
+      'Filepath to the password file',
     ),
+    transform: passwordPromptTransform('--password-file'),
   }),
-  securityNewPassword: createOption({
-    key: 'securityNewPassword' as const,
-    prompt: security.securityNewPasswordPrompt,
-    validation: z.string(),
+  currentPasswordFile: createOption({
+    key: 'currentPasswordFile' as const,
+    prompt: security.currentPasswordFilePrompt,
+    validation: z.string().or(z.object({ _password: z.string() })),
     option: new Option(
-      '-n, --security-new-password <securityNewPassword>',
-      'Enter your new key password',
+      '-c, --current-password-file <currentPasswordFile>',
+      'Filepath to the current password file',
     ),
+    transform: passwordPromptTransform('--current-password-file'),
+  }),
+  newPasswordFile: createOption({
+    key: 'newPasswordFile' as const,
+    prompt: security.newPasswordFilePrompt,
+    validation: z.string().or(z.object({ _password: z.string() })),
+    option: new Option(
+      '-n, --new-password-file <newPasswordFile>',
+      'Filepath to the new password file',
+    ),
+    transform: passwordPromptTransform('--new-password-file'),
   }),
   // Devnet
   devnet: createOption({
@@ -445,24 +461,6 @@ export const globalOptions = {
     expand: async (walletName: string) => {
       return walletName === 'all' ? null : await getWallet(walletName);
     },
-  }),
-  securityPassword: createOption({
-    key: 'securityPassword',
-    prompt: security.securityPasswordPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-p, --security-password <securityPassword>',
-      'Enter a password to encrypt your key with',
-    ),
-  }),
-  securityVerifyPassword: createOption({
-    key: 'securityVerifyPassword' as const,
-    prompt: security.securityPasswordVerifyPrompt,
-    validation: z.string(),
-    option: new Option(
-      '--security-verify-password <securityVerifyPassword>',
-      'Enter a password to verify with password',
-    ),
   }),
   keyMnemonic: createOption({
     key: 'keyMnemonic' as const,

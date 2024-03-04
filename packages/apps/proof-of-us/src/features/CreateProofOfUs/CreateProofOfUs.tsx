@@ -24,14 +24,18 @@ export const CreateProofOfUs: FC<IProps> = ({ params }) => {
   useEffect(() => {
     //init and check in what step you are
     if (!proofOfUs || isMounted) return;
-
     setStatus(proofOfUs.status);
     setIsMounted(true);
   }, [proofOfUs, background]);
 
   useEffect(() => {
+    setStatus(proofOfUs?.status ?? 1);
+  }, [proofOfUs?.proofOfUsId]);
+
+  useEffect(() => {
     if (params?.id === 'new') {
       const proofOfUsId = createProofOfUsID();
+      setStatus(1);
       router.replace(`/user/proof-of-us/${proofOfUsId}`);
       return;
     }
@@ -50,6 +54,7 @@ export const CreateProofOfUs: FC<IProps> = ({ params }) => {
     await updateStatus({ proofOfUsId: params.id, status: newStatus });
   };
 
+  console.log(proofOfUs, status);
   return (
     <div>
       {status === 1 && <AvatarEditor next={next} />}

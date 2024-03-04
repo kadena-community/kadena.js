@@ -38,8 +38,6 @@ export default async function handler(
     };
   });
 
-  console.log(newAccounts);
-
   store.saveLeaderboardAccounts(newAccounts);
 
   res.status(200).json({ message: 'success' });

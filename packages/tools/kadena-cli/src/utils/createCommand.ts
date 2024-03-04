@@ -3,7 +3,7 @@ import { CLINAME } from '../constants/config.js';
 import { CommandError, printCommandError } from './command.util.js';
 import type { OptionType, createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
-import { handlePromptError } from './helpers.js';
+import { handlePromptError, notEmpty } from './helpers.js';
 import { log } from './logger.js';
 import { readStdin } from './stdin.js';
 import type { FlattenObject, Fn, Prettify } from './typeUtilities.js';
@@ -31,12 +31,15 @@ export async function executeOption<Option extends OptionType>(
   Prettify<{
     value: unknown;
     config: OptionConfig<Option>;
+    prompted: boolean;
   }>
 > {
   let value = args[option.key];
+  let prompted = false;
 
   if (value === undefined && option.isInQuestions) {
     if (args.quiet !== true && args.quiet !== 'true') {
+      prompted = true;
       value = await (option.prompt as PromptFn)(args, originalArgs);
     } else if (option.isOptional === false) {
       // Should have been handled earlier, but just in case
@@ -73,6 +76,7 @@ export async function executeOption<Option extends OptionType>(
   return {
     value: value,
     config: newConfig,
+    prompted,
   };
 }
 
@@ -91,8 +95,8 @@ const printCommandExecution = (
   }
 
   log.info(
-    log.color.yellow(
-      `\nExecuted: ${getCommandExecution(command, args, values)}`,
+    log.color.gray(
+      `\nExecuted:\n${getCommandExecution(command, args, values)}`,
     ),
   );
 };
@@ -117,6 +121,16 @@ interface ICommandData {
     }>
   >;
 }
+
+const generateBugReportLink = (command: string, error: string): string => {
+  const platform = encodeURIComponent(process.platform);
+  const browser = encodeURIComponent(`Node.JS ${process.version}`);
+  const reproduction = encodeURIComponent(`Executed command:\n${command}`);
+  const description = encodeURIComponent(
+    `Describe the issue:\n\n\nError stacktrace:\n${error}`,
+  );
+  return `https://github.com/kadena-community/kadena.js/issues/new?assignees=&labels=bug&projects=&template=001-bug_report.yml&os=${platform}&browser=${browser}&description=${description}&reproduction=${reproduction}`;
+};
 
 export const createCommand =
   <
@@ -156,6 +170,7 @@ export const createCommand =
       // args outside try-catch to be able to use it in catch
       let args = { ...originalArgs };
       const values = rest.flatMap((r) => r.args);
+      let prompted = false;
 
       try {
         const stdin = await readStdin();
@@ -173,9 +188,14 @@ export const createCommand =
         const collectOptionsMap = options.reduce((acc, option, index) => {
           acc[option.key] = async (customArgs = {}) => {
             try {
-              const { value, config } = await executeOption(
+              const {
+                value,
+                config,
+                prompted: _prompted,
+              } = await executeOption(
                 option,
                 {
+                  stdin: stdin,
                   ...args,
                   ...customArgs,
                 },
@@ -184,6 +204,7 @@ export const createCommand =
 
               // Keep track of previous args to prompts can use them
               args = { ...args, [option.key]: value };
+              prompted = prompted || _prompted;
               return config;
             } catch (error) {
               handlePromptError(error);
@@ -215,25 +236,35 @@ export const createCommand =
           },
         });
 
-        printCommandExecution(
-          `${program.name()} ${name}`,
-          args,
-          result ?? undefined,
-          values,
-        );
-      } catch (error) {
-        if (error instanceof CommandError) {
-          printCommandError(error);
+        if (prompted) {
           printCommandExecution(
             `${program.name()} ${name}`,
             args,
-            error.args,
+            result ?? undefined,
             values,
           );
+        }
+      } catch (error) {
+        if (error instanceof CommandError) {
+          printCommandError(error);
+          if (prompted) {
+            printCommandExecution(
+              `${program.name()} ${name}`,
+              args,
+              error.args,
+              values,
+            );
+          }
           process.exitCode = error.exitCode;
           return;
         }
         log.error(`\nAn error occurred: ${error.message}\n`);
+        log.info(
+          `Is this a bug? Let us know:\n${generateBugReportLink(
+            getCommandExecution(`${program.name()} ${name}`, args, values),
+            error.stack ?? error.message,
+          )}`,
+        );
         process.exitCode = 1;
       }
     });
@@ -270,9 +301,7 @@ export function getCommandExecution(
       let displayValue: string | null = null;
       const value = args[arg];
 
-      if (arg.toLowerCase().includes('password')) {
-        displayValue = value === '' ? '' : '******';
-      } else if (Array.isArray(value)) {
+      if (Array.isArray(value)) {
         displayValue = `"${value.join(',')}"`;
       } else if (typeof value === 'string') {
         displayValue = `"${value}"`;
@@ -287,7 +316,11 @@ export function getCommandExecution(
         Object.getPrototypeOf(value) === Object.prototype
       ) {
         return Object.entries(value)
-          .map(([key, val]) => `--${key}="${val}"`)
+          .map(([key, val]) =>
+            // Do not show keys starting with _ (used for password)
+            !key.startsWith('_') ? `--${key}="${val}"` : null,
+          )
+          .filter(notEmpty)
           .join(' ');
       }
 

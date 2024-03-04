@@ -204,7 +204,8 @@ export const ExtendedTransfersTable = (
             /**  These transfers are going to be added to their crosschain counterpart and
            this way we avoid repeated transfers in the table */
             if (
-              edge.node.transaction?.cmd.payload.__typename === 'ContPayload'
+              edge.node.transaction?.cmd.payload.__typename ===
+              'ContinuationPayload'
             ) {
               return <></>;
             }

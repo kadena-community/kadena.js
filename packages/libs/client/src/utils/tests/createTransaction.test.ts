@@ -75,8 +75,8 @@ describe('createTransaction', () => {
       .setNonce('nonce:1')
       .createTransaction();
     expect(command).toEqual({
-      cmd: '{"payload":{"exec":{"code":"(test.test-fun \\"bob\\" \\"alice\\" guard {\\"test\\":{\\"modules\\":[coin,free.coin]}} 12.0)","data":{}}},"nonce":"nonce:1","signers":[]}',
-      hash: 'Xm1CjhIcGSO7wUxKiLZxyuFi_DuOexD0eq44QW_BRjI',
+      cmd: '{"payload":{"exec":{"code":"(test.test-fun \\"bob\\" \\"alice\\" guard {\\"test\\": {\\"modules\\": [coin free.coin]}} 12.0)","data":{}}},"nonce":"nonce:1","signers":[]}',
+      hash: 'x_3osDNKNpusk2LScpEUwkm8wo0h_G7OXL03rQMYnUE',
       sigs: [],
     });
   });

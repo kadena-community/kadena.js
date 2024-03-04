@@ -1,7 +1,7 @@
 import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useSignToken } from '@/hooks/data/signToken';
-import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { isSignedOnce } from '@/utils/isAlreadySigning';
 import { MonoSignature } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
@@ -19,10 +19,7 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
   const { signToken } = useSignToken();
 
   const handleJoin = async () => {
-    //TODO FIX for the isAlreadySigning changes to quick
-    setTimeout(() => {
-      signToken();
-    }, 500);
+    signToken();
   };
 
   if (!proofOfUs) return null;
@@ -33,24 +30,22 @@ export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
       <ImagePositions />
       <ListSignees />
       <Stack flex={1} />
-      {!isAlreadySigning(proofOfUs.signees) ? (
+      {!isSignedOnce(proofOfUs.signees) ? (
         <Button onPress={handleJoin}>
           Sign <MonoSignature />
         </Button>
       ) : (
         <Stack gap="md">
-          <Button variant="secondary">
-            <Link href="/user">Dashboard</Link>
-          </Button>
+          <Link href="/user">
+            <Button variant="secondary">Dashboard</Button>
+          </Link>
 
           {proofOfUs.tokenId && (
-            <Button>
-              <Link
-                href={`/user/proof-of-us/t/${proofOfUs.tokenId}/${proofOfUs.requestKey}`}
-              >
-                Go to Proof
-              </Link>
-            </Button>
+            <Link
+              href={`/user/proof-of-us/t/${proofOfUs.tokenId}/${proofOfUs.requestKey}`}
+            >
+              <Button>Go to Proof</Button>
+            </Link>
           )}
         </Stack>
       )}

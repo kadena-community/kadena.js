@@ -26,9 +26,10 @@ export const useWallet = () => {
 
   const retrieveProfileList = useCallback(async () => {
     const profileList = (await walletRepository.getAllProfiles()).map(
-      ({ name, uuid }) => ({
+      ({ name, uuid, accentColor }) => ({
         name,
         uuid,
+        accentColor,
       }),
     );
     setContext((ctx) => ({ ...ctx, profileList }));

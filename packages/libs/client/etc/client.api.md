@@ -209,7 +209,7 @@ export interface IPactCommand {
     signers: Array<{
         pubKey: string;
         address?: string;
-        scheme?: 'ED25519' | 'ETH';
+        scheme?: SignerScheme;
         clist?: ICap[];
     }>;
 }
@@ -411,6 +411,9 @@ export type PactReturnType<T extends (...args: any[]) => any> = T extends (...ar
 
 // @public
 export const readKeyset: (key: string) => () => string;
+
+// @public (undocumented)
+export type SignerScheme = 'ED25519' | 'ETH' | 'WebAuthn';
 
 // Warning: (ae-internal-missing-underscore) The name "signTransactions" should be prefixed with an underscore because the declaration is marked as @internal
 //

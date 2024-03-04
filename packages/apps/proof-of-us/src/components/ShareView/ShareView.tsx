@@ -35,7 +35,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const { proofOfUs, updateStatus, isInitiator } = useProofOfUs();
+  const { proofOfUs, isInitiator } = useProofOfUs();
   const { account } = useAccount();
   const { signToken } = useSignToken();
   const router = useRouter();
@@ -47,6 +47,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   const handleSign = async () => {
     if (!proofOfUs) return;
+
     signToken();
 
     return;
@@ -66,7 +67,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
     const transaction = searchParams.get('transaction');
     if (!transaction || !proofOfUs) return;
 
-    updateStatus({ proofOfUsId: proofOfUs.proofOfUsId, status: 4 });
+    //updateStatus({ proofOfUsId: proofOfUs.proofOfUsId, status: 4 });
   }, []);
 
   if (!proofOfUs || !account || !isMounted) return;

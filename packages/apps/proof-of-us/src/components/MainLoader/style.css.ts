@@ -1,3 +1,4 @@
+import { deviceColors } from '@/styles/tokens.css';
 import { atoms } from '@kadena/react-ui/styles';
 import { keyframes, style } from '@vanilla-extract/css';
 
@@ -16,9 +17,8 @@ export const loaderWrapperClass = style([
     inset: 0,
   }),
   {
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: `${deviceColors.kadenaBlack}b8`,
     zIndex: 1000,
-    color: 'black',
   },
 ]);
 
