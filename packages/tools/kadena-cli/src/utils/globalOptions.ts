@@ -221,15 +221,6 @@ export const globalOptions = {
       'Enter a alias to select keys from',
     ),
   }),
-  walletName: createOption({
-    key: 'walletName' as const,
-    prompt: wallets.walletNamePrompt,
-    validation: z.string(),
-    option: new Option(
-      '-w, --wallet-name <walletName>',
-      'Enter you wallet name',
-    ),
-  }),
   keyIndexOrRange: createOption({
     key: 'keyIndexOrRange' as const,
     prompt: keys.keyIndexOrRangePrompt,
@@ -240,19 +231,6 @@ export const globalOptions = {
     ),
     transform(value) {
       return parseKeyIndexOrRange(value);
-    },
-  }),
-  keyAmount: createOption({
-    key: 'keyAmount' as const,
-    prompt: keys.keyAmountPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-n, --key-amount <keyAmount>',
-      'Enter the number of key pairs you want to generate (default: 1)',
-    ),
-    transform: (keyAmount: string) => {
-      const parsed = parseInt(keyAmount, 10);
-      return isNaN(parsed) ? null : parsed;
     },
   }),
   keyGenFromChoice: createOption({
@@ -273,25 +251,6 @@ export const globalOptions = {
     expand: async (walletName: string) => {
       return await getWallet(walletName);
     },
-  }),
-  walletNameSelectWithAll: createOption({
-    key: 'walletName',
-    prompt: wallets.walletSelectAllPrompt,
-    validation: z.string(),
-    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
-    defaultIsOptional: false,
-    expand: async (walletName: string) => {
-      return walletName === 'all' ? null : await getWallet(walletName);
-    },
-  }),
-  keyMnemonic: createOption({
-    key: 'keyMnemonic' as const,
-    prompt: keys.keyMnemonicPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-m, --key-mnemonic <keyMnemonic>',
-      'Enter your 12-word mnemonic phrase to generate keys from',
-    ),
   }),
   keyUsePassword: createOption({
     key: 'keyUsePassword' as const,
