@@ -10,6 +10,11 @@ export const pactPathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/basics/pact',
+    destination: '/pact',
+    permanent: true,
+  },
+  {
     source: '/:slug/learn-pact/beginner/:slug1',
     destination: '/pact/beginner/:slug1',
     permanent: true,

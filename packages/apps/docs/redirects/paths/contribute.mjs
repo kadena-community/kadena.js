@@ -34,4 +34,9 @@ export const contributePathUrlRedirects = [
     destination: '/contribute/ambassadors',
     permanent: true,
   },
+  {
+    source: '/contribute/run-a-node/overview',
+    destination: '/contribute/node',
+    permanent: true,
+  },
 ];

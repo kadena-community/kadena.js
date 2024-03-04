@@ -29,4 +29,19 @@ export const kadenaPathUrlRedirects = [
     destination: '/kadena/wallets/chainweaver/chainweaver-troubleshooting',
     permanent: true,
   },
+  {
+    source: '/kadena/support',
+    destination: '/kadena/resources',
+    permanent: true,
+  },
+  {
+    source: '/kadena/client/prerequisites',
+    destination: '/kadena/client',
+    permanent: true,
+  },
+  {
+    source: '/kadena/client/using-fp-approach',
+    destination: '/kadena/client',
+    permanent: true,
+  },
 ];

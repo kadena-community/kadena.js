@@ -109,4 +109,9 @@ export const basicsPathUrlRedirects = [
     destination: '/kadena/resources#technical-grantsh-505266918',
     permanent: true,
   },
+  {
+    source: '/basics/code-of-conduct',
+    destination: '/kadena/code-of-conduct',
+    permanent: true,
+  },
 ];

@@ -144,4 +144,20 @@ export const buildPathUrlRedirects = [
     destination: '/build/guides',
     permanent: true,
   },
+  {
+    source: '/build/useful-tools',
+    destination: '/build',
+    permanent: true,
+  },
+  {
+    source: '/build/real-world-pact',
+    destination: '/pact',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/election-dapp-tutorial/02-running-devnet',
+    destination:
+      '/build/guides/election-dapp-tutorial/start-a-local-blockchain',
+    permanent: true,
+  },
 ];
