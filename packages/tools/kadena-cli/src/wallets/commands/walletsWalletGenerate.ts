@@ -97,7 +97,7 @@ export const createGenerateWalletCommand: (
   'Add a new local wallet',
   [
     globalOptions.walletName({ isOptional: false }),
-    globalOptions.passwordFile({ isOptional: false }),
+    globalOptions.passwordFileRepeat({ isOptional: false }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option, { collect }) => {
@@ -106,7 +106,7 @@ export const createGenerateWalletCommand: (
 
     const result = await generateWallet(
       config.walletName,
-      config.passwordFile,
+      config.passwordFileRepeat,
       config.legacy,
     );
 
