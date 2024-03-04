@@ -9,6 +9,7 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 
+import { AccountDiscovery } from '@/pages/account-discovery/account-dsicovery';
 import { ImportWallet } from '@/pages/import-wallet/import-wallet';
 import { CreateNetwork } from '@/pages/networks/create-network';
 import { Networks } from '@/pages/networks/networks';
@@ -56,9 +57,14 @@ export const Routes: FC = () => {
           path="/backup-recovery-phrase/:keySourceId/write-down"
           element={<WriteDownRecoveryPhrase />}
         />
+        <Route
+          path="/account-discovery/:keySourceId"
+          element={<AccountDiscovery />}
+        />
+        ,
         <Route path="/accounts/:account" element={<p>Account</p>} />,
       </Route>
-      <Route path="*" element={<p>Permission Denied!</p>} />
+      <Route path="*" element={<p>Not found!</p>} />
     </Route>,
   );
 

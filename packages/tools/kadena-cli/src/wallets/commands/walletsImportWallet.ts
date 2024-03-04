@@ -17,10 +17,6 @@ import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 
-/**
-kadena keys import-wallet --key-mnemonic "catch ridge print million media eternal sleep heavy inject before captain lazy" --security-new-password 12345678 --security-verify-password 12345678 --key-wallet "test"
-*/
-
 export const importWallet = async ({
   mnemonic,
   password,
@@ -74,36 +70,25 @@ export const createImportWalletCommand: (
   'Import (restore) wallet from mnemonic phrase',
   [
     globalOptions.keyMnemonic(),
-    globalOptions.securityNewPassword({ isOptional: false }),
-    globalOptions.securityVerifyPassword({ isOptional: false }),
+    globalOptions.passwordFile({ isOptional: false }),
     globalOptions.walletName(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
-  async (config) => {
-    try {
-      log.debug('import-wallet:action', { config });
+  async (option, { collect }) => {
+    const config = await collect(option);
+    log.debug('import-wallet:action', config);
 
-      // compare passwords
-      if (config.securityNewPassword !== config.securityVerifyPassword) {
-        log.error(`\nPasswords don't match. Please try again.\n`);
-        process.exit(1);
-      }
+    const loading = ora('Generating..').start();
 
-      const loading = ora('Generating..').start();
+    const result = await importWallet({
+      walletName: config.walletName,
+      mnemonic: config.keyMnemonic,
+      password: config.passwordFile,
+      legacy: config.legacy,
+    });
 
-      const result = await importWallet({
-        walletName: config.walletName,
-        mnemonic: config.keyMnemonic,
-        password: config.securityNewPassword,
-        legacy: config.legacy,
-      });
+    assertCommandError(result, loading);
 
-      assertCommandError(result, loading);
-
-      displayStoredWallet(config.walletName, result.data.wallet.legacy);
-    } catch (error) {
-      log.error(`\n${error.message}\n`);
-      process.exit(1);
-    }
+    displayStoredWallet(config.walletName, result.data.wallet.legacy);
   },
 );

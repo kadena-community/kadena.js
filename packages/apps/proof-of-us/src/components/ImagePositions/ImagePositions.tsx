@@ -6,6 +6,7 @@ import type { FC, MouseEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Modal } from '../Modal/Modal';
 import { SigneePosition } from '../Signees/SigneePosition';
+import { TagInfo } from './TagInfo';
 import { imageClass, wrapperClass } from './style.css';
 
 interface IProps {}
@@ -20,6 +21,7 @@ export const ImagePositions: FC<IProps> = () => {
   const imgRef = useRef<HTMLImageElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [isTagInfoOpen, setIsTagInfoOpen] = useState(true);
 
   useEffect(() => {
     setSigner(
@@ -49,7 +51,7 @@ export const ImagePositions: FC<IProps> = () => {
     const wrapper = wrapperRef.current;
     const img = imgRef.current;
 
-    const elms = wrapper.querySelectorAll('button');
+    const elms = wrapper.querySelectorAll<HTMLElement>('[data-position]');
 
     elms.forEach((elm) => {
       const xPercentage: number = parseFloat(
@@ -64,7 +66,7 @@ export const ImagePositions: FC<IProps> = () => {
         return;
       }
 
-      const [xPos, yPos] = getPosition<HTMLButtonElement>(elm, img, {
+      const [xPos, yPos] = getPosition<HTMLElement>(elm, img, {
         xPercentage,
         yPercentage,
       });
@@ -88,12 +90,14 @@ export const ImagePositions: FC<IProps> = () => {
   const handleClick: MouseEventHandler<HTMLImageElement> = async (e) => {
     if (!imgRef.current || isLocked) return;
     setIsEditorOpen(true);
+    setIsTagInfoOpen(false);
 
     // Calculate the coordinates relative to the image
     const rect = imgRef.current.getBoundingClientRect();
     const xPercentage = ((e.clientX - rect.left) / imgRef.current.width) * 100;
     const yPercentage = ((e.clientY - rect.top) / imgRef.current.height) * 100;
 
+    console.log('update in imageposition click');
     await updateProofOfUs({
       signees: updateSigner({
         position: { xPercentage, yPercentage },
@@ -102,6 +106,7 @@ export const ImagePositions: FC<IProps> = () => {
   };
 
   const handleRemove = async () => {
+    console.log('update in imageposition remove');
     await updateProofOfUs({
       signees: updateSigner({ position: null }),
     });
@@ -122,6 +127,9 @@ export const ImagePositions: FC<IProps> = () => {
           onClick={handleClick}
           onLoad={() => setIsMounted(true)}
         />
+        {isTagInfoOpen && (
+          <TagInfo handleClose={() => setIsTagInfoOpen(false)} />
+        )}
         {proofOfUs?.signees.map((s, idx) => (
           <SigneePosition
             variant="small"

@@ -4,8 +4,12 @@ import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
-import { MonoArrowBack, MonoArrowDownward } from '@kadena/react-icons';
-import { CopyButton } from '@kadena/react-ui';
+import {
+  MonoArrowBack,
+  MonoArrowDownward,
+  MonoCheck,
+} from '@kadena/react-icons';
+import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
@@ -17,7 +21,6 @@ import { TitleHeader } from '../TitleHeader/TitleHeader';
 
 import { useAccount } from '@/hooks/account';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
-import { TextField } from '../TextField/TextField';
 import { qrClass } from './style.css';
 
 interface IProps {
@@ -28,8 +31,11 @@ interface IProps {
 
 export const ShareView: FC<IProps> = ({ prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
+  const qrContainerRef = useRef<HTMLDivElement>(null);
+
   const [isMounted, setIsMounted] = useState(false);
-  const { proofOfUs, updateStatus, isInitiator } = useProofOfUs();
+  const [isCopied, setIsCopied] = useState(false);
+  const { proofOfUs, isInitiator } = useProofOfUs();
   const { account } = useAccount();
   const { signToken } = useSignToken();
   const router = useRouter();
@@ -41,6 +47,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   const handleSign = async () => {
     if (!proofOfUs) return;
+
     signToken();
 
     return;
@@ -60,10 +67,17 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
     const transaction = searchParams.get('transaction');
     if (!transaction || !proofOfUs) return;
 
-    updateStatus({ proofOfUsId: proofOfUs.proofOfUsId, status: 4 });
+    //updateStatus({ proofOfUsId: proofOfUs.proofOfUsId, status: 4 });
   }, []);
 
   if (!proofOfUs || !account || !isMounted) return;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(
+      `${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`,
+    );
+    setIsCopied(true);
+  };
 
   return (
     <ScreenHeight>
@@ -84,10 +98,14 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
           {!isAlreadySigning(proofOfUs.signees) ? (
             <>
-              <div className={qrClass}>
+              <div
+                className={qrClass}
+                ref={qrContainerRef}
+                onClick={handleCopy}
+              >
                 <QRCode
                   ecLevel="H"
-                  size={800}
+                  size={qrContainerRef.current?.offsetWidth || 300}
                   ref={qrRef}
                   value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
                   removeQrCodeBehindLogo={true}
@@ -97,13 +115,12 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                   eyeRadius={10}
                 />
               </div>
-              <TextField
-                placeholder="Link"
-                id="linkshare"
-                aria-label="share"
-                value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
-                endAddon={<CopyButton inputId="linkshare" />}
-              />
+              <Button onPress={handleCopy}>Click to copy link</Button>
+              {isCopied ? (
+                <Stack>
+                  Copied! <MonoCheck />
+                </Stack>
+              ) : null}
               <ListSignees />
             </>
           ) : (

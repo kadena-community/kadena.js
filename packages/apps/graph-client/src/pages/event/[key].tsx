@@ -15,6 +15,7 @@ import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+  Button,
   Grid,
   GridItem,
   Heading,
@@ -23,6 +24,7 @@ import {
   Select,
   SelectItem,
   Stack,
+  TextField,
 } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -34,6 +36,9 @@ const itemsPerPageOptions = [10, 20, 50, 100].map((x) => ({
 
 const Event: React.FC = () => {
   const router = useRouter();
+
+  const [parametersFilterField, setParametersFilterField] =
+    useState<string>('');
 
   // Paginated events
   const getEventsQueryVariables = {
@@ -103,6 +108,7 @@ const Event: React.FC = () => {
   const refetchEvents = async () => {
     await fetchMore({
       variables: {
+        parametersFilter: parametersFilterField,
         first: itemsPerPage,
         last: null,
         after: null,
@@ -195,6 +201,18 @@ const Event: React.FC = () => {
     setCurrentPage(newPageNumber);
   };
 
+  const search = async () => {
+    await refetchEvents();
+  };
+
+  const handleKeyPress = async (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (event.key === 'Enter') {
+      await search();
+    }
+  };
+
   return (
     <>
       <Stack justifyContent="space-between">
@@ -215,6 +233,20 @@ const Event: React.FC = () => {
           ]}
         />
       </Stack>
+
+      <Box margin="md" />
+
+      <Box display="flex" gap="sm" alignItems="flex-end">
+        <TextField
+          label="Filter for the Parameters field"
+          value={parametersFilterField}
+          onValueChange={(value) => setParametersFilterField(value)}
+          placeholder='{"array_starts_with": "k:abc..."}'
+          onKeyDown={handleKeyPress}
+        />
+
+        <Button onClick={search}>Search</Button>
+      </Box>
 
       <Box margin="md" />
 

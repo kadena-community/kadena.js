@@ -48,7 +48,7 @@ async function generateKey(
 export const generateWallet = async (
   walletName: string,
   password: string,
-  legacy: boolean,
+  legacy = false,
 ): Promise<
   CommandResult<{
     mnemonic: string;
@@ -97,32 +97,22 @@ export const createGenerateWalletCommand: (
   'Add a new local wallet',
   [
     globalOptions.walletName({ isOptional: false }),
-    globalOptions.securityPassword({ isOptional: false }),
-    globalOptions.securityVerifyPassword({ isOptional: false }),
+    globalOptions.passwordFile({ isOptional: false }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
-  async (config) => {
-    try {
-      log.debug('create-wallet:action', { config });
+  async (option, { collect }) => {
+    const config = await collect(option);
+    log.debug('create-wallet:action', config);
 
-      if (config.securityPassword !== config.securityVerifyPassword) {
-        log.error(`\nPasswords don't match. Please try again.\n`);
-        return process.exit(1);
-      }
+    const result = await generateWallet(
+      config.walletName,
+      config.passwordFile,
+      config.legacy,
+    );
 
-      const result = await generateWallet(
-        config.walletName,
-        config.securityPassword,
-        config.legacy,
-      );
+    assertCommandError(result);
 
-      assertCommandError(result);
-
-      displayGeneratedWallet(result.data.mnemonic);
-      displayStoredWallet(config.walletName, config.legacy);
-    } catch (error) {
-      log.error(`\n${error.message}\n`);
-      process.exit(1);
-    }
+    displayGeneratedWallet(result.data.mnemonic);
+    displayStoredWallet(config.walletName, config.legacy);
   },
 );

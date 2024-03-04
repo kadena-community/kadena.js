@@ -7,8 +7,8 @@ import { printPlainKeys } from '../utils/keysDisplay.js';
 export const createListKeysCommand: (
   program: Command,
   version: string,
-) => void = createCommand('list', 'List key(s)', [], async (config) => {
-  log.debug('list-keys:action', { config });
+) => void = createCommand('list', 'List key(s)', [], async () => {
+  log.debug('list-keys:action');
 
   await printPlainKeys();
 });

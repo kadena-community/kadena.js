@@ -1,13 +1,20 @@
 import type { Command } from 'commander';
+import { parse } from 'node:path';
+import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
 import { createCommand } from '../../utils/createCommand.js';
 import {
+  isNotEmptyString,
   maskStringPreservingStartAndEnd,
   truncateText,
 } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
 import type { IAliasAccountData } from '../types.js';
-import { getAllAccounts } from '../utils/accountHelpers.js';
+import {
+  ensureAccountAliasFilesExists,
+  getAllAccounts,
+  readAccountFromFile,
+} from '../utils/accountHelpers.js';
 
 function generateTabularData(accounts: IAliasAccountData[]): {
   header: string[];
@@ -22,7 +29,7 @@ function generateTabularData(accounts: IAliasAccountData[]): {
   ];
 
   const data = accounts.map((account) => [
-    truncateText(account.alias, 32),
+    truncateText(parse(account.alias).name, 32),
     maskStringPreservingStartAndEnd(account.name, 32),
     account.publicKeys
       .map((key) => maskStringPreservingStartAndEnd(key, 24))
@@ -37,15 +44,17 @@ function generateTabularData(accounts: IAliasAccountData[]): {
   };
 }
 
-async function accountList(config: {
-  accountAlias: string;
-  accountAliasConfig: IAliasAccountData | undefined;
-}): Promise<IAliasAccountData[] | undefined> {
-  if (config.accountAlias === 'all') {
-    return await getAllAccounts();
-  } else if (config.accountAliasConfig) {
-    return [config.accountAliasConfig];
-  } else {
+async function accountList(
+  accountAlias: string,
+): Promise<IAliasAccountData[] | undefined> {
+  try {
+    if (accountAlias === 'all') {
+      return await getAllAccounts();
+    }  else {
+      const account = await readAccountFromFile(accountAlias);
+      return [account];
+    }
+  } catch (error) {
     return;
   }
 }
@@ -57,16 +66,28 @@ export const createAccountListCommand: (
   'list',
   'List all available accounts',
   [accountOptions.accountSelectWithAll()],
-  async (config) => {
-    log.debug('account-list:action', { config });
+  async (option) => {
+    const isAccountAliasesExist = await ensureAccountAliasFilesExists();
 
-    const accounts = await accountList(config);
-
-    if (!accounts) {
-      return log.error(`Selected account "${config.accountAlias}" not found.`);
+    if (!isAccountAliasesExist) {
+      return log.error(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
     }
 
-    const tabularData = generateTabularData(accounts);
+    const { accountAlias } = await option.accountAlias();
+
+    log.debug('account-list:action', accountAlias);
+
+    if (!isNotEmptyString(accountAlias)) {
+      return log.error('No account alias is selected');
+    }
+
+    const accountsDetails = await accountList(accountAlias);
+
+    if (!accountsDetails || accountsDetails.length === 0) {
+      return log.error(`Selected account alias "${accountAlias}" not found.`);
+    }
+
+    const tabularData = generateTabularData(accountsDetails);
 
     log.output(log.generateTableString(tabularData.header, tabularData.data));
   },

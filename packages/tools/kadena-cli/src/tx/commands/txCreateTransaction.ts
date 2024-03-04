@@ -8,7 +8,7 @@ import { WORKING_DIRECTORY } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
@@ -86,7 +86,7 @@ export const createTransaction = async (
   }
 };
 
-export const createTransactionCommandNew = createCommandFlexible(
+export const createTransactionCommandNew = createCommand(
   'add',
   'Select a template and add a transaction.\nThe template can be passed via stdin.\nThe transaction will be saved to file.',
   [
@@ -95,7 +95,7 @@ export const createTransactionCommandNew = createCommandFlexible(
     txOptions.templateVariables(),
     globalOptions.outFileJson(),
   ],
-  async (option, values, stdin) => {
+  async (option, { values, stdin }) => {
     await writeTemplatesToDisk();
     const template = await option.template({ stdin });
 

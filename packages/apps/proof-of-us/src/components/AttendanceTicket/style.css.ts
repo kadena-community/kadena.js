@@ -12,7 +12,7 @@ export const ticketClass = style([
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     backgroundSize: 'cover',
-    maskImage: "url('/assets/attendance-mask-large.png')",
+    maskImage: "url('/assets/attendance-mask-large.svg')",
     maskRepeat: 'no-repeat',
     maskSize: '100%',
   },
@@ -21,7 +21,7 @@ export const ticketClass = style([
 export const titleClass = style([
   atoms({
     position: 'absolute',
-    fontWeight: 'headingFont.regular',
+    fontWeight: 'headingFont.bold',
     textTransform: 'capitalize',
   }),
   {

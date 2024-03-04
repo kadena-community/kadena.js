@@ -46,7 +46,7 @@ interface IProofOfUsData {
   tx: IUnsignedCommand;
   tokenId: string;
   requestKey: string;
-  manifestUri: string;
+  manifestUri?: string;
   imageUri: string;
   eventId: string;
   mintStatus: IMintStatus;
@@ -73,8 +73,9 @@ interface IProofOfUsToken {
 }
 
 interface IProofOfUsTokenMeta {
-  startDate: int;
-  endDate: int;
+  manifestUri?: string;
+  startDate?: int;
+  endDate?: int;
   description: string;
   image: string;
   name: string;
@@ -94,6 +95,12 @@ interface IProofOfUsTokenMeta {
     name: string;
     family: string;
   };
+}
+
+interface IProofOfUsTokenMetaWithkey extends IProofOfUsTokenMeta {
+  requestKey: string;
+  tokenId: string;
+  mintStatus: 'error' | 'success' | 'init' | undefined;
 }
 
 interface IProofOfUs {
@@ -123,6 +130,10 @@ type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   socialLink?: ISocial;
   position?: ISigneePosition;
   publicKey: string;
+};
+
+type IAccountLeaderboard = Pick<IAccount, 'alias' | 'accountName'> & {
+  tokenCount: number;
 };
 
 type IProofOfUsTokenSignee = Pick<

@@ -41,10 +41,11 @@ export const createDecryptCommand: (program: Command, version: string) => void =
     'Decrypt message',
     [
       globalOptions.message({ isOptional: false }),
-      globalOptions.securityCurrentPassword({ isOptional: false }),
+      globalOptions.currentPasswordFile({ isOptional: false }),
     ],
-    async (config) => {
-      log.debug('decrypt:action', { config });
+    async (option, { collect }) => {
+      const config = await collect(option);
+      log.debug('decrypt:action', config);
 
       if (config.message === undefined) {
         throw new Error('Missing message');
@@ -53,7 +54,7 @@ export const createDecryptCommand: (program: Command, version: string) => void =
       log.warning(`You are about to decrypt this message.\n`);
 
       const result = await decrypt(
-        config.securityCurrentPassword,
+        config.currentPasswordFile,
         config.message as EncryptedString,
       );
 

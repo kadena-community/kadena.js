@@ -1,14 +1,11 @@
-import {
-  fundAmountValidation,
-  getAllAccountNames,
-} from '../account/utils/accountHelpers.js';
-import { NO_ACCOUNT_ERROR_MESSAGE } from '../constants/account.js';
+import { parse } from 'node:path';
+import { fundAmountValidation, getAllAccountNames } from '../account/utils/accountHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   maskStringPreservingStartAndEnd,
   truncateText,
 } from '../utils/helpers.js';
-import { input, select } from '../utils/prompts.js';
+import { checkbox, input, select } from '../utils/prompts.js';
 
 export const publicKeysPrompt: IPrompt<string> = async (
   previousQuestions,
@@ -132,41 +129,42 @@ export const accountOverWritePrompt: IPrompt<boolean> = async () =>
     ],
   });
 
-export const accountSelectionPrompt = async (
-  options: string[] = [],
-): Promise<string> => {
+export const getAllAccountChoices = async (): Promise<
+  { value: string; name: string }[]
+> => {
   const allAccounts = await getAllAccountNames();
-
-  if (allAccounts.length === 0) {
-    throw new Error(NO_ACCOUNT_ERROR_MESSAGE);
-  }
 
   const maxAliasLength = Math.max(
     ...allAccounts.map(({ alias }) => alias.length),
   );
 
-  const accountChoices = allAccounts.map(({ alias, name }) => {
-    const aliasWithoutExtension = alias.split('.yaml')[0];
+  return allAccounts.map(({ alias, name }) => {
+    const aliasWithoutExtension = parse(alias).name;
     const maxLength = maxAliasLength < 25 ? maxAliasLength : 25;
     const paddedAlias = aliasWithoutExtension.padEnd(maxLength, ' ');
     return {
-      value: alias,
+      value: aliasWithoutExtension,
       name: `${truncateText(
         paddedAlias,
         25,
       )} - ${maskStringPreservingStartAndEnd(name, 20)}`,
     };
   });
+};
 
+export const accountSelectionPrompt = async (
+  options: string[] = [],
+): Promise<string> => {
+  const allAccountChoices = await getAllAccountChoices();
   if (options.includes('all')) {
-    accountChoices.unshift({
+    allAccountChoices.unshift({
       value: 'all',
       name: 'All accounts',
     });
   }
 
   if (options.includes('allowManualInput')) {
-    accountChoices.unshift({
+    allAccountChoices.unshift({
       value: 'custom',
       name: 'Enter an account name manually:',
     });
@@ -174,7 +172,7 @@ export const accountSelectionPrompt = async (
 
   const selectedAlias = await select({
     message: 'Select an account:(alias - account name)',
-    choices: accountChoices,
+    choices: allAccountChoices,
   });
 
   if (selectedAlias === 'custom') {
@@ -199,9 +197,56 @@ export const accountSelectPrompt: IPrompt<string> = async (
 ) => {
   const options =
     previousQuestions.isAllowManualInput === true ? ['allowManualInput'] : [];
-  return accountSelectionPrompt(options);
+  return await accountSelectionPrompt(options);
 };
 
-export const accountSelectAllPrompt: IPrompt<string> = async () => {
-  return accountSelectionPrompt(['all']);
+export const accountSelectAllPrompt: IPrompt<string> = async (
+  previousQuestions,
+) => {
+  return await accountSelectionPrompt(['all']);
+};
+
+export const accountSelectMultiplePrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const allAccountChoices = await getAllAccountChoices();
+  const selectedAliases = await checkbox({
+    message: 'Select an account:(alias - account name)',
+    choices: allAccountChoices,
+  });
+
+  return selectedAliases.join(',');
+};
+
+export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const selectedAccounts = previousQuestions.accountAlias as string;
+
+  const selectedAccountsLength = selectedAccounts.split(',').length;
+
+  const selectedAccountMessage =
+    previousQuestions.accountAlias === 'all'
+      ? 'all the accounts'
+      : selectedAccountsLength > 1
+      ? 'all the selected aliases accounts'
+      : `the ${selectedAccounts} alias account`;
+
+  return await select({
+    message: `Are you sure you want to delete ${selectedAccountMessage}?`,
+    choices: [
+      {
+        value: true,
+        name: 'Yes',
+      },
+      {
+        value: false,
+        name: 'No',
+      },
+    ],
+  });
 };

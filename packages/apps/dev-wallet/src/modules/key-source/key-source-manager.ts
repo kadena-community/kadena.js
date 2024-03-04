@@ -15,17 +15,17 @@ function createKeySourceManager(): IKeySourceManager {
     get(source: 'HD-BIP44' | 'HD-chainweaver'): IKeySourceService {
       switch (source) {
         case 'HD-BIP44':
-          return bip44 as IKeySourceService;
+          return bip44;
         case 'HD-chainweaver':
-          return chainweaver as IKeySourceService;
+          return chainweaver;
 
         default:
           throw new Error(`Key source service not found for ${source}`);
       }
     },
     reset() {
-      createBIP44Service().reset();
-      createChainweaverService().reset();
+      createBIP44Service().disconnect();
+      createChainweaverService().disconnect();
     },
   };
 }

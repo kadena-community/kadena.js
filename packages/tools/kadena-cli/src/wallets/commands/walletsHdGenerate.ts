@@ -14,7 +14,7 @@ import type { IKeyPair } from '../../keys/utils/storage.js';
 import { saveKeyByAlias } from '../../keys/utils/storage.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import type { IKeysConfig } from '../utils/keySharedKeyGen.js';
 import { generateFromWallet } from '../utils/keySharedKeyGen.js';
@@ -79,14 +79,14 @@ export const generateHdKeys = async ({
 export const createGenerateHdKeysCommand: (
   program: Command,
   version: string,
-) => void = createCommandFlexible(
+) => void = createCommand(
   'generate-keys',
   'Generate public/secret key pair(s) from your wallet',
   [
     globalOptions.walletSelect(),
     globalOptions.keyGenFromChoice(),
     globalOptions.keyAlias(),
-    globalOptions.securityPassword(),
+    globalOptions.passwordFile(),
     globalOptions.keyIndexOrRange({ isOptional: true }),
   ],
   async (option) => {
@@ -101,7 +101,7 @@ export const createGenerateHdKeysCommand: (
       keyGenFromChoice !== 'genPublicSecretKeyDec'
         ? (await option.keyAlias()).keyAlias
         : '';
-    const { securityPassword } = await option.securityPassword();
+    const { passwordFile } = await option.passwordFile();
 
     const loadingSpinner = ora('Generating keys..').start();
 
@@ -109,7 +109,7 @@ export const createGenerateHdKeysCommand: (
       walletName: walletNameConfig.wallet,
       keyIndexOrRange,
       keyGenFromChoice,
-      password: securityPassword,
+      password: passwordFile,
       keyAlias,
     });
 

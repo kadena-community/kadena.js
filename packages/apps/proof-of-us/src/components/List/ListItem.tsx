@@ -1,35 +1,35 @@
 'use client';
-import type { Token } from '@/__generated__/sdk';
-import { fetchManifestData } from '@/utils/fetchManifestData';
+
 import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import type { FC } from 'react';
-import useSWR from 'swr';
-import { IsLoading } from '../IsLoading/IsLoading';
 import { AttendanceThumb } from '../Thumb/AttendanceThumb';
 import { ConnectThumb } from '../Thumb/ConnectThumb';
 import { Text } from '../Typography/Text';
 import { listItemClass, listItemLinkClass } from './style.css';
 
 interface IProps {
-  token: Token;
+  proofOfUsData?: IProofOfUsData;
 }
 
-interface ITempToken extends Token {
-  info: {
-    precision: number;
-    uri: string;
-    supply: number;
+export const ListItem: FC<IProps> = ({ proofOfUsData }) => {
+  if (!proofOfUsData) return null;
+
+  const getLink = () => {
+    if (proofOfUsData?.mintStatus === 'success') {
+      if (proofOfUsData.type === 'attendance')
+        return `/user/proof-of-us/t/${proofOfUsData.tokenId}`;
+      if (proofOfUsData.type === 'connect')
+        return `/user/proof-of-us/t/${proofOfUsData.tokenId}/${proofOfUsData.requestKey}`;
+    }
+
+    if (!proofOfUsData.tokenId) {
+      return `/scan/e/${proofOfUsData.eventId}`;
+    } else {
+      return `/user/proof-of-us/t/${proofOfUsData.tokenId}/${proofOfUsData.requestKey}`;
+    }
   };
-}
-
-export const ListItem: FC<IProps> = ({ token }) => {
-  //@todo fix the tokenURI. it is now missing from the graph
-  const uri = (token as ITempToken).info?.uri;
-  const { data, isLoading } = useSWR(uri, fetchManifestData, {
-    revalidateOnFocus: false,
-  });
 
   return (
     <motion.li
@@ -38,25 +38,34 @@ export const ListItem: FC<IProps> = ({ token }) => {
       animate={{ opacity: 1, left: 0 }}
       exit={{ opacity: 0, left: '500px' }}
     >
-      {isLoading && <IsLoading />}
-      {data && (
-        <Link
-          className={listItemLinkClass}
-          href={`/user/proof-of-us/t/${token.id}`}
-        >
-          {data.properties.eventType === 'attendance' && (
-            <AttendanceThumb token={data} />
+      {proofOfUsData && (
+        <Link className={listItemLinkClass} href={getLink()}>
+          {proofOfUsData.type === 'attendance' && (
+            <AttendanceThumb
+              token={proofOfUsData}
+              isMinted={
+                proofOfUsData?.mintStatus === 'success' ||
+                proofOfUsData?.mintStatus === undefined
+              }
+            />
           )}
-          {data.properties.eventType === 'connect' && (
-            <ConnectThumb token={data} />
+
+          {proofOfUsData.type === 'connect' && (
+            <ConnectThumb
+              token={proofOfUsData}
+              isMinted={
+                proofOfUsData?.mintStatus === 'success' ||
+                proofOfUsData?.mintStatus === undefined
+              }
+            />
           )}
+
           <Stack display="flex" flexDirection="column" gap="xs">
             <Text transform="capitalize" bold>
-              {data.name}
+              {proofOfUsData.title}
             </Text>
             <Text variant="small">
-              {data.properties.eventName ??
-                new Date(data.properties.date).toDateString()}
+              {new Date(proofOfUsData.date).toDateString()}
             </Text>
           </Stack>
         </Link>

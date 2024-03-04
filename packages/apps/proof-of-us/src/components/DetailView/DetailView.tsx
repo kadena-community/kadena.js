@@ -22,6 +22,7 @@ interface IProps {
   next: () => void;
   prev: () => void;
 }
+
 export const DetailView: FC<IProps> = ({ next, prev }) => {
   const { proofOfUs, closeToken, changeTitle, updateProofOfUs } =
     useProofOfUs();
@@ -64,6 +65,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
       setTitleError('');
     }
 
+    console.log('update in detailview');
     await updateProofOfUs({
       title: changeTitle(value),
     });

@@ -1,5 +1,4 @@
 'use client';
-import type { Token } from '@/__generated__/sdk';
 import { Button } from '@/components/Button/Button';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { List } from '@/components/List/List';
@@ -10,16 +9,16 @@ import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { Text } from '@/components/Typography/Text';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { useAccount } from '@/hooks/account';
-import { useGetAllProofOfUs } from '@/hooks/data/getAllProofOfUs';
+import { useTokens } from '@/hooks/tokens';
 import { secondaryTextClass } from '@/styles/global.css';
-import { MonoGroup, MonoLogout } from '@kadena/react-icons';
+import { MonoGroup, MonoLogout, MonoMilitaryTech } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 
 const Page: FC = () => {
-  const { data, isLoading, error } = useGetAllProofOfUs();
+  const { tokens, isLoading } = useTokens();
   const router = useRouter();
   const { logout } = useAccount();
 
@@ -31,21 +30,24 @@ const Page: FC = () => {
     <UserLayout>
       <ScreenHeight>
         {isLoading && <MainLoader />}
-        {error && <div>{error.message}</div>}
 
-        <Stack flexDirection="column" flex={1}>
-          <TitleHeader
-            label="Dashboard"
-            Append={() => (
-              <IconButton onClick={logout}>
-                <MonoLogout />
-              </IconButton>
-            )}
-          />
-          <Stack flex={1}>
-            {!isLoading &&
-              !error &&
-              (data.length === 0 ? (
+        {tokens && (
+          <Stack flexDirection="column" flex={1}>
+            <TitleHeader
+              label="Dashboard"
+              Append={() => (
+                <>
+                  <Link href="/leaderboard">
+                    <MonoMilitaryTech />
+                  </Link>
+                  <IconButton onClick={logout}>
+                    <MonoLogout />
+                  </IconButton>
+                </>
+              )}
+            />
+            <Stack flex={1} width="100%">
+              {tokens.length === 0 ? (
                 <Stack
                   flexDirection="column"
                   justifyContent="center"
@@ -79,18 +81,24 @@ const Page: FC = () => {
                       overflowY: 'scroll',
                     }}
                   >
-                    <Text bold>Proofs ({data.length})</Text>
+                    <Text bold>Proofs ({tokens.length})</Text>
                     <List>
-                      {data.map((token: Token) => (
-                        <ListItem key={token.id} token={token} />
-                      ))}
+                      {tokens.map((token: IProofOfUsData) => {
+                        return (
+                          <ListItem
+                            key={`${token.proofOfUsId}`}
+                            proofOfUsData={token}
+                          />
+                        );
+                      })}
                     </List>
                   </Stack>
                   <Button onPress={handleNew}>Create Proof</Button>
                 </Stack>
-              ))}
+              )}
+            </Stack>
           </Stack>
-        </Stack>
+        )}
       </ScreenHeight>
     </UserLayout>
   );

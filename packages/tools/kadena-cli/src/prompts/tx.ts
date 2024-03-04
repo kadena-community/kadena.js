@@ -9,6 +9,7 @@ import {
 } from '../keys/utils/keysHelpers.js';
 import { services } from '../services/index.js';
 import { getTemplates } from '../tx/commands/templates/templates.js';
+import { CommandError } from '../utils/command.util.js';
 import type { IPrompt } from '../utils/createOption.js';
 import { maskStringPreservingStartAndEnd } from '../utils/helpers.js';
 import { log } from '../utils/logger.js';
@@ -70,7 +71,11 @@ export const transactionSelectPrompt: IPrompt<string> = async (args) => {
   const existingTransactions: string[] = await getTransactions(signed, path);
 
   if (existingTransactions.length === 0) {
-    throw new Error('No transactions found.');
+    throw new CommandError({
+      warnings: [
+        'No transactions found. Use "kadena tx add" to create a transaction, and "kadena tx sign" to sign it.',
+      ],
+    });
   }
 
   const choices = existingTransactions.map((transaction) => ({
@@ -97,7 +102,9 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
   const existingTransactions: string[] = await getTransactions(signed, path);
 
   if (existingTransactions.length === 0) {
-    throw new Error(`No ${signed ? 'signed ' : ''}transactions found.`);
+    throw new CommandError({
+      warnings: [`No ${signed ? 'signed ' : ''}transactions found.`],
+    });
   }
 
   const choices = existingTransactions.map((transaction) => ({

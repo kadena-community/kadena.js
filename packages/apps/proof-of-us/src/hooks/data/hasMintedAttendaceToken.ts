@@ -1,16 +1,17 @@
 import { hasMintedAttendaceToken } from '@/utils/proofOfUs';
 import { useState } from 'react';
-import { useAccount } from '../account';
 
 export const useHasMintedAttendaceToken = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSuccess, setHasSuccess] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isPending] = useState(false);
-  const { account } = useAccount();
 
-  const hasMinted = async (eventId: string): Promise<boolean> => {
-    if (!account) {
+  const hasMinted = async (
+    eventId: string,
+    accountName?: string,
+  ): Promise<boolean> => {
+    if (!accountName) {
       setHasError(true);
       return false;
     }
@@ -18,7 +19,7 @@ export const useHasMintedAttendaceToken = () => {
     setHasError(false);
     setHasSuccess(false);
 
-    const result = await hasMintedAttendaceToken(eventId, account);
+    const result = await hasMintedAttendaceToken(eventId, accountName);
 
     return result;
   };

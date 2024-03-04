@@ -5,7 +5,6 @@ import {
 } from '../../constants/devnets.js';
 import { mergeConfigs, sanitizeFilename } from '../../utils/helpers.js';
 
-import { existsSync, readFileSync } from 'fs';
 import yaml from 'js-yaml';
 import path from 'path';
 import { services } from '../../services/index.js';
@@ -91,25 +90,25 @@ export async function defaultDevnetIsConfigured(): Promise<boolean> {
 
 export async function getDevnetConfiguration(
   name: string,
-): Promise<IDevnetsCreateOptions | void> {
+): Promise<IDevnetsCreateOptions | null> {
   const devnetFilePath = path.join(defaultDevnetsPath, `${name}.yaml`);
 
   const content = await services.filesystem.readFile(devnetFilePath);
-  if (content === null) return;
+  if (content === null) return null;
 
   return yaml.load(content) as IDevnetsCreateOptions;
 }
 
-export function loadDevnetConfig(
+export async function loadDevnetConfig(
   devnet: string,
-): IDevnetsCreateOptions | never {
+): Promise<IDevnetsCreateOptions> {
   const devnetFilePath = path.join(defaultDevnetsPath, `${devnet}.yaml`);
 
-  if (!existsSync(devnetFilePath)) {
+  if (!(await services.filesystem.fileExists(devnetFilePath))) {
     throw new Error('Devnet configuration file not found.');
   }
 
   return yaml.load(
-    readFileSync(devnetFilePath, 'utf8'),
+    (await services.filesystem.readFile(devnetFilePath))!,
   ) as IDevnetsCreateOptions;
 }

@@ -1,7 +1,8 @@
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { maskStringPreservingStartAndEnd } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
 import type { IAccountDetailsResult } from '../types.js';
@@ -33,7 +34,26 @@ export async function accountDetails(
   }
 }
 
-export const createAccountDetailsCommand = createCommandFlexible(
+function generateTableForAccountDetails(account: IAccountDetailsResult): {
+  headers: string[];
+  data: string[][];
+} {
+  const headers = ['Account Name', 'Public Keys', 'Predicate', 'Balance'];
+
+  const data = [
+    maskStringPreservingStartAndEnd(account.account, 32),
+    account.guard.keys.map((key) => key).join('\n'),
+    account.guard.pred,
+    account.balance.toString(),
+  ];
+
+  return {
+    headers,
+    data: [data],
+  };
+}
+
+export const createAccountDetailsCommand = createCommand(
   'details',
   'Get details of an account',
   [
@@ -42,7 +62,7 @@ export const createAccountDetailsCommand = createCommandFlexible(
     globalOptions.chainId({ isOptional: false }),
     globalOptions.fungible({ isOptional: true }),
   ],
-  async (option, values) => {
+  async (option) => {
     const { account, accountConfig } = await option.account({
       isAllowManualInput: true,
     });
@@ -75,7 +95,12 @@ export const createAccountDetailsCommand = createCommandFlexible(
 
     assertCommandError(result);
 
-    log.info(log.color.green(`\nDetails of account "${account}":\n`));
-    log.info(log.color.green(`${JSON.stringify(result.data, null, 2)}`));
+    log.info(
+      log.color.green(
+        `\nDetails of account "${account}" on network "${networkConfig.networkId}" and chain "${chainId}" is:\n`,
+      ),
+    );
+    const table = generateTableForAccountDetails(result.data);
+    log.output(log.generateTableString(table.headers, table.data));
   },
 );

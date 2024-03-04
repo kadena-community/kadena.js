@@ -23,7 +23,7 @@ export const deviceColors = {
 
 export const customTokens = createGlobalTheme(':root', {
   color: {
-    accent: '#58BD9C',
+    accent: '#42CEA0',
     surface: 'rgba(147, 147, 147, 0.10)',
     forgroundSurface: 'rgba(147, 147, 147, 0.30)',
     border: 'white',

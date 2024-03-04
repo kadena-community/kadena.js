@@ -14,8 +14,10 @@ export const TitleHeader: FC<IProps> = ({ label, Prepend, Append }) => {
       display="flex"
       alignItems="center"
       gap="md"
-      paddingBlock="sm"
+      paddingBlockStart="xl"
+      paddingBlockEnd="md"
       width="100%"
+      style={{ zIndex: 101 }}
     >
       {Prepend && <Prepend />}
       <h2 className={titleClass}>{label}</h2>

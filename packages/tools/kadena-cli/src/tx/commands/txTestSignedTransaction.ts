@@ -5,7 +5,7 @@ import { createClient, isSignedTransaction } from '@kadena/client';
 import path from 'node:path';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
@@ -60,7 +60,7 @@ export const testTransactions = async (
 export const createTestSignedTransactionCommand: (
   program: Command,
   version: string,
-) => void = createCommandFlexible(
+) => void = createCommand(
   'test',
   'Test a signed transaction on testnet.',
   [

@@ -1,11 +1,12 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Block, Transfer } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { PRISMA, builder } from '../builder';
 
-export default builder.prismaNode('Transfer', {
+export default builder.prismaNode(Prisma.ModelName.Transfer, {
   description: 'A transfer of funds from a fungible between two accounts.',
   id: { field: 'blockHash_chainId_orderIndex_moduleHash_requestKey' },
   select: {},
@@ -53,7 +54,7 @@ export default builder.prismaNode('Transfer', {
     crossChainTransfer: t.prismaField({
       description:
         'The counterpart of the crosschain-transfer. `null` when it is not a cross-chain-transfer.',
-      type: 'Transfer',
+      type: Prisma.ModelName.Transfer,
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * 2, // In the worst case resolve scenario, it executes 2 queries.
       select: {
@@ -134,7 +135,7 @@ export default builder.prismaNode('Transfer', {
 
     // relations
     block: t.prismaField({
-      type: 'Block',
+      type: Prisma.ModelName.Block,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
         blockHash: true,
@@ -155,7 +156,7 @@ export default builder.prismaNode('Transfer', {
 
     transaction: t.prismaField({
       description: 'The transaction that initiated this transfer.',
-      type: 'Transaction',
+      type: Prisma.ModelName.Transaction,
       nullable: true,
       complexity:
         COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,

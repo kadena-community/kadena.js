@@ -3,11 +3,10 @@ import { globalOptions } from '../../utils/globalOptions.js';
 import { writeDevnet } from '../utils/devnetHelpers.js';
 
 import { createExternalPrompt } from '../../prompts/generic.js';
-import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
 
-export const manageDevnetsCommand: CreateCommandReturnType = createCommand(
+export const manageDevnetsCommand = createCommand(
   'manage',
   'Manage devnets',
   [
@@ -17,8 +16,9 @@ export const manageDevnetsCommand: CreateCommandReturnType = createCommand(
     globalOptions.devnetMountPactFolder(),
     globalOptions.devnetVersion(),
   ],
-  async (config) => {
-    log.debug('devnet-manage:action', { config });
+  async (option, { collect }) => {
+    const config = await collect(option);
+    log.debug('devnet-manage:action', config);
 
     const externalPrompt = createExternalPrompt({
       devnetOverwritePrompt,

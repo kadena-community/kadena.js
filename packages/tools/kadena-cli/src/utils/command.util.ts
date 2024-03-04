@@ -39,22 +39,15 @@ interface ICommandSuccess<T> {
 export type CommandResult<T> = ICommandSuccess<T> | ICommandError;
 
 /**
- *  Prints output of a command if success if false then calls process.exit(1)
+ * Prints warnings and errors of a command and asserts the output type
+ * Throws a CommandError if the command was not successful
  */
 export function assertCommandError(
   result: CommandResult<unknown>,
   ora?: Ora,
 ): asserts result is Extract<CommandResult<unknown>, { success: true }> {
-  if (result.warnings && result.warnings.length) {
-    log.warning(`${result.warnings.join('\n')}\n`);
-  }
-
   if (result.success === false) {
     if (ora) ora.fail('Failed');
-
-    if (result.errors.length > 0) {
-      log.error(`${result.errors.join('\n')}\n`);
-    }
 
     throw new CommandError({
       errors: result.errors,
@@ -62,6 +55,19 @@ export function assertCommandError(
       exitCode: 1,
     });
   } else {
+    if (result.warnings && result.warnings.length) {
+      log.warning(`${result.warnings.join('\n')}\n`);
+    }
     if (ora) ora.succeed('Completed');
+  }
+}
+
+export function printCommandError(error: CommandError): void {
+  if (error.warnings.length > 0) {
+    log.warning(`${error.warnings.join('\n')}`);
+  }
+  if (error.errors.length > 0) {
+    if (error.warnings.length > 0) log.error('');
+    log.error(`${error.errors.join('\n')}`);
   }
 }

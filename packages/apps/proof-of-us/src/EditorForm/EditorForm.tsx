@@ -5,7 +5,7 @@ import { SocialIcons, getSocial } from '@/utils/getSocial';
 import { Stack } from '@kadena/react-ui';
 import type { ChangeEventHandler, FC, FormEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { iconClass } from './style.css';
+import { iconClass, mobileInputClass } from './style.css';
 
 interface IProps {
   signer?: IProofOfUsSignee;
@@ -51,6 +51,7 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
     }
     setSocialIcon(socialType?.icon);
 
+    console.log('update in editform');
     await updateProofOfUs({
       signees: updateSigner({
         name: label,
@@ -83,6 +84,7 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
           name="label"
           defaultValue={signer?.name}
           maxLength={35}
+          className={mobileInputClass}
         />
         <Stack position="relative">
           <TextField
@@ -91,6 +93,7 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
             placeholder="Social Media Uri"
             name="socialLink"
             defaultValue={signer?.socialLink}
+            className={mobileInputClass}
           />
           {socialIcon && (
             <span className={iconClass}>{renderIcon(socialIcon)}</span>
@@ -98,12 +101,7 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
         </Stack>
         {error && <div>{error}</div>}
         <Stack gap="md">
-          <Button
-            variant="secondary"
-            onPress={() => {
-              onClose();
-            }}
-          >
+          <Button variant="secondary" onClick={onClose}>
             Cancel
           </Button>
           <Button type="submit">Save</Button>

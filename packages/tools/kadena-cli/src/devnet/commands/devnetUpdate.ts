@@ -1,15 +1,15 @@
-import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { guardDocker, updateDevnet } from '../utils/docker.js';
 
-export const updateDevnetCommand: CreateCommandReturnType = createCommand(
+export const updateDevnetCommand = createCommand(
   'update',
   'Update the Docker image of a given devnet container image',
   [globalOptions.devnetVersion()],
-  async (config) => {
-    log.debug('devnet-update:action', { config });
+  async (option) => {
+    const config = await option.version();
+    log.debug('devnet-update:action', config);
 
     guardDocker();
 

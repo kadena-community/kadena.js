@@ -1,10 +1,11 @@
 import { prismaClient } from '@db/prisma-client';
+import { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { builder } from '../builder';
 
-export default builder.prismaNode('Event', {
+export default builder.prismaNode(Prisma.ModelName.Event, {
   description:
     'An event emitted by the execution of a smart-contract function.',
   id: { field: 'blockHash_orderIndex_requestKey' },
@@ -44,7 +45,7 @@ export default builder.prismaNode('Event', {
 
     //relations
     transaction: t.prismaField({
-      type: 'Transaction',
+      type: Prisma.ModelName.Transaction,
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
@@ -69,7 +70,7 @@ export default builder.prismaNode('Event', {
     }),
 
     block: t.prismaField({
-      type: 'Block',
+      type: Prisma.ModelName.Block,
       nullable: false,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {

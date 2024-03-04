@@ -1,4 +1,5 @@
 import { createTransactionCommandNew } from './commands/txCreateTransaction.js';
+import { createTxListCommand } from './commands/txList.js';
 import { createSendTransactionCommand } from './commands/txSend.js';
 import { createSignCommand } from './commands/txSign.js';
 import { createTestSignedTransactionCommand } from './commands/txTestSignedTransaction.js';
@@ -16,4 +17,5 @@ export function txCommandFactory(program: Command, version: string): void {
   createSignCommand(txProgram, version);
   createTestSignedTransactionCommand(txProgram, version);
   createTransactionCommandNew(txProgram, version);
+  createTxListCommand(txProgram, version);
 }

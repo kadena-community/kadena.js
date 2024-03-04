@@ -5,6 +5,10 @@ export const imageWrapper = style([
   atoms({
     position: 'relative',
   }),
+  {
+    marginLeft: '-12px',
+    marginRight: '-12px',
+  },
 ]);
 
 export const titleErrorClass = style([

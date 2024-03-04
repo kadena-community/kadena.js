@@ -248,7 +248,7 @@ export type Nonce = string;
 export type PactCode = string;
 
 // @alpha
-export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean | Date | object;
+export type PactLiteral = string | number | IPactInt | IPactDecimal | boolean | Date;
 
 // @alpha
 export type PactPayload = {
@@ -261,7 +261,7 @@ export type PactPayload = {
 export type PactTransactionHash = IBase64Url;
 
 // @alpha
-export type PactValue = PactLiteral | Array<PactValue>;
+export type PactValue = PactLiteral | Array<PactValue> | Record<string, any>;
 
 // @alpha (undocumented)
 export type Proof = IBase64Url | undefined;

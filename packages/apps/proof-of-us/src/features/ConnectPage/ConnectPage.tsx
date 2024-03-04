@@ -18,7 +18,7 @@ export const ConnectPage: FC<IProps> = () => {
     addSignee();
   }, [proofOfUs, addSignee]);
 
-  if (!proofOfUs) return null;
+  if (!proofOfUs || proofOfUs.signees.length !== 2) return null;
 
   return <ConnectView proofOfUs={proofOfUs} background={background} />;
 };

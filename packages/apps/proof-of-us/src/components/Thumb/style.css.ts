@@ -17,13 +17,36 @@ export const attendanceThumbClass = style([
   },
 ]);
 
+export const attendanceBackgroundClass = style([
+  atoms({
+    position: 'absolute',
+  }),
+  {
+    width: '48px',
+    aspectRatio: '1/1',
+  },
+]);
+export const attendanceLoaderClass = style([
+  atoms({
+    position: 'absolute',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }),
+  {
+    width: '48px',
+    aspectRatio: '1/1',
+    zIndex: 1000,
+  },
+]);
+
 export const connectThumbClass = style([
   atoms({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     fontWeight: 'bodyFont.bold',
-    fontSize: 'xl',
+    fontSize: 'md',
     marginInlineEnd: 'md',
   }),
   {

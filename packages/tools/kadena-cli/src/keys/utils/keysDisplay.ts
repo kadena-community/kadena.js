@@ -35,7 +35,7 @@ export async function printPlainKeys(): Promise<void> {
   const rows: TableRow[] = [];
 
   if (plainKeys.length === 0) {
-    log.info('No plain keys');
+    log.info('No plain keys found');
     return;
   }
 
@@ -258,7 +258,7 @@ export function displayGeneratedWallet(words: string): void {
       `Please store the mnemonic phrase in a safe place. You will need it to recover your wallet.`,
     ),
   );
-  log.info('\n');
+  log.info('');
 }
 
 export function displayStoredWallet(
@@ -272,5 +272,4 @@ export function displayStoredWallet(
   const rows: TableRow[] = [[walletPath]];
 
   log.output(log.generateTableString(header, rows));
-  log.info('\n');
 }
