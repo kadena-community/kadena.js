@@ -129,7 +129,7 @@ export const tableFormatPrompt = (
   }, [] as number[]);
   return choices.map((x) => {
     return {
-      name: x.name.map((name, i) => name.padEnd(columnLengths[i])).join('  '),
+      name: x.name.map((name, i) => name.padEnd(columnLengths[i])).join(' '),
       value: x.value,
     };
   });
