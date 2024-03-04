@@ -54,20 +54,25 @@ test.describe('Query: getTransactions', async () => {
       expect(finalResponse.transactions.edges).toHaveLength(1);
       expect(finalResponse.transactions.totalCount).toEqual(1);
       expect(finalResponse.transactions.edges[0].node).toEqual({
-        code: `\"(coin.transfer \\\"${sourceAccount.account}\\\" \\\"${targetAccount.account}\\\" 20.0)\"`,
-        continuation: null,
-        data: '{}',
-        gas: 736,
-        gasLimit: 2500,
-        gasPrice: 1e-8,
-        senderAccount: sourceAccount.account,
-        ttl: 28800,
-        chainId: 0,
-        pactId: null,
-        proof: null,
-        rollback: null,
-        requestKey: transfer.reqKey,
-        eventCount: 2,
+        payload: {
+          code: `\"(coin.transfer \\\"${sourceAccount.account}\\\" \\\"${targetAccount.account}\\\" 20.0)\"`,
+          data: '{}',
+        },
+        result: {
+          continuation: null,
+          gas: 736,
+          eventCount: 2,
+        },
+        cmd: {
+          meta: {
+            gasLimit: 2500,
+            gasPrice: 1e-8,
+            sender: sourceAccount.account,
+            ttl: 28800,
+            chainId: 0,
+          },
+        },
+        hash: transfer.reqKey,
         id: base64Encode(
           `Transaction:["${transfer.metaData?.blockHash}","${transfer.reqKey}"]`,
         ),
@@ -165,20 +170,27 @@ test.describe('Query: getTransactions', async () => {
       finalResponse = await sendQuery(request, query);
       expect(finalResponse.transactions.totalCount).toEqual(2);
       expect(finalResponse.transactions.edges[0].node).toEqual({
-        code: '"cont"',
-        data: '{}',
-        gas: 478,
-        gasLimit: 2500,
-        gasPrice: 1e-8,
-        senderAccount: sourceAccount.account,
-        continuation: `{"step":1,"yield":null,"pactId":"${transfer.continuation?.pactId}","executed":null,"stepCount":2,"continuation":{"def":"coin.transfer-crosschain","args":["${sourceAccount.account}","${targetAccount.account}",{"keys":["${targetAccount.keys[0].publicKey}"],"pred":"keys-all"},"1",20]},"stepHasRollback":false}`,
-        pactId: transfer.continuation?.pactId,
-        proof: expect.anything(),
-        rollback: false,
-        ttl: 28800,
-        chainId: 1,
-        requestKey: transfer.reqKey,
-        eventCount: 4,
+        payload: {
+          data: '{}',
+          pactId: transfer.continuation?.pactId,
+          proof: expect.anything(),
+          rollback: false,
+        },
+        result: {
+          continuation: `{"step":1,"yield":null,"pactId":"${transfer.continuation?.pactId}","executed":null,"stepCount":2,"continuation":{"def":"coin.transfer-crosschain","args":["${sourceAccount.account}","${targetAccount.account}",{"keys":["${targetAccount.keys[0].publicKey}"],"pred":"keys-all"},"1",20]},"stepHasRollback":false}`,
+          gas: 478,
+          eventCount: 4,
+        },
+        cmd: {
+          meta: {
+            gasLimit: 2500,
+            gasPrice: 1e-8,
+            sender: sourceAccount.account,
+            ttl: 28800,
+            chainId: 1,
+          },
+        },
+        hash: transfer.reqKey,
         id: base64Encode(
           `Transaction:["${transfer.metaData?.blockHash}","${transfer.reqKey}"]`,
         ),
@@ -257,20 +269,25 @@ test.describe('Query: getTransactions', async () => {
         ],
       });
       expect(finalResponse.transactions.edges[1].node).toEqual({
-        code: `"(coin.transfer-crosschain \\"${sourceAccount.account}\\" \\"${targetAccount.account}\\" (read-keyset \\"account-guard\\") \\"1\\" ${transferAmount}.0)"`,
-        data: `{"account-guard":{"keys":["${targetAccount.keys[0].publicKey}"],"pred":"keys-all"}}`,
-        gas: 621,
-        gasLimit: 2500,
-        gasPrice: 1e-8,
-        senderAccount: sourceAccount.account,
-        ttl: 28800,
-        chainId: 0,
-        pactId: null,
-        proof: null,
-        requestKey: transfer.continuation?.pactId,
-        rollback: null,
-        eventCount: 4,
-        continuation: `{\"step\":0,\"yield\":{\"data\":{\"amount\":20,\"receiver\":\"${targetAccount.account}\",\"source-chain\":\"0\",\"receiver-guard\":{\"keys\":[\"${targetAccount.keys[0].publicKey}\"],\"pred\":\"keys-all\"}},\"source\":\"0\",\"provenance\":{\"moduleHash\":\"${coinModuleHash}\",\"targetChainId\":\"1\"}},\"pactId\":\"${transfer.continuation?.pactId}\",\"executed\":null,\"stepCount\":2,\"continuation\":{\"def\":\"coin.transfer-crosschain\",\"args\":[\"${sourceAccount.account}\",\"${targetAccount.account}\",{\"keys\":[\"${targetAccount.keys[0].publicKey}\"],\"pred\":\"keys-all\"},\"1\",20]},\"stepHasRollback\":false}`,
+        payload: {
+          code: `"(coin.transfer-crosschain \\"${sourceAccount.account}\\" \\"${targetAccount.account}\\" (read-keyset \\"account-guard\\") \\"1\\" ${transferAmount}.0)"`,
+          data: `{"account-guard":{"keys":["${targetAccount.keys[0].publicKey}"],"pred":"keys-all"}}`,
+        },
+        result: {
+          continuation: `{\"step\":0,\"yield\":{\"data\":{\"amount\":20,\"receiver\":\"${targetAccount.account}\",\"source-chain\":\"0\",\"receiver-guard\":{\"keys\":[\"${targetAccount.keys[0].publicKey}\"],\"pred\":\"keys-all\"}},\"source\":\"0\",\"provenance\":{\"moduleHash\":\"${coinModuleHash}\",\"targetChainId\":\"1\"}},\"pactId\":\"${transfer.continuation?.pactId}\",\"executed\":null,\"stepCount\":2,\"continuation\":{\"def\":\"coin.transfer-crosschain\",\"args\":[\"${sourceAccount.account}\",\"${targetAccount.account}\",{\"keys\":[\"${targetAccount.keys[0].publicKey}\"],\"pred\":\"keys-all\"},\"1\",20]},\"stepHasRollback\":false}`,
+          gas: 621,
+          eventCount: 4,
+        },
+        cmd: {
+          meta: {
+            gasLimit: 2500,
+            gasPrice: 1e-8,
+            sender: sourceAccount.account,
+            ttl: 28800,
+            chainId: 0,
+          },
+        },
+        hash: transfer.continuation?.pactId,
         id: base64Encode(
           `Transaction:["${continuationBlockHash}","${transfer.continuation?.pactId}"]`,
         ),
