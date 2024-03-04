@@ -12,7 +12,7 @@ export type DerivationMode = (typeof derivationModes)[number];
 export const predicates = ['keys-all', 'keys-any', 'keys-2'] as const;
 export type Predicate = (typeof predicates)[number];
 
-interface IParams {
+export interface ILedgerKeyParams {
   keyId: number;
   derivationMode?: DerivationMode;
 }
@@ -40,7 +40,7 @@ const fetchPublicKey = async ({
   keyId,
   derivationMode = 'current',
   app,
-}: IParams & { app: AppKda }): Promise<string | undefined> => {
+}: ILedgerKeyParams & { app: AppKda }): Promise<string | undefined> => {
   const kdaAddress = await app.getPublicKey(
     getDerivationPath(keyId, derivationMode),
   );
@@ -48,7 +48,7 @@ const fetchPublicKey = async ({
 };
 
 const useLedgerPublicKey = () => {
-  return useAsyncFn(async ({ keyId, derivationMode }: IParams) => {
+  return useAsyncFn(async ({ keyId, derivationMode }: ILedgerKeyParams) => {
     const transport = await getTransport();
     const app = new AppKda(transport);
     return fetchPublicKey({ keyId, app, derivationMode });
