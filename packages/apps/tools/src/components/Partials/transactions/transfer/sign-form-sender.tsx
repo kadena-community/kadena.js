@@ -1,28 +1,22 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-  Button,
   Card,
   Heading,
   NumberField,
   Select,
   SelectItem,
   Stack,
-  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 
 import Link from 'next/link';
 
-import { AccountNameField } from '@/components/Global/AccountNameField';
 import { ChainSelect } from '@/components/Global/ChainSelect';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
-import useLedgerPublicKey, {
-  derivationModes,
-} from '@/hooks/use-ledger-public-key';
 import {
   chainSelectContainerClass,
   notificationLinkStyle,
@@ -30,10 +24,15 @@ import {
 import type { ChainId } from '@kadena/types';
 import useTranslation from 'next-translate/useTranslation';
 import { Controller, useFormContext } from 'react-hook-form';
-import { LedgerDetails } from './ledger-details';
+import { SenderDetails } from './sender-details';
 import type { FormData } from './sign-form';
 
-const accountFromOptions = ['Ledger', 'Coming soon…'] as const;
+export const accountFromOptions = [
+  'Ledger',
+  'Coming soon…',
+  'Wallet Connect',
+] as const;
+export type SenderType = (typeof accountFromOptions)[number];
 
 export const SignFormSender = ({
   onDataUpdate,
@@ -50,17 +49,17 @@ export const SignFormSender = ({
   const {
     control,
     formState: { errors },
-    getValues,
     watch,
-    setValue,
   } = useFormContext<FormData>();
 
   const { selectedNetwork: network } = useWalletConnectClient();
 
+  const [watchSender, watchChain] = watch(['sender', 'senderChainId']);
+
   const senderData = useAccountDetailsQuery({
-    account: getValues('sender'),
+    account: watchSender,
     networkId: network,
-    chainId: getValues('senderChainId'),
+    chainId: watchChain,
   });
 
   useEffect(() => {
@@ -78,24 +77,7 @@ export const SignFormSender = ({
     ? `Cannot send more than ${senderData.data.balance.toFixed(4)} KDA.`
     : '';
 
-  const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
-
-  const [{ value: ledgerPublicKey, error }, getPublicKey] =
-    useLedgerPublicKey();
-
-  useEffect(() => {
-    if (ledgerPublicKey) {
-      setValue('sender', `k:${ledgerPublicKey}`);
-    }
-  }, [ledgerPublicKey, setValue]);
-
-  const derivationMode: DerivationMode = legacyToggleOn
-    ? derivationModes[1]
-    : derivationModes[0];
-
-  useEffect(() => {
-    onDerivationUpdate(derivationMode);
-  }, [derivationMode, onDerivationUpdate]);
+  const [senderType, setSenderType] = useState<SenderType>('Ledger');
 
   return (
     <Card fullWidth>
@@ -105,8 +87,11 @@ export const SignFormSender = ({
         <Select
           label="From"
           placeholder="Select an option"
-          selectedKey={'Ledger'}
+          selectedKey={senderType}
           disabledKeys={['Coming soon…']}
+          onSelectionChange={(x) => {
+            setSenderType(x as SenderType);
+          }}
         >
           {accountFromOptions.map((item) => (
             <SelectItem key={item}>{item}</SelectItem>
@@ -128,38 +113,10 @@ export const SignFormSender = ({
         alignItems="stretch"
         gap="md"
       >
-        <LedgerDetails
-          getPublicKey={getPublicKey}
-          setKeyId={onKeyIdUpdate}
-          legacyToggleOn={legacyToggleOn}
-          setLegacyToggleOn={setLegacyToggleOn}
-          isErroneous={typeof error !== 'undefined'}
-        />
-
-        <Controller
-          name="sender"
-          control={control}
-          render={({ field }) => (
-            <AccountNameField
-              {...field}
-              isInvalid={!!errors.sender}
-              errorMessage={errors.sender?.message}
-              // isDisabled
-              endAddon={
-                <Button
-                  icon={<SystemIcon.ContentCopy />}
-                  variant="text"
-                  onPress={async () => {
-                    await navigator.clipboard.writeText(field.value);
-                  }}
-                  aria-label="Copy Account Name"
-                  title="Copy Account Name"
-                  color="primary"
-                  type="button"
-                />
-              }
-            />
-          )}
+        <SenderDetails
+          type={senderType}
+          onKeyIdUpdate={onKeyIdUpdate}
+          onDerivationUpdate={onDerivationUpdate}
         />
 
         <Stack
