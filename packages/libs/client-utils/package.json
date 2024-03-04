@@ -98,7 +98,7 @@
     "ae:built-in": "api-extractor run --verbose -c ./config/api-extractor-built-in.json",
     "ae:coin": "api-extractor run --verbose -c ./config/api-extractor-coin.json",
     "ae:core": "api-extractor run --verbose -c ./config/api-extractor-core.json",
-    "build": "pnpm run pactjs:generate:contract && pnpm run generate-pipe-type && unbuild && pnpm run ae",
+    "build": "pnpm run pactjs:generate:contract && pnpm run generate-pipe-type && tsc && unbuild && pnpm run ae",
     "dev:ae": "pnpm run dev:ae:core && pnpm run dev:ae:built-in && pnpm run dev:ae:coin",
     "dev:ae:built-in": "api-extractor run --local --verbose -c ./config/api-extractor-built-in.json",
     "dev:ae:coin": "api-extractor run --local --verbose -c ./config/api-extractor-coin.json",

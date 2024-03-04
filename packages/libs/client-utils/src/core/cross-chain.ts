@@ -2,7 +2,6 @@ import type {
   ChainId,
   IClient,
   ICommandResult,
-  IContinuationPayloadObject,
   IPartialPactCommand,
   ITransactionDescriptor,
 } from '@kadena/client';
@@ -33,16 +32,13 @@ const requestSpvProof =
       .pollCreateSpv(txDesc, targetChainId, {
         onPoll,
       })
-      .then(
-        (proof) =>
-          ({
-            pactId: txResult.continuation!.pactId,
-            step: txResult.continuation!.step + 1,
-            proof,
-            rollback: false,
-            data: {},
-          }) as IContinuationPayloadObject['cont'],
-      );
+      .then((proof) => ({
+        pactId: txResult.continuation!.pactId,
+        step: txResult.continuation!.step + 1,
+        proof,
+        rollback: false,
+        data: {},
+      }));
   };
 
 const useGasStation = (targetChainGasPayer: IAccount) =>
@@ -94,6 +90,8 @@ export const crossChain = <T = PactValue>(
       withInput(asyncPipe(client.listen, emit('listen'), throwIfFails)),
       requestSpvProof(targetChainId, client, emit('poll-spv')),
       emit('spv-proof'),
+      // there is an issue with spv-proof type inferring here. this workaround fixes it for now, I'll investigate later
+      (data) => data,
       continuation,
       createPactCommand(targetChainId, targetChainGasPayer),
       composePactCommand(defaults ?? {}),

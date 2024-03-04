@@ -41,13 +41,13 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommandResult;
     }, {
     event: "spv-proof";
-    data: Partial<{
+    data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
-    }>;
+    data: {};
+    };
     }, {
     event: "gas-station" | "sign-continuation";
     data: ICommand;
@@ -75,13 +75,13 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommandResult;
     }, {
     event: "spv-proof";
-    data: Partial<{
+    data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
-    }>;
+    data: {};
+    };
     }, {
     event: "gas-station" | "sign-continuation";
     data: ICommand;
@@ -108,13 +108,13 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommandResult;
     }, {
     event: "spv-proof";
-    data: Partial<{
+    data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
-    }>;
+    data: {};
+    };
     }, {
     event: "gas-station" | "sign-continuation";
     data: ICommand;
@@ -141,13 +141,13 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommandResult;
     }, {
     event: "spv-proof";
-    data: Partial<{
+    data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
-    }>;
+    data: {};
+    };
     }, {
     event: "gas-station" | "sign-continuation";
     data: ICommand;
@@ -174,13 +174,13 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommandResult;
     }, {
     event: "spv-proof";
-    data: Partial<{
+    data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
-    }>;
+    data: {};
+    };
     }, {
     event: "gas-station" | "sign-continuation";
     data: ICommand;
@@ -193,13 +193,13 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     }], [{
     event: 'poll-spv';
     data: string;
-    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "spv-proof", data: Partial<{
+    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "spv-proof", data: {
         pactId: string;
         step: number;
+        proof: string;
         rollback: boolean;
-        data?: Record<string, unknown> | undefined;
-        proof?: string | null | undefined;
-    }>) => IEmitterWrapper<[{
+        data: {};
+    }) => IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
     }, {
@@ -213,13 +213,13 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommandResult;
     }, {
     event: "spv-proof";
-    data: Partial<{
+    data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
-    }>;
+    data: {};
+    };
     }, {
     event: "gas-station" | "sign-continuation";
     data: ICommand;
@@ -246,13 +246,13 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommandResult;
     }, {
     event: "spv-proof";
-    data: Partial<{
+    data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
-    }>;
+    data: {};
+    };
     }, {
     event: "gas-station" | "sign-continuation";
     data: ICommand;
@@ -279,13 +279,13 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommandResult;
     }, {
     event: "spv-proof";
-    data: Partial<{
+    data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
-    }>;
+    data: {};
+    };
     }, {
     event: "gas-station" | "sign-continuation";
     data: ICommand;
@@ -312,13 +312,13 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommandResult;
     }, {
     event: "spv-proof";
-    data: Partial<{
+    data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
-    }>;
+    data: {};
+    };
     }, {
     event: "gas-station" | "sign-continuation";
     data: ICommand;
@@ -345,13 +345,13 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommandResult;
     }, {
     event: "spv-proof";
-    data: Partial<{
+    data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
-    }>;
+    data: {};
+    };
     }, {
     event: "gas-station" | "sign-continuation";
     data: ICommand;

@@ -163,13 +163,13 @@ event: "listen";
 data: ICommandResult;
 }, {
 event: "spv-proof";
-data: Partial<{
+data: {
 pactId: string;
 step: number;
+proof: string;
 rollback: boolean;
-data?: Record<string, unknown> | undefined;
-proof?: string | null | undefined;
-}>;
+data: {};
+};
 }, {
 event: "gas-station" | "sign-continuation";
 data: ICommand;
