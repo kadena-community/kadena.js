@@ -2,7 +2,6 @@ import { Option, program } from 'commander';
 import { z } from 'zod';
 import {
   generic,
-  genericActionsPrompts,
   keys,
   networks,
   security,
@@ -185,24 +184,6 @@ export const globalOptions = {
       }
     },
   }),
-  keyPublicKey: createOption({
-    key: 'keyPublicKey' as const,
-    prompt: keys.keyPublicKeyPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-p, --key-public-key <keyPublicKey>',
-      'Enter a public key',
-    ),
-  }),
-  keySecretKey: createOption({
-    key: 'keySecretKey' as const,
-    prompt: keys.keySecretKeyPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-s, --key-secret-key <keySecretKey>',
-      'Enter a secret key',
-    ),
-  }),
   keyAlias: createOption({
     key: 'keyAlias',
     prompt: keys.keyAliasPrompt,
@@ -251,24 +232,6 @@ export const globalOptions = {
     expand: async (walletName: string) => {
       return await getWallet(walletName);
     },
-  }),
-  keyUsePassword: createOption({
-    key: 'keyUsePassword' as const,
-    prompt: genericActionsPrompts.actionAskForPassword,
-    validation: z.string(),
-    option: new Option(
-      '-u, --key-use-password <keyUsePassword>',
-      'Do you want to use a password to encrypt your key? (yes/no)',
-    ),
-  }),
-  keyFilename: createOption({
-    key: 'keyFilename' as const,
-    prompt: () => generic.genericFileNamePrompt('key'),
-    validation: z.string(),
-    option: new Option(
-      '-f, --key-filename <keyFilename>',
-      'Enter filename to store your key in',
-    ),
   }),
   message: createOption({
     key: 'message' as const,
