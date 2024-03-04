@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { AccountNameField } from '@/components/Global/AccountNameField';
 import {
+  Box,
   Button,
   Card,
   Heading,
@@ -187,19 +188,21 @@ export const SignFormReceiver = ({
         }
       >
         <TabItem key="existing" title="Existing">
-          {renderAccountFieldWithChain('existing')}
-          {receiverData.isFetching ? (
-            <Stack flexDirection={'row'} marginBlockStart={'md'}>
-              <SystemIcon.Information />
-              <Text as={'span'} color={'emphasize'}>
-                {t('fetching-data')}
-              </Text>
-            </Stack>
-          ) : null}
+          <Box paddingInline={'xs'}>
+            {renderAccountFieldWithChain('existing')}
+            {receiverData.isFetching ? (
+              <Stack flexDirection={'row'} marginBlockStart={'md'}>
+                <SystemIcon.Information />
+                <Text as={'span'} color={'emphasize'}>
+                  {t('fetching-data')}
+                </Text>
+              </Stack>
+            ) : null}
+          </Box>
         </TabItem>
 
         <TabItem key="new" title="New">
-          <Stack flexDirection={'column'} gap={'md'}>
+          <Stack flexDirection={'column'} gap={'md'} paddingInline={'xs'}>
             <AddPublicKeysSection
               publicKeys={pubKeys}
               deletePubKey={deletePublicKey}
