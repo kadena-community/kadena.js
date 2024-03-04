@@ -12,6 +12,7 @@ export type { IPact, IPactModules } from './pact';
 export { Pact } from './pact';
 
 export type * from './interfaces/IPactCommand';
+export type * from './interfaces/ISigningRequest';
 
 export {
   ICommandResult,

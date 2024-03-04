@@ -60,6 +60,9 @@ export function HomePage() {
           </ul>
         ) : null}
       </Box>
+      <Box>
+        <Link to="/sig-builder">Sig Builder</Link>
+      </Box>
     </main>
   );
 }
