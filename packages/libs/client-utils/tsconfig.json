@@ -2,6 +2,7 @@
   "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
     "types": [".kadena/pactjs-generated", "node"],
-    "lib": ["es2019"]
+    "lib": ["es2019"],
+    "noEmit": true
   }
 }
