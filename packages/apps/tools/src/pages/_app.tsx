@@ -17,7 +17,9 @@ import React from 'react';
 
 KodeMono();
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+});
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
