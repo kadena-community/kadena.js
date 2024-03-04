@@ -1,46 +1,66 @@
 import { customTokens } from '@/styles/tokens.css';
+import { atoms } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
-export const listItemClass = style({
-  display: 'flex',
-  counterIncrement: 'leaderboard',
-  position: 'relative',
-  paddingLeft: '42px',
-  borderRadius: '2px',
-  background: 'rgba(255, 255, 255, 0.1)',
-  marginBottom: '8px',
-  paddingBottom: '8px',
-  paddingTop: '8px',
-  paddingRight: '10px',
-  marginLeft: '-20px',
-  marginRight: '-20px',
-
-  ':before': {
+export const winnerListClass = style({});
+export const listItemClass = style([
+  atoms({
+    marginBlockEnd: 'md',
+    paddingBlock: 'md',
+    paddingInlineEnd: 'md',
+  }),
+  {
+    display: 'flex',
+    counterIncrement: 'leaderboard',
     position: 'relative',
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'Kode Mono',
-    height: '40px',
-    width: '40px',
-    content: 'counter(leaderboard)',
-    fontSize: '20px',
-    fontWeight: '700',
-    top: '0',
-    left: '-30px',
-    backgroundColor: '#FFFFFF',
-    color: '#000000',
-    borderRadius: '50%',
+    paddingLeft: '42px',
+    borderRadius: '2px',
+    background: 'rgba(255, 255, 255, 0.1)',
+
+    ':before': {
+      position: 'absolute',
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: 'Kode Mono',
+      height: '32px',
+      width: '32px',
+      content: 'counter(leaderboard)',
+      fontSize: '20px',
+      fontWeight: '700',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      left: '15px',
+      backgroundColor: '#FFFFFF',
+      color: '#000000',
+      borderRadius: '50%',
+    },
   },
-});
+]);
 
 export const winnerClass = style({
   paddingLeft: '34px',
   ':before': {
-    background: 'url(/assets/winner.svg)',
+    background: 'url(/assets/winner3.svg)',
     backgroundSize: 'contain',
+    height: '45px',
+    width: '45px',
+    left: '8px',
+  },
+});
+
+export const firstPlaceClass = style({
+  ':before': {
+    background: 'url(/assets/winner1.svg)',
     height: '54px',
     width: '54px',
+    left: '3px',
+  },
+});
+
+export const secondPlaceClass = style({
+  ':before': {
+    background: 'url(/assets/winner2.svg)',
   },
 });
 
@@ -53,18 +73,17 @@ export const amountClass = style({
 
   selectors: {
     [`${winnerClass} &`]: {
+      color: '#FFD600',
+    },
+    [`${firstPlaceClass} &`]: {
       fontSize: '20px',
     },
   },
 });
 
 export const itemsContainerClass = style({
-  width: 'calc(100% - 40px)',
-  selectors: {
-    [`${winnerClass} &`]: {
-      width: 'calc(100% - 54px)',
-    },
-  },
+  width: '100%',
+  paddingLeft: '35px',
 });
 
 export const sectionTitleClass = style({

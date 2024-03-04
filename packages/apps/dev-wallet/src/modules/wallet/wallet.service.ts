@@ -1,6 +1,7 @@
 import { IPactCommand, IUnsignedCommand, addSignatures } from '@kadena/client';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
 
+import { idToColor } from '@/utils/id-to-color';
 import { accountRepository } from '../account/account.repository';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
@@ -38,7 +39,7 @@ export function sign(
             )
             .filter((index) => index !== undefined) as number[];
 
-          const service = await keySourceManager.get(source);
+          const service = keySourceManager.get(source);
 
           if (!service.isConnected()) {
             // call onConnect to connect to the keySource;
@@ -90,12 +91,16 @@ export async function createProfile(
     'buffer',
   );
   await walletRepository.addEncryptedValue(secretId, secret);
+  const uuid = crypto.randomUUID();
+
   const profile: IProfile = {
-    uuid: crypto.randomUUID(),
+    uuid,
     name: profileName,
     networks,
     secretId,
+    accentColor: idToColor(uuid),
   };
+
   await walletRepository.addProfile(profile);
   return profile;
 }
@@ -116,7 +121,7 @@ export const unlockProfile = async (profileId: string, password: string) => {
 };
 
 export async function createKey(keySource: IKeySource) {
-  const service = await keySourceManager.get(keySource.source);
+  const service = keySourceManager.get(keySource.source);
   const key = await service.createKey(keySource.uuid);
   return key;
 }

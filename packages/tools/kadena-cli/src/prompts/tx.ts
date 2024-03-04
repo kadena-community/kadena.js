@@ -1,6 +1,5 @@
-import type { IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IUnsignedCommand } from '@kadena/types';
 import { z } from 'zod';
-
 import { getTransactions } from '../tx/utils/txHelpers.js';
 
 import {
@@ -9,11 +8,13 @@ import {
 } from '../keys/utils/keysHelpers.js';
 import { services } from '../services/index.js';
 import { getTemplates } from '../tx/commands/templates/templates.js';
+import { CommandError } from '../utils/command.util.js';
 import type { IPrompt } from '../utils/createOption.js';
 import { maskStringPreservingStartAndEnd } from '../utils/helpers.js';
 import { log } from '../utils/logger.js';
 import { checkbox, input, select } from '../utils/prompts.js';
 import { tableFormatPrompt } from '../utils/tableDisplay.js';
+import { networkSelectPrompt } from './network.js';
 
 const CommandPayloadStringifiedJSONSchema = z.string();
 const PactTransactionHashSchema = z.string();
@@ -70,7 +71,11 @@ export const transactionSelectPrompt: IPrompt<string> = async (args) => {
   const existingTransactions: string[] = await getTransactions(signed, path);
 
   if (existingTransactions.length === 0) {
-    throw new Error('No transactions found.');
+    throw new CommandError({
+      warnings: [
+        'No transactions found. Use "kadena tx add" to create a transaction, and "kadena tx sign" to sign it.',
+      ],
+    });
   }
 
   const choices = existingTransactions.map((transaction) => ({
@@ -97,7 +102,9 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
   const existingTransactions: string[] = await getTransactions(signed, path);
 
   if (existingTransactions.length === 0) {
-    throw new Error(`No ${signed ? 'signed ' : ''}transactions found.`);
+    throw new CommandError({
+      warnings: [`No ${signed ? 'signed ' : ''}transactions found.`],
+    });
   }
 
   const choices = existingTransactions.map((transaction) => ({
@@ -352,3 +359,25 @@ export async function selectSignMethodPrompt(): Promise<
     ],
   });
 }
+
+export const txTransactionNetworks: IPrompt<string[]> = async (
+  args: Record<string, unknown>,
+) => {
+  const commands: (IUnsignedCommand | ICommand)[] = args.commands as (
+    | IUnsignedCommand
+    | ICommand
+  )[];
+
+  const networkPerTransaction: string[] = [];
+  for (const [index] of commands.entries()) {
+    const network = await networkSelectPrompt(
+      {},
+      { networkText: `Select network for transaction ${index + 1}:` },
+      false,
+    );
+
+    networkPerTransaction.push(network);
+  }
+
+  return networkPerTransaction;
+};

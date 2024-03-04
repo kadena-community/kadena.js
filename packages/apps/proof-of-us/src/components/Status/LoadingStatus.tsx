@@ -1,4 +1,8 @@
-import { MonoAccessTimeFilled } from '@kadena/react-icons';
+import {
+  kadenaSpinner,
+  kadenaSpinnerDivDot,
+  kadenaSpinnerDivRing,
+} from '@/styles/loader.css';
 import { Stack } from '@kadena/react-ui';
 import type { FC } from 'react';
 
@@ -6,7 +10,11 @@ export const LoadingStatus: FC = () => {
   return (
     <>
       <Stack justifyContent="center" paddingBlock="xxxl">
-        <MonoAccessTimeFilled fontSize="8rem" />
+        <div className={kadenaSpinner}>
+          <div className={kadenaSpinnerDivRing}></div>
+          <div className={kadenaSpinnerDivRing}></div>
+          <div className={kadenaSpinnerDivDot}></div>
+        </div>
       </Stack>
     </>
   );

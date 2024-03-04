@@ -120,7 +120,7 @@ export async function signWithAliasFile(
   const wallet = await option.walletName();
   if (!wallet.walletNameConfig) throw new Error('wallet not found');
 
-  const password = await option.securityPassword();
+  const password = await option.passwordFile();
   const key = await option.keyAliasSelect({
     wallet: wallet.walletName,
   });
@@ -139,7 +139,7 @@ export async function signWithAliasFile(
         alias: key.keyAliasSelect,
         signed: false,
         wallet: wallet.walletNameConfig!,
-        password: password.securityPassword,
+        password: password.passwordFile,
         commands: [command],
         legacy: mode.legacy,
       });
@@ -163,7 +163,7 @@ export async function signWithAliasFile(
       alias: key.keyAliasSelect,
       signed: false,
       wallet: wallet.walletNameConfig!,
-      password: password.securityPassword,
+      password: password.passwordFile,
       files: absolutePaths,
       legacy: mode.legacy,
     });

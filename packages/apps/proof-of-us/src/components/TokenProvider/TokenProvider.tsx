@@ -1,142 +1,177 @@
 'use client';
-import type { Token } from '@/__generated__/sdk';
-import { useGetAllProofOfUs } from '@/hooks/data/getAllProofOfUs';
+import { useAccount } from '@/hooks/account';
 import { getClient } from '@/utils/client';
 import { env } from '@/utils/env';
+
+import { store } from '@/utils/socket/store';
+import { differenceInMinutes, isPast } from 'date-fns';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useEffect, useState } from 'react';
 
 export interface ITokenContext {
-  addMintingData: (proofOfUs: IProofOfUsData) => void;
-  tokens: (IProofOfUsData | Token)[];
+  tokens: IProofOfUsData[] | undefined;
   isLoading: boolean;
-  error?: IError;
 }
 
 export const TokenContext = createContext<ITokenContext>({
-  addMintingData: () => {},
   tokens: [],
   isLoading: false,
 });
 
-const kadenaClient = getClient();
+interface IListener {
+  requestKey: string;
+  proofOfUsId: string;
+  listener: any;
+  startDate: number;
+}
+
+const isDateOlderThan5Minutes = async (dateToCheck: Date): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    try {
+      const currentDate = new Date();
+      const minutesDifference = differenceInMinutes(currentDate, dateToCheck);
+
+      if (isPast(dateToCheck) && minutesDifference > 10) {
+        resolve(true); // Date is older than 5 minutes
+      } else {
+        resolve(false); // Date is not older than 5 minutes
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
 export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { data, isLoading, error } = useGetAllProofOfUs();
-  const [mintingTokens, setMintingTokens] = useState<IProofOfUsData[]>(
-    getMintingTokensFromLocalStorage(),
-  );
-  const [successMints, setSuccessMints] = useState<IProofOfUsData[]>([]);
+  const [tokens, setTokens] = useState<IProofOfUsData[]>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [listeners, setListeners] = useState<IListener[]>([]);
+  const { account } = useAccount();
 
   useEffect(() => {
-    const rawMintingTokensData = JSON.stringify(
-      filterDoubles(mintingTokens) ?? [],
-    );
-    localStorage.setItem('mintingTokens', rawMintingTokensData);
-  }, [mintingTokens]);
-
-  const storageListener = (event: StorageEvent) => {
-    if (event.key === 'mintingTokens') {
-      setMintingTokens(getMintingTokensFromLocalStorage());
+    if (Array.isArray(tokens)) {
+      setIsLoading(false);
     }
+  }, [tokens]);
+
+  useEffect(() => {
+    if (!account) return;
+    setIsLoading(true);
+    store.listenToUser(account, setTokens);
+  }, [account]);
+
+  useEffect(() => {
+    if (!tokens) return;
+    tokens.forEach(listenForMinting);
+  }, [tokens]);
+
+  const removeMintingToken = (listener: IListener) => {
+    const filtered = listeners.filter(
+      (l) => l.proofOfUsId !== listener.proofOfUsId,
+    );
+    setListeners(filtered);
   };
 
+  const updateToken = async (
+    tokenId: string,
+    listener: IListener,
+    mintStatus: 'error' | 'success',
+  ) => {
+    const token = tokens?.find((t) => t.proofOfUsId === listener.proofOfUsId);
+    if (!token) return;
+
+    const signees = token.signees.map((s) => ({
+      ...s,
+      signerStatus: 'success',
+    })) as IProofOfUsSignee[];
+
+    console.log('update in tokenprovider', signees);
+    store.updateProofOfUs(
+      { ...token, signees },
+      {
+        tokenId,
+        mintStatus,
+      },
+    );
+  };
+  const listenAll = async () => {
+    for (let i = 0; i < listeners.length; i++) {
+      const listener = listeners[i];
+
+      try {
+        const promises = await Promise.all([
+          isDateOlderThan5Minutes(new Date(listener.startDate)),
+          listener.listener,
+        ]);
+
+        console.log(promises[1][listener.requestKey]);
+        if (
+          promises[1] &&
+          promises[1][listener.requestKey] &&
+          promises[1][listener.requestKey].result?.status === 'success'
+        ) {
+          updateToken(
+            promises[1][listener.requestKey].result.data,
+            listener,
+            'success',
+          );
+        }
+        if (
+          promises[1] &&
+          promises[1][listener.requestKey] &&
+          promises[1][listener.requestKey].result?.status === 'failure'
+        ) {
+          updateToken(
+            promises[1][listener.requestKey].result.data,
+            listener,
+            'error',
+          );
+        }
+        if (promises[0]) {
+          removeMintingToken(listener);
+        }
+      } catch (e) {
+        console.error(e);
+        updateToken('', listener, 'error');
+        removeMintingToken(listener);
+      }
+    }
+  };
   useEffect(() => {
-    window.addEventListener('storage', storageListener);
-    return () => {
-      window.removeEventListener('storage', storageListener);
-    };
-  }, []);
+    listenAll();
+  }, [listeners]);
 
   async function listenForMinting(data: IProofOfUsData) {
     try {
-      const result = (
-        await kadenaClient.pollStatus({
-          requestKey: data.requestKey,
-          chainId: env.CHAINID,
-          networkId: env.NETWORKID,
-        })
-      )[data.requestKey];
-      if (result.result.status === 'success') {
-        removeMintingToken(data.requestKey);
-        setSuccessMints((v) => [...v, { ...data, mintStatus: 'success' }]);
-      }
+      const isAlreadyListening = listeners.find(
+        (listener) => listener.proofOfUsId === data.proofOfUsId,
+      );
+      if (isAlreadyListening || data.mintStatus === 'success') return;
+
+      const listener = getClient().pollStatus({
+        requestKey: data.requestKey,
+        chainId: env.CHAINID,
+        networkId: env.NETWORKID,
+      });
+
+      const obj = {
+        proofOfUsId: data.proofOfUsId,
+        requestKey: data.requestKey,
+        listener,
+        startDate: data.date,
+      } as IListener;
+
+      setListeners((v) => [...v, obj]);
     } catch (e) {
       console.error(data.requestKey, e);
-      removeMintingToken(data.requestKey);
     }
-  }
-
-  function removeMintingToken(requestKey: string) {
-    const newTokens = mintingTokens.filter(
-      (data) => data.requestKey !== requestKey,
-    );
-
-    setMintingTokens(newTokens);
-  }
-
-  function getMintingTokensFromLocalStorage(): IProofOfUsData[] {
-    if (typeof window === 'undefined') {
-      return [];
-    }
-
-    const rawMintingTokensData = localStorage.getItem('mintingTokens') || '[]';
-
-    const mintingTokensData = JSON.parse(
-      rawMintingTokensData,
-    ) as IProofOfUsData[];
-    mintingTokensData.forEach((data) => {
-      listenForMinting(data);
-    });
-
-    return mintingTokensData;
-  }
-
-  const isDataAlreadyLocal = (proofOfUs: IProofOfUsData): boolean => {
-    return !!mintingTokens.find(
-      (data) => data.proofOfUsId === proofOfUs.proofOfUsId,
-    );
-  };
-
-  const addMintingData = (proofOfUs: IProofOfUsData) => {
-    if (
-      (!proofOfUs.tokenId && !proofOfUs.requestKey) ||
-      isDataAlreadyLocal(proofOfUs)
-    )
-      return;
-    setMintingTokens((v) => [...v, proofOfUs]);
-  };
-
-  function filterDoubles(tokens: IProofOfUsData[]): IProofOfUsData[] {
-    const newArray = [];
-    const uniqueObject: Record<string, IProofOfUsData> = {};
-
-    for (const token of tokens) {
-      const id = token.proofOfUsId;
-      uniqueObject[id] = token;
-    }
-    // eslint-disable-next-line guard-for-in
-    for (const i in uniqueObject) {
-      //check if the item is not already in the data.
-      const foundInData = data.find((d) => d.id === uniqueObject[i].requestKey);
-      if (!foundInData) newArray.push(uniqueObject[i]);
-    }
-
-    return newArray;
   }
 
   return (
     <TokenContext.Provider
       value={{
-        addMintingData,
-        tokens: [
-          ...filterDoubles(mintingTokens),
-          ...filterDoubles(successMints),
-          ...data,
-        ],
-
+        tokens,
         isLoading,
-        error,
       }}
     >
       {children}

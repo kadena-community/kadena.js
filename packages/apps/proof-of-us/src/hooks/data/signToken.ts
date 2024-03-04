@@ -1,6 +1,7 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { createManifest } from '@/utils/createManifest';
 import { getReturnUrl } from '@/utils/getReturnUrl';
+import { haveAllSigned } from '@/utils/isAlreadySigning';
 import { createConnectTokenTransaction, getTokenId } from '@/utils/proofOfUs';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -17,6 +18,7 @@ export const useSignToken = () => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
+  const transaction = searchParams.get('transaction');
 
   const createTx = async () => {
     if (!proofOfUs || !account) return;
@@ -52,24 +54,25 @@ export const useSignToken = () => {
   };
 
   const sign = async () => {
-    const transaction = searchParams.get('transaction');
-
     if (!transaction || hasSigned()) return;
 
+    const signees = updateSigner({ signerStatus: 'success' }, true);
+    console.log('update in signtoken sign');
     await updateProofOfUs({
       tx: transaction,
-      signees: updateSigner({ signerStatus: 'success' }, true),
+      status: haveAllSigned(signees) ? 4 : 3,
+      signees: signees,
     });
 
     setIsLoading(false);
     setHasError(false);
 
-    router.replace(getReturnUrl());
+    //router.replace(getReturnUrl());
   };
 
   useEffect(() => {
     sign();
-  }, [searchParams]);
+  }, [searchParams, transaction]);
 
   const signToken = async () => {
     if (!proofOfUs || !account) return;
@@ -85,6 +88,7 @@ export const useSignToken = () => {
         JSON.stringify(transactionData.transaction),
       ).toString('base64');
 
+      console.log('update in signtoken signtoken');
       await updateProofOfUs({
         requestKey: transactionData.transaction?.hash,
         tokenId: transactionData.tokenId,
@@ -93,6 +97,7 @@ export const useSignToken = () => {
         signees: updateSigner({ signerStatus: 'signing' }, true),
       });
     } else {
+      console.log('update in signtoken else');
       await updateProofOfUs({
         signees: updateSigner({ signerStatus: 'signing' }, true),
       });

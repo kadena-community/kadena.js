@@ -37,3 +37,8 @@ export const secondaryTextClass = style({
   opacity: '.8',
   textAlign: 'center',
 });
+
+globalStyle('a:has(button)', {
+  textDecoration: 'none',
+  flex: 1,
+});

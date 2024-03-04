@@ -65,6 +65,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
       setTitleError('');
     }
 
+    console.log('update in detailview');
     await updateProofOfUs({
       title: changeTitle(value),
     });

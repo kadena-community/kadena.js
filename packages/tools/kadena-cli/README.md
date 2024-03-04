@@ -71,11 +71,56 @@ prefill a question by filling the flag
 
 ### list of root commands and flags
 
-|           | description                                              |
-| --------- | -------------------------------------------------------- |
-| config    | configuration of the cli. E.g. network, config directory |
-| --help    | display help information                                 |
-| --version | display version information                              |
+|           | description                 |
+| --------- | --------------------------- |
+| --help    | display help information    |
+| --version | display version information |
+
+### list global commands and flags
+
+|         | description                                       |
+| ------- | ------------------------------------------------- |
+| --quiet | Eliminating interactive prompts and confirmations |
+
+## Quiet Mode
+
+The Quiet Mode feature of the Kadena CLI can be used to streamline the
+automation of tasks, specifically targeting environments where interactive input
+is impractical, such as continuous integration (CI) systems. By activating Quiet
+Mode, the CLI suppresses interactive prompts and skips confirmations, allowing
+commands to execute uninterrupted. This mode ensures that automated processes
+can run smoothly and efficiently, without the need for manual intervention.
+
+```
+kadena [command] --quiet
+kadena [command] -q
+```
+
+---
+
+## Legacy Mode
+
+Legacy Mode offers a bridge for users requiring compatibility with the
+previously used crypto algo, particularly for commands related to wallets, keys,
+and transactions. This mode ensures the output format aligns with earlier
+standards, facilitating seamless integration with existing workflows and tools
+such as Chainweaver. It's especially useful when interacting with systems that
+rely on the legacy format for processing or when maintaining backward
+compatibility is critical.
+
+Legacy mode is available for:
+
+```
+kadena wallet add
+kadena keys generate
+kadena tx sign
+```
+
+```
+kadena [command] --legacy
+```
+
+---
 
 ### Command specific help
 
@@ -205,6 +250,7 @@ kadena wallet add [arguments]
 | --wallet-name              | Set the name of the wallet                     |                |
 | --security-password        | Set the password for the wallet                |                |
 | --security-verify-password | Set the password for the wallet (verification) |                |
+| --legacy                   | Generate legacy wallet                         |                |
 
 example:
 
@@ -254,26 +300,26 @@ kadena wallet generate-keys [arguments]
 example generating public keys using a range
 
 ```
-kadena wallet generate --wallet-name="kadenawallet.wallet" --key-index-or-range="0-5" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0-5" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
 ```
 
 example generating a public key using a index
 
 ```
-kadena wallet generated --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
 ```
 
 example generating a public and secret key using a index
 
 ```
-kadena wallet generate --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKey" --key-alias="myalias" --security-password=12345678
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKey" --key-alias="myalias" --security-password=12345678
 ```
 
 example generating a public and decrypted secret key using a index (will not be
 stored on filesystem)
 
 ```
-kadena wallet generate --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKeyDec" --security-password=12345678
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKeyDec" --security-password=12345678
 ```
 
 password will be hidden after entry: --security-password=\*
@@ -387,11 +433,16 @@ kadena key generate [arguments]
 | ----------------------- | ------------------------------------------- |
 | --key-alias             | Set alias of the key to store on filesystem |
 | --key-amount            | Set the amount of keys to generate          |
+| --legacy                | Generate legacy keys                        |
 
 example
 
 ```
 kadena key generate --key-alias="myalias" --key-amount="5"
+```
+
+```
+kadena key generate --key-alias="myalias" --key-amount="5" --legacy
 ```
 
 ---
@@ -728,13 +779,18 @@ kadena tx send [arguments]
 | **Arguments & Options**       | ** Description**                                                      | **Required** |
 | ----------------------------- | --------------------------------------------------------------------- | ------------ |
 | --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma seperated list) |              |
-| --network                     | Name of the network to be used                                        |              |
-| --chain-id                    | Chain to be used                                                      |              |
+| --tx-transaction-network      | Kadena networks comma seperated list in order of transaction          |              |
+|                               | (e.g. "mainnet, testnet, devnet, ...")                                |              |
+| --poll                        | Poll status of sent transactions                                      |              |
 
 example:
 
 ```
-kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --network="testnet" --chain-id="1"
+kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --tx-transaction-network "mainnet, testnet"
+```
+
+```
+kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --tx-transaction-network "mainnet, testnet" --poll
 ```
 
 ---
