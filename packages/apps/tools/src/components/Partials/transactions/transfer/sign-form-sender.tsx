@@ -141,6 +141,7 @@ export const SignFormSender = ({
             <AccountNameField
               {...field}
               isInvalid={!!errors.sender}
+              errorMessage={errors.sender?.message}
               // isDisabled
               endAddon={
                 <Button
