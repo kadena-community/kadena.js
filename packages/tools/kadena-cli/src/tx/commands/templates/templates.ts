@@ -67,6 +67,10 @@ export const writeTemplatesToDisk = async (): Promise<void> => {
 };
 
 export const getTemplate = async (filename: string): Promise<string> => {
+  const cwdFile = await services.filesystem.readFile(filename);
+  if (cwdFile !== null) {
+    return cwdFile;
+  }
   const filePath = path.join(TX_TEMPLATE_FOLDER, filename);
   const template = await services.filesystem.readFile(filePath);
   if (template !== null) {
