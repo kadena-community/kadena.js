@@ -1,6 +1,6 @@
 import { AccountHoverTag } from '@/components/Global';
-// import { useLedgerPublicKey } from '@/hooks/use-ledger-public-key';
 import { Toggle } from '@/components/Global/Toggle';
+import type { ILedgerKeyParams } from '@/hooks/use-ledger-public-key';
 import { derivationModes } from '@/hooks/use-ledger-public-key';
 import {
   marginBottomOnError,
@@ -13,10 +13,10 @@ import useTranslation from 'next-translate/useTranslation';
 import React, { useState } from 'react';
 
 export interface ILedgerDetails {
-  getPublicKey: any;
-  setKeyId: any;
+  getPublicKey: (params: ILedgerKeyParams) => Promise<string | undefined>;
+  setKeyId: (keyId: number) => void;
   legacyToggleOn: boolean;
-  setLegacyToggleOn: any;
+  setLegacyToggleOn: (toggleOn: boolean) => void;
 }
 
 export const LedgerDetails = ({
