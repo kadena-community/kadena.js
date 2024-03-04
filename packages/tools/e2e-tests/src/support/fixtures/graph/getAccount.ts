@@ -25,9 +25,11 @@ export function getAccountQuery(accountName: string) {
                 ...CoreTransferFields
               }
               transaction {
-                payload {
-                  ... on ContinuationPayload {
-                    pactId
+                cmd{
+                  payload {
+                    ... on ContinuationPayload {
+                      pactId
+                    }
                   }
                 }
               }
@@ -56,7 +58,6 @@ export function getAccountQuery(accountName: string) {
           chainId
           creationTime
         }
-
         payload {
           ... on ExecutionPayload {
             code
