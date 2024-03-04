@@ -2,4 +2,4 @@
 **/*.md
 tsdoc-metadata.json
 coverage
-assets/sitemap.xml
+sitemap.xml
