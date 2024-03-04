@@ -10,7 +10,7 @@ import { SystemIcons } from '@kadena/react-components';
 import { NumberField, Stack, SystemIcon, Tooltip } from '@kadena/react-ui';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
-import React, { useState } from 'react';
+import React from 'react';
 
 export interface ILedgerDetails {
   getPublicKey: (params: ILedgerKeyParams) => Promise<string | undefined>;
