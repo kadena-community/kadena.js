@@ -6,13 +6,10 @@ import {
   createAccount,
   generateAccount,
 } from '@helpers/client-utils/accounts.helper';
-import {
-  transferFunds,
-  transferFundsCrossChain,
-} from '@helpers/client-utils/transfer.helper';
+import { transferFunds } from '@helpers/client-utils/transfer.helper';
 import type { ICommandResult } from '@kadena/client';
 import { expect, test } from '@playwright/test';
-import { getBlockHash } from 'src/support/helpers/graph/block.helper';
+// import { getBlockHash } from 'src/support/helpers/graph/block.helper';
 import { base64Encode } from 'src/support/helpers/graph/cryptography.helper';
 import { sendQuery } from 'src/support/helpers/graph/request.helper';
 import type { IAccount } from 'src/support/types/account.types';
