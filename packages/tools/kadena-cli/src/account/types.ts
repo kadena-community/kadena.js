@@ -35,7 +35,7 @@ export interface IAccountDetailsResult {
 }
 
 export interface IAliasAccountData {
-  name: string;
+  accountName: string;
   fungible: string;
   publicKeys: string[];
   predicate: string;

@@ -43,18 +43,18 @@ export const createAccountFundCommand = createCommand(
     }
 
     const { account, accountConfig } = await option.account();
-    const { amount } = await option.amount();
-    const { network, networkConfig } = await option.network({
-      allowedNetworkIds: ['testnet04'],
-    });
-    const { chainId } = await option.chainId();
-
     if (!accountConfig) {
       log.error(
         `\nAccount details are missing. Please check selected "${account}" account alias file.\n`,
       );
       return;
     }
+
+    const { amount } = await option.amount();
+    const { network, networkConfig } = await option.network({
+      allowedNetworkIds: ['testnet04'],
+    });
+    const { chainId } = await option.chainId();
 
     const config = {
       accountConfig,
@@ -133,7 +133,7 @@ export const createAccountFundCommand = createCommand(
 
     log.info(
       log.color.green(
-        `"${accountConfig.name}" account funded with "${amount}" ${accountConfig.fungible} on chain ${chainId} in ${networkConfig.networkId} network.`,
+        `"${accountConfig.accountName}" account funded with "${amount}" ${accountConfig.fungible} on chain ${chainId} in ${networkConfig.networkId} network.`,
       ),
     );
   },

@@ -10,7 +10,7 @@ import { notEmpty } from '../../utils/helpers.js';
 import { isEmpty } from './addHelpers.js';
 
 export const accountAliasFileSchema = z.object({
-  name: z.string(),
+  accountName: z.string(),
   fungible: z.string(),
   publicKeys: z.array(z.string()),
   predicate: z.string(),
@@ -94,7 +94,10 @@ export async function getAllAccountNames(): Promise<
   }[]
 > {
   const allAccountDetails = await getAllAccounts();
-  return allAccountDetails.map(({ alias, name }) => ({ alias, name }));
+  return allAccountDetails.map(({ alias, accountName }) => ({
+    alias,
+    name: accountName,
+  }));
 }
 
 export const formatZodFieldErrors = (error: ZodError): string =>

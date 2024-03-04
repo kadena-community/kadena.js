@@ -11,7 +11,7 @@ export async function writeAccountAlias(
   await services.filesystem.ensureDirectoryExists(filePath);
   try {
     const aliasData = {
-      name: accountName,
+      accountName: accountName,
       fungible,
       publicKeys: publicKeysConfig,
       predicate,

@@ -1,5 +1,8 @@
 import { parse } from 'node:path';
-import { fundAmountValidation, getAllAccountNames } from '../account/utils/accountHelpers.js';
+import {
+  fundAmountValidation,
+  getAllAccountNames,
+} from '../account/utils/accountHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   maskStringPreservingStartAndEnd,
@@ -156,6 +159,10 @@ export const accountSelectionPrompt = async (
   options: string[] = [],
 ): Promise<string> => {
   const allAccountChoices = await getAllAccountChoices();
+  if (allAccountChoices.length === 0 && !options.includes('allowManualInput')) {
+    return '';
+  }
+
   if (options.includes('all')) {
     allAccountChoices.unshift({
       value: 'all',

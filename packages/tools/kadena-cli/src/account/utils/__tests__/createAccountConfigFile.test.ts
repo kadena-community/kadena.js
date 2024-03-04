@@ -33,7 +33,7 @@ describe('createAccountConfigFile', () => {
     const fileContent = await fs.readFile(filePath);
     expect(fileContent).toBe(
       yaml.dump({
-        name: config.accountName,
+        accountName: config.accountName,
         fungible: config.fungible,
         publicKeys: config.publicKeysConfig.filter((key: string) => !!key),
         predicate: config.predicate,

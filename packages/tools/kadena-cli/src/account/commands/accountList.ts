@@ -30,7 +30,7 @@ function generateTabularData(accounts: IAliasAccountData[]): {
 
   const data = accounts.map((account) => [
     truncateText(parse(account.alias).name, 32),
-    maskStringPreservingStartAndEnd(account.name, 32),
+    maskStringPreservingStartAndEnd(account.accountName, 32),
     account.publicKeys
       .map((key) => maskStringPreservingStartAndEnd(key, 24))
       .join('\n'),
@@ -50,7 +50,7 @@ async function accountList(
   try {
     if (accountAlias === 'all') {
       return await getAllAccounts();
-    }  else {
+    } else {
       const account = await readAccountFromFile(accountAlias);
       return [account];
     }
@@ -78,7 +78,7 @@ export const createAccountListCommand: (
     log.debug('account-list:action', accountAlias);
 
     if (!isNotEmptyString(accountAlias)) {
-      return log.error('No account alias is selected');
+      return log.error(NO_ACCOUNTS_FOUND_ERROR_MESSAGE);
     }
 
     const accountsDetails = await accountList(accountAlias);

@@ -83,7 +83,7 @@ describe('addAccount', () => {
     expect(result.data).toEqual(filePath);
     expect(fileContent).toBe(
       yaml.dump({
-        name: 'accountName',
+        accountName: 'accountName',
         fungible: 'coin',
         publicKeys: ['publicKey1'],
         predicate: 'keys-any',
