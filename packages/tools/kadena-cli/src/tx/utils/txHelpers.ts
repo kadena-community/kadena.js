@@ -24,6 +24,11 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 
+export interface ICommandData {
+  networkId: string;
+  chainId: string;
+}
+
 /**
  *
  * @param command - The command to check.
@@ -364,9 +369,26 @@ export async function getTransactionsFromFile(
   return transactions;
 }
 
-export function parseCommaSeparatedInput(commandLineInput: string): string[] {
-  if (commandLineInput.trim() === '') {
-    return [];
+export function parseInput(input: string | string[]): string[] {
+  if (Array.isArray(input)) {
+    return input;
   }
-  return commandLineInput.split(',').map((item) => item.trim());
+
+  if (typeof input === 'string') {
+    if (input.trim() === '') {
+      return [];
+    }
+    return input.split(',').map((item) => item.trim());
+  }
+  return [];
+}
+
+export function extractCommandData(
+  command: IUnsignedCommand | ICommand,
+): ICommandData {
+  const payload = JSON.parse(command.cmd);
+  const networkId: string = payload.networkId;
+  const chainId: string = payload.meta.chainId;
+
+  return { networkId, chainId };
 }
