@@ -140,7 +140,6 @@ export const SignFormSender = ({
             <AccountNameField
               {...field}
               isInvalid={!!errors.sender}
-              label={t('The account name to fund coins to')}
               // isDisabled
               endAddon={
                 <Button
