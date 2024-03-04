@@ -5,14 +5,14 @@ import { join } from 'path';
 import { services } from '../../services/index.js';
 import { CommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { dappOptions } from '../dappOptions.js';
 
 export const createDappCommand: (program: Command, version: string) => void =
   createCommand(
     'add',
     'Add a new dapp project',
-    [globalOptions.dappTemplate()],
+    [dappOptions.dappTemplate()],
     async (option, { values }) => {
       const config = await option.dappTemplate();
       log.debug('dapp-create-command', config);

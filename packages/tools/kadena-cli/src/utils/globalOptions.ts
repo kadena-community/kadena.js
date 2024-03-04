@@ -382,17 +382,6 @@ export const globalOptions = {
       return message;
     },
   }),
-
-  // Dapp
-  dappTemplate: createOption({
-    key: 'dappTemplate',
-    prompt: genericActionsPrompts.actionAskForDappTemplate,
-    validation: z.string(),
-    option: new Option(
-      '-t, --dapp-template <dappTemplate>',
-      'Select a dapp template',
-    ),
-  }),
   // common
   outFileJson: createOption({
     key: 'outFile',
