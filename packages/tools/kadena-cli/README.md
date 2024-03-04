@@ -464,17 +464,17 @@ kadena key list"
 
 Tool to manage / fund accounts of fungibles (e.g. coin')
 
-| **Subcommand**  | **Description**                                  | **Default value** |
-| --------------- | ------------------------------------------------ | ----------------- |
-| add-manual      | Add an existing account to the CLI               |                   |
-| add-from-wallet | Add an account from a key wallet                 |                   |
-| create          | create account on chain(nr) for token \*WIP      |                   |
-| details         | Get details of an account                        |                   |
-| fund            | Fund a existing/new account                      |                   |
-| name-to-address | Resolve a .kda name to a k:address (kadenanames) |                   |
-| address-to-name | Resolve a k:address to a .kda name (kadenanames) |                   |
-| list            | List available account(s)                        |                   |
-| delete          | Delete existing account(s)                       |                   |
+| **Subcommand**  | **Description**                                     | **Default value** |
+| --------------- | --------------------------------------------------- | ----------------- |
+| add-manual      | Add an existing account to the CLI                  |                   |
+| add-from-wallet | Add an account from a key wallet                    |                   |
+| create          | create an account in mainnet on chain(nr) for token |                   |
+| details         | Get details of an account                           |                   |
+| fund            | Fund a existing/new account                         |                   |
+| name-to-address | Resolve a .kda name to a k:address (kadenanames)    |                   |
+| address-to-name | Resolve a k:address to a .kda name (kadenanames)    |                   |
+| list            | List available account(s)                           |                   |
+| delete          | Delete existing account(s)                          |                   |
 
 ---
 
@@ -511,7 +511,7 @@ kadena account add-from-wallet [arguments]
 | --fungible              | Fungible e.g coin                            |              |
 | --network               | Name of the network to be used               |              |
 | --chain-id              | Chain to be used                             |              |
-| --public-keys           | Comma seperated list of public keys          |              |
+| --public-keys           | Comma separated list of public keys          |              |
 | --predicate             | keys-all, keys-any, keys-2, Custom predicate |              |
 
 example:
@@ -523,38 +523,53 @@ kadena account add-from-wallet --account-alias="myalias" --key-wallet="mywallet.
 ---
 
 ```
-kadena account details [arguments]
+kadena account create [arguments]
 ```
 
-| **Arguments & Options** | ** Description**               | **Required** |
-| ----------------------- | ------------------------------ | ------------ |
-| --account               | Provide alias for account      |              |
-| --network               | Name of the network to be used |              |
-| --chain-id              | Chain to be used               |              |
+| **Arguments & Options** | ** Description**                             | **Required** |
+| ----------------------- | -------------------------------------------- | ------------ |
+| --account-name          | Provide an account name                      | No           |
+| --fungible              | Fungible e.g coin                            | No           |
+| --chain-id              | Chain to be used                             |              |
+| --public-keys           | Comma separated list of public keys          |              |
+| --predicate             | keys-all, keys-any, keys-2, Custom predicate |              |
 
 example:
 
+create an account with optional account name and fungible
+
 ```
-kadena account details --account="myalias.yaml" --network="mainnet" --chain-id="1"
+kadena account create --account-name="" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0"
+```
+
+create an account with an account name and fungible
+
+```
+kadena account create --account-name="mainnet_test_account" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0" --fungible="coin
 ```
 
 ---
 
 ```
-kadena account fund [arguments]
+kadena account details [arguments]
 ```
 
-| **Arguments & Options** | ** Description**               | **Required** |
-| ----------------------- | ------------------------------ | ------------ |
-| --account               | Provide alias for account      |              |
-| --amount                | Amount to fund                 |              |
-| --network               | Name of the network to be used |              |
-| --chain-id              | Chain to be used               |              |
+| **Arguments & Options** | ** Description**                       | **Required** |
+| ----------------------- | -------------------------------------- | ------------ |
+| --account               | Provide account alias/name for account |              |
+| --network               | Name of the network to be used         |              |
+| --chain-id              | Chain to be used                       |              |
 
-example:
+example using account alias:
 
 ```
-kadena account fund --account="myalias.yaml" --amount="10" --network="testnet" --chain-id="1"
+kadena account details --account="myalias" --network="mainnet" --chain-id="1"
+```
+
+example using account name:
+
+```
+kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="1"
 ```
 
 ---
@@ -596,7 +611,7 @@ kadena account name-to-address --network="mainnet" --account-kdn-name="kadena.kd
 ---
 
 ```
-kadena account name-to-address [arguments]
+kadena account address-to-name [arguments]
 ```
 
 | **Arguments & Options** | ** Description**                          | **Required** |
@@ -616,9 +631,9 @@ kadena account address-to-name --network="mainnet" --account-kdn-address="k:acco
 kadena account list [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                |
-| ----------------------- | ------------------------------- |
-| --account-alias         | Provide the name of the account |
+| **Arguments & Options** | ** Description**                 |
+| ----------------------- | -------------------------------- |
+| --account-alias         | Provide the alias of the account |
 
 example for listing specific account:
 
@@ -638,10 +653,10 @@ kadena account list --account-alias="all"
 kadena account delete [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                |
-| ----------------------- | ------------------------------- |
-| --account-alias         | Provide the name of the account |
-| --confirm               | Confirm deletion of account     |
+| **Arguments & Options** | ** Description**                 |
+| ----------------------- | -------------------------------- |
+| --account-alias         | Provide the alias of the account |
+| --confirm               | Confirm deletion of account      |
 
 example for delete a specific account:
 
@@ -719,7 +734,7 @@ kadena kadena sign [arguments]
 | --key-wallet                    | Provide the name of the wallet                                          |              |
 | --security-password             | Provide the password for the wallet                                     |              |
 | --key-alias-select              | Select a aliased file                                                   |              |
-| --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma seperated list) |              |
+| --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma separated list) |              |
 
 example:
 
