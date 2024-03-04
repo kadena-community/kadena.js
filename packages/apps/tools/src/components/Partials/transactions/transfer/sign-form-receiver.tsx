@@ -77,7 +77,6 @@ export const SignFormReceiver = ({
             {...field}
             isInvalid={!!errors.receiver}
             errorMessage={errors.receiver?.message}
-            label={t('The account name to fund coins to')}
             isDisabled={tab === 'new'}
             endAddon={
               <Button

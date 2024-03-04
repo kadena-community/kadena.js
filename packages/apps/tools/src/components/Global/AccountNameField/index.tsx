@@ -21,6 +21,7 @@ const BaseAccountNameField = (
     <div className={accountInputWrapperStyle}>
       <TextField
         {...props}
+        label={props.label ?? t('Account Name')}
         inputFont="code"
         placeholder={props.placeholder ?? t('Type Account Name')}
         id="kd-select-account-input"
