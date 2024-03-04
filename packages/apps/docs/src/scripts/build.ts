@@ -23,7 +23,7 @@ const runPrettier = async (): Promise<IScriptResult> => {
   if (stderr) {
     errors.push(`Prettier had issues: ${stderr}`);
   } else {
-    success.push('Prettier done!');
+    success.push('Prettier done!!');
   }
 
   return { errors, success };
