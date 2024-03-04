@@ -9,7 +9,7 @@ import {
 } from '../utils/staticGeneration/getJsonData';
 import type { IScriptResult } from './types';
 
-const MENU_FILE = './public/sitemap.xml';
+const MENU_FILE = './public/assets/sitemap.xml';
 const URL = 'https://docs.kadena.io';
 
 const errors: string[] = [];
