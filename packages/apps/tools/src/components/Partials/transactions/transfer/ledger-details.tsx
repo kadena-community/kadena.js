@@ -7,21 +7,10 @@ import {
   tooltipInfoContainer,
 } from '@/pages/transactions/transfer/styles.css';
 import { SystemIcons } from '@kadena/react-components';
-import {
-  Combobox,
-  ComboboxItem,
-  Stack,
-  SystemIcon,
-  Tooltip,
-} from '@kadena/react-ui';
+import { NumberField, Stack, SystemIcon, Tooltip } from '@kadena/react-ui';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 import React, { useState } from 'react';
-
-const options = Array.from({ length: 10 }, (_, i) => ({
-  id: `ledger-key-${i}`,
-  name: `${i}`,
-}));
 
 export interface ILedgerDetails {
   getPublicKey: any;
@@ -56,11 +45,11 @@ export const LedgerDetails = ({
       marginBlockStart={'md'}
     >
       <Stack gap={'md'}>
-        <Combobox
-          allowsCustomValue
-          startIcon={<SystemIcon.KeyIconFilled />}
+        <NumberField
+          startAddon={<SystemIcon.KeyIconFilled />}
           label="Key Index"
-          onInputChange={async (value) => {
+          onChange={async (event) => {
+            const value = event.target.value;
             await getPublicKey({
               keyId: parseInt(value, 10),
               derivationMode,
@@ -70,12 +59,11 @@ export const LedgerDetails = ({
             setKeyId(value);
             setErrorLedgerKey(false);
           }}
-          defaultItems={options}
           isInvalid={errorLedgerKey}
           errorMessage={errorLedgerKey ? 'Enter number from 1 to 99' : ''}
-        >
-          {(item) => <ComboboxItem key={item.id}>{item.name}</ComboboxItem>}
-        </Combobox>
+          minValue={0}
+          maxValue={99}
+        />
         <div
           className={classNames(
             tooltipInfoContainer,
