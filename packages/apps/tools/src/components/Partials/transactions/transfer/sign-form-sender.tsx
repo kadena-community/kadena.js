@@ -33,7 +33,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { LedgerDetails } from './ledger-details';
 import type { FormData } from './sign-form';
 
-const accountFromOptions = ['Ledger', 'WalletConnect'] as const;
+const accountFromOptions = ['Ledger', 'Coming soon…'] as const;
 
 export const SignFormSender = ({
   onDataUpdate,
@@ -105,6 +105,7 @@ export const SignFormSender = ({
           label="From"
           placeholder="Select an option"
           selectedKey={'Ledger'}
+          disabledKeys={['Coming soon…']}
         >
           {accountFromOptions.map((item) => (
             <SelectItem key={item}>{item}</SelectItem>
