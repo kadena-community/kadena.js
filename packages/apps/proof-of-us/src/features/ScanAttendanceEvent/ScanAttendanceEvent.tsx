@@ -133,7 +133,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
                   {startDate.toLocaleTimeString()} to claim the nft
                 </MessageBlock>
                 <Stack gap="md">
-                  {!isMinted && (
+                  {!isMinted && account && (
                     <Stack flex={1}>
                       <Link href="/user">
                         <Button>Go to dashboard</Button>
@@ -148,7 +148,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
             <Stack flexDirection="column" flex={1} gap="md">
               <MessageBlock title={''}>The event has ended.</MessageBlock>
               <Stack gap="md">
-                {!isMinted && (
+                {!isMinted && account && (
                   <Stack flex={1}>
                     <Link href="/user">
                       <Button>Go to dashboard</Button>
@@ -161,9 +161,11 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
           {showClaimButton && !isMinted && (
             <Stack flex={1} gap="md">
-              <Link href="/user">
-                <Button>Go to dashboard</Button>
-              </Link>
+              {account && (
+                <Link href="/user">
+                  <Button>Go to dashboard</Button>
+                </Link>
+              )}
               <Button onPress={handleClaim}>Claim NFT</Button>
             </Stack>
           )}
@@ -174,9 +176,11 @@ export const ScanAttendanceEvent: FC<IProps> = ({
                 There was an issue with minting
               </MessageBlock>
               <Stack flex={1} gap="md">
-                <Link href="/user">
-                  <Button>Go to dashboard</Button>
-                </Link>
+                {account && (
+                  <Link href="/user">
+                    <Button>Go to dashboard</Button>
+                  </Link>
+                )}
               </Stack>
             </Stack>
           )}
