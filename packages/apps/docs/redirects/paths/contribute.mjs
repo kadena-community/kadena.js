@@ -19,4 +19,19 @@ export const contributePathUrlRedirects = [
     destination: '/contribute/node',
     permanent: true,
   },
+  {
+    source: '/contribute/contribute',
+    destination: '/contribute',
+    permanent: true,
+  },
+  {
+    source: '/contribute/node/overview',
+    destination: '/contribute/node',
+    permanent: true,
+  },
+  {
+    source: '/contribute/ambassadors/overview',
+    destination: '/contribute/ambassadors',
+    permanent: true,
+  },
 ];

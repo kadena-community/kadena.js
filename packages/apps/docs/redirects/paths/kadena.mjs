@@ -17,5 +17,16 @@ export const kadenaPathUrlRedirects = [
   {
     source: '/kadena/overview',
     destination: '/kadena/why-kadena',
+    permanent: true,
+  },
+  {
+    source: '/kadena-wallets/overview',
+    destination: '/kadena/wallets',
+    permanent: true,
+  },
+  {
+    source: '/kadena/wallets/chainweaver-troubleshooting',
+    destination: '/kadena/wallets/chainweaver/chainweaver-troubleshooting',
+    permanent: true,
   },
 ];

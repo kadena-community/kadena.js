@@ -1,151 +1,35 @@
 import { redirects } from './redirects/index.mjs';
 
+const languages = ['en', 'es', 'ko'];
+
 const redirectsConfig = [
   ...redirects,
-  {
-    source: '/kda/what-is-kda',
-    destination: '/kadena/kda',
-    permanent: true,
-  },
-  {
-    source: '/kadena-wallets/overview',
-    destination: '/kadena/wallets',
-    permanent: true,
-  },
-  {
-    source: '/kadena/wallets/chainweaver-troubleshooting',
-    destination: '/kadena/wallets/chainweaver/chainweaver-troubleshooting',
-    permanent: true,
-  },
-  {
-    source: '/build/introduction',
-    destination: '/build',
-    permanent: true,
-  },
-  {
-    source: '/build/guides/a-step-by-step-guide-to-writing-pact-smart-contract',
-    destination: '/build/guides',
-    permanent: true,
-  },
-  {
-    source: '/contribute/contribute',
-    destination: '/contribute',
-    permanent: true,
-  },
-  {
-    source: '/contribute/node/overview',
-    destination: '/contribute/node',
-    permanent: true,
-  },
-  {
-    source: '/contribute/ambassadors/overview',
-    destination: '/contribute/ambassadors',
-    permanent: true,
-  },
-  {
-    source: '/pact/reference/pact/reference/functions',
-    destination: '/pact/reference/functions',
-    permanent: true,
-  },
-  {
-    source: '/blogchain/:slug/announcing-kadena-technical-grants.2020-11-25',
-    destination:
-      '/blogchain/:slug/announcing-kadena-technical-grants-2020-11-25',
-    permanent: true,
-  },
-  {
-    source: '/learn-pact/beginner/welcome-to-pact',
-    destination: '/pact/beginner',
-    permanent: true,
-  },
-  {
-    source: '/learn-pact/beginner/:slug',
-    destination: '/pact/beginner/:slug',
-    permanent: true,
-  },
-  {
-    source: '/learn-pact/intermediate/deploy-to-a-local-server',
-    destination: '/pact/intermediate',
-    permanent: true,
-  },
-  {
-    source: '/learn-pact/intermediate/:slug',
-    destination: '/pact/intermediate/:slug',
-    permanent: true,
-  },
-  {
-    source: '/learn-pact/intro',
-    destination: '/pact/overview',
-    permanent: true,
-  },
-
-  /* Pact Reference docs redirects */
-  {
-    source: '/en/latest',
-    destination: '/pact/reference',
-    permanent: true,
-  },
-  {
-    source: '/ja/latest',
-    destination: '/pact/reference',
-    permanent: true,
-  },
-  {
-    source: '/ko/latest',
-    destination: '/pact/reference',
-    permanent: true,
-  },
-  {
-    source: '/ja/stable',
-    destination: '/pact/reference',
-    permanent: true,
-  },
-  {
-    source: '/ko/stable',
-    destination: '/pact/reference',
-    permanent: true,
-  },
-  {
-    // en/latest/index.html
-    source: '/:slug/:slug1/index.html',
-    destination: '/pact/reference',
-    permanent: true,
-  },
-  {
-    // en/latest/genindex.html
-    source: '/:slug/:slug1/genindex.html',
-    destination: '/pact/reference',
-    permanent: true,
-  },
-  {
-    // en/latest/pact-reference.html
-    source: '/:slug/:slug1/pact-reference.html',
-    destination: '/pact/reference',
-    permanent: true,
-  },
-  {
-    // en/latest/pact-functions.html
-    source: '/:slug/:slug1/pact-functions.html',
-    destination: '/pact/reference/functions',
-    permanent: true,
-  },
-  {
-    // en/latest/pact-properties.html
-    source: '/:slug/:slug1/pact-properties.html',
-    destination: '/pact/reference/property-checking',
-    permanent: true,
-  },
-  {
-    // en/latest/pact-properties-api.html
-    source: '/:slug/:slug1/pact-properties-api.html',
-    destination: '/pact/reference/properties-and-invariants',
-    permanent: true,
-  },
-  {
-    source: '/openapi/pact.html',
-    destination: '/pact/api',
-    permanent: true,
-  },
+  ...languages
+    .map((language) => {
+      return [
+        {
+          source: `/${language}/`,
+          destination: '/',
+          permanent: true,
+        },
+        {
+          source: `/${language}/:slug`,
+          destination: '/:slug',
+          permanent: true,
+        },
+        {
+          source: `/${language}/:slug/:slug1`,
+          destination: '/:slug/:slug1',
+          permanent: true,
+        },
+        {
+          source: `/${language}/:slug/:slug1/:slug2`,
+          destination: '/:slug/:slug1/:slug2',
+          permanent: true,
+        },
+      ];
+    })
+    .flat(),
 ];
 
 export { redirectsConfig as default };

@@ -134,4 +134,14 @@ export const buildPathUrlRedirects = [
     destination: '/build/guides/pact-local-api-queries',
     permanent: true,
   },
+  {
+    source: '/build/introduction',
+    destination: '/build',
+    permanent: true,
+  },
+  {
+    source: '/build/guides/a-step-by-step-guide-to-writing-pact-smart-contract',
+    destination: '/build/guides',
+    permanent: true,
+  },
 ];

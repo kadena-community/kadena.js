@@ -32,14 +32,17 @@ export const rootPathUrlRedirects = [
   {
     source: '/kadena-docs/faq',
     destination: '/kadena/kadena-faq',
+    permanent: true,
   },
   {
     source: '/kadena-docs/exchanges',
     destination: '/kadena/exchanges',
+    permanent: true,
   },
   {
     source: '/kadena-docs/faq/:slug',
     destination: '/kadena/kadena-faq',
+    permanent: true,
   },
   {
     source: '/contribute/code-of-conduct',
