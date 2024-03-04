@@ -7,17 +7,40 @@ export function getTransactionsQuery(accountName: string) {
         totalCount
         edges {
           node {
-            code
-            data
-            gas
-            gasLimit
-            gasPrice
             id
-            senderAccount
-            continuation
-            pactId
-            proof
-            rollback
+            hash
+            cmd {
+              meta {
+                chainId
+                gasLimit
+                gasPrice
+                sender
+                ttl
+              }
+              payload {
+                ... on ExecutionPayload {
+                  data
+                  code
+                }
+                ... on ContinuationPayload {
+                  data
+                  pactId
+                  proof
+                  rollback
+                }
+              }
+              signers {
+                id
+                requestKey
+                publicKey
+                capabilities
+              }
+            }
+            result {
+              continuation
+              eventCount
+              gas
+            }
             transfers {
               amount
               chainId
@@ -36,20 +59,10 @@ export function getTransactionsQuery(accountName: string) {
                 senderAccount
               }
             }
-            ttl
-            chainId
-            requestKey
-            eventCount
             events {
               requestKey
               parameterText
               id
-            }
-            signers {
-              capabilities
-              id
-              publicKey
-              requestKey
             }
           }
         }
