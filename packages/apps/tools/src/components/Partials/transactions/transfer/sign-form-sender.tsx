@@ -80,7 +80,8 @@ export const SignFormSender = ({
 
   const [legacyToggleOn, setLegacyToggleOn] = useState<boolean>(false);
 
-  const [{ value: ledgerPublicKey }, getPublicKey] = useLedgerPublicKey();
+  const [{ value: ledgerPublicKey, error }, getPublicKey] =
+    useLedgerPublicKey();
 
   useEffect(() => {
     if (ledgerPublicKey) {
@@ -132,6 +133,7 @@ export const SignFormSender = ({
           setKeyId={onKeyIdUpdate}
           legacyToggleOn={legacyToggleOn}
           setLegacyToggleOn={setLegacyToggleOn}
+          isErroneous={typeof error !== 'undefined'}
         />
 
         <Controller
