@@ -1,4 +1,7 @@
+import { redirects } from './redirects/index.mjs';
+
 const redirectsConfig = [
+  ...redirects,
   {
     source: '/kda/what-is-kda',
     destination: '/kadena/kda',

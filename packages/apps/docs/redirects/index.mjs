@@ -1,5 +1,15 @@
-export { basicsPathUrlRedirects } from './paths/basics.mjs';
-export { buildPathUrlRedirects } from './paths/build.mjs';
-export { kadenaPathUrlRedirects } from './paths/kadena.mjs';
-export { pactPathUrlRedirects } from './paths/pact.mjs';
-export { rootPathUrlRedirects } from './paths/root.mjs';
+import { basicsPathUrlRedirects } from './paths/basics.mjs';
+import { buildPathUrlRedirects } from './paths/build.mjs';
+import { kadenaPathUrlRedirects } from './paths/kadena.mjs';
+import { pactPathUrlRedirects } from './paths/pact.mjs';
+import { rootPathUrlRedirects } from './paths/root.mjs';
+
+const redirects = [
+  basicsPathUrlRedirects,
+  buildPathUrlRedirects,
+  kadenaPathUrlRedirects,
+  pactPathUrlRedirects,
+  rootPathUrlRedirects,
+].flat();
+
+export { redirects };
