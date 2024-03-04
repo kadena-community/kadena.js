@@ -4,6 +4,7 @@ import { removeNetwork } from '../utils/networkHelpers.js';
 import type { Command } from 'commander';
 import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
+import { networkOptions } from '../networkOptions.js';
 
 export const deleteNetworksCommand: (
   program: Command,
@@ -11,7 +12,10 @@ export const deleteNetworksCommand: (
 ) => void = createCommand(
   'delete',
   'Delete local network',
-  [globalOptions.network({ isOptional: false }), globalOptions.networkDelete()],
+  [
+    globalOptions.network({ isOptional: false }),
+    networkOptions.networkDelete(),
+  ],
   async (option) => {
     const networkData = await option.network();
     const deleteNetwork = await option.networkDelete();
