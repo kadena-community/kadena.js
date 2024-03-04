@@ -17,6 +17,7 @@ export interface ILedgerDetails {
   setKeyId: (keyId: number) => void;
   legacyToggleOn: boolean;
   setLegacyToggleOn: (toggleOn: boolean) => void;
+  isErroneous?: boolean;
 }
 
 export const LedgerDetails = ({
@@ -24,6 +25,7 @@ export const LedgerDetails = ({
   setKeyId,
   legacyToggleOn,
   setLegacyToggleOn,
+  isErroneous,
 }: ILedgerDetails): React.JSX.Element => {
   const { t } = useTranslation('common');
 
@@ -32,7 +34,6 @@ export const LedgerDetails = ({
     ? derivationModes[1]
     : derivationModes[0];
 
-  const [errorLedgerKey, setErrorLedgerKey] = useState<boolean>(false);
   const setLegacyOn = () => {
     setLegacyToggleOn(!legacyToggleOn);
   };
@@ -52,15 +53,17 @@ export const LedgerDetails = ({
             await getPublicKey({ keyId: value, derivationMode });
             setKeyId(value);
           }}
-          isInvalid={errorLedgerKey}
-          errorMessage={errorLedgerKey ? 'Enter number from 1 to 99' : ''}
+          isInvalid={isErroneous}
+          errorMessage={
+            isErroneous ? 'You need to connect to your Ledger device.' : ''
+          }
           minValue={0}
           maxValue={99}
         />
         <div
           className={classNames(
             tooltipInfoContainer,
-            errorLedgerKey ? marginBottomOnError : null,
+            isErroneous ? marginBottomOnError : null,
           )}
         >
           <Tooltip content={t('ledger tooltip content')} position={'top'}>
