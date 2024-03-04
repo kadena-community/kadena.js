@@ -103,6 +103,16 @@ export const globalOptions = {
     ),
     transform: passwordPromptTransform('--password-file'),
   }),
+  passwordFileRepeat: createOption({
+    key: 'passwordFileRepeat' as const,
+    prompt: security.passwordFileRepeatPrompt,
+    validation: z.string().or(z.object({ _password: z.string() })),
+    option: new Option(
+      '--password-file <passwordFile>',
+      'Filepath to the password file',
+    ),
+    transform: passwordPromptTransform('--password-file'),
+  }),
   currentPasswordFile: createOption({
     key: 'currentPasswordFile' as const,
     prompt: security.currentPasswordFilePrompt,

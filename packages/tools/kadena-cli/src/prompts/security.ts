@@ -25,6 +25,15 @@ export async function passwordFilePrompt(
   if ((args.stdin as string | null) !== null) return '-';
 
   const password = await promptForPassword('Enter a password');
+  return { _password: password };
+}
+
+export async function passwordFileRepeatPrompt(
+  args: Record<string, unknown>,
+): Promise<string | { _password: string }> {
+  if ((args.stdin as string | null) !== null) return '-';
+
+  const password = await promptForPassword('Enter a password');
   const passwordRepeat = await promptForPassword(
     'Enter a password to verify with password',
   );
