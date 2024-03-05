@@ -43,6 +43,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
   receiverChainId,
 }) => {
   const { t } = useTranslation('common');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [requestStatus, setRequestStatus] = useState<{
     status: FormStatus;
@@ -63,6 +64,8 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
   }
 
   const onSubmit = async () => {
+    setIsLoading(true);
+
     const submitResponse = (await submitTx(
       [data],
       senderChainId,
@@ -71,6 +74,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
     )) as ITransactionDescriptor[];
 
     if (!submitResponse) {
+      setIsLoading(false);
       return setRequestStatus({
         status: 'erroneous',
         message: t('An error occurred.'),
@@ -90,6 +94,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
       (response) => response.result.status === 'failure',
     );
     if (error) {
+      setIsLoading(false);
       setRequestStatus({
         status: 'erroneous',
         message: error.response.error?.message || t('An error occurred.'),
@@ -133,6 +138,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
       );
 
       if (typeof requestKeyOrError !== 'string') {
+        setIsLoading(false);
         setRequestStatus({
           status: 'erroneous',
           message: error.response.error?.message || t('An error occurred.'),
@@ -153,6 +159,8 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
           },
         );
 
+        setIsLoading(false);
+
         if (pollResponseTarget.result.status === 'success') {
           return setRequestStatus({ status: 'successful' });
         }
@@ -166,9 +174,12 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
           message: error.response.error?.message || t('An error occurred.'),
         });
         return;
+      } finally {
+        setIsLoading(false);
       }
     }
 
+    setIsLoading(false);
     return setRequestStatus({ status: 'successful' });
   };
 
@@ -194,7 +205,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         <SubmitTransactionDetails transactions={{ cmds: [data] }} />
         <div className={buttonContainerClass}>
           <Button
-            // isLoading={ledgerSignState.loading}
+            isLoading={isLoading}
             // isDisabled={ledgerSignState.loading}
             endIcon={<SystemIcon.TrailingIcon />}
             title={t('Transfer')}
