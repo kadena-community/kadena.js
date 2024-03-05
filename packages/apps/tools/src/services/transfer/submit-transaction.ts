@@ -24,12 +24,12 @@ export async function submitTx(
   commands: ICommand[],
   chainId: ChainId,
   networkId: string,
-  networskData: INetworkData[],
+  networksData: INetworkData[],
   targetChainId?: ChainId,
 ): Promise<any> {
   debug(submitTx.name);
 
-  const networkData: INetworkData | undefined = networskData.find(
+  const networkData: INetworkData | undefined = networksData.find(
     (item) => (networkId as Network) === item.networkId,
   );
 
