@@ -72,8 +72,10 @@ export const createAddAccountFromWalletCommand = createCommand(
       return;
     }
 
-    if (!wallet.walletNameConfig.keys.length) {
-      log.error(`Wallet ${wallet.walletName} does not contain any keys.`);
+    if (wallet.walletNameConfig.keys.length === 0) {
+      log.error(
+        `Wallet ${wallet.walletName} does not contain any public keys. Please use "kadena wallet generate-keys" command to generate keys.`,
+      );
       return;
     }
 

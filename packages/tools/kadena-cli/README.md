@@ -273,6 +273,7 @@ kadena wallet import [arguments]
 | --security-new-password    | Set the password for the wallet                |                |
 | --security-verify-password | Set the password for the wallet (verification) |                |
 | --wallet-name              | Set the name of the wallet                     |                |
+| --legacy                   | Use Chainweaver's key derivation               |                |
 
 example:
 
@@ -288,6 +289,8 @@ password will be hidden after entry: --security-new-password=\*
 ```
 kadena wallet generate-keys [arguments]
 ```
+
+Generate a keypair from a wallet mnemonic
 
 | **Arguments & Options** | ** Description**                                                                    | ** Required ** |
 | ----------------------- | ----------------------------------------------------------------------------------- | -------------- |
@@ -428,6 +431,8 @@ Tool to generate and manage keys
 ```
 kadena key generate [arguments]
 ```
+
+Generate a plain keypair using a random mnemonic
 
 | **Arguments & Options** | ** Description**                            |
 | ----------------------- | ------------------------------------------- |
@@ -692,7 +697,7 @@ kadena tx add [arguments]
 
 | **Arguments & Options** | ** Description**                               | **Required** |
 | ----------------------- | ---------------------------------------------- | ------------ |
-| --template              | Select template                                |              |
+| --template              | Select template path                           |              |
 | --template-data         | Provide File path of data to use for template  |              |
 | --network-id            | Provide the network id                         |              |
 | --out-file              | Provide path to save output                    |              |
@@ -703,6 +708,14 @@ example:
 ```
 kadena tx add --template="transfer.yaml" --template-data="path" (--account-from="k:account" --account-to="k:toaccount" --amount="1" --chain-id="1" --pk-from="publicKey") --network-id="testnet04" --out-file="transaction-(request-key).json"
 ```
+
+Template variables are prompted unless assigned via --template-data or direct
+flags. Variables can be prefixed to enable value selection using:
+
+- `account:` to select a account name
+- `key:` to select a public key
+- `network:` to select existing networkId
+- `decimal:` to enable decimal input validation
 
 ---
 
