@@ -28,6 +28,7 @@ import { useQuery } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
 import type { FormData } from './sign-form';
 
+import { useAccountChainDetailsQuery } from '@/hooks/use-account-chain-details-query';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import type { ChainId } from '@kadena/types';
 
@@ -54,15 +55,26 @@ export const SignFormReceiver = ({
     setValue,
   } = useFormContext<FormData>();
 
+  const [chainSelectOptions, setChainSelectOptions] = useState<
+    { chainId: ChainId; data: string | number }[]
+  >([]);
+
   const receiverData = useAccountDetailsQuery({
     account: getValues('receiver'),
     networkId: network,
     chainId: getValues('receiverChainId'),
   });
 
+  const receiverAccountChains = useAccountChainDetailsQuery({
+    account: getValues('receiver'),
+    networkId: network,
+  });
+
   useEffect(() => {
     if (receiverData.isSuccess) {
-      onDataUpdate(receiverData.data);
+      if (receiverData?.data) {
+        onDataUpdate(receiverData.data);
+      }
     }
   }, [onDataUpdate, receiverData.data, receiverData.isSuccess]);
 
@@ -107,6 +119,7 @@ export const SignFormReceiver = ({
                 onChange(chainId);
                 onChainUpdate(chainId);
               }}
+              additionalInfoOptions={chainSelectOptions}
               isInvalid={!!errors.receiverChainId}
               errorMessage={errors.receiverChainId?.message}
             />
@@ -176,6 +189,19 @@ export const SignFormReceiver = ({
     pubKeys.length,
   ]);
 
+  useEffect(() => {
+    if (receiverAccountChains.isSuccess) {
+      if (receiverAccountChains?.data) {
+        setChainSelectOptions(
+          receiverAccountChains.data.map((item) => ({
+            chainId: item.chainId,
+            data: item.data ? `existing` : 'new',
+          })),
+        );
+      }
+    }
+  }, [receiverAccountChains.isSuccess, receiverAccountChains.data]);
+
   return (
     <Card fullWidth>
       <Heading as={'h4'}>{t('Receiver')} </Heading>
@@ -189,7 +215,7 @@ export const SignFormReceiver = ({
         <TabItem key="existing" title="Existing">
           <Box padding={'xs'}>
             {renderAccountFieldWithChain('existing')}
-            {receiverData.isFetching ? (
+            {receiverAccountChains.isFetching ? (
               <Stack flexDirection={'row'} marginBlockStart={'md'}>
                 <SystemIcon.Information />
                 <Text as={'span'} color={'emphasize'}>
@@ -224,7 +250,7 @@ export const SignFormReceiver = ({
 
             {renderAccountFieldWithChain('new')}
 
-            {receiverData.isFetching ? (
+            {receiverAccountChains.isFetching ? (
               <Stack flexDirection={'row'} marginBlockStart={'md'}>
                 <SystemIcon.Information />
                 <Text as={'span'} color={'emphasize'}>
