@@ -1,0 +1,9 @@
+{
+  "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "module": "NodeNext",
+    "types": [".kadena/pactjs-generated", "./src/utils/ttys.d.ts"]
+  },
+  "exclude": ["./src/mocks"]
+}

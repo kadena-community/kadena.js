@@ -1,3 +1,5 @@
 .next
 **/*.md
 tsdoc-metadata.json
+coverage
+src/pact

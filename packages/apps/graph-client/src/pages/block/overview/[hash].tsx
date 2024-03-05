@@ -1,9 +1,7 @@
-import type { BlockTransactionsConnection } from '@/__generated__/sdk';
-import {
-  useGetBlockFromHashQuery,
-  useGetGraphConfigurationQuery,
-} from '@/__generated__/sdk';
-import { centerBlockStyle } from '@/components/common/center-block/styles.css';
+import type { BlockTransactionsConnection, Event } from '@/__generated__/sdk';
+import { useGetBlockFromHashQuery } from '@/__generated__/sdk';
+import { centerBlockClass } from '@/components/common/center-block/styles.css';
+import { EventsTable } from '@/components/events-table/events-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import {
@@ -11,18 +9,26 @@ import {
   getGraphConfiguration,
 } from '@/graphql/queries.graph';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
-import { Text } from '@components/text';
 import routes from '@constants/routes';
 import {
   Accordion,
+  AccordionItem,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+  Cell,
+  Column,
+  ContentHeader,
+  Heading,
   Link,
   Notification,
+  Row,
   Stack,
   Table,
+  TableBody,
+  TableHeader,
 } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -40,14 +46,12 @@ const Block: React.FC = () => {
     skip: !router.query.hash,
   });
 
-  const { data: configData } = useGetGraphConfigurationQuery();
-
   const viewAllTransactionsPage: string = `${routes.BLOCK_TRANSACTIONS}/${
     router.query.hash as string
   }`;
 
   return (
-    <div className={centerBlockStyle}>
+    <div className={centerBlockClass}>
       <div style={{ maxWidth: '1000px' }}>
         <Stack justifyContent="space-between">
           <Breadcrumbs>
@@ -79,163 +83,145 @@ const Block: React.FC = () => {
 
         {data?.block && (
           <>
-            <Text
-              as="h2"
-              css={{
-                display: 'block',
-                color: '$mauve12',
-                fontSize: '$2xl',
-                my: '$4',
-              }}
-            >
-              Block Header
-            </Text>
+            <Heading as="h4">Block Header</Heading>
 
-            <Table.Root wordBreak="break-word">
-              <Table.Body>
-                <Table.Tr>
-                  <Table.Td>
+            <Table className={atoms({ wordBreak: 'break-word' })} isCompact>
+              <TableHeader>
+                <Column>Label</Column>
+                <Column>Value</Column>
+              </TableHeader>
+              <TableBody>
+                <Row>
+                  <Cell>
                     <strong>Chain ID</strong>
-                  </Table.Td>
-                  <Table.Td>{data.block.chainId}</Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                  <Table.Td>
+                  </Cell>
+                  <Cell>{data.block.chainId}</Cell>
+                </Row>
+                <Row>
+                  <Cell>
                     <strong>Height</strong>
-                  </Table.Td>
-                  <Table.Td>{data.block.height}</Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                  <Table.Td>
+                  </Cell>
+                  <Cell>{data.block.height}</Cell>
+                </Row>
+                <Row>
+                  <Cell>
                     <strong>Hash</strong>
-                  </Table.Td>
-                  <Table.Td>{data.block.hash}</Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                  <Table.Td>
-                    <strong>Confirmation Depth</strong>
-                  </Table.Td>
-                  <Table.Td>
-                    {!configData?.graphConfiguration
-                      ?.maximumConfirmationDepth ||
-                    data.block.confirmationDepth <
-                      configData.graphConfiguration.maximumConfirmationDepth
-                      ? data.block.confirmationDepth
-                      : `>${data.block.confirmationDepth}`}
-                  </Table.Td>
-                </Table.Tr>
-              </Table.Body>
-            </Table.Root>
+                  </Cell>
+                  <Cell>{data.block.hash}</Cell>
+                </Row>
+              </TableBody>
+            </Table>
 
             <Box margin="sm" />
 
-            <Accordion.Root>
-              {[
-                <Accordion.Section title="See more" key={'accordion-header'}>
-                  <Table.Root>
-                    <Table.Body>
-                      <Table.Tr>
-                        <Table.Td>
-                          <strong>Parent</strong>
-                        </Table.Td>
-                        <Table.Td>
-                          <Link
-                            href={`${routes.BLOCK_OVERVIEW}/${data.block.parentHash}`}
-                          >
-                            {data.block.parentHash}
-                          </Link>
-                        </Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
-                          <strong>Pow Hash</strong>
-                        </Table.Td>
-                        <Table.Td>{data.block.powHash}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
-                          <strong>Epoch Start</strong>
-                        </Table.Td>
-                        <Table.Td>{data.block.epoch}</Table.Td>
-                      </Table.Tr>
-                    </Table.Body>
-                  </Table.Root>
-                </Accordion.Section>,
-              ]}
-            </Accordion.Root>
+            <Accordion selectionMode="multiple">
+              <AccordionItem title="See more" key={'accordion-header'}>
+                <Table isCompact>
+                  <TableHeader>
+                    <Column>Label</Column>
+                    <Column>Value</Column>
+                  </TableHeader>
+                  <TableBody>
+                    <Row>
+                      <Cell>
+                        <strong>Parent</strong>
+                      </Cell>
+                      <Cell>
+                        <Link
+                          href={`${routes.BLOCK_OVERVIEW}/${data.block.parent?.hash}`}
+                        >
+                          {data.block.parent?.hash}
+                        </Link>
+                      </Cell>
+                    </Row>
+                    <Row>
+                      <Cell>
+                        <strong>Pow Hash</strong>
+                      </Cell>
+                      <Cell>{data.block.powHash}</Cell>
+                    </Row>
+                    <Row>
+                      <Cell>
+                        <strong>Epoch Start</strong>
+                      </Cell>
+                      <Cell>{data.block.epoch}</Cell>
+                    </Row>
+                  </TableBody>
+                </Table>
+              </AccordionItem>
+            </Accordion>
 
             <Box margin="md" />
 
-            <Text
-              as="h2"
-              css={{
-                display: 'block',
-                color: '$mauve12',
-                fontSize: '$2xl',
-                my: '$4',
-              }}
-            >
-              Block Payload
-            </Text>
-            <Table.Root wordBreak="break-word">
-              <Table.Body>
-                <Table.Tr>
-                  <Table.Td>
-                    <strong>Payload Hash</strong>
-                  </Table.Td>
-                  <Table.Td>{data.block.payloadHash}</Table.Td>
-                  <Table.Td></Table.Td>
-                </Table.Tr>
-                <Table.Tr url={viewAllTransactionsPage}>
-                  <Table.Td>
-                    <strong>No. of transactions</strong>
-                  </Table.Td>
-                  <Table.Td>{data.block.transactions.totalCount}</Table.Td>
-                </Table.Tr>
-              </Table.Body>
-            </Table.Root>
-            <Box margin="sm" />
-            <Accordion.Root>
-              {[
-                <Accordion.Section title="See more" key={'accordion-payload'}>
-                  <Table.Root>
-                    <Table.Body>
-                      <Table.Tr>
-                        <Table.Td>
-                          <strong>Payload Hash</strong>
-                        </Table.Td>
-                        <Table.Td>{data.block.payloadHash}</Table.Td>
-                      </Table.Tr>
+            <Heading as="h4">Block Payload</Heading>
 
-                      <Table.Tr>
-                        <Table.Td>
-                          <strong>Miner Keys</strong>
-                        </Table.Td>
-                        <Table.Td>
-                          <Table.Root>
-                            <Table.Body>
-                              {data.block.minerAccount.guard.keys?.map(
-                                (minerKey, index) => (
-                                  <Table.Tr key={index}>
-                                    <Table.Td>{minerKey}</Table.Td>
-                                  </Table.Tr>
-                                ),
-                              )}
-                            </Table.Body>
-                          </Table.Root>
-                        </Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
-                          <strong>Predicate</strong>
-                        </Table.Td>
-                        <Table.Td>{data.block.predicate}</Table.Td>
-                      </Table.Tr>
-                    </Table.Body>
-                  </Table.Root>
-                </Accordion.Section>,
-              ]}
-            </Accordion.Root>
+            <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+              <TableHeader>
+                <Column>Label</Column>
+                <Column>Value</Column>
+              </TableHeader>
+              <TableBody>
+                <Row>
+                  <Cell>
+                    <strong>Payload Hash</strong>
+                  </Cell>
+                  <Cell>{data.block.payloadHash}</Cell>
+                </Row>
+                <Row href={viewAllTransactionsPage}>
+                  <Cell>
+                    <strong>No. of transactions</strong>
+                  </Cell>
+                  <Cell>{data.block.transactions.totalCount}</Cell>
+                </Row>
+              </TableBody>
+            </Table>
+            <Box margin="sm" />
+            <Accordion selectionMode="multiple">
+              <AccordionItem title="See more" key={'accordion-payload'}>
+                <Table isCompact>
+                  <TableHeader>
+                    <Column>Label</Column>
+                    <Column>Value</Column>
+                  </TableHeader>
+                  <TableBody>
+                    <Row>
+                      <Cell>
+                        <strong>Payload Hash</strong>
+                      </Cell>
+                      <Cell>{data.block.payloadHash}</Cell>
+                    </Row>
+
+                    <Row>
+                      <Cell>
+                        <strong>Miner Keys</strong>
+                      </Cell>
+                      <Cell>
+                        <Table>
+                          <TableHeader>
+                            <Column>Value</Column>
+                          </TableHeader>
+                          <TableBody>
+                            {data.block.minerAccount.guard.keys?.map(
+                              (minerKey, index) => (
+                                <Row key={index}>
+                                  <Cell>{minerKey}</Cell>
+                                </Row>
+                              ),
+                            )}
+                          </TableBody>
+                        </Table>
+                      </Cell>
+                    </Row>
+                    <Row>
+                      <Cell>
+                        <strong>Predicate</strong>
+                      </Cell>
+                      <Cell>{data.block.minerAccount.guard.predicate}</Cell>
+                    </Row>
+                  </TableBody>
+                </Table>
+              </AccordionItem>
+            </Accordion>
 
             <Box margin="md" />
 
@@ -247,6 +233,22 @@ const Block: React.FC = () => {
                 }
                 description="All transactions present in this block"
               />
+            )}
+
+            <Box margin="md" />
+
+            {data.block.events.edges.length && (
+              <>
+                <ContentHeader
+                  heading="Events"
+                  icon="KIcon"
+                  description="All events of this block"
+                />
+                <Box margin="sm" />
+                <EventsTable
+                  events={data.block.events.edges.map((x) => x.node) as Event[]}
+                />
+              </>
             )}
           </>
         )}

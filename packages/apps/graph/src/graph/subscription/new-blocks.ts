@@ -1,7 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Block } from '@prisma/client';
-import { dotenv } from '@utils/dotenv';
-import { createID } from '@utils/global-id';
+import { chainIds as defaultChainIds } from '@utils/chains';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
@@ -11,36 +10,42 @@ builder.subscriptionField('newBlocks', (t) =>
   t.field({
     description: 'Subscribe to new blocks.',
     args: {
-      chainIds: t.arg.intList({ required: false }),
+      chainIds: t.arg.stringList({ required: false }),
     },
-    type: ['ID'],
+    type: [GQLBlock],
     nullable: true,
     subscribe: (__root, args, context) =>
-      iteratorFn(args.chainIds as number[] | undefined, context),
+      iteratorFn(
+        args.chainIds?.length ? args.chainIds : defaultChainIds,
+        context,
+      ),
     resolve: (parent) => parent,
   }),
 );
 
 async function* iteratorFn(
-  chainIds: number[] = Array.from(new Array(dotenv.CHAIN_COUNT)).map(
-    (__, i) => i,
-  ),
+  chainIds: string[],
   context: IContext,
-): AsyncGenerator<string[], void, unknown> {
-  const blockResult = await getLastBlocks(chainIds);
+): AsyncGenerator<Block[], void, unknown> {
+  const startingTimestamp = new Date().toISOString();
+  const blockResult = await getLastBlocks(chainIds, startingTimestamp);
   let lastBlock;
 
   if (!nullishOrEmpty(blockResult)) {
     lastBlock = blockResult[0];
-    yield [createID(GQLBlock.name, lastBlock.hash)];
+    yield [lastBlock];
   }
 
   while (!context.req.socket.destroyed) {
-    const newBlocks = await getLastBlocks(chainIds, lastBlock?.id);
+    const newBlocks = await getLastBlocks(
+      chainIds,
+      startingTimestamp,
+      lastBlock?.id,
+    );
 
     if (!nullishOrEmpty(newBlocks)) {
       lastBlock = newBlocks[0];
-      yield newBlocks.map((block) => createID(GQLBlock.name, block.hash));
+      yield newBlocks;
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -48,7 +53,8 @@ async function* iteratorFn(
 }
 
 async function getLastBlocks(
-  chainIds: number[],
+  chainIds: string[],
+  date: string,
   id?: number,
 ): Promise<Block[]> {
   const defaultFilter: Parameters<typeof prismaClient.block.findMany>[0] = {
@@ -62,12 +68,20 @@ async function getLastBlocks(
       ? { take: 5, ...defaultFilter }
       : {
           take: 100,
-          where: { id: { gt: id } },
+          where: {
+            AND: {
+              id: { gt: id },
+              creationTime: { gt: date },
+            },
+          },
         };
 
   const foundblocks = await prismaClient.block.findMany({
     ...extendedFilter,
-    where: { ...extendedFilter.where, chainId: { in: chainIds } },
+    where: {
+      ...extendedFilter.where,
+      chainId: { in: chainIds.map((x) => parseInt(x)) },
+    },
   });
 
   return foundblocks.sort((a, b) => b.id - a.id);

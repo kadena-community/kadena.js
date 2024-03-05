@@ -1,80 +1,18 @@
-import { ALL_ACCOUNT_FIELDS } from './fields/account.graph';
 import { ALL_BLOCK_FIELDS } from './fields/block.graph';
+import { ALL_EVENT_FIELDS } from './fields/event.graph';
+import { ALL_FUNGIBLE_ACCOUNT_FIELDS } from './fields/fungible-account.graph';
 import {
-  ALL_CHAIN_ACCOUNT_FIELDS,
-  CORE_CHAIN_ACCOUNT_FIELDS,
-} from './fields/chain-account.graph';
-import { ALL_EVENT_FIELDS, CORE_EVENT_FIELDS } from './fields/event.graph';
+  ALL_FUNGIBLE_CHAIN_ACCOUNT_FIELDS,
+  CORE_FUNGIBLE_CHAIN_ACCOUNT_FIELDS,
+} from './fields/fungible-chain-account.graph';
 import { CORE_MINER_KEY_FIELDS } from './fields/miner-key.graph';
 import { ALL_NON_FUNGIBLE_ACCOUNT_FIELDS } from './fields/non-fungible-account.graph';
 import { CORE_NON_FUNGIBLE_CHAIN_ACCOUNT_FIELDS } from './fields/non-fungible-chain-account.graph';
-import {
-  ALL_TRANSACTION_FIELDS,
-  CORE_TRANSACTION_FIELDS,
-} from './fields/transaction.graph';
+import { CORE_TRANSACTION_FIELDS } from './fields/transaction.graph';
 import { CORE_TRANSFER_FIELDS } from './fields/transfer.graph';
 
 import type { DocumentNode } from '@apollo/client';
 import { gql } from '@apollo/client';
-
-export const getTransactionNode: DocumentNode = gql`
-  ${ALL_TRANSACTION_FIELDS}
-  ${CORE_EVENT_FIELDS}
-
-  query getTransactionNode($id: ID!) {
-    node(id: $id) {
-      ... on Transaction {
-        ...AllTransactionFields
-        block {
-          hash
-        }
-        events {
-          ...CoreEventFields
-        }
-        signers {
-          publicKey
-          signature
-        }
-      }
-    }
-  }
-`;
-
-export const getBlockNodes: DocumentNode = gql`
-  query getBlockNodes($ids: [ID!]!) {
-    nodes(ids: $ids) {
-      ... on Block {
-        height
-        hash
-        parentHash
-        chainId
-        creationTime
-        confirmationDepth
-        transactions {
-          totalCount
-        }
-      }
-    }
-  }
-`;
-
-export const getEventNodes: DocumentNode = gql`
-  ${ALL_EVENT_FIELDS}
-
-  query getEventNodes($ids: [ID!]!) {
-    nodes(ids: $ids) {
-      ... on Event {
-        ...AllEventFields
-        block {
-          id
-        }
-        transaction {
-          requestKey
-        }
-      }
-    }
-  }
-`;
 
 export const getBlockFromHash: DocumentNode = gql`
   ${ALL_BLOCK_FIELDS}
@@ -104,10 +42,20 @@ export const getBlockFromHash: DocumentNode = gql`
           }
         }
       }
-      confirmationDepth
       minerAccount {
         guard {
+          predicate
           keys
+        }
+      }
+      parent {
+        hash
+      }
+      events {
+        edges {
+          node {
+            ...AllEventFields
+          }
         }
       }
     }
@@ -123,38 +71,22 @@ export const getLastBlock: DocumentNode = gql`
 export const getGraphConfiguration: DocumentNode = gql`
   query getGraphConfiguration {
     graphConfiguration {
-      maximumConfirmationDepth
       minimumBlockHeight
     }
   }
 `;
 
-export const getRecentHeights: DocumentNode = gql`
-  query getRecentHeights($completedOnly: Boolean = true, $count: Int!) {
-    completedBlockHeights(
-      completedHeights: $completedOnly
-      heightCount: $count
-    ) {
-      ...AllBlockFields
-      confirmationDepth
-      transactions {
-        totalCount
-      }
-    }
-  }
-`;
-
 export const getFungibleAccount: DocumentNode = gql`
-  ${ALL_ACCOUNT_FIELDS}
-  ${CORE_CHAIN_ACCOUNT_FIELDS}
+  ${ALL_FUNGIBLE_ACCOUNT_FIELDS}
+  ${CORE_FUNGIBLE_CHAIN_ACCOUNT_FIELDS}
   ${CORE_TRANSACTION_FIELDS}
   ${CORE_TRANSFER_FIELDS}
 
   query getFungibleAccount($fungibleName: String!, $accountName: String!) {
     fungibleAccount(fungibleName: $fungibleName, accountName: $accountName) {
-      ...AllAccountFields
+      ...AllFungibleAccountFields
       chainAccounts {
-        ...CoreChainAccountFields
+        ...CoreFungibleChainAccountFields
         guard {
           keys
           predicate
@@ -171,11 +103,18 @@ export const getFungibleAccount: DocumentNode = gql`
         edges {
           node {
             ...CoreTransferFields
+            creationTime
             crossChainTransfer {
               ...CoreTransferFields
             }
             transaction {
-              pactId
+              cmd {
+                payload {
+                  ... on ContinuationPayload {
+                    pactId
+                  }
+                }
+              }
             }
           }
         }
@@ -187,7 +126,7 @@ export const getFungibleAccount: DocumentNode = gql`
 export const getFungibleChainAccount: DocumentNode = gql`
   ${CORE_TRANSACTION_FIELDS}
   ${CORE_TRANSFER_FIELDS}
-  ${ALL_CHAIN_ACCOUNT_FIELDS}
+  ${ALL_FUNGIBLE_CHAIN_ACCOUNT_FIELDS}
 
   query getFungibleChainAccount(
     $fungibleName: String!
@@ -199,7 +138,7 @@ export const getFungibleChainAccount: DocumentNode = gql`
       accountName: $accountName
       chainId: $chainId
     ) {
-      ...AllChainAccountFields
+      ...AllFungibleChainAccountFields
       transactions {
         edges {
           node {
@@ -211,11 +150,18 @@ export const getFungibleChainAccount: DocumentNode = gql`
         edges {
           node {
             ...CoreTransferFields
+            creationTime
             crossChainTransfer {
               ...CoreTransferFields
             }
             transaction {
-              pactId
+              cmd {
+                payload {
+                  ... on ContinuationPayload {
+                    pactId
+                  }
+                }
+              }
             }
           }
         }
@@ -261,9 +207,11 @@ export const getTransactions: DocumentNode = gql`
           block {
             hash
           }
-          signers {
-            publicKey
-            signature
+          cmd {
+            signers {
+              publicKey
+              signature
+            }
           }
         }
       }
@@ -303,11 +251,18 @@ export const getTransfers: DocumentNode = gql`
         cursor
         node {
           ...CoreTransferFields
+          creationTime
           crossChainTransfer {
             ...CoreTransferFields
           }
           transaction {
-            pactId
+            cmd {
+              payload {
+                ... on ContinuationPayload {
+                  pactId
+                }
+              }
+            }
           }
         }
       }
@@ -320,6 +275,7 @@ export const getEvents: DocumentNode = gql`
 
   query getEvents(
     $qualifiedEventName: String!
+    $parametersFilter: String
     $after: String
     $before: String
     $first: Int
@@ -327,6 +283,7 @@ export const getEvents: DocumentNode = gql`
   ) {
     events(
       qualifiedEventName: $qualifiedEventName
+      parametersFilter: $parametersFilter
       after: $after
       before: $before
       first: $first
@@ -350,8 +307,14 @@ export const getEvents: DocumentNode = gql`
 `;
 
 export const estimateGasLimit: DocumentNode = gql`
-  query estimateGasLimit($transaction: PactTransaction!) {
-    gasLimitEstimate(transaction: $transaction)
+  query estimateGasLimit($input: String!) {
+    gasLimitEstimate(input: $input) {
+      amount
+      inputType
+      usedPreflight
+      usedSignatureVerification
+      transaction
+    }
   }
 `;
 
@@ -365,10 +328,6 @@ export const getNonFungibleAccount: DocumentNode = gql`
       ...AllNonFungibleAccountFields
       chainAccounts {
         ...CoreNonFungibleChainAccountFields
-        guard {
-          keys
-          predicate
-        }
       }
       nonFungibles {
         balance
@@ -386,17 +345,13 @@ export const getNonFungibleAccount: DocumentNode = gql`
   }
 `;
 
-export const getChainNonFungibleAccount: DocumentNode = gql`
+export const getNonFungibleChainAccount: DocumentNode = gql`
   ${CORE_NON_FUNGIBLE_CHAIN_ACCOUNT_FIELDS}
   ${CORE_TRANSACTION_FIELDS}
 
-  query getChainNonFungibleAccount($accountName: String!, $chainId: String!) {
+  query getNonFungibleChainAccount($accountName: String!, $chainId: String!) {
     nonFungibleChainAccount(accountName: $accountName, chainId: $chainId) {
       ...CoreNonFungibleChainAccountFields
-      guard {
-        keys
-        predicate
-      }
       nonFungibles {
         balance
         id

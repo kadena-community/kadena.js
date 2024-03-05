@@ -1,12 +1,15 @@
 import { prismaClient } from '@db/prisma-client';
+import { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
+import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { builder } from '../builder';
 
-export default builder.prismaNode('Event', {
+export default builder.prismaNode(Prisma.ModelName.Event, {
   description:
     'An event emitted by the execution of a smart-contract function.',
   id: { field: 'blockHash_orderIndex_requestKey' },
+  select: {},
   fields: (t) => ({
     // database fields
     incrementedId: t.exposeInt('id'),
@@ -23,6 +26,17 @@ export default builder.prismaNode('Event', {
     moduleName: t.exposeString('moduleName'),
     name: t.exposeString('name'),
     parameterText: t.exposeString('parameterText'),
+    parameters: t.string({
+      nullable: true,
+      select: {
+        parameters: true,
+      },
+      resolve({ parameters }) {
+        return nullishOrEmpty(parameters)
+          ? undefined
+          : JSON.stringify(parameters);
+      },
+    }),
     qualifiedName: t.exposeString('qualifiedName', {
       description:
         'The full eventname, containing module and eventname, e.g. coin.TRANSFER',
@@ -31,9 +45,13 @@ export default builder.prismaNode('Event', {
 
     //relations
     transaction: t.prismaField({
-      type: 'Transaction',
+      type: Prisma.ModelName.Transaction,
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      select: {
+        blockHash: true,
+        requestKey: true,
+      },
       async resolve(query, parent) {
         try {
           return await prismaClient.transaction.findUnique({
@@ -52,9 +70,12 @@ export default builder.prismaNode('Event', {
     }),
 
     block: t.prismaField({
-      type: 'Block',
+      type: Prisma.ModelName.Block,
       nullable: false,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
+      select: {
+        blockHash: true,
+      },
       async resolve(query, parent) {
         try {
           return await prismaClient.block.findUniqueOrThrow({

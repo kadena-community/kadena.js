@@ -1,83 +1,82 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style, styleVariants } from '@vanilla-extract/css';
 
 export const circleColorVariant = styleVariants({
   complete: [
-    sprinkles({
-      backgroundColor: '$infoAccent',
-    }),
+    {
+      backgroundColor: tokens.kda.foundation.color.accent.blue,
+    },
   ],
   pending: [
-    sprinkles({
-      backgroundColor: '$negativeAccent',
-    }),
+    {
+      backgroundColor: tokens.kda.foundation.color.accent.red,
+    },
   ],
   incomplete: [
-    sprinkles({
-      borderWidth: '$md',
-      borderColor: '$neutral3',
-      borderStyle: 'solid',
-    }),
+    {
+      border: `2px solid ${tokens.kda.foundation.color.neutral.n30}`,
+    },
   ],
 });
 
 export const lineColorVariant = styleVariants({
   complete: [
     {
-      backgroundImage: `linear-gradient(${vars.colors.$blue60} 33%, rgba(255,255,255,0) 0%)`,
+      backgroundImage: `linear-gradient(${tokens.kda.foundation.color.accent.blue} 33%, rgba(255,255,255,0) 0%)`,
     },
   ],
   pending: [
     {
-      backgroundImage: `linear-gradient(${vars.colors.$red60} 33%, rgba(255,255,255,0) 0%)`,
+      backgroundImage: `linear-gradient(${tokens.kda.foundation.color.accent.red} 33%, rgba(255,255,255,0) 0%)`,
     },
   ],
   incomplete: [
     {
-      backgroundImage: `linear-gradient(${vars.colors.$gray40} 33%, rgba(255,255,255,0) 0%)`,
+      backgroundImage: `linear-gradient(${tokens.kda.foundation.color.neutral.n30} 33%, rgba(255,255,255,0) 0%)`,
     },
   ],
 });
 
 export const textColorVariant = styleVariants({
   complete: [
-    sprinkles({
-      color: '$neutral6',
+    atoms({
+      color: 'text.gray.default',
     }),
   ],
   pending: [
-    sprinkles({
-      color: '$neutral6',
+    atoms({
+      color: 'text.gray.default',
     }),
   ],
   incomplete: [
-    sprinkles({
-      color: '$neutral3',
-    }),
+    {
+      color: tokens.kda.foundation.color.neutral.n30,
+    },
   ],
 });
 
 export const progressBarStyle = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     height: '100%',
+    marginBlockStart: 'lg',
   }),
 ]);
 
 export const progressBarContentStyle = style([
-  sprinkles({
+  atoms({
     display: 'flex',
-    alignItems: 'center',
     flexDirection: 'column',
-    marginLeft: '$6',
+    alignItems: 'flex-start',
+    marginInlineStart: 'xs',
   }),
 ]);
 
 export const checkpointContainerStyle = style([
-  sprinkles({
+  atoms({
     display: 'flex',
     alignItems: 'center',
-    gap: '$4',
+    gap: 'md',
   }),
   {
     alignSelf: 'stretch',
@@ -85,41 +84,39 @@ export const checkpointContainerStyle = style([
 ]);
 
 export const textContainerStyle = style([
-  sprinkles({
-    fontSize: '$xs',
-    fontFamily: '$main',
-    fontWeight: '$normal',
-    lineHeight: '$base',
-    paddingTop: '$1',
-    marginBottom: '$lg',
-  }),
-  {
+  atoms({
+    fontSize: 'xs',
+    fontFamily: 'primaryFont',
+    fontWeight: 'bodyFont.regular',
+    lineHeight: 'base',
+    paddingBlockStart: 'xs',
+    marginBlockEnd: 'lg',
     flex: 1,
-  },
+  }),
 ]);
 
 export const circleStyle = style([
-  sprinkles({
-    borderRadius: '$round',
-    width: '$sm',
-    height: '$sm',
+  atoms({
+    borderRadius: 'round',
   }),
+  {
+    width: tokens.kda.foundation.size.n3,
+    height: tokens.kda.foundation.size.n3,
+  },
 ]);
 
 export const circleLineContainerStyle = style([
-  sprinkles({
-    width: '$2',
+  atoms({
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     flexDirection: 'column',
-    gap: '$1',
+    gap: 'xs',
   }),
   {
+    width: tokens.kda.foundation.size.n3,
     alignSelf: 'stretch',
     paddingTop: '6px',
-  },
-  {
     selectors: {
       '&:first-child': {
         paddingTop: '$1',
@@ -132,13 +129,13 @@ export const circleLineContainerStyle = style([
 ]);
 
 export const lineStyle = style([
-  sprinkles({
-    width: '$1',
+  atoms({
     position: 'relative',
-  }),
-  {
     top: 0,
     bottom: 0,
+  }),
+  {
+    width: tokens.kda.foundation.size.n1,
     left: '5px',
     flex: 1,
 

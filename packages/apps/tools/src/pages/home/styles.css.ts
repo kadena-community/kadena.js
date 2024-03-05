@@ -1,28 +1,25 @@
-import { sprinkles, vars } from '@kadena/react-ui/theme';
+import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const homeWrapperClass = style([
-  sprinkles({
-    paddingRight: '$16',
-  }),
+  {
+    paddingInlineEnd: tokens.kda.foundation.size.n16,
+  },
 ]);
 
 export const helpCenterButtonClass = style([
-  sprinkles({
-    color: '$blue80',
+  atoms({
+    color: 'text.brand.primary.default',
     cursor: 'pointer',
   }),
 ]);
 
-export const linkStyle = style([
-  sprinkles({
-    color: '$blue80',
+export const infoBoxStyle = style([
+  atoms({
+    fontSize: 'sm',
+    padding: 'sm',
+    borderRadius: 'sm',
+    display: 'flex',
+    flexDirection: 'column',
   }),
-  {
-    selectors: {
-      [`&.visited`]: {
-        color: vars.colors.$blue60,
-      },
-    },
-  },
 ]);

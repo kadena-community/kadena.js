@@ -66,6 +66,9 @@ export const responsiveStyle = ({
     : {}),
 });
 
+/**
+ * @internal usage
+ */
 export const mapToProperty =
   <Property extends keyof Properties<string | number>>(
     property: Property,
@@ -85,16 +88,17 @@ type Token = string | { [key: string]: Token };
 const ignoredTokens = ['@hover', '@focus', '@disabled'] as const;
 type IgnoredToken = (typeof ignoredTokens)[number];
 
+/**
+ * @internal
+ */
 export function flattenTokens<T extends Record<string, Token>>(
   tokens: T,
 ): FlattenObject<T, IgnoredToken> {
   return flattenObject(tokens, ignoredTokens);
 }
 
-export function token(
-  path: ObjectPathLeaves<typeof tokens.kda.foundation>,
-  fallback?: string,
-): string {
+export type TokenPath = ObjectPathLeaves<typeof tokens.kda.foundation>;
+export function token(path: TokenPath, fallback?: string): string {
   const v = get(tokens.kda.foundation, path);
   if (!isNullOrUndefined(fallback)) {
     return fallbackVar(v, fallback);

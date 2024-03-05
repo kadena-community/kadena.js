@@ -1,6 +1,5 @@
 import {
   Event,
-  useGetEventNodesQuery,
   useGetEventsByNameSubscription,
   useGetEventsQuery,
 } from '@/__generated__/sdk';
@@ -9,26 +8,37 @@ import { ErrorBox } from '@/components/error-box/error-box';
 import { EventsTable } from '@/components/events-table/events-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
-import { getEventNodes, getEvents } from '@/graphql/queries.graph';
+import { getEvents } from '@/graphql/queries.graph';
 import { getEventsByName } from '@/graphql/subscriptions.graph';
 import routes from '@constants/routes';
 import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+  Button,
   Grid,
   GridItem,
   Heading,
   Notification,
   Pagination,
   Select,
+  SelectItem,
   Stack,
+  TextField,
 } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
+const itemsPerPageOptions = [10, 20, 50, 100].map((x) => ({
+  label: x.toString(),
+  value: x,
+}));
+
 const Event: React.FC = () => {
   const router = useRouter();
+
+  const [parametersFilterField, setParametersFilterField] =
+    useState<string>('');
 
   // Paginated events
   const getEventsQueryVariables = {
@@ -59,21 +69,12 @@ const Event: React.FC = () => {
     variables: getEventsByNameSubscriptionVariables,
   });
 
-  const nodesQueryVariables = {
-    ids: eventsSubscriptionData?.events as string[],
-  };
-
-  const { data: nodesQueryData } = useGetEventNodesQuery({
-    variables: nodesQueryVariables,
-    skip: !eventsSubscriptionData?.events?.length,
-  });
-
   const [subscriptionsEvents, setSubscriptionsEvents] = useState<Event[]>([]);
 
   useEffect(() => {
-    if (nodesQueryData?.nodes?.length) {
+    if (eventsSubscriptionData?.events?.length) {
       const updatedEvents = [
-        ...(nodesQueryData?.nodes as Event[]),
+        ...(eventsSubscriptionData?.events as Event[]),
         ...subscriptionsEvents,
       ];
 
@@ -83,16 +84,17 @@ const Event: React.FC = () => {
 
       setSubscriptionsEvents(updatedEvents);
     }
-  }, [nodesQueryData]);
+  }, [eventsSubscriptionData?.events]);
 
   // Pagination
-  const itemsPerPageOptions = [10, 50, 100, 200];
   const urlPage = router.query.page;
   const urlItemsPerPage = router.query.items;
 
-  const [itemsPerPage, setItemsPerPage] = useState<number>(
+  const [itemsPerPage, setItemsPerPage] = useState<number>(() =>
     urlItemsPerPage &&
-      itemsPerPageOptions.includes(parseInt(urlItemsPerPage as string))
+    itemsPerPageOptions.some(
+      (option) => option.value === parseInt(urlItemsPerPage as string),
+    )
       ? parseInt(urlItemsPerPage as string)
       : 10,
   );
@@ -106,6 +108,7 @@ const Event: React.FC = () => {
   const refetchEvents = async () => {
     await fetchMore({
       variables: {
+        parametersFilter: parametersFilterField,
         first: itemsPerPage,
         last: null,
         after: null,
@@ -198,6 +201,18 @@ const Event: React.FC = () => {
     setCurrentPage(newPageNumber);
   };
 
+  const search = async () => {
+    await refetchEvents();
+  };
+
+  const handleKeyPress = async (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (event.key === 'Enter') {
+      await search();
+    }
+  };
+
   return (
     <>
       <Stack justifyContent="space-between">
@@ -215,13 +230,23 @@ const Event: React.FC = () => {
               query: getEventsByName,
               variables: getEventsByNameSubscriptionVariables,
             },
-            {
-              query: getEventNodes,
-              variables: nodesQueryVariables,
-            },
           ]}
         />
       </Stack>
+
+      <Box margin="md" />
+
+      <Box display="flex" gap="sm" alignItems="flex-end">
+        <TextField
+          label="Filter for the Parameters field"
+          value={parametersFilterField}
+          onValueChange={(value) => setParametersFilterField(value)}
+          placeholder='{"array_starts_with": "k:abc..."}'
+          onKeyDown={handleKeyPress}
+        />
+
+        <Button onClick={search}>Search</Button>
+      </Box>
 
       <Box margin="md" />
 
@@ -238,24 +263,19 @@ const Event: React.FC = () => {
         <GridItem>
           <Stack justifyContent="space-between">
             <Select
-              ariaLabel="items-per-page"
+              aria-label="items-per-page"
               id="items-per-page"
-              onChange={(event) =>
-                setItemsPerPage(parseInt(event.target.value))
+              onSelectionChange={(key) =>
+                setItemsPerPage(typeof key === 'string' ? parseInt(key) : key)
               }
-              style={{ display: 'inline-block' }}
-              defaultValue={itemsPerPage}
+              defaultSelectedKey={itemsPerPage}
+              items={itemsPerPageOptions}
             >
-              {itemsPerPageOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
+              {(item) => <SelectItem key={item.value}>{item.label}</SelectItem>}
             </Select>
             <Pagination
               totalPages={totalPages}
-              label="pagination"
-              currentPage={currentPage}
+              selectedPage={currentPage}
               onPageChange={handlePaginationClick}
             />
           </Stack>

@@ -1,0 +1,1 @@
+export { KadenaLogo } from './KadenaLogo';

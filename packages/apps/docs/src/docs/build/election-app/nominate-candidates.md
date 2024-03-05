@@ -350,7 +350,7 @@ To add candidates to the database:
    ```
 
    If you were to execute this transaction, it would fail—as expected—with output similar to the following:
-
+   
    ```bash
    election.repl:57:0:Trace: Begin Tx 5: Add candidate with existing key
    election.repl:58:2:Trace: Using n_14912521e87a6d387157d526b281bde8422371d1.election
@@ -628,6 +628,7 @@ To modify the frontend to list candidates from the development network:
    - Processes the response from the development network and returns a list of candidates or an empty list.
 
 5. Change to the terminal where the `election-dapp/frontend` directory is your current working directory. 
+
 6. Install the frontend dependencies by running the following command:
    
    ```bash
@@ -690,6 +691,7 @@ To modify the frontend to add candidates from the development network:
    Unlike the transaction for listing candidates, the transaction for adding candidates must be sent to the blockchain, so you must pay a transaction fee—in units of gas—for the resources consumed to process the transaction.
    
    The value of the `senderAccount` field in the metadata specifies the account that pays for gas.
+   
    This is important to remember because, in the [Add a gas station](/build/election/add-a-gas-station) tutorial, you'll specify the account of a **gas station** to pay for transactions that are signed by voters.
    However, the transaction to add a candidate must be signed and paid for by the same account.
 

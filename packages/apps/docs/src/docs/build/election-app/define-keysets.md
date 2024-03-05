@@ -10,7 +10,7 @@ tags: [account, keyset, namespace, governance, authorization, tutorial]
 
 # Define keysets
 
-As you learned in [Add an administrator account](/build/election/dd-admin-account) and [Define a namespace](/build/election/define-a-namespace), keysets determine rules for signing transactions and controlling the accounts that can access and update the namespaces where you deploy smart contracts. 
+As you learned in [Add an administrator account](/build/election/add-admin-account) and [Define a namespace](/build/election/define-a-namespace), keysets determine rules for signing transactions and controlling the accounts that can access and update the namespaces where you deploy smart contracts. 
 This tutorial demonstrates how to define the `admin-keyset` in the principal namespace that you created in [Define a namespace](/build/election/define-a-namespace) using the public key of the administrative account you created in [Add an administrator account](/build/election/add-admin-account). 
 
 After you define the `admin-keyset` in your principal namespace, you'll be able to use it to authorize your administrative account to submit specific types of transactions for the election application you're building.

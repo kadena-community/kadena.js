@@ -1,37 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { atoms } from '@theme/atoms.css';
 import React from 'react';
-import type { IAccordionProps, IAccordionSectionProps } from './';
-import { Accordion } from './';
 
-const generateSection = (i: number): IAccordionSectionProps => ({
-  title: `Section title ${i}`,
-  children: (
-    <p>
-      This is the content for section {i}.<br />
-      The type of this content is not restricted: any valid HTML content is
-      allowed.
-    </p>
-  ),
-  onOpen: () => console.log(`open section ${i}`),
-  onClose: () => console.log(`close section ${i}`),
-});
-const generateSections = (n: number): IAccordionSectionProps[] =>
-  Array.from({ length: n }, (d, i) => generateSection(i + 1));
+import type { IAccordionProps } from './Accordion';
+import { Accordion, AccordionItem } from './Accordion';
 
-const sampleCount: number = 3;
-const sampleSections: IAccordionSectionProps[] = generateSections(sampleCount);
-
-type StoryProps = {
-  linked: boolean;
-  customSections: IAccordionSectionProps[];
-} & IAccordionProps;
-
-const meta: Meta<StoryProps> = {
+const meta: Meta<IAccordionProps> = {
   title: 'Layout/Accordion',
   parameters: {
     status: {
-      type: 'inDevelopment',
+      type: 'releaseCandidate',
     },
     controls: {
       hideNoControlsWarning: true,
@@ -45,47 +22,33 @@ const meta: Meta<StoryProps> = {
     },
   },
   argTypes: {
-    linked: {
-      control: { type: 'boolean' },
-      description:
-        'When linked, only one section can be open at a time. If a section is opened, the previously opened section will be closed.',
-      table: {
-        defaultValue: { summary: 'false' },
-        type: { summary: 'boolean' },
+    selectionMode: {
+      description: 'The selection mode for the Accordion component.',
+      defaultValue: 'single',
+      control: {
+        type: 'select',
+        options: ['single', 'multiple', 'none'],
       },
     },
   },
 };
 
-type IStory = StoryObj<StoryProps>;
-
-export const Dynamic: IStory = {
+type Story = StoryObj<IAccordionProps>;
+export const Dynamic: Story = {
   name: 'Accordion',
-  args: {
-    linked: false,
-  },
-  render: ({ linked }) => {
-    const sections = sampleSections;
+  render: ({ selectionMode = 'single' }) => {
     return (
-      <div className={atoms({ width: '100%' })}>
-        <Accordion.Root linked={linked}>
-          {sections.map(
-            (
-              { title, children, onOpen, onClose }: IAccordionSectionProps,
-              index,
-            ) => (
-              <Accordion.Section
-                onOpen={onOpen}
-                onClose={onClose}
-                title={title}
-                key={index}
-              >
-                {children}
-              </Accordion.Section>
-            ),
-          )}
-        </Accordion.Root>
-      </div>
+      <Accordion selectionMode={selectionMode}>
+        <AccordionItem key="files" title="Your files">
+          <p>Files</p>
+        </AccordionItem>
+        <AccordionItem key="shared" title="Shared with you">
+          <p>Shared</p>
+        </AccordionItem>
+        <AccordionItem key="last" title="Last item">
+          <p>Last</p>
+        </AccordionItem>
+      </Accordion>
     );
   },
 };

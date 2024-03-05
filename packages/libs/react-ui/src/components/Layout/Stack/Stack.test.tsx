@@ -1,8 +1,8 @@
-import { Stack } from '@components/Layout/Stack';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, test } from 'vitest';
 import { itemClass } from '../stories.css';
+import { Stack } from './Stack';
 
 describe('Stack', () => {
   test('renders correctly', () => {

@@ -9,7 +9,7 @@ module.exports = {
   ],
   plugins: ['import'],
   parserOptions: { tsconfigRootDir: __dirname },
-  ignorePatterns: ['**/generated/**', 'vitest.*.ts'],
+  ignorePatterns: ['**/generated/**', '**/src/__generated__/**', 'vitest.*.ts'],
   settings: {
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
@@ -24,5 +24,6 @@ module.exports = {
     '@kadena-dev/typedef-var': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/no-floating-promises': 'off',
   },
 };

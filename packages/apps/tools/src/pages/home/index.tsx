@@ -2,28 +2,31 @@ import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import ResourceLinks from '@/components/Global/ResourceLinks';
 import { menuData } from '@/constants/side-menu-items';
 import { useToolbar } from '@/context/layout-context';
-import {
-  helpCenterButtonClass,
-  homeWrapperClass,
-  linkStyle,
-} from '@/pages/home/styles.css';
+import { homeWrapperClass, infoBoxStyle } from '@/pages/home/styles.css';
 import {
   Accordion,
+  AccordionItem,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
   Card,
+  Cell,
+  Column,
   Grid,
   GridItem,
   Heading,
+  Row,
   Stack,
   Table,
+  TableBody,
+  TableHeader,
 } from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
-import Link from 'next/link';
 
+import { linkStyle } from '@/pages/faucet/styles.css';
+import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
 
@@ -40,14 +43,18 @@ const Home: FC = () => {
           components={[
             <Link
               className={linkStyle}
-              href="/faucet/existing"
               key="faucet-existing-link"
-            />,
+              href="/faucet/existing"
+            >
+              {t('faucet-existing-link')}
+            </Link>,
             <Link
               className={linkStyle}
-              href="/faucet/new"
               key="faucet-new-link"
-            />,
+              href="/faucet/new"
+            >
+              {t('faucet-new-link')}
+            </Link>,
           ]}
         />
       ),
@@ -58,20 +65,57 @@ const Home: FC = () => {
         <Trans
           i18nKey="common:how-to-keypair"
           components={[
-            <a
+            <Link
               className={linkStyle}
+              key="chainweb-transfer-link"
               href="https://transfer.chainweb.com/"
               target="_blank"
               rel="noreferrer"
-              key="chainweb-transfer-link"
-            />,
-            <strong key="generate-keypair" />,
-            <a
+            >
+              {t('chainweb-transfer-link')}
+            </Link>,
+            <Link
               className={linkStyle}
-              href="https://kadena.io/chainweaver-tos/"
+              href="https://chainweaver.kadena.network/"
+              key="chainweaver-link"
               target="_blank"
               rel="noreferrer"
-              key="chainweaver-link"
+            >
+              {t('chainweaver-link')}
+            </Link>,
+          ]}
+        />
+      ),
+    },
+    {
+      title: t('How do I create an account?'),
+      body: (
+        <Trans
+          i18nKey="common:how-to-keys-accounts"
+          components={[
+            <Link
+              className={linkStyle}
+              key="chainweb-transfer-link"
+              href="https://chainweaver.kadena.network/"
+              target="_blank"
+              rel="noreferrer"
+            />,
+          ]}
+        />
+      ),
+    },
+    {
+      title: t('How do I select a network and chain?'),
+      body: (
+        <Trans
+          i18nKey="common:how-to-networks"
+          components={[
+            <Link
+              className={linkStyle}
+              key="chainweb-transfer-link"
+              href="https://docs.kadena.io/build/guides/election-dapp-tutorial/start-a-local-blockchain"
+              target="_blank"
+              rel="noreferrer"
             />,
           ]}
         />
@@ -80,11 +124,6 @@ const Home: FC = () => {
   ];
 
   useToolbar(menuData);
-
-  const handleOpenHelpCenter = (): void => {
-    // @ts-ignore
-    helpCenterRef.openSection(0);
-  };
 
   return (
     <div className={homeWrapperClass}>
@@ -99,18 +138,30 @@ const Home: FC = () => {
             title: t('Help Center'),
             children: (
               <>
-                <p>
-                  Blockchain transactions are irreversible. If you make a
-                  mistake, your coins may not be recoverable. Before you
-                  transfer large sums, it is always best to do a small test
-                  transaction first and then send those coins back to the sender
-                  to verify that the receiver account works as expected.
-                </p>
+                <div className={infoBoxStyle}>
+                  <span>
+                    Blockchain transactions are irreversible. If you make a
+                    mistake, your coins may not be recoverable. Before you
+                    transfer large sums, it is always best to do a small test
+                    transaction first and then send those coins back to the
+                    sender to verify that the receiver account works as
+                    expected.
+                  </span>
+                </div>
                 <ResourceLinks
                   links={[
-                    { title: 'Pact Language Resources', href: '#' },
-                    { title: 'Whitepaper', href: '#' },
-                    { title: 'KadenaJs', href: '#' },
+                    {
+                      title: 'Pact Language Resources',
+                      href: 'https://www.kadena.io/pact',
+                    },
+                    {
+                      title: 'Whitepapers',
+                      href: 'https://www.kadena.io/whitepapers',
+                    },
+                    {
+                      title: 'Kadena Client',
+                      href: 'https://www.npmjs.com/package/@kadena/client',
+                    },
                   ]}
                 />
               </>
@@ -128,16 +179,21 @@ const Home: FC = () => {
           {t('Kadena Developer Tools')}
         </Heading>
         <Heading bold={false} as="h2" variant="h5" color="default">
-          {t(
-            "We're constantly adding new Developer Tools to make it easier for our builders to utilize all Kadena has to offer.",
-          )}
+          <p>
+            {t(
+              'Set up your development environment and get the latest Developer Tools to build your application on the Kadena network.',
+            )}
+          </p>
+          <p>
+            {t('Select a network to get started or explore the documentation.')}
+          </p>
         </Heading>
         <Stack flexDirection="column" gap="lg" marginBlockStart="lg">
           <Card fullWidth>
             <Grid columns={2}>
               <GridItem>
                 <Heading as="h3" variant="h5">
-                  {t('General Links')}
+                  {t('New to Kadena')}
                 </Heading>
                 <Box marginBlockEnd="md" />
                 <ul>
@@ -148,34 +204,54 @@ const Home: FC = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Overview of Kadena')}
+                      {t('Welcome to Kadena')}
                     </a>
                   </li>
                   <li>
                     <a
                       className={linkStyle}
-                      href="https://docs.kadena.io/kadena/kda/manage-kda"
+                      href="https://docs.kadena.io/kadena/why-kadena"
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Manage your KDA')}
+                      {t('Why Kadena?')}
                     </a>
                   </li>
                   <li>
                     <a
                       className={linkStyle}
-                      href="https://kadena.io/grants/"
+                      href="https://docs.kadena.io/blogchain/2022/the-story-of-kadenas-proof-of-work-blockchain-2022-10-13"
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Contribute to the network')}
+                      {t('Proof of work consensus')}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/kadena/kda/kda-concepts"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Accounts and keys')}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/kadena/wallets/chainweaver#networksh1378111525"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Networks and nodes')}
                     </a>
                   </li>
                 </ul>
               </GridItem>
               <GridItem>
                 <Heading as="h3" variant="h5">
-                  {t('Developers Links')}
+                  {t('For Developers')}
                 </Heading>
                 <Box marginBlockEnd="md" />
                 <ul>
@@ -186,7 +262,7 @@ const Home: FC = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Quick start')}
+                      {t('Deploy your first contract')}
                     </a>
                   </li>
                   <li>
@@ -196,17 +272,37 @@ const Home: FC = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Pact language resources')}
+                      {t('Get started with Pact')}
                     </a>
                   </li>
                   <li>
                     <a
                       className={linkStyle}
-                      href="https://docs.kadena.io/build/guides/election-dapp-tutorial"
+                      href="https://docs.kadena.io/marmalade"
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {t('Build your first dApp')}
+                      {t('NFTs and Marmalade')}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/kadena/client"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Kadena client')}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className={linkStyle}
+                      href="https://docs.kadena.io/pact/reference/functions"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('Pact functions')}
                     </a>
                   </li>
                 </ul>
@@ -218,44 +314,45 @@ const Home: FC = () => {
               {t('Frequently Asked Questions')}
             </Heading>
             <Box marginBlockEnd="md" />
-            <Accordion.Root>
-              {faqs.map((faq) => (
-                <Accordion.Section title={faq.title} key={faq.title}>
+            <Accordion items={faqs} selectionMode="multiple">
+              {(faq) => (
+                <AccordionItem title={faq.title} key={faq.title}>
                   {faq.body}
-                </Accordion.Section>
-              ))}
-            </Accordion.Root>
+                </AccordionItem>
+              )}
+            </Accordion>
           </Card>
           <Card fullWidth>
             <Heading as="h3" variant="h5">
               Latest Updates
             </Heading>
-            <p>
-              {/* eslint-disable-next-line react/no-unescaped-entities */}
-              If you're seeking Help click{' '}
-              <span
-                className={helpCenterButtonClass}
-                onClick={handleOpenHelpCenter}
-              >
-                HERE
-              </span>
-            </p>
-            <p>
+            <Box as="p" marginBlockEnd="md">
               Changelog with the latest updates to the Kadena Development Tools.
-            </p>
-            <br />
-            <Table.Root striped>
-              <Table.Body>
-                <Table.Tr>
-                  <Table.Td>July 28, 2023</Table.Td>
-                  <Table.Td>Added the Account Transactions Overview.</Table.Td>
-                </Table.Tr>
-                <Table.Tr>
-                  <Table.Td>July 10, 2023</Table.Td>
-                  <Table.Td>Released version 1 of the Tools Website.</Table.Td>
-                </Table.Tr>
-              </Table.Body>
-            </Table.Root>
+            </Box>
+
+            <Table isStriped>
+              <TableHeader>
+                <Column>Date</Column>
+                <Column>Update</Column>
+              </TableHeader>
+              <TableBody>
+                <Row>
+                  <Cell>January 31, 2024</Cell>
+                  <Cell>
+                    Released version 1.2 of the Tools Website, including the
+                    Transactions module, which has a Cross Chain Transfer
+                    Tracker & Cross Chain Transfer Finisher.
+                  </Cell>
+                </Row>
+                <Row>
+                  <Cell>November 30, 2023</Cell>
+                  <Cell>
+                    Initial release of the Tools Website, including the Faucet
+                    module.
+                  </Cell>
+                </Row>
+              </TableBody>
+            </Table>
           </Card>
         </Stack>
       </div>

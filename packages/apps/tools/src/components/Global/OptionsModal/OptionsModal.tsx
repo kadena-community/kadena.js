@@ -1,26 +1,27 @@
 import {
   modalButtonStyle,
   modalOptionsContentStyle,
+  modalWrapperStyle,
   radioItemWrapperStyle,
   titleTagStyle,
 } from '@/components/Global/OptionsModal/styles.css';
 import type { DevOption } from '@/constants/kadena';
 import { useAppContext } from '@/context/app-context';
-import type { IDialogProps, SystemIcon } from '@kadena/react-ui';
+import type { IDialogProps } from '@kadena/react-ui';
 import {
   Button,
   Card,
   Dialog,
   DialogContent,
   DialogHeader,
-  IconButton,
   Stack,
+  SystemIcon,
   Tag,
   Text,
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export interface IDevOption {
   title: string;
@@ -31,10 +32,17 @@ export interface IDevOption {
 
 interface IOptionsModalProps extends IDialogProps {}
 
-export const OptionsModal: FC<IOptionsModalProps> = (props) => {
+export const OptionsModal: FC<IOptionsModalProps> = ({
+  onOpenChange,
+  ...rest
+}) => {
   const { t } = useTranslation('common');
   const { devOption, setDevOption } = useAppContext();
   const [selected, setSelected] = useState(devOption);
+
+  useEffect(() => {
+    setSelected(devOption);
+  }, [devOption]);
 
   const devOptions: {
     [Key in DevOption]: IDevOption;
@@ -65,12 +73,12 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
   };
 
   const options = Object.entries(devOptions);
-
   const renderOptions = (): React.JSX.Element => {
     return (
-      <>
+      <Stack gap={'md'} flexDirection={'column'}>
         {options.map((item) => {
           const [key, value] = item;
+          const Icon = SystemIcon[value.icon];
 
           return (
             <div
@@ -81,19 +89,29 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
               <Card fullWidth>
                 <Stack>
                   {selected === key ? (
-                    <IconButton
+                    <Button
                       title="Radio"
-                      icon={'RadioboxMarked'}
-                      color="primary"
+                      aria-label="Radio"
+                      icon={<SystemIcon.RadioboxMarked />}
+                      variant="text"
+                      onPress={() => setSelected(key as DevOption)}
                     />
                   ) : (
-                    <IconButton
+                    <Button
                       title="Radio"
-                      icon={'RadioboxBlank'}
-                      color="primary"
+                      aria-label="Radio"
+                      icon={<SystemIcon.RadioboxBlank />}
+                      variant="text"
+                      onPress={() => setSelected(key as DevOption)}
                     />
                   )}
-                  <IconButton title="Radio" icon={value.icon} color="primary" />
+                  <Button
+                    title="Radio"
+                    aria-label="Radio"
+                    icon={<Icon />}
+                    variant="text"
+                    onPress={() => setSelected(key as DevOption)}
+                  />
                   <Stack flexDirection="column" marginInline="md">
                     <div className={titleTagStyle}>
                       <Text as="span">{value.title}</Text>
@@ -108,12 +126,24 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
             </div>
           );
         })}
-      </>
+      </Stack>
     );
   };
 
   return (
-    <Dialog {...props}>
+    <Dialog
+      {...rest}
+      onOpenChange={(isOpen) => {
+        if (typeof onOpenChange === 'function') {
+          onOpenChange(isOpen);
+        }
+
+        if (isOpen === false) {
+          // When closing, reset to its original state
+          setSelected(devOption);
+        }
+      }}
+    >
       {(state) => (
         <>
           <DialogHeader>Settings</DialogHeader>
@@ -121,7 +151,7 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
             <div className={modalOptionsContentStyle}>
               {renderOptions()}
 
-              <div className={modalButtonStyle}>
+              <div className={modalWrapperStyle}>
                 <Button
                   title={`${t('Save')}`}
                   onClick={() => {
@@ -129,6 +159,7 @@ export const OptionsModal: FC<IOptionsModalProps> = (props) => {
                     state.close();
                   }}
                   color="primary"
+                  className={modalButtonStyle}
                 >
                   {`${t('Save')}`}
                 </Button>

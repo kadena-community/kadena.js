@@ -57,12 +57,38 @@ export async function getTokenDetails(
         balance,
         id: event.token,
         chainId: event.chainId
-          ? parseInt(event.chainId.toString())
-          : parseInt(dotenv.SIMULATE_DEFAULT_CHAIN_ID.toString()),
+          ? event.chainId.toString()
+          : dotenv.SIMULATE_DEFAULT_CHAIN_ID.toString(),
+        version: event.version!,
       });
       processedTokens.add(tokenChainIdKey);
     }
   });
 
   return result;
+}
+
+/**
+ * Get the chain ids for which the account has tokens
+ *
+ */
+export async function checkAccountChains(accountName: string) {
+  const chainIds = new Set<string>();
+  const allEvents = await prismaClient.reconcile.findMany({
+    where: {
+      OR: [{ senderAccount: accountName }, { receiverAccount: accountName }],
+    },
+    select: {
+      chainId: true,
+    },
+    distinct: ['chainId'],
+  });
+
+  allEvents.forEach((event) => {
+    if (event.chainId?.toString()) {
+      chainIds.add(event.chainId.toString());
+    }
+  });
+
+  return Array.from(chainIds);
 }

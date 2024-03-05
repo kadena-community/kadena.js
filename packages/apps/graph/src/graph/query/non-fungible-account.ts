@@ -1,8 +1,5 @@
-import { getNonFungibleChainAccount } from '@services/account-service';
-import { chainIds } from '@utils/chains';
 import { builder } from '../builder';
 import NonFungibleAccount from '../objects/non-fungible-account';
-import type { NonFungibleChainAccount } from '../types/graphql-types';
 import { NonFungibleAccountName } from '../types/graphql-types';
 
 builder.queryField('nonFungibleAccount', (t) =>
@@ -14,28 +11,11 @@ builder.queryField('nonFungibleAccount', (t) =>
     },
     type: NonFungibleAccount,
     async resolve(__parent, args) {
-      const chainAccounts = (
-        await Promise.all(
-          chainIds.map((chainId) => {
-            return getNonFungibleChainAccount({
-              chainId: chainId,
-              accountName: args.accountName,
-            });
-          }),
-        )
-      ).filter(
-        (chainAccount) => chainAccount !== null,
-      ) as NonFungibleChainAccount[];
-
-      if (chainAccounts.length === 0) {
-        return null;
-      }
-
       return {
         __typename: NonFungibleAccountName,
         accountName: args.accountName,
         nonFungibles: [],
-        chainAccounts: chainAccounts,
+        chainAccounts: [],
         transactions: [],
       };
     },

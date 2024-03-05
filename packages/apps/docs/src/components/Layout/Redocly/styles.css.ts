@@ -1,4 +1,4 @@
-import { responsiveStyle, tokens } from '@kadena/react-ui/theme';
+import { responsiveStyle, tokens } from '@kadena/react-ui/styles';
 import { createVar, style } from '@vanilla-extract/css';
 import { $$asideMenuWidthCode } from '../basestyles.css';
 import {
@@ -22,7 +22,7 @@ export const codebackgroundClass = style([
         pointerEvents: 'none',
         inset: 0,
         backgroundColor: tokens.kda.foundation.color.background.base.default,
-        backgroundImage: 'url("/assets/bg-vertical.webp")',
+        // backgroundImage: 'url("/assets/bg-vertical.webp")',
         backgroundRepeat: 'no-repeat',
         backgroundPositionY: '-100px',
         backgroundPositionX: '-100px',

@@ -1,5 +1,67 @@
 # @kadena/graph
 
+## 0.1.7
+
+### Patch Changes
+
+- 357a29456: Created TokenInfo and added object to Token
+
+## 0.1.6
+
+### Patch Changes
+
+- 85b8911fc: Added flood command in readme and changed fungible and non-fungible
+  chain account queries file names
+- 889956dad: Remove coin related data from non-fungible account
+
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies [5b1d8334e]
+  - @kadena/chainweb-node-client@0.5.3
+  - @kadena/client@1.8.1
+  - @kadena/client-utils@0.4.1
+
+## 0.1.4
+
+### Patch Changes
+
+- 5d5b91918: use `creationTime` next to `id` to get recent blocks
+
+## 0.1.3
+
+### Patch Changes
+
+- ae6b98387: only write schema when `NODE_END=development`
+
+## 0.1.2
+
+### Patch Changes
+
+- 6a4153b1b: Alter migrations to support the correct format for devnet. Also
+  removed unnecessary indexes.
+- 5f89df506: Change default value for branch
+- e6e252cd9: Implement flood functionality
+- Updated dependencies [172734c8b]
+- Updated dependencies [1b4e49d96]
+  - @kadena/client-utils@0.4.0
+
+## 0.1.1
+
+### Patch Changes
+
+- 9bf1a73cd: Initial release
+- 9cd6d072f: Added documentation on the cross-chain transfer lookup; the
+  reasoning behind the current method
+- Updated dependencies [64dd84ee0]
+- Updated dependencies [bbeef98a6]
+- Updated dependencies [0540b213b]
+- Updated dependencies [3fc8ac86d]
+- Updated dependencies [72f472e58]
+  - @kadena/client-utils@0.3.0
+  - @kadena/client@1.8.0
+
 ## 1.0.7
 
 ### Patch Changes

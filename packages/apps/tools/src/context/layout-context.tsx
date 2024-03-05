@@ -12,8 +12,6 @@ interface ILayoutContext {
   setActiveMenuIndex: (index?: number) => void;
   activeMenu?: ISidebarToolbarItem;
   resetLayout: () => void;
-  visibleLinks: boolean;
-  setVisibleLinks: (value: boolean) => void;
 }
 
 const LayoutContext = createContext<ILayoutContext>({
@@ -24,8 +22,6 @@ const LayoutContext = createContext<ILayoutContext>({
   setActiveMenuIndex: () => {},
   activeMenu: undefined,
   resetLayout: () => {},
-  visibleLinks: false,
-  setVisibleLinks: () => {},
 });
 
 const useLayoutContext = (): ILayoutContext => {
@@ -42,8 +38,7 @@ export const useToolbar = (
   toolbar: ISidebarToolbarItem[],
   pathName?: string,
 ): void => {
-  const { setToolbar, setActiveMenuIndex, activeMenuIndex, isMenuOpen } =
-    useLayoutContext();
+  const { setToolbar, setActiveMenuIndex } = useLayoutContext();
   useEffect(() => {
     setToolbar(toolbar);
 
@@ -59,16 +54,13 @@ export const useToolbar = (
       const index = menuData.indexOf(activeMenu);
       setActiveMenuIndex(index);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeMenuIndex, isMenuOpen]);
+  }, [pathName, setActiveMenuIndex, setToolbar, toolbar]);
 };
 
 const LayoutContextProvider = (props: PropsWithChildren): JSX.Element => {
   const [toolbar, setToolbar] = useState<ISidebarToolbarItem[]>([]);
   const [activeMenuIndex, setActiveMenuIndex] = useState<number | undefined>(0);
   const [isMenuOpen, setIsMenuOpen] = useState(true);
-  const [visibleLinks, setVisibleLinks] = useState(false);
 
   const resetLayout = (): void => {
     setToolbar([]);
@@ -88,8 +80,6 @@ const LayoutContextProvider = (props: PropsWithChildren): JSX.Element => {
         activeMenu:
           activeMenuIndex !== undefined ? toolbar[activeMenuIndex] : undefined,
         resetLayout,
-        visibleLinks,
-        setVisibleLinks,
       }}
     >
       {props.children}

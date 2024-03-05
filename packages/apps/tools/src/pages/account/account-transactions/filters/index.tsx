@@ -1,7 +1,8 @@
-import { ChainSelect } from '@/components/Global';
-import AccountNameField, {
+import {
+  AccountNameField,
+  ChainSelect,
   NAME_VALIDATION,
-} from '@/components/Global/AccountNameField';
+} from '@/components/Global';
 import Routes from '@/constants/routes';
 import { menuData } from '@/constants/side-menu-items';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
@@ -90,15 +91,14 @@ const CheckTransactions: FC = () => {
             <Grid columns={2}>
               <GridItem>
                 <ChainSelect
-                  onChange={onChainSelectChange}
-                  value={chainID}
-                  ariaLabel="Select Chain ID"
+                  onSelectionChange={onChainSelectChange}
+                  selectedKey={chainID}
                 />
               </GridItem>
               <GridItem>
                 <AccountNameField
-                  inputProps={register('name')}
-                  error={errors.name}
+                  {...register('name')}
+                  errorMessage={errors.name?.message}
                   label={t('Account')}
                 />
               </GridItem>

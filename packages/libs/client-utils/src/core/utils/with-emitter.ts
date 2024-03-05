@@ -3,68 +3,105 @@ import type { IEmit } from './helpers';
 import { asyncLock } from './helpers';
 import type { Any, UnionToIntersection } from './types';
 
-type ToNextType<T extends Array<{ event: string; data: Any }>> =
+type ExecuteTo<T extends Array<{ event: string; data: Any }>> =
   UnionToIntersection<
     {
-      [K in keyof T]: T[K] extends { event: infer Tag }
-        ? (event: Tag) => Promise<T[K]['data']>
-        : never;
+      [K in keyof T]: (event: T[K]['event']) => Promise<T[K]['data']>;
     }[number]
   >;
 
-type ToOnType<
+type StartFrom<
+  T extends Array<{ event: string; data: Any }>,
+  TReturn,
+> = UnionToIntersection<
+  {
+    [K in keyof T]: (event: T[K]['event'], data: T[K]['data']) => TReturn;
+  }[number]
+>;
+
+type OnType<
   T extends Array<{ event: string; data: Any }>,
   WrapperType,
 > = UnionToIntersection<
   {
-    [K in keyof T]: T[K] extends { event: infer Tag; data: infer R }
-      ? (event: Tag, cb: (data: R) => Any) => WrapperType
-      : never;
+    [K in keyof T]: (
+      event: T[K]['event'],
+      cb: (data: T[K]['data']) => Any,
+    ) => WrapperType;
   }[number]
 >;
 
+/**
+ * @alpha
+ */
 export interface IEmitterWrapper<
   T extends Array<{ event: string; data: Any }>,
   Extra extends Array<{ event: string; data: Any }>,
   ExecReturnType,
 > {
-  on: ToOnType<[...T, ...Extra], this>;
+  on: OnType<[...T, ...Extra], this>;
   execute: () => ExecReturnType;
-  executeTo: (() => ExecReturnType) & ToNextType<[...T, ...Extra]>;
+  executeTo: (() => ExecReturnType) & ExecuteTo<[...T]>;
 }
 
+type ExtractEventType<T> = T extends { _event_type: infer U } ? U : any;
+
+/**
+ * @alpha
+ */
 export type WithEmitter<
   Extra extends [...Array<{ event: string; data: Any }>] = [],
 > = <T extends (emit: IEmit) => Any>(
   fn: T,
-) => (
-  ...args: Parameters<ReturnType<T>>
-) => IEmitterWrapper<
-  ReturnType<T>['_event_type'],
-  Extra,
-  ReturnType<ReturnType<T>>
->;
+) => {
+  (
+    ...args: Parameters<ReturnType<T>>
+  ): IEmitterWrapper<
+    ExtractEventType<ReturnType<T>>,
+    Extra,
+    ReturnType<ReturnType<T>>
+  >;
+  from: StartFrom<
+    [...ExtractEventType<ReturnType<T>>, ...Extra],
+    IEmitterWrapper<
+      ExtractEventType<ReturnType<T>>,
+      Extra,
+      ReturnType<ReturnType<T>>
+    >
+  >;
+};
 
-export const withEmitter: WithEmitter =
-  (fn) =>
-  (...args: Any[]): Any => {
+/**
+ * @alpha
+ */
+export const withEmitter: WithEmitter = (fn) => {
+  const createListener = (
+    args: Any[],
+    from: { event: string | null; data: any } = { event: null, data: null },
+  ): Any => {
     const emitter = new MyEventTarget();
     const allEvents: Record<string, unknown> = {};
-    const execute: (...args: any) => Promise<any> = fn(((event: string) => {
-      allEvents[event] = null;
-      return async (data: Any) => {
-        allEvents[event] = data;
-        await emitter.dispatchEvent(event, data);
-        return data;
-      };
-    }) as Any);
+    const execute: () => (...args: any) => Promise<any> = () =>
+      fn(((event: string) => {
+        allEvents[event] = null;
+        const emit = async (data: Any) => {
+          allEvents[event] = data;
+          await emitter.dispatchEvent(event, data);
+          return data;
+        };
+        if (from.event === event) {
+          emit.startPoint = from.data;
+        }
+        return emit;
+      }) as Any);
     let executePromise: Promise<any> | null = null;
 
     const exec = (): Promise<any> => {
       if (executePromise !== null) {
         return executePromise;
       }
-      executePromise = execute(...args);
+
+      executePromise = execute()(...args);
       return executePromise;
     };
     const lock = asyncLock();
@@ -79,7 +116,7 @@ export const withEmitter: WithEmitter =
           lock.open();
           return exec();
         }
-        if (allEvents[event] !== null) {
+        if (executePromise && event in allEvents && allEvents[event] !== null) {
           return Promise.resolve(allEvents[event]);
         }
         const pr = new Promise((resolve, reject) => {
@@ -103,3 +140,9 @@ export const withEmitter: WithEmitter =
     };
     return wrapper;
   };
+  const withFrom = (...args: any[]) => createListener(args);
+  withFrom.from = (event: string, data: Any) => {
+    return createListener([], { event, data });
+  };
+  return withFrom as any;
+};

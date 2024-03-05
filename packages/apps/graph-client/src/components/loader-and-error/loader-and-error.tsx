@@ -1,6 +1,6 @@
 import type { ApolloError } from '@apollo/client';
 import React from 'react';
-import { centerBlockStyle } from '../common/center-block/styles.css';
+import { centerBlockClass } from '../common/center-block/styles.css';
 import Loader from '../common/loader/loader';
 import { ErrorBox } from '../error-box/error-box';
 
@@ -14,7 +14,7 @@ const LoaderAndError: React.FC<ILoaderAndErrorProps> = (props) => {
   const { loading, loaderText, error } = props;
 
   return (
-    <div className={centerBlockStyle}>
+    <div className={centerBlockClass}>
       {loading && (
         <>
           <Loader />

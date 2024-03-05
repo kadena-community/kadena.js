@@ -1,70 +1,54 @@
-import { sprinkles } from '@theme/sprinkles.css';
-import { vars } from '@theme/vars.css';
 import { style } from '@vanilla-extract/css';
+import { atoms, bodyBaseBold, token } from '../../styles';
+import { iconFill } from '../Icon/IconWrapper.css';
 
 export const accordionSectionClass = style([
-  sprinkles({
+  atoms({
     display: 'block',
-    marginBottom: '$4',
     overflow: 'hidden',
   }),
   {
-    borderBottom: `1px solid ${vars.colors.$borderDefault}`,
-    selectors: {
-      '&:last-child': {
-        marginBottom: 0,
-      },
-    },
+    borderBlockEnd: `1px solid ${token('color.border.base.default')}`,
   },
 ]);
 
-export const accordionHeadingTitleClass = style([
-  sprinkles({
-    fontSize: '$base',
-  }),
-]);
-
 export const accordionButtonClass = style([
-  sprinkles({
+  bodyBaseBold,
+  atoms({
+    display: 'flex',
     alignItems: 'center',
     background: 'none',
     border: 'none',
-    color: '$neutral5',
+    color: 'text.subtle.default',
     cursor: 'pointer',
-    display: 'flex',
-    fontSize: '$base',
-    fontWeight: '$semiBold',
     justifyContent: 'space-between',
-    padding: 0,
-    paddingBottom: '$2',
-    paddingRight: '$1',
+    paddingBlock: 'sm',
     textAlign: 'left',
     width: '100%',
-  }),
-]);
-
-export const accordionToggleIconClass = style([
-  sprinkles({
-    color: '$neutral5',
+    gap: 'sm',
   }),
   {
-    transform: 'rotate(45deg)',
-    transition: 'transform 0.2s ease',
-    selectors: {
-      '&.isOpen': {
-        transform: 'rotate(90deg)',
-      },
+    color: token('color.text.subtle.default'),
+    vars: {
+      [iconFill]: token('color.text.subtle.default'),
     },
   },
 ]);
 
 export const accordionContentClass = style([
-  sprinkles({
-    color: '$neutral5',
-    fontSize: '$base',
-    margin: 0,
+  atoms({
+    display: 'none',
+    color: 'text.subtle.default',
+    fontSize: 'base',
+    margin: 'no',
     overflow: 'hidden',
-    padding: 0,
-    paddingBottom: '$2',
+    paddingBlock: 'sm',
   }),
+  {
+    selectors: {
+      "&[data-open='true']": {
+        display: 'block',
+      },
+    },
+  },
 ]);

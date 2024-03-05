@@ -682,7 +682,7 @@ App.tsx:42 Uncaught (in promise) {callStack: Array(0), type: 'TxFailure', messag
 
 When you added the `ACCOUNT-OWNER` capability to the `election-dapp/pact/election.pact` file, you didn't set the scope for the capability.
 
-You might recall in the previous tutorial that you tested voting with a transactionb similar to the following in the `voting.repl` file:
+You might recall in the previous tutorial that you tested voting with a transaction similar to the following in the `voting.repl` file:
 
 ```pact
 (env-sigs
@@ -873,7 +873,7 @@ To update the smart contract and complete the workshop:
    
    After you click View, you should see the updated list of functions and capabilities.
    If you click **Open**, you can view the module code in the editor pane and verify that the `election-gas-station` module deployed on the local development network is what you expect.
-
+   
 ## Next steps
 
 In this tutorial, you learned how to: 

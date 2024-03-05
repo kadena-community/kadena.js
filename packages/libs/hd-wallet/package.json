@@ -1,35 +1,43 @@
 {
   "name": "@kadena/hd-wallet",
-  "version": "0.2.0",
-  "private": true,
-  "description": "HD Wallet; key derivation",
+  "version": "0.3.0",
+  "description": "Key derivation based on Hierarchical Deterministic (HD)/Mnemonic keys and BIP32, for Kadena",
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/libs/hd-wallet"
   },
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "contributors": [
     "Javad Khalilian <javad@kadena.io>",
+    "Albert Groothedde <albert@kadena.io>",
     "Danillo Felixdaal <danillo@kadena.io>"
   ],
+  "type": "module",
   "exports": {
-    "./chainweaver": "./lib/chainweaver/index.js"
-  },
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "chainweaver": [
-        "./lib/chainweaver/index.d.ts"
-      ]
+    ".": {
+      "import": {
+        "browser": "./lib/esm/browser.js",
+        "default": "./lib/esm/index.js"
+      },
+      "require": {
+        "browser": "./lib/cjs/browser.js",
+        "default": "./lib/cjs/index.js"
+      },
+      "types": "./dist/hd-wallet.d.ts"
+    },
+    "./chainweaver": {
+      "types": "./lib/esm/chainweaver/index.d.ts",
+      "require": "./lib/cjs/chainweaver/index.js",
+      "import": "./lib/esm/chainweaver/index.js"
     }
   },
   "files": [
-    "lib"
+    "lib",
+    "chainweaver"
   ],
   "scripts": {
-    "build": "tsc && cpy ./src/chainweaver/vendor/**/* ./lib/chainweaver/vendor/",
+    "build": "tsc -p tsconfig.cjs.json && tsc && api-extractor run || true && cpy ./src/chainweaver/vendor/**/* ./lib/cjs/chainweaver/vendor/ && cpy ./src/chainweaver/vendor/**/* ./lib/esm/chainweaver/vendor/ && cp ./package.cjs.json ./lib/cjs/package.json",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
@@ -42,9 +50,10 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@kadena/client": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@scure/bip39": "^1.2.1",
+    "buffer": "^6.0.3",
+    "buffer-from": "^1.1.2",
     "debug": "~4.3.4",
     "ed25519-keygen": "^0.4.8"
   },
@@ -56,6 +65,7 @@
     "@kadena/types": "workspace:*",
     "@microsoft/api-extractor": "^7.38.0",
     "@rushstack/eslint-config": "~3.3.0",
+    "@types/buffer-from": "^1.1.3",
     "@types/debug": "~4.1.7",
     "@types/node": "^18.17.14",
     "@vitest/coverage-v8": "^1.1.0",
@@ -65,8 +75,5 @@
     "ts-node": "~10.8.2",
     "typescript": "5.2.2",
     "vitest": "^1.1.0"
-  },
-  "publishConfig": {
-    "provenance": true
   }
 }

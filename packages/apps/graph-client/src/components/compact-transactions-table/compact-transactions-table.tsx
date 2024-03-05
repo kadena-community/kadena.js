@@ -7,7 +7,19 @@ import type {
   QueryTransactionsConnection,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
-import { Box, Button, ContentHeader, Link, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Cell,
+  Column,
+  ContentHeader,
+  Link,
+  Row,
+  Table,
+  TableBody,
+  TableHeader,
+  Tooltip,
+} from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import { truncate } from '@utils/truncate';
 import React from 'react';
 
@@ -41,56 +53,69 @@ export const CompactTransactionsTable = (
         }
       />
       <Box margin="sm" />
-      <Button variant="compact" as="a" href={viewAllHref}>
+      <Link isCompact href={viewAllHref}>
         View all transactions
-      </Button>
+      </Link>
       <Box margin="xs" />
-      <Table.Root wordBreak="break-word">
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Chain</Table.Th>
-            <Table.Th>Timestamp</Table.Th>
-            <Table.Th>Block Height</Table.Th>
-            <Table.Th>Request Key</Table.Th>
-            <Table.Th>Code</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
+      <Table className={atoms({ wordBreak: 'break-all' })} isCompact>
+        <TableHeader>
+          <Column>Chain</Column>
+          <Column>Timestamp</Column>
+          <Column>Block Height</Column>
+          <Column>Request Key</Column>
+          <Column>Code</Column>
+        </TableHeader>
+        <TableBody>
           {transactions.edges.slice(0, 10).map((edge, index) => {
             return (
-              <Table.Tr key={index}>
-                <Table.Td>{edge.node.chainId}</Table.Td>
-                <Table.Td>
-                  {new Date(edge.node.creationTime).toLocaleString()}
-                </Table.Td>
-                <Table.Td>{edge.node.height}</Table.Td>
-                <Table.Td>
-                  <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
-                    <span title={edge.node.requestKey}>
-                      {truncateColumns
-                        ? truncate(edge.node.requestKey)
-                        : edge.node.requestKey}
-                    </span>
+              <Row key={index}>
+                <Cell>{edge.node.hash}</Cell>
+                <Cell>
+                  {new Date(edge.node.cmd.meta.creationTime).toLocaleString()}
+                </Cell>
+                <Cell>{edge.node.result.height}</Cell>
+                <Cell>
+                  <Link href={`${routes.TRANSACTIONS}/${edge.node.hash}`}>
+                    {truncateColumns ? (
+                      <Tooltip
+                        closeDelay={150}
+                        content={edge.node.hash}
+                        delay={500}
+                        position="left"
+                      >
+                        <span>{truncate(edge.node.hash)}</span>
+                      </Tooltip>
+                    ) : (
+                      <span>{edge.node.hash}</span>
+                    )}
                   </Link>
-                </Table.Td>
-                <Table.Td>
-                  {edge.node.code ? (
-                    <span title={edge.node.code}>
-                      {JSON.parse(
-                        truncateColumns
-                          ? truncate(edge.node.code)!
-                          : edge.node.code,
-                      )}
-                    </span>
+                </Cell>
+                <Cell>
+                  {edge.node.cmd.payload.__typename === 'ExecutionPayload' &&
+                  edge.node.cmd.payload.code ? (
+                    truncateColumns ? (
+                      <Tooltip
+                        closeDelay={150}
+                        content={edge.node.cmd.payload.code}
+                        delay={500}
+                        position="left"
+                      >
+                        <span>
+                          {truncate(JSON.parse(edge.node.cmd.payload.code))}
+                        </span>
+                      </Tooltip>
+                    ) : (
+                      <span>{JSON.parse(edge.node.cmd.payload.code)}</span>
+                    )
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
                   )}
-                </Table.Td>
-              </Table.Tr>
+                </Cell>
+              </Row>
             );
           })}
-        </Table.Body>
-      </Table.Root>
+        </TableBody>
+      </Table>
     </>
   );
 };

@@ -9,10 +9,12 @@ export const dotenv: {
   COMPLEXITY_ENABLED: boolean;
   COMPLEXITY_EXPOSED: boolean;
   DATABASE_URL: string;
-  MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH: number;
   NETWORK_HOST: string;
   NETWORK_ID: string;
   PORT: number;
+  PRISMA_LOGGING_ENABLED: boolean;
+  PRISMA_LOG_TO_FILE: boolean;
+  PRISMA_LOG_FILENAME: string;
   TRACING_ENABLED: boolean;
   TRACING_EXPOSED: boolean;
   TRACING_LOG_FILENAME: string;
@@ -28,6 +30,7 @@ export const dotenv: {
   GITHUB_TOKEN: string;
   SIMULATE_DEFAULT_CHAIN_ID: ChainId;
   SIMULATE_LOG_FOLDER_NAME: string;
+  NODE_ENV: string;
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
   COMPLEXITY_LIMIT: parseInt(or(process.env.COMPLEXITY_LIMIT, '500'), 10),
@@ -43,13 +46,18 @@ export const dotenv: {
     process.env.DATABASE_URL,
     'postgresql://devnet@localhost:5432/devnet?pool_timeout=0',
   ),
-  MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH: parseInt(
-    or(process.env.MAX_CALCULATED_BLOCK_CONFIRMATION_DEPTH, '7'),
-    10,
-  ),
   NETWORK_HOST: or(process.env.NETWORK_HOST, 'http://localhost:8080'),
   NETWORK_ID: or(process.env.NETWORK_ID, 'fast-development'),
   PORT: parseInt(or(process.env.PORT, '4000'), 10),
+  PRISMA_LOGGING_ENABLED: or(
+    process.env.PRISMA_LOGGING_ENABLED?.toLocaleLowerCase() === 'true',
+    false,
+  ),
+  PRISMA_LOG_TO_FILE: or(
+    process.env.PRISMA_LOG_TO_FILE?.toLocaleLowerCase() === 'true',
+    false,
+  ),
+  PRISMA_LOG_FILENAME: or(process.env.PRISMA_LOG_FILENAME, 'prisma.log'),
   TRACING_ENABLED: or(
     process.env.TRACING_ENABLED?.toLocaleLowerCase() === 'true',
     false,
@@ -73,7 +81,7 @@ export const dotenv: {
   ),
   MARMALADE_REPOSITORY_BRANCH: or(
     process.env.MARMALADE_REPOSITORY_BRANCH,
-    'v2',
+    'main',
   ),
   MARMALADE_REMOTE_TEMPLATE_PATH: or(
     process.env.MARMALADE_REMOTE_TEMPLATE_PATH,
@@ -103,6 +111,7 @@ export const dotenv: {
     '0' as ChainId,
   ),
   SIMULATE_LOG_FOLDER_NAME: or(process.env.SIMULATE_LOG_FOLDER_NAME, 'logs'),
+  NODE_ENV: or(process.env.NODE_ENV, 'production'),
 };
 
 function or<T>(value: T | undefined, otherwise: T): T {

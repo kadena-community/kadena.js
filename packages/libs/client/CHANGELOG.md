@@ -1,5 +1,18 @@
 # Change Log - @kadena/client
 
+## 1.8.1
+
+### Patch Changes
+
+- Updated dependencies [5b1d8334e]
+  - @kadena/chainweb-node-client@0.5.3
+
+## 1.8.0
+
+### Minor Changes
+
+- 0540b213b: Adds support for a custom url to signWithChainweaver
+
 ## 1.7.0
 
 ### Minor Changes

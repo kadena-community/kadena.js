@@ -1,6 +1,6 @@
 # About code owners: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-/.github                                        @ghislain89
+/.github                                        @ghislain89 @alber70g @sstraatemans @javadkh2
 /.changeset
 /common                                         @alber70g
 /pnpm-lock.yaml
@@ -17,9 +17,10 @@
 /packages/libs/pactjs-generator                 @alber70g @javadkh2
 /packages/libs/react-ui                         @eileenmguo @sstraatemans @salamaashoush
 /packages/libs/types                            @alber70g
+/packages/libs/toolbox                          @alber70g @salamaashoush
 /packages/tools/eslint-config                   @alber70g
 /packages/tools/eslint-plugin                   @alber70g
 /packages/tools/pactjs-cli                      @alber70g @javadkh2
 /packages/tools/shared-config                   @alber70g
-/packages/tools/e2e-tests                       @ghislain89
-/packages/tools/integration-tests               @ghislain89
+/packages/tools/e2e-tests                       @ghislain89 @sstraatemans @sanderlooijenga @KristinaSpasevska @MRVDH @nil-amrutlal-dept
+/packages/tools/integration-tests               @ghislain89 @sstraatemans @sanderlooijenga @KristinaSpasevska @MRVDH @nil-amrutlal-dept

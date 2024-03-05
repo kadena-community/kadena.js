@@ -7,28 +7,28 @@ import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+  Cell,
+  Column,
+  Row,
   Stack,
   Table,
+  TableBody,
+  TableHeader,
 } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 const GasEstimation: React.FC = () => {
   const router = useRouter();
-  const { cmd, hash, sigs } = router.query;
-
-  const cmdString = cmd as string;
-  const hashString = hash as string;
-  const sigsString = sigs as string;
-  const sigsArray = sigsString ? sigsString.split(',') : [];
 
   const variables = {
-    transaction: { cmd: cmdString, hash: hashString, sigs: sigsArray },
+    input: router.query.input as string,
   };
 
   const { loading, data, error } = useEstimateGasLimitQuery({
     variables,
-    skip: !cmdString || !hashString || !sigsString,
+    skip: !router.query.input,
   });
 
   return (
@@ -36,7 +36,7 @@ const GasEstimation: React.FC = () => {
       <Stack justifyContent="space-between">
         <Breadcrumbs>
           <BreadcrumbsItem href={`${routes.HOME}`}>Home</BreadcrumbsItem>
-          <BreadcrumbsItem>Gas Estimation</BreadcrumbsItem>
+          <BreadcrumbsItem>Gas Limit Estimation</BreadcrumbsItem>
         </Breadcrumbs>
         <GraphQLQueryDialog
           queries={[{ query: estimateGasLimit, variables }]}
@@ -48,27 +48,43 @@ const GasEstimation: React.FC = () => {
       <LoaderAndError
         error={error}
         loading={loading}
-        loaderText="Waiting for gas estimation..."
+        loaderText="Waiting for gas limit estimation..."
       />
 
-      <Table.Root wordBreak="break-all">
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Label</Table.Th>
-            <Table.Th>Value</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
-          <Table.Tr>
-            <Table.Td>Cmd</Table.Td>
-            <Table.Td>{cmdString}</Table.Td>
-          </Table.Tr>
-          <Table.Tr>
-            <Table.Td>Gas Estimate</Table.Td>
-            <Table.Td>{data?.gasLimitEstimate}</Table.Td>
-          </Table.Tr>
-        </Table.Body>
-      </Table.Root>
+      <Table isCompact className={atoms({ wordBreak: 'break-word' })}>
+        <TableHeader>
+          <Column>Type</Column>
+          <Column>Value</Column>
+        </TableHeader>
+        <TableBody>
+          <Row>
+            <Cell>Input</Cell>
+            <Cell>{router.query.input}</Cell>
+          </Row>
+          <Row>
+            <Cell>Gas Limit Estimate</Cell>
+            <Cell>{data?.gasLimitEstimate.amount}</Cell>
+          </Row>
+          <Row>
+            <Cell>The detected input type</Cell>
+            <Cell>{data?.gasLimitEstimate.inputType}</Cell>
+          </Row>
+          <Row>
+            <Cell>Was preflight used</Cell>
+            <Cell>{data?.gasLimitEstimate.usedPreflight.toString()}</Cell>
+          </Row>
+          <Row>
+            <Cell>Was signature verification used</Cell>
+            <Cell>
+              {data?.gasLimitEstimate.usedSignatureVerification.toString()}
+            </Cell>
+          </Row>
+          <Row>
+            <Cell>The transaction that was generated and used</Cell>
+            <Cell>{data?.gasLimitEstimate.transaction}</Cell>
+          </Row>
+        </TableBody>
+      </Table>
     </>
   );
 };

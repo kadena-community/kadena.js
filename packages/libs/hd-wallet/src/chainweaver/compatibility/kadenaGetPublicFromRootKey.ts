@@ -1,10 +1,13 @@
-import { kadenaGenKeypair } from './kadenaGenKeypair';
+import type { EncryptedString } from '../../index.js';
+import { kadenaDecrypt } from '../../index.js';
+import { kadenaGenKeypair } from '../kadena-crypto.js';
 
-export function kadenaGetPublicFromRootKey(
+export async function kadenaGetPublicFromRootKey(
   password: string,
-  rootKey: string | Uint8Array,
+  rootKey: EncryptedString,
   index: number,
-): Uint8Array {
-  const [, publicKey] = kadenaGenKeypair(password, rootKey, index);
+): Promise<Uint8Array> {
+  const decrypted = await kadenaDecrypt(password, rootKey);
+  const [, publicKey] = await kadenaGenKeypair(password, decrypted, index);
   return publicKey;
 }

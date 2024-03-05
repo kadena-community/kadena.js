@@ -485,7 +485,7 @@ To deploy the Pact module on the development network:
      const transaction = Pact.builder
        .execution(fs.readFileSync('../pact/election.pact', 'utf8'))
    ```
-
+   
    You'll also see that the metadata for the transaction specifies a gas limit and gas price:
    
    ```typescript
@@ -589,12 +589,16 @@ To view the module in Chainweaver:
 1. Open and unlock the Chainweaver desktop or web application.
 
 2. In Chainweaver, click **Contracts** in the navigation panel, then click **Module Explorer**.
+
 3. Under **Deployed Contracts**, search for the `election` module. 
+
 4. Click **View** to see the name of the function and capability that you defined in the module.
+
 5. Click **Open** to see the content of the module.
    
    The line specifying the namespace for the module isn't included because it isn't considered part of the module itself. 
 6. Click **Call** to the right of the `list-candidates` function. 
+
 7. In the **Function: list-candidates** window, click **Preview** and scroll down to see that the **Raw Response** displayed is `[1, 2, 3]`. 
    
    This is an actual response from the blockchain that you can receive without paying any transaction fees.

@@ -1,9 +1,22 @@
-import { Box, Link, Pagination, Select, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Cell,
+  Column,
+  Link,
+  Pagination,
+  Row,
+  Select,
+  SelectItem,
+  Table,
+  TableBody,
+  TableHeader,
+} from '@kadena/react-ui';
 
 import type { GetTransactionsQuery } from '@/__generated__/sdk';
 import routes from '@/constants/routes';
 import { formatLisp } from '@/utils/formatter';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
+import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -24,12 +37,15 @@ interface IExpandedTransactionsTableProps {
   ) => Promise<any>;
 }
 
+const itemsPerPageOptions = [10, 50, 100, 200].map((x) => ({
+  label: x.toString(),
+  value: x,
+}));
+
 export const ExtendedTransactionsTable = (
   props: IExpandedTransactionsTableProps,
 ): JSX.Element => {
   const { transactions, fetchMore } = props;
-
-  const itemsPerPageOptions = [10, 50, 100, 200];
 
   // Parse the query parameters from the URL using Next.js router
   const router = useRouter();
@@ -37,9 +53,11 @@ export const ExtendedTransactionsTable = (
   const urlItemsPerPage = router.query.items;
 
   // Use state to manage itemsPerPage and currentPage
-  const [itemsPerPage, setItemsPerPage] = useState<number>(
+  const [itemsPerPage, setItemsPerPage] = useState<number>(() =>
     urlItemsPerPage &&
-      itemsPerPageOptions.includes(parseInt(urlItemsPerPage as string))
+    itemsPerPageOptions.some(
+      (option) => option.value === parseInt(urlItemsPerPage as string),
+    )
       ? parseInt(urlItemsPerPage as string)
       : 10,
   );
@@ -151,64 +169,62 @@ export const ExtendedTransactionsTable = (
           <span style={{ display: 'inline-block' }}>Items per page: </span>
 
           <Select
-            ariaLabel="items-per-page"
+            aria-label="items-per-page"
             id="items-per-page"
-            onChange={(event) => setItemsPerPage(parseInt(event.target.value))}
-            style={{ display: 'inline-block' }}
-            defaultValue={itemsPerPage}
+            onSelectionChange={(key) =>
+              setItemsPerPage(typeof key === 'string' ? parseInt(key) : key)
+            }
+            defaultSelectedKey={itemsPerPage}
+            items={itemsPerPageOptions}
           >
-            {itemsPerPageOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
+            {(item) => <SelectItem key={item.value}>{item.label}</SelectItem>}
           </Select>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Pagination
             totalPages={totalPages}
-            label="pagination"
-            currentPage={currentPage}
+            selectedPage={currentPage}
             onPageChange={handlePaginationClick}
           />
         </div>
       </Box>
-      <Table.Root wordBreak="break-word">
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Chain</Table.Th>
-            <Table.Th>Timestamp</Table.Th>
-            <Table.Th>Block Height</Table.Th>
-            <Table.Th>Request Key</Table.Th>
-            <Table.Th>Code</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
+      <Table className={atoms({ wordBreak: 'break-word' })} isCompact>
+        <TableHeader>
+          <Column>Chain</Column>
+          <Column>Timestamp</Column>
+          <Column>Block Height</Column>
+          <Column>Request Key</Column>
+          <Column>Code</Column>
+        </TableHeader>
+        <TableBody>
           {transactions.edges.map((edge, index) => {
             return (
-              <Table.Tr key={index}>
-                <Table.Td>{edge.node.chainId}</Table.Td>
-                <Table.Td>
-                  {new Date(edge.node.creationTime).toLocaleString()}
-                </Table.Td>
-                <Table.Td>{edge.node.height}</Table.Td>
-                <Table.Td>
-                  <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
-                    {edge.node.requestKey}
+              <Row key={index}>
+                <Cell>{edge.node.cmd.meta.chainId}</Cell>
+                <Cell>
+                  {new Date(edge.node.cmd.meta.creationTime).toLocaleString()}
+                </Cell>
+                <Cell>{edge.node.result.height}</Cell>
+                <Cell>
+                  <Link href={`${routes.TRANSACTIONS}/${edge.node.hash}`}>
+                    {edge.node.hash}
                   </Link>
-                </Table.Td>
-                <Table.Td>
-                  {edge.node.code ? (
-                    <pre>{formatLisp(JSON.parse(edge.node.code))}</pre>
+                </Cell>
+                <Cell>
+                  {edge.node.cmd.payload.__typename === 'ExecutionPayload' &&
+                  edge.node.cmd.payload.code ? (
+                    <pre>
+                      {formatLisp(JSON.parse(edge.node.cmd.payload.code))}
+                    </pre>
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
                   )}
-                </Table.Td>
-              </Table.Tr>
+                </Cell>
+              </Row>
             );
           })}
-        </Table.Body>
-      </Table.Root>
+        </TableBody>
+      </Table>
       <span
         style={{ float: 'right' }}
       >{`Page ${currentPage} out of ${totalPages}`}</span>

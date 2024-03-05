@@ -1,5 +1,5 @@
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
-import { Button } from '@kadena/react-ui';
+import { Button, SystemIcon } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React from 'react';
@@ -24,11 +24,10 @@ const WalletConnectButton: FC = () => {
     <Button
       title={buttonTitle}
       color="positive"
-      icon="Link"
-      iconAlign="right"
-      onClick={handleClick}
-      disabled={isInitializing}
-      loading={isInitializing}
+      endIcon={<SystemIcon.Link />}
+      onPress={handleClick}
+      isDisabled={isInitializing}
+      isLoading={isInitializing}
     >
       {buttonTitle}
     </Button>

@@ -11,6 +11,7 @@ import type { WithEmitter } from './utils/with-emitter';
 import { withEmitter } from './utils/with-emitter';
 
 import type { PactValue } from '@kadena/types';
+import { queryAllChains } from './query-all-chains';
 
 /**
  * @alpha
@@ -32,6 +33,18 @@ export const preflightClient = <T = PactValue>(
 export const dirtyReadClient = <T = PactValue>(
   ...args: Parameters<typeof dirtyRead<T>>
 ) => withEmitter(dirtyRead<T>(...args));
+
+/**
+ * @alpha
+ */
+export const queryAllChainsClient = <T = PactValue>(
+  ...args: Parameters<typeof queryAllChains<T>>
+) =>
+  (
+    withEmitter as unknown as WithEmitter<
+      [{ event: 'chain-result'; data: { result: T; chainId: ChainId } }]
+    >
+  )(queryAllChains<T>(...args));
 
 /**
  * @alpha

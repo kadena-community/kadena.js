@@ -1,8 +1,8 @@
-import { TagGroup, TagItem } from '@components/Tag';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
+import { TagGroup, TagItem } from '../Tag';
 
 const tags = [
   { id: '1', name: 'News' },

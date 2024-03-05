@@ -8,7 +8,7 @@
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/libs/chainweb-stream-client"
   },
-  "license": "ISC",
+  "license": "BSD-3-Clause",
   "contributors": [
     {
       "name": "Tasos"

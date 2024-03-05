@@ -1,119 +1,120 @@
-import { Box, Stack } from '@kadena/react-ui';
+import {
+  Box,
+  Button,
+  Cell,
+  Column,
+  Link,
+  Row,
+  Stack,
+  Table,
+  TableBody,
+  TableHeader,
+} from '@kadena/react-ui';
 
 import type { Block, QueryTransactionsConnection } from '@/__generated__/sdk';
 import {
-  useGetBlockNodesQuery,
   useGetBlocksSubscription,
-  useGetRecentHeightsQuery,
   useGetTransactionsQuery,
 } from '@/__generated__/sdk';
-import { centerBlockStyle } from '@/components/common/center-block/styles.css';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
-import { ErrorBox } from '@/components/error-box/error-box';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
-import {
-  getBlockNodes,
-  getRecentHeights,
-  getTransactions,
-} from '@/graphql/queries.graph';
+import { getTransactions } from '@/graphql/queries.graph';
 import { getBlocksSubscription } from '@/graphql/subscriptions.graph';
-import { ChainwebGraph } from '@components/chainweb';
 import routes from '@constants/routes';
-import { useChainTree } from '@context/chain-tree-context';
-import { useParsedBlocks } from '@utils/hooks/use-parsed-blocks';
-import { usePrevious } from '@utils/hooks/use-previous';
-import isEqual from 'lodash.isequal';
+import { atoms } from '@kadena/react-ui/styles';
 import React, { useEffect, useState } from 'react';
 
 const Home: React.FC = () => {
-  const {
-    loading: loadingNewBlockIds,
-    data: newBlocksIds,
-    error: newBlockIdsError,
-  } = useGetBlocksSubscription();
+  const [subscriptionPaused, setSubscriptionPaused] = useState(false);
 
-  const nodesQueryVariables = {
-    ids: newBlocksIds?.newBlocks as string[],
-  };
+  const { data: newBlocks, error: newBlocksError } = useGetBlocksSubscription({
+    skip: subscriptionPaused,
+  });
 
-  const { data: nodesQueryData, error: nodesQueryError } =
-    useGetBlockNodesQuery({
-      variables: nodesQueryVariables,
-      skip: !newBlocksIds?.newBlocks?.length,
-    });
-
-  const [newBlocks, setNewBlocks] = useState<Block[]>([]);
+  const [blocks, setBlocks] = useState<Block[]>([]);
 
   useEffect(() => {
-    setNewBlocks(nodesQueryData?.nodes as Block[]);
-  }, [nodesQueryData]);
+    if (newBlocks?.newBlocks?.length) {
+      const updatedBlocks = [
+        ...(newBlocks?.newBlocks as Block[]),
+        ...(blocks || []),
+      ];
 
-  const getRecentHeightsVariables = { count: 3 };
-  const { data: recentBlocks, error: recentBlocksError } =
-    useGetRecentHeightsQuery({ variables: getRecentHeightsVariables });
-  const previousNewBlocks = usePrevious(newBlocks);
-  const previousRecentBlocks = usePrevious(recentBlocks);
+      if (updatedBlocks.length > 10) {
+        updatedBlocks.length = 10;
+      }
+
+      setBlocks(updatedBlocks);
+    }
+  }, [newBlocks?.newBlocks]);
 
   const getTransactionsVariables = { first: 10 };
-  const { data: txs, error: txError } = useGetTransactionsQuery({
+  const {
+    loading: txLoading,
+    data: txs,
+    error: txError,
+  } = useGetTransactionsQuery({
     variables: getTransactionsVariables,
   });
 
-  const { allBlocks, addBlocks } = useParsedBlocks();
-
-  const { addBlockToChain } = useChainTree();
-
-  useEffect(() => {
-    if (
-      isEqual(previousNewBlocks, newBlocks) === false &&
-      newBlocks?.length > 0
-    ) {
-      newBlocks.forEach(async (block) => {
-        addBlockToChain(block);
-      });
-      addBlocks(newBlocks);
-    }
-  }, [newBlocks, addBlocks, previousNewBlocks, addBlockToChain]);
-
-  useEffect(() => {
-    if (
-      isEqual(previousRecentBlocks, recentBlocks) === false &&
-      recentBlocks?.completedBlockHeights &&
-      recentBlocks?.completedBlockHeights?.length > 0
-    ) {
-      recentBlocks.completedBlockHeights.forEach(async (block) => {
-        addBlockToChain(block);
-      });
-
-      addBlocks(recentBlocks?.completedBlockHeights);
-    }
-  }, [recentBlocks, addBlocks, previousRecentBlocks, addBlockToChain]);
-
   return (
     <>
-      <Stack justifyContent="flex-end">
+      <Stack justifyContent="space-between">
+        <Button
+          title="Toggle subscription polling."
+          isCompact
+          variant="text"
+          onPress={() => setSubscriptionPaused(!subscriptionPaused)}
+        >
+          {subscriptionPaused ? 'Continue' : 'Pause'}
+        </Button>
+
         <GraphQLQueryDialog
           queries={[
             { query: getBlocksSubscription },
-            { query: getBlockNodes, variables: nodesQueryVariables },
-            { query: getRecentHeights, variables: getRecentHeightsVariables },
             { query: getTransactions, variables: getTransactionsVariables },
           ]}
         />
       </Stack>
 
       <LoaderAndError
-        error={newBlockIdsError || recentBlocksError || txError}
-        loading={loadingNewBlockIds}
+        error={newBlocksError || txError}
+        loading={txLoading}
         loaderText="Loading..."
       />
 
-      {nodesQueryError && <ErrorBox error={nodesQueryError} />}
-
-      <div className={centerBlockStyle}>
-        {allBlocks && <ChainwebGraph blocks={allBlocks} />}
-      </div>
+      {blocks && (
+        <Table className={atoms({ wordBreak: 'break-all' })} isCompact>
+          <TableHeader>
+            <Column>Hash</Column>
+            <Column>Creation Time</Column>
+            <Column>Height</Column>
+            <Column>Chain</Column>
+            <Column>Transactions</Column>
+          </TableHeader>
+          <TableBody>
+            {blocks.map((block, index) => {
+              return (
+                <Row key={index}>
+                  <Cell>
+                    <Link
+                      style={{ padding: 0, border: 0 }}
+                      href={`${routes.BLOCK_OVERVIEW}/${block.hash}`}
+                    >
+                      {block.hash}
+                    </Link>
+                  </Cell>
+                  <Cell>{new Date(block.creationTime).toLocaleString()}</Cell>
+                  <Cell>{block.height}</Cell>
+                  <Cell>{block.chainId}</Cell>
+                  <Cell>{block.transactions.totalCount}</Cell>
+                </Row>
+              );
+            })}
+          </TableBody>
+        </Table>
+      )}
 
       {txs?.transactions && (
         <div>

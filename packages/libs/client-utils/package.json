@@ -1,25 +1,56 @@
 {
   "name": "@kadena/client-utils",
-  "version": "0.2.0",
+  "version": "0.4.1",
   "description": "Utility functions build as a wrapper around @kadena/client",
   "repository": {
     "type": "git",
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/libs/client-utils"
   },
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "contributors": [
     "Javad Khalilian <javad@kadena.io>",
     "Albert Groothedde <albert@kadena.io>",
     "Nil Amrutlal <nil.amrutlal@deptagency.com>"
   ],
   "exports": {
-    "./built-in": "./lib/built-in/index.js",
-    "./coin": "./lib/coin/index.js",
-    "./core": "./lib/core/index.js",
-    "./nodejs": "./lib/nodejs/index.js"
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js",
+      "default": "./lib/index.js",
+      "types": "./lib/index.d.ts"
+    },
+    "./built-in": {
+      "import": "./lib/built-in/index.js",
+      "require": "./lib/built-in/index.js",
+      "default": "./lib/built-in/index.js",
+      "types": "./lib/built-in/index.d.ts"
+    },
+    "./coin": {
+      "import": "./lib/coin/index.js",
+      "require": "./lib/coin/index.js",
+      "default": "./lib/coin/index.js",
+      "types": "./lib/coin/index.d.ts"
+    },
+    "./core": {
+      "import": "./lib/core/index.js",
+      "require": "./lib/core/index.js",
+      "default": "./lib/core/index.js",
+      "types": "./lib/core/index.d.ts"
+    },
+    "./nodejs": {
+      "import": "./lib/nodejs/index.js",
+      "require": "./lib/nodejs/index.js",
+      "default": "./lib/nodejs/index.js",
+      "types": "./lib/nodejs/index.d.ts"
+    },
+    "./marmalade": {
+      "import": "./lib/marmalade/index.js",
+      "require": "./lib/marmalade/index.js",
+      "default": "./lib/marmalade/index.js",
+      "types": "./lib/marmalade/index.d.ts"
+    }
   },
-  "main": "./lib/core/index.js",
   "typesVersions": {
     "*": {
       "built-in": [
@@ -33,6 +64,9 @@
       ],
       "nodejs": [
         "./lib/nodejs/index.d.ts"
+      ],
+      "marmalade": [
+        "./lib/marmalade/index.d.ts"
       ]
     }
   },
@@ -50,6 +84,7 @@
     "ae:coin": "api-extractor run --verbose -c ./config/api-extractor-coin.json",
     "ae:core": "api-extractor run --verbose -c ./config/api-extractor-core.json",
     "build": "pnpm run pactjs:generate:contract && pnpm run generate-pipe-type && tsc && pnpm run ae",
+    "dev:ae": "pnpm run dev:ae:core && pnpm run dev:ae:built-in && pnpm run dev:ae:coin",
     "dev:ae:built-in": "api-extractor run --local --verbose -c ./config/api-extractor-built-in.json",
     "dev:ae:coin": "api-extractor run --local --verbose -c ./config/api-extractor-coin.json",
     "dev:ae:core": "api-extractor run --local --verbose -c ./config/api-extractor-core.json",
@@ -63,7 +98,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "pactjs:generate:contract": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact",
+    "pactjs:generate:contract": "pactjs contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact",
     "test": "vitest run",
     "test:integration": "vitest run -c ./vitest.integration.config.ts",
     "test:watch": "vitest"

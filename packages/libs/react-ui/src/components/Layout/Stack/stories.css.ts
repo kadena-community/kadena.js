@@ -1,5 +1,5 @@
-import { vars } from '@theme/vars.css';
 import { styleVariants } from '@vanilla-extract/css';
+import { vars } from '../../../styles/vars.css';
 
 export const itemSizeClass = styleVariants(vars.sizes, (size) => {
   return [

@@ -23,8 +23,11 @@ A GraphQL endpoint that interacts with chainweb-data and chainweb-node.
   - [Simulate traffic on the devnet](#simulate-traffic-on-the-devnet)
     - [Coin simulation](#coin-simulation)
     - [Marmalade simulation](#marmalade-simulation)
+    - [Flood devnet](#flood-devnet)
   - [Tracing and trace analysis](#tracing-and-trace-analysis)
   - [Query Complexity](#query-complexity)
+  - [Gas Limit Estimations](#gas-limit-estimations)
+  - [Prisma JSON field queries](#prisma-json-field-queries)
 
 # Getting started
 
@@ -110,7 +113,7 @@ psql -h localhost -U devnet
 ### Fund an account on the devnet
 
 ```sh
-npm run fund -- -k <key> -a <amount>
+pnpm run fund -- -k <key> -a <amount>
 ```
 
 - key - public key to fund (default: will generate a new account)
@@ -137,7 +140,7 @@ order. The simulation is also responsible for creating differents transactions
 types such as transfers, cross-chain transfers, and safe transfers.
 
 ```sh
-npm run simulate:coin -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <tokenPool> -s <seed>
+pnpm run simulate:coin -a <numberOfAccounts> -i <timeInterval> -t <maxAmount> -tp <tokenPool> -s <seed>
 ```
 
 - numberOfAccounts - number of accounts to be created in the devnet (default: 6)
@@ -153,13 +156,26 @@ transfered between accounts at a random order. The simulation is also
 responsible for creating differents tokens along its course.
 
 ```sh
-npm run simulate:marmalade -a <numberOfAccounts> -i <timeInterval> -mt <maximumMintValue> -s <seed>
+pnpm run simulate:marmalade -a <numberOfAccounts> -i <timeInterval> -mt <maximumMintValue> -s <seed>
 ```
 
 - numberOfAccounts - number of accounts to be created in the devnet (default: 8)
 - timeInterval - frequency of transactions in miliseconds (default: 100)
 - maximumMintValue - maximum amount a token can be minted at once (default: 25)
 - seed - seed for random number generation (default: current timestamp)
+
+#### Flood devnet
+
+In the flood command we are able to flood the network with transactions. We can
+alter the configuration via the parameters.
+
+```sh
+pnpm run simulate:flood -tx <transactions> -i <interval> -t <totalTx>
+```
+
+- transactions - amount of transactions per iteration
+- interval - time interval between iterations
+- totalTx - total number of transactions before command stops
 
 ### Tracing and trace analysis
 
@@ -196,3 +212,26 @@ following rules:
 - Prisma calls without relations: 5
 - Prisma calls with relations: 10
 - \*In cases of lists, a multiplier is applied for the requested item count.
+
+### Gas Limit Estimations
+
+You can get the gas limit estimation for any transaction by using the `gasLimitEstimate` query. The input accepts a JSON object and based on the parameters passed it will determine what type of format it is and return the gas limit estimation. The following types are supported:
+
+- `full-transaction`: A complete transaction object. Required parameters: `cmd`, `hash` and `sigs`.
+- `stringified-command`: A JSON stringified command. Required parameters: `cmd`. It also optionally accepts `sigs`.
+- `full-command`: A full command. Required parameters: `payload`, `meta` and `signers`.
+- `partial-command`: A partial command. Required parameters: `payload` and either `meta` or `signers`. In case `meta` is not given, but `signers` is given, you can also add `chainId` as a parameter.
+- `payload`: A just the payload of a command. Required parameters: `payload` and `chainId`.
+- `code`: The code of an execution. Required parameters: `code` and `chainId`.
+
+Every type accepts an optional parameter called `networkId` to override the default value from the environment variables.
+
+### Prisma JSON field queries
+
+Some columns in the database are of type `jsonb`. To query these columns, you can supply a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
+
+An example of such a filter parameter value could be: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`, in which case, the `parameters` column is a `jsonb` type column which is filtered to only include rows where the value contains an array that has the string `k:abcdefg` on index 0.
+
+Queries that allow such filters:
+
+- `parametersFilter` on the `events` query and `events` subscription.

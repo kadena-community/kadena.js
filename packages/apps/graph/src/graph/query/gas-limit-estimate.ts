@@ -1,37 +1,20 @@
+import { estimateGasLimit } from '@services/chainweb-node/estimate-gas-limit';
 import { COMPLEXITY } from '@services/complexity';
-import { estimateGas } from '@services/node-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-
-const PactTransaction = builder.inputType('PactTransaction', {
-  fields: (t) => ({
-    cmd: t.field({ type: 'String', required: true }),
-    hash: t.field({ type: 'String' }),
-    sigs: t.field({ type: ['String'] }),
-  }),
-});
+import GasLimitEstimation from '../objects/gas-limit-estimation';
 
 builder.queryField('gasLimitEstimate', (t) =>
   t.field({
     description: 'Estimate the gas limit for a transaction.',
-    type: 'Int',
+    type: GasLimitEstimation,
     args: {
-      transaction: t.arg({ type: PactTransaction, required: true }),
+      input: t.arg.string({ required: true }),
     },
     complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
     async resolve(__parent, args) {
       try {
-        if (args.transaction.cmd.includes(`\\`)) {
-          args.transaction.cmd = args.transaction.cmd.replace(/\\\\/g, '\\');
-        }
-
-        const result = await estimateGas({
-          cmd: args.transaction.cmd,
-          hash: args.transaction.hash,
-          sigs: args.transaction.sigs,
-        });
-
-        return result.gas;
+        return await estimateGasLimit(args.input);
       } catch (error) {
         throw normalizeError(error);
       }
@@ -42,31 +25,18 @@ builder.queryField('gasLimitEstimate', (t) =>
 builder.queryField('gasLimitEstimates', (t) =>
   t.field({
     description: 'Estimate the gas limit for a list of transactions.',
-    type: ['Int'],
+    type: [GasLimitEstimation],
     args: {
-      transactions: t.arg({ type: [PactTransaction], required: true }),
+      input: t.arg.stringList({ required: true }),
     },
     complexity: (args) => ({
-      field: COMPLEXITY.FIELD.CHAINWEB_NODE * args.transactions.length,
+      field: COMPLEXITY.FIELD.CHAINWEB_NODE * args.input.length,
     }),
     async resolve(__parent, args) {
       try {
-        const gasEstimatePromises = args.transactions.map((transaction) => {
-          if (transaction.cmd.includes('//')) {
-            transaction.cmd = transaction.cmd.replace(/\/\//g, '/');
-          }
-
-          return estimateGas({
-            cmd: transaction.cmd,
-            hash: transaction.hash,
-            sigs: transaction.sigs,
-          });
-        });
-
-        const results = await Promise.all(gasEstimatePromises);
-        const gasEstimates = results.map((result) => result.gas);
-
-        return gasEstimates;
+        return await Promise.all(
+          args.input.map((input) => estimateGasLimit(input)),
+        );
       } catch (error) {
         throw normalizeError(error);
       }

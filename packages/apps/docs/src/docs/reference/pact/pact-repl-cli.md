@@ -2,8 +2,8 @@
 title: Pact command-line interpreter
 description:
   The Pact command-line interpreter enables you to test Pact code and modules in an interactive terminal shell.
-menu: Pact REPL commands
-label: Pact REPL commands
+menu: Pact REPL
+label: Pact REPL
 order: 6
 layout: full
 tags: ['pact', 'language reference', 'REPL commands']

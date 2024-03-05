@@ -20,7 +20,7 @@ type KadenaConstants = {
 
 export const kadenaConstants: KadenaConstants = {
   mainnet01: {
-    label: 'Coming soon… Mainnet',
+    label: 'Mainnet',
     API: env('KADENA_MAINNET_API', 'api.chainweb.com'),
     apiHost: ({ networkId, chainId }) =>
       `https://${kadenaConstants.mainnet01.API}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
@@ -38,10 +38,4 @@ export const kadenaConstants: KadenaConstants = {
   GAS_PRICE: Number(env('GAS_PRICE', 0.00000001)),
   API_TTL: Number(env('KADENA_API_TTIL', 600000)),
   DEFAULT_SENDER: env('DEFAULT_SENDER', 'not-real'),
-};
-
-export const getKadenaConstantByNetwork = (
-  network: DefinedNetwork,
-): KadenaConstants[DefinedNetwork] => {
-  return kadenaConstants[network];
 };

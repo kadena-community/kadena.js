@@ -26,6 +26,9 @@ export const addSignatures: (transaction: IUnsignedCommand, ...signatures: {
     pubKey?: string;
 }[]) => IUnsignedCommand | ICommand;
 
+// @public (undocumented)
+export type BuiltInPredicate = 'keys-all' | 'keys-any' | 'keys-2';
+
 export { ChainId }
 
 // @public
@@ -36,6 +39,11 @@ export function createEckoWalletQuicksign(): IEckoSignFunction;
 
 // @public
 export function createEckoWalletSign(): IEckoSignSingleFunction;
+
+// @public
+export function createSignWithChainweaver(options?: {
+    host: string;
+}): ISignFunction;
 
 // @public
 export const createSignWithKeypair: ICreateSignWithKeypair;
@@ -201,7 +209,7 @@ export interface IPactCommand {
     signers: Array<{
         pubKey: string;
         address?: string;
-        scheme?: 'ED25519' | 'ETH';
+        scheme?: SignerScheme;
         clist?: ICap[];
     }>;
 }
@@ -404,7 +412,15 @@ export type PactReturnType<T extends (...args: any[]) => any> = T extends (...ar
 // @public
 export const readKeyset: (key: string) => () => string;
 
-// @public
+// @public (undocumented)
+export type SignerScheme = 'ED25519' | 'ETH' | 'WebAuthn';
+
+// Warning: (ae-internal-missing-underscore) The name "signTransactions" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const signTransactions: (chainweaverUrl: string) => ISignFunction;
+
+// @public @deprecated
 export const signWithChainweaver: ISignFunction;
 
 // @public

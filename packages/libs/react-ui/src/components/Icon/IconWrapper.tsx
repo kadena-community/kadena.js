@@ -15,9 +15,10 @@ export const IconWrapper = (
 ): React.FC<IconType> => {
   const WrappedIcon: React.FC<SVGProps<SVGSVGElement> & IIconProps> = ({
     size = 'md',
+    className,
     ...props
   }) => (
-    <span className={classNames(iconContainer, sizeVariants[size])}>
+    <span className={classNames(iconContainer, sizeVariants[size], className)}>
       <Component {...props} height="100%" width="100%" />
     </span>
   );

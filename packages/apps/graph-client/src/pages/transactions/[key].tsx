@@ -1,24 +1,25 @@
-import type { Transaction } from '@/__generated__/sdk';
-import {
-  useGetTransactionByRequestKeySubscription,
-  useGetTransactionNodeQuery,
-} from '@/__generated__/sdk';
+import { useGetTransactionByRequestKeySubscription } from '@/__generated__/sdk';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
 import routes from '@/constants/routes';
-import { getTransactionNode } from '@/graphql/queries.graph';
 import { getTransactionByRequestKey } from '@/graphql/subscriptions.graph';
 import { formatCode, formatLisp } from '@/utils/formatter';
 import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+  Cell,
+  Column,
   Link,
   Notification,
+  Row,
   Stack,
   SystemIcon,
   Table,
+  TableBody,
+  TableHeader,
 } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -38,20 +39,7 @@ const RequestKey: React.FC = () => {
     skip: !router.query.key,
   });
 
-  const nodeQueryVariables = {
-    id: transactionSubscriptionData?.transaction as string,
-  };
-
-  const {
-    loading: nodeQueryLoading,
-    data: nodeQueryData,
-    error: nodeQueryError,
-  } = useGetTransactionNodeQuery({
-    variables: nodeQueryVariables,
-    skip: !transactionSubscriptionData?.transaction,
-  });
-
-  const transaction = nodeQueryData?.node as Transaction;
+  const transaction = transactionSubscriptionData?.transaction;
 
   return (
     <>
@@ -69,10 +57,6 @@ const RequestKey: React.FC = () => {
               query: getTransactionByRequestKey,
               variables: transactionSubscriptionVariables,
             },
-            {
-              query: getTransactionNode,
-              variables: nodeQueryVariables,
-            },
           ]}
         />
       </Stack>
@@ -86,30 +70,32 @@ const RequestKey: React.FC = () => {
       />
       {!transactionSubscriptionLoading &&
         !transactionSubscriptionError &&
-        nodeQueryLoading && (
+        transactionSubscriptionLoading && (
           <LoaderAndError
-            error={nodeQueryError}
-            loading={nodeQueryLoading}
+            error={transactionSubscriptionError}
+            loading={transactionSubscriptionLoading}
             loaderText="Waiting for transaction to come in..."
           />
         )}
 
       {transaction && (
         <>
-          <Table.Root striped wordBreak="break-word">
-            <Table.Head>
-              <Table.Tr>
-                <Table.Th width="$40">Key</Table.Th>
-                <Table.Th>Value</Table.Th>
-              </Table.Tr>
-            </Table.Head>
-            <Table.Body>
-              <Table.Tr>
-                <Table.Td>
+          <Table
+            isStriped
+            isCompact
+            className={atoms({ wordBreak: 'break-word' })}
+          >
+            <TableHeader>
+              <Column width="160">Key</Column>
+              <Column>Value</Column>
+            </TableHeader>
+            <TableBody>
+              <Row>
+                <Cell>
                   <strong>Status</strong>
-                </Table.Td>
-                <Table.Td>
-                  {transaction.badResult && (
+                </Cell>
+                <Cell>
+                  {transaction.result.badResult && (
                     <Notification
                       intent="negative"
                       icon={<SystemIcon.Close />}
@@ -118,14 +104,14 @@ const RequestKey: React.FC = () => {
                       Transaction failed with status:{' '}
                       <pre>
                         {JSON.stringify(
-                          JSON.parse(transaction.badResult),
+                          JSON.parse(transaction.result.badResult),
                           null,
                           4,
                         )}
                       </pre>
                     </Notification>
                   )}
-                  {transaction.goodResult && (
+                  {transaction.result.goodResult && (
                     <Notification
                       intent="positive"
                       icon={<SystemIcon.Check />}
@@ -133,258 +119,301 @@ const RequestKey: React.FC = () => {
                     >
                       Transaction succeeded with status:
                       <br />
-                      <pre>{formatCode(transaction.goodResult)}</pre>
+                      <pre>{formatCode(transaction.result.goodResult)}</pre>
                     </Notification>
                   )}
-                  {!transaction.goodResult && !transaction.badResult && (
-                    <Notification intent="warning" role="status">
-                      Unknown transaction status
-                    </Notification>
-                  )}
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                  {!transaction.result.goodResult &&
+                    !transaction.result.badResult && (
+                      <Notification intent="warning" role="status">
+                        Unknown transaction status
+                      </Notification>
+                    )}
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Request Key</strong>
-                </Table.Td>
-                <Table.Td>{transaction.requestKey}</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+                <Cell>{transaction.hash}</Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Chain</strong>
-                </Table.Td>
-                <Table.Td>{transaction.chainId}</Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+                <Cell>{transaction.cmd.meta.chainId}</Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Block</strong>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   <Link
                     href={`${routes.BLOCK_OVERVIEW}/${transaction.block?.hash}`}
                   >
                     {transaction.block?.hash}
                   </Link>
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Code</strong>
-                </Table.Td>
-                <Table.Td>
-                  <pre>{formatLisp(JSON.parse(transaction.code))}</pre>
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+                <Cell>
+                  <pre>
+                    {transaction.cmd.payload.__typename ===
+                      'ExecutionPayload' && transaction.cmd.payload.code
+                      ? formatLisp(JSON.parse(transaction.cmd.payload.code))
+                      : 'Cont'}
+                  </pre>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Transaction Output</strong>
-                </Table.Td>
-                <Table.Td>
-                  <Table.Root>
-                    <Table.Body>
-                      <Table.Tr>
-                        <Table.Td>
+                </Cell>
+                <Cell>
+                  <Table>
+                    <TableHeader>
+                      <Column>Label</Column>
+                      <Column>Value</Column>
+                    </TableHeader>
+                    <TableBody>
+                      <Row>
+                        <Cell>
                           <strong>Gas</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.gas}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.result.gas}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Result</strong>
-                        </Table.Td>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>
                           <pre>
-                            {transaction.goodResult
-                              ? formatCode(transaction.goodResult)
-                              : transaction.badResult
-                              ? formatCode(transaction.badResult)
+                            {transaction.result.goodResult
+                              ? formatCode(transaction.result.goodResult)
+                              : transaction.result.badResult
+                              ? formatCode(transaction.result.badResult)
                               : 'Unknown'}
                           </pre>
-                        </Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Logs</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.logs}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.result.logs}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Metadata</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.metadata}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.result.metadata}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Continuation</strong>
-                        </Table.Td>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>
                           <pre>
-                            {transaction.continuation
-                              ? formatCode(transaction.continuation)
+                            {transaction.result.continuation
+                              ? formatCode(transaction.result.continuation)
                               : 'None'}
                           </pre>
-                        </Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Transaction ID</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.transactionId}</Table.Td>
-                      </Table.Tr>
-                    </Table.Body>
-                  </Table.Root>
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.result.transactionId}</Cell>
+                      </Row>
+                    </TableBody>
+                  </Table>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Events</strong>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   {transaction.events?.map((event, index) => (
-                    <Table.Root key={index}>
-                      <Table.Body>
-                        <Table.Tr>
-                          <Table.Td>
+                    <Table key={index}>
+                      <TableHeader>
+                        <Column>Label</Column>
+                        <Column>Value</Column>
+                      </TableHeader>
+                      <TableBody>
+                        <Row>
+                          <Cell>
                             <strong>Name</strong>
-                          </Table.Td>
-                          <Table.Td>{event.qualifiedName}</Table.Td>
-                        </Table.Tr>
-                        <Table.Tr>
-                          <Table.Td>
+                          </Cell>
+                          <Cell>{event.qualifiedName}</Cell>
+                        </Row>
+                        <Row>
+                          <Cell>
                             <strong>Parameters</strong>
-                          </Table.Td>
-                          <Table.Td>
+                          </Cell>
+                          <Cell>
                             <pre>{formatCode(event.parameterText)}</pre>
-                          </Table.Td>
-                        </Table.Tr>
-                      </Table.Body>
-                    </Table.Root>
+                          </Cell>
+                        </Row>
+                      </TableBody>
+                    </Table>
                   ))}
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Data</strong>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   <pre>
-                    {transaction.data &&
-                      JSON.stringify(JSON.parse(transaction.data), null, 4)}
+                    {/* {transaction.cmd.payload.data &&
+                      JSON.stringify(JSON.parse(transaction.cmd.payload.data), null, 4)} */}
+                    {JSON.stringify(
+                      JSON.parse(transaction.cmd.payload.data),
+                      null,
+                      4,
+                    )}
                   </pre>
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Nonce</strong>
-                </Table.Td>
-                <Table.Td>
-                  <pre>{transaction.nonce}</pre>
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+                <Cell>
+                  <pre>{transaction.cmd.nonce}</pre>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Meta</strong>
-                </Table.Td>
-                <Table.Td>
-                  <Table.Root>
-                    <Table.Body>
-                      <Table.Tr>
-                        <Table.Td>
+                </Cell>
+                <Cell>
+                  <Table>
+                    <TableHeader>
+                      <Column width="100">Label</Column>
+                      <Column>Value</Column>
+                    </TableHeader>
+                    <TableBody>
+                      <Row>
+                        <Cell>
                           <strong>Chain</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.chainId}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.cmd.meta.chainId}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Sender</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.senderAccount}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.cmd.meta.sender}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Gas Price</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.gasPrice}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.cmd.meta.gasPrice}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Gas Limit</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.gasLimit}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.cmd.meta.gasLimit}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>TTL</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.ttl}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.cmd.meta.ttl}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Creation Time</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.creationTime}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.cmd.meta.creationTime}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Height</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.height}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>{transaction.result.height}</Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Pact ID</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.pactId}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>
+                          {transaction.cmd.payload.__typename ===
+                          'ContinuationPayload'
+                            ? transaction.cmd.payload.pactId
+                            : ''}
+                        </Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Proof</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.proof}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>
+                          {transaction.cmd.payload.__typename ===
+                          'ContinuationPayload'
+                            ? transaction.cmd.payload.proof
+                            : ''}
+                        </Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Rollback</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.rollback}</Table.Td>
-                      </Table.Tr>
-                      <Table.Tr>
-                        <Table.Td>
+                        </Cell>
+                        <Cell>
+                          {transaction.cmd.payload.__typename ===
+                          'ContinuationPayload'
+                            ? transaction.cmd.payload.rollback
+                            : ''}
+                        </Cell>
+                      </Row>
+                      <Row>
+                        <Cell>
                           <strong>Step</strong>
-                        </Table.Td>
-                        <Table.Td>{transaction.step}</Table.Td>
-                      </Table.Tr>
-                    </Table.Body>
-                  </Table.Root>
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                        </Cell>
+                        <Cell>
+                          {transaction.cmd.payload.__typename ===
+                          'ContinuationPayload'
+                            ? transaction.cmd.payload.step
+                            : ''}
+                        </Cell>
+                      </Row>
+                    </TableBody>
+                  </Table>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Signers</strong>
-                </Table.Td>
-                <Table.Td>
-                  {transaction.signers
+                </Cell>
+                <Cell>
+                  {transaction.cmd.signers
                     ?.map((signer) => {
                       return signer.publicKey;
                     })
                     .join(', ')}
-                </Table.Td>
-              </Table.Tr>
-              <Table.Tr>
-                <Table.Td>
+                </Cell>
+              </Row>
+              <Row>
+                <Cell>
                   <strong>Signatures</strong>
-                </Table.Td>
-                <Table.Td>
-                  {transaction.signers
+                </Cell>
+                <Cell>
+                  {transaction.cmd.signers
                     ?.map((signer) => {
                       return signer.signature;
                     })
                     .join(', ')}
-                </Table.Td>
-              </Table.Tr>
-            </Table.Body>
-          </Table.Root>
+                </Cell>
+              </Row>
+            </TableBody>
+          </Table>
         </>
       )}
     </>

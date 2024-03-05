@@ -1,7 +1,23 @@
-import type { GetTransfersQuery } from '@/__generated__/sdk';
+import type {
+  GetTransfersQuery,
+  QueryTransfersConnection,
+} from '@/__generated__/sdk';
 import routes from '@/constants/routes';
 import type { FetchMoreOptions, FetchMoreQueryOptions } from '@apollo/client';
-import { Box, Link, Pagination, Select, Table } from '@kadena/react-ui';
+import {
+  Box,
+  Cell,
+  Column,
+  Link,
+  Pagination,
+  Row,
+  Select,
+  SelectItem,
+  Table,
+  TableBody,
+  TableHeader,
+} from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -14,19 +30,22 @@ interface IVariableType {
 }
 
 interface IExpandedTransfersTableProps {
-  transfers: GetTransfersQuery['transfers'];
+  transfers: QueryTransfersConnection;
   fetchMore: (
     fetchMoreOptions: FetchMoreQueryOptions<IVariableType, DataType> &
       FetchMoreOptions,
   ) => Promise<any>;
 }
 
+const itemsPerPageOptions = [10, 50, 100, 200].map((x) => ({
+  label: x.toString(),
+  value: x,
+}));
+
 export const ExtendedTransfersTable = (
   props: IExpandedTransfersTableProps,
 ): JSX.Element => {
   const { transfers, fetchMore } = props;
-
-  const itemsPerPageOptions = [10, 50, 100, 200];
 
   // Parse the query parameters from the URL using Next.js router
   const router = useRouter();
@@ -35,9 +54,11 @@ export const ExtendedTransfersTable = (
   const urlItemsPerPage = router.query.items;
 
   // Use state to manage itemsPerPage and currentPage
-  const [itemsPerPage, setItemsPerPage] = useState<number>(
+  const [itemsPerPage, setItemsPerPage] = useState<number>(() =>
     urlItemsPerPage &&
-      itemsPerPageOptions.includes(parseInt(urlItemsPerPage as string))
+    itemsPerPageOptions.some(
+      (option) => option.value === parseInt(urlItemsPerPage as string),
+    )
       ? parseInt(urlItemsPerPage as string)
       : 10,
   );
@@ -149,44 +170,43 @@ export const ExtendedTransfersTable = (
           <span style={{ display: 'inline-block' }}>Items per page: </span>
 
           <Select
-            ariaLabel="items-per-page"
+            aria-label="items-per-page"
             id="items-per-page"
-            onChange={(event) => setItemsPerPage(parseInt(event.target.value))}
-            style={{ display: 'inline-block' }}
-            defaultValue={itemsPerPage}
+            onSelectionChange={(key) =>
+              setItemsPerPage(typeof key === 'string' ? parseInt(key) : key)
+            }
+            items={itemsPerPageOptions}
+            defaultSelectedKey={itemsPerPage}
           >
-            {itemsPerPageOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
+            {(item) => <SelectItem key={item.value}>{item.label}</SelectItem>}
           </Select>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Pagination
             totalPages={totalPages}
-            label="pagination"
-            currentPage={currentPage}
+            selectedPage={currentPage}
             onPageChange={handlePaginationClick}
           />
         </div>
       </Box>
-      <Table.Root wordBreak="break-word">
-        <Table.Head>
-          <Table.Tr>
-            <Table.Th>Chain</Table.Th>
-            <Table.Th>Block Height</Table.Th>
-            <Table.Th>Amount</Table.Th>
-            <Table.Th>Sender Account</Table.Th>
-            <Table.Th>Receiver Account</Table.Th>
-            <Table.Th>Request key</Table.Th>
-          </Table.Tr>
-        </Table.Head>
-        <Table.Body>
+      <Table className={atoms({ wordBreak: 'break-word' })} isCompact>
+        <TableHeader>
+          <Column>Chain</Column>
+          <Column>Timestamp</Column>
+          <Column>Block Height</Column>
+          <Column>Amount</Column>
+          <Column>Sender Account</Column>
+          <Column>Receiver Account</Column>
+          <Column>Request key</Column>
+        </TableHeader>
+        <TableBody>
           {transfers.edges.map((edge, index) => {
             /**  These transfers are going to be added to their crosschain counterpart and
            this way we avoid repeated transfers in the table */
-            if (edge.node.transaction?.pactId) {
+            if (
+              edge.node.transaction?.cmd.payload.__typename ===
+              'ContinuationPayload'
+            ) {
               return <></>;
             }
 
@@ -199,18 +219,19 @@ export const ExtendedTransfersTable = (
               : edge.node.height;
 
             return (
-              <Table.Tr key={index}>
-                <Table.Td>{chainIdDisplay}</Table.Td>
-                <Table.Td>{heightDisplay}</Table.Td>
-                <Table.Td>{edge.node.amount}</Table.Td>
-                <Table.Td>
+              <Row key={index}>
+                <Cell>{chainIdDisplay}</Cell>
+                <Cell>{new Date(edge.node.creationTime).toLocaleString()}</Cell>
+                <Cell>{heightDisplay}</Cell>
+                <Cell>{edge.node.amount}</Cell>
+                <Cell>
                   <Link
                     href={`${routes.ACCOUNT}/${router.query.fungible}/${edge.node.senderAccount}`}
                   >
                     {edge.node.senderAccount}
                   </Link>
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   {edge.node.receiverAccount ? (
                     <Link
                       href={`${routes.ACCOUNT}/${router.query.fungible}/${edge.node.receiverAccount}`}
@@ -226,8 +247,8 @@ export const ExtendedTransfersTable = (
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
                   )}
-                </Table.Td>
-                <Table.Td>
+                </Cell>
+                <Cell>
                   <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
                     {edge.node.requestKey}
                   </Link>
@@ -241,12 +262,12 @@ export const ExtendedTransfersTable = (
                       </Link>
                     </>
                   )}
-                </Table.Td>
-              </Table.Tr>
+                </Cell>
+              </Row>
             );
           })}
-        </Table.Body>
-      </Table.Root>
+        </TableBody>
+      </Table>
     </>
   );
 };

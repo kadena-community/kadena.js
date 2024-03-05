@@ -7,7 +7,7 @@
     "url": "https://github.com/kadena-community/kadena.js.git",
     "directory": "packages/tools/eslint-config"
   },
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "files": [
     "mixins",
     "profile"
@@ -24,8 +24,8 @@
   "dependencies": {
     "@kadena-dev/eslint-plugin": "workspace:*",
     "@rushstack/eslint-config": "~3.3.0",
-    "@typescript-eslint/eslint-plugin": "^5.23.0",
-    "@typescript-eslint/parser": "^5.23.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.45.0",
     "eslint-config-next": "13.4.5",
     "eslint-config-prettier": "^9.0.0",

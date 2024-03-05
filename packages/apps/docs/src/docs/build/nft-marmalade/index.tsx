@@ -1,13 +1,13 @@
 import {
   Box,
-  Button,
   Card,
   Grid,
   GridItem,
   Heading,
+  Link as KadenaLink,
+  SystemIcon,
   Text,
 } from '@kadena/react-ui';
-import { sprinkles } from '@kadena/react-ui/theme';
 
 import type { IMostPopularPage } from '@/MostPopularData';
 import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
@@ -15,6 +15,8 @@ import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
+
+import { marmaladeWrapperClass } from '@/styles/index.css';
 import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
 import type { GetStaticProps } from 'next';
@@ -30,12 +32,7 @@ interface IProps {
 const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
   return (
     <>
-      <Box
-        marginBlockEnd="xxxl"
-        className={sprinkles({
-          marginInlineEnd: { sm: 0, lg: '$32', xl: '$64' },
-        })}
-      >
+      <Box marginBlockEnd="xxxl" className={marmaladeWrapperClass}>
         <Text>
           The long-awaited release of Marmalade’s V2 standard has arrived,
           bringing a host of exciting updates and features to the top NFT
@@ -61,22 +58,24 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 NFTs.
               </Text>
             </Box>
-            <Button as="a" asChild icon="TrailingIcon">
-              <Link href={'/marmalade/quick-start'}>Get started</Link>
-            </Button>
+            <KadenaLink
+              endIcon={<SystemIcon.TrailingIcon />}
+              variant="contained"
+              href="/marmalade/quick-start"
+            >
+              Get started
+            </KadenaLink>
           </Card>
         </GridItem>
 
         <GridItem>
-          <Box className={sprinkles({ marginBlockStart: '$8' })}>
+          <Box marginBlockStart="xxl">
             <MostPopular pages={popularPages} title="Most viewed docs" />
           </Box>
         </GridItem>
       </Grid>
 
-      <Box
-        className={sprinkles({ marginBlockStart: '$8', marginBlockEnd: '$20' })}
-      >
+      <Box marginBlockStart="xxl" marginBlockEnd="xxxl">
         <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem rowSpan={2}>
             <DocsCard
@@ -88,6 +87,9 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/marmalade/architecture">
                   Architecture
+                </Link>
+                <Link className={docsCardLink} href="/marmalade/auctions">
+                  Auctions
                 </Link>
                 <Link
                   className={docsCardLink}
@@ -128,6 +130,20 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                   href="/marmalade/concrete-policies"
                 >
                   Policies Overview
+                </Link>
+              </BrowseSection>
+            </DocsCard>
+          </GridItem>
+          <GridItem>
+            <DocsCard
+              label="Auctions"
+              description=""
+              schema="success"
+              background="whitepapers"
+            >
+              <BrowseSection marker="none">
+                <Link className={docsCardLink} href="/marmalade/auctions">
+                  Auctions Overview
                 </Link>
               </BrowseSection>
             </DocsCard>

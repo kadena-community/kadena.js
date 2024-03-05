@@ -1,5 +1,41 @@
 # @kadena/client-utils
 
+## 0.4.1
+
+### Patch Changes
+
+- Updated dependencies [5b1d8334e]
+  - @kadena/chainweb-node-client@0.5.3
+  - @kadena/client@1.8.1
+  - @kadena/pactjs-cli@1.8.1
+
+## 0.4.0
+
+### Minor Changes
+
+- 1b4e49d96: introduce `from` function that allows start a process from a
+  specific event
+
+### Patch Changes
+
+- 172734c8b: enable the utility function 'describeModule' to be used in other
+  packages
+
+## 0.3.0
+
+### Minor Changes
+
+- bbeef98a6: added createPactCommandFromStringTemplate method
+- 3fc8ac86d: add utility function for built-in Pact function 'describe-module'
+- 72f472e58: Add safeTransfer which requires both sender and receiver to sign
+
+### Patch Changes
+
+- 64dd84ee0: Changed the return type for getBalance to string.
+- Updated dependencies [0540b213b]
+  - @kadena/client@1.8.0
+  - @kadena/pactjs-cli@1.8.0
+
 ## 0.2.0
 
 ### Minor Changes
