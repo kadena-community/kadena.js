@@ -86,5 +86,5 @@ ahead for the future of blockchain, thanks to Kadena. Follow us and you’ll lea
 why!
 
 Learn more about **Pact** [here](/pact/beginner), **Chainweb
-**[here](/kadena/whitepapers/chainweb-layer-1), and **mining** on Kadena
+**[here](https://www.kadena.io/whitepapers), and **mining** on Kadena
 [here](https://github.com/kadena-io/chainweb-miner#what-is-mining).
