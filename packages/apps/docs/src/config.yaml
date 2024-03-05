@@ -184,7 +184,11 @@ pages:
             url: /add-vote-management
             file: /build/election-app/add-vote-management.md
           gasstation:
+<<<<<<< HEAD
             url: /add-a-gas-station
+=======
+            url: /gas-station
+>>>>>>> 19639c955 (fix names of files to build)
             file: /build/election-app/add-a-gas-station.md
       faucet:
         url: /faucet

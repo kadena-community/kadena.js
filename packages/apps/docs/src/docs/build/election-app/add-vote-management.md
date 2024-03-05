@@ -26,7 +26,7 @@ Before you start this tutorial, verify the following basic requirements:
 - You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
 - You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
 - You are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
-- You have created and funded an administrative account as described in [Add an administrator account](/build/election-dapp-tutorial/add-admin-account).
+- You have created and funded an administrative account as described in [Add an administrator account](/build/election/add-admin-account).
 - You have created a principal namespace on the development network as described in [Define a namespace](/build/election/define-a-namespace).
 - You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/election/define-keysets).
 - You have created an election Pact module and deployed it as described in [Write a smart contract](/build/election/write-a-smart-contract) and updated its functionality as described in [Nominate candidates](/build/election/nominate-candidates).
@@ -59,7 +59,6 @@ To organize tests into separate files:
    ```pact
    (load "setup.repl")
    ```
-
 6. Open the `candidates.repl` file and and add the following as the first line in the file:
    
    ```pact
@@ -670,7 +669,7 @@ To update the `election` module on the development network:
    npm run deploy-module:devnet -- k:<your-public-key> upgrade init-votes
    ```
 
-   Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/election-dapp-tutorial/add-admin-account).
+   Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/election/add-admin-account).
    You can copy this account name from Chainweaver when viewing the account watch list.
    
    In addition to the account name and `upgrade`, you must include `init-votes` in the command to add `{"init-votes": true}` to the transaction data.
@@ -692,7 +691,7 @@ To update the `election` module on the development network:
 
 ## Update the frontend and cast a vote
 
-As you learned in [Nominate candidates](/build/guides/election-dapp-tutorial/nominate-candidates), the election application frontend is written in TypeScript and uses repositories to exchange data with the backend. 
+As you learned in [Nominate candidates](/build/election/nominate-candidates), the election application frontend is written in TypeScript and uses repositories to exchange data with the backend. 
 By default, the frontend uses the in-memory implementations of the repositories. 
 By making changes to the implementation of the `interface IVoteRepository` in
 `frontend/src/repositories/candidate/DevnetVoteRepository.ts` file, you can configure the
