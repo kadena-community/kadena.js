@@ -23,7 +23,6 @@
       "dependsOn": ["topo"],
       "inputs": ["test/**/*.ts", "test/**/*.tsx"],
       "outputMode": "new-only"
-      
     },
     "lint": {
       "dependsOn": ["build"],
