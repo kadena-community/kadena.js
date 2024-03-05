@@ -85,7 +85,7 @@ jobs:
         run: pnpm install
 
       - name: run integration tests
-        run: pnpm run test:integration --filter ${{ matrix.package }} --forcs
+        run: pnpm run test:integration --filter ${{ matrix.package }} --force
 
   end-to-end-tests:
     name: E2E - ${{ matrix.app }}
