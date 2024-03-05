@@ -201,107 +201,105 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
 
   return (
     <Stack flexDirection="column" gap="lg">
-      <>
-        <SubmitTransactionDetails transactions={{ cmds: [data] }} />
-        <div className={buttonContainerClass}>
-          <Button
-            isLoading={isLoading}
-            // isDisabled={ledgerSignState.loading}
-            endIcon={<SystemIcon.TrailingIcon />}
-            title={t('Transfer')}
-            onPress={onSubmit}
-          >
-            {t('Transfer')}
-          </Button>
-        </div>
-        {requestKey !== '' ? (
-          <FormStatusNotification
-            status={'processing'}
-            title={t('Transaction submitted')}
-          >
-            <Stack flexDirection={'row'} alignItems={'center'}>
-              <Trans
-                i18nKey="common:link-to-kadena-explorer"
-                components={[
-                  <Link
-                    className={linkStyle}
-                    href={linkToExplorer}
-                    target={'_blank'}
-                    key={requestKey}
-                  >
-                    {requestKey}
-                  </Link>,
-                ]}
-              />
-              <Button
-                color="primary"
-                icon={<SystemIcon.ContentCopy />}
-                onPress={async () => {
-                  await navigator.clipboard.writeText(requestKey);
-                }}
-                title={t('copy request Key')}
-                aria-label={t('copy request Key')}
-                variant="text"
-              />
-            </Stack>
+      <SubmitTransactionDetails transactions={{ cmds: [data] }} />
 
+      {requestKey !== '' ? (
+        <FormStatusNotification
+          status={'processing'}
+          title={t('Transaction submitted')}
+        >
+          <Stack flexDirection={'row'} alignItems={'center'}>
             <Trans
-              i18nKey="common:link-to-tracker"
+              i18nKey="common:link-to-kadena-explorer"
               components={[
                 <Link
                   className={linkStyle}
-                  href={linkToTracker}
+                  href={linkToExplorer}
                   target={'_blank'}
                   key={requestKey}
-                />,
+                >
+                  {requestKey}
+                </Link>,
               ]}
             />
+            <Button
+              color="primary"
+              icon={<SystemIcon.ContentCopy />}
+              onPress={async () => {
+                await navigator.clipboard.writeText(requestKey);
+              }}
+              title={t('copy request Key')}
+              aria-label={t('copy request Key')}
+              variant="text"
+            />
+          </Stack>
 
-            {!onSameChain ? (
-              <Stack flexDirection={'column'} marginBlockStart={'xl'}>
-                <div className={infoNotificationColor}>
-                  {t('cross-chain-transfer-initiated')}
-                </div>
-                <Stack>
-                  <span>
-                    <Trans
-                      i18nKey="common:link-to-finisher"
-                      components={[
-                        <Link
-                          className={explorerLinkStyle}
-                          href={linkToFinisher}
-                          target={'_blank'}
-                          key={requestKey}
-                        />,
-                      ]}
-                    />
-                  </span>
+          <Trans
+            i18nKey="common:link-to-tracker"
+            components={[
+              <Link
+                className={linkStyle}
+                href={linkToTracker}
+                target={'_blank'}
+                key={requestKey}
+              />,
+            ]}
+          />
 
-                  <Button
-                    color="primary"
-                    icon={<SystemIcon.ContentCopy />}
-                    onPress={async () => {
-                      await navigator.clipboard.writeText(
-                        completeLinkToFinisher,
-                      );
-                    }}
-                    title={t('copy link to finisher')}
-                    aria-label={t('copy link to finisher')}
-                    variant="text"
+          {!onSameChain ? (
+            <Stack flexDirection={'column'} marginBlockStart={'xl'}>
+              <div className={infoNotificationColor}>
+                {t('cross-chain-transfer-initiated')}
+              </div>
+              <Stack>
+                <span>
+                  <Trans
+                    i18nKey="common:link-to-finisher"
+                    components={[
+                      <Link
+                        className={explorerLinkStyle}
+                        href={linkToFinisher}
+                        target={'_blank'}
+                        key={requestKey}
+                      />,
+                    ]}
                   />
-                </Stack>
+                </span>
+
+                <Button
+                  color="primary"
+                  icon={<SystemIcon.ContentCopy />}
+                  onPress={async () => {
+                    await navigator.clipboard.writeText(completeLinkToFinisher);
+                  }}
+                  title={t('copy link to finisher')}
+                  aria-label={t('copy link to finisher')}
+                  variant="text"
+                />
               </Stack>
-            ) : null}
-          </FormStatusNotification>
-        ) : null}
-        <FormStatusNotification
-          status={requestStatus.status}
-          statusBodies={{
-            successful: t('The coins have been funded to the given account.'),
-          }}
-          body={requestStatus.message}
-        />
-      </>
+            </Stack>
+          ) : null}
+        </FormStatusNotification>
+      ) : null}
+      <FormStatusNotification
+        status={requestStatus.status}
+        statusBodies={{
+          successful: t('The coins have been funded to the given account.'),
+        }}
+        body={requestStatus.message}
+      />
+
+      <div className={buttonContainerClass}>
+        <Button
+          isLoading={isLoading}
+          // isDisabled={ledgerSignState.loading}
+          endIcon={<SystemIcon.TrailingIcon />}
+          title={t('Transfer')}
+          onPress={onSubmit}
+        >
+          {t('Transfer')}
+        </Button>
+      </div>
     </Stack>
   );
 };
