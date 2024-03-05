@@ -71,7 +71,7 @@ export const keyGetAllKeyFilesPrompt: IPrompt<string> = async (args) => {
 
 export async function keyAliasPrompt(): Promise<string> {
   return await input({
-    message: `Enter a alias for your key:`,
+    message: `Enter an alias for your key:`,
     validate: function (input) {
       if (!isValidFilename(input)) {
         return 'Alias must be alphanumeric! Please enter a valid name.';
