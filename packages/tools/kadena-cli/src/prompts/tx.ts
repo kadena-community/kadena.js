@@ -23,7 +23,7 @@ const ISignatureJsonSchema = z.object({
   sig: z.string(),
 });
 
-const SignatureOrUndefinedOrNull = z.union([
+export const SignatureOrUndefinedOrNull = z.union([
   ISignatureJsonSchema,
   z.undefined(),
   z.null(),
