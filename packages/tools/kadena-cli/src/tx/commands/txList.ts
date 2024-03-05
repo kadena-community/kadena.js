@@ -14,7 +14,11 @@ export const createTxListCommand: (program: Command, version: string) => void =
       log.debug('list-tx:action');
 
       const { directory } = await option.directory();
-      const transactions: string[] = await getTransactions(false, directory);
+      const transactions: string[] = await getTransactions(
+        false,
+        directory,
+        true,
+      );
 
       transactions.sort((a, b) => {
         const aIsSigned = a.includes('-signed') ? 1 : -1;
