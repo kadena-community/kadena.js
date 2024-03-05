@@ -70,7 +70,7 @@ export const createImportWalletCommand: (
   'Import (restore) wallet from mnemonic phrase',
   [
     globalOptions.keyMnemonic(),
-    globalOptions.passwordFile({ isOptional: false }),
+    globalOptions.passwordFileRepeat({ isOptional: false }),
     globalOptions.walletName(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
@@ -83,7 +83,7 @@ export const createImportWalletCommand: (
     const result = await importWallet({
       walletName: config.walletName,
       mnemonic: config.keyMnemonic,
-      password: config.passwordFile,
+      password: config.passwordFileRepeat,
       legacy: config.legacy,
     });
 
