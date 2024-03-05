@@ -11,7 +11,7 @@ export const testNetworkConfigMock: INetworkCreateOptions = {
 export const devNetConfigMock: INetworkCreateOptions = {
   networkHost: 'https://localhost:8080',
   networkExplorerUrl: 'https://localhost:8080/explorer',
-  networkId: 'fast-development',
+  networkId: 'development',
   network: 'devnet',
 };
 
