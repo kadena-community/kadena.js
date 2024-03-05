@@ -1,24 +1,29 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "topo": {
+      "dependsOn": ["^topo"]
+    },
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["topo", "^build"],
       "outputs": ["dist/**", "lib/**"],
       "outputMode": "new-only"
     },
     "test": {
-      "dependsOn": ["build"],
+      "dependsOn": ["topo", "build"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
       "outputMode": "new-only"
     },
     "test:integration": {
-      "dependsOn": ["build"],
+      "dependsOn": ["topo", "build"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
       "outputMode": "new-only"
     },
     "test:e2e": {
+      "dependsOn": ["topo"],
       "inputs": ["test/**/*.ts", "test/**/*.tsx"],
       "outputMode": "new-only"
+      
     },
     "lint": {
       "dependsOn": ["build"],
