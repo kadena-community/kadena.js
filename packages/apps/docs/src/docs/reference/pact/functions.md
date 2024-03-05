@@ -13,7 +13,7 @@ tags: ['pact', 'language reference']
 # Pact functions
 
 - [General purpose functions](/reference/pact/general-functions)
-- [Database functions](/reference/pact/general-functions)
+- [Database functions](/reference/pact/database-functions)
 - [Time functions](/reference/pact/functions/time)
 - [Operators](/reference/pact/functions/operators)
 - [Keysets](/reference/pact//functions/keysets)
