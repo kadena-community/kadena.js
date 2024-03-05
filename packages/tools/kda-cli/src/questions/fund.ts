@@ -1,139 +1,119 @@
-import { useWalletConnectClient } from "@/context/connect-wallet-context";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { IDialogProps } from "@kadena/react-ui";
+import { setTransferCreateCommand } from '../pact/coin.js';
 import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  Stack,
-  SystemIcon,
-  TextField,
-} from "@kadena/react-ui";
-import useTranslation from "next-translate/useTranslation";
-import type { FC } from "react";
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { formButtonStyle, modalOptionsContentStyle } from "./styles.css";
+  addCapability,
+  buildCommand,
+  listen,
+  send,
+  setData,
+  setDomain,
+  setMeta,
+  setNetworkId,
+  signWithKeypair,
+} from '../pact/pact.js';
+import type { IAnswers, IQuestion } from './questions.js';
 
-const schema = z.object({
-  label: z.string().trim().min(1),
-  networkId: z.string().trim().min(1),
-  api: z.string().trim().min(1),
-});
-
-type FormData = z.infer<typeof schema>;
-interface IAddNetworkModalProps extends IDialogProps {}
-
-export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
-  const { t } = useTranslation("common");
-  const { setSelectedNetwork, setNetworksData, networksData } =
-    useWalletConnectClient();
-
-  const [label, setLabel] = useState("");
-  const [networkId, setNetworkId] = useState("");
-  const [api, setApi] = useState("");
-
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    setError("");
-  }, [networkId]);
-
-  const handleSubmit = (data: FormData, callback: () => void) => {
-    const networks = [...networksData];
-    const { networkId, label, api } = data;
-
-    const isDuplicate = networks.find(
-      (item) => item.networkId === networkId && item.label === label,
-    );
-
-    if (isDuplicate) {
-      setError("Error: Duplicate NetworkId");
-      return;
-    }
-
-    networks.push({
-      label,
-      networkId,
-      API: api,
-      ESTATS: api,
-    });
-    setNetworksData(networks);
-
-    setSelectedNetwork(networkId);
-    callback();
-  };
-
-  const {
-    register,
-    handleSubmit: validateThenSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-  });
-
-  return (
-    <Dialog {...props}>
-      {(state) => (
-        <>
-          <DialogHeader>Add Network</DialogHeader>
-          <DialogContent>
-            <div className={modalOptionsContentStyle}>
-              <form
-                onSubmit={validateThenSubmit((data) => {
-                  handleSubmit(data, () => state.close());
-                })}
-              >
-                <section>
-                  <Stack flexDirection="column" gap="sm">
-                    <TextField
-                      label={t("Network label")}
-                      id="label"
-                      {...register("label")}
-                      onValueChange={setLabel}
-                      value={label}
-                      placeholder="devnet"
-                      isInvalid={!!errors?.label}
-                      errorMessage={errors?.label?.message ?? ""}
-                    />
-                    <TextField
-                      label={t("Network ID")}
-                      id="networkId"
-                      {...register("networkId")}
-                      onValueChange={setNetworkId}
-                      value={networkId}
-                      placeholder="development"
-                      isInvalid={!!errors?.networkId}
-                      errorMessage={errors?.networkId?.message ?? ""}
-                    />
-                    <TextField
-                      label={t("Network api")}
-                      id="api"
-                      {...register("api")}
-                      onChange={(e) => setApi(e.target.value)}
-                      value={api}
-                      placeholder="localhost:8080"
-                      isInvalid={!!errors?.api}
-                      errorMessage={errors?.api?.message ?? ""}
-                    />
-                  </Stack>
-                </section>
-                <section className={formButtonStyle}>
-                  <Button
-                    type="submit"
-                    endIcon={<SystemIcon.TrailingIcon />}
-                    isDisabled={Boolean(error)}
-                  >
-                    {t("Save Network")}
-                  </Button>
-                </section>
-              </form>
-            </div>
-          </DialogContent>
-        </>
-      )}
-    </Dialog>
-  );
+const fundCondition = ({ task }: IAnswers): boolean => {
+  if (Array.isArray(task))
+    return task?.includes('fund') || task?.includes('setup');
+  return false;
 };
+
+export const fundQuestions: IQuestion[] = [
+  {
+    message: 'What account would you like to fund?',
+    name: 'account',
+    type: 'input',
+    when: fundCondition,
+  },
+  {
+    message: 'On wich network would you like to fund the account?',
+    name: 'network',
+    type: 'input',
+    defaultValue: 'development',
+    when: fundCondition,
+  },
+  {
+    message: 'On what chain would you like to fund the account?',
+    name: 'chainId',
+    type: 'input',
+    choices: [...Array(20).keys()].map((i) => ({
+      label: i.toString(),
+      value: i.toString(),
+    })),
+    when: fundCondition,
+  },
+  {
+    message: 'What endpoint would you like to use?',
+    name: 'endpoint',
+    type: 'input',
+    defaultValue: 'http://localhost:8080',
+    when: fundCondition,
+  },
+  {
+    message: 'What public key would you like to use?',
+    name: 'publicKey',
+    type: 'input',
+    when: fundCondition,
+  },
+  {
+    message: 'Funding devnet accounts...',
+    name: 'fundDevnet',
+    type: 'execute',
+    when: fundCondition,
+    action: async ({
+      account,
+      chainId,
+      network,
+      endpoint,
+      publicKey,
+    }: IAnswers) => {
+      if (
+        typeof account !== 'string' ||
+        typeof chainId !== 'string' ||
+        typeof network !== 'string' ||
+        typeof endpoint !== 'string' ||
+        typeof publicKey !== 'string'
+      )
+        return { success: false };
+      await buildCommand(
+        setTransferCreateCommand('sender00', account, 'ks', 100),
+        setMeta({
+          gasLimit: 1000,
+          gasPrice: 0.0000001,
+          ttl: 60000,
+          chainId: chainId,
+          sender: 'sender00',
+        }),
+        setData({
+          ks: {
+            keys: [publicKey],
+            pred: 'keys-all',
+          },
+        }),
+        addCapability({
+          name: 'coin.GAS',
+          args: [],
+          signer:
+            '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
+        }),
+        addCapability({
+          name: 'coin.TRANSFER',
+          args: ['sender00', account, 100],
+          signer:
+            '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
+        }),
+        setNetworkId(network),
+        setDomain(endpoint),
+        signWithKeypair({
+          publicKey:
+            '368820f80c324bbc7c2b0610688a7da43e39f91d118732671cd9c7500ff43cca',
+          secretKey:
+            '251a920c403ae8c8f65f59142316af3c82b631fba46ddea92ee8c95035bd2898',
+        }),
+        send,
+        listen,
+      )({});
+      return { success: true };
+    },
+  },
+];
