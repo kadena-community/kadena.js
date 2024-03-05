@@ -172,7 +172,7 @@ export async function signWithAliasFile(
   assertCommandError(result);
 
   if (result.data.commands.length === 1) {
-    log.output(JSON.stringify(result.data.commands[0], null, 2));
+    log.output(JSON.stringify(result.data.commands[0].command, null, 2));
   }
   result.data.commands.forEach((tx) => {
     log.info(`Signed transaction saved to ${tx.path}`);
