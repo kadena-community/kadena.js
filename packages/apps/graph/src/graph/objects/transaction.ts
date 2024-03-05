@@ -1,7 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
-import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { PRISMA, builder } from '../builder';
 import TransactionCommand from './transaction-command';
@@ -34,7 +33,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
         code: true,
         requestKey: true,
       },
-      async resolve(parent) {
+      async resolve(parent, __arguments, context) {
         try {
           const signers = await prismaClient.signer.findMany({
             where: {
@@ -62,7 +61,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
               proof: parent.proof,
             },
             signers,
-            networkId: dotenv.NETWORK_ID,
+            networkId: context.networkId,
           };
         } catch (error) {
           throw normalizeError(error);
