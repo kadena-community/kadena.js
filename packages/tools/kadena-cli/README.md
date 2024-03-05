@@ -71,11 +71,56 @@ prefill a question by filling the flag
 
 ### list of root commands and flags
 
-|           | description                                              |
-| --------- | -------------------------------------------------------- |
-| config    | configuration of the cli. E.g. network, config directory |
-| --help    | display help information                                 |
-| --version | display version information                              |
+|           | description                 |
+| --------- | --------------------------- |
+| --help    | display help information    |
+| --version | display version information |
+
+### list global commands and flags
+
+|         | description                                       |
+| ------- | ------------------------------------------------- |
+| --quiet | Eliminating interactive prompts and confirmations |
+
+## Quiet Mode
+
+The Quiet Mode feature of the Kadena CLI can be used to streamline the
+automation of tasks, specifically targeting environments where interactive input
+is impractical, such as continuous integration (CI) systems. By activating Quiet
+Mode, the CLI suppresses interactive prompts and skips confirmations, allowing
+commands to execute uninterrupted. This mode ensures that automated processes
+can run smoothly and efficiently, without the need for manual intervention.
+
+```
+kadena [command] --quiet
+kadena [command] -q
+```
+
+---
+
+## Legacy Mode
+
+Legacy Mode offers a bridge for users requiring compatibility with the
+previously used crypto algo, particularly for commands related to wallets, keys,
+and transactions. This mode ensures the output format aligns with earlier
+standards, facilitating seamless integration with existing workflows and tools
+such as Chainweaver. It's especially useful when interacting with systems that
+rely on the legacy format for processing or when maintaining backward
+compatibility is critical.
+
+Legacy mode is available for:
+
+```
+kadena wallet add
+kadena keys generate
+kadena tx sign
+```
+
+```
+kadena [command] --legacy
+```
+
+---
 
 ### Command specific help
 
@@ -205,6 +250,7 @@ kadena wallet add [arguments]
 | --wallet-name              | Set the name of the wallet                     |                |
 | --security-password        | Set the password for the wallet                |                |
 | --security-verify-password | Set the password for the wallet (verification) |                |
+| --legacy                   | Generate legacy wallet                         |                |
 
 example:
 
@@ -254,26 +300,26 @@ kadena wallet generate-keys [arguments]
 example generating public keys using a range
 
 ```
-kadena wallet generate --wallet-name="kadenawallet.wallet" --key-index-or-range="0-5" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0-5" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
 ```
 
 example generating a public key using a index
 
 ```
-kadena wallet generated --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
 ```
 
 example generating a public and secret key using a index
 
 ```
-kadena wallet generate --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKey" --key-alias="myalias" --security-password=12345678
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKey" --key-alias="myalias" --security-password=12345678
 ```
 
 example generating a public and decrypted secret key using a index (will not be
 stored on filesystem)
 
 ```
-kadena wallet generate --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKeyDec" --security-password=12345678
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKeyDec" --security-password=12345678
 ```
 
 password will be hidden after entry: --security-password=\*
@@ -387,11 +433,16 @@ kadena key generate [arguments]
 | ----------------------- | ------------------------------------------- |
 | --key-alias             | Set alias of the key to store on filesystem |
 | --key-amount            | Set the amount of keys to generate          |
+| --legacy                | Generate legacy keys                        |
 
 example
 
 ```
 kadena key generate --key-alias="myalias" --key-amount="5"
+```
+
+```
+kadena key generate --key-alias="myalias" --key-amount="5" --legacy
 ```
 
 ---
@@ -413,17 +464,17 @@ kadena key list"
 
 Tool to manage / fund accounts of fungibles (e.g. coin')
 
-| **Subcommand**  | **Description**                                  | **Default value** |
-| --------------- | ------------------------------------------------ | ----------------- |
-| add-manual      | Add an existing account to the CLI               |                   |
-| add-from-wallet | Add an account from a key wallet                 |                   |
-| create          | create account on chain(nr) for token \*WIP      |                   |
-| details         | Get details of an account                        |                   |
-| fund            | Fund a existing/new account                      |                   |
-| name-to-address | Resolve a .kda name to a k:address (kadenanames) |                   |
-| address-to-name | Resolve a k:address to a .kda name (kadenanames) |                   |
-| list            | List available account(s)                        |                   |
-| delete          | Delete existing account(s)                       |                   |
+| **Subcommand**  | **Description**                                     | **Default value** |
+| --------------- | --------------------------------------------------- | ----------------- |
+| add-manual      | Add an existing account to the CLI                  |                   |
+| add-from-wallet | Add an account from a key wallet                    |                   |
+| create          | create an account in mainnet on chain(nr) for token |                   |
+| details         | Get details of an account                           |                   |
+| fund            | Fund a existing/new account                         |                   |
+| name-to-address | Resolve a .kda name to a k:address (kadenanames)    |                   |
+| address-to-name | Resolve a k:address to a .kda name (kadenanames)    |                   |
+| list            | List available account(s)                           |                   |
+| delete          | Delete existing account(s)                          |                   |
 
 ---
 
@@ -460,7 +511,7 @@ kadena account add-from-wallet [arguments]
 | --fungible              | Fungible e.g coin                            |              |
 | --network               | Name of the network to be used               |              |
 | --chain-id              | Chain to be used                             |              |
-| --public-keys           | Comma seperated list of public keys          |              |
+| --public-keys           | Comma separated list of public keys          |              |
 | --predicate             | keys-all, keys-any, keys-2, Custom predicate |              |
 
 example:
@@ -472,38 +523,53 @@ kadena account add-from-wallet --account-alias="myalias" --key-wallet="mywallet.
 ---
 
 ```
-kadena account details [arguments]
+kadena account create [arguments]
 ```
 
-| **Arguments & Options** | ** Description**               | **Required** |
-| ----------------------- | ------------------------------ | ------------ |
-| --account               | Provide alias for account      |              |
-| --network               | Name of the network to be used |              |
-| --chain-id              | Chain to be used               |              |
+| **Arguments & Options** | ** Description**                             | **Required** |
+| ----------------------- | -------------------------------------------- | ------------ |
+| --account-name          | Provide an account name                      | No           |
+| --fungible              | Fungible e.g coin                            | No           |
+| --chain-id              | Chain to be used                             |              |
+| --public-keys           | Comma separated list of public keys          |              |
+| --predicate             | keys-all, keys-any, keys-2, Custom predicate |              |
 
 example:
 
+create an account with optional account name and fungible
+
 ```
-kadena account details --account="myalias.yaml" --network="mainnet" --chain-id="1"
+kadena account create --account-name="" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0"
+```
+
+create an account with an account name and fungible
+
+```
+kadena account create --account-name="mainnet_test_account" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0" --fungible="coin
 ```
 
 ---
 
 ```
-kadena account fund [arguments]
+kadena account details [arguments]
 ```
 
-| **Arguments & Options** | ** Description**               | **Required** |
-| ----------------------- | ------------------------------ | ------------ |
-| --account               | Provide alias for account      |              |
-| --amount                | Amount to fund                 |              |
-| --network               | Name of the network to be used |              |
-| --chain-id              | Chain to be used               |              |
+| **Arguments & Options** | ** Description**                       | **Required** |
+| ----------------------- | -------------------------------------- | ------------ |
+| --account               | Provide account alias/name for account |              |
+| --network               | Name of the network to be used         |              |
+| --chain-id              | Chain to be used                       |              |
 
-example:
+example using account alias:
 
 ```
-kadena account fund --account="myalias.yaml" --amount="10" --network="testnet" --chain-id="1"
+kadena account details --account="myalias" --network="mainnet" --chain-id="1"
+```
+
+example using account name:
+
+```
+kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="1"
 ```
 
 ---
@@ -545,7 +611,7 @@ kadena account name-to-address --network="mainnet" --account-kdn-name="kadena.kd
 ---
 
 ```
-kadena account name-to-address [arguments]
+kadena account address-to-name [arguments]
 ```
 
 | **Arguments & Options** | ** Description**                          | **Required** |
@@ -565,9 +631,9 @@ kadena account address-to-name --network="mainnet" --account-kdn-address="k:acco
 kadena account list [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                |
-| ----------------------- | ------------------------------- |
-| --account-alias         | Provide the name of the account |
+| **Arguments & Options** | ** Description**                 |
+| ----------------------- | -------------------------------- |
+| --account-alias         | Provide the alias of the account |
 
 example for listing specific account:
 
@@ -587,10 +653,10 @@ kadena account list --account-alias="all"
 kadena account delete [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                |
-| ----------------------- | ------------------------------- |
-| --account-alias         | Provide the name of the account |
-| --confirm               | Confirm deletion of account     |
+| **Arguments & Options** | ** Description**                 |
+| ----------------------- | -------------------------------- |
+| --account-alias         | Provide the alias of the account |
+| --confirm               | Confirm deletion of account      |
 
 example for delete a specific account:
 
@@ -668,7 +734,7 @@ kadena kadena sign [arguments]
 | --key-wallet                    | Provide the name of the wallet                                          |              |
 | --security-password             | Provide the password for the wallet                                     |              |
 | --key-alias-select              | Select a aliased file                                                   |              |
-| --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma seperated list) |              |
+| --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma separated list) |              |
 
 example:
 
@@ -728,13 +794,18 @@ kadena tx send [arguments]
 | **Arguments & Options**       | ** Description**                                                      | **Required** |
 | ----------------------------- | --------------------------------------------------------------------- | ------------ |
 | --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma seperated list) |              |
-| --network                     | Name of the network to be used                                        |              |
-| --chain-id                    | Chain to be used                                                      |              |
+| --tx-transaction-network      | Kadena networks comma seperated list in order of transaction          |              |
+|                               | (e.g. "mainnet, testnet, devnet, ...")                                |              |
+| --poll                        | Poll status of sent transactions                                      |              |
 
 example:
 
 ```
-kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --network="testnet" --chain-id="1"
+kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --tx-transaction-network "mainnet, testnet"
+```
+
+```
+kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --tx-transaction-network "mainnet, testnet" --poll
 ```
 
 ---
