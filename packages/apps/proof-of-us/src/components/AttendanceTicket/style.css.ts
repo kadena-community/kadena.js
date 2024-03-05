@@ -26,7 +26,7 @@ export const titleClass = style([
   }),
   {
     top: 'clamp(.5rem, 5vw, 2rem)',
-    left: 'clamp(.5rem, 5vw, 2rem)',
+    left: 'clamp(.4rem, 6.5vw, 3rem)',
     width: '65vw',
     fontSize: 'clamp(.5rem, 5vw, 2rem)',
     textOverflow: 'ellipsis',
@@ -53,7 +53,7 @@ export const dateWrapperClass = style([
   }),
   {
     bottom: 'clamp(.5rem, 5vw, 2rem)',
-    left: 'clamp(.5rem, 5vw, 2rem)',
+    left: 'clamp(.4rem, 6.5vw, 3rem)',
     width: '65vw',
     fontSize: 'clamp(.5rem, 5vw, 2rem)',
     textOverflow: 'ellipsis',
