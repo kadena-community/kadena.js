@@ -25,7 +25,13 @@ export function getAccountQuery(accountName: string) {
                 ...CoreTransferFields
               }
               transaction {
-                pactId
+                cmd{
+                  payload {
+                    ... on ContinuationPayload {
+                      pactId
+                    }
+                  }
+                }
               }
             }
           }
@@ -46,11 +52,21 @@ export function getAccountQuery(accountName: string) {
       chainId
     }
     fragment CoreTransactionFields on Transaction {
-      chainId
-      code
-      creationTime
-      height
-      requestKey
+      hash
+      cmd {
+        meta {
+          chainId
+          creationTime
+        }
+        payload {
+          ... on ExecutionPayload {
+            code
+          }
+        }
+      }
+      result {
+        height
+      }
     }
     fragment CoreTransferFields on Transfer {
       amount

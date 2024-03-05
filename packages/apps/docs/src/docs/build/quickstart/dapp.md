@@ -45,4 +45,4 @@ faucet to a DeFi lending platform.
 Already have a dApp idea? Apply to our Developer Program to get technical and
 marketing support from Kadena.
 
-- [Go to Developer Program](/kadena/support/developer-program)
+- [Go to Developer Program](/kadena/resources#developer-programh1574074382)

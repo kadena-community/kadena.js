@@ -50,7 +50,7 @@ export const createTransaction = async (
     if (outFilePath === null) {
       filePath = path.join(
         WORKING_DIRECTORY,
-        `transaction-${transaction.hash}.json`,
+        `transaction-${transaction.hash.slice(0, 10)}.json`,
       );
     } else if (outFilePath === '-') {
       // "-" means print to stdout, which is always done anyways. So just don't write a file.

@@ -141,6 +141,7 @@ export const networkSelectPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
+  const networkText = (args.networkText as string) ?? 'Select a network';
   const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
 
   const allowedNetworks =
@@ -172,7 +173,7 @@ export const networkSelectPrompt: IPrompt<string> = async (
   }
 
   const selectedNetwork = await select({
-    message: 'Select a network',
+    message: networkText,
     choices: choices,
   });
 
@@ -184,7 +185,12 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  if ((await services.filesystem.readDir(defaultNetworksPath)).length === 0) {
+  const isNetworksFolderExists =
+    await services.filesystem.directoryExists(defaultNetworksPath);
+  if (
+    !isNetworksFolderExists ||
+    (await services.filesystem.readDir(defaultNetworksPath)).length === 0
+  ) {
     await ensureNetworksConfiguration();
   }
 

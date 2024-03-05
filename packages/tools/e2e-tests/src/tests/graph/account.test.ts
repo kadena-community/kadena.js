@@ -56,7 +56,9 @@ test('Query: getAccount by AccountName', async ({ request }) => {
               requestKey: accountCreationResult.reqKey,
               senderAccount: sender00Account.account,
               transaction: {
-                pactId: null,
+                cmd: {
+                  payload: {},
+                },
               },
             },
           },
