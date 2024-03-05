@@ -14,6 +14,7 @@ import Link from 'next/link';
 
 import { ChainSelect } from '@/components/Global/ChainSelect';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { useAccountChainDetailsQuery } from '@/hooks/use-account-chain-details-query';
 import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
@@ -51,6 +52,9 @@ export const SignFormSender = ({
     formState: { errors },
     watch,
   } = useFormContext<FormData>();
+  const [chainSelectOptions, setChainSelectOptions] = useState<
+    { chainId: ChainId; data: string | number }[]
+  >([]);
 
   const { selectedNetwork: network } = useWalletConnectClient();
 
@@ -67,6 +71,24 @@ export const SignFormSender = ({
       onDataUpdate(senderData.data);
     }
   }, [onDataUpdate, senderData.data, senderData.isSuccess]);
+
+  const senderAccountChains = useAccountChainDetailsQuery({
+    account: watchSender,
+    networkId: network,
+  });
+
+  useEffect(() => {
+    if (senderAccountChains.isSuccess) {
+      if (senderAccountChains?.data) {
+        setChainSelectOptions(
+          senderAccountChains.data.map((item) => ({
+            chainId: item.chainId,
+            data: item.data ? `${item.data.balance.toFixed(4)} KDA` : 'N/A',
+          })),
+        );
+      }
+    }
+  }, [senderAccountChains.isSuccess, senderAccountChains.data]);
 
   const watchAmount = watch('amount');
 
@@ -137,6 +159,7 @@ export const SignFormSender = ({
                     onChange(chainId);
                     onChainUpdate(chainId);
                   }}
+                  additionalInfoOptions={chainSelectOptions}
                   isInvalid={!!errors.senderChainId}
                   errorMessage={errors.senderChainId?.message}
                 />
