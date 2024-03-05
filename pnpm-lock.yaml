@@ -881,9 +881,6 @@ importers:
       '@kadena/pactjs-generator':
         specifier: workspace:*
         version: link:../../libs/pactjs-generator
-      '@kadena/react-components':
-        specifier: workspace:*
-        version: link:../../libs/react-components
       '@kadena/react-ui':
         specifier: workspace:*
         version: link:../../libs/react-ui
