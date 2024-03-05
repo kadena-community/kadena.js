@@ -145,7 +145,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         });
         return;
       }
-      setReceiverRequestKey(requestKeyOrError as string);
+      setReceiverRequestKey(requestKeyOrError);
 
       try {
         const pollResponseTarget = await listenResult(
