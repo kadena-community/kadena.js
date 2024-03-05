@@ -1,3 +1,4 @@
+import { useNetwork } from '@/modules/network/network.hook';
 import {
   KadenaLogo,
   NavHeader,
@@ -10,10 +11,9 @@ import {
 import { FC, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
-const mockNetworkItems: string[] = ['DevNet', 'Testnet', 'Mainnet'];
-
 export const Layout: FC = () => {
-  const [value, setValue] = useState<string>(mockNetworkItems[0]);
+  const { networks, activeNetwork } = useNetwork();
+  const [value, setValue] = useState(activeNetwork?.name);
 
   return (
     <>
@@ -39,9 +39,9 @@ export const Layout: FC = () => {
           onSelectionChange={(value: any) => setValue(value)}
           startIcon={<SystemIcon.Earth />}
         >
-          {mockNetworkItems.map((network) => (
-            <SelectItem key={network} textValue={network}>
-              {network}
+          {networks.map((network) => (
+            <SelectItem key={network.networkId} textValue={network.name}>
+              {network.name}
             </SelectItem>
           ))}
         </NavHeaderSelect>
