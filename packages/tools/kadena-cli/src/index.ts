@@ -5,6 +5,10 @@ async function main(): Promise<void> {
   // stdin must be read before the "commander" or "chalk" packages are loaded
   await readStdin();
 
+  // Polyfill crypto for Node.JS <= 18.x
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (globalThis as any).crypto = await import('crypto');
+
   const { Command } = await import('commander');
   const { loadProgram } = await import('./program.js');
   await loadProgram(new Command()).parseAsync();
