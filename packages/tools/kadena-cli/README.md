@@ -273,6 +273,7 @@ kadena wallet import [arguments]
 | --security-new-password    | Set the password for the wallet                |                |
 | --security-verify-password | Set the password for the wallet (verification) |                |
 | --wallet-name              | Set the name of the wallet                     |                |
+| --legacy                   | Use Chainweaver's key derivation               |                |
 
 example:
 
@@ -288,6 +289,8 @@ password will be hidden after entry: --security-new-password=\*
 ```
 kadena wallet generate-keys [arguments]
 ```
+
+Generate a keypair from a wallet mnemonic
 
 | **Arguments & Options** | ** Description**                                                                    | ** Required ** |
 | ----------------------- | ----------------------------------------------------------------------------------- | -------------- |
@@ -428,6 +431,8 @@ Tool to generate and manage keys
 ```
 kadena key generate [arguments]
 ```
+
+Generate a plain keypair using a random mnemonic
 
 | **Arguments & Options** | ** Description**                            |
 | ----------------------- | ------------------------------------------- |
