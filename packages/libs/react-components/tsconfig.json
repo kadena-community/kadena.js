@@ -1,0 +1,8 @@
+{
+  "extends": "./node_modules/@kadena-dev/shared-config/tsconfig-base.json",
+  "compilerOptions": {
+    "types": [],
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"]
+}
