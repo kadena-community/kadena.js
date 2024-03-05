@@ -187,7 +187,7 @@ export const SignFormReceiver = ({
         }
       >
         <TabItem key="existing" title="Existing">
-          <Box paddingInline={'xs'}>
+          <Box padding={'xs'}>
             {renderAccountFieldWithChain('existing')}
             {receiverData.isFetching ? (
               <Stack flexDirection={'row'} marginBlockStart={'md'}>
@@ -201,7 +201,7 @@ export const SignFormReceiver = ({
         </TabItem>
 
         <TabItem key="new" title="New">
-          <Stack flexDirection={'column'} gap={'md'} paddingInline={'xs'}>
+          <Stack flexDirection={'column'} gap={'md'} padding={'xs'}>
             <AddPublicKeysSection
               publicKeys={pubKeys}
               deletePubKey={deletePublicKey}
