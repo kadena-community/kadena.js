@@ -1,6 +1,6 @@
-import { useWalletConnectClient } from '@/context/connect-wallet-context';
-import { zodResolver } from '@hookform/resolvers/zod';
-import type { IDialogProps } from '@kadena/react-ui';
+import { useWalletConnectClient } from "@/context/connect-wallet-context";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { IDialogProps } from "@kadena/react-ui";
 import {
   Button,
   Dialog,
@@ -9,13 +9,13 @@ import {
   Stack,
   SystemIcon,
   TextField,
-} from '@kadena/react-ui';
-import useTranslation from 'next-translate/useTranslation';
-import type { FC } from 'react';
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { formButtonStyle, modalOptionsContentStyle } from './styles.css';
+} from "@kadena/react-ui";
+import useTranslation from "next-translate/useTranslation";
+import type { FC } from "react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { formButtonStyle, modalOptionsContentStyle } from "./styles.css";
 
 const schema = z.object({
   label: z.string().trim().min(1),
@@ -27,18 +27,18 @@ type FormData = z.infer<typeof schema>;
 interface IAddNetworkModalProps extends IDialogProps {}
 
 export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
   const { setSelectedNetwork, setNetworksData, networksData } =
     useWalletConnectClient();
 
-  const [label, setLabel] = useState('');
-  const [networkId, setNetworkId] = useState('');
-  const [api, setApi] = useState('');
+  const [label, setLabel] = useState("");
+  const [networkId, setNetworkId] = useState("");
+  const [api, setApi] = useState("");
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    setError('');
+    setError("");
   }, [networkId]);
 
   const handleSubmit = (data: FormData, callback: () => void) => {
@@ -50,7 +50,7 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
     );
 
     if (isDuplicate) {
-      setError('Error: Duplicate NetworkId');
+      setError("Error: Duplicate NetworkId");
       return;
     }
 
@@ -89,34 +89,34 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
                 <section>
                   <Stack flexDirection="column" gap="sm">
                     <TextField
-                      label={t('Network label')}
+                      label={t("Network label")}
                       id="label"
-                      {...register('label')}
+                      {...register("label")}
                       onValueChange={setLabel}
                       value={label}
                       placeholder="devnet"
                       isInvalid={!!errors?.label}
-                      errorMessage={errors?.label?.message ?? ''}
+                      errorMessage={errors?.label?.message ?? ""}
                     />
                     <TextField
-                      label={t('Network ID')}
+                      label={t("Network ID")}
                       id="networkId"
-                      {...register('networkId')}
+                      {...register("networkId")}
                       onValueChange={setNetworkId}
                       value={networkId}
-                      placeholder="fast-development"
+                      placeholder="development"
                       isInvalid={!!errors?.networkId}
-                      errorMessage={errors?.networkId?.message ?? ''}
+                      errorMessage={errors?.networkId?.message ?? ""}
                     />
                     <TextField
-                      label={t('Network api')}
+                      label={t("Network api")}
                       id="api"
-                      {...register('api')}
+                      {...register("api")}
                       onChange={(e) => setApi(e.target.value)}
                       value={api}
                       placeholder="localhost:8080"
                       isInvalid={!!errors?.api}
-                      errorMessage={errors?.api?.message ?? ''}
+                      errorMessage={errors?.api?.message ?? ""}
                     />
                   </Stack>
                 </section>
@@ -126,7 +126,7 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
                     endIcon={<SystemIcon.TrailingIcon />}
                     isDisabled={Boolean(error)}
                   >
-                    {t('Save Network')}
+                    {t("Save Network")}
                   </Button>
                 </section>
               </form>

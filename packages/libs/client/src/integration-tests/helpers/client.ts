@@ -1,33 +1,139 @@
-import type { ChainId, NetworkId } from '@kadena/types';
-import { createClient } from '../../index';
+import { useWalletConnectClient } from "@/context/connect-wallet-context";
+import { zodResolver } from "@hookform/resolvers/zod";
+import type { IDialogProps } from "@kadena/react-ui";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  Stack,
+  SystemIcon,
+  TextField,
+} from "@kadena/react-ui";
+import useTranslation from "next-translate/useTranslation";
+import type { FC } from "react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { formButtonStyle, modalOptionsContentStyle } from "./styles.css";
 
-export const apiHostGenerator = ({
-  networkId,
-  chainId,
-}: {
-  networkId: NetworkId;
-  chainId: ChainId;
-}): string => {
-  switch (networkId) {
-    case 'fast-development':
-      return `http://127.0.0.1:8080/chainweb/0.0/${networkId}/chain/${
-        chainId ?? '1'
-      }/pact`;
-    default:
-      return `http://127.0.0.1:8080/chainweb/0.0/${networkId}/chain/${
-        chainId ?? '1'
-      }/pact`;
-  }
+const schema = z.object({
+  label: z.string().trim().min(1),
+  networkId: z.string().trim().min(1),
+  api: z.string().trim().min(1),
+});
+
+type FormData = z.infer<typeof schema>;
+interface IAddNetworkModalProps extends IDialogProps {}
+
+export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
+  const { t } = useTranslation("common");
+  const { setSelectedNetwork, setNetworksData, networksData } =
+    useWalletConnectClient();
+
+  const [label, setLabel] = useState("");
+  const [networkId, setNetworkId] = useState("");
+  const [api, setApi] = useState("");
+
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setError("");
+  }, [networkId]);
+
+  const handleSubmit = (data: FormData, callback: () => void) => {
+    const networks = [...networksData];
+    const { networkId, label, api } = data;
+
+    const isDuplicate = networks.find(
+      (item) => item.networkId === networkId && item.label === label,
+    );
+
+    if (isDuplicate) {
+      setError("Error: Duplicate NetworkId");
+      return;
+    }
+
+    networks.push({
+      label,
+      networkId,
+      API: api,
+      ESTATS: api,
+    });
+    setNetworksData(networks);
+
+    setSelectedNetwork(networkId);
+    callback();
+  };
+
+  const {
+    register,
+    handleSubmit: validateThenSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  return (
+    <Dialog {...props}>
+      {(state) => (
+        <>
+          <DialogHeader>Add Network</DialogHeader>
+          <DialogContent>
+            <div className={modalOptionsContentStyle}>
+              <form
+                onSubmit={validateThenSubmit((data) => {
+                  handleSubmit(data, () => state.close());
+                })}
+              >
+                <section>
+                  <Stack flexDirection="column" gap="sm">
+                    <TextField
+                      label={t("Network label")}
+                      id="label"
+                      {...register("label")}
+                      onValueChange={setLabel}
+                      value={label}
+                      placeholder="devnet"
+                      isInvalid={!!errors?.label}
+                      errorMessage={errors?.label?.message ?? ""}
+                    />
+                    <TextField
+                      label={t("Network ID")}
+                      id="networkId"
+                      {...register("networkId")}
+                      onValueChange={setNetworkId}
+                      value={networkId}
+                      placeholder="development"
+                      isInvalid={!!errors?.networkId}
+                      errorMessage={errors?.networkId?.message ?? ""}
+                    />
+                    <TextField
+                      label={t("Network api")}
+                      id="api"
+                      {...register("api")}
+                      onChange={(e) => setApi(e.target.value)}
+                      value={api}
+                      placeholder="localhost:8080"
+                      isInvalid={!!errors?.api}
+                      errorMessage={errors?.api?.message ?? ""}
+                    />
+                  </Stack>
+                </section>
+                <section className={formButtonStyle}>
+                  <Button
+                    type="submit"
+                    endIcon={<SystemIcon.TrailingIcon />}
+                    isDisabled={Boolean(error)}
+                  >
+                    {t("Save Network")}
+                  </Button>
+                </section>
+              </form>
+            </div>
+          </DialogContent>
+        </>
+      )}
+    </Dialog>
+  );
 };
-
-// configure the client and export the functions
-export const {
-  listen,
-  submit,
-  preflight,
-  dirtyRead,
-  pollCreateSpv,
-  pollStatus,
-  getStatus,
-  createSpv,
-} = createClient(apiHostGenerator);
