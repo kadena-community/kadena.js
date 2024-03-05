@@ -1,6 +1,7 @@
 import { AccountNameField } from '@/components/Global';
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
 import { Button, SystemIcon } from '@kadena/react-ui';
+import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useCallback } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -19,6 +20,8 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
   onKeyIdUpdate,
   onDerivationUpdate,
 }) => {
+  const { t } = useTranslation('common');
+
   const {
     formState: { errors },
     setValue,
@@ -65,6 +68,7 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
                 type="button"
               />
             }
+            description={isLedger ? t('unexpected-account-name') : undefined}
           />
         )}
       />

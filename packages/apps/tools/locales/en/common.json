@@ -261,5 +261,7 @@
   "Capabilities": "Capabilities",
   "Name": "Name",
   "Arguments": "Arguments",
-  "Signer": "Signer"
+  "Signer": "Signer",
+  "Waiting for ledger signature": "Waiting for ledger signature",
+  "unexpected-account-name": "If this is not the expected account name, try changing the Legacy toggle"
 }
