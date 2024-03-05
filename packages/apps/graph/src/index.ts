@@ -11,6 +11,7 @@ moduleAlias.addAliases({
 
 import { runSystemsCheck } from '@services/systems-check';
 import { dotenv } from '@utils/dotenv';
+import { getNetworkId } from '@utils/get-network-id';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { createYoga } from 'graphql-yoga';
 import 'json-bigint-patch';
@@ -41,9 +42,10 @@ const yogaApp = createYoga({
   graphiql: {
     subscriptionsProtocol: 'WS',
   },
-  context: () => {
+  context: async () => {
     return {
       extensions: {},
+      networkId: await getNetworkId(dotenv.NETWORK_HOST),
     };
   },
 });
