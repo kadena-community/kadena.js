@@ -7,7 +7,9 @@ async function main(): Promise<void> {
 
   // Polyfill crypto for Node.JS <= 18.x
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (globalThis as any).crypto = await import('crypto');
+  if ((globalThis as any).crypto === undefined) {
+    (globalThis as any).crypto = await import('crypto');
+  }
 
   const { Command } = await import('commander');
   const { loadProgram } = await import('./program.js');
