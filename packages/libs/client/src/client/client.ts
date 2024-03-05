@@ -213,12 +213,6 @@ export interface IClient extends IBaseClient {
   send: ISubmit;
 
   /**
-   * Alias for `submit` that accepts only one transaction. useful when you want more precise type checking.
-   * {@link IBaseClient.submit | submit() function}
-   */
-  submitOne: (transaction: ICommand) => Promise<ITransactionDescriptor>;
-
-  /**
    * Use {@link IBaseClient.getStatus | getStatus() function}
    * Alias for `getStatus`.
    *
@@ -357,7 +351,6 @@ export const createClient: ICreateClient = (
 
   return {
     ...client,
-    submitOne: client.submit,
     preflight(body) {
       return client.local(body, {
         preflight: true,
