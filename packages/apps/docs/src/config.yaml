@@ -27,9 +27,6 @@ pages:
       consensus:
         url: /consensus
         file: /learn/consensus.md
-      cryptography:
-        url: /cryptography
-        file: /learn/cryptography.md
       chainweb:
         url: /chainweb
         file: /learn/chainweb-simplified.md
