@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { unwrapData } from '../dataWrapper';
-import { execCodeParser } from '../execCodeParser';
+import { functionCallParser } from '../functionCallParser';
 import { getPointer } from '../getPointer';
 import { FAILED } from '../parser-utilities';
 
-describe('execCodeParser', () => {
+describe('functionCallParser', () => {
   it('parses pact code', () => {
     const pointer = getPointer('(read-keyset "guard")');
-    const result = execCodeParser(pointer);
+    const result = functionCallParser(pointer);
     const data = unwrapData(result);
     expect(data).toEqual({
       codes: [
@@ -18,7 +18,7 @@ describe('execCodeParser', () => {
 
   it('parses function with module name', () => {
     const pointer = getPointer('(my-module.func "guard")');
-    const result = execCodeParser(pointer);
+    const result = functionCallParser(pointer);
     const data = unwrapData(result);
     expect(data).toEqual({
       codes: [
@@ -32,7 +32,7 @@ describe('execCodeParser', () => {
 
   it('parses function with module name and namespace', () => {
     const pointer = getPointer('(my-namespace.my-module.func "guard")');
-    const result = execCodeParser(pointer);
+    const result = functionCallParser(pointer);
     const data = unwrapData(result);
     expect(data).toEqual({
       codes: [
@@ -52,7 +52,7 @@ describe('execCodeParser', () => {
     const pointer = getPointer(
       '(coin.transfer "alice" "bob" 100)(free.my-coin.transfer "alice" "bob" 100.1)',
     );
-    const result = execCodeParser(pointer);
+    const result = functionCallParser(pointer);
     const data = unwrapData(result);
     expect(data).toEqual({
       codes: [
@@ -70,14 +70,14 @@ describe('execCodeParser', () => {
 
   it('reruns FAILED if parenthesis mismatch', () => {
     const pointer = getPointer('(coin.transfer "alice" "bob" 100');
-    const result = execCodeParser(pointer);
+    const result = functionCallParser(pointer);
     const data = unwrapData(result);
     expect(data).toEqual(FAILED);
   });
 
   it('reruns FAILED if function name missing', () => {
     const pointer = getPointer('("alice" "bob" 100)');
-    const result = execCodeParser(pointer);
+    const result = functionCallParser(pointer);
     const data = unwrapData(result);
     expect(data).toEqual(FAILED);
   });
@@ -86,9 +86,8 @@ describe('execCodeParser', () => {
     const pointer = getPointer(
       '(coin.test "alice" "bob" {"one": "1", "second": "2"})',
     );
-    const result = execCodeParser(pointer);
+    const result = functionCallParser(pointer);
     const data = unwrapData(result);
-    console.log(JSON.stringify(data, null, 2));
     expect(data).toEqual({
       codes: [
         {
@@ -110,7 +109,7 @@ describe('execCodeParser', () => {
 
   it('parses a function call with list argument', () => {
     const pointer = getPointer('(my-module.test "alice" "bob" [100 200])');
-    const result = execCodeParser(pointer);
+    const result = functionCallParser(pointer);
     const data = unwrapData(result);
     expect(data).toEqual({
       codes: [
@@ -130,7 +129,7 @@ describe('execCodeParser', () => {
     const pointer = getPointer(
       '(transfer-create "sender-account" "receiver-account" (read-keyset "guard") 10.1)',
     );
-    const result = execCodeParser(pointer);
+    const result = functionCallParser(pointer);
     const data = unwrapData(result);
     expect(data).toEqual({
       codes: [

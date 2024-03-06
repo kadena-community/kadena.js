@@ -81,10 +81,9 @@ const arg: ArgParser = lazyParser(
     ) as ArgParser,
 );
 
-export const execCodeParser = (pointer: IPointer) => {
+export const functionCallParser = (pointer: IPointer) => {
   const rule = repeat($('codes', code(arg)));
   const result = rule(pointer);
-  console.log(JSON.stringify(result));
   if (pointer.done()) {
     // return the result if all tokens are consumed
     return result;
