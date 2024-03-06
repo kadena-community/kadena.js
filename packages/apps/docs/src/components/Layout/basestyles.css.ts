@@ -1,10 +1,6 @@
 import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
 import { createVar, globalStyle, style } from '@vanilla-extract/css';
-import {
-  $$backgroundOverlayColor,
-  $$leftSideWidth,
-  $$pageWidth,
-} from './global.css';
+import { $$leftSideWidth, $$pageWidth } from './global.css';
 
 globalStyle('html, body', {
   margin: 0,
@@ -40,7 +36,7 @@ export const basebackgroundClass = style([
         content: '',
         position: 'absolute',
         inset: 0,
-        backgroundColor: $$backgroundOverlayColor,
+        backgroundColor: 'transparent',
         zIndex: 1,
       },
     },
