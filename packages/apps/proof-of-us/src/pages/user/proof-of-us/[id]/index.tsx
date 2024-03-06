@@ -1,4 +1,5 @@
 import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
+import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { CreateProofOfUs } from '@/features/CreateProofOfUs/CreateProofOfUs';
 import type { NextPage, NextPageContext } from 'next';
@@ -13,7 +14,9 @@ const Page: NextPage<IProps> = ({ params }) => {
   return (
     <LoginBoundry>
       <UserLayout>
-        <CreateProofOfUs params={params} />
+        <ProofOfUsProvider>
+          <CreateProofOfUs params={params} />
+        </ProofOfUsProvider>
       </UserLayout>
     </LoginBoundry>
   );
