@@ -185,7 +185,12 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  if ((await services.filesystem.readDir(defaultNetworksPath)).length === 0) {
+  const isNetworksFolderExists =
+    await services.filesystem.directoryExists(defaultNetworksPath);
+  if (
+    !isNetworksFolderExists ||
+    (await services.filesystem.readDir(defaultNetworksPath)).length === 0
+  ) {
     await ensureNetworksConfiguration();
   }
 
