@@ -1,5 +1,10 @@
 import { getClassName } from '@/utils/getClassName';
-import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
+import {
+  atoms,
+  darkThemeClass,
+  responsiveStyle,
+  tokens,
+} from '@kadena/react-ui/styles';
 import { globalStyle, style } from '@vanilla-extract/css';
 import { paragraphWrapperClass } from '../Paragraph/styles.css';
 
@@ -29,6 +34,7 @@ export const figureImg = style([
   atoms({
     height: '100%',
     width: '100%',
+    cursor: 'pointer',
   }),
   {
     ...responsiveStyle({
@@ -73,13 +79,18 @@ globalStyle(`table figure`, {
 
 export const imageModalClass = style([
   atoms({
-    width: '100%',
+    position: 'fixed',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   }),
   {
-    outline: 0,
+    inset: 0,
+    zIndex: 9999,
     maxWidth: '100vw',
     maxHeight: '100vh',
-    backgroundColor: 'transparent',
+    backgroundColor: 'rgba(26, 26, 26, 0.8)',
     border: 0,
     paddingInline: tokens.kda.foundation.spacing.xs,
     ...responsiveStyle({
@@ -98,17 +109,10 @@ export const imageModalAltTextClass = style([
   }),
   {
     color: tokens.kda.foundation.color.text.base.inverse.default,
+    selectors: {
+      [`${darkThemeClass} &`]: {
+        color: tokens.kda.foundation.color.text.base.default,
+      },
+    },
   },
 ]);
-
-globalStyle(`${imageModalClass} button`, {
-  top: `calc(0px - ${tokens.kda.foundation.spacing.sm})`,
-  right: 0,
-  color: tokens.kda.foundation.color.text.base.inverse.default,
-
-  ...responsiveStyle({
-    md: {
-      paddingInline: tokens.kda.foundation.spacing.xl,
-    },
-  }),
-});

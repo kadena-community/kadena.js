@@ -6,6 +6,7 @@ import { Analytics } from '@/components/Analytics/Analytics';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Header } from '@/components/Layout/components/Header/Header';
 import { markDownComponents } from '@/components/Markdown';
+import { FigureProvider } from '@/components/Markdown/Figure/FigureProvider';
 import { MenuProvider } from '@/hooks/useMenu/MenuProvider';
 import { getLayout } from '@/utils/getLayout';
 import type { IPageMeta, IPageProps } from '@kadena/docs-tools';
@@ -114,13 +115,15 @@ export const MyApp = ({
           }}
         >
           <RouterProvider navigate={router.push}>
-            <MenuProvider>
-              <Header menuItems={props.headerMenuItems} />
-              <CookieConsent />
-              <Layout {...props}>
-                <Component {...props} />
-              </Layout>
-            </MenuProvider>
+            <FigureProvider>
+              <MenuProvider>
+                <Header menuItems={props.headerMenuItems} />
+                <CookieConsent />
+                <Layout {...props}>
+                  <Component {...props} />
+                </Layout>
+              </MenuProvider>
+            </FigureProvider>
           </RouterProvider>
         </ThemeProvider>
       </MDXProvider>
