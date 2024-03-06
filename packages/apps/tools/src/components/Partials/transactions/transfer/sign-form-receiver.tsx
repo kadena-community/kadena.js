@@ -59,10 +59,12 @@ export const SignFormReceiver = ({
     { chainId: ChainId; data: string | number }[]
   >([]);
 
+  const [watchReceiver, watchChain] = watch(['receiver', 'receiverChainId']);
+
   const receiverData = useAccountDetailsQuery({
-    account: getValues('receiver'),
+    account: watchReceiver,
     networkId: network,
-    chainId: getValues('receiverChainId'),
+    chainId: watchChain,
   });
 
   const receiverAccountChains = useAccountChainDetailsQuery({
