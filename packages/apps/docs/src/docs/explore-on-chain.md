@@ -64,44 +64,42 @@ For this tutorial, you'll create your account wallet using the web-based applica
 
 To create an account wallet:
 
-1.  Open Chainweaver from your browser using the URL https://chainweaver.kadena.network.
+1. Open Chainweaver from your browser using the URL https://chainweaver.kadena.network.
 
-2.  Review the [Terms of Service](https://kadena.io/chainweaver-tos/) and confirm that you agree to them, then click **Create a new wallet**.
+2. Review the [Terms of Service](https://kadena.io/chainweaver-tos/) and confirm that you agree to them, then click **Create a new wallet**.
 
-3.  Type and confirm the password you want to use for this account, then click **Continue**.
+3. Type and confirm the password you want to use for this account, then click **Continue**.
     
-    Behind the scenes, Chainweaver generates a public and secret key for your account and a 12-word recovery phrase that is cryptographically secure, so only you can unlock your account.
+   Behind the scenes, Chainweaver generates a public and secret key for your account and a 12-word recovery phrase that is cryptographically secure, so only you can unlock your account.
 
-4.  Confirm that you understand the importance of the recovery phrase, then click **Continue**.
+4. Confirm that you understand the importance of the recovery phrase, then click **Continue**.
 
-5.  Click **Copy** to copy the 12-word recovery phrase to the clipboard so you can save it in a secure location, for example, as a note in a password vault.
+5. Click **Copy** to copy the 12-word recovery phrase to the clipboard so you can save it in a secure location, for example, as a note in a password vault.
 
-    You can also reveal each word by moving the cursor over the text field in the browser.
-    Write each word in the correct order and store the complete recovery phrase in a secure place.
+   You can also reveal each word by moving the cursor over the text field in the browser.
+   Write each word in the correct order and store the complete recovery phrase in a secure place.
 
-6.  Confirm that you have stored the recovery phrase, then click **Continue**.
+6. Confirm that you have stored the recovery phrase, then click **Continue**.
 
-7.  Verify the 12-word recovery phrase by typing the correct words in the correct order, then click **Continue**.
+7. Verify the 12-word recovery phrase by typing the correct words in the correct order, then click **Continue**.
 
-8.  Click **Done** to view your new wallet.
+8. Click **Done** to view your new wallet.
+   
+   At this point, your wallet is simply an online custodian for the public and secret key pair associated with your recovery phase.
+
+1. Click **Add k: Account** to link your public key to an **account name** with the **k:** prefix.
 
 ## Fund the account wallet
 
-After you create the account wallet, it's really a placeholder waiting for you to complete the account creation. 
+After you generate the keys and add an account name, the account name acts as a placeholder waiting for you to complete the next step to activate the account name as the owner of the wallet. 
 Your wallet isn't yet associated with any particular **network** or any particular **chain**.
-If you click **Keys** in the Chainweaver navigation panel,
+If you click **Accounts** in the Chainweaver navigation panel, you'll see that the balance Does not exist on any chain in the network.
+
+To fund the account wallet:
 
 1. Click **Keys** in the Chainweaver navigation panel.
 2. Click the **Copy to Clipboard** icon next to the public key for your wallet.
-<<<<<<< HEAD
-<<<<<<< HEAD
 3. Open [Kadena Developer Tools](https://tools.kadena.io/) in your browser.
-=======
-3. Open [fKadena Tools](https://tools.kadena.io/) in your browser.
->>>>>>> 5dcedcab1 (Fleashing out the structure and working on lots of topics)
-=======
-3. Open [Kadena Developer Tools](https://tools.kadena.io/) in your browser.
->>>>>>> 0776f1e2d (WIP)
 4. Click **Fund new account**.
 5. Paste the public key you copied from Chainweaver in the **Public Key** field, then click the plus (+).
    
@@ -132,6 +130,7 @@ Each round you choose to play, you'll sign a transaction to see how many points 
 Because you'll be signing transactions, you'll need Chainweaver open on your local computer.
 
 To play the game:
+
 1. Open and unlock Chainweaver.
 2. Click **Accounts** in the Chainweaver navigation panel.
 3. Click the **Copy to Clipboard** icon next to your account name to copy the account name you funded with 100 tokens.
@@ -140,7 +139,7 @@ To play the game:
 2. Click **Choose Account**, paste the account name you copied from Chainweaver, then click **Let's Play**
 3. Click **Start new round** to open a new transaction signing request in Chainweaver:
    
-   TIn Chainweaver, you'll see that the request has three parts:
+   In Chainweaver, you'll see that the request has three parts:
    
    - Configuration: Verify the network and chain identifier match the network and chain where your account has tokens—for example, the network is Testnet and the Chain ID is 1—then click **Next**.
    - Sign: Select your public key for each of the three **Grant Capabilities** fields, then click **Next**.
