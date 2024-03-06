@@ -36,8 +36,8 @@ export const Layout: FC = () => {
           <Link to="/">
             <Text bold>DX-Wallet</Text>
           </Link>
-          <Link to="/select-profile">
-            <Text bold>Profiles</Text>
+          <Link to="/networks">
+            <Text bold>Network</Text>
           </Link>
         </NavHeaderLinkList>
 
