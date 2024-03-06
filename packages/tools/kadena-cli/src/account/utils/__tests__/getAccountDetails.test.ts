@@ -35,7 +35,7 @@ describe('getAccountDetailsFromChain', () => {
   it('should throw an error when account details are undefined from chain', async () => {
     server.use(
       http.post(
-        'https://localhost:8080/chainweb/0.0/fast-development/chain/2/pact/api/v1/local',
+        'https://localhost:8080/chainweb/0.0/development/chain/2/pact/api/v1/local',
         () => {
           return HttpResponse.json(
             {
@@ -63,7 +63,7 @@ describe('getAccountDetailsFromChain', () => {
   it('should throw an error when account is not available on chain', async () => {
     server.use(
       http.post(
-        'https://localhost:8080/chainweb/0.0/fast-development/chain/2/pact/api/v1/local',
+        'https://localhost:8080/chainweb/0.0/development/chain/2/pact/api/v1/local',
         () => {
           return HttpResponse.json({ error: 'row not found' }, { status: 404 });
         },
@@ -128,7 +128,7 @@ describe('getAccountDetails', () => {
   it('should throw an error when account details throws an error', async () => {
     server.use(
       http.post(
-        'https://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/local',
+        'https://localhost:8080/chainweb/0.0/development/chain/1/pact/api/v1/local',
         () => {
           return HttpResponse.json(
             { error: 'something went wrong' },

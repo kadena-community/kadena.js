@@ -2,7 +2,7 @@
   "cookies": [
     {
       "name": "_persist%3Anetwork",
-      "value": "%2522fast-development%2522",
+      "value": "%2522development%2522",
       "domain": "localhost",
       "path": "/",
       "expires": -1,
@@ -22,7 +22,7 @@
     },
     {
       "name": "_persist%3Anetworks",
-      "value": "%255B%257B%2522networkId%2522%253A%2522mainnet01%2522%252C%2522label%2522%253A%2522Mainnet%2522%252C%2522API%2522%253A%2522api.chainweb.com%2522%252C%2522ESTATS%2522%253A%2522estats.chainweb.com%2522%257D%252C%257B%2522networkId%2522%253A%2522testnet04%2522%252C%2522label%2522%253A%2522Testnet%2522%252C%2522API%2522%253A%2522api.testnet.chainweb.com%2522%252C%2522ESTATS%2522%253A%2522estats.testnet.chainweb.com%2522%257D%252C%257B%2522label%2522%253A%2522devnet%2522%252C%2522networkId%2522%253A%2522fast-development%2522%252C%2522API%2522%253A%2522localhost%253A8080%2522%252C%2522ESTATS%2522%253A%2522localhost%253A8080%2522%257D%255D",
+      "value": "%255B%257B%2522networkId%2522%253A%2522mainnet01%2522%252C%2522label%2522%253A%2522Mainnet%2522%252C%2522API%2522%253A%2522api.chainweb.com%2522%252C%2522ESTATS%2522%253A%2522estats.chainweb.com%2522%257D%252C%257B%2522networkId%2522%253A%2522testnet04%2522%252C%2522label%2522%253A%2522Testnet%2522%252C%2522API%2522%253A%2522api.testnet.chainweb.com%2522%252C%2522ESTATS%2522%253A%2522estats.testnet.chainweb.com%2522%257D%252C%257B%2522label%2522%253A%2522devnet%2522%252C%2522networkId%2522%253A%2522development%2522%252C%2522API%2522%253A%2522localhost%253A8080%2522%252C%2522ESTATS%2522%253A%2522localhost%253A8080%2522%257D%255D",
       "domain": "localhost",
       "path": "/",
       "expires": -1,
