@@ -80,7 +80,7 @@ interface IFundExistingAccountResponseBody {
   };
 }
 
-const AMOUNT_OF_COINS_FUNDED: number = 100;
+const AMOUNT_OF_COINS_FUNDED: number = 20;
 const isCustomError = (error: unknown): error is ICommandResult => {
   return error !== null && typeof error === 'object' && 'result' in error;
 };
