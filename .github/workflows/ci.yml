@@ -45,7 +45,7 @@ jobs:
         run: pnpm run lint
 
       - name: Build, lint, test all packages
-        run: pnpm turbo lint build test --force
+        run: pnpm turbo lint build test
 
   integration-tests:
     name: INT - ${{ matrix.package }}
@@ -85,7 +85,7 @@ jobs:
         run: pnpm install
 
       - name: run integration tests
-        run: pnpm run test:integration --filter ${{ matrix.package }} --force
+        run: pnpm run test:integration --filter ${{ matrix.package }}
 
   end-to-end-tests:
     name: E2E - ${{ matrix.app }}
@@ -125,7 +125,7 @@ jobs:
 
       # Disable remote caching, we need to explicitly rebuild Apps.
       - name: build dApp
-        run: pnpm turbo build --filter @kadena/${{ matrix.app }} --force
+        run: pnpm turbo build --filter @kadena/${{ matrix.app }}
 
       - name: Run end-to-end tests
         run:

@@ -68,7 +68,7 @@ describe('describeModule', () => {
   it('describes the coin module', async () => {
     const module = await describeModule('coin', config);
     expect(module.hash).toBeTruthy();
-    expect(module.blessed).toHaveLength(3);
+    expect(module.blessed).toHaveLength(4);
     expect(module.keyset).toContain('Governance {');
     expect(module.interfaces).toHaveLength(2);
     expect(module.name).toBe('coin');
