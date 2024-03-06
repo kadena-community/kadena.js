@@ -17,7 +17,7 @@
       "outputMode": "new-only"
     },
     "test:e2e": {
-      "inputs": ["test/**/*.ts", "test/**/*.tsx"],
+      "inputs": ["tests/**/*.ts", "tests/**/*.tsx"],
       "outputMode": "new-only"
     },
     "lint": {
