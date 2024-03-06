@@ -3,6 +3,7 @@ import { getFungibleChainAccount } from '@services/account-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import FungibleChainAccount from '../objects/fungible-chain-account';
+import type { FungibleChainAccount as FungibleChainAccountType } from '../types/graphql-types';
 
 builder.queryField('fungibleChainAccountByPublicKey', (t) =>
   t.field({
@@ -11,24 +12,32 @@ builder.queryField('fungibleChainAccountByPublicKey', (t) =>
       publicKey: t.arg.string({ required: true }),
       chainId: t.arg.string({ required: true }),
     },
-    type: FungibleChainAccount,
+    type: [FungibleChainAccount],
     nullable: true,
     async resolve(__parent, args) {
       try {
-        const accountName = await getChainAccountNameByPublicKey(
+        const accountNames = await getChainAccountNamesByPublicKey(
           args.publicKey,
           args.chainId,
         );
 
-        if (!accountName) {
+        if (accountNames.length === 0) {
           return null;
         }
 
-        return await getFungibleChainAccount({
-          chainId: args.chainId,
-          fungibleName: 'coin',
-          accountName,
-        });
+        const fungibleChainAccounts = (
+          await Promise.all(
+            accountNames.map(async (accountName: string) => {
+              return await getFungibleChainAccount({
+                chainId: args.chainId,
+                fungibleName: 'coin',
+                accountName,
+              });
+            }),
+          )
+        ).filter(Boolean) as FungibleChainAccountType[];
+
+        return fungibleChainAccounts;
       } catch (error) {
         throw normalizeError(error);
       }
@@ -36,10 +45,10 @@ builder.queryField('fungibleChainAccountByPublicKey', (t) =>
   }),
 );
 
-async function getChainAccountNameByPublicKey(
+async function getChainAccountNamesByPublicKey(
   publicKey: string,
   chainId: string,
-): Promise<string | undefined> {
+): Promise<string[]> {
   const searchPubKey = `%${publicKey}%`;
 
   const regex = /^[a-zA-Z0-9]+$/;
@@ -49,7 +58,7 @@ async function getChainAccountNameByPublicKey(
   }
 
   const result = (await prismaClient.$queryRaw`
-    SELECT to_acct
+    SELECT DISTINCT to_acct
     FROM transfers AS tr
     INNER JOIN transactions AS tx
       ON tx.block = tr.block AND tx.requestkey = tr.requestkey
@@ -59,13 +68,11 @@ async function getChainAccountNameByPublicKey(
       AND
         (tx.code LIKE '%coin.transfer-create%'
         OR tx.code LIKE '%coin.create-account%')
-    ORDER BY tr.amount DESC
-    LIMIT 1
   `) as { to_acct: string }[];
 
   if (result.length === 0) {
-    return undefined;
+    return [];
   }
 
-  return result[0].to_acct;
+  return result.map((account) => account.to_acct);
 }

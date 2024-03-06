@@ -12,6 +12,7 @@ import { PrismaJsonColumnParsingError } from './prisma-json-columns';
  * Checks what type of error it is and returns a normalized GraphQLError with the correct type, message and a description that clearly translates to the user what the error means.
  */
 export function normalizeError(error: any): GraphQLError {
+  console.log(error);
   if (error instanceof PrismaClientInitializationError) {
     return new GraphQLError('Prisma Client Initialization Error', {
       extensions: {

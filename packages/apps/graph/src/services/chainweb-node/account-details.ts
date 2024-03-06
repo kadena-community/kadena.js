@@ -21,6 +21,12 @@ export async function getAccountDetails(
 ): Promise<FungibleChainAccountDetails | null> {
   let result;
   try {
+    console.log(
+      'gettingAccountDetails for',
+      accountName,
+      chainId,
+      fungibleName,
+    );
     result = (await details(
       accountName,
       dotenv.NETWORK_ID,
