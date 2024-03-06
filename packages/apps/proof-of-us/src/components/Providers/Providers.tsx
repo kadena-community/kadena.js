@@ -7,7 +7,6 @@ import { ThemeProvider } from 'next-themes';
 import type { FC, PropsWithChildren } from 'react';
 import { SWRConfig } from 'swr';
 import { AccountProvider } from '../AccountProvider/AccountProvider';
-import { ProofOfUsProvider } from '../ProofOfUsProvider/ProofOfUsProvider';
 import { ToastProvider } from '../ToastProvider/ToastProvider';
 import { TokenProvider } from '../TokenProvider/TokenProvider';
 
@@ -29,9 +28,7 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
         <ToastProvider>
           <AccountProvider>
             <ThemeProvider>
-              <TokenProvider>
-                <ProofOfUsProvider>{children}</ProofOfUsProvider>
-              </TokenProvider>
+              <TokenProvider>{children}</TokenProvider>
             </ThemeProvider>
           </AccountProvider>
         </ToastProvider>
