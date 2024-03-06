@@ -1,10 +1,10 @@
-import { sender00Account } from '@kadena-dev/e2e-base/src/constants/accounts.constants';
 import {
   createAccount,
   generateAccount,
 } from '@kadena-dev/e2e-base/src/helpers/client-utils/accounts.helper';
-import type { IAccount } from '@kadena-dev/e2e-base/src/types/account.types';
 import { expect, test } from '@playwright/test';
+import { sender00Account } from '../../e2e-base/src/constants/accounts.constants';
+import type { IAccount } from '../../e2e-base/src/types/account.types';
 import { base64Encode } from '../helpers/cryptography.helper';
 import { sendQuery } from '../helpers/request.helper';
 import { getAccountQuery } from '../queries/getAccount';

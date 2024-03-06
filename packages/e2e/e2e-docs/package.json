@@ -1,5 +1,5 @@
 {
-  "name": "@kadena-dev/e2e-docs",
+  "name": "e2e-docs",
   "version": "0.0.1",
   "private": true,
   "scripts": {
