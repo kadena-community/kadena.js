@@ -54,7 +54,7 @@ const TransferPage = () => {
         paddingBlockEnd={'xxxl'}
         gap={'lg'}
       >
-        <Notification intent="info" role="alert">
+        <Notification intent="info" role="alert" isDismissable>
           <Trans
             i18nKey="common:ledger-info-notification"
             components={[
