@@ -34,7 +34,7 @@ export interface IParsedCode {
     } | {
         object: Array<{
             property: string;
-            value: IParsedCode['args'];
+            value: IParsedCode['args'][number];
         }>;
     } | {
         list: Array<IParsedCode['args']>;
