@@ -94,14 +94,14 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       account,
       listenToProofOfUsData,
     );
-    const unListen2 = store.listenProofOfUsBackgroundData(
+    const unListenBackgroundData = store.listenProofOfUsBackgroundData(
       `${params.id}`,
       setBackground,
     );
 
     return () => {
       unListen();
-      unListen2();
+      unListenBackgroundData();
     };
   }, [params?.id, account]);
 
