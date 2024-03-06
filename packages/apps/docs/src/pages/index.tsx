@@ -52,6 +52,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               </BrowseSection>
             </DocsCard>
           </GridItem>
+
           <GridItem>
             <DocsCard
               label="Onboard / Build"
@@ -66,13 +67,16 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 <Link className={docsCardLink} href="/build/quickstart">
                   Deploy your first contract - Quick start
                 </Link>
-<<<<<<< HEAD
-                <Link className={docsCardLink} href="/build/pact/get-started-with-pact">
-                  Get started with 
+                <Link
+                  className={docsCardLink}
+                  href="/build/pact/get-started-with-pact"
+                >
+                  Get started with Pact smart contract language
                 </Link>
               </BrowseSection>
             </DocsCard>
           </GridItem>
+
           <GridItem>
             <DocsCard
               label="Coach / Build"
@@ -97,115 +101,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               </BrowseSection>
             </DocsCard>
           </GridItem>
-          <GridItem>
-            <DocsCard
-              label="Propel / Deploy / Get technical"
-              description="Deploy your smart contracts on the network or support the infrastructure by deploying a Chainweb node."
-              schema="success"
-              background="whitepapers"
-            >
-              <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/deploy">
-                  Prepare to deploy
-                </Link>
-                <Link className={docsCardLink} href="/deploy/node">
-                  Manage a Chainweb node
-                </Link>
-              </BrowseSection>
-            </DocsCard>
-          </GridItem>
-          <GridItem rowSpan={1}>
-            <DocsCard
-              label="Embrace / Participate / Join us"
-              description="Find out about community programs, grants, partnerships, and business development opportunities,
-              to grow the Kadena ecosystem and how you can contribute."
-              schema="info"
-              background="contribute"
-            >
-              <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/participate">
-                  How to get involved
-                </Link>
 
-                <Link className={docsCardLink} href="/participate/community">
-                  Community programs
-                </Link>
-
-                <Link className={docsCardLink} href="/participate/developer">
-                  Developer programs
-                </Link>
-
-                <Link className={docsCardLink} href="/participate/docs">
-                  Contribute to doc
-                </Link>
-
-                <Link className={docsCardLink} href="https://kadena.io/grants/">
-                  Grants
-                </Link>
-              </BrowseSection>
-            </DocsCard>
-          </GridItem>
-          <GridItem>
-            <DocsCard
-              label="Explore / Go beyond"
-              description="Explore videos, whitepapers, discussion forums, and other sites and tools that are outside the scope of documentation."
-              schema="warning"
-              background="marmalade"
-            >
-              <BrowseSection marker="none">
-                <Link className={docsCardLink} href="https://tools.kadena.io">
-                  Get KDA and developer tools
-                </Link>
-                <Link className={docsCardLink} href="https://academy.kadena.io">
-                  Browse courses in the Kadena Academy
-                </Link>
-                <Link
-                  className={docsCardLink}
-                  href="https://www.youtube.com/kadenablockchain"
-                >
-                  Visit the Kadena video library
-                </Link>
-                <Link
-                  className={docsCardLink}
-                  href="https://www.kadena.io/blog"
-                >
-=======
-                <Link
-                  className={docsCardLink}
-                  href="/build/pact/get-started-with-pact"
-                >
-                  Get started with smart contracts
-                </Link>
-                <Link className={docsCardLink} href="/build/election">
-                  Build a simple election application
-                </Link>
-              </BrowseSection>
-            </DocsCard>
-          </GridItem>
-          <GridItem>
-            <DocsCard
-              label="Coach / Build"
-              description="Take your game to the next level with tools, sample code, and 
-              how-to guides."
-              schema="success"
-              background="whitepapers"
-            >
-              <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/build/pact">
-                  Build with Pact
-                </Link>
-                <Link className={docsCardLink} href="/build/kadena-client">
-                  Kadena client
-                </Link>
-                <Link className={docsCardLink} href="/build/code-templates">
-                  Code templates
-                </Link>
-                <Link className={docsCardLink} href="/build/cryptography">
-                  Cryptographic utilities
-                </Link>
-              </BrowseSection>
-            </DocsCard>
-          </GridItem>
           <GridItem>
             <DocsCard
               label="Propel / Deploy / Get technical"
@@ -236,6 +132,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               </BrowseSection>
             </DocsCard>
           </GridItem>
+
           <GridItem rowSpan={1}>
             <DocsCard
               label="Embrace / Participate / Join us"
@@ -267,6 +164,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
               </BrowseSection>
             </DocsCard>
           </GridItem>
+
           <GridItem>
             <DocsCard
               label="Explore / Go beyond"
@@ -291,7 +189,6 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                   className={docsCardLink}
                   href="https://www.kadena.io/blog"
                 >
->>>>>>> c413069b8 (Fleashing out the structure and working on lots of topics)
                   Stay up to date
                 </Link>
               </BrowseSection>

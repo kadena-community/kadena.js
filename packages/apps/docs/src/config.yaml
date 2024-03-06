@@ -238,7 +238,7 @@ pages:
         children:
           webeditor:
             url: /web-editor
-            file: /tutorials/beginner/web-editor.md
+            file: /tutorials/beginner/dev-network.md
           helloworld:
             url: /hello-world
             file: /tutorials/beginner/hello-world.md
