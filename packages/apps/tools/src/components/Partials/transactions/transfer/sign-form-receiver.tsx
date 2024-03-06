@@ -32,6 +32,8 @@ import { useAccountChainDetailsQuery } from '@/hooks/use-account-chain-details-q
 import { createPrincipal } from '@/services/faucet/create-principal';
 import type { ChainId } from '@kadena/types';
 
+type TabValue = 'new' | 'existing';
+
 export const SignFormReceiver = ({
   onDataUpdate,
   onPubKeysUpdate,
@@ -80,7 +82,9 @@ export const SignFormReceiver = ({
     }
   }, [onDataUpdate, receiverData.data, receiverData.isSuccess]);
 
-  const renderAccountFieldWithChain = (tab: string) => (
+  const [toAccountTab, setToAccountTab] = useState<TabValue>('existing');
+
+  const renderAccountFieldWithChain = (tab: TabValue) => (
     <Stack flexDirection={'column'} gap={'md'}>
       <Controller
         name="receiver"
@@ -129,10 +133,6 @@ export const SignFormReceiver = ({
         />
       </div>
     </Stack>
-  );
-
-  const [toAccountTab, setToAccountTab] = useState<'new' | 'existing'>(
-    'existing',
   );
 
   const [pubKeys, setPubKeys] = useState<string[]>([]);
@@ -210,9 +210,7 @@ export const SignFormReceiver = ({
       <Tabs
         aria-label="receiver-account-tabs"
         selectedKey={toAccountTab}
-        onSelectionChange={(value) =>
-          setToAccountTab(value as 'new' | 'existing')
-        }
+        onSelectionChange={(value) => setToAccountTab(value as TabValue)}
       >
         <TabItem key="existing" title="Existing">
           <Box padding={'xs'}>
