@@ -86,11 +86,12 @@ export const imageModalClass = style([
     alignItems: 'center',
   }),
   {
+    outline: 0,
     inset: 0,
     zIndex: 9999,
     maxWidth: '100vw',
     maxHeight: '100vh',
-    backgroundColor: 'rgba(26, 26, 26, 0.8)',
+    backgroundColor: 'transparent',
     border: 0,
     paddingInline: tokens.kda.foundation.spacing.xs,
     ...responsiveStyle({
@@ -116,3 +117,7 @@ export const imageModalAltTextClass = style([
     },
   },
 ]);
+
+globalStyle(`${imageModalClass} button`, {
+  display: 'none',
+});
