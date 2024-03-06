@@ -359,7 +359,8 @@ To test updating a module with the correct keyset:
 
 ### Use an incorrect keyset
 
-You can't use `expect-failure` in the Pact REPL to test module definitions, but you can simulate an unauthorized user attempting to update a module.
+You can't use `expect-failure` in the Pact REPL to test module definitions, but
+you can simulate an unauthorized user attempting to update a module.
 
 To test updating a module with an incorrect keyset:
 

@@ -30,12 +30,33 @@ If you want to learn more about namespaces and how they are used before continui
 
 Before you start this tutorial, verify the following basic requirements:
 
+<<<<<<< HEAD:packages/apps/docs/src/docs/build/election-app/define-a-namespace.md
 - You have an internet connection and a web browser installed on your local computer.
 - You have a code editor, such as [Visual Studio Code](https://code.visualstudio.com/download), access to an interactive terminal shell, and are generally familiar with using command-line programs.
 - You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
 - You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
 - You are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
 - You have created and funded an administrative account as described in [Add an administrator account](/build/election/add-admin-account).
+=======
+- You have an internet connection and a web browser installed on your local
+  computer.
+- You have a code editor, such as
+  [Visual Studio Code](https://code.visualstudio.com/download), access to an
+  interactive terminal shell, and are generally familiar with using command-line
+  programs.
+- You have cloned the
+  [election-dapp](https://github.com/kadena-community/voting-dapp.git
+  election-dapp) repository as described in
+  [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace)
+  and have checked out the `01-getting-started` branch.
+- You have the development network running in a Docker container as described in
+  [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain).
+- You are
+  [connected to the development network](/build/guides/election-dapp-tutorial/start-a-local-blockchain#connect-to-the-development-networkh1207030923)
+  using your local host IP address and port number 8080.
+- You have created and funded an administrative account as described in
+  [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
+>>>>>>> c5a705b515b66c481ca8326b2eaf79736b5f1351:packages/apps/docs/src/docs/build/guides/election-dapp-tutorial/define-a-namespace.md
 
 ## Write a transaction in Pact
 
@@ -62,8 +83,13 @@ To write a simple transaction in Pact:
 
 6. Execute the transaction using the `pact` command-line program.
 
+<<<<<<< HEAD:packages/apps/docs/src/docs/build/election-app/define-a-namespace.md
    If `pact-cli` is installed locally, run the following command inside the `pact` folder in the terminal shell:
    
+=======
+   After you execute the file, you should see the following output:
+
+>>>>>>> c5a705b515b66c481ca8326b2eaf79736b5f1351:packages/apps/docs/src/docs/build/guides/election-dapp-tutorial/define-a-namespace.md
    ```bash
    pact namespace.repl -t
    ```
@@ -80,22 +106,44 @@ To write a simple transaction in Pact:
    Load successful
    ```
 
+<<<<<<< HEAD:packages/apps/docs/src/docs/build/election-app/define-a-namespace.md
    If you don't have `pact` installed locally, you can open the [pact-cli](http://localhost:8080/ttyd/pact-cli/) from the Docker container.
    However, to use the `pact-cli` in the development network, you must mount the `pact` folder in the container.
    To mount the `pact` folder, start the development network with the following command:
    
+=======
+   If you don't have `pact` installed locally, you can open the
+   [pact-cli](http://localhost:8080/ttyd/pact-cli/) from the Docker container.
+   However, to use the `pact-cli` in the development network, you must mount the
+   `pact` folder in the container. To mount the `pact` folder, start the
+   development network with the following command:
+
+>>>>>>> c5a705b515b66c481ca8326b2eaf79736b5f1351:packages/apps/docs/src/docs/build/guides/election-dapp-tutorial/define-a-namespace.md
    ```docker
    docker run --interactive --tty --publish 8080:8080 \
     --volume ./pact:/pact-cli:ro kadena/devnet:latest
    ```
+<<<<<<< HEAD:packages/apps/docs/src/docs/build/election-app/define-a-namespace.md
    
    After you start the development network with the `pact` folder mounted, you can load the `namespace.repl` file with the following command:
+=======
+
+   After you start the development network with the `pact` folder mounted, you
+   can load the `namespace.repl` file in the
+   [pact-cli](http://localhost:8080/ttyd/pact-cli/) with the following command:
+>>>>>>> c5a705b515b66c481ca8326b2eaf79736b5f1351:packages/apps/docs/src/docs/build/guides/election-dapp-tutorial/define-a-namespace.md
 
    ```pact
    (load "namespace.repl")
    ```
 
+<<<<<<< HEAD:packages/apps/docs/src/docs/build/election-app/define-a-namespace.md
    If you are using `pact-cli` in a browser, you can replace the `pact namespace.repl -t` command with `(load "namespace.repl")` throughout this tutorial.
+=======
+   If you are using the pact-cli in a browser, you can replace the
+   `pact namespace.repl -t` command with `(load "namespace.repl")` throughout
+   this tutorial.
+>>>>>>> c5a705b515b66c481ca8326b2eaf79736b5f1351:packages/apps/docs/src/docs/build/guides/election-dapp-tutorial/define-a-namespace.md
 
 ## Use Pact built-in functions
 
@@ -188,7 +236,11 @@ To define the election application namespace with the `define-namespace` functio
    namespace.repl:20:0:Trace: Commit Tx 0: Define a namespace called 'election
    Load successful
    ```
+<<<<<<< HEAD:packages/apps/docs/src/docs/build/election-app/define-a-namespace.md
    
+=======
+
+>>>>>>> c5a705b515b66c481ca8326b2eaf79736b5f1351:packages/apps/docs/src/docs/build/guides/election-dapp-tutorial/define-a-namespace.md
    You now have a namespace called `election` defined in the Pact REPL.
 
 ## Modify the namespace
@@ -237,9 +289,16 @@ To test modifying the election application namespace:
    ```bash
    pact namespace.repl -t
    ```
+<<<<<<< HEAD:packages/apps/docs/src/docs/build/election-app/define-a-namespace.md
    
    You'll see that the update transaction succeeds with output similar to the following:
    
+=======
+
+   You'll see that the update transaction succeeds with output similar to the
+   following:
+
+>>>>>>> c5a705b515b66c481ca8326b2eaf79736b5f1351:packages/apps/docs/src/docs/build/guides/election-dapp-tutorial/define-a-namespace.md
    ```bash
    namespace.repl:1:0:Trace: Setting transaction data
    namespace.repl:12:0:Trace: Begin Tx 0: Define a namespace called 'election
@@ -423,8 +482,15 @@ To create a principal namespace:
    Load successful
    ```
 
+<<<<<<< HEAD:packages/apps/docs/src/docs/build/election-app/define-a-namespace.md
 In this example, you defined a principal namespace in the Pact REPL using the public key for the `sender00` test account. 
 Next, you can define a principal namespace on the development network using the administrative account you created in [Add an administrator account](/build/election/add-admin-account).
+=======
+In this example, you defined a principal namespace in the Pact REPL using the
+public key for `sender00` account. Next, you can define a principal namespace on
+the development network using the administrative account you created in
+[Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
+>>>>>>> c5a705b515b66c481ca8326b2eaf79736b5f1351:packages/apps/docs/src/docs/build/guides/election-dapp-tutorial/define-a-namespace.md
 
 ## Create your own principal namespace
 
@@ -492,9 +558,6 @@ To create your principal namespace on the development network:
    Remember that `k:<your-public-key>` is the default **account name** for your administrative account that you funded in [Add an administrator account](/build/election/add-admin-account).
    You can copy this account name from Chainweaver when viewing the account watch list.
 
-   When you run the script, you should see Chainweaver display a QuickSign Request.
-   For example:
-   
    ![Sample QuickSign request](/assets/docs/election-workshop/quicksign-request.png)
 
    If you don't see the request automatically, select Chainweaver to bring it to the foreground. 

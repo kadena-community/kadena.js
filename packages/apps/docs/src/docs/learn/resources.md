@@ -11,13 +11,17 @@ layout: full
 
 # Kadena resources
 
-This page provides official links to help you find information about Kadena, including where you can find whitepapers, blog pos article, press releases, and brand guidelines.
-For information about the Kadena team, see [About Kadena](https://www.kadena.io/about) on the main Kadena website.
+This page provides official links to help you find information about Kadena,
+including where you can find whitepapers, blog pos article, press releases, and
+brand guidelines. For information about the Kadena team, see
+[About Kadena](https://www.kadena.io/about) on the main Kadena website.
 
 ## Whitepapers
 
-Kadena has published several whitepapers detailing important aspects of the Chainweb protocol, the Pact smart contract language, and the Kadena public blockchain.
-You can download these white papers from the main [Kadena](https://www.kadena.io/whitepapers) website.
+Kadena has published several whitepapers detailing important aspects of the
+Chainweb protocol, the Pact smart contract language, and the Kadena public
+blockchain. You can download these white papers from the main
+[Kadena](https://www.kadena.io/whitepapers) website.
 
 For more information about Chainweb, see the following resources:
 

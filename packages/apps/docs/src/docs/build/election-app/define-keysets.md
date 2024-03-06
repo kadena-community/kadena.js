@@ -1,8 +1,8 @@
 ---
-title: "Define keysets"
-description: "Learn how to define keysets in your principal namespace."
-menu: "Workshop: Election application"
-label: "Define keysets"
+title: 'Define keysets'
+description: 'Learn how to define keysets in your principal namespace.'
+menu: 'Workshop: Election application'
+label: 'Define keysets'
 order: 5
 layout: full
 tags: [account, keyset, namespace, governance, authorization, tutorial]

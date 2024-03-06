@@ -1,4 +1,5 @@
 import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
+import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import { ScreenHeight } from '@/components/ScreenHeight/ScreenHeight';
 import { ErrorStatus } from '@/components/Status/ErrorStatus';
 import { LoadingStatus } from '@/components/Status/LoadingStatus';
@@ -38,17 +39,19 @@ const Page: NextPage<IProps> = ({ params }) => {
     <LoginBoundry>
       <UserLayout>
         <ScreenHeight>
-          {status !== SubmitStatus.ERROR && <LoadingStatus />}
-          {status === SubmitStatus.ERROR && (
-            <Stack
-              flex={1}
-              flexDirection="column"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <ErrorStatus>{JSON.stringify(result, null, 2)}</ErrorStatus>
-            </Stack>
-          )}
+          <ProofOfUsProvider>
+            {status !== SubmitStatus.ERROR && <LoadingStatus />}
+            {status === SubmitStatus.ERROR && (
+              <Stack
+                flex={1}
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <ErrorStatus>{JSON.stringify(result, null, 2)}</ErrorStatus>
+              </Stack>
+            )}
+          </ProofOfUsProvider>
         </ScreenHeight>
       </UserLayout>
     </LoginBoundry>

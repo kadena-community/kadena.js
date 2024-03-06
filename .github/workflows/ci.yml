@@ -102,6 +102,11 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
+      - name: Start devnet
+        uses: ./.github/actions/devnet
+        with:
+          migrations: packages/apps/graph/cwd-extra-migrations
+
       - uses: pnpm/action-setup@v2
         with:
           version: 8
@@ -112,27 +117,24 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
-      - name: Start devnet
-        uses: ./.github/actions/devnet
-        with:
-          migrations: packages/apps/graph/cwd-extra-migrations
-
       - name: Install dependencies
         run: pnpm install
 
-      - name: Install browsers
-        run: pnpm --filter @kadena-dev/e2e-tests run install:chromium
-
-      # Disable remote caching, we need to explicitly rebuild Apps.
-      - name: build dApp
+      # Due to how docs is built, we need to explicitly rebuild to generate the correct menu structure.
+      - name: build Docs
+        if: matrix.app == 'docs'
         run: pnpm turbo build --filter @kadena/${{ matrix.app }} --force
 
-      - name: Run end-to-end tests
+      - name: build dApps
+        if: matrix.app != 'docs'
+        run: pnpm turbo build --filter @kadena/${{ matrix.app }}
+
+      - name: Install browsers
         run:
-          pnpm turbo test:e2e --filter @kadena-dev/e2e-tests -- -c
-          playwright.${{ matrix.app }}.config.ts
-        env:
-          TESTOBJECT: ${{ matrix.app }}
+          pnpm --filter @kadena-dev/e2e-${{ matrix.app }} run install:chromium
+
+      - name: Run end-to-end tests
+        run: pnpm turbo test:e2e --filter @kadena-dev/e2e-${{ matrix.app }}
 
       - uses: actions/upload-artifact@v3
         if: always()

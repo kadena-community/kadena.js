@@ -16,7 +16,7 @@ export const fundGasStation = async ({
   chainId: ChainId;
   upgrade: boolean;
 }): Promise<string | undefined> => {
-  if (NETWORK_ID !== 'fast-development') {
+  if (NETWORK_ID !== 'development') {
     return 'Only needs to happen on Devnet (development), funding happens differently on other networks.';
   }
 

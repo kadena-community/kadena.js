@@ -51,7 +51,7 @@ describe('transferCreate', () => {
       {
         host: 'http://127.0.0.1:8080',
         defaults: {
-          networkId: 'fast-development',
+          networkId: 'development',
         },
         sign: createSignWithKeypair([sender00Account]),
       },
@@ -79,7 +79,7 @@ describe('transferCreate', () => {
         'submit',
         withStep((step, trDesc) => {
           expect(step).toBe(3);
-          expect(trDesc.networkId).toBe(NetworkIds.fast_development);
+          expect(trDesc.networkId).toBe(NetworkIds.development);
           expect(trDesc.chainId).toBe('0');
           expect(trDesc.requestKey).toBeTruthy();
         }),
@@ -105,7 +105,7 @@ describe('getBalance', () => {
   it("should return the account's balance", async () => {
     const balance = await getBalance(
       accountOne.account,
-      'fast-development',
+      'development',
       '0',
       'http://127.0.0.1:8080',
     );
@@ -117,7 +117,7 @@ describe('getDetails', () => {
   it("should return the account's details", async () => {
     const data = await details(
       accountOne.account,
-      'fast-development',
+      'development',
       '0',
       'http://127.0.0.1:8080',
     );
@@ -150,7 +150,7 @@ describe('createAccount', () => {
       {
         host: 'http://127.0.0.1:8080',
         defaults: {
-          networkId: 'fast-development',
+          networkId: 'development',
         },
         sign: createSignWithKeypair([sender00Account]),
       },
@@ -175,7 +175,7 @@ describe('transfer', () => {
       {
         host: 'http://127.0.0.1:8080',
         defaults: {
-          networkId: 'fast-development',
+          networkId: 'development',
         },
         sign: createSignWithKeypair([accountOne]),
       },
@@ -185,7 +185,7 @@ describe('transfer', () => {
 
     const balance = await getBalance(
       accountTwo.account,
-      'fast-development',
+      'development',
       '0',
       'http://127.0.0.1:8080',
     );
@@ -216,7 +216,7 @@ describe('cross chain transfer', () => {
       {
         host: 'http://127.0.0.1:8080',
         defaults: {
-          networkId: 'fast-development',
+          networkId: 'development',
         },
         sign: createSignWithKeypair([sender00Account]),
       },
@@ -226,7 +226,7 @@ describe('cross chain transfer', () => {
 
     const balance = await getBalance(
       accountOne.account,
-      'fast-development',
+      'development',
       '1',
       'http://127.0.0.1:8080',
     );
@@ -239,7 +239,7 @@ describe('safeTransfer', () => {
   it('should transfer kda from sender00 account to receiverAccount if both receiver and sender sign', async () => {
     const initialBalance = await getBalance(
       accountOne.account,
-      'fast-development',
+      'development',
       '0',
       'http://127.0.0.1:8080',
     );
@@ -259,7 +259,7 @@ describe('safeTransfer', () => {
       {
         host: 'http://127.0.0.1:8080',
         defaults: {
-          networkId: 'fast-development',
+          networkId: 'development',
         },
         sign: createSignWithKeypair([sender00Account, accountOne]),
       },
@@ -275,7 +275,7 @@ describe('safeTransfer', () => {
 
     const balanceAfterTransfer = await getBalance(
       accountOne.account,
-      'fast-development',
+      'development',
       '0',
       'http://127.0.0.1:8080',
     );
@@ -306,7 +306,7 @@ describe('safeTransfer', () => {
       {
         host: 'http://127.0.0.1:8080',
         defaults: {
-          networkId: 'fast-development',
+          networkId: 'development',
         },
         sign: createSignWithKeypair([sender00Account]),
       },
@@ -334,7 +334,7 @@ describe('safeTransfer', () => {
       {
         host: 'http://127.0.0.1:8080',
         defaults: {
-          networkId: 'fast-development',
+          networkId: 'development',
         },
         sign: createSignWithKeypair([sender00Account]),
       },
@@ -346,7 +346,7 @@ describe('safeTransfer', () => {
   it('uses normal transfer if gasPayer is the same as receiver', async () => {
     const initialBalance = await getBalance(
       accountOne.account,
-      'fast-development',
+      'development',
       '0',
       'http://127.0.0.1:8080',
     );
@@ -370,7 +370,7 @@ describe('safeTransfer', () => {
       {
         host: 'http://127.0.0.1:8080',
         defaults: {
-          networkId: 'fast-development',
+          networkId: 'development',
         },
         sign: createSignWithKeypair([sender00Account, accountOne]),
       },
@@ -388,7 +388,7 @@ describe('safeTransfer', () => {
     expect(result).toBe('Write succeeded');
     const balanceAfterTransfer = await getBalance(
       accountOne.account,
-      'fast-development',
+      'development',
       '0',
       'http://127.0.0.1:8080',
     );

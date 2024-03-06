@@ -65,7 +65,7 @@ export const createAccountFundCommand = createCommand(
 
     log.debug('account-fund:action', config);
 
-    if (['mainnet01', 'fast-development'].includes(networkConfig.networkId)) {
+    if (['mainnet01', 'development'].includes(networkConfig.networkId)) {
       log.error(
         `\nNetwork "${network}" of id "${networkConfig.networkId}" is not supported.\n`,
       );
@@ -77,7 +77,7 @@ export const createAccountFundCommand = createCommand(
       return;
     }
 
-    // if (networkConfig.networkId === 'fast-development') {
+    // if (networkConfig.networkId === 'development') {
     //   if (!(await networkIsAlive(networkConfig.networkHost))) {
     //     console.log(
     //       chalk.red(
