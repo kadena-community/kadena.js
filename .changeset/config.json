@@ -13,8 +13,8 @@
   "@kadena/bootstrap-lib", 
   "@kadena/tools", 
   "@kadena-dev/e2e-base", 
-  "@kadena-dev/e2e-docs", 
-  "@kadena-dev/e2e-tools", 
-  "@kadena-dev/e2e-graph", 
+  "e2e-docs", 
+  "e2e-tools", 
+  "e2e-graph", 
   "@kadena/docs"]
 }
