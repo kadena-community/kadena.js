@@ -33,7 +33,7 @@ export const NAMESPACES = {
 
 export const NAMESPACE = NAMESPACES[environment];
 
-export const NETWORK_ID: 'fast-development' = 'fast-development';
+export const NETWORK_ID: 'development' = 'development';
 
 export const DOMAIN: string = 'http://localhost:8080';
 

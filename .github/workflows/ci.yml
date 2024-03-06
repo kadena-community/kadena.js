@@ -125,7 +125,7 @@ jobs:
 
       # Disable remote caching, we need to explicitly rebuild Apps.
       - name: build dApp
-        run: pnpm turbo build --filter @kadena/${{ matrix.app }} --force
+        run: pnpm turbo build --filter @kadena/${{ matrix.app }}
 
       - name: Run end-to-end tests
         run:

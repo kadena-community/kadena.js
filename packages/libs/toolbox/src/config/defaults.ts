@@ -165,7 +165,7 @@ export function createDevNetNetworkConfig(
   const defaults = {
     type: 'chainweb-devnet',
     rpcUrl: createChainwebRpcUrl(),
-    networkId: 'fast-development',
+    networkId: 'development',
     chainId: '0',
     signers: defaultSigners,
     keysets: defaultKeysets,
@@ -240,7 +240,7 @@ export function createLocalChainwebNetworkConfig(
   const defaults = {
     type: 'chainweb-local',
     rpcUrl: createChainwebRpcUrl(),
-    networkId: 'fast-development',
+    networkId: 'development',
     chainId: '0',
     signers: defaultSigners,
     keysets: defaultKeysets,
