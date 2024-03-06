@@ -38,6 +38,7 @@
     "graphql": "~16.8.1",
     "graphql-request": "^6.1.0",
     "graphql-tag": "^2.12.6",
+    "http-proxy-middleware": "^2.0.6",
     "next": "13.5.5",
     "next-themes": "^0.2.1",
     "nft.storage": "^7.1.1",

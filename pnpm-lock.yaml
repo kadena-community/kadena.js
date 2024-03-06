@@ -718,6 +718,9 @@ importers:
       graphql-tag:
         specifier: ^2.12.6
         version: 2.12.6(graphql@16.8.1)
+      http-proxy-middleware:
+        specifier: ^2.0.6
+        version: 2.0.6
       next:
         specifier: 13.5.5
         version: 13.5.5(@babel/core@7.23.9)(react-dom@18.2.0)(react@18.2.0)
@@ -7487,7 +7490,7 @@ packages:
     dependencies:
       '@inquirer/type': 1.1.5
       '@types/mute-stream': 0.0.4
-      '@types/node': 20.9.0
+      '@types/node': 20.11.21
       '@types/wrap-ansi': 3.0.0
       ansi-escapes: 4.3.2
       chalk: 4.1.2
@@ -14095,6 +14098,12 @@ packages:
   /@types/http-errors@2.0.1:
     resolution: {integrity: sha512-/K3ds8TRAfBvi5vfjuz8y6+GiAYBZ0x4tXv1Av6CWBWn0IlADc+ZX9pMq7oU0fNQPnBwIZl3rmeLp6SBApbxSQ==}
 
+  /@types/http-proxy@1.17.14:
+    resolution: {integrity: sha512-SSrD0c1OQzlFX7pGu1eXxSEjemej64aaNPRhhVYUGqXh0BtldAAx37MG8btcumvpgKyZp1F5Gn3JkktdxiFv6w==}
+    dependencies:
+      '@types/node': 18.17.14
+    dev: false
+
   /@types/is-ci@3.0.0:
     resolution: {integrity: sha512-Q0Op0hdWbYd1iahB+IFNQcWXFq4O0Q5MwQP7uN0souuQ4rPg1vEYcnIOfr1gY+M+6rc8FGoRaBO1mOOvL29sEQ==}
     dependencies:
@@ -14293,12 +14302,6 @@ packages:
 
   /@types/node@20.11.21:
     resolution: {integrity: sha512-/ySDLGscFPNasfqStUuWWPfL78jompfIoVzLJPVVAHBh6rpG68+pI2Gk+fNLeI8/f1yPYL4s46EleVIc20F1Ow==}
-    dependencies:
-      undici-types: 5.26.5
-    dev: false
-
-  /@types/node@20.9.0:
-    resolution: {integrity: sha512-nekiGu2NDb1BcVofVcEKMIwzlx4NjHlcjhoxxKBNLtz15Y1z7MYf549DFvkHSId02Ax6kGwWntIBPC3l/JZcmw==}
     dependencies:
       undici-types: 5.26.5
     dev: false
@@ -15572,7 +15575,7 @@ packages:
       chalk: 4.1.2
       debug: 4.3.4(supports-color@5.5.0)
       loader-utils: 2.0.4
-      webpack: 5.88.2(@swc/core@1.3.80)(esbuild@0.18.20)
+      webpack: 5.88.2(webpack-cli@4.9.2)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -15624,7 +15627,7 @@ packages:
       std-env: 3.6.0
       test-exclude: 6.0.0
       v8-to-istanbul: 9.2.0
-      vitest: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+      vitest: 1.1.0(@types/node@18.17.14)(happy-dom@12.9.1)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -21195,7 +21198,6 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.4(supports-color@5.5.0)
-    dev: true
 
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -22378,6 +22380,35 @@ packages:
       - supports-color
     dev: true
 
+  /http-proxy-middleware@2.0.6:
+    resolution: {integrity: sha512-ya/UeJ6HVBYxrgYotAZo1KvPWlgB48kUJLDePFeneHsVujFaW5WNj2NgWCAE//B1Dl02BIfYlpNgBy8Kf8Rjmw==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      '@types/express': ^4.17.13
+    peerDependenciesMeta:
+      '@types/express':
+        optional: true
+    dependencies:
+      '@types/http-proxy': 1.17.14
+      http-proxy: 1.18.1
+      is-glob: 4.0.3
+      is-plain-obj: 3.0.0
+      micromatch: 4.0.5
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /http-proxy@1.18.1:
+    resolution: {integrity: sha512-7mz/721AbnJwIVbnaSv1Cz3Am0ZLT/UBwkC92VlxhXv/k/BBQfM2fXElQNC27BVGr0uwUpplYPQM9LnaBMR5NQ==}
+    engines: {node: '>=8.0.0'}
+    dependencies:
+      eventemitter3: 4.0.7
+      follow-redirects: 1.15.3(debug@4.3.4)
+      requires-port: 1.0.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
   /http-shutdown@1.2.2:
     resolution: {integrity: sha512-S9wWkJ/VSY9/k4qcjG318bqJNruzE4HySUhFYknwmu6LBP97KLLfwNf+n4V1BHurvFNkSKLFnK/RsuUnRTf9Vw==}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
@@ -23138,6 +23169,11 @@ packages:
   /is-plain-obj@2.1.0:
     resolution: {integrity: sha512-YWnfyRwxL/+SsrWYfOpUtz5b3YD+nyfkHvjbcanzk8zgyO4ASD67uVMRt8k5bM4lLMDnXfriRhOpemw+NfT1eA==}
     engines: {node: '>=8'}
+
+  /is-plain-obj@3.0.0:
+    resolution: {integrity: sha512-gwsOE28k+23GP1B6vFl1oVh/WOzmawBrKwo5Ev6wMKzPkaXaCDIQKzLnvsA42DRlbVTWorkgTKIviAKCWkfUwA==}
+    engines: {node: '>=10'}
+    dev: false
 
   /is-plain-obj@4.1.0:
     resolution: {integrity: sha512-+Pgi+vMuUNkJyExiMBt5IlFoMyKnr5zhJ4Uspz58WOhBF5QoIZkFyNHIbBAtHwzVAgk5RtndVNsDRN61/mmDqg==}
@@ -25813,7 +25849,7 @@ packages:
       webpack: ^5.0.0
     dependencies:
       schema-utils: 4.2.0
-      webpack: 5.88.2(@swc/core@1.3.80)(esbuild@0.18.20)
+      webpack: 5.88.2(webpack-cli@4.9.2)
     dev: true
 
   /minimatch@3.0.4:
@@ -32047,7 +32083,7 @@ packages:
       '@types/concat-stream': 2.0.0
       '@types/debug': 4.1.8
       '@types/is-empty': 1.2.1
-      '@types/node': 20.9.0
+      '@types/node': 20.11.21
       '@types/unist': 3.0.2
       '@ungap/structured-clone': 1.2.0
       concat-stream: 2.0.0
@@ -32794,7 +32830,7 @@ packages:
       dom-accessibility-api: 0.6.3
       lodash-es: 4.17.21
       redent: 4.0.0
-      vitest: 1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0)
+      vitest: 1.1.0(@types/node@18.17.14)(happy-dom@12.9.1)
     dev: true
 
   /vitest@1.1.0(@types/node@18.17.14)(@vitest/ui@1.1.0):
