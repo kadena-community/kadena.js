@@ -2,14 +2,14 @@ import { useNetwork } from '@/modules/network/network.hook';
 import {
   KadenaLogo,
   NavHeader,
-  NavHeaderLink,
   NavHeaderLinkList,
   NavHeaderSelect,
   SelectItem,
   SystemIcon,
+  Text,
 } from '@kadena/react-ui';
 import { FC, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 export const Layout: FC = () => {
   const { networks, activeNetwork } = useNetwork();
@@ -25,18 +25,18 @@ export const Layout: FC = () => {
         }
       >
         <NavHeaderLinkList>
-          <NavHeaderLink key="home" href="/">
-            DX-Wallet
-          </NavHeaderLink>
-          <NavHeaderLink key="home" href="/select-profile">
-            Profiles
-          </NavHeaderLink>
+          <Link to="/">
+            <Text bold>DX-Wallet</Text>
+          </Link>
+          <Link to="/select-profile">
+            <Text bold>Profiles</Text>
+          </Link>
         </NavHeaderLinkList>
 
         <NavHeaderSelect
           aria-label="Select Network"
           selectedKey={value}
-          onSelectionChange={(value: any) => setValue(value)}
+          onSelectionChange={(value) => setValue(value as string)}
           startIcon={<SystemIcon.Earth />}
         >
           {networks.map((network) => (
