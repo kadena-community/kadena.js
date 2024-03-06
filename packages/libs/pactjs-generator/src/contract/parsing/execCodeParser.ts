@@ -16,7 +16,9 @@ export interface IParsedCode {
     | { string: string }
     | { int: number }
     | { decimal: number }
-    | { object: Array<{ property: string; value: IParsedCode['args'] }> }
+    | {
+        object: Array<{ property: string; value: IParsedCode['args'][number] }>;
+      }
     | { list: Array<IParsedCode['args']> }
   >;
 }

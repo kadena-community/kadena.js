@@ -9,7 +9,7 @@ describe('execCodeParser', () => {
     expect(parsed).toEqual([
       {
         function: { module: 'coin', name: 'transfer' },
-        args: [{ string: 'alice' }, { string: 'bob' }, { int: 100 }],
+        args: [{ string: 'alice' }, { string: 'bob' }, { int: '100' }],
       },
       {
         function: {
@@ -20,8 +20,8 @@ describe('execCodeParser', () => {
         args: [
           { string: 'alice' },
           { string: 'bob' },
-          { list: [{ decimal: 100.1 }, { int: 2 }] },
-          { object: [{ property: 'extra', value: [{ string: 'some-data' }] }] },
+          { list: [{ decimal: '100.1' }, { int: '2' }] },
+          { object: [{ property: 'extra', value: { string: 'some-data' } }] },
         ],
       },
     ]);
