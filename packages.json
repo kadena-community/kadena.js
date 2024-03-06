@@ -144,12 +144,6 @@
     "path": "packages/apps/proof-of-us"
   },
   {
-    "name": "@kadena/react-components",
-    "version": "0.1.2",
-    "private": true,
-    "path": "packages/libs/react-components"
-  },
-  {
     "name": "@kadena/react-icons",
     "version": "0.0.1",
     "private": true,
