@@ -51,7 +51,7 @@ jobs:
 
       - name: Build
         if: steps.changed.outputs.pathFilter == 'true'
-        run: pnpm run build --force
+        run: pnpm run build
 
       - name: Publish Storybook
         if: steps.changed.outputs.pathFilter == 'true'
