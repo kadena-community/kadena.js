@@ -14,10 +14,12 @@ interface ChainSelectProps
   extends Omit<ISelectProps, 'onSelectionChange' | 'selectedKey' | 'children'> {
   onSelectionChange?: OnChainSelectChange;
   selectedKey?: ChainwebChainId;
+  additionalInfoOptions?: any[];
 }
 const ChainSelect: FC<ChainSelectProps> = ({
   selectedKey,
   onSelectionChange,
+  additionalInfoOptions,
   ...rest
 }) => {
   const onSelectChange = useCallback(
@@ -41,8 +43,13 @@ const ChainSelect: FC<ChainSelectProps> = ({
       startIcon={<SystemIcon.Link />}
       aria-label="Select Chain ID"
     >
-      {CHAINS.map((chainId) => (
-        <SelectItem key={chainId}>{chainId}</SelectItem>
+      {CHAINS.map((chainId, index) => (
+        <SelectItem key={chainId}>
+          <span>{chainId}</span>
+          {additionalInfoOptions && additionalInfoOptions.length ? (
+            <span>{` (${additionalInfoOptions[index].data})`}</span>
+          ) : null}
+        </SelectItem>
       ))}
     </Select>
   );

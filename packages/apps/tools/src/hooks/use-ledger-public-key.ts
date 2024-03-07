@@ -9,7 +9,10 @@ export const derivationModes = [
 ] as const;
 export type DerivationMode = (typeof derivationModes)[number];
 
-interface IParams {
+export const predicates = ['keys-all', 'keys-any', 'keys-2'] as const;
+export type Predicate = (typeof predicates)[number];
+
+export interface ILedgerKeyParams {
   keyId: number;
   derivationMode?: DerivationMode;
 }
@@ -22,7 +25,10 @@ function bufferToHex(buffer: Uint8Array) {
     .join('');
 }
 
-const getDerivationPath = (keyId: number, derivationMode: DerivationMode) => {
+export const getDerivationPath = (
+  keyId: number,
+  derivationMode: DerivationMode,
+) => {
   switch (derivationMode) {
     case 'legacy':
       return `m/44'/626'/0'/0/${keyId}`;
@@ -34,7 +40,7 @@ const fetchPublicKey = async ({
   keyId,
   derivationMode = 'current',
   app,
-}: IParams & { app: AppKda }): Promise<string | undefined> => {
+}: ILedgerKeyParams & { app: AppKda }): Promise<string | undefined> => {
   const kdaAddress = await app.getPublicKey(
     getDerivationPath(keyId, derivationMode),
   );
@@ -42,7 +48,7 @@ const fetchPublicKey = async ({
 };
 
 const useLedgerPublicKey = () => {
-  return useAsyncFn(async ({ keyId, derivationMode }: IParams) => {
+  return useAsyncFn(async ({ keyId, derivationMode }: ILedgerKeyParams) => {
     const transport = await getTransport();
     const app = new AppKda(transport);
     return fetchPublicKey({ keyId, app, derivationMode });
