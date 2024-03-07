@@ -12,12 +12,12 @@ import { FC } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 export const Layout: FC = () => {
-  const { networks, activeNetwork, updateNetwork } = useNetwork();
+  const { networks, activeNetwork, setActiveNetwork } = useNetwork();
 
   const handleNetworkUpdate = (value: string) => {
     const network = networks.find((network) => network.networkId === value);
     if (network) {
-      updateNetwork(network);
+      setActiveNetwork(network);
     }
   };
 

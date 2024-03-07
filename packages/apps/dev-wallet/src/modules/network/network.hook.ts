@@ -50,5 +50,6 @@ export function useNetwork() {
     updateNetwork,
     deleteNetwork,
     retrieveNetworks,
+    setActiveNetwork,
   };
 }
