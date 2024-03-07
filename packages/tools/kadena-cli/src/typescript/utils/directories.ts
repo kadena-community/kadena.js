@@ -1,5 +1,4 @@
 import { dirname, join } from 'path';
-import { rimraf } from 'rimraf';
 import { services } from '../../services/index.js';
 import { shallowFindFile } from './shallowFindFile.js';
 
@@ -32,7 +31,7 @@ export const prepareTargetDirectory = async (
   clean: boolean = true,
 ): Promise<void> => {
   if (clean === true) {
-    rimraf.sync(targetDirectory);
+    await services.filesystem.deleteDirectory(targetDirectory);
   }
 
   await services.filesystem.ensureDirectoryExists(targetDirectory);

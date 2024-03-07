@@ -1,4 +1,3 @@
-import clear from 'clear';
 import path from 'path';
 import sanitize from 'sanitize-filename';
 import type { ZodError } from 'zod';
@@ -297,21 +296,6 @@ export function isNumeric(str: string): boolean {
  */
 export function getQuestionKeys<T>(arr: Array<IQuestion<T>>): Array<string> {
   return arr.map((question) => question.key as string);
-}
-
-/**
- * Clears the CLI. Only executes in production environments.
- *
- * @param {boolean} [full=false] - If true, performs a full clear; otherwise, performs a standard clear.
- */
-export function clearCLI(full: boolean = false): void {
-  if (process.env.NODE_ENV === 'production') {
-    if (full) {
-      clear(true);
-    } else {
-      clear();
-    }
-  }
 }
 
 // export const skipSymbol = Symbol('skip');
