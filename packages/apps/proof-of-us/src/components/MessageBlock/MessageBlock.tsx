@@ -3,8 +3,8 @@ import { Heading } from '../Typography/Heading';
 import { errorWrapperClass } from './style.css';
 
 interface IProps extends PropsWithChildren {
-  variant?: 'success' | 'error';
-  title: string;
+  variant?: 'success' | 'error' | 'info';
+  title?: string;
 }
 
 export const MessageBlock: FC<IProps> = ({
@@ -14,7 +14,7 @@ export const MessageBlock: FC<IProps> = ({
 }) => {
   return (
     <div data-type={variant} className={errorWrapperClass}>
-      <Heading as="h6">{title}</Heading>
+      {title && <Heading as="h6">{title}</Heading>}
       {children}
     </div>
   );

@@ -7,7 +7,7 @@ import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
 import {
   MonoArrowBack,
   MonoArrowDownward,
-  MonoCheck,
+  MonoCheckCircle,
 } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
@@ -21,7 +21,7 @@ import { TitleHeader } from '../TitleHeader/TitleHeader';
 
 import { useAccount } from '@/hooks/account';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
-import { qrClass } from './style.css';
+import { copyClass, qrClass } from './style.css';
 
 interface IProps {
   next: () => void;
@@ -94,6 +94,15 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
               </>
             )}
             label="Share"
+            Append={() => (
+              <>
+                {isCopied ? (
+                  <Stack>
+                    Copied <MonoCheckCircle className={copyClass} />
+                  </Stack>
+                ) : null}
+              </>
+            )}
           />
 
           {!isAlreadySigning(proofOfUs.signees) ? (
@@ -105,7 +114,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
               >
                 <QRCode
                   ecLevel="H"
-                  size={qrContainerRef.current?.offsetWidth || 300}
+                  size={300}
                   ref={qrRef}
                   value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
                   removeQrCodeBehindLogo={true}
@@ -116,11 +125,6 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                 />
               </div>
               <Button onPress={handleCopy}>Click to copy link</Button>
-              {isCopied ? (
-                <Stack>
-                  Copied! <MonoCheck />
-                </Stack>
-              ) : null}
               <ListSignees />
             </>
           ) : (

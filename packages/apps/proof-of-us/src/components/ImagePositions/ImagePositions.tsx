@@ -1,7 +1,7 @@
 import { EditorForm } from '@/EditorForm/EditorForm';
 import { useAccount } from '@/hooks/account';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
 import type { FC, MouseEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Modal } from '../Modal/Modal';
@@ -127,7 +127,7 @@ export const ImagePositions: FC<IProps> = () => {
           onClick={handleClick}
           onLoad={() => setIsMounted(true)}
         />
-        {isTagInfoOpen && (
+        {isTagInfoOpen && proofOfUs && !isSignedOnce(proofOfUs.signees) && (
           <TagInfo handleClose={() => setIsTagInfoOpen(false)} />
         )}
         {proofOfUs?.signees.map((s, idx) => (
