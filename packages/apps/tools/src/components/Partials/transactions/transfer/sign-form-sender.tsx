@@ -102,7 +102,7 @@ export const SignFormSender = ({
   const [senderType, setSenderType] = useState<SenderType>('Ledger');
 
   return (
-    <LoadingCard fullWidth>
+    <LoadingCard fullWidth isLoading={senderData.isFetching}>
       <Heading as={'h4'}>{t('Sender')} </Heading>
 
       <Stack flexDirection={'row'} justifyContent={'space-between'}>
