@@ -55,47 +55,6 @@ export const globalOptions = {
     validation: z.boolean().optional(),
     option: globalFlags.legacy,
   }),
-  // security
-  passwordFile: createOption({
-    key: 'passwordFile' as const,
-    prompt: security.passwordFilePrompt,
-    validation: z.string().or(z.object({ _password: z.string() })),
-    option: new Option(
-      '--password-file <passwordFile>',
-      'Filepath to the password file',
-    ),
-    transform: passwordPromptTransform('--password-file'),
-  }),
-  passwordFileRepeat: createOption({
-    key: 'passwordFileRepeat' as const,
-    prompt: security.passwordFileRepeatPrompt,
-    validation: z.string().or(z.object({ _password: z.string() })),
-    option: new Option(
-      '--password-file <passwordFile>',
-      'Filepath to the password file',
-    ),
-    transform: passwordPromptTransform('--password-file'),
-  }),
-  currentPasswordFile: createOption({
-    key: 'currentPasswordFile' as const,
-    prompt: security.currentPasswordFilePrompt,
-    validation: z.string().or(z.object({ _password: z.string() })),
-    option: new Option(
-      '-c, --current-password-file <currentPasswordFile>',
-      'Filepath to the current password file',
-    ),
-    transform: passwordPromptTransform('--current-password-file'),
-  }),
-  newPasswordFile: createOption({
-    key: 'newPasswordFile' as const,
-    prompt: security.newPasswordFilePrompt,
-    validation: z.string().or(z.object({ _password: z.string() })),
-    option: new Option(
-      '-n, --new-password-file <newPasswordFile>',
-      'Filepath to the new password file',
-    ),
-    transform: passwordPromptTransform('--new-password-file'),
-  }),
   // Logs
   logFolder: createOption({
     key: 'logFolder' as const,
@@ -266,6 +225,39 @@ export const globalOptions = {
     },
   }),
 } as const;
+
+export const securityOptions = {
+  createPasswordOption: (
+    args: Parameters<typeof security.passwordPrompt>[0],
+    optionArgs?: Parameters<ReturnType<typeof createOption>>[0],
+  ) => {
+    return createOption({
+      key: 'passwordFile' as const,
+      prompt: security.passwordPrompt(args),
+      validation: z.string().or(z.object({ _password: z.string() })),
+      option: new Option(
+        '--password-file <passwordFile>',
+        'Filepath to the password file',
+      ),
+      transform: passwordPromptTransform('--password-file'),
+    })(optionArgs);
+  },
+  createNewPasswordOption: (
+    args: Parameters<typeof security.passwordPrompt>[0],
+    optionArgs?: Parameters<ReturnType<typeof createOption>>[0],
+  ) => {
+    return createOption({
+      key: 'newPasswordFile' as const,
+      prompt: security.passwordPrompt(args),
+      validation: z.string().or(z.object({ _password: z.string() })),
+      option: new Option(
+        '--new-password-file <newPasswordFile>',
+        'Filepath to the new password file',
+      ),
+      transform: passwordPromptTransform('--new-password-file'),
+    })(optionArgs);
+  },
+};
 
 export type GlobalOptions = typeof globalOptions;
 export type GlobalFlags = typeof globalFlags;

@@ -7,7 +7,7 @@ import { toHexStr } from '../../keys/utils/keysHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
+import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 
 export const decrypt = async (
@@ -41,7 +41,9 @@ export const createDecryptCommand: (program: Command, version: string) => void =
     'Decrypt message',
     [
       globalOptions.message({ isOptional: false }),
-      globalOptions.currentPasswordFile({ isOptional: false }),
+      securityOptions.createPasswordOption({
+        message: 'Enter the password used to encrypt',
+      }),
     ],
     async (option, { collect }) => {
       const config = await collect(option);
@@ -54,7 +56,7 @@ export const createDecryptCommand: (program: Command, version: string) => void =
       log.warning(`You are about to decrypt this message.\n`);
 
       const result = await decrypt(
-        config.currentPasswordFile,
+        config.passwordFile,
         config.message as EncryptedString,
       );
 

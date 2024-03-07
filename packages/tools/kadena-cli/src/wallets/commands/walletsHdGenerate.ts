@@ -15,7 +15,7 @@ import { saveKeyByAlias } from '../../keys/utils/storage.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
+import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
 import type { IKeysConfig } from '../utils/keySharedKeyGen.js';
 import { generateFromWallet } from '../utils/keySharedKeyGen.js';
 
@@ -86,7 +86,9 @@ export const createGenerateHdKeysCommand: (
     globalOptions.walletSelect(),
     globalOptions.keyGenFromChoice(),
     globalOptions.keyAlias(),
-    globalOptions.passwordFile(),
+    securityOptions.createPasswordOption({
+      message: 'Enter the wallet password',
+    }),
     globalOptions.keyIndexOrRange({ isOptional: true }),
   ],
   async (option) => {
