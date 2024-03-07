@@ -227,6 +227,19 @@ export interface IClient extends IBaseClient {
   getPoll: (
     transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor,
   ) => Promise<IPollResponse>;
+
+  /**
+   * Polls the result of one request.
+   * Calls the '/poll' endpoint.
+   *
+   *
+   * @param transactionDescriptors - transaction descriptors to listen for.
+   * @returns A promise that resolves to the command result.
+   */
+  pollOne: (
+    transactionDescriptor: ITransactionDescriptor,
+    options?: IPollOptions,
+  ) => Promise<ICommandResult>;
 }
 
 /**
@@ -239,7 +252,7 @@ export interface ICreateClient {
    * Useful when you are working with a single network and chainId.
    * @param hostUrl - the URL to use in the client
    */
-  (hostUrl: string): IClient;
+  (hostUrl: string, defaults?: { confirmationDepth?: number }): IClient;
 
   /**
    * Generates a client instance by passing a hostUrlGenerator function.
@@ -252,6 +265,7 @@ export interface ICreateClient {
       chainId: ChainId;
       networkId: string;
     }) => string,
+    defaults?: { confirmationDepth?: number },
   ): IClient;
 }
 
@@ -261,7 +275,9 @@ export interface ICreateClient {
  */
 export const createClient: ICreateClient = (
   host = kadenaHostGenerator,
+  defaults = { confirmationDepth: 0 },
 ): IClient => {
+  const confirmationDepth = defaults.confirmationDepth;
   const getHost = typeof host === 'string' ? () => host : host;
 
   const client: IBaseClient = {
@@ -308,7 +324,7 @@ export const createClient: ICreateClient = (
           hostUrl: getHost({ chainId, networkId }),
         })),
       ).map(([hostUrl, requestKeys]) =>
-        pollStatus(hostUrl, requestKeys, options),
+        pollStatus(hostUrl, requestKeys, { confirmationDepth, ...options }),
       );
 
       // merge all of the result in one object
@@ -383,5 +399,10 @@ export const createClient: ICreateClient = (
     },
     send: client.submit,
     getPoll: client.getStatus,
+    pollOne: (transactionDescriptor, options) => {
+      return client
+        .pollStatus(transactionDescriptor, options)
+        .then((res) => res[transactionDescriptor.requestKey]);
+    },
   };
 };

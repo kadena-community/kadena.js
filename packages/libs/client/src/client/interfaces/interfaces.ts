@@ -16,6 +16,7 @@ export interface IPollOptions {
   onPoll?: (id: string) => void;
   timeout?: number;
   interval?: number;
+  confirmationDepth?: number;
 }
 
 /**

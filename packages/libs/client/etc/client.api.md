@@ -106,6 +106,7 @@ export interface IClient extends IBaseClient {
     dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
     // @deprecated
     getPoll: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor) => Promise<IPollResponse>;
+    pollOne: (transactionDescriptor: ITransactionDescriptor, options?: IPollOptions) => Promise<ICommandResult>;
     preflight: (transaction: ICommand | IUnsignedCommand) => Promise<ILocalCommandResult>;
     runPact: (code: string, data: Record<string, unknown>, option: INetworkOptions) => Promise<ICommandResult>;
     // @deprecated
@@ -142,11 +143,15 @@ export interface IContinuationPayloadObject {
 
 // @public (undocumented)
 export interface ICreateClient {
-    (hostUrl: string): IClient;
+    (hostUrl: string, defaults?: {
+        confirmationDepth?: number;
+    }): IClient;
     (hostAddressGenerator?: (options: {
         chainId: ChainId;
         networkId: string;
-    }) => string): IClient;
+    }) => string, defaults?: {
+        confirmationDepth?: number;
+    }): IClient;
 }
 
 // @public
@@ -242,6 +247,8 @@ export interface IPartialPactCommand extends AllPartial<IPactCommand> {
 
 // @public
 export interface IPollOptions {
+    // (undocumented)
+    confirmationDepth?: number;
     // (undocumented)
     interval?: number;
     // (undocumented)
