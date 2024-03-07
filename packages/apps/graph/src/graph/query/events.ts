@@ -100,6 +100,8 @@ builder.queryField('events', (t) =>
           },
           orderBy: {
             height: 'desc',
+            requestKey: 'desc',
+            orderIndex: 'desc',
           },
         });
       } catch (error) {
