@@ -21,9 +21,10 @@ import {
 
 interface IProps {
   next: () => void;
+  status?: IBuildStatusValues;
 }
 
-export const AvatarEditor: FC<IProps> = ({ next }) => {
+export const AvatarEditor: FC<IProps> = ({ next, status }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pathname = usePathname();
@@ -92,12 +93,14 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
   }, [isMounted, proofOfUs]);
 
   useEffect(() => {
+    console.log({ pathname });
     return () => {
+      console.log(pathname, 111111);
       const src = videoRef.current?.srcObject as MediaStream;
       if (!src) return;
       src.getTracks().forEach((t) => t.stop());
     };
-  }, [pathname]);
+  }, [pathname, status]);
 
   const handleCapture = async (evt: MouseEvent<HTMLButtonElement>) => {
     if (isAlreadySigning(proofOfUs?.signees)) return;

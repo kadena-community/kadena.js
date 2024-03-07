@@ -57,7 +57,7 @@ export const CreateProofOfUs: FC<IProps> = ({ params }) => {
   console.log(proofOfUs, status);
   return (
     <div>
-      {status === 1 && <AvatarEditor next={next} />}
+      {status === 1 && <AvatarEditor next={next} status={status} />}
       {status === 2 && <DetailView next={next} prev={prev} />}
       {status === 3 && <ShareView next={next} prev={prev} status={status} />}
       {status >= 4 && <MintView next={next} prev={prev} status={status} />}

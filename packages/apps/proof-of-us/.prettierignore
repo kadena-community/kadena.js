@@ -3,3 +3,4 @@
 tsdoc-metadata.json
 coverage
 src/pact
+src/__generated__
