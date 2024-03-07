@@ -4,19 +4,19 @@ import { services } from '../../../services/index.js';
 
 const transferTemplate = `
 code: |-
-  (coin.transfer "{{{account-from}}}" "{{{account-to}}}" {{decimal-amount}})
+  (coin.transfer "{{{account:from}}}" "{{{account:to}}}" {{decimal:amount}})
 data:
 meta:
   chainId: "{{chain-id}}"
-  sender: "{{{account-from}}}"
+  sender: "{{{account:from}}}"
   gasLimit: 2300
   gasPrice: 0.000001
   ttl: 600
 signers:
-  - public: "{{pk-from}}"
+  - public: "{{key:from}}"
     caps:
       - name: "coin.TRANSFER"
-        args: ["{{{account-from}}}", "{{{account-to}}}", {{decimal-amount}}]
+        args: ["{{{account:from}}}", "{{{account:to}}}", {{decimal:amount}}]
       - name: "coin.GAS"
         args: []
 networkId: "{{network-id}}"
@@ -25,26 +25,26 @@ type: exec
 
 const safeTransferTemplate = `
 code: |-
-  (coin.transfer "{{{account-from}}}" "{{{account-to}}}" {{decimal-amount}}))
-  (coin.transfer "{{{account-to}}}" "{{{account-from}}}" 0.000000000001)
+  (coin.transfer "{{{account:from}}}" "{{{account:to}}}" {{decimal:amount}}))
+  (coin.transfer "{{{account:to}}}" "{{{account:from}}}" 0.000000000001)
 data:
 meta:
   chainId: "{{chain-id}}"
-  sender: {{{account-from}}}
+  sender: {{{account:from}}}
   gasLimit: 2000
   gasPrice: 0.00000001
   ttl: 7200
 signers:
-  - public: {{pk-from}}
+  - public: {{key:from}}
     caps:
       - name: "coin.TRANSFER"
-        args: [{{{account-from}}}, {{{account-to}}}, {{decimal-amount}}]
+        args: [{{{account:from}}}, {{{account:to}}}, {{decimal:amount}}]
       - name: "coin.GAS"
         args: []
-  - public: {{pk-to}}
+  - public: {{key:to}}
     caps:
       - name: "coin.TRANSFER"
-        args: [{{{account-to}}}, {{{account-from}}}, 0.000000000001]
+        args: [{{{account:to}}}, {{{account:from}}}, 0.000000000001]
 networkId: "{{network-id}}"
 type: exec
 `;
