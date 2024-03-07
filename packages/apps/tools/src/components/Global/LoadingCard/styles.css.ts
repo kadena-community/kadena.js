@@ -12,5 +12,5 @@ export const containerStyle = style([
     alignItems: 'center',
     justifyContent: 'center',
   }),
-  { backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: token('zIndex.overlay') },
+  { backgroundColor: 'rgba(0, 0, 0, 0.8)', zIndex: token('zIndex.overlay') },
 ]);
