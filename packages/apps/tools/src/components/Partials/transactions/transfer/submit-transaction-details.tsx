@@ -1,10 +1,10 @@
+import { LoadingCard } from '@/components/Global/LoadingCard';
 import type {
   ICommand,
   IExecutionPayloadObject,
   IPactCommand,
 } from '@kadena/client';
 import {
-  Card,
   Stack,
   SystemIcon,
   Text,
@@ -29,7 +29,7 @@ export const SubmitTransactionDetails = ({
   const transaction = JSON.parse(transactions.cmds[0].cmd) as IPactCommand;
 
   return (
-    <Card fullWidth={true}>
+    <LoadingCard fullWidth={true}>
       <Stack flexDirection={'column'} gap={'sm'}>
         <ToggleButton
           isSelected={txDetailsExpanded}
@@ -108,6 +108,6 @@ export const SubmitTransactionDetails = ({
             )
           : null}
       </Stack>
-    </Card>
+    </LoadingCard>
   );
 };
