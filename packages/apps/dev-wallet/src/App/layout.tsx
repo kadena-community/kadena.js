@@ -8,15 +8,13 @@ import {
   SystemIcon,
   Text,
 } from '@kadena/react-ui';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 export const Layout: FC = () => {
   const { networks, activeNetwork, updateNetwork } = useNetwork();
-  const [value, setValue] = useState(activeNetwork?.networkId);
 
   const handleNetworkUpdate = (value: string) => {
-    setValue(value);
     const network = networks.find((network) => network.networkId === value);
     if (network) {
       updateNetwork(network);
@@ -43,7 +41,7 @@ export const Layout: FC = () => {
 
         <NavHeaderSelect
           aria-label="Select Network"
-          selectedKey={value}
+          selectedKey={activeNetwork?.networkId}
           onSelectionChange={(value) => handleNetworkUpdate(value as string)}
           startIcon={<SystemIcon.Earth />}
         >
@@ -54,7 +52,6 @@ export const Layout: FC = () => {
           ))}
         </NavHeaderSelect>
       </NavHeader>
-
       <Outlet />
       <div id="modalportal"></div>
     </>
