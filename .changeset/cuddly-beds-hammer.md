@@ -2,4 +2,4 @@
 '@kadena/graph': patch
 ---
 
-Create needed database indexes and refactor existing ones
+Create database index for qualname on events; adjusted the events query
