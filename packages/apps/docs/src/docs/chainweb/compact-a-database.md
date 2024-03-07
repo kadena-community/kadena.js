@@ -29,10 +29,10 @@ To compact a Chainweb node database:
 2. Verify that you have access to the `cwtool`  command-line program by running the following command:
    
    ```bash
-   cwtool
+   cwtool --help
    ```
 
-   If you have access to the cwtool, you should see usage information similar to the following:
+   If you have access to the `cwtool` program, you should see usage information similar to the following:
 
    ```bash
    Chainweb Tool
@@ -71,12 +71,13 @@ To compact a Chainweb node database:
    
    Creating a backup copy of the database requires you to have more disk space available to store both the active database and the backup until you complete the compaction. 
    However, creating a backup ensures that the node continues to run uninterrupted while the database is being compacted. 
+   The backup also ensures tht you can restore the database if something goes wrong with the compacted database. 
 
 4. Compact your backup `sqlite` database by running the `cwtool compact` command with the following arguments:
    
    - `--target-blockheight` to keep enough state available to continue validating blocks after the database has been compacted. An appropriate value depends on the network your node is connected to. For example, if you are compacting your local development netowrk for testing purposes, you would set a lower block height than a node connected to the Kadena test network or main network. If this parameter isn't computed automatically, you should specify a value of at least 3.5 million (”3500000”) for a node connected to the Kadena main network.
-   - `--pact-database-dir` to specify the path to the backup pact `sqlite` state where all of the `*.sqlite`  files are located. The `cwtool compact` command creates one log file for each chain in this directory.
-   - `--log-dir` to specify the directory where you want `cwtool compact` to put the log files it creates. If the directory doesn’t exist, `cwtool compact` creates it. These logs can be useful if something goes wrong.
+   - `--pact-database-dir` to specify the path to the backup pact `sqlite` state where all of the `*.sqlite`  files are located.
+   - `--log-dir` to specify the directory where you want `cwtool compact` to put the log files it creates, one for each chain. If the directory doesn’t exist, `cwtool compact` creates it. These logs can be useful if something goes wrong.
      
    For example, run a command similar to the following:
    ```bash
@@ -95,5 +96,6 @@ To compact a Chainweb node database:
 6. Restart your node. 
    
    Your node should start normally and continue running with the reduced database size as though nothing has changed.
+   As a precaution, you should keep the backup copy of the database available—in a compressed format, if necessary—until you're sure that you won't need to restore from it.
 
 If you encounter errors or warnings, open a new issue for [chainweb-node](https://github.com/kadena-io/chainweb-node#issues) or contact Kadena developers in the [infrastructure](https://discord.com/channels/502858632178958377/1051827506279370802) channel on the Kadena Discord server.
