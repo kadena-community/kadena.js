@@ -39,13 +39,9 @@ describe('transferFund', () => {
       },
     });
     expect(result).toStrictEqual({
-      result: {
-        reqKey: 'requestKey-1',
-        result: {
-          status: 'success',
-          data: 'Write succeeded',
-        },
-      },
+      chainId: '1',
+      networkId: 'development',
+      requestKey: 'requestKey-1',
     });
   });
 
