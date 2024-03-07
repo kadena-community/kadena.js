@@ -58,7 +58,7 @@ model Event {
   @@index([blockHash, requestKey], map: "events_block_requestkey")
   @@index([height(sort: Desc), chainId, orderIndex], map: "events_height_chainid_idx")
   @@index([moduleName], map: "events_module")
-  @@index([qualifiedName, height(sort: Desc)], map: "events_qualifiedname_height")
+  @@index([qualifiedName, height(sort: Desc)], map: "events_qualname_height_idx")
   @@map("events")
 }
 
