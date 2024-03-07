@@ -9,6 +9,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { keysOptions } from '../keysOptions.js';
 import {
   displayGeneratedPlainKeys,
   printStoredPlainKeys,
@@ -76,7 +77,7 @@ export const createGeneratePlainKeysCommand: (
   'Generate random public/secret key pair(s)',
   [
     globalOptions.keyAlias({ isOptional: false }),
-    globalOptions.keyAmount({ isOptional: true }),
+    keysOptions.keyAmount({ isOptional: true }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option, { collect }) => {

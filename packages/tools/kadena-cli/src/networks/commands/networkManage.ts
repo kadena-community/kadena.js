@@ -3,6 +3,7 @@ import type { Command } from 'commander';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { networkOptions } from '../networkOptions.js';
 import { removeNetwork, writeNetworks } from '../utils/networkHelpers.js';
 
 /**
@@ -18,10 +19,10 @@ export const manageNetworksCommand: (
   'Update local networks',
   [
     globalOptions.network({ isOptional: false }),
-    globalOptions.networkExplorerUrl(),
-    globalOptions.networkHost(),
-    globalOptions.networkId(),
-    globalOptions.networkName(),
+    networkOptions.networkExplorerUrl(),
+    networkOptions.networkHost(),
+    networkOptions.networkId(),
+    networkOptions.networkName(),
   ],
   async (option) => {
     const networkData = await option.network();

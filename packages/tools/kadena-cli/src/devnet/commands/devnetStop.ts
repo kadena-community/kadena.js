@@ -1,13 +1,12 @@
-import { globalOptions } from '../../utils/globalOptions.js';
-
 import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
+import { devnetOptions } from '../devnetOptions.js';
 import { guardDocker, stopDevnet } from '../utils/docker.js';
 
 export const stopDevnetCommand = createCommand(
   'stop',
   'Stop devnet',
-  [globalOptions.devnetSelect()],
+  [devnetOptions.devnetSelect()],
   async (option) => {
     const config = await option.name();
     log.debug('devnet-stop:action', config);
