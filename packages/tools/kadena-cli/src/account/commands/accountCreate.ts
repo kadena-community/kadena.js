@@ -12,10 +12,10 @@ export const createAccountCreateCommand = createCommand(
   'Create an account on mainnet',
   [
     accountOptions.accountName({ isOptional: true }),
-    globalOptions.publicKeys({ isOptional: false }),
-    globalOptions.predicate({ isOptional: false }),
+    accountOptions.publicKeys({ isOptional: false }),
+    accountOptions.predicate({ isOptional: false }),
     globalOptions.chainId({ isOptional: false }),
-    globalOptions.fungible({
+    accountOptions.fungible({
       isOptional: true,
       disableQuestion: true,
     }),

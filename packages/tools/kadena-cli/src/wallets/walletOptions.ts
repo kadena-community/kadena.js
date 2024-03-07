@@ -1,7 +1,7 @@
 import { Option } from 'commander';
 import { z } from 'zod';
 import { getWallet } from '../keys/utils/keysHelpers.js';
-import { wallets } from '../prompts/index.js';
+import { keys, wallets } from '../prompts/index.js';
 import { createOption } from '../utils/createOption.js';
 
 export const walletOptions = {
