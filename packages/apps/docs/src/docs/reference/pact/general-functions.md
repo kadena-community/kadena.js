@@ -317,38 +317,101 @@ Top level only: this function will fail if used in module code.
 
 ## enumerate
 
-_from_&nbsp;`integer` _to_&nbsp;`integer` _inc_&nbsp;`integer`
-_&rarr;_&nbsp;`[integer]`
+Use `enumerate` to return a sequence of numbers from the specified *`first`* number to the specified *`last`* number, inclusively, as a list. 
 
-_from_&nbsp;`integer` _to_&nbsp;`integer` _&rarr;_&nbsp;`[integer]`
+By default, the sequence increments by one from the *`first`* number to the *`last`* number. 
+Optionally, you can specify an increment other than one to use between numbers in the sequence. 
 
-Returns a sequence of numbers from FROM to TO (both inclusive) as a list. INC is
-the increment between numbers in the sequence. If INC is not given, it is
-assumed to be 1. Additionally, if INC is not given and FROM is greater than TO
-assume a value for INC of -1. If FROM equals TO, return the singleton list
-containing FROM, irrespective of INC's value. If INC is equal to zero, this
-function will return the singleton list containing FROM. If INC is such that
-FROM + INC > TO (when FROM < TO) or FROM + INC < TO (when FROM > TO) return the
-singleton list containing FROM. Lastly, if INC is such that FROM + INC < TO
-(when FROM < TO) or FROM + INC > TO (when FROM > TO), then this function fails.
+If you specify a *`first`* number that’s greater than the *`last`* number, the sequence decrements by one from the *`first`* number to the *`last`* number.
 
-```lisp
-pact> (enumerate 0 10 2)
-[0 2 4 6 8 10]
+### Basic syntax
+
+To increment or decrement the sequence by one, use the following syntax:
+
+```pact
+enumerate *first* *last*
+```
+
+To specify a value to increment or decrement the sequence by, use the following syntax:
+
+```pact
+enumerate *first* *last inc*
+```
+
+### Arguments
+
+Use the following arguments to define the beginning and end of the sequence you want to list using the `enumerate` Pact function.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `first` | integer | Specifies the first number in the sequence. |
+| `last` | integer | Specifies the last number in the sequence. |
+
+### Options
+
+Use the following optional argument to define the increment to use between the beginning and end of the sequence in the `enumerate` Pact function.
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `inc` | integer | Specifies the increment to use between numbers in the sequence. The value can be a positive or negative integer. |
+
+### Return values
+
+The `enumerate` function returns the resulting sequence of numbers as a list.
+
+### Examples
+
+The following example enumerates a sequence of numbers using the default increment of one in the Pact REPL:
+
+```pact
 pact> (enumerate 0 10)
 [0 1 2 3 4 5 6 7 8 9 10]
-pact> (enumerate 10 0)
-[10 9 8 7 6 5 4 3 2 1 0]
+```
+
+The following example enumerates a sequence of numbers using an increment of two between numbers in the sequence:
+
+```pact
+pact> (enumerate 0 10 2)
+[0 2 4 6 8 10]
+```
+
+The following example illustrates decrementing a sequence of numbers using an `inc` value of -2 between numbers in the sequence:
+
+```pact
+pact> (enumerate 20 10 -2)
+[20 18 16 14 12 10]
 ```
 
 ## filter
 
-_app_&nbsp;`x:<a> -> bool` _list_&nbsp;`[<a>]` _&rarr;_&nbsp;`[<a>]`
+Use `filter` to filter a list of element by applying the specified criteria to each element in the list.
+FEach element that matches the specified criteria—returning a result of `true`—is included in the resulting list with its original value.
 
-Filter LIST by applying APP to each element. For each true result, the original
-value is kept.
+### Basic syntax
 
-```lisp
+To filter a list of elements, use the following syntax:
+
+```pact
+filter *apply-criteria* [list]
+```
+
+### Arguments
+
+Use the following argument to define the criteria you want to use to filter the list of elements.
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| `apply-criteria` | integer | Specifies the criteria to apply to evaluate each element in a list. If the element matches the criteria applied, its value is included in the resulting list.|
+
+### Return values
+
+The `filter` function returns the list of elements matching the specified criteria.
+
+### Examples
+
+The following example composes a list of elements by evaluating the length of strings with less than two characters:
+
+```pact
 pact> (filter (compose (length) (< 2)) ["my" "dog" "has" "fleas"])
 ["dog" "has" "fleas"]
 ```

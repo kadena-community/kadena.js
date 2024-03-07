@@ -52,7 +52,7 @@ Before you start this tutorial, verify the following basic requirements:
 In the previous tutorial, you voted with your administrative account. 
 The transaction was successful because the account had sufficient funds to pay the transaction fee. 
 For this tutorial, you need to create a new voter account on the development network. 
-Initially, you'll use the voter account to see that voting transactions in the election application require funds.
+Initially, you'll use the voter account to see that voting in the election application requires you to have funds in an account.
 
 The steps for creating the voter account are similar to the steps you followed to create your administrative account.
 
@@ -389,7 +389,7 @@ To do this, you'll update the `vote` function to accept the following arguments:
 - Zero as the gas limit to allow unlimited gas.
 - Zero as the gas price. 
 
-You'll also change the `senderAccount` in the transaction metadata to use the`'election-gas-station'` module so that the election gas station account pays the transaction fee for voting transactions instead of the voter account.
+You'll also change the `senderAccount` in the transaction metadata to use the `election-gas-station` module so that the election gas station account pays the transaction fee for voting transactions instead of the voter account.
 
 To update the `vote` function:
 
@@ -403,7 +403,7 @@ To update the `vote` function:
    ])
    ```
 
-3. Update the `senderAccount` in the transaction metadata to be `'election-gas-station'` as follows: 
+3. Update the `senderAccount` in the transaction metadata to be `election-gas-station` as follows: 
    
    ```typescript
    .setMeta({
@@ -496,7 +496,7 @@ To create a capability-guarded account:
    )
    ```
 
-1. Update the `election-gas-station.repl` file to set `init` to true for the next transactions by adding the following lines of code after loading the `setup.repl` module:
+1. Update the `election-gas-station.repl` file to set `init` to true for the next transaction by adding the following lines of code after loading the `setup.repl` module:
 
    ```pact
    (env-data
@@ -519,7 +519,7 @@ To create a capability-guarded account:
    Load successful
    ```
    
-   If you're successful loading the election-gas-station module in the Pact REPL, you can update the module deployed on the development network.
+   If you're successful loading the `election-gas-station module` in the Pact REPL, you can update the module deployed on the development network.
 
 ## Update the gas station module
 
@@ -652,7 +652,7 @@ To modify the `senderAccount` to use the gas station account:
 
 1. Open the `frontend/src/repositories/vote/DevnetVoteRepository.ts` file in the code editor on your computer.
 
-2. Update the `senderAccount` in the transaction metadata to replace `'election-gas-station'` with the `c:<capability-guarded-account-name>` account name for your gas station.
+2. Update the `senderAccount` in the transaction metadata to replace `election-gas-station` with the `c:<capability-guarded-account-name>` account name for your gas station.
    
    For example: 
    
@@ -700,7 +700,7 @@ You might recall in the previous tutorial that you tested voting with a transact
 In this test from the previous tutorial, the `caps` field passed to `env-sigs` is an empty array. 
 As a consequence, the signature of the transaction is not scoped to any capability and the signer automatically approves all capabilities required for the function to execute. 
 
-In the `vote` function of `frontend/src/repositories/vote/DevnetVoteRepository.ts` you scoped the signature of the transaction to the `GAS_PAYER` capability, but not to the `ACCOUNT-OWNER` capability. 
+In the `vote` function of `frontend/src/repositories/vote/DevnetVoteRepository.ts`, you scoped the signature of the transaction to the `GAS_PAYER` capability, but not to the `ACCOUNT-OWNER` capability. 
 If you sign for some capabilities but not for all capabilities required for a transaction to be executed, the transaction will fail at the point where a capability is required that you did not sign for.
 Therefore, you need to add a second capability to the array passed to `addSigners` in
 the `vote` function in `frontend/src/repositories/vote/DevnetVoteRepository.ts`.
@@ -766,7 +766,7 @@ To set an upper limit for transaction fees:
    ```pact
    (defun enforce-below-or-at-gas-price:bool (gasPrice:decimal)
      (enforce (<= (chain-gas-price) gasPrice)
-       (format "Gas Price must be smaller than or equal to {}" [gasPrice]))
+       (format "Gas Price must be lower than or equal to {}" [gasPrice]))
    )
    ```
 
@@ -788,7 +788,7 @@ This type of "continued" transaction requires more computational resources—tha
 To prevent the gas station account from being depleted by transactions that require multiple steps, you can configure the gas station module to only allow simple transactions, identified by the `exec` transaction type.
 Transactions identified with the `exec` transaction type can contain multiple functions but complete in a single step.
 
-To set limits on the transactions allowed to access to the gas station account:
+To set limits on the transactions allowed to access the gas station account:
 
 1. Open the `election-gas-station.pact` file in the code editor on your computer.
 
@@ -799,7 +799,7 @@ To set limits on the transactions allowed to access to the gas station account:
    ```
    
    An `exec` transaction can contain multiple function calls.
-   You can also restrict access to the gas station account by only allowing specific function calls.
+   You can further restrict access to the funds in the gas station account by only allowing specific function calls.
 
 3. Restrict access to only allow one function call by adding the following line to the `GAS_PAYER` capability definition:
 
@@ -824,7 +824,7 @@ After you've completed the changes to secure the gas station account, you are re
 
 To update the smart contract and complete the workshop:
 
-1. Open the `election-dap/pact` folder in a terminal shell on your computer and verify all of your tests you created in the workshop pass using the Pact REPL.
+1. Open the `election-dap/pact` folder in a terminal shell on your computer and verify all of the tests you created in the workshop pass using the Pact REPL.
    
    - pact/candidates.repl
    - pact/election-gas-station.repl
@@ -842,11 +842,9 @@ To update the smart contract and complete the workshop:
    - Your administrative account name with the **k:** prefix exists on chain 1.
    - Your administrative account name is funded with KDA on chain 1. 
    
-   You're going to use Chainweaver to sign the transaction that updates the module. 
+3. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
 
-1. Open the `election-dapp/snippets` folder in a terminal shell on your computer.
-
-1. Update your `election-gas-station` module on the development network by running a command similar to the following with your administrative account name:
+4. Update your `election-gas-station` module on the development network by running a command similar to the following with your administrative account name:
    
    ```bash
    npm run deploy-gas-station:devnet -- k:<your-public-key> upgrade
@@ -856,11 +854,11 @@ To update the smart contract and complete the workshop:
    You can copy this account name from Chainweaver when viewing the account watch list.
    When you run the script, you should see Chainweaver display a QuickSign Request.
   
-2. Click **Sign All** to sign the request.
+5. Click **Sign All** to sign the request.
    
    After you click Sign All, the transaction is executed and the results are displayed in your terminal shell.
 
-3. Verify your contract changes in the Chainweaver Module Explorer by refreshing the list of **Deployed Contracts**, then clicking **View** for the `election-gas-station` module.
+6. Verify your contract changes in the Chainweaver Module Explorer by refreshing the list of **Deployed Contracts**, then clicking **View** for the `election-gas-station` module.
    
    After you click View, you should see the updated list of functions and capabilities.
    If you click **Open**, you can view the module code in the editor pane and verify that the `election-gas-station` module deployed on the local development network is what you expect.
@@ -871,7 +869,7 @@ In this tutorial, you learned how to:
 
 - Add a second module to your smart contract.
 - Define a gas station account that pays transaction fees on behalf of other accounts.
-- Restrict access to the gas station account based on conditions you specify in the Pct module.
+- Restrict access to the gas station account based on conditions you specify in the Pact module.
 - Deploy the gas station module on the development network.
 
 In this workshop, you configured an election application to use the Kadena client to interact with a smart contract deployed on the Kadena blockchain as its backend. 
