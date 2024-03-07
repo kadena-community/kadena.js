@@ -1,5 +1,6 @@
 import type { ISidebarToolbarItem } from '../types/Layout';
 import Routes from './routes';
+import {isDevEnvironment} from "@/utils/isDevEnvironment";
 
 export const menuData: ISidebarToolbarItem[] = [
   {
@@ -30,10 +31,10 @@ export const menuData: ISidebarToolbarItem[] = [
         title: 'Cross Chain Transfer Finisher',
         href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
       },
-      {
+      ...isDevEnvironment ? [{
         title: 'Transfer',
         href: Routes.TRANSFER,
-      },
+      }] : []
     ],
   },
 ];
