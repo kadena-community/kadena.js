@@ -130,9 +130,13 @@ export const createAccountFundCommand = createCommand(
     const result = await fund(config);
     assertCommandError(result);
 
+    const explorerURL = networkConfig.networkExplorerUrl.endsWith('/')
+      ? networkConfig.networkExplorerUrl
+      : `${networkConfig.networkExplorerUrl}/`;
+
     log.info(
       log.color.green(
-        `Explorer URL: ${networkConfig.networkExplorerUrl}\nRequest Key: ${result.data.requestKey}`,
+        `Transaction explorer URL: ${explorerURL}${result.data.requestKey}`,
       ),
     );
     const { pollStatus } = createClient(

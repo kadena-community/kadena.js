@@ -83,11 +83,12 @@ export async function createAndTransferFund({
     );
 
     // Validate the transaction locally before sending it to the network
-    await local(signedTx);
+    const localResult = await local(signedTx);
+    if (localResult.result.status === 'failure') {
+      throw localResult.result.error;
+    }
 
-    const requestKeys = await submit(signedTx);
-
-    return requestKeys;
+    return await submit(signedTx);
   } catch (error) {
     throw Error(`Failed to create an account and transfer fund: ${error}`);
   }

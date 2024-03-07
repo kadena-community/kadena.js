@@ -105,7 +105,7 @@ describe('fund', () => {
     });
   });
 
-  it('should return success false and error message when transfer fund api status returns failure', async () => {
+  it('should return success false and error message when api call fails', async () => {
     server.use(
       http.post(
         'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/send',
