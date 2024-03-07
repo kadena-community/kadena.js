@@ -1,0 +1,34 @@
+{
+  "name": "e2e-docs",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "format": "pnpm run --sequential /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
+    "format:src": "prettier . --cache --write",
+    "install:chromium": "npx playwright install chromium",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint . --ext .js,.ts",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@kadena/docs": "workspace:*",
+    "@playwright/test": "^1.41.1"
+  },
+  "devDependencies": {
+    "@kadena-dev/e2e-base": "workspace:*",
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/eslint-plugin": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
+    "@kadena/types": "workspace:*",
+    "@rushstack/eslint-config": "~3.3.0",
+    "@types/node": "^18.17.14",
+    "eslint": "^8.45.0",
+    "eslint-plugin-playwright": "0.16.0",
+    "prettier": "~3.0.3"
+  }
+}

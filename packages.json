@@ -174,10 +174,28 @@
     "path": "packages/libs/types"
   },
   {
-    "name": "@kadena-dev/e2e-tests",
+    "name": "@kadena-dev/e2e-base",
     "version": "0.0.2",
     "private": true,
-    "path": "packages/tools/e2e-tests"
+    "path": "packages/e2e/base"
+  },
+  {
+    "name": "e2e-docs",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/e2e/e2e-docs"
+  },
+  {
+    "name": "e2e-graph",
+    "version": "0.0.2",
+    "private": true,
+    "path": "packages/e2e/e2e-graph"
+  },
+  {
+    "name": "e2e-tools",
+    "version": "0.0.2",
+    "private": true,
+    "path": "packages/e2e/e2e-tools"
   },
   {
     "name": "@kadena-dev/eslint-config",
