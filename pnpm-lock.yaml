@@ -2797,9 +2797,6 @@ importers:
       chalk:
         specifier: ^5.2.0
         version: 5.3.0
-      clear:
-        specifier: ^0.1.0
-        version: 0.1.0
       commander:
         specifier: ^11.0.0
         version: 11.0.0
@@ -2812,9 +2809,6 @@ importers:
       ora:
         specifier: ^7.0.1
         version: 7.0.1
-      rimraf:
-        specifier: ~5.0.1
-        version: 5.0.1
       sanitize-filename:
         specifier: ^1.6.3
         version: 1.6.3
@@ -18889,10 +18883,6 @@ packages:
   /clean-yaml-object@0.1.0:
     resolution: {integrity: sha512-3yONmlN9CSAkzNwnRCiJQ7Q2xK5mWuEfL3PuTZcAUzhObbXsfsnMptJzXwz93nc5zn9V9TwCVMmV7w4xsm43dw==}
     engines: {node: '>=0.10.0'}
-    dev: false
-
-  /clear@0.1.0:
-    resolution: {integrity: sha512-qMjRnoL+JDPJHeLePZJuao6+8orzHMGP04A8CdwCNsKhRbOnKRjefxONR7bwILT3MHecxKBjHkKL/tkZ8r4Uzw==}
     dev: false
 
   /cli-boxes@2.2.1:
