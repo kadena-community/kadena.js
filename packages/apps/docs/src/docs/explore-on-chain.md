@@ -91,9 +91,9 @@ To create an account wallet:
 
 ## Fund the account wallet
 
-After you generate the keys and add an account name, the account name acts as a placeholder waiting for you to complete the next step to activate the account name as the owner of the wallet. 
-Your wallet isn't yet associated with any particular **network** or any particular **chain**.
-If you click **Accounts** in the Chainweaver navigation panel, you'll see that the balance Does not exist on any chain in the network.
+After you generate the keys for an account, the account name acts as a placeholder waiting for you to complete the next step to identify the public key or account name that owns the wallet. 
+Before you take this step, your wallet isn't associated with any particular **network** or any particular **chain**.
+In fact, if you view your account in Chainweaver navigation panel, you'll see that the balance displays **Does not exist** for every chain in the selected network.
 
 To fund the account wallet:
 
