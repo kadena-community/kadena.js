@@ -10,12 +10,7 @@ export const containerStyle = style([
     height: '100%',
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
   }),
   { backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: token('zIndex.overlay') },
-]);
-
-export const loaderStyle = style([
-  {
-    margin: '0 auto',
-  },
 ]);

@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { ICardProps } from '@kadena/react-ui';
 import { Card, ProgressCircle } from '@kadena/react-ui';
-import { containerStyle, loaderStyle } from './styles.css';
+import { containerStyle } from './styles.css';
 
 export const LoadingCard = ({
   isLoading,
@@ -13,7 +13,7 @@ export const LoadingCard = ({
     <Card {...rest}>
       {isLoading && (
         <div className={containerStyle}>
-          <ProgressCircle isIndeterminate className={loaderStyle} />
+          <ProgressCircle isIndeterminate />
         </div>
       )}
       {children}
