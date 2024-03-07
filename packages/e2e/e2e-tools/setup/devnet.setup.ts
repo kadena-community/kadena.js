@@ -3,7 +3,7 @@ import { deployGuards } from '@kadena-dev/e2e-base/src/smart-contracts/guards/de
 import { deployGasStation } from '@kadena-dev/e2e-base/src/smart-contracts/kadena-xchain-gas/deploy';
 import { expect, test as setup } from '@playwright/test';
 
-setup('Configure Devnet', async () => {
+setup('Deploy kadena-xchain-gas-station', async () => {
   await setup.step(
     'Deploy Guards Contracts & Gas Station on chain 0',
     async () => {
@@ -18,7 +18,9 @@ setup('Configure Devnet', async () => {
       await deployGasStation('1');
     },
   );
+});
 
+setup('Deploy Faucet', async () => {
   await setup.step('Deploy Faucet Contract on chain 0', async () => {
     const deploymentStatus = await deployFaucetContract('0');
     expect(deploymentStatus).toEqual('success');

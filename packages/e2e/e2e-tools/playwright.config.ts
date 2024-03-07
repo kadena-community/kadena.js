@@ -19,7 +19,7 @@ const config: PlaywrightTestConfig = {
     {
       name: 'setup',
       testDir: 'setup',
-      testMatch: 'faucet.setup.ts',
+      testMatch: 'devnet.setup.ts',
     },
     {
       name: 'tools',
