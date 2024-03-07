@@ -142,3 +142,10 @@ type IProofOfUsTokenSignee = Pick<
 > & {
   name: string;
 };
+
+interface IToken {
+  requestKey?: string;
+  tokenId: string;
+  uri: string;
+  mintStartDate?: number;
+}
