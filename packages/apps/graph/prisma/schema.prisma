@@ -137,9 +137,12 @@ model Transfer {
   block           Block        @relation(fields: [blockHash], references: [hash], onDelete: NoAction, onUpdate: NoAction)
   transaction     Transaction? @relation(fields: [blockHash, requestKey], references: [blockHash, requestKey], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([blockHash, chainId, orderIndex, moduleHash, requestKey] )
-  @@index([senderAccount, height(sort: Desc)], map: "transfers_from_acct_height")
-  @@index([receiverAccount, height(sort: Desc)], map: "transfers_to_acct_height")
+  @@id([blockHash, chainId, orderIndex, moduleHash, requestKey])
+  @@index([receiverAccount, height(sort: Desc), orderIndex])
+  @@index([blockHash, requestKey], map: "transfers_block_requestkey")
+  @@index([blockHash, senderAccount], map: "transfers_from_acct")
+  @@index([senderAccount, height(sort: Desc), orderIndex], map: "transfers_from_acct_height_idx")
+  @@index([blockHash, receiverAccount], map: "transfers_to_acct")
   @@map("transfers")
 }
 
