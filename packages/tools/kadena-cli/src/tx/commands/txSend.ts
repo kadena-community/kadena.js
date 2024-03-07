@@ -11,6 +11,7 @@ import type {
 } from '@kadena/client';
 import { createClient, isSignedTransaction } from '@kadena/client';
 import ora from 'ora';
+import { IS_TEST } from '../../constants/config.js';
 import type {
   ICustomNetworkChoice,
   INetworkCreateOptions,
@@ -242,7 +243,10 @@ export const createSendTransactionCommand: (
     }
 
     if (transactionsWithDetails.length > 0) {
-      const loader = ora('Sending transactions...\n').start();
+      const loader = ora({
+        text: 'Sending transactions...\n',
+        isEnabled: !IS_TEST,
+      }).start();
       const result = await sendTransactionAction({ transactionsWithDetails });
       assertCommandError(result, loader);
 
