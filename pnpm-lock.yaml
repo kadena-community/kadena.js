@@ -1300,6 +1300,9 @@ importers:
       '@kadena/types':
         specifier: workspace:*
         version: link:../../libs/types
+      '@ledgerhq/hw-transport-mocker':
+        specifier: 6.28.4
+        version: 6.28.4
       '@rushstack/eslint-config':
         specifier: ~3.3.0
         version: 3.3.0(eslint@8.53.0)(typescript@5.2.2)
@@ -7976,8 +7979,29 @@ packages:
       rxjs: 7.8.1
       semver: 7.5.4
 
+  /@ledgerhq/devices@8.2.1:
+    resolution: {integrity: sha512-l/2I/Xzt7Z32OmGzoc/mUvaZivdn7Id/SO7hBTGpk7PtJTpBRxVAabP4GWEKCayGyOAcvTwoVxM0HMkNVfIzOQ==}
+    dependencies:
+      '@ledgerhq/errors': 6.16.2
+      '@ledgerhq/logs': 6.12.0
+      rxjs: 7.8.1
+      semver: 7.5.4
+    dev: true
+
   /@ledgerhq/errors@6.16.1:
     resolution: {integrity: sha512-4D4wKecGzQpIu7sx03Sg4uE1e8g1oZUndWgw9gw776H8h9ov9c5TxPaldTn2j6orPECAERViLf7LTO4L5pE2Cw==}
+
+  /@ledgerhq/errors@6.16.2:
+    resolution: {integrity: sha512-jFpohaSW+p1Obp3NDT9QSByEtT3gtBZIjVNu8m25gnrH5zdtfPVlPwH6UiuS50s+2dHQyehV8hF+IfreKDWAZA==}
+    dev: true
+
+  /@ledgerhq/hw-transport-mocker@6.28.4:
+    resolution: {integrity: sha512-s4GyN8AdjenO+Y6XsxQyW1bQlbsBwNZJyax4Jz2tf+AbiDC3geblaK3wAg6FTUX0tz5K0mAarEVvM03Qxdxblw==}
+    dependencies:
+      '@ledgerhq/hw-transport': 6.30.4
+      '@ledgerhq/logs': 6.12.0
+      rxjs: 7.8.1
+    dev: true
 
   /@ledgerhq/hw-transport-webhid@6.28.3:
     resolution: {integrity: sha512-MNxdK1M+35QA9A+8e4ETSefK3iTO6MaHjB1tKClEngcmcJ2no+Mw8GuMyfaKkrKs2N7KbSQdVHcu9ouCL1NZhw==}
@@ -7995,6 +8019,15 @@ packages:
       '@ledgerhq/errors': 6.16.1
       '@ledgerhq/logs': 6.12.0
       events: 3.3.0
+
+  /@ledgerhq/hw-transport@6.30.4:
+    resolution: {integrity: sha512-VBcVd7UG8HDrjWMoZI5rqBDz+PBxLHTIPZOGY/fdMoEUwaBbss0Z3MxuJanMyerlfaLqnBSVuL0blz7rOyagkw==}
+    dependencies:
+      '@ledgerhq/devices': 8.2.1
+      '@ledgerhq/errors': 6.16.2
+      '@ledgerhq/logs': 6.12.0
+      events: 3.3.0
+    dev: true
 
   /@ledgerhq/logs@6.12.0:
     resolution: {integrity: sha512-ExDoj1QV5eC6TEbMdLUMMk9cfvNKhhv5gXol4SmULRVCx/3iyCPhJ74nsb3S0Vb+/f+XujBEj3vQn5+cwS0fNA==}

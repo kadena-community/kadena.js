@@ -31,7 +31,7 @@ export class FundExistingAccountPage {
     account: string,
     chainId: string,
   ): Promise<void> {
-    await this._accountCard._chain.setValueForListBox(
+    await this._accountCard.setValueForListBox(
       'Select Chain ID',
       'Select Chain ID Chain ID',
       chainId,
