@@ -10,9 +10,9 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { CommandError, assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
-import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { select } from '../../utils/prompts.js';
+import { walletOptions } from '../walletOptions.js';
 
 export const deleteWallet = async (
   wallet: string,
@@ -72,7 +72,7 @@ export const createDeleteWalletsCommand: (
 ) => void = createCommand(
   'delete',
   'Delete wallet from your local filesystem',
-  [globalOptions.walletNameSelectWithAll(), confirmDelete()],
+  [walletOptions.walletNameSelectWithAll(), confirmDelete()],
   async (option, { collect }) => {
     const config = await collect(option);
     if (config.confirm !== true) {
