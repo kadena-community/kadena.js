@@ -85,7 +85,7 @@ export const createChangeWalletPasswordCommand: (
     }),
     securityOptions.createNewPasswordOption({
       message: 'Enter the new wallet password',
-      confirmPasswordMessage: 'Re-enter the new password',
+      confirmPasswordMessage: 'Re-enter the password',
     }),
     confirmOption(),
   ],
