@@ -13,7 +13,7 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { CommandError, assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
-import { globalOptions } from '../../utils/globalOptions.js';
+import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { select } from '../../utils/prompts.js';
 
@@ -80,8 +80,13 @@ export const createChangeWalletPasswordCommand: (
   'Update the password for your wallet',
   [
     globalOptions.walletSelect(),
-    globalOptions.currentPasswordFile({ isOptional: false }),
-    globalOptions.newPasswordFile({ isOptional: false }),
+    securityOptions.createPasswordOption({
+      message: 'Enter your current password',
+    }),
+    securityOptions.createNewPasswordOption({
+      message: 'Enter the new wallet password',
+      confirmPasswordMessage: 'Repeat the new password',
+    }),
     confirmOption(),
   ],
   async (option, { collect }) => {
@@ -99,7 +104,7 @@ export const createChangeWalletPasswordCommand: (
     const result = await changeWalletPassword(
       config.walletName,
       config.walletNameConfig,
-      config.currentPasswordFile,
+      config.passwordFile,
       config.newPasswordFile,
     );
     assertCommandError(result);
