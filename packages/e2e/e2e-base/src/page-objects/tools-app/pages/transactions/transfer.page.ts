@@ -57,6 +57,11 @@ export class TransferPage {
     await this.receiverCard.setTab(value);
   }
 
+  public async setPublicKey(value: string): Promise<void> {
+    await this.receiverCard.setValueForTextbox('Enter Public Key', value);
+    await this.receiverCard.clickButton('Add public key');
+  }
+
   public async signTransaction(): Promise<void> {
     await this._page.getByRole('button', { name: 'Sign' }).click();
   }

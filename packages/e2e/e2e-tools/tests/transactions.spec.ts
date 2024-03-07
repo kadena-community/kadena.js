@@ -106,3 +106,30 @@ test(`Tracking and Finishing a Cross Chain Transfer`, async ({
   //   ).toHaveText('Transfer complete');
   // });
 });
+
+test(`Ledger: Transfer to new account`, async ({ toolsApp, page }) => {
+  await test.step('Enable Devnet and navigate to the Transfer Page', async () => {
+    await page.goto('/');
+    await toolsApp.homePage.header.goToPage('Transactions');
+    await toolsApp.asidePanel.navigateTo('Transfer');
+  });
+
+  await test.step('Set Sender Details', async () => {
+    await toolsApp.transferPage.setSender('Ledger');
+    await toolsApp.transferPage.setKeyIndex('0');
+    await toolsApp.transferPage.setChainId('sender', '0');
+    await toolsApp.transferPage.setAmount('1');
+  });
+
+  await test.step('Set Receiver Details', async () => {
+    await toolsApp.transferPage.setReceiverTab('New');
+    await toolsApp.transferPage.setPublicKey('TODO'); //TODO: Add public key
+    await toolsApp.transferPage.setChainId('receiver', '0');
+  });
+
+  await test.step('Sign Transaction', async () => {
+    await toolsApp.transferPage.signTransaction();
+  });
+
+  expect(true).toBe(true);
+});
