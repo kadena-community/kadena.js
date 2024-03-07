@@ -17,12 +17,12 @@ describe('template to live test', () => {
   // NOTE: this tests uses live testnet04 meaning it is not isolated!!!
   it('creates, signs and tests the transaction', async () => {
     const variables = {
-      'account-from': `k:${publicKey}`,
-      'account-to': targetAccount,
-      'decimal-amount': '0.01',
+      'account:from': `k:${publicKey}`,
+      'account:to': targetAccount,
+      'decimal:amount': '0.01',
       'chain-id': '1',
-      'pk-from': publicKey,
-      'network-id': 'testnet04',
+      'key:from': publicKey,
+      'network:networkId': 'testnet04',
     };
 
     await services.filesystem.ensureDirectoryExists(process.cwd());

@@ -22,12 +22,12 @@ describe('tx send', () => {
     const transaction = await createTransaction(
       defaultTemplates.transfer,
       {
-        'account-from': `k:${publicKey}`,
-        'account-to': targetAccount,
-        'decimal-amount': '0.01',
+        'account:from': `k:${publicKey}`,
+        'account:to': targetAccount,
+        'decimal:amount': '0.01',
         'chain-id': '1',
-        'pk-from': publicKey,
-        'network-id': 'testnet04',
+        'key:from': publicKey,
+        'network:networkId': 'testnet04',
       },
       null,
     );
@@ -43,7 +43,7 @@ describe('tx send', () => {
         'Enter ChainId': '1',
       },
       select: {
-        'Select a network': 'testnet',
+        'Select network': 'testnet',
       },
       checkbox: {
         'Select a transaction file': [0],

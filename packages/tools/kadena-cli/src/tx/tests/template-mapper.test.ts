@@ -12,15 +12,15 @@ describe('template mapper', () => {
     const command = await createPactCommandFromStringTemplate(
       defaultTemplates.transfer,
       {
-        'account-from':
+        'account:from':
           'k:2619fafe33b3128f38a4e4aefe6a5559371b18b6c25ac897aff165ce14b241b3',
-        'account-to':
+        'account:to':
           'k:2619fafe33b3128f38a4e4aefe6a5559371b18b6c25ac897aff165ce14b241b4',
-        'decimal-amount': '1.0',
+        'decimal:amount': '1.0',
         'chain-id': '0',
-        'pk-from':
+        'key:from':
           '2619fafe33b3128f38a4e4aefe6a5559371b18b6c25ac897aff165ce14b241b3',
-        'network-id': 'testnet04',
+        'network:networkId': 'testnet04',
       },
     );
 
