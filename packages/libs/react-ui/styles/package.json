@@ -1,0 +1,5 @@
+{
+  "main": "../dist/styles.cjs",
+  "module": "../dist/styles.mjs",
+  "types": "./index.d.ts"
+}

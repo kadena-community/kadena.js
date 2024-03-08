@@ -1,0 +1,5 @@
+{
+  "main": "../dist/global.cjs",
+  "module": "../dist/global.mjs",
+  "types": "./index.d.ts"
+}
