@@ -18,7 +18,7 @@ import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletKey } from '../../keys/utils/keysHelpers.js';
 import type { IKeyPair as IKeyPairLocal } from '../../keys/utils/storage.js';
 import { tx } from '../../prompts/index.js';
-import { ICommandSchema, IUnsignedCommandSchema } from '../../prompts/tx.js';
+import { ICommandSchema } from '../../prompts/tx.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { notEmpty } from '../../utils/helpers.js';
@@ -73,17 +73,15 @@ export async function getAllTransactions(
           const content = await services.filesystem.readFile(filePath);
           if (content === null) return null;
           const JSONParsedContent = JSON.parse(content);
-          const isSignedTx =
-            'sigs' in JSONParsedContent &&
-            isSignedTransaction(JSONParsedContent);
-          const schema = isSignedTx ? ICommandSchema : IUnsignedCommandSchema;
-          const parsed = schema.safeParse(JSON.parse(content));
+          const parsed = ICommandSchema.safeParse(JSONParsedContent);
           if (parsed.success) {
+            const isSignedTx = isSignedTransaction(JSONParsedContent);
             return {
               fileName,
               signed: isSignedTx,
             };
           }
+
           return null;
         }),
       )
@@ -308,7 +306,7 @@ export async function getTransactionFromFile(
     }
     const transaction = JSON.parse(fileContent);
     if (signed) {
-      return tx.ICommandSchema.parse(transaction);
+      return tx.ISignedCommandSchema.parse(transaction);
     }
     const result = tx.IUnsignedCommandSchema.parse(transaction);
     return result as IUnsignedCommand; // typecast because `IUnsignedCommand` uses undefined instead of null

@@ -158,7 +158,7 @@ export const txOptions = {
   txSignedTransactionFile: createOption({
     key: 'txSignedTransactionFile',
     prompt: tx.transactionSelectPrompt,
-    validation: tx.ICommandSchema,
+    validation: tx.ISignedCommandSchema,
     option: new Option(
       '-s, --tx-signed-transaction-file <txSignedTransactionFile>',
       'provide your signed transaction file',
