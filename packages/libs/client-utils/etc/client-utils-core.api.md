@@ -382,6 +382,9 @@ export const dirtyReadClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign"
 // @alpha
 export const estimateGas: (command: IPartialPactCommand_2 | ((cmd?: IPartialPactCommand_2 | (() => IPartialPactCommand_2)) => IPartialPactCommand_2), host?: IClientConfig['host'], client?: IClient) => Promise<unknown>;
 
+// @public (undocumented)
+export const getGlobalConfig: () => Partial<IClientConfig>;
+
 // @alpha (undocumented)
 export interface IEmitterWrapper<T extends Array<{
     event: string;
@@ -482,6 +485,9 @@ export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "
     chainId: ChainId | undefined;
     }[]>>);
 };
+
+// @public (undocumented)
+export const setGlobalConfig: (cfg: Partial<IClientConfig>) => void;
 
 // @alpha (undocumented)
 export const submitClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => {
