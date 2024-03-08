@@ -51,7 +51,7 @@ jobs:
 
       - name: Build
         if: steps.changed.outputs.pathFilter == 'true'
-        run: pnpm run build
+        run: pnpm run build --filter=${{ matrix.package }}...
 
       - name: Publish Storybook
         if: steps.changed.outputs.pathFilter == 'true'
