@@ -23,7 +23,7 @@ export const ConnectThumb: FC<IProps> = ({ token, isMinted = true }) => {
         color: invertColor,
       }}
     >
-      {!isMinted && <MonoDownloading />}
+      {!isMinted && <MonoDownloading style={{ fill: invertColor }} />}
     </div>
   );
 };

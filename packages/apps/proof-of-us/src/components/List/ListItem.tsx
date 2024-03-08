@@ -32,6 +32,7 @@ export const ListItem: FC<IProps> = ({ token }) => {
 
   useEffect(() => {
     if (token?.info?.uri) {
+      console.log(token.info.uri);
       setUri(token.info.uri);
       return;
     }
@@ -45,11 +46,13 @@ export const ListItem: FC<IProps> = ({ token }) => {
     setIsMinted(false);
     setInnerData(metaData);
   }, []);
+
   const loadData = useCallback(
     async (data: IProofOfUsTokenMeta | undefined) => {
       if (!data) return;
       if (token) {
         setInnerData(data);
+        setIsMinted(true);
         setInnerTokenId(token.id);
       }
     },
@@ -62,13 +65,16 @@ export const ListItem: FC<IProps> = ({ token }) => {
   }, [error, token, removeTokenFromData]);
 
   useEffect(() => {
-    if (token?.proofOfUsId) {
-      loadProofOfUsData(token?.proofOfUsId);
-    }
+    console.log('loading data', { token, data });
     if (data) {
       loadData(data);
+      return;
     }
-  }, [data, loadData, token]);
+    if (token?.proofOfUsId) {
+      loadProofOfUsData(token?.proofOfUsId);
+      return;
+    }
+  }, [data, loadData, token, loadProofOfUsData]);
 
   const getLink = () => {
     //return `/scan/e/${innerData?.properties.eventId}`;

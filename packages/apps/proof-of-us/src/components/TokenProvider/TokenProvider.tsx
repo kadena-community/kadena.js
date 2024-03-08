@@ -99,6 +99,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     token: IToken,
     mintStatus: 'error' | 'success',
   ) => {
+    console.log('success', mintStatus, token);
     removeMintingToken(token);
 
     if (mintStatus === 'success') {
@@ -119,36 +120,28 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!token.requestKey || !token.listener || !token.mintStartDate) return;
 
       try {
-        const promises = await Promise.all([
+        const promise = await Promise.any([
           isDateOlderThan5Minutes(new Date(token.mintStartDate)),
           token.listener,
         ]);
 
-        console.log(promises[1][token.requestKey]);
+        console.log(promise);
         if (
-          promises[1] &&
-          promises[1][token.requestKey] &&
-          promises[1][token.requestKey].result?.status === 'success'
+          promise &&
+          promise[token.requestKey] &&
+          promise[token.requestKey].result?.status === 'success'
         ) {
-          updateToken(
-            promises[1][token.requestKey].result.data,
-            token,
-            'success',
-          );
+          updateToken(promise[token.requestKey].result.data, token, 'success');
         }
         if (
-          promises[1] &&
-          promises[1][token.requestKey] &&
-          promises[1][token.requestKey].result?.status === 'failure'
+          promise &&
+          promise[token.requestKey] &&
+          promise[token.requestKey].result?.status === 'failure'
         ) {
-          console.log('fail', promises[1][token.requestKey]);
-          updateToken(
-            promises[1][token.requestKey].result.data,
-            token,
-            'error',
-          );
+          console.log('fail', promise[token.requestKey]);
+          updateToken(promise[token.requestKey].result.data, token, 'error');
         }
-        if (promises[0]) {
+        if (typeof promise === 'boolean') {
           console.log('timeout?');
           removeMintingToken(token);
         }
@@ -229,13 +222,16 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
       eventId: proofOfUs.eventId,
       proofOfUsId: proofOfUs.proofOfUsId,
       requestKey: proofOfUs.requestKey,
+      info: {
+        uri: proofOfUs.manifestUri ?? '',
+      },
       id: proofOfUs.tokenId,
       mintStartDate: Date.now(),
     };
 
     setMintingTokens((v) => {
       const newArray = [...v];
-      if (!v.find((t) => t.proofOfUsId === token.proofOfUsId)) {
+      if (!v.find((t) => t.requestKey === token.requestKey)) {
         newArray.push(token);
       }
 
@@ -244,7 +240,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   };
 
-  console.log({ tokens });
   return (
     <TokenContext.Provider
       value={{

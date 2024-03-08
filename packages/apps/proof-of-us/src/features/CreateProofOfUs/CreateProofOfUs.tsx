@@ -35,7 +35,6 @@ export const CreateProofOfUs: FC<IProps> = ({ params }) => {
   useEffect(() => {
     if (params?.id === 'new') {
       const proofOfUsId = createProofOfUsID();
-      setStatus(1);
       router.replace(`/user/proof-of-us/${proofOfUsId}`);
       return;
     }

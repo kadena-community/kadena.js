@@ -66,7 +66,7 @@ export const AttendanceThumb: FC<IProps> = ({ token, isMinted }) => {
             color: invertColor,
           }}
         >
-          <MonoDownloading fontSize="md" />
+          <MonoDownloading style={{ fill: invertColor }} fontSize="md" />
         </div>
       )}
     </div>

@@ -68,7 +68,7 @@ export const useSignToken = () => {
     setIsLoading(false);
     setHasError(false);
 
-    //router.replace(getReturnUrl());
+    router.replace(getReturnUrl());
   };
 
   useEffect(() => {
