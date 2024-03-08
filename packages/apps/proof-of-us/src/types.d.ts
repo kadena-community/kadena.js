@@ -145,6 +145,7 @@ type IProofOfUsTokenSignee = Pick<
 };
 
 interface IToken {
+  eventId?: string;
   proofOfUsId?: string;
   requestKey?: string;
   id: string;

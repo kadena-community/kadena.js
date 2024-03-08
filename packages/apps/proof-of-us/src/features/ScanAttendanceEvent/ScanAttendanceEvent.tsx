@@ -5,6 +5,7 @@ import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { SubmitStatus, useSubmit } from '@/hooks/submit';
+import { useTokens } from '@/hooks/tokens';
 import { getReturnUrl } from '@/utils/getReturnUrl';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
 import { store } from '@/utils/socket/store';
@@ -32,6 +33,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     useClaimAttendanceToken();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { addMintingData } = useTokens();
 
   const { account, isMounted, login } = useAccount();
   const { doSubmit, isStatusLoading, status } = useSubmit();
@@ -77,6 +79,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     console.log('update in scanattendance');
     store.updateProofOfUs(proof, proof);
 
+    addMintingData(proof);
     doSubmit();
   }, [account, searchParams]);
 

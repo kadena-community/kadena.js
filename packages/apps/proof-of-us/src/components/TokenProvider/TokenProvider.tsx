@@ -1,5 +1,7 @@
 'use client';
+import { useAccount } from '@/hooks/account';
 import { useGetAllProofOfUs } from '@/hooks/data/getAllProofOfUs';
+import { useHasMintedAttendaceToken } from '@/hooks/data/hasMintedAttendaceToken';
 import { getClient } from '@/utils/client';
 import { env } from '@/utils/env';
 import { differenceInMinutes, isPast } from 'date-fns';
@@ -22,18 +24,22 @@ export const TokenContext = createContext<ITokenContext>({
 
 const isDateOlderThan5Minutes = async (dateToCheck: Date): Promise<boolean> => {
   return new Promise((resolve, reject) => {
-    try {
-      const currentDate = new Date();
-      const minutesDifference = differenceInMinutes(currentDate, dateToCheck);
+    const checkCondition = () => {
+      try {
+        const currentDate = new Date();
+        const minutesDifference = differenceInMinutes(currentDate, dateToCheck);
 
-      if (isPast(dateToCheck) && minutesDifference > 10) {
-        resolve(true); // Date is older than 5 minutes
-      } else {
-        resolve(false); // Date is not older than 5 minutes
+        if (isPast(dateToCheck) && minutesDifference > 5) {
+          resolve(true); // Date is older than 5 minutes
+        } else {
+          setTimeout(checkCondition, 1000); // Check again in 1 second
+        }
+      } catch (error) {
+        reject(error);
       }
-    } catch (error) {
-      reject(error);
-    }
+    };
+
+    checkCondition();
   });
 };
 
@@ -42,6 +48,8 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   const [mintingTokens, setMintingTokens] = useState<IToken[]>([]);
   const [successTokens, setSuccessTokens] = useState<IToken[]>([]);
   const { data, isLoading } = useGetAllProofOfUs();
+  const { hasMinted } = useHasMintedAttendaceToken();
+  const { account } = useAccount();
 
   //const [listeners, setListeners] = useState<IListener[]>([]);
   // const { account } = useAccount();
@@ -133,6 +141,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
           promises[1][token.requestKey] &&
           promises[1][token.requestKey].result?.status === 'failure'
         ) {
+          console.log('fail', promises[1][token.requestKey]);
           updateToken(
             promises[1][token.requestKey].result.data,
             token,
@@ -140,9 +149,11 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
           );
         }
         if (promises[0]) {
+          console.log('timeout?');
           removeMintingToken(token);
         }
       } catch (e) {
+        console.log('catch fail');
         console.error(e);
         removeMintingToken(token);
       }
@@ -179,20 +190,43 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     const rawMintingTokensData = localStorage.getItem('mintingTokens') || '[]';
 
     const mintingTokensData = JSON.parse(rawMintingTokensData) as IToken[];
-    mintingTokensData.forEach((data) => {
-      listenForMinting(data);
+    mintingTokensData.forEach(async (tokenData) => {
+      //check if the tokenid is not already in the data
+      //if it is we can remove this mintingtoken
+      if (tokens.find((t) => t.id === tokenData.id)) {
+        removeMintingToken(tokenData);
+        return;
+      }
+
+      if (!tokenData.id && tokenData.eventId) {
+        const isMinted = await hasMinted(
+          tokenData.eventId,
+          account?.accountName,
+        );
+        if (isMinted) {
+          removeMintingToken(tokenData);
+          return;
+        }
+      }
+
+      listenForMinting(tokenData);
     });
 
     return mintingTokensData;
   }
 
-  const removeTokenFromData = useCallback((token: IToken) => {
-    const newTokens = tokens?.filter((t) => t.id !== token.id);
-    setTokens(newTokens);
-  }, []);
+  const removeTokenFromData = useCallback(
+    (token: IToken) => {
+      if (!tokens) return;
+      const newTokens = tokens.filter((t) => t.id !== token.id);
+      setTokens(newTokens);
+    },
+    [tokens],
+  );
 
-  const addMintingData = (proofOfUs: IProofOfUsData) => {
+  const addMintingData = async (proofOfUs: IProofOfUsData) => {
     const token: IToken = {
+      eventId: proofOfUs.eventId,
       proofOfUsId: proofOfUs.proofOfUsId,
       requestKey: proofOfUs.requestKey,
       id: proofOfUs.tokenId,
@@ -210,10 +244,11 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   };
 
+  console.log({ tokens });
   return (
     <TokenContext.Provider
       value={{
-        tokens: [...mintingTokens, ...successTokens, ...(data as IToken[])],
+        tokens: [...mintingTokens, ...successTokens, ...tokens],
         isLoading,
         removeTokenFromData,
         addMintingData,
