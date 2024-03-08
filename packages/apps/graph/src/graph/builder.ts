@@ -31,6 +31,7 @@ import type {
   TransactionCommand,
   TransactionMeta,
   TransactionResult,
+  TransactionSubscriptionResponse,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -84,6 +85,7 @@ export const builder = new SchemaBuilder<
       ExecutionPayload: ExecutionPayload;
       ContinuationPayload: ContinuationPayload;
       TransactionResult: TransactionResult;
+      TransactionSubscriptionResponse: TransactionSubscriptionResponse;
     };
     Connection: {
       totalCount: number;

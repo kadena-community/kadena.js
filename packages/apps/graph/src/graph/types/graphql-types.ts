@@ -135,3 +135,17 @@ export interface TransactionResult {
   eventCount: bigint | null;
   transactionId: bigint | null;
 }
+
+export const TransactionStatus = {
+  PENDING: 'pending',
+  COMPLETED: 'completed',
+  FAILED: 'failed',
+  MISSING: 'missing',
+} as const;
+
+type TransactionStatusKey = keyof typeof TransactionStatus;
+
+export interface TransactionSubscriptionResponse {
+  status: TransactionStatusKey;
+  transaction: Transaction | null;
+}

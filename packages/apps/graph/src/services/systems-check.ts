@@ -7,6 +7,7 @@ import type { NetworkConfig } from '@utils/network';
 import { readdir } from 'fs/promises';
 import { Listr } from 'listr2';
 import path from 'path';
+import { mempoolGetPending } from './chainweb-node/mempool';
 
 export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
   const networkId = (await networkConfig).networkId;
@@ -81,9 +82,15 @@ export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
             },
             {
               title: 'Checking if the mempool is reachable.',
-              skip: () =>
-                'Skipping: There is currently no mempool implementation.',
-              task: async () => {},
+              // skip: () =>
+              //   'Skipping: There is currently no mempool implementation.',
+              task: async () => {
+                try {
+                  await mempoolGetPending();
+                } catch (error) {
+                  throw new Error('Unable to connect to the mempool.');
+                }
+              },
             },
           ],
           {

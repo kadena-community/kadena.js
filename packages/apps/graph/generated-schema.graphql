@@ -435,6 +435,11 @@ type Subscription {
   Listen for a transaction by request key. Returns the ID when it is in a block.
   """
   transaction(requestKey: String!): Transaction
+
+  """
+  Listen for a transaction by request key. Returns the ID when it is in a block.
+  """
+  transactionStatus(chainId: String!, requestKey: String!): TransactionSubscriptionResponse
 }
 
 """The token identifier and its balance."""
@@ -510,6 +515,23 @@ type TransactionResult {
   logs: String
   metadata: String
   transactionId: BigInt
+}
+
+"""The status of the transaction."""
+enum TransactionStatus {
+  COMPLETED
+  FAILED
+  MISSING
+  PENDING
+}
+
+"""The response for a transaction subscription."""
+type TransactionSubscriptionResponse {
+  """The status of the transaction."""
+  status: TransactionStatus!
+
+  """The transaction."""
+  transaction: Transaction
 }
 
 """A transfer of funds from a fungible between two accounts."""

@@ -18,6 +18,7 @@ import './objects/transaction-command';
 import './objects/transaction-meta';
 import './objects/transaction-payload';
 import './objects/transaction-result';
+import './objects/transaction-subscription';
 import './objects/transfer';
 import './query/block';
 import './query/blocks-from-depth';
@@ -41,6 +42,7 @@ import './subscription/events';
 import './subscription/new-blocks';
 import './subscription/new-blocks-from-depth';
 import './subscription/transaction';
+import './subscription/transaction-status';
 
 builder.queryType({});
 builder.subscriptionType({});
