@@ -7,9 +7,6 @@ import React, { useCallback } from 'react';
 
 export type OnChainSelectChange = (value: ChainwebChainId) => void;
 
-// eslint-disable-next-line @kadena-dev/typedef-var
-const ELEMENT_ID = 'select-chain-id';
-
 interface ChainSelectProps
   extends Omit<ISelectProps, 'onSelectionChange' | 'selectedKey' | 'children'> {
   onSelectionChange?: OnChainSelectChange;
@@ -36,12 +33,10 @@ const ChainSelect: FC<ChainSelectProps> = ({
   return (
     <Select
       {...rest}
-      label="Chain ID"
-      id={ELEMENT_ID}
+      label="Select Chain ID"
       onSelectionChange={onSelectChange}
       selectedKey={selectedKey}
       startIcon={<SystemIcon.Link />}
-      aria-label="Select Chain ID"
     >
       {CHAINS.map((chainId, index) => (
         <SelectItem key={chainId}>
