@@ -24,6 +24,7 @@ export const ListItem: FC<IProps> = ({ token }) => {
   const [uri, setUri] = useState<string | undefined>();
   const { data, error } = useSWR(uri ? uri : null, fetchManifestData, {
     revalidateOnFocus: false,
+    revalidateIfStale: false,
   });
   const [innerData, setInnerData] = useState<IProofOfUsTokenMeta | undefined>();
   const [innerTokenId, setInnerTokenId] = useState<string>();
@@ -32,7 +33,6 @@ export const ListItem: FC<IProps> = ({ token }) => {
 
   useEffect(() => {
     if (token?.info?.uri) {
-      console.log(token.info.uri);
       setUri(token.info.uri);
       return;
     }
@@ -65,7 +65,6 @@ export const ListItem: FC<IProps> = ({ token }) => {
   }, [error, token, removeTokenFromData]);
 
   useEffect(() => {
-    console.log('loading data', { token, data });
     if (data) {
       loadData(data);
       return;

@@ -11,7 +11,6 @@ import { createContext, useCallback, useEffect, useState } from 'react';
 export interface IProofOfUsContext {
   proofOfUs?: IProofOfUsData;
   background: IProofOfUsBackground;
-  closeToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
   updateStatus: ({
     proofOfUsId,
     status,
@@ -42,7 +41,6 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   background: {
     bg: '',
   },
-  closeToken: async () => {},
   updateStatus: async () => {},
   addSignee: async () => {},
   removeSignee: async () => {},
@@ -114,11 +112,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   }) => {
     if (!proofOfUs) return;
     await store.updateStatus(proofOfUsId, proofOfUs, status);
-  };
-
-  const closeToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
-    if (!proofOfUs) return;
-    await store.closeToken(proofOfUsId, proofOfUs);
   };
 
   const addSignee = async () => {
@@ -201,7 +194,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <ProofOfUsContext.Provider
       value={{
-        closeToken,
         addSignee,
         removeSignee,
         createToken,

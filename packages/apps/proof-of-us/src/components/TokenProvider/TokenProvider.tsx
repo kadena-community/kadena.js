@@ -51,20 +51,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   const { hasMinted } = useHasMintedAttendaceToken();
   const { account } = useAccount();
 
-  //const [listeners, setListeners] = useState<IListener[]>([]);
-  // const { account } = useAccount();
 
-  // useEffect(() => {
-  //   if (Array.isArray(tokens)) {
-  //     setIsLoading(false);
-  //   }
-  // }, [tokens]);
-
-  // useEffect(() => {
-  //   if (!account) return;
-  //   setIsLoading(true);
-  //   store.listenToUser(account, setTokens);
-  // }, [account]);
 
   const storageListener = (event: StorageEvent) => {
     if (event.key === 'mintingTokens') {
