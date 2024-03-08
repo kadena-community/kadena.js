@@ -1,5 +1,21 @@
 # @kadena/graph-client
 
+## 0.1.13
+
+### Patch Changes
+
+- 6677a71f4: Added Events to Block and removed obsolete fields
+- 04468a259: Added parameters filter to events
+- 1809e6212: Removed confirmation depth as a block property. Added query and
+  subscription for blocks from depth
+- 48fc44b5a: Fixed token object
+- 01b9ed3e9: Refactored transactions to follow domain model. Adapted
+  graph-client to new data format
+- f503c33df: Fixed Cont/Exec Payload renaming issue
+- 7e50d4949: Replaced SSE with WebSockets for Subscriptions
+- Updated dependencies [550e6d9e4]
+  - @kadena/react-ui@0.8.2
+
 ## 0.1.12
 
 ### Patch Changes

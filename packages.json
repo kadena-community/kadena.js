@@ -25,25 +25,25 @@
   },
   {
     "name": "@kadena/client",
-    "version": "1.8.1",
+    "version": "1.9.0",
     "private": false,
     "path": "packages/libs/client"
   },
   {
     "name": "@kadena/client-examples",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "private": true,
     "path": "packages/libs/client-examples"
   },
   {
     "name": "@kadena/client-utils",
-    "version": "0.4.1",
+    "version": "0.5.0",
     "private": false,
     "path": "packages/libs/client-utils"
   },
   {
     "name": "@kadena/cookbook",
-    "version": "0.0.11",
+    "version": "0.0.12",
     "private": true,
     "path": "packages/tools/cookbook"
   },
@@ -61,13 +61,13 @@
   },
   {
     "name": "@kadena/dev-wallet",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "private": true,
     "path": "packages/apps/dev-wallet"
   },
   {
     "name": "@kadena/dev-wallet-desktop",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "private": true,
     "path": "packages/apps/dev-wallet-desktop"
   },
@@ -85,13 +85,13 @@
   },
   {
     "name": "@kadena/graph",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "private": false,
     "path": "packages/apps/graph"
   },
   {
     "name": "@kadena/graph-client",
-    "version": "0.1.12",
+    "version": "0.1.13",
     "private": true,
     "path": "packages/apps/graph-client"
   },
@@ -109,8 +109,8 @@
   },
   {
     "name": "@kadena/kadena-cli",
-    "version": "0.0.1-alpha.4",
-    "private": false,
+    "version": "0.1.0",
+    "private": true,
     "path": "packages/tools/kadena-cli"
   },
   {
@@ -127,37 +127,37 @@
   },
   {
     "name": "@kadena/pactjs-cli",
-    "version": "1.8.1",
+    "version": "1.9.0",
     "private": false,
     "path": "packages/tools/pactjs-cli"
   },
   {
     "name": "@kadena/pactjs-generator",
-    "version": "1.8.1",
+    "version": "1.9.0",
     "private": false,
     "path": "packages/libs/pactjs-generator"
   },
   {
     "name": "@kadena/proof-of-us",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "private": true,
     "path": "packages/apps/proof-of-us"
   },
   {
     "name": "@kadena/react-icons",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": true,
     "path": "packages/libs/react-icons"
   },
   {
     "name": "@kadena/react-ui",
-    "version": "0.8.1",
+    "version": "0.8.2",
     "private": false,
     "path": "packages/libs/react-ui"
   },
   {
     "name": "@kadena/toolbox",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": true,
     "path": "packages/libs/toolbox"
   },
@@ -169,7 +169,7 @@
   },
   {
     "name": "@kadena/types",
-    "version": "0.6.0",
+    "version": "0.6.1",
     "private": false,
     "path": "packages/libs/types"
   },
@@ -177,25 +177,7 @@
     "name": "@kadena-dev/e2e-base",
     "version": "0.0.2",
     "private": true,
-    "path": "packages/e2e/base"
-  },
-  {
-    "name": "e2e-docs",
-    "version": "0.0.1",
-    "private": true,
-    "path": "packages/e2e/e2e-docs"
-  },
-  {
-    "name": "e2e-graph",
-    "version": "0.0.2",
-    "private": true,
-    "path": "packages/e2e/e2e-graph"
-  },
-  {
-    "name": "e2e-tools",
-    "version": "0.0.2",
-    "private": true,
-    "path": "packages/e2e/e2e-tools"
+    "path": "packages/e2e/e2e-base"
   },
   {
     "name": "@kadena-dev/eslint-config",
@@ -211,7 +193,7 @@
   },
   {
     "name": "@kadena-dev/integration-tests",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "private": true,
     "path": "packages/tools/integration-tests"
   },
@@ -238,6 +220,24 @@
     "version": "1.0.1",
     "private": false,
     "path": "packages/tools/shared-config"
+  },
+  {
+    "name": "e2e-docs",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/e2e/e2e-docs"
+  },
+  {
+    "name": "e2e-graph",
+    "version": "0.0.2",
+    "private": true,
+    "path": "packages/e2e/e2e-graph"
+  },
+  {
+    "name": "e2e-tools",
+    "version": "0.0.2",
+    "private": true,
+    "path": "packages/e2e/e2e-tools"
   },
   {
     "name": "kadena.js",
