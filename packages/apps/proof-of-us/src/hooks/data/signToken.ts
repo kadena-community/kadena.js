@@ -49,6 +49,7 @@ export const useSignToken = () => {
       transaction: transaction,
       manifestUri: manifestData?.url,
       imageUri: imageData.url,
+      eventName: manifest.properties.eventName,
       tokenId,
     };
   };
@@ -94,6 +95,7 @@ export const useSignToken = () => {
         tokenId: transactionData.tokenId,
         manifestUri: transactionData.manifestUri,
         imageUri: transactionData.imageUri,
+        eventName: transactionData.eventName,
         signees: updateSigner({ signerStatus: 'signing' }, true),
       });
     } else {

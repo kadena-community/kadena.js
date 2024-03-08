@@ -1,5 +1,4 @@
 'use client';
-import type { Token } from '@/__generated__/sdk';
 import { Button } from '@/components/Button/Button';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { List } from '@/components/List/List';
@@ -84,7 +83,7 @@ const Page: FC = () => {
                   >
                     <Text bold>Proofs ({tokens.length})</Text>
                     <List>
-                      {tokens.map((token: Token) => {
+                      {tokens.map((token: IToken) => {
                         return <ListItem key={`${token.id}`} token={token} />;
                       })}
                     </List>

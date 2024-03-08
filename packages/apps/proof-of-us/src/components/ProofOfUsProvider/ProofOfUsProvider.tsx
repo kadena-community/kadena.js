@@ -1,5 +1,6 @@
 'use client';
 import { useAccount } from '@/hooks/account';
+import { useTokens } from '@/hooks/tokens';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { store } from '@/utils/socket/store';
@@ -60,6 +61,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
 export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { account } = useAccount();
   const params = useParams();
+  const { addMintingData } = useTokens();
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
   const [background, setBackground] = useState<IProofOfUsBackground>({
     bg: '',
@@ -82,6 +84,11 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         ) as IProofOfUsSignee[];
       }
       if (!innerData) return;
+
+      if (innerData?.tokenId && innerData.requestKey) {
+        addMintingData(innerData);
+      }
+
       setProofOfUs({ ...innerData });
     },
     [setProofOfUs, params?.id],

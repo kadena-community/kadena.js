@@ -53,6 +53,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
       imageUri: data.image,
       date: Date.now(),
       eventId: data.properties.eventId,
+      eventName: data.properties.eventName,
       backgroundColor: data.properties.avatar?.backgroundColor,
       tx: transaction,
       status: 4,

@@ -1,8 +1,9 @@
 'use client';
 
-import type { Token } from '@/__generated__/sdk';
 import { useTokens } from '@/hooks/tokens';
+import { createManifest } from '@/utils/createManifest';
 import { fetchManifestData } from '@/utils/fetchManifestData';
+import { store } from '@/utils/socket/store';
 import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -16,44 +17,40 @@ import { Text } from '../Typography/Text';
 import { listItemClass, listItemLinkClass } from './style.css';
 
 interface IProps {
-  proofOfUsData?: IProofOfUsData;
   token?: IToken;
 }
 
-export const ListItem: FC<IProps> = ({ proofOfUsData, token }) => {
+export const ListItem: FC<IProps> = ({ token }) => {
   const [uri, setUri] = useState<string | undefined>();
-  const { data, isLoading, error } = useSWR(
-    uri ? uri : null,
-    fetchManifestData,
-    {
-      revalidateOnFocus: false,
-    },
-  );
+  const { data, error } = useSWR(uri ? uri : null, fetchManifestData, {
+    revalidateOnFocus: false,
+  });
   const [innerData, setInnerData] = useState<IProofOfUsTokenMeta | undefined>();
   const [innerTokenId, setInnerTokenId] = useState<string>();
+  const [isMinted, setIsMinted] = useState(true);
   const { removeTokenFromData } = useTokens();
 
   useEffect(() => {
-    if (token) {
-      setUri(token.uri);
+    if (token?.info?.uri) {
+      setUri(token.info.uri);
       return;
     }
   }, [token]);
 
+  const loadProofOfUsData = useCallback(async (proofOfUsId: string) => {
+    const data = await store.getProofOfUs(proofOfUsId);
+    if (!data) return;
+    const metaData = await createManifest(data, data?.imageUri);
+
+    setIsMinted(false);
+    setInnerData(metaData);
+  }, []);
   const loadData = useCallback(
-    async (
-      data: IProofOfUsTokenMeta | undefined,
-      proofOfUsData: IProofOfUsData | undefined,
-    ) => {
-      if (proofOfUsData && 'signees' in proofOfUsData) {
-        // const manifestData = await createManifest(
-        //   proofOfUsData,
-        //   proofOfUsData?.imageUri,
-        // );
-        // setInnerData(manifestData);
-      } else if (token) {
+    async (data: IProofOfUsTokenMeta | undefined) => {
+      if (!data) return;
+      if (token) {
         setInnerData(data);
-        setInnerTokenId(token.tokenId);
+        setInnerTokenId(token.id);
       }
     },
     [],
@@ -61,13 +58,17 @@ export const ListItem: FC<IProps> = ({ proofOfUsData, token }) => {
 
   useEffect(() => {
     if (!token || !error) return;
-    console.log('error', { error });
     removeTokenFromData(token);
   }, [error, token, removeTokenFromData]);
 
   useEffect(() => {
-    loadData(data, proofOfUsData);
-  }, [data, proofOfUsData, loadData]);
+    if (token?.proofOfUsId) {
+      loadProofOfUsData(token?.proofOfUsId);
+    }
+    if (data) {
+      loadData(data);
+    }
+  }, [data, loadData, token]);
 
   const getLink = () => {
     //return `/scan/e/${innerData?.properties.eventId}`;
@@ -102,11 +103,11 @@ export const ListItem: FC<IProps> = ({ proofOfUsData, token }) => {
       ) : (
         <Link className={listItemLinkClass} href={getLink()}>
           {innerData.properties.eventType === 'attendance' && (
-            <AttendanceThumb token={innerData} isMinted={true} />
+            <AttendanceThumb token={innerData} isMinted={isMinted} />
           )}
 
           {innerData.properties.eventType === 'connect' && (
-            <ConnectThumb token={innerData} isMinted={true} />
+            <ConnectThumb token={innerData} isMinted={isMinted} />
           )}
 
           <Stack display="flex" flexDirection="column" gap="xs">

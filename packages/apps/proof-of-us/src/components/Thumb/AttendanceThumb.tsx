@@ -1,6 +1,5 @@
 import { getContrast } from '@/utils/getContrast';
 import { MonoDownloading } from '@kadena/react-icons';
-import { motion } from 'framer-motion';
 import type { FC } from 'react';
 import {
   attendanceBackgroundClass,
@@ -17,10 +16,8 @@ export const AttendanceThumb: FC<IProps> = ({ token, isMinted }) => {
     token.properties.avatar?.backgroundColor ?? '#000',
   );
 
-  console.log({ token });
   return (
-    <motion.div
-      layoutId={token.image}
+    <div
       className={attendanceThumbClass}
       style={{
         color: invertColor,
@@ -72,6 +69,6 @@ export const AttendanceThumb: FC<IProps> = ({ token, isMinted }) => {
           <MonoDownloading fontSize="md" />
         </div>
       )}
-    </motion.div>
+    </div>
   );
 };

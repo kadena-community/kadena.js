@@ -1,47 +1,47 @@
 'use client';
-import type { Token } from '@/__generated__/sdk';
-import { useAccount } from '@/hooks/account';
 import { useGetAllProofOfUs } from '@/hooks/data/getAllProofOfUs';
-import { getClient } from '@/utils/client';
-import { env } from '@/utils/env';
-
-import { store } from '@/utils/socket/store';
-import { differenceInMinutes, isPast } from 'date-fns';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 
 export interface ITokenContext {
   tokens: IToken[] | undefined;
   isLoading: boolean;
-  removeTokenFromData: (token: Token) => void;
+  removeTokenFromData: (token: IToken) => void;
 }
 
 export const TokenContext = createContext<ITokenContext>({
   tokens: [],
   isLoading: false,
-  removeTokenFromData: (token: Token) => {},
+  removeTokenFromData: (token: IToken) => {},
 });
 
-const isDateOlderThan5Minutes = async (dateToCheck: Date): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
-    try {
-      const currentDate = new Date();
-      const minutesDifference = differenceInMinutes(currentDate, dateToCheck);
+// const isDateOlderThan5Minutes = async (dateToCheck: Date): Promise<boolean> => {
+//   return new Promise((resolve, reject) => {
+//     try {
+//       const currentDate = new Date();
+//       const minutesDifference = differenceInMinutes(currentDate, dateToCheck);
 
-      if (isPast(dateToCheck) && minutesDifference > 10) {
-        resolve(true); // Date is older than 5 minutes
-      } else {
-        resolve(false); // Date is not older than 5 minutes
-      }
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
+//       if (isPast(dateToCheck) && minutesDifference > 10) {
+//         resolve(true); // Date is older than 5 minutes
+//       } else {
+//         resolve(false); // Date is not older than 5 minutes
+//       }
+//     } catch (error) {
+//       reject(error);
+//     }
+//   });
+// };
 
 export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [tokens, setTokens] = useState<IToken[]>();
+  const [tokens, setTokens] = useState<IToken[]>([]);
+  const [mintingTokens, setMintingTokens] = useState<IToken[]>([]);
   const { data, isLoading } = useGetAllProofOfUs();
+
+  useEffect(() => {
+    const dataStr = localStorage.getItem('mintingTokens') ?? '[]';
+    setMintingTokens(JSON.parse(dataStr));
+  }, []);
+
   //const [listeners, setListeners] = useState<IListener[]>([]);
   // const { account } = useAccount();
 
@@ -57,16 +57,16 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   //   store.listenToUser(account, setTokens);
   // }, [account]);
 
-  useEffect(() => {
-    if (!data) return;
+  // useEffect(() => {
+  //   if (!data) return;
 
-    const tokens: IToken[] = data.map((t) => ({
-      tokenId: t.id,
-      uri: t.info?.uri ?? '',
-    }));
+  //   const tokens: IToken[] = data.map((t) => ({
+  //     tokenId: t.id,
+  //     uri: t.info?.uri ?? '',
+  //   }));
 
-    setTokens(tokens);
-  }, [data]);
+  //   setTokens(tokens);
+  // }, [data]);
 
   // const removeMintingToken = (listener: IListener) => {
   //   const filtered = listeners.filter(
@@ -170,18 +170,37 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   //   }
   // }
 
-  const removeTokenFromData = (token: IToken) => {
-    const newTokens = tokens?.filter((t) => t.tokenId !== token.tokenId);
+  const removeTokenFromData = useCallback((token: IToken) => {
+    const newTokens = data?.filter((t) => t.id !== token.id);
     setTokens(newTokens);
+  }, []);
+
+  const addMintingData = (proofOfUs: IProofOfUsData) => {
+    const token: IToken = {
+      proofOfUsId: proofOfUs.proofOfUsId,
+      requestKey: proofOfUs.requestKey,
+      id: proofOfUs.tokenId,
+      mintStartDate: Date.now(),
+    };
+
+    setMintingTokens((v) => {
+      const newArray = [...v];
+      if (!v.find((t) => t.proofOfUsId === token.proofOfUsId)) {
+        newArray.push(token);
+      }
+
+      localStorage.setItem('mintingTokens', JSON.stringify(newArray));
+      return newArray;
+    });
   };
 
-  console.log({ tokens });
   return (
     <TokenContext.Provider
       value={{
-        tokens,
+        tokens: data,
         isLoading,
         removeTokenFromData,
+        addMintingData,
       }}
     >
       {children}

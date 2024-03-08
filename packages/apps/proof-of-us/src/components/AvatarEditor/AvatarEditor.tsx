@@ -93,9 +93,7 @@ export const AvatarEditor: FC<IProps> = ({ next, status }) => {
   }, [isMounted, proofOfUs]);
 
   useEffect(() => {
-    console.log({ pathname });
     return () => {
-      console.log(pathname, 111111);
       const src = videoRef.current?.srcObject as MediaStream;
       if (!src) return;
       src.getTracks().forEach((t) => t.stop());

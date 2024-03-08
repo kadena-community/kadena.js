@@ -54,7 +54,6 @@ export const CreateProofOfUs: FC<IProps> = ({ params }) => {
     await updateStatus({ proofOfUsId: params.id, status: newStatus });
   };
 
-  console.log(proofOfUs, status);
   return (
     <div>
       {status === 1 && <AvatarEditor next={next} status={status} />}
