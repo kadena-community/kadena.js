@@ -59,18 +59,9 @@ export function getSignersStatus(
   }));
 }
 
-/**
- * Retrieves all transaction file names from the transaction directory based on the signature status.
- * @param {boolean} signed - Whether to retrieve signed or unsigned transactions.
- * @param {boolean} all - Whether to retrieve all transactions (signed and unsigned).
- * @returns {Promise<string[]>} A promise that resolves to an array of transaction file names.
- * @throws Throws an error if reading the transaction directory fails.
- */
-export async function getTransactions(
-  signed: boolean,
+export async function getAllTransactions(
   directory: string,
-  all: boolean = false,
-): Promise<string[]> {
+): Promise<{ fileName: string; signed: boolean }[]> {
   try {
     const files = await services.filesystem.readDir(directory);
     // Since naming convention is not enforced, we need to check the content of the files
@@ -81,24 +72,52 @@ export async function getTransactions(
           const filePath = join(directory, fileName);
           const content = await services.filesystem.readFile(filePath);
           if (content === null) return null;
-          // signed=false can still return already signed transactions
-          const schema = signed ? ICommandSchema : IUnsignedCommandSchema;
-          const JSONParsedContent = JSON.parse(content) as
-            | ICommand
-            | IUnsignedCommand;
-          const parsed = schema.safeParse(JSONParsedContent);
-          if (parsed.success && !signed && !all) {
-            const isSigned = JSONParsedContent.sigs.every((sig) => !!sig);
-            if (isSigned) return null;
+          const JSONParsedContent = JSON.parse(content);
+          const isSignedTx =
+            'sigs' in JSONParsedContent &&
+            isSignedTransaction(JSONParsedContent);
+          const schema = isSignedTx ? ICommandSchema : IUnsignedCommandSchema;
+          const parsed = schema.safeParse(JSON.parse(content));
+          if (parsed.success) {
+            return {
+              fileName,
+              signed: isSignedTx,
+            };
           }
-
-          if (parsed.success) return fileName;
           return null;
         }),
       )
     ).filter(notEmpty);
 
     return transactionFiles;
+  } catch (error) {
+    log.error(`Error reading transaction directory: ${error}`);
+    throw error;
+  }
+}
+
+export async function getAllTransactionFileNames(
+  directory: string,
+): Promise<string[]> {
+  const transactionFiles = await getAllTransactions(directory);
+  return transactionFiles.map((tx) => tx.fileName);
+}
+
+/**
+ * Retrieves all transaction file names from the transaction directory based on the signature status.
+ * @param {boolean} signed - Whether to retrieve signed or unsigned transactions.
+ * @returns {Promise<string[]>} A promise that resolves to an array of transaction file names.
+ * @throws Throws an error if reading the transaction directory fails.
+ */
+export async function getTransactions(
+  signed: boolean,
+  directory: string,
+): Promise<string[]> {
+  try {
+    const transactionFiles = await getAllTransactions(directory);
+    return transactionFiles
+      .filter((tx) => tx.signed === signed)
+      .map((tx) => tx.fileName);
   } catch (error) {
     log.error(`Error reading transaction directory: ${error}`);
     throw error;
