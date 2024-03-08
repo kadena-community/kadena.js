@@ -1,5 +1,8 @@
 'use client';
 import { useGetAllProofOfUs } from '@/hooks/data/getAllProofOfUs';
+import { getClient } from '@/utils/client';
+import { env } from '@/utils/env';
+import { differenceInMinutes, isPast } from 'date-fns';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
 
@@ -7,40 +10,38 @@ export interface ITokenContext {
   tokens: IToken[] | undefined;
   isLoading: boolean;
   removeTokenFromData: (token: IToken) => void;
+  addMintingData: (proofOfUs: IProofOfUsData) => void;
 }
 
 export const TokenContext = createContext<ITokenContext>({
   tokens: [],
   isLoading: false,
   removeTokenFromData: (token: IToken) => {},
+  addMintingData: (proofOfUs: IProofOfUsData) => {},
 });
 
-// const isDateOlderThan5Minutes = async (dateToCheck: Date): Promise<boolean> => {
-//   return new Promise((resolve, reject) => {
-//     try {
-//       const currentDate = new Date();
-//       const minutesDifference = differenceInMinutes(currentDate, dateToCheck);
+const isDateOlderThan5Minutes = async (dateToCheck: Date): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    try {
+      const currentDate = new Date();
+      const minutesDifference = differenceInMinutes(currentDate, dateToCheck);
 
-//       if (isPast(dateToCheck) && minutesDifference > 10) {
-//         resolve(true); // Date is older than 5 minutes
-//       } else {
-//         resolve(false); // Date is not older than 5 minutes
-//       }
-//     } catch (error) {
-//       reject(error);
-//     }
-//   });
-// };
+      if (isPast(dateToCheck) && minutesDifference > 10) {
+        resolve(true); // Date is older than 5 minutes
+      } else {
+        resolve(false); // Date is not older than 5 minutes
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
 export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   const [tokens, setTokens] = useState<IToken[]>([]);
   const [mintingTokens, setMintingTokens] = useState<IToken[]>([]);
+  const [successTokens, setSuccessTokens] = useState<IToken[]>([]);
   const { data, isLoading } = useGetAllProofOfUs();
-
-  useEffect(() => {
-    const dataStr = localStorage.getItem('mintingTokens') ?? '[]';
-    setMintingTokens(JSON.parse(dataStr));
-  }, []);
 
   //const [listeners, setListeners] = useState<IListener[]>([]);
   // const { account } = useAccount();
@@ -57,121 +58,136 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   //   store.listenToUser(account, setTokens);
   // }, [account]);
 
-  // useEffect(() => {
-  //   if (!data) return;
+  const storageListener = (event: StorageEvent) => {
+    if (event.key === 'mintingTokens') {
+      setMintingTokens(getMintingTokensFromLocalStorage());
+    }
+  };
 
-  //   const tokens: IToken[] = data.map((t) => ({
-  //     tokenId: t.id,
-  //     uri: t.info?.uri ?? '',
-  //   }));
+  useEffect(() => {
+    setMintingTokens(getMintingTokensFromLocalStorage());
+    window.addEventListener('storage', storageListener);
+    return () => {
+      window.removeEventListener('storage', storageListener);
+    };
+  }, []);
 
-  //   setTokens(tokens);
-  // }, [data]);
+  useEffect(() => {
+    if (!data) return;
 
-  // const removeMintingToken = (listener: IListener) => {
-  //   const filtered = listeners.filter(
-  //     (l) => l.proofOfUsId !== listener.proofOfUsId,
-  //   );
-  //   setListeners(filtered);
-  // };
+    setTokens(data as IToken[]);
+  }, [data]);
 
-  // const updateToken = async (
-  //   tokenId: string,
-  //   listener: IListener,
-  //   mintStatus: 'error' | 'success',
-  // ) => {
-  //   const token = tokens?.find((t) => t.proofOfUsId === listener.proofOfUsId);
-  //   if (!token) return;
+  const removeMintingToken = (token: IToken) => {
+    setMintingTokens((v) => {
+      const newArray = v.filter((t) => t.requestKey !== token.requestKey);
+      localStorage.setItem('mintingTokens', JSON.stringify(newArray));
+      return newArray;
+    });
+  };
 
-  //   const signees = token.signees.map((s) => ({
-  //     ...s,
-  //     signerStatus: 'success',
-  //   })) as IProofOfUsSignee[];
+  const updateToken = async (
+    tokenId: string,
+    token: IToken,
+    mintStatus: 'error' | 'success',
+  ) => {
+    removeMintingToken(token);
 
-  //   console.log('update in tokenprovider', signees);
-  //   store.updateProofOfUs(
-  //     { ...token, signees },
-  //     {
-  //       tokenId,
-  //       mintStatus,
-  //     },
-  //   );
-  // };
-  // const listenAll = async () => {
-  //   for (let i = 0; i < listeners.length; i++) {
-  //     const listener = listeners[i];
+    if (mintStatus === 'success') {
+      setSuccessTokens((v) => {
+        const newArray = [...v];
+        delete token.proofOfUsId;
+        if (!v.find((t) => t.requestKey === token.requestKey)) {
+          newArray.push(token);
+        }
+        return newArray;
+      });
+    }
+  };
+  const listenAll = async () => {
+    for (let i = 0; i < mintingTokens.length; i++) {
+      const token = mintingTokens[i];
 
-  //     try {
-  //       const promises = await Promise.all([
-  //         isDateOlderThan5Minutes(new Date(listener.startDate)),
-  //         listener.listener,
-  //       ]);
+      if (!token.requestKey || !token.listener || !token.mintStartDate) return;
 
-  //       console.log(promises[1][listener.requestKey]);
-  //       if (
-  //         promises[1] &&
-  //         promises[1][listener.requestKey] &&
-  //         promises[1][listener.requestKey].result?.status === 'success'
-  //       ) {
-  //         updateToken(
-  //           promises[1][listener.requestKey].result.data,
-  //           listener,
-  //           'success',
-  //         );
-  //       }
-  //       if (
-  //         promises[1] &&
-  //         promises[1][listener.requestKey] &&
-  //         promises[1][listener.requestKey].result?.status === 'failure'
-  //       ) {
-  //         updateToken(
-  //           promises[1][listener.requestKey].result.data,
-  //           listener,
-  //           'error',
-  //         );
-  //       }
-  //       if (promises[0]) {
-  //         removeMintingToken(listener);
-  //       }
-  //     } catch (e) {
-  //       console.error(e);
-  //       updateToken('', listener, 'error');
-  //       removeMintingToken(listener);
-  //     }
-  //   }
-  // };
-  // useEffect(() => {
-  //   listenAll();
-  // }, [listeners]);
+      try {
+        const promises = await Promise.all([
+          isDateOlderThan5Minutes(new Date(token.mintStartDate)),
+          token.listener,
+        ]);
 
-  // async function listenForMinting(data: IProofOfUsData) {
-  //   try {
-  //     const isAlreadyListening = listeners.find(
-  //       (listener) => listener.proofOfUsId === data.proofOfUsId,
-  //     );
-  //     if (isAlreadyListening || data.mintStatus === 'success') return;
+        console.log(promises[1][token.requestKey]);
+        if (
+          promises[1] &&
+          promises[1][token.requestKey] &&
+          promises[1][token.requestKey].result?.status === 'success'
+        ) {
+          updateToken(
+            promises[1][token.requestKey].result.data,
+            token,
+            'success',
+          );
+        }
+        if (
+          promises[1] &&
+          promises[1][token.requestKey] &&
+          promises[1][token.requestKey].result?.status === 'failure'
+        ) {
+          updateToken(
+            promises[1][token.requestKey].result.data,
+            token,
+            'error',
+          );
+        }
+        if (promises[0]) {
+          removeMintingToken(token);
+        }
+      } catch (e) {
+        console.error(e);
+        removeMintingToken(token);
+      }
+    }
+  };
+  useEffect(() => {
+    listenAll();
+  }, [mintingTokens]);
 
-  //     const listener = getClient().pollStatus({
-  //       requestKey: data.requestKey,
-  //       chainId: env.CHAINID,
-  //       networkId: env.NETWORKID,
-  //     });
+  async function listenForMinting(data: IToken) {
+    try {
+      const isAlreadyListening = !!data.listener;
+      if (isAlreadyListening || !data.requestKey) return;
 
-  //     const obj = {
-  //       proofOfUsId: data.proofOfUsId,
-  //       requestKey: data.requestKey,
-  //       listener,
-  //       startDate: data.date,
-  //     } as IListener;
+      data.listener = getClient().pollStatus({
+        requestKey: data.requestKey,
+        chainId: env.CHAINID,
+        networkId: env.NETWORKID,
+      });
 
-  //     setListeners((v) => [...v, obj]);
-  //   } catch (e) {
-  //     console.error(data.requestKey, e);
-  //   }
-  // }
+      setMintingTokens((v) =>
+        v.map((item) => (item.requestKey === data.requestKey ? data : item)),
+      );
+    } catch (e) {
+      console.error(data.requestKey, e);
+    }
+  }
+
+  function getMintingTokensFromLocalStorage(): IToken[] {
+    if (typeof window === 'undefined') {
+      return [];
+    }
+
+    const rawMintingTokensData = localStorage.getItem('mintingTokens') || '[]';
+
+    const mintingTokensData = JSON.parse(rawMintingTokensData) as IToken[];
+    mintingTokensData.forEach((data) => {
+      listenForMinting(data);
+    });
+
+    return mintingTokensData;
+  }
 
   const removeTokenFromData = useCallback((token: IToken) => {
-    const newTokens = data?.filter((t) => t.id !== token.id);
+    const newTokens = tokens?.filter((t) => t.id !== token.id);
     setTokens(newTokens);
   }, []);
 
@@ -197,7 +213,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <TokenContext.Provider
       value={{
-        tokens: data,
+        tokens: [...mintingTokens, ...successTokens, ...(data as IToken[])],
         isLoading,
         removeTokenFromData,
         addMintingData,
