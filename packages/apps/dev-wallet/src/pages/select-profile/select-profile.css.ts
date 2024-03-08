@@ -31,6 +31,7 @@ export const imgClass = style([
     border: `2px solid ${borderColor}`,
   },
 ]);
+
 export const aliasClass = style([
   atoms({
     fontSize: 'lg',
@@ -44,11 +45,3 @@ export const initialsClass = style([
     fontWeight: 'bodyFont.bold',
   }),
 ]);
-
-export const formField = atoms({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  alignItems: 'stretch',
-  gap: 'sm',
-});
