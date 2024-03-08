@@ -20,6 +20,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { walletOptions } from '../walletOptions.js';
 
 /**
  * Generates a new key for the wallet.
@@ -96,7 +97,7 @@ export const createGenerateWalletCommand: (
   'add',
   'Add a new local wallet',
   [
-    globalOptions.walletName({ isOptional: false }),
+    walletOptions.walletName({ isOptional: false }),
     globalOptions.passwordFileRepeat({ isOptional: false }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],

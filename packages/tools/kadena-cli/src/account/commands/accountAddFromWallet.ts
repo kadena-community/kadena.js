@@ -56,11 +56,11 @@ export const createAddAccountFromWalletCommand = createCommand(
   [
     accountOptions.accountAlias(),
     globalOptions.walletSelect(),
-    globalOptions.fungible(),
+    accountOptions.fungible(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
     selectPublicKeys(),
-    globalOptions.predicate(),
+    accountOptions.predicate(),
     accountOptions.accountOverwrite(),
   ],
 

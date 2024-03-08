@@ -4,7 +4,7 @@
 /.changeset
 /common                                         @alber70g
 /pnpm-lock.yaml
-/packages/apps/docs                             @sstraatemans @eileenmguo @realdreamer @ghislain89
+/packages/apps/docs
 /packages/apps/proof-of-us                      @sstraatemans @realdreamer @ghislain89
 /packages/apps/graph                            @alber70g @MRVDH @nil-amrutlal-dept
 /packages/apps/graph-client                     @alber70g @MRVDH @nil-amrutlal-dept

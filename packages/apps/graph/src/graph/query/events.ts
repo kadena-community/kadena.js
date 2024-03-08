@@ -99,7 +99,9 @@ builder.queryField('events', (t) =>
             }),
           },
           orderBy: {
-            id: 'desc',
+            height: 'desc',
+            requestKey: 'desc',
+            orderIndex: 'desc',
           },
         });
       } catch (error) {

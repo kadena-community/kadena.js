@@ -89,8 +89,10 @@ const ProofOfUsStore = () => {
     proofOfUsId: string,
     setDataCallback: Dispatch<SetStateAction<IProofOfUsBackground>>,
   ) => {
+    console.log('listen', proofOfUsId);
     const backgroundRef = ref(database, `background/${proofOfUsId}`);
     onValue(backgroundRef, (snapshot) => {
+      console.log({ snap: snapshot.val() });
       const data = snapshot.val() ?? { bg: '' };
       setDataCallback(data);
     });
