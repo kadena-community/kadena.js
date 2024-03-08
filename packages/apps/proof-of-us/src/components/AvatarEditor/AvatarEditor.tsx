@@ -1,4 +1,3 @@
-import { IconButton } from '@/components/IconButton/IconButton';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
@@ -134,9 +133,7 @@ export const AvatarEditor: FC<IProps> = ({ next }) => {
           label="Say Cheese"
           Append={() => (
             <Link href="/user">
-              <IconButton>
-                <MonoClose />
-              </IconButton>
+              <MonoClose />
             </Link>
           )}
         />

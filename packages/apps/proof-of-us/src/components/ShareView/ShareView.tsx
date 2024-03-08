@@ -70,6 +70,16 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
     //updateStatus({ proofOfUsId: proofOfUs.proofOfUsId, status: 4 });
   }, []);
 
+  useEffect(() => {
+    if (!isCopied) return;
+
+    const timer = setTimeout(() => {
+      setIsCopied(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [isCopied]);
+
   if (!proofOfUs || !account || !isMounted) return;
 
   const handleCopy = () => {
