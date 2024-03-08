@@ -2,9 +2,13 @@ import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import { sidebarLinks } from '@/constants/side-links';
 import React, { useRef } from 'react';
-import { infoAccordionWrapper, linksBoxStyle } from './styles.css';
+import {
+  accordionItemContentStyle,
+  accordionItemTitleStyle,
+  infoAccordionWrapper,
+  linksBoxStyle,
+} from './styles.css';
 
-import { infoBoxStyle } from '@/pages/transactions/cross-chain-transfer-tracker/styles.css';
 import { Accordion, AccordionItem } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
@@ -38,8 +42,17 @@ export const RightInfoSidebar: FC<IRightInfoSidebarProps> = ({
             <div className={infoAccordionWrapper}>
               <Accordion selectionMode="multiple">
                 {infoSections.map((item) => (
-                  <AccordionItem title={item.question} key={item.question}>
-                    <div className={infoBoxStyle}>{item.content}</div>
+                  <AccordionItem
+                    title={
+                      <div className={accordionItemTitleStyle}>
+                        {item.question}
+                      </div>
+                    }
+                    key={item.question}
+                  >
+                    <div className={accordionItemContentStyle}>
+                      {item.content}
+                    </div>
                   </AccordionItem>
                 ))}
               </Accordion>

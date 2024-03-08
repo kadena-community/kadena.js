@@ -19,3 +19,23 @@ export const infoAccordionWrapper = style([
     fontSize: 'xs',
   }),
 ]);
+
+export const accordionItemTitleStyle = style([
+  atoms({
+    fontSize: 'sm',
+    padding: 'sm',
+    borderRadius: 'sm',
+    display: 'flex',
+    flexDirection: 'column',
+  }),
+]);
+
+export const accordionItemContentStyle = style([
+  atoms({
+    fontSize: 'sm',
+    padding: 'md',
+    borderRadius: 'sm',
+    display: 'flex',
+    flexDirection: 'column',
+  }),
+]);
