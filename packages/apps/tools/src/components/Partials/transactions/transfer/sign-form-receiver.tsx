@@ -4,7 +4,6 @@ import { AccountNameField } from '@/components/Global/AccountNameField';
 import {
   Box,
   Button,
-  Card,
   Heading,
   Stack,
   SystemIcon,
@@ -28,6 +27,7 @@ import { useQuery } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
 import type { FormData } from './sign-form';
 
+import { LoadingCard } from '@/components/Global/LoadingCard';
 import { useAccountChainDetailsQuery } from '@/hooks/use-account-chain-details-query';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import type { ChainId } from '@kadena/types';
@@ -205,7 +205,7 @@ export const SignFormReceiver = ({
   }, [receiverAccountChains.isSuccess, receiverAccountChains.data]);
 
   return (
-    <Card fullWidth>
+    <LoadingCard fullWidth isLoading={receiverData.isFetching}>
       <Heading as={'h4'}>{t('Receiver')} </Heading>
       <Tabs
         aria-label="receiver-account-tabs"
@@ -261,7 +261,7 @@ export const SignFormReceiver = ({
           </Stack>
         </TabItem>
       </Tabs>
-    </Card>
+    </LoadingCard>
   );
 };
 

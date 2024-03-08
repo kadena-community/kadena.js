@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-  Card,
   Heading,
   NumberField,
   Select,
@@ -13,6 +12,7 @@ import {
 import Link from 'next/link';
 
 import { ChainSelect } from '@/components/Global/ChainSelect';
+import { LoadingCard } from '@/components/Global/LoadingCard';
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useAccountChainDetailsQuery } from '@/hooks/use-account-chain-details-query';
 import type { AccountDetails } from '@/hooks/use-account-details-query';
@@ -102,7 +102,7 @@ export const SignFormSender = ({
   const [senderType, setSenderType] = useState<SenderType>('Ledger');
 
   return (
-    <Card fullWidth>
+    <LoadingCard fullWidth isLoading={senderData.isFetching}>
       <Heading as={'h4'}>{t('Sender')} </Heading>
 
       <Stack flexDirection={'row'} justifyContent={'space-between'}>
@@ -194,7 +194,7 @@ export const SignFormSender = ({
           )}
         />
       </Stack>
-    </Card>
+    </LoadingCard>
   );
 };
 
