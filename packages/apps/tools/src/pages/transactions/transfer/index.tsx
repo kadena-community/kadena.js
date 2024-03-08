@@ -20,6 +20,7 @@ import React, { useCallback, useState } from 'react';
 import { containerClass } from '../styles.css';
 import { notificationLinkStyle } from './styles.css';
 
+import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/right-info-sidebar';
 import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
 import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
 
@@ -37,6 +38,24 @@ const TransferPage = () => {
 
   const [receiverChainId, setReceiverChainId] = useState<ChainId>(CHAINS[0]);
   const [senderChainId, setSenderChainId] = useState<ChainId>(CHAINS[0]);
+
+  const helpInfoSections = [
+    {
+      question: 'What was my key index, again?',
+      content:
+        'In case you forget which key index corresponds to which account, the Search Ledger Keys tool allows you to search your ledger for a specific key',
+    },
+    {
+      question: 'What does legacy mode toggle do?',
+      content:
+        'If you used the “Change Ledger Account” feature in October 2023, you will be able to access your account keys using the “Legacy Mode” toggle that is now found next to the “Key Index” input field.',
+    },
+    {
+      question: 'Some wise precautions when signing with a Ledger',
+      content:
+        'When signing on a Ledger device, you should always check the details of the transaction carefully. If everything is in order, click “Confirm” to sign the transaction. After this, the Transfer Tool should update its interface to show the transaction',
+    },
+  ];
 
   return (
     <section className={containerClass}>
@@ -80,6 +99,8 @@ const TransferPage = () => {
           senderChainId={senderChainId}
         />
       </Stack>
+
+      <RightInfoSidebar infoSections={helpInfoSections} />
     </section>
   );
 };
