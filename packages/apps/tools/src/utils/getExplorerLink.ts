@@ -11,5 +11,5 @@ export const getExplorerLink = (
   }
   const networkData = networksData.find((item) => item.networkId === network);
 
-  return `http://${networkData.API}/explorer/fast-development/tx/${requestKey}`;
+  return `http://${networkData.API}/explorer/development/tx/${requestKey}`;
 };

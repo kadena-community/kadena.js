@@ -89,21 +89,14 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (!params?.id || !account) return;
-    const unListen = store.listenProofOfUsData(
-      `${params.id}`,
-      account,
-      listenToProofOfUsData,
-    );
-    const unListen2 = store.listenProofOfUsBackgroundData(
-      `${params.id}`,
-      setBackground,
-    );
+    store.listenProofOfUsData(`${params.id}`, account, listenToProofOfUsData);
+    store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
 
-    return () => {
-      unListen();
-      unListen2();
-    };
-  }, [params?.id, account]);
+    // return () => {
+    //   unListen();
+    //   unListenBackgroundData();
+    // };
+  }, [account]);
 
   const updateStatus = async ({
     proofOfUsId,

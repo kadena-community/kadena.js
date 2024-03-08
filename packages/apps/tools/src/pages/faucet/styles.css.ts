@@ -19,7 +19,7 @@ export const inputContainerClass = style([
 export const accountNameContainerClass = style([{ flex: 1 }]);
 
 export const chainSelectContainerClass = style([
-  { width: tokens.kda.foundation.size.n30 },
+  { width: tokens.kda.foundation.size.n56 },
 ]);
 
 export const buttonContainerClass = style([

@@ -22,5 +22,5 @@
 /packages/tools/eslint-plugin                   @alber70g
 /packages/tools/pactjs-cli                      @alber70g @javadkh2
 /packages/tools/shared-config                   @alber70g
-/packages/tools/e2e-tests                       @ghislain89 @sstraatemans @sanderlooijenga @KristinaSpasevska @MRVDH @nil-amrutlal-dept
+/packages/e2e                                   @ghislain89 @sstraatemans @sanderlooijenga @KristinaSpasevska @MRVDH @nil-amrutlal-dept
 /packages/tools/integration-tests               @ghislain89 @sstraatemans @sanderlooijenga @KristinaSpasevska @MRVDH @nil-amrutlal-dept

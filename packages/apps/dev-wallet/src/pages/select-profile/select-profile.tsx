@@ -52,10 +52,6 @@ export function SelectProfile() {
         </Stack>
 
         <br />
-        <Link to="/networks">
-          <Text bold>Networks</Text>
-        </Link>
-        <br />
         <Link to="/import-wallet">
           <Text bold>Import/Recover wallet</Text>
         </Link>

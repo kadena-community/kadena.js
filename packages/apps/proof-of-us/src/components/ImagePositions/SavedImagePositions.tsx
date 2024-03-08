@@ -1,3 +1,4 @@
+import { getIPFSLink } from '@/utils/getIPFSLink';
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
 import { SigneePosition } from '../Signees/SigneePosition';
@@ -67,7 +68,7 @@ export const SavedImagePositions: FC<IProps> = ({ data }) => {
       <section ref={wrapperRef} className={imageWrapper}>
         <img
           ref={imgRef}
-          src={data.image}
+          src={getIPFSLink(data.image)}
           onLoad={setMarkers}
           className={savedImageClass}
         />

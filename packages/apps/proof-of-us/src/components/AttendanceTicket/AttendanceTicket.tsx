@@ -1,4 +1,5 @@
 import { getContrast } from '@/utils/getContrast';
+import { getIPFSLink } from '@/utils/getIPFSLink';
 import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';
 import type { FC } from 'react';
@@ -25,7 +26,7 @@ export const AttendanceTicket: FC<IProps> = ({ data }) => {
       layoutId={data.image}
       className={ticketClass}
       style={{
-        backgroundImage: `url("${data.image}")`,
+        backgroundImage: `url("${getIPFSLink(data.image)}")`,
         backgroundColor: data.properties?.avatar?.backgroundColor,
       }}
     >

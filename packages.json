@@ -98,7 +98,7 @@
   {
     "name": "@kadena/hd-wallet",
     "version": "0.3.0",
-    "private": true,
+    "private": false,
     "path": "packages/libs/hd-wallet"
   },
   {
@@ -109,8 +109,8 @@
   },
   {
     "name": "@kadena/kadena-cli",
-    "version": "0.3.1",
-    "private": true,
+    "version": "0.0.1-alpha.4",
+    "private": false,
     "path": "packages/tools/kadena-cli"
   },
   {
@@ -144,10 +144,22 @@
     "path": "packages/apps/proof-of-us"
   },
   {
+    "name": "@kadena/react-icons",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/libs/react-icons"
+  },
+  {
     "name": "@kadena/react-ui",
     "version": "0.8.1",
     "private": false,
     "path": "packages/libs/react-ui"
+  },
+  {
+    "name": "@kadena/toolbox",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/libs/toolbox"
   },
   {
     "name": "@kadena/tools",
@@ -162,10 +174,28 @@
     "path": "packages/libs/types"
   },
   {
-    "name": "@kadena-dev/e2e-tests",
+    "name": "@kadena-dev/e2e-base",
     "version": "0.0.2",
     "private": true,
-    "path": "packages/tools/e2e-tests"
+    "path": "packages/e2e/base"
+  },
+  {
+    "name": "e2e-docs",
+    "version": "0.0.1",
+    "private": true,
+    "path": "packages/e2e/e2e-docs"
+  },
+  {
+    "name": "e2e-graph",
+    "version": "0.0.2",
+    "private": true,
+    "path": "packages/e2e/e2e-graph"
+  },
+  {
+    "name": "e2e-tools",
+    "version": "0.0.2",
+    "private": true,
+    "path": "packages/e2e/e2e-tools"
   },
   {
     "name": "@kadena-dev/eslint-config",

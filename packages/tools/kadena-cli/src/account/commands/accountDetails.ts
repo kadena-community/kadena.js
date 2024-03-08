@@ -60,7 +60,7 @@ export const createAccountDetailsCommand = createCommand(
     accountOptions.accountSelect(),
     globalOptions.networkSelect(),
     globalOptions.chainId({ isOptional: false }),
-    globalOptions.fungible({ isOptional: true }),
+    accountOptions.fungible({ isOptional: true }),
   ],
   async (option) => {
     const { account, accountConfig } = await option.account({

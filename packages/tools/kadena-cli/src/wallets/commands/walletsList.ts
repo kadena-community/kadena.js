@@ -3,8 +3,8 @@ import type { Command } from 'commander';
 import { printWalletKeys } from '../../keys/utils/keysDisplay.js';
 import { getAllWallets, getWallet } from '../../keys/utils/keysHelpers.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { walletOptions } from '../walletOptions.js';
 
 export const createListWalletsCommand: (
   program: Command,
@@ -12,7 +12,7 @@ export const createListWalletsCommand: (
 ) => void = createCommand(
   'list',
   'List wallet(s)',
-  [globalOptions.walletNameSelectWithAll()],
+  [walletOptions.walletNameSelectWithAll()],
   async (option) => {
     const config = await option.walletName();
     log.debug('list-keys:action', config);

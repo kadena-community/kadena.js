@@ -4,8 +4,8 @@ import path from 'path';
 import { defaultNetworksPath } from '../../constants/networks.js';
 import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { networkOptions } from '../networkOptions.js';
 import { writeNetworks } from '../utils/networkHelpers.js';
 
 export const createNetworksCommand: (
@@ -15,11 +15,11 @@ export const createNetworksCommand: (
   'add',
   'Add local network configuration',
   [
-    globalOptions.networkName({ isOptional: false }),
-    globalOptions.networkId({ isOptional: false }),
-    globalOptions.networkHost({ isOptional: false }),
-    globalOptions.networkExplorerUrl(),
-    globalOptions.networkOverwrite(),
+    networkOptions.networkName({ isOptional: false }),
+    networkOptions.networkId({ isOptional: false }),
+    networkOptions.networkHost({ isOptional: false }),
+    networkOptions.networkExplorerUrl(),
+    networkOptions.networkOverwrite(),
   ],
   async (option, { collect }) => {
     const config = await collect(option);

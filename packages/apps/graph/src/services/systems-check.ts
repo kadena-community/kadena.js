@@ -3,11 +3,14 @@ import { createClient, createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 import { Prisma } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
+import type { NetworkConfig } from '@utils/network';
 import { readdir } from 'fs/promises';
 import { Listr } from 'listr2';
 import path from 'path';
 
-export async function runSystemsCheck() {
+export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
+  const networkId = (await networkConfig).networkId;
+
   console.log('\n');
   return new Listr([
     {
@@ -54,7 +57,7 @@ export async function runSystemsCheck() {
               task: async () => {
                 await createClient(
                   ({ chainId }) =>
-                    `${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
+                    `${dotenv.NETWORK_HOST}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
                 ).local(
                   createTransaction(
                     composePactCommand(

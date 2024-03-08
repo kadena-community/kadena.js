@@ -18,7 +18,7 @@ export async function isChainWebAtHeight(
   serviceUrl: string,
 ) {
   try {
-    const res = await fetch(`${serviceUrl}/chainweb/0.0/fast-development/cut`);
+    const res = await fetch(`${serviceUrl}/chainweb/0.0/development/cut`);
     if (res.ok) {
       const data = (await res.json()) as { height: number };
       const height = data.height;

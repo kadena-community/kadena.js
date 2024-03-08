@@ -14,12 +14,12 @@ export const createAddAccountManualCommand = createCommand(
   [
     accountOptions.accountAlias(),
     accountOptions.accountName(),
-    globalOptions.fungible(),
+    accountOptions.fungible(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
     accountOptions.accountOverwrite(),
-    globalOptions.publicKeys(),
-    globalOptions.predicate(),
+    accountOptions.publicKeys(),
+    accountOptions.predicate(),
   ],
 
   async (option) => {

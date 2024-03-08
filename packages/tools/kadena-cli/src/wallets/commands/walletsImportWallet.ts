@@ -16,6 +16,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { walletOptions } from '../walletOptions.js';
 
 export const importWallet = async ({
   mnemonic,
@@ -69,9 +70,9 @@ export const createImportWalletCommand: (
   'import',
   'Import (restore) wallet from mnemonic phrase',
   [
-    globalOptions.keyMnemonic(),
+    walletOptions.keyMnemonic(),
     globalOptions.passwordFileRepeat({ isOptional: false }),
-    globalOptions.walletName(),
+    walletOptions.walletName(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option, { collect }) => {

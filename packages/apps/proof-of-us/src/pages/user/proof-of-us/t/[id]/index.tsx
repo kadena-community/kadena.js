@@ -1,4 +1,5 @@
 import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
+import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { Share } from '@/features/Share/Share';
 import { fetchManifestData } from '@/utils/fetchManifestData';
@@ -17,7 +18,9 @@ const Page: NextPage<IProps> = ({ params, data, metadataUri }) => {
   return (
     <LoginBoundry>
       <UserLayout>
-        <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
+        <ProofOfUsProvider>
+          <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
+        </ProofOfUsProvider>
       </UserLayout>
     </LoginBoundry>
   );

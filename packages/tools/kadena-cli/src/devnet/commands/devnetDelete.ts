@@ -1,5 +1,4 @@
 import { devnetDeletePrompt } from '../../prompts/devnet.js';
-import { globalOptions } from '../../utils/globalOptions.js';
 import {
   getDevnetConfiguration,
   removeDevnetConfiguration,
@@ -8,6 +7,7 @@ import {
 import { createExternalPrompt } from '../../prompts/generic.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
+import { devnetOptions } from '../devnetOptions.js';
 import {
   dockerVolumeName,
   guardDocker,
@@ -18,7 +18,7 @@ import {
 export const deleteDevnetCommand = createCommand(
   'delete',
   'Delete devnet',
-  [globalOptions.devnetSelect()],
+  [devnetOptions.devnetSelect()],
   async (option) => {
     const config = await option.name();
     log.debug('devnet-delete:action', config);

@@ -19,6 +19,14 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: '/api/ipfs/:path*/image',
+        destination: `https://:path*.ipfs.nftstorage.link/image`,
+      },
+      {
+        source: '/api/ipfs/:path*/metadata',
+        destination: `https://:path*.ipfs.nftstorage.link/metadata`,
+      },
+      {
         source: '/graph',
         destination:
           process.env.NEXT_PUBLIC_GRAHQLURL ??
