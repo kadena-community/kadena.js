@@ -70,6 +70,31 @@ const ProofOfUsStore = () => {
     return () => off(backgroundRef);
   };
 
+  const listenLeaderboard = (
+    setDataCallback: Dispatch<SetStateAction<IAccountLeaderboard[]>>,
+  ) => {
+    const accountsRef = ref(database, `accounts`);
+    onValue(accountsRef, (snapshot) => {
+      const data = snapshot.val();
+
+      if (!data) return [];
+
+      const getAccountName = (str: string) =>
+        `${str.substring(0, 6)}...${str.substring(str.length - 4)}`;
+
+      const dataArray = Object.entries(
+        data as Record<string, IAccountLeaderboard>,
+      )
+        .map(([key, value]) => ({
+          accountName: getAccountName(value.accountName),
+          alias: value.alias,
+          tokenCount: value.tokenCount || 0,
+        }))
+        .sort((a, b) => (a.tokenCount < b.tokenCount ? 1 : -1));
+      setDataCallback(dataArray);
+    });
+  };
+
   const addBackground = async (
     proofOfUs: IProofOfUsData,
     background: IProofOfUsBackground,
@@ -206,6 +231,7 @@ const ProofOfUsStore = () => {
     saveAlias,
     getAllAccounts,
     saveLeaderboardAccounts,
+    listenLeaderboard,
   };
 };
 

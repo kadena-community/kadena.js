@@ -51,8 +51,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   const { hasMinted } = useHasMintedAttendaceToken();
   const { account } = useAccount();
 
-
-
   const storageListener = (event: StorageEvent) => {
     if (event.key === 'mintingTokens') {
       setMintingTokens(getMintingTokensFromLocalStorage());
