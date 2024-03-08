@@ -1,6 +1,6 @@
 {
   "name": "@kadena/kadena-cli",
-  "version": "0.0.1-alpha.5",
+  "version": "0.1.0",
   "private": true,
   "description": "Kadena CLI tool to interact with the Kadena blockchain (manage keys, transactions, etc.)",
   "keywords": [
