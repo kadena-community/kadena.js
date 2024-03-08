@@ -38,7 +38,7 @@ The Kadena `client-utils` package includes the following `built-in` helper funct
 
 ### createPrincipal
 
-Use `createPrincipal` to create a principal based on one public key.
+Use `createPrincipal` to create a principal account based on one public key.
 
 #### Basic usage
 
@@ -54,7 +54,7 @@ Use `describeModule` to return detailed information about a specified Pact modul
 
 #### Basic usage
 
-desccribeModule _module_
+describeModule _module_
 
 #### Parameters
 
@@ -103,16 +103,35 @@ The Kadena `client-utils` package includes the following `core` helper functions
 
 ### asyncPipe
 
-Use `asyncPipe` to ...
+Use `asyncPipe` to open a connection to the Kadena network and execute multiple functions in order to return a single result.
+This utility enables you to pass the output from the first function as input to a second function and return the combined results.
 
 #### Basic usage
 
+```typescript
+asyncPipe( function(), function())
+```
 #### Parameters
 
 #### Return value
 
 #### Example
 
+The following example pipes the result from the `appendAsync` function to the `asyncPipe` function and returns the combined results.
+
+```
+const asyncAppend = (append: string) => (input: string) =>
+      Promise.resolve(`${input} ${append}`);
+
+    const appendAsync = asyncPipe(
+      asyncAlways,
+      asyncAppend('one'),
+      asyncAppend('two'),
+    );
+    const result = await appendAsync('hello');
+    expect(result).toEqual('hello one two');
+  });
+```
 
 ### crossChainClient
 
