@@ -13,7 +13,7 @@ Marmalade is the name of the Kadena **token standard**.
 This token standard defines the interfaces for minting digital items with Kadena **smart contracts** and protecting those digital items with Kadena **token policies**.
 
 Digital items that are unique, one-of-a-kind assets are most commonly referred to as non-fungible tokens (NFTs).
-However, the Kadena token standard—influenced by the Ethereum [multi-token standard](https://ethereum.org/developers/docs/standards/tokens/erc-1155)—enables you to define, mint, and secure tokens that are fully fungible as interchangeable coins, partially fungible as a limited edition with a fixed supply, or completely non-fungible as unique items.
+However, the Kadena token standard is implemented as am multi-token standard that enables you to define, mint, and secure tokens that are fully fungible as interchangeable coins, partially fungible as a limited edition with a fixed supply, or completely non-fungible as unique items.
 Tokens can also be restricted to a single owner with rules for transferring ownership or support shared ownership with multiple potential stakeholders.
 
 As a creator, you have complete control over your token properties and the rules for minting, owning, and transferring tokens.
@@ -22,8 +22,9 @@ As a creator, you have complete control over your token properties and the rules
 
 Non-fungible tokens defined using other token standards have two main drawbacks:
 
-- Most token standards assume that a change of ownership is a transfer operation. 
+- Most token standards assume that a change of ownership is always a transfer operation. 
   However, a transfer-based model doesn't take into account the non-transferable nature of a unique asset.
+  Marmalade supports both transfers and sales, with the additional flexibility to use token policies for either operation.
 - Most token standards don't provide any guarantees that creators will be paid royalties for their work or  what they'll be paid from the exchanges that host their work.
 
 With Marmalade, Kadena eliminates these issues by making **sales contracts** and **token policies** core components of the token standard.
@@ -54,7 +55,7 @@ To complete a sale, the `pact` function defines the following steps:
 
 - Buy: A buyer initiates a **buy** operation with a promised payment and the escrowed asset waits for the step to be completed successfully by the buyer. 
 
-- Rollback: If the buyer doesn't complete the transaction within a certain period of time, the `pact` function can roll back the transaction and the seller can **withdraw** the sale. 
+- Withdraw: If the buyer doesn't complete the transaction within a certain period of time, the `pact` function can roll back the first step of the transaction and the seller can **withdraw** the sale. 
   If the seller withdraws, the `pact` transfers the asset back to the seller's account from the escrow account.
 
 ## Token policies
@@ -67,17 +68,18 @@ There are several built-in policies—called **concrete policies**—that are co
 For example, if you apply the `non-fungible-policy` to a token, the token is automatically configured to be minted only once. 
 
 You can apply built-in policies to any token or write custom policies based on the `kip.token-policy-v2` standard.
-You can also apply policies to **collections** of tokens to establish **marketplace communities** that share a common approach to token ownership or token sales. 
+You can also create **collections** of tokens using the `collection-policy` to establish **marketplace communities** that share a common approach to token ownership or token sales.
+After you create the group of tokens that make up the collection, the entire collection can be discovered from Chainweb events.
 
-For example, you can use token policies to define the following types of rules for creating, minting, burning, and transferring tokens:
+For example, you can use token policies to define the following types of rules:
 
-- You can create tokens with a **royalty** policy to specify a royalty rate as part of the token's metadata.
+- You can create tokens with a **royalty** policy to specify a royalty rate and the account that should receive royalties.
 
-- You can use a **mint** policy to specify whether a token is unique, part of a limited series, or a fully fungible coin.
+- You can use policies to control mint operations such as whether a token is unique, part of a limited series, or a fully fungible coin.
 
-- You can specify a **burn** policy to prevent certain tokens from being destroyed.
+- You can use policies to prevent certain tokens from being burned or to be burned only when under specific conditions are met.
 
-- You can define a **transfer** policy to restrict how tokens are transferred.
+- You can use policies to restrict how tokens are owned and transferred.
 
 ## Preparing to mint a token
 
@@ -92,7 +94,7 @@ If you're the owner of a token, you have the option to offer the token for sale 
 
 ## Token sales and trustless escrow
 
-AIf you're the owner of a token, you can start the sales process to find a buyer by selecting and configuring a `sale` smart contract.
+If you're the owner of a token, you can start the sales process to find a buyer by selecting and configuring a `sale` smart contract.
 You've already seen that a sale is essentially a `pact` with two steps: the **offer** step and the **buy** step.
 
 Smart contracts with the `sale` pact also use a special feature of pacts—**pact guards**—to govern the **trustless escrow account** for the token sale. 
@@ -103,8 +105,11 @@ Let's take a closer look at how a sale takes place, starting with an offer.
 
 ### Offer
 
-A seller creates an **offer** for the asset to be sold. 
-This step transfers the asset from the seller's account in the token ledger to the escrow account. The `sale` pact assigns an identifier to the SALE event that results from the transfer operation.
+A seller creates an **offer** for the asset to be sold.
+For this example, the offer is a simple sale with a **quoted** asking price.
+There are other ways you can sell assets—including conventional auctions and dutch auctions—that implement different sale mechanics, but the general use of the trusted escrow account applies to all types of sales.
+
+The **offer** step transfers the asset from the seller's account in the token ledger to the escrow account. The `sale` pact assigns an identifier to the SALE event that results from the transfer operation.
 
 For example, Bob submits a transaction to offer NFT1 for sale with a price quote of 50 KDA.
 This transaction:
@@ -119,10 +124,10 @@ The `sale:1` pact guard takes ownership of the asset.
 
 ### Buy
 
-The buyer who wants to acquire the asset that's been offered for sale sends a **continuation message** for the identifier assigned to the SALE event. 
+The buyer who wants to acquire the asset that's been offered for sale sends a **continuation** transaction for the identifier assigned to the SALE event. 
 
-For example, Alice sends a continuation message for the `sale:1` pact identifier to transfer NFT1 out of the escrow account in the token ledger and into her account. 
-The token policy then debits the sale price of 50.0 from Alice’s KDA account to credit Bob and executes any other offsetting transaction needed to release the escrowed NFT.
+For example, Alice sends a continuation transaction for the `sale:1` pact identifier to transfer NFT1 out of the escrow account in the token ledger and into her account. 
+The ledger then debits the sale price of 50.0 from Alice’s KDA account to credit Bob and executes any other offsetting transaction needed to release the escrowed NFT.
 For example, the token policy pays any royalty fees or returns any funds as specified in the policy. 
 
 ![Alice continues the execution of the sale pact](/assets/marmalade/buy.png)
@@ -130,12 +135,14 @@ For example, the token policy pays any royalty fees or returns any funds as spec
 With this separation of duties, the `sale` pact is responsible for transferring the NFT out of escrow and enforcing the timeout.
 Any other transaction requirements are handled by token policies.
 
-### Rollback and withdraw
+### Withdraw
 
-The timeout captured in the **offer** step allows a seller to withdraw from the sale if there are no interested buyers for the token. 
-The timeout is measured in blocks, such that if a seller sets the timeout to 30 blocks, he can't pull out of the sale until 30 blocks have been mined on-chain.
+Sellers can configure sale contracts to allow them to withdraw from the sale if there are no interested buyers for a token.
+Alternatively, sellers can specify a **timeout** as part of the **offer** step. 
+The timeout is measured in blocks.
+If a seller sets the timeout to 30 blocks, he can't pull out of the sale until 30 blocks have been mined on-chain.
 
-After the timeout, the seller can send a **rollback** continuation message for the identifier assigned to the SALE event. 
+After the timeout, the seller can send a **rollback** continuation transaction for the identifier assigned to the SALE event. 
 The **withdraw** operation then transfers the token out of the escrow account and returns it to the seller.
 
 ### Completing a logical sequence
@@ -168,7 +175,7 @@ You also want to require that the token can only be transferred to a new owner t
 
 To accomplish this, you can create the token using the `marmalade-v2.guard-policy-v1`,`marmalade-v2.non-fungible-policy-v1`, and `marmalade-v2.royalty-policy-v1` policies.
 
-These policies ensure that you are the only person authorized to mint the token, only one token can be minted, and any time the token is transferred to a new owner, you're paid the  royalty you specify.
+These policies help to ensure that you are the only person authorized to mint the token, only one token can be minted, and any time the token is transferred to a new owner, you're paid the royalty you specify.
 After you mint the token, all future sales respect the policies you've put in place. 
 Any new NFT owner can only resell the NFT using the offer, trustless escrow, and royalty enforcement process with a new buyer.
 
