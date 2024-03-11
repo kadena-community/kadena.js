@@ -10,8 +10,8 @@ import type { ButtonHTMLAttributes, RefObject } from 'react';
 import { useButton } from 'react-aria';
 import type { TreeState } from 'react-stately';
 import {
-  isNonContiguousSelectionModifier,
   isCtrlKeyPressed,
+  isNonContiguousSelectionModifier,
 } from '../../utils/aria';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention

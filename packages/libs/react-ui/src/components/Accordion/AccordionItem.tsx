@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useRef } from 'react';
 import { mergeProps, useFocusRing, useHover } from 'react-aria';
 import type { Node, TreeState } from 'react-stately';
@@ -13,7 +14,6 @@ import {
   rotatedIconClass,
 } from './Accordion.css';
 import { useAccordionItem } from './useAccordionItem';
-import classNames from 'classnames';
 
 interface IAccordionItemProps<T> {
   item: Node<T>;

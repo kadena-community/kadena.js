@@ -12,7 +12,8 @@
   "contributors": [
     "Eileen Guo <eileen@kadena.io>",
     "Salama Ashoush <salama@kadena.io>",
-    "Sam Ferrero <ferrero@kadena.io>"
+    "Sam Ferrero <ferrero@kadena.io>",
+    "Robin Mulder <robin.mulder@kadena.io>"
   ],
   "sideEffects": [
     "*.css.*",
