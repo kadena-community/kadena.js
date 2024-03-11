@@ -93,6 +93,7 @@ export const SignFormReceiver = ({
         render={({ field }) => (
           <AccountNameField
             {...field}
+            id="receiver-account-name"
             isInvalid={!!errors.receiver}
             errorMessage={errors.receiver?.message}
             isDisabled={tab === 'new'}

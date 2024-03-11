@@ -53,6 +53,7 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
           <AccountNameField
             {...field}
             isDisabled={isLedger}
+            id="sender-account-name"
             isInvalid={!!errors.sender}
             errorMessage={errors.sender?.message}
             endAddon={
