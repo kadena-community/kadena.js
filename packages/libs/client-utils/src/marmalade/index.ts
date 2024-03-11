@@ -5,7 +5,7 @@ export function hi() {
 }
 
 export function hello() {
-  return 'hello';
+  return 'Hello!';
 }
 
 export function bye() {
