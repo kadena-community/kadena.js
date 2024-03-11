@@ -218,7 +218,7 @@ export interface IPactCommand {
     // (undocumented)
     verifiers?: Array<{
         name: string;
-        proof: string;
+        proof: PactValue;
         clist?: ICap[];
     }>;
 }

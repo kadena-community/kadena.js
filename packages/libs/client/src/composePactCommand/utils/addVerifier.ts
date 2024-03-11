@@ -1,8 +1,6 @@
 import type { ICap, PactValue } from '@kadena/types';
 import type { IPartialPactCommand } from '../../interfaces/IPactCommand';
 
-import { unpackLiterals } from '../../utils/pact-helpers';
-import { parseAsPactValue } from '../../utils/parseAsPactValue';
 import type { ExtractType } from './addSigner';
 import { patchCommand } from './patchCommand';
 
@@ -46,8 +44,7 @@ export const addVerifier: IAddVerifier = ((
     patchCommand(cmd, {
       verifiers: [
         {
-          name: verifier.name,
-          proof: unpackLiterals(parseAsPactValue(verifier.proof)),
+          ...verifier,
           clist,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any,

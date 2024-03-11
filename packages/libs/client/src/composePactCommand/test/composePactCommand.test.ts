@@ -468,7 +468,7 @@ describe('mergePayload', () => {
             },
           ],
           name: 'test-verifier',
-          proof: '"test-proof"',
+          proof: 'test-proof',
         },
       ],
       nonce: 'test-nonce',

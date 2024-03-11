@@ -108,7 +108,7 @@ describe('createTransactionBuilder', () => {
       verifiers: [
         {
           name: 'test-verifier',
-          proof: '"test-proof"',
+          proof: 'test-proof',
           clist: [
             { args: [], name: 'coin.GAS' },
             {
