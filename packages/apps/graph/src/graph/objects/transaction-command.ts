@@ -21,7 +21,6 @@ export default builder.objectType('TransactionCommand', {
       type: ['Signer'],
       nullable: true,
       resolve(__query, parent) {
-        console.log(parent);
         return parent.signers;
       },
     }),
