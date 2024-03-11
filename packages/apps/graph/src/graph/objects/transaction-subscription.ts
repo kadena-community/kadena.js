@@ -1,7 +1,6 @@
 import { builder } from '../builder';
 import { TransactionStatus } from '../types/graphql-types';
 import { GQLMempoolTransaction } from './mempool-transaction';
-// import { GQLMempoolTransaction } from './mempool-transaction';
 import GQLTransaction from './transaction';
 
 export const GQLTransactionSubscriptionStatus = builder.enumType(
