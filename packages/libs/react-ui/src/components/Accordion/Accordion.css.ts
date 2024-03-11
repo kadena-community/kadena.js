@@ -37,18 +37,36 @@ export const accordionButtonClass = style([
 
 export const accordionContentClass = style([
   atoms({
-    display: 'none',
+    display: 'grid',
     color: 'text.subtle.default',
     fontSize: 'base',
     margin: 'no',
     overflow: 'hidden',
+    paddingInlineStart: 'sm',
+    height: '100%',
+    paddingBlock: 'no',
+  }),
+  {
+    gridTemplateRows: '0fr',
+    transition: 'all 300ms ease',
+  },
+]);
+
+export const accordionContentOpenClass = style([
+  atoms({
     paddingBlock: 'sm',
   }),
   {
-    selectors: {
-      "&[data-open='true']": {
-        display: 'block',
-      },
-    },
+    gridTemplateRows: '1fr',
   },
+]);
+
+export const accordionContentWrapperClass = style([{ minHeight: '0' }]);
+
+export const rotatedIconClass = style([
+  { transform: 'rotate(45deg)', transitionDuration: '0.3s' },
+]);
+
+export const defaultIconClass = style([
+  { transform: 'rotate(0deg)', transitionDuration: '0.3s' },
 ]);

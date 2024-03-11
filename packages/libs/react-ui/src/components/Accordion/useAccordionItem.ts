@@ -10,14 +10,9 @@ import type { ButtonHTMLAttributes, RefObject } from 'react';
 import { useButton } from 'react-aria';
 import type { TreeState } from 'react-stately';
 import {
-  isCtrlKeyPressed,
   isNonContiguousSelectionModifier,
+  isCtrlKeyPressed,
 } from '../../utils/aria';
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface AccordionItemAriaProps<T> {
-  item: Node<T>;
-}
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface AccordionItemAria {
@@ -29,16 +24,15 @@ export interface AccordionItemAria {
 
 //TODO: Replace with `useAccordionItem` from @react-aria/accordion when it is fixed.
 export function useAccordionItem<T>(
-  props: AccordionItemAriaProps<T>,
+  item: Node<T>,
   state: TreeState<T>,
   ref: RefObject<HTMLButtonElement>,
 ): AccordionItemAria {
-  const { item } = props;
   const key = item.key;
   const manager = state.selectionManager;
   const buttonId = useId();
   const regionId = useId();
-  const isDisabled = state.disabledKeys.has(item.key);
+  const isDisabled = state.disabledKeys.has(key);
 
   const { itemProps } = useSelectableItem({
     selectionManager: manager,
@@ -86,7 +80,9 @@ export function useAccordionItem<T>(
     }),
     ref,
   );
-  const isExpanded = state.expandedKeys.has(item.key);
+
+  const isExpanded = state.selectionManager.isSelected(key);
+
   return {
     buttonProps: {
       ...buttonProps,
