@@ -149,3 +149,8 @@ export interface TransactionSubscriptionResponse {
   status: TransactionStatusKey;
   transaction: Transaction | null;
 }
+
+export interface MempoolTransaction {
+  hash: string;
+  cmd: TransactionCommand;
+}

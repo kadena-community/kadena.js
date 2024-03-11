@@ -24,6 +24,7 @@ import type {
   GasLimitEstimation,
   GraphConfiguration,
   Guard,
+  MempoolTransaction,
   NonFungibleAccount,
   NonFungibleChainAccount,
   Token,
@@ -86,6 +87,7 @@ export const builder = new SchemaBuilder<
       ContinuationPayload: ContinuationPayload;
       TransactionResult: TransactionResult;
       TransactionSubscriptionResponse: TransactionSubscriptionResponse;
+      MempoolTransaction: MempoolTransaction;
     };
     Connection: {
       totalCount: number;

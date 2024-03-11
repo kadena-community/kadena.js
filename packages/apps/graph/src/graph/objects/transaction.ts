@@ -70,6 +70,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     }),
     result: t.field({
       type: TransactionResult,
+      nullable: true,
       select: {
         badResult: true,
         continuation: true,

@@ -206,6 +206,15 @@ type Guard {
   predicate: String!
 }
 
+"""A transaction in the mempool."""
+type MempoolTransaction {
+  """The command of the transaction."""
+  cmd: TransactionCommand!
+
+  """The hash of the transaction."""
+  hash: String!
+}
+
 """The account of the miner that solved a block."""
 type MinerKey implements Node {
   block: Block!
@@ -465,7 +474,7 @@ type Transaction implements Node {
   events: [Event!]
   hash: String!
   id: ID!
-  result: TransactionResult!
+  result: TransactionResult
   transfers: [Transfer!]
 }
 
@@ -525,13 +534,16 @@ enum TransactionStatus {
   PENDING
 }
 
+"""The body of the transaction status subscription."""
+union TransactionSubscription = MempoolTransaction | Transaction
+
 """The response for a transaction subscription."""
 type TransactionSubscriptionResponse {
   """The status of the transaction."""
   status: TransactionStatus!
 
   """The transaction."""
-  transaction: Transaction
+  transaction: TransactionSubscription
 }
 
 """A transfer of funds from a fungible between two accounts."""

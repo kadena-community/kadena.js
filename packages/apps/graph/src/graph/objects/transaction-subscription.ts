@@ -1,5 +1,7 @@
 import { builder } from '../builder';
 import { TransactionStatus } from '../types/graphql-types';
+import { GQLMempoolTransaction } from './mempool-transaction';
+// import { GQLMempoolTransaction } from './mempool-transaction';
 import GQLTransaction from './transaction';
 
 export const GQLTransactionSubscriptionStatus = builder.enumType(
@@ -9,6 +11,21 @@ export const GQLTransactionSubscriptionStatus = builder.enumType(
     values: Object.keys(
       TransactionStatus,
     ) as (keyof typeof TransactionStatus)[],
+  },
+);
+
+export const GQLTransactionSubscription = builder.unionType(
+  'TransactionSubscription',
+  {
+    description: 'The body of the transaction status subscription.',
+    types: [GQLTransaction, GQLMempoolTransaction],
+    resolveType(transaction) {
+      if ('result' in transaction) {
+        return 'Transaction';
+      } else {
+        return 'MempoolTransaction';
+      }
+    },
   },
 );
 
@@ -24,7 +41,7 @@ export const GQLTransactionSubscriptionResponse = builder.objectType(
       }),
       transaction: t.field({
         description: 'The transaction.',
-        type: GQLTransaction,
+        type: GQLTransactionSubscription,
         nullable: true,
         resolve: (parent) => parent.transaction,
       }),
