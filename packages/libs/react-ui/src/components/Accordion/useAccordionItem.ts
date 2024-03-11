@@ -1,3 +1,4 @@
+import type { AccordionItemAriaProps } from '@react-aria/accordion';
 import { useSelectableItem } from '@react-aria/selection';
 import { mergeProps, useId } from '@react-aria/utils';
 import type {
@@ -12,7 +13,6 @@ import {
   isCtrlKeyPressed,
   isNonContiguousSelectionModifier,
 } from '../../utils/aria';
-import { AccordionItemAriaProps } from '@react-aria/accordion';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface AccordionItemAria {
