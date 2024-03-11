@@ -14,6 +14,7 @@ import { CommandError } from '../utils/command.util.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   getExistingNetworks,
+  isNotEmptyString,
   maskStringPreservingStartAndEnd,
   notEmpty,
 } from '../utils/helpers.js';
@@ -512,4 +513,15 @@ export const txTransactionNetworks: IPrompt<string[]> = async (
   }
 
   return networkPerTransaction;
+};
+
+export const txRequestKeyPrompt: IPrompt<string> = async () => {
+  return await input({
+    message: 'Enter transaction request key:',
+    validate: (value) => {
+      if (isNotEmptyString(value.trim())) return true;
+
+      return 'Transaction request key cannot be empty';
+    },
+  });
 };

@@ -7,6 +7,7 @@ import { tx } from '../prompts/index.js';
 import {
   templateDataPrompt,
   templateVariables,
+  txRequestKeyPrompt,
   txTransactionNetworks,
 } from '../prompts/tx.js';
 import { services } from '../services/index.js';
@@ -225,5 +226,15 @@ export const txOptions = {
     },
     validation: z.boolean().optional(),
     option: new Option('-p, --poll', 'Poll for transaction status'),
+  }),
+  requestKey: createOption({
+    key: 'requestKey',
+    prompt: txRequestKeyPrompt,
+    defaultIsOptional: false,
+    validation: z.string(),
+    option: new Option(
+      '-k, --request-key <requestKey>',
+      'Enter your request key',
+    ),
   }),
 };
