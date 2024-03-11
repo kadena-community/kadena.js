@@ -47,13 +47,16 @@ export function sign(
             await onConnect(keySource);
           }
 
-          const signatures = await service.sign(
-            Tx.hash,
-            keySource.uuid,
-            relevantIndexes,
-          );
+          if (relevantIndexes.length > 0) {
+            const signatures = await service.sign(
+              keySource.uuid,
+              Tx.hash,
+              relevantIndexes,
+            );
 
-          return signatures;
+            return signatures;
+          }
+          return [];
         }),
       );
       return addSignatures(Tx, ...signatures.flat());

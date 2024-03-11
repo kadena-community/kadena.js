@@ -20,6 +20,7 @@
     "@kadena/client-utils": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/hd-wallet": "workspace:*",
+    "@kadena/pactjs-generator": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/react-ui": "workspace:*",
     "@scure/bip39": "^1.2.1",
