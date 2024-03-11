@@ -1,6 +1,6 @@
 ---
 title: Build with Pact
-description: Pact is a smart contract programming language, designed to enable correct, transactional execution on a high-performance blockchain.
+description: Pact is a human-readable smart contract programming language, designed to enable correct, transactional execution on a high-performance blockchain.
 menu: Smart contracts
 label: Build with Pact
 order: 1

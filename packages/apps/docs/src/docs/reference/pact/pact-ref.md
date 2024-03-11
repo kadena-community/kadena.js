@@ -4,54 +4,37 @@ description:
   This document is a reference for the Pact smart contract language, designed
   for correct, transactional execution on a high-performance blockchain.
 menu: Pact functions
-label: Pact functions
+label: Introduction
 order: 1
 layout: full
 tags: ['pact', 'language reference']
 ---
 
-# Pact language reference
+# Pact functions
 
-Pact is a smart contract programming language, specifically designed for correct, transactional execution on the [Kadena high-performance blockchain](http://kadena.io).
+Pact is a smart contract programming language, specifically designed for correct, transactional execution on the Kadena high-performance blockchain.
+The language includes many native, built-in functions to perform common programming tasks and to perform operations that are unique to the Pact programming language.
 
-The language reference covers the following topics:
-- [Concepts](/reference/pact/concepts)
-- [Syntax and keywords](/reference/pact/syntax)
-- [General purpose functions](/reference/pact/general-functions)
-- [Database functions](/reference/pact/database-functions)
-- [Time functions](/reference/pact/functions/time)
-- [Operators](/reference/pact/functions/operators)
-- [Keysets](/reference/pact//functions/keysets)
-- [Capabilities](/reference/pact//functions/capabilities)
-- [Simple payment verification (spv)](/reference/pact/functions//spv)
-- [Commitments](/reference/pact/functions/commitments)
-- [Guards](/reference/pact/functions/guards)
-- [Zero knowledge (zk)](/reference/pact/functions/zk)
-- [Repl-only functions](/reference/pact/functions/repl-only-functions)
-- [Property checking](/reference/pact/property-checking)
-- [Properties and invariants](/reference/pact/properties-and-invariants)
-- [Pacts](/reference/pact/pacts)
-- [Pact REPL](/reference/pact/pact-repl-cli)
+You can find reference information for all of the the Pact built-in functions in the following topics:
 
-For information about the design of the Pact programming language, see the [Pact white paper](/kadena) or the [pact home page](http://kadena.io/#pactModal).
+- [General purpose functions](/reference/functions/general) are used to perform many common tasks, such as specifying the character set for a smart contract, concatenating a list of strings, or defining a unique namespace for your applications.
 
-## General purpose functions
+- [Database functions](/reference/functions/database) are used to perform database-related tasks, such as creating new tables, reading data from an existing table, or updating table records.
 
-You can use the following built-in functions to perform many common tasks, such as specifying the character set for a smart contract, concatenating a list of strings, or defining a unique namespace for your applications.
-Click the name of a function for more information about the function syntax and code examples that illustrate how to use the function.
+- [Time functions](/reference/functions/time) are used to manage and manipulate time-based information and formats.
 
-| Function | Description
-| -------- | -----------
-| [CHARSET_ASCII](/reference/pact-ref/general#charset_ascii) | Constant denoting the ASCII charset.
-| [CHARSET_LATIN1](/reference/pact-ref/general#charset_latin1) | Constant denoting the Latin-1 charset ISO-8859-1.
-| [at](/reference/pact-ref/general#at) | Index LIST at IDX, or get value with key IDX from OBJECT.
+- [Operator functions](/reference/functions/operators) are used to tell the compiler the specific type of mathematical or logical action you want to perform.
 
-## Database functions
+- [Keyset functions](/reference/functions/keysets) are used to define and manage security through the handling of the public keys required to sign transactions.
+  
+- [Guard functions](/reference/functions/guards) are used to create and manage account principals and security enforcement.
 
-You can use built-in functions to perform many database-related tasks, such as creating new tables, reading data from an existing table, or updating table records.
-Click the name of a function for more information about the function syntax and code examples that illustrate how to use the function.
+- [Capabilities functions](/reference/functions/capabilities) are used to define and manage the permissions that authorize or deny access to smart contract operations.
 
-| Function | Description
-| -------- | -----------
-| [create-table](/reference/pact-ref/database#create-table) | Constant denoting the ASCII charset.
-| [describe-keyset](/reference/pact-ref/database#describe-keyset) | Constant denoting the Latin-1 charset ISO-8859-1.
+- [Repl-only functions functions](/reference/functions/repl-only-functions) are used in the interactive Pact REPL to enable testing.
+
+- [Simple payment verification (spv) functions](/reference/functions/spv) are used to verify payment payloads.
+
+- [Commitment functions](/reference/functions/commitments) are used to handle specialized cryptographic operations.
+
+- [Zero knowledge (zk) functions](/reference/functions/zk) are used to handle specialized zero knowledge operations.

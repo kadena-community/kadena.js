@@ -18,7 +18,7 @@ tags: ['pact', 'language reference']
 - [Operators](/reference/pact/functions/operators)
 - [Keysets](/reference/pact//functions/keysets)
 - [Capabilities](/reference/pact//functions/capabilities)
-- [Simple payment verification (spv)](/reference/pact/functions//spv)
+- [Simple payment verification (spv)](/reference/pact/functions/spv)
 - [Commitments](/reference/pact/functions/commitments)
 - [Guards](/reference/pact/functions/guards)
 - [Zero knowledge (zk)](/reference/pact/functions/zk)

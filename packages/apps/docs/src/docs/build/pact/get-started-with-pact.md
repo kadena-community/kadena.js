@@ -1,7 +1,7 @@
 ---
 title: Get started with Pact
-description: Start your builder's journey on Kadena by learning about the Pact smart contract programming language.
-menu: Pact
+description: "Pact is a human-readable smart contract programming language, designed to enable correct, transactional execution on a high-performance blockchain. Start your builder's journey on Kadena by learning about the Pact smart contract programming language."
+menu: Smart contracts
 label: Get started with Pact
 order: 2
 layout: full

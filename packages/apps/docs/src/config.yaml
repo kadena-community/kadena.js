@@ -55,11 +55,8 @@ pages:
         file: /quick-start.md
       pact:
         url: /pact
-        file: /build/pact/build-with-pact.md
+        file: /build/pact/get-started-with-pact.md
         children:
-          get-started:
-            url: /get-started-with-pact
-            file: /build/pact/beginner/get-started-with-pact.md
           devnet:
             url: /dev-network
             file: /build/pact/beginner/dev-network.md
@@ -113,7 +110,7 @@ pages:
             file: /build/pact/intermediate/built-in-functions.md
       nftmarmalade:
         url: /nft-marmalade
-        file: /build/nft-marmalade/nft-standard.md
+        file: /build/nft-marmalade/what-is-marmalade.md
         children:
           quickstart:
             url: /quick-start
@@ -292,19 +289,19 @@ pages:
     url: /reference
     file: /reference/reference.md
     children:
-      pactref:
-        url: /pactref
-        file: /reference/pact/pact-ref.md
       pactsyntax:
         url: /syntax
         file: /reference/pact/syntax.md
       functions:
         url: /functions
-        file: /reference/pact/general-functions.md
+        file: /reference/pact/pact-ref.md
         children:
+          general:
+            url: /general
+            file: /reference/pact/functions/general-functions.md            
           database:
             url: /database
-            file: /reference/pact/database-functions.md
+            file: /reference/pact/functions/database-functions.md
           time:
             url: /time
             file: /reference/pact/functions/time.md
@@ -380,7 +377,7 @@ pages:
         file: /reference/pact/pact-repl-cli.md
       pactjs:
         url: /pactjs
-        file: /reference/pactjs-api.md
+        file: /reference/pact/pactjs-api.md
       restapi:
         url: /rest-api
         file: /reference/pact/rest-api.md

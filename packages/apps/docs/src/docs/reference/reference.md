@@ -12,16 +12,19 @@ tags: [pact, typescript, account, transactions, utils]
 
 ## Smart contracts: Pact
 
-Pact is a smart contract programming language, specifically designed for correct, transactional execution on the [Kadena high-performance blockchain](http://kadena.io).
+Pact is a smart contract programming language, specifically designed for correct, transactional execution on the Kadena high-performance blockchain.
 
-- [Pact language reference](/reference/pact-ref)
-- [Concepts](/reference/pact/concepts)
-- [Syntax and keywords](/reference/pact/syntax)
-- [Pact functions](/reference/pact/functions)
-- [Pact OpenAPI](/reference/pact/api)
-- [Pact-JS](/reference/pact/pactjs-api)
+The reference information for the Pact programming language covers the following topics:
 
-For information about the design of the Pact programming language, see the [Pact white paper](/kadena) or the [pact home page](http://kadena.io/#pactModal).
+- [Syntax and keywords](/reference/syntax) provides a quick reference to the language syntax and how to declare different types.
+- [Pact functions](/reference/functions) describes all of the native, built-in functions in the Pact programming languages organized into different categories
+- [Property validation](/reference/property-checking) explains how you can use Pact property checking to validate your code and the properties and invariants you can use to test the code for correctness.
+- [Sequenced pacts](/reference/pacts) highlights the use of multi-step transactions using pact definitions.
+- [Pact REPL](/reference/pact-repl) provides command-line reference information for the Pact REPL interactive command-line program.
+- [Pact REST API](/reference/rest-api) describes the Pact REST API and how you can use it to interact with the blockchain.
+- [Pact-JS](/reference/pactjs) covers the TypeScript library that provides a frontend application programming interface (API) for interacting with Pact smart contracts and the Kadena network.
+
+For information about the design of the Pact programming language, see the [Pact white paper](/kadena) or the [Pact home page](https://www.kadena.io/pact).
 
 ## Frontend interface: Kadena client
 
@@ -33,6 +36,7 @@ The Kadena client includes the following packages:
 - Command-line interface
 
 ## NFT marketplace: Marmalade technical reference
+
 
 
 ## Queries and indexing: Kadena GraphQL
