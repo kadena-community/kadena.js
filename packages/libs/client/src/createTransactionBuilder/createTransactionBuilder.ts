@@ -12,6 +12,8 @@ import {
 } from '../composePactCommand';
 import type { ValidDataTypes } from '../composePactCommand/utils/addData';
 import type { ISigner } from '../composePactCommand/utils/addSigner';
+import type { IVerifier } from '../composePactCommand/utils/addVerifier';
+import { addVerifier } from '../composePactCommand/utils/addVerifier';
 import { patchCommand } from '../composePactCommand/utils/patchCommand';
 import type { AddCapabilities } from '../composePactCommand/utils/payload';
 import type {
@@ -49,6 +51,28 @@ interface IAddSigner<TCommand> {
   ): IBuilder<TCommand>;
 }
 
+interface IAddVerifier<TCommand> {
+  /**
+   * Add signer without capability
+   */
+  (first: IVerifier): IBuilder<TCommand>;
+  /**
+   * Add a signer including capabilities. The withCapability function is obtained from
+   * the function you call in the execution part.
+   * @example
+   * Pact.builder.execute(
+   *   Pact.coin.transfer("alice", "bob", \{ decimal:"1" \})
+   * ).addVerifier(\{ name:"name", proof:"proof" \}, (withCapability) =\> [
+   *   withCapability("coin.GAS"),
+   *   withCapability("coin.TRANSFER", "alice", "bob", \{ decimal:"1" \})
+   * ])
+   */
+  (
+    first: IVerifier,
+    capability: (withCapability: ExtractCapabilityType<TCommand>) => ICap[],
+  ): IBuilder<TCommand>;
+}
+
 interface ISetNonce<TCommand> {
   /**
    * Overriding the default nonce by calling this function
@@ -81,6 +105,23 @@ interface IAddKeyset<TCommand> {
  * @public
  */
 export interface IBuilder<TCommand> {
+  /**
+   * Add signer with theirs capabilities
+   * @example
+   * ```
+   * Pact.builder
+   *   .execution(Pact.modules.coin.transfer("albert"))
+   *   // add signer without scoping to any capabilities
+   *   .addSigner("public_key")
+   *   // add signer without scoping to the capabilities
+   *   .addSigner("gas_payer_public_key",()=>[
+   *       withCapability("coin.GAS"),
+   *       withCapability("myModule.CAP","arg1",{ decimal: 2 })
+   *    ])
+   * ```
+   */
+  addVerifier: IAddVerifier<TCommand>;
+
   /**
    * Add signer with theirs capabilities
    * @example
@@ -283,6 +324,16 @@ const getBuilder = <T>(init: IPartialPactCommand): IBuilder<T> => {
       state.composeWith(
         addSigner(
           pubKey,
+          cap as (withCapability: IGeneralCapability) => ICap[],
+        ) as (cmd: IPartialPactCommand) => IPartialPactCommand,
+      );
+      return builder;
+    },
+
+    addVerifier: (verifier: IVerifier, cap?: unknown) => {
+      state.composeWith(
+        addVerifier(
+          verifier,
           cap as (withCapability: IGeneralCapability) => ICap[],
         ) as (cmd: IPartialPactCommand) => IPartialPactCommand,
       );

@@ -62,6 +62,11 @@ export interface IPactCommand {
     scheme?: SignerScheme;
     clist?: ICap[];
   }>;
+  verifiers?: Array<{
+    name: string;
+    proof: string;
+    clist?: ICap[];
+  }>;
   networkId: string;
   nonce: string;
 }

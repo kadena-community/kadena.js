@@ -81,5 +81,24 @@ export function patchCommand(
       }
     });
   }
+  if (patch.verifiers !== undefined) {
+    patch.verifiers.forEach((verifier) => {
+      state.verifiers ??= [];
+      const foundVerifier = state.verifiers
+        .filter(Boolean)
+        .find(
+          (item) =>
+            verifier?.name === item?.name && verifier?.proof === item?.proof,
+        );
+      if (foundVerifier !== undefined) {
+        foundVerifier.clist = [
+          ...(foundVerifier.clist ?? []),
+          ...(verifier?.clist ?? []),
+        ];
+      } else {
+        state.verifiers.push(verifier);
+      }
+    });
+  }
   return state;
 }
