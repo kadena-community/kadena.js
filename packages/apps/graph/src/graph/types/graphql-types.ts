@@ -1,4 +1,4 @@
-import type { Signer, Transaction, Transfer } from '@prisma/client';
+import type { Block, Signer, Transaction, Transfer } from '@prisma/client';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Guard {

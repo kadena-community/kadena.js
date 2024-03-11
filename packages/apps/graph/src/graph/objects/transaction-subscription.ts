@@ -19,7 +19,7 @@ export const GQLTransactionSubscription = builder.unionType(
     description: 'The body of the transaction status subscription.',
     types: [GQLTransaction, GQLMempoolTransaction],
     resolveType(transaction) {
-      if ('result' in transaction) {
+      if ('continuation' in transaction) {
         return 'Transaction';
       } else {
         return 'MempoolTransaction';
