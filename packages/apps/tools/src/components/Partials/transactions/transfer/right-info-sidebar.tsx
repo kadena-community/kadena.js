@@ -1,7 +1,7 @@
 import DrawerToolbar from '@/components/Common/DrawerToolbar';
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import { sidebarLinks } from '@/constants/side-links';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   accordionItemContentStyle,
   accordionItemTitleStyle,
@@ -23,21 +23,35 @@ export interface InfoSections {
 
 export interface IRightInfoSidebarProps {
   infoSections: InfoSections[];
+  sidebarOpen?: boolean;
 }
 
 export const RightInfoSidebar: FC<IRightInfoSidebarProps> = ({
   infoSections,
+  sidebarOpen,
 }) => {
   const { t } = useTranslation('common');
   const router = useRouter();
+  const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.lg}`);
+
+  console.log(isMediumScreen);
+
+  const [initialItem, setInitialItem] = useState<{ item: number } | undefined>(
+    undefined,
+  );
 
   const drawerPanelRef = useRef<HTMLElement | null>(null);
-  const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.lg}`);
+
+  useEffect(() => {
+    if (isMediumScreen) {
+      setInitialItem({ item: 0 });
+    }
+  }, [sidebarOpen, isMediumScreen]);
 
   return (
     <DrawerToolbar
       ref={drawerPanelRef}
-      initialOpenItem={isMediumScreen ? { item: 0 } : undefined}
+      initialOpenItem={initialItem}
       sections={[
         {
           icon: 'Information',

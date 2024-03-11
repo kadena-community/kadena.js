@@ -7,6 +7,7 @@ import {
   Heading,
   Notification,
   Stack,
+  SystemIcon,
 } from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -23,7 +24,6 @@ import { notificationLinkStyle } from './styles.css';
 import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/right-info-sidebar';
 import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
 import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
-
 const TransferPage = () => {
   const router = useRouter();
   useToolbar(menuData, router.pathname);
@@ -38,6 +38,8 @@ const TransferPage = () => {
 
   const [receiverChainId, setReceiverChainId] = useState<ChainId>(CHAINS[0]);
   const [senderChainId, setSenderChainId] = useState<ChainId>(CHAINS[0]);
+
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   const helpInfoSections = [
     {
@@ -57,6 +59,8 @@ const TransferPage = () => {
     },
   ];
 
+  const openSidebarMenu = () => setSidebarOpen(!sidebarOpen);
+
   return (
     <section className={containerClass}>
       <Head>
@@ -66,7 +70,11 @@ const TransferPage = () => {
         <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
         <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
       </Breadcrumbs>
-      <Heading as="h4">{t('Transfer')}</Heading>
+      <Stack justifyContent={'space-between'} alignItems={'center'}>
+        <Heading as="h4">{t('Transfer')}</Heading>
+        <SystemIcon.HelpCircle onClick={openSidebarMenu} cursor={'pointer'} />
+      </Stack>
+
       <Stack
         flexDirection="column"
         paddingBlockStart={'md'}
@@ -100,7 +108,10 @@ const TransferPage = () => {
         />
       </Stack>
 
-      <RightInfoSidebar infoSections={helpInfoSections} />
+      <RightInfoSidebar
+        infoSections={helpInfoSections}
+        sidebarOpen={sidebarOpen}
+      />
     </section>
   );
 };
