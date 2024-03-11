@@ -49,6 +49,7 @@ export const accordionContentClass = style([
   {
     gridTemplateRows: '0fr',
     transition: 'all 300ms ease',
+    transitionProperty: 'grid-template-rows, padding',
   },
 ]);
 

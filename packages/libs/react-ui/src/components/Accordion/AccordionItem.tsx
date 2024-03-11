@@ -20,9 +20,10 @@ interface IAccordionItemProps<T> {
   state: TreeState<T>;
 }
 
-export function AccordionItem<T>({ state, item }: IAccordionItemProps<T>) {
+export function AccordionItem<T>(props: IAccordionItemProps<T>) {
+  const { state, item } = props;
   const ref = useRef<HTMLButtonElement>(null);
-  const { buttonProps, regionProps } = useAccordionItem<T>(item, state, ref);
+  const { buttonProps, regionProps } = useAccordionItem<T>(props, state, ref);
   const isOpen = state.selectionManager.isSelected(item.key);
   const isDisabled = state.disabledKeys.has(item.key);
   const { hoverProps } = useHover({ isDisabled });

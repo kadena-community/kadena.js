@@ -3,7 +3,6 @@ import { mergeProps, useId } from '@react-aria/utils';
 import type {
   DOMAttributes,
   LongPressEvent,
-  Node,
   PressEvent,
 } from '@react-types/shared';
 import type { ButtonHTMLAttributes, RefObject } from 'react';
@@ -13,6 +12,7 @@ import {
   isCtrlKeyPressed,
   isNonContiguousSelectionModifier,
 } from '../../utils/aria';
+import { AccordionItemAriaProps } from '@react-aria/accordion';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface AccordionItemAria {
@@ -24,10 +24,11 @@ export interface AccordionItemAria {
 
 //TODO: Replace with `useAccordionItem` from @react-aria/accordion when it is fixed.
 export function useAccordionItem<T>(
-  item: Node<T>,
+  props: AccordionItemAriaProps<T>,
   state: TreeState<T>,
   ref: RefObject<HTMLButtonElement>,
 ): AccordionItemAria {
+  const { item } = props;
   const key = item.key;
   const manager = state.selectionManager;
   const buttonId = useId();
