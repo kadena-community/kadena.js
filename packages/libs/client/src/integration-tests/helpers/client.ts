@@ -9,7 +9,7 @@ export const apiHostGenerator = ({
   chainId: ChainId;
 }): string => {
   switch (networkId) {
-    case 'fast-development':
+    case 'development':
       return `http://127.0.0.1:8080/chainweb/0.0/${networkId}/chain/${
         chainId ?? '1'
       }/pact`;

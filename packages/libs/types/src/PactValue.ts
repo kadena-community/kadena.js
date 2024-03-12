@@ -47,8 +47,7 @@ export type PactLiteral =
   | IPactInt
   | IPactDecimal
   | boolean
-  | Date
-  | object;
+  | Date;
 
 /**
  * A sum type representing a `pact` value.
@@ -64,4 +63,4 @@ export type PactLiteral =
  * TODO: add module reference type type.
  * @alpha
  */
-export type PactValue = PactLiteral | Array<PactValue>;
+export type PactValue = PactLiteral | Array<PactValue> | Record<string, any>;

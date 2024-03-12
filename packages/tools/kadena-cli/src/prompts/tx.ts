@@ -1,17 +1,26 @@
-import type { IUnsignedCommand } from '@kadena/types';
-import chalk from 'chalk';
+import type { ICommand, IUnsignedCommand } from '@kadena/types';
 import { z } from 'zod';
-
 import { getTransactions } from '../tx/utils/txHelpers.js';
 
+import { getAllAccounts } from '../account/utils/accountHelpers.js';
 import {
   getAllPlainKeys,
   getAllWalletKeys,
 } from '../keys/utils/keysHelpers.js';
+import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
 import { getTemplates } from '../tx/commands/templates/templates.js';
+import { CommandError } from '../utils/command.util.js';
 import type { IPrompt } from '../utils/createOption.js';
+import {
+  getExistingNetworks,
+  maskStringPreservingStartAndEnd,
+  notEmpty,
+} from '../utils/helpers.js';
+import { log } from '../utils/logger.js';
 import { checkbox, input, select } from '../utils/prompts.js';
+import { tableFormatPrompt } from '../utils/tableDisplay.js';
+import { networkSelectPrompt } from './network.js';
 
 const CommandPayloadStringifiedJSONSchema = z.string();
 const PactTransactionHashSchema = z.string();
@@ -20,7 +29,7 @@ const ISignatureJsonSchema = z.object({
   sig: z.string(),
 });
 
-const SignatureOrUndefinedOrNull = z.union([
+export const SignatureOrUndefinedOrNull = z.union([
   ISignatureJsonSchema,
   z.undefined(),
   z.null(),
@@ -54,7 +63,7 @@ export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
         IUnsignedCommandSchema.parse(parsedInput);
         return true;
       } catch (error) {
-        console.log('error', error);
+        log.info('error', error);
         return 'Incorrect Format. Please enter a valid Unsigned Command.';
       }
     },
@@ -68,7 +77,11 @@ export const transactionSelectPrompt: IPrompt<string> = async (args) => {
   const existingTransactions: string[] = await getTransactions(signed, path);
 
   if (existingTransactions.length === 0) {
-    throw new Error('No transactions found.');
+    throw new CommandError({
+      warnings: [
+        'No transactions found. Use "kadena tx add" to create a transaction, and "kadena tx sign" to sign it.',
+      ],
+    });
   }
 
   const choices = existingTransactions.map((transaction) => ({
@@ -95,7 +108,9 @@ export const transactionsSelectPrompt: IPrompt<string[]> = async (args) => {
   const existingTransactions: string[] = await getTransactions(signed, path);
 
   if (existingTransactions.length === 0) {
-    throw new Error('No transactions found.');
+    throw new CommandError({
+      warnings: [`No ${signed ? 'signed ' : ''}transactions found.`],
+    });
   }
 
   const choices = existingTransactions.map((transaction) => ({
@@ -161,15 +176,13 @@ export const selectTemplate: IPrompt<string> = async (args) => {
 // in account, we need to know what value exactly is expected. like public key, account name, or keyset
 // the idea is to expect specific naming for the variables, like "account-from" or "pk-from" or "keyset-from"
 
-const getAllAccounts = async (): Promise<string[]> => {
-  // Wait for account implementation
-  return [];
-};
-
-const promptVariableValue = async (key: string): Promise<string> => {
-  if (key.startsWith('account-')) {
+const promptVariableValue = async (
+  key: string,
+  variables: Record<string, string>,
+): Promise<string> => {
+  if (key.startsWith('account:')) {
     // search for account alias - needs account implementation
-    const accounts = await getAllAccounts();
+    const accounts = await getAllAccounts().catch(() => []);
 
     const hasAccount = accounts.length > 0;
     let value: string | null = null;
@@ -179,7 +192,19 @@ const promptVariableValue = async (key: string): Promise<string> => {
         value: '_manual_',
         name: 'Enter account manually',
       },
-      ...accounts.map((x) => ({ value: x, name: x })),
+      ...tableFormatPrompt([
+        ...accounts.map((account) => ({
+          value: account.name,
+          name: [
+            account.fungible,
+            maskStringPreservingStartAndEnd(account.name, 20),
+            account.publicKeys
+              .map((x) => maskStringPreservingStartAndEnd(x))
+              .join(','),
+            account.predicate,
+          ],
+        })),
+      ]),
     ];
     if (hasAccount) {
       value = await select({
@@ -201,39 +226,156 @@ const promptVariableValue = async (key: string): Promise<string> => {
     }
 
     if (value === null) throw new Error('account not found');
+
+    log.info(`${log.color.green('>')} Using account name ${value}`);
     return value;
-  }
-  if (key.startsWith('pk-')) {
+  } else if (key.startsWith('key:')) {
     const walletKeys = await getAllWalletKeys();
     const plainKeys = await getAllPlainKeys();
+    const accounts = await getAllAccounts().catch(() => []);
 
     const hasKeys = walletKeys.length > 0 || plainKeys.length > 0;
+    const hasAccounts = accounts.length > 0;
     let value: string | null = null;
+    let targetSelection: string | null = null;
 
-    const choices = [
-      {
-        value: '_manual_',
-        name: 'Enter public key manually',
-      },
-      ...walletKeys.map((key) => ({
-        value: key.publicKey,
-        name: `${key.alias} (wallet ${key.wallet.folder})`,
-      })),
-      ...plainKeys.map((key) => ({
-        value: key.publicKey,
-        name: `${key.alias} (plain key)`,
-      })),
-    ];
+    //
+    // Handle match between account and key variables
+    //
+    const pkName = key.replace('key:', '');
+    const accountName = `account:${pkName}`;
+    const accountMatch = variables[`account:${pkName}`];
 
-    if (hasKeys) {
+    if (accountMatch) {
+      const accounts = await getAllAccounts().catch(() => []);
+      const accountConfig = accounts.find((x) => x.name === accountMatch);
+      if (accountConfig) {
+        const selection = await select({
+          message: `Template key "${key}" matches account "${accountName}". Use public key?`,
+          choices: [
+            ...accountConfig.publicKeys.map((key) => ({
+              value: key,
+              name: `Account public key: ${key}`,
+            })),
+            {
+              value: '_manual_',
+              name: 'Enter public key manually',
+            },
+            hasAccounts
+              ? {
+                  value: '_account_',
+                  name: 'Pick a public key from another account',
+                }
+              : undefined,
+            hasKeys
+              ? {
+                  value: '_key_',
+                  name: 'Pick a public key from keys',
+                }
+              : undefined,
+          ].filter(notEmpty),
+        });
+        if (!selection.startsWith('_')) return selection;
+        targetSelection = selection;
+      }
+    }
+
+    // Choices for where to select public key from
+    if (targetSelection === null) {
+      const choices = [
+        {
+          value: '_manual_',
+          name: 'Enter public key manually',
+        },
+        hasAccounts
+          ? {
+              value: '_account_',
+              name: 'Pick a public key from another account',
+            }
+          : undefined,
+        hasKeys
+          ? {
+              value: '_key_',
+              name: 'Pick a public key from keys',
+            }
+          : undefined,
+      ].filter(notEmpty);
+      if (choices.length === 1) targetSelection = choices[0].value;
+      else {
+        targetSelection = await select({
+          message: `Select public key from:`,
+          choices: choices,
+        });
+      }
+    }
+
+    // Pick from wallet keys or plain keys
+    if (targetSelection === '_key_') {
+      const choices = [
+        ...tableFormatPrompt([
+          ...walletKeys.map((key) => ({
+            value: key.publicKey,
+            name: [
+              key.alias,
+              maskStringPreservingStartAndEnd(key.publicKey),
+              `(wallet ${key.wallet.folder})`,
+            ],
+          })),
+          ...plainKeys.map((key) => ({
+            value: key.publicKey,
+            name: [
+              key.alias,
+              maskStringPreservingStartAndEnd(key.publicKey),
+              `(plain key)`,
+            ],
+          })),
+        ]),
+      ];
       value = await select({
         message: `Select public key alias for template value ${key}:`,
-        choices,
+        choices: choices,
       });
     }
 
-    if (value === '_manual_' || !hasKeys) {
-      return await input({
+    // Pick public key from accounts
+    if (targetSelection === '_account_') {
+      const accountName = await select({
+        message: `Select account alias for template value ${key}:`,
+        choices: [
+          ...tableFormatPrompt([
+            ...accounts.map((account) => ({
+              value: account.name,
+              name: [
+                account.fungible,
+                maskStringPreservingStartAndEnd(account.name, 20),
+                account.publicKeys
+                  .map((x) => maskStringPreservingStartAndEnd(x))
+                  .join(','),
+                account.predicate,
+              ],
+            })),
+          ]),
+        ],
+      });
+      const account = accounts.find((x) => x.name === accountName)!;
+      if (account.publicKeys.length === 1) {
+        value = account.publicKeys[0];
+      } else {
+        value = await select({
+          message: `Select public key for template value ${key}:`,
+          choices: [
+            ...account.publicKeys.map((key) => ({
+              value: key,
+              name: `Account key: ${key}`,
+            })),
+          ],
+        });
+      }
+    }
+
+    // Fallback: manual entry if nothing else is selected
+    if (value === null) {
+      value = await input({
         message: `Manual entry for public key for template value ${key}:`,
         validate: (value) => {
           if (value === '') return `${key} cannot be empty`;
@@ -242,20 +384,14 @@ const promptVariableValue = async (key: string): Promise<string> => {
       });
     }
 
-    const selectedKey =
-      walletKeys.find((x) => x.publicKey === value) ??
-      plainKeys.find((x) => x.publicKey === value);
-    if (selectedKey === undefined) throw new Error('public key not found');
-
     if (value === null || value === '_manual_') {
       throw new Error('public key not found');
     }
 
-    console.log(`${chalk.green('>')} Using public key ${value}`);
+    log.info(`${log.color.green('>')} Using public key ${value}`);
     return value;
-  }
-  if (key.startsWith('keyset-')) {
-    // search for key alias - needs account implementation
+  } else if (key.startsWith('keyset-')) {
+    // TODO: search for key alias - needs account implementation
     const alias = await input({
       message: `Template value for keyset ${key}:`,
       validate: (value) => {
@@ -263,17 +399,30 @@ const promptVariableValue = async (key: string): Promise<string> => {
         return true;
       },
     });
-    console.log('keyset alias', alias);
+    log.info('keyset alias', alias);
     return alias;
+  } else if (key.startsWith('network:')) {
+    const networks = await getExistingNetworks();
+    const networkName = await select({
+      message: `Select network id for template value ${key}:`,
+      choices: networks,
+    });
+    const network = await loadNetworkConfig(networkName);
+    return network.networkId;
   }
 
-  return await input({
+  const result = await input({
     message: `Template value ${key}:`,
     validate: (value) => {
       if (value === '') return `${key} cannot be empty`;
+      if (key.startsWith('decimal:') && !/^\d+\.\d+$/.test(value)) {
+        return 'Decimal value must be in the format "123.456"';
+      }
       return true;
     },
   });
+
+  return result;
 };
 
 export const templateVariables: IPrompt<Record<string, string>> = async (
@@ -298,7 +447,10 @@ export const templateVariables: IPrompt<Record<string, string>> = async (
     if (match !== undefined) variableValues[variable] = match.split('=')[1];
     else {
       // Prompt for variable value
-      variableValues[variable] = await promptVariableValue(variable);
+      variableValues[variable] = await promptVariableValue(
+        variable,
+        variableValues,
+      );
     }
   }
 
@@ -312,9 +464,53 @@ export const outFilePrompt: IPrompt<string | null> = async (args) => {
   return result ?? null;
 };
 
-export const templateDataPrompt: IPrompt<string | null> = async (args) => {
+export const templateDataPrompt: IPrompt<string | null> = async () => {
   const result = await input({
-    message: 'File path of data to use for template (json or yaml):',
+    message: 'File path of data to use for template .json or .yaml (optional):',
   });
   return result ?? null;
+};
+
+export async function selectSignMethodPrompt(): Promise<
+  'localWallet' | 'aliasFile' | 'keyPair'
+> {
+  return await select({
+    message: 'Select an action',
+    choices: [
+      {
+        value: 'localWallet',
+        name: 'Sign with local wallet',
+      },
+      {
+        value: 'aliasFile',
+        name: 'Sign with aliased file',
+      },
+      {
+        value: 'keyPair',
+        name: 'Sign with key pair',
+      },
+    ],
+  });
+}
+
+export const txTransactionNetworks: IPrompt<string[]> = async (
+  args: Record<string, unknown>,
+) => {
+  const commands: (IUnsignedCommand | ICommand)[] = args.commands as (
+    | IUnsignedCommand
+    | ICommand
+  )[];
+
+  const networkPerTransaction: string[] = [];
+  for (const [index] of commands.entries()) {
+    const network = await networkSelectPrompt(
+      {},
+      { networkText: `Select network for transaction ${index + 1}:` },
+      false,
+    );
+
+    networkPerTransaction.push(network);
+  }
+
+  return networkPerTransaction;
 };

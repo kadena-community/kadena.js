@@ -1,19 +1,28 @@
 import type { EVENT_NAMES } from '@/utils/analytics';
 import { analyticsEvent } from '@/utils/analytics';
-import { SystemIcon } from '@kadena/react-ui';
+import {
+  MonoAddLink,
+  MonoCheck,
+  MonoIosShare,
+  MonoLogoLinkedin,
+  MonoLogoX,
+  MonoThumbUpOffAlt,
+} from '@kadena/react-icons';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useState } from 'react';
+import { IconButton } from '../IconButton/IconButton';
 
 interface IProps {
-  token: IProofOfUsTokenMeta;
+  data: IProofOfUsTokenMeta;
+  tokenId?: string;
 }
 
-export const SocialShare: FC<IProps> = ({ token }) => {
-  const label = token.name;
-  const text = `${token.name} was a great event`;
-  const title = `A new  NFT: `;
-  const twitterTitle = `A new  NFT:`;
-  const url = `${process.env.NEXT_PUBLIC_URL}/share/${token.properties.eventId}`;
+export const SocialShare: FC<IProps> = ({ data, tokenId }) => {
+  const label = data.name;
+  const text = `${data.name} | Proof Of Us #devworld2024`;
+  const title = `${data?.name} | Proof Of Us (Powered by Kadena)`;
+  const twitterTitle = `${data?.name} @kadena_io on @devworld_conf #devworldkadena`;
+  const url = `${process.env.NEXT_PUBLIC_URL}/share/${tokenId}`;
 
   const shareDetails = { url, title, text, label };
   const [isShowed, setIsShowed] = useState(false);
@@ -91,13 +100,17 @@ export const SocialShare: FC<IProps> = ({ token }) => {
 
   return (
     <div>
-      <button onClick={handleClick}>sociallink</button>
+      <IconButton aria-label="share to the socials" onClick={handleClick}>
+        <MonoIosShare />
+      </IconButton>
 
       {isShowed ? (
         <>
           <ul>
             <li>
-              <button onClick={onFacebookShare}>facebookicon</button>
+              <IconButton onClick={onFacebookShare}>
+                <MonoThumbUpOffAlt />
+              </IconButton>
             </li>
             <li>
               <a
@@ -106,7 +119,7 @@ export const SocialShare: FC<IProps> = ({ token }) => {
                 rel="noopener noreferrer"
                 href={`https://twitter.com/intent/tweet?url=${url}&text=${twitterTitle}`}
               >
-                <SystemIcon.Twitter />
+                <MonoLogoX />
               </a>
             </li>
             <li>
@@ -116,19 +129,19 @@ export const SocialShare: FC<IProps> = ({ token }) => {
                 rel="noopener noreferrer"
                 href={`https://linkedin.com/share/?url=${url}&text=${title}`}
               >
-                <SystemIcon.Linkedin />
+                <MonoLogoLinkedin />
               </a>
             </li>
             <li>
-              <button onClick={onCopyToClipboard}>
-                <SystemIcon.Link />
-              </button>
+              <IconButton onClick={onCopyToClipboard}>
+                <MonoAddLink />
+              </IconButton>
             </li>
           </ul>
           {isCopied ? (
             <div>
               <br />
-              <SystemIcon.Check /> Copied!
+              <MonoCheck /> Copied!
             </div>
           ) : null}
         </>

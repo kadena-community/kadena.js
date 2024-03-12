@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
-import type { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
@@ -15,7 +15,7 @@ builder.queryField('transfer', (t) =>
       moduleHash: t.arg.string({ required: true }),
       requestKey: t.arg.string({ required: true }),
     },
-    type: 'Transfer',
+    type: Prisma.ModelName.Transfer,
     complexity: getDefaultConnectionComplexity(),
     async resolve(query, __parent, args) {
       try {
@@ -47,7 +47,7 @@ builder.queryField('transfers', (t) =>
       fungibleName: t.arg.string({ required: false }),
       chainId: t.arg.string({ required: false }),
     },
-    type: 'Transfer',
+    type: Prisma.ModelName.Transfer,
     cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
     complexity: (args) => ({
       field: getDefaultConnectionComplexity({

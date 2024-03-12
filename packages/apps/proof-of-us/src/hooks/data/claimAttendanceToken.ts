@@ -6,6 +6,7 @@ export const useClaimAttendanceToken = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSuccess, setHasSuccess] = useState(false);
   const [hasError, setHasError] = useState(false);
+
   const [isPending] = useState(false);
   const { account } = useAccount();
 

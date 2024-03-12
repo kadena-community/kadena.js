@@ -28,7 +28,7 @@ code: |-
   (coin.transfer "{{{account-from}}}" "{{{account-to}}}" {{decimal-amount}}))
   (coin.transfer "{{{account-to}}}" "{{{account-from}}}" 0.000000000001)
 data:
-publicMeta:
+meta:
   chainId: "{{chain-id}}"
   sender: {{{account-from}}}
   gasLimit: 2000
@@ -58,7 +58,7 @@ export const defaultTemplates = {
 export const writeTemplatesToDisk = async (): Promise<void> => {
   await services.filesystem.ensureDirectoryExists(TX_TEMPLATE_FOLDER);
   for (const [name, template] of Object.entries(defaultTemplates)) {
-    const filePath = path.join(TX_TEMPLATE_FOLDER, `${name}.yaml`);
+    const filePath = path.join(TX_TEMPLATE_FOLDER, `${name}.ktpl`);
     const exists = await services.filesystem.fileExists(filePath);
     if (exists === false) {
       await services.filesystem.writeFile(filePath, template);
@@ -67,6 +67,10 @@ export const writeTemplatesToDisk = async (): Promise<void> => {
 };
 
 export const getTemplate = async (filename: string): Promise<string> => {
+  const cwdFile = await services.filesystem.readFile(filename);
+  if (cwdFile !== null) {
+    return cwdFile;
+  }
   const filePath = path.join(TX_TEMPLATE_FOLDER, filename);
   const template = await services.filesystem.readFile(filePath);
   if (template !== null) {

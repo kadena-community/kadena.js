@@ -3,10 +3,9 @@ import '@kadena/react-ui/global';
 
 // eslint-disable-next-line import/no-unresolved
 import { Analytics } from '@/components/Analytics/Analytics';
+import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Providers } from '@/components/Providers/Providers';
 import { Toasts } from '@/components/Toasts/Toasts';
-
-import { Header } from '@/components/Header/Header';
 import { mainWrapperClass } from '@/styles/global.css';
 import { AnimatePresence } from 'framer-motion';
 import type { AppProps } from 'next/app';
@@ -63,7 +62,7 @@ export const MyApp = ({
           <meta
             key="twitter:image"
             name="twitter:image"
-            content={`${process.env.NEXT_PUBLIC_URL}/assets/test.jpg`}
+            content={`${process.env.NEXT_PUBLIC_URL}/assets/proof-of-us-logo.png`}
           />
           {/* <!-- Open Graph / Facebook --> */}
           <meta key="og:type" property="og:type" content="website" />
@@ -85,7 +84,7 @@ export const MyApp = ({
           <meta
             key="og:image"
             property="og:image"
-            content={`${process.env.NEXT_PUBLIC_URL}/assets/test.jpg`}
+            content={`${process.env.NEXT_PUBLIC_URL}/assets/proof-of-us-logo.png`}
           />
 
           <link rel="icon" href="/assets/favicons/icon@32.png" sizes="32x32" />
@@ -104,8 +103,8 @@ export const MyApp = ({
           {/* Apple touch icon */}
           <link rel="apple-touch-icon" href="/assets/favicons/icon@192.png" />
         </Head>
-        <Header />
         <main className={mainWrapperClass}>
+          <CookieConsent />
           <AnimatePresence mode="popLayout" initial={false}>
             <Component {...pageProps} key={router.asPath} />
           </AnimatePresence>

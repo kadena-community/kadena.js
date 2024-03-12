@@ -13,14 +13,13 @@ import {
 
 import type { Block, QueryTransactionsConnection } from '@/__generated__/sdk';
 import {
-  useGetBlockNodesQuery,
   useGetBlocksSubscription,
   useGetTransactionsQuery,
 } from '@/__generated__/sdk';
 import { CompactTransactionsTable } from '@/components/compact-transactions-table/compact-transactions-table';
 import { GraphQLQueryDialog } from '@/components/graphql-query-dialog/graphql-query-dialog';
 import LoaderAndError from '@/components/loader-and-error/loader-and-error';
-import { getBlockNodes, getTransactions } from '@/graphql/queries.graph';
+import { getTransactions } from '@/graphql/queries.graph';
 import { getBlocksSubscription } from '@/graphql/subscriptions.graph';
 import routes from '@constants/routes';
 import { atoms } from '@kadena/react-ui/styles';
@@ -29,37 +28,26 @@ import React, { useEffect, useState } from 'react';
 const Home: React.FC = () => {
   const [subscriptionPaused, setSubscriptionPaused] = useState(false);
 
-  const { data: newBlocksIds, error: newBlockIdsError } =
-    useGetBlocksSubscription({
-      skip: subscriptionPaused,
-    });
+  const { data: newBlocks, error: newBlocksError } = useGetBlocksSubscription({
+    skip: subscriptionPaused,
+  });
 
-  const nodesQueryVariables = {
-    ids: newBlocksIds?.newBlocks as string[],
-  };
-
-  const { data: nodesQueryData, error: nodesQueryError } =
-    useGetBlockNodesQuery({
-      variables: nodesQueryVariables,
-      skip: !newBlocksIds?.newBlocks?.length,
-    });
-
-  const [newBlocks, setNewBlocks] = useState<Block[]>([]);
+  const [blocks, setBlocks] = useState<Block[]>([]);
 
   useEffect(() => {
-    if (nodesQueryData?.nodes?.length) {
+    if (newBlocks?.newBlocks?.length) {
       const updatedBlocks = [
-        ...(nodesQueryData?.nodes as Block[]),
-        ...(newBlocks || []),
+        ...(newBlocks?.newBlocks as Block[]),
+        ...(blocks || []),
       ];
 
       if (updatedBlocks.length > 10) {
         updatedBlocks.length = 10;
       }
 
-      setNewBlocks(updatedBlocks);
+      setBlocks(updatedBlocks);
     }
-  }, [nodesQueryData?.nodes]);
+  }, [newBlocks?.newBlocks]);
 
   const getTransactionsVariables = { first: 10 };
   const {
@@ -85,30 +73,28 @@ const Home: React.FC = () => {
         <GraphQLQueryDialog
           queries={[
             { query: getBlocksSubscription },
-            { query: getBlockNodes, variables: nodesQueryVariables },
             { query: getTransactions, variables: getTransactionsVariables },
           ]}
         />
       </Stack>
 
       <LoaderAndError
-        error={newBlockIdsError || nodesQueryError || txError}
+        error={newBlocksError || txError}
         loading={txLoading}
         loaderText="Loading..."
       />
 
-      {newBlocks && (
+      {blocks && (
         <Table className={atoms({ wordBreak: 'break-all' })} isCompact>
           <TableHeader>
             <Column>Hash</Column>
             <Column>Creation Time</Column>
             <Column>Height</Column>
             <Column>Chain</Column>
-            <Column>Confirmation Depth</Column>
             <Column>Transactions</Column>
           </TableHeader>
           <TableBody>
-            {newBlocks.map((block, index) => {
+            {blocks.map((block, index) => {
               return (
                 <Row key={index}>
                   <Cell>
@@ -122,7 +108,6 @@ const Home: React.FC = () => {
                   <Cell>{new Date(block.creationTime).toLocaleString()}</Cell>
                   <Cell>{block.height}</Cell>
                   <Cell>{block.chainId}</Cell>
-                  <Cell>{block.confirmationDepth}</Cell>
                   <Cell>{block.transactions.totalCount}</Cell>
                 </Row>
               );

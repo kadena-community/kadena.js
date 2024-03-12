@@ -1,37 +1,40 @@
-import chalk from 'chalk';
 import { spawnSync } from 'child_process';
 import type { Command } from 'commander';
-import debug from 'debug';
 import { join } from 'path';
 
 import { services } from '../../services/index.js';
+import { CommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
+import { dappOptions } from '../dappOptions.js';
 
 export const createDappCommand: (program: Command, version: string) => void =
   createCommand(
-    'create',
-    'Create a new dapp project',
-    [globalOptions.dappTemplate()],
-    async (config, args) => {
-      debug('dapp-create-command')({ config });
-      if (args[0] === undefined) {
-        console.error(
-          chalk.red(
+    'add',
+    'Add a new dapp project',
+    [dappOptions.dappTemplate()],
+    async (option, { values }) => {
+      const config = await option.dappTemplate();
+      log.debug('dapp-create-command', config);
+
+      if (values[0] === undefined) {
+        throw new CommandError({
+          errors: [
             'Project name is required, e.g. `kadena dapp create my-dapp`',
-          ),
-        );
-        process.exit(1);
+          ],
+          exitCode: 1,
+        });
       }
-      const projectDir = join(process.cwd(), args[0]);
-      const { dappTemplate } = config;
+      const projectDir = join(process.cwd(), values[0]);
 
       const folderExists =
         await services.filesystem.directoryExists(projectDir);
 
       if (folderExists) {
-        console.error(chalk.red(`Project directory ${args[0]} already exists`));
-        process.exit(1);
+        throw new CommandError({
+          errors: [`Project directory ${values[0]} already exists`],
+          exitCode: 1,
+        });
       }
 
       const cmd = 'npx';
@@ -39,9 +42,9 @@ export const createDappCommand: (program: Command, version: string) => void =
         '@kadena/create-kadena-app',
         'generate-project',
         '-n',
-        args[0],
+        values[0],
         '-t',
-        dappTemplate,
+        config.dappTemplate,
       ];
       spawnSync(cmd, cmdArgs, { stdio: 'inherit' });
     },

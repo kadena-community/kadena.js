@@ -1,20 +1,29 @@
+import { getContrast } from '@/utils/getContrast';
+import { getIPFSLink } from '@/utils/getIPFSLink';
+import { MonoDownloading } from '@kadena/react-icons';
 import classNames from 'classnames';
 import type { FC } from 'react';
-import { connectThumbClass, thumbWrapClass } from './style.css';
+import { connectThumbClass } from './style.css';
 
 interface IProps {
-  token: IProofOfUsTokenMeta;
+  token: IProofOfUsData;
+  isMinted?: boolean;
 }
-export const ConnectThumb: FC<IProps> = ({ token }) => {
+export const ConnectThumb: FC<IProps> = ({ token, isMinted = true }) => {
+  const invertColor = getContrast(token.backgroundColor ?? '#000');
+
   return (
-    <span className={thumbWrapClass}>
-      <div
-        className={classNames(connectThumbClass)}
-        style={{
-          backgroundColor: token.properties.avatar?.backgroundColor,
-          backgroundImage: `url("${token.image}")`,
-        }}
-      />
-    </span>
+    <div
+      className={classNames(connectThumbClass)}
+      style={{
+        backgroundColor: token.backgroundColor,
+        backgroundImage: isMinted
+          ? `url("${getIPFSLink(token.imageUri)}")`
+          : '',
+        color: invertColor,
+      }}
+    >
+      {!isMinted && <MonoDownloading />}
+    </div>
   );
 };

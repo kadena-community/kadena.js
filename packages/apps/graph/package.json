@@ -1,6 +1,6 @@
 {
   "name": "@kadena/graph",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "GraphQL server, available for running your own GraphQL endpoint. This project uses chainweb-data as the datasource.",
   "repository": {
     "type": "git",
@@ -29,10 +29,10 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "pactjs:generate:contract:coin": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact;",
+    "pactjs:generate:contract:coin": "pactjs contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact;",
     "pactjs:generate:contract:faucet": "pactjs contract-generate --contract user.coin-faucet --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact;",
-    "pactjs:generate:contract:marmalade": "pactjs contract-generate --contract marmalade.ledger --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact;",
-    "pactjs:generate:contract:marmalade-v2": "pactjs contract-generate --contract marmalade-v2.ledger --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact;",
+    "pactjs:generate:contract:marmalade": "pactjs contract-generate --contract marmalade.ledger --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact;",
+    "pactjs:generate:contract:marmalade-v2": "pactjs contract-generate --contract marmalade-v2.ledger --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact;",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
     "prisma:studio": "prisma studio",
@@ -67,12 +67,15 @@
     "eslint": "^8.45.0",
     "graphql": "~16.8.1",
     "graphql-scalars": "~1.22.4",
+    "graphql-ws": "^5.15.0",
     "graphql-yoga": "~5.0.2",
     "js-yaml": "~4.1.0",
     "json-bigint-patch": "~0.0.8",
+    "listr2": "~8.0.2",
     "module-alias": "^2.2.3",
     "prisma": "^5.7.1",
-    "seedrandom": "~3.0.5"
+    "seedrandom": "~3.0.5",
+    "ws": "^8.16.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -86,6 +89,7 @@
     "@types/node": "^18.17.14",
     "@types/pg": "~8.10.9",
     "@types/seedrandom": "~3.0.8",
+    "@types/ws": "^8.5.10",
     "prettier": "~3.0.3",
     "ts-node": "~10.8.2",
     "typescript": "5.2.2"

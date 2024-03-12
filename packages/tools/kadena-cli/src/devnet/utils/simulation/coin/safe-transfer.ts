@@ -4,6 +4,7 @@ import { submitClient } from '@kadena/client-utils/core';
 import { PactNumber } from '@kadena/pactjs';
 import type { ChainId } from '@kadena/types';
 import type { IAccount } from '../../../../constants/devnets.js';
+import { log } from '../../../../utils/logger.js';
 import { stringifyProperty } from '../helper.js';
 
 export async function safeTransfer({
@@ -24,7 +25,7 @@ export async function safeTransfer({
     .plus(extraAmount.decimal)
     .toPactDecimal();
 
-  console.log(
+  log.info(
     `Safe Transfer from ${sender.account} to ${
       receiver.account
     }\nPublic Key: ${stringifyProperty(receiver.keys, 'publicKey')}\nAmount: ${

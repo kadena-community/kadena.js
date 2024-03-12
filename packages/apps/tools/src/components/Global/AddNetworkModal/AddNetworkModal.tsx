@@ -104,7 +104,7 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
                       {...register('networkId')}
                       onValueChange={setNetworkId}
                       value={networkId}
-                      placeholder="fast-development"
+                      placeholder="development"
                       isInvalid={!!errors?.networkId}
                       errorMessage={errors?.networkId?.message ?? ''}
                     />

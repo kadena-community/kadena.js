@@ -131,7 +131,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                 <BrowseSection marker="none">
                   <Link
                     className={docsCardLink}
-                    href="/kadena/whitepapers/pact-smart-contract-language"
+                    href="https://www.kadena.io/whitepapers"
                   >
                     Read the whitepaper
                   </Link>

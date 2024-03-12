@@ -3,10 +3,16 @@ import { INetwork, networkRepository } from './network.repository';
 
 export function useNetwork() {
   const [networks, setNetworks] = useState<INetwork[]>([]);
+  const [activeNetwork, setActiveNetwork] = useState<INetwork | undefined>(
+    undefined,
+  );
 
   const retrieveNetworks = useCallback(async () => {
     const networks = (await networkRepository.getNetworkList()) ?? [];
     setNetworks(networks);
+    setActiveNetwork(
+      networks.filter((network) => network.networkId === 'testnet04')[0],
+    );
   }, []);
 
   const addNetwork = useCallback(
@@ -39,9 +45,11 @@ export function useNetwork() {
 
   return {
     networks,
+    activeNetwork,
     addNetwork,
     updateNetwork,
     deleteNetwork,
     retrieveNetworks,
+    setActiveNetwork,
   };
 }

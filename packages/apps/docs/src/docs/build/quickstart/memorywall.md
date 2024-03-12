@@ -57,10 +57,9 @@ Setup Chainweaver, Kadena’s official wallet and developer workbench.
 1. Go to [kadena.io/chainweaver](https://kadena.io/chainweaver-tos/)
 2. Agree to the terms of service and click "Create new wallet"
 3. Follow the 3-step process for creating a new wallet:
-    - Set password
-    - Record recovery phrase
-    - Verify recovery phrase
-
+   - Set password
+   - Record recovery phrase
+   - Verify recovery phrase
 
 To download Chainweaver and find detailed instructions on Chainweaver usage go
 here [Chainweaver User Guide](/kadena/wallets/chainweaver).
@@ -113,11 +112,11 @@ Play the “Pacty Parrots” game to see how dApps and wallets interact.
 4. Select “Start new round” to begin the game
 5. When Chainweaver pops up you will be prompted with a signing request which
    has 3 parts:
-    - Configuration: View transaction info and adjust settings if desired
-    - Sign: Select your public key in each of the 3 “Grant Capabilities” fields
-    - Preview: You should see a Raw Response of “Write succeeded!” and if so select
-      “Submit”
 
+   - Configuration: View transaction info and adjust settings if desired
+   - Sign: Select your public key in each of the 3 “Grant Capabilities” fields
+   - Preview: You should see a Raw Response of “Write succeeded!” and if so
+     select “Submit”
 
 6. Watch the parrots dance and wait for your result
 7. Choose to “Spin again” or “Cash out” which will prompt another transaction to
@@ -177,4 +176,4 @@ faucet to a DeFi lending platform.
 Already have a dApp idea? Apply to our Developer Program to get technical and
 marketing support from Kadena.
 
-- [Go to Developer Program](/kadena/support/developer-program)
+- [Go to Developer Program](/kadena/resources#developer-programh1574074382)

@@ -6,5 +6,6 @@ module.exports = {
   parserOptions: { tsconfigRootDir: __dirname },
   rules: {
     '@rushstack/no-new-null': 'off',
+    'no-console': 'warn',
   },
 };

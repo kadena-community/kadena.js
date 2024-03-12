@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client-examples",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "private": true,
   "description": "Test project to verify pactjs-cli and pactjs-generator",
   "repository": {
@@ -18,7 +18,7 @@
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
     "format:src": "prettier . --cache --write",
-    "gen-marmalade-v2": "pactjs contract-generate --contract marmalade-v2.ledger --chain 8 --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/8/pact;",
+    "gen-marmalade-v2": "pactjs contract-generate --contract marmalade-v2.ledger --chain 8 --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact;",
     "lint": "pnpm run /^lint:.*/",
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",

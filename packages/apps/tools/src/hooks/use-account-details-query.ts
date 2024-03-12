@@ -18,7 +18,7 @@ const schema = z.object({
   }),
 });
 
-type AccountDetails = z.infer<typeof schema>;
+export type AccountDetails = z.infer<typeof schema>;
 
 const fetchDetails = async ({
   account,
@@ -37,6 +37,7 @@ const useAccountDetailsQuery = ({ account, networkId, chainId }: IParams) => {
     queryKey: ['account-details', account, networkId, chainId],
     queryFn: () => fetchDetails({ account, networkId, chainId }),
     enabled: !!account,
+    retry: false,
   });
 };
 

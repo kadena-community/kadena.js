@@ -1,13 +1,16 @@
 import clear from 'clear';
-import { existsSync, mkdirSync, readdirSync } from 'fs';
 import path from 'path';
 import sanitize from 'sanitize-filename';
 import type { ZodError } from 'zod';
 import { MAX_CHARACTERS_LENGTH } from '../constants/config.js';
-import { defaultDevnetsPath } from '../constants/devnets.js';
+import { defaultDevnetsPath, devnetDefaults } from '../constants/devnets.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
+import { writeDevnet } from '../devnet/utils/devnetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
+import { services } from '../services/index.js';
+import { CommandError, printCommandError } from './command.util.js';
+import { log } from './logger.js';
 
 /**
  * Assigns a value to an object's property if the value is neither undefined nor an empty string.
@@ -77,16 +80,20 @@ export interface IQuestion<T> {
 }
 
 export function handlePromptError(error: unknown): never {
-  if (error instanceof Error) {
+  if (error instanceof CommandError) {
+    printCommandError(error);
+  } else if (error instanceof Error) {
     if (error.message.includes('User force closed the prompt')) {
+      // Usually NEVER process.exit, this one is an exception since it us the uses's intention
       process.exit(0);
     } else {
-      console.log(error.message);
+      log.debug(error);
+      log.error(error.message);
     }
   } else {
-    console.log('Unexpected error executing option', error);
+    log.error('Unexpected error executing option', error);
   }
-  process.exit(1);
+  throw new CommandError({ errors: [], exitCode: 1 });
 }
 
 /**
@@ -160,18 +167,18 @@ export function capitalizeFirstLetter(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function getExistingNetworks(): ICustomNetworkChoice[] {
-  if (!existsSync(defaultNetworksPath)) {
-    mkdirSync(defaultNetworksPath, { recursive: true });
-  }
+export async function getExistingNetworks(): Promise<ICustomNetworkChoice[]> {
+  await services.filesystem.ensureDirectoryExists(defaultNetworksPath);
 
   try {
-    return readdirSync(defaultNetworksPath).map((filename) => ({
-      value: path.basename(filename.toLowerCase(), '.yaml'),
-      name: path.basename(filename.toLowerCase(), '.yaml'),
-    }));
+    return (await services.filesystem.readDir(defaultNetworksPath)).map(
+      (filename) => ({
+        value: path.basename(filename.toLowerCase(), '.yaml'),
+        name: path.basename(filename.toLowerCase(), '.yaml'),
+      }),
+    );
   } catch (error) {
-    console.error('Error reading networks directory:', error);
+    log.error('Error reading networks directory:', error);
     return [];
   }
 }
@@ -182,23 +189,24 @@ export async function getConfiguration(
   configurationPath: string,
 ): Promise<ICustomChoice[]> {
   try {
-    return readdirSync(configurationPath).map((filename) => ({
-      value: path.basename(filename.toLowerCase(), '.yaml'),
-      name: path.basename(filename.toLowerCase(), '.yaml'),
-    }));
+    return (await services.filesystem.readDir(configurationPath)).map(
+      (filename) => ({
+        value: path.basename(filename.toLowerCase(), '.yaml'),
+        name: path.basename(filename.toLowerCase(), '.yaml'),
+      }),
+    );
   } catch (error) {
-    console.error(`Error reading ${configurationPath} directory:`, error);
+    log.error(`Error reading ${configurationPath} directory:`, error);
     return [];
   }
 }
 
 export async function ensureDevnetsConfiguration(): Promise<void> {
-  if (existsSync(defaultDevnetsPath)) {
+  if (await services.filesystem.directoryExists(defaultDevnetsPath)) {
     return;
   }
-
-  mkdirSync(defaultDevnetsPath, { recursive: true });
-  await import('./../devnet/init.js');
+  await services.filesystem.ensureDirectoryExists(defaultDevnetsPath);
+  await writeDevnet(devnetDefaults.devnet);
 }
 
 export async function getExistingDevnets(): Promise<ICustomDevnetsChoice[]> {
@@ -357,3 +365,55 @@ export const formatZodError = (error: ZodError): string => {
     .filter(notEmpty);
   return formatted.join('\n');
 };
+
+export const safeJsonParse = <T extends unknown>(value: string): T | null => {
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    return null;
+  }
+};
+
+export const passwordPromptTransform =
+  // prettier-ignore
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  (flag: string) =>
+    async (
+      passwordFile: string | { _password: string },
+      args: Record<string, unknown>,
+    ): Promise<string> => {
+      const password =
+        typeof passwordFile === 'string'
+          ? passwordFile === '-'
+            ? (args.stdin as string | null)
+            : await services.filesystem.readFile(passwordFile)
+          : passwordFile._password;
+
+      if (password === null) {
+        throw new CommandError({
+          errors: [`Password file not found: ${passwordFile}`],
+          exitCode: 1,
+        });
+      }
+
+      const trimmedPassword = password.trim();
+
+      if (typeof passwordFile !== 'string') {
+        log.info(`You can use the ${flag} flag to provide a password.`);
+      }
+
+      if (trimmedPassword.length < 8) {
+        throw new CommandError({
+          errors: ['Password should be at least 8 characters long.'],
+          exitCode: 1,
+        });
+      }
+
+      if (trimmedPassword.includes('\n')) {
+        log.warning(
+          'Password contains new line characters. Make sure you are using the correct password.',
+        );
+      }
+
+      return trimmedPassword;
+    };

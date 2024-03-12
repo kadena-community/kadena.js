@@ -1,33 +1,29 @@
-import debug from 'debug';
-import { globalOptions } from '../../utils/globalOptions.js';
-
-import chalk from 'chalk';
-import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
+import { log } from '../../utils/logger.js';
+import { devnetOptions } from '../devnetOptions.js';
 import { guardDocker, stopDevnet } from '../utils/docker.js';
 
-export const stopDevnetCommand: CreateCommandReturnType = createCommand(
+export const stopDevnetCommand = createCommand(
   'stop',
   'Stop devnet',
-  [globalOptions.devnetSelect()],
-  async (config) => {
-    debug('devnet-stop:action')({ config });
+  [devnetOptions.devnetSelect()],
+  async (option) => {
+    const config = await option.name();
+    log.debug('devnet-stop:action', config);
 
     guardDocker();
 
     try {
       stopDevnet(config.name);
 
-      console.log(
-        chalk.green(
+      log.info(
+        log.color.green(
           `\nThe devnet configuration "${config.name}" has been stopped.\n`,
         ),
       );
     } catch (e) {
-      console.log(
-        chalk.red(
-          'Stopping devnet requires Docker. Please install Docker and try again.',
-        ),
+      log.error(
+        'Stopping devnet requires Docker. Please install Docker and try again.',
       );
       return;
     }

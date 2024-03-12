@@ -1,4 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
+import { Prisma } from '@prisma/client';
 import { getFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
@@ -9,6 +10,7 @@ import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
 import type { FungibleChainAccount } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
+import Guard from './guard';
 
 export default builder.node(
   builder.objectRef<FungibleChainAccount>(FungibleChainAccountName),
@@ -46,7 +48,7 @@ export default builder.node(
       accountName: t.exposeString('accountName'),
       fungibleName: t.exposeString('fungibleName'),
       guard: t.field({
-        type: 'Guard',
+        type: Guard,
         complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
         async resolve(parent) {
           try {
@@ -67,7 +69,7 @@ export default builder.node(
       }),
       balance: t.exposeFloat('balance'),
       transactions: t.prismaConnection({
-        type: 'Transaction',
+        type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
         complexity: (args) => ({
@@ -113,7 +115,7 @@ export default builder.node(
         },
       }),
       transfers: t.prismaConnection({
-        type: 'Transfer',
+        type: Prisma.ModelName.Transfer,
         edgesNullable: false,
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
         complexity: (args) => ({

@@ -1,5 +1,11 @@
 # @kadena/react-ui
 
+## 0.8.2
+
+### Patch Changes
+
+- 550e6d9e4: Extended clickable area for the numberField buttons
+
 ## 0.8.1
 
 ### Patch Changes

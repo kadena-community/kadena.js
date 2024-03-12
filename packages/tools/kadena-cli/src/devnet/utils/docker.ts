@@ -1,5 +1,5 @@
-import chalk from 'chalk';
 import { execSync } from 'child_process';
+import { log } from '../../utils/logger.js';
 import type { IDevnetsCreateOptions } from './devnetHelpers.js';
 
 const volumePrefix: string = 'kadena_';
@@ -13,6 +13,7 @@ export const guardDockerInstalled = (): void | never => {
   try {
     execSync('docker -v', { stdio: 'pipe' });
   } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (error.stderr.includes('command not found')) {
       throw new Error('Please install Docker.');
     }
@@ -23,6 +24,7 @@ export const guardDockerRunning = (): void | never => {
   try {
     execSync('docker ps', { stdio: 'pipe' });
   } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (error.stderr.includes('Cannot connect to the Docker daemon')) {
       throw new Error('Please make sure the Docker daemon is running.');
     }
@@ -39,8 +41,8 @@ export const dockerVolumeName = (containerName: string): string =>
 
 const maybeCreateVolume = (useVolume: boolean, containerName: string): void => {
   if (!useVolume) {
-    console.log(
-      chalk.green('Not creating persistent volume as per configuration.'),
+    log.info(
+      log.color.green('Not creating persistent volume as per configuration.'),
     );
     return;
   }
@@ -53,15 +55,15 @@ const maybeCreateVolume = (useVolume: boolean, containerName: string): void => {
     .split('\n');
 
   if (existingVolumes.includes(volumeName)) {
-    console.log(chalk.green(`Using existing volume: ${volumeName}`));
+    log.info(log.color.green(`Using existing volume: ${volumeName}`));
     return;
   }
 
-  console.log(chalk.green(`Creating volume: ${volumeName}`));
+  log.info(log.color.green(`Creating volume: ${volumeName}`));
 
   execSync(`docker volume create ${volumeName}`);
 
-  console.log(chalk.green(`Successfully created volume: ${volumeName}`));
+  log.info(log.color.green(`Successfully created volume: ${volumeName}`));
 };
 
 const formatDockerRunOptions = (
@@ -112,20 +114,20 @@ export function runDevnet(configuration: IDevnetsCreateOptions): void {
 
   if (containerExists(configuration.name)) {
     execSync(`docker start ${configuration.name}`);
-    console.log(
-      chalk.green(`Started existing container: ${configuration.name}`),
+    log.info(
+      log.color.green(`Started existing container: ${configuration.name}`),
     );
     return;
   }
   execSync(`docker run ${dockerRunOptions}`);
-  console.log(
-    chalk.green(`New devnet container "${configuration.name}" is running`),
+  log.info(
+    log.color.green(`New devnet container "${configuration.name}" is running`),
   );
 }
 
 export function stopDevnet(containerName: string): void {
   execSync(`docker stop ${containerName}`);
-  console.log(chalk.green(`Stopped devnet container: ${containerName}`));
+  log.info(log.color.green(`Stopped devnet container: ${containerName}`));
 }
 
 export function removeDevnet(containerName: string): void {
@@ -139,5 +141,5 @@ export function removeVolume(containerName: string): void {
 export function updateDevnet(version?: string): void {
   const image = `${devnetImageName}:${version}`;
   execSync(`docker pull ${image}`);
-  console.log(chalk.green(`Updated ${image}`));
+  log.info(log.color.green(`Updated ${image}`));
 }

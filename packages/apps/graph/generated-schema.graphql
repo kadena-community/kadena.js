@@ -6,27 +6,34 @@ scalar BigInt
 """A unit of information that stores a set of verified transactions."""
 type Block implements Node {
   chainId: BigInt!
-
-  """The number of blocks that proceed this block."""
-  confirmationDepth: Int!
   creationTime: DateTime!
 
   """
   The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.
   """
   epoch: DateTime!
+  events(after: String, before: String, first: Int, last: Int): BlockEventsConnection!
   hash: ID!
   height: BigInt!
   id: ID!
   minerAccount: FungibleChainAccount!
   parent: Block
-  parentHash: String!
   payloadHash: String!
 
   """The proof of work hash."""
   powHash: String!
-  predicate: String!
   transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
+}
+
+type BlockEventsConnection {
+  edges: [BlockEventsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type BlockEventsConnectionEdge {
+  cursor: String!
+  node: Event!
 }
 
 type BlockTransactionsConnection {
@@ -38,6 +45,30 @@ type BlockTransactionsConnection {
 type BlockTransactionsConnectionEdge {
   cursor: String!
   node: Transaction!
+}
+
+"""The payload of an cont transaction."""
+type ContinuationPayload {
+  """
+  The environment data made available to the transaction. Formatted as raw JSON.
+  """
+  data: String!
+
+  """
+  A unique id when a pact (defpact) is initiated. See the "Pact execution scope and pact-id" explanation in the docs for more information.
+  """
+  pactId: String
+
+  """The proof provided to continue the cross-chain transaction."""
+  proof: String
+
+  """Whether or not this transaction can be rolled back."""
+  rollback: Boolean
+
+  """
+  The step-number when this is an execution of a `defpact`, aka multi-step transaction.
+  """
+  step: Int
 }
 
 """
@@ -65,6 +96,7 @@ type Event implements Node {
   """
   orderIndex: BigInt!
   parameterText: String!
+  parameters: String
 
   """
   The full eventname, containing module and eventname, e.g. coin.TRANSFER
@@ -72,6 +104,19 @@ type Event implements Node {
   qualifiedName: String!
   requestKey: String!
   transaction: Transaction
+}
+
+"""The payload of an exec transaction."""
+type ExecutionPayload {
+  """
+  The Pact expressions executed in this transaction when it is an `exec` transaction.
+  """
+  code: String
+
+  """
+  The environment data made available to the transaction. Formatted as raw JSON.
+  """
+  data: String!
 }
 
 """A fungible-specific account."""
@@ -151,9 +196,6 @@ type GasLimitEstimation {
 
 """General information about the graph and chainweb-data."""
 type GraphConfiguration {
-  """The maximum number of confirmations calculated on this endpoint."""
-  maximumConfirmationDepth: Int!
-
   """The lowest block-height that is indexed in this endpoint."""
   minimumBlockHeight: BigInt
 }
@@ -241,6 +283,9 @@ type Query {
   """Retrieve a block by hash."""
   block(hash: String!): Block
 
+  """Retrieve blocks by chain and minimal depth."""
+  blocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
+
   """Retrieve blocks by chain and minimal height."""
   blocksFromHeight(chainIds: [String!], startHeight: Int!): [Block!]!
 
@@ -251,17 +296,23 @@ type Query {
   event(blockHash: String!, orderIndex: Int!, requestKey: String!): Event
 
   """Retrieve events."""
-  events(after: String, before: String, first: Int, last: Int, qualifiedEventName: String!): QueryEventsConnection!
+  events(after: String, before: String, chainId: String, first: Int, last: Int, parametersFilter: String, qualifiedEventName: String!): QueryEventsConnection!
 
   """
   Retrieve an fungible specific account by its name and fungible, such as coin.
   """
   fungibleAccount(accountName: String!, fungibleName: String!): FungibleAccount
 
+  """Retrieve an account by public key."""
+  fungibleAccountByPublicKey(publicKey: String!): FungibleAccount
+
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
   fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
+
+  """Retrieve a chain account by public key."""
+  fungibleChainAccountByPublicKey(chainId: String!, publicKey: String!): FungibleChainAccount
 
   """Estimate the gas limit for a transaction."""
   gasLimitEstimate(input: String!): GasLimitEstimation!
@@ -372,15 +423,18 @@ type Signer implements Node {
 
 type Subscription {
   """Listen for events by qualifiedName (e.g. `coin.TRANSFER`)."""
-  events(qualifiedEventName: String!): [ID!]
+  events(chainId: String, parametersFilter: String, qualifiedEventName: String!): [Event!]
 
   """Subscribe to new blocks."""
-  newBlocks(chainIds: [Int!]): [ID!]
+  newBlocks(chainIds: [String!]): [Block!]
+
+  """Subscribe to new blocks from a specific depth."""
+  newBlocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
 
   """
   Listen for a transaction by request key. Returns the ID when it is in a block.
   """
-  transaction(requestKey: String!): ID
+  transaction(requestKey: String!): Transaction
 }
 
 """The token identifier and its balance."""
@@ -401,69 +455,61 @@ type TokenInfo {
 
 """A confirmed transaction."""
 type Transaction implements Node {
-  """The JSON stringified error message if the transaction failed."""
-  badResult: String
   block: Block
-  chainId: BigInt!
+  cmd: TransactionCommand!
+  events: [Event!]
+  hash: String!
+  id: ID!
+  result: TransactionResult!
+  transfers: [Transfer!]
+}
 
-  """
-  The Pact expressions executed in this transaction when it is an `exec` transaction. For a continuation, this field is `cont`.
-  """
-  code: String!
+"""A transaction command."""
+type TransactionCommand {
+  meta: TransactionMeta!
+
+  """The network id of the environment."""
+  networkId: String!
+  nonce: String!
+  payload: TransactionPayload!
+  signers: [Signer!]
+}
+
+"""The metadata of a transaction."""
+type TransactionMeta {
+  chainId: BigInt!
+  creationTime: DateTime!
+  gasLimit: BigInt!
+  gasPrice: Float!
+  sender: String!
+  ttl: BigInt!
+}
+
+"""The payload of a transaction."""
+union TransactionPayload = ContinuationPayload | ExecutionPayload
+
+"""The result of a transaction."""
+type TransactionResult {
+  """The transaction result when it was successful. Formatted as raw JSON."""
+  badResult: String
 
   """
   The JSON stringified continuation in the case that it is a continuation.
   """
   continuation: String
-  creationTime: DateTime!
-
-  """
-  The environment data made available to the transaction. Formatted as raw JSON.
-  """
-  data: String
   eventCount: BigInt
-  events: [Event!]
   gas: BigInt!
-  gasLimit: BigInt!
-  gasPrice: Float!
 
   """The transaction result when it was successful. Formatted as raw JSON."""
   goodResult: String
 
   """The height of the block this transaction belongs to."""
   height: BigInt!
-  id: ID!
 
   """Identifier to retrieve the logs for the execution of the transaction."""
   logs: String
   metadata: String
-  nonce: String
-
-  """
-  In the case of a cross-chain transaction; A unique id when a pact (defpact) is initiated. See the "Pact execution scope and pact-id" explanation in the docs for more information.
-  """
-  pactId: String
-
-  """
-  In the case of a cross-chain transaction; the proof provided to continue the cross-chain transaction.
-  """
-  proof: String
-  requestKey: String!
-
-  """
-  In the case of a cross-chain transaction; Whether or not this transaction can be rolled back.
-  """
-  rollback: Boolean
-  senderAccount: String
-  signers: [Signer!]
-
-  """
-  The step-number when this is an execution of a `defpact`, aka multi-step transaction.
-  """
-  step: BigInt
   transactionId: BigInt
-  transfers: [Transfer!]
-  ttl: BigInt!
 }
 
 """A transfer of funds from a fungible between two accounts."""

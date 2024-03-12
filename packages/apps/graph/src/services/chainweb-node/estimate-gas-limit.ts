@@ -3,6 +3,7 @@ import { createClient, createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 import { hash as hashFunction } from '@kadena/cryptography-utils';
 import { dotenv } from '@utils/dotenv';
+import { networkConfig } from '../..';
 import type { GasLimitEstimation } from '../../graph/types/graphql-types';
 
 export class GasLimitEstimationError extends Error {
@@ -153,6 +154,8 @@ export const estimateGasLimit = async (
   const paredInput = jsonParseInput(rawInput);
   const input = determineInputType(paredInput);
 
+  const networkId = input.networkId || (await networkConfig).networkId;
+
   const returnValue: GasLimitEstimation = {
     amount: 0,
     inputType: input.type,
@@ -185,7 +188,7 @@ export const estimateGasLimit = async (
           { payload: input.payload },
           { meta: input.meta },
           { signers: input.signers },
-          { networkId: input.networkId || dotenv.NETWORK_ID },
+          { networkId },
         )(),
       );
       break;
@@ -199,7 +202,7 @@ export const estimateGasLimit = async (
           { payload: input.payload },
           { meta: input.meta },
           { signers: input.signers },
-          { networkId: input.networkId || dotenv.NETWORK_ID },
+          { networkId },
         )(),
       );
       break;
@@ -240,9 +243,7 @@ export const estimateGasLimit = async (
   try {
     const result = await createClient(
       ({ chainId }) =>
-        `${dotenv.NETWORK_HOST}/chainweb/0.0/${
-          input.networkId || dotenv.NETWORK_ID
-        }/chain/${chainId}/pact`,
+        `${dotenv.NETWORK_HOST}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
     ).local(transaction, configuration);
 
     returnValue.amount = result.gas;

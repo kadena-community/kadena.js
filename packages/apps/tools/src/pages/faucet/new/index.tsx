@@ -80,7 +80,7 @@ interface IFundExistingAccountResponseBody {
   };
 }
 
-const AMOUNT_OF_COINS_FUNDED: number = 100;
+const AMOUNT_OF_COINS_FUNDED: number = 20;
 const isCustomError = (error: unknown): error is ICommandResult => {
   return error !== null && typeof error === 'object' && 'result' in error;
 };
@@ -132,6 +132,7 @@ const NewAccountFaucetPage: FC = () => {
     setError,
     getValues,
     resetField,
+    reset,
     control,
     setValue,
   } = useForm<FormData>({
@@ -212,6 +213,7 @@ const NewAccountFaucetPage: FC = () => {
       }
 
       setRequestStatus({ status: 'processing' });
+      reset(undefined, { keepDirtyValues: true });
       setRequestKey('');
       try {
         const submitResponse = (await fundCreateNewAccount(
@@ -270,7 +272,7 @@ const NewAccountFaucetPage: FC = () => {
         setRequestStatus({ status: 'erroneous', message });
       }
     },
-    [chainID, networksData, pred, pubKeys, selectedNetwork, setError, t],
+    [chainID, networksData, pred, pubKeys, selectedNetwork, reset, setError, t],
   );
 
   const mainnetSelected: boolean = selectedNetwork === 'mainnet01';

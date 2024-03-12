@@ -14,31 +14,15 @@ import {
 import { services } from '../../services/index.js';
 
 import { notEmpty } from '../../utils/helpers.js';
+import { log } from '../../utils/logger.js';
 import type { IKeyPair } from './storage.js';
 import { getFilesWithExtension } from './storage.js';
-
-export interface IWalletConfig {
-  securityPassword: string;
-  keyWallet: string;
-  legacy?: boolean;
-}
 
 export interface IWallet {
   folder: string;
   legacy: boolean;
   wallet: string;
   keys: string[];
-}
-
-/**
- * Ensures that the wallet directory exists. If the directory does not exist,
- * the process is terminated and exits.
- */
-export async function ensureWalletExists(): Promise<void> {
-  if (!(await services.filesystem.directoryExists(WALLET_DIR))) {
-    console.error(`No Wallet created yet. Please create a wallet first.`);
-    process.exit(1);
-  }
 }
 
 /**
@@ -57,7 +41,8 @@ export async function getWallet(walletFile: string): Promise<IWallet | null> {
     walletNameParts.length === 2 && walletNameParts[1] === 'wallet';
 
   if (!isRegular && !isLegacy) {
-    console.trace(
+    log.debug(new Error('Invalid wallet file given to getWallet'));
+    log.warning(
       `Invalid wallet file given to getWallet: "${walletFile}", expected full file name`,
     );
     return null;
@@ -126,7 +111,7 @@ const readKeyFile = async (path: string): Promise<IPlainKey> => {
       (parsed as { index?: string }).index ??
         (key.match(/-([0-9]+)\.key$/)?.[1] as string),
     ) || 0;
-  const alias = key.replace('.key', '').split('-').slice(0, 1).join('-');
+  const alias = key; // use to be base name, for now use entire filename
   const legacy = key.endsWith(KEY_LEGACY_EXT);
 
   return {
@@ -201,7 +186,9 @@ export const isIWalletKey = (
  * @returns {string[]} An array of all wallet filenames with their extensions.
  */
 export async function getAllWallets(): Promise<string[]> {
-  await ensureWalletExists();
+  if (!(await services.filesystem.directoryExists(WALLET_DIR))) {
+    return [];
+  }
 
   const walletDirs = await services.filesystem.readDir(WALLET_DIR);
 

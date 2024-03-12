@@ -182,14 +182,7 @@ export const TextFieldStory: Story = {
   },
   render: (props) => {
     const [value, setValue] = useState<string>('');
-    return (
-      <TextField
-        type="number"
-        {...props}
-        value={value}
-        onValueChange={setValue}
-      />
-    );
+    return <TextField {...props} value={value} onValueChange={setValue} />;
   },
 };
 

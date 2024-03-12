@@ -1,408 +1,298 @@
 ---
-title: Web Editor
+title: Set up a local development network
 description: Kadena makes blockchain work for everyone.
-menu: Web Editor
-label: Web Editor
-order: 2
+menu: Set up a local network
+label: Set up a local network
+order: 3
 layout: full
 tags: ['pact', 'web editor', 'pact tutorials']
 ---
 
-# Web Editor
+# Set up a local development network
 
-Welcome to this tutorial on the Chainweaver Web Pact Editor!
+The first step in developing smart contracts using Pact is to set up a local development environment.
+If you followed the steps in [Deploy your first contract](/build/quickstart), you should already have a local development network running in a Docker container.
 
-In this tutorial, you’ll learn about the Chainweaver Web Pact Editor, a powerful
-tool for developing smart contracts with Pact.
+Your local development environment should also include:
 
-**Topics covered in this tutorial**
+- An internet connection and a web browser installed on your local computer.
+- An integrated development environment (IDE) or code editor such as [Visual Studio Code](https://code.visualstudio.com/download).
+- Access to an interactive terminal shell as part of the IDE or code editor you use.
 
-- Introduction to the Editor
-- Navigation Bar
-- Code Editor
-- Tool Panel
+## Start the development network
 
-The goal of this tutorial is to get you familiar with each of the editor’s
-powerful features so that you can use it to build smart contracts using pact.
+If you haven't downloaded the Docker image for the development network or have stopped the container, you should pull the latest image and start the network on your local computer.
+The development network includes several commonly-used contracts deployed by default.
+These contracts provide functions you can reuse to perform common tasks like creating accounts and transferring funds.
 
-:::note Key Takeaway
+To start the local development network:
 
-The Chainweaver Web Pact Editor is a robust development environment for Pact. It
-gives you access to many useful features for smart contract development. These
-features allow you to easily build and test contracts before deploying them to
-either your private chain or
+1. Open a terminal shell on your computer.
 
-[Chainweb](/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01)
+2. Start the Docker service if it isn't configured to start automatically.
 
-:::
+3. Start the container without a persistent volume by running the following command:
 
-## Chainweaver Web Pact Editor Tutorial
+   ```shell
+   docker run --interactive --tty --publish 8080:8080 kadena/devnet:latest
+   ```
 
-https://www.youtube.com/watch?v=lA6lGmlAhmw
+   You can stop the network at any time—and reset the blockchain state—by pressing Ctrl-c in the terminal. 
 
-Subscribe to our
-[YouTube channel](https://www.youtube.com/channel/UCB6-MaxD2hlcGLL70ukHotA) to
-access the latest Pact tutorials.
+## Install Pact
 
-## Introduction to the Editor
+You can run Pact in a browser or install it locally on your local computer.
+In most cases, you should install Pact locally as part of your private development environment.
+Depending on your operating system platform and preferred tools, you can download and install Pact prebuilt binaries or build Pact from its source code.
 
-The Chainweaver Web Pact Editor is a web-based REPL that allows you to write
-Pact code, manage keysets, deploy smart contracts, and explore other smart
-contracts. These and many other features make the online editor an ideal place
-to build, test, and deploy your smart contracts.
+### Install from binaries
 
-To get started with the Chainweaver Web Pact Editor, navigate to
+You can download and install [Pact](https://github.com/kadena-io/pact#installing-pact) binaries for Linux or macOS computers from [Pact Releases](https://github.com/kadena-io/pact/releases).
 
-[chainweaver.kadena.network](https://chainweaver.kadena.network/)
+### Use Homebrew
 
-.
+On macOS, you can install Pact using Homebrew byt running the following commands:
 
-![1-pact-kadena](/assets/docs/1-pact-kadena.jpeg)
+```shell
+brew update
+brew install kadena-io/pact/pact
+```
 
-### Basic Layout
+### Build from source
 
-Here you'll see a clean and intuitive layout, giving you access to the tools you
-need without cluttering the developer experience.
+To build Pact binaries directly from source, download the source code from [Pact Releases](https://github.com/kadena-io/pact/releases), then use Homebrew, Cabal, or Nix to build Pact.
+For more information about the dependencies and tools for building from the source code, see [Building from source](https://github.com/kadena-io/pact?tab=readme-ov-file#building-from-source).
 
-![2-overview](/assets/docs/2-overview.jpeg)
+### Install the language server
 
-The interface consists of three main sections; the **code editor**, the
-**navigation bar**, and the **tool panel**.
+You can install the [Pact language server plugin](https://github.com/kadena-io/pact-lsp/releases) on your local computer to support syntax highlighting and other features in the code editor.
 
-|                    |                                                                                                                           |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| **Code Editor**    | An area for writing and editing your smart contracts.                                                                     |
-| **Navigation Bar** | Includes relevant documentation links and allows you to load code into the REPL or deploy smart contract.                 |
-| **Tool Panel**     | Provides essential functionality needed to manage keys, interact with the REPL, view messages, explore modules, and more. |
+## Install Chainweaver
 
-Each of these features helps provide an intuitive developer experience. These
-features make smart contract development both fun and rewarding.
+Chainweaver integrates the management of wallets, accounts, and keys with signing and editing features that you can use as you develop smart contracts using the Pact programming language.
+With Chainweaver, you can build, test, and iterate on your smart contracts before deploying them to your local development network, the Kadena test network, or the Kadena [main network](/blogchain/2019/all-about-chainweb-101-and-faqs-2019-02-01).
 
-## Navigation Bar
+Chainweaver includes a built-in read-eval-print-loop (REPL) interactive interpreter that enables you to write and execute Pact code in the desktop or web-based application.
+You can also use Chainweaver to:
 
-You can locate the navigation bar at the top of the screen. It allows you to
-load your contract into the REPL, or to deploy the contract to a live network.
-It also shows the Pact version number and links to these tutorials, the Pact
-language documentation and the Kadena homepage.
+- Explore smart contract modules and functions.
+- Define and manage authorization rules in keysets.
+- Deploy smart contracts on a network.
+- Update previously-deployed contracts.
 
-![15-nav-bar](/assets/docs/15-nav-bar.jpeg)
+If you don't already have a Chainweaver account, you should create one using either the [Chainweaver desktop application](https://github.com/kadena-io/chainweaver/releases) or the [Chainweaver web application](https://chainweaver.kadena.network/).
+After you download and install the desktop application or open Chainweaver in a browser, you can create a wallet and accounts to interact with Kadena networks.
 
-### Load into REPL
+When you open and unlock Chainweaver, the navigation panel on the left is collapsed to only display icons by default.
+The navigation panel provides access to the tools for managing your accounts, keys, and development environment.
 
-Selecting “Load into REPL” loads text from the editor into the REPL and executes
-the commands. After selecting this button, you’ll also notice that it opens an
-interactive terminal you can use to run Pact commands. You’ll use this feature
-often when exploring the REPL later in this tutorial.
+| Icon | Section | What you can do here |
+| ---- | ------- | -------------------- |
+| ![](/assets/docs/accounts-icon.png) | Accounts | View and manage your accounts, add account names to your watch list, transfer funds between accounts and across chains, and view transaction status. |
+| ![](/assets/docs/keys-icon.png) | Keys | Generate, view, and manage public keys associated with your secret key.
+| ![](/assets/docs/sig-icon.png) | Signature Builder | Construct the signatures needed to sign transactions.
+![](/assets/docs/contracts-icon.png) | Contracts | Access a code editor and development tools for writing, testing, and deploying Pact modules and smart contracts.
+![](/assets/docs/resources-icon.png) | Resources | Explore documentation and Chainweaver resources.
+![](/assets/docs/settings-icon.png) | Settings | Configure your network and account settings.
+![](/assets/docs/logout-icon.png) | Log out | Log out of the current session.
 
-### Deploy
+### Connect to the development network
 
-The deploy button is used to deploy smart contracts onto the blockchain. Select
-Deploy to view the features available to you. Here you’ll have the option to
-choose a server, set a few settings, sign the transaction and more. This
-tutorial doesn't go over the details of each of these options. If you'd like,
-view Hello World with Pact for a full description of smart contract deployment
-with the Web Editor.
+By default, Chainweaver lets you connect to the Kadena test network and the Kadena main network. 
+However, as you start writing Pact modules, you'll want to test and deploy them on your local development network. 
+Before you can do that, you need to configure Chainweaver to connect to the local host and port number running the development network.
 
-![16-deploy](/assets/docs/16-deploy.png)
+To connect to the development network:
 
-You can close this window by either hitting cancel or the X on the top right.
+1.  Click **Settings** in the Chainweaver navigation panel.
 
-### Navigation
+2.  Click **Network**.
 
-The navigation bar also provides some necessary information and links to help
-you get started with Pact.
+3.  In Edit Networks, type a network name, then click **Create**.
 
-**Pact Version 2.6.1**
+4.  Expand the new network, then add the localhost as a node for this network by typing `127.0.0.1:8080`.
 
-At the time of this tutorial, Pact is currently on version 2.6.1. As this
-continues to update its likely that some of the features we explore will
-continue to improve.
+    If the local computer is still running the development network Docker container, you should see the dot next to the node turn green.
 
-#### Available Links
+5.  Click **Ok** to close the network settings.
 
-Links to the Pact tutorials, developer documentation and Kadena homepage can
-also be found on the navigation bar.
+### Navigate smart contracts
 
-|                                  |                                                                                            |
-| -------------------------------- | ------------------------------------------------------------------------------------------ |
-| [Documentation](/pact/reference) | Provides an in-depth look at the Pact programming language.                                |
-| [Tutorials](/pact)               | Learn more about Pact by completing tutorials like this.                                   |
-| [Kadena](https://kadena.io/)     | Explore the Kadena blockchain, which is the enterprise-grade blockchain that Pact runs on. |
+After you connect Chainweaver to the development network, you can use Chainweaver to deploy and manage the smart contracts you develop.
+You can access the Chainweaver development environment by clicking **Contracts** in the navigation panel.
 
-:::info Join the Newsletter
+After you click Contracts, Chainweaver displays common tasks and two working areas:
 
-You can also join the newsletter to stay up to date on the latest Kadena and
-Pact information [here](http://kadena.io/newsletter).
+- The left side displays a sample contract in a code editor that you can use to view and edit contract code.
+- The right side provides controls that enable you to navigate between contracts, view contract details, manage keys, and test operations for contracts you have deployed.
 
-:::
+The common tasks enable you to:
 
-## Code Editor
+- Browse to an open a file from the file system.
+- Load your contract into the Pact interactive REPL where you can run Pact commands.
+- Deploy the selected contract on the active blockchain network.
 
-The code editor provides a familiar editing interface. It comes equipped with
-both **inline error reporting** and **formal verification**.
+You'll use **Load into REPL** and **Deploy** frequently as you start writing Pact modules and deploy modules on the local development network.
 
-![3-code-editor](/assets/docs/3-code-editor.jpeg)
+## Code editor
 
-#### Inline Error Reporting
+Within the Contracts development environment, the code editor enables you to view and modify contract code using a familiar editing interface. 
+It's similar to other code editors with support for copying and pasting text, syntax highlighting, and inline error reporting.
 
-Inline error reporting ensures that you have clear direction on how to fix
-errors that may exist in your code.
+You can hover the cursor over lines that indicate errors to view information about the problem to help you determine how to fix it.
 
-![8-inline-error](/assets/docs/8-inline-error.jpeg)
+![Inline error](/assets/docs/inline-error.png)
 
-For example, if you look at line 17 of your smart contract you’ll see the error
-shown above. This and other errors types state the issue and help you to fix
-problems that may be affecting your smart contract.
+The Chainweaver code editor also supports **formal verification**.
+Formal verification is a process that enables you to automatically test the correctness of your code for potential errors and security vulnerabilities. 
+With this process, you can mathematically prove that your contract has no security vulnerabilities, ensuring you can create secure code quickly and effectively.
 
-:::danger Warning
+For more information about how formal verification helps you develop safer smart contracts, see [Pact Formal Verification: Making Blockchain Smart Contracts Safer.](/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
 
-You can fix this error by creating an admin-keyset. Creating an admin-keyset can
-be done using the tool panel which we’ll discuss more shortly.
+## Contract navigation and developer tools
 
-:::
-
-#### Formal Verification
-
-The online editor also supports formal verification. Formal verification is a
-process for automatically testing the correctness of your code. It
-mathematically proves that your contract has absolutely no security
-vulnerabilities. It also alerts you to any potential errors and vulnerabilities
-helping you create secure code quickly and effectively.
-
-Formal verification is a tremendous innovation for smart contract languages. For
-more information on how this helps you develop safer smart contracts, read our
-Medium post
-
-[Pact Formal Verification: Making Blockchain Smart Contracts Safer.](/blogchain/2018/pact-formal-verification-for-blockchain-smart-contracts-done-right-2018-05-11)
-
-## Tool Panel
-
-The tool panel gives you access to many beneficial features while developing
-smart contracts. It helps you set-up your environment, run commands in the
-interactive REPL, read messages, and explore other modules that exist on the
+The right side of the Contracts development environment provides many useful features and tools for developing smart contracts. 
+For example, there are features to help you set up your environment, run commands in the interactive REPL, read messages, and explore other modules that exist on the
 network.
-
-![4-tool-panel](/assets/docs/4-tool-panel.jpeg)
 
 ### Env
 
-The first option available to you in the tool panel is the environment. Select
-**Env** to view sections for addressing errors and creating and managing
-**data** and **wallets** from the UI.
+Select **Env** to view and fix errors or manage authorization data in keysets.
+If the error and warning detected can be fixed automatically, you'll see the Fix option.
 
-#### Manage Errors
+![Environment errors](/assets/docs/fix-error.png)
 
-Errors can be viewed and fixed using the errors section. As you can see here, it
-currently shows an error that there is no such key in the message
-‘admin-keyset’. This error is the same as what you saw previously in the editor.
+In this example, the error is a missing keyset and you can click **Fix** to automatically create the keyset and add it to the Data section.
 
-![6-errors](/assets/docs/6-errors.jpeg)
+![New admin-keyset](/assets/docs/admin-keyset.png)
 
-To fix this error, select the fix button on the right side of the screen. As
-you’ll see, this creates a keyset for you in the data section below. This along
-with many other errors and warnings can be fixed using this simple tool.
+If you delete the keyset created for you, you can use the Data section to create a keyset by typing a keyset name, then clicking **Create**. 
+By default, keysets require all of the keys associated with an account to sign transactions, so you'll see **keys-all** selected for the new keyset. 
+You'll learn more about keysets, in [Keysets](/pact/beginner/keysets).
 
-Coming up you’ll see how to create this keyset manually. Remove the admin-keyset
-by selecting the x to the right of the recently created keyset.
+You can also create keysets manually using the JSON format by clicking **Raw**, then defining the keyset **name**, **keys**, and **pred** values.
+You can see the JSON format for keysets you have created by clicking **Result**.
 
-#### Create and Manage Keysets
+![Keyset in JSON format](/assets/docs/result.png)
 
-The data section allows you to create and manage keysets. To get started, select
-the input **Enter Keyset Name** > type **admin-keyset** > then click **create**.
-
-![9-admin-keyset](/assets/docs/9-admin-keyset.jpeg)
-
-You should now see admin-keyset appear under your list of available keysets.
-
-:::info Tip
-
-You can delete keys using the **x** over on the right.
-
-:::
-
-You’ll also see a dropdown that allows you to select keys-all, keys-2, and
-keys-any. These options refer to the number of key signatures required to
-validate a transaction. For more information on this and a more in-depth
-explanation of keys in Pact, see the tutorial on Pact Keysets.
-
-#### Result
-
-Each key created has a JSON representation available for programmatic access. In
-the **Result** tab, you can see the keys you have created shown in JSON.
-
-![10-result](/assets/docs/10-result.jpeg)
-
-#### Raw
-
-You can also create keysets using the JSON format rather than the user
-interface. Creating keysets with JSON is done using the **Raw** tab.
-
-![11-raw](/assets/docs/11-raw.jpeg)
-
-To create a new key, specify a keyset **name**, **keys**, and **pred**, similar
-to the format seen in the **Result** tab.
-
-:::info
-
-Pred Stands for “Predicate Function”. A predicate function is a boolean value
-function evaluating to either true or false. In this case, it will be one of the
-options **keys-any**, **keys-2**, or **keys-all** as you had seen in the keysets
-tab. Predicate functions specify which keys need to sign the transaction for it
-to be valid.
-
-:::
-
-#### Add Key
-
-As the name suggests, keysets are used to hold keys. You can create these keys
-in the section below Data named Wallet. To create a wallet, first, enter a key
-name then select **Generate**. I’ll name mine admin-key, but you can choose
-whatever you’d like
-
-![12-add-key](/assets/docs/12-add-key.jpeg)
-
-You should now see the key name, the public key, and the private key you
-generated. This key is useful any time you'd like to deploy or interact with a
-smart contract.
+The `pred` field specifies a `predicate` function to use for the keyset.
+The `predicate` function returns a boolean value evaluating to true or false. 
+In this case, the predicate option evaluated is **keys-all** and it returns true if all of the keys listed in the keyset—in this example, only one key—sign the transaction.
 
 ### REPL
 
-A great way to get started with Pact is to jump in and start writing code for
-yourself. The REPL helps you to do this quickly and allows you to run Pact
-commands from directly within the browser.
+A great way to get started with Pact is by writing some simple code for yourself. 
+The REPL enables you to run Pact commands directly in the browser.
+Select **REPL** to open the Pact interactive interpreter, then try running the following commands to start learning Pact syntax conventions.
 
-![18-REPL](/assets/docs/18-REPL.png)
+**Numbers**
 
-Try running some of the commands shown below to get started with the REPL.
+Pact uses **prefix notation** for math operators. 
+With prefix notation, the operator precedes the values it’s operating on.
+For example, you can add two numbers with the following command:
 
-**Add numbers**
-
-Pact uses prefix notation for math operators. Prefix notation is standard in
-LISP-like languages like Pact. What this means is that the operator precedes the
-two values it’s operating on.
-
-```bash title=" "
+```pact title=" "
 (+ 2 2)
 4
 ```
 
+To subtract two numbers:
+
+```pact title=" "
+pact>(- 4 9)
+-5
+```
+
+To multiply two numbers:
+
+```pact
+pact>(* 3 4)
+12
+```
+
 **Strings**
 
-Concatenate strings using +. Try saying Hello REPL.
+You can concatenate strings using a plus (+) as a prefix. 
+For example, you can concatenate the strings "Hello" and "REPL" with the following command:
 
-```bash title=" "
+```pact title=" "
 pact > (+ "Hello" " REPL")
 “Hello REPL”
 ```
 
-:::note Try More Commands
+**Lists**
 
-You can view many more commands in the
+You can specify lists using square brackets (`[ ]`) with or without commas.
+For example, you can specify the elements in a list without using commas:
 
-[Pact Syntax Documentation](/pact/reference/syntax) and
-[Built-in Functions Documentation](/pact/reference/functions). Try running a few
-for yourself to learn more about the Pact programming language.
+```pact
+pact> [1 2 3]
+[1 2 3]
+```
 
-:::
+To specify the elements in a list using commas:
 
-**Run Commands from the Code Editor**
+```pact
+pact>["blue","yellow","green"]
+["blue" "yellow" "green"]
+```
+**Objects**
 
-It’s also possible to run REPL commands from the **code editor**. To get
-started, delete the existing code from the code editor and select REPL from the
-tool panel.
+You can create objects using curly braces (`{ }`) with key-value pairs separated by a colon (`:`). 
+For example:
 
-![7-repl](/assets/docs/7-repl.jpeg)
+```pact
+pact> { "foo": (+ 1 2), "bar": "baz" }
+{ "foo": 3, "bar": "baz" }
+```
 
-To run commands using the editor, enter a command and then select Load into REPL
-at the top of the screen. Experiment with other commands yourself by running
-some of the ones shown previously.
+You can view more commands to try in [Syntax and keywords](/pact/reference/syntax) and
+[Pact functions](/pact/reference/functions).
+
+**Run commands in the code editor**
+
+You can also run commands in the **code editor**. 
+To run commands in the code editor, delete existing code from the code editor type a command, then click **Load into REPL**.
 
 ### Messages
 
-Code editors often provide messages to developers that help them identify errors
-and log outputs. These are useful ways to debug programs and fix potential
-issues with your contract. In the Chainweaver Web Pact Editor, these messages
-can be seen in the messages tab in the Toolbar.
-
-![19-messages](/assets/docs/19-messages.png)
+Code editors often provide messages to help you identify errors and log outputs. 
+These messages are useful for debugging programs and fixing potential issues with your contract. 
+Select **Messages** to view messages from the code editor in Chainweaver.
 
 ### Module Explorer
 
-Another powerful tool provided by the editor is the **Module Explorer**. The
-**module explorer** allows you to load example contracts, deployed contracts,
-and to run functions that exist on any contracts that exist on the network!
+Select **Module Explorer** to open and view sample smart contracts, search for and view deployed contracts, and call functions from any contract that exists on the active network.
 
-Click on the button **module explorer** to get started. Here you’ll see a
-section for **example contracts** and a section for **deployed contracts**.
+![Module explorer](/assets/docs/module-explorer.png)
 
-![20-module-explorer](/assets/docs/20-module-explorer.jpeg)
+Under **Examples**, you can click **Open** next to an example contract name to load the contract into the code editor. 
+You can modify the code in the editor and reload the original contract code at any time, if needed.
+Click **View** to explore the Pact modules in a contract.
 
-### Example Contracts
+For example, if you select the **Simple Payment** contract, then click **View** for the **payments** modules, you'll see the functions and capabilities defined in the **payments** module. 
 
-The example contracts section allows you to load example contracts directly into
-your editor. You can use this code however you’d like, and can always come back
-here to reload the code again if needed.
+![Simple payment functions and capabilities](/assets/docs/example-functions.png)
 
-When you first loaded [pact.kadena.io/](https://pact.kadena.io/) the Formal
-Verification contract shown here is automatically loaded. Select **view > open**
-to reload this contract.
+Under **Deployed Contracts**, you san search for any contract that has been deployed to the network using the Module Explorer by name, by chain, or by navigating the pages using the arrow buttons.
 
-:::info View other Smart Contracts
+After you select a deployed contract, you can click **View** to see details about what's defined in the contract, including implemented interfaces, functions, capabilities, and pact included in the contract. 
+You can click **Open** to see the full contract code in the code editor.
 
-You can also view other smart contracts. Select **View > Open** on any smart
-contract to load its code into the code editor.
+You can also call individual functions from within the Module Explorer. 
+You'll learn more about calling functions in [Hello World](/pact/beginner/hello-world).
 
-:::
+## Next steps
 
-#### View Functions
+In this section, you set up your development environment with a local development blockchain network, Pact, and Chainweaver.
+You also explored the Chainweaver development environment by viewing full contract logic in the code editor, running simple Pact commands in the interactive REPL, and navigating through the features and tools for writing and testing smart contracts.
 
-You can view a summary of functions that exist within any smart contract from
-within the **module explorer**. After selecting **View**, you will see an
-overview of these functions. The image below shows the functions in the example
-**Simple Payment**.
+Before moving on, you might want to use the code editor and Module Explorer to get a more detailed view of the modules defined in the example and deployed contracts.
 
-![14-examples](/assets/docs/14-examples.jpeg)
+WHen you're ready, the next section introduces Pact with a simple "Hello, World!" contract.
+For the next steps, you'll:
 
-#### Deployed Contracts
-
-You can also view any contract that has been deployed to the network using the
-Module Explorer.
-
-![13-deployed-contracts](/assets/docs/13-deployed-contracts.jpeg)
-
-You can search by name, by chain, or by navigating the pages using the arrow
-buttons.
-
-Once you find a particular contract, select **view**. From here you can look at
-each function on the contract, and when you’re ready, select open to see the
-contract code.
-
-You can also call functions on modules from within the editor. For more
-information on calling functions, see Hello World with Pact.
-
-## Review
-
-Congratulations! You have completed your introduction to the **Chainweaver Web
-Pact Editor**.
-
-The Chainweaver Web Pact Editor is an excellent tool built to make developing
-smart contracts with Pact both fun and simple.
-
-**Topic Summary**
-
-Throughout this tutorial, you explored each core feature of the editor's
-interface. This included each of the following topics.
-
-- Introduction to the Editor
-- Navigation Bar
-- Code Editor
-- Tool Panel
-
-Take some time now to explore each of the features we discussed and get used to
-navigating this new environment. As you continue with Pact, you’ll use this tool
-regularly to help explore new ideas, write smart contracts, manage keysets, and
-explore modules.
-
-Throughout these tutorials, you’ll use this tool very often. By getting used to
-these core features, you're on your way to making amazing new applications using
-Pact.
+- Define a module for the `hello-world` contract.
+- Define an owner for the module using a keyset.
+- Define a function in the module.
+- Execute the module using the interactive Pact REPL interpreter.

@@ -25,7 +25,7 @@ export async function saveSignedTransactions(
     const fileDir = directory ?? WORKING_DIRECTORY;
     const filePath = path.join(
       fileDir,
-      `transaction-${command.hash}-${state}.json`,
+      `transaction-${command.hash.slice(0, 10)}-${state}.json`,
     );
 
     await services.filesystem.writeFile(

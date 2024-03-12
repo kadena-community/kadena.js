@@ -1,4 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
+import { Prisma } from '@prisma/client';
 import { getFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
@@ -101,7 +102,7 @@ export default builder.node(
         },
       }),
       transactions: t.prismaConnection({
-        type: 'Transaction',
+        type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
         complexity: (args) => ({
@@ -149,7 +150,7 @@ export default builder.node(
         },
       }),
       transfers: t.prismaConnection({
-        type: 'Transfer',
+        type: Prisma.ModelName.Transfer,
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
         edgesNullable: false,
         complexity: (args) => ({

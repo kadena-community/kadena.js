@@ -54,15 +54,15 @@ Before you start this tutorial, verify the following basic requirements:
 - You have cloned the
   [election-dapp](https://github.com/kadena-community/voting-dapp.git
   election-dapp) repository as described in
-  [Prepare your workspace](/build/guides/election-dapp-tutorial/01-getting-started)
+  [Prepare your workspace](/build/guides/election-dapp-tutorial/prepare-your-workspace)
   and have checked out the `01-getting-started` branch.
 - You have the development network running in a Docker container as described in
-  [Start a local blockchain](/build/guides/election-dapp-tutorial/02-running-devnet).
+  [Start a local blockchain](/build/guides/election-dapp-tutorial/start-a-local-blockchain).
 - You are
-  [connected to the development network](/build/guides/election-dapp-tutorial/02-running-devnet#connect-to-the-development-network)
+  [connected to the development network](/build/guides/election-dapp-tutorial/start-a-local-blockchain#connect-to-the-development-networkh1207030923)
   using your local host IP address and port number 8080.
 - You have created and funded an administrative account as described in
-  [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
+  [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
 
 ## Write a transaction in Pact
 
@@ -96,7 +96,7 @@ To write a simple transaction in Pact:
    ```
 
    After you execute the file, you should see the following output:
-   
+
    ```bash
    namespace.repl:1:0:Trace: Begin Tx 0: Define a namespace called 'election
    namespace.repl:4:0:Trace: Commit Tx 0: Define a namespace called 'election
@@ -105,23 +105,26 @@ To write a simple transaction in Pact:
 
    If you don't have `pact` installed locally, you can open the
    [pact-cli](http://localhost:8080/ttyd/pact-cli/) from the Docker container.
-   However, to use the `pact-cli` in the development network, you must mount the `pact` folder in the container. To mount the `pact` folder, start the development network with the following command:
+   However, to use the `pact-cli` in the development network, you must mount the
+   `pact` folder in the container. To mount the `pact` folder, start the
+   development network with the following command:
 
    ```docker
    docker run --interactive --tty --publish 8080:8080 \
     --volume ./pact:/pact-cli:ro kadena/devnet:latest
    ```
-   
-   After you start the development network with the `pact` folder mounted, you can
-   load the `namespace.repl` file in the [pact-cli](http://localhost:8080/ttyd/pact-cli/) with the following command:
+
+   After you start the development network with the `pact` folder mounted, you
+   can load the `namespace.repl` file in the
+   [pact-cli](http://localhost:8080/ttyd/pact-cli/) with the following command:
 
    ```pact
    (load "namespace.repl")
    ```
-   
+
    If you are using the pact-cli in a browser, you can replace the
-   `pact namespace.repl -t` command with `(load "namespace.repl")` throughout this
-   tutorial.
+   `pact namespace.repl -t` command with `(load "namespace.repl")` throughout
+   this tutorial.
 
 ## Use Pact built-in functions
 
@@ -226,6 +229,7 @@ function:
    namespace.repl:20:0:Trace: Commit Tx 0: Define a namespace called 'election
    Load successful
    ```
+
    You now have a namespace called `election` defined in the Pact REPL.
 
 ## Modify the namespace
@@ -284,8 +288,9 @@ To test modifying the election application namespace:
    pact namespace.repl -t
    ```
 
-   You'll see that the update transaction succeeds with output similar to the following:
-   
+   You'll see that the update transaction succeeds with output similar to the
+   following:
+
    ```bash
    namespace.repl:1:0:Trace: Setting transaction data
    namespace.repl:12:0:Trace: Begin Tx 0: Define a namespace called 'election
@@ -297,8 +302,9 @@ To test modifying the election application namespace:
    namespace.repl:34:0:Trace: Commit Tx 1: Update the 'election' namespace
    Load successful
    ```
-   
-   After this second transaction is successful, the `admin-keyset` no longer governs the `election` namespace.
+
+   After this second transaction is successful, the `admin-keyset` no longer
+   governs the `election` namespace.
 
 ### Verify the admin-keyset doesn't govern the namespace
 
@@ -504,7 +510,7 @@ To create a principal namespace:
 In this example, you defined a principal namespace in the Pact REPL using the
 public key for `sender00` account. Next, you can define a principal namespace on
 the development network using the administrative account you created in
-[Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
+[Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
 
 ## Create your own principal namespace
 
@@ -524,8 +530,9 @@ To create your principal namespace on the development network:
    - Your administrative account name is funded with KDA on chain 1.
 
    ![Verify your administrative account in Chainweaver](/assets/docs/election-workshop/funded-account.png)
-   
-   You're going to use Chainweaver to sign the transaction that creates the principal namespace.
+
+   You're going to use Chainweaver to sign the transaction that creates the
+   principal namespace.
 
 3. Open the `election-dapp/snippets/principal-namespace.ts` file in your code
    editor.
@@ -570,10 +577,10 @@ To create your principal namespace on the development network:
    In the remaining lines of code, the Kadena client processes the response it
    receives from your local development network.
 
-1. Open the `election-dapp/snippets` folder in a terminal shell on your
+4. Open the `election-dapp/snippets` folder in a terminal shell on your
    computer.
 
-1. Create your principal namespace using the `create-namespace` script by
+5. Create your principal namespace using the `create-namespace` script by
    running a command similar to the following with your administrative account
    name:
 
@@ -583,19 +590,19 @@ To create your principal namespace on the development network:
 
    Remember that `k:<your-public-key>` is the default **account name** for your
    administrative account that you funded in
-   [Add an administrator account](/build/guides/election-dapp-tutorial/03-admin-account).
-   You can copy this account name from Chainweaver when viewing the account watch
-   list.
+   [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
+   You can copy this account name from Chainweaver when viewing the account
+   watch list.
 
-   When you run the script, you should see Chainweaver display a QuickSign Request.
-   For example:
-   
+   When you run the script, you should see Chainweaver display a QuickSign
+   Request. For example:
+
    ![Sample QuickSign request](/assets/docs/election-workshop/quicksign-request.png)
-   
+
    If you don't see the request automatically, select Chainweaver to bring it to
    the foreground.
 
-1. Click **Sign All** to sign the request.
+6. Click **Sign All** to sign the request.
 
    After you click Sign All, the transaction is executed and the results are
    displayed in your terminal shell. For example, you should see output similar

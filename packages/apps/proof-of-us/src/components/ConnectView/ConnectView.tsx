@@ -1,13 +1,14 @@
 import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
-import { ListSignees } from '@/components/ListSignees/ListSignees';
-import { MainLoader } from '@/components/MainLoader/MainLoader';
-import { SocialsEditor } from '@/components/SocialsEditor/SocialsEditor';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
-import { useAvatar } from '@/hooks/avatar';
 import { useSignToken } from '@/hooks/data/signToken';
-import { useSubmit } from '@/hooks/submit';
-import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { isSignedOnce } from '@/utils/isAlreadySigning';
+import { MonoSignature } from '@kadena/react-icons';
+import { Stack } from '@kadena/react-ui';
+import Link from 'next/link';
 import type { FC } from 'react';
+import { Button } from '../Button/Button';
+import { ListSignees } from '../ListSignees/ListSignees';
+import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 
 interface IProps {
   proofOfUs: IProofOfUsData;
@@ -16,46 +17,38 @@ interface IProps {
 
 export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
   const { signToken } = useSignToken();
-  const { doSubmit, isStatusLoading } = useSubmit();
-  const { uploadBackground } = useAvatar();
 
   const handleJoin = async () => {
-    await signToken();
-  };
-
-  const handleMint = async () => {
-    if (!proofOfUs) return;
-    Promise.all([doSubmit(), uploadBackground(proofOfUs.proofOfUsId)]).then(
-      (values) => {
-        console.log(values);
-      },
-    );
+    signToken();
   };
 
   if (!proofOfUs) return null;
 
   return (
-    <>
-      {isStatusLoading && <MainLoader />}
-      <section>
-        <TitleHeader label="Details" />
+    <ScreenHeight>
+      <TitleHeader label={proofOfUs.title ?? ''} />
+      <ImagePositions />
+      <ListSignees />
+      <Stack flex={1} />
+      {!isSignedOnce(proofOfUs.signees) ? (
+        <Button onPress={handleJoin}>
+          Sign <MonoSignature />
+        </Button>
+      ) : (
+        <Stack gap="md">
+          <Link href="/user">
+            <Button variant="secondary">Dashboard</Button>
+          </Link>
 
-        <h3>{proofOfUs.title}</h3>
-        <SocialsEditor />
-        <ImagePositions />
-        <button
-          onClick={() => {
-            handleMint();
-          }}
-        >
-          Sign temporary
-        </button>
-        <div>status: {proofOfUs?.mintStatus}</div>
-        <ListSignees />
-        {!isAlreadySigning(proofOfUs.signees) && (
-          <button onClick={handleJoin}>Sign</button>
-        )}
-      </section>
-    </>
+          {proofOfUs.tokenId && (
+            <Link
+              href={`/user/proof-of-us/t/${proofOfUs.tokenId}/${proofOfUs.requestKey}`}
+            >
+              <Button>Go to Proof</Button>
+            </Link>
+          )}
+        </Stack>
+      )}
+    </ScreenHeight>
   );
 };

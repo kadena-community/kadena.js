@@ -1,11 +1,4 @@
-import {
-  addItem,
-  deleteItem,
-  getAllItems,
-  getOneItem,
-  updateItem,
-} from '@/modules/db/indexeddb';
-import { injectDb } from '../db/db.service';
+import { IDBService, dbService } from '../db/db.service';
 
 export interface INetwork {
   uuid: string;
@@ -27,13 +20,13 @@ export interface NetworkRepository {
   deleteNetwork: (networkId: string) => Promise<void>;
 }
 
-const createNetworkRepository = (): NetworkRepository => {
-  const getAll = injectDb(getAllItems);
-  const getOne = injectDb(getOneItem);
-  const add = injectDb(addItem);
-  const update = injectDb(updateItem);
-  const deleteOne = injectDb(deleteItem);
-
+const createNetworkRepository = ({
+  getAll,
+  getOne,
+  add,
+  update,
+  remove,
+}: IDBService): NetworkRepository => {
   return {
     getNetworkList: async (): Promise<INetwork[]> => {
       return getAll('network');
@@ -51,11 +44,11 @@ const createNetworkRepository = (): NetworkRepository => {
       await update('network', network);
     },
     deleteNetwork: async (networkId: string): Promise<void> => {
-      await deleteOne('network', networkId);
+      await remove('network', networkId);
     },
   };
 };
-export const networkRepository = createNetworkRepository();
+export const networkRepository = createNetworkRepository(dbService);
 
 export const addDefaultNetworks = async () => {
   const networks = await networkRepository.getNetworkList();

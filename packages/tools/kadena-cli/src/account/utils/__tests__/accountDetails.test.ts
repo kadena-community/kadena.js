@@ -33,7 +33,7 @@ describe('accountDetails', () => {
   it('should return error if account does not exist', async () => {
     server.use(
       http.post(
-        'https://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/local',
+        'https://localhost:8080/chainweb/0.0/development/chain/1/pact/api/v1/local',
         () => {
           return HttpResponse.json({ error: 'row not found' }, { status: 404 });
         },
@@ -48,7 +48,7 @@ describe('accountDetails', () => {
     });
     assert(!result.success);
     expect(result.errors).toEqual([
-      'Account is not available on chain "1" of networkId "fast-development"',
+      'Account "k:accountName" is not available on chain "1" of networkId "development"',
     ]);
   });
 });

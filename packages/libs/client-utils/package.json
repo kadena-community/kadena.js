@@ -1,6 +1,6 @@
 {
   "name": "@kadena/client-utils",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Utility functions build as a wrapper around @kadena/client",
   "repository": {
     "type": "git",
@@ -14,29 +14,74 @@
     "Nil Amrutlal <nil.amrutlal@deptagency.com>"
   ],
   "exports": {
-    "./built-in": "./lib/built-in/index.js",
-    "./coin": "./lib/coin/index.js",
-    "./core": "./lib/core/index.js",
-    "./nodejs": "./lib/nodejs/index.js",
-    "./marmalade": "./lib/marmalade/index.js"
+    ".": {
+      "types": {
+        "import": "./lib/esm/index.d.ts",
+        "require": "./lib/cjs/index.d.ts"
+      },
+      "import": "./lib/esm/index.mjs",
+      "require": "./lib/cjs/index.js"
+    },
+    "./built-in": {
+      "types": {
+        "import": "./lib/esm/built-in/index.d.ts",
+        "require": "./lib/cjs/built-in/index.d.ts"
+      },
+      "import": "./lib/esm/built-in/index.mjs",
+      "require": "./lib/cjs/built-in/index.js"
+    },
+    "./coin": {
+      "types": {
+        "import": "./lib/esm/coin/index.d.ts",
+        "require": "./lib/cjs/coin/index.d.ts"
+      },
+      "import": "./lib/esm/coin/index.mjs",
+      "require": "./lib/cjs/coin/index.js"
+    },
+    "./core": {
+      "types": {
+        "import": "./lib/esm/core/index.d.ts",
+        "require": "./lib/cjs/core/index.d.ts"
+      },
+      "import": "./lib/esm/core/index.mjs",
+      "require": "./lib/cjs/core/index.js"
+    },
+    "./nodejs": {
+      "types": {
+        "import": "./lib/esm/nodejs/index.d.ts",
+        "require": "./lib/cjs/nodejs/index.d.ts"
+      },
+      "import": "./lib/esm/nodejs/index.mjs",
+      "require": "./lib/cjs/nodejs/index.js"
+    },
+    "./marmalade": {
+      "types": {
+        "import": "./lib/esm/marmalade/index.d.ts",
+        "require": "./lib/cjs/marmalade/index.d.ts"
+      },
+      "import": "./lib/esm/marmalade/index.mjs",
+      "require": "./lib/cjs/marmalade/index.js"
+    }
   },
-  "main": "./lib/core/index.js",
   "typesVersions": {
     "*": {
+      ".": [
+        "./lib/esm/index.d.ts"
+      ],
       "built-in": [
-        "./lib/built-in/index.d.ts"
+        "./lib/esm/built-in/index.d.ts"
       ],
       "core": [
-        "./lib/core/index.d.ts"
+        "./lib/esm/core/index.d.ts"
       ],
       "coin": [
-        "./lib/coin/index.d.ts"
+        "./lib/esm/coin/index.d.ts"
       ],
       "nodejs": [
-        "./lib/nodejs/index.d.ts"
+        "./lib/esm/nodejs/index.d.ts"
       ],
       "marmalade": [
-        "./lib/marmalade/index.d.ts"
+        "./lib/esm/marmalade/index.d.ts"
       ]
     }
   },
@@ -53,7 +98,8 @@
     "ae:built-in": "api-extractor run --verbose -c ./config/api-extractor-built-in.json",
     "ae:coin": "api-extractor run --verbose -c ./config/api-extractor-coin.json",
     "ae:core": "api-extractor run --verbose -c ./config/api-extractor-core.json",
-    "build": "pnpm run pactjs:generate:contract && pnpm run generate-pipe-type && tsc && pnpm run ae",
+    "build": "pnpm run pactjs:generate:contract && pnpm run generate-pipe-type && tsc && unbuild && pnpm run ae",
+    "dev:ae": "pnpm run dev:ae:core && pnpm run dev:ae:built-in && pnpm run dev:ae:coin",
     "dev:ae:built-in": "api-extractor run --local --verbose -c ./config/api-extractor-built-in.json",
     "dev:ae:coin": "api-extractor run --local --verbose -c ./config/api-extractor-coin.json",
     "dev:ae:core": "api-extractor run --local --verbose -c ./config/api-extractor-core.json",
@@ -67,7 +113,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts",
-    "pactjs:generate:contract": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/1/pact",
+    "pactjs:generate:contract": "pactjs contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact",
     "test": "vitest run",
     "test:integration": "vitest run -c ./vitest.integration.config.ts",
     "test:watch": "vitest"
@@ -100,6 +146,7 @@
     "prettier": "~3.0.3",
     "ts-node": "~10.8.2",
     "typescript": "5.2.2",
+    "unbuild": "^2.0.0",
     "vitest": "^1.1.0"
   }
 }

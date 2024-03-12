@@ -1,5 +1,5 @@
 import { ALL_BLOCK_FIELDS } from './fields/block.graph';
-import { ALL_EVENT_FIELDS, CORE_EVENT_FIELDS } from './fields/event.graph';
+import { ALL_EVENT_FIELDS } from './fields/event.graph';
 import { ALL_FUNGIBLE_ACCOUNT_FIELDS } from './fields/fungible-account.graph';
 import {
   ALL_FUNGIBLE_CHAIN_ACCOUNT_FIELDS,
@@ -8,72 +8,11 @@ import {
 import { CORE_MINER_KEY_FIELDS } from './fields/miner-key.graph';
 import { ALL_NON_FUNGIBLE_ACCOUNT_FIELDS } from './fields/non-fungible-account.graph';
 import { CORE_NON_FUNGIBLE_CHAIN_ACCOUNT_FIELDS } from './fields/non-fungible-chain-account.graph';
-import {
-  ALL_TRANSACTION_FIELDS,
-  CORE_TRANSACTION_FIELDS,
-} from './fields/transaction.graph';
+import { CORE_TRANSACTION_FIELDS } from './fields/transaction.graph';
 import { CORE_TRANSFER_FIELDS } from './fields/transfer.graph';
 
 import type { DocumentNode } from '@apollo/client';
 import { gql } from '@apollo/client';
-
-export const getTransactionNode: DocumentNode = gql`
-  ${ALL_TRANSACTION_FIELDS}
-  ${CORE_EVENT_FIELDS}
-
-  query getTransactionNode($id: ID!) {
-    node(id: $id) {
-      ... on Transaction {
-        ...AllTransactionFields
-        block {
-          hash
-        }
-        events {
-          ...CoreEventFields
-        }
-        signers {
-          publicKey
-          signature
-        }
-      }
-    }
-  }
-`;
-
-export const getBlockNodes: DocumentNode = gql`
-  query getBlockNodes($ids: [ID!]!) {
-    nodes(ids: $ids) {
-      ... on Block {
-        height
-        hash
-        chainId
-        creationTime
-        confirmationDepth
-        transactions {
-          totalCount
-        }
-      }
-    }
-  }
-`;
-
-export const getEventNodes: DocumentNode = gql`
-  ${ALL_EVENT_FIELDS}
-
-  query getEventNodes($ids: [ID!]!) {
-    nodes(ids: $ids) {
-      ... on Event {
-        ...AllEventFields
-        block {
-          id
-        }
-        transaction {
-          requestKey
-        }
-      }
-    }
-  }
-`;
 
 export const getBlockFromHash: DocumentNode = gql`
   ${ALL_BLOCK_FIELDS}
@@ -103,10 +42,20 @@ export const getBlockFromHash: DocumentNode = gql`
           }
         }
       }
-      confirmationDepth
       minerAccount {
         guard {
+          predicate
           keys
+        }
+      }
+      parent {
+        hash
+      }
+      events {
+        edges {
+          node {
+            ...AllEventFields
+          }
         }
       }
     }
@@ -122,7 +71,6 @@ export const getLastBlock: DocumentNode = gql`
 export const getGraphConfiguration: DocumentNode = gql`
   query getGraphConfiguration {
     graphConfiguration {
-      maximumConfirmationDepth
       minimumBlockHeight
     }
   }
@@ -160,7 +108,13 @@ export const getFungibleAccount: DocumentNode = gql`
               ...CoreTransferFields
             }
             transaction {
-              pactId
+              cmd {
+                payload {
+                  ... on ContinuationPayload {
+                    pactId
+                  }
+                }
+              }
             }
           }
         }
@@ -201,7 +155,13 @@ export const getFungibleChainAccount: DocumentNode = gql`
               ...CoreTransferFields
             }
             transaction {
-              pactId
+              cmd {
+                payload {
+                  ... on ContinuationPayload {
+                    pactId
+                  }
+                }
+              }
             }
           }
         }
@@ -247,9 +207,11 @@ export const getTransactions: DocumentNode = gql`
           block {
             hash
           }
-          signers {
-            publicKey
-            signature
+          cmd {
+            signers {
+              publicKey
+              signature
+            }
           }
         }
       }
@@ -294,7 +256,13 @@ export const getTransfers: DocumentNode = gql`
             ...CoreTransferFields
           }
           transaction {
-            pactId
+            cmd {
+              payload {
+                ... on ContinuationPayload {
+                  pactId
+                }
+              }
+            }
           }
         }
       }
@@ -307,6 +275,7 @@ export const getEvents: DocumentNode = gql`
 
   query getEvents(
     $qualifiedEventName: String!
+    $parametersFilter: String
     $after: String
     $before: String
     $first: Int
@@ -314,6 +283,7 @@ export const getEvents: DocumentNode = gql`
   ) {
     events(
       qualifiedEventName: $qualifiedEventName
+      parametersFilter: $parametersFilter
       after: $after
       before: $before
       first: $first
