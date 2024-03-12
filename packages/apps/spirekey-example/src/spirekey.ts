@@ -1,5 +1,7 @@
 import { IUnsignedCommand } from '@kadena/client';
 
+export const ERROR = Symbol('ERROR');
+
 export class KadenaSpireKey {
   private _returnUrl: string;
   private _spireKeyHostname: string;
@@ -41,24 +43,27 @@ export class KadenaSpireKey {
     if (searchParams.has('user')) {
       const userSearch = searchParams.get('user');
       if (userSearch && userSearch?.length > 0) {
-        // decode base64
-        this._user = JSON.parse(decodeBase64(userSearch));
-        console.log('retrieved user from querystring parameters', this._user);
+        const parsedUser = tryParse<IUser>(decodeBase64(userSearch));
+
+        if (parsedUser !== ERROR) this._user = parsedUser;
       }
     }
 
     if (searchParams.has('transaction')) {
       const transactionSearch = searchParams.get('transaction');
       if (transactionSearch && transactionSearch?.length > 0) {
-        const transaction: IUnsignedCommand = JSON.parse(
+        const parsedTransaction = tryParse<IUnsignedCommand>(
           decodeBase64(transactionSearch),
         );
+        if (parsedTransaction === ERROR) {
+          return;
+        }
         console.log(
           'retrieved transaction from querystring parameters',
-          JSON.stringify(transaction, null, 2),
+          JSON.stringify(parsedTransaction, null, 2),
         );
 
-        this._transactions[transaction.hash] = transaction;
+        this._transactions[parsedTransaction.hash] = parsedTransaction;
       }
     }
     this._saveToLocalStorage();
@@ -100,12 +105,16 @@ export class KadenaSpireKey {
   private _loadFromLocalStorage() {
     const user = this._storage.getItem('spirekey_user');
     if (user) {
-      this._user = JSON.parse(user);
+      const parsedUser = tryParse<IUser>(user);
+      if (parsedUser !== ERROR) this._user = parsedUser;
     }
 
     const transactions = this._storage.getItem('spirekey_transactions');
     if (transactions) {
-      this._transactions = JSON.parse(transactions);
+      const parsedTransactions =
+        tryParse<Record<string, IUnsignedCommand>>(transactions);
+
+      if (parsedTransactions !== ERROR) this._transactions = parsedTransactions;
     }
   }
 
@@ -181,4 +190,18 @@ function decodeBase64(msg: string) {
 function encodeBase64(msg: string) {
   return btoa(msg);
   // return Buffer.from(msg).toString('base64');
+}
+
+function tryParse<T>(msg: string): T | typeof ERROR {
+  try {
+    return JSON.parse(msg);
+  } catch (e: any) {
+    console.warn(
+      `an error occurred while decoding the user from the querystring parameters${
+        'message' in e ? '\n' + e.message : ''
+      }`,
+    );
+    if ('stack' in e) console.warn(e.stack);
+    return ERROR;
+  }
 }
