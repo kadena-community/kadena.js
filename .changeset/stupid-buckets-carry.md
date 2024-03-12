@@ -2,4 +2,4 @@
 '@kadena/react-ui': patch
 ---
 
-small fixes for the accordion component
+Add expand animation to accordion component
