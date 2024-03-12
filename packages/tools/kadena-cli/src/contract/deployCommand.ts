@@ -1,4 +1,5 @@
 import type { Command } from 'commander';
+import { log } from '../utils/logger.js';
 
 export function deployCommand(program: Command, version: string): void {
   program
@@ -6,6 +7,6 @@ export function deployCommand(program: Command, version: string): void {
     .option('-n, --network <network>')
     .option('-f, --file <file>')
     .action((args) => {
-      console.log(args);
+      log.debug('deploy', args);
     });
 }

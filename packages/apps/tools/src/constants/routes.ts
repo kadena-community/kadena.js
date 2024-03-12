@@ -9,4 +9,5 @@ export default {
   FAUCET_EXISTING: '/faucet/existing',
   FAUCET_NEW: '/faucet/new',
   BALANCE: '/balance',
+  TRANSFER: '/transactions/transfer',
 } as const;

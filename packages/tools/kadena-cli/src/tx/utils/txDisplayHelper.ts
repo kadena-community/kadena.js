@@ -1,11 +1,28 @@
-import chalk from 'chalk';
 import { isNumeric } from '../../utils/helpers.js';
+import { log } from '../../utils/logger.js';
+import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
 
 const formatLength = 80;
 
 const displaySeparator = (): void => {
-  console.log(chalk.green('-'.padEnd(formatLength, '-')));
+  log.info(log.color.green('-'.padEnd(formatLength, '-')));
 };
+
+export async function printTx(transactions: string[]): Promise<void> {
+  const header: TableHeader = ['Filename', 'Signed'];
+  const rows: TableRow[] = [];
+
+  if (transactions.length === 0) {
+    log.info('No transactions found');
+    return;
+  }
+
+  for (const key of transactions) {
+    rows.push([key ?? 'N/A', key.includes('signed') === true ? 'Yes' : 'No']);
+  }
+
+  log.output(log.generateTableString(header, rows));
+}
 
 export function txDisplayTransaction(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -16,12 +33,12 @@ export function txDisplayTransaction(
 ): void {
   if (header !== '') {
     displaySeparator();
-    console.log(`  ${chalk.black(header.padEnd(formatLength - 2))}`);
+    log.info(`  ${log.color.black(header.padEnd(formatLength - 2))}`);
     displaySeparator();
   }
 
   if (obj === null || obj === undefined) {
-    console.log('Transaction '.repeat(baseIndent) + chalk.green('null'));
+    log.info('Transaction '.repeat(baseIndent) + log.color.green('null'));
     return;
   }
 
@@ -34,7 +51,7 @@ export function txDisplayTransaction(
     const formattedKey = `${' '.repeat(indentLevel)}${output}:`;
 
     if (typeof value === 'object' && value !== null) {
-      console.log(chalk.black(formattedKey));
+      log.info(log.color.black(formattedKey));
       for (const [subKey, subValue] of Object.entries(value)) {
         printObject(subKey, subValue, indentLevel + 2);
       }
@@ -43,11 +60,11 @@ export function txDisplayTransaction(
         value !== null && value !== undefined ? value.toString() : 'null';
 
       if (key === 'status') {
-        const color = value === 'failure' ? chalk.red : chalk.green;
+        const color = value === 'failure' ? log.color.red : log.color.green;
         formattedValue = color(formattedValue);
       }
-      console.log(
-        `${chalk.black(formattedKey)} ${chalk.green(formattedValue)}`,
+      log.info(
+        `${log.color.black(formattedKey)} ${log.color.green(formattedValue)}`,
       );
     }
   };

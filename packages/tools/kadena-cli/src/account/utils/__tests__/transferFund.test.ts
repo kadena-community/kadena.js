@@ -52,7 +52,7 @@ describe('transferFund', () => {
   it('should throw an error when any sort of error happens', async () => {
     server.use(
       http.post(
-        'https://localhost:8080/chainweb/0.0/fast-development/chain/1/pact/api/v1/send',
+        'https://localhost:8080/chainweb/0.0/development/chain/1/pact/api/v1/send',
         () => {
           return new HttpResponse('Something went wrong', { status: 500 });
         },

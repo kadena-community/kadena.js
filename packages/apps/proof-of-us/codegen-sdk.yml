@@ -7,3 +7,9 @@ generates:
       - typescript
       - typescript-operations
       - typescript-react-apollo
+  ./src/__generated__/sdk-node.ts:
+    documents: 'src/**/*.graph.(ts|tsx)'
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request

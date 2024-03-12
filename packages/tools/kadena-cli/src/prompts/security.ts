@@ -1,7 +1,7 @@
-import type { IPrompt } from '../utils/createOption.js';
+import { CommandError } from '../utils/command.util.js';
 import { password } from '../utils/prompts.js';
 
-export async function promptForPassword(
+async function promptForPassword(
   message: string,
   isOptional: boolean = false,
 ): Promise<string> {
@@ -19,29 +19,58 @@ export async function promptForPassword(
   });
 }
 
-export const securityPasswordPrompt: IPrompt<string> = async (
-  prev = {},
-  args,
-  isOptional,
-) => {
-  return promptForPassword('Enter a password', isOptional);
-};
+export async function passwordFilePrompt(
+  args: Record<string, unknown>,
+): Promise<string | { _password: string }> {
+  if ((args.stdin as string | null) !== null) return '-';
 
-export const securityPasswordVerifyPrompt: IPrompt<string> = async (
-  prev = {},
-  args,
-  isOptional,
-) => {
-  return promptForPassword(
-    'Enter a password to verify with password',
-    isOptional,
-  );
-};
-
-export async function securityCurrentPasswordPrompt(): Promise<string> {
-  return promptForPassword('Enter your current password');
+  const password = await promptForPassword('Enter a password');
+  return { _password: password };
 }
 
-export async function securityNewPasswordPrompt(): Promise<string> {
-  return promptForPassword('Enter your new password');
+export async function passwordFileRepeatPrompt(
+  args: Record<string, unknown>,
+): Promise<string | { _password: string }> {
+  if ((args.stdin as string | null) !== null) return '-';
+
+  const password = await promptForPassword('Enter a password');
+  const passwordRepeat = await promptForPassword(
+    'Enter a password to verify with password',
+  );
+  if (password === passwordRepeat) {
+    return { _password: password };
+  } else {
+    throw new CommandError({
+      errors: ['Passwords do not match. Please try again.'],
+      exitCode: 1,
+    });
+  }
+}
+
+export async function newPasswordFilePrompt(
+  args: Record<string, unknown>,
+): Promise<string | { _password: string }> {
+  if ((args.stdin as string | null) !== null) return '-';
+
+  const password = await promptForPassword('Enter your new password');
+  const passwordRepeat = await promptForPassword(
+    'Enter a password to verify with password',
+  );
+  if (password === passwordRepeat) {
+    return { _password: password };
+  } else {
+    throw new CommandError({
+      errors: ['Passwords do not match. Please try again.'],
+      exitCode: 1,
+    });
+  }
+}
+
+export async function currentPasswordFilePrompt(
+  args: Record<string, unknown>,
+): Promise<string | { _password: string }> {
+  if ((args.stdin as string | null) !== null) return '-';
+
+  const password = await promptForPassword('Enter your current password');
+  return { _password: password };
 }

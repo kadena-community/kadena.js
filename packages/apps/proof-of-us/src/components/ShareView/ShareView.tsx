@@ -1,19 +1,27 @@
 import { Button } from '@/components/Button/Button';
 import { ListSignees } from '@/components/ListSignees/ListSignees';
+import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { isAlreadySigning } from '@/utils/isAlreadySigning';
-import { CopyButton, SystemIcon, TextField } from '@kadena/react-ui';
-import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
-
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
+import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
+import {
+  MonoArrowBack,
+  MonoArrowDownward,
+  MonoCheckCircle,
+} from '@kadena/react-icons';
+import { Stack } from '@kadena/react-ui';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
-import { backButtonClass } from '../DetailView/style.css';
+import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
-import { qrClass } from './style.css';
+
+import { useAccount } from '@/hooks/account';
+import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
+import { copyClass, qrClass } from './style.css';
 
 interface IProps {
   next: () => void;
@@ -21,11 +29,17 @@ interface IProps {
   status: number;
 }
 
-export const ShareView: FC<IProps> = ({ next, prev, status }) => {
+export const ShareView: FC<IProps> = ({ prev, status }) => {
   const qrRef = useRef<QRCode | null>(null);
-  const { proofOfUs } = useProofOfUs();
+  const qrContainerRef = useRef<HTMLDivElement>(null);
+
+  const [isMounted, setIsMounted] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const { proofOfUs, isInitiator } = useProofOfUs();
+  const { account } = useAccount();
+  const { signToken } = useSignToken();
   const router = useRouter();
-  const { id } = useParams();
+  const searchParams = useSearchParams();
 
   const handleBack = () => {
     prev();
@@ -33,41 +47,84 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
 
   const handleSign = async () => {
     if (!proofOfUs) return;
-    router.push(
-      `${process.env.NEXT_PUBLIC_WALLET_URL}/sign?transaction=${
-        proofOfUs.tx
-      }&returnUrl=${getReturnHostUrl()}/scan/${id}
-      `,
-    );
+
+    signToken();
+
     return;
   };
 
-  if (!proofOfUs) return;
+  //check that the account is also really the initiator.
+  //other accounts have no business here and are probably looking for the scan view
+  useEffect(() => {
+    if (!isInitiator()) {
+      router.replace(`/scan/${proofOfUs?.proofOfUsId}`);
+      return;
+    }
+    setIsMounted(true);
+  }, [proofOfUs, account]);
+
+  useEffect(() => {
+    const transaction = searchParams.get('transaction');
+    if (!transaction || !proofOfUs) return;
+
+    //updateStatus({ proofOfUsId: proofOfUs.proofOfUsId, status: 4 });
+  }, []);
+
+  useEffect(() => {
+    if (!isCopied) return;
+
+    const timer = setTimeout(() => {
+      setIsCopied(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [isCopied]);
+
+  if (!proofOfUs || !account || !isMounted) return;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(
+      `${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`,
+    );
+    setIsCopied(true);
+  };
 
   return (
-    <section>
+    <ScreenHeight>
       {status === 3 && (
         <>
           <TitleHeader
             Prepend={() => (
               <>
                 {!isAlreadySigning(proofOfUs.signees) && (
-                  <button className={backButtonClass} onClick={handleBack}>
-                    <SystemIcon.ArrowCollapseDown />
-                  </button>
+                  <IconButton onClick={handleBack}>
+                    <MonoArrowBack />
+                  </IconButton>
                 )}
               </>
             )}
             label="Share"
+            Append={() => (
+              <>
+                {isCopied ? (
+                  <Stack>
+                    Copied <MonoCheckCircle className={copyClass} />
+                  </Stack>
+                ) : null}
+              </>
+            )}
           />
 
-          <ListSignees />
           {!isAlreadySigning(proofOfUs.signees) ? (
             <>
-              <div className={qrClass}>
+              <div
+                className={qrClass}
+                ref={qrContainerRef}
+                onClick={handleCopy}
+              >
                 <QRCode
                   ecLevel="H"
-                  size={800}
+                  size={300}
                   ref={qrRef}
                   value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
                   removeQrCodeBehindLogo={true}
@@ -77,18 +134,16 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
                   eyeRadius={10}
                 />
               </div>
-              <TextField
-                placeholder="Link"
-                id="linkshare"
-                aria-label="share"
-                value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
-                endAddon={<CopyButton inputId="linkshare" />}
-              />
+              <Button onPress={handleCopy}>Click to copy link</Button>
+              <ListSignees />
             </>
           ) : (
-            <ImagePositions />
+            <>
+              <ImagePositions />
+              <ListSignees />
+            </>
           )}
-          {isAlreadySigning(proofOfUs.signees) && (
+          {isSignedOnce(proofOfUs.signees) && (
             <Button onPress={handleSign}>Sign & Upload</Button>
           )}
         </>
@@ -98,8 +153,8 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
           <TitleHeader
             Prepend={() => (
               <>
-                <button className={backButtonClass} onClick={handleBack}>
-                  <SystemIcon.ArrowCollapseDown />
+                <button onClick={handleBack}>
+                  <MonoArrowDownward />
                 </button>
               </>
             )}
@@ -119,6 +174,6 @@ export const ShareView: FC<IProps> = ({ next, prev, status }) => {
           )}
         </>
       )}
-    </section>
+    </ScreenHeight>
   );
 };

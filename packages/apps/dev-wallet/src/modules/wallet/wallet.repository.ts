@@ -1,12 +1,5 @@
-import { injectDb } from '@/modules/db/db.service';
-import {
-  addItem,
-  getAllItems,
-  getOneItem,
-  updateItem,
-} from '@/modules/db/indexeddb';
-import { BuiltInPredicate } from '@kadena/client';
-import { INetwork } from '../network/network.repository';
+import { IDBService, dbService } from '@/modules/db/db.service';
+import type { INetwork } from '../network/network.repository';
 
 export interface IKeyItem {
   publicKey: string;
@@ -15,14 +8,16 @@ export interface IKeyItem {
 
 export type KeySourceType = 'HD-BIP44' | 'HD-chainweaver';
 
+export interface IKeyItem {
+  index: number;
+  publicKey: string;
+}
+
 export interface IKeySource {
   uuid: string;
+  profileId: string;
   source: KeySourceType;
-  keys: Array<{
-    id?: string;
-    index: number;
-    publicKey: string;
-  }>;
+  keys: Array<IKeyItem>;
 }
 
 export interface IProfile {
@@ -30,40 +25,15 @@ export interface IProfile {
   name: string;
   networks: INetwork[];
   secretId: string;
+  accentColor: string;
 }
 
-export interface IKeySetGuard {
-  type: 'keySet';
-  publicKeys: Array<IKeyItem>;
-  pred: BuiltInPredicate;
-}
-
-export interface IAccount {
-  uuid: string;
-  profileId: string;
-  alias?: string;
-  address: string;
-  guard: IKeySetGuard; // this could be extended to support other guards
-}
-
-export interface WalletRepository {
-  getAllProfiles: () => Promise<Exclude<IProfile, 'networks'>[]>;
-  getProfile: (id: string) => Promise<IProfile>;
-  addProfile: (profile: IProfile) => Promise<void>;
-  updateProfile: (profile: IProfile) => Promise<void>;
-  getEncryptedValue: (key: string) => Promise<Uint8Array>;
-  addEncryptedValue: (key: string, value: string | Uint8Array) => Promise<void>;
-  addAccount: (account: IAccount) => Promise<void>;
-  getAccountsByProfileId: (profileId: string) => Promise<IAccount[]>;
-  getProfileKeySources: (profileId: string) => Promise<IKeySource[]>;
-}
-
-const createWalletRepository = (): WalletRepository => {
-  const getAll = injectDb(getAllItems);
-  const getOne = injectDb(getOneItem);
-  const add = injectDb(addItem);
-  const update = injectDb(updateItem);
-
+const createWalletRepository = ({
+  getAll,
+  getOne,
+  add,
+  update,
+}: IDBService) => {
   return {
     getAllProfiles: async (): Promise<Exclude<IProfile, 'networks'>[]> => {
       return getAll('profile');
@@ -86,16 +56,13 @@ const createWalletRepository = (): WalletRepository => {
     ): Promise<void> => {
       return add('encryptedValue', value, key);
     },
-    addAccount: async (account: IAccount): Promise<void> => {
-      return add('account', account);
-    },
-    getAccountsByProfileId(profileId: string): Promise<IAccount[]> {
-      return getAll('account', profileId, 'profileId');
-    },
     getProfileKeySources: async (profileId: string): Promise<IKeySource[]> => {
       return getAll('keySource', profileId, 'profileId');
+    },
+    getKeySource: async (keySourceId: string): Promise<IKeySource> => {
+      return getOne('keySource', keySourceId);
     },
   };
 };
 
-export const walletRepository = createWalletRepository();
+export const walletRepository = createWalletRepository(dbService);

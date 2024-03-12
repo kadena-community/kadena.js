@@ -8,6 +8,7 @@ import type { FC, PropsWithChildren } from 'react';
 import { SWRConfig } from 'swr';
 import { AccountProvider } from '../AccountProvider/AccountProvider';
 import { ToastProvider } from '../ToastProvider/ToastProvider';
+import { TokenProvider } from '../TokenProvider/TokenProvider';
 
 // next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -26,7 +27,9 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
       <ApolloProvider client={client}>
         <ToastProvider>
           <AccountProvider>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>
+              <TokenProvider>{children}</TokenProvider>
+            </ThemeProvider>
           </AccountProvider>
         </ToastProvider>
       </ApolloProvider>

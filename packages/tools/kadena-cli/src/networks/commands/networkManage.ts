@@ -1,9 +1,9 @@
-import chalk from 'chalk';
 import type { Command } from 'commander';
-import debug from 'debug';
 
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
+import { networkOptions } from '../networkOptions.js';
 import { removeNetwork, writeNetworks } from '../utils/networkHelpers.js';
 
 /**
@@ -14,15 +14,15 @@ import { removeNetwork, writeNetworks } from '../utils/networkHelpers.js';
 export const manageNetworksCommand: (
   program: Command,
   version: string,
-) => void = createCommandFlexible(
+) => void = createCommand(
   'update',
-  'Manage networks',
+  'Update local networks',
   [
     globalOptions.network({ isOptional: false }),
-    globalOptions.networkExplorerUrl(),
-    globalOptions.networkHost(),
-    globalOptions.networkId(),
-    globalOptions.networkName(),
+    networkOptions.networkExplorerUrl(),
+    networkOptions.networkHost(),
+    networkOptions.networkId(),
+    networkOptions.networkName(),
   ],
   async (option) => {
     const networkData = await option.network();
@@ -31,7 +31,7 @@ export const manageNetworksCommand: (
     const networkHost = await option.networkHost();
     const networkExplorerUrl = await option.networkExplorerUrl();
 
-    debug.log('manage-networks', {
+    log.debug('manage-networks', {
       networkExplorerUrl,
       networkHost,
       networkId,
@@ -49,8 +49,8 @@ export const manageNetworksCommand: (
       await removeNetwork(networkData.networkConfig);
     }
 
-    console.log(
-      chalk.green(
+    log.info(
+      log.color.green(
         `\nThe network configuration "${networkData.network}" has been updated.\n`,
       ),
     );

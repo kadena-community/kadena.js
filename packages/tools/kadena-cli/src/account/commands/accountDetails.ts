@@ -1,10 +1,10 @@
-import chalk from 'chalk';
-import type { Command } from 'commander';
-import debug from 'debug';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { maskStringPreservingStartAndEnd } from '../../utils/helpers.js';
+import { log } from '../../utils/logger.js';
+import { accountOptions } from '../accountOptions.js';
 import type { IAccountDetailsResult } from '../types.js';
 import type { IGetAccountDetailsParams } from '../utils/getAccountDetails.js';
 import { getAccountDetailsFromChain } from '../utils/getAccountDetails.js';
@@ -23,7 +23,7 @@ export async function accountDetails(
       return {
         success: false,
         errors: [
-          `Account is not available on chain "${config.chainId}" of networkId "${config.networkId}"`,
+          `Account "${config.accountName}" is not available on chain "${config.chainId}" of networkId "${config.networkId}"`,
         ],
       };
     }
@@ -34,33 +34,73 @@ export async function accountDetails(
   }
 }
 
-export const createAccountDetailsCommand: (
-  program: Command,
-  version: string,
-) => void = createCommand(
+function generateTableForAccountDetails(account: IAccountDetailsResult): {
+  headers: string[];
+  data: string[][];
+} {
+  const headers = ['Account Name', 'Public Keys', 'Predicate', 'Balance'];
+
+  const data = [
+    maskStringPreservingStartAndEnd(account.account, 32),
+    account.guard.keys.map((key) => key).join('\n'),
+    account.guard.pred,
+    account.balance.toString(),
+  ];
+
+  return {
+    headers,
+    data: [data],
+  };
+}
+
+export const createAccountDetailsCommand = createCommand(
   'details',
   'Get details of an account',
   [
-    globalOptions.accountSelect(),
+    accountOptions.accountSelect(),
     globalOptions.networkSelect(),
     globalOptions.chainId({ isOptional: false }),
+    accountOptions.fungible({ isOptional: true }),
   ],
-  async (config) => {
-    debug('account-details:action')({ config });
+  async (option) => {
+    const { account, accountConfig } = await option.account({
+      isAllowManualInput: true,
+    });
+
+    let fungible = accountConfig?.fungible ?? 'coin';
+    const accountName = accountConfig?.name ?? account;
+
+    if (!accountConfig) {
+      fungible = (await option.fungible()).fungible;
+    }
+
+    const { networkConfig } = await option.network();
+    const { chainId } = await option.chainId();
+
+    log.debug('account-details:action', {
+      account,
+      accountConfig,
+      chainId,
+      networkConfig,
+      fungible,
+    });
 
     const result = await accountDetails({
-      accountName: config.accountConfig.name,
-      chainId: config.chainId,
-      networkId: config.networkConfig.networkId,
-      networkHost: config.networkConfig.networkHost,
-      fungible: config.accountConfig.fungible,
+      accountName: accountName,
+      chainId: chainId,
+      networkId: networkConfig.networkId,
+      networkHost: networkConfig.networkHost,
+      fungible: fungible,
     });
 
     assertCommandError(result);
 
-    console.log(
-      chalk.green(`\nDetails of account "${config.accountConfig.name}":\n`),
+    log.info(
+      log.color.green(
+        `\nDetails of account "${account}" on network "${networkConfig.networkId}" and chain "${chainId}" is:\n`,
+      ),
     );
-    console.log(chalk.green(`${JSON.stringify(result.data, null, 2)}`));
+    const table = generateTableForAccountDetails(result.data);
+    log.output(log.generateTableString(table.headers, table.data));
   },
 );

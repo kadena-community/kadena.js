@@ -1,30 +1,33 @@
-import debug from 'debug';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { removeNetwork } from '../utils/networkHelpers.js';
 
-import chalk from 'chalk';
 import type { Command } from 'commander';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
+import { log } from '../../utils/logger.js';
+import { networkOptions } from '../networkOptions.js';
 
 export const deleteNetworksCommand: (
   program: Command,
   version: string,
-) => void = createCommandFlexible(
+) => void = createCommand(
   'delete',
-  'Delete network',
-  [globalOptions.network({ isOptional: false }), globalOptions.networkDelete()],
+  'Delete local network',
+  [
+    globalOptions.network({ isOptional: false }),
+    networkOptions.networkDelete(),
+  ],
   async (option) => {
     const networkData = await option.network();
     const deleteNetwork = await option.networkDelete();
 
-    debug.log('delete-network:action', {
+    log.debug('delete-network:action', {
       ...networkData,
       ...deleteNetwork,
     });
 
     if (deleteNetwork.networkDelete === 'no') {
-      console.log(
-        chalk.yellow(
+      log.info(
+        log.color.yellow(
           `\nThe network configuration "${networkData.network}" will not be deleted.\n`,
         ),
       );
@@ -33,8 +36,8 @@ export const deleteNetworksCommand: (
 
     await removeNetwork(networkData.networkConfig);
 
-    console.log(
-      chalk.green(
+    log.info(
+      log.color.green(
         `\nThe network configuration "${networkData.network}" has been deleted.\n`,
       ),
     );

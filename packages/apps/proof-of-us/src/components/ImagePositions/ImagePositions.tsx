@@ -1,25 +1,27 @@
+import { EditorForm } from '@/EditorForm/EditorForm';
 import { useAccount } from '@/hooks/account';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { isAlreadySigning } from '@/utils/isAlreadySigning';
-import type { ChangeEventHandler, FC, MouseEventHandler } from 'react';
+import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
+import type { FC, MouseEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import {
-  signeeClass,
-  signeeClassWrapper,
-  signeeInputClass,
-  wrapperClass,
-} from './style.css';
+import { Modal } from '../Modal/Modal';
+import { SigneePosition } from '../Signees/SigneePosition';
+import { TagInfo } from './TagInfo';
+import { imageClass, wrapperClass } from './style.css';
 
 interface IProps {}
 
 export const ImagePositions: FC<IProps> = () => {
-  const { proofOfUs, updateSigner, background } = useProofOfUs();
+  const { proofOfUs, updateSigner, background, updateProofOfUs } =
+    useProofOfUs();
   const { account } = useAccount();
   const [isMounted, setIsMounted] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
   const [signer, setSigner] = useState<IProofOfUsSignee>();
   const imgRef = useRef<HTMLImageElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [isTagInfoOpen, setIsTagInfoOpen] = useState(true);
 
   useEffect(() => {
     setSigner(
@@ -49,12 +51,9 @@ export const ImagePositions: FC<IProps> = () => {
     const wrapper = wrapperRef.current;
     const img = imgRef.current;
 
-    const elms = wrapper.querySelectorAll('div');
-    const inputs = wrapper.querySelectorAll('input');
+    const elms = wrapper.querySelectorAll<HTMLElement>('[data-position]');
 
-    elms.forEach((elm, idx) => {
-      const input = inputs[idx];
-
+    elms.forEach((elm) => {
       const xPercentage: number = parseFloat(
         elm.getAttribute('data-xpercentage') ?? '0',
       );
@@ -64,11 +63,10 @@ export const ImagePositions: FC<IProps> = () => {
 
       if (!xPercentage || !yPercentage) {
         elm.setAttribute('style', `display: none`);
-        input.setAttribute('style', `display: none`);
         return;
       }
 
-      const [xPos, yPos] = getPosition<HTMLDivElement>(elm, img, {
+      const [xPos, yPos] = getPosition<HTMLElement>(elm, img, {
         xPercentage,
         yPercentage,
       });
@@ -76,21 +74,6 @@ export const ImagePositions: FC<IProps> = () => {
       elm.setAttribute(
         'style',
         `display: flex; top: ${yPos}px; left: ${xPos}px;`,
-      );
-
-      //input
-      const [xPosMarker, yPosMarker] = getPosition<HTMLInputElement>(
-        input,
-        img,
-        {
-          xPercentage,
-          yPercentage,
-        },
-      );
-
-      input.setAttribute(
-        'style',
-        `display: flex; top: ${yPosMarker}px; left: ${xPosMarker}px;`,
       );
     });
   };
@@ -104,58 +87,57 @@ export const ImagePositions: FC<IProps> = () => {
     };
   }, [wrapperRef, imgRef, proofOfUs?.signees, isMounted]);
 
-  const handleClick: MouseEventHandler<HTMLImageElement> = (e) => {
+  const handleClick: MouseEventHandler<HTMLImageElement> = async (e) => {
     if (!imgRef.current || isLocked) return;
+    setIsEditorOpen(true);
+    setIsTagInfoOpen(false);
 
     // Calculate the coordinates relative to the image
     const rect = imgRef.current.getBoundingClientRect();
     const xPercentage = ((e.clientX - rect.left) / imgRef.current.width) * 100;
     const yPercentage = ((e.clientY - rect.top) / imgRef.current.height) * 100;
 
-    updateSigner({ position: { xPercentage, yPercentage } });
-  };
-
-  const handleLabelChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    //TODO: this needs to debounce
-
-    updateSigner({
-      label: e.target.value,
+    console.log('update in imageposition click');
+    await updateProofOfUs({
+      signees: updateSigner({
+        position: { xPercentage, yPercentage },
+      }),
     });
   };
 
-  const handleRemove = () => {
-    updateSigner({ position: null });
+  const handleRemove = async () => {
+    console.log('update in imageposition remove');
+    await updateProofOfUs({
+      signees: updateSigner({ position: null }),
+    });
   };
 
   return (
     <>
+      {isEditorOpen && (
+        <Modal label="Add details" onClose={() => setIsEditorOpen(false)}>
+          <EditorForm signer={signer} onClose={() => setIsEditorOpen(false)} />
+        </Modal>
+      )}
       <section ref={wrapperRef} className={wrapperClass}>
         <img
+          className={imageClass}
           ref={imgRef}
           src={background.bg}
           onClick={handleClick}
           onLoad={() => setIsMounted(true)}
         />
+        {isTagInfoOpen && proofOfUs && !isSignedOnce(proofOfUs.signees) && (
+          <TagInfo handleClose={() => setIsTagInfoOpen(false)} />
+        )}
         {proofOfUs?.signees.map((s, idx) => (
-          <span key={s.accountName}>
-            <div
-              className={signeeClassWrapper}
-              data-xpercentage={s.position?.xPercentage}
-              data-ypercentage={s.position?.yPercentage}
-            >
-              <button className={signeeClass} onClick={handleRemove}>
-                {idx}
-              </button>
-            </div>
-            <input
-              className={signeeInputClass}
-              value={s.label}
-              disabled={signer?.accountName !== s.accountName || isLocked}
-              type="text"
-              name="label"
-              onChange={handleLabelChange}
-            />
-          </span>
+          <SigneePosition
+            variant="small"
+            key={s.accountName}
+            position={s?.position}
+            onClick={handleRemove}
+            idx={idx}
+          />
         ))}
       </section>
     </>

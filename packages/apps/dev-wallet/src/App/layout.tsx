@@ -1,27 +1,59 @@
-import { Stack, Text } from '@kadena/react-ui';
+import { useNetwork } from '@/modules/network/network.hook';
+import {
+  KadenaLogo,
+  NavHeader,
+  NavHeaderLinkList,
+  NavHeaderSelect,
+  SelectItem,
+  SystemIcon,
+  Text,
+} from '@kadena/react-ui';
 import { FC } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import { layout } from './layout.css';
 
 export const Layout: FC = () => {
+  const { networks, activeNetwork, setActiveNetwork } = useNetwork();
+
+  const handleNetworkUpdate = (value: string) => {
+    const network = networks.find((network) => network.networkId === value);
+    if (network) {
+      setActiveNetwork(network);
+    }
+  };
+
   return (
-    <div className={layout}>
-      <Stack
-        as="nav"
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="center"
-        padding={'sm'}
-        backgroundColor="base.default"
+    <>
+      <NavHeader
+        logo={
+          <Link to="/">
+            <KadenaLogo height={40} />
+          </Link>
+        }
       >
-        <Stack gap="sm" padding="sm">
+        <NavHeaderLinkList>
           <Link to="/">
             <Text bold>DX-Wallet</Text>
           </Link>
-        </Stack>
-      </Stack>
+          <Link to="/networks">
+            <Text bold>Network</Text>
+          </Link>
+        </NavHeaderLinkList>
+
+        <NavHeaderSelect
+          aria-label="Select Network"
+          selectedKey={activeNetwork?.networkId}
+          onSelectionChange={(value) => handleNetworkUpdate(value as string)}
+          startIcon={<SystemIcon.Earth />}
+        >
+          {networks.map((network) => (
+            <SelectItem key={network.networkId} textValue={network.name}>
+              {network.name}
+            </SelectItem>
+          ))}
+        </NavHeaderSelect>
+      </NavHeader>
       <Outlet />
       <div id="modalportal"></div>
-    </div>
+    </>
   );
 };

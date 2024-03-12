@@ -1,11 +1,9 @@
 import yaml from 'js-yaml';
-import { readdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { extname, join } from 'node:path';
 import type { ZodError, ZodIssue } from 'zod';
 import { z } from 'zod';
 import type { IAliasAccountData } from './../types.js';
 
-import { NO_ACCOUNT_ERROR_MESSAGE } from '../../constants/account.js';
 import { ACCOUNT_DIR } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import { notEmpty } from '../../utils/helpers.js';
@@ -32,15 +30,22 @@ export const formatZodErrors = (errors: ZodError): string => {
 export const readAccountFromFile = async (
   accountFile: string,
 ): Promise<IAliasAccountData> => {
-  const content = await services.filesystem.readFile(
-    join(ACCOUNT_DIR, accountFile),
-  );
+  const ext = extname(accountFile);
+  const fileWithExt =
+    !ext || ext !== '.yaml' ? `${accountFile}.yaml` : accountFile;
+  const filePath = join(ACCOUNT_DIR, fileWithExt);
+
+  if (!(await services.filesystem.fileExists(filePath))) {
+    throw new Error(`Account alias "${accountFile}" file not exist`);
+  }
+
+  const content = await services.filesystem.readFile(filePath);
   const account = content !== null ? yaml.load(content) : null;
   try {
     const parsedContent = accountAliasFileSchema.parse(account);
     return {
       ...parsedContent,
-      alias: accountFile,
+      alias: fileWithExt,
     };
   } catch (error) {
     if (isEmpty(content)) {
@@ -54,16 +59,26 @@ export const readAccountFromFile = async (
   }
 };
 
-export async function ensureAccountExists(): Promise<void> {
-  if (!(await services.filesystem.directoryExists(ACCOUNT_DIR))) {
-    throw new Error(NO_ACCOUNT_ERROR_MESSAGE);
+export async function ensureAccountAliasDirectoryExists(): Promise<boolean> {
+  return await services.filesystem.directoryExists(ACCOUNT_DIR);
+}
+
+export async function ensureAccountAliasFilesExists(): Promise<boolean> {
+  if (!(await ensureAccountAliasDirectoryExists())) {
+    return false;
   }
+
+  const files = await services.filesystem.readDir(ACCOUNT_DIR);
+
+  return files.length > 0;
 }
 
 export async function getAllAccounts(): Promise<IAliasAccountData[]> {
-  await ensureAccountExists();
+  if (!(await ensureAccountAliasDirectoryExists())) {
+    return [];
+  }
 
-  const files = readdirSync(ACCOUNT_DIR);
+  const files = await services.filesystem.readDir(ACCOUNT_DIR);
 
   const allAccounts = await Promise.all(
     files.map((file) => readAccountFromFile(file).catch(() => null)),

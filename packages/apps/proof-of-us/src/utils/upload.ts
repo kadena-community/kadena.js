@@ -25,6 +25,7 @@ interface INFTUrl {
 
 export const createImageUrl = async (
   bg: string,
+  uri?: string,
 ): Promise<INFTUrl | undefined> => {
   const mimeType = bg.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/)?.[1];
 
@@ -38,7 +39,9 @@ export const createImageUrl = async (
   const image = await NFTStorage.encodeDirectory([
     createFileFromBlob(blob, imageFileName),
   ]);
-  const imageUrl = `https://${image.cid.toString()}.ipfs.nftstorage.link/${imageFileName}`;
+  const imageUrl = uri
+    ? uri
+    : `https://${image.cid.toString()}.ipfs.nftstorage.link/${imageFileName}`;
 
   console.log('image cid', image.cid.toString());
   console.log('image url', imageUrl);
@@ -48,13 +51,16 @@ export const createImageUrl = async (
 
 export const createMetaDataUrl = async (
   manifest: any,
+  uri?: string,
 ): Promise<INFTUrl | undefined> => {
   const metadataFileName = 'metadata';
   const metadata = await NFTStorage.encodeDirectory([
     new File([JSON.stringify(manifest, null, 2)], metadataFileName),
   ]);
 
-  const metadataUrl = `https://${metadata.cid.toString()}.ipfs.nftstorage.link/${metadataFileName}`;
+  const metadataUrl = uri
+    ? uri
+    : `https://${metadata.cid.toString()}.ipfs.nftstorage.link/${metadataFileName}`;
 
   console.log('metadata cid', metadata.cid.toString());
   console.log('metadata url', metadataUrl);

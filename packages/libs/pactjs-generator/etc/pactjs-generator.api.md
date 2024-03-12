@@ -10,6 +10,9 @@
 // @alpha (undocumented)
 export function contractParser(contract: string, namespace?: string): [IModule[], IPointer];
 
+// @alpha
+export function execCodeParser(code: string): undefined | IParsedCode[];
+
 // @alpha (undocumented)
 export function generateDts(module: IModule): string;
 
@@ -18,6 +21,31 @@ export function generateTemplates(templates: {
     name: string;
     template: ITemplate;
 }[], version: string): string;
+
+// @alpha (undocumented)
+export interface IParsedCode {
+    // (undocumented)
+    args: Array<{
+        string: string;
+    } | {
+        int: number;
+    } | {
+        decimal: number;
+    } | {
+        object: Array<{
+            property: string;
+            value: IParsedCode['args'][number];
+        }>;
+    } | {
+        list: Array<IParsedCode['args']>;
+    }>;
+    // (undocumented)
+    function: {
+        module?: string;
+        namespace?: string;
+        name: string;
+    };
+}
 
 // @alpha (undocumented)
 export interface ITemplate {

@@ -1,5 +1,4 @@
-import { injectDb } from '@/modules/db/db.service';
-import { addItem, getOneItem, updateItem } from '@/modules/db/indexeddb';
+import { IDBService, dbService } from '@/modules/db/db.service';
 
 export interface IHDBIP44 {
   uuid: string;
@@ -26,6 +25,17 @@ export interface IHDChainweaver {
   }>;
 }
 
+export interface IWebAuthn {
+  uuid: string;
+  profileId: string;
+  source: 'webauthn';
+  keys: Array<{
+    index: number;
+    id: string;
+    publicKey: string;
+  }>;
+}
+
 export type HDWalletKeySource = IHDBIP44 | IHDChainweaver;
 
 export interface HDWalletRepository {
@@ -36,11 +46,11 @@ export interface HDWalletRepository {
   addEncryptedValue: (key: string, value: string | Uint8Array) => Promise<void>;
 }
 
-const createKeySourceRepository = (): HDWalletRepository => {
-  const getOne = injectDb(getOneItem);
-  const add = injectDb(addItem);
-  const update = injectDb(updateItem);
-
+const createKeySourceRepository = ({
+  getOne,
+  add,
+  update,
+}: IDBService): HDWalletRepository => {
   return {
     getKeySource: async (id: string): Promise<HDWalletKeySource> => {
       return getOne('keySource', id);
@@ -63,4 +73,4 @@ const createKeySourceRepository = (): HDWalletRepository => {
   };
 };
 
-export const keySourceRepository = createKeySourceRepository();
+export const keySourceRepository = createKeySourceRepository(dbService);

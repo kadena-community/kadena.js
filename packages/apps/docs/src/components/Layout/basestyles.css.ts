@@ -1,15 +1,11 @@
 import { atoms, responsiveStyle, tokens } from '@kadena/react-ui/styles';
 import { createVar, globalStyle, style } from '@vanilla-extract/css';
-import {
-  $$backgroundOverlayColor,
-  $$leftSideWidth,
-  $$pageWidth,
-} from './global.css';
+import { $$leftSideWidth, $$pageWidth } from './global.css';
 
 globalStyle('html, body', {
   margin: 0,
   backgroundColor: tokens.kda.foundation.color.neutral.n0,
-  overscrollBehavior: 'none',
+  overscrollBehaviorY: 'none',
 });
 
 globalStyle('a', {
@@ -40,7 +36,7 @@ export const basebackgroundClass = style([
         content: '',
         position: 'absolute',
         inset: 0,
-        backgroundColor: $$backgroundOverlayColor,
+        backgroundColor: 'transparent',
         zIndex: 1,
       },
     },

@@ -4,7 +4,7 @@
 /.changeset
 /common                                         @alber70g
 /pnpm-lock.yaml
-/packages/apps/docs                             @sstraatemans @eileenmguo @realdreamer @ghislain89
+/packages/apps/docs
 /packages/apps/proof-of-us                      @sstraatemans @realdreamer @ghislain89
 /packages/apps/graph                            @alber70g @MRVDH @nil-amrutlal-dept
 /packages/apps/graph-client                     @alber70g @MRVDH @nil-amrutlal-dept
@@ -17,9 +17,10 @@
 /packages/libs/pactjs-generator                 @alber70g @javadkh2
 /packages/libs/react-ui                         @eileenmguo @sstraatemans @salamaashoush
 /packages/libs/types                            @alber70g
+/packages/libs/toolbox                          @alber70g @salamaashoush
 /packages/tools/eslint-config                   @alber70g
 /packages/tools/eslint-plugin                   @alber70g
 /packages/tools/pactjs-cli                      @alber70g @javadkh2
 /packages/tools/shared-config                   @alber70g
-/packages/tools/e2e-tests                       @ghislain89 @sstraatemans @sanderlooijenga @KristinaSpasevska @MRVDH @nil-amrutlal-dept
+/packages/e2e                                   @ghislain89 @sstraatemans @sanderlooijenga @KristinaSpasevska @MRVDH @nil-amrutlal-dept
 /packages/tools/integration-tests               @ghislain89 @sstraatemans @sanderlooijenga @KristinaSpasevska @MRVDH @nil-amrutlal-dept

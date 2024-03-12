@@ -1,4 +1,4 @@
-import type { Transaction, Transfer } from '@prisma/client';
+import type { Signer, Transaction, Transfer } from '@prisma/client';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Guard {
@@ -62,7 +62,6 @@ export interface FungibleAccount {
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface GraphConfiguration {
-  maximumConfirmationDepth: number;
   minimumBlockHeight: bigint;
 }
 
@@ -87,4 +86,52 @@ export interface NonFungibleAccount {
   accountName: string;
   chainAccounts: NonFungibleChainAccount[];
   transactions: Transaction[];
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface TransactionCommand {
+  payload: ExecutionPayload | ContinuationPayload;
+  meta: TransactionMeta;
+  signers: Signer[];
+  networkId: string;
+  nonce: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface ExecutionPayload {
+  code: string | null;
+  data: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface ContinuationPayload {
+  pactId: string | null;
+  step: number | null;
+  rollback: boolean | null;
+  data: string;
+  proof: string | null;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface TransactionMeta {
+  sender: string;
+  chainId: bigint;
+  gasLimit: bigint;
+  gasPrice: number;
+  ttl: bigint;
+  creationTime: Date;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+
+export interface TransactionResult {
+  badResult: string | null;
+  continuation: string | null;
+  gas: bigint;
+  goodResult: string | null;
+  height: bigint;
+  logs: string | null;
+  metadata: string | null;
+  eventCount: bigint | null;
+  transactionId: bigint | null;
 }

@@ -5,7 +5,7 @@ import { manageNetworksCommand } from './commands/networkManage.js';
 
 import type { Command } from 'commander';
 
-const SUBCOMMAND_ROOT: 'networks' = 'networks';
+const SUBCOMMAND_ROOT: 'network' = 'network';
 
 export function networksCommandFactory(
   program: Command,

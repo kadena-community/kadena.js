@@ -23,7 +23,7 @@ export async function addAccount(
       data: result,
       warnings: !config.accountDetailsFromChain
         ? [
-            `The account "${config.accountName}" is not on chain yet. To create it on-chain, transfer funds to it from ${config.networkConfig.network} and use "fund" command.`,
+            `The account "${config.accountName}" is not on chain yet. To create it on-chain, transfer funds to it from ${config.networkConfig.network} and use "kadena account fund" command.`,
           ]
         : [],
     };

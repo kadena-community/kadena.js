@@ -4,14 +4,18 @@ import { load as loadYaml } from 'js-yaml';
 import { join } from 'node:path';
 import { z } from 'zod';
 import { tx } from '../prompts/index.js';
-import { templateDataPrompt, templateVariables } from '../prompts/tx.js';
+import {
+  templateDataPrompt,
+  templateVariables,
+  txTransactionNetworks,
+} from '../prompts/tx.js';
 import { services } from '../services/index.js';
 import { createOption } from '../utils/createOption.js';
 import { isNotEmptyString } from '../utils/helpers.js';
 import { log } from '../utils/logger.js';
 import { getTemplate } from './commands/templates/templates.js';
 import { getTemplateVariables } from './utils/template.js';
-import { parseCommaSeparatedInput } from './utils/txHelpers.js';
+import { parseInput } from './utils/txHelpers.js';
 
 export const txOptions = {
   selectTemplate: createOption({
@@ -57,6 +61,7 @@ export const txOptions = {
     option: new Option('--template-data <templateData>', 'template data file'),
     prompt: templateDataPrompt,
     async expand(filePath) {
+      if (filePath === undefined) return null;
       const absolutePath = join(process.cwd(), filePath);
       const exists = await services.filesystem.fileExists(absolutePath);
       const file = await services.filesystem.readFile(
@@ -88,6 +93,31 @@ export const txOptions = {
     ),
     prompt: templateVariables,
     allowUnknownOptions: true,
+    // TODO:
+    // Transform repeats the same logic as in the prompt
+    // This is because prompt can be skipped entirely if quiet=true
+    // But prompt still needs the logic to prevent prompting known variables
+    transform: async (value, args) => {
+      const variableValues: Record<string, string> = value ?? {};
+      const { values, variables, data } = args as {
+        values: string[];
+        variables: string[];
+        data: Record<string, unknown>;
+      };
+      for (const variable of variables) {
+        // Prioritize variables from data file
+        if (Object.hasOwn(data, variable)) {
+          variableValues[variable] = String(data[variable]);
+          continue;
+        }
+        // Find variables in cli arguments
+        const match = values.find((value) =>
+          value.startsWith(`--${variable}=`),
+        );
+        if (match !== undefined) variableValues[variable] = match.split('=')[1];
+      }
+      return variableValues;
+    },
   }),
 
   txUnsignedCommand: createOption({
@@ -120,7 +150,7 @@ export const txOptions = {
       txUnsigedTransactionFiles: string | string[],
     ): Promise<string[]> => {
       if (typeof txUnsigedTransactionFiles === 'string') {
-        return parseCommaSeparatedInput(txUnsigedTransactionFiles);
+        return parseInput(txUnsigedTransactionFiles);
       }
       return txUnsigedTransactionFiles;
     },
@@ -146,7 +176,7 @@ export const txOptions = {
       txSignedTransactionFiles: string | string[],
     ): Promise<string[]> => {
       if (typeof txSignedTransactionFiles === 'string') {
-        return parseCommaSeparatedInput(txSignedTransactionFiles);
+        return parseInput(txSignedTransactionFiles);
       }
       return txSignedTransactionFiles;
     },
@@ -166,5 +196,34 @@ export const txOptions = {
       }
       return value;
     },
+  }),
+  txTransactionNetwork: createOption({
+    key: 'txTransactionNetwork',
+    validation: z.array(z.string()),
+    option: new Option(
+      '-n, --tx-transaction-network <txTransactionNetwork>',
+      'Kadena networks comma seperated list in order of transaction.  (e.g. "mainnet, testnet, devnet, ...")',
+    ),
+    transform: async (value: string | string[]): Promise<string[]> => {
+      return parseInput(value);
+    },
+    prompt: txTransactionNetworks,
+  }),
+  txSignWith: createOption({
+    key: 'txSignWith',
+    prompt: tx.selectSignMethodPrompt,
+    validation: z.string(),
+    option: new Option(
+      '-s, --tx-sign-with <txSignWith>',
+      'Select a signing method',
+    ),
+  }),
+  txPoll: createOption({
+    key: 'txPoll' as const,
+    prompt: ({ poll }): boolean => {
+      return poll === true || poll === 'true' || false;
+    },
+    validation: z.boolean().optional(),
+    option: new Option('-p, --poll', 'Poll for transaction status'),
   }),
 };

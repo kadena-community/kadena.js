@@ -44,6 +44,10 @@ type TokenType = 'connect' | 'attendance';
 
 interface IProofOfUsData {
   tx: IUnsignedCommand;
+  tokenId: string;
+  requestKey: string;
+  manifestUri?: string;
+  imageUri: string;
   eventId: string;
   mintStatus: IMintStatus;
   status: IBuildStatusValues;
@@ -69,12 +73,14 @@ interface IProofOfUsToken {
 }
 
 interface IProofOfUsTokenMeta {
-  startDate: int;
-  endDate: int;
+  manifestUri?: string;
+  startDate?: int;
+  endDate?: int;
   description: string;
   image: string;
   name: string;
   properties: {
+    eventName: string;
     eventId: string;
     eventType: TokenType;
     date: number;
@@ -84,11 +90,17 @@ interface IProofOfUsTokenMeta {
     signees?: IProofOfUsTokenSignee[];
   };
 
-  authors: string[];
+  authors: { name: string }[];
   collection: {
     name: string;
     family: string;
   };
+}
+
+interface IProofOfUsTokenMetaWithkey extends IProofOfUsTokenMeta {
+  requestKey: string;
+  tokenId: string;
+  mintStatus: 'error' | 'success' | 'init' | undefined;
 }
 
 interface IProofOfUs {
@@ -112,15 +124,21 @@ interface ISigneePosition {
 }
 
 type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
-  label?: string;
+  name?: string;
   signerStatus: ISignerStatus;
   initiator: boolean;
-  socialLinks?: ISocial[];
+  socialLink?: ISocial;
   position?: ISigneePosition;
   publicKey: string;
 };
 
+type IAccountLeaderboard = Pick<IAccount, 'alias' | 'accountName'> & {
+  tokenCount: number;
+};
+
 type IProofOfUsTokenSignee = Pick<
   IProofOfUsSignee,
-  'label' | 'socialLinks' | 'position'
->;
+  'accountName' | 'socialLink' | 'position'
+> & {
+  name: string;
+};

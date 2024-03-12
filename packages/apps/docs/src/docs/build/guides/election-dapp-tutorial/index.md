@@ -118,9 +118,9 @@ compare your solution with the finished code at every step along the way.
 - [Define a namespaces](/build/guides/election-dapp-tutorial/define-a-namespace)
 - [Define keysets](/build/guides/election-dapp-tutorial/define-keysets)
 - [Write a smart contract](/build/guides/election-dapp-tutorial/write-a-smart-contract)
-- [Nominate candidates](/build/guides/election-dapp-tutorial/07-nominate-candidates)
-- [Add voting management](/build/guides/election-dapp-tutorial/08-voting)
-- [Add a gas station](/build/guides/election-dapp-tutorial/09-gas-station)
+- [Nominate candidates](/build/guides/election-dapp-tutorial/nominate-candidates)
+- [Add voting management](/build/guides/election-dapp-tutorial/add-vote-management)
+- [Add a gas station](/build/guides/election-dapp-tutorial/add-a-gas-station)
 
 Stay tuned for future editions of this workshop and for more intermediate and
 advanced tutorials covering additional topics, such as:

@@ -1,4 +1,13 @@
-import { connect, createStore, deleteDatabase } from '@/modules/db/indexeddb';
+import {
+  addItem,
+  connect,
+  createStore,
+  deleteDatabase,
+  deleteItem,
+  getAllItems,
+  getOneItem,
+  updateItem,
+} from '@/modules/db/indexeddb';
 import { execInSequence } from '@/utils/helpers';
 
 // since we create the database in the first call we need to make sure another call does not happen
@@ -40,7 +49,7 @@ const createConnectionPool = (
 };
 
 const DB_NAME = 'dev-wallet';
-const DB_VERSION = 25;
+const DB_VERSION = 28;
 
 export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
   const result = await connect(DB_NAME, DB_VERSION);
@@ -65,6 +74,7 @@ export const setupDatabase = execInSequence(async (): Promise<IDBDatabase> => {
     create('keySource', 'uuid', [{ index: 'profileId' }]);
     create('account', 'uuid', [{ index: 'address' }, { index: 'profileId' }]);
     create('network', 'uuid', [{ index: 'networkId', unique: true }]);
+    create('fungible', 'contract', [{ index: 'symbol', unique: true }]);
   }
   return db;
 });
@@ -82,10 +92,68 @@ export const { createDatabaseConnection, closeDatabaseConnections } =
   createConnectionPool(createConnection);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const injectDb = <R extends (...args: any[]) => Promise<any>>(
+const injectDb = <R extends (...args: any[]) => Promise<any>>(
   fn: (db: IDBDatabase) => R,
+  onCall: (...args: Parameters<R>) => void = () => {},
 ) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (async (...args: any): Promise<any> => {
-    return createDatabaseConnection().then((db) => fn(db)(...args));
+    return createDatabaseConnection().then(async (db) => {
+      const result = await fn(db)(...args);
+      onCall(...args);
+      return result;
+    });
   }) as R;
+
+type EventTypes = 'add' | 'update' | 'delete';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Listener = (type: EventTypes, storeName: string, ...data: any[]) => void;
+export interface IDBService {
+  getAll: <T>(
+    storeName: string,
+    filter?: string | string[] | undefined,
+    indexName?: string | undefined,
+  ) => Promise<T[]>;
+  getOne: <T>(storeName: string, key: string) => Promise<T>;
+  add: <T>(
+    storeName: string,
+    value: T,
+    key?: string | undefined,
+  ) => Promise<void>;
+  update: <T>(
+    storeName: string,
+    value: T,
+    key?: string | undefined,
+  ) => Promise<void>;
+  remove: (storeName: string, key: string) => Promise<void>;
+  subscribe: (cb: Listener) => () => void;
+}
+
+export const createDbService = () => {
+  const listeners: Listener[] = [];
+  const subscribe: IDBService['subscribe'] = (cb) => {
+    listeners.push(cb);
+    return () => {
+      const index = listeners.indexOf(cb);
+      if (index > -1) {
+        listeners.splice(index, 1);
+      }
+    };
+  };
+  const notify =
+    (event: EventTypes) =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (storeName: string, ...rest: any[]) => {
+      listeners.forEach((cb) => cb(event, storeName, ...rest));
+    };
+  return {
+    getAll: injectDb(getAllItems),
+    getOne: injectDb(getOneItem),
+    add: injectDb(addItem, notify('add')),
+    update: injectDb(updateItem, notify('update')),
+    remove: injectDb(deleteItem, notify('delete')),
+    subscribe,
+  };
+};
+
+export const dbService: IDBService = createDbService();

@@ -198,7 +198,7 @@ To explore using TypeScript and Kadena client:
     "deploy-gas-station:devnet": "KADENA_NETWORK=devnet ts-node ./deploy-gas-station.ts",
     "deploy-module:devnet": "KADENA_NETWORK=devnet ts-node ./deploy-module.ts",
     "format": "prettier --write .",
-    "generate-types:coin:devnet": "pactjs contract-generate --contract coin --api http://localhost:8080/chainweb/0.0/fast-development/chain/1/pact",
+    "generate-types:coin:devnet": "pactjs contract-generate --contract coin --api http://localhost:8080/chainweb/0.0/development/chain/1/pact",
     "list-modules:devnet": "KADENA_NETWORK=devnet ts-node ./list-modules.ts",
     "transfer-create:devnet": "KADENA_NETWORK=devnet ts-node ./transfer-create.ts",
     "transfer:devnet": "KADENA_NETWORK=devnet ts-node ./transfer.ts"
@@ -222,7 +222,7 @@ To explore using TypeScript and Kadena client:
 
    Notice that when the environment variable `KADENA_NETWORK` is set to `devnet`, the functions exported from this file return the following:
 
-   - The network identifier `fast-development`.
+   - The network identifier `development`.
    - The chain identifier `1`
    - The API base URL `localhost:8080`—the host and port for the node you previously specified for the development network—and appended with the network id and chain id.
 

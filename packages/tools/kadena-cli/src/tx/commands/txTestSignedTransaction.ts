@@ -1,13 +1,13 @@
 import type { Command } from 'commander';
-import debug from 'debug';
 
 import type { ICommandResult } from '@kadena/client';
 import { createClient, isSignedTransaction } from '@kadena/client';
 import path from 'node:path';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
 import { txDisplayTransaction } from '../utils/txDisplayHelper.js';
 import { getTransactionsFromFile } from '../utils/txHelpers.js';
@@ -60,8 +60,8 @@ export const testTransactions = async (
 export const createTestSignedTransactionCommand: (
   program: Command,
   version: string,
-) => void = createCommandFlexible(
-  'test-signed-transaction',
+) => void = createCommand(
+  'test',
   'Test a signed transaction on testnet.',
   [
     txOptions.directory({ disableQuestion: true }),
@@ -78,7 +78,7 @@ export const createTestSignedTransactionCommand: (
     });
     const chainOption = await option.chainId();
 
-    debug.log('sign-with-local-wallet:action', {
+    log.debug('sign-with-local-wallet:action', {
       ...networkOption,
       directory,
       ...files,

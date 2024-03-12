@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { createPactCommand } from '../deploy-contract';
+import { createPactCommandFromTransaction } from '../deploy-contract';
 import { contractCode, input } from './test-data';
 
 describe('createPactCommand', () => {
@@ -12,7 +12,10 @@ describe('createPactCommand', () => {
   });
 
   it('should return a pact command with the correct structure', async () => {
-    const command = createPactCommand({ contractCode, transactionBody: input });
+    const command = createPactCommandFromTransaction({
+      contractCode,
+      transactionBody: input,
+    });
 
     console.log(command);
     expect(command).toEqual({
@@ -47,7 +50,7 @@ describe('createPactCommand', () => {
         creationTime: 1698278400,
         chainId: '0',
       },
-      networkId: 'fast-development',
+      networkId: 'development',
     });
   });
 });

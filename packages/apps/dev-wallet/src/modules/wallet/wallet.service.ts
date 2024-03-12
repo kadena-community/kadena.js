@@ -1,21 +1,18 @@
 import { IPactCommand, IUnsignedCommand, addSignatures } from '@kadena/client';
 import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
+
+import { idToColor } from '@/utils/id-to-color';
+import { accountRepository } from '../account/account.repository';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
-import {
-  IAccount,
-  IKeyItem,
-  IKeySource,
-  IProfile,
-  walletRepository,
-} from './wallet.repository';
+import { IKeySource, IProfile, walletRepository } from './wallet.repository';
 
 export function getProfile(profileId: string) {
   return walletRepository.getProfile(profileId);
 }
 
 export function getAccounts(profileId: string) {
-  return walletRepository.getAccountsByProfileId(profileId);
+  return accountRepository.getAccountsByProfileId(profileId);
 }
 
 export function sign(
@@ -39,7 +36,7 @@ export function sign(
 
           const service = keySourceManager.get(source);
 
-          if (!service.isReady()) {
+          if (!service.isConnected()) {
             // call onConnect to connect to the keySource;
             // then the ui can prompt the user to unlock the wallet in case of hd-wallet
             await onConnect(keySource);
@@ -74,12 +71,16 @@ export async function createProfile(
     'buffer',
   );
   await walletRepository.addEncryptedValue(secretId, secret);
+  const uuid = crypto.randomUUID();
+
   const profile: IProfile = {
-    uuid: crypto.randomUUID(),
+    uuid,
     name: profileName,
     networks,
     secretId,
+    accentColor: idToColor(uuid),
   };
+
   await walletRepository.addProfile(profile);
   return profile;
 }
@@ -99,42 +100,11 @@ export const unlockProfile = async (profileId: string, password: string) => {
   }
 };
 
-export async function createKey(keySource: IKeySource, quantity: number) {
+export async function createKey(keySource: IKeySource) {
   const service = keySourceManager.get(keySource.source);
-  const keys = await service.createKey(keySource.uuid, quantity);
-  return keys;
+  const key = await service.createKey(keySource.uuid);
+  return key;
 }
-
-export async function createKAccount(profileId: string, keyItem: IKeyItem) {
-  const account: IAccount = {
-    uuid: crypto.randomUUID(),
-    alias: '',
-    profileId: profileId,
-    address: `k:${keyItem.publicKey}`,
-    guard: {
-      type: 'keySet',
-      pred: 'keys-any',
-      publicKeys: [keyItem],
-    },
-  };
-
-  await walletRepository.addAccount(account);
-  return account;
-}
-
-export const createFirstAccount = async (
-  profileId: string,
-  keySource: IKeySource,
-) => {
-  if (!profileId) {
-    throw new Error('Wallet not initialized');
-  }
-
-  const service = keySourceManager.get(keySource.source);
-  const keys = await service.createKey(keySource.uuid, 1);
-
-  return createKAccount(profileId, keys[0]);
-};
 
 export async function decryptSecret(password: string, secretId: string) {
   const encrypted = await walletRepository.getEncryptedValue(secretId);

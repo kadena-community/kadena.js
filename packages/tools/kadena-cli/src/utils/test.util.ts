@@ -1,93 +1,10 @@
 import { Command } from 'commander';
-import util from 'node:util';
+import { format } from 'util';
+import { vi } from 'vitest';
 import { loadProgram } from '../program.js';
-
-class OutputCapture {
-  private _stdout: string[] = [];
-  private _stderr: string[] = [];
-  private _print: boolean = false;
-  private _originalStdoutWrite: typeof process.stdout.write;
-  private _originalStderrWrite: typeof process.stderr.write;
-  private _originalConsoleLog: typeof console.log;
-  private _originalProcessExit: typeof process.exit;
-  public constructor() {
-    this._originalStdoutWrite = process.stdout.write.bind(process.stdout);
-    this._originalStderrWrite = process.stderr.write.bind(process.stderr);
-    this._originalConsoleLog = console.log.bind(console);
-    this._originalProcessExit = process.exit.bind(process);
-  }
-  public capture(print: boolean = false): void {
-    this._print = print;
-    process.stdout.write = (chunk, encoding?: any, callback?: any) => {
-      this._stdout.push(chunk.toString());
-      if (this._print) this._originalStdoutWrite(chunk, encoding, callback);
-      return true;
-    };
-    process.stderr.write = (chunk, encoding?: any, callback?: any) => {
-      this._stderr.push(chunk.toString());
-      if (this._print) this._originalStderrWrite(chunk, encoding, callback);
-      return true;
-    };
-    console.log = function () {
-      // @ts-ignore
-      process.stdout.write(`${util.format.apply(this, arguments)}\n`);
-    };
-    (process.exit as (code?: number) => void) = (code) => {
-      this._stderr.push(`process.exit called with status code ${code}`);
-    };
-  }
-  public get stdout(): string[] {
-    return this._stdout;
-  }
-  public get stderr(): string[] {
-    return this._stderr;
-  }
-  public clear(): void {
-    this._stdout = [];
-    this._stderr = [];
-  }
-  public reset(): void {
-    process.stdout.write = this._originalStdoutWrite;
-    process.stderr.write = this._originalStderrWrite;
-    console.log = this._originalConsoleLog;
-    process.exit = this._originalProcessExit;
-  }
-}
-
-export const capture: OutputCapture = new OutputCapture();
-
-function parseStdout(lines: string[]): string {
-  return lines
-    .flatMap((line) => line.split('\n'))
-    .filter((line) => line)
-    .join('\n');
-}
-
-export async function run(
-  args: string[],
-): Promise<{ stdout: string; stderr: string }> {
-  capture.capture();
-
-  try {
-    const program = loadProgram(new Command());
-    await program.parseAsync(['node', 'index.js', ...args]);
-  } catch (e) {
-    capture.stderr.push(e.message);
-  }
-
-  capture.reset();
-  const result = {
-    stdout: parseStdout(capture.stdout),
-    stderr: parseStdout(capture.stderr),
-  };
-  capture.clear();
-  // Hint: uncomment this when writing tests and run exits unexpectedly
-  if (result.stderr)
-    console.error(
-      `Error in execution:\n${result.stderr}\nstdout: "${result.stdout}"`,
-    );
-  return result;
-}
+import { log } from './logger.js';
+import * as prompts from './prompts.js';
+import * as readStdin from './stdin.js';
 
 export function isValidEncryptedValue(value: string | unknown): boolean {
   if (typeof value !== 'string') return false;
@@ -96,3 +13,87 @@ export function isValidEncryptedValue(value: string | unknown): boolean {
   // parts: salt, iv, tag, data, public key (only for secretKeys, not rootKey)
   return parts.length === 3 || parts.length === 4;
 }
+
+const captureLogs = (): (() => string[]) => {
+  const logs: string[] = [];
+  log.setTransport((record) => {
+    logs.push(format(...record.args));
+  });
+  return () => logs;
+};
+
+export const runCommand = async (
+  args: string[],
+  stdin?: string,
+): Promise<string> => {
+  process.stderr.isTTY = true;
+  const getLogs = captureLogs();
+  if (stdin !== undefined) {
+    const stdinMock = vi.spyOn(readStdin, 'readStdin');
+    stdinMock.mockImplementation(async () => stdin ?? null);
+  }
+  await loadProgram(new Command()).parseAsync(['node', 'index.js', ...args]);
+  return getLogs().join('\n');
+};
+
+export const mockPrompts = (data: {
+  select?: Record<string, string>;
+  password?: Record<string, string>;
+  input?: Record<string, string>;
+  checkbox?: Record<string, number[]>;
+  verbose?: boolean;
+}): void => {
+  vi.spyOn(prompts, 'select').mockImplementation((async (args) => {
+    const message = (await args.message) as string;
+    // eslint-disable-next-line no-console, @typescript-eslint/strict-boolean-expressions
+    if (data.verbose) console.log(`select: ${message}`);
+    if (!data.select) return '';
+    const match = Object.entries(data.select).filter((x) =>
+      message.includes(x[0]),
+    );
+    if (match.length > 0) return match[0][1];
+    return '';
+  }) as typeof prompts.select);
+
+  vi.spyOn(prompts, 'input').mockImplementation((async (args) => {
+    const message = (await args.message) as string;
+    // eslint-disable-next-line no-console, @typescript-eslint/strict-boolean-expressions
+    if (data.verbose) console.log(`input: ${message}`);
+    if (!data.input) return '';
+    const match = Object.entries(data.input).filter((x) =>
+      message.includes(x[0]),
+    );
+    if (match.length > 0) return match[0][1];
+    return '';
+  }) as typeof prompts.input);
+
+  vi.spyOn(prompts, 'password').mockImplementation((async (args) => {
+    if (!data.password) return '';
+    const message = (await args.message) as string;
+    // eslint-disable-next-line no-console, @typescript-eslint/strict-boolean-expressions
+    if (data.verbose) console.log(`password: ${message}`);
+    const match = Object.entries(data.password).filter((x) =>
+      message.includes(x[0]),
+    );
+    if (match.length > 0) return match[0][1];
+    return '';
+  }) as typeof prompts.password);
+
+  vi.spyOn(prompts, 'checkbox').mockImplementation((async (args) => {
+    const message = (await args.message) as string;
+    const choices = args.choices.filter((x) => x.type !== 'separator');
+
+    // eslint-disable-next-line no-console, @typescript-eslint/strict-boolean-expressions
+    if (data.verbose) console.log(`checkbox: ${message}`);
+    if (!data.checkbox) return [];
+    const match = Object.entries(data.checkbox).filter((x) =>
+      message.includes(x[0]),
+    );
+
+    if (match.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return match[0][1].map((i) => (choices[i] as any).value);
+    }
+    return [];
+  }) as typeof prompts.checkbox);
+};

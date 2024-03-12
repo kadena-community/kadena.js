@@ -27,8 +27,8 @@ const meta: Meta<IAccordionProps> = {
       defaultValue: 'single',
       control: {
         type: 'select',
-        options: ['single', 'multiple', 'none'],
       },
+      options: ['single', 'multiple', 'none'],
     },
   },
 };

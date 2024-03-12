@@ -1,59 +1,61 @@
 import { getContrast } from '@/utils/getContrast';
+import { getIPFSLink } from '@/utils/getIPFSLink';
+import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
-import { ticketClass, ticketWrapClass, titleClass } from './style.css';
+import { useMemo } from 'react';
+import {
+  dateClass,
+  dateTitleClass,
+  dateWrapperClass,
+  ticketBorderClass,
+  ticketClass,
+  titleClass,
+} from './style.css';
+
 interface IProps {
-  token: IProofOfUsTokenMeta;
+  data: IProofOfUsTokenMeta;
 }
 
-export const AttendanceTicket: FC<IProps> = ({ token }) => {
-  const [contrastColor, setContrastColor] = useState<string>('white');
-  const color = token.properties?.avatar?.backgroundColor;
+export const AttendanceTicket: FC<IProps> = ({ data }) => {
+  const color = data.properties?.avatar?.backgroundColor ?? 'white';
+  const contrastColor = useMemo(() => getContrast(color), [color]);
 
-  useEffect(() => {
-    const color = getContrast(token.properties?.avatar?.backgroundColor ?? '');
-    setContrastColor(color);
-  }, [token.properties?.avatar?.backgroundColor]);
   return (
-    <>
-      <svg viewBox="0 0 160 90" width="1">
-        <defs>
-          <clipPath id="path" clipPathUnits="objectBoundingBox">
-            <path
-              style={{ fill: 'rgb(0,7,255)' }}
-              transform="scale(0.0063, 0.011)"
-              d="M159.764,30.921c-0.029,0 -0.059,0 -0.088,0c-7.771,0 -14.079,6.309 -14.079,14.079c-0,7.77 6.308,14.079 14.079,14.079c0.029,-0 0.059,-0 0.088,-0l0,31.008l-159.642,0l-0,-89.817l159.642,0l0,30.651Z"
-            ></path>
-          </clipPath>
-        </defs>
-      </svg>
+    <motion.div
+      layoutId={data.image}
+      className={ticketClass}
+      style={{
+        backgroundImage: `url("${getIPFSLink(data.image)}")`,
+        backgroundColor: data.properties?.avatar?.backgroundColor,
+      }}
+    >
+      <img
+        className={ticketBorderClass}
+        src="/assets/attendance-border-large.svg"
+      />
 
-      <div className={ticketWrapClass}>
-        <motion.div
-          layoutId="proof-of-us:jQ9ZFi5VDifZ_LekqHCGrP5EdgKTgU7WhrYkIWNPMe8"
-          className={ticketClass}
-          style={{
-            backgroundImage: `url("${token.image}")`,
-            backgroundColor: token.properties?.avatar?.backgroundColor,
-          }}
+      <h4
+        className={titleClass}
+        style={{
+          color: contrastColor,
+          textShadow: `1px 1px 0px ${color}`,
+        }}
+      >
+        {data.name}
+      </h4>
+      {data.properties.date && (
+        <Stack
+          flexDirection="column"
+          className={dateWrapperClass}
+          style={{ color: contrastColor, textShadow: `1px 1px 0px ${color}` }}
         >
-          <h4
-            className={titleClass}
-            style={{
-              color: contrastColor,
-              textShadow: `-1px -1px 0 ${color}, 1px -1px 0 ${color}, -1px 1px 0 ${color}, 1px 1px 0 ${color}`,
-            }}
-          >
-            {token.name}
-          </h4>
-
-          <div style={{ color: contrastColor }}>
-            <h5>Date</h5>
-            {new Date(token.properties.date).toDateString()}
-          </div>
-        </motion.div>
-      </div>
-    </>
+          <h5 className={dateTitleClass}>Date</h5>
+          <span className={dateClass}>
+            {new Date(data.properties.date).toDateString()}
+          </span>
+        </Stack>
+      )}
+    </motion.div>
   );
 };

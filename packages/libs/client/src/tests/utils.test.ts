@@ -17,7 +17,7 @@ describe('parseType', () => {
   it('returns the input argument if it is neither an object, number, string, nor function', () => {
     const arg = true;
     const result = parseAsPactValue(arg);
-    expect(result).toBe(true);
+    expect(result).toBe('true');
   });
 
   it('wraps string input in double quotes', () => {

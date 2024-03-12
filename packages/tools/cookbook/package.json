@@ -1,6 +1,6 @@
 {
   "name": "@kadena/cookbook",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "private": true,
   "description": "Demonstrates common use cases for @kadena/client and @kadena/pact-cli for smart contracts",
   "keywords": [],
@@ -18,7 +18,7 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint src --ext .js,.ts,.json",
-    "pactjs:coin": "pactjs contract-generate --contract coin --api https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact",
+    "pactjs:coin": "pactjs contract-generate --contract coin --api https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/0/pact",
     "test": ""
   },
   "dependencies": {

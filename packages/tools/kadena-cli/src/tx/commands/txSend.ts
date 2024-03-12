@@ -1,79 +1,157 @@
 import type { Command } from 'commander';
-
-import type { ICommand, IUnsignedCommand } from '@kadena/client';
-import { createClient, isSignedTransaction } from '@kadena/client';
 import path from 'node:path';
+
+import type {
+  ChainId,
+  IClient,
+  ICommand,
+  IPollOptions,
+  ITransactionDescriptor,
+  IUnsignedCommand,
+} from '@kadena/client';
+import { createClient, isSignedTransaction } from '@kadena/client';
+import ora from 'ora';
+import type {
+  ICustomNetworkChoice,
+  INetworkCreateOptions,
+} from '../../networks/utils/networkHelpers.js';
+import { loadNetworkConfig } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
-import { globalOptions } from '../../utils/globalOptions.js';
+import { createCommand } from '../../utils/createCommand.js';
+import { getExistingNetworks } from '../../utils/helpers.js';
+import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
 import { parseTransactionsFromStdin } from '../utils/input.js';
-import { getTransactionsFromFile } from '../utils/txHelpers.js';
+import {
+  extractCommandData,
+  getTransactionsFromFile,
+} from '../utils/txHelpers.js';
 
-// import { globalOptions } from '../../utils/globalOptions.js';
+interface INetworkDetails extends INetworkCreateOptions {
+  chainId: ChainId;
+}
 
-/*
+interface ITransactionWithDetails {
+  command: ICommand | IUnsignedCommand;
+  details: INetworkDetails;
+}
 
-kadena tx send ??
-*/
-type IAnyCommand = IUnsignedCommand | ICommand;
-const isFilePaths = (
-  transactions: IAnyCommand[] | string[],
-): transactions is string[] => {
-  return typeof transactions[0] === 'string';
-};
 interface ISubmitResponse {
-  transaction: IAnyCommand;
+  transaction: IUnsignedCommand | ICommand;
+  details: INetworkDetails;
   requestKey: string;
+  clientKey: string;
+}
+
+const clientInstances: Map<string, IClient> = new Map();
+
+function getClient(details: INetworkDetails): IClient {
+  const clientKey = `${details.networkHost}-${details.networkId}-${details.chainId}`;
+  if (!clientInstances.has(clientKey)) {
+    const client: IClient = createClient(
+      `${details.networkHost}/chainweb/0.0/${details.networkId}/chain/${details.chainId}/pact`,
+    );
+    clientInstances.set(clientKey, client);
+  }
+  return clientInstances.get(clientKey)!;
+}
+
+export async function pollRequests(
+  requestKeys: ISubmitResponse[],
+): Promise<void> {
+  const pollingPromises = requestKeys.map(
+    ({ requestKey, clientKey, details }) => {
+      const client = clientInstances.get(clientKey);
+      if (!client) {
+        log.error(
+          `No client found for requestKey: ${requestKey} with clientKey: ${clientKey}. Polling will not be done for this request.`,
+        );
+        return Promise.resolve({
+          requestKey,
+          status: 'error',
+          message: `Client not found for ${clientKey}`,
+        });
+      }
+
+      const options: IPollOptions = {
+        onPoll: (rqKey) => log.info('Polling status of', rqKey),
+      };
+
+      const transactionDescriptor: ITransactionDescriptor = {
+        requestKey,
+        networkId: details.networkId,
+        chainId: details.chainId,
+      };
+
+      return client
+        .pollStatus(transactionDescriptor, options)
+        .then((data) => ({ requestKey, status: 'success', data }))
+        .catch((error) => ({ requestKey, status: 'error', error }));
+    },
+  );
+
+  const results = await Promise.allSettled(pollingPromises);
+
+  results.forEach((result) => {
+    if (result.status === 'fulfilled') {
+      const value = result.value;
+      const { requestKey, status } = value;
+
+      if (status === 'success' && 'data' in value) {
+        log.info(
+          `Polling success for requestKey: ${requestKey}, result:`,
+          value.data,
+        );
+      } else if (status === 'error' && 'error' in value) {
+        log.error(
+          `Polling error for requestKey: ${requestKey}, error:`,
+          value.error,
+        );
+      } else if ('message' in value) {
+        log.info(
+          `Polling message for requestKey: ${requestKey}: ${value.message}`,
+        );
+      }
+    } else {
+      log.error(`Polling failed for a request, error:`, result.reason);
+    }
+  });
 }
 
 export const sendTransactionAction = async ({
-  chainId,
-  networkHost,
-  networkId,
-  transactions: transactionsInput,
+  transactionsWithDetails,
 }: {
-  networkId: string;
-  networkHost: string;
-  chainId: string;
-  /** Command object of filepath to JSON file with command object */
-  transactions: (IUnsignedCommand | ICommand)[] | string[];
+  transactionsWithDetails: {
+    command: ICommand | IUnsignedCommand;
+    details: INetworkDetails;
+  }[];
 }): Promise<CommandResult<{ transactions: ISubmitResponse[] }>> => {
-  const client = createClient(
-    `${networkHost}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
-  );
-
-  let transactions: (IUnsignedCommand | ICommand)[] = [];
-
-  if (isFilePaths(transactionsInput)) {
-    transactions = await getTransactionsFromFile(transactionsInput, true);
-  } else {
-    transactions = transactionsInput;
-  }
-
   const successfulCommands: ISubmitResponse[] = [];
   const errors: string[] = [];
 
-  for (const command of transactions) {
+  for (const { command, details } of transactionsWithDetails) {
     try {
       if (!isSignedTransaction(command)) {
         errors.push(`Invalid signed transaction: ${JSON.stringify(command)}`);
         continue;
       }
 
-      const response = await client.submit(command);
+      const client = getClient(details);
 
+      const response = await client.submit(command);
       successfulCommands.push({
         transaction: command,
+        details,
         requestKey: response.requestKey,
+        clientKey: `${details.networkHost}-${details.networkId}-${details.chainId}`,
       });
     } catch (error) {
       errors.push(`Error in processing transaction: ${error.message}`);
     }
   }
 
-  if (errors.length === transactions.length) {
+  if (errors.length === transactionsWithDetails.length) {
     return { success: false, errors };
   } else if (errors.length > 0) {
     return {
@@ -89,48 +167,98 @@ export const sendTransactionAction = async ({
 export const createSendTransactionCommand: (
   program: Command,
   version: string,
-) => void = createCommandFlexible(
+) => void = createCommand(
   'send',
   'Send a transaction to the network',
   [
     txOptions.directory({ disableQuestion: true }),
     txOptions.txSignedTransactionFiles(),
-    globalOptions.network(),
-    globalOptions.chainId(),
+    txOptions.txTransactionNetwork(),
+    txOptions.txPoll(),
   ],
-  async (option, values, stdin) => {
-    const commands: IUnsignedCommand[] = [];
-    const filePaths: string[] = [];
+  async (option, { stdin }) => {
+    const commands: (IUnsignedCommand | ICommand)[] = [];
 
     if (stdin !== undefined) {
       commands.push(await parseTransactionsFromStdin(stdin));
     } else {
       const { directory } = await option.directory();
       const { txSignedTransactionFiles } =
-        await option.txSignedTransactionFiles();
+        await option.txSignedTransactionFiles({ signed: true });
       const absolutePaths = txSignedTransactionFiles.map((file) =>
         path.resolve(path.join(directory, file)),
       );
-      filePaths.push(...absolutePaths);
+      commands.push(...(await getTransactionsFromFile(absolutePaths, true)));
     }
 
-    const { networkConfig } = await option.network();
-    const { chainId } = await option.chainId();
-
-    const result = await sendTransactionAction({
-      ...networkConfig,
-      chainId: chainId,
-      transactions: commands.length ? commands : filePaths,
+    const networkForTransactions = await option.txTransactionNetwork({
+      commands,
     });
-    assertCommandError(result);
+    const transactionsWithDetails: ITransactionWithDetails[] = [];
 
-    console.log(
-      result.data.transactions
-        .map(
-          (transaction) =>
-            `Transaction: ${transaction.transaction.hash} submitted with request key: ${transaction.requestKey}`,
-        )
-        .join('\n\n'),
-    );
+    const existingNetworks: ICustomNetworkChoice[] =
+      await getExistingNetworks();
+
+    for (let index = 0; index < commands.length; index++) {
+      const command = commands[index];
+      const network = networkForTransactions.txTransactionNetwork[index];
+
+      if (!existingNetworks.some((item) => item.value === network)) {
+        log.error(
+          `Network "${network}" does not exist. Please create it using "kadena network create" command, the transaction "${
+            index + 1
+          }" with hash "${command.hash}" will not be sent.`,
+        );
+        continue;
+      }
+
+      const networkDetails = await loadNetworkConfig(network);
+      const commandData = extractCommandData(command);
+
+      if (commandData.networkId === networkDetails.networkId) {
+        transactionsWithDetails.push({
+          command,
+          details: {
+            chainId: commandData.chainId as ChainId,
+            ...networkDetails,
+          },
+        });
+      } else {
+        log.error(
+          `Network ID: "${commandData.networkId}" in transaction command ${
+            index + 1
+          } does not match the Network ID: "${
+            networkDetails.networkId
+          }" from the provided network "${network}", transaction with hash "${
+            command.hash
+          }" will not be sent.`,
+        );
+      }
+    }
+
+    if (transactionsWithDetails.length > 0) {
+      const loader = ora('Sending transactions...\n').start();
+      const result = await sendTransactionAction({ transactionsWithDetails });
+      assertCommandError(result, loader);
+
+      if (result.success) {
+        log.info(
+          result.data.transactions
+            .map(
+              ({ transaction, requestKey }) =>
+                `Transaction: ${transaction.hash} submitted with request key: ${requestKey}`,
+            )
+            .join('\n\n'),
+        );
+      }
+
+      const poll = await option.txPoll();
+
+      if (poll.txPoll === true) {
+        await pollRequests(result.data.transactions);
+      }
+    } else {
+      log.info('No transactions to send.');
+    }
   },
 );

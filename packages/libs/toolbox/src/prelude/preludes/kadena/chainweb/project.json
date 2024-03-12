@@ -1,0 +1,61 @@
+{
+  "$schema": "./schema.json",
+  "name": "@kadena/chainweb",
+  "version": "0.0.1",
+  "description": "Chainweb standard contracts",
+  "env": {
+    "namespaces": ["util"],
+    "keysets": {
+      "ns-admin-keyset": {
+        "keys": [],
+        "pred": "keys-all"
+      },
+      "ns-operate-keyset": {
+        "keys": [],
+        "pred": "keys-all"
+      },
+      "ns-genesis-keyset": {
+        "keys": [],
+        "pred": "="
+      },
+      "util-ns-users": {
+        "keys": [],
+        "pred": "keys-all"
+      },
+      "util-ns-admin": {
+        "keys": [],
+        "pred": "keys-all"
+      }
+    }
+  },
+  "repl": "gh:kadena-io/chainweb-node/pact/init.repl",
+  "source": "gh:kadena-io/chainweb-node",
+  "contracts": [
+    {
+      "from": "./pact/namespaces/v1/ns.pact"
+    },
+    {
+      "from": "./pact/gas-payer/gas-payer-v1.pact"
+    },
+    {
+      "from": "./pact/coin-contract/v2/fungible-v2.pact"
+    },
+    {
+      "from": "./pact/coin-contract/v4/fungible-xchain-v1.pact"
+    },
+    {
+      "name": "coin-v6.pact",
+      "from": "./pact/coin-contract/v6/coin-v6-install.pact"
+    },
+    {
+      "order": 1,
+      "from": "./pact/util/util-ns.pact",
+      "namespace": "util"
+    },
+    {
+      "order": 1,
+      "from": "./pact/util/guards.pact",
+      "namespace": "util"
+    }
+  ]
+}

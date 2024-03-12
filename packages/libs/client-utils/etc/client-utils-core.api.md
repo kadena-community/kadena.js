@@ -8,13 +8,13 @@ import type { ChainId } from '@kadena/client';
 import { IClient } from '@kadena/client';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
 import type { IPactCommand } from '@kadena/client';
 import { IPartialPactCommand } from '@kadena/client/lib/interfaces/IPactCommand';
 import type { IPartialPactCommand as IPartialPactCommand_2 } from '@kadena/client';
 import type { ISignFunction } from '@kadena/client';
 import { ITransactionDescriptor } from '@kadena/client';
+import { IUnsignedCommand } from '@kadena/types';
 import type { PactValue } from '@kadena/types';
 
 // Warning: (ae-forgotten-export) The symbol "IAsyncPipe" needs to be exported by the entry point index.d.ts
@@ -32,7 +32,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -44,9 +44,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
+    data: {};
     };
     }, {
     event: "gas-station" | "sign-continuation";
@@ -66,7 +66,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -78,9 +78,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
+    data: {};
     };
     }, {
     event: "gas-station" | "sign-continuation";
@@ -94,12 +94,12 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     }], [{
     event: 'poll-spv';
     data: string;
-    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "preflight", data: ILocalCommandResult) => IEmitterWrapper<[{
+    }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "preflight", data: ICommandResult) => IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -111,9 +111,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
+    data: {};
     };
     }, {
     event: "gas-station" | "sign-continuation";
@@ -132,7 +132,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -144,9 +144,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
+    data: {};
     };
     }, {
     event: "gas-station" | "sign-continuation";
@@ -165,7 +165,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -177,9 +177,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
+    data: {};
     };
     }, {
     event: "gas-station" | "sign-continuation";
@@ -196,15 +196,15 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     }], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "spv-proof", data: {
         pactId: string;
         step: number;
+        proof: string;
         rollback: boolean;
-        data?: Record<string, unknown> | undefined;
-        proof?: string | null | undefined;
+        data: {};
     }) => IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -216,9 +216,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
+    data: {};
     };
     }, {
     event: "gas-station" | "sign-continuation";
@@ -237,7 +237,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -249,9 +249,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
+    data: {};
     };
     }, {
     event: "gas-station" | "sign-continuation";
@@ -270,7 +270,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -282,9 +282,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
+    data: {};
     };
     }, {
     event: "gas-station" | "sign-continuation";
@@ -303,7 +303,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -315,9 +315,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
+    data: {};
     };
     }, {
     event: "gas-station" | "sign-continuation";
@@ -336,7 +336,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -348,9 +348,9 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
     data: {
     pactId: string;
     step: number;
+    proof: string;
     rollback: boolean;
-    data?: Record<string, unknown> | undefined;
-    proof?: string | null | undefined;
+    data: {};
     };
     }, {
     event: "gas-station" | "sign-continuation";
@@ -380,33 +380,107 @@ export const dirtyReadClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign"
 };
 
 // @alpha
-export const estimateGas: (command: IPartialPactCommand_2 | ((cmd?: IPartialPactCommand_2 | (() => IPartialPactCommand_2)) => IPartialPactCommand_2), host?: IClientConfig['host'], client?: IClient) => Promise<{
-    gasLimit: number;
-    gasPrice: number;
-}>;
+export const estimateGas: (command: IPartialPactCommand_2 | ((cmd?: IPartialPactCommand_2 | (() => IPartialPactCommand_2)) => IPartialPactCommand_2), host?: IClientConfig['host'], client?: IClient) => Promise<unknown>;
+
+// @alpha (undocumented)
+export interface IEmitterWrapper<T extends Array<{
+    event: string;
+    data: Any;
+}>, Extra extends Array<{
+    event: string;
+    data: Any;
+}>, ExecReturnType> {
+    // (undocumented)
+    execute: () => ExecReturnType;
+    // Warning: (ae-forgotten-export) The symbol "ExecuteTo" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    executeTo: (() => ExecReturnType) & ExecuteTo<[...T]>;
+    // Warning: (ae-forgotten-export) The symbol "OnType" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    on: OnType<[...T, ...Extra], this>;
+}
 
 // @alpha (undocumented)
 export const preflightClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => {
     (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
     event: "sign";
-    data: ICommand;
+    data: IUnsignedCommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>;
-    from: ((event: "sign", data: ICommand) => IEmitterWrapper<[{
+    from: ((event: "sign", data: IUnsignedCommand) => IEmitterWrapper<[{
     event: "sign";
-    data: ICommand;
+    data: IUnsignedCommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
-    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "preflight", data: ILocalCommandResult) => IEmitterWrapper<[{
+    data: ICommandResult;
+    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "preflight", data: ICommandResult) => IEmitterWrapper<[{
     event: "sign";
-    data: ICommand;
+    data: IUnsignedCommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>);
+};
+
+// @alpha (undocumented)
+export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">, args_1?: IClient | undefined) => {
+    (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
+    event: "query-result";
+    data: {
+    result: Awaited<T> | undefined;
+    chainId: ChainId | undefined;
+    }[];
+    }], [{
+    event: 'chain-result';
+    data: {
+    result: T;
+    chainId: ChainId;
+    };
+    }], Promise<{
+    result: Awaited<T> | undefined;
+    chainId: ChainId | undefined;
+    }[]>>;
+    from: ((event: "query-result", data: {
+        result: Awaited<T> | undefined;
+        chainId: ChainId | undefined;
+    }[]) => IEmitterWrapper<[{
+    event: "query-result";
+    data: {
+    result: Awaited<T> | undefined;
+    chainId: ChainId | undefined;
+    }[];
+    }], [{
+    event: 'chain-result';
+    data: {
+    result: T;
+    chainId: ChainId;
+    };
+    }], Promise<{
+    result: Awaited<T> | undefined;
+    chainId: ChainId | undefined;
+    }[]>>) & ((event: "chain-result", data: {
+        result: T;
+        chainId: ChainId;
+    }) => IEmitterWrapper<[{
+    event: "query-result";
+    data: {
+    result: Awaited<T> | undefined;
+    chainId: ChainId | undefined;
+    }[];
+    }], [{
+    event: 'chain-result';
+    data: {
+    result: T;
+    chainId: ChainId;
+    };
+    }], Promise<{
+    result: Awaited<T> | undefined;
+    chainId: ChainId | undefined;
+    }[]>>);
 };
 
 // @alpha (undocumented)
@@ -416,7 +490,7 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClie
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -429,19 +503,19 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClie
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
     }, {
     event: "listen";
     data: ICommandResult;
-    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "preflight", data: ILocalCommandResult) => IEmitterWrapper<[{
+    }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>) & ((event: "preflight", data: ICommandResult) => IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -453,7 +527,7 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClie
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -465,7 +539,7 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClie
     data: ICommand;
     }, {
     event: "preflight";
-    data: ILocalCommandResult;
+    data: ICommandResult;
     }, {
     event: "submit";
     data: ITransactionDescriptor;
@@ -475,9 +549,28 @@ export const submitClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClie
     }], [], Promise<undefined> | (T extends Promise<any> ? T : Promise<T>)>);
 };
 
+// Warning: (ae-forgotten-export) The symbol "IEmit" needs to be exported by the entry point index.d.ts
+//
+// @alpha (undocumented)
+export type WithEmitter<Extra extends [...Array<{
+    event: string;
+    data: Any;
+}>] = []> = <T extends (emit: IEmit) => Any>(fn: T) => {
+    (...args: Parameters<ReturnType<T>>): IEmitterWrapper<ExtractEventType<ReturnType<T>>, Extra, ReturnType<ReturnType<T>>>;
+    from: StartFrom<[
+    ...ExtractEventType<ReturnType<T>>,
+    ...Extra
+    ], IEmitterWrapper<ExtractEventType<ReturnType<T>>, Extra, ReturnType<ReturnType<T>>>>;
+};
+
+// @alpha (undocumented)
+export const withEmitter: WithEmitter;
+
 // Warnings were encountered during analysis:
 //
-// src/core/client-helpers.ts:41:57 - (ae-forgotten-export) The symbol "IEmitterWrapper" needs to be exported by the entry point index.d.ts
+// lib/esm/core/utils/with-emitter.d.ts:26:5 - (ae-forgotten-export) The symbol "Any" needs to be exported by the entry point index.d.ts
+// lib/esm/core/utils/with-emitter.d.ts:45:5 - (ae-forgotten-export) The symbol "ExtractEventType" needs to be exported by the entry point index.d.ts
+// lib/esm/core/utils/with-emitter.d.ts:46:5 - (ae-forgotten-export) The symbol "StartFrom" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

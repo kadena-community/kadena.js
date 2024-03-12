@@ -1,5 +1,6 @@
 import { join } from 'path';
 import type { INetworkCreateOptions } from '../networks/utils/networkHelpers.js';
+import { NETWORKS_DIR } from './config.js';
 
 export interface IDefaultNetworkOptions {
   [key: string]: INetworkCreateOptions;
@@ -24,7 +25,7 @@ export const networkDefaults: IDefaultNetworkOptions = {
   },
   devnet: {
     network: 'devnet',
-    networkId: 'fast-development',
+    networkId: 'development',
     networkHost: 'http://localhost:8080',
     networkExplorerUrl: 'http://localhost:8080/explorer',
   },
@@ -36,7 +37,7 @@ export const networkDefaults: IDefaultNetworkOptions = {
   },
 };
 
-export const defaultNetworksPath: string = `${process.cwd()}/.kadena/networks`;
+export const defaultNetworksPath: string = NETWORKS_DIR;
 export const standardNetworks: string[] = ['mainnet', 'testnet'];
 export const defaultNetwork: string = 'testnet';
 

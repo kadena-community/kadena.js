@@ -1,15 +1,12 @@
-import { globalStyle, style } from '@vanilla-extract/css';
+import { deviceColors } from '@/styles/tokens.css';
+import { style } from '@vanilla-extract/css';
 
 export const qrClass = style({
-  maxWidth: '500px',
-  maxHeight: '500px',
-  width: '100%',
-  height: '100%',
-  aspectRatio: '1/1',
+  maxWidth: '400px',
+  maxHeight: '400px',
+  margin: '0 auto',
 });
-
-globalStyle(`${qrClass} canvas`, {
-  width: '100%!important',
-  height: '100%!important',
-  aspectRatio: '1/1',
+export const copyClass = style({
+  marginLeft: '10px',
+  fill: deviceColors.green,
 });
