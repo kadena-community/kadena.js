@@ -32,19 +32,30 @@ interface IProps {
 const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
   return (
     <>
+      <Box marginBlockEnd="xxxl" className={marmaladeWrapperClass}>
+        <Text>
+          The long-awaited release of Marmalade’s V2 standard has arrived,
+          bringing a host of exciting updates and features to the top NFT
+          standard in the industry! If you’ve been tracking the progress of
+          Kadena and its NFT standards, you know we’ve been on a journey from
+          the unstandardised on-chain metadata and single-policy token logic in
+          V1 (KIP-13) to a far more robust and dynamic V2 (KIP-20). We’re
+          thrilled to share the next stage of this adventure.
+        </Text>
+      </Box>
       <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
         <GridItem>
           <Card fullWidth>
             <Heading as="h4">Quick start</Heading>
-              <Box marginBlock="md">
-                <Text>
-                  Marmalade is the name of the Kadena token standard.
-                  The token standard defines the interfaces for creating, minting,
-                  and transferring digital items like non-fungible tokens (NFTs) 
-                  and token collections using Kadena smart contracts and built-in
-                  Kadena token policies.
-                </Text>
-              </Box>
+            <Box marginBlock="md">
+              <Text>
+                Marmalade is the name of the Kadena token standard.
+                The token standard defines the interfaces for creating, minting,
+                and transferring digital items like non-fungible tokens (NFTs) 
+                and token collections using Kadena smart contracts and built-in
+                Kadena token policies.
+              </Text>
+            </Box>
             <KadenaLink
               endIcon={<SystemIcon.TrailingIcon />}
               variant="contained"
@@ -78,13 +89,16 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 <Link className={docsCardLink} href="/marmalade/metadata">
                   Token metadata
                 </Link>
-                <Link className={docsCardLink} href="/marmalade/architecture/ledger">
+                <Link
+                  className={docsCardLink}
+                  href="/marmalade/architecture/ledger"
+                >
                   Ledger contract
-                </Link>        
+                </Link>
                 <Link className={docsCardLink} href="/marmalade/architecture/policy-manager">
                   Policy manager contract
-                </Link>     
-                <Link className={docsCardLink} href="/marmalade/architecture/sale-contracts">
+                </Link>
+                <Link className={docsCardLink} href="/marmalade/architecture/sale-contract">
                   Sale contracts
                 </Link>
               </BrowseSection>
@@ -112,16 +126,28 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               background="whitepapers"
             >
               <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/marmalade/concrete-policies/non-fungible-policy">
+                <Link
+                  className={docsCardLink}
+                  href="/marmalade/concrete-policies/non-fungible-policy"
+                >
                   Non-fungible policy
                 </Link>
-                <Link className={docsCardLink} href="/marmalade/concrete-policies/guard-policy">
+                <Link 
+                  className={docsCardLink} 
+                  href="/marmalade/concrete-policies/guard-policy"
+                >
                   Authorization policy
                 </Link>
-                <Link className={docsCardLink} href="/marmalade/concrete-policies/royalty-policy">
+                <Link 
+                  className={docsCardLink} 
+                  href="/marmalade/concrete-policies/royalty-policy"
+                >
                   Royalty policy
                 </Link>
-                <Link className={docsCardLink} href="/marmalade/concrete-policies/collection-policy">
+                <Link 
+                  className={docsCardLink} 
+                  href="/marmalade/concrete-policies/collection-policy"
+                >
                   Collection policy
                 </Link>
               </BrowseSection>
@@ -135,13 +161,22 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               background="whitepapers"
             >
               <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/marmalade/auctions">
+                <Link 
+                  className={docsCardLink} 
+                  href="/marmalade/auctions"
+                >
                   Auctions overview
                 </Link>
-                <Link className={docsCardLink} href="/marmalade/auctions/conventional-auction">
+                <Link 
+                  className={docsCardLink} 
+                  href="/marmalade/auctions/conventional-auction"
+                >
                   Convention auction
                 </Link>
-                <Link className={docsCardLink} href="/marmalade/auctions/dutch-auction">
+                <Link 
+                  className={docsCardLink} 
+                  href="/marmalade/auctions/dutch-auction"
+                >
                   Dutch auction
                 </Link>
               </BrowseSection>
