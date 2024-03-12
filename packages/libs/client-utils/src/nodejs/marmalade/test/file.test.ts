@@ -236,8 +236,10 @@ describe('updateTemplateFilesWithCodeFile', () => {
 
     expect(writeFileSync).toHaveBeenCalledWith(
       join('templateDirectory', 'templateFile'),
-      'codeFile: ' +
-        relative('templateDirectory', join('codeFileDirectory', 'file')),
+      `codeFile: ${relative(
+        'templateDirectory',
+        join('codeFileDirectory', 'file'),
+      )}`,
     );
   });
 });

@@ -4,7 +4,7 @@ import { Pact } from '@kadena/client';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 
-interface ITransactionBodyInput {
+export interface ITransactionBody {
   chainId: ChainId;
   networkId: string;
   signers: string[];
@@ -20,13 +20,15 @@ interface ITransactionBodyInput {
 
 interface IDeployContractInput {
   contractCode: string;
-  transactionBody: ITransactionBodyInput;
+  transactionBody: ITransactionBody;
 }
 
 /**
  * @alpha
  */
-export const createPactCommand = (inputs: IDeployContractInput) => {
+export const createPactCommandFromTransaction = (
+  inputs: IDeployContractInput,
+) => {
   const { contractCode, transactionBody } = inputs;
   let transactionBuilder = Pact.builder
     .execution(contractCode)
@@ -89,4 +91,4 @@ export const createPactCommand = (inputs: IDeployContractInput) => {
 export const deployContract = (
   inputs: IDeployContractInput,
   config: IClientConfig,
-) => submitClient(config)(createPactCommand(inputs));
+) => submitClient(config)(createPactCommandFromTransaction(inputs));

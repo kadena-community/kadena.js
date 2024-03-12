@@ -24,8 +24,10 @@ export const defaultChainId: ChainId = '0';
 export const defaultNetworkId = 'fast-development';
 export const defaultNetworkHost = 'http://localhost:8080';
 
-/* Defines the arguments for the marmalade contracts: these values are going
-to be replaced in the marmalade templates and code files  */
+/**
+ * Defines the arguments for the marmalade contracts: these values are going
+ * to be replaced in the marmalade templates and code files
+ */
 export const defaultArguments = {
   sender_key: defaultAccount.publicKeys?.[0] ?? '',
   marmalade_namespace: 'marmalade-v2',
@@ -39,9 +41,12 @@ export const defaultArguments = {
   marmalade_user_key_1: defaultAccount.publicKeys?.[0] ?? '',
   marmalade_user_key_2: defaultAccount.publicKeys?.[0] ?? '',
 };
-/* Define the order of the namespaces in the marmalade contracts: the smart contracts
-related to the namespace of the first item are going to be deployed first, then the second,
-and so on  */
+
+/**
+ * Define the order of the namespaces in the marmalade contracts: the smart contracts
+ * related to the namespace of the first item are going to be deployed first,
+ * then the second, and so on
+ */
 export const defaultNamespaceDeployOrder = ['marmalade-v2', 'marmalade-sale'];
 
 export const defaultNamespaceConfig: INamespaceConfig[] = [
@@ -79,9 +84,10 @@ export const defaultRemoteConfig: IRemoteConfig = {
   exclude: ['data', 'sample'],
 };
 
-/* By default the client configuration will point to localhost:8080 and use sender00
-  as the default account */
-
+/**
+ * By default the client configuration will point to localhost:8080 and use sender00
+ * as the default account
+ */
 export const defaultClientConfig: IClientConfig = {
   sign: createSignWithKeypair({
     publicKey: defaultAccount.publicKeys?.[0] ?? '',
