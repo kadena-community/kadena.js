@@ -50,7 +50,7 @@ describe('createPactCommand', () => {
         creationTime: 1698278400,
         chainId: '0',
       },
-      networkId: 'fast-development',
+      networkId: 'development',
     });
   });
 });

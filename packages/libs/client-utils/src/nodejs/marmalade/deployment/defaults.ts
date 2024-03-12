@@ -21,7 +21,7 @@ export const defaultAccount: IAccountWithSecretKey = {
 };
 
 export const defaultChainId: ChainId = '0';
-export const defaultNetworkId = 'fast-development';
+export const defaultNetworkId = 'development';
 export const defaultNetworkHost = 'http://localhost:8080';
 
 /**
