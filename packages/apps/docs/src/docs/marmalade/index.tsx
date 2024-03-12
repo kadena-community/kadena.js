@@ -36,15 +36,15 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
         <GridItem>
           <Card fullWidth>
             <Heading as="h4">Quick start</Heading>
-            <Box marginBlock="md">
-              <Text>
-              Marmalade is the name of the Kadena token standard.
-              The token standard defines the interfaces for creating, minting,
-              and transferring digital items like non-fungible tokens (NFTs) 
-              and token collections using Kadena smart contracts and built-in
-              Kadena token policies.
-              </Text>
-            </Box>
+              <Box marginBlock="md">
+                <Text>
+                  Marmalade is the name of the Kadena token standard.
+                  The token standard defines the interfaces for creating, minting,
+                  and transferring digital items like non-fungible tokens (NFTs) 
+                  and token collections using Kadena smart contracts and built-in
+                  Kadena token policies.
+                </Text>
+              </Box>
             <KadenaLink
               endIcon={<SystemIcon.TrailingIcon />}
               variant="contained"
