@@ -148,8 +148,10 @@ export const deployMarmalade = async ({
 
     console.log(`Deploying Marmalade Contracts...`);
 
-    /* sort the templates alphabetically so that the contracts are deployed in the correct order
-    also taking into account the order provided in the configuration */
+    /**
+     * sort the templates alphabetically so that the contracts are deployed in the correct order
+     * also taking into account the order provided in the configuration
+     */
     const templateSort = (a: string, b: string) => {
       const indexA = namespaceDeployOrder.findIndex((order) =>
         a.includes(order),
