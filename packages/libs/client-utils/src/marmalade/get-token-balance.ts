@@ -24,7 +24,7 @@ interface IGeBalanceInput {
   };
 }
 
-const getBalanceCommand = ({
+const getTokenBalanceCommand = ({
   tokenId,
   chainId,
   accountName,
@@ -45,7 +45,10 @@ const getBalanceCommand = ({
     }),
   );
 
-export const getBalance = (inputs: IGeBalanceInput, config: IClientConfig) =>
+export const getTokenBalance = (
+  inputs: IGeBalanceInput,
+  config: IClientConfig,
+) =>
   submitClient<
     PactReturnType<IPactModules['marmalade-v2.ledger']['get-balance']>
-  >(config)(getBalanceCommand(inputs));
+  >(config)(getTokenBalanceCommand(inputs));

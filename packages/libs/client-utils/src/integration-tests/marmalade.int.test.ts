@@ -7,7 +7,7 @@ import { transferCreate } from '../coin';
 import type { IClientConfig } from '../core/utils/helpers';
 import { createToken } from '../marmalade/create-token';
 import { createTokenId } from '../marmalade/create-token-id';
-import { getBalance } from '../marmalade/get-balance';
+import { getTokenBalance } from '../marmalade/get-token-balance';
 import { mintToken } from '../marmalade/mint-token';
 import { transferCreateToken } from '../marmalade/transfer-create-token';
 import { deployMarmalade } from '../nodejs';
@@ -37,7 +37,7 @@ const inputs = {
 const config = {
   host: 'http://127.0.0.1:8080',
   defaults: {
-    networkId: 'fast-development',
+    networkId: 'development',
   },
   sign: createSignWithKeypair([sourceAccount]),
 };
@@ -46,7 +46,7 @@ beforeAll(async () => {
   const fundConfig: IClientConfig = {
     host: 'http://127.0.0.1:8080',
     defaults: {
-      networkId: 'fast-development',
+      networkId: 'development',
       meta: {
         chainId,
       },
@@ -152,7 +152,7 @@ describe('createToken', () => {
         'submit',
         withStep((step, trDesc) => {
           expect(step).toBe(3);
-          expect(trDesc.networkId).toBe(NetworkIds.fast_development);
+          expect(trDesc.networkId).toBe(NetworkIds.development);
           expect(trDesc.chainId).toBe(chainId);
           expect(trDesc.requestKey).toBeTruthy();
         }),
@@ -217,7 +217,7 @@ describe('mintToken', () => {
         'submit',
         withStep((step, trDesc) => {
           expect(step).toBe(3);
-          expect(trDesc.networkId).toBe(NetworkIds.fast_development);
+          expect(trDesc.networkId).toBe(NetworkIds.development);
           expect(trDesc.chainId).toBe(chainId);
           expect(trDesc.requestKey).toBeTruthy();
         }),
@@ -237,7 +237,7 @@ describe('mintToken', () => {
 
     expect(result).toBe(true);
 
-    const balance = await getBalance(
+    const balance = await getTokenBalance(
       {
         accountName: sourceAccount.account,
         chainId,
@@ -280,9 +280,9 @@ describe('mintToken', () => {
   });
 });
 
-describe('getBalance', () => {
+describe('getTokenBalance', () => {
   it('shoud get a balance', async () => {
-    const result = await getBalance(
+    const result = await getTokenBalance(
       {
         accountName: sourceAccount.account,
         chainId,
@@ -302,7 +302,7 @@ describe('getBalance', () => {
   });
   it('should throw an error if token does not exist', async () => {
     const nonExistingTokenId = 'non-existing-token';
-    const task = getBalance(
+    const task = getTokenBalance(
       {
         accountName: sourceAccount.account,
         chainId,
@@ -375,7 +375,7 @@ describe('transferCreateToken', () => {
         'submit',
         withStep((step, trDesc) => {
           expect(step).toBe(3);
-          expect(trDesc.networkId).toBe(NetworkIds.fast_development);
+          expect(trDesc.networkId).toBe(NetworkIds.development);
           expect(trDesc.chainId).toBe(chainId);
           expect(trDesc.requestKey).toBeTruthy();
         }),
@@ -395,7 +395,7 @@ describe('transferCreateToken', () => {
 
     expect(result).toBe(true);
 
-    const balance = await getBalance(
+    const balance = await getTokenBalance(
       {
         accountName: secondaryTargetAccount.account,
         chainId: chainId,
