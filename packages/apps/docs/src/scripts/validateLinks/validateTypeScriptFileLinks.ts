@@ -1,13 +1,14 @@
+import chalk from 'chalk';
 import fs from 'fs';
-import { glob } from 'glob';
+import { globby } from 'globby';
 import path from 'path';
 
-async function extractLinksFromComponent(filePath) {
+async function extractLinksFromComponent(filePath: string): Promise<string[]> {
   const content = fs.readFileSync(filePath, 'utf8');
   // Regex to capture the full <Link> component
   const linkComponentRegex = /<Link[^>]+href=["']([^"']+)["'][^>]*>/g;
   let match;
-  const links = [];
+  const links: string[] = [];
 
   while ((match = linkComponentRegex.exec(content)) !== null) {
     // Extract href value
@@ -21,8 +22,11 @@ async function extractLinksFromComponent(filePath) {
   return links;
 }
 
-async function verifyLinksExist(links, basePath) {
-  const brokenLinks = [];
+async function verifyLinksExist(
+  links: string[],
+  basePath: string,
+): Promise<string[]> {
+  const brokenLinks: string[] = [];
 
   for (const link of links) {
     const expectedPath = path.join(basePath, `${link}.tsx`);
@@ -42,20 +46,34 @@ async function verifyLinksExist(links, basePath) {
   return brokenLinks;
 }
 
-async function main() {
-  const basePath = path.resolve('./src/pages');
-  const tsxFiles = await glob('./src/pages/**/*.+(tsx|ts)');
+export interface IValidateTypeScriptFileLinksResult {
+  file: string;
+  brokenLinks: string[];
+}
 
-  console.log(`Scanning ${tsxFiles.length} files for internal links...`);
+export default async function validateTypeScriptFileLinks(
+  basePath: string,
+): Promise<IValidateTypeScriptFileLinksResult[]> {
+  const tsxFiles = await globby(`${basePath}/**/*.+(tsx|ts)`);
 
+  console.log(
+    chalk.blue(
+      `Scanning ${tsxFiles.length} typesript files for internal links...`,
+    ),
+  );
+
+  const overallBrokenLinks: IValidateTypeScriptFileLinksResult[] = [];
   for (const file of tsxFiles) {
     const internalLinks = await extractLinksFromComponent(file);
     const brokenLinks = await verifyLinksExist(internalLinks, basePath);
 
     if (brokenLinks.length > 0) {
-      console.log(`Broken links found in ${file}:`, brokenLinks);
+      overallBrokenLinks.push({
+        file,
+        brokenLinks,
+      });
     }
   }
-}
 
-await main().catch(console.error);
+  return overallBrokenLinks;
+}
