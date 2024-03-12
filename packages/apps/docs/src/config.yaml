@@ -115,6 +115,9 @@ pages:
           quickstart:
             url: /quick-start
             file: /build/nft-marmalade/quickstart.md
+          architecture:
+            url: /architecture
+            file: /build/nft-marmalade/contract-architecture.md
           ledger:
             url: /ledger
             file: /build/nft-marmalade/ledger.md
