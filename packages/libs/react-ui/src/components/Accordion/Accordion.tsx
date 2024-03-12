@@ -11,6 +11,11 @@ export interface IAccordionProps<T extends object = object>
   extends AriaAccordionProps<T>,
     Omit<TreeProps<T>, 'children'> {}
 
+/**
+ * Known issue: Accordion does not fully support keyboard navigation yet.
+ * This will be fixed when react-aria will release the hooks for the Accordion & AccordionItem.
+ */
+
 function BaseAccordion<T extends object>(
   props: IAccordionProps<T>,
   forwardedRef: ForwardedRef<HTMLDivElement>,
@@ -21,6 +26,7 @@ function BaseAccordion<T extends object>(
   });
   const ref = useObjectRef(forwardedRef);
   const { accordionProps } = useAccordion(props, state, ref);
+
   return (
     <div ref={ref} {...accordionProps}>
       {[...state.collection].map((item) => (
