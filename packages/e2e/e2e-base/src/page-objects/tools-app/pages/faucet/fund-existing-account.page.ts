@@ -47,6 +47,6 @@ export class FundExistingAccountPage {
       }),
     ).toHaveValue(account);
 
-    await this._page.getByRole('button', { name: 'Fund 100 Coins' }).click();
+    await this._page.getByRole('button', { name: 'Fund 20 Coins' }).click();
   }
 }
