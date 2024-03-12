@@ -32,21 +32,26 @@ export const RightInfoSidebar: FC<IRightInfoSidebarProps> = ({
 }) => {
   const { t } = useTranslation('common');
   const router = useRouter();
-  const isMediumScreen = useIsMatchingMediaQuery(`${breakpoints.lg}`);
-
-  console.log(isMediumScreen);
+  const isLargeScreen = useIsMatchingMediaQuery(`${breakpoints.lg}`);
 
   const [initialItem, setInitialItem] = useState<{ item: number } | undefined>(
     undefined,
   );
 
   const drawerPanelRef = useRef<HTMLElement | null>(null);
+  const [initialRender, setInitialRender] = useState(true);
 
   useEffect(() => {
-    if (isMediumScreen) {
-      setInitialItem({ item: 0 });
+    if (initialRender) {
+      setInitialRender(false);
+      if (isLargeScreen) {
+        setInitialItem({ item: 0 });
+      }
+      return;
     }
-  }, [sidebarOpen, isMediumScreen]);
+
+    setInitialItem({ item: 0 });
+  }, [sidebarOpen, isLargeScreen, initialRender]);
 
   return (
     <DrawerToolbar
