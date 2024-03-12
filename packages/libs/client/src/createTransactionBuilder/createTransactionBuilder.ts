@@ -53,7 +53,7 @@ interface IAddSigner<TCommand> {
 
 interface IAddVerifier<TCommand> {
   /**
-   * Add signer without capability
+   * Add verifier without capability
    */
   (first: IVerifier): IBuilder<TCommand>;
   /**
@@ -106,15 +106,15 @@ interface IAddKeyset<TCommand> {
  */
 export interface IBuilder<TCommand> {
   /**
-   * Add signer with theirs capabilities
+   * Add verifier with theirs capabilities
    * @example
    * ```
    * Pact.builder
    *   .execution(Pact.modules.coin.transfer("albert"))
-   *   // add signer without scoping to any capabilities
-   *   .addSigner("public_key")
-   *   // add signer without scoping to the capabilities
-   *   .addSigner("gas_payer_public_key",()=>[
+   *   // add verifier without scoping to any capabilities
+   *   .addVerifier(\{ name:"bridge", proof:"proof" \})
+   *   // add verifier without scoping to the capabilities
+   *   .addVerifier(\{ name:"zk", proof:"proof" \},()=>[
    *       withCapability("coin.GAS"),
    *       withCapability("myModule.CAP","arg1",{ decimal: 2 })
    *    ])
