@@ -22,7 +22,6 @@ The reference information for the Pact programming language covers the following
 - [Sequenced pacts](/reference/pacts) highlights the use of multi-step transactions using pact definitions.
 - [Pact REPL](/reference/pact-repl) provides command-line reference information for the Pact REPL interactive command-line program.
 - [Pact REST API](/reference/rest-api) describes the Pact REST API and how you can use it to interact with the blockchain.
-- [Pact-JS](/reference/pactjs) covers the TypeScript library that provides a frontend application programming interface (API) for interacting with Pact smart contracts and the Kadena network.
 
 For information about the design of the Pact programming language, see the [Pact white paper](/kadena) or the [Pact home page](https://www.kadena.io/pact).
 
@@ -32,8 +31,11 @@ The Kadena client is a collection`of libraries, functions, and utilities written
 
 The Kadena client includes the following packages:
 
-- Client utilities @kadena/client-utils
-- Command-line interface
+- [Pact-JS](/reference/pactjs) is a TypeScript library that provides a frontend application programming interface (API) for interacting with Pact smart contracts and the Kadena network.
+
+- [Client utilities]() @kadena/client-utils
+
+- [Command-line interface]()
 
 ## NFT marketplace: Marmalade technical reference
 

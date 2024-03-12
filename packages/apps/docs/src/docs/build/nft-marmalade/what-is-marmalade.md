@@ -77,7 +77,7 @@ For example, you can use token policies to define the following types of rules:
 
 - You can use policies to control mint operations such as whether a token is unique, part of a limited series, or a fully fungible coin.
 
-- You can use policies to prevent certain tokens from being burned or to be burned only when under specific conditions are met.
+- You can use policies to prevent certain tokens from being burned or to be burned only when specific conditions are met.
 
 - You can use policies to restrict how tokens are owned and transferred.
 
