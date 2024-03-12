@@ -1309,6 +1309,9 @@ importers:
       '@types/node':
         specifier: ^18.17.14
         version: 18.17.14
+      '@types/w3c-web-hid':
+        specifier: 1.0.6
+        version: 1.0.6
       eslint:
         specifier: ^8.45.0
         version: 8.53.0
@@ -7992,14 +7995,12 @@ packages:
       '@ledgerhq/logs': 6.12.0
       rxjs: 7.8.1
       semver: 7.5.4
-    dev: true
 
   /@ledgerhq/errors@6.16.1:
     resolution: {integrity: sha512-4D4wKecGzQpIu7sx03Sg4uE1e8g1oZUndWgw9gw776H8h9ov9c5TxPaldTn2j6orPECAERViLf7LTO4L5pE2Cw==}
 
   /@ledgerhq/errors@6.16.2:
     resolution: {integrity: sha512-jFpohaSW+p1Obp3NDT9QSByEtT3gtBZIjVNu8m25gnrH5zdtfPVlPwH6UiuS50s+2dHQyehV8hF+IfreKDWAZA==}
-    dev: true
 
   /@ledgerhq/hw-transport-mocker@6.28.4:
     resolution: {integrity: sha512-s4GyN8AdjenO+Y6XsxQyW1bQlbsBwNZJyax4Jz2tf+AbiDC3geblaK3wAg6FTUX0tz5K0mAarEVvM03Qxdxblw==}
@@ -8033,7 +8034,6 @@ packages:
       '@ledgerhq/errors': 6.16.2
       '@ledgerhq/logs': 6.12.0
       events: 3.3.0
-    dev: true
 
   /@ledgerhq/logs@6.12.0:
     resolution: {integrity: sha512-ExDoj1QV5eC6TEbMdLUMMk9cfvNKhhv5gXol4SmULRVCx/3iyCPhJ74nsb3S0Vb+/f+XujBEj3vQn5+cwS0fNA==}
@@ -15565,6 +15565,10 @@ packages:
 
   /@types/uuid@9.0.8:
     resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
+    dev: true
+
+  /@types/w3c-web-hid@1.0.6:
+    resolution: {integrity: sha512-IWyssXmRDo6K7s31dxf+U+x/XUWuVsl9qUIYbJmpUHPcTv/COfBCKw/F0smI45+gPV34brjyP30BFcIsHgYWLA==}
     dev: true
 
   /@types/webpack-env@1.18.4:
@@ -35151,7 +35155,7 @@ packages:
     prepare: true
     requiresBuild: true
     dependencies:
-      '@ledgerhq/hw-transport': 6.30.3
+      '@ledgerhq/hw-transport': 6.30.4
       fast-sha256: 1.3.0
       typedoc: 0.22.18(typescript@5.2.2)
     transitivePeerDependencies:

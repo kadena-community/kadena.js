@@ -8,12 +8,16 @@ export class CardComponent {
 
   public constructor(page: Page, title: string) {
     this._page = page;
-    this._component = this._page.locator(`div h5:has-text("${title}")`);
+    this._component = this._page
+      .locator(`div`)
+      .filter({ has: this._page.locator(`div div h5:has-text("${title}")`) });
     this._listbox = new ListBoxComponent(this._page);
   }
 
   public async setValueForTextbox(label: string, value: string): Promise<void> {
-    await this._component.getByRole('textbox', { name: label }).fill(value);
+    await this._component
+      .getByRole('textbox', { name: label })
+      .fill(value, { force: true });
     await this._component.getByRole('textbox', { name: label }).press('Tab');
   }
 

@@ -20,6 +20,10 @@ export class TransferPage {
     );
   }
 
+  public async setSenderAccount(account: string): Promise<void> {
+    await this.senderCard.setValueForTextbox('Account Name', account);
+  }
+
   public async setKeyIndex(value: string): Promise<void> {
     await this.senderCard.setValueForTextbox('Key Index', value);
   }

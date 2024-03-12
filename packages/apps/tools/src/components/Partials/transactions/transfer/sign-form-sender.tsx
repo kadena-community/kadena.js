@@ -103,7 +103,7 @@ export const SignFormSender = ({
 
   return (
     <LoadingCard fullWidth isLoading={senderData.isFetching}>
-      <Heading as={'h4'}>{t('Sender')} </Heading>
+      <Heading as={'h5'}>{t('Sender')} </Heading>
 
       <Stack flexDirection={'row'} justifyContent={'space-between'}>
         <Select

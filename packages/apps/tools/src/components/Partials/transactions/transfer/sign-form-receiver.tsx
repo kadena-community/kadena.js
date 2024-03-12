@@ -207,7 +207,7 @@ export const SignFormReceiver = ({
 
   return (
     <LoadingCard fullWidth isLoading={receiverData.isFetching}>
-      <Heading as={'h4'}>{t('Receiver')} </Heading>
+      <Heading as={'h5'}>{t('Receiver')} </Heading>
       <Tabs
         aria-label="receiver-account-tabs"
         selectedKey={toAccountTab}
