@@ -4,6 +4,9 @@ import { Pact } from '@kadena/client';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 
+/**
+ * @alpha
+ */
 export interface ITransactionBody {
   chainId: ChainId;
   networkId: string;
