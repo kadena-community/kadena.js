@@ -1309,9 +1309,6 @@ importers:
       '@types/node':
         specifier: ^18.17.14
         version: 18.17.14
-      '@types/w3c-web-hid':
-        specifier: 1.0.6
-        version: 1.0.6
       eslint:
         specifier: ^8.45.0
         version: 8.53.0
@@ -15565,10 +15562,6 @@ packages:
 
   /@types/uuid@9.0.8:
     resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
-    dev: true
-
-  /@types/w3c-web-hid@1.0.6:
-    resolution: {integrity: sha512-IWyssXmRDo6K7s31dxf+U+x/XUWuVsl9qUIYbJmpUHPcTv/COfBCKw/F0smI45+gPV34brjyP30BFcIsHgYWLA==}
     dev: true
 
   /@types/webpack-env@1.18.4:
@@ -35170,7 +35163,7 @@ packages:
     hasBin: true
     requiresBuild: true
     dependencies:
-      '@ledgerhq/hw-transport': 6.30.3
+      '@ledgerhq/hw-transport': 6.30.4
       blake2b: 2.1.4
       hw-app-alamgu: github.com/alamgu/hw-app-alamgu/6822e963dd4a92d50929bd8a3b750c90973504b3(typescript@5.2.2)
     transitivePeerDependencies:
