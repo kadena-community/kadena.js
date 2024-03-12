@@ -3,12 +3,14 @@ import type {
   ICommandResult,
   INetworkOptions,
   IPactCommand,
+  IPartialPactCommand,
   ISignFunction,
   IUnsignedCommand,
 } from '@kadena/client';
 import { createClient, getHostUrl, isSignedTransaction } from '@kadena/client';
 import type { PactValue } from '@kadena/types';
 
+import { composePactCommand } from '@kadena/client/fp';
 import { getGlobalConfig } from '../global-config';
 import type { Any } from './types';
 
@@ -139,3 +141,15 @@ export const asyncLock = () => {
   lock.close();
   return lock;
 };
+
+type InitialInput =
+  | Partial<IPartialPactCommand>
+  | (() => Partial<IPartialPactCommand>);
+
+export const composeWithDefaults =
+  (
+    defaults: IPartialPactCommand = {},
+    globalConfig = getGlobalConfig().defaults,
+  ) =>
+  (cmd: InitialInput = {}) =>
+    composePactCommand(defaults, cmd)(globalConfig);

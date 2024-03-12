@@ -12,4 +12,13 @@ const createGlobalConfig = () => {
   };
 };
 
-export const { setGlobalConfig, getGlobalConfig } = createGlobalConfig();
+export const {
+  /**
+   * @alpha
+   */
+  setGlobalConfig,
+  /**
+   * @alpha
+   */
+  getGlobalConfig,
+} = createGlobalConfig();
