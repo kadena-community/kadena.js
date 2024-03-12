@@ -5,12 +5,22 @@ export class KadenaSpireKey {
   private _spireKeyHostname: string;
   private _user: IUser | null = null;
   private _transactions: Record<string, IUnsignedCommand> = {};
+  private _storage: Storage;
+  private _location: Location;
+  private _history: History;
 
-  constructor(spireKeyHostname: string, returnUrl: string) {
+  constructor(
+    spireKeyHostname: string,
+    returnUrl: string,
+    browserApis?: { storage: Storage; location: Location; history: History },
+  ) {
     this._spireKeyHostname = spireKeyHostname;
     this._returnUrl = returnUrl;
+    this._storage = browserApis?.storage ?? window.sessionStorage;
+    this._location = browserApis?.location ?? window.location;
+    this._history = browserApis?.history ?? window.history;
     this._loadFromLocalStorage();
-    this.update(window.location);
+    this.update(this._location);
   }
 
   get isLoggedIn() {
@@ -53,20 +63,20 @@ export class KadenaSpireKey {
     }
     this._saveToLocalStorage();
     // clear querystring parameters
-    history.pushState({}, '', location.pathname);
+    this._history.pushState({}, '', location.pathname);
   }
 
   login() {
-    location.href = `${this._spireKeyHostname}/login?returnUrl=${this._returnUrl}`;
+    this._location.href = `${this._spireKeyHostname}/login?returnUrl=${this._returnUrl}`;
   }
 
   loginOptimistic() {
-    location.href = `${this._spireKeyHostname}/login?returnUrl=${this._returnUrl}&optimistic=true`;
+    this._location.href = `${this._spireKeyHostname}/login?returnUrl=${this._returnUrl}&optimistic=true`;
   }
 
   logout() {
     this._clearLocalStorage();
-    location.href = new URL(this._returnUrl).origin;
+    this._location.href = new URL(this._returnUrl).origin;
   }
 
   sign(tx: IUnsignedCommand) {
@@ -76,32 +86,32 @@ export class KadenaSpireKey {
       optimistic: false,
     };
     const queryString = new URLSearchParams(query as any).toString();
-    location.href = `${this._spireKeyHostname}/sign?${queryString}`;
+    this._location.href = `${this._spireKeyHostname}/sign?${queryString}`;
   }
 
   private _saveToLocalStorage() {
-    sessionStorage.setItem('spirekey_user', JSON.stringify(this._user));
-    sessionStorage.setItem(
+    this._storage.setItem('spirekey_user', JSON.stringify(this._user));
+    this._storage.setItem(
       'spirekey_transactions',
       JSON.stringify(this._transactions),
     );
   }
 
   private _loadFromLocalStorage() {
-    const user = sessionStorage.getItem('spirekey_user');
+    const user = this._storage.getItem('spirekey_user');
     if (user) {
       this._user = JSON.parse(user);
     }
 
-    const transactions = sessionStorage.getItem('spirekey_transactions');
+    const transactions = this._storage.getItem('spirekey_transactions');
     if (transactions) {
       this._transactions = JSON.parse(transactions);
     }
   }
 
   private _clearLocalStorage() {
-    sessionStorage.removeItem('spirekey_user');
-    sessionStorage.removeItem('spirekey_transactions');
+    this._storage.removeItem('spirekey_user');
+    this._storage.removeItem('spirekey_transactions');
   }
 }
 
