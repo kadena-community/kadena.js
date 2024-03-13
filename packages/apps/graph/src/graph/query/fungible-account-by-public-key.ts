@@ -13,43 +13,44 @@ builder.queryField('fungibleAccountByPublicKey', (t) =>
     args: {
       publicKey: t.arg.string({ required: true }),
     },
-    type: FungibleAccount,
+    type: [FungibleAccount],
     nullable: true,
     async resolve(__parent, args) {
       try {
-        const accountName = await getAccountNameByPublicKey(args.publicKey);
+        const accountNames = await getAccountNamesByPublicKey(args.publicKey);
 
-        if (!accountName) {
+        if (accountNames.length === 0) {
           return null;
         }
 
-        const chainAccounts = (
-          await Promise.all(
-            chainIds.map(async (chainId) => {
-              return getFungibleChainAccount({
-                chainId: chainId,
-                fungibleName: 'coin',
-                accountName: accountName,
-              });
-            }),
-          )
-        ).filter(
-          (chainAccount) => chainAccount !== null,
-        ) as FungibleChainAccount[];
+        const accountsWithChainAccounts = await Promise.all(
+          accountNames.map(async (accountName: string) => {
+            const chainAccounts = (
+              await Promise.all(
+                chainIds.map((chainId) =>
+                  getFungibleChainAccount({
+                    chainId: chainId,
+                    fungibleName: 'coin',
+                    accountName: accountName,
+                  }),
+                ),
+              )
+            ).filter(Boolean) as FungibleChainAccount[];
 
-        if (chainAccounts.length === 0) {
-          return null;
-        }
+            return {
+              __typename: FungibleAccountName,
+              accountName,
+              fungibleName: 'coin',
+              chainAccounts,
+              totalBalance: 0,
+              transactions: [],
+              transfers: [],
+            };
+          }),
+        );
 
-        return {
-          __typename: FungibleAccountName,
-          accountName: accountName,
-          fungibleName: 'coin',
-          chainAccounts,
-          totalBalance: 0,
-          transactions: [],
-          transfers: [],
-        };
+        console.log('returning', accountsWithChainAccounts);
+        return accountsWithChainAccounts;
       } catch (error) {
         throw normalizeError(error);
       }
@@ -57,39 +58,34 @@ builder.queryField('fungibleAccountByPublicKey', (t) =>
   }),
 );
 
-export async function getAccountNameByPublicKey(
+async function getAccountNamesByPublicKey(
   publicKey: string,
-): Promise<string | undefined> {
-  const result = await prismaClient.transaction.findFirst({
-    where: {
-      AND: [
-        {
-          code: {
-            contains: 'transfer-create',
-          },
-        },
-        {
-          data: {
-            path: ['account-guard', 'keys'],
-            array_contains: publicKey,
-          },
-        },
-        {
-          data: {
-            path: ['account-guard', 'pred'],
-            not: '',
-          },
-        },
-      ],
-    },
-    select: {
-      transfers: {
-        select: { receiverAccount: true },
-        orderBy: { amount: 'desc' },
-        take: 1,
-      },
-    },
-  });
+): Promise<string[]> {
+  const regex = /^[a-zA-Z0-9]+$/;
 
-  return result?.transfers[0].receiverAccount;
+  if (publicKey.length !== 64 || !regex.test(publicKey)) {
+    throw new Error('Invalid public key');
+  }
+
+  const searchPubKey = `%${publicKey}%`;
+
+  const accountsFromTransactions = (await prismaClient.$queryRaw`
+    SELECT DISTINCT to_acct
+    FROM transfers AS tr
+    INNER JOIN transactions AS tx
+      ON tx.block = tr.block AND tx.requestkey = tr.requestkey
+    WHERE
+      tx.data::text LIKE ${searchPubKey}
+      AND
+        (tx.code LIKE '%coin.transfer-create%'
+        OR tx.code LIKE '%coin.create-account%')
+  `) as { to_acct: string }[];
+
+  const result = accountsFromTransactions.map((account) => account.to_acct);
+
+  if (result.length === 0) {
+    return [];
+  }
+
+  return result;
 }

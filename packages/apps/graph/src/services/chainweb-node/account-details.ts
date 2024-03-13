@@ -24,6 +24,12 @@ export async function getAccountDetails(
   const networkId = (await networkConfig).networkId;
 
   try {
+    console.log(
+      'gettingAccountDetails for',
+      accountName,
+      chainId,
+      fungibleName,
+    );
     result = (await details(
       accountName,
       networkId,
