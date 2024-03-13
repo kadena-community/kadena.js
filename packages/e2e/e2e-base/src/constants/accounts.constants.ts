@@ -34,6 +34,19 @@ export const sender00Account: IAccount = {
   ],
 };
 
+export const ledgerAccount: IAccount = {
+  account: 'k:b5b519c5369bd5b53008d3c28967f4da8752363ba7eb76dfd637e21c0a1764af',
+  keys: [
+    {
+      publicKey:
+        'b5b519c5369bd5b53008d3c28967f4da8752363ba7eb76dfd637e21c0a1764af',
+      secretKey:
+        'd81a36f4cafa525d08e02275524d3dc1adddeaf304943d357e21d4f854eabc6f',
+    },
+  ],
+  chains: ['0'],
+};
+
 export const devnetMiner: IAccount = {
   account: 'k:f89ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
   keys: [
