@@ -10,7 +10,7 @@ tags: [NFT, marketplace, non-fungible tokens, minting, marmalade, v2]
 
 # Get started with Marmalade
 
-As you learned in [What is Marmalade?](/build/nft-standard),  Marmalade is the name of the Kadena **token standard**.
+As you learned in [What is Marmalade?](/marmalade/what-is-marmalade),  Marmalade is the name of the Kadena **token standard**.
 The token standard defines the interfaces for minting digital items using a set of smart contracts and token policies.
 The Marmalade token standard enables you to define, mint, and secure tokens that are fully fungible coins, partially fungible in a limited edition, or completely non-fungible unique items.
 When you mint tokens using these interfaces, the Kadena blockchain infrastructure provides proof of authenticity and ownership by enabling you to commit on-chain transactions with low transaction fees.
