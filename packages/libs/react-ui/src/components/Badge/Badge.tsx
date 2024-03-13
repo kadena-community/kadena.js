@@ -18,18 +18,14 @@ export const Badge = (props: IBadgeProps) => {
   const mainCircleStyle = props.imageUrl
     ? { backgroundImage: `url(${props.imageUrl})`, backgroundSize: 'cover' }
     : {};
-  console.log(props);
 
   return (
     <div className={circle({ size: props.size })} style={mainCircleStyle}>
-      {
-        // If there is image, return it, otrhewise check for initials and last case SystemIcon.Account
-        props.imageUrl ? null : initials ? (
-          <span>{initials}</span>
-        ) : (
-          <SystemIcon.Account size="xl" />
-        )
-      }
+      {props.imageUrl ? null : initials ? (
+        <span>{initials}</span>
+      ) : (
+        <SystemIcon.Account size="xl" />
+      )}
       <div className={status({ color: props.color, size: props.size })}></div>
     </div>
   );
