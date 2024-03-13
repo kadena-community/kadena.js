@@ -49,10 +49,10 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
             <Heading as="h4">Quick start</Heading>
             <Box marginBlock="md">
               <Text>
-                Marmalade is the name of the Kadena token standard.
-                The token standard defines the interfaces for creating, minting,
-                and transferring digital items like non-fungible tokens (NFTs) 
-                and token collections using Kadena smart contracts and built-in
+                Marmalade is the name of the Kadena token standard. The token
+                standard defines the interfaces for creating, minting, and
+                transferring digital items like non-fungible tokens (NFTs) and
+                token collections using Kadena smart contracts and built-in
                 Kadena token policies.
               </Text>
             </Box>
@@ -83,7 +83,10 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               background="marmalade"
             >
               <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/marmalade/what-is-marmalade">
+                <Link
+                  className={docsCardLink}
+                  href="/marmalade/what-is-marmalade"
+                >
                   What is Marmalade?
                 </Link>
                 <Link className={docsCardLink} href="/marmalade/metadata">
@@ -95,10 +98,16 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 >
                   Ledger contract
                 </Link>
-                <Link className={docsCardLink} href="/marmalade/architecture/policy-manager">
+                <Link
+                  className={docsCardLink}
+                  href="/marmalade/architecture/policy-manager"
+                >
                   Policy manager contract
                 </Link>
-                <Link className={docsCardLink} href="/marmalade/architecture/sale-contract">
+                <Link
+                  className={docsCardLink}
+                  href="/marmalade/architecture/sale-contract"
+                >
                   Sale contracts
                 </Link>
               </BrowseSection>
@@ -132,20 +141,20 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 >
                   Non-fungible policy
                 </Link>
-                <Link 
-                  className={docsCardLink} 
+                <Link
+                  className={docsCardLink}
                   href="/marmalade/concrete-policies/guard-policy"
                 >
                   Authorization policy
                 </Link>
-                <Link 
-                  className={docsCardLink} 
+                <Link
+                  className={docsCardLink}
                   href="/marmalade/concrete-policies/royalty-policy"
                 >
                   Royalty policy
                 </Link>
-                <Link 
-                  className={docsCardLink} 
+                <Link
+                  className={docsCardLink}
                   href="/marmalade/concrete-policies/collection-policy"
                 >
                   Collection policy
@@ -161,20 +170,17 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               background="whitepapers"
             >
               <BrowseSection marker="none">
-                <Link 
-                  className={docsCardLink} 
-                  href="/marmalade/auctions"
-                >
+                <Link className={docsCardLink} href="/marmalade/auctions">
                   Auctions overview
                 </Link>
-                <Link 
-                  className={docsCardLink} 
+                <Link
+                  className={docsCardLink}
                   href="/marmalade/auctions/conventional-auction"
                 >
                   Convention auction
                 </Link>
-                <Link 
-                  className={docsCardLink} 
+                <Link
+                  className={docsCardLink}
                   href="/marmalade/auctions/dutch-auction"
                 >
                   Dutch auction
