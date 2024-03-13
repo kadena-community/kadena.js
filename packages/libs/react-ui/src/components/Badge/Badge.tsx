@@ -1,11 +1,12 @@
 import React from 'react';
 
 import type { RecipeVariants } from '@vanilla-extract/recipes';
+import { SystemIcon } from '..';
 import { circle, status } from './Badge.css';
 import { getInitials } from './getInitials';
-type statusVariants = NonNullable<RecipeVariants<typeof status>>;
-type circleVariants = NonNullable<RecipeVariants<typeof circle>>;
-export interface IBadgeProps extends statusVariants, circleVariants {
+
+type Variants = NonNullable<RecipeVariants<typeof status>>;
+export interface IBadgeProps extends Variants {
   name?: string;
   imageUrl?: string;
   // accept it and use prios
@@ -21,7 +22,14 @@ export const Badge = (props: IBadgeProps) => {
 
   return (
     <div className={circle({ size: props.size })} style={mainCircleStyle}>
-      <span>{initials}</span>
+      {
+        // If there is image, return it, otrhewise check for initials and last case SystemIcon.Account
+        props.imageUrl ? null : initials ? (
+          <span>{initials}</span>
+        ) : (
+          <SystemIcon.Account size="xl" />
+        )
+      }
       <div className={status({ color: props.color, size: props.size })}></div>
     </div>
   );

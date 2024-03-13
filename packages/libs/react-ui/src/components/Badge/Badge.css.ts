@@ -55,12 +55,12 @@ export const circle = recipe({
   variants: {
     size: {
       xs: {
-        fontSize: token('typography.fontSize.5xl'),
+        fontSize: token('typography.fontSize.6xl'),
         width: '100px',
         height: '100px',
       },
       s: {
-        fontSize: token('typography.fontSize.7xl'),
+        fontSize: token('typography.fontSize.9xl'), // looks same in the design
         width: '130px',
         height: '130px',
       },
