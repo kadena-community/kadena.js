@@ -68,7 +68,7 @@ roles:
 The following diagram provides a simplified overview of the workflow between
 these roles.
 
-![OAuth Flow](image.png)
+![OAuth Flow](/assets/docs/kadena_spirekey_1.png)
 
 The workflow for Kadena SpireKey is similar. In Kadena SpireKey, your
 decentralized application is the client application hosted on the resource
@@ -83,7 +83,6 @@ implement in your application.
 With this overview in mind, let's look at how you can integrate Kadena SpireKey
 with your application.
 
-
 ## Integrate with Kadena SpireKey
 
 There are three basic integration points between a decentralized application and
@@ -96,7 +95,6 @@ enable users to perform the following steps:
 - Sign transactions created by the application using a Kadena SpireKey account.
 
 ### Register an account in Kadena SpireKey
-
 
 The following diagram illustrates the process for registering an account using
 Kadena SpireKey.
@@ -158,7 +156,8 @@ sequenceDiagram
 
 ## Authentication request and response
 
-To authenticate users for your application, your application must send a GET request to the Kadena SpireKey `login` endpoint and receive a response.
+To authenticate users for your application, your application must send a GET
+request to the Kadena SpireKey `login` endpoint and receive a response.
 
 ### Authentication request
 
@@ -174,8 +173,8 @@ https://spirekey.kadena.io/login?returnUrl=https://your-dapp.com/auth
   - `returnUrl`: `string` - the url where the user will be redirected to after
     authentication.
   - `optimistic`: `boolean` - when `true`, Kadena SpireKey will return a signed
-    transaction, even when there are pending transactions.  
-     The response will include `pendingTxIds`.
+    transaction, even when there are pending transactions. The response will
+    include `pendingTxIds`.
 
 ### Authentication response
 
@@ -197,9 +196,8 @@ https://your-dapp.com/auth?user=base-64-user
     Kadena SpireKey
   - `pendingTxIds`: `Array<string>` - List of transaction Request Keys. One of:
     - Account Creation Transaction id: the account is being minted, and the dapp
-      can use this to verify when this is completed.  
-      The `user` object, can already be used to prepare transactions for the
-      user.
+      can use this to verify when this is completed. The `user` object, can
+      already be used to prepare transactions for the user.
 
 ## Sign request and response
 
@@ -221,8 +219,8 @@ https://spirekey.kadena.io/sign?transaction=tx-base64&returnUrl=https://your-dap
   - `transaction`: [`IUnsignedCommand`]() a base64 encoded transaction
   - `returnUrl` the url where the user will be redirected to after signing
   - `optimistic`: `boolean` - when `true`, Kadena SpireKey will return a signed
-    transaction, even when there are pending transactions.  
-    The response will include `pendingTxIds`.
+    transaction, even when there are pending transactions. The response will
+    include `pendingTxIds`.
 
 ### Sign response
 

@@ -39,6 +39,9 @@ pages:
               termsofservice:
                 url: /terms-of-service
                 file: /kadena/wallets/chainweaver/terms-of-service.md
+          kadenaspirekey:
+            url: /kadena-spirekey
+            file: /kadena/wallets/kadena-spirekey/index.md
           ledger:
             url: /ledger
             file: /kadena/wallets/ledger/index.md
