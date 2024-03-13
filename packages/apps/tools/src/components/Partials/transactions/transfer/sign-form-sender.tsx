@@ -59,7 +59,6 @@ export const SignFormSender = ({
   const { selectedNetwork: network } = useWalletConnectClient();
 
   const [watchSender, watchChain] = watch(['sender', 'senderChainId']);
-
   const senderData = useAccountDetailsQuery({
     account: watchSender,
     networkId: network,
