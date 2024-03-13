@@ -21,7 +21,7 @@ export const dropdownItemClass = style([
     display: 'block',
     paddingBlock: 'xs',
     paddingInline: 'sm',
-    fontFamily: 'bodyFont',
+    fontFamily: 'secondaryFont',
     fontSize: 'sm',
   }),
   {

@@ -10,7 +10,7 @@ export const button = recipe({
       borderRadius: 'xs',
       paddingBlock: 'sm',
       paddingInline: 'xl',
-      fontWeight: 'headingFont.bold',
+      fontWeight: 'primaryFont.medium',
       fontSize: 'base',
       textDecoration: 'none',
       position: 'relative',

@@ -21,7 +21,7 @@ export const ticketClass = style([
 export const titleClass = style([
   atoms({
     position: 'absolute',
-    fontWeight: 'headingFont.bold',
+    fontWeight: 'primaryFont.medium',
     textTransform: 'capitalize',
   }),
   {
@@ -48,7 +48,7 @@ export const ticketBorderClass = style([
 export const dateWrapperClass = style([
   atoms({
     position: 'absolute',
-    fontWeight: 'headingFont.regular',
+    fontWeight: 'primaryFont.regular',
     textTransform: 'capitalize',
   }),
   {
@@ -64,7 +64,7 @@ export const dateWrapperClass = style([
 
 export const dateTitleClass = style([
   atoms({
-    fontWeight: 'headingFont.bold',
+    fontWeight: 'primaryFont.medium',
     textTransform: 'capitalize',
     paddingBlockEnd: 'no',
   }),
@@ -78,8 +78,8 @@ export const dateTitleClass = style([
 
 export const dateClass = style([
   atoms({
-    fontFamily: 'codeFont',
-    fontWeight: 'headingFont.regular',
+    fontFamily: 'monospaceFont',
+    fontWeight: 'monospaceFont.medium',
     textTransform: 'capitalize',
   }),
   {

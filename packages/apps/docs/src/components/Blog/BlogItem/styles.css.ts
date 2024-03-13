@@ -118,7 +118,7 @@ export const imageClass = style([
 export const authorTitleClass = style([
   atoms({
     fontSize: 'md',
-    fontWeight: 'bodyFont.regular',
+    fontWeight: 'secondaryFont.regular',
     color: 'text.subtlest.inverse.default',
   }),
 ]);
