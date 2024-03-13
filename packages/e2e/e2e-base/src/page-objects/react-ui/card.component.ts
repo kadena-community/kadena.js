@@ -15,10 +15,8 @@ export class CardComponent {
   }
 
   public async setValueForTextbox(label: string, value: string): Promise<void> {
-    await this._component
-      .getByRole('textbox', { name: label })
-      .fill(value, { force: true });
-    await this._component.getByRole('textbox', { name: label }).press('Tab');
+    await this._component.getByRole('textbox', { name: label }).fill(value);
+    //await this._component.getByRole('textbox', { name: label }).press('Tab');
   }
 
   public async setValueForCombobox(name: string, value: string): Promise<void> {

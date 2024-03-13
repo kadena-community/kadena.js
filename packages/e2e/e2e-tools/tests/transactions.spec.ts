@@ -117,6 +117,7 @@ test(`Ledger: Transfer to new account`, async ({ toolsApp, page }) => {
   await test.step('Set Sender Details', async () => {
     await toolsApp.transferPage.setSender('Ledger');
     await toolsApp.transferPage.setKeyIndex('0');
+    //await page.waitForTimeout(500000);
     await toolsApp.transferPage.setAmount('0.1');
   });
 
