@@ -39,14 +39,43 @@ describe('transferFund', () => {
       },
     });
     expect(result).toStrictEqual({
-      result: {
-        reqKey: 'requestKey-1',
-        result: {
-          status: 'success',
-          data: 'Write succeeded',
-        },
-      },
+      chainId: '1',
+      networkId: 'development',
+      requestKey: 'requestKey-1',
     });
+  });
+
+  it('should throw an error when local api transaction failure', async () => {
+    server.use(
+      http.post(
+        'https://localhost:8080/chainweb/0.0/development/chain/1/pact/api/v1/local',
+        () => {
+          return HttpResponse.json(
+            {
+              result: {
+                status: 'failure',
+                error: {
+                  message: 'shit hit the fan',
+                },
+              },
+            },
+            { status: 200 },
+          );
+        },
+      ),
+    );
+
+    await expect(async () => {
+      await transferFund({
+        accountName: 'accountName',
+        config: {
+          amount: '100',
+          contract: 'coin',
+          chainId: '1',
+          networkConfig: devNetConfigMock,
+        },
+      });
+    }).rejects.toEqual(Error('Failed to transfer fund : "shit hit the fan"'));
   });
 
   it('should throw an error when any sort of error happens', async () => {

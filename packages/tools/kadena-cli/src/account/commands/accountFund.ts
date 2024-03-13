@@ -1,5 +1,6 @@
 // import { describeModule } from '@kadena/client-utils/built-in';
 // import { Option } from 'commander';
+import { createClient } from '@kadena/client';
 import ora from 'ora';
 // import { z } from 'zod';
 // import { FAUCET_MODULE_NAME } from '../../constants/devnets.js';
@@ -126,15 +127,44 @@ export const createAccountFundCommand = createCommand(
     //   }
     // }
 
-    const loader = ora('Funding account...\n').start();
-
     const result = await fund(config);
-    assertCommandError(result, loader);
+    assertCommandError(result);
+
+    const explorerURL = networkConfig.networkExplorerUrl.endsWith('/')
+      ? networkConfig.networkExplorerUrl
+      : `${networkConfig.networkExplorerUrl}/`;
 
     log.info(
       log.color.green(
-        `"${accountConfig.name}" account funded with "${amount}" ${accountConfig.fungible} on chain ${chainId} in ${networkConfig.networkId} network.`,
+        `Transaction explorer URL: ${explorerURL}${result.data.requestKey}`,
       ),
     );
+    const { pollStatus } = createClient(
+      `${networkConfig.networkHost}/chainweb/0.0/${networkConfig.networkId}/chain/${chainId}/pact`,
+    );
+
+    const loader = ora('Funding account...\n').start();
+
+    pollStatus(result.data)
+      .then((response) => {
+        const transactionResult = response[result.data.requestKey];
+        if (
+          typeof transactionResult !== 'string' &&
+          transactionResult.result.status === 'failure'
+        ) {
+          throw transactionResult.result.error;
+        }
+
+        loader.succeed('Account funded');
+        log.info(
+          log.color.green(
+            `"${accountConfig.name}" account funded with "${amount}" ${accountConfig.fungible} on chain ${chainId} in ${networkConfig.networkId} network.\nUse "account details" command to check the balance.`,
+          ),
+        );
+      })
+      .catch((e) => {
+        loader.fail('Failed to fund account');
+        log.error(e.message);
+      });
   },
 );

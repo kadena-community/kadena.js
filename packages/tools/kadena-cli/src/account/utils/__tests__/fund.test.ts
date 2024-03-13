@@ -25,13 +25,9 @@ describe('fund', () => {
     expect(result).toStrictEqual({
       success: true,
       data: {
-        result: {
-          reqKey: 'requestKey-1',
-          result: {
-            status: 'success',
-            data: 'Write succeeded',
-          },
-        },
+        chainId: '1',
+        networkId: 'testnet04',
+        requestKey: 'requestKey-1',
       },
     });
   });
@@ -70,13 +66,9 @@ describe('fund', () => {
     expect(result).toStrictEqual({
       success: true,
       data: {
-        result: {
-          reqKey: 'requestKey-1',
-          result: {
-            status: 'success',
-            data: 'Write succeeded',
-          },
-        },
+        chainId: '1',
+        networkId: 'testnet04',
+        requestKey: 'requestKey-1',
       },
     });
   });
@@ -113,21 +105,14 @@ describe('fund', () => {
     });
   });
 
-  it('should return success false and error message when transfer fund api status returns failure', async () => {
+  it('should return success false and error message when api call fails', async () => {
     server.use(
       http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/listen',
+        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/send',
         () => {
           return HttpResponse.json(
-            {
-              result: {
-                status: 'failure',
-                error: {
-                  message: 'coin can be requested only every 30 minutes',
-                },
-              },
-            },
-            { status: 200 },
+            { error: 'something went wrong' },
+            { status: 500 },
           );
         },
       ),
@@ -148,9 +133,7 @@ describe('fund', () => {
 
     expect(result).toStrictEqual({
       success: false,
-      errors: [
-        'Failed to transfer fund : "coin can be requested only every 30 minutes"',
-      ],
+      errors: ['Failed to transfer fund : "{"error":"something went wrong"}"'],
     });
   });
 });
