@@ -284,13 +284,13 @@ type Query {
   block(hash: String!): Block
 
   """Retrieve blocks by chain and minimal depth."""
-  blocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
+  blocksFromDepth(after: String, before: String, chainIds: [String!], first: Int, last: Int, minimumDepth: Int!): QueryBlocksFromDepthConnection
 
   """Retrieve blocks by chain and minimal height."""
-  blocksFromHeight(chainIds: [String!], startHeight: Int!): [Block!]!
+  blocksFromHeight(after: String, before: String, chainIds: [String!], first: Int, last: Int, startHeight: Int!): QueryBlocksFromHeightConnection!
 
   """Retrieve all completed blocks from a given height."""
-  completedBlockHeights(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, heightCount: Int = 3): [Block!]!
+  completedBlockHeights(after: String, before: String, chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, first: Int, heightCount: Int = 3, last: Int): QueryCompletedBlockHeightsConnection!
 
   """Retrieve a single event by its unique key."""
   event(blockHash: String!, orderIndex: Int!, requestKey: String!): Event
@@ -358,6 +358,39 @@ type Query {
 
   """Retrieve transfers."""
   transfers(accountName: String, after: String, before: String, chainId: String, first: Int, fungibleName: String, last: Int): QueryTransfersConnection!
+}
+
+type QueryBlocksFromDepthConnection {
+  edges: [QueryBlocksFromDepthConnectionEdge]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type QueryBlocksFromDepthConnectionEdge {
+  cursor: String!
+  node: Block!
+}
+
+type QueryBlocksFromHeightConnection {
+  edges: [QueryBlocksFromHeightConnectionEdge]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type QueryBlocksFromHeightConnectionEdge {
+  cursor: String!
+  node: Block!
+}
+
+type QueryCompletedBlockHeightsConnection {
+  edges: [QueryCompletedBlockHeightsConnectionEdge]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type QueryCompletedBlockHeightsConnectionEdge {
+  cursor: String!
+  node: Block!
 }
 
 type QueryEventsConnection {
