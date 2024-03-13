@@ -9,6 +9,14 @@ import validateTypeScriptFileLinks from './validateTypeScriptFileLinks';
 const args = process.argv.slice(2);
 const isCi = args.includes('--ci');
 
+// This is to avoid false positives for links that are not broken within the docs
+// but are broken in the website E.g. might comes from the different docs repo
+// it could be fixed in the following PR later on
+// to avoid the hard dependency on the doc website repo
+
+// since we already have the redirect in place for the /learn-pact/beginner/welcome-to-pact it's ignored
+const ignoreLinks = ['/learn-pact/beginner/welcome-to-pact'];
+
 export default async function validateLinks(basePath: string): Promise<void> {
   const [markdownLinks, typeScriptLinks, markdownHashLinks] =
     (await Promise.all([
@@ -66,12 +74,20 @@ export default async function validateLinks(basePath: string): Promise<void> {
     console.log(chalk.green('No broken Markdown hash links found.'));
   }
 
+  // Only to filter out the links that are not in the ignore list
+  // and have broken links
+  // This is to avoid false positives(or avoid immediate dependency) for links that are not broken within the docs
+  const filteredLinks = [...markdownLinks, ...typeScriptLinks].filter(
+    (result) => {
+      const brokenLinks = result.brokenLinks.filter(
+        (link) => !ignoreLinks.includes(link),
+      );
+      return brokenLinks.length > 0;
+    },
+  );
+
   if (isCi) {
-    if (
-      markdownLinks.length > 0 ||
-      typeScriptLinks.length > 0 ||
-      markdownHashLinks.length > 0
-    ) {
+    if (filteredLinks.length > 0 || markdownHashLinks.length > 0) {
       process.exit(1);
     }
   }
