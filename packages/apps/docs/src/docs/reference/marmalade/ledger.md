@@ -1,75 +1,63 @@
 ---
 title: Ledger contract
-description: What is the Marmalade Ledger
+description: Functions and capabilities defined in the non-fungible token marketplace Marmalade Ledger contract manage the token lifecycle and keep track of all token-related activity.
 menu: Ledger contract
 label: Ledger contract
 order: 1
 layout: full
 ---
 
-# What is the Marmalade Ledger?
+# Ledger contract
 
-What is it and what is it used for. Think of a Ledger as your personal bank
-statement, only in this case its not just for you, it's for everybody
-participating in the system. It's this big ol' record that keeps track of the
-things within marmalade that happen. You can look at the ledger as the heart of
-marmalade, the place where most of the action happens.
+This part of the documentation describes the functions and capabilities defined in the non-fungible token marketplace Marmalade Ledger contract.
+You can use the Marmalade Ledger contract to create, manage, and transfer tokens minted using the Marmalade token standard and to keep track of all token-related activity.
 
-In the context of NFTs, the Marmalade Ledger plays a crucial role in managing
-the lifecycle of these unique digital assets. It provides the underlying
-infrastructure and framework necessary to create, transfer, and track ownership
-of NFTs within the Marmalade ecosystem. It acts as a decentralised, transparent,
-and immutable ledger of ownership, ensuring that every change in ownership,
-creation, or transfer of an NFT is securely and accurately recorded.
+- Ledger functions
+- Ledger capabilities
 
-The ledger consists of several components. It defines tables and schemas to
-organise data related to accounts and tokens. It includes capabilities, which
-are functions that perform specific actions and enforce certain conditions. By
-leveraging the capabilities, tables, and schemas defined within the ledger,
-developers and users can interact with NFTs in a standardised and reliable
-manner. The ledger enforces policies and guards to ensure compliance with
-predefined rules and constraints, promoting secure and trustworthy NFT
-transactions.
+## create-token-id
 
-**Diving Deeper into the Marmalade Ledger**
+Use `create-token-id` to generate a unique token identifier with the specified token identifier.
 
-When delving further into the ledger's workings, we find each function and
-capability playing a unique role in its operation and management.
+### Arguments
 
-## Marmalade functions
+Use the following arguments to create the token identifier.
 
-**Create Token**
+| Argument | Type | Description
+| `details` | object | Defines token properties using the metadata schema in JSON file format.
+| `creation-guard` | Specifies the temporary guard—for example, a keyset—used to generate the token identifier. This guard isn't stored and ensure that only the  owner of the creation key can create a specific token identifier.
 
-A Token is created in marmalade via running `create-token`. Arguments include:
+Before creating a token, you must choose a temporary guard.
+The guard can be
 
-- `id`: token-id, formatted in `t:{token-detail-hash}`. Should be created using
-  `create-token-id`
-- `precision`: Number of decimals allowed for for the token amount. For one-off
-  token, precision must be 0, and should be enforced in the policy's
-  `enforce-init`.
-- `uri`: url to external JSON containing metadata
-- `policies`: policies contracts with custom functions to execute at marmalade
-  functions
-- `creation-guard`: Non stored guard (usally a Keyset). Must be used to reserve
-  a `token-id`
+- A keyset you've already defined or used in the guard-policy.
+- A single-use keyset that won't be used again.
+- Another type guard.
 
-`policy-manager.enforce-init` calls `policy::enforce-init` in stored
-token-policies, and the function is executed in `ledger.create-token`.
+This guard becomes part of the hashed data in the `token-id` string prefixed with `t:`. 
+Including the guard in the hashed token identifier protects anyone else from creating the token. 
+With this mechanism, only you—as the owner of the creation key—can create the token specified by the `token-id` string.
 
-**Creation guard usage**
+### Example
 
-Before creating a token, the creator must choose a temporary guard, which can be
+Generate a unique `token-id` by calling the following function:
 
-- An usual keyset. (eg: one already used in the guard-policy).
-- But also a single-use keyset, since it isn't stored and won't be needed
-  anymore.
-- Some more complex setups could involve other guard types (eg: when token
-  creations are managed by a SC).
+`(ledger.create-token-id details creation-guard)`
 
-This guard will be part of the `token-id` (starting `t:`) creation. As a
-consequence, it protects the legit creator from being front-runned during token
-creation. With this mechanism, only the legit creator who owns the creation key
-can create a specific `token-id`.
+## create-token
+
+Use `create-token` to create a token with the specified token identifier. 
+
+### Arguments
+
+Use the following arguments to create a token.
+
+| Argument | Type | Description
+| `id` | String | Specifies the unique token identifier generated using the`create-token-id` function and formatted as `t:{token-detail-hash}`. 
+| `precision` | integer | Specifies the number of decimals allowed for the token supply amount. For non-fungible tokens, the precision must be 0, and should be enforced in the policy's `enforce-init`.
+| `uri` | string | Specifies the uniform resource identifier (uri) to an external JSON file containing token metadata.
+| `policies` | list| Specifies one or more policy contracts with custom functions to execute at marmalade functions
+| `creation-guard` | Specifies the temporary guard—for example, a keyset—used to generate the token identifier. This guard isn't stored and ensure that only the  owner of the creation key can create a specific token identifier.
 
 Creation steps:
 
