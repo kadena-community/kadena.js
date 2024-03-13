@@ -20,6 +20,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
   selectedKey,
   onSelectionChange,
   additionalInfoOptions,
+  id,
   ...rest
 }) => {
   const onSelectChange = useCallback(
@@ -37,7 +38,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
     <Select
       {...rest}
       label="Chain ID"
-      id={ELEMENT_ID}
+      id={id ?? ELEMENT_ID}
       onSelectionChange={onSelectChange}
       selectedKey={selectedKey}
       startIcon={<SystemIcon.Link />}
