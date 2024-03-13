@@ -77,7 +77,7 @@ Depending on the rules defined in the referenced sale contract, the policy manag
 By using a separate contract to define and manage the mechanics of the sales process, you can ensure that buyers and sellers can participate safely without compromising royalty payments. 
 It's important to note that contracts that define a sales model—the sale contract—must be reviewed and registered in the policy manager so that the policy manager can enforce the contract rules.
 
-The following diagram provides a simplified view of the interaction between the ledger, policy manager, and sale contracts:
+The following diagram provides a simplified view of the interaction between the ledger, policy manager, and a sale contract:
 
 ![Contract interaction using a sale contract](/assets/marmalade/contracts-workflow.png)
 
@@ -86,3 +86,27 @@ For information about creating an offer that references a sales-specific contrac
 
 For more information about how to implement the sale contract interface and creating your own sale contract, see [Create a custom sale contract]().
 
+## Policies
+
+Individual policies give you granular control over token properties and token-related activity, including minting, burning, transferring, and buying tokens.
+Token policies are implemented as smart contracts based on the interfaces defined in the [`kip.token-policy-v2`](https://github.com/kadena-io/marmalade/blob/main/pact/kip/token-policy-v2.pact) standard.
+There are several built-in policies—called **concrete policies**—that are configured to handle the most common marketplace use cases. 
+
+The built-in concrete policies are officially released and maintained to provide ready-to-use implementations of common features that don't require any custom development work.
+
+The concrete policies currently available provide the following features:
+
+- Guard enforcement policy.
+  If the `guard-policy` is applied to a token, a keyset or another type of guard must be specified to initiate any token-related activity, bolstering security against unauthorized minting.
+- Non-fungible token enforcement policy.
+  If the `non-fungible-policy` is applied to a token, the token is guaranteed to be unique with a maximum supply of one and precision set to zero.
+- Royalty enforcement policy.
+  If the `royalty-policy` is applied to a token, you can designate an account to receive royalties each time the token is transferred to a new owner, fostering an ongoing revenue stream from NFT sales.
+- Collection identification policy.
+  If the `collection-policy` is applied to a token, the token is identified as part of a collection and can be discovered as an item in a toke list.
+
+You can also create **custom policies** to implement unique rules or enforce specific behavior not covered by the concrete policies.
+You can find examples of custom policies in the [examples/policies](https://github.com/kadena-io/marmalade/tree/main/examples/policies) repository.
+
+Example policies aren't officially released and maintained, but can be useful models for developing your own custom policies.
+If an example or custom policy seems broadly useful to a general audience, it can be promoted to a concrete policy, contributing to the overall evolution of the Marmalade marketplace.

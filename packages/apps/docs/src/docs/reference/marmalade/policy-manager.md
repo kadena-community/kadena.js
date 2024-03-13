@@ -1,21 +1,13 @@
 ---
 title: Policy manager contract
-description: The Power of the Policy Manager in Marmalade V2
+description: Functions and capabilities defined in the Marmalade policy manager contract enforce the policies you select for tokens and token-related operations.
 menu: Policy manager contract
 label: Policy manager contract
 order: 2
 layout: full
 ---
 
-# Policy Manager in Marmalade V2
-
-Marmalade V2 introduces a groundbreaking Policy Manager, a tool that transforms
-how policies for non-fungible tokens (NFTs) are curated and implemented. With
-this innovation, dApps, marketplaces, and wallets can seamlessly identify token
-properties like collections, non-fungibility, and royalty specifications,
-leveraging the concrete policies within the Policy Manager.
-
-## Overview
+# Policy manager contract
 
 The Policy Manager stands as a central repository for these policies, supporting
 both general-purpose policies and concrete policies. When a general-purpose
@@ -37,9 +29,7 @@ attributes.
     [`kip.token-policy-v2`](https://github.com/kadena-io/marmalade/blob/v2/pact/kip/token-policy-v2.pact)
     interface.
 
-Venturing further into the realm of Marmalade V2, token creators gain the
-flexibility to program tokens by selecting multiple policies, encompassing rules
-for creation, mints, transfers, burns, sales, and more.
+Source code: [policy-manager.pact](https://github.com/kadena-io/marmalade/blob/v2/pact/policy-manager/policy-manager.pact)
 
 ## Technical Details
 
@@ -126,13 +116,3 @@ the associated policies.
   calling the pact-id function to retrieve the ID of the currently executing
   pact and comparing it to the provided sale parameter. If they are not equal,
   an exception will be thrown".
-
-With the Policy Manager and its support for policy stacking, you can craft
-sophisticated and innovative NFTs that push the boundaries of creativity and
-functionality. As you embark on this exciting journey, we await your innovative
-ideas and creativity to further enrich the NFT experience within Kadena's
-Marmalade ecosystem. Happy crafting!
-
----
-
-[Policy Manager Contract](https://github.com/kadena-io/marmalade/blob/v2/pact/policy-manager/policy-manager.pact)

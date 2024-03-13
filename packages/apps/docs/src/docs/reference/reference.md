@@ -39,7 +39,13 @@ The Kadena client includes the following packages:
 
 ## NFT marketplace: Marmalade technical reference
 
+The Marmalade token standard defines the interfaces for minting digital items—including non-fungible tokens, token collections, and policy-driven marketplace communities—using Pact smart contracts on the Kadena network.
 
+The reference information for the Marmalade standard covers the following topics:
+
+- [Ledger contract](/reference/ledger) describes the core functions defined in the Marmalade ledger contract.
+- [Policy manager contract](/reference/ledger/policy-manager) describes the core functions defined in the Marmalade ledger contract.
+- [Sale contract](/reference/ledger/sale-contracts) describes the core functions defined in the Marmalade ledger contract.
 
 ## Queries and indexing: Kadena GraphQL
 

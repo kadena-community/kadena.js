@@ -118,15 +118,6 @@ pages:
           architecture:
             url: /architecture
             file: /build/nft-marmalade/contract-architecture.md
-          ledger:
-            url: /ledger
-            file: /build/nft-marmalade/ledger.md
-          policymanager:
-            url: /policy-manager
-            file: /build/nft-marmalade/policy-manager.md
-          salecontract:
-            url: /sale-contracts
-            file: /build/nft-marmalade/sale-contracts.md
           concretepolicies:
             url: /concrete-policies
             file: /build/nft-marmalade/concrete-policies.md
@@ -384,6 +375,16 @@ pages:
       restapi:
         url: /rest-api
         file: /reference/pact/rest-api.md
+      marmalade:
+        url: /ledger
+        file: /reference/marmalade/ledger.md
+        children:
+          policymanager:
+            url: /policy-manager
+            file: /reference/marmalade/policy-manager.md
+          salecontract:
+            url: /sale-contracts
+            file: /reference/marmalade/sale-contracts.md
       chainweb:
         url: /chainweb
         file: /reference/chainweb/chainweb.md

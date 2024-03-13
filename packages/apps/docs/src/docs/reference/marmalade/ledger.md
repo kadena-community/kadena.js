@@ -1,7 +1,7 @@
 ---
 title: Ledger contract
-description: Functions and capabilities defined in the non-fungible token marketplace Marmalade Ledger contract manage the token lifecycle and keep track of all token-related activity.
-menu: Ledger contract
+description: Functions and capabilities defined in the Marmalade Ledger contract enable you to manage the token lifecycle and keep track of all token-related activity.
+menu: NFT marketplace
 label: Ledger contract
 order: 1
 layout: full
@@ -9,11 +9,14 @@ layout: full
 
 # Ledger contract
 
-This part of the documentation describes the functions and capabilities defined in the non-fungible token marketplace Marmalade Ledger contract.
-You can use the Marmalade Ledger contract to create, manage, and transfer tokens minted using the Marmalade token standard and to keep track of all token-related activity.
+The Marmalade token standard provides interfaces that enable you to define, mint, and secure tokens.
+As discussed in [Layered contract architecture](/build/nft-marmalade/contract-architecture), the contract that provides the core functionality to create, manage, and transfer tokens minted using the Marmalade token standard is the Marmalade ledger contract.
+The ledger contract records and manages all token-related activity to ensure every transaction is accurate, every policy is enforced, and every account is
+up-to-date.
 
-- Ledger functions
-- Ledger capabilities
+This part of the documentation describes the functions and capabilities defined in the Marmalade ledger contract.
+
+Source code: [ledger.pact](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger/ledger.pact)
 
 ## create-token-id
 
@@ -24,8 +27,9 @@ Use `create-token-id` to generate a unique token identifier with the specified t
 Use the following arguments to create the token identifier.
 
 | Argument | Type | Description
+| -------- | ---- | -----------
 | `details` | object | Defines token properties using the metadata schema in JSON file format.
-| `creation-guard` | Specifies the temporary guard—for example, a keyset—used to generate the token identifier. This guard isn't stored and ensure that only the  owner of the creation key can create a specific token identifier.
+| `creation-guard` | guard | Specifies the temporary guard—for example, a keyset—used to generate the token identifier. This guard isn't stored and ensure that only the  owner of the creation key can create a specific token identifier.
 
 Before creating a token, you must choose a temporary guard.
 The guard can be
@@ -53,110 +57,125 @@ Use `create-token` to create a token with the specified token identifier.
 Use the following arguments to create a token.
 
 | Argument | Type | Description
-| `id` | String | Specifies the unique token identifier generated using the`create-token-id` function and formatted as `t:{token-detail-hash}`. 
+| -------- | ---- | -----------
+| `id` | string | Specifies the unique token identifier generated using the `create-token-id` function and formatted as `t:{token-detail-hash}`. 
 | `precision` | integer | Specifies the number of decimals allowed for the token supply amount. For non-fungible tokens, the precision must be 0, and should be enforced in the policy's `enforce-init`.
 | `uri` | string | Specifies the uniform resource identifier (uri) to an external JSON file containing token metadata.
 | `policies` | list| Specifies one or more policy contracts with custom functions to execute at marmalade functions
 | `creation-guard` | Specifies the temporary guard—for example, a keyset—used to generate the token identifier. This guard isn't stored and ensure that only the  owner of the creation key can create a specific token identifier.
 
-Creation steps:
+To create a token with this function:
 
-- Generate a unique `token-id` by calling
-  `(ledger.create-token-id details creation-guard)`
+- Generate a unique `token-id` by calling `(ledger.create-token-id details creation-guard)`
 - Create the token by calling `(ledger.create-token ... creation-guard)`
-  - This transaction must include the `TOKEN` capability signed with the keyset
-    `creation-guard`
+  
+  The `create-token` transaction must include the `TOKEN` capability signed with the keyset `creation-guard` that you used to generate the token identifier.
 
-**Mint Token**
+## mint
 
-Token amount is minted to an account at `mint`. Arguments include:
+Use `mint` to mint the specified token amount to the specified account.
 
-- `id`: token-id
-- `account`: account that will receive the minted token
-- `guard`: guard of the minted account
-- `amount`: amount to be minted
+### Arguments
 
-`policy-manager.enforce-mint` calls `policy:enforce-mint` in stored
-token-policies, and the function is executed at `ledger.mint`.
+Use the following arguments to mint a token.
 
-**Burn Token**
+| Argument | Type | Description
+| -------- | ---- | -----------
+| `id` | string | Specifies the unique token identifier generated using `create-token-id` function and formatted as `t:{token-detail-hash}`. 
+|  `account` | string | Specifies the account that will receive the minted token.
+| `guard` | guard | Specifies the guard for the minted token account.
+| `amount` | decimal | Specifies the number of tokens to be minted.
 
-Token amount is burnt from an account at `burn`. Arguments include:
+When you submit the `mint` transaction, the `policy-manager.enforce-mint` function calls the `policy:enforce-mint` function in the stored token policies and the function is executed at `ledger.mint`.
 
-- `id`: token-id
-- `account`: account where the token will be burnt from
-- `amount`: amount to be burnt
+## burn
 
-`policy-manager.enforce-burn` calls `policy:enforce-burn` in stored
-token-policies, and the function is executed at `ledger.burn`.
+Use `burn` to destroy the specified token amount from the specified account.
 
-**Transfer**
+### Arguments
 
-Token amount is transferred from sender to receiver at `transfer`. Arguments
-include:
+Use the following arguments to burn a token.
 
-- `id`: token-id
-- `sender`: sender account
-- `receiver`: receiver account
-- `amount`: amount to be transferred
+| Argument | Type | Description
+| -------- | ---- | -----------
+| `id` | string | Specifies the unique token identifier generated using `create-token-id` function and formatted as `t:{token-detail-hash}`. 
+|  `account` | string | Specifies the account where the token will be destroyed.
+| `amount` | decimal | Specifies the number of tokens to be burned.
 
-`policy-manager.enforce-transfer` calls `policy:enforce-transfer` in stored
-token-policies, and the function is executed at `ledger.transfer`.
+When you submit the `burn` transaction, the `policy-manager.enforce-burn` function calls the `policy:enforce-burn` function in the stored token policies and the function is executed at `ledger.burn`.
 
-**Sale**
+## transfer
 
-`sale` allows a two-step offer - buy escrow system using
-[defpact](/pact/reference/syntax#defpacth1545231271). Arguments include:
+Use `transfer` to transfer the specified token amount from the specified sender to the specified receiver.
 
-- `id`: token-id
-- `seller`: seller account
-- `amount`: amount to be sold
-- `timeout`: timeout of the offer
+### Arguments
 
-**offer**
+Use the following arguments to transfer a token.
 
-Step 0 of `sale` executes `offer`. `offer` transfers the token from the seller
-to the escrow account.
+| Argument | Type | Description
+| -------- | ---- | -----------
+| `id` | string | Specifies the unique token identifier generated using `create-token-id` function and formatted as `t:{token-detail-hash}`. 
+| `sender` | string | Specifies the sender account that the token will be transferred from.
+| `receiver` | string | Specifies the receiver account that the token will be transferred to.
+| `amount` | decimal | Specifies the number of tokens to be transferred.
 
-`policy-manager.enforce-offer` calls `policy:enforce-offer` in stored
-token-policies, and the function is executed at step 0 of `sale`.
+When you submit the `transfer` transaction, the `policy-manager.enforce-transfer` function calls the `policy:enforce-transfer` function in the stored token policies and the function is executed at `ledger.transfer`.
 
-**withdraw (cont)**
+## sale
 
-Step 0-rollback executes `withdraw`. `withdraw` transfers token from the escrow
-back to the seller. `withdraw` can be executed after timeout, by sending in
-`cont` command with `rollback: true`, `step: 0`. Formatting `cont` commands can
-be read in
-[here](/pact/reference/rest-api#yaml-continuation-command-requesth-2127282742)
+Use `sale` to execute a two-step transaction using the offer and buy steps with an escrow account as described in [Token sales and trustless-escrow](/build/nft-marmalade/what-is-marmalade#token-sales-and-trustless-escrow).
 
-`policy-manager.enforce-withdraw` calls `policy:enforce-withdraw` in stored
-token-policies, and the function is executed at step 0-rollback of `sale`.
+Because a sale requires two steps that must be completed in a specific order, the transaction is defined using a pact.
+For information about the syntax used to define a pact, see [defpact](/reference/reference/syntax#defpacth1545231271).
 
-**buy (cont)**
+### Arguments
 
-Step 1 executes `buy`. `buy` transfers token from the escrow to the buyer. `buy`
-can be executed before `timeout`. The `buyer` and `buyer-guard` information is
-read from the `env-data` of the command instead of passing in arguments. Just
-like `withdraw`, `buy` is executed using `cont` command with `rollback:false`,
-`step: 0`.
+Use the following arguments to initiate the sale of a token.
 
-`policy-manager.enforce-buy` calls `policy:enforce-buy` in stored
-token-policies, and the function is executed at step 1 of `sale`.
+| Argument | Type | Description
+| -------- | ---- | -----------
+| `id` | string | Specifies the unique token identifier generated using `create-token-id` function and formatted as `t:{token-detail-hash}`. 
+| `seller` | string | Specifies the seller account that the token will be offered from.
+| `amount` | decimal | Specifies the number of tokens to be offered for sale.
+| `timeout` | integer | Specifies when the offer is set to expire in the number of blocks that must be mined before the offer can be withdrawn. The `timeout` argument is optional. If not specified, an offer can be withdrawn at any time by the token owner.
 
----
+### offer
 
-To sum up, the Marmalade Ledger is a sophisticated system that records and
-manages transactions and operation within the Marmalade platform. It ensures
-every transaction is accurate, every policy is enforced, and every account is
-up-to-date.
+The first step of a `sale` pact (step 0) executes the `offer` function. 
+The `offer` function transfers the token from the seller's account to the escrow account.
 
-We hope you've got a sense of what the marmalade ledger is all about.
+The `policy-manager.enforce-offer` function calls the `policy:enforce-offer` function in the stored token policies and the function is executed at step 0 of the `sale`.
 
-Whether you're a code whizz or a crypto newbie, we hope this journey into the
-workings of this ledger has helped to unravel some of the mysteries behind it.
-You could be buying a new digital art piece today or selling some tomorrow.
-Marmalade makes it possible.
+### withdraw (cont)
 
----
+The `sale` pact includes a rollback step (step 0-rollback). 
+The rollback step executes the `withdraw` function. 
+The `withdraw` function transfers the tokens held in the escrow account for the sale back to the seller. 
+If a `timeout` is specified, the `withdraw` function can only be executed after the timeout period has passed.
+You can execute the `withdraw` function by sending a continuation (`cont`) command with the following information:
 
-[Ledger Contract](https://github.com/kadena-io/marmalade/blob/v2/pact/ledger.pact)
+```yaml
+pactTxHash: sale-pact-id
+step: 0
+rollback: true
+```
+
+For more information about formatting continuation commands, see 
+[YAML Continuation command request](/reference/rest-api#yaml-continuation-command-requesth-2127282742)
+
+The `policy-manager.enforce-withdraw` function calls the `policy:enforce-withdraw` function in the stored token policies and the function is executed at step 0-rollback of `sale`.
+
+### buy (cont)
+
+The second step of a `sale` pact (step 1) executes the `buy` function. 
+The `buy` function transfers the tokens held in the escrow account to the buyer. The `buy` function can be executed before `timeout`. 
+The `buyer` and `buyer-guard` information is read from the `env-data` of the command instead of passing in arguments. 
+Like the `withdraw` function, the `buy` function is executed using a continuation (`cont`) command:
+
+```yaml
+pactTxHash: sale-pact-id
+step: 0
+rollback: false
+```
+
+The `policy-manager.enforce-buy` function calls the `policy:enforce-buy` function in the stored token policies and the function is executed at step 1 of `sale`.
