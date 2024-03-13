@@ -40,7 +40,7 @@ export const SignFormReceiver = ({
   onPredicateUpdate,
   onChainUpdate,
 }: {
-  onDataUpdate: (data: AccountDetails) => void;
+  onDataUpdate: (data: AccountDetails | undefined) => void;
   onPubKeysUpdate: (pubKeys: string[]) => void;
   onPredicateUpdate: (pred: PredKey) => void;
   onChainUpdate: (chainId: ChainId) => void;
@@ -79,6 +79,8 @@ export const SignFormReceiver = ({
       if (receiverData?.data) {
         onDataUpdate(receiverData.data);
       }
+    } else {
+      onDataUpdate(undefined);
     }
   }, [onDataUpdate, receiverData.data, receiverData.isSuccess]);
 

@@ -69,7 +69,7 @@ export const SignForm = ({
   };
 
   const receiverDataRef = useRef<AccountDetails>();
-  const onReceiverDataUpdate = (data: AccountDetails) => {
+  const onReceiverDataUpdate = (data: AccountDetails | undefined) => {
     receiverDataRef.current = data;
   };
 
