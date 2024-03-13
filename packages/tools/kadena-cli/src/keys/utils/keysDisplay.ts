@@ -4,6 +4,7 @@ import path from 'path';
 import {
   KEY_EXT,
   KEY_LEGACY_EXT,
+  PLAIN_KEY_DIR,
   PLAIN_KEY_EXT,
   PLAIN_KEY_LEGACY_EXT,
   WALLET_DIR,
@@ -19,6 +20,7 @@ import { log } from '../../utils/logger.js';
 import type { IPlainKey, IWallet } from './keysHelpers.js';
 import type { IKeyPair } from './storage.js';
 
+import { relativeToCwd } from '../../utils/path.util.js';
 import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
 import { getAllPlainKeys } from './keysHelpers.js';
 
@@ -119,7 +121,7 @@ export function printStoredPlainKeys(
   isLegacy: boolean,
   startIndex: number = 0,
 ): void {
-  printStoredKeys(alias, keyPairs, isLegacy, false, startIndex);
+  printStoredKeys(alias, keyPairs, isLegacy, null, startIndex);
 }
 
 /**
@@ -130,12 +132,13 @@ export function printStoredPlainKeys(
  * @param {number} [startIndex=0] - The starting index for naming the key files.
  */
 export function printStoredHdKeys(
+  wallet: IWallet,
   alias: string,
   keyPairs: IKeyPair[],
   isLegacy: boolean,
   startIndex: number = 0,
 ): void {
-  printStoredKeys(alias, keyPairs, isLegacy, true, startIndex);
+  printStoredKeys(alias, keyPairs, isLegacy, wallet, startIndex);
 }
 
 /**
@@ -149,13 +152,13 @@ export function printStoredKeys(
   alias: string,
   keyPairs: IKeyPair[],
   isLegacy: boolean,
-  isHd: boolean,
+  wallet: IWallet | null,
   startIndex: number = 0,
 ): void {
-  const header: TableHeader = ['Filename'];
+  const header: TableHeader = ['Filepath'];
   const rows: TableRow[] = [];
 
-  const ext = isHd
+  const ext = wallet
     ? isLegacy
       ? KEY_LEGACY_EXT
       : KEY_EXT
@@ -167,14 +170,19 @@ export function printStoredKeys(
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   keyPairs.forEach((_, index) => {
-    const fileNameIndex =
-      startIndex + index > 0 ? `-${startIndex + index}` : '';
+    const fileNameIndex = keyPairs.length > 1 ? `-${startIndex + index}` : '';
     const fileName = `${sanitizedAlias}${fileNameIndex}${ext}`;
-    rows.push([fileName]);
+    const filePath = relativeToCwd(
+      path.join(
+        wallet ? path.join(WALLET_DIR, wallet.folder) : PLAIN_KEY_DIR,
+        fileName,
+      ),
+    );
+    rows.push([filePath]);
   });
 
   if (rows.length > 0) {
-    const message = isHd
+    const message = wallet
       ? 'The HD Key Pair is stored within your keys folder under the filename(s):'
       : 'The Plain Key Pair is stored within your keys folder under the filename(s):';
 
@@ -269,7 +277,7 @@ export function displayStoredWallet(
   const walletPath = `${WALLET_DIR}/${walletName}/${walletName}${extension}`;
 
   const header: TableHeader = ['Wallet Storage Location'];
-  const rows: TableRow[] = [[walletPath]];
+  const rows: TableRow[] = [[relativeToCwd(walletPath)]];
 
   log.output(log.generateTableString(header, rows));
 }

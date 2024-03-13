@@ -118,6 +118,7 @@ export const createGenerateHdKeysCommand: (
     displayGeneratedHdKeys(result.data.keys);
     if (keyGenFromChoice !== 'genPublicSecretKeyDec') {
       printStoredHdKeys(
+        walletNameConfig,
         keyAlias,
         result.data.keys,
         result.data.legacy,

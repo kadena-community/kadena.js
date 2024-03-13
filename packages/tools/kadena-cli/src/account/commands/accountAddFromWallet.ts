@@ -124,6 +124,6 @@ export const createAddAccountFromWalletCommand = createCommand(
 
     assertCommandError(result);
 
-    displayAddAccountSuccess(config.accountAlias);
+    displayAddAccountSuccess(config.accountAlias, result.data);
   },
 );

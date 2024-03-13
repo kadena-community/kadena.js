@@ -88,7 +88,9 @@ export async function saveKeyByAlias(
     for (let i = 0; i < keyPairs.length; i++) {
       const keyPair = keyPairs[i];
       const keyIndex = keyPairs.length === 1 ? startIndex : startIndex + i;
-      let fileName = `${sanitizedAlias}${keyIndex}`;
+      let fileName = `${sanitizedAlias}${
+        keyPairs.length === 1 ? '' : `-${keyIndex}`
+      }`;
       const ext = legacy ? KEY_LEGACY_EXT : KEY_EXT;
       fileName += ext;
       const filePath = join(baseDir, fileName);
