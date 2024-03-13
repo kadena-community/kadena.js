@@ -25,7 +25,15 @@ const fetchDetails = async ({
   networkId,
   chainId,
 }: IParams): Promise<AccountDetails> => {
-  const result = await details(account, networkId, chainId);
+  console.log('fetchDetails', account, networkId, chainId);
+  const result = await details(
+    account,
+    networkId,
+    chainId,
+    'http://localhost:8080/',
+  );
+
+  //http://localhost:8080/chainweb/0.0/development/chain/0/pact/chainweb/0.0/development/chain/10/pact/api/v1/local?preflight=false&signatureVerification=false
 
   const parsed = schema.parse(result);
 
