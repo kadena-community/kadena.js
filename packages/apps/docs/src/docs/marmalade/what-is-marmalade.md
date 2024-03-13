@@ -13,7 +13,7 @@ Marmalade is the name of the Kadena **token standard**.
 This token standard defines the interfaces for minting digital items with Kadena **smart contracts** and protecting those digital items with Kadena **token policies**.
 
 Digital items that are unique, one-of-a-kind assets are most commonly referred to as non-fungible tokens (NFTs).
-However, the Kadena token standard is implemented as am multi-token standard that enables you to define, mint, and secure tokens that are fully fungible as interchangeable coins, partially fungible as a limited edition with a fixed supply, or completely non-fungible as unique items.
+However, the Kadena token standard is implemented as a multi-token or **poly-fungible** standard that enables you to define, mint, and secure tokens that are fully fungible as interchangeable coins, partially fungible as a limited edition with a fixed supply, or completely non-fungible as unique items.
 Tokens can also be restricted to a single owner with rules for transferring ownership or support shared ownership with multiple potential stakeholders.
 
 As a creator, you have complete control over your token properties and the rules for minting, owning, and transferring tokens.
