@@ -1,45 +1,28 @@
 import React from 'react';
 
-import { circleClass, statusClass } from './Badge.css';
-
-export interface IBadgeProps {
+import type { RecipeVariants } from '@vanilla-extract/recipes';
+import { circle, status } from './Badge.css';
+import { getInitials } from './getInitials';
+type statusVariants = NonNullable<RecipeVariants<typeof status>>;
+type circleVariants = NonNullable<RecipeVariants<typeof circle>>;
+export interface IBadgeProps extends statusVariants, circleVariants {
   name?: string;
   imageUrl?: string;
-  size?: 'small' | 'extrasmall' | 'base';
-  icon?: React.ReactNode; // accept it and use prios
-  // categorical colors rename
-  statusColor?: string;
+  // accept it and use prios
+  // icon situaton, fallback in case nothing provided OR we actually allow any icon
 }
 
 export const Badge = (props: IBadgeProps) => {
-  const getInitials = (name: string | undefined) => {
-    if (!name) return '';
-
-    let initials = '';
-    const has2names = name.split(' ').length > 1;
-    if (has2names) {
-      initials = name
-        .split(' ')
-        .slice(0, 2)
-        .map((word) => word[0])
-        .join('')
-        .toUpperCase();
-    } else {
-      initials = name.slice(0, 2).toUpperCase();
-    }
-
-    return initials;
-  };
-
   const initials = getInitials(props.name);
   const mainCircleStyle = props.imageUrl
     ? { backgroundImage: `url(${props.imageUrl})`, backgroundSize: 'cover' }
     : {};
+  console.log(props);
 
   return (
-    <div className={circleClass} style={mainCircleStyle}>
-      {initials}
-      <div className={statusClass}></div>
+    <div className={circle({ size: props.size })} style={mainCircleStyle}>
+      <span>{initials}</span>
+      <div className={status({ color: props.color, size: props.size })}></div>
     </div>
   );
 };
