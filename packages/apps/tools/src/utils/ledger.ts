@@ -1,3 +1,4 @@
+import { env } from '@/utils/env';
 import type { ChainId, IUnsignedCommand } from '@kadena/client';
 import {
   Pact,
@@ -61,7 +62,7 @@ class KadenaLedgerAppLike implements IKadenaLedgerAppLike {
   public async getPublicKey(path: string) {
     return {
       publicKey: hexToBuffer(
-        'ae5536288779fa4340086b3e35d559b454ea00215ccae2e7b1ed883aa7d998ed',
+        env('QA_LEDGER_MOCKED_PUBKEY', 'ENV VAR NOT SET!'),
       ),
       address: null,
     };
@@ -92,8 +93,7 @@ class KadenaLedgerAppLike implements IKadenaLedgerAppLike {
     params: TransferCrossChainTxParams,
     txType: 0 | 1 | 2,
   ): Promise<BuildTransactionResult> {
-    const senderKey =
-      'ae5536288779fa4340086b3e35d559b454ea00215ccae2e7b1ed883aa7d998ed';
+    const senderKey = env('QA_LEDGER_MOCKED_PUBKEY', 'ENV VAR NOT SET!');
     const sender = `k:${senderKey}`;
 
     const amount = new PactNumber(params.amount).toPactDecimal();
@@ -176,7 +176,7 @@ class KadenaLedgerAppLike implements IKadenaLedgerAppLike {
 
     const signWithKeyPair = createSignWithKeypair({
       publicKey: senderKey,
-      secretKey: 'SECRET',
+      secretKey: env('QA_LEDGER_MOCKED_PRIVATEKEY', 'ENV VAR NOT SET!'),
     });
 
     const signedTx = await signWithKeyPair(pactCommand);
