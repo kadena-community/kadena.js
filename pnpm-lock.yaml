@@ -2320,6 +2320,12 @@ importers:
       storybook-dark-mode:
         specifier: ^3.0.0
         version: 3.0.0(@types/react-dom@18.2.7)(@types/react@18.2.15)(react-dom@18.2.0)(react@18.2.0)
+      tiny-readdir-glob:
+        specifier: ^1.2.1
+        version: 1.2.1
+      tsx:
+        specifier: ^3.12.10
+        version: 3.12.10
       typescript:
         specifier: 5.2.2
         version: 5.2.2
