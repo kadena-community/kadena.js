@@ -1,3 +1,4 @@
+import { load } from 'js-yaml';
 import path from 'path';
 import sanitize from 'sanitize-filename';
 import type { ZodError } from 'zod';
@@ -353,6 +354,14 @@ export const formatZodError = (error: ZodError): string => {
 export const safeJsonParse = <T extends unknown>(value: string): T | null => {
   try {
     return JSON.parse(value);
+  } catch (e) {
+    return null;
+  }
+};
+
+export const safeYamlParse = <T extends unknown>(value: string): T | null => {
+  try {
+    return load(value) as T;
   } catch (e) {
     return null;
   }
