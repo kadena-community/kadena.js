@@ -55,15 +55,18 @@ export const defaultTemplates = {
   'safe-transfer': safeTransferTemplate,
 } as Record<string, string>;
 
-export const writeTemplatesToDisk = async (): Promise<void> => {
+export const writeTemplatesToDisk = async (): Promise<string[]> => {
   await services.filesystem.ensureDirectoryExists(TX_TEMPLATE_FOLDER);
+  const templatesAdded = [];
   for (const [name, template] of Object.entries(defaultTemplates)) {
     const filePath = path.join(TX_TEMPLATE_FOLDER, `${name}.ktpl`);
     const exists = await services.filesystem.fileExists(filePath);
     if (exists === false) {
       await services.filesystem.writeFile(filePath, template);
+      templatesAdded.push(`${name}.ktpl`);
     }
   }
+  return templatesAdded;
 };
 
 export const getTemplate = async (filename: string): Promise<string> => {

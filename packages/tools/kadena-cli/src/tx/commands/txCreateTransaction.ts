@@ -4,13 +4,17 @@ import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs
 import { PactNumber } from '@kadena/pactjs';
 import path from 'path';
 
-import { WORKING_DIRECTORY } from '../../constants/config.js';
+import {
+  TX_TEMPLATE_FOLDER,
+  WORKING_DIRECTORY,
+} from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { relativeToCwd } from '../../utils/path.util.js';
 import { txOptions } from '../txOptions.js';
 import { fixTemplatePactCommand } from './templates/mapper.js';
 import { writeTemplatesToDisk } from './templates/templates.js';
@@ -96,7 +100,14 @@ export const createTransactionCommandNew = createCommand(
     globalOptions.outFileJson(),
   ],
   async (option, { values, stdin }) => {
-    await writeTemplatesToDisk();
+    const templatesAdded = await writeTemplatesToDisk();
+    if (templatesAdded.length > 0) {
+      log.info(
+        `Added default templates to ${relativeToCwd(
+          TX_TEMPLATE_FOLDER,
+        )}: ${templatesAdded.join(', ')}`,
+      );
+    }
     const template = await option.template({ stdin });
 
     const templateData = await option.templateData();
