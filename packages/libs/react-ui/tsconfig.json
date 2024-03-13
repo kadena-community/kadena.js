@@ -12,6 +12,6 @@
     "moduleResolution": "Bundler",
     "removeComments": true
   },
-  "include": ["./src"],
+  "include": ["./src", "*.config.ts"],
   "exclude": ["node_modules"]
 }

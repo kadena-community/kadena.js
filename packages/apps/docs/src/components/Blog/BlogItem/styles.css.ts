@@ -19,8 +19,7 @@ export const blogitem = style([
 
     selectors: {
       '&:hover': {
-        backgroundColor:
-          tokens.kda.foundation.color.background['layer-2'].default,
+        backgroundColor: tokens.kda.foundation.color.background.layer20.default,
       },
     },
   },

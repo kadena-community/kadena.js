@@ -7,7 +7,7 @@ export const buttonContainerClass = style([
 ]);
 export const notificationLinkStyle = style([
   atoms({
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
     color: 'text.semantic.warning.default',
     textDecoration: 'underline',
   }),

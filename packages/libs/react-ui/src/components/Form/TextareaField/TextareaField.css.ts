@@ -10,7 +10,7 @@ export const addon = style({
 export const textarea = style([
   atoms({
     borderRadius: 'sm',
-    backgroundColor: 'layer-3.default',
+    backgroundColor: 'layer10.default',
     border: 'none',
     color: 'text.base.default',
     outline: 'none',
@@ -41,7 +41,7 @@ export const textarea = style([
       },
       '&[data-disabled]': {
         pointerEvents: 'none',
-        backgroundColor: token('color.background.layer-3.default'),
+        backgroundColor: token('color.background.layer10.default'),
       },
       '&[data-focused]': {
         outline: `2px solid ${token('color.border.semantic.info.@focus')}`,

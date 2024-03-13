@@ -5,7 +5,6 @@ import { Layout } from '@/components/Common';
 import { AppContextProvider, LayoutContextProvider } from '@/context';
 import { WalletConnectClientContextProvider } from '@/context/connect-wallet-context';
 import '@/resources/styles/globals.css';
-import { KodeMono } from '@kadena/fonts';
 import { RouterProvider } from '@kadena/react-ui';
 import { darkThemeClass } from '@kadena/react-ui/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -14,8 +13,6 @@ import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import React from 'react';
-
-KodeMono();
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },

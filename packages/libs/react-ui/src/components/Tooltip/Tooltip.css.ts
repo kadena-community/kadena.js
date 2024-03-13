@@ -5,7 +5,7 @@ import { tokens } from '../../styles/index';
 export const base = style([
   atoms({
     position: 'absolute',
-    backgroundColor: 'layer-3.default',
+    backgroundColor: 'layer10.default',
     fontSize: 'sm',
     paddingBlock: 'sm',
     paddingInline: 'md',
@@ -21,7 +21,7 @@ export const base = style([
       position: 'absolute',
       borderTop: '6px solid transparent',
       borderRight: '6px solid transparent',
-      borderBottom: `6px solid ${tokens.kda.foundation.color.background['layer-3'].default}`,
+      borderBottom: `6px solid ${tokens.kda.foundation.color.background.layer03.default}`,
       borderLeft: '6px solid transparent',
     },
     zIndex: tokens.kda.foundation.zIndex.overlay,

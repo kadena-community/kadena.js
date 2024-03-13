@@ -40,7 +40,7 @@ export const avatarClass = style([
     fontSize: '2xl',
     justifyContent: 'center',
     alignItems: 'center',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
   }),
   {
     background: 'green',

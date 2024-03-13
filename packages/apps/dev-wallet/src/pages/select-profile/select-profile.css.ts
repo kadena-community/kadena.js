@@ -41,7 +41,7 @@ export const aliasClass = style([
 export const initialsClass = style([
   atoms({
     fontSize: '9xl',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold.bold.bold.bold.bold.bold',
   }),
 ]);
 

@@ -175,10 +175,8 @@ const Home: FC = () => {
       </Breadcrumbs>
       <br />
       <div style={{ width: '680px' }}>
-        <Heading bold={false} variant="h3">
-          {t('Kadena Developer Tools')}
-        </Heading>
-        <Heading bold={false} as="h2" variant="h5" color="default">
+        <Heading variant="h3">{t('Kadena Developer Tools')}</Heading>
+        <Heading as="h2" variant="h5" color="default">
           <p>
             {t(
               'Set up your development environment and get the latest Developer Tools to build your application on the Kadena network.',

@@ -8,7 +8,7 @@ export const underlayClass = style({
 });
 
 export const popoverClass = atoms({
-  backgroundColor: 'layer-3.default',
+  backgroundColor: 'layer10.default',
   borderRadius: 'sm',
 });
 
