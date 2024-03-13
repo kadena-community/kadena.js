@@ -423,9 +423,12 @@ pages:
     url: /marmalade
     file: /marmalade/index.tsx
     children:
+      whatismarmalade:
+        url: /what-is-marmalade
+        file: /marmalade/what-is-marmalade.md
       quickstart:
         url: /quick-start
-        file: /marmalade/quick-start/index.md
+        file: /marmalade/mint-with-marmalade.md
       architecture:
         url: /architecture
         file: /marmalade/architecture/index.md
