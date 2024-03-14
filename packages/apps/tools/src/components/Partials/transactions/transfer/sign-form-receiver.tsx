@@ -31,6 +31,7 @@ import { LoadingCard } from '@/components/Global/LoadingCard';
 import { useAccountChainDetailsQuery } from '@/hooks/use-account-chain-details-query';
 import { createPrincipal } from '@/services/faucet/create-principal';
 import type { ChainId } from '@kadena/types';
+import { useDebounce } from 'react-use';
 
 type TabValue = 'new' | 'existing';
 
@@ -63,14 +64,24 @@ export const SignFormReceiver = ({
 
   const [watchReceiver, watchChain] = watch(['receiver', 'receiverChainId']);
 
+  const [debouncedValue, setDebouncedValue] = useState('');
+
+  useDebounce(
+    () => {
+      setDebouncedValue(watchReceiver);
+    },
+    1000,
+    [watchReceiver],
+  );
+
   const receiverData = useAccountDetailsQuery({
-    account: watchReceiver,
+    account: debouncedValue,
     networkId: network,
     chainId: watchChain,
   });
 
   const receiverAccountChains = useAccountChainDetailsQuery({
-    account: getValues('receiver'),
+    account: debouncedValue,
     networkId: network,
   });
 
