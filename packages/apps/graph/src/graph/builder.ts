@@ -17,6 +17,7 @@ import {
 import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prisma-client';
 import type {
+  CapabilitiesList,
   ContinuationPayload,
   ExecutionPayload,
   FungibleAccount,
@@ -24,12 +25,17 @@ import type {
   GasLimitEstimation,
   GraphConfiguration,
   Guard,
+  MempoolInfo,
   MempoolTransaction,
   NonFungibleAccount,
   NonFungibleChainAccount,
+  Signer1,
   Token,
   TokenInfo,
+  Transaction1,
   TransactionCommand,
+  TransactionCommand1,
+  TransactionInfo,
   TransactionMeta,
   TransactionResult,
   TransactionSubscriptionResponse,
@@ -88,6 +94,12 @@ export const builder = new SchemaBuilder<
       TransactionResult: TransactionResult;
       TransactionSubscriptionResponse: TransactionSubscriptionResponse;
       MempoolTransaction: MempoolTransaction;
+      Transaction1: Transaction1;
+      MempoolInfo: MempoolInfo;
+      TransactionInfo: TransactionInfo;
+      Signer1: Signer1;
+      TransactionCommand1: TransactionCommand1;
+      CapabilitiesList: CapabilitiesList;
     };
     Connection: {
       totalCount: number;

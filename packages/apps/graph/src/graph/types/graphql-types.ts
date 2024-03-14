@@ -154,3 +154,46 @@ export interface MempoolTransaction {
   hash: string;
   cmd: TransactionCommand;
 }
+
+export interface MempoolInfo {
+  status: string;
+}
+
+export interface Transaction1 {
+  hash: string;
+  result: TransactionResult | MempoolInfo;
+  cmd: TransactionCommand1;
+}
+
+export interface TransactionInfo {
+  badResult: string | null;
+  continuation: string | null;
+  gas: bigint;
+  goodResult: string | null;
+  height: bigint;
+  logs: string | null;
+  metadata: string | null;
+  eventCount: bigint | null;
+  transactionId: bigint | null;
+}
+
+export interface Signer1 {
+  publicKey: string;
+  address: string | null;
+  scheme: string | null;
+  clist: CapabilitiesList[];
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface TransactionCommand1 {
+  payload: ExecutionPayload | ContinuationPayload;
+  meta: TransactionMeta;
+  signers: Signer1[];
+  networkId: string;
+  nonce: string;
+}
+
+export interface CapabilitiesList {
+  name: string;
+  args: string;
+}

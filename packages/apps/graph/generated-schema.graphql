@@ -47,6 +47,12 @@ type BlockTransactionsConnectionEdge {
   node: Transaction!
 }
 
+"""List of capabilities associated with/installed by this signer."""
+type CapabilitiesList {
+  args: String!
+  name: String!
+}
+
 """The payload of an cont transaction."""
 type ContinuationPayload {
   """
@@ -206,6 +212,12 @@ type Guard {
   predicate: String!
 }
 
+"""The mempool information."""
+type MempoolInfo {
+  """The status of the mempool."""
+  status: String
+}
+
 """A transaction in the mempool."""
 type MempoolTransaction {
   """The command of the transaction."""
@@ -356,8 +368,14 @@ type Query {
   """Retrieve one transaction by its unique key."""
   transaction(blockHash: String!, requestKey: String!): Transaction
 
+  """Retrieve a completed transaction by its unique key."""
+  transaction1(blockHash: String!, requestKey: String!): Transaction1
+
   """Retrieve transactions."""
   transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactionsConnection!
+
+  """Retrieve transactions."""
+  transactions1(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactions1Connection!
 
   """Retrieve all transactions by a given public key."""
   transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
@@ -378,6 +396,17 @@ type QueryEventsConnection {
 type QueryEventsConnectionEdge {
   cursor: String!
   node: Event!
+}
+
+type QueryTransactions1Connection {
+  edges: [QueryTransactions1ConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type QueryTransactions1ConnectionEdge {
+  cursor: String!
+  node: Transaction1!
 }
 
 type QueryTransactionsByPublicKeyConnection {
@@ -430,6 +459,18 @@ type Signer implements Node {
   signature: String!
 }
 
+"""A signer for a specific transaction."""
+type Signer1 implements Node {
+  """The signer for the gas."""
+  address: String
+  clist: [CapabilitiesList!]!
+  id: ID!
+  publicKey: String!
+
+  """The signature scheme that was used to sign."""
+  scheme: String
+}
+
 type Subscription {
   """Listen for events by qualifiedName (e.g. `coin.TRANSFER`)."""
   events(chainId: String, parametersFilter: String, qualifiedEventName: String!): [Event!]
@@ -478,6 +519,14 @@ type Transaction implements Node {
   transfers: [Transfer!]
 }
 
+"""A transaction."""
+type Transaction1 implements Node {
+  cmd: TransactionCommand1!
+  hash: String!
+  id: ID!
+  result: TransactionResult1!
+}
+
 """A transaction command."""
 type TransactionCommand {
   meta: TransactionMeta!
@@ -487,6 +536,41 @@ type TransactionCommand {
   nonce: String!
   payload: TransactionPayload!
   signers: [Signer!]
+}
+
+"""A transaction command."""
+type TransactionCommand1 {
+  meta: TransactionMeta!
+
+  """The network id of the environment."""
+  networkId: String!
+  nonce: String!
+  payload: TransactionPayload!
+  signers: [Signer1!]!
+}
+
+"""The result of a transaction."""
+type TransactionInfo {
+  """The transaction result when it was successful. Formatted as raw JSON."""
+  badResult: String
+
+  """
+  The JSON stringified continuation in the case that it is a continuation.
+  """
+  continuation: String
+  eventCount: BigInt
+  gas: BigInt!
+
+  """The transaction result when it was successful. Formatted as raw JSON."""
+  goodResult: String
+
+  """The height of the block this transaction belongs to."""
+  height: BigInt!
+
+  """Identifier to retrieve the logs for the execution of the transaction."""
+  logs: String
+  metadata: String
+  transactionId: BigInt
 }
 
 """The metadata of a transaction."""
@@ -525,6 +609,9 @@ type TransactionResult {
   metadata: String
   transactionId: BigInt
 }
+
+"""The result of a transaction."""
+union TransactionResult1 = MempoolInfo | TransactionInfo
 
 """The status of the transaction."""
 enum TransactionStatus {
