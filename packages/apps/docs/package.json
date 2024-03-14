@@ -33,6 +33,7 @@
     "test:watch": "vitest",
     "validate-links": "node --import @swc-node/register/esm-register ./src/scripts/validateLinks/index.ts",
     "validate-links:ci": "pnpm run validate-links --ci",
+    "validate-links:dev": "pnpm run build:scripts && pnpm run validate-links",
     "verify": "tsc --noEmit"
   },
   "dependencies": {
