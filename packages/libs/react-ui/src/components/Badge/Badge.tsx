@@ -1,16 +1,20 @@
 import React from 'react';
 
 import type { RecipeVariants } from '@vanilla-extract/recipes';
-import { SystemIcon } from '..';
+
+import { MonoQuestionMark } from '@kadena/react-icons/system'; // find icons list to type it
 import { circle, status } from './Badge.css';
 import { getInitials } from './getInitials';
 
-type Variants = NonNullable<RecipeVariants<typeof status>>;
-export interface IBadgeProps extends Variants {
+type StatusVariants = NonNullable<RecipeVariants<typeof status>>;
+type CircleVariants = NonNullable<RecipeVariants<typeof circle>>;
+export interface IBadgeProps extends StatusVariants, CircleVariants {
   name?: string;
   imageUrl?: string;
+  //color always to the main background
+  //status renders the small circle and shows the color
   // accept it and use prios
-  // icon situaton, fallback in case nothing provided OR we actually allow any icon
+  //icon is from system icons, fallback question mark
 }
 
 export const Badge = (props: IBadgeProps) => {
@@ -20,13 +24,21 @@ export const Badge = (props: IBadgeProps) => {
     : {};
 
   return (
-    <div className={circle({ size: props.size })} style={mainCircleStyle}>
+    <div
+      className={circle({ size: props.size, color: props.color })}
+      style={mainCircleStyle}
+    >
       {props.imageUrl ? null : initials ? (
         <span>{initials}</span>
       ) : (
-        <SystemIcon.Account size="xl" />
+        // <SystemIcon. size={props.size === 'base' ? 'md' : props.size} />
+        <MonoQuestionMark />
       )}
-      <div className={status({ color: props.color, size: props.size })}></div>
+      {props.status && (
+        <div
+          className={status({ size: props.size, status: props.status })}
+        ></div>
+      )}
     </div>
   );
 };
