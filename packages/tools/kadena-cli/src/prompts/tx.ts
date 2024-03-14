@@ -1,6 +1,9 @@
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
 import { z } from 'zod';
-import { getTransactions } from '../tx/utils/txHelpers.js';
+import {
+  getTransactions,
+  requestKeyValidation,
+} from '../tx/utils/txHelpers.js';
 
 import { getAllAccounts } from '../account/utils/accountHelpers.js';
 import {
@@ -519,9 +522,15 @@ export const txRequestKeyPrompt: IPrompt<string> = async () => {
   return await input({
     message: 'Enter transaction request key:',
     validate: (value) => {
-      if (isNotEmptyString(value.trim())) return true;
+      if (!isNotEmptyString(value.trim())) {
+        return 'Request key cannot be empty';
+      }
 
-      return 'Transaction request key cannot be empty';
+      const parse = requestKeyValidation.safeParse(value);
+      if (parse.success) return true;
+
+      const formatted = parse.error.format();
+      return formatted._errors[0];
     },
   });
 };

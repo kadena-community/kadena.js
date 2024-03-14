@@ -16,7 +16,7 @@ import { isNotEmptyString } from '../utils/helpers.js';
 import { log } from '../utils/logger.js';
 import { getTemplate } from './commands/templates/templates.js';
 import { getTemplateVariables } from './utils/template.js';
-import { parseInput } from './utils/txHelpers.js';
+import { parseInput, requestKeyValidation } from './utils/txHelpers.js';
 
 export const txOptions = {
   selectTemplate: createOption({
@@ -231,7 +231,7 @@ export const txOptions = {
     key: 'requestKey',
     prompt: txRequestKeyPrompt,
     defaultIsOptional: false,
-    validation: z.string(),
+    validation: requestKeyValidation,
     option: new Option(
       '-k, --request-key <requestKey>',
       'Enter your request key',
