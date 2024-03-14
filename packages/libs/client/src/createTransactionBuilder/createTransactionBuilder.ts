@@ -55,7 +55,7 @@ interface IAddVerifier<TCommand> {
   /**
    * Add verifier without capability
    */
-  (first: IVerifier): IBuilder<TCommand>;
+  (verifier: IVerifier): IBuilder<TCommand>;
   /**
    * Add a signer including capabilities. The withCapability function is obtained from
    * the function you call in the execution part.
@@ -68,7 +68,7 @@ interface IAddVerifier<TCommand> {
    * ])
    */
   (
-    first: IVerifier,
+    verifier: IVerifier,
     capability: (withCapability: ExtractCapabilityType<TCommand>) => ICap[],
   ): IBuilder<TCommand>;
 }

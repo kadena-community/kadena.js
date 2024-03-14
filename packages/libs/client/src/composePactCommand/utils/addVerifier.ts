@@ -10,10 +10,10 @@ export interface IVerifier {
 }
 
 interface IAddVerifier {
-  (first: IVerifier): () => IPartialPactCommand;
+  (verifier: IVerifier): () => IPartialPactCommand;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   <TCommand extends any>(
-    first: IVerifier,
+    verifier: IVerifier,
     capability: (forCapability: ExtractType<TCommand>) => ICap[],
   ): TCommand;
 }
