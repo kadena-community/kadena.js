@@ -55,7 +55,7 @@ export const SignForm = ({
 
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { senderChainId: CHAINS[0], receiverChainId: CHAINS[0] },
+    defaultValues: { senderChainId: CHAINS[0], receiverChainId: undefined },
   });
 
   const { selectedNetwork: network } = useWalletConnectClient();
