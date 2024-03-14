@@ -1,3 +1,5 @@
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { prefixApi } from '@/utils/network';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
@@ -28,10 +30,11 @@ export interface AccountAllChainsDetails {
 const fetchDetails = async ({
   account,
   networkId,
-}: IParams): Promise<AccountAllChainsDetails[]> => {
+  host,
+}: IParams & { host: string }): Promise<AccountAllChainsDetails[]> => {
   const something: any[] = [];
   CHAINS.forEach((chainId) => {
-    const data = details(account, networkId, chainId);
+    const data = details(account, networkId, chainId, prefixApi(host));
     something.push(data);
   });
   const promisesArr = await Promise.allSettled(something);
@@ -51,9 +54,17 @@ const fetchDetails = async ({
 };
 
 const useAccountChainDetailsQuery = ({ account, networkId }: IParams) => {
+  const { networksData } = useWalletConnectClient();
+
+  const networkDto = networksData.find((item) => item.networkId === networkId);
+
+  if (!networkDto) {
+    throw new Error('Network not found');
+  }
+
   return useQuery({
-    queryKey: ['account-chain-details', account, networkId],
-    queryFn: () => fetchDetails({ account, networkId }),
+    queryKey: ['account-chain-details', account, networkId, networkDto.API],
+    queryFn: () => fetchDetails({ account, networkId, host: networkDto.API }),
     enabled: !!account,
   });
 };
