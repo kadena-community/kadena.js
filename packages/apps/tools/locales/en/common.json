@@ -261,5 +261,6 @@
   "Waiting for ledger signature": "Waiting for ledger signature",
   "fetching-receiver-data": "Fetching receiver account data..",
   "unexpected-account-name": "If this is not the expected account name, try changing the Legacy toggle",
+  "Transaction": "Transaction",
   "transfer-sidebar-title": "Tips & tricks"
 }
