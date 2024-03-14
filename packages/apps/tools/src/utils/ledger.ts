@@ -147,7 +147,7 @@ class KadenaLedgerAppLike implements IKadenaLedgerAppLike {
             sender,
             params.recipient,
             amount,
-            params.recipient_chainId,
+            `${params.recipient_chainId}`,
           ),
         ])
         .addSigner(senderKey, (signFor) => [signFor('coin.GAS')])
