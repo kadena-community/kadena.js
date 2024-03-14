@@ -363,7 +363,6 @@ type Query {
 type QueryBlocksFromDepthConnection {
   edges: [QueryBlocksFromDepthConnectionEdge]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type QueryBlocksFromDepthConnectionEdge {
@@ -374,7 +373,6 @@ type QueryBlocksFromDepthConnectionEdge {
 type QueryBlocksFromHeightConnection {
   edges: [QueryBlocksFromHeightConnectionEdge]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type QueryBlocksFromHeightConnectionEdge {
@@ -385,7 +383,6 @@ type QueryBlocksFromHeightConnectionEdge {
 type QueryCompletedBlockHeightsConnection {
   edges: [QueryCompletedBlockHeightsConnectionEdge]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type QueryCompletedBlockHeightsConnectionEdge {

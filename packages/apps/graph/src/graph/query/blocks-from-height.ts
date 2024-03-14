@@ -38,9 +38,17 @@ builder.queryField('blocksFromHeight', (t) =>
               },
             }),
           },
-          orderBy: {
-            height: 'asc',
-          },
+          orderBy: [
+            {
+              height: 'asc',
+            },
+            {
+              chainId: 'asc',
+            },
+            {
+              id: 'asc',
+            },
+          ],
         });
       } catch (error) {
         throw normalizeError(error);
