@@ -1,3 +1,5 @@
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
+import { prefixApi } from '@/utils/network';
 import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
 import { useQuery } from '@tanstack/react-query';
@@ -24,16 +26,9 @@ const fetchDetails = async ({
   account,
   networkId,
   chainId,
-}: IParams): Promise<AccountDetails> => {
-  console.log('fetchDetails', account, networkId, chainId);
-  const result = await details(
-    account,
-    networkId,
-    chainId,
-    'http://localhost:8080/',
-  );
-
-  //http://localhost:8080/chainweb/0.0/development/chain/0/pact/chainweb/0.0/development/chain/10/pact/api/v1/local?preflight=false&signatureVerification=false
+  host,
+}: IParams & { host: string }): Promise<AccountDetails> => {
+  const result = await details(account, networkId, chainId, prefixApi(host));
 
   const parsed = schema.parse(result);
 
@@ -41,9 +36,18 @@ const fetchDetails = async ({
 };
 
 const useAccountDetailsQuery = ({ account, networkId, chainId }: IParams) => {
+  const { networksData } = useWalletConnectClient();
+
+  const networkDto = networksData.find((item) => item.networkId === networkId);
+
+  if (!networkDto) {
+    throw new Error('Network not found');
+  }
+
   return useQuery({
-    queryKey: ['account-details', account, networkId, chainId],
-    queryFn: () => fetchDetails({ account, networkId, chainId }),
+    queryKey: ['account-details', account, networkId, chainId, networkDto.API],
+    queryFn: () =>
+      fetchDetails({ account, networkId, chainId, host: networkDto.API }),
     enabled: !!account,
     retry: false,
   });
