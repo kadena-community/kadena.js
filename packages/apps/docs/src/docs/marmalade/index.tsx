@@ -106,7 +106,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 </Link>
                 <Link
                   className={docsCardLink}
-                  href="/marmalade/architecture/sale-contract"
+                  href="/marmalade/architecture/sale-contracts"
                 >
                   Sale contracts
                 </Link>

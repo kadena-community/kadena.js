@@ -11,3 +11,5 @@ declare module '*.yaml' {
   };
   export default data;
 }
+
+declare module 'markdown-link-extractor';

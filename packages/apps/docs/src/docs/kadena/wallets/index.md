@@ -24,7 +24,7 @@ The official implementation of the draft
 [KIP-00XX SpireConnect](https://github.com/kadena-community/webauthn-wallet/blob/main/KIP-00XX.md)
 to work with the WebAuthN enabled wallet Kadena SpireKey
 
-[User Guide](/kadena/wallets/kadena-spirekey/user-guide)
+[User Guide](/kadena/wallets/kadena-spirekey)
 
 [Kadena SpireKey](https://webauthn-wallet.vercel.app/)
 
