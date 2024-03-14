@@ -1,6 +1,6 @@
 {
   "name": "@kadena/cookbook",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "private": true,
   "description": "Demonstrates common use cases for @kadena/client and @kadena/pact-cli for smart contracts",
   "keywords": [],
