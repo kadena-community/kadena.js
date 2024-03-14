@@ -42,16 +42,15 @@ export const RightInfoSidebar: FC<IRightInfoSidebarProps> = ({
   const [initialRender, setInitialRender] = useState(true);
 
   useEffect(() => {
-    if (initialRender) {
-      setInitialRender(false);
+    if (initialRender && !sidebarOpen) {
       if (isLargeScreen) {
         setInitialItem({ item: 0 });
+        return;
       }
-      return;
     }
-
+    setInitialRender(false);
     setInitialItem({ item: 0 });
-  }, [sidebarOpen, isLargeScreen]);
+  }, [initialRender, isLargeScreen, sidebarOpen]);
 
   return (
     <DrawerToolbar
