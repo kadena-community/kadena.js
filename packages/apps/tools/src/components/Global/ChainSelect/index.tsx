@@ -45,7 +45,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
       aria-label="Select Chain ID"
     >
       {CHAINS.map((chainId, index) => (
-        <SelectItem key={chainId}>
+        <SelectItem key={chainId} textValue={chainId}>
           <span>{chainId}</span>
           {additionalInfoOptions && additionalInfoOptions.length ? (
             <span>{` (${additionalInfoOptions[index].data})`}</span>
