@@ -130,6 +130,7 @@ export const WithColor: Story = {
   args: {
     name: 'Sam Ferrero',
     color: 'category8',
+    size: 'lg',
   },
   render: ({ name, imageUrl, color, size, status, icon }) => {
     return (
@@ -149,7 +150,7 @@ export const WithNothing: StoryFn<IBadgeProps> = ({
   name,
   imageUrl,
   color,
-  size,
+  size = 'sm',
   status,
   icon,
 }) => (
