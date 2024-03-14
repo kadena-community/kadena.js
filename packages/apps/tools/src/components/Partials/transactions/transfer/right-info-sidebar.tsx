@@ -45,8 +45,8 @@ export const RightInfoSidebar: FC<IRightInfoSidebarProps> = ({
     if (initialRender && !sidebarOpen) {
       if (isLargeScreen) {
         setInitialItem({ item: 0 });
-        return;
       }
+      return;
     }
     setInitialRender(false);
     setInitialItem({ item: 0 });
