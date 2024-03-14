@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import React from 'react';
 
 import type { RecipeVariants } from '@vanilla-extract/recipes';
@@ -11,7 +12,7 @@ type CircleVariants = NonNullable<RecipeVariants<typeof circle>>;
 export interface IBadgeProps extends StatusVariants, CircleVariants {
   name?: string;
   imageUrl?: string;
-  //icon is from system icons, fallback question mark
+  icon?: ReactElement;
 }
 
 export const Badge = (props: IBadgeProps) => {
@@ -28,8 +29,7 @@ export const Badge = (props: IBadgeProps) => {
       {props.imageUrl ? null : initials ? (
         <span>{initials}</span>
       ) : (
-        // <SystemIcon. size={props.size === 'base' ? 'md' : props.size} />
-        <MonoQuestionMark />
+        props.icon || <MonoQuestionMark />
       )}
       {props.status && (
         <div
