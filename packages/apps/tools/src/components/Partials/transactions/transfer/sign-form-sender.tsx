@@ -28,11 +28,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { SenderDetails } from './sender-details';
 import type { FormData } from './sign-form';
 
-export const accountFromOptions = [
-  'Ledger',
-  'Coming soon…',
-  'Wallet Connect',
-] as const;
+export const accountFromOptions = ['Ledger', 'Coming soon…'] as const;
 export type SenderType = (typeof accountFromOptions)[number];
 
 export const SignFormSender = ({
