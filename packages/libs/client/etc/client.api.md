@@ -15,6 +15,7 @@ import type { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { ILocalOptions } from '@kadena/chainweb-node-client';
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { IPreflightResult } from '@kadena/chainweb-node-client';
+import type { ISigningCap } from '@kadena/types';
 import { IUnsignedCommand } from '@kadena/types';
 import type { LocalRequestBody } from '@kadena/chainweb-node-client';
 import type { LocalResponse } from '@kadena/chainweb-node-client';
@@ -348,6 +349,30 @@ export interface ISignBody {
 export interface ISignFunction extends ISingleSignFunction {
     // (undocumented)
     (transactionList: IUnsignedCommand[]): Promise<(ICommand | IUnsignedCommand)[]>;
+}
+
+// @alpha (undocumented)
+export interface ISigningRequest {
+    // (undocumented)
+    caps: ISigningCap[];
+    // (undocumented)
+    chainId?: IPactCommand['meta']['chainId'];
+    // (undocumented)
+    code: string;
+    // (undocumented)
+    data?: Record<string, unknown>;
+    // (undocumented)
+    extraSigners?: string[];
+    // (undocumented)
+    gasLimit?: number;
+    // (undocumented)
+    gasPrice?: number;
+    // (undocumented)
+    nonce?: string;
+    // (undocumented)
+    sender?: string;
+    // (undocumented)
+    ttl?: number;
 }
 
 // @public

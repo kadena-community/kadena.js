@@ -1,6 +1,9 @@
 import type { ISigningCap } from '@kadena/types';
 import type { IPactCommand } from './IPactCommand';
 
+/**
+ * @alpha
+ */
 export interface ISigningRequest {
   code: string;
   data?: Record<string, unknown>;

@@ -5,12 +5,19 @@ const localConfig = defineConfig({
   test: {
     exclude: ['src/**/*.int.test.ts'],
     coverage: {
+      exclude: [
+        // Type only files
+        'src/client/interfaces/interfaces.ts',
+        'src/interfaces/IPactCommand.ts',
+        'src/interfaces/ISigningRequest.ts',
+        'src/interfaces/type-utilities.ts',
+      ],
       provider: 'v8',
       thresholds: {
-        lines: 92.38,
-        functions: 88.88,
-        branches: 94.84,
-        statements: 92.38,
+        lines: 99,
+        functions: 92,
+        branches: 96,
+        statements: 99,
       },
     },
   },

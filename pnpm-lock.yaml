@@ -55,6 +55,9 @@ importers:
       '@kadena/pactjs':
         specifier: workspace:*
         version: link:../../libs/pactjs
+      '@kadena/pactjs-generator':
+        specifier: workspace:*
+        version: link:../../libs/pactjs-generator
       '@kadena/react-ui':
         specifier: workspace:*
         version: link:../../libs/react-ui
@@ -24680,6 +24683,7 @@ packages:
 
   /jose@4.15.4:
     resolution: {integrity: sha512-W+oqK4H+r5sITxfxpSU+MMdr/YSWGvgZMQDIsNoBDGGy4i7GBPTtvFKibQzW06n3U3TqHjhvBJsirShsEJ6eeQ==}
+    deprecated: this version is no longer supported
     dev: false
 
   /jose@5.1.3:

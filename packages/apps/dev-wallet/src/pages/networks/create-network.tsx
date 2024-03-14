@@ -1,5 +1,7 @@
-import { useNetwork } from '@/modules/network/network.hook';
-import { INetwork } from '@/modules/network/network.repository';
+import {
+  INetwork,
+  networkRepository,
+} from '@/modules/network/network.repository';
 import { Box, Button, Heading, TextField } from '@kadena/react-ui';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -20,9 +22,11 @@ export function CreateNetwork() {
     },
   });
   const { fields, append, remove } = useFieldArray({ control, name: 'hosts' });
-  const { addNetwork } = useNetwork();
   async function create(network: Omit<INetwork, 'uuid'>) {
-    await addNetwork({ ...network, uuid: crypto.randomUUID() });
+    await networkRepository.addNetwork({
+      ...network,
+      uuid: crypto.randomUUID(),
+    });
     navigate('/networks');
   }
 
