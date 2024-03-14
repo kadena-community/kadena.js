@@ -1,5 +1,15 @@
 # @kadena/dev-wallet
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [016b9dbfc]
+- Updated dependencies [25de564cd]
+  - @kadena/client@1.10.0
+  - @kadena/react-ui@0.8.3
+  - @kadena/client-utils@0.5.1
+
 ## 0.0.5
 
 ### Patch Changes

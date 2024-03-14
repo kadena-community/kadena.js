@@ -1,5 +1,13 @@
 # @kadena/graph
 
+## 0.1.9
+
+### Patch Changes
+
+- Updated dependencies [016b9dbfc]
+  - @kadena/client@1.10.0
+  - @kadena/client-utils@0.5.1
+
 ## 0.1.8
 
 ### Patch Changes

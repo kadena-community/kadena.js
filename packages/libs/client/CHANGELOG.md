@@ -1,5 +1,11 @@
 # Change Log - @kadena/client
 
+## 1.10.0
+
+### Minor Changes
+
+- 016b9dbfc: Added support for verifiers in @kadena/client
+
 ## 1.9.0
 
 ### Minor Changes
