@@ -57,7 +57,7 @@ Before you start this tutorial, verify the following basic requirements:
   [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
 - You have created a principal namespace on the development network as described
   in
-  [Define a namespace](/build/guides/election-dapp-tutorial/0define-a-namespace).
+  [Define a namespace](/build/guides/election-dapp-tutorial/define-a-namespace).
 - You have defined the keyset that controls your namespace using the
   administrative account as described in
   [Define keysets](/build/guides/election-dapp-tutorial/define-keysets).

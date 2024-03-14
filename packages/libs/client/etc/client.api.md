@@ -18,6 +18,7 @@ import { IPreflightResult } from '@kadena/chainweb-node-client';
 import { IUnsignedCommand } from '@kadena/types';
 import type { LocalRequestBody } from '@kadena/chainweb-node-client';
 import type { LocalResponse } from '@kadena/chainweb-node-client';
+import type { PactValue } from '@kadena/types';
 import type { SessionTypes } from '@walletconnect/types';
 
 // @public
@@ -82,6 +83,8 @@ export interface IBuilder<TCommand> {
     addKeyset: IAddKeyset<TCommand>;
     // Warning: (ae-forgotten-export) The symbol "IAddSigner" needs to be exported by the entry point index.d.ts
     addSigner: IAddSigner<TCommand>;
+    // Warning: (ae-forgotten-export) The symbol "IAddVerifier" needs to be exported by the entry point index.d.ts
+    addVerifier: IAddVerifier<TCommand>;
     createTransaction: () => IUnsignedCommand;
     getCommand: () => Partial<IPactCommand>;
     setMeta: (meta: Partial<Omit<IPactCommand['meta'], 'sender'>> & {
@@ -210,6 +213,12 @@ export interface IPactCommand {
         pubKey: string;
         address?: string;
         scheme?: SignerScheme;
+        clist?: ICap[];
+    }>;
+    // (undocumented)
+    verifiers?: Array<{
+        name: string;
+        proof: PactValue;
         clist?: ICap[];
     }>;
 }

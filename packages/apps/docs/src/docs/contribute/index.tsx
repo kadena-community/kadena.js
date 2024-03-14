@@ -65,7 +65,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
 
                 <Link
                   className={docsCardLink}
-                  href="/contribute/node/troubleshooting-chainweb"
+                  href="/contribute/node/trouble-shooting-chainweb"
                 >
                   Troubleshooting Chainweb
                 </Link>

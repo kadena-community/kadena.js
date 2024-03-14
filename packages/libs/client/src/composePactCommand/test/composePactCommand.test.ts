@@ -12,6 +12,7 @@ import { getModule } from '../../pact';
 import { createTransaction } from '../../utils/createTransaction';
 import { composePactCommand } from '../composePactCommand';
 import { addData } from '../utils/addData';
+import { addVerifier } from '../utils/addVerifier';
 import { mergePayload } from '../utils/patchCommand';
 import type { ICoin } from './coin-contract';
 
@@ -435,5 +436,42 @@ describe('mergePayload', () => {
     expect(pactCommand.meta?.creationTime).toBe(1690416000);
 
     vi.useRealTimers();
+  });
+
+  it('returns command object with verifiers and capabilities', () => {
+    const command = composePactCommand(
+      execution(coin.transfer('alice', 'bob', { decimal: '12.1' })),
+      addVerifier(
+        { name: 'test-verifier', proof: 'test-proof' },
+        (forCapability) => [
+          forCapability('coin.GAS'),
+          forCapability('coin.TRANSFER', 'alice', 'bob', { decimal: '12.1' }),
+        ],
+      ),
+      setNonce('test-nonce'),
+    )();
+    expect(command).toStrictEqual({
+      payload: {
+        exec: {
+          code: '(coin.transfer "alice" "bob" 12.1)',
+          data: {},
+        },
+      },
+      signers: [],
+      verifiers: [
+        {
+          clist: [
+            { args: [], name: 'coin.GAS' },
+            {
+              args: ['alice', 'bob', { decimal: '12.1' }],
+              name: 'coin.TRANSFER',
+            },
+          ],
+          name: 'test-verifier',
+          proof: 'test-proof',
+        },
+      ],
+      nonce: 'test-nonce',
+    });
   });
 });
