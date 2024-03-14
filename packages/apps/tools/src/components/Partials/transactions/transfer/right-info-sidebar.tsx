@@ -51,7 +51,7 @@ export const RightInfoSidebar: FC<IRightInfoSidebarProps> = ({
     }
 
     setInitialItem({ item: 0 });
-  }, [sidebarOpen, isLargeScreen, initialRender]);
+  }, [sidebarOpen, isLargeScreen]);
 
   return (
     <DrawerToolbar
