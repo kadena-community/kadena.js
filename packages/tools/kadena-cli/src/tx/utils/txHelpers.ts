@@ -17,7 +17,6 @@ import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletKey } from '../../keys/utils/keysHelpers.js';
 import type { IKeyPair as IKeyPairLocal } from '../../keys/utils/storage.js';
-import { tx } from '../../prompts/index.js';
 import { ICommandSchema } from '../../prompts/tx.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
@@ -305,11 +304,15 @@ export async function getTransactionFromFile(
       throw Error(`Failed to read file at path: ${transactionFilePath}`);
     }
     const transaction = JSON.parse(fileContent);
+    const parsedTransaction = ICommandSchema.parse(transaction);
     if (signed) {
-      return tx.ISignedCommandSchema.parse(transaction);
+      const isSignedTx = isSignedTransaction(transaction);
+      if (!isSignedTx) {
+        throw Error(`${transactionFile} is not a signed transaction`);
+      }
+      return parsedTransaction as ICommand;
     }
-    const result = tx.IUnsignedCommandSchema.parse(transaction);
-    return result as IUnsignedCommand; // typecast because `IUnsignedCommand` uses undefined instead of null
+    return parsedTransaction as IUnsignedCommand; // typecast because `IUnsignedCommand` uses undefined instead of null;
   } catch (error) {
     log.error(
       `Error processing ${
