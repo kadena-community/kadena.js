@@ -1,14 +1,5 @@
-import { style } from '@vanilla-extract/css';
-
 import { recipe } from '@vanilla-extract/recipes';
 import { atoms, token } from '../../styles';
-
-export const initialsClass = style([
-  atoms({
-    fontSize: '9xl',
-    fontWeight: 'bodyFont.bold',
-  }),
-]);
 
 export const circle = recipe({
   base: [
@@ -47,11 +38,29 @@ export const circle = recipe({
     },
     color: {
       category1: {
-        background: token('color.categorical.category1.default'), // color background
+        background: token('color.categorical.category1.default'),
       },
       category2: {
-        background: token('color.categorical.category2.default'), // color background
-      }, //...
+        background: token('color.categorical.category2.default'),
+      },
+      category3: {
+        background: token('color.categorical.category3.default'),
+      },
+      category4: {
+        background: token('color.categorical.category4.default'),
+      },
+      category5: {
+        background: token('color.categorical.category5.default'),
+      },
+      category6: {
+        background: token('color.categorical.category6.default'),
+      },
+      category7: {
+        background: token('color.categorical.category7.default'),
+      },
+      category8: {
+        background: token('color.categorical.category8.default'),
+      },
     },
   },
   defaultVariants: {
@@ -73,13 +82,17 @@ export const status = recipe({
   variants: {
     status: {
       positive: {
-        // background: token('color.background.semantic.info.default'),
-        // background: token('color.background.semantic.negative.default'),
-        background: token('color.background.semantic.positive.default'), // this is for status
+        background: token('color.background.semantic.positive.default'),
       },
       negative: {
         background: token('color.background.semantic.negative.default'),
-      }, //...
+      },
+      info: {
+        background: token('color.background.semantic.info.default'),
+      },
+      warning: {
+        background: token('color.background.semantic.warning.default'),
+      },
     },
     size: {
       lg: {

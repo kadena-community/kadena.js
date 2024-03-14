@@ -11,9 +11,6 @@ type CircleVariants = NonNullable<RecipeVariants<typeof circle>>;
 export interface IBadgeProps extends StatusVariants, CircleVariants {
   name?: string;
   imageUrl?: string;
-  //color always to the main background
-  //status renders the small circle and shows the color
-  // accept it and use prios
   //icon is from system icons, fallback question mark
 }
 
