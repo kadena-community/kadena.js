@@ -146,7 +146,7 @@ class KadenaLedgerAppLike implements IKadenaLedgerAppLike {
             'coin.TRANSFER_XCHAIN',
             sender,
             params.recipient,
-            { decimal: amount },
+            amount,
             params.recipient_chainId,
           ),
         ])
