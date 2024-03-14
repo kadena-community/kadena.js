@@ -48,7 +48,7 @@ const useAccountDetailsQuery = ({ account, networkId, chainId }: IParams) => {
     queryKey: ['account-details', account, networkId, chainId, networkDto.API],
     queryFn: () =>
       fetchDetails({ account, networkId, chainId, host: networkDto.API }),
-    enabled: !!account,
+    enabled: !!account && !!chainId,
     retry: false,
   });
 };
