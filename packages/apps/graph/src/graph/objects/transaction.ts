@@ -2,7 +2,7 @@ import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
-import { PRISMA, builder } from '../builder';
+import { builder } from '../builder';
 import TransactionCommand from './transaction-command';
 import TransactionResult from './transaction-result';
 
@@ -14,8 +14,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
   fields: (t) => ({
     hash: t.exposeString('requestKey'),
     cmd: t.field({
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       type: TransactionCommand,
       select: {
         senderAccount: true,
@@ -39,7 +38,6 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
             where: {
               requestKey: parent.requestKey,
             },
-            take: PRISMA.DEFAULT_SIZE,
           });
 
           return {
