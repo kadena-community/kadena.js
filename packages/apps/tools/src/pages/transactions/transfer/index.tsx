@@ -24,6 +24,8 @@ import { notificationLinkStyle } from './styles.css';
 import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/right-info-sidebar';
 import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
 import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
+import useIsLedgerLibSupported from '@/hooks/use-is-ledger-lib-supported';
+
 const TransferPage = () => {
   const router = useRouter();
   useToolbar(menuData, router.pathname);
@@ -35,6 +37,8 @@ const TransferPage = () => {
   >((pactCommandObject) => {
     setData(pactCommandObject);
   }, []);
+
+  const browserSupported = useIsLedgerLibSupported();
 
   const [receiverChainId, setReceiverChainId] = useState<ChainId>(CHAINS[0]);
   const [senderChainId, setSenderChainId] = useState<ChainId>(CHAINS[0]);
@@ -81,6 +85,22 @@ const TransferPage = () => {
         paddingBlockEnd={'xxxl'}
         gap={'lg'}
       >
+        {!browserSupported ? (
+          <Notification intent={'negative'} role={'alert'} isDismissable>
+            <Trans
+              i18nKey="common:ledger-error-notification"
+              components={[
+                <a
+                  className={notificationLinkStyle}
+                  target={'_blank'}
+                  href="https://caniuse.com/?search=webhid"
+                  rel="noreferrer"
+                  key="link-to-ledger-docs"
+                />,
+              ]}
+            />
+          </Notification>
+        ) : null}
         <Notification intent="info" role="alert" isDismissable>
           <Trans
             i18nKey="common:ledger-info-notification"

@@ -260,5 +260,6 @@
   "Waiting for ledger signature": "Waiting for ledger signature",
   "fetching-receiver-data": "Fetching receiver account data..",
   "unexpected-account-name": "If this is not the expected account name, try changing the Legacy toggle",
-  "transfer-sidebar-title": "Tips & tricks"
+  "transfer-sidebar-title": "Tips & tricks",
+  "ledger-error-notification": "You cannot sign with Ledger on the current browser! Please visit <0>this website</0> for more information on browser compatibility."
 }
