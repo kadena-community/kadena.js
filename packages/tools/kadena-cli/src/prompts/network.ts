@@ -257,7 +257,12 @@ export const networkDeletePrompt: IPrompt<string> = async (
   if (previousQuestions.network === undefined) {
     throw new Error('Network name is required for the delete prompt.');
   }
-  const message = `Are you sure you want to delete the configuration for network "${defaultValue}"?`;
+
+  let message = `Are you sure you want to delete the configuration for network "${defaultValue}"?`;
+  if (previousQuestions.isDefaultNetwork) {
+    message += `\nThis is the "default network". If you delete it, then the default network settings will also be deleted.`;
+  }
+
   return await select({
     message,
     choices: [

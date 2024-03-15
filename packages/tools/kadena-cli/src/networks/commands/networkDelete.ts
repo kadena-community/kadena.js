@@ -1,8 +1,12 @@
 import { globalOptions } from '../../utils/globalOptions.js';
-import { removeNetwork } from '../utils/networkHelpers.js';
+import {
+  removeDefaultNetwork,
+  removeNetwork,
+} from '../utils/networkHelpers.js';
 
 import type { Command } from 'commander';
 import { createCommand } from '../../utils/createCommand.js';
+import { getDefaultNetworkName } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { networkOptions } from '../networkOptions.js';
 
@@ -17,8 +21,12 @@ export const deleteNetworksCommand: (
     networkOptions.networkDelete(),
   ],
   async (option) => {
+    const defaultNetworkName = await getDefaultNetworkName();
     const networkData = await option.network();
-    const deleteNetwork = await option.networkDelete();
+    const isDefaultNetwork = networkData.network === defaultNetworkName;
+    const deleteNetwork = await option.networkDelete({
+      isDefaultNetwork,
+    });
 
     log.debug('delete-network:action', {
       ...networkData,
@@ -35,6 +43,7 @@ export const deleteNetworksCommand: (
     }
 
     await removeNetwork(networkData.networkConfig);
+    await removeDefaultNetwork();
 
     log.info(
       log.color.green(

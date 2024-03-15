@@ -1,5 +1,6 @@
 import {
   defaultNetworksPath,
+  defaultNetworksSettingsFilePath,
   networkDefaults,
   networkFiles,
 } from '../../constants/networks.js';
@@ -111,6 +112,10 @@ export async function removeNetwork(
   );
 
   await services.filesystem.deleteFile(networkFilePath);
+}
+
+export async function removeDefaultNetwork(): Promise<void> {
+  await services.filesystem.deleteFile(defaultNetworksSettingsFilePath);
 }
 
 export async function loadNetworkConfig(
