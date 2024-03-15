@@ -51,6 +51,7 @@ export const LedgerDetails: FC<ILedgerDetailsProps> = ({
       onLedgerKeyUpdate(state.value);
     }
   }, [onLedgerKeyUpdate, state.value]);
+
   return (
     <Stack
       flexDirection={'row'}

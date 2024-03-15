@@ -98,8 +98,6 @@ const useLedgerSign = () => {
       }: { networkId: string; derivationPath: string },
     ) => {
       const app = await getKadenaLedgerApp();
-      // const transport = await getTransport();
-      // const app = new AppKda(transport);
       return sign(app, transferInput, networkId, derivationPath);
     },
   );

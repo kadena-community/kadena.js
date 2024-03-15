@@ -42,8 +42,6 @@ const fetchPublicKey = async ({
 
 const useLedgerPublicKey = () => {
   return useAsyncFn(async ({ keyId, derivationMode }: ILedgerKeyParams) => {
-    // const transport = await getTransport();
-    // const app = new AppKda(transport);
     const app = await getKadenaLedgerApp();
     return fetchPublicKey({ keyId, app, derivationMode });
   });
