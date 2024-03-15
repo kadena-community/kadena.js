@@ -33,11 +33,12 @@ export const Avatar = ({
       className={circle({ size: size, color: color })}
       style={mainCircleStyle}
     >
-      {imageUrl ? null : initials ? (
+      {imageUrl ? null : initials && size !== 'sm' ? (
         <span>{initials}</span>
       ) : (
         icon || <MonoQuestionMark />
       )}
+
       {status && <div className={circleStatus({ size, status })}></div>}
     </div>
   );
