@@ -130,11 +130,10 @@ jobs:
         run: pnpm turbo build --filter @kadena/${{ matrix.app }}
 
       - name: Install browsers
-        run:
-          pnpm --filter @kadena-dev/e2e-${{ matrix.app }} run install:chromium
+        run: pnpm --filter e2e-${{ matrix.app }} run install:chromium
 
       - name: Run end-to-end tests
-        run: pnpm turbo test:e2e --filter @kadena-dev/e2e-${{ matrix.app }}
+        run: pnpm turbo test:e2e --filter e2e-${{ matrix.app }}
 
       - uses: actions/upload-artifact@v3
         if: always()
