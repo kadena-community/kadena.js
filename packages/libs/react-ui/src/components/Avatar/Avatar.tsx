@@ -3,11 +3,11 @@ import React from 'react';
 
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 
-import { MonoQuestionMark } from '@kadena/react-icons/system'; // find icons list to type it
-import { circle, status } from './Avatar.css';
+import { MonoQuestionMark } from '@kadena/react-icons/system';
+import { circle, circleStatus } from './Avatar.css';
 import { getInitials } from './getInitials';
 
-type StatusVariants = NonNullable<RecipeVariants<typeof status>>;
+type StatusVariants = NonNullable<RecipeVariants<typeof circleStatus>>;
 type CircleVariants = NonNullable<RecipeVariants<typeof circle>>;
 export interface IAvatarProps extends StatusVariants, CircleVariants {
   name?: string;
@@ -15,27 +15,30 @@ export interface IAvatarProps extends StatusVariants, CircleVariants {
   icon?: ReactElement;
 }
 
-export const Avatar = (props: IAvatarProps) => {
-  const initials = getInitials(props.name);
-  const mainCircleStyle = props.imageUrl
-    ? { backgroundImage: `url(${props.imageUrl})`, backgroundSize: 'cover' }
+export const Avatar = ({
+  size,
+  status,
+  name,
+  imageUrl,
+  icon,
+  color,
+}: IAvatarProps) => {
+  const initials = getInitials(name);
+  const mainCircleStyle = imageUrl
+    ? { backgroundImage: `url(${imageUrl})`, backgroundSize: 'cover' }
     : {};
 
   return (
     <div
-      className={circle({ size: props.size, color: props.color })}
+      className={circle({ size: size, color: color })}
       style={mainCircleStyle}
     >
-      {props.imageUrl ? null : initials ? (
+      {imageUrl ? null : initials ? (
         <span>{initials}</span>
       ) : (
-        props.icon || <MonoQuestionMark />
+        icon || <MonoQuestionMark />
       )}
-      {props.status && (
-        <div
-          className={status({ size: props.size, status: props.status })}
-        ></div>
-      )}
+      {status && <div className={circleStatus({ size, status })}></div>}
     </div>
   );
 };

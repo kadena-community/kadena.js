@@ -69,7 +69,7 @@ export const circle = recipe({
   },
 });
 
-export const status = recipe({
+export const circleStatus = recipe({
   base: [
     atoms({
       position: 'absolute',
