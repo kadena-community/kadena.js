@@ -108,7 +108,6 @@ export const AddPublicKeysSection = ({
             onPress={() => {
               const value = publicKey;
               const valid = validatePublicKey(stripAccountPrefix(value || ''));
-              console.log('is valid', value);
               if (valid) {
                 addPublicKey(value);
               } else {

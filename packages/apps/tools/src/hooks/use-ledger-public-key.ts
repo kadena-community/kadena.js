@@ -37,7 +37,6 @@ const fetchPublicKey = async ({
   const kdaAddress = await app.getPublicKey(
     getDerivationPath(keyId, derivationMode),
   );
-  console.log('kdaAddress', kdaAddress);
   return bufferToHex(kdaAddress.publicKey);
 };
 
