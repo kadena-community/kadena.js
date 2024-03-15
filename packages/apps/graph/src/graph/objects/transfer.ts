@@ -1,5 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
-import type { Block, Transaction, Transfer } from '@prisma/client';
+import type { Block, Transfer } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
 import { COMPLEXITY } from '@services/complexity';
@@ -155,11 +155,11 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
-        transactions: true,
+        transaction: true,
       },
       async resolve(__query, parent) {
         try {
-          return parent.transactions as Transaction | null | undefined;
+          return parent.transaction;
         } catch (error) {
           throw normalizeError(error);
         }
