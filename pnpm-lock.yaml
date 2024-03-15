@@ -928,8 +928,8 @@ importers:
         specifier: ^4.35.3
         version: 4.35.3(react-dom@18.2.0)(react@18.2.0)
       '@vanilla-extract/css':
-        specifier: 1.14.1
-        version: 1.14.1
+        specifier: 1.14.0
+        version: 1.14.0
       '@walletconnect/modal':
         specifier: ~2.6.1
         version: 2.6.1(react@18.2.0)
@@ -5099,7 +5099,7 @@ packages:
       '@crackle/babel-plugin-remove-exports': 0.3.0
       '@crackle/router': 0.4.1(react-dom@18.2.0)(react@18.2.0)
       '@ungap/structured-clone': 1.2.0
-      '@vanilla-extract/css': 1.14.1
+      '@vanilla-extract/css': 1.14.0
       '@vanilla-extract/integration': 6.2.4(@types/node@18.17.14)
       '@vanilla-extract/vite-plugin': 3.9.3(@types/node@18.17.14)(vite@5.1.6)
       '@vitejs/plugin-react-swc': 3.5.0(vite@5.1.6)
@@ -16472,28 +16472,13 @@ packages:
       modern-ahocorasick: 1.0.1
       outdent: 0.8.0
 
-  /@vanilla-extract/css@1.14.1:
-    resolution: {integrity: sha512-V4JUuHNjZgl64NGfkDJePqizkNgiSpphODtZEs4cCPuxLAzwOUJYATGpejwimJr1n529kq4DEKWexW22LMBokw==}
-    dependencies:
-      '@emotion/hash': 0.9.1
-      '@vanilla-extract/private': 1.0.3
-      chalk: 4.1.2
-      css-what: 6.1.0
-      cssesc: 3.0.0
-      csstype: 3.1.2
-      deep-object-diff: 1.1.9
-      deepmerge: 4.3.1
-      media-query-parser: 2.0.2
-      modern-ahocorasick: 1.0.1
-      outdent: 0.8.0
-
   /@vanilla-extract/integration@6.2.1(@types/node@18.17.14):
     resolution: {integrity: sha512-+xYJz07G7TFAMZGrOqArOsURG+xcYvqctujEkANjw2McCBvGEK505RxQqOuNiA9Mi9hgGdNp2JedSa94f3eoLg==}
     dependencies:
       '@babel/core': 7.23.9
       '@babel/plugin-syntax-typescript': 7.23.3(@babel/core@7.23.9)
       '@vanilla-extract/babel-plugin-debug-ids': 1.0.5
-      '@vanilla-extract/css': 1.14.1
+      '@vanilla-extract/css': 1.14.0
       esbuild: 0.17.6
       eval: 0.1.6
       find-up: 5.0.0
