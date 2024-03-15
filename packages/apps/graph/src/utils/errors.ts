@@ -54,18 +54,25 @@ export function normalizeError(error: any): GraphQLError {
   }
 
   if (error instanceof PrismaClientValidationError) {
+    let description: string | undefined;
+
     if (error.message.includes('Unknown argument')) {
       error.message = `Unknown argument${
         error.message.split('Unknown argument')[1]
       }`;
+
+      description =
+        'The Prisma client failed to validate the input. Check the input and try again. If you are trying to filter on a JSON column, make sure the JSON is in the correct format. See the README for the allowed JSON format.';
+    }
+    if (error.message.includes('Unknown field')) {
+      description = `Prisma tried to select a field that is not available.`;
     }
 
     return new GraphQLError('Prisma Client Validation Error', {
       extensions: {
         type: error.name,
         message: error.message,
-        description:
-          'The Prisma client failed to validate the input. Check the input and try again. If you are trying to filter on a JSON column, make sure the JSON is in the correct format. See the README for the allowed JSON format.',
+        description,
         data: error.stack,
       },
     });
