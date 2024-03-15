@@ -4,18 +4,18 @@ import React from 'react';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 
 import { MonoQuestionMark } from '@kadena/react-icons/system'; // find icons list to type it
-import { circle, status } from './Badge.css';
+import { circle, status } from './Avatar.css';
 import { getInitials } from './getInitials';
 
 type StatusVariants = NonNullable<RecipeVariants<typeof status>>;
 type CircleVariants = NonNullable<RecipeVariants<typeof circle>>;
-export interface IBadgeProps extends StatusVariants, CircleVariants {
+export interface IAvatarProps extends StatusVariants, CircleVariants {
   name?: string;
   imageUrl?: string;
   icon?: ReactElement;
 }
 
-export const Badge = (props: IBadgeProps) => {
+export const Avatar = (props: IAvatarProps) => {
   const initials = getInitials(props.name);
   const mainCircleStyle = props.imageUrl
     ? { backgroundImage: `url(${props.imageUrl})`, backgroundSize: 'cover' }
