@@ -1,3 +1,4 @@
+// maybe make public in the future
 export const getInitials = (name: string | undefined) => {
   if (!name) {
     return '';

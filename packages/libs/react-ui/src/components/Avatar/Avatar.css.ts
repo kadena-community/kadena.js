@@ -26,7 +26,7 @@ export const circle = recipe({
         height: token('icon.size.lg'),
       },
       sm: {
-        fontSize: token('typography.fontSize.sm'), // no text
+        fontSize: token('typography.fontSize.sm'),
         width: token('icon.size.sm'),
         height: token('icon.size.sm'),
       },
