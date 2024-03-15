@@ -174,12 +174,12 @@ Tool to add and manage networks
 kadena network update [arguments]
 ```
 
-| **Arguments & Options** | **Description**                         | ** Required ** |
-| ----------------------- | --------------------------------------- | -------------- |
-| --network-name          | Update the name of the network          |                |
-| --network-id            | Update the id of the network            |                |
-| --network-host          | Update the host for the network         |                |
-| --network-explorer-url  | Update the explorer url for the network |                |
+| **Arguments & Options** | **Description**                         | **Required**  |
+| ----------------------- | --------------------------------------- | ------------- |
+| --network-name          | Update the name of the network          |               |
+| --network-id            | Update the id of the network            |               |
+| --network-host          | Update the host for the network         |               |
+| --network-explorer-url  | Update the explorer url for the network |               |
 
 example:
 
@@ -193,13 +193,13 @@ kadena networks update --network-name="mainnet" --network-id="mainnet01" --netwo
 kadena networks add [arguments]
 ```
 
-| **Arguments & Options** | **Description**                      | ** Required ** |
-| ----------------------- | ------------------------------------ | -------------- |
-| --network-name          | Set the name of the network          |                |
-| --network-id            | Set the id of the network            |                |
-| --network-host          | Set the host for the network         |                |
-| --network-explorer-url  | Set the explorer url for the network |                |
-| --network-overwrite     | Confirm overwrite configuration      |                |
+| **Arguments & Options** | **Description**                      | **Required**  |
+| ----------------------- | ------------------------------------ | ------------- |
+| --network-name          | Set the name of the network          |               |
+| --network-id            | Set the id of the network            |               |
+| --network-host          | Set the host for the network         |               |
+| --network-explorer-url  | Set the explorer url for the network |               |
+| --network-overwrite     | Confirm overwrite configuration      |               |
 
 example:
 
@@ -213,10 +213,10 @@ kadena network add --network-name="mainnet" --network-id="mainnet01" --network-h
 kadena networks delete [arguments]
 ```
 
-| **Arguments & Options** | **Description**                  | ** Required ** |
-| ----------------------- | -------------------------------- | -------------- |
-| --network               | Select name of network to delete |                |
-| --network-delete        | Confirm deletion of network      |                |
+| **Arguments & Options** | **Description**                  | **Required** |
+| ----------------------- | -------------------------------- | ------------ |
+| --network               | Select name of network to delete |              |
+| --network-delete        | Confirm deletion of network      |              |
 
 example:
 
@@ -245,12 +245,12 @@ Tool to generate and manage wallets
 kadena wallet add [arguments]
 ```
 
-| **Arguments & Options**    | **Description**                                | ** Required ** |
-| -------------------------- | ---------------------------------------------- | -------------- |
-| --wallet-name              | Set the name of the wallet                     |                |
-| --security-password        | Set the password for the wallet                |                |
-| --security-verify-password | Set the password for the wallet (verification) |                |
-| --legacy                   | Generate legacy wallet                         |                |
+| **Arguments & Options**    | **Description**                                | **Required** |
+| -------------------------- | ---------------------------------------------- | ------------ |
+| --wallet-name              | Set the name of the wallet                     |              |
+| --security-password        | Set the password for the wallet                |              |
+| --security-verify-password | Set the password for the wallet (verification) |              |
+| --legacy                   | Generate legacy wallet                         |              |
 
 example:
 
@@ -267,13 +267,13 @@ password will be hidden after entry: --security-password=\*
 kadena wallet import [arguments]
 ```
 
-| **Arguments & Options**    | **Description**                                | ** Required ** |
-| -------------------------- | ---------------------------------------------- | -------------- |
-| --key-mnemonic             | 12 word mnemnoc phrase                         |                |
-| --security-new-password    | Set the password for the wallet                |                |
-| --security-verify-password | Set the password for the wallet (verification) |                |
-| --wallet-name              | Set the name of the wallet                     |                |
-| --legacy                   | Use Chainweaver's key derivation               |                |
+| **Arguments & Options**    | **Description**                                | **Required** |
+| -------------------------- | ---------------------------------------------- | ------------ |
+| --key-mnemonic             | 12 word mnemnoc phrase                         |              |
+| --security-new-password    | Set the password for the wallet                |              |
+| --security-verify-password | Set the password for the wallet (verification) |              |
+| --wallet-name              | Set the name of the wallet                     |              |
+| --legacy                   | Use Chainweaver's key derivation               |              |
 
 example:
 
@@ -292,13 +292,13 @@ kadena wallet generate-keys [arguments]
 
 Generate a keypair from a wallet mnemonic
 
-| **Arguments & Options** | **Description**                                                                     | ** Required ** |
-| ----------------------- | ----------------------------------------------------------------------------------- | -------------- |
-| --wallet-name           | Provide the name of the wallet                                                      |                |
-| --key-index-or-range    | Set index or range of indices for key generation (e.g., 5 or 1-5)                   |                |
-| --security-password     | Set the password for the wallet                                                     |                |
-| --key-gen-from-choice   | Select generation type: genPublicKey (publicKey only), genPublicSecretKey           |                |
-|                         | (publickey and secretKey), genPublicSecretKeyDec (publicKey and SecretKey Decrypted |                |
+| **Arguments & Options** | **Description**                                                                     | **Required** |
+| ----------------------- | ----------------------------------------------------------------------------------- | ------------ |
+| --wallet-name           | Provide the name of the wallet                                                      |              |
+| --key-index-or-range    | Set index or range of indices for key generation (e.g., 5 or 1-5)                   |              |
+| --security-password     | Set the password for the wallet                                                     |              |
+| --key-gen-from-choice   | Select generation type: genPublicKey (publicKey only), genPublicSecretKey           |              |
+|                         | (publickey and secretKey), genPublicSecretKeyDec (publicKey and SecretKey Decrypted |              |
 
 example generating public keys using a range
 
@@ -379,7 +379,7 @@ kadena wallet delete --wallet-name="all" --confirm=true
 kadena wallet list [arguments]
 ```
 
-| **Arguments & Options** | **Description**           |
+| **Arguments & Options** | **Description**            |
 | ----------------------- | -------------------------- |
 | --wallet-name           | Set the name of the wallet |
 
@@ -457,7 +457,7 @@ kadena key list
 ```
 
 | **Arguments & Options** | **Description** |
-| ----------------------- | ---------------- |
+| ----------------------- | --------------- |
 
 example for listing all keys
 
@@ -619,7 +619,7 @@ kadena account name-to-address --network="mainnet" --account-kdn-name="kadena.kd
 kadena account address-to-name [arguments]
 ```
 
-| **Arguments & Options** | **Description**                          | **Required** |
+| **Arguments & Options** | **Description**                           | **Required** |
 | ----------------------- | ----------------------------------------- | ------------ |
 | --network               | Name of the network to be used            |              |
 | --account-kdn-address   | Provide k:account to resolve to .kda name |              |
@@ -636,7 +636,7 @@ kadena account address-to-name --network="mainnet" --account-kdn-address="k:acco
 kadena account list [arguments]
 ```
 
-| **Arguments & Options** | **Description**                 |
+| **Arguments & Options** | **Description**                  |
 | ----------------------- | -------------------------------- |
 | --account-alias         | Provide the alias of the account |
 
@@ -658,7 +658,7 @@ kadena account list --account-alias="all"
 kadena account delete [arguments]
 ```
 
-| **Arguments & Options** | **Description**                 |
+| **Arguments & Options** | **Description**                  |
 | ----------------------- | -------------------------------- |
 | --account-alias         | Provide the alias of the account |
 | --confirm               | Confirm deletion of account      |
@@ -695,7 +695,7 @@ Tool for creating and managing transactions
 kadena tx add [arguments]
 ```
 
-| **Arguments & Options** | **Description**                               | **Required** |
+| **Arguments & Options** | **Description**                                | **Required** |
 | ----------------------- | ---------------------------------------------- | ------------ |
 | --template              | Select template path                           |              |
 | --template-data         | Provide File path of data to use for template  |              |
@@ -723,10 +723,10 @@ flags. Variables can be prefixed to enable value selection using:
 kadena tx sign [arguments]
 ```
 
-| **Arguments & Options**         | **Description**                                                        | **Required** |
+| **Arguments & Options**         | **Description**                                                         | **Required** |
 | ------------------------------- | ----------------------------------------------------------------------- | ------------ |
 | --tx-sign-with="aliasFile"      | Provide signing method                                                  | Yes          |
-| --key-pairs                     | Provide publickey and secretKey (or list seperated my semicolon)        |              |
+| --key-pairs                     | Provide publickey and secretKey (or list separated my semicolon)        |              |
 | --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma seperated list) |              |
 
 example:
@@ -741,7 +741,7 @@ kadena tx sign --tx-sign-with="keyPair" --key-pairs="publicKey=xxx,secretKey=xxx
 kadena kadena sign [arguments]
 ```
 
-| **Arguments & Options**         | **Description**                                                        | **Required** |
+| **Arguments & Options**         | **Description**                                                         | **Required** |
 | ------------------------------- | ----------------------------------------------------------------------- | ------------ |
 | --tx-sign-with="aliasFile"      | Provide signing method                                                  | Yes          |
 | --key-wallet                    | Provide the name of the wallet                                          |              |
@@ -763,13 +763,13 @@ password will be hidden after entry: --security-password=\*
 kadena tx sign [arguments]
 ```
 
-| **Arguments & Options**         | **Description**                                                        | **Required** |
+| **Arguments & Options**         | **Description**                                                         | **Required** |
 | ------------------------------- | ----------------------------------------------------------------------- | ------------ |
 | --tx-sign-with="localWallet"    | Provide signing method                                                  | Yes          |
-| --key-wallet                    | Provode the name of the wallet                                          |              |
+| --key-wallet                    | Provide the name of the wallet                                          |              |
 | --security-password             | Provide the password for the wallet                                     |              |
 | --key-alias-select              | Select a aliased file                                                   |              |
-| --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma seperated list) |              |
+| --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma separated list) |              |
 
 example:
 
@@ -785,11 +785,11 @@ password will be hidden after entry: --security-password=\*
 kadena tx test-signed-transaction [arguments]
 ```
 
-| **Arguments & Options**       | **Description**                                                      | **Required** |
+| **Arguments & Options**       | **Description**                                                       | **Required** |
 | ----------------------------- | --------------------------------------------------------------------- | ------------ |
 | --network                     | Name of the network to be used                                        |              |
 | --directory                   | Provide the directory for the signed transaction                      |              |
-| --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma seperated list) |              |
+| --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma separated list) |              |
 | --chain-id                    | Chain to be used                                                      |              |
 
 example:
@@ -804,10 +804,10 @@ kadena tx test-signed-transaction --network="testnet" --directory="./" --tx-sign
 kadena tx send [arguments]
 ```
 
-| **Arguments & Options**       | **Description**                                                      | **Required** |
+| **Arguments & Options**       | **Description**                                                       | **Required** |
 | ----------------------------- | --------------------------------------------------------------------- | ------------ |
-| --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma seperated list) |              |
-| --tx-transaction-network      | Kadena networks comma seperated list in order of transaction          |              |
+| --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma separated list) |              |
+| --tx-transaction-network      | Kadena networks comma separated list in order of transaction          |              |
 |                               | (e.g. "mainnet, testnet, devnet, ...")                                |              |
 | --poll                        | Poll status of sent transactions                                      |              |
 
@@ -827,12 +827,12 @@ kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0T
 kadena tx status [arguments]
 ```
 
-| **Arguments & Options**       | **Description**                                                      | **Required** |
-| ----------------------------- | --------------------------------------------------------------------- | ------------ |
-| --request-key                 | Provide a transaction request key                                     |              |
-| --network                     | Select name of the network where transaction happened                 |              |
-|                               | (e.g. "mainnet, testnet, devnet, ...")                                |              |
-| --chain-id                    | Chain to be used in the transaction                                   |              |
+| **Arguments & Options** | **Description**                                       | **Required** |
+| ----------------------- | ----------------------------------------------------- | ------------ |
+| --request-key           | Provide a transaction request key                     |              |
+| --network               | Select name of the network where transaction happened |              |
+|                         | (e.g. "mainnet, testnet, devnet, ...")                |              |
+| --chain-id              | Chain to be used in the transaction                   |              |
 
 example:
 
@@ -854,7 +854,7 @@ Tool for creating dapp projects
 kadena dapp add [arguments]
 ```
 
-| **Arguments & Options** | ** Description**                         | **Required** |
+| **Arguments & Options** | **Description**                          | **Required** |
 | ----------------------- | ---------------------------------------- | ------------ |
 | project-directory       | Specify the project directory [Required] | yes          |
 | --dapp-template         | Select template: vuejs, nextjs, angular  |              |
