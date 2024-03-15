@@ -172,8 +172,6 @@ class KadenaLedgerAppLike implements IKadenaLedgerAppLike {
         .createTransaction();
     }
 
-    console.log('pactCommand', pactCommand);
-
     const signWithKeyPair = createSignWithKeypair({
       publicKey: senderKey,
       secretKey: env('QA_LEDGER_MOCKED_PRIVATEKEY', 'ENV VAR NOT SET!'),
@@ -194,7 +192,6 @@ class KadenaLedgerAppLike implements IKadenaLedgerAppLike {
 export const getKadenaLedgerApp = async (): Promise<
   AppKda | IKadenaLedgerAppLike
 > => {
-  console.log('getKadenaLedgerApp', { isTestEnvironment });
   if (isTestEnvironment) {
     const app: IKadenaLedgerAppLike = new KadenaLedgerAppLike();
     return app;

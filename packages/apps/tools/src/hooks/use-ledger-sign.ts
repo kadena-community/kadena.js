@@ -58,8 +58,6 @@ const signWithLedger = (
 ) => {
   const ledgerParams = pactToLedger(transferInput, derivationPath, networkId);
 
-  console.log('signWithLedger', transferInput);
-
   if (isCrossChainInput(transferInput)) {
     return app.signTransferCrossChainTx(ledgerParams);
   }
