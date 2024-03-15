@@ -12,6 +12,7 @@
 - [Getting started](#getting-started)
   - [Method 1: Using the published npm package](#method-1-using-the-published-npm-package)
   - [Method 2: Building and running from source](#method-2-building-and-running-from-source)
+  - [Running your first query](#running-your-first-query)
 - [Features](#features)
   - [Tracing and trace analysis](#tracing-and-trace-analysis)
   - [Query Complexity](#query-complexity)
@@ -72,7 +73,11 @@ Then, run the project:
 pnpm run start
 ```
 
-Finally, go to localhost:4000/graphql and execute this query to see if everything works:
+### Running your first query
+
+On startup, the GraphQL server runs a set of system checks to see if Chainweb node and the chainweb-data database are reachable. It also checks if all the extra migrations have been executed. If the checks fail, the server will not start. If the checks pass, the server will start and you can access the GraphQL endpoint at `localhost:4000/graphql`.
+
+To do a final check, go to localhost:4000/graphql and execute this query to see if everything works:
 
 ```gql
 subscription {
