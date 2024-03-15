@@ -2,9 +2,13 @@ import { load } from 'js-yaml';
 import path from 'path';
 import sanitize from 'sanitize-filename';
 import type { ZodError } from 'zod';
+import z from 'zod';
 import { MAX_CHARACTERS_LENGTH } from '../constants/config.js';
 import { defaultDevnetsPath, devnetDefaults } from '../constants/devnets.js';
-import { defaultNetworksPath } from '../constants/networks.js';
+import {
+  defaultNetworksPath,
+  defaultNetworksSettingsFilePath,
+} from '../constants/networks.js';
 import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import { writeDevnet } from '../devnet/utils/devnetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
@@ -440,3 +444,27 @@ export const passwordPromptTransform =
 
       return trimmedPassword;
     };
+
+const defaultNetworkSchema = z.object({
+  name: z.string(),
+});
+
+export const getDefaultNetworkName = async (): Promise<string | undefined> => {
+  const isDefaultNetworkAvailable = await services.filesystem.fileExists(
+    defaultNetworksSettingsFilePath,
+  );
+
+  if (!isDefaultNetworkAvailable) return;
+
+  const content = await services.filesystem.readFile(
+    defaultNetworksSettingsFilePath,
+  );
+
+  const network = content !== null ? load(content) : null;
+
+  const parse = defaultNetworkSchema.safeParse(network);
+
+  if (parse.success) {
+    return parse.data.name;
+  }
+};

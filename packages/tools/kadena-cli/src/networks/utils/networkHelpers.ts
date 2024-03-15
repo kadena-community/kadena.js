@@ -6,6 +6,7 @@ import {
 
 import {
   formatZodError,
+  getDefaultNetworkName,
   mergeConfigs,
   sanitizeFilename,
 } from '../../utils/helpers.js';
@@ -133,4 +134,36 @@ export async function ensureNetworksConfiguration(): Promise<void> {
       await writeNetworks(networkDefaults[network]);
     }
   }
+}
+
+interface INetworkChoiceOption {
+  network?: string;
+  name?: string;
+}
+
+export async function getNetworksInOrder<T extends INetworkChoiceOption>(
+  networks: T[],
+): Promise<T[]> {
+  const defaultNetworkName = await getDefaultNetworkName();
+
+  const partitionedNetworks = networks.reduce(
+    (acc, obj) => {
+      const networkKey = obj.network ?? obj.name;
+      if (networkKey === defaultNetworkName) {
+        acc.defaultNetworks.push(obj);
+      } else {
+        acc.remainingNetworks.push(obj);
+      }
+      return acc;
+    },
+    { defaultNetworks: [], remainingNetworks: [] } as {
+      defaultNetworks: T[];
+      remainingNetworks: T[];
+    },
+  );
+
+  return [
+    ...partitionedNetworks.defaultNetworks,
+    ...partitionedNetworks.remainingNetworks,
+  ];
 }

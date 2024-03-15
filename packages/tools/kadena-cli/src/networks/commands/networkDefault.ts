@@ -1,7 +1,9 @@
 import { Command } from 'commander';
+import yaml from 'js-yaml';
 import path from 'node:path';
 import {
   defaultNetworksPath,
+  defaultNetworksSettingsFilePath,
   defaultNetworksSettingsPath,
 } from '../../constants/networks.js';
 import { services } from '../../services/index.js';
@@ -36,13 +38,8 @@ export const createNetworkSetDefaultCommand: (
       return;
     }
 
-    const defaultNetworkSettingsFilePath = path.join(
-      defaultNetworksSettingsPath,
-      '__default__.yaml',
-    );
-
     const defaultNetworkAlreadyExists = await services.filesystem.fileExists(
-      defaultNetworkSettingsFilePath,
+      defaultNetworksSettingsFilePath,
     );
 
     if (defaultNetworkAlreadyExists) {
@@ -60,9 +57,13 @@ export const createNetworkSetDefaultCommand: (
       defaultNetworksSettingsPath,
     );
 
+    const data = {
+      name: network,
+    };
+
     await services.filesystem.writeFile(
-      defaultNetworkSettingsFilePath,
-      network,
+      defaultNetworksSettingsFilePath,
+      yaml.dump(data),
     );
 
     log.info(

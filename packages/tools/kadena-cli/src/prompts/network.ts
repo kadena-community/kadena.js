@@ -5,11 +5,13 @@ import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
   ensureNetworksConfiguration,
+  getNetworksInOrder,
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
+  getDefaultNetworkName,
   getExistingNetworks,
   isAlphabetic,
   isNotEmptyString,
@@ -161,10 +163,13 @@ export const networkSelectPrompt: IPrompt<string> = async (
     );
   }
 
-  const choices: ICustomNetworkChoice[] = filteredNetworks.map((network) => ({
+  const networksInOrder = await getNetworksInOrder(filteredNetworks);
+
+  const choices: ICustomNetworkChoice[] = networksInOrder.map((network) => ({
     value: network.value,
     name: network.name,
   }));
+
   if (isOptional === true) {
     choices.unshift({
       value: 'skip',
@@ -228,7 +233,9 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
     );
   }
 
-  const choices: ICustomNetworkChoice[] = filteredNetworks.map((network) => ({
+  const networksInOrder = await getNetworksInOrder(filteredNetworks);
+
+  const choices: ICustomNetworkChoice[] = networksInOrder.map((network) => ({
     value: network.value,
     name: network.name,
   }));

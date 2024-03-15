@@ -42,6 +42,11 @@ export const defaultNetworksSettingsPath = join(
   DEFAULT_SETTINGS_PATH,
   'networks',
 );
+export const defaultNetworksSettingsFilePath = join(
+  defaultNetworksSettingsPath,
+  '__default__.yaml',
+);
+
 export const standardNetworks: string[] = ['mainnet', 'testnet'];
 export const defaultNetwork: string = 'testnet';
 
