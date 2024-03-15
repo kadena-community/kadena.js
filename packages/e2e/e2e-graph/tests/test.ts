@@ -1,1 +1,3 @@
-dummy File, will remove
+export const dummy = () => {
+  console.log('test');
+};
