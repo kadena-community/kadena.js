@@ -30,7 +30,7 @@ export const circle = recipe({
         width: token('icon.size.sm'),
         height: token('icon.size.sm'),
       },
-      base: {
+      md: {
         fontSize: token('typography.fontSize.xs'), // typography.smallest
         width: token('icon.size.base'),
         height: token('icon.size.base'),
@@ -64,7 +64,7 @@ export const circle = recipe({
     },
   },
   defaultVariants: {
-    size: 'base',
+    size: 'md',
     color: 'category1',
   },
 });
@@ -107,7 +107,7 @@ export const circleStatus = recipe({
         bottom: '2px',
         right: '2px',
       },
-      base: {
+      md: {
         width: '8px',
         height: '8px',
         bottom: '4px',
@@ -116,6 +116,6 @@ export const circleStatus = recipe({
     },
   },
   defaultVariants: {
-    size: 'base',
+    size: 'md',
   },
 });
