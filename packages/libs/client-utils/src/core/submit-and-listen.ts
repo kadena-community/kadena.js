@@ -1,11 +1,11 @@
 import { createTransaction } from '@kadena/client';
-import { composePactCommand } from '@kadena/client/fp';
 
 import type { PactValue } from '@kadena/types';
 import { asyncPipe } from './utils/asyncPipe';
 import type { IClientConfig, IEmit } from './utils/helpers';
 import {
   checkSuccess,
+  composeWithDefaults,
   extractResult,
   getClient,
   safeSign,
@@ -19,7 +19,7 @@ export const submitAndListen =
   ) =>
   (emit: IEmit) =>
     asyncPipe(
-      composePactCommand(defaults ?? {}),
+      composeWithDefaults(defaults),
       createTransaction,
       safeSign(sign),
       emit('sign'),

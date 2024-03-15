@@ -38,7 +38,7 @@ export const SignatureOrUndefinedOrNull = z.union([
 export const ICommandSchema = z.object({
   cmd: CommandPayloadStringifiedJSONSchema,
   hash: PactTransactionHashSchema,
-  sigs: z.array(ISignatureJsonSchema),
+  sigs: z.array(SignatureOrUndefinedOrNull),
 });
 
 export const IUnsignedCommandSchema = z.object({
@@ -47,12 +47,11 @@ export const IUnsignedCommandSchema = z.object({
   sigs: z.array(SignatureOrUndefinedOrNull),
 });
 
-// export const ISignatureJsonSchema = z.union([
-//   z.object({
-//     sig: z.string(),
-//   }),
-//   z.null(),
-// ]);
+export const ISignedCommandSchema = z.object({
+  cmd: CommandPayloadStringifiedJSONSchema,
+  hash: PactTransactionHashSchema,
+  sigs: z.array(ISignatureJsonSchema),
+});
 
 export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
   const result = await input({

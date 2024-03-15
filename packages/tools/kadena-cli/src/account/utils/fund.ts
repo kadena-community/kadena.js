@@ -1,4 +1,4 @@
-import type { ICommandResult } from '@kadena/client';
+import type { ITransactionDescriptor } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
@@ -17,7 +17,7 @@ export async function fund({
   amount: string;
   networkConfig: INetworkCreateOptions;
   chainId: ChainId;
-}): Promise<CommandResult<ICommandResult>> {
+}): Promise<CommandResult<ITransactionDescriptor>> {
   try {
     const accountDetailsFromChain = await getAccountDetails({
       accountName: accountConfig.name,
@@ -51,10 +51,6 @@ export async function fund({
             chainId,
           },
         });
-
-    if (typeof result !== 'string' && result.result.status === 'failure') {
-      throw result.result.error;
-    }
 
     return {
       success: true,

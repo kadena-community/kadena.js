@@ -139,6 +139,11 @@ export const sendTransactionAction = async ({
 
       const client = getClient(details);
 
+      const localResponse = await client.local(command);
+      if (localResponse.result.status === 'failure') {
+        throw localResponse.result.error;
+      }
+
       const response = await client.submit(command);
       successfulCommands.push({
         transaction: command,

@@ -101,9 +101,6 @@ export const builder = new SchemaBuilder<
       TransactionCommand1: TransactionCommand1;
       CapabilitiesList: CapabilitiesList;
     };
-    Connection: {
-      totalCount: number;
-    };
   }
 >({
   plugins: [

@@ -51,7 +51,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   background="whitepapers"
                 >
                   <BrowseSection marker="none">
-                    <Link className={docsCardLink} href="/kadena/overview">
+                    <Link className={docsCardLink} href="/kadena/why-kadena">
                       What is Kadena?
                     </Link>
                     <Link className={docsCardLink} href="/kadena/kda">

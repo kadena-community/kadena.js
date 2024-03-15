@@ -52,13 +52,9 @@ describe('createAndTransferFunds', () => {
     });
 
     expect(result).toStrictEqual({
-      result: {
-        reqKey: 'requestKey-1',
-        result: {
-          status: 'success',
-          data: 'Write succeeded',
-        },
-      },
+      chainId: '1',
+      networkId: 'testnet04',
+      requestKey: 'requestKey-1',
     });
   });
 

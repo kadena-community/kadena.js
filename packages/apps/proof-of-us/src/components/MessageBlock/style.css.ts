@@ -17,6 +17,9 @@ export const errorWrapperClass = style([
       '&[data-type="success"]': {
         border: `1px solid  ${deviceColors.green}`,
       },
+      '&[data-type="info"]': {
+        border: `1px solid  ${deviceColors.yellow}`,
+      },
     },
   },
 ]);

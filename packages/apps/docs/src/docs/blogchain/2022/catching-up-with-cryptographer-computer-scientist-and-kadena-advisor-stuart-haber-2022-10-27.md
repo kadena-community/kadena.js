@@ -98,9 +98,8 @@ technical, political, and social circles.
 
 I keep myself busy these days. I’m currently an advisor and consultant for
 several companies, including Kadena. At Kadena, I apply cryptographic security
-principles to
-[Pact](/kadena/whitepapers#pact-kadenas-smart-contract-languageh-2100814099),
-reinforcing platform safety.
+principles to [Pact](https://www.kadena.io/whitepapers), reinforcing platform
+safety.
 
 I also partake in a few speaking engagements every year. In June 2022, Stornetta
 and I were featured speakers at
@@ -131,9 +130,9 @@ months later, when I became an advisor for Kadena.
 
 As I mentioned previously, I’m very impressed with Kadena’s smart contract
 language and Stuart and Will’s principled approach to developing it.
-[Chainweb](/kadena/whitepapers) is a differentiating factor as well. It’s a
-highly scalable braided blockchain architecture that can seamlessly scale from
-10 to 20 chains. Stuart published an
+[Chainweb](https://www.kadena.io/whitepapers) is a differentiating factor as
+well. It’s a highly scalable braided blockchain architecture that can seamlessly
+scale from 10 to 20 chains. Stuart published an
 [article](./the-future-of-multichain-2022-04-19) in April 2022 on Medium about
 the future of multichain and how builders can scale their applications, which I
 found insightful and profound.
@@ -175,7 +174,7 @@ communities:
 
 [Platform Documentation](/)
 
-[White Papers](/kadena/whitepapers)
+[White Papers](https://www.kadena.io/whitepapers)
 
 [Kadena Communities](https://kadena.io/community/)
 

@@ -7,7 +7,7 @@ import { builder } from '../builder';
 import Block from '../objects/block';
 
 builder.queryField('completedBlockHeights', (t) =>
-  t.prismaField({
+  t.prismaConnection({
     description: 'Retrieve all completed blocks from a given height.',
     args: {
       completedHeights: t.arg.boolean({ required: false, defaultValue: false }),
@@ -17,7 +17,8 @@ builder.queryField('completedBlockHeights', (t) =>
         defaultValue: defaultChainIds,
       }),
     },
-    type: [Block],
+    cursor: 'hash',
+    type: Block,
     complexity: (args) => ({
       field:
         COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS *
@@ -79,6 +80,9 @@ builder.queryField('completedBlockHeights', (t) =>
 
         return await prismaClient.block.findMany({
           ...query,
+          orderBy: {
+            height: 'desc',
+          },
           where: {
             AND: [
               {

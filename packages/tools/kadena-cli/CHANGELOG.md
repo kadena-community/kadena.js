@@ -1,5 +1,50 @@
 # @kadena/kadena-cli
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [d67b52906]
+  - @kadena/pactjs-generator@1.10.1
+  - @kadena/client@1.10.1
+  - @kadena/pactjs-cli@1.10.1
+  - @kadena/client-utils@0.5.2
+
+## 0.1.1
+
+### Patch Changes
+
+- Updated dependencies [016b9dbfc]
+  - @kadena/client@1.10.0
+  - @kadena/client-utils@0.5.1
+  - @kadena/pactjs-cli@1.10.0
+  - @kadena/pactjs-generator@1.10.0
+
+## 0.1.0
+
+### Minor Changes
+
+- b383c722b: Fix account add command for --quiet flag
+- 1a326e534: Add scripts to deploy faucet to devnet Add "account fund" command
+  to kadena-cli
+- caae0f830: Fix account details sub command
+
+### Patch Changes
+
+- e7b64b1f4: exclude unnecessary files from published npm package
+- Updated dependencies [b53c2600c]
+- Updated dependencies [57a734447]
+- Updated dependencies [6ddf094d8]
+- Updated dependencies [6ddf094d8]
+- Updated dependencies [be9129381]
+  - @kadena/client@1.9.0
+  - @kadena/client-utils@0.5.0
+  - @kadena/pactjs-generator@1.9.0
+  - @kadena/pactjs-cli@1.9.0
+  - @kadena/cryptography-utils@0.4.2
+  - @kadena/hd-wallet@0.3.0
+  - @kadena/pactjs@0.4.2
+
 ## 0.3.1
 
 ### Patch Changes

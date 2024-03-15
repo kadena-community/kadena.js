@@ -81,5 +81,8 @@ export function patchCommand(
       }
     });
   }
+  if (patch.verifiers !== undefined && patch.verifiers.length > 0) {
+    state.verifiers = [...(state.verifiers ?? []), ...patch.verifiers];
+  }
   return state;
 }

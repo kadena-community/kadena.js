@@ -16,7 +16,7 @@ export const useHDWallet = () => {
     ) => {
       switch (type) {
         case 'HD-BIP44': {
-          const service = keySourceManager.get(type) as BIP44Service;
+          const service = (await keySourceManager.get(type)) as BIP44Service;
           return service.register(
             profileId,
             mnemonic,
@@ -28,7 +28,9 @@ export const useHDWallet = () => {
           if (derivationPathTemplate) {
             throw new Error('Chainweaver does not support derivation path');
           }
-          const service = keySourceManager.get(type) as ChainweaverService;
+          const service = (await keySourceManager.get(
+            type,
+          )) as ChainweaverService;
           return service.register(profileId, mnemonic, password);
         }
         default:
@@ -42,11 +44,13 @@ export const useHDWallet = () => {
     async (type: KeySourceType, password: string, keySource: IKeySource) => {
       switch (type) {
         case 'HD-BIP44': {
-          const service = keySourceManager.get(type) as BIP44Service;
+          const service = (await keySourceManager.get(type)) as BIP44Service;
           return service.connect(password, keySource as unknown as IHDBIP44);
         }
         case 'HD-chainweaver': {
-          const service = keySourceManager.get(type) as ChainweaverService;
+          const service = (await keySourceManager.get(
+            type,
+          )) as ChainweaverService;
           return service.connect(
             password,
             keySource as unknown as IHDChainweaver,

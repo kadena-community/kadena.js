@@ -15,20 +15,20 @@ tags: ['pact', 'language reference', 'list operators', 'pact operators']
 ## at
 
 ```pact
-(at k l)
+(at key-field some-object)
 ```
 
-- takes `k`: `string`
-- takes `l`: [_a_]
-- produces _a_
+- takes `key-field`: `string`
+- takes `some-obect`: `{object _any type_}`
+- produces _any type_
 
 ```pact
-(at i l)
+(at index some-list)
 ```
 
-- takes `i`: `integer`
-- takes `o`: `list`
-- produces `bool`
+- takes `index`: `integer`
+- takes `some-list`: `[list _any type_]`
+- produces _any type_
 
 projection
 

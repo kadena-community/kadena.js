@@ -7,6 +7,7 @@ import {
   Heading,
   Notification,
   Stack,
+  SystemIcon,
 } from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -20,9 +21,9 @@ import React, { useCallback, useState } from 'react';
 import { containerClass } from '../styles.css';
 import { notificationLinkStyle } from './styles.css';
 
+import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/right-info-sidebar';
 import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
 import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
-
 const TransferPage = () => {
   const router = useRouter();
   useToolbar(menuData, router.pathname);
@@ -38,6 +39,28 @@ const TransferPage = () => {
   const [receiverChainId, setReceiverChainId] = useState<ChainId>(CHAINS[0]);
   const [senderChainId, setSenderChainId] = useState<ChainId>(CHAINS[0]);
 
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+
+  const helpInfoSections = [
+    {
+      question: 'What was my key index, again?',
+      content:
+        'In case you forget which key index corresponds to which account, the Search Ledger Keys tool allows you to search your ledger for a specific key',
+    },
+    {
+      question: 'What does legacy mode toggle do?',
+      content:
+        'If you used the “Change Ledger Account” feature in October 2023, you will be able to access your account keys using the “Legacy Mode” toggle that is now found next to the “Key Index” input field.',
+    },
+    {
+      question: 'Some wise precautions when signing with a Ledger',
+      content:
+        'When signing on a Ledger device, you should always check the details of the transaction carefully. If everything is in order, click “Confirm” to sign the transaction. After this, the Transfer Tool should update its interface to show the transaction',
+    },
+  ];
+
+  const openSidebarMenu = () => setSidebarOpen(!sidebarOpen);
+
   return (
     <section className={containerClass}>
       <Head>
@@ -47,7 +70,11 @@ const TransferPage = () => {
         <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
         <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
       </Breadcrumbs>
-      <Heading as="h4">{t('Transfer')}</Heading>
+      <Stack justifyContent={'space-between'} alignItems={'center'}>
+        <Heading as="h4">{t('Transfer')}</Heading>
+        <SystemIcon.HelpCircle onClick={openSidebarMenu} cursor={'pointer'} />
+      </Stack>
+
       <Stack
         flexDirection="column"
         paddingBlockStart={'md'}
@@ -80,6 +107,11 @@ const TransferPage = () => {
           senderChainId={senderChainId}
         />
       </Stack>
+
+      <RightInfoSidebar
+        infoSections={helpInfoSections}
+        sidebarOpen={sidebarOpen}
+      />
     </section>
   );
 };

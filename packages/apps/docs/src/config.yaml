@@ -39,6 +39,9 @@ pages:
               termsofservice:
                 url: /terms-of-service
                 file: /kadena/wallets/chainweaver/terms-of-service.md
+          kadenaspirekey:
+            url: /kadena-spirekey
+            file: /kadena/wallets/kadena-spirekey/index.md
           ledger:
             url: /ledger
             file: /kadena/wallets/ledger/index.md
@@ -389,6 +392,9 @@ pages:
     url: /chainweb
     file: /chainweb/index.tsx
     children:
+      compact:
+        url: /compact-database
+        file: /chainweb/compact-a-database.md
       nodeclient:
         file: /packages/libs/chainweb-node-client/README.md
         url: /node-client
@@ -420,9 +426,12 @@ pages:
     url: /marmalade
     file: /marmalade/index.tsx
     children:
+      whatismarmalade:
+        url: /what-is-marmalade
+        file: /marmalade/what-is-marmalade.md
       quickstart:
         url: /quick-start
-        file: /marmalade/quick-start/index.md
+        file: /marmalade/mint-with-marmalade.md
       architecture:
         url: /architecture
         file: /marmalade/architecture/index.md

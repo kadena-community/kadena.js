@@ -1,5 +1,43 @@
 # @kadena/dev-wallet
 
+## 0.0.7
+
+### Patch Changes
+
+- d67b52906: Fixed IParsedCode interface
+- Updated dependencies [d67b52906]
+  - @kadena/pactjs-generator@1.10.1
+  - @kadena/client@1.10.1
+  - @kadena/client-utils@0.5.2
+
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [016b9dbfc]
+- Updated dependencies [25de564cd]
+  - @kadena/client@1.10.0
+  - @kadena/react-ui@0.8.3
+  - @kadena/client-utils@0.5.1
+
+## 0.0.5
+
+### Patch Changes
+
+- f0571c102: Adding atoms and styles to profile overview
+- 3148c8d53: Added navheader for easy extension of routes and more
+- Updated dependencies [b53c2600c]
+- Updated dependencies [57a734447]
+- Updated dependencies [6ddf094d8]
+- Updated dependencies [6ddf094d8]
+- Updated dependencies [550e6d9e4]
+  - @kadena/client@1.9.0
+  - @kadena/client-utils@0.5.0
+  - @kadena/react-ui@0.8.2
+  - @kadena/cryptography-utils@0.4.2
+  - @kadena/hd-wallet@0.3.0
+  - @kadena/pactjs@0.4.2
+
 ## 0.0.4
 
 ### Patch Changes

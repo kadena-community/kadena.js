@@ -386,5 +386,49 @@ describe('yaml-converter', () => {
         },
       });
     });
+    it('converts a yaml with no holes to KadenaClientTx', async () => {
+      const args = {};
+      const res = await createPactCommandFromTemplate(
+        './aux-files/real-policy-manager-no-holes-test.yaml',
+        args,
+        __dirname,
+      );
+
+      expect(res).toStrictEqual({
+        nonce: 'real-policy-manager-nonce',
+        signers: [
+          {
+            pubKey:
+              'k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+          },
+          {
+            pubKey:
+              '554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94',
+          },
+          {
+            pubKey:
+              'f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f',
+          },
+        ],
+        networkId: 'testnet',
+        payload: {
+          exec: {
+            data: {
+              ns: 'test-namespace',
+              upgrade: false,
+            },
+            code: '(test-module 123 k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94)',
+          },
+        },
+        meta: {
+          chainId: '1',
+          creationTime: 1698278400,
+          sender: 'my-test-sender',
+          gasLimit: 100000,
+          gasPrice: 1e-7,
+          ttl: 10000,
+        },
+      });
+    });
   });
 });

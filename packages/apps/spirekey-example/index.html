@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpireKey Example App</title>
+    <style>
+      /* Colors */
+      :root {
+        --dark-kadena: #2d5649;
+        --light-kadena: #4b9079;
+      }
+
+      .error {
+        color: red;
+      }
+
+      /* General body styling */
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+      }
+
+      /* Styling for the login section */
+      .login-section {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .login-button {
+        background-color: var(--light-kadena);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .login-button:hover {
+        background-color: var(--dark-kadena);
+      }
+
+      /* App section styling */
+      .app-section {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-top: 20px;
+      }
+
+      h1 {
+        color: var(--dark-kadena);
+      }
+
+      p {
+        font-size: 16px;
+        color: #666;
+      }
+
+      .message-input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+      }
+
+      .sign-button,
+      .logout-button {
+        background-color: var(--light-kadena);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+      }
+
+      .sign-button:hover,
+      .logout-button:hover {
+        background-color: var(--dark-kadena);
+      }
+
+      a {
+        color: var(--light-kadena);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .send-section {
+        background-color: #e9ecef;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 20px;
+      }
+
+      .send-list {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .send-list li {
+        padding: 5px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .send-list li:last-child {
+        border-bottom: none;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module" src="src/main.ts"></script>
+
+    <div id="loginSection">
+      <button id="loginButton" class="button">Login with SpireKey</button>
+      <button id="loginOptimisticButton" class="button">
+        Login with SpireKey (optimistic)
+      </button>
+    </div>
+
+    <div id="appSection">
+      <h1>SpireKey Example</h1>
+      <p>
+        Logged in as <span id="walletName"></span> (<code
+          id="accountName"
+          style="display: inline"
+        ></code
+        >)
+      </p>
+      <input id="messageInput" type="text" />
+      <button id="signButton">Write on the Kadena Wall</button>
+      <a href="https://hello.chainweb.com/" target="_blank"
+        >View the Kadena Wall</a
+      >
+      <div id="sendSection">
+        <h2>Transactions to send</h2>
+        <ul id="sendList"></ul>
+      </div>
+      <button id="logoutButton">Logout</button>
+    </div>
+  </body>
+</html>

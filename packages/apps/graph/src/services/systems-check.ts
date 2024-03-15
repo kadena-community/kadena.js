@@ -46,7 +46,7 @@ export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
 
                 if (unexecutedMigrations.length > 0) {
                   throw new Error(
-                    `Unexecuted migrations detected: ${unexecutedMigrations.join(
+                    `Unexecuted migrations detected. If you started graph at the same time as devnet, try restarting graph: ${unexecutedMigrations.join(
                       ', ',
                     )}`,
                   );

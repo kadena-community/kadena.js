@@ -3,7 +3,6 @@ import { copyFavIcons } from './copyFavIcons';
 import { checkAuthors } from './createBlogAuthors';
 import { createSitemap } from './createSitemap';
 import { createSpecs } from './createSpec';
-import { detectBrokenLinks } from './detectBrokenLinks';
 import { fixLocalLinks } from './fixLocalLinks';
 import { createDocsTree } from './getdocstree';
 import { deleteTempDir } from './importReadme/importRepo';
@@ -38,7 +37,6 @@ const runPrettier = async (): Promise<IScriptResult> => {
 
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(createSpecs, 'Create specs files');
-  await initFunc(detectBrokenLinks, 'Detect broken links');
   await initFunc(checkForHeaders, 'Detect missing H1 headers');
   await initFunc(checkAuthors, 'Check author data for blog');
   await initFunc(createSitemap, 'Create the sitemap');

@@ -14,7 +14,6 @@ import './objects/signer';
 import './objects/signer1';
 import './objects/token';
 import './objects/token-info';
-import './objects/total-count';
 import './objects/transaction';
 import './objects/transaction-command';
 import './objects/transaction-command1';
