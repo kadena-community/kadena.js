@@ -259,3 +259,23 @@ export const networkDeletePrompt: IPrompt<string> = async (
     ],
   });
 };
+
+export const networkDefaultConfirmationPrompt: IPrompt<boolean> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const defaultValue = args.defaultValue ?? previousQuestions.network;
+  if (defaultValue === undefined) {
+    throw new Error('Network name is required to set the default network.');
+  }
+
+  const message = `Are you sure you want to set "${defaultValue}" as the default network?`;
+  return await select({
+    message,
+    choices: [
+      { value: true, name: 'Yes' },
+      { value: false, name: 'No' },
+    ],
+  });
+};
