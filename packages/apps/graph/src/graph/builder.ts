@@ -29,12 +29,11 @@ import type {
   MempoolTransaction,
   NonFungibleAccount,
   NonFungibleChainAccount,
-  Signer1,
+  Signer,
   Token,
   TokenInfo,
-  Transaction1,
+  Transaction,
   TransactionCommand,
-  TransactionCommand1,
   TransactionInfo,
   TransactionMeta,
   TransactionResult,
@@ -87,18 +86,17 @@ export const builder = new SchemaBuilder<
       NonFungibleChainAccount: NonFungibleChainAccount;
       Token: Token;
       TokenInfo: TokenInfo;
-      TransactionCommand: TransactionCommand;
       TransactionMeta: TransactionMeta;
       ExecutionPayload: ExecutionPayload;
       ContinuationPayload: ContinuationPayload;
       TransactionResult: TransactionResult;
       TransactionSubscriptionResponse: TransactionSubscriptionResponse;
       MempoolTransaction: MempoolTransaction;
-      Transaction1: Transaction1;
+      Transaction: Transaction;
       MempoolInfo: MempoolInfo;
       TransactionInfo: TransactionInfo;
-      Signer1: Signer1;
-      TransactionCommand1: TransactionCommand1;
+      Signer: Signer;
+      TransactionCommand: TransactionCommand;
       CapabilitiesList: CapabilitiesList;
     };
   }

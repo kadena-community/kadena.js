@@ -1,28 +1,13 @@
-import { Signer, Transaction } from '@prisma/client';
-import { IContext } from '../builder';
-import { Transaction1 } from '../types/graphql-types';
+import type { Signer, Transaction } from '@prisma/client';
+import type { IContext } from '../builder';
+import type { Transaction as GQLTransaction } from '../types/graphql-types';
+import { prismaSignersMapper } from './signer-mapper';
 
 export function prismaTransactionMapper(
   prismaTransaction: Transaction,
   prismaSigners: Signer[],
   context: IContext,
-): Transaction1 {
-  const signersList = prismaSigners.map((signer) => {
-    return {
-      publicKey: signer.publicKey,
-      address: signer.address,
-      scheme: signer.scheme,
-      clist: (signer.capabilities as Array<{ args: any[]; name: string }>).map(
-        (capability) => {
-          return {
-            name: capability.name,
-            args: JSON.stringify(capability.args),
-          };
-        },
-      ),
-    };
-  });
-
+): GQLTransaction {
   return {
     hash: prismaTransaction.requestKey,
     cmd: {
@@ -46,7 +31,7 @@ export function prismaTransactionMapper(
         rollback: prismaTransaction.rollback,
         proof: prismaTransaction.proof,
       },
-      signers: signersList,
+      signers: prismaSignersMapper(prismaSigners),
     },
     result: {
       badResult: prismaTransaction.badResult
@@ -70,11 +55,11 @@ export function prismaTransactionMapper(
   };
 }
 
-export function mempoolTxMapper(mempoolData: any): Transaction1 {
-  let mempoolInfo = {
+export function mempoolTxMapper(mempoolData: any): GQLTransaction {
+  const mempoolInfo = {
     status: mempoolData.tag,
   };
-  let mempoolTx = JSON.parse(mempoolData.contents);
+  const mempoolTx = JSON.parse(mempoolData.contents);
 
   mempoolTx.cmd = JSON.parse(mempoolTx.cmd);
 

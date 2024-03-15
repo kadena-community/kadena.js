@@ -2,22 +2,24 @@ import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
-import { builder } from '../builder';
+import { PRISMA, builder } from '../builder';
+import Transaction1 from '../objects/transaction';
+import { prismaTransactionMapper } from '../utils/transaction-mapper';
 
 builder.queryField('transaction', (t) =>
-  t.prismaField({
-    description: 'Retrieve one transaction by its unique key.',
+  t.field({
+    description: 'Retrieve a completed transaction by its unique key.',
     nullable: true,
     args: {
       blockHash: t.arg.string({ required: true }),
       requestKey: t.arg.string({ required: true }),
     },
-    type: Prisma.ModelName.Transaction,
+    type: Transaction1,
     complexity: getDefaultConnectionComplexity(),
-    async resolve(query, __parent, args) {
+    async resolve(parent, args, context) {
+      console.log(parent);
       try {
-        return await prismaClient.transaction.findUnique({
-          ...query,
+        const prismaTransactiom = await prismaClient.transaction.findUnique({
           where: {
             blockHash_requestKey: {
               blockHash: args.blockHash,
@@ -25,6 +27,19 @@ builder.queryField('transaction', (t) =>
             },
           },
         });
+
+        if (!prismaTransactiom) return null;
+
+        const prismaSigners = await prismaClient.signer.findMany({
+          where: { requestKey: prismaTransactiom.requestKey },
+          take: PRISMA.DEFAULT_SIZE,
+        });
+
+        return prismaTransactionMapper(
+          prismaTransactiom,
+          prismaSigners,
+          context,
+        );
       } catch (error) {
         throw normalizeError(error);
       }

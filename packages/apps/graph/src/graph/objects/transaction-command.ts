@@ -17,12 +17,9 @@ export default builder.objectType('TransactionCommand', {
       },
     }),
 
-    signers: t.prismaField({
+    signers: t.field({
       type: ['Signer'],
-      nullable: true,
-      resolve(__query, parent) {
-        return parent.signers;
-      },
+      resolve: (parent) => parent.signers,
     }),
 
     networkId: t.exposeString('networkId', {

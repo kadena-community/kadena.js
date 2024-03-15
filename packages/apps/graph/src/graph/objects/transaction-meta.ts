@@ -1,6 +1,6 @@
 import { builder } from '../builder';
 
-builder.objectType('TransactionMeta', {
+export default builder.objectType('TransactionMeta', {
   description: 'The metadata of a transaction.',
   fields: (t) => ({
     sender: t.exposeString('sender'),

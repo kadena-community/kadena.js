@@ -1,6 +1,16 @@
 import { builder } from '../builder';
 
-export default builder.objectType('TransactionResult', {
+const MempoolInfo = builder.objectType('MempoolInfo', {
+  description: 'The mempool information.',
+  fields: (t) => ({
+    status: t.exposeString('status', {
+      description: 'The status of the mempool.',
+      nullable: true,
+    }),
+  }),
+});
+
+const TransactionInfo = builder.objectType('TransactionInfo', {
   description: 'The result of a transaction.',
   fields: (t) => ({
     badResult: t.exposeString('badResult', {
@@ -35,4 +45,16 @@ export default builder.objectType('TransactionResult', {
       nullable: true,
     }),
   }),
+});
+
+export default builder.unionType('TransactionResult', {
+  description: 'The result of a transaction.',
+  types: [TransactionInfo, MempoolInfo],
+  resolveType(result) {
+    if ('status' in result) {
+      return 'MempoolInfo';
+    } else {
+      return 'TransactionInfo';
+    }
+  },
 });

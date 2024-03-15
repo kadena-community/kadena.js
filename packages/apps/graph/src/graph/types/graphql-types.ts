@@ -1,4 +1,4 @@
-import type { Block, Signer, Transaction, Transfer } from '@prisma/client';
+import type { Transfer } from '@prisma/client';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Guard {
@@ -158,10 +158,10 @@ export interface MempoolInfo {
   status: string;
 }
 
-export interface Transaction1 {
+export interface Transaction {
   hash: string;
   result: TransactionResult | MempoolInfo;
-  cmd: TransactionCommand1;
+  cmd: TransactionCommand;
 }
 
 export interface TransactionInfo {
@@ -176,7 +176,7 @@ export interface TransactionInfo {
   transactionId: bigint | null;
 }
 
-export interface Signer1 {
+export interface Signer {
   publicKey: string;
   address: string | null;
   scheme: string | null;
@@ -184,10 +184,10 @@ export interface Signer1 {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface TransactionCommand1 {
+export interface TransactionCommand {
   payload: ExecutionPayload | ContinuationPayload;
   meta: TransactionMeta;
-  signers: Signer1[];
+  signers: Signer[];
   networkId: string;
   nonce: string;
 }
