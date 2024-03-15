@@ -31,12 +31,14 @@ async function* iteratorFn(
     minimumDepth,
     startingTimestamp,
   );
+
   let lastBlock;
 
   if (!nullishOrEmpty(blockResult)) {
     lastBlock = blockResult[0];
-    yield [lastBlock];
+    yield [];
   }
+
   while (!context.req.socket.destroyed) {
     const newBlocks = await getLastBlocksWithDepth(
       chainIds,
