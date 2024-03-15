@@ -369,6 +369,81 @@ export const tokens = createThemeContract({
          */
         toast: '',
       },
+      effect: {
+        shadow: {
+          /**
+           * This is the shadow 1 description
+           * @light  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
+           * @dark  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
+           */
+          level1: '',
+          /**
+           * This is the shadow 2 description
+           * @light  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
+           * @dark  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
+           */
+          level2: '',
+          /**
+           * This is the shadow 3 description updated
+           * @light  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
+           * @dark  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
+           */
+          level3: '',
+        },
+      },
+      layout: {
+        content: {
+          /**
+           * @light  `"33.75rem"`
+           * @dark  `"33.75rem"`
+           */
+          minWidth: '',
+          /**
+           * @light  `"42.5rem"`
+           * @dark  `"42.5rem"`
+           */
+          maxWidth: '',
+        },
+      },
+      icon: {
+        size: {
+          /**
+           * @light {@link tokens.kda.foundation.size.n3}
+           * @dark {@link tokens.kda.foundation.size.n3}
+           */
+          xxs: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n4}
+           * @dark {@link tokens.kda.foundation.size.n4}
+           */
+          xs: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n5}
+           * @dark {@link tokens.kda.foundation.size.n5}
+           */
+          sm: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n6}
+           * @dark {@link tokens.kda.foundation.size.n6}
+           */
+          base: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n8}
+           * @dark {@link tokens.kda.foundation.size.n8}
+           */
+          lg: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n10}
+           * @dark {@link tokens.kda.foundation.size.n10}
+           */
+          xl: '',
+          /**
+           * @light {@link tokens.kda.foundation.size.n16}
+           * @dark {@link tokens.kda.foundation.size.n16}
+           */
+          xxl: '',
+        },
+      },
       color: {
         accent: {
           /**
@@ -433,6 +508,11 @@ export const tokens = createThemeContract({
                * @dark {@link tokens.kda.foundation.color.palette.magenta.n50}
                */
               secondary: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.palette.orange.n50}
+               * @dark {@link tokens.kda.foundation.color.palette.orange.n50}
+               */
+              tertiary: '',
             },
           },
           semantic: {
@@ -476,6 +556,11 @@ export const tokens = createThemeContract({
              */
             '@hover': '',
             /**
+             * @light {@link tokens.kda.foundation.color.neutral.n5}
+             * @dark {@link tokens.kda.foundation.color.neutral.n5}
+             */
+            '@focus': '',
+            /**
              * @light {@link tokens.kda.foundation.color.neutral.n20}
              * @dark {@link tokens.kda.foundation.color.neutral.n20}
              */
@@ -491,6 +576,21 @@ export const tokens = createThemeContract({
                * @dark {@link tokens.kda.foundation.color.neutralwarm.n99}
                */
               warm: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n90}
+               * @dark {@link tokens.kda.foundation.color.neutral.n90}
+               */
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n95}
+               * @dark {@link tokens.kda.foundation.color.neutral.n95}
+               */
+              '@focus': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n80}
+               * @dark {@link tokens.kda.foundation.color.neutral.n80}
+               */
+              '@disabled': '',
             },
           },
           layer03: {
@@ -707,13 +807,127 @@ export const tokens = createThemeContract({
               },
             },
           },
+          accent: {
+            primary: {
+              /**
+               * @light {@link tokens.kda.foundation.color.palette.aqua.n20}
+               * @dark {@link tokens.kda.foundation.color.palette.aqua.n20}
+               */
+              default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.palette.aqua.n30}
+               * @dark {@link tokens.kda.foundation.color.palette.aqua.n30}
+               */
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.palette.aqua.n30}
+               * @dark {@link tokens.kda.foundation.color.palette.aqua.n30}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.palette.aqua.n80}
+                 * @dark {@link tokens.kda.foundation.color.palette.aqua.n80}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.palette.aqua.n70}
+                 * @dark {@link tokens.kda.foundation.color.palette.aqua.n70}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.palette.aqua.n70}
+                 * @dark {@link tokens.kda.foundation.color.palette.aqua.n70}
+                 */
+                '@focus': '',
+              },
+            },
+            secondary: {
+              /**
+               * @light {@link tokens.kda.foundation.color.palette.magenta.n50}
+               * @dark {@link tokens.kda.foundation.color.palette.magenta.n50}
+               */
+              default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.palette.magenta.n60}
+               * @dark {@link tokens.kda.foundation.color.palette.magenta.n60}
+               */
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.palette.magenta.n60}
+               * @dark {@link tokens.kda.foundation.color.palette.magenta.n60}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.palette.magenta.n50}
+                 * @dark {@link tokens.kda.foundation.color.palette.magenta.n50}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.palette.magenta.n40}
+                 * @dark {@link tokens.kda.foundation.color.palette.magenta.n40}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.palette.magenta.n40}
+                 * @dark {@link tokens.kda.foundation.color.palette.magenta.n40}
+                 */
+                '@focus': '',
+              },
+            },
+            tertiary: {
+              /**
+               * @light {@link tokens.kda.foundation.color.palette.orange.n50}
+               * @dark {@link tokens.kda.foundation.color.palette.orange.n50}
+               */
+              default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.palette.orange.n60}
+               * @dark {@link tokens.kda.foundation.color.palette.orange.n60}
+               */
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.palette.orange.n60}
+               * @dark {@link tokens.kda.foundation.color.palette.orange.n60}
+               */
+              '@focus': '',
+              inverse: {
+                /**
+                 * @light {@link tokens.kda.foundation.color.palette.orange.n50}
+                 * @dark {@link tokens.kda.foundation.color.palette.orange.n50}
+                 */
+                default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.palette.orange.n40}
+                 * @dark {@link tokens.kda.foundation.color.palette.orange.n40}
+                 */
+                '@hover': '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.palette.orange.n40}
+                 * @dark {@link tokens.kda.foundation.color.palette.orange.n40}
+                 */
+                '@focus': '',
+              },
+            },
+          },
           semantic: {
             positive: {
               /**
-               * @light {@link tokens.kda.foundation.color.palette.celery.n20@alpha20}
-               * @dark {@link tokens.kda.foundation.color.palette.celery.n20@alpha20}
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n20}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n20}
                */
               default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n1}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n1}
+               */
+              subtle: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n0}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n0}
+               */
+              subtlest: '',
               /**
                * @light {@link tokens.kda.foundation.color.semantic.positive.n10}
                * @dark {@link tokens.kda.foundation.color.semantic.positive.n10}
@@ -726,10 +940,20 @@ export const tokens = createThemeContract({
               '@focus': '',
               inverse: {
                 /**
-                 * @light {@link tokens.kda.foundation.color.palette.celery.n80@alpha20}
-                 * @dark {@link tokens.kda.foundation.color.palette.celery.n80@alpha20}
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n80}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n80}
                  */
                 default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n99}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n99}
+                 */
+                subtle: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n100}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n100}
+                 */
+                subtlest: '',
                 /**
                  * @light {@link tokens.kda.foundation.color.semantic.positive.n90}
                  * @dark {@link tokens.kda.foundation.color.semantic.positive.n90}
@@ -744,10 +968,20 @@ export const tokens = createThemeContract({
             },
             negative: {
               /**
-               * @light {@link tokens.kda.foundation.color.palette.red.n20@alpha20}
-               * @dark {@link tokens.kda.foundation.color.palette.red.n20@alpha20}
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n20}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n20}
                */
               default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n1}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n1}
+               */
+              subtle: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n0}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n0}
+               */
+              subtlest: '',
               /**
                * @light {@link tokens.kda.foundation.color.semantic.negative.n10}
                * @dark {@link tokens.kda.foundation.color.semantic.negative.n10}
@@ -760,10 +994,20 @@ export const tokens = createThemeContract({
               '@focus': '',
               inverse: {
                 /**
-                 * @light {@link tokens.kda.foundation.color.palette.red.n80@alpha20}
-                 * @dark {@link tokens.kda.foundation.color.palette.red.n80@alpha20}
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n80}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n80}
                  */
                 default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n99}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n99}
+                 */
+                subtle: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n100}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n100}
+                 */
+                subtlest: '',
                 /**
                  * @light {@link tokens.kda.foundation.color.semantic.negative.n90}
                  * @dark {@link tokens.kda.foundation.color.semantic.negative.n90}
@@ -778,10 +1022,20 @@ export const tokens = createThemeContract({
             },
             warning: {
               /**
-               * @light {@link tokens.kda.foundation.color.palette.yellow.n20@alpha20}
-               * @dark {@link tokens.kda.foundation.color.palette.yellow.n20@alpha20}
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n20}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n20}
                */
               default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n1}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n1}
+               */
+              subtle: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n0}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n0}
+               */
+              subtlest: '',
               /**
                * @light {@link tokens.kda.foundation.color.semantic.warning.n10}
                * @dark {@link tokens.kda.foundation.color.semantic.warning.n10}
@@ -794,10 +1048,20 @@ export const tokens = createThemeContract({
               '@focus': '',
               inverse: {
                 /**
-                 * @light {@link tokens.kda.foundation.color.palette.yellow.n80@alpha20}
-                 * @dark {@link tokens.kda.foundation.color.palette.yellow.n80@alpha20}
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n80}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n80}
                  */
                 default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n99}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n99}
+                 */
+                subtle: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n100}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n100}
+                 */
+                subtlest: '',
                 /**
                  * @light {@link tokens.kda.foundation.color.semantic.warning.n90}
                  * @dark {@link tokens.kda.foundation.color.semantic.warning.n90}
@@ -812,10 +1076,20 @@ export const tokens = createThemeContract({
             },
             info: {
               /**
-               * @light {@link tokens.kda.foundation.color.palette.blue.n20@alpha20}
-               * @dark {@link tokens.kda.foundation.color.palette.blue.n20@alpha20}
+               * @light {@link tokens.kda.foundation.color.semantic.info.n20}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n20}
                */
               default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.info.n1}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n1}
+               */
+              subtle: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.semantic.info.n0}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n0}
+               */
+              subtlest: '',
               /**
                * @light {@link tokens.kda.foundation.color.semantic.info.n10}
                * @dark {@link tokens.kda.foundation.color.semantic.info.n10}
@@ -828,10 +1102,20 @@ export const tokens = createThemeContract({
               '@focus': '',
               inverse: {
                 /**
-                 * @light {@link tokens.kda.foundation.color.palette.blue.n80@alpha20}
-                 * @dark {@link tokens.kda.foundation.color.palette.blue.n80@alpha20}
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n80}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n80}
                  */
                 default: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n99}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n99}
+                 */
+                subtle: '',
+                /**
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n100}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n100}
+                 */
+                subtlest: '',
                 /**
                  * @light {@link tokens.kda.foundation.color.semantic.info.n90}
                  * @dark {@link tokens.kda.foundation.color.semantic.info.n90}
@@ -1731,18 +2015,18 @@ export const tokens = createThemeContract({
         link: {
           base: {
             /**
-             * @light {@link tokens.kda.foundation.color.palette.blue.n70}
-             * @dark {@link tokens.kda.foundation.color.palette.blue.n70}
+             * @light {@link tokens.kda.foundation.color.palette.aqua.n90}
+             * @dark {@link tokens.kda.foundation.color.palette.aqua.n50}
              */
             default: '',
             /**
-             * @light {@link tokens.kda.foundation.color.palette.blue.n80}
-             * @dark {@link tokens.kda.foundation.color.palette.blue.n80}
+             * @light {@link tokens.kda.foundation.color.palette.aqua.n100}
+             * @dark {@link tokens.kda.foundation.color.palette.aqua.n70}
              */
             '@hover': '',
             /**
-             * @light {@link tokens.kda.foundation.color.palette.blue.n60}
-             * @dark {@link tokens.kda.foundation.color.palette.blue.n60}
+             * @light {@link tokens.kda.foundation.color.palette.aqua.n100}
+             * @dark {@link tokens.kda.foundation.color.palette.aqua.n70}
              */
             '@focus': '',
             /**
@@ -2229,6 +2513,18 @@ export const tokens = createThemeContract({
              */
             default: '',
             /**
+             * Use for text in a hover state.
+             * @light {@link tokens.kda.foundation.color.neutral.n100}
+             * @dark {@link tokens.kda.foundation.color.neutral.n100}
+             */
+            '@hover': '',
+            /**
+             * Use for text in a focus state.
+             * @light {@link tokens.kda.foundation.color.neutral.n100}
+             * @dark {@link tokens.kda.foundation.color.neutral.n100}
+             */
+            '@focus': '',
+            /**
              * Use for text in a disabled state.
              * @light {@link tokens.kda.foundation.color.neutral.n100@alpha40}
              * @dark {@link tokens.kda.foundation.color.neutral.n100@alpha40}
@@ -2247,6 +2543,30 @@ export const tokens = createThemeContract({
                * @dark {@link tokens.kda.foundation.color.neutral.n0@alpha95}
                */
               default: '',
+              /**
+               * Use for text in a hover state.
+               * @light {@link tokens.kda.foundation.color.neutral.n0}
+               * @dark {@link tokens.kda.foundation.color.neutral.n0}
+               */
+              '@hover': '',
+              /**
+               * Use for text in a focus state.
+               * @light {@link tokens.kda.foundation.color.neutral.n0}
+               * @dark {@link tokens.kda.foundation.color.neutral.n0}
+               */
+              '@focus': '',
+              /**
+               * Use for text in a disabled state.
+               * @light {@link tokens.kda.foundation.color.neutral.n0@alpha40}
+               * @dark {@link tokens.kda.foundation.color.neutral.n0@alpha40}
+               */
+              '@disabled': '',
+              /**
+               * Use for text in selected or opened states, such as tabs and dropdown buttons.
+               * @light {@link tokens.kda.foundation.color.neutral.n0}
+               * @dark {@link tokens.kda.foundation.color.neutral.n0}
+               */
+              '@selected': '',
             },
           },
           subtle: {
@@ -2388,140 +2708,814 @@ export const tokens = createThemeContract({
           semantic: {
             positive: {
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.positive.n90}
-               * @dark {@link tokens.kda.foundation.color.semantic.positive.n90}
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n99}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n99}
                */
               default: '',
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.positive.n95}
-               * @dark {@link tokens.kda.foundation.color.semantic.positive.n95}
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n100}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n100}
                */
               '@hover': '',
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.positive.n99}
-               * @dark {@link tokens.kda.foundation.color.semantic.positive.n99}
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n100}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n100}
                */
               '@focus': '',
               inverse: {
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.positive.n10}
-                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n10}
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n1}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n1}
                  */
                 default: '',
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.positive.n5}
-                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n5}
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n0}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n0}
                  */
                 '@hover': '',
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.positive.n1}
-                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n1}
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n0}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n0}
                  */
                 '@focus': '',
               },
             },
             negative: {
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.negative.n90}
-               * @dark {@link tokens.kda.foundation.color.semantic.negative.n90}
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n99}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n99}
                */
               default: '',
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.negative.n95}
-               * @dark {@link tokens.kda.foundation.color.semantic.negative.n95}
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n100}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n100}
                */
               '@hover': '',
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.negative.n99}
-               * @dark {@link tokens.kda.foundation.color.semantic.negative.n99}
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n100}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n100}
                */
               '@focus': '',
               inverse: {
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.negative.n10}
-                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n10}
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n1}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n1}
                  */
                 default: '',
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.negative.n5}
-                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n5}
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n0}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n0}
                  */
                 '@hover': '',
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.negative.n1}
-                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n1}
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n0}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n0}
                  */
                 '@focus': '',
               },
             },
             warning: {
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.warning.n90}
-               * @dark {@link tokens.kda.foundation.color.semantic.warning.n90}
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n99}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n99}
                */
               default: '',
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.warning.n95}
-               * @dark {@link tokens.kda.foundation.color.semantic.warning.n95}
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n100}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n100}
                */
               '@hover': '',
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.warning.n99}
-               * @dark {@link tokens.kda.foundation.color.semantic.warning.n99}
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n100}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n100}
                */
               '@focus': '',
               inverse: {
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.warning.n10}
-                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n10}
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n1}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n1}
                  */
                 default: '',
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.warning.n5}
-                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n5}
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n0}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n0}
                  */
                 '@hover': '',
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.warning.n1}
-                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n1}
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n0}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n0}
                  */
                 '@focus': '',
               },
             },
             info: {
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.info.n90}
-               * @dark {@link tokens.kda.foundation.color.semantic.info.n90}
+               * @light {@link tokens.kda.foundation.color.semantic.info.n99}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n99}
                */
               default: '',
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.info.n95}
-               * @dark {@link tokens.kda.foundation.color.semantic.info.n95}
+               * @light {@link tokens.kda.foundation.color.semantic.info.n100}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n100}
                */
               '@hover': '',
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.info.n99}
-               * @dark {@link tokens.kda.foundation.color.semantic.info.n99}
+               * @light {@link tokens.kda.foundation.color.semantic.info.n100}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n100}
                */
               '@focus': '',
               inverse: {
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.info.n10}
-                 * @dark {@link tokens.kda.foundation.color.semantic.info.n10}
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n1}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n1}
                  */
                 default: '',
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.info.n5}
-                 * @dark {@link tokens.kda.foundation.color.semantic.info.n5}
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n0}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n0}
                  */
                 '@hover': '',
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.info.n1}
-                 * @dark {@link tokens.kda.foundation.color.semantic.info.n1}
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n0}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n0}
                  */
                 '@focus': '',
               },
             },
+          },
+        },
+        palette: {
+          aqua: {
+            /**
+             * @light  `"#f0fffa"`
+             * @dark  `"#0a1f18"`
+             */
+            n0: '',
+            /**
+             * @light  `"#c9ffed"`
+             * @dark  `"#113529"`
+             */
+            n1: '',
+            /**
+             * @light  `"#a1ffe0"`
+             * @dark  `"#184c3b"`
+             */
+            n5: '',
+            /**
+             * @light  `"#7affd3"`
+             * @dark  `"#20624c"`
+             */
+            n10: '',
+            /**
+             * @light  `"#52ffc6"`
+             * @dark  `"#27795e"`
+             */
+            n20: '',
+            /**
+             * @light  `"#4be9b5"`
+             * @dark  `"#2e8f6f"`
+             */
+            n30: '',
+            /**
+             * @light  `"#44d2a3"`
+             * @dark  `"#35a580"`
+             */
+            n40: '',
+            /**
+             * @light  `"#3cbc92"`
+             * @dark  `"#3cbc92"`
+             */
+            n50: '',
+            /**
+             * @light  `"#35a580"`
+             * @dark  `"#44d2a3"`
+             */
+            n60: '',
+            /**
+             * @light  `"#2e8f6f"`
+             * @dark  `"#4be9b5"`
+             */
+            n70: '',
+            /**
+             * @light  `"#27795e"`
+             * @dark  `"#52ffc6"`
+             */
+            n80: '',
+            /**
+             * @light  `"#20624c"`
+             * @dark  `"#7affd3"`
+             */
+            n90: '',
+            /**
+             * @light  `"#184c3b"`
+             * @dark  `"#a1ffe0"`
+             */
+            n95: '',
+            /**
+             * @light  `"#113529"`
+             * @dark  `"#c9ffed"`
+             */
+            n99: '',
+            /**
+             * @light  `"#0a1f18"`
+             * @dark  `"#f0fffa"`
+             */
+            n100: '',
+          },
+          blue: {
+            /**
+             * @light  `"#f0f8ff"`
+             * @dark  `"#06101a"`
+             */
+            n0: '',
+            /**
+             * @light  `"#d6ebff"`
+             * @dark  `"#0b1d2e"`
+             */
+            n1: '',
+            /**
+             * @light  `"#bbdbf9"`
+             * @dark  `"#112c46"`
+             */
+            n5: '',
+            /**
+             * @light  `"#a0cbf4"`
+             * @dark  `"#194268"`
+             */
+            n10: '',
+            /**
+             * [generated]
+             * @light  `"#86bcee"`
+             * @dark  `"#205586"`
+             */
+            n20: '',
+            /**
+             * @light  `"#6bace8"`
+             * @dark  `"#2767a3"`
+             */
+            n30: '',
+            /**
+             * @light  `"#509ce3"`
+             * @dark  `"#2e7ac0"`
+             */
+            n40: '',
+            /**
+             * @light  `"#358cdd"`
+             * @dark  `"#358cdd"`
+             */
+            n50: '',
+            /**
+             * @light  `"#2e7ac0"`
+             * @dark  `"#509ce3"`
+             */
+            n60: '',
+            /**
+             * @light  `"#2767a3"`
+             * @dark  `"#6bace8"`
+             */
+            n70: '',
+            /**
+             * [generated]
+             * @light  `"#205586"`
+             * @dark  `"#86bcee"`
+             */
+            n80: '',
+            /**
+             * @light  `"#194268"`
+             * @dark  `"#a0cbf4"`
+             */
+            n90: '',
+            /**
+             * @light  `"#112c46"`
+             * @dark  `"#bbdbf9"`
+             */
+            n95: '',
+            /**
+             * @light  `"#0b1d2e"`
+             * @dark  `"#d6ebff"`
+             */
+            n99: '',
+            /**
+             * @light  `"#06101a"`
+             * @dark  `"#f0f8ff"`
+             */
+            n100: '',
+            /**
+             * [generated]
+             * @light  `"#86bcee33"`
+             * @dark  `"#20558633"`
+             */
+            'n20@alpha20': '',
+            /**
+             * [generated]
+             * @light  `"#20558633"`
+             * @dark  `"#86bcee33"`
+             */
+            'n80@alpha20': '',
+          },
+          celery: {
+            /**
+             * @light  `"#e9fce3"`
+             * @dark  `"#001a04"`
+             */
+            n0: '',
+            /**
+             * @light  `"#cdfcbf"`
+             * @dark  `"#003007"`
+             */
+            n1: '',
+            /**
+             * @light  `"#aef69d"`
+             * @dark  `"#00400a"`
+             */
+            n5: '',
+            /**
+             * @light  `"#96ee85"`
+             * @dark  `"#00530d"`
+             */
+            n10: '',
+            /**
+             * [generated]
+             * @light  `"#72e06a"`
+             * @dark  `"#00670f"`
+             */
+            n20: '',
+            /**
+             * @light  `"#4ecf50"`
+             * @dark  `"#007c0f"`
+             */
+            n30: '',
+            /**
+             * @light  `"#27bb36"`
+             * @dark  `"#009112"`
+             */
+            n40: '',
+            /**
+             * @light  `"#07a721"`
+             * @dark  `"#07a721"`
+             */
+            n50: '',
+            /**
+             * @light  `"#009112"`
+             * @dark  `"#27bb36"`
+             */
+            n60: '',
+            /**
+             * @light  `"#007c0f"`
+             * @dark  `"#4ecf50"`
+             */
+            n70: '',
+            /**
+             * [generated]
+             * @light  `"#00670f"`
+             * @dark  `"#72e06a"`
+             */
+            n80: '',
+            /**
+             * @light  `"#00530d"`
+             * @dark  `"#96ee85"`
+             */
+            n90: '',
+            /**
+             * @light  `"#00400a"`
+             * @dark  `"#aef69d"`
+             */
+            n95: '',
+            /**
+             * @light  `"#003007"`
+             * @dark  `"#cdfcbf"`
+             */
+            n99: '',
+            /**
+             * @light  `"#001a04"`
+             * @dark  `"#e9fce3"`
+             */
+            n100: '',
+            /**
+             * [generated]
+             * @light  `"#72e06a33"`
+             * @dark  `"#00670f33"`
+             */
+            'n20@alpha20': '',
+            /**
+             * [generated]
+             * @light  `"#00670f33"`
+             * @dark  `"#72e06a33"`
+             */
+            'n80@alpha20': '',
+          },
+          green: {
+            /**
+             * @light  `"#e9f8ef"`
+             * @dark  `"#061a10"`
+             */
+            n0: '',
+            /**
+             * @light  `"#cef8e0"`
+             * @dark  `"#0a2e1d"`
+             */
+            n1: '',
+            /**
+             * @light  `"#b8e7cf"`
+             * @dark  `"#153e2c"`
+             */
+            n5: '',
+            /**
+             * @light  `"#a2d5be"`
+             * @dark  `"#1f4f3c"`
+             */
+            n10: '',
+            /**
+             * @light  `"#8cc4ad"`
+             * @dark  `"#2a5f4b"`
+             */
+            n20: '',
+            /**
+             * @light  `"#76b39b"`
+             * @dark  `"#356f5a"`
+             */
+            n30: '',
+            /**
+             * @light  `"#60a18a"`
+             * @dark  `"#3f806a"`
+             */
+            n40: '',
+            /**
+             * @light  `"#4a9079"`
+             * @dark  `"#4a9079"`
+             */
+            n50: '',
+            /**
+             * @light  `"#3f806a"`
+             * @dark  `"#60a18a"`
+             */
+            n60: '',
+            /**
+             * @light  `"#356f5a"`
+             * @dark  `"#76b39b"`
+             */
+            n70: '',
+            /**
+             * @light  `"#2a5f4b"`
+             * @dark  `"#8cc4ad"`
+             */
+            n80: '',
+            /**
+             * @light  `"#1f4f3c"`
+             * @dark  `"#a2d5be"`
+             */
+            n90: '',
+            /**
+             * @light  `"#153e2c"`
+             * @dark  `"#b8e7cf"`
+             */
+            n95: '',
+            /**
+             * @light  `"#0a2e1d"`
+             * @dark  `"#cef8e0"`
+             */
+            n99: '',
+            /**
+             * @light  `"#061a10"`
+             * @dark  `"#e9f8ef"`
+             */
+            n100: '',
+          },
+          magenta: {
+            /**
+             * @light  `"#fff7fa"`
+             * @dark  `"#470820"`
+             */
+            n0: '',
+            /**
+             * @light  `"#ffeaf1"`
+             * @dark  `"#660b2e"`
+             */
+            n1: '',
+            /**
+             * @light  `"#fbc7da"`
+             * @dark  `"#7b0d38"`
+             */
+            n5: '',
+            /**
+             * @light  `"#f6a4c3"`
+             * @dark  `"#901041"`
+             */
+            n10: '',
+            /**
+             * @light  `"#f282ad"`
+             * @dark  `"#a5124b"`
+             */
+            n20: '',
+            /**
+             * @light  `"#ed5f96"`
+             * @dark  `"#ba1455"`
+             */
+            n30: '',
+            /**
+             * @light  `"#e93c7f"`
+             * @dark  `"#cf175e"`
+             */
+            n40: '',
+            /**
+             * @light  `"#e41968"`
+             * @dark  `"#e41968"`
+             */
+            n50: '',
+            /**
+             * @light  `"#cf175e"`
+             * @dark  `"#e93c7f"`
+             */
+            n60: '',
+            /**
+             * @light  `"#ba1455"`
+             * @dark  `"#ed5f96"`
+             */
+            n70: '',
+            /**
+             * @light  `"#a5124b"`
+             * @dark  `"#f282ad"`
+             */
+            n80: '',
+            /**
+             * @light  `"#901041"`
+             * @dark  `"#f6a4c3"`
+             */
+            n90: '',
+            /**
+             * @light  `"#7b0d38"`
+             * @dark  `"#fbc7da"`
+             */
+            n95: '',
+            /**
+             * @light  `"#660b2e"`
+             * @dark  `"#ffeaf1"`
+             */
+            n99: '',
+            /**
+             * @light  `"#470820"`
+             * @dark  `"#fff7fa"`
+             */
+            n100: '',
+          },
+          orange: {
+            /**
+             * @light  `"#fff7eb"`
+             * @dark  `"#290e01"`
+             */
+            n0: '',
+            /**
+             * @light  `"#ffeccc"`
+             * @dark  `"#491901"`
+             */
+            n1: '',
+            /**
+             * @light  `"#ffdfad"`
+             * @dark  `"#612300"`
+             */
+            n5: '',
+            /**
+             * @light  `"#fdd291"`
+             * @dark  `"#7a2f00"`
+             */
+            n10: '',
+            /**
+             * @light  `"#ffbb63"`
+             * @dark  `"#953d00"`
+             */
+            n20: '',
+            /**
+             * @light  `"#f5a655"`
+             * @dark  `"#b14c00"`
+             */
+            n30: '',
+            /**
+             * @light  `"#ec9046"`
+             * @dark  `"#cb5d00"`
+             */
+            n40: '',
+            /**
+             * @light  `"#e27b38"`
+             * @dark  `"#e27b38"`
+             */
+            n50: '',
+            /**
+             * @light  `"#cb5d00"`
+             * @dark  `"#ec9046"`
+             */
+            n60: '',
+            /**
+             * @light  `"#b14c00"`
+             * @dark  `"#f5a655"`
+             */
+            n70: '',
+            /**
+             * @light  `"#953d00"`
+             * @dark  `"#ffbb63"`
+             */
+            n80: '',
+            /**
+             * @light  `"#7a2f00"`
+             * @dark  `"#fdd291"`
+             */
+            n90: '',
+            /**
+             * @light  `"#612300"`
+             * @dark  `"#ffdfad"`
+             */
+            n95: '',
+            /**
+             * @light  `"#491901"`
+             * @dark  `"#ffeccc"`
+             */
+            n99: '',
+            /**
+             * @light  `"#290e01"`
+             * @dark  `"#fff7eb"`
+             */
+            n100: '',
+          },
+          red: {
+            /**
+             * @light  `"#fff5f5"`
+             * @dark  `"#330000"`
+             */
+            n0: '',
+            /**
+             * @light  `"#ffebe7"`
+             * @dark  `"#590000"`
+             */
+            n1: '',
+            /**
+             * @light  `"#ffddd6"`
+             * @dark  `"#740000"`
+             */
+            n5: '',
+            /**
+             * @light  `"#ffcdc3"`
+             * @dark  `"#930000"`
+             */
+            n10: '',
+            /**
+             * [generated]
+             * @light  `"#ffb7a9"`
+             * @dark  `"#b40000"`
+             */
+            n20: '',
+            /**
+             * @light  `"#ff9b88"`
+             * @dark  `"#d31510"`
+             */
+            n30: '',
+            /**
+             * @light  `"#ff7c65"`
+             * @dark  `"#ea3829"`
+             */
+            n40: '',
+            /**
+             * @light  `"#f75c46"`
+             * @dark  `"#f75c46"`
+             */
+            n50: '',
+            /**
+             * @light  `"#ea3829"`
+             * @dark  `"#ff7c65"`
+             */
+            n60: '',
+            /**
+             * @light  `"#d31510"`
+             * @dark  `"#ff9b88"`
+             */
+            n70: '',
+            /**
+             * [generated]
+             * @light  `"#b40000"`
+             * @dark  `"#ffb7a9"`
+             */
+            n80: '',
+            /**
+             * @light  `"#930000"`
+             * @dark  `"#ffcdc3"`
+             */
+            n90: '',
+            /**
+             * @light  `"#740000"`
+             * @dark  `"#ffddd6"`
+             */
+            n95: '',
+            /**
+             * @light  `"#590000"`
+             * @dark  `"#ffebe7"`
+             */
+            n99: '',
+            /**
+             * @light  `"#330000"`
+             * @dark  `"#fff5f5"`
+             */
+            n100: '',
+            /**
+             * [generated]
+             * @light  `"#ffb7a933"`
+             * @dark  `"#b4000033"`
+             */
+            'n20@alpha20': '',
+            /**
+             * [generated]
+             * @light  `"#b4000033"`
+             * @dark  `"#ffb7a933"`
+             */
+            'n80@alpha20': '',
+          },
+          yellow: {
+            /**
+             * @light  `"#fbf8dd"`
+             * @dark  `"#1a1100"`
+             */
+            n0: '',
+            /**
+             * @light  `"#fbf198"`
+             * @dark  `"#362500"`
+             */
+            n1: '',
+            /**
+             * @light  `"#f8e750"`
+             * @dark  `"#483300"`
+             */
+            n5: '',
+            /**
+             * @light  `"#f8d904"`
+             * @dark  `"#5b4300"`
+             */
+            n10: '',
+            /**
+             * [generated]
+             * @light  `"#e8c600"`
+             * @dark  `"#705300"`
+             */
+            n20: '',
+            /**
+             * @light  `"#d7b300"`
+             * @dark  `"#856600"`
+             */
+            n30: '',
+            /**
+             * @light  `"#c49f00"`
+             * @dark  `"#9b7800"`
+             */
+            n40: '',
+            /**
+             * @light  `"#b08c00"`
+             * @dark  `"#b08c00"`
+             */
+            n50: '',
+            /**
+             * @light  `"#9b7800"`
+             * @dark  `"#c49f00"`
+             */
+            n60: '',
+            /**
+             * @light  `"#856600"`
+             * @dark  `"#d7b300"`
+             */
+            n70: '',
+            /**
+             * [generated]
+             * @light  `"#705300"`
+             * @dark  `"#e8c600"`
+             */
+            n80: '',
+            /**
+             * @light  `"#5b4300"`
+             * @dark  `"#f8d904"`
+             */
+            n90: '',
+            /**
+             * @light  `"#483300"`
+             * @dark  `"#f8e750"`
+             */
+            n95: '',
+            /**
+             * @light  `"#362500"`
+             * @dark  `"#fbf198"`
+             */
+            n99: '',
+            /**
+             * @light  `"#1a1100"`
+             * @dark  `"#fbf8dd"`
+             */
+            n100: '',
+            /**
+             * [generated]
+             * @light  `"#e8c60033"`
+             * @dark  `"#70530033"`
+             */
+            'n20@alpha20': '',
+            /**
+             * [generated]
+             * @light  `"#70530033"`
+             * @dark  `"#e8c60033"`
+             */
+            'n80@alpha20': '',
           },
         },
         semantic: {
@@ -2947,755 +3941,6 @@ export const tokens = createThemeContract({
              */
             '@hover': '',
           },
-        },
-        palette: {
-          aqua: {
-            /**
-             * @light  `"#f0fffa"`
-             * @dark  `"#0a1f18"`
-             */
-            n0: '',
-            /**
-             * @light  `"#c9ffed"`
-             * @dark  `"#113529"`
-             */
-            n1: '',
-            /**
-             * @light  `"#a1ffe0"`
-             * @dark  `"#184c3b"`
-             */
-            n5: '',
-            /**
-             * @light  `"#7affd3"`
-             * @dark  `"#20624c"`
-             */
-            n10: '',
-            /**
-             * @light  `"#52ffc6"`
-             * @dark  `"#27795e"`
-             */
-            n20: '',
-            /**
-             * @light  `"#4be9b5"`
-             * @dark  `"#2e8f6f"`
-             */
-            n30: '',
-            /**
-             * @light  `"#44d2a3"`
-             * @dark  `"#35a580"`
-             */
-            n40: '',
-            /**
-             * @light  `"#3cbc92"`
-             * @dark  `"#3cbc92"`
-             */
-            n50: '',
-            /**
-             * @light  `"#35a580"`
-             * @dark  `"#44d2a3"`
-             */
-            n60: '',
-            /**
-             * @light  `"#2e8f6f"`
-             * @dark  `"#4be9b5"`
-             */
-            n70: '',
-            /**
-             * @light  `"#27795e"`
-             * @dark  `"#52ffc6"`
-             */
-            n80: '',
-            /**
-             * @light  `"#20624c"`
-             * @dark  `"#7affd3"`
-             */
-            n90: '',
-            /**
-             * @light  `"#184c3b"`
-             * @dark  `"#a1ffe0"`
-             */
-            n95: '',
-            /**
-             * @light  `"#113529"`
-             * @dark  `"#c9ffed"`
-             */
-            n99: '',
-            /**
-             * @light  `"#0a1f18"`
-             * @dark  `"#f0fffa"`
-             */
-            n100: '',
-          },
-          blue: {
-            /**
-             * @light  `"#f0f8ff"`
-             * @dark  `"#06101a"`
-             */
-            n0: '',
-            /**
-             * @light  `"#d6ebff"`
-             * @dark  `"#0b1d2e"`
-             */
-            n1: '',
-            /**
-             * @light  `"#bbdbf9"`
-             * @dark  `"#122f4b"`
-             */
-            n5: '',
-            /**
-             * @light  `"#a0cbf4"`
-             * @dark  `"#194268"`
-             */
-            n10: '',
-            /**
-             * [generated]
-             * @light  `"#86bcee"`
-             * @dark  `"#205586"`
-             */
-            n20: '',
-            /**
-             * @light  `"#6bace8"`
-             * @dark  `"#2767a3"`
-             */
-            n30: '',
-            /**
-             * @light  `"#509ce3"`
-             * @dark  `"#2e7ac0"`
-             */
-            n40: '',
-            /**
-             * @light  `"#358cdd"`
-             * @dark  `"#358cdd"`
-             */
-            n50: '',
-            /**
-             * @light  `"#2e7ac0"`
-             * @dark  `"#509ce3"`
-             */
-            n60: '',
-            /**
-             * @light  `"#2767a3"`
-             * @dark  `"#6bace8"`
-             */
-            n70: '',
-            /**
-             * [generated]
-             * @light  `"#205586"`
-             * @dark  `"#86bcee"`
-             */
-            n80: '',
-            /**
-             * @light  `"#194268"`
-             * @dark  `"#a0cbf4"`
-             */
-            n90: '',
-            /**
-             * @light  `"#122f4b"`
-             * @dark  `"#bbdbf9"`
-             */
-            n95: '',
-            /**
-             * @light  `"#0b1d2e"`
-             * @dark  `"#d6ebff"`
-             */
-            n99: '',
-            /**
-             * @light  `"#06101a"`
-             * @dark  `"#f0f8ff"`
-             */
-            n100: '',
-            /**
-             * [generated]
-             * @light  `"#86bcee33"`
-             * @dark  `"#20558633"`
-             */
-            'n20@alpha20': '',
-            /**
-             * [generated]
-             * @light  `"#20558633"`
-             * @dark  `"#86bcee33"`
-             */
-            'n80@alpha20': '',
-          },
-          celery: {
-            /**
-             * @light  `"#e9fce3"`
-             * @dark  `"#001a04"`
-             */
-            n0: '',
-            /**
-             * @light  `"#cdfcbf"`
-             * @dark  `"#003007"`
-             */
-            n1: '',
-            /**
-             * @light  `"#aef69d"`
-             * @dark  `"#00400a"`
-             */
-            n5: '',
-            /**
-             * @light  `"#96ee85"`
-             * @dark  `"#00530d"`
-             */
-            n10: '',
-            /**
-             * [generated]
-             * @light  `"#72e06a"`
-             * @dark  `"#00670f"`
-             */
-            n20: '',
-            /**
-             * @light  `"#4ecf50"`
-             * @dark  `"#007c0f"`
-             */
-            n30: '',
-            /**
-             * @light  `"#27bb36"`
-             * @dark  `"#009112"`
-             */
-            n40: '',
-            /**
-             * @light  `"#07a721"`
-             * @dark  `"#07a721"`
-             */
-            n50: '',
-            /**
-             * @light  `"#009112"`
-             * @dark  `"#27bb36"`
-             */
-            n60: '',
-            /**
-             * @light  `"#007c0f"`
-             * @dark  `"#4ecf50"`
-             */
-            n70: '',
-            /**
-             * [generated]
-             * @light  `"#00670f"`
-             * @dark  `"#72e06a"`
-             */
-            n80: '',
-            /**
-             * @light  `"#00530d"`
-             * @dark  `"#96ee85"`
-             */
-            n90: '',
-            /**
-             * @light  `"#00400a"`
-             * @dark  `"#aef69d"`
-             */
-            n95: '',
-            /**
-             * @light  `"#003007"`
-             * @dark  `"#cdfcbf"`
-             */
-            n99: '',
-            /**
-             * @light  `"#001a04"`
-             * @dark  `"#e9fce3"`
-             */
-            n100: '',
-            /**
-             * [generated]
-             * @light  `"#72e06a33"`
-             * @dark  `"#00670f33"`
-             */
-            'n20@alpha20': '',
-            /**
-             * [generated]
-             * @light  `"#00670f33"`
-             * @dark  `"#72e06a33"`
-             */
-            'n80@alpha20': '',
-          },
-          green: {
-            /**
-             * @light  `"#e9f8ef"`
-             * @dark  `"#061a10"`
-             */
-            n0: '',
-            /**
-             * @light  `"#cef8e0"`
-             * @dark  `"#0a2e1d"`
-             */
-            n1: '',
-            /**
-             * @light  `"#b8e7cf"`
-             * @dark  `"#153e2c"`
-             */
-            n5: '',
-            /**
-             * @light  `"#a2d5be"`
-             * @dark  `"#1f4f3c"`
-             */
-            n10: '',
-            /**
-             * @light  `"#8cc4ad"`
-             * @dark  `"#2a5f4b"`
-             */
-            n20: '',
-            /**
-             * @light  `"#76b39b"`
-             * @dark  `"#356f5a"`
-             */
-            n30: '',
-            /**
-             * @light  `"#60a18a"`
-             * @dark  `"#3f806a"`
-             */
-            n40: '',
-            /**
-             * @light  `"#4a9079"`
-             * @dark  `"#4a9079"`
-             */
-            n50: '',
-            /**
-             * @light  `"#3f806a"`
-             * @dark  `"#60a18a"`
-             */
-            n60: '',
-            /**
-             * @light  `"#356f5a"`
-             * @dark  `"#76b39b"`
-             */
-            n70: '',
-            /**
-             * @light  `"#2a5f4b"`
-             * @dark  `"#8cc4ad"`
-             */
-            n80: '',
-            /**
-             * @light  `"#1f4f3c"`
-             * @dark  `"#a2d5be"`
-             */
-            n90: '',
-            /**
-             * @light  `"#153e2c"`
-             * @dark  `"#b8e7cf"`
-             */
-            n95: '',
-            /**
-             * @light  `"#0a2e1d"`
-             * @dark  `"#cef8e0"`
-             */
-            n99: '',
-            /**
-             * @light  `"#061a10"`
-             * @dark  `"#e9f8ef"`
-             */
-            n100: '',
-          },
-          magenta: {
-            /**
-             * @light  `"#fff7fa"`
-             * @dark  `"#470820"`
-             */
-            n0: '',
-            /**
-             * @light  `"#ffeaf1"`
-             * @dark  `"#660b2e"`
-             */
-            n1: '',
-            /**
-             * @light  `"#fbc7da"`
-             * @dark  `"#7b0d38"`
-             */
-            n5: '',
-            /**
-             * @light  `"#f6a4c3"`
-             * @dark  `"#901041"`
-             */
-            n10: '',
-            /**
-             * @light  `"#f282ad"`
-             * @dark  `"#a5124b"`
-             */
-            n20: '',
-            /**
-             * @light  `"#ed5f96"`
-             * @dark  `"#ba1455"`
-             */
-            n30: '',
-            /**
-             * @light  `"#e93c7f"`
-             * @dark  `"#cf175e"`
-             */
-            n40: '',
-            /**
-             * @light  `"#e41968"`
-             * @dark  `"#e41968"`
-             */
-            n50: '',
-            /**
-             * @light  `"#cf175e"`
-             * @dark  `"#e93c7f"`
-             */
-            n60: '',
-            /**
-             * @light  `"#ba1455"`
-             * @dark  `"#ed5f96"`
-             */
-            n70: '',
-            /**
-             * @light  `"#a5124b"`
-             * @dark  `"#f282ad"`
-             */
-            n80: '',
-            /**
-             * @light  `"#901041"`
-             * @dark  `"#f6a4c3"`
-             */
-            n90: '',
-            /**
-             * @light  `"#7b0d38"`
-             * @dark  `"#fbc7da"`
-             */
-            n95: '',
-            /**
-             * @light  `"#660b2e"`
-             * @dark  `"#ffeaf1"`
-             */
-            n99: '',
-            /**
-             * @light  `"#470820"`
-             * @dark  `"#fff7fa"`
-             */
-            n100: '',
-          },
-          orange: {
-            /**
-             * @light  `"#fff7eb"`
-             * @dark  `"#290e01"`
-             */
-            n0: '',
-            /**
-             * @light  `"#ffeccc"`
-             * @dark  `"#491901"`
-             */
-            n1: '',
-            /**
-             * @light  `"#ffdfad"`
-             * @dark  `"#612300"`
-             */
-            n5: '',
-            /**
-             * @light  `"#fdd291"`
-             * @dark  `"#7a2f00"`
-             */
-            n10: '',
-            /**
-             * @light  `"#ffbb63"`
-             * @dark  `"#953d00"`
-             */
-            n20: '',
-            /**
-             * @light  `"#f5a655"`
-             * @dark  `"#b14c00"`
-             */
-            n30: '',
-            /**
-             * @light  `"#ec9046"`
-             * @dark  `"#cb5d00"`
-             */
-            n40: '',
-            /**
-             * @light  `"#e27b38"`
-             * @dark  `"#e27b38"`
-             */
-            n50: '',
-            /**
-             * @light  `"#cb5d00"`
-             * @dark  `"#ec9046"`
-             */
-            n60: '',
-            /**
-             * @light  `"#b14c00"`
-             * @dark  `"#f5a655"`
-             */
-            n70: '',
-            /**
-             * @light  `"#953d00"`
-             * @dark  `"#ffbb63"`
-             */
-            n80: '',
-            /**
-             * @light  `"#7a2f00"`
-             * @dark  `"#fdd291"`
-             */
-            n90: '',
-            /**
-             * @light  `"#612300"`
-             * @dark  `"#ffdfad"`
-             */
-            n95: '',
-            /**
-             * @light  `"#491901"`
-             * @dark  `"#ffeccc"`
-             */
-            n99: '',
-            /**
-             * @light  `"#290e01"`
-             * @dark  `"#fff7eb"`
-             */
-            n100: '',
-          },
-          red: {
-            /**
-             * @light  `"#fff0f0"`
-             * @dark  `"#1a0606"`
-             */
-            n0: '',
-            /**
-             * @light  `"#ffd6d6"`
-             * @dark  `"#2e0b0b"`
-             */
-            n1: '',
-            /**
-             * @light  `"#f9bbbb"`
-             * @dark  `"#4b1212"`
-             */
-            n5: '',
-            /**
-             * @light  `"#f4a0a0"`
-             * @dark  `"#681919"`
-             */
-            n10: '',
-            /**
-             * [generated]
-             * @light  `"#ee8686"`
-             * @dark  `"#862020"`
-             */
-            n20: '',
-            /**
-             * @light  `"#e86b6b"`
-             * @dark  `"#a32727"`
-             */
-            n30: '',
-            /**
-             * @light  `"#e35050"`
-             * @dark  `"#c02e2e"`
-             */
-            n40: '',
-            /**
-             * @light  `"#dd3535"`
-             * @dark  `"#dd3535"`
-             */
-            n50: '',
-            /**
-             * @light  `"#c02e2e"`
-             * @dark  `"#e35050"`
-             */
-            n60: '',
-            /**
-             * @light  `"#a32727"`
-             * @dark  `"#e86b6b"`
-             */
-            n70: '',
-            /**
-             * [generated]
-             * @light  `"#862020"`
-             * @dark  `"#ee8686"`
-             */
-            n80: '',
-            /**
-             * @light  `"#681919"`
-             * @dark  `"#f4a0a0"`
-             */
-            n90: '',
-            /**
-             * @light  `"#4b1212"`
-             * @dark  `"#f9bbbb"`
-             */
-            n95: '',
-            /**
-             * @light  `"#2e0b0b"`
-             * @dark  `"#ffd6d6"`
-             */
-            n99: '',
-            /**
-             * @light  `"#1a0606"`
-             * @dark  `"#fff0f0"`
-             */
-            n100: '',
-            /**
-             * [generated]
-             * @light  `"#ee868633"`
-             * @dark  `"#86202033"`
-             */
-            'n20@alpha20': '',
-            /**
-             * [generated]
-             * @light  `"#86202033"`
-             * @dark  `"#ee868633"`
-             */
-            'n80@alpha20': '',
-          },
-          yellow: {
-            /**
-             * @light  `"#fcf8e3"`
-             * @dark  `"#1a1500"`
-             */
-            n0: '',
-            /**
-             * @light  `"#fcf2bf"`
-             * @dark  `"#302800"`
-             */
-            n1: '',
-            /**
-             * @light  `"#f6e79d"`
-             * @dark  `"#403500"`
-             */
-            n5: '',
-            /**
-             * @light  `"#eedd85"`
-             * @dark  `"#534500"`
-             */
-            n10: '',
-            /**
-             * [generated]
-             * @light  `"#e0cc6a"`
-             * @dark  `"#675600"`
-             */
-            n20: '',
-            /**
-             * @light  `"#cfba4e"`
-             * @dark  `"#7c6700"`
-             */
-            n30: '',
-            /**
-             * @light  `"#bba227"`
-             * @dark  `"#917900"`
-             */
-            n40: '',
-            /**
-             * @light  `"#a78c07"`
-             * @dark  `"#a78c07"`
-             */
-            n50: '',
-            /**
-             * @light  `"#917900"`
-             * @dark  `"#bba227"`
-             */
-            n60: '',
-            /**
-             * @light  `"#7c6700"`
-             * @dark  `"#cfba4e"`
-             */
-            n70: '',
-            /**
-             * [generated]
-             * @light  `"#675600"`
-             * @dark  `"#e0cc6a"`
-             */
-            n80: '',
-            /**
-             * @light  `"#534500"`
-             * @dark  `"#eedd85"`
-             */
-            n90: '',
-            /**
-             * @light  `"#403500"`
-             * @dark  `"#f6e79d"`
-             */
-            n95: '',
-            /**
-             * @light  `"#302800"`
-             * @dark  `"#fcf2bf"`
-             */
-            n99: '',
-            /**
-             * @light  `"#1a1500"`
-             * @dark  `"#fcf8e3"`
-             */
-            n100: '',
-            /**
-             * [generated]
-             * @light  `"#e0cc6a33"`
-             * @dark  `"#67560033"`
-             */
-            'n20@alpha20': '',
-            /**
-             * [generated]
-             * @light  `"#67560033"`
-             * @dark  `"#e0cc6a33"`
-             */
-            'n80@alpha20': '',
-          },
-        },
-      },
-      effect: {
-        shadow: {
-          /**
-           * This is the shadow 1 description
-           * @light  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
-           * @dark  `"4px 0.5rem tokens.kda.foundation.size.n2 4px #000000"`
-           */
-          level1: '',
-          /**
-           * This is the shadow 2 description
-           * @light  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
-           * @dark  `"4rem 4rem tokens.kda.foundation.size.n2 2rem #000000"`
-           */
-          level2: '',
-          /**
-           * This is the shadow 3 description updated
-           * @light  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
-           * @dark  `"0px 0px tokens.kda.foundation.size.n2 24px #000000"`
-           */
-          level3: '',
-        },
-      },
-      icon: {
-        size: {
-          /**
-           * @light {@link tokens.kda.foundation.size.n3}
-           * @dark {@link tokens.kda.foundation.size.n3}
-           */
-          xxs: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n4}
-           * @dark {@link tokens.kda.foundation.size.n4}
-           */
-          xs: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n5}
-           * @dark {@link tokens.kda.foundation.size.n5}
-           */
-          sm: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n6}
-           * @dark {@link tokens.kda.foundation.size.n6}
-           */
-          base: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n8}
-           * @dark {@link tokens.kda.foundation.size.n8}
-           */
-          lg: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n10}
-           * @dark {@link tokens.kda.foundation.size.n10}
-           */
-          xl: '',
-          /**
-           * @light {@link tokens.kda.foundation.size.n16}
-           * @dark {@link tokens.kda.foundation.size.n16}
-           */
-          xxl: '',
-        },
-      },
-      layout: {
-        content: {
-          /**
-           * @light  `"33.75rem"`
-           * @dark  `"33.75rem"`
-           */
-          minWidth: '',
-          /**
-           * @light  `"42.5rem"`
-           * @dark  `"42.5rem"`
-           */
-          maxWidth: '',
         },
       },
       typography: {

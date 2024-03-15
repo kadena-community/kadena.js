@@ -22,12 +22,12 @@ const focusColor = createVar();
 const colorVariants = {
   primary: {
     vars: {
-      [fg]: token('color.text.brand.primary.inverse.default'),
-      [fgHover]: token('color.text.brand.primary.inverse.@hover'),
-      [bg]: token('color.background.brand.primary.inverse.default'),
-      [bgHover]: token('color.background.brand.primary.inverse.@hover'),
-      [focusColor]: token('color.border.brand.primary.@focus'),
-      [iconFill]: token('color.icon.brand.primary.default'),
+      [fg]: token('color.text.base.inverse.default'),
+      [fgHover]: token('color.text.base.inverse.@hover'),
+      [bg]: token('color.background.accent.primary.inverse.default'),
+      [bgHover]: token('color.background.accent.primary.inverse.@hover'),
+      [focusColor]: token('color.background.accent.primary.inverse.default'),
+      [iconFill]: token('color.icon.base.inverse.default'),
     },
   },
   secondary: {
@@ -76,7 +76,7 @@ const colorVariants = {
       [fgHover]: token('color.text.semantic.info.inverse.@hover'),
       [bg]: token('color.background.semantic.info.inverse.default'),
       [bgHover]: token('color.background.semantic.info.inverse.@hover'),
-      [focusColor]: token('color.border.semantic.info.@focus'),
+      [focusColor]: token('color.background.semantic.info.inverse.default'),
       [iconFill]: token('color.icon.semantic.info.default'),
     },
   },
