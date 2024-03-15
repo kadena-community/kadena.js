@@ -94,7 +94,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: ['tools', 'docs', 'graph']
+        app: ['docs', 'graph']
 
     steps:
       - uses: actions/checkout@v4
