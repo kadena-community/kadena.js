@@ -17,13 +17,15 @@
   - [Query Complexity](#query-complexity)
   - [Gas Limit Estimations](#gas-limit-estimations)
   - [Prisma JSON field queries](#prisma-json-field-queries)
+  - [Paginated results](#paginated-results)
 - [Useful extra's](#useful-extras)
   - [Running devnet](#running-devnet)
-  - [Connect to the database](#connect-to-the-database)
+  - [Connecting to the database](#connecting-to-the-database)
   - [Simulating traffic on the devnet](#simulating-traffic-on-the-devnet)
     - [Coin simulation](#coin-simulation)
     - [Marmalade simulation](#marmalade-simulation)
     - [Flood devnet](#flood-devnet)
+- [Changelog](#changelog)
 
 ## Getting started
 
@@ -54,7 +56,6 @@ npx @kadena/graph
 Prerequisites:
 
 - [pnpm](https://pnpm.io/installation)
-- [Docker](https://docs.docker.com/get-docker/) (or an alternative, e.g. [podman](https://podman.io/docs/installation))
 
 First, install dependencies and build up to and including `@kadena/graph`.
 
@@ -144,9 +145,20 @@ Queries that allow such filters:
 
 - `parametersFilter` on the `events` query and `events` subscription.
 
+### Paginated results
+
+Arrays are returned as [Relay Cursor Connections](https://relay.dev/graphql/connections.htm). This means that the results are paginated and you can use the `first`, `last`, `before` and `after` arguments to navigate through the results. The `edges` field contains the actual data, and the `pageInfo` field contains information about the whether there is a next or previous page, and the cursor of the first and last item in the current page. The `totalCount` field contains the total amount of items in the result set.
+
+Note that `first` can only be used with `after`, and `last` can only be used with `before`. If neither `first` or `last` is given, the default amount of items returned is 20.
+
 ## Useful extra's
 
 ### Running devnet
+
+Prerequisites:
+
+- [pnpm](https://pnpm.io/installation)
+- [Docker](https://docs.docker.com/get-docker/) (or an alternative, e.g. [podman](https://podman.io/docs/installation))
 
 This project has a built-in command to create and start devnet. For the full guide visit the quickstart page on the documentation website [here](https://docs.kadena.io/build/quickstart).
 
@@ -167,7 +179,7 @@ pnpm run fund -- -k <key> -a <amount>
 
 An alternative is to run a full simulation of traffic on the devnet, see [Simulating traffic on the devnet](#simulating-traffic-on-the-devnet).
 
-### Connect to the database
+### Connecting to the database
 
 If you want to have a quick glance into the chainweb-data database, you can use Prisma's built in Studio as a database GUI, using
 `pnpm run prisma:studio`.
@@ -229,3 +241,7 @@ pnpm run simulate:flood -tx <transactions> -i <interval> -t <totalTx>
 - transactions - amount of transactions per iteration
 - interval - time interval between iterations
 - totalTx - total number of transactions before command stops
+
+## Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md).
