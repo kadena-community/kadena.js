@@ -132,6 +132,7 @@ const typographyReset = {
   lineHeight: 'inherit',
   letterSpacing: 'inherit',
 };
+
 export const button = recipe({
   base: [
     buttonReset,
@@ -145,6 +146,7 @@ export const button = recipe({
     }),
     {
       background: 'none',
+      fontFamily: token('typography.family.primaryFont'),
       border: `${tokens.kda.foundation.border.width.normal} solid transparent`,
       transition:
         'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
