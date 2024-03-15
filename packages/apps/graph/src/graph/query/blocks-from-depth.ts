@@ -7,10 +7,14 @@ import Block from '../objects/block';
 
 builder.queryField('blocksFromDepth', (t) =>
   t.prismaConnection({
-    description: 'Retrieve blocks by chain and minimal depth.',
+    description:
+      'Retrieve blocks by chain and minimal depth. Default page size is 20.',
     args: {
       minimumDepth: t.arg.int({ required: true }),
-      chainIds: t.arg.stringList({ required: false }),
+      chainIds: t.arg.stringList({
+        required: false,
+        description: 'Default: all chains',
+      }),
     },
     cursor: 'hash',
     type: Block,

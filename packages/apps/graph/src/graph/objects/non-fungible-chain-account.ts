@@ -58,6 +58,7 @@ export default builder.node(
         },
       }),
       transactions: t.prismaConnection({
+        description: 'Default page size is 20.',
         type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,

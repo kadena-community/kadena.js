@@ -43,6 +43,7 @@ const yogaApp = createYoga({
   plugins,
   graphiql: {
     subscriptionsProtocol: 'WS',
+    title: 'Kadena GraphQL',
   },
   context: async () => {
     return {

@@ -69,6 +69,7 @@ export default builder.node(
       }),
       balance: t.exposeFloat('balance'),
       transactions: t.prismaConnection({
+        description: 'Default page size is 20.',
         type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
@@ -115,6 +116,7 @@ export default builder.node(
         },
       }),
       transfers: t.prismaConnection({
+        description: 'Default page size is 20.',
         type: Prisma.ModelName.Transfer,
         edgesNullable: false,
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',

@@ -8,7 +8,8 @@ import Block from '../objects/block';
 
 builder.queryField('completedBlockHeights', (t) =>
   t.prismaConnection({
-    description: 'Retrieve all completed blocks from a given height.',
+    description:
+      'Retrieve all completed blocks from a given height. Default page size is 20.',
     args: {
       completedHeights: t.arg.boolean({ required: false, defaultValue: false }),
       heightCount: t.arg.int({ required: false, defaultValue: 3 }),
