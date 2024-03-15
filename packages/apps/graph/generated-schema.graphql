@@ -436,7 +436,7 @@ type QueryTransactions1Connection {
 
 type QueryTransactions1ConnectionEdge {
   cursor: String!
-  node: Transaction1!
+  node: Transaction!
 }
 
 type QueryTransactionsByPublicKeyConnection {
@@ -517,9 +517,9 @@ type Subscription {
   transaction(requestKey: String!): Transaction
 
   """
-  Listen for a transaction by request key. Returns the ID when it is in a block.
+  Listen for a transaction by request key. Returns the transaction when found.
   """
-  transactionStatus(chainId: String!, requestKey: String!): TransactionSubscriptionResponse
+  transactionStatus(chainId: String!, requestKey: String!): Transaction1
 }
 
 """The token identifier and its balance."""
@@ -645,7 +645,6 @@ union TransactionResult1 = MempoolInfo | TransactionInfo
 
 """The status of the transaction."""
 enum TransactionStatus {
-  COMPLETED
   FAILED
   MISSING
   PENDING

@@ -2,18 +2,22 @@ import { prismaClient } from '@db/prisma-client';
 import { mempoolLookup } from '@services/chainweb-node/mempool';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
-import { GQLTransactionSubscriptionResponse } from '../objects/transaction-subscription';
-import type { TransactionSubscriptionResponse } from '../types/graphql-types';
+import GQLTransactions1 from '../objects/transaction1';
+import type { Transaction1 } from '../types/graphql-types';
+import {
+  mempoolTxMapper,
+  prismaTransactionMapper,
+} from '../utils/transaction-mapper';
 
 builder.subscriptionField('transactionStatus', (t) =>
   t.field({
     description:
-      'Listen for a transaction by request key. Returns the ID when it is in a block.',
+      'Listen for a transaction by request key. Returns the transaction when found.',
     args: {
       requestKey: t.arg.string({ required: true }),
       chainId: t.arg.string({ required: true }),
     },
-    type: GQLTransactionSubscriptionResponse,
+    type: GQLTransactions1,
     nullable: true,
     subscribe: (__root, args, context) =>
       iteratorFn(args.requestKey, args.chainId, context),
@@ -25,7 +29,7 @@ async function* iteratorFn(
   requestKey: string,
   chainId: string,
   context: IContext,
-): AsyncGenerator<TransactionSubscriptionResponse | undefined, void, unknown> {
+): AsyncGenerator<Transaction1 | undefined, void, unknown> {
   while (!context.req.socket.destroyed) {
     const transaction = await prismaClient.transaction.findFirst({
       where: {
@@ -35,7 +39,7 @@ async function* iteratorFn(
     });
 
     if (transaction) {
-      yield { transaction, status: 'COMPLETED' };
+      yield prismaTransactionMapper(transaction, [], context);
       return;
     } else {
       const mempoolResponse = await checkMempoolForTransaction(
@@ -55,60 +59,21 @@ async function* iteratorFn(
 async function checkMempoolForTransaction(
   hash: string,
   chainId: string,
-): Promise<TransactionSubscriptionResponse> {
+): Promise<Transaction1 | null> {
   try {
     const mempoolData = await mempoolLookup(hash, chainId);
     if (mempoolData.length === 0) {
-      return {
-        status: 'MISSING',
-        transaction: null,
-      };
+      return null;
     }
 
     const transactionData = mempoolData[0];
 
-    if (transactionData.tag === 'Missing') {
-      return {
-        status: 'MISSING',
-        transaction: null,
-      };
-    }
-
     if (transactionData.tag === 'Pending') {
-      return {
-        status: 'PENDING',
-        //@ts-ignore
-        transaction: mempoolTxMapper(transactionData.contents),
-      };
+      return mempoolTxMapper(transactionData);
     }
 
-    return {
-      status: 'MISSING',
-      transaction: null,
-    };
+    return null;
   } catch (error) {
-    return {
-      status: 'MISSING',
-      transaction: null,
-    };
+    return null;
   }
-}
-
-function mempoolTxMapper(mempoolContents: any) {
-  let mempoolTx = JSON.parse(mempoolContents);
-
-  mempoolTx.cmd = JSON.parse(mempoolTx.cmd);
-
-  if ('cont' in mempoolTx.cmd.payload) {
-    mempoolTx.cmd.payload = mempoolTx.cmd.payload.cont;
-  } else if ('exec' in mempoolTx.cmd.payload) {
-    mempoolTx.cmd.payload = mempoolTx.cmd.payload.exec;
-  }
-
-  mempoolTx.cmd.payload.data = JSON.stringify(mempoolTx.cmd.payload.data);
-
-  return {
-    requestKey: mempoolTx.hash,
-    cmd: mempoolTx.cmd,
-  };
 }

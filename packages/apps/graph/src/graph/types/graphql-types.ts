@@ -138,7 +138,6 @@ export interface TransactionResult {
 
 export const TransactionStatus = {
   PENDING: 'pending',
-  COMPLETED: 'completed',
   FAILED: 'failed',
   MISSING: 'missing',
 } as const;

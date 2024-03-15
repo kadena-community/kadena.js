@@ -69,3 +69,26 @@ export function prismaTransactionMapper(
     },
   };
 }
+
+export function mempoolTxMapper(mempoolData: any): Transaction1 {
+  let mempoolInfo = {
+    status: mempoolData.tag,
+  };
+  let mempoolTx = JSON.parse(mempoolData.contents);
+
+  mempoolTx.cmd = JSON.parse(mempoolTx.cmd);
+
+  if ('cont' in mempoolTx.cmd.payload) {
+    mempoolTx.cmd.payload = mempoolTx.cmd.payload.cont;
+  } else if ('exec' in mempoolTx.cmd.payload) {
+    mempoolTx.cmd.payload = mempoolTx.cmd.payload.exec;
+  }
+
+  mempoolTx.cmd.payload.data = JSON.stringify(mempoolTx.cmd.payload.data);
+
+  return {
+    hash: mempoolTx.hash,
+    cmd: mempoolTx.cmd,
+    result: mempoolInfo,
+  };
+}
