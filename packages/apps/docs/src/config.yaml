@@ -473,14 +473,10 @@ pages:
             file: /marmalade/auctions/dutch-auction.md
       metadata:
         url: /metadata
-        file: /marmalade/metadata/index.md
-        children:
-          arweavestorage:
-            url: /arweave-storage
-            file: /marmalade/metadata/arweave-storage.md
-          ipfs:
-            url: /ipfs
-            file: /marmalade/metadata/ipfs.md
+        file: /marmalade/metadata.md
+      storage:
+        url: /storage
+        file: /marmalade/storage.md
       v1:
         url: /marmalade-v1
         file: /marmalade/marmalade-v1/index.md
