@@ -54,15 +54,7 @@ To define the database schema and table:
 
    In this code, `defschema` defines a `candidate-schema` for a database table with two columns: `name` of type string and `votes` of type integer.
 
-<<<<<<< HEAD
-1. Create the table outside of the election module by adding the following lines of code at the end of the `./pact/election.pact` file, after the closing parenthesis (`)`) of the `election` module definition:
-=======
-<<<<<<< HEAD
 3. Create the table outside of the election module by adding the following lines of code at the end of the `./pact/election.pact` file, after the closing parenthesis (`)`) of the  `election` module definition:
-=======
-1. Create the table outside of the election module by adding the following lines of code at the end of the `./pact/election.pact` file, after the closing parenthesis (`)`) of the `election` module definition:
->>>>>>> 42ebad323 (Fixes and draft of gas station)
->>>>>>> 8661741ec (Fixes and draft of gas station)
 
    ```pact
    (if (read-msg "init-candidates")
