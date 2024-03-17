@@ -1,27 +1,63 @@
 ---
-title: Long-term storage
+title: Store digital assets
 description: Ensure the long-term storage and availability of non-fungible tokens.
-menu: Long-term storage
-label: Long-term storage
+menu: Non-fungible tokens (NFT)
+label: Store digital assets
 order: 1
 layout: full
 ---
 
-# Long-term storage options
+# Store digital assets
 
-Given the immutable characteristic of non-fungible tokens, it's important to consider the long-term accessibility and sustainability associated with the token.
+In [Describe tokens in metadata](/build/nft-marmalade/metadata), you saw how token attributes are defined using an off-chain JSON file. 
+When you create and mint tokens, you must provide the uniform resource identifier for the metadata that describes your non-fungible token or token collection.
+Because storing your digital assets is a critical part of the process, one of your first decision is how to make the assets available using an off-chain storage option.
 
-Two protocols designed to handle these requirements are the **InterPlanetary File System** (IPFS) and **Arweave**.
+There are many possible ways you could store digital assets, including a public node that you manage yourself, a cloud service provider, or a distributed file system service.
+In general, you should consider the long-term accessibility required to ensure the sustainability of the asset.
+
+As an example, two protocols that are designed to handle long-term storage and global accessibility are the **InterPlanetary File System (IPFS)** and **Arweave**.
 
 ## Using IPFS
 
 The InterPlanetary File System (IPFS) is a file storage protocol designed to allow distributed file sharing, storage, and access over a peer-to-peer network.
-You can use this distributed file system to store NFT data, so that the data remains available and accessible for NFTs hosted on the Marmalade platform.
+You can use this distributed file system to store you digital assets and the corresponding metadata, so that the data remains available and accessible for tokens minted using the Marmalade standard and recorded in the Marmalade ledger.
+
+### Store a single NFT
+
+The following example demonstrates how to store a single image and its metadata using the InterPlanetary File System (IPFS). 
+The example uses sample paths and content identifiers to illustrate how to store and access the image.
+
+To store a single NFT on IPFS:
+
+1. Upload the image asset to IPFS.
+
+2. Record the content identifier (CI)D for the asset you uploaded.
+   
+   For example, `Bayfabc...`.
+
+3. Update the metadata file so that the `image` property is the path to the content identifier.
+   
+   For example, `ipfs://Bayfabc.../1.jpg`.
+
+4. Upload the metadata file to IPFS.
+
+5. Retrieve the content identifier for the uploaded metadata file.
+   
+   For example, `ipfs://Bayfxyz.../metadata.json" `.
+
+The following example illustrates the file name and link for accessing an individual NFT on IPFS:
+
+**uri:** `ipfs://bafyreiainnf575ivbxffep3xqx4d4v2jrpyz4yrggylfp5i7lru7zpfese/metadata.json`
+**gateway-link:** [[click here]](https://bafyreiainnf575ivbxffep3xqx4d4v2jrpyz4yrggylfp5i7lru7zpfese.ipfs.dweb.link/metadata.json)
+
+Note that these content identifiers are only intended as examples.
+In addition, you should have a thorough understanding of IPFS storage and adjust the steps, as needed, for your IPFS environment.
 
 ### Store an NFT collection
 
-The following guide describes the recommended approach to storing metadata and a collection of image assets on IPFS. 
-The guide uses sample paths and content identifiers to illustrate the best practices for storing asset collections to ensure resilience and longevity in the IPFS ecosystem and how to access stored data.
+The following example demonstrates how to store a collection of images and the corresponding metadata using the InterPlanetary File System (IPFS). 
+The example uses sample paths and content identifiers to illustrate how to store and access the image.
 
 To store an asset collection on IPFS:
 
@@ -66,51 +102,22 @@ The following example illustrates the file names and links for accessing a colle
 Note that these content identifiers are only intended as examples.
 In addition, you should have a thorough understanding of IPFS storage and adjust the steps, as needed for your IPFS environment.
 
-### Store a single NFT
+### Verify the metadata details
 
-The following guide describes the recommended approach to storing metadata and a single image on IPFS. 
-The guide uses sample paths and content identifiers to illustrate the best practices for storing individual to ensure resilience and longevity in the IPFS ecosystem and how to access stored data.
-
-To store a single NFT on IPFS:
-
-1. Upload the image asset to IPFS.
-
-2. Record the content identifier (CI)D for the asset you uploaded.
-   
-   For example, `Bayfabc...`.
-
-3. Update the metadata file so that the `image` property is the path to the content identifier.
-   
-   For example, `ipfs://Bayfabc.../1.jpg`.
-
-4. Upload the metadata file to IPFS.
-
-5. Retrieve the content identifier for the uploaded metadata file.
-   
-   For example, `ipfs://Bayfxyz.../metadata.json" `.
-
-The following example illustrates the file name and link for accessing an individual NFT on IPFS:
-
-**uri:** `ipfs://bafyreiainnf575ivbxffep3xqx4d4v2jrpyz4yrggylfp5i7lru7zpfese/metadata.json`
-**gateway-link:** [[click here]](https://bafyreiainnf575ivbxffep3xqx4d4v2jrpyz4yrggylfp5i7lru7zpfese.ipfs.dweb.link/metadata.json)
-
-Note that these content identifiers are only intended as examples.
-In addition, you should have a thorough understanding of IPFS storage and adjust the steps, as needed for your IPFS environment.
-
-### Metadata structure
-
-Your metadata files should adhere to the Marmalade [JSON schema](/marmalade/metadata). 
-The schema provides a structure for your metadata, ensuring that necessary details are present and formatted correctly. 
-You can find the schema in this readme.
-
-In this schema, the `image` property should contain a link to the image on IPFS
+The metadata files that you upload for your image or collection adhere to the Marmalade [metadata schema](/build/nft-marmalade/metadata). 
+In this schema, the `image` field should contain a link to the image on IPFS
 as illustrated in the previous examples.
 
-### Token creation in the ledger
+### Create the token in the ledger
 
-When creating a token in the ledger, you should use the `create-token` function.
-The link obtained from IPFS (`.json`) serves as the URI supplied to create a token
-within the ledger:
+To create the token in the Marmalade ledger, you should use the link from IPFS (`.json`) as the URI.
+For example, each token should have a link to a JSON file similar to the following:
+
+```
+ipfs://bafybeig4ihtm2phax2eodfpubwy467szuiieqafkoywp5khzt6cz2hqrna/1.json
+```
+
+To use the `create-token` function:
 
 ```pact
 (defun create-token:bool
@@ -135,9 +142,7 @@ This function requires a token ID as its argument and returns the associated URI
 )
 ```
 
-When you call the `get-uri` function and pass in a token ID, the function accesses the `tokens` map, finds the row corresponding to the provided token ID, and returns
-the value stored in the `'uri` field of that row. 
-Essentially, it retrieves the URI that corresponds to the token ID you specified.
+When you call the `get-uri` function and pass in a token ID, the function accesses the `tokens` map, finds the row corresponding to the provided token ID, and returns the value stored in the `'uri` field of that row. 
 
 ## Using Arweave with Akord
 

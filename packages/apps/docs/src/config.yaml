@@ -112,19 +112,31 @@ pages:
         url: /nft-marmalade
         file: /build/nft-marmalade/what-is-marmalade.md
         children:
-          quickstart:
-            url: /quick-start
-            file: /build/nft-marmalade/quickstart.md
+          qetstarted:
+            url: /get-started
+            file: /build/nft-marmalade/get-started.md
           architecture:
             url: /architecture
             file: /build/nft-marmalade/contract-architecture.md
+          metadata:
+            url: /metadata
+            file: /build/nft-marmalade/metadata.md
+          storage:
+            url: /storage
+            file: /build/nft-marmalade/storage.md
+          nft:
+            url: /create-nft
+            file: /build/nft-marmalade/create-nft.md
+          collection:
+            url: /create-a-collection
+            file: /build/nft-marmalade/create-a-collection.md
           concretepolicies:
             url: /concrete-policies
             file: /build/nft-marmalade/concrete-policies.md
             children:
               collection:
                 url: /collection-policy
-                file: /build/nft-marmalade/concrete-policies/collection-policy.md
+                file: /build/nft-marmalade/collection-policy.md
               guard:
                 url: /guard-policy
                 file: /build/nft-marmalade/concrete-policies/guard-policy.md
@@ -134,12 +146,6 @@ pages:
               royalty:
                 url: /royalty-policy
                 file: /build/nft-marmalade/concrete-policies/royalty-policy.md
-          metadata:
-            url: /metadata
-            file: /build/nft-marmalade/metadata.md
-          storage:
-            url: /storage
-            file: /build/nft-marmalade/storage.md
       frontend:
         url: /frontend
         file: /build/frontend.md

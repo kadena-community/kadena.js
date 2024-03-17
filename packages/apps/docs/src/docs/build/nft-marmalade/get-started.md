@@ -10,7 +10,7 @@ tags: [NFT, marketplace, non-fungible tokens, minting, marmalade, v2]
 
 # Get started with Marmalade
 
-As you learned in [What is Marmalade?](/build/nft-standard),  Marmalade is the name of the Kadena **token standard**.
+As you learned in [What is Marmalade?](/build/nft-marmalade),  Marmalade is the name of the Kadena **token standard**.
 The token standard defines the interfaces for minting digital items using a set of smart contracts and token policies.
 The Marmalade token standard enables you to define, mint, and secure tokens that are fully fungible coins, partially fungible in a limited edition, or completely non-fungible unique items.
 When you mint tokens using these interfaces, the Kadena blockchain infrastructure provides proof of authenticity and ownership by enabling you to commit on-chain transactions with low transaction fees.
@@ -157,11 +157,12 @@ The `marmalade-v2.util-v1` contract provides two additional helper functions to 
 
 The next steps to take—and whether you should use the helper functions or the underlying functions defined in the `marmalade-v2.ledger` contract—depend on what you are trying to accomplish and where you want to store your digital items and metadata.
 
-<!--
 To learn more about working with Marmalade smart contracts and token policies, see the following topics:
 
-- [Long-term storage options]()
-- [Create a non-fungible token]()
-- [Create a collection]()
-- [Create a limited edition]()
+- [Describe tokens in metadata](/build/nft-marmalade/metadata)
+- [Store digital assets](/build/nft-marmalade/storage)
+- [Create a non-fungible token](/build/nft-marmalade/create-nft)
+<!--
+- [Create a collection](/build/nft-marmalade/create-a-collection)
+- [Create a limited edition](/build/nft-marmalade/limited-edition)
 -->
