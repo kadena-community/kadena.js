@@ -16,6 +16,7 @@ export interface IAddPublicKeysSection {
   setPublicKeys: (keys: string[]) => void;
   deletePubKey: () => void;
   initialPublicKey?: string;
+  maxKeysAmount?: number;
 }
 
 export const AddPublicKeysSection = ({
@@ -23,6 +24,7 @@ export const AddPublicKeysSection = ({
   setPublicKeys,
   deletePubKey,
   initialPublicKey,
+  maxKeysAmount,
 }: IAddPublicKeysSection): React.JSX.Element => {
   const { t } = useTranslation('common');
 
@@ -118,6 +120,7 @@ export const AddPublicKeysSection = ({
             title="Add Public Key"
             color="primary"
             type="button"
+            isDisabled={publicKeys.length >= (maxKeysAmount || 10)}
           >
             {t('Add public key')}
           </Button>
