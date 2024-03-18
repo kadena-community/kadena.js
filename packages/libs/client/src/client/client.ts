@@ -101,7 +101,7 @@ export interface IBaseClient {
    * Calls the '/poll' endpoint multiple times to get the status of all requests.
    *
    * @param transactionDescriptors - transaction descriptors to status polling.
-   * @param options - options to adjust polling (onPoll, timeout, and interval).
+   * @param options - options to adjust polling (onPoll, timeout, interval, and confirmationDepth).
    * @returns A promise that resolves to the poll request promise with the command result.
    */
   pollStatus: (
@@ -235,6 +235,7 @@ export interface IClient extends IBaseClient {
    *
    *
    * @param transactionDescriptors - transaction descriptors to listen for.
+   * @param options - options to adjust polling (onPoll, timeout, interval, and confirmationDepth).
    * @returns A promise that resolves to the command result.
    */
   pollOne: (
@@ -252,6 +253,7 @@ export interface ICreateClient {
    *
    * Useful when you are working with a single network and chainId.
    * @param hostUrl - the URL to use in the client
+   * @param defaults - default options for the client it includes confirmationDepth that is used for polling
    */
   (hostUrl: string, defaults?: { confirmationDepth?: Milliseconds }): IClient;
 
@@ -260,6 +262,7 @@ export interface ICreateClient {
    *
    * Note: The default hostUrlGenerator creates a Kadena testnet or mainnet URL based on networkId.
    * @param hostAddressGenerator - the function that generates the URL based on `chainId` and `networkId` from the transaction
+   * @param defaults - default options for the client it includes confirmationDepth that is used for polling
    */
   (
     hostAddressGenerator?: (options: {
