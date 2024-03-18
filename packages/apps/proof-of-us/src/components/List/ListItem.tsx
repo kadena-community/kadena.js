@@ -3,6 +3,7 @@
 import { useTokens } from '@/hooks/tokens';
 import { createManifest } from '@/utils/createManifest';
 import { fetchManifestData } from '@/utils/fetchManifestData';
+import { getIPFSLink } from '@/utils/getIPFSLink';
 import { store } from '@/utils/socket/store';
 import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';

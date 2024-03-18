@@ -53,11 +53,13 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const storageListener = (event: StorageEvent) => {
     if (event.key === 'mintingTokens') {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       setMintingTokens(getMintingTokensFromLocalStorage());
     }
   };
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     setMintingTokens(getMintingTokensFromLocalStorage());
     window.addEventListener('storage', storageListener);
     return () => {
@@ -71,34 +73,33 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     setTokens(data as IToken[]);
   }, [data]);
 
-  const removeMintingToken = (token: IToken) => {
+  const removeMintingToken = useCallback((token: IToken) => {
     setMintingTokens((v) => {
       const newArray = v.filter((t) => t.requestKey !== token.requestKey);
       localStorage.setItem('mintingTokens', JSON.stringify(newArray));
       return newArray;
     });
-  };
+  }, []);
 
-  const updateToken = async (
-    tokenId: string,
-    token: IToken,
-    mintStatus: 'error' | 'success',
-  ) => {
-    console.log('success', mintStatus, token);
-    removeMintingToken(token);
+  const updateToken = useCallback(
+    async (tokenId: string, token: IToken, mintStatus: 'error' | 'success') => {
+      console.log('success', mintStatus, token);
+      removeMintingToken(token);
 
-    if (mintStatus === 'success') {
-      setSuccessTokens((v) => {
-        const newArray = [...v];
-        delete token.proofOfUsId;
-        if (!v.find((t) => t.requestKey === token.requestKey)) {
-          newArray.push(token);
-        }
-        return newArray;
-      });
-    }
-  };
-  const listenAll = async () => {
+      if (mintStatus === 'success') {
+        setSuccessTokens((v) => {
+          const newArray = [...v];
+          delete token.proofOfUsId;
+          if (!v.find((t) => t.requestKey === token.requestKey)) {
+            newArray.push(token);
+          }
+          return newArray;
+        });
+      }
+    },
+    [tokens],
+  );
+  const listenAll = useCallback(async () => {
     for (let i = 0; i < mintingTokens.length; i++) {
       const token = mintingTokens[i];
 
@@ -109,8 +110,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
           isDateOlderThan5Minutes(new Date(token.mintStartDate)),
           token.listener,
         ]);
-
-        console.log(promise);
         if (
           promise &&
           promise[token.requestKey] &&
@@ -136,12 +135,13 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
         removeMintingToken(token);
       }
     }
-  };
+  }, [tokens, mintingTokens]);
+
   useEffect(() => {
     listenAll();
   }, [mintingTokens]);
 
-  async function listenForMinting(data: IToken) {
+  const listenForMinting = useCallback(async (data: IToken) => {
     try {
       const isAlreadyListening = !!data.listener;
       if (isAlreadyListening || !data.requestKey) return;
@@ -158,9 +158,9 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     } catch (e) {
       console.error(data.requestKey, e);
     }
-  }
+  }, []);
 
-  function getMintingTokensFromLocalStorage(): IToken[] {
+  const getMintingTokensFromLocalStorage = useCallback((): IToken[] => {
     if (typeof window === 'undefined') {
       return [];
     }
@@ -191,7 +191,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     });
 
     return mintingTokensData;
-  }
+  }, [tokens, account]);
 
   const removeTokenFromData = useCallback(
     (token: IToken) => {
@@ -202,7 +202,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     [tokens],
   );
 
-  const addMintingData = async (proofOfUs: IProofOfUsData) => {
+  const addMintingData = useCallback(async (proofOfUs: IProofOfUsData) => {
     const token: IToken = {
       eventId: proofOfUs.eventId,
       proofOfUsId: proofOfUs.proofOfUsId,
@@ -223,7 +223,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
       localStorage.setItem('mintingTokens', JSON.stringify(newArray));
       return newArray;
     });
-  };
+  }, []);
 
   return (
     <TokenContext.Provider
