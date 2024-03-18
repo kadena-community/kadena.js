@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Button, Notification, Stack, SystemIcon } from '@kadena/react-ui';
 
@@ -28,6 +28,7 @@ import type { ChainId } from '@kadena/types';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { z } from 'zod';
 import { SignFormReceiver } from './sign-form-receiver';
+import type { SenderType } from './sign-form-sender';
 import { SignFormSender } from './sign-form-sender';
 
 const schema = z.object({
@@ -93,6 +94,8 @@ export const SignForm = ({
     derivationMode.current = mode;
   };
 
+  const [signingMethod, setSigningMethod] = useState<SenderType>('Ledger');
+
   const handleSignTransaction = async (data: FormData) => {
     let transferInput: TransferInput;
 
@@ -157,6 +160,8 @@ export const SignForm = ({
             onKeyIdUpdate={onKeyIdUpdate}
             onDerivationUpdate={onDerivationUpdate}
             onChainUpdate={onSenderChainUpdate}
+            signingMethod={signingMethod}
+            onSigningMethodUpdate={setSigningMethod}
           />
 
           {/* RECEIVER FLOW */}
@@ -165,6 +170,7 @@ export const SignForm = ({
             onPubKeysUpdate={onPubKeysUpdate}
             onPredicateUpdate={onPredicateUpdate}
             onChainUpdate={onReceiverChainUpdate}
+            signingMethod={signingMethod}
           />
 
           {ledgerSignState.error && (

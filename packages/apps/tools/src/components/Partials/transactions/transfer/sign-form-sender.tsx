@@ -36,11 +36,15 @@ export const SignFormSender = ({
   onKeyIdUpdate,
   onDerivationUpdate,
   onChainUpdate,
+  signingMethod,
+  onSigningMethodUpdate,
 }: {
   onDataUpdate: (data: AccountDetails) => void;
   onKeyIdUpdate: (keyId: number) => void;
   onDerivationUpdate: (derivationMode: DerivationMode) => void;
   onChainUpdate: (chainId: ChainId) => void;
+  signingMethod: SenderType;
+  onSigningMethodUpdate: (method: SenderType) => void;
 }) => {
   const { t } = useTranslation('common');
   const {
@@ -94,8 +98,6 @@ export const SignFormSender = ({
     ? `Cannot send more than ${senderData.data.balance.toFixed(4)} KDA.`
     : '';
 
-  const [senderType, setSenderType] = useState<SenderType>('Ledger');
-
   return (
     <LoadingCard fullWidth isLoading={senderData.isFetching}>
       <Heading as={'h5'}>{t('Sender')} </Heading>
@@ -104,10 +106,10 @@ export const SignFormSender = ({
         <Select
           label="From"
           placeholder="Select an option"
-          selectedKey={senderType}
+          selectedKey={signingMethod}
           disabledKeys={['Coming soon…']}
           onSelectionChange={(x) => {
-            setSenderType(x as SenderType);
+            onSigningMethodUpdate(x as SenderType);
           }}
         >
           {accountFromOptions.map((item) => (
@@ -131,7 +133,7 @@ export const SignFormSender = ({
         gap="md"
       >
         <SenderDetails
-          type={senderType}
+          type={signingMethod}
           onKeyIdUpdate={onKeyIdUpdate}
           onDerivationUpdate={onDerivationUpdate}
         />
