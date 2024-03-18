@@ -1,7 +1,7 @@
 import { tokens } from '@kadena/react-ui/styles';
-import { globalStyle } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
-export const specsWrapper = 'specs-wrapper';
+export const specsWrapper = style({});
 
 globalStyle(`.${specsWrapper} .menu-content li span`, {
   color: tokens.kda.foundation.color.text.base.default,
