@@ -7,7 +7,11 @@ import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
 import type { IMenuItem } from '@/types/Layout';
 import { getHref } from '@/utils/getHref';
 import type { INetworkData } from '@/utils/network';
-import { MonoBuildCircle, MonoPublic } from '@kadena/react-icons/system';
+import {
+  MonoBuildCircle,
+  MonoContrast,
+  MonoPublic,
+} from '@kadena/react-icons/system';
 import {
   KadenaLogo,
   NavHeader,
@@ -16,7 +20,6 @@ import {
   NavHeaderLinkList,
   NavHeaderSelect,
   SelectItem,
-  SystemIcon,
 } from '@kadena/react-ui';
 import { atoms, breakpoints } from '@kadena/react-ui/styles';
 import { useTheme } from 'next-themes';
@@ -88,7 +91,7 @@ const Header: FC<IHeaderProps> = () => {
         </NavHeaderLinkList>
         <NavHeaderButton
           aria-label="Toggle theme"
-          icon={<SystemIcon.ThemeLightDark />}
+          icon={<MonoContrast />}
           onPress={() => toggleTheme()}
           className={atoms({ marginInlineEnd: 'sm' })}
         />
