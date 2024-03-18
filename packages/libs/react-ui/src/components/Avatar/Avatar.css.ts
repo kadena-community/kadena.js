@@ -14,9 +14,6 @@ export const circle = recipe({
       color: 'text.base.inverse.default',
       overflow: 'visible',
     }),
-    {
-      backgroundColor: token('color.background.base.inverse.default'),
-    },
   ],
   variants: {
     size: {

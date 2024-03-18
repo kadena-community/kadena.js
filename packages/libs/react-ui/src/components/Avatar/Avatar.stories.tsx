@@ -11,11 +11,12 @@ const meta: Meta<IAvatarProps> = {
   component: Avatar,
   parameters: {
     status: {
-      type: [''],
+      type: ['needsRevision'],
     },
     docs: {
       description: {
-        component: 'A component used for displaying user icon.',
+        component:
+          'A component used for displaying user icon with a specific background color and an optional status circle.',
       },
     },
   },
