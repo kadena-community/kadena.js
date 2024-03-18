@@ -23,7 +23,6 @@ import { notificationLinkStyle } from './styles.css';
 
 import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/right-info-sidebar';
 import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
-import type { SenderType } from '@/components/Partials/transactions/transfer/sign-form-sender';
 import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
 import useIsLedgerLibSupported from '@/hooks/use-is-ledger-lib-supported';
 
@@ -45,7 +44,6 @@ const TransferPage = () => {
   const [senderChainId, setSenderChainId] = useState<ChainId>(CHAINS[0]);
 
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
-  const [signingMode, setSigningMode] = useState<SenderType>('Ledger');
 
   const helpInfoSections = [
     {
@@ -65,7 +63,8 @@ const TransferPage = () => {
     },
   ];
 
-  const showNotSupported = !browserSupported && signingMode === 'Ledger';
+  const [isLedger, setIsLedger] = useState<boolean>(true);
+  const showNotSupported = !browserSupported && isLedger;
 
   const openSidebarMenu = () => setSidebarOpen(!sidebarOpen);
 
@@ -124,7 +123,7 @@ const TransferPage = () => {
           onSuccess={onSignSuccess}
           onSenderChainUpdate={setSenderChainId}
           onReceiverChainUpdate={setReceiverChainId}
-          setSigningMode={setSigningMode}
+          setIsLedger={setIsLedger}
         />
         <SubmitTransaction
           data={data}
