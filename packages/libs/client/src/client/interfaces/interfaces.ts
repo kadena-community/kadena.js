@@ -8,6 +8,9 @@ export interface INetworkOptions {
   chainId: ChainId;
 }
 
+/**
+ * @alpha
+ */
 export type Milliseconds = number & { _brand?: 'milliseconds' };
 
 /**

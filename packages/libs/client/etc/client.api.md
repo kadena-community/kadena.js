@@ -249,10 +249,14 @@ export interface IPartialPactCommand extends AllPartial<IPactCommand> {
 export interface IPollOptions {
     // (undocumented)
     confirmationDepth?: number;
+    // Warning: (ae-incompatible-release-tags) The symbol "interval" is marked as @public, but its signature references "Milliseconds" which is marked as @alpha
+    //
     // (undocumented)
     interval?: Milliseconds;
     // (undocumented)
     onPoll?: (id: string) => void;
+    // Warning: (ae-incompatible-release-tags) The symbol "timeout" is marked as @public, but its signature references "Milliseconds" which is marked as @alpha
+    //
     // (undocumented)
     timeout?: Milliseconds;
 }
@@ -439,7 +443,7 @@ export class Literal {
 // @public
 export const literal: (value: string) => Literal;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export type Milliseconds = number & {
     _brand?: 'milliseconds';
 };
@@ -487,6 +491,11 @@ export type WithCapability<TCode extends string & {
         funs: [TCode];
     };
 }>;
+
+// Warnings were encountered during analysis:
+//
+// src/client/client.ts:258:34 - (ae-incompatible-release-tags) The symbol "confirmationDepth" is marked as @public, but its signature references "Milliseconds" which is marked as @alpha
+// src/client/client.ts:272:18 - (ae-incompatible-release-tags) The symbol "confirmationDepth" is marked as @public, but its signature references "Milliseconds" which is marked as @alpha
 
 // (No @packageDocumentation comment for this package)
 
