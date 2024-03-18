@@ -32,6 +32,7 @@ import { useAccountChainDetailsQuery } from '@/hooks/use-account-chain-details-q
 import { createPrincipal } from '@/services/faucet/create-principal';
 import type { ChainId } from '@kadena/types';
 import { useDebounce } from 'react-use';
+import type { SenderType } from './sign-form-sender';
 
 type TabValue = 'new' | 'existing';
 
@@ -40,11 +41,13 @@ export const SignFormReceiver = ({
   onPubKeysUpdate,
   onPredicateUpdate,
   onChainUpdate,
+  signingMethod,
 }: {
   onDataUpdate: (data: AccountDetails | undefined) => void;
   onPubKeysUpdate: (pubKeys: string[]) => void;
   onPredicateUpdate: (pred: PredKey) => void;
   onChainUpdate: (chainId: ChainId) => void;
+  signingMethod: SenderType;
 }) => {
   const { t } = useTranslation('common');
 
