@@ -250,8 +250,7 @@ export const SignFormReceiver = ({
           <Stack flexDirection={'column'} gap={'md'} padding={'xs'}>
             {isLedger && (
               <Notification role="alert" intent="info" isDismissable>
-                The Ledger signing method only supports the creation of single
-                key accounts at the moment.
+                {t('ledger-account-creation-info')}
               </Notification>
             )}
             <AddPublicKeysSection
