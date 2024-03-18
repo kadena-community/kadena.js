@@ -1,6 +1,6 @@
 import type { IUnsignedCommand } from '@kadena/client';
 import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
-import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
+import { createPactCommandFromStringTemplate } from '@kadena/client-utils';
 import { PactNumber } from '@kadena/pactjs';
 import path from 'path';
 
