@@ -16,6 +16,7 @@ import type {
   INetworkOptions,
   IPollOptions,
   IPollRequestPromise,
+  Milliseconds,
 } from './interfaces/interfaces';
 import {
   groupByHost,
@@ -252,7 +253,7 @@ export interface ICreateClient {
    * Useful when you are working with a single network and chainId.
    * @param hostUrl - the URL to use in the client
    */
-  (hostUrl: string, defaults?: { confirmationDepth?: number }): IClient;
+  (hostUrl: string, defaults?: { confirmationDepth?: Milliseconds }): IClient;
 
   /**
    * Generates a client instance by passing a hostUrlGenerator function.
@@ -265,7 +266,7 @@ export interface ICreateClient {
       chainId: ChainId;
       networkId: string;
     }) => string,
-    defaults?: { confirmationDepth?: number },
+    defaults?: { confirmationDepth?: Milliseconds },
   ): IClient;
 }
 

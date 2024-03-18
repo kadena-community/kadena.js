@@ -144,13 +144,13 @@ export interface IContinuationPayloadObject {
 // @public (undocumented)
 export interface ICreateClient {
     (hostUrl: string, defaults?: {
-        confirmationDepth?: number;
+        confirmationDepth?: Milliseconds;
     }): IClient;
     (hostAddressGenerator?: (options: {
         chainId: ChainId;
         networkId: string;
     }) => string, defaults?: {
-        confirmationDepth?: number;
+        confirmationDepth?: Milliseconds;
     }): IClient;
 }
 
@@ -250,11 +250,11 @@ export interface IPollOptions {
     // (undocumented)
     confirmationDepth?: number;
     // (undocumented)
-    interval?: number;
+    interval?: Milliseconds;
     // (undocumented)
     onPoll?: (id: string) => void;
     // (undocumented)
-    timeout?: number;
+    timeout?: Milliseconds;
 }
 
 // @public (undocumented)
@@ -438,6 +438,11 @@ export class Literal {
 
 // @public
 export const literal: (value: string) => Literal;
+
+// @public (undocumented)
+export type Milliseconds = number & {
+    _brand?: 'milliseconds';
+};
 
 // @public
 export const Pact: IPact;

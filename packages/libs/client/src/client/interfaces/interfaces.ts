@@ -8,14 +8,16 @@ export interface INetworkOptions {
   chainId: ChainId;
 }
 
+export type Milliseconds = number & { _brand?: 'milliseconds' };
+
 /**
  * Options for any polling action on {@link IClient}
  * @public
  */
 export interface IPollOptions {
   onPoll?: (id: string) => void;
-  timeout?: number;
-  interval?: number;
+  timeout?: Milliseconds;
+  interval?: Milliseconds;
   confirmationDepth?: number;
 }
 

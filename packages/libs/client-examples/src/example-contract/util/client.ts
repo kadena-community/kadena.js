@@ -37,6 +37,7 @@ export const {
   pollStatus,
   getStatus,
   createSpv,
+  pollOne,
 } = createClient(apiHostGenerator);
 
 export const submitOne = async (

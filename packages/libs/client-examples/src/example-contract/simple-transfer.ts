@@ -1,16 +1,16 @@
 import type { PactReturnType } from '@kadena/client';
 import { isSignedTransaction, Pact, signWithChainweaver } from '@kadena/client';
 import type { IPactDecimal } from '@kadena/types';
-import { listen, submit } from './util/client';
+import { pollOne, submit } from './util/client';
 import { keyFromAccount } from './util/keyFromAccount';
 
 // npx ts-node simple-transfer.ts
 
 // change these two accounts with your accounts
 const senderAccount: string =
-  'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46';
-const receiverAccount: string =
   'k:2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11';
+const receiverAccount: string =
+  'k:6c63dda2d4b2b6d1d10537484d7279619283371b3ba62957a773676369944b17';
 
 const NETWORK_ID: string = 'testnet04';
 
@@ -38,7 +38,12 @@ async function transfer(
 
   if (isSignedTransaction(signedTr)) {
     const transactionDescriptor = await submit(signedTr);
-    const response = await listen(transactionDescriptor);
+    const response = await pollOne(transactionDescriptor, {
+      confirmationDepth: 2,
+      timeout: 5 * 60 * 1000, // 5 minutes
+      onPoll: (id) =>
+        console.log('time', new Date().toTimeString(), 'polling', id),
+    });
     if (response.result.status === 'failure') {
       throw response.result.error;
     } else {
