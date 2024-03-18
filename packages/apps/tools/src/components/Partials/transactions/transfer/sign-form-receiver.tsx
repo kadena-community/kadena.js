@@ -262,6 +262,7 @@ export const SignFormReceiver = ({
                 onPubKeysUpdate(keys);
               }}
               initialPublicKey={initialPublicKey}
+              maxKeysAmount={signingMethod === 'Ledger' ? 1 : undefined}
             />
             {pubKeys.length > 1 ? (
               <PredKeysSelect
