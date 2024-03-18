@@ -73,8 +73,8 @@ export const AddPublicKeysSection = ({
               icon={<SystemIcon.TrashCan />}
               variant="text"
               onPress={() => deletePublicKey(index)}
-              aria-label="Add public key"
-              title="Add Public Key"
+              aria-label="Delete public key"
+              title="Delete public Key"
               color="primary"
               type="button"
             />
