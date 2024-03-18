@@ -1,7 +1,6 @@
 import { DrawerIconButton } from '@/components/Common/DrawerToolbar/DrawerIcon';
-import type { SystemIcon } from '@kadena/react-ui';
 import classNames from 'classnames';
-import type { ForwardRefExoticComponent, ReactNode } from 'react';
+import type { ForwardRefExoticComponent, ReactElement, ReactNode } from 'react';
 import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import {
   buttonWrapperClass,
@@ -13,7 +12,7 @@ import {
 } from './styles.css';
 
 export interface IDrawerToolbarSection {
-  icon: keyof typeof SystemIcon;
+  icon: ReactElement;
   title: string;
   children: ReactNode;
 }

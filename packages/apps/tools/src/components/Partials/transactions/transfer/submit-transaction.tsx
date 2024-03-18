@@ -1,6 +1,6 @@
 import type { FormStatus } from '@/components/Global/FormStatusNotification';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
-import { Button, Stack, SystemIcon } from '@kadena/react-ui';
+import { Button, Stack } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useState } from 'react';
@@ -27,6 +27,10 @@ import {
   linkStyle,
 } from '@/pages/transactions/transfer/styles.css';
 import { getExplorerLink } from '@/utils/getExplorerLink';
+import {
+  MonoContentCopy,
+  MonoKeyboardArrowRight,
+} from '@kadena/react-icons/system';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import Trans from 'next-translate/Trans';
 import Link from 'next/link';
@@ -224,7 +228,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
             />
             <Button
               color="primary"
-              icon={<SystemIcon.ContentCopy />}
+              icon={<MonoContentCopy />}
               onPress={async () => {
                 await navigator.clipboard.writeText(requestKey);
               }}
@@ -268,7 +272,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
 
                 <Button
                   color="primary"
-                  icon={<SystemIcon.ContentCopy />}
+                  icon={<MonoContentCopy />}
                   onPress={async () => {
                     await navigator.clipboard.writeText(completeLinkToFinisher);
                   }}
@@ -293,7 +297,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         <Button
           isLoading={isLoading}
           // isDisabled={ledgerSignState.loading}
-          endIcon={<SystemIcon.TrailingIcon />}
+          endIcon={<MonoKeyboardArrowRight />}
           title={t('Transfer')}
           onPress={onSubmit}
         >

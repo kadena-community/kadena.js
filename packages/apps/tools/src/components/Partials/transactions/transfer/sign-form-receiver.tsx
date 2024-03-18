@@ -7,7 +7,6 @@ import {
   Heading,
   Notification,
   Stack,
-  SystemIcon,
   TabItem,
   Tabs,
   Text,
@@ -31,6 +30,7 @@ import type { FormData } from './sign-form';
 import { LoadingCard } from '@/components/Global/LoadingCard';
 import { useAccountChainDetailsQuery } from '@/hooks/use-account-chain-details-query';
 import { createPrincipal } from '@/services/faucet/create-principal';
+import { MonoContentCopy, MonoInfo } from '@kadena/react-icons/system';
 import type { ChainId } from '@kadena/types';
 import { useDebounce } from 'react-use';
 import type { SenderType } from './sign-form-sender';
@@ -116,7 +116,7 @@ export const SignFormReceiver = ({
             isDisabled={tab === 'new'}
             endAddon={
               <Button
-                icon={<SystemIcon.ContentCopy />}
+                icon={<MonoContentCopy />}
                 variant="text"
                 onPress={async () => {
                   await navigator.clipboard.writeText(field.value);
@@ -237,7 +237,7 @@ export const SignFormReceiver = ({
             {renderAccountFieldWithChain('existing')}
             {receiverAccountChains.isFetching ? (
               <Stack flexDirection={'row'} marginBlockStart={'md'}>
-                <SystemIcon.Information />
+                <MonoInfo />
                 <Text as={'span'} color={'emphasize'}>
                   {t('fetching-data')}
                 </Text>
@@ -278,7 +278,7 @@ export const SignFormReceiver = ({
 
             {receiverAccountChains.isFetching ? (
               <Stack flexDirection={'row'} marginBlockStart={'md'}>
-                <SystemIcon.Information />
+                <MonoInfo />
                 <Text as={'span'} color={'emphasize'}>
                   {t('fetching-data')}
                 </Text>

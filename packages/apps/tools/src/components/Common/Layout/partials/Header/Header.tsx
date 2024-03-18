@@ -7,6 +7,7 @@ import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
 import type { IMenuItem } from '@/types/Layout';
 import { getHref } from '@/utils/getHref';
 import type { INetworkData } from '@/utils/network';
+import { MonoBuildCircle, MonoPublic } from '@kadena/react-icons/system';
 import {
   KadenaLogo,
   NavHeader,
@@ -93,16 +94,24 @@ const Header: FC<IHeaderProps> = () => {
         />
         <NavHeaderButton
           aria-label={'Application Settings'}
-          icon={<SystemIcon.ProgressWrench />}
+          icon={
+            <MonoBuildCircle
+              className={atoms({
+                color: 'text.base.default',
+              })}
+            />
+          }
           onPress={() => handleDevOptionsClick()}
-          className={atoms({ marginInlineEnd: 'sm' })}
+          className={atoms({
+            marginInlineEnd: 'sm',
+          })}
         />
         <NavHeaderSelect
           id="network-select"
           aria-label={t('Select Network')}
           selectedKey={selectedNetwork as string}
           onSelectionChange={(value) => handleOnChange(value as Network)}
-          startIcon={<SystemIcon.Earth />}
+          startIcon={<MonoPublic />}
         >
           {[
             ...networksData.map((network: INetworkData) => (

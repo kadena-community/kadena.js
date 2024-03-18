@@ -8,6 +8,7 @@ import { useToolbar } from '@/context/layout-context';
 import type { ITransaction } from '@/services/accounts/get-transactions';
 import { getTransactions } from '@/services/accounts/get-transactions';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import { MonoKeyboardArrowRight } from '@kadena/react-icons/system';
 import {
   Box,
   Breadcrumbs,
@@ -20,7 +21,6 @@ import {
   GridItem,
   Heading,
   Row,
-  SystemIcon,
   Table,
   TableBody,
   TableHeader,
@@ -271,7 +271,7 @@ const CheckTransactions: FC = () => {
                 <Cell>
                   <Button
                     variant="text"
-                    icon={<SystemIcon.TrailingIcon />}
+                    icon={<MonoKeyboardArrowRight />}
                     onClick={() => handleOpenTransactionDetails(result)}
                   />
                 </Cell>

@@ -1,7 +1,8 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { CHAINS } from '@kadena/chainweb-node-client';
+import { MonoLink } from '@kadena/react-icons/system';
 import type { ISelectProps } from '@kadena/react-ui';
-import { Select, SelectItem, SystemIcon } from '@kadena/react-ui';
+import { Select, SelectItem } from '@kadena/react-ui';
 import type { FC } from 'react';
 import React, { useCallback } from 'react';
 
@@ -41,7 +42,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
       id={id ?? ELEMENT_ID}
       onSelectionChange={onSelectChange}
       selectedKey={selectedKey}
-      startIcon={<SystemIcon.Link />}
+      startIcon={<MonoLink />}
       aria-label="Select Chain ID"
     >
       {CHAINS.map((chainId, index) => (

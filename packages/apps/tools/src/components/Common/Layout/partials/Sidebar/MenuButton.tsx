@@ -1,4 +1,4 @@
-import { SystemIcon, Tooltip } from '@kadena/react-ui';
+import { Tooltip } from '@kadena/react-ui';
 import classNames from 'classnames';
 import Link from 'next/link';
 import type { ButtonHTMLAttributes, FC } from 'react';
@@ -14,7 +14,7 @@ export interface IMenuButtonProps
   title?: string;
   active?: boolean;
   href?: string;
-  icon: keyof typeof SystemIcon;
+  icon: React.ReactElement;
   rotateClass?: string;
 }
 
@@ -27,7 +27,6 @@ export const MenuButton: FC<IMenuButtonProps> = ({
   onClick,
   ...rest
 }) => {
-  const Icon = SystemIcon[icon];
   // @ts-ignore
   const rotationClass =
     rotateClass === undefined
@@ -46,9 +45,7 @@ export const MenuButton: FC<IMenuButtonProps> = ({
       aria-label={title}
       onClick={onClick}
     >
-      <span>
-        <Icon size={'sm'} />
-      </span>
+      <span>{icon}</span>
     </button>
   );
 

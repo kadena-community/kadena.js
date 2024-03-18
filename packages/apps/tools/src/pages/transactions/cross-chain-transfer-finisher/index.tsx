@@ -31,6 +31,10 @@ import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  MonoContentCopy,
+  MonoKeyboardArrowRight,
+} from '@kadena/react-icons/system';
+import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -41,7 +45,6 @@ import {
   Notification,
   NotificationHeading,
   Stack,
-  SystemIcon,
   TextField,
   TextareaField,
   TrackerCard,
@@ -603,7 +606,7 @@ const CrossChainTransferFinisher: FC = () => {
                       />
                       <Button
                         color="primary"
-                        icon={<SystemIcon.ContentCopy />}
+                        icon={<MonoContentCopy />}
                         onPress={async () => {
                           await handleCopySigData();
                         }}
@@ -622,7 +625,7 @@ const CrossChainTransferFinisher: FC = () => {
           <Button
             type="submit"
             isLoading={processingTx}
-            endIcon={<SystemIcon.TrailingIcon />}
+            endIcon={<MonoKeyboardArrowRight />}
           >
             {t('Finish Transaction')}
           </Button>
