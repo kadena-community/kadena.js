@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Heading,
+  Notification,
   Stack,
   SystemIcon,
   TabItem,
@@ -221,6 +222,8 @@ export const SignFormReceiver = ({
     }
   }, [receiverAccountChains.isSuccess, receiverAccountChains.data]);
 
+  const isLedger = signingMethod === 'Ledger';
+
   return (
     <LoadingCard fullWidth isLoading={receiverData.isFetching}>
       <Heading as={'h5'}>{t('Receiver')} </Heading>
@@ -245,6 +248,12 @@ export const SignFormReceiver = ({
 
         <TabItem key="new" title="New">
           <Stack flexDirection={'column'} gap={'md'} padding={'xs'}>
+            {isLedger && (
+              <Notification role="alert" intent="info" isDismissable>
+                The Ledger signing method only supports the creation of single
+                key accounts at the moment.
+              </Notification>
+            )}
             <AddPublicKeysSection
               publicKeys={pubKeys}
               deletePubKey={deletePublicKey}
