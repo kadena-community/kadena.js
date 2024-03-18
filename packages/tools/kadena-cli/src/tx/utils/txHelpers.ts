@@ -14,6 +14,7 @@ import {
 } from '@kadena/hd-wallet/chainweaver';
 import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
+import { z } from 'zod';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletKey } from '../../keys/utils/keysHelpers.js';
 import type { IKeyPair as IKeyPairLocal } from '../../keys/utils/storage.js';
@@ -422,3 +423,21 @@ export function extractCommandData(
 
   return { networkId, chainId };
 }
+
+export const REQUEST_KEY_MAX_LENGTH = 44;
+export const REQUEST_KEY_MIN_LENGTH = 43;
+
+export const requestKeyValidation = z
+  .string()
+  .trim()
+  .refine(
+    (val) => {
+      if (val.length === REQUEST_KEY_MAX_LENGTH) {
+        return val[val.length - 1] === '=';
+      }
+      return val.length === REQUEST_KEY_MIN_LENGTH;
+    },
+    {
+      message: 'Request key is invalid. Please provide a valid request key.',
+    },
+  );

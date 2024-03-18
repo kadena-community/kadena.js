@@ -11,7 +11,9 @@ export class AsideComponent {
   }
 
   public async navigateTo(ariaLabel: string): Promise<void> {
-    await this._component.getByRole('link', { name: ariaLabel }).click();
+    await this._component
+      .getByRole('link', { name: ariaLabel, exact: true })
+      .click();
     await expect(
       this._page
         .getByRole('navigation', { name: 'Breadcrumbs' })

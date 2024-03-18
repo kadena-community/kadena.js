@@ -28,11 +28,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { SenderDetails } from './sender-details';
 import type { FormData } from './sign-form';
 
-export const accountFromOptions = [
-  'Ledger',
-  'Coming soon…',
-  'Wallet Connect',
-] as const;
+export const accountFromOptions = ['Ledger', 'Coming soon…'] as const;
 export type SenderType = (typeof accountFromOptions)[number];
 
 export const SignFormSender = ({
@@ -40,13 +36,15 @@ export const SignFormSender = ({
   onKeyIdUpdate,
   onDerivationUpdate,
   onChainUpdate,
-  setSigningMode,
+  signingMethod,
+  onSigningMethodUpdate,
 }: {
   onDataUpdate: (data: AccountDetails) => void;
   onKeyIdUpdate: (keyId: number) => void;
   onDerivationUpdate: (derivationMode: DerivationMode) => void;
   onChainUpdate: (chainId: ChainId) => void;
-  setSigningMode: (mode: SenderType) => void;
+  signingMethod: SenderType;
+  onSigningMethodUpdate: (method: SenderType) => void;
 }) => {
   const { t } = useTranslation('common');
   const {
@@ -61,7 +59,6 @@ export const SignFormSender = ({
   const { selectedNetwork: network } = useWalletConnectClient();
 
   const [watchSender, watchChain] = watch(['sender', 'senderChainId']);
-
   const senderData = useAccountDetailsQuery({
     account: watchSender,
     networkId: network,
@@ -101,24 +98,18 @@ export const SignFormSender = ({
     ? `Cannot send more than ${senderData.data.balance.toFixed(4)} KDA.`
     : '';
 
-  const [senderType, setSenderType] = useState<SenderType>('Ledger');
-
-  useEffect(() => {
-    setSigningMode(senderType);
-  }, [senderType, setSigningMode]);
-
   return (
     <LoadingCard fullWidth isLoading={senderData.isFetching}>
-      <Heading as={'h4'}>{t('Sender')} </Heading>
+      <Heading as={'h5'}>{t('Sender')} </Heading>
 
       <Stack flexDirection={'row'} justifyContent={'space-between'}>
         <Select
           label="From"
           placeholder="Select an option"
-          selectedKey={senderType}
+          selectedKey={signingMethod}
           disabledKeys={['Coming soon…']}
           onSelectionChange={(x) => {
-            setSenderType(x as SenderType);
+            onSigningMethodUpdate(x as SenderType);
           }}
         >
           {accountFromOptions.map((item) => (
@@ -142,7 +133,7 @@ export const SignFormSender = ({
         gap="md"
       >
         <SenderDetails
-          type={senderType}
+          type={signingMethod}
           onKeyIdUpdate={onKeyIdUpdate}
           onDerivationUpdate={onDerivationUpdate}
         />
@@ -175,7 +166,7 @@ export const SignFormSender = ({
           {senderData.isFetching ? (
             <Text>{t('fetching-data')}</Text>
           ) : senderData.data ? (
-            <Text>{senderData.data?.balance} KDA</Text>
+            <Text>{senderData.data?.balance.toFixed(4)} KDA</Text>
           ) : (
             <Text>{t('No funds on selected chain.')}</Text>
           )}

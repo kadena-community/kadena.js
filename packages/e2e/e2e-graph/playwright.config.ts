@@ -9,6 +9,9 @@ const config: PlaywrightTestConfig = {
     reuseExistingServer: process.env.CI === undefined,
     stdout: 'pipe',
     stderr: 'pipe',
+    env: {
+      PORT: '4000',
+    },
   },
   projects: [
     {

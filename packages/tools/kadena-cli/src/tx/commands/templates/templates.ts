@@ -4,48 +4,48 @@ import { services } from '../../../services/index.js';
 
 const transferTemplate = `
 code: |-
-  (coin.transfer "{{{account-from}}}" "{{{account-to}}}" {{decimal-amount}})
+  (coin.transfer "{{{account:from}}}" "{{{account:to}}}" {{decimal:amount}})
 data:
 meta:
   chainId: "{{chain-id}}"
-  sender: "{{{account-from}}}"
+  sender: "{{{account:from}}}"
   gasLimit: 2300
   gasPrice: 0.000001
   ttl: 600
 signers:
-  - public: "{{pk-from}}"
+  - public: "{{key:from}}"
     caps:
       - name: "coin.TRANSFER"
-        args: ["{{{account-from}}}", "{{{account-to}}}", {{decimal-amount}}]
+        args: ["{{{account:from}}}", "{{{account:to}}}", {{decimal:amount}}]
       - name: "coin.GAS"
         args: []
-networkId: "{{network-id}}"
+networkId: "{{network:networkId}}"
 type: exec
 `;
 
 const safeTransferTemplate = `
 code: |-
-  (coin.transfer "{{{account-from}}}" "{{{account-to}}}" {{decimal-amount}}))
-  (coin.transfer "{{{account-to}}}" "{{{account-from}}}" 0.000000000001)
+  (coin.transfer "{{{account:from}}}" "{{{account:to}}}" {{decimal:amount}}))
+  (coin.transfer "{{{account:to}}}" "{{{account:from}}}" 0.000000000001)
 data:
 meta:
   chainId: "{{chain-id}}"
-  sender: {{{account-from}}}
+  sender: {{{account:from}}}
   gasLimit: 2000
   gasPrice: 0.00000001
   ttl: 7200
 signers:
-  - public: {{pk-from}}
+  - public: {{key:from}}
     caps:
       - name: "coin.TRANSFER"
-        args: [{{{account-from}}}, {{{account-to}}}, {{decimal-amount}}]
+        args: [{{{account:from}}}, {{{account:to}}}, {{decimal:amount}}]
       - name: "coin.GAS"
         args: []
-  - public: {{pk-to}}
+  - public: {{key:to}}
     caps:
       - name: "coin.TRANSFER"
-        args: [{{{account-to}}}, {{{account-from}}}, 0.000000000001]
-networkId: "{{network-id}}"
+        args: [{{{account:to}}}, {{{account:from}}}, 0.000000000001]
+networkId: "{{network:networkId}}"
 type: exec
 `;
 
@@ -55,15 +55,18 @@ export const defaultTemplates = {
   'safe-transfer': safeTransferTemplate,
 } as Record<string, string>;
 
-export const writeTemplatesToDisk = async (): Promise<void> => {
+export const writeTemplatesToDisk = async (): Promise<string[]> => {
   await services.filesystem.ensureDirectoryExists(TX_TEMPLATE_FOLDER);
+  const templatesAdded = [];
   for (const [name, template] of Object.entries(defaultTemplates)) {
     const filePath = path.join(TX_TEMPLATE_FOLDER, `${name}.ktpl`);
     const exists = await services.filesystem.fileExists(filePath);
     if (exists === false) {
       await services.filesystem.writeFile(filePath, template);
+      templatesAdded.push(`${name}.ktpl`);
     }
   }
+  return templatesAdded;
 };
 
 export const getTemplate = async (filename: string): Promise<string> => {

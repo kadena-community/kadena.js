@@ -34,7 +34,7 @@ builder.queryField('transaction', (t) =>
 
 builder.queryField('transactions', (t) =>
   t.prismaConnection({
-    description: 'Retrieve transactions.',
+    description: 'Retrieve transactions. Default page size is 20.',
     edgesNullable: false,
     args: {
       accountName: t.arg.string({ required: false }),

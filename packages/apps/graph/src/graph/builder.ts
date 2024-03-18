@@ -85,9 +85,6 @@ export const builder = new SchemaBuilder<
       ContinuationPayload: ContinuationPayload;
       TransactionResult: TransactionResult;
     };
-    Connection: {
-      totalCount: number;
-    };
   }
 >({
   plugins: [

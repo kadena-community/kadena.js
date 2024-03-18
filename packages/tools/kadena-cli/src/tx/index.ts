@@ -2,6 +2,7 @@ import { createTransactionCommandNew } from './commands/txCreateTransaction.js';
 import { createTxListCommand } from './commands/txList.js';
 import { createSendTransactionCommand } from './commands/txSend.js';
 import { createSignCommand } from './commands/txSign.js';
+import { createTxStatusCommand } from './commands/txStatus.js';
 import { createTestSignedTransactionCommand } from './commands/txTestSignedTransaction.js';
 
 import type { Command } from 'commander';
@@ -13,9 +14,10 @@ export function txCommandFactory(program: Command, version: string): void {
     .command(SUBCOMMAND_ROOT)
     .description(`Tool for creating and managing transactions`);
 
-  createSendTransactionCommand(txProgram, version);
+  createTransactionCommandNew(txProgram, version);
   createSignCommand(txProgram, version);
   createTestSignedTransactionCommand(txProgram, version);
-  createTransactionCommandNew(txProgram, version);
+  createSendTransactionCommand(txProgram, version);
+  createTxStatusCommand(txProgram, version);
   createTxListCommand(txProgram, version);
 }

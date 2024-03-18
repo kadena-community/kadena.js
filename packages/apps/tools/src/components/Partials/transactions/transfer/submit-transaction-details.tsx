@@ -5,6 +5,7 @@ import type {
   IPactCommand,
 } from '@kadena/client';
 import {
+  Heading,
   Stack,
   SystemIcon,
   Text,
@@ -30,6 +31,7 @@ export const SubmitTransactionDetails = ({
 
   return (
     <LoadingCard fullWidth={true}>
+      <Heading as={'h5'}>{t('Transaction')} </Heading>
       <Stack flexDirection={'column'} gap={'sm'}>
         <ToggleButton
           isSelected={txDetailsExpanded}

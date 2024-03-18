@@ -25,7 +25,7 @@ export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
               },
             },
             {
-              title: 'Checking if all the migrations have been run.',
+              title: 'Checking if all the migrations are executed.',
               task: async () => {
                 const migrationsDir = path.join(
                   process.cwd(),
@@ -45,7 +45,7 @@ export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
 
                 if (unexecutedMigrations.length > 0) {
                   throw new Error(
-                    `Unexecuted migrations detected: ${unexecutedMigrations.join(
+                    `Unexecuted migrations detected. If you started graph at the same time as devnet, try restarting graph: ${unexecutedMigrations.join(
                       ', ',
                     )}`,
                   );

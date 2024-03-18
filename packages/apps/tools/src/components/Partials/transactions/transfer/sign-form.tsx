@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Button, Notification, Stack, SystemIcon } from '@kadena/react-ui';
 
@@ -45,12 +45,10 @@ export const SignForm = ({
   onSuccess,
   onSenderChainUpdate,
   onReceiverChainUpdate,
-  setSigningMode,
 }: {
   onSuccess: (pactCommandObject: PactCommandObject) => void;
   onSenderChainUpdate: (chainId: ChainId) => void;
   onReceiverChainUpdate: (chainId: ChainId) => void;
-  setSigningMode: (mode: SenderType) => void;
 }) => {
   const { t } = useTranslation('common');
 
@@ -58,7 +56,7 @@ export const SignForm = ({
 
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { senderChainId: CHAINS[0], receiverChainId: CHAINS[0] },
+    defaultValues: { senderChainId: CHAINS[0], receiverChainId: undefined },
   });
 
   const { selectedNetwork: network } = useWalletConnectClient();
@@ -72,7 +70,7 @@ export const SignForm = ({
   };
 
   const receiverDataRef = useRef<AccountDetails>();
-  const onReceiverDataUpdate = (data: AccountDetails) => {
+  const onReceiverDataUpdate = (data: AccountDetails | undefined) => {
     receiverDataRef.current = data;
   };
 
@@ -95,6 +93,8 @@ export const SignForm = ({
   const onDerivationUpdate = (mode: DerivationMode) => {
     derivationMode.current = mode;
   };
+
+  const [signingMethod, setSigningMethod] = useState<SenderType>('Ledger');
 
   const handleSignTransaction = async (data: FormData) => {
     let transferInput: TransferInput;
@@ -160,7 +160,8 @@ export const SignForm = ({
             onKeyIdUpdate={onKeyIdUpdate}
             onDerivationUpdate={onDerivationUpdate}
             onChainUpdate={onSenderChainUpdate}
-            setSigningMode={setSigningMode}
+            signingMethod={signingMethod}
+            onSigningMethodUpdate={setSigningMethod}
           />
 
           {/* RECEIVER FLOW */}
@@ -169,6 +170,7 @@ export const SignForm = ({
             onPubKeysUpdate={onPubKeysUpdate}
             onPredicateUpdate={onPredicateUpdate}
             onChainUpdate={onReceiverChainUpdate}
+            signingMethod={signingMethod}
           />
 
           {ledgerSignState.error && (

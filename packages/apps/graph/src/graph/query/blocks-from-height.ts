@@ -1,19 +1,26 @@
 import { prismaClient } from '@db/prisma-client';
-import { COMPLEXITY } from '@services/complexity';
+import { getDefaultConnectionComplexity } from '@services/complexity';
 import { chainIds as defaultChainIds } from '@utils/chains';
 import { normalizeError } from '@utils/errors';
-import { PRISMA, builder } from '../builder';
+import { builder } from '../builder';
 import Block from '../objects/block';
 
 builder.queryField('blocksFromHeight', (t) =>
-  t.prismaField({
-    description: 'Retrieve blocks by chain and minimal height.',
+  t.prismaConnection({
+    description:
+      'Retrieve blocks by chain and minimal height. Default page size is 20.',
     args: {
       startHeight: t.arg.int({ required: true }),
       chainIds: t.arg.stringList({ required: false }),
     },
-    type: [Block],
-    complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+    cursor: 'hash',
+    type: Block,
+    complexity: (args) => ({
+      field: getDefaultConnectionComplexity({
+        first: args.first,
+        last: args.last,
+      }),
+    }),
     async resolve(
       query,
       __parent,
@@ -32,10 +39,17 @@ builder.queryField('blocksFromHeight', (t) =>
               },
             }),
           },
-          orderBy: {
-            height: 'asc',
-          },
-          take: PRISMA.DEFAULT_SIZE,
+          orderBy: [
+            {
+              height: 'asc',
+            },
+            {
+              chainId: 'asc',
+            },
+            {
+              id: 'asc',
+            },
+          ],
         });
       } catch (error) {
         throw normalizeError(error);

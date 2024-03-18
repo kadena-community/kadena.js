@@ -29,11 +29,12 @@ async function* iteratorFn(
 ): AsyncGenerator<Block[], void, unknown> {
   const startingTimestamp = new Date().toISOString();
   const blockResult = await getLastBlocks(chainIds, startingTimestamp);
+
   let lastBlock;
 
   if (!nullishOrEmpty(blockResult)) {
     lastBlock = blockResult[0];
-    yield [lastBlock];
+    yield [];
   }
 
   while (!context.req.socket.destroyed) {

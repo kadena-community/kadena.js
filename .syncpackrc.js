@@ -38,6 +38,12 @@ const config = {
       dependencyTypes: ['prod'],
       isBanned: true,
     },
+    {
+      label:
+        'Allow `@kadena/tools` to downgrade `@vanilla-extract/next-plugin` to fix initial render issues (see https://github.com/vanilla-extract-css/vanilla-extract/issues/1152#issuecomment-1784531987)',
+      packages: ['@kadena/tools'],
+      dependencies: ['@vanilla-extract/next-plugin'],
+    },
   ],
 };
 

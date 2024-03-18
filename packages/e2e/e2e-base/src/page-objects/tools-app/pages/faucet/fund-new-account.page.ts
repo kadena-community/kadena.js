@@ -38,7 +38,7 @@ export class FundNewAccountPage {
       );
       await this._publicKeysCard.clickButton('Add Public Key');
     }
-    await this._accountCard._chain.setValueForListBox(
+    await this._accountCard.setValueForListBox(
       'Select Chain ID',
       'Select Chain ID Chain ID',
       account.chains[0],

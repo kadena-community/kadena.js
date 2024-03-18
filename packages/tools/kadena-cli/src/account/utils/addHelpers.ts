@@ -7,6 +7,7 @@ import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { services } from '../../services/index.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
+import { relativeToCwd } from '../../utils/path.util.js';
 import type { IAccountDetailsResult, IAddAccountConfig } from '../types.js';
 
 export const isEmpty = (value?: string | null): boolean =>
@@ -39,10 +40,15 @@ export const getAccountFilePath = (fileName: string): string => {
   return path.join(ACCOUNT_DIR, `${sanitizedAlias}.yaml`);
 };
 
-export const displayAddAccountSuccess = (accountAlias: string): void => {
+export const displayAddAccountSuccess = (
+  accountAlias: string,
+  path: string,
+): void => {
   log.info(
     log.color.green(
-      `\nThe account configuration "${accountAlias}" has been saved.\n`,
+      `\nThe account configuration "${accountAlias}" has been saved in ${relativeToCwd(
+        path,
+      )}\n`,
     ),
   );
 };

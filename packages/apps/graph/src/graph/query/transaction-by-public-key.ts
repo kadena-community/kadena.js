@@ -18,7 +18,7 @@ builder.queryField('transactionsByPublicKey', (t) =>
         getDefaultConnectionComplexity({
           first: args.first,
           last: args.last,
-        }) * 2, // Times two because of the exra call to signers.
+        }) * 2, // Times two because of the extra call to signers.
     }),
     async totalCount(__parent, args) {
       const requestKeys = await prismaClient.signer.findMany({
