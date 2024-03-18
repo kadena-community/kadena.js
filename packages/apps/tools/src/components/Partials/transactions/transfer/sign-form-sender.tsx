@@ -166,7 +166,7 @@ export const SignFormSender = ({
           {senderData.isFetching ? (
             <Text>{t('fetching-data')}</Text>
           ) : senderData.data ? (
-            <Text>{senderData.data?.balance} KDA</Text>
+            <Text>{senderData.data?.balance.toFixed(4)} KDA</Text>
           ) : (
             <Text>{t('No funds on selected chain.')}</Text>
           )}
