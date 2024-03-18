@@ -49,7 +49,7 @@ export const listItemClass = style([
     paddingInline: 'sm',
     marginInline: 'xs',
     color: 'text.base.default',
-    // backgroundColor: 'layer10.default',
+    backgroundColor: 'layer10.default',
     cursor: 'pointer',
     borderRadius: 'sm',
   }),

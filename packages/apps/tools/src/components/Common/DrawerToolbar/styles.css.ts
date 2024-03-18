@@ -61,7 +61,7 @@ export const expandedDrawerTitleClass = style([
     justifyContent: 'space-between',
     alignItems: 'center',
     fontWeight: 'secondaryFont.bold',
-    // backgroundColor: 'layer-1.default',
+    backgroundColor: 'layer10.default',
   }),
   {
     borderBottom: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
@@ -88,7 +88,7 @@ export const expandedDrawerContentStyle = style([
     position: 'fixed',
     right: 0,
     bottom: 0,
-    // backgroundColor: 'layer-1.default',
+    backgroundColor: 'layer10.default',
     fontSize: 'sm',
   }),
   {

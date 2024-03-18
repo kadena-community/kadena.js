@@ -5,13 +5,13 @@ import { tokens } from '../../styles/index';
 export const base = style([
   atoms({
     position: 'absolute',
-    backgroundColor: 'layer10.default',
     fontSize: 'sm',
     paddingBlock: 'sm',
     paddingInline: 'md',
     borderRadius: 'md',
-    color: 'text.base.default',
+    color: 'text.base.inverse.default',
     pointerEvents: 'none',
+    backgroundColor: 'base.inverse.default',
     maxWidth: 'content.maxWidth',
   }),
   {
