@@ -70,6 +70,7 @@ export const AddPublicKeysSection = ({
           key={`public-key-${index}`}
           id={`public-key-${index}`}
           value={key}
+          isReadOnly
           endAddon={
             <Button
               icon={<SystemIcon.TrashCan />}
