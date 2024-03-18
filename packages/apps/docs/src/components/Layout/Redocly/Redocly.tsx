@@ -2,6 +2,7 @@ import { BottomPageSection } from '@/components/BottomPageSection/BottomPageSect
 import { Breadcrumbs } from '@/components/Breadcrumbs/Breadcrumbs';
 import { LastModifiedDate } from '@/components/LastModifiedDate/LastModifiedDate';
 import type { IPageProps } from '@kadena/docs-tools';
+import { tokens } from '@kadena/react-ui/styles';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
