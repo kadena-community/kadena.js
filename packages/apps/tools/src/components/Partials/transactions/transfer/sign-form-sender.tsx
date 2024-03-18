@@ -40,11 +40,13 @@ export const SignFormSender = ({
   onKeyIdUpdate,
   onDerivationUpdate,
   onChainUpdate,
+  setSigningMode,
 }: {
   onDataUpdate: (data: AccountDetails) => void;
   onKeyIdUpdate: (keyId: number) => void;
   onDerivationUpdate: (derivationMode: DerivationMode) => void;
   onChainUpdate: (chainId: ChainId) => void;
+  setSigningMode: (mode: SenderType) => void;
 }) => {
   const { t } = useTranslation('common');
   const {
@@ -100,6 +102,10 @@ export const SignFormSender = ({
     : '';
 
   const [senderType, setSenderType] = useState<SenderType>('Ledger');
+
+  useEffect(() => {
+    setSigningMode(senderType);
+  }, [senderType, setSigningMode]);
 
   return (
     <LoadingCard fullWidth isLoading={senderData.isFetching}>

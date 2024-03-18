@@ -23,6 +23,7 @@ import { notificationLinkStyle } from './styles.css';
 
 import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/right-info-sidebar';
 import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
+import type { SenderType } from '@/components/Partials/transactions/transfer/sign-form-sender';
 import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
 import useIsLedgerLibSupported from '@/hooks/use-is-ledger-lib-supported';
 
@@ -44,6 +45,7 @@ const TransferPage = () => {
   const [senderChainId, setSenderChainId] = useState<ChainId>(CHAINS[0]);
 
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const [signingMode, setSigningMode] = useState<SenderType>('Ledger');
 
   const helpInfoSections = [
     {
@@ -62,6 +64,8 @@ const TransferPage = () => {
         'When signing on a Ledger device, you should always check the details of the transaction carefully. If everything is in order, click “Confirm” to sign the transaction. After this, the Transfer Tool should update its interface to show the transaction',
     },
   ];
+
+  const showNotSupported = !browserSupported && signingMode === 'Ledger';
 
   const openSidebarMenu = () => setSidebarOpen(!sidebarOpen);
 
@@ -85,7 +89,7 @@ const TransferPage = () => {
         paddingBlockEnd={'xxxl'}
         gap={'lg'}
       >
-        {!browserSupported ? (
+        {showNotSupported ? (
           <Notification intent={'negative'} role={'alert'} isDismissable>
             <Trans
               i18nKey="common:ledger-error-notification"
@@ -120,6 +124,7 @@ const TransferPage = () => {
           onSuccess={onSignSuccess}
           onSenderChainUpdate={setSenderChainId}
           onReceiverChainUpdate={setReceiverChainId}
+          setSigningMode={setSigningMode}
         />
         <SubmitTransaction
           data={data}

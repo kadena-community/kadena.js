@@ -28,6 +28,7 @@ import type { ChainId } from '@kadena/types';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { z } from 'zod';
 import { SignFormReceiver } from './sign-form-receiver';
+import type { SenderType } from './sign-form-sender';
 import { SignFormSender } from './sign-form-sender';
 
 const schema = z.object({
@@ -44,10 +45,12 @@ export const SignForm = ({
   onSuccess,
   onSenderChainUpdate,
   onReceiverChainUpdate,
+  setSigningMode,
 }: {
   onSuccess: (pactCommandObject: PactCommandObject) => void;
   onSenderChainUpdate: (chainId: ChainId) => void;
   onReceiverChainUpdate: (chainId: ChainId) => void;
+  setSigningMode: (mode: SenderType) => void;
 }) => {
   const { t } = useTranslation('common');
 
@@ -157,6 +160,7 @@ export const SignForm = ({
             onKeyIdUpdate={onKeyIdUpdate}
             onDerivationUpdate={onDerivationUpdate}
             onChainUpdate={onSenderChainUpdate}
+            setSigningMode={setSigningMode}
           />
 
           {/* RECEIVER FLOW */}
