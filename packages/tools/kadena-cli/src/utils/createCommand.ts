@@ -3,7 +3,7 @@ import { CLINAME } from '../constants/config.js';
 import { CommandError, printCommandError } from './command.util.js';
 import type { OptionType, createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
-import { handlePromptError, notEmpty } from './helpers.js';
+import { handlePromptError, isNotEmptyString, notEmpty } from './helpers.js';
 import { log } from './logger.js';
 import { readStdin } from './stdin.js';
 import type { FlattenObject, Fn, Prettify } from './typeUtilities.js';
@@ -34,7 +34,9 @@ export async function executeOption<Option extends OptionType>(
     prompted: boolean;
   }>
 > {
-  let value = args[option.key];
+  let value = isNotEmptyString(args[option.key])
+    ? args[option.key]
+    : option.defaultValue;
   let prompted = false;
 
   if (value === undefined && option.isInQuestions) {
@@ -276,7 +278,10 @@ export function handleQuietOption(
 ): void {
   if (args.quiet === true) {
     const missing = options.filter(
-      (option) => option.isOptional === false && args[option.key] === undefined,
+      (option) =>
+        option.isOptional === false &&
+        args[option.key] === undefined &&
+        option.defaultValue === undefined,
     );
     if (missing.length) {
       log.error(

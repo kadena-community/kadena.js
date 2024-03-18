@@ -63,3 +63,6 @@ export const networkFiles: INetworkFiles = Object.keys(networkDefaults).reduce(
   },
   {} as INetworkFiles,
 );
+
+export const NETWORK_CONFIG_NOT_FOUND_MESSAGE =
+  'No network configuration found for a network name';

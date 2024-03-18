@@ -11,7 +11,6 @@ import {
 import { services } from '../services/index.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
-  getDefaultNetworkName,
   getExistingNetworks,
   isAlphabetic,
   isNotEmptyString,
@@ -259,7 +258,7 @@ export const networkDeletePrompt: IPrompt<string> = async (
   }
 
   let message = `Are you sure you want to delete the configuration for network "${defaultValue}"?`;
-  if (previousQuestions.isDefaultNetwork) {
+  if (isNotEmptyString(previousQuestions.isDefaultNetwork)) {
     message += `\nThis is the "default network". If you delete it, then the default network settings will also be deleted.`;
   }
 

@@ -22,7 +22,10 @@ export const deleteNetworksCommand: (
   ],
   async (option) => {
     const defaultNetworkName = await getDefaultNetworkName();
-    const networkData = await option.network();
+    const networkData = await option.network({
+      default: defaultNetworkName,
+    });
+
     const isDefaultNetwork = networkData.network === defaultNetworkName;
     const deleteNetwork = await option.networkDelete({
       isDefaultNetwork,

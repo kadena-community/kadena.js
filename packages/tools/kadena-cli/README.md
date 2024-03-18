@@ -166,6 +166,7 @@ Tool to add and manage networks
 | list           | List all available networks |                   |
 | update         | Manage networks             |                   |
 | add            | Add new network             |                   |
+| set-default    | Set default network         |                   |
 | delete         | Delete existing network     |                   |
 
 ---
@@ -184,13 +185,13 @@ kadena network update [arguments]
 example:
 
 ```
-kadena networks update --network-name="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/
+kadena network update --network-name="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/
 ```
 
 ---
 
 ```
-kadena networks add [arguments]
+kadena network add [arguments]
 ```
 
 | **Arguments & Options** | **Description**                      | **Required** |
@@ -208,9 +209,23 @@ kadena network add --network-name="mainnet" --network-id="mainnet01" --network-h
 ```
 
 ---
+```
+kadena network set-default [arguments]
+```
+
+| **Arguments & Options**               | **Description**                       | **Required** |
+| ------------------------------------- | ------------------------------------- | ------------ |
+| --network                             | Select name of network to set default |              |
+| --network-default-confirmation        | Confirmation for default network      |              |
+
+example:
+```
+kadena network set-default --network="testnet" --network-default-confirmation
+```
+---
 
 ```
-kadena networks delete [arguments]
+kadena network delete [arguments]
 ```
 
 | **Arguments & Options** | **Description**                  | **Required** |

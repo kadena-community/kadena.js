@@ -336,6 +336,9 @@ export const maskStringPreservingStartAndEnd = (
 export const isNotEmptyString = (value: unknown): value is string =>
   value !== null && value !== undefined && value !== '';
 
+export const isNotEmptyObject = <T extends object>(obj?: T): obj is T =>
+  obj !== undefined && obj !== null && Object.keys(obj).length > 0;
+
 /**
  * Prints zod error issues in format
  * ```code
@@ -467,4 +470,13 @@ export const getDefaultNetworkName = async (): Promise<string | undefined> => {
   if (parse.success) {
     return parse.data.name;
   }
+};
+
+export const getNetworkName = async (
+  network: string,
+): Promise<string | undefined> => {
+  const networkName = isNotEmptyString(network?.trim())
+    ? network
+    : await getDefaultNetworkName();
+  return networkName;
 };
