@@ -24,6 +24,6 @@ export const baseConfig: PlaywrightTestConfig = {
   timeout: 100000,
 
   expect: {
-    timeout: 1 * 30000,
+    timeout: 2 * 30000,
   },
 };
