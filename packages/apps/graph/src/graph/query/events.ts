@@ -98,11 +98,11 @@ builder.queryField('events', (t) =>
               }),
             }),
           },
-          orderBy: {
-            height: 'desc',
-            requestKey: 'desc',
-            orderIndex: 'desc',
-          },
+          orderBy: [
+            { height: 'desc' },
+            { requestKey: 'desc' },
+            { orderIndex: 'desc' },
+          ],
         });
       } catch (error) {
         throw normalizeError(error);
