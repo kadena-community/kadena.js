@@ -1,6 +1,6 @@
 {
   "name": "@kadena/kadena-cli",
-  "version": "0.0.1-alpha.5",
+  "version": "0.1.2",
   "private": true,
   "description": "Kadena CLI tool to interact with the Kadena blockchain (manage keys, transactions, etc.)",
   "keywords": [
@@ -63,12 +63,10 @@
     "@kadena/pactjs-generator": "workspace:*",
     "@scure/bip39": "^1.2.1",
     "chalk": "^5.2.0",
-    "clear": "^0.1.0",
     "commander": "^11.0.0",
     "js-yaml": "~4.1.0",
     "memfs": "~3.5.1",
     "ora": "^7.0.1",
-    "rimraf": "~5.0.1",
     "sanitize-filename": "^1.6.3",
     "seedrandom": "~3.0.5",
     "ttys": "^0.0.3",

@@ -38,7 +38,7 @@ builder.queryField('event', (t) =>
 
 builder.queryField('events', (t) =>
   t.prismaConnection({
-    description: 'Retrieve events.',
+    description: 'Retrieve events. Default page size is 20.',
     edgesNullable: false,
     args: {
       qualifiedEventName: t.arg.string({ required: true }),
@@ -99,7 +99,9 @@ builder.queryField('events', (t) =>
             }),
           },
           orderBy: {
-            id: 'desc',
+            height: 'desc',
+            requestKey: 'desc',
+            orderIndex: 'desc',
           },
         });
       } catch (error) {

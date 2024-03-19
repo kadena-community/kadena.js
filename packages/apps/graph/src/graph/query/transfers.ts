@@ -40,7 +40,7 @@ builder.queryField('transfer', (t) =>
 
 builder.queryField('transfers', (t) =>
   t.prismaConnection({
-    description: 'Retrieve transfers.',
+    description: 'Retrieve transfers. Default page size is 20.',
     edgesNullable: false,
     args: {
       accountName: t.arg.string({ required: false }),

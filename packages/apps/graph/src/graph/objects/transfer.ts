@@ -4,7 +4,7 @@ import { Prisma } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
-import { PRISMA, builder } from '../builder';
+import { builder } from '../builder';
 
 export default builder.prismaNode(Prisma.ModelName.Transfer, {
   description: 'A transfer of funds from a fungible between two accounts.',
@@ -138,16 +138,11 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
       type: Prisma.ModelName.Block,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
-        blockHash: true,
+        block: true,
       },
-      async resolve(query, parent) {
+      async resolve(__query, parent) {
         try {
-          return (await prismaClient.block.findUnique({
-            ...query,
-            where: {
-              hash: parent.blockHash,
-            },
-          })) as Block;
+          return parent.block;
         } catch (error) {
           throw normalizeError(error);
         }
@@ -158,23 +153,13 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
       description: 'The transaction that initiated this transfer.',
       type: Prisma.ModelName.Transaction,
       nullable: true,
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
-        blockHash: true,
-        requestKey: true,
+        transaction: true,
       },
-      async resolve(query, parent) {
+      async resolve(__query, parent) {
         try {
-          return await prismaClient.transaction.findUnique({
-            ...query,
-            where: {
-              blockHash_requestKey: {
-                blockHash: parent.blockHash,
-                requestKey: parent.requestKey,
-              },
-            },
-          });
+          return parent.transaction;
         } catch (error) {
           throw normalizeError(error);
         }

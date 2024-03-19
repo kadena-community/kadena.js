@@ -14,11 +14,11 @@ import {
 } from '@kadena/hd-wallet/chainweaver';
 import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
+import { z } from 'zod';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { getWalletKey } from '../../keys/utils/keysHelpers.js';
 import type { IKeyPair as IKeyPairLocal } from '../../keys/utils/storage.js';
-import { tx } from '../../prompts/index.js';
-import { ICommandSchema, IUnsignedCommandSchema } from '../../prompts/tx.js';
+import { ICommandSchema } from '../../prompts/tx.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { notEmpty } from '../../utils/helpers.js';
@@ -59,18 +59,9 @@ export function getSignersStatus(
   }));
 }
 
-/**
- * Retrieves all transaction file names from the transaction directory based on the signature status.
- * @param {boolean} signed - Whether to retrieve signed or unsigned transactions.
- * @param {boolean} all - Whether to retrieve all transactions (signed and unsigned).
- * @returns {Promise<string[]>} A promise that resolves to an array of transaction file names.
- * @throws Throws an error if reading the transaction directory fails.
- */
-export async function getTransactions(
-  signed: boolean,
+export async function getAllTransactions(
   directory: string,
-  all: boolean = false,
-): Promise<string[]> {
+): Promise<{ fileName: string; signed: boolean }[]> {
   try {
     const files = await services.filesystem.readDir(directory);
     // Since naming convention is not enforced, we need to check the content of the files
@@ -81,24 +72,50 @@ export async function getTransactions(
           const filePath = join(directory, fileName);
           const content = await services.filesystem.readFile(filePath);
           if (content === null) return null;
-          // signed=false can still return already signed transactions
-          const schema = signed ? ICommandSchema : IUnsignedCommandSchema;
-          const JSONParsedContent = JSON.parse(content) as
-            | ICommand
-            | IUnsignedCommand;
-          const parsed = schema.safeParse(JSONParsedContent);
-          if (parsed.success && !signed && !all) {
-            const isSigned = JSONParsedContent.sigs.every((sig) => !!sig);
-            if (isSigned) return null;
+          const JSONParsedContent = JSON.parse(content);
+          const parsed = ICommandSchema.safeParse(JSONParsedContent);
+          if (parsed.success) {
+            const isSignedTx = isSignedTransaction(JSONParsedContent);
+            return {
+              fileName,
+              signed: isSignedTx,
+            };
           }
 
-          if (parsed.success) return fileName;
           return null;
         }),
       )
     ).filter(notEmpty);
 
     return transactionFiles;
+  } catch (error) {
+    log.error(`Error reading transaction directory: ${error}`);
+    throw error;
+  }
+}
+
+export async function getAllTransactionFileNames(
+  directory: string,
+): Promise<string[]> {
+  const transactionFiles = await getAllTransactions(directory);
+  return transactionFiles.map((tx) => tx.fileName);
+}
+
+/**
+ * Retrieves all transaction file names from the transaction directory based on the signature status.
+ * @param {boolean} signed - Whether to retrieve signed or unsigned transactions.
+ * @returns {Promise<string[]>} A promise that resolves to an array of transaction file names.
+ * @throws Throws an error if reading the transaction directory fails.
+ */
+export async function getTransactions(
+  signed: boolean,
+  directory: string,
+): Promise<string[]> {
+  try {
+    const transactionFiles = await getAllTransactions(directory);
+    return transactionFiles
+      .filter((tx) => tx.signed === signed)
+      .map((tx) => tx.fileName);
   } catch (error) {
     log.error(`Error reading transaction directory: ${error}`);
     throw error;
@@ -288,11 +305,15 @@ export async function getTransactionFromFile(
       throw Error(`Failed to read file at path: ${transactionFilePath}`);
     }
     const transaction = JSON.parse(fileContent);
+    const parsedTransaction = ICommandSchema.parse(transaction);
     if (signed) {
-      return tx.ICommandSchema.parse(transaction);
+      const isSignedTx = isSignedTransaction(transaction);
+      if (!isSignedTx) {
+        throw Error(`${transactionFile} is not a signed transaction`);
+      }
+      return parsedTransaction as ICommand;
     }
-    const result = tx.IUnsignedCommandSchema.parse(transaction);
-    return result as IUnsignedCommand; // typecast because `IUnsignedCommand` uses undefined instead of null
+    return parsedTransaction as IUnsignedCommand; // typecast because `IUnsignedCommand` uses undefined instead of null;
   } catch (error) {
     log.error(
       `Error processing ${
@@ -402,3 +423,21 @@ export function extractCommandData(
 
   return { networkId, chainId };
 }
+
+export const REQUEST_KEY_MAX_LENGTH = 44;
+export const REQUEST_KEY_MIN_LENGTH = 43;
+
+export const requestKeyValidation = z
+  .string()
+  .trim()
+  .refine(
+    (val) => {
+      if (val.length === REQUEST_KEY_MAX_LENGTH) {
+        return val[val.length - 1] === '=';
+      }
+      return val.length === REQUEST_KEY_MIN_LENGTH;
+    },
+    {
+      message: 'Request key is invalid. Please provide a valid request key.',
+    },
+  );

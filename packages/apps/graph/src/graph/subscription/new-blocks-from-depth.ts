@@ -2,7 +2,7 @@ import { prismaClient } from '@db/prisma-client';
 import type { Block } from '@prisma/client';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import type { IContext } from '../builder';
-import { PRISMA, builder } from '../builder';
+import { builder } from '../builder';
 import GQLBlock from '../objects/block';
 
 builder.subscriptionField('newBlocksFromDepth', (t) =>
@@ -31,12 +31,14 @@ async function* iteratorFn(
     minimumDepth,
     startingTimestamp,
   );
+
   let lastBlock;
 
   if (!nullishOrEmpty(blockResult)) {
     lastBlock = blockResult[0];
-    yield [lastBlock];
+    yield [];
   }
+
   while (!context.req.socket.destroyed) {
     const newBlocks = await getLastBlocksWithDepth(
       chainIds,
@@ -60,7 +62,7 @@ async function getLastBlocksWithDepth(
   date: string,
   id?: number,
 ): Promise<Block[]> {
-  const blocksArray = await Promise.all(
+  const blocks = await Promise.all(
     chainIds.map(async (chainId) => {
       const latestBlock = await prismaClient.block.findFirst({
         where: {
@@ -112,12 +114,5 @@ async function getLastBlocksWithDepth(
     }),
   );
 
-  const blocks = blocksArray
-    .flat()
-    .sort(
-      (a, b) => parseInt(b.height.toString()) - parseInt(a.height.toString()),
-    )
-    .slice(0, PRISMA.DEFAULT_SIZE);
-
-  return blocks;
+  return blocks.flat();
 }

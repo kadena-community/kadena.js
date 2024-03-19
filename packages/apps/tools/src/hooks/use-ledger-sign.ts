@@ -1,5 +1,6 @@
 import type { Network } from '@/constants/kadena';
-import { getTransport } from '@/utils/getTransport';
+import type { AppKdaLike } from '@/utils/ledger';
+import { getKadenaLedgerApp } from '@/utils/ledger';
 import { isSignedTransaction } from '@kadena/client';
 import type {
   createCrossChainCommand,
@@ -7,7 +8,6 @@ import type {
   transferCreateCommand,
 } from '@kadena/client-utils/coin';
 import type { TransferCrossChainTxParams } from '@ledgerhq/hw-app-kda';
-import AppKda from '@ledgerhq/hw-app-kda';
 import { useAsyncFn } from 'react-use';
 
 export type ITransferInput = Parameters<typeof transferCommand>[0];
@@ -51,7 +51,7 @@ const isTransferInput = (
 };
 
 const signWithLedger = (
-  app: AppKda,
+  app: AppKdaLike,
   transferInput: TransferInput,
   derivationPath: string,
   networkId: Network,
@@ -70,7 +70,7 @@ const signWithLedger = (
 };
 
 const sign = async (
-  app: AppKda,
+  app: AppKdaLike,
   transferInput: TransferInput,
   networkId: string,
   derivationPath: string,
@@ -97,8 +97,7 @@ const useLedgerSign = () => {
         derivationPath,
       }: { networkId: string; derivationPath: string },
     ) => {
-      const transport = await getTransport();
-      const app = new AppKda(transport);
+      const app = await getKadenaLedgerApp();
       return sign(app, transferInput, networkId, derivationPath);
     },
   );

@@ -3,11 +3,14 @@ import { createClient, createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 import { Prisma } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
+import type { NetworkConfig } from '@utils/network';
 import { readdir } from 'fs/promises';
 import { Listr } from 'listr2';
 import path from 'path';
 
-export async function runSystemsCheck() {
+export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
+  const networkId = (await networkConfig).networkId;
+
   console.log('\n');
   return new Listr([
     {
@@ -22,7 +25,7 @@ export async function runSystemsCheck() {
               },
             },
             {
-              title: 'Checking if all the migrations have been run.',
+              title: 'Checking if all the migrations are executed.',
               task: async () => {
                 const migrationsDir = path.join(
                   process.cwd(),
@@ -42,7 +45,7 @@ export async function runSystemsCheck() {
 
                 if (unexecutedMigrations.length > 0) {
                   throw new Error(
-                    `Unexecuted migrations detected: ${unexecutedMigrations.join(
+                    `Unexecuted migrations detected. If you started graph at the same time as devnet, try restarting graph: ${unexecutedMigrations.join(
                       ', ',
                     )}`,
                   );
@@ -54,7 +57,7 @@ export async function runSystemsCheck() {
               task: async () => {
                 await createClient(
                   ({ chainId }) =>
-                    `${dotenv.NETWORK_HOST}/chainweb/0.0/${dotenv.NETWORK_ID}/chain/${chainId}/pact`,
+                    `${dotenv.NETWORK_HOST}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
                 ).local(
                   createTransaction(
                     composePactCommand(

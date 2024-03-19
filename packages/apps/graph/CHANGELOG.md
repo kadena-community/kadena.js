@@ -1,5 +1,67 @@
 # @kadena/graph
 
+## 0.1.11
+
+### Patch Changes
+
+- d5e63d759: Removed obsolete totalCount on some queries and made all array
+  return values connections
+- 66938ac8f: Updated the README
+- 8c8d70d60: Fix typo in transfers object, transaction field\
+- 61ef8bc03: Do not return one object by default on subcriptions if it's not new
+
+## 0.1.10
+
+### Patch Changes
+
+- Updated dependencies [d67b52906]
+  - @kadena/client@1.10.1
+  - @kadena/client-utils@0.5.2
+
+## 0.1.9
+
+### Patch Changes
+
+- Updated dependencies [016b9dbfc]
+  - @kadena/client@1.10.0
+  - @kadena/client-utils@0.5.1
+
+## 0.1.8
+
+### Patch Changes
+
+- a5acd8581: Naming consistency and chainId as stringList
+- 339ac3155: Added more filter options to the events query and subscription
+- b571a8445: Create database index for qualname on events; adjusted the events
+  query
+- 2c1228774: Add fungible account by public key and chain fungible account by
+  public key queries
+- 727191dc9: Added system status checker
+- 21dfce774: Improved gas limit estimation with support for more types of input
+- 6677a71f4: Added Events to Block and removed obsolete fields
+- 8716b6b72: Changed the way object relations are handled. Instead of performing
+  multiple queries we use prisma's relation to select the object
+- ea63873ba: fix an issue where retrieval of marmalade-v2.ledger.get-token-info
+  results in invalid json for `policies` removed `policies` for now.
+- b9b7eaa13: Fetch network id from /info instead of getting it fron environment
+  variables
+- cb969a4d7: Optimize the use of Data Loaders for non-fungible account and chain
+  accounts
+- 1809e6212: Removed confirmation depth as a block property. Added query and
+  subscription for blocks from depth
+- 01b9ed3e9: Refactored transactions to follow domain model. Adapted
+  graph-client to new data format
+- 7e50d4949: Replaced SSE with WebSockets for Subscriptions
+- Updated dependencies [b53c2600c]
+- Updated dependencies [57a734447]
+- Updated dependencies [6ddf094d8]
+- Updated dependencies [6ddf094d8]
+  - @kadena/client@1.9.0
+  - @kadena/client-utils@0.5.0
+  - @kadena/chainweb-node-client@0.5.3
+  - @kadena/cryptography-utils@0.4.2
+  - @kadena/pactjs@0.4.2
+
 ## 0.1.7
 
 ### Patch Changes

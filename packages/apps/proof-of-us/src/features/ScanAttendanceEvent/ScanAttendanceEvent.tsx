@@ -6,6 +6,7 @@ import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { SubmitStatus, useSubmit } from '@/hooks/submit';
 import { useTokens } from '@/hooks/tokens';
+import { env } from '@/utils/env';
 import { getReturnUrl } from '@/utils/getReturnUrl';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
 import { store } from '@/utils/socket/store';
@@ -98,7 +99,9 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     router.push(
       `${
         process.env.NEXT_PUBLIC_WALLET_URL
-      }/sign?transaction=${bufferedTx}&returnUrl=${getReturnUrl()}
+      }/sign?transaction=${bufferedTx}&chainId=${
+        env.CHAINID
+      }&returnUrl=${getReturnUrl()}
       `,
     );
   };

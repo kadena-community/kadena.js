@@ -57,6 +57,7 @@ interface IDefaultTypesExtension {
 export interface IContext {
   req: IncomingMessage;
   extensions: any;
+  networkId: string;
 }
 
 export const PRISMA = {
@@ -83,9 +84,6 @@ export const builder = new SchemaBuilder<
       ExecutionPayload: ExecutionPayload;
       ContinuationPayload: ContinuationPayload;
       TransactionResult: TransactionResult;
-    };
-    Connection: {
-      totalCount: number;
     };
   }
 >({

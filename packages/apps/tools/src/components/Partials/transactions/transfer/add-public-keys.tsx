@@ -16,6 +16,7 @@ export interface IAddPublicKeysSection {
   setPublicKeys: (keys: string[]) => void;
   deletePubKey: () => void;
   initialPublicKey?: string;
+  maxKeysAmount?: number;
 }
 
 export const AddPublicKeysSection = ({
@@ -23,6 +24,7 @@ export const AddPublicKeysSection = ({
   setPublicKeys,
   deletePubKey,
   initialPublicKey,
+  maxKeysAmount,
 }: IAddPublicKeysSection): React.JSX.Element => {
   const { t } = useTranslation('common');
 
@@ -68,13 +70,14 @@ export const AddPublicKeysSection = ({
           key={`public-key-${index}`}
           id={`public-key-${index}`}
           value={key}
+          isReadOnly
           endAddon={
             <Button
               icon={<SystemIcon.TrashCan />}
               variant="text"
               onPress={() => deletePublicKey(index)}
-              aria-label="Add public key"
-              title="Add Public Key"
+              aria-label="Delete public key"
+              title="Delete public Key"
               color="primary"
               type="button"
             />
@@ -108,7 +111,6 @@ export const AddPublicKeysSection = ({
             onPress={() => {
               const value = publicKey;
               const valid = validatePublicKey(stripAccountPrefix(value || ''));
-              console.log('is valid', value);
               if (valid) {
                 addPublicKey(value);
               } else {
@@ -119,6 +121,7 @@ export const AddPublicKeysSection = ({
             title="Add Public Key"
             color="primary"
             type="button"
+            isDisabled={publicKeys.length >= (maxKeysAmount || 10)}
           >
             {t('Add public key')}
           </Button>

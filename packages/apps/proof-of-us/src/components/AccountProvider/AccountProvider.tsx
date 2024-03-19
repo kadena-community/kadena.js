@@ -49,7 +49,7 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
     router.push(
       `${env.WALLET_URL}/login?returnUrl=${getReturnUrl()}&networkId=${
         env.NETWORKID
-      }&optimistic=true`,
+      }&chainId=${env.CHAINID}&optimistic=true`,
     );
   }, [router]);
 

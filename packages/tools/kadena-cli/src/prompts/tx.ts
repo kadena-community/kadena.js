@@ -1,6 +1,9 @@
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
 import { z } from 'zod';
-import { getTransactions } from '../tx/utils/txHelpers.js';
+import {
+  getTransactions,
+  requestKeyValidation,
+} from '../tx/utils/txHelpers.js';
 
 import { getAllAccounts } from '../account/utils/accountHelpers.js';
 import {
@@ -14,6 +17,7 @@ import { CommandError } from '../utils/command.util.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   getExistingNetworks,
+  isNotEmptyString,
   maskStringPreservingStartAndEnd,
   notEmpty,
 } from '../utils/helpers.js';
@@ -38,7 +42,7 @@ export const SignatureOrUndefinedOrNull = z.union([
 export const ICommandSchema = z.object({
   cmd: CommandPayloadStringifiedJSONSchema,
   hash: PactTransactionHashSchema,
-  sigs: z.array(ISignatureJsonSchema),
+  sigs: z.array(SignatureOrUndefinedOrNull),
 });
 
 export const IUnsignedCommandSchema = z.object({
@@ -47,12 +51,11 @@ export const IUnsignedCommandSchema = z.object({
   sigs: z.array(SignatureOrUndefinedOrNull),
 });
 
-// export const ISignatureJsonSchema = z.union([
-//   z.object({
-//     sig: z.string(),
-//   }),
-//   z.null(),
-// ]);
+export const ISignedCommandSchema = z.object({
+  cmd: CommandPayloadStringifiedJSONSchema,
+  hash: PactTransactionHashSchema,
+  sigs: z.array(ISignatureJsonSchema),
+});
 
 export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
   const result = await input({
@@ -513,4 +516,21 @@ export const txTransactionNetworks: IPrompt<string[]> = async (
   }
 
   return networkPerTransaction;
+};
+
+export const txRequestKeyPrompt: IPrompt<string> = async () => {
+  return await input({
+    message: 'Enter transaction request key:',
+    validate: (value) => {
+      if (!isNotEmptyString(value.trim())) {
+        return 'Request key cannot be empty';
+      }
+
+      const parse = requestKeyValidation.safeParse(value);
+      if (parse.success) return true;
+
+      const formatted = parse.error.format();
+      return formatted._errors[0];
+    },
+  });
 };

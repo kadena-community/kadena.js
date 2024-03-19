@@ -1,9 +1,8 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
-import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
-import { PRISMA, builder } from '../builder';
+import { builder } from '../builder';
 import TransactionCommand from './transaction-command';
 import TransactionResult from './transaction-result';
 
@@ -15,8 +14,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
   fields: (t) => ({
     hash: t.exposeString('requestKey'),
     cmd: t.field({
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       type: TransactionCommand,
       select: {
         senderAccount: true,
@@ -34,13 +32,12 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
         code: true,
         requestKey: true,
       },
-      async resolve(parent) {
+      async resolve(parent, __arguments, context) {
         try {
           const signers = await prismaClient.signer.findMany({
             where: {
               requestKey: parent.requestKey,
             },
-            take: PRISMA.DEFAULT_SIZE,
           });
 
           return {
@@ -62,7 +59,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
               proof: parent.proof,
             },
             signers,
-            networkId: dotenv.NETWORK_ID,
+            networkId: context.networkId,
           };
         } catch (error) {
           throw normalizeError(error);
@@ -106,16 +103,11 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
-        blockHash: true,
+        block: true,
       },
-      async resolve(query, parent) {
+      async resolve(__query, parent) {
         try {
-          return await prismaClient.block.findUnique({
-            ...query,
-            where: {
-              hash: parent.blockHash,
-            },
-          });
+          return parent.block;
         } catch (error) {
           throw normalizeError(error);
         }
@@ -125,22 +117,13 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     events: t.prismaField({
       type: [Prisma.ModelName.Event],
       nullable: true,
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
-        blockHash: true,
-        requestKey: true,
+        events: true,
       },
-      async resolve(query, parent) {
+      async resolve(__query, parent) {
         try {
-          return await prismaClient.event.findMany({
-            ...query,
-            where: {
-              requestKey: parent.requestKey,
-              blockHash: parent.blockHash,
-            },
-            take: PRISMA.DEFAULT_SIZE,
-          });
+          return parent.events;
         } catch (error) {
           throw normalizeError(error);
         }
@@ -150,22 +133,13 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     transfers: t.prismaField({
       type: [Prisma.ModelName.Transfer],
       nullable: true,
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
-        blockHash: true,
-        requestKey: true,
+        transfers: true,
       },
-      async resolve(query, parent) {
+      async resolve(__query, parent) {
         try {
-          return await prismaClient.transfer.findMany({
-            ...query,
-            where: {
-              requestKey: parent.requestKey,
-              blockHash: parent.blockHash,
-            },
-            take: PRISMA.DEFAULT_SIZE,
-          });
+          return parent.transfers;
         } catch (error) {
           throw normalizeError(error);
         }

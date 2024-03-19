@@ -7,6 +7,7 @@ import { tx } from '../prompts/index.js';
 import {
   templateDataPrompt,
   templateVariables,
+  txRequestKeyPrompt,
   txTransactionNetworks,
 } from '../prompts/tx.js';
 import { services } from '../services/index.js';
@@ -15,7 +16,7 @@ import { isNotEmptyString } from '../utils/helpers.js';
 import { log } from '../utils/logger.js';
 import { getTemplate } from './commands/templates/templates.js';
 import { getTemplateVariables } from './utils/template.js';
-import { parseInput } from './utils/txHelpers.js';
+import { parseInput, requestKeyValidation } from './utils/txHelpers.js';
 
 export const txOptions = {
   selectTemplate: createOption({
@@ -158,7 +159,7 @@ export const txOptions = {
   txSignedTransactionFile: createOption({
     key: 'txSignedTransactionFile',
     prompt: tx.transactionSelectPrompt,
-    validation: tx.ICommandSchema,
+    validation: tx.ISignedCommandSchema,
     option: new Option(
       '-s, --tx-signed-transaction-file <txSignedTransactionFile>',
       'provide your signed transaction file',
@@ -225,5 +226,15 @@ export const txOptions = {
     },
     validation: z.boolean().optional(),
     option: new Option('-p, --poll', 'Poll for transaction status'),
+  }),
+  requestKey: createOption({
+    key: 'requestKey',
+    prompt: txRequestKeyPrompt,
+    defaultIsOptional: false,
+    validation: requestKeyValidation,
+    option: new Option(
+      '-k, --request-key <requestKey>',
+      'Enter your request key',
+    ),
   }),
 };

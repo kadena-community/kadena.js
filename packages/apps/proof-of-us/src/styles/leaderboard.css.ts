@@ -23,8 +23,9 @@ export const listItemClass = style([
       alignItems: 'center',
       justifyContent: 'center',
       fontFamily: 'Kode Mono',
-      height: '32px',
-      width: '32px',
+      minHeight: '32px',
+      minWidth: '32px',
+      aspectRatio: '1',
       content: 'counter(leaderboard)',
       fontSize: '20px',
       fontWeight: '700',
@@ -84,6 +85,12 @@ export const amountClass = style({
 export const itemsContainerClass = style({
   width: '100%',
   paddingLeft: '35px',
+});
+
+export const overflowClass = style({
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
 });
 
 export const sectionTitleClass = style({

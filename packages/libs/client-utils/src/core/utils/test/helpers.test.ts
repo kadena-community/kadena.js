@@ -4,6 +4,7 @@ import type { ICommandResult } from '@kadena/chainweb-node-client';
 import {
   asyncLock,
   checkSuccess,
+  composeWithDefaults,
   extractResult,
   inspect,
   pickFirst,
@@ -206,5 +207,37 @@ describe('asyncLock', () => {
       wait.then(() => 'should not resolve'),
     ]);
     expect(result).toBe('timeout');
+  });
+});
+
+describe('composeWithDefaults', () => {
+  it('returns a function that returns the input', () => {
+    const command = composeWithDefaults(
+      { meta: { chainId: '1', creationTime: 0 } },
+      {
+        meta: {
+          chainId: '2',
+          creationTime: 1,
+          gasLimit: 1,
+          sender: 'sender',
+          ttl: 1,
+        },
+        networkId: 'networkId',
+      },
+    )({ meta: { chainId: '3', gasPrice: 2 }, nonce: 'nonce', signers: [] });
+
+    expect(command).toEqual({
+      meta: {
+        chainId: '3',
+        creationTime: 0,
+        gasLimit: 1,
+        gasPrice: 2,
+        sender: 'sender',
+        ttl: 1,
+      },
+      networkId: 'networkId',
+      nonce: 'nonce',
+      signers: [],
+    });
   });
 });

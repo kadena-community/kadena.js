@@ -1,72 +1,83 @@
 import { prismaClient } from '@db/prisma-client';
-import { COMPLEXITY } from '@services/complexity';
+import { getDefaultConnectionComplexity } from '@services/complexity';
+import { chainIds as defaultChainIds } from '@utils/chains';
 import { normalizeError } from '@utils/errors';
-import { PRISMA, builder } from '../builder';
+import { builder } from '../builder';
 import Block from '../objects/block';
 
 builder.queryField('blocksFromDepth', (t) =>
-  t.prismaField({
-    description: 'Retrieve blocks by chain and minimal depth.',
+  t.prismaConnection({
+    description:
+      'Retrieve blocks by chain and minimal depth. Default page size is 20.',
     args: {
       minimumDepth: t.arg.int({ required: true }),
-      chainIds: t.arg.stringList({ required: true }),
+      chainIds: t.arg.stringList({
+        required: false,
+        description: 'Default: all chains',
+      }),
     },
-    type: [Block],
+    cursor: 'hash',
+    type: Block,
     nullable: true,
-    complexity:
-      (COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS +
-        COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS) *
-      PRISMA.DEFAULT_SIZE,
-    async resolve(query, __parent, { minimumDepth, chainIds }) {
+    complexity: (args) => ({
+      field: getDefaultConnectionComplexity({
+        withRelations: true,
+        first: args.first,
+        last: args.last,
+      }),
+    }),
+    // @ts-ignore
+    async resolve(
+      query,
+      __parent,
+      { minimumDepth, chainIds = defaultChainIds },
+    ) {
       try {
-        const blocksArray = await Promise.all(
-          chainIds.map(async (chainId) => {
-            const latestBlock = await prismaClient.block.findFirst({
-              where: {
-                chainId: parseInt(chainId),
-              },
-              orderBy: {
-                height: 'desc',
-              },
-              select: {
-                height: true,
-              },
-            });
+        const latestBlocks = await prismaClient.block.groupBy({
+          by: ['chainId'],
+          _max: {
+            height: true,
+          },
+          where: {
+            chainId: {
+              in: (chainIds as string[]).map((id) => parseInt(id)),
+            },
+          },
+        });
 
-            if (!latestBlock) return [];
+        const pairs = latestBlocks
+          .filter((x) => x._max.height !== null)
+          .map((block) => ({
+            chainId: block.chainId,
+            height: {
+              lte:
+                parseInt((block._max.height as bigint).toString()) -
+                minimumDepth,
+            },
+          }));
 
-            return prismaClient.block.findMany({
-              ...query,
-              where: {
-                chainId: parseInt(chainId),
-                height: {
-                  lte: parseInt(latestBlock.height.toString()) - minimumDepth,
-                },
-              },
-              orderBy: [
-                {
-                  height: 'desc',
-                },
-                { creationTime: 'desc' },
-              ],
-              take: PRISMA.DEFAULT_SIZE,
-              select: {
-                ...query.select,
-                height: true,
-              },
-            });
-          }),
-        );
-
-        const blocks = blocksArray
-          .flat()
-          .sort(
-            (a, b) =>
-              parseInt(b.height.toString()) - parseInt(a.height.toString()),
-          )
-          .slice(0, PRISMA.DEFAULT_SIZE);
-
-        return blocks;
+        return await prismaClient.block.findMany({
+          ...query,
+          where: {
+            OR: pairs,
+          },
+          orderBy: [
+            {
+              height: 'desc',
+            },
+            {
+              chainId: 'desc',
+            },
+            {
+              id: 'desc',
+            },
+          ],
+          select: {
+            // @ts-ignore
+            ...query.select,
+            height: true,
+          },
+        });
       } catch (error) {
         throw normalizeError(error);
       }

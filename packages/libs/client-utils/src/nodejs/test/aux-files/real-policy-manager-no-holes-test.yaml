@@ -1,0 +1,16 @@
+code: (test-module 123 k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94)
+nonce: real-policy-manager-nonce
+signers:
+  - public: k:554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94
+  - public: 554754f48b16df24b552f6832dda090642ed9658559fef9f3ee1bb4637ea7c94
+  - public: f90ef46927f506c70b6a58fd322450a936311dc6ac91f4ec3d8ef949608dbf1f
+data:
+  ns: test-namespace
+  upgrade: false
+networkId: testnet
+publicMeta:
+  chainId: "1"
+  sender: my-test-sender
+  gasLimit: 100000
+  gasPrice: 0.0000001
+  ttl: 10000

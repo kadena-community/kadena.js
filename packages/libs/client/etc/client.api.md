@@ -15,9 +15,11 @@ import type { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { ILocalOptions } from '@kadena/chainweb-node-client';
 import { IPollResponse } from '@kadena/chainweb-node-client';
 import { IPreflightResult } from '@kadena/chainweb-node-client';
+import type { ISigningCap } from '@kadena/types';
 import { IUnsignedCommand } from '@kadena/types';
 import type { LocalRequestBody } from '@kadena/chainweb-node-client';
 import type { LocalResponse } from '@kadena/chainweb-node-client';
+import type { PactValue } from '@kadena/types';
 import type { SessionTypes } from '@walletconnect/types';
 
 // @public
@@ -82,6 +84,8 @@ export interface IBuilder<TCommand> {
     addKeyset: IAddKeyset<TCommand>;
     // Warning: (ae-forgotten-export) The symbol "IAddSigner" needs to be exported by the entry point index.d.ts
     addSigner: IAddSigner<TCommand>;
+    // Warning: (ae-forgotten-export) The symbol "IAddVerifier" needs to be exported by the entry point index.d.ts
+    addVerifier: IAddVerifier<TCommand>;
     createTransaction: () => IUnsignedCommand;
     getCommand: () => Partial<IPactCommand>;
     setMeta: (meta: Partial<Omit<IPactCommand['meta'], 'sender'>> & {
@@ -212,6 +216,12 @@ export interface IPactCommand {
         scheme?: SignerScheme;
         clist?: ICap[];
     }>;
+    // (undocumented)
+    verifiers?: Array<{
+        name: string;
+        proof: PactValue;
+        clist?: ICap[];
+    }>;
 }
 
 // @public
@@ -339,6 +349,30 @@ export interface ISignBody {
 export interface ISignFunction extends ISingleSignFunction {
     // (undocumented)
     (transactionList: IUnsignedCommand[]): Promise<(ICommand | IUnsignedCommand)[]>;
+}
+
+// @alpha (undocumented)
+export interface ISigningRequest {
+    // (undocumented)
+    caps: ISigningCap[];
+    // (undocumented)
+    chainId?: IPactCommand['meta']['chainId'];
+    // (undocumented)
+    code: string;
+    // (undocumented)
+    data?: Record<string, unknown>;
+    // (undocumented)
+    extraSigners?: string[];
+    // (undocumented)
+    gasLimit?: number;
+    // (undocumented)
+    gasPrice?: number;
+    // (undocumented)
+    nonce?: string;
+    // (undocumented)
+    sender?: string;
+    // (undocumented)
+    ttl?: number;
 }
 
 // @public

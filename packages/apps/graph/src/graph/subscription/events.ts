@@ -39,11 +39,12 @@ async function* iteratorFn(
     chainId,
     parametersFilter,
   );
+
   let lastEvent;
 
   if (!nullishOrEmpty(eventResult)) {
     lastEvent = eventResult[0];
-    yield [lastEvent];
+    yield [];
   }
 
   while (!context.req.socket.destroyed) {

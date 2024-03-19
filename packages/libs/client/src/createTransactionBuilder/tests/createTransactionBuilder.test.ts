@@ -87,6 +87,41 @@ describe('createTransactionBuilder', () => {
     });
   });
 
+  it('returns command with verifiers', () => {
+    const builder = createTransactionBuilder();
+    const command = builder
+      .execution(coin.transfer('bob', 'alice', { decimal: '12' }))
+      .addVerifier(
+        { name: 'test-verifier', proof: 'test-proof' },
+        (forCapability) => [
+          forCapability('coin.GAS'),
+          forCapability('coin.TRANSFER', 'bob', 'alice', { decimal: '12' }),
+        ],
+      )
+      .getCommand();
+
+    expect(command).toStrictEqual({
+      payload: {
+        exec: { code: '(coin.transfer "bob" "alice" 12.0)', data: {} },
+      },
+      signers: [],
+      verifiers: [
+        {
+          name: 'test-verifier',
+          proof: 'test-proof',
+          clist: [
+            { args: [], name: 'coin.GAS' },
+            {
+              args: ['bob', 'alice', { decimal: '12' }],
+              name: 'coin.TRANSFER',
+            },
+          ],
+        },
+      ],
+      nonce: 'kjs:nonce:1690416000000',
+    });
+  });
+
   it('returns command with meta', () => {
     const builder = createTransactionBuilder();
     const command = builder

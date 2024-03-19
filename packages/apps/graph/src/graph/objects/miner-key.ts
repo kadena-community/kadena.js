@@ -1,4 +1,3 @@
-import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
@@ -16,16 +15,11 @@ export default builder.prismaNode(Prisma.ModelName.MinerKey, {
       nullable: false,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
-        blockHash: true,
+        blocks: true,
       },
-      async resolve(query, parent) {
+      async resolve(__query, parent) {
         try {
-          return await prismaClient.block.findUniqueOrThrow({
-            ...query,
-            where: {
-              hash: parent.blockHash,
-            },
-          });
+          return parent.blocks;
         } catch (error) {
           throw normalizeError(error);
         }

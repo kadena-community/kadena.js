@@ -37,7 +37,9 @@ export interface IParsedCode {
             value: IParsedCode['args'][number];
         }>;
     } | {
-        list: Array<IParsedCode['args']>;
+        list: IParsedCode['args'];
+    } | {
+        code: IParsedCode;
     }>;
     // (undocumented)
     function: {

@@ -114,6 +114,6 @@ export const createAddAccountManualCommand = createCommand(
 
     assertCommandError(result);
 
-    displayAddAccountSuccess(accountAlias);
+    displayAddAccountSuccess(accountAlias, result.data);
   },
 );
