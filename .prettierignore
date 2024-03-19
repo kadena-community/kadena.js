@@ -1,3 +1,4 @@
 .github/CODEOWNERS
 .changeset
 pnpm-lock.yaml
+packages/apps/docs/src/**/*.md
