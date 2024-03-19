@@ -1,4 +1,5 @@
 import { DrawerIconButton } from '@/components/Common/DrawerToolbar/DrawerIcon';
+import { MonoClose } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import type { ForwardRefExoticComponent, ReactElement, ReactNode } from 'react';
 import React, { forwardRef, useCallback, useEffect, useState } from 'react';
@@ -60,7 +61,7 @@ export const DrawerToolbar: ForwardRefExoticComponent<
             {sections[visibleSection].title}
             <DrawerIconButton
               onClick={() => setVisibleSection(null)}
-              icon="Close"
+              icon={<MonoClose />}
               title="close"
             />
           </div>
