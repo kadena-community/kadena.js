@@ -8,8 +8,8 @@ export async function readStdin(): Promise<string | null> {
     return stdin;
   }
 
-  await import('ttys');
   try {
+    await import('ttys');
     // eslint-disable-next-line require-atomic-updates
     stdin = readFileSync(0, 'utf8');
   } catch (e) {
