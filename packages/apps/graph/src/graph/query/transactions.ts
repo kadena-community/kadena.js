@@ -53,15 +53,15 @@ builder.queryField('transactions', (t) =>
 
     async resolve(__parent, args, context) {
       try {
-        const whereFilter = generateTransactionFilter(args);
+        const whereCondition = generateTransactionFilter(args);
         const totalCount = await prismaClient.transaction.count({
-          where: whereFilter,
+          where: whereCondition,
         });
 
         const connection = await resolveTransactionConnection(
           args,
           context,
-          whereFilter,
+          whereCondition,
         );
         return {
           totalCount,

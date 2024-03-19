@@ -34,7 +34,7 @@ import './query/last-block-height';
 import './query/non-fungible-account';
 import './query/non-fungible-chain-account';
 import './query/pact-query';
-// import './query/transaction-by-public-key';
+import './query/transaction-by-public-key';
 import './query/transactions';
 import './query/transfers';
 import './subscription/events';

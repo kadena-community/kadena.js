@@ -66,12 +66,12 @@ builder.queryField('transfers', (t) =>
     },
     async resolve(query, __parent, args) {
       try {
-        const whereFilter = generateTransferFilter(args);
+        const whereCondition = generateTransferFilter(args);
 
         return await prismaClient.transfer.findMany({
           ...query,
           where: {
-            ...whereFilter,
+            ...whereCondition,
           },
           orderBy: {
             height: 'desc',

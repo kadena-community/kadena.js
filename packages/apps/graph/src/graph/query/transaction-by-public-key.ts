@@ -3,16 +3,14 @@ import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
+import Transaction from '../objects/transaction';
+import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 
 builder.queryField('transactionsByPublicKey', (t) =>
-  t.prismaConnection({
+  t.connection({
+    type: Transaction,
     description: 'Retrieve all transactions by a given public key.',
     edgesNullable: false,
-    args: {
-      publicKey: t.arg.string({ required: true }),
-    },
-    type: Prisma.ModelName.Transaction,
-    cursor: 'blockHash_requestKey',
     complexity: (args) => ({
       field:
         getDefaultConnectionComplexity({
@@ -20,25 +18,10 @@ builder.queryField('transactionsByPublicKey', (t) =>
           last: args.last,
         }) * 2, // Times two because of the extra call to signers.
     }),
-    async totalCount(__parent, args) {
-      const requestKeys = await prismaClient.signer.findMany({
-        where: {
-          publicKey: args.publicKey,
-        },
-        select: {
-          requestKey: true,
-        },
-      });
-
-      return await prismaClient.transaction.count({
-        where: {
-          requestKey: {
-            in: requestKeys.map((value) => value.requestKey),
-          },
-        },
-      });
+    args: {
+      publicKey: t.arg.string({ required: true }),
     },
-    async resolve(query, __parent, args) {
+    async resolve(__parent, args, context) {
       try {
         const requestKeys = await prismaClient.signer.findMany({
           where: {
@@ -49,17 +32,13 @@ builder.queryField('transactionsByPublicKey', (t) =>
           },
         });
 
-        return await prismaClient.transaction.findMany({
-          ...query,
-          where: {
-            requestKey: {
-              in: requestKeys.map((value) => value.requestKey),
-            },
+        const whereCondition: Prisma.TransactionWhereInput = {
+          requestKey: {
+            in: requestKeys.map((value) => value.requestKey),
           },
-          orderBy: {
-            height: 'desc',
-          },
-        });
+        };
+
+        return resolveTransactionConnection(args, context, whereCondition);
       } catch (error) {
         throw normalizeError(error);
       }
