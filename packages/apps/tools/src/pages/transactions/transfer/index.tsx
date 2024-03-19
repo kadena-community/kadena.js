@@ -63,7 +63,7 @@ const TransferPage = () => {
     },
   ];
 
-  const [isLedger, setIsLedger] = useState<boolean>(true);
+  const [isLedger, setIsLedger] = useState<boolean>(false);
   const showNotSupported = !browserSupported && isLedger;
 
   const openSidebarMenu = () => setSidebarOpen(!sidebarOpen);
