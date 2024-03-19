@@ -91,7 +91,13 @@ const Header: FC<IHeaderProps> = () => {
         </NavHeaderLinkList>
         <NavHeaderButton
           aria-label="Toggle theme"
-          icon={<MonoContrast />}
+          icon={
+            <MonoContrast
+              className={atoms({
+                color: 'text.base.default',
+              })}
+            />
+          }
           onPress={() => toggleTheme()}
           className={atoms({ marginInlineEnd: 'sm' })}
         />

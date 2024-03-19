@@ -1,5 +1,6 @@
 import { isDevEnvironment } from '@/utils/isDevEnvironment';
 import { MonoAnimation, MonoQrCodeScanner } from '@kadena/react-icons/system';
+import { atoms } from '@kadena/react-ui/styles';
 import React from 'react';
 import type { ISidebarToolbarItem } from '../types/Layout';
 import Routes from './routes';
@@ -7,7 +8,7 @@ import Routes from './routes';
 export const menuData: ISidebarToolbarItem[] = [
   {
     title: 'Faucet',
-    icon: <MonoQrCodeScanner />,
+    icon: <MonoQrCodeScanner className={atoms({ fontSize: '4xl' })} />,
     href: 'faucet',
     items: [
       {
@@ -22,7 +23,7 @@ export const menuData: ISidebarToolbarItem[] = [
   },
   {
     title: 'Transactions',
-    icon: <MonoAnimation />,
+    icon: <MonoAnimation className={atoms({ fontSize: '4xl' })} />,
     href: 'transactions',
     items: [
       {
@@ -42,6 +43,5 @@ export const menuData: ISidebarToolbarItem[] = [
           ]
         : []),
     ],
-
   },
 ];
