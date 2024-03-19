@@ -50,24 +50,16 @@ builder.queryField('transactions', (t) =>
       requestKey: t.arg.string({ required: false }),
     },
     type: Transaction,
-
+    complexity: getDefaultConnectionComplexity(),
     async resolve(__parent, args, context) {
       try {
         const whereCondition = generateTransactionFilter(args);
-        const totalCount = await prismaClient.transaction.count({
-          where: whereCondition,
-        });
 
-        const connection = await resolveTransactionConnection(
+        return await resolveTransactionConnection(
           args,
           context,
           whereCondition,
         );
-        return {
-          totalCount,
-          pageInfo: connection.pageInfo,
-          edges: connection.edges,
-        };
       } catch (error) {
         throw normalizeError(error);
       }

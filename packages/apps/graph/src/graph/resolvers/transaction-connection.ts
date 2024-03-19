@@ -10,7 +10,13 @@ export async function resolveTransactionConnection(
   context: IContext,
   whereCondition: Prisma.TransactionWhereInput,
 ) {
-  return await resolveCursorConnection(
+  const totalCount = await prismaClient.transaction.count({
+    where: {
+      ...whereCondition,
+    },
+  });
+
+  const connection = await resolveCursorConnection(
     {
       args,
       toCursor: (transaction) => {
@@ -68,4 +74,9 @@ export async function resolveTransactionConnection(
       return await prismaTransactionsMapper(prismaTransactions, context);
     },
   );
+
+  return {
+    ...connection,
+    totalCount,
+  };
 }

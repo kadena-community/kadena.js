@@ -14,11 +14,6 @@ export default builder.node('Signer', {
       nullable: true,
       description: 'The signature scheme that was used to sign.',
     }),
-    // clist: t.exposeString('clist', {
-    //   nullable: true,
-    //   description:
-    //     'List of capabilities associated with/installed by this signer.',
-    // }),
     clist: t.field({
       type: ['CapabilitiesList'],
       resolve: (parent) => parent.clist,

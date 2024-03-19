@@ -107,6 +107,13 @@ export default builder.node(
         type: Transaction,
         description: 'Default page size is 20.',
         edgesNullable: false,
+        complexity: (args) => ({
+          field: getDefaultConnectionComplexity({
+            withRelations: true,
+            first: args.first,
+            last: args.last,
+          }),
+        }),
         async resolve(parent, args, context) {
           try {
             const whereCondition: Prisma.TransactionWhereInput = {

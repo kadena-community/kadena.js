@@ -1,3 +1,4 @@
+import { COMPLEXITY } from '@services/complexity';
 import { builder } from '../builder';
 import TransactionCommand from './transaction-command';
 import TransactionResult from './transaction-info';
@@ -17,6 +18,7 @@ export default builder.node('Transaction', {
   fields: (t) => ({
     hash: t.exposeString('hash'),
     cmd: t.field({
+      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       type: TransactionCommand,
       resolve: (parent) => parent.cmd,
     }),
