@@ -367,6 +367,36 @@ export const safeYamlParse = <T extends unknown>(value: string): T | null => {
   }
 };
 
+export function detectFileParseType(filepath: string): 'yaml' | 'json' | null {
+  const ext = path.extname(filepath);
+  if (ext === '.yaml' || ext === '.yml') {
+    return 'yaml';
+  }
+  if (ext === '.json') {
+    return 'json';
+  }
+  return null;
+}
+
+export function detectArrayFileParseType(
+  filepaths: string[],
+): { filepath: string; type: 'yaml' | 'json' }[] {
+  return filepaths.reduce(
+    (memo, filepath) => {
+      const type = detectFileParseType(filepath);
+      if (type) memo.push({ filepath, type });
+      return memo;
+    },
+    [] as { filepath: string; type: 'yaml' | 'json' }[],
+  );
+}
+
+export function getFileParser(
+  type: 'yaml' | 'json',
+): <T extends unknown>(value: string) => T | null {
+  return type === 'yaml' ? safeYamlParse : safeJsonParse;
+}
+
 export const passwordPromptTransform =
   // prettier-ignore
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

@@ -10,8 +10,6 @@ type IKeyPair = IKeyPairBase & {
 };
 
 export interface IPlainKeyService {
-  delete: (key: IPlainKey) => Promise<void>;
-  deleteAll: () => Promise<void>;
   generateKeyPairs: (amount: number, legacy?: boolean) => Promise<IKeyPair[]>;
   list: () => Promise<IPlainKey[]>;
   storeKeyPairs: (
@@ -88,14 +86,6 @@ export class PlainKeyService implements IPlainKeyService {
       ...keyPair,
       legacy: false,
     }));
-  }
-
-  public delete(key: IPlainKey): ReturnType<IPlainKeyService['delete']> {
-    return this.services.config.deletePlainKey(key);
-  }
-
-  public deleteAll(): ReturnType<IPlainKeyService['deleteAll']> {
-    return this.services.config.deletePlainKeyAll();
   }
 
   public list(): ReturnType<IPlainKeyService['list']> {

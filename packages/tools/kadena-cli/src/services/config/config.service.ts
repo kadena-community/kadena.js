@@ -7,7 +7,6 @@ import {
   notEmpty,
   safeYamlParse,
 } from '../../utils/helpers.js';
-import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import type { Services } from '../index.js';
 import { plainKeySchema } from './config.schemas.js';
@@ -20,11 +19,13 @@ import type {
 export interface IConfigService {
   // Key
   getPlainKey(filepath: string): Promise<IPlainKey | null>;
-  getPlainKeyByAlias(alias: string): Promise<IPlainKey | null>;
-  getPlainKeys(): Promise<IPlainKey[]>;
+  getPlainKeys(directory?: string): Promise<IPlainKey[]>;
   setPlainKey(key: IPlainKeyCreate): Promise<string>;
-  deletePlainKey(key: IPlainKey): Promise<void>;
-  deletePlainKeyAll(): Promise<void>;
+  // wallet
+  getWallet: (filepath: string) => Promise<IWallet | null>;
+  setWallet: (wallet: IWalletCreate) => Promise<string>;
+  getWallets: () => Promise<IWallet[]>;
+  deleteWallet: (filepath: string) => Promise<void>;
 }
 
 export class ConfigService implements IConfigService {
@@ -33,14 +34,16 @@ export class ConfigService implements IConfigService {
 
   public async getPlainKey(
     filepath: string,
+    /* How to parse file, defaults to yaml */
+    type?: 'yaml' | 'json',
   ): ReturnType<IConfigService['getPlainKey']> {
     const file = await this.services.filesystem.readFile(filepath);
     if (file === null) return null;
-    const parsed = plainKeySchema.safeParse(safeYamlParse(file));
-    if (!parsed.success) {
-      log.debug(formatZodError(parsed.error));
-      return null;
-    }
+
+    const parser = type === 'json' ? safeJsonParse : safeYamlParse;
+    const parsed = plainKeySchema.safeParse(parser(file));
+    if (!parsed.success) return null;
+
     const alias = path.basename(filepath);
     return {
       alias: alias,
@@ -51,17 +54,17 @@ export class ConfigService implements IConfigService {
     };
   }
 
-  public async getPlainKeyByAlias(
-    alias: string,
-  ): ReturnType<IConfigService['getPlainKeyByAlias']> {
-    const filename = alias.endsWith(KEY_EXT) ? alias : `${alias}${KEY_EXT}`;
-    return this.getPlainKey(path.join(PLAIN_KEY_DIR, filename));
-  }
-
-  public async getPlainKeys(): ReturnType<IConfigService['getPlainKeys']> {
-    const files = await this.services.filesystem.readDir(PLAIN_KEY_DIR);
+  public async getPlainKeys(
+    directory?: string,
+  ): ReturnType<IConfigService['getPlainKeys']> {
+    const dir = directory ?? process.cwd();
+    const files = await this.services.filesystem.readDir(dir);
+    const filepaths = files.map((file) => path.join(dir, file));
+    const parsableFiles = detectArrayFileParseType(filepaths);
     const keys = await Promise.all(
-      files.map((key) => this.getPlainKey(path.join(PLAIN_KEY_DIR, key))),
+      parsableFiles.map(async (file) =>
+        this.getPlainKey(file.filepath, file.type),
+      ),
     );
     return keys.filter(notEmpty);
   }
@@ -70,16 +73,15 @@ export class ConfigService implements IConfigService {
     key: IPlainKeyCreate,
   ): ReturnType<IConfigService['setPlainKey']> {
     const filename = sanitize(key.alias);
-    const filepath = path.join(PLAIN_KEY_DIR, `${filename}.key`);
-    await this.services.filesystem.ensureDirectoryExists(PLAIN_KEY_DIR);
+    const filepath = path.join(process.cwd(), `${filename}${YAML_EXT}`);
     if (await this.services.filesystem.fileExists(filepath)) {
       throw new Error(`Plain Key "${relativeToCwd(filepath)}" already exists.`);
     }
     const data: IPlainKeyFile = {
-      legacy: key.legacy,
       publicKey: key.publicKey,
       secretKey: key.secretKey,
     };
+    if (key.legacy) data.legacy = key.legacy;
     await this.services.filesystem.writeFile(
       filepath,
       yaml.dump(data, { lineWidth: -1 }),
@@ -87,14 +89,6 @@ export class ConfigService implements IConfigService {
     return filepath;
   }
 
-  public async deletePlainKey(
-    key: IPlainKey,
-  ): ReturnType<IConfigService['deletePlainKey']> {
-    await this.services.filesystem.deleteFile(key.filepath);
   }
-  public async deletePlainKeyAll(): ReturnType<
-    IConfigService['deletePlainKeyAll']
-  > {
-    await this.services.filesystem.deleteDirectory(PLAIN_KEY_DIR);
   }
 }
