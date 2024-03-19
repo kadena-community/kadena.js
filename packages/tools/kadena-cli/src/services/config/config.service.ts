@@ -1,14 +1,24 @@
 import yaml from 'js-yaml';
 import path from 'node:path';
 import sanitize from 'sanitize-filename';
-import { KEY_EXT, PLAIN_KEY_DIR } from '../../constants/config.js';
+import { WALLET_DIR, YAML_EXT } from '../../constants/config.js';
 import {
-  formatZodError,
+  detectArrayFileParseType,
   notEmpty,
+  safeJsonParse,
   safeYamlParse,
 } from '../../utils/helpers.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import type { Services } from '../index.js';
+import {
+  WALLET_SCHEMA_VERSION,
+  walletSchema,
+} from '../wallet/wallet.schemas.js';
+import type {
+  IWallet,
+  IWalletCreate,
+  IWalletFile,
+} from '../wallet/wallet.types.js';
 import { plainKeySchema } from './config.schemas.js';
 import type {
   IPlainKey,
@@ -89,6 +99,59 @@ export class ConfigService implements IConfigService {
     return filepath;
   }
 
+  public async getWallet(
+    filepath: string,
+  ): ReturnType<IConfigService['getWallet']> {
+    const file = await this.services.filesystem.readFile(filepath);
+    if (file === null) {
+      throw new Error(`Wallet file "${relativeToCwd(filepath)}" not found.`);
+    }
+    const parsed = walletSchema.safeParse(safeYamlParse(file));
+    if (!parsed.success) return null;
+    return {
+      alias: parsed.data.alias,
+      filepath,
+      version: parsed.data.version,
+      legacy: parsed.data.legacy ?? false,
+      mnemonic: parsed.data.mnemonic,
+      keys: parsed.data.keys,
+    };
   }
+
+  public async setWallet(
+    wallet: IWalletCreate,
+  ): ReturnType<IConfigService['setWallet']> {
+    const filename = sanitize(wallet.alias);
+    const filepath = path.join(process.cwd(), `${filename}${YAML_EXT}`);
+    if (await this.services.filesystem.fileExists(filepath)) {
+      throw new Error(`Wallet "${relativeToCwd(filepath)}" already exists.`);
+    }
+    const data: IWalletFile = {
+      alias: wallet.alias,
+      legacy: wallet.legacy ?? false,
+      mnemonic: wallet.mnemonic,
+      version: WALLET_SCHEMA_VERSION,
+      keys: [],
+    };
+    await this.services.filesystem.writeFile(
+      filepath,
+      yaml.dump(data, { lineWidth: -1 }),
+    );
+    return filepath;
+  }
+
+  public async getWallets(): ReturnType<IConfigService['getWallets']> {
+    const files = await this.services.filesystem.readDir(WALLET_DIR);
+    const filepaths = files.map((file) => path.join(WALLET_DIR, file));
+    const wallets = await Promise.all(
+      filepaths.map(async (filepath) => this.getWallet(filepath)),
+    );
+    return wallets.filter(notEmpty);
+  }
+
+  public async deleteWallet(
+    filepath: string,
+  ): ReturnType<IConfigService['deleteWallet']> {
+    await this.services.filesystem.deleteFile(filepath);
   }
 }
