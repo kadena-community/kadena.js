@@ -381,6 +381,16 @@ pages:
       restapi:
         url: /rest-api
         file: /reference/pact/rest-api.md
+      frontend:
+        url: /kadena-client
+        file: /reference/kadena-client/client-utils.md
+        children:
+          kadena-cli:
+            url: /kadena-cli
+            file: /reference/kadena-client/kadena-cli.md
+          kadena-js:
+            url: /kadena-js
+            file: /reference/kadena-client/kadena-js.md
       marmalade:
         url: /ledger
         file: /reference/marmalade/ledger.md

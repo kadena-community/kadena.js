@@ -25,7 +25,7 @@ The reference information for the Pact programming language covers the following
 
 For information about the design of the Pact programming language, see the [Pact white paper](/kadena) or the [Pact home page](https://www.kadena.io/pact).
 
-## Frontend interface: Kadena client
+## Frontend libraries: Kadena client
 
 The Kadena client is a collection`of libraries, functions, and utilities written in TypeScript to provide a familiar application programming interface (API) for interacting with smart contracts and the Kadena network. 
 
@@ -35,7 +35,7 @@ The Kadena client includes the following packages:
 
 - [Client utilities]() @kadena/client-utils
 
-- [Command-line interface]()
+- [Command-line interface](/reference/frontend/kadena-cli)
 
 ## NFT marketplace: Marmalade technical reference
 
