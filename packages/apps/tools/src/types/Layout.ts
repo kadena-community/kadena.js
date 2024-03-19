@@ -1,5 +1,5 @@
 import type { ITreeProps } from '@kadena/react-ui';
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 export interface IMenuItem {
   title: string;

@@ -42,5 +42,6 @@ export const menuData: ISidebarToolbarItem[] = [
           ]
         : []),
     ],
+
   },
 ];
