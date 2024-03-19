@@ -1,5 +1,6 @@
 export type {
   IAccordionProps,
+  IAvatarProps,
   IBoxProps,
   IBreadcrumbItemProps,
   IBreadcrumbsProps,
@@ -50,6 +51,7 @@ export type {
 export {
   Accordion,
   AccordionItem,
+  Avatar,
   Box,
   Breadcrumbs,
   BreadcrumbsItem,

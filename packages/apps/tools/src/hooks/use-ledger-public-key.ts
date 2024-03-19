@@ -1,5 +1,6 @@
-import { getTransport } from '@/utils/getTransport';
-import AppKda from '@ledgerhq/hw-app-kda';
+import type { AppKdaLike } from '@/utils/ledger';
+import { bufferToHex, getKadenaLedgerApp } from '@/utils/ledger';
+
 import { useAsyncFn } from 'react-use';
 
 export const derivationModes = [
@@ -17,14 +18,6 @@ export interface ILedgerKeyParams {
   derivationMode?: DerivationMode;
 }
 
-function bufferToHex(buffer: Uint8Array) {
-  return [...buffer]
-    .map((b) => {
-      return b.toString(16).padStart(2, '0');
-    })
-    .join('');
-}
-
 export const getDerivationPath = (
   keyId: number,
   derivationMode: DerivationMode,
@@ -40,7 +33,7 @@ const fetchPublicKey = async ({
   keyId,
   derivationMode = 'current',
   app,
-}: ILedgerKeyParams & { app: AppKda }): Promise<string | undefined> => {
+}: ILedgerKeyParams & { app: AppKdaLike }): Promise<string | undefined> => {
   const kdaAddress = await app.getPublicKey(
     getDerivationPath(keyId, derivationMode),
   );
@@ -49,8 +42,7 @@ const fetchPublicKey = async ({
 
 const useLedgerPublicKey = () => {
   return useAsyncFn(async ({ keyId, derivationMode }: ILedgerKeyParams) => {
-    const transport = await getTransport();
-    const app = new AppKda(transport);
+    const app = await getKadenaLedgerApp();
     return fetchPublicKey({ keyId, app, derivationMode });
   });
 };

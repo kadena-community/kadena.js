@@ -19,10 +19,11 @@ export const baseConfig: PlaywrightTestConfig = {
     baseURL: 'http://localhost:3000/',
     channel: 'chromium',
     trace: 'retain-on-failure',
+    viewport: { width: 1920, height: 1080 },
   },
   timeout: 100000,
 
   expect: {
-    timeout: 1 * 30000,
+    timeout: 2 * 30000,
   },
 };

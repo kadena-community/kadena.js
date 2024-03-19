@@ -7,7 +7,8 @@ import Block from '../objects/block';
 
 builder.queryField('blocksFromHeight', (t) =>
   t.prismaConnection({
-    description: 'Retrieve blocks by chain and minimal height.',
+    description:
+      'Retrieve blocks by chain and minimal height. Default page size is 20.',
     args: {
       startHeight: t.arg.int({ required: true }),
       chainIds: t.arg.stringList({ required: false }),

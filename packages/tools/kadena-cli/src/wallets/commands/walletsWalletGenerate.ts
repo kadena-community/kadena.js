@@ -18,7 +18,7 @@ import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
+import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { walletOptions } from '../walletOptions.js';
 
@@ -98,7 +98,10 @@ export const createGenerateWalletCommand: (
   'Add a new local wallet',
   [
     walletOptions.walletName({ isOptional: false }),
-    globalOptions.passwordFileRepeat({ isOptional: false }),
+    securityOptions.createPasswordOption({
+      message: 'Enter the new wallet password',
+      confirmPasswordMessage: 'Re-enter the password',
+    }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option, { collect }) => {
@@ -107,7 +110,7 @@ export const createGenerateWalletCommand: (
 
     const result = await generateWallet(
       config.walletName,
-      config.passwordFileRepeat,
+      config.passwordFile,
       config.legacy,
     );
 

@@ -91,17 +91,22 @@ export const MyApp = ({
             <meta name="author" content={authorInfo.name} />
           </>
         )}
-        <link rel="icon" href="/assets/favicons/icon@32.png" sizes="32x32" />
-        <link rel="icon" href="/assets/favicons/icon@128.png" sizes="128x128" />
+
+        <link rel="icon" href="/assets/favicons/icon@32.png?1" sizes="32x32" />
+        <link
+          rel="icon"
+          href="/assets/favicons/icon@128.png?1"
+          sizes="128x128"
+        />
         <link
           rel="shortcut icon"
           sizes="192x192"
-          href="/assets/favicons/icon@192.png"
+          href="/assets/favicons/icon@192.png?1"
         />
         {/* Android Shortcut icon */}
-        <link rel="shortcut icon" href="/assets/favicons/icon@192.png" />
+        <link rel="shortcut icon" href="/assets/favicons/icon@192.png?1" />
         {/* Apple touch icon */}
-        <link rel="apple-touch-icon" href="/assets/favicons/icon@192.png" />
+        <link rel="apple-touch-icon" href="/assets/favicons/icon@192.png?1" />
       </Head>
       <MDXProvider components={markDownComponents}>
         <ThemeProvider

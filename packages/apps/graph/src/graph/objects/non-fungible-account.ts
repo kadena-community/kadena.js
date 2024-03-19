@@ -82,6 +82,7 @@ export default builder.node(
       }),
       transactions: t.connection({
         type: Transaction,
+        description: 'Default page size is 20.',
         edgesNullable: false,
         resolve(parent, args, context) {
           try {

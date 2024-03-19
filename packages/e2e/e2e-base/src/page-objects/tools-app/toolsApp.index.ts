@@ -6,6 +6,7 @@ import { HomePage } from '@page-objects/tools-app/pages/home.page';
 import { CrossChainFinisherPage } from '@page-objects/tools-app/pages/transactions/cross-chain-finisher.page';
 import { CrossChainTrackerPage } from '@page-objects/tools-app/pages/transactions/cross-chain-tracker.page';
 import type { Page } from '@playwright/test';
+import { TransferPage } from './pages/transactions/transfer.page';
 
 export class ToolsAppIndex {
   private readonly _page: Page;
@@ -16,6 +17,7 @@ export class ToolsAppIndex {
   public fundExistingAccountPage: FundExistingAccountPage;
   public crossChainTrackerPage: CrossChainTrackerPage;
   public crossChainFinisherPage: CrossChainFinisherPage;
+  public transferPage: TransferPage;
 
   public constructor(page: Page) {
     this._page = page;
@@ -26,5 +28,6 @@ export class ToolsAppIndex {
     this.fundExistingAccountPage = new FundExistingAccountPage(this._page);
     this.crossChainTrackerPage = new CrossChainTrackerPage(this._page);
     this.crossChainFinisherPage = new CrossChainFinisherPage(this._page);
+    this.transferPage = new TransferPage(this._page);
   }
 }

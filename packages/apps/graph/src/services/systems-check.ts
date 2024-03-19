@@ -26,7 +26,7 @@ export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
               },
             },
             {
-              title: 'Checking if all the migrations have been run.',
+              title: 'Checking if all the migrations are executed.',
               task: async () => {
                 const migrationsDir = path.join(
                   process.cwd(),

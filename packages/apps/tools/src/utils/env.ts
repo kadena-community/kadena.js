@@ -12,6 +12,9 @@ export interface IEnvInterface {
   FAUCET_NAMESPACE?: string;
   FAUCET_CONTRACT?: string;
   FAUCET_USER?: string;
+  QA_LEDGER_MOCK?: string;
+  QA_LEDGER_MOCKED_PUBKEY?: string;
+  QA_LEDGER_MOCKED_PRIVATEKEY?: string;
 }
 
 type RequiredEnv = Required<IEnvInterface>;
@@ -30,6 +33,9 @@ export const dotenv: IEnvInterface = {
   FAUCET_NAMESPACE: process.env.FAUCET_NAMESPACE,
   FAUCET_CONTRACT: process.env.FAUCET_CONTRACT,
   FAUCET_USER: process.env.FAUCET_USER,
+  QA_LEDGER_MOCK: process.env.QA_LEDGER_MOCK,
+  QA_LEDGER_MOCKED_PUBKEY: process.env.QA_LEDGER_MOCKED_PUBKEY,
+  QA_LEDGER_MOCKED_PRIVATEKEY: process.env.QA_LEDGER_MOCKED_PRIVATEKEY,
 };
 
 export const env = <T extends keyof RequiredEnv, TDefault>(

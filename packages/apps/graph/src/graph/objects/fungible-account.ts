@@ -105,6 +105,7 @@ export default builder.node(
       }),
       transactions: t.connection({
         type: Transaction,
+        description: 'Default page size is 20.',
         edgesNullable: false,
         async resolve(parent, args, context) {
           try {
@@ -129,6 +130,7 @@ export default builder.node(
       }),
 
       transfers: t.prismaConnection({
+        description: 'Default page size is 20.',
         type: Prisma.ModelName.Transfer,
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
         edgesNullable: false,

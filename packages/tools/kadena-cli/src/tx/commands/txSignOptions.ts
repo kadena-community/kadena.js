@@ -1,11 +1,13 @@
-import { globalOptions } from '../../utils/globalOptions.js';
+import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
 import { txOptions } from '../txOptions.js';
 
 export const options = [
   txOptions.txSignWith(),
   // sign with local wallet
   globalOptions.walletSelect(),
-  globalOptions.passwordFile(),
+  securityOptions.createPasswordOption({
+    message: 'Enter the wallet password',
+  }),
   txOptions.directory({ disableQuestion: true }),
   txOptions.txUnsignedTransactionFiles(),
 

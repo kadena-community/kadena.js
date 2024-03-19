@@ -87,9 +87,17 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
       },
     }),
 
+    // relations
     transactions: t.connection({
       type: Transaction,
-      description: 'The transactions in this block.',
+      description: 'Default page size is 20.',
+      edgesNullable: false,
+      complexity: (args) => ({
+        field: getDefaultConnectionComplexity({
+          first: args.first,
+          last: args.last,
+        }),
+      }),
       select: {
         hash: true,
       },
@@ -106,6 +114,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
     }),
 
     events: t.prismaConnection({
+      description: 'Default page size is 20.',
       type: Prisma.ModelName.Event,
       cursor: 'blockHash_orderIndex_requestKey',
       edgesNullable: false,

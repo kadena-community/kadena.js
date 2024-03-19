@@ -20,6 +20,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
   selectedKey,
   onSelectionChange,
   additionalInfoOptions,
+  id,
   ...rest
 }) => {
   const onSelectChange = useCallback(
@@ -37,14 +38,14 @@ const ChainSelect: FC<ChainSelectProps> = ({
     <Select
       {...rest}
       label="Chain ID"
-      id={ELEMENT_ID}
+      id={id ?? ELEMENT_ID}
       onSelectionChange={onSelectChange}
       selectedKey={selectedKey}
       startIcon={<SystemIcon.Link />}
       aria-label="Select Chain ID"
     >
       {CHAINS.map((chainId, index) => (
-        <SelectItem key={chainId}>
+        <SelectItem key={chainId} textValue={chainId}>
           <span>{chainId}</span>
           {additionalInfoOptions && additionalInfoOptions.length ? (
             <span>{` (${additionalInfoOptions[index].data})`}</span>
