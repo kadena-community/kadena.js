@@ -47,7 +47,7 @@ export async function printPlainKeys(): Promise<void> {
     rows.push(row);
   }
 
-  log.info(`Listing keys in ${relativeToCwd(PLAIN_KEY_DIR)}/`);
+  log.info(`Listing keys in the working directory:`);
 
   if (rows.length > 0) {
     log.output(log.generateTableString(header, rows));
