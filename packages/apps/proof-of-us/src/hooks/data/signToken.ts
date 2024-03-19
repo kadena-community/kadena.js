@@ -1,5 +1,6 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { createManifest } from '@/utils/createManifest';
+import { env } from '@/utils/env';
 import { getReturnUrl } from '@/utils/getReturnUrl';
 import { haveAllSigned } from '@/utils/isAlreadySigning';
 import { createConnectTokenTransaction, getTokenId } from '@/utils/proofOfUs';
@@ -106,7 +107,9 @@ export const useSignToken = () => {
     router.push(
       `${
         process.env.NEXT_PUBLIC_WALLET_URL
-      }/sign?transaction=${transaction}&returnUrl=${getReturnUrl()}
+      }/sign?transaction=${transaction}&chainId=${
+        env.CHAINID
+      }&returnUrl=${getReturnUrl()}
       `,
     );
   };
