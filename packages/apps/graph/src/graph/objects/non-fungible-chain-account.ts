@@ -1,15 +1,13 @@
-import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
-import {
-  COMPLEXITY,
-  getDefaultConnectionComplexity,
-} from '@services/complexity';
+import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
+import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 import type { NonFungibleChainAccount } from '../types/graphql-types';
 import { NonFungibleChainAccountName } from '../types/graphql-types';
 import Token from './token';
+import Transaction from './transaction';
 
 export default builder.node(
   builder.objectRef<NonFungibleChainAccount>(NonFungibleChainAccountName),
@@ -57,47 +55,22 @@ export default builder.node(
           }
         },
       }),
-      transactions: t.prismaConnection({
-        type: Prisma.ModelName.Transaction,
-        cursor: 'blockHash_requestKey',
+      transactions: t.connection({
+        type: Transaction,
         edgesNullable: false,
-        complexity: (args) => ({
-          field: getDefaultConnectionComplexity({
-            withRelations: true,
-            first: args.first,
-            last: args.last,
-          }),
-        }),
-        async totalCount(parent) {
-          return await prismaClient.transaction.count({
-            where: {
+        resolve(parent, args, context) {
+          try {
+            const whereCondition: Prisma.TransactionWhereInput = {
               senderAccount: parent.accountName,
+              chainId: parseInt(parent.chainId),
               events: {
                 some: {
                   moduleName: 'marmalade-v2.ledger',
                 },
               },
-              chainId: parseInt(parent.chainId),
-            },
-          });
-        },
-        async resolve(query, parent) {
-          try {
-            return await prismaClient.transaction.findMany({
-              ...query,
-              where: {
-                senderAccount: parent.accountName,
-                events: {
-                  some: {
-                    moduleName: 'marmalade-v2.ledger',
-                  },
-                },
-                chainId: parseInt(parent.chainId),
-              },
-              orderBy: {
-                height: 'desc',
-              },
-            });
+            };
+
+            return resolveTransactionConnection(args, context, whereCondition);
           } catch (error) {
             throw normalizeError(error);
           }

@@ -1,20 +1,18 @@
-import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
-import {
-  COMPLEXITY,
-  getDefaultConnectionComplexity,
-} from '@services/complexity';
+import { COMPLEXITY } from '@services/complexity';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { nonFungibleChainCheck } from '../data-loaders/non-fungible-chain-check';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
+import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 import type { NonFungibleAccount } from '../types/graphql-types';
 import {
   NonFungibleAccountName,
   NonFungibleChainAccountName,
 } from '../types/graphql-types';
 import Token from './token';
+import Transaction from './transaction';
 
 export default builder.node(
   builder.objectRef<NonFungibleAccount>(NonFungibleAccountName),
@@ -82,49 +80,21 @@ export default builder.node(
           }
         },
       }),
-      transactions: t.prismaConnection({
-        type: Prisma.ModelName.Transaction,
-        cursor: 'blockHash_requestKey',
+      transactions: t.connection({
+        type: Transaction,
         edgesNullable: false,
-        complexity: (args) => ({
-          field: getDefaultConnectionComplexity({
-            withRelations: true,
-            first: args.first,
-            last: args.last,
-          }),
-        }),
-        async totalCount(parent) {
+        resolve(parent, args, context) {
           try {
-            return await prismaClient.transaction.count({
-              where: {
-                senderAccount: parent.accountName,
-                events: {
-                  some: {
-                    moduleName: 'marmalade-v2.ledger',
-                  },
+            const whereCondition: Prisma.TransactionWhereInput = {
+              senderAccount: parent.accountName,
+              events: {
+                some: {
+                  moduleName: 'marmalade-v2.ledger',
                 },
               },
-            });
-          } catch (error) {
-            throw normalizeError(error);
-          }
-        },
-        async resolve(query, parent) {
-          try {
-            return await prismaClient.transaction.findMany({
-              ...query,
-              where: {
-                senderAccount: parent.accountName,
-                events: {
-                  some: {
-                    moduleName: 'marmalade-v2.ledger',
-                  },
-                },
-              },
-              orderBy: {
-                height: 'desc',
-              },
-            });
+            };
+
+            return resolveTransactionConnection(args, context, whereCondition);
           } catch (error) {
             throw normalizeError(error);
           }

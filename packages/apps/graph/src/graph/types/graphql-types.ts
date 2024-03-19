@@ -160,12 +160,13 @@ export interface MempoolInfo {
 
 export interface Transaction {
   hash: string;
-  result: TransactionResult | MempoolInfo;
+  result: TransactionInfo | MempoolInfo;
   cmd: TransactionCommand;
 }
 
 export interface TransactionInfo {
   badResult: string | null;
+  blockHash: string | null;
   continuation: string | null;
   gas: bigint;
   goodResult: string | null;

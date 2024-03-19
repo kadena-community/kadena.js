@@ -18,6 +18,10 @@ const TransactionInfo = builder.objectType('TransactionInfo', {
         'The transaction result when it was successful. Formatted as raw JSON.',
       nullable: true,
     }),
+    blockHash: t.exposeString('blockHash', {
+      description: 'The hash of the block this transaction belongs to.',
+      nullable: true,
+    }),
     continuation: t.exposeString('continuation', {
       description:
         'The JSON stringified continuation in the case that it is a continuation.',

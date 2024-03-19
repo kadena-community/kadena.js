@@ -22,6 +22,8 @@ type Block implements Node {
 
   """The proof of work hash."""
   powHash: String!
+
+  """The transactions in this block."""
   transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
 }
 
@@ -37,9 +39,8 @@ type BlockEventsConnectionEdge {
 }
 
 type BlockTransactionsConnection {
-  edges: [BlockTransactionsConnectionEdge!]!
+  edges: [BlockTransactionsConnectionEdge]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type BlockTransactionsConnectionEdge {
@@ -139,7 +140,6 @@ type FungibleAccount implements Node {
 type FungibleAccountTransactionsConnection {
   edges: [FungibleAccountTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type FungibleAccountTransactionsConnectionEdge {
@@ -173,7 +173,6 @@ type FungibleChainAccount implements Node {
 type FungibleChainAccountTransactionsConnection {
   edges: [FungibleChainAccountTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type FungibleChainAccountTransactionsConnectionEdge {
@@ -251,7 +250,6 @@ type NonFungibleAccount implements Node {
 type NonFungibleAccountTransactionsConnection {
   edges: [NonFungibleAccountTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type NonFungibleAccountTransactionsConnectionEdge {
@@ -271,7 +269,6 @@ type NonFungibleChainAccount implements Node {
 type NonFungibleChainAccountTransactionsConnection {
   edges: [NonFungibleChainAccountTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type NonFungibleChainAccountTransactionsConnectionEdge {
@@ -365,20 +362,11 @@ type Query {
   """
   pactQuery(pactQuery: PactQuery!): String!
 
-  """Retrieve one transaction by its unique key."""
-  transaction(blockHash: String!, requestKey: String!): Transaction
-
   """Retrieve a completed transaction by its unique key."""
-  transaction1(blockHash: String!, requestKey: String!): Transaction1
+  transaction(blockHash: String!, requestKey: String!): Transaction
 
   """Retrieve transactions."""
   transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactionsConnection!
-
-  """Retrieve transactions."""
-  transactions1(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactions1Connection!
-
-  """Retrieve all transactions by a given public key."""
-  transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
 
   """Retrieve one transfer by its unique key."""
   transfer(blockHash: String!, chainId: String!, moduleHash: String!, orderIndex: Int!, requestKey: String!): Transfer
@@ -428,32 +416,9 @@ type QueryEventsConnectionEdge {
   node: Event!
 }
 
-type QueryTransactions1Connection {
-  edges: [QueryTransactions1ConnectionEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type QueryTransactions1ConnectionEdge {
-  cursor: String!
-  node: Transaction!
-}
-
-type QueryTransactionsByPublicKeyConnection {
-  edges: [QueryTransactionsByPublicKeyConnectionEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type QueryTransactionsByPublicKeyConnectionEdge {
-  cursor: String!
-  node: Transaction!
-}
-
 type QueryTransactionsConnection {
   edges: [QueryTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 type QueryTransactionsConnectionEdge {
@@ -476,23 +441,6 @@ type QueryTransfersConnectionEdge {
 type Signer implements Node {
   """The signer for the gas."""
   address: String
-  capabilities: String
-  id: ID!
-  orderIndex: Int!
-  publicKey: String!
-  requestKey: String!
-
-  """The signature scheme that was used to sign."""
-  scheme: String
-
-  """The result of the signing operation of the hash of the transaction."""
-  signature: String!
-}
-
-"""A signer for a specific transaction."""
-type Signer1 implements Node {
-  """The signer for the gas."""
-  address: String
   clist: [CapabilitiesList!]!
   id: ID!
   publicKey: String!
@@ -511,15 +459,8 @@ type Subscription {
   """Subscribe to new blocks from a specific depth."""
   newBlocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
 
-  """
-  Listen for a transaction by request key. Returns the ID when it is in a block.
-  """
-  transaction(requestKey: String!): Transaction
-
-  """
-  Listen for a transaction by request key. Returns the transaction when found.
-  """
-  transactionStatus(chainId: String!, requestKey: String!): Transaction1
+  """Listen for a transaction by request key and chain."""
+  transaction(chainId: String!, requestKey: String!): Transaction
 }
 
 """The token identifier and its balance."""
@@ -538,23 +479,12 @@ type TokenInfo {
   uri: String!
 }
 
-"""A confirmed transaction."""
+"""A transaction."""
 type Transaction implements Node {
-  block: Block
   cmd: TransactionCommand!
-  events: [Event!]
   hash: String!
   id: ID!
   result: TransactionResult!
-  transfers: [Transfer!]
-}
-
-"""A transaction."""
-type Transaction1 implements Node {
-  cmd: TransactionCommand1!
-  hash: String!
-  id: ID!
-  result: TransactionResult1!
 }
 
 """A transaction command."""
@@ -565,24 +495,16 @@ type TransactionCommand {
   networkId: String!
   nonce: String!
   payload: TransactionPayload!
-  signers: [Signer!]
-}
-
-"""A transaction command."""
-type TransactionCommand1 {
-  meta: TransactionMeta!
-
-  """The network id of the environment."""
-  networkId: String!
-  nonce: String!
-  payload: TransactionPayload!
-  signers: [Signer1!]!
+  signers: [Signer!]!
 }
 
 """The result of a transaction."""
 type TransactionInfo {
   """The transaction result when it was successful. Formatted as raw JSON."""
   badResult: String
+
+  """The hash of the block this transaction belongs to."""
+  blockHash: String
 
   """
   The JSON stringified continuation in the case that it is a continuation.
@@ -617,31 +539,7 @@ type TransactionMeta {
 union TransactionPayload = ContinuationPayload | ExecutionPayload
 
 """The result of a transaction."""
-type TransactionResult {
-  """The transaction result when it was successful. Formatted as raw JSON."""
-  badResult: String
-
-  """
-  The JSON stringified continuation in the case that it is a continuation.
-  """
-  continuation: String
-  eventCount: BigInt
-  gas: BigInt!
-
-  """The transaction result when it was successful. Formatted as raw JSON."""
-  goodResult: String
-
-  """The height of the block this transaction belongs to."""
-  height: BigInt!
-
-  """Identifier to retrieve the logs for the execution of the transaction."""
-  logs: String
-  metadata: String
-  transactionId: BigInt
-}
-
-"""The result of a transaction."""
-union TransactionResult1 = MempoolInfo | TransactionInfo
+union TransactionResult = MempoolInfo | TransactionInfo
 
 """The status of the transaction."""
 enum TransactionStatus {
@@ -686,7 +584,5 @@ type Transfer implements Node {
   receiverAccount: String!
   requestKey: String!
   senderAccount: String!
-
-  """The transaction that initiated this transfer."""
   transaction: Transaction
 }

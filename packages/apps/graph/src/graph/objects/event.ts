@@ -1,12 +1,10 @@
-import { prismaClient } from '@db/prisma-client';
-import type { Transaction } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
-import { PRISMA, builder } from '../builder';
-import GQLTransaction from '../objects/transaction';
-import { prismaTransactionMapper } from '../utils/transaction-mapper';
+import { builder } from '../builder';
+import { prismaTransactionMapper } from '../mappers/transaction-mapper';
+import Transaction from '../objects/transaction';
 
 export default builder.prismaNode(Prisma.ModelName.Event, {
   description:
@@ -48,27 +46,16 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
 
     //relations
     transaction: t.field({
-      type: GQLTransaction,
+      type: Transaction,
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
-        transactions: true,
+        transaction: true,
       },
-      async resolve(__query, parent, context) {
+      async resolve(parent, __args, context) {
         try {
           if (parent.transaction) {
-            const signers = await prismaClient.signer.findMany({
-              where: {
-                requestKey: (parent.transaction as Transaction).requestKey,
-              },
-              take: PRISMA.DEFAULT_SIZE,
-            });
-
-            return prismaTransactionMapper(
-              parent.transaction as Transaction,
-              signers,
-              context,
-            );
+            return prismaTransactionMapper(parent.transaction, context);
           }
           return null;
         } catch (error) {

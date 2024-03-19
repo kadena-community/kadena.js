@@ -2,17 +2,16 @@ import { prismaClient } from '@db/prisma-client';
 import { mempoolLookup } from '@services/chainweb-node/mempool';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
-import GQLTransactions from '../objects/transaction';
-import type { Transaction } from '../types/graphql-types';
 import {
   mempoolTxMapper,
   prismaTransactionMapper,
-} from '../utils/transaction-mapper';
+} from '../mappers/transaction-mapper';
+import GQLTransactions from '../objects/transaction';
+import type { Transaction } from '../types/graphql-types';
 
-builder.subscriptionField('transactionStatus', (t) =>
+builder.subscriptionField('transaction', (t) =>
   t.field({
-    description:
-      'Listen for a transaction by request key. Returns the transaction when found.',
+    description: 'Listen for a transaction by request key and chain.',
     args: {
       requestKey: t.arg.string({ required: true }),
       chainId: t.arg.string({ required: true }),
@@ -39,7 +38,7 @@ async function* iteratorFn(
     });
 
     if (transaction) {
-      yield prismaTransactionMapper(transaction, [], context);
+      yield prismaTransactionMapper(transaction, context);
       return;
     } else {
       const mempoolResponse = await checkMempoolForTransaction(

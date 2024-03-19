@@ -5,8 +5,13 @@ import TransactionResult from './transaction-result';
 export default builder.node('Transaction', {
   description: 'A transaction.',
   id: {
-    resolve: (parent) =>
-      JSON.stringify([parent.hash, parent.cmd.meta.creationTime]),
+    resolve: (parent) => {
+      if ('blockHash' in parent.result) {
+        return JSON.stringify([parent.hash, parent.result.blockHash]);
+      } else {
+        return JSON.stringify([parent.hash, parent.result]);
+      }
+    },
   },
 
   fields: (t) => ({

@@ -8,9 +8,11 @@ import {
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
+import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 import type { FungibleChainAccount } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
 import Guard from './guard';
+import Transaction from './transaction';
 
 export default builder.node(
   builder.objectRef<FungibleChainAccount>(FungibleChainAccountName),
@@ -68,20 +70,12 @@ export default builder.node(
         },
       }),
       balance: t.exposeFloat('balance'),
-      transactions: t.prismaConnection({
-        type: Prisma.ModelName.Transaction,
-        cursor: 'blockHash_requestKey',
+      transactions: t.connection({
+        type: Transaction,
         edgesNullable: false,
-        complexity: (args) => ({
-          field: getDefaultConnectionComplexity({
-            withRelations: true,
-            first: args.first,
-            last: args.last,
-          }),
-        }),
-        async totalCount(parent) {
-          return await prismaClient.transaction.count({
-            where: {
+        resolve(parent, args, context) {
+          try {
+            const whereCondition: Prisma.TransactionWhereInput = {
               senderAccount: parent.accountName,
               events: {
                 some: {
@@ -89,26 +83,9 @@ export default builder.node(
                 },
               },
               chainId: parseInt(parent.chainId),
-            },
-          });
-        },
-        async resolve(query, parent) {
-          try {
-            return await prismaClient.transaction.findMany({
-              ...query,
-              where: {
-                senderAccount: parent.accountName,
-                events: {
-                  some: {
-                    moduleName: parent.fungibleName,
-                  },
-                },
-                chainId: parseInt(parent.chainId),
-              },
-              orderBy: {
-                height: 'desc',
-              },
-            });
+            };
+
+            return resolveTransactionConnection(args, context, whereCondition);
           } catch (error) {
             throw normalizeError(error);
           }

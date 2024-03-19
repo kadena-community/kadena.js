@@ -2,9 +2,10 @@ import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
-import { PRISMA, builder } from '../builder';
-import Transaction1 from '../objects/transaction';
-import { prismaTransactionMapper } from '../utils/transaction-mapper';
+import { builder } from '../builder';
+import { prismaTransactionMapper } from '../mappers/transaction-mapper';
+import Transaction from '../objects/transaction';
+import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 
 builder.queryField('transaction', (t) =>
   t.field({
@@ -14,10 +15,9 @@ builder.queryField('transaction', (t) =>
       blockHash: t.arg.string({ required: true }),
       requestKey: t.arg.string({ required: true }),
     },
-    type: Transaction1,
+    type: Transaction,
     complexity: getDefaultConnectionComplexity(),
-    async resolve(parent, args, context) {
-      console.log(parent);
+    async resolve(__parent, args, context) {
       try {
         const prismaTransactiom = await prismaClient.transaction.findUnique({
           where: {
@@ -30,16 +30,7 @@ builder.queryField('transaction', (t) =>
 
         if (!prismaTransactiom) return null;
 
-        const prismaSigners = await prismaClient.signer.findMany({
-          where: { requestKey: prismaTransactiom.requestKey },
-          take: PRISMA.DEFAULT_SIZE,
-        });
-
-        return prismaTransactionMapper(
-          prismaTransactiom,
-          prismaSigners,
-          context,
-        );
+        return prismaTransactionMapper(prismaTransactiom, context);
       } catch (error) {
         throw normalizeError(error);
       }
@@ -48,7 +39,7 @@ builder.queryField('transaction', (t) =>
 );
 
 builder.queryField('transactions', (t) =>
-  t.prismaConnection({
+  t.connection({
     description: 'Retrieve transactions.',
     edgesNullable: false,
     args: {
@@ -58,37 +49,25 @@ builder.queryField('transactions', (t) =>
       blockHash: t.arg.string({ required: false }),
       requestKey: t.arg.string({ required: false }),
     },
-    type: Prisma.ModelName.Transaction,
-    cursor: 'blockHash_requestKey',
-    complexity: (args) => ({
-      field: getDefaultConnectionComplexity({
-        withRelations: !!args.fungibleName,
-        first: args.first,
-        last: args.last,
-      }),
-    }),
-    async totalCount(__parent, args) {
-      try {
-        return await prismaClient.transaction.count({
-          where: generateTransactionFilter(args),
-        });
-      } catch (error) {
-        throw normalizeError(error);
-      }
-    },
-    async resolve(query, __parent, args) {
+    type: Transaction,
+
+    async resolve(__parent, args, context) {
       try {
         const whereFilter = generateTransactionFilter(args);
-
-        return await prismaClient.transaction.findMany({
-          ...query,
-          where: {
-            ...whereFilter,
-          },
-          orderBy: {
-            height: 'desc',
-          },
+        const totalCount = await prismaClient.transaction.count({
+          where: whereFilter,
         });
+
+        const connection = await resolveTransactionConnection(
+          args,
+          context,
+          whereFilter,
+        );
+        return {
+          totalCount,
+          pageInfo: connection.pageInfo,
+          edges: connection.edges,
+        };
       } catch (error) {
         throw normalizeError(error);
       }

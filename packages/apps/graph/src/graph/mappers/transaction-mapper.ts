@@ -1,13 +1,44 @@
+import { prismaClient } from '@db/prisma-client';
 import type { Signer, Transaction } from '@prisma/client';
 import type { IContext } from '../builder';
 import type { Transaction as GQLTransaction } from '../types/graphql-types';
 import { prismaSignersMapper } from './signer-mapper';
 
-export function prismaTransactionMapper(
-  prismaTransaction: Transaction,
-  prismaSigners: Signer[],
+export async function prismaTransactionsMapper(
+  prismaTransactions: Transaction[],
   context: IContext,
-): GQLTransaction {
+): Promise<GQLTransaction[]> {
+  const requestKeys = [...new Set(prismaTransactions.map((t) => t.requestKey))];
+
+  const prismaSigners = await prismaClient.signer.findMany({
+    where: { requestKey: { in: requestKeys } },
+  });
+
+  return Promise.all(
+    prismaTransactions.map(async (prismaTransaction) => {
+      const transactionSigners = prismaSigners.filter(
+        (s) => s.requestKey === prismaTransaction.requestKey,
+      );
+      return await prismaTransactionMapper(
+        prismaTransaction,
+        context,
+        transactionSigners,
+      );
+    }),
+  );
+}
+
+export async function prismaTransactionMapper(
+  prismaTransaction: Transaction,
+  context: IContext,
+  prismaSigners?: Signer[],
+): Promise<GQLTransaction> {
+  if (!prismaSigners) {
+    prismaSigners = await prismaClient.signer.findMany({
+      where: { requestKey: prismaTransaction.requestKey },
+    });
+  }
+
   return {
     hash: prismaTransaction.requestKey,
     cmd: {
@@ -37,6 +68,7 @@ export function prismaTransactionMapper(
       badResult: prismaTransaction.badResult
         ? JSON.stringify(prismaTransaction.badResult)
         : null,
+      blockHash: prismaTransaction.blockHash,
       continuation: prismaTransaction.continuation
         ? JSON.stringify(prismaTransaction.continuation)
         : null,

@@ -6,9 +6,11 @@ import {
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
+import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 import type { Guard } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
 import FungibleChainAccount from './fungible-chain-account';
+import Transaction from './transaction';
 
 export default builder.prismaNode(Prisma.ModelName.Block, {
   description:
@@ -85,34 +87,18 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
       },
     }),
 
-    // relations
-    transactions: t.prismaConnection({
-      type: Prisma.ModelName.Transaction,
-      cursor: 'blockHash_requestKey',
-      edgesNullable: false,
-      complexity: (args) => ({
-        field: getDefaultConnectionComplexity({
-          first: args.first,
-          last: args.last,
-        }),
-      }),
+    transactions: t.connection({
+      type: Transaction,
+      description: 'The transactions in this block.',
       select: {
-        transactions: true,
+        hash: true,
       },
-      async totalCount(parent) {
+      resolve(parent, args, context) {
         try {
-          return (
-            parent as Prisma.BlockGetPayload<{ select: { transactions: true } }>
-          ).transactions.length;
-        } catch (error) {
-          throw normalizeError(error);
-        }
-      },
-      async resolve(__query, parent) {
-        try {
-          return (
-            parent as Prisma.BlockGetPayload<{ select: { transactions: true } }>
-          ).transactions;
+          const whereCondition: Prisma.TransactionWhereInput = {
+            blockHash: parent.hash,
+          };
+          return resolveTransactionConnection(args, context, whereCondition);
         } catch (error) {
           throw normalizeError(error);
         }
@@ -141,7 +127,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
           throw normalizeError(error);
         }
       },
-      async resolve(query, parent) {
+      async resolve(__query, parent) {
         try {
           return (
             parent as Prisma.BlockGetPayload<{ select: { events: true } }>
