@@ -103,9 +103,14 @@ The Kadena `client-utils` package includes the following `core` helper functions
 
 ### asyncPipe
 
-Use `asyncPipe` to ...
+Use `asyncPipe` to open a connection to the Kadena network and execute multiple functions in order to return a single result.
+This utility enables you to pass the output from the first function as input to a second function and return the combined results.
 
 #### Basic usage
+
+```typescript
+asyncPipe( function(), function())
+```
 
 #### Parameters
 
@@ -113,6 +118,21 @@ Use `asyncPipe` to ...
 
 #### Example
 
+The following example pipes the result from the `appendAsync` function to the `asyncPipe` function and returns the combined results.
+
+```
+const asyncAppend = (append: string) => (input: string) =>
+      Promise.resolve(`${input} ${append}`);
+
+    const appendAsync = asyncPipe(
+      asyncAlways,
+      asyncAppend('one'),
+      asyncAppend('two'),
+    );
+    const result = await appendAsync('hello');
+    expect(result).toEqual('hello one two');
+  });
+```
 
 ### crossChainClient
 
@@ -128,7 +148,7 @@ Use `crossChainClient` to ...
 
 ### dirtyReadClient
 
-Use `dirtyReadClient` to ...
+Use `dirtyReadClient` to read a raw result from the Kadena blockchain without submittinga transaction.
 
 #### Basic usage
 
