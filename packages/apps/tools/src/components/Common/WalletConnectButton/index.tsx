@@ -3,6 +3,7 @@ import { MonoLink } from '@kadena/react-icons/system';
 import { Button } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
+import React from 'react';
 
 const WalletConnectButton: FC = () => {
   const { connect, isInitializing, disconnect, session } =
