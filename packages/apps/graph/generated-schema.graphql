@@ -330,16 +330,10 @@ type Query {
   """
   fungibleAccount(accountName: String!, fungibleName: String!): FungibleAccount
 
-  """Retrieve an account by public key."""
-  fungibleAccountByPublicKey(publicKey: String!): FungibleAccount
-
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
   fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
-
-  """Retrieve a chain account by public key."""
-  fungibleChainAccountByPublicKey(chainId: String!, publicKey: String!): FungibleChainAccount
 
   """Estimate the gas limit for a transaction."""
   gasLimitEstimate(input: String!): GasLimitEstimation!
