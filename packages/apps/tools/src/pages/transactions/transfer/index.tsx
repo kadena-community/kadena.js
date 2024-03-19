@@ -23,7 +23,9 @@ import { notificationLinkStyle } from './styles.css';
 import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/right-info-sidebar';
 import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
 import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
+import useIsLedgerLibSupported from '@/hooks/use-is-ledger-lib-supported';
 import { MonoHelp } from '@kadena/react-icons/system';
+
 const TransferPage = () => {
   const router = useRouter();
   useToolbar(menuData, router.pathname);
@@ -35,6 +37,8 @@ const TransferPage = () => {
   >((pactCommandObject) => {
     setData(pactCommandObject);
   }, []);
+
+  const browserSupported = useIsLedgerLibSupported();
 
   const [receiverChainId, setReceiverChainId] = useState<ChainId>(CHAINS[0]);
   const [senderChainId, setSenderChainId] = useState<ChainId>(CHAINS[0]);
@@ -59,6 +63,9 @@ const TransferPage = () => {
     },
   ];
 
+  const [isLedger, setIsLedger] = useState<boolean>(false);
+  const showNotSupported = !browserSupported && isLedger;
+
   const openSidebarMenu = () => setSidebarOpen(!sidebarOpen);
 
   return (
@@ -81,6 +88,22 @@ const TransferPage = () => {
         paddingBlockEnd={'xxxl'}
         gap={'lg'}
       >
+        {showNotSupported ? (
+          <Notification intent={'negative'} role={'alert'} isDismissable>
+            <Trans
+              i18nKey="common:ledger-error-notification"
+              components={[
+                <a
+                  className={notificationLinkStyle}
+                  target={'_blank'}
+                  href="https://caniuse.com/?search=webhid"
+                  rel="noreferrer"
+                  key="link-to-ledger-docs"
+                />,
+              ]}
+            />
+          </Notification>
+        ) : null}
         <Notification intent="info" role="alert" isDismissable>
           <Trans
             i18nKey="common:ledger-info-notification"
@@ -100,6 +123,7 @@ const TransferPage = () => {
           onSuccess={onSignSuccess}
           onSenderChainUpdate={setSenderChainId}
           onReceiverChainUpdate={setReceiverChainId}
+          setIsLedger={setIsLedger}
         />
         <SubmitTransaction
           data={data}

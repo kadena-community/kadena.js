@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Button, Notification, Stack } from '@kadena/react-ui';
 
@@ -46,10 +46,12 @@ export const SignForm = ({
   onSuccess,
   onSenderChainUpdate,
   onReceiverChainUpdate,
+  setIsLedger,
 }: {
   onSuccess: (pactCommandObject: PactCommandObject) => void;
   onSenderChainUpdate: (chainId: ChainId) => void;
   onReceiverChainUpdate: (chainId: ChainId) => void;
+  setIsLedger: (mode: boolean) => void;
 }) => {
   const { t } = useTranslation('common');
 
@@ -96,6 +98,12 @@ export const SignForm = ({
   };
 
   const [signingMethod, setSigningMethod] = useState<SenderType>('Ledger');
+
+  useEffect(() => {
+    if (signingMethod === 'Ledger') {
+      setIsLedger(true);
+    }
+  }, [signingMethod, setIsLedger]);
 
   const handleSignTransaction = async (data: FormData) => {
     let transferInput: TransferInput;

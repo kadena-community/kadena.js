@@ -1,4 +1,3 @@
-import type { Transaction } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
@@ -49,11 +48,11 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
-        transactions: true,
+        transaction: true,
       },
       async resolve(__query, parent) {
         try {
-          return parent.transactions as Transaction | null | undefined;
+          return parent.transaction;
         } catch (error) {
           throw normalizeError(error);
         }
