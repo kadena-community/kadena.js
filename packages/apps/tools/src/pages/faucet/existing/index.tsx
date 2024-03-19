@@ -38,7 +38,11 @@ import { sidebarLinks } from '@/constants/side-links';
 import { notificationLinkStyle } from '@/pages/faucet/new/styles.css';
 import { getExplorerLink } from '@/utils/getExplorerLink';
 import type { ITransactionDescriptor } from '@kadena/client';
-import { MonoKeyboardArrowRight } from '@kadena/react-icons/system';
+import {
+  MonoInfo,
+  MonoKeyboardArrowRight,
+  MonoLink,
+} from '@kadena/react-icons/system';
 import Link from 'next/link';
 import {
   accountNameContainerClass,
@@ -328,7 +332,7 @@ const ExistingAccountFaucetPage: FC = () => {
         initialOpenItem={openItem}
         sections={[
           {
-            icon: 'Information',
+            icon: <MonoInfo />,
             title: t('Frequently asked questions'),
             children: (
               <>
@@ -342,7 +346,7 @@ const ExistingAccountFaucetPage: FC = () => {
             ),
           },
           {
-            icon: 'Link',
+            icon: <MonoLink />,
             title: t('Resources & Links'),
             children: (
               <div className={linksBoxStyle}>

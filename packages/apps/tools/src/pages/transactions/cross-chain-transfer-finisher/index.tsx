@@ -32,7 +32,9 @@ import { getApiHost } from '@/utils/network';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   MonoContentCopy,
+  MonoInfo,
   MonoKeyboardArrowRight,
+  MonoLink,
 } from '@kadena/react-icons/system';
 import {
   Box,
@@ -637,7 +639,7 @@ const CrossChainTransferFinisher: FC = () => {
         initialOpenItem={openItem}
         sections={[
           {
-            icon: 'Information',
+            icon: <MonoInfo />,
             title: activeInfoTag.title,
             children: (
               <div className={infoBoxStyle}>
@@ -646,7 +648,7 @@ const CrossChainTransferFinisher: FC = () => {
             ),
           },
           {
-            icon: 'Link',
+            icon: <MonoLink />,
             title: t('Resources & Links'),
             children: (
               <div className={linksBoxStyle}>

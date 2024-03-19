@@ -8,7 +8,11 @@ import { useToolbar } from '@/context/layout-context';
 import type { ITransaction } from '@/services/accounts/get-transactions';
 import { getTransactions } from '@/services/accounts/get-transactions';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
-import { MonoKeyboardArrowRight } from '@kadena/react-icons/system';
+import {
+  MonoDelete,
+  MonoInfo,
+  MonoKeyboardArrowRight,
+} from '@kadena/react-icons/system';
 import {
   Box,
   Breadcrumbs,
@@ -145,7 +149,7 @@ const CheckTransactions: FC = () => {
         ref={transactionDetailsRef}
         sections={[
           {
-            icon: 'Information',
+            icon: <MonoInfo />,
             title: t('Transaction Details'),
             children: (
               <>
@@ -212,7 +216,7 @@ const CheckTransactions: FC = () => {
         </GridItem>
         <GridItem>
           <div className={headerButtonGroupClass}>
-            <Button icon="TrashCan" onClick={resetFiltersEvent}>
+            <Button icon={<MonoDelete />} onClick={resetFiltersEvent}>
               {t('Reset all filters')}
             </Button>
             <Button icon="Refresh" onClick={refreshResultsEvent}>

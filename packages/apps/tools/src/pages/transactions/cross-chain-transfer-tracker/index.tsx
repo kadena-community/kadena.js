@@ -18,6 +18,7 @@ import {
 } from '@/services/transfer-tracker/get-transfer-status';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  MonoInfo,
   MonoLink,
   MonoRefresh,
   MonoSearch,
@@ -343,7 +344,7 @@ const CrossChainTransferTracker: FC = () => {
         initialOpenItem={openItem}
         sections={[
           {
-            icon: 'Information',
+            icon: <MonoInfo />,
             title: helpInfoSections[0].title,
             children: (
               <div className={infoBoxStyle}>
@@ -352,7 +353,7 @@ const CrossChainTransferTracker: FC = () => {
             ),
           },
           {
-            icon: 'Link',
+            icon: <MonoLink />,
             title: t('Resources & Links'),
             children: (
               <div className={linksBoxStyle}>

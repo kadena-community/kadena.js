@@ -10,6 +10,7 @@ import {
 } from './styles.css';
 
 import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
+import { MonoInfo, MonoLink } from '@kadena/react-icons/system';
 import { Accordion, AccordionItem } from '@kadena/react-ui';
 import { breakpoints } from '@kadena/react-ui/styles';
 import useTranslation from 'next-translate/useTranslation';
@@ -58,7 +59,7 @@ export const RightInfoSidebar: FC<IRightInfoSidebarProps> = ({
       initialOpenItem={initialItem}
       sections={[
         {
-          icon: 'Information',
+          icon: <MonoInfo />,
           title: t('transfer-sidebar-title'),
           children: (
             <div className={infoAccordionWrapper}>
@@ -82,7 +83,7 @@ export const RightInfoSidebar: FC<IRightInfoSidebarProps> = ({
           ),
         },
         {
-          icon: 'Link',
+          icon: <MonoLink />,
           title: t('Resources & Links'),
           children: (
             <div className={linksBoxStyle}>

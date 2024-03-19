@@ -60,7 +60,10 @@ import type { ITransactionDescriptor } from '@kadena/client';
 import {
   MonoAdd,
   MonoContentCopy,
+  MonoDelete,
+  MonoInfo,
   MonoKeyboardArrowRight,
+  MonoLink,
 } from '@kadena/react-icons/system';
 import { useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
@@ -323,7 +326,7 @@ const NewAccountFaucetPage: FC = () => {
           onIconButtonClick={() => {
             deletePublicKey(index);
           }}
-          icon="TrashCan"
+          icon={<MonoDelete />}
           maskOptions={{ headLength: 4, character: '.' }}
         />
       ))}
@@ -536,7 +539,7 @@ const NewAccountFaucetPage: FC = () => {
         initialOpenItem={openItem}
         sections={[
           {
-            icon: 'Information',
+            icon: <MonoInfo />,
             title: t('Frequently asked questions'),
             children: (
               <>
@@ -550,7 +553,7 @@ const NewAccountFaucetPage: FC = () => {
             ),
           },
           {
-            icon: 'Link',
+            icon: <MonoLink />,
             title: t('Resources & Links'),
             children: (
               <div className={linksBoxStyle}>
