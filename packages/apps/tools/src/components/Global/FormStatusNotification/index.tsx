@@ -1,8 +1,8 @@
 import {
+  MonoAccessTime,
   MonoCheck,
   MonoInfo,
   MonoWarning,
-  MonoWarningAmber,
 } from '@kadena/react-icons/system';
 import type { INotificationProps } from '@kadena/react-ui';
 import { Notification, NotificationHeading } from '@kadena/react-ui';
@@ -25,9 +25,9 @@ const statusToColorMap: Record<FormStatus, INotificationProps['intent']> = {
 
 const statusToIconMap: Record<FormStatus, INotificationProps['icon']> = {
   erroneous: <MonoWarning />,
-  idle: <MonoWarningAmber />, // is this?
+  idle: <MonoAccessTime />,
   processing: <MonoInfo />,
-  successful: <MonoCheck />, // MonoCheckCircleOutline?
+  successful: <MonoCheck />,
 };
 
 export interface IFormStatusNotificationProps {
