@@ -7,6 +7,7 @@ import { useComboBox, useFilter, useHover } from 'react-aria';
 import { useComboBoxState } from 'react-stately';
 
 import { atoms } from '../../../styles';
+import { fixAriaLabeling } from '../../../utils';
 import { ListBox } from '../../ListBox';
 import { Popover } from '../../Popover';
 import { formField } from '../Form.css';
@@ -34,6 +35,7 @@ function ComboBoxBase<T extends object>(
   props: IComboboxProps<T>,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
+  props = fixAriaLabeling(props, 'ComboBox');
   const isDisabled = props.disabled ?? props.isDisabled;
   const inputRef = useObjectRef(ref);
   const buttonRef = useRef(null);

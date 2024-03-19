@@ -9,6 +9,7 @@ import { ListBox } from '../../ListBox';
 import { Popover } from '../../Popover';
 
 import classNames from 'classnames';
+import { fixAriaLabeling } from '../../../utils';
 import { formField } from '../Form.css';
 import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
@@ -31,6 +32,7 @@ function SelectBase<T extends object>(
   props: ISelectProps<T>,
   forwardedRef: ForwardedRef<HTMLButtonElement>,
 ) {
+  props = fixAriaLabeling(props, 'Select');
   const isDisabled = props.disabled ?? props.isDisabled;
   const ref = useObjectRef(forwardedRef);
   const state = useSelectState({

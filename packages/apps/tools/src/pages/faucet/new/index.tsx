@@ -453,7 +453,6 @@ const NewAccountFaucetPage: FC = () => {
               <PredKeysSelect
                 onSelectionChange={onPredSelectChange}
                 selectedKey={pred}
-                aria-label="Select Predicate"
               />
             ) : null}
           </Card>
@@ -487,7 +486,6 @@ const NewAccountFaucetPage: FC = () => {
                 <ChainSelect
                   onSelectionChange={onChainSelectChange}
                   selectedKey={chainID}
-                  aria-label="Select Chain ID"
                 />
               </div>
             </div>

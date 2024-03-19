@@ -244,7 +244,6 @@ export const SignFormReceiver = ({
                   onPredicateUpdate(pred);
                 }}
                 selectedKey={pred}
-                aria-label="Select Predicate"
               />
             ) : null}
 

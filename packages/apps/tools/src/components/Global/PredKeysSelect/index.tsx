@@ -7,8 +7,6 @@ export type PredKey = 'keys-all' | 'keys-any' | 'keys-2';
 
 export type OnPredSelectChange = (value: PredKey) => void;
 
-const ELEMENT_ID = 'select-pred';
-
 const predicates: Array<PredKey> = ['keys-all', 'keys-any', 'keys-2'];
 interface IPredKeysSelectProps
   extends Omit<ISelectProps, 'onSelectionChange' | 'selectedKey' | 'children'> {
@@ -35,11 +33,9 @@ const PredKeysSelect: FC<IPredKeysSelectProps> = ({
   return (
     <Select
       {...rest}
-      id={ELEMENT_ID}
-      label="Predicate"
+      label="Select Predicate"
       onSelectionChange={onSelectChange}
       selectedKey={selectedKey}
-      aria-label="Select Predicate"
     >
       {predicates.map((pred) => (
         <SelectItem key={pred}>{pred}</SelectItem>
