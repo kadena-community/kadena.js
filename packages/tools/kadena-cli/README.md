@@ -423,7 +423,6 @@ Tool to generate and manage keys
 | **Subcommand** | **Description**                           | **Required** | **Default value** |
 | -------------- | ----------------------------------------- | ------------ | ----------------- |
 | generate       | Generate random public/secret key pair(s) | No           |                   |
-| decrypt        | Decrypt encrypted messsage                | No           |                   |
 | list           | List available key(s)                     | No           |                   |
 
 ---
