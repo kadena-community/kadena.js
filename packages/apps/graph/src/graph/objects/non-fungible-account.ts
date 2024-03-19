@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';

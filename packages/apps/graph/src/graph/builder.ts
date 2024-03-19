@@ -26,7 +26,6 @@ import type {
   GraphConfiguration,
   Guard,
   MempoolInfo,
-  MempoolTransaction,
   NonFungibleAccount,
   NonFungibleChainAccount,
   Signer,
@@ -36,8 +35,6 @@ import type {
   TransactionCommand,
   TransactionInfo,
   TransactionMeta,
-  TransactionResult,
-  TransactionSubscriptionResponse,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -89,9 +86,6 @@ export const builder = new SchemaBuilder<
       TransactionMeta: TransactionMeta;
       ExecutionPayload: ExecutionPayload;
       ContinuationPayload: ContinuationPayload;
-      TransactionResult: TransactionResult;
-      TransactionSubscriptionResponse: TransactionSubscriptionResponse;
-      MempoolTransaction: MempoolTransaction;
       Transaction: Transaction;
       MempoolInfo: MempoolInfo;
       TransactionInfo: TransactionInfo;

@@ -123,47 +123,18 @@ export interface TransactionMeta {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-
-export interface TransactionResult {
-  badResult: string | null;
-  continuation: string | null;
-  gas: bigint;
-  goodResult: string | null;
-  height: bigint;
-  logs: string | null;
-  metadata: string | null;
-  eventCount: bigint | null;
-  transactionId: bigint | null;
-}
-
-export const TransactionStatus = {
-  PENDING: 'pending',
-  FAILED: 'failed',
-  MISSING: 'missing',
-} as const;
-
-type TransactionStatusKey = keyof typeof TransactionStatus;
-
-export interface TransactionSubscriptionResponse {
-  status: TransactionStatusKey;
-  transaction: Transaction | null;
-}
-
-export interface MempoolTransaction {
-  hash: string;
-  cmd: TransactionCommand;
-}
-
 export interface MempoolInfo {
   status: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Transaction {
   hash: string;
   result: TransactionInfo | MempoolInfo;
   cmd: TransactionCommand;
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export interface TransactionInfo {
   badResult: string | null;
   blockHash: string | null;
@@ -177,6 +148,7 @@ export interface TransactionInfo {
   transactionId: bigint | null;
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Signer {
   publicKey: string;
   address: string | null;
@@ -193,6 +165,7 @@ export interface TransactionCommand {
   nonce: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export interface CapabilitiesList {
   name: string;
   args: string;

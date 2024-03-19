@@ -217,15 +217,6 @@ type MempoolInfo {
   status: String
 }
 
-"""A transaction in the mempool."""
-type MempoolTransaction {
-  """The command of the transaction."""
-  cmd: TransactionCommand!
-
-  """The hash of the transaction."""
-  hash: String!
-}
-
 """The account of the miner that solved a block."""
 type MinerKey implements Node {
   block: Block!
@@ -540,25 +531,6 @@ union TransactionPayload = ContinuationPayload | ExecutionPayload
 
 """The result of a transaction."""
 union TransactionResult = MempoolInfo | TransactionInfo
-
-"""The status of the transaction."""
-enum TransactionStatus {
-  FAILED
-  MISSING
-  PENDING
-}
-
-"""The body of the transaction status subscription."""
-union TransactionSubscription = MempoolTransaction | Transaction
-
-"""The response for a transaction subscription."""
-type TransactionSubscriptionResponse {
-  """The status of the transaction."""
-  status: TransactionStatus!
-
-  """The transaction."""
-  transaction: TransactionSubscription
-}
 
 """A transfer of funds from a fungible between two accounts."""
 type Transfer implements Node {

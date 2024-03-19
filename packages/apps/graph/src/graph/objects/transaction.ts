@@ -1,6 +1,6 @@
 import { builder } from '../builder';
 import TransactionCommand from './transaction-command';
-import TransactionResult from './transaction-result';
+import TransactionResult from './transaction-info';
 
 export default builder.node('Transaction', {
   description: 'A transaction.',

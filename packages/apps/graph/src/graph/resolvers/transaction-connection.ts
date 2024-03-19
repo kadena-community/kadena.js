@@ -1,10 +1,8 @@
 import { prismaClient } from '@db/prisma-client';
-import {
-  ResolveCursorConnectionArgs,
-  resolveCursorConnection,
-} from '@pothos/plugin-relay';
-import { Prisma } from '@prisma/client';
-import { IContext } from '../builder';
+import type { ResolveCursorConnectionArgs } from '@pothos/plugin-relay';
+import { resolveCursorConnection } from '@pothos/plugin-relay';
+import type { Prisma } from '@prisma/client';
+import type { IContext } from '../builder';
 import { prismaTransactionsMapper } from '../mappers/transaction-mapper';
 
 export async function resolveTransactionConnection(
