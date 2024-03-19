@@ -214,12 +214,10 @@ export const createConnectTokenTransaction = async (
   const transactionBuilder = Pact.builder
     .execution(
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.create-and-mint-connection-token
-        "${eventId}"
       "${manifestUri}"
       (map (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard) [${guardString}])
       )`,
     )
-
     .addData('event_id', eventId)
     .addData('collection_id', collectionId)
     .addData('uri', manifestUri)
