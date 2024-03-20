@@ -1,3 +1,4 @@
+import type { IWallet } from '../keys/utils/keysHelpers.js';
 import { getAllWallets } from '../keys/utils/keysHelpers.js';
 import { CommandError } from '../utils/command.util.js';
 
@@ -24,7 +25,7 @@ async function walletSelectionPrompt(
   if (existingKeys.length === 0 && !specialOptions.includes('none')) {
     throw new CommandError({
       errors: [
-        'No wallets found. use "kadena wallets add" to add a new wallet.',
+        'No wallets found. use "kadena wallet add" to add a new wallet.',
       ],
     });
   }
@@ -62,4 +63,30 @@ export async function walletSelectPrompt(): Promise<string> {
 
 export async function walletSelectAllPrompt(): Promise<string> {
   return walletSelectionPrompt(['all']);
+}
+
+export async function walletSelectByWalletPrompt(
+  wallets: string[] = [],
+): Promise<string> {
+  if (wallets.length === 0) {
+    throw new CommandError({
+      errors: [
+        'No wallets found containing keys to sign this transaction with. Please use "kadena wallet add" to add a new wallet and generate keys to use for signing, or use "kadena wallet import to import a wallet."',
+      ],
+    });
+  }
+
+  const choices = wallets.map((key) => {
+    return {
+      value: key,
+      name: `Wallet: ${key}`,
+    };
+  });
+
+  const selectedWallet = await select({
+    message: `${wallets.length} wallets found containing the keys for signing this transaction, please select a wallet to sign this transaction with first:`,
+    choices: choices,
+  });
+
+  return selectedWallet;
 }
