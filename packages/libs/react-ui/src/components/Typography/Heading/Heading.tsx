@@ -2,18 +2,12 @@ import classNames from 'classnames';
 import type { ComponentPropsWithRef, FC } from 'react';
 import React from 'react';
 import {
-  fontH1Bold,
-  fontH1Regular,
-  fontH2Bold,
-  fontH2Regular,
-  fontH3Bold,
-  fontH3Regular,
-  fontH4Bold,
-  fontH4Regular,
-  fontH5Bold,
-  fontH5Regular,
-  fontH6Bold,
-  fontH6Regular,
+  typographyFontH1,
+  typographyFontH2,
+  typographyFontH3,
+  typographyFontH4,
+  typographyFontH5,
+  typographyFontH6,
 } from '../../../styles';
 import { colorVariants, transformVariants } from '../typography.css';
 
@@ -24,27 +18,26 @@ export type HeadingElementType = (typeof HEADING_ELEMENTS)[number];
 export interface IHeadingProps extends ComponentPropsWithRef<'h1'> {
   as?: HeadingElementType;
   variant?: HeadingElementType;
-  bold?: boolean;
   color?: keyof typeof colorVariants;
   transform?: keyof typeof transformVariants;
   children: React.ReactNode;
 }
 
-function getHeadingClass(variant: HeadingElementType, isBold: boolean): string {
+function getHeadingClass(variant: HeadingElementType): string {
   switch (variant) {
     case 'h2':
-      return isBold ? fontH2Bold : fontH2Regular;
+      return typographyFontH2;
     case 'h3':
-      return isBold ? fontH3Bold : fontH3Regular;
+      return typographyFontH3;
     case 'h4':
-      return isBold ? fontH4Bold : fontH4Regular;
+      return typographyFontH4;
     case 'h5':
-      return isBold ? fontH5Bold : fontH5Regular;
+      return typographyFontH5;
     case 'h6':
-      return isBold ? fontH6Bold : fontH6Regular;
+      return typographyFontH6;
     case 'h1':
     default:
-      return isBold ? fontH1Bold : fontH1Regular;
+      return typographyFontH1;
   }
 }
 
@@ -53,13 +46,12 @@ export const Heading: FC<IHeadingProps> = ({
   variant = as,
   color = 'emphasize',
   transform = 'none',
-  bold = true,
   children,
   className,
   ...props
 }) => {
   const classList = classNames(
-    getHeadingClass(variant, bold),
+    getHeadingClass(variant),
     colorVariants[color],
     transformVariants[transform],
     className,

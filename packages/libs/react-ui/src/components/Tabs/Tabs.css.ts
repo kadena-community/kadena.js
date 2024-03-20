@@ -51,7 +51,7 @@ export const tabItemClass = style([
     paddingBlock: 'xs',
     paddingInline: 'sm',
     fontSize: 'md',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
     backgroundColor: 'transparent',
     color: 'text.base.default',
     outline: 'none',

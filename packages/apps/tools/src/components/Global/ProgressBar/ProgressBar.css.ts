@@ -87,7 +87,7 @@ export const textContainerStyle = style([
   atoms({
     fontSize: 'xs',
     fontFamily: 'primaryFont',
-    fontWeight: 'bodyFont.regular',
+    fontWeight: 'secondaryFont.regular',
     lineHeight: 'base',
     paddingBlockStart: 'xs',
     marginBlockEnd: 'lg',

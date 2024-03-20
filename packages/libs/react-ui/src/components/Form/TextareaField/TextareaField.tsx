@@ -11,7 +11,7 @@ import type {
 import React, { forwardRef, useCallback } from 'react';
 import type { AriaTextFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useTextField } from 'react-aria';
-import { bodyBaseRegular, codeBaseRegular } from '../../../styles';
+import { bodyBaseRegular, monospaceBaseRegular } from '../../../styles';
 import { formField, inputContainer } from '../Form.css';
 import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
@@ -141,7 +141,7 @@ export function TextareaFieldBase(
           ref={ref}
           className={classNames(
             textarea,
-            props.inputFont === 'code' ? codeBaseRegular : bodyBaseRegular,
+            props.inputFont === 'code' ? monospaceBaseRegular : bodyBaseRegular,
           )}
           data-outlined={props.isOutlined || undefined}
           data-focused={isFocused || undefined}

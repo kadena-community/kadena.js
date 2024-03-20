@@ -9,7 +9,7 @@ export const avatarClass = style([
 
     backgroundColor: 'base.default',
     color: 'text.base.default',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
     fontSize: 'md',
   }),
   {

@@ -5,7 +5,6 @@ import React, { Children, useContext } from 'react';
 import {
   accordionButtonClass,
   accordionSectionClass,
-  accordionToggleIconClass,
 } from '../Accordion/Accordion.css';
 import { SystemIcon } from '../Icon';
 import { Heading } from '../Typography/Heading/Heading';
@@ -59,9 +58,9 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
       >
         <Heading variant="h3">{title}</Heading>
         <SystemIcon.Close
-          className={classNames(accordionToggleIconClass, {
-            isOpen,
-          })}
+          // className={classNames(accordionToggleIconClass, {
+          //   isOpen,
+          // })}
           size="sm"
         />
       </button>

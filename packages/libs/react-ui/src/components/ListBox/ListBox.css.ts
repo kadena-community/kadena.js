@@ -7,7 +7,7 @@ export const listBoxClass = style([
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: 'layer-3.default',
+    backgroundColor: 'layer10.default',
     margin: 'no',
     padding: 'no',
     listStyleType: 'none',
@@ -49,7 +49,6 @@ export const listItemClass = style([
     paddingInline: 'sm',
     marginInline: 'xs',
     color: 'text.base.default',
-    backgroundColor: 'layer-3.default',
     cursor: 'pointer',
     borderRadius: 'sm',
   }),
@@ -76,7 +75,7 @@ export const listItemClass = style([
       },
       '&[data-selected="true"]': {
         color: token('color.text.semantic.info.default'),
-        fontWeight: token('typography.weight.bodyFont.bold'),
+        fontWeight: token('typography.weight.secondaryFont.bold'),
       },
       '&[data-has-children="true"]': {
         padding: '0',
@@ -92,7 +91,7 @@ export const listSeparatorClass = style([
     listStyleType: 'none',
     margin: 'no',
     padding: 'no',
-    backgroundColor: 'layer-2.default',
+    backgroundColor: 'base.default',
   }),
   {
     height: '1px',
@@ -106,8 +105,8 @@ export const listSectionHeadingClass = style([
     paddingBlock: 'xs',
     paddingInline: 'sm',
     color: 'text.base.default',
-    backgroundColor: 'layer-3.default',
-    fontWeight: 'bodyFont.bold',
+    backgroundColor: 'layer10.default',
+    fontWeight: 'secondaryFont.bold',
   }),
   {
     cursor: 'default',

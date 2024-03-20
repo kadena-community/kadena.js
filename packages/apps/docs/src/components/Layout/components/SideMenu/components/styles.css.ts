@@ -17,7 +17,7 @@ export const linkClass = style([
     alignItems: 'center',
     width: '100%',
     color: 'text.subtle.default',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
     textDecoration: 'none',
   }),
   {

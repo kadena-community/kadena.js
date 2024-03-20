@@ -77,7 +77,7 @@ export const levelItemVariantClass = styleVariants({
   l1: {
     display: 'block',
     cursor: 'pointer',
-    fontWeight: tokens.kda.foundation.typography.weight.bodyFont.bold,
+    fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.bold,
     padding: `${tokens.kda.foundation.spacing.md} 0 ${tokens.kda.foundation.spacing.sm}`,
     borderBottom: `1px solid ${$$borderColor}`,
   },
@@ -170,7 +170,8 @@ export const treeItemPseudoVariantClass = styleVariants({
         position: 'absolute',
         right: tokens.kda.foundation.spacing.xs,
         content: '+',
-        fontWeight: tokens.kda.foundation.typography.weight.bodyFont.regular,
+        fontWeight:
+          tokens.kda.foundation.typography.weight.secondaryFont.regular,
         transform: 'translate(0, 0) rotate(0)',
         transition: 'transform .2s ease',
       },

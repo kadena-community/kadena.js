@@ -23,10 +23,6 @@ const meta: Meta<typeof Heading> = {
       options: HEADING_ELEMENTS,
       control: { type: 'select' },
     },
-    bold: {
-      options: HEADING_ELEMENTS,
-      control: { type: 'boolean' },
-    },
     color: {
       options: Object.keys(colorVariants) as (keyof typeof colorVariants)[],
       control: { type: 'select' },
@@ -49,18 +45,11 @@ export const Primary: Story = {
     as: 'h1',
     children: 'heading',
     variant: undefined,
-    bold: undefined,
     color: undefined,
     transform: undefined,
   },
-  render: ({ as, bold, variant, transform, children, color }) => (
-    <Heading
-      as={as}
-      variant={variant}
-      bold={bold}
-      color={color}
-      transform={transform}
-    >
+  render: ({ as, variant, transform, children, color }) => (
+    <Heading as={as} variant={variant} color={color} transform={transform}>
       {children}
     </Heading>
   ),
