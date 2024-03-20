@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 'use client';
 import { useAccount } from '@/hooks/account';
 import { useGetAllProofOfUs } from '@/hooks/data/getAllProofOfUs';

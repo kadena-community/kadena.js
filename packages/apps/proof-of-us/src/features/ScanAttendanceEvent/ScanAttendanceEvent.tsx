@@ -9,7 +9,6 @@ import { useTokens } from '@/hooks/tokens';
 import { env } from '@/utils/env';
 import { getReturnUrl } from '@/utils/getReturnUrl';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
-import { store } from '@/utils/socket/store';
 import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
