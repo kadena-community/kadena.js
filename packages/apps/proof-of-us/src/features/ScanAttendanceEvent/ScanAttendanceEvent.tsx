@@ -5,7 +5,6 @@ import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { SubmitStatus, useSubmit } from '@/hooks/submit';
-import { useTokens } from '@/hooks/tokens';
 import { env } from '@/utils/env';
 import { getReturnUrl } from '@/utils/getReturnUrl';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
@@ -34,7 +33,6 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     useClaimAttendanceToken();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { addMintingData } = useTokens();
 
   const { account, isMounted, login } = useAccount();
   const { doSubmit, isStatusLoading, status } = useSubmit();
