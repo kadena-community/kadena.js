@@ -1,4 +1,3 @@
-import type { IWallet } from '../keys/utils/keysHelpers.js';
 import { getAllWallets } from '../keys/utils/keysHelpers.js';
 import { CommandError } from '../utils/command.util.js';
 
