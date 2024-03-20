@@ -133,19 +133,6 @@ pages:
           concretepolicies:
             url: /concrete-policies
             file: /build/nft-marmalade/concrete-policies.md
-            children:
-              collection:
-                url: /collection-policy
-                file: /build/nft-marmalade/collection-policy.md
-              guard:
-                url: /guard-policy
-                file: /build/nft-marmalade/concrete-policies/guard-policy.md
-              nonfungible:
-                url: /non-fungible-policy
-                file: /build/nft-marmalade/concrete-policies/non-fungible-policy.md
-              royalty:
-                url: /royalty-policy
-                file: /build/nft-marmalade/concrete-policies/royalty-policy.md
       frontend:
         url: /frontend
         file: /build/frontend.md
@@ -401,6 +388,25 @@ pages:
           salecontract:
             url: /sale-contracts
             file: /reference/marmalade/sale-contracts.md
+          auction:
+            url: /auctions
+            file: /reference/marmalade/auction-ref.md
+          policies:
+            url: /policies
+            file: /reference/marmalade/policies.md
+            children:
+              guard:
+                url: /guard-policy
+                file: /reference/marmalade/guard-policy.md
+              nftpolicy:
+                url: /nft-policy
+                file: /reference/marmalade/non-fungible-policy.md
+              royalty:
+                url: /royalty-policy
+                file: /reference/marmalade/royalty-policy.md
+              collection:
+                url: /collection-policy
+                file: /reference/marmalade/collection-policy.md
       chainweb:
         url: /chainweb
         file: /reference/chainweb/chainweb.md

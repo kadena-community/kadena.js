@@ -45,7 +45,7 @@ The tables, schemas, and capabilities defined in the ledger contract ensure that
 
 By enforcing rules and constraints through token policies, Marmalade promotes more secure and trustworthy transactions for all marketplace participants.
 
-For more technical details about the Marmalade ledger contract, see []().
+For more technical details about the Marmalade ledger contract, see [Ledger contract](/reference/marmalade).
 
 ## Policy manager
 

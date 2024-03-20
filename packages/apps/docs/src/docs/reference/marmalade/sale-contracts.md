@@ -9,29 +9,22 @@ layout: full
 
 # Sale contracts
 
-With Sale Contracts, Marmalade V2 introduces a new way to manage the sale of a
-token. WHen offering a token up for sale in the ledger, it is now possible to
-also provide a reference to a sale contract. This sale contract can then be used
-to manage the sale of the token which allows for maximum flexibility and
-creativity in the sale of a token.
+As discussed in [Layered contract architecture](/build/nft-marmalade/contract-architecture), you can use a sales-specific contract to manage how tokens are sold—for example, by offering tokens for sale in a [conventional auction](https://docs.kadena.io/marmalade/auctions/conventional-auction) or a [dutch auction](https://docs.kadena.io/marmalade/auctions/dutch-auction).
 
-Security is an important aspect of selling a token, especially when it comes to
-guaranteeing royalty. Therefore the sale contracts are required to be registered
-within the Policy Manager. This ensures that the sale contract is known to the
-Policy Manager and that the Policy Manager can enforce the sale contract. Before
-registering the sale contract will undergo a review process to ensure that it is
-safe to use.
+Although this is a flexible system for managing sales, sales-specific contracts must be registered in the policy manager to ensure that the policy manager can enforce the proper collection and distribution of tokens and funds. 
+Before you can register a sales-specific contract, it must undergo a review process to ensure that the contract is safe to use.
 
-Where Sale Contracts are aimed at general purpose sales, Marmalade token
-creators still have complete flexibility to implement any custom sale logic
-within a policy and attach it to the token itself. This allows for a wide range
-of sale options and flexibility.
+If you want to create your own sales-specific contract, you can open a pull request in the
+[Marmalade Github repository](https://github.com/kadena-io/marmalade/tree/main/pact/sale-contracts) to begin the review process.
 
-## Sale Contract Interface
+Note that creating a sales-specific contract isn't necessary in most cases.
+You can implement sales-related logic directly in a policy and attach the policy to a token instead of creating a separate contract.
 
-The sale contract interface is a light interface which needs to be implemented
-by any sale contract. It is used by the Policy Manager to enforce the sale
-contract. The interface is defined as follows:
+## Sale contract interface
+
+The sale contract interface is a lightweight interface that must be implemented in any sale contract. 
+The interface is used by the policy manager to enforce the logic defined in the contract. 
+The interface is defined as follows:
 
 ```pact
 (defun enforce-quote-update:bool (sale-id:string price:decimal)
@@ -39,30 +32,12 @@ contract. The interface is defined as follows:
 )
 ```
 
-The function `enforce-quote-update` is called in from the `buy` step in the
-ledger and takes two parameters:
+The function `enforce-quote-update` is called in from the `buy` step in the ledger and takes two parameters:
 
-- sale-id (type: string): This parameter represents the identifier of the sale,
-  which is basicaly the pact-id that is created when the token is offered up for
-  sale in the ledger.
-- price (type: decimal): This parameter represents the finale price associated
-  with the sale.
+- `sale-id (type: string)`: This parameter represents the `pact-id` that is created when the token is offered up for sale in the ledger.
+- `price (type: decimal)`: This parameter represents the final price associated with the sale.
 
-## Available Sale Contracts
-
-The available sale contracts are listed below. More sale contracts will follow
-but in the meantime, you can also create your own sale contract. The sale
-contracts can be found in the
-[Marmalade Github repository](https://github.com/kadena-io/marmalade/tree/v2/pact/sale-contracts)
-under `pact/sale-contracts`. Just create a pull request and we will review your
-sale contract and take care of deployment and whitelisting it in the Policy
-Manager.
-
-Marmalade V2 provides 2 useful sale contracts, which lets token owners easily
-create auctions of their choice: [`conventional-auction`](https://docs.kadena.io/marmalade/auctions/conventional-auction) and [`dutch-auction`](https://docs.kadena.io/marmalade/auctions/dutch-auction). 
-
-
-## Using a Sale Contract
+## Using a sales-specific contract
 
 The sale contract can be used by providing the sale contract's module name as
 part of the quote specification when calling the `offer` function in the ledger.
@@ -81,8 +56,4 @@ name mentioned under the key `sale-type`.
 }
 ```
 
-**_Note:_** When using a sale contract the `sale-price` during `offer` must
-always be `0.0`, since the sale contract will be responsible for updating the
-price during the `buy` step.
-
-[Sale Interface Contract](https://github.com/kadena-io/marmalade/blob/v2/pact/policy-manager/sale.interface.pact)
+Note that when you reference a specific `sale-type`, the `sale-price` for the `offer` must be `0.0` because the references contract is responsible for updating the final price during the `buy` step.

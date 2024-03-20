@@ -10,9 +10,8 @@ layout: full
 # Ledger contract
 
 The Marmalade token standard provides interfaces that enable you to define, mint, and secure tokens.
-As discussed in [Layered contract architecture](/build/nft-marmalade/contract-architecture), the contract that provides the core functionality to create, manage, and transfer tokens minted using the Marmalade token standard is the Marmalade ledger contract.
-The ledger contract records and manages all token-related activity to ensure every transaction is accurate, every policy is enforced, and every account is
-up-to-date.
+As discussed in [Layered contract architecture](/build/nft-marmalade/contract-architecture), the Marmalade ledger contract provides the core functionality to create, manage, and transfer tokens minted using the Marmalade token standard.
+The ledger contract records and manages all token-related activity to ensure every transaction is accurate, every policy is enforced, and every account is up-to-date.
 
 This part of the documentation describes the functions and capabilities defined in the Marmalade ledger contract.
 

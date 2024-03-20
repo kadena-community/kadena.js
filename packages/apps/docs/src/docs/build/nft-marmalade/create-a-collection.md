@@ -128,8 +128,54 @@ To create the metadata:
    
    `ipfs://bafybeic43pacmyel2bavpahsbrd4daknvizoyrpcsazxhrs6zmvwx5wlqu/1.json`
 
-   With this step, you are ready to mint the non-fungible tokens in the collection.
-   The simplest way to do that is using the `mint-NFT` helper function defined in the `marmalade-v2.util` contract.
+   With this step, you are ready to create and mint the non-fungible tokens in the collection.
+
+## Create a token identifier
+
+Each token in the collection needs a unique identifier that links the token metadata to the collection identifier.
+You can create token identifiers using the `create-token-id` function in the `marmalade-v2.ledger` contract.
+As before, you can use the Chainweaver desktop or web application to navigate to contract functions and **Testnet** as the network to connect to
+
+To create a token identifier:
+
+1. In Chainweaver, click **Contracts**, then click **Module Explorer**.
+
+1. Under **Deployed Contracts**, select the `marmalade-v2.ledger` contract, then click **View**.
+
+2. Under Functions, select **create-token-id**, then click **Call**. 
+   
+1. On the Parameters tab, you need to specify the **token-details** and a **creation-guard**.
+   
+   In this example, the **token-details** for the metadata file that describes the first token in the collection look like this:
+   
+   ```json
+   {
+     "uri": "ipfs://bafybeic43pacmyel2bavpahsbrd4daknvizoyrpcsazxhrs6zmvwx5wlqu/1.json",
+     "precision": 0,
+     "policies": [marmalade-v2.non-fungible-policy-v1,marmalade-v2.guard-policy-v1,marmalade-v2.collection-policy-v1]
+   }
+   ```
+   
+   As this example illustrates, for the tokens in a collection, you should typically apply the built-in guard and collection policies.
+   The guard policy protects the tokens from unauthorized activity and the collection policy is required to associate the tokens with the correct collection you've defined for them.
+   To configure the guard policy, you'll need to register the accounts that can perform the activities you want to restrict access to.
+   
+   You can use **(read-keyset "my-keyset")** for the **creation-guard** to read the keyset from information you configure in the transaction details.
+
+   After configuring the parameters for the create-token-id function, click **Next**.
+
+1. On the Configuration tab, select the **Transaction Sender** and, under Advanced, configure a keyset and key, then click **Next**.
+
+1. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
+
+   Note that you aren't required to select a transaction sender or a signing key to create a token identifier. 
+   However, this information is required to submit a transaction that records the token identifier in the blockchain.
+
+2. On the Preview tab, scroll to see the **Raw Response** is a token identifier, then click **Submit**.
+   
+   In this example, the token identifier created is:
+   "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg"
+
 
 ## Mint the non-fungible token
 
@@ -146,55 +192,48 @@ To mint the non-fungible tokens:
 6. On the Parameters tab, set the **uri**, **policies**, and **guard** information, then click **Next**.
    
    - Set the **uri** to point to the content identifier for the metadata file for the token.
-     For this walk-through, the **uri** for the metadata file for the token is:
-     `ipfs://bafkreibtpwfidowlbmxblew2lyghgy2tctvcazsfcjxk3ozgnm5a33uc4m/guitar1.json`
+     In this example, the **uri** for the metadata file for the first token is:
 
    - Set the **policies** to identify the policies to enforce for the token.
-     For this walk-through, the token uses the following policies: 
-     [marmalade-v2.non-fungible-policy-v1,marmalade-v2.guard-policy-v1]
+     In this example, the token uses the following policies: 
 [marmalade-v2.non-fungible-policy-v1,marmalade-v2.guard-policy-v1,marmalade-v2.collection-policy-v1]
    - Set the **guard** to authorize a specific keyset or another guard to mint the token.
      For this walk-through, the guard can be read from the transaction using `(read-keyset "my-keyset")`.
 
-7. On the Configuration tab, select the **Transaction Sender**, review transaction settings, and select the keyset to use, then click **Next**.
-8. On the Sign tab, select an Unrestricted Signing key, then click **Next**.
-9. On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
+1. On the Configuration tab, select the **Transaction Sender**, review transaction settings, and select the keyset to use, then click **Next**.
+2. On the Sign tab, select an Unrestricted Signing key, then click **Next**.
+3. On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
    
 
-## Create a token identifier
-
-Create a token identifier using the create-token-id function
-For this walk-through, the token-details look like this:
-{
-     "uri": "ipfs://bafkreibtpwfidowlbmxblew2lyghgy2tctvcazsfcjxk3ozgnm5a33uc4m/guitar1.json",
-     "precision": 0,
-     "policies": [marmalade-v2.non-fungible-policy-v1,marmalade-v2.guard-policy-v1]
-}
-
-The creation-guard uses the keyset in the transaction details:
-(read-keyset "my-keyset")
-
-On the Configuration tab, select the Transaction Sender and a keyset and key, then click Next.
-
-On the Sign tab, select an Unrestricted signing key from the available key, then click Next.
-
-On the Preview tab, scroll to see the Raw Response is a token identifier similar to the following. 
-You don't need to submit this transaction.
-Instead, copy the token identifier to use it in later steps and close the create-toke-id function call window.
-
-"t:jEDZtohdLCkbsbFTlVrgVOQOYckgSLHHWQsXKry8jO0"
-
-"t:SxZFchlR7cXacctVhvdGg8u8l9FC0uYx-gacR_VlZhU"
+Instead, copy the token identifier to use it in later steps and close the create-token-id function call window.
 
 ## Create a token
 
-id: "t:SxZFchlR7cXacctVhvdGg8u8l9FC0uYx-gacR_VlZhU"
+id: "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg"
 precision: 0
-uri: "ipfs://bafkreibtpwfidowlbmxblew2lyghgy2tctvcazsfcjxk3ozgnm5a33uc4m/guitar1.json"
-policies: [marmalade-v2.non-fungible-policy-v1,marmalade-v2.guard-policy-v1]
-creation-guard: (read-keyset "my-keyset")
+uri: "ipfs://bafybeic43pacmyel2bavpahsbrd4daknvizoyrpcsazxhrs6zmvwx5wlqu/1.json"
+policies: [marmalade-v2.non-fungible-policy-v1,marmalade-v2.guard-policy-v1,marmalade-v2.collection-policy-v1]
+creation-guard: (read-keyset "operator")
 
+(marmalade-v2.collection-policy-v1.TOKEN-COLLECTION "collection:MawFy7BSJMkatOJ07y_e0tYbPE26K_q8x0ACX5C25B8" "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg")
+
+(marmalade-v2.ledger.INIT-CALL "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg" 0 "ipfs://bafybeic43pacmyel2bavpahsbrd4daknvizoyrpcsazxhrs6zmvwx5wlqu/1.json")
+
+(marmalade-v2.guard-policy-v1.GUARDS "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg" {"mint-guard": {"keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], "pred": "keys-all"},"burn_guard": {"keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], "pred": "keys-all"},
+   "sale_guard": {"keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], "pred": "keys-all"},
+   "transfer_guard": {"keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], "pred": "keys-all"}})
+
+(marmalade-v2.ledger.TOKEN "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg" 0 [marmalade-v2.non-fungible-policy-v1,marmalade-v2.guard-policy-v1,marmalade-v2.collection-policy-v1] "my-keyset")
+
+
+TOKEN-COLLECTION (collection-id:string token-id:string)
+Be sure that the creation guard matches the operator guard you used to create the collection.
+
+select the unrestricted signer
+
+marmalade-v2.ledger.TOKEN
 ## Create a collection identifier
+
 "collection:MawFy7BSJMkatOJ07y_e0tYbPE26K_q8x0ACX5C25B8"
 
 get-collection
@@ -208,3 +247,13 @@ get-collection
       },
    "size": 0
 }
+
+## Configure the guard policy
+```json
+{
+   "mint-guard": {"keys": ["bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], "pred": "keys-all"},
+   "burn_guard": {"keys": ["bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], "pred": "keys-all"},
+   "sale_guard": {"keys": ["bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], "pred": "keys-all"},
+   "transfer_guard": {"keys": ["bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], "pred": "keys-all"}
+}
+```

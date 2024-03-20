@@ -1,7 +1,7 @@
 ---
 title: Client utilities
 description:
-  The `@kadena/client-utils` library provides a TypeScript based application programming interface API for interacting with smart contracts and the Kadena network. The library includes helper functions for the `coin` module that you can import using `@kadena/client-utils/coin` and `core` functions that you can use to develop interfaces for custom contracts.
+  The `@kadena` libraries provide a TypeScript based application programming interface API for interacting with smart contracts and the Kadena network. The libraries include helper functions for many common tasks in corePact modules, such as the `coin` module, and `core` functions that you can use to develop new interfaces for custom contracts.
 menu: Frontend libraries
 label: Client utilities
 order: 1
@@ -147,7 +147,7 @@ Use `crossChainClient` to ...
 
 ### dirtyReadClient
 
-Use `dirtyReadClient` to ...
+Use `dirtyReadClient` to read a raw result from the Kadena blockchain without submittinga transaction.
 
 #### Basic usage
 

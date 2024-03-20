@@ -219,7 +219,7 @@ cd my-vuejs
 
 ## kadena keys
 
-Use kadena keys to generate and manage public and secret keys.
+Use `kadena keys` to generate and manage public and secret keys.
 
 ### Basic usage
 
@@ -245,40 +245,154 @@ Use the following action to specify the operation you want to perform.
 
 | Use this action | To do this
 | --------------- | -----------
-| `generate` | Generate random public and secret key pairs.	No	
-| `decrypt`	| Decrypt an encrypted message.	No	
-| `list` | List available keys.	No	
+| `create-wallet` | Create your local wallet.
+| `import-wallet` | Import or restore wallet from a secret mnemonic phrase.
+| `gen-hd` | Generate hierarchical deterministic keys for your wallet.
+| `gen-plain` | Generate simple public and secret key pairs.
+| `change-wallet-password` | Update the password for your wallet.
+| `delete-wallet` | Delete a wallet from your local storage.
+| `decrypt` | Decrypt an encrypted message.
+| `list` | List all available keys.
+| `help` | Display help for a specified command.
 
-### Arguments
+### Options
+
+Depending on the action you select, you can specify different arguments and options.
+The following table summarizes all of the options you can specify.
+To see the options to use for a specific action, use the --help flag on the command line or review the examples.
 
 | Use this argument | To do this
 | ----------------- | -----------
-| `--key-alias`	| Set an alias for the key to store on the file system.
-| `--key-amount` | Specify the number of keys to generate.
-| `--legacy` | Generate keys using a legacy format.
+| `-a`, `--key-alias`	| Set an alias for the key to store on the file system.
+| `-c`, `--key-gen-from-choice` | Choose an action for generating keys.
+| `-c`, `--security-current-password` | Enter your current key password
+| `--confirm` | Confirm that you want to change the wallet password or delete the wallet.
+| `-l`, `--legacy` | Generate keys using a legacy format.
+|` -m`, `--key-mnemonic` | Import or restore your wallet using the 12-word mnemonic phrase used to generate your wallet keys.
+| `-n`, `--security-new-password` | Enter your new key password
+| `-n`, `--key-amount` | Specify the number of key pairs to generate. The default is one.
+| `-n`, `--key-message` | Enter a message to decrypt.
+| `-q`, `--quiet` | Disables interactive prompts and skips confirmations.
+| `-p`, `--security-password` | Enter a password to encrypt your key with.
+| `--security-verify-password` | Confirm the password used to encrypt the wallet.
+| `-r`, `--key-index-or-range` | Enter the index or range of indices for key generation (for example, 5 or 1-5). The default is one.
+| `-w`, `--key-wallet` | Specify the name for your wallet.
 
 ### Examples
 
-To generate a plain public and secret key pair using a random mnemonic secret phrase, you can run a command similar to the following:
+To create a wallet interactively, run the following command:
 
 ```bash
-kadena key generate --key-alias="myalias" --key-amount="5"
+kadena keys create-wallet
 ```
 
-To generate a public and secret key pair using a random mnemonic secret phrase in a legacy format for backward compatibility, you can run a command similar to the following:
-
+This command prompts you to enter a wallet name, type a password, and confirm your password.
+The command then displays the 12-word mnemonic phrase required to import or restore the wallet and where the wallet is stored on the local filesystem.
+For example:
 
 ```bash
-kadena key generate --key-alias="myalias" --key-amount="5" --legacy
+Mnemonic phrase: urban bubble quarter sleep apple property that machine castle enforce crowd warfare
+Please store the key phrase in a safe place. You will need it to recover your keys.
+
+
+Your wallet was stored at: /Users/my-vuejs/.kadena/wallets/pistolas1/pistolas1.wallet
 ```
 
+After creating a wallet, you can use the `kadena keys gen-hd` or `kadena keys gen-plain` to generate public and secret key pairs for the wallet.
+
+To generate one or more public and secret key pairs, you can run a command similar to the following:
+
+```bash
+kadena keys gen-plain --key-alias="myalias" --key-amount="2"
 ```
-kadena key list
+
+To generate a public and secret key pair using a legacy format for backward compatibility, you can run a command similar to the following:
+
+```bash
+kadena keys generate --key-alias="myalias" --key-amount="5" --legacy
+```
+
+```bash
+kadena keys list
+```
+
+kadena wallet add --wallet-name="kadenawallet" --security-password=1245678 --security-verify-password=1245678
+password will be hidden after entry: --security-password=* --security-verify-password=*
+
+kadena wallet import [arguments]
+Arguments & Options	Description	Required
+--key-mnemonic	12 word mnemnoc phrase	
+--security-new-password	Set the password for the wallet	
+--security-verify-password	Set the password for the wallet (verification)	
+--wallet-name	Set the name of the wallet	
+--legacy	Use Chainweaver's key derivation	
+example:
+
+kadena wallet import-wallet --key-mnemonic="male more sugar violin accuse panel kick nose sign alarm stool inmate" --security-new-password=12345678 --security-verify-password=12345678 --key-wallet="mywalletname"
+password will be hidden after entry: --security-new-password=* --security-verify-password=*
+
+kadena wallet generate-keys [arguments]
+Generate a keypair from a wallet mnemonic
+
+Arguments & Options	Description	Required
+--wallet-name	Provide the name of the wallet	
+--key-index-or-range	Set index or range of indices for key generation (e.g., 5 or 1-5)	
+--security-password	Set the password for the wallet	
+--key-gen-from-choice	Select generation type: genPublicKey (publicKey only), genPublicSecretKey	
+(publickey and secretKey), genPublicSecretKeyDec (publicKey and SecretKey Decrypted	
+example generating public keys using a range
+
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0-5" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
+example generating a public key using a index
+
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
+example generating a public and secret key using a index
+
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKey" --key-alias="myalias" --security-password=12345678
+example generating a public and decrypted secret key using a index (will not be stored on filesystem)
+
+kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKeyDec" --security-password=12345678
+password will be hidden after entry: --security-password=*
+
+kadena wallet change-password [arguments]
 Arguments & Options	Description
-example for listing all keys
+--wallet-name	Provide the name of the wallet
+--security-current-password	Provide the current password of the wallet
+--security-new-password	Set the new password for the wallet
+--security-verify-password	Set the new password for the wallet (verification)
+--confirm	Confirm password change
+example:
 
-kadena key list"
+kadena wallet change-password --wallet-name="kadenawallet.wallet" --security-current-password=12345678 --security-new-password=12345678 --security-verify-password=1234567 --confirm=true
+password will be hidden after entry: --security-current-password=* --security-new-password=* --security-verify-password=*
 
+kadena wallet delete [arguments]
+Arguments & Options	Description
+--wallet-name	Select the name of the wallet
+--confirm	Confirm deletion of wallet
+example single wallet deletion:
+
+kadena wallet delete --wallet-name="kadenawallet.wallet" --confirm=true
+example deletion of all wallets:
+
+kadena wallet delete --wallet-name="all" --confirm=true
+kadena wallet list [arguments]
+Arguments & Options	Description
+--wallet-name	Set the name of the wallet
+example for listing specific wallet:
+
+kadena wallet list --wallet-name="walletname"
+example for listing all wallets:
+
+kadena wallet list --wallet-name="all"
+kadena wallet decrypt [arguments]
+Arguments & Options	Description
+--key-message	Provide encrypted Message
+--security-current-password	Provide password to decrypt message
+example:
+
+kadena wallet decrypt --key-message="encryptedmessage" --security-current-password=12345678
+password will be hidden after entry: --security-current-password=*
 
 ## kadena networks
 
@@ -377,101 +491,8 @@ kadena networks update \
   --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/"
 ```
 
-## kadena wallet
-Tool to generate and manage wallets
 
-Subcommand	Description	Default value
-add	Add a new local wallet	
-import	Import ( restore ) wallet from mnemonic phrase	
-generate-keys	Generate public/secret key pair(s) from your wallet	
-change-password	Update the password for your wallet	
-delete	Delete existing wallet from local filesystem	
-list	List wallets(s)	
-kadena wallet add [arguments]
-Arguments & Options	Description	Required
---wallet-name	Set the name of the wallet	
---security-password	Set the password for the wallet	
---security-verify-password	Set the password for the wallet (verification)	
---legacy	Generate legacy wallet	
-example:
 
-kadena wallet add --wallet-name="kadenawallet" --security-password=1245678 --security-verify-password=1245678
-password will be hidden after entry: --security-password=* --security-verify-password=*
-
-kadena wallet import [arguments]
-Arguments & Options	Description	Required
---key-mnemonic	12 word mnemnoc phrase	
---security-new-password	Set the password for the wallet	
---security-verify-password	Set the password for the wallet (verification)	
---wallet-name	Set the name of the wallet	
---legacy	Use Chainweaver's key derivation	
-example:
-
-kadena wallet import-wallet --key-mnemonic="male more sugar violin accuse panel kick nose sign alarm stool inmate" --security-new-password=12345678 --security-verify-password=12345678 --key-wallet="mywalletname"
-password will be hidden after entry: --security-new-password=* --security-verify-password=*
-
-kadena wallet generate-keys [arguments]
-Generate a keypair from a wallet mnemonic
-
-Arguments & Options	Description	Required
---wallet-name	Provide the name of the wallet	
---key-index-or-range	Set index or range of indices for key generation (e.g., 5 or 1-5)	
---security-password	Set the password for the wallet	
---key-gen-from-choice	Select generation type: genPublicKey (publicKey only), genPublicSecretKey	
-(publickey and secretKey), genPublicSecretKeyDec (publicKey and SecretKey Decrypted	
-example generating public keys using a range
-
-kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0-5" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
-example generating a public key using a index
-
-kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
-example generating a public and secret key using a index
-
-kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKey" --key-alias="myalias" --security-password=12345678
-example generating a public and decrypted secret key using a index (will not be stored on filesystem)
-
-kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKeyDec" --security-password=12345678
-password will be hidden after entry: --security-password=*
-
-kadena wallet change-password [arguments]
-Arguments & Options	Description
---wallet-name	Provide the name of the wallet
---security-current-password	Provide the current password of the wallet
---security-new-password	Set the new password for the wallet
---security-verify-password	Set the new password for the wallet (verification)
---confirm	Confirm password change
-example:
-
-kadena wallet change-password --wallet-name="kadenawallet.wallet" --security-current-password=12345678 --security-new-password=12345678 --security-verify-password=1234567 --confirm=true
-password will be hidden after entry: --security-current-password=* --security-new-password=* --security-verify-password=*
-
-kadena wallet delete [arguments]
-Arguments & Options	Description
---wallet-name	Select the name of the wallet
---confirm	Confirm deletion of wallet
-example single wallet deletion:
-
-kadena wallet delete --wallet-name="kadenawallet.wallet" --confirm=true
-example deletion of all wallets:
-
-kadena wallet delete --wallet-name="all" --confirm=true
-kadena wallet list [arguments]
-Arguments & Options	Description
---wallet-name	Set the name of the wallet
-example for listing specific wallet:
-
-kadena wallet list --wallet-name="walletname"
-example for listing all wallets:
-
-kadena wallet list --wallet-name="all"
-kadena wallet decrypt [arguments]
-Arguments & Options	Description
---key-message	Provide encrypted Message
---security-current-password	Provide password to decrypt message
-example:
-
-kadena wallet decrypt --key-message="encryptedmessage" --security-current-password=12345678
-password will be hidden after entry: --security-current-password=*
 ## kadena account
 Tool to manage / fund accounts of fungibles (e.g. coin')
 

@@ -70,11 +70,13 @@ following command:
 Once the interface is integrated, you can enforce policies through these
 functions:
 
-`enforce-mint`: Governs token minting. `enforce-burn`: Regulates token burning.
-`enforce-init`: Handles token initialization. `enforce-offer`: Manages token
-offering for sale. `enforce-buy`: Controls purchasing of tokens offered for
-sale. `enforce-transfer`: Administers token transfers between accounts.
+`enforce-mint`: Governs token minting. 
+`enforce-burn`: Regulates token burning.
+`enforce-init`: Handles token initialization. 
+`enforce-offer`: Manages token offering for sale. 
+`enforce-buy`: Controls purchasing of tokens offered for sale. 
+`enforce-transfer`: Administers token transfers between accounts.
 
-Each function requires specific parameters related to the token objec. By
-implementing custom checks within these functions, creators can tailor their
+Each function requires specific parameters related to the token object. 
+By implementing custom checks within these functions, creators can tailor their
 tokens' behavior.
