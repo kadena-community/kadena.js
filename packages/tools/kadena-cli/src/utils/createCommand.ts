@@ -3,7 +3,7 @@ import { CLINAME } from '../constants/config.js';
 import { CommandError, printCommandError } from './command.util.js';
 import type { OptionType, createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
-import { handlePromptError, isNotEmptyString, notEmpty } from './helpers.js';
+import { handlePromptError, notEmpty } from './helpers.js';
 import { log } from './logger.js';
 import { readStdin } from './stdin.js';
 import type { FlattenObject, Fn, Prettify } from './typeUtilities.js';
@@ -34,16 +34,19 @@ export async function executeOption<Option extends OptionType>(
     prompted: boolean;
   }>
 > {
-  let value = isNotEmptyString(args[option.key])
-    ? args[option.key]
-    : option.defaultValue;
+  let value = args[option.key];
   let prompted = false;
 
   if (value === undefined && option.isInQuestions) {
     if (args.quiet !== true && args.quiet !== 'true') {
       prompted = true;
       value = await (option.prompt as PromptFn)(args, originalArgs);
-    } else if (option.isOptional === false) {
+    } else if (args.quiet === true || args.quiet !== 'true') {
+      value = option.defaultValue;
+    } else if (
+      option.isOptional === false &&
+      option.defaultValue === undefined
+    ) {
       // Should have been handled earlier, but just in case
       throw new Error(
         `Missing required argument: ${option.key} (${option.option.flags})`,
