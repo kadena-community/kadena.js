@@ -100,28 +100,30 @@ export async function getAllAccountNames(): Promise<
 export const formatZodFieldErrors = (error: ZodError): string =>
   error.errors.map((e: ZodIssue) => e.message).join('\n');
 
-export const chainIdValidation = z
-  .number({
-    errorMap: (error) => {
-      if (error.code === 'too_small') {
-        return {
-          message: 'must be greater than or equal to 0',
-        };
-      }
+export const chainIdValidation = z.array(
+  z
+    .number({
+      errorMap: (error) => {
+        if (error.code === 'too_small') {
+          return {
+            message: 'must be greater than or equal to 0',
+          };
+        }
 
-      if (error.code === 'too_big') {
-        return {
-          message: 'must be less than or equal to 19',
-        };
-      }
+        if (error.code === 'too_big') {
+          return {
+            message: 'must be less than or equal to 19',
+          };
+        }
 
-      return {
-        message: 'must be a number',
-      };
-    },
-  })
-  .min(0)
-  .max(19);
+        return {
+          message: 'must be a number',
+        };
+      },
+    })
+    .min(0)
+    .max(19),
+);
 
 export const fundAmountValidation = z
   .number({
