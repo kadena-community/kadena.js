@@ -81,7 +81,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     store.updateProofOfUs(proof, proof);
 
     addMintingData(proof);
-    doSubmit();
+    doSubmit(undefined, true);
   }, [account, searchParams]);
 
   const handleClaim = async () => {

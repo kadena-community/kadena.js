@@ -1,19 +1,12 @@
-import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSubmit } from '@/hooks/submit';
+import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import { haveAllSigned } from '@/utils/isAlreadySigning';
-import { MonoClose } from '@kadena/react-icons';
-import { Stack } from '@kadena/react-ui';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
-import { IconButton } from '../IconButton/IconButton';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
-import { ErrorStatus } from '../Status/ErrorStatus';
-import { LoadingStatus } from '../Status/LoadingStatus';
-import { SuccessStatus } from '../Status/SuccessStatus';
-import { TitleHeader } from '../TitleHeader/TitleHeader';
 
 interface IProps {
   next: () => void;
@@ -23,7 +16,7 @@ interface IProps {
 
 export const MintView: FC<IProps> = () => {
   const { proofOfUs, updateSigner, updateProofOfUs } = useProofOfUs();
-  const { doSubmit, isStatusLoading, status, result } = useSubmit();
+  const { doSubmit } = useSubmit();
   const { uploadBackground } = useAvatar();
   const router = useRouter();
 
@@ -45,6 +38,11 @@ export const MintView: FC<IProps> = () => {
       });
 
       await doSubmit(proofOfUs.tx);
+      router.replace(
+        `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
+          proofOfUs.requestKey
+        }`,
+      );
     } catch (e) {
       console.error('SUBMIT ERR');
     }
@@ -59,46 +57,7 @@ export const MintView: FC<IProps> = () => {
     handleMint();
   }, [proofOfUs?.tx]);
 
-  const handleClose = () => {
-    router.push('/user');
-  };
-
   if (!proofOfUs) return;
 
-  return (
-    <ScreenHeight>
-      <>
-        <TitleHeader
-          label={proofOfUs.title ?? ''}
-          Append={() => (
-            <IconButton onClick={handleClose}>
-              <MonoClose />
-            </IconButton>
-          )}
-        />
-
-        {isStatusLoading && (
-          <>
-            <LoadingStatus />
-            <ListSignees />
-            <Stack flex={1} />
-          </>
-        )}
-        {status === 'error' && (
-          <ErrorStatus handleClose={handleClose} handleMint={handleMint}>
-            {JSON.stringify(result, null, 2)}
-          </ErrorStatus>
-        )}
-
-        {status === 'success' && (
-          <SuccessStatus
-            handleClose={handleClose}
-            href={`/user/proof-of-us/t/${proofOfUs.tokenId}/${proofOfUs.requestKey}`}
-          >
-            View the created Proof or create a new one.
-          </SuccessStatus>
-        )}
-      </>
-    </ScreenHeight>
-  );
+  return <ScreenHeight></ScreenHeight>;
 };

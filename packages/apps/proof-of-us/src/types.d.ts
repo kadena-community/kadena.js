@@ -153,5 +153,5 @@ interface IToken {
     uri: string;
   };
   mintStartDate?: number;
-  listener?: any;
+  listener?: Promise<any>;
 }

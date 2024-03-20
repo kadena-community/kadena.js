@@ -36,14 +36,9 @@ const Page: FC = () => {
             <TitleHeader
               label="Dashboard"
               Append={() => (
-                <>
-                  <Link href="/leaderboard">
-                    <MonoMilitaryTech />
-                  </Link>
-                  <IconButton onClick={logout}>
-                    <MonoLogout />
-                  </IconButton>
-                </>
+                <IconButton onClick={logout}>
+                  <MonoLogout />
+                </IconButton>
               )}
             />
             <Stack flex={1} width="100%">

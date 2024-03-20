@@ -68,8 +68,10 @@ export const useSignToken = () => {
 
     setIsLoading(false);
     setHasError(false);
+    //router.replace(`${getReturnHostUrl()}/user/proof-of-us/${proofOfUs.tokenId}/${txRes.requestKey}`);
 
-    router.replace(getReturnUrl());
+    console.log(transaction, proofOfUs);
+    //router.replace(getReturnUrl());
   };
 
   useEffect(() => {

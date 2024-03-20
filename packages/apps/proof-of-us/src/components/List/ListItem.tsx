@@ -3,13 +3,12 @@
 import { useTokens } from '@/hooks/tokens';
 import { createManifest } from '@/utils/createManifest';
 import { fetchManifestData } from '@/utils/fetchManifestData';
-import { getIPFSLink } from '@/utils/getIPFSLink';
 import { store } from '@/utils/socket/store';
 import { Stack } from '@kadena/react-ui';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import type { FC } from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { IsLoading } from '../IsLoading/IsLoading';
 import { AttendanceThumb } from '../Thumb/AttendanceThumb';
@@ -27,6 +26,7 @@ export const ListItem: FC<IProps> = ({ token }) => {
     revalidateOnFocus: false,
     revalidateIfStale: false,
   });
+
   const [innerData, setInnerData] = useState<IProofOfUsTokenMeta | undefined>();
   const [innerTokenId, setInnerTokenId] = useState<string>();
   const [isMinted, setIsMinted] = useState(true);
@@ -76,26 +76,15 @@ export const ListItem: FC<IProps> = ({ token }) => {
     }
   }, [data, loadData, token, loadProofOfUsData]);
 
-  const getLink = () => {
-    //return `/scan/e/${innerData?.properties.eventId}`;
-    // if (proofOfUsData?.mintStatus === 'success') {
-    //   if (proofOfUsData.type === 'attendance')
-    //     return `/user/proof-of-us/t/${proofOfUsData.tokenId}`;
-    //   if (proofOfUsData.type === 'connect')
-    //     return `/user/proof-of-us/t/${proofOfUsData.tokenId}/${proofOfUsData.requestKey}`;
-    // }
-
-    // if (!proofOfUsData.tokenId) {
-    // } else {
-    //   return `/user/proof-of-us/t/${proofOfUsData.tokenId}/${proofOfUsData.requestKey}`;
-    // }
-
-    if (innerData?.properties.eventType === 'attendance') {
-      return `/user/proof-of-us/t/${innerTokenId}`;
-    } else {
-      return `/user/proof-of-us/t/${innerTokenId}`;
+  const link = useMemo(() => {
+    if (token?.requestKey) {
+      return `/user/proof-of-us/t/${token.id}/${token.requestKey}`;
+    } else if (token?.id) {
+      return `/user/proof-of-us/t/${token.id}`;
     }
-  };
+
+    return `/user/proof-of-us/t/${innerTokenId}`;
+  }, [innerTokenId, token?.id, token?.requestKey]);
 
   return (
     <motion.li
@@ -107,7 +96,7 @@ export const ListItem: FC<IProps> = ({ token }) => {
       {!innerData ? (
         <IsLoading />
       ) : (
-        <Link className={listItemLinkClass} href={getLink()}>
+        <Link className={listItemLinkClass} href={link}>
           {innerData.properties.eventType === 'attendance' && (
             <AttendanceThumb token={innerData} isMinted={isMinted} />
           )}
