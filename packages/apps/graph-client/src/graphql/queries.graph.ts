@@ -307,7 +307,7 @@ export const getEvents: DocumentNode = gql`
 `;
 
 export const estimateGasLimit: DocumentNode = gql`
-  query estimateGasLimit($input: String!) {
+  query estimateGasLimit($input: [String!]!) {
     gasLimitEstimate(input: $input) {
       amount
       inputType

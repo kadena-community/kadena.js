@@ -3,12 +3,12 @@ import { wordlist } from '@scure/bip39/wordlists/english';
 
 import {
   getAllKeys,
-  getAllPlainKeys,
   getWallet,
   isIWalletKey,
   parseKeyPairsInput,
 } from '../keys/utils/keysHelpers.js';
 
+import { services } from '../services/index.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   isValidFilename,
@@ -17,10 +17,11 @@ import {
 import { input, select } from '../utils/prompts.js';
 
 export const keyGetAllPlainFilesPrompt: IPrompt<string> = async () => {
-  const choices = (await getAllPlainKeys()).map((data) => {
+  const keys = await services.plainKey.list();
+  const choices = keys.map((data) => {
     return {
-      value: data.key,
-      name: `${data.key}: ${maskStringPreservingStartAndEnd(data.publicKey)}`,
+      value: data.alias,
+      name: `${data.alias}: ${maskStringPreservingStartAndEnd(data.publicKey)}`,
     };
   });
 

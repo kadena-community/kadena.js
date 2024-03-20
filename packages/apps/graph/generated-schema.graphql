@@ -287,22 +287,13 @@ type Query {
   """
   fungibleAccount(accountName: String!, fungibleName: String!): FungibleAccount
 
-  """Retrieve an account by public key."""
-  fungibleAccountByPublicKey(publicKey: String!): FungibleAccount
-
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
   fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
 
-  """Retrieve a chain account by public key."""
-  fungibleChainAccountByPublicKey(chainId: String!, publicKey: String!): FungibleChainAccount
-
-  """Estimate the gas limit for a transaction."""
-  gasLimitEstimate(input: String!): GasLimitEstimation!
-
-  """Estimate the gas limit for a list of transactions."""
-  gasLimitEstimates(input: [String!]!): [GasLimitEstimation!]!
+  """Estimate the gas limit for one or more transactions."""
+  gasLimitEstimate(input: [String!]!): [GasLimitEstimation!]!
 
   """Get the configuration of the graph."""
   graphConfiguration: GraphConfiguration!
@@ -321,12 +312,7 @@ type Query {
   """
   Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
   """
-  pactQueries(pactQuery: [PactQuery!]!): [String!]!
-
-  """
-  Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
-  """
-  pactQuery(pactQuery: PactQuery!): String!
+  pactQuery(pactQuery: [PactQuery!]!): [String!]!
 
   """Retrieve a completed transaction by its unique key."""
   transaction(blockHash: String!, requestKey: String!): Transaction

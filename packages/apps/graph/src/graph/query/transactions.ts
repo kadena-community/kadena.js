@@ -8,37 +8,6 @@ import Transaction from '../objects/transaction';
 import TransactionConnection from '../objects/transaction-connection';
 import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 
-builder.queryField('transaction', (t) =>
-  t.field({
-    description: 'Retrieve a completed transaction by its unique key.',
-    nullable: true,
-    args: {
-      blockHash: t.arg.string({ required: true }),
-      requestKey: t.arg.string({ required: true }),
-    },
-    type: Transaction,
-    complexity: getDefaultConnectionComplexity(),
-    async resolve(__parent, args, context) {
-      try {
-        const prismaTransactiom = await prismaClient.transaction.findUnique({
-          where: {
-            blockHash_requestKey: {
-              blockHash: args.blockHash,
-              requestKey: args.requestKey,
-            },
-          },
-        });
-
-        if (!prismaTransactiom) return null;
-
-        return prismaTransactionMapper(prismaTransactiom, context);
-      } catch (error) {
-        throw normalizeError(error);
-      }
-    },
-  }),
-);
-
 builder.queryField('transactions', (t) =>
   t.field({
     description: 'Retrieve transactions. Default page size is 20.',

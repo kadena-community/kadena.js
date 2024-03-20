@@ -51,6 +51,8 @@ export const fileSystemService: IFileSystemService = {
   async ensureDirectoryExists(path: string) {
     if (await fileSystemService.directoryExists(path)) return;
 
+    // TODO: this is not very reliable, preferably `path` always is a directory
+    // directories can also have . in their name
     const isFile = path.split('/').pop()?.includes('.') ?? false;
 
     await fs.mkdir(isFile ? dirname(path) : path, {

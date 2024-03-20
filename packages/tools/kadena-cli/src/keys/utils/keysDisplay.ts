@@ -11,29 +11,22 @@ import {
   WALLET_EXT,
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
+import type { IPlainKey } from '../../services/index.js';
 import { services } from '../../services/index.js';
 import {
   maskStringPreservingStartAndEnd,
   sanitizeFilename,
 } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
-import type { IPlainKey, IWallet } from './keysHelpers.js';
+import type { IWallet } from './keysHelpers.js';
 import type { IKeyPair } from './storage.js';
 
 import { relativeToCwd } from '../../utils/path.util.js';
 import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
-import { getAllPlainKeys } from './keysHelpers.js';
 
 export async function printPlainKeys(): Promise<void> {
-  const plainKeys: IPlainKey[] = await getAllPlainKeys();
-
-  const header: TableHeader = [
-    'Alias',
-    'Index',
-    'Legacy',
-    'Public Key',
-    'Secret Key',
-  ];
+  const plainKeys = await services.plainKey.list();
+  const header: TableHeader = ['Alias', 'Public Key', 'Secret Key'];
   const rows: TableRow[] = [];
 
   if (plainKeys.length === 0) {
@@ -41,17 +34,20 @@ export async function printPlainKeys(): Promise<void> {
     return;
   }
 
+  const hasLegacy = plainKeys.some((key) => key.legacy);
+  if (hasLegacy) header.push('Legacy');
+
   for (const key of plainKeys) {
-    rows.push([
-      key.alias ?? 'N/A',
-      key.index !== undefined ? key.index.toString() : 'N/A',
-      key.legacy ? 'Yes' : 'No',
-      key.publicKey ?? 'N/A',
-      key.secretKey !== undefined
-        ? maskStringPreservingStartAndEnd(key.secretKey, 65)
-        : 'N/A',
-    ]);
+    const row = [
+      key.alias,
+      key.publicKey,
+      maskStringPreservingStartAndEnd(key.secretKey, 35),
+    ];
+    if (hasLegacy) row.push(key.legacy ? 'Yes' : 'No');
+    rows.push(row);
   }
+
+  log.info(`Listing keys in the working directory:`);
 
   if (rows.length > 0) {
     log.output(log.generateTableString(header, rows));
@@ -110,18 +106,16 @@ export async function printWalletKeys(wallet: IWallet | null): Promise<void> {
 
 /**
  * Prints the filenames of stored plain keys.
- * @param {string} alias - The alias for the keys.
- * @param {IKeyPair[]} keyPairs - Array of key pairs.
- * @param {boolean} isLegacy - Indicates if the keys are in legacy format.
- * @param {number} [startIndex=0] - The starting index for naming the key files.
+ * @param {IKeyPair[]} keyPairs - Array of plain key pairs
  */
-export function printStoredPlainKeys(
-  alias: string,
-  keyPairs: IKeyPair[],
-  isLegacy: boolean,
-  startIndex: number = 0,
-): void {
-  printStoredKeys(alias, keyPairs, isLegacy, null, startIndex);
+export function printStoredPlainKeys(keyPairs: IPlainKey[]): void {
+  if (keyPairs.length === 0) return;
+  log.info(
+    log.color.green(
+      'The Plain Key Pair is stored within your keys folder under the filename(s):',
+    ),
+  );
+  log.output(keyPairs.map((key) => relativeToCwd(key.filepath)).join('\n'));
 }
 
 /**
@@ -195,18 +189,32 @@ export function printStoredKeys(
 
 /**
  * Displays generated plain key pairs in a formatted manner.
- * @param {IKeyPair[]} plainKeyPairs - Array of plain key pairs.
+ * @param {IPlainKey[]} keys - Array of plain key pairs.
  * @param {boolean} [legacy] - Optional flag to indicate if the keys are legacy keys.
  */
-export function displayGeneratedPlainKeys(
-  plainKeyPairs: IKeyPair[],
-  legacy?: boolean,
-): void {
-  return displayGeneratedKeys(
-    plainKeyPairs,
-    ['Generated Legacy Plain Key Pair(s): ', 'Generated Plain Key Pair(s): '],
-    legacy,
+export function displayGeneratedPlainKeys(keys: IPlainKey[]): void {
+  if (keys.length === 0) {
+    log.info('Did not generate any keys.');
+    return;
+  }
+
+  const header: TableHeader = ['Public Key', 'Secret Key (Encrypted)'];
+  const rows: TableRow[] = keys.map((key) => [
+    key.publicKey,
+    maskStringPreservingStartAndEnd(key.secretKey, 35),
+  ]);
+
+  const hasLegacy = keys.some((key) => key.legacy);
+  log.info(
+    log.color.green(
+      hasLegacy
+        ? 'Generated Legacy Plain Key Pair(s):'
+        : 'Generated Plain Key Pair(s):',
+    ),
   );
+
+  log.output(log.generateTableString(header, rows));
+  log.info('');
 }
 
 /**
