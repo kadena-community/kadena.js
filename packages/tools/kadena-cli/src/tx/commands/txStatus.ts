@@ -50,9 +50,10 @@ export const generateTabularData = (
 ): { header: string[]; rows: string[][] } => {
   const eventsData = result.events?.map((event) => {
     const { name, module, params } = event;
-    const moduleName = module.namespace
-      ? `${module.namespace}.${module.name}`
-      : module.name;
+    const moduleName =
+      module.namespace !== null
+        ? `${module.namespace}.${module.name}`
+        : module.name;
     const eventName = `${moduleName}.${name}`;
     return [`Event:${eventName}`, params.join('\n')];
   });

@@ -18,7 +18,6 @@ import {
 } from '../account/utils/accountHelpers.js';
 import { KEY_EXT, WALLET_EXT } from '../constants/config.js';
 import {
-  IWallet,
   getWallet,
   parseKeyIndexOrRange,
   parseKeyPairsInput,
