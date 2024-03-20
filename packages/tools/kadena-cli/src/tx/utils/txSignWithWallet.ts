@@ -63,7 +63,7 @@ export const signTransactionsWithwallet = async ({
         relevantKeyPairs,
       );
 
-      // Quietly return if no commands were signed
+      // Quietly continue if no commands were signed
       if (signedCommand === undefined) {
         continue;
       }

@@ -317,6 +317,7 @@ export async function assessTransactionSigningStatus(
 
   let allSigned = true;
   const errors: string[] = [];
+  const warnings: string[] = [];
   const signedCommands: ICommand[] = [];
   const partiallySignedTransactions: string[] = [];
 
@@ -345,7 +346,7 @@ export async function assessTransactionSigningStatus(
           )
           .join('\n');
 
-        errors.push(
+        warnings.push(
           `Transaction with hash: ${command.hash} is partially signed:\n${formattedStatus}`,
         );
         partiallySignedTransactions.push(
@@ -363,7 +364,7 @@ export async function assessTransactionSigningStatus(
     const commandString = `\n kadena tx sign --tx-sign-with="wallet" --tx-unsigned-transaction-files="${partiallySignedTransactions.join(
       ',',
     )}"`;
-    errors.push(
+    warnings.push(
       `\n\nTo sign the partially signed transactions, now run the follow-up command:${commandString}`,
     );
   }
@@ -371,7 +372,8 @@ export async function assessTransactionSigningStatus(
   return {
     success: allSigned,
     data: signedCommands,
-    errors: errors,
+    errors,
+    warnings,
   };
 }
 
