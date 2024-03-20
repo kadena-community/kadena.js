@@ -41,8 +41,9 @@ Overview of the main packages maintained in this repository:
 | [@kadena/pactjs][41]                 | [![version][43]][42] |
 | [@kadena/pactjs-cli][44]             | [![version][46]][45] |
 | [@kadena/pactjs-generator][47]       | [![version][49]][48] |
-| [@kadena/react-ui][50]               | [![version][52]][51] |
-| [@kadena/types][53]                  | [![version][55]][54] |
+| [@kadena/react-icons][50]            | [![version][52]][51] |
+| [@kadena/react-ui][53]               | [![version][55]][54] |
+| [@kadena/types][56]                  | [![version][58]][57] |
 
 <!--packageTable end -->
 
@@ -50,7 +51,7 @@ Overview of the main packages maintained in this repository:
 
 Special thanks to the wonderful people who have contributed to this project:
 
-[![Contributors][57]][56]
+[![Contributors][60]][59]
 
 [1]: https://docs.kadena.io
 [2]: https://discord.io/kadena
@@ -117,12 +118,16 @@ Special thanks to the wonderful people who have contributed to this project:
 [48]: packages/libs/pactjs-generator/CHANGELOG.md
 [49]: https://img.shields.io/npm/v/@kadena/pactjs-generator.svg
 [50]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/react-ui
-[51]: packages/libs/react-ui/CHANGELOG.md
-[52]: https://img.shields.io/npm/v/@kadena/react-ui.svg
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/react-icons
+[51]: packages/libs/react-icons/CHANGELOG.md
+[52]: https://img.shields.io/npm/v/@kadena/react-icons.svg
 [53]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/react-ui
+[54]: packages/libs/react-ui/CHANGELOG.md
+[55]: https://img.shields.io/npm/v/@kadena/react-ui.svg
+[56]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/types
-[54]: packages/libs/types/CHANGELOG.md
-[55]: https://img.shields.io/npm/v/@kadena/types.svg
-[56]: https://github.com/kadena-community/kadena.js/graphs/contributors
-[57]: https://contrib.rocks/image?repo=kadena-community/kadena.js
+[57]: packages/libs/types/CHANGELOG.md
+[58]: https://img.shields.io/npm/v/@kadena/types.svg
+[59]: https://github.com/kadena-community/kadena.js/graphs/contributors
+[60]: https://contrib.rocks/image?repo=kadena-community/kadena.js
