@@ -5,6 +5,7 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { prismaTransactionMapper } from '../mappers/transaction-mapper';
 import Transaction from '../objects/transaction';
+import TransactionConnection from '../objects/transaction-connection';
 import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 
 builder.queryField('transaction', (t) =>
@@ -39,17 +40,21 @@ builder.queryField('transaction', (t) =>
 );
 
 builder.queryField('transactions', (t) =>
-  t.connection({
+  t.field({
     description: 'Retrieve transactions. Default page size is 20.',
-    edgesNullable: false,
+    nullable: false,
+    type: TransactionConnection,
     args: {
       accountName: t.arg.string({ required: false }),
       fungibleName: t.arg.string({ required: false }),
       chainId: t.arg.string({ required: false }),
       blockHash: t.arg.string({ required: false }),
       requestKey: t.arg.string({ required: false }),
+      first: t.arg.int({ required: false }),
+      last: t.arg.int({ required: false }),
+      before: t.arg.string({ required: false }),
+      after: t.arg.string({ required: false }),
     },
-    type: Transaction,
     complexity: getDefaultConnectionComplexity(),
     async resolve(__parent, args, context) {
       try {

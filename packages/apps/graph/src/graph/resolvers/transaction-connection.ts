@@ -76,7 +76,9 @@ export async function resolveTransactionConnection(
   );
 
   return {
-    ...connection,
+    // this is required because connection.edges is a readonly array
+    edges: Array.from(connection.edges),
+    pageInfo: connection.pageInfo,
     totalCount,
   };
 }

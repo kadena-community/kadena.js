@@ -7,7 +7,7 @@ import { resolveTransactionConnection } from '../resolvers/transaction-connectio
 import type { NonFungibleChainAccount } from '../types/graphql-types';
 import { NonFungibleChainAccountName } from '../types/graphql-types';
 import Token from './token';
-import Transaction from './transaction';
+import TransactionConnection from './transaction-connection';
 
 export default builder.node(
   builder.objectRef<NonFungibleChainAccount>(NonFungibleChainAccountName),
@@ -55,10 +55,15 @@ export default builder.node(
           }
         },
       }),
-      transactions: t.connection({
-        type: Transaction,
+      transactions: t.field({
+        type: TransactionConnection,
         description: 'Default page size is 20.',
-        edgesNullable: false,
+        args: {
+          first: t.arg.int({ required: false }),
+          last: t.arg.int({ required: false }),
+          before: t.arg.string({ required: false }),
+          after: t.arg.string({ required: false }),
+        },
         resolve(parent, args, context) {
           try {
             const whereCondition: Prisma.TransactionWhereInput = {

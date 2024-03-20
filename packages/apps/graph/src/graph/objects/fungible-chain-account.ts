@@ -12,7 +12,7 @@ import { resolveTransactionConnection } from '../resolvers/transaction-connectio
 import type { FungibleChainAccount } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
 import Guard from './guard';
-import Transaction from './transaction';
+import TransactionConnection from './transaction-connection';
 
 export default builder.node(
   builder.objectRef<FungibleChainAccount>(FungibleChainAccountName),
@@ -70,10 +70,15 @@ export default builder.node(
         },
       }),
       balance: t.exposeFloat('balance'),
-      transactions: t.connection({
-        type: Transaction,
+      transactions: t.field({
+        type: TransactionConnection,
         description: 'Default page size is 20.',
-        edgesNullable: false,
+        args: {
+          first: t.arg.int({ required: false }),
+          last: t.arg.int({ required: false }),
+          before: t.arg.string({ required: false }),
+          after: t.arg.string({ required: false }),
+        },
         complexity: (args) => ({
           field: getDefaultConnectionComplexity({
             withRelations: true,

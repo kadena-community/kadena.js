@@ -170,3 +170,24 @@ export interface CapabilitiesList {
   name: string;
   args: string;
 }
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface TransactionEdge {
+  node: Transaction;
+  cursor: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface TransactionPageInfo {
+  startCursor?: string | null;
+  endCursor?: string | null;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface TransactionConnection {
+  edges: TransactionEdge[];
+  pageInfo: TransactionPageInfo;
+  totalCount: number;
+}

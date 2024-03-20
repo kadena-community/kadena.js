@@ -26,7 +26,7 @@ type Block implements Node {
   powHash: String!
 
   """Default page size is 20."""
-  transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
+  transactions(after: String, before: String, first: Int, last: Int): TransactionConnection!
 }
 
 type BlockEventsConnection {
@@ -38,16 +38,6 @@ type BlockEventsConnection {
 type BlockEventsConnectionEdge {
   cursor: String!
   node: Event!
-}
-
-type BlockTransactionsConnection {
-  edges: [BlockTransactionsConnectionEdge!]!
-  pageInfo: PageInfo!
-}
-
-type BlockTransactionsConnectionEdge {
-  cursor: String!
-  node: Transaction!
 }
 
 """List of capabilities associated with/installed by this signer."""
@@ -137,20 +127,10 @@ type FungibleAccount implements Node {
   totalBalance: Decimal!
 
   """Default page size is 20."""
-  transactions(after: String, before: String, first: Int, last: Int): FungibleAccountTransactionsConnection!
+  transactions(after: String, before: String, first: Int, last: Int): TransactionConnection!
 
   """Default page size is 20."""
   transfers(after: String, before: String, first: Int, last: Int): FungibleAccountTransfersConnection!
-}
-
-type FungibleAccountTransactionsConnection {
-  edges: [FungibleAccountTransactionsConnectionEdge!]!
-  pageInfo: PageInfo!
-}
-
-type FungibleAccountTransactionsConnectionEdge {
-  cursor: String!
-  node: Transaction!
 }
 
 type FungibleAccountTransfersConnection {
@@ -174,20 +154,10 @@ type FungibleChainAccount implements Node {
   id: ID!
 
   """Default page size is 20."""
-  transactions(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransactionsConnection!
+  transactions(after: String, before: String, first: Int, last: Int): TransactionConnection!
 
   """Default page size is 20."""
   transfers(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransfersConnection!
-}
-
-type FungibleChainAccountTransactionsConnection {
-  edges: [FungibleChainAccountTransactionsConnectionEdge!]!
-  pageInfo: PageInfo!
-}
-
-type FungibleChainAccountTransactionsConnectionEdge {
-  cursor: String!
-  node: Transaction!
 }
 
 type FungibleChainAccountTransfersConnection {
@@ -247,17 +217,7 @@ type NonFungibleAccount implements Node {
   nonFungibles: [Token!]!
 
   """Default page size is 20."""
-  transactions(after: String, before: String, first: Int, last: Int): NonFungibleAccountTransactionsConnection!
-}
-
-type NonFungibleAccountTransactionsConnection {
-  edges: [NonFungibleAccountTransactionsConnectionEdge!]!
-  pageInfo: PageInfo!
-}
-
-type NonFungibleAccountTransactionsConnectionEdge {
-  cursor: String!
-  node: Transaction!
+  transactions(after: String, before: String, first: Int, last: Int): TransactionConnection!
 }
 
 """A chain and non-fungible-specific account."""
@@ -268,17 +228,7 @@ type NonFungibleChainAccount implements Node {
   nonFungibles: [Token!]!
 
   """Default page size is 20."""
-  transactions(after: String, before: String, first: Int, last: Int): NonFungibleChainAccountTransactionsConnection!
-}
-
-type NonFungibleChainAccountTransactionsConnection {
-  edges: [NonFungibleChainAccountTransactionsConnectionEdge!]!
-  pageInfo: PageInfo!
-}
-
-type NonFungibleChainAccountTransactionsConnectionEdge {
-  cursor: String!
-  node: Transaction!
+  transactions(after: String, before: String, first: Int, last: Int): TransactionConnection!
 }
 
 input PactQuery {
@@ -382,10 +332,10 @@ type Query {
   transaction(blockHash: String!, requestKey: String!): Transaction
 
   """Retrieve transactions. Default page size is 20."""
-  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactionsConnection!
+  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): TransactionConnection!
 
   """Retrieve all transactions by a given public key."""
-  transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
+  transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): TransactionConnection!
 
   """Retrieve one transfer by its unique key."""
   transfer(blockHash: String!, chainId: String!, moduleHash: String!, orderIndex: Int!, requestKey: String!): Transfer
@@ -433,26 +383,6 @@ type QueryEventsConnection {
 type QueryEventsConnectionEdge {
   cursor: String!
   node: Event!
-}
-
-type QueryTransactionsByPublicKeyConnection {
-  edges: [QueryTransactionsByPublicKeyConnectionEdge!]!
-  pageInfo: PageInfo!
-}
-
-type QueryTransactionsByPublicKeyConnectionEdge {
-  cursor: String!
-  node: Transaction!
-}
-
-type QueryTransactionsConnection {
-  edges: [QueryTransactionsConnectionEdge!]!
-  pageInfo: PageInfo!
-}
-
-type QueryTransactionsConnectionEdge {
-  cursor: String!
-  node: Transaction!
 }
 
 type QueryTransfersConnection {
@@ -527,6 +457,17 @@ type TransactionCommand {
   signers: [Signer!]!
 }
 
+type TransactionConnection {
+  edges: [TransactionEdge!]!
+  pageInfo: TransactionPageInfo!
+  totalCount: Int!
+}
+
+type TransactionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
 """The result of a transaction."""
 type TransactionInfo {
   """The transaction result when it was successful. Formatted as raw JSON."""
@@ -562,6 +503,13 @@ type TransactionMeta {
   gasPrice: Float!
   sender: String!
   ttl: BigInt!
+}
+
+type TransactionPageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
 }
 
 """The payload of a transaction."""

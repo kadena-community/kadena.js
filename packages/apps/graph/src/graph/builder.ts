@@ -33,8 +33,11 @@ import type {
   TokenInfo,
   Transaction,
   TransactionCommand,
+  TransactionConnection,
+  TransactionEdge,
   TransactionInfo,
   TransactionMeta,
+  TransactionPageInfo,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -92,6 +95,9 @@ export const builder = new SchemaBuilder<
       Signer: Signer;
       TransactionCommand: TransactionCommand;
       CapabilitiesList: CapabilitiesList;
+      TransactionConnection: TransactionConnection;
+      TransactionEdge: TransactionEdge;
+      TransactionPageInfo: TransactionPageInfo;
     };
   }
 >({

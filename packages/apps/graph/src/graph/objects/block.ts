@@ -10,7 +10,7 @@ import { resolveTransactionConnection } from '../resolvers/transaction-connectio
 import type { Guard } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
 import FungibleChainAccount from './fungible-chain-account';
-import Transaction from './transaction';
+import TransactionConnection from './transaction-connection';
 
 export default builder.prismaNode(Prisma.ModelName.Block, {
   description:
@@ -88,10 +88,15 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
     }),
 
     // relations
-    transactions: t.connection({
-      type: Transaction,
+    transactions: t.field({
+      type: TransactionConnection,
       description: 'Default page size is 20.',
-      edgesNullable: false,
+      args: {
+        first: t.arg.int({ required: false }),
+        last: t.arg.int({ required: false }),
+        before: t.arg.string({ required: false }),
+        after: t.arg.string({ required: false }),
+      },
       complexity: (args) => ({
         field: getDefaultConnectionComplexity({
           first: args.first,

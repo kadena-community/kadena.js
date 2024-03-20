@@ -3,14 +3,20 @@ import type { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import Transaction from '../objects/transaction';
+import TransactionConnection from '../objects/transaction-connection';
 import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 
 builder.queryField('transactionsByPublicKey', (t) =>
-  t.connection({
-    type: Transaction,
+  t.field({
+    type: TransactionConnection,
     description: 'Retrieve all transactions by a given public key.',
-    edgesNullable: false,
+    args: {
+      publicKey: t.arg.string({ required: true }),
+      first: t.arg.int({ required: false }),
+      last: t.arg.int({ required: false }),
+      before: t.arg.string({ required: false }),
+      after: t.arg.string({ required: false }),
+    },
     complexity: (args) => ({
       field:
         getDefaultConnectionComplexity({
@@ -18,9 +24,7 @@ builder.queryField('transactionsByPublicKey', (t) =>
           last: args.last,
         }) * 2, // Times two because of the extra call to signers.
     }),
-    args: {
-      publicKey: t.arg.string({ required: true }),
-    },
+
     async resolve(__parent, args, context) {
       try {
         const requestKeys = await prismaClient.signer.findMany({
