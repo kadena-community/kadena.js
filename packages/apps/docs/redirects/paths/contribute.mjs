@@ -15,6 +15,11 @@ export const contributePathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/contribute/node/troubleshooting-chainweb',
+    destination: '/contribute/node/trouble-shooting-chainweb',
+    permanent: true,
+  },
+  {
     source: '/contribute/node/overview',
     destination: '/contribute/node',
     permanent: true,
