@@ -8,12 +8,12 @@ import {
   bodySmallRegular,
   bodySmallestBold,
   bodySmallestRegular,
-  codeBaseBold,
-  codeBaseRegular,
-  codeSmallBold,
-  codeSmallRegular,
-  codeSmallestBold,
-  codeSmallestRegular,
+  monospaceBaseBold,
+  monospaceBaseRegular,
+  monospaceSmallBold,
+  monospaceSmallRegular,
+  monospaceSmallestBold,
+  monospaceSmallestRegular,
 } from '../../../styles';
 import { colorVariants, transformVariants } from '../typography.css';
 
@@ -28,14 +28,14 @@ function getFontClass(
   type: TextElementType,
 ): string {
   if (type === 'code' && variant === 'smallest') {
-    return isBold ? codeSmallestBold : codeSmallestRegular;
+    return isBold ? monospaceSmallestBold : monospaceSmallestRegular;
   }
   if (type === 'code' && variant === 'small') {
-    return isBold ? codeSmallBold : codeSmallRegular;
+    return isBold ? monospaceSmallBold : monospaceSmallRegular;
   }
 
   if (type === 'code' && variant === 'base') {
-    return isBold ? codeBaseBold : codeBaseRegular;
+    return isBold ? monospaceBaseBold : monospaceBaseRegular;
   }
 
   if (variant === 'smallest') {

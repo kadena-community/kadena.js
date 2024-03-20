@@ -21,7 +21,7 @@ export const listItemClass = style([
 ]);
 export const titleClass = style([
   atoms({
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
   }),
   { flex: 1 },
 ]);
