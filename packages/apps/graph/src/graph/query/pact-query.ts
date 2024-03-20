@@ -19,7 +19,7 @@ const PactQuery = builder.inputType('PactQuery', {
   }),
 });
 
-builder.queryField('pactQueries', (t) =>
+builder.queryField('pactQuery', (t) =>
   t.field({
     description:
       'Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).',
@@ -39,29 +39,6 @@ builder.queryField('pactQueries', (t) =>
               query.chainId,
               query.data as CommandData[],
             ),
-        );
-      } catch (error) {
-        throw normalizeError(error);
-      }
-    },
-  }),
-);
-
-builder.queryField('pactQuery', (t) =>
-  t.field({
-    description:
-      'Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).',
-    type: 'String',
-    args: {
-      pactQuery: t.arg({ type: PactQuery, required: true }),
-    },
-    complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
-    async resolve(__parent, args) {
-      try {
-        return await sendRawQuery(
-          args.pactQuery.code,
-          args.pactQuery.chainId,
-          args.pactQuery.data as CommandData[],
         );
       } catch (error) {
         throw normalizeError(error);
