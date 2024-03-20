@@ -1,15 +1,20 @@
 import TransportWebHID from '@ledgerhq/hw-transport-webhid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const useIsLedgerLibSupported = () => {
   const [isSupported, setIsSupported] = useState<boolean>(false);
-  if (typeof window !== 'undefined') {
-    TransportWebHID.isSupported()
-      .then((data) => {
-        setIsSupported(data);
-      })
-      .catch(() => setIsSupported(false));
-  }
+
+  useEffect(() => {
+    async function checkIsSupported() {
+      try {
+        const isSupported = await TransportWebHID.isSupported();
+        setIsSupported(isSupported);
+      } catch (e) {
+        setIsSupported(false);
+      }
+    }
+    void checkIsSupported();
+  }, []);
 
   return isSupported;
 };
