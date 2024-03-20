@@ -71,14 +71,18 @@ export const ListItem: FC<IProps> = ({ token }) => {
       return;
     }
 
-    if (token?.info?.uri) {
-      setUri(token.info.uri);
-      return;
-    } else if (token?.proofOfUsId) {
+    if (token?.proofOfUsId) {
       loadProofOfUsData(token?.proofOfUsId);
       return;
     }
-  }, [data, loadData, token, loadProofOfUsData]);
+  }, [data, token]);
+
+  useEffect(() => {
+    if (token?.info?.uri) {
+      setUri(token.info.uri);
+      return;
+    }
+  }, [token]);
 
   const link = useMemo(() => {
     if (innerData?.properties.eventType === 'attendance') {
