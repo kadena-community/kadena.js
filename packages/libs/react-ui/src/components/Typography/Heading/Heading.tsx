@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import type { ComponentPropsWithRef, FC } from 'react';
+import type { ReactNode } from 'react';
 import React from 'react';
 import {
   typographyFontH1,
@@ -11,56 +11,52 @@ import {
 } from '../../../styles';
 import { colorVariants, transformVariants } from '../typography.css';
 
-// eslint-disable-next-line @kadena-dev/typedef-var
-export const HEADING_ELEMENTS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const;
-export type HeadingElementType = (typeof HEADING_ELEMENTS)[number];
+type HeadingElementType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
-export interface IHeadingProps extends ComponentPropsWithRef<'h1'> {
+export interface IHeadingProps {
   as?: HeadingElementType;
-  variant?: HeadingElementType;
+  children: ReactNode;
+  className?: string;
   color?: keyof typeof colorVariants;
   transform?: keyof typeof transformVariants;
-  children: React.ReactNode;
+  variant: HeadingElementType;
 }
 
-function getHeadingClass(variant: HeadingElementType): string {
-  switch (variant) {
-    case 'h2':
-      return typographyFontH2;
-    case 'h3':
-      return typographyFontH3;
-    case 'h4':
-      return typographyFontH4;
-    case 'h5':
-      return typographyFontH5;
-    case 'h6':
-      return typographyFontH6;
-    case 'h1':
-    default:
-      return typographyFontH1;
-  }
-}
+const fontMap = {
+  h1: typographyFontH1,
+  h2: typographyFontH2,
+  h3: typographyFontH3,
+  h4: typographyFontH4,
+  h5: typographyFontH5,
+  h6: typographyFontH6,
+};
 
-export const Heading: FC<IHeadingProps> = ({
+/**
+ * Heading component
+ * @param as - HTML element to render defaults to "h1"
+ * @param children - Text content
+ * @param className - Additional classes
+ * @param color - Color variant defaults to "default"
+ * @param transform - Text transform variant defaults to "none"
+ * @param variant - Typography variant defaults to the "as" param
+ */
+
+export const Heading = ({
   as = 'h1',
-  variant = as,
-  color = 'emphasize',
-  transform = 'none',
   children,
   className,
-  ...props
-}) => {
+  color = 'default',
+  transform = 'none',
+  variant = as,
+}: IHeadingProps) => {
   const classList = classNames(
-    getHeadingClass(variant),
+    fontMap[variant],
     colorVariants[color],
     transformVariants[transform],
     className,
   );
-  // making sure that the variant is one of the allowed ones in case typescript is ignored or not used
-  const Element = HEADING_ELEMENTS.includes(as) ? as : 'h1';
-  return (
-    <Element className={classList} {...props}>
-      {children}
-    </Element>
-  );
+
+  const Element = as;
+
+  return <Element className={classList}>{children}</Element>;
 };
