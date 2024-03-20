@@ -6,10 +6,7 @@ import {
 } from '../tx/utils/txHelpers.js';
 
 import { getAllAccounts } from '../account/utils/accountHelpers.js';
-import {
-  getAllPlainKeys,
-  getAllWalletKeys,
-} from '../keys/utils/keysHelpers.js';
+import { getAllWalletKeys } from '../keys/utils/keysHelpers.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
 import { getTemplates } from '../tx/commands/templates/templates.js';
@@ -234,7 +231,7 @@ const promptVariableValue = async (
     return value;
   } else if (key.startsWith('key:')) {
     const walletKeys = await getAllWalletKeys();
-    const plainKeys = await getAllPlainKeys();
+    const plainKeys = await services.plainKey.list();
     const accounts = await getAllAccounts().catch(() => []);
 
     const hasKeys = walletKeys.length > 0 || plainKeys.length > 0;

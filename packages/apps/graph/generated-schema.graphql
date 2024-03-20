@@ -12,6 +12,8 @@ type Block implements Node {
   The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.
   """
   epoch: DateTime!
+
+  """Default page size is 20."""
   events(after: String, before: String, first: Int, last: Int): BlockEventsConnection!
   hash: ID!
   height: BigInt!
@@ -22,6 +24,8 @@ type Block implements Node {
 
   """The proof of work hash."""
   powHash: String!
+
+  """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
 }
 
@@ -126,7 +130,11 @@ type FungibleAccount implements Node {
   fungibleName: String!
   id: ID!
   totalBalance: Decimal!
+
+  """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): FungibleAccountTransactionsConnection!
+
+  """Default page size is 20."""
   transfers(after: String, before: String, first: Int, last: Int): FungibleAccountTransfersConnection!
 }
 
@@ -160,7 +168,11 @@ type FungibleChainAccount implements Node {
   fungibleName: String!
   guard: Guard!
   id: ID!
+
+  """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransactionsConnection!
+
+  """Default page size is 20."""
   transfers(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransfersConnection!
 }
 
@@ -224,6 +236,8 @@ type NonFungibleAccount implements Node {
   chainAccounts: [NonFungibleChainAccount!]!
   id: ID!
   nonFungibles: [Token!]!
+
+  """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleAccountTransactionsConnection!
 }
 
@@ -244,6 +258,8 @@ type NonFungibleChainAccount implements Node {
   chainId: ID!
   id: ID!
   nonFungibles: [Token!]!
+
+  """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleChainAccountTransactionsConnection!
 }
 
@@ -283,19 +299,30 @@ type Query {
   """Retrieve a block by hash."""
   block(hash: String!): Block
 
-  """Retrieve blocks by chain and minimal depth."""
-  blocksFromDepth(after: String, before: String, chainIds: [String!], first: Int, last: Int, minimumDepth: Int!): QueryBlocksFromDepthConnection
+  """Retrieve blocks by chain and minimal depth. Default page size is 20."""
+  blocksFromDepth(
+    after: String
+    before: String
 
-  """Retrieve blocks by chain and minimal height."""
+    """Default: all chains"""
+    chainIds: [String!]
+    first: Int
+    last: Int
+    minimumDepth: Int!
+  ): QueryBlocksFromDepthConnection
+
+  """Retrieve blocks by chain and minimal height. Default page size is 20."""
   blocksFromHeight(after: String, before: String, chainIds: [String!], first: Int, last: Int, startHeight: Int!): QueryBlocksFromHeightConnection!
 
-  """Retrieve all completed blocks from a given height."""
+  """
+  Retrieve all completed blocks from a given height. Default page size is 20.
+  """
   completedBlockHeights(after: String, before: String, chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, first: Int, heightCount: Int = 3, last: Int): QueryCompletedBlockHeightsConnection!
 
   """Retrieve a single event by its unique key."""
   event(blockHash: String!, orderIndex: Int!, requestKey: String!): Event
 
-  """Retrieve events."""
+  """Retrieve events. Default page size is 20."""
   events(after: String, before: String, chainId: String, first: Int, last: Int, parametersFilter: String, qualifiedEventName: String!): QueryEventsConnection!
 
   """
@@ -303,22 +330,13 @@ type Query {
   """
   fungibleAccount(accountName: String!, fungibleName: String!): FungibleAccount
 
-  """Retrieve an account by public key."""
-  fungibleAccountByPublicKey(publicKey: String!): FungibleAccount
-
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
   fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
 
-  """Retrieve a chain account by public key."""
-  fungibleChainAccountByPublicKey(chainId: String!, publicKey: String!): FungibleChainAccount
-
-  """Estimate the gas limit for a transaction."""
-  gasLimitEstimate(input: String!): GasLimitEstimation!
-
-  """Estimate the gas limit for a list of transactions."""
-  gasLimitEstimates(input: [String!]!): [GasLimitEstimation!]!
+  """Estimate the gas limit for one or more transactions."""
+  gasLimitEstimate(input: [String!]!): [GasLimitEstimation!]!
 
   """Get the configuration of the graph."""
   graphConfiguration: GraphConfiguration!
@@ -337,17 +355,12 @@ type Query {
   """
   Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
   """
-  pactQueries(pactQuery: [PactQuery!]!): [String!]!
-
-  """
-  Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
-  """
-  pactQuery(pactQuery: PactQuery!): String!
+  pactQuery(pactQuery: [PactQuery!]!): [String!]!
 
   """Retrieve one transaction by its unique key."""
   transaction(blockHash: String!, requestKey: String!): Transaction
 
-  """Retrieve transactions."""
+  """Retrieve transactions. Default page size is 20."""
   transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactionsConnection!
 
   """Retrieve all transactions by a given public key."""
@@ -356,7 +369,7 @@ type Query {
   """Retrieve one transfer by its unique key."""
   transfer(blockHash: String!, chainId: String!, moduleHash: String!, orderIndex: Int!, requestKey: String!): Transfer
 
-  """Retrieve transfers."""
+  """Retrieve transfers. Default page size is 20."""
   transfers(accountName: String, after: String, before: String, chainId: String, first: Int, fungibleName: String, last: Int): QueryTransfersConnection!
 }
 

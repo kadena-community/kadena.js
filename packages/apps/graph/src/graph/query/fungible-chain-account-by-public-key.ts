@@ -36,7 +36,7 @@ builder.queryField('fungibleChainAccountByPublicKey', (t) =>
   }),
 );
 
-export async function getChainAccountNameByPublicKey(
+async function getChainAccountNameByPublicKey(
   publicKey: string,
   chainId: string,
 ): Promise<string | undefined> {

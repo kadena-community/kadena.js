@@ -4,37 +4,6 @@ import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import { builder } from '../builder';
-import Event from '../objects/event';
-
-builder.queryField('event', (t) =>
-  t.prismaField({
-    description: 'Retrieve a single event by its unique key.',
-    nullable: true,
-    args: {
-      blockHash: t.arg.string({ required: true }),
-      orderIndex: t.arg.int({ required: true }),
-      requestKey: t.arg.string({ required: true }),
-    },
-    type: Event,
-    complexity: getDefaultConnectionComplexity(),
-    async resolve(query, __parent, args) {
-      try {
-        return await prismaClient.event.findUnique({
-          ...query,
-          where: {
-            blockHash_orderIndex_requestKey: {
-              blockHash: args.blockHash,
-              orderIndex: args.orderIndex,
-              requestKey: args.requestKey,
-            },
-          },
-        });
-      } catch (error) {
-        throw normalizeError(error);
-      }
-    },
-  }),
-);
 
 builder.queryField('events', (t) =>
   t.prismaConnection({
@@ -98,11 +67,11 @@ builder.queryField('events', (t) =>
               }),
             }),
           },
-          orderBy: {
-            height: 'desc',
-            requestKey: 'desc',
-            orderIndex: 'desc',
-          },
+          orderBy: [
+            { height: 'desc' },
+            { requestKey: 'desc' },
+            { orderIndex: 'desc' },
+          ],
         });
       } catch (error) {
         throw normalizeError(error);
