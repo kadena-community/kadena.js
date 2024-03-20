@@ -1,10 +1,7 @@
-import { prismaClient } from '@db/prisma-client';
 import type { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import { prismaTransactionMapper } from '../mappers/transaction-mapper';
-import Transaction from '../objects/transaction';
 import TransactionConnection from '../objects/transaction-connection';
 import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 
