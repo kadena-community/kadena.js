@@ -5,6 +5,11 @@ export const basicsPathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/basics/community',
+    destination: '/kadena',
+    permanent: true,
+  },
+  {
     source: '/basics/wallets',
     destination: '/kadena/wallets',
     permanent: true,
@@ -106,7 +111,7 @@ export const basicsPathUrlRedirects = [
   },
   {
     source: '/basics/support/:slug',
-    destination: '/kadena/support',
+    destination: '/kadena/resources',
     permanent: true,
   },
   {

@@ -5,6 +5,11 @@ export const contributePathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/contribute/introduction',
+    destination: '/contribute',
+    permanent: true,
+  },
+  {
     source: '/contribute/run-a-node/interact-with-nodes',
     destination: '/contribute/node/interact-with-nodes',
     permanent: true,
