@@ -6,8 +6,7 @@ import GQLTransaction from '../objects/transaction';
 
 builder.subscriptionField('transaction', (t) =>
   t.field({
-    description:
-      'Listen for a transaction by request key. Returns the ID when it is in a block.',
+    description: 'Listen for a transaction by request key.',
     args: {
       requestKey: t.arg.string({ required: true }),
     },
