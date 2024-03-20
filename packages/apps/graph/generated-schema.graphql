@@ -335,11 +335,8 @@ type Query {
   """
   fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
 
-  """Estimate the gas limit for a transaction."""
-  gasLimitEstimate(input: String!): GasLimitEstimation!
-
-  """Estimate the gas limit for a list of transactions."""
-  gasLimitEstimates(input: [String!]!): [GasLimitEstimation!]!
+  """Estimate the gas limit for one or more transactions."""
+  gasLimitEstimate(input: [String!]!): [GasLimitEstimation!]!
 
   """Get the configuration of the graph."""
   graphConfiguration: GraphConfiguration!
@@ -358,12 +355,7 @@ type Query {
   """
   Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
   """
-  pactQueries(pactQuery: [PactQuery!]!): [String!]!
-
-  """
-  Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
-  """
-  pactQuery(pactQuery: PactQuery!): String!
+  pactQuery(pactQuery: [PactQuery!]!): [String!]!
 
   """Retrieve one transaction by its unique key."""
   transaction(blockHash: String!, requestKey: String!): Transaction

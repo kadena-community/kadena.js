@@ -6,25 +6,7 @@ import GasLimitEstimation from '../objects/gas-limit-estimation';
 
 builder.queryField('gasLimitEstimate', (t) =>
   t.field({
-    description: 'Estimate the gas limit for a transaction.',
-    type: GasLimitEstimation,
-    args: {
-      input: t.arg.string({ required: true }),
-    },
-    complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
-    async resolve(__parent, args) {
-      try {
-        return await estimateGasLimit(args.input);
-      } catch (error) {
-        throw normalizeError(error);
-      }
-    },
-  }),
-);
-
-builder.queryField('gasLimitEstimates', (t) =>
-  t.field({
-    description: 'Estimate the gas limit for a list of transactions.',
+    description: 'Estimate the gas limit for one or more transactions.',
     type: [GasLimitEstimation],
     args: {
       input: t.arg.stringList({ required: true }),
