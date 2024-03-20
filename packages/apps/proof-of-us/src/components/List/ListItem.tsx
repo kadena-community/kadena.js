@@ -128,7 +128,7 @@ export const ListItem: FC<IProps> = ({ token }) => {
             <Text transform="capitalize" bold>
               {innerData.name}
             </Text>
-            <Text variant="small">
+            <Text size="small">
               {new Date(innerData.properties.date).toDateString()}
             </Text>
           </Stack>

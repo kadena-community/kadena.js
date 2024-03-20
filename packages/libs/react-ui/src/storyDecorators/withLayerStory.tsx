@@ -29,7 +29,6 @@ const WithLayerStory: FC<IWithLayerStoryProps> = ({ children, layer }) => {
       style={{ minHeight: '20rem' }}
     >
       <Text
-        variant="base"
         bold
         className={atoms({
           position: 'absolute',

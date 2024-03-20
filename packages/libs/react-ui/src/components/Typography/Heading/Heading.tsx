@@ -19,7 +19,7 @@ export interface IHeadingProps {
   className?: string;
   color?: keyof typeof colorVariants;
   transform?: keyof typeof transformVariants;
-  variant: HeadingElementType;
+  variant?: HeadingElementType;
 }
 
 const fontMap = {
@@ -42,7 +42,7 @@ const fontMap = {
  */
 
 export const Heading = ({
-  as = 'h1',
+  as = 'h2',
   children,
   className,
   color = 'default',

@@ -4,14 +4,23 @@ import React from 'react';
 
 import {
   bodyBaseRegular,
+  bodyBaseBold,
   bodySmallRegular,
+  bodySmallBold,
   bodySmallestRegular,
+  bodySmallestBold,
   monospaceBaseRegular,
+  monospaceBaseBold,
   monospaceSmallRegular,
+  monospaceSmallBold,
   monospaceSmallestRegular,
+  monospaceSmallestBold,
   uiBaseRegular,
+  uiBaseBold,
   uiSmallRegular,
+  uiSmallBold,
   uiSmallestRegular,
+  uiSmallestBold,
 } from '../../../styles';
 import { colorVariants, transformVariants } from '../typography.css';
 
@@ -20,6 +29,7 @@ export interface ITextProps extends HTMLAttributes<HTMLSpanElement> {
   children: string | ReactNode;
   className?: string;
   color?: keyof typeof colorVariants;
+  bold?: boolean;
   size?: 'small' | 'smallest' | 'base';
   transform?: keyof typeof transformVariants;
   variant?: 'body' | 'code' | 'ui';
@@ -29,19 +39,25 @@ export interface ITextProps extends HTMLAttributes<HTMLSpanElement> {
 
 const fontMap = {
   code: {
-    smallest: monospaceSmallestRegular,
-    small: monospaceSmallRegular,
-    base: monospaceBaseRegular,
+    smallest: {
+      regular: monospaceSmallestRegular,
+      bold: monospaceSmallestBold,
+    },
+    small: { regular: monospaceSmallRegular, bold: monospaceSmallBold },
+    base: {
+      regular: monospaceBaseRegular,
+      bold: monospaceBaseBold,
+    },
   },
   ui: {
-    smallest: uiSmallestRegular,
-    small: uiSmallRegular,
-    base: uiBaseRegular,
+    smallest: { regular: uiSmallestRegular, bold: uiSmallestBold },
+    small: { regular: uiSmallRegular, bold: uiSmallBold },
+    base: { regular: uiBaseRegular, bold: uiBaseBold },
   },
   body: {
-    smallest: bodySmallestRegular,
-    small: bodySmallRegular,
-    base: bodyBaseRegular,
+    smallest: { regular: bodySmallestRegular, bold: bodySmallestBold },
+    small: { regular: bodySmallRegular, bold: bodySmallBold },
+    base: { regular: bodyBaseRegular, bold: bodyBaseBold },
   },
 };
 
@@ -52,6 +68,7 @@ const fontMap = {
  * @param className - Additional classes
  * @param color - Color variant defaults to "default"
  * @param size - Typography size defaults to "base"
+ * @param bold - Add extra font weight
  * @param transform - Text transform variant defaults to "none"
  * @param variant - Typography variant defaults to "body"
  */
@@ -63,12 +80,13 @@ export const Text = ({
   color = 'default',
   size = 'base',
   transform = 'none',
-  variant = 'body',
+  variant = 'ui',
   ariaLabel,
+  bold,
   id,
 }: ITextProps) => {
   const classList = cn(
-    fontMap[variant][size],
+    fontMap[variant][size][bold ? 'bold' : 'regular'],
     colorVariants[color],
     transformVariants[transform],
     className,
