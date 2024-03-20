@@ -471,12 +471,3 @@ export const getDefaultNetworkName = async (): Promise<string | undefined> => {
     return parse.data.name;
   }
 };
-
-export const getNetworkName = async (
-  network: string,
-): Promise<string | undefined> => {
-  const networkName = isNotEmptyString(network?.trim())
-    ? network
-    : await getDefaultNetworkName();
-  return networkName;
-};

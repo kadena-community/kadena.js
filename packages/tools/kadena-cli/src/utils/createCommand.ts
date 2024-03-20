@@ -41,7 +41,7 @@ export async function executeOption<Option extends OptionType>(
     if (args.quiet !== true && args.quiet !== 'true') {
       prompted = true;
       value = await (option.prompt as PromptFn)(args, originalArgs);
-    } else if (args.quiet === true || args.quiet !== 'true') {
+    } else if (args.quiet === true || args.quiet === 'true') {
       value = option.defaultValue;
     } else if (
       option.isOptional === false &&
