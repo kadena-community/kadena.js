@@ -28,23 +28,14 @@ export const ListItem: FC<IProps> = ({ token }) => {
   });
 
   const [innerData, setInnerData] = useState<IProofOfUsTokenMeta | undefined>();
-  const [innerTokenId, setInnerTokenId] = useState<string>();
   const [isMinted, setIsMinted] = useState(true);
   const { removeTokenFromData } = useTokens();
-
-  useEffect(() => {
-    if (token?.info?.uri) {
-      setUri(token.info.uri);
-      return;
-    }
-  }, [token]);
 
   const loadProofOfUsData = useCallback(async (proofOfUsId: string) => {
     const data = await store.getProofOfUs(proofOfUsId);
     if (!data) return;
     const metaData = await createManifest(data, data?.imageUri);
 
-    setIsMinted(false);
     setInnerData(metaData);
   }, []);
 
@@ -53,8 +44,6 @@ export const ListItem: FC<IProps> = ({ token }) => {
       if (!data) return;
       if (token) {
         setInnerData(data);
-        setIsMinted(true);
-        setInnerTokenId(token.id);
       }
     },
     [],
@@ -66,11 +55,26 @@ export const ListItem: FC<IProps> = ({ token }) => {
   }, [error, token, removeTokenFromData]);
 
   useEffect(() => {
+    setIsMinted(false);
+    if (token?.listener) {
+      token.listener.then((res) => {
+        setIsMinted(true);
+      });
+    } else {
+      setIsMinted(true);
+    }
+  }, [token, setIsMinted]);
+
+  useEffect(() => {
     if (data) {
       loadData(data);
       return;
     }
-    if (token?.proofOfUsId) {
+
+    if (token?.info?.uri) {
+      setUri(token.info.uri);
+      return;
+    } else if (token?.proofOfUsId) {
       loadProofOfUsData(token?.proofOfUsId);
       return;
     }
@@ -78,18 +82,24 @@ export const ListItem: FC<IProps> = ({ token }) => {
 
   const link = useMemo(() => {
     if (innerData?.properties.eventType === 'attendance') {
-      console.log(234234243);
-      return `/scan/e/${innerData.properties.eventId}`;
+      if (isMinted) {
+        return `/user/proof-of-us/t/${token?.id}`;
+      }
+      return `/scan/e/${token?.eventId}`;
     }
 
-    if (token?.requestKey) {
-      return `/user/proof-of-us/t/${token.id}/${token.requestKey}`;
-    } else if (token?.id) {
-      return `/user/proof-of-us/t/${token.id}`;
+    if (isMinted) {
+      return `/user/proof-of-us/t/${token?.id}`;
+    } else {
+      return `/user/proof-of-us/t/${token?.id}/${token?.requestKey}`;
     }
-
-    return `/user/proof-of-us/t/${innerTokenId}`;
-  }, [innerTokenId, token?.id, token?.requestKey]);
+  }, [
+    isMinted,
+    token?.id,
+    token?.requestKey,
+    innerData?.properties.eventType,
+    token?.eventId,
+  ]);
 
   return (
     <motion.li

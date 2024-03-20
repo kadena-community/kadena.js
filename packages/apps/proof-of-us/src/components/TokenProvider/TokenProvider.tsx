@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 'use client';
 import { useAccount } from '@/hooks/account';
 import { useGetAllProofOfUs } from '@/hooks/data/getAllProofOfUs';
@@ -50,13 +51,16 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   const { hasMinted } = useHasMintedAttendaceToken();
   const { account } = useAccount();
 
-  const storageListener = (event: StorageEvent) => {
-    if (event.key === 'mintingTokens') {
-      console.log('eventkey');
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      setMintingTokens(getMintingTokensFromLocalStorage());
-    }
-  };
+  const storageListener = useCallback(
+    (event: StorageEvent) => {
+      if (event.key === 'mintingTokens') {
+        console.log('eventkey');
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        setMintingTokens(getMintingTokensFromLocalStorage());
+      }
+    },
+    [setMintingTokens],
+  );
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -75,7 +79,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [data]);
 
   const removeMintingToken = useCallback((token: IToken) => {
-    console.log('are we removing at all?');
     setMintingTokens((v) => {
       const newArray = v.filter((t) => t.requestKey !== token.requestKey);
       localStorage.setItem('mintingTokens', JSON.stringify(newArray));
@@ -85,7 +88,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const updateToken = useCallback(
     async (tokenId: string, token: IToken, mintStatus: 'error' | 'success') => {
-      console.log('success', mintStatus, token);
       removeMintingToken(token);
 
       if (mintStatus === 'success') {
@@ -100,7 +102,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
         });
       }
     },
-    [tokens],
+    [setSuccessTokens, removeMintingToken],
   );
   const listenAll = useCallback(async () => {
     for (let i = 0; i < mintingTokens.length; i++) {
@@ -198,7 +200,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     });
 
     return mintingTokensData;
-  }, [tokens, account]);
+  }, []);
 
   const removeTokenFromData = useCallback(
     (token: IToken) => {
