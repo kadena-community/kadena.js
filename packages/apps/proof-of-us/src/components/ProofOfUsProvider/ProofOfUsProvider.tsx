@@ -83,7 +83,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       }
       if (!innerData) return;
 
-      if (innerData?.tokenId && innerData.requestKey) {
+      if (innerData.requestKey) {
         addMintingData(innerData);
       }
 

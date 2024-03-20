@@ -77,6 +77,11 @@ export const ListItem: FC<IProps> = ({ token }) => {
   }, [data, loadData, token, loadProofOfUsData]);
 
   const link = useMemo(() => {
+    if (innerData?.properties.eventType === 'attendance') {
+      console.log(234234243);
+      return `/scan/e/${innerData.properties.eventId}`;
+    }
+
     if (token?.requestKey) {
       return `/user/proof-of-us/t/${token.id}/${token.requestKey}`;
     } else if (token?.id) {

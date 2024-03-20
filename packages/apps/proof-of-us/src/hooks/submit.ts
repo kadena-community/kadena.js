@@ -59,7 +59,7 @@ export const useSubmit = () => {
           setStatus(SubmitStatus.SUCCESS);
           setResult(result);
         } else {
-          setStatus(SubmitStatus.ERROR);
+          setStatus(SubmitStatus.SUCCESS);
           setResult({
             status: 'Could not submit transaction',
             data: 'Already claimed',

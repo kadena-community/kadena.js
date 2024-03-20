@@ -77,10 +77,11 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     if (!transaction || !account) return;
 
     const proof = getProof(data, account, transaction);
+    console.log({ proof });
     console.log('update in scanattendance');
     store.updateProofOfUs(proof, proof);
 
-    addMintingData(proof);
+    console.log('submit');
     doSubmit(undefined, true);
   }, [account, searchParams]);
 
@@ -95,6 +96,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     const proof = getProof(data, account, bufferedTx);
     console.log('update in scanattendance claim');
     store.updateProofOfUs(proof, proof);
+    console.log({ proof });
 
     router.push(
       `${

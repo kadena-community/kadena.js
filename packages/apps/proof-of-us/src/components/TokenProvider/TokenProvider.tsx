@@ -108,35 +108,34 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
 
       if (!token.requestKey || !token.listener || !token.mintStartDate) return;
 
-      //try {
-      isDateOlderThan5Minutes(new Date(token.mintStartDate))
-        .then(() => {
-          console.log('timeout?');
-          removeMintingToken(token);
-        })
-        .catch(() => {
-          console.log('timeout?');
-          removeMintingToken(token);
+      try {
+        isDateOlderThan5Minutes(new Date(token.mintStartDate))
+          .then(() => {
+            console.log('timeout?');
+            removeMintingToken(token);
+          })
+          .catch(() => {
+            console.log('timeout?');
+            removeMintingToken(token);
+          });
+
+        token.listener.then((result) => {
+          if (!token.requestKey) return;
+          if (
+            result &&
+            result[token.requestKey] &&
+            result[token.requestKey].result?.status === 'success'
+          ) {
+            updateToken(result[token.requestKey].result.data, token, 'success');
+          } else {
+            removeMintingToken(token);
+          }
         });
-
-      token.listener.then((result) => {
-        if (!token.requestKey) return;
-        if (
-          result &&
-          result[token.requestKey] &&
-          result[token.requestKey].result?.status === 'success'
-        ) {
-          updateToken(result[token.requestKey].result.data, token, 'success');
-        } else {
-          removeMintingToken(token);
-        }
-      });
-
-      // } catch (e) {
-      //   console.log('catch fail');
-      //   console.error(e);
-      //   removeMintingToken(token);
-      // }
+      } catch (e) {
+        console.log('catch fail');
+        console.error(e);
+        removeMintingToken(token);
+      }
     }
   }, [tokens, mintingTokens]);
 
