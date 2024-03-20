@@ -66,8 +66,6 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
   useEffect(() => {
     const transaction = searchParams.get('transaction');
     if (!transaction || !proofOfUs) return;
-
-    //updateStatus({ proofOfUsId: proofOfUs.proofOfUsId, status: 4 });
   }, []);
 
   useEffect(() => {

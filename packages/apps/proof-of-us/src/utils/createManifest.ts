@@ -7,7 +7,6 @@ const getEventData = async (
   const event = await getProofOfUs(eventId);
   if (!event) return;
   const data = await fetchManifestData(event?.uri);
-
   return data;
 };
 

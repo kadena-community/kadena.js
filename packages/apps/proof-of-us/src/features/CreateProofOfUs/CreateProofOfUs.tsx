@@ -35,7 +35,6 @@ export const CreateProofOfUs: FC<IProps> = ({ params }) => {
   useEffect(() => {
     if (params?.id === 'new') {
       const proofOfUsId = createProofOfUsID();
-      setStatus(1);
       router.replace(`/user/proof-of-us/${proofOfUsId}`);
       return;
     }
@@ -54,10 +53,9 @@ export const CreateProofOfUs: FC<IProps> = ({ params }) => {
     await updateStatus({ proofOfUsId: params.id, status: newStatus });
   };
 
-  console.log(proofOfUs, status);
   return (
     <div>
-      {status === 1 && <AvatarEditor next={next} />}
+      {status === 1 && <AvatarEditor next={next} status={status} />}
       {status === 2 && <DetailView next={next} prev={prev} />}
       {status === 3 && <ShareView next={next} prev={prev} status={status} />}
       {status >= 4 && <MintView next={next} prev={prev} status={status} />}

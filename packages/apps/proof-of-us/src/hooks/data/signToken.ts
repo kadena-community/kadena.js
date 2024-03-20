@@ -50,6 +50,7 @@ export const useSignToken = () => {
       transaction: transaction,
       manifestUri: manifestData?.url,
       imageUri: imageData.url,
+      eventName: manifest.properties.eventName,
       tokenId,
     };
   };
@@ -67,7 +68,9 @@ export const useSignToken = () => {
 
     setIsLoading(false);
     setHasError(false);
+    //router.replace(`${getReturnHostUrl()}/user/proof-of-us/${proofOfUs.tokenId}/${txRes.requestKey}`);
 
+    console.log(transaction, proofOfUs);
     //router.replace(getReturnUrl());
   };
 
@@ -95,6 +98,7 @@ export const useSignToken = () => {
         tokenId: transactionData.tokenId,
         manifestUri: transactionData.manifestUri,
         imageUri: transactionData.imageUri,
+        eventName: transactionData.eventName,
         signees: updateSigner({ signerStatus: 'signing' }, true),
       });
     } else {
