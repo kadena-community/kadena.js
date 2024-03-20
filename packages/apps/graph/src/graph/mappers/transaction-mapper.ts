@@ -1,11 +1,13 @@
 import { prismaClient } from '@db/prisma-client';
-import type { Signer, Transaction } from '@prisma/client';
+import type { Prisma, Signer } from '@prisma/client';
 import type { IContext } from '../builder';
 import type { Transaction as GQLTransaction } from '../types/graphql-types';
 import { prismaSignersMapper } from './signer-mapper';
 
 export async function prismaTransactionsMapper(
-  prismaTransactions: Transaction[],
+  prismaTransactions: Prisma.TransactionGetPayload<{
+    include: { block: true; events: true };
+  }>[],
   context: IContext,
 ): Promise<GQLTransaction[]> {
   const requestKeys = [...new Set(prismaTransactions.map((t) => t.requestKey))];
@@ -29,7 +31,9 @@ export async function prismaTransactionsMapper(
 }
 
 export async function prismaTransactionMapper(
-  prismaTransaction: Transaction,
+  prismaTransaction: Prisma.TransactionGetPayload<{
+    include: { block: true; events: true };
+  }>,
   context: IContext,
   prismaSigners?: Signer[],
 ): Promise<GQLTransaction> {
@@ -84,6 +88,8 @@ export async function prismaTransactionMapper(
       eventCount: prismaTransaction.eventCount,
       transactionId: prismaTransaction.transactionId,
     },
+    block: prismaTransaction.block,
+    events: prismaTransaction.events,
   };
 }
 
@@ -103,9 +109,14 @@ export function mempoolTxMapper(mempoolData: any): GQLTransaction {
 
   mempoolTx.cmd.payload.data = JSON.stringify(mempoolTx.cmd.payload.data);
 
+  // Convert creationTime to milliseconds (mempool has it in epoch format in seconds)
+  mempoolTx.cmd.meta.creationTime = mempoolTx.cmd.meta.creationTime * 1000;
+
   return {
     hash: mempoolTx.hash,
     cmd: mempoolTx.cmd,
     result: mempoolInfo,
+    block: null,
+    events: [],
   };
 }

@@ -1,4 +1,4 @@
-import type { Transfer } from '@prisma/client';
+import type { Block, Event, Transfer } from '@prisma/client';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Guard {
@@ -132,8 +132,9 @@ export interface Transaction {
   hash: string;
   result: TransactionInfo | MempoolInfo;
   cmd: TransactionCommand;
+  block: Block | null;
+  events: Event[];
 }
-
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface TransactionInfo {
   badResult: string | null;

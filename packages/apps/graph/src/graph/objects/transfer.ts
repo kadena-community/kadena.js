@@ -156,7 +156,12 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
-        transaction: true,
+        transaction: {
+          include: {
+            block: true,
+            events: true,
+          },
+        },
       },
       async resolve(parent, __args, context) {
         try {

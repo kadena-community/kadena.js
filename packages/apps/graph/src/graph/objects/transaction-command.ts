@@ -1,4 +1,6 @@
 import { builder } from '../builder';
+import Signer from './signer';
+import Meta from './transaction-meta';
 import Payload from './transaction-payload';
 
 export default builder.objectType('TransactionCommand', {
@@ -11,14 +13,14 @@ export default builder.objectType('TransactionCommand', {
       },
     }),
     meta: t.field({
-      type: 'TransactionMeta',
+      type: Meta,
       resolve(parent) {
         return parent.meta;
       },
     }),
 
     signers: t.field({
-      type: ['Signer'],
+      type: [Signer],
       resolve: (parent) => parent.signers,
     }),
 

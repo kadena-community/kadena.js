@@ -35,6 +35,10 @@ async function* iteratorFn(
         requestKey: requestKey,
         chainId: parseInt(chainId),
       },
+      include: {
+        block: true,
+        events: true,
+      },
     });
 
     if (transaction) {

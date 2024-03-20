@@ -426,7 +426,11 @@ type TokenInfo {
 
 """A transaction."""
 type Transaction implements Node {
+  block: Block
   cmd: TransactionCommand!
+
+  """Default page size is 20."""
+  events(after: String, before: String, first: Int, last: Int): TransactionEventsConnection!
   hash: String!
   id: ID!
   result: TransactionResult!
@@ -452,6 +456,17 @@ type TransactionConnection {
 type TransactionEdge {
   cursor: String!
   node: Transaction!
+}
+
+type TransactionEventsConnection {
+  edges: [TransactionEventsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type TransactionEventsConnectionEdge {
+  cursor: String!
+  node: Event!
 }
 
 """The result of a transaction."""
