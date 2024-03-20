@@ -471,19 +471,13 @@ export const templateDataPrompt: IPrompt<string | null> = async () => {
   return result ?? null;
 };
 
-export async function selectSignMethodPrompt(): Promise<
-  'localWallet' | 'aliasFile' | 'keyPair'
-> {
+export async function selectSignMethodPrompt(): Promise<'wallet' | 'keyPair'> {
   return await select({
     message: 'Select an action',
     choices: [
       {
-        value: 'localWallet',
-        name: 'Sign with local wallet',
-      },
-      {
-        value: 'aliasFile',
-        name: 'Sign with aliased file',
+        value: 'wallet',
+        name: 'Sign with wallet',
       },
       {
         value: 'keyPair',

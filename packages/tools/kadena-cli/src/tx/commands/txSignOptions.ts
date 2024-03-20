@@ -4,10 +4,10 @@ import { txOptions } from '../txOptions.js';
 export const options = [
   txOptions.txSignWith(),
   // sign with local wallet
-  globalOptions.walletSelect(),
   securityOptions.createPasswordOption({
     message: 'Enter the wallet password',
   }),
+  globalOptions.walletsSelectByWallet(),
   txOptions.directory({ disableQuestion: true }),
   txOptions.txUnsignedTransactionFiles(),
 
