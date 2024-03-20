@@ -38,6 +38,6 @@ export const createAccountCreateCommand = createCommand(
     });
 
     assertCommandError(result, loader);
-    log.info(log.color.green(`Account "${result.data}"created successfully`));
+    log.info(log.color.green(`Account "${result.data}" created successfully`));
   },
 );
