@@ -80,9 +80,7 @@ const CheckTransactions: FC = () => {
         <BreadcrumbsItem>{t('Filters')}</BreadcrumbsItem>
       </Breadcrumbs>
       <Box marginBlockEnd="sm" />
-      <Heading bold={false} as="h5">
-        {t('Account Transaction Filters')}
-      </Heading>
+      <Heading as="h5">{t('Account Transaction Filters')}</Heading>
       <section className={mainContentClass}>
         <form onSubmit={handleSubmit(checkTransactionsEvent)}>
           <Card fullWidth>

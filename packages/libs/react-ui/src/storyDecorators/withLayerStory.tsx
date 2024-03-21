@@ -10,7 +10,7 @@ import { atoms } from '../styles/atoms.css';
 
 interface IWithLayerStoryProps {
   children: React.ReactNode;
-  layer: 'base' | 'layer-1' | 'layer-2' | 'layer-3';
+  layer: 'base' | 'layer10' | 'layer20' | 'layer30';
 }
 const WithLayerStory: FC<IWithLayerStoryProps> = ({ children, layer }) => {
   return (
@@ -51,13 +51,13 @@ export const onBase: Decorator = (story) => (
 );
 
 export const onLayer1: Decorator = (story) => (
-  <WithLayerStory layer="layer-1">{story()}</WithLayerStory>
+  <WithLayerStory layer="layer10">{story()}</WithLayerStory>
 );
 
 export const onLayer2: Decorator = (story) => (
-  <WithLayerStory layer="layer-2">{story()}</WithLayerStory>
+  <WithLayerStory layer="layer20">{story()}</WithLayerStory>
 );
 
 export const onLayer3: Decorator = (story) => (
-  <WithLayerStory layer="layer-3">{story()}</WithLayerStory>
+  <WithLayerStory layer="layer30">{story()}</WithLayerStory>
 );

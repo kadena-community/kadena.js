@@ -25,13 +25,13 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
   return (
     <SWRConfig value={{ provider: localStorageProvider }}>
       <ApolloProvider client={client}>
-        <ToastProvider>
-          <AccountProvider>
-            <ThemeProvider>
-              <TokenProvider>{children}</TokenProvider>
-            </ThemeProvider>
-          </AccountProvider>
-        </ToastProvider>
+        <AccountProvider>
+          <TokenProvider>
+            <ToastProvider>
+              <ThemeProvider>{children}</ThemeProvider>
+            </ToastProvider>
+          </TokenProvider>
+        </AccountProvider>
       </ApolloProvider>
     </SWRConfig>
   );

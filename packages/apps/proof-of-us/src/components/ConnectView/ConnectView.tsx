@@ -1,11 +1,14 @@
 import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useSignToken } from '@/hooks/data/signToken';
+import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import { isSignedOnce } from '@/utils/isAlreadySigning';
 import { MonoSignature } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
+import { useEffect } from 'react';
 import { Button } from '../Button/Button';
 import { ListSignees } from '../ListSignees/ListSignees';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
@@ -18,9 +21,21 @@ interface IProps {
 export const ConnectView: FC<IProps> = ({ proofOfUs }) => {
   const { signToken } = useSignToken();
 
+  const router = useRouter();
+
   const handleJoin = async () => {
     signToken();
   };
+
+  useEffect(() => {
+    if (proofOfUs.tokenId && proofOfUs.requestKey) {
+      router.replace(
+        `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
+          proofOfUs.requestKey
+        }`,
+      );
+    }
+  }, [proofOfUs.tokenId, proofOfUs.requestKey]);
 
   if (!proofOfUs) return null;
 

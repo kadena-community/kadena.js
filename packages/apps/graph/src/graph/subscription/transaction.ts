@@ -11,7 +11,7 @@ import type { Transaction } from '../types/graphql-types';
 
 builder.subscriptionField('transaction', (t) =>
   t.field({
-    description: 'Listen for a transaction by request key and chain.',
+    description: 'Listen for a transaction by request key.',
     args: {
       requestKey: t.arg.string({ required: true }),
       chainId: t.arg.string({ required: true }),

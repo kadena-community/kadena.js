@@ -7,123 +7,168 @@ import { tokens } from './contract.css';
 /**
  * Small Code @xs Description
  */
-export const codeSmallRegular = style({
-  fontFamily: tokens.kda.foundation.typography.family.codeFont,
-  fontSize: '14px',
-  fontWeight: tokens.kda.foundation.typography.weight.monoFont.regular,
-  lineHeight: tokens.kda.foundation.size.n6,
+export const monospaceSmallRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.xs,
+  fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
   letterSpacing: tokens.kda.foundation.spacing.no,
-});
-
-/**
- * Small Code Bold @ xs Description
- */
-export const codeSmallBold = style({
-  fontFamily: tokens.kda.foundation.typography.family.codeFont,
-  fontSize: '14px',
-  fontWeight: tokens.kda.foundation.typography.weight.monoFont.bold,
-  lineHeight: tokens.kda.foundation.size.n6,
-  letterSpacing: tokens.kda.foundation.spacing.no,
-});
-
-/**
- * Smallest Code @xs Description
- */
-export const codeSmallestRegular = style({
-  fontFamily: tokens.kda.foundation.typography.family.codeFont,
-  fontSize: tokens.kda.foundation.size.n3,
-  fontWeight: tokens.kda.foundation.typography.weight.monoFont.regular,
-  lineHeight: tokens.kda.foundation.size.n6,
-  letterSpacing: tokens.kda.foundation.spacing.no,
-});
-
-/**
- * Smallest Code Bold @ xs Description
- */
-export const codeSmallestBold = style({
-  fontFamily: tokens.kda.foundation.typography.family.codeFont,
-  fontSize: tokens.kda.foundation.size.n3,
-  fontWeight: tokens.kda.foundation.typography.weight.monoFont.bold,
-  lineHeight: tokens.kda.foundation.size.n6,
-  letterSpacing: tokens.kda.foundation.spacing.no,
-});
-
-/**
- * Code @xs Description
- */
-export const codeBaseRegular = style({
-  fontFamily: tokens.kda.foundation.typography.family.codeFont,
-  fontSize: tokens.kda.foundation.size.n4,
-  fontWeight: tokens.kda.foundation.typography.weight.monoFont.regular,
-  lineHeight: tokens.kda.foundation.size.n6,
-  letterSpacing: tokens.kda.foundation.spacing.no,
-});
-
-/**
- * Code Bold @ xs Description
- */
-export const codeBaseBold = style({
-  fontFamily: tokens.kda.foundation.typography.family.codeFont,
-  fontSize: tokens.kda.foundation.size.n4,
-  fontWeight: tokens.kda.foundation.typography.weight.monoFont.bold,
-  lineHeight: tokens.kda.foundation.size.n6,
-  letterSpacing: tokens.kda.foundation.spacing.no,
-});
-
-/**
- * H1 Description
- */
-export const fontH1Regular = style({
-  fontFamily: tokens.kda.foundation.typography.family.headingFont,
-  fontSize: tokens.kda.foundation.size.n10,
-  fontWeight: tokens.kda.foundation.typography.weight.headingFont.regular,
-  lineHeight: tokens.kda.foundation.size.n14,
-  letterSpacing: '0.125rem',
   '@media': {
-    '(width >= 48rem)': {
-      fontSize: tokens.kda.foundation.size.n12,
-      lineHeight: tokens.kda.foundation.size.n17,
-    },
     '(width >= 64rem)': {
-      fontSize: tokens.kda.foundation.size.n15,
-      lineHeight: tokens.kda.foundation.size.n20,
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
     },
     '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.size.n18,
-      lineHeight: tokens.kda.foundation.size.n25,
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
     },
     '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.size.n20,
-      lineHeight: tokens.kda.foundation.size.n30,
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
     },
   },
 });
 
 /**
- * H1 Bold @ xs Description
+ * Small Code Bold @ xs Description
  */
-export const fontH1Bold = style({
-  fontFamily: tokens.kda.foundation.typography.family.headingFont,
-  fontSize: tokens.kda.foundation.size.n10,
-  fontWeight: tokens.kda.foundation.typography.weight.headingFont.bold,
-  lineHeight: tokens.kda.foundation.size.n14,
-  letterSpacing: '0.125rem',
+export const monospaceSmallBold = style({
+  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.xs,
+  fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.bold,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+  letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
-    '(width >= 48rem)': {
-      fontSize: tokens.kda.foundation.size.n12,
-      lineHeight: tokens.kda.foundation.size.n17,
-    },
     '(width >= 64rem)': {
-      fontSize: tokens.kda.foundation.size.n15,
-      lineHeight: tokens.kda.foundation.size.n20,
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
     },
     '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.size.n18,
-      lineHeight: tokens.kda.foundation.size.n25,
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
     },
     '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.size.n20,
-      lineHeight: tokens.kda.foundation.size.n30,
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+    },
+  },
+});
+
+/**
+ * Smallest Code @xs Description
+ */
+export const monospaceSmallestRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
+  fontSize: '0.6875rem',
+  fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
+  lineHeight: '0.875rem',
+  letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+    },
+  },
+});
+
+/**
+ * Smallest Code Bold @ xs Description
+ */
+export const monospaceSmallestBold = style({
+  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
+  fontSize: '0.6875rem',
+  fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.bold,
+  lineHeight: '0.875rem',
+  letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+    },
+  },
+});
+
+/**
+ * Code @xs Description
+ */
+export const monospaceBaseRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.sm,
+  fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
+  lineHeight: '1.125rem',
+  letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+  },
+});
+
+/**
+ * Code Bold @ xs Description
+ */
+export const monospaceBaseBold = style({
+  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.sm,
+  fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.bold,
+  lineHeight: '1.125rem',
+  letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+  },
+});
+
+/**
+ * H1 Description
+ */
+export const typographyFontH1 = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize['3xl'],
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
+  lineHeight: tokens.kda.foundation.typography.lineHeight['4xl'],
+  letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize['5xl'],
+      lineHeight: tokens.kda.foundation.typography.lineHeight['7xl'],
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize['5xl'],
+      lineHeight: tokens.kda.foundation.typography.lineHeight['7xl'],
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize['5xl'],
+      lineHeight: tokens.kda.foundation.typography.lineHeight['7xl'],
     },
   },
 });
@@ -131,49 +176,24 @@ export const fontH1Bold = style({
 /**
  * H2 Description
  */
-export const fontH2Regular = style({
-  fontFamily: tokens.kda.foundation.typography.family.headingFont,
-  fontSize: tokens.kda.foundation.size.n9,
-  fontWeight: tokens.kda.foundation.typography.weight.headingFont.regular,
-  lineHeight: tokens.kda.foundation.size.n13,
-  letterSpacing: '0.125rem',
+export const typographyFontH2 = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize['2xl'],
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
+  lineHeight: tokens.kda.foundation.typography.lineHeight['3xl'],
+  letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
-      fontSize: tokens.kda.foundation.size.n11,
-      lineHeight: tokens.kda.foundation.size.n16,
+      fontSize: tokens.kda.foundation.typography.fontSize['3xl'],
+      lineHeight: tokens.kda.foundation.typography.lineHeight['4xl'],
     },
     '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.size.n13,
-      lineHeight: tokens.kda.foundation.size.n19,
+      fontSize: tokens.kda.foundation.typography.fontSize['3xl'],
+      lineHeight: tokens.kda.foundation.typography.lineHeight['4xl'],
     },
     '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.size.n15,
-      lineHeight: tokens.kda.foundation.size.n20,
-    },
-  },
-});
-
-/**
- * H2 Bold @ xs Description
- */
-export const fontH2Bold = style({
-  fontFamily: tokens.kda.foundation.typography.family.headingFont,
-  fontSize: tokens.kda.foundation.size.n9,
-  fontWeight: tokens.kda.foundation.typography.weight.headingFont.bold,
-  lineHeight: tokens.kda.foundation.size.n13,
-  letterSpacing: '0.125rem',
-  '@media': {
-    '(width >= 64rem)': {
-      fontSize: tokens.kda.foundation.size.n11,
-      lineHeight: tokens.kda.foundation.size.n16,
-    },
-    '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.size.n13,
-      lineHeight: tokens.kda.foundation.size.n19,
-    },
-    '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.size.n15,
-      lineHeight: tokens.kda.foundation.size.n20,
+      fontSize: tokens.kda.foundation.typography.fontSize['3xl'],
+      lineHeight: tokens.kda.foundation.typography.lineHeight['4xl'],
     },
   },
 });
@@ -181,49 +201,24 @@ export const fontH2Bold = style({
 /**
  * H3 Description
  */
-export const fontH3Regular = style({
-  fontFamily: tokens.kda.foundation.typography.family.headingFont,
-  fontSize: tokens.kda.foundation.size.n7,
-  fontWeight: tokens.kda.foundation.typography.weight.headingFont.regular,
-  lineHeight: tokens.kda.foundation.size.n11,
-  letterSpacing: '0.125rem',
+export const typographyFontH3 = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.xl,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
+  lineHeight: tokens.kda.foundation.typography.lineHeight['2xl'],
+  letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
-      fontSize: tokens.kda.foundation.size.n9,
-      lineHeight: tokens.kda.foundation.size.n13,
+      fontSize: tokens.kda.foundation.typography.fontSize['2xl'],
+      lineHeight: tokens.kda.foundation.typography.lineHeight['3xl'],
     },
     '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.size.n10,
-      lineHeight: tokens.kda.foundation.size.n15,
+      fontSize: tokens.kda.foundation.typography.fontSize['2xl'],
+      lineHeight: tokens.kda.foundation.typography.lineHeight['3xl'],
     },
     '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.size.n11,
-      lineHeight: tokens.kda.foundation.size.n17,
-    },
-  },
-});
-
-/**
- * H3 Bold @ xs Description
- */
-export const fontH3Bold = style({
-  fontFamily: tokens.kda.foundation.typography.family.headingFont,
-  fontSize: tokens.kda.foundation.size.n7,
-  fontWeight: tokens.kda.foundation.typography.weight.headingFont.bold,
-  lineHeight: tokens.kda.foundation.size.n11,
-  letterSpacing: '0.125rem',
-  '@media': {
-    '(width >= 64rem)': {
-      fontSize: tokens.kda.foundation.size.n9,
-      lineHeight: tokens.kda.foundation.size.n13,
-    },
-    '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.size.n10,
-      lineHeight: tokens.kda.foundation.size.n15,
-    },
-    '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.size.n11,
-      lineHeight: tokens.kda.foundation.size.n17,
+      fontSize: tokens.kda.foundation.typography.fontSize['2xl'],
+      lineHeight: tokens.kda.foundation.typography.lineHeight['3xl'],
     },
   },
 });
@@ -231,49 +226,24 @@ export const fontH3Bold = style({
 /**
  * H4 Description
  */
-export const fontH4Regular = style({
-  fontFamily: tokens.kda.foundation.typography.family.headingFont,
-  fontSize: tokens.kda.foundation.size.n6,
-  fontWeight: tokens.kda.foundation.typography.weight.headingFont.regular,
-  lineHeight: tokens.kda.foundation.size.n9,
+export const typographyFontH4 = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.lg,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
-      fontSize: tokens.kda.foundation.size.n7,
-      lineHeight: tokens.kda.foundation.size.n11,
+      fontSize: tokens.kda.foundation.typography.fontSize.xl,
+      lineHeight: tokens.kda.foundation.typography.lineHeight['2xl'],
     },
     '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.size.n8,
-      lineHeight: tokens.kda.foundation.size.n12,
+      fontSize: tokens.kda.foundation.typography.fontSize.xl,
+      lineHeight: tokens.kda.foundation.typography.lineHeight['2xl'],
     },
     '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.size.n9,
-      lineHeight: tokens.kda.foundation.size.n13,
-    },
-  },
-});
-
-/**
- * H4 Bold @ xs Description
- */
-export const fontH4Bold = style({
-  fontFamily: tokens.kda.foundation.typography.family.headingFont,
-  fontSize: tokens.kda.foundation.size.n6,
-  fontWeight: tokens.kda.foundation.typography.weight.headingFont.bold,
-  lineHeight: tokens.kda.foundation.size.n9,
-  letterSpacing: tokens.kda.foundation.spacing.no,
-  '@media': {
-    '(width >= 64rem)': {
-      fontSize: tokens.kda.foundation.size.n7,
-      lineHeight: tokens.kda.foundation.size.n11,
-    },
-    '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.size.n8,
-      lineHeight: tokens.kda.foundation.size.n12,
-    },
-    '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.size.n9,
-      lineHeight: tokens.kda.foundation.size.n13,
+      fontSize: tokens.kda.foundation.typography.fontSize.xl,
+      lineHeight: tokens.kda.foundation.typography.lineHeight['2xl'],
     },
   },
 });
@@ -281,41 +251,24 @@ export const fontH4Bold = style({
 /**
  * H5 Description
  */
-export const fontH5Regular = style({
-  fontFamily: tokens.kda.foundation.typography.family.headingFont,
-  fontSize: tokens.kda.foundation.size.n5,
-  fontWeight: tokens.kda.foundation.typography.weight.headingFont.regular,
-  lineHeight: tokens.kda.foundation.size.n8,
+export const typographyFontH5 = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.base,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.base,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
     '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.size.n6,
-      lineHeight: tokens.kda.foundation.size.n9,
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
     },
     '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.size.n6,
-      lineHeight: tokens.kda.foundation.size.n9,
-    },
-  },
-});
-
-/**
- * H5 Bold @ xs Description
- */
-export const fontH5Bold = style({
-  fontFamily: tokens.kda.foundation.typography.family.headingFont,
-  fontSize: tokens.kda.foundation.size.n5,
-  fontWeight: tokens.kda.foundation.typography.weight.headingFont.bold,
-  lineHeight: tokens.kda.foundation.size.n8,
-  letterSpacing: tokens.kda.foundation.spacing.no,
-  '@media': {
-    '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.size.n6,
-      lineHeight: tokens.kda.foundation.size.n9,
-    },
-    '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.size.n6,
-      lineHeight: tokens.kda.foundation.size.n9,
+      fontSize: tokens.kda.foundation.typography.fontSize.lg,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
     },
   },
 });
@@ -323,41 +276,24 @@ export const fontH5Bold = style({
 /**
  * H6 Description
  */
-export const fontH6Regular = style({
-  fontFamily: tokens.kda.foundation.typography.family.headingFont,
-  fontSize: tokens.kda.foundation.size.n4,
-  fontWeight: tokens.kda.foundation.typography.weight.headingFont.regular,
-  lineHeight: tokens.kda.foundation.size.n6,
+export const typographyFontH6 = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.sm,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
+  lineHeight: '1.125rem',
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
     '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.size.n5,
-      lineHeight: tokens.kda.foundation.size.n7,
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
     },
     '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.size.n5,
-      lineHeight: tokens.kda.foundation.size.n7,
-    },
-  },
-});
-
-/**
- * H6 Bold @ xs Description
- */
-export const fontH6Bold = style({
-  fontFamily: tokens.kda.foundation.typography.family.headingFont,
-  fontSize: tokens.kda.foundation.size.n4,
-  fontWeight: tokens.kda.foundation.typography.weight.headingFont.bold,
-  lineHeight: tokens.kda.foundation.size.n6,
-  letterSpacing: tokens.kda.foundation.spacing.no,
-  '@media': {
-    '(width >= 80rem)': {
-      fontSize: tokens.kda.foundation.size.n5,
-      lineHeight: tokens.kda.foundation.size.n7,
-    },
-    '(width >= 96rem)': {
-      fontSize: tokens.kda.foundation.size.n5,
-      lineHeight: tokens.kda.foundation.size.n7,
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
     },
   },
 });
@@ -366,64 +302,292 @@ export const fontH6Bold = style({
  * Small P @xs Description
  */
 export const bodySmallRegular = style({
-  fontFamily: tokens.kda.foundation.typography.family.bodyFont,
-  fontSize: '14px',
-  fontWeight: tokens.kda.foundation.typography.weight.bodyFont.regular,
-  lineHeight: tokens.kda.foundation.size.n4,
+  fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.xs,
+  fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
   letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+      lineHeight: '1.375rem',
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+      lineHeight: '1.375rem',
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+      lineHeight: '1.375rem',
+    },
+  },
 });
 
 /**
  * Small P Bold @ xs Description
  */
 export const bodySmallBold = style({
-  fontFamily: tokens.kda.foundation.typography.family.bodyFont,
-  fontSize: '14px',
-  fontWeight: tokens.kda.foundation.typography.weight.bodyFont.bold,
-  lineHeight: tokens.kda.foundation.size.n4,
+  fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.xs,
+  fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
   letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+      lineHeight: '1.375rem',
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+      lineHeight: '1.375rem',
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+      lineHeight: '1.375rem',
+    },
+  },
 });
 
 /**
  * Smallest P @xs Description
  */
 export const bodySmallestRegular = style({
-  fontFamily: tokens.kda.foundation.typography.family.bodyFont,
-  fontSize: tokens.kda.foundation.size.n3,
-  fontWeight: tokens.kda.foundation.typography.weight.bodyFont.regular,
-  lineHeight: tokens.kda.foundation.size.n4,
+  fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
+  fontSize: '0.6875rem',
+  fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
   letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+  },
 });
 
 /**
  * Smallest P Bold @ xs Description
  */
 export const bodySmallestBold = style({
-  fontFamily: tokens.kda.foundation.typography.family.bodyFont,
-  fontSize: tokens.kda.foundation.size.n3,
-  fontWeight: tokens.kda.foundation.typography.weight.bodyFont.bold,
-  lineHeight: tokens.kda.foundation.size.n4,
+  fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
+  fontSize: '0.6875rem',
+  fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
   letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+  },
 });
 
 /**
  * P @xs Description
  */
 export const bodyBaseRegular = style({
-  fontFamily: tokens.kda.foundation.typography.family.bodyFont,
-  fontSize: tokens.kda.foundation.size.n4,
-  fontWeight: tokens.kda.foundation.typography.weight.bodyFont.regular,
-  lineHeight: tokens.kda.foundation.size.n6,
+  fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.sm,
+  fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
+  lineHeight: '1.375rem',
   letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+  },
 });
 
 /**
  * P Bold @ xs Description
  */
 export const bodyBaseBold = style({
-  fontFamily: tokens.kda.foundation.typography.family.bodyFont,
-  fontSize: tokens.kda.foundation.size.n4,
-  fontWeight: tokens.kda.foundation.typography.weight.bodyFont.bold,
-  lineHeight: tokens.kda.foundation.size.n6,
+  fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.sm,
+  fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
+  lineHeight: '1.375rem',
   letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.xl,
+    },
+  },
+});
+
+/**
+ * Small P @xs Description
+ */
+export const uiSmallRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.xs,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+  letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+    },
+  },
+});
+
+/**
+ * Small P Bold @ xs Description
+ */
+export const uiSmallBold = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.xs,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+  letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.sm,
+    },
+  },
+});
+
+/**
+ * Smallest P @xs Description
+ */
+export const uiSmallestRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: '0.6875rem',
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
+  lineHeight: '0.875rem',
+  letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+    },
+  },
+});
+
+/**
+ * Smallest P Bold @ xs Description
+ */
+export const uiSmallestBold = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: '0.6875rem',
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
+  lineHeight: '0.875rem',
+  letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.xs,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+    },
+  },
+});
+
+/**
+ * P @xs Description
+ */
+export const uiBaseRegular = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.sm,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
+  lineHeight: '1.125rem',
+  letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+  },
+});
+
+/**
+ * P Bold @ xs Description
+ */
+export const uiBaseBold = style({
+  fontFamily: tokens.kda.foundation.typography.family.primaryFont,
+  fontSize: tokens.kda.foundation.typography.fontSize.sm,
+  fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
+  lineHeight: '1.125rem',
+  letterSpacing: tokens.kda.foundation.spacing.no,
+  '@media': {
+    '(width >= 64rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 80rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+    '(width >= 96rem)': {
+      fontSize: tokens.kda.foundation.typography.fontSize.base,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.base,
+    },
+  },
 });

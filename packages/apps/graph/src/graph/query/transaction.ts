@@ -7,28 +7,37 @@ import Transaction from '../objects/transaction';
 
 builder.queryField('transaction', (t) =>
   t.field({
-    description: 'Retrieve a completed transaction by its unique key.',
+    description:
+      'Retrieve one transaction by its unique key. Throws an error if multiple transactions are found.',
     nullable: true,
     args: {
-      blockHash: t.arg.string({ required: true }),
+      blockHash: t.arg.string({ required: false }),
       requestKey: t.arg.string({ required: true }),
     },
     type: Transaction,
     complexity: getDefaultConnectionComplexity(),
     async resolve(__parent, args, context) {
       try {
-        const prismaTransactiom = await prismaClient.transaction.findUnique({
+        const prismaTransactions = await prismaClient.transaction.findMany({
           where: {
-            blockHash_requestKey: {
-              blockHash: args.blockHash,
-              requestKey: args.requestKey,
-            },
+            requestKey: args.requestKey,
+            ...(args.blockHash && { blockHash: args.blockHash }),
           },
         });
 
-        if (!prismaTransactiom) return null;
+        if (!prismaTransactions) return null;
 
-        return prismaTransactionMapper(prismaTransactiom, context);
+        if (prismaTransactions.length === 0) {
+          return null;
+        }
+
+        if (prismaTransactions.length > 1) {
+          throw new Error(
+            `Multiple transactions found for requestKey: ${args.requestKey}`,
+          );
+        }
+
+        return prismaTransactionMapper(prismaTransactions[0], context);
       } catch (error) {
         throw normalizeError(error);
       }
