@@ -14,6 +14,10 @@ export const wrapperClass = style([
 
 export const signeeClass = style([
   atoms({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 'md',
     padding: 'md',
   }),
   {

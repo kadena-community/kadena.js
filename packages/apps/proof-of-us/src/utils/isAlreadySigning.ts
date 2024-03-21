@@ -24,15 +24,3 @@ export const haveAllSigned = (signees?: IProofOfUsSignee[]): boolean => {
 
   return !!signinglist.length;
 };
-
-export const hasSigned = (
-  proofOfUs?: IProofOfUsData,
-  account?: IAccount,
-): boolean => {
-  if (!proofOfUs || !account) return false;
-  const signee = getAccountSignee(proofOfUs, account);
-
-  if (!signee) return false;
-
-  return signee.signerStatus === 'success';
-};

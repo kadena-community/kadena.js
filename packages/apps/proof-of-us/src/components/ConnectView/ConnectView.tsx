@@ -4,11 +4,7 @@ import { useAccount } from '@/hooks/account';
 import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
-import {
-  getAccountSignee,
-  hasSigned,
-  isAlreadySigning,
-} from '@/utils/isAlreadySigning';
+import { getAccountSignee, isAlreadySigning } from '@/utils/isAlreadySigning';
 import { MonoSignature } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
@@ -28,7 +24,7 @@ interface IProps {
 export const ConnectView: FC<IProps> = () => {
   const { signToken } = useSignToken();
   const { account } = useAccount();
-  const { proofOfUs, addSignee, removeSignee } = useProofOfUs();
+  const { proofOfUs, addSignee, removeSignee, hasSigned } = useProofOfUs();
   const router = useRouter();
 
   useEffect(() => {
@@ -52,7 +48,7 @@ export const ConnectView: FC<IProps> = () => {
   useEffect(() => {
     if (!proofOfUs) return;
 
-    if (proofOfUs.tokenId && proofOfUs.requestKey) {
+    if (proofOfUs.tokenId && proofOfUs.requestKey && hasSigned()) {
       router.replace(
         `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
           proofOfUs.requestKey
@@ -69,7 +65,7 @@ export const ConnectView: FC<IProps> = () => {
       <ImagePositions />
       <ListSignees />
       <Stack flex={1} />
-      {isAlreadySigning(proofOfUs) && !hasSigned(proofOfUs, account) ? (
+      {isAlreadySigning(proofOfUs) && !hasSigned() ? (
         <Stack gap="md">
           <Button onPress={handleJoin}>
             Sign <MonoSignature />

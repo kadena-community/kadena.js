@@ -149,6 +149,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const updateSigner = (value: any, isOverwrite: boolean = false) => {
+    console.log(0, { proofOfUs });
     if (!proofOfUs) return [];
     if (!account) return proofOfUs.signees;
 
