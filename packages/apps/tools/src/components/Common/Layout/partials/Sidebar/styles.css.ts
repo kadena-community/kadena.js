@@ -2,10 +2,21 @@ import { atoms, darkThemeClass, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const gridItemMiniMenuStyle = style([
-  {
-    height: '100%',
+  atoms({
+    display: 'flex',
     flexDirection: 'column',
+    height: '100%',
     position: 'relative',
+  }),
+]);
+
+export const iconWrapperClass = style([
+  atoms({
+    display: 'block',
+  }),
+  {
+    height: '16px',
+    width: '16px',
   },
 ]);
 
@@ -52,9 +63,9 @@ export const gridMiniMenuLinkButtonStyle = style([
     fontWeight: 'secondaryFont.bold',
     fontSize: 'sm',
     pointerEvents: 'none',
+    width: '100%',
   }),
   {
-    width: '100%',
     borderBottom: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
     padding: '0.85rem 1rem',
 

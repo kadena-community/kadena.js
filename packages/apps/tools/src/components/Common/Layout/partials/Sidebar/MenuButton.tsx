@@ -7,6 +7,7 @@ import {
   gridMiniMenuListButtonStyle,
   iconLeftStyle,
   iconRightStyle,
+  iconWrapperClass,
 } from './styles.css';
 
 export interface IMenuButtonProps
@@ -45,9 +46,7 @@ export const MenuButton: FC<IMenuButtonProps> = ({
       aria-label={title}
       onClick={onClick}
     >
-      <span style={{ display: 'block', width: '16px', height: '16px' }}>
-        {icon}
-      </span>
+      <span className={iconWrapperClass}>{icon}</span>
     </button>
   );
 
