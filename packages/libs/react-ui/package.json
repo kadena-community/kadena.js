@@ -51,7 +51,11 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files": ["dist", "global", "styles"],
+  "files": [
+    "dist",
+    "global",
+    "styles"
+  ],
   "scripts": {
     "build": "crackle package && tsx scripts/fix-build.ts",
     "build:storybook": "storybook build",
@@ -144,11 +148,11 @@
     "prettier": "~3.0.3",
     "prop-types": "^15.8.1",
     "rimraf": "~5.0.1",
-    "tiny-readdir-glob": "^1.2.1",
-    "tsx": "^3.12.10",
     "storybook": "^8.0.2",
     "storybook-dark-mode": "^4.0.1",
+    "tiny-readdir-glob": "^1.2.1",
     "tsc-alias": "~1.8.7",
+    "tsx": "^3.12.10",
     "typescript": "5.2.2",
     "vitest": "^1.1.0",
     "vitest-dom": "^0.1.1"
