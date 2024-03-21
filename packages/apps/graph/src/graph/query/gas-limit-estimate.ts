@@ -6,7 +6,7 @@ import GasLimitEstimation from '../objects/gas-limit-estimation';
 
 builder.queryField('gasLimitEstimate', (t) =>
   t.field({
-    description: `Estimate the gas limit for one or more transactions. The input accepts a JSON object and based on the parameters passed it will determine what type of format it is and return the gas limit estimation. The following types are supported:
+    description: `Estimate the gas limit for one or more transactions. Throws an error when the transaction fails or is invalid. The input accepts a JSON object and based on the parameters passed it will determine what type of format it is and return the gas limit estimation. The following types are supported:
        
       - \`full-transaction\`: A complete transaction object. Required parameters: \`cmd\`, \`hash\` and \`sigs\`.
       - \`stringified-command\`: A JSON stringified command. Required parameters: \`cmd\`. It also optionally accepts \`sigs\`.
