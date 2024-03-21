@@ -37,6 +37,7 @@ export const ACCOUNT_DIR: string = `${KADENA_DIR}/accounts`;
 export const WALLET_EXT = '.wallet';
 export const WALLET_LEGACY_EXT = '.legacy.wallet';
 export const KEY_EXT = '.key';
+export const YAML_EXT = '.yaml';
 export const KEY_LEGACY_EXT = '.legacy.key';
 export const PLAIN_KEY_EXT = '.key';
 export const PLAIN_KEY_LEGACY_EXT = '.legacy.key';

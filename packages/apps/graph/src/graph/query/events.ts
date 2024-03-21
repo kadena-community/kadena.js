@@ -4,41 +4,14 @@ import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import { builder } from '../builder';
-import Event from '../objects/event';
-
-builder.queryField('event', (t) =>
-  t.prismaField({
-    description: 'Retrieve a single event by its unique key.',
-    nullable: true,
-    args: {
-      blockHash: t.arg.string({ required: true }),
-      orderIndex: t.arg.int({ required: true }),
-      requestKey: t.arg.string({ required: true }),
-    },
-    type: Event,
-    complexity: getDefaultConnectionComplexity(),
-    async resolve(query, __parent, args) {
-      try {
-        return await prismaClient.event.findUnique({
-          ...query,
-          where: {
-            blockHash_orderIndex_requestKey: {
-              blockHash: args.blockHash,
-              orderIndex: args.orderIndex,
-              requestKey: args.requestKey,
-            },
-          },
-        });
-      } catch (error) {
-        throw normalizeError(error);
-      }
-    },
-  }),
-);
 
 builder.queryField('events', (t) =>
   t.prismaConnection({
-    description: 'Retrieve events. Default page size is 20.',
+    description: `Retrieve events by qualifiedName (e.g. \`coin.TRANSFER\`). Default page size is 20.
+       
+      The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
+       
+      An example of such a filter parameter value: \`events(parametersFilter: "{\\"array_starts_with\\": \\"k:abcdefg\\"}")\``,
     edgesNullable: false,
     args: {
       qualifiedEventName: t.arg.string({ required: true }),

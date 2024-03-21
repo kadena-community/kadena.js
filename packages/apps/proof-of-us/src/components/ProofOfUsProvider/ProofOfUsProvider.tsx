@@ -1,5 +1,6 @@
 'use client';
 import { useAccount } from '@/hooks/account';
+import { useTokens } from '@/hooks/tokens';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { store } from '@/utils/socket/store';
@@ -10,7 +11,6 @@ import { createContext, useCallback, useEffect, useState } from 'react';
 export interface IProofOfUsContext {
   proofOfUs?: IProofOfUsData;
   background: IProofOfUsBackground;
-  closeToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
   updateStatus: ({
     proofOfUsId,
     status,
@@ -41,7 +41,6 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   background: {
     bg: '',
   },
-  closeToken: async () => {},
   updateStatus: async () => {},
   addSignee: async () => {},
   removeSignee: async () => {},
@@ -60,6 +59,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
 export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { account } = useAccount();
   const params = useParams();
+  const { addMintingData } = useTokens();
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
   const [background, setBackground] = useState<IProofOfUsBackground>({
     bg: '',
@@ -82,6 +82,11 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         ) as IProofOfUsSignee[];
       }
       if (!innerData) return;
+
+      if (innerData.requestKey) {
+        addMintingData(innerData);
+      }
+
       setProofOfUs({ ...innerData });
     },
     [setProofOfUs, params?.id],
@@ -107,11 +112,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   }) => {
     if (!proofOfUs) return;
     await store.updateStatus(proofOfUsId, proofOfUs, status);
-  };
-
-  const closeToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
-    if (!proofOfUs) return;
-    await store.closeToken(proofOfUsId, proofOfUs);
   };
 
   const addSignee = async () => {
@@ -194,7 +194,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <ProofOfUsContext.Provider
       value={{
-        closeToken,
         addSignee,
         removeSignee,
         createToken,

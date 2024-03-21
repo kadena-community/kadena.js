@@ -1,3 +1,4 @@
+import { load } from 'js-yaml';
 import path from 'path';
 import sanitize from 'sanitize-filename';
 import type { ZodError } from 'zod';
@@ -357,6 +358,44 @@ export const safeJsonParse = <T extends unknown>(value: string): T | null => {
     return null;
   }
 };
+
+export const safeYamlParse = <T extends unknown>(value: string): T | null => {
+  try {
+    return load(value) as T;
+  } catch (e) {
+    return null;
+  }
+};
+
+export function detectFileParseType(filepath: string): 'yaml' | 'json' | null {
+  const ext = path.extname(filepath);
+  if (ext === '.yaml' || ext === '.yml') {
+    return 'yaml';
+  }
+  if (ext === '.json') {
+    return 'json';
+  }
+  return null;
+}
+
+export function detectArrayFileParseType(
+  filepaths: string[],
+): { filepath: string; type: 'yaml' | 'json' }[] {
+  return filepaths.reduce(
+    (memo, filepath) => {
+      const type = detectFileParseType(filepath);
+      if (type) memo.push({ filepath, type });
+      return memo;
+    },
+    [] as { filepath: string; type: 'yaml' | 'json' }[],
+  );
+}
+
+export function getFileParser(
+  type: 'yaml' | 'json',
+): <T extends unknown>(value: string) => T | null {
+  return type === 'yaml' ? safeYamlParse : safeJsonParse;
+}
 
 export const passwordPromptTransform =
   // prettier-ignore

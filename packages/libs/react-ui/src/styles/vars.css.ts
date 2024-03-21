@@ -11,7 +11,10 @@ import { lightThemeValues } from './tokens/light.css';
 // eslint-disable-next-line @kadena-dev/typedef-var
 export const primaryFont =
   lightThemeValues.kda.foundation.typography.family.primaryFont;
-
+export const secondaryFont =
+  lightThemeValues.kda.foundation.typography.family.secondaryFont;
+export const monospaceFont =
+  lightThemeValues.kda.foundation.typography.family.monospaceFont;
 // eslint-disable-next-line @kadena-dev/typedef-var
 const oldThemeValues = {
   fonts: {

@@ -34,7 +34,7 @@ export const tableRow = style([
     },
     selectors: {
       '.striped &:nth-child(even)': {
-        backgroundColor: token('color.background.layer-2.default'),
+        backgroundColor: token('color.background.base.default'),
       },
       '.striped &:nth-child(even):hover': {
         backgroundColor: token('color.background.brand.primary.@hover'),

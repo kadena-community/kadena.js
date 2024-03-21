@@ -18,7 +18,8 @@
     "next:dev": "next dev",
     "start": "next start",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "verify": "tsc --noEmit"
   },
   "dependencies": {
     "@apollo/client": "~3.8.8",

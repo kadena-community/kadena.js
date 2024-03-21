@@ -57,7 +57,7 @@ builder.queryField('fungibleAccountByPublicKey', (t) =>
   }),
 );
 
-export async function getAccountNameByPublicKey(
+async function getAccountNameByPublicKey(
   publicKey: string,
 ): Promise<string | undefined> {
   const result = await prismaClient.transaction.findFirst({

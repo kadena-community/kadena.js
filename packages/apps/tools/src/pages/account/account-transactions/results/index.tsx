@@ -210,9 +210,7 @@ const CheckTransactions: FC = () => {
       <Box marginBlockEnd="sm" />
       <Grid columns={2}>
         <GridItem>
-          <Heading bold={false} as="h5">
-            {t('Account Transactions')}
-          </Heading>
+          <Heading as="h5">{t('Account Transactions')}</Heading>
         </GridItem>
         <GridItem>
           <div className={headerButtonGroupClass}>

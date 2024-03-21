@@ -8,7 +8,11 @@ import GQLEvent from '../objects/event';
 
 builder.subscriptionField('events', (t) =>
   t.field({
-    description: 'Listen for events by qualifiedName (e.g. `coin.TRANSFER`).',
+    description: `Listen for events by qualifiedName (e.g. \`coin.TRANSFER\`).
+       
+      The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
+       
+      An example of such a filter parameter value: \`events(parametersFilter: "{\\"array_starts_with\\": \\"k:abcdefg\\"}")\``,
     args: {
       qualifiedEventName: t.arg.string({ required: true }),
       chainId: t.arg.string(),

@@ -23,7 +23,7 @@ export const tagItemClass = style([
 
 export const tagClass = style([
   atoms({
-    backgroundColor: 'layer-2.default',
+    backgroundColor: 'base.default',
     color: 'text.base.default',
     borderRadius: 'xs',
     paddingBlock: 'xs',

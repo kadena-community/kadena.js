@@ -25,8 +25,7 @@ interface IProps {
 }
 
 export const DetailView: FC<IProps> = ({ next, prev }) => {
-  const { proofOfUs, closeToken, changeTitle, updateProofOfUs } =
-    useProofOfUs();
+  const { proofOfUs, changeTitle, updateProofOfUs } = useProofOfUs();
   const { removeBackground } = useAvatar();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
@@ -51,7 +50,6 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   };
   const handleClose = async () => {
     if (!confirm('Are you sure you want to stop with this token?')) return;
-    await closeToken({ proofOfUsId: proofOfUs.proofOfUsId });
     setIsMounted(false);
     router.replace('/user');
   };

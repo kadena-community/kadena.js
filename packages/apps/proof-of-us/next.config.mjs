@@ -19,12 +19,12 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/ipfs/:path*/image',
-        destination: `https://:path*.ipfs.nftstorage.link/image`,
+        source: '/api/ipfs/:id/:path/image',
+        destination: `https://:id.ipfs.:path.link/image`,
       },
       {
-        source: '/api/ipfs/:path*/metadata',
-        destination: `https://:path*.ipfs.nftstorage.link/metadata`,
+        source: '/api/ipfs/:id/:path/metadata',
+        destination: `https://:id.ipfs.:path.link/metadata`,
       },
       {
         source: '/graph',

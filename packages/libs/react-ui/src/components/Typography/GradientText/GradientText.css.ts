@@ -4,7 +4,7 @@ import { tokens } from '../../../styles/index';
 
 export const gradientTextClass = style([
   atoms({
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
   }),
   {
     backgroundColor: 'inherit',

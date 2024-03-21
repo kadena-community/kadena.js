@@ -322,7 +322,13 @@ type Query {
   """Retrieve a single event by its unique key."""
   event(blockHash: String!, orderIndex: Int!, requestKey: String!): Event
 
-  """Retrieve events. Default page size is 20."""
+  """
+  Retrieve events by qualifiedName (e.g. `coin.TRANSFER`). Default page size is 20.
+         
+        The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
+         
+        An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
+  """
   events(after: String, before: String, chainId: String, first: Int, last: Int, parametersFilter: String, qualifiedEventName: String!): QueryEventsConnection!
 
   """
@@ -330,22 +336,26 @@ type Query {
   """
   fungibleAccount(accountName: String!, fungibleName: String!): FungibleAccount
 
-  """Retrieve an account by public key."""
-  fungibleAccountByPublicKey(publicKey: String!): FungibleAccount
-
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
   fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
 
-  """Retrieve a chain account by public key."""
-  fungibleChainAccountByPublicKey(chainId: String!, publicKey: String!): FungibleChainAccount
-
-  """Estimate the gas limit for a transaction."""
-  gasLimitEstimate(input: String!): GasLimitEstimation!
-
-  """Estimate the gas limit for a list of transactions."""
-  gasLimitEstimates(input: [String!]!): [GasLimitEstimation!]!
+  """
+  Estimate the gas limit for one or more transactions. The input accepts a JSON object and based on the parameters passed it will determine what type of format it is and return the gas limit estimation. The following types are supported:
+         
+        - `full-transaction`: A complete transaction object. Required parameters: `cmd`, `hash` and `sigs`.
+        - `stringified-command`: A JSON stringified command. Required parameters: `cmd`. It also optionally accepts `sigs`.
+        - `full-command`: A full command. Required parameters: `payload`, `meta` and `signers`.
+        - `partial-command`: A partial command. Required parameters: `payload` and either `meta` or `signers`. In case `meta` is not given, but `signers` is given, you can also add `chainId` as a parameter.
+        - `payload`: A just the payload of a command. Required parameters: `payload` and `chainId`.
+        - `code`: The code of an execution. Required parameters: `code` and `chainId`.
+         
+        Every type accepts an optional parameter called `networkId` to override the default value from the environment variables.
+         
+        Example of the input needed for a type `code` query: `gasLimitEstimate(input: "{\"code\":\"(coin.details \\"k:1234\\")\",\"chainId\":\"3\"}")`
+  """
+  gasLimitEstimate(input: [String!]!): [GasLimitEstimation!]!
 
   """Get the configuration of the graph."""
   graphConfiguration: GraphConfiguration!
@@ -364,15 +374,12 @@ type Query {
   """
   Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
   """
-  pactQueries(pactQuery: [PactQuery!]!): [String!]!
+  pactQuery(pactQuery: [PactQuery!]!): [String!]!
 
   """
-  Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
+  Retrieve one transaction by its unique key. Throws an error if multiple transactions are found.
   """
-  pactQuery(pactQuery: PactQuery!): String!
-
-  """Retrieve one transaction by its unique key."""
-  transaction(blockHash: String!, requestKey: String!): Transaction
+  transaction(blockHash: String, requestKey: String!): Transaction
 
   """Retrieve transactions. Default page size is 20."""
   transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactionsConnection!
@@ -479,7 +486,13 @@ type Signer implements Node {
 }
 
 type Subscription {
-  """Listen for events by qualifiedName (e.g. `coin.TRANSFER`)."""
+  """
+  Listen for events by qualifiedName (e.g. `coin.TRANSFER`).
+         
+        The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
+         
+        An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
+  """
   events(chainId: String, parametersFilter: String, qualifiedEventName: String!): [Event!]
 
   """Subscribe to new blocks."""
@@ -488,9 +501,7 @@ type Subscription {
   """Subscribe to new blocks from a specific depth."""
   newBlocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
 
-  """
-  Listen for a transaction by request key. Returns the ID when it is in a block.
-  """
+  """Listen for a transaction by request key."""
   transaction(requestKey: String!): Transaction
 }
 

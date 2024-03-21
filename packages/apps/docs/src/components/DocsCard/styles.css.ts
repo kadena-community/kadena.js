@@ -69,7 +69,7 @@ export const cardVariants = styleVariants({
 export const docsCardLink = style([
   atoms({
     textDecoration: 'none',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
     color: 'text.brand.primary.default',
   }),
   {
