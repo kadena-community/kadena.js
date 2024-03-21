@@ -50,6 +50,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
       type: 'attendance',
       requestKey: tx.hash,
       title: data.name,
+      isReadyToSign: false,
       signees: [{ ...getSigneeAccount(account), initiator: true }],
       mintStatus: 'init',
       imageUri: data.image,

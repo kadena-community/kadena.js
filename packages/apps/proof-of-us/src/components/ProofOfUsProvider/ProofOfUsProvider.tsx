@@ -139,13 +139,12 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const changeTitle = (value: string) => {
-    if (isAlreadySigning(proofOfUs?.signees)) return proofOfUs?.title ?? '';
+    if (isAlreadySigning(proofOfUs)) return proofOfUs?.title ?? '';
     return value;
   };
 
   const updateBackgroundColor = (value: string) => {
-    if (isAlreadySigning(proofOfUs?.signees))
-      return proofOfUs?.backgroundColor ?? '';
+    if (isAlreadySigning(proofOfUs)) return proofOfUs?.backgroundColor ?? '';
     return value;
   };
 
@@ -153,8 +152,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!proofOfUs) return [];
     if (!account) return proofOfUs.signees;
 
-    if (!isOverwrite && isAlreadySigning(proofOfUs.signees))
-      return proofOfUs.signees;
+    if (!isOverwrite && isAlreadySigning(proofOfUs)) return proofOfUs.signees;
 
     const newList: IProofOfUsSignee[] = proofOfUs.signees.map((a) => {
       if (a.accountName === account.accountName) {

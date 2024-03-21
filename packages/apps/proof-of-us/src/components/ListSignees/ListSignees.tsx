@@ -14,7 +14,8 @@ export const ListSignees: FC = () => {
 
   return (
     <Stack flexDirection="column" gap="md">
-      <Heading as="h5">Signees</Heading>
+      <Heading as="h5">Signees ({proofOfUs?.signees.length})</Heading>
+
       <section className={wrapperClass}>
         <Signee signee={initiator} />
         <Signee signee={signee} />

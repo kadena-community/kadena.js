@@ -61,6 +61,7 @@ interface IProofOfUsData {
   signees: IProofOfUsSignee[];
   title?: string;
   uri?: string;
+  isReadyToSign: boolean;
 }
 
 interface IProofOfUsToken {

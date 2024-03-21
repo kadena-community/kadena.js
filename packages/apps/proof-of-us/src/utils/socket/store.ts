@@ -34,6 +34,7 @@ const ProofOfUsStore = () => {
       status: BUILDSTATUS.INIT,
       mintStatus: 'init',
       proofOfUsId,
+      isReadyToSign: false,
       eventId: process.env.NEXT_PUBLIC_CONNECTION_EVENTID,
       type: 'connect',
       date: Date.now(),
@@ -100,13 +101,13 @@ const ProofOfUsStore = () => {
     background: IProofOfUsBackground,
   ) => {
     //check if there are people already signing. it is not possible to set the background
-    if (isAlreadySigning(proofOfUs.signees)) return;
+    if (isAlreadySigning(proofOfUs)) return;
     await set(ref(database, `background/${proofOfUs.proofOfUsId}`), background);
   };
 
   const removeBackground = async (proofOfUs: IProofOfUsData) => {
     //check if there are people already signing. it is not possible to set the background
-    if (isAlreadySigning(proofOfUs.signees)) return;
+    if (isAlreadySigning(proofOfUs)) return;
     await set(ref(database, `background/${proofOfUs.proofOfUsId}`), null);
   };
 
