@@ -3,28 +3,29 @@ import type { HTMLAttributes, ReactNode } from 'react';
 import React from 'react';
 
 import {
-  bodyBaseRegular,
   bodyBaseBold,
-  bodySmallRegular,
+  bodyBaseRegular,
   bodySmallBold,
-  bodySmallestRegular,
+  bodySmallRegular,
   bodySmallestBold,
-  monospaceBaseRegular,
+  bodySmallestRegular,
   monospaceBaseBold,
-  monospaceSmallRegular,
+  monospaceBaseRegular,
   monospaceSmallBold,
-  monospaceSmallestRegular,
+  monospaceSmallRegular,
   monospaceSmallestBold,
-  uiBaseRegular,
+  monospaceSmallestRegular,
   uiBaseBold,
-  uiSmallRegular,
+  uiBaseRegular,
   uiSmallBold,
-  uiSmallestRegular,
+  uiSmallRegular,
   uiSmallestBold,
+  uiSmallestRegular,
 } from '../../../styles';
 import { colorVariants, transformVariants } from '../typography.css';
 
-export interface ITextProps extends HTMLAttributes<HTMLSpanElement> {
+export interface ITextProps
+  extends HTMLAttributes<HTMLSpanElement | HTMLParagraphElement> {
   as?: 'p' | 'span' | 'code';
   children: string | ReactNode;
   className?: string;
