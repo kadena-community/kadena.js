@@ -6,7 +6,7 @@ fi
 echo "Starting devnet..."
 
 exec docker run --name=devnet -d --health-cmd='curl --verbose --fail http://localhost:8080/info || exit 1' \
-  -e MINING_BATCH_PERIOD=0.1 \
+  -e MINING_BATCH_PERIOD=1 \
   -e MINING_CONFIRMATION_PERIOD=1 \
   -v "/var/run/docker.sock":"/var/run/docker.sock" \
   -v /home/runner/work/_temp:/home/runner/work/_temp \
