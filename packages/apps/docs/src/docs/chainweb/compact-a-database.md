@@ -77,7 +77,7 @@ To compact a Chainweb node database:
 
 4. Compact your backup `sqlite` database by running the `cwtool compact` command with the following arguments:
 
-   - `--target-blockheight` to keep enough state available to continue validating blocks after the database has been compacted. An appropriate value depends on the network your node is connected to. For example, if you are compacting your local development netowrk for testing purposes, you would set a lower block height than a node connected to the Kadena testnet or mainnet. For a node connected to mainnet, it's recommended to use a value of about 4.6 million ("4600000"). In the near future, this option will be removed, and this value will be computed automatically.
+   - `--target-blockheight` to keep enough state available to continue validating blocks after the database has been compacted. An appropriate value depends on the network your node is connected to. For example, if you are compacting your local development network for testing purposes, you would set a lower block height than a node connected to the Kadena test network (`testnet`) or main network (`mainnet`). For a node connected to `mainnet`, it's recommended to use a value of about 4.6 million ("4600000"). In the near future, this option will be removed, and this value will be computed automatically.
    - `--pact-database-dir` to specify the path to the backup pact `sqlite` state where all of the `*.sqlite`  files are located.
    - `--log-dir` to specify the directory where you want `cwtool compact` to put the log files it creates, one for each chain. If the directory doesn’t exist, `cwtool compact` creates it. These logs can be useful if something goes wrong.
 
