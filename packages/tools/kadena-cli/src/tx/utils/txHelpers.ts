@@ -360,7 +360,7 @@ export async function assessTransactionSigningStatus(
   }
 
   if (partiallySignedTransactions.length > 0) {
-    const commandString = `\n kadena tx sign --tx-sign-with="wallet" --tx-unsigned-transaction-files="${partiallySignedTransactions.join(
+    const commandString = `\n kadena tx sign --tx-unsigned-transaction-files="${partiallySignedTransactions.join(
       ',',
     )}"`;
     warnings.push(
