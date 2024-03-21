@@ -1,5 +1,8 @@
 import { parse } from 'node:path';
-import { fundAmountValidation, getAllAccountNames } from '../account/utils/accountHelpers.js';
+import {
+  fundAmountValidation,
+  getAllAccountNames,
+} from '../account/utils/accountHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   maskStringPreservingStartAndEnd,

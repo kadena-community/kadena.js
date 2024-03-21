@@ -22,15 +22,15 @@ export const resolveAddressToName = async (
 
     if (result === undefined) {
       return {
-        success: false,
+        status: 'error',
         errors: [`No name found for address: ${address}`],
       };
     }
 
-    return { success: true, data: { commands: result } };
+    return { status: 'success', data: { commands: result } };
   } catch (error) {
     return {
-      success: false,
+      status: 'error',
       errors: [`Error in name resolving action: ${error.message}`],
     };
   }
