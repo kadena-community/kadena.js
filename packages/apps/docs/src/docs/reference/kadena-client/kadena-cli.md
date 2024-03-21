@@ -40,6 +40,12 @@ Run the following command to install globally using `pnpm`:
 pnpm install -g @kadena/kadena-cli
 ```
 
+To verify the package is installed and display usage information, type `kadena` and press Return:
+
+```bash
+kadena
+```
+
 ## Get started
 
 You can use the `kadena` parent command with different flags and subcommands to perform different types of operations.
@@ -47,31 +53,27 @@ You can use the `kadena` parent command with different flags and subcommands to 
 The basic syntax for running `kadena` commands is:
 
 ```bash
-kadena [subcommand] [action] [argument] [flag]
+kadena <subcommand> <action>
 ```
 
-Depending on the subcommand you select, the arguments, options, and flags you specify might apply to the parent command or to a specific subcommand. For example, you can use the `--help` flag to display usage information for the `kadena` parent command or for a specified subcommand.
-
-When you have the SDK installed, you can use the following commands to specify the operation you want to perform. For reference information and examples that illustrate using these commands, select an appropriate command.
-
-To display usage information for the `kadena` parent command, type:
+Depending on the subcommand you select, the arguments, options, and flags you specify might apply to the parent command or to a specific subcommand. You can use the `--help` flag to display usage information for the `kadena` parent command, for a specified subcommand, or for a subcommand action.
+For example, to see all of the options available for adding a new wallet, you can run the following command:
 
 ```bash
-kadena
+kadena wallet add --help
 ```
 
 ## kadena
 
 Use the `kadena` parent as the primary entry point for commands used to create, test, deploy, and managed decentralized applications you develop for the Kadena network.
-
-Use the flags, subcommands, and arguments to specify the operations you want to perform interactively or quiet mode.
+Use the flags, subcommands, actions, and arguments to specify the operations you want to perform interactively or quiet mode.
 
 ### Basic usage
 
 The basic syntax for running `kadena` commands is:
 
 ```bash
-kadena [subcommand] [flag]
+kadena <subcommand> <action> [arguments] [flag]
 ```
 
 ### Flags
@@ -86,27 +88,31 @@ You can use the following optional flags with the `kadena` parent command or wit
 
 ### Subcommands
 
-Use the following subcommand subjects to specify the type of operation you want to perform or to view usage information for a specific command.
+Subcommands to perform actions or organized into categories that describe the subject of the action you want to perform. 
+For example, you can create and manage all wallet-related information using the `wallet` subcommand.
+Use the following subcommands to select the category of information for the operation you want to perform.
 
 | Use this subcommand | To do this
 | ------------------- | -----------
-| `config` | Configure the initial context and properties for the command-line interface.
-| `dapp` | Create and manage an application project.
-| `keys` | Generate and manage public and secret keys.
+| `config` | Configure the initial context and properties for working with the `kadena` command-line interface.
+| `dapp` | Create and manage an application project using a frontend framework template.
+| `wallet` | Generate keys and manage wallets.
+| `key` | Generate and manage public and secret keys.
 | `account` | Create, fund, and manage accounts that contain fungibles assets.
-| `networks` | Create and manage network information.
+| `network` | Create and manage network information.
 | `tx` | Create and manage transactions.
-| `wallet` | Generate and manage wallets or generate keys from a wallet.
 | `help` | Display usage information for a specified command.
+| `version` | Display version information.
 
 For reference information and examples, select an appropriate subcommand.
 	
 ### Interactive and quiet modes
 
-You can make commands prompt you interactively for required parameters by not including arguments in the command.
-You can reduce interactive prompting by specifying the arguments as part of the command. 
-If you want to disable all interactive prompts and confirmation messages, you can use the `--quiet `flag.
+If you want to minimize the information you enter on the command-line, you can enter arguments by responding to interactive prompts. 
+Responding to prompts interactively is typically the best approach when getting started, eliminating the need to look up or remember the argument required for the action you want to perform.
+As you gain experience, you can reduce interactive prompting by specifying the arguments as part of the command. 
 
+If you want to disable all interactive prompts and confirmation messages, you can use the `--quiet `flag.
 The `--quiet` flag enables you to automate tasks in environments where interactive input is impractical, such as continuous integration (CI) pipelines. 
 If you include the  `--quiet` flag in a command, the command suppresses all interactive prompts and skips confirmations, so that the command executes uninterrupted. 
 This mode ensures that automated processes can run smoothly and efficiently, without the need for manual intervention.
@@ -114,20 +120,12 @@ This mode ensures that automated processes can run smoothly and efficiently, wit
 ### Legacy mode
 
 The `--legacy` flag ensures that the output format for commands related to wallets, keys, and transactions aligns with earlier cryptographic standards and with existing workflows and tools, such as Chainweaver. 
-This flag is especially useful if you need to interact with tools that rely on a legacy format for processing transactions or if you need to maintain backwards compatibility for an application.
-
-Legacy mode is available for:
-
-kadena wallet add
-kadena keys generate
-kadena tx sign
-
-kadena [command] --legacy
+This flag is especially useful if you need to interact with tools that rely on a legacy format for processing transactions or if you need to maintain backwards compatibility for a wallet or other application.
 
 ## kadena config
 
 Use `kadena config` to set up and manage the Kadena CLI environment.
-Use `kadena config init` to creates a `.kadena` folder with the default Kadena networks, including the development, test, and main public networks.
+Use `kadena config init` to create a `.kadena` folder with the default configuration for the development, test, and main Kadena networks.
 
 ### Basic usage
 
@@ -143,9 +141,9 @@ You can use the following optional flags with the `kadena config` command.
 
 | Use this flag | To do this
 | ------------- | -----------
-| `-h`, `--help` |	Displays usage information.
-| `-q`, `--quiet` | Eliminates interactive prompts and confirmations to enable automation of tasks.
-| `-V`, `--version`	| Displays version information.
+| `-h`, `--help` |	Display usage information.
+| `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
+| `-V`, `--version`	| Display version information.
 
 ### Actions
 
@@ -183,9 +181,9 @@ You can use the following optional flags with the `kadena dapp` command.
 
 | Use this flag | To do this
 | ------------- | -----------
-| `-h`, `--help` |	Displays usage information.
-| `-q`, `--quiet` | Eliminates interactive prompts and confirmations to enable automation of tasks.
-| `-V`, `--version`	| Displays version information.
+| `-h`, `--help` |	Display usage information.
+| `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
+| `-V`, `--version`	| Display version information.
 
 ### Actions
 
@@ -193,7 +191,8 @@ Use the following action to specify the operation you want to perform.
 
 | Use this action | To do this
 | --------------- | -----------
-| `create` | Create a new project directory using a frontend framework template.
+| `add` | Create a new project directory using a frontend framework template.
+| `help` |
 
 ### Arguments
 
@@ -207,7 +206,7 @@ Use the following action to specify the operation you want to perform.
 To create a new project using a Vue.js template, you can run a command similar to the following:
 
 ```bash
-kadena dapp create my-vuejs --dapp-template="vuejs"
+kadena dapp add my-vuejs --dapp-template="vuejs"
 ```
 
 If you are missing required dependencies for the template you select, you are prompted to install them.
@@ -217,16 +216,16 @@ After running the command, you can change to your project directory by running a
 cd my-vuejs
 ```
 
-## kadena keys
+## kadena key
 
-Use `kadena keys` to generate and manage public and secret keys.
+Use `kadena key` to generate and manage public and secret keys.
 
 ### Basic usage
 
-The basic syntax for the `kadena keys` command is:
+The basic syntax for the `kadena key` command is:
 
 ```bash
-kadena keys <action> <argument> [flag]
+kadena key <action> <argument> [flag]
 ```
 
 ### Flags
@@ -235,9 +234,10 @@ You can use the following optional flags with the `kadena keys` command.
 
 | Use this flag | To do this
 | ------------- | -----------
-| `-h`, `--help` |	Displays usage information.
-| `-q`, `--quiet` | Eliminates interactive prompts and confirmations to enable automation of tasks.
-| `-V`, `--version`	| Displays version information.
+| `-h`, `--help` |	Display usage information.
+| `-l`, `--legacy` | Generate keys using a legacy format.
+| `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
+| `-V`, `--version`	| Display version information.
 
 ### Actions
 
@@ -245,176 +245,115 @@ Use the following action to specify the operation you want to perform.
 
 | Use this action | To do this
 | --------------- | -----------
-| `create-wallet` | Create your local wallet.
-| `import-wallet` | Import or restore wallet from a secret mnemonic phrase.
-| `gen-hd` | Generate hierarchical deterministic keys for your wallet.
-| `gen-plain` | Generate simple public and secret key pairs.
-| `change-wallet-password` | Update the password for your wallet.
-| `delete-wallet` | Delete a wallet from your local storage.
-| `decrypt` | Decrypt an encrypted message.
+| `generate` | Generate random public and secret key pairs.
+| `delete` | Delete a public and secret key pair from the local filesystem.
 | `list` | List all available keys.
 | `help` | Display help for a specified command.
 
-### Options
+### Arguments
 
 Depending on the action you select, you can specify different arguments and options.
 The following table summarizes all of the options you can specify.
-To see the options to use for a specific action, use the --help flag on the command line or review the examples.
+To see the options to use for a specific action, use the `--help` flag on the command-line or review the examples.
 
 | Use this argument | To do this
 | ----------------- | -----------
-| `-a`, `--key-alias`	| Set an alias for the key to store on the file system.
-| `-c`, `--key-gen-from-choice` | Choose an action for generating keys.
-| `-c`, `--security-current-password` | Enter your current key password
-| `--confirm` | Confirm that you want to change the wallet password or delete the wallet.
-| `-l`, `--legacy` | Generate keys using a legacy format.
-|` -m`, `--key-mnemonic` | Import or restore your wallet using the 12-word mnemonic phrase used to generate your wallet keys.
-| `-n`, `--security-new-password` | Enter your new key password
-| `-n`, `--key-amount` | Specify the number of key pairs to generate. The default is one.
-| `-n`, `--key-message` | Enter a message to decrypt.
-| `-q`, `--quiet` | Disables interactive prompts and skips confirmations.
-| `-p`, `--security-password` | Enter a password to encrypt your key with.
-| `--security-verify-password` | Confirm the password used to encrypt the wallet.
-| `-r`, `--key-index-or-range` | Enter the index or range of indices for key generation (for example, 5 or 1-5). The default is one.
-| `-w`, `--key-wallet` | Specify the name for your wallet.
+| `-a`, `--key-alias`	<`keyAlias`> | Set an alias for the key to store on the file system.
+| `-n`, `--key-amount` <`keyAmount`>| Specify the number of key pairs to generate. The default is one.
 
 ### Examples
 
-To create a wallet interactively, run the following command:
+To generate a random public and secret key pair interactively, run the following command:
 
 ```bash
-kadena keys create-wallet
+kadena keys generate --key-alias="myalias" --key-amount="2"
 ```
 
-This command prompts you to enter a wallet name, type a password, and confirm your password.
-The command then displays the 12-word mnemonic phrase required to import or restore the wallet and where the wallet is stored on the local filesystem.
+This command prompts you to enter the alias you want to use for the key and the number of keys to generate.
+After you respond to the prompts, the command displays confirmation that the keys were generated and where the key is stored on the local filesystem.
 For example:
 
 ```bash
-Mnemonic phrase: urban bubble quarter sleep apple property that machine castle enforce crowd warfare
-Please store the key phrase in a safe place. You will need it to recover your keys.
+Generated Plain Key Pair(s): 
+Public Key           Secret Key                                                      
+af042ef9<public-key> 52d872b1<secret-key>
 
+The Plain Key Pair is stored within your keys folder under the filename(s):
+Filename
+pistolas.key
 
-Your wallet was stored at: /Users/my-vuejs/.kadena/wallets/pistolas1/pistolas1.wallet
+Executed:
+kadena key generate --key-alias="pistolas" --key-amount="1" 
 ```
 
-After creating a wallet, you can use the `kadena keys gen-hd` or `kadena keys gen-plain` to generate public and secret key pairs for the wallet.
-
-To generate one or more public and secret key pairs, you can run a command similar to the following:
+To generate two public and secret key pairs, you can run a command similar to the following:
 
 ```bash
-kadena keys gen-plain --key-alias="myalias" --key-amount="2"
+kadena key generate --key-alias="myalias" --key-amount="2"
 ```
 
 To generate a public and secret key pair using a legacy format for backward compatibility, you can run a command similar to the following:
 
 ```bash
-kadena keys generate --key-alias="myalias" --key-amount="5" --legacy
+kadena key generate --key-alias="myalias" --key-amount="5" --legacy
 ```
+
+To list information about available keys, you can run the following command:
 
 ```bash
 kadena keys list
 ```
 
-kadena wallet add --wallet-name="kadenawallet" --security-password=1245678 --security-verify-password=1245678
-password will be hidden after entry: --security-password=* --security-verify-password=*
+This command displays information similar to the following:
 
-kadena wallet import [arguments]
-Arguments & Options	Description	Required
---key-mnemonic	12 word mnemnoc phrase	
---security-new-password	Set the password for the wallet	
---security-verify-password	Set the password for the wallet (verification)	
---wallet-name	Set the name of the wallet	
---legacy	Use Chainweaver's key derivation	
-example:
+```bash
+Alias         Index Legacy Public Key           Secret Key                                                      
+myalias-1.key 1     No     8724e659<public-key> 5a2410de<secret-key>
+myalias.key   0     No     6ab6cffe<public-key> 45b829ee<secret-key>
+pistolas.key  0     No     dd4a1a4a<public-key> 2c1863f3<secret-key>
+```
 
-kadena wallet import-wallet --key-mnemonic="male more sugar violin accuse panel kick nose sign alarm stool inmate" --security-new-password=12345678 --security-verify-password=12345678 --key-wallet="mywalletname"
-password will be hidden after entry: --security-new-password=* --security-verify-password=*
+To delete a key interactively, you can run the following command:
 
-kadena wallet generate-keys [arguments]
-Generate a keypair from a wallet mnemonic
+```bash
+kadena key delete
+```
 
-Arguments & Options	Description	Required
---wallet-name	Provide the name of the wallet	
---key-index-or-range	Set index or range of indices for key generation (e.g., 5 or 1-5)	
---security-password	Set the password for the wallet	
---key-gen-from-choice	Select generation type: genPublicKey (publicKey only), genPublicSecretKey	
-(publickey and secretKey), genPublicSecretKeyDec (publicKey and SecretKey Decrypted	
-example generating public keys using a range
+This command prompts you to select all key files or a specific key file.
+After you select the key file you want to delete, you are prompted to confirm the selection.
+For example:
 
-kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0-5" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
-example generating a public key using a index
+```bash
+? Select a key file: test.key: af042....5b9b9f
+? Are you sure you want to delete the key: "test.key"? Yes
 
-kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
-example generating a public and secret key using a index
+the key: "test.key" has been deleted
 
-kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKey" --key-alias="myalias" --security-password=12345678
-example generating a public and decrypted secret key using a index (will not be stored on filesystem)
+Executed:
+kadena key delete --key-files="test.key" --confirm 
+```
 
-kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKeyDec" --security-password=12345678
-password will be hidden after entry: --security-password=*
+## kadena network
 
-kadena wallet change-password [arguments]
-Arguments & Options	Description
---wallet-name	Provide the name of the wallet
---security-current-password	Provide the current password of the wallet
---security-new-password	Set the new password for the wallet
---security-verify-password	Set the new password for the wallet (verification)
---confirm	Confirm password change
-example:
-
-kadena wallet change-password --wallet-name="kadenawallet.wallet" --security-current-password=12345678 --security-new-password=12345678 --security-verify-password=1234567 --confirm=true
-password will be hidden after entry: --security-current-password=* --security-new-password=* --security-verify-password=*
-
-kadena wallet delete [arguments]
-Arguments & Options	Description
---wallet-name	Select the name of the wallet
---confirm	Confirm deletion of wallet
-example single wallet deletion:
-
-kadena wallet delete --wallet-name="kadenawallet.wallet" --confirm=true
-example deletion of all wallets:
-
-kadena wallet delete --wallet-name="all" --confirm=true
-kadena wallet list [arguments]
-Arguments & Options	Description
---wallet-name	Set the name of the wallet
-example for listing specific wallet:
-
-kadena wallet list --wallet-name="walletname"
-example for listing all wallets:
-
-kadena wallet list --wallet-name="all"
-kadena wallet decrypt [arguments]
-Arguments & Options	Description
---key-message	Provide encrypted Message
---security-current-password	Provide password to decrypt message
-example:
-
-kadena wallet decrypt --key-message="encryptedmessage" --security-current-password=12345678
-password will be hidden after entry: --security-current-password=*
-
-## kadena networks
-
-Use `kadena networks` to add and manage Kadena networks and network information.
+Use `kadena network` to add and manage Kadena networks and network information.
 
 ### Basic usage
 
-The basic syntax for the `kadena networks` command is:
+The basic syntax for the `kadena network` command is:
 
 ```bash
-kadena networks <action> <argument> [flag]
+kadena network <action> <arguments> [flag]
 ```
 
 ### Flags
 
-You can use the following optional flags with the `kadena config` command.
+You can use the following optional flags with the `kadena network` command.
 
 | Use this flag | To do this
 | ------------- | -----------
-| `-h`, `--help` |	Displays usage information.
-| `-q`, `--quiet` | Eliminates interactive prompts and confirmations to enable automation of tasks.
-| `-V`, `--version`	| Displays version information.
+| `-h`, `--help` |	Display usage information.
+| `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
+| `-V`, `--version`	| Display version information.
 
 ### Actions
 
@@ -422,10 +361,11 @@ Use the following actions to specify the operation you want to perform.
 
 | Use this action | To do this
 | --------------- | -----------
-| `create`	| Create a new network.
-| `delete` | Delete an existing network.
-| `list`	| List all available networks.
+| `add`	| Add a new local network configuration.
+| `list`	| List all available local networks.
 | `update` | Update existing network information.
+| `delete` | Delete an existing network configuration.
+| `help` | Display help for a specified command.
 
 ### Arguments
 
@@ -434,19 +374,19 @@ The following table summarizes all of the arguments you can specify.
 
 | Use this argument | To do this
 | ----------------- | -----------
-| `--network-name` | Specify the name of the network to act on.
-| `--network-id` | Specify the identifier for the network to act on.
-| `--network-host` | Specify the host for the network to act on.
-| `--network-explorer-url` | Specify the explorer URL for the network to act on.
-| `--network-overwrite` | Confirm that you want to overwrite existing information for the specified network.
-| `--network-delete` | Confirm that you want to delete the specified network.
+| `-n`, `--network-name` <`networkName`> | Specify the name of the network to act on.
+| `--network-id` <`networkId`>| Specify the identifier for the network to act on.
+| `--network-host` <`networkHost`>| Specify the host for the network to act on.
+| `--network-explorer-url` <`networkExplorerURL`>| Specify the explorer URL for the network to act on.
+| `--network-overwrite` yes|no | Confirm that you want to overwrite existing information for the specified network.
+| `--network-delete` yes|no | Confirm that you want to delete the specified network.
 
 ### Examples
 
-To create a new network, you can run a command similar to the following:
+To add a new network configuration, you can run a command similar to the following:
 
 ```bash
-kadena networks create \
+kadena network add \
   --network-name="mydevnet" \
   --network-id="mydevnet01" \
   --network-host="localhost:8081" \
@@ -458,27 +398,19 @@ If you leave out any of the arguments, you are prompted interactively to provide
 Because this example specifies all of the arguments, the command creates the network and displays output similar to the following:
 
 ```bash
--------------------------------------------------------------------------------
-  networkName : mydevnet                                                  
-  networkId : mydevnet01                                                  
-  networkHost : localhost:8081                                            
-  networkExplorerUrl : https://explorer.localhost:8081                    
-  networkOverwrite : yes                                                  
---------------------------------------------------------------------------------
+The network configuration "mydevnet" has been saved.
 ```
-
-To delete an existing network, you can run a command similar to the following:
-
-```bash
-kadena network delete \
-  --network="mydevnet" \
-  --network-delete="yes"
-```
-
 To list the details for all networks, you can run a command similar to the following:
 
 ```bash
 kadena network list
+```
+
+This command displays information similar to the following:
+
+```bash
+Network  Network ID Network Host   Network Explorer URL           
+mydevnet mydevnet01 localhost:8081 https://explorer.localhost:8081
 ```
 
 To update the information for a network, you can run a command similar to the following:
@@ -491,21 +423,55 @@ kadena networks update \
   --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/"
 ```
 
+To delete an existing network, you can run a command similar to the following:
 
+```bash
+kadena network delete \
+  --network="mydevnet" \
+  --network-delete="yes"
+```
 
 ## kadena account
-Tool to manage / fund accounts of fungibles (e.g. coin')
 
-Subcommand	Description	Default value
-add-manual	Add an existing account to the CLI	
-add-from-wallet	Add an account from a key wallet	
-create	create an account in mainnet on chain(nr) for token	
-details	Get details of an account	
-fund	Fund a existing/new account	
-name-to-address	Resolve a .kda name to a k:address (kadenanames)	
-address-to-name	Resolve a k:address to a .kda name (kadenanames)	
-list	List available account(s)	
-delete	Delete existing account(s)	
+Use `kadena account` to add, fund, and manage Kadena accounts and fungible assets.
+
+### Basic usage
+
+The basic syntax for the `kadena account` command is:
+
+```bash
+kadena account <action> <arguments> [flag]
+```
+
+### Flags
+
+You can use the following optional flags with the `kadena account` command.
+
+| Use this flag | To do this
+| ------------- | -----------
+| `-h`, `--help` |	Display usage information.
+| `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
+| `-V`, `--version`	| Display version information.
+
+### Actions
+
+Use the following actions to specify the operation you want to perform.
+
+| Use this action | To do this
+| --------------- | -----------
+| create [options] | Create an account on the Kadena public blockchain network (mainnet).
+| add-manual [options] | Add an existing account locally to the CLI.
+| add-from-wallet [options] | Add a local account from a key wallet.
+| delete [options] | Delete a local account.
+| details [options] | Get details for a specified account.
+| fund [options] | Fund a specified new or existing account.
+| list [options] | List all available accounts.
+| name-to-address [options] | Resolve a .kda name to a k:account The k: prefix refers to Kadena account name associated with a public key.
+| address-to-name [options]  Resolve a k:account to a .kda name.
+} help [command] | Display help for a specified command.
+
+## Arguments
+
 kadena account add-manual [arguments]
 Arguments & Options	Description	Required
 --account-alias	Set alias for account	
@@ -592,30 +558,53 @@ kadena account delete [arguments]
 Arguments & Options	Description
 --account-alias	Provide the alias of the account
 --confirm	Confirm deletion of account
-example for delete a specific account:
+
+### Examples 
+
+To delete a specific account:
 
 kadena account delete --account-alias="accountAlias" --confirm
-example for delete all accounts:
+
+To delete all accounts:
 
 kadena account delete --account-alias="all" --confirm
-kadena tx
-Tool for creating and managing transactions
 
-Subcommand	Description	Default value
-send	Send a transaction to the network	
-sign	Sign a transaction using a keypair,	
-Sign a transaction using your local aliased file	
-Sign a transaction using your local wallet	
-test	Test a signed transaction	
-add	Select a template and add a transaction	
-kadena tx add [arguments]
-Arguments & Options	Description	Required
---template	Select template path	
---template-data	Provide File path of data to use for template	
---network-id	Provide the network id	
---out-file	Provide path to save output	
---xx	Args are created onl the fly based on template	
-example:
+## kadena tx
+
+Use `kadena tx` to create, submit, and manage transactions.
+
+### Basic usage
+
+The basic syntax for the `kadena tx` command is:
+
+```bash
+kadena tx <action> <arguments> [flag]
+```
+
+### Flags
+
+You can use the following optional flags with the `kadena tx` command.
+
+| Use this flag | To do this
+| ------------- | -----------
+| `-h`, `--help` |	Display usage information.
+| `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
+| `-V`, `--version`	| Display version information.
+
+### Actions
+
+Use the following actions to specify the operation you want to perform.
+
+| Use this action | To do this
+| --------------- | -----------
+| send [options] | Send a transaction to the network.
+| sign [options] | Sign a transaction using your local wallet/aliased file/keypair.
+| test [options] | Test a signed transaction on testnet.
+| add [options] | Select a template and add a transaction.
+| list [options] | List transactions.
+| help [command] | Display usage information for a specified command.
+
+### Examples
 
 kadena tx add --template="transfer.yaml" --template-data="path" (--account-from="k:account" --account-to="k:toaccount" --amount="1" --chain-id="1" --pk-from="publicKey") --network-id="testnet04" --out-file="transaction-(request-key).json"
 Template variables are prompted unless assigned via --template-data or direct flags. Variables can be prefixed to enable value selection using:
