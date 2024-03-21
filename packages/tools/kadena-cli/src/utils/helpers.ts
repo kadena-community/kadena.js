@@ -1,9 +1,10 @@
+import type { ChainId } from '@kadena/types';
 import { load } from 'js-yaml';
 import path from 'path';
 import sanitize from 'sanitize-filename';
 import type { ZodError } from 'zod';
 import z from 'zod';
-import { MAX_CHARACTERS_LENGTH } from '../constants/config.js';
+import { MAX_CHAIN_IDS, MAX_CHARACTERS_LENGTH } from '../constants/config.js';
 import { defaultDevnetsPath, devnetDefaults } from '../constants/devnets.js';
 import {
   defaultNetworksPath,
@@ -471,3 +472,10 @@ export const getDefaultNetworkName = async (): Promise<string | undefined> => {
     return parse.data.name;
   }
 };
+
+export const generateAllChainIds = (): ChainId[] =>
+  Array.from(
+    { length: MAX_CHAIN_IDS },
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    (_, index) => index.toString() as ChainId,
+  );

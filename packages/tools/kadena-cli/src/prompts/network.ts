@@ -28,9 +28,8 @@ export const chainIdPrompt: IPrompt<string> = async (
     message: 'Enter ChainId (0-19)',
     default: defaultValue,
     validate: function (input) {
-      const chainIds = input.split(',');
-      const parsedChainId = chainIds.map((id) => parseInt(id.trim(), 10));
-      const result = chainIdValidation.safeParse(parsedChainId);
+      const chainId = Number(input.trim());
+      const result = chainIdValidation.safeParse(chainId);
       if (!result.success) {
         const formatted = result.error.format();
         return `ChainId: ${formatted._errors[0]}`;

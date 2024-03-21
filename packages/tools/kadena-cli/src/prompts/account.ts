@@ -1,7 +1,10 @@
+import type { ChainId } from '@kadena/types';
 import { parse } from 'node:path';
 import {
+  chainIdRangeValidation,
   fundAmountValidation,
   getAllAccountNames,
+  parseChainIdRange,
 } from '../account/utils/accountHelpers.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
@@ -252,4 +255,28 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
       },
     ],
   });
+};
+
+export const chainIdPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const defaultValue = (args.defaultValue as string) || '0';
+  return (await input({
+    message:
+      'Enter a ChainId from (0-19) (comma or hyphen separated for multiple e.g 0,1,2 or 1-5 or all):',
+    default: defaultValue,
+    validate: function (input) {
+      if (input.trim() === 'all') return true;
+
+      const parseInput = parseChainIdRange(input);
+      const result = chainIdRangeValidation.safeParse(parseInput);
+      if (result.success === false) {
+        const formatted = result.error.format();
+        return `ChainId: ${formatted._errors[0]}`;
+      }
+      return true;
+    },
+  })) as ChainId;
 };

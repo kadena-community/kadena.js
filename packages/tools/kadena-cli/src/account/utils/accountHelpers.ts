@@ -100,7 +100,31 @@ export async function getAllAccountNames(): Promise<
 export const formatZodFieldErrors = (error: ZodError): string =>
   error.errors.map((e: ZodIssue) => e.message).join('\n');
 
-export const chainIdValidation = z.array(
+export const chainIdValidation = z
+  .number({
+    errorMap: (error) => {
+      if (error.code === 'too_small') {
+        return {
+          message: 'must be greater than or equal to 0',
+        };
+      }
+
+      if (error.code === 'too_big') {
+        return {
+          message: 'must be less than or equal to 19',
+        };
+      }
+
+      return {
+        message: 'must be a number',
+      };
+    },
+  })
+  .int()
+  .min(0)
+  .max(19);
+
+export const chainIdRangeValidation = z.array(
   z
     .number({
       errorMap: (error) => {
@@ -121,6 +145,7 @@ export const chainIdValidation = z.array(
         };
       },
     })
+    .int()
     .min(0)
     .max(19),
 );
@@ -147,3 +172,40 @@ export const fundAmountValidation = z
   })
   .min(1)
   .max(100);
+
+export const getChainIdRangeSeparator = (
+  input: string,
+): ',' | '-' | undefined => {
+  const hasComma = input.includes(',');
+  const hasHyphen = input.includes('-');
+  return hasComma ? ',' : hasHyphen ? '-' : undefined;
+};
+
+const getChainIds = (
+  input: string,
+  separator?: ',' | '-',
+): number[] | undefined => {
+  if (isEmpty(separator)) {
+    return [parseInt(input.trim(), 10)];
+  } else if (separator === ',') {
+    const splitValue = new Set(input.split(','));
+    return [...splitValue]
+      .map((id) => parseInt(id.trim(), 10))
+      .filter(notEmpty);
+  } else if (separator === '-') {
+    let [start, end] = input.split('-').map((id) => parseInt(id.trim(), 10));
+    if (start > end) {
+      const temp = start;
+      start = end;
+      end = temp;
+    }
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
+};
+
+export const parseChainIdRange = (input: string): number[] | undefined => {
+  const indexRangeSeparator = getChainIdRangeSeparator(input);
+  const chainIds = getChainIds(input, indexRangeSeparator);
+  return chainIds;
+};

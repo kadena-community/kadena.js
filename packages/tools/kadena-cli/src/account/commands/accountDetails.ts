@@ -22,6 +22,15 @@ interface IAccountDetails {
   [key: string]: IAccountDetailsResult;
 }
 
+const formatWarnings = (warnings: string[]): string => {
+  if (warnings.length === 0) return warnings.join(',');
+  const [prefix, ...chainIds] = warnings;
+  const sortedChainIds = chainIds.sort(
+    (a, b) => parseInt(a, 10) - parseInt(b, 10),
+  );
+  return `${prefix} ${sortedChainIds.join(',')}`;
+};
+
 export async function accountDetails(
   config: IAccountDetailsConfig,
 ): Promise<CommandResult<IAccountDetails[]>> {
@@ -66,7 +75,7 @@ export async function accountDetails(
     status,
     data: accountDetailsList.filter(notEmpty),
     errors: errors,
-    warnings: warnings,
+    warnings: [formatWarnings(warnings)],
   };
 }
 
@@ -106,7 +115,7 @@ export const createAccountDetailsCommand = createCommand(
   [
     accountOptions.accountSelect(),
     globalOptions.networkSelect(),
-    globalOptions.chainId({ isOptional: false }),
+    accountOptions.chainIdRange({ isOptional: false }),
     accountOptions.fungible({ isOptional: true }),
   ],
   async (option) => {
