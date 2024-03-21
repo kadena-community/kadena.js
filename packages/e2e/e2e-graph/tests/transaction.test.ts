@@ -1,17 +1,17 @@
+import { devnetMiner } from '@kadena-dev/e2e-base/src/constants/accounts.constants';
+import { transferAmount } from '@kadena-dev/e2e-base/src/constants/amounts.constants';
+import { coinModuleHash } from '@kadena-dev/e2e-base/src/constants/coin.constants';
 import {
   createAccount,
   generateAccount,
 } from '@kadena-dev/e2e-base/src/helpers/client-utils/accounts.helper';
-import type { ICommandResult } from '@kadena/client';
-import { expect, test } from '@playwright/test';
-import { devnetMiner } from '../../e2e-base/src/constants/accounts.constants';
-import { transferAmount } from '../../e2e-base/src/constants/amounts.constants';
-import { coinModuleHash } from '../../e2e-base/src/constants/coin.constants';
 import {
   transferFunds,
   transferFundsCrossChain,
-} from '../../e2e-base/src/helpers/client-utils/transfer.helper';
-import type { IAccount } from '../../e2e-base/src/types/account.types';
+} from '@kadena-dev/e2e-base/src/helpers/client-utils/transfer.helper';
+import type { IAccount } from '@kadena-dev/e2e-base/src/types/account.types';
+import type { ICommandResult } from '@kadena/client';
+import { expect, test } from '@playwright/test';
 import { getBlockHash } from '../helpers/block.helper';
 import { base64Encode } from '../helpers/cryptography.helper';
 import { sendQuery } from '../helpers/request.helper';
@@ -34,11 +34,15 @@ test.describe('Query: getTransactions', async () => {
       await createAccount(targetAccount, sourceAccount.chains[0]);
     });
     await test.step('There are no transactions from the sourceAccount.', async () => {
-      query = getTransactionsQuery(sourceAccount.account);
-      initialResponse = await sendQuery(request, query);
-
-      expect(initialResponse.transactions.edges).toHaveLength(0);
-      expect(initialResponse.transactions.totalCount).toEqual(0);
+      await expect(async () => {
+        query = getTransactionsQuery(sourceAccount.account);
+        initialResponse = await sendQuery(request, query);
+        expect(initialResponse.transactions.edges).toHaveLength(0);
+        expect(initialResponse.transactions.totalCount).toEqual(0);
+      }).toPass({
+        intervals: [50, 100],
+        timeout: 100,
+      });
     });
 
     await test.step('Transfer funds from sourceAccount to targetAccount.', async () => {
@@ -50,7 +54,8 @@ test.describe('Query: getTransactions', async () => {
       );
     });
     await test.step('SourceAccount has 1 transaction.', async () => {
-      finalResponse = await sendQuery(request, query);
+      await expect(async () => {
+        finalResponse = await sendQuery(request, query);
 
       expect(finalResponse.transactions.edges).toHaveLength(1);
       expect(finalResponse.transactions.totalCount).toEqual(1);
@@ -172,10 +177,15 @@ test.describe('Query: getTransactions', async () => {
     });
 
     await test.step('There are no transactions from the sourceAccount.', async () => {
-      query = getTransactionsQuery(sourceAccount.account);
-      initialResponse = await sendQuery(request, query);
-      expect(initialResponse.transactions.edges).toHaveLength(0);
-      expect(initialResponse.transactions.totalCount).toEqual(0);
+      await expect(async () => {
+        query = getTransactionsQuery(sourceAccount.account);
+        initialResponse = await sendQuery(request, query);
+        expect(initialResponse.transactions.edges).toHaveLength(0);
+        expect(initialResponse.transactions.totalCount).toEqual(0);
+      }).toPass({
+        intervals: [50, 100],
+        timeout: 100,
+      });
     });
 
     await test.step('Transfer funds from sourceAccount (Chain 0) to targetAccount (Chain 1).', async () => {
