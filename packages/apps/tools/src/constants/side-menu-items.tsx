@@ -8,7 +8,13 @@ import Routes from './routes';
 export const menuData: ISidebarToolbarItem[] = [
   {
     title: 'Faucet',
-    icon: <MonoQrCodeScanner className={atoms({ fontSize: '4xl' })} />,
+    icon: (
+      <MonoQrCodeScanner
+        className={atoms({ fontSize: '4xl' })}
+        width={'100%'}
+        height={'100%'}
+      />
+    ),
     href: 'faucet',
     items: [
       {

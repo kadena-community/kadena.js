@@ -45,7 +45,9 @@ export const MenuButton: FC<IMenuButtonProps> = ({
       aria-label={title}
       onClick={onClick}
     >
-      <span>{icon}</span>
+      <span style={{ display: 'block', width: '16px', height: '16px' }}>
+        {icon}
+      </span>
     </button>
   );
 
