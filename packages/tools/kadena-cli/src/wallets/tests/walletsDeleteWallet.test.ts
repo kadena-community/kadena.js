@@ -15,7 +15,7 @@ describe('delete wallet', () => {
     const walletPath = path.join(root, '.kadena/wallets/test/test.wallet');
 
     const result1 = await generateWallet('test', '12345678', false);
-    assert(result1.success);
+    assert(result1.status === 'success');
 
     expect(await services.filesystem.fileExists(walletPath)).toBe(true);
 
@@ -27,7 +27,7 @@ describe('delete wallet', () => {
     }
 
     const result = await deleteWallet('test.wallet', walletContent);
-    assert(result.success);
+    assert(result.status === 'success');
 
     expect(await services.filesystem.fileExists(walletPath)).toBe(false);
   });

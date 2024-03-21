@@ -15,11 +15,11 @@ async function deleteAccountDir(): Promise<CommandResult<null>> {
     await services.filesystem.deleteDirectory(ACCOUNT_DIR);
     return {
       data: null,
-      success: true,
+      status: 'success',
     };
   } catch (error) {
     return {
-      success: false,
+      status: 'error',
       errors: ['Failed to delete all account aliases.'],
     };
   }
@@ -37,11 +37,11 @@ async function removeAccount(
     await services.filesystem.deleteFile(filePath);
     return {
       data: null,
-      success: true,
+      status: 'success',
     };
   } else {
     return {
-      success: false,
+      status: 'error',
       errors: [`The account alias "${accountAlias}" does not exist`],
     };
   }

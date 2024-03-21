@@ -26,6 +26,7 @@ import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
+import type { ISavedTransaction } from './storage.js';
 
 export interface ICommandData {
   networkId: string;
@@ -315,7 +316,7 @@ export async function assessTransactionSigningStatus(
     throw new Error('No commands provided.');
   }
 
-  let allSigned = true;
+  let commandStatus: 'error' | 'success' | 'partial' = 'success';
   const errors: string[] = [];
   const warnings: string[] = [];
   const signedCommands: ICommand[] = [];
@@ -323,40 +324,38 @@ export async function assessTransactionSigningStatus(
 
   for (const command of commands) {
     if (!command) {
-      allSigned = false;
+      commandStatus = 'error';
       errors.push('One or more transactions failed to sign.');
       continue;
     }
 
     if (isSignedTransaction(command)) {
+      if (commandStatus === 'error') {
+        commandStatus = 'partial';
+      }
       signedCommands.push(command);
-      log.info(
-        `Transaction with hash: ${command.hash} was successfully signed.`,
+    } else if (isPartiallySignedTransaction(command)) {
+      commandStatus = 'partial';
+      const status = getSignersStatus(command);
+      const formattedStatus = status
+        .map(
+          (signerStatus) =>
+            ` Public Key: ${signerStatus.publicKey}, Signed: ${
+              signerStatus.isSigned ? 'Yes' : 'No'
+            }`,
+        )
+        .join('\n');
+
+      warnings.push(
+        `Transaction with hash: ${command.hash} is partially signed:\n${formattedStatus}`,
+      );
+      partiallySignedTransactions.push(
+        `transaction-${command.hash.slice(0, 10)}-partial.json`,
       );
     } else {
-      allSigned = false;
-      if (isPartiallySignedTransaction(command)) {
-        const status = getSignersStatus(command);
-        const formattedStatus = status
-          .map(
-            (signerStatus) =>
-              ` Public Key: ${signerStatus.publicKey}, Signed: ${
-                signerStatus.isSigned ? 'Yes' : 'No'
-              }`,
-          )
-          .join('\n');
-
-        warnings.push(
-          `Transaction with hash: ${command.hash} is partially signed:\n${formattedStatus}`,
-        );
-        partiallySignedTransactions.push(
-          `transaction-${command.hash.slice(0, 10)}-partial.json`,
-        );
-      } else {
-        errors.push(
-          `Transaction with hash: ${command.hash} is skipped because no matching keys within wallet(s) were found and left unsigned.`,
-        );
-      }
+      errors.push(
+        `Transaction with hash: ${command.hash} is skipped because no matching keys within wallet(s) were found and left unsigned.`,
+      );
     }
   }
 
@@ -369,12 +368,17 @@ export async function assessTransactionSigningStatus(
     );
   }
 
-  return {
-    success: allSigned,
-    data: signedCommands,
-    errors,
-    warnings,
-  };
+  if (
+    commandStatus === 'success' &&
+    errors.length === 0 &&
+    warnings.length === 0
+  ) {
+    return { status: 'success', data: signedCommands, warnings };
+  } else if (commandStatus === 'error' && errors.length > 0) {
+    return { status: 'error', errors, warnings };
+  } else {
+    return { status: 'partial', data: signedCommands, errors, warnings };
+  }
 }
 
 export async function getTransactionsFromFile(
@@ -439,6 +443,7 @@ export const requestKeyValidation = z
       message: 'Request key is invalid. Please provide a valid request key.',
     },
   );
+
 export async function getWalletsAndKeysForSigning(
   unsignedTransactions: IUnsignedCommand[],
 ): Promise<IWalletWithKey[]> {
@@ -579,4 +584,44 @@ export async function filterRelevantUnsignedCommandsForWallet(
     skippedCommands,
     relevantKeyPairs,
   };
+}
+
+export function processSigningStatus(
+  savedTransactions: ISavedTransaction[],
+  signingStatus: CommandResult<ICommand[]>,
+): CommandResult<{ commands: { command: ICommand; path: string }[] }> {
+  if (
+    signingStatus.status === 'success' ||
+    signingStatus.status === 'partial'
+  ) {
+    const commands = savedTransactions
+      .filter(
+        (tx) => signingStatus.status === 'success' || tx.state === 'signed',
+      )
+      .map((tx) => ({
+        command: tx.command as ICommand,
+        path: tx.filePath,
+      }));
+
+    if (signingStatus.status === 'partial') {
+      return {
+        status: 'partial',
+        data: { commands },
+        errors: signingStatus.errors,
+        warnings: signingStatus.warnings,
+      };
+    } else {
+      return {
+        status: 'success',
+        data: { commands },
+        warnings: signingStatus.warnings,
+      };
+    }
+  } else {
+    return {
+      status: 'error',
+      errors: signingStatus.errors,
+      warnings: signingStatus.warnings,
+    };
+  }
 }

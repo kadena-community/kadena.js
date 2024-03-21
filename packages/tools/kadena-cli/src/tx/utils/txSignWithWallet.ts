@@ -21,6 +21,7 @@ import {
   filterRelevantUnsignedCommandsForWallet,
   getTransactionsFromFile,
   getWalletsAndKeysForSigning,
+  processSigningStatus,
   signTransactionWithSeed,
 } from './txHelpers.js';
 
@@ -45,7 +46,7 @@ export const signTransactionsWithwallet = async ({
 > => {
   if (unsignedCommands.length === 0) {
     return {
-      success: false,
+      status: 'error',
       errors: ['No unsigned transactions found.'],
     };
   }
@@ -77,20 +78,11 @@ export const signTransactionsWithwallet = async ({
       ...skippedCommands,
       ...transactions,
     ]);
-    if (!signingStatus.success) return signingStatus;
 
-    return {
-      success: true,
-      data: {
-        commands: savedTransactions.map((tx) => ({
-          command: tx.command as ICommand,
-          path: tx.filePath,
-        })),
-      },
-    };
+    return processSigningStatus(savedTransactions, signingStatus);
   } catch (error) {
     return {
-      success: false,
+      status: 'error',
       errors: [`Error in signTransactionWithwallet: ${error.message}`],
     };
   }
@@ -188,10 +180,13 @@ export async function signWithwallet(
 
   assertCommandError(results);
 
-  if (results.data.commands.length === 1) {
-    log.output(JSON.stringify(results.data.commands[0].command, null, 2));
+  if (results.data.commands.length !== 0) {
+    results.data.commands.forEach((tx, i) => {
+      log.info(
+        `Transaction with hash: ${results.data.commands[i].command.hash} was successfully signed.`,
+      );
+      log.output(JSON.stringify(results.data.commands[i].command, null, 2));
+      log.info(`Signed transaction saved to ${tx.path}`);
+    });
   }
-  results.data.commands.forEach((tx) => {
-    log.info(`Signed transaction saved to ${tx.path}`);
-  });
 }

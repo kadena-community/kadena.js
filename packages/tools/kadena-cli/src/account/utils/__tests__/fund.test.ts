@@ -23,7 +23,7 @@ describe('fund', () => {
       chainId: '1',
     });
     expect(result).toStrictEqual({
-      success: true,
+      status: 'success',
       data: {
         chainId: '1',
         networkId: 'testnet04',
@@ -64,7 +64,7 @@ describe('fund', () => {
       chainId: '1',
     });
     expect(result).toStrictEqual({
-      success: true,
+      status: 'success',
       data: {
         chainId: '1',
         networkId: 'testnet04',
@@ -100,7 +100,7 @@ describe('fund', () => {
     });
 
     expect(result).toStrictEqual({
-      success: false,
+      status: 'error',
       errors: ['{"error":"something went wrong"}'],
     });
   });
@@ -132,7 +132,7 @@ describe('fund', () => {
     });
 
     expect(result).toStrictEqual({
-      success: false,
+      status: 'error',
       errors: ['Failed to transfer fund : "{"error":"something went wrong"}"'],
     });
   });
