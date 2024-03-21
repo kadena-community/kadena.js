@@ -5,6 +5,7 @@ import {
   getDefaultConnectionComplexity,
 } from '@services/complexity';
 import { builder } from '../builder';
+import { prismaTransactionMapper } from '../mappers/transaction-mapper';
 import Block from './block';
 import TransactionCommand from './transaction-command';
 import TransactionResult from './transaction-info';
@@ -19,6 +20,33 @@ export default builder.node('Transaction', {
         return JSON.stringify([parent.result, parent.hash]);
       }
     },
+    parse: (id) => {
+      const [blockHash, requestKey] = JSON.parse(id);
+      return {
+        blockHash,
+        requestKey,
+      };
+    },
+  },
+  isTypeOf(source) {
+    return (source as any).__typename === 'Transaction';
+  },
+  async loadOne({ blockHash, requestKey }, context) {
+    const prismaTransaction = await prismaClient.transaction.findUnique({
+      where: {
+        blockHash_requestKey: {
+          blockHash: blockHash,
+          requestKey: requestKey,
+        },
+      },
+    });
+
+    if (!prismaTransaction) return null;
+
+    return {
+      __typename: 'Transaction',
+      ...(await prismaTransactionMapper(prismaTransaction, context)),
+    };
   },
   fields: (t) => ({
     hash: t.exposeString('hash'),
