@@ -10,16 +10,18 @@ export const ListSignees: FC = () => {
   const { proofOfUs } = useProofOfUs();
 
   const initiator = proofOfUs?.signees?.find((s) => s.initiator);
-  const signee = proofOfUs?.signees?.find((s) => !s.initiator);
+  const signees = proofOfUs?.signees?.filter((s) => !s.initiator) ?? [];
 
   return (
     <Stack flexDirection="column" gap="md">
       <Heading as="h5">Signees ({proofOfUs?.signees.length})</Heading>
 
-      <section className={wrapperClass}>
+      <ul className={wrapperClass}>
         <Signee signee={initiator} />
-        <Signee signee={signee} />
-      </section>
+        {signees.map((signee) => (
+          <Signee key={signee.accountName} signee={signee} />
+        ))}
+      </ul>
     </Stack>
   );
 };
