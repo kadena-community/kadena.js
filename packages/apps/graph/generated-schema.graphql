@@ -96,7 +96,7 @@ type Event implements Node {
   name: String!
 
   """
-  The order index of this event, in the case that there are multiple events.
+  The order index of this event, in the case that there are multiple events in one transaction.
   """
   orderIndex: BigInt!
   parameterText: String!
@@ -319,9 +319,6 @@ type Query {
   """
   completedBlockHeights(after: String, before: String, chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, first: Int, heightCount: Int = 3, last: Int): QueryCompletedBlockHeightsConnection!
 
-  """Retrieve a single event by its unique key."""
-  event(blockHash: String!, orderIndex: Int!, requestKey: String!): Event
-
   """
   Retrieve events by qualifiedName (e.g. `coin.TRANSFER`). Default page size is 20.
          
@@ -329,7 +326,7 @@ type Query {
          
         An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
   """
-  events(after: String, before: String, chainId: String, first: Int, last: Int, parametersFilter: String, qualifiedEventName: String!): QueryEventsConnection!
+  events(after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, orderIndex: Int, parametersFilter: String, qualifiedEventName: String!, requestKey: String): QueryEventsConnection!
 
   """
   Retrieve an fungible specific account by its name and fungible, such as coin.
@@ -387,11 +384,8 @@ type Query {
   """Retrieve all transactions by a given public key."""
   transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
 
-  """Retrieve one transfer by its unique key."""
-  transfer(blockHash: String!, chainId: String!, moduleHash: String!, orderIndex: Int!, requestKey: String!): Transfer
-
   """Retrieve transfers. Default page size is 20."""
-  transfers(accountName: String, after: String, before: String, chainId: String, first: Int, fungibleName: String, last: Int): QueryTransfersConnection!
+  transfers(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransfersConnection!
 }
 
 type QueryBlocksFromDepthConnection {
