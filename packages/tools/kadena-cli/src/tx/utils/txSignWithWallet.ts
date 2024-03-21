@@ -14,7 +14,7 @@ import { log } from '../../utils/logger.js';
 import type { options } from '../commands/txSignOptions.js';
 import { parseTransactionsFromStdin } from './input.js';
 import { saveSignedTransactions } from './storage.js';
-import type { IWalletWithKey } from './txHelpers.js';
+
 import {
   assessTransactionSigningStatus,
   extractRelevantWalletAndKeyPairsFromCommand,
