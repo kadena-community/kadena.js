@@ -79,7 +79,6 @@ export {
   TextField,
   TextareaField,
 } from './Form';
-export { ProductIcon, SystemIcon } from './Icon';
 export { Box, Grid, GridItem, Stack } from './Layout';
 export { Link } from './Link';
 export { KadenaLogo } from './Logo';
