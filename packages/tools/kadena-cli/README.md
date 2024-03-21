@@ -174,12 +174,12 @@ Tool to add and manage networks
 kadena network update [arguments]
 ```
 
-| **Arguments & Options** | **Description**                         | **Required**  |
-| ----------------------- | --------------------------------------- | ------------- |
-| --network-name          | Update the name of the network          |               |
-| --network-id            | Update the id of the network            |               |
-| --network-host          | Update the host for the network         |               |
-| --network-explorer-url  | Update the explorer url for the network |               |
+| **Arguments & Options** | **Description**                         | **Required** |
+| ----------------------- | --------------------------------------- | ------------ |
+| --network-name          | Update the name of the network          |              |
+| --network-id            | Update the id of the network            |              |
+| --network-host          | Update the host for the network         |              |
+| --network-explorer-url  | Update the explorer url for the network |              |
 
 example:
 
@@ -193,13 +193,13 @@ kadena networks update --network-name="mainnet" --network-id="mainnet01" --netwo
 kadena networks add [arguments]
 ```
 
-| **Arguments & Options** | **Description**                      | **Required**  |
-| ----------------------- | ------------------------------------ | ------------- |
-| --network-name          | Set the name of the network          |               |
-| --network-id            | Set the id of the network            |               |
-| --network-host          | Set the host for the network         |               |
-| --network-explorer-url  | Set the explorer url for the network |               |
-| --network-overwrite     | Confirm overwrite configuration      |               |
+| **Arguments & Options** | **Description**                      | **Required** |
+| ----------------------- | ------------------------------------ | ------------ |
+| --network-name          | Set the name of the network          |              |
+| --network-id            | Set the id of the network            |              |
+| --network-host          | Set the host for the network         |              |
+| --network-explorer-url  | Set the explorer url for the network |              |
+| --network-overwrite     | Confirm overwrite configuration      |              |
 
 example:
 
@@ -678,15 +678,16 @@ kadena account delete --account-alias="all" --confirm
 
 Tool for creating and managing transactions
 
-| **Subcommand** | **Description**                                  | **Default value** |
-| -------------- | ------------------------------------------------ | ----------------- |
-| send           | Send a transaction to the network                |                   |
-| sign           | Sign a transaction using a keypair,              |                   |
-|                | Sign a transaction using your local aliased file |                   |
-|                | Sign a transaction using your local wallet       |                   |
-|                |                                                  |                   |
-| test           | Test a signed transaction                        |                   |
-| add            | Select a template and add a transaction          |                   |
+| **Subcommand** | **Description**                         | **Default value** |
+| -------------- | --------------------------------------- | ----------------- |
+| add            | Select a template and add a transaction |                   |
+| sign           | Sign a transaction using your wallet,   |                   |
+|                | Sign a transaction using a key pair     |                   |
+|                |                                         |                   |
+| test           | Test a signed transaction               |                   |
+| send           | Send a transaction to the network       |                   |
+| status         | Get the status of a transaction         |                   |
+| list           | List transaction(s)                     |                   |
 
 ---
 
@@ -837,6 +838,18 @@ example:
 
 ```
 kadena tx status --request-key="118mEpX1-6NpJT1kArsWIHHVtJaOERQOeEwNoouOSGU" --network="testnet" --chain-id="0"
+```
+
+---
+
+```
+kadena tx list
+```
+
+example:
+
+```
+kadena tx list
 ```
 
 ---
