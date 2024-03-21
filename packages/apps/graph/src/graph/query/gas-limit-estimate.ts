@@ -17,7 +17,7 @@ builder.queryField('gasLimitEstimate', (t) =>
        
       Every type accepts an optional parameter called \`networkId\` to override the default value from the environment variables.
        
-      Example of the input needed for a type \`code\` query: \`gasLimitEstimate(input: "{\\"code\\":\\"(coin.details \\\\"k:1234\\\\")\\",\\"chainId\\":\\"3\\"}")\``,
+      Example of the input needed for a type \`code\` query: \`gasLimitEstimate(input: "{\\"code\\":\\"(coin.details \\\\\\"k:1234\\\\\\")\\",\\"chainId\\":\\"3\\"}")\``,
     type: [GasLimitEstimation],
     args: {
       input: t.arg.stringList({ required: true }),
