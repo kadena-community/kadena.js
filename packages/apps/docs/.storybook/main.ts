@@ -1,23 +1,32 @@
-import { dirname, join } from "path";
-const path = require('path');
 import { StorybookConfig } from '@storybook/react-webpack5';
 import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { dirname, join } from 'path';
+const path = require('path');
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.stories.@(ts|tsx)'],
-  addons: [getAbsolutePath("@storybook/addon-a11y"), getAbsolutePath("@storybook/addon-links"), getAbsolutePath("@storybook/addon-essentials"), getAbsolutePath("@storybook/addon-controls"), getAbsolutePath("@storybook/addon-interactions"), getAbsolutePath("@storybook/addon-mdx-gfm"), getAbsolutePath("storybook-dark-mode"), {
-    name: 'storybook-addon-swc',
-    options: {
-      enable: true,
-      enableSwcLoader: true,
-      enableSwcMinify: true,
-      swcLoaderOptions: {},
-      swcMinifyOptions: {}
-    }
-  }],
+  addons: [
+    getAbsolutePath('@storybook/addon-a11y'),
+    getAbsolutePath('@storybook/addon-links'),
+    getAbsolutePath('@storybook/addon-essentials'),
+    getAbsolutePath('@storybook/addon-controls'),
+    getAbsolutePath('@storybook/addon-interactions'),
+    getAbsolutePath('@storybook/addon-mdx-gfm'),
+    getAbsolutePath('storybook-dark-mode'),
+    {
+      name: 'storybook-addon-swc',
+      options: {
+        enable: true,
+        enableSwcLoader: true,
+        enableSwcMinify: true,
+        swcLoaderOptions: {},
+        swcMinifyOptions: {},
+      },
+    },
+  ],
   framework: {
-    name: getAbsolutePath("@storybook/nextjs"),
+    name: getAbsolutePath('@storybook/nextjs'),
     options: {},
   },
   docs: {
@@ -80,5 +89,5 @@ const config: StorybookConfig = {
 export default config;
 
 function getAbsolutePath(value: string): any {
-  return dirname(require.resolve(join(value, "package.json")));
+  return dirname(require.resolve(join(value, 'package.json')));
 }
