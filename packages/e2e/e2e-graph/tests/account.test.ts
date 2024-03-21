@@ -68,7 +68,7 @@ test('Query: getAccount by AccountName', async ({ request }) => {
     }).toPass({
       // Probe, wait 1s, probe, wait 2s, probe, wait 10s, probe, wait 10s, probe
       // ... Defaults to [100, 250, 500, 1000].
-      intervals: [50, 100],
+
       timeout: 2000,
     });
   });
