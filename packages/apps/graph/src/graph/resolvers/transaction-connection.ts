@@ -69,10 +69,6 @@ export async function resolveTransactionConnection(
           { height: orderByDirection },
           { blockHash: orderByDirection },
         ],
-        include: {
-          block: true,
-          events: true,
-        },
       });
 
       return await prismaTransactionsMapper(prismaTransactions, context);

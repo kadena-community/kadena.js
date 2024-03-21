@@ -134,6 +134,7 @@ export interface Transaction {
   cmd: TransactionCommand;
   block: Block | null;
   events: Event[];
+  transfers: Transfer[];
 }
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface TransactionInfo {

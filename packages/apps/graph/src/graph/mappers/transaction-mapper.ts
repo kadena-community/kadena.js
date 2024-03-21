@@ -1,13 +1,11 @@
 import { prismaClient } from '@db/prisma-client';
-import type { Prisma, Signer } from '@prisma/client';
+import type { Signer, Transaction } from '@prisma/client';
 import type { IContext } from '../builder';
 import type { Transaction as GQLTransaction } from '../types/graphql-types';
 import { prismaSignersMapper } from './signer-mapper';
 
 export async function prismaTransactionsMapper(
-  prismaTransactions: Prisma.TransactionGetPayload<{
-    include: { block: true; events: true };
-  }>[],
+  prismaTransactions: Transaction[],
   context: IContext,
 ): Promise<GQLTransaction[]> {
   const requestKeys = [...new Set(prismaTransactions.map((t) => t.requestKey))];
@@ -31,9 +29,7 @@ export async function prismaTransactionsMapper(
 }
 
 export async function prismaTransactionMapper(
-  prismaTransaction: Prisma.TransactionGetPayload<{
-    include: { block: true; events: true };
-  }>,
+  prismaTransaction: Transaction,
   context: IContext,
   prismaSigners?: Signer[],
 ): Promise<GQLTransaction> {
@@ -88,8 +84,9 @@ export async function prismaTransactionMapper(
       eventCount: prismaTransaction.eventCount,
       transactionId: prismaTransaction.transactionId,
     },
-    block: prismaTransaction.block,
-    events: prismaTransaction.events,
+    block: null,
+    events: [],
+    transfers: [],
   };
 }
 
@@ -118,5 +115,6 @@ export function mempoolTxMapper(mempoolData: any): GQLTransaction {
     result: mempoolInfo,
     block: null,
     events: [],
+    transfers: [],
   };
 }

@@ -24,10 +24,6 @@ builder.queryField('transaction', (t) =>
               requestKey: args.requestKey,
             },
           },
-          include: {
-            block: true,
-            events: true,
-          },
         });
 
         if (!prismaTransactiom) return null;

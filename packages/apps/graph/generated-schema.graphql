@@ -434,6 +434,9 @@ type Transaction implements Node {
   hash: String!
   id: ID!
   result: TransactionResult!
+
+  """Default page size is 20."""
+  transfers(after: String, before: String, first: Int, last: Int): TransactionTransfersConnection!
 }
 
 """A transaction command."""
@@ -518,6 +521,17 @@ union TransactionPayload = ContinuationPayload | ExecutionPayload
 
 """The result of a transaction."""
 union TransactionResult = MempoolInfo | TransactionInfo
+
+type TransactionTransfersConnection {
+  edges: [TransactionTransfersConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type TransactionTransfersConnectionEdge {
+  cursor: String!
+  node: Transfer!
+}
 
 """A transfer of funds from a fungible between two accounts."""
 type Transfer implements Node {
