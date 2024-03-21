@@ -28,9 +28,7 @@ export default builder.node('Transaction', {
       };
     },
   },
-  isTypeOf(source) {
-    return (source as any).__typename === 'Transaction';
-  },
+
   async loadOne({ blockHash, requestKey }, context) {
     const prismaTransaction = await prismaClient.transaction.findUnique({
       where: {

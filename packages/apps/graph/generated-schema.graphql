@@ -434,7 +434,7 @@ type Subscription {
   newBlocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
 
   """Listen for a transaction by request key."""
-  transaction(chainId: String!, requestKey: String!): Transaction
+  transaction(chainId: String, requestKey: String!): Transaction
 }
 
 """The token identifier and its balance."""

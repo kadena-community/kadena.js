@@ -1,3 +1,5 @@
+import { chainIds } from '@utils/chains';
+
 export class MempoolError extends Error {
   public mempoolError: any;
 
@@ -28,26 +30,30 @@ export async function mempoolGetPending() {
   }
 }
 
-export async function mempoolLookup(hash: string, chainId: string) {
+export async function mempoolLookup(hash: string, chainId?: string) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-  const res = await fetch(
-    `https://localhost:1789/chainweb/0.0/development/chain/${chainId}/mempool/lookup`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify([hash]),
-    },
-  );
+  let chainsToCheck = chainIds;
 
-  if (!res.ok) {
-    throw new MempoolError('Unable to lookup transaction in mempool');
+  if (chainId) {
+    chainsToCheck = [chainId];
   }
-  const data = await res.json();
-  return data;
-}
 
-// mempoolLookup('63X9tpFDrtQcWjDzCMxOVOiBx6FQYtLk1Tv9hUZh24E', '1');
-// mempoolGetPending();
+  for (const chainId of chainsToCheck) {
+    const res = await fetch(
+      `https://localhost:1789/chainweb/0.0/development/chain/${chainId}/mempool/lookup`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify([hash]),
+      },
+    );
+
+    if (res.ok) {
+      const data = await res.json();
+      if (data[0].contents) return data;
+    }
+  }
+}
