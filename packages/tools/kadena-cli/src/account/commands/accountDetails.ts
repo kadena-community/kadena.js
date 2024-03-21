@@ -74,7 +74,7 @@ export async function accountDetails(
   return {
     status,
     data: accountDetailsList.filter(notEmpty),
-    errors: errors,
+    errors,
     warnings: [formatWarnings(warnings)],
   };
 }

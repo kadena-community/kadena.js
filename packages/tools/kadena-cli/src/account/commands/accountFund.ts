@@ -12,9 +12,13 @@ import { createCommand } from '../../utils/createCommand.js';
 // import { createOption } from '../../utils/createOption.js';
 import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
-import { ensureAccountAliasFilesExists } from '../utils/accountHelpers.js';
+import {
+  ensureAccountAliasFilesExists,
+  getTransactionExplorerUrl,
+} from '../utils/accountHelpers.js';
 import { fund } from '../utils/fund.js';
 
 // const deployDevnet = createOption({
@@ -33,7 +37,7 @@ export const createAccountFundCommand = createCommand(
     accountOptions.accountSelect(),
     accountOptions.fundAmount(),
     globalOptions.networkSelect(),
-    globalOptions.chainId(),
+    accountOptions.chainIdRange(),
     // deployDevnet(),
   ],
   async (option) => {
@@ -128,43 +132,62 @@ export const createAccountFundCommand = createCommand(
     // }
 
     const result = await fund(config);
-    assertCommandError(result);
-
-    const explorerURL = networkConfig.networkExplorerUrl.endsWith('/')
-      ? networkConfig.networkExplorerUrl
-      : `${networkConfig.networkExplorerUrl}/`;
-
-    log.info(
-      log.color.green(
-        `Transaction explorer URL: ${explorerURL}${result.data.requestKey}`,
-      ),
-    );
-    const { pollStatus } = createClient(
-      `${networkConfig.networkHost}/chainweb/0.0/${networkConfig.networkId}/chain/${chainId}/pact`,
-    );
-
-    const loader = ora('Funding account...\n').start();
-
-    pollStatus(result.data)
-      .then((response) => {
-        const transactionResult = response[result.data.requestKey];
-        if (
-          typeof transactionResult !== 'string' &&
-          transactionResult.result.status === 'failure'
-        ) {
-          throw transactionResult.result.error;
-        }
-
-        loader.succeed('Account funded');
+    if (result.success && result.data.length > 0) {
+      result.data.forEach(({ chainId, requestKey }) => {
+        const explorerUrl = getTransactionExplorerUrl(
+          networkConfig.networkExplorerUrl,
+          requestKey,
+        );
         log.info(
           log.color.green(
-            `"${accountConfig.name}" account funded with "${amount}" ${accountConfig.fungible} on chain ${chainId} in ${networkConfig.networkId} network.\nUse "account details" command to check the balance.`,
+            `Transaction explorer URL for Chain ID "${chainId}" is : ${explorerUrl}`,
           ),
         );
-      })
-      .catch((e) => {
-        loader.fail('Failed to fund account');
-        log.error(e.message);
       });
+
+      const loader = ora('Funding account...\n').start();
+      const txErrors: string[] = [];
+      const txResults = await Promise.all(
+        result.data.map(async (transaction) => {
+          const { requestKey, chainId } = transaction;
+          try {
+            const { pollStatus } = createClient(
+              `${networkConfig.networkHost}/chainweb/0.0/${networkConfig.networkId}/chain/${chainId}/pact`,
+            );
+            const response = await pollStatus(transaction);
+            const transactionResult = response[requestKey];
+            if (
+              typeof transactionResult !== 'string' &&
+              transactionResult.result.status === 'failure'
+            ) {
+              throw transactionResult.result.error;
+            }
+            return { [chainId]: transactionResult };
+          } catch (e) {
+            txErrors.push(
+              `ChainID: "${chainId}" - requestKey: ${requestKey} - ${e.message}`,
+            );
+          }
+        }),
+      );
+      loader.stop();
+      txResults.filter(notEmpty).forEach((txResult) => {
+        const chainId = Object.keys(txResult)[0];
+        log.info(
+          log.color.green(
+            `"${accountConfig.name}" account funded with "${amount}" on Chain ID "${chainId}" ${accountConfig.fungible} in ${networkConfig.networkId} network.\nUse "account details" command to check the balance.`,
+          ),
+        );
+      });
+
+      if (txErrors.length > 0) {
+        log.error('Failed to fund account on following:');
+        txErrors.forEach((error) => {
+          log.error(error);
+        });
+      }
+    }
+
+    assertCommandError(result);
   },
 );

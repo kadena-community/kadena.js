@@ -209,3 +209,11 @@ export const parseChainIdRange = (input: string): number[] | undefined => {
   const chainIds = getChainIds(input, indexRangeSeparator);
   return chainIds;
 };
+
+export const getTransactionExplorerUrl = (
+  explorerURL: string,
+  requestKey: string,
+): string => {
+  const baseURL = explorerURL.endsWith('/') ? explorerURL : `${explorerURL}/`;
+  return `${baseURL}${requestKey}`;
+};
