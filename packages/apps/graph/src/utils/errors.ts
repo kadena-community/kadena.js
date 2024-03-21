@@ -123,8 +123,11 @@ export function normalizeError(error: any): GraphQLError {
       extensions: {
         type: error.name,
         message: error.originalError?.message || error.message,
-        description:
-          'Chainweb Node was unable to estimate the gas limit for the transaction. Please check your input and try again.',
+        description: error.message.startsWith(
+          'Chainweb Node was unable to estimate',
+        )
+          ? error.message
+          : 'Chainweb Node was unable to estimate the gas limit for the transaction. Please check your input and try again.',
         ...(error.originalError && { data: error.originalError.stack }),
       },
     });
