@@ -1,11 +1,4 @@
-import type {
-  BlockTransactionsConnection,
-  FungibleAccountTransactionsConnection,
-  FungibleChainAccountTransactionsConnection,
-  NonFungibleAccountTransactionsConnection,
-  NonFungibleChainAccountTransactionsConnection,
-  QueryTransactionsConnection,
-} from '@/__generated__/sdk';
+import type { TransactionConnection } from '@/__generated__/sdk';
 import routes from '@constants/routes';
 import {
   Box,
@@ -27,13 +20,7 @@ interface ICompactTransactionsTableProps {
   viewAllHref?: string;
   description?: string;
   truncateColumns?: boolean;
-  transactions:
-    | FungibleAccountTransactionsConnection
-    | FungibleChainAccountTransactionsConnection
-    | BlockTransactionsConnection
-    | QueryTransactionsConnection
-    | NonFungibleAccountTransactionsConnection
-    | NonFungibleChainAccountTransactionsConnection;
+  transactions: TransactionConnection;
 }
 
 export const CompactTransactionsTable = (
@@ -73,7 +60,13 @@ export const CompactTransactionsTable = (
                 <Cell>
                   {new Date(edge.node.cmd.meta.creationTime).toLocaleString()}
                 </Cell>
-                <Cell>{edge.node.result.height}</Cell>
+                <Cell>
+                  {edge.node.result.__typename === 'TransactionInfo' ? (
+                    edge.node.result.height
+                  ) : (
+                    <span style={{ color: 'lightgray' }}>N/A</span>
+                  )}
+                </Cell>
                 <Cell>
                   <Link href={`${routes.TRANSACTIONS}/${edge.node.hash}`}>
                     {truncateColumns ? (

@@ -95,37 +95,47 @@ const RequestKey: React.FC = () => {
                   <strong>Status</strong>
                 </Cell>
                 <Cell>
-                  {transaction.result.badResult && (
-                    <Notification
-                      intent="negative"
-                      icon={<SystemIcon.Close />}
-                      role="status"
-                    >
-                      Transaction failed with status:{' '}
-                      <pre>
-                        {JSON.stringify(
-                          JSON.parse(transaction.result.badResult),
-                          null,
-                          4,
-                        )}
-                      </pre>
-                    </Notification>
-                  )}
-                  {transaction.result.goodResult && (
-                    <Notification
-                      intent="positive"
-                      icon={<SystemIcon.Check />}
-                      role="status"
-                    >
-                      Transaction succeeded with status:
-                      <br />
-                      <pre>{formatCode(transaction.result.goodResult)}</pre>
-                    </Notification>
-                  )}
-                  {!transaction.result.goodResult &&
+                  {transaction.result.__typename === 'TransactionInfo' &&
+                    transaction.result.badResult && (
+                      <Notification
+                        intent="negative"
+                        icon={<SystemIcon.Close />}
+                        role="status"
+                      >
+                        Transaction failed with status:{' '}
+                        <pre>
+                          {JSON.stringify(
+                            JSON.parse(transaction.result.badResult),
+                            null,
+                            4,
+                          )}
+                        </pre>
+                      </Notification>
+                    )}
+                  {transaction.result.__typename === 'TransactionInfo' &&
+                    transaction.result.goodResult && (
+                      <Notification
+                        intent="positive"
+                        icon={<SystemIcon.Check />}
+                        role="status"
+                      >
+                        Transaction succeeded with status:
+                        <br />
+                        <pre>{formatCode(transaction.result.goodResult)}</pre>
+                      </Notification>
+                    )}
+                  {transaction.result.__typename === 'TransactionInfo' &&
+                    !transaction.result.goodResult &&
                     !transaction.result.badResult && (
                       <Notification intent="warning" role="status">
                         Unknown transaction status
+                      </Notification>
+                    )}
+                  {transaction.result.__typename === 'MempoolInfo' &&
+                    transaction.result.status === 'pending' && (
+                      <Notification intent="info" role="status">
+                        Transaction is pending and currently located in the
+                        mempool.
                       </Notification>
                     )}
                 </Cell>
@@ -167,77 +177,81 @@ const RequestKey: React.FC = () => {
                   </pre>
                 </Cell>
               </Row>
-              <Row>
-                <Cell>
-                  <strong>Transaction Output</strong>
-                </Cell>
-                <Cell>
-                  <Table>
-                    <TableHeader>
-                      <Column>Label</Column>
-                      <Column>Value</Column>
-                    </TableHeader>
-                    <TableBody>
-                      <Row>
-                        <Cell>
-                          <strong>Gas</strong>
-                        </Cell>
-                        <Cell>{transaction.result.gas}</Cell>
-                      </Row>
-                      <Row>
-                        <Cell>
-                          <strong>Result</strong>
-                        </Cell>
-                        <Cell>
-                          <pre>
-                            {transaction.result.goodResult
-                              ? formatCode(transaction.result.goodResult)
-                              : transaction.result.badResult
-                              ? formatCode(transaction.result.badResult)
-                              : 'Unknown'}
-                          </pre>
-                        </Cell>
-                      </Row>
-                      <Row>
-                        <Cell>
-                          <strong>Logs</strong>
-                        </Cell>
-                        <Cell>{transaction.result.logs}</Cell>
-                      </Row>
-                      <Row>
-                        <Cell>
-                          <strong>Metadata</strong>
-                        </Cell>
-                        <Cell>{transaction.result.metadata}</Cell>
-                      </Row>
-                      <Row>
-                        <Cell>
-                          <strong>Continuation</strong>
-                        </Cell>
-                        <Cell>
-                          <pre>
-                            {transaction.result.continuation
-                              ? formatCode(transaction.result.continuation)
-                              : 'None'}
-                          </pre>
-                        </Cell>
-                      </Row>
-                      <Row>
-                        <Cell>
-                          <strong>Transaction ID</strong>
-                        </Cell>
-                        <Cell>{transaction.result.transactionId}</Cell>
-                      </Row>
-                    </TableBody>
-                  </Table>
-                </Cell>
-              </Row>
+              {transaction.result.__typename === 'TransactionInfo' ? (
+                <Row>
+                  <Cell>
+                    <strong>Transaction Output</strong>
+                  </Cell>
+                  <Cell>
+                    <Table>
+                      <TableHeader>
+                        <Column>Label</Column>
+                        <Column>Value</Column>
+                      </TableHeader>
+                      <TableBody>
+                        <Row>
+                          <Cell>
+                            <strong>Gas</strong>
+                          </Cell>
+                          <Cell>{transaction.result.gas}</Cell>
+                        </Row>
+                        <Row>
+                          <Cell>
+                            <strong>Result</strong>
+                          </Cell>
+                          <Cell>
+                            <pre>
+                              {transaction.result.goodResult
+                                ? formatCode(transaction.result.goodResult)
+                                : transaction.result.badResult
+                                ? formatCode(transaction.result.badResult)
+                                : 'Unknown'}
+                            </pre>
+                          </Cell>
+                        </Row>
+                        <Row>
+                          <Cell>
+                            <strong>Logs</strong>
+                          </Cell>
+                          <Cell>{transaction.result.logs}</Cell>
+                        </Row>
+                        <Row>
+                          <Cell>
+                            <strong>Metadata</strong>
+                          </Cell>
+                          <Cell>{transaction.result.metadata}</Cell>
+                        </Row>
+                        <Row>
+                          <Cell>
+                            <strong>Continuation</strong>
+                          </Cell>
+                          <Cell>
+                            <pre>
+                              {transaction.result.continuation
+                                ? formatCode(transaction.result.continuation)
+                                : 'None'}
+                            </pre>
+                          </Cell>
+                        </Row>
+                        <Row>
+                          <Cell>
+                            <strong>Transaction ID</strong>
+                          </Cell>
+                          <Cell>{transaction.result.transactionId}</Cell>
+                        </Row>
+                      </TableBody>
+                    </Table>
+                  </Cell>
+                </Row>
+              ) : (
+                <></>
+              )}
               <Row>
                 <Cell>
                   <strong>Events</strong>
                 </Cell>
                 <Cell>
-                  {transaction.events?.map((event, index) => (
+                  {transaction.events?.edges.map((event, index) => (
                     <Table key={index}>
                       <TableHeader>
                         <Column>Label</Column>
@@ -248,14 +262,14 @@ const RequestKey: React.FC = () => {
                           <Cell>
                             <strong>Name</strong>
                           </Cell>
-                          <Cell>{event.qualifiedName}</Cell>
+                          <Cell>{event.node.qualifiedName}</Cell>
                         </Row>
                         <Row>
                           <Cell>
                             <strong>Parameters</strong>
                           </Cell>
                           <Cell>
-                            <pre>{formatCode(event.parameterText)}</pre>
+                            <pre>{formatCode(event.node.parameterText)}</pre>
                           </Cell>
                         </Row>
                       </TableBody>
@@ -338,7 +352,14 @@ const RequestKey: React.FC = () => {
                         <Cell>
                           <strong>Height</strong>
                         </Cell>
-                        <Cell>{transaction.result.height}</Cell>
+                        <Cell>
+                          {transaction.result.__typename ===
+                          'TransactionInfo' ? (
+                            transaction.result.height
+                          ) : (
+                            <span style={{ color: 'lightgray' }}>N/A</span>
+                          )}
+                        </Cell>
                       </Row>
                       <Row>
                         <Cell>
@@ -357,9 +378,11 @@ const RequestKey: React.FC = () => {
                         </Cell>
                         <Cell>
                           {transaction.cmd.payload.__typename ===
-                          'ContinuationPayload'
-                            ? transaction.cmd.payload.proof
-                            : ''}
+                          'ContinuationPayload' ? (
+                            transaction.cmd.payload.proof
+                          ) : (
+                            <span style={{ color: 'lightgray' }}>N/A</span>
+                          )}
                         </Cell>
                       </Row>
                       <Row>
@@ -368,9 +391,11 @@ const RequestKey: React.FC = () => {
                         </Cell>
                         <Cell>
                           {transaction.cmd.payload.__typename ===
-                          'ContinuationPayload'
-                            ? transaction.cmd.payload.rollback
-                            : ''}
+                          'ContinuationPayload' ? (
+                            transaction.cmd.payload.rollback
+                          ) : (
+                            <span style={{ color: 'lightgray' }}>N/A</span>
+                          )}
                         </Cell>
                       </Row>
                       <Row>
@@ -379,9 +404,11 @@ const RequestKey: React.FC = () => {
                         </Cell>
                         <Cell>
                           {transaction.cmd.payload.__typename ===
-                          'ContinuationPayload'
-                            ? transaction.cmd.payload.step
-                            : ''}
+                          'ContinuationPayload' ? (
+                            transaction.cmd.payload.step
+                          ) : (
+                            <span style={{ color: 'lightgray' }}>N/A</span>
+                          )}
                         </Cell>
                       </Row>
                     </TableBody>

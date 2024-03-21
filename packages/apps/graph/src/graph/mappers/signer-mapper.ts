@@ -14,6 +14,7 @@ export function prismaSignerMapper(prismaSigner: Signer): GQLSigner {
       name,
       args: JSON.stringify(args),
     })),
+    signature: prismaSigner.signature,
   };
 }
 

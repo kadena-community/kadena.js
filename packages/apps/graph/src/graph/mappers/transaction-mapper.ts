@@ -106,6 +106,19 @@ export function mempoolTxMapper(mempoolData: any): GQLTransaction {
 
   mempoolTx.cmd.payload.data = JSON.stringify(mempoolTx.cmd.payload.data);
 
+  mempoolTx.cmd.signers = mempoolTx.cmd.signers.map((signer: any) => ({
+    publicKey: signer.pubKey,
+    scheme: signer.scheme,
+    requestKey: mempoolTx.hash,
+    clist: signer.clist.map((c: any) => ({
+      name: c.name,
+      args: JSON.stringify(c.args),
+    })),
+    orderIndex: null,
+    address: null,
+    signature: null,
+  }));
+
   // Convert creationTime to milliseconds (mempool has it in epoch format in seconds)
   mempoolTx.cmd.meta.creationTime = mempoolTx.cmd.meta.creationTime * 1000;
 

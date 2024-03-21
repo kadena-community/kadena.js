@@ -34,7 +34,7 @@ export default builder.node('Signer', {
 
   fields: (t) => ({
     requestKey: t.exposeString('requestKey'),
-    orderIndex: t.exposeInt('orderIndex'),
+    orderIndex: t.exposeInt('orderIndex', { nullable: true }),
     publicKey: t.exposeString('publicKey'),
     address: t.exposeString('address', {
       nullable: true,
@@ -48,5 +48,6 @@ export default builder.node('Signer', {
       type: ['CapabilitiesList'],
       resolve: (parent) => parent.clist,
     }),
+    signature: t.exposeString('signature', { nullable: true }),
   }),
 });

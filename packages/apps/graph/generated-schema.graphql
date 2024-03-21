@@ -409,12 +409,13 @@ type Signer implements Node {
   address: String
   clist: [CapabilitiesList!]!
   id: ID!
-  orderIndex: Int!
+  orderIndex: Int
   publicKey: String!
   requestKey: String!
 
   """The signature scheme that was used to sign."""
   scheme: String
+  signature: String
 }
 
 type Subscription {

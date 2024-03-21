@@ -204,7 +204,13 @@ export const ExtendedTransactionsTable = (
                 <Cell>
                   {new Date(edge.node.cmd.meta.creationTime).toLocaleString()}
                 </Cell>
-                <Cell>{edge.node.result.height}</Cell>
+                <Cell>
+                  {edge.node.result.__typename === 'TransactionInfo' ? (
+                    edge.node.result.height
+                  ) : (
+                    <span style={{ color: 'lightgray' }}>N/A</span>
+                  )}
+                </Cell>
                 <Cell>
                   <Link href={`${routes.TRANSACTIONS}/${edge.node.hash}`}>
                     {edge.node.hash}

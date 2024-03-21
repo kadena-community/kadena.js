@@ -28,7 +28,11 @@ export const getTransactionByRequestKey: DocumentNode = gql`
         hash
       }
       events {
-        ...CoreEventFields
+        edges {
+          node {
+            ...CoreEventFields
+          }
+        }
       }
       cmd {
         signers {

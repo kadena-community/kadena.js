@@ -1,8 +1,7 @@
 import type {
-  FungibleChainAccountTransactionsConnection,
   FungibleChainAccountTransfersConnection,
-  NonFungibleChainAccountTransactionsConnection,
   Token,
+  TransactionConnection,
 } from '@/__generated__/sdk';
 import {
   useGetFungibleChainAccountQuery,
@@ -259,7 +258,7 @@ const ChainAccount: React.FC = () => {
                     truncateColumns={true}
                     transactions={
                       fungibleChainAccountData.fungibleChainAccount
-                        .transactions as FungibleChainAccountTransactionsConnection
+                        .transactions as TransactionConnection
                     }
                   />
                 </GridItem>
@@ -335,7 +334,7 @@ const ChainAccount: React.FC = () => {
                     truncateColumns={true}
                     transactions={
                       nonFungibleChainAccountData.nonFungibleChainAccount
-                        .transactions as NonFungibleChainAccountTransactionsConnection
+                        .transactions as TransactionConnection
                     }
                   />
                 </GridItem>

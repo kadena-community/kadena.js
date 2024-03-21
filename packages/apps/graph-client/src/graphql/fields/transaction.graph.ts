@@ -17,7 +17,9 @@ export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
       }
     }
     result {
-      height
+      ... on TransactionInfo {
+        height
+      }
     }
   }
 `;
@@ -54,7 +56,10 @@ export const ALL_TRANSACTION_FIELDS: DocumentNode = gql`
       signers {
         publicKey
         signature
-        capabilities
+        clist {
+          name
+          args
+        }
       }
 
       networkId
@@ -62,14 +67,19 @@ export const ALL_TRANSACTION_FIELDS: DocumentNode = gql`
     }
 
     result {
-      badResult
-      continuation
-      gas
-      goodResult
-      logs
-      metadata
-      eventCount
-      transactionId
+      ... on TransactionInfo {
+        badResult
+        continuation
+        gas
+        goodResult
+        logs
+        metadata
+        eventCount
+        transactionId
+      }
+      ... on MempoolInfo {
+        status
+      }
     }
 
     # block {}
