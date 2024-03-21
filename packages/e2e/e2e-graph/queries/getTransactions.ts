@@ -1,9 +1,7 @@
 export function getTransactionsQuery(accountName: string) {
   return {
     query: `query getTransactions($accountName: String) {
-      transactions(
-        accountName: $accountName
-      ) {
+      transactions(accountName: $accountName) {
         totalCount
         edges {
           node {
@@ -31,38 +29,50 @@ export function getTransactionsQuery(accountName: string) {
               }
               signers {
                 id
-                requestKey
                 publicKey
-                capabilities
+                clist {
+                  args
+                  name
+                }
               }
             }
             result {
-              continuation
-              eventCount
-              gas
+              ... on TransactionInfo {
+                continuation
+                eventCount
+                gas
+              }
             }
             transfers {
-              amount
-              chainId
-              id
-              receiverAccount
-              requestKey
-              senderAccount
-              crossChainTransfer {
-                amount
-                blockHash
-                chainId
-                id
-                moduleName
-                receiverAccount
-                requestKey
-                senderAccount
+              edges {
+                node {
+                  amount
+                  chainId
+                  id
+                  receiverAccount
+                  requestKey
+                  senderAccount
+                  crossChainTransfer {
+                    amount
+                    blockHash
+                    chainId
+                    id
+                    moduleName
+                    receiverAccount
+                    requestKey
+                    senderAccount
+                  }
+                }
               }
             }
             events {
-              requestKey
-              parameterText
-              id
+              edges {
+                node {
+                  requestKey
+                  parameterText
+                  id
+                }
+              }
             }
           }
         }

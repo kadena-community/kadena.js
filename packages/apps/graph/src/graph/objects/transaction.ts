@@ -14,9 +14,9 @@ export default builder.node('Transaction', {
   id: {
     resolve: (parent) => {
       if ('blockHash' in parent.result) {
-        return JSON.stringify([parent.hash, parent.result.blockHash]);
+        return JSON.stringify([parent.result.blockHash, parent.hash]);
       } else {
-        return JSON.stringify([parent.hash, parent.result]);
+        return JSON.stringify([parent.result, parent.hash]);
       }
     },
   },
@@ -70,7 +70,6 @@ export default builder.node('Transaction', {
         }
       },
       async resolve(query, parent) {
-        console.log(query);
         if ('blockHash' in parent.result && parent.result.blockHash) {
           return await prismaClient.event.findMany({
             ...query,

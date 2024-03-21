@@ -2,9 +2,13 @@ import { builder } from '../builder';
 
 export default builder.node('Signer', {
   description: 'A signer for a specific transaction.',
-  id: { resolve: (parent) => parent.publicKey },
+  id: {
+    resolve: (parent) => JSON.stringify([parent.requestKey, parent.orderIndex]),
+  },
 
   fields: (t) => ({
+    requestKey: t.exposeString('requestKey'),
+    orderIndex: t.exposeInt('orderIndex'),
     publicKey: t.exposeString('publicKey'),
     address: t.exposeString('address', {
       nullable: true,

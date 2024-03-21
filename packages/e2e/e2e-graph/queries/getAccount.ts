@@ -65,7 +65,9 @@ export function getAccountQuery(accountName: string) {
         }
       }
       result {
-        height
+        ... on TransactionInfo {
+          height
+        }
       }
     }
     fragment CoreTransferFields on Transfer {

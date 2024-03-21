@@ -152,6 +152,8 @@ export interface TransactionInfo {
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Signer {
+  requestKey: string;
+  orderIndex: number;
   publicKey: string;
   address: string | null;
   scheme: string | null;
