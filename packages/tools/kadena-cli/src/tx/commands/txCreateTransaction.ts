@@ -58,7 +58,7 @@ export const createTransaction = async (
       );
     } else if (outFilePath === '-') {
       // "-" means print to stdout, which is always done anyways. So just don't write a file.
-      return { success: true, data: { transaction, filePath: '-' } };
+      return { status: 'success', data: { transaction, filePath: '-' } };
     } else {
       filePath = outFilePath;
     }
@@ -81,10 +81,10 @@ export const createTransaction = async (
       JSON.stringify(transaction, null, 2),
     );
 
-    return { success: true, data: { transaction, filePath } };
+    return { status: 'success', data: { transaction, filePath } };
   } catch (error) {
     return {
-      success: false,
+      status: 'error',
       errors: ['Failed to create transaction from template', error.message],
     };
   }

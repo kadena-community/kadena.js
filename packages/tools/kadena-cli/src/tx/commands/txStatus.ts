@@ -29,7 +29,7 @@ export const getTxStatus = async (config: {
     );
 
     return {
-      success: true,
+      status: 'success',
       data: result[config.requestKey],
     };
   } catch (error) {
@@ -38,7 +38,7 @@ export const getTxStatus = async (config: {
         ? `Transaction request for ${config.requestKey} is timed out. Please check your "chainID" input and try again.`
         : `Transaction request for ${config.requestKey} is failed with : ${error.message}`;
     return {
-      success: false,
+      status: 'error',
       errors: [errorMessage],
     };
   }

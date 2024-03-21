@@ -27,26 +27,38 @@ export class CommandError extends Error {
 }
 
 interface ICommandError {
-  success: false;
+  status: 'error';
   errors: string[];
   warnings?: string[];
 }
+
 interface ICommandSuccess<T> {
-  success: true;
+  status: 'success';
   warnings?: string[];
   data: T;
 }
-export type CommandResult<T> = ICommandSuccess<T> | ICommandError;
+
+interface ICommandPartialSuccess<T> {
+  status: 'partial';
+  warnings?: string[];
+  errors: string[];
+  data: T;
+}
+
+export type CommandResult<T> =
+  | ICommandSuccess<T>
+  | ICommandError
+  | ICommandPartialSuccess<T>;
 
 /**
- * Prints warnings and errors of a command and asserts the output type
- * Throws a CommandError if the command was not successful
+ * Prints warnings and errors of a command and asserts the output type.
+ * Throws a CommandError if the command was not successful.
  */
 export function assertCommandError(
   result: CommandResult<unknown>,
   ora?: Ora,
-): asserts result is Extract<CommandResult<unknown>, { success: true }> {
-  if (result.success === false) {
+): asserts result is Extract<CommandResult<unknown>, { status: 'success' }> {
+  if (result.status === 'error') {
     if (ora) ora.fail('Failed');
 
     throw new CommandError({
@@ -54,9 +66,19 @@ export function assertCommandError(
       warnings: result.warnings,
       exitCode: 1,
     });
+  } else if (result.status === 'partial') {
+    if (result.errors.length) {
+      log.error(`Partial Success with Errors:\n${result.errors.join('\n')}\n`);
+    }
+    if (result.warnings && result.warnings.length) {
+      log.warning(
+        `Partial Success with Warnings:\n${result.warnings.join('\n')}\n`,
+      );
+    }
+    if (ora) ora.warn('Partially Completed');
   } else {
     if (result.warnings && result.warnings.length) {
-      log.warning(`${result.warnings.join('\n')}\n`);
+      log.warning(`Success with Warnings:\n${result.warnings.join('\n')}\n`);
     }
     if (ora) ora.succeed('Completed');
   }

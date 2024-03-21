@@ -35,7 +35,7 @@ export const importWallet = async ({
 
   if (existing !== null && existing.legacy === legacy) {
     return {
-      success: false,
+      status: 'error',
       errors: [`Wallet "${walletName}" already exists.`],
     };
   }
@@ -57,10 +57,10 @@ export const importWallet = async ({
   const wallet = await getWallet(path.basename(walletPath));
 
   if (!wallet) {
-    return { success: false, errors: [`Failed to create wallet`] };
+    return { status: 'error', errors: [`Failed to create wallet`] };
   }
 
-  return { success: true, data: { wallet } };
+  return { status: 'success', data: { wallet } };
 };
 
 export const createImportWalletCommand: (

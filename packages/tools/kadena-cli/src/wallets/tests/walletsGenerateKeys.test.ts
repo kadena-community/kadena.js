@@ -15,7 +15,7 @@ describe('generate hd keys command', () => {
       password: walletPassword,
       walletName,
     });
-    assert(wallet.success);
+    assert(wallet.status === 'success');
 
     const keys = await generateHdKeys({
       keyAlias: keyName,
@@ -24,7 +24,7 @@ describe('generate hd keys command', () => {
       password: walletPassword,
       walletName: wallet.data.wallet.wallet,
     });
-    assert(keys.success);
+    assert(keys.status === 'success');
 
     expect(keys.data.legacy).toBe(false);
     expect(keys.data.startIndex).toBe(1);
@@ -45,7 +45,7 @@ describe('generate hd keys command', () => {
       password: walletPassword,
       walletName: walletName,
     });
-    assert(wallet.success);
+    assert(wallet.status === 'success');
 
     const keys = await generateHdKeys({
       keyAlias: keyName,
@@ -54,7 +54,7 @@ describe('generate hd keys command', () => {
       password: walletPassword,
       walletName: wallet.data.wallet.wallet,
     });
-    assert(keys.success);
+    assert(keys.status === 'success');
 
     expect(keys.data.legacy).toBe(false);
     expect(keys.data.startIndex).toBe(1);

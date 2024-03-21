@@ -10,7 +10,7 @@ describe('create wallet', () => {
   it('Should create a encrypted seed and store it', async () => {
     const result = await generateWallet('test', '12345678', false);
 
-    assert(result.success);
+    assert(result.status === 'success');
 
     const filePath = path.join(root, '.kadena/wallets/test/test.wallet');
     expect(result.data.mnemonic.split(' ')).toHaveLength(12);

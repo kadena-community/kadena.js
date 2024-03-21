@@ -10,7 +10,7 @@ describe('decrypt command', () => {
 
     const output = await decrypt(password, message as EncryptedString);
 
-    assert(output.success);
+    assert(output.status === 'success');
 
     expect(output.data.value).toEqual(
       '786aeb505f3dd734d2acd25846816dc0d5f975474a391f4190400c4f4ccb57aab50fd5612de8edaf35c3a01b0a9c564c2e216cfb512591639c5e901d55f2363f',
