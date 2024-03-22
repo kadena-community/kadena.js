@@ -1,6 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
+import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
 const generateTransactionFilter = (args: {
@@ -27,14 +28,8 @@ builder.queryField('transactions', (t) =>
   t.prismaConnection({
     description: 'Retrieve transactions. Default page size is 20.',
     type: Prisma.ModelName.Transaction,
-    edgesNullable: false,
-    complexity: (args) => ({
-      field: getDefaultConnectionComplexity({
-        first: args.first,
-        last: args.last,
-      }),
-    }),
     cursor: 'blockHash_requestKey',
+    edgesNullable: false,
     args: {
       accountName: t.arg.string({ required: false }),
       fungibleName: t.arg.string({ required: false }),
@@ -42,17 +37,34 @@ builder.queryField('transactions', (t) =>
       blockHash: t.arg.string({ required: false }),
       requestKey: t.arg.string({ required: false }),
     },
+    complexity: (args) => ({
+      field: getDefaultConnectionComplexity({
+        first: args.first,
+        last: args.last,
+      }),
+    }),
     async totalCount(parent, args, context) {
-      return prismaClient.transaction.count({
-        where: generateTransactionFilter(args),
-      });
+      try {
+        return prismaClient.transaction.count({
+          where: generateTransactionFilter(args),
+        });
+      } catch (error) {
+        throw normalizeError(error);
+      }
     },
 
     async resolve(query, parent, args, context) {
-      return prismaClient.transaction.findMany({
-        ...query,
-        where: generateTransactionFilter(args),
-      });
+      try {
+        return prismaClient.transaction.findMany({
+          ...query,
+          where: generateTransactionFilter(args),
+          orderBy: {
+            height: 'desc',
+          },
+        });
+      } catch (error) {
+        throw normalizeError(error);
+      }
     },
   }),
 );

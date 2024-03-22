@@ -1,6 +1,9 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
-import { COMPLEXITY } from '@services/complexity';
+import {
+  COMPLEXITY,
+  getDefaultConnectionComplexity,
+} from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
@@ -59,6 +62,13 @@ export default builder.node(
         type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
+        complexity: (args) => ({
+          field: getDefaultConnectionComplexity({
+            withRelations: true,
+            first: args.first,
+            last: args.last,
+          }),
+        }),
         async totalCount(parent) {
           try {
             return await prismaClient.transaction.count({

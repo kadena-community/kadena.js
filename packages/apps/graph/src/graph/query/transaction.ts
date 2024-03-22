@@ -15,28 +15,29 @@ builder.queryField('transaction', (t) =>
     },
     type: Prisma.ModelName.Transaction,
     complexity: getDefaultConnectionComplexity(),
-    async resolve(query, parent, args) {
+    async resolve(query, __parent, args) {
       try {
-        const prismaTransactions = await prismaClient.transaction.findMany({
+        const result = await prismaClient.transaction.findMany({
+          ...query,
           where: {
             requestKey: args.requestKey,
             ...(args.blockHash && { blockHash: args.blockHash }),
           },
         });
 
-        if (!prismaTransactions) return null;
+        if (!result) return null;
 
-        if (prismaTransactions.length === 0) {
+        if (result.length === 0) {
           return null;
         }
 
-        if (prismaTransactions.length > 1) {
+        if (result.length > 1) {
           throw new Error(
             `Multiple transactions found for requestKey: ${args.requestKey}`,
           );
         }
 
-        return prismaTransactions[0];
+        return result[0];
       } catch (error) {
         throw normalizeError(error);
       }
