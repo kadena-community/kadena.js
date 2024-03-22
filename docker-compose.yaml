@@ -1,0 +1,12 @@
+version: '3'
+services:
+  devnet:
+    image: kadena/devnet:experimental-smart-mining.graph
+    ports:
+      - 8080:8080 # HTTP
+      - 5432:5432 # Postgres
+    environment:
+      - MINING_BATCH_PERIOD=0.05
+      - MINING_CONFIRMATION_PERIOD=1
+    volumes:
+      - ./packages/apps/graph/cwd-extra-migrations:/cwd-extra-migrations:ro
