@@ -69,8 +69,8 @@ export default builder.node(
       }),
       balance: t.exposeFloat('balance'),
       transactions: t.prismaConnection({
-        type: Prisma.ModelName.Transaction,
         description: 'Default page size is 20.',
+        type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
         complexity: (args) => ({
@@ -81,17 +81,21 @@ export default builder.node(
           }),
         }),
         async totalCount(parent) {
-          return await prismaClient.transaction.count({
-            where: {
-              senderAccount: parent.accountName,
-              events: {
-                some: {
-                  moduleName: parent.fungibleName,
+          try {
+            return await prismaClient.transaction.count({
+              where: {
+                senderAccount: parent.accountName,
+                events: {
+                  some: {
+                    moduleName: parent.fungibleName,
+                  },
                 },
+                chainId: parseInt(parent.chainId),
               },
-              chainId: parseInt(parent.chainId),
-            },
-          });
+            });
+          } catch (error) {
+            throw normalizeError(error);
+          }
         },
 
         async resolve(query, parent) {
@@ -105,6 +109,9 @@ export default builder.node(
                 },
               },
               chainId: parseInt(parent.chainId),
+            },
+            orderBy: {
+              height: 'desc',
             },
           });
         },

@@ -55,13 +55,13 @@ export default builder.node(
         },
       }),
       transactions: t.prismaConnection({
-        type: Prisma.ModelName.Transaction,
-        edgesNullable: false,
         description: 'Default page size is 20.',
+        type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
+        edgesNullable: false,
         async totalCount(parent) {
           try {
-            return prismaClient.transaction.count({
+            return await prismaClient.transaction.count({
               where: {
                 senderAccount: parent.accountName,
                 events: {
@@ -88,6 +88,9 @@ export default builder.node(
                   },
                 },
                 chainId: parseInt(parent.chainId),
+              },
+              orderBy: {
+                height: 'desc',
               },
             });
           } catch (error) {

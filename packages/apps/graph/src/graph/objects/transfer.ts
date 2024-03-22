@@ -150,13 +150,13 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
     }),
 
     transaction: t.prismaField({
+      description: 'The transaction that initiated this transfer.',
       type: Prisma.ModelName.Transaction,
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
         transaction: true,
       },
-
       async resolve(__query, parent) {
         try {
           return parent.transaction;

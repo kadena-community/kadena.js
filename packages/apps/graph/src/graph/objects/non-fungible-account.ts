@@ -1,6 +1,9 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
-import { COMPLEXITY } from '@services/complexity';
+import {
+  COMPLEXITY,
+  getDefaultConnectionComplexity,
+} from '@services/complexity';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
@@ -80,13 +83,20 @@ export default builder.node(
         },
       }),
       transactions: t.prismaConnection({
-        type: Prisma.ModelName.Transaction,
-        edgesNullable: false,
         description: 'Default page size is 20.',
+        type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
+        edgesNullable: false,
+        complexity: (args) => ({
+          field: getDefaultConnectionComplexity({
+            withRelations: true,
+            first: args.first,
+            last: args.last,
+          }),
+        }),
         async totalCount(parent) {
           try {
-            return prismaClient.transaction.count({
+            return await prismaClient.transaction.count({
               where: {
                 senderAccount: parent.accountName,
                 events: {
@@ -111,6 +121,9 @@ export default builder.node(
                     moduleName: 'marmalade-v2.ledger',
                   },
                 },
+              },
+              orderBy: {
+                height: 'desc',
               },
             });
           } catch (error) {

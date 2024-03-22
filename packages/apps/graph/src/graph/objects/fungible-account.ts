@@ -102,8 +102,10 @@ export default builder.node(
         },
       }),
       transactions: t.prismaConnection({
-        type: Prisma.ModelName.Transaction,
         description: 'Default page size is 20.',
+        type: Prisma.ModelName.Transaction,
+        cursor: 'blockHash_requestKey',
+        edgesNullable: false,
         complexity: (args) => ({
           field: getDefaultConnectionComplexity({
             withRelations: true,
@@ -111,33 +113,42 @@ export default builder.node(
             last: args.last,
           }),
         }),
-        cursor: 'blockHash_requestKey',
-        edgesNullable: false,
         async totalCount(parent) {
-          return await prismaClient.transaction.count({
-            where: {
-              senderAccount: parent.accountName,
-              events: {
-                some: {
-                  moduleName: parent.fungibleName,
+          try {
+            return await prismaClient.transaction.count({
+              where: {
+                senderAccount: parent.accountName,
+                events: {
+                  some: {
+                    moduleName: parent.fungibleName,
+                  },
                 },
               },
-            },
-          });
+            });
+          } catch (error) {
+            throw normalizeError(error);
+          }
         },
 
         async resolve(query, parent) {
-          return await prismaClient.transaction.findMany({
-            ...query,
-            where: {
-              senderAccount: parent.accountName,
-              events: {
-                some: {
-                  moduleName: parent.fungibleName,
+          try {
+            return await prismaClient.transaction.findMany({
+              ...query,
+              where: {
+                senderAccount: parent.accountName,
+                events: {
+                  some: {
+                    moduleName: parent.fungibleName,
+                  },
                 },
               },
-            },
-          });
+              orderBy: {
+                height: 'desc',
+              },
+            });
+          } catch (error) {
+            throw normalizeError(error);
+          }
         },
       }),
 

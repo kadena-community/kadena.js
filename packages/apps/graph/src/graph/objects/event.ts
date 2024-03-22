@@ -45,7 +45,7 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
     //relations
     transaction: t.prismaField({
       type: Prisma.ModelName.Transaction,
-      nullable: false,
+      nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
         transaction: true,
