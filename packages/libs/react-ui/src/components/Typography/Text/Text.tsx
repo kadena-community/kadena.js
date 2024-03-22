@@ -1,31 +1,11 @@
-import cn from 'classnames';
+import classNames from 'classnames';
 import type { HTMLAttributes, ReactNode } from 'react';
 import React from 'react';
 
-import {
-  bodyBaseBold,
-  bodyBaseRegular,
-  bodySmallBold,
-  bodySmallRegular,
-  bodySmallestBold,
-  bodySmallestRegular,
-  monospaceBaseBold,
-  monospaceBaseRegular,
-  monospaceSmallBold,
-  monospaceSmallRegular,
-  monospaceSmallestBold,
-  monospaceSmallestRegular,
-  uiBaseBold,
-  uiBaseRegular,
-  uiSmallBold,
-  uiSmallRegular,
-  uiSmallestBold,
-  uiSmallestRegular,
-} from '../../../styles';
 import { colorVariants, transformVariants } from '../typography.css';
+import { fontMap } from './constants';
 
-export interface ITextProps
-  extends HTMLAttributes<HTMLSpanElement | HTMLParagraphElement> {
+export interface ITextProps {
   as?: 'p' | 'span' | 'code';
   children: string | ReactNode;
   className?: string;
@@ -37,30 +17,6 @@ export interface ITextProps
   ariaLabel?: HTMLAttributes<HTMLSpanElement>['aria-label'];
   id?: HTMLAttributes<HTMLSpanElement>['id'];
 }
-
-const fontMap = {
-  code: {
-    smallest: {
-      regular: monospaceSmallestRegular,
-      bold: monospaceSmallestBold,
-    },
-    small: { regular: monospaceSmallRegular, bold: monospaceSmallBold },
-    base: {
-      regular: monospaceBaseRegular,
-      bold: monospaceBaseBold,
-    },
-  },
-  ui: {
-    smallest: { regular: uiSmallestRegular, bold: uiSmallestBold },
-    small: { regular: uiSmallRegular, bold: uiSmallBold },
-    base: { regular: uiBaseRegular, bold: uiBaseBold },
-  },
-  body: {
-    smallest: { regular: bodySmallestRegular, bold: bodySmallestBold },
-    small: { regular: bodySmallRegular, bold: bodySmallBold },
-    base: { regular: bodyBaseRegular, bold: bodyBaseBold },
-  },
-};
 
 /**
  * Text component
@@ -86,7 +42,7 @@ export const Text = ({
   bold,
   id,
 }: ITextProps) => {
-  const classList = cn(
+  const classList = classNames(
     fontMap[variant][size][bold ? 'bold' : 'regular'],
     colorVariants[color],
     transformVariants[transform],

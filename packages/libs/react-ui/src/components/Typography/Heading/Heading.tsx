@@ -1,15 +1,9 @@
 import classNames from 'classnames';
 import type { ReactNode } from 'react';
 import React from 'react';
-import {
-  typographyFontH1,
-  typographyFontH2,
-  typographyFontH3,
-  typographyFontH4,
-  typographyFontH5,
-  typographyFontH6,
-} from '../../../styles';
+
 import { colorVariants, transformVariants } from '../typography.css';
+import { fontMap } from './contants';
 
 type HeadingElementType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
@@ -21,16 +15,6 @@ export interface IHeadingProps {
   transform?: keyof typeof transformVariants;
   variant?: HeadingElementType;
 }
-
-const fontMap = {
-  h1: typographyFontH1,
-  h2: typographyFontH2,
-  h3: typographyFontH3,
-  h4: typographyFontH4,
-  h5: typographyFontH5,
-  h6: typographyFontH6,
-};
-
 /**
  * Heading component
  * @param as - HTML element to render defaults to "h1"
@@ -45,7 +29,7 @@ export const Heading = ({
   as = 'h2',
   children,
   className,
-  color = 'default',
+  color = 'emphasize',
   transform = 'none',
   variant = as,
 }: IHeadingProps) => {
