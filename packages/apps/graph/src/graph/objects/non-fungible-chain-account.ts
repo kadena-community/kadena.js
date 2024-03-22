@@ -56,6 +56,7 @@ export default builder.node(
       }),
       transactions: t.prismaConnection({
         type: Prisma.ModelName.Transaction,
+        edgesNullable: false,
         description: 'Default page size is 20.',
         cursor: 'blockHash_requestKey',
         async totalCount(parent) {

@@ -1,4 +1,11 @@
-import type { TransactionConnection } from '@/__generated__/sdk';
+import type {
+  BlockTransactionsConnection,
+  FungibleAccountTransactionsConnection,
+  FungibleChainAccountTransactionsConnection,
+  NonFungibleAccountTransactionsConnection,
+  NonFungibleChainAccountTransactionsConnection,
+  QueryTransactionsConnection,
+} from '@/__generated__/sdk';
 import routes from '@constants/routes';
 import {
   Box,
@@ -20,7 +27,13 @@ interface ICompactTransactionsTableProps {
   viewAllHref?: string;
   description?: string;
   truncateColumns?: boolean;
-  transactions: TransactionConnection;
+  transactions:
+    | FungibleAccountTransactionsConnection
+    | FungibleChainAccountTransactionsConnection
+    | BlockTransactionsConnection
+    | QueryTransactionsConnection
+    | NonFungibleAccountTransactionsConnection
+    | NonFungibleChainAccountTransactionsConnection;
 }
 
 export const CompactTransactionsTable = (
@@ -56,7 +69,7 @@ export const CompactTransactionsTable = (
           {transactions.edges.slice(0, 10).map((edge, index) => {
             return (
               <Row key={index}>
-                <Cell>{edge.node.hash}</Cell>
+                <Cell>{edge?.node.hash}</Cell>
                 <Cell>
                   {new Date(edge.node.cmd.meta.creationTime).toLocaleString()}
                 </Cell>

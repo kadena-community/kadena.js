@@ -1,8 +1,9 @@
 import type {
+  FungibleAccountTransactionsConnection,
   FungibleAccountTransfersConnection,
   FungibleChainAccount,
+  NonFungibleAccountTransactionsConnection,
   Token,
-  TransactionConnection,
 } from '@/__generated__/sdk';
 import {
   useGetFungibleAccountQuery,
@@ -233,7 +234,7 @@ const Account: React.FC = () => {
                     }/${router.query.account as string}`}
                     transactions={
                       fungibleAccountData.fungibleAccount
-                        .transactions as TransactionConnection
+                        .transactions as FungibleAccountTransactionsConnection
                     }
                   />
                 </TabItem>
@@ -313,7 +314,7 @@ const Account: React.FC = () => {
                     }`}
                     transactions={
                       nonFungibleAccountData.nonFungibleAccount
-                        .transactions as TransactionConnection
+                        .transactions as NonFungibleAccountTransactionsConnection
                     }
                   />
                 </TabItem>

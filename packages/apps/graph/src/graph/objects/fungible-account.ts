@@ -112,7 +112,7 @@ export default builder.node(
           }),
         }),
         cursor: 'blockHash_requestKey',
-
+        edgesNullable: false,
         async totalCount(parent) {
           return await prismaClient.transaction.count({
             where: {

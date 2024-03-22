@@ -41,7 +41,7 @@ type BlockEventsConnectionEdge {
 }
 
 type BlockTransactionsConnection {
-  edges: [BlockTransactionsConnectionEdge]!
+  edges: [BlockTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
@@ -113,7 +113,7 @@ type Event implements Node {
   """
   qualifiedName: String!
   requestKey: String!
-  transactions: Transaction!
+  transaction: Transaction!
 }
 
 """The payload of an exec transaction."""
@@ -145,7 +145,7 @@ type FungibleAccount implements Node {
 }
 
 type FungibleAccountTransactionsConnection {
-  edges: [FungibleAccountTransactionsConnectionEdge]!
+  edges: [FungibleAccountTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
@@ -183,7 +183,7 @@ type FungibleChainAccount implements Node {
 }
 
 type FungibleChainAccountTransactionsConnection {
-  edges: [FungibleChainAccountTransactionsConnectionEdge]!
+  edges: [FungibleChainAccountTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
@@ -254,7 +254,7 @@ type NonFungibleAccount implements Node {
 }
 
 type NonFungibleAccountTransactionsConnection {
-  edges: [NonFungibleAccountTransactionsConnectionEdge]!
+  edges: [NonFungibleAccountTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
@@ -276,7 +276,7 @@ type NonFungibleChainAccount implements Node {
 }
 
 type NonFungibleChainAccountTransactionsConnection {
-  edges: [NonFungibleChainAccountTransactionsConnectionEdge]!
+  edges: [NonFungibleChainAccountTransactionsConnectionEdge!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }

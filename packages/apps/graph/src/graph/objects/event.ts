@@ -43,7 +43,7 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
     requestKey: t.exposeString('requestKey'),
 
     //relations
-    transactions: t.prismaField({
+    transaction: t.prismaField({
       type: Prisma.ModelName.Transaction,
       nullable: false,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,

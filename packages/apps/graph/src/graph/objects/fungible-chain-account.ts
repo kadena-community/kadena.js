@@ -72,6 +72,7 @@ export default builder.node(
         type: Prisma.ModelName.Transaction,
         description: 'Default page size is 20.',
         cursor: 'blockHash_requestKey',
+        edgesNullable: false,
         complexity: (args) => ({
           field: getDefaultConnectionComplexity({
             withRelations: true,

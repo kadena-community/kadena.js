@@ -1,4 +1,4 @@
-import type { Event, TransactionConnection } from '@/__generated__/sdk';
+import type { BlockTransactionsConnection, Event } from '@/__generated__/sdk';
 import { useGetBlockFromHashQuery } from '@/__generated__/sdk';
 import { centerBlockClass } from '@/components/common/center-block/styles.css';
 import { EventsTable } from '@/components/events-table/events-table';
@@ -228,7 +228,9 @@ const Block: React.FC = () => {
             {data.block.transactions.totalCount > 0 && (
               <CompactTransactionsTable
                 viewAllHref={viewAllTransactionsPage}
-                transactions={data.block.transactions as TransactionConnection}
+                transactions={
+                  data.block.transactions as BlockTransactionsConnection
+                }
                 description="All transactions present in this block"
               />
             )}
