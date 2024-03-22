@@ -20,11 +20,12 @@ import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import type { ChainId, ITransactionDescriptor } from '@kadena/client';
 
-import { explorerLinkStyle } from '@/pages/faucet/styles.css';
 import {
   buttonContainerClass,
   infoNotificationColor,
   linkStyle,
+  notificationLinkErrorStyle,
+  notificationLinkStyle,
 } from '@/pages/transactions/transfer/styles.css';
 import { getExplorerLink } from '@/utils/getExplorerLink';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
@@ -252,19 +253,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
                 {t('cross-chain-transfer-initiated')}
               </div>
               <Stack>
-                <span>
-                  <Trans
-                    i18nKey="common:link-to-finisher"
-                    components={[
-                      <Link
-                        className={explorerLinkStyle}
-                        href={linkToFinisher}
-                        target={'_blank'}
-                        key={requestKey}
-                      />,
-                    ]}
-                  />
-                </span>
+                <span>{t('cross-chain-warning')}</span>
 
                 <Button
                   color="primary"
@@ -286,8 +275,42 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         statusBodies={{
           successful: t('The coins have been funded to the given account.'),
         }}
-        body={requestStatus.message}
-      />
+      >
+        <Stack flexDirection={'column'} marginBlockStart={'md'}>
+          {requestStatus.message}
+
+          {!onSameChain && requestStatus.status === 'erroneous' ? (
+            <Stack gap={'sm'} alignItems={'center'}>
+              <Trans
+                i18nKey="common:link-to-finisher"
+                components={[
+                  <Link
+                    className={notificationLinkStyle}
+                    href={linkToFinisher}
+                    target={'_self'}
+                    key={linkToFinisher}
+                  />,
+                ]}
+              />
+
+              <Button
+                color="primary"
+                icon={
+                  <SystemIcon.ContentCopy
+                    className={notificationLinkErrorStyle}
+                  />
+                }
+                onPress={async () => {
+                  await navigator.clipboard.writeText(completeLinkToFinisher);
+                }}
+                title={t('copy link to finisher')}
+                aria-label={t('copy link to finisher')}
+                variant="text"
+              />
+            </Stack>
+          ) : null}
+        </Stack>
+      </FormStatusNotification>
 
       <div className={buttonContainerClass}>
         <Button
