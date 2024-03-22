@@ -72,9 +72,11 @@ export async function fund({
     errors.push(error.message);
   }
 
+  const nonEmptyData = accountFundsResult.filter(notEmpty);
+  status = nonEmptyData.length === 0 ? 'error' : status;
   return {
     status,
-    data: accountFundsResult.filter(notEmpty),
+    data: nonEmptyData,
     errors,
     warnings,
   };

@@ -1,6 +1,5 @@
 // import { describeModule } from '@kadena/client-utils/built-in';
 // import { Option } from 'commander';
-import { createClient } from '@kadena/client';
 import ora from 'ora';
 // import { z } from 'zod';
 // import { FAUCET_MODULE_NAME } from '../../constants/devnets.js';
@@ -12,14 +11,15 @@ import { createCommand } from '../../utils/createCommand.js';
 // import { createOption } from '../../utils/createOption.js';
 import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
-import {
-  ensureAccountAliasFilesExists,
-  getTransactionExplorerUrl,
-} from '../utils/accountHelpers.js';
+import { ensureAccountAliasFilesExists } from '../utils/accountHelpers.js';
 import { fund } from '../utils/fund.js';
+import {
+  getTxDetails,
+  logAccountFundingTxResults,
+  logTransactionExplorerUrls,
+} from '../utils/fundHelpers.js';
 
 // const deployDevnet = createOption({
 //   key: 'deployDevnet',
@@ -132,62 +132,32 @@ export const createAccountFundCommand = createCommand(
     // }
 
     const result = await fund(config);
-    if (result.success && result.data.length > 0) {
-      result.data.forEach(({ chainId, requestKey }) => {
-        const explorerUrl = getTransactionExplorerUrl(
-          networkConfig.networkExplorerUrl,
-          requestKey,
-        );
-        log.info(
-          log.color.green(
-            `Transaction explorer URL for Chain ID "${chainId}" is : ${explorerUrl}`,
-          ),
-        );
-      });
-
-      const loader = ora('Funding account...\n').start();
-      const txErrors: string[] = [];
-      const txResults = await Promise.all(
-        result.data.map(async (transaction) => {
-          const { requestKey, chainId } = transaction;
-          try {
-            const { pollStatus } = createClient(
-              `${networkConfig.networkHost}/chainweb/0.0/${networkConfig.networkId}/chain/${chainId}/pact`,
-            );
-            const response = await pollStatus(transaction);
-            const transactionResult = response[requestKey];
-            if (
-              typeof transactionResult !== 'string' &&
-              transactionResult.result.status === 'failure'
-            ) {
-              throw transactionResult.result.error;
-            }
-            return { [chainId]: transactionResult };
-          } catch (e) {
-            txErrors.push(
-              `ChainID: "${chainId}" - requestKey: ${requestKey} - ${e.message}`,
-            );
-          }
-        }),
-      );
-      loader.stop();
-      txResults.filter(notEmpty).forEach((txResult) => {
-        const chainId = Object.keys(txResult)[0];
-        log.info(
-          log.color.green(
-            `"${accountConfig.name}" account funded with "${amount}" on Chain ID "${chainId}" ${accountConfig.fungible} in ${networkConfig.networkId} network.\nUse "account details" command to check the balance.`,
-          ),
-        );
-      });
-
-      if (txErrors.length > 0) {
-        log.error('Failed to fund account on following:');
-        txErrors.forEach((error) => {
-          log.error(error);
-        });
-      }
-    }
-
+    const isSuccessOrParitalSuccess =
+      result.status === 'success' || result.status === 'partial';
     assertCommandError(result);
+    logTransactionExplorerUrls(result, networkConfig.networkExplorerUrl);
+    if (isSuccessOrParitalSuccess && result.data.length > 0) {
+      const loader = ora('Funding account...\n').start();
+      const { txResults, txErrors } = await getTxDetails(
+        result.data,
+        networkConfig.networkHost,
+        networkConfig.networkId,
+      );
+
+      if (txErrors.length === 0) {
+        loader.succeed('Funding account successful.');
+      } else {
+        loader.fail('Failed to fund account.');
+      }
+
+      logAccountFundingTxResults(
+        txResults,
+        txErrors,
+        accountConfig.name,
+        accountConfig.fungible,
+        amount,
+        networkConfig.networkId,
+      );
+    }
   },
 );
