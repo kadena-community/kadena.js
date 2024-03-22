@@ -20,9 +20,6 @@ const meta: Meta<typeof Heading> = {
     variant: {
       control: { type: 'select' },
     },
-    color: {
-      control: { type: 'radio' },
-    },
     transform: {
       control: { type: 'radio' },
     },
