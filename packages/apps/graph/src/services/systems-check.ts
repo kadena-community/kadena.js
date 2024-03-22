@@ -82,7 +82,7 @@ export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
             },
             {
               title: 'Checking if the mempool is reachable.',
-              task: async () => {
+              async task() {
                 try {
                   await mempoolGetPending();
                 } catch (error) {
