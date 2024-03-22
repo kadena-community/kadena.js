@@ -10,7 +10,6 @@ import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { accountDetailsLoader } from '../data-loaders/account-details';
-import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 import type {
   FungibleAccount,
   FungibleChainAccount,
@@ -19,7 +18,6 @@ import {
   FungibleAccountName,
   FungibleChainAccountName,
 } from '../types/graphql-types';
-import TransactionConnection from './transaction-connection';
 
 export default builder.node(
   builder.objectRef<FungibleAccount>(FungibleAccountName),
@@ -103,15 +101,9 @@ export default builder.node(
           }
         },
       }),
-      transactions: t.field({
-        type: TransactionConnection,
+      transactions: t.prismaConnection({
+        type: Prisma.ModelName.Transaction,
         description: 'Default page size is 20.',
-        args: {
-          first: t.arg.int({ required: false }),
-          last: t.arg.int({ required: false }),
-          before: t.arg.string({ required: false }),
-          after: t.arg.string({ required: false }),
-        },
         complexity: (args) => ({
           field: getDefaultConnectionComplexity({
             withRelations: true,
@@ -119,25 +111,33 @@ export default builder.node(
             last: args.last,
           }),
         }),
-        async resolve(parent, args, context) {
-          try {
-            const whereCondition: Prisma.TransactionWhereInput = {
+        cursor: 'blockHash_requestKey',
+
+        async totalCount(parent) {
+          return await prismaClient.transaction.count({
+            where: {
               senderAccount: parent.accountName,
               events: {
                 some: {
                   moduleName: parent.fungibleName,
                 },
               },
-            };
+            },
+          });
+        },
 
-            return await resolveTransactionConnection(
-              args,
-              context,
-              whereCondition,
-            );
-          } catch (error) {
-            throw normalizeError(error);
-          }
+        async resolve(query, parent) {
+          return await prismaClient.transaction.findMany({
+            ...query,
+            where: {
+              senderAccount: parent.accountName,
+              events: {
+                some: {
+                  moduleName: parent.fungibleName,
+                },
+              },
+            },
+          });
         },
       }),
 

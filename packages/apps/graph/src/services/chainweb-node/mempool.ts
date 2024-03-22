@@ -1,3 +1,4 @@
+import type { Signer } from '@prisma/client';
 import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 
@@ -57,4 +58,43 @@ export async function mempoolLookup(hash: string, chainId?: string) {
       if (data[0].contents) return data;
     }
   }
+}
+
+export async function getTransactionStatus(
+  hash: string,
+  chainId?: string,
+): Promise<string | undefined> {
+  const mempoolData = await mempoolLookup(hash, chainId);
+
+  if (mempoolData && mempoolData[0].tag === 'Pending') {
+    return 'Pending';
+  }
+
+  return undefined;
+}
+
+export async function getMempoolSigners(
+  hash: string,
+  chainId?: string,
+): Promise<Signer[]> {
+  const mempoolData = await mempoolLookup(hash, chainId);
+
+  if (mempoolData && mempoolData[0].tag === 'Pending') {
+    const mempoolTx = JSON.parse(mempoolData[0].contents);
+    mempoolTx.cmd = JSON.parse(mempoolTx.cmd);
+
+    mempoolTx.cmd.signers = mempoolTx.cmd.signers.map((signer: any) => ({
+      publicKey: signer.pubKey,
+      scheme: signer.scheme,
+      requestKey: mempoolTx.hash,
+      capabilities: JSON.parse(JSON.stringify(signer.clist)),
+      orderIndex: null,
+      address: null,
+      signature: null,
+    }));
+
+    return mempoolTx.cmd.signers;
+  }
+
+  return [];
 }

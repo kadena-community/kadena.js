@@ -30,13 +30,9 @@ import type {
   NonFungibleChainAccount,
   Token,
   TokenInfo,
-  Transaction,
   TransactionCommand,
-  TransactionConnection,
-  TransactionEdge,
   TransactionInfo,
   TransactionMeta,
-  TransactionPageInfo,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -88,14 +84,10 @@ export const builder = new SchemaBuilder<
       TransactionMeta: TransactionMeta;
       ExecutionPayload: ExecutionPayload;
       ContinuationPayload: ContinuationPayload;
-      Transaction: Transaction;
       MempoolInfo: MempoolInfo;
       TransactionInfo: TransactionInfo;
       TransactionCommand: TransactionCommand;
       CapabilitiesList: CapabilitiesList;
-      TransactionConnection: TransactionConnection;
-      TransactionEdge: TransactionEdge;
-      TransactionPageInfo: TransactionPageInfo;
     };
   }
 >({

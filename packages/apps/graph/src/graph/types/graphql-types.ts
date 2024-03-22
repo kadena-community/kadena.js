@@ -1,4 +1,4 @@
-import type { Block, Event, Signer, Transfer } from '@prisma/client';
+import type { Signer, Transaction, Transfer } from '@prisma/client';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Guard {
@@ -128,15 +128,6 @@ export interface MempoolInfo {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface Transaction {
-  hash: string;
-  result: TransactionInfo | MempoolInfo;
-  cmd: TransactionCommand;
-  block: Block | null;
-  events: Event[];
-  transfers: Transfer[];
-}
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export interface TransactionInfo {
   badResult: string | null;
   blockHash: string | null;
@@ -163,25 +154,4 @@ export interface TransactionCommand {
 export interface CapabilitiesList {
   name: string;
   args: string;
-}
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface TransactionEdge {
-  node: Transaction;
-  cursor: string;
-}
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface TransactionPageInfo {
-  startCursor?: string | null;
-  endCursor?: string | null;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-}
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface TransactionConnection {
-  edges: TransactionEdge[];
-  pageInfo: TransactionPageInfo;
-  totalCount: number;
 }

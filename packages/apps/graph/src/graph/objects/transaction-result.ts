@@ -1,3 +1,4 @@
+import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { builder } from '../builder';
 
 const MempoolInfo = builder.objectType('MempoolInfo', {
@@ -27,7 +28,7 @@ const TransactionInfo = builder.objectType('TransactionInfo', {
         'The JSON stringified continuation in the case that it is a continuation.',
       nullable: true,
     }),
-    gas: t.expose('gas', { type: 'BigInt' }),
+    gas: t.expose('gas', { type: 'BigInt', nullable: true }),
     goodResult: t.exposeString('goodResult', {
       description:
         'The transaction result when it was successful. Formatted as raw JSON.',
@@ -36,6 +37,7 @@ const TransactionInfo = builder.objectType('TransactionInfo', {
     height: t.expose('height', {
       description: 'The height of the block this transaction belongs to.',
       type: 'BigInt',
+      nullable: true,
     }),
     logs: t.exposeString('logs', {
       description:
@@ -55,7 +57,7 @@ export default builder.unionType('TransactionResult', {
   description: 'The result of a transaction.',
   types: [TransactionInfo, MempoolInfo],
   resolveType(result) {
-    if ('status' in result) {
+    if ('status' in result && !nullishOrEmpty(result.status)) {
       return 'MempoolInfo';
     } else {
       return 'TransactionInfo';

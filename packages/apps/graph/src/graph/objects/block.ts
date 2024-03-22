@@ -1,4 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
+import type { Block } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import {
   COMPLEXITY,
@@ -6,11 +7,9 @@ import {
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 import type { Guard } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
 import FungibleChainAccount from './fungible-chain-account';
-import TransactionConnection from './transaction-connection';
 
 export default builder.prismaNode(Prisma.ModelName.Block, {
   description:
@@ -88,15 +87,10 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
     }),
 
     // relations
-    transactions: t.field({
-      type: TransactionConnection,
+    transactions: t.prismaConnection({
+      type: Prisma.ModelName.Transaction,
       description: 'Default page size is 20.',
-      args: {
-        first: t.arg.int({ required: false }),
-        last: t.arg.int({ required: false }),
-        before: t.arg.string({ required: false }),
-        after: t.arg.string({ required: false }),
-      },
+      cursor: 'blockHash_requestKey',
       complexity: (args) => ({
         field: getDefaultConnectionComplexity({
           first: args.first,
@@ -106,12 +100,25 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
       select: {
         hash: true,
       },
-      resolve(parent, args, context) {
+      async totalCount(parent) {
         try {
-          const whereCondition: Prisma.TransactionWhereInput = {
-            blockHash: parent.hash,
-          };
-          return resolveTransactionConnection(args, context, whereCondition);
+          return await prismaClient.transaction.count({
+            where: {
+              blockHash: (parent as Block).hash,
+            },
+          });
+        } catch (error) {
+          throw normalizeError(error);
+        }
+      },
+      async resolve(query, parent) {
+        try {
+          return await prismaClient.transaction.findMany({
+            ...query,
+            where: {
+              blockHash: (parent as Block).hash,
+            },
+          });
         } catch (error) {
           throw normalizeError(error);
         }

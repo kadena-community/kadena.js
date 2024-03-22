@@ -1,12 +1,11 @@
 import { prismaClient } from '@db/prisma-client';
+import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import { prismaTransactionMapper } from '../mappers/transaction-mapper';
-import Transaction from '../objects/transaction';
 
 builder.queryField('transaction', (t) =>
-  t.field({
+  t.prismaField({
     description:
       'Retrieve one transaction by its unique key. Throws an error if multiple transactions are found.',
     nullable: true,
@@ -14,9 +13,9 @@ builder.queryField('transaction', (t) =>
       blockHash: t.arg.string({ required: false }),
       requestKey: t.arg.string({ required: true }),
     },
-    type: Transaction,
+    type: Prisma.ModelName.Transaction,
     complexity: getDefaultConnectionComplexity(),
-    async resolve(__parent, args, context) {
+    async resolve(query, parent, args) {
       try {
         const prismaTransactions = await prismaClient.transaction.findMany({
           where: {
@@ -37,7 +36,7 @@ builder.queryField('transaction', (t) =>
           );
         }
 
-        return prismaTransactionMapper(prismaTransactions[0], context);
+        return prismaTransactions[0];
       } catch (error) {
         throw normalizeError(error);
       }

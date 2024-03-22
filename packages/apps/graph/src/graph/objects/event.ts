@@ -3,8 +3,6 @@ import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { builder } from '../builder';
-import { prismaTransactionMapper } from '../mappers/transaction-mapper';
-import Transaction from '../objects/transaction';
 
 export default builder.prismaNode(Prisma.ModelName.Event, {
   description:
@@ -45,19 +43,16 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
     requestKey: t.exposeString('requestKey'),
 
     //relations
-    transaction: t.field({
-      type: Transaction,
-      nullable: true,
+    transactions: t.prismaField({
+      type: Prisma.ModelName.Transaction,
+      nullable: false,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
         transaction: true,
       },
-      async resolve(parent, __args, context) {
+      async resolve(__query, parent) {
         try {
-          if (parent.transaction) {
-            return prismaTransactionMapper(parent.transaction, context);
-          }
-          return null;
+          return parent.transaction;
         } catch (error) {
           throw normalizeError(error);
         }

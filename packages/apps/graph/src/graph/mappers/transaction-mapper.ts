@@ -1,98 +1,6 @@
-import { prismaClient } from '@db/prisma-client';
-import type { Signer, Transaction } from '@prisma/client';
-import type { IContext } from '../builder';
-import type { Transaction as GQLTransaction } from '../types/graphql-types';
+import type { Transaction } from '@prisma/client';
 
-export async function prismaTransactionsMapper(
-  prismaTransactions: Transaction[],
-  context: IContext,
-): Promise<GQLTransaction[]> {
-  const requestKeys = [...new Set(prismaTransactions.map((t) => t.requestKey))];
-
-  const prismaSigners = await prismaClient.signer.findMany({
-    where: { requestKey: { in: requestKeys } },
-  });
-
-  return Promise.all(
-    prismaTransactions.map((prismaTransaction) => {
-      const transactionSigners = prismaSigners.filter(
-        (s) => s.requestKey === prismaTransaction.requestKey,
-      );
-      return prismaTransactionMapper(
-        prismaTransaction,
-        context,
-        transactionSigners,
-      );
-    }),
-  );
-}
-
-export async function prismaTransactionMapper(
-  prismaTransaction: Transaction,
-  context: IContext,
-  prismaSigners?: Signer[],
-): Promise<GQLTransaction> {
-  if (!prismaSigners) {
-    prismaSigners = await prismaClient.signer.findMany({
-      where: { requestKey: prismaTransaction.requestKey },
-    });
-  }
-
-  return {
-    hash: prismaTransaction.requestKey,
-    cmd: {
-      meta: {
-        chainId: prismaTransaction.chainId,
-        gasLimit: prismaTransaction.gasLimit,
-        creationTime: prismaTransaction.creationTime,
-        gasPrice: prismaTransaction.gasPrice,
-        sender: prismaTransaction.senderAccount,
-        ttl: prismaTransaction.ttl,
-      },
-      networkId: context.networkId,
-      nonce: prismaTransaction.nonce,
-      payload: {
-        code: JSON.stringify(prismaTransaction.code),
-        data: prismaTransaction.data
-          ? JSON.stringify(prismaTransaction.data)
-          : '',
-        pactId: prismaTransaction.pactId,
-        step: Number(prismaTransaction.step),
-        rollback: prismaTransaction.rollback,
-        proof: prismaTransaction.proof,
-      },
-      signers: prismaSigners,
-    },
-    result: {
-      badResult: prismaTransaction.badResult
-        ? JSON.stringify(prismaTransaction.badResult)
-        : null,
-      blockHash: prismaTransaction.blockHash,
-      continuation: prismaTransaction.continuation
-        ? JSON.stringify(prismaTransaction.continuation)
-        : null,
-      gas: prismaTransaction.gas,
-      goodResult: prismaTransaction.goodResult
-        ? JSON.stringify(prismaTransaction.goodResult)
-        : null,
-      height: prismaTransaction.height,
-      logs: prismaTransaction.logs,
-      metadata: prismaTransaction.metadata
-        ? JSON.stringify(prismaTransaction.metadata)
-        : null,
-      eventCount: prismaTransaction.eventCount,
-      transactionId: prismaTransaction.transactionId,
-    },
-    block: null,
-    events: [],
-    transfers: [],
-  };
-}
-
-export function mempooTransactionMapper(mempoolData: any): GQLTransaction {
-  const mempoolInfo = {
-    status: mempoolData.tag,
-  };
+export function mempooTransactionMapper1(mempoolData: any): Transaction {
   const mempoolTx = JSON.parse(mempoolData.contents);
 
   mempoolTx.cmd = JSON.parse(mempoolTx.cmd);
@@ -118,12 +26,35 @@ export function mempooTransactionMapper(mempoolData: any): GQLTransaction {
   // Convert creationTime to milliseconds (mempool has it in epoch format in seconds)
   mempoolTx.cmd.meta.creationTime = mempoolTx.cmd.meta.creationTime * 1000;
 
-  return {
-    hash: mempoolTx.hash,
-    cmd: mempoolTx.cmd,
-    result: mempoolInfo,
-    block: null,
-    events: [],
-    transfers: [],
+  console.log('aqui', mempoolTx);
+
+  const transaction = {
+    requestKey: mempoolTx.hash,
+    badResult: null,
+    continuation: null,
+    gas: BigInt(0),
+    goodResult: null,
+    height: BigInt(0),
+    logs: null,
+    metadata: null,
+    eventCount: null,
+    transactionId: null,
+    blockHash: '',
+    chainId: mempoolTx.cmd.meta.chainId,
+    code: mempoolTx.cmd.payload.code,
+    creationTime: new Date(mempoolTx.cmd.meta.creationTime * 1000),
+    data: mempoolTx.cmd.payload.data,
+    gasLimit: BigInt(mempoolTx.cmd.meta.gasLimit),
+    gasPrice: mempoolTx.cmd.meta.gasPrice,
+    nonce: mempoolTx.cmd.nonce,
+    pactId: mempoolTx.cmd.payload.pactId,
+    rollback: mempoolTx.cmd.payload.rollback,
+    proof: mempoolTx.cmd.payload.proof,
+    senderAccount: mempoolTx.cmd.meta.sender,
+    step: BigInt(mempoolTx.cmd.payload.step),
+    ttl: BigInt(mempoolTx.cmd.meta.ttl),
   };
+  console.log(transaction);
+
+  return transaction;
 }

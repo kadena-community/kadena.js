@@ -1,149 +1,133 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import {
-  COMPLEXITY,
-  getDefaultConnectionComplexity,
-} from '@services/complexity';
+  getMempoolSigners,
+  getTransactionStatus,
+} from '@services/chainweb-node/mempool';
+import { getDefaultConnectionComplexity } from '@services/complexity';
+import { normalizeError } from '@utils/errors';
+import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { builder } from '../builder';
-import { prismaTransactionMapper } from '../mappers/transaction-mapper';
-import Block from './block';
 import TransactionCommand from './transaction-command';
-import TransactionResult from './transaction-info';
+import TransactionResult from './transaction-result';
 
-export default builder.node('Transaction', {
+export default builder.prismaNode(Prisma.ModelName.Transaction, {
   description: 'A transaction.',
+  // We can assume this id field because we never return connections when
+  // querying transactions from the mempool
   id: {
-    resolve: (parent) => {
-      if ('blockHash' in parent.result) {
-        return JSON.stringify([parent.result.blockHash, parent.hash]);
-      } else {
-        return JSON.stringify([parent.result, parent.hash]);
-      }
-    },
-    parse: (id) => {
-      const [blockHash, requestKey] = JSON.parse(id);
-      return {
-        blockHash,
-        requestKey,
-      };
-    },
-  },
-
-  async loadOne({ blockHash, requestKey }, context) {
-    const prismaTransaction = await prismaClient.transaction.findUnique({
-      where: {
-        blockHash_requestKey: {
-          blockHash: blockHash,
-          requestKey: requestKey,
-        },
-      },
-    });
-
-    if (!prismaTransaction) return null;
-
-    return {
-      __typename: 'Transaction',
-      ...(await prismaTransactionMapper(prismaTransaction, context)),
-    };
+    field: 'blockHash_requestKey',
   },
   fields: (t) => ({
-    hash: t.exposeString('hash'),
+    hash: t.exposeString('requestKey'),
     cmd: t.field({
-      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       type: TransactionCommand,
-      resolve: (parent) => parent.cmd,
+
+      resolve: async (parent, __args, context) => {
+        try {
+          let signers = await prismaClient.signer.findMany({
+            where: {
+              requestKey: parent.requestKey,
+            },
+          });
+
+          // This is needed because if the transaction is in the mempool, the
+          // signers are not stored in the database. We make sure blockHash is
+          // nullish because if it is, the transaction is in the mempool
+          // If blockHash has a value, we do not check the mempool for signers
+          if (signers.length === 0 && nullishOrEmpty(parent.blockHash)) {
+            signers = await getMempoolSigners(
+              parent.requestKey,
+              parent.chainId.toString(),
+            );
+          }
+
+          return {
+            nonce: parent.nonce,
+            meta: {
+              chainId: parent.chainId,
+              gasLimit: parent.gasLimit,
+              gasPrice: parent.gasPrice,
+              ttl: parent.ttl,
+              creationTime: parent.creationTime,
+              sender: parent.senderAccount,
+            },
+            payload: {
+              code: JSON.stringify(parent.code),
+              data: parent.data ? JSON.stringify(parent.data) : '',
+              pactId: parent.pactId,
+              step: Number(parent.step),
+              rollback: parent.rollback,
+              proof: parent.proof,
+            },
+            signers,
+            networkId: context.networkId,
+          };
+        } catch (error) {
+          throw normalizeError(error);
+        }
+      },
     }),
     result: t.field({
       type: TransactionResult,
-      resolve: (parent) => parent.result,
-    }),
-    block: t.field({
-      type: Block,
-      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
-      nullable: true,
-      async resolve(parent) {
-        if ('blockHash' in parent.result && parent.result.blockHash) {
-          return await prismaClient.block.findUnique({
-            where: {
-              hash: parent.result.blockHash,
-            },
-          });
-        }
-        return null;
+      resolve: async (parent, args, context) => {
+        return {
+          badResult: parent.badResult ? JSON.stringify(parent.badResult) : null,
+          continuation: parent.continuation
+            ? JSON.stringify(parent.continuation)
+            : null,
+          gas: parent.gas,
+          goodResult: parent.goodResult
+            ? JSON.stringify(parent.goodResult)
+            : null,
+          height: parent.height,
+          logs: parent.logs,
+          metadata: parent.metadata ? JSON.stringify(parent.metadata) : null,
+          eventCount: parent.eventCount,
+          transactionId: parent.transactionId,
+          blockHash: parent.blockHash,
+          status: await getTransactionStatus(
+            parent.requestKey,
+            parent.chainId.toString(),
+          ),
+        };
       },
     }),
+    block: t.prismaField({
+      type: Prisma.ModelName.Block,
+      select: {
+        block: true,
+      },
+      resolve(__query, parent) {
+        return parent.block;
+      },
+    }),
+
     events: t.prismaConnection({
-      description: 'Default page size is 20.',
       type: Prisma.ModelName.Event,
-      edgesNullable: false,
-      complexity: (args) => ({
-        field: getDefaultConnectionComplexity({
-          first: args.first,
-          last: args.last,
-        }),
-      }),
       cursor: 'blockHash_orderIndex_requestKey',
-      async totalCount(parent) {
-        if ('blockHash' in parent.result && parent.result.blockHash) {
-          return await prismaClient.event.count({
-            where: {
-              blockHash: parent.result.blockHash,
-              requestKey: parent.hash,
-            },
-          });
-        } else {
-          return 0;
-        }
-      },
-      async resolve(query, parent) {
-        if ('blockHash' in parent.result && parent.result.blockHash) {
-          return await prismaClient.event.findMany({
-            ...query,
-            where: {
-              blockHash: parent.result.blockHash,
-              requestKey: parent.hash,
-            },
-          });
-        } else {
-          return [];
-        }
-      },
-    }),
-    transfers: t.prismaConnection({
-      description: 'Default page size is 20.',
-      type: Prisma.ModelName.Transfer,
-      edgesNullable: false,
       complexity: (args) => ({
         field: getDefaultConnectionComplexity({
+          withRelations: true,
           first: args.first,
           last: args.last,
         }),
       }),
-      cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
       async totalCount(parent) {
-        if ('blockHash' in parent.result && parent.result.blockHash) {
-          return await prismaClient.transfer.count({
-            where: {
-              blockHash: parent.result.blockHash,
-              requestKey: parent.hash,
-            },
-          });
-        } else {
-          return 0;
-        }
+        return await prismaClient.event.count({
+          where: {
+            blockHash: parent.blockHash,
+            requestKey: parent.requestKey,
+          },
+        });
       },
-      resolve(query, parent) {
-        if ('blockHash' in parent.result && parent.result.blockHash) {
-          return prismaClient.transfer.findMany({
-            ...query,
-            where: {
-              blockHash: parent.result.blockHash,
-              requestKey: parent.hash,
-            },
-          });
-        } else {
-          return [];
-        }
+      async resolve(__query, parent) {
+        return await prismaClient.event.findMany({
+          where: {
+            blockHash: parent.blockHash,
+            requestKey: parent.requestKey,
+          },
+        });
       },
     }),
   }),

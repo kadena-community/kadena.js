@@ -1,9 +1,7 @@
-import type { Prisma } from '@prisma/client';
+import { prismaClient } from '@db/prisma-client';
+import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
-import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import TransactionConnection from '../objects/transaction-connection';
-import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 
 const generateTransactionFilter = (args: {
   accountName?: string | null | undefined;
@@ -25,33 +23,36 @@ const generateTransactionFilter = (args: {
   ...(args.requestKey && { requestKey: args.requestKey }),
 });
 
-builder.queryField('transactions', (t) =>
-  t.field({
+builder.queryField('transactions1', (t) =>
+  t.prismaConnection({
     description: 'Retrieve transactions. Default page size is 20.',
-    nullable: false,
-    type: TransactionConnection,
+    type: Prisma.ModelName.Transaction,
+    edgesNullable: false,
+    complexity: (args) => ({
+      field: getDefaultConnectionComplexity({
+        first: args.first,
+        last: args.last,
+      }),
+    }),
+    cursor: 'blockHash_requestKey',
     args: {
       accountName: t.arg.string({ required: false }),
       fungibleName: t.arg.string({ required: false }),
       chainId: t.arg.string({ required: false }),
       blockHash: t.arg.string({ required: false }),
       requestKey: t.arg.string({ required: false }),
-      first: t.arg.int({ required: false }),
-      last: t.arg.int({ required: false }),
-      before: t.arg.string({ required: false }),
-      after: t.arg.string({ required: false }),
     },
-    complexity: getDefaultConnectionComplexity(),
-    async resolve(__parent, args, context) {
-      try {
-        return await resolveTransactionConnection(
-          args,
-          context,
-          generateTransactionFilter(args),
-        );
-      } catch (error) {
-        throw normalizeError(error);
-      }
+    async totalCount(parent, args, context) {
+      return prismaClient.transaction.count({
+        where: generateTransactionFilter(args),
+      });
+    },
+
+    async resolve(query, parent, args, context) {
+      return prismaClient.transaction.findMany({
+        ...query,
+        where: generateTransactionFilter(args),
+      });
     },
   }),
 );

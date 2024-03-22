@@ -1,13 +1,10 @@
 import { prismaClient } from '@db/prisma-client';
+import type { Transaction } from '@prisma/client';
 import { mempoolLookup } from '@services/chainweb-node/mempool';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
-import {
-  mempooTransactionMapper,
-  prismaTransactionMapper,
-} from '../mappers/transaction-mapper';
-import GQLTransactions from '../objects/transaction';
-import type { Transaction } from '../types/graphql-types';
+import { mempooTransactionMapper1 } from '../mappers/transaction-mapper';
+import GQLTransaction from '../objects/transaction';
 
 builder.subscriptionField('transaction', (t) =>
   t.field({
@@ -16,7 +13,7 @@ builder.subscriptionField('transaction', (t) =>
       requestKey: t.arg.string({ required: true }),
       chainId: t.arg.string({ required: false }),
     },
-    type: GQLTransactions,
+    type: GQLTransaction,
     nullable: true,
     subscribe: (__root, args, context) =>
       iteratorFn(
@@ -42,7 +39,7 @@ async function* iteratorFn(
     });
 
     if (transaction) {
-      yield prismaTransactionMapper(transaction, context);
+      yield transaction;
       return;
     } else {
       const mempoolResponse = await checkMempoolForTransaction(
@@ -72,7 +69,7 @@ async function checkMempoolForTransaction(
     const transactionData = mempoolData[0];
 
     if (transactionData.tag === 'Pending') {
-      return mempooTransactionMapper(transactionData);
+      return mempooTransactionMapper1(transactionData);
     }
 
     return null;

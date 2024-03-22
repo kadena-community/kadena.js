@@ -5,8 +5,6 @@ import { Decimal } from '@prisma/client/runtime/library';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import { prismaTransactionMapper } from '../mappers/transaction-mapper';
-import Transaction from './transaction';
 
 export default builder.prismaNode(Prisma.ModelName.Transfer, {
   description: 'A transfer of funds from a fungible between two accounts.',
@@ -151,17 +149,17 @@ export default builder.prismaNode(Prisma.ModelName.Transfer, {
       },
     }),
 
-    transaction: t.field({
-      type: Transaction,
+    transaction: t.prismaField({
+      type: Prisma.ModelName.Transaction,
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
         transaction: true,
       },
 
-      async resolve(parent, __args, context) {
+      async resolve(__query, parent) {
         try {
-          return prismaTransactionMapper(parent.transaction, context);
+          return parent.transaction;
         } catch (error) {
           throw normalizeError(error);
         }
