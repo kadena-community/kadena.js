@@ -1,6 +1,7 @@
 import { deviceColors } from '@/styles/tokens.css';
 import { MonoClose, MonoInfo } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
+import { style } from '@vanilla-extract/css';
 import type { FC } from 'react';
 import { IconButton } from '../IconButton/IconButton';
 import { Heading } from '../Typography/Heading';
@@ -28,7 +29,9 @@ export const TagInfo: FC<IProps> = ({ handleClose }) => {
             </IconButton>
           </Stack>
         </Heading>
-        <Text style={{ opacity: '.8' }}>Tap on the photo to tag yourself</Text>
+        <Text className={style({ opacity: '.8' })}>
+          Tap on the photo to tag yourself
+        </Text>
       </div>
     </Stack>
   );
