@@ -24,6 +24,7 @@ test('Query: getAccount by AccountName', async ({ request }) => {
 
   await test.step('Should return an account after it has been created', async () => {
     await expect(async () => {
+      console.log('Starting assertion');
       const query = getAccountQuery(testAccount.account);
       queryResponse = await sendQuery(request, query);
       expect(queryResponse.fungibleAccount).toEqual({
@@ -66,7 +67,7 @@ test('Query: getAccount by AccountName', async ({ request }) => {
         },
       });
     }).toPass({
-      intervals: [100],
+      intervals: [2_000],
       timeout: 20_000,
     });
   });
