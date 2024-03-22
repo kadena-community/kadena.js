@@ -10,7 +10,7 @@ import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button } from '../Button/Button';
 import { ListSignees } from '../ListSignees/ListSignees';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
@@ -24,6 +24,7 @@ interface IProps {
 export const ConnectView: FC<IProps> = () => {
   const { signToken } = useSignToken();
   const { account } = useAccount();
+  const [signed, setSigned] = useState(false);
   const { proofOfUs, signees, addSignee, removeSignee, hasSigned } =
     useProofOfUs();
   const router = useRouter();
@@ -46,17 +47,28 @@ export const ConnectView: FC<IProps> = () => {
     router.replace('/user');
   };
 
-  useEffect(() => {
-    if (!proofOfUs) return;
+  const initSigned = useCallback(
+    async (proofOfUs?: IProofOfUsData) => {
+      if (!proofOfUs) return;
+      const innerSigned = await hasSigned();
+      setSigned(innerSigned);
+      if (proofOfUs.tokenId && proofOfUs.requestKey && innerSigned) {
+        console.log('weird');
+        return;
 
-    if (proofOfUs.tokenId && proofOfUs.requestKey && hasSigned()) {
-      router.replace(
-        `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
-          proofOfUs.requestKey
-        }`,
-      );
-    }
-  }, [proofOfUs?.tokenId, proofOfUs?.requestKey]);
+        router.replace(
+          `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
+            proofOfUs.requestKey
+          }`,
+        );
+      }
+    },
+    [setSigned],
+  );
+
+  useEffect(() => {
+    initSigned(proofOfUs);
+  }, [proofOfUs?.tokenId, proofOfUs?.requestKey, signees]);
 
   if (!proofOfUs) return null;
 
@@ -66,7 +78,7 @@ export const ConnectView: FC<IProps> = () => {
       <ImagePositions />
       <ListSignees />
       <Stack flex={1} />
-      {isAlreadySigning(proofOfUs) && !hasSigned() ? (
+      {isAlreadySigning(proofOfUs) && !signed ? (
         <Stack gap="md">
           <Button onPress={handleJoin}>
             Sign <MonoSignature />

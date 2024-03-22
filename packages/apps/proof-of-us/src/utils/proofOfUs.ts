@@ -2,13 +2,8 @@ import type { IUnsignedCommand } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { getClient } from './client';
-import { proofOfUsData } from './data';
 import { env } from './env';
 
-export const getAllProofOfUs = async (): Promise<IProofOfUsToken[]> => {
-  const data = proofOfUsData.filter((d) => d && d['token-id']);
-  return data as IProofOfUsToken[];
-};
 export const getProofOfUs = async (
   id: string,
 ): Promise<IProofOfUsToken | undefined> => {

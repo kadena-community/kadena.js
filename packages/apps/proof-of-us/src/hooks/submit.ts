@@ -1,5 +1,6 @@
 import { getClient } from '@/utils/client';
 import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
+import type { IUnsignedCommand } from '@kadena/client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useProofOfUs } from './proofOfUs';
@@ -13,9 +14,25 @@ export enum SubmitStatus {
   INCOMPLETE = 'incomplete',
 }
 
+const setSignatures = (tx: string, signees: IProofOfUsSignee[]): string => {
+  const innerTx = JSON.parse(Buffer.from(tx, 'base64').toString());
+  const { signers } = JSON.parse(innerTx.cmd);
+  const sigs = signers.reduce((acc: any, val: any) => {
+    const pubKey = val.pubKey;
+    const signee = signees.find((signee) => signee.publicKey === pubKey);
+    if (!signee) return acc;
+
+    acc.push({ sig: signee.signature });
+
+    return acc;
+  }, []);
+
+  return Buffer.from(JSON.stringify({ ...innerTx, sigs })).toString('base64');
+};
+
 export const useSubmit = () => {
   const searchParams = useSearchParams();
-  const { proofOfUs } = useProofOfUs();
+  const { proofOfUs, signees } = useProofOfUs();
   const transaction = searchParams.get('transaction');
   const [result, setResult] = useState<any>({});
   const [status, setStatus] = useState(SubmitStatus.IDLE);
@@ -43,12 +60,15 @@ export const useSubmit = () => {
   }, [transaction]);
 
   const doSubmit = async (txArg?: string, waitForMint: boolean = false) => {
+    console.log(11111111);
     const innerTransaction = transaction;
     if (!innerTransaction) return;
     setStatus(SubmitStatus.LOADING);
     const client = getClient();
 
-    const tx = JSON.parse(Buffer.from(innerTransaction, 'base64').toString());
+    const signedTransaction = setSignatures(innerTransaction, signees);
+
+    const tx = JSON.parse(Buffer.from(signedTransaction, 'base64').toString());
     try {
       const txRes = await client.submit(tx);
 

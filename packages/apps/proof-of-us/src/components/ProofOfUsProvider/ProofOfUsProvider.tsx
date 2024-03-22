@@ -4,6 +4,8 @@ import { useTokens } from '@/hooks/tokens';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { store } from '@/utils/socket/store';
+import type { IUnsignedCommand } from '@kadena/client';
+import { ICommandResult } from '@kadena/client';
 import { useParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
@@ -31,10 +33,11 @@ export interface IProofOfUsContext {
   createToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
   changeTitle: (value: string) => string;
   updateBackgroundColor: (value: string) => string;
-  isConnected: () => boolean;
-  isInitiator: () => boolean;
-  hasSigned: () => boolean;
+  isConnected: () => Promise<boolean>;
+  isInitiator: () => Promise<boolean>;
+  hasSigned: () => Promise<boolean>;
   updateProofOfUs: (value: any) => Promise<void>;
+  getSignature: (tx: IUnsignedCommand) => Promise<string | undefined>;
 }
 
 export const ProofOfUsContext = createContext<IProofOfUsContext>({
@@ -50,10 +53,11 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   createToken: async () => {},
   changeTitle: () => '',
   updateBackgroundColor: () => '',
-  isConnected: () => false,
-  isInitiator: () => false,
-  hasSigned: () => false,
+  isConnected: async () => false,
+  isInitiator: async () => false,
+  hasSigned: async () => false,
   updateProofOfUs: async () => {},
+  getSignature: async () => {},
 });
 
 export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -155,14 +159,42 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     console.log(222);
     if (!isOverwrite && isAlreadySigning(proofOfUs)) return;
 
-    console.log(3333);
-    const signee = signees.find((a) => a.accountName === account.accountName);
+    let innerSignees = signees;
+    if (!innerSignees.length) {
+      innerSignees = await store.getProofOfUsSignees(proofOfUs.proofOfUsId);
+    }
+    const signee = innerSignees.find(
+      (a) => a.accountName === account.accountName,
+    );
 
     console.log(4444, signee);
     if (!signee) return;
 
-    console.log('signeeeee', { signee, signees });
     await store.updateSignee(proofOfUs, { ...signee, ...value });
+  };
+
+  const getSignature = async (
+    tx: IUnsignedCommand,
+  ): Promise<string | undefined> => {
+    if (!proofOfUs || !account) return;
+    if (!account) return;
+
+    let innerSignees = signees;
+    if (!innerSignees.length) {
+      innerSignees = await store.getProofOfUsSignees(proofOfUs.proofOfUsId);
+    }
+
+    const idx = innerSignees.findIndex(
+      (a) => a.accountName === account.accountName,
+    );
+    if (idx < 0) return;
+
+    const signee = innerSignees[idx];
+
+    console.log(4444, signee);
+    if (!signee) return;
+
+    return tx.sigs[idx]?.sig;
   };
 
   const createToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
@@ -188,18 +220,38 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     await store.updateProofOfUs(proofOfUs, value);
   };
 
-  const hasSigned = (): boolean => {
-    const signee = signees.find((s) => s.accountName === account?.accountName);
+  const hasSigned = async (): Promise<boolean> => {
+    if (!proofOfUs) return false;
+    let innerSignees = signees;
+    if (!innerSignees.length) {
+      innerSignees = await store.getProofOfUsSignees(proofOfUs?.proofOfUsId);
+    }
 
-    return signee?.signerStatus === 'success';
+    console.log('hassigned', signees);
+    const signee = innerSignees.find(
+      (s) => s.accountName === account?.accountName,
+    );
+
+    return !!signee?.signature;
   };
 
-  const isConnected = () => {
-    return !!signees.find((s) => s.accountName === account?.accountName);
+  const isConnected = async () => {
+    if (!proofOfUs) return false;
+    let innerSignees = signees;
+    if (!innerSignees.length) {
+      innerSignees = await store.getProofOfUsSignees(proofOfUs?.proofOfUsId);
+    }
+    return !!innerSignees.find((s) => s.accountName === account?.accountName);
   };
 
-  const isInitiator = () => {
-    const foundAccount = signees.find(
+  const isInitiator = async () => {
+    if (!proofOfUs) return false;
+    let innerSignees = signees;
+    if (!innerSignees.length) {
+      innerSignees = await store.getProofOfUsSignees(proofOfUs?.proofOfUsId);
+    }
+
+    const foundAccount = innerSignees.find(
       (s) => s.accountName === account?.accountName,
     );
     return !!foundAccount?.initiator;
@@ -222,6 +274,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         updateBackgroundColor,
         updateProofOfUs,
         hasSigned,
+        getSignature,
       }}
     >
       {children}

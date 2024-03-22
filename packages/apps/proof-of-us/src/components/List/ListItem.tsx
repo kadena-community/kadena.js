@@ -57,11 +57,18 @@ export const ListItem: FC<IProps> = ({ token }) => {
 
   useEffect(() => {
     setIsMinted(false);
-    if (token?.listener) {
-      token.listener.then((res) => {
+
+    try {
+      if (token?.listener) {
+        token.listener
+          .then((res) => {
+            setIsMinted(true);
+          })
+          .catch(console.log);
+      } else {
         setIsMinted(true);
-      });
-    } else {
+      }
+    } catch (e) {
       setIsMinted(true);
     }
   }, [token, setIsMinted]);
@@ -106,35 +113,5 @@ export const ListItem: FC<IProps> = ({ token }) => {
     token?.eventId,
   ]);
 
-  return (
-    <motion.li
-      className={listItemClass}
-      initial={{ opacity: 0, left: '500px' }}
-      animate={{ opacity: 1, left: 0 }}
-      exit={{ opacity: 0, left: '500px' }}
-    >
-      {!innerData ? (
-        <IsLoading />
-      ) : (
-        <Link className={listItemLinkClass} href={link}>
-          {innerData.properties.eventType === 'attendance' && (
-            <AttendanceThumb token={innerData} isMinted={isMinted} />
-          )}
-
-          {innerData.properties.eventType === 'connect' && (
-            <ConnectThumb token={innerData} isMinted={isMinted} />
-          )}
-
-          <Stack display="flex" flexDirection="column" gap="xs">
-            <Text transform="capitalize" bold>
-              {innerData.name}
-            </Text>
-            <Text variant="small">
-              {new Date(innerData.properties.date).toDateString()}
-            </Text>
-          </Stack>
-        </Link>
-      )}
-    </motion.li>
-  );
+  return <>s</>;
 };

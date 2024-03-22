@@ -32,10 +32,11 @@ export const MintView: FC<IProps> = () => {
 
       console.log('update in mintview');
       await updateProofOfUs({
-        status: 3,
+        status: 4,
       });
 
       await doSubmit(proofOfUs.tx);
+      return;
       router.replace(
         `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
           proofOfUs.requestKey

@@ -16,6 +16,7 @@ export const useSignToken = () => {
     background,
     hasSigned,
     updateProofOfUs,
+    getSignature,
   } = useProofOfUs();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -61,13 +62,16 @@ export const useSignToken = () => {
   };
 
   const sign = async () => {
-    if (!transaction || hasSigned() || !proofOfUs) return;
+    const signed = await hasSigned();
+    if (!transaction || signed || !proofOfUs) return;
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
 
     console.log({ tx });
 
     console.log('signing success');
-    await updateSignee({ signerStatus: 'success' }, true);
+    const signature = await getSignature(tx);
+    console.log({ signature });
+    await updateSignee({ signerStatus: 'success', signature }, true);
 
     console.log('update in signtoken sign');
     await updateProofOfUs({
@@ -78,6 +82,7 @@ export const useSignToken = () => {
     setIsLoading(false);
     setHasError(false);
 
+    return;
     router.replace(
       `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
         tx.hash

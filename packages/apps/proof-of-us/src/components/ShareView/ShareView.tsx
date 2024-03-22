@@ -56,12 +56,18 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   //check that the account is also really the initiator.
   //other accounts have no business here and are probably looking for the scan view
-  useEffect(() => {
-    if (!isInitiator()) {
+
+  const checkInitiator = async () => {
+    const initiator = await isInitiator();
+    if (!initiator) {
       router.replace(`/scan/${proofOfUs?.proofOfUsId}`);
       return;
     }
     setIsMounted(true);
+  };
+
+  useEffect(() => {
+    checkInitiator();
   }, [proofOfUs, account]);
 
   useEffect(() => {
@@ -140,9 +146,11 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                 />
               </div>
               <Stack gap="md">
-                <Button onPress={handleStartSigning}>
-                  Start signing <MonoSignature />
-                </Button>
+                {signees.length > 1 && (
+                  <Button onPress={handleStartSigning}>
+                    Start signing <MonoSignature />
+                  </Button>
+                )}
               </Stack>
               <ListSignees />
             </>
