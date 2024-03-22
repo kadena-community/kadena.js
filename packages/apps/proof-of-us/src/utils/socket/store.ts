@@ -179,6 +179,7 @@ const ProofOfUsStore = () => {
     signees: IProofOfUsSignee[],
     account: IProofOfUsSignee,
   ) => {
+    console.log('addsigner??', signees);
     if (signees.find((s) => s.accountName === account.accountName)) return;
 
     const signee: IProofOfUsSignee = {

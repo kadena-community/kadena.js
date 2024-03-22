@@ -156,12 +156,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     if (!isOverwrite && isAlreadySigning(proofOfUs)) return;
 
     console.log(3333);
-    const signee = signees.find((a) => {
-      if (a.accountName === account.accountName) {
-        return { ...a, ...value };
-      }
-      return a;
-    });
+    const signee = signees.find((a) => a.accountName === account.accountName);
 
     console.log(4444, signee);
     if (!signee) return;
