@@ -143,5 +143,40 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
         }
       },
     }),
+    transfers: t.prismaConnection({
+      type: Prisma.ModelName.Transfer,
+      cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
+      complexity: (args) => ({
+        field: getDefaultConnectionComplexity({
+          withRelations: true,
+          first: args.first,
+          last: args.last,
+        }),
+      }),
+      async totalCount(parent) {
+        if (!parent.blockHash) return 0;
+        else {
+          return await prismaClient.transfer.count({
+            where: {
+              blockHash: parent.blockHash,
+              requestKey: parent.requestKey,
+              chainId: parent.chainId,
+            },
+          });
+        }
+      },
+      async resolve(__query, parent) {
+        if (!parent.blockHash) return [];
+        else {
+          return await prismaClient.transfer.findMany({
+            where: {
+              blockHash: parent.blockHash,
+              requestKey: parent.requestKey,
+              chainId: parent.chainId,
+            },
+          });
+        }
+      },
+    }),
   }),
 });

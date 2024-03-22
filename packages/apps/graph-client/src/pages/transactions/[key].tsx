@@ -262,14 +262,26 @@ const RequestKey: React.FC = () => {
                           <Cell>
                             <strong>Name</strong>
                           </Cell>
-                          <Cell>{event.node.qualifiedName}</Cell>
+                          <Cell>
+                            {event?.node ? (
+                              event.node.qualifiedName
+                            ) : (
+                              <span style={{ color: 'lightgray' }}>N/A</span>
+                            )}
+                          </Cell>
                         </Row>
                         <Row>
                           <Cell>
                             <strong>Parameters</strong>
                           </Cell>
                           <Cell>
-                            <pre>{formatCode(event.node.parameterText)}</pre>
+                            <pre>
+                              {event?.node ? (
+                                formatCode(event.node.parameterText)
+                              ) : (
+                                <span style={{ color: 'lightgray' }}>N/A</span>
+                              )}
+                            </pre>
                           </Cell>
                         </Row>
                       </TableBody>
