@@ -83,4 +83,13 @@ export const networkOptions = {
       'Delete the configuration for network (yes/no)',
     ),
   }),
+  networkDefaultConfirmation: createOption({
+    key: 'networkDefaultConfirmation' as const,
+    prompt: networks.networkDefaultConfirmationPrompt,
+    validation: z.boolean(),
+    option: new Option(
+      '-c, --network-default-confirmation <networkDefaultConfirmation>',
+      'Confirm selected network as default',
+    ),
+  }),
 };

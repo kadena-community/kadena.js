@@ -25,7 +25,7 @@ import {
 import { readKeyFileContent } from '../keys/utils/storage.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { createOption } from './createOption.js';
-import { passwordPromptTransform } from './helpers.js';
+import { getDefaultNetworkName, passwordPromptTransform } from './helpers.js';
 import { log } from './logger.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
@@ -69,13 +69,13 @@ export const globalOptions = {
   network: createOption({
     key: 'network' as const,
     prompt: networks.networkSelectPrompt,
+    defaultValue: await getDefaultNetworkName(),
     validation: z.string(),
     option: new Option(
       '-n, --network <network>',
       'Kadena network (e.g. "mainnet")',
     ),
     expand: async (network: string) => {
-      // await ensureNetworksConfiguration();
       try {
         return await loadNetworkConfig(network);
       } catch (e) {
@@ -91,6 +91,7 @@ export const globalOptions = {
     key: 'network' as const,
     prompt: networks.networkSelectOnlyPrompt,
     defaultIsOptional: false,
+    defaultValue: await getDefaultNetworkName(),
     validation: z.string(),
     option: new Option(
       '-n, --network <network>',

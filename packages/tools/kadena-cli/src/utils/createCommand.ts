@@ -41,7 +41,12 @@ export async function executeOption<Option extends OptionType>(
     if (args.quiet !== true && args.quiet !== 'true') {
       prompted = true;
       value = await (option.prompt as PromptFn)(args, originalArgs);
-    } else if (option.isOptional === false) {
+    } else if (args.quiet === true || args.quiet === 'true') {
+      value = option.defaultValue;
+    } else if (
+      option.isOptional === false &&
+      option.defaultValue === undefined
+    ) {
       // Should have been handled earlier, but just in case
       throw new Error(
         `Missing required argument: ${option.key} (${option.option.flags})`,
@@ -276,7 +281,10 @@ export function handleQuietOption(
 ): void {
   if (args.quiet === true) {
     const missing = options.filter(
-      (option) => option.isOptional === false && args[option.key] === undefined,
+      (option) =>
+        option.isOptional === false &&
+        args[option.key] === undefined &&
+        option.defaultValue === undefined,
     );
     if (missing.length) {
       log.error(

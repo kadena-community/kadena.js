@@ -33,6 +33,9 @@ export const TX_TEMPLATE_FOLDER = `${KADENA_DIR}/transaction-templates`;
 // account path
 export const ACCOUNT_DIR: string = `${KADENA_DIR}/accounts`;
 
+// Default settings path
+export const DEFAULT_SETTINGS_PATH = `${KADENA_DIR}/defaults`;
+
 // key extensions
 export const WALLET_EXT = '.wallet';
 export const WALLET_LEGACY_EXT = '.legacy.wallet';
