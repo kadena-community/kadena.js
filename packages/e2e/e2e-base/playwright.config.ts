@@ -6,7 +6,6 @@ import { join } from 'path';
  */
 export const baseConfig: PlaywrightTestConfig = {
   testDir: join(__dirname, 'src/tests'),
-  fullyParallel: true,
   forbidOnly: process.env.CI !== undefined,
   retries: process.env.CI !== undefined ? 1 : 0,
   workers: 1,
