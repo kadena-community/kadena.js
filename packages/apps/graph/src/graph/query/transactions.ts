@@ -23,7 +23,7 @@ const generateTransactionFilter = (args: {
   ...(args.requestKey && { requestKey: args.requestKey }),
 });
 
-builder.queryField('transactions1', (t) =>
+builder.queryField('transactions', (t) =>
   t.prismaConnection({
     description: 'Retrieve transactions. Default page size is 20.',
     type: Prisma.ModelName.Transaction,

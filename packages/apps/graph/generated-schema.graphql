@@ -391,7 +391,7 @@ type Query {
   transaction(blockHash: String, requestKey: String!): Transaction
 
   """Retrieve transactions. Default page size is 20."""
-  transactions1(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactions1Connection!
+  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactionsConnection!
 
   """Retrieve all transactions by a given public key."""
   transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
@@ -441,23 +441,23 @@ type QueryEventsConnectionEdge {
   node: Event!
 }
 
-type QueryTransactions1Connection {
-  edges: [QueryTransactions1ConnectionEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type QueryTransactions1ConnectionEdge {
-  cursor: String!
-  node: Transaction!
-}
-
 type QueryTransactionsByPublicKeyConnection {
   edges: [QueryTransactionsByPublicKeyConnectionEdge]!
   pageInfo: PageInfo!
 }
 
 type QueryTransactionsByPublicKeyConnectionEdge {
+  cursor: String!
+  node: Transaction!
+}
+
+type QueryTransactionsConnection {
+  edges: [QueryTransactionsConnectionEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type QueryTransactionsConnectionEdge {
   cursor: String!
   node: Transaction!
 }
