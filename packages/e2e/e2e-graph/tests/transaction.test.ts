@@ -40,7 +40,7 @@ test.describe('Query: getTransactions', async () => {
         expect(initialResponse.transactions.edges).toHaveLength(0);
         expect(initialResponse.transactions.totalCount).toEqual(0);
       }).toPass({
-        intervals: [2_000],
+        intervals: [1_000],
         timeout: 10_000,
       });
     });
@@ -132,7 +132,7 @@ test.describe('Query: getTransactions', async () => {
           ],
         });
       }).toPass({
-        intervals: [2_000],
+        intervals: [1_000],
         timeout: 10_000,
       });
     });
@@ -163,7 +163,7 @@ test.describe('Query: getTransactions', async () => {
         expect(initialResponse.transactions.edges).toHaveLength(0);
         expect(initialResponse.transactions.totalCount).toEqual(0);
       }).toPass({
-        intervals: [2_000],
+        intervals: [1_000],
         timeout: 10_000,
       });
     });
@@ -385,7 +385,7 @@ test.describe('Query: getTransactions', async () => {
           ],
         });
       }).toPass({
-        intervals: [2_000],
+        intervals: [1_000],
         timeout: 10_000,
       });
     });
