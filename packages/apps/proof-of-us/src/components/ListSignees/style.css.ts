@@ -2,15 +2,22 @@ import { atoms, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const wrapperClass = style([
-  atoms({}),
-  {
+  atoms({
     display: 'flex',
     width: '100%',
+    padding: 'no',
+  }),
+  {
+    listStyle: 'none',
   },
 ]);
 
 export const signeeClass = style([
   atoms({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 'md',
     padding: 'md',
   }),
   {

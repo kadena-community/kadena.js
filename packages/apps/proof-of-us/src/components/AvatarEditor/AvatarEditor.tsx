@@ -33,7 +33,7 @@ export const AvatarEditor: FC<IProps> = ({ next, status }) => {
 
   useEffect(() => {
     // if someone is already signing the pou, you are not allowed to change the photo anymore
-    if (isAlreadySigning(proofOfUs?.signees)) {
+    if (isAlreadySigning(proofOfUs)) {
       next();
     }
   }, []);
@@ -100,7 +100,7 @@ export const AvatarEditor: FC<IProps> = ({ next, status }) => {
   }, [pathname, status]);
 
   const handleCapture = async (evt: MouseEvent<HTMLButtonElement>) => {
-    if (isAlreadySigning(proofOfUs?.signees)) return;
+    if (isAlreadySigning(proofOfUs)) return;
     evt.preventDefault();
 
     if (!videoRef.current) return;
@@ -159,7 +159,7 @@ export const AvatarEditor: FC<IProps> = ({ next, status }) => {
           muted
           playsInline
         ></video>
-        {!isAlreadySigning(proofOfUs?.signees) && (
+        {!isAlreadySigning(proofOfUs) && (
           <button
             className={cameraButton}
             id="capture"

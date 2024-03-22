@@ -1,7 +1,7 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { createManifest } from '@/utils/createManifest';
 import { env } from '@/utils/env';
-import { getReturnUrl } from '@/utils/getReturnUrl';
+import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
 import { haveAllSigned } from '@/utils/isAlreadySigning';
 import { createConnectTokenTransaction, getTokenId } from '@/utils/proofOfUs';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
@@ -56,7 +56,8 @@ export const useSignToken = () => {
   };
 
   const sign = async () => {
-    if (!transaction || hasSigned()) return;
+    if (!transaction || hasSigned() || !proofOfUs) return;
+    const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
 
     const signees = updateSigner({ signerStatus: 'success' }, true);
     console.log('update in signtoken sign');
@@ -68,15 +69,18 @@ export const useSignToken = () => {
 
     setIsLoading(false);
     setHasError(false);
-    //router.replace(`${getReturnHostUrl()}/user/proof-of-us/${proofOfUs.tokenId}/${txRes.requestKey}`);
 
-    console.log(transaction, proofOfUs);
-    //router.replace(getReturnUrl());
+    router.replace(
+      `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
+        tx.hash
+      }`,
+    );
   };
 
   useEffect(() => {
+    if (!proofOfUs) return;
     sign();
-  }, [searchParams, transaction]);
+  }, [searchParams, transaction, proofOfUs]);
 
   const signToken = async () => {
     if (!proofOfUs || !account) return;

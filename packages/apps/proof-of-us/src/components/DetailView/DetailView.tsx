@@ -77,7 +77,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
       <TitleHeader
         Prepend={() => (
           <>
-            {!isAlreadySigning(proofOfUs.signees) && (
+            {!isAlreadySigning(proofOfUs) && (
               <IconButton onClick={handleRedo}>
                 <MonoArrowBack />
               </IconButton>
@@ -87,7 +87,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         label="Details"
         Append={() => (
           <>
-            {!isAlreadySigning(proofOfUs.signees) && (
+            {!isAlreadySigning(proofOfUs) && (
               <IconButton onClick={handleClose}>
                 <MonoClose />
               </IconButton>
@@ -96,7 +96,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         )}
       />
 
-      {!isAlreadySigning(proofOfUs.signees) ? (
+      {!isAlreadySigning(proofOfUs) ? (
         <>
           <div className={imageWrapper}>
             <ImagePositions />

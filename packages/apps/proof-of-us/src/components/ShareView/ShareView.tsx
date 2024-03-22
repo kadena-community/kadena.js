@@ -8,6 +8,7 @@ import {
   MonoArrowBack,
   MonoArrowDownward,
   MonoCheckCircle,
+  MonoSignature,
 } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
@@ -35,7 +36,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const { proofOfUs, isInitiator } = useProofOfUs();
+  const { proofOfUs, isInitiator, updateProofOfUs } = useProofOfUs();
   const { account } = useAccount();
   const { signToken } = useSignToken();
   const router = useRouter();
@@ -87,6 +88,12 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
     setIsCopied(true);
   };
 
+  const handleStartSigning = () => {
+    updateProofOfUs({
+      isReadyToSign: true,
+    });
+  };
+
   return (
     <ScreenHeight>
       {status === 3 && (
@@ -94,7 +101,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
           <TitleHeader
             Prepend={() => (
               <>
-                {!isAlreadySigning(proofOfUs.signees) && (
+                {!isAlreadySigning(proofOfUs) && (
                   <IconButton onClick={handleBack}>
                     <MonoArrowBack />
                   </IconButton>
@@ -113,7 +120,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
             )}
           />
 
-          {!isAlreadySigning(proofOfUs.signees) ? (
+          {!isAlreadySigning(proofOfUs) ? (
             <>
               <div
                 className={qrClass}
@@ -132,7 +139,11 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                   eyeRadius={10}
                 />
               </div>
-              <Button onPress={handleCopy}>Click to copy link</Button>
+              <Stack gap="md">
+                <Button onPress={handleStartSigning}>
+                  Start signing <MonoSignature />
+                </Button>
+              </Stack>
               <ListSignees />
             </>
           ) : (
