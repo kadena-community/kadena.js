@@ -60,7 +60,7 @@ export async function mempoolLookup(hash: string, chainId?: string) {
   }
 }
 
-export async function getTransactionStatus(
+export async function getMempoolTransactionStatus(
   hash: string,
   chainId?: string,
 ): Promise<string | undefined> {
@@ -73,7 +73,7 @@ export async function getTransactionStatus(
   return undefined;
 }
 
-export async function getMempoolSigners(
+export async function getMempoolTransactionSigners(
   hash: string,
   chainId?: string,
 ): Promise<Signer[]> {

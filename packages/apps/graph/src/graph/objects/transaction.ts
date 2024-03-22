@@ -1,8 +1,8 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import {
-  getMempoolSigners,
-  getTransactionStatus,
+  getMempoolTransactionSigners,
+  getMempoolTransactionStatus,
 } from '@services/chainweb-node/mempool';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
@@ -25,21 +25,22 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
 
       resolve: async (parent, __args, context) => {
         try {
-          let signers = await prismaClient.signer.findMany({
-            where: {
-              requestKey: parent.requestKey,
-            },
-          });
+          let signers = [];
 
           // This is needed because if the transaction is in the mempool, the
-          // signers are not stored in the database. We make sure blockHash is
-          // nullish because if it is, the transaction is in the mempool
-          // If blockHash has a value, we do not check the mempool for signers
-          if (signers.length === 0 && nullishOrEmpty(parent.blockHash)) {
-            signers = await getMempoolSigners(
+          // signers are not stored in the database and there is no status.
+          // If blockHash has a value, we do not check the mempool for signers or status
+          if (nullishOrEmpty(parent.blockHash)) {
+            signers = await getMempoolTransactionSigners(
               parent.requestKey,
               parent.chainId.toString(),
             );
+          } else {
+            signers = await prismaClient.signer.findMany({
+              where: {
+                requestKey: parent.requestKey,
+              },
+            });
           }
 
           return {
@@ -86,7 +87,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
           eventCount: parent.eventCount,
           transactionId: parent.transactionId,
           blockHash: parent.blockHash,
-          status: await getTransactionStatus(
+          status: await getMempoolTransactionStatus(
             parent.requestKey,
             parent.chainId.toString(),
           ),
