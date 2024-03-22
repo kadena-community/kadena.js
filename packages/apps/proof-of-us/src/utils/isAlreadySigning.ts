@@ -3,12 +3,12 @@ export const isAlreadySigning = (proofOfUs?: IProofOfUsData): boolean => {
 };
 
 export const getAccountSignee = (
-  proofOfUs?: IProofOfUsData,
+  signees: IProofOfUsSignee[],
   account?: IAccount,
 ): IProofOfUsSignee | undefined => {
-  if (!proofOfUs || !account) return;
+  if (!account) return;
 
-  return proofOfUs.signees.find((s) => s.accountName === account.accountName);
+  return signees.find((s) => s.accountName === account.accountName);
 };
 
 export const isSignedOnce = (signees?: IProofOfUsSignee[]): boolean => {
@@ -18,8 +18,7 @@ export const isSignedOnce = (signees?: IProofOfUsSignee[]): boolean => {
   return !!signinglist.length;
 };
 
-export const haveAllSigned = (signees?: IProofOfUsSignee[]): boolean => {
-  if (!signees) return false;
+export const haveAllSigned = (signees: IProofOfUsSignee[]): boolean => {
   const signinglist = signees.filter((s) => s.signerStatus !== 'success');
 
   return !!signinglist.length;

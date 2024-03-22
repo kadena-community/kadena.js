@@ -7,18 +7,20 @@ import { Signee } from './Signee';
 import { wrapperClass } from './style.css';
 
 export const ListSignees: FC = () => {
-  const { proofOfUs } = useProofOfUs();
+  const { signees } = useProofOfUs();
 
-  const initiator = proofOfUs?.signees?.find((s) => s.initiator);
-  const signees = proofOfUs?.signees?.filter((s) => !s.initiator) ?? [];
+  console.log(signees);
+
+  const initiator = signees.find((s) => s.initiator);
+  const restSignees = signees.filter((s) => !s.initiator) ?? [];
 
   return (
     <Stack flexDirection="column" gap="md">
-      <Heading as="h5">Signees ({proofOfUs?.signees.length})</Heading>
+      <Heading as="h5">Signees ({signees.length})</Heading>
 
       <ul className={wrapperClass}>
         <Signee signee={initiator} />
-        {signees.map((signee) => (
+        {restSignees.map((signee) => (
           <Signee key={signee.accountName} signee={signee} />
         ))}
       </ul>

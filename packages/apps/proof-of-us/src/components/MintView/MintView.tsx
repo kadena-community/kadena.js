@@ -2,7 +2,6 @@ import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSubmit } from '@/hooks/submit';
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
-import { haveAllSigned } from '@/utils/isAlreadySigning';
 import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -15,7 +14,7 @@ interface IProps {
 }
 
 export const MintView: FC<IProps> = () => {
-  const { proofOfUs, updateSigner, updateProofOfUs } = useProofOfUs();
+  const { proofOfUs, updateSignee, updateProofOfUs } = useProofOfUs();
   const { doSubmit } = useSubmit();
   const { uploadBackground } = useAvatar();
   const router = useRouter();
@@ -29,12 +28,11 @@ export const MintView: FC<IProps> = () => {
       console.error('UPLOAD ERR');
     }
     try {
-      const signees = updateSigner({ signerStatus: 'success' }, true);
+      await updateSignee({ signerStatus: 'success' }, true);
 
       console.log('update in mintview');
       await updateProofOfUs({
-        status: haveAllSigned(signees) ? 4 : 3,
-        signees: signees,
+        status: 3,
       });
 
       await doSubmit(proofOfUs.tx);

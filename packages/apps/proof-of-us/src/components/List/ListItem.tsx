@@ -33,8 +33,9 @@ export const ListItem: FC<IProps> = ({ token }) => {
 
   const loadProofOfUsData = useCallback(async (proofOfUsId: string) => {
     const data = await store.getProofOfUs(proofOfUsId);
+    const signees = await store.getProofOfUsSignees(proofOfUsId);
     if (!data) return;
-    const metaData = await createManifest(data, data?.imageUri);
+    const metaData = await createManifest(data, signees, data?.imageUri);
 
     setInnerData(metaData);
   }, []);

@@ -58,7 +58,6 @@ interface IProofOfUsData {
   type: TokenType;
   date: number;
   minted?: number;
-  signees: IProofOfUsSignee[];
   title?: string;
   uri?: string;
   isReadyToSign: boolean;

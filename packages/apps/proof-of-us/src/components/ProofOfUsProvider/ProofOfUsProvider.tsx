@@ -10,6 +10,7 @@ import { createContext, useCallback, useEffect, useState } from 'react';
 
 export interface IProofOfUsContext {
   proofOfUs?: IProofOfUsData;
+  signees: IProofOfUsSignee[];
   background: IProofOfUsBackground;
   updateStatus: ({
     proofOfUsId,
@@ -26,33 +27,32 @@ export interface IProofOfUsContext {
     proofOfUsId: string;
     signee: IProofOfUsSignee;
   }) => Promise<void>;
+  updateSignee: (value: any, isOverwrite?: boolean) => Promise<void>;
   createToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
   changeTitle: (value: string) => string;
   updateBackgroundColor: (value: string) => string;
   isConnected: () => boolean;
   isInitiator: () => boolean;
   hasSigned: () => boolean;
-  updateSigner: (value: any, isOverwrite?: boolean) => IProofOfUsSignee[];
   updateProofOfUs: (value: any) => Promise<void>;
 }
 
 export const ProofOfUsContext = createContext<IProofOfUsContext>({
   proofOfUs: undefined,
+  signees: [],
   background: {
     bg: '',
   },
   updateStatus: async () => {},
   addSignee: async () => {},
   removeSignee: async () => {},
+  updateSignee: async () => {},
   createToken: async () => {},
   changeTitle: () => '',
   updateBackgroundColor: () => '',
   isConnected: () => false,
   isInitiator: () => false,
   hasSigned: () => false,
-  updateSigner: () => {
-    return [];
-  },
   updateProofOfUs: async () => {},
 });
 
@@ -61,6 +61,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const params = useParams();
   const { addMintingData } = useTokens();
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
+  const [signees, setSignees] = useState<IProofOfUsSignee[]>([]);
   const [background, setBackground] = useState<IProofOfUsBackground>({
     bg: '',
   });
@@ -76,12 +77,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       }
 
       if (!innerData) return;
-      if (!Array.isArray(innerData.signees)) {
-        innerData.signees = Object.entries(innerData.signees).map(
-          ([key, value]) => value,
-        ) as IProofOfUsSignee[];
-      }
-      if (!innerData) return;
 
       if (innerData.requestKey) {
         addMintingData(innerData);
@@ -92,10 +87,26 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     [setProofOfUs, params?.id],
   );
 
+  const listenToSigneesData = useCallback(
+    async (data: IProofOfUsSignee[]) => {
+      let innerData: IProofOfUsSignee[] = data ?? [];
+
+      if (!innerData && params && params.id !== 'new') {
+        console.log(3333);
+        innerData = await store.getProofOfUsSignees(`${params.id}`);
+        if (!innerData) return;
+      }
+
+      setSignees([...innerData]);
+    },
+    [setSignees, params?.id],
+  );
+
   useEffect(() => {
     if (!params?.id || !account) return;
     store.listenProofOfUsData(`${params.id}`, account, listenToProofOfUsData);
     store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
+    store.listenProofOfUsSigneesData(`${params.id}`, listenToSigneesData);
 
     // return () => {
     //   unListen();
@@ -116,7 +127,11 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const addSignee = async () => {
     if (!account || !proofOfUs) return;
-    await store.addSignee(proofOfUs, getSigneeAccount(account, proofOfUs));
+    await store.addSignee(
+      proofOfUs,
+      signees,
+      getSigneeAccount(account, signees),
+    );
   };
 
   const removeSignee = async ({
@@ -130,11 +145,36 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     await store.removeSignee(proofOfUs, signee);
   };
 
+  const updateSignee = async (
+    value: any,
+    isOverwrite: boolean = false,
+  ): Promise<void> => {
+    console.log(111);
+    if (!proofOfUs || !account) return;
+    if (!account) return;
+    console.log(222);
+    if (!isOverwrite && isAlreadySigning(proofOfUs)) return;
+
+    console.log(3333);
+    const signee = signees.find((a) => {
+      if (a.accountName === account.accountName) {
+        return { ...a, ...value };
+      }
+      return a;
+    });
+
+    console.log(4444, signee);
+    if (!signee) return;
+
+    console.log('signeeeee', { signee, signees });
+    await store.updateSignee(proofOfUs, { ...signee, ...value });
+  };
+
   const createToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
     if (!account) return;
     await store.createProofOfUs(
       proofOfUsId,
-      getSigneeAccount(account, proofOfUs),
+      getSigneeAccount(account, signees),
     );
   };
 
@@ -148,43 +188,23 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     return value;
   };
 
-  const updateSigner = (value: any, isOverwrite: boolean = false) => {
-    console.log(0, { proofOfUs });
-    if (!proofOfUs) return [];
-    if (!account) return proofOfUs.signees;
-
-    if (!isOverwrite && isAlreadySigning(proofOfUs)) return proofOfUs.signees;
-
-    const newList: IProofOfUsSignee[] = proofOfUs.signees.map((a) => {
-      if (a.accountName === account.accountName) {
-        return { ...a, ...value };
-      }
-      return a;
-    });
-
-    return newList;
-  };
   const updateProofOfUs = async (value: any) => {
     if (!proofOfUs || !account) return;
     await store.updateProofOfUs(proofOfUs, value);
   };
 
   const hasSigned = (): boolean => {
-    const signee = proofOfUs?.signees?.find(
-      (s) => s.accountName === account?.accountName,
-    );
+    const signee = signees.find((s) => s.accountName === account?.accountName);
 
     return signee?.signerStatus === 'success';
   };
 
   const isConnected = () => {
-    return !!proofOfUs?.signees?.find(
-      (s) => s.accountName === account?.accountName,
-    );
+    return !!signees.find((s) => s.accountName === account?.accountName);
   };
 
   const isInitiator = () => {
-    const foundAccount = proofOfUs?.signees.find(
+    const foundAccount = signees.find(
       (s) => s.accountName === account?.accountName,
     );
     return !!foundAccount?.initiator;
@@ -195,16 +215,17 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       value={{
         addSignee,
         removeSignee,
+        updateSignee,
         createToken,
         isConnected,
         isInitiator,
         background,
         proofOfUs,
+        signees,
         updateStatus,
         changeTitle,
         updateBackgroundColor,
         updateProofOfUs,
-        updateSigner,
         hasSigned,
       }}
     >

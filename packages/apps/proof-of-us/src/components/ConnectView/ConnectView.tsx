@@ -24,7 +24,8 @@ interface IProps {
 export const ConnectView: FC<IProps> = () => {
   const { signToken } = useSignToken();
   const { account } = useAccount();
-  const { proofOfUs, addSignee, removeSignee, hasSigned } = useProofOfUs();
+  const { proofOfUs, signees, addSignee, removeSignee, hasSigned } =
+    useProofOfUs();
   const router = useRouter();
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export const ConnectView: FC<IProps> = () => {
   };
 
   const handleSignOff = async () => {
-    const signee = getAccountSignee(proofOfUs, account);
+    const signee = getAccountSignee(signees, account);
     if (signee && proofOfUs) {
       removeSignee({ proofOfUsId: proofOfUs.proofOfUsId, signee });
     }

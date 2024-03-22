@@ -2,7 +2,6 @@ import { useProofOfUs } from '@/hooks/proofOfUs';
 import { createManifest } from '@/utils/createManifest';
 import { env } from '@/utils/env';
 import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
-import { haveAllSigned } from '@/utils/isAlreadySigning';
 import { createConnectTokenTransaction, getTokenId } from '@/utils/proofOfUs';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -10,8 +9,14 @@ import { useEffect, useState } from 'react';
 import { useAccount } from '../account';
 
 export const useSignToken = () => {
-  const { updateSigner, proofOfUs, background, hasSigned, updateProofOfUs } =
-    useProofOfUs();
+  const {
+    updateSignee,
+    proofOfUs,
+    signees,
+    background,
+    hasSigned,
+    updateProofOfUs,
+  } = useProofOfUs();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [data] = useState<IProofOfUs | undefined>(undefined);
@@ -29,7 +34,7 @@ export const useSignToken = () => {
       console.error('no image found');
       return;
     }
-    const manifest = await createManifest(proofOfUs, imageData.url);
+    const manifest = await createManifest(proofOfUs, signees, imageData.url);
     const manifestData = await createMetaDataUrl(manifest);
     if (!manifestData) {
       console.error('no manifestData found');
@@ -38,7 +43,7 @@ export const useSignToken = () => {
 
     const transaction = await createConnectTokenTransaction(
       manifestData?.url,
-      proofOfUs,
+      signees,
       account,
     );
 
@@ -59,12 +64,15 @@ export const useSignToken = () => {
     if (!transaction || hasSigned() || !proofOfUs) return;
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
 
-    const signees = updateSigner({ signerStatus: 'success' }, true);
+    console.log({ tx });
+
+    console.log('signing success');
+    await updateSignee({ signerStatus: 'success' }, true);
+
     console.log('update in signtoken sign');
     await updateProofOfUs({
       tx: transaction,
-      status: haveAllSigned(signees) ? 4 : 3,
-      signees: signees,
+      status: 3,
     });
 
     setIsLoading(false);
@@ -97,19 +105,17 @@ export const useSignToken = () => {
       ).toString('base64');
 
       console.log('update in signtoken signtoken');
+      await updateSignee({ signerStatus: 'signing' }, true);
       await updateProofOfUs({
         requestKey: transactionData.transaction?.hash,
         tokenId: transactionData.tokenId,
         manifestUri: transactionData.manifestUri,
         imageUri: transactionData.imageUri,
         eventName: transactionData.eventName,
-        signees: updateSigner({ signerStatus: 'signing' }, true),
       });
     } else {
       console.log('update in signtoken else');
-      await updateProofOfUs({
-        signees: updateSigner({ signerStatus: 'signing' }, true),
-      });
+      await updateSignee({ signerStatus: 'signing' }, true);
     }
 
     router.push(

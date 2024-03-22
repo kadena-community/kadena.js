@@ -184,7 +184,7 @@ export const hasMintedAttendaceToken = async (
 
 export const createConnectTokenTransaction = async (
   manifestUri: string,
-  proofOfUs: IProofOfUsData,
+  signees: IProofOfUsSignee[],
   account: IAccount,
 ): Promise<IUnsignedCommand | undefined> => {
   const credential = account.credentials[0];
@@ -203,11 +203,11 @@ export const createConnectTokenTransaction = async (
     throw new Error('credential of account not found');
   }
 
-  if (proofOfUs.signees.length < 2) {
+  if (signees.length < 2) {
     throw new Error('You need at least 2 signers');
   }
 
-  const guardString = proofOfUs.signees.reduce((acc: string, val) => {
+  const guardString = signees.reduce((acc: string, val) => {
     return `${acc} "${val.accountName}"`;
   }, '');
 
@@ -230,7 +230,7 @@ export const createConnectTokenTransaction = async (
       ttl: 30000,
     });
 
-  proofOfUs.signees.forEach((signee, idx) => {
+  signees.forEach((signee, idx) => {
     if (idx === 0) {
       transactionBuilder.addSigner(
         {

@@ -36,7 +36,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const { proofOfUs, isInitiator, updateProofOfUs } = useProofOfUs();
+  const { proofOfUs, isInitiator, updateProofOfUs, signees } = useProofOfUs();
   const { account } = useAccount();
   const { signToken } = useSignToken();
   const router = useRouter();
@@ -152,7 +152,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
               <ListSignees />
             </>
           )}
-          {isSignedOnce(proofOfUs.signees) && (
+          {isSignedOnce(signees) && (
             <Button onPress={handleSign}>Sign & Upload</Button>
           )}
         </>

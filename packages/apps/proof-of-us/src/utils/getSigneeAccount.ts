@@ -1,14 +1,9 @@
 export const getSigneeAccount = (
   account: IAccount,
-  proofOfUs?: IProofOfUsData,
+  signees: IProofOfUsSignee[],
 ): IProofOfUsSignee => {
-  // const signees = Object.entries(proofOfUs?.signees ?? []).map(
-  //   ([key, value]) => value,
-  // );
-
-  const signer = proofOfUs?.signees.find(
-    (c) => c.accountName === account.accountName,
-  );
+  console.log({ signees });
+  const signer = signees.find((c) => c.accountName === account.accountName);
 
   const credential = account.credentials[0];
   if (signer) return signer;
