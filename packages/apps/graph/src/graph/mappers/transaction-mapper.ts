@@ -26,8 +26,6 @@ export function mempooTransactionMapper1(mempoolData: any): Transaction {
   // Convert creationTime to milliseconds (mempool has it in epoch format in seconds)
   mempoolTx.cmd.meta.creationTime = mempoolTx.cmd.meta.creationTime * 1000;
 
-  console.log('aqui', mempoolTx);
-
   const transaction = {
     requestKey: mempoolTx.hash,
     badResult: null,
@@ -54,7 +52,6 @@ export function mempooTransactionMapper1(mempoolData: any): Transaction {
     step: BigInt(mempoolTx.cmd.payload.step),
     ttl: BigInt(mempoolTx.cmd.meta.ttl),
   };
-  console.log(transaction);
 
   return transaction;
 }
