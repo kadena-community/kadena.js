@@ -62,7 +62,7 @@ export const generateWallet = async (
 
   if (existing !== null && existing.legacy === legacy) {
     return {
-      success: false,
+      status: 'error',
       errors: [`Wallet "${walletName}" already exists.`],
     };
   }
@@ -70,7 +70,7 @@ export const generateWallet = async (
   const walletPath = join(WALLET_DIR, walletName);
   if (await services.filesystem.fileExists(walletPath)) {
     return {
-      success: false,
+      status: 'error',
       errors: [`Wallet named "${walletName}" already exists.`],
     };
   }
@@ -80,7 +80,7 @@ export const generateWallet = async (
   const path = await storageService.storeWallet(seed, walletName, legacy);
 
   return {
-    success: true,
+    status: 'success',
     data: { mnemonic: words, path },
   };
 };
@@ -95,7 +95,7 @@ export const createGenerateWalletCommand: (
   version: string,
 ) => void = createCommand(
   'add',
-  'Add a new local wallet',
+  'Add a new wallet',
   [
     walletOptions.walletName({ isOptional: false }),
     securityOptions.createPasswordOption({

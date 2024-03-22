@@ -15,14 +15,12 @@ builder.queryField('block', (t) =>
     complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
     async resolve(query, __parent, args) {
       try {
-        const block = await prismaClient.block.findUnique({
+        return await prismaClient.block.findUnique({
           ...query,
           where: {
             hash: args.hash,
           },
         });
-
-        return block;
       } catch (error) {
         throw normalizeError(error);
       }

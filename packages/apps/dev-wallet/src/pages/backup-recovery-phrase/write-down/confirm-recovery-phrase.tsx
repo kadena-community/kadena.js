@@ -32,7 +32,7 @@ export function ConfirmRecoveryPhrase({
           <TextField id="phrase" {...register('phrase')} />
           <Button type="submit">Confirm</Button>
         </form>
-        {error && <Text variant="base">{error}</Text>}
+        {error && <Text>{error}</Text>}
       </Box>
     </main>
   );

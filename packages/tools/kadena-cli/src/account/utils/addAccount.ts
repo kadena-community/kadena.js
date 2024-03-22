@@ -19,7 +19,7 @@ export async function addAccount(
 
     const result = await createAccountConfigFile(filePath, updatedConfig);
     return {
-      success: true,
+      status: 'success',
       data: result,
       warnings: !config.accountDetailsFromChain
         ? [
@@ -29,7 +29,7 @@ export async function addAccount(
     };
   } catch (error) {
     return {
-      success: false,
+      status: 'error',
       errors: [error.message],
     };
   }

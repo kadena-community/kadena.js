@@ -177,7 +177,7 @@ const Home: FC = () => {
       <br />
       <div style={{ width: '680px' }}>
         <Heading variant="h3">{t('Kadena Developer Tools')}</Heading>
-        <Heading as="h2" variant="h5" color="default">
+        <Heading as="h2" variant="h5">
           <p>
             {t(
               'Set up your development environment and get the latest Developer Tools to build your application on the Kadena network.',

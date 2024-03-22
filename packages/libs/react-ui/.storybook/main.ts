@@ -1,6 +1,7 @@
 import { type StorybookConfig } from '@storybook/react-webpack5';
 import { VanillaExtractPlugin } from '@vanilla-extract/webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { dirname, join } from 'path';
 
 const config: StorybookConfig = {
   stories: [
@@ -9,13 +10,13 @@ const config: StorybookConfig = {
     '../src/**/*.stories.@(js|jsx|ts|tsx)',
   ],
   addons: [
-    '@storybook/addon-a11y',
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-controls',
-    '@storybook/addon-interactions',
-    'storybook-dark-mode',
-    '@etchteam/storybook-addon-status',
+    getAbsolutePath('@storybook/addon-a11y'),
+    getAbsolutePath('@storybook/addon-links'),
+    getAbsolutePath('@storybook/addon-essentials'),
+    getAbsolutePath('@storybook/addon-controls'),
+    getAbsolutePath('@storybook/addon-interactions'),
+    getAbsolutePath('storybook-dark-mode'),
+    getAbsolutePath('@etchteam/storybook-addon-status'),
     {
       name: '@storybook/addon-docs',
       options: {
@@ -23,10 +24,17 @@ const config: StorybookConfig = {
         transcludeMarkdown: true,
       },
     },
+    getAbsolutePath('@storybook/addon-mdx-gfm'),
+    '@storybook/addon-webpack5-compiler-swc',
   ],
   framework: {
-    name: '@storybook/react-webpack5',
-    options: {},
+    name: getAbsolutePath('@storybook/react-webpack5'),
+    options: {
+      builder: {
+        fsCache: true,
+        lazyCompilation: true,
+      },
+    },
   },
   docs: {
     autodocs: true,
@@ -68,3 +76,7 @@ const config: StorybookConfig = {
   },
 };
 export default config;
+
+function getAbsolutePath(value: string): any {
+  return dirname(require.resolve(join(value, 'package.json')));
+}

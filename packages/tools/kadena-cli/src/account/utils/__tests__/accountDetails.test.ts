@@ -19,7 +19,7 @@ describe('accountDetails', () => {
       networkHost: devNetConfigMock.networkHost,
       fungible: 'coin',
     });
-    assert(result.success);
+    assert(result.status === 'success');
     expect(result.data).toEqual({
       account: 'accountName',
       guard: {
@@ -46,7 +46,7 @@ describe('accountDetails', () => {
       networkHost: devNetConfigMock.networkHost,
       fungible: 'coin',
     });
-    assert(!result.success);
+    assert(result.status === 'error');
     expect(result.errors).toEqual([
       'Account "k:accountName" is not available on chain "1" of networkId "development"',
     ]);

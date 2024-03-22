@@ -53,12 +53,12 @@ export async function fund({
         });
 
     return {
-      success: true,
+      status: 'success',
       data: result,
     };
   } catch (error) {
     return {
-      success: false,
+      status: 'error',
       errors: [error.message],
     };
   }

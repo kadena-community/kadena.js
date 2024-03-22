@@ -51,7 +51,7 @@ export const testTransactions = async (
   }
 
   return {
-    success: errors.length === 0,
+    status: errors.length === 0 ? 'success' : 'error',
     data: successfulCommands,
     errors: errors,
   };

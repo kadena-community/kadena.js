@@ -46,7 +46,7 @@ export const changeWalletPassword = async (
   const seed = (await getWalletContent(wallet)) as EncryptedString;
   if (walletConfig.wallet === null || seed === null) {
     return {
-      success: false,
+      status: 'error',
       errors: [`Wallet: ${walletConfig.wallet} does not exist.`],
     };
   }
@@ -69,7 +69,7 @@ export const changeWalletPassword = async (
     walletConfig.legacy,
   );
 
-  return { success: true, data: { filename: walletConfig.wallet } };
+  return { status: 'success', data: { filename: walletConfig.wallet } };
 };
 
 export const createChangeWalletPasswordCommand: (

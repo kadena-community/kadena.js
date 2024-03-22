@@ -5,6 +5,7 @@ import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
   ensureNetworksConfiguration,
+  getNetworksInOrder,
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
@@ -161,10 +162,13 @@ export const networkSelectPrompt: IPrompt<string> = async (
     );
   }
 
-  const choices: ICustomNetworkChoice[] = filteredNetworks.map((network) => ({
+  const networksInOrder = await getNetworksInOrder(filteredNetworks);
+
+  const choices: ICustomNetworkChoice[] = networksInOrder.map((network) => ({
     value: network.value,
     name: network.name,
   }));
+
   if (isOptional === true) {
     choices.unshift({
       value: 'skip',
@@ -228,7 +232,9 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
     );
   }
 
-  const choices: ICustomNetworkChoice[] = filteredNetworks.map((network) => ({
+  const networksInOrder = await getNetworksInOrder(filteredNetworks);
+
+  const choices: ICustomNetworkChoice[] = networksInOrder.map((network) => ({
     value: network.value,
     name: network.name,
   }));
@@ -250,12 +256,37 @@ export const networkDeletePrompt: IPrompt<string> = async (
   if (previousQuestions.network === undefined) {
     throw new Error('Network name is required for the delete prompt.');
   }
-  const message = `Are you sure you want to delete the configuration for network "${defaultValue}"?`;
+
+  let message = `Are you sure you want to delete the configuration for network "${defaultValue}"?`;
+  if (isNotEmptyString(previousQuestions.isDefaultNetwork)) {
+    message += `\nThis is the "default network". If you delete it, then the default network settings will also be deleted.`;
+  }
+
   return await select({
     message,
     choices: [
       { value: 'yes', name: 'Yes' },
       { value: 'no', name: 'No' },
+    ],
+  });
+};
+
+export const networkDefaultConfirmationPrompt: IPrompt<boolean> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const defaultValue = args.defaultValue ?? previousQuestions.network;
+  if (defaultValue === undefined) {
+    throw new Error('Network name is required to set the default network.');
+  }
+
+  const message = `Are you sure you want to set "${defaultValue}" as the default network?`;
+  return await select({
+    message,
+    choices: [
+      { value: true, name: 'Yes' },
+      { value: false, name: 'No' },
     ],
   });
 };
