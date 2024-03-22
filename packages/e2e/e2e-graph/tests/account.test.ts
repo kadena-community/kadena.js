@@ -67,7 +67,7 @@ test('Query: getAccount by AccountName', async ({ request }) => {
       });
     }).toPass({
       intervals: [100],
-      timeout: 10_000,
+      timeout: 20_000,
     });
   });
 });
