@@ -76,7 +76,7 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
-      - name: Start devnet
+      - name: Start sandbox
         uses: ./.github/actions/devnet
         with:
           migrations: packages/apps/graph/cwd-extra-migrations
@@ -102,7 +102,7 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
-      - name: Start devnet
+      - name: Start sandbox
         uses: ./.github/actions/devnet
         with:
           migrations: packages/apps/graph/cwd-extra-migrations
