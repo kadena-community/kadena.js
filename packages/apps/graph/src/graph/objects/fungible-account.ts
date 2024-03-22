@@ -129,7 +129,6 @@ export default builder.node(
             throw normalizeError(error);
           }
         },
-
         async resolve(query, parent) {
           try {
             return await prismaClient.transaction.findMany({
@@ -151,7 +150,6 @@ export default builder.node(
           }
         },
       }),
-
       transfers: t.prismaConnection({
         description: 'Default page size is 20.',
         type: Prisma.ModelName.Transfer,

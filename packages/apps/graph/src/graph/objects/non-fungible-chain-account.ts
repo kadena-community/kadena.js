@@ -70,21 +70,17 @@ export default builder.node(
           }),
         }),
         async totalCount(parent) {
-          try {
-            return await prismaClient.transaction.count({
-              where: {
-                senderAccount: parent.accountName,
-                events: {
-                  some: {
-                    moduleName: 'marmalade-v2.ledger',
-                  },
+          return await prismaClient.transaction.count({
+            where: {
+              senderAccount: parent.accountName,
+              events: {
+                some: {
+                  moduleName: 'marmalade-v2.ledger',
                 },
-                chainId: parseInt(parent.chainId),
               },
-            });
-          } catch (error) {
-            throw normalizeError(error);
-          }
+              chainId: parseInt(parent.chainId),
+            },
+          });
         },
         async resolve(query, parent) {
           try {

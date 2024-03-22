@@ -81,26 +81,7 @@ export default builder.node(
           }),
         }),
         async totalCount(parent) {
-          try {
-            return await prismaClient.transaction.count({
-              where: {
-                senderAccount: parent.accountName,
-                events: {
-                  some: {
-                    moduleName: parent.fungibleName,
-                  },
-                },
-                chainId: parseInt(parent.chainId),
-              },
-            });
-          } catch (error) {
-            throw normalizeError(error);
-          }
-        },
-
-        async resolve(query, parent) {
-          return await prismaClient.transaction.findMany({
-            ...query,
+          return await prismaClient.transaction.count({
             where: {
               senderAccount: parent.accountName,
               events: {
@@ -110,10 +91,28 @@ export default builder.node(
               },
               chainId: parseInt(parent.chainId),
             },
-            orderBy: {
-              height: 'desc',
-            },
           });
+        },
+        async resolve(query, parent) {
+          try {
+            return await prismaClient.transaction.findMany({
+              ...query,
+              where: {
+                senderAccount: parent.accountName,
+                events: {
+                  some: {
+                    moduleName: parent.fungibleName,
+                  },
+                },
+                chainId: parseInt(parent.chainId),
+              },
+              orderBy: {
+                height: 'desc',
+              },
+            });
+          } catch (error) {
+            throw normalizeError(error);
+          }
         },
       }),
       transfers: t.prismaConnection({
