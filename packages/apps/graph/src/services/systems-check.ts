@@ -82,8 +82,6 @@ export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
             },
             {
               title: 'Checking if the mempool is reachable.',
-              // skip: () =>
-              //   'Skipping: There is currently no mempool implementation.',
               task: async () => {
                 try {
                   await mempoolGetPending();

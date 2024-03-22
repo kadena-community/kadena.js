@@ -1,4 +1,5 @@
 import { chainIds } from '@utils/chains';
+import { dotenv } from '@utils/dotenv';
 
 export class MempoolError extends Error {
   public mempoolError: any;
@@ -13,7 +14,7 @@ export async function mempoolGetPending() {
   try {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     const res = await fetch(
-      'https://localhost:1789/chainweb/0.0/development/chain/1/mempool/getPending',
+      `${dotenv.MEMPOOL_HOST}/chainweb/0.0/development/chain/1/mempool/getPending`,
       {
         method: 'POST',
         body: JSON.stringify({}),
@@ -41,7 +42,7 @@ export async function mempoolLookup(hash: string, chainId?: string) {
 
   for (const chainId of chainsToCheck) {
     const res = await fetch(
-      `https://localhost:1789/chainweb/0.0/development/chain/${chainId}/mempool/lookup`,
+      `${dotenv.MEMPOOL_HOST}/chainweb/0.0/development/chain/${chainId}/mempool/lookup`,
       {
         method: 'POST',
         headers: {

@@ -1,4 +1,4 @@
-import type { Block, Event, Transfer } from '@prisma/client';
+import type { Block, Event, Signer, Transfer } from '@prisma/client';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface Guard {
@@ -148,17 +148,6 @@ export interface TransactionInfo {
   metadata: string | null;
   eventCount: bigint | null;
   transactionId: bigint | null;
-}
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface Signer {
-  requestKey: string;
-  orderIndex: number | null;
-  publicKey: string;
-  address: string | null;
-  scheme: string | null;
-  clist: CapabilitiesList[];
-  signature: string | null;
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention

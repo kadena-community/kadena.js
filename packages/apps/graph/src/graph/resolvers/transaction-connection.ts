@@ -19,7 +19,7 @@ export async function resolveTransactionConnection(
   const connection = await resolveCursorConnection(
     {
       args,
-      toCursor: (transaction) => {
+      toCursor(transaction) {
         if ('blockHash' in transaction.result) {
           return Buffer.from(
             JSON.stringify([transaction.hash, transaction.result.blockHash]),

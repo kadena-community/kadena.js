@@ -1,37 +1,9 @@
-import { prismaClient } from '@db/prisma-client';
+import { Prisma } from '@prisma/client';
 import { builder } from '../builder';
-import { prismaSignerMapper } from '../mappers/signer-mapper';
 
-export default builder.node('Signer', {
+export default builder.prismaNode(Prisma.ModelName.Signer, {
   description: 'A signer for a specific transaction.',
-  id: {
-    resolve: (parent) => JSON.stringify([parent.requestKey, parent.orderIndex]),
-    parse: (id) => {
-      const [requestKey, orderIndex] = JSON.parse(id);
-      return {
-        requestKey,
-        orderIndex,
-      };
-    },
-  },
-  async loadOne({ requestKey, orderIndex }) {
-    const prismaSigner = await prismaClient.signer.findUnique({
-      where: {
-        requestKey_orderIndex: {
-          requestKey,
-          orderIndex,
-        },
-      },
-    });
-
-    if (!prismaSigner) return null;
-
-    return {
-      __typename: 'Signer',
-      ...prismaSignerMapper(prismaSigner),
-    };
-  },
-
+  id: { field: 'requestKey_orderIndex' },
   fields: (t) => ({
     requestKey: t.exposeString('requestKey'),
     orderIndex: t.exposeInt('orderIndex', { nullable: true }),
@@ -46,7 +18,14 @@ export default builder.node('Signer', {
     }),
     clist: t.field({
       type: ['CapabilitiesList'],
-      resolve: (parent) => parent.clist,
+      resolve: (parent) => {
+        return (
+          parent.capabilities as Array<{ args: any[]; name: string }>
+        ).map(({ name, args }) => ({
+          name,
+          args: JSON.stringify(args),
+        }));
+      },
     }),
     signature: t.exposeString('signature', { nullable: true }),
   }),

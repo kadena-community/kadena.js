@@ -3,7 +3,7 @@ import { mempoolLookup } from '@services/chainweb-node/mempool';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
 import {
-  mempoolTxMapper,
+  mempooTransactionMapper,
   prismaTransactionMapper,
 } from '../mappers/transaction-mapper';
 import GQLTransactions from '../objects/transaction';
@@ -72,7 +72,7 @@ async function checkMempoolForTransaction(
     const transactionData = mempoolData[0];
 
     if (transactionData.tag === 'Pending') {
-      return mempoolTxMapper(transactionData);
+      return mempooTransactionMapper(transactionData);
     }
 
     return null;

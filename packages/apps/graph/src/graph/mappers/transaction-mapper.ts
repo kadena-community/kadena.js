@@ -2,7 +2,6 @@ import { prismaClient } from '@db/prisma-client';
 import type { Signer, Transaction } from '@prisma/client';
 import type { IContext } from '../builder';
 import type { Transaction as GQLTransaction } from '../types/graphql-types';
-import { prismaSignersMapper } from './signer-mapper';
 
 export async function prismaTransactionsMapper(
   prismaTransactions: Transaction[],
@@ -15,11 +14,11 @@ export async function prismaTransactionsMapper(
   });
 
   return Promise.all(
-    prismaTransactions.map(async (prismaTransaction) => {
+    prismaTransactions.map((prismaTransaction) => {
       const transactionSigners = prismaSigners.filter(
         (s) => s.requestKey === prismaTransaction.requestKey,
       );
-      return await prismaTransactionMapper(
+      return prismaTransactionMapper(
         prismaTransaction,
         context,
         transactionSigners,
@@ -62,7 +61,7 @@ export async function prismaTransactionMapper(
         rollback: prismaTransaction.rollback,
         proof: prismaTransaction.proof,
       },
-      signers: prismaSignersMapper(prismaSigners),
+      signers: prismaSigners,
     },
     result: {
       badResult: prismaTransaction.badResult
@@ -90,7 +89,7 @@ export async function prismaTransactionMapper(
   };
 }
 
-export function mempoolTxMapper(mempoolData: any): GQLTransaction {
+export function mempooTransactionMapper(mempoolData: any): GQLTransaction {
   const mempoolInfo = {
     status: mempoolData.tag,
   };
@@ -110,10 +109,7 @@ export function mempoolTxMapper(mempoolData: any): GQLTransaction {
     publicKey: signer.pubKey,
     scheme: signer.scheme,
     requestKey: mempoolTx.hash,
-    clist: signer.clist.map((c: any) => ({
-      name: c.name,
-      args: JSON.stringify(c.args),
-    })),
+    capabilities: JSON.parse(JSON.stringify(signer.clist)),
     orderIndex: null,
     address: null,
     signature: null,

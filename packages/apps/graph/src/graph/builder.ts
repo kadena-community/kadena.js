@@ -28,7 +28,6 @@ import type {
   MempoolInfo,
   NonFungibleAccount,
   NonFungibleChainAccount,
-  Signer,
   Token,
   TokenInfo,
   Transaction,
@@ -92,7 +91,6 @@ export const builder = new SchemaBuilder<
       Transaction: Transaction;
       MempoolInfo: MempoolInfo;
       TransactionInfo: TransactionInfo;
-      Signer: Signer;
       TransactionCommand: TransactionCommand;
       CapabilitiesList: CapabilitiesList;
       TransactionConnection: TransactionConnection;
