@@ -40,7 +40,8 @@ test.describe('Query: getTransactions', async () => {
         expect(initialResponse.transactions.edges).toHaveLength(0);
         expect(initialResponse.transactions.totalCount).toEqual(0);
       }).toPass({
-        timeout: 6000,
+        intervals: [2_000],
+        timeout: 10_000,
       });
     });
 
@@ -182,7 +183,8 @@ test.describe('Query: getTransactions', async () => {
         expect(initialResponse.transactions.edges).toHaveLength(0);
         expect(initialResponse.transactions.totalCount).toEqual(0);
       }).toPass({
-        timeout: 6000,
+        intervals: [2_000],
+        timeout: 10_000,
       });
     });
 
