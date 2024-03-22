@@ -69,3 +69,5 @@ export const tagInfoClass = style([
     borderRadius: '8px',
   },
 ]);
+
+export const textStyle = style({ opacity: '.8' });

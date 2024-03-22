@@ -34,7 +34,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           <Card fullWidth>
             <Heading as="h4">Get started with tutorials</Heading>
             <Box marginBlock="md">
-              <Text>
+              <Text variant="body">
                 Building applications to run on a blockchain doesn&apos;t have
                 to be hard, time-consuming, or expensive. Get started with the
                 basics through hands-on tutorials. Learn how to set up a

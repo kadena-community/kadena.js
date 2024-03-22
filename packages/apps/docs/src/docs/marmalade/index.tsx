@@ -33,7 +33,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
   return (
     <>
       <Box marginBlockEnd="xxxl" className={marmaladeWrapperClass}>
-        <Text>
+        <Text variant="body">
           The long-awaited release of Marmalade’s V2 standard has arrived,
           bringing a host of exciting updates and features to the top NFT
           standard in the industry! If you’ve been tracking the progress of
@@ -48,7 +48,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           <Card fullWidth>
             <Heading as="h4">Quick start</Heading>
             <Box marginBlock="md">
-              <Text>
+              <Text variant="body">
                 Marmalade is the name of the Kadena token standard. The token
                 standard defines the interfaces for creating, minting, and
                 transferring digital items like non-fungible tokens (NFTs) and

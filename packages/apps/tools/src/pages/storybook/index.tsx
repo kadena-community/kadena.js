@@ -79,7 +79,7 @@ const Storybook = () => {
         <Card fullWidth>
           <Stack flexDirection="column">
             <Heading as="h5">
-              <Text as="code">useAccountDetailsQuery</Text>
+              <Text variant="code">useAccountDetailsQuery</Text>
             </Heading>
             <Stack gap="md">
               <AccountNameField
