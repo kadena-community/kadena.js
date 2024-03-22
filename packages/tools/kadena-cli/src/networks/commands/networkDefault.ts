@@ -23,7 +23,7 @@ export const setNetworkDefault = async (
 
     if (!(await services.filesystem.fileExists(filePath))) {
       return {
-        success: false,
+        status: 'error',
         errors: [
           `The network configuration for network "${network}" does not exist.`,
         ],
@@ -44,12 +44,12 @@ export const setNetworkDefault = async (
     );
 
     return {
-      success: true,
+      status: 'success',
       data: {},
     };
   } catch (error) {
     return {
-      success: false,
+      status: 'error',
       errors: [error.message],
     };
   }
@@ -79,7 +79,7 @@ export const createNetworkSetDefaultCommand: (
     const { networkDefaultConfirmation } =
       await option.networkDefaultConfirmation();
 
-    if (!networkDefaultConfirmation) {
+    if (networkDefaultConfirmation === false) {
       log.warning(`The default network will not be set.`);
       return;
     }
