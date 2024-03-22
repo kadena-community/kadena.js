@@ -17,7 +17,7 @@ describe('createAccountOnMainnet', () => {
     });
     expect(result).toEqual({
       data: 'testAccount',
-      success: true,
+      status: 'success',
     });
   });
 
@@ -50,7 +50,7 @@ describe('createAccountOnMainnet', () => {
     });
     expect(result).toEqual({
       errors: ['something went wrong'],
-      success: false,
+      status: 'error',
     });
   });
 
@@ -82,7 +82,7 @@ describe('createAccountOnMainnet', () => {
     });
     expect(result).toStrictEqual({
       errors: ['Account "testAccount" already exists on chain "1"'],
-      success: false,
+      status: 'error',
     });
   });
 });

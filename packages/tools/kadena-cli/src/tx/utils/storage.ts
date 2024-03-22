@@ -4,9 +4,10 @@ import { WORKING_DIRECTORY } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import { isPartiallySignedTransaction } from './txHelpers.js';
 
-interface ISavedTransaction {
+export interface ISavedTransaction {
   command: ICommand | IUnsignedCommand;
   filePath: string;
+  state: string;
 }
 
 /**
@@ -32,7 +33,7 @@ export async function saveSignedTransactions(
       filePath,
       JSON.stringify(command, null, 2),
     );
-    result.push({ command, filePath });
+    result.push({ command, filePath, state });
   }
   return result;
 }

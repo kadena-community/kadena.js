@@ -158,16 +158,16 @@ export const sendTransactionAction = async ({
   }
 
   if (errors.length === transactionsWithDetails.length) {
-    return { success: false, errors };
+    return { status: 'error', errors };
   } else if (errors.length > 0) {
     return {
-      success: true,
+      status: 'success',
       data: { transactions: successfulCommands },
       warnings: errors,
     };
   }
 
-  return { success: true, data: { transactions: successfulCommands } };
+  return { status: 'success', data: { transactions: successfulCommands } };
 };
 
 export const createSendTransactionCommand: (
@@ -250,7 +250,7 @@ export const createSendTransactionCommand: (
       const result = await sendTransactionAction({ transactionsWithDetails });
       assertCommandError(result, loader);
 
-      if (result.success) {
+      if (result.status === 'success') {
         log.info(
           result.data.transactions
             .map(

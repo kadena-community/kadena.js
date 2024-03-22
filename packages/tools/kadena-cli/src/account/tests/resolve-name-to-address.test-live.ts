@@ -19,7 +19,7 @@ describe('resolveAddressToName functionality', () => {
     );
     assertCommandError(result);
 
-    expect(result.success).toBe(true);
+    expect(result.status).toBe('success');
     expect(result.data.commands).toBeDefined();
     expect(result.data.commands).toBe(
       'k:235fa197fa8de8615d4db0b1ad250c4f716a98e0213f29ba2060e60f1dbf56bd',

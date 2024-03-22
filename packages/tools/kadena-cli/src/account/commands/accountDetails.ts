@@ -15,20 +15,20 @@ export async function accountDetails(
   try {
     const accountDetails = await getAccountDetailsFromChain({ ...config });
     return {
-      success: true,
+      status: 'success',
       data: accountDetails,
     };
   } catch (error) {
     if (error.message.includes('row not found') === true) {
       return {
-        success: false,
+        status: 'error',
         errors: [
           `Account "${config.accountName}" is not available on chain "${config.chainId}" of networkId "${config.networkId}"`,
         ],
       };
     }
     return {
-      success: false,
+      status: 'error',
       errors: [error.message],
     };
   }

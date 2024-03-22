@@ -21,12 +21,12 @@ export const deleteWallet = async (
   const walletFolderPath = `${WALLET_DIR}/${walletConfig?.folder}`;
   await services.filesystem.deleteDirectory(walletFolderPath);
 
-  return { success: true, data: {} };
+  return { status: 'success', data: {} };
 };
 
 export const deleteAllWallets = async (): Promise<CommandResult<{}>> => {
   await services.filesystem.deleteDirectory(WALLET_DIR);
-  return { success: true, data: {} };
+  return { status: 'success', data: {} };
 };
 
 const confirmDelete = createOption({

@@ -22,7 +22,7 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
     orderIndex: t.expose('orderIndex', {
       type: 'BigInt',
       description:
-        'The order index of this event, in the case that there are multiple events.',
+        'The order index of this event, in the case that there are multiple events in one transaction.',
     }),
     moduleName: t.exposeString('moduleName'),
     name: t.exposeString('name'),

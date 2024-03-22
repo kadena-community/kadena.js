@@ -5,6 +5,26 @@ import { builder } from '../builder';
 import TransactionConnection from '../objects/transaction-connection';
 import { resolveTransactionConnection } from '../resolvers/transaction-connection';
 
+const generateTransactionFilter = (args: {
+  accountName?: string | null | undefined;
+  fungibleName?: string | null | undefined;
+  chainId?: string | null | undefined;
+  blockHash?: string | null | undefined;
+  requestKey?: string | null | undefined;
+}): Prisma.TransactionWhereInput => ({
+  ...(args.accountName && { senderAccount: args.accountName }),
+  ...(args.fungibleName && {
+    events: {
+      some: {
+        moduleName: args.fungibleName,
+      },
+    },
+  }),
+  ...(args.chainId && { chainId: parseInt(args.chainId) }),
+  ...(args.blockHash && { blockHash: args.blockHash }),
+  ...(args.requestKey && { requestKey: args.requestKey }),
+});
+
 builder.queryField('transactions', (t) =>
   t.field({
     description: 'Retrieve transactions. Default page size is 20.',
@@ -24,12 +44,10 @@ builder.queryField('transactions', (t) =>
     complexity: getDefaultConnectionComplexity(),
     async resolve(__parent, args, context) {
       try {
-        const whereCondition = generateTransactionFilter(args);
-
         return await resolveTransactionConnection(
           args,
           context,
-          whereCondition,
+          generateTransactionFilter(args),
         );
       } catch (error) {
         throw normalizeError(error);
@@ -37,39 +55,3 @@ builder.queryField('transactions', (t) =>
     },
   }),
 );
-
-function generateTransactionFilter(args: {
-  accountName?: string | null | undefined;
-  fungibleName?: string | null | undefined;
-  chainId?: string | null | undefined;
-  blockHash?: string | null | undefined;
-  requestKey?: string | null | undefined;
-}): Prisma.TransactionWhereInput {
-  const whereFilter: Prisma.TransactionWhereInput = {};
-
-  if (args.accountName) {
-    whereFilter.senderAccount = args.accountName;
-  }
-
-  if (args.fungibleName) {
-    if (whereFilter.events) {
-      whereFilter.events.some = { moduleName: args.fungibleName };
-    } else {
-      whereFilter.events = { some: { moduleName: args.fungibleName } };
-    }
-  }
-
-  if (args.chainId) {
-    whereFilter.chainId = parseInt(args.chainId);
-  }
-
-  if (args.blockHash) {
-    whereFilter.blockHash = args.blockHash;
-  }
-
-  if (args.requestKey) {
-    whereFilter.requestKey = args.requestKey;
-  }
-
-  return whereFilter;
-}

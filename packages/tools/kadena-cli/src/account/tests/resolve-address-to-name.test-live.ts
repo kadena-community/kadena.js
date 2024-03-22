@@ -20,7 +20,7 @@ describe('resolveAddressToName functionality', () => {
     );
     assertCommandError(result);
 
-    expect(result.success).toBe(true);
+    expect(result.status).toBe('success');
     expect(result.data.commands).toBeDefined();
     expect(result.data.commands).toBe('randy.kda');
   });

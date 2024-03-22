@@ -192,6 +192,17 @@ export const globalOptions = {
       return await getWallet(walletName);
     },
   }),
+  walletsSelectByWallet: createOption({
+    key: 'walletName',
+    prompt: async (args) => {
+      return Array.isArray(args.wallets)
+        ? wallets.walletSelectByWalletPrompt(args.wallets as string[])
+        : wallets.walletSelectPrompt();
+    },
+    validation: z.string(),
+    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
+    defaultIsOptional: false,
+  }),
   message: createOption({
     key: 'message' as const,
     prompt: generic.messagePrompt,
