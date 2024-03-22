@@ -96,11 +96,17 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     }),
     block: t.prismaField({
       type: Prisma.ModelName.Block,
-      select: {
-        block: true,
-      },
+      nullable: true,
       resolve(__query, parent) {
-        return parent.block;
+        if (!parent.blockHash) {
+          return null;
+        } else {
+          return prismaClient.block.findUnique({
+            where: {
+              hash: parent.blockHash,
+            },
+          });
+        }
       },
     }),
 
@@ -115,20 +121,26 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
         }),
       }),
       async totalCount(parent) {
-        return await prismaClient.event.count({
-          where: {
-            blockHash: parent.blockHash,
-            requestKey: parent.requestKey,
-          },
-        });
+        if (!parent.blockHash) return 0;
+        else {
+          return await prismaClient.event.count({
+            where: {
+              blockHash: parent.blockHash,
+              requestKey: parent.requestKey,
+            },
+          });
+        }
       },
       async resolve(__query, parent) {
-        return await prismaClient.event.findMany({
-          where: {
-            blockHash: parent.blockHash,
-            requestKey: parent.requestKey,
-          },
-        });
+        if (!parent.blockHash) return [];
+        else {
+          return await prismaClient.event.findMany({
+            where: {
+              blockHash: parent.blockHash,
+              requestKey: parent.requestKey,
+            },
+          });
+        }
       },
     }),
   }),
