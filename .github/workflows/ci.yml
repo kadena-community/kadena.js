@@ -120,14 +120,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # Due to how docs is built, we need to explicitly rebuild to generate the correct menu structure.
-      - name: build Docs
-        if: matrix.app == 'docs'
-        run: pnpm turbo build --filter @kadena/${{ matrix.app }} --force
-
+      # Explicitly rebuild dApps. This gives devnet the time to start up and process all initial blocks.
       - name: build dApps
-        if: matrix.app != 'docs'
-        run: pnpm turbo build --filter @kadena/${{ matrix.app }}
+        run: pnpm turbo build --filter @kadena/${{ matrix.app }} --force
 
       - name: Install browsers
         run: pnpm --filter e2e-${{ matrix.app }} run install:chromium
