@@ -15,10 +15,10 @@ import Debug from 'debug';
 import type { Translate } from 'next-translate';
 
 interface ITransactionData {
-  sender: { chain: ChainwebChainId; account: string };
-  receiver: { chain: ChainwebChainId; account: string };
-  amount: number;
-  receiverGuard: {
+  sender: { chain: ChainwebChainId; account?: string };
+  receiver: { chain: ChainwebChainId; account?: string };
+  amount?: number;
+  receiverGuard?: {
     pred: string;
     keys: [string];
   };
@@ -105,9 +105,8 @@ export async function getTransferData({
       // return { error: ('message' in result.error ? (result.error.message as string) : 'An error occurred.' };
     }
 
-    const [senderAccount, receiverAccount, guard, targetChain, amount] =
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      found?.continuation?.continuation.args as Array<any>;
+    const [senderAccount, receiverAccount, guard, targetChain, amount] = found
+      ?.continuation?.continuation.args as Array<PactValue | undefined>;
 
     const yieldData = found?.continuation?.yield as
       | {
@@ -124,14 +123,19 @@ export async function getTransferData({
       tx: {
         sender: {
           chain: yieldData?.source as ChainwebChainId,
-          account: senderAccount,
+          account: senderAccount as string | undefined,
         },
         receiver: {
           chain: targetChain as ChainwebChainId,
-          account: receiverAccount,
+          account: receiverAccount as string | undefined,
         },
-        amount: amount,
-        receiverGuard: guard,
+        amount: amount as number | undefined,
+        receiverGuard: guard as
+          | {
+              pred: string;
+              keys: [string];
+            }
+          | undefined,
         step: step,
         pactId: pactId,
         rollback: stepHasRollback,
