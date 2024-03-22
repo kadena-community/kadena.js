@@ -468,19 +468,32 @@ Use the following actions to specify the operation you want to perform.
 | list [options] | List all available accounts.
 | name-to-address [options] | Resolve a .kda name to a k:account The k: prefix refers to Kadena account name associated with a public key.
 | address-to-name [options]  Resolve a k:account to a .kda name.
-} help [command] | Display help for a specified command.
+| help [command] | Display help for a specified command.
 
-## Arguments
+### Arguments
 
-kadena account add-manual [arguments]
-Arguments & Options	Description	Required
---account-alias	Set alias for account	
---account-name	Set account name	
---fungible	Fungible e.g coin	
---network	Name of the network to be used	
---chain-id	Chain to be used	
---public-keys	Comma seperated list of public keys	
---predicate	keys-all, keys-any, keys-2, Custom predicate	
+Depending on the action you select, you can specify different arguments and options.
+The following table summarizes all of the arguments you can specify.
+
+| Use this argument | To do this
+| ----------------- | -----------
+| `-a`, `--account-name` <`accountName`> | Specify the account name associated with one or more specified public keys.
+| `--account-alias` <`accountAlias`> | Specify an alias to store your account information.
+| `-p`, `--public-keys` <`publicKeys`> | Specify public keys for an account in a comma-separated list.
+| `-p`, `--predicate` <`predicate`> | Specify the number of signatures required in a keyset for a transaction to be valid. You can specify `keys-all`, `keys-any`, `keys-2`, or a custom predicate.
+| `-n`, `--network` <`network`> | Specify the Kadena network name—for example, `testnet` or `mainnet`—to use.
+| `-c`, `--chain-id` <`chainId`> | Specify the chain identifier to use.
+| `-f`, `--fungible` <`fungible`> | Specify the name of a fungible asset type. The default is `coin`.
+| `-h`, `--help` | Display help for a specified command.
+
+### Examples
+
+To create an account on the Kadena public blockchain network (mainnet) interactively, run the following command:
+
+```bash
+kadena account create
+```
+
 example:
 
 kadena account add-manual --account-alias="myalias" --account-name="myaccountname" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="mypublickey" --predicate="keys-all"
