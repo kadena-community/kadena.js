@@ -103,9 +103,12 @@ jobs:
           show-progress: false
 
       - name: Start sandbox
-        uses: ./.github/actions/devnet
-        with:
-          migrations: packages/apps/graph/cwd-extra-migrations
+        run: docker-compose up -d
+        working-directory: .github/actions/devnet
+
+      - name: Execute healthcheck script
+        run: ./healthcheck.sh
+        working-directory: .github/actions/devnet
 
       - uses: pnpm/action-setup@v2
         with:
@@ -141,6 +144,10 @@ jobs:
           name: playwright-report
           path: packages/tools/e2e-tests/playwright-report/
           retention-days: 30
+
+      - name: Stop sandbox
+        run: docker-compose down
+        working-directory: .github/actions/devnet
 
   ci-gate:
     if: always()
