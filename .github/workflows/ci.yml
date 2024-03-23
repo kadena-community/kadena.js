@@ -76,10 +76,8 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
-      - name: Start sandbox
+      - name: Start Blockchain sandbox
         uses: ./.github/actions/devnet
-        with:
-          migrations: packages/apps/graph/cwd-extra-migrations
 
       - name: Install dependencies
         run: pnpm install
@@ -102,13 +100,8 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
-      - name: Start sandbox
-        run: docker-compose up -d
-        working-directory: .github/actions/devnet
-
-      - name: Execute healthcheck script
-        run: ./healthcheck.sh
-        working-directory: .github/actions/devnet
+      - name: Start Blockchain sandbox
+        uses: ./.github/actions/devnet
 
       - uses: pnpm/action-setup@v2
         with:

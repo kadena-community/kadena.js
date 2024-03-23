@@ -1,10 +1,16 @@
-# action.yml
-name: 'Start Devnet'
-description: 'Start devnet container'
+=
+name: 'Start Blockchain Sandbox'
 inputs:
   migrations:
     description: 'extra chainweb migrations'
     required: false
 runs:
-  using: 'node20'
-  main: 'action.js'
+  using: 'composite'
+  steps:
+      - name: Start sandbox
+        run: docker-compose up -d
+        working-directory: .github/actions/devnet
+
+      - name: Check sandbox health
+        run: ./healthcheck.sh
+        working-directory: .github/actions/devnet
