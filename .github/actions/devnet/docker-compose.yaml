@@ -11,4 +11,3 @@ services:
       - MINING_CONFIRMATION_PERIOD=1
     volumes:
       - ../../../packages/apps/graph/cwd-extra-migrations:/cwd-extra-migrations:ro
-      
