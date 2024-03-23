@@ -1,4 +1,3 @@
-=
 name: 'Start Blockchain Sandbox'
 inputs:
   migrations:
@@ -7,10 +6,10 @@ inputs:
 runs:
   using: 'composite'
   steps:
-      - name: Start sandbox
-        run: docker-compose up -d
-        working-directory: .github/actions/devnet
+    - name: Start sandbox
+      run: docker-compose up -d
+      working-directory: .github/actions/devnet
 
-      - name: Check sandbox health
-        run: ./healthcheck.sh
-        working-directory: .github/actions/devnet
+    - name: Check sandbox health
+      run: ./healthcheck.sh
+      working-directory: .github/actions/devnet
