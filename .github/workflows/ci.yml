@@ -131,6 +131,21 @@ jobs:
       - name: Run end-to-end tests
         run: pnpm turbo test:e2e --filter e2e-${{ matrix.app }}
 
+      - name: Collect docker logs on failure
+        if: always()
+        uses: jwalton/gh-docker-logs@v2
+        with:
+          dest: './logs'
+      - name: Tar logs
+        if: always()
+        run: tar cvzf ./logs.tgz ./logs
+      - name: Upload logs to GitHub
+        if: always()
+        uses: actions/upload-artifact@master
+        with:
+          name: logs.tgz
+          path: ./logs.tgz
+
       - uses: actions/upload-artifact@v3
         if: always()
         with:
