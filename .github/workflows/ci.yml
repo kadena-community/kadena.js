@@ -135,16 +135,16 @@ jobs:
         if: always()
         uses: jwalton/gh-docker-logs@v2
         with:
-          dest: './logs'
+          dest: './logs-${{ matrix.app }}'
       - name: Tar logs
         if: always()
-        run: tar cvzf ./logs.tgz ./logs
+        run: tar cvzf ./logs-${{ matrix.app }}.tgz ./logs-${{ matrix.app }}
       - name: Upload logs to GitHub
         if: always()
         uses: actions/upload-artifact@master
         with:
           name: logs.tgz
-          path: ./logs.tgz
+          path: ./logs-${{ matrix.app }}.tgz
 
       - uses: actions/upload-artifact@v3
         if: always()
