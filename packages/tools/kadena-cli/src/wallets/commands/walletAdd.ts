@@ -35,20 +35,23 @@ export const createGenerateWalletCommand: (
     log.debug('create-wallet:action', config);
 
     try {
-      const { wallet, words } = await services.wallet.create({
+      const created = await services.wallet.create({
         alias: config.walletName,
         legacy: config.legacy,
         password: config.passwordFile,
       });
+      let wallet = created.wallet;
       const key = await services.wallet.generateKey({
         seed: wallet.seed,
         legacy: wallet.legacy,
         password: config.passwordFile,
         index: 0,
       });
-      await services.wallet.storeKey(wallet, key);
+      wallet = await services.wallet.storeKey(wallet, key);
 
-      log.output(log.generateTableString(['Mnemonic Phrase'], [[words]]));
+      log.output(
+        log.generateTableString(['Mnemonic Phrase'], [[created.words]]),
+      );
       log.info(
         log.color.yellow(
           `\nPlease store the mnemonic phrase in a safe place. You will need it to recover your wallet.\n`,
@@ -62,6 +65,7 @@ export const createGenerateWalletCommand: (
       );
       if (config.walletAccountCreate) {
         const accountFilepath = path.join(ACCOUNT_DIR, `${wallet.alias}.yaml`);
+
         await writeAccountAliasMinimal(
           {
             accountName: `k:${wallet.keys[0].publicKey}`,

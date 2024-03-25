@@ -1,10 +1,10 @@
-import { createChangeWalletPasswordCommand } from './commands/walletsChangeWalletPassword.js';
-import { createDeleteWalletsCommand } from './commands/walletsDeleteWallet.js';
-import { createExportCommand } from './commands/walletsExport.js';
-import { createGenerateHdKeysCommand } from './commands/walletsGenerateKey.js';
-import { createImportWalletCommand } from './commands/walletsImport.js';
-import { createListWalletsCommand } from './commands/walletsList.js';
-import { createGenerateWalletCommand } from './commands/walletsWalletGenerate.js';
+import { createGenerateWalletCommand } from './commands/walletAdd.js';
+import { createChangeWalletPasswordCommand } from './commands/walletChangePassword.js';
+import { createDeleteWalletsCommand } from './commands/walletDelete.js';
+import { createExportCommand } from './commands/walletExport.js';
+import { createGenerateHdKeysCommand } from './commands/walletGenerateKey.js';
+import { createImportWalletCommand } from './commands/walletImport.js';
+import { createListWalletsCommand } from './commands/walletList.js';
 
 import type { Command } from 'commander';
 
