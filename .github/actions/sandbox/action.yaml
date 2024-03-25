@@ -5,9 +5,7 @@ runs:
     - name: Start sandbox
       shell: bash
       run: docker-compose up -d
-      working-directory: .github/actions/devnet
 
     - name: Check sandbox health
       shell: bash
       run: ./healthcheck.sh
-      working-directory: .github/actions/devnet
