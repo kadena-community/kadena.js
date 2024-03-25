@@ -1,5 +1,5 @@
 import { hasMintedAttendaceToken } from '@/utils/proofOfUs';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTokens } from '../tokens';
 
 export const useHasMintedAttendaceToken = () => {

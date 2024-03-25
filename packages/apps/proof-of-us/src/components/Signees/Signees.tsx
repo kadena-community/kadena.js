@@ -8,7 +8,7 @@ interface IProps {
   authors: { name: string }[];
 }
 export const Signees: FC<IProps> = ({ signees, authors }) => {
-  const isMultiple = signees?.length && signees?.length > 2;
+  const isMultiple = !!(signees?.length && signees?.length > 2);
   console.log({ signees, isMultiple });
   return (
     <ul

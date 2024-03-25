@@ -1,4 +1,3 @@
-import { env } from '@/utils/env';
 import { getIPFSLink } from '@/utils/getIPFSLink';
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';

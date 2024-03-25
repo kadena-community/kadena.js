@@ -127,7 +127,7 @@ interface ISigneePosition {
 type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   name?: string;
   signerStatus: ISignerStatus;
-  signature: string;
+  signature?: string;
   initiator: boolean;
   socialLink?: ISocial;
   position?: ISigneePosition;

@@ -1,6 +1,5 @@
 import { getClient } from '@/utils/client';
 import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
-import type { IUnsignedCommand } from '@kadena/client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useProofOfUs } from './proofOfUs';

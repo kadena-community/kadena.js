@@ -13,7 +13,7 @@ interface IProps {
 }
 
 export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
-  const { updateSignee, updateProofOfUs } = useProofOfUs();
+  const { updateSignee } = useProofOfUs();
   const [error, setError] = useState<string>('');
   const formRef = useRef<HTMLFormElement>(null);
   const [socialIcon, setSocialIcon] = useState<

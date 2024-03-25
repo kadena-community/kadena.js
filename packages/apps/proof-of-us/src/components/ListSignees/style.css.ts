@@ -27,22 +27,24 @@ export const multipleWrapperClass = style([
 export const multipleSigneeClass = style([
   atoms({ display: 'flex', width: '100%', padding: 'md' }),
   {
-    '&:nth-child(even)': {
-      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    },
-    '&:nth-child(odd)': {
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    },
-    '&:not(:last-child)': {
-      borderBlockEnd: '1px solid rgba(255,255,255,.2)',
-    },
-    '&:first-child': {
-      borderTopLeftRadius: tokens.kda.foundation.radius.md,
-      borderTopRightRadius: tokens.kda.foundation.radius.md,
-    },
-    '&:last-child': {
-      borderBottomLeftRadius: tokens.kda.foundation.radius.md,
-      borderBottomRightRadius: tokens.kda.foundation.radius.md,
+    selectors: {
+      '&:nth-child(even)': {
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      },
+      '&:nth-child(odd)': {
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      },
+      '&:not(:last-child)': {
+        borderBlockEnd: '1px solid rgba(255,255,255,.2)',
+      },
+      '&:first-child': {
+        borderTopLeftRadius: tokens.kda.foundation.radius.md,
+        borderTopRightRadius: tokens.kda.foundation.radius.md,
+      },
+      '&:last-child': {
+        borderBottomLeftRadius: tokens.kda.foundation.radius.md,
+        borderBottomRightRadius: tokens.kda.foundation.radius.md,
+      },
     },
   },
 ]);

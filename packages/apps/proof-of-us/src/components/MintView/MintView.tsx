@@ -36,7 +36,6 @@ export const MintView: FC<IProps> = () => {
       });
 
       await doSubmit(proofOfUs.tx);
-      return;
       router.replace(
         `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
           proofOfUs.requestKey
