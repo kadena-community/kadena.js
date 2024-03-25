@@ -30,7 +30,7 @@ async function walletSelectionPrompt(
   }
 
   const choices = existingKeys.map((key) => ({
-    value: key.filepath,
+    value: key.alias,
     name: `Wallet: ${key.alias}`,
   }));
 
@@ -70,7 +70,7 @@ export async function walletSelectAllPrompt(): Promise<string> {
         name: 'All Wallets',
       },
       ...wallets.map((wallet) => ({
-        value: wallet.filepath,
+        value: wallet.alias,
         name: wallet.alias,
       })),
     ],

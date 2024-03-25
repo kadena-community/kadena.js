@@ -28,6 +28,7 @@ import type {
 
 export interface IWalletService {
   get: (filepath: string) => Promise<IWallet | null>;
+  getByAlias: (alias: string) => Promise<IWallet | null>;
   list: () => Promise<IWallet[]>;
   create: (
     wallet: IWalletCreate,
@@ -79,6 +80,13 @@ export class WalletService implements IWalletService {
 
   public async get(filepath: string): ReturnType<IWalletService['get']> {
     return this.services.config.getWallet(filepath);
+  }
+
+  public async getByAlias(
+    alias: string,
+  ): ReturnType<IWalletService['getByAlias']> {
+    const wallets = await this.services.config.getWallets();
+    return wallets.find((wallet) => wallet.alias === alias) ?? null;
   }
 
   public async list(): ReturnType<IWalletService['list']> {

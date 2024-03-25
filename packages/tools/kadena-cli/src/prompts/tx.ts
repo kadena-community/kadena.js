@@ -6,7 +6,6 @@ import {
 } from '../tx/utils/txHelpers.js';
 
 import { getAllAccounts } from '../account/utils/accountHelpers.js';
-import { getAllWalletKeys } from '../keys/utils/keysHelpers.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
 import { getTemplates } from '../tx/commands/templates/templates.js';
@@ -230,11 +229,15 @@ const promptVariableValue = async (
     log.info(`${log.color.green('>')} Using account name ${value}`);
     return value;
   } else if (key.startsWith('key:')) {
-    const walletKeys = await getAllWalletKeys();
+    const wallets = await services.wallet.list();
+    const walletKeysCount = wallets.reduce(
+      (acc, wallet) => acc + wallet.keys.length,
+      0,
+    );
     const plainKeys = await services.plainKey.list();
     const accounts = await getAllAccounts().catch(() => []);
 
-    const hasKeys = walletKeys.length > 0 || plainKeys.length > 0;
+    const hasKeys = walletKeysCount > 0 || plainKeys.length > 0;
     const hasAccounts = accounts.length > 0;
     let value: string | null = null;
     let targetSelection: string | null = null;
@@ -311,30 +314,37 @@ const promptVariableValue = async (
 
     // Pick from wallet keys or plain keys
     if (targetSelection === '_key_') {
-      const choices = [
-        ...tableFormatPrompt([
-          ...walletKeys.map((key) => ({
-            value: key.publicKey,
-            name: [
-              key.alias,
-              maskStringPreservingStartAndEnd(key.publicKey),
-              `(wallet ${key.wallet.folder})`,
-            ],
-          })),
-          ...plainKeys.map((key) => ({
-            value: key.publicKey,
-            name: [
-              key.alias,
-              maskStringPreservingStartAndEnd(key.publicKey),
-              `(plain key)`,
-            ],
-          })),
-        ]),
-      ];
-      value = await select({
+      const target = await select({
         message: `Select public key alias for template value ${key}:`,
-        choices: choices,
+        choices: [
+          { value: '_wallet_', name: 'Wallet keys' },
+          { value: '_plain_', name: 'Plain keys' },
+        ] as const,
       });
+      if (target === '_wallet_') {
+        const wallet = await select({
+          message: `Select wallet for template value ${key}:`,
+          choices: wallets.map((wallet) => ({
+            value: wallet,
+            name: wallet.alias,
+          })),
+        });
+        value = await select({
+          message: `Select public key from wallet ${wallet.alias}:`,
+          choices: wallet.keys.map((wallet) => ({
+            value: wallet.publicKey,
+            name: wallet.publicKey,
+          })),
+        });
+      } else if (target === '_plain_') {
+        value = await select({
+          message: `Select public key from plain keys:`,
+          choices: plainKeys.map((key) => ({
+            value: key.publicKey,
+            name: key.publicKey,
+          })),
+        });
+      }
     }
 
     // Pick public key from accounts

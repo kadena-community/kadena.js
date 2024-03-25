@@ -1,10 +1,6 @@
-import type { IKeyPair } from '@kadena/types';
-import yaml from 'js-yaml';
 import path from 'path';
 
-import { ACCOUNT_DIR, WALLET_DIR } from '../../constants/config.js';
-import type { IWallet } from '../../keys/utils/keysHelpers.js';
-import { services } from '../../services/index.js';
+import { ACCOUNT_DIR } from '../../constants/config.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
@@ -52,17 +48,3 @@ export const displayAddAccountSuccess = (
     ),
   );
 };
-
-export async function getAllPublicKeysFromWalletConfig(
-  walletNameConfig: IWallet,
-): Promise<Array<string>> {
-  const publicKeysList: Array<string> = [];
-  for (const key of walletNameConfig.keys) {
-    const content = await services.filesystem.readFile(
-      path.join(WALLET_DIR, walletNameConfig?.folder, key),
-    );
-    const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
-    publicKeysList.push(parsed?.publicKey ?? '');
-  }
-  return publicKeysList.filter((key) => !isEmpty(key));
-}
