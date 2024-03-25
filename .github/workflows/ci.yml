@@ -100,7 +100,7 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
-      - name: Start Blockchain sandbox
+      - name: Sandbox - setup
         uses: ./.github/actions/devnet
 
       - uses: pnpm/action-setup@v2
@@ -131,12 +131,12 @@ jobs:
       - name: Run end-to-end tests
         run: pnpm turbo test:e2e --filter e2e-${{ matrix.app }}
 
-      - name: Export & archive logs
+      - name: Sandbox - export & archive logs
         uses: ./.github/actions/archive-logs
         with:
           test-object: ${{ matrix.app }}
 
-      - name: Stop sandbox
+      - name: Sandbox - teardown
         run: docker-compose down
         working-directory: .github/actions/devnet
 
