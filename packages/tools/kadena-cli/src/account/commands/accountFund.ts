@@ -9,7 +9,10 @@ import ora from 'ora';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 // import { createOption } from '../../utils/createOption.js';
-import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
+import {
+  CHAIN_ID_ACTION_ERROR_MESSAGE,
+  NO_ACCOUNTS_FOUND_ERROR_MESSAGE,
+} from '../../constants/account.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
@@ -53,6 +56,11 @@ export const createAccountFundCommand = createCommand(
       allowedNetworkIds: ['testnet04'],
     });
     const { chainId } = await option.chainId();
+
+    if (!chainId) {
+      log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
+      return;
+    }
 
     if (!accountConfig) {
       log.error(

@@ -1,14 +1,14 @@
 import type { ChainId } from '@kadena/types';
 import { Option } from 'commander';
 import { z } from 'zod';
+import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
 import { account } from '../prompts/index.js';
 import { createOption } from '../utils/createOption.js';
-import { generateAllChainIds } from '../utils/helpers.js';
+import { formatZodError, generateAllChainIds } from '../utils/helpers.js';
 import { log } from '../utils/logger.js';
 import type { IAliasAccountData } from './types.js';
 import {
   chainIdRangeValidation,
-  formatZodErrors,
   formatZodFieldErrors,
   fundAmountValidation,
   parseChainIdRange,
@@ -167,10 +167,16 @@ export const accountOptions = {
       }
 
       const chainIds = parseChainIdRange(chainId.trim());
+      if (!chainIds || !chainIds.length) {
+        log.error(CHAIN_ID_RANGE_ERROR_MESSAGE);
+        return;
+      }
+
       const parse = chainIdRangeValidation.safeParse(chainIds);
       if (!parse.success) {
-        const formatted = formatZodErrors(parse.error);
-        throw new Error(`ChainId: ${formatted}`);
+        const formatted = formatZodError(parse.error);
+        log.error(CHAIN_ID_RANGE_ERROR_MESSAGE, formatted);
+        return;
       }
 
       return parse.data.map((id) => id.toString()) as ChainId[];

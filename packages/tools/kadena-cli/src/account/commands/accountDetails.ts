@@ -1,4 +1,5 @@
 import type { ChainId } from '@kadena/types';
+import { CHAIN_ID_ACTION_ERROR_MESSAGE } from '../../constants/account.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
@@ -133,6 +134,11 @@ export const createAccountDetailsCommand = createCommand(
 
     const { networkConfig } = await option.network();
     const { chainId } = await option.chainId();
+
+    if (!chainId) {
+      log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
+      return;
+    }
 
     log.debug('account-details:action', {
       account,

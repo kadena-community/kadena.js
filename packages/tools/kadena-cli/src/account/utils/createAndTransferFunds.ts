@@ -90,6 +90,8 @@ export async function createAndTransferFund({
 
     return await submit(signedTx);
   } catch (error) {
-    throw Error(`Failed to create an account and transfer fund: ${error}`);
+    throw Error(
+      `Failed to create an account and transfer fund: ${error.message}`,
+    );
   }
 }

@@ -6,8 +6,10 @@ import {
   getAllAccountNames,
   parseChainIdRange,
 } from '../account/utils/accountHelpers.js';
+import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
+  formatZodError,
   maskStringPreservingStartAndEnd,
   truncateText,
 } from '../utils/helpers.js';
@@ -271,10 +273,15 @@ export const chainIdPrompt: IPrompt<string> = async (
       if (input.trim() === 'all') return true;
 
       const parseInput = parseChainIdRange(input);
+
+      if (!parseInput || !parseInput.length) {
+        return CHAIN_ID_RANGE_ERROR_MESSAGE;
+      }
+
       const result = chainIdRangeValidation.safeParse(parseInput);
-      if (result.success === false) {
-        const formatted = result.error.format();
-        return `ChainId: ${formatted._errors[0]}`;
+      if (!result.success) {
+        const formatted = formatZodError(result.error);
+        return `ChainId: ${formatted}`;
       }
       return true;
     },
