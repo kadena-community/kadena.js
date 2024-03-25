@@ -102,3 +102,5 @@ temp
 
 # parcel
 .parcel-cache
+
+.github/actions/devnet/l1/*

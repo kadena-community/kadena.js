@@ -136,6 +136,7 @@ jobs:
         uses: jwalton/gh-docker-logs@v2
         with:
           dest: './logs-${{ matrix.app }}'
+
       - name: Tar logs
         if: always()
         run: tar cvzf ./logs-${{ matrix.app }}.tgz ./logs-${{ matrix.app }}
@@ -145,6 +146,18 @@ jobs:
         with:
           name: logs-${{ matrix.app }}.tgz
           path: ./logs-${{ matrix.app }}.tgz
+
+      - name: Tar volume
+        if: always()
+        run: tar cvzf ./volume-${{ matrix.app }}.tgz ./l1
+        working-directory: .github/actions/devnet
+
+      - name: Upload logs to GitHub
+        if: always()
+        uses: actions/upload-artifact@master
+        with:
+          name: volume-${{ matrix.app }}.tgz
+          path: ./volume-${{ matrix.app }}.tgz
 
       - uses: actions/upload-artifact@v3
         if: always()
