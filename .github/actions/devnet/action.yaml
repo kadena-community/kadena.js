@@ -1,8 +1,4 @@
 name: 'Start Blockchain Sandbox'
-inputs:
-  migrations:
-    description: 'extra chainweb migrations'
-    required: false
 runs:
   using: 'composite'
   steps:
