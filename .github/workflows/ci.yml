@@ -77,7 +77,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Start Blockchain sandbox
-        uses: ./.github/actions/devnet
+        uses: ./.github/actions/sandbox
 
       - name: Install dependencies
         run: pnpm install
@@ -101,7 +101,7 @@ jobs:
           show-progress: false
 
       - name: Setup devnet sandbox
-        uses: ./.github/actions/devnet
+        uses: ./.github/actions/sandbox
 
       - uses: pnpm/action-setup@v2
         with:
