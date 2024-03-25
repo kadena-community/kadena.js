@@ -70,10 +70,11 @@ export async function accountDetails(
     status = 'error';
     errors.push(error.message);
   }
-  status = accountDetails.length === 0 ? 'error' : status;
+  const nonEmptyAccountDetails = accountDetailsList.filter(notEmpty);
+  status = nonEmptyAccountDetails.length === 0 ? 'error' : status;
   return {
     status,
-    data: accountDetailsList.filter(notEmpty),
+    data: nonEmptyAccountDetails,
     errors,
     warnings: [formatWarnings(warnings)],
   };
