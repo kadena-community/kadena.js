@@ -1,6 +1,6 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
 import { assert, describe, expect, it } from 'vitest';
-import { decrypt } from '../commands/walletsDecrypt.js';
+import { decrypt } from '../commands/walletsExport.js';
 
 describe('decrypt command', () => {
   it('should decrypt a message correctly', async () => {

@@ -9,6 +9,7 @@ import {
 } from '../keys/utils/keysHelpers.js';
 
 import { services } from '../services/index.js';
+import type { IWallet } from '../services/wallet/wallet.types.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   isValidFilename,
@@ -186,5 +187,49 @@ export async function keyPairsPrompt(): Promise<string> {
         return error.message;
       }
     },
+  });
+}
+
+export async function walletCreateAccountPrompt(): Promise<boolean> {
+  return await select({
+    message: 'Automatically create the first account?',
+    choices: [
+      { value: true, name: 'Yes' },
+      { value: false, name: 'No' },
+    ],
+  });
+}
+
+export async function walletGenerateKeyAmountPrompt(): Promise<string> {
+  return await input({
+    message: 'Amount of keys to generate:',
+    default: '1',
+    validate(input) {
+      if (!/^\d+$/.test(input)) {
+        return 'Amount must be a number';
+      }
+      return true;
+    },
+  });
+}
+
+export async function walletGenerateKeyAliasPrompt(): Promise<
+  string | undefined
+> {
+  return await input({
+    message: 'Alias for the generated key (optional):',
+  });
+}
+
+export async function walletKeyIndex(args: {
+  wallet?: IWallet;
+}): Promise<string> {
+  if (!args.wallet) throw Error('walletKeyIndex called without wallet');
+  return await select({
+    message: 'Select a key index:',
+    choices: args.wallet.keys.map((key, index) => ({
+      value: index.toString(),
+      name: `${index}: ${key.publicKey}`,
+    })),
   });
 }

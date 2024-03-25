@@ -1,4 +1,3 @@
-import yaml from 'js-yaml';
 import path from 'path';
 
 import {
@@ -8,8 +7,6 @@ import {
   PLAIN_KEY_EXT,
   PLAIN_KEY_LEGACY_EXT,
   WALLET_DIR,
-  WALLET_EXT,
-  WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
 import type { IPlainKey } from '../../services/index.js';
 import { services } from '../../services/index.js';
@@ -21,6 +18,7 @@ import { log } from '../../utils/logger.js';
 import type { IWallet } from './keysHelpers.js';
 import type { IKeyPair } from './storage.js';
 
+import type { IWallet as IServiceWallet } from '../../services/wallet/wallet.types.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
 
@@ -56,50 +54,32 @@ export async function printPlainKeys(): Promise<void> {
   }
 }
 
-export async function printWalletKeys(wallet: IWallet | null): Promise<void> {
+export async function printWalletKeys(
+  wallet: IServiceWallet | null,
+): Promise<void> {
   if (!wallet) return;
 
-  const header: TableHeader = [
-    'Filename',
-    'Index',
-    'Legacy',
-    'Public Key',
-    'Secret Key',
-  ];
+  const header: TableHeader = ['Alias', 'Index', 'Public Key'];
   const rows: TableRow[] = [];
 
   if (wallet.keys.length === 0) {
-    log.info(`\nWallet: ${wallet.folder}${wallet.legacy ? ' (legacy)' : ''}`);
+    log.info(`\nWallet: ${wallet.alias}${wallet.legacy ? ' (legacy)' : ''}`);
     return log.info('No keys');
   }
 
   for (const key of wallet.keys) {
-    const content = await services.filesystem.readFile(
-      path.join(WALLET_DIR, wallet.folder, key),
-    );
-    const parsed: IKeyPair | null =
-      content !== null && content !== ''
-        ? (yaml.load(content) as IKeyPair)
-        : null;
-
-    if (parsed) {
-      rows.push([
-        key,
-        parsed.index !== undefined ? parsed.index.toString() : 'N/A',
-        key.includes('legacy') ? 'Yes' : 'No',
-        parsed.publicKey ?? 'N/A',
-        parsed.secretKey !== undefined
-          ? maskStringPreservingStartAndEnd(parsed.secretKey, 65)
-          : 'N/A',
-      ]);
-    }
+    rows.push([
+      key.alias ?? `N/A`,
+      key.index.toString(),
+      key.publicKey ?? 'N/A',
+    ]);
   }
 
   if (rows.length > 0) {
-    log.info(`\nWallet: ${wallet.folder}${wallet.legacy ? ' (legacy)' : ''}`);
+    log.info(`\nWallet: ${wallet.alias}${wallet.legacy ? ' (legacy)' : ''}`);
     log.output(log.generateTableString(header, rows));
   } else {
-    log.info(`\nWallet: ${wallet.folder}${wallet.legacy ? ' (legacy)' : ''}`);
+    log.info(`\nWallet: ${wallet.alias}${wallet.legacy ? ' (legacy)' : ''}`);
     log.info('No valid keys found');
   }
 }
@@ -261,31 +241,4 @@ export function displayGeneratedKeys(
     log.info('No keys to display.');
   }
   log.info('\n');
-}
-
-export function displayGeneratedWallet(words: string): void {
-  const header: TableHeader = ['Mnemonic Phrase'];
-  const rows: TableRow[] = [[words]];
-
-  log.output(log.generateTableString(header, rows));
-
-  log.info(
-    log.color.yellow(
-      `Please store the mnemonic phrase in a safe place. You will need it to recover your wallet.`,
-    ),
-  );
-  log.info('');
-}
-
-export function displayStoredWallet(
-  walletName: string,
-  isLegacy: boolean,
-): void {
-  const extension: string = isLegacy ? WALLET_LEGACY_EXT : WALLET_EXT;
-  const walletPath = `${WALLET_DIR}/${walletName}/${walletName}${extension}`;
-
-  const header: TableHeader = ['Wallet Storage Location'];
-  const rows: TableRow[] = [[relativeToCwd(walletPath)]];
-
-  log.output(log.generateTableString(header, rows));
 }
