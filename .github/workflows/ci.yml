@@ -131,22 +131,10 @@ jobs:
       - name: Run end-to-end tests
         run: pnpm turbo test:e2e --filter e2e-${{ matrix.app }}
 
-      - name: Collect docker logs on failure
-        if: always()
-        uses: jwalton/gh-docker-logs@v2
+      - name: Export & archive logs
+        uses: ./.github/actions/archive-logs
         with:
-          dest: './logs-${{ matrix.app }}'
-
-      - name: Tar logs
-        if: always()
-        run: tar cvzf ./logs-${{ matrix.app }}.tgz ./logs-${{ matrix.app }}
-
-      - name: Upload logs to GitHub
-        if: always()
-        uses: actions/upload-artifact@master
-        with:
-          name: logs-${{ matrix.app }}.tgz
-          path: ./logs-${{ matrix.app }}.tgz
+          test-object: ${{ matrix.app }}
 
       - name: Stop sandbox
         run: docker-compose down
