@@ -150,8 +150,7 @@ jobs:
 
       - name: save volume
         run: |
-          docker run --rm -v "sandbox:/data" -v "./backup:/backup" busybox tar \
-          -czvf /backup/sandbox_volume.tar.gz /data
+          docker run --rm -v "sandbox:/data" -v "./backup:/backup" busybox tar -czvf /backup/sandbox_volume.tar.gz /data
         working-directory: .github/actions/devnet
 
       - name: Upload Volumes
