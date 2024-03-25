@@ -23,7 +23,6 @@ export const createGenerateHdKeysCommand: (
     securityOptions.createPasswordOption({
       message: 'Enter the wallet password',
     }),
-    globalOptions.keyIndexOrRange({ isOptional: true }),
   ],
   async (option) => {
     const { walletNameConfig, walletName } = await option.walletName();

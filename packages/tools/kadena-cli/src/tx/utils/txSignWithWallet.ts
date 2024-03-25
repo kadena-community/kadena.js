@@ -4,17 +4,17 @@ import type { ICommand, IUnsignedCommand } from '@kadena/types';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 
-import type { EncryptedString } from '@kadena/hd-wallet';
-import type { IWallet } from '../../keys/utils/keysHelpers.js';
-import { getWallet, getWalletContent } from '../../keys/utils/keysHelpers.js';
-
-import type { IKeyPair } from '../../keys/utils/storage.js';
 import type { CommandOption } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
 import type { options } from '../commands/txSignOptions.js';
 import { parseTransactionsFromStdin } from './input.js';
 import { saveSignedTransactions } from './storage.js';
 
+import { services } from '../../services/index.js';
+import type {
+  IWallet,
+  IWalletKey,
+} from '../../services/wallet/wallet.types.js';
 import {
   assessTransactionSigningStatus,
   extractRelevantWalletAndKeyPairsFromCommand,
@@ -22,25 +22,23 @@ import {
   getTransactionsFromFile,
   getWalletsAndKeysForSigning,
   processSigningStatus,
-  signTransactionWithSeed,
+  signTransactionWithWallet,
 } from './txHelpers.js';
 
-export const signTransactionsWithwallet = async ({
+export const signTransactionsWithWallet = async ({
   password,
   signed,
   unsignedCommands,
   skippedCommands,
   relevantKeyPairs,
   wallet,
-  walletConfig,
 }: {
   password: string;
   signed: boolean;
   unsignedCommands: IUnsignedCommand[];
   skippedCommands: IUnsignedCommand[];
-  relevantKeyPairs: IKeyPair[];
-  wallet: string;
-  walletConfig: IWallet;
+  relevantKeyPairs: IWalletKey[];
+  wallet: IWallet;
 }): Promise<
   CommandResult<{ commands: { command: ICommand; path: string }[] }>
 > => {
@@ -52,15 +50,12 @@ export const signTransactionsWithwallet = async ({
   }
   const transactions: (IUnsignedCommand | ICommand)[] = [];
 
-  const seed = (await getWalletContent(wallet)) as EncryptedString;
-
   try {
     for (const command of unsignedCommands) {
-      const signedCommand = await signTransactionWithSeed(
-        seed,
+      const signedCommand = await signTransactionWithWallet(
+        wallet,
         password,
         command,
-        walletConfig.legacy,
         relevantKeyPairs,
       );
 
@@ -88,7 +83,7 @@ export const signTransactionsWithwallet = async ({
   }
 };
 
-export async function signWithwallet(
+export async function signWithWallet(
   option: CommandOption<typeof options>,
   values: string[],
   stdin?: string,
@@ -97,7 +92,7 @@ export async function signWithwallet(
     if (stdin !== undefined) {
       const command = await parseTransactionsFromStdin(stdin);
       const wallet = await option.walletName();
-      const walletConfig = await getWallet(wallet.walletName);
+      const walletConfig = await services.wallet.get(wallet.walletName);
 
       if (walletConfig === null) {
         throw new Error(`Wallet: ${wallet.walletName} does not exist.`);
@@ -105,7 +100,6 @@ export async function signWithwallet(
 
       const walletAndKeys = await extractRelevantWalletAndKeyPairsFromCommand(
         command,
-        wallet.walletName,
         walletConfig,
       );
 
@@ -115,14 +109,13 @@ export async function signWithwallet(
         password,
         command,
       });
-      return await signTransactionsWithwallet({
+      return await signTransactionsWithWallet({
         password: password.passwordFile,
         signed: false,
         unsignedCommands: [command],
         skippedCommands: [],
         relevantKeyPairs: walletAndKeys.relevantKeyPairs,
-        wallet: wallet.walletName,
-        walletConfig: walletConfig!,
+        wallet: walletConfig,
       });
     } else {
       const { directory } = await option.directory();
@@ -152,7 +145,7 @@ export async function signWithwallet(
       ];
 
       const wallet = await option.walletName({ wallets });
-      const walletConfig = await getWallet(wallet.walletName);
+      const walletConfig = wallet.walletNameConfig;
       const password = await option.passwordFile();
 
       if (walletConfig === null) {
@@ -162,18 +155,21 @@ export async function signWithwallet(
       const { unsignedCommands, skippedCommands, relevantKeyPairs } =
         await filterRelevantUnsignedCommandsForWallet(
           unsignedCommandsUnfiltered,
-          walletAndKeys,
-          wallet.walletName,
+          {
+            wallet: wallets.find(
+              (x) => x.alias === wallet.walletNameConfig!.alias,
+            )!,
+            relevantKeyPairs: [],
+          },
         );
 
-      return await signTransactionsWithwallet({
+      return await signTransactionsWithWallet({
         password: password.passwordFile,
         signed: false,
         unsignedCommands,
         skippedCommands,
         relevantKeyPairs,
-        wallet: wallet.walletName,
-        walletConfig,
+        wallet: walletConfig,
       });
     }
   })();

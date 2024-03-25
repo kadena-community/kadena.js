@@ -14,15 +14,13 @@ import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
 import { isAbsolute, join } from 'path';
 import { z } from 'zod';
-import type { IWallet } from '../../keys/utils/keysHelpers.js';
-import {
-  getAllWallets,
-  getWallet,
-  getWalletKey,
-} from '../../keys/utils/keysHelpers.js';
-import type { IKeyPair as IKeyPairLocal } from '../../keys/utils/storage.js';
 import { ICommandSchema } from '../../prompts/tx.js';
 import { services } from '../../services/index.js';
+import type {
+  IWallet,
+  IWalletKey,
+  IWalletKeyPair,
+} from '../../services/wallet/wallet.types.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
@@ -34,8 +32,8 @@ export interface ICommandData {
 }
 
 export interface IWalletWithKey {
-  wallet: string;
-  relevantKeyPairs: IKeyPairLocal[];
+  wallet: IWallet;
+  relevantKeyPairs: IWalletKey[];
 }
 
 /**
@@ -145,12 +143,11 @@ export function formatDate(): string {
   return `${year}-${month}-${day}-${hours}:${minutes}`;
 }
 
-export async function signTransactionWithSeed(
-  seed: EncryptedString,
+export async function signTransactionWithWallet(
+  wallet: IWallet,
   password: string,
   unsignedTransaction: IUnsignedCommand,
-  legacy: boolean,
-  relevantKeyPairs: IKeyPairLocal[] = [],
+  relevantKeyPairs: IWalletKey[] = [],
 ): Promise<ICommand | IUnsignedCommand> {
   try {
     const signatures = await Promise.all(
@@ -158,11 +155,11 @@ export async function signTransactionWithSeed(
         if (typeof key.index !== 'number') {
           throw new Error('Key index not found');
         }
-        if (legacy === true) {
+        if (wallet.legacy === true) {
           const sigUint8Array = await legacyKadenaSignWithSeed(
             password,
             unsignedTransaction.cmd,
-            seed,
+            wallet.seed,
             key.index,
           );
           return {
@@ -170,7 +167,11 @@ export async function signTransactionWithSeed(
             pubKey: key.publicKey,
           };
         } else {
-          const signWithSeed = kadenaSignWithSeed(password, seed, key.index);
+          const signWithSeed = kadenaSignWithSeed(
+            password,
+            wallet.seed,
+            key.index,
+          );
           const sigs = await signWithSeed(unsignedTransaction.hash);
           return {
             sig: sigs.sig,
@@ -197,7 +198,7 @@ export async function signTransactionWithSeed(
  */
 
 export async function signTransactionWithKeyPair(
-  keys: IKeyPairLocal[],
+  keys: IWalletKeyPair[],
   unsignedTransactions: IUnsignedCommand[],
   legacy?: boolean,
 ): Promise<(ICommand | IUnsignedCommand)[]> {
@@ -246,10 +247,10 @@ export async function signTransactionWithKeyPair(
   }
 }
 
-export function getRelevantKeypairs(
+export function getRelevantKeypairs<T extends { publicKey: string }>(
   tx: IPactCommand,
-  keypairs: IKeyPairLocal[],
-): IKeyPairLocal[] {
+  keypairs: T[],
+): T[] {
   const relevantKeypairs = keypairs.filter((keypair) =>
     tx.signers.some(({ pubKey }) => pubKey === keypair.publicKey),
   );
@@ -447,22 +448,17 @@ export const requestKeyValidation = z
 export async function getWalletsAndKeysForSigning(
   unsignedTransactions: IUnsignedCommand[],
 ): Promise<IWalletWithKey[]> {
-  const walletNames = await getAllWallets();
+  const wallets = await services.wallet.list();
   const foundWalletsWithKeys: IWalletWithKey[] = [];
 
-  for (const walletName of walletNames) {
-    const walletConfig = await getWallet(walletName);
-    if (walletConfig !== null) {
+  for (const wallet of wallets) {
+    if (wallet !== null) {
       for (const command of unsignedTransactions) {
         try {
           const commandObj = JSON.parse(command.cmd) as IPactCommand;
           const signers = commandObj?.signers ?? [];
           const { relevantKeyPairs } =
-            await extractRelevantWalletAndKeyPairsFromCommand(
-              command,
-              walletName,
-              walletConfig,
-            );
+            await extractRelevantWalletAndKeyPairsFromCommand(command, wallet);
 
           const unsignedRelevantKeyPairs = relevantKeyPairs.filter(
             (keyPair) => {
@@ -477,7 +473,7 @@ export async function getWalletsAndKeysForSigning(
 
           if (unsignedRelevantKeyPairs.length > 0) {
             const existingEntry = foundWalletsWithKeys.find(
-              (entry) => entry.wallet === walletName,
+              (entry) => entry.wallet === wallet,
             );
             if (existingEntry) {
               existingEntry.relevantKeyPairs = [
@@ -488,16 +484,13 @@ export async function getWalletsAndKeysForSigning(
               ];
             } else {
               foundWalletsWithKeys.push({
-                wallet: walletName,
+                wallet: wallet,
                 relevantKeyPairs: unsignedRelevantKeyPairs,
               });
             }
           }
         } catch (error) {
-          log.error(
-            `Error processing wallet ${walletName} for command:`,
-            error,
-          );
+          log.error(`Error processing wallet ${wallet} for command:`, error);
         }
       }
     }
@@ -508,17 +501,15 @@ export async function getWalletsAndKeysForSigning(
 
 export async function extractRelevantWalletAndKeyPairsFromCommand(
   command: IUnsignedCommand,
-  wallet: string,
-  walletConfig: IWallet,
+  wallet: IWallet,
 ): Promise<IWalletWithKey> {
   try {
     const parsedTransaction = JSON.parse(command.cmd);
 
-    const keys = await Promise.all(
-      walletConfig.keys.map((key) => getWalletKey(walletConfig, key)),
+    const relevantKeyPairs = getRelevantKeypairs(
+      parsedTransaction,
+      wallet.keys,
     );
-
-    const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
 
     return {
       wallet,
@@ -531,17 +522,16 @@ export async function extractRelevantWalletAndKeyPairsFromCommand(
 
 export async function filterRelevantUnsignedCommandsForWallet(
   unsignedCommands: IUnsignedCommand[],
-  wallets: IWalletWithKey[],
-  walletName: string,
+  walletWithKey: IWalletWithKey,
 ): Promise<{
   unsignedCommands: IUnsignedCommand[];
   skippedCommands: IUnsignedCommand[];
-  relevantKeyPairs: IKeyPairLocal[];
+  relevantKeyPairs: IWalletKey[];
 }> {
-  const wallet = wallets.find((wallet) => wallet.wallet === walletName);
+  const wallet = walletWithKey;
 
   if (!wallet) {
-    log.error(`Wallet named '${walletName}' not found.`);
+    log.error(`Wallet named '${wallet}' not found.`);
     return {
       unsignedCommands: [],
       skippedCommands: [...unsignedCommands],
@@ -555,7 +545,7 @@ export async function filterRelevantUnsignedCommandsForWallet(
 
   const skippedCommands: IUnsignedCommand[] = [];
   const relevantUnsignedCommands: IUnsignedCommand[] = [];
-  const relevantKeyPairs: IKeyPairLocal[] = [];
+  const relevantKeyPairs: IWalletKey[] = [];
 
   unsignedCommands.forEach((command) => {
     const commandObj = JSON.parse(command.cmd) as IPactCommand;

@@ -20,10 +20,10 @@ export const walletOptions = {
     validation: z.string(),
     option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,
-    expand: async (filepath: string) => {
-      return filepath === 'all'
+    expand: async (walletName: string) => {
+      return walletName === 'all'
         ? await services.wallet.list()
-        : await services.wallet.get(filepath);
+        : await services.wallet.getByAlias(walletName);
     },
   }),
   keyMnemonic: createOption({
