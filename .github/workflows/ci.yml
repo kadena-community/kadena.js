@@ -149,9 +149,7 @@ jobs:
           path: ./logs-${{ matrix.app }}.tgz
 
       - name: save volume
-        run:
-          ./docker-volumes.sh -v devnet_devnet_1 save
-          devnet_devnet_1-${{matrix.app}}-volumes.tar.gz
+        run: ./docker-volumes.sh
         working-directory: .github/actions/devnet
 
       - name: Upload Volumes
