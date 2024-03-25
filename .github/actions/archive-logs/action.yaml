@@ -11,10 +11,8 @@ runs:
       with:
         dest: './logs-${{ inputs.test-object }}'
     - name: Tar logs
-      if: always()
-      run:
-        tar cvzf ./logs-${{ inputs.test-object }}.tgz ./logs-${{
-        inputs.test-object }}
+      shell: bash
+      run: tar cvzf ./logs-${{ inputs.test-object }}.tgz ./logs-${{ inputs.test-object }}
 
     - name: Upload logs to GitHub
       if: always()
