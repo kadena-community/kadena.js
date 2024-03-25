@@ -1,3 +1,4 @@
+import { MonoContentCopy } from '@kadena/react-icons/system';
 import React, { useState } from 'react';
 import { HoverTag } from '../HoverTag';
 import type { IHoverTagProps } from '../HoverTag/HoverTag';
@@ -8,7 +9,7 @@ export const AccountHoverTag = ({ value }: IAccountHoverTagProps) => {
   const [tooltipContent, setTooltipContent] = useState<string>(value);
   return (
     <HoverTag
-      icon="ContentCopy"
+      icon={<MonoContentCopy />}
       value={value}
       onIconButtonClick={async () => {
         await navigator.clipboard.writeText(value);

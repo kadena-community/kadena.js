@@ -2,6 +2,7 @@ import { MenuButton } from '@/components/Common/Layout/partials/Sidebar/MenuButt
 import { MenuLinkButton } from '@/components/Common/Layout/partials/Sidebar/MenuLinkButton';
 import { useLayoutContext } from '@/context';
 import { useIsMatchingMediaQuery } from '@/hooks/use-is-mobile-media-query';
+import { MonoClose } from '@kadena/react-icons/system';
 import { breakpoints } from '@kadena/react-ui/styles';
 import { useRouter } from 'next/router';
 import type { FC } from 'react';
@@ -37,7 +38,7 @@ export const Menu: FC = () => {
       <>
         <div className={subMenuTitleClass}>
           <span>{activeMenu?.title}</span>
-          <MenuButton icon={'Close'} onClick={handleCloseMenu} />
+          <MenuButton icon={<MonoClose />} onClick={handleCloseMenu} />
         </div>
         <div className={subMenuContentStyle}>
           {activeMenu?.items?.map((item, index) => (

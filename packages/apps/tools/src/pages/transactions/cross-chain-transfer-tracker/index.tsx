@@ -18,6 +18,13 @@ import {
 } from '@/services/transfer-tracker/get-transfer-status';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  MonoInfo,
+  MonoLink,
+  MonoRefresh,
+  MonoSearch,
+  MonoWarning,
+} from '@kadena/react-icons/system';
+import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -30,7 +37,6 @@ import {
   NotificationFooter,
   NotificationHeading,
   Stack,
-  SystemIcon,
   TrackerCard,
 } from '@kadena/react-ui';
 import Debug from 'debug';
@@ -183,7 +189,7 @@ const CrossChainTransferTracker: FC = () => {
               onDismiss={() => {
                 setTxError('');
               }}
-              icon={<SystemIcon.AlertBox />}
+              icon={<MonoWarning />}
               role="status"
             >
               <NotificationHeading>Warning</NotificationHeading>
@@ -192,7 +198,7 @@ const CrossChainTransferTracker: FC = () => {
                 <NotificationButton
                   intent="negative"
                   onClick={validateThenSubmit(handleSubmit)}
-                  icon={<SystemIcon.Refresh />}
+                  icon={<MonoRefresh />}
                 >
                   {t('Retry')}
                 </NotificationButton>
@@ -231,7 +237,7 @@ const CrossChainTransferTracker: FC = () => {
               type="submit"
               title={t('Search')}
               onPress={() => setOpenItem(undefined)}
-              endIcon={<SystemIcon.Magnify />}
+              endIcon={<MonoSearch />}
               isLoading={isSubmitting}
             >
               {t('Search')}
@@ -323,7 +329,7 @@ const CrossChainTransferTracker: FC = () => {
               onPress={() => {
                 window.location.href = `/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`;
               }}
-              endIcon={<SystemIcon.Link />}
+              endIcon={<MonoLink />}
               color="positive"
               variant="contained"
             >
@@ -338,7 +344,7 @@ const CrossChainTransferTracker: FC = () => {
         initialOpenItem={openItem}
         sections={[
           {
-            icon: 'Information',
+            icon: <MonoInfo />,
             title: helpInfoSections[0].title,
             children: (
               <div className={infoBoxStyle}>
@@ -347,7 +353,7 @@ const CrossChainTransferTracker: FC = () => {
             ),
           },
           {
-            icon: 'Link',
+            icon: <MonoLink />,
             title: t('Resources & Links'),
             children: (
               <div className={linksBoxStyle}>

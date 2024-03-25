@@ -1,6 +1,7 @@
 import { AccountNameField } from '@/components/Global';
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
-import { Button, SystemIcon } from '@kadena/react-ui';
+import { MonoContentCopy } from '@kadena/react-icons/system';
+import { Button } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useCallback } from 'react';
@@ -58,7 +59,7 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
             errorMessage={errors.sender?.message}
             endAddon={
               <Button
-                icon={<SystemIcon.ContentCopy />}
+                icon={<MonoContentCopy />}
                 variant="text"
                 onPress={async () => {
                   await navigator.clipboard.writeText(field.value);

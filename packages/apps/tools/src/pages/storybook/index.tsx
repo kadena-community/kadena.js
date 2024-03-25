@@ -9,6 +9,7 @@ import useLedgerPublicKey, {
   derivationModes,
 } from '@/hooks/use-ledger-public-key';
 import type { ChainId } from '@kadena/client';
+import { MonoKey } from '@kadena/react-icons/system';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
@@ -20,7 +21,6 @@ import {
   Select,
   SelectItem,
   Stack,
-  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
@@ -130,7 +130,7 @@ const Storybook = () => {
             <Stack gap="md">
               <Combobox
                 allowsCustomValue
-                startIcon={<SystemIcon.KeyIconFilled />}
+                startIcon={<MonoKey />}
                 label="Key ID"
                 onInputChange={async (value) => {
                   console.log('onInputChange', value);

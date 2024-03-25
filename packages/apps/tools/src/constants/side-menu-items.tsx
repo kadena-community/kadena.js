@@ -1,11 +1,13 @@
 import { isDevEnvironment } from '@/utils/isDevEnvironment';
+import { MonoAnimation, MonoQrCodeScanner } from '@kadena/react-icons/system';
+import React from 'react';
 import type { ISidebarToolbarItem } from '../types/Layout';
 import Routes from './routes';
 
 export const menuData: ISidebarToolbarItem[] = [
   {
     title: 'Faucet',
-    icon: 'QrcodeScan',
+    icon: <MonoQrCodeScanner />,
     href: 'faucet',
     items: [
       {
@@ -20,7 +22,7 @@ export const menuData: ISidebarToolbarItem[] = [
   },
   {
     title: 'Transactions',
-    icon: 'Transition',
+    icon: <MonoAnimation />,
     href: 'transactions',
     items: [
       {

@@ -7,7 +7,6 @@ import {
   Heading,
   Notification,
   Stack,
-  SystemIcon,
 } from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -25,6 +24,7 @@ import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/ri
 import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
 import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
 import useIsLedgerLibSupported from '@/hooks/use-is-ledger-lib-supported';
+import { MonoHelp } from '@kadena/react-icons/system';
 
 const TransferPage = () => {
   const router = useRouter();
@@ -79,7 +79,7 @@ const TransferPage = () => {
       </Breadcrumbs>
       <Stack justifyContent={'space-between'} alignItems={'center'}>
         <Heading as="h4">{t('Transfer')}</Heading>
-        <SystemIcon.HelpCircle onClick={openSidebarMenu} cursor={'pointer'} />
+        <MonoHelp onClick={openSidebarMenu} cursor={'pointer'} />
       </Stack>
 
       <Stack

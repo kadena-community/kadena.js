@@ -1,4 +1,4 @@
-import { SystemIcon } from '@kadena/react-ui';
+import { MonoLink } from '@kadena/react-icons/system';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React from 'react';
@@ -24,7 +24,7 @@ export const ResourceLinks: FC<IProps> = ({ links, ...rest }: IProps) => {
     <div className={resourceLinksWrapperClass} {...rest}>
       <div className={titleWrapperClass}>
         <span className={titleTextClass}>{t('Resource Links')}</span>
-        <SystemIcon.Link />
+        <MonoLink />
       </div>
       <ul className={linksClass}>
         {links.map((link) => (

@@ -3,14 +3,8 @@ import {
   helperStyle,
   helperTextIconStyle,
 } from '@/components/Global/FormItemCard/styles.css';
-import {
-  Card,
-  Grid,
-  GridItem,
-  Heading,
-  SystemIcon,
-  Text,
-} from '@kadena/react-ui';
+import { MonoInfo } from '@kadena/react-icons/system';
+import { Card, Grid, GridItem, Heading, Text } from '@kadena/react-ui';
 import type { ChangeEvent, FC } from 'react';
 import React from 'react';
 
@@ -59,7 +53,7 @@ export const FormItemCard: FC<IFormItemCardProps> = ({
                     <div className={helperTextIconStyle}>
                       <span>{helper}</span>
                       <span>
-                        <SystemIcon.Information size={'sm'} />
+                        <MonoInfo />
                       </span>
                     </div>
                   </button>

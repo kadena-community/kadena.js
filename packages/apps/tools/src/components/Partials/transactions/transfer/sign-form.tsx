@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Button, Notification, Stack, SystemIcon } from '@kadena/react-ui';
+import { Button, Notification, Stack } from '@kadena/react-ui';
 
 import { NAME_VALIDATION } from '@/components/Global/AccountNameField';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
@@ -24,6 +24,7 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 
 import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { stripAccountPrefix } from '@/utils/string';
+import { MonoKeyboardArrowRight } from '@kadena/react-icons/system';
 import type { ChainId } from '@kadena/types';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { z } from 'zod';
@@ -199,7 +200,7 @@ export const SignForm = ({
               // isLoading={receiverData.isFetching || ledgerSignState.loading}
               isLoading={ledgerSignState.loading}
               // isDisabled={isSubmitting}
-              endIcon={<SystemIcon.TrailingIcon />}
+              endIcon={<MonoKeyboardArrowRight />}
               title={t('Sign')}
               type="submit"
             >
