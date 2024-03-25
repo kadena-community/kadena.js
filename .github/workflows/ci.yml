@@ -153,10 +153,8 @@ jobs:
         working-directory: .github/actions/devnet
 
       - name: save volume
-        run:
-          docker run --rm  -v devnet_sandbox:/backup-volume -v \
-          ./:/backup  busybox tar -zcvf /backup/devnet-volume.tar.gz \
-          /backup-volume
+        run: |
+          docker run --rm  -v devnet_sandbox:/backup-volume -v ./:/backup  busybox tar -zcvf /backup/devnet-volume.tar.gz /backup-volume
         working-directory: .github/actions/devnet
 
       - name: Upload Volumes
