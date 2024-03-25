@@ -150,17 +150,15 @@ jobs:
 
       - name: save volume
         run: |
-          docker run --rm -v "sandbox:/data" -v "./backup:/backup" busybox tar -czvf /backup/sandbox_volume.tar.gz /data
-          echo "echoing directory"
-          ls
+          docker run --rm  -v devnet_sandbox:/backup-volume -v ./:/backup  busybox tar -zcvf /backup/devnet-volume.tar.gz /backup-volume
         working-directory: .github/actions/devnet
 
       - name: Upload Volumes
         if: always()
         uses: actions/upload-artifact@master
         with:
-          name: sandbox_volume
-          path: .github/actions/devnet/backup/sandbox_volume.tar.gz
+          name: sandbox_volume_${{ matrix.app }}
+          path: .github/actions/devnet/devnet-volume.tar.gz
 
       - uses: actions/upload-artifact@v3
         if: always()
