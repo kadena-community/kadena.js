@@ -147,17 +147,18 @@ jobs:
           name: logs-${{ matrix.app }}.tgz
           path: ./logs-${{ matrix.app }}.tgz
 
-      - name: Tar volume
-        if: always()
-        run: tar cvzf ./volume-${{ matrix.app }}.tgz ./l1
+      - name: Check sandbox health
+        run:
+          ./healthcheck.sh -v devnet_devnet_1 save devnet_devnet_1-${{matrix.app
+          }}-volumes.tar.gz
         working-directory: .github/actions/devnet
 
       - name: Upload logs to GitHub
         if: always()
         uses: actions/upload-artifact@master
         with:
-          name: volume-${{ matrix.app }}.tgz
-          path: ./volume-${{ matrix.app }}.tgz
+          name: logs-${{ matrix.app }}.tgz
+          path: .github/actions/devnet/logs-${{ matrix.app }}.tgz
 
       - uses: actions/upload-artifact@v3
         if: always()
