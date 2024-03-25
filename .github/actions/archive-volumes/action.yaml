@@ -1,0 +1,18 @@
+name: 'Archive sandbox volume'
+inputs:
+  test-object:
+    description: 'object under test'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+      - name: save volume
+        shell: bash
+        run: docker run --rm  -v devnet_sandbox:/bckp-vol -v ./:/bckp  busybox tar -zcvf /bckp/devnet-vol.tar.gz /bckp-vol
+        working-directory: .github/actions/archive-volumes
+
+      - name: Upload Volume
+        uses: actions/upload-artifact@master
+        with:
+          name: sandbox_volume_${{ matrix.app }}
+          path: .github/actions/archive-volumes/devnet-vol.tar.gz
