@@ -8,7 +8,7 @@ runs:
   steps:
       - name: save volume
         shell: bash
-        run: docker run --rm  -v devnet_sandbox:/bckp-vol -v ./:/bckp  busybox tar -zcvf /bckp/devnet-vol.tar.gz /bckp-vol
+        run: docker run --rm  -v sandbox_sandbox:/bckp-vol -v ./:/bckp  busybox tar -zcvf /bckp/devnet-vol.tar.gz /bckp-vol
         working-directory: .github/actions/archive-volumes
 
       - name: Upload Volume

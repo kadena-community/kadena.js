@@ -5,7 +5,7 @@ services:
     ports:
       - 8080:8080 # HTTP
       - 5432:5432 # Postgres
-      - 9999:9999
+      - 9999:9999 # Info
     environment:
       - MINING_BATCH_PERIOD=0.05
       - MINING_CONFIRMATION_PERIOD=1
