@@ -10,6 +10,13 @@ export const notificationLinkStyle = style([
   }),
 ]);
 
+export const notificationLinkErrorStyle = style([
+  atoms({
+    color: 'text.semantic.negative.default',
+    cursor: 'pointer',
+  }),
+]);
+
 export const chainSelectContainerClass = style([
   { width: tokens.kda.foundation.size.n56 },
 ]);
