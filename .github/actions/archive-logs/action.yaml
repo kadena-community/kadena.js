@@ -7,6 +7,7 @@ runs:
   using: 'composite'
   steps:
     - name: Save sandbox logs
+      if: always()
       uses: jwalton/gh-docker-logs@v2
       with:
         dest: './logs-${{ inputs.test-object }}'
