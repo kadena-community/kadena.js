@@ -27,7 +27,7 @@ test('Query: getAccount by AccountName', async ({ request }) => {
       console.log('Starting assertion');
       const query = getAccountQuery(testAccount.account);
       queryResponse = await sendQuery(request, query);
-      console.log('Query response:', queryResponse.fungibleAccount);
+      //console.log('Query response:', queryResponse.fungibleAccount.transfers);
       expect(queryResponse.fungibleAccount).toEqual({
         accountName: testAccount.account,
         chainAccounts: [
