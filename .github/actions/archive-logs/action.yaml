@@ -6,17 +6,19 @@ inputs:
 runs:
   using: 'composite'
   steps:
-  - name: Save sandbox logs
-    uses: jwalton/gh-docker-logs@v2
-    with:
-      dest: './logs-${{ inputs.test-object }}'
-  - name: Tar logs
-    if: always()
-    run: tar cvzf ./logs-${{ inputs.test-object }}.tgz ./logs-${{ inputs.test-object }}
+    - name: Save sandbox logs
+      uses: jwalton/gh-docker-logs@v2
+      with:
+        dest: './logs-${{ inputs.test-object }}'
+    - name: Tar logs
+      if: always()
+      run:
+        tar cvzf ./logs-${{ inputs.test-object }}.tgz ./logs-${{
+        inputs.test-object }}
 
-  - name: Upload logs to GitHub
-    if: always()
-    uses: actions/upload-artifact@master
+    - name: Upload logs to GitHub
+      if: always()
+      uses: actions/upload-artifact@master
       with:
         name: logs-${{ inputs.test-object }}.tgz
         path: ./logs-${{ inputs.test-object }}.tgz
