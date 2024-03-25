@@ -17,9 +17,9 @@ runs:
       shell: bash
       run: tar cvzf ./logs-${{ inputs.test-object }}.tgz ./logs-${{ inputs.test-object }}
 
-    - name: Upload logs
-      if: always()
-      uses: actions/upload-artifact@master
-      with:
-        name: logs-${{ inputs.test-object }}.tgz
-        path: ./logs-${{ inputs.test-object }}.tgz
+    # - name: Upload logs
+    #   if: always()
+    #   uses: actions/upload-artifact@master
+    #   with:
+    #     name: logs-${{ inputs.test-object }}.tgz
+    #     path: ./logs-${{ inputs.test-object }}.tgz
