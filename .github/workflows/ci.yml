@@ -159,7 +159,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: devnet_devnet_1-${{matrix.app}}-volumes.tar.gz
-          path: .github/actions/devnet/devnet_devnet_1-${{matrix.app}}-volumes.tar.gz
+          path: .github/actions/devnet/backup/sandbox_volume.tar.gz
 
       - uses: actions/upload-artifact@v3
         if: always()
