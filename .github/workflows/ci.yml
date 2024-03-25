@@ -150,7 +150,7 @@ jobs:
 
       - name: save volume
         run:
-          ./healthcheck.sh -v devnet_devnet_1 save
+          ./docker-volumes.sh -v devnet_devnet_1 save
           devnet_devnet_1-${{matrix.app}}-volumes.tar.gz
         working-directory: .github/actions/devnet
 
