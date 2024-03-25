@@ -132,6 +132,7 @@ jobs:
         run: pnpm turbo test:e2e --filter e2e-${{ matrix.app }}
 
       - name: Archive sandbox logs
+        if: always()
         uses: ./.github/actions/archive-logs
         with:
           test-object: ${{ matrix.app }}
