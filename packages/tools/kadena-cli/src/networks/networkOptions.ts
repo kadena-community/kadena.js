@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { networks } from '../prompts/index.js';
 import { createOption } from '../utils/createOption.js';
 import { isNotEmptyString } from '../utils/helpers.js';
+import { loadNetworkConfig } from './utils/networkHelpers.js';
 
 export const networkOptions = {
   networkName: createOption({
@@ -89,7 +90,29 @@ export const networkOptions = {
     validation: z.boolean(),
     option: new Option(
       '-c, --network-default-confirmation <networkDefaultConfirmation>',
-      'Confirm selected network as default',
+      'Confirm to set/unset the network as default',
     ),
+  }),
+  networkSelectWithNone: createOption({
+    key: 'network' as const,
+    prompt: networks.networkSelectWithNonePrompt,
+    defaultIsOptional: false,
+    defaultValue: 'none',
+    validation: z.string(),
+    option: new Option(
+      '-n, --network <network>',
+      'Kadena network (e.g. "mainnet")',
+    ),
+    expand: async (network: string) => {
+      try {
+        if (network === 'none') return null;
+
+        return await loadNetworkConfig(network);
+      } catch (e) {
+        throw new Error(
+          `No network configuration found for "${network}". Please create a "${network}" network.`,
+        );
+      }
+    },
   }),
 };

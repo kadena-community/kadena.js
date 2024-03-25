@@ -10,10 +10,10 @@ import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
 import { isNotEmptyObject } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { networkOptions } from '../networkOptions.js';
+import { removeDefaultNetwork } from '../utils/networkHelpers.js';
 
 export const setNetworkDefault = async (
   network: string,
@@ -62,7 +62,7 @@ export const createNetworkSetDefaultCommand: (
   'set-default',
   'Set default network from the list of available networks.',
   [
-    globalOptions.network({ isOptional: false }),
+    networkOptions.networkSelectWithNone({ isOptional: false }),
     networkOptions.networkDefaultConfirmation({ isOptional: false }),
   ],
   async (option) => {
@@ -71,16 +71,36 @@ export const createNetworkSetDefaultCommand: (
 
     const { network, networkConfig } = config;
 
-    if (!isNotEmptyObject(networkConfig)) {
+    if (network === 'none') {
+      if (
+        !(await services.filesystem.fileExists(defaultNetworksSettingsFilePath))
+      ) {
+        log.warning(`There is no default network to remove.`);
+        return;
+      }
+    }
+
+    if (!isNotEmptyObject(networkConfig) && network !== 'none') {
       log.warning(`The network configuration "${network}" does not exist.`);
       return;
     }
 
-    const { networkDefaultConfirmation } =
-      await option.networkDefaultConfirmation();
+    const action = network === 'none' ? 'unset' : 'set';
 
+    const { networkDefaultConfirmation } =
+      await option.networkDefaultConfirmation({
+        action,
+      });
     if (networkDefaultConfirmation === false) {
-      log.warning(`The default network will not be set.`);
+      log.warning(`The default network will not be ${action}.`);
+      return;
+    }
+
+    if (network === 'none') {
+      await removeDefaultNetwork();
+      log.info(
+        log.color.green(`The default network configuration has been removed.`),
+      );
       return;
     }
 

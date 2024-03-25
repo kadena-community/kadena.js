@@ -184,11 +184,7 @@ export const networkSelectPrompt: IPrompt<string> = async (
   return selectedNetwork;
 };
 
-export const networkSelectOnlyPrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-) => {
+const getEnsureExistingNetworks = async (): Promise<ICustomNetworkChoice[]> => {
   const isNetworksFolderExists =
     await services.filesystem.directoryExists(defaultNetworksPath);
   if (
@@ -197,7 +193,6 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
   ) {
     await ensureNetworksConfiguration();
   }
-
   const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
 
   if (!existingNetworks.length) {
@@ -205,6 +200,15 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
       'No existing networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init',
     );
   }
+  return existingNetworks;
+};
+
+export const networkSelectOnlyPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const existingNetworks = await getEnsureExistingNetworks();
 
   const allowedNetworkIds =
     previousQuestions.allowedNetworkIds !== undefined
@@ -238,6 +242,31 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
     value: network.value,
     name: network.name,
   }));
+
+  const selectedNetwork = await select({
+    message: 'Select a network',
+    choices: choices,
+  });
+
+  return selectedNetwork;
+};
+
+export const networkSelectWithNonePrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+): Promise<string> => {
+  const existingNetworks = await getEnsureExistingNetworks();
+
+  const choices: ICustomNetworkChoice[] = existingNetworks.map((network) => ({
+    value: network.value,
+    name: network.name,
+  }));
+
+  choices.unshift({
+    value: 'none',
+    name: 'None',
+  });
 
   const selectedNetwork = await select({
     message: 'Select a network',
@@ -281,7 +310,10 @@ export const networkDefaultConfirmationPrompt: IPrompt<boolean> = async (
     throw new Error('Network name is required to set the default network.');
   }
 
-  const message = `Are you sure you want to set "${defaultValue}" as the default network?`;
+  const message =
+    previousQuestions.action === 'set'
+      ? `Are you sure you want to set "${defaultValue}" as the default network?`
+      : `Are you sure you want to remove the default network?`;
   return await select({
     message,
     choices: [
