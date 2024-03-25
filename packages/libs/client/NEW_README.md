@@ -268,6 +268,97 @@ const builder: IBuilder = Pact.builder.continuation({
 
 ```
 
+### Add Signer
+
+**Goal**: adding `IPactCommand.signers` list
+
+You can use the `addSigner` method to add signer's public keys and capability
+list to the command. Later, the Chainweb node can check if all signers signed
+the transaction or not.
+
+**Note**: You can call `addSigner` as many times as you want if the transaction
+has more signers.
+
+```TS
+Pact.builder.execution(...codes).addSigner(signerOrSignersList, capabilityCallback): IBuilder
+```
+
+| Parameter          | Type                                                                                                   | Description                                                                                                              |
+| ------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| signer             | string \| { pubKey: string; scheme?: 'ED25519' \| 'ETH' \| 'WebAuthn'; address?: string;} \| ISigner[] | Public key of the signer or the signer object (this can also be a list of signers if all sign for the same capabilities) |
+| capabilityCallback | (signFor) => ReturnType<signFor>[]                                                                     | Allows you to scope the sign to a specific list of capabilities                                                          |
+
+Chainweb supports three schemes of public keys `ED25519`, `WebAuthn`, `ETH`; the
+default value is `ED25519`. You can pass just the public key if the scheme is
+`ED25519`, otherwise, you need to pass a signer object including pubKey and
+scheme.
+
+#### Examples
+
+Adding a signer for coin transfer
+
+```TS
+// ED25519 key
+const alicePublicKey = "e7f4da07b1d200f6e45aa6492afed6819297a97563859a5f0df9c54f5abd4aab";
+
+Pact.builder
+  .execution(Pact.modules.coin.transfer('alice', 'bob', { decimal: '1.1' }))
+  .addSigner(alicePublicKey, (signFor) => [
+    signFor('coin.TRANSFER', 'alice', 'bob', { decimal: '1.1' }),
+  ]);
+```
+
+Add a signer with `WebAuthn` scheme
+
+```TS
+Pact.builder
+  .execution(Pact.modules.coin.transfer('alice', 'bob', { decimal: '1.1' }))
+  .addSigner({ pubKey: webAuthnPublicKey, scheme: "WebAuthn" }, (signFor) => [
+    signFor('coin.TRANSFER', 'alice', 'bob', { decimal: '1.1' }),
+  ]);
+```
+
+Add a list of signers with no capabilities
+
+```TS
+Pact.builder
+  .execution("(free.my-module.my-function)")
+  .addSigner(["ED25519_publicKey", { pubKey: "WebAuthn_publicKey", scheme:"WebAuthn" }]);
+```
+
+Add a list of signers with similar capabilities
+
+```TS
+Pact.builder
+  .execution(Pact.modules.coin.transfer('alice', 'bob', { decimal: '1.1' }))
+  // e.g., Alice's account is guarded by two keys
+  .addSigner(["first_publicKey", "second_publicKey"], (signFor) => [
+    signFor('coin.TRANSFER', 'alice', 'bob', { decimal: '1.1' }),
+  ]);
+
+
+const equivalentPactCommand = {
+  payload: {
+    exec: {
+      code : '(coin.transfer "alice" "bob" 1.1 )',
+      data : {}
+    }
+  },
+  signers : [
+    {
+      pubKey: 'first_publicKey',
+      scheme: 'ED25519',
+      clist:[{name: 'coin.TRANSFER', args: ['alice','bob', { decimal: '1.1' }]}]
+    },
+    {
+      pubKey: 'second_publicKey',
+      scheme: 'ED25519',
+      clist:[{name: 'coin.TRANSFER', args: ['alice','bob', { decimal: '1.1' }]}]
+    }
+  ]
+}
+```
+
 # TODO: ADD OTHER PARTS
 
 ## Complete and Runnable Examples
