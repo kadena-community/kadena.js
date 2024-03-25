@@ -1,15 +1,19 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
 import {
+  kadenaDecrypt,
+  kadenaEncrypt,
   kadenaGenKeypairFromSeed,
   kadenaGenMnemonic,
   kadenaMnemonicToSeed,
 } from '@kadena/hd-wallet';
 import {
+  kadenaChangePassword,
   kadenaGenKeypair,
   kadenaGenMnemonic as legacyKadenaGenMnemonic,
   kadenaMnemonicToRootKeypair as legacykadenaMnemonicToRootKeypair,
 } from '@kadena/hd-wallet/chainweaver';
 
+import { toHexStr } from '../../keys/utils/keysHelpers.js';
 import type { Services } from '../index.js';
 import { WALLET_SCHEMA_VERSION } from './wallet.schemas.js';
 import type {
@@ -38,6 +42,11 @@ export interface IWalletService {
     key: IWalletKey,
     password: string,
   ) => Promise<IWalletKeyPair>;
+  changePassword: (
+    wallet: IWallet,
+    currentPassword: string,
+    newPassword: string,
+  ) => Promise<IWallet>;
 }
 
 export class WalletService implements IWalletService {
@@ -53,7 +62,6 @@ export class WalletService implements IWalletService {
     const wallet = await this._createFromSeed({
       alias,
       legacy,
-      password,
       seed,
     });
     return { words, wallet };
@@ -66,7 +74,7 @@ export class WalletService implements IWalletService {
     mnemonic,
   }: IWalletImport): ReturnType<IWalletService['import']> {
     const seed = await this._mnemonicToSeed(mnemonic, password, legacy);
-    return this._createFromSeed({ alias, legacy, password, seed });
+    return this._createFromSeed({ alias, legacy, seed });
   }
 
   public async get(filepath: string): ReturnType<IWalletService['get']> {
@@ -102,9 +110,9 @@ export class WalletService implements IWalletService {
     key: IWalletKey,
   ): ReturnType<IWalletService['storeKey']> {
     const keys = [...wallet.keys, key];
-    wallet.keys = keys;
-    await this.services.config.setWallet(wallet, true);
-    return wallet;
+    const newWallet = { ...wallet, keys };
+    await this.services.config.setWallet(newWallet, true);
+    return newWallet;
   }
 
   public async getKeyPair(
@@ -112,31 +120,51 @@ export class WalletService implements IWalletService {
     key: IWalletKey,
     password: string,
   ): ReturnType<IWalletService['getKeyPair']> {
-    return await this._generateKey({
+    const keypair = await this._generateKey({
       seed: wallet.seed,
       legacy: wallet.legacy,
       password,
       index: key.index,
     });
+
+    return {
+      publicKey: keypair.publicKey,
+      secretKey: toHexStr(await kadenaDecrypt(password, keypair.secretKey)),
+    };
+  }
+
+  public async changePassword(
+    wallet: IWallet,
+    currentPassword: string,
+    newPassword: string,
+  ): ReturnType<IWalletService['changePassword']> {
+    const encryptedSeed = await (async () => {
+      if (wallet.legacy === true) {
+        return await kadenaChangePassword(
+          wallet.seed,
+          currentPassword,
+          newPassword,
+        );
+      } else {
+        const decryptedSeed = await kadenaDecrypt(currentPassword, wallet.seed);
+        return await kadenaEncrypt(newPassword, decryptedSeed);
+      }
+    })();
+    const newWallet = { ...wallet, seed: encryptedSeed };
+    await this.services.config.setWallet(newWallet, true);
+    return newWallet;
   }
 
   private async _createFromSeed({
     alias,
     legacy,
-    password,
     seed,
   }: IWalletCreateFromSeed): Promise<IWallet> {
-    const key = await this.generateKey({
-      legacy,
-      seed,
-      password,
-      index: 0,
-    });
     const walletCreate = {
       alias,
       legacy,
       seed,
-      keys: [key],
+      keys: [],
     };
     const filepath = await this.services.config.setWallet(walletCreate);
     return {

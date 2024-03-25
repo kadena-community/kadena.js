@@ -1,9 +1,6 @@
 import type { Command } from 'commander';
 
-import { kadenaDecrypt } from '@kadena/hd-wallet';
-
 import jsYaml from 'js-yaml';
-import { toHexStr } from '../../keys/utils/keysHelpers.js';
 import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
@@ -41,14 +38,7 @@ export const createExportCommand: (program: Command, version: string) => void =
           key,
           passwordFile,
         );
-
-        const decrypted = {
-          publicKey: keypair.publicKey,
-          secretKey: toHexStr(
-            await kadenaDecrypt(passwordFile, keypair.secretKey),
-          ),
-        };
-        log.output(jsYaml.dump(decrypted, { lineWidth: -1 }));
+        log.output(jsYaml.dump(keypair, { lineWidth: -1 }));
       } catch (e) {
         log.error(`Failed to export keypair: ${e.message}`);
       }

@@ -2,19 +2,13 @@ import type { Command } from 'commander';
 import { Option } from 'commander';
 import { z } from 'zod';
 
-import type { EncryptedString } from '@kadena/hd-wallet';
-import { kadenaDecrypt, kadenaEncrypt } from '@kadena/hd-wallet';
-import { kadenaChangePassword } from '@kadena/hd-wallet/chainweaver';
-
-import type { IWallet } from '../../keys/utils/keysHelpers.js';
-import { getWalletContent } from '../../keys/utils/keysHelpers.js';
-import * as storageService from '../../keys/utils/storage.js';
-import type { CommandResult } from '../../utils/command.util.js';
-import { CommandError, assertCommandError } from '../../utils/command.util.js';
+import { services } from '../../services/index.js';
+import { CommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { relativeToCwd } from '../../utils/path.util.js';
 import { select } from '../../utils/prompts.js';
 
 const confirmOption = createOption({
@@ -36,41 +30,6 @@ const confirmOption = createOption({
     });
   },
 });
-
-export const changeWalletPassword = async (
-  wallet: string,
-  walletConfig: IWallet,
-  currentPassword: string,
-  newPassword: string,
-): Promise<CommandResult<{ filename: string }>> => {
-  const seed = (await getWalletContent(wallet)) as EncryptedString;
-  if (walletConfig.wallet === null || seed === null) {
-    return {
-      status: 'error',
-      errors: [`Wallet: ${walletConfig.wallet} does not exist.`],
-    };
-  }
-
-  let encryptedNewSeed: EncryptedString;
-  if (walletConfig.legacy === true) {
-    encryptedNewSeed = await kadenaChangePassword(
-      seed,
-      currentPassword,
-      newPassword,
-    );
-  } else {
-    const decryptedCurrentSeed = await kadenaDecrypt(currentPassword, seed);
-    encryptedNewSeed = await kadenaEncrypt(newPassword, decryptedCurrentSeed);
-  }
-
-  await storageService.storeWallet(
-    encryptedNewSeed,
-    walletConfig.folder,
-    walletConfig.legacy,
-  );
-
-  return { status: 'success', data: { filename: walletConfig.wallet } };
-};
 
 export const createChangeWalletPasswordCommand: (
   program: Command,
@@ -101,15 +60,13 @@ export const createChangeWalletPasswordCommand: (
       throw new CommandError({ errors: ['Invalid wallet'], exitCode: 1 });
     }
 
-    const result = await changeWalletPassword(
-      config.walletName,
+    const result = await services.wallet.changePassword(
       config.walletNameConfig,
       config.passwordFile,
       config.newPasswordFile,
     );
-    assertCommandError(result);
 
     log.info(log.color.green(`\nWallet password successfully updated..\n`));
-    log.info('Walletname: ', result.data.filename);
+    log.info('Wallet location: ', relativeToCwd(result.filepath));
   },
 );
