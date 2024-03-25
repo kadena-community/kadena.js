@@ -18,12 +18,12 @@ import {
 } from '../account/utils/accountHelpers.js';
 import { KEY_EXT, WALLET_EXT } from '../constants/config.js';
 import {
-  getWallet,
   parseKeyIndexOrRange,
   parseKeyPairsInput,
 } from '../keys/utils/keysHelpers.js';
 import { readKeyFileContent } from '../keys/utils/storage.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
+import { services } from '../services/index.js';
 import { createOption } from './createOption.js';
 import { getDefaultNetworkName, passwordPromptTransform } from './helpers.js';
 import { log } from './logger.js';
@@ -189,8 +189,8 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,
-    expand: async (walletName: string) => {
-      return await getWallet(walletName);
+    expand: async (filepath: string) => {
+      return await services.wallet.get(filepath);
     },
   }),
   walletsSelectByWallet: createOption({

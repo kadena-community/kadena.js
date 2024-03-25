@@ -1,7 +1,6 @@
 import type { Command } from 'commander';
 
 import { printWalletKeys } from '../../keys/utils/keysDisplay.js';
-import { getAllWallets, getWallet } from '../../keys/utils/keysHelpers.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
 import { walletOptions } from '../walletOptions.js';
@@ -17,15 +16,14 @@ export const createListWalletsCommand: (
     const config = await option.walletName();
     log.debug('list-keys:action', config);
 
-    if (config.walletName === 'all') {
-      const walletNames = await getAllWallets();
-      for (const wallet of walletNames) {
-        await printWalletKeys(await getWallet(wallet));
+    if (config.walletNameConfig === null) {
+      return log.error(`Selected wallet not found.`);
+    } else if (Array.isArray(config.walletNameConfig)) {
+      for (const wallet of config.walletNameConfig) {
+        await printWalletKeys(wallet);
       }
-    } else if (config.walletNameConfig === null) {
-      return log.error(`Selected wallet "${config.walletName}" not found.`);
+    } else {
+      await printWalletKeys(config.walletNameConfig);
     }
-
-    await printWalletKeys(config.walletNameConfig);
   },
 );

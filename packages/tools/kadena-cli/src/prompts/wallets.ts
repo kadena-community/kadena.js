@@ -1,4 +1,4 @@
-import { getAllWallets } from '../keys/utils/keysHelpers.js';
+import { services } from '../services/index.js';
 import { CommandError } from '../utils/command.util.js';
 
 import { isValidFilename } from '../utils/helpers.js';
@@ -19,7 +19,7 @@ export async function walletNamePrompt(): Promise<string> {
 async function walletSelectionPrompt(
   specialOptions: ('none' | 'all')[] = [],
 ): Promise<string> {
-  const existingKeys: string[] = await getAllWallets();
+  const existingKeys = await services.wallet.list();
 
   if (existingKeys.length === 0 && !specialOptions.includes('none')) {
     throw new CommandError({
@@ -30,8 +30,8 @@ async function walletSelectionPrompt(
   }
 
   const choices = existingKeys.map((key) => ({
-    value: key,
-    name: `Wallet: ${key}`,
+    value: key.filepath,
+    name: `Wallet: ${key.alias}`,
   }));
 
   // Check for special options and add them
@@ -61,7 +61,20 @@ export async function walletSelectPrompt(): Promise<string> {
 }
 
 export async function walletSelectAllPrompt(): Promise<string> {
-  return walletSelectionPrompt(['all']);
+  const wallets = await services.wallet.list();
+  return await select({
+    message: 'Select a wallet',
+    choices: [
+      {
+        value: 'all',
+        name: 'All Wallets',
+      },
+      ...wallets.map((wallet) => ({
+        value: wallet.filepath,
+        name: wallet.alias,
+      })),
+    ],
+  });
 }
 
 export async function walletSelectByWalletPrompt(

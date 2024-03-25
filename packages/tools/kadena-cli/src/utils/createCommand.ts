@@ -264,6 +264,7 @@ export const createCommand =
           return;
         }
         log.error(`\nAn error occurred: ${error.message}\n`);
+        log.debug(error.stack);
         log.info(
           `Is this a bug? Let us know:\n${generateBugReportLink(
             getCommandExecution(`${program.name()} ${name}`, args, values),

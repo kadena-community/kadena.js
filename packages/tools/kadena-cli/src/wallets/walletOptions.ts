@@ -1,7 +1,7 @@
 import { Option } from 'commander';
 import { z } from 'zod';
-import { getWallet } from '../keys/utils/keysHelpers.js';
 import { keys, wallets } from '../prompts/index.js';
+import { services } from '../services/index.js';
 import { createOption } from '../utils/createOption.js';
 
 export const walletOptions = {
@@ -20,8 +20,10 @@ export const walletOptions = {
     validation: z.string(),
     option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,
-    expand: async (walletName: string) => {
-      return walletName === 'all' ? null : await getWallet(walletName);
+    expand: async (filepath: string) => {
+      return filepath === 'all'
+        ? await services.wallet.list()
+        : await services.wallet.get(filepath);
     },
   }),
   keyMnemonic: createOption({
@@ -31,6 +33,49 @@ export const walletOptions = {
     option: new Option(
       '-m, --key-mnemonic <keyMnemonic>',
       'Enter your 12-word mnemonic phrase to generate keys from',
+    ),
+  }),
+  walletAccountCreate: createOption({
+    key: 'walletAccountCreate' as const,
+    prompt: keys.walletCreateAccountPrompt,
+    validation: z.boolean(),
+    option: new Option(
+      '-a, --account',
+      'Automatically create an account for the wallet',
+    ),
+  }),
+  amount: createOption({
+    key: 'amount' as const,
+    prompt: keys.walletGenerateKeyAmountPrompt,
+    validation: z.string(),
+    option: new Option('-n, --amount <amount>', 'Amount of keys to generate'),
+  }),
+  startIndex: createOption({
+    key: 'startIndex' as const,
+    prompt: () => '1',
+    validation: z.string(),
+    option: new Option(
+      '-i, --start-index',
+      'Index to start generating keys at',
+    ),
+  }),
+  keyAlias: createOption({
+    key: 'keyAlias' as const,
+    prompt: keys.walletGenerateKeyAliasPrompt,
+    validation: z.string().optional(),
+    option: new Option(
+      '-a, --key-alias <keyAlias>',
+      'Optional alias for generated key(s)',
+    ),
+    transform: (value) => (value !== '' ? value : undefined),
+  }),
+  keyIndex: createOption({
+    key: 'keyIndex' as const,
+    prompt: keys.walletKeyIndex,
+    validation: z.string(),
+    option: new Option(
+      '-i, --key-index <keyIndex>',
+      'The key index of which you want to export the unencrypted keypair',
     ),
   }),
 };

@@ -1,6 +1,6 @@
 import { assert, describe, expect, it } from 'vitest';
-import { generateHdKeys } from '../commands/walletsHdGenerate.js';
-import { importWallet } from '../commands/walletsImportWallet.js';
+import { generateHdKeys } from '../commands/walletsGenerateKey.js';
+import { importWallet } from '../commands/walletsImport.js';
 
 describe('generate hd keys command', () => {
   it('should generate hd keys correctly correctly', async () => {

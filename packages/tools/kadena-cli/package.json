@@ -53,7 +53,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@inquirer/prompts": "^3.0.4",
+    "@inquirer/prompts": "3.3.0",
     "@kadena/client": "workspace:^",
     "@kadena/client-utils": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
@@ -61,16 +61,16 @@
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-cli": "workspace:^",
     "@kadena/pactjs-generator": "workspace:*",
-    "@scure/bip39": "^1.2.1",
-    "chalk": "^5.2.0",
-    "commander": "^11.0.0",
-    "js-yaml": "~4.1.0",
-    "memfs": "~3.5.1",
-    "ora": "^7.0.1",
-    "sanitize-filename": "^1.6.3",
-    "seedrandom": "~3.0.5",
-    "ttys": "^0.0.3",
-    "zod": "~3.18.0"
+    "@scure/bip39": "1.2.1",
+    "chalk": "5.3.0",
+    "commander": "11.0.0",
+    "js-yaml": "4.1.0",
+    "memfs": "3.5.3",
+    "ora": "7.0.1",
+    "sanitize-filename": "1.6.3",
+    "seedrandom": "3.0.5",
+    "ttys": "0.0.3",
+    "zod": "3.18.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
