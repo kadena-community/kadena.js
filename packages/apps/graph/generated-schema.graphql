@@ -113,7 +113,7 @@ type Event implements Node {
   """
   qualifiedName: String!
   requestKey: String!
-  transaction: Transaction!
+  transaction: Transaction
 }
 
 """The payload of an exec transaction."""
@@ -444,6 +444,7 @@ type QueryEventsConnectionEdge {
 type QueryTransactionsByPublicKeyConnection {
   edges: [QueryTransactionsByPublicKeyConnectionEdge]!
   pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 type QueryTransactionsByPublicKeyConnectionEdge {
@@ -526,13 +527,10 @@ type TokenInfo {
 
 """A transaction."""
 type Transaction implements Node {
-  block: Block
   cmd: TransactionCommand!
-  events(after: String, before: String, first: Int, last: Int): TransactionEventsConnection!
   hash: String!
   id: ID!
   result: TransactionResult!
-  transfers(after: String, before: String, first: Int, last: Int): TransactionTransfersConnection!
 }
 
 """A transaction command."""
@@ -546,42 +544,53 @@ type TransactionCommand {
   signers: [Signer!]!
 }
 
-type TransactionEventsConnection {
-  edges: [TransactionEventsConnectionEdge]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type TransactionEventsConnectionEdge {
-  cursor: String!
-  node: Event!
-}
-
 """The result of a transaction."""
 type TransactionInfo {
   """The transaction result when it was successful. Formatted as raw JSON."""
   badResult: String
-
-  """The hash of the block this transaction belongs to."""
-  blockHash: String
+  block: Block!
 
   """
   The JSON stringified continuation in the case that it is a continuation.
   """
   continuation: String
   eventCount: BigInt
-  gas: BigInt
+  events(after: String, before: String, first: Int, last: Int): TransactionInfoEventsConnection!
+  gas: BigInt!
 
   """The transaction result when it was successful. Formatted as raw JSON."""
   goodResult: String
 
   """The height of the block this transaction belongs to."""
-  height: BigInt
+  height: BigInt!
 
   """Identifier to retrieve the logs for the execution of the transaction."""
   logs: String
   metadata: String
   transactionId: BigInt
+  transfers(after: String, before: String, first: Int, last: Int): TransactionInfoTransfersConnection!
+}
+
+type TransactionInfoEventsConnection {
+  edges: [TransactionInfoEventsConnectionEdge]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type TransactionInfoEventsConnectionEdge {
+  cursor: String!
+  node: Event!
+}
+
+type TransactionInfoTransfersConnection {
+  edges: [TransactionInfoTransfersConnectionEdge]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type TransactionInfoTransfersConnectionEdge {
+  cursor: String!
+  node: Transfer!
 }
 
 """The metadata of a transaction."""
@@ -599,17 +608,6 @@ union TransactionPayload = ContinuationPayload | ExecutionPayload
 
 """The result of a transaction."""
 union TransactionResult = MempoolInfo | TransactionInfo
-
-type TransactionTransfersConnection {
-  edges: [TransactionTransfersConnectionEdge]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type TransactionTransfersConnectionEdge {
-  cursor: String!
-  node: Transfer!
-}
 
 """A transfer of funds from a fungible between two accounts."""
 type Transfer implements Node {
@@ -635,5 +633,7 @@ type Transfer implements Node {
   receiverAccount: String!
   requestKey: String!
   senderAccount: String!
+
+  """The transaction that initiated this transfer."""
   transaction: Transaction
 }

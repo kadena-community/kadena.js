@@ -204,8 +204,12 @@ export const getTransactions: DocumentNode = gql`
         cursor
         node {
           ...CoreTransactionFields
-          block {
-            hash
+          result {
+            ... on TransactionInfo {
+              block {
+                hash
+              }
+            }
           }
           cmd {
             signers {

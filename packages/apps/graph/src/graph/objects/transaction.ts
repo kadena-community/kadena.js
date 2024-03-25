@@ -4,7 +4,6 @@ import {
   getMempoolTransactionSigners,
   getMempoolTransactionStatus,
 } from '@services/chainweb-node/mempool';
-import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { builder } from '../builder';
@@ -71,110 +70,41 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     }),
     result: t.field({
       type: TransactionResult,
-      resolve: async (parent, args, context) => {
-        return {
-          badResult: parent.badResult ? JSON.stringify(parent.badResult) : null,
-          continuation: parent.continuation
-            ? JSON.stringify(parent.continuation)
-            : null,
-          gas: parent.gas,
-          goodResult: parent.goodResult
-            ? JSON.stringify(parent.goodResult)
-            : null,
-          height: parent.height,
-          logs: parent.logs,
-          metadata: parent.metadata ? JSON.stringify(parent.metadata) : null,
-          eventCount: parent.eventCount,
-          transactionId: parent.transactionId,
-          blockHash: parent.blockHash,
-          status: await getMempoolTransactionStatus(
+      resolve: async (parent) => {
+        try {
+          const status = await getMempoolTransactionStatus(
             parent.requestKey,
             parent.chainId.toString(),
-          ),
-        };
-      },
-    }),
-    block: t.prismaField({
-      type: Prisma.ModelName.Block,
-      nullable: true,
-      resolve(__query, parent) {
-        if (!parent.blockHash) {
-          return null;
-        } else {
-          return prismaClient.block.findUnique({
-            where: {
-              hash: parent.blockHash,
-            },
-          });
-        }
-      },
-    }),
+          );
 
-    events: t.prismaConnection({
-      type: Prisma.ModelName.Event,
-      cursor: 'blockHash_orderIndex_requestKey',
-      complexity: (args) => ({
-        field: getDefaultConnectionComplexity({
-          withRelations: true,
-          first: args.first,
-          last: args.last,
-        }),
-      }),
-      async totalCount(parent) {
-        if (!parent.blockHash) return 0;
-        else {
-          return await prismaClient.event.count({
-            where: {
-              blockHash: parent.blockHash,
-              requestKey: parent.requestKey,
-            },
-          });
-        }
-      },
-      async resolve(__query, parent) {
-        if (!parent.blockHash) return [];
-        else {
-          return await prismaClient.event.findMany({
-            where: {
-              blockHash: parent.blockHash,
-              requestKey: parent.requestKey,
-            },
-          });
-        }
-      },
-    }),
-    transfers: t.prismaConnection({
-      type: Prisma.ModelName.Transfer,
-      cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
-      complexity: (args) => ({
-        field: getDefaultConnectionComplexity({
-          withRelations: true,
-          first: args.first,
-          last: args.last,
-        }),
-      }),
-      async totalCount(parent) {
-        if (!parent.blockHash) return 0;
-        else {
-          return await prismaClient.transfer.count({
-            where: {
-              blockHash: parent.blockHash,
-              requestKey: parent.requestKey,
-              chainId: parent.chainId,
-            },
-          });
-        }
-      },
-      async resolve(__query, parent) {
-        if (!parent.blockHash) return [];
-        else {
-          return await prismaClient.transfer.findMany({
-            where: {
-              blockHash: parent.blockHash,
-              requestKey: parent.requestKey,
-              chainId: parent.chainId,
-            },
-          });
+          if (!nullishOrEmpty(status) && status) {
+            return {
+              status,
+            };
+          }
+
+          return {
+            hash: parent.requestKey,
+            chainId: parent.chainId,
+            badResult: parent.badResult
+              ? JSON.stringify(parent.badResult)
+              : null,
+            continuation: parent.continuation
+              ? JSON.stringify(parent.continuation)
+              : null,
+            gas: parent.gas,
+            goodResult: parent.goodResult
+              ? JSON.stringify(parent.goodResult)
+              : null,
+            height: parent.height,
+            logs: parent.logs,
+            metadata: parent.metadata ? JSON.stringify(parent.metadata) : null,
+            eventCount: parent.eventCount,
+            transactionId: parent.transactionId,
+            blockHash: parent.blockHash,
+          };
+        } catch (error) {
+          throw normalizeError(error);
         }
       },
     }),

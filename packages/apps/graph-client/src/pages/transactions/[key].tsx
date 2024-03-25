@@ -157,11 +157,15 @@ const RequestKey: React.FC = () => {
                   <strong>Block</strong>
                 </Cell>
                 <Cell>
-                  <Link
-                    href={`${routes.BLOCK_OVERVIEW}/${transaction.block?.hash}`}
-                  >
-                    {transaction.block?.hash}
-                  </Link>
+                  {transaction.result.__typename === 'TransactionInfo' ? (
+                    <Link
+                      href={`${routes.BLOCK_OVERVIEW}/${transaction.result.block.hash}`}
+                    >
+                      {transaction.result.block.hash}
+                    </Link>
+                  ) : (
+                    <span style={{ color: 'lightgray' }}>N/A</span>
+                  )}
                 </Cell>
               </Row>
               <Row>
@@ -251,42 +255,45 @@ const RequestKey: React.FC = () => {
                   <strong>Events</strong>
                 </Cell>
                 <Cell>
-                  {transaction.events?.edges.map((event, index) => (
-                    <Table key={index}>
-                      <TableHeader>
-                        <Column>Label</Column>
-                        <Column>Value</Column>
-                      </TableHeader>
-                      <TableBody>
-                        <Row>
-                          <Cell>
-                            <strong>Name</strong>
-                          </Cell>
-                          <Cell>
-                            {event?.node ? (
-                              event.node.qualifiedName
-                            ) : (
-                              <span style={{ color: 'lightgray' }}>N/A</span>
-                            )}
-                          </Cell>
-                        </Row>
-                        <Row>
-                          <Cell>
-                            <strong>Parameters</strong>
-                          </Cell>
-                          <Cell>
-                            <pre>
+                  {transaction.result.__typename === 'TransactionInfo' &&
+                    transaction.result.events.edges.map((event, index) => (
+                      <Table key={index}>
+                        <TableHeader>
+                          <Column>Label</Column>
+                          <Column>Value</Column>
+                        </TableHeader>
+                        <TableBody>
+                          <Row>
+                            <Cell>
+                              <strong>Name</strong>
+                            </Cell>
+                            <Cell>
                               {event?.node ? (
-                                formatCode(event.node.parameterText)
+                                event.node.qualifiedName
                               ) : (
                                 <span style={{ color: 'lightgray' }}>N/A</span>
                               )}
-                            </pre>
-                          </Cell>
-                        </Row>
-                      </TableBody>
-                    </Table>
-                  ))}
+                            </Cell>
+                          </Row>
+                          <Row>
+                            <Cell>
+                              <strong>Parameters</strong>
+                            </Cell>
+                            <Cell>
+                              <pre>
+                                {event?.node ? (
+                                  formatCode(event.node.parameterText)
+                                ) : (
+                                  <span style={{ color: 'lightgray' }}>
+                                    N/A
+                                  </span>
+                                )}
+                              </pre>
+                            </Cell>
+                          </Row>
+                        </TableBody>
+                      </Table>
+                    ))}
                 </Cell>
               </Row>
               <Row>

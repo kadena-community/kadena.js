@@ -41,36 +41,36 @@ export function getTransactionsQuery(accountName: string) {
                 continuation
                 eventCount
                 gas
-              }
-            }
-            transfers {
-              edges {
-                node {
-                  amount
-                  chainId
-                  id
-                  receiverAccount
-                  requestKey
-                  senderAccount
-                  crossChainTransfer {
-                    amount
-                    blockHash
-                    chainId
-                    id
-                    moduleName
-                    receiverAccount
-                    requestKey
-                    senderAccount
+                transfers {
+                  edges {
+                    node {
+                      amount
+                      chainId
+                      id
+                      receiverAccount
+                      requestKey
+                      senderAccount
+                      crossChainTransfer {
+                        amount
+                        blockHash
+                        chainId
+                        id
+                        moduleName
+                        receiverAccount
+                        requestKey
+                        senderAccount
+                      }
+                    }
                   }
                 }
-              }
-            }
-            events {
-              edges {
-                node {
-                  requestKey
-                  parameterText
-                  id
+                events {
+                  edges {
+                    node {
+                      requestKey
+                      parameterText
+                      id
+                    }
+                  }
                 }
               }
             }
@@ -92,8 +92,12 @@ export function getTransactionsByRequestKeyQuery(
       transactions(requestKey: $requestKey) {
         edges {
           node {
-            block {
-              hash
+            result {
+              ... on TransactionInfo {
+                block {
+                  hash
+                }
+              }
             }
           }
         }

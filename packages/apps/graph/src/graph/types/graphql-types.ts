@@ -129,8 +129,10 @@ export interface MempoolInfo {
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface TransactionInfo {
+  hash: string;
+  chainId: bigint;
   badResult: string | null;
-  blockHash: string | null;
+  blockHash: string;
   continuation: string | null;
   gas: bigint;
   goodResult: string | null;
