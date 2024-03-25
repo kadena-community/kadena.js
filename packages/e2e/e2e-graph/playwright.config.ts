@@ -13,6 +13,7 @@ const config: PlaywrightTestConfig = {
       PORT: '4000',
       PRISMA_LOGGING_ENABLED: 'true',
       PRISMA_LOG_TO_FILE: 'true',
+      PRISMA_LOG_FILENAME: 'prisma.log',
     },
   },
   projects: [
