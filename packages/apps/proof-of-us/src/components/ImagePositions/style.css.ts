@@ -31,7 +31,6 @@ export const imageWrapper = style([
     position: 'relative',
     width: '100%',
     overflowY: 'hidden',
-    maxWidth: '800px',
     aspectRatio: '1/1',
     zIndex: 2,
   },

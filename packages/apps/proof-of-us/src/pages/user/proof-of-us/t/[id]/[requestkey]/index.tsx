@@ -60,7 +60,9 @@ const Page: NextPage<IProps> = ({ params }) => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <ErrorStatus>{JSON.stringify(result, null, 2)}</ErrorStatus>
+                <ErrorStatus handleClose="/user">
+                  {JSON.stringify(result, null, 2)}
+                </ErrorStatus>
               </Stack>
             )}
           </ScreenHeight>

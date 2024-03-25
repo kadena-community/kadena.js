@@ -1,14 +1,16 @@
 import { MonoClose } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
+import Link from 'next/link';
 import type { FC, PropsWithChildren } from 'react';
 import { Button } from '../Button/Button';
 import { MessageBlock } from '../MessageBlock/MessageBlock';
 import { Heading } from '../Typography/Heading';
 
 interface IProps extends PropsWithChildren {
-  handleClose?: () => void;
+  handleClose?: string;
   handleMint?: () => Promise<void>;
 }
+
 export const ErrorStatus: FC<IProps> = ({
   children,
   handleClose,
@@ -28,9 +30,9 @@ export const ErrorStatus: FC<IProps> = ({
         </MessageBlock>
         <Stack gap="md">
           {handleClose && (
-            <Button variant="secondary" onPress={handleClose}>
-              Dashboard
-            </Button>
+            <Link href={handleClose}>
+              <Button>Go to dashboard</Button>
+            </Link>
           )}
           {handleMint && (
             <Button variant="tertiary" onPress={handleMint}>

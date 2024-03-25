@@ -46,49 +46,76 @@ export const AvatarEditor: FC<IProps> = ({ next, status }) => {
     if (!proofOfUs) return;
     if (!videoRef.current || !isMounted) return;
 
-    navigator.mediaDevices
-      .getUserMedia({ audio: false, video: true })
-      .then((stream) => {
+    const setCanvas = (stream: MediaStream) => {
+      if (!videoRef.current) return;
+      if (!canvasRef.current) return;
+
+      canvasRef.current.width = canvasRef.current.offsetWidth;
+      canvasRef.current.height = canvasRef.current.offsetHeight;
+
+      videoRef.current.srcObject = stream;
+      const containerWidth = (videoRef.current.parentNode as HTMLElement)
+        ?.offsetWidth;
+      const containerHeight = (videoRef.current.parentNode as HTMLElement)
+        ?.offsetHeight;
+
+      const topIndent = canvasRef.current.getBoundingClientRect().top;
+      const context = canvasRef.current.getContext('2d');
+      context?.translate(canvasRef.current.width, 0);
+      context?.scale(-1, 1);
+
+      function updateCanvas() {
         if (!videoRef.current) return;
         if (!canvasRef.current) return;
 
-        videoRef.current.srcObject = stream;
-        const containerWidth = (videoRef.current.parentNode as HTMLElement)
-          ?.offsetWidth;
-        const containerHeight = (videoRef.current.parentNode as HTMLElement)
-          ?.offsetHeight;
-
-        canvasRef.current.width = containerWidth * 0.9;
-        canvasRef.current.height = containerWidth * 0.9;
-        const topIndent = 100;
-        const context = canvasRef.current.getContext('2d');
-        context?.translate(canvasRef.current.width, 0);
-        context?.scale(-1, 1);
-
-        function updateCanvas() {
-          if (!videoRef.current) return;
-          if (!canvasRef.current) return;
-
+        if (containerHeight >= containerWidth) {
           const newWidth =
             (videoRef.current.videoWidth * containerHeight) /
             videoRef.current.videoHeight;
 
           context?.drawImage(
             videoRef.current,
-            canvasRef.current.width / 2 - newWidth / 2,
+            (canvasRef.current.width - newWidth) / 2,
             -topIndent,
             newWidth,
             containerHeight,
           );
+        } else {
+          const newHeight =
+            (videoRef.current.videoHeight * containerWidth) /
+            videoRef.current.videoWidth;
 
-          window.requestAnimationFrame(updateCanvas);
+          context?.drawImage(
+            videoRef.current,
+            (canvasRef.current.offsetWidth - containerWidth) / 2,
+            (containerHeight - newHeight) / 2 - topIndent,
+            containerWidth,
+            newHeight,
+          );
         }
 
-        requestAnimationFrame(updateCanvas);
+        window.requestAnimationFrame(updateCanvas);
+      }
+
+      requestAnimationFrame(updateCanvas);
+    };
+
+    let handleSetCanvas: () => void;
+
+    navigator.mediaDevices
+      .getUserMedia({ audio: false, video: true })
+      .then((stream) => {
+        handleSetCanvas = () => setCanvas(stream);
+        setCanvas(stream);
+        window.addEventListener('resize', handleSetCanvas);
       })
       .catch((e) => {
         alert('The browser needs permissions for the camera to work');
       });
+
+    return () => {
+      window.removeEventListener('resize', handleSetCanvas);
+    };
   }, [isMounted, proofOfUs]);
 
   useEffect(() => {
