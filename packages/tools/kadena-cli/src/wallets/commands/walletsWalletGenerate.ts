@@ -11,72 +11,6 @@ import { relativeToCwd } from '../../utils/path.util.js';
 import { walletOptions } from '../walletOptions.js';
 
 /**
-<<<<<<< Updated upstream
- * Generates a new key for the wallet.
- * @param {string} password - The password to encrypt the mnemonic with.
- * @param {boolean} legacy - Whether to use legacy format.
- * @returns {Promise<{words: string, seed: string}>} - The mnemonic words and seed.
- */
-async function generateKey(
-  password: string,
-  legacy: boolean,
-): Promise<{ words: string; seed: string }> {
-  let words: string;
-  let seed: string;
-
-  if (legacy === true) {
-    words = LegacyKadenaGenMnemonic();
-    seed = await legacykadenaMnemonicToRootKeypair(password, words);
-  } else {
-    words = kadenaGenMnemonic();
-    seed = await kadenaMnemonicToSeed(password, words);
-  }
-
-  return { words, seed };
-}
-
-export const generateWallet = async (
-  walletName: string,
-  password: string,
-  legacy = false,
-): Promise<
-  CommandResult<{
-    mnemonic: string;
-    path: string;
-  }>
-> => {
-  const existing = await getWallet(
-    storageService.addWalletExtension(walletName, legacy),
-  );
-
-  if (existing !== null && existing.legacy === legacy) {
-    return {
-      status: 'error',
-      errors: [`Wallet "${walletName}" already exists.`],
-    };
-  }
-
-  const walletPath = join(WALLET_DIR, walletName);
-  if (await services.filesystem.fileExists(walletPath)) {
-    return {
-      status: 'error',
-      errors: [`Wallet named "${walletName}" already exists.`],
-    };
-  }
-
-  const { words, seed } = await generateKey(password, legacy);
-
-  const path = await storageService.storeWallet(seed, walletName, legacy);
-
-  return {
-    status: 'success',
-    data: { mnemonic: words, path },
-  };
-};
-
-/**
-=======
->>>>>>> Stashed changes
  * Creates a command to generate wallets.
  * @param {Command} program - The commander program.
  * @param {string} version - The version of the program.
@@ -106,6 +40,14 @@ export const createGenerateWalletCommand: (
         legacy: config.legacy,
         password: config.passwordFile,
       });
+      const key = await services.wallet.generateKey({
+        seed: wallet.seed,
+        legacy: wallet.legacy,
+        password: config.passwordFile,
+        index: 0,
+      });
+      await services.wallet.storeKey(wallet, key);
+
       log.output(log.generateTableString(['Mnemonic Phrase'], [[words]]));
       log.info(
         log.color.yellow(

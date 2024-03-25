@@ -10,7 +10,7 @@ export interface IWalletKey {
 
 export interface IWalletKeyPair {
   publicKey: string;
-  secretKey: EncryptedString;
+  secretKey: string;
 }
 
 export interface IWallet {
@@ -30,7 +30,7 @@ export type IWalletImport = IWalletCreate & {
   mnemonic: string;
 };
 
-export type IWalletCreateFromSeed = IWalletCreate & {
+export type IWalletCreateFromSeed = Pick<IWallet, 'alias' | 'legacy'> & {
   seed: EncryptedString;
 };
 
