@@ -34,6 +34,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const searchParams = useSearchParams();
 
   const { account, isMounted, login } = useAccount();
+  console.log({ account });
   const { addMintingData } = useTokens();
   const { doSubmit, isStatusLoading, status } = useSubmit();
 
@@ -77,7 +78,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     addMintingData(proof);
 
     console.log('submit');
-    doSubmit(undefined, true);
+    doSubmit(transaction, true);
   }, [account, searchParams]);
 
   const handleClaim = async () => {

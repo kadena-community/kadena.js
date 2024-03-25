@@ -53,9 +53,6 @@ export const ConnectView: FC<IProps> = () => {
       const innerSigned = await hasSigned();
       setSigned(innerSigned);
       if (proofOfUs.tokenId && proofOfUs.requestKey && innerSigned) {
-        console.log('weird');
-        return;
-
         router.replace(
           `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
             proofOfUs.requestKey

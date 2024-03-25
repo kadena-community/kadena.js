@@ -5,10 +5,17 @@ import classNames from 'classnames';
 import type { FC } from 'react';
 import { SignStatus } from '../SignStatus/SignStatus';
 import { Text } from '../Typography/Text';
-import { accountClass, ellipsClass, nameClass, signeeClass } from './style.css';
+import {
+  accountClass,
+  ellipsClass,
+  multipleSigneeClass,
+  nameClass,
+  signeeClass,
+} from './style.css';
 
 interface IProps {
   signee?: IProofOfUsSignee;
+  isMultiple: boolean;
 }
 
 const isMe = (signer?: IProofOfUsSignee, account?: IAccount) => {
@@ -21,7 +28,7 @@ const getAccount = (signee?: IProofOfUsSignee): string => {
   return signee.accountName;
 };
 
-export const Signee: FC<IProps> = ({ signee }) => {
+export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
   const { account } = useAccount();
 
   const getSuccessStyle = (signee?: IProofOfUsSignee) => {
@@ -33,7 +40,10 @@ export const Signee: FC<IProps> = ({ signee }) => {
     return {};
   };
   return (
-    <li className={signeeClass} style={getSuccessStyle(signee)}>
+    <li
+      className={classNames(isMultiple ? multipleSigneeClass : signeeClass)}
+      style={getSuccessStyle(signee)}
+    >
       <SignStatus status={signee?.signerStatus} />
       <Text className={classNames(nameClass, ellipsClass)} bold>
         {getSigneeName(signee)} {isMe(signee, account) && ' (me)'}

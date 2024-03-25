@@ -17,6 +17,7 @@ export const useSignToken = () => {
     hasSigned,
     updateProofOfUs,
     getSignature,
+    isInitiator,
   } = useProofOfUs();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -74,15 +75,19 @@ export const useSignToken = () => {
     await updateSignee({ signerStatus: 'success', signature }, true);
 
     console.log('update in signtoken sign');
+    const accountIsInitiator = await isInitiator();
     await updateProofOfUs({
       tx: transaction,
-      status: 3,
+      status: accountIsInitiator ? 4 : 3,
     });
 
     setIsLoading(false);
     setHasError(false);
 
-    return;
+    //when the account is not the initiator you want to redirect.
+    //if they are the initiator, you dont, so the app will submit the nft
+    if (accountIsInitiator) return;
+
     router.replace(
       `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
         tx.hash

@@ -1,6 +1,7 @@
 import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
+import { multipleSigneeClass } from '../ListSignees/style.css';
 import {
   bulletClass,
   ellipsClass,
@@ -14,6 +15,7 @@ interface IProps {
   accountName?: string;
   socialLink?: ISocial;
   idx: number;
+  isMultiple: boolean;
 }
 
 export const SigneeItem: FC<IProps> = ({
@@ -21,14 +23,11 @@ export const SigneeItem: FC<IProps> = ({
   accountName,
   idx,
   socialLink,
+  isMultiple,
 }) => {
+  console.log({ isMultiple });
   return (
-    <Stack
-      className={itemClass}
-      flexDirection="column"
-      alignItems="center"
-      gap="sm"
-    >
+    <li className={classNames(isMultiple ? multipleSigneeClass : itemClass)}>
       <Stack width="100%">
         <div className={bulletClass} data-position={idx} />
         <div className={classNames(titleClass, ellipsClass)}>{name}</div>
@@ -41,6 +40,6 @@ export const SigneeItem: FC<IProps> = ({
           </a>
         </Stack>
       )}
-    </Stack>
+    </li>
   );
 };

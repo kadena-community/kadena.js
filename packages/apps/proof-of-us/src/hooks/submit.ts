@@ -60,13 +60,15 @@ export const useSubmit = () => {
   }, [transaction]);
 
   const doSubmit = async (txArg?: string, waitForMint: boolean = false) => {
-    console.log(11111111);
-    const innerTransaction = transaction;
+    const innerTransaction = txArg ? txArg : transaction;
+
     if (!innerTransaction) return;
     setStatus(SubmitStatus.LOADING);
     const client = getClient();
 
-    const signedTransaction = setSignatures(innerTransaction, signees);
+    const signedTransaction = txArg
+      ? innerTransaction
+      : setSignatures(innerTransaction, signees);
 
     const tx = JSON.parse(Buffer.from(signedTransaction, 'base64').toString());
     try {
@@ -91,6 +93,7 @@ export const useSubmit = () => {
           router.replace(`${getReturnHostUrl()}/user`);
           return;
         }
+
         router.replace(
           `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs?.tokenId}/${proofOfUs?.requestKey}`,
         );

@@ -4,6 +4,8 @@ import { style } from '@vanilla-extract/css';
 export const itemClass = style([
   atoms({
     padding: 'md',
+    flexDirection: 'column',
+    alignItems: 'center',
   }),
   {
     flex: '1 1 50%',

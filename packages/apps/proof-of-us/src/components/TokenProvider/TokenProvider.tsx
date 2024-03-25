@@ -13,6 +13,7 @@ export interface ITokenContext {
   isLoading: boolean;
   removeTokenFromData: (token: IToken) => void;
   addMintingData: (proofOfUs: IProofOfUsData) => void;
+  getToken: (id: string) => IToken | undefined;
 }
 
 export const TokenContext = createContext<ITokenContext>({
@@ -20,6 +21,7 @@ export const TokenContext = createContext<ITokenContext>({
   isLoading: false,
   removeTokenFromData: (token: IToken) => {},
   addMintingData: (proofOfUs: IProofOfUsData) => {},
+  getToken: () => undefined,
 });
 
 const isDateOlderThan5Minutes = async (dateToCheck: Date): Promise<boolean> => {
@@ -242,6 +244,16 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   }, []);
 
+  const getToken = useCallback(
+    (id: string): IToken | undefined => {
+      //id could be eventId or a requestkey
+      return [...mintingTokens, ...successTokens, ...tokens].find(
+        (token) => token.requestKey === id || token.eventId === id,
+      );
+    },
+    [mintingTokens],
+  );
+
   console.log({ mintingTokens, successTokens });
   return (
     <TokenContext.Provider
@@ -250,6 +262,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
         isLoading,
         removeTokenFromData,
         addMintingData,
+        getToken,
       }}
     >
       {children}

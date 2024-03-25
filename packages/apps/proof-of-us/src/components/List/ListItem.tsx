@@ -94,10 +94,7 @@ export const ListItem: FC<IProps> = ({ token }) => {
 
   const link = useMemo(() => {
     if (innerData?.properties.eventType === 'attendance') {
-      if (isMinted) {
-        return `/user/proof-of-us/t/${token?.id}`;
-      }
-      return `/scan/e/${token?.eventId}`;
+      return `/scan/e/${innerData?.properties.eventId}`;
     }
 
     if (isMinted) {
@@ -113,5 +110,33 @@ export const ListItem: FC<IProps> = ({ token }) => {
     token?.eventId,
   ]);
 
-  return <>s</>;
+  return (
+    <motion.li
+      className={listItemClass}
+      initial={{ opacity: 0, left: '500px' }}
+      animate={{ opacity: 1, left: 0 }}
+      exit={{ opacity: 0, left: '500px' }}
+    >
+      {!innerData ? (
+        <IsLoading />
+      ) : (
+        <Link className={listItemLinkClass} href={link}>
+          {innerData.properties.eventType === 'attendance' && (
+            <AttendanceThumb token={innerData} isMinted={isMinted} />
+          )}
+          {innerData.properties.eventType === 'connect' && (
+            <ConnectThumb token={innerData} isMinted={isMinted} />
+          )}
+          <Stack display="flex" flexDirection="column" gap="xs">
+            <Text transform="capitalize" bold>
+              {innerData.name}
+            </Text>
+            <Text variant="small">
+              {new Date(innerData.properties.date).toDateString()}
+            </Text>
+          </Stack>
+        </Link>
+      )}
+    </motion.li>
+  );
 };
