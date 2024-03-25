@@ -1,4 +1,5 @@
 import { services } from '../services/index.js';
+import type { IWallet } from '../services/wallet/wallet.types.js';
 import { CommandError } from '../utils/command.util.js';
 
 import { isValidFilename } from '../utils/helpers.js';
@@ -78,7 +79,7 @@ export async function walletSelectAllPrompt(): Promise<string> {
 }
 
 export async function walletSelectByWalletPrompt(
-  wallets: string[] = [],
+  wallets: IWallet[] = [],
 ): Promise<string> {
   if (wallets.length === 0) {
     throw new CommandError({
@@ -88,10 +89,10 @@ export async function walletSelectByWalletPrompt(
     });
   }
 
-  const choices = wallets.map((key) => {
+  const choices = wallets.map((wallet) => {
     return {
-      value: key,
-      name: `Wallet: ${key}`,
+      value: wallet.alias,
+      name: `Wallet: ${wallet.alias}`,
     };
   });
 

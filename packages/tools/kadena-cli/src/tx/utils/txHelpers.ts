@@ -522,7 +522,7 @@ export async function extractRelevantWalletAndKeyPairsFromCommand(
 
 export async function filterRelevantUnsignedCommandsForWallet(
   unsignedCommands: IUnsignedCommand[],
-  walletWithKey: IWalletWithKey,
+  walletWithKey?: IWalletWithKey,
 ): Promise<{
   unsignedCommands: IUnsignedCommand[];
   skippedCommands: IUnsignedCommand[];

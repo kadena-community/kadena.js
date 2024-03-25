@@ -164,7 +164,7 @@ export const globalOptions = {
     key: 'walletName',
     prompt: async (args) => {
       return Array.isArray(args.wallets)
-        ? wallets.walletSelectByWalletPrompt(args.wallets as string[])
+        ? wallets.walletSelectByWalletPrompt(args.wallets)
         : wallets.walletSelectPrompt();
     },
     validation: z.string(),
