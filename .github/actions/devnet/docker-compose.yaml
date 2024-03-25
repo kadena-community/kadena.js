@@ -12,3 +12,5 @@ services:
     volumes:
       - ../../../packages/apps/graph/cwd-extra-migrations:/cwd-extra-migrations:ro
       - l1:/data
+volumes:
+  l1:
