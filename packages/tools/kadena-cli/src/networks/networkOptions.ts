@@ -89,7 +89,7 @@ export const networkOptions = {
     prompt: networks.networkDefaultConfirmationPrompt,
     validation: z.boolean(),
     option: new Option(
-      '-c, --network-default-confirmation <networkDefaultConfirmation>',
+      '-c, --network-default-confirmation',
       'Confirm to set/unset the network as default',
     ),
   }),
@@ -97,7 +97,6 @@ export const networkOptions = {
     key: 'network' as const,
     prompt: networks.networkSelectWithNonePrompt,
     defaultIsOptional: false,
-    defaultValue: 'none',
     validation: z.string(),
     option: new Option(
       '-n, --network <network>',

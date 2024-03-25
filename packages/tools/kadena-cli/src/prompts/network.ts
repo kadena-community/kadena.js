@@ -256,6 +256,7 @@ export const networkSelectWithNonePrompt: IPrompt<string> = async (
   args,
   isOptional,
 ): Promise<string> => {
+  const defaultNetwork = previousQuestions.defaultNetwork;
   const existingNetworks = await getEnsureExistingNetworks();
 
   const choices: ICustomNetworkChoice[] = existingNetworks.map((network) => ({
@@ -263,10 +264,12 @@ export const networkSelectWithNonePrompt: IPrompt<string> = async (
     name: network.name,
   }));
 
-  choices.unshift({
-    value: 'none',
-    name: 'None',
-  });
+  if (isNotEmptyString(defaultNetwork)) {
+    choices.unshift({
+      value: 'none',
+      name: 'Remove default network',
+    });
+  }
 
   const selectedNetwork = await select({
     message: 'Select a network',
@@ -306,14 +309,14 @@ export const networkDefaultConfirmationPrompt: IPrompt<boolean> = async (
   isOptional,
 ) => {
   const defaultValue = args.defaultValue ?? previousQuestions.network;
-  if (defaultValue === undefined) {
+  if (defaultValue === undefined && previousQuestions.action === 'set') {
     throw new Error('Network name is required to set the default network.');
   }
 
   const message =
     previousQuestions.action === 'set'
       ? `Are you sure you want to set "${defaultValue}" as the default network?`
-      : `Are you sure you want to remove the default network?`;
+      : `Are you sure you want to remove the "${defaultValue}" default network?`;
   return await select({
     message,
     choices: [

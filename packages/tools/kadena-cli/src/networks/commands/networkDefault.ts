@@ -1,6 +1,7 @@
 import type { Command } from 'commander';
 import yaml from 'js-yaml';
 import path from 'node:path';
+import { isEmpty } from '../../account/utils/addHelpers.js';
 import {
   defaultNetworksPath,
   defaultNetworksSettingsFilePath,
@@ -10,7 +11,10 @@ import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { isNotEmptyObject } from '../../utils/helpers.js';
+import {
+  getDefaultNetworkName,
+  isNotEmptyObject,
+} from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { networkOptions } from '../networkOptions.js';
 import { removeDefaultNetwork } from '../utils/networkHelpers.js';
@@ -66,18 +70,18 @@ export const createNetworkSetDefaultCommand: (
     networkOptions.networkDefaultConfirmation({ isOptional: false }),
   ],
   async (option) => {
-    const config = await option.network();
+    const defaultNetworkName = await getDefaultNetworkName();
+    const config = await option.network({
+      defaultNetwork: defaultNetworkName,
+    });
+
     log.debug('network-set-default:action', config);
 
     const { network, networkConfig } = config;
 
-    if (network === 'none') {
-      if (
-        !(await services.filesystem.fileExists(defaultNetworksSettingsFilePath))
-      ) {
-        log.warning(`There is no default network to remove.`);
-        return;
-      }
+    if (network === 'none' && isEmpty(defaultNetworkName)) {
+      log.warning(`There is no default network to remove.`);
+      return;
     }
 
     if (!isNotEmptyObject(networkConfig) && network !== 'none') {
@@ -87,12 +91,21 @@ export const createNetworkSetDefaultCommand: (
 
     const action = network === 'none' ? 'unset' : 'set';
 
+    let networkName: string = network;
+    let confirmationErrorMsg = 'The default network will not be set.';
+    if (action === 'unset') {
+      networkName = defaultNetworkName as string;
+      confirmationErrorMsg = 'The default network will not be removed.';
+    }
+
     const { networkDefaultConfirmation } =
       await option.networkDefaultConfirmation({
         action,
+        network: networkName,
       });
+
     if (networkDefaultConfirmation === false) {
-      log.warning(`The default network will not be ${action}.`);
+      log.warning(confirmationErrorMsg);
       return;
     }
 
