@@ -1,5 +1,6 @@
 import { getFungibleChainAccount } from '@services/account-service';
 import { chainIds } from '@utils/chains';
+import { defaultFungibleName } from '@utils/default';
 import { builder } from '../builder';
 import FungibleAccount from '../objects/fungible-account';
 import type { FungibleChainAccount } from '../types/graphql-types';
@@ -12,7 +13,7 @@ builder.queryField('fungibleAccount', (t) =>
     nullable: true,
     args: {
       accountName: t.arg.string({ required: true }),
-      fungibleName: t.arg.string({ required: true }),
+      fungibleName: t.arg.string({ required: false }),
     },
     type: FungibleAccount,
     async resolve(__parent, args) {
@@ -21,7 +22,7 @@ builder.queryField('fungibleAccount', (t) =>
           chainIds.map(async (chainId) => {
             return getFungibleChainAccount({
               chainId: chainId,
-              fungibleName: args.fungibleName,
+              fungibleName: args.fungibleName || defaultFungibleName,
               accountName: args.accountName,
             });
           }),
@@ -37,7 +38,7 @@ builder.queryField('fungibleAccount', (t) =>
       return {
         __typename: FungibleAccountName,
         accountName: args.accountName,
-        fungibleName: args.fungibleName,
+        fungibleName: args.fungibleName || defaultFungibleName,
         chainAccounts: chainAccounts,
         totalBalance: 0,
         transactions: [],
