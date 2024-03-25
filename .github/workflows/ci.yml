@@ -142,7 +142,7 @@ jobs:
         run: docker-compose down
         working-directory: .github/actions/sandbox
       
-      - name: Archive sandbox logs
+      - name: Archive sandbox volume
         if: always()
         uses: ./.github/actions/archive-volumes
         with:
