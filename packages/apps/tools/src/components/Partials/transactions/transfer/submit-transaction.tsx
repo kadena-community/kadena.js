@@ -142,7 +142,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         setIsLoading(false);
         setRequestStatus({
           status: 'erroneous',
-          message: error.response.error?.message || t('An error occurred.'),
+          message: requestKeyOrError.error || t('An error occurred.'),
         });
         return;
       }
@@ -252,20 +252,8 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
               <div className={infoNotificationColor}>
                 {t('cross-chain-transfer-initiated')}
               </div>
-              <Stack>
-                <span>{t('cross-chain-warning')}</span>
 
-                <Button
-                  color="primary"
-                  icon={<SystemIcon.ContentCopy />}
-                  onPress={async () => {
-                    await navigator.clipboard.writeText(completeLinkToFinisher);
-                  }}
-                  title={t('copy link to finisher')}
-                  aria-label={t('copy link to finisher')}
-                  variant="text"
-                />
-              </Stack>
+              <Trans i18nKey="common:cross-chain-warning" />
             </Stack>
           ) : null}
         </FormStatusNotification>
