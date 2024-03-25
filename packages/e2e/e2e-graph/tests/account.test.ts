@@ -47,6 +47,7 @@ test('Query: getAccount by AccountName', async ({ request }) => {
           edges: [],
         },
         transfers: {
+          totalCount: 1,
           edges: [
             {
               node: {

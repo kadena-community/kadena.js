@@ -18,6 +18,7 @@ export function getAccountQuery(accountName: string) {
           }
         }
         transfers {
+          totalCount
           edges {
             node {
               ...CoreTransferFields
