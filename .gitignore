@@ -103,4 +103,4 @@ temp
 # parcel
 .parcel-cache
 
-.github/actions/devnet/l1/*
+.github/actions/devnet/l1/state/*
