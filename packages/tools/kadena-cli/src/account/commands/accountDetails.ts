@@ -70,7 +70,7 @@ export async function accountDetails(
     status = 'error';
     errors.push(error.message);
   }
-
+  status = accountDetails.length === 0 ? 'error' : status;
   return {
     status,
     data: accountDetailsList.filter(notEmpty),

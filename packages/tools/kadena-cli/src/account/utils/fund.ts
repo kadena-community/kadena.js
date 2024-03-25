@@ -62,7 +62,7 @@ export async function fund({
           return result;
         } catch (error) {
           status = 'partial';
-          warnings.push(`Error on Chain ID: ${chainId} - ${error.message}`);
+          warnings.push(`Error on Chain ID ${chainId} - ${error.message}`);
           return null;
         }
       }),

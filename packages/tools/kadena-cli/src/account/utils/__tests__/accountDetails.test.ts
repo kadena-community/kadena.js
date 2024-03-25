@@ -14,20 +14,24 @@ describe('accountDetails', () => {
   it('should return account details', async () => {
     const result = await accountDetails({
       accountName: 'accountName',
-      chainId: '1',
+      chainId: ['1'],
       networkId: devNetConfigMock.networkId,
       networkHost: devNetConfigMock.networkHost,
       fungible: 'coin',
     });
     assert(result.status === 'success');
-    expect(result.data).toEqual({
-      account: 'accountName',
-      guard: {
-        pred: 'keys-all',
-        keys: ['publicKey1', 'publicKey2'],
+    expect(result.data).toEqual([
+      {
+        ['1']: {
+          account: 'accountName',
+          guard: {
+            pred: 'keys-all',
+            keys: ['publicKey1', 'publicKey2'],
+          },
+          balance: 0,
+        },
       },
-      balance: 0,
-    });
+    ]);
   });
 
   it('should return error if account does not exist', async () => {
@@ -41,14 +45,12 @@ describe('accountDetails', () => {
     );
     const result = await accountDetails({
       accountName: 'k:accountName',
-      chainId: '1',
+      chainId: ['1'],
       networkId: devNetConfigMock.networkId,
       networkHost: devNetConfigMock.networkHost,
       fungible: 'coin',
     });
-    assert(result.status === 'error');
-    expect(result.errors).toEqual([
-      'Account "k:accountName" is not available on chain "1" of networkId "development"',
-    ]);
+    const warningMsg = `\nAccount "k:accountName" is not available on\nfollowing chain(s) of the "development" network: 1`;
+    expect(result.warnings).toStrictEqual([warningMsg]);
   });
 });
