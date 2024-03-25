@@ -100,7 +100,7 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
-      - name: Sandbox - setup
+      - name: Setup devnet sandbox
         uses: ./.github/actions/devnet
 
       - uses: pnpm/action-setup@v2
@@ -137,20 +137,16 @@ jobs:
         with:
           test-object: ${{ matrix.app }}
 
-      - name: Sandbox - teardown
-        run: docker-compose down
-        working-directory: .github/actions/devnet
-
-      - name: save volume
-        run: docker run --rm  -v devnet_sandbox:/bckp-vol -v ./:/bckp  busybox tar -zcvf /bckp/devnet-vol.tar.gz /bckp-vol
-        working-directory: .github/actions/devnet
-
-      - name: Upload Volumes
+      - name: Teardown devnet sandbox
         if: always()
-        uses: actions/upload-artifact@master
+        run: docker-compose down
+        working-directory: .github/actions/sandbox
+      
+      - name: Archive sandbox logs
+        if: always()
+        uses: ./.github/actions/archive-volumes
         with:
-          name: sandbox_volume_${{ matrix.app }}
-          path: .github/actions/devnet/devnet-vol.tar.gz
+          test-object: ${{ matrix.app }}
 
       - uses: actions/upload-artifact@v3
         if: always()
