@@ -153,9 +153,9 @@ jobs:
         working-directory: .github/actions/devnet
 
       - name: save volume
-        run: |
-          docker run --rm  -v devnet_sandbox:/bckp-vol -v ./:/bckp  busybox tar \
-          -zcvf /bckp/devnet-vol.tar.gz /bckp-vol
+        run:
+          docker run --rm  -v devnet_sandbox:/bckp-vol -v ./:/bckp  busybox tar
+          \ -zcvf /bckp/devnet-vol.tar.gz /bckp-vol
         working-directory: .github/actions/devnet
 
       - name: Upload Volumes
