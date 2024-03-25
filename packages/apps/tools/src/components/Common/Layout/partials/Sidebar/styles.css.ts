@@ -15,8 +15,8 @@ export const iconWrapperClass = style([
     display: 'block',
   }),
   {
-    height: '16px',
-    width: '16px',
+    width: tokens.kda.foundation.size.n5,
+    height: tokens.kda.foundation.size.n5,
   },
 ]);
 
