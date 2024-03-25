@@ -133,6 +133,13 @@ pages:
           concretepolicies:
             url: /concrete-policies
             file: /build/nft-marmalade/concrete-policies.md
+            children:
+              examplepolicies:
+                url: /explore-examples
+                file: /build/nft-marmalade/example-policies.md
+              custompolicies:
+                url: /explore-examples
+                file: /build/nft-marmalade/custom-policies.md
       frontend:
         url: /frontend
         file: /build/frontend.md
@@ -379,34 +386,33 @@ pages:
             url: /kadena-js
             file: /reference/kadena-client/kadena-js.md
       marmalade:
-        url: /ledger
-        file: /reference/marmalade/ledger.md
+        url: /nft-ref
+        file: /reference/marmalade/nft-ref.md
         children:
+          ledger:
+            url: /ledger
+            file: /reference/marmalade/ledger.md
           policymanager:
             url: /policy-manager
             file: /reference/marmalade/policy-manager.md
           salecontract:
             url: /sale-contracts
             file: /reference/marmalade/sale-contracts.md
+          guard:
+            url: /guard-policy
+            file: /reference/marmalade/guard-policy.md
+          nftpolicy:
+            url: /nft-policy
+            file: /reference/marmalade/non-fungible-policy.md
+          royalty:
+            url: /royalty-policy
+            file: /reference/marmalade/royalty-policy.md
+          collection:
+            url: /collection-policy
+            file: /reference/marmalade/collection-policy.md
           auction:
             url: /auctions
             file: /reference/marmalade/auction-ref.md
-          policies:
-            url: /policies
-            file: /reference/marmalade/policies.md
-            children:
-              guard:
-                url: /guard-policy
-                file: /reference/marmalade/guard-policy.md
-              nftpolicy:
-                url: /nft-policy
-                file: /reference/marmalade/non-fungible-policy.md
-              royalty:
-                url: /royalty-policy
-                file: /reference/marmalade/royalty-policy.md
-              collection:
-                url: /collection-policy
-                file: /reference/marmalade/collection-policy.md
       chainweb:
         url: /chainweb
         file: /reference/chainweb/chainweb.md

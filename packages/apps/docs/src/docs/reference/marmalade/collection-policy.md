@@ -7,7 +7,7 @@ order: 1
 layout: full
 ---
 
-# Collection Policy
+# Collection policy
 
 Marmalade's Collection Policy is a policy designed for creators or operators to
 organise their tokens into a curated group, just like creating an art gallery or
