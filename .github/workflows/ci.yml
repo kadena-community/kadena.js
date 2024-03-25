@@ -131,7 +131,7 @@ jobs:
       - name: Run end-to-end tests
         run: pnpm turbo test:e2e --filter e2e-${{ matrix.app }}
 
-      - name: Sandbox - export & archive logs
+      - name: Archive sandbox logs
         uses: ./.github/actions/archive-logs
         with:
           test-object: ${{ matrix.app }}
