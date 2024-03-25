@@ -12,10 +12,10 @@ runs:
       with:
         dest: './logs-${{ inputs.test-object }}'
     
-    - name: Compress logs
-      if: always()
-      shell: bash
-      run: tar cvzf ./logs-${{ inputs.test-object }}.tgz ./logs-${{ inputs.test-object }}
+    # - name: Compress logs
+    #   if: always()
+    #   shell: bash
+    #   run: tar cvzf ./logs-${{ inputs.test-object }}.tgz ./logs-${{ inputs.test-object }}
 
     # - name: Upload logs
     #   if: always()
