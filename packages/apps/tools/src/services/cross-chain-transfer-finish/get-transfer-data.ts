@@ -17,7 +17,7 @@ import type { Translate } from 'next-translate';
 
 interface ITransactionData {
   sender: { chain: ChainwebChainId; account?: string };
-  receiver: { chain?: ChainwebChainId; account?: string };
+  receiver: { chain: ChainwebChainId; account?: string };
   amount?: number;
   receiverGuard?: {
     pred: string;
@@ -110,34 +110,8 @@ export async function getTransferData({
       return { error: t('Not a Cross Chain Request Key') };
     }
 
-    const continuationArgs = found?.continuation?.continuation.args;
-
-    let senderAccount: string | undefined,
-      receiverAccount: string | undefined,
-      guard:
-        | {
-            pred: string;
-            keys: [string];
-          }
-        | undefined,
-      targetChain: ChainwebChainId | undefined,
-      amount: number | undefined;
-
-    if (typeof continuationArgs !== 'undefined') {
-      const [_senderAccount, _receiverAccount, _guard, _targetChain, _amount] =
-        continuationArgs as Array<PactValue | undefined>;
-
-      senderAccount = _senderAccount as string | undefined;
-      receiverAccount = _receiverAccount as string | undefined;
-      guard = _guard as
-        | {
-            pred: string;
-            keys: [string];
-          }
-        | undefined;
-      targetChain = _targetChain as ChainwebChainId | undefined;
-      amount = _amount as number | undefined;
-    }
+    const [senderAccount, receiverAccount, guard, targetChain, amount] = found
+      ?.continuation?.continuation.args as Array<PactValue | undefined>;
 
     const yieldData = found?.continuation?.yield as
       | {
@@ -154,13 +128,13 @@ export async function getTransferData({
       tx: {
         sender: {
           chain: yieldData?.source as ChainwebChainId,
-          account: senderAccount,
+          account: senderAccount as string | undefined,
         },
         receiver: {
-          chain: targetChain,
-          account: receiverAccount,
+          chain: targetChain as ChainwebChainId,
+          account: receiverAccount as string | undefined,
         },
-        amount: amount,
+        amount: amount as number | undefined,
         receiverGuard: guard as
           | {
               pred: string;
