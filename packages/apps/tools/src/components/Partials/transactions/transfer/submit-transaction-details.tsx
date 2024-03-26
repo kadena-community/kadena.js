@@ -29,6 +29,9 @@ export const SubmitTransactionDetails = ({
   if (!transactions || !transactions.cmds.length) return null;
   const transaction = JSON.parse(transactions.cmds[0].cmd) as IPactCommand;
 
+  console.log('transaction details: ');
+  console.log(transaction);
+
   return (
     <LoadingCard fullWidth={true}>
       <Heading as={'h5'}>{t('Transaction')} </Heading>
