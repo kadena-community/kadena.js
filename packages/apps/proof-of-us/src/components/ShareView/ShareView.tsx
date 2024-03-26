@@ -21,6 +21,9 @@ import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 
 import { useAccount } from '@/hooks/account';
+import { createManifest } from '@/utils/createManifest';
+import { createConnectTokenTransaction, getTokenId } from '@/utils/proofOfUs';
+import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { copyClass, qrClass } from './style.css';
 
@@ -36,7 +39,8 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const { proofOfUs, isInitiator, updateProofOfUs, signees } = useProofOfUs();
+  const { proofOfUs, signees, background, isInitiator, updateProofOfUs } =
+    useProofOfUs();
   const { account } = useAccount();
   const { signToken } = useSignToken();
   const router = useRouter();
@@ -94,8 +98,54 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
     setIsCopied(true);
   };
 
-  const handleStartSigning = () => {
+  const createTx = async () => {
+    if (!proofOfUs || !account || !signees) return;
+
+    const imageData = await createImageUrl(background.bg);
+    if (!imageData) {
+      console.error('no image found');
+      return;
+    }
+    const manifest = await createManifest(proofOfUs, signees, imageData.url);
+    const manifestData = await createMetaDataUrl(manifest);
+    if (!manifestData) {
+      console.error('no manifestData found');
+      return;
+    }
+
+    const transaction = await createConnectTokenTransaction(
+      manifestData?.url,
+      signees,
+      account,
+    );
+
+    const tokenId = await getTokenId(
+      process.env.NEXT_PUBLIC_CONNECTION_EVENTID ?? '',
+      manifestData.url,
+    );
+    return {
+      transaction: transaction,
+      manifestUri: manifestData?.url,
+      imageUri: imageData.url,
+      eventName: manifest.properties.eventName,
+      tokenId,
+    };
+  };
+
+  const handleStartSigning = async () => {
+    const transactionData = await createTx();
+    if (!transactionData) return;
+    const transaction = Buffer.from(
+      JSON.stringify(transactionData.transaction),
+    ).toString('base64');
+
     updateProofOfUs({
+      tx: transaction,
+      requestKey: transactionData.transaction?.hash,
+      tokenId: transactionData.tokenId,
+      manifestUri: transactionData.manifestUri,
+      imageUri: transactionData.imageUri,
+      eventName: transactionData.eventName,
       isReadyToSign: true,
     });
   };

@@ -1,8 +1,6 @@
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSubmit } from '@/hooks/submit';
-import { getReturnHostUrl } from '@/utils/getReturnUrl';
-import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
@@ -15,10 +13,9 @@ interface IProps {
 }
 
 export const MintView: FC<IProps> = () => {
-  const { proofOfUs, signees, updateSignee, updateProofOfUs } = useProofOfUs();
+  const { proofOfUs, signees, updateSignee } = useProofOfUs();
   const { doSubmit } = useSubmit();
   const { uploadBackground } = useAvatar();
-  const router = useRouter();
 
   const handleMint = async () => {
     if (!proofOfUs) return;
@@ -30,19 +27,7 @@ export const MintView: FC<IProps> = () => {
     }
     try {
       await updateSignee({ signerStatus: 'success' }, true);
-
-      // console.log('update in mintview');
-      // await updateProofOfUs({
-      //   status: 4,
-      // });
-
       await doSubmit();
-
-      // router.replace(
-      //   `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
-      //     proofOfUs.requestKey
-      //   }`,
-      // );
     } catch (e) {
       console.error('SUBMIT ERR');
     }

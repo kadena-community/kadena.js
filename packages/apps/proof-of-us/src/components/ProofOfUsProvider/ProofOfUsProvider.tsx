@@ -97,7 +97,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       let innerData: IProofOfUsSignee[] = data ?? [];
 
       if (!innerData && params && params.id !== 'new') {
-        console.log(3333);
         innerData = await store.getProofOfUsSignees(`${params.id}`);
         if (!innerData) return;
       }

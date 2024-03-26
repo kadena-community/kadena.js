@@ -86,7 +86,7 @@ export const ConnectView: FC<IProps> = () => {
 
   if (showMaxModal) {
     return (
-      <Modal label="Maximum signees">
+      <Modal label="Maximum signees" onClose={() => {}}>
         <Stack flexDirection="column" gap="md">
           <Text>There are already a max of {env.MAXSIGNERS} signed in.</Text>
 

@@ -92,7 +92,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     router.push(
       `${
         process.env.NEXT_PUBLIC_WALLET_URL
-      }/sign?transaction=${bufferedTx}&chainId=${
+      }sign?transaction=${bufferedTx}&chainId=${
         env.CHAINID
       }&returnUrl=${getReturnUrl()}
       `,

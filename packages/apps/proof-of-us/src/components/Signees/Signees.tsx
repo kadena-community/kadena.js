@@ -9,7 +9,6 @@ interface IProps {
 }
 export const Signees: FC<IProps> = ({ signees, authors }) => {
   const isMultiple = !!(signees?.length && signees?.length > 2);
-  console.log({ signees, isMultiple });
   return (
     <ul
       className={classNames(
