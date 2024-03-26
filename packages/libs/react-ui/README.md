@@ -135,7 +135,7 @@ You can use "next-themes" to set this up in Next.js projects by wrapping
 `Component` with the `ThemeProvider` in `__app.tsx`
 
 ```tsx
-import { darkThemeClass } from '@kadena/react-ui';
+import { darkThemeClass } from '@kadena/react-ui/styles';
 import { ThemeProvider } from 'next-themes';
 
 export const MyApp = ({ Component, pageProps }) => {
