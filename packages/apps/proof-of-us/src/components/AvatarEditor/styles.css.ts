@@ -105,17 +105,19 @@ export const canvasClass = style({
   maxWidth: '94vw',
   maxHeight: '94vw',
   aspectRatio: '1',
-  transform: 'translateX(-50%)',
   left: '50%',
   top: '100px',
   zIndex: '1',
   border: '2px solid rgba(255, 255, 255, 0.40)',
   borderRadius: '8px',
   boxSizing: 'border-box',
+  transform: 'translateX(-50%)',
   '@media': {
     'screen and (orientation: landscape)': {
-      maxWidth: 'calc(100vh - 110px)',
-      maxHeight: 'calc(100vh - 110px)',
+      maxWidth: '94vh',
+      maxHeight: '94vh',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
     },
   },
 });
