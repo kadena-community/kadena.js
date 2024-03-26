@@ -53,14 +53,12 @@ const TransferPage = () => {
   const { reset } = methods;
 
   const onReset = () => {
-    console.log('Reset from index');
-    // @ts-ignore
     reset({
-      receiverChainId: null,
+      receiverChainId: undefined,
       senderChainId: '0',
       receiver: '',
       sender: '',
-      amount: null,
+      amount: undefined
     });
   };
 
