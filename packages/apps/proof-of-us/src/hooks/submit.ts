@@ -1,5 +1,6 @@
 import { getClient } from '@/utils/client';
 import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
+import { setSignatures } from '@/utils/setSignatures';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useProofOfUs } from './proofOfUs';
@@ -12,32 +13,6 @@ export enum SubmitStatus {
   SUBMITABLE = 'submitable',
   INCOMPLETE = 'incomplete',
 }
-
-const setSignatures = (
-  tx: string,
-  signees: IProofOfUsSignee[] = [],
-): string => {
-  const innerTx = JSON.parse(Buffer.from(tx, 'base64').toString());
-  const { signers } = JSON.parse(innerTx.cmd);
-  console.log(JSON.parse(innerTx.cmd), { signees, signers });
-  const sigs = signers.reduce((acc: any, val: any) => {
-    const pubKey = val.pubKey;
-
-    console.log({ pubKey });
-
-    const signee = signees.find((signee) => signee.publicKey === pubKey);
-
-    console.log(signee);
-    if (!signee) return acc;
-
-    acc.push({ sig: signee.signature });
-
-    return acc;
-  }, []);
-
-  console.log(sigs);
-  return Buffer.from(JSON.stringify({ ...innerTx, sigs })).toString('base64');
-};
 
 export const useSubmit = () => {
   const searchParams = useSearchParams();
