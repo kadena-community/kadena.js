@@ -336,7 +336,7 @@ export const maskStringPreservingStartAndEnd = (
 export const isNotEmptyString = (value: unknown): value is string =>
   value !== null && value !== undefined && value !== '';
 
-export const isNotEmptyObject = <T extends object>(obj?: T): obj is T =>
+export const isNotEmptyObject = <T extends object>(obj?: T | null): obj is T =>
   obj !== undefined && obj !== null && Object.keys(obj).length > 0;
 
 /**

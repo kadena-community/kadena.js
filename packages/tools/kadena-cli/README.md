@@ -213,15 +213,21 @@ kadena network add --network-name="mainnet" --network-id="mainnet01" --network-h
 kadena network set-default [arguments]
 ```
 
-| **Arguments & Options**               | **Description**                       | **Required** |
-| ------------------------------------- | ------------------------------------- | ------------ |
-| --network                             | Select name of network to set default |              |
-| --network-default-confirmation        | Confirmation for default network      |              |
+| **Arguments & Options**               | **Description**                                   | **Required** |
+| ------------------------------------- | ------------------------------------------------- | ------------ |
+| --network                             | Select name of network to set default             |              |
+| --network-default-confirmation        | Confirmation for default network to set/unset     |              |
 
-example:
+example for setting default network:
 ```
 kadena network set-default --network="testnet" --network-default-confirmation
 ```
+example for removing default network:
+```
+kadena network set-default --network="none" --network-default-confirmation
+```
+
+Passing a network as "none" will remove the default network
 ---
 
 ```
