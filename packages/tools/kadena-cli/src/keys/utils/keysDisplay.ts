@@ -1,13 +1,11 @@
 import type { IPlainKey } from '../../services/index.js';
-import { services } from '../../services/index.js';
 import type { IWallet as IServiceWallet } from '../../services/wallet/wallet.types.js';
 import { maskStringPreservingStartAndEnd } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
 
-export async function printPlainKeys(): Promise<void> {
-  const plainKeys = await services.plainKey.list();
+export async function printPlainKeys(plainKeys: IPlainKey[]): Promise<void> {
   const header: TableHeader = ['Alias', 'Public Key', 'Secret Key'];
   const rows: TableRow[] = [];
 

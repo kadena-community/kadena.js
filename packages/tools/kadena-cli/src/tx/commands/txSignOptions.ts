@@ -8,7 +8,7 @@ export const options = [
   securityOptions.createPasswordOption({
     message: 'Enter the wallet password',
   }),
-  txOptions.directory({ disableQuestion: true }),
+  globalOptions.directory({ disableQuestion: true }),
   txOptions.txUnsignedTransactionFiles(),
 
   globalOptions.legacy({ isOptional: true, disableQuestion: true }),
