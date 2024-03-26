@@ -78,7 +78,7 @@ export const createTestSignedTransactionCommand: (
     });
     const chainOption = await option.chainId();
 
-    log.debug('sign-with-wallet:action', {
+    log.debug('test-signed-transaction:action', {
       ...networkOption,
       directory,
       ...files,
