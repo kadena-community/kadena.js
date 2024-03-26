@@ -239,26 +239,27 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
             />
           </Stack>
 
-          <Trans
-            i18nKey="common:link-to-tracker"
-            components={[
-              <Link
-                className={linkStyle}
-                href={linkToTracker}
-                target={'_blank'}
-                key={requestKey}
-              />,
-            ]}
-          />
-
           {!onSameChain ? (
-            <Stack flexDirection={'column'} marginBlockStart={'xl'}>
-              <div className={infoNotificationColor}>
-                {t('cross-chain-transfer-initiated')}
-              </div>
+            <>
+              <Trans
+                i18nKey="common:link-to-tracker"
+                components={[
+                  <Link
+                    className={linkStyle}
+                    href={linkToTracker}
+                    target={'_blank'}
+                    key={requestKey}
+                  />,
+                ]}
+              />
+              <Stack flexDirection={'column'} marginBlockStart={'xl'}>
+                <div className={infoNotificationColor}>
+                  {t('cross-chain-transfer-initiated')}
+                </div>
 
-              <Trans i18nKey="common:cross-chain-warning" />
-            </Stack>
+                <Trans i18nKey="common:cross-chain-warning" />
+              </Stack>
+            </>
           ) : null}
         </FormStatusNotification>
       ) : null}
