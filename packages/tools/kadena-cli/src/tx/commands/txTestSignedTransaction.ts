@@ -62,7 +62,7 @@ export const createTestSignedTransactionCommand: (
   version: string,
 ) => void = createCommand(
   'test',
-  'Test a signed transaction on testnet.',
+  'Test a signed transaction on (network choice).',
   [
     txOptions.directory({ disableQuestion: true }),
     txOptions.txSignedTransactionFiles(),
@@ -78,7 +78,7 @@ export const createTestSignedTransactionCommand: (
     });
     const chainOption = await option.chainId();
 
-    log.debug('sign-with-local-wallet:action', {
+    log.debug('sign-with-wallet:action', {
       ...networkOption,
       directory,
       ...files,
