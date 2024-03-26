@@ -801,8 +801,9 @@ signing and submission.
 ### Available Templates
 
 Currently, two default templates are provided: `transfer` and `safe-transfer`.
-These templates cover the most common transaction types, allowing for
-straightforward transfers of tokens between accounts.
+(Default templates are stored at `.kadena/transaction-templates`) These
+templates cover the most common transaction types, allowing for straightforward
+transfers of tokens between accounts.
 
 ### Command Usage
 
@@ -826,7 +827,7 @@ options available:
 ### Example Command
 
 ```
-kadena tx add --template="transfer.yaml" --template-data="data.yaml" (--account-from="k:account" --account-to="k:toaccount" --amount="1" --chain-id="1" --pk-from="publicKey") --network-id="testnet04" --out-file="transaction.json"
+kadena tx add --template="transfer.yaml" --template-data="data.yaml" --network-id="testnet04" --out-file="transaction.json"
 ```
 
 In this example, `transfer.yaml` is the template used to construct the
@@ -835,17 +836,30 @@ variables. The `--network-id` specifies which network the transaction is
 intended for, and `--out-file` determines where the generated transaction file
 will be saved.
 
-### Template Variables
+Below is a YAML template "transfer.yaml" that outlines the structure for a coin
+transfer operation on Kadena. Notice the use of placeholders with prefixes to
+define expected data types for each field:
 
-Variables are a critical part of transaction templates, defining the data
-required to construct a transaction. Users can be prompted for variables missing
-from the `--template-data` file or not provided as command-line arguments. The
-`--holes` option is particularly useful for identifying all the variables a
-template requires.
-
-Variables support specific prefixes (`account:`, `key:`, `network:`, `decimal:`)
-to facilitate the correct selection or validation of input values in interactive
-mode.
+```yaml
+code: |-
+  (coin.transfer "{{{account:from}}}" "{{{account:to}}}" {{decimal:amount}})
+data:
+meta:
+  chainId: '{{chain-id}}'
+  sender: '{{{account:from}}}'
+  gasLimit: 2300
+  gasPrice: 0.000001
+  ttl: 600
+signers:
+  - public: '{{key:from}}'
+    caps:
+      - name: 'coin.TRANSFER'
+        args: ['{{{account:from}}}', '{{{account:to}}}', { { decimal:amount } }]
+      - name: 'coin.GAS'
+        args: []
+networkId: '{{network:networkId}}'
+type: exec
+```
 
 `account`: This prefix is used for variables that should be filled with an
 account name, guiding users to input valid Kadena account identifiers. `key`:
@@ -854,41 +868,6 @@ cryptographic keys in the correct format. `network`: This prefix is used for
 specifying the network ID, helping users to select the appropriate network for
 their transaction. `decimal`: For variables that involve numerical values with
 decimal points, this prefix ensures the format and precision of the input.
-
-Below is a YAML template that outlines the structure for a coin transfer
-operation on Kadena. Notice the use of placeholders with prefixes to define
-expected data types for each field:
-
-```yaml
-code: |-
-  (coin.transfer "{{{account:from}}}" "{{{account:to}}}" {{decimal:amount}}))
-  (coin.transfer "{{{account:to}}}" "{{{account:from}}}" 0.000000000001)
-data:
-meta:
-  chainId: '{{chain-id}}'
-  sender: { { { account:from } } }
-  gasLimit: 2000
-  gasPrice: 0.00000001
-  ttl: 7200
-signers:
-  - public: { { key:from } }
-    caps:
-      - name: 'coin.TRANSFER'
-        args:
-          [
-            { { { account:from } } },
-            { { { account:to } } },
-            { { decimal:amount } },
-          ]
-      - name: 'coin.GAS'
-        args: []
-  - public: { { key:to } }
-    caps:
-      - name: 'coin.TRANSFER'
-        args: [{ { { account:to } } }, { { { account:from } } }, 0.000000000001]
-networkId: '{{network:networkId}}'
-type: exec
-```
 
 This template exemplifies how prefixes guide users in providing the correct
 types of input values, significantly reducing the potential for errors when the
@@ -907,6 +886,18 @@ mindful of the data types and formats expected by the template to avoid errors.
 This method allows for a more streamlined and automated approach to transaction
 creation, suitable for users who prefer script-based automation or who are
 running the CLI in environments where interactive prompts are not feasible.
+
+### Template Variables
+
+Variables are a critical part of transaction templates, defining the data
+required to construct a transaction. Users can be prompted for variables missing
+from the `--template-data` file or not provided as command-line arguments. The
+`--holes` option is particularly useful for identifying all the variables a
+template requires.
+
+Variables support specific prefixes (`account:`, `key:`, `network:`, `decimal:`)
+to facilitate the correct selection or validation of input values in interactive
+mode.
 
 ---
 
@@ -1089,3 +1080,7 @@ available:
 [1]: https://nextjs.org/
 [2]: https://vuejs.org/
 [3]: https://angular.io/
+
+```
+
+```
