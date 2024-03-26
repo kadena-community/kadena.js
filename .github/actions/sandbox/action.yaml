@@ -1,4 +1,4 @@
-name: 'Start Blockchain Sandbox'
+name: 'Start Kadena sandbox'
 runs:
   using: 'composite'
   steps:
