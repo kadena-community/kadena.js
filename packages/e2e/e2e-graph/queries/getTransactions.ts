@@ -93,7 +93,7 @@ export function getTransactionsByRequestKeyQuery(
         edges {
           node {
             result {
-              ... on TransactionInfo {
+              ... on TransactionResult {
                 block {
                   hash
                 }
