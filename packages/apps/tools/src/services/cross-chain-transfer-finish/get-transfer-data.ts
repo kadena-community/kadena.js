@@ -6,7 +6,7 @@ import {
 } from '@/services/utils/utils';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
-import { isCrossChainResponse } from '@/utils/pact';
+import { isContinuationResponse, isCrossChainResponse } from '@/utils/pact';
 import type {
   ChainwebChainId,
   ICommandResult,
@@ -106,23 +106,25 @@ export async function getTransferData({
       // return { error: ('message' in result.error ? (result.error.message as string) : 'An error occurred.' };
     }
 
-    if (!isCrossChainResponse(found)) {
+    if (
+      !isCrossChainResponse(found) ||
+      !isContinuationResponse(found.continuation)
+    ) {
       return { error: t('Not a Cross Chain Request Key') };
     }
 
-    const [senderAccount, receiverAccount, guard, targetChain, amount] = found
-      ?.continuation?.continuation.args as Array<PactValue | undefined>;
+    const { continuation } = found;
 
-    const yieldData = found?.continuation?.yield as
-      | {
-          data: [string, PactValue][];
-          provenance: { targetChainId: ChainId; moduleHash: string } | null;
-          source: string;
-        }
-      | null
-      | undefined;
+    const [senderAccount, receiverAccount, guard, targetChain, amount] =
+      continuation.continuation.args as Array<PactValue | undefined>;
 
-    const { step, stepHasRollback, pactId } = found?.continuation as IPactExec;
+    const yieldData = continuation?.yield as {
+      data: [string, PactValue][];
+      provenance: { targetChainId: ChainId; moduleHash: string } | null;
+      source: string;
+    } | null;
+
+    const { step, stepHasRollback, pactId } = continuation;
 
     return {
       tx: {
