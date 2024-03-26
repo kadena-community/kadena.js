@@ -2814,19 +2814,19 @@ importers:
         specifier: workspace:*
         version: link:../../libs/pactjs-generator
       '@scure/bip39':
-        specifier: 1.2.1
+        specifier: ^1.2.1
         version: 1.2.1
       chalk:
-        specifier: 5.3.0
+        specifier: ^5.2.0
         version: 5.3.0
       commander:
-        specifier: 11.0.0
-        version: 11.0.0
+        specifier: ^11.0.0
+        version: 11.1.0
       js-yaml:
-        specifier: 4.1.0
+        specifier: ~4.1.0
         version: 4.1.0
       memfs:
-        specifier: 3.5.3
+        specifier: ~3.5.1
         version: 3.5.3
       ora:
         specifier: 7.0.1
@@ -2835,13 +2835,13 @@ importers:
         specifier: 1.6.3
         version: 1.6.3
       seedrandom:
-        specifier: 3.0.5
+        specifier: ~3.0.5
         version: 3.0.5
       ttys:
         specifier: 0.0.3
         version: 0.0.3
       zod:
-        specifier: 3.18.0
+        specifier: ~3.18.0
         version: 3.18.0
     devDependencies:
       '@kadena-dev/eslint-config':
@@ -19792,7 +19792,6 @@ packages:
   /commander@11.1.0:
     resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
     engines: {node: '>=16'}
-    dev: true
 
   /commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
@@ -21115,12 +21114,8 @@ packages:
     engines: {node: '>=14.16'}
     dev: false
 
-  /emoji-regex@10.2.1:
-    resolution: {integrity: sha512-97g6QgOk8zlDRdgq1WxwgTMgEWGVAQvB5Fdpgc1MkNy56la5SKP9GsMXKDOdqwn90/41a8yPwIGk1Y6WVbeMQA==}
-
   /emoji-regex@10.3.0:
     resolution: {integrity: sha512-QpLs9D9v9kArv4lfDEgg1X/gN5XLnf/A6l9cs8SPZLRZR3ZkY9+kwIQTxm+fsSej5UMYGE8fdoaZVIBlqG0XTw==}
-    dev: false
 
   /emoji-regex@7.0.3:
     resolution: {integrity: sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==}
@@ -32955,7 +32950,7 @@ packages:
     engines: {node: '>=16'}
     dependencies:
       eastasianwidth: 0.2.0
-      emoji-regex: 10.2.1
+      emoji-regex: 10.3.0
       strip-ansi: 7.1.0
 
   /string-width@7.1.0:
