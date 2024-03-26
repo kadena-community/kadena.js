@@ -11,7 +11,7 @@ import type {
   ChainwebChainId,
   ICommandResult,
 } from '@kadena/chainweb-node-client';
-import type { ChainId, IPactEvent, IPactExec, PactValue } from '@kadena/types';
+import type { ChainId, IPactEvent, PactValue } from '@kadena/types';
 import Debug from 'debug';
 import type { Translate } from 'next-translate';
 
