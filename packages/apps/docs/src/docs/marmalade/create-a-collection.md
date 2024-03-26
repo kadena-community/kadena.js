@@ -11,9 +11,13 @@ tags: [NFT, marketplace, non-fungible tokens, minting, marmalade, v2]
 # Create a token collection
 
 Many token creators generate non-fungible tokens in collections with a common theme or categorize their creative work by media, style, or subject.
-Creating a collection is similar to creating an individual non-fungible token as described in [Create a non-fungible token](/build/nft-marmalade/create-nft) except that you need a metadata file that describes the collection in addition to a metadata file for each token that's part of the collection.
-You can use the built-in `collection-policy` to identify the collection and the tokens that are part of collection.
+Creating a collection is similar to creating an individual non-fungible token as described in [Create a non-fungible token](/build/nft-marmalade/create-nft) except that:
 
+- You need to create the collection to generate a unique identifier for it.
+- You need to specify the collection a token is part of in its metadata file.
+- You need to identify the collection to add a token to when you create the token.
+
+You can use the built-in `collection-policy` to create the collection and identify the tokens that are part of collection.
 The `collection-policy` helps organize tokens into a curated group that can be uploaded and stored together.
 The policy does generate a collection of tokens.
 If you use tools that automate token generation and metadata, you should evaluate the generated metadata to ensure that it conforms with the Marmalade metadata schema.
