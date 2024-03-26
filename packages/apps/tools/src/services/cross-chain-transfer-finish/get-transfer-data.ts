@@ -6,7 +6,7 @@ import {
 } from '@/services/utils/utils';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
-import { isCrossChainRequest } from '@/utils/pact';
+import { isCrossChainResponse } from '@/utils/pact';
 import type {
   ChainwebChainId,
   ICommandResult,
@@ -106,7 +106,7 @@ export async function getTransferData({
       // return { error: ('message' in result.error ? (result.error.message as string) : 'An error occurred.' };
     }
 
-    if (!isCrossChainRequest(found)) {
+    if (!isCrossChainResponse(found)) {
       return { error: t('Not a Cross Chain Request Key') };
     }
 
