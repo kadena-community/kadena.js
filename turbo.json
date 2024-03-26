@@ -12,6 +12,7 @@
       "outputMode": "new-only"
     },
     "test:integration": {
+      "cache": false,
       "dependsOn": ["build"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
       "outputMode": "new-only"
