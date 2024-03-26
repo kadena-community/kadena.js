@@ -1,6 +1,6 @@
 import { getFungibleChainAccount } from '@services/account-service';
 import { COMPLEXITY } from '@services/complexity';
-import { defaultFungibleName } from '@utils/default';
+import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import FungibleChainAccount from '../objects/fungible-chain-account';
@@ -21,7 +21,7 @@ builder.queryField('fungibleChainAccount', (t) =>
       try {
         return await getFungibleChainAccount({
           chainId: args.chainId,
-          fungibleName: args.fungibleName || defaultFungibleName,
+          fungibleName: args.fungibleName || dotenv.DEFAULT_FUNGIBLE_NAME,
           accountName: args.accountName,
         });
       } catch (error) {
