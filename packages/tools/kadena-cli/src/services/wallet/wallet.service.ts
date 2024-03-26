@@ -14,6 +14,7 @@ import {
 } from '@kadena/hd-wallet/chainweaver';
 
 import { toHexStr } from '../../keys/utils/keysHelpers.js';
+import { log } from '../../utils/logger.js';
 import type { Services } from '../index.js';
 import { WALLET_SCHEMA_VERSION } from './wallet.schemas.js';
 import type {
@@ -86,7 +87,16 @@ export class WalletService implements IWalletService {
     alias: string,
   ): ReturnType<IWalletService['getByAlias']> {
     const wallets = await this.services.config.getWallets();
-    return wallets.find((wallet) => wallet.alias === alias) ?? null;
+    const match = wallets.filter((wallet) => wallet.alias === alias);
+    if (match.length === 1) {
+      return match[0];
+    } else if (match.length > 1) {
+      log.warning(
+        `Multiple wallets found with alias "${alias}", it is recommended to use unique aliases`,
+      );
+      return match[0];
+    }
+    return null;
   }
 
   public async list(): ReturnType<IWalletService['list']> {

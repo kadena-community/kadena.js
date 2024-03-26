@@ -11,7 +11,7 @@ type IKeyPair = IKeyPairBase & {
 
 export interface IPlainKeyService {
   generateKeyPairs: (amount: number, legacy?: boolean) => Promise<IKeyPair[]>;
-  list: () => Promise<IPlainKey[]>;
+  list: (directory?: string) => Promise<IPlainKey[]>;
   storeKeyPairs: (
     keyPairs: IKeyPair[],
     alias: string,
@@ -88,7 +88,7 @@ export class PlainKeyService implements IPlainKeyService {
     }));
   }
 
-  public list(): ReturnType<IPlainKeyService['list']> {
-    return this.services.config.getPlainKeys();
+  public list(directory?: string): ReturnType<IPlainKeyService['list']> {
+    return this.services.config.getPlainKeys(directory);
   }
 }

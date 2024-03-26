@@ -64,7 +64,7 @@ export const createTestSignedTransactionCommand: (
   'test',
   'Test a signed transaction on testnet.',
   [
-    txOptions.directory({ disableQuestion: true }),
+    globalOptions.directory({ disableQuestion: true }),
     txOptions.txSignedTransactionFiles(),
     globalOptions.network({ isOptional: false }),
     globalOptions.chainId(),
