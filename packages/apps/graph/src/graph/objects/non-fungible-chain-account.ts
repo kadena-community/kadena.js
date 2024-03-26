@@ -75,6 +75,7 @@ export default builder.node(
               senderAccount: parent.accountName,
               events: {
                 some: {
+                  // transactions can happen not via ledger, but via a policy
                   moduleName: 'marmalade-v2.ledger',
                 },
               },

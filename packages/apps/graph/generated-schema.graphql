@@ -255,9 +255,11 @@ type NonFungibleAccountTransactionsConnectionEdge {
 """A chain and non-fungible-specific account."""
 type NonFungibleChainAccount implements Node {
   accountName: String!
+  # Jermaine: eigenlijk zouden we hier nog een guard moeten hebben
+  # guard: Guard!
   chainId: ID!
   id: ID!
-  nonFungibles: [Token!]!
+  nonFungibleBalances: [NonFungibleTokenBalance!]!
 
   """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleChainAccountTransactionsConnection!
@@ -321,9 +323,9 @@ type Query {
 
   """
   Retrieve events by qualifiedName (e.g. `coin.TRANSFER`). Default page size is 20.
-         
+
         The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
-         
+
         An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
   """
   events(after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, orderIndex: Int, parametersFilter: String, qualifiedEventName: String!, requestKey: String): QueryEventsConnection!
@@ -340,16 +342,16 @@ type Query {
 
   """
   Estimate the gas limit for one or more transactions. Throws an error when the transaction fails or is invalid. The input accepts a JSON object and based on the parameters passed it will determine what type of format it is and return the gas limit estimation. The following types are supported:
-         
+
         - `full-transaction`: A complete transaction object. Required parameters: `cmd`, `hash` and `sigs`.
         - `stringified-command`: A JSON stringified command. Required parameters: `cmd`. It also optionally accepts `sigs`.
         - `full-command`: A full command. Required parameters: `payload`, `meta` and `signers`.
         - `partial-command`: A partial command. Required parameters: `payload` and either `meta` or `signers`. In case `meta` is not given, but `signers` is given, you can also add `chainId` as a parameter.
         - `payload`: A just the payload of a command. Required parameters: `payload` and `chainId`.
         - `code`: The code of an execution. Required parameters: `code` and `chainId`.
-         
+
         Every type accepts an optional parameter called `networkId` to override the default value from the environment variables.
-         
+
         Example of the input needed for a type `code` query: `gasLimitEstimate(input: "{\"code\":\"(coin.details \\\"k:1234\\\")\",\"chainId\":\"3\"}")`
   """
   gasLimitEstimate(input: [String!]!): [GasLimitEstimation!]!
@@ -482,9 +484,9 @@ type Signer implements Node {
 type Subscription {
   """
   Listen for events by qualifiedName (e.g. `coin.TRANSFER`).
-         
+
         The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
-         
+
         An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
   """
   events(chainId: String, parametersFilter: String, qualifiedEventName: String!): [Event!]
@@ -500,20 +502,30 @@ type Subscription {
 }
 
 """The token identifier and its balance."""
-type Token {
+type NonFungibleTokenBalance {
+  # Review with Jermaine:
+  # We should probably rename this to NonFungibleToken
+
+  # token shouldn't be with NonFungibleToken, but with the NonFungibleChainAccount
   balance: Int!
   chainId: String!
   id: ID!
-  info: TokenInfo
+  info: NonFungibleToken
   version: String!
 }
 
 """Information related to a token."""
-type TokenInfo {
+type NonFungibleToken {
+  # Review with Jermaine:
+  # We should probably rename this to NonFungibleToken
   precision: Int!
   supply: Int!
   uri: String!
+  # And maybe we want to add a property with policies: [Policy]
 }
+# type Policy {
+#   moduleName: string
+# }
 
 """A confirmed transaction."""
 type Transaction implements Node {
