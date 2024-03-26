@@ -4,6 +4,7 @@ import {
   generateAccount,
 } from '@kadena-dev/e2e-base/src/helpers/client-utils/accounts.helper';
 import type { IAccount } from '@kadena-dev/e2e-base/src/types/account.types';
+import type { ICommandResult } from '@kadena/chainweb-node-client';
 import { expect, test } from '@playwright/test';
 import { base64Encode } from '../helpers/cryptography.helper';
 import { sendQuery } from '../helpers/request.helper';
@@ -15,6 +16,15 @@ let accountCreationResult: any;
 
 test('Query: getAccount by AccountName', async ({ request }) => {
   await test.step('Given a test account has been created', async () => {
+    const accountCount = 30;
+    const accountsMap = new Map<string, ICommandResult>();
+
+    for (let i = 0; i < accountCount; i++) {
+      const account = await generateAccount(1, ['0']);
+      const creationResult = await createAccount(account, account.chains[0]);
+      accountsMap.set(account.account, creationResult);
+    }
+
     testAccount = await generateAccount(1, ['0']);
     accountCreationResult = await createAccount(
       testAccount,
@@ -68,8 +78,8 @@ test('Query: getAccount by AccountName', async ({ request }) => {
         },
       });
     }).toPass({
-      intervals: [2_000],
-      timeout: 20_000,
+      intervals: [20],
+      timeout: 300,
     });
   });
 });
