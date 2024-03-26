@@ -97,7 +97,7 @@ export async function getTransferStatus({
     }
 
     //If crosschain transfer
-    if (sender.chain !== receiver.chain) {
+    if (sender.chain && receiver.chain && sender.chain !== receiver.chain) {
       await checkForProof({
         requestKey,
         network,
