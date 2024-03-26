@@ -16,16 +16,16 @@ import Debug from 'debug';
 import type { Translate } from 'next-translate';
 
 interface ITransactionData {
-  sender: { chain: ChainwebChainId; account?: string };
-  receiver: { chain: ChainwebChainId; account?: string };
+  sender: { chain?: ChainwebChainId; account?: string };
+  receiver: { chain?: ChainwebChainId; account?: string };
   amount?: number;
   receiverGuard?: {
     pred: string;
     keys: [string];
   };
-  step: number;
-  pactId: string;
-  rollback: boolean;
+  step?: number;
+  pactId?: string;
+  rollback?: boolean;
   events?: IEventData[];
   result?: ICommandResult['result'];
 }
@@ -106,43 +106,73 @@ export async function getTransferData({
       // return { error: ('message' in result.error ? (result.error.message as string) : 'An error occurred.' };
     }
 
-    if (
-      !isCrossChainResponse(found) ||
-      !isContinuationResponse(found.continuation)
-    ) {
-      return { error: t('Not a Cross Chain Request Key') };
-    }
+    let senderAccount: string | undefined,
+      receiverAccount: string | undefined,
+      guard:
+        | {
+            pred: string;
+            keys: [string];
+          }
+        | undefined,
+      targetChain: ChainwebChainId | undefined,
+      amount: number | undefined;
 
     const { continuation } = found;
 
-    const [senderAccount, receiverAccount, guard, targetChain, amount] =
-      continuation.continuation.args as Array<PactValue | undefined>;
+    let senderChain: ChainwebChainId | undefined;
 
-    const yieldData = continuation?.yield as {
-      data: [string, PactValue][];
-      provenance: { targetChainId: ChainId; moduleHash: string } | null;
-      source: string;
-    } | null;
+    let step: number | undefined,
+      pactId: string | undefined,
+      stepHasRollback: boolean | undefined;
 
-    const { step, stepHasRollback, pactId } = continuation;
+    if (isContinuationResponse(continuation)) {
+      const [_senderAccount, _receiverAccount, _guard, _targetChain, _amount] =
+        continuation.continuation.args as Array<PactValue | undefined>;
+
+      senderAccount = _senderAccount as string | undefined;
+      receiverAccount = _receiverAccount as string | undefined;
+      guard = _guard as
+        | {
+            pred: string;
+            keys: [string];
+          }
+        | undefined;
+      targetChain = _targetChain as ChainwebChainId | undefined;
+      amount = _amount as number | undefined;
+
+      const {
+        step: _step,
+        stepHasRollback: _stepHasRollback,
+        pactId: _pactId,
+      } = continuation;
+
+      step = _step;
+      stepHasRollback = _stepHasRollback;
+      pactId = _pactId;
+    }
+
+    if (isContinuationResponse(continuation) && isCrossChainResponse(found)) {
+      const yieldData = continuation!.yield as {
+        data: [string, PactValue][];
+        provenance: { targetChainId: ChainId; moduleHash: string } | null;
+        source: string;
+      };
+
+      senderChain = yieldData.source as ChainwebChainId;
+    }
 
     return {
       tx: {
         sender: {
-          chain: yieldData?.source as ChainwebChainId,
-          account: senderAccount as string | undefined,
+          chain: senderChain,
+          account: senderAccount,
         },
         receiver: {
-          chain: targetChain as ChainwebChainId,
-          account: receiverAccount as string | undefined,
+          chain: targetChain,
+          account: receiverAccount,
         },
-        amount: amount as number | undefined,
-        receiverGuard: guard as
-          | {
-              pred: string;
-              keys: [string];
-            }
-          | undefined,
+        amount: amount,
+        receiverGuard: guard,
         step: step,
         pactId: pactId,
         rollback: stepHasRollback,
