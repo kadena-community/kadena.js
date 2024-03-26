@@ -2790,7 +2790,7 @@ importers:
   packages/tools/kadena-cli:
     dependencies:
       '@inquirer/prompts':
-        specifier: ^3.0.4
+        specifier: 3.3.0
         version: 3.3.0
       '@kadena/client':
         specifier: workspace:^
@@ -2814,34 +2814,34 @@ importers:
         specifier: workspace:*
         version: link:../../libs/pactjs-generator
       '@scure/bip39':
-        specifier: ^1.2.1
+        specifier: 1.2.1
         version: 1.2.1
       chalk:
-        specifier: ^5.2.0
+        specifier: 5.3.0
         version: 5.3.0
       commander:
-        specifier: ^11.0.0
+        specifier: 11.0.0
         version: 11.0.0
       js-yaml:
-        specifier: ~4.1.0
+        specifier: 4.1.0
         version: 4.1.0
       memfs:
-        specifier: ~3.5.1
+        specifier: 3.5.3
         version: 3.5.3
       ora:
-        specifier: ^7.0.1
+        specifier: 7.0.1
         version: 7.0.1
       sanitize-filename:
-        specifier: ^1.6.3
+        specifier: 1.6.3
         version: 1.6.3
       seedrandom:
-        specifier: ~3.0.5
+        specifier: 3.0.5
         version: 3.0.5
       ttys:
-        specifier: ^0.0.3
+        specifier: 0.0.3
         version: 0.0.3
       zod:
-        specifier: ~3.18.0
+        specifier: 3.18.0
         version: 3.18.0
     devDependencies:
       '@kadena-dev/eslint-config':
