@@ -1,12 +1,17 @@
 import yaml from 'js-yaml';
 import { extname, join } from 'node:path';
-import type { ZodError, ZodIssue } from 'zod';
+import type {
+  ZodError,
+  ZodIssue,
+  ZodIssueCode,
+  ZodIssueOptionalMessage,
+} from 'zod';
 import { z } from 'zod';
 import type { IAliasAccountData } from './../types.js';
 
-import { ACCOUNT_DIR } from '../../constants/config.js';
+import { ACCOUNT_DIR, MAX_CHAIN_VALUE } from '../../constants/config.js';
 import { services } from '../../services/index.js';
-import { notEmpty } from '../../utils/helpers.js';
+import { isNotEmptyString, notEmpty } from '../../utils/helpers.js';
 import { isEmpty } from './addHelpers.js';
 
 export const accountAliasFileSchema = z.object({
@@ -100,55 +105,40 @@ export async function getAllAccountNames(): Promise<
 export const formatZodFieldErrors = (error: ZodError): string =>
   error.errors.map((e: ZodIssue) => e.message).join('\n');
 
+const chainIdErrorMsgMap: { [key in Partial<ZodIssueCode>]?: string } = {
+  too_small: 'must be greater than or equal to 0',
+  too_big: `must be less than or equal to ${MAX_CHAIN_VALUE}`,
+  invalid_type: `must be a number between 0 and ${MAX_CHAIN_VALUE}`,
+};
+
+const chainIdValidationErrorMapper = (
+  error: ZodIssueOptionalMessage,
+): { message: string } => {
+  const errorMsg = isNotEmptyString(chainIdErrorMsgMap[error.code])
+    ? chainIdErrorMsgMap[error.code]
+    : `must be a valid chain id between 0 and ${MAX_CHAIN_VALUE}`;
+  return {
+    message: errorMsg as string,
+  };
+};
+
 export const chainIdValidation = z
   .number({
-    errorMap: (error) => {
-      if (error.code === 'too_small') {
-        return {
-          message: 'must be greater than or equal to 0',
-        };
-      }
-
-      if (error.code === 'too_big') {
-        return {
-          message: 'must be less than or equal to 19',
-        };
-      }
-
-      return {
-        message: 'must be a number',
-      };
-    },
+    errorMap: chainIdValidationErrorMapper,
   })
   .int()
   .min(0)
-  .max(19);
+  .max(MAX_CHAIN_VALUE);
 
 export const chainIdRangeValidation = z
   .array(
     z
       .number({
-        errorMap: (error) => {
-          if (error.code === 'too_small') {
-            return {
-              message: 'must be greater than or equal to 0',
-            };
-          }
-
-          if (error.code === 'too_big') {
-            return {
-              message: 'must be less than or equal to 19',
-            };
-          }
-
-          return {
-            message: 'must be a number',
-          };
-        },
+        errorMap: chainIdValidationErrorMapper,
       })
       .int()
       .min(0)
-      .max(19),
+      .max(MAX_CHAIN_VALUE),
   )
   .nonempty();
 

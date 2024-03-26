@@ -175,7 +175,7 @@ export const accountOptions = {
       const parse = chainIdRangeValidation.safeParse(chainIds);
       if (!parse.success) {
         const formatted = formatZodError(parse.error);
-        log.error(CHAIN_ID_RANGE_ERROR_MESSAGE, formatted);
+        log.error(`Error: -c, --chain-id in ${formatted}`);
         return;
       }
 

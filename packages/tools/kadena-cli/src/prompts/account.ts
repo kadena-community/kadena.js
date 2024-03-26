@@ -7,6 +7,7 @@ import {
   parseChainIdRange,
 } from '../account/utils/accountHelpers.js';
 import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
+import { MAX_CHAIN_VALUE } from '../constants/config.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   formatZodError,
@@ -266,8 +267,7 @@ export const chainIdPrompt: IPrompt<string> = async (
 ) => {
   const defaultValue = (args.defaultValue as string) || '0';
   return (await input({
-    message:
-      'Enter a ChainId from (0-19) (comma or hyphen separated for multiple e.g 0,1,2 or 1-5 or all):',
+    message: `Enter a ChainId (0-${MAX_CHAIN_VALUE}) (comma or hyphen separated e.g 0,1,2 or 1-5 or all):`,
     default: defaultValue,
     validate: function (input) {
       if (input.trim() === 'all') return true;

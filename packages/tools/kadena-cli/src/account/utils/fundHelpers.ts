@@ -112,7 +112,9 @@ export function logAccountFundingTxResults(
       ),
     );
     log.info(
-      log.color.green(`Use "account details" command to check the balance.`),
+      log.color.green(
+        `Use "kadena account details" command to check the balance.`,
+      ),
     );
   }
 

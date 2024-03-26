@@ -23,8 +23,8 @@ interface IAccountDetails {
   [key: string]: IAccountDetailsResult;
 }
 
-const formatWarnings = (warnings: string[]): string => {
-  if (warnings.length === 0) return warnings.join(',');
+const formatWarnings = (warnings: string[]): string | null => {
+  if (warnings.length === 0) return null;
   const [prefix, ...chainIds] = warnings;
   const sortedChainIds = chainIds.sort(
     (a, b) => parseInt(a, 10) - parseInt(b, 10),
@@ -77,7 +77,7 @@ export async function accountDetails(
     status,
     data: nonEmptyAccountDetails,
     errors,
-    warnings: [formatWarnings(warnings)],
+    warnings: [formatWarnings(warnings)].filter(notEmpty),
   };
 }
 
