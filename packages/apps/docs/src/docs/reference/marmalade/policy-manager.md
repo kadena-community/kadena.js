@@ -1,7 +1,7 @@
 ---
-title: Policy manager contract
+title: Policy manager
 description: Functions and capabilities defined in the Marmalade policy manager contract enforce the policies you select for tokens and token-related operations.
-menu: Policy manager contract
+menu: Policy manager
 label: Policy manager contract
 order: 2
 layout: full
@@ -58,7 +58,7 @@ array of functionalities:
 - `BUY`
 - `WITHDRAW`
 
-## Policy functions
+## Functions
 
 As a general rule, all of the `enforce-**` functions require the `ledger::**-CALL`
 capability to be in scope to ensure that functions are initiated from the ledger.

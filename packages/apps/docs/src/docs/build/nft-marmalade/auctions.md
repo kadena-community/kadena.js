@@ -50,4 +50,4 @@ Using functions in the `marmalade-sale.dutch-auction` contract, you can:
 - Conclude the auction with the first bid at the current price.
 - Define the process for ending the auction and awarding the item to the bidder.
 
-For reference information about the dutch auction smart contract, see [](/reference/nft-ref/dutch-auction-ref.md).
+For reference information about the dutch auction smart contract, see [Dutch auction reference](/reference/nft-ref/dutch-auction-ref.md).

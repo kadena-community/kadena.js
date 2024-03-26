@@ -1,8 +1,8 @@
 ---
 title: Ledger contract
 description: Functions and capabilities defined in the Marmalade Ledger contract enable you to manage the token lifecycle and keep track of all token-related activity.
-menu: NFT marketplace
-label: Ledger contract
+menu: NFT marketplace reference
+label: Ledger
 order: 1
 layout: full
 ---

@@ -182,7 +182,7 @@ pages:
         file: /faucet-app.md
       nft-workshop:
         url: /nft-workshop
-        file: /build/nft-workshop.md
+        file: /build/nft-workshop/index.md
   deploy:
     url: /deploy
     file: /deploy/deploy.md
@@ -385,40 +385,36 @@ pages:
           kadena-js:
             url: /kadena-js
             file: /reference/kadena-client/kadena-js.md
-      marmalade:
+      nftreference:
         url: /nft-ref
-        file: /reference/marmalade/nft-ref.md
+        file: /reference/marmalade/ledger.md
         children:
-          ledger:
-            url: /ledger
-            file: /reference/marmalade/ledger.md
           policymanager:
             url: /policy-manager
             file: /reference/marmalade/policy-manager.md
+            children:
+              collection:
+                url: /collection-policy
+                file: /reference/marmalade/collection-policy.md
+              guard:
+                url: /guard-policy
+                file: /reference/marmalade/guard-policy.md
+              nftpolicy:
+                url: /nft-policy
+                file: /reference/marmalade/non-fungible-policy.md
+              royalty:
+                url: /royalty-policy
+                file: /reference/marmalade/royalty-policy.md
           salecontract:
             url: /sale-contracts
             file: /reference/marmalade/sale-contracts.md
-          guard:
-            url: /guard-policy
-            file: /reference/marmalade/guard-policy.md
-          nftpolicy:
-            url: /nft-policy
-            file: /reference/marmalade/non-fungible-policy.md
-          royalty:
-            url: /royalty-policy
-            file: /reference/marmalade/royalty-policy.md
-          collection:
-            url: /collection-policy
-            file: /reference/marmalade/collection-policy.md
-          auction:
-            url: /auctions
-            file: /reference/marmalade/auction-ref.md
-          conventional:
-            url: /conventional-auction
-            file: /reference/marmalade/conventional-auction-ref.md
-          dutch:
-            url: /dutch-auction
-            file: /reference/marmalade/dutch-auction-ref.md
+            children:
+              conventional:
+                url: /conventional-auction
+                file: /reference/marmalade/conventional-auction-ref.md
+              dutch:
+                url: /dutch-auction
+                file: /reference/marmalade/dutch-auction-ref.md
       chainweb:
         url: /chainweb
         file: /reference/chainweb/chainweb.md

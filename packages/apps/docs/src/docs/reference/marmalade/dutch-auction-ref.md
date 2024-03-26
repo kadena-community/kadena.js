@@ -2,7 +2,7 @@
 
 title: Dutch auction reference 
 description: Describes the capabilities, schemas, tables, functions, and constants defined in the sales-specific contracts for a dutch auction.
-menu: Dutch auction
+menu: Sales-specific contracts
 label: Dutch auction
 order: 2
 layout: full
@@ -23,7 +23,7 @@ The dutch auction smart contract defines the following capabilities to manage pe
 - `PRICE_ACCEPTED`: Specifies the event emitted after the buyer successfully executes the `marmalade.buy` function in a sales contract.
 - `DUMMY`: Acts as a placeholder capability for the `buyer-guard` field.
 
-## Schemas
+## Schema and table
 
 The `auctions-schema` describes the following information for a dutch auction: 
 
@@ -36,8 +36,6 @@ The `auctions-schema` describes the following information for a dutch auction:
 - `price-interval-seconds`
 - `buyer`
 - `buyer-guard`
-
-## Tables
 
 The dutch auction contract stores auction information in the `auctions` table.
 

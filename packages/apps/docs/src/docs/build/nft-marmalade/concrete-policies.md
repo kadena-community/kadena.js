@@ -1,7 +1,7 @@
 ---
-title: Policies
+title: Set policies
 description: Describes how to work with concrete and custom policies when you create tokens.
-menu: Policies
+menu: Set policies
 label: Use concrete policies
 order: 8
 layout: full
@@ -93,7 +93,7 @@ For technical details about the collection policy, see [Collection policy](/refe
 
 The non-fungible policy ensures the uniqueness of digital assets.
 If you apply this policy to a token, the policy guarantees that the token supply is one with a precision of zero.
-No additional configuration is necessary for this policy
+No additional configuration is necessary for this policy.
 
 For technical details about the non-fungible policy, see [Non-fungible policy](/reference/nft-ref/non-fungible-policy).
 

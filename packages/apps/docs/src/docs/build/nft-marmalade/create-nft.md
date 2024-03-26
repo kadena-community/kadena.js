@@ -164,4 +164,4 @@ Regardless of the sales model you choose, you enter the token marketplace by sub
 This walk-through demonstrated the workflow for creating a non-fungible token (NFT) using the Marmalade standard with permanent storage on IPFS.
 To learn more about configuring auction contracts, see [Auctions](/build/nft-marmalade/auctions).
 To learn more about creating and using your own sale contract, see [Sale contracts](/build/nft-marmalade/sale-contracts).
-For technical reference information about any Marmalade smart contract, see [NFT marketplace](/reference/marmalade).
+For technical reference information about any Marmalade smart contract, see [NFT marketplace reference](/reference/nft-ref).

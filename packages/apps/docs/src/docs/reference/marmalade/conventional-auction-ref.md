@@ -2,8 +2,8 @@
 
 title: Conventional auction reference 
 description: Describes the capabilities, schemas, tables, functions, and constants defined in the sales-specific contracts for a conventional auction.
-menu: Dutch auction
-label: Dutch auction
+menu: Sales-specific contracts
+label: Conventional auction
 order: 2
 layout: full
 

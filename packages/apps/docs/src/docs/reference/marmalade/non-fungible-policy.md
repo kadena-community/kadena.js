@@ -1,45 +1,31 @@
 ---
-title: Non Fungible Policy
-description: Utilizing the Non Fungible Policy
-menu: Non Fungible Policy
-label: Non Fungible Policy
+title: Non-fungible policy
+description: Describes the schemas, tables, capabilities, and functions defined in the non-fungible policy.
+menu: Policy manager
+label: Non-fungible policy
 order: 3
 layout: full
 ---
 
-# Non-Fungible Policy
+# Non-fungible policy
 
-The Non Fungable Policy is designed to safeguard the individuality ( Ensuring
-Digital Uniqueness ) of digital assets, known as Non-Fungible Tokens (NFTs).
-This policy guarantees the authenticity and uniqueness of every digital
-creation.
+The non-fungible policy ensures the uniqueness of digital assets.
+If you apply this policy to a token, the policy guarantees that the token supply is one with a precision of zero.
 
-## Technical Specifications
+Source code: [non-fungible-policy.pact](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/non-fungible-policy/non-fungible-policy-v1.pact)
 
-**Non-fungible-policy-v1**:
+## Capabilities
 
-- **Purpose**: Manages the creation and distinction of NFTs with a fixed supply
-  of ONE.
-- **Interface**: Implements the kip.token-policy-v2 interface.
-- **Actions**: Handles various token-related functions like minting, burning,
-  and transferring.
-
-### Specifications and Tables:
-
-- **Policy functions**: Set rules for different token-related tasks.
-
-### Capabilities:
+The non-fungible policy smart contract defines the following capability to manage permissions:
 
 - `GOVERNANCE`: Oversees access control for contract modifications.
 
-### Functions:
+## Functions
+
+The guard policy smart contract defines the following functions to enforce restrictions of different token activities:
 
 - `enforce-init`: Ensures proper initiation of tokens using a ledger guard. This
   sets the stage for minting by storing the mint guard associated with the
   token.
 - `enforce-mint`: Regulates the minting process, maintaining a fixed supply of 1
   for each token, thus preserving its non-fungible nature.
-
----
-
-[Non Fungible Policy Contract](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/non-fungible-policy/non-fungible-policy-v1.pact)

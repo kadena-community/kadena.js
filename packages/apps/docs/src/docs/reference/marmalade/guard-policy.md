@@ -1,73 +1,32 @@
 ---
-title: Guard Policy
-description: Utilizing the Guard Policy
+title: Guard policy
+description: Describes the schemas, tables, capabilities, and functions defined in the guard policy.
 menu: Guard Policy
 label: Guard Policy
 order: 2
 layout: full
 ---
 
-# Guard Policy
+# Guard policy
 
-The Guard Policy is designed to ensure that all token-related actions - minting,
-burning, transferring, and buying/selling - are done securely and only by
+The guard policy ensures that all token-related actions—minting,
+burning, transferring, buying, and selling—can only be performed by
 authorized parties.
+If you apply the guard policy when you create a token, you can specify who is authorized to perform each type of token activity.
 
-**The Role of Guard Policy in Digital Asset Protection**:
+This part of the documentation describes the schemas, tables, capabilities, and functions defined in the Marmalade guard policy contract.
 
-1.  **Token Creation and Initialization**:
+Source code: [guard-policy](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/guard-policy/guard-policy-v1.pact)
 
-    - Envision owning a unique Non-Fungible Token (NFT). When initiating your
-      token, you apply the Guard Policy. This policy outlines specific guards or
-      rules for different actions, from minting to transfer.
-    - A typical configuration for guards looks like:
+## Schema and table
 
-    ```pact
-    'mint-guard': {"keys": ["mint"], "pred": "keys-all"},
-    'burn-guard': {"keys": ["burn"], "pred": "keys-all"},
-    'sale-guard': {"keys": ["sale"], "pred": "keys-all"},
-    'transfer-guard': {"keys": ["transfer"], "pred": "keys-all"}
-    ```
+The guard policy smart contract defines one schema and one table.
+The `guards` schema describes guard values for `mint`, `burn`, `sale`, and `transfer` operations.
+The `policy-guards` table maps token identifiers to their guard values.
 
-2.  **Token Minting**:
+## Capabilities
 
-    - After creation, you might want to produce new tokens. The Guard Policy
-      ensures that only those with the appropriate 'mint' key can do this.
-
-3.  **Token Burning**:
-
-    - If you wish to reduce your token's supply, only those with the 'burn' key
-      can proceed with this action under the Guard Policy.
-
-4.  **Token Transfer**:
-
-    - When moving your token to another party, the Guard Policy verifies the
-      transfer, ensuring only those with the 'transfer' key can execute it.
-
-5.  **Token Sale**:
-
-    - When you're ready to sell, the Guard Policy checks that only entities with
-      the 'sale' key can complete this action. It also confirms the sale ID with
-      the ongoing pact to guarantee only authorized sales.
-
-While this might seem intricate, the platform simplifies the process, taking
-most of the weight off token owners. All you need to do is set up your guard
-configuration.
-
-In essence, the Guard Policy isn't just a security tool; it's a means to ensure
-trust, control, and peace of mind in the digital assets realm.
-
-## Technical Specifications
-
-### Schemas and Tables:
-
-- **Schemas**: Contains `guards` that specify values for `mint`, `burn`, `sale`,
-  and `transfer`.
-
-- **Tables**: The `policy-guards` table connects token IDs to their guard
-  values.
-
-### Capabilities:
+The guard policy smart contract defines the following capabilities to manage permissions:
 
 - `GOVERNANCE`: Governs contract upgrade access.
 - `GUARDS` @event: Emits guard info during `enforce-init`.
@@ -77,7 +36,9 @@ trust, control, and peace of mind in the digital assets realm.
   `enforce-buy`.
 - `TRANSFER`: Uses the `sale-guard` in `enforce-transfer`.
 
-## Functions:
+## Functions
+
+The guard policy smart contract defines the following functions to enforce restrictions of different token activities:
 
 - `enforce-init`: Initializes the `policy-guards` table with token ID and guard
   values.
@@ -89,8 +50,3 @@ trust, control, and peace of mind in the digital assets realm.
 - `enforce-transfer`: Validates transfers, checking sender, receiver, and
   amount.
 
-In summary, the Guard policy ensures the safety and integrity of digital assets.
-
----
-
-[Guard Policy Contract](https://github.com/kadena-io/marmalade/blob/v2/pact/concrete-policies/guard-policy/guard-policy-v1.pact)

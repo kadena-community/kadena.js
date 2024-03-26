@@ -43,9 +43,11 @@ The Marmalade token standard defines the interfaces for minting digital items—
 
 The reference information for the Marmalade standard covers the following topics:
 
-- [Ledger contract](/reference/ledger) describes the core functions defined in the Marmalade ledger contract.
-- [Policy manager contract](/reference/ledger/policy-manager) describes the core functions defined in the Marmalade ledger contract.
-- [Sale contract](/reference/ledger/sale-contracts) describes the core functions defined in the Marmalade ledger contract.
+- [Ledger](/reference/nft-ref) describes the core functions defined in the Marmalade ledger contract.
+
+- [Policy manager](/reference/nft-ref/policy-manager) describes the core functions defined in the policy manager contract and provides reference information for the concrete policies.
+
+- [Sales-specific contracts](/reference/nft-ref/sale-contracts) provides an overview for creating a custom sale contract and provides reference information for the registered sale contracts.
 
 ## Queries and indexing: Kadena GraphQL
 
