@@ -69,8 +69,6 @@ export async function getMempoolTransactionStatus(
   if (mempoolData && mempoolData[0].tag === 'Pending') {
     return 'Pending';
   }
-
-  return undefined;
 }
 
 export async function getMempoolTransactionSigners(
