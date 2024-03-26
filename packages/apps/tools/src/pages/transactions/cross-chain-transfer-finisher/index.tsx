@@ -175,7 +175,11 @@ const CrossChainTransferFinisher: FC = () => {
   const handleValidateSubmit = async (data: FormData): Promise<void> => {
     debug(handleValidateSubmit.name);
 
-    if (!pollResults.tx) {
+    if (
+      !pollResults.tx ||
+      !pollResults.tx.sender.chain ||
+      !pollResults.tx.receiver.chain
+    ) {
       return;
     }
 
