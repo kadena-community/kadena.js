@@ -25,6 +25,8 @@ builder.queryField('transaction', (t) =>
           },
         });
 
+        if (!result) return null;
+
         if (result.length === 0) {
           return null;
         }

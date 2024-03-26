@@ -13,6 +13,7 @@ import './objects/signer';
 import './objects/token';
 import './objects/token-info';
 import './objects/transaction';
+import './objects/transaction-capability';
 import './objects/transaction-command';
 import './objects/transaction-meta';
 import './objects/transaction-payload';

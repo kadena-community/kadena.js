@@ -430,7 +430,7 @@ type QueryEventsConnectionEdge {
 }
 
 type QueryTransactionsByPublicKeyConnection {
-  edges: [QueryTransactionsByPublicKeyConnectionEdge!]!
+  edges: [QueryTransactionsByPublicKeyConnectionEdge]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
@@ -466,17 +466,15 @@ type QueryTransfersConnectionEdge {
 type Signer implements Node {
   """The signer for the gas."""
   address: String
-  capabilities: String
+  clist: [TransactionCapability!]!
   id: ID!
-  orderIndex: Int!
+  orderIndex: Int
   publicKey: String!
   requestKey: String!
 
   """The signature scheme that was used to sign."""
   scheme: String
-
-  """The result of the signing operation of the hash of the transaction."""
-  signature: String!
+  sig: String
 }
 
 type Subscription {
@@ -496,7 +494,7 @@ type Subscription {
   newBlocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
 
   """Listen for a transaction by request key."""
-  transaction(requestKey: String!): Transaction
+  transaction(chainId: String, requestKey: String!): Transaction
 }
 
 """The token identifier and its balance."""
@@ -515,15 +513,18 @@ type TokenInfo {
   uri: String!
 }
 
-"""A confirmed transaction."""
+"""A transaction."""
 type Transaction implements Node {
-  block: Block
   cmd: TransactionCommand!
-  events: [Event!]
   hash: String!
   id: ID!
-  result: TransactionResult!
-  transfers: [Transfer!]
+  result: TransactionInfo!
+}
+
+"""List of capabilities associated with/installed by this signer."""
+type TransactionCapability {
+  args: String!
+  name: String!
 }
 
 """A transaction command."""
@@ -534,7 +535,16 @@ type TransactionCommand {
   networkId: String!
   nonce: String!
   payload: TransactionPayload!
-  signers: [Signer!]
+  signers: [Signer!]!
+}
+
+"""The result of a transaction."""
+union TransactionInfo = TransactionMempoolInfo | TransactionResult
+
+"""The mempool information."""
+type TransactionMempoolInfo {
+  """The status of the mempool."""
+  status: String
 }
 
 """The metadata of a transaction."""
@@ -554,12 +564,14 @@ union TransactionPayload = ContinuationPayload | ExecutionPayload
 type TransactionResult {
   """The transaction result when it was successful. Formatted as raw JSON."""
   badResult: String
+  block: Block!
 
   """
   The JSON stringified continuation in the case that it is a continuation.
   """
   continuation: String
   eventCount: BigInt
+  events(after: String, before: String, first: Int, last: Int): TransactionResultEventsConnection!
   gas: BigInt!
 
   """The transaction result when it was successful. Formatted as raw JSON."""
@@ -572,6 +584,29 @@ type TransactionResult {
   logs: String
   metadata: String
   transactionId: BigInt
+  transfers(after: String, before: String, first: Int, last: Int): TransactionResultTransfersConnection!
+}
+
+type TransactionResultEventsConnection {
+  edges: [TransactionResultEventsConnectionEdge]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type TransactionResultEventsConnectionEdge {
+  cursor: String!
+  node: Event!
+}
+
+type TransactionResultTransfersConnection {
+  edges: [TransactionResultTransfersConnectionEdge]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type TransactionResultTransfersConnectionEdge {
+  cursor: String!
+  node: Transfer!
 }
 
 """A transfer of funds from a fungible between two accounts."""

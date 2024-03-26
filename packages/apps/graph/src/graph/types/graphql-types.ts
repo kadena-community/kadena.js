@@ -123,9 +123,16 @@ export interface TransactionMeta {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
+export interface TransactionMempoolInfo {
+  status: string;
+}
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export interface TransactionResult {
+  hash: string;
+  chainId: bigint;
   badResult: string | null;
+  blockHash: string;
   continuation: string | null;
   gas: bigint;
   goodResult: string | null;
@@ -134,4 +141,19 @@ export interface TransactionResult {
   metadata: string | null;
   eventCount: bigint | null;
   transactionId: bigint | null;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface TransactionCommand {
+  payload: ExecutionPayload | ContinuationPayload;
+  meta: TransactionMeta;
+  signers: Signer[];
+  networkId: string;
+  nonce: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface TransactionCapability {
+  name: string;
+  args: string;
 }

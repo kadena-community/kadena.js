@@ -28,6 +28,8 @@ export const dotenv: {
   MARMALADE_REMOTE_EXCLUDE: string[];
   MARMALADE_LOCAL_TEMPLATE_PATH: string;
   MARMALADE_LOCAL_NAMESPACE_PATH: string;
+  MEMPOOL_HOSTNAME: string;
+  MEMPOOL_PORT: number;
   GITHUB_TOKEN: string;
   SIMULATE_DEFAULT_CHAIN_ID: ChainId;
   SIMULATE_LOG_FOLDER_NAME: string;
@@ -107,6 +109,8 @@ export const dotenv: {
     process.env.MARMALADE_LOCAL_NAMESPACE_PATH,
     'src/devnet/deployment/marmalade/templates/ns',
   ),
+  MEMPOOL_HOSTNAME: or(process.env.MEMPOOL_HOST, 'localhost'),
+  MEMPOOL_PORT: parseInt(or(process.env.MEMPOOL_PORT, '1789'), 10),
   GITHUB_TOKEN: or(process.env.GITHUB_TOKEN, '/pact/marmalade-ns'),
   SIMULATE_DEFAULT_CHAIN_ID: or(
     process.env.SIMULATE_DEFAULT_CHAIN_ID as ChainId,

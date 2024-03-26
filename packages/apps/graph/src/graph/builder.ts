@@ -28,7 +28,9 @@ import type {
   NonFungibleChainAccount,
   Token,
   TokenInfo,
+  TransactionCapability,
   TransactionCommand,
+  TransactionMempoolInfo,
   TransactionMeta,
   TransactionResult,
 } from './types/graphql-types';
@@ -79,11 +81,13 @@ export const builder = new SchemaBuilder<
       NonFungibleChainAccount: NonFungibleChainAccount;
       Token: Token;
       TokenInfo: TokenInfo;
-      TransactionCommand: TransactionCommand;
       TransactionMeta: TransactionMeta;
       ExecutionPayload: ExecutionPayload;
       ContinuationPayload: ContinuationPayload;
+      TransactionMempoolInfo: TransactionMempoolInfo;
       TransactionResult: TransactionResult;
+      TransactionCommand: TransactionCommand;
+      TransactionCapability: TransactionCapability;
     };
   }
 >({

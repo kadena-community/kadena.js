@@ -27,6 +27,8 @@ const generateTransactionFilter = (args: {
 builder.queryField('transactions', (t) =>
   t.prismaConnection({
     description: 'Retrieve transactions. Default page size is 20.',
+    type: Prisma.ModelName.Transaction,
+    cursor: 'blockHash_requestKey',
     edgesNullable: false,
     args: {
       accountName: t.arg.string({ required: false }),
@@ -35,27 +37,25 @@ builder.queryField('transactions', (t) =>
       blockHash: t.arg.string({ required: false }),
       requestKey: t.arg.string({ required: false }),
     },
-    type: Prisma.ModelName.Transaction,
-    cursor: 'blockHash_requestKey',
     complexity: (args) => ({
       field: getDefaultConnectionComplexity({
-        withRelations: !!args.fungibleName,
         first: args.first,
         last: args.last,
       }),
     }),
-    async totalCount(__parent, args) {
+    async totalCount(parent, args, context) {
       try {
-        return await prismaClient.transaction.count({
+        return prismaClient.transaction.count({
           where: generateTransactionFilter(args),
         });
       } catch (error) {
         throw normalizeError(error);
       }
     },
-    async resolve(query, __parent, args) {
+
+    async resolve(query, parent, args, context) {
       try {
-        return await prismaClient.transaction.findMany({
+        return prismaClient.transaction.findMany({
           ...query,
           where: generateTransactionFilter(args),
           orderBy: {
