@@ -40,7 +40,7 @@ export function mempooTransactionMapper(mempoolData: any): Transaction {
     blockHash: '',
     chainId: mempoolTx.cmd.meta.chainId,
     code: mempoolTx.cmd.payload.code,
-    creationTime: new Date(mempoolTx.cmd.meta.creationTime * 1000),
+    creationTime: mempoolTx.cmd.meta.creationTime,
     data: mempoolTx.cmd.payload.data,
     gasLimit: BigInt(mempoolTx.cmd.meta.gasLimit),
     gasPrice: mempoolTx.cmd.meta.gasPrice,

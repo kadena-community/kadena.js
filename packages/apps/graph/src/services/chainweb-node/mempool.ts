@@ -1,6 +1,7 @@
 import type { Signer } from '@prisma/client';
 import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
+import https from 'https';
 
 export class MempoolError extends Error {
   public mempoolError: any;
@@ -12,29 +13,45 @@ export class MempoolError extends Error {
 }
 
 export async function mempoolGetPending() {
-  try {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    const res = await fetch(
-      `${dotenv.MEMPOOL_HOST}/chainweb/0.0/development/chain/1/mempool/getPending`,
-      {
-        method: 'POST',
-        body: JSON.stringify({}),
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: dotenv.MEMPOOL_HOSTNAME,
+      port: dotenv.MEMPOOL_PORT,
+      path: '/chainweb/0.0/development/chain/1/mempool/getPending',
+      method: 'POST',
+      rejectUnauthorized: false, // This disables certificate verification
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+    };
 
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    throw new MempoolError(
-      'Unable to get pending transactions from mempool.',
-      error,
-    );
-  }
+    const req = https.request(options, (res) => {
+      let data = '';
+
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        resolve(JSON.parse(data));
+      });
+    });
+
+    req.on('error', (error) => {
+      reject(
+        new MempoolError(
+          'Unable to get pending transactions from mempool.',
+          error,
+        ),
+      );
+    });
+
+    req.write(JSON.stringify({}));
+    req.end();
+  });
 }
 
 export async function mempoolLookup(hash: string, chainId?: string) {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
   let chainsToCheck = chainIds;
 
   if (chainId) {
@@ -42,20 +59,45 @@ export async function mempoolLookup(hash: string, chainId?: string) {
   }
 
   for (const chainId of chainsToCheck) {
-    const res = await fetch(
-      `${dotenv.MEMPOOL_HOST}/chainweb/0.0/development/chain/${chainId}/mempool/lookup`,
-      {
+    const result: any = await new Promise((resolve, reject) => {
+      const options = {
+        hostname: dotenv.MEMPOOL_HOSTNAME,
+        port: dotenv.MEMPOOL_PORT,
+        path: `/chainweb/0.0/development/chain/${chainId}/mempool/lookup`,
         method: 'POST',
+        rejectUnauthorized: false, // This disables certificate verification
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify([hash]),
-      },
-    );
+      };
 
-    if (res.ok) {
-      const data = await res.json();
-      if (data[0].contents) return data;
+      const req = https.request(options, (res) => {
+        let data = '';
+
+        res.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        res.on('end', () => {
+          resolve(JSON.parse(data));
+        });
+      });
+
+      req.on('error', (error) => {
+        reject(
+          new MempoolError(
+            'Unable to lookup transactions from mempool.',
+            error,
+          ),
+        );
+      });
+
+      req.write(JSON.stringify([hash]));
+      req.end();
+    });
+
+    if (result && result[0] && result[0].contents) {
+      return result;
     }
   }
 }
