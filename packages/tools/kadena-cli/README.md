@@ -209,26 +209,29 @@ kadena network add --network-name="mainnet" --network-id="mainnet01" --network-h
 ```
 
 ---
+
 ```
 kadena network set-default [arguments]
 ```
 
-| **Arguments & Options**               | **Description**                                   | **Required** |
-| ------------------------------------- | ------------------------------------------------- | ------------ |
-| --network                             | Select name of network to set default             |              |
-| --network-default-confirmation        | Confirmation for default network to set/unset     |              |
+| **Arguments & Options**        | **Description**                               | **Required** |
+| ------------------------------ | --------------------------------------------- | ------------ |
+| --network                      | Select name of network to set default         |              |
+| --network-default-confirmation | Confirmation for default network to set/unset |              |
 
 example for setting default network:
+
 ```
 kadena network set-default --network="testnet" --network-default-confirmation
 ```
+
 example for removing default network:
+
 ```
 kadena network set-default --network="none" --network-default-confirmation
 ```
 
-Passing a network as "none" will remove the default network
----
+## Passing a network as "none" will remove the default network
 
 ```
 kadena network delete [arguments]
@@ -496,8 +499,8 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 | create          | create an account in mainnet on chain(nr) for token |                   |
 | details         | Get details of an account                           |                   |
 | fund            | Fund a existing/new account                         |                   |
-| name-to-address | Resolve a .kda name to a k:address (kadena names)    |                   |
-| address-to-name | Resolve a k:address to a .kda name (kadena names)    |                   |
+| name-to-address | Resolve a .kda name to a k:address (kadena names)   |                   |
+| address-to-name | Resolve a k:address to a .kda name (kadena names)   |                   |
 | list            | List available account(s)                           |                   |
 | delete          | Delete existing account(s)                          |                   |
 
@@ -546,10 +549,17 @@ kadena account add-from-wallet --account-alias="myalias" --key-wallet="mywallet.
 ```
 
 ---
-### Creating an account on mainnet
-The kadena account create command allows you to create a new account on the mainnet network. This command is restricted to mainnet use and it doesn't support on other networks.
 
-If you would like to create an account on [testnet](#funding-an-account-on-testnet), please use the `kadena account fund` command.
+### Creating an account on mainnet
+
+The kadena account create command allows you to create a new account on the
+mainnet network. This command is restricted to mainnet use and it doesn't
+support on other networks.
+
+If you would like to create an account on
+[testnet](#funding-an-account-on-testnet), please use the `kadena account fund`
+command.
+
 ```
 kadena account create [arguments]
 ```
@@ -565,11 +575,13 @@ kadena account create [arguments]
 example:
 
 Create an account without specifying a name:
+
 ```
 kadena account create --account-name="" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0"
 ```
 
 Create an account with a name
+
 ```
 kadena account create --account-name="mainnet_test_account" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0" --fungible="coin
 ```
@@ -577,17 +589,20 @@ kadena account create --account-name="mainnet_test_account" --public-keys="YOUR_
 ---
 
 ### Getting an account details / balance
-The `kadena account details` command retrieves vital information about a specified account on the Kadena blockchain, such as its balance, guard conditions (public keys, predicate), and the account's name.
+
+The `kadena account details` command retrieves vital information about a
+specified account on the Kadena blockchain, such as its balance, guard
+conditions (public keys, predicate), and the account's name.
 
 ```
 kadena account details [arguments]
 ```
 
-| **Arguments & Options** | **Description**                                     | **Required** |
-| ----------------------- | --------------------------------------------------- | ------------ |
-| --account               | Provide account alias/name to retrieve its details  |              |
-| --network               | Name of the network to be used                      |              |
-| --chain-id              | Provide the chain ID associated with the account    |              |
+| **Arguments & Options** | **Description**                                    | **Required** |
+| ----------------------- | -------------------------------------------------- | ------------ |
+| --account               | Provide account alias/name to retrieve its details |              |
+| --network               | Name of the network to be used                     |              |
+| --chain-id              | Provide the chain ID associated with the account   |              |
 
 example using account alias:
 
@@ -602,8 +617,13 @@ kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="
 ```
 
 ---
+
 ### Funding an account on testnet
-The kadena account fund command is tailored for the **testnet** network. It allows you to fund an account with a specific amount of a fungible asset. If the account does not exist, it will be automatically _created_ and funded. Note that this command is not applicable to the mainnet network.
+
+The kadena account fund command is tailored for the **testnet** network. It
+allows you to fund an account with a specific amount of a fungible asset. If the
+account does not exist, it will be automatically _created_ and funded. Note that
+this command is not applicable to the mainnet network.
 
 ```
 kadena account fund [arguments]
@@ -811,6 +831,12 @@ password will be hidden after entry: --security-password=\*
 ```
 kadena tx test-signed-transaction [arguments]
 ```
+
+Testing a signed transaction for its viability against a specified network by
+making a Local call. Using the local API endpoints, you can dry-run Pact smart
+contracts using actual data in the coin contract tables. This is perfect for
+checking the viability of your transactions / smart contracts, as well as to
+check account data without necessarily having to spend tokens.
 
 | **Arguments & Options**       | **Description**                                                       | **Required** |
 | ----------------------------- | --------------------------------------------------------------------- | ------------ |
