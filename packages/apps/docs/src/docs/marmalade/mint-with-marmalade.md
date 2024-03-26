@@ -41,8 +41,7 @@ Before you start this tutorial, verify the following basic requirements:
 
   If you followed the [Quick start](/build/quickstart), you might already have a
   Chainweaver account. If you don't have an account yet, follow the instructions
-  in [Create an account wallet](/build/quickstart#create-an-account-wallet) to
-  create one.
+  in [Create an account wallet](/build/quickstart) to create one.
 
 - You should have funds in an account on the Kadena test network. You can fund a
   new or existing account on the test network by accessing
