@@ -1,7 +1,8 @@
 import { downloadTemplate } from 'giget';
+import { existsSync } from 'node:fs';
 import { cp, mkdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join } from 'pathe';
 import type { PactToolboxClient } from '../client';
 import { logger, writeFileAtPath } from '../utils';
 import { resolvePreludes } from './resolvePrelude';
@@ -73,8 +74,8 @@ export async function downloadPrelude(
   prelude: PactPrelude,
   preludesDir: string,
   client: PactToolboxClient,
-  downloaded: Set<string>,
-  allPreludes: PactPrelude[],
+  allPreludes: PactPrelude[] = [],
+  downloaded: Set<string> = new Set(),
 ) {
   if (downloaded.has(prelude.name)) {
     return;
@@ -93,8 +94,8 @@ export async function downloadPrelude(
         found,
         preludesDir,
         client,
-        downloaded,
         allPreludes,
+        downloaded,
       );
     }
   }
@@ -137,8 +138,8 @@ export async function downloadPreludes(config: CommonPreludeOptions) {
       prelude,
       preludesDir,
       config.client,
-      downloaded,
       preludes,
+      downloaded,
     );
   }
 
@@ -157,7 +158,27 @@ export async function downloadPreludes(config: CommonPreludeOptions) {
     join(preludesDir, 'init.repl'),
     renderTemplate(initTemplate, {
       preludes: preludeNames,
-      gasLimit: config.client.network.gasLimit || 1000000,
+      gasLimit: config.client.network.meta?.gasLimit || 1000000,
     }),
   );
+}
+
+export function isPreludeDownloaded(prelude: PactPrelude, preludesDir: string) {
+  const specs = Array.isArray(prelude.specs)
+    ? prelude.specs
+    : Object.values(prelude.specs).flat();
+  const paths = specs.map((spec) =>
+    join(preludesDir, spec.group || 'root', spec.name),
+  );
+  for (const path of paths) {
+    if (!existsSync(path)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export async function shouldDownloadPreludes(config: CommonPreludeOptions) {
+  const { preludes, preludesDir } = await resolvePreludes(config);
+  return preludes.some((p) => !isPreludeDownloaded(p, preludesDir));
 }

@@ -4,6 +4,23 @@
 const config = {
   versionGroups: [
     {
+      label:
+        '@kadena/unplugin package needs to allow different version as peer dependency',
+      packages: ['@kadena/unplugin'],
+      dependencies: [
+        'vite',
+        'webpack',
+        'next',
+        'rollup',
+        '@nuxt/*',
+        '@rspack/*',
+        '@rsbuild/*',
+        'esbuild',
+      ],
+      isIgnored: true,
+    },
+
+    {
       label: 'Internal packages that have inconsistent version usage',
       packages: ['**'],
       dependencies: [
@@ -19,7 +36,13 @@ const config = {
     {
       label: 'Internal dev packages are pinned to `workspace:*`',
       packages: ['**'],
-      dependencies: ['@kadena-dev/*', '@kadena/types', '@kadena/react-icons'],
+      dependencies: [
+        '@kadena-dev/*',
+        '@kadena/types',
+        '@kadena/react-icons',
+        '@kadena/toolbox',
+        '@kadena/unplugin',
+      ],
       dependencyTypes: ['dev'],
       pinVersion: 'workspace:*',
     },

@@ -24,7 +24,8 @@
     "Jermaine Jong <jermaine@kadena.io",
     "Javad Khalilian <javad@kadena.io>",
     "Mohamed Ismail <mohamed@kadena.io>",
-    "Bart Huijgen <bart@kadena.io>"
+    "Bart Huijgen <bart@kadena.io>",
+    "Salama Ashoush <salama@kadena.io>"
   ],
   "type": "module",
   "main": "./lib/index.js",
@@ -61,6 +62,7 @@
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-cli": "workspace:^",
     "@kadena/pactjs-generator": "workspace:*",
+    "@kadena/toolbox": "workspace:*",
     "@scure/bip39": "^1.2.1",
     "chalk": "^5.2.0",
     "commander": "^11.0.0",

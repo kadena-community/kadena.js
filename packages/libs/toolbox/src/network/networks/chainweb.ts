@@ -1,7 +1,7 @@
 import type { ChildProcessWithoutNullStreams } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { rm } from 'node:fs/promises';
-import { join } from 'node:path';
+import { join } from 'pathe';
 import type {
   ChainwebMiningClientConfig,
   ChainwebNodeConfig,
@@ -19,7 +19,7 @@ import {
   pollFn,
   runBin,
 } from '../../utils';
-import type { PactToolboxNetworkApi } from '../types';
+import type { ToolboxNetworkApi } from '../types';
 
 const chainwebNodeBin = 'chainweb-node';
 const chainwebMiningClientBin = 'chainweb-mining-client';
@@ -82,7 +82,7 @@ export async function startChainWebMiningClient(
   );
 }
 
-export class LocalChainwebNetwork implements PactToolboxNetworkApi {
+export class LocalChainwebNetwork implements ToolboxNetworkApi {
   public id = getUuid();
   private chainwebNodeProcess?: ChildProcessWithoutNullStreams;
   private miningClientProcess?: ChildProcessWithoutNullStreams;

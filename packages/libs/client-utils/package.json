@@ -61,6 +61,14 @@
       },
       "import": "./lib/esm/marmalade/index.mjs",
       "require": "./lib/cjs/marmalade/index.js"
+    },
+    "./toolbox": {
+      "types": {
+        "import": "./lib/esm/toolbox/index.d.ts",
+        "require": "./lib/cjs/toolbox/index.d.ts"
+      },
+      "import": "./lib/esm/toolbox/index.mjs",
+      "require": "./lib/cjs/toolbox/index.js"
     }
   },
   "typesVersions": {

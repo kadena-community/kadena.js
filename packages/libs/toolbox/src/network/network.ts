@@ -7,7 +7,12 @@ import {
   isLocalNetwork,
   isPactServerNetworkConfig,
 } from '../config';
-import { deployPreludes, downloadPreludes } from '../prelude';
+import {
+  deployPreludes,
+  downloadPreludes,
+  isPreludeDownloaded,
+  shouldDownloadPreludes,
+} from '../prelude';
 import type {
   CreateProxyServerOptions,
   PactToolboxProxyServer,
@@ -17,60 +22,58 @@ import { logger } from '../utils';
 import { LocalChainwebNetwork } from './networks/chainweb';
 import { LocalDevNetNetwork } from './networks/devnet';
 import { PactServerNetwork } from './networks/pactServer';
-import type { PactToolboxNetworkApi } from './types';
+import type { ToolboxNetworkApi, ToolboxNetworkStartOptions } from './types';
 
 export function createPactToolboxNetwork(
   network: NetworkConfig,
-  silent: boolean,
-  isStateless: boolean,
-): PactToolboxNetworkApi {
+): ToolboxNetworkApi {
   if (isPactServerNetworkConfig(network)) {
-    return new PactServerNetwork(network, silent, isStateless);
+    return new PactServerNetwork(network);
   }
   if (isDevNetworkConfig(network)) {
-    return new LocalDevNetNetwork(network, silent, isStateless);
+    return new LocalDevNetNetwork(network);
   }
 
   if (isLocalChainwebNetworkConfig(network)) {
-    return new LocalChainwebNetwork(network, silent, isStateless);
+    return new LocalChainwebNetwork(network);
   }
   throw new Error(`Unsupported network type`);
 }
 
-export interface StartLocalNetworkOptions {
-  silent?: boolean;
+export interface StartLocalNetworkOptions extends ToolboxNetworkStartOptions {
   client?: PactToolboxClient;
   logAccounts?: boolean;
   network?: string;
   port?: number;
   enableProxy?: boolean;
   proxyOptions?: CreateProxyServerOptions;
-  isStateless?: boolean;
 }
 
-export class PactToolboxNetwork implements PactToolboxNetworkApi {
+export class PactToolboxNetwork implements ToolboxNetworkApi {
   public id = 'pact-toolbox';
-  private networkApi: PactToolboxNetworkApi;
+  private networkApi: ToolboxNetworkApi;
   private networkConfig: NetworkConfig;
   private proxy?: PactToolboxProxyServer;
   private client: PactToolboxClient;
-  private logAccounts: boolean;
   private proxyPort = 8080;
+  private startOptions: StartLocalNetworkOptions;
 
   constructor(
-    private toolboxConfig: Required<PactToolboxConfigObj>,
-    {
-      network,
-      client,
-      silent = true,
-      logAccounts = false,
-      port = 8080,
-      enableProxy = true,
-      isStateless = false,
-      proxyOptions,
-    }: StartLocalNetworkOptions = {},
+    private toolboxConfig: PactToolboxConfigObj,
+    startOptions: StartLocalNetworkOptions = {},
   ) {
-    const networkConfig = getNetworkConfig(this.toolboxConfig, network);
+    this.startOptions = {
+      silent: true,
+      logAccounts: false,
+      port: 8080,
+      enableProxy: true,
+      isStateless: false,
+      ...startOptions,
+    };
+    const networkConfig = getNetworkConfig(
+      this.toolboxConfig,
+      this.startOptions.network,
+    );
     if (!networkConfig) {
       throw new Error(`Network ${networkConfig} not found in config`);
     }
@@ -80,20 +83,17 @@ export class PactToolboxNetwork implements PactToolboxNetworkApi {
       );
     }
     this.networkConfig = networkConfig;
-    this.client = client ?? new PactToolboxClient(toolboxConfig);
-    this.networkApi = createPactToolboxNetwork(
-      this.networkConfig,
-      silent,
-      isStateless,
-    );
-    this.proxyPort = (this.networkConfig as any).proxyPort ?? port;
-    if (enableProxy) {
+    this.client =
+      this.startOptions.client ?? new PactToolboxClient(toolboxConfig);
+    this.networkApi = createPactToolboxNetwork(this.networkConfig);
+    this.proxyPort =
+      (this.networkConfig as any).proxyPort ?? this.startOptions.port;
+    if (this.startOptions.enableProxy) {
       this.proxy = createProxyServer(this.networkApi, {
         port: this.proxyPort,
-        ...proxyOptions,
+        ...this.startOptions.proxyOptions,
       });
     }
-    this.logAccounts = logAccounts;
   }
   getServicePort() {
     return this.networkApi.getServicePort();
@@ -125,31 +125,35 @@ export class PactToolboxNetwork implements PactToolboxNetworkApi {
     return this.networkApi.getServicePort();
   }
 
-  async start() {
-    const preludes = this.toolboxConfig.preludes;
-    const contractsDir = this.toolboxConfig.contractsDir;
-    if (this.toolboxConfig.downloadPreludes) {
+  async start(options?: ToolboxNetworkStartOptions) {
+    const preludes = this.toolboxConfig.preludes ?? [];
+    const contractsDir = this.toolboxConfig.contractsDir ?? 'contracts';
+    const preludeConfig = {
+      client: this.client,
+      contractsDir,
+      preludes,
+    };
+    const needDownloadPreludes =
+      this.toolboxConfig.downloadPreludes &&
+      (await shouldDownloadPreludes(preludeConfig));
+
+    if (needDownloadPreludes) {
       // download preludes
-      await downloadPreludes({
-        client: this.client,
-        contractsDir,
-        preludes,
-      });
+      await downloadPreludes(preludeConfig);
     }
-    await this.networkApi.start();
+    await this.networkApi.start({
+      ...this.startOptions,
+      ...options,
+    });
     logger.success(
       `Network ${this.networkConfig.name} started at ${this.getUrl()}`,
     );
     await this.proxy?.start();
     if (this.toolboxConfig.deployPreludes) {
-      await deployPreludes({
-        client: this.client,
-        contractsDir,
-        preludes,
-      });
+      await deployPreludes(preludeConfig);
     }
 
-    if (this.logAccounts) {
+    if (this.startOptions.logAccounts) {
       // log all signers and keys
       const signers = this.networkConfig.signers;
       for (const signer of signers) {
@@ -180,12 +184,12 @@ export class PactToolboxNetwork implements PactToolboxNetworkApi {
 }
 
 export async function startLocalNetwork(
-  config: Required<PactToolboxConfigObj>,
+  config: PactToolboxConfigObj,
   options: StartLocalNetworkOptions = {},
 ) {
   const network = new PactToolboxNetwork(config, options);
   try {
-    await network.start();
+    await network.start(options);
     return network;
   } catch (e) {
     await network.stop();

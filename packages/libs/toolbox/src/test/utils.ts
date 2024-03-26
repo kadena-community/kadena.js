@@ -7,6 +7,7 @@ import {
   isPactServerNetworkConfig,
 } from '../config';
 import { getRandomNetworkPorts } from '../utils';
+import { mockEckoWallet } from '../wallet';
 
 export function disablePersistance(network: NetworkConfig) {
   if (isPactServerNetworkConfig(network) && network.serverConfig?.persistDir) {
@@ -37,9 +38,12 @@ export function getConfigOverrides(
 
 export function injectNetworkConfig(config: PactToolboxConfigObj) {
   const network = getSerializableNetworkConfig(config);
-  (globalThis as any).__PACT_TOOLBOX_NETWORK_CONFIG__ = network;
+  (globalThis as any).__KADENA_TOOLBOX_NETWORK_CONFIG__ = network;
 }
 
+export function setupWalletsMocks() {
+  mockEckoWallet();
+}
 export async function updatePorts(
   network: NetworkConfig,
   enableProxy: boolean = false,

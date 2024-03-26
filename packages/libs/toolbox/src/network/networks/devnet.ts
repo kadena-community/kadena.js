@@ -10,29 +10,23 @@ import {
   isDockerInstalled,
   pollFn,
 } from '../../utils';
-import type { PactToolboxNetworkApi } from '../types';
+import type { ToolboxNetworkApi, ToolboxNetworkStartOptions } from '../types';
 
 export const dockerService = new DockerService();
-export class LocalDevNetNetwork implements PactToolboxNetworkApi {
+export class LocalDevNetNetwork implements ToolboxNetworkApi {
   public id = getUuid();
   private container?: DockerContainer;
   private containerConfig: DevNetContainerConfig;
 
-  constructor(
-    private network: DevNetworkConfig,
-    private silent: boolean,
-    private isStateless: boolean = false,
-  ) {
+  constructor(private network: DevNetworkConfig) {
     this.containerConfig = {
       port: 8080,
       image: 'kadena/devnet',
       name: 'devnet',
       tag: 'latest',
+      volume: 'kadena_devnet',
       ...this.network.containerConfig,
     };
-    this.containerConfig.name = this.isStateless
-      ? `devnet-${this.id}`
-      : this.containerConfig.name;
   }
 
   get image() {
@@ -81,9 +75,16 @@ export class LocalDevNetNetwork implements PactToolboxNetworkApi {
     return dockerService.createContainer(this.containerConfig);
   }
 
-  async start() {
+  async start({
+    silent = false,
+    isStateless = false,
+    conflict = 'error',
+  }: ToolboxNetworkStartOptions = {}) {
+    this.containerConfig.name = isStateless
+      ? `devnet-${this.id}`
+      : this.containerConfig.name;
     this.container = await this.prepareContainer();
-    await dockerService.startContainer(this.container, !this.silent);
+    await dockerService.startContainer(this.container, !silent);
 
     cleanUpProcess(() => this.stop());
 
@@ -123,17 +124,17 @@ export class LocalDevNetNetwork implements PactToolboxNetworkApi {
     }
   }
 
-  public async restart() {
+  public async restart(options?: ToolboxNetworkStartOptions) {
     await this.stop();
-    await this.start();
+    await this.start(options);
   }
 }
 
 export async function startDevNetNetwork(
   networkConfig: DevNetworkConfig,
-  silent = true,
+  startOptions?: ToolboxNetworkStartOptions,
 ) {
-  const network = new LocalDevNetNetwork(networkConfig, silent);
-  await network.start();
+  const network = new LocalDevNetNetwork(networkConfig);
+  await network.start(startOptions);
   return network;
 }

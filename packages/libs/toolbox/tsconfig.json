@@ -8,5 +8,5 @@
     "noEmit": true,
     "moduleResolution": "Bundler"
   },
-  "include": ["src", "entries", "tests"]
+  "include": ["src", "tests", "playground"]
 }

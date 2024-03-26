@@ -30,6 +30,6 @@ export interface PactPrelude {
 
 export interface CommonPreludeOptions {
   contractsDir: string;
-  preludes: (PactPrelude | string)[];
+  preludes?: (PactPrelude | string)[];
   client: PactToolboxClient;
 }

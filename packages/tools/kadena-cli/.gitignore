@@ -7,3 +7,4 @@
 
 *.js
 !/vitest.setup.js
+pact/prelude

@@ -1,0 +1,189 @@
+{
+  "name": "@kadena/unplugin",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Bundler plugins for @kadena/toolbox",
+  "keywords": [
+    "unplugin",
+    "vite",
+    "webpack",
+    "rollup",
+    "transform",
+    "esbuild",
+    "pact-lang",
+    "kadena"
+  ],
+  "homepage": "https://github.com/kadena-community/kadena.js",
+  "bugs": {
+    "url": "https://github.com/kadena-community/kadena.js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kadena-community/kadena.js.git",
+    "directory": "packages/libs/unplugin"
+  },
+  "license": "BSD-3-Clause",
+  "author": "KADENA",
+  "contributors": [
+    "Salama Ashoush <salama@kadena.io>"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./astro": {
+      "types": "./dist/astro.d.ts",
+      "import": "./dist/astro.js",
+      "require": "./dist/astro.cjs"
+    },
+    "./rspack": {
+      "types": "./dist/rspack.d.ts",
+      "import": "./dist/rspack.js",
+      "require": "./dist/rspack.cjs"
+    },
+    "./rsbuild": {
+      "types": "./dist/rsbuild.d.ts",
+      "import": "./dist/rsbuild.js",
+      "require": "./dist/rsbuild.cjs"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js",
+      "require": "./dist/vite.cjs"
+    },
+    "./webpack": {
+      "types": "./dist/webpack.d.ts",
+      "import": "./dist/webpack.js",
+      "require": "./dist/webpack.cjs"
+    },
+    "./rollup": {
+      "types": "./dist/rollup.d.ts",
+      "import": "./dist/rollup.js",
+      "require": "./dist/rollup.cjs"
+    },
+    "./esbuild": {
+      "types": "./dist/esbuild.d.ts",
+      "import": "./dist/esbuild.js",
+      "require": "./dist/esbuild.cjs"
+    },
+    "./nuxt": {
+      "types": "./dist/nuxt.d.ts",
+      "import": "./dist/nuxt.js",
+      "require": "./dist/nuxt.cjs"
+    },
+    "./next": {
+      "types": "./dist/next.d.ts",
+      "import": "./dist/next.js",
+      "require": "./dist/next.cjs"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.js",
+      "require": "./dist/types.cjs"
+    },
+    "./*": "./*"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*",
+        "./*"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:fix": "tsx scripts/postbuild.ts",
+    "dev": "tsup --watch src",
+    "format": "pnpm run --sequential /^format:.*/",
+    "format:lint": "pnpm run lint:src --fix",
+    "format:md": "remark README.md -o --use @kadena-dev/markdown",
+    "format:src": "prettier . --cache --write",
+    "lint": "pnpm run /^lint:.*/",
+    "lint:fmt": "prettier . --cache --check",
+    "lint:pkg": "lint-package",
+    "lint:src": "eslint src --ext .js,.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify": "tsc --noEmit --skipLibCheck"
+  },
+  "dependencies": {
+    "@kadena/pactjs-generator": "workspace:*",
+    "@kadena/toolbox": "workspace:*",
+    "defu": "^6.1.4",
+    "picomatch": "^4.0.1",
+    "unplugin": "^1.7.1"
+  },
+  "devDependencies": {
+    "@kadena-dev/eslint-config": "workspace:*",
+    "@kadena-dev/lint-package": "workspace:*",
+    "@kadena-dev/markdown": "workspace:*",
+    "@kadena-dev/shared-config": "workspace:*",
+    "@nuxt/kit": "^3.10.2",
+    "@nuxt/schema": "^3.10.2",
+    "@rsbuild/core": "0.4.3",
+    "@rspack/core": "^0.5.4",
+    "@types/node": "^18.17.14",
+    "@vitest/coverage-v8": "^1.1.0",
+    "fast-glob": "^3.3.1",
+    "lint-staged": "^15.2.2",
+    "next": "^14.1.0",
+    "rollup": "^4.12.0",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.1",
+    "typescript": "5.2.2",
+    "unbuild": "^2.0.0",
+    "vite": "^5.1.5",
+    "vitest": "^1.1.0",
+    "webpack": "^5.88.2"
+  },
+  "peerDependencies": {
+    "@nuxt/kit": "^3",
+    "@nuxt/schema": "^3",
+    "@rsbuild/core": "^0.4",
+    "@rspack/core": "^0.5",
+    "esbuild": "*",
+    "next": ">=13",
+    "rollup": "^3",
+    "vite": ">=3",
+    "webpack": "^4 || ^5"
+  },
+  "peerDependenciesMeta": {
+    "@nuxt/kit": {
+      "optional": true
+    },
+    "@nuxt/schema": {
+      "optional": true
+    },
+    "@rsbuild/core": {
+      "optional": true
+    },
+    "@rspack/core": {
+      "optional": true
+    },
+    "esbuild": {
+      "optional": true
+    },
+    "next": {
+      "optional": true
+    },
+    "rollup": {
+      "optional": true
+    },
+    "vite": {
+      "optional": true
+    },
+    "webpack": {
+      "optional": true
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { join } from 'node:path';
+import { join } from 'pathe';
 import readdir from 'tiny-readdir-glob';
 import type { PactToolboxConfigObj } from '../config';
 import { resolveConfig } from '../config';

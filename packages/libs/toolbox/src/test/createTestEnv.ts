@@ -3,7 +3,12 @@ import type { PactToolboxConfigObj } from '../config';
 import { getNetworkConfig, resolveConfig } from '../config';
 import { PactToolboxNetwork } from '../network';
 import { logger } from '../utils';
-import { disablePersistance, injectNetworkConfig, updatePorts } from './utils';
+import {
+  disablePersistance,
+  injectNetworkConfig,
+  setupWalletsMocks,
+  updatePorts,
+} from './utils';
 
 export interface PactTestEnv {
   client: PactToolboxClient;
@@ -41,6 +46,7 @@ export async function createPactTestEnv({
   await updatePorts(networkConfig, enableProxy);
 
   injectNetworkConfig(config);
+  setupWalletsMocks();
 
   if (!client) {
     client = new PactToolboxClient(config);

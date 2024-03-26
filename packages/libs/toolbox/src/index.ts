@@ -1,5 +1,6 @@
 export * from './client';
 export * from './config';
+export * from './init';
 export * from './installer';
 export * from './network';
 export * from './prelude';

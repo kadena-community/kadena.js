@@ -1,4 +1,5 @@
 import type {
+  ChainId,
   IBuilder,
   IClient,
   ICommand,
@@ -13,7 +14,7 @@ import {
   isSignedTransaction,
 } from '@kadena/client';
 import { readFile, stat } from 'node:fs/promises';
-import { join } from 'node:path';
+import { join } from 'pathe';
 import type {
   KeysetConfig,
   NetworkConfig,
@@ -38,6 +39,7 @@ export interface DeployContractParams {
   data?: Record<string, unknown>;
   caps?: string[][];
   skipSign?: boolean;
+  chainId?: ChainId;
 }
 
 export interface LocalOptions {
@@ -54,6 +56,12 @@ export class PactToolboxClient {
     network?: string,
   ) {
     this.networkConfig = getNetworkConfig(config, network);
+    this.kdaClient = createClient(createRpcUrlGetter(this.networkConfig));
+  }
+
+  setConfig(config: PactToolboxConfigObj) {
+    this.config = config;
+    this.networkConfig = getNetworkConfig(config);
     this.kdaClient = createClient(createRpcUrlGetter(this.networkConfig));
   }
 
@@ -98,11 +106,8 @@ export class PactToolboxClient {
       .execution(command)
       .setMeta({
         ...defaultMeta,
-        chainId: this.networkConfig.chainId,
+        ...this.networkConfig.meta,
         senderAccount: this.networkConfig.senderAccount,
-        ttl: this.networkConfig.ttl,
-        gasLimit: this.networkConfig.gasLimit,
-        gasPrice: this.networkConfig.gasPrice,
       })
       .setNetworkId(this.networkConfig.networkId) as T;
   }
@@ -180,11 +185,17 @@ export class PactToolboxClient {
       caps = [],
       skipSign = false,
       listen = true,
+      chainId,
     }: DeployContractParams = {},
   ) {
     const txBuilder = this.execution(code)
       .addData('upgrade', upgrade)
       .addData('init', init);
+
+    if (chainId) {
+      txBuilder.setMeta({ chainId });
+    }
+
     if (signer && !skipSign) {
       const signerKeys = this.getSigner(signer);
       if (!signerKeys) {

@@ -8,32 +8,41 @@ import type { StartLocalNetworkOptions } from '../network';
 import { startLocalNetwork } from '../network';
 import { logger } from '../utils';
 
-export interface ScriptContext {
+export interface ToolboxScriptContext {
   client: PactToolboxClient;
   args: Record<string, unknown>;
 }
 
-interface ScriptObject {
+export interface ToolboxScriptOptions {
   autoStartNetwork?: boolean;
+  persist?: boolean;
   startNetworkOptions?: Partial<StartLocalNetworkOptions>;
   configOverrides?: Partial<PactToolboxConfigObj>;
   network?: string;
-  run: (ctx: ScriptContext) => Promise<void>;
+}
+export interface ToolboxScript extends ToolboxScriptOptions {
+  run: (ctx: ToolboxScriptContext) => Promise<void>;
 }
 
-export function createScript(options: ScriptObject) {
+export function createScript(options: ToolboxScript) {
   return options;
 }
 
-interface RunScriptOptions {
+export interface RunScriptOptions {
   network?: string;
   args?: Record<string, unknown>;
+  config?: PactToolboxConfigObj;
+  client?: PactToolboxClient;
+  scriptOptions?: ToolboxScriptOptions;
 }
 export async function runScript(
   script: string,
-  { network, args = {} }: RunScriptOptions,
+  { network, args = {}, config, client, scriptOptions }: RunScriptOptions,
 ): Promise<void> {
-  let config = await resolveConfig();
+  if (!config) {
+    config = await resolveConfig();
+  }
+
   const scriptsDir = config.scriptsDir ?? 'scripts';
   const jiti = createJiti(undefined as unknown as string, {
     interopDefault: true,
@@ -57,14 +66,17 @@ export async function runScript(
   if (typeof scriptObject !== 'object') {
     throw new Error(`Script ${script} should export an object with run method`);
   }
-  const options = scriptObject as ScriptObject;
+  const options = defu(scriptOptions, scriptObject) as ToolboxScript;
   if (options.configOverrides) {
     config = defu(
-      config,
       options.configOverrides,
+      config,
     ) as Required<PactToolboxConfigObj>;
   }
-  const client = new PactToolboxClient(config, network ?? options.network);
+  if (!client) {
+    client = new PactToolboxClient(config, network ?? options.network);
+  }
+  client.setConfig(config);
   try {
     let n;
     if (options.autoStartNetwork) {
@@ -80,10 +92,12 @@ export async function runScript(
       args,
     };
     await options.run(context);
-    if (n) {
-      await n.stop();
+    if (!options.persist) {
+      if (n) {
+        await n.stop();
+      }
+      process.exit(0);
     }
-    process.exit(0);
   } catch (error) {
     logger.error(error);
     process.exit(1);

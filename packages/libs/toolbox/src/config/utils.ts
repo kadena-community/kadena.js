@@ -1,3 +1,6 @@
+import { parseYAML } from 'confbox';
+import { readFile, readdir } from 'fs/promises';
+import { join } from 'pathe';
 import type {
   ChainwebNetworkConfig,
   DevNetworkConfig,
@@ -24,6 +27,12 @@ export function isChainwebNetworkConfig(
   config: NetworkConfig,
 ): config is ChainwebNetworkConfig {
   return config?.type === 'chainweb';
+}
+
+export function hasOnDemandMining(
+  config: NetworkConfig,
+): config is DevNetworkConfig | LocalChainwebNetworkConfig {
+  return 'onDemandMining' in config && !!config.onDemandMining;
 }
 
 export function isLocalChainwebNetworkConfig(
@@ -66,7 +75,7 @@ export function createRpcUrlGetter(
   const rpcUrl = getNetworkRpcUrl(networkConfig);
   return ({
     networkId = networkConfig.networkId,
-    chainId = networkConfig.chainId ?? '0',
+    chainId = networkConfig.meta?.chainId ?? '0',
   }) => {
     // rpcUrl could contain placeholders like {chainId} and {networkId}
     return rpcUrl.replace(/{networkId}|{chainId}/g, (match: string) =>
@@ -92,7 +101,7 @@ export function getNetworkConfig(
 ) {
   const networkName =
     network ??
-    process.env.PACT_TOOLBOX_NETWORK ??
+    process.env.KADENA_TOOLBOX_NETWORK ??
     config.defaultNetwork ??
     'local';
   const found = config.networks[networkName];
@@ -101,19 +110,49 @@ export function getNetworkConfig(
   return found;
 }
 
-export function getSerializableNetworkConfig(config: PactToolboxConfigObj) {
+export function getSerializableNetworkConfig(
+  config: PactToolboxConfigObj,
+  isDev = true,
+) {
   const network = getNetworkConfig(config);
   return {
     networkId: network.networkId,
-    chainId: network.chainId,
+    meta: network.meta,
     rpcUrl: getNetworkRpcUrl(network),
-    gasLimit: network.gasLimit,
-    gasPrice: network.gasPrice,
-    ttl: network.ttl,
     senderAccount: network.senderAccount,
-    signers: network.signers,
     type: network.type,
     keysets: network.keysets,
     name: network.name,
+    ...(isDev ? { signers: network.signers } : {}),
   };
 }
+
+interface kadenaCliNetwork {
+  network: string;
+  networkId: string;
+  networkHost: string;
+  networkExplorerUrl: string;
+}
+
+export async function getKadenaCliNetwork(
+  name: string,
+  kadenaFolder = join(process.cwd(), '.kadena'),
+) {
+  if (!name.endsWith('.yaml')) {
+    name = `${name}.yaml`;
+  }
+  const content = await readFile(join(kadenaFolder, 'networks', name), 'utf8');
+  return parseYAML(content) as kadenaCliNetwork;
+}
+
+// export async function getkadenaCliNetworks(
+//   kadenaFolder = join(process.cwd(), '.kadena'),
+// ) {
+//   const networks: Record<string, NetworkConfig> = {};
+//   const files = await readdir(join(kadenaFolder, 'networks'));
+//   for (const file of files) {
+//     const networkConfig = await getKadenaCliNetwork(file);
+//   }
+
+//   return networks;
+// }

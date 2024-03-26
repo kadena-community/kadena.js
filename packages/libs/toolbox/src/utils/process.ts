@@ -1,6 +1,6 @@
 import type { ChildProcessWithoutNullStreams } from 'child_process';
 import { spawn } from 'child_process';
-
+import find from 'find-process';
 export interface RunBinOptions {
   silent?: boolean;
   cwd?: string;
@@ -57,4 +57,36 @@ export function cleanUpProcess(
   process.once('SIGTERM', async () => {
     await clean('SIGTERM');
   });
+}
+
+export interface ProcessQuery {
+  name?: string;
+  port?: number | string;
+  pid?: number;
+}
+
+export function findProcess(query: ProcessQuery) {
+  const { name, port, pid } = query;
+  if (name) {
+    return find('name', name);
+  }
+  if (port) {
+    return find('port', port);
+  }
+  if (pid) {
+    return find('pid', pid);
+  }
+  return null;
+}
+
+export async function killProcess(query: ProcessQuery) {
+  const proc = await findProcess(query);
+  if (proc) {
+    const p = proc.find((p) => p.name === query.name) ?? proc[0];
+    process.kill(p.pid);
+  }
+}
+export function isProcessRunning(query: ProcessQuery) {
+  const proc = findProcess(query);
+  return proc !== null;
 }

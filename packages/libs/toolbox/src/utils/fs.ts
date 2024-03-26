@@ -1,5 +1,5 @@
 import { mkdir, stat, writeFile as writeFileN } from 'node:fs/promises';
-import { dirname } from 'node:path';
+import { dirname } from 'pathe';
 
 export const writeFileAtPath: typeof writeFileN = async (
   path,
