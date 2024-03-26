@@ -1,4 +1,5 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
+import { env } from '@/utils/env';
 import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
@@ -15,7 +16,11 @@ export const ListSignees: FC = () => {
   const isMultiple = signees.length > 2;
   return (
     <Stack flexDirection="column" gap="md">
-      <Heading as="h5">Signees ({signees.length})</Heading>
+      <Stack>
+        <Heading as="h5">Signees ({signees.length})</Heading>
+        <Stack flex={1} />
+        <Heading as="h6">Max {env.MAXSIGNERS}</Heading>
+      </Stack>
 
       <ul
         className={classNames(

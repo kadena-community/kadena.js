@@ -35,6 +35,7 @@ export interface IProofOfUsContext {
   isConnected: () => Promise<boolean>;
   isInitiator: () => Promise<boolean>;
   hasSigned: () => Promise<boolean>;
+  isSignee: () => Promise<boolean>;
   updateProofOfUs: (value: any) => Promise<void>;
   getSignature: (tx: IUnsignedCommand) => Promise<string | undefined>;
 }
@@ -55,6 +56,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   isConnected: async () => false,
   isInitiator: async () => false,
   hasSigned: async () => false,
+  isSignee: async () => false,
   updateProofOfUs: async () => {},
   getSignature: async () => undefined,
 });
@@ -226,12 +228,25 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       innerSignees = await store.getProofOfUsSignees(proofOfUs?.proofOfUsId);
     }
 
-    console.log('hassigned', signees);
     const signee = innerSignees.find(
       (s) => s.accountName === account?.accountName,
     );
 
     return !!signee?.signature;
+  };
+
+  const isSignee = async (): Promise<boolean> => {
+    if (!proofOfUs) return false;
+    let innerSignees = signees;
+    if (!innerSignees.length) {
+      innerSignees = await store.getProofOfUsSignees(proofOfUs?.proofOfUsId);
+    }
+
+    const signee = innerSignees.find(
+      (s) => s.accountName === account?.accountName,
+    );
+
+    return !!signee;
   };
 
   const isConnected = async () => {
@@ -273,6 +288,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         updateBackgroundColor,
         updateProofOfUs,
         hasSigned,
+        isSignee,
         getSignature,
       }}
     >

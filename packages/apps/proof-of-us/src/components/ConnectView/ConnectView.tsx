@@ -3,6 +3,7 @@ import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useAccount } from '@/hooks/account';
 import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
+import { env } from '@/utils/env';
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
 import { getAccountSignee, isAlreadySigning } from '@/utils/isAlreadySigning';
 import { MonoSignature } from '@kadena/react-icons';
@@ -25,14 +26,26 @@ export const ConnectView: FC<IProps> = () => {
   const { signToken } = useSignToken();
   const { account } = useAccount();
   const [signed, setSigned] = useState(false);
-  const { proofOfUs, signees, addSignee, removeSignee, hasSigned } =
+  const [showMaxModal, setShowMaxModal] = useState(false);
+  const { proofOfUs, signees, addSignee, removeSignee, hasSigned, isSignee } =
     useProofOfUs();
   const router = useRouter();
 
-  useEffect(() => {
+  const check2AddSignee = async () => {
     if (!proofOfUs?.proofOfUsId) return;
+    const isSigneeResult = await isSignee();
+    console.log(22, isSigneeResult, signees.length);
+    if (signees.length >= env.MAXSIGNERS && !isSigneeResult) {
+      setShowMaxModal(true);
+      return;
+    }
+
     addSignee();
-  }, [proofOfUs?.proofOfUsId]);
+  };
+
+  useEffect(() => {
+    check2AddSignee();
+  }, [proofOfUs?.proofOfUsId, signees.length]);
 
   const handleJoin = async () => {
     signToken();
@@ -69,6 +82,9 @@ export const ConnectView: FC<IProps> = () => {
 
   if (!proofOfUs) return null;
 
+  if (showMaxModal) {
+    return null;
+  }
   return (
     <ScreenHeight>
       <TitleHeader label={proofOfUs.title ?? ''} />

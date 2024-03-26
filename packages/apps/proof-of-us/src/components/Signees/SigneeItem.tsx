@@ -1,4 +1,5 @@
 import { Stack } from '@kadena/react-ui';
+import type { CSSProperties } from '@vanilla-extract/css';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import { multipleSigneeClass } from '../ListSignees/style.css';
@@ -18,6 +19,11 @@ interface IProps {
   isMultiple: boolean;
 }
 
+const colors = ['rgba(255, 0, 0, 0.42)', 'rgba(255, 199, 0, 0.42)'];
+const getColors = (idx: number) => {
+  return colors[idx % 2];
+};
+
 export const SigneeItem: FC<IProps> = ({
   name,
   accountName,
@@ -25,11 +31,13 @@ export const SigneeItem: FC<IProps> = ({
   socialLink,
   isMultiple,
 }) => {
-  console.log({ isMultiple });
+  const colorStyle = {
+    '--bulletColor': getColors(idx),
+  } as any;
   return (
     <li className={classNames(isMultiple ? multipleSigneeClass : itemClass)}>
       <Stack width="100%">
-        <div className={bulletClass} data-position={idx} />
+        <div className={bulletClass} data-position={idx} style={colorStyle} />
         <div className={classNames(titleClass, ellipsClass)}>{name}</div>
       </Stack>
       <div className={classNames(nameClass, ellipsClass)}>{accountName}</div>
