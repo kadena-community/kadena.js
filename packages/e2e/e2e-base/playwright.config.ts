@@ -11,7 +11,7 @@ export const baseConfig: PlaywrightTestConfig = {
   workers: 1,
   reporter:
     process.env.CI !== undefined
-      ? [['github'], ['dot'], ['html', { open: 'never' }]]
+      ? [['github'], ['list'], ['html', { open: 'never' }]]
       : [['list'], ['html', { open: 'never' }]],
   use: {
     headless: process.env.CI !== undefined,
