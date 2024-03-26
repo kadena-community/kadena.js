@@ -9,6 +9,7 @@ export const dotenv: {
   COMPLEXITY_ENABLED: boolean;
   COMPLEXITY_EXPOSED: boolean;
   DATABASE_URL: string;
+  DEFAULT_FUNGIBLE_NAME: string;
   NETWORK_HOST: string;
   NETWORK_ID: string;
   PORT: number;
@@ -46,6 +47,7 @@ export const dotenv: {
     process.env.DATABASE_URL,
     'postgresql://devnet@localhost:5432/devnet?pool_timeout=0',
   ),
+  DEFAULT_FUNGIBLE_NAME: or(process.env.DEFAULT_FUNGIBLE_NAME, 'coin'),
   NETWORK_HOST: or(process.env.NETWORK_HOST, 'http://localhost:8080'),
   NETWORK_ID: or(process.env.NETWORK_ID, 'development'),
   PORT: parseInt(or(process.env.PORT, '4000'), 10),
