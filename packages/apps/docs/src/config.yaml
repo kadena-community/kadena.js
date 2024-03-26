@@ -180,9 +180,9 @@ pages:
       faucet:
         url: /faucet
         file: /faucet-app.md
-      nft-marketplace:
-        url: /nft-marketplace
-        file: /build/nft-marketplace.md
+      nft-workshop:
+        url: /nft-workshop
+        file: /build/nft-workshop.md
   deploy:
     url: /deploy
     file: /deploy/deploy.md
