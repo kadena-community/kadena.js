@@ -4,7 +4,6 @@ import { createPactCommandFromStringTemplate } from '@kadena/client-utils';
 import { PactNumber } from '@kadena/pactjs';
 import path from 'path';
 
-import chalk from 'chalk';
 import {
   TX_TEMPLATE_FOLDER,
   WORKING_DIRECTORY,
@@ -17,10 +16,7 @@ import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import { txOptions } from '../txOptions.js';
-import {
-  convertListToYamlWithEmptyValues,
-  getVariablesByTemplate,
-} from '../utils/template.js';
+import { convertListToYamlWithEmptyValues } from '../utils/template.js';
 import { fixTemplatePactCommand } from './templates/mapper.js';
 import { writeTemplatesToDisk } from './templates/templates.js';
 
@@ -118,9 +114,10 @@ export const createTransactionCommandNew = createCommand(
     const showHoles = await option.holes();
 
     if (showHoles.holes === true) {
-      const holes = await getVariablesByTemplate(template.template, { stdin });
       log.info('Template variables used in this template:');
-      return log.output(convertListToYamlWithEmptyValues(holes.variables));
+      return log.output(
+        convertListToYamlWithEmptyValues(template.templateConfig.variables),
+      );
     }
 
     const templateData = await option.templateData();
