@@ -65,7 +65,7 @@ export function getAccountQuery(accountName: string) {
         }
       }
       result {
-        ... on TransactionInfo {
+        ... on TransactionResult {
           height
         }
       }

@@ -205,7 +205,7 @@ export const getTransactions: DocumentNode = gql`
         node {
           ...CoreTransactionFields
           result {
-            ... on TransactionInfo {
+            ... on TransactionResult {
               block {
                 hash
               }
@@ -214,7 +214,7 @@ export const getTransactions: DocumentNode = gql`
           cmd {
             signers {
               publicKey
-              signature
+              sig
             }
           }
         }

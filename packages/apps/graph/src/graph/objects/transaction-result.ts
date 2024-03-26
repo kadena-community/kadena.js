@@ -7,7 +7,7 @@ import {
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { builder } from '../builder';
 
-const MempoolInfo = builder.objectType('MempoolInfo', {
+const TransactionMempoolInfo = builder.objectType('TransactionMempoolInfo', {
   description: 'The mempool information.',
   fields: (t) => ({
     status: t.exposeString('status', {
@@ -17,7 +17,7 @@ const MempoolInfo = builder.objectType('MempoolInfo', {
   }),
 });
 
-const TransactionInfo = builder.objectType('TransactionInfo', {
+const TransactionResult = builder.objectType('TransactionResult', {
   description: 'The result of a transaction.',
   fields: (t) => ({
     badResult: t.exposeString('badResult', {
@@ -127,14 +127,14 @@ const TransactionInfo = builder.objectType('TransactionInfo', {
   }),
 });
 
-export default builder.unionType('TransactionResult', {
+export default builder.unionType('TransactionInfo', {
   description: 'The result of a transaction.',
-  types: [TransactionInfo, MempoolInfo],
+  types: [TransactionResult, TransactionMempoolInfo],
   resolveType(result) {
     if ('status' in result && !nullishOrEmpty(result.status)) {
-      return 'MempoolInfo';
+      return TransactionMempoolInfo.name;
     } else {
-      return 'TransactionInfo';
+      return TransactionResult.name;
     }
   },
 });

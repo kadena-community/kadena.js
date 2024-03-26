@@ -37,7 +37,7 @@ export function getTransactionsQuery(accountName: string) {
               }
             }
             result {
-              ... on TransactionInfo {
+              ... on TransactionResult {
                 continuation
                 eventCount
                 gas

@@ -25,7 +25,7 @@ export const getTransactionByRequestKey: DocumentNode = gql`
     transaction(requestKey: $requestKey) {
       ...AllTransactionFields
       result {
-        ... on TransactionInfo {
+        ... on TransactionResult {
           block {
             hash
           }
@@ -42,7 +42,7 @@ export const getTransactionByRequestKey: DocumentNode = gql`
       cmd {
         signers {
           publicKey
-          signature
+          sig
         }
       }
     }

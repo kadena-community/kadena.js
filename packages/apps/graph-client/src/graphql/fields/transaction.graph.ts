@@ -17,7 +17,7 @@ export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
       }
     }
     result {
-      ... on TransactionInfo {
+      ... on TransactionResult {
         height
       }
     }
@@ -55,7 +55,7 @@ export const ALL_TRANSACTION_FIELDS: DocumentNode = gql`
 
       signers {
         publicKey
-        signature
+        sig
         clist {
           name
           args
@@ -67,7 +67,7 @@ export const ALL_TRANSACTION_FIELDS: DocumentNode = gql`
     }
 
     result {
-      ... on TransactionInfo {
+      ... on TransactionResult {
         badResult
         continuation
         gas
@@ -77,7 +77,7 @@ export const ALL_TRANSACTION_FIELDS: DocumentNode = gql`
         eventCount
         transactionId
       }
-      ... on MempoolInfo {
+      ... on TransactionMempoolInfo {
         status
       }
     }

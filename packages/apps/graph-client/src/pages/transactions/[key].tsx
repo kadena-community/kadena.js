@@ -95,7 +95,7 @@ const RequestKey: React.FC = () => {
                   <strong>Status</strong>
                 </Cell>
                 <Cell>
-                  {transaction.result.__typename === 'TransactionInfo' &&
+                  {transaction.result.__typename === 'TransactionResult' &&
                     transaction.result.badResult && (
                       <Notification
                         intent="negative"
@@ -112,7 +112,7 @@ const RequestKey: React.FC = () => {
                         </pre>
                       </Notification>
                     )}
-                  {transaction.result.__typename === 'TransactionInfo' &&
+                  {transaction.result.__typename === 'TransactionResult' &&
                     transaction.result.goodResult && (
                       <Notification
                         intent="positive"
@@ -124,14 +124,14 @@ const RequestKey: React.FC = () => {
                         <pre>{formatCode(transaction.result.goodResult)}</pre>
                       </Notification>
                     )}
-                  {transaction.result.__typename === 'TransactionInfo' &&
+                  {transaction.result.__typename === 'TransactionResult' &&
                     !transaction.result.goodResult &&
                     !transaction.result.badResult && (
                       <Notification intent="warning" role="status">
                         Unknown transaction status
                       </Notification>
                     )}
-                  {transaction.result.__typename === 'MempoolInfo' &&
+                  {transaction.result.__typename === 'TransactionMempoolInfo' &&
                     transaction.result.status === 'pending' && (
                       <Notification intent="info" role="status">
                         Transaction is pending and currently located in the
@@ -157,7 +157,7 @@ const RequestKey: React.FC = () => {
                   <strong>Block</strong>
                 </Cell>
                 <Cell>
-                  {transaction.result.__typename === 'TransactionInfo' ? (
+                  {transaction.result.__typename === 'TransactionResult' ? (
                     <Link
                       href={`${routes.BLOCK_OVERVIEW}/${transaction.result.block.hash}`}
                     >
@@ -181,7 +181,7 @@ const RequestKey: React.FC = () => {
                   </pre>
                 </Cell>
               </Row>
-              {transaction.result.__typename === 'TransactionInfo' ? (
+              {transaction.result.__typename === 'TransactionResult' ? (
                 <Row>
                   <Cell>
                     <strong>Transaction Output</strong>
@@ -255,7 +255,7 @@ const RequestKey: React.FC = () => {
                   <strong>Events</strong>
                 </Cell>
                 <Cell>
-                  {transaction.result.__typename === 'TransactionInfo' &&
+                  {transaction.result.__typename === 'TransactionResult' &&
                     transaction.result.events.edges.map((event, index) => (
                       <Table key={index}>
                         <TableHeader>
@@ -373,7 +373,7 @@ const RequestKey: React.FC = () => {
                         </Cell>
                         <Cell>
                           {transaction.result.__typename ===
-                          'TransactionInfo' ? (
+                          'TransactionResult' ? (
                             transaction.result.height
                           ) : (
                             <span style={{ color: 'lightgray' }}>N/A</span>
@@ -453,7 +453,7 @@ const RequestKey: React.FC = () => {
                 <Cell>
                   {transaction.cmd.signers
                     ?.map((signer) => {
-                      return signer.signature;
+                      return signer.sig;
                     })
                     .join(', ')}
                 </Cell>

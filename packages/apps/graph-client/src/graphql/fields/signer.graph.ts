@@ -9,7 +9,7 @@ export const CORE_SIGNER_KEY_FIELDS: DocumentNode = gql`
     }
     publicKey
     requestKey
-    signature
+    sig
   }
 `;
 

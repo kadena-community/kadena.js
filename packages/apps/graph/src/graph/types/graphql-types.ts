@@ -123,12 +123,12 @@ export interface TransactionMeta {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface MempoolInfo {
+export interface TransactionMempoolInfo {
   status: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface TransactionInfo {
+export interface TransactionResult {
   hash: string;
   chainId: bigint;
   badResult: string | null;
@@ -153,7 +153,7 @@ export interface TransactionCommand {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface CapabilitiesList {
+export interface TransactionCapability {
   name: string;
   args: string;
 }

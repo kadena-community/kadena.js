@@ -205,7 +205,7 @@ export const ExtendedTransactionsTable = (
                   {new Date(edge.node.cmd.meta.creationTime).toLocaleString()}
                 </Cell>
                 <Cell>
-                  {edge.node.result.__typename === 'TransactionInfo' ? (
+                  {edge.node.result.__typename === 'TransactionResult' ? (
                     edge.node.result.height
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>

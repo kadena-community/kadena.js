@@ -17,7 +17,7 @@ export default builder.prismaNode(Prisma.ModelName.Signer, {
       description: 'The signature scheme that was used to sign.',
     }),
     clist: t.field({
-      type: ['CapabilitiesList'],
+      type: ['TransactionCapability'],
       resolve: (parent) => {
         return (
           parent.capabilities as Array<{ args: any[]; name: string }>
@@ -27,6 +27,6 @@ export default builder.prismaNode(Prisma.ModelName.Signer, {
         }));
       },
     }),
-    signature: t.exposeString('signature', { nullable: true }),
+    sig: t.exposeString('signature', { nullable: true }),
   }),
 });

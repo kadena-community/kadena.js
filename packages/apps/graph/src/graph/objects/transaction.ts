@@ -8,7 +8,7 @@ import { normalizeError } from '@utils/errors';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { builder } from '../builder';
 import TransactionCommand from './transaction-command';
-import TransactionResult from './transaction-result';
+import TransactonInfo from './transaction-result';
 
 export default builder.prismaNode(Prisma.ModelName.Transaction, {
   description: 'A transaction.',
@@ -69,7 +69,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
       },
     }),
     result: t.field({
-      type: TransactionResult,
+      type: TransactonInfo,
       resolve: async (parent) => {
         try {
           const status = await getMempoolTransactionStatus(
