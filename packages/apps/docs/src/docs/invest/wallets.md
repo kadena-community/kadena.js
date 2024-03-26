@@ -1,18 +1,19 @@
 ---
-title: Kadena wallets
+title: Wallets
 description:
-  KDA custody tools for desktop and mobile, with support guides to get you
-  started.
-menu: Kadena Wallets
+  Select a desktop, mobile, Web-based, or hardware wallet to hold KDA—the native cryptocurrency token for the Kadena network—and to manage transfer between accounts.
+menu: Wallets
 label: Wallets
 order: 4
 layout: full
 ---
 
-# Kadena wallets
+# Wallets
 
-KDA custody tools for desktop and mobile, with support guides to get you
-started.
+If you want to buy KDA—the native cryptocurrency token for the Kadena network—from exchange or receive KDA in a transfer from another account, you need to have a secure digital wallet to receive the funds.
+There are many desktop, mobile, web-based, and hardware wallets that you can choose from to hold KDA and to transfer KDA between accounts.
+
+This section provides an introduction to the custody solutions available with links to additional information to to get you started.
 
 ## Software Wallets
 

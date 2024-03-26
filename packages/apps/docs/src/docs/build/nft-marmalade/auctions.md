@@ -10,10 +10,10 @@ layout: full
 # Auctions
 
 With Marmalade, you can write smart contracts for two different types of auctions, depending on how to want to handle the mechanics of the starting price and bidding:
-- In a [conventional-auction](https://docs.kadena.io/marmalade/auctions#conventional-auction), you set the minimum price and a set period of time for bidding to take place with the ability to cancel the auction if no bids exceed the minimum price.
-- In a [dutch-auction](https://docs.kadena.io/marmalade/auctions#dutch-auction), you set an initial price above the expected market value and gradually reduce the price over a predetermined period of time.
+- In a **conventional-auction**, you set the minimum price and a set period of time for bidding to take place with the ability to cancel the auction if no bids exceed the minimum price.
+- In a **dutch-auction**, you set an initial price above the expected market value and gradually reduce the price over a predetermined period of time.
 
-### **Conventional Auction**
+## Conventional auction
 
 A conventional auction is a specialized type of smart contract that allows you—as a token owner or reseller—to sell a non-fungible token using the traditional auction format.
 In a traditional auction, you set an opening price that represents the minimum price at which an item can be sold and invite bidders to compete by increasing the price they're willing to pay.
@@ -32,9 +32,9 @@ Using functions in the `marmalade-sale.conventional-auction` contract, you can:
 - Define a process for refunding bids.
 - Define rules for concluding the auction and determining the winning bid.
 
-For reference information about the conventional auction smart contract, see []().
+For reference information about the conventional auction smart contract, see [Conventional auction reference](/reference/nft-ref/conventional-auction-ref).
 
-### Dutch auction
+## Dutch auction
 
 A dutch auction is a specialized type of smart contract that allows you—as a token owner or reseller—to sell a non-fungible token using the dutch auction format.
 In a dutch auction, you set an opening price that represents the maximum price at which you expect an item can be reasonably sold and gradually reduce the price to entice potential buyers to submit a bid.
@@ -50,4 +50,4 @@ Using functions in the `marmalade-sale.dutch-auction` contract, you can:
 - Conclude the auction with the first bid at the current price.
 - Define the process for ending the auction and awarding the item to the bidder.
 
-For reference information about the dutch auction smart contract, see []().
+For reference information about the dutch auction smart contract, see [](/reference/nft-ref/dutch-auction-ref.md).

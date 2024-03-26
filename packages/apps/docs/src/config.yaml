@@ -413,6 +413,12 @@ pages:
           auction:
             url: /auctions
             file: /reference/marmalade/auction-ref.md
+          conventional:
+            url: /conventional-auction
+            file: /reference/marmalade/conventional-auction-ref.md
+          dutch:
+            url: /dutch-auction
+            file: /reference/marmalade/dutch-auction-ref.md
       chainweb:
         url: /chainweb
         file: /reference/chainweb/chainweb.md
