@@ -110,6 +110,8 @@ const CrossChainTransferTracker: FC = () => {
     router.query.reqKey = data.requestKey;
     await router.push(router);
 
+    setTxError('');
+
     try {
       await getTransferStatus({
         requestKey: data.requestKey,
@@ -121,6 +123,9 @@ const CrossChainTransferTracker: FC = () => {
             if (status.status === 'Error' && status.description) {
               //Set error message
               setTxError(status.description);
+            }
+            if (!status.receiverChain && !status.receiverAccount) {
+              setTxError(t('Not a Cross Chain Request Key'));
             }
           },
         },
