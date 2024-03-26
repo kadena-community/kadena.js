@@ -836,7 +836,7 @@ variables. The `--network-id` specifies which network the transaction is
 intended for, and `--out-file` determines where the generated transaction file
 will be saved.
 
-Below is a YAML template "transfer.yaml" that outlines the structure for a coin
+Below is a YAML template `transfer.yaml` that outlines the structure for a coin
 transfer operation on Kadena. Notice the use of placeholders with prefixes to
 define expected data types for each field:
 
@@ -898,6 +898,18 @@ template requires.
 Variables support specific prefixes (`account:`, `key:`, `network:`, `decimal:`)
 to facilitate the correct selection or validation of input values in interactive
 mode.
+
+Below is a YAML example `data.yaml` for `transfer.yaml` that outlines the
+structure for a template data file.
+
+```yaml
+account-from: ''
+account-to: ''
+decimal-amount: ''
+chain-id: ''
+pk-from: ''
+network-id: ''
+```
 
 ---
 
