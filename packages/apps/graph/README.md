@@ -96,6 +96,35 @@ subscription {
 
 If you need to overwrite the default environment variables, you can do so by creating a `.env` file in the root of the project and copying the contents of `.env.example` to it.
 
+### Some examples
+
+Here you can find a shortlist of queries and subscriptions that might be useful for each type of user. Note that all the queries and subscriptions can be explored in the GraphiQL Explorer interface at `localhost:4000/graphql`.
+The following examples are using the testnet deployment of Graph, but you can just copy and paste the queries into your own instance of Graph.
+
+##### Wallet related
+- [Get account balance](http://localhost:4000/graphql?query=query+GetAccountBalance%28%24accountName%3A+String%21%29+%7B%0A++fungibleAccount%28accountName%3A+%24accountName%29%7B%0A++++accountName%0A++++totalBalance%0A++++fungibleName%0A++++chainAccounts%7B%0A++++++chainId%0A++++++balance%0A++++%7D%0A++%7D%0A%7D)
+- [Getting account transactions](http://localhost:4000/graphql?query=query+GetAccountBalance%28%24accountName%3A+String%21%29+%7B%0A++fungibleAccount%28accountName%3A+%24accountName%29+%7B%0A++++transactions%28first%3A+10%29+%7B%0A++++++edges+%7B%0A++++++++node+%7B%0A++++++++++hash%0A++++++++++cmd+%7B%0A++++++++++++meta+%7B%0A++++++++++++++chainId%0A++++++++++++++creationTime%0A++++++++++++++gasLimit%0A++++++++++++++gasPrice%0A++++++++++++++sender%0A++++++++++++++ttl%0A++++++++++++%7D%0A++++++++++++payload+%7B%0A++++++++++++++...+on+ContinuationPayload+%7B%0A++++++++++++++++data%0A++++++++++++++++pactId%0A++++++++++++++++proof%0A++++++++++++++++rollback%0A++++++++++++++++step%0A++++++++++++++%7D%0A++++++++++++++...+on+ExecutionPayload+%7B%0A++++++++++++++++code%0A++++++++++++++++data%0A++++++++++++++%7D%0A++++++++++++%7D%0A++++++++++%7D%0A++++++++%7D%0A++++++%7D%0A++++%7D%0A++%7D%0A%7D)
+
+##### Explorer related
+- [Listen for a transaction](http://localhost:4000/graphql?query=subscription+ListenTransaction%28%24requestKey%3A+String%21%29%7B%0A++transaction%28requestKey%3A+%24requestKey%29%7B%0A++++result%7B%0A++++++height%0A++++++goodResult%0A++++++badResult%0A++++++gas%0A++++++eventCount%0A++++%7D%0A++%7D%0A%7D)
+- [Get the 5 latest confirmed blocks on chain 0 and 1](http://localhost:4000/graphql?query=query+GetLatestConfirmedBlocks%28%24minimumDepth%3A+Int%21%2C+%24chainIds%3A+%5BString%21%5D%21%29+%7B%0A++blocksFromDepth%28first%3A+5%2C+minimumDepth%3A+%24minimumDepth%2C+chainIds%3A+%24chainIds%29+%7B%0A++++edges+%7B%0A++++++node+%7B%0A++++++++height%0A++++++++hash%0A++++++%7D%0A++++%7D%0A++%7D%0A%7D)
+
+
+##### Event related
+- [Listen to events](http://localhost:4000/graphql?query=subscription+GetLatestEvents%28%24qualifiedEventName%3A+String%21%29%7B%0A++events%28qualifiedEventName%3A+%24qualifiedEventName%29%7B%0A++++name%0A++++requestKey%0A++++parameters%0A++++orderIndex%0A++%7D%0A%7D)
+
+##### Fungible related
+- [Get data on a given account for a given fungible](http://localhost:4000/graphql?query=query+GetAccountInfoOnFungible%28%24accountName%3A+String%21%2C+%24fungibleName%3A+String%21%29%7B%0A++fungibleAccount%28accountName%3A%24accountName%2C+fungibleName%3A+%24fungibleName%29%7B%0A++++accountName%0A++++fungibleName%0A++++totalBalance%0A++++transactions%7B%0A++++++totalCount%0A++++%7D%0A++%7D%0A%7D)
+
+
+##### Non-fungible related
+
+
+
+
+
+
+
 ## Features
 
 ### Tracing and trace analysis
