@@ -12,7 +12,7 @@ export const useSignToken = () => {
   const {
     updateSignee,
     proofOfUs,
-    signees,
+    signees = [],
     background,
     hasSigned,
     updateProofOfUs,
@@ -64,14 +64,16 @@ export const useSignToken = () => {
 
   const sign = async () => {
     const signed = await hasSigned();
+
+    console.log('test', { signed, transaction });
     if (!transaction || signed || !proofOfUs) return;
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
 
-    console.log({ tx });
+    console.log('test', { tx });
 
-    console.log('signing success');
+    console.log('test', 'signing success');
     const signature = await getSignature(tx);
-    console.log({ signature });
+    console.log('test', { signature });
     await updateSignee({ signerStatus: 'success', signature }, true);
 
     console.log('update in signtoken sign');

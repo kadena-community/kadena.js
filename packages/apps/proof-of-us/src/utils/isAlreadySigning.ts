@@ -3,10 +3,10 @@ export const isAlreadySigning = (proofOfUs?: IProofOfUsData): boolean => {
 };
 
 export const getAccountSignee = (
-  signees: IProofOfUsSignee[],
+  signees?: IProofOfUsSignee[],
   account?: IAccount,
 ): IProofOfUsSignee | undefined => {
-  if (!account) return;
+  if (!account || !signees) return;
 
   return signees.find((s) => s.accountName === account.accountName);
 };

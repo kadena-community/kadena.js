@@ -146,7 +146,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                 />
               </div>
               <Stack gap="md">
-                {signees.length > 1 && (
+                {(signees?.length ?? 0) > 1 && (
                   <Button onPress={handleStartSigning}>
                     Start signing <MonoSignature />
                   </Button>

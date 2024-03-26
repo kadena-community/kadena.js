@@ -13,12 +13,21 @@ export enum SubmitStatus {
   INCOMPLETE = 'incomplete',
 }
 
-const setSignatures = (tx: string, signees: IProofOfUsSignee[]): string => {
+const setSignatures = (
+  tx: string,
+  signees: IProofOfUsSignee[] = [],
+): string => {
   const innerTx = JSON.parse(Buffer.from(tx, 'base64').toString());
   const { signers } = JSON.parse(innerTx.cmd);
+  console.log(JSON.parse(innerTx.cmd), { signees, signers });
   const sigs = signers.reduce((acc: any, val: any) => {
     const pubKey = val.pubKey;
+
+    console.log({ pubKey });
+
     const signee = signees.find((signee) => signee.publicKey === pubKey);
+
+    console.log(signee);
     if (!signee) return acc;
 
     acc.push({ sig: signee.signature });
@@ -26,6 +35,7 @@ const setSignatures = (tx: string, signees: IProofOfUsSignee[]): string => {
     return acc;
   }, []);
 
+  console.log(sigs);
   return Buffer.from(JSON.stringify({ ...innerTx, sigs })).toString('base64');
 };
 
@@ -41,7 +51,6 @@ export const useSubmit = () => {
 
   const processTransaction = async (transaction: string) => {
     const client = getClient();
-
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
     setTx(tx);
 
@@ -60,7 +69,6 @@ export const useSubmit = () => {
 
   const doSubmit = async (txArg?: string, waitForMint: boolean = false) => {
     const innerTransaction = txArg ? txArg : transaction;
-
     if (!innerTransaction) return;
     setStatus(SubmitStatus.LOADING);
     const client = getClient();

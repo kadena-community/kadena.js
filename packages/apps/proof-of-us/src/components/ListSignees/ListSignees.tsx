@@ -9,6 +9,7 @@ import { multipleWrapperClass, wrapperClass } from './style.css';
 
 export const ListSignees: FC = () => {
   const { signees } = useProofOfUs();
+  if (!signees) return null;
 
   const initiator = signees.find((s) => s.initiator);
   const restSignees = signees.filter((s) => !s.initiator) ?? [];

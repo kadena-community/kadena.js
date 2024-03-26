@@ -14,7 +14,9 @@ import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from '../Button/Button';
 import { ListSignees } from '../ListSignees/ListSignees';
+import { Modal } from '../Modal/Modal';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
+import { Text } from '../Typography/Text';
 
 interface IProps {
   params: {
@@ -32,7 +34,7 @@ export const ConnectView: FC<IProps> = () => {
   const router = useRouter();
 
   const check2AddSignee = async () => {
-    if (!proofOfUs?.proofOfUsId) return;
+    if (!proofOfUs?.proofOfUsId || !signees) return;
     const isSigneeResult = await isSignee();
     console.log(22, isSigneeResult, signees.length);
     if (signees.length >= env.MAXSIGNERS && !isSigneeResult) {
@@ -45,7 +47,7 @@ export const ConnectView: FC<IProps> = () => {
 
   useEffect(() => {
     check2AddSignee();
-  }, [proofOfUs?.proofOfUsId, signees.length]);
+  }, [proofOfUs?.proofOfUsId, signees?.length]);
 
   const handleJoin = async () => {
     signToken();
@@ -83,7 +85,17 @@ export const ConnectView: FC<IProps> = () => {
   if (!proofOfUs) return null;
 
   if (showMaxModal) {
-    return null;
+    return (
+      <Modal label="Maximum signees">
+        <Stack flexDirection="column" gap="md">
+          <Text>There are already a max of {env.MAXSIGNERS} signed in.</Text>
+
+          <Link href="/user">
+            <Button>Close</Button>
+          </Link>
+        </Stack>
+      </Modal>
+    );
   }
   return (
     <ScreenHeight>

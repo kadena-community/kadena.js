@@ -1,5 +1,4 @@
 import { Stack } from '@kadena/react-ui';
-import type { CSSProperties } from '@vanilla-extract/css';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import { multipleSigneeClass } from '../ListSignees/style.css';
@@ -19,9 +18,19 @@ interface IProps {
   isMultiple: boolean;
 }
 
-const colors = ['rgba(255, 0, 0, 0.42)', 'rgba(255, 199, 0, 0.42)'];
+const TRANSPARENT = '7D';
+const colors = [
+  '#2898BD',
+  '#5E4DB2',
+  '#E56910',
+  '#943D73',
+  '#09326C',
+  '#8F7EE7',
+  '#50253F',
+  '#A54800',
+];
 const getColors = (idx: number) => {
-  return colors[idx % 2];
+  return colors[idx % 8] + TRANSPARENT;
 };
 
 export const SigneeItem: FC<IProps> = ({

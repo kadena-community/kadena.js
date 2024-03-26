@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
+import { LoadingStatus } from '../Status/LoadingStatus';
 
 interface IProps {
   next: () => void;
@@ -14,7 +15,7 @@ interface IProps {
 }
 
 export const MintView: FC<IProps> = () => {
-  const { proofOfUs, updateSignee, updateProofOfUs } = useProofOfUs();
+  const { proofOfUs, signees, updateSignee, updateProofOfUs } = useProofOfUs();
   const { doSubmit } = useSubmit();
   const { uploadBackground } = useAvatar();
   const router = useRouter();
@@ -30,32 +31,37 @@ export const MintView: FC<IProps> = () => {
     try {
       await updateSignee({ signerStatus: 'success' }, true);
 
-      console.log('update in mintview');
-      await updateProofOfUs({
-        status: 4,
-      });
+      // console.log('update in mintview');
+      // await updateProofOfUs({
+      //   status: 4,
+      // });
 
-      await doSubmit(proofOfUs.tx);
-      router.replace(
-        `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
-          proofOfUs.requestKey
-        }`,
-      );
+      await doSubmit();
+
+      // router.replace(
+      //   `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
+      //     proofOfUs.requestKey
+      //   }`,
+      // );
     } catch (e) {
       console.error('SUBMIT ERR');
     }
   };
 
   useEffect(() => {
-    if (!proofOfUs) return;
+    if (!proofOfUs || !signees) return;
 
     if (!proofOfUs.tx) {
       throw new Error('no tx is found');
     }
     handleMint();
-  }, [proofOfUs?.tx]);
+  }, [proofOfUs?.tx, signees?.length]);
 
   if (!proofOfUs) return;
 
-  return <ScreenHeight></ScreenHeight>;
+  return (
+    <ScreenHeight>
+      <LoadingStatus />
+    </ScreenHeight>
+  );
 };

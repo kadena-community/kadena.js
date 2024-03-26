@@ -23,6 +23,8 @@ export const ImagePositions: FC<IProps> = () => {
   const [isTagInfoOpen, setIsTagInfoOpen] = useState(true);
 
   useEffect(() => {
+    if (!signees || !proofOfUs) return;
+
     setSigner(signees.find((c) => c.accountName === account?.accountName));
     setIsLocked(isAlreadySigning(proofOfUs));
   }, [proofOfUs, signees]);
@@ -104,6 +106,8 @@ export const ImagePositions: FC<IProps> = () => {
     console.log('update in imageposition remove');
     await updateSignee({ position: null });
   };
+
+  if (!signees) return null;
 
   return (
     <>

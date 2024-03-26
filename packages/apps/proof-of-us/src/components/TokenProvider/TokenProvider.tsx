@@ -254,7 +254,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     [mintingTokens],
   );
 
-  console.log({ mintingTokens, successTokens });
   return (
     <TokenContext.Provider
       value={{
