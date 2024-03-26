@@ -567,8 +567,171 @@ if you prefer to have the none stringified version of command you can use
 const transaction: IPactCommand = Pact.builder.execution(code).getCommand()
 ```
 
-# TODO: ADD OTHER PARTS
+#### Examples
+
+```TS
+const command = Pact.builder
+    .execution(Pact.modules.coin.transfer(senderAccount, receiverAccount, amount))
+    .addSigner(senderKey, (signFor) => [
+      signFor('coin.GAS'),
+      signFor('coin.TRANSFER', senderAccount, receiverAccount, amount),
+    ])
+    .setMeta({ chainId: '0', senderAccount })
+    .setNetworkId(NETWORK_ID)
+    .getCommand();
+
+const output = {
+  payload: {
+    exec: {
+      code: '(coin.transfer "k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46" "k:2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11" 1.0)',
+      data: {},
+    },
+  },
+  nonce: 'kjs:nonce:1711448853909',
+  signers: [
+    {
+      pubKey:
+        'dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
+      scheme: 'ED25519',
+      clist: [
+        { name: 'coin.GAS', args: [] },
+        {
+          name: 'coin.TRANSFER',
+          args: [
+            'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
+            'k:2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11',
+            { decimal: '1' },
+          ],
+        },
+      ],
+    },
+  ],
+  meta: {
+    gasLimit: 2500,
+    gasPrice: 1e-8,
+    sender:
+      'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
+    ttl: 28800,
+    creationTime: 1711448853,
+    chainId: '0',
+  },
+  networkId: 'testnet04',
+};
+
+```
+
+### Initial value
+
+if you might find yourself repeating certain parts of methods for different
+commands. You can create your command builder by using
+`createTransactionBuilder`. This allows you to set all default values once and
+then reuse the builder.
+
+| Parameter | Type                  | Description              |
+| --------- | --------------------- | ------------------------ |
+| initial   | Partial<IPactCommand> | the initial pact command |
+
+```TS
+const builder: ITransactionBuilder = createTransactionBuilder(initialPactCommand)
+```
+
+#### Examples
+
+create a builder with network and chain already set.
+
+```TS
+// pre configure the builder
+export const txBuilder = createTransactionBuilder({ networkId: "mainnet01", meta: {chainId: "1"} });
+
+// then somewhere in the code
+
+const command = txBuilder
+    .execution(Pact.modules.coin.transfer(senderAccount, receiverAccount, amount))
+    .addSigner(senderKey, (signFor) => [
+      signFor('coin.GAS'),
+      signFor('coin.TRANSFER', senderAccount, receiverAccount, amount),
+    ])
+    .setMeta({ senderAccount })
+
+const output = const output = {
+  payload: {
+    exec: {
+      code: '(coin.transfer "k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46" "k:2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11" 1.0)',
+      data: {},
+    },
+  },
+  nonce: 'kjs:nonce:1711448853909',
+  signers: [
+    {
+      pubKey:
+        'dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
+      scheme: 'ED25519',
+      clist: [
+        { name: 'coin.GAS', args: [] },
+        {
+          name: 'coin.TRANSFER',
+          args: [
+            'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
+            'k:2f48080efe54e6eb670487f664bcaac7684b4ebfcfc8a3330ef080c9c97f7e11',
+            { decimal: '1' },
+          ],
+        },
+      ],
+    },
+  ],
+  meta: {
+    gasLimit: 2500,
+    gasPrice: 1e-8,
+    sender:
+      'k:dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
+    ttl: 28800,
+    creationTime: 1711448853,
+    // default value
+    chainId: '1',
+  },
+  // default value
+  networkId: 'mainnet01',
+};
+
+```
+
+## Signing Transactions
+
+After creating the command, you need to sign it using the related private keys.
+This process is usually managed with a wallet. Kadena has two protocols for
+signing transactions, each serving different purposes:
+
+- **Sign API**: This API allows users to send their sign requests to the wallet.
+  The wallet is then responsible for creating and signing the transaction
+  simultaneously. With this approach, the wallet has more freedom, making it
+  more suitable for simple transactions.
+
+- **Quicksign**: This API is designed to give dApps full control over the
+  command, with the wallet only responsible for adding signatures. This is the
+  recommended method if you are using the command builder from this library.
+
+Wallets typically have their own API for communicating with dApps. While you can
+directly use the wallet API, we've also developed wrapper functions for certain
+wallets to provide more convenience.
+
+### Chainweaver
+
+you can use `createSignWithChainweaver` to sign tx via Chainweaver.
+
+```TS
+createSignWithChainweaver(options:{ host?: string }): (txList:IUnsignedCommand[]) =>Promise<(ICommand | IUnsignedCommand)[]>
+```
+
+| Parameter | Type              | Description                                                           |
+| --------- | ----------------- | --------------------------------------------------------------------- |
+| option    | { host?: string } | option including host url default `{ host: 'http://127.0.0.1:9467' }` |
+
+## TODO: ADD OTHER PARTS
 
 ## Complete and Runnable Examples
 
 Check out [Client Examples](../client-examples/)
+
+```
+
+```
