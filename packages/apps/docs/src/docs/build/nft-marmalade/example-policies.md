@@ -3,7 +3,7 @@ title: Explore example policies
 description: Describes where to find and how to work with example policies.
 menu: Policies
 label: Explore example policies
-order: 4
+order: 1
 layout: full
 ---
 

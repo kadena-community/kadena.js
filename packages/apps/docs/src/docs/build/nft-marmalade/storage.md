@@ -3,7 +3,7 @@ title: Store digital assets
 description: Ensure the long-term storage and availability of non-fungible tokens.
 menu: Non-fungible tokens (NFT)
 label: Store digital assets
-order: 1
+order: 5
 layout: full
 ---
 

@@ -3,7 +3,7 @@ title: What is Marmalade?
 description: Build a non-fungible token (NFT) marketplace using Marmalade and Pact smart contracts.
 menu:  Non-fungible tokens (NFT)
 label: What is Marmalade?
-order: 2
+order: 1
 layout: full
 ---
 

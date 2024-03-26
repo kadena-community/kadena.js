@@ -3,7 +3,7 @@ title: Layered contract architecture
 description: Build a non-fungible token (NFT) marketplace using the Marmalade token standard and Pact smart contracts.
 menu:  Non-fungible tokens (NFT)
 label: Layered contract architecture
-order: 2
+order: 3
 layout: full
 ---
 

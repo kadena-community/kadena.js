@@ -3,7 +3,7 @@ title: Describe tokens in metadata
 description: Set token properties for digital assets using the Marmalade metadata standard.
 menu: Non-fungible tokens (NFT)
 label: Describe tokens in metadata
-order: 5
+order: 4
 layout: full
 ---
 

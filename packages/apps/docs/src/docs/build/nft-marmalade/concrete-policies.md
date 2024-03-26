@@ -3,7 +3,7 @@ title: Policies
 description: Describes how to work with concrete and custom policies when you create tokens.
 menu: Policies
 label: Use concrete policies
-order: 4
+order: 8
 layout: full
 ---
 
@@ -116,42 +116,3 @@ For example, a typical configuration for the royalty policy looks similar to the
 
 in this example, the royalty policy ensures that the creator account receives a return of 5% (0.05) for all
 future sales of the token where this policy is applied.
-
-### **Custom Policies**
-
-Custom policies allow creators to implement unique rules and checks tailored to
-their requirements. The utilization of custom policies offer more flexibility
-and can be altered as per the token creator's vision.
-
-\* When creating a custom policy it should always adhere to
-[`kip.token-policy-v2`](https://github.com/kadena-io/marmalade/blob/v2/pact/kip/token-policy-v2.pact)
-
-## Technical Overview: Implementing Policies
-
-Regardless of whether a policy is concrete or custom, its implementation
-revolves around the `token-policy-v2` interface, which outlines specific
-functions that govern token behavior.
-
-**Getting Started**:  
-To use this interface, you first need to import it into your Pact code using the
-following command:
-
-```pact
-(namespace 'my-namespace)
-(import 'marmalade-v2.token-policy-v2)
-```
-
-**Policy Enforcement Functions**:  
-Once the interface is integrated, you can enforce policies through these
-functions:
-
-`enforce-mint`: Governs token minting. 
-`enforce-burn`: Regulates token burning.
-`enforce-init`: Handles token initialization. 
-`enforce-offer`: Manages token offering for sale. 
-`enforce-buy`: Controls purchasing of tokens offered for sale. 
-`enforce-transfer`: Administers token transfers between accounts.
-
-Each function requires specific parameters related to the token object. 
-By implementing custom checks within these functions, creators can tailor their
-tokens' behavior.

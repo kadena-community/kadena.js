@@ -3,7 +3,7 @@ title: Create a non-fungible token
 description: This guide demonstrates how to create a non-fungible token (NFT) from artwork to marketplace using the Marmalade standard with permanent storage on IPFS.
 menu: Non-fungible tokens (NFT)
 label: Create a non-fungible token
-order: 2
+order: 6
 layout: full
 tags: [NFT, marketplace, non-fungible tokens, minting, marmalade, v2]
 ---

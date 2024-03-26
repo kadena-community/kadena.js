@@ -135,10 +135,10 @@ pages:
             file: /build/nft-marmalade/concrete-policies.md
             children:
               examplepolicies:
-                url: /explore-examples
+                url: /example-policies
                 file: /build/nft-marmalade/example-policies.md
               custompolicies:
-                url: /explore-examples
+                url: /custom-policies
                 file: /build/nft-marmalade/custom-policies.md
       frontend:
         url: /frontend
