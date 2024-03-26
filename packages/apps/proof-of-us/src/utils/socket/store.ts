@@ -1,31 +1,9 @@
 import { BUILDSTATUS } from '@/constants';
 import { child, get, off, onValue, ref, set, update } from 'firebase/database';
 import type { Dispatch, SetStateAction } from 'react';
+import { convertSignersObjectToArray } from '../convertSignersObjectToArray';
 import { database, dbRef } from '../firebase';
 import { isAlreadySigning } from '../isAlreadySigning';
-
-const convertObjectToArray = (
-  obj?: Record<string, IProofOfUsSignee>,
-): IProofOfUsSignee[] => {
-  if (!obj) return [];
-
-  if (!Array.isArray(obj)) {
-    const newArray = Object.entries(obj).map(([key, value]) => value);
-
-    const initiator = newArray.find((a) => a.initiator);
-    const restArray = newArray
-      .filter((a) => !a.initiator)
-      .sort((a, b) => {
-        if (a.accountName < b.accountName) return -1;
-        if (a.accountName > b.accountName) return 1;
-        return 0;
-      });
-
-    return initiator ? [initiator, ...restArray] : [...restArray];
-  }
-
-  return [];
-};
 
 const ProofOfUsStore = () => {
   const getProofOfUs = async (
@@ -43,7 +21,7 @@ const ProofOfUsStore = () => {
 
     if (!docRef.exists()) return [];
 
-    const data = convertObjectToArray(
+    const data = convertSignersObjectToArray(
       docRef.toJSON() as Record<string, IProofOfUsSignee>,
     );
     return data;
@@ -116,7 +94,7 @@ const ProofOfUsStore = () => {
   ) => {
     const signeesRef = ref(database, `signees/${proofOfUsId}`);
     onValue(signeesRef, (snapshot) => {
-      const data = convertObjectToArray(snapshot.val());
+      const data = convertSignersObjectToArray(snapshot.val());
 
       setDataCallback(data);
     });

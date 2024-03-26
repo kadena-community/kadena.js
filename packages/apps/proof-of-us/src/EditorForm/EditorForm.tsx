@@ -51,7 +51,6 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
     }
     setSocialIcon(socialType?.icon);
 
-    console.log('update in editform');
     await updateSignee({
       name: label,
       socialLink,

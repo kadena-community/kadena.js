@@ -106,6 +106,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     [setSignees, params?.id],
   );
 
+  //start listeners
   useEffect(() => {
     if (!params?.id || !account) return;
     store.listenProofOfUsData(`${params.id}`, account, listenToProofOfUsData);
