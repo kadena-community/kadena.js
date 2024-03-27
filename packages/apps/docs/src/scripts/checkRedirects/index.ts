@@ -1,18 +1,7 @@
-import menuData from '@/_generated/menu.json';
-import type {
-  IConfigTreeItem,
-  IMenuData,
-  IScriptResult,
-} from '@kadena/docs-tools';
-import {
-  getFileFromNameOfUrl,
-  getParentTreeFromPage,
-  getUrlNameOfPageFile,
-} from '@kadena/docs-tools';
-import { constants } from 'buffer';
+import type { IScriptResult } from '@kadena/docs-tools';
 import * as fs from 'fs';
 import xml2js from 'xml2js';
-import { getPageFromPath } from '../fixLocalLinks/utils/getPageFromPath';
+import redirects from './../../../redirects.mjs';
 
 const errors: string[] = [];
 const success: string[] = [];
@@ -43,12 +32,29 @@ const getSitemapLinks = async (): Promise<string[]> => {
   return getSitemapLinkstoArray(xml);
 };
 
+const checkImportedRedirects = (
+  url: string,
+  sitemapUrls: string[],
+): boolean => {
+  const redirect = redirects.find((r) => r.source === url);
+
+  //if there is a redirect, check that the desitnation exists
+  if (
+    !sitemapUrls.find((r) => r === redirect?.destination) &&
+    redirect?.destination
+  ) {
+    return !!checkImportedRedirects(redirect?.destination, sitemapUrls);
+  }
+
+  return !!sitemapUrls.find((r) => r === redirect?.destination);
+};
+
 const checkUrlCreator =
   (sitemapUrls: string[]) =>
   async (url: string, idx: number): Promise<void> => {
     const found = sitemapUrls.find((r) => r === url);
-    if (!found) {
-      console.log(url);
+    if (!found && !checkImportedRedirects(url, sitemapUrls)) {
+      errors.push(`${url} has no working redirect`);
     }
   };
 
@@ -59,6 +65,8 @@ export const checkRedirects = async (): Promise<IScriptResult> => {
   const checkUrl = checkUrlCreator(sitemapUrls);
 
   productionSitemapUrls.forEach(checkUrl);
+
+  console.log({ success, errors });
   return { success, errors };
 };
 
