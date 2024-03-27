@@ -168,6 +168,8 @@ export const createCommand =
     }
 
     command.addOption(globalOptions.quiet().option);
+    command.addOption(globalOptions.json().option);
+    command.addOption(globalOptions.yaml().option);
     options.forEach((option) => {
       command.addOption(option.option);
     });
@@ -188,6 +190,11 @@ export const createCommand =
         if (!process.stderr.isTTY) args.quiet = true;
 
         handleQuietOption(args, options);
+        if (args.json === true) {
+          log.setOutputMode('json');
+        } else if (args.yaml === true) {
+          log.setOutputMode('yaml');
+        }
 
         const optionIndex = new Map<unknown, number>();
         const collectOptionsMap = options.reduce((acc, option, index) => {

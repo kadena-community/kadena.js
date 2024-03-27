@@ -1,5 +1,6 @@
 import type { ChalkInstance } from 'chalk';
 import { Chalk } from 'chalk';
+import jsYaml from 'js-yaml';
 import { formatWithOptions } from 'node:util';
 import z from 'zod';
 import type { TableHeader, TableRow } from '../utils/tableDisplay.js';
@@ -58,6 +59,8 @@ type Levels = typeof LEVELS;
 type LevelKey = keyof Levels;
 type LevelValue = Levels[keyof Levels];
 
+type OutputMode = 'plain' | 'json' | 'yaml';
+
 /** Accepts levels as strings "info" or "3" and output as numbers */
 const levelSchema = z.union([
   z
@@ -107,6 +110,7 @@ class Logger {
   private _transport: Transport = defaultTransport;
   // chalk takes the more strict version of stdout because we can't be sure which log level it is used
   private _chalk: ChalkInstance = stdOutChalk;
+  private _outputMode: OutputMode = 'plain';
 
   public LEVELS: Levels = LEVELS;
   public level: LevelValue = LEVELS.info;
@@ -122,6 +126,10 @@ class Logger {
 
   public setTransport(transport: Transport): void {
     this._transport = transport;
+  }
+
+  public setOutputMode(outputMode: OutputMode): void {
+    this._outputMode = outputMode;
   }
 
   public setLevel(level: LevelValue): void {
@@ -167,8 +175,14 @@ class Logger {
     this._log(LEVELS.warning, args);
   }
 
-  public output(...args: unknown[]): void {
-    this._log(LEVELS.output, args);
+  public output(plain: string | null, formatted: unknown): void {
+    if (this._outputMode === 'json') {
+      this._log(LEVELS.output, [JSON.stringify(formatted, null, 2)]);
+    } else if (this._outputMode === 'yaml') {
+      this._log(LEVELS.output, [jsYaml.dump(formatted, { lineWidth: -1 })]);
+    } else if (plain !== null) {
+      this._log(LEVELS.output, [plain]);
+    }
   }
 
   public info(...args: unknown[]): void {

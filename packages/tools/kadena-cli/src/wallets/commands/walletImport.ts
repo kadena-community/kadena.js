@@ -38,7 +38,7 @@ export const createImportWalletCommand: (
 
       loading.succeed('Wallet imported successfully');
 
-      log.output(
+      log.info(
         log.generateTableString(['Mnemonic Phrase'], [[config.keyMnemonic]]),
       );
       log.info(
@@ -46,12 +46,16 @@ export const createImportWalletCommand: (
           `\nPlease store the mnemonic phrase in a safe place. You will need it to recover your wallet.\n`,
         ),
       );
-      log.output(
+      log.info(
         log.generateTableString(
           ['Wallet Storage Location'],
           [[relativeToCwd(wallet.filepath)]],
         ),
       );
+      log.output(null, {
+        words: config.keyMnemonic,
+        wallet,
+      });
     } catch (error) {
       loading.fail('Failed to import wallet');
       if (error instanceof Error) {

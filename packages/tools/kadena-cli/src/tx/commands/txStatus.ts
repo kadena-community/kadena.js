@@ -111,6 +111,6 @@ export const createTxStatusCommand: (
     }
 
     const { header, rows } = generateTabularData(config.chainId, result.data);
-    log.output(log.generateTableString(header, rows));
+    log.output(log.generateTableString(header, rows), result.data.result);
   },
 );

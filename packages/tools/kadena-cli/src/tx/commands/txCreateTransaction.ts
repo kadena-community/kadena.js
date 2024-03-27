@@ -139,7 +139,10 @@ export const createTransactionCommandNew = createCommand(
     );
     assertCommandError(result);
 
-    log.output(JSON.stringify(result.data.transaction, null, 2));
+    log.output(
+      JSON.stringify(result.data.transaction, null, 2),
+      result.data.transaction,
+    );
 
     const relativePath = path.relative(WORKING_DIRECTORY, result.data.filePath);
     log.info(`\ntransaction saved to: ./${relativePath}`);

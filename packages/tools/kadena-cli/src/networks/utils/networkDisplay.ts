@@ -30,24 +30,38 @@ export async function displayNetworksConfig(): Promise<void> {
   const rows: TableRow[] = [];
   const defaultNetworkName = await getDefaultNetworkName();
   const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
-  for (const { value } of existingNetworks) {
-    const networkFilePath = path.join(defaultNetworksPath, `${value}.yaml`);
-    const fileContent = await services.filesystem.readFile(networkFilePath);
-    const networkConfig: INetworkCreateOptions =
-      fileContent !== null
-        ? (yaml.load(fileContent) as INetworkCreateOptions)
-        : networkDefaults[value] !== undefined
-        ? networkDefaults[value]
-        : ({} as INetworkCreateOptions);
 
+  const networks = await Promise.all(
+    existingNetworks.map(async (network) => {
+      const networkFilePath = path.join(
+        defaultNetworksPath,
+        `${network.value}.yaml`,
+      );
+      const fileContent = await services.filesystem.readFile(networkFilePath);
+      const networkConfig: INetworkCreateOptions =
+        fileContent !== null
+          ? (yaml.load(fileContent) as INetworkCreateOptions)
+          : networkDefaults[network.value] !== undefined
+          ? networkDefaults[network.value]
+          : ({} as INetworkCreateOptions);
+      return {
+        ...networkConfig,
+      };
+    }),
+  );
+
+  for (const network of networks) {
     rows.push([
-      value,
-      networkConfig.networkId ?? 'Not Set',
-      networkConfig.networkHost ?? 'Not Set',
-      networkConfig.networkExplorerUrl ?? 'Not Set',
-      value === defaultNetworkName ? 'Yes' : 'No',
+      network.network,
+      network.networkId ?? 'Not Set',
+      network.networkHost ?? 'Not Set',
+      network.networkExplorerUrl ?? 'Not Set',
+      network.network === defaultNetworkName ? 'Yes' : 'No',
     ]);
   }
 
-  log.output(log.generateTableString(header, rows));
+  log.output(log.generateTableString(header, rows), {
+    networks,
+    default: defaultNetworkName,
+  });
 }

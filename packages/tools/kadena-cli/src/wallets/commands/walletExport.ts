@@ -38,7 +38,7 @@ export const createExportCommand: (program: Command, version: string) => void =
           key,
           passwordFile,
         );
-        log.output(jsYaml.dump(keypair, { lineWidth: -1 }));
+        log.output(jsYaml.dump(keypair, { lineWidth: -1 }), keypair);
       } catch (e) {
         log.error(`Failed to export keypair: ${e.message}`);
       }

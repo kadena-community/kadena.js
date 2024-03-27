@@ -26,15 +26,6 @@ import { getDefaultNetworkName, passwordPromptTransform } from './helpers.js';
 import { log } from './logger.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
-export const globalFlags = {
-  quiet: new Option(
-    '-q --quiet',
-    'Disables interactive prompts and skips confirmations',
-  ),
-  legacy: new Option('-l, --legacy', 'Output legacy format'),
-} as const;
-
-// eslint-disable-next-line @rushstack/typedef-var
 export const globalOptions = {
   // global
   quiet: createOption({
@@ -42,7 +33,30 @@ export const globalOptions = {
     // quiet is never prompted
     prompt: () => false,
     validation: z.boolean().optional(),
-    option: globalFlags.quiet,
+    option: new Option(
+      '-q --quiet',
+      'Disables interactive prompts and skips confirmations',
+    ),
+  }),
+  json: createOption({
+    key: 'json' as const,
+    // json is never prompted
+    prompt: () => false,
+    validation: z.boolean().optional(),
+    option: new Option(
+      '--json',
+      'Output command data in JSON format on stdout',
+    ),
+  }),
+  yaml: createOption({
+    key: 'yaml' as const,
+    // json is never prompted
+    prompt: () => false,
+    validation: z.boolean().optional(),
+    option: new Option(
+      '--yaml',
+      'Output command data in YAML format on stdout',
+    ),
   }),
   legacy: createOption({
     key: 'legacy' as const,
@@ -50,7 +64,7 @@ export const globalOptions = {
       return legacy === true || legacy === 'true' || false;
     },
     validation: z.boolean().optional(),
-    option: globalFlags.legacy,
+    option: new Option('-l, --legacy', 'Output legacy format'),
   }),
   // Logs
   logFolder: createOption({
@@ -258,4 +272,3 @@ export const securityOptions = {
 };
 
 export type GlobalOptions = typeof globalOptions;
-export type GlobalFlags = typeof globalFlags;
