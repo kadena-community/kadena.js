@@ -48,7 +48,7 @@ export const globalOptions = {
   }),
   yaml: createOption({
     key: 'yaml' as const,
-    // json is never prompted
+    // yaml is never prompted
     prompt: () => false,
     validation: z.boolean().optional(),
     option: new Option(
