@@ -1,5 +1,3 @@
-/* eslint-disable @kadena-dev/no-eslint-disable */
-
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
@@ -12,7 +10,7 @@ import type {
 import React, { forwardRef } from 'react';
 import type { AriaLinkOptions, HoverEvents } from 'react-aria';
 import { useFocusRing, useHover, useLink } from 'react-aria';
-import { button } from '../Button/SharedButton.css';
+import { button } from '../Button/Button.css';
 import { disableLoadingProps } from '../Button/utils';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 
@@ -34,8 +32,6 @@ export interface ILinkProps extends PickedAriaLinkProps, HoverEvents, Variants {
   title?: ComponentProps<'button'>['title'];
 }
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable react/function-component-definition */
 function BaseLink(
   props: ILinkProps,
   forwardedRef: ForwardedRef<ElementRef<'a'>>,
@@ -69,8 +65,7 @@ function BaseLink(
       ref={ref}
       className={classNames(
         button({
-          variant: props.variant ?? 'text',
-          color: props.color,
+          variant: props.variant,
           isCompact: props.isCompact,
           isLoading: props.isLoading,
         }),

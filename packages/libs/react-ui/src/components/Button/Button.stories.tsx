@@ -1,26 +1,18 @@
+import { MonoChevronLeft, MonoChevronRight } from '@kadena/react-icons';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
-import { LeadingIcon, Plus, TrailingIcon } from '../Icon/System/SystemIcon';
+import React from 'react';
+
+import { getVariants } from '../../storyDecorators/getVariants';
+import { iconControl } from '../../storyDecorators/iconControl';
 import { Box } from '../Layout/Box/Box';
-import { Heading, Text } from '../Typography';
 import type { IButtonProps } from './Button';
 import { Button } from './Button';
-import { button } from './SharedButton.css';
-import { ToggleButton } from './ToggleButton';
+import { button } from './Button.css';
 
-// eslint-disable-next-line @kadena-dev/typedef-var
-const buttonVariants = Object.keys(
-  (button as any).classNames?.variants?.variant,
-) as IButtonProps['variant'][];
-
-// eslint-disable-next-line @kadena-dev/typedef-var
-const buttonColors = Object.keys(
-  (button as any).classNames?.variants?.color,
-) as IButtonProps['color'][];
+const variants = getVariants(button);
 
 const meta: Meta<IButtonProps> = {
   title: 'Components/Button',
-  component: Button,
   parameters: {
     status: { type: 'releaseCandidate' },
     controls: {
@@ -35,34 +27,28 @@ const meta: Meta<IButtonProps> = {
     },
   },
   argTypes: {
-    onClick: {
+    onPress: {
       action: 'clicked',
-      description: '(deprecated) callback when button is clicked',
+      description: 'callback when button is clicked',
       table: {
         disable: true,
       },
     },
+    icon: iconControl,
+    startIcon: iconControl,
+    endIcon: iconControl,
+    badgeValue: {
+      description: 'badge value to be shown after the children',
+      control: {
+        type: 'text',
+      },
+    },
     variant: {
-      options: buttonVariants,
+      options: variants.variant,
       control: {
         type: 'select',
       },
       description: 'button style variant',
-      table: {
-        type: { summary: buttonVariants.join(' | ') },
-        defaultValue: { summary: 'default' },
-      },
-    },
-    color: {
-      options: buttonColors,
-      control: {
-        type: 'select',
-      },
-      description: 'button color variant',
-      table: {
-        type: { summary: buttonColors.join(' | ') },
-        defaultValue: { summary: 'default' },
-      },
     },
     isDisabled: {
       description: 'only used when rendered as button',
@@ -82,186 +68,143 @@ const meta: Meta<IButtonProps> = {
         type: 'boolean',
       },
     },
+    avatarProps: {
+      description:
+        'Props for the avatar component which can be rendered instead of startIcon',
+      control: {
+        type: 'boolean',
+      },
+    },
   },
 };
 
-type ButtonStory = StoryObj<
-  {
-    text: string;
-  } & IButtonProps
->;
+type ButtonStory = StoryObj<IButtonProps>;
 
 export const _Button: ButtonStory = {
-  name: 'Button',
   args: {
-    text: 'Click me',
-    variant: 'contained',
-    color: 'primary',
-    isDisabled: false,
-    isCompact: false,
-    isLoading: false,
-    icon: undefined,
-    startIcon: undefined,
-    endIcon: undefined,
+    children: 'Hello world',
+    variant: 'primary',
+    onPress: () => undefined,
   },
-  render: ({ text, ...props }) => {
-    return <Button {...props}>{text}</Button>;
+  render: (props: IButtonProps) => {
+    return <Button {...props}>{props.children}</Button>;
+  },
+};
+
+export const StartIcon: ButtonStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    startIcon: <MonoChevronLeft />,
+    onPress: () => undefined,
+  },
+  render: (props: IButtonProps) => {
+    return <Button {...props}>{props.children}</Button>;
+  },
+};
+
+export const EndIcon: ButtonStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    endIcon: <MonoChevronRight />,
+    onPress: () => undefined,
+  },
+  render: (props: IButtonProps) => {
+    return <Button {...props}>{props.children}</Button>;
+  },
+};
+
+export const BothIcons: ButtonStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    startIcon: <MonoChevronLeft />,
+    endIcon: <MonoChevronRight />,
+    onPress: () => undefined,
+  },
+  render: (props: IButtonProps) => {
+    return <Button {...props}>{props.children}</Button>;
+  },
+};
+
+export const WithAvatar: ButtonStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    avatarProps: {
+      imageUrl: 'https://via.placeholder.com/150',
+      status: 'info',
+    },
+    onPress: () => undefined,
+  },
+  render: (props: IButtonProps) => {
+    return <Button {...props}>{props.children}</Button>;
+  },
+};
+
+export const BadgeOnly: ButtonStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    badgeValue: '6',
+    onPress: () => undefined,
+  },
+  render: (props: IButtonProps) => {
+    return <Button {...props}>{props.children}</Button>;
+  },
+};
+
+export const BadgeAndEndIcon: ButtonStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    endIcon: <MonoChevronRight />,
+    badgeValue: '6',
+    onPress: () => undefined,
+  },
+  render: (props: IButtonProps) => {
+    return <Button {...props}>{props.children}</Button>;
+  },
+};
+
+export const BadgeAndStartIcon: ButtonStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    startIcon: <MonoChevronLeft />,
+    badgeValue: '6',
+    onPress: () => undefined,
+  },
+  render: (props: IButtonProps) => {
+    return <Button {...props}>{props.children}</Button>;
+  },
+};
+
+export const IconOnly: ButtonStory = {
+  args: {
+    variant: 'primary',
+    icon: <MonoChevronRight />,
+    onPress: () => undefined,
+  },
+  render: (props: IButtonProps) => {
+    return <Button {...props}>{props.children}</Button>;
   },
 };
 
 export const AllVariants: StoryFn<IButtonProps> = ({
-  isCompact,
-  isDisabled,
-  isLoading,
-}) => (
+  variant,
+  ...props
+}: IButtonProps) => (
   <Box gap="xs" display="flex">
-    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
-      <Heading variant="h6">Contained (default)</Heading>
-      {buttonColors.map((color) => (
-        <Button
-          key={color}
-          color={color}
-          isCompact={isCompact}
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
-        >
-          {color}
-        </Button>
-      ))}
-    </Box>
-
-    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
-      <Heading variant="h6">Alternative</Heading>
-      {buttonColors.map((color) => (
-        <Button
-          key={color}
-          color={color}
-          variant="alternative"
-          isCompact={isCompact}
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
-        >
-          {color}
-        </Button>
-      ))}
-    </Box>
-
-    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
-      <Heading variant="h6">Outlined</Heading>
-      {buttonColors.map((color) => (
-        <Button
-          key={color}
-          color={color}
-          variant="outlined"
-          isCompact={isCompact}
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
-        >
-          {color}
-        </Button>
-      ))}
-    </Box>
-
-    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
-      <Heading variant="h6">Text</Heading>
-      {buttonColors.map((color) => (
-        <Button
-          key={color}
-          color={color}
-          variant="text"
-          isCompact={isCompact}
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
-        >
-          {color}
+    <Box gap="md" display="flex" flexDirection="column" alignItems="center">
+      {variants.variant.map((item) => (
+        <Button key={item} variant={item as IButtonProps['variant']} {...props}>
+          {props.children || item}
         </Button>
       ))}
     </Box>
   </Box>
 );
-
-export const StartIcon: StoryFn<IButtonProps> = ({
-  isCompact,
-  isDisabled,
-  isLoading,
-  color,
-  variant,
-}) => (
-  <Button
-    startIcon={<Plus />}
-    isCompact={isCompact}
-    isDisabled={isDisabled}
-    isLoading={isLoading}
-    color={color}
-    variant={variant}
-  >
-    Click me
-  </Button>
-);
-
-export const EndIcon: StoryFn<IButtonProps> = ({
-  isCompact,
-  isDisabled,
-  isLoading,
-  color,
-  variant,
-}) => (
-  <Button
-    endIcon={<Plus />}
-    isCompact={isCompact}
-    isDisabled={isDisabled}
-    isLoading={isLoading}
-    color={color}
-    variant={variant}
-  >
-    Click me
-  </Button>
-);
-
-export const OnlyIcon: StoryFn<IButtonProps> = ({
-  isCompact,
-  isDisabled,
-  isLoading,
-  color,
-  variant,
-}) => (
-  <Button
-    icon={<Plus />}
-    isCompact={isCompact}
-    isDisabled={isDisabled}
-    isLoading={isLoading}
-    color={color}
-    variant={variant}
-  />
-);
-
-export const _ToggleButton = () => {
-  const [isSelected, setIsSelected] = useState(false);
-  return (
-    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
-      <Text>
-        Toggle button is same as button button can stay selected (active) the
-        styles are not final for now it is the same as button in addition to
-        selected state which is same as active/focused state
-      </Text>
-      <ToggleButton
-        variant="contained"
-        color="primary"
-        onChange={setIsSelected}
-        isSelected={isSelected}
-      >
-        {isSelected ? 'Selected' : 'Not selected'}
-      </ToggleButton>
-    </Box>
-  );
-};
 
 export default meta;
