@@ -1,4 +1,5 @@
 import { checkForHeaders } from './checkForHeaders';
+import { checkRedirects } from './checkRedirects';
 import { copyFavIcons } from './copyFavIcons';
 import { checkAuthors } from './createBlogAuthors';
 import { createSitemap } from './createSitemap';
@@ -34,12 +35,12 @@ const runPrettier = async (): Promise<IScriptResult> => {
   deleteTempDir();
   await initFunc(movePages, 'Move all pages from docs with config.yaml');
   await initFunc(fixLocalLinks, 'fix local links from the config.yaml');
-
   await initFunc(createDocsTree, 'Create docs tree');
   await initFunc(createSpecs, 'Create specs files');
   await initFunc(checkForHeaders, 'Detect missing H1 headers');
   await initFunc(checkAuthors, 'Check author data for blog');
   await initFunc(createSitemap, 'Create the sitemap');
+  await initFunc(checkRedirects, 'Check if all the old routes have a redirect');
   await initFunc(copyFavIcons, 'Copy favicons');
   await initFunc(runPrettier, 'Prettier');
   //cleanup, removing the tempdir
