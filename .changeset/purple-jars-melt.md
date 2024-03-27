@@ -5,3 +5,4 @@
 ---
 
 added support for confirmationDepth in client
+added `pollOne` as an alternative to `listen` that uses `/poll` endpoint
