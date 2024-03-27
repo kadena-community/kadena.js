@@ -29,7 +29,7 @@ export const chainIdPrompt: IPrompt<string> = async (
     message: `Enter ChainId (0-${MAX_CHAIN_VALUE})`,
     default: defaultValue,
     validate: function (input) {
-      const chainId = Number(input.trim());
+      const chainId = parseInt(input.trim(), 10);
       const result = chainIdValidation.safeParse(chainId);
       if (!result.success) {
         const formatted = result.error.format();

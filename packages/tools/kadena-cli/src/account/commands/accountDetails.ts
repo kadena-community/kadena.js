@@ -5,6 +5,7 @@ import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import {
+  isNotEmptyObject,
   maskStringPreservingStartAndEnd,
   notEmpty,
 } from '../../utils/helpers.js';
@@ -128,14 +129,14 @@ export const createAccountDetailsCommand = createCommand(
     let fungible = accountConfig?.fungible ?? 'coin';
     const accountName = accountConfig?.name ?? account;
 
-    if (!accountConfig) {
+    if (!isNotEmptyObject(accountConfig)) {
       fungible = (await option.fungible()).fungible;
     }
 
     const { networkConfig } = await option.network();
     const { chainId } = await option.chainId();
 
-    if (!chainId) {
+    if (chainId === undefined || chainId.length === 0) {
       log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
       return;
     }
