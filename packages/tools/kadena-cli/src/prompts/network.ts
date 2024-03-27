@@ -1,6 +1,7 @@
 import type { ChainId } from '@kadena/types';
 import { z } from 'zod';
 import { chainIdValidation } from '../account/utils/accountHelpers.js';
+import { MAX_CHAIN_VALUE } from '../constants/config.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
@@ -25,10 +26,10 @@ export const chainIdPrompt: IPrompt<string> = async (
 ) => {
   const defaultValue = (args.defaultValue as string) || '0';
   return (await input({
-    message: 'Enter ChainId (0-19)',
+    message: `Enter ChainId (0-${MAX_CHAIN_VALUE})`,
     default: defaultValue,
     validate: function (input) {
-      const chainId = parseInt(input, 10);
+      const chainId = parseInt(input.trim(), 10);
       const result = chainIdValidation.safeParse(chainId);
       if (!result.success) {
         const formatted = result.error.format();

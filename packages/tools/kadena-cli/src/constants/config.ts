@@ -48,3 +48,6 @@ export const PLAIN_KEY_LEGACY_EXT = '.legacy.key';
 export const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
 export const IS_TEST = process.env.VITEST === 'true';
 export const MAX_CHARACTERS_LENGTH = 80;
+
+export const MAX_CHAIN_IDS: number = 20;
+export const MAX_CHAIN_VALUE: number = MAX_CHAIN_IDS - 1;

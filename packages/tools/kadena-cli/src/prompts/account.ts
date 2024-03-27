@@ -1,10 +1,16 @@
+import type { ChainId } from '@kadena/types';
 import { parse } from 'node:path';
 import {
+  chainIdRangeValidation,
   fundAmountValidation,
   getAllAccountNames,
+  parseChainIdRange,
 } from '../account/utils/accountHelpers.js';
+import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
+import { MAX_CHAIN_VALUE } from '../constants/config.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
+  formatZodError,
   maskStringPreservingStartAndEnd,
   truncateText,
 } from '../utils/helpers.js';
@@ -252,4 +258,32 @@ export const accountDeleteConfirmationPrompt: IPrompt<boolean> = async (
       },
     ],
   });
+};
+
+export const chainIdPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const defaultValue = (args.defaultValue as string) || '0';
+  return (await input({
+    message: `Enter a ChainId (0-${MAX_CHAIN_VALUE}) (comma or hyphen separated e.g 0,1,2 or 1-5 or all):`,
+    default: defaultValue,
+    validate: function (input) {
+      if (input.trim() === 'all') return true;
+
+      const parseInput = parseChainIdRange(input);
+
+      if (!parseInput || !parseInput.length) {
+        return CHAIN_ID_RANGE_ERROR_MESSAGE;
+      }
+
+      const result = chainIdRangeValidation.safeParse(parseInput);
+      if (!result.success) {
+        const formatted = formatZodError(result.error);
+        return `ChainId: ${formatted}`;
+      }
+      return true;
+    },
+  })) as ChainId;
 };

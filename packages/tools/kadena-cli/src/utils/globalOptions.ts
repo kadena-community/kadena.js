@@ -117,10 +117,10 @@ export const globalOptions = {
     }),
     option: new Option('-c, --chain-id <chainId>'),
     transform: (chainId: string) => {
-      const parsedChainId = parseInt(chainId.trim(), 10);
+      const parsedChainId = Number(chainId.trim());
       try {
         chainIdValidation.parse(parsedChainId);
-        return chainId as ChainId;
+        return parsedChainId.toString() as ChainId;
       } catch (error) {
         const errorMessage = formatZodFieldErrors(error);
         throw new Error(`Error: -c --chain-id ${errorMessage}`);

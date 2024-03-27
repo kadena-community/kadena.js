@@ -1,12 +1,17 @@
+import type { ChainId } from '@kadena/types';
 import { Option } from 'commander';
 import { z } from 'zod';
+import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
 import { account } from '../prompts/index.js';
 import { createOption } from '../utils/createOption.js';
+import { formatZodError, generateAllChainIds } from '../utils/helpers.js';
 import { log } from '../utils/logger.js';
 import type { IAliasAccountData } from './types.js';
 import {
+  chainIdRangeValidation,
   formatZodFieldErrors,
   fundAmountValidation,
+  parseChainIdRange,
   readAccountFromFile,
 } from './utils/accountHelpers.js';
 
@@ -146,5 +151,35 @@ export const accountOptions = {
     validation: z.boolean(),
     prompt: account.accountDeleteConfirmationPrompt,
     option: new Option('-c, --confirm', 'Confirm account deletion'),
+  }),
+  chainIdRange: createOption({
+    key: 'chainId' as const,
+    prompt: account.chainIdPrompt,
+    defaultIsOptional: false,
+    validation: z.string({
+      /* eslint-disable-next-line @typescript-eslint/naming-convention */
+      invalid_type_error: 'Error: -c, --chain-id must be a number',
+    }),
+    option: new Option('-c, --chain-id <chainId>'),
+    transform: (chainId: string) => {
+      if (chainId === 'all') {
+        return generateAllChainIds();
+      }
+
+      const chainIds = parseChainIdRange(chainId.trim());
+      if (!chainIds || !chainIds.length) {
+        log.error(CHAIN_ID_RANGE_ERROR_MESSAGE);
+        return;
+      }
+
+      const parse = chainIdRangeValidation.safeParse(chainIds);
+      if (!parse.success) {
+        const formatted = formatZodError(parse.error);
+        log.error(`Error: -c, --chain-id in ${formatted}`);
+        return;
+      }
+
+      return parse.data.map((id) => id.toString()) as ChainId[];
+    },
   }),
 };

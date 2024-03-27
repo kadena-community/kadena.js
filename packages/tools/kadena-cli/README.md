@@ -517,7 +517,7 @@ kadena account add-manual [arguments]
 | --fungible              | Fungible e.g coin                            |              |
 | --network               | Name of the network to be used               |              |
 | --chain-id              | Chain to be used                             |              |
-| --public-keys           | Comma seperated list of public keys          |              |
+| --public-keys           | Comma separated list of public keys          |              |
 | --predicate             | keys-all, keys-any, keys-2, Custom predicate |              |
 
 example:
@@ -598,22 +598,42 @@ conditions (public keys, predicate), and the account's name.
 kadena account details [arguments]
 ```
 
-| **Arguments & Options** | **Description**                                    | **Required** |
-| ----------------------- | -------------------------------------------------- | ------------ |
-| --account               | Provide account alias/name to retrieve its details |              |
-| --network               | Name of the network to be used                     |              |
-| --chain-id              | Provide the chain ID associated with the account   |              |
+| **Arguments & Options** | **Description**                                     | **Required** |
+| ----------------------- | --------------------------------------------------- | ------------ |
+| --account               | Provide account alias/name to retrieve its details  |              |
+| --network               | Name of the network to be used                      |              |
+| --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |             |
 
-example using account alias:
+Example:
+**Single Chain ID:**
 
+using account alias:
 ```
 kadena account details --account="myalias" --network="mainnet" --chain-id="1"
 ```
-
-example using account name:
-
+using account name:
 ```
 kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="1"
+```
+
+**Chain ID Range:**
+
+You can specify a range of chain IDs to query multiple chains at once. Use a comma for discrete values or a hyphen for a continuous range.
+
+Discrete Chain IDs:
+```
+kadena account details --account="myalias" --network="mainnet" --chain-id="1,5"
+```
+
+Continuous Range of Chain IDs:
+```
+kadena account details --account="myalias" --network="mainnet" --chain-id="1-5"
+```
+
+All Chains:
+Use "all" to query details across all chains.
+```
+kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="all"
 ```
 
 ---
@@ -634,15 +654,36 @@ kadena account fund [arguments]
 | --account               | Provide alias for an account                     |              |
 | --amount                | Amount to fund                                   |              |
 | --network               | Name of the network to be used                   |              |
-| --chain-id              | Provide the chain ID associated with the account |              |
+| --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |             |
 
-example:
+Example:
+**Single Chain ID:**
 
+Fund an account on a specific chain:
 ```
 kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="1"
 ```
+**Chain ID Range:**
 
+You can specify a range of chain IDs to fund an account across multiple chains. Use a comma for discrete values or a hyphen for a continuous range.
+
+Discrete Chain IDs:
+```
+kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="1,3"
+```
+
+Continuous Range of Chain IDs:
+```
+kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="1-3"
+```
+
+All Chains:
+Use "all" to fund an account across all chains on the testnet.
+```
+kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="all"
+```
 ---
+
 
 ```
 kadena account account name-to-address [arguments]
