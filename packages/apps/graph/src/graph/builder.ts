@@ -5,9 +5,11 @@ import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
 import RelayPlugin from '@pothos/plugin-relay';
 import TracingPlugin, { wrapResolver } from '@pothos/plugin-tracing';
+import ValidationPlugin from '@pothos/plugin-validation';
 import { Prisma } from '@prisma/client';
 import { logTrace } from '@services/tracing/trace-service';
 import { dotenv } from '@utils/dotenv';
+import { normalizeError } from '@utils/errors';
 import {
   BigIntResolver,
   DateTimeResolver,
@@ -97,6 +99,7 @@ export const builder = new SchemaBuilder<
     PrismaPlugin,
     RelayPlugin,
     TracingPlugin,
+    ValidationPlugin,
   ],
 
   prisma: {
@@ -111,6 +114,10 @@ export const builder = new SchemaBuilder<
   relayOptions: {
     clientMutationId: 'optional',
     cursorType: 'String',
+  },
+
+  validationOptions: {
+    validationError: (message) => normalizeError(message),
   },
 
   ...(dotenv.COMPLEXITY_ENABLED && {

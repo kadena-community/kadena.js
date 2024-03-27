@@ -39,12 +39,42 @@ builder.queryField('events', (t) =>
       An example of such a filter parameter value: \`events(parametersFilter: "{\\"array_starts_with\\": \\"k:abcdefg\\"}")\``,
     edgesNullable: false,
     args: {
-      qualifiedEventName: t.arg.string({ required: true }),
-      chainId: t.arg.string({ required: false }),
-      parametersFilter: t.arg.string({ required: false }),
-      blockHash: t.arg.string({ required: false }),
-      orderIndex: t.arg.int({ required: false }),
-      requestKey: t.arg.string({ required: false }),
+      qualifiedEventName: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      chainId: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      parametersFilter: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      blockHash: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      orderIndex: t.arg.int({
+        required: false,
+        validate: {
+          nonnegative: true,
+        },
+      }),
+      requestKey: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: Prisma.ModelName.Event,
     cursor: 'blockHash_orderIndex_requestKey',

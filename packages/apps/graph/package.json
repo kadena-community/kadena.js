@@ -70,6 +70,7 @@
     "@pothos/plugin-prisma": "~3.63.0",
     "@pothos/plugin-relay": "~3.45.1",
     "@pothos/plugin-tracing": "^0.5.8",
+    "@pothos/plugin-validation": "^3.10.1",
     "@prisma/client": "^5.7.1",
     "cli-highlight": "^2.1.11",
     "commander": "^11.0.0",
@@ -87,7 +88,8 @@
     "module-alias": "^2.2.3",
     "prisma": "^5.7.1",
     "seedrandom": "~3.0.5",
-    "ws": "^8.16.0"
+    "ws": "^8.16.0",
+    "zod": "~3.18.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

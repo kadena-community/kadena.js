@@ -133,6 +133,33 @@ export function normalizeError(error: any): GraphQLError {
     });
   }
 
+  if (error.name === 'ZodError') {
+    if (error.issues.length > 1) {
+      return new GraphQLError('Input Validation Error', {
+        extensions: {
+          type: 'ZodError',
+          message: 'Multiple validation issues found. See data for details.',
+          description:
+            'The input provided is invalid. Check the input and try again.',
+          data: error.issues.map((issue: any) => ({
+            message: issue.message,
+            path: issue.path.join('.'),
+          })),
+        },
+      });
+    }
+    return new GraphQLError('Input Validation Error', {
+      extensions: {
+        type: 'ZodError',
+        message: `${error.issues[0].message}: ${error.issues[0].path.join(
+          '.',
+        )}`,
+        description:
+          'The input provided is invalid. Check the input and try again.',
+      },
+    });
+  }
+
   if (error.type === 'system' && error.code === 'ECONNREFUSED') {
     return new GraphQLError('Chainweb Node Connection Refused', {
       extensions: {

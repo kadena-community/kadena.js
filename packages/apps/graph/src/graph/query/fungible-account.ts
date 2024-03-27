@@ -12,8 +12,18 @@ builder.queryField('fungibleAccount', (t) =>
       'Retrieve an fungible specific account by its name and fungible, such as coin.',
     nullable: true,
     args: {
-      accountName: t.arg.string({ required: true }),
-      fungibleName: t.arg.string({ required: false }),
+      accountName: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      fungibleName: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: FungibleAccount,
     async resolve(__parent, args) {

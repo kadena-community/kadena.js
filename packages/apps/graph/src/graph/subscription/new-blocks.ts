@@ -10,7 +10,15 @@ builder.subscriptionField('newBlocks', (t) =>
   t.field({
     description: 'Subscribe to new blocks.',
     args: {
-      chainIds: t.arg.stringList({ required: false }),
+      chainIds: t.arg.stringList({
+        required: false,
+        validate: {
+          minLength: 1,
+          items: {
+            minLength: 1,
+          },
+        },
+      }),
     },
     type: [GQLBlock],
     nullable: true,

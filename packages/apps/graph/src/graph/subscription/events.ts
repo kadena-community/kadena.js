@@ -14,9 +14,24 @@ builder.subscriptionField('events', (t) =>
        
       An example of such a filter parameter value: \`events(parametersFilter: "{\\"array_starts_with\\": \\"k:abcdefg\\"}")\``,
     args: {
-      qualifiedEventName: t.arg.string({ required: true }),
-      chainId: t.arg.string(),
-      parametersFilter: t.arg.string(),
+      qualifiedEventName: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      chainId: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      parametersFilter: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: [GQLEvent],
     nullable: true,
