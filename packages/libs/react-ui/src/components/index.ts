@@ -4,6 +4,7 @@ export type { IBreadcrumbItemProps, IBreadcrumbsProps } from './Breadcrumbs';
 export type { IButtonProps, IToggleButtonProps } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
+export type { IBadgeProps } from './Badge';
 export type {
   IDialogContentProps,
   IDialogFooterProps,
@@ -108,6 +109,7 @@ export { Tag, TagGroup, TagItem } from './Tag';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Heading, Text } from './Typography';
+export { Badge } from './Badge';
 
 // Deprecated components
 export { TableV1 } from './TableV1';

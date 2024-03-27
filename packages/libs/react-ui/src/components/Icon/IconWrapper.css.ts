@@ -1,9 +1,9 @@
 import { createVar, style, styleVariants } from '@vanilla-extract/css';
-import { sprinkles } from '../../styles/sprinkles.css';
+import { atoms, token } from '../../styles';
 
 export const iconFill = createVar();
 export const iconContainer = style([
-  sprinkles({
+  atoms({
     display: 'block',
     flexShrink: 0,
   }),
@@ -19,10 +19,9 @@ export const iconContainer = style([
 ]);
 
 export const sizeVariants = styleVariants({
-  xs: [sprinkles({ size: '$3' })],
-  sm: [sprinkles({ size: '$4' })],
-  md: [sprinkles({ size: '$6' })],
-  lg: [sprinkles({ size: '$8' })],
-  xl: [sprinkles({ size: '$10' })],
-  heroHeader: [sprinkles({ size: '$24' })],
+  xs: { height: token('size.n3') },
+  sm: { height: token('size.n4') },
+  md: { height: token('size.n6') },
+  lg: { height: token('size.n8') },
+  xl: { height: token('size.n10') },
 });
