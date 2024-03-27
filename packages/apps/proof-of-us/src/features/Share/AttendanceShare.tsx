@@ -21,6 +21,7 @@ interface IProps {
   data?: IProofOfUsTokenMeta;
   metadataUri?: string;
 }
+
 export const AttendanceShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
   const router = useRouter();
 
@@ -44,8 +45,8 @@ export const AttendanceShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
           )}
         />
         <AttendanceTicket data={data} />
-        <Stack flexDirection="column">
-          <Heading as="h6">Metadata</Heading>
+        <Stack flexDirection="column" marginBlockStart="lg">
+          <Heading as="h4">Metadata</Heading>
           <MetaList>
             <MetaTerm>block explorer</MetaTerm>
             <MetaDetails>
