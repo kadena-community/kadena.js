@@ -9,6 +9,7 @@ import { getInitials } from './getInitials';
 
 type StatusVariants = NonNullable<RecipeVariants<typeof circleStatus>>;
 type CircleVariants = NonNullable<RecipeVariants<typeof circle>>;
+
 export interface IAvatarProps extends StatusVariants, CircleVariants {
   name?: string;
   // could also be a component if we need to
