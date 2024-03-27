@@ -1,3 +1,4 @@
+import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { atoms, token } from '../../styles';
 
@@ -17,20 +18,20 @@ export const circle = recipe({
   ],
   variants: {
     size: {
-      lg: {
-        fontSize: token('typography.fontSize.sm'),
-        width: token('icon.size.lg'),
-        height: token('icon.size.lg'),
-      },
       sm: {
         fontSize: token('typography.fontSize.sm'),
-        width: token('icon.size.sm'),
-        height: token('icon.size.sm'),
+        width: token('size.n4'),
+        height: token('size.n4'),
       },
       md: {
         fontSize: token('typography.fontSize.xs'), // typography.smallest
-        width: token('icon.size.base'),
-        height: token('icon.size.base'),
+        width: token('size.n6'),
+        height: token('size.n6'),
+      },
+      lg: {
+        fontSize: token('typography.fontSize.sm'),
+        width: token('size.n8'),
+        height: token('size.n8'),
       },
     },
     color: {
@@ -92,12 +93,6 @@ export const circleStatus = recipe({
       },
     },
     size: {
-      lg: {
-        width: '8px',
-        height: '8px',
-        bottom: '4px',
-        right: '4px',
-      },
       sm: {
         width: '4px',
         height: '4px',
@@ -110,9 +105,20 @@ export const circleStatus = recipe({
         bottom: '4px',
         right: '4px',
       },
+      lg: {
+        width: '8px',
+        height: '8px',
+        bottom: '4px',
+        right: '4px',
+      },
     },
   },
   defaultVariants: {
     size: 'md',
   },
+});
+
+export const disabledStyle = style({
+  opacity: 0.4,
+  transition: 'opacity 0.2s ease-in-out',
 });

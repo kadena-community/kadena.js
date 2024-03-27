@@ -25,6 +25,7 @@ export const iconStyle = style({
   fill: iconFill,
   height: iconSize,
   width: iconSize,
+  transition: 'fill 0.2s ease-in-out',
 });
 
 export const iconOnlyStyle = atoms({
@@ -55,7 +56,9 @@ export const noPostfixStyle = style({ marginInlineEnd: noPostfixSpacing });
 
 // spacing if there is an avatar
 const avatarSpacing = createVar();
-export const avatarStyle = style({ marginInlineStart: avatarSpacing });
+export const avatarStyle = style({
+  marginInlineStart: avatarSpacing,
+});
 
 export const centerContentWrapper = style([
   atoms({ display: 'flex', alignItems: 'center', gap: 'sm' }),
@@ -124,6 +127,9 @@ export const button = recipe({
           cursor: 'pointer',
           color: hoverTextColor,
           background: hoverBackgroundColor,
+          vars: {
+            [iconFill]: token('color.icon.base.inverse.@hover'),
+          },
         },
         '&[data-pressed]': focus,
         '&[data-focus-visible]': focus,

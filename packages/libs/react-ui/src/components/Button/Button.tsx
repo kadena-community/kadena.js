@@ -115,7 +115,11 @@ const BaseButton = (
     startIcon || avatarProps ? (
       <span className={startIcon ? prefixIconStyle : avatarStyle}>
         {avatarProps ? (
-          <Avatar size={isCompact ? 'sm' : 'md'} {...avatarProps} />
+          <Avatar
+            isDisabled={props.isDisabled}
+            size={isCompact ? 'sm' : 'md'}
+            {...avatarProps}
+          />
         ) : (
           renderIcon(startIcon as ReactElement)
         )}
