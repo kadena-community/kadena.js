@@ -322,5 +322,5 @@ If an offer doesn't have a quoted price, it can be configure to use either a **c
 Regardless of the sales model you choose, you enter the token marketplace by submitting the offer transaction.
 
 You can find an introduction to sales-specific contracts like the auction contracts in [Layered contract architecture](/build/nft-marmalade/contract-architecture#sales-specific-contracts).
-For technical details about the conventional auction or dutch auction contracts, see [Auctions](/reference/auctions).
-For information about creating a your own sales-specific contracts, see []().
+For technical details about the conventional auction or dutch auction contracts, see [Conventional auction sale contract](/reference/nft-ref/sale-contracts/conventional-auction) or [Dutch auction sale contract](/reference/nft-ref/sale-contracts/dutch-auction).
+For information about creating a your own sales-specific contracts, see [Create a sale contract](/reference/nft-ref/sale-contracts).

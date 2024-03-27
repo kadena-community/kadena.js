@@ -1,8 +1,8 @@
 ---
 title: Auctions
 description: Introduces the types of auctions you can implement for an NFT marketplace using Marmalade and the Kadena blockchain network.
-menu: Auctions
-label: Overview
+menu: Sales
+label: Auctions
 order: 5
 layout: full
 ---
@@ -32,7 +32,7 @@ Using functions in the `marmalade-sale.conventional-auction` contract, you can:
 - Define a process for refunding bids.
 - Define rules for concluding the auction and determining the winning bid.
 
-For reference information about the conventional auction smart contract, see [Conventional auction reference](/reference/nft-ref/conventional-auction-ref).
+For reference information about the conventional auction smart contract, see [Conventional auction reference](/reference/nft-ref/sale-contracts/conventional-auction-ref).
 
 ## Dutch auction
 
@@ -50,4 +50,4 @@ Using functions in the `marmalade-sale.dutch-auction` contract, you can:
 - Conclude the auction with the first bid at the current price.
 - Define the process for ending the auction and awarding the item to the bidder.
 
-For reference information about the dutch auction smart contract, see [Dutch auction reference](/reference/nft-ref/dutch-auction-ref.md).
+For reference information about the dutch auction smart contract, see [Dutch auction reference](/reference/nft-ref/sale-contracts/dutch-auction).

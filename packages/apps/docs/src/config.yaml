@@ -140,6 +140,17 @@ pages:
               custompolicies:
                 url: /custom-policies
                 file: /build/nft-marmalade/custom-policies.md
+          sales:
+            url: /sales
+            file: /build/nft-marmalade/sale-contracts.md
+            children:
+              auctions:
+                url: /auctions
+                file: /build/nft-marmalade/auctions.md
+              offer:
+                url: /offers
+                file: /build/nft-marmalade/start-a-sale.md
+
       frontend:
         url: /frontend
         file: /build/frontend.md
@@ -183,6 +194,10 @@ pages:
       nft-workshop:
         url: /nft-workshop
         file: /build/nft-workshop/index.md
+        children:
+          prepare:
+            url: /prepare
+            file: /build/nft-workshop/prepare-your-workspace.md
   deploy:
     url: /deploy
     file: /deploy/deploy.md

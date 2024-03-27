@@ -63,7 +63,7 @@ By using the policy manager contract, you can standardize the rules for creating
 
 With the policy manager contract, you can choose token properties from built-in policies—like the non-fungible policy and royalty policy—or create custom policies to use on their own or in combination with the built-in policies.
 
-For more technical details about the Marmalade policy manager contract, see []().
+For more technical details about the Marmalade policy manager contract, see [Policy manager contract](/reference/nft-ref/policy-manager).
 
 ## Sales-specific contracts
 
@@ -81,10 +81,8 @@ The following diagram provides a simplified view of the interaction between the 
 
 ![Contract interaction using a sale contract](/assets/marmalade/offer-sale-contracts-workflow.png)
 
-For information about registered sales-specific contracts, see [`conventional-auction`](/reference/nft-ref/conventional-) and [`dutch-auction`](https://docs.kadena.io/marmalade/auctions/dutch-auction).
-For information about creating an offer that references a sales-specific contract, see []().
-
-For more information about how to implement the sale contract interface and creating your own sale contract, see [Create a sale contract]().
+For information about registered sales-specific contracts, see [Auctions](/build/nft-marmalade/sales/auctions).
+For more information about how to reference a sales-specific contract, implement the sale contract interface, or create your own sale contract, see [Create a sale contract](/reference/nft-ref/sale-contracts).
 
 ## Policies
 

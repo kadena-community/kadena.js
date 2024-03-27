@@ -1,7 +1,7 @@
 ---
-title: Sell tokens
+title: Sales
 description: Describes the different ways you can offer tokens for sale and how to create and use sales-specific contracts.
-menu: Sell tokens
+menu: Sales
 label: Sale options
 order: 3
 layout: full
@@ -33,7 +33,8 @@ For example, a dutch auction starts with a price above market value and drops ov
 If you offer a token for sale and select the `dutch-auction` sale contract, the policy manager handles the mechanics of lowering the price over the scheduled auction period.
 
 There are two registered sale contracts available in the [Marmalade Github repository](https://github.com/kadena-io/marmalade/tree/v2/pact/sale-contracts) under `pact/sale-contracts`.
-These contracts enable you to create auctions to sell your tokens using a [conventional-auction]() format or a [`dutch auction`]() format. 
+These contracts enable you to create auctions to sell your tokens using a conventional auction format or a dutch auction format.
+For more information about these auction formats, see [Auctions](/build/nft-marmalade/sales/auctions).
 
 ## Creating custom sale contracts
 
@@ -43,7 +44,7 @@ Before you can register a sales-specific contract, the contract must be reviewed
 
 To create your own sales-specific contract:
 
-1. Implement the `enforce-quote-update` interface in your contrac to allow the policy manager to enforce the sale
+1. Implement the `enforce-quote-update` interface in your contract to allow the policy manager to enforce the sale
 contract:
    
    ```pact

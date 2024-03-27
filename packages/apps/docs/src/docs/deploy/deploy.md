@@ -51,4 +51,4 @@ If you are preparing to deploy on the Kadena test or main network, see the follo
 
 ## View recent articles
 
-Use keywords to [Search](), visit the [Kadena Blogchain](https://www.kadena.io/blog), or browse [Popular articles]() to find the topics you're looking for.
+Use keywords to Search or visit the [Kadena Blogchain](https://www.kadena.io/blog) to browse recent articles to find the topics you're looking for.

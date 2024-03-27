@@ -154,14 +154,14 @@ Now that your token is recorded in the Marmalade ledger, you can transfer it to 
 In this simple example, there's no royalty policy associated with the token because it isn't intended to generate an ongoing revenue stream.
 However, the token owner can still offer the token for sale.
 
-The offer can include a specific quoted price or be configured without a quoted price.
-If an offer doesn't have a quoted price, it can be configure to use either a **conventional auction** or a **dutch auction** contract to attract buyers to bid on the work.
+The offer can include a specific fixed quoted price or be configured with a variable quoted price that is adjusted according to the rules in a reference sale-specific contract.
+If an offer doesn't have a fixed quoted price, you can be configure to use either a **conventional auction** or a **dutch auction** contract to attract buyers to bid on the work.
 You can find an introduction to sales-specific contracts like these auction contracts in [Layered contract architecture](/build/nft-marmalade/contract-architecture#sales-specific-contracts).
 Regardless of the sales model you choose, you enter the token marketplace by submitting the offer transaction.
 
 ## Next steps
 
 This walk-through demonstrated the workflow for creating a non-fungible token (NFT) using the Marmalade standard with permanent storage on IPFS.
-To learn more about configuring auction contracts, see [Auctions](/build/nft-marmalade/auctions).
-To learn more about creating and using your own sale contract, see [Sale contracts](/build/nft-marmalade/sale-contracts).
+To learn more about configuring sale contracts, see [Sales options](/build/nft-marmalade/sales).
+To learn more about creating and using your own sale contract, see [Create a sale contract](/reference/nft-ref/sale-contracts).
 For technical reference information about any Marmalade smart contract, see [NFT marketplace reference](/reference/nft-ref).

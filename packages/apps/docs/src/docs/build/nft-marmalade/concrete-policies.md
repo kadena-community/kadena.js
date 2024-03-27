@@ -1,7 +1,7 @@
 ---
-title: Set policies
+title: Policies
 description: Describes how to work with concrete and custom policies when you create tokens.
-menu: Set policies
+menu: Policies
 label: Use concrete policies
 order: 8
 layout: full
