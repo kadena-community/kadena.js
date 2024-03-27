@@ -255,7 +255,7 @@ export interface ICreateClient {
    * @param hostUrl - the URL to use in the client
    * @param defaults - default options for the client it includes confirmationDepth that is used for polling
    */
-  (hostUrl: string, defaults?: { confirmationDepth?: Milliseconds }): IClient;
+  (hostUrl: string, defaults?: { confirmationDepth?: number }): IClient;
 
   /**
    * Generates a client instance by passing a hostUrlGenerator function.
@@ -269,7 +269,7 @@ export interface ICreateClient {
       chainId: ChainId;
       networkId: string;
     }) => string,
-    defaults?: { confirmationDepth?: Milliseconds },
+    defaults?: { confirmationDepth?: number },
   ): IClient;
 }
 
