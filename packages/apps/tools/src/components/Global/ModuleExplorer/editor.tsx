@@ -28,13 +28,17 @@ const AceViewer = dynamic(import('@/components/Global/Ace'), {
 
 export interface IEditorProps {
   openedModules: IChainModule[];
+  onActiveModuleChange: (module: IChainModule) => void;
 }
 
 const moduleToTabId = ({ moduleName, chainId }: IChainModule): string => {
   return `${moduleName}-${chainId}`;
 };
 
-const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
+const Editor = ({
+  openedModules,
+  onActiveModuleChange,
+}: IEditorProps): React.JSX.Element => {
   const { t } = useTranslation('common');
   const [keyboardHandler, setKeyboardHandler] =
     usePersistentState<KeyboardHandler>('keyboard-handler', keyboards[0]);
@@ -99,7 +103,17 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
           </Select>
         </GridItem>
       </Grid>
-      <Tabs defaultSelectedKey={moduleToTabId(openedModules[0])}>
+      <Tabs
+        defaultSelectedKey={moduleToTabId(openedModules[0])}
+        onSelectionChange={(key) => {
+          const activeModule = openedModules.find((module) => {
+            return moduleToTabId(module) === key;
+          });
+          if (activeModule) {
+            onActiveModuleChange(activeModule);
+          }
+        }}
+      >
         {openedModules.map(({ moduleName, chainId, code }) => {
           return (
             <TabItem
