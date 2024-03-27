@@ -254,18 +254,25 @@ const ModuleExplorerPage = (
 
   const router = useRouter();
 
-  const openModule = useCallback<(selectedModule: IChainModule) => void>(
-    (selectedModule) => {
-      setOpenedModules([selectedModule]);
-
+  const setDeeplink = useCallback(
+    (module: IChainModule) => {
       // eslint-disable-next-line no-void
       void router.replace(
-        `?${QueryParams.MODULE}=${selectedModule.moduleName}&${QueryParams.CHAIN}=${selectedModule.chainId}`,
+        `?${QueryParams.MODULE}=${module.moduleName}&${QueryParams.CHAIN}=${module.chainId}`,
         undefined,
         { shallow: true },
       );
     },
     [router],
+  );
+
+  const openModule = useCallback<(selectedModule: IChainModule) => void>(
+    (selectedModule) => {
+      setOpenedModules([selectedModule]);
+
+      setDeeplink(selectedModule);
+    },
+    [setDeeplink],
   );
 
   const onInterfaceClick = useCallback<
@@ -309,6 +316,7 @@ const ModuleExplorerPage = (
             queryClient,
           );
         }}
+        onActiveModuleChange={setDeeplink}
         openedModules={fetchedModules}
       />
     </>
