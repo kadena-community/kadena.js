@@ -3,7 +3,7 @@ import { wordlist } from '@scure/bip39/wordlists/english';
 
 import { parseKeyPairsInput } from '../keys/utils/keysHelpers.js';
 import type { IWallet } from '../services/wallet/wallet.types.js';
-import { isValidFilename } from '../utils/helpers.js';
+import { isNumeric, isValidFilename } from '../utils/helpers.js';
 import { input, select } from '../utils/prompts.js';
 
 export async function keyAliasPrompt(): Promise<string> {
@@ -80,7 +80,7 @@ export async function walletGenerateKeyAmountPrompt(): Promise<string> {
     message: 'Amount of keys to generate:',
     default: '1',
     validate(input) {
-      if (!/^\d+$/.test(input)) {
+      if (!isNumeric(input)) {
         return 'Amount must be a number';
       }
       return true;
