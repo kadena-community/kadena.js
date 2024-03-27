@@ -20,7 +20,7 @@ import { keyboards, modes, themes } from '@/components/Global/Ace/helper';
 import { usePersistentState } from '@/hooks/use-persistent-state';
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
@@ -44,6 +44,20 @@ const Editor = ({
     usePersistentState<KeyboardHandler>('keyboard-handler', keyboards[0]);
   const [theme, setTheme] = usePersistentState<Theme>('theme', 'monokai');
   const [mode, setMode] = usePersistentState<Mode>('mode', 'lisp');
+
+  const [activeModule, setActiveModule] = useState(
+    openedModules.length
+      ? moduleToTabId(openedModules[openedModules.length - 1])
+      : undefined,
+  );
+
+  useEffect(() => {
+    setActiveModule(
+      openedModules.length
+        ? moduleToTabId(openedModules[openedModules.length - 1])
+        : undefined,
+    );
+  }, [openedModules]);
 
   if (!openedModules.length) {
     return (
@@ -104,8 +118,10 @@ const Editor = ({
         </GridItem>
       </Grid>
       <Tabs
-        defaultSelectedKey={moduleToTabId(openedModules[0])}
+        selectedKey={activeModule}
         onSelectionChange={(key) => {
+          setActiveModule(key as string);
+
           const activeModule = openedModules.find((module) => {
             return moduleToTabId(module) === key;
           });
