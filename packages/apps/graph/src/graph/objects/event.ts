@@ -1,3 +1,4 @@
+import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
@@ -49,10 +50,23 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
         transaction: true,
+        blockHash: true,
+        requestKey: true,
       },
-      async resolve(__query, parent) {
+      async resolve(query, parent) {
         try {
-          return parent.transaction;
+          return (
+            parent.transaction ||
+            (await prismaClient.transaction.findUnique({
+              ...query,
+              where: {
+                blockHash_requestKey: {
+                  blockHash: parent.blockHash,
+                  requestKey: parent.requestKey,
+                },
+              },
+            }))
+          );
         } catch (error) {
           throw normalizeError(error);
         }
@@ -65,10 +79,19 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
         block: true,
+        blockHash: true,
       },
-      async resolve(__query, parent) {
+      async resolve(query, parent) {
         try {
-          return parent.block;
+          return (
+            parent.block ||
+            (await prismaClient.block.findUniqueOrThrow({
+              ...query,
+              where: {
+                hash: parent.blockHash,
+              },
+            }))
+          );
         } catch (error) {
           throw normalizeError(error);
         }
