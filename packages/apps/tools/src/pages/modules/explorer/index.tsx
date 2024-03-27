@@ -294,6 +294,27 @@ const ModuleExplorerPage = (
     });
   }, []);
 
+  const onModuleOpen = useCallback<(module: IChainModule) => void>(
+    (module) => {
+      setOpenedModules((prev) => {
+        const alreadyOpened = prev.find((openedModule) => {
+          return (
+            openedModule.moduleName === module.moduleName &&
+            openedModule.chainId === module.chainId
+          );
+        });
+
+        if (alreadyOpened) {
+          return prev;
+        }
+        return [...prev, module];
+      });
+
+      setDeeplink(module);
+    },
+    [setDeeplink],
+  );
+
   const { t } = useTranslation('common');
 
   useToolbar(menuData, router.pathname);
@@ -309,8 +330,8 @@ const ModuleExplorerPage = (
       </Breadcrumbs>
       <ModuleExplorer
         modules={modules}
-        onModuleClick={openModule}
-        onInterfaceClick={onInterfaceClick}
+        onModuleClick={onModuleOpen}
+        onInterfaceClick={onModuleOpen}
         onModuleExpand={({ moduleName, chains }) => {
           // eslint-disable-next-line no-void
           void enrichModule(
