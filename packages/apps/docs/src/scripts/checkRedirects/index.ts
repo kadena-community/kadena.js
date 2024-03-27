@@ -1,5 +1,4 @@
 import type { IScriptResult } from '@kadena/docs-tools';
-import type { AnyARecord } from 'dns';
 import * as fs from 'fs';
 import xml2js from 'xml2js';
 import redirects from './../../../redirects.mjs';
@@ -144,5 +143,3 @@ export const checkRedirects = async (): Promise<IScriptResult> => {
   console.log({ success, errors });
   return { success, errors };
 };
-
-checkRedirects();
