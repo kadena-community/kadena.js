@@ -312,12 +312,31 @@ type Query {
   ): QueryBlocksFromDepthConnection
 
   """Retrieve blocks by chain and minimal height. Default page size is 20."""
-  blocksFromHeight(after: String, before: String, chainIds: [String!], first: Int, last: Int, startHeight: Int!): QueryBlocksFromHeightConnection!
+  blocksFromHeight(
+    after: String
+    before: String
+
+    """Default: all chains"""
+    chainIds: [String!]
+    first: Int
+    last: Int
+    startHeight: Int!
+  ): QueryBlocksFromHeightConnection!
 
   """
   Retrieve all completed blocks from a given height. Default page size is 20.
   """
-  completedBlockHeights(after: String, before: String, chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, first: Int, heightCount: Int = 3, last: Int): QueryCompletedBlockHeightsConnection!
+  completedBlockHeights(
+    after: String
+    before: String
+
+    """Default: all chains"""
+    chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
+    completedHeights: Boolean = false
+    first: Int
+    heightCount: Int = 3
+    last: Int
+  ): QueryCompletedBlockHeightsConnection!
 
   """
   Retrieve events by qualifiedName (e.g. `coin.TRANSFER`). Default page size is 20.

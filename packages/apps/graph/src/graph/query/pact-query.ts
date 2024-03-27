@@ -6,15 +6,35 @@ import { builder } from '../builder';
 
 const PactData = builder.inputType('PactQueryData', {
   fields: (t) => ({
-    key: t.field({ type: 'String', required: true }),
-    value: t.field({ type: 'String', required: true }),
+    key: t.string({
+      required: true,
+      validate: {
+        minLength: 1,
+      },
+    }),
+    value: t.string({
+      required: true,
+      validate: {
+        minLength: 1,
+      },
+    }),
   }),
 });
 
 const PactQuery = builder.inputType('PactQuery', {
   fields: (t) => ({
-    code: t.field({ type: 'String', required: true }),
-    chainId: t.field({ type: 'String', required: true }),
+    code: t.string({
+      required: true,
+      validate: {
+        minLength: 1,
+      },
+    }),
+    chainId: t.string({
+      required: true,
+      validate: {
+        minLength: 1,
+      },
+    }),
     data: t.field({ type: [PactData] }),
   }),
 });

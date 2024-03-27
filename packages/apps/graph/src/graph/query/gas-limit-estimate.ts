@@ -20,7 +20,15 @@ builder.queryField('gasLimitEstimate', (t) =>
       Example of the input needed for a type \`code\` query: \`gasLimitEstimate(input: "{\\"code\\":\\"(coin.details \\\\\\"k:1234\\\\\\")\\",\\"chainId\\":\\"3\\"}")\``,
     type: [GasLimitEstimation],
     args: {
-      input: t.arg.stringList({ required: true }),
+      input: t.arg.stringList({
+        required: true,
+        validate: {
+          minLength: 1,
+          items: {
+            minLength: 1,
+          },
+        },
+      }),
     },
     complexity: (args) => ({
       field: COMPLEXITY.FIELD.CHAINWEB_NODE * args.input.length,

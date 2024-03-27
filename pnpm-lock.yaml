@@ -491,6 +491,9 @@ importers:
       '@pothos/plugin-tracing':
         specifier: ^0.5.8
         version: 0.5.8(@pothos/core@3.40.1)(graphql@16.8.1)
+      '@pothos/plugin-validation':
+        specifier: ^3.10.1
+        version: 3.10.1(@pothos/core@3.40.1)(graphql@16.8.1)(zod@3.18.0)
       '@prisma/client':
         specifier: ^5.7.1
         version: 5.7.1(prisma@5.7.1)
@@ -545,6 +548,9 @@ importers:
       ws:
         specifier: ^8.16.0
         version: 8.16.0
+      zod:
+        specifier: ~3.18.0
+        version: 3.18.0
     devDependencies:
       '@kadena-dev/eslint-config':
         specifier: workspace:*
@@ -10556,6 +10562,18 @@ packages:
     dependencies:
       '@pothos/core': 3.40.1(graphql@16.8.1)
       graphql: 16.8.1
+    dev: false
+
+  /@pothos/plugin-validation@3.10.1(@pothos/core@3.40.1)(graphql@16.8.1)(zod@3.18.0):
+    resolution: {integrity: sha512-FdYHzVSbrHZ4cDPOW/RB8Zsyx7qNuybAbC5DO3zVSsPPgY/FWLNWtQ6CaE+tkg5Je1RxpmO5od7Ig1Wt+akqnA==}
+    peerDependencies:
+      '@pothos/core': '*'
+      graphql: '>=15.1.0'
+      zod: '*'
+    dependencies:
+      '@pothos/core': 3.40.1(graphql@16.8.1)
+      graphql: 16.8.1
+      zod: 3.18.0
     dev: false
 
   /@prisma/client@5.7.1(prisma@5.7.1):

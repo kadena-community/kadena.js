@@ -10,8 +10,18 @@ builder.subscriptionField('transaction', (t) =>
   t.field({
     description: 'Listen for a transaction by request key.',
     args: {
-      requestKey: t.arg.string({ required: true }),
-      chainId: t.arg.string({ required: false }),
+      requestKey: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      chainId: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: GQLTransaction,
     nullable: true,

@@ -31,11 +31,31 @@ builder.queryField('transactions', (t) =>
     cursor: 'blockHash_requestKey',
     edgesNullable: false,
     args: {
-      accountName: t.arg.string({ required: false }),
+      accountName: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
       fungibleName: t.arg.string({ required: false }),
-      chainId: t.arg.string({ required: false }),
-      blockHash: t.arg.string({ required: false }),
-      requestKey: t.arg.string({ required: false }),
+      chainId: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      blockHash: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      requestKey: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     complexity: (args) => ({
       field: getDefaultConnectionComplexity({
@@ -43,7 +63,7 @@ builder.queryField('transactions', (t) =>
         last: args.last,
       }),
     }),
-    async totalCount(parent, args, context) {
+    async totalCount(__parent, args) {
       try {
         return prismaClient.transaction.count({
           where: generateTransactionFilter(args),
@@ -53,7 +73,7 @@ builder.queryField('transactions', (t) =>
       }
     },
 
-    async resolve(query, parent, args, context) {
+    async resolve(query, __parent, args) {
       try {
         return prismaClient.transaction.findMany({
           ...query,

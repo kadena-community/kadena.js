@@ -10,8 +10,21 @@ builder.subscriptionField('newBlocksFromDepth', (t) =>
     description: 'Subscribe to new blocks from a specific depth.',
     type: [GQLBlock],
     args: {
-      minimumDepth: t.arg.int({ required: true }),
-      chainIds: t.arg.stringList({ required: true }),
+      minimumDepth: t.arg.int({
+        required: true,
+        validate: {
+          nonnegative: true,
+        },
+      }),
+      chainIds: t.arg.stringList({
+        required: true,
+        validate: {
+          minLength: 1,
+          items: {
+            minLength: 1,
+          },
+        },
+      }),
     },
     nullable: true,
     subscribe: (__root, args, context) =>

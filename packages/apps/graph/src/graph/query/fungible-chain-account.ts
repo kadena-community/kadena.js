@@ -10,9 +10,24 @@ builder.queryField('fungibleChainAccount', (t) =>
     description:
       'Retrieve an account by its name and fungible, such as coin, on a specific chain.',
     args: {
-      accountName: t.arg.string({ required: true }),
-      fungibleName: t.arg.string({ required: false }),
-      chainId: t.arg.string({ required: true }),
+      accountName: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      fungibleName: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      chainId: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: FungibleChainAccount,
     nullable: true,

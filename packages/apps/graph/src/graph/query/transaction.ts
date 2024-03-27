@@ -10,8 +10,18 @@ builder.queryField('transaction', (t) =>
       'Retrieve one transaction by its unique key. Throws an error if multiple transactions are found.',
     nullable: true,
     args: {
-      blockHash: t.arg.string({ required: false }),
-      requestKey: t.arg.string({ required: true }),
+      blockHash: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      requestKey: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: Prisma.ModelName.Transaction,
     complexity: getDefaultConnectionComplexity(),
