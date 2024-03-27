@@ -29,7 +29,7 @@ export async function printTx(
     ]);
   }
 
-  log.output(log.generateTableString(header, rows));
+  log.output(log.generateTableString(header, rows), transactions);
 }
 
 export function txDisplayTransaction(

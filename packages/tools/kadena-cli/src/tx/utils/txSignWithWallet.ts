@@ -176,7 +176,10 @@ export async function signWithWallet(
       log.info(
         `Transaction with hash: ${results.data.commands[i].command.hash} was successfully signed.`,
       );
-      log.output(JSON.stringify(results.data.commands[i].command, null, 2));
+      log.output(
+        JSON.stringify(results.data.commands[i].command, null, 2),
+        results.data.commands[i].command,
+      );
       log.info(`Signed transaction saved to ${tx.path}`);
     });
   }
