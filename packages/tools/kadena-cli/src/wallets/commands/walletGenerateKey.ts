@@ -73,6 +73,7 @@ export const createGenerateHdKeysCommand: (
         ['Public key', 'Index'],
         keys.map((key) => [key.publicKey, key.index.toString()]),
       ),
+      keys,
     );
     log.info();
     log.info(

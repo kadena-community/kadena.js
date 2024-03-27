@@ -49,19 +49,17 @@ export const createGenerateWalletCommand: (
       });
       wallet = await services.wallet.storeKey(wallet, key);
 
-      log.output(
-        log.generateTableString(['Mnemonic Phrase'], [[created.words]]),
-      );
+      log.info(log.generateTableString(['Mnemonic Phrase'], [[created.words]]));
       log.info(
         log.color.yellow(
           `\nPlease store the mnemonic phrase in a safe place. You will need it to recover your wallet.\n`,
         ),
       );
 
-      log.output(log.color.green(`First keypair generated`));
-      log.output(`publicKey: ${key.publicKey}\n`);
+      log.info(log.color.green(`First keypair generated`));
+      log.info(`publicKey: ${key.publicKey}\n`);
 
-      log.output(
+      log.info(
         log.generateTableString(
           ['Wallet Storage Location'],
           [[relativeToCwd(wallet.filepath)]],
@@ -80,9 +78,9 @@ export const createGenerateWalletCommand: (
           },
           accountFilepath,
         );
-        log.output(log.color.green(`Account created`));
-        log.output(`accountName: ${accountName}\n`);
-        log.output(
+        log.info(log.color.green(`Account created`));
+        log.info(`accountName: ${accountName}\n`);
+        log.info(
           log.generateTableString(
             ['Account Storage Location'],
             [[relativeToCwd(accountFilepath)]],
@@ -95,6 +93,11 @@ export const createGenerateWalletCommand: (
         log.info(`\nTo fund the account, use the following command:`);
         log.info(`kadena account fund --account ${accountName}`);
       }
+
+      log.output(null, {
+        words: created.words,
+        wallet,
+      });
     } catch (error) {
       if (error instanceof Error) {
         log.error(error.message);
