@@ -1,5 +1,6 @@
 import type { Command } from 'commander';
 
+import ora from 'ora';
 import { services } from '../../services/index.js';
 import type { IWalletKey } from '../../services/wallet/wallet.types.js';
 import { CommandError } from '../../utils/command.util.js';
@@ -37,7 +38,7 @@ export const createGenerateHdKeysCommand: (
 
     const { passwordFile } = await option.passwordFile();
 
-    // const loadingSpinner = ora('Generating keys..').start();
+    const loadingSpinner = ora('Generating keys..').start();
 
     const defaultStartIndex =
       Math.max(...wallet.keys.map((key) => key.index)) + 1;
@@ -64,6 +65,8 @@ export const createGenerateHdKeysCommand: (
       wallet = await services.wallet.storeKey(wallet, key);
       keys.push(key);
     }
+
+    loadingSpinner.succeed('Keys generated successfully');
 
     log.output(
       log.generateTableString(
