@@ -1,13 +1,11 @@
-import chalk from 'chalk';
-import debug from 'debug';
-import type { CreateCommandReturnType } from '../../utils/createCommand.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { networkIsAlive } from '../utils/network.js';
 import { simulateCoin } from '../utils/simulation/coin/simulate.js';
 import { simulationOptions } from '../utils/simulation/simulationOptions.js';
 
-export const simulateCommand: CreateCommandReturnType = createCommand(
+export const simulateCommand = createCommand(
   'simulate',
   'Simulate traffic on a devnet',
   [
@@ -21,34 +19,30 @@ export const simulateCommand: CreateCommandReturnType = createCommand(
     simulationOptions.simulationSeed({ isOptional: true }),
     simulationOptions.simulationMaxTime({ isOptional: true }),
   ],
-  async (config) => {
-    try {
-      debug('devnet-simulate:action')({ config });
+  async (option, { collect }) => {
+    const config = await collect(option);
+    log.debug('devnet-simulate:action', config);
 
-      if (!(await networkIsAlive(config.networkConfig.networkHost))) {
-        console.log(
-          'Network is not reachable. Please check if the provided host is exposed.',
-        );
-        return;
-      }
-
-      await simulateCoin({
-        network: {
-          id: 'fast-development',
-          host: config.networkConfig.networkHost,
-        },
-        maxAmount: config.simulationMaxTransferAmount,
-        numberOfAccounts: config.simulationNumberOfAccounts,
-        transferInterval: config.simulationTransferInterval,
-        tokenPool: config.simulationTokenPool,
-        logFolder: config.logFolder,
-        defaultChain: config.simulationDefaultChainId,
-        seed: config.simulationSeed,
-        maxTime: config.simulationMaxTime,
-      });
-    } catch (error) {
-      console.log(chalk.red(`\n${error.message}\n`));
-      process.exit(1);
+    if (!(await networkIsAlive(config.networkConfig.networkHost))) {
+      log.info(
+        'Network is not reachable. Please check if the provided host is exposed.',
+      );
+      return;
     }
+
+    await simulateCoin({
+      network: {
+        id: 'development',
+        host: config.networkConfig.networkHost,
+      },
+      maxAmount: config.simulationMaxTransferAmount,
+      numberOfAccounts: config.simulationNumberOfAccounts,
+      transferInterval: config.simulationTransferInterval,
+      tokenPool: config.simulationTokenPool,
+      logFolder: config.logFolder,
+      defaultChain: config.simulationDefaultChainId,
+      seed: config.simulationSeed,
+      maxTime: config.simulationMaxTime,
+    });
   },
 );

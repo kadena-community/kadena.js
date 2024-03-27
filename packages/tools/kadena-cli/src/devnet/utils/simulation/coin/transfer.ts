@@ -2,7 +2,9 @@ import type { ChainId, ICommandResult } from '@kadena/client';
 import { createSignWithKeypair } from '@kadena/client';
 import { transferCreate } from '@kadena/client-utils/coin';
 import { PactNumber } from '@kadena/pactjs';
+
 import type { IAccount } from '../../../../constants/devnets.js';
+import { log } from '../../../../utils/logger.js';
 import { stringifyProperty } from '../helper.js';
 
 export async function transfer({
@@ -20,7 +22,7 @@ export async function transfer({
 }): Promise<ICommandResult> {
   const pactAmount = new PactNumber(amount).toPactDecimal();
 
-  console.log(
+  log.info(
     `Transfering from ${sender.account} to ${
       receiver.account
     }\nPublic Key: ${stringifyProperty(receiver.keys, 'publicKey')}\nAmount: ${

@@ -1,5 +1,8 @@
 import type { ICap } from '@kadena/types';
-import type { IPartialPactCommand } from '../../interfaces/IPactCommand';
+import type {
+  IPartialPactCommand,
+  SignerScheme,
+} from '../../interfaces/IPactCommand';
 import type {
   ExtractCapabilityType,
   IGeneralCapability,
@@ -8,7 +11,11 @@ import { patchCommand } from './patchCommand';
 
 export type ISigner =
   | string
-  | { pubKey: string; scheme?: 'ED25519' | 'ETH'; address?: string };
+  | {
+      pubKey: string;
+      scheme?: SignerScheme;
+      address?: string;
+    };
 
 interface IAddSigner {
   (first: ISigner | ISigner[]): () => IPartialPactCommand;

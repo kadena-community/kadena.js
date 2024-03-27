@@ -1,4 +1,4 @@
 export const config = {
   flags: ["registry"],
-  networkId: "fast-development",
+  networkId: "development",
 };

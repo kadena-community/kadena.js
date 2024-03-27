@@ -13,3 +13,4 @@ export * from './rule';
 export * from './seq';
 export * from './skip';
 export * from './str';
+export * from './type';

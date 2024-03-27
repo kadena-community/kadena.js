@@ -1,32 +1,45 @@
 import { validateMnemonic } from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
 
-import { program } from 'commander';
 import {
   getAllKeys,
-  getAllWallets,
+  getAllPlainKeys,
   getWallet,
   isIWalletKey,
   parseKeyPairsInput,
 } from '../keys/utils/keysHelpers.js';
 
-import chalk from 'chalk';
-
 import type { IPrompt } from '../utils/createOption.js';
-import { isValidFilename } from '../utils/helpers.js';
+import {
+  isValidFilename,
+  maskStringPreservingStartAndEnd,
+} from '../utils/helpers.js';
 import { input, select } from '../utils/prompts.js';
 
-export async function keyWallet(): Promise<string> {
-  return await input({
-    message: `Enter your wallet name:`,
-    validate: function (input) {
-      if (!isValidFilename(input)) {
-        return 'Wallet must be alphanumeric! Please enter a valid name.';
-      }
-      return true;
-    },
+export const keyGetAllPlainFilesPrompt: IPrompt<string> = async () => {
+  const choices = (await getAllPlainKeys()).map((data) => {
+    return {
+      value: data.key,
+      name: `${data.key}: ${maskStringPreservingStartAndEnd(data.publicKey)}`,
+    };
   });
-}
+
+  if (choices.length === 0) {
+    throw new Error('No plain keys found');
+  }
+
+  choices.unshift({
+    value: 'all',
+    name: 'All keys',
+  });
+
+  const choice = await select({
+    message: 'Select a key file:',
+    choices: choices,
+  });
+
+  return choice;
+};
 
 export const keyGetAllKeyFilesPrompt: IPrompt<string> = async (args) => {
   let keys: string[] = [];
@@ -58,7 +71,7 @@ export const keyGetAllKeyFilesPrompt: IPrompt<string> = async (args) => {
 
 export async function keyAliasPrompt(): Promise<string> {
   return await input({
-    message: `Enter a alias for your key:`,
+    message: `Enter an alias for your key:`,
     validate: function (input) {
       if (!isValidFilename(input)) {
         return 'Alias must be alphanumeric! Please enter a valid name.';
@@ -126,12 +139,6 @@ export async function keyIndexOrRangePrompt(): Promise<string> {
   });
 }
 
-export async function keyMessagePrompt(): Promise<string> {
-  return await input({
-    message: `Enter message to decrypt:`,
-  });
-}
-
 export async function genFromChoicePrompt(): Promise<
   'genPublicKey' | 'genPublicSecretKey' | 'genPublicSecretKeyDec'
 > {
@@ -152,92 +159,6 @@ export async function genFromChoicePrompt(): Promise<
       },
     ],
   });
-}
-
-async function walletSelectionPrompt(
-  specialOptions: string[] = [],
-): Promise<string> {
-  const existingKeys: string[] = await getAllWallets();
-
-  if (existingKeys.length === 0 && !specialOptions.includes('none')) {
-    console.log(chalk.red('No wallets found. Exiting.'));
-    process.exit(0);
-  }
-
-  const choices = existingKeys.map((key) => ({
-    value: key,
-    name: `Wallet: ${key}`,
-  }));
-
-  // Check for special options and add them
-  if (specialOptions.includes('all')) {
-    choices.unshift({
-      value: 'all',
-      name: 'All Wallets',
-    });
-  }
-  if (specialOptions.includes('none')) {
-    choices.unshift({
-      value: 'none',
-      name: 'No Wallet',
-    });
-  }
-
-  const selectedWallet = await select({
-    message: 'Select a wallet',
-    choices: choices,
-  });
-
-  return selectedWallet;
-}
-
-export async function keyWalletSelectPrompt(): Promise<string> {
-  return walletSelectionPrompt();
-}
-
-export async function keyWalletSelectAllPrompt(): Promise<string> {
-  return walletSelectionPrompt(['all']);
-}
-
-export async function keyWalletSelectNonePrompt(): Promise<string> {
-  return walletSelectionPrompt(['none']);
-}
-
-export async function keyWalletSelectAllOrNonePrompt(): Promise<string> {
-  return walletSelectionPrompt(['all', 'none']);
-}
-
-export async function keyWalletPrompt(): Promise<string> {
-  const existingKeys: string[] = await getAllWallets();
-
-  const choices = existingKeys.map((key) => ({
-    value: key,
-    name: `alias: ${key}`,
-  }));
-
-  // Option to create a new key
-  choices.push({ value: 'createWallet', name: 'Create a new wallet' });
-  choices.push({
-    value: 'createLegacyWallet',
-    name: 'Create a new legacy wallet',
-  });
-
-  const selectedWallet = await select({
-    message: 'Select a wallet',
-    choices: choices,
-  });
-
-  if (selectedWallet === 'createWallet') {
-    await program.parseAsync(['', '', 'keys', 'create-wallet']);
-    return keyWalletPrompt();
-  }
-
-  if (selectedWallet === 'createLegacyWallet') {
-    await program.parseAsync(['', '', 'keys', 'create-wallet', '--legacy']);
-    return keyWalletPrompt();
-  }
-
-  return selectedWallet;
 }
 
 export const confirmDeleteAllKeysPrompt: IPrompt<string> = async () => {

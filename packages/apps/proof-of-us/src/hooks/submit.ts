@@ -1,4 +1,4 @@
-import { createClient } from '@kadena/client';
+import { getClient } from '@/utils/client';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -20,7 +20,7 @@ export const useSubmit = () => {
   const [preview, setPreview] = useState<any>(null);
 
   const processTransaction = async (transaction: string) => {
-    const client = createClient();
+    const client = getClient();
 
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
     setTx(tx);
@@ -38,16 +38,17 @@ export const useSubmit = () => {
     processTransaction(transaction);
   }, [transaction]);
 
-  const doSubmit = async () => {
-    if (!transaction) return;
-    const client = createClient();
-
+  const doSubmit = async (txArg?: string) => {
+    const innerTransaction = transaction;
+    if (!innerTransaction) return;
     setStatus(SubmitStatus.LOADING);
+    const client = getClient();
 
-    const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
+    const tx = JSON.parse(Buffer.from(innerTransaction, 'base64').toString());
     try {
       const txRes = await client.submit(tx);
       const result = await client.listen(txRes);
+      //router.replace(getReturnUrl());
 
       if (result.result.status === 'success') {
         setStatus(SubmitStatus.SUCCESS);
@@ -59,6 +60,7 @@ export const useSubmit = () => {
           data: 'Already claimed',
         });
       }
+      // router.replace(getReturnUrl());
     } catch (err: any) {
       setStatus(SubmitStatus.ERROR);
       console.log(err);

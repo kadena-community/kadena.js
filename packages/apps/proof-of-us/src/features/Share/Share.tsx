@@ -1,36 +1,27 @@
 'use client';
-import { AttendanceTicket } from '@/components/AttendanceTicket/AttendanceTicket';
-import { SocialShare } from '@/components/SocialShare/SocialShare';
-import { env } from '@/utils/env';
-
 import type { FC } from 'react';
+import { AttendanceShare } from './AttendanceShare';
+import { ConnectShare } from './ConnectShare';
 
 interface IProps {
-  eventId: string;
-  token?: IProofOfUsToken;
-  proofOfUs?: IProofOfUsTokenMeta;
+  tokenId: string;
+  data?: IProofOfUsTokenMeta;
+  metadataUri?: string;
 }
-export const Share: FC<IProps> = ({ token, proofOfUs }) => {
+export const Share: FC<IProps> = ({ tokenId, data, metadataUri }) => {
+  if (!data) return null;
   return (
-    <div>
-      {proofOfUs?.name && (
-        <>
-          <SocialShare token={proofOfUs} />
-          <AttendanceTicket token={proofOfUs} />
-        </>
+    <>
+      {data.properties.eventType === 'attendance' && (
+        <AttendanceShare
+          data={data}
+          tokenId={tokenId}
+          metadataUri={metadataUri}
+        />
       )}
-
-      <div>
-        find your token on the chain:{' '}
-        <a
-          href={`https://explorer.chainweb.com/${env.NETWORKNAME}/eventsearch?q=${token?.['token-id']}`}
-          target="_blank"
-        >
-          click here
-        </a>
-      </div>
-      {proofOfUs && <pre>{JSON.stringify(proofOfUs, null, 2)}</pre>}
-      {token && <pre>{JSON.stringify(token, null, 2)}</pre>}
-    </div>
+      {data.properties.eventType === 'connect' && (
+        <ConnectShare data={data} tokenId={tokenId} metadataUri={metadataUri} />
+      )}
+    </>
   );
 };

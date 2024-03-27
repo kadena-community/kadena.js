@@ -41,7 +41,7 @@ export default async function handler(
     });
   }
 
-  const imageData = await createImageUrl(background.bg);
+  const imageData = await createImageUrl(background.bg, proofOfUs.imageUri);
 
   if (!imageData) {
     return res.status(500).json({
@@ -49,8 +49,8 @@ export default async function handler(
     });
   }
 
-  const manifest = createManifest(proofOfUs, imageData.url);
-  const metadata = await createMetaDataUrl(manifest);
+  const manifest = await createManifest(proofOfUs, imageData.url);
+  const metadata = await createMetaDataUrl(manifest, proofOfUs.manifestUri);
 
   if (!metadata) {
     return res.status(500).json({
@@ -59,7 +59,6 @@ export default async function handler(
   }
 
   const client = new NFTStorage({ token: process.env.NFTSTORAGE_API_TOKEN });
-
   const results = await Promise.allSettled([
     client.storeCar(imageData.data.car),
     client.storeCar(metadata.data.car),

@@ -23,7 +23,7 @@ export const sourceAccount: IAccountWithSecretKey = {
 
 export const input = {
   chainId: '0' as ChainId,
-  networkId: 'fast-development',
+  networkId: 'development',
   signers: [sourceAccount.publicKey],
   meta: {
     gasLimit: 70000,

@@ -1,5 +1,6 @@
 import { sleep } from '@/utils/helpers';
 import { FC, ReactNode, useEffect, useState } from 'react';
+import { addDefaultFungibles } from '../account/account.repository';
 import { addDefaultNetworks } from '../network/network.repository';
 import { closeDatabaseConnections, setupDatabase } from './db.service';
 
@@ -29,6 +30,7 @@ export const DatabaseProvider: FC<{
       await sleep(10);
       try {
         await addDefaultNetworks();
+        await addDefaultFungibles();
         db.close();
         setInitialized(true);
       } catch (e) {

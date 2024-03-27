@@ -1,5 +1,4 @@
 import type { ChainId } from '@kadena/types';
-import { readdirSync } from 'fs';
 import { z } from 'zod';
 import { chainIdValidation } from '../account/utils/accountHelpers.js';
 import { defaultNetworksPath } from '../constants/networks.js';
@@ -8,6 +7,7 @@ import {
   ensureNetworksConfiguration,
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
+import { services } from '../services/index.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   getExistingNetworks,
@@ -141,7 +141,8 @@ export const networkSelectPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
+  const networkText = (args.networkText as string) ?? 'Select a network';
+  const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
 
   const allowedNetworks =
     prev.allowedNetworks !== undefined
@@ -172,7 +173,7 @@ export const networkSelectPrompt: IPrompt<string> = async (
   }
 
   const selectedNetwork = await select({
-    message: 'Select a network',
+    message: networkText,
     choices: choices,
   });
 
@@ -184,11 +185,16 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
   args,
   isOptional,
 ) => {
-  if (readdirSync(defaultNetworksPath).length === 0) {
+  const isNetworksFolderExists =
+    await services.filesystem.directoryExists(defaultNetworksPath);
+  if (
+    !isNetworksFolderExists ||
+    (await services.filesystem.readDir(defaultNetworksPath)).length === 0
+  ) {
     await ensureNetworksConfiguration();
   }
 
-  const existingNetworks: ICustomNetworkChoice[] = getExistingNetworks();
+  const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
 
   if (!existingNetworks.length) {
     throw new Error(
@@ -203,9 +209,9 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
 
   const existingNetworksData = (
     await Promise.all(
-      existingNetworks.map((network) => ({
+      existingNetworks.map(async (network) => ({
         ...network,
-        ...loadNetworkConfig(network.value),
+        ...(await loadNetworkConfig(network.value)),
       })),
     )
   ).flat();

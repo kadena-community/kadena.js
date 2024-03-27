@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 import yaml from 'js-yaml';
 import path from 'path';
 
@@ -13,40 +11,98 @@ import {
   WALLET_LEGACY_EXT,
 } from '../../constants/config.js';
 import { services } from '../../services/index.js';
-import { sanitizeFilename } from '../../utils/helpers.js';
-import type { IWallet } from './keysHelpers.js';
+import {
+  maskStringPreservingStartAndEnd,
+  sanitizeFilename,
+} from '../../utils/helpers.js';
+import { log } from '../../utils/logger.js';
+import type { IPlainKey, IWallet } from './keysHelpers.js';
 import type { IKeyPair } from './storage.js';
 
-// eslint-disable-next-line @rushstack/no-new-null
+import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
+import { getAllPlainKeys } from './keysHelpers.js';
+
+export async function printPlainKeys(): Promise<void> {
+  const plainKeys: IPlainKey[] = await getAllPlainKeys();
+
+  const header: TableHeader = [
+    'Alias',
+    'Index',
+    'Legacy',
+    'Public Key',
+    'Secret Key',
+  ];
+  const rows: TableRow[] = [];
+
+  if (plainKeys.length === 0) {
+    log.info('No plain keys found');
+    return;
+  }
+
+  for (const key of plainKeys) {
+    rows.push([
+      key.alias ?? 'N/A',
+      key.index !== undefined ? key.index.toString() : 'N/A',
+      key.legacy ? 'Yes' : 'No',
+      key.publicKey ?? 'N/A',
+      key.secretKey !== undefined
+        ? maskStringPreservingStartAndEnd(key.secretKey, 65)
+        : 'N/A',
+    ]);
+  }
+
+  if (rows.length > 0) {
+    log.output(log.generateTableString(header, rows));
+  } else {
+    log.info('No valid keys found');
+  }
+}
+
 export async function printWalletKeys(wallet: IWallet | null): Promise<void> {
   if (!wallet) return;
 
-  const formatLength = 80;
-
-  console.log(
-    chalk.black.bgGreen(
-      `\n${` Wallet: ${wallet.folder}${
-        wallet.legacy ? ' (legacy)' : ''
-      }`.padEnd(formatLength)}\n`,
-    ),
-  );
+  const header: TableHeader = [
+    'Filename',
+    'Index',
+    'Legacy',
+    'Public Key',
+    'Secret Key',
+  ];
+  const rows: TableRow[] = [];
 
   if (wallet.keys.length === 0) {
-    return console.log('No keys');
+    log.info(`\nWallet: ${wallet.folder}${wallet.legacy ? ' (legacy)' : ''}`);
+    return log.info('No keys');
   }
 
-  console.log(chalk.yellow('-'.padEnd(formatLength, '-')));
   for (const key of wallet.keys) {
     const content = await services.filesystem.readFile(
       path.join(WALLET_DIR, wallet.folder, key),
     );
-    const parsed = content !== null ? (yaml.load(content) as IKeyPair) : null;
-    console.log(chalk.yellow(`Filename: ${key}`));
-    console.log(`Public Key: ${parsed?.publicKey}`);
-    if (typeof parsed?.secretKey === 'string') {
-      console.log(`Secret Key: ${parsed.secretKey}`);
+    const parsed: IKeyPair | null =
+      content !== null && content !== ''
+        ? (yaml.load(content) as IKeyPair)
+        : null;
+
+    if (parsed) {
+      rows.push([
+        key,
+        parsed.index !== undefined ? parsed.index.toString() : 'N/A',
+        key.includes('legacy') ? 'Yes' : 'No',
+        parsed.publicKey ?? 'N/A',
+        parsed.secretKey !== undefined
+          ? maskStringPreservingStartAndEnd(parsed.secretKey, 65)
+          : 'N/A',
+      ]);
     }
-    console.log(chalk.yellow('-'.padEnd(formatLength, '-')));
+  }
+
+  if (rows.length > 0) {
+    log.info(`\nWallet: ${wallet.folder}${wallet.legacy ? ' (legacy)' : ''}`);
+    log.output(log.generateTableString(header, rows));
+  } else {
+    log.info(`\nWallet: ${wallet.folder}${wallet.legacy ? ' (legacy)' : ''}`);
+    log.info('No valid keys found');
   }
 }
 
@@ -83,7 +139,6 @@ export function printStoredHdKeys(
 }
 
 /**
- * Prints the filenames of stored keys, determining the filename based on alias, key pair index, and legacy status.
  * @param {string} alias - The alias for the keys.
  * @param {IKeyPair[]} keyPairs - Array of key pairs.
  * @param {boolean} isLegacy - Indicates if the keys are in legacy format.
@@ -97,6 +152,9 @@ export function printStoredKeys(
   isHd: boolean,
   startIndex: number = 0,
 ): void {
+  const header: TableHeader = ['Filename'];
+  const rows: TableRow[] = [];
+
   const ext = isHd
     ? isLegacy
       ? KEY_LEGACY_EXT
@@ -105,19 +163,25 @@ export function printStoredKeys(
     ? PLAIN_KEY_LEGACY_EXT
     : PLAIN_KEY_EXT;
 
-  const message = isHd
-    ? 'The HD Key Pair is stored within your keys folder under the filename(s):'
-    : 'The Plain Key Pair is stored within your keys folder under the filename(s):';
-
-  console.log(chalk.green(message));
-  console.log('\n');
-
   const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
 
-  for (let index = 0; index < keyPairs.length; index++) {
-    const fileNameIndex = index > 0 ? `-${index}` : '';
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  keyPairs.forEach((_, index) => {
+    const fileNameIndex =
+      startIndex + index > 0 ? `-${startIndex + index}` : '';
     const fileName = `${sanitizedAlias}${fileNameIndex}${ext}`;
-    console.log(chalk.green(`- ${fileName}`));
+    rows.push([fileName]);
+  });
+
+  if (rows.length > 0) {
+    const message = isHd
+      ? 'The HD Key Pair is stored within your keys folder under the filename(s):'
+      : 'The Plain Key Pair is stored within your keys folder under the filename(s):';
+
+    log.info(log.color.green(message));
+    log.output(log.generateTableString(header, rows));
+  } else {
+    log.info('No keys found.');
   }
 }
 
@@ -164,35 +228,48 @@ export function displayGeneratedKeys(
   message: [string, string],
   legacy?: boolean,
 ): void {
-  const messagePrefix = legacy === true ? message[0] : message[1];
+  const header: TableHeader = ['Public Key', 'Secret Key'];
+  const rows: TableRow[] = keyPairs.map((keyPair) => [
+    keyPair.publicKey ?? 'N/A',
+    keyPair.secretKey !== undefined
+      ? maskStringPreservingStartAndEnd(keyPair.secretKey, 65)
+      : 'N/A',
+  ]);
 
-  console.log(
-    chalk.green(`${messagePrefix}${JSON.stringify(keyPairs, null, 2)}`),
-  );
-  console.log('\n');
+  const messagePrefix = legacy === true ? message[0] : message[1];
+  log.info(log.color.green(messagePrefix));
+
+  if (rows.length > 0) {
+    log.output(log.generateTableString(header, rows));
+  } else {
+    log.info('No keys to display.');
+  }
+  log.info('\n');
 }
 
 export function displayGeneratedWallet(words: string): void {
-  console.log(chalk.green(`Mnemonic phrase: ${words}`));
+  const header: TableHeader = ['Mnemonic Phrase'];
+  const rows: TableRow[] = [[words]];
 
-  console.log(
-    chalk.yellow(
-      `Please store the key phrase in a safe place. You will need it to recover your keys.`,
+  log.output(log.generateTableString(header, rows));
+
+  log.info(
+    log.color.yellow(
+      `Please store the mnemonic phrase in a safe place. You will need it to recover your wallet.`,
     ),
   );
-  console.log('\n');
+  log.info('');
 }
 
 export function displayStoredWallet(
   walletName: string,
   isLegacy: boolean,
 ): void {
-  const extension: string = isLegacy === true ? WALLET_LEGACY_EXT : WALLET_EXT;
+  const extension: string = isLegacy ? WALLET_LEGACY_EXT : WALLET_EXT;
+  const walletPath = `${WALLET_DIR}/${walletName}/${walletName}${extension}`;
 
-  console.log(
-    chalk.green(
-      `Your wallet was stored at: ${WALLET_DIR}/${walletName}/${walletName}${extension}`,
-    ),
-  );
-  console.log('\n');
+  const header: TableHeader = ['Wallet Storage Location'];
+  const rows: TableRow[] = [[walletPath]];
+
+  log.output(log.generateTableString(header, rows));
 }

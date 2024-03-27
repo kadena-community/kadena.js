@@ -1,6 +1,7 @@
-import type { ChainId, IUnsignedCommand } from '@kadena/client';
-import { Pact, createClient } from '@kadena/client';
+import type { IUnsignedCommand } from '@kadena/client';
+import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
+import { getClient } from './client';
 import { proofOfUsData } from './data';
 import { env } from './env';
 
@@ -11,7 +12,7 @@ export const getAllProofOfUs = async (): Promise<IProofOfUsToken[]> => {
 export const getProofOfUs = async (
   id: string,
 ): Promise<IProofOfUsToken | undefined> => {
-  const client = createClient();
+  const client = getClient();
 
   const transaction = Pact.builder
     .execution(
@@ -20,9 +21,9 @@ export const getProofOfUs = async (
       }.proof-of-us.get-event "${decodeURIComponent(id)}"
       )`,
     )
-    .setNetworkId('testnet04')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: '1',
+      chainId: `${env.CHAINID}`,
     })
     .createTransaction();
 
@@ -35,18 +36,64 @@ export const getProofOfUs = async (
     ? (result.data as IProofOfUsToken)
     : undefined;
 };
+export const getTokenId = async (
+  eventId: string,
+  uri: string,
+): Promise<string | undefined> => {
+  const client = getClient();
+
+  const transaction = Pact.builder
+    .execution(
+      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.retrieve-connection-token-id "${eventId}" "${uri}"
+      )`,
+    )
+    .setNetworkId(env.NETWORKID)
+    .setMeta({
+      chainId: `${env.CHAINID}`,
+    })
+    .createTransaction();
+
+  const { result } = await client.local(transaction, {
+    preflight: false,
+    signatureVerification: false,
+  });
+
+  return result.status === 'success' ? (result.data as string) : undefined;
+};
+
+export const getTokenInfo = async (id: string): Promise<string | undefined> => {
+  const client = getClient();
+
+  const transaction = Pact.builder
+    .execution(
+      `(marmalade-v2.ledger.get-token-info "${decodeURIComponent(id)}"
+      )`,
+    )
+    .setNetworkId(env.NETWORKID)
+    .setMeta({
+      chainId: `${env.CHAINID}`,
+    })
+    .createTransaction();
+
+  const { result } = await client.local(transaction, {
+    preflight: false,
+    signatureVerification: false,
+  });
+
+  return result.status === 'success' ? (result.data as string) : undefined;
+};
 
 export const getTokenUri = async (id: string): Promise<string | undefined> => {
-  const client = createClient();
+  const client = getClient();
 
   const transaction = Pact.builder
     .execution(
       `(marmalade-v2.ledger.get-uri "${decodeURIComponent(id)}"
       )`,
     )
-    .setNetworkId('testnet04')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: '1',
+      chainId: `${env.CHAINID}`,
     })
     .createTransaction();
 
@@ -71,21 +118,20 @@ export const claimAttendanceToken = async (
 
   const transaction = Pact.builder
     .execution(
-      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.mint-attendance-token 
-      "${eventId}" 
+      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.mint-attendance-token
+      "${eventId}"
       "${account.accountName}"
       (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard "${account.accountName}")
       )`,
     )
     .addData('event_id', `${eventId}`)
-    .setNetworkId(env.NETWORKID ?? '')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: `${env.CHAINID as ChainId}`,
+      chainId: `${env.CHAINID}`,
       senderAccount: 'proof-of-us-gas-station',
       gasPrice: 0.000001,
     })
     .addSigner(
-      // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
       {
         pubKey: `${credential.publicKey}`,
         scheme: 'WebAuthn',
@@ -110,23 +156,23 @@ export const claimAttendanceToken = async (
 
 export const hasMintedAttendaceToken = async (
   eventId: string,
-  account: IAccount,
+  accountName: string,
 ): Promise<boolean> => {
   const transaction = Pact.builder
     .execution(
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.has-minted-attendance-token
-      "${eventId}" 
-      "${account.accountName}"
+      "${eventId}"
+      "${accountName}"
       )`,
     )
     .addData('event-id', `${eventId}`)
-    .setNetworkId(env.NETWORKID ?? '')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: `${env.CHAINID as ChainId}`,
+      chainId: `${env.CHAINID}`,
     })
     .createTransaction();
 
-  const client = createClient();
+  const client = getClient();
 
   const { result } = await client.local(transaction, {
     preflight: false,
@@ -177,18 +223,18 @@ export const createConnectTokenTransaction = async (
     .addData('event_id', eventId)
     .addData('collection_id', collectionId)
     .addData('uri', manifestUri)
-    .setNetworkId(env.NETWORKID ?? '')
+    .setNetworkId(env.NETWORKID)
     .setMeta({
-      chainId: `${env.CHAINID as ChainId}`,
+      chainId: `${env.CHAINID}`,
       senderAccount: 'proof-of-us-gas-station',
       gasPrice: 0.000001,
       gasLimit: 10000,
+      ttl: 30000,
     });
 
   proofOfUs.signees.forEach((signee, idx) => {
     if (idx === 0) {
       transactionBuilder.addSigner(
-        // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
         {
           pubKey: signee.publicKey,
           scheme: 'WebAuthn',
@@ -209,7 +255,6 @@ export const createConnectTokenTransaction = async (
       );
     } else {
       transactionBuilder.addSigner(
-        // @ts-expect-error WebAuthn is not yet added to the @kadena/client types
         {
           pubKey: signee.publicKey,
           scheme: 'WebAuthn',

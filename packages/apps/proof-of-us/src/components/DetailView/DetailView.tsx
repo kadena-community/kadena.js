@@ -1,30 +1,32 @@
+import { Button } from '@/components/Button/Button';
+import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { useRouter } from 'next/navigation';
-
-import { Button } from '@/components/Button/Button';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
-
-import { SystemIcon } from '@kadena/react-ui';
+import {
+  MonoArrowBack,
+  MonoClose,
+  MonoQrCodeScanner,
+} from '@kadena/react-icons';
+import { Stack } from '@kadena/react-ui';
+import { useRouter } from 'next/navigation';
 import type { ChangeEventHandler, FC } from 'react';
 import { useState } from 'react';
+import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
-import { SocialsEditor } from '../SocialsEditor/SocialsEditor';
+import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
+import { TextField } from '../TextField/TextField';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
-import {
-  backButtonClass,
-  closeButtonClass,
-  imageWrapper,
-  titleErrorClass,
-  titleInputClass,
-} from './style.css';
+import { imageWrapper } from './style.css';
 
 interface IProps {
   next: () => void;
   prev: () => void;
 }
+
 export const DetailView: FC<IProps> = ({ next, prev }) => {
-  const { proofOfUs, closeToken, changeTitle } = useProofOfUs();
+  const { proofOfUs, closeToken, changeTitle, updateProofOfUs } =
+    useProofOfUs();
   const { removeBackground } = useAvatar();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
@@ -54,27 +56,33 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
     router.replace('/user');
   };
 
-  const handleTitleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleTitleChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
     //TODO: this needs to debounce
     if (!proofOfUs) return;
     const value = e.target.value;
     if (!value) {
       setTitleError('Title is empty');
+    } else {
+      setTitleError('');
     }
-    changeTitle(value);
+
+    console.log('update in detailview');
+    await updateProofOfUs({
+      title: changeTitle(value),
+    });
   };
 
   if (!isMounted) return null;
 
   return (
-    <section>
+    <ScreenHeight>
       <TitleHeader
         Prepend={() => (
           <>
             {!isAlreadySigning(proofOfUs.signees) && (
-              <button className={backButtonClass} onClick={handleRedo}>
-                <SystemIcon.ArrowCollapseDown />
-              </button>
+              <IconButton onClick={handleRedo}>
+                <MonoArrowBack />
+              </IconButton>
             )}
           </>
         )}
@@ -82,9 +90,9 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         Append={() => (
           <>
             {!isAlreadySigning(proofOfUs.signees) && (
-              <button className={closeButtonClass} onClick={handleClose}>
-                <SystemIcon.Close />
-              </button>
+              <IconButton onClick={handleClose}>
+                <MonoClose />
+              </IconButton>
             )}
           </>
         )}
@@ -96,24 +104,22 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
             <ImagePositions />
           </div>
 
-          <input
-            className={titleInputClass}
+          <TextField
             name="title"
-            placeholder="title"
+            placeholder="Title"
             onChange={handleTitleChange}
             defaultValue={proofOfUs.title}
           />
-
-          <SocialsEditor />
         </>
       ) : (
         <ImagePositions />
       )}
 
+      <Stack flex={1} />
+      {titleError && <MessageBlock variant="error">{titleError}</MessageBlock>}
       <Button variant="primary" onPress={handleShare}>
-        Share
+        Share <MonoQrCodeScanner />
       </Button>
-      {titleError && <div className={titleErrorClass}>{titleError}</div>}
-    </section>
+    </ScreenHeight>
   );
 };

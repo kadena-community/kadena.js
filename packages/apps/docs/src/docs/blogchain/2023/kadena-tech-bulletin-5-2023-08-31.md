@@ -110,7 +110,7 @@ and more efficient, thereby reducing errors and making code reviews smoother!
 The newest version of Chainweb has been released! Chainweb 2.20 brings you some
 exciting updates, including but not limited to internal changes, Pact 4.8
 updates, and most significantly, a fresh Chainweb Version called
-“fast-development” designed for Pact developers.
+“development” designed for Pact developers.
 
 Official GitHub Link:
 [https://github.com/kadena-io/chainweb-node/releases/tag/2.20](https://github.com/kadena-io/chainweb-node/releases/tag/2.20)

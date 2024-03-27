@@ -1,7 +1,8 @@
+import { Prisma } from '@prisma/client';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { builder } from '../builder';
 
-export default builder.prismaNode('Signer', {
+export default builder.prismaNode(Prisma.ModelName.Signer, {
   description: 'A signer for a specific transaction.',
   id: { field: 'requestKey_orderIndex' },
   select: {},

@@ -1,4 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
+import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
@@ -10,7 +11,7 @@ builder.queryField('transactionsByPublicKey', (t) =>
     args: {
       publicKey: t.arg.string({ required: true }),
     },
-    type: 'Transaction',
+    type: Prisma.ModelName.Transaction,
     cursor: 'blockHash_requestKey',
     complexity: (args) => ({
       field:

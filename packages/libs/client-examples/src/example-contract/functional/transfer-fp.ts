@@ -67,7 +67,7 @@ doTransfer(
     signerPublicKey:
       'dc20ab800b0420be9b1075c97e80b104b073b0405b5e2b78afd29dd74aaf5e46',
     chainId: '0',
-    networkId: 'fast-development',
+    networkId: 'development',
   }),
 )
   .then(console.log)

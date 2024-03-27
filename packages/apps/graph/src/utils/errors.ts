@@ -1,10 +1,12 @@
 import {
   PrismaClientInitializationError,
   PrismaClientKnownRequestError,
+  PrismaClientValidationError,
 } from '@prisma/client/runtime/library';
 import { GasLimitEstimationError } from '@services/chainweb-node/estimate-gas-limit';
 import { PactCommandError } from '@services/chainweb-node/utils';
 import { GraphQLError } from 'graphql';
+import { PrismaJsonColumnParsingError } from './prisma-json-columns';
 
 /**
  * Checks what type of error it is and returns a normalized GraphQLError with the correct type, message and a description that clearly translates to the user what the error means.
@@ -49,6 +51,41 @@ export function normalizeError(error: any): GraphQLError {
         },
       });
     }
+  }
+
+  if (error instanceof PrismaClientValidationError) {
+    if (error.message.includes('Unknown argument')) {
+      error.message = `Unknown argument${
+        error.message.split('Unknown argument')[1]
+      }`;
+    }
+
+    return new GraphQLError('Prisma Client Validation Error', {
+      extensions: {
+        type: error.name,
+        message: error.message,
+        description:
+          'The Prisma client failed to validate the input. Check the input and try again. If you are trying to filter on a JSON column, make sure the JSON is in the correct format. See the README for the allowed JSON format.',
+        data: error.stack,
+      },
+    });
+  }
+
+  if (error instanceof PrismaJsonColumnParsingError) {
+    return new GraphQLError('Prisma JSON Column Parsing Error', {
+      extensions: {
+        type: error.name,
+        message: error.message,
+        description:
+          'Error parsing JSON for filtering on the Prisma jsonb column. See the README for the allowed JSON format.',
+        data: {
+          query: error.query,
+          subscription: error.subscription,
+          queryParameter: error.queryParameter,
+          column: error.column,
+        },
+      },
+    });
   }
 
   if (error instanceof PactCommandError) {

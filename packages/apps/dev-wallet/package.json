@@ -1,6 +1,6 @@
 {
   "name": "@kadena/dev-wallet",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "description": "Kadena developer wallet",
   "type": "module",
@@ -17,6 +17,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
     "@kadena/client": "workspace:*",
+    "@kadena/client-utils": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/hd-wallet": "workspace:*",
     "@kadena/pactjs": "workspace:*",

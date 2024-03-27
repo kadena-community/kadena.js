@@ -200,17 +200,22 @@ export const ExtendedTransactionsTable = (
           {transactions.edges.map((edge, index) => {
             return (
               <Row key={index}>
-                <Cell>{edge.node.chainId}</Cell>
-                <Cell>{new Date(edge.node.creationTime).toLocaleString()}</Cell>
-                <Cell>{edge.node.height}</Cell>
+                <Cell>{edge.node.cmd.meta.chainId}</Cell>
                 <Cell>
-                  <Link href={`${routes.TRANSACTIONS}/${edge.node.requestKey}`}>
-                    {edge.node.requestKey}
+                  {new Date(edge.node.cmd.meta.creationTime).toLocaleString()}
+                </Cell>
+                <Cell>{edge.node.result.height}</Cell>
+                <Cell>
+                  <Link href={`${routes.TRANSACTIONS}/${edge.node.hash}`}>
+                    {edge.node.hash}
                   </Link>
                 </Cell>
                 <Cell>
-                  {edge.node.code ? (
-                    <pre>{formatLisp(JSON.parse(edge.node.code))}</pre>
+                  {edge.node.cmd.payload.__typename === 'ExecutionPayload' &&
+                  edge.node.cmd.payload.code ? (
+                    <pre>
+                      {formatLisp(JSON.parse(edge.node.cmd.payload.code))}
+                    </pre>
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
                   )}

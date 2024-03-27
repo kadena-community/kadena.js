@@ -344,6 +344,9 @@ pages:
           pacts:
             url: /pacts
             file: /pact/reference/pacts.md
+          pactrepl:
+            url: /pact-repl-cli
+            file: /pact/reference/pact-repl-cli.md
       api:
         url: /api
         file: /pact/api/index.tsx
@@ -386,6 +389,9 @@ pages:
     url: /chainweb
     file: /chainweb/index.tsx
     children:
+      compact:
+        url: /compact-database
+        file: /chainweb/compact-a-database.md
       nodeclient:
         file: /packages/libs/chainweb-node-client/README.md
         url: /node-client

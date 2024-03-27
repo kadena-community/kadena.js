@@ -24,6 +24,11 @@ import type { CommandResult } from '../../utils/command.util.js';
 import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 
+export interface ICommandData {
+  networkId: string;
+  chainId: string;
+}
+
 /**
  *
  * @param command - The command to check.
@@ -57,12 +62,14 @@ export function getSignersStatus(
 /**
  * Retrieves all transaction file names from the transaction directory based on the signature status.
  * @param {boolean} signed - Whether to retrieve signed or unsigned transactions.
+ * @param {boolean} all - Whether to retrieve all transactions (signed and unsigned).
  * @returns {Promise<string[]>} A promise that resolves to an array of transaction file names.
  * @throws Throws an error if reading the transaction directory fails.
  */
 export async function getTransactions(
   signed: boolean,
   directory: string,
+  all: boolean = false,
 ): Promise<string[]> {
   try {
     const files = await services.filesystem.readDir(directory);
@@ -76,7 +83,15 @@ export async function getTransactions(
           if (content === null) return null;
           // signed=false can still return already signed transactions
           const schema = signed ? ICommandSchema : IUnsignedCommandSchema;
-          const parsed = schema.safeParse(JSON.parse(content));
+          const JSONParsedContent = JSON.parse(content) as
+            | ICommand
+            | IUnsignedCommand;
+          const parsed = schema.safeParse(JSONParsedContent);
+          if (parsed.success && !signed && !all) {
+            const isSigned = JSONParsedContent.sigs.every((sig) => !!sig);
+            if (isSigned) return null;
+          }
+
           if (parsed.success) return fileName;
           return null;
         }),
@@ -132,7 +147,7 @@ export async function signTransactionsWithSeed(
       const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
 
       if (relevantKeyPairs.length === 0) {
-        console.error(
+        log.error(
           `\nNo matching signable keys found for transaction at index ${i} between wallet and transaction.\n`,
         );
         continue;
@@ -202,7 +217,7 @@ export async function signTransactionWithKeyPair(
       const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
 
       if (relevantKeyPairs.length === 0) {
-        console.error(
+        log.error(
           `\nNo matching signable keys found for transaction at index ${i} between wallet and transaction.\n`,
         );
         continue;
@@ -279,7 +294,7 @@ export async function getTransactionFromFile(
     const result = tx.IUnsignedCommandSchema.parse(transaction);
     return result as IUnsignedCommand; // typecast because `IUnsignedCommand` uses undefined instead of null
   } catch (error) {
-    console.error(
+    log.error(
       `Error processing ${
         signed ? 'signed' : 'unsigned'
       } transaction file: ${transactionFile}, failed with error: ${error}`,
@@ -301,9 +316,7 @@ export async function assessTransactionSigningStatus(
   commands: (ICommand | IUnsignedCommand | undefined)[],
 ): Promise<CommandResult<ICommand[]>> {
   if (commands.length === 0) {
-    throw new Error(
-      'Error in assessTransactionSigningStatus: No commands provided.',
-    );
+    throw new Error('No commands provided.');
   }
 
   let allSigned = true;
@@ -366,9 +379,26 @@ export async function getTransactionsFromFile(
   return transactions;
 }
 
-export function parseCommaSeparatedInput(commandLineInput: string): string[] {
-  if (commandLineInput.trim() === '') {
-    return [];
+export function parseInput(input: string | string[]): string[] {
+  if (Array.isArray(input)) {
+    return input;
   }
-  return commandLineInput.split(',').map((item) => item.trim());
+
+  if (typeof input === 'string') {
+    if (input.trim() === '') {
+      return [];
+    }
+    return input.split(',').map((item) => item.trim());
+  }
+  return [];
+}
+
+export function extractCommandData(
+  command: IUnsignedCommand | ICommand,
+): ICommandData {
+  const payload = JSON.parse(command.cmd);
+  const networkId: string = payload.networkId;
+  const chainId: string = payload.meta.chainId;
+
+  return { networkId, chainId };
 }

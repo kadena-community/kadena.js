@@ -18,13 +18,12 @@ export const ALL_BLOCK_FIELDS: DocumentNode = gql`
     creationTime
     epoch
     id
-    parentHash
     powHash
-    predicate
 
     # confirmationDepth // default excluded since it's a heavy query
     # minerAccount {}
     # parent {}
     # transactions {}
+    # events {}
   }
 `;

@@ -21,6 +21,9 @@ export const KADENA_DIR = (() => {
 // wallet path
 export const WALLET_DIR = `${KADENA_DIR}/wallets`;
 
+// wallet path
+export const NETWORKS_DIR = `${KADENA_DIR}/networks`;
+
 // plain key path
 export const PLAIN_KEY_DIR = `${KADENA_DIR}/keys`;
 

@@ -34,7 +34,7 @@ import { signWithChainweaver } from "@kadena/client"
 
 const balance = await getBalance(
   accountOne.account,
-  'fast-development',
+  'development',
   '0',
   'http://localhost:8080',
  );

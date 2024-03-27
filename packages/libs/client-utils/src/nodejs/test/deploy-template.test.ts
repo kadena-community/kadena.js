@@ -9,7 +9,7 @@ import * as yamlConverter from '../yaml-converter';
 const clientConfig = {
   host: 'http://127.0.0.1:8080',
   defaults: {
-    networkId: 'fast-development',
+    networkId: 'development',
   },
   sign: createSignWithKeypair([
     { publicKey: 'pubkey', secretKey: 'secretKey' },

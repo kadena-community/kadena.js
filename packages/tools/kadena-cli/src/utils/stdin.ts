@@ -8,11 +8,6 @@ export async function readStdin(): Promise<string | null> {
     return stdin;
   }
 
-  if (!process.stderr.isTTY) {
-    console.log('stdin is not a TTY - refusing to use STDIN');
-    return null;
-  }
-
   await import('ttys');
   try {
     // eslint-disable-next-line require-atomic-updates

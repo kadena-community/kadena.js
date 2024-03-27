@@ -75,10 +75,6 @@ const config: StorybookConfig = {
       '@/pages': path.resolve(__dirname, '../src/pages'),
       '@/types': path.resolve(__dirname, '../src/types'),
       '@/utils': path.resolve(__dirname, '../src/utils'),
-      '@kadena-ui/react-components': path.resolve(
-        __dirname,
-        '../../../libs/react-components',
-      ),
     };
 
     config.resolve.fallback = {

@@ -1,18 +1,18 @@
-import chalk from 'chalk';
 import { Option } from 'commander';
 import { z } from 'zod';
 
-import { IS_DEVELOPMENT } from '../../constants/config.js';
 import type { IWallet } from '../../keys/utils/keysHelpers.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { log } from '../../utils/logger.js';
 import { checkbox } from '../../utils/prompts.js';
+import { accountOptions } from '../accountOptions.js';
 import { addAccount } from '../utils/addAccount.js';
 import {
   displayAddAccountSuccess,
-  getAllPublicKeysFromKeyWalletConfig,
+  getAllPublicKeysFromWalletConfig,
   isEmpty,
 } from '../utils/addHelpers.js';
 import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveAccountDetails.js';
@@ -21,8 +21,8 @@ const selectPublicKeys = createOption({
   key: 'publicKeys' as const,
   defaultIsOptional: false,
   async prompt(args) {
-    const publicKeysList = await getAllPublicKeysFromKeyWalletConfig(
-      args.keyWalletConfig as IWallet,
+    const publicKeysList = await getAllPublicKeysFromWalletConfig(
+      args.walletNameConfig as IWallet,
     );
     const selectedKeys = await checkbox({
       message: 'Select public keys to add to account',
@@ -50,31 +50,31 @@ const selectPublicKeys = createOption({
   ),
 });
 
-export const createAddAccountFromWalletCommand = createCommandFlexible(
+export const createAddAccountFromWalletCommand = createCommand(
   'add-from-wallet',
-  'Add an account from a key wallet',
+  'Add an local account from a key wallet',
   [
-    globalOptions.accountAlias(),
-    globalOptions.keyWalletSelect(),
-    globalOptions.fungible(),
+    accountOptions.accountAlias(),
+    globalOptions.walletSelect(),
+    accountOptions.fungible(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
     selectPublicKeys(),
-    globalOptions.predicate(),
-    globalOptions.accountOverwrite(),
+    accountOptions.predicate(),
+    accountOptions.accountOverwrite(),
   ],
 
   async (option, values) => {
     const accountAlias = (await option.accountAlias()).accountAlias;
-    const keyWallet = await option.keyWallet();
-    if (!keyWallet.keyWalletConfig) {
-      console.log(chalk.red(`Wallet ${keyWallet.keyWallet} does not exist.`));
+    const wallet = await option.walletName();
+    if (!wallet.walletNameConfig) {
+      log.error(`Wallet ${wallet.walletName} does not exist.`);
       return;
     }
 
-    if (!keyWallet.keyWalletConfig.keys.length) {
-      console.log(
-        chalk.red(`Wallet ${keyWallet.keyWallet} does not contain any keys.`),
+    if (wallet.walletNameConfig.keys.length === 0) {
+      log.error(
+        `Wallet ${wallet.walletName} does not contain any public keys. Please use "kadena wallet generate-keys" command to generate keys.`,
       );
       return;
     }
@@ -84,12 +84,12 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
     const chainId = (await option.chainId()).chainId;
     const { publicKeys, publicKeysConfig } = await option.publicKeys({
       values,
-      keyWalletConfig: keyWallet.keyWalletConfig,
+      walletNameConfig: wallet.walletNameConfig,
     });
     const predicate = (await option.predicate()).predicate || 'keys-all';
     const config = {
       accountAlias,
-      keyWallet,
+      wallet,
       fungible,
       network,
       networkConfig,
@@ -118,9 +118,7 @@ export const createAddAccountFromWalletCommand = createCommandFlexible(
       accountOverwrite,
     };
 
-    if (IS_DEVELOPMENT) {
-      console.log('create-account-add-from-wallet:action', updatedConfig);
-    }
+    log.debug('create-account-add-from-wallet:action', updatedConfig);
 
     const result = await addAccount(updatedConfig);
 

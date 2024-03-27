@@ -5,9 +5,9 @@
 ```ts
 
 import type { ChainId } from '@kadena/client';
+import { ChainId as ChainId_2 } from '@kadena/types';
 import { ICommand } from '@kadena/types';
 import { ICommandResult } from '@kadena/chainweb-node-client';
-import { ILocalCommandResult } from '@kadena/chainweb-node-client';
 import type { INetworkOptions } from '@kadena/client';
 import type { IPactCommand } from '@kadena/client';
 import { IPactDecimal } from '@kadena/types';
@@ -27,14 +27,14 @@ event: "sign";
 data: ICommand;
 }, {
 event: "preflight";
-data: ILocalCommandResult;
+data: ICommandResult;
 }, {
 event: "submit";
 data: ITransactionDescriptor;
 }, {
 event: "listen";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined>>;
+}], [], any>;
 
 // @alpha (undocumented)
 export const createAccountCommand: ({ account, keyset, gasPayer, chainId, contract, }: ICreateAccountCommandInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
@@ -45,10 +45,28 @@ export const createAccountCommand: ({ account, keyset, gasPayer, chainId, contra
 export const createCrossChainCommand: ({ sender, receiver, amount, targetChainId, gasPayer, chainId, contract, }: Omit<ICrossChainInput, 'targetChainGasPayer'>) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
 
 // @alpha (undocumented)
-export const details: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => Promise<undefined> | Promise<object>;
+export const details: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => any;
 
 // @alpha (undocumented)
-export const getBalance: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => Promise<string | undefined>;
+export const discoverAccount: (account: string, networkId: string, host?: IClientConfig['host'], contract?: string) => IEmitterWrapper<[{
+event: "query-result";
+data: {
+result: any;
+chainId: ChainId_2 | undefined;
+}[];
+}], [{
+event: "chain-result";
+data: {
+result: any;
+chainId: ChainId_2;
+};
+}], Promise<{
+result: any;
+chainId: ChainId_2 | undefined;
+}[]>>;
+
+// @alpha (undocumented)
+export const getBalance: (account: string, networkId: string, chainId: ChainId, host?: IClientConfig['host'], contract?: string) => Promise<any>;
 
 // Warning: (ae-forgotten-export) The symbol "IRotateCommandInput" needs to be exported by the entry point index.d.ts
 //
@@ -58,14 +76,14 @@ event: "sign";
 data: ICommand;
 }, {
 event: "preflight";
-data: ILocalCommandResult;
+data: ICommandResult;
 }, {
 event: "submit";
 data: ITransactionDescriptor;
 }, {
 event: "listen";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined>>;
+}], [], any>;
 
 // @alpha (undocumented)
 export const rotateCommand: ({ account, newguard, gasPayer, chainId, contract, }: IRotateCommandInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
@@ -78,14 +96,14 @@ event: "sign";
 data: ICommand;
 }, {
 event: "preflight";
-data: ILocalCommandResult;
+data: ICommandResult;
 }, {
 event: "submit";
 data: ITransactionDescriptor;
 }, {
 event: "listen";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<object> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]>>;
+}], [], Promise<string> | Promise<undefined> | Promise<number> | Promise<false> | Promise<true> | Promise<IPactInt> | Promise<IPactDecimal> | Promise<Date> | Promise<PactValue[]> | Promise<Record<string, any>>>;
 
 // @alpha (undocumented)
 export const safeTransferCommand: ({ sender, receiver, amount, gasPayer, chainId, contract, }: ISafeTransferInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
@@ -98,14 +116,14 @@ event: "sign";
 data: ICommand;
 }, {
 event: "preflight";
-data: ILocalCommandResult;
+data: ICommandResult;
 }, {
 event: "submit";
 data: ITransactionDescriptor;
 }, {
 event: "listen";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined>>;
+}], [], any>;
 
 // @alpha (undocumented)
 export const transferCommand: ({ sender, receiver, amount, gasPayer, chainId, contract, }: ITransferInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
@@ -118,14 +136,14 @@ event: "sign";
 data: ICommand;
 }, {
 event: "preflight";
-data: ILocalCommandResult;
+data: ICommandResult;
 }, {
 event: "submit";
 data: ITransactionDescriptor;
 }, {
 event: "listen";
 data: ICommandResult;
-}], [], Promise<string> | Promise<undefined>>;
+}], [], any>;
 
 // @alpha (undocumented)
 export const transferCreateCommand: ({ sender, receiver, amount, gasPayer, chainId, contract, }: ICreateTransferInput) => (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined) => Partial<IPartialPactCommand>;
@@ -136,7 +154,7 @@ event: "sign";
 data: ICommand;
 }, {
 event: "preflight";
-data: ILocalCommandResult;
+data: ICommandResult;
 }, {
 event: "submit";
 data: ITransactionDescriptor;
@@ -148,9 +166,9 @@ event: "spv-proof";
 data: {
 pactId: string;
 step: number;
+proof: string;
 rollback: boolean;
-data?: Record<string, unknown> | undefined;
-proof?: string | null | undefined;
+data: {};
 };
 }, {
 event: "gas-station" | "sign-continuation";
@@ -164,7 +182,7 @@ data: ICommandResult;
 }], [{
 event: "poll-spv";
 data: string;
-}], Promise<string> | Promise<undefined>>;
+}], any>;
 
 // (No @packageDocumentation comment for this package)
 

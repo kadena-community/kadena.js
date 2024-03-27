@@ -16,12 +16,21 @@ const nextConfig = {
     // config.infrastructureLogging = { debug: /PackFileCache/ };
     return config;
   },
-
   async rewrites() {
     return [
       {
+        source: '/api/ipfs/:path*/image',
+        destination: `https://:path*.ipfs.nftstorage.link/image`,
+      },
+      {
+        source: '/api/ipfs/:path*/metadata',
+        destination: `https://:path*.ipfs.nftstorage.link/metadata`,
+      },
+      {
         source: '/graph',
-        destination: 'https://graph.testnet.kadena.network/graphql',
+        destination:
+          process.env.NEXT_PUBLIC_GRAHQLURL ??
+          'https://graph.testnet.kadena.network/graphql',
       },
     ];
   },

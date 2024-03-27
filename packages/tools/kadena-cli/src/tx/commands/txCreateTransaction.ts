@@ -8,7 +8,7 @@ import { WORKING_DIRECTORY } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
-import { createCommandFlexible } from '../../utils/createCommandFlexible.js';
+import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
@@ -50,7 +50,7 @@ export const createTransaction = async (
     if (outFilePath === null) {
       filePath = path.join(
         WORKING_DIRECTORY,
-        `transaction-${transaction.hash}.json`,
+        `transaction-${transaction.hash.slice(0, 10)}.json`,
       );
     } else if (outFilePath === '-') {
       // "-" means print to stdout, which is always done anyways. So just don't write a file.
@@ -86,16 +86,16 @@ export const createTransaction = async (
   }
 };
 
-export const createTransactionCommandNew = createCommandFlexible(
-  'create-transaction',
-  'Select a template and create a transaction.\nThe template can be passed via stdin.\nThe transaction will be saved to file.',
+export const createTransactionCommandNew = createCommand(
+  'add',
+  'Select a template and add a transaction.\nThe template can be passed via stdin.\nThe transaction will be saved to file.',
   [
     txOptions.selectTemplate({ isOptional: false }),
     txOptions.templateData({ isOptional: true }),
     txOptions.templateVariables(),
     globalOptions.outFileJson(),
   ],
-  async (option, values, stdin) => {
+  async (option, { values, stdin }) => {
     await writeTemplatesToDisk();
     const template = await option.template({ stdin });
 

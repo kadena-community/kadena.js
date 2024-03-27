@@ -62,10 +62,10 @@ const command = {
 add a signer and capabilities they sign for, to the command it also uses the the
 typing from the payload part and recommends the relevant capabilities
 
-| parameter          | type                                                                       | description                                                                                |
-| ------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| signer             | string \| { pubKey: string; scheme?: 'ED25519' \| 'ETH', address?:string } | public key of the signer or object including publicKey, schema, and address                |
-| capabilityCallBack | (withCapability)=> ICap[]                                                  | it gives withCapability function to users in order to add capabilities to the signer part. |
+| parameter          | type                                                                                     | description                                                                                |
+| ------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| signer             | string \| { pubKey: string; scheme?: 'ED25519' \| 'ETH' \| 'WebAuthn', address?:string } | public key of the signer or object including publicKey, schema, and address                |
+| capabilityCallBack | (withCapability)=> ICap[]                                                                | it gives withCapability function to users in order to add capabilities to the signer part. |
 
 <details>
 <summary>examples</summary>

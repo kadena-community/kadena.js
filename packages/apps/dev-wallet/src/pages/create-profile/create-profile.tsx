@@ -1,4 +1,5 @@
 import { useHDWallet } from '@/modules/key-source/hd-wallet/hd-wallet.hook';
+import { useNetwork } from '@/modules/network/network.hook';
 import { IKeySource } from '@/modules/wallet/wallet.repository';
 import { kadenaGenMnemonic } from '@kadena/hd-wallet';
 import { Box, Button, Heading, Text, TextField } from '@kadena/react-ui';
@@ -12,7 +13,8 @@ export function CreateProfile() {
     password: string;
     profileName: string;
   }>();
-  const { createProfile, isUnlocked, createFirstAccount } = useWallet();
+  const { createProfile, isUnlocked, createKey, createKAccount } = useWallet();
+  const { activeNetwork } = useNetwork();
   const [createdKeySource, setCreatedKeySource] = useState<IKeySource>();
   const { createHDWallet } = useHDWallet();
   async function create({
@@ -22,6 +24,9 @@ export function CreateProfile() {
     profileName: string;
     password: string;
   }) {
+    if (!activeNetwork) {
+      return;
+    }
     const mnemonic = kadenaGenMnemonic();
     const profile = await createProfile(profileName, password);
     // for now we only support slip10 so we just create the keySource and the first account by default for it
@@ -32,7 +37,10 @@ export function CreateProfile() {
       password,
       mnemonic,
     );
-    await createFirstAccount(profile.uuid, keySource);
+
+    const key = await createKey(keySource);
+
+    await createKAccount(profile.uuid, activeNetwork.networkId, key.publicKey);
     console.log('wallet created');
     setCreatedKeySource(keySource);
   }

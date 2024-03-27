@@ -203,7 +203,7 @@ export const deployQuestions: IQuestion[] = [
           chainIds: l1Chains,
           setDeployChainSettings: setDeployChainSettings({
             endpoint: 'http://localhost:8080',
-            network: 'fast-development',
+            network: 'development',
             signer,
           }),
           setDeploySettings: deployCommand,
@@ -214,7 +214,7 @@ export const deployQuestions: IQuestion[] = [
           chainIds: l2Chains,
           setDeployChainSettings: setDeployChainSettings({
             endpoint: 'http://localhost:8081',
-            network: 'fast-development',
+            network: 'development',
             signer,
           }),
           setDeploySettings: deployCommand,

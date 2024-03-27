@@ -45,6 +45,7 @@ export async function getInputPrompt(
  * @returns {(defaultValue?: string) => Promise<string>} A wrapped version of the prompt function that takes an optional default value and returns a Promise resolving to a string.
  */
 export function externalPrompt(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   promptFunction: IPrompt<any>,
 ): (defaultValue?: string) => Promise<string> {
   return async function wrappedPrompt(defaultValue?: string): Promise<string> {
@@ -59,8 +60,10 @@ export function externalPrompt(
  * @param {T} prompts - An object containing original prompt functions.
  * @returns {Record<keyof T, (defaultValue?: string) => Promise<string>>} A record where each key is a prompt function name and each value is the corresponding externalized prompt function.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createExternalPrompt<T extends Record<string, IPrompt<any>>>(
   prompts: T,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   config?: { [x: string]: any },
 ): Record<keyof T, (defaultValue?: string) => Promise<string>> {
   return Object.keys(prompts).reduce(
@@ -76,5 +79,11 @@ export function logFolderPrompt(): Promise<string> {
   return input({
     message: 'Specify the directory where the log file will be generated',
     default: `${process.cwd()}/logs/simulate`,
+  });
+}
+
+export async function messagePrompt(): Promise<string> {
+  return await input({
+    message: `Enter message to decrypt:`,
   });
 }

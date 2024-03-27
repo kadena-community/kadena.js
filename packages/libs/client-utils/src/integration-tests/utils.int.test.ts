@@ -38,7 +38,7 @@ describe('estimateGas', () => {
     const gasEstimation = await estimateGas(
       composePactCommand(
         transferCreateCommand(inputs),
-        setNetworkId('fast-development'),
+        setNetworkId('development'),
       ),
       'http://127.0.0.1:8080',
     );
@@ -48,7 +48,7 @@ describe('estimateGas', () => {
     // check if the gas estimation is correct
     const transferResult = await transferCreate(inputs, {
       defaults: {
-        networkId: 'fast-development',
+        networkId: 'development',
         meta: { ...gasEstimation } as IPactCommand['meta'],
       },
       host: 'http://127.0.0.1:8080',

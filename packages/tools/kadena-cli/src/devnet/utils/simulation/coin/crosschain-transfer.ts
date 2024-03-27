@@ -3,6 +3,7 @@ import { createSignWithKeypair } from '@kadena/client';
 import { transferCrossChain } from '@kadena/client-utils/coin';
 import type { IAccount } from '../../../../constants/devnets.js';
 import { defaultAccount } from '../../../../constants/devnets.js';
+import { log } from '../../../../utils/logger.js';
 
 export async function crossChainTransfer({
   network,
@@ -19,20 +20,20 @@ export async function crossChainTransfer({
 }): Promise<ICommandResult> {
   // Gas Payer validations
   if (gasPayer.chainId !== receiver.chainId && gasPayer !== defaultAccount) {
-    console.log(
+    log.warning(
       `Gas payer ${gasPayer.account} does not for sure have an account on the receiver chain; using ${defaultAccount.account} as gas payer`,
     );
     gasPayer = defaultAccount;
   }
 
-  if (!gasPayer.keys.map((key) => key.secretKey)) {
-    console.log(
+  if (!gasPayer.keys.some((key) => key.secretKey)) {
+    log.warning(
       `Gas payer ${gasPayer.account} does not have a secret key; using ${defaultAccount.account} as gas payer`,
     );
     gasPayer = defaultAccount;
   }
 
-  console.log(
+  log.info(
     `Crosschain Transfer from ${sender.account}, chain ${sender.chainId}\nTo ${receiver.account}, chain ${receiver.chainId}\nAmount: ${amount}\nGas Payer: ${gasPayer.account}`,
   );
 

@@ -14,13 +14,7 @@ import { useNumberFieldState } from 'react-stately';
 import { bodyBaseRegular, codeBaseRegular } from '../../../styles';
 import { Button } from '../../Button';
 import { ChevronDown, ChevronUp } from '../../Icon/System/SystemIcon';
-import {
-  endAddon,
-  formField,
-  input,
-  inputContainer,
-  startAddon,
-} from '../Form.css';
+import { formField, input, inputContainer, startAddon } from '../Form.css';
 import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
 import {
@@ -155,7 +149,7 @@ export function NumberFieldBase(
           data-outlined={props.isOutlined || undefined}
         />
 
-        <div className={classNames(endAddon, buttonContainerClass)}>
+        <div className={buttonContainerClass}>
           <Button
             icon={<ChevronUp size="sm" className={iconClass} />}
             variant="text"

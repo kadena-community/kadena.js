@@ -1,23 +1,10 @@
 import type { ChainId } from '@kadena/types';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
+import type { ITransactionBody } from '../built-in/deploy-contract';
 import { deployContract } from '../built-in/deploy-contract';
 import type { IClientConfig } from '../core/utils/helpers';
 import { deployTemplate } from './deploy-template';
-
-interface ITransactionBody {
-  chainId: ChainId;
-  networkId: string;
-  signers: string[];
-  meta: {
-    gasLimit: number;
-    chainId: ChainId;
-    ttl: number;
-    senderAccount: string;
-  };
-  data?: { key: string; value: string };
-  keysets?: { name: string; pred: string; keys: string[] }[];
-}
 
 interface IFilesConfig {
   /** The directory where the files can be found */

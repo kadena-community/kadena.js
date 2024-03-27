@@ -1,0 +1,12 @@
+{
+  "extends": "@kadena-dev/shared-config/tsconfig-base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "skipLibCheck": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "noEmit": true,
+    "moduleResolution": "Bundler"
+  },
+  "include": ["src", "entries", "tests"]
+}

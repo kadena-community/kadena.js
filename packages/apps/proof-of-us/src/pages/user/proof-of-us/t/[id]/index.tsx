@@ -1,3 +1,5 @@
+import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
+import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { Share } from '@/features/Share/Share';
 import { fetchManifestData } from '@/utils/fetchManifestData';
@@ -8,15 +10,19 @@ interface IProps {
   params: {
     id: string;
   };
-  token?: IProofOfUsToken;
-  proofOfUs?: IProofOfUsTokenMeta;
+  data?: IProofOfUsTokenMeta;
+  metadataUri?: string;
 }
 
-const Page: NextPage<IProps> = ({ params, token, proofOfUs }) => {
+const Page: NextPage<IProps> = ({ params, data, metadataUri }) => {
   return (
-    <UserLayout>
-      <Share eventId={params.id} token={token} proofOfUs={proofOfUs} />
-    </UserLayout>
+    <LoginBoundry>
+      <UserLayout>
+        <ProofOfUsProvider>
+          <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
+        </ProofOfUsProvider>
+      </UserLayout>
+    </LoginBoundry>
   );
 };
 
@@ -27,9 +33,9 @@ export const getServerSideProps = async (
 
   const uri = await getTokenUri(id);
   const data = await fetchManifestData(uri);
-  const newData = data ? { ...data } : undefined;
+
   return {
-    props: { params: { id: `${ctx.query.id}` }, proofOfUs: newData },
+    props: { params: { id: `${ctx.query.id}` }, data, metadataUri: uri },
   };
 };
 

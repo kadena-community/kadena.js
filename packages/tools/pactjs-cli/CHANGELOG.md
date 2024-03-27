@@ -1,5 +1,16 @@
 # Change Log - @kadena/pactjs-cli
 
+## 1.9.0
+
+### Patch Changes
+
+- Updated dependencies [b53c2600c]
+- Updated dependencies [6ddf094d8]
+- Updated dependencies [6ddf094d8]
+- Updated dependencies [be9129381]
+  - @kadena/client@1.9.0
+  - @kadena/pactjs-generator@1.9.0
+
 ## 1.8.1
 
 ### Patch Changes
