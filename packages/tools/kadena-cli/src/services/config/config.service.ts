@@ -144,8 +144,11 @@ export class ConfigService implements IConfigService {
   public async getWallets(): ReturnType<IConfigService['getWallets']> {
     const files = await this.services.filesystem.readDir(WALLET_DIR);
     const filepaths = files.map((file) => path.join(WALLET_DIR, file));
+
     const wallets = await Promise.all(
-      filepaths.map(async (filepath) => this.getWallet(filepath)),
+      filepaths.map(async (filepath) =>
+        this.getWallet(filepath).catch(() => null),
+      ),
     );
     return wallets.filter(notEmpty);
   }

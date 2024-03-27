@@ -10,7 +10,9 @@ export async function printPlainKeys(plainKeys: IPlainKey[]): Promise<void> {
   const rows: TableRow[] = [];
 
   if (plainKeys.length === 0) {
-    log.info('No plain keys found');
+    log.info('There are no key files in your working directory.');
+    log.info('You can add one using:\n');
+    log.info('  kadena key generate');
     return;
   }
 

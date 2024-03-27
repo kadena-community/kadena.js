@@ -63,6 +63,11 @@ export async function walletSelectPrompt(): Promise<string> {
 
 export async function walletSelectAllPrompt(): Promise<string> {
   const wallets = await services.wallet.list();
+
+  // Prevent uselessly prompting the user if there are no wallets
+  // 'all' is a safe fallback as the option will result in an empty array
+  if (wallets.length === 0) return 'all';
+
   return await select({
     message: 'Select a wallet',
     choices: [

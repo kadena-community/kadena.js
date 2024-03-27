@@ -19,6 +19,10 @@ export const createListWalletsCommand: (
     if (config.walletNameConfig === null) {
       return log.error(`Selected wallet not found.`);
     } else if (Array.isArray(config.walletNameConfig)) {
+      if (config.walletNameConfig.length === 0) {
+        log.info('There are no wallets created. You can add one with:\n');
+        log.info('  kadena wallet add');
+      }
       for (const wallet of config.walletNameConfig) {
         await printWalletKeys(wallet);
       }
