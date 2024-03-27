@@ -75,7 +75,9 @@ describe('fund', () => {
         },
       ],
       errors: [],
-      warnings: [],
+      warnings: [
+        'Account "accountName" does not exist on Chain ID(s) 1. So the account will be created on these Chain ID(s).',
+      ],
     });
   });
 

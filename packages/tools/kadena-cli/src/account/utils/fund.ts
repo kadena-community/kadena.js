@@ -2,11 +2,19 @@ import type { ITransactionDescriptor } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { notEmpty } from '../../utils/helpers.js';
+import { isNotEmptyString, notEmpty } from '../../utils/helpers.js';
 import type { IAliasAccountData } from '../types.js';
 import { createAndTransferFund } from './createAndTransferFunds.js';
 import { getAccountDetails } from './getAccountDetails.js';
 import { transferFund } from './transferFund.js';
+
+const formatAccountCreatedMsgs = (msgs: string[]): string | null => {
+  if (msgs.length === 0) return null;
+  const [pre, ...chainIds] = msgs;
+  return `${pre} ${chainIds.join(
+    ', ',
+  )}. So the account will be created on these Chain ID(s).`;
+};
 
 export async function fund({
   accountConfig,
@@ -22,6 +30,7 @@ export async function fund({
   let status: 'success' | 'partial' | 'error' = 'success';
   const errors: string[] = [];
   const warnings: string[] = [];
+  const accountCreatedMsgs: string[] = [];
   let accountFundsResult: (ITransactionDescriptor | null)[] = [];
   try {
     accountFundsResult = await Promise.all(
@@ -59,6 +68,14 @@ export async function fund({
                   chainId,
                 },
               });
+          if (!accountDetailsFromChain) {
+            if (accountCreatedMsgs.length === 0) {
+              accountCreatedMsgs.push(
+                `Account "${accountConfig.name}" does not exist on Chain ID(s)`,
+              );
+            }
+            accountCreatedMsgs.push(chainId);
+          }
           return result;
         } catch (error) {
           status = 'partial';
@@ -74,10 +91,16 @@ export async function fund({
 
   const nonEmptyData = accountFundsResult.filter(notEmpty);
   status = nonEmptyData.length === 0 ? 'error' : status;
+
+  const formattedAccountMsgs = formatAccountCreatedMsgs(accountCreatedMsgs);
+  if (isNotEmptyString(formattedAccountMsgs)) {
+    warnings.push(formattedAccountMsgs);
+  }
+
   return {
     status,
     data: nonEmptyData,
     errors,
-    warnings,
+    warnings: warnings.filter(notEmpty),
   };
 }
