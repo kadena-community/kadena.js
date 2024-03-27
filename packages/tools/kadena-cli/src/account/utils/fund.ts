@@ -14,9 +14,9 @@ export async function fund({
   networkConfig,
   chainId,
 }: {
-  accountConfig: IAliasAccountData;
+  accountConfig: Omit<IAliasAccountData, 'alias'>;
   amount: string;
-  networkConfig: INetworkCreateOptions;
+  networkConfig: Pick<INetworkCreateOptions, 'networkId' | 'networkHost'>;
   chainId: ChainId[];
 }): Promise<CommandResult<ITransactionDescriptor[]>> {
   let status: 'success' | 'partial' | 'error' = 'success';

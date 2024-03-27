@@ -25,7 +25,7 @@ export async function createAndTransferFund({
     amount: string;
     contract: string;
     chainId: ChainId;
-    networkConfig: INetworkCreateOptions;
+    networkConfig: Pick<INetworkCreateOptions, 'networkId' | 'networkHost'>;
   };
 }): Promise<ITransactionDescriptor> {
   try {
