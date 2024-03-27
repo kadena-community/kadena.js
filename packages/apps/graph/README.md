@@ -98,8 +98,11 @@ If you need to overwrite the default environment variables, you can do so by cre
 
 ### Some examples
 
-Here you can find a shortlist of queries and subscriptions that might be useful for each type of user. Note that all the queries and subscriptions can be explored in the GraphiQL Explorer interface at `localhost:4000/graphql`.
-The following examples are using the testnet deployment of Graph, but you can just copy and paste the queries into your own instance of Graph.
+We've curated a list of useful queries and subscriptions tailored for different user types. You can experiment with these examples and more using the GraphiQL Explorer interface.
+
+To get started, ensure you have a local instance of the graph service running on `localhost:4000`.
+
+
 
 ##### Wallet related
 - [Get account balance](http://localhost:4000/graphql?query=query+GetAccountBalance%28%24accountName%3A+String%21%29+%7B%0A++fungibleAccount%28accountName%3A+%24accountName%29%7B%0A++++accountName%0A++++totalBalance%0A++++fungibleName%0A++++chainAccounts%7B%0A++++++chainId%0A++++++balance%0A++++%7D%0A++%7D%0A%7D)
@@ -118,11 +121,9 @@ The following examples are using the testnet deployment of Graph, but you can ju
 
 
 ##### Non-fungible related
+- [Get token balances for a given account](http://localhost:4000/graphql?query=query+GetNFTBalances+%28%24accountName%3AString%21%29%7B%0A++nonFungibleAccount%28accountName%3A+%24accountName%29%7B%0A++++accountName%0A++++nonFungibles%7B%0A++++++balance%0A++++++chainId%0A++++++id%0A++++++info%7B%0A++++++++precision%0A++++++++supply%0A++++++++uri%0A++++++%7D%0A++++++version%0A++++%7D%0A++++transactions%7B%0A++++++totalCount%0A++++%7D%0A++%7D%0A%7D)
 
-
-
-
-
+Remember, the GraphiQL Explorer is a powerful tool for understanding and interacting with our GraphQL API. Don't hesitate to experiment and learn!
 
 
 ## Features
