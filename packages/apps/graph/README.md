@@ -36,9 +36,6 @@ If you are not familiar yet with GraphQL, we recommend to first read the [offici
 
 This GraphQL server creates a readonly GraphQL endpoint that retrieves data from a Chainweb node and a [chainweb-data](https://github.com/kadena-io/chainweb-data) PostgreSQL database. The Chainweb node is used to execute pact queries to, for uses such as retrieving account balances. The PostgreSQL database is used to read data such as blocks, transactions, and events. By default, the GraphQL server points to a local devnet instance.
 
-
-
-
 Prequisites:
 
 - [Node.js](https://nodejs.org/en/download/)
@@ -124,7 +121,6 @@ To get started, ensure you have a local instance of the graph service running on
 - [Get token balances for a given account](http://localhost:4000/graphql?query=query+GetNFTBalances+%28%24accountName%3AString%21%29%7B%0A++nonFungibleAccount%28accountName%3A+%24accountName%29%7B%0A++++accountName%0A++++nonFungibles%7B%0A++++++balance%0A++++++chainId%0A++++++id%0A++++++info%7B%0A++++++++precision%0A++++++++supply%0A++++++++uri%0A++++++%7D%0A++++++version%0A++++%7D%0A++++transactions%7B%0A++++++totalCount%0A++++%7D%0A++%7D%0A%7D)
 
 Remember, the GraphiQL Explorer is a powerful tool for understanding and interacting with our GraphQL API. Don't hesitate to experiment and learn!
-
 
 ## Features
 
