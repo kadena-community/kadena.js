@@ -32,7 +32,7 @@
 If you are not familiar yet with GraphQL, we recommend to first read the [official documentation](https://graphql.org/learn/) on what it is and how it works. In GraphQL, there are three main types of operations: queries, mutations, and subscriptions. In this GraphQL server, we only support queries and subscriptions.
 
 - **Queries** are used to read or fetch data in a readonly manner. Queries should be used when we do not wish or need to have live updates on the retrieved data(eg. a finished transaction);
-- **Subscriptions**, however, are useful when listening for data. Unlike queries, subscriptions are long-lasting operations that can change their result over time. The server is capable of pushing updates to the subscription's result. Subscriptions should be used when we need to have live updates on the data we wish to receive (eg. a transaction in progress);
+- **Subscriptions** are useful when listening for data. Unlike queries, subscriptions are long-lasting operations that can change their result over time. The server is capable of pushing updates to the subscription's result. Subscriptions should be used when we need to have live updates on the data we wish to receive (eg. a transaction in progress);
 
 This GraphQL server creates a readonly GraphQL endpoint that retrieves data from a Chainweb node and a [chainweb-data](https://github.com/kadena-io/chainweb-data) PostgreSQL database. The Chainweb node is used to execute pact queries to, for uses such as retrieving account balances. The PostgreSQL database is used to read data such as blocks, transactions, and events. By default, the GraphQL server points to a local devnet instance.
 
@@ -93,7 +93,7 @@ subscription {
 
 If you need to overwrite the default environment variables, you can do so by creating a `.env` file in the root of the project and copying the contents of `.env.example` to it.
 
-### Some examples
+### Example queries for use case  
 
 We've curated a list of useful queries and subscriptions tailored for different user types. You can experiment with these examples and more using the GraphiQL Explorer interface.
 
@@ -102,23 +102,23 @@ To get started, ensure you have a local instance of the graph service running on
 
 
 ##### Wallet related
-- [Get account balance](http://localhost:4000/graphql?query=query+GetAccountBalance%28%24accountName%3A+String%21%29+%7B%0A++fungibleAccount%28accountName%3A+%24accountName%29%7B%0A++++accountName%0A++++totalBalance%0A++++fungibleName%0A++++chainAccounts%7B%0A++++++chainId%0A++++++balance%0A++++%7D%0A++%7D%0A%7D)
-- [Getting account transactions](http://localhost:4000/graphql?query=query+GetAccountBalance%28%24accountName%3A+String%21%29+%7B%0A++fungibleAccount%28accountName%3A+%24accountName%29+%7B%0A++++transactions%28first%3A+10%29+%7B%0A++++++edges+%7B%0A++++++++node+%7B%0A++++++++++hash%0A++++++++++cmd+%7B%0A++++++++++++meta+%7B%0A++++++++++++++chainId%0A++++++++++++++creationTime%0A++++++++++++++gasLimit%0A++++++++++++++gasPrice%0A++++++++++++++sender%0A++++++++++++++ttl%0A++++++++++++%7D%0A++++++++++++payload+%7B%0A++++++++++++++...+on+ContinuationPayload+%7B%0A++++++++++++++++data%0A++++++++++++++++pactId%0A++++++++++++++++proof%0A++++++++++++++++rollback%0A++++++++++++++++step%0A++++++++++++++%7D%0A++++++++++++++...+on+ExecutionPayload+%7B%0A++++++++++++++++code%0A++++++++++++++++data%0A++++++++++++++%7D%0A++++++++++++%7D%0A++++++++++%7D%0A++++++++%7D%0A++++++%7D%0A++++%7D%0A++%7D%0A%7D)
+- [Get account balance](http://localhost:4000/graphql?query=query+GetAccountBalance+%7B%0A++fungibleAccount%28accountName%3A+%22k%3A123456789...%22%29%7B%0A++++accountName%0A++++totalBalance%0A++++fungibleName%0A++++chainAccounts%7B%0A++++++chainId%0A++++++balance%0A++++%7D%0A++%7D%0A%7D)
+- [Getting account transactions](http://localhost:4000/graphql?query=query+GetAccountBalance%7B%0A++fungibleAccount%28accountName%3A+%22k%3A123456789...%22%29+%7B%0A++++transactions%28first%3A+10%29+%7B%0A++++++edges+%7B%0A++++++++node+%7B%0A++++++++++hash%0A++++++++++cmd+%7B%0A++++++++++++meta+%7B%0A++++++++++++++chainId%0A++++++++++++++creationTime%0A++++++++++++++gasLimit%0A++++++++++++++gasPrice%0A++++++++++++++sender%0A++++++++++++++ttl%0A++++++++++++%7D%0A++++++++++++payload+%7B%0A++++++++++++++...+on+ContinuationPayload+%7B%0A++++++++++++++++data%0A++++++++++++++++pactId%0A++++++++++++++++proof%0A++++++++++++++++rollback%0A++++++++++++++++step%0A++++++++++++++%7D%0A++++++++++++++...+on+ExecutionPayload+%7B%0A++++++++++++++++code%0A++++++++++++++++data%0A++++++++++++++%7D%0A++++++++++++%7D%0A++++++++++%7D%0A++++++++%7D%0A++++++%7D%0A++++%7D%0A++%7D%0A%7D)
 
 ##### Explorer related
-- [Listen for a transaction](http://localhost:4000/graphql?query=subscription+ListenTransaction%28%24requestKey%3A+String%21%29%7B%0A++transaction%28requestKey%3A+%24requestKey%29%7B%0A++++result%7B%0A++++++height%0A++++++goodResult%0A++++++badResult%0A++++++gas%0A++++++eventCount%0A++++%7D%0A++%7D%0A%7D)
-- [Get the 5 latest confirmed blocks on chain 0 and 1](http://localhost:4000/graphql?query=query+GetLatestConfirmedBlocks%28%24minimumDepth%3A+Int%21%2C+%24chainIds%3A+%5BString%21%5D%21%29+%7B%0A++blocksFromDepth%28first%3A+5%2C+minimumDepth%3A+%24minimumDepth%2C+chainIds%3A+%24chainIds%29+%7B%0A++++edges+%7B%0A++++++node+%7B%0A++++++++height%0A++++++++hash%0A++++++%7D%0A++++%7D%0A++%7D%0A%7D)
+- [Listen for a transaction](http://localhost:4000/graphql?query=subscription+ListenTransaction%7B%0A++transaction%28requestKey%3A+%22EBS5rExXr7ndvMp6nK_ie-372oIXWVX5JmmKMXkiD4Q%22%29%7B%0A++++cmd%7B%0A++++++meta%7B%0A++++++++chainId%0A++++++++creationTime%0A++++++++gasLimit%0A++++++++gasPrice%0A++++++++sender%0A++++++++ttl%0A++++++%7D%0A++++++networkId%0A++++++nonce%0A++++++payload%7B%0A++++++++...on+ContinuationPayload%7B%0A++++++++++data%0A++++++++++pactId%0A++++++++++proof%0A++++++++++rollback%0A++++++++++step%0A++++++++%7D%0A++++++++...on+ExecutionPayload%7B%0A++++++++++code%0A++++++++++data%0A++++++++%7D%0A++++++%7D%0A++++++signers%7B%0A++++++++address%0A++++++++clist%7B%0A++++++++++args%0A++++++++++name%0A++++++++%7D%0A++++++++id%0A++++++++orderIndex%0A++++++++publicKey%0A++++++++requestKey%0A++++++++scheme%0A++++++++sig%0A++++++%7D%0A++++%7D%0A++++hash%0A++++id%0A++++result%7B%0A++++++...on+TransactionMempoolInfo%7B%0A++++++++status%0A++++++%7D%0A++++%7D%0A++%7D%0A%7D)
+- [Get the 5 latest confirmed blocks on chain 0 and 1](http://localhost:4000/graphql?query=query+GetLatestConfirmedBlocks+%7B%0A++blocksFromDepth%28first%3A+5%2C+minimumDepth%3A+6%2C+chainIds%3A+%5B%220%22%2C+%221%22%5D%29+%7B%0A++++edges+%7B%0A++++++node+%7B%0A++++++++height%0A++++++++hash%0A++++++%7D%0A++++%7D%0A++%7D%0A%7D)
 
 
 ##### Event related
-- [Listen to events](http://localhost:4000/graphql?query=subscription+GetLatestEvents%28%24qualifiedEventName%3A+String%21%29%7B%0A++events%28qualifiedEventName%3A+%24qualifiedEventName%29%7B%0A++++name%0A++++requestKey%0A++++parameters%0A++++orderIndex%0A++%7D%0A%7D)
+- [Listen to events](http://localhost:4000/graphql?query=subscription+GetLatestEvents%7B%0A++events%28qualifiedEventName%3A+%22coin.TRANSFER%22%29%7B%0A++++name%0A++++requestKey%0A++++parameters%0A++++orderIndex%0A++%7D%0A%7D)
 
 ##### Fungible related
-- [Get data on a given account for a given fungible](http://localhost:4000/graphql?query=query+GetAccountInfoOnFungible%28%24accountName%3A+String%21%2C+%24fungibleName%3A+String%21%29%7B%0A++fungibleAccount%28accountName%3A%24accountName%2C+fungibleName%3A+%24fungibleName%29%7B%0A++++accountName%0A++++fungibleName%0A++++totalBalance%0A++++transactions%7B%0A++++++totalCount%0A++++%7D%0A++%7D%0A%7D)
+- [Get data on a given account for a given fungible](http://localhost:4000/graphql?query=query+GetAccountInfoOnFungible%7B%0A++fungibleAccount%28accountName%3A%22test-coin-account%22%2C+fungibleName%3A+%22test-coin%22%29%7B%0A++++accountName%0A++++fungibleName%0A++++totalBalance%0A++++transactions%7B%0A++++++totalCount%0A++++%7D%0A++%7D%0A%7D)
 
 
 ##### Non-fungible related
-- [Get token balances for a given account](http://localhost:4000/graphql?query=query+GetNFTBalances+%28%24accountName%3AString%21%29%7B%0A++nonFungibleAccount%28accountName%3A+%24accountName%29%7B%0A++++accountName%0A++++nonFungibles%7B%0A++++++balance%0A++++++chainId%0A++++++id%0A++++++info%7B%0A++++++++precision%0A++++++++supply%0A++++++++uri%0A++++++%7D%0A++++++version%0A++++%7D%0A++++transactions%7B%0A++++++totalCount%0A++++%7D%0A++%7D%0A%7D)
+- [Get token balances for a given account](http://localhost:4000/graphql?query=query+GetNFTBalances+%7B%0A++nonFungibleAccount%28accountName%3A+%22k%3A123456789...%22%29%7B%0A++++accountName%0A++++nonFungibles%7B%0A++++++balance%0A++++++chainId%0A++++++id%0A++++++info%7B%0A++++++++precision%0A++++++++supply%0A++++++++uri%0A++++++%7D%0A++++++version%0A++++%7D%0A++++transactions%7B%0A++++++totalCount%0A++++%7D%0A++%7D%0A%7D)
 
 Remember, the GraphiQL Explorer is a powerful tool for understanding and interacting with our GraphQL API. Don't hesitate to experiment and learn!
 
