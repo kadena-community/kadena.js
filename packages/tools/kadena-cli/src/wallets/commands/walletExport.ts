@@ -23,7 +23,7 @@ export const createExportCommand: (program: Command, version: string) => void =
       const { keyIndex } = await option.keyIndex({ wallet });
       log.warning(`Warning: this will print the keypair unencrypted.`);
       const { passwordFile } = await option.passwordFile();
-      log.debug('decrypt:action', {
+      log.debug('wallet-export:action', {
         wallet,
         keyIndex,
         passwordFile,

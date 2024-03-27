@@ -91,7 +91,7 @@ export function displayGeneratedPlainKeys(keys: IPlainKey[]): void {
     return;
   }
 
-  const header: TableHeader = ['Public Key', 'Secret Key (Encrypted)'];
+  const header: TableHeader = ['Public Key', 'Secret Key'];
   const rows: TableRow[] = keys.map((key) => [
     key.publicKey,
     maskStringPreservingStartAndEnd(key.secretKey, 35),

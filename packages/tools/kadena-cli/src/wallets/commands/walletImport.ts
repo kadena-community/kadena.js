@@ -56,6 +56,8 @@ export const createImportWalletCommand: (
       loading.fail('Failed to import wallet');
       if (error instanceof Error) {
         log.error(error.message);
+      } else {
+        throw error;
       }
     }
   },
