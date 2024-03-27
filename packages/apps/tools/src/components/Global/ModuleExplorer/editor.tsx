@@ -29,6 +29,7 @@ const AceViewer = dynamic(import('@/components/Global/Ace'), {
 export interface IEditorProps {
   openedModules: IChainModule[];
   onActiveModuleChange: (module: IChainModule) => void;
+  onTabClose: (module: IChainModule) => void;
 }
 
 const moduleToTabId = ({ moduleName, chainId }: IChainModule): string => {
@@ -38,6 +39,7 @@ const moduleToTabId = ({ moduleName, chainId }: IChainModule): string => {
 const Editor = ({
   openedModules,
   onActiveModuleChange,
+  onTabClose,
 }: IEditorProps): React.JSX.Element => {
   const { t } = useTranslation('common');
   const [keyboardHandler, setKeyboardHandler] =
@@ -130,12 +132,20 @@ const Editor = ({
           }
         }}
       >
-        {openedModules.map(({ moduleName, chainId, code }) => {
+        {openedModules.map((module) => {
+          const { moduleName, chainId, code } = module;
           return (
             <TabItem
               title={`${moduleName} @ ${chainId}`}
               key={moduleToTabId({ moduleName, chainId })}
             >
+              <button
+                onClick={() => {
+                  onTabClose(module);
+                }}
+              >
+                Close
+              </button>
               <AceViewer
                 code={code}
                 width="100%"

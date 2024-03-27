@@ -342,6 +342,16 @@ const ModuleExplorerPage = (
           );
         }}
         onActiveModuleChange={setDeeplink}
+        onTabClose={(module) => {
+          setOpenedModules(
+            openedModules.filter((openedModule) => {
+              return (
+                openedModule.moduleName !== module.moduleName &&
+                openedModule.chainId !== module.chainId
+              );
+            }),
+          );
+        }}
         openedModules={fetchedModules}
       />
     </>

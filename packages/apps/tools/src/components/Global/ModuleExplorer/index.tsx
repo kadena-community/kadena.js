@@ -14,6 +14,7 @@ export interface IModuleExplorerProps {
   onInterfaceClick: ISidePanelProps['onInterfaceClick'];
   onModuleExpand: ISidePanelProps['onModuleExpand'];
   onActiveModuleChange: IEditorProps['onActiveModuleChange'];
+  onTabClose: IEditorProps['onTabClose'];
 }
 
 const ModuleExplorer = ({
@@ -23,6 +24,7 @@ const ModuleExplorer = ({
   onInterfaceClick,
   onModuleExpand,
   onActiveModuleChange,
+  onTabClose,
 }: IModuleExplorerProps): React.JSX.Element => {
   const results = getModulesMap(modules);
   return (
@@ -37,6 +39,7 @@ const ModuleExplorer = ({
       <Editor
         openedModules={openedModules}
         onActiveModuleChange={onActiveModuleChange}
+        onTabClose={onTabClose}
       />
     </div>
   );
