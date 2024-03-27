@@ -65,12 +65,12 @@ export async function keyPairsPrompt(): Promise<string> {
   });
 }
 
-export async function walletCreateAccountPrompt(): Promise<boolean> {
+export async function walletCreateAccountPrompt(): Promise<string> {
   return await select({
-    message: 'Automatically create the first account?',
+    message: 'Create a account using the first wallet key?',
     choices: [
-      { value: true, name: 'Yes' },
-      { value: false, name: 'No' },
+      { value: 'true', name: 'Yes' },
+      { value: 'false', name: 'No' },
     ],
   });
 }

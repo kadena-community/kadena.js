@@ -35,12 +35,12 @@ export const walletOptions = {
       'Enter your 12-word mnemonic phrase to generate keys from',
     ),
   }),
-  walletAccountCreate: createOption({
-    key: 'walletAccountCreate' as const,
+  createAccount: createOption({
+    key: 'createAccount' as const,
     prompt: keys.walletCreateAccountPrompt,
-    validation: z.boolean(),
+    validation: z.string(),
     option: new Option(
-      '-a, --account',
+      '-c, --create-account <createAccount>',
       'Automatically create an account for the wallet',
     ),
   }),

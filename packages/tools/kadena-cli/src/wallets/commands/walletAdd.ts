@@ -28,7 +28,7 @@ export const createGenerateWalletCommand: (
       confirmPasswordMessage: 'Re-enter the password',
     }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
-    walletOptions.walletAccountCreate(),
+    walletOptions.createAccount(),
   ],
   async (option, { collect }) => {
     const config = await collect(option);
@@ -57,13 +57,18 @@ export const createGenerateWalletCommand: (
           `\nPlease store the mnemonic phrase in a safe place. You will need it to recover your wallet.\n`,
         ),
       );
+
+      log.output(log.color.green(`First keypair generated`));
+      log.output(`publicKey: ${key.publicKey}\n`);
+
       log.output(
         log.generateTableString(
           ['Wallet Storage Location'],
           [[relativeToCwd(wallet.filepath)]],
         ),
       );
-      if (config.walletAccountCreate) {
+      log.info();
+      if (config.createAccount === 'true') {
         const accountFilepath = path.join(ACCOUNT_DIR, `${wallet.alias}.yaml`);
 
         await writeAccountAliasMinimal(
@@ -75,6 +80,8 @@ export const createGenerateWalletCommand: (
           },
           accountFilepath,
         );
+        log.output(log.color.green(`Account created`));
+        log.output(`accountName: k:${wallet.keys[0].publicKey}\n`);
         log.output(
           log.generateTableString(
             ['Account Storage Location'],
@@ -89,6 +96,8 @@ export const createGenerateWalletCommand: (
     } catch (error) {
       if (error instanceof Error) {
         log.error(error.message);
+      } else {
+        throw error;
       }
     }
   },
