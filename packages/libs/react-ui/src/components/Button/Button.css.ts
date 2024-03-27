@@ -4,19 +4,19 @@ import { atoms } from '../../styles/atoms.css';
 import { token } from '../../styles/themeUtils';
 import { tokens } from '../../styles/tokens/contract.css';
 import { uiBaseBold, uiSmallestBold } from '../../styles/tokens/styles.css';
-import { iconFill } from '../Icon/IconWrapper.css';
 
 const backgroundColor = createVar();
 const textColor = createVar();
 const hoverTextColor = createVar();
 const hoverBackgroundColor = createVar();
 const disabledBackgroundColor = createVar();
-const focusColor = createVar();
 const focusBackgroundColor = createVar();
 const iconSize = createVar();
+const iconFill = createVar();
 
+//FIXME: change the color token to border.tint.outline
 const focus = {
-  outline: `${focusColor} solid ${tokens.kda.foundation.border.width.normal}`,
+  outline: `${tokens.kda.foundation.color.accent.blue} solid ${tokens.kda.foundation.border.width.normal}`,
   outlineOffset: tokens.kda.foundation.border.width.normal,
   backgroundColor: focusBackgroundColor,
 };
@@ -27,9 +27,19 @@ export const iconStyle = style({
   width: iconSize,
 });
 
+export const iconOnlyStyle = atoms({
+  paddingInline: 'sm',
+});
+
 // spacing if there is a leading icon or avatar
 const prefixIconSpacing = createVar();
 export const prefixIconStyle = style({ marginInlineStart: prefixIconSpacing });
+
+// spacing if there is a trailing icon
+const postfixIconSpacing = createVar();
+export const postfixIconStyle = style({
+  marginInlineEnd: postfixIconSpacing,
+});
 
 // spacing if there is a trailing icon
 const badgeSpacing = createVar();
@@ -45,7 +55,7 @@ export const noPostfixStyle = style({ marginInlineEnd: noPostfixSpacing });
 
 // spacing if there is an avatar
 const avatarSpacing = createVar();
-export const avatarStyle = style({ marginInlineEnd: avatarSpacing });
+export const avatarStyle = style({ marginInlineStart: avatarSpacing });
 
 export const centerContentWrapper = style([
   atoms({ display: 'flex', alignItems: 'center', gap: 'sm' }),
@@ -102,8 +112,6 @@ export const button = recipe({
       alignItems: 'center',
       borderRadius: 'xs',
       gap: 'sm',
-      fontFamily: 'primaryFont',
-      fontWeight: 'primaryFont.bold',
       paddingBlock: 'sm',
     }),
     {
@@ -144,9 +152,6 @@ export const button = recipe({
             'color.background.accent.primary.inverse.@hover',
           ),
           [iconFill]: token('color.text.base.inverse.default'),
-          [focusColor]: token(
-            'color.background.accent.primary.inverse.default',
-          ),
           [disabledBackgroundColor]: token('color.background.base.@disabled'),
           [focusBackgroundColor]: token(
             'color.background.accent.primary.inverse.@focus',
@@ -163,7 +168,6 @@ export const button = recipe({
           [hoverBackgroundColor]: token(
             'color.background.semantic.warning.inverse.@hover',
           ),
-          [focusColor]: token('color.border.semantic.warning.@focus'),
           [iconFill]: token('color.icon.semantic.warning.default'),
           [disabledBackgroundColor]: token('color.background.base.@disabled'),
           [focusBackgroundColor]: token(
@@ -183,7 +187,6 @@ export const button = recipe({
           [hoverBackgroundColor]: token(
             'color.background.semantic.negative.inverse.@hover',
           ),
-          [focusColor]: token('color.border.semantic.negative.@focus'),
           [iconFill]: token('color.icon.semantic.negative.default'),
           [disabledBackgroundColor]: token('color.background.base.@disabled'),
           [focusBackgroundColor]: token(
@@ -203,7 +206,6 @@ export const button = recipe({
           [hoverBackgroundColor]: token(
             'color.background.semantic.positive.inverse.@hover',
           ),
-          [focusColor]: token('color.border.semantic.positive.@focus'),
           [iconFill]: token('color.icon.semantic.positive.default'),
           [disabledBackgroundColor]: token('color.background.base.@disabled'),
           [focusBackgroundColor]: token(
@@ -221,7 +223,6 @@ export const button = recipe({
           [hoverBackgroundColor]: token(
             'color.background.semantic.info.inverse.@hover',
           ),
-          [focusColor]: token('color.background.semantic.info.inverse.default'),
           [iconFill]: token('color.icon.semantic.info.default'),
           [disabledBackgroundColor]: token('color.background.base.@disabled'),
           [focusBackgroundColor]: token(
@@ -235,7 +236,6 @@ export const button = recipe({
           [textColor]: token('color.text.base.default'),
           [hoverTextColor]: token('color.text.base.@hover'),
           [hoverBackgroundColor]: token('color.background.base.@hover'),
-          [focusColor]: token('color.background.semantic.info.inverse.default'),
           [iconFill]: token('color.icon.semantic.info.default'),
           [disabledBackgroundColor]: 'transparent',
           [focusBackgroundColor]: token('color.background.base.@focus'),
@@ -255,7 +255,6 @@ export const button = recipe({
           [textColor]: token('color.text.base.default'),
           [hoverTextColor]: token('color.text.base.@hover'),
           [hoverBackgroundColor]: token('color.background.base.@hover'),
-          [focusColor]: token('color.text.base.inverse.@focus'),
           [iconFill]: token('color.icon.base.@focus'),
           [disabledBackgroundColor]: 'transparent',
           [focusBackgroundColor]: token('color.background.base.@focus'),
@@ -264,11 +263,12 @@ export const button = recipe({
     },
     isCompact: {
       true: [
+        uiSmallestBold,
         {
-          uiSmallestBold,
           vars: {
             [iconSize]: token('size.n4'),
             [prefixIconSpacing]: token('size.n3'),
+            [postfixIconSpacing]: token('size.n2'),
             [avatarSpacing]: token('size.n3'),
             [badgeSpacing]: token('size.n3'),
             [noPrefixSpacing]: token('size.n4'),
@@ -277,11 +277,12 @@ export const button = recipe({
         },
       ],
       false: [
+        uiBaseBold,
         {
-          uiBaseBold,
           vars: {
             [iconSize]: token('size.n6'),
             [prefixIconSpacing]: token('size.n4'),
+            [postfixIconSpacing]: token('size.n4'),
             [avatarSpacing]: token('size.n5'),
             [badgeSpacing]: token('size.n4'),
             [noPrefixSpacing]: token('size.n6'),

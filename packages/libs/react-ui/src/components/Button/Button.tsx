@@ -14,10 +14,11 @@ import {
   badgeStyle,
   button,
   centerContentWrapper,
+  iconOnlyStyle,
   iconStyle,
   noPostfixStyle,
   noPrefixStyle,
-  postfixStyle,
+  postfixIconStyle,
   prefixIconStyle,
 } from './Button.css';
 import { disableLoadingProps } from './utils';
@@ -123,7 +124,7 @@ const BaseButton = (
 
   // Icon to be rendered after the center content
   const postfixContent = endIcon ? (
-    <span className={postfixStyle}>{renderIcon(endIcon)}</span>
+    <span className={postfixIconStyle}>{renderIcon(endIcon)}</span>
   ) : null;
 
   // Content with optional badge component
@@ -162,7 +163,7 @@ const BaseButton = (
       />
     </>
   ) : icon ? (
-    renderIcon(icon as ReactElement)
+    <span className={iconOnlyStyle}>{renderIcon(icon as ReactElement)}</span>
   ) : (
     <>
       {prefixContent}
