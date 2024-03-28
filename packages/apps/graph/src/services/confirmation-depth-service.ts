@@ -1,20 +1,21 @@
 import { prismaClient } from '@db/prisma-client';
 
-export async function getLatestBlockHeights(chainIds?: string[]) {
-  return await prismaClient.block.groupBy({
+const getLatestBlockHeights = async (chainIds?: string[]) =>
+  await prismaClient.block.groupBy({
     by: ['chainId'],
     _max: {
       height: true,
     },
-    where: {
-      chainId: {
-        in: (chainIds as string[]).map((id) => parseInt(id)),
+    ...(chainIds?.length && {
+      where: {
+        chainId: {
+          in: chainIds.map((id) => parseInt(id)),
+        },
       },
-    },
+    }),
   });
-}
 
-export async function getConditionForMinimumDepth(
+export const getConditionForMinimumDepth = async (
   minimumDepth: number,
   chainIds?: string[],
 ): Promise<
@@ -24,20 +25,8 @@ export async function getConditionForMinimumDepth(
       lte: number;
     };
   }[]
-> {
-  const latestBlocks = await prismaClient.block.groupBy({
-    by: ['chainId'],
-    _max: {
-      height: true,
-    },
-    where: {
-      chainId: {
-        in: (chainIds as string[]).map((id) => parseInt(id)),
-      },
-    },
-  });
-
-  return latestBlocks
+> =>
+  (await getLatestBlockHeights(chainIds))
     .filter((x) => x._max.height !== null)
     .map((block) => ({
       chainId: block.chainId,
@@ -45,4 +34,3 @@ export async function getConditionForMinimumDepth(
         lte: parseInt((block._max.height as bigint).toString()) - minimumDepth,
       },
     }));
-}
