@@ -19,8 +19,8 @@ export const Modal: FC<IProps> = ({ label, children, onClose }) => {
   const backRef = useRef<HTMLDivElement>(null);
 
   const handleClose: MouseEventHandler<HTMLDivElement> = (evt) => {
-    evt.preventDefault();
     if (evt.target !== backRef.current) return;
+    evt.preventDefault();
     onClose();
   };
   return (
