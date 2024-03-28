@@ -345,7 +345,7 @@ type Query {
          
         An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
   """
-  events(after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, orderIndex: Int, parametersFilter: String, qualifiedEventName: String!, requestKey: String): QueryEventsConnection!
+  events(after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, minimumDepth: Int, orderIndex: Int, parametersFilter: String, qualifiedEventName: String!, requestKey: String): QueryEventsConnection!
 
   """
   Retrieve an fungible specific account by its name and fungible, such as coin.
@@ -504,7 +504,7 @@ type Subscription {
          
         An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
   """
-  events(chainId: String, parametersFilter: String, qualifiedEventName: String!): [Event!]
+  events(chainId: String, minimumDepth: Int, parametersFilter: String, qualifiedEventName: String!): [Event!]
 
   """Subscribe to new blocks."""
   newBlocks(chainIds: [String!]): [Block!]
