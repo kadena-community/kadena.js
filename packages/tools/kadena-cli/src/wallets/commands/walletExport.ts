@@ -40,7 +40,9 @@ export const createExportCommand: (program: Command, version: string) => void =
         );
         log.output(jsYaml.dump(keypair, { lineWidth: -1 }));
       } catch (e) {
-        log.error(`Failed to export keypair: ${e.message}`);
+        log.error(
+          `Failed to export keypair: Incorrect password. Please verify the password and try again.`,
+        );
       }
     },
   );
