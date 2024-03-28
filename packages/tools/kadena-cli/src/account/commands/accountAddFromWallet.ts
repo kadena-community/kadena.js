@@ -1,7 +1,7 @@
 import { Option } from 'commander';
 import { z } from 'zod';
 
-import type { IWallet } from '../../keys/utils/keysHelpers.js';
+import type { IWallet } from '../../services/wallet/wallet.types.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
@@ -10,19 +10,17 @@ import { log } from '../../utils/logger.js';
 import { checkbox } from '../../utils/prompts.js';
 import { accountOptions } from '../accountOptions.js';
 import { addAccount } from '../utils/addAccount.js';
-import {
-  displayAddAccountSuccess,
-  getAllPublicKeysFromWalletConfig,
-  isEmpty,
-} from '../utils/addHelpers.js';
+import { displayAddAccountSuccess, isEmpty } from '../utils/addHelpers.js';
 import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveAccountDetails.js';
 
 const selectPublicKeys = createOption({
   key: 'publicKeys' as const,
   defaultIsOptional: false,
   async prompt(args) {
-    const publicKeysList = await getAllPublicKeysFromWalletConfig(
-      args.walletNameConfig as IWallet,
+    const wallet = args.walletNameConfig as IWallet;
+    const publicKeysList = wallet.keys.reduce(
+      (acc, key) => acc.concat([key.publicKey]),
+      [] as string[],
     );
     const selectedKeys = await checkbox({
       message: 'Select public keys to add to account',

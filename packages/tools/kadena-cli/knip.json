@@ -1,0 +1,3 @@
+{
+  "ignore": ["lib/**", "*.test.ts", "*.test-live.ts"]
+}

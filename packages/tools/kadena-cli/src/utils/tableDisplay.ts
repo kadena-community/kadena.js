@@ -60,8 +60,8 @@ const getColumnWidths = (header: TableHeader, rows: TableRow[]): number[] => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const columnWidths = header.map((_, index) =>
     Math.max(
-      ...[header[index], ...rows.map((row) => row[index])].map((item) => {
-        const splitItem = item.split('\n');
+      ...[header[index], ...rows.map((row) => row.at(index))].map((item) => {
+        const splitItem = (item ?? '').split('\n');
         return Math.max(...splitItem.map((item) => item.length));
       }),
     ),

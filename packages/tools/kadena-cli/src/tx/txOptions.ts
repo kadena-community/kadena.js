@@ -182,22 +182,6 @@ export const txOptions = {
       return txSignedTransactionFiles;
     },
   }),
-  directory: createOption({
-    key: 'directory' as const,
-    // Directory is an optional flag, and never prompted
-    prompt: () => null,
-    validation: z.string().optional(),
-    option: new Option(
-      '--directory <directory>',
-      `Enter your directory (default: working directory)`,
-    ),
-    transform(value: string) {
-      if (typeof value !== 'string' || value === '') {
-        return process.cwd();
-      }
-      return value;
-    },
-  }),
   txTransactionNetwork: createOption({
     key: 'txTransactionNetwork',
     validation: z.array(z.string()),

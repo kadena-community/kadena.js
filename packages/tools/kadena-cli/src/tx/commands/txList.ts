@@ -1,7 +1,7 @@
 import type { Command } from 'commander';
 import { createCommand } from '../../utils/createCommand.js';
+import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
-import { txOptions } from '../txOptions.js';
 import { printTx } from '../utils/txDisplayHelper.js';
 import { getAllTransactions } from '../utils/txHelpers.js';
 
@@ -9,7 +9,7 @@ export const createTxListCommand: (program: Command, version: string) => void =
   createCommand(
     'list',
     'List transaction(s)',
-    [txOptions.directory({ disableQuestion: true })],
+    [globalOptions.directory({ disableQuestion: true })],
     async (option) => {
       log.debug('list-tx:action');
 

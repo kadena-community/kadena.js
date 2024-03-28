@@ -16,14 +16,9 @@ import {
   chainIdValidation,
   formatZodFieldErrors,
 } from '../account/utils/accountHelpers.js';
-import { KEY_EXT, WALLET_EXT } from '../constants/config.js';
-import {
-  getWallet,
-  parseKeyIndexOrRange,
-  parseKeyPairsInput,
-} from '../keys/utils/keysHelpers.js';
-import { readKeyFileContent } from '../keys/utils/storage.js';
+import { parseKeyPairsInput } from '../keys/utils/keysHelpers.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
+import { services } from '../services/index.js';
 import { createOption } from './createOption.js';
 import { getDefaultNetworkName, passwordPromptTransform } from './helpers.js';
 import { log } from './logger.js';
@@ -153,71 +148,28 @@ export const globalOptions = {
       'Enter an alias to store your key',
     ),
   }),
-  keyAliasSelect: createOption({
-    key: 'keyAliasSelect',
-    prompt: keys.keyGetAllKeyFilesPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-a, --key-alias-select <keyAliasSelect>',
-      'Enter a alias to select keys from',
-    ),
-  }),
-  keyIndexOrRange: createOption({
-    key: 'keyIndexOrRange' as const,
-    prompt: keys.keyIndexOrRangePrompt,
-    validation: z.string(),
-    option: new Option(
-      '-r, --key-index-or-range <keyIndexOrRange>',
-      'Enter the index or range of indices for key generation (e.g., 5 or 1-5). Default is 1',
-    ),
-    transform(value) {
-      return parseKeyIndexOrRange(value);
-    },
-  }),
-  keyGenFromChoice: createOption({
-    key: 'keyGenFromChoice',
-    prompt: keys.genFromChoicePrompt,
-    validation: z.string(),
-    option: new Option(
-      '-c, --key-gen-from-choice <keyGenFromChoice>',
-      'Choose an action for generating keys',
-    ),
-  }),
   walletSelect: createOption({
     key: 'walletName',
     prompt: wallets.walletSelectPrompt,
     validation: z.string(),
     option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,
-    expand: async (walletName: string) => {
-      return await getWallet(walletName);
+    expand: async (walletAlias: string) => {
+      return await services.wallet.getByAlias(walletAlias);
     },
   }),
   walletsSelectByWallet: createOption({
     key: 'walletName',
     prompt: async (args) => {
       return Array.isArray(args.wallets)
-        ? wallets.walletSelectByWalletPrompt(args.wallets as string[])
+        ? wallets.walletSelectByWalletPrompt(args.wallets)
         : wallets.walletSelectPrompt();
     },
     validation: z.string(),
     option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,
-  }),
-  message: createOption({
-    key: 'message' as const,
-    prompt: generic.messagePrompt,
-    validation: z.string(),
-    option: new Option('-m, --message <message>', 'Enter message to decrypt'),
-    transform: async (message: string) => {
-      if (message.includes(WALLET_EXT) || message.includes(KEY_EXT)) {
-        const keyFileContent = await readKeyFileContent(message);
-        if (typeof keyFileContent === 'string') {
-          return keyFileContent;
-        }
-        return keyFileContent?.secretKey;
-      }
-      return message;
+    expand: async (walletAlias: string) => {
+      return await services.wallet.getByAlias(walletAlias);
     },
   }),
   // common
@@ -234,6 +186,22 @@ export const globalOptions = {
       if (!value) return null;
       const file = value.endsWith('.json') ? value : `${value}.json`;
       return join(process.cwd(), file);
+    },
+  }),
+  directory: createOption({
+    key: 'directory' as const,
+    // Directory is an optional flag, and never prompted
+    prompt: () => null,
+    validation: z.string().optional(),
+    option: new Option(
+      '--directory <directory>',
+      `Enter your directory (default: working directory)`,
+    ),
+    transform(value: string) {
+      if (typeof value !== 'string' || value === '') {
+        return process.cwd();
+      }
+      return value;
     },
   }),
 } as const;
@@ -270,6 +238,3 @@ export const securityOptions = {
     })(optionArgs);
   },
 };
-
-export type GlobalOptions = typeof globalOptions;
-export type GlobalFlags = typeof globalFlags;

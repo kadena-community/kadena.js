@@ -1,4 +1,5 @@
-import { getAllWallets } from '../keys/utils/keysHelpers.js';
+import { services } from '../services/index.js';
+import type { IWallet } from '../services/wallet/wallet.types.js';
 import { CommandError } from '../utils/command.util.js';
 
 import { isValidFilename } from '../utils/helpers.js';
@@ -19,7 +20,7 @@ export async function walletNamePrompt(): Promise<string> {
 async function walletSelectionPrompt(
   specialOptions: ('none' | 'all')[] = [],
 ): Promise<string> {
-  const existingKeys: string[] = await getAllWallets();
+  const existingKeys = await services.wallet.list();
 
   if (existingKeys.length === 0 && !specialOptions.includes('none')) {
     throw new CommandError({
@@ -30,8 +31,8 @@ async function walletSelectionPrompt(
   }
 
   const choices = existingKeys.map((key) => ({
-    value: key,
-    name: `Wallet: ${key}`,
+    value: key.alias,
+    name: `Wallet: ${key.alias}`,
   }));
 
   // Check for special options and add them
@@ -61,11 +62,29 @@ export async function walletSelectPrompt(): Promise<string> {
 }
 
 export async function walletSelectAllPrompt(): Promise<string> {
-  return walletSelectionPrompt(['all']);
+  const wallets = await services.wallet.list();
+
+  // Prevent uselessly prompting the user if there are no wallets
+  // 'all' is a safe fallback as the option will result in an empty array
+  if (wallets.length === 0) return 'all';
+
+  return await select({
+    message: 'Select a wallet',
+    choices: [
+      {
+        value: 'all',
+        name: 'All Wallets',
+      },
+      ...wallets.map((wallet) => ({
+        value: wallet.alias,
+        name: wallet.alias,
+      })),
+    ],
+  });
 }
 
 export async function walletSelectByWalletPrompt(
-  wallets: string[] = [],
+  wallets: IWallet[] = [],
 ): Promise<string> {
   if (wallets.length === 0) {
     throw new CommandError({
@@ -75,10 +94,10 @@ export async function walletSelectByWalletPrompt(
     });
   }
 
-  const choices = wallets.map((key) => {
+  const choices = wallets.map((wallet) => {
     return {
-      value: key,
-      name: `Wallet: ${key}`,
+      value: wallet.alias,
+      name: `Wallet: ${wallet.alias}`,
     };
   });
 

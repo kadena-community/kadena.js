@@ -30,7 +30,7 @@ export const passwordPrompt =
 
     if (confirmPasswordMessage !== undefined) {
       const passwordRepeat = await passwordInput({
-        message: message,
+        message: confirmPasswordMessage,
         mask: '*',
         validate: (value) => {
           if (value.length < 8) {

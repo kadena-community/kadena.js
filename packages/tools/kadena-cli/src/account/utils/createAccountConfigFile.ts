@@ -24,6 +24,30 @@ export async function writeAccountAlias(
   }
 }
 
+export async function writeAccountAliasMinimal(
+  config: Pick<
+    IAddAccountConfig,
+    'publicKeysConfig' | 'predicate' | 'accountName' | 'fungible'
+  >,
+  filePath: string,
+): Promise<void> {
+  const { publicKeysConfig, predicate, accountName, fungible } = config;
+  await services.filesystem.ensureDirectoryExists(filePath);
+  try {
+    const aliasData = {
+      name: accountName,
+      fungible,
+      publicKeys: publicKeysConfig,
+      predicate,
+    };
+    accountAliasFileSchema.parse(aliasData);
+    await services.filesystem.writeFile(filePath, yaml.dump(aliasData));
+  } catch (error) {
+    const errorMessage = formatZodErrors(error);
+    throw new Error(`Error writing alias file: ${filePath}\n ${errorMessage}`);
+  }
+}
+
 export async function createAccountConfigFile(
   filePath: string,
   config: IAddAccountConfig,
