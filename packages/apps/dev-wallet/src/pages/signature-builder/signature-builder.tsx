@@ -134,24 +134,24 @@ export function SignatureBuilder() {
           {({ step, goTo }) => (
             <Box>
               <Button
-                variant="text"
+                variant="transparent"
                 isDisabled={step < 0}
                 onPress={() => goTo(0)}
               >{`Paste Data`}</Button>
               {schema === 'signingRequest' && (
                 <Button
-                  variant="text"
+                  variant="transparent"
                   isDisabled={step < 1}
                   onPress={() => goTo(1)}
                 >{`Add Signers`}</Button>
               )}
               <Button
-                variant="text"
+                variant="transparent"
                 isDisabled={step < 2}
                 onPress={() => goTo(2)}
               >{`Review Transaction`}</Button>
               <Button
-                variant="text"
+                variant="transparent"
                 isDisabled={step < 3}
                 onPress={() => goTo(3)}
               >{`Sign Transaction`}</Button>
@@ -198,7 +198,7 @@ export function SignatureBuilder() {
               {capsWithoutSigners && (
                 <pre>{JSON.stringify(capsWithoutSigners, null, 2)}</pre>
               )}
-              <Button onPress={() => back()} variant="text">
+              <Button onPress={() => back()} variant="transparent">
                 Back to Input
               </Button>
               <Button onPress={() => next()}>Review Transaction</Button>
@@ -268,11 +268,11 @@ export function SignatureBuilder() {
                 <pre>{JSON.stringify(unsignedTx, null, 2)}</pre>
               </Card>
               {schema !== 'quickSignRequest' ? (
-                <Button onPress={() => back()} variant="text">
+                <Button onPress={() => back()} variant="transparent">
                   Back to Edit Transaction
                 </Button>
               ) : (
-                <Button onPress={() => goTo(0)} variant="text">
+                <Button onPress={() => goTo(0)} variant="transparent">
                   Back to Input
                 </Button>
               )}
@@ -296,7 +296,7 @@ export function SignatureBuilder() {
                   {JSON.stringify(signed, null, 2)}
                 </pre>
               </Card>
-              <Button onPress={() => back()} variant="text">
+              <Button onPress={() => back()} variant="transparent">
                 Back to Review Transaction
               </Button>
             </>

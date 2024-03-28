@@ -69,11 +69,10 @@ export const AddPublicKeysSection = ({
           endAddon={
             <Button
               icon={<MonoDelete />}
-              variant="text"
+              variant="transparent"
               onPress={() => deletePublicKey(index)}
               aria-label="Delete public key"
               title="Delete public Key"
-              color="primary"
               type="button"
             />
           }
@@ -114,7 +113,7 @@ export const AddPublicKeysSection = ({
             }}
             aria-label="Add public key"
             title="Add Public Key"
-            color="primary"
+            variant="primary"
             type="button"
             isDisabled={publicKeys.length >= (maxKeysAmount || 10)}
           >

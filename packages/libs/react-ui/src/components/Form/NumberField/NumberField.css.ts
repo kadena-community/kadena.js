@@ -6,7 +6,7 @@ export const buttonContainerClass = style([
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: 'layer10.default',
+    backgroundColor: 'input.default',
     color: 'text.base.default',
     outline: 'none',
   }),

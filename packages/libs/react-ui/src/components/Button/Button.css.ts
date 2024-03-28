@@ -14,11 +14,13 @@ const focusBackgroundColor = createVar();
 const iconSize = createVar();
 const iconFill = createVar();
 
-//FIXME: change the color token to border.tint.outline
 const focus = {
-  outline: `${tokens.kda.foundation.color.accent.blue} solid ${tokens.kda.foundation.border.width.normal}`,
+  outline: `${tokens.kda.foundation.color.border.tint.outline} solid ${tokens.kda.foundation.border.width.normal}`,
   outlineOffset: tokens.kda.foundation.border.width.normal,
   backgroundColor: focusBackgroundColor,
+  vars: {
+    [textColor]: token('color.text.base.inverse.@focus'),
+  },
 };
 
 export const iconStyle = style({
@@ -116,6 +118,7 @@ export const button = recipe({
       borderRadius: 'xs',
       gap: 'sm',
       paddingBlock: 'sm',
+      color: 'text.base.inverse.@init',
     }),
     {
       backgroundColor: backgroundColor,
@@ -129,6 +132,7 @@ export const button = recipe({
           background: hoverBackgroundColor,
           vars: {
             [iconFill]: token('color.icon.base.inverse.@hover'),
+            [textColor]: token('color.text.base.inverse.@hover'),
           },
         },
         '&[data-pressed]': focus,
@@ -140,6 +144,8 @@ export const button = recipe({
           cursor: 'not-allowed',
           vars: {
             [iconFill]: token('color.icon.base.@disabled'),
+            [textColor]: token('color.text.base.inverse.@disabled'),
+            [disabledBackgroundColor]: token('color.background.base.default'),
           },
         },
       },
@@ -152,13 +158,10 @@ export const button = recipe({
           [backgroundColor]: token(
             'color.background.accent.primary.inverse.default',
           ),
-          [textColor]: token('color.text.base.inverse.default'),
-          [hoverTextColor]: token('color.text.base.inverse.@hover'),
           [hoverBackgroundColor]: token(
             'color.background.accent.primary.inverse.@hover',
           ),
           [iconFill]: token('color.text.base.inverse.default'),
-          [disabledBackgroundColor]: token('color.background.base.@disabled'),
           [focusBackgroundColor]: token(
             'color.background.accent.primary.inverse.@focus',
           ),
@@ -175,7 +178,6 @@ export const button = recipe({
             'color.background.semantic.warning.inverse.@hover',
           ),
           [iconFill]: token('color.icon.semantic.warning.default'),
-          [disabledBackgroundColor]: token('color.background.base.@disabled'),
           [focusBackgroundColor]: token(
             'color.background.semantic.warning.inverse.@focus',
           ),
@@ -194,7 +196,6 @@ export const button = recipe({
             'color.background.semantic.negative.inverse.@hover',
           ),
           [iconFill]: token('color.icon.semantic.negative.default'),
-          [disabledBackgroundColor]: token('color.background.base.@disabled'),
           [focusBackgroundColor]: token(
             'color.background.semantic.negative.inverse.@focus',
           ),
@@ -213,7 +214,6 @@ export const button = recipe({
             'color.background.semantic.positive.inverse.@hover',
           ),
           [iconFill]: token('color.icon.semantic.positive.default'),
-          [disabledBackgroundColor]: token('color.background.base.@disabled'),
           [focusBackgroundColor]: token(
             'color.background.semantic.positive.inverse.@focus',
           ),
@@ -230,7 +230,6 @@ export const button = recipe({
             'color.background.semantic.info.inverse.@hover',
           ),
           [iconFill]: token('color.icon.semantic.info.default'),
-          [disabledBackgroundColor]: token('color.background.base.@disabled'),
           [focusBackgroundColor]: token(
             'color.background.semantic.info.inverse.@focus',
           ),
@@ -240,11 +239,10 @@ export const button = recipe({
         vars: {
           [backgroundColor]: 'transparent',
           [textColor]: token('color.text.base.default'),
-          [hoverTextColor]: token('color.text.base.@hover'),
-          [hoverBackgroundColor]: token('color.background.base.@hover'),
+          // [hoverBackgroundColor]: token('color.background.base.@hover'),
           [iconFill]: token('color.icon.semantic.info.default'),
           [disabledBackgroundColor]: 'transparent',
-          [focusBackgroundColor]: token('color.background.base.@focus'),
+          // [focusBackgroundColor]: token('color.background.base.@focus'),
         },
       },
       outlined: {
@@ -259,11 +257,10 @@ export const button = recipe({
         vars: {
           [backgroundColor]: 'transparent',
           [textColor]: token('color.text.base.default'),
-          [hoverTextColor]: token('color.text.base.@hover'),
-          [hoverBackgroundColor]: token('color.background.base.@hover'),
+          // [hoverBackgroundColor]: token('color.background.base.@hover'),
           [iconFill]: token('color.icon.base.@focus'),
           [disabledBackgroundColor]: 'transparent',
-          [focusBackgroundColor]: token('color.background.base.@focus'),
+          // [focusBackgroundColor]: token('color.background.base.@focus'),
         },
       },
     },

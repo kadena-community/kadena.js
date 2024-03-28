@@ -8,7 +8,7 @@ export const comboBoxControlClass = style([
     display: 'flex',
     alignItems: 'center',
     borderRadius: 'sm',
-    backgroundColor: 'layer10.default',
+    backgroundColor: 'input.default',
     border: 'none',
     color: 'text.base.default',
     outline: 'none',
@@ -27,8 +27,8 @@ export const comboBoxControlClass = style([
       },
       '&[data-disabled]': {
         pointerEvents: 'none',
-        backgroundColor: token('color.background.base.@disabled'),
-        color: token('color.text.base.@disabled'),
+        backgroundColor: token('color.background.input.inverse.default'),
+        color: token('color.text.base.inverse.@disabled'),
       },
       '&[data-focused]': {
         outline: `2px solid ${token('color.border.semantic.info.@focus')}`,

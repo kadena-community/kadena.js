@@ -107,7 +107,7 @@ describe('Button', () => {
     const user = userEvent.setup({ pointerEventsCheck: 0 });
     const spyWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const { getByRole } = render(
-      <Button onClick={onPressSpy}>Click Me</Button>,
+      <Button onPress={onPressSpy}>Click Me</Button>,
     );
 
     const button = getByRole('button');

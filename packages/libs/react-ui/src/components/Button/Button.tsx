@@ -1,7 +1,13 @@
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
-import type { ComponentProps, ForwardedRef, ReactElement } from 'react';
+import type {
+  ComponentProps,
+  ForwardedRef,
+  MouseEventHandler,
+  ReactElement,
+  ReactNode,
+} from 'react';
 import React, { cloneElement, forwardRef } from 'react';
 import type { AriaButtonProps, AriaFocusRingProps } from 'react-aria';
 import { useButton, useFocusRing, useHover, useLink } from 'react-aria';
@@ -30,7 +36,7 @@ type BaseProps = Omit<AriaFocusRingProps, 'isTextInput'> & Variants;
 export interface ICustomProps extends BaseProps {
   avatarProps?: Omit<IAvatarProps, 'size'>;
   badgeValue?: string | number;
-  children?: string;
+  children?: ReactNode | ReactNode[];
   className?: string;
   endIcon?: ReactElement;
   icon?: ReactElement;
@@ -48,9 +54,11 @@ interface IAnchorElementProps extends ICustomProps {
   target?: '_self' | '_blank' | '_parent' | '_top';
 }
 
-interface IButtonElementProps
-  extends ICustomProps,
-    Pick<AriaButtonProps, 'onPress' | 'type'> {
+export interface IButtonElementProps extends ICustomProps {
+  type?: Pick<AriaButtonProps, 'type'>['type'];
+  onPress?:
+    | Pick<AriaButtonProps, 'onPress'>
+    | MouseEventHandler<HTMLButtonElement>;
   href?: never;
   target?: never;
 }

@@ -611,14 +611,13 @@ const CrossChainTransferFinisher: FC = () => {
                         className={textareaWrapperStyle}
                       />
                       <Button
-                        color="primary"
                         icon={<MonoContentCopy />}
                         onPress={async () => {
                           await handleCopySigData();
                         }}
                         title={t('copySigData')}
                         aria-label={t('copySigData')}
-                        variant="text"
+                        variant="outlined"
                       />
                     </div>
                   </GridItem>

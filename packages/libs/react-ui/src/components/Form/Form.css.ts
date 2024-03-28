@@ -22,7 +22,7 @@ export const baseContainerClass = style([
     color: 'text.base.default',
     overflow: 'hidden',
     lineHeight: 'base',
-    backgroundColor: 'layer10.default',
+    backgroundColor: 'surface.default',
     position: 'relative',
   }),
   {
@@ -74,7 +74,7 @@ export const endAddon = style({
 export const input = style([
   atoms({
     borderRadius: 'sm',
-    backgroundColor: 'layer10.default',
+    backgroundColor: 'input.default',
     border: 'none',
     color: 'text.base.default',
     outline: 'none',

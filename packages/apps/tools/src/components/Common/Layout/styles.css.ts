@@ -48,7 +48,7 @@ export const sidebarStyle = style([
     left: 0,
     bottom: 0,
     display: 'flex',
-    backgroundColor: 'layer10.default',
+    backgroundColor: 'layer.default',
     overflow: 'hidden',
     zIndex: 1,
   }),

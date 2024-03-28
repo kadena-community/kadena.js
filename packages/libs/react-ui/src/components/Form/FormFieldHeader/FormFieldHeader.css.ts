@@ -22,7 +22,7 @@ export const infoClass = style([
 
 export const tagClass = style([
   atoms({
-    backgroundColor: 'layer03.inverse.default',
+    backgroundColor: 'base.inverse.default',
     color: 'text.base.inverse.default',
     borderRadius: 'sm',
     paddingInline: 'sm',
