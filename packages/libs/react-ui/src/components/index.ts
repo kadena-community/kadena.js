@@ -1,10 +1,10 @@
 export type { IAccordionProps } from './Accordion';
 export type { IAvatarProps } from './Avatar';
+export type { IBadgeProps } from './Badge';
 export type { IBreadcrumbItemProps, IBreadcrumbsProps } from './Breadcrumbs';
 export type { IButtonProps, IToggleButtonProps } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
-export type { IBadgeProps } from './Badge';
 export type {
   IDialogContentProps,
   IDialogFooterProps,
@@ -55,6 +55,7 @@ export type { IHeadingProps, ITextProps } from './Typography';
 
 export { Accordion, AccordionItem } from './Accordion';
 export { Avatar } from './Avatar';
+export { Badge } from './Badge';
 export { Breadcrumbs, BreadcrumbsItem } from './Breadcrumbs';
 export { Button, ToggleButton } from './Button';
 export { Card } from './Card';
@@ -109,7 +110,6 @@ export { Tag, TagGroup, TagItem } from './Tag';
 export { Tooltip } from './Tooltip';
 export { TrackerCard } from './TrackerCard/TrackerCard';
 export { Heading, Text } from './Typography';
-export { Badge } from './Badge';
 
 // Deprecated components
 export { TableV1 } from './TableV1';
