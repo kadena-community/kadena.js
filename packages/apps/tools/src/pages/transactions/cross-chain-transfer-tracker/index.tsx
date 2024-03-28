@@ -335,8 +335,7 @@ const CrossChainTransferTracker: FC = () => {
                 window.location.href = `/transactions/cross-chain-transfer-finisher?reqKey=${requestKey}`;
               }}
               endIcon={<MonoLink />}
-              color="positive"
-              variant="contained"
+              variant="positive"
             >
               {t('Finish Transaction')}
             </Button>

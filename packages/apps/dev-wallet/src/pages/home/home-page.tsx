@@ -39,7 +39,7 @@ export function HomePage() {
         {keySources.map((ks) => (
           <Card>
             <Heading variant="h6">{ks.source}</Heading>
-            <Button onClick={() => createAccount(ks)}>Add k account</Button>
+            <Button onPress={() => createAccount(ks)}>Add k account</Button>
             <br />
             <Link to={`/backup-recovery-phrase/${ks.uuid}`}>
               Back up recovery phrase

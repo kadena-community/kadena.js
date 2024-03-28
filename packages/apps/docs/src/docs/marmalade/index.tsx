@@ -4,7 +4,7 @@ import {
   Grid,
   GridItem,
   Heading,
-  Link as KadenaLink,
+  Button as KadenaLink,
   SystemIcon,
   Text,
 } from '@kadena/react-ui';
@@ -58,7 +58,6 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
             </Box>
             <KadenaLink
               endIcon={<SystemIcon.TrailingIcon />}
-              variant="contained"
               href="/marmalade/quick-start"
             >
               Get started

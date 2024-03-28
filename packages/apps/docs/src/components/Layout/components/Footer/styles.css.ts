@@ -5,12 +5,13 @@ import { $$footerMenu, $$pageWidth } from '../../global.css';
 export const footerWrapperClass = style([
   atoms({
     position: 'relative',
-    backgroundColor: 'layer10.inverse.default',
+    backgroundColor: 'layer.default',
   }),
   {
     selectors: {
       [`${darkThemeClass} &`]: {
-        backgroundColor: tokens.kda.foundation.color.background.layer10.default,
+        backgroundColor:
+          tokens.kda.foundation.color.background.surfaceHighContrast.default,
       },
     },
     marginBlockStart: tokens.kda.foundation.size.n40,

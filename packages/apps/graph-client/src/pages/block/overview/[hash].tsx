@@ -16,11 +16,11 @@ import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+  Button,
   Cell,
   Column,
   ContentHeader,
   Heading,
-  Link,
   Notification,
   Row,
   Stack,
@@ -127,11 +127,11 @@ const Block: React.FC = () => {
                         <strong>Parent</strong>
                       </Cell>
                       <Cell>
-                        <Link
+                        <Button
                           href={`${routes.BLOCK_OVERVIEW}/${data.block.parent?.hash}`}
                         >
                           {data.block.parent?.hash}
-                        </Link>
+                        </Button>
                       </Cell>
                     </Row>
                     <Row>

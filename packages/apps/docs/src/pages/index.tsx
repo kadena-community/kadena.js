@@ -17,7 +17,7 @@ import {
   Grid,
   GridItem,
   Heading,
-  Link as KandenaLink,
+  Button as KandenaLink,
   Stack,
   SystemIcon,
 } from '@kadena/react-ui';
@@ -74,8 +74,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     <KandenaLink
                       href="/build/guides/election-dapp-tutorial"
                       endIcon={<SystemIcon.TrailingIcon />}
-                      color="negative"
-                      variant="contained"
+                      variant="negative"
                     >
                       Build your first dApp
                     </KandenaLink>

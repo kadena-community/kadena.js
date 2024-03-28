@@ -6,10 +6,10 @@ import type {
 import routes from '@constants/routes';
 import {
   Box,
+  Button,
   Cell,
   Column,
   ContentHeader,
-  Link,
   Row,
   Table,
   TableBody,
@@ -79,14 +79,14 @@ export const CompactTransfersTable = (
         }
       />
       <Box margin="sm" />
-      <Link
+      <Button
         isCompact
         href={`${routes.ACCOUNT_TRANSFERS}/${fungibleName}/${accountName}${
           chainId !== undefined ? `?chain=${chainId}` : ''
         }`}
       >
         View all transfers
-      </Link>
+      </Button>
       <Box margin="xs" />
       <Table className={atoms({ wordBreak: 'break-all' })} isCompact>
         <TableHeader>
@@ -135,7 +135,7 @@ export const CompactTransfersTable = (
                 <Cell>{heightDisplay}</Cell>
                 <Cell>{transfer.amount}</Cell>
                 <Cell>
-                  <Link
+                  <Button
                     href={`${routes.ACCOUNT}/${fungibleName}/${transfer.senderAccount}`}
                   >
                     {truncateColumns ? (
@@ -150,11 +150,11 @@ export const CompactTransfersTable = (
                     ) : (
                       <span>{transfer.senderAccount}</span>
                     )}
-                  </Link>
+                  </Button>
                 </Cell>
                 <Cell>
                   {!crossChainCounterPart ? (
-                    <Link
+                    <Button
                       href={`${routes.ACCOUNT}/${fungibleName}/${transfer.receiverAccount}`}
                     >
                       {truncateColumns ? (
@@ -169,9 +169,9 @@ export const CompactTransfersTable = (
                       ) : (
                         <span>{transfer.receiverAccount}</span>
                       )}
-                    </Link>
+                    </Button>
                   ) : (
-                    <Link
+                    <Button
                       href={`${routes.ACCOUNT}/${fungibleName}/${crossChainCounterPart.receiverAccount}`}
                     >
                       {truncateColumns ? (
@@ -188,11 +188,13 @@ export const CompactTransfersTable = (
                       ) : (
                         <span>{crossChainCounterPart.receiverAccount}</span>
                       )}
-                    </Link>
+                    </Button>
                   )}
                 </Cell>
                 <Cell>
-                  <Link href={`${routes.TRANSACTIONS}/${transfer.requestKey}`}>
+                  <Button
+                    href={`${routes.TRANSACTIONS}/${transfer.requestKey}`}
+                  >
                     {truncateColumns ? (
                       <Tooltip
                         closeDelay={150}
@@ -205,11 +207,11 @@ export const CompactTransfersTable = (
                     ) : (
                       <span>{transfer.requestKey}</span>
                     )}
-                  </Link>
+                  </Button>
                   {crossChainCounterPart && (
                     <>
                       <span> / </span>
-                      <Link
+                      <Button
                         href={`${routes.TRANSACTIONS}/${crossChainCounterPart.requestKey}`}
                       >
                         {truncateColumns ? (
@@ -226,7 +228,7 @@ export const CompactTransfersTable = (
                         ) : (
                           <span>{crossChainCounterPart.requestKey}</span>
                         )}
-                      </Link>
+                      </Button>
                     </>
                   )}
                 </Cell>

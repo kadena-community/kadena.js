@@ -1,21 +1,7 @@
-import type { Meta, StoryFn, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { button } from '../Button/SharedButton.css';
-import { LeadingIcon, Plus, TrailingIcon } from '../Icon/System/SystemIcon';
-import { Box } from '../Layout/Box/Box';
-import { Heading } from '../Typography/Heading/Heading';
 import type { ILinkProps } from './Link';
 import { Link } from './Link';
-
-// eslint-disable-next-line @kadena-dev/typedef-var
-const buttonVariants = Object.keys(
-  (button as any).classNames?.variants?.variant,
-) as ILinkProps['variant'][];
-
-// eslint-disable-next-line @kadena-dev/typedef-var
-const buttonColors = Object.keys(
-  (button as any).classNames?.variants?.color,
-) as ILinkProps['color'][];
 
 const meta: Meta<ILinkProps> = {
   title: 'Components/Link',
@@ -41,28 +27,6 @@ const meta: Meta<ILinkProps> = {
       description: '(deprecated) callback when button is clicked',
       table: {
         disable: true,
-      },
-    },
-    variant: {
-      options: buttonVariants,
-      control: {
-        type: 'select',
-      },
-      description: 'button style variant',
-      table: {
-        type: { summary: buttonVariants.join(' | ') },
-        defaultValue: { summary: 'default' },
-      },
-    },
-    color: {
-      options: buttonColors,
-      control: {
-        type: 'select',
-      },
-      description: 'button color variant',
-      table: {
-        type: { summary: buttonColors.join(' | ') },
-        defaultValue: { summary: 'default' },
       },
     },
     isDisabled: {
@@ -93,11 +57,9 @@ type LinkStory = StoryObj<
 >;
 
 export const _Link: LinkStory = {
-  name: 'Link',
   args: {
     text: 'Click me',
-    variant: 'text',
-    color: 'primary',
+    variant: 'primary',
     isDisabled: false,
     isCompact: false,
     isLoading: false,
@@ -110,144 +72,5 @@ export const _Link: LinkStory = {
     return <Link {...props}>{text}</Link>;
   },
 };
-
-export const AllVariants: StoryFn<ILinkProps> = ({
-  isCompact,
-  isDisabled,
-  isLoading,
-}) => (
-  <Box gap="xs" display="flex">
-    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
-      <Heading variant="h6">Contained</Heading>
-      {buttonColors.map((color) => (
-        <Link
-          key={color}
-          color={color}
-          isCompact={isCompact}
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          href="#"
-          variant="contained"
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
-        >
-          {color}
-        </Link>
-      ))}
-    </Box>
-
-    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
-      <Heading variant="h6">Alternative</Heading>
-      {buttonColors.map((color) => (
-        <Link
-          key={color}
-          color={color}
-          variant="alternative"
-          isCompact={isCompact}
-          href="#"
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
-        >
-          {color}
-        </Link>
-      ))}
-    </Box>
-
-    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
-      <Heading variant="h6">Outlined</Heading>
-      {buttonColors.map((color) => (
-        <Link
-          key={color}
-          color={color}
-          variant="outlined"
-          href="#"
-          isCompact={isCompact}
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
-        >
-          {color}
-        </Link>
-      ))}
-    </Box>
-
-    <Box gap="xs" display="flex" flexDirection="column" alignItems="flex-start">
-      <Heading variant="h6">Text (default)</Heading>
-      {buttonColors.map((color) => (
-        <Link
-          key={color}
-          color={color}
-          variant="text"
-          href="#"
-          isCompact={isCompact}
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
-        >
-          {color}
-        </Link>
-      ))}
-    </Box>
-  </Box>
-);
-
-export const StartIcon: StoryFn<ILinkProps> = ({
-  isCompact,
-  isDisabled,
-  isLoading,
-  color,
-  variant,
-}) => (
-  <Link
-    startIcon={<Plus />}
-    isCompact={isCompact}
-    isDisabled={isDisabled}
-    isLoading={isLoading}
-    color={color}
-    variant={variant}
-  >
-    Click me
-  </Link>
-);
-
-export const EndIcon: StoryFn<ILinkProps> = ({
-  isCompact,
-  isDisabled,
-  isLoading,
-  color,
-  variant,
-}) => (
-  <Link
-    endIcon={<Plus />}
-    isCompact={isCompact}
-    isDisabled={isDisabled}
-    isLoading={isLoading}
-    color={color}
-    variant={variant}
-  >
-    Click me
-  </Link>
-);
-
-export const OnlyIcon: StoryFn<ILinkProps> = ({
-  isCompact,
-  isDisabled,
-  isLoading,
-  color,
-  variant,
-}) => (
-  <Link
-    icon={<Plus />}
-    isCompact={isCompact}
-    isDisabled={isDisabled}
-    isLoading={isLoading}
-    color={color}
-    variant={variant}
-  />
-);
 
 export default meta;

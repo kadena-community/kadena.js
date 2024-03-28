@@ -21,7 +21,7 @@ import {
   Grid,
   GridItem,
   Heading,
-  Link as KadenaLink,
+  Button as KadenaLink,
   SystemIcon,
   Text,
 } from '@kadena/react-ui';
@@ -59,7 +59,6 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
               <KadenaLink
                 endIcon={<SystemIcon.TrailingIcon />}
                 href="/pact/beginner"
-                variant="contained"
               >
                 Getting started
               </KadenaLink>

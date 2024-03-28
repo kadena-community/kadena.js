@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import type { ReactNode } from 'react';
 import React from 'react';
 
-import { transformVariants } from '../typography.css';
+import { colorVariants, transformVariants } from '../typography.css';
 import { fontMap } from './contants';
 
 type HeadingElementType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
@@ -16,7 +16,7 @@ export interface IHeadingProps {
 }
 /**
  * Heading component
- * @param as - HTML element to render defaults to "h1"
+ * @param as - HTML element to render defaults to "h2"
  * @param children - Text content
  * @param className - Additional classes
  * @param transform - Text transform variant defaults to "none"
@@ -33,6 +33,7 @@ export const Heading = ({
   const classList = classNames(
     fontMap[variant],
     transformVariants[transform],
+    colorVariants.default,
     className,
   );
 

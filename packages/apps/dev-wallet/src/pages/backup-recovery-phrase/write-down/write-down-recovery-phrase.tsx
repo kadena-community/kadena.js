@@ -73,7 +73,7 @@ export function WriteDownRecoveryPhrase() {
         <Text size="small">{mnemonic}</Text>
         <Button
           type="submit"
-          onClick={() => {
+          onPress={() => {
             setReadyForConfirmation(true);
           }}
         >

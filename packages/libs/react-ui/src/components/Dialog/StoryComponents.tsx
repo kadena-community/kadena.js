@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import React from 'react';
+import { Button } from '../Button';
 import { Stack } from '../Layout';
-import { Link } from '../Link';
 import { Text } from '../Typography';
 
 export const ModalContent: FC = () => {
@@ -13,13 +13,13 @@ export const ModalContent: FC = () => {
       </Text>
       <ul>
         <li>
-          <Link href="#">link 1</Link>
+          <Button href="#">link 1</Button>
         </li>
         <li>
-          <Link href="#">link 2</Link>
+          <Button href="#">link 2</Button>
         </li>
         <li>
-          <Link href="#">link 3</Link>
+          <Button href="#">link 3</Button>
         </li>
       </ul>
       <Text>
