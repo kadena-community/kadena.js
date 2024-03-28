@@ -12,7 +12,7 @@ interface IPageNumProps {
 export const PageNum: FC<IPageNumProps> = ({ number, current, onClick }) => {
   return (
     <Button
-      variant="text"
+      variant="outlined"
       className={pageNumButtonClass}
       data-current={current || undefined}
       aria-current={current || undefined}

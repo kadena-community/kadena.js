@@ -11,7 +11,7 @@ export const monospaceSmallRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
   fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
-  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.md,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
@@ -33,7 +33,7 @@ export const monospaceSmallBold = style({
   fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
   fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.bold,
-  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.md,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
@@ -53,22 +53,22 @@ export const monospaceSmallBold = style({
  */
 export const monospaceSmallestRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
-  fontSize: '0.6875rem',
+  fontSize: tokens.kda.foundation.typography.fontSize.xxs,
   fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.regular,
-  lineHeight: '0.875rem',
+  lineHeight: tokens.kda.foundation.typography.lineHeight.sm,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.xs,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.md,
     },
     '(width >= 80rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.xs,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.md,
     },
     '(width >= 96rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.xs,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.md,
     },
   },
 });
@@ -78,22 +78,22 @@ export const monospaceSmallestRegular = style({
  */
 export const monospaceSmallestBold = style({
   fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
-  fontSize: '0.6875rem',
+  fontSize: tokens.kda.foundation.typography.fontSize.xxs,
   fontWeight: tokens.kda.foundation.typography.weight.monospaceFont.bold,
-  lineHeight: '0.875rem',
+  lineHeight: tokens.kda.foundation.typography.lineHeight.sm,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.xs,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.md,
     },
     '(width >= 80rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.xs,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.md,
     },
     '(width >= 96rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.xs,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.md,
     },
   },
 });
@@ -305,7 +305,7 @@ export const bodySmallRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
   fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
-  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.md,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
@@ -330,7 +330,7 @@ export const bodySmallBold = style({
   fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
   fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
-  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.md,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
@@ -353,9 +353,9 @@ export const bodySmallBold = style({
  */
 export const bodySmallestRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
-  fontSize: '0.6875rem',
+  fontSize: tokens.kda.foundation.typography.fontSize.xxs,
   fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
-  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.md,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
@@ -378,9 +378,9 @@ export const bodySmallestRegular = style({
  */
 export const bodySmallestBold = style({
   fontFamily: tokens.kda.foundation.typography.family.secondaryFont,
-  fontSize: '0.6875rem',
+  fontSize: tokens.kda.foundation.typography.fontSize.xxs,
   fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
-  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.md,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
@@ -455,7 +455,7 @@ export const uiSmallRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
-  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.md,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
@@ -477,7 +477,7 @@ export const uiSmallBold = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
   fontSize: tokens.kda.foundation.typography.fontSize.xs,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
-  lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+  lineHeight: tokens.kda.foundation.typography.lineHeight.md,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
@@ -497,22 +497,22 @@ export const uiSmallBold = style({
  */
 export const uiSmallestRegular = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
-  fontSize: '0.6875rem',
+  fontSize: tokens.kda.foundation.typography.fontSize.xxs,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.regular,
-  lineHeight: '0.875rem',
+  lineHeight: tokens.kda.foundation.typography.lineHeight.sm,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.xs,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.md,
     },
     '(width >= 80rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.xs,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.md,
     },
     '(width >= 96rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.xs,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.md,
     },
   },
 });
@@ -522,22 +522,22 @@ export const uiSmallestRegular = style({
  */
 export const uiSmallestBold = style({
   fontFamily: tokens.kda.foundation.typography.family.primaryFont,
-  fontSize: '0.6875rem',
+  fontSize: tokens.kda.foundation.typography.fontSize.xxs,
   fontWeight: tokens.kda.foundation.typography.weight.primaryFont.medium,
-  lineHeight: '0.875rem',
+  lineHeight: tokens.kda.foundation.typography.lineHeight.sm,
   letterSpacing: tokens.kda.foundation.spacing.no,
   '@media': {
     '(width >= 64rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.xs,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.md,
     },
     '(width >= 80rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.xs,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.md,
     },
     '(width >= 96rem)': {
       fontSize: tokens.kda.foundation.typography.fontSize.xs,
-      lineHeight: tokens.kda.foundation.typography.lineHeight.minimum,
+      lineHeight: tokens.kda.foundation.typography.lineHeight.md,
     },
   },
 });

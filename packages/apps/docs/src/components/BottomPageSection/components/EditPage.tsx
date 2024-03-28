@@ -18,7 +18,7 @@ export const EditPage: FC<IProps> = ({ editLink }) => {
     window.open(editLink, '_blank');
   };
   return (
-    <Button onClick={onClick} title="Edit this page">
+    <Button onPress={onClick} title="Edit this page">
       Edit this page
     </Button>
   );

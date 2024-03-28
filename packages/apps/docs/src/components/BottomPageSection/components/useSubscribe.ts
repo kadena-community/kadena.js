@@ -8,7 +8,7 @@ interface IReturn {
   hasError: boolean;
   message?: string;
   handleFormState: (event: ChangeEvent<HTMLInputElement>) => void;
-  handleSubscribe: IButtonProps['onClick'];
+  handleSubscribe: IButtonProps['onPress'];
   canSubmit: boolean;
   hasSuccess: boolean;
   isLoading: boolean;

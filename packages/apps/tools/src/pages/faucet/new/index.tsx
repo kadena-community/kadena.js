@@ -429,7 +429,7 @@ const NewAccountFaucetPage: FC = () => {
                   endAddon={
                     <Button
                       icon={<MonoAdd />}
-                      variant="text"
+                      variant="outlined"
                       onPress={() => {
                         const value = getValues('pubKey');
                         const valid = validatePublicKey(
@@ -446,7 +446,6 @@ const NewAccountFaucetPage: FC = () => {
                       }}
                       aria-label="Add public key"
                       title="Add Public Key"
-                      color="primary"
                       type="button"
                     />
                   }
@@ -477,14 +476,13 @@ const NewAccountFaucetPage: FC = () => {
                   endAddon={
                     <Button
                       icon={<MonoContentCopy />}
-                      variant="text"
+                      variant="outlined"
                       onPress={async () => {
                         const value = getValues('name');
                         await navigator.clipboard.writeText(value);
                       }}
                       aria-label="Copy Account Name"
                       title="Copy Account Name"
-                      color="primary"
                       type="button"
                     />
                   }

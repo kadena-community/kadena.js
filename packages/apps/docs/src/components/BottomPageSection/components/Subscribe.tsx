@@ -47,7 +47,7 @@ export const Subscribe: FC = () => {
                 <Button
                   type="submit"
                   isDisabled={!canSubmit}
-                  onClick={handleSubscribe}
+                  onPress={handleSubscribe}
                   title="Subscribe"
                   isLoading={isLoading}
                 >

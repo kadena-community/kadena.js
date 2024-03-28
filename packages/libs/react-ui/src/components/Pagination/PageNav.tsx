@@ -21,7 +21,7 @@ export const PageNav: FC<IPageNavProps> = ({
 
   return (
     <Button
-      variant="text"
+      variant="outlined"
       isDisabled={isDisabled}
       onPress={onClick}
       startIcon={isPrevious ? <SystemIcon.LeadingIcon /> : undefined}
