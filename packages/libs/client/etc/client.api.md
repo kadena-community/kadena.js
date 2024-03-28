@@ -144,13 +144,13 @@ export interface IContinuationPayloadObject {
 // @public (undocumented)
 export interface ICreateClient {
     (hostUrl: string, defaults?: {
-        confirmationDepth?: Milliseconds;
+        confirmationDepth?: number;
     }): IClient;
     (hostAddressGenerator?: (options: {
         chainId: ChainId;
         networkId: string;
     }) => string, defaults?: {
-        confirmationDepth?: Milliseconds;
+        confirmationDepth?: number;
     }): IClient;
 }
 
@@ -491,11 +491,6 @@ export type WithCapability<TCode extends string & {
         funs: [TCode];
     };
 }>;
-
-// Warnings were encountered during analysis:
-//
-// src/client/client.ts:258:34 - (ae-incompatible-release-tags) The symbol "confirmationDepth" is marked as @public, but its signature references "Milliseconds" which is marked as @alpha
-// src/client/client.ts:272:18 - (ae-incompatible-release-tags) The symbol "confirmationDepth" is marked as @public, but its signature references "Milliseconds" which is marked as @alpha
 
 // (No @packageDocumentation comment for this package)
 

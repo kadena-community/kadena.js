@@ -16,7 +16,6 @@ import type {
   INetworkOptions,
   IPollOptions,
   IPollRequestPromise,
-  Milliseconds,
 } from './interfaces/interfaces';
 import {
   groupByHost,
