@@ -1,5 +1,12 @@
 # Change Log - @kadena/chainweb-node-client
 
+## 0.6.0
+
+### Minor Changes
+
+- 3bbfeaaa9: added support for confirmationDepth in client added `pollOne` as an
+  alternative to `listen` that uses `/poll` endpoint
+
 ## 0.5.3
 
 ### Patch Changes

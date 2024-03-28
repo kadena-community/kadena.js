@@ -1,5 +1,17 @@
 # @kadena/graph-client
 
+## 0.1.15
+
+### Patch Changes
+
+- 6e6b89bdf: Adjust client to new transaction and signers queries format and
+  also to newly added relational connections on transaction
+- fc1308be8: Removed duplicate queries
+- Updated dependencies [b316674811]
+- Updated dependencies [8bb316881]
+- Updated dependencies [5c5937eef]
+  - @kadena/react-ui@0.8.4
+
 ## 0.1.14
 
 ### Patch Changes
