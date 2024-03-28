@@ -714,17 +714,296 @@ Wallets typically have their own API for communicating with dApps. While you can
 directly use the wallet API, we've also developed wrapper functions for certain
 wallets to provide more convenience.
 
-### Chainweaver
+### Sign function interface
 
-you can use `createSignWithChainweaver` to sign tx via Chainweaver.
+We follow one interface for wallet helpers, basically there are two overloads of
+the sign functions. if you pass single tx it returns the single signed (or
+partially signed) tx and if you pass a list of txs it returns the list of signed
+(or partially signed) txs.
 
 ```TS
-createSignWithChainweaver(options:{ host?: string }): (txList:IUnsignedCommand[]) =>Promise<(ICommand | IUnsignedCommand)[]>
+interface ISignFunction {
+  (transaction: IUnsignedCommand): Promise<ICommand | IUnsignedCommand>;
+  (transactionList: IUnsignedCommand[]): Promise<Array<ICommand | IUnsignedCommand>>;
+}
+```
+
+#### Single Transaction
+
+| Parameter | Type             | Description     |
+| --------- | ---------------- | --------------- |
+| tx        | IUnsignedCommand | the transaction |
+
+#### List of Transactions
+
+| Parameter | Type               | Description                                |
+| --------- | ------------------ | ------------------------------------------ |
+| tsList    | IUnsignedCommand[] | list of the transactions need to be signed |
+
+### Chainweaver
+
+You can use `createSignWithChainweaver` to sign tx via Chainweaver. it's a
+factory function that returns the actual sign function.
+
+**note**: This function uses `quicksign` protocol.
+
+```TS
+createSignWithChainweaver(options:{ host?: string }): ISignFunction
 ```
 
 | Parameter | Type              | Description                                                           |
 | --------- | ----------------- | --------------------------------------------------------------------- |
 | option    | { host?: string } | option including host url default `{ host: 'http://127.0.0.1:9467' }` |
+
+#### Examples
+
+Sign one transaction
+
+```TS
+
+const signWithChainweaver = createSignWithChainweaver()
+
+const transaction = Pact.builder
+    .execution(Pact.modules.coin.transfer(senderAccount, receiverAccount, amount))
+    .addSigner(senderKey, (signFor) => [
+      signFor('coin.GAS'),
+      signFor('coin.TRANSFER', senderAccount, receiverAccount, amount),
+    ])
+    .setMeta({ chainId: '0', senderAccount })
+    .setNetworkId(NETWORK_ID)
+    .createTransaction();
+
+const signedTx = signWithChainweaver(transaction);
+
+```
+
+Sign two transactions
+
+```TS
+
+const signWithChainweaver = createSignWithChainweaver()
+
+const [txOneSigned, txTwoSigned] = signWithChainweaver([txOne, txTwo]);
+
+```
+
+### WalletConnect
+
+We have developed helpers based on
+[KIP-017](https://github.com/kadena-io/KIPs/blob/master/kip-0017.md) that uses
+wallet-connect protocol;
+
+**note**: You need to create wallet-connect client and session via the
+wallet-connect SDK then you can use the helpers to sign transactions.
+
+#### Wallet Connect sign method
+
+`createWalletConnectSign` is a factory function that returns the sign function
+work with `sign` protocol
+
+**note** : the return object might be different (e.g in meta data) from what you
+pass since the `sign` protocol let wallets to create the tx.
+
+```TS
+createWalletConnectSign(client, session, walletConnectChainId): (transaction: IUnsignedCommand): Promise<ICommand | IUnsignedCommand>
+```
+
+| Parameter | Type                | Description                                                                                                 |
+| --------- | ------------------- | ----------------------------------------------------------------------------------------------------------- |
+| client    | Client              | wallet-connect client object                                                                                |
+| session   | SessionTypes.Struct | wallet-connect session object                                                                               |
+| networkId | string              | networkId (e.g "mainnet01" , "testnet04") - can be prefixed with "kadena:" as well (e.g "kadena:mainnet01") |
+
+##### Examples
+
+```TS
+const signWithWalletConnect = createWalletConnectSign(client, session, "mainnet01");
+
+const signedTx = signWithWalletConnect(tx);
+```
+
+#### Wallet Connect quicksign method
+
+`createWalletConnectQuicksign` is a factory function that returns the sign
+function work with `quicksign` protocol
+
+```TS
+createWalletConnectQuicksign(client, session, walletConnectChainId): ISignFunction
+```
+
+| Parameter | Type                | Description                                                                                                 |
+| --------- | ------------------- | ----------------------------------------------------------------------------------------------------------- |
+| client    | Client              | wallet-connect client object                                                                                |
+| session   | SessionTypes.Struct | wallet-connect session object                                                                               |
+| networkId | string              | networkId (e.g "mainnet01" , "testnet04") - can be prefixed with "kadena:" as well (e.g "kadena:mainnet01") |
+
+##### Examples
+
+```TS
+const quicksignWithWalletConnect = createWalletConnectQuicksign(client, session, "mainnet01");
+
+const signedTx = signWithWalletConnect(tx);
+```
+
+### EckoWallet
+
+We developed two functions for `sign` and `quicksign` protocol with EckoWallet;
+both function return a sign function that have the following properties as well;
+
+```TS
+const { isInstalled, isConnected, connect } = createEckoWalletSign()
+const { isInstalled, isConnected, connect } = createEckoWalletQuicksign()
+```
+
+#### isInstalled
+
+You can use this function to check if the EckoWallet extension is installed in
+the browser
+
+```TS
+isInstalled(): boolean
+```
+
+#### isConnected
+
+You can use this function to check if the dApp is already connected to
+EckoWallet
+
+```TS
+isConnected(): Promise<boolean>
+```
+
+#### connect
+
+You can use this function to send connect request to EckoWallet
+
+```TS
+connect(networkId:string): Promise<boolean>
+```
+
+#### Sign with EckoWallet
+
+This function uses `sign` protocol to communicate with EckoWallet.
+
+**note** : the return object might be different (e.g in meta data) from what you
+pass since the `sign` protocol let wallets to create the tx.
+
+```TS
+createEckoWalletSign(options:{ host?: string }): (transaction: IUnsignedCommand): Promise<ICommand | IUnsignedCommand>
+```
+
+##### Examples
+
+```TS
+
+const signWithEckoWallet = createEckoWalletSign()
+
+// the wallet will create the completed one
+const partialTx = Pact.builder
+    .execution(Pact.modules.coin.transfer(senderAccount, receiverAccount, amount))
+    .addSigner(senderKey, (signFor) => [
+      signFor('coin.GAS'),
+      signFor('coin.TRANSFER', senderAccount, receiverAccount, amount),
+    ])
+    .setMeta({ chainId: '0' })
+    .setNetworkId(NETWORK_ID)
+    .createTransaction();
+
+const signedTx =  signWithEckoWallet(partialTx)
+```
+
+#### quicksign with EckoWallet
+
+This function uses `quicksign` protocol to communicate with EckoWallet.
+
+```TS
+createEckoWalletQuicksign(options:{ host?: string }): ISignFunction
+```
+
+##### Examples
+
+Sign one transaction
+
+```TS
+
+const quicksignWithEckoWallet = createEckoWalletQuicksign()
+
+const tx = Pact.builder
+    .execution(Pact.modules.coin.transfer(senderAccount, receiverAccount, amount))
+    .addSigner(senderKey, (signFor) => [
+      signFor('coin.GAS'),
+      signFor('coin.TRANSFER', senderAccount, receiverAccount, amount),
+    ])
+    .setMeta({ chainId: '0', senderAccount })
+    .setNetworkId(NETWORK_ID)
+    .createTransaction();
+
+const signedTx =  quicksignWithEckoWallet(partialTx)
+```
+
+Sign two transactions
+
+```TS
+
+const quicksignWithEckoWallet = createEckoWalletQuicksign()
+
+const [txOneSigned, txTwoSigned] = quicksignWithEckoWallet([txOne, txTwo]);
+
+```
+
+### Sign with Keypairs
+
+if you already have private key (e.g. in a server environment or in a safe
+environment or CI test pipeline) you can sign the tx by using
+`createSignWithKeypair` function. its a factory function that returns the sign
+function.
+
+the keypair interface
+
+```TS
+interface IKeyPair {
+    publicKey: string;
+    secretKey: string;
+}
+```
+
+```TS
+createSignWithKeypair(keyOrKeys:IKeyPair | IKeyPair[]): ISignFunction
+```
+
+#### Examples
+
+Sign with one key
+
+```TS
+const signWithKeypair = createSignWithKeypair({ publicKey, secretKey })
+
+const signedTx = signWithKeypair(tx);
+
+```
+
+Sign with several keys
+
+```TS
+const signWithKeypair = createSignWithKeypair([firstKeyPair, secondKeyPair])
+
+const signedTx = signWithKeypair(tx);
+
+```
+
+### Add Signatures Manually
+
+if you already have the signature you can add it in the right order to the tx by
+using `addSignatures`
+
+```TS
+addSignatures(transaction, ...signatures): IUnsignedCommand | ICommand
+```
+
+| Parameter     | Type                                    | Description                                                 |
+| ------------- | --------------------------------------- | ----------------------------------------------------------- |
+| transaction   | IUnsignedCommand                        | the partially signed or unsigned transaction                |
+| ...signatures | Array<{ sig: string; pubKey?: string }> | list of signatures that need to be added to the transaction |
 
 ## TODO: ADD OTHER PARTS
 

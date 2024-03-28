@@ -5,7 +5,6 @@ import type { IQuicksignResponse } from '../../signing-api/v1/quicksign';
 import type { ISignFunction } from '../ISignFunction';
 import { addSignatures } from '../utils/addSignatures';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
-import type { TWalletConnectChainId } from './walletConnectTypes';
 
 /**
  * Creates the quicksignWithWalletConnect function with interface {@link ISingleSignFunction}
@@ -15,8 +14,11 @@ import type { TWalletConnectChainId } from './walletConnectTypes';
 export function createWalletConnectQuicksign(
   client: Client,
   session: SessionTypes.Struct,
-  walletConnectChainId: TWalletConnectChainId,
+  networkId: string,
 ): ISignFunction {
+  const walletConnectChainId = networkId.startsWith('kadena:')
+    ? networkId
+    : `kadena:${networkId}`;
   const quicksignWithWalletConnect: ISignFunction = (async (
     transactionList: IUnsignedCommand | Array<IUnsignedCommand | ICommand>,
   ) => {

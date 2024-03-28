@@ -5,7 +5,6 @@ import type { ISigningRequest } from '../../interfaces/ISigningRequest';
 import { isExecCommand } from '../../interfaces/isExecCommand';
 import type { ISingleSignFunction } from '../ISignFunction';
 import { parseTransactionCommand } from '../utils/parseTransactionCommand';
-import type { TWalletConnectChainId } from './walletConnectTypes';
 
 interface ISigningResponse {
   body: ICommand | IUnsignedCommand;
@@ -22,8 +21,11 @@ interface ISigningResponse {
 export function createWalletConnectSign(
   client: Client,
   session: SessionTypes.Struct,
-  walletConnectChainId: TWalletConnectChainId,
+  networkId: string,
 ): ISingleSignFunction {
+  const walletConnectChainId = networkId.startsWith('kadena:')
+    ? networkId
+    : `kadena:${networkId}`;
   const signWithWalletConnect: ISingleSignFunction = async (transaction) => {
     const parsedTransaction = parseTransactionCommand(transaction);
     if (!isExecCommand(parsedTransaction)) {
