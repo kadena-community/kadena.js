@@ -102,9 +102,6 @@ async function getLastEvents(
   parametersFilter?: string | null,
   minimumDepth?: number | null,
 ): Promise<Event[]> {
-  // These variables are created to be used in the query below in case minimumDepth is provided
-  const searchableChainIds = chainId ? [chainId] : chainIds;
-
   const defaultFilter: Parameters<typeof prismaClient.event.findMany>[0] = {
     orderBy: {
       id: 'desc',
@@ -138,7 +135,10 @@ async function getLastEvents(
         }),
       }),
       ...(minimumDepth && {
-        OR: await getConditionForMinimumDepth(minimumDepth, searchableChainIds),
+        OR: await getConditionForMinimumDepth(
+          minimumDepth,
+          chainId ? [chainId] : chainIds,
+        ),
       }),
     },
   });
