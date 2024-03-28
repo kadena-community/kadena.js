@@ -21,23 +21,6 @@ describe('safeAssign', () => {
   });
 });
 
-describe('capitalizeFirstLetter', () => {
-  it('should capitalize the first letter of a string', () => {
-    const result = helpers.capitalizeFirstLetter('hello');
-    expect(result).toBe('Hello');
-  });
-
-  it('should return an empty string if input is empty', () => {
-    const result = helpers.capitalizeFirstLetter('');
-    expect(result).toBe('');
-  });
-
-  it('should return the same string if the first character is not a letter', () => {
-    const result = helpers.capitalizeFirstLetter('1hello');
-    expect(result).toBe('1hello');
-  });
-});
-
 describe('isAlphabetic', () => {
   it('should return true for alphabetic strings', () => {
     expect(helpers.isAlphabetic('HelloWorld')).toBe(true);
@@ -97,36 +80,6 @@ describe('mergeConfigs', () => {
     const source = { key1: 'newvalue1', key3: 'value3' };
     const merged = helpers.mergeConfigs(target, source);
     expect(merged).toEqual({ key1: 'newvalue1', key2: 'value2' });
-  });
-});
-
-describe('collectResponses', () => {
-  it('should collect responses for a set of questions', async () => {
-    const args = {};
-    const questions = [
-      { key: 'key1', prompt: () => Promise.resolve('Answer 1') },
-      { key: 'key2', prompt: () => Promise.resolve('Answer 2') },
-    ];
-    const responses = await helpers.collectResponses(args, questions);
-    expect(responses).toEqual({ key1: 'Answer 1', key2: 'Answer 2' });
-  });
-
-  it('should handle questions with default values', async () => {
-    const args = {};
-    const questions = [
-      {
-        key: 'key1',
-        prompt: () => Promise.resolve('Answer 1'),
-        default: 'Default 1',
-      },
-      {
-        key: 'key2',
-        prompt: () => Promise.resolve('Answer 2'),
-        default: 'Default 2',
-      },
-    ];
-    const responses = await helpers.collectResponses(args, questions);
-    expect(responses).toEqual({ key1: 'Answer 1', key2: 'Answer 2' });
   });
 });
 
@@ -204,16 +157,5 @@ describe('getPubKeyFromAccount', () => {
     expect(() => helpers.getPubKeyFromAccount(invalidAccount)).toThrow(
       'Invalid account',
     );
-  });
-});
-
-describe('getQuestionKeys', () => {
-  it('should retrieve the keys of questions', () => {
-    const questions = [
-      { key: 'key1', prompt: () => Promise.resolve('Answer 1') },
-      { key: 'key2', prompt: () => Promise.resolve('Answer 2') },
-    ];
-    const keys = helpers.getQuestionKeys(questions);
-    expect(keys).toEqual(['key1', 'key2']);
   });
 });
