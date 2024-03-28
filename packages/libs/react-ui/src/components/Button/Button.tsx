@@ -20,6 +20,7 @@ import {
   badgeStyle,
   button,
   centerContentWrapper,
+  disabledBadgeStyle,
   iconOnlyStyle,
   iconStyle,
   noPostfixStyle,
@@ -57,7 +58,7 @@ interface IAnchorElementProps extends ICustomProps {
 export interface IButtonElementProps extends ICustomProps {
   type?: Pick<AriaButtonProps, 'type'>['type'];
   onPress?:
-    | Pick<AriaButtonProps, 'onPress'>
+    | Pick<AriaButtonProps, 'onPress'>['onPress']
     | MouseEventHandler<HTMLButtonElement>;
   href?: never;
   target?: never;
@@ -109,8 +110,11 @@ const BaseButton = (
 ) => {
   props = disableLoadingProps(props);
   const ref = useObjectRef(forwardedRef);
-  const { buttonProps, isPressed } = useButton(props, ref);
-  const { linkProps, isPressed: isLinkPressed } = useLink(props, ref);
+  const { buttonProps, isPressed } = useButton(props as ICustomProps, ref);
+  const { linkProps, isPressed: isLinkPressed } = useLink(
+    props as ICustomProps,
+    ref,
+  );
   const { hoverProps, isHovered } = useHover(props);
   const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
 
@@ -152,8 +156,9 @@ const BaseButton = (
       {badgeValue ? (
         <Badge
           size={'sm'}
+          className={classNames({ [disabledBadgeStyle]: props.isDisabled })}
           style={
-            ['outlined', 'transparent'].includes(variant)
+            ['outlined', 'transparent'].includes(variant) || props.isDisabled
               ? 'default'
               : 'inverse'
           }
@@ -166,14 +171,20 @@ const BaseButton = (
 
   // For buttons with icons only, only show the loader
   const content = props.isLoading ? (
-    <>
+    <span
+      className={classNames({
+        [`${noPrefixStyle} ${postfixIconStyle} ${centerContentWrapper}`]: !icon,
+        [iconOnlyStyle]: icon,
+      })}
+    >
       {icon ? null : loadingLabel}
       <ProgressCircle
+        size={isCompact ? 'sm' : 'md'}
         aria-hidden="true"
         aria-label={isLoadingAriaLiveLabel}
         isIndeterminate
       />
-    </>
+    </span>
   ) : icon ? (
     <span className={iconOnlyStyle}>{renderIcon(icon as ReactElement)}</span>
   ) : (
