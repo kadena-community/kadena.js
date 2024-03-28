@@ -2,7 +2,6 @@ import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import { getConditionForMinimumDepth } from '@services/confirmation-depth-service';
-import { chainIds } from '@utils/chains';
 import { normalizeError } from '@utils/errors';
 import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import { builder } from '../builder';
@@ -34,7 +33,7 @@ const generateEventsFilter = async (args: {
   ...(args.minimumDepth && {
     OR: await getConditionForMinimumDepth(
       args.minimumDepth,
-      args.chainId ? [args.chainId] : chainIds,
+      args.chainId ? [args.chainId] : undefined,
     ),
   }),
 });
