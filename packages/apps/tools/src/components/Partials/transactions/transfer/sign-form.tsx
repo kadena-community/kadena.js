@@ -18,8 +18,6 @@ import { CHAINS } from '@kadena/chainweb-node-client';
 import useTranslation from 'next-translate/useTranslation';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { buttonContainerClass } from '@/pages/transactions/transfer/styles.css';
-
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 
 import type { AccountDetails } from '@/hooks/use-account-details-query';
@@ -32,7 +30,7 @@ import { SignFormReceiver } from './sign-form-receiver';
 import type { SenderType } from './sign-form-sender';
 import { SignFormSender } from './sign-form-sender';
 
-const schema = z.object({
+export const schema = z.object({
   sender: NAME_VALIDATION,
   senderChainId: z.enum(CHAINS),
   receiver: NAME_VALIDATION,
@@ -57,15 +55,27 @@ export const SignForm = ({
 
   const [ledgerSignState, signTx] = useLedgerSign();
 
+  const defaultValues = {
+    senderChainId: CHAINS[0],
+    receiverChainId: undefined,
+    // receiver: '',
+    // sender: '',
+    // amount: undefined,
+  };
+
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { senderChainId: CHAINS[0], receiverChainId: undefined },
+    defaultValues,
   });
+
+  const { reset } = methods;
 
   const { selectedNetwork: network } = useWalletConnectClient();
 
   const watchChains = methods.watch(['senderChainId', 'receiverChainId']);
-  const onSameChain = watchChains.every((chain) => chain === watchChains[0]);
+  const onSameChain = watchChains.every(
+    (chain: ChainId) => chain === watchChains[0],
+  );
 
   const senderDataRef = useRef<AccountDetails>();
   const onSenderDataUpdate = (data: AccountDetails) => {
@@ -159,9 +169,23 @@ export const SignForm = ({
     }
   };
 
+  const onReset = () => {
+    reset(defaultValues);
+
+    senderDataRef.current = undefined;
+    receiverDataRef.current = undefined;
+    pubKeys.current = [];
+    pred.current = undefined;
+    keyId.current = undefined;
+    derivationMode.current = 'current';
+  };
+
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSignTransaction)}>
+      <form
+        onSubmit={methods.handleSubmit(handleSignTransaction)}
+        onReset={onReset}
+      >
         <Stack flexDirection="column" gap="lg">
           {/* SENDER  FLOW */}
           <SignFormSender
@@ -195,7 +219,17 @@ export const SignForm = ({
             </Notification>
           )}
 
-          <div className={buttonContainerClass}>
+          <Stack justifyContent={'flex-end'} gap={'lg'}>
+            <Button
+              // isLoading={isLoading}
+              // isDisabled={ledgerSignState.loading}
+              endIcon={<SystemIcon.Refresh />}
+              title={t('Reset')}
+              type="reset"
+            >
+              {t('Reset')}
+            </Button>
+
             <Button
               // isLoading={receiverData.isFetching || ledgerSignState.loading}
               isLoading={ledgerSignState.loading}
@@ -206,7 +240,7 @@ export const SignForm = ({
             >
               {t('Sign')}
             </Button>
-          </div>
+          </Stack>
         </Stack>
       </form>
     </FormProvider>
