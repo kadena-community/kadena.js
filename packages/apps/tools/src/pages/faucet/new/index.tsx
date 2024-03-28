@@ -429,7 +429,7 @@ const NewAccountFaucetPage: FC = () => {
                   endAddon={
                     <Button
                       icon={<MonoAdd />}
-                      variant="outlined"
+                      variant="transparent"
                       onPress={() => {
                         const value = getValues('pubKey');
                         const valid = validatePublicKey(
@@ -476,7 +476,7 @@ const NewAccountFaucetPage: FC = () => {
                   endAddon={
                     <Button
                       icon={<MonoContentCopy />}
-                      variant="outlined"
+                      variant="transparent"
                       onPress={async () => {
                         const value = getValues('name');
                         await navigator.clipboard.writeText(value);
