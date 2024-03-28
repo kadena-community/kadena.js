@@ -1,8 +1,8 @@
 import {
   Box,
+  Button,
   Cell,
   Column,
-  Link,
   Pagination,
   Row,
   Select,
@@ -212,9 +212,9 @@ export const ExtendedTransactionsTable = (
                   )}
                 </Cell>
                 <Cell>
-                  <Link href={`${routes.TRANSACTIONS}/${edge.node.hash}`}>
+                  <Button href={`${routes.TRANSACTIONS}/${edge.node.hash}`}>
                     {edge.node.hash}
-                  </Link>
+                  </Button>
                 </Cell>
                 <Cell>
                   {edge.node.cmd.payload.__typename === 'ExecutionPayload' &&

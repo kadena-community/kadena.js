@@ -3,7 +3,6 @@ import {
   Button,
   Cell,
   Column,
-  Link,
   Row,
   Stack,
   Table,
@@ -98,12 +97,12 @@ const Home: React.FC = () => {
               return (
                 <Row key={index}>
                   <Cell>
-                    <Link
+                    <Button
                       style={{ padding: 0, border: 0 }}
                       href={`${routes.BLOCK_OVERVIEW}/${block.hash}`}
                     >
                       {block.hash}
-                    </Link>
+                    </Button>
                   </Cell>
                   <Cell>{new Date(block.creationTime).toLocaleString()}</Cell>
                   <Cell>{block.height}</Cell>

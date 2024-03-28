@@ -9,10 +9,10 @@ import type {
 import routes from '@constants/routes';
 import {
   Box,
+  Button,
   Cell,
   Column,
   ContentHeader,
-  Link,
   Row,
   Table,
   TableBody,
@@ -53,9 +53,9 @@ export const CompactTransactionsTable = (
         }
       />
       <Box margin="sm" />
-      <Link isCompact href={viewAllHref}>
+      <Button isCompact href={viewAllHref}>
         View all transactions
-      </Link>
+      </Button>
       <Box margin="xs" />
       <Table className={atoms({ wordBreak: 'break-all' })} isCompact>
         <TableHeader>
@@ -81,7 +81,7 @@ export const CompactTransactionsTable = (
                   )}
                 </Cell>
                 <Cell>
-                  <Link href={`${routes.TRANSACTIONS}/${edge.node.hash}`}>
+                  <Button href={`${routes.TRANSACTIONS}/${edge.node.hash}`}>
                     {truncateColumns ? (
                       <Tooltip
                         closeDelay={150}
@@ -94,7 +94,7 @@ export const CompactTransactionsTable = (
                     ) : (
                       <span>{edge.node.hash}</span>
                     )}
-                  </Link>
+                  </Button>
                 </Cell>
                 <Cell>
                   {edge.node.cmd.payload.__typename === 'ExecutionPayload' &&

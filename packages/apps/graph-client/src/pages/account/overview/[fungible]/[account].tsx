@@ -28,7 +28,6 @@ import {
   Button,
   Cell,
   Column,
-  Link,
   Notification,
   Row,
   Stack,
@@ -279,11 +278,11 @@ const Account: React.FC = () => {
                       {nonFungibleAccountData.nonFungibleAccount.chainAccounts.map(
                         (chainAccount) => (
                           <Box key={chainAccount.chainId}>
-                            <Link
+                            <Button
                               href={`${routes.ACCOUNT}/${router.query.fungible}/${router.query.account}/${chainAccount.chainId}`}
                             >
                               {chainAccount.chainId}
-                            </Link>
+                            </Button>
                           </Box>
                         ),
                       )}

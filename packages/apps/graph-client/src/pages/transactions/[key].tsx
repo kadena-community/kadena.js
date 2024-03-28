@@ -8,9 +8,9 @@ import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
+  Button,
   Cell,
   Column,
-  Link,
   Notification,
   Row,
   Stack,
@@ -158,11 +158,11 @@ const RequestKey: React.FC = () => {
                 </Cell>
                 <Cell>
                   {transaction.result.__typename === 'TransactionResult' ? (
-                    <Link
+                    <Button
                       href={`${routes.BLOCK_OVERVIEW}/${transaction.result.block.hash}`}
                     >
                       {transaction.result.block.hash}
-                    </Link>
+                    </Button>
                   ) : (
                     <span style={{ color: 'lightgray' }}>N/A</span>
                   )}

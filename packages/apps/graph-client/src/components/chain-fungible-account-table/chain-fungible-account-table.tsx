@@ -2,10 +2,10 @@ import type { FungibleChainAccount } from '@/__generated__/sdk';
 import routes from '@constants/routes';
 import {
   Box,
+  Button,
   Cell,
   Column,
   ContentHeader,
-  Link,
   Row,
   Table,
   TableBody,
@@ -44,11 +44,11 @@ export const FungibleChainAccountTable = (
             <Row key={index}>
               <Cell>{chainAccount.chainId}</Cell>
               <Cell>
-                <Link
+                <Button
                   href={`${routes.ACCOUNT}/${fungibleName}/${accountName}/${chainAccount.chainId}`}
                 >
                   {chainAccount.balance}
-                </Link>
+                </Button>
               </Cell>
               <Cell>{chainAccount.guard.predicate}</Cell>
               <Cell>{chainAccount.guard.keys.join(', ')}</Cell>

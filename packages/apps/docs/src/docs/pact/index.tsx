@@ -21,7 +21,7 @@ import {
   Grid,
   GridItem,
   Heading,
-  Link as KadenaLink,
+  Button as KadenaLink,
   SystemIcon,
   Text,
 } from '@kadena/react-ui';

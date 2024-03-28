@@ -1,5 +1,5 @@
 import type { IMenuData } from '@kadena/docs-tools';
-import { Link } from '@kadena/react-ui';
+import { Button } from '@kadena/react-ui';
 import type { FC } from 'react';
 import React from 'react';
 import { StripItem } from './StripItem';
@@ -20,7 +20,7 @@ export const BlogPostsStrip: FC<IProps> = ({ data, link, linkLabel }) => {
         ))}
       </ul>
 
-      {link && <Link href={link}>{linkLabel}</Link>}
+      {link && <Button href={link}>{linkLabel}</Button>}
     </section>
   );
 };
