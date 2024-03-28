@@ -1,5 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Event } from '@prisma/client';
+import { getConditionForMinimumDepth } from '@services/confirmation-depth-service';
+import { chainIds } from '@utils/chains';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import type { IContext } from '../builder';
@@ -32,6 +34,12 @@ builder.subscriptionField('events', (t) =>
           minLength: 1,
         },
       }),
+      minimumDepth: t.arg.int({
+        required: false,
+        validate: {
+          nonnegative: true,
+        },
+      }),
     },
     type: [GQLEvent],
     nullable: true,
@@ -41,6 +49,7 @@ builder.subscriptionField('events', (t) =>
         args.qualifiedEventName,
         args.chainId,
         args.parametersFilter,
+        args.minimumDepth,
       ),
     resolve: (parent) => parent,
   }),
@@ -51,12 +60,14 @@ async function* iteratorFn(
   qualifiedEventName: string,
   chainId?: string | null,
   parametersFilter?: string | null,
+  minimumDepth?: number | null,
 ): AsyncGenerator<Event[] | undefined, void, unknown> {
   const eventResult = await getLastEvents(
     qualifiedEventName,
     undefined,
     chainId,
     parametersFilter,
+    minimumDepth,
   );
 
   let lastEvent;
@@ -72,6 +83,7 @@ async function* iteratorFn(
       lastEvent?.id,
       chainId,
       parametersFilter,
+      minimumDepth,
     );
 
     if (!nullishOrEmpty(newEvents)) {
@@ -88,7 +100,11 @@ async function getLastEvents(
   id?: number,
   chainId?: string | null,
   parametersFilter?: string | null,
+  minimumDepth?: number | null,
 ): Promise<Event[]> {
+  // These variables are created to be used in the query below in case minimumDepth is provided
+  const searchableChainIds = chainId ? [chainId] : chainIds;
+
   const defaultFilter: Parameters<typeof prismaClient.event.findMany>[0] = {
     orderBy: {
       id: 'desc',
@@ -120,6 +136,9 @@ async function getLastEvents(
           queryParameter: 'parametersFilter',
           column: 'parameters',
         }),
+      }),
+      ...(minimumDepth && {
+        OR: await getConditionForMinimumDepth(minimumDepth, searchableChainIds),
       }),
     },
   });
