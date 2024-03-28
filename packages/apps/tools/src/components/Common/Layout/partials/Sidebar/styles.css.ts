@@ -121,6 +121,7 @@ export const bottomIconsContainerStyle = style([
 export const gridItemMenuStyle = style([
   {
     borderLeft: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
+    width: '100%',
   },
 ]);
 

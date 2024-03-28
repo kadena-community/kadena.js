@@ -28,6 +28,7 @@ import { Breadcrumbs, BreadcrumbsItem } from '@kadena/react-ui';
 import type { QueryClient } from '@tanstack/react-query';
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type {
   GetServerSideProps,
@@ -292,9 +293,12 @@ const ModuleExplorerPage = (
 
   return (
     <>
+      <Head>
+        <title>Kadena Developer Tools - Modules</title>
+      </Head>
       <Breadcrumbs>
-        <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
-        <BreadcrumbsItem>{t('Module Explorer')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Modules')}</BreadcrumbsItem>
+        <BreadcrumbsItem>{t('Explorer')}</BreadcrumbsItem>
       </Breadcrumbs>
       <ModuleExplorer
         modules={modules}

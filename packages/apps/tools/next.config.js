@@ -1,9 +1,9 @@
-/** @type {import('next').NextConfig} */
 const nextTranslate = require('@webpro/next-translate-plugin');
 const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin');
 
 const withVanillaExtract = createVanillaExtractPlugin();
 
+/** @type {import('next').NextConfig} */
 const config = {
   nextTranslate: { basePath: __dirname },
   eslint: {
@@ -29,6 +29,15 @@ const config = {
     QA_LEDGER_MOCK: process.env.QA_LEDGER_MOCK,
     QA_LEDGER_MOCKED_PUBKEY: process.env.QA_LEDGER_MOCKED_PUBKEY,
     QA_LEDGER_MOCKED_PRIVATEKEY: process.env.QA_LEDGER_MOCKED_PRIVATEKEY,
+  },
+  async redirects() {
+    return [
+      {
+        source: '/transactions/module-explorer',
+        destination: '/modules/explorer',
+        permanent: true,
+      },
+    ];
   },
 };
 
