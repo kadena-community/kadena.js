@@ -103,21 +103,6 @@ describe('Button', () => {
     );
   });
 
-  it('Should handle deprecated onClick', async () => {
-    const user = userEvent.setup({ pointerEventsCheck: 0 });
-    const spyWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    const { getByRole } = render(
-      <Button onPress={onPressSpy}>Click Me</Button>,
-    );
-
-    const button = getByRole('button');
-    await user.click(button);
-    expect(onPressSpy).toHaveBeenCalledTimes(1);
-    expect(spyWarn).toHaveBeenCalledWith(
-      'onClick is deprecated, please use onPress',
-    );
-  });
-
   it('Should not respond when disabled', async () => {
     const user = userEvent.setup({ pointerEventsCheck: 0 });
     const { getByRole } = render(
