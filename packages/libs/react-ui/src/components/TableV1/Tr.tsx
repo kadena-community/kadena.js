@@ -42,7 +42,7 @@ export const Tr: FC<ITrProps> = ({ children, url, onClick, className }) => {
           <Button
             title=""
             aria-label=""
-            onClick={onClick}
+            onPress={onClick}
             icon={<SystemIcon.TrailingIcon />}
           />
         </td>

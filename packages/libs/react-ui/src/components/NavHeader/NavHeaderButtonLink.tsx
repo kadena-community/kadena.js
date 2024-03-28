@@ -12,11 +12,6 @@ export const NavHeaderButtonLink: FC<INavHeaderButtonLinkProps> = ({
   ...props
 }) => {
   return (
-    <Link
-      className={cn(iconButtonClass, className)}
-      isCompact
-      variant={'contained'}
-      {...props}
-    />
+    <Link className={cn(iconButtonClass, className)} isCompact {...props} />
   );
 };
