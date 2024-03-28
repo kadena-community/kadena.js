@@ -1,6 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Event } from '@prisma/client';
-import { getConditionForMinimumDepth } from '@services/confirmation-depth-service';
+import { getConditionForMinimumDepth } from '@services/depth-service';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import type { IContext } from '../builder';
