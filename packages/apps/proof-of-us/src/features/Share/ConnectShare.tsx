@@ -34,83 +34,88 @@ export const ConnectShare: FC<IProps> = ({ tokenId, data, metadataUri }) => {
   return (
     <UserLayout>
       <Stack
-        display="flex"
-        paddingInline="md"
-        width="100%"
-        style={{ height: '60px' }}
-      >
-        <TitleHeader
-          label={data.name}
-          Append={() => (
-            <>
-              <SocialShare data={data} tokenId={tokenId} />
-              <IconButton onClick={handleClose}>
-                <MonoClose />
-              </IconButton>
-            </>
-          )}
-        />
-      </Stack>
-      <Stack
         flexDirection="column"
-        width="100%"
-        style={{
-          position: 'relative',
-          marginBlockStart: '-60px',
-          top: 0,
-          zIndex: 100,
-        }}
+        style={{ maxWidth: '800px', width: '100%', marginInline: 'auto' }}
       >
-        <SavedImagePositions data={data} />
-
         <Stack
-          gap="md"
-          className={overflowClass}
-          flexDirection="column"
+          display="flex"
           paddingInline="md"
-          style={{ position: 'relative' }}
+          width="100%"
+          style={{ height: '60px' }}
         >
-          <Heading as="h5">Signees</Heading>
-
-          <Signees signees={data.properties.signees} authors={data.authors} />
-          <Heading as="h6">Metadata</Heading>
-          <MetaList>
-            <MetaTerm>block explorer</MetaTerm>
-            <MetaDetails>
-              <a
-                href={`https://explorer.chainweb.com/${env.NETWORKNAME}/eventsearch?q=${tokenId}`}
-                target="_blank"
-              >
-                click here
-              </a>
-            </MetaDetails>
-
-            <MetaTerm>name</MetaTerm>
-            <MetaDetails>{data.name}</MetaDetails>
-            <MetaTerm>description</MetaTerm>
-            <MetaDetails>{data.description}</MetaDetails>
-
-            <MetaTerm>event Date</MetaTerm>
-            <MetaDetails>
-              {format(data.properties.date, 'dd MMMM yyyy')}
-            </MetaDetails>
-            <MetaTerm>image</MetaTerm>
-            <MetaDetails>
-              <a href={data.image} target="_blank">
-                click here
-              </a>
-            </MetaDetails>
-            {metadataUri && (
+          <TitleHeader
+            label={data.name}
+            Append={() => (
               <>
-                <MetaTerm>all meta data</MetaTerm>
-                <MetaDetails>
-                  <a href={metadataUri} target="_blank">
-                    click here
-                  </a>
-                </MetaDetails>
+                <SocialShare data={data} tokenId={tokenId} />
+                <IconButton onClick={handleClose}>
+                  <MonoClose />
+                </IconButton>
               </>
             )}
-          </MetaList>
+          />
+        </Stack>
+        <Stack
+          flexDirection="column"
+          width="100%"
+          style={{
+            position: 'relative',
+            marginBlockStart: '-60px',
+            top: 0,
+            zIndex: 100,
+          }}
+        >
+          <SavedImagePositions data={data} />
+
+          <Stack
+            gap="md"
+            className={overflowClass}
+            flexDirection="column"
+            paddingInline="md"
+            style={{ position: 'relative' }}
+          >
+            <Heading as="h5">Signees</Heading>
+
+            <Signees signees={data.properties.signees} authors={data.authors} />
+            <Heading as="h6">Metadata</Heading>
+            <MetaList>
+              <MetaTerm>block explorer</MetaTerm>
+              <MetaDetails>
+                <a
+                  href={`https://explorer.chainweb.com/${env.NETWORKNAME}/eventsearch?q=${tokenId}`}
+                  target="_blank"
+                >
+                  click here
+                </a>
+              </MetaDetails>
+
+              <MetaTerm>name</MetaTerm>
+              <MetaDetails>{data.name}</MetaDetails>
+              <MetaTerm>description</MetaTerm>
+              <MetaDetails>{data.description}</MetaDetails>
+
+              <MetaTerm>event Date</MetaTerm>
+              <MetaDetails>
+                {format(data.properties.date, 'dd MMMM yyyy')}
+              </MetaDetails>
+              <MetaTerm>image</MetaTerm>
+              <MetaDetails>
+                <a href={data.image} target="_blank">
+                  click here
+                </a>
+              </MetaDetails>
+              {metadataUri && (
+                <>
+                  <MetaTerm>all meta data</MetaTerm>
+                  <MetaDetails>
+                    <a href={metadataUri} target="_blank">
+                      click here
+                    </a>
+                  </MetaDetails>
+                </>
+              )}
+            </MetaList>
+          </Stack>
         </Stack>
       </Stack>
     </UserLayout>
