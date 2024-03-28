@@ -22,7 +22,6 @@ import type { ChainId, ITransactionDescriptor } from '@kadena/client';
 
 import { explorerLinkStyle } from '@/pages/faucet/styles.css';
 import {
-  buttonContainerClass,
   infoNotificationColor,
   linkStyle,
 } from '@/pages/transactions/transfer/styles.css';
@@ -289,7 +288,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         body={requestStatus.message}
       />
 
-      <div className={buttonContainerClass}>
+      <Stack justifyContent={'flex-end'} gap={'lg'}>
         <Button
           isLoading={isLoading}
           // isDisabled={ledgerSignState.loading}
@@ -299,7 +298,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         >
           {t('Transfer')}
         </Button>
-      </div>
+      </Stack>
     </Stack>
   );
 };
