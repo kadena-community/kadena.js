@@ -32,7 +32,7 @@ const Page: FC = () => {
         {isLoading && <MainLoader />}
 
         {tokens && (
-          <Stack flexDirection="column" flex={1}>
+          <Stack flexDirection="column" flex={1} alignItems="center">
             <TitleHeader
               label="Dashboard"
               Append={() => (
@@ -47,6 +47,7 @@ const Page: FC = () => {
                   flexDirection="column"
                   justifyContent="center"
                   alignItems="center"
+                  width="100%"
                 >
                   <MonoGroup fontSize="8rem" />
                   <Text bold>Create Your First Proof</Text>

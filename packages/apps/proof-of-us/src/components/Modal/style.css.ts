@@ -45,3 +45,8 @@ export const dialogClass = style([
     backdropFilter: 'blur(10px)',
   },
 ]);
+
+export const headerClass = style({
+  fontSize: '18px',
+  width: '100%',
+});
