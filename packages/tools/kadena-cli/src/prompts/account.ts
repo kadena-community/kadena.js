@@ -48,7 +48,7 @@ export const accountAliasPrompt: IPrompt<string> = async () =>
 
 export const accountNamePrompt: IPrompt<string> = async () =>
   await input({
-    message: 'Enter an account name:',
+    message: 'Enter an account name (optional):',
   });
 
 export const accountKdnAddressPrompt: IPrompt<string> = async () =>
@@ -82,7 +82,12 @@ export const fungiblePrompt: IPrompt<string> = async () =>
     message: 'Enter the name of a fungible:',
   });
 
-export const predicatePrompt: IPrompt<string> = async () => {
+export const predicatePrompt: IPrompt<string> = async (previousQuestions) => {
+  const allowedPredicates =
+    previousQuestions.allowedPredicates !== undefined
+      ? (previousQuestions.allowedPredicates as string[])
+      : [];
+
   const choices = [
     {
       value: 'keys-all',
@@ -102,9 +107,15 @@ export const predicatePrompt: IPrompt<string> = async () => {
     },
   ];
 
+  const filteredChoices = choices.filter(
+    (choice) =>
+      allowedPredicates.length === 0 ||
+      allowedPredicates.includes(choice.value),
+  );
+
   const selectedPredicate = await select({
     message: 'Select a keyset predicate.',
-    choices: choices,
+    choices: filteredChoices,
   });
 
   if (selectedPredicate === 'custom') {

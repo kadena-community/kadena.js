@@ -209,3 +209,11 @@ export const getTransactionExplorerUrl = (
   const baseURL = explorerURL.endsWith('/') ? explorerURL : `${explorerURL}/`;
   return `${baseURL}${requestKey}`;
 };
+
+export const isKAccount = (accountName: string): boolean =>
+  accountName.startsWith('k:');
+
+export const isValidForOnlyKeysAllPredicate = (
+  accountName: string,
+  publicKeys: string[],
+): boolean => isKAccount(accountName) && publicKeys.length === 1;
