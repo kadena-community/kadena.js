@@ -34,8 +34,8 @@ export const schema = z.object({
   sender: NAME_VALIDATION,
   senderChainId: z.enum(CHAINS),
   receiver: NAME_VALIDATION,
-  amount: z.number().positive().nullable(),
-  receiverChainId: z.enum(CHAINS).nullable(),
+  amount: z.number().positive(),
+  receiverChainId: z.enum(CHAINS),
 });
 
 export type FormData = z.infer<typeof schema>;
@@ -57,10 +57,10 @@ export const SignForm = ({
 
   const defaultValues = {
     senderChainId: CHAINS[0],
-    receiverChainId: null,
-    receiver: '',
-    sender: '',
-    amount: null,
+    receiverChainId: undefined,
+    // receiver: '',
+    // sender: '',
+    // amount: undefined,
   };
 
   const methods = useForm<FormData>({
@@ -74,7 +74,7 @@ export const SignForm = ({
 
   const watchChains = methods.watch(['senderChainId', 'receiverChainId']);
   const onSameChain = watchChains.every(
-    (chain: ChainId | null) => chain === watchChains[0],
+    (chain: ChainId) => chain === watchChains[0],
   );
 
   const senderDataRef = useRef<AccountDetails>();
@@ -129,8 +129,6 @@ export const SignForm = ({
     };
 
     if (!onSameChain) {
-      if (!data.receiverChainId) return;
-
       const xChainTransferInput: ICrossChainInput = {
         ...transferInput,
         receiver: {
