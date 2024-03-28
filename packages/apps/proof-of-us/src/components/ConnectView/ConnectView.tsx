@@ -122,7 +122,7 @@ export const ConnectView: FC<IProps> = () => {
               <Button>Go to Proof</Button>
             </Link>
           ) : (
-            <Button onPress={handleSignOff}>Sign Off</Button>
+            <Button onPress={handleSignOff}>Drop out!</Button>
           )}
         </Stack>
       )}
