@@ -273,7 +273,7 @@ const CheckTransactions: FC = () => {
                 <Cell>{displayAccountName(result.fromAccount as string)}</Cell>
                 <Cell>
                   <Button
-                    variant="outlined"
+                    variant="transparent"
                     icon={<MonoKeyboardArrowRight />}
                     onPress={() => handleOpenTransactionDetails(result)}
                   />

@@ -16,7 +16,7 @@ export interface IHeadingProps {
 }
 /**
  * Heading component
- * @param as - HTML element to render defaults to "h1"
+ * @param as - HTML element to render defaults to "h2"
  * @param children - Text content
  * @param className - Additional classes
  * @param transform - Text transform variant defaults to "none"

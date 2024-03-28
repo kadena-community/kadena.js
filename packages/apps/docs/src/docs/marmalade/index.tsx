@@ -58,7 +58,6 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
             </Box>
             <KadenaLink
               endIcon={<SystemIcon.TrailingIcon />}
-              variant="outlined"
               href="/marmalade/quick-start"
             >
               Get started
