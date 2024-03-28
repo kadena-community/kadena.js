@@ -1,0 +1,18 @@
+{
+  "name": "chainweb-pact",
+	"description": "Chainweb Pact Project",
+  "source": "git@github.com:kadena-io/chainweb-pact.git",
+	"dependencies": [
+		"git@github.com:other-user/my-other-dependency.git"
+	],
+  "contracts": [
+    {
+      "path": "./utils.pact",
+      "dependencies": [
+        {
+          "path": "./some-other-contract.pact"
+        }
+      ]
+    }
+  ]
+}
