@@ -395,10 +395,10 @@ type Query {
   """
   Retrieve one transaction by its unique key. Throws an error if multiple transactions are found.
   """
-  transaction(blockHash: String, requestKey: String!): Transaction
+  transaction(blockHash: String, minimumDepth: Int, requestKey: String!): Transaction
 
   """Retrieve transactions. Default page size is 20."""
-  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactionsConnection!
+  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, minimumDepth: Int, requestKey: String): QueryTransactionsConnection!
 
   """Retrieve all transactions by a given public key."""
   transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!

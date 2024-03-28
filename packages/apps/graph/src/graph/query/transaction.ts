@@ -1,6 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
+import { getConditionForMinimumDepth } from '@services/depth-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
@@ -22,6 +23,12 @@ builder.queryField('transaction', (t) =>
           minLength: 1,
         },
       }),
+      minimumDepth: t.arg.int({
+        required: false,
+        validate: {
+          nonnegative: true,
+        },
+      }),
     },
     type: Prisma.ModelName.Transaction,
     complexity: getDefaultConnectionComplexity(),
@@ -32,6 +39,9 @@ builder.queryField('transaction', (t) =>
           where: {
             requestKey: args.requestKey,
             ...(args.blockHash && { blockHash: args.blockHash }),
+            ...(args.minimumDepth && {
+              OR: await getConditionForMinimumDepth(args.minimumDepth),
+            }),
           },
         });
 
