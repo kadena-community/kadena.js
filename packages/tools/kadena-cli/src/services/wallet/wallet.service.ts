@@ -1,6 +1,5 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
 import {
-  kadenaDecrypt,
   kadenaEncrypt,
   kadenaGenKeypairFromSeed,
   kadenaGenMnemonic,
@@ -15,6 +14,7 @@ import {
 
 import { toHexStr } from '../../keys/utils/keysHelpers.js';
 import { log } from '../../utils/logger.js';
+import { decryptMessage } from '../../utils/wrappers.js';
 import type { Services } from '../index.js';
 import { WALLET_SCHEMA_VERSION } from './wallet.schemas.js';
 import type {
@@ -147,7 +147,7 @@ export class WalletService implements IWalletService {
 
     return {
       publicKey: keypair.publicKey,
-      secretKey: toHexStr(await kadenaDecrypt(password, keypair.secretKey)),
+      secretKey: toHexStr(await decryptMessage(password, keypair.secretKey)),
     };
   }
 
@@ -164,7 +164,10 @@ export class WalletService implements IWalletService {
           newPassword,
         );
       } else {
-        const decryptedSeed = await kadenaDecrypt(currentPassword, wallet.seed);
+        const decryptedSeed = await decryptMessage(
+          currentPassword,
+          wallet.seed,
+        );
         return await kadenaEncrypt(newPassword, decryptedSeed);
       }
     })();
