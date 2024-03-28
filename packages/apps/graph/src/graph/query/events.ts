@@ -15,33 +15,29 @@ const generateEventsFilter = async (args: {
   orderIndex?: number | null | undefined;
   requestKey?: string | null | undefined;
   minimumDepth?: number | null | undefined;
-}): Promise<Prisma.EventWhereInput> => {
-  const searchableChainIds = args.chainId ? [args.chainId] : chainIds;
-
-  return {
-    qualifiedName: args.qualifiedEventName,
-    transaction: {
-      NOT: [],
-    },
-    ...(args.parametersFilter && {
-      parameters: parsePrismaJsonColumn(args.parametersFilter, {
-        query: 'events',
-        queryParameter: 'parametersFilter',
-        column: 'parameters',
-      }),
+}): Promise<Prisma.EventWhereInput> => ({
+  qualifiedName: args.qualifiedEventName,
+  transaction: {
+    NOT: [],
+  },
+  ...(args.parametersFilter && {
+    parameters: parsePrismaJsonColumn(args.parametersFilter, {
+      query: 'events',
+      queryParameter: 'parametersFilter',
+      column: 'parameters',
     }),
-    ...(args.chainId && { chainId: parseInt(args.chainId) }),
-    ...(args.blockHash && { blockHash: args.blockHash }),
-    ...(args.orderIndex && { orderIndex: args.orderIndex }),
-    ...(args.requestKey && { requestKey: args.requestKey }),
-    ...(args.minimumDepth && {
-      OR: await getConditionForMinimumDepth(
-        args.minimumDepth,
-        searchableChainIds,
-      ),
-    }),
-  };
-};
+  }),
+  ...(args.chainId && { chainId: parseInt(args.chainId) }),
+  ...(args.blockHash && { blockHash: args.blockHash }),
+  ...(args.orderIndex && { orderIndex: args.orderIndex }),
+  ...(args.requestKey && { requestKey: args.requestKey }),
+  ...(args.minimumDepth && {
+    OR: await getConditionForMinimumDepth(
+      args.minimumDepth,
+      args.chainId ? [args.chainId] : chainIds,
+    ),
+  }),
+});
 
 builder.queryField('events', (t) =>
   t.prismaConnection({
