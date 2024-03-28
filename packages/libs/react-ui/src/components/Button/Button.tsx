@@ -66,6 +66,11 @@ export interface IButtonElementProps extends ICustomProps {
 
 export type IButtonProps = IAnchorElementProps | IButtonElementProps;
 
+const renderIcon = (icon: ReactElement) =>
+  cloneElement(icon, {
+    className: iconStyle,
+  });
+
 /**
  * Button component
  * @param onPress - callback when button is clicked
@@ -86,11 +91,6 @@ export type IButtonProps = IAnchorElementProps | IButtonElementProps;
  * @param style - additional style
  * @param title - title to be shown as HTML tooltip
  */
-
-const renderIcon = (icon: ReactElement) =>
-  cloneElement(icon, {
-    className: iconStyle,
-  });
 
 const BaseButton = (
   {
