@@ -9,7 +9,7 @@ export const badge = recipe({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    lineHeight: 'minimum',
+    lineHeight: 'base',
   }),
   variants: {
     size: {

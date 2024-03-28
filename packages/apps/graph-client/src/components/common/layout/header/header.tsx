@@ -184,7 +184,7 @@ const Header: FC<IHeaderProps> = (props) => {
             onKeyDown={handleKeyPress}
           />
 
-          <Button onClick={search}>Search</Button>
+          <Button onPress={search}>Search</Button>
         </div>
       </header>
     </div>

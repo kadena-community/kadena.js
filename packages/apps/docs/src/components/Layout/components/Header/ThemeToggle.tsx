@@ -24,7 +24,7 @@ export const ThemeToggle: FC = () => {
 
   return (
     <NavHeaderButton
-      onClick={toggleTheme}
+      onPress={toggleTheme}
       title="Toggle between Light and Dark theme"
       aria-label="Toggle between Light and Dark theme"
       icon={<SystemIcon.ThemeLightDark />}

@@ -44,7 +44,7 @@ export function CreateNetwork() {
           />
           <Heading variant="h5">Hosts</Heading>
           <Button
-            onClick={() =>
+            onPress={() =>
               append({
                 url: '',
                 submit: true,
@@ -82,7 +82,7 @@ export function CreateNetwork() {
                 id={`hosts.${index}.confirm`}
                 {...register(`hosts.${index}.confirm`)}
               />
-              <Button onClick={() => remove(index)}>Delete</Button>
+              <Button onPress={() => remove(index)}>Delete</Button>
             </div>
           ))}
           <Button type="submit">Create</Button>
