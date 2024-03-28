@@ -1,3 +1,4 @@
+import { KEYS_ALL_PRED_ERROR_MESSAGE } from '../../constants/account.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
@@ -81,9 +82,7 @@ export const createAddAccountManualCommand = createCommand(
     }
 
     if (isKeysAllPredicate && predicate !== 'keys-all') {
-      throw new Error(
-        `Predicate should be keys-all for single public key account with "${accountName}"`,
-      );
+      throw new Error(KEYS_ALL_PRED_ERROR_MESSAGE);
     }
 
     const validPublicKeys = publicKeysConfig.filter((key) => !!key);

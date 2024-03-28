@@ -1,4 +1,5 @@
 import ora from 'ora';
+import { KEYS_ALL_PRED_ERROR_MESSAGE } from '../../constants/account.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
@@ -24,12 +25,11 @@ export const createAccountCreateCommand = createCommand(
   async (option) => {
     const { accountName } = await option.accountName();
     const { publicKeysConfig } = await option.publicKeys();
-    const allowedPredicates = isValidForOnlyKeysAllPredicate(
+    const isOnlyKeysAllPredicate = isValidForOnlyKeysAllPredicate(
       accountName,
       publicKeysConfig,
-    )
-      ? ['keys-all']
-      : undefined;
+    );
+    const allowedPredicates = isOnlyKeysAllPredicate ? ['keys-all'] : undefined;
 
     const { predicate } = (await option.predicate({
       allowedPredicates,
@@ -39,6 +39,10 @@ export const createAccountCreateCommand = createCommand(
 
     const { chainId } = await option.chainId();
     const fungible = (await option.fungible()).fungible || 'coin';
+
+    if (isOnlyKeysAllPredicate && predicate !== 'keys-all') {
+      throw new Error(KEYS_ALL_PRED_ERROR_MESSAGE);
+    }
 
     const config = {
       accountName,
