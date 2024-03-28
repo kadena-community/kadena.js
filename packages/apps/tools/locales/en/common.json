@@ -266,5 +266,7 @@
   "ledger-error-notification": "You cannot sign with Ledger on the current browser! Please visit <0>this website</0> for more information on browser compatibility.",
   "Transaction": "Transaction",
   "ledger-account-creation-info": "The Ledger signing method only supports the creation of single key accounts at the moment.",
-  "Reset": "Reset"
+  "Reset": "Reset",
+  "Hide raw transaction details": "Hide raw transaction details",
+  "Show raw transaction details": "Show raw transaction details"
 }
