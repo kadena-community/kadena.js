@@ -1,10 +1,10 @@
 ---
-title: Logical Operators
+title: Logical operators
 description:
   Pact comes equipped with the ability for smart contract authors to express and
   automatically check properties -- or, specifications -- of Pact programs.
-menu: Logical Operators
-label: Logical Operators
+menu: Logical operators
+label: Logical operators
 order: 4
 layout: full
 tags: ['pact', 'language reference', 'logical operators', 'pact operators']

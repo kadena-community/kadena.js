@@ -53,4 +53,4 @@ The following example illustrates the `quote` specification with the `sale-type`
 }
 ```
 
-Note that when you reference a specific `sale-type`, the `sale-price` for the `offer` must be `0.0` because the references contract is responsible for updating the final price during the `buy` step.
+Note that when you reference a specific `sale-type`, the `sale-price` for the `offer` must be `0.0` because the referenced contract is responsible for updating the final price during the `buy` step.

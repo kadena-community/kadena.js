@@ -13,11 +13,9 @@ layout: full
 
 ## Short Introduction
 
-- In this doc you will learn how to install the Kadena App, connect to the
-  Kadena Transfer Tool, view token balances, send tokens, and receive tokens
-  using your Ledger Device.
+In this doc you will learn how to install the Kadena App, connect to the Kadena Transfer Tool, view token balances, send tokens, and receive tokens using your Ledger Device.
 
-Before You Start, Make Sure:
+Before you start, make sure:
 
 - You’ve
   [initialized](https://support.ledgerwallet.com/hc/en-us/articles/360000613793)

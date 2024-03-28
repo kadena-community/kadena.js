@@ -10,6 +10,8 @@ layout: landing
 tags: [pact, chainweb, network, node operator, developer]
 ---
 
+# TEMP H1
+
 There are two main deployment scenarios for the Kadena network:
 
 - Deploying and managing a node to support the decentralized network infrastructure and earn rewards.

@@ -1,15 +1,13 @@
 ---
-title: KDA Concepts
+title: Accounts, addresses, and keys
 description: KDA Concepts
-menu: KDA Concepts
-label: KDA Concepts
+menu: Accounts, addresses, and keys
+label: Accounts, addresses, and keys
 order: 2
 layout: full
 ---
 
-# KDA Concepts
-
-## 1. Account name & keys can be different
+# Accounts, addresses, and keys
 
 With most blockchains, accounts are modeled as simply public/private keypairs
 (i.e. your account name is the same as your public key). This “one-to-one” model

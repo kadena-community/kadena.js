@@ -162,7 +162,7 @@ To learn more about working with Marmalade smart contracts and token policies, s
 - [Describe tokens in metadata](/build/nft-marmalade/metadata)
 - [Store digital assets](/build/nft-marmalade/storage)
 - [Create a non-fungible token](/build/nft-marmalade/create-nft)
-- [Create a collection](/build/nft-marmalade/create-a-collection)
+- [Create a token collection](/build/nft-marmalade/create-a-collection)
 <!--
 - [Create a limited edition](/build/nft-marmalade/limited-edition)
 -->

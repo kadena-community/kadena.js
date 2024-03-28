@@ -18,6 +18,6 @@ tags: [pact, typescript, account, transactions, utils]
 - Common scenarios
 - Language reference 
 
-# Build a non-fungible token marketplace
+## Build a non-fungible token marketplace
 
-# Perform common tasks using commands
+## Perform common tasks using commands

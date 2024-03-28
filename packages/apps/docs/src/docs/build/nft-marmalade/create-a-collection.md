@@ -17,12 +17,12 @@ Creating a collection is similar to creating an individual non-fungible token as
 - You need to specify the collection a token is part of in its metadata file.
 - You need to identify the collection to add a token to when you create the token.
 
-You can use the built-in `collection-policy` to create the collection and identify the tokens that are part of collection.
+You can use the built-in `collection-policy` to create the collection and identify the tokens that are part of the collection.
 The `collection-policy` helps organize tokens into a curated group that can be uploaded and stored together.
 The policy doesn't generate a collection of tokens.
-If you use tools that automate token generation and metadata, you should evaluate the generated metadata to ensure that it conforms with the Marmalade metadata schema.
+If you use tools that automate token generation and metadata, you should evaluate the generated metadata to ensure that it conforms with the Marmalade [metadata](/build/nft-marmalade/metadata) schema.
 
-For demonstration purposes, the sample collection consists of portable network graphics.
+For demonstration purposes, the sample collection in this guide consists of portable network graphics.
 
 ## Identify the collection
 
@@ -55,7 +55,7 @@ To identify the collection:
    - Set the **operator-account** to the account curating the token collection.
      In this example, the account is a single-key account with funds on the test network `k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e`.
 
-7. On the Configuration tab, select the **Transaction Sender**, review transaction settings, and select the keyset to use, then click **Next**.
+7. On the Configuration tab, select the **Transaction Sender**, review transaction settings, click **Advanced** to create or select the keyset to use, then click **Next**.
 8. On the Sign tab, select an Unrestricted Signing key, then click **Next**.
 9. On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
 
@@ -68,18 +68,21 @@ To identify the collection:
    In this example, the collection identifier is "collection:MawFy7BSJMkatOJ07y_e0tYbPE26K_q8x0ACX5C25B8".
    You can use the collection identifier in the **get-collection** function to see the details for your collection.
    For example, you can use the **get-collection** function to see how many tokens have been added to the collection:
-
+   
+   ```json
    {
       "id": "collection:MawFy7BSJMkatOJ07y_e0tYbPE26K_q8x0ACX5C25B8",
       "max-size": 8,
       "name": "luxi-dupree",
-      "operator-account": "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e",   "operator-guard": KeySet {
+      "operator-account": "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e", 
+      "operator-guard": KeySet {
          keys: [bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e],
          pred: keys-all
          },
       "size": 0
    }
-   
+   ```
+
    Because no tokens have been added to the collection yet, the `size` is zero.
 
 ## Upload the digital assets
@@ -187,7 +190,7 @@ To create a token identifier:
 
    After configuring the parameters for the **create-token-id** function, click **Next**.
 
-2. On the Configuration tab, select the **Transaction Sender** and, under Advanced, configure the **my-keyset** by selecting a keyset predicate and a key, then click **Next**.
+2. On the Configuration tab, select the **Transaction Sender** and, under Advanced, configure **my-keyset** by selecting a keyset predicate and a key, then click **Next**.
 
 3. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
 
@@ -218,11 +221,11 @@ To create a token in a collection:
    
    In this example, the parameters look like this for the first token in the collection:
 
-   id: "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg"
-   precision: 0
-   uri: "ipfs://bafybeic43pacmyel2bavpahsbrd4daknvizoyrpcsazxhrs6zmvwx5wlqu/1.json"
-   policies: [marmalade-v2.non-fungible-policy-v1,marmalade-v2.guard-policy-v1,marmalade-v2.collection-policy-v1]
-   creation-guard: (read-keyset "my-keyset")
+   - **id**: "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg"
+   - **precision**: 0
+   - **uri**: "ipfs://bafybeic43pacmyel2bavpahsbrd4daknvizoyrpcsazxhrs6zmvwx5wlqu/1.json"
+   - **policies**: [marmalade-v2.non-fungible-policy-v1,marmalade-v2.guard-policy-v1,marmalade-v2.collection-policy-v1]
+   - **creation-guard**: (read-keyset "my-keyset")
 
    Be sure that the **creation guard** you specify here matches the **operator guard** you used to create the collection.
 
@@ -234,20 +237,34 @@ To create a token in a collection:
 
 6. Click the **Raw** tab to configure policy settings for the collection policy and the guard policy as a JSON object, then click **Next**.
    
-   In this example, the Raw data sets the collection identifier and registers the guards to use for the mint, burn, transfer, and sale operations.
+   In this example, the **Raw** data sets the collection identifier and registers the guards to use for the mint, burn, transfer, and sale operations.
    For example:
-
+   
+   ```json
    {
        "collection_id": "collection:MawFy7BSJMkatOJ07y_e0tYbPE26K_q8x0ACX5C25B8",
-       "mint-guard": {"keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], "pred": "keys-all"},
-       "burn_guard": {"keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], "pred": "keys-all"},
-       "sale_guard": {"keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], "pred": "keys-all"},
-       "transfer_guard": {"keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], "pred": "keys-all"}
+       "mint-guard": {
+         "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
+         "pred": "keys-all"},
+       "burn_guard": {
+         "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
+         "pred": "keys-all"},
+       "sale_guard": {
+         "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
+         "pred": "keys-all"},
+       "transfer_guard": {
+         "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
+         "pred": "keys-all"}
    }
+   ```
 
-1. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
+   In this example, the same account is authorized to perform all token activity.
+   You don't need to specify a guard for any token activity that you don't want to restrict access to.
+   You can also use different guards for any token action if you want to authorize different accounts to perform specific actions.
 
-1. On the Preview tab, review the transaction details, including the destination network and chain, and verify that the **Raw Response** is **true**, then click **Submit**.
+7. On the Sign tab, select an unrestricted signing key from the available Unrestricted Signing Keys, then click **Next**.
+
+8. On the Preview tab, review the transaction details, including the destination network and chain, and verify that the **Raw Response** is **true**, then click **Submit**.
 
    After you submit the transaction, it is queued for processing in the memory pool until validated and added to a block.
    After the transaction is included in a block, you can view the transaction results in the block explorer.
@@ -256,7 +273,7 @@ To create a token in a collection:
 
 ## Mint the collection token
 
-Now that you have a token in the Marmalade ledger, you can mint the token using the account you registers for the mint guard.
+Now that you have a token in the Marmalade ledger, you can mint the token using the account you registered for the mint guard.
 
 To mint a non-fungible token in a collection:
 
@@ -269,21 +286,25 @@ To mint a non-fungible token in a collection:
    
    In this example, the parameters look like this for the first token in the collection:
 
-   id: "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg"
-   account: "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"
-   guard: (read-keyset "my-keyset")
-   amount: 1.0
+   - **id**: "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg"
+   - **account**: "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"
+   - **guard**: (read-keyset "my-keyset")
+   - **amount**: 1.0
 
    Be sure to specify the **account** and **guard** you used to create the collection.
    The non-fungible policy ensures that only one token can be minted.
 
-7. On the Configuration tab, select the **Transaction Sender**, review transaction settings, and select the keyset to use, then click **Next**.
-8. On the Sign tab, click the Grant Capabilities plus (+) to add the MINT capability to the transaction and specify the token identifier, minting account, and amount as arguments.
+7. On the Configuration tab, select the **Transaction Sender**, review transaction settings, click Advanced to verify the keyset is the one you intend to use, then click **Next**.
+
+8. On the Sign tab, click the Grant Capabilities plus (+) to add the MINT capability to the transaction and specify the **token identifier**, **minting account**, and **amount** as arguments.
 
    In this example, the MINT capabilities look like this:
-   (marmalade-v2.ledger.MINT "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg" "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e" 1.0)
    
-   Select an account to sign for the **coin.TRANSFER** and **marmalade-v2.ledger.MINT** capabilities, then click **Next**.
+   ```pact
+   (marmalade-v2.ledger.MINT "t:BRY_BIznnBWXuXlzKHg8Ha-s6k_4YTf1ctOfsz3CeWg" "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e" 1.0)
+   ```
+
+1. Select an account to sign for the **coin.GAS** and **marmalade-v2.ledger.MINT** capabilities, then click **Next**.
 
 9.  On the Preview tab, scroll to see the Raw Response is **true**, then click **Submit**.
    
@@ -294,7 +315,7 @@ To mint a non-fungible token in a collection:
 
    This example demonstrated the steps for creating and minting a single token in a collection.
    You can call the **get-collection** function to verify that your token as been added to the collection.
-   For example, calling the `get-collectio`n function after completing the previous steps returns a collection size of 1:
+   For example, calling the `get-collection` function after completing the previous steps returns a collection size of 1:
 
    ```json
    {
@@ -317,10 +338,20 @@ Now that your token is recorded in the Marmalade ledger, you can transfer it to 
 In this simple example, there's no royalty policy associated with the token because it isn't intended to generate an ongoing revenue stream.
 However, the token owner can still offer the token for sale.
 
-The offer can include a specific quoted price or be configured without a quoted price.
-If an offer doesn't have a quoted price, it can be configure to use either a **conventional auction** or a **dutch auction** contract to attract buyers to bid on the work.
-Regardless of the sales model you choose, you enter the token marketplace by submitting the offer transaction.
+As you might remember from [Token sales and trustless escrow](/build/nft-marmalade#token-sales-and-trustless-escrow), the offer is the first step in a **sale pact**.
+The offer can include a specific price that's not negotiable or be configured to use a specific type of **sale contract** with parameters to support a specific sales model.
+For example, you can configure a sale to use a **conventional auction** format or a **dutch auction** format to attract buyers to bid on the work.
+Each auction format is implemented as sales-specific smart contract that you can attach to a sale pact when you're ready to offer your tokens for sale.
 
-You can find an introduction to sales-specific contracts like the auction contracts in [Layered contract architecture](/build/nft-marmalade/contract-architecture#sales-specific-contracts).
-For technical details about the conventional auction or dutch auction contracts, see [Conventional auction sale contract](/reference/nft-ref/sale-contracts/conventional-auction) or [Dutch auction sale contract](/reference/nft-ref/sale-contracts/dutch-auction).
-For information about creating a your own sales-specific contracts, see [Create a sale contract](/reference/nft-ref/sale-contracts).
+You can find an introduction to sales-specific contracts—like the conventional and dutch auction contracts—in [Layered contract architecture](/build/nft-marmalade/contract-architecture#sales-specific-contracts).
+For information about the difference between a conventional auction and a dutch auction, see [Auctions](/build/nft-marmalade/sales/auctions) 
+
+For technical details about the conventional auction contract, see [Conventional auction sale contract](/reference/nft-ref/sale-contracts/conventional-auction).
+For technical details about the dutch auction contracts, see [Dutch auction sale contract](/reference/nft-ref/sale-contracts/dutch-auction).
+For information about creating your own sales-specific contracts, see [Create a sale contract](/reference/nft-ref/sale-contracts).
+
+## Next steps
+
+This guide demonstrated the workflow for creating a non-fungible token collection using the Marmalade standard with permanent storage on IPFS.
+To learn more about the policies configured in this example and other policies available, see [Policies](/build/nft-marmalade/concrete-policies).
+To learn more about the selling tokens, see [Sales](/build/nft-marmalade/sales).

@@ -9,7 +9,7 @@ layout: full
 
 # Layered contract architecture
 
-As you learned in [What is Marmalade?](/build/nftmarmalade/what-is-marmalade), Marmalade is a token standard that defines the interfaces for minting and managing digital items like non-fungible tokens and token collections using Pact smart contracts on the Kadena network. 
+As you learned in [What is Marmalade?](/build/nft-marmalade), Marmalade is a token standard that defines the interfaces for minting and managing digital items like non-fungible tokens and token collections using Pact smart contracts on the Kadena network. 
 
 The Marmalade standard includes several built-in smart contracts to manage how tokens are minted, offered for sale, and transferred between accounts. 
 This multi-layered contract architecture simplifies how you create and manage tokens, define marketplace policies, and implement common token features.

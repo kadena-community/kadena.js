@@ -1,78 +1,58 @@
 ---
-title: Chainweaver User Guide
+title: Get started with Chainweaver
 description: Chainweaver User Guide
-menu: Chainweaver
-label: User Guide
+menu: Wallets
+label: Get started with Chainweaver
 order: 2
 layout: full
 ---
 
-# Chainweaver User Guide
+# Get started with Chainweaver
 
-## Getting Started
+Chainweaver is a desktop or web application that provides a graphical user interface for interacting with Kadena blockchain networks, and got managing accounts, keys, transactions, and smart contracts.
+You can create a new wallet by downloading the [Chainweaver desktop application](https://github.com/kadena-io/chainweaver/releases) or by signing in with the [Chainweaver web application](https://chainweaver.kadena.network/).
+As a desktop application, Chainweaver is available for download in three formats: 
 
-### Installing the Chainweaver software
+- Download a macOS disk image (`.dmg`) for macOS computers.
+- Download a Debian package (`.deb`) for Linux distributions.
+- Download an open virtual application (`.ova)` for Windows, Linux, and macOS as a virtual appliance.
 
-Chainweaver is available for download in three formats to accommodate users’
-preference in operating system; (1) .dmg for Mac, (2) .deb for Linux, (3) and
-.ova for Windows, Linux, and Mac as a virtual appliance
+## Download and install on macOS
 
-**.dmg for Mac**
+1. Download the disk image for [macOS](https://github.com/kadena-io/chainweaver/releases/download/v2.2.3/kadena-chainweaver-mac-2.2.3.0.zip).
+1. Navigate to your **Downloads** folder.
+2. Open the downloaded file, then drag the application icon into your **Applications** folder.
 
-_Compatible with macOS High Sierra 10.13 and above_
+   ![Instal Chainweaver on macOS](/assets/docs/installing-chainweaver.png)
 
-:::note
+## Download and install on Linux
 
-Download the .dmg [here.](/kadena/wallets)
+1. Download the Debian package for [Linux](https://github.com/kadena-io/chainweaver/releases/download/v2.2.3/kadena-chainweaver-linux-2.2.3.0.deb)
 
-:::
+1. Navigate to your **Downloads** folder.
+2. Double-click the `.deb` file.
 
-Navigate to your downloads folder, open the .dmg, and drag the application into
-your Applications folder.
+   ![downloads folder](/assets/docs/deb_downloads.png)
 
-![installing-chainweaver](/assets/docs/installing-chainweaver.png)
+3. Click **Install**.
 
-**.deb for Linux**
+   ![Install on Linux](/assets/docs/deb_install.png)
 
-_Compatible with Ubuntu 18.04_
+   You should see a progress bar. 
+   Check that the version being installed is the version that you want to install.
+   After installation is complete, you can find Chainweaver in the Applications menu:
 
-:::note
+   ![Kadena Chainweaver icon](/assets/docs/deb_chainweaver.png)
 
-Download the .deb [here.](/kadena/wallets)
+If you encounter issues installing the Debian package, open a terminal shell and run the following command:
 
-:::
+`dpkg -s kadena-chainweaver`
 
-- As of August 6th 2021, deposit of KDA in all 20 chains (chain 0 to chain 19)
-  is now supported.
+If this command doesn't return the Chainweaver version you expect, then the automatic installation window didn't work. Run the following command to install from the terminal:
 
-Navigate to your downloads folder and double click the .deb.
+`sudo dpkg -i ~/Downloads/kadena-chainweaver_1.0.0_amd64.deb`
 
-![downloads folder](/assets/docs/deb_downloads.png)
-
-Click the install button on the install window that pops up.
-
-![installer](/assets/docs/deb_install.png)
-
-There should be a progress bar that appears and progresses to completion until
-you see this installed state. Be sure to check that the installed version is the
-one that you tried to install.
-
-![installed](/assets/docs/deb_installed.png)
-
-You can now find Chainweaver in the applications menu.
-
-![menu](/assets/docs/deb_appmenu.png)
-
-With this icon
-
-![kadena chainweaver icon](/assets/docs/deb_chainweaver.png)
-
-:::note Help
-
-See the [Chainweaver Troubleshoot](./chainweaver-troubleshooting.md) page if you
-encountered issues installing the .deb
-
-:::
+If this command fails, check the error output for how to address the this issue.
 
 **.ova for Windows, Linux, and Mac**
 
@@ -787,7 +767,61 @@ Beware of fake accounts and scam attempts.
 
 Chainweaver will only communicate through verified channels.
 
-## Chat
+## Troubleshooting
 
-Join our Discord server [here](https://discord.io/kadena) and chat live with
-Kadena developers and the community on the #chainweaver channel
+
+### Debian Installation Issues
+
+
+#### Uninstall Chainweaver
+
+To remove Chainweaver (this won't delete your wallet, just chainweaver itself)
+to try to reinstall, type `sudo dpkg -r kadena-chainweaver` in a terminal.
+
+### OVA Installation Issues
+
+#### Starting the Virtual Machine
+
+You don't need to import the ova each time to run Chainweaver. To start
+Chainweaver again, open Virtual Box from the start menu. The Virtual Box Manager
+should open up and you can double click "Chainweaver VM".
+
+![ova vm menu](/assets/docs/ova_startvm.png)
+
+#### Stopping the Virtual Machine
+
+To stop the virtual machine, it is best to shut it down like a regular computer.
+Press "Applications" in the lower left corner.
+
+![applications menu](/assets/docs/ova_menu.png)
+
+And press "Log Off" then hit "Shutdown in the Dialog that appears.
+
+![shutdown menu](/assets/docs/ova_shutdown.png)
+
+It is safe to close the "Virtual Box Manager" window at this time.
+
+#### Upgrading the Virtual Machine
+
+When a new Chainweaver is released, you don't need to download a new OVA every
+time. Instead, close the Chainweaver application inside the VM and notice these
+two icons on the desktop. Click the "Upgrade Chainweaver" icon and an update
+script will start. You can then click the other desktop icon to restart
+Chainweaver.
+
+![desktop icons](/assets/docs/ova_desktop.png)
+
+#### VT-x / AMD-v Error on Import / Startup
+
+Virtualbox requires certain hardware acceleration to be able to operate. Almost
+all modern computers have this feature (VT-x for Intel and AMD-v for AMD CPUs)
+but some computers ship with it off by default. If you see an error like this
+when importing or starting the VM, it is turned off for your computer.
+
+![Virtualisation CPU support error](/assets/docs/ova_vtx_error.jpg)
+
+You'll need to turn this on in your system firmware menu. Known systems where
+this is necessary are:
+
+- Lenovo:
+  [https://support.lenovo.com/au/en/solutions/ht500006](https://support.lenovo.com/au/en/solutions/ht500006

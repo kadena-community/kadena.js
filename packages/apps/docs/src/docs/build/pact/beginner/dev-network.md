@@ -67,6 +67,57 @@ For more information about the dependencies and tools for building from the sour
 
 You can install the [Pact language server plugin](https://github.com/kadena-io/pact-lsp/releases) on your local computer to support syntax highlighting and other features in the code editor.
 
+## Configure Visual Studio Code
+
+If you use Visual Studio Code as your integrated development environment (IDE), you can install the Pact extension to streamline your smart contract development experience. 
+Before installing the extension, verify that you have Pact and the Pact Language Server installed.
+
+### Install the Pact extension
+
+To install the Pact extension:
+
+1. Open Visual Studio Code.
+2. Select **View**, then click **Extensions**. 
+3. Type **pact** in the Search field. 
+4. Select **PactLang**, then click **Install**.
+   
+   If you're prompted to install additional extensions, you should install them to enable the full functionality
+of the Pact extension.
+
+### Configure Pact settings
+
+To configure the Pact extension settings:
+
+1. Select **Code**, **Settings**, then click **Settings** and search for **pact**. 
+
+2. Select **Pact configuration** and configure the settings appropriate for your development environment.
+   
+1. Select **Enable coverage** to enable code coverage reporting for `.pact` and `.repl` files.
+   
+   With this option enabled, code coverage is calculated for the `.repl` file and all of the `.pact` and `.repl` files that it loads every time you save a `.repl` file. 
+   
+   Covered lines aree highlighted in green in your editor and uncovered lines aree highlighted in red. 
+   To view a code coverage report in HTML format, right-click the `./coverage/html/index.html` file relative to the file that was run. 
+   Click **Show preview** to open the report.
+   
+   To run code coverage for all your `.repl` files at once, create an entry point `.repl` file that loads all the other `.repl` files in your project. 
+   You can then open the entry point file and save it to run all of your tests.
+
+1. Select **Enable Lsp** to enable the Pact Language server. 
+   
+   With this option enabled, syntax errors are be highlighted in `.pact` files and problems are reported in the Visual Studio Code status bar and bottom panel. 
+
+1. Select **Enable trace** to enable the output trace for Pact. 
+   
+   With this option enabled, the `pact` command runs with the `--trace` option every time you save a file.
+   The `--trace` option provides detailed line by line information about `.pact` and `.repl` file execution.
+
+2. Set the path to the Pact executable and the Pact Language server executable. 
+   
+   If you added the executables to your `PATH`, you can use `pact` and `pact-lsp` for these settings.
+   
+   ![Configure Pact settings](/assets/docs/vscode-pact.png)
+
 ## Install Chainweaver
 
 Chainweaver integrates the management of wallets, accounts, and keys with signing and editing features that you can use as you develop smart contracts using the Pact programming language.

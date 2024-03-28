@@ -1,27 +1,30 @@
 ---
-title: Concepts
+title: Advanced concepts
 description:
-  This document is a reference for the Pact smart-contract language, designed
-  for correct, transactional execution on a high-performance blockchain.
-menu: Concepts
-label: Concepts
+  Provides an in-depth look at core concepts for programming advanced applications using the Pact smart contract programming language and key features such as guard, capabilities, pacts, and module references.
+menu: Advanced concepts
+label: Advanced concepts
 order: 3
 layout: full
 tags: ['pact', 'concepts', 'declaration']
 ---
 
-# Concepts
+# Advanced concepts
 
-## Execution Modes
+This part of the documentation provides a more in-depth look at core concepts for programming advanced applications using the Pact smart contract programming language and working with key features such as guards, capabilities, pacts, and module references.
+Many of these features offer a great deal of flexibility for developing sophisticated smart contract programs, but introduce additional complexity for you to consider.
+The descriptions and examples in this section are intended to help you identify best practices and potential risks in using these features and to give you a deeper understanding of how to build with Pact.
+
+## Execution modes
 
 Pact is designed to be used in distinct _execution modes_ to address the
 performance requirements of rapid linear execution on a blockchain. These are:
 
-1. Contract definition.
-2. Transaction execution.
-3. Queries and local execution.
+- Contract definition.
+- Transaction execution.
+- Queries and local execution.
 
-### Contract Definition
+### Contract definition
 
 In this mode, a large amount of code is sent into the blockchain to establish
 the smart contract, as comprised of modules (code), tables (data), and keysets

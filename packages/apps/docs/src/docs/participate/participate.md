@@ -10,6 +10,8 @@ layout: landing
 tags: [pact, typescript, account, transactions, utils]
 ---
 
+# TEMP H1
+
 There are many ways to become an active participant in the Kadena community.
 For example, you can join the conversation on Discord, ask and answer questions on Stack Overflow, or attend Kadena events at conferences. 
 There are also ways you can contribute to the community and be rewarded for your contributions. 

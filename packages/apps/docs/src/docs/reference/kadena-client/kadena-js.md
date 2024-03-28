@@ -9,6 +9,8 @@ layout: full
 tags: ['TypeScript', 'Kadena client', 'frontend']
 ---
 
+# Kadena client libraries
+
 The Kadena client is a collection`of libraries, functions, and utilities written in TypeScript to provide a familiar application programming interface (API) for interacting with smart contracts and the Kadena network. 
 
 The Kadena client includes the following packages:

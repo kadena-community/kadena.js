@@ -438,7 +438,7 @@ function verifySig() {
 }
 ```
 
-# Safe transfers
+## Safe transfers
 
 With many cryptocurrencies, users risk losing their funds if they make a mistake typing the public key they are transferring funds to because their private key can't access the funds after they are transferred using the incorrect public key.
 

@@ -108,7 +108,10 @@ pages:
           builtinfunctions:
             url: /built-in-functions
             file: /build/pact/intermediate/built-in-functions.md
-      nftmarmalade:
+          advanced:
+            url: /advanced
+            file: /build/pact/intermediate/concepts.md
+      nft-marmalade:
         url: /nft-marmalade
         file: /build/nft-marmalade/what-is-marmalade.md
         children:
@@ -150,7 +153,9 @@ pages:
               offer:
                 url: /offers
                 file: /build/nft-marmalade/start-a-sale.md
-
+      authentication:
+        url: /authentication
+        file: /build/authenticate-with-spirekey.md
       frontend:
         url: /frontend
         file: /build/frontend.md
@@ -218,6 +223,16 @@ pages:
       wallets:
         url: /wallets
         file: /invest/wallets.md
+        children:
+          spirekey:
+            url: /spirekey
+            file: /invest/spirekey.md
+          chainweaver:
+            url: /chainweaver
+            file: /invest/chainweaver.md
+          ledger:
+            url: /ledger
+            file: /invest/ledger.md
   participate:
     url: /participate
     file: /participate/participate.md
@@ -351,6 +366,9 @@ pages:
           objectoperators:
             url: /object-operators
             file: /reference/pact/properties-and-invariants/object-operators.md
+          logicaloperators:
+            url: /logical-operators
+            file: /reference/pact/properties-and-invariants/logical.md
           listoperators:
             url: /list-operators
             file: /reference/pact/properties-and-invariants/list-operators.md
@@ -400,6 +418,34 @@ pages:
           kadena-js:
             url: /kadena-js
             file: /reference/kadena-client/kadena-js.md
+          pactjs:
+            file: /packages/libs/pactjs/README.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /pactjs
+          pactjsapi:
+            file: /packages/libs/pactjs/etc/pactjs.api.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /pactjs-api
+          pactjsutils:
+            file: /packages/libs/pactjs/etc/pactjs-utils.api.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /pactjs-utils
+          pactjscli:
+            file: /packages/tools/pactjs-cli/README.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /pactjs-cli
+          pactjscliapi:
+            file: /packages/tools/pactjs-cli/etc/pactjs-cli.api.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /pactjs-cli-api
+          pactjsgenerator:
+            file: /packages/libs/pactjs-generator/README.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /pactjs-generator
+          pactjsgeneratorapi:
+            file: /packages/libs/pactjs-generator/etc/pactjs-generator.api.md
+            repo: https://github.com/kadena-community/kadena.js
+            url: /pactjs-generator-api
       nftreference:
         url: /nft-ref
         file: /reference/marmalade/ledger.md
