@@ -74,7 +74,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                     <KandenaLink
                       href="/build/guides/election-dapp-tutorial"
                       endIcon={<SystemIcon.TrailingIcon />}
-                      variant="outlined"
+                      variant="negative"
                     >
                       Build your first dApp
                     </KandenaLink>

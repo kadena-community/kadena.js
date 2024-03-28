@@ -617,7 +617,7 @@ const CrossChainTransferFinisher: FC = () => {
                         }}
                         title={t('copySigData')}
                         aria-label={t('copySigData')}
-                        variant="outlined"
+                        variant="transparent"
                       />
                     </div>
                   </GridItem>

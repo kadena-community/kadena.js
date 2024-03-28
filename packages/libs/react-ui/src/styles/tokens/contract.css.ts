@@ -3329,10 +3329,22 @@ export const tokens = createThemeContract({
             'n20@alpha20': '',
             /**
              * [generated]
+             * @light  `"#86bceecc"`
+             * @dark  `"#205586cc"`
+             */
+            'n20@alpha80': '',
+            /**
+             * [generated]
              * @light  `"#20558633"`
              * @dark  `"#86bcee33"`
              */
             'n80@alpha20': '',
+            /**
+             * [generated]
+             * @light  `"#205586cc"`
+             * @dark  `"#86bceecc"`
+             */
+            'n80@alpha80': '',
           },
           celery: {
             /**
@@ -3420,10 +3432,22 @@ export const tokens = createThemeContract({
             'n20@alpha20': '',
             /**
              * [generated]
+             * @light  `"#72e06acc"`
+             * @dark  `"#00670fcc"`
+             */
+            'n20@alpha80': '',
+            /**
+             * [generated]
              * @light  `"#00670f33"`
              * @dark  `"#72e06a33"`
              */
             'n80@alpha20': '',
+            /**
+             * [generated]
+             * @light  `"#00670fcc"`
+             * @dark  `"#72e06acc"`
+             */
+            'n80@alpha80': '',
           },
           green: {
             /**
@@ -3742,10 +3766,22 @@ export const tokens = createThemeContract({
             'n20@alpha20': '',
             /**
              * [generated]
+             * @light  `"#ffb7a9cc"`
+             * @dark  `"#b40000cc"`
+             */
+            'n20@alpha80': '',
+            /**
+             * [generated]
              * @light  `"#b4000033"`
              * @dark  `"#ffb7a933"`
              */
             'n80@alpha20': '',
+            /**
+             * [generated]
+             * @light  `"#b40000cc"`
+             * @dark  `"#ffb7a9cc"`
+             */
+            'n80@alpha80': '',
           },
           yellow: {
             /**
@@ -3833,10 +3869,22 @@ export const tokens = createThemeContract({
             'n20@alpha20': '',
             /**
              * [generated]
+             * @light  `"#e8c600cc"`
+             * @dark  `"#705300cc"`
+             */
+            'n20@alpha80': '',
+            /**
+             * [generated]
              * @light  `"#70530033"`
              * @dark  `"#e8c60033"`
              */
             'n80@alpha20': '',
+            /**
+             * [generated]
+             * @light  `"#705300cc"`
+             * @dark  `"#e8c600cc"`
+             */
+            'n80@alpha80': '',
           },
         },
         semantic: {
@@ -3862,11 +3910,15 @@ export const tokens = createThemeContract({
              */
             n10: '',
             /**
-             * [generated]
-             * @light  `"#86bcee"`
-             * @dark  `"#86bcee"`
+             * @light {@link tokens.kda.foundation.color.palette.blue.n20}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n20}
              */
             n20: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.palette.blue.n20@alpha80}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n20@alpha80}
+             */
+            'n20@alpha80': '',
             /**
              * @light {@link tokens.kda.foundation.color.palette.blue.n30}
              * @dark {@link tokens.kda.foundation.color.palette.blue.n30}
@@ -3893,11 +3945,15 @@ export const tokens = createThemeContract({
              */
             n70: '',
             /**
-             * [generated]
-             * @light  `"#205586"`
-             * @dark  `"#205586"`
+             * @light {@link tokens.kda.foundation.color.palette.blue.n80}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n80}
              */
             n80: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.palette.blue.n80@alpha80}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n80@alpha80}
+             */
+            'n80@alpha80': '',
             /**
              * @light {@link tokens.kda.foundation.color.palette.blue.n90}
              * @dark {@link tokens.kda.foundation.color.palette.blue.n90}
@@ -3918,18 +3974,6 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.palette.blue.n100}
              */
             n100: '',
-            /**
-             * [generated]
-             * @light  `"#86bceecc"`
-             * @dark  `"#86bceecc"`
-             */
-            'n20@alpha80': '',
-            /**
-             * [generated]
-             * @light  `"#205586cc"`
-             * @dark  `"#205586cc"`
-             */
-            'n80@alpha80': '',
           },
           negative: {
             /**
@@ -3953,11 +3997,15 @@ export const tokens = createThemeContract({
              */
             n10: '',
             /**
-             * [generated]
-             * @light  `"#ffb7a9"`
-             * @dark  `"#ffb7a9"`
+             * @light {@link tokens.kda.foundation.color.palette.red.n20}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n20}
              */
             n20: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.palette.red.n20@alpha80}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n20@alpha80}
+             */
+            'n20@alpha80': '',
             /**
              * @light {@link tokens.kda.foundation.color.palette.red.n30}
              * @dark {@link tokens.kda.foundation.color.palette.red.n30}
@@ -3984,11 +4032,15 @@ export const tokens = createThemeContract({
              */
             n70: '',
             /**
-             * [generated]
-             * @light  `"#b40000"`
-             * @dark  `"#b40000"`
+             * @light {@link tokens.kda.foundation.color.palette.red.n80}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n80}
              */
             n80: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.palette.red.n80@alpha80}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n80@alpha80}
+             */
+            'n80@alpha80': '',
             /**
              * @light {@link tokens.kda.foundation.color.palette.red.n90}
              * @dark {@link tokens.kda.foundation.color.palette.red.n90}
@@ -4009,18 +4061,6 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.palette.red.n100}
              */
             n100: '',
-            /**
-             * [generated]
-             * @light  `"#ffb7a9cc"`
-             * @dark  `"#ffb7a9cc"`
-             */
-            'n20@alpha80': '',
-            /**
-             * [generated]
-             * @light  `"#b40000cc"`
-             * @dark  `"#b40000cc"`
-             */
-            'n80@alpha80': '',
           },
           positive: {
             /**
@@ -4044,11 +4084,15 @@ export const tokens = createThemeContract({
              */
             n10: '',
             /**
-             * [generated]
-             * @light  `"#72e06a"`
-             * @dark  `"#72e06a"`
+             * @light {@link tokens.kda.foundation.color.palette.celery.n20}
+             * @dark {@link tokens.kda.foundation.color.palette.celery.n20}
              */
             n20: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.palette.celery.n20@alpha80}
+             * @dark {@link tokens.kda.foundation.color.palette.celery.n20@alpha80}
+             */
+            'n20@alpha80': '',
             /**
              * @light {@link tokens.kda.foundation.color.palette.celery.n30}
              * @dark {@link tokens.kda.foundation.color.palette.celery.n30}
@@ -4075,11 +4119,15 @@ export const tokens = createThemeContract({
              */
             n70: '',
             /**
-             * [generated]
-             * @light  `"#00670f"`
-             * @dark  `"#00670f"`
+             * @light {@link tokens.kda.foundation.color.palette.celery.n80}
+             * @dark {@link tokens.kda.foundation.color.palette.celery.n80}
              */
             n80: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.palette.celery.n80@alpha80}
+             * @dark {@link tokens.kda.foundation.color.palette.celery.n80@alpha80}
+             */
+            'n80@alpha80': '',
             /**
              * @light {@link tokens.kda.foundation.color.palette.celery.n90}
              * @dark {@link tokens.kda.foundation.color.palette.celery.n90}
@@ -4100,18 +4148,6 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.palette.celery.n100}
              */
             n100: '',
-            /**
-             * [generated]
-             * @light  `"#72e06acc"`
-             * @dark  `"#72e06acc"`
-             */
-            'n20@alpha80': '',
-            /**
-             * [generated]
-             * @light  `"#00670fcc"`
-             * @dark  `"#00670fcc"`
-             */
-            'n80@alpha80': '',
           },
           warning: {
             /**
@@ -4135,11 +4171,15 @@ export const tokens = createThemeContract({
              */
             n10: '',
             /**
-             * [generated]
-             * @light  `"#e8c600"`
-             * @dark  `"#e8c600"`
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n20}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n20}
              */
             n20: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n20@alpha80}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n20@alpha80}
+             */
+            'n20@alpha80': '',
             /**
              * @light {@link tokens.kda.foundation.color.palette.yellow.n30}
              * @dark {@link tokens.kda.foundation.color.palette.yellow.n30}
@@ -4166,11 +4206,15 @@ export const tokens = createThemeContract({
              */
             n70: '',
             /**
-             * [generated]
-             * @light  `"#705300"`
-             * @dark  `"#705300"`
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n80}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n80}
              */
             n80: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n80@alpha80}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n80@alpha80}
+             */
+            'n80@alpha80': '',
             /**
              * @light {@link tokens.kda.foundation.color.palette.yellow.n90}
              * @dark {@link tokens.kda.foundation.color.palette.yellow.n90}
@@ -4191,18 +4235,6 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.palette.yellow.n100}
              */
             n100: '',
-            /**
-             * [generated]
-             * @light  `"#e8c600cc"`
-             * @dark  `"#e8c600cc"`
-             */
-            'n20@alpha80': '',
-            /**
-             * [generated]
-             * @light  `"#705300cc"`
-             * @dark  `"#705300cc"`
-             */
-            'n80@alpha80': '',
           },
         },
         categorical: {
@@ -4342,20 +4374,6 @@ export const tokens = createThemeContract({
           level3: '',
         },
       },
-      layout: {
-        content: {
-          /**
-           * @light  `"33.75rem"`
-           * @dark  `"33.75rem"`
-           */
-          minWidth: '',
-          /**
-           * @light  `"42.5rem"`
-           * @dark  `"42.5rem"`
-           */
-          maxWidth: '',
-        },
-      },
       icon: {
         size: {
           /**
@@ -4393,6 +4411,20 @@ export const tokens = createThemeContract({
            * @dark {@link tokens.kda.foundation.size.n16}
            */
           xxl: '',
+        },
+      },
+      layout: {
+        content: {
+          /**
+           * @light  `"33.75rem"`
+           * @dark  `"33.75rem"`
+           */
+          minWidth: '',
+          /**
+           * @light  `"42.5rem"`
+           * @dark  `"42.5rem"`
+           */
+          maxWidth: '',
         },
       },
       typography: {
