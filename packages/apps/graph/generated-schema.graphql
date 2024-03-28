@@ -340,9 +340,9 @@ type Query {
 
   """
   Retrieve events by qualifiedName (e.g. `coin.TRANSFER`). Default page size is 20.
-  
+         
         The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
-  
+         
         An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
   """
   events(after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, minimumDepth: Int, orderIndex: Int, parametersFilter: String, qualifiedEventName: String!, requestKey: String): QueryEventsConnection!
@@ -499,9 +499,9 @@ type Signer implements Node {
 type Subscription {
   """
   Listen for events by qualifiedName (e.g. `coin.TRANSFER`).
-  
+         
         The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
-  
+         
         An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
   """
   events(chainId: String, minimumDepth: Int, parametersFilter: String, qualifiedEventName: String!): [Event!]
