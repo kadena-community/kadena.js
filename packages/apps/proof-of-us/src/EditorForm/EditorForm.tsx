@@ -13,7 +13,7 @@ interface IProps {
 }
 
 export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
-  const { updateSigner, updateProofOfUs } = useProofOfUs();
+  const { updateSignee } = useProofOfUs();
   const [error, setError] = useState<string>('');
   const formRef = useRef<HTMLFormElement>(null);
   const [socialIcon, setSocialIcon] = useState<
@@ -51,14 +51,10 @@ export const EditorForm: FC<IProps> = ({ signer, onClose }) => {
     }
     setSocialIcon(socialType?.icon);
 
-    console.log('update in editform');
-    await updateProofOfUs({
-      signees: updateSigner({
-        name: label,
-        socialLink,
-      }),
+    await updateSignee({
+      name: label,
+      socialLink,
     });
-
     onClose();
   };
 

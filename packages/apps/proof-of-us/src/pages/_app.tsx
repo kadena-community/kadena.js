@@ -5,7 +5,6 @@ import '@kadena/react-ui/global';
 import { Analytics } from '@/components/Analytics/Analytics';
 import { CookieConsent } from '@/components/CookieConsent/CookieConsent';
 import { Providers } from '@/components/Providers/Providers';
-import { Toasts } from '@/components/Toasts/Toasts';
 import { mainWrapperClass } from '@/styles/global.css';
 import { AnimatePresence } from 'framer-motion';
 import type { AppProps } from 'next/app';
@@ -108,7 +107,6 @@ export const MyApp = ({
           <AnimatePresence mode="popLayout" initial={false}>
             <Component {...pageProps} key={router.asPath} />
           </AnimatePresence>
-          <Toasts />
         </main>
         <Analytics />
       </>

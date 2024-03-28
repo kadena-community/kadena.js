@@ -12,8 +12,7 @@ import { imageClass, wrapperClass } from './style.css';
 interface IProps {}
 
 export const ImagePositions: FC<IProps> = () => {
-  const { proofOfUs, updateSigner, background, updateProofOfUs } =
-    useProofOfUs();
+  const { proofOfUs, signees, updateSignee, background } = useProofOfUs();
   const { account } = useAccount();
   const [isMounted, setIsMounted] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
@@ -24,11 +23,11 @@ export const ImagePositions: FC<IProps> = () => {
   const [isTagInfoOpen, setIsTagInfoOpen] = useState(true);
 
   useEffect(() => {
-    setSigner(
-      proofOfUs?.signees.find((c) => c.accountName === account?.accountName),
-    );
+    if (!signees || !proofOfUs) return;
+
+    setSigner(signees.find((c) => c.accountName === account?.accountName));
     setIsLocked(isAlreadySigning(proofOfUs));
-  }, [proofOfUs]);
+  }, [proofOfUs, signees]);
 
   const getPosition = <T extends HTMLElement>(
     elm: T,
@@ -85,7 +84,7 @@ export const ImagePositions: FC<IProps> = () => {
     return () => {
       window.removeEventListener('resize', setMarkers);
     };
-  }, [wrapperRef, imgRef, proofOfUs?.signees, isMounted]);
+  }, [wrapperRef, imgRef, signees, isMounted]);
 
   const handleClick: MouseEventHandler<HTMLImageElement> = async (e) => {
     if (!imgRef.current || isLocked) return;
@@ -98,19 +97,17 @@ export const ImagePositions: FC<IProps> = () => {
     const yPercentage = ((e.clientY - rect.top) / imgRef.current.height) * 100;
 
     console.log('update in imageposition click');
-    await updateProofOfUs({
-      signees: updateSigner({
-        position: { xPercentage, yPercentage },
-      }),
+    await updateSignee({
+      position: { xPercentage, yPercentage },
     });
   };
 
   const handleRemove = async () => {
     console.log('update in imageposition remove');
-    await updateProofOfUs({
-      signees: updateSigner({ position: null }),
-    });
+    await updateSignee({ position: null });
   };
+
+  if (!signees) return null;
 
   return (
     <>
@@ -127,10 +124,10 @@ export const ImagePositions: FC<IProps> = () => {
           onClick={handleClick}
           onLoad={() => setIsMounted(true)}
         />
-        {isTagInfoOpen && proofOfUs && !isSignedOnce(proofOfUs.signees) && (
+        {isTagInfoOpen && proofOfUs && !isSignedOnce(signees) && (
           <TagInfo handleClose={() => setIsTagInfoOpen(false)} />
         )}
-        {proofOfUs?.signees.map((s, idx) => (
+        {signees.map((s, idx) => (
           <SigneePosition
             variant="small"
             key={s.accountName}

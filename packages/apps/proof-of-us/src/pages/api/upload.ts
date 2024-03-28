@@ -23,6 +23,7 @@ export default async function handler(
 
   const background = await store.getBackground(proofOfUsId);
   const proofOfUs = await store.getProofOfUs(proofOfUsId);
+  const signees = await store.getProofOfUsSignees(proofOfUsId);
 
   if (!background?.bg) {
     return res.status(404).json({
@@ -49,7 +50,7 @@ export default async function handler(
     });
   }
 
-  const manifest = await createManifest(proofOfUs, imageData.url);
+  const manifest = await createManifest(proofOfUs, signees, imageData.url);
   const metadata = await createMetaDataUrl(manifest, proofOfUs.manifestUri);
 
   if (!metadata) {

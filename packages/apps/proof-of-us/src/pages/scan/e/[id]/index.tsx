@@ -26,6 +26,7 @@ const Page: NextPage<IProps> = ({ params }) => {
 
   const init = async () => {
     const result = await hasMinted(eventId, account?.accountName);
+    console.log({ result });
     setIsMinted(result);
   };
 

@@ -58,7 +58,6 @@ interface IProofOfUsData {
   type: TokenType;
   date: number;
   minted?: number;
-  signees: IProofOfUsSignee[];
   title?: string;
   uri?: string;
   isReadyToSign: boolean;
@@ -128,6 +127,7 @@ interface ISigneePosition {
 type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   name?: string;
   signerStatus: ISignerStatus;
+  signature?: string;
   initiator: boolean;
   socialLink?: ISocial;
   position?: ISigneePosition;

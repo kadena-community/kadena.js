@@ -12,11 +12,9 @@ const getEventData = async (
 
 export const createManifest = async (
   proofOfUs: IProofOfUsData,
+  signees: IProofOfUsSignee[],
   url: string,
 ): Promise<IProofOfUsTokenMeta> => {
-  const signees =
-    Object.keys(proofOfUs.signees).map((k: any) => proofOfUs.signees[k]) ?? [];
-
   const eventData = await getEventData(proofOfUs.eventId);
 
   return {

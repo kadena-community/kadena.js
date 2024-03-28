@@ -25,7 +25,10 @@ const Page: NextPage<IProps> = ({ params }) => {
   const router = useRouter();
 
   const init = async () => {
-    await listen(params.requestKey);
+    try {
+      //TODO: use listener from the tokenprovider
+      await listen(params.requestKey);
+    } catch (e) {}
   };
 
   useEffect(() => {
