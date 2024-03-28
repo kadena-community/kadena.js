@@ -16,9 +16,7 @@ import { useLedgerSign } from '@/hooks/use-ledger-sign';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CHAINS } from '@kadena/chainweb-node-client';
 import useTranslation from 'next-translate/useTranslation';
-import { useForm } from 'react-hook-form';
-
-import { buttonContainerClass } from '@/pages/transactions/transfer/styles.css';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 
@@ -36,8 +34,8 @@ export const schema = z.object({
   sender: NAME_VALIDATION,
   senderChainId: z.enum(CHAINS),
   receiver: NAME_VALIDATION,
-  amount: z.number().positive(),
-  receiverChainId: z.enum(CHAINS),
+  amount: z.number().positive().nullable(),
+  receiverChainId: z.enum(CHAINS).nullable(),
 });
 
 export type FormData = z.infer<typeof schema>;
@@ -57,16 +55,26 @@ export const SignForm = ({
 
   const [ledgerSignState, signTx] = useLedgerSign();
 
+  const defaultValues = {
+    senderChainId: CHAINS[0],
+    receiverChainId: null,
+    receiver: '',
+    sender: '',
+    amount: null,
+  };
+
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { senderChainId: CHAINS[0], receiverChainId: undefined },
+    defaultValues,
   });
+
+  const { reset } = methods;
 
   const { selectedNetwork: network } = useWalletConnectClient();
 
   const watchChains = methods.watch(['senderChainId', 'receiverChainId']);
   const onSameChain = watchChains.every(
-    (chain: ChainId) => chain === watchChains[0],
+    (chain: ChainId | null) => chain === watchChains[0],
   );
 
   const senderDataRef = useRef<AccountDetails>();
@@ -121,6 +129,8 @@ export const SignForm = ({
     };
 
     if (!onSameChain) {
+      if (!data.receiverChainId) return;
+
       const xChainTransferInput: ICrossChainInput = {
         ...transferInput,
         receiver: {
@@ -161,57 +171,81 @@ export const SignForm = ({
     }
   };
 
+  const onReset = () => {
+    reset(defaultValues);
+
+    senderDataRef.current = undefined;
+    receiverDataRef.current = undefined;
+    pubKeys.current = [];
+    pred.current = undefined;
+    keyId.current = undefined;
+    derivationMode.current = 'current';
+  };
+
   return (
-    // <FormProvider {...methods}>
-    <form onSubmit={methods.handleSubmit(handleSignTransaction)}>
-      <Stack flexDirection="column" gap="lg">
-        {/* SENDER  FLOW */}
-        <SignFormSender
-          onDataUpdate={onSenderDataUpdate}
-          onKeyIdUpdate={onKeyIdUpdate}
-          onDerivationUpdate={onDerivationUpdate}
-          onChainUpdate={onSenderChainUpdate}
-          signingMethod={signingMethod}
-          onSigningMethodUpdate={setSigningMethod}
-        />
-
-        {/* RECEIVER FLOW */}
-        <SignFormReceiver
-          onDataUpdate={onReceiverDataUpdate}
-          onPubKeysUpdate={onPubKeysUpdate}
-          onPredicateUpdate={onPredicateUpdate}
-          onChainUpdate={onReceiverChainUpdate}
-          signingMethod={signingMethod}
-        />
-
-        {ledgerSignState.error && (
-          <FormStatusNotification
-            status="erroneous"
-            body={ledgerSignState.error.message}
+    <FormProvider {...methods}>
+      <form
+        onSubmit={methods.handleSubmit(handleSignTransaction)}
+        onReset={onReset}
+      >
+        <Stack flexDirection="column" gap="lg">
+          {/* SENDER  FLOW */}
+          <SignFormSender
+            onDataUpdate={onSenderDataUpdate}
+            onKeyIdUpdate={onKeyIdUpdate}
+            onDerivationUpdate={onDerivationUpdate}
+            onChainUpdate={onSenderChainUpdate}
+            signingMethod={signingMethod}
+            onSigningMethodUpdate={setSigningMethod}
           />
-        )}
 
-        {ledgerSignState.loading && (
-          <Notification role="alert">
-            {t('Waiting for ledger signature…')}
-          </Notification>
-        )}
+          {/* RECEIVER FLOW */}
+          <SignFormReceiver
+            onDataUpdate={onReceiverDataUpdate}
+            onPubKeysUpdate={onPubKeysUpdate}
+            onPredicateUpdate={onPredicateUpdate}
+            onChainUpdate={onReceiverChainUpdate}
+            signingMethod={signingMethod}
+          />
 
-        <div className={buttonContainerClass}>
-          <Button
-            // isLoading={receiverData.isFetching || ledgerSignState.loading}
-            isLoading={ledgerSignState.loading}
-            // isDisabled={isSubmitting}
-            endIcon={<MonoKeyboardArrowRight />}
-            title={t('Sign')}
-            type="submit"
-          >
-            {t('Sign')}
-          </Button>
-        </div>
-      </Stack>
-    </form>
-    // </FormProvider>
+          {ledgerSignState.error && (
+            <FormStatusNotification
+              status="erroneous"
+              body={ledgerSignState.error.message}
+            />
+          )}
+
+          {ledgerSignState.loading && (
+            <Notification role="alert">
+              {t('Waiting for ledger signature…')}
+            </Notification>
+          )}
+
+          <Stack justifyContent={'flex-end'} gap={'lg'}>
+            <Button
+              // isLoading={isLoading}
+              // isDisabled={ledgerSignState.loading}
+              endIcon={<SystemIcon.Refresh />}
+              title={t('Reset')}
+              type="reset"
+            >
+              {t('Reset')}
+            </Button>
+
+            <Button
+              // isLoading={receiverData.isFetching || ledgerSignState.loading}
+              isLoading={ledgerSignState.loading}
+              // isDisabled={isSubmitting}
+              endIcon={<MonoKeyboardArrowRight />}
+              title={t('Sign')}
+              type="submit"
+            >
+              {t('Sign')}
+            </Button>
+          </Stack>
+        </Stack>
+      </form>
+    </FormProvider>
   );
 };
 

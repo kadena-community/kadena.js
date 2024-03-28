@@ -21,7 +21,6 @@ import { getApiHost } from '@/utils/network';
 import type { ChainId, ITransactionDescriptor } from '@kadena/client';
 
 import {
-  buttonContainerClass,
   infoNotificationColor,
   linkStyle,
   notificationLinkErrorStyle,
@@ -303,7 +302,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         </Stack>
       </FormStatusNotification>
 
-      <div className={buttonContainerClass}>
+      <Stack justifyContent={'flex-end'} gap={'lg'}>
         <Button
           isLoading={isLoading}
           // isDisabled={ledgerSignState.loading}
@@ -313,7 +312,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         >
           {t('Transfer')}
         </Button>
-      </div>
+      </Stack>
     </Stack>
   );
 };

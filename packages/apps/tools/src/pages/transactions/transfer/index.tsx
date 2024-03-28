@@ -4,7 +4,6 @@ import { useToolbar } from '@/context/layout-context';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
-  Button,
   Heading,
   Notification,
   Stack,
@@ -22,11 +21,7 @@ import { containerClass } from '../styles.css';
 import { notificationLinkStyle } from './styles.css';
 
 import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/right-info-sidebar';
-import type { FormData } from '@/components/Partials/transactions/transfer/sign-form';
-import {
-  SignForm,
-  schema,
-} from '@/components/Partials/transactions/transfer/sign-form';
+import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
 import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
 import useIsLedgerLibSupported from '@/hooks/use-is-ledger-lib-supported';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -44,23 +39,6 @@ const TransferPage = () => {
   >((pactCommandObject) => {
     setData(pactCommandObject);
   }, []);
-
-  const methods = useForm<FormData>({
-    resolver: zodResolver(schema),
-    defaultValues: { senderChainId: CHAINS[0], receiverChainId: undefined },
-  });
-
-  const { reset } = methods;
-
-  const onReset = () => {
-    reset({
-      receiverChainId: undefined,
-      senderChainId: '0',
-      receiver: '',
-      sender: '',
-      amount: undefined
-    });
-  };
 
   const browserSupported = useIsLedgerLibSupported();
 
@@ -143,30 +121,17 @@ const TransferPage = () => {
           />
         </Notification>
 
-        <FormProvider {...methods}>
-          <SignForm
-            onSuccess={onSignSuccess}
-            onSenderChainUpdate={setSenderChainId}
-            onReceiverChainUpdate={setReceiverChainId}
-            setIsLedger={setIsLedger}
-          />
-        </FormProvider>
-
+        <SignForm
+          onSuccess={onSignSuccess}
+          onSenderChainUpdate={setSenderChainId}
+          onReceiverChainUpdate={setReceiverChainId}
+          setIsLedger={setIsLedger}
+        />
         <SubmitTransaction
           data={data}
           receiverChainId={receiverChainId}
           senderChainId={senderChainId}
         />
-
-        <Button
-          // isLoading={isLoading}
-          // isDisabled={ledgerSignState.loading}
-          endIcon={<SystemIcon.Refresh />}
-          title={t('Reset')}
-          onPress={onReset}
-        >
-          {t('Reset')}
-        </Button>
       </Stack>
 
       <RightInfoSidebar
