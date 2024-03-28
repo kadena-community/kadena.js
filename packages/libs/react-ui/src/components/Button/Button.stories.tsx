@@ -115,19 +115,6 @@ export const EndIcon: ButtonStory = {
   },
 };
 
-export const BothIcons: ButtonStory = {
-  args: {
-    children: 'Hello world',
-    variant: 'primary',
-    startIcon: <MonoChevronLeft />,
-    endIcon: <MonoChevronRight />,
-    onPress: () => undefined,
-  },
-  render: (props: IButtonProps) => {
-    return <Button {...props}>{props.children}</Button>;
-  },
-};
-
 export const WithAvatar: ButtonStory = {
   args: {
     children: 'Hello world',
