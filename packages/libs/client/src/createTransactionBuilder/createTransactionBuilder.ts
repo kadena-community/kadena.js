@@ -33,7 +33,11 @@ interface IAddSigner<TCommand> {
   /**
    * Add signer without capability
    */
-  (first: ISigner | ISigner[]): IBuilder<TCommand>;
+  (signer: ISigner): IBuilder<TCommand>;
+  /**
+   * Add signers without capability
+   */
+  (signersList: ISigner[]): IBuilder<TCommand>;
   /**
    * Add a signer including capabilities. The withCapability function is obtained from
    * the function you call in the execution part.
@@ -46,7 +50,22 @@ interface IAddSigner<TCommand> {
    * ])
    */
   (
-    first: ISigner | ISigner[],
+    signer: ISigner,
+    capability: (withCapability: ExtractCapabilityType<TCommand>) => ICap[],
+  ): IBuilder<TCommand>;
+  /**
+   * Add signers with similar capabilities. The withCapability function is obtained from
+   * the function you call in the execution part.
+   * @example
+   * Pact.builder.execute(
+   *   Pact.coin.transfer("alice", "bob", \{ decimal:"1" \})
+   * ).addSigner(["public_key_1","public_key_2"], (withCapability) =\> [
+   *   withCapability("coin.GAS"),
+   *   withCapability("coin.TRANSFER", "alice", "bob", \{ decimal:"1" \})
+   * ])
+   */
+  (
+    signersList: ISigner[],
     capability: (withCapability: ExtractCapabilityType<TCommand>) => ICap[],
   ): IBuilder<TCommand>;
 }
@@ -320,10 +339,12 @@ const getBuilder = <T>(init: IPartialPactCommand): IBuilder<T> => {
       state.composeWith(addKeyset(key, pred, ...publicKeys));
       return builder;
     },
-    addSigner: (pubKey, cap?: unknown) => {
+    addSigner: (signerOrSignerList, cap?: unknown) => {
       state.composeWith(
         addSigner(
-          pubKey,
+          // TS gets confuse when we have function overloads but pass types as union
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          signerOrSignerList as any,
           cap as (withCapability: IGeneralCapability) => ICap[],
         ) as (cmd: IPartialPactCommand) => IPartialPactCommand,
       );

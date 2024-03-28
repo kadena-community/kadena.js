@@ -18,10 +18,16 @@ export type ISigner =
     };
 
 interface IAddSigner {
-  (first: ISigner | ISigner[]): () => IPartialPactCommand;
+  (signer: ISigner): () => IPartialPactCommand;
+  (signersList: ISigner[]): () => IPartialPactCommand;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   <TCommand extends any>(
-    first: ISigner | ISigner[],
+    signer: ISigner,
+    capability: (withCapability: ExtractType<TCommand>) => ICap[],
+  ): TCommand;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  <TCommand extends any>(
+    signersList: ISigner[],
     capability: (withCapability: ExtractType<TCommand>) => ICap[],
   ): TCommand;
 }
