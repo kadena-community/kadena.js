@@ -4,8 +4,8 @@ import sanitize from 'sanitize-filename';
 import { WALLET_DIR, YAML_EXT } from '../../constants/config.js';
 import {
   detectArrayFileParseType,
+  getFileParser,
   notEmpty,
-  safeJsonParse,
   safeYamlParse,
 } from '../../utils/helpers.js';
 import { relativeToCwd } from '../../utils/path.util.js';
@@ -45,9 +45,9 @@ export class ConfigService implements IConfigService {
     type?: 'yaml' | 'json',
   ): ReturnType<IConfigService['getPlainKey']> {
     const file = await this.services.filesystem.readFile(filepath);
-    if (file === null) return null;
+    if (file === null || type === undefined) return null;
 
-    const parser = type === 'json' ? safeJsonParse : safeYamlParse;
+    const parser = getFileParser(type);
     const parsed = plainKeySchema.safeParse(parser(file));
     if (!parsed.success) return null;
 

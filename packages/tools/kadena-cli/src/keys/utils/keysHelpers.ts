@@ -1,5 +1,5 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
-import type { IKeyPair } from './storage.js';
+import type { IWalletKeyPair } from '../../services/wallet/wallet.types.js';
 
 /**
  * Converts a Uint8Array to a hexadecimal string.
@@ -27,23 +27,21 @@ export const fromHexStr = (hexStr: string): Uint8Array =>
  * Parses a string input to extract key pairs in a custom string format.
  *
  * @param {string} input - The string input containing the key pairs in the custom string format.
- * @returns {IKeyPair[]} An array of objects, each containing 'publicKey' and 'secretKey'.
+ * @returns {IWalletKeyPair[]} An array of objects, each containing 'publicKey' and 'secretKey'.
  * @throws {Error} If the input is not in valid custom string format,
  *                 or if required keys ('publicKey' or 'secretKey') are missing.
  */
-export function parseKeyPairsInput(input: string): IKeyPair[] {
+export function parseKeyPairsInput(input: string): IWalletKeyPair[] {
   return input.split(';').map((pairStr) => {
     const keyValuePairs = pairStr
       .trim()
       .split(',')
-      .reduce((acc: Partial<IKeyPair>, keyValue) => {
+      .reduce((acc: Partial<IWalletKeyPair>, keyValue) => {
         const [key, value] = keyValue.split('=').map((item) => item.trim());
         if (key === 'publicKey') {
           acc.publicKey = value;
         } else if (key === 'secretKey') {
           acc.secretKey = value as EncryptedString | string;
-        } else if (key === 'index') {
-          acc.index = parseInt(value);
         }
         return acc;
       }, {});
@@ -56,6 +54,6 @@ export function parseKeyPairsInput(input: string): IKeyPair[] {
         'Invalid custom string format. Expected "publicKey=xxx,secretKey=xxx;..."',
       );
     }
-    return keyValuePairs as IKeyPair;
+    return keyValuePairs as IWalletKeyPair;
   });
 }

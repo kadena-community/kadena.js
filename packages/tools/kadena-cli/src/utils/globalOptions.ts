@@ -16,9 +16,7 @@ import {
   chainIdValidation,
   formatZodFieldErrors,
 } from '../account/utils/accountHelpers.js';
-import { KEY_EXT, WALLET_EXT } from '../constants/config.js';
 import { parseKeyPairsInput } from '../keys/utils/keysHelpers.js';
-import { readKeyFileContent } from '../keys/utils/storage.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
 import { createOption } from './createOption.js';
@@ -174,22 +172,6 @@ export const globalOptions = {
       return await services.wallet.getByAlias(walletAlias);
     },
   }),
-  message: createOption({
-    key: 'message' as const,
-    prompt: generic.messagePrompt,
-    validation: z.string(),
-    option: new Option('-m, --message <message>', 'Enter message to decrypt'),
-    transform: async (message: string) => {
-      if (message.includes(WALLET_EXT) || message.includes(KEY_EXT)) {
-        const keyFileContent = await readKeyFileContent(message);
-        if (typeof keyFileContent === 'string') {
-          return keyFileContent;
-        }
-        return keyFileContent?.secretKey;
-      }
-      return message;
-    },
-  }),
   // common
   outFileJson: createOption({
     key: 'outFile',
@@ -256,6 +238,3 @@ export const securityOptions = {
     })(optionArgs);
   },
 };
-
-export type GlobalOptions = typeof globalOptions;
-export type GlobalFlags = typeof globalFlags;
