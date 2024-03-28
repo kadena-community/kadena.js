@@ -9,6 +9,7 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useToolbar } from '@/context/layout-context';
 import { usePersistentChainID } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { MonoKeyboardArrowRight } from '@kadena/react-icons';
 import {
   Box,
   Breadcrumbs,
@@ -103,7 +104,9 @@ const CheckTransactions: FC = () => {
             </Grid>
           </Card>
           <section className={submitClass}>
-            <Button icon="TrailingIcon">{t('Search for transactions')}</Button>
+            <Button endIcon={<MonoKeyboardArrowRight />}>
+              {t('Search for transactions')}
+            </Button>
           </section>
         </form>
       </section>

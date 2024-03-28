@@ -30,7 +30,7 @@ export const GraphQLQueryDialog = (
         endIcon={<SystemIcon.Information />}
         title="Show the GraphQL query used."
         isCompact
-        variant="text"
+        variant="transparent"
         onPress={() => setIsOpen(true)}
       >
         GraphQL

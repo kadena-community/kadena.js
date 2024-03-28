@@ -97,13 +97,12 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
             endAddon={
               <Button
                 icon={<MonoContentCopy />}
-                variant="text"
+                variant="transparent"
                 onPress={async () => {
                   await navigator.clipboard.writeText(field.value);
                 }}
                 aria-label="Copy Account Name"
                 title="Copy Account Name"
-                color="primary"
                 type="button"
               />
             }

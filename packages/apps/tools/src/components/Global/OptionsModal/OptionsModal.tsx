@@ -97,7 +97,7 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
                       title="Radio"
                       aria-label="Radio"
                       icon={<MonoRadioButtonChecked />}
-                      variant="text"
+                      variant="transparent"
                       onPress={() => setSelected(key as DevOption)}
                     />
                   ) : (
@@ -105,7 +105,7 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
                       title="Radio"
                       aria-label="Radio"
                       icon={<MonoRadioButtonUnchecked />}
-                      variant="text"
+                      variant="transparent"
                       onPress={() => setSelected(key as DevOption)}
                     />
                   )}
@@ -113,7 +113,7 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
                     title="Radio"
                     aria-label="Radio"
                     icon={value.icon}
-                    variant="text"
+                    variant="transparent"
                     onPress={() => setSelected(key as DevOption)}
                   />
                   <Stack flexDirection="column" marginInline="md">
@@ -158,11 +158,10 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
               <div className={modalWrapperStyle}>
                 <Button
                   title={`${t('Save')}`}
-                  onClick={() => {
+                  onPress={() => {
                     setDevOption(selected);
                     state.close();
                   }}
-                  color="primary"
                   className={modalButtonStyle}
                 >
                   {`${t('Save')}`}
