@@ -23,3 +23,12 @@ export const haveAllSigned = (signees: IProofOfUsSignee[]): boolean => {
 
   return !!signinglist.length;
 };
+
+export const isReadyToMint = (signees?: IProofOfUsSignee[]): boolean => {
+  if (!signees) return false;
+  const signinglist = signees.filter(
+    (s) => s.signerStatus === 'success' && !s.initiator,
+  );
+
+  return signinglist.length >= signees.length - 1;
+};

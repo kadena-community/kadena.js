@@ -3,7 +3,11 @@ import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
-import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
+import {
+  isAlreadySigning,
+  isReadyToMint,
+  isSignedOnce,
+} from '@/utils/isAlreadySigning';
 import {
   MonoArrowBack,
   MonoArrowDownward,
@@ -14,7 +18,7 @@ import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
@@ -88,6 +92,8 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
     return () => clearTimeout(timer);
   }, [isCopied]);
+
+  const readyToMint = useMemo(() => isReadyToMint(signees), [signees]);
 
   if (!proofOfUs || !account || !isMounted) return;
 
@@ -210,9 +216,10 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
               <ListSignees />
             </>
           )}
-          {isSignedOnce(signees) && (
-            <Button onPress={handleSign}>Sign & Upload</Button>
-          )}
+
+          <Button isDisabled={!readyToMint} onPress={handleSign}>
+            {readyToMint ? 'Sign & Upload' : 'Waiting for signatures'}
+          </Button>
         </>
       )}
       {status === 4 && (
