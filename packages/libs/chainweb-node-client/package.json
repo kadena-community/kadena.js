@@ -1,6 +1,6 @@
 {
   "name": "@kadena/chainweb-node-client",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "Typed JavaScript wrapper with fetch to call chainweb-node API endpoints",
   "keywords": [],
   "repository": {

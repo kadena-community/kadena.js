@@ -1,5 +1,13 @@
 # @kadena/react-ui
 
+## 0.8.4
+
+### Patch Changes
+
+- b316674811: Added Avatar component waiting for final tokens
+- 8bb316881: fix: use new text and header components from react-ui package
+- 5c5937eef: Update tokens
+
 ## 0.8.3
 
 ### Patch Changes
