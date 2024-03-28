@@ -5,9 +5,8 @@ import { token } from '../../styles/themeUtils';
 import { tokens } from '../../styles/tokens/contract.css';
 import { uiBaseBold, uiSmallestBold } from '../../styles/tokens/styles.css';
 
-const backgroundColor = createVar();
 const textColor = createVar();
-const hoverTextColor = createVar();
+const backgroundColor = createVar();
 const hoverBackgroundColor = createVar();
 const disabledBackgroundColor = createVar();
 const focusBackgroundColor = createVar();
@@ -18,9 +17,6 @@ const focus = {
   outline: `${tokens.kda.foundation.color.border.tint.outline} solid ${tokens.kda.foundation.border.width.normal}`,
   outlineOffset: tokens.kda.foundation.border.width.normal,
   backgroundColor: focusBackgroundColor,
-  vars: {
-    [textColor]: token('color.text.base.inverse.@focus'),
-  },
 };
 
 export const iconStyle = style({
@@ -28,6 +24,11 @@ export const iconStyle = style({
   height: iconSize,
   width: iconSize,
   transition: 'fill 0.2s ease-in-out',
+});
+
+export const disabledBadgeStyle = style({
+  opacity: 0.4,
+  transition: 'opacity 0.2s ease-in-out',
 });
 
 export const iconOnlyStyle = atoms({
@@ -67,6 +68,7 @@ export const centerContentWrapper = style([
   {
     fontFamily: 'inherit',
     fontSize: 'inherit',
+    lineHeight: 'inherit',
   },
 ]);
 
@@ -108,6 +110,80 @@ export const buttonReset = style({
   },
 });
 
+const defaultVars = {
+  [iconFill]: token('color.icon.base.@init'),
+  [textColor]: token('color.text.base.@init'),
+};
+
+const defaultSelectors = {
+  '&[data-hovered]': {
+    vars: {
+      [iconFill]: token('color.icon.base.@hover'),
+      [textColor]: token('color.text.base.@hover'),
+    },
+  },
+  '&[data-pressed]': {
+    vars: {
+      [iconFill]: token('color.icon.base.@active'),
+      [textColor]: token('color.text.base.@active'),
+    },
+  },
+  '&[data-focus-visible]': {
+    vars: {
+      [iconFill]: token('color.icon.base.@focus'),
+      [textColor]: token('color.text.base.@focus'),
+    },
+  },
+  '&[data-selected]': {
+    vars: {
+      [iconFill]: token('color.icon.base.@active'),
+      [textColor]: token('color.text.base.@active'),
+    },
+  },
+  '&[data-disabled]': {
+    vars: {
+      [backgroundColor]: 'transparent',
+    },
+  },
+};
+
+const inverseVars = {
+  [iconFill]: token('color.icon.base.inverse.@init'),
+  [textColor]: token('color.text.base.inverse.@init'),
+};
+
+const inverseSelectors = {
+  '&[data-hovered]': {
+    vars: {
+      [iconFill]: token('color.icon.base.inverse.@hover'),
+      [textColor]: token('color.text.base.inverse.@hover'),
+    },
+  },
+  '&[data-pressed]': {
+    vars: {
+      [iconFill]: token('color.icon.base.inverse.@active'),
+      [textColor]: token('color.text.base.inverse.@active'),
+    },
+  },
+  '&[data-focus-visible]': {
+    vars: {
+      [iconFill]: token('color.icon.base.inverse.@focus'),
+      [textColor]: token('color.text.base.inverse.@focus'),
+    },
+  },
+  '&[data-selected]': {
+    vars: {
+      [iconFill]: token('color.icon.base.inverse.@active'),
+      [textColor]: token('color.text.base.inverse.@active'),
+    },
+  },
+  '&[data-disabled]': {
+    vars: {
+      [backgroundColor]: token('color.background.base.@disabled'),
+    },
+  },
+};
+
 export const button = recipe({
   base: [
     buttonReset,
@@ -118,34 +194,25 @@ export const button = recipe({
       borderRadius: 'xs',
       gap: 'sm',
       paddingBlock: 'sm',
-      color: 'text.base.inverse.@init',
     }),
     {
-      backgroundColor: backgroundColor,
       color: textColor,
+      backgroundColor: backgroundColor,
       transition:
         'background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out',
       selectors: {
         '&[data-hovered]': {
           cursor: 'pointer',
-          color: hoverTextColor,
           background: hoverBackgroundColor,
-          vars: {
-            [iconFill]: token('color.icon.base.inverse.@hover'),
-            [textColor]: token('color.text.base.inverse.@hover'),
-          },
         },
         '&[data-pressed]': focus,
         '&[data-focus-visible]': focus,
         '&[data-selected]': focus,
         '&[data-disabled]': {
-          background: disabledBackgroundColor,
-          color: token('color.text.base.@disabled'),
           cursor: 'not-allowed',
           vars: {
             [iconFill]: token('color.icon.base.@disabled'),
-            [textColor]: token('color.text.base.inverse.@disabled'),
-            [disabledBackgroundColor]: token('color.background.base.default'),
+            [textColor]: token('color.text.base.@disabled'),
           },
         },
       },
@@ -161,10 +228,13 @@ export const button = recipe({
           [hoverBackgroundColor]: token(
             'color.background.accent.primary.inverse.@hover',
           ),
-          [iconFill]: token('color.text.base.inverse.default'),
           [focusBackgroundColor]: token(
             'color.background.accent.primary.inverse.@focus',
           ),
+          ...inverseVars,
+        },
+        selectors: {
+          ...inverseSelectors,
         },
       },
       warning: {
@@ -172,15 +242,16 @@ export const button = recipe({
           [backgroundColor]: token(
             'color.background.semantic.warning.inverse.default',
           ),
-          [textColor]: token('color.text.semantic.warning.inverse.default'),
-          [hoverTextColor]: token('color.text.semantic.warning.inverse.@hover'),
           [hoverBackgroundColor]: token(
             'color.background.semantic.warning.inverse.@hover',
           ),
-          [iconFill]: token('color.icon.semantic.warning.default'),
           [focusBackgroundColor]: token(
             'color.background.semantic.warning.inverse.@focus',
           ),
+          ...inverseVars,
+        },
+        selectors: {
+          ...inverseSelectors,
         },
       },
       negative: {
@@ -188,17 +259,16 @@ export const button = recipe({
           [backgroundColor]: token(
             'color.background.semantic.negative.inverse.default',
           ),
-          [textColor]: token('color.text.semantic.negative.inverse.default'),
-          [hoverTextColor]: token(
-            'color.text.semantic.negative.inverse.@hover',
-          ),
           [hoverBackgroundColor]: token(
             'color.background.semantic.negative.inverse.@hover',
           ),
-          [iconFill]: token('color.icon.semantic.negative.default'),
           [focusBackgroundColor]: token(
             'color.background.semantic.negative.inverse.@focus',
           ),
+          ...inverseVars,
+        },
+        selectors: {
+          ...inverseSelectors,
         },
       },
       positive: {
@@ -206,17 +276,16 @@ export const button = recipe({
           [backgroundColor]: token(
             'color.background.semantic.positive.inverse.default',
           ),
-          [textColor]: token('color.text.semantic.positive.inverse.default'),
-          [hoverTextColor]: token(
-            'color.text.semantic.positive.inverse.@hover',
-          ),
           [hoverBackgroundColor]: token(
             'color.background.semantic.positive.inverse.@hover',
           ),
-          [iconFill]: token('color.icon.semantic.positive.default'),
           [focusBackgroundColor]: token(
             'color.background.semantic.positive.inverse.@focus',
           ),
+          ...inverseVars,
+        },
+        selectors: {
+          ...inverseSelectors,
         },
       },
       info: {
@@ -224,49 +293,50 @@ export const button = recipe({
           [backgroundColor]: token(
             'color.background.semantic.info.inverse.default',
           ),
-          [textColor]: token('color.text.semantic.info.inverse.default'),
-          [hoverTextColor]: token('color.text.semantic.info.inverse.@hover'),
           [hoverBackgroundColor]: token(
             'color.background.semantic.info.inverse.@hover',
           ),
-          [iconFill]: token('color.icon.semantic.info.default'),
           [focusBackgroundColor]: token(
             'color.background.semantic.info.inverse.@focus',
           ),
+          ...inverseVars,
+        },
+        selectors: {
+          ...inverseSelectors,
         },
       },
       transparent: {
         vars: {
           [backgroundColor]: 'transparent',
-          [textColor]: token('color.text.base.default'),
-          // [hoverBackgroundColor]: token('color.background.base.@hover'),
-          [iconFill]: token('color.icon.semantic.info.default'),
+          [hoverBackgroundColor]: token('color.background.base.@hover'),
           [disabledBackgroundColor]: 'transparent',
-          // [focusBackgroundColor]: token('color.background.base.@focus'),
+          [focusBackgroundColor]: token('color.background.base.@focus'),
+          ...defaultVars,
+        },
+        selectors: {
+          ...defaultSelectors,
         },
       },
       outlined: {
         boxShadow: `0px 0px 0px 1px ${token(
           'color.border.base.default',
         )} inset`,
-        selectors: {
-          '&[data-hovered]': {
-            borderColor: token('color.border.base.@hover'),
-          },
-        },
         vars: {
           [backgroundColor]: 'transparent',
-          [textColor]: token('color.text.base.default'),
-          // [hoverBackgroundColor]: token('color.background.base.@hover'),
-          [iconFill]: token('color.icon.base.@focus'),
+          [hoverBackgroundColor]: token('color.background.base.@hover'),
           [disabledBackgroundColor]: 'transparent',
-          // [focusBackgroundColor]: token('color.background.base.@focus'),
+          [focusBackgroundColor]: token('color.background.base.@focus'),
+          ...defaultVars,
+        },
+        selectors: {
+          ...defaultSelectors,
         },
       },
     },
     isCompact: {
       true: [
         uiSmallestBold,
+        { lineHeight: token('size.n4') },
         {
           vars: {
             [iconSize]: token('size.n4'),
@@ -281,6 +351,7 @@ export const button = recipe({
       ],
       false: [
         uiBaseBold,
+        { lineHeight: token('size.n6') },
         {
           vars: {
             [iconSize]: token('size.n6'),
