@@ -30,6 +30,15 @@ const config = {
     QA_LEDGER_MOCKED_PUBKEY: process.env.QA_LEDGER_MOCKED_PUBKEY,
     QA_LEDGER_MOCKED_PRIVATEKEY: process.env.QA_LEDGER_MOCKED_PRIVATEKEY,
   },
+  async redirects() {
+    return [
+      {
+        source: '/transactions/module-explorer',
+        destination: '/modules/explorer',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = withVanillaExtract(nextTranslate(config));
