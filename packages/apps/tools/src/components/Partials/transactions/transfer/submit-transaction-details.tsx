@@ -44,7 +44,9 @@ export const SubmitTransactionDetails = ({
             )
           }
         >
-          Transaction
+          {txDetailsExpanded
+            ? t('Hide raw transaction details')
+            : t('Show raw transaction details')}
         </ToggleButton>
         {txDetailsExpanded ? (
           <TrackerCard
