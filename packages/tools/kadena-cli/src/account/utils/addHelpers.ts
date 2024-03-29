@@ -1,6 +1,7 @@
 import path from 'path';
 
 import { ACCOUNT_DIR } from '../../constants/config.js';
+import { KadenaError } from '../../services/service-error.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
@@ -32,6 +33,9 @@ export const getUpdatedConfig = (
 };
 
 export const getAccountFilePath = (fileName: string): string => {
+  if (ACCOUNT_DIR === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   const sanitizedAlias = sanitizeFilename(fileName);
   return path.join(ACCOUNT_DIR, `${sanitizedAlias}.yaml`);
 };

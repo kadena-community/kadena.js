@@ -11,6 +11,7 @@ import type { IAliasAccountData } from './../types.js';
 
 import { ACCOUNT_DIR, MAX_CHAIN_VALUE } from '../../constants/config.js';
 import { services } from '../../services/index.js';
+import { KadenaError } from '../../services/service-error.js';
 import { isNotEmptyString, notEmpty } from '../../utils/helpers.js';
 import { isEmpty } from './addHelpers.js';
 
@@ -35,6 +36,9 @@ export const formatZodErrors = (errors: ZodError): string => {
 export const readAccountFromFile = async (
   accountFile: string,
 ): Promise<IAliasAccountData> => {
+  if (ACCOUNT_DIR === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   const ext = extname(accountFile);
   const fileWithExt =
     !ext || ext !== '.yaml' ? `${accountFile}.yaml` : accountFile;
@@ -65,10 +69,16 @@ export const readAccountFromFile = async (
 };
 
 export async function ensureAccountAliasDirectoryExists(): Promise<boolean> {
+  if (ACCOUNT_DIR === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   return await services.filesystem.directoryExists(ACCOUNT_DIR);
 }
 
 export async function ensureAccountAliasFilesExists(): Promise<boolean> {
+  if (ACCOUNT_DIR === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   if (!(await ensureAccountAliasDirectoryExists())) {
     return false;
   }
@@ -79,6 +89,9 @@ export async function ensureAccountAliasFilesExists(): Promise<boolean> {
 }
 
 export async function getAllAccounts(): Promise<IAliasAccountData[]> {
+  if (ACCOUNT_DIR === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   if (!(await ensureAccountAliasDirectoryExists())) {
     return [];
   }
