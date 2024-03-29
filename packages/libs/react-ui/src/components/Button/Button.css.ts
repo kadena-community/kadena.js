@@ -64,13 +64,22 @@ export const avatarStyle = style({
 });
 
 export const centerContentWrapper = style([
-  atoms({ display: 'flex', alignItems: 'center', gap: 'sm' }),
+  atoms({
+    display: 'flex',
+    alignItems: 'center',
+    gap: 'sm',
+    flexDirection: 'row',
+  }),
   {
     fontFamily: 'inherit',
     fontSize: 'inherit',
     lineHeight: 'inherit',
   },
 ]);
+
+export const directionStyle = style({
+  flexDirection: 'row-reverse',
+});
 
 export const buttonReset = style({
   position: 'relative',

@@ -253,8 +253,8 @@ export const SignForm: FC<ISignFormProps> = ({
 
           <Stack justifyContent={'flex-end'} gap={'lg'}>
             <Button
-              endIcon={<MonoRefresh />}
-              color="secondary"
+              endVisual={<MonoRefresh />}
+              variant="outlined"
               title={t('Reset')}
               type="reset"
             >
@@ -262,10 +262,10 @@ export const SignForm: FC<ISignFormProps> = ({
             </Button>
 
             <Button
-              endIcon={<MonoKeyboardArrowRight />}
+              endVisual={<MonoKeyboardArrowRight />}
               title={getSubmitButtonText()}
               type="submit"
-              color={getSubmitButtonColor()}
+              variant={getSubmitButtonColor()}
             >
               {getSubmitButtonText()}
             </Button>

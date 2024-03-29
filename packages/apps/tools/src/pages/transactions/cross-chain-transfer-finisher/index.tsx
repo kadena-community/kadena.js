@@ -630,7 +630,7 @@ const CrossChainTransferFinisher: FC = () => {
           <Button
             type="submit"
             isLoading={processingTx}
-            endIcon={<MonoKeyboardArrowRight />}
+            icon={<MonoKeyboardArrowRight />}
           >
             {t('Finish Transaction')}
           </Button>

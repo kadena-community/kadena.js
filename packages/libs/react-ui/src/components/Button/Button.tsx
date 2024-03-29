@@ -20,6 +20,7 @@ import {
   badgeStyle,
   button,
   centerContentWrapper,
+  directionStyle,
   disabledBadgeStyle,
   iconOnlyStyle,
   iconStyle,
@@ -39,10 +40,9 @@ export interface ICustomProps extends BaseProps {
   badgeValue?: string | number;
   children?: ReactNode | ReactNode[];
   className?: string;
-  endIcon?: ReactElement;
   icon?: ReactElement;
+  iconPosition?: 'start' | 'end';
   isDisabled?: boolean;
-  startIcon?: ReactElement;
   loadingLabel?: string;
   style?: ComponentProps<'button'>['style'];
   // Title to be shown as HTML tooltip
@@ -80,8 +80,7 @@ const renderIcon = (icon: ReactElement) =>
  * @param children - label to be shown
  * @param badgeValue - badge value to be shown after the label
  * @param icon - icon to be shown as only child
- * @param startIcon - icon to be shown before the children
- * @param endIcon - icon to be shown after the children
+ * @param iconPosition - position of the icon either "start" or "end"
  * @param isDisabled - disabled state
  * @param isLoading - loading state
  * @param isCompact - compact button style
@@ -95,8 +94,7 @@ const renderIcon = (icon: ReactElement) =>
 const BaseButton = (
   {
     icon,
-    startIcon,
-    endIcon,
+    iconPosition = 'end',
     children,
     avatarProps,
     badgeValue,
@@ -118,6 +116,9 @@ const BaseButton = (
   const { hoverProps, isHovered } = useHover(props);
   const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
 
+  const startIcon = iconPosition === 'start' && icon;
+  const endIcon = iconPosition === 'end' && icon;
+
   const isLoadingAriaLiveLabel = `${
     typeof children === 'string' ? children : buttonProps['aria-label'] ?? 'is'
   } loading`.trim();
@@ -133,14 +134,14 @@ const BaseButton = (
             {...avatarProps}
           />
         ) : (
-          renderIcon(startIcon as ReactElement)
+          renderIcon(icon as ReactElement)
         )}
       </span>
     ) : null;
 
   // Icon to be rendered after the center content
   const postfixContent = endIcon ? (
-    <span className={postfixIconStyle}>{renderIcon(endIcon)}</span>
+    <span className={postfixIconStyle}>{renderIcon(icon)}</span>
   ) : null;
 
   // Content with optional badge component
@@ -168,16 +169,18 @@ const BaseButton = (
       ) : null}
     </span>
   );
+  // FIXME: label during loading
 
   // For buttons with icons only, only show the loader
   const content = props.isLoading ? (
     <span
       className={classNames({
         [`${noPrefixStyle} ${postfixIconStyle} ${centerContentWrapper}`]: !icon,
-        [iconOnlyStyle]: icon,
+        [iconOnlyStyle]: icon && !children,
+        [directionStyle]: startIcon,
       })}
     >
-      {icon ? null : loadingLabel}
+      {icon && !children ? null : loadingLabel}
       <ProgressCircle
         size={isCompact ? 'sm' : 'md'}
         aria-hidden="true"
@@ -185,7 +188,7 @@ const BaseButton = (
         isIndeterminate
       />
     </span>
-  ) : icon ? (
+  ) : icon && !children ? (
     <span className={iconOnlyStyle}>{renderIcon(icon as ReactElement)}</span>
   ) : (
     <>

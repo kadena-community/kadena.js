@@ -51,7 +51,6 @@ const ToggleButtonBase = (
       className={classNames(
         button({
           variant: props.variant,
-          color: props.color,
           isCompact: props.isCompact,
           isLoading: props.isLoading,
         }),

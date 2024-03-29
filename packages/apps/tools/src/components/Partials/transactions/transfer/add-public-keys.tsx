@@ -101,7 +101,7 @@ export const AddPublicKeysSection = ({
         />
         <Stack flexDirection={'row-reverse'}>
           <Button
-            endIcon={<MonoAdd />}
+            icon={<MonoAdd />}
             onPress={() => {
               const value = publicKey;
               const valid = validatePublicKey(stripAccountPrefix(value || ''));

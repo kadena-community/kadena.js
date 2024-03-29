@@ -300,16 +300,15 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
               />
 
               <Button
-                icon={
-                  <MonoContentCopy className={notificationLinkErrorStyle} />
-                }
                 onPress={async () => {
                   await navigator.clipboard.writeText(completeLinkToFinisher);
                 }}
                 title={t('copy link to finisher')}
                 aria-label={t('copy link to finisher')}
                 variant="transparent"
-              />
+              >
+                <MonoContentCopy className={notificationLinkErrorStyle} />
+              </Button>
             </Stack>
           ) : (
             t('successful-transfer-page-transfer')
@@ -321,7 +320,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         <Button
           isLoading={isLoading}
           isDisabled={isSuccessfulTransfer}
-          endIcon={<MonoKeyboardArrowRight />}
+          endVisual={<MonoKeyboardArrowRight />}
           title={t('Transfer')}
           onPress={onSubmit}
         >
