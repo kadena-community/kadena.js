@@ -1,7 +1,10 @@
 import { prismaClient } from '@db/prisma-client';
-import { Prisma } from '@prisma/client';
+import { Prisma, Transaction } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
-import { getConditionForMinimumDepth } from '@services/depth-service';
+import {
+  getConditionForMinimumDepth,
+  getConfirmationDepth,
+} from '@services/depth-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
@@ -89,13 +92,60 @@ builder.queryField('transactions', (t) =>
 
     async resolve(query, __parent, args) {
       try {
-        return prismaClient.transaction.findMany({
-          ...query,
-          where: await generateTransactionFilter(args),
-          orderBy: {
-            height: 'desc',
-          },
-        });
+        let transactions: Transaction[] = [];
+        let skip = 0;
+        const take = query.take;
+
+        while (transactions.length < take) {
+          const remaining = take - transactions.length;
+          const fetchedTransactions = await prismaClient.transaction.findMany({
+            ...query,
+            where: await generateTransactionFilter(args),
+            orderBy: {
+              height: 'desc',
+            },
+            take: remaining,
+            skip,
+          });
+
+          if (fetchedTransactions.length === 0) {
+            break;
+          }
+
+          if (args.minimumDepth) {
+            const uniqueBlockHashes = [
+              ...new Set(fetchedTransactions.map((t) => t.blockHash)),
+            ];
+            const confirmationDepths = await Promise.all(
+              uniqueBlockHashes.map((blockHash) =>
+                getConfirmationDepth(blockHash),
+              ),
+            );
+
+            const blockHashToDepth: Record<string, number> =
+              uniqueBlockHashes.reduce(
+                (map: Record<string, number>, blockHash, index) => {
+                  map[blockHash] = confirmationDepths[index];
+                  return map;
+                },
+                {},
+              );
+
+            const filteredTransactions = fetchedTransactions.filter(
+              (transaction) =>
+                blockHashToDepth[transaction.blockHash] >=
+                (args.minimumDepth as number),
+            );
+
+            transactions = [...transactions, ...filteredTransactions];
+          } else {
+            transactions = [...transactions, ...fetchedTransactions];
+          }
+
+          skip += remaining;
+        }
+
+        return transactions.slice(0, take);
       } catch (error) {
         throw normalizeError(error);
       }
