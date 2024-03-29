@@ -41,7 +41,7 @@ export const walletOptions = {
     validation: z.string(),
     option: new Option(
       '-c, --create-account <createAccount>',
-      'Create a account using the first wallet key',
+      'Create an account using the first wallet key',
     ),
   }),
   amount: createOption({
