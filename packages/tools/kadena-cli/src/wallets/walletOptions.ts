@@ -55,7 +55,7 @@ export const walletOptions = {
     prompt: () => '1',
     validation: z.string(),
     option: new Option(
-      '-i, --start-index',
+      '-i, --start-index <startIndex>',
       'Index to start generating keys at',
     ),
   }),
