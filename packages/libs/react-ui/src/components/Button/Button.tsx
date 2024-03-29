@@ -51,20 +51,30 @@ export interface ICustomProps extends BaseProps {
 
 interface IAnchorElementProps extends ICustomProps {
   onPress?: never;
-  href: string;
+  href: string | undefined;
   target?: '_self' | '_blank' | '_parent' | '_top';
 }
 
 export interface IButtonElementProps extends ICustomProps {
-  type?: Pick<AriaButtonProps, 'type'>['type'];
-  onPress?:
+  type?: Omit<Pick<AriaButtonProps, 'type'>['type'], 'submit'>;
+  onPress:
     | Pick<AriaButtonProps, 'onPress'>['onPress']
     | MouseEventHandler<HTMLButtonElement>;
   href?: never;
   target?: never;
 }
 
-export type IButtonProps = IAnchorElementProps | IButtonElementProps;
+export interface ISubmitButtonProps extends ICustomProps {
+  type: 'submit';
+  onPress?: never;
+  href?: never;
+  target?: never;
+}
+
+export type IButtonProps =
+  | IAnchorElementProps
+  | IButtonElementProps
+  | ISubmitButtonProps;
 
 const renderIcon = (icon: ReactElement) =>
   cloneElement(icon, {
@@ -118,6 +128,9 @@ const BaseButton = (
 
   const startIcon = iconPosition === 'start' && icon;
   const endIcon = iconPosition === 'end' && icon;
+  const iconOnly =
+    (icon && !children) || (loadingLabel === '' && props.isLoading);
+  const isLoading = props.isLoading && loadingLabel !== '';
 
   const isLoadingAriaLiveLabel = `${
     typeof children === 'string' ? children : buttonProps['aria-label'] ?? 'is'
@@ -169,18 +182,20 @@ const BaseButton = (
       ) : null}
     </span>
   );
-  // FIXME: label during loading
 
-  // For buttons with icons only, only show the loader
+  // For buttons with icons only or empty loader text, only show the loader
   const content = props.isLoading ? (
     <span
       className={classNames({
-        [`${noPrefixStyle} ${postfixIconStyle} ${centerContentWrapper}`]: !icon,
-        [iconOnlyStyle]: icon && !children,
+        [`${noPrefixStyle} ${postfixIconStyle} ${centerContentWrapper}`]:
+          (endIcon && isLoading) || !iconOnly,
+        [`${noPostfixStyle} ${prefixIconStyle} ${centerContentWrapper}`]:
+          (startIcon && isLoading) || !iconOnly,
+        [iconOnlyStyle]: iconOnly,
         [directionStyle]: startIcon,
       })}
     >
-      {icon && !children ? null : loadingLabel}
+      {iconOnly ? null : loadingLabel}
       <ProgressCircle
         size={isCompact ? 'sm' : 'md'}
         aria-hidden="true"
@@ -188,7 +203,7 @@ const BaseButton = (
         isIndeterminate
       />
     </span>
-  ) : icon && !children ? (
+  ) : iconOnly ? (
     <span className={iconOnlyStyle}>{renderIcon(icon as ReactElement)}</span>
   ) : (
     <>
@@ -243,5 +258,7 @@ const BaseButton = (
     </button>
   );
 };
+
+BaseButton.displayName = 'Button';
 
 export const Button = forwardRef(BaseButton);
