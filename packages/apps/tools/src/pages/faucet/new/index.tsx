@@ -501,7 +501,7 @@ const NewAccountFaucetPage: FC = () => {
             <Button
               isLoading={requestStatus.status === 'processing'}
               isDisabled={mainnetSelected}
-              endIcon={<MonoKeyboardArrowRight />}
+              icon={<MonoKeyboardArrowRight />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
               type="submit"
             >

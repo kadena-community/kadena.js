@@ -35,8 +35,12 @@ const meta: Meta<IButtonProps> = {
       },
     },
     icon: iconControl,
-    startIcon: iconControl,
-    endIcon: iconControl,
+    iconPosition: {
+      control: {
+        type: 'radio',
+      },
+      options: ['start', 'end'],
+    },
     badgeValue: {
       description: 'badge value to be shown after the children',
       control: {
@@ -95,7 +99,8 @@ export const StartIcon: ButtonStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    startIcon: <MonoChevronLeft />,
+    icon: <MonoChevronLeft />,
+    iconPosition: 'start',
     onPress: () => undefined,
   },
   render: (props: IButtonProps) => {
@@ -107,7 +112,7 @@ export const EndIcon: ButtonStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    endIcon: <MonoChevronRight />,
+    icon: <MonoChevronRight />,
     onPress: () => undefined,
   },
   render: (props: IButtonProps) => {
@@ -146,7 +151,7 @@ export const BadgeAndEndIcon: ButtonStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    endIcon: <MonoChevronRight />,
+    icon: <MonoChevronRight />,
     badgeValue: '6',
     onPress: () => undefined,
   },
@@ -159,7 +164,8 @@ export const BadgeAndStartIcon: ButtonStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    startIcon: <MonoChevronLeft />,
+    icon: <MonoChevronLeft />,
+    iconPosition: 'start',
     badgeValue: '6',
     onPress: () => undefined,
   },

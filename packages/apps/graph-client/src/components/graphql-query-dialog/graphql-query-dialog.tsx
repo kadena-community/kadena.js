@@ -27,7 +27,7 @@ export const GraphQLQueryDialog = (
   return (
     <>
       <Button
-        endIcon={<SystemIcon.Information />}
+        icon={<SystemIcon.Information />}
         title="Show the GraphQL query used."
         isCompact
         variant="transparent"
