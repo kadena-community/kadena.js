@@ -25,7 +25,7 @@ import {
 import { readKeyFileContent } from '../keys/utils/storage.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { createOption } from './createOption.js';
-import { passwordPromptTransform } from './helpers.js';
+import { getDefaultNetworkName, passwordPromptTransform } from './helpers.js';
 import { log } from './logger.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
@@ -69,13 +69,13 @@ export const globalOptions = {
   network: createOption({
     key: 'network' as const,
     prompt: networks.networkSelectPrompt,
+    defaultValue: await getDefaultNetworkName(),
     validation: z.string(),
     option: new Option(
       '-n, --network <network>',
       'Kadena network (e.g. "mainnet")',
     ),
     expand: async (network: string) => {
-      // await ensureNetworksConfiguration();
       try {
         return await loadNetworkConfig(network);
       } catch (e) {
@@ -91,6 +91,7 @@ export const globalOptions = {
     key: 'network' as const,
     prompt: networks.networkSelectOnlyPrompt,
     defaultIsOptional: false,
+    defaultValue: await getDefaultNetworkName(),
     validation: z.string(),
     option: new Option(
       '-n, --network <network>',
@@ -116,10 +117,10 @@ export const globalOptions = {
     }),
     option: new Option('-c, --chain-id <chainId>'),
     transform: (chainId: string) => {
-      const parsedChainId = parseInt(chainId.trim(), 10);
+      const parsedChainId = Number(chainId.trim());
       try {
         chainIdValidation.parse(parsedChainId);
-        return chainId as ChainId;
+        return parsedChainId.toString() as ChainId;
       } catch (error) {
         const errorMessage = formatZodFieldErrors(error);
         throw new Error(`Error: -c --chain-id ${errorMessage}`);
@@ -191,6 +192,17 @@ export const globalOptions = {
     expand: async (walletName: string) => {
       return await getWallet(walletName);
     },
+  }),
+  walletsSelectByWallet: createOption({
+    key: 'walletName',
+    prompt: async (args) => {
+      return Array.isArray(args.wallets)
+        ? wallets.walletSelectByWalletPrompt(args.wallets as string[])
+        : wallets.walletSelectPrompt();
+    },
+    validation: z.string(),
+    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
+    defaultIsOptional: false,
   }),
   message: createOption({
     key: 'message' as const,

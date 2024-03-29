@@ -19,8 +19,7 @@ export const blogitem = style([
 
     selectors: {
       '&:hover': {
-        backgroundColor:
-          tokens.kda.foundation.color.background['layer-2'].default,
+        backgroundColor: tokens.kda.foundation.color.background.layer20.default,
       },
     },
   },
@@ -119,7 +118,7 @@ export const imageClass = style([
 export const authorTitleClass = style([
   atoms({
     fontSize: 'md',
-    fontWeight: 'bodyFont.regular',
+    fontWeight: 'secondaryFont.regular',
     color: 'text.subtlest.inverse.default',
   }),
 ]);

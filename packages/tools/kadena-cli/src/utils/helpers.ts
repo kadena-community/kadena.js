@@ -1,9 +1,15 @@
+import type { ChainId } from '@kadena/types';
+import { load } from 'js-yaml';
 import path from 'path';
 import sanitize from 'sanitize-filename';
 import type { ZodError } from 'zod';
-import { MAX_CHARACTERS_LENGTH } from '../constants/config.js';
+import z from 'zod';
+import { MAX_CHAIN_IDS, MAX_CHARACTERS_LENGTH } from '../constants/config.js';
 import { defaultDevnetsPath, devnetDefaults } from '../constants/devnets.js';
-import { defaultNetworksPath } from '../constants/networks.js';
+import {
+  defaultNetworksPath,
+  defaultNetworksSettingsFilePath,
+} from '../constants/networks.js';
 import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import { writeDevnet } from '../devnet/utils/devnetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
@@ -331,6 +337,9 @@ export const maskStringPreservingStartAndEnd = (
 export const isNotEmptyString = (value: unknown): value is string =>
   value !== null && value !== undefined && value !== '';
 
+export const isNotEmptyObject = <T extends object>(obj?: T | null): obj is T =>
+  obj !== undefined && obj !== null && Object.keys(obj).length > 0;
+
 /**
  * Prints zod error issues in format
  * ```code
@@ -357,6 +366,44 @@ export const safeJsonParse = <T extends unknown>(value: string): T | null => {
     return null;
   }
 };
+
+export const safeYamlParse = <T extends unknown>(value: string): T | null => {
+  try {
+    return load(value) as T;
+  } catch (e) {
+    return null;
+  }
+};
+
+export function detectFileParseType(filepath: string): 'yaml' | 'json' | null {
+  const ext = path.extname(filepath);
+  if (ext === '.yaml' || ext === '.yml') {
+    return 'yaml';
+  }
+  if (ext === '.json') {
+    return 'json';
+  }
+  return null;
+}
+
+export function detectArrayFileParseType(
+  filepaths: string[],
+): { filepath: string; type: 'yaml' | 'json' }[] {
+  return filepaths.reduce(
+    (memo, filepath) => {
+      const type = detectFileParseType(filepath);
+      if (type) memo.push({ filepath, type });
+      return memo;
+    },
+    [] as { filepath: string; type: 'yaml' | 'json' }[],
+  );
+}
+
+export function getFileParser(
+  type: 'yaml' | 'json',
+): <T extends unknown>(value: string) => T | null {
+  return type === 'yaml' ? safeYamlParse : safeJsonParse;
+}
 
 export const passwordPromptTransform =
   // prettier-ignore
@@ -401,3 +448,34 @@ export const passwordPromptTransform =
 
       return trimmedPassword;
     };
+
+const defaultNetworkSchema = z.object({
+  name: z.string(),
+});
+
+export const getDefaultNetworkName = async (): Promise<string | undefined> => {
+  const isDefaultNetworkAvailable = await services.filesystem.fileExists(
+    defaultNetworksSettingsFilePath,
+  );
+
+  if (!isDefaultNetworkAvailable) return;
+
+  const content = await services.filesystem.readFile(
+    defaultNetworksSettingsFilePath,
+  );
+
+  const network = content !== null ? load(content) : null;
+
+  const parse = defaultNetworkSchema.safeParse(network);
+
+  if (parse.success) {
+    return parse.data.name;
+  }
+};
+
+export const generateAllChainIds = (): ChainId[] =>
+  Array.from(
+    { length: MAX_CHAIN_IDS },
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    (_, index) => index.toString() as ChainId,
+  );

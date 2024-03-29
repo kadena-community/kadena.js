@@ -4,10 +4,10 @@ import type {
   IExecutionPayloadObject,
   IPactCommand,
 } from '@kadena/client';
+import { MonoExpandLess, MonoExpandMore } from '@kadena/react-icons/system';
 import {
   Heading,
   Stack,
-  SystemIcon,
   Text,
   ToggleButton,
   TrackerCard,
@@ -37,11 +37,7 @@ export const SubmitTransactionDetails = ({
           isSelected={txDetailsExpanded}
           onChange={() => setTxDetailsExpanded(!txDetailsExpanded)}
           startIcon={
-            txDetailsExpanded ? (
-              <SystemIcon.ChevronUp />
-            ) : (
-              <SystemIcon.ChevronDown />
-            )
+            txDetailsExpanded ? <MonoExpandLess /> : <MonoExpandMore />
           }
         >
           Transaction

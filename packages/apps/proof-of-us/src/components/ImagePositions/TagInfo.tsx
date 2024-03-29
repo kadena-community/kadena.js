@@ -5,7 +5,7 @@ import type { FC } from 'react';
 import { IconButton } from '../IconButton/IconButton';
 import { Heading } from '../Typography/Heading';
 import { Text } from '../Typography/Text';
-import { tagInfoClass, tagInfoWrapperClass } from './style.css';
+import { tagInfoClass, tagInfoWrapperClass, textStyle } from './style.css';
 
 interface IProps {
   handleClose: () => void;
@@ -28,7 +28,7 @@ export const TagInfo: FC<IProps> = ({ handleClose }) => {
             </IconButton>
           </Stack>
         </Heading>
-        <Text style={{ opacity: '.8' }}>Tap on the photo to tag yourself</Text>
+        <Text className={textStyle}>Tap on the photo to tag yourself</Text>
       </div>
     </Stack>
   );

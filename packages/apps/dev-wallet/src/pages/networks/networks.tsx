@@ -8,7 +8,7 @@ export function Networks() {
     <main>
       <Box margin="md">
         <Heading variant="h5">Networks Page</Heading>
-        <Text variant="base">Networks</Text>
+        <Text>Networks</Text>
         <ul>
           {networks.map((network) => (
             <li key={network.uuid}>

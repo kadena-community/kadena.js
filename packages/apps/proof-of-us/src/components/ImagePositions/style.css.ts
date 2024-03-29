@@ -31,7 +31,6 @@ export const imageWrapper = style([
     position: 'relative',
     width: '100%',
     overflowY: 'hidden',
-    maxWidth: '800px',
     aspectRatio: '1/1',
     zIndex: 2,
   },
@@ -69,3 +68,5 @@ export const tagInfoClass = style([
     borderRadius: '8px',
   },
 ]);
+
+export const textStyle = style({ opacity: '.8' });

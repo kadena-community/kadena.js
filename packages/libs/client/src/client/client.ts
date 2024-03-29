@@ -100,7 +100,7 @@ export interface IBaseClient {
    * Calls the '/poll' endpoint multiple times to get the status of all requests.
    *
    * @param transactionDescriptors - transaction descriptors to status polling.
-   * @param options - options to adjust polling (onPoll, timeout, and interval).
+   * @param options - options to adjust polling (onPoll, timeout, interval, and confirmationDepth).
    * @returns A promise that resolves to the poll request promise with the command result.
    */
   pollStatus: (
@@ -227,6 +227,20 @@ export interface IClient extends IBaseClient {
   getPoll: (
     transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor,
   ) => Promise<IPollResponse>;
+
+  /**
+   * Polls the result of one request.
+   * Calls the '/poll' endpoint.
+   *
+   *
+   * @param transactionDescriptors - transaction descriptors to listen for.
+   * @param options - options to adjust polling (onPoll, timeout, interval, and confirmationDepth).
+   * @returns A promise that resolves to the command result.
+   */
+  pollOne: (
+    transactionDescriptor: ITransactionDescriptor,
+    options?: IPollOptions,
+  ) => Promise<ICommandResult>;
 }
 
 /**
@@ -238,20 +252,23 @@ export interface ICreateClient {
    *
    * Useful when you are working with a single network and chainId.
    * @param hostUrl - the URL to use in the client
+   * @param defaults - default options for the client it includes confirmationDepth that is used for polling
    */
-  (hostUrl: string): IClient;
+  (hostUrl: string, defaults?: { confirmationDepth?: number }): IClient;
 
   /**
    * Generates a client instance by passing a hostUrlGenerator function.
    *
    * Note: The default hostUrlGenerator creates a Kadena testnet or mainnet URL based on networkId.
    * @param hostAddressGenerator - the function that generates the URL based on `chainId` and `networkId` from the transaction
+   * @param defaults - default options for the client it includes confirmationDepth that is used for polling
    */
   (
     hostAddressGenerator?: (options: {
       chainId: ChainId;
       networkId: string;
     }) => string,
+    defaults?: { confirmationDepth?: number },
   ): IClient;
 }
 
@@ -261,7 +278,9 @@ export interface ICreateClient {
  */
 export const createClient: ICreateClient = (
   host = kadenaHostGenerator,
+  defaults = { confirmationDepth: 0 },
 ): IClient => {
+  const confirmationDepth = defaults.confirmationDepth;
   const getHost = typeof host === 'string' ? () => host : host;
 
   const client: IBaseClient = {
@@ -308,7 +327,7 @@ export const createClient: ICreateClient = (
           hostUrl: getHost({ chainId, networkId }),
         })),
       ).map(([hostUrl, requestKeys]) =>
-        pollStatus(hostUrl, requestKeys, options),
+        pollStatus(hostUrl, requestKeys, { confirmationDepth, ...options }),
       );
 
       // merge all of the result in one object
@@ -383,5 +402,10 @@ export const createClient: ICreateClient = (
     },
     send: client.submit,
     getPoll: client.getStatus,
+    pollOne: (transactionDescriptor, options) => {
+      return client
+        .pollStatus(transactionDescriptor, options)
+        .then((res) => res[transactionDescriptor.requestKey]);
+    },
   };
 };

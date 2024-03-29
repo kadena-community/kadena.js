@@ -1,11 +1,13 @@
 import {
   defaultNetworksPath,
+  defaultNetworksSettingsFilePath,
   networkDefaults,
   networkFiles,
 } from '../../constants/networks.js';
 
 import {
   formatZodError,
+  getDefaultNetworkName,
   mergeConfigs,
   sanitizeFilename,
 } from '../../utils/helpers.js';
@@ -112,6 +114,10 @@ export async function removeNetwork(
   await services.filesystem.deleteFile(networkFilePath);
 }
 
+export async function removeDefaultNetwork(): Promise<void> {
+  await services.filesystem.deleteFile(defaultNetworksSettingsFilePath);
+}
+
 export async function loadNetworkConfig(
   network: string,
 ): Promise<INetworksCreateOptions> {
@@ -133,4 +139,36 @@ export async function ensureNetworksConfiguration(): Promise<void> {
       await writeNetworks(networkDefaults[network]);
     }
   }
+}
+
+interface INetworkChoiceOption {
+  network?: string;
+  name?: string;
+}
+
+export async function getNetworksInOrder<T extends INetworkChoiceOption>(
+  networks: T[],
+): Promise<T[]> {
+  const defaultNetworkName = await getDefaultNetworkName();
+
+  const partitionedNetworks = networks.reduce(
+    (acc, obj) => {
+      const networkKey = obj.network ?? obj.name;
+      if (networkKey === defaultNetworkName) {
+        acc.defaultNetworks.push(obj);
+      } else {
+        acc.remainingNetworks.push(obj);
+      }
+      return acc;
+    },
+    { defaultNetworks: [], remainingNetworks: [] } as {
+      defaultNetworks: T[];
+      remainingNetworks: T[];
+    },
+  );
+
+  return [
+    ...partitionedNetworks.defaultNetworks,
+    ...partitionedNetworks.remainingNetworks,
+  ];
 }

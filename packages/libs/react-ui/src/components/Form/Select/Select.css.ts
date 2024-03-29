@@ -7,7 +7,7 @@ export const selectButtonClass = style([
     display: 'flex',
     alignItems: 'center',
     borderRadius: 'sm',
-    backgroundColor: 'layer-3.default',
+    backgroundColor: 'layer10.default',
     border: 'none',
     color: 'text.base.default',
     outline: 'none',

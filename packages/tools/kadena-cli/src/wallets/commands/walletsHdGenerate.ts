@@ -39,7 +39,7 @@ export const generateHdKeys = async ({
 
     if (!wallet) {
       return {
-        success: false,
+        status: 'error',
         errors: [`The wallet "${walletName}" does not exist.`],
       };
     }
@@ -70,9 +70,12 @@ export const generateHdKeys = async ({
       );
     }
 
-    return { success: true, data: { keys, legacy: wallet.legacy, startIndex } };
+    return {
+      status: 'success',
+      data: { keys, legacy: wallet.legacy, startIndex },
+    };
   } catch (error) {
-    return { success: false, errors: [error.message] };
+    return { status: 'error', errors: [error.message] };
   }
 };
 

@@ -1,4 +1,5 @@
 import { createNetworksCommand } from './commands/networkCreate.js';
+import { createNetworkSetDefaultCommand } from './commands/networkDefault.js';
 import { deleteNetworksCommand } from './commands/networkDelete.js';
 import { listNetworksCommand } from './commands/networkList.js';
 import { manageNetworksCommand } from './commands/networkManage.js';
@@ -15,8 +16,9 @@ export function networksCommandFactory(
     .command(SUBCOMMAND_ROOT)
     .description(`Tool to create and manage networks`);
 
-  listNetworksCommand(networksProgram, version);
-  manageNetworksCommand(networksProgram, version);
   createNetworksCommand(networksProgram, version);
+  createNetworkSetDefaultCommand(networksProgram, version);
+  manageNetworksCommand(networksProgram, version);
   deleteNetworksCommand(networksProgram, version);
+  listNetworksCommand(networksProgram, version);
 }

@@ -1,7 +1,6 @@
 import { useAccount } from '@/hooks/account';
 import { deviceColors } from '@/styles/tokens.css';
 import { getSigneeName } from '@/utils/getSigneeName';
-import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import { SignStatus } from '../SignStatus/SignStatus';
@@ -34,13 +33,7 @@ export const Signee: FC<IProps> = ({ signee }) => {
     return {};
   };
   return (
-    <Stack
-      className={signeeClass}
-      flexDirection="column"
-      alignItems="center"
-      gap="sm"
-      style={getSuccessStyle(signee)}
-    >
+    <li className={signeeClass} style={getSuccessStyle(signee)}>
       <SignStatus status={signee?.signerStatus} />
       <Text className={classNames(nameClass, ellipsClass)} bold>
         {getSigneeName(signee)} {isMe(signee, account) && ' (me)'}
@@ -48,6 +41,6 @@ export const Signee: FC<IProps> = ({ signee }) => {
       <Text className={classNames(accountClass, ellipsClass)}>
         {getAccount(signee)}
       </Text>
-    </Stack>
+    </li>
   );
 };

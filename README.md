@@ -38,10 +38,10 @@ Overview of the main packages maintained in this repository:
 | [@kadena/cryptography-utils][32]     | [![version][34]][33] |
 | [@kadena/graph][35]                  | [![version][37]][36] |
 | [@kadena/hd-wallet][38]              | [![version][40]][39] |
-| [@kadena/kadena-cli][41]             | [![version][43]][42] |
-| [@kadena/pactjs][44]                 | [![version][46]][45] |
-| [@kadena/pactjs-cli][47]             | [![version][49]][48] |
-| [@kadena/pactjs-generator][50]       | [![version][52]][51] |
+| [@kadena/pactjs][41]                 | [![version][43]][42] |
+| [@kadena/pactjs-cli][44]             | [![version][46]][45] |
+| [@kadena/pactjs-generator][47]       | [![version][49]][48] |
+| [@kadena/react-icons][50]            | [![version][52]][51] |
 | [@kadena/react-ui][53]               | [![version][55]][54] |
 | [@kadena/types][56]                  | [![version][58]][57] |
 
@@ -106,21 +106,21 @@ Special thanks to the wonderful people who have contributed to this project:
 [39]: packages/libs/hd-wallet/CHANGELOG.md
 [40]: https://img.shields.io/npm/v/@kadena/hd-wallet.svg
 [41]:
-  https://github.com/kadena-community/kadena.js/tree/main/packages/tools/kadena-cli
-[42]: packages/tools/kadena-cli/CHANGELOG.md
-[43]: https://img.shields.io/npm/v/@kadena/kadena-cli.svg
-[44]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/pactjs
-[45]: packages/libs/pactjs/CHANGELOG.md
-[46]: https://img.shields.io/npm/v/@kadena/pactjs.svg
-[47]:
+[42]: packages/libs/pactjs/CHANGELOG.md
+[43]: https://img.shields.io/npm/v/@kadena/pactjs.svg
+[44]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/tools/pactjs-cli
-[48]: packages/tools/pactjs-cli/CHANGELOG.md
-[49]: https://img.shields.io/npm/v/@kadena/pactjs-cli.svg
-[50]:
+[45]: packages/tools/pactjs-cli/CHANGELOG.md
+[46]: https://img.shields.io/npm/v/@kadena/pactjs-cli.svg
+[47]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/pactjs-generator
-[51]: packages/libs/pactjs-generator/CHANGELOG.md
-[52]: https://img.shields.io/npm/v/@kadena/pactjs-generator.svg
+[48]: packages/libs/pactjs-generator/CHANGELOG.md
+[49]: https://img.shields.io/npm/v/@kadena/pactjs-generator.svg
+[50]:
+  https://github.com/kadena-community/kadena.js/tree/main/packages/libs/react-icons
+[51]: packages/libs/react-icons/CHANGELOG.md
+[52]: https://img.shields.io/npm/v/@kadena/react-icons.svg
 [53]:
   https://github.com/kadena-community/kadena.js/tree/main/packages/libs/react-ui
 [54]: packages/libs/react-ui/CHANGELOG.md

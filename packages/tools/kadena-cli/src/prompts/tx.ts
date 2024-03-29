@@ -6,10 +6,7 @@ import {
 } from '../tx/utils/txHelpers.js';
 
 import { getAllAccounts } from '../account/utils/accountHelpers.js';
-import {
-  getAllPlainKeys,
-  getAllWalletKeys,
-} from '../keys/utils/keysHelpers.js';
+import { getAllWalletKeys } from '../keys/utils/keysHelpers.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
 import { getTemplates } from '../tx/commands/templates/templates.js';
@@ -234,7 +231,7 @@ const promptVariableValue = async (
     return value;
   } else if (key.startsWith('key:')) {
     const walletKeys = await getAllWalletKeys();
-    const plainKeys = await getAllPlainKeys();
+    const plainKeys = await services.plainKey.list();
     const accounts = await getAllAccounts().catch(() => []);
 
     const hasKeys = walletKeys.length > 0 || plainKeys.length > 0;
@@ -474,19 +471,13 @@ export const templateDataPrompt: IPrompt<string | null> = async () => {
   return result ?? null;
 };
 
-export async function selectSignMethodPrompt(): Promise<
-  'localWallet' | 'aliasFile' | 'keyPair'
-> {
+export async function selectSignMethodPrompt(): Promise<'wallet' | 'keyPair'> {
   return await select({
     message: 'Select an action',
     choices: [
       {
-        value: 'localWallet',
-        name: 'Sign with local wallet',
-      },
-      {
-        value: 'aliasFile',
-        name: 'Sign with aliased file',
+        value: 'wallet',
+        name: 'Sign with wallet',
       },
       {
         value: 'keyPair',

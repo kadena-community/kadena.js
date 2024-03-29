@@ -8,7 +8,7 @@ export const circle = recipe({
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      fontWeight: 'bodyFont.regular',
+      fontWeight: 'secondaryFont.regular',
       fontFamily: 'primaryFont', // will be updated with latest tokens
       borderRadius: 'round',
       color: 'text.base.inverse.default',

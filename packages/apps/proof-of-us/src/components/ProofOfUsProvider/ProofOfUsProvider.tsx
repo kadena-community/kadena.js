@@ -1,5 +1,6 @@
 'use client';
 import { useAccount } from '@/hooks/account';
+import { useTokens } from '@/hooks/tokens';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { store } from '@/utils/socket/store';
@@ -10,7 +11,6 @@ import { createContext, useCallback, useEffect, useState } from 'react';
 export interface IProofOfUsContext {
   proofOfUs?: IProofOfUsData;
   background: IProofOfUsBackground;
-  closeToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
   updateStatus: ({
     proofOfUsId,
     status,
@@ -41,7 +41,6 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   background: {
     bg: '',
   },
-  closeToken: async () => {},
   updateStatus: async () => {},
   addSignee: async () => {},
   removeSignee: async () => {},
@@ -60,6 +59,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
 export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   const { account } = useAccount();
   const params = useParams();
+  const { addMintingData } = useTokens();
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
   const [background, setBackground] = useState<IProofOfUsBackground>({
     bg: '',
@@ -82,6 +82,11 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         ) as IProofOfUsSignee[];
       }
       if (!innerData) return;
+
+      if (innerData.requestKey) {
+        addMintingData(innerData);
+      }
+
       setProofOfUs({ ...innerData });
     },
     [setProofOfUs, params?.id],
@@ -109,11 +114,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     await store.updateStatus(proofOfUsId, proofOfUs, status);
   };
 
-  const closeToken = async ({ proofOfUsId }: { proofOfUsId: string }) => {
-    if (!proofOfUs) return;
-    await store.closeToken(proofOfUsId, proofOfUs);
-  };
-
   const addSignee = async () => {
     if (!account || !proofOfUs) return;
     await store.addSignee(proofOfUs, getSigneeAccount(account, proofOfUs));
@@ -139,22 +139,21 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   };
 
   const changeTitle = (value: string) => {
-    if (isAlreadySigning(proofOfUs?.signees)) return proofOfUs?.title ?? '';
+    if (isAlreadySigning(proofOfUs)) return proofOfUs?.title ?? '';
     return value;
   };
 
   const updateBackgroundColor = (value: string) => {
-    if (isAlreadySigning(proofOfUs?.signees))
-      return proofOfUs?.backgroundColor ?? '';
+    if (isAlreadySigning(proofOfUs)) return proofOfUs?.backgroundColor ?? '';
     return value;
   };
 
   const updateSigner = (value: any, isOverwrite: boolean = false) => {
+    console.log(0, { proofOfUs });
     if (!proofOfUs) return [];
     if (!account) return proofOfUs.signees;
 
-    if (!isOverwrite && isAlreadySigning(proofOfUs.signees))
-      return proofOfUs.signees;
+    if (!isOverwrite && isAlreadySigning(proofOfUs)) return proofOfUs.signees;
 
     const newList: IProofOfUsSignee[] = proofOfUs.signees.map((a) => {
       if (a.accountName === account.accountName) {
@@ -194,7 +193,6 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <ProofOfUsContext.Provider
       value={{
-        closeToken,
         addSignee,
         removeSignee,
         createToken,

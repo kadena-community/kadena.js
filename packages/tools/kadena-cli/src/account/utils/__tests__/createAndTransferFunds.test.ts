@@ -29,9 +29,7 @@ describe('createAndTransferFunds', () => {
       });
     }).rejects.toEqual(
       Error(
-        `Failed to create an account and transfer fund: ${Error(
-          'Cannot transfer fund on mainnet',
-        )}`,
+        `Failed to create an account and transfer fund: Cannot transfer fund on mainnet`,
       ),
     );
   });
@@ -83,11 +81,7 @@ describe('createAndTransferFunds', () => {
         },
       });
     }).rejects.toEqual(
-      Error(
-        `Failed to create an account and transfer fund: ${Error(
-          'gas failure',
-        )}`,
-      ),
+      Error(`Failed to create an account and transfer fund: gas failure`),
     );
   });
 });

@@ -11,7 +11,12 @@ builder.queryField('fungibleAccountByPublicKey', (t) =>
   t.field({
     description: 'Retrieve an account by public key.',
     args: {
-      publicKey: t.arg.string({ required: true }),
+      publicKey: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: FungibleAccount,
     nullable: true,
@@ -57,7 +62,7 @@ builder.queryField('fungibleAccountByPublicKey', (t) =>
   }),
 );
 
-export async function getAccountNameByPublicKey(
+async function getAccountNameByPublicKey(
   publicKey: string,
 ): Promise<string | undefined> {
   const result = await prismaClient.transaction.findFirst({

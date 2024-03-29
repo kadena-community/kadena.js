@@ -21,15 +21,15 @@ export const decrypt = async (
 
     if (isLegacy === true) {
       return {
-        success: false,
+        status: 'error',
         errors: [`Decryption is not available for legacy keys.`],
       };
     }
 
-    return { success: true, data: { value: toHexStr(decryptedMessage) } };
+    return { status: 'success', data: { value: toHexStr(decryptedMessage) } };
   } catch (error) {
     return {
-      success: false,
+      status: 'error',
       errors: [error.message],
     };
   }

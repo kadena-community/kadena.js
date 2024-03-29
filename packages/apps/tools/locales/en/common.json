@@ -252,7 +252,8 @@
   "how-to-networks": "You can choose the Network in the top navigation bar between the default \"Testnet\" and \"Mainnet\" initially. You also have the option to add a custom network (like the local devnet) and you have the instructions on how to to that <0>HERE</0>. Choosing the chain is connected to the available operations that you can perform and you'll have the option available when doing one",
   "ledger tooltip content": "Change ledger key. You can use any number (from the pre-defined 100).",
   "link-to-tracker": "Track the transaction <0>HERE</0>",
-  "link-to-finisher": "You can stay on this page to automatically finalize the transfer, or you can copy <0>this link</0> to finish manually.",
+  "link-to-finisher": "Copy <0>this link</0> to finish the transfer manually.",
+  "cross-chain-warning": "If you stay on this page the transfer will be automatically finalized.",
   "cross-chain-transfer-initiated": "You're about to make a Cross Chain Transfer.",
   "fetching-data": "Fetching account data..",
   "Public Key(s)": "Public Key(s)",
@@ -261,7 +262,8 @@
   "Waiting for ledger signature": "Waiting for ledger signature",
   "fetching-receiver-data": "Fetching receiver account data..",
   "unexpected-account-name": "If this is not the expected account name, try changing the Legacy toggle",
-  "Transaction": "Transaction",
   "transfer-sidebar-title": "Tips & tricks",
+  "ledger-error-notification": "You cannot sign with Ledger on the current browser! Please visit <0>this website</0> for more information on browser compatibility.",
+  "Transaction": "Transaction",
   "ledger-account-creation-info": "The Ledger signing method only supports the creation of single key accounts at the moment."
 }

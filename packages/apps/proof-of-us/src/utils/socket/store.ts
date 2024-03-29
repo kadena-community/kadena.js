@@ -34,38 +34,14 @@ const ProofOfUsStore = () => {
       status: BUILDSTATUS.INIT,
       mintStatus: 'init',
       proofOfUsId,
+      isReadyToSign: false,
       eventId: process.env.NEXT_PUBLIC_CONNECTION_EVENTID,
       type: 'connect',
       date: Date.now(),
       signees: [{ ...account, signerStatus: 'init', initiator: true }],
     };
 
-    await set(
-      ref(database, `proofs/${account.accountName}/${proofOfUsId}`),
-      obj,
-    );
     await set(ref(database, `data/${proofOfUsId}`), obj);
-  };
-
-  const filterProof = (data: IProofOfUsData): boolean => {
-    return !!(data.requestKey && data.mintStatus !== 'error');
-  };
-  const listenToUser = (
-    account: IAccount,
-    setDataCallback: (proofOfUs: IProofOfUsData[]) => void,
-  ) => {
-    const proofOfUsRef = ref(database, `/proofs/${account.accountName}`);
-    onValue(proofOfUsRef, (snapshot) => {
-      const data = snapshot.val();
-      if (!data) {
-        setDataCallback([]);
-        return;
-      }
-      const arr = (Object.entries(data).map(([key, value]) => value) ??
-        []) as IProofOfUsData[];
-
-      setDataCallback(arr.filter(filterProof));
-    });
   };
 
   const listenProofOfUsData = (
@@ -73,10 +49,7 @@ const ProofOfUsStore = () => {
     account: IAccount,
     setDataCallback: (proofOfUs: IProofOfUsData | undefined) => void,
   ) => {
-    const proofOfUsRef = ref(
-      database,
-      `proofs/${account.accountName}/${proofOfUsId}`,
-    );
+    const proofOfUsRef = ref(database, `data/${proofOfUsId}`);
     onValue(proofOfUsRef, (snapshot) => {
       const data = snapshot.val();
       setDataCallback(data);
@@ -89,10 +62,8 @@ const ProofOfUsStore = () => {
     proofOfUsId: string,
     setDataCallback: Dispatch<SetStateAction<IProofOfUsBackground>>,
   ) => {
-    console.log('listen', proofOfUsId);
     const backgroundRef = ref(database, `background/${proofOfUsId}`);
     onValue(backgroundRef, (snapshot) => {
-      console.log({ snap: snapshot.val() });
       const data = snapshot.val() ?? { bg: '' };
       setDataCallback(data);
     });
@@ -130,13 +101,13 @@ const ProofOfUsStore = () => {
     background: IProofOfUsBackground,
   ) => {
     //check if there are people already signing. it is not possible to set the background
-    if (isAlreadySigning(proofOfUs.signees)) return;
+    if (isAlreadySigning(proofOfUs)) return;
     await set(ref(database, `background/${proofOfUs.proofOfUsId}`), background);
   };
 
   const removeBackground = async (proofOfUs: IProofOfUsData) => {
     //check if there are people already signing. it is not possible to set the background
-    if (isAlreadySigning(proofOfUs.signees)) return;
+    if (isAlreadySigning(proofOfUs)) return;
     await set(ref(database, `background/${proofOfUs.proofOfUsId}`), null);
   };
 
@@ -145,30 +116,15 @@ const ProofOfUsStore = () => {
     proofOfUs: IProofOfUsData,
     status: IBuildStatusValues,
   ) => {
-    console.log('updatestatus', proofOfUs);
-    const signees = proofOfUs.signees;
-
-    const newProof = { ...proofOfUs, status };
-    const promises = signees.map((s) => {
-      return update(
-        ref(database, `proofs/${s.accountName}/${proofOfUs.proofOfUsId}`),
-        newProof,
-      );
+    return await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      status,
     });
-    promises.push(
-      update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-        status,
-      }),
-    );
-
-    return await Promise.allSettled(promises);
   };
 
   const addSignee = async (
     proofOfUs: IProofOfUsData,
     account: IProofOfUsSignee,
   ) => {
-    console.log('addsignee', proofOfUs);
     const signeesList = [...proofOfUs.signees];
     if (!signeesList) return;
 
@@ -189,29 +145,15 @@ const ProofOfUsStore = () => {
       signeesList.length = 2;
     }
 
-    const newProof = { ...proofOfUs, signees: signeesList };
-
-    const promises = signeesList.map((s) => {
-      return update(
-        ref(database, `proofs/${s.accountName}/${proofOfUs.proofOfUsId}`),
-        newProof,
-      );
+    return await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      signees: signeesList,
     });
-
-    promises.push(
-      update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-        signees: signeesList,
-      }),
-    );
-
-    return await Promise.allSettled(promises);
   };
 
   const removeSignee = async (
     proofOfUs: IProofOfUsData,
     account: IProofOfUsSignee,
   ) => {
-    console.log('removesignee', proofOfUs);
     const signeesList = proofOfUs.signees;
     if (!signeesList) return;
 
@@ -219,76 +161,31 @@ const ProofOfUsStore = () => {
       (s) => s.accountName !== account.accountName,
     );
 
-    const newProof = { ...proofOfUs, signees: signees };
-
-    const promises = signees.map((s) => {
-      return update(
-        ref(database, `proofs/${s.accountName}/${proofOfUs.proofOfUsId}`),
-        newProof,
-      );
+    return await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      signees: signees,
     });
-
-    promises.push(
-      update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-        signees: signees,
-      }),
-    );
-
-    return await Promise.allSettled(promises);
   };
 
   const closeToken = async (proofOfUsId: string, proofOfUs: IProofOfUsData) => {
-    const signees = proofOfUs.signees;
-    const promises = signees.map((s) => {
-      return set(ref(database, `proofs/${s.accountName}/${proofOfUsId}`), null);
-    });
-    promises.push(set(ref(database, `data/${proofOfUsId}`), null));
-
-    return await Promise.allSettled(promises);
+    return await set(ref(database, `data/${proofOfUsId}`), null);
   };
 
   const updateMintStatus = async (
     proofOfUs: IProofOfUsData,
     mintStatus: IMintStatus,
   ) => {
-    console.log('updatemint', proofOfUs);
-    const signees = proofOfUs.signees;
-    const newProof = { ...proofOfUs, signees: signees };
-
-    const promises = signees.map((s) => {
-      return update(
-        ref(database, `proofs/${s.accountName}/${proofOfUs.proofOfUsId}`),
-        newProof,
-      );
+    return await update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      mintStatus,
     });
-    promises.push(
-      update(ref(database, `data/${proofOfUs.proofOfUsId}`), {
-        mintStatus,
-      }),
-    );
-
-    return await Promise.allSettled(promises);
   };
 
   const updateProofOfUs = async (proofOfUs: IProofOfUsData, value: any) => {
     const newProof = { ...proofOfUs, ...value };
 
-    console.log('updateproof', value, newProof);
-
-    const signees = newProof.signees;
-
-    const promises = signees.map((s: IProofOfUsSignee) => {
-      return update(
-        ref(database, `proofs/${s.accountName}/${newProof.proofOfUsId}`),
-        newProof,
-      );
-    });
-
-    promises.push(
-      update(ref(database, `data/${newProof.proofOfUsId}`), newProof),
+    return await update(
+      ref(database, `data/${newProof.proofOfUsId}`),
+      newProof,
     );
-
-    return await Promise.allSettled(promises);
   };
 
   const getAllAccounts = async (): Promise<IAccountLeaderboard[] | null> => {
@@ -329,14 +226,13 @@ const ProofOfUsStore = () => {
     removeBackground,
     closeToken,
     updateStatus,
-    listenToUser,
     listenProofOfUsData,
     listenProofOfUsBackgroundData,
-    listenLeaderboard,
     updateProofOfUs,
     saveAlias,
     getAllAccounts,
     saveLeaderboardAccounts,
+    listenLeaderboard,
   };
 };
 

@@ -1,6 +1,7 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { createManifest } from '@/utils/createManifest';
-import { getReturnUrl } from '@/utils/getReturnUrl';
+import { env } from '@/utils/env';
+import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
 import { haveAllSigned } from '@/utils/isAlreadySigning';
 import { createConnectTokenTransaction, getTokenId } from '@/utils/proofOfUs';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
@@ -49,12 +50,14 @@ export const useSignToken = () => {
       transaction: transaction,
       manifestUri: manifestData?.url,
       imageUri: imageData.url,
+      eventName: manifest.properties.eventName,
       tokenId,
     };
   };
 
   const sign = async () => {
-    if (!transaction || hasSigned()) return;
+    if (!transaction || hasSigned() || !proofOfUs) return;
+    const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
 
     const signees = updateSigner({ signerStatus: 'success' }, true);
     console.log('update in signtoken sign');
@@ -67,12 +70,17 @@ export const useSignToken = () => {
     setIsLoading(false);
     setHasError(false);
 
-    //router.replace(getReturnUrl());
+    router.replace(
+      `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
+        tx.hash
+      }`,
+    );
   };
 
   useEffect(() => {
+    if (!proofOfUs) return;
     sign();
-  }, [searchParams, transaction]);
+  }, [searchParams, transaction, proofOfUs]);
 
   const signToken = async () => {
     if (!proofOfUs || !account) return;
@@ -94,6 +102,7 @@ export const useSignToken = () => {
         tokenId: transactionData.tokenId,
         manifestUri: transactionData.manifestUri,
         imageUri: transactionData.imageUri,
+        eventName: transactionData.eventName,
         signees: updateSigner({ signerStatus: 'signing' }, true),
       });
     } else {
@@ -106,7 +115,9 @@ export const useSignToken = () => {
     router.push(
       `${
         process.env.NEXT_PUBLIC_WALLET_URL
-      }/sign?transaction=${transaction}&returnUrl=${getReturnUrl()}
+      }/sign?transaction=${transaction}&chainId=${
+        env.CHAINID
+      }&returnUrl=${getReturnUrl()}
       `,
     );
   };

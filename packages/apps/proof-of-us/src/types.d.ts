@@ -48,6 +48,7 @@ interface IProofOfUsData {
   requestKey: string;
   manifestUri?: string;
   imageUri: string;
+  eventName?: string;
   eventId: string;
   mintStatus: IMintStatus;
   status: IBuildStatusValues;
@@ -60,6 +61,7 @@ interface IProofOfUsData {
   signees: IProofOfUsSignee[];
   title?: string;
   uri?: string;
+  isReadyToSign: boolean;
 }
 
 interface IProofOfUsToken {
@@ -142,3 +144,15 @@ type IProofOfUsTokenSignee = Pick<
 > & {
   name: string;
 };
+
+interface IToken {
+  eventId?: string;
+  proofOfUsId?: string;
+  requestKey?: string;
+  id: string;
+  info?: {
+    uri: string;
+  };
+  mintStartDate?: number;
+  listener?: Promise<any>;
+}

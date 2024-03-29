@@ -10,7 +10,7 @@ import type {
 import React, { forwardRef, useCallback } from 'react';
 import type { AriaTextFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useTextField } from 'react-aria';
-import { bodyBaseRegular, codeBaseRegular } from '../../../styles';
+import { bodyBaseRegular, monospaceBaseRegular } from '../../../styles';
 import {
   endAddon,
   formField,
@@ -125,7 +125,7 @@ export function TextFieldBase(
           ref={ref}
           className={classNames(
             input,
-            props.inputFont === 'code' ? codeBaseRegular : bodyBaseRegular,
+            props.inputFont === 'code' ? monospaceBaseRegular : bodyBaseRegular,
           )}
           data-focused={isFocused || undefined}
           data-disabled={isDisabled || undefined}

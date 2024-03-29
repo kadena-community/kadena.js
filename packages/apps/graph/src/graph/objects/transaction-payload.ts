@@ -50,9 +50,9 @@ export default builder.unionType('TransactionPayload', {
   resolveType(payload) {
     if ('pactId' in payload) {
       if (payload.pactId === null) {
-        return 'ExecutionPayload';
+        return ExecutionPayload.name;
       } else {
-        return 'ContinuationPayload';
+        return ContinuationPayload.name;
       }
     }
   },

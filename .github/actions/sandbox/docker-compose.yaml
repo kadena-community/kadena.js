@@ -1,0 +1,17 @@
+version: '3'
+services:
+  devnet:
+    image: kadena/devnet@sha256:b63feb2de2a46c77199569845f9dc5e44609260dcf1e874b5fb04907d1426e64
+    ports:
+      - 8080:8080 # HTTP
+      - 5432:5432 # Postgres
+      - 9999:9999 # Info
+      - 1789:1789 
+    environment:
+      - MINING_BATCH_PERIOD=0.05
+      - MINING_CONFIRMATION_PERIOD=1
+    volumes:
+      - ../../../packages/apps/graph/cwd-extra-migrations:/cwd-extra-migrations:ro
+      - sandbox:/data
+volumes:
+  sandbox:

@@ -5,9 +5,6 @@ import { join } from 'node:path';
 import {
   KEY_EXT,
   KEY_LEGACY_EXT,
-  PLAIN_KEY_DIR,
-  PLAIN_KEY_EXT,
-  PLAIN_KEY_LEGACY_EXT,
   WALLET_DIR,
   WALLET_EXT,
   WALLET_LEGACY_EXT,
@@ -28,39 +25,6 @@ export interface IKeyPair {
 
 export type KeyContent = TSeedContent | IKeyPair;
 
-export async function savePlainKeyByAlias(
-  alias: string,
-  keyPairs: IKeyPair[],
-  legacy: boolean = false,
-): Promise<void> {
-  const sanitizedAlias = sanitizeFilename(alias).toLocaleLowerCase();
-
-  try {
-    for (let i = 0; i < keyPairs.length; i++) {
-      const keyPair = keyPairs[i];
-      let fileName = `${sanitizedAlias}${i > 0 ? `-${i}` : ''}`;
-      const ext = legacy ? PLAIN_KEY_LEGACY_EXT : PLAIN_KEY_EXT;
-      fileName += ext;
-      const filePath = join(PLAIN_KEY_DIR, fileName);
-
-      const data: IKeyPair = {
-        publicKey: keyPair.publicKey,
-        index: i,
-      };
-      if (keyPair.secretKey !== undefined) {
-        data.secretKey = keyPair.secretKey;
-      }
-
-      await services.filesystem.ensureDirectoryExists(filePath);
-      await services.filesystem.writeFile(
-        filePath,
-        yaml.dump(data, { lineWidth: -1 }),
-      );
-    }
-  } catch (error) {
-    log.error(`Error saving plain key file:`, error);
-  }
-}
 /**
  * Saves key pairs by alias in a specific wallet directory.
  *

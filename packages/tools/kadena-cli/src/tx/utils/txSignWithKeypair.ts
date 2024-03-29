@@ -13,6 +13,7 @@ import { saveSignedTransactions } from './storage.js';
 import {
   assessTransactionSigningStatus,
   getTransactionsFromFile,
+  processSigningStatus,
   signTransactionWithKeyPair,
 } from './txHelpers.js';
 
@@ -31,7 +32,7 @@ export const signTransactionWithKeyPairAction = async ({
 > => {
   if (unsignedTransactions.length === 0) {
     return {
-      success: false,
+      status: 'error',
       errors: ['No unsigned transactions found.'],
     };
   }
@@ -49,20 +50,11 @@ export const signTransactionWithKeyPairAction = async ({
     );
 
     const signingStatus = await assessTransactionSigningStatus(signedCommands);
-    if (!signingStatus.success) return signingStatus;
 
-    return {
-      success: true,
-      data: {
-        commands: savedTransactions.map((tx) => ({
-          command: tx.command as ICommand,
-          path: tx.filePath,
-        })),
-      },
-    };
+    return processSigningStatus(savedTransactions, signingStatus);
   } catch (error) {
     return {
-      success: false,
+      status: 'error',
       errors: [`Error in signAction: ${error.message}`],
     };
   }

@@ -9,9 +9,9 @@ export const GET_TOKENS: DocumentNode = gql`
       nonFungibles {
         balance
         id
-        # info {
-        #   uri
-        # }
+        info {
+          uri
+        }
       }
     }
   }

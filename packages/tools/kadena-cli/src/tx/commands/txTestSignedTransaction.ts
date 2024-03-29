@@ -51,7 +51,7 @@ export const testTransactions = async (
   }
 
   return {
-    success: errors.length === 0,
+    status: errors.length === 0 ? 'success' : 'error',
     data: successfulCommands,
     errors: errors,
   };
@@ -62,7 +62,7 @@ export const createTestSignedTransactionCommand: (
   version: string,
 ) => void = createCommand(
   'test',
-  'Test a signed transaction on testnet.',
+  'Test a signed transaction on (network choice).',
   [
     txOptions.directory({ disableQuestion: true }),
     txOptions.txSignedTransactionFiles(),
@@ -78,7 +78,7 @@ export const createTestSignedTransactionCommand: (
     });
     const chainOption = await option.chainId();
 
-    log.debug('sign-with-local-wallet:action', {
+    log.debug('test-signed-transaction:action', {
       ...networkOption,
       directory,
       ...files,

@@ -1,5 +1,6 @@
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { MonoKeyboardArrowRight } from '@kadena/react-icons/system';
 import type { IDialogProps } from '@kadena/react-ui';
 import {
   Button,
@@ -7,7 +8,6 @@ import {
   DialogContent,
   DialogHeader,
   Stack,
-  SystemIcon,
   TextField,
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
@@ -123,7 +123,7 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
                 <section className={formButtonStyle}>
                   <Button
                     type="submit"
-                    endIcon={<SystemIcon.TrailingIcon />}
+                    endIcon={<MonoKeyboardArrowRight />}
                     isDisabled={Boolean(error)}
                   >
                     {t('Save Network')}

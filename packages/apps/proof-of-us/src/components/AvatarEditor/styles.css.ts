@@ -11,7 +11,6 @@ export const cameraClass = style({
   position: 'relative',
   width: '100vw',
   height: '100vh',
-  maxWidth: '800px',
   objectFit: 'cover',
   transform: 'scaleX(-1)',
 });
@@ -57,6 +56,14 @@ export const cameraButton = style({
       backgroundColor: '#38af8a',
     },
   },
+  '@media': {
+    'screen and (orientation: landscape)': {
+      transform: 'translateY(-50%)',
+      right: '7vw',
+      left: 'auto',
+      top: '50%',
+    },
+  },
 });
 
 export const cameraButtonWrapperClass = style({
@@ -95,14 +102,24 @@ export const canvasClass = style({
   position: 'absolute',
   width: '94vw',
   height: '94vw',
-  maxWidth: '780px',
-  transform: 'translateX(-50%)',
+  maxWidth: '94vw',
+  maxHeight: '94vw',
+  aspectRatio: '1',
   left: '50%',
   top: '100px',
   zIndex: '1',
   border: '2px solid rgba(255, 255, 255, 0.40)',
   borderRadius: '8px',
   boxSizing: 'border-box',
+  transform: 'translateX(-50%)',
+  '@media': {
+    'screen and (orientation: landscape)': {
+      maxWidth: '94vh',
+      maxHeight: '94vh',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
+    },
+  },
 });
 
 export const headerClass = style({

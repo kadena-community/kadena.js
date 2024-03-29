@@ -76,7 +76,7 @@ prefill a question by filling the flag
 | --help    | display help information    |
 | --version | display version information |
 
-### list global commands and flags
+### list of global commands and flags
 
 |         | description                                       |
 | ------- | ------------------------------------------------- |
@@ -112,7 +112,7 @@ Legacy mode is available for:
 
 ```
 kadena wallet add
-kadena keys generate
+kadena key generate
 kadena tx sign
 ```
 
@@ -166,6 +166,7 @@ Tool to add and manage networks
 | list           | List all available networks |                   |
 | update         | Manage networks             |                   |
 | add            | Add new network             |                   |
+| set-default    | Set default network         |                   |
 | delete         | Delete existing network     |                   |
 
 ---
@@ -174,32 +175,32 @@ Tool to add and manage networks
 kadena network update [arguments]
 ```
 
-| **Arguments & Options** | **Description**                         | **Required**  |
-| ----------------------- | --------------------------------------- | ------------- |
-| --network-name          | Update the name of the network          |               |
-| --network-id            | Update the id of the network            |               |
-| --network-host          | Update the host for the network         |               |
-| --network-explorer-url  | Update the explorer url for the network |               |
+| **Arguments & Options** | **Description**                         | **Required** |
+| ----------------------- | --------------------------------------- | ------------ |
+| --network-name          | Update the name of the network          |              |
+| --network-id            | Update the id of the network            |              |
+| --network-host          | Update the host for the network         |              |
+| --network-explorer-url  | Update the explorer url for the network |              |
 
 example:
 
 ```
-kadena networks update --network-name="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/
+kadena network update --network-name="mainnet" --network-id="mainnet01" --network-host="https://api.chainweb.com" --network-explorer-url="https://explorer.chainweb.com/mainnet/tx/
 ```
 
 ---
 
 ```
-kadena networks add [arguments]
+kadena network add [arguments]
 ```
 
-| **Arguments & Options** | **Description**                      | **Required**  |
-| ----------------------- | ------------------------------------ | ------------- |
-| --network-name          | Set the name of the network          |               |
-| --network-id            | Set the id of the network            |               |
-| --network-host          | Set the host for the network         |               |
-| --network-explorer-url  | Set the explorer url for the network |               |
-| --network-overwrite     | Confirm overwrite configuration      |               |
+| **Arguments & Options** | **Description**                      | **Required** |
+| ----------------------- | ------------------------------------ | ------------ |
+| --network-name          | Set the name of the network          |              |
+| --network-id            | Set the id of the network            |              |
+| --network-host          | Set the host for the network         |              |
+| --network-explorer-url  | Set the explorer url for the network |              |
+| --network-overwrite     | Confirm overwrite configuration      |              |
 
 example:
 
@@ -210,7 +211,30 @@ kadena network add --network-name="mainnet" --network-id="mainnet01" --network-h
 ---
 
 ```
-kadena networks delete [arguments]
+kadena network set-default [arguments]
+```
+
+| **Arguments & Options**        | **Description**                               | **Required** |
+| ------------------------------ | --------------------------------------------- | ------------ |
+| --network                      | Select name of network to set default         |              |
+| --network-default-confirmation | Confirmation for default network to set/unset |              |
+
+example for setting default network:
+
+```
+kadena network set-default --network="testnet" --network-default-confirmation
+```
+
+example for removing default network:
+
+```
+kadena network set-default --network="none" --network-default-confirmation
+```
+
+## Passing a network as "none" will remove the default network
+
+```
+kadena network delete [arguments]
 ```
 
 | **Arguments & Options** | **Description**                  | **Required** |
@@ -237,7 +261,7 @@ Tool to generate and manage wallets
 | generate-keys   | Generate public/secret key pair(s) from your wallet |                   |
 | change-password | Update the password for your wallet                 |                   |
 | delete          | Delete existing wallet from local filesystem        |                   |
-| list            | List wallets(s)                                     |                   |
+| list            | List wallet(s)                                      |                   |
 
 ---
 
@@ -423,7 +447,6 @@ Tool to generate and manage keys
 | **Subcommand** | **Description**                           | **Required** | **Default value** |
 | -------------- | ----------------------------------------- | ------------ | ----------------- |
 | generate       | Generate random public/secret key pair(s) | No           |                   |
-| decrypt        | Decrypt encrypted messsage                | No           |                   |
 | list           | List available key(s)                     | No           |                   |
 
 ---
@@ -476,8 +499,8 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 | create          | create an account in mainnet on chain(nr) for token |                   |
 | details         | Get details of an account                           |                   |
 | fund            | Fund a existing/new account                         |                   |
-| name-to-address | Resolve a .kda name to a k:address (kadenanames)    |                   |
-| address-to-name | Resolve a k:address to a .kda name (kadenanames)    |                   |
+| name-to-address | Resolve a .kda name to a k:address (kadena names)   |                   |
+| address-to-name | Resolve a k:address to a .kda name (kadena names)   |                   |
 | list            | List available account(s)                           |                   |
 | delete          | Delete existing account(s)                          |                   |
 
@@ -494,7 +517,7 @@ kadena account add-manual [arguments]
 | --fungible              | Fungible e.g coin                            |              |
 | --network               | Name of the network to be used               |              |
 | --chain-id              | Chain to be used                             |              |
-| --public-keys           | Comma seperated list of public keys          |              |
+| --public-keys           | Comma separated list of public keys          |              |
 | --predicate             | keys-all, keys-any, keys-2, Custom predicate |              |
 
 example:
@@ -527,6 +550,16 @@ kadena account add-from-wallet --account-alias="myalias" --key-wallet="mywallet.
 
 ---
 
+### Creating an account on mainnet
+
+The kadena account create command allows you to create a new account on the
+mainnet network. This command is restricted to mainnet use and it doesn't
+support on other networks.
+
+If you would like to create an account on
+[testnet](#funding-an-account-on-testnet), please use the `kadena account fund`
+command.
+
 ```
 kadena account create [arguments]
 ```
@@ -541,13 +574,13 @@ kadena account create [arguments]
 
 example:
 
-create an account with optional account name and fungible
+Create an account without specifying a name:
 
 ```
 kadena account create --account-name="" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0"
 ```
 
-create an account with an account name and fungible
+Create an account with a name
 
 ```
 kadena account create --account-name="mainnet_test_account" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0" --fungible="coin
@@ -555,48 +588,102 @@ kadena account create --account-name="mainnet_test_account" --public-keys="YOUR_
 
 ---
 
+### Getting an account details / balance
+
+The `kadena account details` command retrieves vital information about a
+specified account on the Kadena blockchain, such as its balance, guard
+conditions (public keys, predicate), and the account's name.
+
 ```
 kadena account details [arguments]
 ```
 
-| **Arguments & Options** | **Description**                        | **Required** |
-| ----------------------- | -------------------------------------- | ------------ |
-| --account               | Provide account alias/name for account |              |
-| --network               | Name of the network to be used         |              |
-| --chain-id              | Chain to be used                       |              |
+| **Arguments & Options** | **Description**                                     | **Required** |
+| ----------------------- | --------------------------------------------------- | ------------ |
+| --account               | Provide account alias/name to retrieve its details  |              |
+| --network               | Name of the network to be used                      |              |
+| --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |             |
 
-example using account alias:
+Example:
+**Single Chain ID:**
 
+using account alias:
 ```
 kadena account details --account="myalias" --network="mainnet" --chain-id="1"
 ```
-
-example using account name:
-
+using account name:
 ```
 kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="1"
 ```
 
+**Chain ID Range:**
+
+You can specify a range of chain IDs to query multiple chains at once. Use a comma for discrete values or a hyphen for a continuous range.
+
+Discrete Chain IDs:
+```
+kadena account details --account="myalias" --network="mainnet" --chain-id="1,5"
+```
+
+Continuous Range of Chain IDs:
+```
+kadena account details --account="myalias" --network="mainnet" --chain-id="1-5"
+```
+
+All Chains:
+Use "all" to query details across all chains.
+```
+kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="all"
+```
+
 ---
+
+### Funding an account on testnet
+
+The kadena account fund command is tailored for the **testnet** network. It
+allows you to fund an account with a specific amount of a fungible asset. If the
+account does not exist, it will be automatically _created_ and funded. Note that
+this command is not applicable to the mainnet network.
 
 ```
 kadena account fund [arguments]
 ```
 
-| **Arguments & Options** | **Description**                | **Required** |
-| ----------------------- | ------------------------------ | ------------ |
-| --account               | Provide alias for account      |              |
-| --amount                | Amount to fund                 |              |
-| --network               | Name of the network to be used |              |
-| --chain-id              | Chain to be used               |              |
+| **Arguments & Options** | **Description**                                  | **Required** |
+| ----------------------- | ------------------------------------------------ | ------------ |
+| --account               | Provide alias for an account                     |              |
+| --amount                | Amount to fund                                   |              |
+| --network               | Name of the network to be used                   |              |
+| --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |             |
 
-example:
+Example:
+**Single Chain ID:**
 
+Fund an account on a specific chain:
 ```
 kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="1"
 ```
+**Chain ID Range:**
 
+You can specify a range of chain IDs to fund an account across multiple chains. Use a comma for discrete values or a hyphen for a continuous range.
+
+Discrete Chain IDs:
+```
+kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="1,3"
+```
+
+Continuous Range of Chain IDs:
+```
+kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="1-3"
+```
+
+All Chains:
+Use "all" to fund an account across all chains on the testnet.
+```
+kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="all"
+```
 ---
+
 
 ```
 kadena account account name-to-address [arguments]
@@ -679,15 +766,16 @@ kadena account delete --account-alias="all" --confirm
 
 Tool for creating and managing transactions
 
-| **Subcommand** | **Description**                                  | **Default value** |
-| -------------- | ------------------------------------------------ | ----------------- |
-| send           | Send a transaction to the network                |                   |
-| sign           | Sign a transaction using a keypair,              |                   |
-|                | Sign a transaction using your local aliased file |                   |
-|                | Sign a transaction using your local wallet       |                   |
-|                |                                                  |                   |
-| test           | Test a signed transaction                        |                   |
-| add            | Select a template and add a transaction          |                   |
+| **Subcommand** | **Description**                         | **Default value** |
+| -------------- | --------------------------------------- | ----------------- |
+| add            | Select a template and add a transaction |                   |
+| sign           | Sign a transaction using your wallet,   |                   |
+|                | Sign a transaction using a key pair     |                   |
+|                |                                         |                   |
+| test           | Test a signed transaction               |                   |
+| send           | Send a transaction to the network       |                   |
+| status         | Get the status of a transaction         |                   |
+| list           | List transaction(s)                     |                   |
 
 ---
 
@@ -785,6 +873,12 @@ password will be hidden after entry: --security-password=\*
 kadena tx test-signed-transaction [arguments]
 ```
 
+Testing a signed transaction for its viability against a specified network by
+making a Local call. Using the local API endpoints, you can dry-run Pact smart
+contracts using actual data in the coin contract tables. This is perfect for
+checking the viability of your transactions / smart contracts, as well as to
+check account data without necessarily having to spend tokens.
+
 | **Arguments & Options**       | **Description**                                                       | **Required** |
 | ----------------------------- | --------------------------------------------------------------------- | ------------ |
 | --network                     | Name of the network to be used                                        |              |
@@ -838,6 +932,18 @@ example:
 
 ```
 kadena tx status --request-key="118mEpX1-6NpJT1kArsWIHHVtJaOERQOeEwNoouOSGU" --network="testnet" --chain-id="0"
+```
+
+---
+
+```
+kadena tx list
+```
+
+example:
+
+```
+kadena tx list
 ```
 
 ---

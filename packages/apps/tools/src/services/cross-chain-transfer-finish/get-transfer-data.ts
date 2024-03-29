@@ -6,25 +6,26 @@ import {
 } from '@/services/utils/utils';
 import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
+import { isContinuationResponse, isCrossChainResponse } from '@/utils/pact';
 import type {
   ChainwebChainId,
   ICommandResult,
 } from '@kadena/chainweb-node-client';
-import type { ChainId, IPactEvent, IPactExec, PactValue } from '@kadena/types';
+import type { ChainId, IPactEvent, PactValue } from '@kadena/types';
 import Debug from 'debug';
 import type { Translate } from 'next-translate';
 
 interface ITransactionData {
-  sender: { chain: ChainwebChainId; account: string };
-  receiver: { chain: ChainwebChainId; account: string };
-  amount: number;
-  receiverGuard: {
+  sender: { chain?: ChainwebChainId; account?: string };
+  receiver: { chain?: ChainwebChainId; account?: string };
+  amount?: number;
+  receiverGuard?: {
     pred: string;
     keys: [string];
   };
-  step: number;
-  pactId: string;
-  rollback: boolean;
+  step?: number;
+  pactId?: string;
+  rollback?: boolean;
   events?: IEventData[];
   result?: ICommandResult['result'];
 }
@@ -105,29 +106,69 @@ export async function getTransferData({
       // return { error: ('message' in result.error ? (result.error.message as string) : 'An error occurred.' };
     }
 
-    const [senderAccount, receiverAccount, guard, targetChain, amount] =
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      found?.continuation?.continuation.args as Array<any>;
+    let senderAccount: string | undefined,
+      receiverAccount: string | undefined,
+      guard:
+        | {
+            pred: string;
+            keys: [string];
+          }
+        | undefined,
+      targetChain: ChainwebChainId | undefined,
+      amount: number | undefined;
 
-    const yieldData = found?.continuation?.yield as
-      | {
-          data: [string, PactValue][];
-          provenance: { targetChainId: ChainId; moduleHash: string } | null;
-          source: string;
-        }
-      | null
-      | undefined;
+    const { continuation } = found;
 
-    const { step, stepHasRollback, pactId } = found?.continuation as IPactExec;
+    let senderChain: ChainwebChainId | undefined;
+
+    let step: number | undefined,
+      pactId: string | undefined,
+      stepHasRollback: boolean | undefined;
+
+    if (isContinuationResponse(continuation)) {
+      const [_senderAccount, _receiverAccount, _guard, _targetChain, _amount] =
+        continuation.continuation.args as Array<PactValue | undefined>;
+
+      senderAccount = _senderAccount as string | undefined;
+      receiverAccount = _receiverAccount as string | undefined;
+      guard = _guard as
+        | {
+            pred: string;
+            keys: [string];
+          }
+        | undefined;
+      targetChain = _targetChain as ChainwebChainId | undefined;
+      amount = _amount as number | undefined;
+
+      const {
+        step: _step,
+        stepHasRollback: _stepHasRollback,
+        pactId: _pactId,
+      } = continuation;
+
+      step = _step;
+      stepHasRollback = _stepHasRollback;
+      pactId = _pactId;
+    }
+
+    if (isContinuationResponse(continuation) && isCrossChainResponse(found)) {
+      const yieldData = continuation!.yield as {
+        data: [string, PactValue][];
+        provenance: { targetChainId: ChainId; moduleHash: string } | null;
+        source: string;
+      };
+
+      senderChain = yieldData.source as ChainwebChainId;
+    }
 
     return {
       tx: {
         sender: {
-          chain: yieldData?.source as ChainwebChainId,
+          chain: senderChain,
           account: senderAccount,
         },
         receiver: {
-          chain: targetChain as ChainwebChainId,
+          chain: targetChain,
           account: receiverAccount,
         },
         amount: amount,

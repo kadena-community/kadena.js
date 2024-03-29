@@ -27,7 +27,7 @@ export const ImagePositions: FC<IProps> = () => {
     setSigner(
       proofOfUs?.signees.find((c) => c.accountName === account?.accountName),
     );
-    setIsLocked(isAlreadySigning(proofOfUs?.signees));
+    setIsLocked(isAlreadySigning(proofOfUs));
   }, [proofOfUs]);
 
   const getPosition = <T extends HTMLElement>(
