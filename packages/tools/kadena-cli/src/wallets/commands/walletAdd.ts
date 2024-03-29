@@ -70,10 +70,10 @@ export const createGenerateWalletCommand: (
       log.info();
       if (config.createAccount === 'true') {
         const accountFilepath = path.join(ACCOUNT_DIR, `${wallet.alias}.yaml`);
-
+        const accountName = `k:${wallet.keys[0].publicKey}`;
         await writeAccountAliasMinimal(
           {
-            accountName: `k:${wallet.keys[0].publicKey}`,
+            accountName,
             fungible: 'coin',
             predicate: `keys-all`,
             publicKeysConfig: [wallet.keys[0].publicKey],
@@ -81,7 +81,7 @@ export const createGenerateWalletCommand: (
           accountFilepath,
         );
         log.output(log.color.green(`Account created`));
-        log.output(`accountName: k:${wallet.keys[0].publicKey}\n`);
+        log.output(`accountName: ${accountName}\n`);
         log.output(
           log.generateTableString(
             ['Account Storage Location'],
@@ -92,6 +92,8 @@ export const createGenerateWalletCommand: (
         // - prompt "Do you want to fund the account?"
         // - prompt network
         // - prompt chainId
+        log.info(`\nTo fund the account, use the following command:`);
+        log.info(`kadena account fund --account ${accountName}`);
       }
     } catch (error) {
       if (error instanceof Error) {
