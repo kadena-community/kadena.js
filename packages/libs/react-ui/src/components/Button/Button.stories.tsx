@@ -66,6 +66,12 @@ const meta: Meta<IButtonProps> = {
         type: 'boolean',
       },
     },
+    loadingLabel: {
+      description: 'label to be shown when loading',
+      control: {
+        type: 'text',
+      },
+    },
     isCompact: {
       description: 'compact button style',
       control: {
