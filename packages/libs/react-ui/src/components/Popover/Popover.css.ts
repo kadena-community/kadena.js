@@ -10,6 +10,8 @@ export const underlayClass = style({
 export const popoverClass = atoms({
   backgroundColor: 'base.default',
   borderRadius: 'sm',
+  height: '100%',
+  overflowY: 'scroll',
 });
 
 export const arrowClass = style({
