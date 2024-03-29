@@ -1,7 +1,10 @@
 import { prismaClient } from '@db/prisma-client';
-import { Prisma } from '@prisma/client';
+import { Event, Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
-import { getConditionForMinimumDepth } from '@services/depth-service';
+import {
+  getConditionForMinimumDepth,
+  getConfirmationDepth,
+} from '@services/depth-service';
 import { normalizeError } from '@utils/errors';
 import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import { builder } from '../builder';
@@ -110,15 +113,66 @@ builder.queryField('events', (t) =>
     },
     async resolve(query, __parent, args) {
       try {
-        return await prismaClient.event.findMany({
-          ...query,
-          where: await generateEventsFilter(args),
-          orderBy: [
-            { height: 'desc' },
-            { requestKey: 'desc' },
-            { orderIndex: 'desc' },
-          ],
-        });
+        let events: Event[] = [];
+        let skip = 0;
+        const take = query.take;
+
+        while (events.length < take) {
+          const remaining = take - events.length;
+          const fetchedEvents = await prismaClient.event.findMany({
+            ...query,
+            where: await generateEventsFilter(args),
+            orderBy: [
+              { height: 'desc' },
+              { requestKey: 'desc' },
+              { orderIndex: 'desc' },
+            ],
+            take: remaining,
+            skip,
+          });
+
+          if (fetchedEvents.length === 0) {
+            break;
+          }
+
+          if (args.minimumDepth) {
+            // Get all unique block hashes
+            const uniqueBlockHashes = [
+              ...new Set(fetchedEvents.map((e) => e.blockHash)),
+            ];
+
+            // Get confirmation depths for each block hash
+            const confirmationDepths = await Promise.all(
+              uniqueBlockHashes.map((blockHash) =>
+                getConfirmationDepth(blockHash),
+              ),
+            );
+
+            // Create a map of block hashes to their confirmation depths
+            const blockHashToDepth: Record<string, number> =
+              uniqueBlockHashes.reduce(
+                (map: Record<string, number>, blockHash, index) => {
+                  map[blockHash] = confirmationDepths[index];
+                  return map;
+                },
+                {},
+              );
+
+            const filteredEvents = fetchedEvents.filter(
+              (event) =>
+                blockHashToDepth[event.blockHash] >=
+                (args.minimumDepth as number) + 1,
+            );
+
+            events = [...events, ...filteredEvents];
+          } else {
+            events = [...events, ...fetchedEvents];
+          }
+
+          skip += remaining;
+        }
+
+        return events.slice(0, take);
       } catch (error) {
         throw normalizeError(error);
       }
