@@ -104,7 +104,7 @@ const CheckTransactions: FC = () => {
             </Grid>
           </Card>
           <section className={submitClass}>
-            <Button icon={<MonoKeyboardArrowRight />}>
+            <Button type="submit" icon={<MonoKeyboardArrowRight />}>
               {t('Search for transactions')}
             </Button>
           </section>
