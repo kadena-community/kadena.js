@@ -24,7 +24,7 @@ import {
 } from '@/pages/transactions/transfer/styles.css';
 import type { ChainId } from '@kadena/types';
 import useTranslation from 'next-translate/useTranslation';
-import { Controller, useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { SenderDetails } from './sender-details';
 import type { FormData } from './sign-form';
 
@@ -48,10 +48,13 @@ export const SignFormSender = ({
 }) => {
   const { t } = useTranslation('common');
   const {
-    control,
+    register,
+    setValue,
+    // getValues,
+    // control,
     formState: { errors },
     watch,
-  } = useFormContext<FormData>();
+  } = useForm<FormData>();
   const [chainSelectOptions, setChainSelectOptions] = useState<
     { chainId: ChainId; data: string | number }[]
   >([]);
@@ -144,23 +147,35 @@ export const SignFormSender = ({
           alignItems={'center'}
         >
           <div className={chainSelectContainerClass}>
-            <Controller
-              name="senderChainId"
-              control={control}
-              render={({ field: { onChange, value, ...rest } }) => (
-                <ChainSelect
-                  {...rest}
-                  selectedKey={value}
-                  id="senderChainId"
-                  onSelectionChange={(chainId) => {
-                    onChange(chainId);
-                    onChainUpdate(chainId);
-                  }}
-                  additionalInfoOptions={chainSelectOptions}
-                  isInvalid={!!errors.senderChainId}
-                  errorMessage={errors.senderChainId?.message}
-                />
-              )}
+            {/*<Controller*/}
+            {/*  name="senderChainId"*/}
+            {/*  control={control}*/}
+            {/*  render={({ field: { onChange, value, ...rest } }) => (*/}
+            {/*    <ChainSelect*/}
+            {/*      {...rest}*/}
+            {/*      selectedKey={value}*/}
+            {/*      id="senderChainId"*/}
+            {/*      onSelectionChange={(chainId) => {*/}
+            {/*        onChange(chainId);*/}
+            {/*        onChainUpdate(chainId);*/}
+            {/*      }}*/}
+            {/*      additionalInfoOptions={chainSelectOptions}*/}
+            {/*      isInvalid={!!errors.senderChainId}*/}
+            {/*      errorMessage={errors.senderChainId?.message}*/}
+            {/*    />*/}
+            {/*  )}*/}
+            {/*/>*/}
+            <ChainSelect
+              {...register('senderChainId')}
+              selectedKey={watchChain}
+              id="senderChainId"
+              onSelectionChange={(chainId) => {
+                // onChange(chainId);
+                onChainUpdate(chainId);
+              }}
+              additionalInfoOptions={chainSelectOptions}
+              isInvalid={!!errors.senderChainId}
+              errorMessage={errors.senderChainId?.message}
             />
           </div>
           {senderData.isFetching ? (
@@ -172,23 +187,36 @@ export const SignFormSender = ({
           )}
         </Stack>
 
-        <Controller
-          name="amount"
-          control={control}
-          render={({ field: { onChange, ...rest } }) => (
-            <NumberField
-              {...rest}
-              id="ledger-transfer-amount"
-              label={t('Amount')}
-              onValueChange={(value) => onChange(value)}
-              isDisabled={!!senderData.error}
-              isInvalid={!!errors.amount || invalidAmount}
-              errorMessage={
-                invalidAmount ? invalidAmountMessage : errors.amount?.message
-              }
-              info={t('The amount of KDA to transfer.')}
-            />
-          )}
+        {/*<Controller*/}
+        {/*  name="amount"*/}
+        {/*  control={control}*/}
+        {/*  render={({ field: { onChange, ...rest } }) => (*/}
+        {/*    <NumberField*/}
+        {/*      {...rest}*/}
+        {/*      id="ledger-transfer-amount"*/}
+        {/*      label={t('Amount')}*/}
+        {/*      onValueChange={(value) => onChange(value)}*/}
+        {/*      isDisabled={!!senderData.error}*/}
+        {/*      isInvalid={!!errors.amount || invalidAmount}*/}
+        {/*      errorMessage={*/}
+        {/*        invalidAmount ? invalidAmountMessage : errors.amount?.message*/}
+        {/*      }*/}
+        {/*      info={t('The amount of KDA to transfer.')}*/}
+        {/*    />*/}
+        {/*  )}*/}
+        {/*/>*/}
+        <NumberField
+          {...register('amount')}
+          id="ledger-transfer-amount"
+          label={t('Amount')}
+          onValueChange={() => setValue('amount', watchAmount)}
+          // value={getValues('amount')}
+          isDisabled={!!senderData.error}
+          isInvalid={!!errors.amount || invalidAmount}
+          errorMessage={
+            invalidAmount ? invalidAmountMessage : errors.amount?.message
+          }
+          info={t('The amount of KDA to transfer.')}
         />
       </Stack>
     </LoadingCard>

@@ -58,9 +58,9 @@ export const SignForm = ({
   const defaultValues = {
     senderChainId: CHAINS[0],
     receiverChainId: undefined,
-    // receiver: '',
-    // sender: '',
-    // amount: undefined,
+    receiver: '',
+    sender: '',
+    amount: 0,
   };
 
   const methods = useForm<FormData>({
@@ -68,7 +68,7 @@ export const SignForm = ({
     defaultValues,
   });
 
-  const { reset } = methods;
+  const { reset, handleSubmit } = methods;
 
   const { selectedNetwork: network } = useWalletConnectClient();
 
@@ -169,22 +169,17 @@ export const SignForm = ({
     }
   };
 
-  const onReset = () => {
+  const handleReset = () => {
     reset(defaultValues);
 
-    senderDataRef.current = undefined;
-    receiverDataRef.current = undefined;
-    pubKeys.current = [];
-    pred.current = undefined;
-    keyId.current = undefined;
-    derivationMode.current = 'current';
+    onPubKeysUpdate([]);
   };
 
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={methods.handleSubmit(handleSignTransaction)}
-        onReset={onReset}
+        onSubmit={handleSubmit(handleSignTransaction)}
+        onReset={handleReset}
       >
         <Stack flexDirection="column" gap="lg">
           {/* SENDER  FLOW */}

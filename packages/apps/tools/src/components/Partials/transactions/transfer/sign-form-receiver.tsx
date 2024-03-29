@@ -55,6 +55,7 @@ export const SignFormReceiver = ({
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
 
   const {
+    register,
     control,
     formState: { errors },
     getValues,
@@ -131,23 +132,35 @@ export const SignFormReceiver = ({
         )}
       />
       <div className={chainSelectContainerClass}>
-        <Controller
-          name="receiverChainId"
-          control={control}
-          render={({ field: { onChange, value, ...rest } }) => (
-            <ChainSelect
-              {...rest}
-              selectedKey={value}
-              id="receiverChainId"
-              onSelectionChange={(chainId) => {
-                onChange(chainId);
-                onChainUpdate(chainId);
-              }}
-              additionalInfoOptions={chainSelectOptions}
-              isInvalid={!!errors.receiverChainId}
-              errorMessage={errors.receiverChainId?.message}
-            />
-          )}
+        {/*<Controller*/}
+        {/*  name="receiverChainId"*/}
+        {/*  control={control}*/}
+        {/*  render={({ field: { onChange, value, ...rest } }) => (*/}
+        {/*    <ChainSelect*/}
+        {/*      {...rest}*/}
+        {/*      selectedKey={value}*/}
+        {/*      id="receiverChainId"*/}
+        {/*      onSelectionChange={(chainId) => {*/}
+        {/*        onChange(chainId);*/}
+        {/*        onChainUpdate(chainId);*/}
+        {/*      }}*/}
+        {/*      additionalInfoOptions={chainSelectOptions}*/}
+        {/*      isInvalid={!!errors.receiverChainId}*/}
+        {/*      errorMessage={errors.receiverChainId?.message}*/}
+        {/*    />*/}
+        {/*  )}*/}
+        {/*/>*/}
+        <ChainSelect
+          {...register('receiverChainId')}
+          selectedKey={watchChain}
+          id="receiverChainId"
+          onSelectionChange={(chainId) => {
+            // onChange(chainId);
+            onChainUpdate(chainId);
+          }}
+          additionalInfoOptions={chainSelectOptions}
+          isInvalid={!!errors.receiverChainId}
+          errorMessage={errors.receiverChainId?.message}
         />
       </div>
     </Stack>
