@@ -305,7 +305,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         <Button
           isLoading={isLoading}
           // isDisabled={ledgerSignState.loading}
-          endIcon={<MonoKeyboardArrowRight />}
+          icon={<MonoKeyboardArrowRight />}
           title={t('Transfer')}
           onPress={onSubmit}
         >

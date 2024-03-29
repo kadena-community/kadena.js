@@ -123,7 +123,7 @@ export const AddNetworkModal: FC<IAddNetworkModalProps> = (props) => {
                 <section className={formButtonStyle}>
                   <Button
                     type="submit"
-                    endIcon={<MonoKeyboardArrowRight />}
+                    icon={<MonoKeyboardArrowRight />}
                     isDisabled={Boolean(error)}
                   >
                     {t('Save Network')}

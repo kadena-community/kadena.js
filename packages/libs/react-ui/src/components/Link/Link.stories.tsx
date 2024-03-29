@@ -64,8 +64,6 @@ export const _Link: LinkStory = {
     isCompact: false,
     isLoading: false,
     icon: undefined,
-    startIcon: undefined,
-    endIcon: undefined,
     href: '#',
   },
   render: ({ text, ...props }) => {

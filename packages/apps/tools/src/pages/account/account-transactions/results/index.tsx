@@ -216,10 +216,10 @@ const CheckTransactions: FC = () => {
         </GridItem>
         <GridItem>
           <div className={headerButtonGroupClass}>
-            <Button endIcon={<MonoDelete />} onPress={resetFiltersEvent}>
+            <Button icon={<MonoDelete />} onPress={resetFiltersEvent}>
               {t('Reset all filters')}
             </Button>
-            <Button endIcon={<MonoRefresh />} onPress={refreshResultsEvent}>
+            <Button icon={<MonoRefresh />} onPress={refreshResultsEvent}>
               {t('Reload')}
             </Button>
           </div>
