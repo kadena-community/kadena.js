@@ -40,9 +40,9 @@ To start the sales process for a non-fungible token:
 
    ```pact
    (marmalade-v2.ledger.sale "t:jEDZtohdLCkbsbFTlVrgVOQOYckgSLHHWQsXKry8jO0" "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e" 1.0 0)
-  ```  
+   ```  
 
-2. Click Deploy to display the transaction details Configuration tab.
+2. Click **Deploy** to display the transaction details Configuration tab.
 
 1. Select the **Transaction Sender** and **Chain ID**, review transaction settings, then click **Advanced**.
 3. Click the **Raw** tab and add the quote specification for the sale as a JSON object.
@@ -61,7 +61,9 @@ To start the sales process for a non-fungible token:
    }
    ```
    
-   In this example, the quote specification includes the seller account information and the type of sale contract to use for this offer is a conventional auction:
+   However, the reference to the fungible `coin` module is a bit more complicated than it looks in its raw form.
+   It must include references to the `fungible-xchain-v1` and `fungible-v2` specifications.
+   In the following example, the quote specification includes the references, seller account information, and the type of sale contract to use—in this case, the sale type is a conventional auction:
    
    ```json
    {
@@ -78,7 +80,7 @@ To start the sales process for a non-fungible token:
    }
    ```
   
-  After you add the quote specification to the Raw tab, click **Next**.
+   After you add the quote specification to the Raw tab, click **Next**.
 
 1. On the Sign tab, click the Grant Capabilities plus (+) to add the OFFER capability to the transaction and specify the same arguments as you specified for the **sale** pact.
    
@@ -88,7 +90,7 @@ To start the sales process for a non-fungible token:
    (marmalade-v2.ledger.OFFER "t:jEDZtohdLCkbsbFTlVrgVOQOYckgSLHHWQsXKry8jO0" "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e" 1.0 0)
    ```
 
-2. Select the account to pay for **coin.GAS** and the account you want to grant the **marmalade-v2.ledger.OFFER** capability to offer the token for sale, then click **Next**.
+2. Select the account to pay for **coin.GAS** and the account you want to grant the **marmalade-v2.ledger.OFFER** capability, then click **Next**.
 3. On the Preview tab, review the transaction details and verify that the Raw Response is a string—in this example, **"E2zl-Y_MWBQ39nliHZdrbs1ooC35y9iJGurVDpmJjfo"**—then click **Submit**.
 
    After you submit the transaction, it is queued for processing in the memory pool until validated and added to a block.
@@ -97,8 +99,11 @@ To start the sales process for a non-fungible token:
    ![Token offered for sale](/assets/marmalade/sales-tx.png)
 
    In the transaction results, you'll notice that there's a Continuation section and several events. 
-   Within the events, there are two important pieces of information, the pact-id and escrow account that now holds the token awaiting a buyer.
-   In this example, the pact-id is **M1uFQ7OCI7kw_-93UglWzVMy0DGO1uUllyCnJR5eo6w** and the escrow account is **c:nRIVifc_ClgWSAM8N0qsvpl8eD5kI_exsTqdGaN6We4**.
+   Within the events, there are two important pieces of information, the **pact-id** and **escrow account** that now holds the token awaiting a buyer.
+   In this example:
+   
+   - The pact-id is **M1uFQ7OCI7kw_-93UglWzVMy0DGO1uUllyCnJR5eo6w**.
+   - The escrow account is **c:nRIVifc_ClgWSAM8N0qsvpl8eD5kI_exsTqdGaN6We4**.
 
    ![Sale events](/assets/marmalade/sales-tx-events.png)
 
@@ -107,4 +112,6 @@ To start the sales process for a non-fungible token:
 Congratulations! 
 You have made your digital asset available on the marketplace.
 Well, almost.
-You've selected a type of sale—the conventional auction—but haven't configure any auction details.
+You've selected a type of sale—the conventional auction—but haven't configured any auction details.
+To complete the first part of the sales process, you need to create a conventional auction with start and end times and a reserve price. 
+To continue with this example, see [Create an auction](/build/nft-marmalade/sales/create-an-auction).

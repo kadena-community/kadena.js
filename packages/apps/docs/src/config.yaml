@@ -153,12 +153,19 @@ pages:
               offer:
                 url: /offers
                 file: /build/nft-marmalade/start-a-sale.md
+              conventional:
+                url: /conventional-auction
+                file: /build/nft-marmalade/create-an-auction.md
       authentication:
         url: /authentication
         file: /build/authenticate-with-spirekey.md
       frontend:
         url: /frontend
-        file: /build/frontend.md
+        file: /build/kadena-cli.md
+        children:
+          kadena-graph:
+            url: /kadena-graph
+            file: /build/frontend/kadena-graph.md
       templates:
         url: /templates
         file: /build/code-templates.md
@@ -213,6 +220,12 @@ pages:
       compactdb:
         url: /compact-database
         file: /deploy/chainweb/compact-a-database.md
+      troubleshoot:
+        url: /troubleshoot-chainweb
+        file: /deploy/chainweb/troubleshoot-chainweb.md
+      mining:
+        url: /start-mining
+        file: /deploy/chainweb/start-mining.md
   invest:
     url: /invest
     file: /invest/invest.md
@@ -243,6 +256,10 @@ pages:
       nodeoperators:
         url: /node
         file: /participate/node/index.md
+        children:
+          query:
+            url: /query-nodes
+            file: /participate/node/query-blockchain-nodes.md
       docs:
         url: /docs
         file: /participate/docs.md
@@ -402,9 +419,6 @@ pages:
       pactrepl:
         url: /pact-repl
         file: /reference/pact/pact-repl-cli.md
-      pactjs:
-        url: /pactjs
-        file: /reference/pact/pactjs-api.md
       restapi:
         url: /rest-api
         file: /reference/pact/rest-api.md
@@ -418,6 +432,9 @@ pages:
           kadena-js:
             url: /kadena-js
             file: /reference/kadena-client/kadena-js.md
+          pactjs-old:
+            url: /pactjs-old
+            file: /reference/pact/pactjs-api.md
           pactjs:
             file: /packages/libs/pactjs/README.md
             repo: https://github.com/kadena-community/kadena.js
