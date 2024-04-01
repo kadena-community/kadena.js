@@ -39,7 +39,7 @@ To create a conventional auction for a non-fungible token:
      For this example, the start time is `5.0`.
 
    For example:
-   
+
    ```pact
    (marmalade-sale.conventional-auction.create-auction "M1uFQ7OCI7kw_-93UglWzVMy0DGO1uUllyCnJR5eo6w" "t:jEDZtohdLCkbsbFTlVrgVOQOYckgSLHHWQsXKry8jO0" 1714348800 1714608000 5.0)
    ```  
@@ -50,29 +50,21 @@ To create a conventional auction for a non-fungible token:
 
 9.  On the Sign tab, click the Grant Capabilities plus (+) to add the MANAGE_AUCTION capability to the transaction and specify the sale identifier and the token identifier.
    
-   In this example, the MANAGE_AUCTION capabilities look like this:
+   In this example, the MANAGE_AUCTION capability look like this:
    
    ```pact
-   (marmalade-sale.MANAGE_AUCTION  "M1uFQ7OCI7kw_-93UglWzVMy0DGO1uUllyCnJR5eo6w" "t:jEDZtohdLCkbsbFTlVrgVOQOYckgSLHHWQsXKry8jO0)
+   (marmalade-sale.MANAGE_AUCTION  "M1uFQ7OCI7kw_-93UglWzVMy0DGO1uUllyCnJR5eo6w" "t:jEDZtohdLCkbsbFTlVrgVOQOYckgSLHHWQsXKry8jO0")
    ```
 
-10. Select the account to pay for **coin.GAS** and the account you want to grant the **marmalade-sale.MANAGE_AUCTION** capability , then click **Next**.
-11. On the Preview tab, review the transaction details and verify that the Raw Response is a string—in this example, **"E2zl-Y_MWBQ39nliHZdrbs1ooC35y9iJGurVDpmJjfo"**—then click **Submit**.
+10. Select the account to pay for **coin.GAS** and the account you want to grant the **marmalade-sale.MANAGE_AUCTION** capability, then click **Next**.
+11. On the Preview tab, review the transaction details and verify that there are no errors in the Raw Response, then click **Submit**.
 
    After you submit the transaction, it is queued for processing in the memory pool until validated and added to a block.
    After the transaction is included in a block, you can view the transaction results in the block explorer.
 
-   ![Token offered for sale](/assets/marmalade/sales-tx.png)
-
-   In the transaction results, you'll notice that there's a Continuation section and several events. 
-   Within the events, there are two important pieces of information, the pact-id and escrow account that now holds the token awaiting a buyer.
-   In this example, the pact-id is **M1uFQ7OCI7kw_-93UglWzVMy0DGO1uUllyCnJR5eo6w** and the escrow account is **c:nRIVifc_ClgWSAM8N0qsvpl8eD5kI_exsTqdGaN6We4**.
-
-   ![Sale events](/assets/marmalade/sales-tx-events.png)
-
 ## Next steps
 
-Congratulations! 
-You have made your digital asset available on the marketplace.
-Well, almost.
-You've selected a type of sale—the conventional auction—but haven't configure any auction details.
+You now have a conventional auction prepared to sell your token.
+Buyers can submit pids by calling the `marmalade-sale.conventional-auction.place-bid` function.
+However, it's likely that you'll want to create a frontend using Kadena client libraries to give potential buyers a better user experience.
+Building an end-to-end experience for buyers and sellers will be covered in a future workshop.
