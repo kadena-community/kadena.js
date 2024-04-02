@@ -5,6 +5,7 @@ import { formatWithOptions } from 'node:util';
 import z from 'zod';
 import type { TableHeader, TableRow } from '../utils/tableDisplay.js';
 import { displayTable } from '../utils/tableDisplay.js';
+import { maskSensitiveInfo } from './helpers.js';
 
 /**
  * Custom logging class for kadena-cli
@@ -163,7 +164,8 @@ class Logger {
 
   private _log(level: LevelValue, args: unknown[]): void {
     if (this.level >= level) {
-      this._transport({ date: new Date(), level, args }, this);
+      const processedArgs = args.map((arg) => maskSensitiveInfo(arg));
+      this._transport({ date: new Date(), level, args: processedArgs }, this);
     }
   }
 
