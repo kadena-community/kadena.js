@@ -49,7 +49,7 @@ export const getTxStatus = async ({
         status: 'error',
         errors: [
           notFoundErrorMessage,
-          `If the transaction is just submitted, please try with poll flag "kadena tx status --request-key=${requestKey} --chain-id=${chainId} --network=${networkConfig.network} --poll"`,
+          `If the transaction is just submitted, please try with poll flag: kadena tx status --request-key=${requestKey} --chain-id=${chainId} --network=${networkConfig.network} --poll`,
         ],
       };
     }
