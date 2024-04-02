@@ -4,7 +4,7 @@ import type {
   Transfer,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
-import { MonoKRoundedGreen } from '@kadena/react-icons/system';
+import { KRoundedKdacolorGreen } from '@kadena/react-icons/system';
 import {
   Box,
   Cell,
@@ -74,7 +74,7 @@ export const CompactTransfersTable = (
     <>
       <ContentHeader
         heading="Transfers"
-        icon={<MonoKRoundedGreen />}
+        icon={<KRoundedKdacolorGreen />}
         description={
           description ? description : 'All transfers from this fungible'
         }

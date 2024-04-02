@@ -7,7 +7,7 @@ import type {
   QueryTransactionsConnection,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
-import { MonoKRoundedGreen } from '@kadena/react-icons/system';
+import { KRoundedKdacolorGreen } from '@kadena/react-icons/system';
 import {
   Box,
   Cell,
@@ -46,7 +46,7 @@ export const CompactTransactionsTable = (
     <>
       <ContentHeader
         heading="Transactions"
-        icon={<MonoKRoundedGreen />}
+        icon={<KRoundedKdacolorGreen />}
         description={
           description
             ? description
