@@ -1,5 +1,6 @@
+import { deviceColors } from '@/styles/tokens.css';
 import { atoms, tokens } from '@kadena/react-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const wrapperClass = style([
   atoms({
@@ -101,3 +102,16 @@ export const ellipsClass = style([
     whiteSpace: 'nowrap',
   },
 ]);
+
+export const removeClass = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '50px',
+  height: '100%',
+  backgroundColor: deviceColors.red,
+});
+
+globalStyle(`${wrapperClass}  .swipeable-list-item__content`, {
+  backgroundColor: 'transparent',
+});

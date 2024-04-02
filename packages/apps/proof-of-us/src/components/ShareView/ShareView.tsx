@@ -95,7 +95,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(
-      `${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`,
+      `${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}?shouldAdd=true`,
     );
     setIsCopied(true);
   };
@@ -189,7 +189,9 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                   ecLevel="H"
                   size={300}
                   ref={qrRef}
-                  value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
+                  value={`${getReturnHostUrl()}/scan/${
+                    proofOfUs.proofOfUsId
+                  }?shouldAdd=true`}
                   removeQrCodeBehindLogo={true}
                   logoImage="/assets/qrlogo.png"
                   logoPadding={5}

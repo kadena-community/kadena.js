@@ -1,11 +1,12 @@
 import { useAccount } from '@/hooks/account';
+import { deviceColors } from '@/styles/tokens.css';
 import { getSigneeName } from '@/utils/getSigneeName';
 import { MonoDelete } from '@kadena/react-icons';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import {
-  SwipeAction,
   SwipeableListItem,
+  SwipeAction,
   TrailingActions,
 } from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
@@ -16,6 +17,7 @@ import {
   ellipsClass,
   multipleSigneeClass,
   nameClass,
+  removeClass,
   signeeClass,
 } from './style.css';
 
@@ -40,66 +42,52 @@ export const Signee: FC<IProps> = ({
   signee,
   isMultiple,
   canBeRemoved,
-  //handleRemove,
+  handleRemove,
 }) => {
   const { account } = useAccount();
 
-  // const getSuccessStyle = (signee?: IProofOfUsSignee) => {
-  //   if (signee?.signerStatus === 'success') {
-  //     return {
-  //       borderColor: deviceColors.green,
-  //     };
-  //   }
-  //   return {};
-  // };
+  const getSuccessStyle = (signee?: IProofOfUsSignee) => {
+    if (signee?.signerStatus === 'success') {
+      return {
+        borderColor: deviceColors.green,
+      };
+    }
+    return {};
+  };
 
   const removeSignee = () => {
-    alert('remove s');
+    console.log('remove s');
     if (!signee) return;
-    //handleRemove({ signee });
+    handleRemove({ signee });
   };
 
   const trailingActions = () => (
     <TrailingActions>
       <SwipeAction destructive={true} onClick={removeSignee}>
-        <div style={{ backgroundColor: 'red', width: '50px' }}>
+        <div className={removeClass}>
           <MonoDelete />
         </div>
       </SwipeAction>
     </TrailingActions>
   );
 
-  const handleSwipeStart = () => {
-    console.log('Swipe started');
-    // setSwipeAction('Swipe started');
-    // setTriggeredItemAction('None');
-  };
-
-  const handleSwipeEnd = () => {
-    console.log('swipe ended');
-    // setSwipeAction('Swipe ended');
-    // setSwipeProgress();
-  };
-
   return (
     <SwipeableListItem
-      scrollStartThreshold={0.5}
       blockSwipe={!canBeRemoved}
       trailingActions={trailingActions()}
-      className={classNames(isMultiple ? multipleSigneeClass : signeeClass)}
-      // style={getSuccessStyle(signee)}
-      maxSwipe={0.7}
-      onSwipeEnd={handleSwipeEnd}
-      onSwipeProgress={(e, b) => console.log('progress', e, b)}
-      onSwipeStart={handleSwipeStart}
     >
-      <SignStatus status={signee?.signerStatus} />
-      <Text className={classNames(nameClass, ellipsClass)} bold>
-        {getSigneeName(signee)} {isMe(signee, account) && ' (me)'}
-      </Text>
-      <Text className={classNames(accountClass, ellipsClass)}>
-        {getAccount(signee)}
-      </Text>
+      <div
+        className={classNames(isMultiple ? multipleSigneeClass : signeeClass)}
+        style={getSuccessStyle(signee)}
+      >
+        <SignStatus status={signee?.signerStatus} />
+        <Text className={classNames(nameClass, ellipsClass)} bold>
+          {getSigneeName(signee)} {isMe(signee, account) && ' (me)'}
+        </Text>
+        <Text className={classNames(accountClass, ellipsClass)}>
+          {getAccount(signee)}
+        </Text>
+      </div>
     </SwipeableListItem>
   );
 };

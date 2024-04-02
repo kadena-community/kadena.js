@@ -38,31 +38,30 @@ export const ListSignees: FC = () => {
         <Heading as="h6">Max {env.MAXSIGNERS}</Heading>
       </Stack>
 
-      <SwipeableList
-        threshold={0.5}
-        type={Type.IOS}
-        fullSwipe={false}
+      <div
         className={classNames(
           wrapperClass,
           isMultiple ? multipleWrapperClass : '',
         )}
       >
-        <Signee
-          signee={initiator}
-          isMultiple={isMultiple}
-          handleRemove={removeSignee}
-          canBeRemoved={false}
-        />
-        {restSignees.map((signee) => (
+        <SwipeableList fullSwipe={true} type={Type.IOS}>
           <Signee
-            canBeRemoved={accountIsInitiator}
-            handleRemove={removeSignee}
-            key={signee.accountName}
-            signee={signee}
+            signee={initiator}
             isMultiple={isMultiple}
+            handleRemove={removeSignee}
+            canBeRemoved={false}
           />
-        ))}
-      </SwipeableList>
+          {restSignees.map((signee) => (
+            <Signee
+              canBeRemoved={accountIsInitiator}
+              handleRemove={removeSignee}
+              key={signee.accountName}
+              signee={signee}
+              isMultiple={isMultiple}
+            />
+          ))}
+        </SwipeableList>
+      </div>
     </Stack>
   );
 };

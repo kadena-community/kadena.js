@@ -4,12 +4,12 @@ import { useAccount } from '@/hooks/account';
 import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { env } from '@/utils/env';
-import { getReturnHostUrl } from '@/utils/getReturnUrl';
+import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
 import { getAccountSignee, isAlreadySigning } from '@/utils/isAlreadySigning';
 import { MonoSignature } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { Button } from '../Button/Button';
@@ -26,6 +26,9 @@ interface IProps {
 
 export const ConnectView: FC<IProps> = () => {
   const { signToken } = useSignToken();
+  const params = useSearchParams();
+  const shouldAddParam = params.get('shouldAdd');
+
   const { account } = useAccount();
   const [signed, setSigned] = useState(false);
   const [showMaxModal, setShowMaxModal] = useState(false);
@@ -43,11 +46,13 @@ export const ConnectView: FC<IProps> = () => {
     }
 
     addSignee();
+    router.replace(getReturnUrl());
   };
 
   useEffect(() => {
+    if (!shouldAddParam) return;
     check2AddSignee();
-  }, [proofOfUs?.proofOfUsId, signees?.length]);
+  }, [proofOfUs?.proofOfUsId, signees?.length, shouldAddParam]);
 
   const handleJoin = async () => {
     signToken();
