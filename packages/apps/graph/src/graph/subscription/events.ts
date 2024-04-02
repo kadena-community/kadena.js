@@ -1,6 +1,9 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Event } from '@prisma/client';
-import { getConditionForMinimumDepth } from '@services/depth-service';
+import {
+  createBlockDepthMap,
+  getConditionForMinimumDepth,
+} from '@services/depth-service';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import type { IContext } from '../builder';
@@ -142,5 +145,18 @@ async function getLastEvents(
     },
   });
 
-  return foundEvents.sort((a, b) => b.id - a.id);
+  let eventsToReturn = foundEvents;
+
+  if (minimumDepth) {
+    const blockHashToDepth = await createBlockDepthMap(
+      eventsToReturn,
+      'blockHash',
+    );
+
+    eventsToReturn = foundEvents.filter(
+      (event) => blockHashToDepth[event.blockHash] >= minimumDepth,
+    );
+  }
+
+  return eventsToReturn.sort((a, b) => b.id - a.id);
 }

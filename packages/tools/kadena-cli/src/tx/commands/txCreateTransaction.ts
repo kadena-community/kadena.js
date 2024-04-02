@@ -16,6 +16,7 @@ import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import { txOptions } from '../txOptions.js';
+import { convertListToYamlWithEmptyValues } from '../utils/template.js';
 import { fixTemplatePactCommand } from './templates/mapper.js';
 import { writeTemplatesToDisk } from './templates/templates.js';
 
@@ -97,6 +98,7 @@ export const createTransactionCommandNew = createCommand(
     txOptions.selectTemplate({ isOptional: false }),
     txOptions.templateData({ isOptional: true }),
     txOptions.templateVariables(),
+    txOptions.holes({ isOptional: true, disableQuestion: true }),
     globalOptions.outFileJson(),
   ],
   async (option, { values, stdin }) => {
@@ -109,6 +111,15 @@ export const createTransactionCommandNew = createCommand(
       );
     }
     const template = await option.template({ stdin });
+    const showHoles = await option.holes();
+
+    if (showHoles.holes === true) {
+      log.info('Template variables used in this template:');
+      return log.output(
+        convertListToYamlWithEmptyValues(template.templateConfig.variables),
+        template.templateConfig.variables,
+      );
+    }
 
     const templateData = await option.templateData();
     const templateVariables = await option.templateVariables({
@@ -139,7 +150,10 @@ export const createTransactionCommandNew = createCommand(
     );
     assertCommandError(result);
 
-    log.output(JSON.stringify(result.data.transaction, null, 2));
+    log.output(
+      JSON.stringify(result.data.transaction, null, 2),
+      result.data.transaction,
+    );
 
     const relativePath = path.relative(WORKING_DIRECTORY, result.data.filePath);
     log.info(`\ntransaction saved to: ./${relativePath}`);

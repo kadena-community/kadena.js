@@ -1,5 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Block } from '@prisma/client';
+import { createBlockDepthMap } from '@services/depth-service';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import type { IContext } from '../builder';
 import { builder } from '../builder';
@@ -127,5 +128,11 @@ async function getLastBlocksWithDepth(
     }),
   );
 
-  return blocks.flat();
+  const blocksToReturn = blocks.flat();
+
+  const blockHashToDepth = await createBlockDepthMap(blocksToReturn, 'hash');
+
+  return blocksToReturn.filter(
+    (block) => blockHashToDepth[block.hash] >= minimumDepth,
+  );
 }

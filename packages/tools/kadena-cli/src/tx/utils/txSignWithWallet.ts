@@ -102,7 +102,7 @@ export async function signWithWallet(
       );
 
       const password = await option.passwordFile();
-      log.debug('sign-with-local-wallet:action', {
+      log.debug('sign-with-wallet:action', {
         walletConfig,
         password,
         command,
@@ -126,7 +126,7 @@ export async function signWithWallet(
         path.resolve(path.join(directory, file)),
       );
 
-      log.debug('sign-with-local-wallet:action', {
+      log.debug('sign-with-wallet:action', {
         files,
       });
 
@@ -176,7 +176,10 @@ export async function signWithWallet(
       log.info(
         `Transaction with hash: ${results.data.commands[i].command.hash} was successfully signed.`,
       );
-      log.output(JSON.stringify(results.data.commands[i].command, null, 2));
+      log.output(
+        JSON.stringify(results.data.commands[i].command, null, 2),
+        results.data.commands[i].command,
+      );
       log.info(`Signed transaction saved to ${tx.path}`);
     });
   }

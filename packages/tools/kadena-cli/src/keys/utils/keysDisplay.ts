@@ -32,7 +32,7 @@ export async function printPlainKeys(plainKeys: IPlainKey[]): Promise<void> {
   log.info(`Listing keys in the working directory:`);
 
   if (rows.length > 0) {
-    log.output(log.generateTableString(header, rows));
+    log.output(log.generateTableString(header, rows), plainKeys);
   } else {
     log.info('No valid keys found');
   }
@@ -61,7 +61,7 @@ export async function printWalletKeys(
 
   if (rows.length > 0) {
     log.info(`\nWallet: ${wallet.alias}${wallet.legacy ? ' (legacy)' : ''}`);
-    log.output(log.generateTableString(header, rows));
+    log.output(log.generateTableString(header, rows), wallet.keys);
   } else {
     log.info(`\nWallet: ${wallet.alias}${wallet.legacy ? ' (legacy)' : ''}`);
     log.info('No valid keys found');
@@ -79,7 +79,7 @@ export function printStoredPlainKeys(keyPairs: IPlainKey[]): void {
       'The Plain Key Pair is stored within your keys folder under the filename(s):',
     ),
   );
-  log.output(keyPairs.map((key) => relativeToCwd(key.filepath)).join('\n'));
+  log.info(keyPairs.map((key) => relativeToCwd(key.filepath)).join('\n'));
 }
 
 /**
@@ -108,6 +108,6 @@ export function displayGeneratedPlainKeys(keys: IPlainKey[]): void {
     ),
   );
 
-  log.output(log.generateTableString(header, rows));
+  log.output(log.generateTableString(header, rows), keys);
   log.info('');
 }

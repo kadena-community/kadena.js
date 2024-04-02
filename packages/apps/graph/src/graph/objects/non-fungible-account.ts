@@ -14,7 +14,7 @@ import {
   NonFungibleAccountName,
   NonFungibleChainAccountName,
 } from '../types/graphql-types';
-import Token from './token';
+import Token from './non-fungible-token-balance';
 
 export default builder.node(
   builder.objectRef<NonFungibleAccount>(NonFungibleAccountName),

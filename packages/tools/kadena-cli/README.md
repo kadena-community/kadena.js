@@ -211,7 +211,7 @@ kadena network add --network-name="mainnet" --network-id="mainnet01" --network-h
 ---
 
 ```
-kadena network set-default [arguments]
+kadena network set-default [options]
 ```
 
 | **Arguments & Options**        | **Description**                               | **Required** |
@@ -598,40 +598,45 @@ conditions (public keys, predicate), and the account's name.
 kadena account details [arguments]
 ```
 
-| **Arguments & Options** | **Description**                                     | **Required** |
-| ----------------------- | --------------------------------------------------- | ------------ |
-| --account               | Provide account alias/name to retrieve its details  |              |
-| --network               | Name of the network to be used                      |              |
-| --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |             |
+| **Arguments & Options** | **Description**                                                                                                                           | **Required** |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| --account               | Provide account alias/name to retrieve its details                                                                                        |              |
+| --network               | Name of the network to be used                                                                                                            |              |
+| --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |              |
 
-Example:
-**Single Chain ID:**
+Example: **Single Chain ID:**
 
 using account alias:
+
 ```
 kadena account details --account="myalias" --network="mainnet" --chain-id="1"
 ```
+
 using account name:
+
 ```
 kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="1"
 ```
 
 **Chain ID Range:**
 
-You can specify a range of chain IDs to query multiple chains at once. Use a comma for discrete values or a hyphen for a continuous range.
+You can specify a range of chain IDs to query multiple chains at once. Use a
+comma for discrete values or a hyphen for a continuous range.
 
 Discrete Chain IDs:
+
 ```
 kadena account details --account="myalias" --network="mainnet" --chain-id="1,5"
 ```
 
 Continuous Range of Chain IDs:
+
 ```
 kadena account details --account="myalias" --network="mainnet" --chain-id="1-5"
 ```
 
-All Chains:
-Use "all" to query details across all chains.
+All Chains: Use "all" to query details across all chains.
+
 ```
 kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="all"
 ```
@@ -649,41 +654,45 @@ this command is not applicable to the mainnet network.
 kadena account fund [arguments]
 ```
 
-| **Arguments & Options** | **Description**                                  | **Required** |
-| ----------------------- | ------------------------------------------------ | ------------ |
-| --account               | Provide alias for an account                     |              |
-| --amount                | Amount to fund                                   |              |
-| --network               | Name of the network to be used                   |              |
-| --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |             |
+| **Arguments & Options** | **Description**                                                                                                                           | **Required** |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| --account               | Provide alias for an account                                                                                                              |              |
+| --amount                | Amount to fund                                                                                                                            |              |
+| --network               | Name of the network to be used                                                                                                            |              |
+| --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |              |
 
-Example:
-**Single Chain ID:**
+Example: **Single Chain ID:**
 
 Fund an account on a specific chain:
+
 ```
 kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="1"
 ```
+
 **Chain ID Range:**
 
-You can specify a range of chain IDs to fund an account across multiple chains. Use a comma for discrete values or a hyphen for a continuous range.
+You can specify a range of chain IDs to fund an account across multiple chains.
+Use a comma for discrete values or a hyphen for a continuous range.
 
 Discrete Chain IDs:
+
 ```
 kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="1,3"
 ```
 
 Continuous Range of Chain IDs:
+
 ```
 kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="1-3"
 ```
 
-All Chains:
-Use "all" to fund an account across all chains on the testnet.
+All Chains: Use "all" to fund an account across all chains on the testnet.
+
 ```
 kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="all"
 ```
----
 
+---
 
 ```
 kadena account account name-to-address [arguments]
@@ -783,27 +792,124 @@ Tool for creating and managing transactions
 kadena tx add [arguments]
 ```
 
-| **Arguments & Options** | **Description**                                | **Required** |
-| ----------------------- | ---------------------------------------------- | ------------ |
-| --template              | Select template path                           |              |
-| --template-data         | Provide File path of data to use for template  |              |
-| --network-id            | Provide the network id                         |              |
-| --out-file              | Provide path to save output                    |              |
-| --xx                    | Args are created onl the fly based on template |              |
+`kadena tx add` is a powerful command that leverages transaction templates to
+facilitate the quick and efficient creation of transactions across multiple
+chains and access patterns. This feature is designed to work with user-supplied
+values, filling out predefined templates to generate transactions ready for
+signing and submission.
 
-example:
+### Available Templates
+
+Currently, two default templates are provided: `transfer` and `safe-transfer`.
+(Default templates are stored at `.kadena/transaction-templates`) These
+templates cover the most common transaction types, allowing for straightforward
+transfers of tokens between accounts.
+
+### Command Usage
+
+```plaintext
+kadena tx add [options] [arguments]
+```
+
+This command accepts various arguments and options, allowing for detailed
+customization of the transaction being created. Below is a breakdown of the
+options available:
+
+| **Arguments & Options** | **Description**                                           | Required |
+| ----------------------- | --------------------------------------------------------- | -------- |
+| `--template`            | Path to the transaction template file.                    | Yes      |
+| `--template-data`       | File path for the data used to fill the template.         | No       |
+| `--network-id`          | Specifies the network ID (e.g., `testnet04`).             | Yes      |
+| `--out-file`            | Path for saving the generated transaction file.           | No       |
+| `--holes`               | Displays a list of required template variables.           | No       |
+| Custom options          | Generated based on the chosen template's required fields. | Varies   |
+
+### Example Command
 
 ```
-kadena tx add --template="transfer.yaml" --template-data="path" (--account-from="k:account" --account-to="k:toaccount" --amount="1" --chain-id="1" --pk-from="publicKey") --network-id="testnet04" --out-file="transaction-(request-key).json"
+kadena tx add --template="transfer.yaml" --template-data="data.yaml" --network-id="testnet04" --out-file="transaction.json"
 ```
 
-Template variables are prompted unless assigned via --template-data or direct
-flags. Variables can be prefixed to enable value selection using:
+In this example, `transfer.yaml` is the template used to construct the
+transaction. `data.yaml` contains the user-supplied values for the template
+variables. The `--network-id` specifies which network the transaction is
+intended for, and `--out-file` determines where the generated transaction file
+will be saved.
 
-- `account:` to select a account name
-- `key:` to select a public key
-- `network:` to select existing networkId
-- `decimal:` to enable decimal input validation
+Below is a YAML template `transfer.yaml` that outlines the structure for a coin
+transfer operation on Kadena. Notice the use of placeholders with prefixes to
+define expected data types for each field:
+
+```yaml
+code: |-
+  (coin.transfer "{{{account:from}}}" "{{{account:to}}}" {{decimal:amount}})
+data:
+meta:
+  chainId: '{{chain-id}}'
+  sender: '{{{account:from}}}'
+  gasLimit: 2300
+  gasPrice: 0.000001
+  ttl: 600
+signers:
+  - public: '{{key:from}}'
+    caps:
+      - name: 'coin.TRANSFER'
+        args: ['{{{account:from}}}', '{{{account:to}}}', {{ decimal:amount }}]
+      - name: 'coin.GAS'
+        args: []
+networkId: '{{network:networkId}}'
+type: exec
+```
+
+`account`: This prefix is used for variables that should be filled with an
+account name, guiding users to input valid Kadena account identifiers. `key`:
+Variables with this prefix expect a public key, ensuring that users provide
+cryptographic keys in the correct format. `network`: This prefix is used for
+specifying the network ID, helping users to select the appropriate network for
+their transaction. `decimal`: For variables that involve numerical values with
+decimal points, this prefix ensures the format and precision of the input.
+
+This template exemplifies how prefixes guide users in providing the correct
+types of input values, significantly reducing the potential for errors when the
+CLI is operated in its interactive mode. In this mode, the prefixes play a
+crucial role in prompting users for the specific type of information required,
+ensuring the accuracy and validity of the transaction data. This interactive
+guidance simplifies the transaction creation process, enhancing the security and
+reliability of the transactions constructed.
+
+In contrast, when operating in non-interactive mode, the system relies on
+arguments passed directly via the command line. In this scenario, the values for
+the transaction are provided as arguments, and the prefixes are ignored. This
+means that the responsibility for ensuring the correctness and appropriateness
+of the input values shifts entirely to the user. It's crucial for users to be
+mindful of the data types and formats expected by the template to avoid errors.
+This method allows for a more streamlined and automated approach to transaction
+creation, suitable for users who prefer script-based automation or who are
+running the CLI in environments where interactive prompts are not feasible.
+
+### Template Variables
+
+Variables are a critical part of transaction templates, defining the data
+required to construct a transaction. Users can be prompted for variables missing
+from the `--template-data` file or not provided as command-line arguments. The
+`--holes` option is particularly useful for identifying all the variables a
+template requires.
+
+Variables support specific prefixes (`account:`, `key:`, `network:`, `decimal:`)
+to facilitate the correct selection or validation of input values in interactive
+mode.
+
+Below is a YAML example `data.yaml` for `transfer.yaml` that outlines the
+structure for a template data file.
+
+```yaml
+account-from: ''
+account-to: ''
+decimal-amount: ''
+chain-id: ''
+pk-from: ''
+network-id: ''
+```
 
 ---
 
@@ -986,3 +1092,7 @@ available:
 [1]: https://nextjs.org/
 [2]: https://vuejs.org/
 [3]: https://angular.io/
+
+```
+
+```
