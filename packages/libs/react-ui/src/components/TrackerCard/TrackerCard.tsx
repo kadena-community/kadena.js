@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import type { FC, ReactElement } from 'react';
+import type { FC } from 'react';
 import React from 'react';
-import { MaskedValue } from '..';
+import { MaskedValue, ProductIcon } from '..';
 import {
   CardContainer,
   ContentContainer,
@@ -21,7 +21,7 @@ export interface ITrackerCardProps {
   labelValues: ILabelValue[];
   helperText?: string;
   helperTextType?: 'mild' | 'severe';
-  icon?: ReactElement;
+  icon?: keyof typeof ProductIcon;
   variant?: keyof typeof layoutVariant;
 }
 
