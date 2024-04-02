@@ -660,6 +660,7 @@ kadena account fund [arguments]
 | --amount                | Amount to fund                                                                                                                            |              |
 | --network               | Name of the network to be used                                                                                                            |              |
 | --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |              |
+| --fungible              | Fungible e.g coin (by default coin is used)                                                                                               |              |
 
 Example: **Single Chain ID:**
 
