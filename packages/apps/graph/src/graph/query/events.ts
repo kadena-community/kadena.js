@@ -101,6 +101,7 @@ builder.queryField('events', (t) =>
         withRelations: true,
         first: args.first,
         last: args.last,
+        minimumDepth: args.minimumDepth,
       }),
     }),
     async totalCount(__parent, args) {

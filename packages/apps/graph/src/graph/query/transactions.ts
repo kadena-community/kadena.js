@@ -79,6 +79,7 @@ builder.queryField('transactions', (t) =>
       field: getDefaultConnectionComplexity({
         first: args.first,
         last: args.last,
+        minimumDepth: args.minimumDepth,
       }),
     }),
     async totalCount(__parent, args) {
