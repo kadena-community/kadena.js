@@ -8,7 +8,6 @@ import { SubmitStatus, useSubmit } from '@/hooks/submit';
 import { useTokens } from '@/hooks/tokens';
 import { env } from '@/utils/env';
 import { getReturnUrl } from '@/utils/getReturnUrl';
-import { getSigneeAccount } from '@/utils/getSigneeAccount';
 import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
@@ -35,12 +34,12 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const searchParams = useSearchParams();
 
   const { account, isMounted, login } = useAccount();
+  console.log({ account });
   const { addMintingData } = useTokens();
   const { doSubmit, isStatusLoading, status } = useSubmit();
 
   const getProof = (
     data: IProofOfUsTokenMeta,
-    account: IAccount,
     transaction: string,
   ): IProofOfUsData => {
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
@@ -51,7 +50,6 @@ export const ScanAttendanceEvent: FC<IProps> = ({
       requestKey: tx.hash,
       title: data.name,
       isReadyToSign: false,
-      signees: [{ ...getSigneeAccount(account), initiator: true }],
       mintStatus: 'init',
       imageUri: data.image,
       date: Date.now(),
@@ -76,14 +74,11 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     const transaction = searchParams.get('transaction') ?? '';
     if (!transaction || !account) return;
 
-    const proof = getProof(data, account, transaction);
+    const proof = getProof(data, transaction);
     addMintingData(proof);
-    // console.log({ proof });
-    // console.log('update in scanattendance');
-    // store.updateProofOfUs(proof, proof);
 
     console.log('submit');
-    doSubmit(undefined, true);
+    doSubmit(transaction, true);
   }, [account, searchParams]);
 
   const handleClaim = async () => {
@@ -94,15 +89,10 @@ export const ScanAttendanceEvent: FC<IProps> = ({
       'base64',
     );
 
-    //const proof = getProof(data, account, bufferedTx);
-    // console.log('update in scanattendance claim');
-    // store.updateProofOfUs(proof, proof);
-    // console.log({ proof });
-
     router.push(
       `${
         process.env.NEXT_PUBLIC_WALLET_URL
-      }/sign?transaction=${bufferedTx}&chainId=${
+      }sign?transaction=${bufferedTx}&chainId=${
         env.CHAINID
       }&returnUrl=${getReturnUrl()}
       `,

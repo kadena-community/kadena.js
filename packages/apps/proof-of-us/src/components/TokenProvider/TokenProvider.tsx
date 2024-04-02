@@ -13,6 +13,7 @@ export interface ITokenContext {
   isLoading: boolean;
   removeTokenFromData: (token: IToken) => void;
   addMintingData: (proofOfUs: IProofOfUsData) => void;
+  getToken: (id: string) => IToken | undefined;
 }
 
 export const TokenContext = createContext<ITokenContext>({
@@ -20,6 +21,7 @@ export const TokenContext = createContext<ITokenContext>({
   isLoading: false,
   removeTokenFromData: (token: IToken) => {},
   addMintingData: (proofOfUs: IProofOfUsData) => {},
+  getToken: () => undefined,
 });
 
 const isDateOlderThan5Minutes = async (dateToCheck: Date): Promise<boolean> => {
@@ -120,18 +122,24 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
             removeMintingToken(token);
           });
 
-        token.listener.then((result) => {
-          if (!token.requestKey) return;
-          if (
-            result &&
-            result[token.requestKey] &&
-            result[token.requestKey].result?.status === 'success'
-          ) {
-            updateToken(result[token.requestKey].result.data, token, 'success');
-          } else {
-            removeMintingToken(token);
-          }
-        });
+        token.listener
+          .then((result) => {
+            if (!token.requestKey) return;
+            if (
+              result &&
+              result[token.requestKey] &&
+              result[token.requestKey].result?.status === 'success'
+            ) {
+              updateToken(
+                result[token.requestKey].result.data,
+                token,
+                'success',
+              );
+            } else {
+              removeMintingToken(token);
+            }
+          })
+          .catch(console.log);
       } catch (e) {
         console.log('catch fail');
         console.error(e);
@@ -149,11 +157,13 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
       const isAlreadyListening = !!data.listener;
       if (isAlreadyListening || !data.requestKey) return;
 
-      data.listener = getClient().pollStatus({
-        requestKey: data.requestKey,
-        chainId: env.CHAINID,
-        networkId: env.NETWORKID,
-      });
+      data.listener = getClient()
+        .pollStatus({
+          requestKey: data.requestKey,
+          chainId: env.CHAINID,
+          networkId: env.NETWORKID,
+        })
+        .catch(console.log);
 
       setMintingTokens((v) =>
         v.map((item) => (item.requestKey === data.requestKey ? data : item)),
@@ -234,7 +244,16 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     });
   }, []);
 
-  console.log({ mintingTokens, successTokens });
+  const getToken = useCallback(
+    (id: string): IToken | undefined => {
+      //id could be eventId or a requestkey
+      return [...mintingTokens, ...successTokens, ...tokens].find(
+        (token) => token.requestKey === id || token.eventId === id,
+      );
+    },
+    [mintingTokens],
+  );
+
   return (
     <TokenContext.Provider
       value={{
@@ -242,6 +261,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
         isLoading,
         removeTokenFromData,
         addMintingData,
+        getToken,
       }}
     >
       {children}

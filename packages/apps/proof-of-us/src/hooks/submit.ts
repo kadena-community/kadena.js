@@ -1,5 +1,6 @@
 import { getClient } from '@/utils/client';
 import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
+import { setSignatures } from '@/utils/setSignatures';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useProofOfUs } from './proofOfUs';
@@ -15,7 +16,7 @@ export enum SubmitStatus {
 
 export const useSubmit = () => {
   const searchParams = useSearchParams();
-  const { proofOfUs } = useProofOfUs();
+  const { proofOfUs, signees } = useProofOfUs();
   const transaction = searchParams.get('transaction');
   const [result, setResult] = useState<any>({});
   const [status, setStatus] = useState(SubmitStatus.IDLE);
@@ -25,7 +26,6 @@ export const useSubmit = () => {
 
   const processTransaction = async (transaction: string) => {
     const client = getClient();
-
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
     setTx(tx);
 
@@ -43,12 +43,16 @@ export const useSubmit = () => {
   }, [transaction]);
 
   const doSubmit = async (txArg?: string, waitForMint: boolean = false) => {
-    const innerTransaction = transaction;
+    const innerTransaction = txArg ? txArg : transaction;
     if (!innerTransaction) return;
     setStatus(SubmitStatus.LOADING);
     const client = getClient();
 
-    const tx = JSON.parse(Buffer.from(innerTransaction, 'base64').toString());
+    const signedTransaction = txArg
+      ? innerTransaction
+      : setSignatures(innerTransaction, signees);
+
+    const tx = JSON.parse(Buffer.from(signedTransaction, 'base64').toString());
     try {
       const txRes = await client.submit(tx);
 
@@ -71,6 +75,7 @@ export const useSubmit = () => {
           router.replace(`${getReturnHostUrl()}/user`);
           return;
         }
+
         router.replace(
           `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs?.tokenId}/${proofOfUs?.requestKey}`,
         );
