@@ -15,7 +15,7 @@ export const deleteNetworksCommand: (
   version: string,
 ) => void = createCommand(
   'delete',
-  'Delete local network',
+  'Delete network',
   [
     globalOptions.network({ isOptional: false }),
     networkOptions.networkDelete(),

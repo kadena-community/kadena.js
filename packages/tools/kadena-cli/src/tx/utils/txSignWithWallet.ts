@@ -102,7 +102,7 @@ export async function signWithWallet(
       );
 
       const password = await option.passwordFile();
-      log.debug('sign-with-local-wallet:action', {
+      log.debug('sign-with-wallet:action', {
         walletConfig,
         password,
         command,
@@ -126,7 +126,7 @@ export async function signWithWallet(
         path.resolve(path.join(directory, file)),
       );
 
-      log.debug('sign-with-local-wallet:action', {
+      log.debug('sign-with-wallet:action', {
         files,
       });
 

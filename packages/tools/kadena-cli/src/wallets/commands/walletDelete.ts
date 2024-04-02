@@ -64,7 +64,7 @@ export const createDeleteWalletsCommand: (
   version: string,
 ) => void = createCommand(
   'delete',
-  'Delete wallet from your local filesystem',
+  'Delete wallet from your filesystem',
   [walletOptions.walletNameSelectWithAll(), confirmDelete()],
   async (option, { collect }) => {
     const config = await collect(option);
