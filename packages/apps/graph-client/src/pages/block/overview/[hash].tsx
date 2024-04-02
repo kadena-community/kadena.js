@@ -10,7 +10,7 @@ import {
 } from '@/graphql/queries.graph';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import routes from '@constants/routes';
-import { KRoundedKdacolorGreen } from '@kadena/react-icons/system';
+import { KRoundedKdacolorGreen } from '@kadena/react-icons/brand';
 import {
   Accordion,
   AccordionItem,

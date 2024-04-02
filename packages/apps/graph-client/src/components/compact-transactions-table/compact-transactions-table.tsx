@@ -7,7 +7,7 @@ import type {
   QueryTransactionsConnection,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
-import { KRoundedKdacolorGreen } from '@kadena/react-icons/system';
+import { KRoundedKdacolorGreen } from '@kadena/react-icons/brand';
 import {
   Box,
   Cell,

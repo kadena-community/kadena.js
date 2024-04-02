@@ -4,9 +4,11 @@ interface SVGRProps {
   title?: string;
   titleId?: string;
 }
-const KRoundedKdacolorGreen = (
-  { title, titleId, ...props }: SVGProps<SVGSVGElement> & SVGRProps,
-) => (
+const MonoKRoundedKdacolorGreen = ({
+  title,
+  titleId,
+  ...props
+}: SVGProps<SVGSVGElement> & SVGRProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     data-style="kdacolor"
@@ -24,4 +26,4 @@ const KRoundedKdacolorGreen = (
     />
   </svg>
 );
-export default KRoundedKdacolorGreen;
+export default MonoKRoundedKdacolorGreen;

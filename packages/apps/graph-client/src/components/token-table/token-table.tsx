@@ -1,5 +1,5 @@
 import type { Token } from '@/__generated__/sdk';
-import { KRoundedKdacolorGreen } from '@kadena/react-icons/system';
+import { KRoundedKdacolorGreen } from '@kadena/react-icons/brand';
 import {
   Box,
   Cell,
