@@ -39,6 +39,7 @@ export const ListSignees: FC = () => {
       </Stack>
 
       <SwipeableList
+        threshold={0.5}
         type={Type.IOS}
         fullSwipe={false}
         className={classNames(

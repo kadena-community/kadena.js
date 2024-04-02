@@ -1,5 +1,4 @@
 import { useAccount } from '@/hooks/account';
-import { deviceColors } from '@/styles/tokens.css';
 import { getSigneeName } from '@/utils/getSigneeName';
 import { MonoDelete } from '@kadena/react-icons';
 import classNames from 'classnames';
@@ -70,13 +69,29 @@ export const Signee: FC<IProps> = ({
     </TrailingActions>
   );
 
+  const handleSwipeStart = () => {
+    console.log('Swipe started');
+    // setSwipeAction('Swipe started');
+    // setTriggeredItemAction('None');
+  };
+
+  const handleSwipeEnd = () => {
+    console.log('swipe ended');
+    // setSwipeAction('Swipe ended');
+    // setSwipeProgress();
+  };
+
   return (
     <SwipeableListItem
+      scrollStartThreshold={0.5}
       blockSwipe={!canBeRemoved}
       trailingActions={trailingActions()}
       className={classNames(isMultiple ? multipleSigneeClass : signeeClass)}
       // style={getSuccessStyle(signee)}
       maxSwipe={0.7}
+      onSwipeEnd={handleSwipeEnd}
+      onSwipeProgress={(e, b) => console.log('progress', e, b)}
+      onSwipeStart={handleSwipeStart}
     >
       <SignStatus status={signee?.signerStatus} />
       <Text className={classNames(nameClass, ellipsClass)} bold>
