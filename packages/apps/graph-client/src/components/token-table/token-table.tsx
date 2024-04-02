@@ -1,4 +1,5 @@
 import type { Token } from '@/__generated__/sdk';
+import { MonoKRoundedGreen } from '@kadena/react-icons/system';
 import {
   Box,
   Cell,
@@ -23,7 +24,7 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
     <>
       <ContentHeader
         heading="Tokens"
-        icon="KIcon"
+        icon={<MonoKRoundedGreen />}
         description="All tokens owned by this account"
       />
 

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import type { FC } from 'react';
+import type { FC, ReactElement } from 'react';
 import React from 'react';
-import { MaskedValue, ProductIcon } from '..';
+import { MaskedValue } from '..';
 import {
   CardContainer,
   ContentContainer,
@@ -21,7 +21,7 @@ export interface ITrackerCardProps {
   labelValues: ILabelValue[];
   helperText?: string;
   helperTextType?: 'mild' | 'severe';
-  icon?: keyof typeof ProductIcon;
+  icon: ReactElement;
   variant?: keyof typeof layoutVariant;
 }
 
@@ -59,11 +59,9 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
     warningVariant[helperTextType],
   );
 
-  const Icon = icon && ProductIcon[icon];
-
   return (
     <div className={classCardContainer} data-testid="kda-tracker-card">
-      {Icon ? <Icon data-testid="kda-icon" size="xl" /> : null}
+      {icon}
       <div className={ContentContainer}>
         <div className={DataContainer} data-testid="kda-data-container">
           {labelValues?.map((item, index) => {
