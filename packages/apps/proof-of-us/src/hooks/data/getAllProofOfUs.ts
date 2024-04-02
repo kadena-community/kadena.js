@@ -1,9 +1,9 @@
-import type { Token } from '@/__generated__/sdk';
+import type { NonFungibleTokenBalance } from '@/__generated__/sdk';
 import { useGetTokensQuery } from '@/__generated__/sdk';
 import { useMemo } from 'react';
 import { useAccount } from '../account';
 
-export const useGetAllProofOfUs: IDataHook<Token[]> = () => {
+export const useGetAllProofOfUs: IDataHook<NonFungibleTokenBalance[]> = () => {
   const { account } = useAccount();
 
   const { data, loading: isLoading } = useGetTokensQuery({
@@ -12,8 +12,9 @@ export const useGetAllProofOfUs: IDataHook<Token[]> = () => {
     },
   });
 
-  const tokens: Token[] = useMemo(() => {
-    return (data?.nonFungibleAccount?.nonFungibles ?? []) as Token[];
+  const tokens: NonFungibleTokenBalance[] = useMemo(() => {
+    return (data?.nonFungibleAccount?.nonFungibles ??
+      []) as NonFungibleTokenBalance[];
   }, [data?.nonFungibleAccount?.nonFungibles.length]);
 
   return {
