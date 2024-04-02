@@ -41,18 +41,18 @@ export const Signee: FC<IProps> = ({
   signee,
   isMultiple,
   canBeRemoved,
-  handleRemove,
+  //handleRemove,
 }) => {
   const { account } = useAccount();
 
-  const getSuccessStyle = (signee?: IProofOfUsSignee) => {
-    if (signee?.signerStatus === 'success') {
-      return {
-        borderColor: deviceColors.green,
-      };
-    }
-    return {};
-  };
+  // const getSuccessStyle = (signee?: IProofOfUsSignee) => {
+  //   if (signee?.signerStatus === 'success') {
+  //     return {
+  //       borderColor: deviceColors.green,
+  //     };
+  //   }
+  //   return {};
+  // };
 
   const removeSignee = () => {
     alert('remove s');
