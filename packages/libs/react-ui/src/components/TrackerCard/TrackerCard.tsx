@@ -59,9 +59,11 @@ export const TrackerCard: FC<ITrackerCardProps> = ({
     warningVariant[helperTextType],
   );
 
+  const Icon = icon && ProductIcon[icon];
+
   return (
     <div className={classCardContainer} data-testid="kda-tracker-card">
-      {icon}
+      {Icon ? <Icon data-testid="kda-icon" size="xl" /> : null}
       <div className={ContentContainer}>
         <div className={DataContainer} data-testid="kda-data-container">
           {labelValues?.map((item, index) => {
