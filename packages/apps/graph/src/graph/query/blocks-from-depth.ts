@@ -39,6 +39,7 @@ builder.queryField('blocksFromDepth', (t) =>
         withRelations: true,
         first: args.first,
         last: args.last,
+        minimumDepth: args.minimumDepth,
       }),
     }),
     // @ts-ignore
