@@ -93,10 +93,12 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   if (!proofOfUs || !account || !isMounted) return;
 
+  const SHARE_LINK = `${getReturnHostUrl()}/scan/${
+    proofOfUs.proofOfUsId
+  }?shouldAdd=true`;
+
   const handleCopy = () => {
-    navigator.clipboard.writeText(
-      `${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}?shouldAdd=true`,
-    );
+    navigator.clipboard.writeText(SHARE_LINK);
     setIsCopied(true);
   };
 
@@ -189,9 +191,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                   ecLevel="H"
                   size={300}
                   ref={qrRef}
-                  value={`${getReturnHostUrl()}/scan/${
-                    proofOfUs.proofOfUsId
-                  }?shouldAdd=true`}
+                  value={SHARE_LINK}
                   removeQrCodeBehindLogo={true}
                   logoImage="/assets/qrlogo.png"
                   logoPadding={5}
