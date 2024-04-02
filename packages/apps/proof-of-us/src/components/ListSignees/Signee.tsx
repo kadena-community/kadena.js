@@ -75,7 +75,7 @@ export const Signee: FC<IProps> = ({
       blockSwipe={!canBeRemoved}
       trailingActions={trailingActions()}
       className={classNames(isMultiple ? multipleSigneeClass : signeeClass)}
-      style={getSuccessStyle(signee)}
+      // style={getSuccessStyle(signee)}
       maxSwipe={0.7}
     >
       <SignStatus status={signee?.signerStatus} />
