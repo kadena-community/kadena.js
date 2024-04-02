@@ -117,6 +117,7 @@ export const createTransactionCommandNew = createCommand(
       log.info('Template variables used in this template:');
       return log.output(
         convertListToYamlWithEmptyValues(template.templateConfig.variables),
+        template.templateConfig.variables,
       );
     }
 
