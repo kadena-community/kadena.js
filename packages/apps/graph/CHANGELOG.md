@@ -1,5 +1,31 @@
 # @kadena/graph
 
+## 0.1.11
+
+### Patch Changes
+
+- d5e63d759: Removed obsolete totalCount on some queries and made all array
+  return values connections
+- 66938ac8f: Updated the README
+- 8c8d70d60: Fix typo in transfers object, transaction field\
+- 61ef8bc03: Do not return one object by default on subcriptions if it's not new
+
+## 0.1.10
+
+### Patch Changes
+
+- Updated dependencies [d67b52906]
+  - @kadena/client@1.10.1
+  - @kadena/client-utils@0.5.2
+
+## 0.1.9
+
+### Patch Changes
+
+- Updated dependencies [016b9dbfc]
+  - @kadena/client@1.10.0
+  - @kadena/client-utils@0.5.1
+
 ## 0.1.8
 
 ### Patch Changes

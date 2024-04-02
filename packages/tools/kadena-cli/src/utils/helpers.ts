@@ -1,10 +1,15 @@
-import clear from 'clear';
+import type { ChainId } from '@kadena/types';
+import { load } from 'js-yaml';
 import path from 'path';
 import sanitize from 'sanitize-filename';
 import type { ZodError } from 'zod';
-import { MAX_CHARACTERS_LENGTH } from '../constants/config.js';
+import z from 'zod';
+import { MAX_CHAIN_IDS, MAX_CHARACTERS_LENGTH } from '../constants/config.js';
 import { defaultDevnetsPath, devnetDefaults } from '../constants/devnets.js';
-import { defaultNetworksPath } from '../constants/networks.js';
+import {
+  defaultNetworksPath,
+  defaultNetworksSettingsFilePath,
+} from '../constants/networks.js';
 import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import { writeDevnet } from '../devnet/utils/devnetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
@@ -53,32 +58,6 @@ export function mergeConfigs<T extends object>(
   return target;
 }
 
-/**
- * Interface defining the structure of a question used in dynamic configuration prompts.
- * Each question is bound to a specific type, typically representing a configuration option.
- *
- * @template T - The type the question is bound to, typically an object of configuration options.
- */
-export interface IQuestion<T> {
-  /**
-   * The property key within type T. This key corresponds to the specific configuration option the question relates to.
-   */
-  key: keyof T;
-
-  /**
-   * The prompt function responsible for retrieving the answer for this question.
-   *
-   * @param {Partial<T>} previousAnswers - An object containing answers provided for previous questions. Useful for conditional logic based on past responses.
-   * @param {Partial<T>} args - Command line arguments or other external parameters that might influence the prompt's behavior.
-   * @param {boolean} isOptional - Indicates whether answering this question is optional.
-   * @returns {Promise<T[keyof T]>} - A promise that resolves to the answer provided by the user for this question.
-   */
-  prompt: (
-    previousAnswers: Partial<T>,
-    args: Partial<T>,
-  ) => Promise<T[keyof T]>;
-}
-
 export function handlePromptError(error: unknown): never {
   if (error instanceof CommandError) {
     printCommandError(error);
@@ -94,36 +73,6 @@ export function handlePromptError(error: unknown): never {
     log.error('Unexpected error executing option', error);
   }
   throw new CommandError({ errors: [], exitCode: 1 });
-}
-
-/**
- * Collects user responses for a set of questions, allowing for dynamic configuration based on user input.
- * It iterates through each question, presenting it to the user and collecting the responses.
- *
- * @template T - The type representing the structure of configuration options.
- * @param {Partial<T>} args - The initial or provided answers for some of the questions. These can be used to pre-populate answers or provide defaults.
- * @param {IQuestion<T>[]} questions - A list of questions to be presented to the user.
- * @param {boolean} [isOptional=false] - A flag to indicate whether answering questions is optional. If true, users can choose to skip questions.
- * @returns {Promise<T>} - A promise that resolves to an object containing the collected responses.
- */
-export async function collectResponses<T>(
-  args: Partial<T>,
-  questions: IQuestion<T>[],
-): Promise<T> {
-  const responses: Partial<T> = { ...args };
-
-  for (const question of questions) {
-    if (args[question.key] === undefined) {
-      try {
-        const response = await question.prompt(responses, args);
-        responses[question.key] = response;
-      } catch (error) {
-        handlePromptError(error);
-      }
-    }
-  }
-
-  return responses as T;
 }
 
 /**
@@ -147,24 +96,6 @@ export function getPubKeyFromAccount(account: string): string {
 
   const pubKey = account.toLowerCase().slice(2);
   return pubKey;
-}
-
-/**
- * Capitalizes the first letter of a string.
- *
- * @function
- * @param {string} str - The string to capitalize.
- * @returns {string} The string with the first letter capitalized.
- * @example
- *
- * const lowerCaseString = "hello";
- * const upperCaseString = capitalizeFirstLetter(lowerCaseString);
- * console.log(upperCaseString); // Outputs: Hello
- */
-export function capitalizeFirstLetter(str: string): string {
-  if (typeof str !== 'string' || str.length === 0) return '';
-
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 export async function getExistingNetworks(): Promise<ICustomNetworkChoice[]> {
@@ -284,36 +215,6 @@ export function isNumeric(str: string): boolean {
   return regex.test(str);
 }
 
-/**
- * Retrieves the 'key' property from each object in an array.
- *
- * @function
- * @template T - The type of the objects in the input array.
- * @param {Array<IQuestion<T>>} arr - The array of objects from which to extract 'key' properties.
- * @returns {Array<string>} - An array of strings representing the 'key' properties of the input objects.
- * @example
- * // Returns ['receiver', 'network', 'chainId', 'networkId']
- * getQuestionKeys(fundQuestions);
- */
-export function getQuestionKeys<T>(arr: Array<IQuestion<T>>): Array<string> {
-  return arr.map((question) => question.key as string);
-}
-
-/**
- * Clears the CLI. Only executes in production environments.
- *
- * @param {boolean} [full=false] - If true, performs a full clear; otherwise, performs a standard clear.
- */
-export function clearCLI(full: boolean = false): void {
-  if (process.env.NODE_ENV === 'production') {
-    if (full) {
-      clear(true);
-    } else {
-      clear();
-    }
-  }
-}
-
 // export const skipSymbol = Symbol('skip');
 // export const createSymbol = Symbol('createSymbol');
 
@@ -347,6 +248,9 @@ export const maskStringPreservingStartAndEnd = (
 export const isNotEmptyString = (value: unknown): value is string =>
   value !== null && value !== undefined && value !== '';
 
+export const isNotEmptyObject = <T extends object>(obj?: T | null): obj is T =>
+  obj !== undefined && obj !== null && Object.keys(obj).length > 0;
+
 /**
  * Prints zod error issues in format
  * ```code
@@ -373,6 +277,44 @@ export const safeJsonParse = <T extends unknown>(value: string): T | null => {
     return null;
   }
 };
+
+export const safeYamlParse = <T extends unknown>(value: string): T | null => {
+  try {
+    return load(value) as T;
+  } catch (e) {
+    return null;
+  }
+};
+
+export function detectFileParseType(filepath: string): 'yaml' | 'json' | null {
+  const ext = path.extname(filepath);
+  if (ext === '.yaml' || ext === '.yml') {
+    return 'yaml';
+  }
+  if (ext === '.json') {
+    return 'json';
+  }
+  return null;
+}
+
+export function detectArrayFileParseType(
+  filepaths: string[],
+): { filepath: string; type: 'yaml' | 'json' }[] {
+  return filepaths.reduce(
+    (memo, filepath) => {
+      const type = detectFileParseType(filepath);
+      if (type) memo.push({ filepath, type });
+      return memo;
+    },
+    [] as { filepath: string; type: 'yaml' | 'json' }[],
+  );
+}
+
+export function getFileParser(
+  type: 'yaml' | 'json',
+): <T extends unknown>(value: string) => T | null {
+  return type === 'yaml' ? safeYamlParse : safeJsonParse;
+}
 
 export const passwordPromptTransform =
   // prettier-ignore
@@ -417,3 +359,58 @@ export const passwordPromptTransform =
 
       return trimmedPassword;
     };
+
+const defaultNetworkSchema = z.object({
+  name: z.string(),
+});
+
+export const getDefaultNetworkName = async (): Promise<string | undefined> => {
+  const isDefaultNetworkAvailable = await services.filesystem.fileExists(
+    defaultNetworksSettingsFilePath,
+  );
+
+  if (!isDefaultNetworkAvailable) return;
+
+  const content = await services.filesystem.readFile(
+    defaultNetworksSettingsFilePath,
+  );
+
+  const network = content !== null ? load(content) : null;
+
+  const parse = defaultNetworkSchema.safeParse(network);
+
+  if (parse.success) {
+    return parse.data.name;
+  }
+};
+
+export const generateAllChainIds = (): ChainId[] =>
+  Array.from(
+    { length: MAX_CHAIN_IDS },
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    (_, index) => index.toString() as ChainId,
+  );
+
+export const maskSensitiveInfo = (
+  obj: unknown,
+  fieldsToMask: string[] = ['password', 'passwordFile', 'newPasswordFile'],
+  mask: string = '******',
+): unknown => {
+  if (typeof obj !== 'object' || obj === null) return obj;
+
+  if (Array.isArray(obj)) {
+    return obj.map((item) => maskSensitiveInfo(item, fieldsToMask));
+  }
+
+  return Object.entries(obj as Record<string, unknown>).reduce(
+    (acc, [key, value]) => {
+      acc[key] = fieldsToMask.includes(key)
+        ? mask
+        : typeof value === 'object' && value !== null
+        ? maskSensitiveInfo(value, fieldsToMask)
+        : value;
+      return acc;
+    },
+    {} as Record<string, unknown>,
+  );
+};

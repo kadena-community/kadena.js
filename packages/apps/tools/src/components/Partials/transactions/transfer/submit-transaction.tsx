@@ -1,6 +1,6 @@
 import type { FormStatus } from '@/components/Global/FormStatusNotification';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
-import { Button, Stack, SystemIcon } from '@kadena/react-ui';
+import { Button, Stack } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useState } from 'react';
@@ -20,13 +20,18 @@ import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import type { ChainId, ITransactionDescriptor } from '@kadena/client';
 
-import { explorerLinkStyle } from '@/pages/faucet/styles.css';
 import {
   buttonContainerClass,
   infoNotificationColor,
   linkStyle,
+  notificationLinkErrorStyle,
+  notificationLinkStyle,
 } from '@/pages/transactions/transfer/styles.css';
 import { getExplorerLink } from '@/utils/getExplorerLink';
+import {
+  MonoContentCopy,
+  MonoKeyboardArrowRight,
+} from '@kadena/react-icons/system';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import Trans from 'next-translate/Trans';
 import Link from 'next/link';
@@ -141,7 +146,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         setIsLoading(false);
         setRequestStatus({
           status: 'erroneous',
-          message: error.response.error?.message || t('An error occurred.'),
+          message: requestKeyOrError.error || t('An error occurred.'),
         });
         return;
       }
@@ -224,7 +229,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
             />
             <Button
               color="primary"
-              icon={<SystemIcon.ContentCopy />}
+              icon={<MonoContentCopy />}
               onPress={async () => {
                 await navigator.clipboard.writeText(requestKey);
               }}
@@ -234,50 +239,27 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
             />
           </Stack>
 
-          <Trans
-            i18nKey="common:link-to-tracker"
-            components={[
-              <Link
-                className={linkStyle}
-                href={linkToTracker}
-                target={'_blank'}
-                key={requestKey}
-              />,
-            ]}
-          />
-
           {!onSameChain ? (
-            <Stack flexDirection={'column'} marginBlockStart={'xl'}>
-              <div className={infoNotificationColor}>
-                {t('cross-chain-transfer-initiated')}
-              </div>
-              <Stack>
-                <span>
-                  <Trans
-                    i18nKey="common:link-to-finisher"
-                    components={[
-                      <Link
-                        className={explorerLinkStyle}
-                        href={linkToFinisher}
-                        target={'_blank'}
-                        key={requestKey}
-                      />,
-                    ]}
-                  />
-                </span>
+            <>
+              <Trans
+                i18nKey="common:link-to-tracker"
+                components={[
+                  <Link
+                    className={linkStyle}
+                    href={linkToTracker}
+                    target={'_blank'}
+                    key={requestKey}
+                  />,
+                ]}
+              />
+              <Stack flexDirection={'column'} marginBlockStart={'xl'}>
+                <div className={infoNotificationColor}>
+                  {t('cross-chain-transfer-initiated')}
+                </div>
 
-                <Button
-                  color="primary"
-                  icon={<SystemIcon.ContentCopy />}
-                  onPress={async () => {
-                    await navigator.clipboard.writeText(completeLinkToFinisher);
-                  }}
-                  title={t('copy link to finisher')}
-                  aria-label={t('copy link to finisher')}
-                  variant="text"
-                />
+                <Trans i18nKey="common:cross-chain-warning" />
               </Stack>
-            </Stack>
+            </>
           ) : null}
         </FormStatusNotification>
       ) : null}
@@ -286,14 +268,46 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         statusBodies={{
           successful: t('The coins have been funded to the given account.'),
         }}
-        body={requestStatus.message}
-      />
+      >
+        <Stack flexDirection={'column'} marginBlockStart={'md'}>
+          {requestStatus.message}
+
+          {!onSameChain && requestStatus.status === 'erroneous' ? (
+            <Stack gap={'sm'} alignItems={'center'}>
+              <Trans
+                i18nKey="common:link-to-finisher"
+                components={[
+                  <Link
+                    className={notificationLinkStyle}
+                    href={linkToFinisher}
+                    target={'_self'}
+                    key={linkToFinisher}
+                  />,
+                ]}
+              />
+
+              <Button
+                color="primary"
+                icon={
+                  <MonoContentCopy className={notificationLinkErrorStyle} />
+                }
+                onPress={async () => {
+                  await navigator.clipboard.writeText(completeLinkToFinisher);
+                }}
+                title={t('copy link to finisher')}
+                aria-label={t('copy link to finisher')}
+                variant="text"
+              />
+            </Stack>
+          ) : null}
+        </Stack>
+      </FormStatusNotification>
 
       <div className={buttonContainerClass}>
         <Button
           isLoading={isLoading}
           // isDisabled={ledgerSignState.loading}
-          endIcon={<SystemIcon.TrailingIcon />}
+          endIcon={<MonoKeyboardArrowRight />}
           title={t('Transfer')}
           onPress={onSubmit}
         >

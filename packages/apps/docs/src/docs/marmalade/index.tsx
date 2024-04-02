@@ -33,7 +33,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
   return (
     <>
       <Box marginBlockEnd="xxxl" className={marmaladeWrapperClass}>
-        <Text>
+        <Text variant="body">
           The long-awaited release of Marmalade’s V2 standard has arrived,
           bringing a host of exciting updates and features to the top NFT
           standard in the industry! If you’ve been tracking the progress of
@@ -48,14 +48,12 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           <Card fullWidth>
             <Heading as="h4">Quick start</Heading>
             <Box marginBlock="md">
-              <Text>
-                Marmalade is an NFT smart contract system on Kadena’s
-                blockchain. It comprises multiple smart contracts that execute
-                logic configured by the token policies with which the token is
-                built. Marmalade has been in action for several years, and now
-                we’ve diligently upgraded to Marmalade V2, introducing an
-                entirely new system that simplifies the process of engaging with
-                NFTs.
+              <Text variant="body">
+                Marmalade is the name of the Kadena token standard. The token
+                standard defines the interfaces for creating, minting, and
+                transferring digital items like non-fungible tokens (NFTs) and
+                token collections using Kadena smart contracts and built-in
+                Kadena token policies.
               </Text>
             </Box>
             <KadenaLink
@@ -80,25 +78,37 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           <GridItem rowSpan={2}>
             <DocsCard
               label="Overview"
-              description="Marmalade is an NFT smart contract system on Kadena’s blockchain. It comprises multiple smart contracts that execute logic configured by the token policies with which the token is built. Now we’ve diligently upgraded to Marmalade V2, introducing an entirely new system that simplifies the process of engaging with NFTs."
+              description="Marmalade provides smart contracts that execute logic configured by the built-in token policies you select or the custom policies you define."
               schema="info"
               background="marmalade"
             >
               <BrowseSection marker="none">
-                <Link className={docsCardLink} href="/marmalade/architecture">
-                  Architecture
+                <Link
+                  className={docsCardLink}
+                  href="/marmalade/what-is-marmalade"
+                >
+                  What is Marmalade?
                 </Link>
-                <Link className={docsCardLink} href="/marmalade/auctions">
-                  Auctions
+                <Link className={docsCardLink} href="/marmalade/metadata">
+                  Token metadata
                 </Link>
                 <Link
                   className={docsCardLink}
-                  href="/marmalade/concrete-policies"
+                  href="/marmalade/architecture/ledger"
                 >
-                  Policies
+                  Ledger contract
                 </Link>
-                <Link className={docsCardLink} href="/marmalade/metadata">
-                  Metadata
+                <Link
+                  className={docsCardLink}
+                  href="/marmalade/architecture/policy-manager"
+                >
+                  Policy manager contract
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/marmalade/architecture/sale-contracts"
+                >
+                  Sale contracts
                 </Link>
               </BrowseSection>
             </DocsCard>
@@ -112,7 +122,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/marmalade/architecture">
-                  Architecture Overview
+                  Architecture overview
                 </Link>
               </BrowseSection>
             </DocsCard>
@@ -120,16 +130,34 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           <GridItem>
             <DocsCard
               label="Policies"
-              description="Marmalade V2 aims to broaden its audience by providing a tool to simplify the token creation process, offering a set of policies that encompass commonly used token features, referred to as /marmalade/concrete-policies."
+              description="Marmalade built-in policies simplify token creation by automatically configuring and enforcing the most common token features."
               schema="success"
               background="whitepapers"
             >
               <BrowseSection marker="none">
                 <Link
                   className={docsCardLink}
-                  href="/marmalade/concrete-policies"
+                  href="/marmalade/concrete-policies/non-fungible-policy"
                 >
-                  Policies Overview
+                  Non-fungible policy
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/marmalade/concrete-policies/guard-policy"
+                >
+                  Authorization policy
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/marmalade/concrete-policies/royalty-policy"
+                >
+                  Royalty policy
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/marmalade/concrete-policies/collection-policy"
+                >
+                  Collection policy
                 </Link>
               </BrowseSection>
             </DocsCard>
@@ -137,13 +165,25 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
           <GridItem>
             <DocsCard
               label="Auctions"
-              description=""
+              description="With Marmalade, you can write smart contracts to offer tokens for sale in different ways, depending on how you want to handle the mechanics of the sale."
               schema="success"
               background="whitepapers"
             >
               <BrowseSection marker="none">
                 <Link className={docsCardLink} href="/marmalade/auctions">
-                  Auctions Overview
+                  Auctions overview
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/marmalade/auctions/conventional-auction"
+                >
+                  Convention auction
+                </Link>
+                <Link
+                  className={docsCardLink}
+                  href="/marmalade/auctions/dutch-auction"
+                >
+                  Dutch auction
                 </Link>
               </BrowseSection>
             </DocsCard>

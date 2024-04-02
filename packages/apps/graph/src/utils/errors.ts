@@ -54,18 +54,25 @@ export function normalizeError(error: any): GraphQLError {
   }
 
   if (error instanceof PrismaClientValidationError) {
+    let description: string | undefined;
+
     if (error.message.includes('Unknown argument')) {
       error.message = `Unknown argument${
         error.message.split('Unknown argument')[1]
       }`;
+
+      description =
+        'The Prisma client failed to validate the input. Check the input and try again. If you are trying to filter on a JSON column, make sure the JSON is in the correct format. See the README for the allowed JSON format.';
+    }
+    if (error.message.includes('Unknown field')) {
+      description = `Prisma tried to select a field that is not available.`;
     }
 
     return new GraphQLError('Prisma Client Validation Error', {
       extensions: {
         type: error.name,
         message: error.message,
-        description:
-          'The Prisma client failed to validate the input. Check the input and try again. If you are trying to filter on a JSON column, make sure the JSON is in the correct format. See the README for the allowed JSON format.',
+        description,
         data: error.stack,
       },
     });
@@ -116,9 +123,39 @@ export function normalizeError(error: any): GraphQLError {
       extensions: {
         type: error.name,
         message: error.originalError?.message || error.message,
-        description:
-          'Chainweb Node was unable to estimate the gas limit for the transaction. Please check your input and try again.',
+        description: error.message.startsWith(
+          'Chainweb Node was unable to estimate',
+        )
+          ? error.message
+          : 'Chainweb Node was unable to estimate the gas limit for the transaction. Please check your input and try again.',
         ...(error.originalError && { data: error.originalError.stack }),
+      },
+    });
+  }
+
+  if (error.name === 'ZodError') {
+    if (error.issues.length > 1) {
+      return new GraphQLError('Input Validation Error', {
+        extensions: {
+          type: 'ZodError',
+          message: 'Multiple validation issues found. See data for details.',
+          description:
+            'The input provided is invalid. Check the input and try again.',
+          data: error.issues.map((issue: any) => ({
+            message: issue.message,
+            path: issue.path.join('.'),
+          })),
+        },
+      });
+    }
+    return new GraphQLError('Input Validation Error', {
+      extensions: {
+        type: 'ZodError',
+        message: `${error.issues[0].message}: ${error.issues[0].path.join(
+          '.',
+        )}`,
+        description:
+          'The input provided is invalid. Check the input and try again.',
       },
     });
   }

@@ -20,8 +20,11 @@ import React, { useCallback, useState } from 'react';
 import { containerClass } from '../styles.css';
 import { notificationLinkStyle } from './styles.css';
 
+import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/right-info-sidebar';
 import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
 import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
+import useIsLedgerLibSupported from '@/hooks/use-is-ledger-lib-supported';
+import { MonoHelp } from '@kadena/react-icons/system';
 
 const TransferPage = () => {
   const router = useRouter();
@@ -35,8 +38,35 @@ const TransferPage = () => {
     setData(pactCommandObject);
   }, []);
 
+  const browserSupported = useIsLedgerLibSupported();
+
   const [receiverChainId, setReceiverChainId] = useState<ChainId>(CHAINS[0]);
   const [senderChainId, setSenderChainId] = useState<ChainId>(CHAINS[0]);
+
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+
+  const helpInfoSections = [
+    {
+      question: 'What was my key index, again?',
+      content:
+        'In case you forget which key index corresponds to which account, the Search Ledger Keys tool allows you to search your ledger for a specific key',
+    },
+    {
+      question: 'What does legacy mode toggle do?',
+      content:
+        'If you used the “Change Ledger Account” feature in October 2023, you will be able to access your account keys using the “Legacy Mode” toggle that is now found next to the “Key Index” input field.',
+    },
+    {
+      question: 'Some wise precautions when signing with a Ledger',
+      content:
+        'When signing on a Ledger device, you should always check the details of the transaction carefully. If everything is in order, click “Confirm” to sign the transaction. After this, the Transfer Tool should update its interface to show the transaction',
+    },
+  ];
+
+  const [isLedger, setIsLedger] = useState<boolean>(false);
+  const showNotSupported = !browserSupported && isLedger;
+
+  const openSidebarMenu = () => setSidebarOpen(!sidebarOpen);
 
   return (
     <section className={containerClass}>
@@ -47,13 +77,33 @@ const TransferPage = () => {
         <BreadcrumbsItem>{t('Transactions')}</BreadcrumbsItem>
         <BreadcrumbsItem>{t('Transfer')}</BreadcrumbsItem>
       </Breadcrumbs>
-      <Heading as="h4">{t('Transfer')}</Heading>
+      <Stack justifyContent={'space-between'} alignItems={'center'}>
+        <Heading as="h4">{t('Transfer')}</Heading>
+        <MonoHelp onClick={openSidebarMenu} cursor={'pointer'} />
+      </Stack>
+
       <Stack
         flexDirection="column"
         paddingBlockStart={'md'}
         paddingBlockEnd={'xxxl'}
         gap={'lg'}
       >
+        {showNotSupported ? (
+          <Notification intent={'negative'} role={'alert'} isDismissable>
+            <Trans
+              i18nKey="common:ledger-error-notification"
+              components={[
+                <a
+                  className={notificationLinkStyle}
+                  target={'_blank'}
+                  href="https://caniuse.com/?search=webhid"
+                  rel="noreferrer"
+                  key="link-to-ledger-docs"
+                />,
+              ]}
+            />
+          </Notification>
+        ) : null}
         <Notification intent="info" role="alert" isDismissable>
           <Trans
             i18nKey="common:ledger-info-notification"
@@ -73,6 +123,7 @@ const TransferPage = () => {
           onSuccess={onSignSuccess}
           onSenderChainUpdate={setSenderChainId}
           onReceiverChainUpdate={setReceiverChainId}
+          setIsLedger={setIsLedger}
         />
         <SubmitTransaction
           data={data}
@@ -80,6 +131,11 @@ const TransferPage = () => {
           senderChainId={senderChainId}
         />
       </Stack>
+
+      <RightInfoSidebar
+        infoSections={helpInfoSections}
+        sidebarOpen={sidebarOpen}
+      />
     </section>
   );
 };

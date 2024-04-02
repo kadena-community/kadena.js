@@ -76,6 +76,67 @@ describe('client', () => {
     await local(body);
   });
 
+  it("uses confirmationDepth that is passed as an argument to the 'client' function for the applicable places", async () => {
+    server.resetHandlers(
+      http.post('http://example.org/mainnet01/1/api/v1/poll', ({ request }) => {
+        const url = new URL(request.url);
+        return HttpResponse.json({
+          'test-key': {
+            reqKey: 'test-key',
+            confirmationDepth: url.searchParams.get('confirmationDepth'),
+          },
+        });
+      }),
+    );
+
+    const { pollOne } = createClient(hostApiGenerator, {
+      confirmationDepth: 4,
+    });
+
+    const result = await pollOne({
+      requestKey: 'test-key',
+      networkId: 'mainnet01',
+      chainId: '1',
+    });
+
+    expect(result).toEqual({ reqKey: 'test-key', confirmationDepth: '4' });
+  });
+
+  describe('pollOne', () => {
+    it("used the confirmationDepth that is passed as an argument to the 'pollOne' function", async () => {
+      server.resetHandlers(
+        http.post(
+          'http://example.org/mainnet01/1/api/v1/poll',
+          ({ request }) => {
+            const url = new URL(request.url);
+            return HttpResponse.json({
+              'test-key': {
+                reqKey: 'test-key',
+                confirmationDepth: url.searchParams.get('confirmationDepth'),
+              },
+            });
+          },
+        ),
+      );
+
+      const { pollOne } = createClient(hostApiGenerator, {
+        confirmationDepth: 4,
+      });
+
+      const result = await pollOne(
+        {
+          requestKey: 'test-key',
+          networkId: 'mainnet01',
+          chainId: '1',
+        },
+        {
+          confirmationDepth: 5,
+        },
+      );
+      expect(result).toEqual({ reqKey: 'test-key', confirmationDepth: '5' });
+    });
+  });
+
   describe('local', () => {
     it('uses the hostApiGenerator function to generate hostUrl for local request', async () => {
       server.resetHandlers(

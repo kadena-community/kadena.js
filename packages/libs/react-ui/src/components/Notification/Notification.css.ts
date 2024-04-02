@@ -83,7 +83,7 @@ export const contentClass = style([
 export const titleClass = style([
   atoms({
     fontSize: 'base',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
     marginBlockEnd: 'xs',
   }),
 ]);
@@ -123,7 +123,7 @@ const actionButtonBase = atoms({
   margin: 'no',
   padding: 'no',
   fontSize: 'base',
-  fontWeight: 'bodyFont.bold',
+  fontWeight: 'secondaryFont.bold',
   cursor: 'pointer',
 });
 

@@ -20,7 +20,7 @@ export const titleWrapperClass = style([
 export const titleTextClass = style([
   atoms({
     fontSize: 'sm',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
     marginInlineEnd: 'sm',
   }),
 ]);

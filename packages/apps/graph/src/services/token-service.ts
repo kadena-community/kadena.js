@@ -1,13 +1,13 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Prisma } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
-import type { Token } from '../graph/types/graphql-types';
+import type { NonFungibleTokenBalance } from '../graph/types/graphql-types';
 
 export async function getTokenDetails(
   accountName: string,
   chainId?: string,
-): Promise<Token[] | []> {
-  const result: Token[] = [];
+): Promise<NonFungibleTokenBalance[] | []> {
+  const result: NonFungibleTokenBalance[] = [];
 
   let whereFilter: Prisma.reconcileWhereInput = {
     OR: [{ senderAccount: accountName }, { receiverAccount: accountName }],

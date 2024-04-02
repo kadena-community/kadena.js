@@ -1,6 +1,6 @@
 {
   "name": "@kadena/dev-wallet",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "private": true,
   "description": "Kadena developer wallet",
   "type": "module",
@@ -12,7 +12,8 @@
     "generate-coin-type": "pactjs contract-generate --contract \"coin\" --api \"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/14/pact\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "verify": "tsc --noEmit"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
@@ -20,6 +21,7 @@
     "@kadena/client-utils": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/hd-wallet": "workspace:*",
+    "@kadena/pactjs-generator": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/react-ui": "workspace:*",
     "@scure/bip39": "^1.2.1",

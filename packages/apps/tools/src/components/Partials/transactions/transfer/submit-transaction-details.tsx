@@ -4,9 +4,10 @@ import type {
   IExecutionPayloadObject,
   IPactCommand,
 } from '@kadena/client';
+import { MonoExpandLess, MonoExpandMore } from '@kadena/react-icons/system';
 import {
+  Heading,
   Stack,
-  SystemIcon,
   Text,
   ToggleButton,
   TrackerCard,
@@ -30,16 +31,13 @@ export const SubmitTransactionDetails = ({
 
   return (
     <LoadingCard fullWidth={true}>
+      <Heading as={'h5'}>{t('Transaction')} </Heading>
       <Stack flexDirection={'column'} gap={'sm'}>
         <ToggleButton
           isSelected={txDetailsExpanded}
           onChange={() => setTxDetailsExpanded(!txDetailsExpanded)}
           startIcon={
-            txDetailsExpanded ? (
-              <SystemIcon.ChevronUp />
-            ) : (
-              <SystemIcon.ChevronDown />
-            )
+            txDetailsExpanded ? <MonoExpandLess /> : <MonoExpandMore />
           }
         >
           Transaction

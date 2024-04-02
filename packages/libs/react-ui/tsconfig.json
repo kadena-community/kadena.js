@@ -1,7 +1,7 @@
 {
   "extends": "@kadena-dev/shared-config/tsconfig-base.json",
   "compilerOptions": {
-    "rootDir": "./src",
+    "rootDir": ".",
     "baseUrl": ".",
     "types": ["node", "vitest-dom/extend-expect"],
     "skipLibCheck": true,
@@ -12,6 +12,6 @@
     "moduleResolution": "Bundler",
     "removeComments": true
   },
-  "include": ["./src"],
+  "include": ["src", "*.config.ts", "scripts"],
   "exclude": ["node_modules"]
 }

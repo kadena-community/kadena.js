@@ -1,4 +1,5 @@
 import { prismaClient } from '@db/prisma-client';
+import type { Block } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import {
   COMPLEXITY,
@@ -88,6 +89,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
     // relations
     transactions: t.prismaConnection({
       type: Prisma.ModelName.Transaction,
+      description: 'Default page size is 20.',
       cursor: 'blockHash_requestKey',
       edgesNullable: false,
       complexity: (args) => ({
@@ -97,22 +99,27 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
         }),
       }),
       select: {
-        transactions: true,
+        hash: true,
       },
       async totalCount(parent) {
         try {
-          return (
-            parent as Prisma.BlockGetPayload<{ select: { transactions: true } }>
-          ).transactions.length;
+          return await prismaClient.transaction.count({
+            where: {
+              blockHash: (parent as Block).hash,
+            },
+          });
         } catch (error) {
           throw normalizeError(error);
         }
       },
-      async resolve(__query, parent) {
+      async resolve(query, parent) {
         try {
-          return (
-            parent as Prisma.BlockGetPayload<{ select: { transactions: true } }>
-          ).transactions;
+          return await prismaClient.transaction.findMany({
+            ...query,
+            where: {
+              blockHash: (parent as Block).hash,
+            },
+          });
         } catch (error) {
           throw normalizeError(error);
         }
@@ -120,6 +127,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
     }),
 
     events: t.prismaConnection({
+      description: 'Default page size is 20.',
       type: Prisma.ModelName.Event,
       cursor: 'blockHash_orderIndex_requestKey',
       edgesNullable: false,
@@ -141,7 +149,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
           throw normalizeError(error);
         }
       },
-      async resolve(query, parent) {
+      async resolve(__query, parent) {
         try {
           return (
             parent as Prisma.BlockGetPayload<{ select: { events: true } }>

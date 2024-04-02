@@ -8,7 +8,12 @@ const displaySeparator = (): void => {
   log.info(log.color.green('-'.padEnd(formatLength, '-')));
 };
 
-export async function printTx(transactions: string[]): Promise<void> {
+export async function printTx(
+  transactions: {
+    fileName: string;
+    signed: boolean;
+  }[],
+): Promise<void> {
   const header: TableHeader = ['Filename', 'Signed'];
   const rows: TableRow[] = [];
 
@@ -17,11 +22,14 @@ export async function printTx(transactions: string[]): Promise<void> {
     return;
   }
 
-  for (const key of transactions) {
-    rows.push([key ?? 'N/A', key.includes('signed') === true ? 'Yes' : 'No']);
+  for (const transaction of transactions) {
+    rows.push([
+      transaction.fileName ?? 'N/A',
+      transaction.signed === true ? 'Yes' : 'No',
+    ]);
   }
 
-  log.output(log.generateTableString(header, rows));
+  log.output(log.generateTableString(header, rows), transactions);
 }
 
 export function txDisplayTransaction(

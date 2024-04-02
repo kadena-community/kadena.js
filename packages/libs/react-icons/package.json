@@ -1,7 +1,6 @@
 {
   "name": "@kadena/react-icons",
   "version": "0.0.2",
-  "private": true,
   "description": "Kadena's React icons library",
   "repository": {
     "type": "git",

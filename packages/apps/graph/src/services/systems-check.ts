@@ -7,6 +7,7 @@ import type { NetworkConfig } from '@utils/network';
 import { readdir } from 'fs/promises';
 import { Listr } from 'listr2';
 import path from 'path';
+import { mempoolGetPending } from './chainweb-node/mempool';
 
 export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
   const networkId = (await networkConfig).networkId;
@@ -25,7 +26,7 @@ export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
               },
             },
             {
-              title: 'Checking if all the migrations have been run.',
+              title: 'Checking if all the migrations are executed.',
               task: async () => {
                 const migrationsDir = path.join(
                   process.cwd(),
@@ -45,7 +46,7 @@ export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
 
                 if (unexecutedMigrations.length > 0) {
                   throw new Error(
-                    `Unexecuted migrations detected: ${unexecutedMigrations.join(
+                    `Unexecuted migrations detected. If you started graph at the same time as devnet, try restarting graph: ${unexecutedMigrations.join(
                       ', ',
                     )}`,
                   );
@@ -81,9 +82,13 @@ export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
             },
             {
               title: 'Checking if the mempool is reachable.',
-              skip: () =>
-                'Skipping: There is currently no mempool implementation.',
-              task: async () => {},
+              async task() {
+                try {
+                  await mempoolGetPending();
+                } catch (error) {
+                  throw new Error('Unable to connect to the mempool.');
+                }
+              },
             },
           ],
           {

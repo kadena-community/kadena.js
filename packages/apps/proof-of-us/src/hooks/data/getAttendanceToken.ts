@@ -14,6 +14,7 @@ export const useGetAttendanceToken: IDataHook<
 
   const { data, isLoading } = useSWR(token?.uri, fetchManifestData, {
     revalidateOnFocus: false,
+    revalidateIfStale: false,
   });
 
   const load = async () => {

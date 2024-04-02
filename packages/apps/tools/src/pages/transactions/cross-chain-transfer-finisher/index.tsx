@@ -31,6 +31,12 @@ import type { INetworkData } from '@/utils/network';
 import { getApiHost } from '@/utils/network';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  MonoContentCopy,
+  MonoInfo,
+  MonoKeyboardArrowRight,
+  MonoLink,
+} from '@kadena/react-icons/system';
+import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -41,7 +47,6 @@ import {
   Notification,
   NotificationHeading,
   Stack,
-  SystemIcon,
   TextField,
   TextareaField,
   TrackerCard,
@@ -170,7 +175,11 @@ const CrossChainTransferFinisher: FC = () => {
   const handleValidateSubmit = async (data: FormData): Promise<void> => {
     debug(handleValidateSubmit.name);
 
-    if (!pollResults.tx) {
+    if (
+      !pollResults.tx ||
+      !pollResults.tx.sender.chain ||
+      !pollResults.tx.receiver.chain
+    ) {
       return;
     }
 
@@ -299,8 +308,8 @@ const CrossChainTransferFinisher: FC = () => {
   const showNotification = Object.keys(finalResults).length > 0;
 
   const formattedSigData = `{
-    "pred": "${pollResults.tx?.receiverGuard.pred}",
-    "sigs": ${pollResults.tx?.receiverGuard.keys.map((key) => `"${key}"`)}
+    "pred": "${pollResults.tx?.receiverGuard?.pred}",
+    "sigs": ${pollResults.tx?.receiverGuard?.keys.map((key) => `"${key}"`)}
   }`;
 
   const linkToExplorer = `${getExplorerLink(
@@ -603,7 +612,7 @@ const CrossChainTransferFinisher: FC = () => {
                       />
                       <Button
                         color="primary"
-                        icon={<SystemIcon.ContentCopy />}
+                        icon={<MonoContentCopy />}
                         onPress={async () => {
                           await handleCopySigData();
                         }}
@@ -622,7 +631,7 @@ const CrossChainTransferFinisher: FC = () => {
           <Button
             type="submit"
             isLoading={processingTx}
-            endIcon={<SystemIcon.TrailingIcon />}
+            endIcon={<MonoKeyboardArrowRight />}
           >
             {t('Finish Transaction')}
           </Button>
@@ -634,7 +643,7 @@ const CrossChainTransferFinisher: FC = () => {
         initialOpenItem={openItem}
         sections={[
           {
-            icon: 'Information',
+            icon: <MonoInfo />,
             title: activeInfoTag.title,
             children: (
               <div className={infoBoxStyle}>
@@ -643,7 +652,7 @@ const CrossChainTransferFinisher: FC = () => {
             ),
           },
           {
-            icon: 'Link',
+            icon: <MonoLink />,
             title: t('Resources & Links'),
             children: (
               <div className={linksBoxStyle}>

@@ -1,5 +1,21 @@
 # @kadena/proof-of-us
 
+## 0.2.6
+
+### Patch Changes
+
+- Updated dependencies [d67b52906]
+  - @kadena/client@1.10.1
+
+## 0.2.5
+
+### Patch Changes
+
+- Updated dependencies [016b9dbfc]
+- Updated dependencies [25de564cd]
+  - @kadena/client@1.10.0
+  - @kadena/react-ui@0.8.3
+
 ## 0.2.4
 
 ### Patch Changes

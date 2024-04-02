@@ -1,4 +1,4 @@
-import type { ChainId, ICommandResult } from '@kadena/client';
+import type { ChainId, ITransactionDescriptor } from '@kadena/client';
 import {
   Pact,
   createClient,
@@ -25,9 +25,9 @@ export async function createAndTransferFund({
     amount: string;
     contract: string;
     chainId: ChainId;
-    networkConfig: INetworkCreateOptions;
+    networkConfig: Pick<INetworkCreateOptions, 'networkId' | 'networkHost'>;
   };
-}): Promise<ICommandResult> {
+}): Promise<ITransactionDescriptor> {
   try {
     const { chainId, amount, networkConfig } = config;
 
@@ -78,16 +78,20 @@ export async function createAndTransferFund({
       throw new Error('Transaction is not signed');
     }
 
-    const { submit, listen } = createClient(
+    const { submit, local } = createClient(
       `${networkConfig.networkHost}/chainweb/0.0/${networkConfig.networkId}/chain/${chainId}/pact`,
     );
 
-    const transactionDescriptor = await submit(signedTx);
+    // Validate the transaction locally before sending it to the network
+    const localResult = await local(signedTx);
+    if (localResult.result.status === 'failure') {
+      throw localResult.result.error;
+    }
 
-    const response = await listen(transactionDescriptor);
-
-    return response;
+    return await submit(signedTx);
   } catch (error) {
-    throw Error(`Failed to create an account and transfer fund: ${error}`);
+    throw Error(
+      `Failed to create an account and transfer fund: ${error.message}`,
+    );
   }
 }

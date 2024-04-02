@@ -1,13 +1,8 @@
-import {
-  Button,
-  FormFieldHeader,
-  Stack,
-  SystemIcon,
-  TextField,
-} from '@kadena/react-ui';
+import { Button, FormFieldHeader, Stack, TextField } from '@kadena/react-ui';
 
 import { validatePublicKey } from '@/services/utils/utils';
 import { stripAccountPrefix } from '@/utils/string';
+import { MonoAdd, MonoDelete } from '@kadena/react-icons/system';
 import useTranslation from 'next-translate/useTranslation';
 import React, { useState } from 'react';
 
@@ -16,6 +11,7 @@ export interface IAddPublicKeysSection {
   setPublicKeys: (keys: string[]) => void;
   deletePubKey: () => void;
   initialPublicKey?: string;
+  maxKeysAmount?: number;
 }
 
 export const AddPublicKeysSection = ({
@@ -23,6 +19,7 @@ export const AddPublicKeysSection = ({
   setPublicKeys,
   deletePubKey,
   initialPublicKey,
+  maxKeysAmount,
 }: IAddPublicKeysSection): React.JSX.Element => {
   const { t } = useTranslation('common');
 
@@ -68,13 +65,14 @@ export const AddPublicKeysSection = ({
           key={`public-key-${index}`}
           id={`public-key-${index}`}
           value={key}
+          isReadOnly
           endAddon={
             <Button
-              icon={<SystemIcon.TrashCan />}
+              icon={<MonoDelete />}
               variant="text"
               onPress={() => deletePublicKey(index)}
-              aria-label="Add public key"
-              title="Add Public Key"
+              aria-label="Delete public key"
+              title="Delete public Key"
               color="primary"
               type="button"
             />
@@ -104,11 +102,10 @@ export const AddPublicKeysSection = ({
         />
         <Stack flexDirection={'row-reverse'}>
           <Button
-            endIcon={<SystemIcon.Plus />}
+            endIcon={<MonoAdd />}
             onPress={() => {
               const value = publicKey;
               const valid = validatePublicKey(stripAccountPrefix(value || ''));
-              console.log('is valid', value);
               if (valid) {
                 addPublicKey(value);
               } else {
@@ -119,6 +116,7 @@ export const AddPublicKeysSection = ({
             title="Add Public Key"
             color="primary"
             type="button"
+            isDisabled={publicKeys.length >= (maxKeysAmount || 10)}
           >
             {t('Add public key')}
           </Button>

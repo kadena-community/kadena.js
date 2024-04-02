@@ -1,6 +1,7 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
+import { MonoExitToApp } from '@kadena/react-icons/system';
 import type { ITreeProps } from '@kadena/react-ui';
-import { Button, SystemIcon, Tree } from '@kadena/react-ui';
+import { Button, Tree } from '@kadena/react-ui';
 import React, { useMemo } from 'react';
 import type { IChainModule } from '../types';
 import type { getModulesMap } from '../utils';
@@ -41,7 +42,7 @@ const resultsMapToTreeItems = (
         <Button
           onPress={() => onItemClick({ chainId, moduleName })}
           isCompact
-          endIcon={<SystemIcon.ExitToApp />}
+          endIcon={<MonoExitToApp />}
           title={chainId + (hash ? ` - ${hash}` : '')}
         >
           {chainId}

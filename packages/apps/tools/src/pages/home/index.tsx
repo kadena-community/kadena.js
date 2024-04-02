@@ -26,6 +26,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 
 import { linkStyle } from '@/pages/faucet/styles.css';
+import { MonoHelp } from '@kadena/react-icons/system';
 import Link from 'next/link';
 import type { FC } from 'react';
 import React, { useRef } from 'react';
@@ -134,7 +135,7 @@ const Home: FC = () => {
         ref={helpCenterRef}
         sections={[
           {
-            icon: 'HelpCircle',
+            icon: <MonoHelp />,
             title: t('Help Center'),
             children: (
               <>
@@ -175,10 +176,8 @@ const Home: FC = () => {
       </Breadcrumbs>
       <br />
       <div style={{ width: '680px' }}>
-        <Heading bold={false} variant="h3">
-          {t('Kadena Developer Tools')}
-        </Heading>
-        <Heading bold={false} as="h2" variant="h5" color="default">
+        <Heading variant="h3">{t('Kadena Developer Tools')}</Heading>
+        <Heading as="h2" variant="h5">
           <p>
             {t(
               'Set up your development environment and get the latest Developer Tools to build your application on the Kadena network.',

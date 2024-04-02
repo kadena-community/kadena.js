@@ -8,8 +8,18 @@ builder.queryField('nonFungibleChainAccount', (t) =>
   t.field({
     description: 'Retrieve an account by its name on a specific chain.',
     args: {
-      accountName: t.arg.string({ required: true }),
-      chainId: t.arg.string({ required: true }),
+      accountName: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      chainId: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: ChainNonFungibleAccount,
     nullable: true,

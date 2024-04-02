@@ -28,7 +28,6 @@ export const WrapperClass = style([
   {
     display: 'flex',
     alignItems: 'center',
-    maxWidth: '800px',
     width: '100%',
     margin: '0 auto',
   },

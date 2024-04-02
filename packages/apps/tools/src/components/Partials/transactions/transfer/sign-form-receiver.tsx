@@ -5,8 +5,8 @@ import {
   Box,
   Button,
   Heading,
+  Notification,
   Stack,
-  SystemIcon,
   TabItem,
   Tabs,
   Text,
@@ -30,7 +30,10 @@ import type { FormData } from './sign-form';
 import { LoadingCard } from '@/components/Global/LoadingCard';
 import { useAccountChainDetailsQuery } from '@/hooks/use-account-chain-details-query';
 import { createPrincipal } from '@/services/faucet/create-principal';
+import { MonoContentCopy, MonoInfo } from '@kadena/react-icons/system';
 import type { ChainId } from '@kadena/types';
+import { useDebounce } from 'react-use';
+import type { SenderType } from './sign-form-sender';
 
 type TabValue = 'new' | 'existing';
 
@@ -39,11 +42,13 @@ export const SignFormReceiver = ({
   onPubKeysUpdate,
   onPredicateUpdate,
   onChainUpdate,
+  signingMethod,
 }: {
-  onDataUpdate: (data: AccountDetails) => void;
+  onDataUpdate: (data: AccountDetails | undefined) => void;
   onPubKeysUpdate: (pubKeys: string[]) => void;
   onPredicateUpdate: (pred: PredKey) => void;
   onChainUpdate: (chainId: ChainId) => void;
+  signingMethod: SenderType;
 }) => {
   const { t } = useTranslation('common');
 
@@ -63,14 +68,24 @@ export const SignFormReceiver = ({
 
   const [watchReceiver, watchChain] = watch(['receiver', 'receiverChainId']);
 
+  const [debouncedValue, setDebouncedValue] = useState('');
+
+  useDebounce(
+    () => {
+      setDebouncedValue(watchReceiver);
+    },
+    1000,
+    [watchReceiver],
+  );
+
   const receiverData = useAccountDetailsQuery({
-    account: watchReceiver,
+    account: debouncedValue,
     networkId: network,
     chainId: watchChain,
   });
 
   const receiverAccountChains = useAccountChainDetailsQuery({
-    account: getValues('receiver'),
+    account: debouncedValue,
     networkId: network,
   });
 
@@ -79,6 +94,8 @@ export const SignFormReceiver = ({
       if (receiverData?.data) {
         onDataUpdate(receiverData.data);
       }
+    } else {
+      onDataUpdate(undefined);
     }
   }, [onDataUpdate, receiverData.data, receiverData.isSuccess]);
 
@@ -93,12 +110,13 @@ export const SignFormReceiver = ({
         render={({ field }) => (
           <AccountNameField
             {...field}
+            id="receiver-account-name"
             isInvalid={!!errors.receiver}
             errorMessage={errors.receiver?.message}
             isDisabled={tab === 'new'}
             endAddon={
               <Button
-                icon={<SystemIcon.ContentCopy />}
+                icon={<MonoContentCopy />}
                 variant="text"
                 onPress={async () => {
                   await navigator.clipboard.writeText(field.value);
@@ -204,9 +222,11 @@ export const SignFormReceiver = ({
     }
   }, [receiverAccountChains.isSuccess, receiverAccountChains.data]);
 
+  const isLedger = signingMethod === 'Ledger';
+
   return (
     <LoadingCard fullWidth isLoading={receiverData.isFetching}>
-      <Heading as={'h4'}>{t('Receiver')} </Heading>
+      <Heading as={'h5'}>{t('Receiver')} </Heading>
       <Tabs
         aria-label="receiver-account-tabs"
         selectedKey={toAccountTab}
@@ -217,7 +237,7 @@ export const SignFormReceiver = ({
             {renderAccountFieldWithChain('existing')}
             {receiverAccountChains.isFetching ? (
               <Stack flexDirection={'row'} marginBlockStart={'md'}>
-                <SystemIcon.Information />
+                <MonoInfo />
                 <Text as={'span'} color={'emphasize'}>
                   {t('fetching-data')}
                 </Text>
@@ -228,6 +248,11 @@ export const SignFormReceiver = ({
 
         <TabItem key="new" title="New">
           <Stack flexDirection={'column'} gap={'md'} padding={'xs'}>
+            {isLedger && (
+              <Notification role="alert" intent="info" isDismissable>
+                {t('ledger-account-creation-info')}
+              </Notification>
+            )}
             <AddPublicKeysSection
               publicKeys={pubKeys}
               deletePubKey={deletePublicKey}
@@ -236,6 +261,7 @@ export const SignFormReceiver = ({
                 onPubKeysUpdate(keys);
               }}
               initialPublicKey={initialPublicKey}
+              maxKeysAmount={isLedger ? 1 : undefined}
             />
             {pubKeys.length > 1 ? (
               <PredKeysSelect
@@ -252,7 +278,7 @@ export const SignFormReceiver = ({
 
             {receiverAccountChains.isFetching ? (
               <Stack flexDirection={'row'} marginBlockStart={'md'}>
-                <SystemIcon.Information />
+                <MonoInfo />
                 <Text as={'span'} color={'emphasize'}>
                   {t('fetching-data')}
                 </Text>

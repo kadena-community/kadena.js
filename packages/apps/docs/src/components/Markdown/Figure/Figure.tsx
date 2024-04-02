@@ -43,7 +43,7 @@ export const Figure: FC<IProps> = ({ alt, src }) => {
 
               {alt ? (
                 <figcaption>
-                  <Text variant="smallest" as="span" className={figCaption}>
+                  <Text size="smallest" as="span" className={figCaption}>
                     {alt}
                   </Text>
                 </figcaption>
@@ -67,7 +67,7 @@ export const Figure: FC<IProps> = ({ alt, src }) => {
 
         {alt ? (
           <figcaption>
-            <Text variant="smallest" as="span" className={figCaption}>
+            <Text size="smallest" as="span" className={figCaption}>
               {alt}
             </Text>
           </figcaption>

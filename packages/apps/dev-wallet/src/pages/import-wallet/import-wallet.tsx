@@ -86,7 +86,7 @@ export function ImportWallet() {
             <Button type="submit">Confirm</Button>
           </Stack>
         </form>
-        {error && <Text variant="base">{error}</Text>}
+        {error && <Text>{error}</Text>}
       </Box>
     </main>
   );

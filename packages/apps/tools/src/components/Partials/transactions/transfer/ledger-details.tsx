@@ -7,7 +7,8 @@ import {
   marginBottomOnError,
   tooltipInfoContainer,
 } from '@/pages/transactions/transfer/styles.css';
-import { NumberField, Stack, SystemIcon, Tooltip } from '@kadena/react-ui';
+import { MonoInfo, MonoKey } from '@kadena/react-icons/system';
+import { NumberField, Stack, Tooltip } from '@kadena/react-ui';
 import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
@@ -61,7 +62,7 @@ export const LedgerDetails: FC<ILedgerDetailsProps> = ({
     >
       <Stack gap={'md'}>
         <NumberField
-          startAddon={<SystemIcon.KeyIconFilled />}
+          startAddon={<MonoKey />}
           label={t('Key Index')}
           onValueChange={(keyIndex) => {
             setKeyIndex(keyIndex);
@@ -81,7 +82,7 @@ export const LedgerDetails: FC<ILedgerDetailsProps> = ({
           )}
         >
           <Tooltip content={t('ledger tooltip content')} position={'top'}>
-            <SystemIcon.Information />
+            <MonoInfo />
           </Tooltip>
         </div>
       </Stack>

@@ -1,8 +1,14 @@
-export const isAlreadySigning = (signees?: IProofOfUsSignee[]): boolean => {
-  if (!signees) return false;
-  const signinglist = signees.filter((s) => s.signerStatus !== 'init');
+export const isAlreadySigning = (proofOfUs?: IProofOfUsData): boolean => {
+  return !!proofOfUs?.isReadyToSign;
+};
 
-  return !!signinglist.length;
+export const getAccountSignee = (
+  signees?: IProofOfUsSignee[],
+  account?: IAccount,
+): IProofOfUsSignee | undefined => {
+  if (!account || !signees) return;
+
+  return signees.find((s) => s.accountName === account.accountName);
 };
 
 export const isSignedOnce = (signees?: IProofOfUsSignee[]): boolean => {
@@ -12,9 +18,17 @@ export const isSignedOnce = (signees?: IProofOfUsSignee[]): boolean => {
   return !!signinglist.length;
 };
 
-export const haveAllSigned = (signees?: IProofOfUsSignee[]): boolean => {
-  if (!signees) return false;
+export const haveAllSigned = (signees: IProofOfUsSignee[]): boolean => {
   const signinglist = signees.filter((s) => s.signerStatus !== 'success');
 
   return !!signinglist.length;
+};
+
+export const isReadyToMint = (signees?: IProofOfUsSignee[]): boolean => {
+  if (!signees) return false;
+  const signinglist = signees.filter(
+    (s) => s.signerStatus === 'success' && !s.initiator,
+  );
+
+  return signinglist.length >= signees.length - 1;
 };

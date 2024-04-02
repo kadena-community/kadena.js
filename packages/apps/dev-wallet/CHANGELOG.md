@@ -1,5 +1,25 @@
 # @kadena/dev-wallet
 
+## 0.0.7
+
+### Patch Changes
+
+- d67b52906: Fixed IParsedCode interface
+- Updated dependencies [d67b52906]
+  - @kadena/pactjs-generator@1.10.1
+  - @kadena/client@1.10.1
+  - @kadena/client-utils@0.5.2
+
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [016b9dbfc]
+- Updated dependencies [25de564cd]
+  - @kadena/client@1.10.0
+  - @kadena/react-ui@0.8.3
+  - @kadena/client-utils@0.5.1
+
 ## 0.0.5
 
 ### Patch Changes

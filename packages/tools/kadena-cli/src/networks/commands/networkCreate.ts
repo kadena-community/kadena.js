@@ -13,7 +13,7 @@ export const createNetworksCommand: (
   version: string,
 ) => void = createCommand(
   'add',
-  'Add local network configuration',
+  'Add network configuration',
   [
     networkOptions.networkName({ isOptional: false }),
     networkOptions.networkId({ isOptional: false }),

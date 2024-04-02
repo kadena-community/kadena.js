@@ -76,10 +76,8 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
-      - name: Start devnet
-        uses: ./.github/actions/devnet
-        with:
-          migrations: packages/apps/graph/cwd-extra-migrations
+      - name: Start Blockchain sandbox
+        uses: ./.github/actions/sandbox
 
       - name: Install dependencies
         run: pnpm install
@@ -102,10 +100,8 @@ jobs:
           fetch-depth: 2
           show-progress: false
 
-      - name: Start devnet
-        uses: ./.github/actions/devnet
-        with:
-          migrations: packages/apps/graph/cwd-extra-migrations
+      - name: Setup devnet sandbox
+        uses: ./.github/actions/sandbox
 
       - uses: pnpm/action-setup@v2
         with:
@@ -121,7 +117,7 @@ jobs:
         run: pnpm install
 
       # Due to how docs is built, we need to explicitly rebuild to generate the correct menu structure.
-      - name: build Docs
+      - name: build dApps
         if: matrix.app == 'docs'
         run: pnpm turbo build --filter @kadena/${{ matrix.app }} --force
 
@@ -130,11 +126,27 @@ jobs:
         run: pnpm turbo build --filter @kadena/${{ matrix.app }}
 
       - name: Install browsers
-        run:
-          pnpm --filter @kadena-dev/e2e-${{ matrix.app }} run install:chromium
+        run: pnpm --filter e2e-${{ matrix.app }} run install:chromium
 
       - name: Run end-to-end tests
-        run: pnpm turbo test:e2e --filter @kadena-dev/e2e-${{ matrix.app }}
+        run: pnpm turbo test:e2e --filter e2e-${{ matrix.app }}
+
+      - name: Archive sandbox logs
+        if: always()
+        uses: ./.github/actions/archive-logs
+        with:
+          test-object: ${{ matrix.app }}
+
+      - name: Teardown devnet sandbox
+        if: always()
+        run: docker-compose down
+        working-directory: .github/actions/sandbox
+      
+      - name: Archive sandbox volume
+        if: always()
+        uses: ./.github/actions/archive-volumes
+        with:
+          test-object: ${{ matrix.app }}
 
       - uses: actions/upload-artifact@v3
         if: always()

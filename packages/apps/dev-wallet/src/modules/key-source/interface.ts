@@ -10,8 +10,8 @@ export interface IKeySourceService {
   disconnect: () => void | Promise<void>;
   createKey: (keySourceId: string, index?: number) => Promise<IKeyItem>;
   sign(
-    message: string,
     keySourceId: string,
+    message: string,
     indexes: number[],
   ): Promise<Array<{ sig: string; pubKey: string }>>;
 

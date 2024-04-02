@@ -8,6 +8,8 @@ const config: PlaywrightTestConfig = {
     command: `pnpm --filter @kadena/docs start`,
     url: 'http://localhost:3000',
     reuseExistingServer: process.env.CI === undefined,
+    stdout: 'ignore',
+    stderr: 'ignore',
   },
   projects: [
     {

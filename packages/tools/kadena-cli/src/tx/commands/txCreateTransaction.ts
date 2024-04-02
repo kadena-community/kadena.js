@@ -1,17 +1,22 @@
 import type { IUnsignedCommand } from '@kadena/client';
 import { createTransaction as kadenaCreateTransaction } from '@kadena/client';
-import { createPactCommandFromStringTemplate } from '@kadena/client-utils/nodejs';
+import { createPactCommandFromStringTemplate } from '@kadena/client-utils';
 import { PactNumber } from '@kadena/pactjs';
 import path from 'path';
 
-import { WORKING_DIRECTORY } from '../../constants/config.js';
+import {
+  TX_TEMPLATE_FOLDER,
+  WORKING_DIRECTORY,
+} from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { relativeToCwd } from '../../utils/path.util.js';
 import { txOptions } from '../txOptions.js';
+import { convertListToYamlWithEmptyValues } from '../utils/template.js';
 import { fixTemplatePactCommand } from './templates/mapper.js';
 import { writeTemplatesToDisk } from './templates/templates.js';
 
@@ -54,7 +59,7 @@ export const createTransaction = async (
       );
     } else if (outFilePath === '-') {
       // "-" means print to stdout, which is always done anyways. So just don't write a file.
-      return { success: true, data: { transaction, filePath: '-' } };
+      return { status: 'success', data: { transaction, filePath: '-' } };
     } else {
       filePath = outFilePath;
     }
@@ -77,10 +82,10 @@ export const createTransaction = async (
       JSON.stringify(transaction, null, 2),
     );
 
-    return { success: true, data: { transaction, filePath } };
+    return { status: 'success', data: { transaction, filePath } };
   } catch (error) {
     return {
-      success: false,
+      status: 'error',
       errors: ['Failed to create transaction from template', error.message],
     };
   }
@@ -93,11 +98,28 @@ export const createTransactionCommandNew = createCommand(
     txOptions.selectTemplate({ isOptional: false }),
     txOptions.templateData({ isOptional: true }),
     txOptions.templateVariables(),
+    txOptions.holes({ isOptional: true, disableQuestion: true }),
     globalOptions.outFileJson(),
   ],
   async (option, { values, stdin }) => {
-    await writeTemplatesToDisk();
+    const templatesAdded = await writeTemplatesToDisk();
+    if (templatesAdded.length > 0) {
+      log.info(
+        `Added default templates to ${relativeToCwd(
+          TX_TEMPLATE_FOLDER,
+        )}: ${templatesAdded.join(', ')}`,
+      );
+    }
     const template = await option.template({ stdin });
+    const showHoles = await option.holes();
+
+    if (showHoles.holes === true) {
+      log.info('Template variables used in this template:');
+      return log.output(
+        convertListToYamlWithEmptyValues(template.templateConfig.variables),
+        template.templateConfig.variables,
+      );
+    }
 
     const templateData = await option.templateData();
     const templateVariables = await option.templateVariables({
@@ -128,7 +150,10 @@ export const createTransactionCommandNew = createCommand(
     );
     assertCommandError(result);
 
-    log.output(JSON.stringify(result.data.transaction, null, 2));
+    log.output(
+      JSON.stringify(result.data.transaction, null, 2),
+      result.data.transaction,
+    );
 
     const relativePath = path.relative(WORKING_DIRECTORY, result.data.filePath);
     log.info(`\ntransaction saved to: ./${relativePath}`);

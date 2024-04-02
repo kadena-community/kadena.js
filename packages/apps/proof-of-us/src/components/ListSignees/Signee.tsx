@@ -1,15 +1,21 @@
 import { useAccount } from '@/hooks/account';
 import { deviceColors } from '@/styles/tokens.css';
 import { getSigneeName } from '@/utils/getSigneeName';
-import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import { SignStatus } from '../SignStatus/SignStatus';
 import { Text } from '../Typography/Text';
-import { accountClass, ellipsClass, nameClass, signeeClass } from './style.css';
+import {
+  accountClass,
+  ellipsClass,
+  multipleSigneeClass,
+  nameClass,
+  signeeClass,
+} from './style.css';
 
 interface IProps {
   signee?: IProofOfUsSignee;
+  isMultiple: boolean;
 }
 
 const isMe = (signer?: IProofOfUsSignee, account?: IAccount) => {
@@ -22,7 +28,7 @@ const getAccount = (signee?: IProofOfUsSignee): string => {
   return signee.accountName;
 };
 
-export const Signee: FC<IProps> = ({ signee }) => {
+export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
   const { account } = useAccount();
 
   const getSuccessStyle = (signee?: IProofOfUsSignee) => {
@@ -34,11 +40,8 @@ export const Signee: FC<IProps> = ({ signee }) => {
     return {};
   };
   return (
-    <Stack
-      className={signeeClass}
-      flexDirection="column"
-      alignItems="center"
-      gap="sm"
+    <li
+      className={classNames(isMultiple ? multipleSigneeClass : signeeClass)}
       style={getSuccessStyle(signee)}
     >
       <SignStatus status={signee?.signerStatus} />
@@ -48,6 +51,6 @@ export const Signee: FC<IProps> = ({ signee }) => {
       <Text className={classNames(accountClass, ellipsClass)}>
         {getAccount(signee)}
       </Text>
-    </Stack>
+    </li>
   );
 };

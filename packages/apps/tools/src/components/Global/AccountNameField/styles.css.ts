@@ -3,7 +3,7 @@ import { globalStyle, style } from '@vanilla-extract/css';
 
 export const accountInputWrapperStyle = style([
   atoms({
-    fontFamily: 'codeFont',
+    fontFamily: 'monospaceFont',
   }),
 ]);
 

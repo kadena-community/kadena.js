@@ -204,13 +204,17 @@ export const getTransactions: DocumentNode = gql`
         cursor
         node {
           ...CoreTransactionFields
-          block {
-            hash
+          result {
+            ... on TransactionResult {
+              block {
+                hash
+              }
+            }
           }
           cmd {
             signers {
               publicKey
-              signature
+              sig
             }
           }
         }
@@ -307,7 +311,7 @@ export const getEvents: DocumentNode = gql`
 `;
 
 export const estimateGasLimit: DocumentNode = gql`
-  query estimateGasLimit($input: String!) {
+  query estimateGasLimit($input: [String!]!) {
     gasLimitEstimate(input: $input) {
       amount
       inputType

@@ -13,6 +13,7 @@ import { AccountDiscovery } from '@/pages/account-discovery/account-dsicovery';
 import { ImportWallet } from '@/pages/import-wallet/import-wallet';
 import { CreateNetwork } from '@/pages/networks/create-network';
 import { Networks } from '@/pages/networks/networks';
+import { SignatureBuilder } from '@/pages/signature-builder/signature-builder';
 import { useWallet } from '../modules/wallet/wallet.hook';
 import { BackupRecoveryPhrase } from '../pages/backup-recovery-phrase/backup-recovery-phrase';
 import { WriteDownRecoveryPhrase } from '../pages/backup-recovery-phrase/write-down/write-down-recovery-phrase';
@@ -63,6 +64,7 @@ export const Routes: FC = () => {
         />
         ,
         <Route path="/accounts/:account" element={<p>Account</p>} />,
+        <Route path="/sig-builder" element={<SignatureBuilder />} />,
       </Route>
       <Route path="*" element={<p>Not found!</p>} />
     </Route>,

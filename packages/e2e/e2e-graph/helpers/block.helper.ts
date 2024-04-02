@@ -8,5 +8,5 @@ export async function getBlockHash(
 ): Promise<string> {
   const query = getTransactionsByRequestKeyQuery(requestKey);
   const queryResult = await sendQuery(request, query);
-  return queryResult.transactions.edges[0].node.block.hash;
+  return queryResult.transactions.edges[0].node.result.block.hash;
 }

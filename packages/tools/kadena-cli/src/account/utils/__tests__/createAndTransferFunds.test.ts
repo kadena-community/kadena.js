@@ -29,9 +29,7 @@ describe('createAndTransferFunds', () => {
       });
     }).rejects.toEqual(
       Error(
-        `Failed to create an account and transfer fund: ${Error(
-          'Cannot transfer fund on mainnet',
-        )}`,
+        `Failed to create an account and transfer fund: Cannot transfer fund on mainnet`,
       ),
     );
   });
@@ -52,13 +50,9 @@ describe('createAndTransferFunds', () => {
     });
 
     expect(result).toStrictEqual({
-      result: {
-        reqKey: 'requestKey-1',
-        result: {
-          status: 'success',
-          data: 'Write succeeded',
-        },
-      },
+      chainId: '1',
+      networkId: 'testnet04',
+      requestKey: 'requestKey-1',
     });
   });
 
@@ -87,11 +81,7 @@ describe('createAndTransferFunds', () => {
         },
       });
     }).rejects.toEqual(
-      Error(
-        `Failed to create an account and transfer fund: ${Error(
-          'gas failure',
-        )}`,
-      ),
+      Error(`Failed to create an account and transfer fund: gas failure`),
     );
   });
 });

@@ -7,7 +7,12 @@ builder.queryField('nonFungibleAccount', (t) =>
     description: 'Retrieve a non-fungible specific account by its name.',
     nullable: true,
     args: {
-      accountName: t.arg.string({ required: true }),
+      accountName: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: NonFungibleAccount,
     async resolve(__parent, args) {

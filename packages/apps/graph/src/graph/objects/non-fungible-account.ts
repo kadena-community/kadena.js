@@ -14,7 +14,7 @@ import {
   NonFungibleAccountName,
   NonFungibleChainAccountName,
 } from '../types/graphql-types';
-import Token from './token';
+import Token from './non-fungible-token-balance';
 
 export default builder.node(
   builder.objectRef<NonFungibleAccount>(NonFungibleAccountName),
@@ -83,6 +83,7 @@ export default builder.node(
         },
       }),
       transactions: t.prismaConnection({
+        description: 'Default page size is 20.',
         type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,

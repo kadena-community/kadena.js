@@ -1,46 +1,46 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
-import { COMPLEXITY } from '@services/complexity';
+import {
+  getMempoolTransactionSigners,
+  getMempoolTransactionStatus,
+} from '@services/chainweb-node/mempool';
 import { normalizeError } from '@utils/errors';
-import { PRISMA, builder } from '../builder';
+import { nullishOrEmpty } from '@utils/nullish-or-empty';
+import { builder } from '../builder';
 import TransactionCommand from './transaction-command';
-import TransactionResult from './transaction-result';
+import TransactonInfo from './transaction-result';
 
 export default builder.prismaNode(Prisma.ModelName.Transaction, {
-  description: 'A confirmed transaction.',
-  id: { field: 'blockHash_requestKey' },
-  select: {},
-
+  description: 'A transaction.',
+  // We can assume this id field because we never return connections when
+  // querying transactions from the mempool
+  id: {
+    field: 'blockHash_requestKey',
+  },
   fields: (t) => ({
     hash: t.exposeString('requestKey'),
     cmd: t.field({
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
       type: TransactionCommand,
-      select: {
-        senderAccount: true,
-        chainId: true,
-        gasLimit: true,
-        gasPrice: true,
-        ttl: true,
-        creationTime: true,
-        nonce: true,
-        pactId: true,
-        step: true,
-        rollback: true,
-        data: true,
-        proof: true,
-        code: true,
-        requestKey: true,
-      },
-      async resolve(parent, __arguments, context) {
+
+      resolve: async (parent, __args, context) => {
         try {
-          const signers = await prismaClient.signer.findMany({
-            where: {
-              requestKey: parent.requestKey,
-            },
-            take: PRISMA.DEFAULT_SIZE,
-          });
+          let signers = [];
+
+          // This is needed because if the transaction is in the mempool, the
+          // signers are not stored in the database and there is no status.
+          // If blockHash has a value, we do not check the mempool for signers or status
+          if (nullishOrEmpty(parent.blockHash)) {
+            signers = await getMempoolTransactionSigners(
+              parent.requestKey,
+              parent.chainId.toString(),
+            );
+          } else {
+            signers = await prismaClient.signer.findMany({
+              where: {
+                requestKey: parent.requestKey,
+              },
+            });
+          }
 
           return {
             nonce: parent.nonce,
@@ -69,79 +69,40 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
       },
     }),
     result: t.field({
-      type: TransactionResult,
-      select: {
-        badResult: true,
-        continuation: true,
-        gas: true,
-        goodResult: true,
-        height: true,
-        logs: true,
-        metadata: true,
-        eventCount: true,
-        transactionId: true,
-      },
-      resolve(parent) {
-        return {
-          badResult: parent.badResult ? JSON.stringify(parent.badResult) : null,
-          continuation: parent.continuation
-            ? JSON.stringify(parent.continuation)
-            : null,
-          gas: parent.gas,
-          goodResult: parent.goodResult
-            ? JSON.stringify(parent.goodResult)
-            : null,
-          height: parent.height,
-          logs: parent.logs,
-          metadata: parent.metadata ? JSON.stringify(parent.metadata) : null,
-          eventCount: parent.eventCount,
-          transactionId: parent.transactionId,
-        };
-      },
-    }),
-    // relations
-    block: t.prismaField({
-      type: Prisma.ModelName.Block,
-      nullable: true,
-      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
-      select: {
-        block: true,
-      },
-      async resolve(__query, parent) {
+      type: TransactonInfo,
+      resolve: async (parent) => {
         try {
-          return parent.block;
-        } catch (error) {
-          throw normalizeError(error);
-        }
-      },
-    }),
+          const status = await getMempoolTransactionStatus(
+            parent.requestKey,
+            parent.chainId.toString(),
+          );
 
-    events: t.prismaField({
-      type: [Prisma.ModelName.Event],
-      nullable: true,
-      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
-      select: {
-        events: true,
-      },
-      async resolve(__query, parent) {
-        try {
-          return parent.events;
-        } catch (error) {
-          throw normalizeError(error);
-        }
-      },
-    }),
+          if (!nullishOrEmpty(status) && status) {
+            return {
+              status,
+            };
+          }
 
-    transfers: t.prismaField({
-      type: [Prisma.ModelName.Transfer],
-      nullable: true,
-      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
-      select: {
-        transfers: true,
-      },
-      async resolve(__query, parent) {
-        try {
-          return parent.transfers;
+          return {
+            hash: parent.requestKey,
+            chainId: parent.chainId,
+            badResult: parent.badResult
+              ? JSON.stringify(parent.badResult)
+              : null,
+            continuation: parent.continuation
+              ? JSON.stringify(parent.continuation)
+              : null,
+            gas: parent.gas,
+            goodResult: parent.goodResult
+              ? JSON.stringify(parent.goodResult)
+              : null,
+            height: parent.height,
+            logs: parent.logs,
+            metadata: parent.metadata ? JSON.stringify(parent.metadata) : null,
+            eventCount: parent.eventCount,
+            transactionId: parent.transactionId,
+            blockHash: parent.blockHash,
+          };
         } catch (error) {
           throw normalizeError(error);
         }

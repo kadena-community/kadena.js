@@ -1,5 +1,17 @@
 # Change Log - @kadena/client
 
+## 1.10.1
+
+### Patch Changes
+
+- d67b52906: Fixed IParsedCode interface
+
+## 1.10.0
+
+### Minor Changes
+
+- 016b9dbfc: Added support for verifiers in @kadena/client
+
 ## 1.9.0
 
 ### Minor Changes

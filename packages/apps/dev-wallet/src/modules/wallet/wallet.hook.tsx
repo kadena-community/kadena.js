@@ -126,15 +126,9 @@ export const useWallet = () => {
     [context],
   );
 
-  const createKey = useCallback(
-    async (keySource: IKeySource) => {
-      if (!isUnlocked(context)) {
-        throw new Error('Wallet in not unlocked');
-      }
-      return WalletService.createKey(keySource);
-    },
-    [context],
-  );
+  const createKey = useCallback(async (keySource: IKeySource) => {
+    return WalletService.createKey(keySource);
+  }, []);
 
   const createKAccount = useCallback(
     async (

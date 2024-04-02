@@ -1,9 +1,7 @@
 export function getTransactionsQuery(accountName: string) {
   return {
     query: `query getTransactions($accountName: String) {
-      transactions(
-        accountName: $accountName
-      ) {
+      transactions(accountName: $accountName) {
         totalCount
         edges {
           node {
@@ -31,38 +29,50 @@ export function getTransactionsQuery(accountName: string) {
               }
               signers {
                 id
-                requestKey
                 publicKey
-                capabilities
+                clist {
+                  args
+                  name
+                }
               }
             }
             result {
-              continuation
-              eventCount
-              gas
-            }
-            transfers {
-              amount
-              chainId
-              id
-              receiverAccount
-              requestKey
-              senderAccount
-              crossChainTransfer {
-                amount
-                blockHash
-                chainId
-                id
-                moduleName
-                receiverAccount
-                requestKey
-                senderAccount
+              ... on TransactionResult {
+                continuation
+                eventCount
+                gas
+                transfers {
+                  edges {
+                    node {
+                      amount
+                      chainId
+                      id
+                      receiverAccount
+                      requestKey
+                      senderAccount
+                      crossChainTransfer {
+                        amount
+                        blockHash
+                        chainId
+                        id
+                        moduleName
+                        receiverAccount
+                        requestKey
+                        senderAccount
+                      }
+                    }
+                  }
+                }
+                events {
+                  edges {
+                    node {
+                      requestKey
+                      parameterText
+                      id
+                    }
+                  }
+                }
               }
-            }
-            events {
-              requestKey
-              parameterText
-              id
             }
           }
         }
@@ -82,8 +92,12 @@ export function getTransactionsByRequestKeyQuery(
       transactions(requestKey: $requestKey) {
         edges {
           node {
-            block {
-              hash
+            result {
+              ... on TransactionResult {
+                block {
+                  hash
+                }
+              }
             }
           }
         }

@@ -6,24 +6,24 @@ import type { FC } from 'react';
 import { connectThumbClass } from './style.css';
 
 interface IProps {
-  token: IProofOfUsData;
+  token: IProofOfUsTokenMeta;
   isMinted?: boolean;
 }
 export const ConnectThumb: FC<IProps> = ({ token, isMinted = true }) => {
-  const invertColor = getContrast(token.backgroundColor ?? '#000');
+  const invertColor = getContrast(
+    token.properties.avatar?.backgroundColor ?? '#000',
+  );
 
   return (
     <div
       className={classNames(connectThumbClass)}
       style={{
-        backgroundColor: token.backgroundColor,
-        backgroundImage: isMinted
-          ? `url("${getIPFSLink(token.imageUri)}")`
-          : '',
+        backgroundColor: token.properties.avatar?.backgroundColor,
+        backgroundImage: isMinted ? `url("${getIPFSLink(token.image)}")` : '',
         color: invertColor,
       }}
     >
-      {!isMinted && <MonoDownloading />}
+      {!isMinted && <MonoDownloading style={{ fill: invertColor }} />}
     </div>
   );
 };

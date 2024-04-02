@@ -16,7 +16,7 @@ export const manageNetworksCommand: (
   version: string,
 ) => void = createCommand(
   'update',
-  'Update local networks',
+  'Update networks',
   [
     globalOptions.network({ isOptional: false }),
     networkOptions.networkExplorerUrl(),

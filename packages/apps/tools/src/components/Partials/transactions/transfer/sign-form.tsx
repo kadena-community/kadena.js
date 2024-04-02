@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { Button, Notification, Stack, SystemIcon } from '@kadena/react-ui';
+import { Button, Notification, Stack } from '@kadena/react-ui';
 
 import { NAME_VALIDATION } from '@/components/Global/AccountNameField';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
@@ -24,10 +24,12 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 
 import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { stripAccountPrefix } from '@/utils/string';
+import { MonoKeyboardArrowRight } from '@kadena/react-icons/system';
 import type { ChainId } from '@kadena/types';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { z } from 'zod';
 import { SignFormReceiver } from './sign-form-receiver';
+import type { SenderType } from './sign-form-sender';
 import { SignFormSender } from './sign-form-sender';
 
 const schema = z.object({
@@ -44,10 +46,12 @@ export const SignForm = ({
   onSuccess,
   onSenderChainUpdate,
   onReceiverChainUpdate,
+  setIsLedger,
 }: {
   onSuccess: (pactCommandObject: PactCommandObject) => void;
   onSenderChainUpdate: (chainId: ChainId) => void;
   onReceiverChainUpdate: (chainId: ChainId) => void;
+  setIsLedger: (mode: boolean) => void;
 }) => {
   const { t } = useTranslation('common');
 
@@ -55,7 +59,7 @@ export const SignForm = ({
 
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { senderChainId: CHAINS[0], receiverChainId: CHAINS[0] },
+    defaultValues: { senderChainId: CHAINS[0], receiverChainId: undefined },
   });
 
   const { selectedNetwork: network } = useWalletConnectClient();
@@ -69,7 +73,7 @@ export const SignForm = ({
   };
 
   const receiverDataRef = useRef<AccountDetails>();
-  const onReceiverDataUpdate = (data: AccountDetails) => {
+  const onReceiverDataUpdate = (data: AccountDetails | undefined) => {
     receiverDataRef.current = data;
   };
 
@@ -92,6 +96,14 @@ export const SignForm = ({
   const onDerivationUpdate = (mode: DerivationMode) => {
     derivationMode.current = mode;
   };
+
+  const [signingMethod, setSigningMethod] = useState<SenderType>('Ledger');
+
+  useEffect(() => {
+    if (signingMethod === 'Ledger') {
+      setIsLedger(true);
+    }
+  }, [signingMethod, setIsLedger]);
 
   const handleSignTransaction = async (data: FormData) => {
     let transferInput: TransferInput;
@@ -157,6 +169,8 @@ export const SignForm = ({
             onKeyIdUpdate={onKeyIdUpdate}
             onDerivationUpdate={onDerivationUpdate}
             onChainUpdate={onSenderChainUpdate}
+            signingMethod={signingMethod}
+            onSigningMethodUpdate={setSigningMethod}
           />
 
           {/* RECEIVER FLOW */}
@@ -165,6 +179,7 @@ export const SignForm = ({
             onPubKeysUpdate={onPubKeysUpdate}
             onPredicateUpdate={onPredicateUpdate}
             onChainUpdate={onReceiverChainUpdate}
+            signingMethod={signingMethod}
           />
 
           {ledgerSignState.error && (
@@ -185,7 +200,7 @@ export const SignForm = ({
               // isLoading={receiverData.isFetching || ledgerSignState.loading}
               isLoading={ledgerSignState.loading}
               // isDisabled={isSubmitting}
-              endIcon={<SystemIcon.TrailingIcon />}
+              endIcon={<MonoKeyboardArrowRight />}
               title={t('Sign')}
               type="submit"
             >
