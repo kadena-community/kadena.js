@@ -57,3 +57,33 @@ export async function getConfirmationDepth(blockHash: string): Promise<number> {
     return 0;
   }
 }
+
+/**
+ *
+ * @param items - all the items to create a block depth map for
+ * @param hashProp - the property of the item that contains the block hash
+ * @returns a map of block hashes to their confirmation depths
+ */
+export async function createBlockDepthMap<T>(
+  items: T[],
+  hashProp: keyof T,
+): Promise<Record<string, number>> {
+  // Create a set with all the unique block hashes
+  const uniqueBlockHashes = [...new Set(items.map((item) => item[hashProp]))];
+
+  // Get confirmation depths for each block hash
+  const confirmationDepths = await Promise.all(
+    uniqueBlockHashes.map((blockHash) =>
+      getConfirmationDepth(blockHash as string),
+    ),
+  );
+
+  // Create a map of block hashes to their confirmation depths
+  return uniqueBlockHashes.reduce(
+    (map: Record<string, number>, blockHash, index) => {
+      map[blockHash as string] = confirmationDepths[index];
+      return map;
+    },
+    {},
+  );
+}

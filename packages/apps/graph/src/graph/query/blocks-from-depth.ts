@@ -1,11 +1,10 @@
 import { prismaClient } from '@db/prisma-client';
-import { Block } from '@prisma/client';
+import type { Block } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import {
   getConditionForMinimumDepth,
   getConfirmationDepth,
 } from '@services/depth-service';
-import { chainIds as defaultChainIds } from '@utils/chains';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import GQLBlock from '../objects/block';

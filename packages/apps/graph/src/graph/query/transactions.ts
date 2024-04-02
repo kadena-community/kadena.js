@@ -1,9 +1,10 @@
 import { prismaClient } from '@db/prisma-client';
-import { Prisma, Transaction } from '@prisma/client';
+import type { Transaction } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import {
+  createBlockDepthMap,
   getConditionForMinimumDepth,
-  getConfirmationDepth,
 } from '@services/depth-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
@@ -113,23 +114,10 @@ builder.queryField('transactions', (t) =>
           }
 
           if (args.minimumDepth) {
-            const uniqueBlockHashes = [
-              ...new Set(fetchedTransactions.map((t) => t.blockHash)),
-            ];
-            const confirmationDepths = await Promise.all(
-              uniqueBlockHashes.map((blockHash) =>
-                getConfirmationDepth(blockHash),
-              ),
+            const blockHashToDepth = await createBlockDepthMap(
+              fetchedTransactions,
+              'blockHash',
             );
-
-            const blockHashToDepth: Record<string, number> =
-              uniqueBlockHashes.reduce(
-                (map: Record<string, number>, blockHash, index) => {
-                  map[blockHash] = confirmationDepths[index];
-                  return map;
-                },
-                {},
-              );
 
             const filteredTransactions = fetchedTransactions.filter(
               (transaction) =>

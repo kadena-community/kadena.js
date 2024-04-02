@@ -1,9 +1,10 @@
 import { prismaClient } from '@db/prisma-client';
-import { Event, Prisma } from '@prisma/client';
+import type { Event } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
 import {
+  createBlockDepthMap,
   getConditionForMinimumDepth,
-  getConfirmationDepth,
 } from '@services/depth-service';
 import { normalizeError } from '@utils/errors';
 import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
@@ -136,27 +137,10 @@ builder.queryField('events', (t) =>
           }
 
           if (args.minimumDepth) {
-            // Get all unique block hashes
-            const uniqueBlockHashes = [
-              ...new Set(fetchedEvents.map((e) => e.blockHash)),
-            ];
-
-            // Get confirmation depths for each block hash
-            const confirmationDepths = await Promise.all(
-              uniqueBlockHashes.map((blockHash) =>
-                getConfirmationDepth(blockHash),
-              ),
+            const blockHashToDepth = await createBlockDepthMap(
+              fetchedEvents,
+              'blockHash',
             );
-
-            // Create a map of block hashes to their confirmation depths
-            const blockHashToDepth: Record<string, number> =
-              uniqueBlockHashes.reduce(
-                (map: Record<string, number>, blockHash, index) => {
-                  map[blockHash] = confirmationDepths[index];
-                  return map;
-                },
-                {},
-              );
 
             const filteredEvents = fetchedEvents.filter(
               (event) =>
