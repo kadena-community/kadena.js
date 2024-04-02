@@ -3,7 +3,7 @@ import type {
   FungibleAccountTransfersConnection,
   FungibleChainAccount,
   NonFungibleAccountTransactionsConnection,
-  Token,
+  NonFungibleTokenBalance,
 } from '@/__generated__/sdk';
 import {
   useGetFungibleAccountQuery,
@@ -300,7 +300,7 @@ const Account: React.FC = () => {
                   <TokenTable
                     tokens={
                       nonFungibleAccountData.nonFungibleAccount
-                        .nonFungibles as Token[]
+                        .nonFungibles as NonFungibleTokenBalance[]
                     }
                   />
                 </TabItem>

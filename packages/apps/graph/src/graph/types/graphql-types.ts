@@ -16,15 +16,15 @@ export interface GasLimitEstimation {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface Token {
+export interface NonFungibleTokenBalance {
   id: string;
   balance: number;
   chainId: string;
-  info?: TokenInfo;
+  info?: NonFungibleToken;
   version: string;
 }
 
-export interface TokenInfo {
+export interface NonFungibleToken {
   supply: number;
   precision: number;
   uri: string;
@@ -73,7 +73,7 @@ export interface NonFungibleChainAccount {
   __typename: typeof NonFungibleChainAccountName;
   chainId: string;
   accountName: string;
-  nonFungibles: Token[];
+  nonFungibles: NonFungibleTokenBalance[];
   transactions: Transaction[];
 }
 

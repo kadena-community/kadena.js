@@ -28,8 +28,8 @@ import type {
   Guard,
   NonFungibleAccount,
   NonFungibleChainAccount,
-  Token,
-  TokenInfo,
+  NonFungibleToken,
+  NonFungibleTokenBalance,
   TransactionCapability,
   TransactionCommand,
   TransactionMempoolInfo,
@@ -81,8 +81,8 @@ export const builder = new SchemaBuilder<
       Guard: Guard;
       NonFungibleAccount: NonFungibleAccount;
       NonFungibleChainAccount: NonFungibleChainAccount;
-      Token: Token;
-      TokenInfo: TokenInfo;
+      NonFungibleTokenBalance: NonFungibleTokenBalance;
+      NonFungibleToken: NonFungibleToken;
       TransactionMeta: TransactionMeta;
       ExecutionPayload: ExecutionPayload;
       ContinuationPayload: ContinuationPayload;
