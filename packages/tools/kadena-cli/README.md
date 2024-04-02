@@ -217,18 +217,18 @@ kadena network set-default [options]
 | **Arguments & Options**        | **Description**                               | **Required** |
 | ------------------------------ | --------------------------------------------- | ------------ |
 | --network                      | Select name of network to set default         |              |
-| --network-default-confirmation | Confirmation for default network to set/unset |              |
+| --confirm                      | Confirmation for default network to set/unset |              |
 
 example for setting default network:
 
 ```
-kadena network set-default --network="testnet" --network-default-confirmation
+kadena network set-default --network="testnet" --confirm
 ```
 
 example for removing default network:
 
 ```
-kadena network set-default --network="none" --network-default-confirmation
+kadena network set-default --network="none" --confirm
 ```
 
 ## Passing a network as "none" will remove the default network
@@ -854,7 +854,7 @@ signers:
   - public: '{{key:from}}'
     caps:
       - name: 'coin.TRANSFER'
-        args: ['{{{account:from}}}', '{{{account:to}}}', {{ decimal:amount }}]
+        args: ['{{{account:from}}}', '{{{account:to}}}', { { decimal:amount } }]
       - name: 'coin.GAS'
         args: []
 networkId: '{{network:networkId}}'

@@ -98,13 +98,12 @@ export const createNetworkSetDefaultCommand: (
       confirmationErrorMsg = 'The default network will not be removed.';
     }
 
-    const { networkDefaultConfirmation } =
-      await option.networkDefaultConfirmation({
-        action,
-        network: networkName,
-      });
+    const { confirm } = await option.confirm({
+      action,
+      network: networkName,
+    });
 
-    if (networkDefaultConfirmation === false) {
+    if (confirm === false) {
       log.warning(confirmationErrorMsg);
       return;
     }
