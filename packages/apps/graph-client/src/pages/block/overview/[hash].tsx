@@ -10,7 +10,7 @@ import {
 } from '@/graphql/queries.graph';
 import { CompactTransactionsTable } from '@components/compact-transactions-table/compact-transactions-table';
 import routes from '@constants/routes';
-import { KRoundedKdacolorGreen } from '@kadena/react-icons/brand';
+import { KSquareKdacolorGreen } from '@kadena/react-icons/brand';
 import {
   Accordion,
   AccordionItem,
@@ -242,7 +242,7 @@ const Block: React.FC = () => {
               <>
                 <ContentHeader
                   heading="Events"
-                  icon={<KRoundedKdacolorGreen />}
+                  icon={<KSquareKdacolorGreen />}
                   description="All events of this block"
                 />
                 <Box margin="sm" />

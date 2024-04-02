@@ -1,5 +1,5 @@
 import type { NonFungibleTokenBalance } from '@/__generated__/sdk';
-import { KRoundedKdacolorGreen } from '@kadena/react-icons/brand';
+import { KSquareKdacolorGreen } from '@kadena/react-icons/brand';
 import {
   Box,
   Cell,
@@ -24,7 +24,7 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
     <>
       <ContentHeader
         heading="Tokens"
-        icon={<KRoundedKdacolorGreen />}
+        icon={<KSquareKdacolorGreen />}
         description="All tokens owned by this account"
       />
 
