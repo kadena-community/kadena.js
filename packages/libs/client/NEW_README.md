@@ -993,17 +993,40 @@ const signedTx = signWithKeypair(tx);
 
 ### Add Signatures Manually
 
-if you already have the signature you can add it in the right order to the tx by
+If you already have the signature you can add it in the right order to the tx by
 using `addSignatures`
 
 ```TS
 addSignatures(transaction, ...signatures): IUnsignedCommand | ICommand
 ```
 
-| Parameter     | Type                                    | Description                                                 |
-| ------------- | --------------------------------------- | ----------------------------------------------------------- |
-| transaction   | IUnsignedCommand                        | the partially signed or unsigned transaction                |
-| ...signatures | Array<{ sig: string; pubKey?: string }> | list of signatures that need to be added to the transaction |
+| Parameter     | Type                                                             | Description                                                 |
+| ------------- | ---------------------------------------------------------------- | ----------------------------------------------------------- |
+| transaction   | IUnsignedCommand                                                 | the partially signed or unsigned transaction                |
+| ...signatures | Array<{ sig: string; pubKey: string }> \| Array<{ sig: string }> | list of signatures that need to be added to the transaction |
+
+**Note** All signatures should either include a `pubKey`, or none of them
+should. If signatures do not include `pubKey`, then the number of signatures
+should match the number of signers; thus, signatures are matched based on their
+order.
+
+#### Examples
+
+Add Signature with pubKey
+
+```TS
+
+const signedTx = addSignatures(partiallySignedTx, { sig: "signature-str", pubKey: "publicKey"})
+
+```
+
+Add Signature based on orger
+
+```TS
+
+const signedTx = addSignatures(twoSignersTx, { sigOne: "signature-str" }, { sigTwo: "signature-str" })
+
+```
 
 ## TODO: ADD OTHER PARTS
 

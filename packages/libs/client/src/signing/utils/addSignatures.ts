@@ -13,7 +13,7 @@ const debug: Debugger = _debug('@kadena/client:signing:addSignature');
  */
 export const addSignatures: (
   transaction: IUnsignedCommand,
-  ...signatures: { sig: string; pubKey?: string }[]
+  ...signatures: { sig: string; pubKey: string }[] | { sig: string }[]
 ) => IUnsignedCommand | ICommand = (transaction, ...signatures) => {
   debug(
     () =>
