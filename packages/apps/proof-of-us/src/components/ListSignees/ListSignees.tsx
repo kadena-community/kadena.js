@@ -60,7 +60,12 @@ export const ListSignees: FC = () => {
           isMultiple ? multipleWrapperClass : '',
         )}
       >
-        <SwipeableList fullSwipe={false} type={Type.IOS} threshold={0.5}>
+        <SwipeableList
+          Tag="ul"
+          fullSwipe={false}
+          type={Type.IOS}
+          threshold={0.5}
+        >
           <Signee
             key={initiator?.accountName}
             signee={initiator}
