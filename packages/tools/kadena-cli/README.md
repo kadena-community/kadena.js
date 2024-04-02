@@ -211,7 +211,7 @@ kadena network add --network-name="mainnet" --network-id="mainnet01" --network-h
 ---
 
 ```
-kadena network set-default [arguments]
+kadena network set-default [options]
 ```
 
 | **Arguments & Options**        | **Description**                               | **Required** |
@@ -854,7 +854,7 @@ signers:
   - public: '{{key:from}}'
     caps:
       - name: 'coin.TRANSFER'
-        args: ['{{{account:from}}}', '{{{account:to}}}', { { decimal:amount } }]
+        args: ['{{{account:from}}}', '{{{account:to}}}', {{ decimal:amount }}]
       - name: 'coin.GAS'
         args: []
 networkId: '{{network:networkId}}'
