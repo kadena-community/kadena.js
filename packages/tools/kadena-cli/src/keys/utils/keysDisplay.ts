@@ -1,6 +1,5 @@
 import type { IPlainKey } from '../../services/index.js';
 import type { IWallet as IServiceWallet } from '../../services/wallet/wallet.types.js';
-import { maskStringPreservingStartAndEnd } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
