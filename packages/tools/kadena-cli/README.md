@@ -602,7 +602,9 @@ kadena account details [arguments]
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
 | --account               | Provide account alias/name to retrieve its details                                                                                        |              |
 | --network               | Name of the network to be used                                                                                                            |              |
+| --fungible              | Type of fungible asset (e.g., "coin").                                                                                                    |              |
 | --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |              |
+
 
 Example: **Single Chain ID:**
 
@@ -611,12 +613,14 @@ using account alias:
 ```
 kadena account details --account="myalias" --network="mainnet" --chain-id="1"
 ```
+Note: Fungible type is retrieved from the account alias file.
 
 using account name:
 
 ```
 kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="1"
 ```
+Note: Specify `--fungible` if using an account name. Defaults to "coin" if not provided.
 
 **Chain ID Range:**
 
@@ -660,7 +664,7 @@ kadena account fund [arguments]
 | --amount                | Amount to fund                                                                                                                            |              |
 | --network               | Name of the network to be used                                                                                                            |              |
 | --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |              |
-| --fungible              | Fungible e.g coin (by default coin is used)                                                                                               |              |
+| --fungible              | Type of fungible asset (e.g., "coin") Defaults to "coin" if not provided                                                                  |              |
 
 Example: **Single Chain ID:**
 
@@ -855,7 +859,7 @@ signers:
   - public: '{{key:from}}'
     caps:
       - name: 'coin.TRANSFER'
-        args: ['{{{account:from}}}', '{{{account:to}}}', { { decimal:amount } }]
+        args: ['{{{account:from}}}', '{{{account:to}}}', {{ decimal:amount }}]
       - name: 'coin.GAS'
         args: []
 networkId: '{{network:networkId}}'
