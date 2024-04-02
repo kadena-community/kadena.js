@@ -15,12 +15,13 @@ export type IPrompt<T> = (
   isOptional: boolean,
 ) => T | Promise<T>;
 
-export interface IOptionCreatorObject {
+interface IOptionCreatorObject {
   key: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   prompt: IPrompt<any>;
   validation: z.ZodSchema;
   option: Option;
+  defaultValue?: unknown;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   expand?: (value: any, args: Record<string, unknown>) => unknown;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

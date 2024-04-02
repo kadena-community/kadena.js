@@ -1,7 +1,7 @@
+import { ConnectView } from '@/components/ConnectView/ConnectView';
 import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
 import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import UserLayout from '@/components/UserLayout/UserLayout';
-import { ConnectPage } from '@/features/ConnectPage/ConnectPage';
 import type { NextPage, NextPageContext } from 'next';
 
 interface IProps {
@@ -15,7 +15,7 @@ const Page: NextPage<IProps> = ({ params }) => {
     <LoginBoundry>
       <UserLayout>
         <ProofOfUsProvider>
-          <ConnectPage params={params} />
+          <ConnectView params={params} />
         </ProofOfUsProvider>
       </UserLayout>
     </LoginBoundry>

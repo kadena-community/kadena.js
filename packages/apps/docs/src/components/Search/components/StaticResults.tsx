@@ -32,7 +32,7 @@ const ItemBreadCrumb: FC<IBreadCrumbProps> = ({ url }) => {
     <>
       {urlArray.map((str, idx) => {
         return (
-          <Text variant="smallest" bold={idx === 0} key={str + idx}>
+          <Text size="smallest" bold={idx === 0} key={str + idx}>
             {removeHashFromString(str)} {idx < urlArray.length - 1 ? ' / ' : ''}
           </Text>
         );

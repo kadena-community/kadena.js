@@ -7,9 +7,13 @@ import { builder } from '../builder';
 builder.queryField('transactionsByPublicKey', (t) =>
   t.prismaConnection({
     description: 'Retrieve all transactions by a given public key.',
-    edgesNullable: false,
     args: {
-      publicKey: t.arg.string({ required: true }),
+      publicKey: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: Prisma.ModelName.Transaction,
     cursor: 'blockHash_requestKey',
@@ -49,7 +53,7 @@ builder.queryField('transactionsByPublicKey', (t) =>
           },
         });
 
-        return await prismaClient.transaction.findMany({
+        return prismaClient.transaction.findMany({
           ...query,
           where: {
             requestKey: {

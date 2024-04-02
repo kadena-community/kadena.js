@@ -106,6 +106,7 @@ export interface IClient extends IBaseClient {
     dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
     // @deprecated
     getPoll: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor) => Promise<IPollResponse>;
+    pollOne: (transactionDescriptor: ITransactionDescriptor, options?: IPollOptions) => Promise<ICommandResult>;
     preflight: (transaction: ICommand | IUnsignedCommand) => Promise<ILocalCommandResult>;
     runPact: (code: string, data: Record<string, unknown>, option: INetworkOptions) => Promise<ICommandResult>;
     // @deprecated
@@ -142,11 +143,15 @@ export interface IContinuationPayloadObject {
 
 // @public (undocumented)
 export interface ICreateClient {
-    (hostUrl: string): IClient;
+    (hostUrl: string, defaults?: {
+        confirmationDepth?: number;
+    }): IClient;
     (hostAddressGenerator?: (options: {
         chainId: ChainId;
         networkId: string;
-    }) => string): IClient;
+    }) => string, defaults?: {
+        confirmationDepth?: number;
+    }): IClient;
 }
 
 // @public
@@ -243,11 +248,17 @@ export interface IPartialPactCommand extends AllPartial<IPactCommand> {
 // @public
 export interface IPollOptions {
     // (undocumented)
-    interval?: number;
+    confirmationDepth?: number;
+    // Warning: (ae-incompatible-release-tags) The symbol "interval" is marked as @public, but its signature references "Milliseconds" which is marked as @alpha
+    //
+    // (undocumented)
+    interval?: Milliseconds;
     // (undocumented)
     onPoll?: (id: string) => void;
+    // Warning: (ae-incompatible-release-tags) The symbol "timeout" is marked as @public, but its signature references "Milliseconds" which is marked as @alpha
+    //
     // (undocumented)
-    timeout?: number;
+    timeout?: Milliseconds;
 }
 
 // @public (undocumented)
@@ -431,6 +442,11 @@ export class Literal {
 
 // @public
 export const literal: (value: string) => Literal;
+
+// @alpha (undocumented)
+export type Milliseconds = number & {
+    _brand?: 'milliseconds';
+};
 
 // @public
 export const Pact: IPact;

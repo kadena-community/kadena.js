@@ -7,7 +7,7 @@ export const gridItemCollapsedSidebarStyle = style([
     bottom: 0,
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: 'layer-2.default',
+    backgroundColor: 'base.default',
     fontSize: 'sm',
     zIndex: 1,
   }),
@@ -60,8 +60,8 @@ export const expandedDrawerTitleClass = style([
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    fontWeight: 'bodyFont.bold',
-    backgroundColor: 'layer-1.default',
+    fontWeight: 'secondaryFont.bold',
+    backgroundColor: 'layer10.default',
   }),
   {
     borderBottom: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
@@ -88,7 +88,7 @@ export const expandedDrawerContentStyle = style([
     position: 'fixed',
     right: 0,
     bottom: 0,
-    backgroundColor: 'layer-1.default',
+    backgroundColor: 'layer10.default',
     fontSize: 'sm',
   }),
   {

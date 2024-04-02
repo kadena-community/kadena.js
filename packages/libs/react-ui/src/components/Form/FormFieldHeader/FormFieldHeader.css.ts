@@ -22,12 +22,12 @@ export const infoClass = style([
 
 export const tagClass = style([
   atoms({
-    backgroundColor: 'layer-3.inverse.default',
+    backgroundColor: 'layer03.inverse.default',
     color: 'text.base.inverse.default',
     borderRadius: 'sm',
     paddingInline: 'sm',
     fontSize: 'xs',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
     display: 'inline-block',
   }),
   {
@@ -40,6 +40,6 @@ export const labelClass = style([
   atoms({
     fontSize: 'sm',
     color: 'text.base.default',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
   }),
 ]);

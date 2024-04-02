@@ -2,7 +2,7 @@ import path from 'node:path';
 
 import type { ICommand, IUnsignedCommand } from '@kadena/types';
 
-import type { IKeyPair } from '../../keys/utils/storage.js';
+import type { IWalletKeyPair } from '../../services/wallet/wallet.types.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import type { CommandOption } from '../../utils/createCommand.js';
@@ -13,6 +13,7 @@ import { saveSignedTransactions } from './storage.js';
 import {
   assessTransactionSigningStatus,
   getTransactionsFromFile,
+  processSigningStatus,
   signTransactionWithKeyPair,
 } from './txHelpers.js';
 
@@ -22,7 +23,7 @@ export const signTransactionWithKeyPairAction = async ({
   legacy,
   directory,
 }: {
-  keyPairs: IKeyPair[];
+  keyPairs: IWalletKeyPair[];
   commands: IUnsignedCommand[];
   directory?: string;
   legacy?: boolean;
@@ -31,7 +32,7 @@ export const signTransactionWithKeyPairAction = async ({
 > => {
   if (unsignedTransactions.length === 0) {
     return {
-      success: false,
+      status: 'error',
       errors: ['No unsigned transactions found.'],
     };
   }
@@ -49,27 +50,18 @@ export const signTransactionWithKeyPairAction = async ({
     );
 
     const signingStatus = await assessTransactionSigningStatus(signedCommands);
-    if (!signingStatus.success) return signingStatus;
 
-    return {
-      success: true,
-      data: {
-        commands: savedTransactions.map((tx) => ({
-          command: tx.command as ICommand,
-          path: tx.filePath,
-        })),
-      },
-    };
+    return processSigningStatus(savedTransactions, signingStatus);
   } catch (error) {
     return {
-      success: false,
+      status: 'error',
       errors: [`Error in signAction: ${error.message}`],
     };
   }
 };
 
 export const signTransactionFileWithKeyPairAction = async (data: {
-  keyPairs: IKeyPair[];
+  keyPairs: IWalletKeyPair[];
   files: string[];
   legacy?: boolean;
 }): Promise<
@@ -103,9 +95,13 @@ export async function signWithKeypair(
         ...mode,
         command,
       });
+
       return await signTransactionWithKeyPairAction({
         commands: [command],
-        keyPairs: key.keyPairs,
+        keyPairs: key.keyPairs.map((x) => ({
+          publicKey: x.publicKey,
+          secretKey: x.secretKey!,
+        })),
         legacy: mode.legacy,
       });
     } else {
@@ -125,7 +121,10 @@ export async function signWithKeypair(
       });
       return await signTransactionFileWithKeyPairAction({
         files: absolutePaths,
-        keyPairs: key.keyPairs,
+        keyPairs: key.keyPairs.map((x) => ({
+          publicKey: x.publicKey,
+          secretKey: x.secretKey!,
+        })),
         legacy: mode.legacy,
       });
     }

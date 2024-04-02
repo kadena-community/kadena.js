@@ -14,7 +14,7 @@ export const LastModifiedDate: FC<IProps> = ({ date }) => {
   const dateString = formatISODate(date);
   return (
     <Stack justifyContent="flex-end">
-      <Text variant="smallest">
+      <Text size="smallest">
         Last updated <time dateTime={dateString}>{dateString}</time>
       </Text>
     </Stack>

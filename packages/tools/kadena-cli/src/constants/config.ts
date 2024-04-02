@@ -24,14 +24,14 @@ export const WALLET_DIR = `${KADENA_DIR}/wallets`;
 // wallet path
 export const NETWORKS_DIR = `${KADENA_DIR}/networks`;
 
-// plain key path
-export const PLAIN_KEY_DIR = `${KADENA_DIR}/keys`;
-
 // templates
 export const TX_TEMPLATE_FOLDER = `${KADENA_DIR}/transaction-templates`;
 
 // account path
 export const ACCOUNT_DIR: string = `${KADENA_DIR}/accounts`;
+
+// Default settings path
+export const DEFAULT_SETTINGS_PATH = `${KADENA_DIR}/defaults`;
 
 // key extensions
 export const WALLET_EXT = '.wallet';
@@ -45,3 +45,6 @@ export const PLAIN_KEY_LEGACY_EXT = '.legacy.key';
 export const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
 export const IS_TEST = process.env.VITEST === 'true';
 export const MAX_CHARACTERS_LENGTH = 80;
+
+export const MAX_CHAIN_IDS: number = 20;
+export const MAX_CHAIN_VALUE: number = MAX_CHAIN_IDS - 1;

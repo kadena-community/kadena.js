@@ -1,5 +1,6 @@
+import { MonoKey } from '@kadena/react-icons/system';
 import type { ITextFieldProps } from '@kadena/react-ui';
-import { SystemIcon, TextField } from '@kadena/react-ui';
+import { TextField } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { forwardRef } from 'react';
@@ -35,7 +36,7 @@ export const RequestKeyField: FC<ITextFieldProps> = forwardRef<
       label={t('Request Key')}
       id="request-key-input"
       placeholder={t('Enter Request Key')}
-      startAddon={<SystemIcon.KeyIconFilled />}
+      startAddon={<MonoKey />}
       {...props}
     />
   );

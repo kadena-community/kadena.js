@@ -1,74 +1,10 @@
 import { validateMnemonic } from '@scure/bip39';
 import { wordlist } from '@scure/bip39/wordlists/english';
 
-import {
-  getAllKeys,
-  getWallet,
-  isIWalletKey,
-  parseKeyPairsInput,
-} from '../keys/utils/keysHelpers.js';
-
-import { services } from '../services/index.js';
-import type { IPrompt } from '../utils/createOption.js';
-import {
-  isValidFilename,
-  maskStringPreservingStartAndEnd,
-} from '../utils/helpers.js';
+import { parseKeyPairsInput } from '../keys/utils/keysHelpers.js';
+import type { IWallet } from '../services/wallet/wallet.types.js';
+import { isNumeric, isValidFilename } from '../utils/helpers.js';
 import { input, select } from '../utils/prompts.js';
-
-export const keyGetAllPlainFilesPrompt: IPrompt<string> = async () => {
-  const keys = await services.plainKey.list();
-  const choices = keys.map((data) => {
-    return {
-      value: data.alias,
-      name: `${data.alias}: ${maskStringPreservingStartAndEnd(data.publicKey)}`,
-    };
-  });
-
-  if (choices.length === 0) {
-    throw new Error('No plain keys found');
-  }
-
-  choices.unshift({
-    value: 'all',
-    name: 'All keys',
-  });
-
-  const choice = await select({
-    message: 'Select a key file:',
-    choices: choices,
-  });
-
-  return choice;
-};
-
-export const keyGetAllKeyFilesPrompt: IPrompt<string> = async (args) => {
-  let keys: string[] = [];
-
-  if (args.wallet === 'all') {
-    keys = (await getAllKeys()).map(
-      (file) =>
-        `${file.alias} (${
-          isIWalletKey(file) ? `wallet ${file.wallet}` : 'plain'
-        })`,
-    );
-  } else {
-    const wallet = await getWallet(args.wallet as string);
-    keys = wallet?.keys ?? [];
-  }
-
-  const choices = keys.map((key) => ({
-    value: key,
-    name: `${args.wallet}: ${key}`,
-  }));
-
-  const choice = await select({
-    message: 'Select a key file:',
-    choices: choices,
-  });
-
-  return choice;
-};
 
 export async function keyAliasPrompt(): Promise<string> {
   return await input({
@@ -79,24 +15,6 @@ export async function keyAliasPrompt(): Promise<string> {
       }
       return true;
     },
-  });
-}
-
-export async function keyPublicKeyPrompt(): Promise<string> {
-  return await input({
-    message: `Enter a public key:`,
-    validate: function (input) {
-      if (!isValidFilename(input)) {
-        return 'Public key must be alphanumeric! Please enter a valid public key.';
-      }
-      return true;
-    },
-  });
-}
-
-export async function keySecretKeyPrompt(): Promise<string> {
-  return await input({
-    message: `Enter a secret key:`,
   });
 }
 
@@ -133,48 +51,6 @@ export async function keyAmountPrompt(): Promise<string> {
   });
 }
 
-export async function keyIndexOrRangePrompt(): Promise<string> {
-  return await input({
-    message: `Enter the index or range of indices for key generation (e.g., 5 or 1-5). Default is 0`,
-    default: '0',
-  });
-}
-
-export async function genFromChoicePrompt(): Promise<
-  'genPublicKey' | 'genPublicSecretKey' | 'genPublicSecretKeyDec'
-> {
-  return await select({
-    message: 'Select an action',
-    choices: [
-      {
-        value: 'genPublicKey',
-        name: 'Generate Public key',
-      },
-      {
-        value: 'genPublicSecretKey',
-        name: 'Generate Public and Secret Key',
-      },
-      {
-        value: 'genPublicSecretKeyDec',
-        name: 'Generate Public and Secret Key (decrypted)',
-      },
-    ],
-  });
-}
-
-export const confirmDeleteAllKeysPrompt: IPrompt<string> = async () => {
-  const message =
-    'Are you sure you want to delete ALL key files? ( Warning: This action cannot be undone. Wallets need to be manually selected for deletion. )';
-
-  return await select({
-    message,
-    choices: [
-      { value: 'yes', name: 'Yes, delete all key files' },
-      { value: 'no', name: 'No, do not delete any key files' },
-    ],
-  });
-};
-
 export async function keyPairsPrompt(): Promise<string> {
   return await input({
     message: 'Enter key pairs as a string publicKey=xxx,secretKey=xxx;...',
@@ -186,5 +62,49 @@ export async function keyPairsPrompt(): Promise<string> {
         return error.message;
       }
     },
+  });
+}
+
+export async function walletCreateAccountPrompt(): Promise<string> {
+  return await select({
+    message: 'Create an account using the first wallet key?',
+    choices: [
+      { value: 'true', name: 'Yes' },
+      { value: 'false', name: 'No' },
+    ],
+  });
+}
+
+export async function walletGenerateKeyAmountPrompt(): Promise<string> {
+  return await input({
+    message: 'Amount of keys to generate:',
+    default: '1',
+    validate(input) {
+      if (!isNumeric(input)) {
+        return 'Amount must be a number';
+      }
+      return true;
+    },
+  });
+}
+
+export async function walletGenerateKeyAliasPrompt(): Promise<
+  string | undefined
+> {
+  return await input({
+    message: 'Alias for the generated key (optional):',
+  });
+}
+
+export async function walletKeyIndex(args: {
+  wallet?: IWallet;
+}): Promise<string> {
+  if (!args.wallet) throw Error('walletKeyIndex called without wallet');
+  return await select({
+    message: 'Select a key index:',
+    choices: args.wallet.keys.map((key, index) => ({
+      value: index.toString(),
+      name: `${index}: ${key.publicKey}`,
+    })),
   });
 }

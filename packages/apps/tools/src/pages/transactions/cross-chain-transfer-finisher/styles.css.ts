@@ -23,7 +23,7 @@ export const notificationContainerStyle = style([
 
 export const notificationLinkStyle = style([
   atoms({
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
     textDecoration: 'underline',
     color: 'inherit',
     cursor: 'pointer',
@@ -32,7 +32,7 @@ export const notificationLinkStyle = style([
 
 export const notificationKeyStyle = style([
   atoms({
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
     color: 'inherit',
   }),
 ]);

@@ -10,10 +10,21 @@ builder.queryField('blocksFromDepth', (t) =>
     description:
       'Retrieve blocks by chain and minimal depth. Default page size is 20.',
     args: {
-      minimumDepth: t.arg.int({ required: true }),
+      minimumDepth: t.arg.int({
+        required: true,
+        validate: {
+          nonnegative: true,
+        },
+      }),
       chainIds: t.arg.stringList({
         required: false,
         description: 'Default: all chains',
+        validate: {
+          minLength: 1,
+          items: {
+            minLength: 1,
+          },
+        },
       }),
     },
     cursor: 'hash',

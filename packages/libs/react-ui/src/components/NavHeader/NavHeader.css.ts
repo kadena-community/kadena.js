@@ -78,7 +78,7 @@ export const linkClass = style([
     alignItems: 'center',
     display: 'flex',
     fontSize: 'sm',
-    fontWeight: 'bodyFont.black',
+    fontWeight: 'primaryFont.medium',
     textDecoration: 'none',
     borderRadius: 'sm',
     paddingInline: 'sm',

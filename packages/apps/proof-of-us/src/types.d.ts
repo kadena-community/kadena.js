@@ -48,6 +48,7 @@ interface IProofOfUsData {
   requestKey: string;
   manifestUri?: string;
   imageUri: string;
+  eventName?: string;
   eventId: string;
   mintStatus: IMintStatus;
   status: IBuildStatusValues;
@@ -57,9 +58,9 @@ interface IProofOfUsData {
   type: TokenType;
   date: number;
   minted?: number;
-  signees: IProofOfUsSignee[];
   title?: string;
   uri?: string;
+  isReadyToSign: boolean;
 }
 
 interface IProofOfUsToken {
@@ -126,6 +127,7 @@ interface ISigneePosition {
 type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   name?: string;
   signerStatus: ISignerStatus;
+  signature?: string;
   initiator: boolean;
   socialLink?: ISocial;
   position?: ISigneePosition;
@@ -142,3 +144,15 @@ type IProofOfUsTokenSignee = Pick<
 > & {
   name: string;
 };
+
+interface IToken {
+  eventId?: string;
+  proofOfUsId?: string;
+  requestKey?: string;
+  id: string;
+  info?: {
+    uri: string;
+  };
+  mintStartDate?: number;
+  listener?: Promise<any>;
+}

@@ -2,6 +2,8 @@ import { IParsedCode } from '@kadena/pactjs-generator';
 import { Box, Text } from '@kadena/react-ui';
 import { FC } from 'react';
 
+import { textStyle } from './styles.css';
+
 const Arg: FC<{ arg: IParsedCode['args'][number] }> = ({ arg }) => {
   if ('string' in arg) {
     return <Box style={{ color: 'brown' }}>"{arg.string}"</Box>;
@@ -49,7 +51,7 @@ export const PactCodeView: FC<{ parsedCode: IParsedCode }> = ({
 }) => {
   return (
     <Box>
-      <Text style={{ color: 'blue' }}> {'('}</Text>
+      <Text className={textStyle}> {'('}</Text>
       <Box style={{ paddingLeft: 10 }}>
         <Box style={{ color: 'purple' }}>
           {parsedCode.function.namespace && (
@@ -70,7 +72,7 @@ export const PactCodeView: FC<{ parsedCode: IParsedCode }> = ({
           <Arg key={i} arg={arg} />
         ))}
       </Box>
-      <Text style={{ color: 'blue' }}> {')'}</Text>
+      <Text className={textStyle}> {')'}</Text>
     </Box>
   );
 };

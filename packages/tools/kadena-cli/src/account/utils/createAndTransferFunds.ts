@@ -25,7 +25,7 @@ export async function createAndTransferFund({
     amount: string;
     contract: string;
     chainId: ChainId;
-    networkConfig: INetworkCreateOptions;
+    networkConfig: Pick<INetworkCreateOptions, 'networkId' | 'networkHost'>;
   };
 }): Promise<ITransactionDescriptor> {
   try {
@@ -90,6 +90,8 @@ export async function createAndTransferFund({
 
     return await submit(signedTx);
   } catch (error) {
-    throw Error(`Failed to create an account and transfer fund: ${error}`);
+    throw Error(
+      `Failed to create an account and transfer fund: ${error.message}`,
+    );
   }
 }

@@ -3,7 +3,7 @@ import { atoms } from '../../styles/atoms.css';
 
 export const containerClass = style([
   atoms({
-    backgroundColor: 'layer-2.default',
+    backgroundColor: 'base.default',
     color: 'text.base.default',
     paddingInline: 'xxl',
     paddingBlock: 'lg',

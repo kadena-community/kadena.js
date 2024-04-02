@@ -20,6 +20,7 @@ import { loadNetworkConfig } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
+import { globalOptions } from '../../utils/globalOptions.js';
 import { getExistingNetworks } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
@@ -158,16 +159,16 @@ export const sendTransactionAction = async ({
   }
 
   if (errors.length === transactionsWithDetails.length) {
-    return { success: false, errors };
+    return { status: 'error', errors };
   } else if (errors.length > 0) {
     return {
-      success: true,
+      status: 'success',
       data: { transactions: successfulCommands },
       warnings: errors,
     };
   }
 
-  return { success: true, data: { transactions: successfulCommands } };
+  return { status: 'success', data: { transactions: successfulCommands } };
 };
 
 export const createSendTransactionCommand: (
@@ -177,7 +178,7 @@ export const createSendTransactionCommand: (
   'send',
   'Send a transaction to the network',
   [
-    txOptions.directory({ disableQuestion: true }),
+    globalOptions.directory({ disableQuestion: true }),
     txOptions.txSignedTransactionFiles(),
     txOptions.txTransactionNetwork(),
     txOptions.txPoll(),
@@ -250,7 +251,7 @@ export const createSendTransactionCommand: (
       const result = await sendTransactionAction({ transactionsWithDetails });
       assertCommandError(result, loader);
 
-      if (result.success) {
+      if (result.status === 'success') {
         log.info(
           result.data.transactions
             .map(

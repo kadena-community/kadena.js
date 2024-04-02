@@ -5,6 +5,6 @@ export const labelClass = style([
   atoms({
     fontSize: 'sm',
     color: 'text.base.default',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
   }),
 ]);

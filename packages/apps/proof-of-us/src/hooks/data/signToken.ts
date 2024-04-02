@@ -1,17 +1,19 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { createManifest } from '@/utils/createManifest';
 import { env } from '@/utils/env';
-import { getReturnUrl } from '@/utils/getReturnUrl';
-import { haveAllSigned } from '@/utils/isAlreadySigning';
-import { createConnectTokenTransaction, getTokenId } from '@/utils/proofOfUs';
-import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
+import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAccount } from '../account';
 
 export const useSignToken = () => {
-  const { updateSigner, proofOfUs, background, hasSigned, updateProofOfUs } =
-    useProofOfUs();
+  const {
+    updateSignee,
+    proofOfUs,
+    hasSigned,
+    updateProofOfUs,
+    getSignature,
+    isInitiator,
+  } = useProofOfUs();
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [data] = useState<IProofOfUs | undefined>(undefined);
@@ -21,93 +23,51 @@ export const useSignToken = () => {
   const searchParams = useSearchParams();
   const transaction = searchParams.get('transaction');
 
-  const createTx = async () => {
-    if (!proofOfUs || !account) return;
-
-    const imageData = await createImageUrl(background.bg);
-    if (!imageData) {
-      console.error('no image found');
-      return;
-    }
-    const manifest = await createManifest(proofOfUs, imageData.url);
-    const manifestData = await createMetaDataUrl(manifest);
-    if (!manifestData) {
-      console.error('no manifestData found');
-      return;
-    }
-
-    const transaction = await createConnectTokenTransaction(
-      manifestData?.url,
-      proofOfUs,
-      account,
-    );
-
-    const tokenId = await getTokenId(
-      process.env.NEXT_PUBLIC_CONNECTION_EVENTID ?? '',
-      manifestData.url,
-    );
-    return {
-      transaction: transaction,
-      manifestUri: manifestData?.url,
-      imageUri: imageData.url,
-      tokenId,
-    };
-  };
-
   const sign = async () => {
-    if (!transaction || hasSigned()) return;
+    const signed = await hasSigned();
 
-    const signees = updateSigner({ signerStatus: 'success' }, true);
-    console.log('update in signtoken sign');
+    if (!transaction || signed || !proofOfUs) return;
+    const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
+
+    const signature = await getSignature(tx);
+    await updateSignee({ signerStatus: 'success', signature }, true);
+
+    const accountIsInitiator = await isInitiator();
     await updateProofOfUs({
-      tx: transaction,
-      status: haveAllSigned(signees) ? 4 : 3,
-      signees: signees,
+      // tx: transaction,
+      status: accountIsInitiator ? 4 : 3,
     });
 
     setIsLoading(false);
     setHasError(false);
 
-    //router.replace(getReturnUrl());
+    //when the account is not the initiator you want to redirect.
+    //if they are the initiator, you dont, so the app will submit the nft
+    if (accountIsInitiator) return;
+
+    router.replace(
+      `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
+        tx.hash
+      }`,
+    );
   };
 
   useEffect(() => {
+    if (!proofOfUs) return;
     sign();
-  }, [searchParams, transaction]);
+  }, [searchParams, transaction, proofOfUs]);
 
   const signToken = async () => {
     if (!proofOfUs || !account) return;
     setIsLoading(true);
     setHasError(false);
-
-    let transaction = proofOfUs.tx;
-    if (!transaction) {
-      const transactionData = await createTx();
-      if (!transactionData) return;
-
-      transaction = Buffer.from(
-        JSON.stringify(transactionData.transaction),
-      ).toString('base64');
-
-      console.log('update in signtoken signtoken');
-      await updateProofOfUs({
-        requestKey: transactionData.transaction?.hash,
-        tokenId: transactionData.tokenId,
-        manifestUri: transactionData.manifestUri,
-        imageUri: transactionData.imageUri,
-        signees: updateSigner({ signerStatus: 'signing' }, true),
-      });
-    } else {
-      console.log('update in signtoken else');
-      await updateProofOfUs({
-        signees: updateSigner({ signerStatus: 'signing' }, true),
-      });
-    }
+    const transaction = proofOfUs.tx;
+    await updateSignee({ signerStatus: 'signing' }, true);
 
     router.push(
       `${
         process.env.NEXT_PUBLIC_WALLET_URL
-      }/sign?transaction=${transaction}&chainId=${
+      }sign?transaction=${transaction}&chainId=${
         env.CHAINID
       }&returnUrl=${getReturnUrl()}
       `,

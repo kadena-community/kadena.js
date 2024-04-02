@@ -8,7 +8,7 @@ export const cardClass = style([
     borderRadius: 'md',
     padding: 'md',
     textAlign: 'center',
-    fontFamily: 'bodyFont',
+    fontFamily: 'secondaryFont',
   }),
   {
     border: `2px solid ${borderColor}`,
@@ -41,7 +41,7 @@ export const aliasClass = style([
 export const initialsClass = style([
   atoms({
     fontSize: '9xl',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
   }),
 ]);
 

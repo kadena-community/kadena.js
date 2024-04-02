@@ -1,9 +1,11 @@
-import type { INotificationProps } from '@kadena/react-ui';
 import {
-  Notification,
-  NotificationHeading,
-  SystemIcon,
-} from '@kadena/react-ui';
+  MonoAccessTime,
+  MonoCheck,
+  MonoInfo,
+  MonoWarning,
+} from '@kadena/react-icons/system';
+import type { INotificationProps } from '@kadena/react-ui';
+import { Notification, NotificationHeading } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -22,10 +24,10 @@ const statusToColorMap: Record<FormStatus, INotificationProps['intent']> = {
 };
 
 const statusToIconMap: Record<FormStatus, INotificationProps['icon']> = {
-  erroneous: <SystemIcon.AlertBox />,
-  idle: <SystemIcon.AlertCircleOutline />,
-  processing: <SystemIcon.Information />,
-  successful: <SystemIcon.Check />,
+  erroneous: <MonoWarning />,
+  idle: <MonoAccessTime />,
+  processing: <MonoInfo />,
+  successful: <MonoCheck />,
 };
 
 export interface IFormStatusNotificationProps {

@@ -8,7 +8,7 @@ import { log } from './logger.js';
 import { readStdin } from './stdin.js';
 import type { FlattenObject, Fn, Prettify } from './typeUtilities.js';
 
-export type OptionConfig<Option extends OptionType> = {
+type OptionConfig<Option extends OptionType> = {
   [P in Option['key']]: Option['transform'] extends Fn
     ? Awaited<ReturnType<Option['transform']>>
     : Awaited<ReturnType<Option['prompt']>>;
@@ -23,7 +23,7 @@ type PromptFn = (
   originalArgs: Record<string, unknown>,
 ) => unknown;
 
-export async function executeOption<Option extends OptionType>(
+async function executeOption<Option extends OptionType>(
   option: Option,
   args: Record<string, unknown> = {},
   originalArgs: Record<string, unknown> = {},
@@ -41,7 +41,12 @@ export async function executeOption<Option extends OptionType>(
     if (args.quiet !== true && args.quiet !== 'true') {
       prompted = true;
       value = await (option.prompt as PromptFn)(args, originalArgs);
-    } else if (option.isOptional === false) {
+    } else if (args.quiet === true || args.quiet === 'true') {
+      value = option.defaultValue;
+    } else if (
+      option.isOptional === false &&
+      option.defaultValue === undefined
+    ) {
       // Should have been handled earlier, but just in case
       throw new Error(
         `Missing required argument: ${option.key} (${option.option.flags})`,
@@ -259,6 +264,7 @@ export const createCommand =
           return;
         }
         log.error(`\nAn error occurred: ${error.message}\n`);
+        log.debug(error.stack);
         log.info(
           `Is this a bug? Let us know:\n${generateBugReportLink(
             getCommandExecution(`${program.name()} ${name}`, args, values),
@@ -270,13 +276,16 @@ export const createCommand =
     });
   };
 
-export function handleQuietOption(
+function handleQuietOption(
   args: Record<string, unknown>,
   options: ReturnType<ReturnType<typeof createOption>>[],
 ): void {
   if (args.quiet === true) {
     const missing = options.filter(
-      (option) => option.isOptional === false && args[option.key] === undefined,
+      (option) =>
+        option.isOptional === false &&
+        args[option.key] === undefined &&
+        option.defaultValue === undefined,
     );
     if (missing.length) {
       log.error(
@@ -291,7 +300,7 @@ export function handleQuietOption(
   }
 }
 
-export function getCommandExecution(
+function getCommandExecution(
   command: string,
   args: Record<string, unknown>,
   generalArgs: string[] = [],

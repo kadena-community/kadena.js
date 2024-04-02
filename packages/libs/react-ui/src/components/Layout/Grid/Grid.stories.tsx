@@ -21,7 +21,6 @@ type StoryType = {
 
 const meta: Meta<StoryType> = {
   title: 'Layout/Grid',
-  component: Grid,
   decorators: [
     (story) => (
       <>

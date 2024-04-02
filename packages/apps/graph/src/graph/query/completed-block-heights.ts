@@ -11,11 +11,27 @@ builder.queryField('completedBlockHeights', (t) =>
     description:
       'Retrieve all completed blocks from a given height. Default page size is 20.',
     args: {
-      completedHeights: t.arg.boolean({ required: false, defaultValue: false }),
-      heightCount: t.arg.int({ required: false, defaultValue: 3 }),
+      completedHeights: t.arg.boolean({
+        required: false,
+        defaultValue: false,
+      }),
+      heightCount: t.arg.int({
+        required: false,
+        defaultValue: 3,
+        validate: {
+          nonnegative: true,
+        },
+      }),
       chainIds: t.arg.stringList({
         required: false,
         defaultValue: defaultChainIds,
+        description: 'Default: all chains',
+        validate: {
+          minLength: 1,
+          items: {
+            minLength: 1,
+          },
+        },
       }),
     },
     cursor: 'hash',

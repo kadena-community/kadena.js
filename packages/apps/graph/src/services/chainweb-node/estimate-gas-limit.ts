@@ -189,7 +189,12 @@ export const estimateGasLimit = async (
           { meta: input.meta },
           { signers: input.signers },
           { networkId },
-        )(),
+        )({
+          meta: {
+            gasLimit: 10000,
+            gasPrice: 1.0e-8,
+          },
+        }),
       );
       break;
     case 'partial-command':
@@ -203,7 +208,12 @@ export const estimateGasLimit = async (
           { meta: input.meta },
           { signers: input.signers },
           { networkId },
-        )(),
+        )({
+          meta: {
+            gasLimit: 10000,
+            gasPrice: 1.0e-8,
+          },
+        }),
       );
       break;
     case 'payload':
@@ -211,7 +221,12 @@ export const estimateGasLimit = async (
         composePactCommand(
           { payload: input.payload },
           { meta: { chainId: input.chainId } },
-        )(),
+        )({
+          meta: {
+            gasLimit: 10000,
+            gasPrice: 1.0e-8,
+          },
+        }),
       );
       break;
     case 'code':
@@ -226,7 +241,12 @@ export const estimateGasLimit = async (
             },
           },
           { meta: { chainId: input.chainId } },
-        )(),
+        )({
+          meta: {
+            gasLimit: 10000,
+            gasPrice: 1.0e-8,
+          },
+        }),
       );
       break;
     default:
@@ -246,13 +266,21 @@ export const estimateGasLimit = async (
         `${dotenv.NETWORK_HOST}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
     ).local(transaction, configuration);
 
+    if (result.result.status === 'failure') {
+      throw result.result.error;
+    }
+
     returnValue.amount = result.gas;
     returnValue.transaction = JSON.stringify(transaction);
 
     return returnValue;
   } catch (error) {
     throw new GasLimitEstimationError(
-      'Chainweb Node was unable to estimate the gas limit for the transaction. Please check your input and try again.',
+      `Chainweb Node was unable to estimate the gas limit ${
+        error.type === 'TxFailure'
+          ? 'due to the transaction failing'
+          : 'for an unknown reason'
+      }. Please check your input and try again.`,
       error,
     );
   }

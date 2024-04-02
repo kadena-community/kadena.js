@@ -1,5 +1,3 @@
-import { isAbsolute, join } from 'node:path';
-
 import type { IPactCommand } from '@kadena/client';
 import {
   addSignatures,
@@ -14,19 +12,28 @@ import {
 } from '@kadena/hd-wallet/chainweaver';
 import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
+import { isAbsolute, join } from 'path';
 import { z } from 'zod';
-import type { IWallet } from '../../keys/utils/keysHelpers.js';
-import { getWalletKey } from '../../keys/utils/keysHelpers.js';
-import type { IKeyPair as IKeyPairLocal } from '../../keys/utils/storage.js';
 import { ICommandSchema } from '../../prompts/tx.js';
 import { services } from '../../services/index.js';
+import type {
+  IWallet,
+  IWalletKey,
+  IWalletKeyPair,
+} from '../../services/wallet/wallet.types.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
+import type { ISavedTransaction } from './storage.js';
 
 export interface ICommandData {
   networkId: string;
   chainId: string;
+}
+
+export interface IWalletWithKey {
+  wallet: IWallet;
+  relevantKeyPairs: IWalletKey[];
 }
 
 /**
@@ -136,78 +143,48 @@ export function formatDate(): string {
   return `${year}-${month}-${day}-${hours}:${minutes}`;
 }
 
-/**
- * Signs a transaction using the provided wallet seed and password.
- *
- * @param walletContent - The wallet seed.
- * @param password - The password for the wallet.
- * @param unsignedCommands - The command to be signed.
- * @param legacy - Optional flag for legacy signing method.
- * @returns A promise that resolves to a signed command or undefined.
- */
-export async function signTransactionsWithSeed(
+export async function signTransactionWithWallet(
   wallet: IWallet,
-  walletContent: EncryptedString,
   password: string,
-  unsignedTransactions: IUnsignedCommand[],
-  legacy?: boolean,
-): Promise<(ICommand | IUnsignedCommand)[]> {
+  unsignedTransaction: IUnsignedCommand,
+  relevantKeyPairs: IWalletKey[] = [],
+): Promise<ICommand | IUnsignedCommand> {
   try {
-    const signedTransactions: (ICommand | IUnsignedCommand)[] = [];
+    const signatures = await Promise.all(
+      relevantKeyPairs.map(async (key) => {
+        if (typeof key.index !== 'number') {
+          throw new Error('Key index not found');
+        }
+        if (wallet.legacy === true) {
+          const sigUint8Array = await legacyKadenaSignWithSeed(
+            password,
+            unsignedTransaction.cmd,
+            wallet.seed,
+            key.index,
+          );
+          return {
+            sig: Buffer.from(sigUint8Array).toString('hex'),
+            pubKey: key.publicKey,
+          };
+        } else {
+          const signWithSeed = kadenaSignWithSeed(
+            password,
+            wallet.seed,
+            key.index,
+          );
+          const sigs = await signWithSeed(unsignedTransaction.hash);
+          return {
+            sig: sigs.sig,
+            pubKey: key.publicKey,
+          };
+        }
+      }),
+    );
 
-    for (let i = 0; i < unsignedTransactions.length; i++) {
-      const unsignedCommand = unsignedTransactions[i];
-      const parsedTransaction = JSON.parse(unsignedCommand.cmd);
-      const keys = await Promise.all(
-        wallet.keys.map((key) => getWalletKey(wallet, key)),
-      );
-      const relevantKeyPairs = getRelevantKeypairs(parsedTransaction, keys);
-
-      if (relevantKeyPairs.length === 0) {
-        log.error(
-          `\nNo matching signable keys found for transaction at index ${i} between wallet and transaction.\n`,
-        );
-        continue;
-      }
-
-      const signatures = await Promise.all(
-        relevantKeyPairs.map(async (key) => {
-          if (typeof key.index !== 'number') {
-            throw new Error('Key index not found');
-          }
-          if (legacy === true) {
-            const sigUint8Array = await legacyKadenaSignWithSeed(
-              password,
-              unsignedCommand.cmd,
-              walletContent,
-              key.index,
-            );
-            return {
-              sig: Buffer.from(sigUint8Array).toString('hex'),
-              pubKey: key.publicKey,
-            };
-          } else {
-            const signWithSeed = kadenaSignWithSeed(
-              password,
-              walletContent,
-              key.index,
-            );
-            const sigs = await signWithSeed(unsignedCommand.hash);
-            return {
-              sig: sigs.sig,
-              pubKey: key.publicKey,
-            };
-          }
-        }),
-      );
-
-      const command = addSignatures(unsignedCommand, ...signatures);
-      signedTransactions.push(command);
-    }
-
-    return signedTransactions;
+    return addSignatures(unsignedTransaction, ...signatures);
   } catch (error) {
-    throw new Error(`Error signing transaction: ${error.message}`);
+    log.error(`Error signing transaction: ${error.message}`);
+    return unsignedTransaction;
   }
 }
 
@@ -221,7 +198,7 @@ export async function signTransactionsWithSeed(
  */
 
 export async function signTransactionWithKeyPair(
-  keys: IKeyPairLocal[],
+  keys: IWalletKeyPair[],
   unsignedTransactions: IUnsignedCommand[],
   legacy?: boolean,
 ): Promise<(ICommand | IUnsignedCommand)[]> {
@@ -270,10 +247,10 @@ export async function signTransactionWithKeyPair(
   }
 }
 
-export function getRelevantKeypairs(
+export function getRelevantKeypairs<T extends { publicKey: string }>(
   tx: IPactCommand,
-  keypairs: IKeyPairLocal[],
-): IKeyPairLocal[] {
+  keypairs: T[],
+): T[] {
   const relevantKeypairs = keypairs.filter((keypair) =>
     tx.signers.some(({ pubKey }) => pubKey === keypair.publicKey),
   );
@@ -340,43 +317,69 @@ export async function assessTransactionSigningStatus(
     throw new Error('No commands provided.');
   }
 
-  let allSigned = true;
+  let commandStatus: 'error' | 'success' | 'partial' = 'success';
   const errors: string[] = [];
+  const warnings: string[] = [];
   const signedCommands: ICommand[] = [];
+  const partiallySignedTransactions: string[] = [];
 
   for (const command of commands) {
     if (!command) {
-      allSigned = false;
+      commandStatus = 'error';
       errors.push('One or more transactions failed to sign.');
       continue;
     }
 
     if (isSignedTransaction(command)) {
-      signedCommands.push(command);
-    } else {
-      allSigned = false;
-      if (isPartiallySignedTransaction(command)) {
-        const status = getSignersStatus(command);
-        const formattedStatus = status
-          .map(
-            (signerStatus) =>
-              `Public Key: ${signerStatus.publicKey}, Signed: ${
-                signerStatus.isSigned ? 'Yes' : 'No'
-              }`,
-          )
-          .join('\n');
-        errors.push(`Transaction partially signed: ${formattedStatus}`);
-      } else {
-        errors.push('Transaction is unsigned.');
+      if (commandStatus === 'error') {
+        commandStatus = 'partial';
       }
+      signedCommands.push(command);
+    } else if (isPartiallySignedTransaction(command)) {
+      commandStatus = 'partial';
+      const status = getSignersStatus(command);
+      const formattedStatus = status
+        .map(
+          (signerStatus) =>
+            ` Public Key: ${signerStatus.publicKey}, Signed: ${
+              signerStatus.isSigned ? 'Yes' : 'No'
+            }`,
+        )
+        .join('\n');
+
+      warnings.push(
+        `Transaction with hash: ${command.hash} is partially signed:\n${formattedStatus}`,
+      );
+      partiallySignedTransactions.push(
+        `transaction-${command.hash.slice(0, 10)}-partial.json`,
+      );
+    } else {
+      errors.push(
+        `Transaction with hash: ${command.hash} is skipped because no matching keys within wallet(s) were found and left unsigned.`,
+      );
     }
   }
 
-  return {
-    success: allSigned,
-    data: signedCommands,
-    errors: errors,
-  };
+  if (partiallySignedTransactions.length > 0) {
+    const commandString = `\n kadena tx sign --tx-unsigned-transaction-files="${partiallySignedTransactions.join(
+      ',',
+    )}"`;
+    warnings.push(
+      `\n\nTo sign the partially signed transactions, now run the follow-up command:${commandString}`,
+    );
+  }
+
+  if (
+    commandStatus === 'success' &&
+    errors.length === 0 &&
+    warnings.length === 0
+  ) {
+    return { status: 'success', data: signedCommands, warnings };
+  } else if (commandStatus === 'error' && errors.length > 0) {
+    return { status: 'error', errors, warnings };
+  } else {
+    return { status: 'partial', data: signedCommands, errors, warnings };
+  }
 }
 
 export async function getTransactionsFromFile(
@@ -441,3 +444,174 @@ export const requestKeyValidation = z
       message: 'Request key is invalid. Please provide a valid request key.',
     },
   );
+
+export async function getWalletsAndKeysForSigning(
+  unsignedTransactions: IUnsignedCommand[],
+): Promise<IWalletWithKey[]> {
+  const wallets = await services.wallet.list();
+  const foundWalletsWithKeys: IWalletWithKey[] = [];
+
+  for (const wallet of wallets) {
+    if (wallet !== null) {
+      for (const command of unsignedTransactions) {
+        try {
+          const commandObj = JSON.parse(command.cmd) as IPactCommand;
+          const signers = commandObj?.signers ?? [];
+          const { relevantKeyPairs } =
+            await extractRelevantWalletAndKeyPairsFromCommand(command, wallet);
+
+          const unsignedRelevantKeyPairs = relevantKeyPairs.filter(
+            (keyPair) => {
+              const signerIndex = signers.findIndex(
+                (signer) => signer.pubKey === keyPair.publicKey,
+              );
+              const sig = command.sigs[signerIndex];
+              // Check sig for this signer if null or undefined -> not signed
+              return sig === null || sig === undefined;
+            },
+          );
+
+          if (unsignedRelevantKeyPairs.length > 0) {
+            const existingEntry = foundWalletsWithKeys.find(
+              (entry) => entry.wallet === wallet,
+            );
+            if (existingEntry) {
+              existingEntry.relevantKeyPairs = [
+                ...new Set([
+                  ...existingEntry.relevantKeyPairs,
+                  ...unsignedRelevantKeyPairs,
+                ]),
+              ];
+            } else {
+              foundWalletsWithKeys.push({
+                wallet: wallet,
+                relevantKeyPairs: unsignedRelevantKeyPairs,
+              });
+            }
+          }
+        } catch (error) {
+          log.error(`Error processing wallet ${wallet} for command:`, error);
+        }
+      }
+    }
+  }
+
+  return foundWalletsWithKeys;
+}
+
+export async function extractRelevantWalletAndKeyPairsFromCommand(
+  command: IUnsignedCommand,
+  wallet: IWallet,
+): Promise<IWalletWithKey> {
+  try {
+    const parsedTransaction = JSON.parse(command.cmd);
+
+    const relevantKeyPairs = getRelevantKeypairs(
+      parsedTransaction,
+      wallet.keys,
+    );
+
+    return {
+      wallet,
+      relevantKeyPairs,
+    };
+  } catch (error) {
+    throw new Error('An error occurred while extracting key pairs.');
+  }
+}
+
+export async function filterRelevantUnsignedCommandsForWallet(
+  unsignedCommands: IUnsignedCommand[],
+  walletWithKey?: IWalletWithKey,
+): Promise<{
+  unsignedCommands: IUnsignedCommand[];
+  skippedCommands: IUnsignedCommand[];
+  relevantKeyPairs: IWalletKey[];
+}> {
+  const wallet = walletWithKey;
+
+  if (!wallet) {
+    log.error(`Wallet named '${wallet}' not found.`);
+    return {
+      unsignedCommands: [],
+      skippedCommands: [...unsignedCommands],
+      relevantKeyPairs: [],
+    };
+  }
+
+  const walletPublicKeys = wallet.relevantKeyPairs.map(
+    (keyPair) => keyPair.publicKey,
+  );
+
+  const skippedCommands: IUnsignedCommand[] = [];
+  const relevantUnsignedCommands: IUnsignedCommand[] = [];
+  const relevantKeyPairs: IWalletKey[] = [];
+
+  unsignedCommands.forEach((command) => {
+    const commandObj = JSON.parse(command.cmd) as IPactCommand;
+    const signerPublicKeys = commandObj.signers.map((signer) => signer.pubKey);
+    const isRelevant = signerPublicKeys.some((pubKey) =>
+      walletPublicKeys.includes(pubKey),
+    );
+
+    if (isRelevant) {
+      relevantUnsignedCommands.push(command);
+      signerPublicKeys.forEach((pubKey) => {
+        const keyPair = wallet.relevantKeyPairs.find(
+          (kp) => kp.publicKey === pubKey,
+        );
+        if (keyPair && !relevantKeyPairs.includes(keyPair)) {
+          relevantKeyPairs.push(keyPair);
+        }
+      });
+    } else {
+      skippedCommands.push(command);
+    }
+  });
+
+  return {
+    unsignedCommands: relevantUnsignedCommands,
+    skippedCommands,
+    relevantKeyPairs,
+  };
+}
+
+export function processSigningStatus(
+  savedTransactions: ISavedTransaction[],
+  signingStatus: CommandResult<ICommand[]>,
+): CommandResult<{ commands: { command: ICommand; path: string }[] }> {
+  if (
+    signingStatus.status === 'success' ||
+    signingStatus.status === 'partial'
+  ) {
+    const commands = savedTransactions
+      .filter(
+        (tx) => signingStatus.status === 'success' || tx.state === 'signed',
+      )
+      .map((tx) => ({
+        command: tx.command as ICommand,
+        path: tx.filePath,
+      }));
+
+    if (signingStatus.status === 'partial') {
+      return {
+        status: 'partial',
+        data: { commands },
+        errors: signingStatus.errors,
+        warnings: signingStatus.warnings,
+      };
+    } else {
+      return {
+        status: 'success',
+        data: { commands },
+        warnings: signingStatus.warnings,
+      };
+    }
+  } else {
+    return {
+      status: 'error',
+      errors: signingStatus.errors,
+      warnings: signingStatus.warnings,
+    };
+  }
+}

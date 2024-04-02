@@ -1,3 +1,4 @@
+import { Button } from '@/components/Button/Button';
 import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
 import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import { ScreenHeight } from '@/components/ScreenHeight/ScreenHeight';
@@ -8,6 +9,7 @@ import { useListen } from '@/hooks/listen';
 import { SubmitStatus } from '@/hooks/submit';
 import { Stack } from '@kadena/react-ui';
 import type { GetServerSidePropsContext, NextPage } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -23,7 +25,10 @@ const Page: NextPage<IProps> = ({ params }) => {
   const router = useRouter();
 
   const init = async () => {
-    await listen(params.requestKey);
+    try {
+      //TODO: use listener from the tokenprovider
+      await listen(params.requestKey);
+    } catch (e) {}
   };
 
   useEffect(() => {
@@ -38,9 +43,19 @@ const Page: NextPage<IProps> = ({ params }) => {
   return (
     <LoginBoundry>
       <UserLayout>
-        <ScreenHeight>
-          <ProofOfUsProvider>
-            {status !== SubmitStatus.ERROR && <LoadingStatus />}
+        <ProofOfUsProvider>
+          <ScreenHeight>
+            {status !== SubmitStatus.ERROR && (
+              <Stack flex={1} flexDirection="column">
+                <LoadingStatus />
+                <Stack flex={1} />
+                <Stack>
+                  <Link href="/user">
+                    <Button>Go to dashboard</Button>
+                  </Link>
+                </Stack>
+              </Stack>
+            )}
             {status === SubmitStatus.ERROR && (
               <Stack
                 flex={1}
@@ -48,11 +63,13 @@ const Page: NextPage<IProps> = ({ params }) => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <ErrorStatus>{JSON.stringify(result, null, 2)}</ErrorStatus>
+                <ErrorStatus closeUrl="/user">
+                  {JSON.stringify(result, null, 2)}
+                </ErrorStatus>
               </Stack>
             )}
-          </ProofOfUsProvider>
-        </ScreenHeight>
+          </ScreenHeight>
+        </ProofOfUsProvider>
       </UserLayout>
     </LoginBoundry>
   );

@@ -1,0 +1,13 @@
+name: 'Start Blockchain Sandbox'
+runs:
+  using: 'composite'
+  steps:
+    - name: Start sandbox
+      shell: bash
+      run: docker-compose up -d
+      working-directory: .github/actions/sandbox
+
+    - name: Check sandbox health
+      shell: bash
+      run: ./healthcheck.sh
+      working-directory: .github/actions/sandbox

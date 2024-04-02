@@ -1,13 +1,8 @@
-import {
-  Button,
-  FormFieldHeader,
-  Stack,
-  SystemIcon,
-  TextField,
-} from '@kadena/react-ui';
+import { Button, FormFieldHeader, Stack, TextField } from '@kadena/react-ui';
 
 import { validatePublicKey } from '@/services/utils/utils';
 import { stripAccountPrefix } from '@/utils/string';
+import { MonoAdd, MonoDelete } from '@kadena/react-icons/system';
 import useTranslation from 'next-translate/useTranslation';
 import React, { useState } from 'react';
 
@@ -73,7 +68,7 @@ export const AddPublicKeysSection = ({
           isReadOnly
           endAddon={
             <Button
-              icon={<SystemIcon.TrashCan />}
+              icon={<MonoDelete />}
               variant="text"
               onPress={() => deletePublicKey(index)}
               aria-label="Delete public key"
@@ -107,7 +102,7 @@ export const AddPublicKeysSection = ({
         />
         <Stack flexDirection={'row-reverse'}>
           <Button
-            endIcon={<SystemIcon.Plus />}
+            endIcon={<MonoAdd />}
             onPress={() => {
               const value = publicKey;
               const valid = validatePublicKey(stripAccountPrefix(value || ''));

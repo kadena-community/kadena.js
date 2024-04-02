@@ -16,16 +16,11 @@ import {
   chainIdValidation,
   formatZodFieldErrors,
 } from '../account/utils/accountHelpers.js';
-import { KEY_EXT, WALLET_EXT } from '../constants/config.js';
-import {
-  getWallet,
-  parseKeyIndexOrRange,
-  parseKeyPairsInput,
-} from '../keys/utils/keysHelpers.js';
-import { readKeyFileContent } from '../keys/utils/storage.js';
+import { parseKeyPairsInput } from '../keys/utils/keysHelpers.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
+import { services } from '../services/index.js';
 import { createOption } from './createOption.js';
-import { passwordPromptTransform } from './helpers.js';
+import { getDefaultNetworkName, passwordPromptTransform } from './helpers.js';
 import { log } from './logger.js';
 
 // eslint-disable-next-line @rushstack/typedef-var
@@ -69,13 +64,13 @@ export const globalOptions = {
   network: createOption({
     key: 'network' as const,
     prompt: networks.networkSelectPrompt,
+    defaultValue: await getDefaultNetworkName(),
     validation: z.string(),
     option: new Option(
       '-n, --network <network>',
       'Kadena network (e.g. "mainnet")',
     ),
     expand: async (network: string) => {
-      // await ensureNetworksConfiguration();
       try {
         return await loadNetworkConfig(network);
       } catch (e) {
@@ -91,6 +86,7 @@ export const globalOptions = {
     key: 'network' as const,
     prompt: networks.networkSelectOnlyPrompt,
     defaultIsOptional: false,
+    defaultValue: await getDefaultNetworkName(),
     validation: z.string(),
     option: new Option(
       '-n, --network <network>',
@@ -116,10 +112,10 @@ export const globalOptions = {
     }),
     option: new Option('-c, --chain-id <chainId>'),
     transform: (chainId: string) => {
-      const parsedChainId = parseInt(chainId.trim(), 10);
+      const parsedChainId = Number(chainId.trim());
       try {
         chainIdValidation.parse(parsedChainId);
-        return chainId as ChainId;
+        return parsedChainId.toString() as ChainId;
       } catch (error) {
         const errorMessage = formatZodFieldErrors(error);
         throw new Error(`Error: -c --chain-id ${errorMessage}`);
@@ -152,60 +148,28 @@ export const globalOptions = {
       'Enter an alias to store your key',
     ),
   }),
-  keyAliasSelect: createOption({
-    key: 'keyAliasSelect',
-    prompt: keys.keyGetAllKeyFilesPrompt,
-    validation: z.string(),
-    option: new Option(
-      '-a, --key-alias-select <keyAliasSelect>',
-      'Enter a alias to select keys from',
-    ),
-  }),
-  keyIndexOrRange: createOption({
-    key: 'keyIndexOrRange' as const,
-    prompt: keys.keyIndexOrRangePrompt,
-    validation: z.string(),
-    option: new Option(
-      '-r, --key-index-or-range <keyIndexOrRange>',
-      'Enter the index or range of indices for key generation (e.g., 5 or 1-5). Default is 1',
-    ),
-    transform(value) {
-      return parseKeyIndexOrRange(value);
-    },
-  }),
-  keyGenFromChoice: createOption({
-    key: 'keyGenFromChoice',
-    prompt: keys.genFromChoicePrompt,
-    validation: z.string(),
-    option: new Option(
-      '-c, --key-gen-from-choice <keyGenFromChoice>',
-      'Choose an action for generating keys',
-    ),
-  }),
   walletSelect: createOption({
     key: 'walletName',
     prompt: wallets.walletSelectPrompt,
     validation: z.string(),
     option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
     defaultIsOptional: false,
-    expand: async (walletName: string) => {
-      return await getWallet(walletName);
+    expand: async (walletAlias: string) => {
+      return await services.wallet.getByAlias(walletAlias);
     },
   }),
-  message: createOption({
-    key: 'message' as const,
-    prompt: generic.messagePrompt,
+  walletsSelectByWallet: createOption({
+    key: 'walletName',
+    prompt: async (args) => {
+      return Array.isArray(args.wallets)
+        ? wallets.walletSelectByWalletPrompt(args.wallets)
+        : wallets.walletSelectPrompt();
+    },
     validation: z.string(),
-    option: new Option('-m, --message <message>', 'Enter message to decrypt'),
-    transform: async (message: string) => {
-      if (message.includes(WALLET_EXT) || message.includes(KEY_EXT)) {
-        const keyFileContent = await readKeyFileContent(message);
-        if (typeof keyFileContent === 'string') {
-          return keyFileContent;
-        }
-        return keyFileContent?.secretKey;
-      }
-      return message;
+    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
+    defaultIsOptional: false,
+    expand: async (walletAlias: string) => {
+      return await services.wallet.getByAlias(walletAlias);
     },
   }),
   // common
@@ -222,6 +186,22 @@ export const globalOptions = {
       if (!value) return null;
       const file = value.endsWith('.json') ? value : `${value}.json`;
       return join(process.cwd(), file);
+    },
+  }),
+  directory: createOption({
+    key: 'directory' as const,
+    // Directory is an optional flag, and never prompted
+    prompt: () => null,
+    validation: z.string().optional(),
+    option: new Option(
+      '--directory <directory>',
+      `Enter your directory (default: working directory)`,
+    ),
+    transform(value: string) {
+      if (typeof value !== 'string' || value === '') {
+        return process.cwd();
+      }
+      return value;
     },
   }),
 } as const;
@@ -258,6 +238,3 @@ export const securityOptions = {
     })(optionArgs);
   },
 };
-
-export type GlobalOptions = typeof globalOptions;
-export type GlobalFlags = typeof globalFlags;

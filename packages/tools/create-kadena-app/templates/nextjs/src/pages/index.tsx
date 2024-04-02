@@ -64,11 +64,12 @@ const Home: React.FC = (): JSX.Element => {
               Start Interacting with the Kadena Blockchain
             </h1>
             <p className={styles.note}>
-              This is the Kadena starter template using <strong>NextJS</strong>&nbsp;
-              to help you get started on your blockchain development.
+              This is the Kadena starter template using <strong>NextJS</strong>
+              &nbsp; to help you get started on your blockchain development.
             </p>
             <p className={styles.note}>
-              Use the form below to interact with the Kadena blockchain using&nbsp;
+              Use the form below to interact with the Kadena blockchain
+              using&nbsp;
               <code>@kadena/client</code> and edit&nbsp;
               <code>src/pages/index.tsx</code> to get started.
             </p>
