@@ -50,7 +50,7 @@ const selectPublicKeys = createOption({
 
 export const createAddAccountFromWalletCommand = createCommand(
   'add-from-wallet',
-  'Add an local account from a key wallet',
+  'Add an account from a key wallet',
   [
     accountOptions.accountAlias(),
     globalOptions.walletSelect(),
