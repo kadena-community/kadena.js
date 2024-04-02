@@ -1,5 +1,5 @@
 overwrite: true
-schema: node_modules/@kadena/graph/generated-schema.graphql
+schema: ./node_modules/@kadena/graph/generated-schema.graphql
 generates:
   ./src/__generated__/sdk.ts:
     documents: 'src/**/*.graph.(ts|tsx)'
