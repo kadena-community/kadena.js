@@ -21,7 +21,7 @@ export interface ITrackerCardProps {
   labelValues: ILabelValue[];
   helperText?: string;
   helperTextType?: 'mild' | 'severe';
-  icon: ReactElement;
+  icon?: ReactElement;
   variant?: keyof typeof layoutVariant;
 }
 
