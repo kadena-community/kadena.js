@@ -3,7 +3,7 @@ import { txOptions } from '../txOptions.js';
 
 export const options = [
   txOptions.txSignWith(),
-  // sign with local wallet
+  // sign with wallet
   globalOptions.walletsSelectByWallet(),
   securityOptions.createPasswordOption({
     message: 'Enter the wallet password',

@@ -49,7 +49,7 @@ async function removeAccount(
 
 export const createAccountDeleteCommand = createCommand(
   'delete',
-  'Delete local account',
+  'Delete account',
   [
     accountOptions.accountSelectWithAll(),
     accountOptions.accountDeleteConfirmation({ isOptional: false }),
