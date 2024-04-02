@@ -4,7 +4,7 @@ interface SVGRProps {
   title?: string;
   titleId?: string;
 }
-const MonoKRoundedKdacolorGreen = ({
+const KRoundedKdacolorGreen = ({
   title,
   titleId,
   ...props
@@ -26,4 +26,4 @@ const MonoKRoundedKdacolorGreen = ({
     />
   </svg>
 );
-export default MonoKRoundedKdacolorGreen;
+export default KRoundedKdacolorGreen;

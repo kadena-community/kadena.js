@@ -1,4 +1,5 @@
 export { default as KRoundedKdacolorBlack } from './KRoundedKdacolorBlack';
+export { default as KRoundedKdacolorGreen } from './KRoundedKdacolorGreen';
 export { default as KRoundedKdacolorWhite } from './KRoundedKdacolorWhite';
 export { default as KSquareKdacolorBlack } from './KSquareKdacolorBlack';
 export { default as KSquareKdacolorGreen } from './KSquareKdacolorGreen';
