@@ -40,7 +40,7 @@ export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
     return {};
   };
   return (
-    <li
+    <div
       className={classNames(isMultiple ? multipleSigneeClass : signeeClass)}
       style={getSuccessStyle(signee)}
     >
@@ -51,6 +51,6 @@ export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
       <Text className={classNames(accountClass, ellipsClass)}>
         {getAccount(signee)}
       </Text>
-    </li>
+    </div>
   );
 };
