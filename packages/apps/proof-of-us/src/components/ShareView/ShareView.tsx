@@ -3,11 +3,7 @@ import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
-import {
-  isAlreadySigning,
-  isReadyToMint,
-  isSignedOnce,
-} from '@/utils/isAlreadySigning';
+import { isAlreadySigning, isReadyToMint } from '@/utils/isAlreadySigning';
 import {
   MonoArrowBack,
   MonoArrowDownward,
