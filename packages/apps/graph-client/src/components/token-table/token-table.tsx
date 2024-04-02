@@ -1,4 +1,4 @@
-import type { Token } from '@/__generated__/sdk';
+import type { NonFungibleTokenBalance } from '@/__generated__/sdk';
 import { KRoundedKdacolorGreen } from '@kadena/react-icons/brand';
 import {
   Box,
@@ -14,7 +14,7 @@ import { atoms } from '@kadena/react-ui/styles';
 import React from 'react';
 
 interface ITokenTableProps {
-  tokens: Token[];
+  tokens: NonFungibleTokenBalance[];
 }
 
 export const TokenTable = (props: ITokenTableProps): JSX.Element => {

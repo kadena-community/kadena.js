@@ -1,7 +1,11 @@
 import { prismaClient } from '@db/prisma-client';
+import type { Transaction } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
-import { getConditionForMinimumDepth } from '@services/depth-service';
+import {
+  createBlockDepthMap,
+  getConditionForMinimumDepth,
+} from '@services/depth-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
@@ -75,6 +79,7 @@ builder.queryField('transactions', (t) =>
       field: getDefaultConnectionComplexity({
         first: args.first,
         last: args.last,
+        minimumDepth: args.minimumDepth,
       }),
     }),
     async totalCount(__parent, args) {
@@ -89,13 +94,47 @@ builder.queryField('transactions', (t) =>
 
     async resolve(query, __parent, args) {
       try {
-        return prismaClient.transaction.findMany({
-          ...query,
-          where: await generateTransactionFilter(args),
-          orderBy: {
-            height: 'desc',
-          },
-        });
+        let transactions: Transaction[] = [];
+        let skip = 0;
+        const take = query.take;
+
+        while (transactions.length < take) {
+          const remaining = take - transactions.length;
+          const fetchedTransactions = await prismaClient.transaction.findMany({
+            ...query,
+            where: await generateTransactionFilter(args),
+            orderBy: {
+              height: 'desc',
+            },
+            take: remaining,
+            skip,
+          });
+
+          if (fetchedTransactions.length === 0) {
+            break;
+          }
+
+          if (args.minimumDepth) {
+            const blockHashToDepth = await createBlockDepthMap(
+              fetchedTransactions,
+              'blockHash',
+            );
+
+            const filteredTransactions = fetchedTransactions.filter(
+              (transaction) =>
+                blockHashToDepth[transaction.blockHash] >=
+                (args.minimumDepth as number),
+            );
+
+            transactions = [...transactions, ...filteredTransactions];
+          } else {
+            transactions = [...transactions, ...fetchedTransactions];
+          }
+
+          skip += remaining;
+        }
+
+        return transactions.slice(0, take);
       } catch (error) {
         throw normalizeError(error);
       }

@@ -235,7 +235,7 @@ type NonFungibleAccount implements Node {
   accountName: String!
   chainAccounts: [NonFungibleChainAccount!]!
   id: ID!
-  nonFungibles: [Token!]!
+  nonFungibles: [NonFungibleTokenBalance!]!
 
   """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleAccountTransactionsConnection!
@@ -257,7 +257,7 @@ type NonFungibleChainAccount implements Node {
   accountName: String!
   chainId: ID!
   id: ID!
-  nonFungibles: [Token!]!
+  nonFungibles: [NonFungibleTokenBalance!]!
 
   """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleChainAccountTransactionsConnection!
@@ -272,6 +272,22 @@ type NonFungibleChainAccountTransactionsConnection {
 type NonFungibleChainAccountTransactionsConnectionEdge {
   cursor: String!
   node: Transaction!
+}
+
+"""Information related to a token."""
+type NonFungibleToken {
+  precision: Int!
+  supply: Int!
+  uri: String!
+}
+
+"""The token identifier and its balance."""
+type NonFungibleTokenBalance {
+  balance: Int!
+  chainId: String!
+  id: ID!
+  info: NonFungibleToken
+  version: String!
 }
 
 input PactQuery {
@@ -514,22 +530,6 @@ type Subscription {
 
   """Listen for a transaction by request key."""
   transaction(chainId: String, requestKey: String!): Transaction
-}
-
-"""The token identifier and its balance."""
-type Token {
-  balance: Int!
-  chainId: String!
-  id: ID!
-  info: TokenInfo
-  version: String!
-}
-
-"""Information related to a token."""
-type TokenInfo {
-  precision: Int!
-  supply: Int!
-  uri: String!
 }
 
 """A transaction."""

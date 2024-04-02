@@ -1,7 +1,10 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
-import { getConditionForMinimumDepth } from '@services/depth-service';
+import {
+  getConditionForMinimumDepth,
+  getConfirmationDepth,
+} from '@services/depth-service';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 
@@ -34,7 +37,7 @@ builder.queryField('transaction', (t) =>
     complexity: getDefaultConnectionComplexity(),
     async resolve(query, __parent, args) {
       try {
-        const result = await prismaClient.transaction.findMany({
+        const transactions = await prismaClient.transaction.findMany({
           ...query,
           where: {
             requestKey: args.requestKey,
@@ -45,19 +48,32 @@ builder.queryField('transaction', (t) =>
           },
         });
 
-        if (!result) return null;
+        if (!transactions || transactions.length === 0) return null;
 
-        if (result.length === 0) {
-          return null;
+        let filteredTransactions = transactions;
+
+        if (args.minimumDepth) {
+          const confirmationDepths = await Promise.all(
+            transactions.map((transaction) =>
+              getConfirmationDepth(transaction.blockHash),
+            ),
+          );
+
+          filteredTransactions = transactions.filter(
+            (_, index) =>
+              confirmationDepths[index] >= (args.minimumDepth as number),
+          );
+
+          if (filteredTransactions.length === 0) return null;
         }
 
-        if (result.length > 1) {
+        if (filteredTransactions.length > 1) {
           throw new Error(
             `Multiple transactions found for requestKey: ${args.requestKey}`,
           );
         }
 
-        return result[0];
+        return filteredTransactions[0];
       } catch (error) {
         throw normalizeError(error);
       }

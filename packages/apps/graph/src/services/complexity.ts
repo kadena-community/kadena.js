@@ -16,8 +16,23 @@ export const getDefaultConnectionComplexity = (options?: {
   withRelations?: boolean;
   first?: number | null;
   last?: number | null;
-}) =>
-  (options?.withRelations
+  minimumDepth?: number | null;
+}) => {
+  let baseComplexity = options?.withRelations
     ? COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS
-    : COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS) *
-  (options?.first || options?.last || PRISMA.DEFAULT_SIZE);
+    : COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS;
+
+  // If minimumDepth is provided, increase the complexity
+  if (options?.minimumDepth) {
+    // The maximum calculated depth is 6
+    const confirmationDepthMultiplier =
+      options.minimumDepth > 6 ? 6 : options.minimumDepth;
+
+    baseComplexity +=
+      COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * confirmationDepthMultiplier;
+  }
+
+  return (
+    baseComplexity * (options?.first || options?.last || PRISMA.DEFAULT_SIZE)
+  );
+};

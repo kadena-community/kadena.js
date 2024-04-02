@@ -50,7 +50,7 @@ async function accountList(
   try {
     if (accountAlias === 'all') {
       return await getAllAccounts();
-    }  else {
+    } else {
       const account = await readAccountFromFile(accountAlias);
       return [account];
     }
@@ -89,6 +89,9 @@ export const createAccountListCommand: (
 
     const tabularData = generateTabularData(accountsDetails);
 
-    log.output(log.generateTableString(tabularData.header, tabularData.data));
+    log.output(
+      log.generateTableString(tabularData.header, tabularData.data),
+      accountsDetails,
+    );
   },
 );

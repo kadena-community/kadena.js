@@ -163,7 +163,10 @@ export const createAccountDetailsCommand = createCommand(
         ),
       );
       const table = generateTableForAccountDetails(result.data);
-      log.output(log.generateTableString(table.headers, table.data));
+      log.output(
+        log.generateTableString(table.headers, table.data),
+        result.data,
+      );
     }
     assertCommandError(result);
   },

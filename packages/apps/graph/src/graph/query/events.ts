@@ -1,7 +1,11 @@
 import { prismaClient } from '@db/prisma-client';
+import type { Event } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 import { getDefaultConnectionComplexity } from '@services/complexity';
-import { getConditionForMinimumDepth } from '@services/depth-service';
+import {
+  createBlockDepthMap,
+  getConditionForMinimumDepth,
+} from '@services/depth-service';
 import { normalizeError } from '@utils/errors';
 import { parsePrismaJsonColumn } from '@utils/prisma-json-columns';
 import { builder } from '../builder';
@@ -97,6 +101,7 @@ builder.queryField('events', (t) =>
         withRelations: true,
         first: args.first,
         last: args.last,
+        minimumDepth: args.minimumDepth,
       }),
     }),
     async totalCount(__parent, args) {
@@ -110,15 +115,49 @@ builder.queryField('events', (t) =>
     },
     async resolve(query, __parent, args) {
       try {
-        return await prismaClient.event.findMany({
-          ...query,
-          where: await generateEventsFilter(args),
-          orderBy: [
-            { height: 'desc' },
-            { requestKey: 'desc' },
-            { orderIndex: 'desc' },
-          ],
-        });
+        let events: Event[] = [];
+        let skip = 0;
+        const take = query.take;
+
+        while (events.length < take) {
+          const remaining = take - events.length;
+          const fetchedEvents = await prismaClient.event.findMany({
+            ...query,
+            where: await generateEventsFilter(args),
+            orderBy: [
+              { height: 'desc' },
+              { requestKey: 'desc' },
+              { orderIndex: 'desc' },
+            ],
+            take: remaining,
+            skip,
+          });
+
+          if (fetchedEvents.length === 0) {
+            break;
+          }
+
+          if (args.minimumDepth) {
+            const blockHashToDepth = await createBlockDepthMap(
+              fetchedEvents,
+              'blockHash',
+            );
+
+            const filteredEvents = fetchedEvents.filter(
+              (event) =>
+                blockHashToDepth[event.blockHash] >=
+                (args.minimumDepth as number) + 1,
+            );
+
+            events = [...events, ...filteredEvents];
+          } else {
+            events = [...events, ...fetchedEvents];
+          }
+
+          skip += remaining;
+        }
+
+        return events.slice(0, take);
       } catch (error) {
         throw normalizeError(error);
       }

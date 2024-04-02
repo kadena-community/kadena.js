@@ -12,10 +12,7 @@ import {
 } from '../prompts/tx.js';
 import { services } from '../services/index.js';
 import { createOption } from '../utils/createOption.js';
-import { isNotEmptyString } from '../utils/helpers.js';
-import { log } from '../utils/logger.js';
-import { getTemplate } from './commands/templates/templates.js';
-import { getTemplateVariables } from './utils/template.js';
+import { getVariablesByTemplate } from './utils/template.js';
 import { parseInput, requestKeyValidation } from './utils/txHelpers.js';
 
 export const txOptions = {
@@ -24,37 +21,7 @@ export const txOptions = {
     option: new Option('--template <template>', 'select a template'),
     validation: z.string(),
     prompt: tx.selectTemplate,
-    async expand(templateInput: string, args) {
-      // option 1. --template="transfer.yaml"
-      // option 2. --template="./transfer.ktpl"
-      // option 3. cat send.yaml | kadena tx create-transaction
-
-      let template: string;
-
-      if (templateInput === '-' && isNotEmptyString(args.stdin)) {
-        log.debug('using stdin');
-        template = args.stdin;
-      } else {
-        template = await getTemplate(templateInput);
-      }
-
-      if (template === undefined) {
-        // not in template list, try to load from file
-        const templatePath = join(process.cwd(), templateInput);
-        const file = await services.filesystem.readFile(templatePath);
-
-        if (file === null) {
-          // not in file either, error
-          throw Error(`Template "${templateInput}" not found`);
-        }
-
-        template = file;
-      }
-
-      const variables = getTemplateVariables(template);
-
-      return { template, variables };
-    },
+    expand: getVariablesByTemplate,
   }),
   templateData: createOption({
     key: 'templateData',
@@ -219,6 +186,17 @@ export const txOptions = {
     option: new Option(
       '-k, --request-key <requestKey>',
       'Enter your request key',
+    ),
+  }),
+  holes: createOption({
+    key: 'holes' as const,
+    prompt: ({ holes }): boolean => {
+      return holes === true || holes === 'true' || false;
+    },
+    validation: z.boolean().optional(),
+    option: new Option(
+      '-h --holes',
+      'Get a list of all the values this template needs',
     ),
   }),
 };

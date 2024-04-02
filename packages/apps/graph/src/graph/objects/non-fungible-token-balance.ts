@@ -2,9 +2,9 @@ import { getTokenInfo } from '@devnet/simulation/marmalade/get-token-info';
 import type { ChainId } from '@kadena/types';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import TokenInfo from './token-info';
+import NonFungibleToken from './non-fungible-token';
 
-export default builder.objectType('Token', {
+export default builder.objectType('NonFungibleTokenBalance', {
   description: 'The token identifier and its balance.',
   fields: (t) => ({
     id: t.exposeID('id'),
@@ -12,7 +12,7 @@ export default builder.objectType('Token', {
     chainId: t.exposeString('chainId'),
     version: t.exposeString('version'),
     info: t.field({
-      type: TokenInfo,
+      type: NonFungibleToken,
       nullable: true,
       async resolve(parent) {
         try {
