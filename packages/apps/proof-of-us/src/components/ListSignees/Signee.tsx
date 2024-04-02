@@ -1,15 +1,8 @@
 import { useAccount } from '@/hooks/account';
 import { deviceColors } from '@/styles/tokens.css';
 import { getSigneeName } from '@/utils/getSigneeName';
-import { MonoDelete } from '@kadena/react-icons';
 import classNames from 'classnames';
 import type { FC } from 'react';
-import {
-  SwipeableListItem,
-  SwipeAction,
-  TrailingActions,
-} from 'react-swipeable-list';
-import 'react-swipeable-list/dist/styles.css';
 import { SignStatus } from '../SignStatus/SignStatus';
 import { Text } from '../Typography/Text';
 import {
@@ -17,15 +10,12 @@ import {
   ellipsClass,
   multipleSigneeClass,
   nameClass,
-  removeClass,
   signeeClass,
 } from './style.css';
 
 interface IProps {
   signee?: IProofOfUsSignee;
   isMultiple: boolean;
-  canBeRemoved: boolean;
-  handleRemove: ({ signee }: { signee: IProofOfUsSignee }) => Promise<void>;
 }
 
 const isMe = (signer?: IProofOfUsSignee, account?: IAccount) => {
@@ -38,12 +28,7 @@ const getAccount = (signee?: IProofOfUsSignee): string => {
   return signee.accountName;
 };
 
-export const Signee: FC<IProps> = ({
-  signee,
-  isMultiple,
-  canBeRemoved,
-  handleRemove,
-}) => {
+export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
   const { account } = useAccount();
 
   const getSuccessStyle = (signee?: IProofOfUsSignee) => {
@@ -55,39 +40,18 @@ export const Signee: FC<IProps> = ({
     return {};
   };
 
-  const removeSignee = () => {
-    console.log('remove s');
-    if (!signee) return;
-    handleRemove({ signee });
-  };
-
-  const trailingActions = () => (
-    <TrailingActions>
-      <SwipeAction destructive={true} onClick={removeSignee}>
-        <div className={removeClass}>
-          <MonoDelete />
-        </div>
-      </SwipeAction>
-    </TrailingActions>
-  );
-
   return (
-    <SwipeableListItem
-      blockSwipe={!canBeRemoved}
-      trailingActions={trailingActions()}
+    <div
+      className={classNames(isMultiple ? multipleSigneeClass : signeeClass)}
+      style={getSuccessStyle(signee)}
     >
-      <div
-        className={classNames(isMultiple ? multipleSigneeClass : signeeClass)}
-        style={getSuccessStyle(signee)}
-      >
-        <SignStatus status={signee?.signerStatus} />
-        <Text className={classNames(nameClass, ellipsClass)} bold>
-          {getSigneeName(signee)} {isMe(signee, account) && ' (me)'}
-        </Text>
-        <Text className={classNames(accountClass, ellipsClass)}>
-          {getAccount(signee)}
-        </Text>
-      </div>
-    </SwipeableListItem>
+      <SignStatus status={signee?.signerStatus} />
+      <Text className={classNames(nameClass, ellipsClass)} bold>
+        {getSigneeName(signee)} {isMe(signee, account) && ' (me)'}
+      </Text>
+      <Text className={classNames(accountClass, ellipsClass)}>
+        {getAccount(signee)}
+      </Text>
+    </div>
   );
 };

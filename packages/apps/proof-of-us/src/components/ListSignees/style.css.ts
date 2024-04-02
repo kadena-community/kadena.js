@@ -103,14 +103,19 @@ export const ellipsClass = style([
   },
 ]);
 
-export const removeClass = style({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '50px',
-  height: '100%',
-  backgroundColor: deviceColors.red,
-});
+export const removeClass = style([
+  atoms({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 'md',
+  }),
+  {
+    height: '100%',
+    backgroundColor: deviceColors.red,
+    userSelect: 'none',
+  },
+]);
 
 globalStyle(`${wrapperClass}  .swipeable-list-item__content`, {
   backgroundColor: 'transparent',

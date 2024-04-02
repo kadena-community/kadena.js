@@ -1,14 +1,21 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { env } from '@/utils/env';
+import { MonoDelete } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
-import { SwipeableList, Type } from 'react-swipeable-list';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  SwipeAction,
+  SwipeableList,
+  SwipeableListItem,
+  TrailingActions,
+  Type,
+} from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
 import { Heading } from '../Typography/Heading';
 import { Signee } from './Signee';
-import { multipleWrapperClass, wrapperClass } from './style.css';
+import { multipleWrapperClass, removeClass, wrapperClass } from './style.css';
 
 export const ListSignees: FC = () => {
   const { signees, isInitiator, removeSignee } = useProofOfUs();
@@ -22,6 +29,15 @@ export const ListSignees: FC = () => {
   useEffect(() => {
     checkInitiator();
   }, [isInitiator]);
+
+  const handleRemove = useCallback(
+    (signee: IProofOfUsSignee, isInitiator: boolean) => () => {
+      if (!signee || !isInitiator) return;
+
+      removeSignee({ signee });
+    },
+    [],
+  );
 
   if (!signees) return null;
 
@@ -44,22 +60,40 @@ export const ListSignees: FC = () => {
           isMultiple ? multipleWrapperClass : '',
         )}
       >
-        <SwipeableList fullSwipe={true} type={Type.IOS}>
+        <SwipeableList fullSwipe={false} type={Type.IOS} threshold={0.5}>
           <Signee
+            key={initiator?.accountName}
             signee={initiator}
             isMultiple={isMultiple}
-            handleRemove={removeSignee}
-            canBeRemoved={false}
           />
-          {restSignees.map((signee) => (
-            <Signee
-              canBeRemoved={accountIsInitiator}
-              handleRemove={removeSignee}
-              key={signee.accountName}
-              signee={signee}
-              isMultiple={isMultiple}
-            />
-          ))}
+          {restSignees.map((signee) => {
+            const trailingActions = () => (
+              <TrailingActions>
+                <SwipeAction
+                  destructive={true}
+                  onClick={handleRemove(signee, accountIsInitiator)}
+                >
+                  <div className={removeClass}>
+                    <MonoDelete />
+                  </div>
+                </SwipeAction>
+              </TrailingActions>
+            );
+
+            return (
+              <SwipeableListItem
+                blockSwipe={!accountIsInitiator}
+                key={signee.accountName}
+                trailingActions={trailingActions()}
+              >
+                <Signee
+                  key={signee.accountName}
+                  signee={signee}
+                  isMultiple={isMultiple}
+                />
+              </SwipeableListItem>
+            );
+          })}
         </SwipeableList>
       </div>
     </Stack>
