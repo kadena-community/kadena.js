@@ -39,7 +39,6 @@ export const ConnectView: FC<IProps> = () => {
   const check2AddSignee = async () => {
     if (!proofOfUs?.proofOfUsId || !signees) return;
     const isSigneeResult = await isSignee();
-    console.log(22, isSigneeResult, signees.length);
     if (signees.length >= env.MAXSIGNERS && !isSigneeResult) {
       setShowMaxModal(true);
       return;
@@ -49,8 +48,19 @@ export const ConnectView: FC<IProps> = () => {
     router.replace(getReturnUrl());
   };
 
+  const checkIfSignee = async () => {
+    if (!proofOfUs?.proofOfUsId || !signees) return;
+    const isSigneeResult = await isSignee();
+    if (isSigneeResult) return;
+
+    router.replace('/');
+  };
+
   useEffect(() => {
-    if (!shouldAddParam) return;
+    if (!shouldAddParam) {
+      checkIfSignee();
+      return;
+    }
     check2AddSignee();
   }, [proofOfUs?.proofOfUsId, signees?.length, shouldAddParam]);
 
