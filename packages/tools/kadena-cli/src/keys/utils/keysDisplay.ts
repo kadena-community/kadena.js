@@ -160,11 +160,8 @@ export function displayGeneratedPlainKeys(keys: IPlainKey[]): void {
     return;
   }
 
-  const header: TableHeader = ['Public Key', 'Secret Key'];
-  const rows: TableRow[] = keys.map((key) => [
-    key.publicKey,
-    maskStringPreservingStartAndEnd(key.secretKey, 35),
-  ]);
+  const header: TableHeader = ['Public Key'];
+  const rows: TableRow[] = keys.map((key) => [key.publicKey]);
 
   const hasLegacy = keys.some((key) => key.legacy);
   log.info(
@@ -175,6 +172,9 @@ export function displayGeneratedPlainKeys(keys: IPlainKey[]): void {
     ),
   );
 
-  log.output(log.generateTableString(header, rows), keys);
+  log.output(
+    log.generateTableString(header, rows),
+    keys.length === 1 ? keys[0] : keys,
+  );
   log.info('');
 }
