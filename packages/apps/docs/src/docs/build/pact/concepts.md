@@ -1029,7 +1029,7 @@ support _generalized module governance_, allowing for module authors to design
 any governance scheme they wish. Examples include tallying a stakeholder vote on
 an upgrade hash, or enforcing more than one keyset.
 
-### Keysets vs governance functions
+### Keysets and governance functions
 
 To illustrate, let's consider a module governed by a keyset:
 

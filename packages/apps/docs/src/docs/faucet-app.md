@@ -125,10 +125,12 @@ For now, it's enough to know that a keyset is a specific type of guard that cons
 **predicate** that specifies how many of the keys are required to perform an operation. 
 In JSON, a keyset looks like this:
 
-```js
-{
-“keys”: [ “abc123”],
-“pred”: “keys-all”
+```json
+"name":{
+  {
+    “keys”: [ “abc123”],
+    “pred”: “keys-all”
+    }
 }
 ```
 
@@ -160,16 +162,16 @@ Let’s proceed with defining the “free.goliath-faucet-keyset” using the key
 provided via transaction data. You can parse data from the transaction using the
 (read-\*) family of functions:
 
-- [#read-msg](/reference/pact/functions#read-msg)
-- [#read-keyset](/reference/pact/functions/keysets#read-keyset)
-- [#read-string](/reference/pact/functions#read-string)
-- [#read-integer](/reference/pact/functions#read-integer)
-- [#read-decimal](/reference/pact/functions#read-decimal)
+- [read-msg](/reference/functions/general#read-msg)
+- [read-keyset](/reference/functions/keysets#read-keyset)
+- [read-string](/reference/functions/general#read-string)
+- [read-integer](/reference/functions/general#read-integer)
+- [read-decimal](/reference/functions/general#read-decimal)
 
 Our deployment transaction will be sent with two pieces of data:
 
 - ‘upgrade’: a boolean indicating whether this is a contract deployment or
-  an upgrade to the already-deployed module. If the contract is being upgraded, th emodule can skip
+  an upgrade to the already-deployed module. If the contract is being upgraded, the module can skip
   the keyset definition and initialization steps.
 
 - ‘goliath-faucet-contract’: a keyset that should be registered as the
@@ -214,7 +216,7 @@ enforce a keyset guard on the transaction that deploys the contract. This guard
 should ensure that any keysets passed to the contract were also used to sign the
 transaction that deploys the contract. If the enforcement fails, the deployment
 is aborted, and you can fix the keyset and try again.
-[#keyset-ref-guard](/reference/pact/functions/guards#keyset-ref-guardh2089873729)
+For more information, see [keyset-ref-guard](/reference/functions/guards#keyset-ref-guardh2089873729).
 
 ## Interfaces and modules
 
@@ -230,7 +232,7 @@ different purposes. An interface describes the API that a module will implement
 and can supply constants and models for formal verification to aid in that
 implementation, but it doesn’t contain any implementations itself and cannot be
 executed on Chainweb.
-[#interfaces](/build/pact/advanced#interfacesh394925690)
+For more information, see [interfaces](/build/pact/advanced#interfacesh394925690).
 
 Interfaces purely exist as a method of abstraction. An interface can be
 implemented by multiple modules (that means that the module provides an
@@ -239,15 +241,14 @@ blueprint for implementers. Also, Pact functions take a reference to module as
 an argument so long as the module implements a specific interface. That means
 you can write a function that can be used with any module that implements the
 given interface — a powerful form of abstraction.
-[#module-references](/build/pact/advanced#module-referencesh1941667004)
+For more information, see [module-references](/build/pact/advanced#module-referencesh1941667004).
 
 We don’t use interfaces in our contract because it’s quite small and no one else
 is expected to provide another implementation for its API. Instead, we skip
 straight to the implementation: the ‘goliath-faucet’ module.
 
-A module in Pact is the primary unit of organization for Pact code. Modules can
-contain functions, pacts, capabilities, tables, and other Pact code.
-[#module](/reference/pact/syntax#moduleh-1068784020)
+A [module](/reference/syntax#moduleh-1068784020) in Pact is the primary unit of organization for Pact code. 
+Modules can contain functions, pacts, capabilities, tables, and other Pact code.
 
 Let’s define a Pact module with the code for our faucet. To define a module we
 must provide a module name, a module governance function, and then the module
@@ -266,7 +267,7 @@ Governance functions can be a keyset reference, which means that the contract
 can be upgraded so long as the upgrade transaction satisfies the keyset, or they
 can be a “capability” defined in the module. We’ll learn a lot more about
 capabilities later and will use a keyset reference as our governance.
-[#keysets-vs-governance-functions](/build/pact/advanced#keysets-vs-governance-functions)
+For more information, see [Keysets and governance functions](/build/pact/advanced#keysets-and-governance-functions).
 
 ```pact
 (module goliath-faucet "free.goliath-faucet-keyset"
@@ -290,7 +291,7 @@ Now, let’s implement the body of our module. We’ll begin with the two forms 
 metadata we can use to annotate our modules, interfaces, functions, table
 schemas, and other Pact code. The @doc metadata field is for documentation
 strings, and the @model metadata field is for formal verification.
-[#docs-and-metadata](/reference/pact/syntax#docs-and-metadatah85265693)
+For more information, see [Docs and metadata](/reference/syntax#docs-and-metadatah85265693).
 
 ## Metadata
 
@@ -303,11 +304,9 @@ functions must satisfy and invariants that table schemas must satisfy. Pact, via
 the Z3 theorem prover, can prove that there is no possible set of variable
 assignments in our code that will violate the given property or invariant. Or,
 if it does find a violation, it can tell us so we can fix it!
-[#what-do-properties-and-schema-invariants-look-like](/reference/pact/property-checking#what-do-properties-and-schema-invariants-look-likeh1040965298)
 
 Properties (but not invariants) can be defined at the top level of the module so
 they can be reused in multiple functions.
-[#defining-and-reusing-properties](/reference/pact/property-checking#defining-and-reusing-propertiesh-363561805)
 
 We have a few functions that should never succeed unless they were called in a
 transaction signed by the Goliath faucet keyset. We can capture that property in
@@ -329,8 +328,7 @@ in several functions, or values that other modules should be able to refer to.
 Our faucet contract has a specific range of values that it will allow the
 per-request and per-account limits to be set to. It’s useful to capture these
 values in variables that our tests, module code, and other modules on Chainweb
-can refer to. To expose a constant value, use (defconst).
-[#defconst](/reference/pact/syntax#defconsth645951102)
+can refer to. To expose a constant value, use [(defconst)](/reference/syntax#defconsth645951102).
 
 ```pact
 (defconst FAUCET_ACCOUNT "goliath-faucet
@@ -341,7 +339,7 @@ can refer to. To expose a constant value, use (defconst).
    @doc "Users can at minimum ask for up to 100 KDA per account.")
 ```
 
-## Schemas & Tables
+## Schemas and tables
 
 When your smart contract needs to persist some data across multiple calls to
 functions in the contract, it should use a table. Tables in Pact are relational
@@ -358,7 +356,7 @@ Before we define any tables, however, we should define schemas for them. The
 schema for a table specifies the table columns and their data types. #defschema
 
 The schema will be used to verify we are using the right types when reading or
-writing the table. For example, Pact can typecheck our module and ensure we
+writing the table. For example, Pact can type check our module and ensure we
 never try to provide a string for an integer column, or try to insert a row
 that’s missing a column.
 
@@ -384,9 +382,8 @@ schemas) to guarantee it is never possible for an address to exceed their
 account limit or return more funds than they have requested. To specify an
 invariant, use (invariant) and provide a predicate; the Z3 theorem prover will
 check that the variables used in your predicate can never have values that would
-fail the predicate. Not all Pact functions can be used in the predicate; you can
-see a list of available ones here
-[Property and invariant functions](/reference/pact/properties-and-invariants#property-and-invariant-functions)
+fail the predicate. Not all Pact functions can be used in the predicate.
+For more information about property and invariant functions, see [Property validation](/reference/pact/properties-checking).
 
 The first invariant ensures that you can never receive more funds than your
 account limit. The second ensures you can never return more funds than you have
@@ -400,7 +397,7 @@ When our module is deployed, we’ll also need to create the table using the
 (create-table) function (this must be called outside the module).
 
 Pact supplies several data-access functions for working with tables.
-For more information, see [Database](/preference/pact/functions/database)
+For more information, see the [database](/reference/functions/database) function reference.
 
 Note that these functions can only be called by functions within the module that
 defined the table, or in a transaction that satisfies the module governance
@@ -418,9 +415,7 @@ capabilities. A guard in Pact defines a rule that must be satisfied for the
 transaction to continue.
 
 We’ve seen an example already: keysets are one type of guard. But there are
-others, such as pact guards (used to guard that transaction is executed within a
-certain multi-step transactions, such as `(coin.transfer-crosschain)` and user
-guards (arbitrary user-defined predicate functions).
+others, such as pact guards that guard the execution of a step in a multi-step transaction or user guards for user-defined predicate functions.
 
 In short, guards are pure predicate functions over the given environment, which
 can be enforced at any time with (enforce-guard).
@@ -538,7 +533,7 @@ amount. Second, if the transaction succeeded, then the table at the
 ‘funds-requested’ column must have increased by the amount requested. The first
 property is a simple check, but the second uses a property-only function called
 `(column-delta)`.
-For more information about this function, see [Column delta](/reference/pact/properties-and-invariants/database#column-delta).
+For more information about this function, see [column-delta](/reference/property-checking/database#column-deltah-1553511807).
 
 Recall that due to our schema invariants we have some additional checks that
 verify that our table writes are always within the valid bounds of our account
@@ -826,7 +821,7 @@ request file.
 
 ## Initialization
 
-At this point we’ve established our smart contract: we entered a namespace,
+At this point, we’ve established our smart contract: we entered a namespace,
 defined a keyset, and implemented a module. Now it’s time to initialize data.
 
 For a typical smart contract, that simply means creating any tables we defined
@@ -841,7 +836,7 @@ Speaking of: it’s a common practice to implement the initialization step as an
 ‘if’ statement that differentiates between an initial deployment and an upgrade.
 As with our keyset definition at the beginning of the contract, this can be done
 by sending an `“upgrade”` field with a boolean value as part of the transaction
-data
+data:
 
 ```pact
 (if (read-msg "upgrade")

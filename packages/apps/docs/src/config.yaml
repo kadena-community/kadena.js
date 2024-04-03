@@ -110,7 +110,7 @@ pages:
             file: /build/pact/intermediate/built-in-functions.md
           advanced:
             url: /advanced
-            file: /build/pact/intermediate/concepts.md
+            file: /build/pact/concepts.md
       nft-marmalade:
         url: /nft-marmalade
         file: /build/nft-marmalade/what-is-marmalade.md
