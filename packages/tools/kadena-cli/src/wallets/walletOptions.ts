@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { keys, wallets } from '../prompts/index.js';
 import { services } from '../services/index.js';
 import { createOption } from '../utils/createOption.js';
+import { mnemonicPromptTransform } from '../utils/helpers.js';
 
 export const walletOptions = {
   walletName: createOption({
@@ -26,14 +27,15 @@ export const walletOptions = {
         : await services.wallet.getByAlias(walletName);
     },
   }),
-  keyMnemonic: createOption({
-    key: 'keyMnemonic' as const,
+  mnemonicFile: createOption({
+    key: 'mnemonicFile' as const,
     prompt: keys.keyMnemonicPrompt,
-    validation: z.string(),
+    validation: z.literal('-').or(z.object({ _secret: z.string() })),
     option: new Option(
-      '-m, --key-mnemonic <keyMnemonic>',
-      'Enter your 12-word mnemonic phrase to generate keys from',
+      '-m, --mnemonic-file <mnemonicFile>',
+      'Filepath to your 12-word mnemonic phrase file to generate keys from (can be passed via stdin)',
     ),
+    transform: mnemonicPromptTransform('--mnemonic-file'),
   }),
   createAccount: createOption({
     key: 'createAccount' as const,

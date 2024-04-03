@@ -325,48 +325,86 @@ export function getFileParser(
 }
 
 export const passwordPromptTransform =
-  // prettier-ignore
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  (flag: string) =>
-    async (
-      passwordFile: string | { _password: string },
-      args: Record<string, unknown>,
-    ): Promise<string> => {
-      const password =
-        typeof passwordFile === 'string'
-          ? passwordFile === '-'
-            ? (args.stdin as string | null)
-            : await services.filesystem.readFile(passwordFile)
-          : passwordFile._password;
+  (
+    flag: string,
+    useStdin?: boolean,
+  ): ((
+    passwordFile: string | { _password: string },
+    args: Record<string, unknown>,
+  ) => Promise<string>) =>
+  async (passwordFile, args) => {
+    const password =
+      typeof passwordFile === 'string'
+        ? useStdin === true && passwordFile === '-'
+          ? (args.stdin as string | null)
+          : await services.filesystem.readFile(passwordFile)
+        : passwordFile._password;
 
-      if (password === null) {
-        throw new CommandError({
-          errors: [`Password file not found: ${passwordFile}`],
-          exitCode: 1,
-        });
-      }
+    if (password === null) {
+      throw new CommandError({
+        errors: [`Password file not found: ${passwordFile}`],
+        exitCode: 1,
+      });
+    }
 
-      const trimmedPassword = password.trim();
+    const trimmedPassword = password.trim();
 
-      if (typeof passwordFile !== 'string') {
-        log.info(`You can use the ${flag} flag to provide a password.`);
-      }
+    if (typeof passwordFile !== 'string') {
+      log.info(`You can use the ${flag} flag to provide a password.`);
+    }
 
-      if (trimmedPassword.length < 8) {
-        throw new CommandError({
-          errors: ['Password should be at least 8 characters long.'],
-          exitCode: 1,
-        });
-      }
+    if (trimmedPassword.length < 8) {
+      throw new CommandError({
+        errors: ['Password should be at least 8 characters long.'],
+        exitCode: 1,
+      });
+    }
 
-      if (trimmedPassword.includes('\n')) {
-        log.warning(
-          'Password contains new line characters. Make sure you are using the correct password.',
-        );
-      }
+    if (trimmedPassword.includes('\n')) {
+      log.warning(
+        'Password contains new line characters. Make sure you are using the correct password.',
+      );
+    }
 
-      return trimmedPassword;
-    };
+    return trimmedPassword;
+  };
+
+export const mnemonicPromptTransform =
+  (
+    flag: string,
+  ): ((
+    filepath: string | { _secret: string },
+    args: Record<string, unknown>,
+  ) => Promise<string>) =>
+  async (filepath, args) => {
+    const content =
+      typeof filepath === 'string'
+        ? filepath === '-'
+          ? (args.stdin as string | null)
+          : await services.filesystem.readFile(filepath)
+        : filepath._secret;
+
+    if (content === null) {
+      throw new CommandError({
+        errors: [`Mnemonic file not found: ${filepath}`],
+        exitCode: 1,
+      });
+    }
+
+    const trimmedContent = content.trim();
+
+    if (typeof filepath !== 'string') {
+      log.info(`You can use the ${flag} flag to provide a mnemonic.`);
+    }
+
+    if (trimmedContent.includes('\n')) {
+      log.warning(
+        'Mnemonic contains new line characters. Make sure you are using the correct Mnemonic.',
+      );
+    }
+
+    return trimmedContent;
+  };
 
 const defaultNetworkSchema = z.object({
   name: z.string(),
