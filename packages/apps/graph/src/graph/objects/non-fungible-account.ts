@@ -101,7 +101,7 @@ export default builder.node(
                 senderAccount: parent.accountName,
                 events: {
                   some: {
-                    moduleName: 'marmalade-v2.ledger',
+                    moduleName: { startsWith: 'marmalade-v2' },
                   },
                 },
               },
@@ -118,7 +118,7 @@ export default builder.node(
                 senderAccount: parent.accountName,
                 events: {
                   some: {
-                    moduleName: 'marmalade-v2.ledger',
+                    moduleName: { startsWith: 'marmalade-v2' },
                   },
                 },
               },
