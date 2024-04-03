@@ -11,7 +11,7 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import { IPactInt } from '@kadena/types';
+import type { IPactInt } from '@kadena/types';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 

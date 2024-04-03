@@ -12,7 +12,7 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import { IPactInt, PactValue } from '@kadena/types';
+import type { IPactInt } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
