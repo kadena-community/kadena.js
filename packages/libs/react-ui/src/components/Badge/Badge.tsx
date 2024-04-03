@@ -1,5 +1,6 @@
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
+import type { AriaRole } from 'react';
 import React from 'react';
 import { badge } from './Badge.css';
 
@@ -10,6 +11,8 @@ interface IBadgeProps {
   className?: string;
   size?: Variants['size'];
   style?: Variants['style'];
+  ariaRole?: AriaRole;
+  ariaLabel?: string;
 }
 
 /**
@@ -24,9 +27,15 @@ const Badge = ({
   className,
   size = 'lg',
   style = 'default',
+  ariaLabel,
+  ariaRole,
 }: IBadgeProps) => {
   return (
-    <span className={classNames(badge({ size, style }), className)}>
+    <span
+      role={ariaRole}
+      aria-label={ariaLabel}
+      className={classNames(badge({ size, style }), className)}
+    >
       {children}
     </span>
   );

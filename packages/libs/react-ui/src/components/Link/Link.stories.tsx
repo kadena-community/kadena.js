@@ -1,11 +1,18 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import { MonoChevronLeft, MonoChevronRight } from '@kadena/react-icons';
+import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import React from 'react';
+
+import { Link } from '.';
+import { getVariants } from '../../storyDecorators/getVariants';
+import { iconControl } from '../../storyDecorators/iconControl';
+import { button } from '../Button/Button.css';
+import { Box } from '../Layout/Box/Box';
 import type { ILinkProps } from './Link';
-import { Link } from './Link';
+
+const variants = getVariants(button);
 
 const meta: Meta<ILinkProps> = {
   title: 'Components/Link',
-  component: Link,
   parameters: {
     status: { type: 'releaseCandidate' },
     controls: {
@@ -14,23 +21,35 @@ const meta: Meta<ILinkProps> = {
     },
     docs: {
       description: {
-        component: `The LinkButton component renders an anchor element <a/> which will be styled with the same variants/colors as the Button component.
-        <br/><br/>
-        To support client side routing make sure to import/use "RouterProvider" from "@kadena/react-ui" see https://react-spectrum.adobe.com/react-aria/routing.html for more info on how to integrate it with NextJS and client side routing.
-        `,
+        component:
+          'A link component used for navigating to different pages or sections of the same page',
       },
     },
   },
   argTypes: {
-    onClick: {
-      action: 'clicked',
-      description: '(deprecated) callback when button is clicked',
-      table: {
-        disable: true,
+    href: { control: { type: 'text' } },
+    icon: iconControl,
+    iconPosition: {
+      control: {
+        type: 'radio',
+      },
+      options: ['start', 'end'],
+    },
+    badgeValue: {
+      description: 'badge value to be shown after the children',
+      control: {
+        type: 'text',
       },
     },
+    variant: {
+      options: variants.variant,
+      control: {
+        type: 'select',
+      },
+      description: 'Link style variant',
+    },
     isDisabled: {
-      description: 'only used when rendered as button',
+      description: 'only used when rendered as Link',
       control: {
         type: 'boolean',
       },
@@ -41,8 +60,26 @@ const meta: Meta<ILinkProps> = {
         type: 'boolean',
       },
     },
+    loadingLabel: {
+      description: 'label to be shown when loading',
+      control: {
+        type: 'text',
+      },
+    },
+    ariaLabel: {
+      control: {
+        type: 'text',
+      },
+    },
     isCompact: {
-      description: 'compact button style',
+      description: 'compact Link style',
+      control: {
+        type: 'boolean',
+      },
+    },
+    avatarProps: {
+      description:
+        'Props for the avatar component which can be rendered instead of startIcon',
       control: {
         type: 'boolean',
       },
@@ -50,25 +87,114 @@ const meta: Meta<ILinkProps> = {
   },
 };
 
-type LinkStory = StoryObj<
-  {
-    text: string;
-  } & ILinkProps
->;
+type LinkStory = StoryObj<ILinkProps>;
 
 export const _Link: LinkStory = {
   args: {
-    text: 'Click me',
+    children: 'Hello world',
     variant: 'primary',
-    isDisabled: false,
-    isCompact: false,
-    isLoading: false,
-    icon: undefined,
-    href: '#',
   },
-  render: ({ text, ...props }) => {
-    return <Link {...props}>{text}</Link>;
+  render: (props: ILinkProps) => {
+    return <Link {...props}>{props.children}</Link>;
   },
 };
+
+export const StartIcon: LinkStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    icon: <MonoChevronLeft />,
+    iconPosition: 'start',
+  },
+  render: (props: ILinkProps) => {
+    return <Link {...props}>{props.children}</Link>;
+  },
+};
+
+export const EndIcon: LinkStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    icon: <MonoChevronRight />,
+  },
+  render: (props: ILinkProps) => {
+    return <Link {...props}>{props.children}</Link>;
+  },
+};
+
+export const WithAvatar: LinkStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    avatarProps: {
+      imageUrl: 'https://via.placeholder.com/150',
+      status: 'info',
+    },
+  },
+  render: (props: ILinkProps) => {
+    return <Link {...props}>{props.children}</Link>;
+  },
+};
+
+export const BadgeOnly: LinkStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    badgeValue: '6',
+  },
+  render: (props: ILinkProps) => {
+    return <Link {...props}>{props.children}</Link>;
+  },
+};
+
+export const BadgeAndEndIcon: LinkStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    icon: <MonoChevronRight />,
+    badgeValue: '6',
+  },
+  render: (props: ILinkProps) => {
+    return <Link {...props}>{props.children}</Link>;
+  },
+};
+
+export const BadgeAndStartIcon: LinkStory = {
+  args: {
+    children: 'Hello world',
+    variant: 'primary',
+    icon: <MonoChevronLeft />,
+    iconPosition: 'start',
+    badgeValue: '6',
+  },
+  render: (props: ILinkProps) => {
+    return <Link {...props}>{props.children}</Link>;
+  },
+};
+
+export const IconOnly: LinkStory = {
+  args: {
+    variant: 'primary',
+    icon: <MonoChevronRight />,
+  },
+  render: (props: ILinkProps) => {
+    return <Link {...props}>{props.children}</Link>;
+  },
+};
+
+export const AllVariants: StoryFn<ILinkProps> = ({
+  variant,
+  ...props
+}: ILinkProps) => (
+  <Box gap="xs" display="flex">
+    <Box gap="md" display="flex" flexDirection="column" alignItems="center">
+      {variants.variant.map((item) => (
+        <Link key={item} variant={item as ILinkProps['variant']} {...props}>
+          {props.children || item}
+        </Link>
+      ))}
+    </Box>
+  </Box>
+);
 
 export default meta;
