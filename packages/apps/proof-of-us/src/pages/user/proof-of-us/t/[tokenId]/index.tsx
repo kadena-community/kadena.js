@@ -8,7 +8,7 @@ import type { GetServerSidePropsContext, NextPage } from 'next';
 
 interface IProps {
   params: {
-    id: string;
+    tokenId: string;
   };
   data?: IProofOfUsTokenMeta;
   metadataUri?: string;
@@ -19,7 +19,11 @@ const Page: NextPage<IProps> = ({ params, data, metadataUri }) => {
     <LoginBoundry>
       <UserLayout>
         <ProofOfUsProvider>
-          <Share tokenId={params.id} data={data} metadataUri={metadataUri} />
+          <Share
+            tokenId={params.tokenId}
+            data={data}
+            metadataUri={metadataUri}
+          />
         </ProofOfUsProvider>
       </UserLayout>
     </LoginBoundry>
@@ -29,13 +33,20 @@ const Page: NextPage<IProps> = ({ params, data, metadataUri }) => {
 export const getServerSideProps = async (
   ctx: GetServerSidePropsContext,
 ): Promise<{ props: IProps }> => {
-  const id = `${ctx.query.id}`;
+  const tokenId = `${ctx.query.tokenId}`;
 
-  const uri = await getTokenUri(id);
+  console.log({ tokenId });
+  const uri = await getTokenUri(tokenId);
+  console.log({ uri });
   const data = await fetchManifestData(uri);
+  console.log({ data });
 
   return {
-    props: { params: { id: `${ctx.query.id}` }, data, metadataUri: uri },
+    props: {
+      params: { tokenId: `${ctx.query.tokenId}` },
+      data,
+      metadataUri: uri,
+    },
   };
 };
 

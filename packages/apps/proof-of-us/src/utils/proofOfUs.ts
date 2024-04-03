@@ -213,7 +213,7 @@ export const createConnectTokenTransaction = async (
       (map (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard) [${guardString}])
       )`,
     )
-    .addData('event_id', eventId)
+    //.addData('event_id', eventId)
     .addData('collection_id', collectionId)
     .addData('uri', manifestUri)
     .setNetworkId(env.NETWORKID)

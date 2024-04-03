@@ -30,7 +30,7 @@ const isDateOlderThan5Minutes = async (dateToCheck: Date): Promise<boolean> => {
       try {
         const currentDate = new Date();
         const minutesDifference = differenceInMinutes(currentDate, dateToCheck);
-        if (isPast(dateToCheck) && minutesDifference > 5) {
+        if (isPast(dateToCheck) && minutesDifference > 15) {
           resolve(true); // Date is older than 5 minutes
         } else {
           setTimeout(checkCondition, 1000); // Check again in 1 second
@@ -114,11 +114,11 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
       try {
         isDateOlderThan5Minutes(new Date(token.mintStartDate))
           .then(() => {
-            console.log('timeout?');
+            console.log('timeout complete?');
             removeMintingToken(token);
           })
           .catch(() => {
-            console.log('timeout?');
+            console.log('timeout fail?');
             removeMintingToken(token);
           });
 
@@ -136,10 +136,14 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
                 'success',
               );
             } else {
+              console.log('result is fail', result[token.requestKey]);
               removeMintingToken(token);
             }
           })
-          .catch(console.log);
+          .catch((e) => {
+            console.log('something wrong');
+            console.log({ e });
+          });
       } catch (e) {
         console.log('catch fail');
         console.error(e);
