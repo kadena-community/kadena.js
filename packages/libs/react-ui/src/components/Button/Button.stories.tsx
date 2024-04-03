@@ -72,6 +72,11 @@ const meta: Meta<IButtonProps> = {
         type: 'text',
       },
     },
+    ariaLabel: {
+      control: {
+        type: 'text',
+      },
+    },
     isCompact: {
       description: 'compact button style',
       control: {

@@ -10,7 +10,7 @@ import type {
 } from 'react';
 import React, { cloneElement, forwardRef } from 'react';
 import type { AriaButtonProps, AriaFocusRingProps } from 'react-aria';
-import { useButton, useFocusRing, useHover, useLink } from 'react-aria';
+import { useButton, useFocusRing, useHover } from 'react-aria';
 import type { IAvatarProps } from '../Avatar';
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
@@ -47,12 +47,8 @@ export interface ICustomProps extends BaseProps {
   style?: ComponentProps<'button'>['style'];
   // Title to be shown as HTML tooltip
   title?: ComponentProps<'button'>['title'];
-}
-
-interface IAnchorElementProps extends ICustomProps {
-  onPress?: never;
-  href: string | undefined;
-  target?: '_self' | '_blank' | '_parent' | '_top';
+  // manual override for icon only buttons
+  ariaLabel?: Pick<AriaButtonProps, 'aria-label'>['aria-label'];
 }
 
 export interface IButtonElementProps extends ICustomProps {
@@ -60,32 +56,26 @@ export interface IButtonElementProps extends ICustomProps {
   onPress:
     | Pick<AriaButtonProps, 'onPress'>['onPress']
     | MouseEventHandler<HTMLButtonElement>;
-  href?: never;
-  target?: never;
 }
 
 export interface ISubmitButtonProps extends ICustomProps {
   type: 'submit';
   onPress?: never;
-  href?: never;
-  target?: never;
 }
 
-export type IButtonProps =
-  | IAnchorElementProps
-  | IButtonElementProps
-  | ISubmitButtonProps;
+export type IButtonProps = IButtonElementProps | ISubmitButtonProps;
 
-const renderIcon = (icon: ReactElement) =>
-  cloneElement(icon, {
+const renderIcon = (icon: ReactElement | undefined) => {
+  if (icon === undefined) return null;
+
+  return cloneElement(icon, {
     className: iconStyle,
   });
+};
 
 /**
  * Button component
  * @param onPress - callback when button is clicked
- * @param href - link to be opened when clicked, will render an anchor tag
- * @param target - target to be used when clicked the anchor
  * @param variant - button style variant
  * @param children - label to be shown
  * @param badgeValue - badge value to be shown after the label
@@ -111,18 +101,13 @@ const BaseButton = (
     isCompact = false,
     loadingLabel = 'Loading',
     variant = 'primary',
-    href,
     ...props
   }: IButtonProps,
-  forwardedRef: ForwardedRef<HTMLButtonElement | HTMLAnchorElement>,
+  forwardedRef: ForwardedRef<HTMLButtonElement>,
 ) => {
   props = disableLoadingProps(props);
   const ref = useObjectRef(forwardedRef);
   const { buttonProps, isPressed } = useButton(props as ICustomProps, ref);
-  const { linkProps, isPressed: isLinkPressed } = useLink(
-    props as ICustomProps,
-    ref,
-  );
   const { hoverProps, isHovered } = useHover(props);
   const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
 
@@ -147,7 +132,7 @@ const BaseButton = (
             {...avatarProps}
           />
         ) : (
-          renderIcon(icon as ReactElement)
+          renderIcon(icon)
         )}
       </span>
     ) : null;
@@ -204,7 +189,7 @@ const BaseButton = (
       />
     </span>
   ) : iconOnly ? (
-    <span className={iconOnlyStyle}>{renderIcon(icon as ReactElement)}</span>
+    <span className={iconOnlyStyle}>{renderIcon(icon)}</span>
   ) : (
     <>
       {prefixContent}
@@ -213,46 +198,26 @@ const BaseButton = (
     </>
   );
 
-  const sharedAttributes = {
-    className: classNames(
-      button({
-        variant,
-        isCompact,
-        isLoading: props.isLoading,
-      }),
-      props.className,
-    ),
-    style: props.style,
-    title: props.title,
-    ['aria-disabled']: props.isLoading || undefined,
-    ['data-disabled']: props.isDisabled || undefined,
-    ['data-pressed']: isPressed || isLinkPressed || undefined,
-    ['data-hovered']: (!isPressed && !isLinkPressed && isHovered) || undefined,
-    ['data-focused']: isFocused || undefined,
-    ['data-focus-visible']: isFocusVisible || undefined,
-  };
-
-  if (href) {
-    return (
-      <a
-        {...{
-          ...sharedAttributes,
-          ...mergeProps(linkProps, hoverProps, focusProps),
-          ref: ref as ForwardedRef<HTMLAnchorElement>,
-        }}
-      >
-        {content}
-      </a>
-    );
-  }
-
   return (
     <button
-      {...{
-        ...sharedAttributes,
-        ...mergeProps(buttonProps, hoverProps, focusProps),
-        ref: ref as ForwardedRef<HTMLButtonElement>,
-      }}
+      {...mergeProps(buttonProps, hoverProps, focusProps)}
+      className={classNames(
+        button({
+          variant,
+          isCompact,
+          isLoading: props.isLoading,
+        }),
+        props.className,
+      )}
+      style={props.style}
+      title={props.title}
+      aria-disabled={props.isLoading || undefined}
+      data-disabled={props.isDisabled || undefined}
+      data-pressed={isPressed || undefined}
+      data-hovered={(!isPressed && isHovered) || undefined}
+      data-focused={isFocused || undefined}
+      data-focus-visible={isFocusVisible || undefined}
+      ref={ref}
     >
       {content}
     </button>

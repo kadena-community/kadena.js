@@ -6,7 +6,7 @@ export const badge = recipe({
     borderRadius: 'xs',
     border: 'hairline',
     padding: 'xs',
-    display: 'flex',
+    display: 'inline-flex',
     justifyContent: 'center',
     alignItems: 'center',
     lineHeight: 'base',
