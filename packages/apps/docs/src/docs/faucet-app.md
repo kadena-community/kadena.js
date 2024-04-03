@@ -138,7 +138,7 @@ few built-in predicate functions, such as the “keys-all” function above this
 predicate means means that all keys in the set must have signed the transaction.
 You can also write your own predicate functions (for example, to authorize
 access according to a vote).
-For more information about keysets, see [Keysets and authorization](/build/pact/concepts#keysets-and-authorization)
+For more information about keysets, see [Keysets and authorization](/build/pact/advanced#keysets-and-authorization)
 
 Keysets are defined using the `(define-keyset)` function. This function takes a
 name and a keyset as arguments. When evaluated, Pact will either register the
@@ -230,7 +230,7 @@ different purposes. An interface describes the API that a module will implement
 and can supply constants and models for formal verification to aid in that
 implementation, but it doesn’t contain any implementations itself and cannot be
 executed on Chainweb.
-[#interfaces](/build/pact/concepts#interfacesh394925690)
+[#interfaces](/build/pact/advanced#interfacesh394925690)
 
 Interfaces purely exist as a method of abstraction. An interface can be
 implemented by multiple modules (that means that the module provides an
@@ -239,7 +239,7 @@ blueprint for implementers. Also, Pact functions take a reference to module as
 an argument so long as the module implements a specific interface. That means
 you can write a function that can be used with any module that implements the
 given interface — a powerful form of abstraction.
-[#module-references](/build/pact/concepts#module-referencesh1941667004)
+[#module-references](/build/pact/advanced#module-referencesh1941667004)
 
 We don’t use interfaces in our contract because it’s quite small and no one else
 is expected to provide another implementation for its API. Instead, we skip
@@ -266,7 +266,7 @@ Governance functions can be a keyset reference, which means that the contract
 can be upgraded so long as the upgrade transaction satisfies the keyset, or they
 can be a “capability” defined in the module. We’ll learn a lot more about
 capabilities later and will use a keyset reference as our governance.
-[#keysets-vs-governance-functions](/build/pact/concepts#keysets-vs-governance-functions)
+[#keysets-vs-governance-functions](/build/pact/advanced#keysets-vs-governance-functions)
 
 ```pact
 (module goliath-faucet "free.goliath-faucet-keyset"
@@ -442,7 +442,7 @@ satisfied in order to take some action:
 ```
 
 Capabilities can implement more sophisticated rules, such as orchestrating a vote to determine whether the contract can be upgraded. 
-To learn more about capabilities, see [Capabilities](/build/pact/concepts#capabilities).
+To learn more about capabilities, see [Capabilities](/build/pact/advanced#capabilities).
 
 There are four critical things to know about capabilities.
 
@@ -468,7 +468,7 @@ convention, unmanaged capabilities are “granted” and managed capabilities ar
 metadata field.
 
 We won’t use managed capabilities in this contract, but you can learn more about
-them in [Signatures and managed capabilities](/build/pact/concepts#signatures-and-managed-capabilitiesh-260692187)
+them in [Signatures and managed capabilities](/build/pact/advanced#signatures-and-managed-capabilitiesh-260692187)
 and [What are the semantics of capability manager functions in Pact?](https://stackoverflow.com/questions/72746446/what-are-the-semantics-of-capability-manager-functions-in-pact).
 
 Finally, signers of a Pact transaction can scope their signature to one or more
