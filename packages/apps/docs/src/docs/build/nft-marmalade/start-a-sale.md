@@ -67,16 +67,24 @@ To start the sales process for a non-fungible token:
    
    ```json
    {
-     "fungible": {"refSpec":[{"namespace":null,"name":"fungible-xchain-v1"},{"namespace":null,"name":"fungible-v2"}],"refName":{"namespace":null,"name":"coin"}}
-     ,"sale-price": 0.0
-     ,"seller-fungible-account": {
-          "account": "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"
-          ,"guard": {
+    "quote": {
+      "fungible": {
+        "refSpec":[
+          {"namespace":null,"name":"fungible-xchain-v1"},
+          {"namespace":null,"name":"fungible-v2"}],
+        "refName":{
+          "namespace":null,"name":"coin"}
+        },
+        "sale-price": 0.0,
+        "seller-fungible-account": {
+          "account": "k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e",
+          "guard": {
               "keys": ["bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
               "pred": "keys-all"
             }
+        },
+        "sale-type": "marmalade-sale.conventional-auction"
         }
-     ,"sale-type": "marmalade-sale.conventional-auction"
    }
    ```
   
@@ -91,7 +99,7 @@ To start the sales process for a non-fungible token:
    ```
 
 2. Select the account to pay for **coin.GAS** and the account you want to grant the **marmalade-v2.ledger.OFFER** capability, then click **Next**.
-3. On the Preview tab, review the transaction details and verify that the Raw Response is a string—in this example, **"E2zl-Y_MWBQ39nliHZdrbs1ooC35y9iJGurVDpmJjfo"**—then click **Submit**.
+3. On the Preview tab, review the transaction details and verify that there are no errors in the Raw Response, then click **Submit**.
 
    After you submit the transaction, it is queued for processing in the memory pool until validated and added to a block.
    After the transaction is included in a block, you can view the transaction results in the block explorer.

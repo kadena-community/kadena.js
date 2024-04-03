@@ -246,13 +246,13 @@ To create a token in a collection:
        "mint-guard": {
          "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
          "pred": "keys-all"},
-       "burn_guard": {
+       "burn-guard": {
          "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
          "pred": "keys-all"},
-       "sale_guard": {
+       "sale-guard": {
          "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
          "pred": "keys-all"},
-       "transfer_guard": {
+       "transfer-guard": {
          "keys": ["k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e"], 
          "pred": "keys-all"}
    }

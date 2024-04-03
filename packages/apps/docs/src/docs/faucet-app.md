@@ -10,117 +10,120 @@ tags: [pact, smart contract, typescript, tutorial]
 
 # Welcome to the Faucet application workshop
 
-This is a Pact developer tutorial series titled “Real World Pact”, which
-contains tutorials on:
+The Faucet application workshop consists of self-paced tutorials with step-by-step instructions to help you start coding with the Pact smart contract programming language.
+If you are interested in exploring the entire project, see the [Real World Pact](https://github.com/thomashoneyman/real-world-pact) repository, the [Goliath Faucet Contract Overview](https://github.com/thomashoneyman/real-world-pact/tree/main/01-faucet-contract#contract-overview) and [Goliath Faucet Main Contract](https://github.com/thomashoneyman/real-world-pact/blob/main/01-faucet-contract/faucet.pact).
 
-Goliath Faucet Contract Goliath Wallet UI with TypeScript + React frontend The
-purpose of the step-by-step guide is to enable developers and interested
-individuals to start coding easily. For those interested in exploring the entire
-repo, please see
-[Goliath Faucet Contract Overview](https://github.com/thomashoneyman/real-world-pact/tree/main/01-faucet-contract#contract-overview)
-and
-[Goliath Faucet Main Contract](https://github.com/thomashoneyman/real-world-pact/blob/main/01-faucet-contract/faucet.pact).
+## What you’ll build
 
-:::tip
-
-For convenience you can find this project in this
-[repository](https://github.com/thomashoneyman/real-world-pact).
-
-:::
-
-## Overview
+The tutorials in the workshop will guide you to create a faucet contract using Pact and a wallet application using TypeScript and React frontend. 
 
 The Goliath faucet is a simple smart contract that allows users to request KDA.
-Even though it’s a small contract, we’ll cover the majority of Pact’s features
-in the process of building it. The faucet contract is intended for use on a test
-network, so it will allow anyone to request funds.
+Even though it’s a small contract, you'll learn about many of the most important Pact features by building it. 
+The faucet contract is intended for use on a test network, so it allows
 
-We’ll implement these features in idiomatic Pact:
+In this application:
 
-1. Any Goliath user can request funds from the faucet, with the faucet account
-   signing on their behalf.
+- Users can request funds from the faucet and have the faucet account sign on their behalf.
 
-2. By default, users can request up to 20.0 KDA per call to request-funds and up
-   to 100.0 KDA in total.
+- By default, users can request up to 20.0 KDA per call to request-funds and up to 100.0 KDA in total.
 
-3. The faucet account can increase the per-request and per-account limits for
-   any account (but it cannot decrease them).
+- The faucet account can increase the per-request and per-account limits for any account, but it cannot decrease them.
 
-4. You can return funds to the Goliath faucet, which will credit against your
-   total account limit.
+- Users can return funds to the faucet to receive credit against their total account limit.
 
-5. You can look up your account’s per-account and per-request limits and see how
-   much KDA you can still request.
+- Users can look up their per-account and per-request limits to see how much KDA they can still request.
 
-After following all the steps, you’ll be able to understand the contract behind
-the app, Goliath wallet.
+After following all the steps, you’ll be able to understand the contract behind the app, Goliath wallet.
 
-## Introduction
+## What you’ll learn
 
-Welcome to the Goliath faucet smart contract!
+By completing the tutorials in this workshop, you’ll learn how to:
 
-We’re using the Pact smart contract language. A smart contract can contain a
-mixture of:
+- Define and use namespace.
+- Leverage keysets and capabilities to manage permissions.
+- Write and use Pact code for modules and interfaces.
+- Send Pact code to a Chainweb node for evaluation.
+- Deploy and update a smart contract.
+- Interact with the contract and blockchain using a frontend client.
 
-- Top-level Pact code that is executed on-chain when you deploy the contract
+## What you'll need
 
-- Pact code organized into interfaces and modules, which can be called via other
-  smart contracts or by sending Pact code to a Chainweb node at its Pact
-  endpoint for evaluation.
+To complete the tutorials in the workshop, you need to have some software installed on the computer you are using for your development environment. 
+Each tutorial includes a "Before you begin" summary of what you'll need for that specific tutorial. 
+As a preview before you start the workshop, you should check whether your development environment meets the following basic requirements:
 
-A typical Pact smart contract executes some top-level setup code by defining one
-or more keysets and entering a namespaces. Then, it defines a module and/or
-interface that other modules can reference. Finally, it executes more top-level
-code to initialize data required by the module, such as creating new tables.
-Each of these steps introduces critical concepts for Pact development.
+- You have an internet connection and a web browser installed on your local
+  computer.
+- You have a code editor, such as Visual Studio Code, access to an interactive
+  terminal shell, and are generally familiar with using command-line programs.
+- You have [Docker](https://docs.docker.com/get-docker/) installed and are
+  generally familiar with using Docker commands for containerized applications.
+- You have [Git](https://git-scm.com/downloads) installed and are generally
+  familiar with using `git` commands.
+- You have [Node.js](https://nodejs.dev/en/learn/how-to-install-nodejs/) and
+  [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+  installed on your local computer.
+- You have access to
+  [Chainweaver](https://github.com/kadena-io/chainweaver/releases) desktop or
+  web application.
+- You have [Pact](https://github.com/kadena-io/pact#installing-pact) and the
+  [Pact language server plugin](https://github.com/kadena-io/pact-lsp/releases)
+  installed on your local computer.
 
-We’ll take all these steps in our smart contract. We’ll begin by exploring
-namespaces, keysets, interfaces, and modules. Then we’ll implement the
-“goliath-faucet” module and finish up by initializing some data.
+If you have everything you need, you're ready to start building the faucet
+ application.
+
+## What is a smart contract?
+
+The core functionality for the faucet application is implemented in a smart contract.
+A smart contract is a program that can automatically execute agreements on the
+blockchain without external oversight, as long as the conditions specified in the contract are met. 
+
+For the faucet contract in this workshop, you'll be using the Pact smart contract language. 
+A Pact smart contract typically includes the following:
+
+- Context-setting code that is executed on-chain when you deploy the contract.
+
+- Interfaces, modules, and functions that can be called using other smart contracts or by sending Pact code to a Chainweb node at its Pact endpoint for evaluation.
+
+In most cases, you start writing Pact smart contracts by defining or specifying a **namespace** for the contract.
+The namespace isolates your code and functions from other contracts that might contain similar functions and provides a boundary for code that you control.
+Within the namespace, you typically define one or more **keysets** that control who is authorized to manage or use the namespace.
+After setting the context for the contract, you typically define a module or interface that other modules can reference and initialize any data required by the module, for example, by defining schemas and creating tables for the module to use.
 
 ## Namespaces
 
-Our contract begins by entering a namespace.
+In Pact, every module, interface, and keyset must have a unique name within a particular namespace. 
+On a private blockchain, you can define your own namespace or use the local root of the chain as your namespace. 
+However, on a public blockchain, the root namespace is reserved for foundational, built-in contracts like the `coin` contract.
+In addition, defining a new namespace on Chainweb requires approval from the Kadena team.
 
-Modules, interfaces, and keysets in Pact must have unique names within a
-particular namespace. On a private blockchain you can define your own namespace
-or use the "root" namespace (ie. no namespace at all). On a public blockchain
-the root namespace is reserved for built-in contracts (like the coin contract,
-which we’ll see later), and on Chainweb specifically you can only define a new
-namespace with the approval of the Kadena team.
+Because of these restrictions, you have two options for define a new namespace for the faucet contract:
 
-In short, we technically can define a namespace with (define-namespace) in our
-contract but, practically speaking, we can’t do this on Chainweb. So we can’t
-define a namespace, and we can’t use the root namespace. What are we to do?
+- Use one of the public namespaces Chainweb exposes for general use—the `free` and `user` namespaces to define  the interfaces, modules, and keysets for the contract.
+- Create a principal namespace that users your account name to define a unique namespace.
 
-Chainweb exposes two namespaces for public use: "free" and "user". You can
-define interfaces, modules, and keysets inside either of these two interfaces.
+For this tutorial, you can enter the `free` namespace with the `(namespace)` function. 
 
-To do that, enter the namespace with the (namespace) function. #namespace
+To enter the `free` namespace:
 
-We’ll use the "free" namespace for our contract:
+1. Open your code editor on your local computer and create a new `my-faucet.pact` file.
+2. Add the following as the first line in the new file:
 
-```pact
-(namespace "free")
-```
+   ```pact
+   (namespace "free")
+   ```
 
 ## Keysets
 
-Now that we are inside the `"free"` namespace, we can begin defining keysets for
-use in our module.
+Public-key authorization is widely used in smart contracts to ensure that only the holders of specific cryptographically-secure keys can take certain actions, such as transferring
+funds from their account. 
+Pact integrates single- and multi-signature public-key authorization into smart contracts directly using the concept of **keysets**.
 
-Public-key authorization is widely used in smart contracts to ensure that only
-the holders of specific keys can take certain actions (such as transferring
-funds from their account). Pact integrates single- and multi-signature
-public-key authorization into smart contracts directly via the concept of
-keysets.
-
-Pact has other tools for authorization as well as a whole, authorization in Pact
-is handled via guards or capabilities (we’ll learn about both later), and a
-keyset is a specific kind of guard.
-
-So what, concretely, is a keyset? A keyset pairs a set of public keys with a
-predicate function. In JSON form it looks like this:
+Pact has other tools for authorizing the actions allowed—primarily through the use of **guards** or **capabilities** that you'll learn about later. 
+For now, it's enough to know that a keyset is a specific type of guard that consists of one or public keys and a
+**predicate** that specifies how many of the keys are required to perform an operation. 
+In JSON, a keyset looks like this:
 
 ```js
 {
@@ -135,13 +138,12 @@ few built-in predicate functions, such as the “keys-all” function above this
 predicate means means that all keys in the set must have signed the transaction.
 You can also write your own predicate functions (for example, to authorize
 access according to a vote).
-[#keysets-and-authorization](/pact/reference/concepts#keysets-and-authorizationh960403648)
+For more information about keysets, see [Keysets and authorization](/build/pact/concepts#keysets-and-authorization)
 
-Keysets are defined via the `(define-keyset)` function. This function takes a
+Keysets are defined using the `(define-keyset)` function. This function takes a
 name and a keyset as arguments. When evaluated, Pact will either register the
 keyset at the given name on Chainweb or, if the name is already registered, then
 it will “rotate” (ie. update) the keyset to the new value.
-[#define-keyset](/pact/reference/functions/keysets#define-keyseth1939391989)
 
 When registering a keyset in a smart contract it’s a common practice to send the
 keyset in the deployment transaction data instead of hardcoding it into the
@@ -158,16 +160,16 @@ Let’s proceed with defining the “free.goliath-faucet-keyset” using the key
 provided via transaction data. You can parse data from the transaction using the
 (read-\*) family of functions:
 
-- [#read-msg](/pact/reference/functions#read-msg)
-- [#read-keyset](/pact/reference/functions/keysets#read-keyset)
-- [#read-string](/pact/reference/functions#read-string)
-- [#read-integer](/pact/reference/functions#read-integer)
-- [#read-decimal](/pact/reference/functions#read-decimal)
+- [#read-msg](/reference/pact/functions#read-msg)
+- [#read-keyset](/reference/pact/functions/keysets#read-keyset)
+- [#read-string](/reference/pact/functions#read-string)
+- [#read-integer](/reference/pact/functions#read-integer)
+- [#read-decimal](/reference/pact/functions#read-decimal)
 
 Our deployment transaction will be sent with two pieces of data:
 
-- ‘upgrade’: a boolean indicating whether we intend this as a deployment or as
-  an upgrade to the already-deployed module if we are upgrading then we can skip
+- ‘upgrade’: a boolean indicating whether this is a contract deployment or
+  an upgrade to the already-deployed module. If the contract is being upgraded, th emodule can skip
   the keyset definition and initialization steps.
 
 - ‘goliath-faucet-contract’: a keyset that should be registered as the
@@ -176,7 +178,7 @@ Our deployment transaction will be sent with two pieces of data:
 Below, we read the Goliath faucet keyset from the transaction data and register
 it, but only if we are deploying (not upgrading) this contract. Once the keyset
 is registered, our Pact module can refer to it when guarding sensitive
-information. To see how to provide a keyset in transaction data please refer to
+information. To see how to provide a keyset in transaction data, see
 the
 [faucet.repl file](https://github.com/thomashoneyman/real-world-pact/blob/main/01-faucet-contract/faucet.repl)
 and the deploy-faucet-contract.yaml file.
@@ -212,9 +214,9 @@ enforce a keyset guard on the transaction that deploys the contract. This guard
 should ensure that any keysets passed to the contract were also used to sign the
 transaction that deploys the contract. If the enforcement fails, the deployment
 is aborted, and you can fix the keyset and try again.
-[#keyset-ref-guard](/pact/reference/functions/guards#keyset-ref-guardh2089873729)
+[#keyset-ref-guard](/reference/pact/functions/guards#keyset-ref-guardh2089873729)
 
-## Interfaces & Modules
+## Interfaces and modules
 
 So far we’ve been writing code at the top level. Code at the top level is
 ordinary Pact that Chainweb can execute. However, when you are defining a new
@@ -228,7 +230,7 @@ different purposes. An interface describes the API that a module will implement
 and can supply constants and models for formal verification to aid in that
 implementation, but it doesn’t contain any implementations itself and cannot be
 executed on Chainweb.
-[#interfaces](/pact/reference/concepts#interfacesh394925690)
+[#interfaces](/build/pact/concepts#interfacesh394925690)
 
 Interfaces purely exist as a method of abstraction. An interface can be
 implemented by multiple modules (that means that the module provides an
@@ -237,7 +239,7 @@ blueprint for implementers. Also, Pact functions take a reference to module as
 an argument so long as the module implements a specific interface. That means
 you can write a function that can be used with any module that implements the
 given interface — a powerful form of abstraction.
-[#module-references](/pact/reference/concepts#module-referencesh1941667004)
+[#module-references](/build/pact/concepts#module-referencesh1941667004)
 
 We don’t use interfaces in our contract because it’s quite small and no one else
 is expected to provide another implementation for its API. Instead, we skip
@@ -245,7 +247,7 @@ straight to the implementation: the ‘goliath-faucet’ module.
 
 A module in Pact is the primary unit of organization for Pact code. Modules can
 contain functions, pacts, capabilities, tables, and other Pact code.
-[#module](/pact/reference/syntax#moduleh-1068784020)
+[#module](/reference/pact/syntax#moduleh-1068784020)
 
 Let’s define a Pact module with the code for our faucet. To define a module we
 must provide a module name, a module governance function, and then the module
@@ -264,7 +266,7 @@ Governance functions can be a keyset reference, which means that the contract
 can be upgraded so long as the upgrade transaction satisfies the keyset, or they
 can be a “capability” defined in the module. We’ll learn a lot more about
 capabilities later and will use a keyset reference as our governance.
-[#keysets-vs-governance-functions](/pact/reference/concepts#keysets-vs-governance-functions)
+[#keysets-vs-governance-functions](/build/pact/concepts#keysets-vs-governance-functions)
 
 ```pact
 (module goliath-faucet "free.goliath-faucet-keyset"
@@ -288,7 +290,7 @@ Now, let’s implement the body of our module. We’ll begin with the two forms 
 metadata we can use to annotate our modules, interfaces, functions, table
 schemas, and other Pact code. The @doc metadata field is for documentation
 strings, and the @model metadata field is for formal verification.
-[#docs-and-metadata](/pact/reference/syntax#docs-and-metadatah85265693)
+[#docs-and-metadata](/reference/pact/syntax#docs-and-metadatah85265693)
 
 ## Metadata
 
@@ -301,11 +303,11 @@ functions must satisfy and invariants that table schemas must satisfy. Pact, via
 the Z3 theorem prover, can prove that there is no possible set of variable
 assignments in our code that will violate the given property or invariant. Or,
 if it does find a violation, it can tell us so we can fix it!
-[#what-do-properties-and-schema-invariants-look-like](/pact/reference/property-checking#what-do-properties-and-schema-invariants-look-likeh1040965298)
+[#what-do-properties-and-schema-invariants-look-like](/reference/pact/property-checking#what-do-properties-and-schema-invariants-look-likeh1040965298)
 
 Properties (but not invariants) can be defined at the top level of the module so
 they can be reused in multiple functions.
-[#defining-and-reusing-properties](/pact/reference/property-checking#defining-and-reusing-propertiesh-363561805)
+[#defining-and-reusing-properties](/reference/pact/property-checking#defining-and-reusing-propertiesh-363561805)
 
 We have a few functions that should never succeed unless they were called in a
 transaction signed by the Goliath faucet keyset. We can capture that property in
@@ -328,7 +330,7 @@ Our faucet contract has a specific range of values that it will allow the
 per-request and per-account limits to be set to. It’s useful to capture these
 values in variables that our tests, module code, and other modules on Chainweb
 can refer to. To expose a constant value, use (defconst).
-[#defconst](/pact/reference/syntax#defconsth645951102)
+[#defconst](/reference/pact/syntax#defconsth645951102)
 
 ```pact
 (defconst FAUCET_ACCOUNT "goliath-faucet
@@ -344,7 +346,7 @@ can refer to. To expose a constant value, use (defconst).
 When your smart contract needs to persist some data across multiple calls to
 functions in the contract, it should use a table. Tables in Pact are relational
 databases and have a key-row structure. Keys are always strings. You can define
-a table with `deftable`. [#deftable](/pact/reference/syntax#deftableh661222121)
+a table with the `deftable` keyword.
 
 Our smart contract needs to persist four pieces of data. First, we need to
 record how much KDA in total each account has requested and returned so that we
@@ -384,22 +386,21 @@ invariant, use (invariant) and provide a predicate; the Z3 theorem prover will
 check that the variables used in your predicate can never have values that would
 fail the predicate. Not all Pact functions can be used in the predicate; you can
 see a list of available ones here
-[#property-and-invariant-functions](/pact/reference/properties-and-invariants#property-and-invariant-functions)
+[Property and invariant functions](/reference/pact/properties-and-invariants#property-and-invariant-functions)
 
 The first invariant ensures that you can never receive more funds than your
 account limit. The second ensures you can never return more funds than you have
 received. Then, we define our four columns and their types.
 
 Now that we have our schema we can define a table which uses it with the
-(deftable) function. [#deftable](/pact/reference/syntax#deftableh661222121)
+(deftable) function.
 
 We’ll refer to the table by name when we need to insert, read, or update data.
 When our module is deployed, we’ll also need to create the table using the
 (create-table) function (this must be called outside the module).
-[#create-table](/pact/reference/functions/database#create-tableh447366077)
 
 Pact supplies several data-access functions for working with tables.
-[#database](/pact/reference/functions/database)
+For more information, see [Database](/preference/pact/functions/database)
 
 Note that these functions can only be called by functions within the module that
 defined the table, or in a transaction that satisfies the module governance
@@ -440,10 +441,8 @@ satisfied in order to take some action:
   (enforce-guard (keyset-ref-guard "free.my-keyset"))
 ```
 
-Capabilities can implement more sophisticated rules, such as orchestrating a
-vote to determine whether the contract can be upgraded. You can learn more about
-capabilities in the Pact documentation.
-[#capabilities](/pact/reference/concepts#capabilitiesh-1323277354#capabilities)
+Capabilities can implement more sophisticated rules, such as orchestrating a vote to determine whether the contract can be upgraded. 
+To learn more about capabilities, see [Capabilities](/build/pact/concepts#capabilities).
 
 There are four critical things to know about capabilities.
 
@@ -451,8 +450,6 @@ First, you can grant a capability to a function with `(with-capability)`, and
 you can protect some sensitive code with the `(require-capability)` function.
 “Granting” a capability means that calls to `(require-capability)` will succeed
 so long as the capability is in scope.
-[#with-capability](/pact/reference/functions/capabilities#with-capabilityh-1711421313)
-[#require-capability](/pact/reference/functions/capabilities#require-capabilityh-544592256)
 
 Second, you can only grant a capability within the module that defined the
 corresponding capability. That means, for example, that protecting code with
@@ -471,9 +468,8 @@ convention, unmanaged capabilities are “granted” and managed capabilities ar
 metadata field.
 
 We won’t use managed capabilities in this contract, but you can learn more about
-them here:
-[#signatures-and-managed-capabilities](/pact/reference/concepts#signatures-and-managed-capabilitiesh-260692187)
-[#what-are-the-semantics-of-capability-manager-functions-in-pact](https://stackoverflow.com/questions/72746446/what-are-the-semantics-of-capability-manager-functions-in-pact)
+them in [Signatures and managed capabilities](/build/pact/concepts#signatures-and-managed-capabilitiesh-260692187)
+and [What are the semantics of capability manager functions in Pact?](https://stackoverflow.com/questions/72746446/what-are-the-semantics-of-capability-manager-functions-in-pact).
 
 Finally, signers of a Pact transaction can scope their signature to one or more
 capabilities in the module. This indicates that the signer has agreed to grant
@@ -481,7 +477,7 @@ the specified capabilities if they are asked for via the `(with-capability)`
 function, but other capabilities should be denied.
 
 Managed capabilities must always be scoped; unmanaged capabilities don’t always
-have to be scoped. When the signer signs with empty capability list, unmanaged
+have to be scoped. When the signer signs with an empty capability list, unmanaged
 capabilities required in the transaction will be signed.
 
 You can see examples of scoping a signature to a capability in the
@@ -542,7 +538,7 @@ amount. Second, if the transaction succeeded, then the table at the
 ‘funds-requested’ column must have increased by the amount requested. The first
 property is a simple check, but the second uses a property-only function called
 `(column-delta)`.
-[#column-delta](/pact/reference/properties-and-invariants/database#column-delta)
+For more information about this function, see [Column delta](/reference/pact/properties-and-invariants/database#column-delta).
 
 Recall that due to our schema invariants we have some additional checks that
 verify that our table writes are always within the valid bounds of our account
@@ -560,7 +556,7 @@ at all, or from writing a value that’s not the exact amount the user requested
 Pact’s formal verification will check that your implementation satisfies the two
 properties above, but we still have to write the code that _prevents_ the
 invalid states. To abort a transaction if it fails to meet a condition, use
-(enforce). [enforce](/pact/reference/functions#enforceh-1604583454)
+(enforce).
 
 To see formal verification in action, comment out this line and re-run the REPL
 file.
@@ -576,7 +572,6 @@ there (ie. it has requested funds before), or assume the default limits if not.
 There are a number of functions for reading and writing tables. One of the most
 common is (with-default-read), which is used to read a row from a table, with a
 fallback value in the case the row does not exist.
-[#with-default-read](/pact/reference/functions/database#with-default-readh1087687497)
 
 The `:=` operator indicates that we are storing the value of the column on the
 left-hand side in the variable name on the right-hand side within the scope of
@@ -602,7 +597,6 @@ variable, `balance`, that records the difference between the total requested
 funds and the total returned funds.
 
 For binding the variable, we can introduce local variables with `(let)`.
-[#let](/pact/reference/syntax#leth107035)
 
 This balance is what should be checked against the account limit. Now, we can
 finally enforce that the requested amount does not exceed the request limit.
@@ -680,7 +674,6 @@ The second property test verifies that if this transaction succeeded, then the
 accounts table row for this account, at the “request-limit” column, has been
 updated to be the value provided to this function. Similarly to (column-delta),
 we can use this to verify that the table is written correctly.
-[#read](/pact/reference/functions/database#readh3496342)
 
 ```pact
 @model
@@ -712,7 +705,6 @@ in case the account had never requested funds before. This function is
 different: it should not be possible to update the limits for an account that
 hasn’t yet requested anything. `(with-read)` will fail the transaction if the
 given account does not exist in the table, and read the row otherwise.
-[#with-read](/pact/reference/functions/database#with-readh866473533)
 
 Note that when using `(with-read)` it is not necessary to bind variables to
 every column in the table. You can just use the columns you want.
@@ -730,7 +722,6 @@ every column in the table. You can just use the columns you want.
 We used `(write)` before because we were inserting a new row into the table if
 the account didn’t yet exist. To update one or more columns in an existing row
 you can use `(update)`.
-[#update](/pact/beginner/schemas-and-tables#updateh-1754979095)
 
 Like `(with-read)`, it’s only necessary to include the columns that you are
 updating, not all the columns.

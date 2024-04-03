@@ -63,6 +63,10 @@ For example, to see all of the options available for adding a new wallet, you ca
 kadena wallet add --help
 ```
 
+The following diagram provides an overview of the kadena command-line interface:
+
+![Kadena command-line interface at a glance](/assets/docs/kadena-cli-overview.png)
+
 ## kadena
 
 Use the `kadena` parent as the primary entry point for commands used to create, test, deploy, and managed decentralized applications you develop for the Kadena network.
