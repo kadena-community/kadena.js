@@ -19,3 +19,4 @@ In this tutorial, you'll:
   - A token creator.
   - A token owner and seller.
   - A token buyer.
+- Deploy smart contracts for Marmalade on the development network.
