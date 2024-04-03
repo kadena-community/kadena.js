@@ -97,12 +97,16 @@ function generateTableForAccountDetails(accounts: IAccountDetails[]): {
   const data = accounts.map((acc) => {
     const chainId = Object.keys(acc)[0];
     const account = acc[chainId];
+    const balance =
+      typeof account.balance === 'object' && 'decimal' in account.balance
+        ? account.balance.decimal.toString()
+        : account.balance.toString();
     return [
       maskStringPreservingStartAndEnd(account.account, 32),
       chainId,
       account.guard.keys.map((key) => key).join('\n'),
       account.guard.pred,
-      account.balance.toString(),
+      balance,
     ];
   });
 
