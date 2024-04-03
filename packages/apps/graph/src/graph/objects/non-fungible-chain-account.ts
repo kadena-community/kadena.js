@@ -75,7 +75,7 @@ export default builder.node(
               senderAccount: parent.accountName,
               events: {
                 some: {
-                  moduleName: 'marmalade-v2.ledger',
+                  moduleName: { startsWith: 'marmalade-v2' },
                 },
               },
               chainId: parseInt(parent.chainId),
@@ -90,7 +90,7 @@ export default builder.node(
                 senderAccount: parent.accountName,
                 events: {
                   some: {
-                    moduleName: 'marmalade-v2.ledger',
+                    moduleName: { startsWith: 'marmalade-v2' },
                   },
                 },
                 chainId: parseInt(parent.chainId),
