@@ -12,7 +12,7 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import { PactNumber } from '@kadena/pactjs';
+import { IPactInt, PactValue } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
@@ -20,7 +20,7 @@ interface ICreateTokenInput {
   policies?: string[];
   uri: string;
   tokenId: string;
-  precision: number;
+  precision: IPactInt | PactReference;
   chainId: ChainId;
   creator: {
     account: string;
@@ -43,7 +43,7 @@ const createTokenCommand = ({
     execution(
       Pact.modules['marmalade-v2.ledger']['create-token'](
         tokenId,
-        new PactNumber(precision).toPactInteger(),
+        precision,
         uri,
         policies.length > 0
           ? ([policies.join(' ')] as unknown as PactReference)

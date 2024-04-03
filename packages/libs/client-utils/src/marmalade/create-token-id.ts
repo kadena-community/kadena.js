@@ -1,4 +1,9 @@
-import type { ChainId, IPactModules, PactReturnType } from '@kadena/client';
+import type {
+  ChainId,
+  IPactModules,
+  PactReference,
+  PactReturnType,
+} from '@kadena/client';
 import { Pact, readKeyset } from '@kadena/client';
 import {
   addKeyset,
@@ -6,13 +11,14 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
+import { IPactInt } from '@kadena/types';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
 
 interface ICreateTokenIdInput {
   policies?: string[];
   uri: string;
-  precision: number;
+  precision: IPactInt | PactReference;
   chainId: ChainId;
   creator: {
     account: string;

@@ -23,7 +23,7 @@ let tokenId: string | undefined;
 const chainId = '0' as ChainId;
 const inputs = {
   chainId,
-  precision: 0,
+  precision: { int: '0' },
   uri: Date.now().toString(),
   policies: [],
   creator: {
