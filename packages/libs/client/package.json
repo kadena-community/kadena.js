@@ -57,7 +57,7 @@
     "@rushstack/eslint-config": "~3.3.0",
     "@types/debug": "~4.1.7",
     "@types/node": "^18.17.14",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.4.0",
     "@walletconnect/types": "~2.8.1",
     "eslint": "^8.45.0",
     "jsdom": "^22.1.0",
@@ -65,7 +65,7 @@
     "prettier": "~3.0.3",
     "ts-node": "~10.8.2",
     "typescript": "5.2.2",
-    "vitest": "^1.1.0"
+    "vitest": "^1.4.0"
   },
   "publishConfig": {
     "provenance": true

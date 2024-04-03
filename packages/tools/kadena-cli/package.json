@@ -84,12 +84,12 @@
     "@types/js-yaml": "4.0.9",
     "@types/node": "^18.17.14",
     "@types/seedrandom": "~3.0.8",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.4.0",
     "cache-sh": "^1.2.1",
     "eslint": "^8.45.0",
     "msw": "^2.0.0",
     "prettier": "~3.0.3",
     "typescript": "5.2.2",
-    "vitest": "^1.1.0"
+    "vitest": "^1.4.0"
   }
 }

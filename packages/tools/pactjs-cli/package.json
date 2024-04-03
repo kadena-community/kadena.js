@@ -56,10 +56,10 @@
     "@types/mkdirp": "~1.0.2",
     "@types/node": "^18.17.14",
     "@types/rimraf": "~3.0.2",
-    "@vitest/coverage-v8": "^1.1.0",
+    "@vitest/coverage-v8": "^1.4.0",
     "eslint": "^8.45.0",
     "msw": "^2.0.0",
     "typescript": "5.2.2",
-    "vitest": "^1.1.0"
+    "vitest": "^1.4.0"
   }
 }

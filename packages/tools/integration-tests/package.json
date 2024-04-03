@@ -21,7 +21,7 @@
     "@kadena/client-utils": "workspace:*",
     "@kadena/cryptography-utils": "workspace:*",
     "supertest": "^6.3.3",
-    "vitest": "^1.1.0"
+    "vitest": "^1.4.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
