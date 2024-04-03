@@ -26,8 +26,8 @@
   "dependencies": {
     "@apollo/client": "~3.8.8",
     "@graphql-yoga/apollo-link": "~3.0.3",
-    "@kadena/react-icons": "workspace:*",
     "@kadena/graph": "workspace:*",
+    "@kadena/react-icons": "workspace:*",
     "@kadena/react-ui": "workspace:*",
     "@parcel/watcher": "^2.1.0",
     "eslint": "^8.45.0",
