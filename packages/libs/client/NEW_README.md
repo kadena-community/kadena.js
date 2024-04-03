@@ -1028,11 +1028,482 @@ const signedTx = addSignatures(twoSignersTx, { sigOne: "signature-str" }, { sigT
 
 ```
 
-## TODO: ADD OTHER PARTS
+## Communicate With Network
+
+Kadena exposed pact api as via
+[Pact REST APIs](https://api.chainweb.com/openapi/pact.html). Though you can use
+any rest client - e.g. fetch - for calling the endpoints we have also created
+the functions for more convince.
+
+### createCLient
+
+in order to use the helpders you need to use `createCLient` functions which
+returns `IClient` interface;
+
+```TS
+createClient(
+  host?: string | (options: {chainId: ChainId; networkId: string}) => string,
+  options?: { confirmationDepth?: number }
+): IClient
+
+interface IClient {
+  getStatus: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor) => Promise<IPollResponse>;
+  submit: {
+    (transaction: ICommand): Promise<ITransactionDescriptor>;
+    (transactionList: ICommand[]): Promise<ITransactionDescriptor[]>;
+  }
+  send: {
+    (transaction: ICommand): Promise<ITransactionDescriptor>;
+    (transactionList: ICommand[]): Promise<ITransactionDescriptor[]>;
+  }
+  submitOne: (transaction: ICommand) => Promise<ITransactionDescriptor>;
+  listen: (transactionDescriptor: ITransactionDescriptor) => Promise<ICommandResult>;
+  pollOne: (transactionDescriptor: ITransactionDescriptor) => Promise<ICommandResult>;
+  pollStatus: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor, options?: IPollOptions) => IPollRequestPromise<ICommandResult>;
+  getPoll: (transactionDescriptors: ITransactionDescriptor[] | ITransactionDescriptor) => Promise<IPollResponse>;
+  local: <T extends ILocalOptions>(transaction: LocalRequestBody, options?: T) => Promise<LocalResponse<T>>;
+  dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
+  preflight: (transaction: ICommand | IUnsignedCommand) => Promise<ILocalCommandResult>;
+  runPact: (code: string, data: Record<string, unknown>, option: INetworkOptions) => Promise<ICommandResult>;
+  signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
+  createSpv: (transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId) => Promise<string>;
+  pollCreateSpv: (transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId, options?: IPollOptions) => Promise<string>;
+}
+
+```
+
+**note**: You can use object destructuring for extracting specific functions
+
+```TS
+const { submit, local, pollCreateSpv } = createClient();
+```
+
+| Parameter | Type                                                                 | Description                                                                                                                                |
+| --------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| host      | string \| (options: {chainId: ChainId; networkId: string}) => string | the pact service url as string or the function that returns the url                                                                        |
+| options   | { confirmationDepth?: number }                                       | add options for the client it has only one property now; `confirmationDepth` which then be used in the poll endpoint; default value is `0` |
+
+both host and options are optional the de default value of host is a function
+that returns kadena's node url for mainnet and testnet. if you want to use
+different urls you need to pass this option.
+
+**note**: `networkId` and `chainId` are read from the command object and passed
+to the URL generator function.
+
+#### Examples
+
+Create a client for development network chian "1"; useful if you work only with
+specific chain
+
+```TS
+const client = createClient("http://127.0.0.1:8080/chainweb/0.0/development/chain/1/pact")
+```
+
+create a clint for devnet that covers multi chain. as you see we passed the url
+generator function for more flexibility
+
+```TS
+const devNetClient = createClient(({chainId, networkId})=>
+   `http://127.0.0.1:8080/chainweb/0.0/${networkId}/chain/${chainId ?? '1'}/pact`
+);
+```
+
+Create a client which uses mainnet but not kadena's nodes
+
+```TS
+const client = createClient(({ chainId, networkId }) => {
+  switch (networkId) {
+    case 'mainnet01':
+      return `http://my-node-url/chainweb/0.0/${networkId}/chain/{${chainId}}/pact`;
+    case 'testnet04':
+      return `http://my-test-node-url/chainweb/0.0/${networkId}/chain/{${chainId}}/pact`;
+    default:
+      throw new Error('UNKNOWN_NETWORK');
+  }
+});
+```
+
+Create a client which confirmationDepth is 5; means wait for 5 new blocks before
+reading the result of a transaction.
+
+```TS
+const { submit, pollStatus } = createClient(undefined, { confirmationDepth: 5 })
+```
+
+### Submit data to blockchain
+
+you can use the the following functions to submit data to the blockchain they
+all use `/send` endpoint.
+
+- `submit`
+- `send`
+- `submitOne`
+
+#### Client: submit
+
+there are two overloads of `submit` function;
+
+- submit one transaction
+
+```TS
+const { submit } = createClient();
+
+submit(tx): Promise<ITransactionDescriptor>;
+
+interface ITransactionDescriptor {
+  networkId: string;
+  chainId: ChainId;
+  requestKey: string
+}
+
+```
+
+| Parameter | Type     | Description                        |
+| --------- | -------- | ---------------------------------- |
+| tx        | ICommand | the command object ready to submit |
+
+- submit a list of transactions
+
+```TS
+const { submit } = createClient();
+
+submit(txList):Promise<ITransactionDescriptor[]>;
+
+```
+
+| Parameter | Type       | Description                         |
+| --------- | ---------- | ----------------------------------- |
+| txList    | ICommand[] | the command objects ready to submit |
+
+**note**: in many cases need to store the result of this function you need this
+to fetch the result of the request.
+
+#### Client: send
+
+`send` is an _deprecated_ alias for `submit` function with the same interface.
+
+#### Client: submitOne
+
+`submitOne` is an alias for the first overload of `submit` function.
+
+```TS
+const { submitOne } = createClient();
+
+submitOne(tx): Promise<ITransactionDescriptor>;
+```
+
+| Parameter | Type     | Description                        |
+| --------- | -------- | ---------------------------------- |
+| tx        | ICommand | the command object ready to submit |
+
+### Get the status of transactions
+
+After you submit a transaction you need to query for the result of the
+transaction. You can do it by calling `/listen` or `/poll` endpoint. there are
+some differences between two endpoints. `/listen` is a blocking request that
+only accepts one request key and returns the results when it's ready, this
+request keeps the http request open for a while, on the other hand `/poll`
+accepts a list and responds immediacy with the current status of request key
+
+the library exposes the following function which uses one of the endpoint and
+designed for deferent scenarios.
+
+- `getStatus`
+- `pollStatus`
+- `listen`
+- `pollOne`
+
+No matter which function you use the result of a transaction follows
+`ICommandResult` interface
+
+```TS
+interface ICommandResult {
+  reqKey: string;
+  txId: number | null;
+  result:
+    | {
+        status: 'success';
+        data: PactValue;
+      }
+    | {
+        status: 'failure';
+        error: object;
+      };
+  gas: number;
+  logs: string | null;
+  continuation: null | {
+    blockHash: string;
+    blockTime: number;
+    blockHeight: number;
+    prevBlockHash: string;
+    publicMeta?: IPactCommand['meta']
+  };
+  metaData: null | {
+    blockHash: string;
+    blockTime: number;
+    blockHeight: number;
+    prevBlockHash: string;
+    publicMeta?: IPactCommand['meta']
+  };
+  events?: Array<{
+    name: string;
+    module: {
+      name: string;
+      namespace: string | null;
+    };
+    params: Array<PactValue>;
+    moduleHash: string;
+  }>;
+}
+```
+
+#### Client: getStatus
+
+This function calls `/poll` and returns the result of requests
+
+```Ts
+const { getStatus } = createClient();
+
+getStatus(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor): Promise<{
+    [requestKey: IBase64Url]: { [requestKey:string] ICommandResult};
+}>
+
+```
+
+| Parameter             | Type                                             | Description                           |
+| --------------------- | ------------------------------------------------ | ------------------------------------- |
+| transactionDescriptor | TransactionDescriptor \| TransactionDescriptor[] | one or list of requests to be queried |
+
+#### Client: pollStatus
+
+This function calls `/poll` in some intervals and returns the result of all
+requests when all are ready
+
+```Ts
+const { pollStatus } = createClient();
+
+pollStatus(
+  transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor,
+  pollOptions:{
+    onPoll?: (id: string) => void;
+    timeout?: Milliseconds;
+    interval?: Milliseconds;
+    confirmationDepth?: number;
+  }
+): IPollRequestPromise<{
+    [requestKey: IBase64Url]: { [requestKey:string] ICommandResult};
+}>
+
+interface IPollRequestPromise extends Promise {
+  [requestKey: IBase64Url]: Promise<ICommandResult>
+}
+
+```
+
+| Parameter             | Type                                                                                                            | Description                                                                                                                                                                                                                                                                                                                                                                                   |
+| --------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| transactionDescriptor | TransactionDescriptor \| TransactionDescriptor[]                                                                | one or list of requests to be queried                                                                                                                                                                                                                                                                                                                                                         |
+| pollOptions           | { onPoll?: (id: string) => void; timeout?: Milliseconds; interval?: Milliseconds; confirmationDepth?: number; } | onPoll: callback is called when the request is polling this might call several times if the request is not ready yet. timeout: timeout if the result is not ready (default `180000` // 3 minutes). interval: delay between retries (default is `5000` // 5 sec). confirmationDepth: set the confirmationDepth for getting the response this override the one you set in createClient function |
+
+**Return value** The return value is a special type of promise. Though you can
+just await for the result just like a normal promise - which its the case for
+most of the typical use cases - you can sill listen for each individual request
+via `requests` property.
+
+##### Examples
+
+Poll the status of a request
+
+```TS
+const result = await pollStatus(request, {} )
+```
+
+Poll the status of several requests and get the result for each one immediately
+
+```TS
+const resultPromise = pollStatus([firstRequest, secondRequest, thirdRequest])
+// notify the UI from the result of each request as soon as its available
+resultPromise.requests["first-request-key"].then(res => {UI.notify(res)})
+resultPromise.requests["second-request-key"].then(res => {UI.notify(res)})
+resultPromise.requests["third-request-key"].then(res => {UI.notify(res)})
+// the final result object
+const finalResult = await resultPromise
+
+```
+
+#### Client: listen
+
+`listen` is another function for fetch the result on one request. it uses
+`/listen` endpoint that its a blocking endpoint. **note**: if your network /
+firewall configuration doesn't let to keep http connection open for long time
+then its better to use `pollOne` which has the same interface but uses `/poll`
+under the hood.
+
+```Ts
+const { listen } = createClient();
+
+listen(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor): Promise<ICommandResult>
+
+```
+
+| Parameter             | Type                  | Description                                                       |
+| --------------------- | --------------------- | ----------------------------------------------------------------- |
+| transactionDescriptor | TransactionDescriptor | the request object including `requestKet`, `networkId`, `chainId` |
+
+#### Client: pollOne
+
+the `pollOne` function fetch the result of only one request via `/poll`
+endpoint.
+
+```Ts
+const { pollOne } = createClient();
+
+pollOne(transactionDescriptor: TransactionDescriptor[] | ITransactionDescriptor): Promise<ICommandResult>
+
+```
+
+| Parameter             | Type                  | Description                                                       |
+| --------------------- | --------------------- | ----------------------------------------------------------------- |
+| transactionDescriptor | TransactionDescriptor | the request object including `requestKet`, `networkId`, `chainId` |
+
+### Read data from node
+
+Apart form transactions you also can send read request to the node this mainly
+utilized the `/local` endpoint. these kind of request returns the result
+immediately since you don't need to submit data. You also can use these function
+in order to validate your transaction before calling `/send` endpoint to avoid
+tx failure. since in some scenarios you need to pay gas even for failed
+transactions.
+
+The following function all utilize `/local` endpoint.
+
+- `local`
+- `dirtyRead`
+- `preflight`
+- `signatureVerification`
+- `runPact`
+
+#### Client: local
+
+The `local` function is the most generic function that utilizes `/local`
+endpoint.
+
+```TS
+local(
+  transaction: ICommand | IUnsignedCommand,
+  options?: { preflight?: boolean; signatureVerification?: boolean; }
+): Promise<ICommandResult & { preflightWarnings?: string[] }>;
+```
+
+The return type is `ICommandResult` with `preflightWarnings` when it is set to
+true.
+
+| Parameter   | Type                                                      | Description                                                                                                                                                                                                                                                                                   |
+| ----------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| transaction | ICommand \| IUnsignedCommand                              | The signed or unsigned command object                                                                                                                                                                                                                                                         |
+| option      | { preflight?: boolean; signatureVerification?: boolean; } | preflight: runs the code in the preflight mode which is simulating submitting the tx so you also can have the gas consumption result (default = `true`), signatureVerification: run the signature verification in the node as well then the tx should have the txs as well (default = `true`) |
+
+##### Examples
+
+Use local call to avoid submitting an incorrect tx
+
+```TS
+// check if the tx and signatures are correct
+const response = await client.local(signedTx)
+
+if (response.result.status === 'failure') {
+  // throw if the tx fail to avoid paying gas for a failed tx
+  throw response.result.error;
+}
+const request = await client.submit(signedTx)
+
+```
+
+Use local call for gas estimation
+
+```TS
+// We don't need to send signatures to check gas estimation;
+const response = await client.local(unsignedTx, { preflight:true , signatureVerification: false })
+
+if (response.result.status === 'failure') {
+  throw response.result.error;
+}
+
+const gasEstimation =  response.gas;
+```
+
+#### Client: dirtyRead
+
+Alias for local which both preflight and signatureVerification are false; useful
+when your code only includes reading data from the node.
+
+```TS
+dirtyRead( transaction: ICommand | IUnsignedCommand ): Promise<ICommandResult>;
+```
+
+##### Examples
+
+Get account balance
+
+```TS
+const tr = Pact.builder
+  .execution(Pact.modules.coin['get-balance'](account))
+  .setMeta({ chainId: '0' })
+  .setNetworkId("mainnet04")
+  .createTransaction();
+
+// we don't need to submit a transaction for just reading data,
+// so instead we just read the value from the local data of the blockchain node
+const res = await dirtyRead(tr);
+
+if (response.result.status === 'failure') {
+  throw response.result.error;
+}
+
+const balance = response.result.data
+```
+
+#### Client: preflight
+
+Alias for local which preflight is true but signatureVerification is false
+
+```TS
+preflight( transaction: ICommand | IUnsignedCommand ): Promise<ICommandResult>;
+```
+
+#### Client: signatureVerification
+
+Alias for local which preflight is false but signatureVerification is true
+
+```TS
+signatureVerification( transaction: ICommand | IUnsignedCommand ): Promise<ICommandResult & { preflightWarnings?: string[] }>;
+```
+
+#### Client: runPact
+
+If you just want to see the result of a pact code and dont want to create a
+command object you can use `runPact` function. this function creates a command
+object internally.
+
+```TS
+runPact(code: string, data?: Record<string, unknown>, option?: INetworkOptions): Promise<ICommandResult>;
+```
+
+#### Examples
+
+```TS
+const { runPact } = createClient()
+
+const result = await runPact(`(coin.getBalance "alice")`, {}, { networkId:"mainnet01", chainId:"1" })
+```
 
 ## Complete and Runnable Examples
 
 Check out [Client Examples](../client-examples/)
+
+```
+
+```
 
 ```
 
