@@ -1,33 +1,48 @@
-import { useProofOfUs } from '@/hooks/proofOfUs';
+import {
+  MonoWifi,
+  MonoWifi1Bar,
+  MonoWifi2Bar,
+  MonoWifiOff,
+} from '@kadena/react-icons';
+import { differenceInSeconds } from 'date-fns';
 import type { FC } from 'react';
-import { useEffect } from 'react';
-import { MonoWifi } from '../../../../../libs/react-icons/dist/system/cjs';
+import { useEffect, useState } from 'react';
 
 interface IProps {
   signee: IProofOfUsSignee;
-  isMe: boolean;
 }
 
 export const PingStatus: FC<IProps> = ({ signee }) => {
-  const { updateSigneePing } = useProofOfUs();
+  const [state, setState] = useState<number>(0);
 
-  const update = async () => {
-    if (!signee) return;
-    await updateSigneePing(signee);
+  const checkTime = () => {
+    const seconds = differenceInSeconds(
+      Date.now(),
+      signee.lastPingTime ?? Date.now(),
+    );
+    setState(seconds);
   };
 
   useEffect(() => {
-    update();
-    const interval = setInterval(update, 10000);
+    const interval = setInterval(checkTime, 10000);
 
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [signee.lastPingTime]);
 
-  return (
-    <section>
-      <MonoWifi />
-    </section>
-  );
+  const renderIcon = (seconds: number) => {
+    switch (true) {
+      case seconds > 69:
+        return <MonoWifiOff />;
+      case seconds > 39:
+        return <MonoWifi1Bar />;
+      case seconds > 19:
+        return <MonoWifi2Bar />;
+      default:
+        return <MonoWifi />;
+    }
+  };
+
+  return <section>{renderIcon(state)}</section>;
 };

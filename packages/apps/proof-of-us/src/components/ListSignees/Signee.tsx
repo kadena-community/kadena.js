@@ -52,7 +52,7 @@ export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
     >
       <Stack gap="md">
         <SignStatus status={signee?.signerStatus} />
-        <PingStatus signee={signee} isMe={isMeChecked} />
+        <PingStatus signee={signee} />
       </Stack>
       <Text className={classNames(nameClass, ellipsClass)} bold>
         {getSigneeName(signee)} {isMeChecked && ' (me)'}

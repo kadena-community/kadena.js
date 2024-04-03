@@ -108,6 +108,13 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     [setSignees, params?.id],
   );
 
+  const pingSignee = async () => {
+    const signee = signees?.find((s) => s.accountName === account?.accountName);
+    if (!signee) return;
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    await updateSigneePing(signee);
+  };
+
   //start listeners
   useEffect(() => {
     if (!params?.id || !account) return;
@@ -115,6 +122,16 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
     store.listenProofOfUsSigneesData(`${params.id}`, listenToSigneesData);
   }, [account]);
+
+  //update the ping of the account signer
+  useEffect(() => {
+    pingSignee();
+    const interval = setInterval(pingSignee, 10000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [signees?.length]);
 
   const updateStatus = async ({
     proofOfUsId,
