@@ -192,6 +192,19 @@ const ProofOfUsStore = () => {
     );
   };
 
+  const updateSigneePing = async (
+    proofOfUs: IProofOfUsData,
+    signee: IProofOfUsSignee,
+  ) => {
+    return await set(
+      ref(
+        database,
+        `signees/${proofOfUs.proofOfUsId}/${signee.accountName}/lastPingTime`,
+      ),
+      Date.now(),
+    );
+  };
+
   const closeToken = async (proofOfUsId: string, proofOfUs: IProofOfUsData) => {
     await set(ref(database, `signees/${proofOfUsId}`), null);
     return await set(ref(database, `data/${proofOfUsId}`), null);
@@ -251,6 +264,7 @@ const ProofOfUsStore = () => {
     addSignee,
     removeSignee,
     updateSignee,
+    updateSigneePing,
     addBackground,
     removeBackground,
     closeToken,

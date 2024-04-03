@@ -36,6 +36,7 @@ export interface IProofOfUsContext {
   isInitiator: () => Promise<boolean>;
   hasSigned: () => Promise<boolean>;
   isSignee: () => Promise<boolean>;
+  updateSigneePing: (signee: IProofOfUsSignee) => Promise<void>;
   updateProofOfUs: (value: any) => Promise<void>;
   getSignature: (tx: IUnsignedCommand) => Promise<string | undefined>;
 }
@@ -57,6 +58,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   isInitiator: async () => false,
   hasSigned: async () => false,
   isSignee: async () => false,
+  updateSigneePing: async () => {},
   updateProofOfUs: async () => {},
   getSignature: async () => undefined,
 });
@@ -242,6 +244,11 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     return !!signee;
   };
 
+  const updateSigneePing = async (signee: IProofOfUsSignee): Promise<void> => {
+    if (!proofOfUs) return;
+    return store.updateSigneePing(proofOfUs, signee);
+  };
+
   const isConnected = async () => {
     if (!proofOfUs) return false;
 
@@ -285,6 +292,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         updateProofOfUs,
         hasSigned,
         isSignee,
+        updateSigneePing,
         getSignature,
       }}
     >
