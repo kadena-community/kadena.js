@@ -225,12 +225,12 @@ export const securityOptions = {
     return createOption({
       key: 'passwordFile' as const,
       prompt: security.passwordPrompt(args),
-      validation: z.string().or(z.object({ _password: z.string() })),
+      validation: z.literal('-').or(z.object({ _password: z.string() })),
       option: new Option(
         '--password-file <passwordFile>',
         'Filepath to the password file',
       ),
-      transform: passwordPromptTransform('--password-file'),
+      transform: passwordPromptTransform('--password-file', args.useStdin),
     })(optionArgs);
   },
   createNewPasswordOption: (
@@ -240,12 +240,12 @@ export const securityOptions = {
     return createOption({
       key: 'newPasswordFile' as const,
       prompt: security.passwordPrompt(args),
-      validation: z.string().or(z.object({ _password: z.string() })),
+      validation: z.literal('-').or(z.object({ _password: z.string() })),
       option: new Option(
         '--new-password-file <newPasswordFile>',
         'Filepath to the new password file',
       ),
-      transform: passwordPromptTransform('--new-password-file'),
+      transform: passwordPromptTransform('--new-password-file', args.useStdin),
     })(optionArgs);
   },
 };
