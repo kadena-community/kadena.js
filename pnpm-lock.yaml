@@ -564,6 +564,9 @@ importers:
       '@graphql-yoga/apollo-link':
         specifier: ~3.0.3
         version: 3.0.3(@apollo/client@3.8.8)(@types/node@18.17.14)(graphql@16.8.1)
+      '@kadena/react-icons':
+        specifier: workspace:*
+        version: link:../../libs/react-icons
       '@kadena/graph':
         specifier: workspace:*
         version: link:../graph
@@ -2082,6 +2085,9 @@ importers:
 
   packages/libs/react-ui:
     dependencies:
+      '@kadena/react-icons':
+        specifier: workspace:*
+        version: link:../react-icons
       '@react-aria/accordion':
         specifier: 3.0.0-alpha.25
         version: 3.0.0-alpha.25(react-dom@18.2.0)(react@18.2.0)
@@ -2167,9 +2173,6 @@ importers:
       '@kadena-dev/shared-config':
         specifier: workspace:*
         version: link:../../tools/shared-config
-      '@kadena/react-icons':
-        specifier: workspace:*
-        version: link:../react-icons
       '@react-types/shared':
         specifier: ^3.22.0
         version: 3.22.0(react@18.2.0)

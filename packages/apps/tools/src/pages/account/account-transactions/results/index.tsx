@@ -10,6 +10,7 @@ import { getTransactions } from '@/services/accounts/get-transactions';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
   MonoDelete,
+  MonoHistory,
   MonoInfo,
   MonoKeyboardArrowRight,
 } from '@kadena/react-icons/system';
@@ -250,7 +251,7 @@ const CheckTransactions: FC = () => {
 
       <ContentHeader
         heading={t('Transactions')}
-        icon={'History'}
+        icon={<MonoHistory />}
         description="This table is listing all the incoming and outgoing transactions sorted by date."
       />
       <Box marginBlockEnd="xxxl" />
