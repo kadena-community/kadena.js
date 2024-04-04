@@ -4,118 +4,118 @@ Release:
 Github Config & Actions:
   - changed-files:
       - any-glob-to-any-file: .github/*
-bootstrap-lib:
+'@kadena/bootstrap-lib':
   - changed-files:
       - any-glob-to-any-file: packages/libs/bootstrap-lib/*
-chainweb-node-client:
+'@kadena/chainweb-node-client':
   - changed-files:
       - any-glob-to-any-file: packages/libs/chainweb-node-client/*
-chainweb-stream-client:
+'@kadena/chainweb-stream-client':
   - changed-files:
       - any-glob-to-any-file: packages/libs/chainweb-stream-client/*
-chainwebjs:
+'@kadena/chainwebjs':
   - changed-files:
       - any-glob-to-any-file: packages/libs/chainwebjs/*
-client:
+'@kadena/client':
   - changed-files:
       - any-glob-to-any-file: packages/libs/client/*
-client-examples:
+'@kadena/client-examples':
   - changed-files:
       - any-glob-to-any-file: packages/libs/client-examples/*
-client-utils:
+'@kadena/client-utils':
   - changed-files:
       - any-glob-to-any-file: packages/libs/client-utils/*
-cookbook:
+'@kadena/cookbook':
   - changed-files:
       - any-glob-to-any-file: packages/tools/cookbook/*
-create-kadena-app:
+'@kadena/create-kadena-app':
   - changed-files:
       - any-glob-to-any-file: packages/tools/create-kadena-app/*
-cryptography-utils:
+'@kadena/cryptography-utils':
   - changed-files:
       - any-glob-to-any-file: packages/libs/cryptography-utils/*
-dev-wallet:
+'@kadena/dev-wallet':
   - changed-files:
       - any-glob-to-any-file: packages/apps/dev-wallet/*
-dev-wallet-desktop:
+'@kadena/dev-wallet-desktop':
   - changed-files:
       - any-glob-to-any-file: packages/apps/dev-wallet-desktop/*
-docs:
+'@kadena/docs':
   - changed-files:
       - any-glob-to-any-file: packages/apps/docs/*
-docs-tools:
+'@kadena/docs-tools':
   - changed-files:
       - any-glob-to-any-file: packages/tools/docs-tools/*
-graph:
+'@kadena/graph':
   - changed-files:
       - any-glob-to-any-file: packages/apps/graph/*
-graph-client:
+'@kadena/graph-client':
   - changed-files:
       - any-glob-to-any-file: packages/apps/graph-client/*
-hd-wallet:
+'@kadena/hd-wallet':
   - changed-files:
       - any-glob-to-any-file: packages/libs/hd-wallet/*
-js-monorepo:
+'@kadena/js-monorepo':
   - changed-files:
       - any-glob-to-any-file: ./*
-kadena-cli:
+'@kadena/kadena-cli':
   - changed-files:
       - any-glob-to-any-file: packages/tools/kadena-cli/*
-kda-cli:
+'@kadena/kda-cli':
   - changed-files:
       - any-glob-to-any-file: packages/tools/kda-cli/*
-pactjs:
+'@kadena/pactjs':
   - changed-files:
       - any-glob-to-any-file: packages/libs/pactjs/*
-pactjs-cli:
+'@kadena/pactjs-cli':
   - changed-files:
       - any-glob-to-any-file: packages/tools/pactjs-cli/*
-pactjs-generator:
+'@kadena/pactjs-generator':
   - changed-files:
       - any-glob-to-any-file: packages/libs/pactjs-generator/*
-proof-of-us:
+'@kadena/proof-of-us':
   - changed-files:
       - any-glob-to-any-file: packages/apps/proof-of-us/*
-react-icons:
+'@kadena/react-icons':
   - changed-files:
       - any-glob-to-any-file: packages/libs/react-icons/*
-react-ui:
+'@kadena/react-ui':
   - changed-files:
       - any-glob-to-any-file: packages/libs/react-ui/*
-spirekey-example:
+'@kadena/spirekey-example':
   - changed-files:
       - any-glob-to-any-file: packages/apps/spirekey-example/*
-toolbox:
+'@kadena/toolbox':
   - changed-files:
       - any-glob-to-any-file: packages/libs/toolbox/*
-tools:
+'@kadena/tools':
   - changed-files:
       - any-glob-to-any-file: packages/apps/tools/*
-types:
+'@kadena/types':
   - changed-files:
       - any-glob-to-any-file: packages/libs/types/*
-e2e-base:
+'@kadena-dev/e2e-base':
   - changed-files:
       - any-glob-to-any-file: packages/e2e/e2e-base/*
-eslint-config:
+'@kadena-dev/eslint-config':
   - changed-files:
       - any-glob-to-any-file: packages/tools/eslint-config/*
-eslint-plugin:
+'@kadena-dev/eslint-plugin':
   - changed-files:
       - any-glob-to-any-file: packages/tools/eslint-plugin/*
-integration-tests:
+'@kadena-dev/integration-tests':
   - changed-files:
       - any-glob-to-any-file: packages/tools/integration-tests/*
-lint-package:
+'@kadena-dev/lint-package':
   - changed-files:
       - any-glob-to-any-file: packages/tools/lint-package/*
-markdown:
+'@kadena-dev/markdown':
   - changed-files:
       - any-glob-to-any-file: packages/tools/markdown/*
-scripts:
+'@kadena-dev/scripts':
   - changed-files:
       - any-glob-to-any-file: packages/tools/scripts/*
-shared-config:
+'@kadena-dev/shared-config':
   - changed-files:
       - any-glob-to-any-file: packages/tools/shared-config/*
 e2e-docs:
