@@ -25,7 +25,7 @@ const config: StorybookConfig = {
       },
     },
     getAbsolutePath('@storybook/addon-mdx-gfm'),
-    '@storybook/addon-webpack5-compiler-swc',
+    getAbsolutePath('@storybook/addon-webpack5-compiler-swc'),
   ],
   framework: {
     name: getAbsolutePath('@storybook/react-webpack5'),

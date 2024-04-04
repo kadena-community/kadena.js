@@ -83,7 +83,8 @@ export default builder.node(
         },
       }),
       transactions: t.prismaConnection({
-        description: 'Default page size is 20.',
+        description:
+          'Default page size is 20. Note that custom token related transactions are not included.',
         type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
@@ -101,7 +102,7 @@ export default builder.node(
                 senderAccount: parent.accountName,
                 events: {
                   some: {
-                    moduleName: 'marmalade-v2.ledger',
+                    moduleName: { startsWith: 'marmalade-v2' },
                   },
                 },
               },
@@ -118,7 +119,7 @@ export default builder.node(
                 senderAccount: parent.accountName,
                 events: {
                   some: {
-                    moduleName: 'marmalade-v2.ledger',
+                    moduleName: { startsWith: 'marmalade-v2' },
                   },
                 },
               },
