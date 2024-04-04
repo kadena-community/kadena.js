@@ -1,4 +1,5 @@
 'use client';
+import { MonoExpandMore } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useState } from 'react';
@@ -78,11 +79,7 @@ export const TreeItem: FC<ITreeItemProps> = ({
               treeToggleVariant[isOpen ? 'opened' : 'closed'],
             )}
           >
-            {hasChildren ? (
-              <SystemIcon.ChevronDown size="md" />
-            ) : (
-              <SystemIcon.Circle size="md" />
-            )}
+            {hasChildren ? <MonoExpandMore /> : <SystemIcon.Circle size="md" />}
           </span>
           <span
             className={classNames(

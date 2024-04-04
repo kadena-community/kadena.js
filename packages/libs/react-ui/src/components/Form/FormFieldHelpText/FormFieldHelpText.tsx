@@ -1,8 +1,8 @@
+import { MonoWarningAmber } from '@kadena/react-icons/system';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
 import type { ComponentProps, FC } from 'react';
 import React from 'react';
-import { AlertBox } from '../../Icon/System/SystemIcon';
 import { helperText } from './FormFieldHelpText.css';
 
 type HelperVariants = NonNullable<RecipeVariants<typeof helperText>>;
@@ -21,7 +21,7 @@ export const FormFieldHelpText: FC<IFormFieldHelpTextProps> = (props) => {
         props.className,
       )}
     >
-      <AlertBox size="sm" />
+      <MonoWarningAmber />
       {props.children}
     </span>
   );

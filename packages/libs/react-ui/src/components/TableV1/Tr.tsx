@@ -1,7 +1,8 @@
+import { MonoChevronRight } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
-import { Link, SystemIcon } from '..';
+import { Link } from '..';
 import { Button } from '../Button/Button';
 import { linkButtonClass, trClass } from './Table.css';
 import { Td } from './Td';
@@ -33,7 +34,7 @@ export const Tr: FC<ITrProps> = ({ children, url, onClick, className }) => {
           <Link
             href={url}
             title={url}
-            icon={<SystemIcon.TrailingIcon />}
+            icon={<MonoChevronRight />}
             aria-label={url}
           />
         </td>
@@ -43,7 +44,7 @@ export const Tr: FC<ITrProps> = ({ children, url, onClick, className }) => {
             title=""
             aria-label=""
             onClick={onClick}
-            icon={<SystemIcon.TrailingIcon />}
+            icon={<MonoChevronRight />}
           />
         </td>
       ) : (

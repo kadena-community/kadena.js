@@ -1,3 +1,4 @@
+import { MonoExpandLess, MonoExpandMore } from '@kadena/react-icons/system';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import classNames from 'classnames';
 import type {
@@ -13,7 +14,6 @@ import { useFocusRing, useHover, useLocale, useNumberField } from 'react-aria';
 import { useNumberFieldState } from 'react-stately';
 import { bodyBaseRegular, monospaceBaseRegular } from '../../../styles';
 import { Button } from '../../Button';
-import { ChevronDown, ChevronUp } from '../../Icon/System/SystemIcon';
 import { formField, input, inputContainer, startAddon } from '../Form.css';
 import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
@@ -151,14 +151,14 @@ export function NumberFieldBase(
 
         <div className={buttonContainerClass}>
           <Button
-            icon={<ChevronUp size="sm" className={iconClass} />}
+            icon={<MonoExpandLess size="sm" className={iconClass} />}
             variant="text"
             isCompact
             className={buttonClass}
             {...incrementButtonProps}
           />
           <Button
-            icon={<ChevronDown size="sm" className={iconClass} />}
+            icon={<MonoExpandMore className={iconClass} />}
             variant="text"
             isCompact
             className={buttonClass}
