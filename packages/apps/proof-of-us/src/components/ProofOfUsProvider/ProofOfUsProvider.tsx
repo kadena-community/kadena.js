@@ -36,6 +36,7 @@ export interface IProofOfUsContext {
   isInitiator: () => Promise<boolean>;
   hasSigned: () => Promise<boolean>;
   isSignee: () => Promise<boolean>;
+  updateSigneePing: (signee: IProofOfUsSignee) => Promise<void>;
   updateProofOfUs: (value: any) => Promise<void>;
   getSignature: (tx: IUnsignedCommand) => Promise<string | undefined>;
 }
@@ -57,6 +58,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   isInitiator: async () => false,
   hasSigned: async () => false,
   isSignee: async () => false,
+  updateSigneePing: async () => {},
   updateProofOfUs: async () => {},
   getSignature: async () => undefined,
 });
@@ -106,6 +108,13 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     [setSignees, params?.id],
   );
 
+  const pingSignee = async () => {
+    const signee = signees?.find((s) => s.accountName === account?.accountName);
+    if (!signee) return;
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    await updateSigneePing(signee);
+  };
+
   //start listeners
   useEffect(() => {
     if (!params?.id || !account) return;
@@ -113,6 +122,15 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
     store.listenProofOfUsSigneesData(`${params.id}`, listenToSigneesData);
   }, [account]);
+
+  //update the ping of the account signer
+  useEffect(() => {
+    pingSignee();
+    const interval = setInterval(pingSignee, 6000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [signees?.length]);
 
   const updateStatus = async ({
     proofOfUsId,
@@ -242,6 +260,11 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     return !!signee;
   };
 
+  const updateSigneePing = async (signee: IProofOfUsSignee): Promise<void> => {
+    if (!proofOfUs) return;
+    return store.updateSigneePing(proofOfUs, signee);
+  };
+
   const isConnected = async () => {
     if (!proofOfUs) return false;
 
@@ -285,6 +308,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         updateProofOfUs,
         hasSigned,
         isSignee,
+        updateSigneePing,
         getSignature,
       }}
     >

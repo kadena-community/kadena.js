@@ -27,7 +27,13 @@ export const multipleWrapperClass = style([
 ]);
 
 export const multipleSigneeClass = style([
-  atoms({ display: 'flex', width: '100%', padding: 'md' }),
+  atoms({
+    display: 'flex',
+    width: '100%',
+    padding: 'md',
+    gap: 'sm',
+    alignItems: 'center',
+  }),
 ]);
 
 export const signeeClass = style([
@@ -65,6 +71,12 @@ export const nameClass = style([
     textTransform: 'capitalize',
     width: '50%',
     textAlign: 'center',
+  },
+]);
+
+export const multipleNameClass = style([
+  {
+    textAlign: 'initial',
   },
 ]);
 

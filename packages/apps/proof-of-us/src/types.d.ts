@@ -132,6 +132,7 @@ type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   socialLink?: ISocial;
   position?: ISigneePosition;
   publicKey: string;
+  lastPingTime?: number;
 };
 
 type IAccountLeaderboard = Pick<IAccount, 'alias' | 'accountName'> & {
