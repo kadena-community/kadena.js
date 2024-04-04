@@ -26,11 +26,11 @@ interface IAccountDetails {
 
 const formatWarnings = (warnings: string[]): string | null => {
   if (warnings.length === 0) return null;
-  const [prefix, ...chainIds] = warnings;
+  const [prefix, suffix, ...chainIds] = warnings;
   const sortedChainIds = chainIds.sort(
     (a, b) => parseInt(a, 10) - parseInt(b, 10),
   );
-  return `${prefix} ${sortedChainIds.join(',')}`;
+  return `${prefix} ${sortedChainIds.join(',')} ${suffix}`;
 };
 
 export async function accountDetails(
@@ -55,8 +55,9 @@ export async function accountDetails(
           if (error.message.includes('row not found') === true) {
             if (warnings.length === 0) {
               warnings.push(
-                `\nAccount "${config.accountName}" is not available on\nfollowing chain(s) of the "${config.networkId}" network:`,
+                `\nAccount "${config.accountName}" is not available on\nfollowing chain(s):`,
               );
+              warnings.push(`on network "${config.networkId}"`);
             }
             warnings.push(chainId);
             return null;

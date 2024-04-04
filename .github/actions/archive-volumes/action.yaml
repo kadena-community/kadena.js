@@ -12,7 +12,7 @@ runs:
         working-directory: .github/actions/archive-volumes
 
       - name: Upload Volume
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v4
         with:
-          name: sandbox_volume_${{ matrix.app }}
+          name: sandbox_volume_${{ inputs.test-object }}
           path: .github/actions/archive-volumes/devnet-vol.tar.gz

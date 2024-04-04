@@ -1,13 +1,16 @@
 import { useAccount } from '@/hooks/account';
 import { deviceColors } from '@/styles/tokens.css';
 import { getSigneeName } from '@/utils/getSigneeName';
+import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
+import { PingStatus } from '../PingStatus/PingStatus';
 import { SignStatus } from '../SignStatus/SignStatus';
 import { Text } from '../Typography/Text';
 import {
   accountClass,
   ellipsClass,
+  multipleNameClass,
   multipleSigneeClass,
   nameClass,
   signeeClass,
@@ -39,18 +42,32 @@ export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
     }
     return {};
   };
+
+  if (!signee) return null;
+
+  const isMeChecked = isMe(signee, account);
   return (
-    <li
+    <div
       className={classNames(isMultiple ? multipleSigneeClass : signeeClass)}
       style={getSuccessStyle(signee)}
     >
-      <SignStatus status={signee?.signerStatus} />
-      <Text className={classNames(nameClass, ellipsClass)} bold>
-        {getSigneeName(signee)} {isMe(signee, account) && ' (me)'}
+      <Stack gap="sm" alignItems="center">
+        <SignStatus status={signee?.signerStatus} />
+        <PingStatus signee={signee} />
+      </Stack>
+      <Text
+        className={classNames(
+          nameClass,
+          ellipsClass,
+          isMultiple && multipleNameClass,
+        )}
+        bold
+      >
+        {getSigneeName(signee)} {isMeChecked && ' (me)'}
       </Text>
       <Text className={classNames(accountClass, ellipsClass)}>
         {getAccount(signee)}
       </Text>
-    </li>
+    </div>
   );
 };

@@ -19,3 +19,5 @@ export const NO_ACCOUNTS_FOUND_ERROR_MESSAGE =
 
 export const CHAIN_ID_ACTION_ERROR_MESSAGE = 'Please provide a valid Chain ID.';
 export const CHAIN_ID_RANGE_ERROR_MESSAGE = `Enter a valid chainId: between 0-${MAX_CHAIN_VALUE}`;
+export const KEYS_ALL_PRED_ERROR_MESSAGE =
+  'Only "keys-all" predicate is allowed for the given public keys and account name';
