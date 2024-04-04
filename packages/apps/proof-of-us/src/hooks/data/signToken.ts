@@ -48,7 +48,7 @@ export const useSignToken = () => {
     router.replace(
       `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
         tx.hash
-      }`,
+      }/${proofOfUs.proofOfUsId}`,
     );
   };
 

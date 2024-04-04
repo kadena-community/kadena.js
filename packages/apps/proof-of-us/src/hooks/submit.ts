@@ -77,7 +77,9 @@ export const useSubmit = () => {
         }
 
         router.replace(
-          `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs?.tokenId}/${proofOfUs?.requestKey}`,
+          `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs?.tokenId}/${proofOfUs?.requestKey}/${
+            proofOfUs.proofOfUsId
+          }`,
         );
         return;
       }

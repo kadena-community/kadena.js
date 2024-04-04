@@ -3,6 +3,7 @@ import { useProofOfUs } from '@/hooks/proofOfUs';
 import { useSubmit } from '@/hooks/submit';
 import type { FC } from 'react';
 import { useEffect } from 'react';
+import { ListSignees } from '../ListSignees/ListSignees';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { LoadingStatus } from '../Status/LoadingStatus';
 
@@ -47,6 +48,7 @@ export const MintView: FC<IProps> = () => {
   return (
     <ScreenHeight>
       <LoadingStatus />
+      <ListSignees />
     </ScreenHeight>
   );
 };

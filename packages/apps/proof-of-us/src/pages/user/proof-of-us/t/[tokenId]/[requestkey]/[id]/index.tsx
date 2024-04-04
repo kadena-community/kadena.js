@@ -1,4 +1,5 @@
 import { Button } from '@/components/Button/Button';
+import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
 import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import { ScreenHeight } from '@/components/ScreenHeight/ScreenHeight';
@@ -69,6 +70,7 @@ const Page: NextPage<IProps> = ({ params }) => {
             ) : (
               <Stack flex={1} flexDirection="column">
                 <LoadingStatus />
+                <ListSignees />
                 <Stack flex={1} />
                 <Stack>
                   <Link href="/user">

@@ -89,7 +89,7 @@ export const ConnectView: FC<IProps> = () => {
         router.replace(
           `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
             proofOfUs.requestKey
-          }`,
+          }/${proofOfUs.proofOfUsId}`,
         );
       }
     },
@@ -139,7 +139,7 @@ export const ConnectView: FC<IProps> = () => {
 
           {proofOfUs.tokenId ? (
             <Link
-              href={`/user/proof-of-us/t/${proofOfUs.tokenId}/${proofOfUs.requestKey}`}
+              href={`/user/proof-of-us/t/${proofOfUs.tokenId}/${proofOfUs.requestKey}/${proofOfUs.proofOfUsId}`}
             >
               <Button>Go to Proof</Button>
             </Link>

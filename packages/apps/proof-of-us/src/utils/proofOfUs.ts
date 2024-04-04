@@ -39,7 +39,7 @@ export const getTokenId = async (
 
   const transaction = Pact.builder
     .execution(
-      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.retrieve-connection-token-id "${eventId}" "${uri}"
+      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.retrieve-connection-token-id "" "${uri}"
       )`,
     )
     .setNetworkId(env.NETWORKID)
@@ -183,12 +183,7 @@ export const createConnectTokenTransaction = async (
   account: IAccount,
 ): Promise<IUnsignedCommand | undefined> => {
   const credential = account.credentials[0];
-  const eventId = process.env.NEXT_PUBLIC_CONNECTION_EVENTID ?? '';
   const collectionId = process.env.NEXT_PUBLIC_CONNECTION_COLLECTIONID ?? '';
-
-  if (!eventId) {
-    throw new Error('eventId not found');
-  }
 
   if (!collectionId) {
     throw new Error('collectionId not found');
@@ -213,7 +208,6 @@ export const createConnectTokenTransaction = async (
       (map (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard) [${guardString}])
       )`,
     )
-    //.addData('event_id', eventId)
     .addData('collection_id', collectionId)
     .addData('uri', manifestUri)
     .setNetworkId(env.NETWORKID)
@@ -242,7 +236,7 @@ export const createConnectTokenTransaction = async (
           ),
           withCap(
             `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.CONNECT`,
-            `${eventId}`,
+            ``,
             `${manifestUri}`,
           ),
         ],
@@ -256,7 +250,7 @@ export const createConnectTokenTransaction = async (
         (withCap) => [
           withCap(
             `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.CONNECT`,
-            `${eventId}`,
+            ``,
             `${manifestUri}`,
           ),
         ],
