@@ -48,22 +48,37 @@ export const createChangeWalletPasswordCommand: (
     }),
     confirmOption(),
   ],
-  async (option, { collect }) => {
-    const config = await collect(option);
-    log.debug('change-wallet-password:action', config);
+  async (option) => {
+    const { walletNameConfig, walletName } = await option.walletName();
+    const wallet = walletNameConfig;
+    if (!wallet) {
+      throw new Error(`Wallet: ${walletName} does not exist.`);
+    }
 
-    if (config.confirm !== true) {
+    const { passwordFile } = await option.passwordFile({ wallet });
+    const { newPasswordFile } = await option.newPasswordFile();
+    const { confirm } = await option.confirm();
+
+    log.debug('change-wallet-password:action', {
+      walletName,
+      wallet,
+      passwordFile,
+      newPasswordFile,
+      confirm,
+    });
+
+    if (confirm !== true) {
       return log.error(`\nWallet password won't be updated. Exiting..\n`);
     }
 
-    if (config.walletNameConfig === null) {
+    if (wallet === null) {
       throw new CommandError({ errors: ['Invalid wallet'], exitCode: 1 });
     }
 
     const result = await services.wallet.changePassword(
-      config.walletNameConfig,
-      config.passwordFile,
-      config.newPasswordFile,
+      wallet,
+      passwordFile,
+      newPasswordFile,
     );
 
     log.info(log.color.green(`\nWallet password successfully updated..\n`));
