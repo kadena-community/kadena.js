@@ -9,7 +9,7 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { nonFungibleChainCheck } from '../data-loaders/non-fungible-chain-check';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
-import type { NonFungibleAccount } from '../types/graphql-types';
+import type { Guard, NonFungibleAccount } from '../types/graphql-types';
 import {
   NonFungibleAccountName,
   NonFungibleChainAccountName,
@@ -33,6 +33,7 @@ export default builder.node(
           __typename: NonFungibleAccountName,
           accountName,
           chainAccounts: [],
+          nonFungibleTokenBalances: [],
           transactions: [],
         };
       } catch (error) {
@@ -58,7 +59,11 @@ export default builder.node(
                 __typename: NonFungibleChainAccountName,
                 chainId,
                 accountName: parent.accountName,
-                nonFungibles: [],
+                guard: {
+                  keys: [],
+                  predicate: 'keys-all' as Guard['predicate'],
+                },
+                nonFungibleTokenBalances: [],
                 transactions: [],
               };
             });
@@ -67,7 +72,7 @@ export default builder.node(
           }
         },
       }),
-      nonFungibles: t.field({
+      nonFungibleTokenBalances: t.field({
         type: [Token],
         complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
         async resolve(parent) {
