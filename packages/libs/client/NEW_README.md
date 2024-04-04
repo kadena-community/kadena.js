@@ -1064,8 +1064,8 @@ interface IClient {
   local: <T extends ILocalOptions>(transaction: LocalRequestBody, options?: T) => Promise<LocalResponse<T>>;
   dirtyRead: (transaction: IUnsignedCommand) => Promise<ICommandResult>;
   preflight: (transaction: ICommand | IUnsignedCommand) => Promise<ILocalCommandResult>;
-  runPact: (code: string, data: Record<string, unknown>, option: INetworkOptions) => Promise<ICommandResult>;
   signatureVerification: (transaction: ICommand) => Promise<ICommandResult>;
+  runPact: (code: string, data: Record<string, unknown>, option: INetworkOptions) => Promise<ICommandResult>;
   createSpv: (transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId) => Promise<string>;
   pollCreateSpv: (transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId, options?: IPollOptions) => Promise<string>;
 }
@@ -1441,6 +1441,10 @@ when your code only includes reading data from the node.
 dirtyRead( transaction: ICommand | IUnsignedCommand ): Promise<ICommandResult>;
 ```
 
+| Parameter   | Type                         | Description                           |
+| ----------- | ---------------------------- | ------------------------------------- |
+| transaction | ICommand \| IUnsignedCommand | The signed or unsigned command object |
+
 ##### Examples
 
 Get account balance
@@ -1471,6 +1475,10 @@ Alias for local which preflight is true but signatureVerification is false
 preflight( transaction: ICommand | IUnsignedCommand ): Promise<ICommandResult>;
 ```
 
+| Parameter   | Type                         | Description                           |
+| ----------- | ---------------------------- | ------------------------------------- |
+| transaction | ICommand \| IUnsignedCommand | The signed or unsigned command object |
+
 #### Client: signatureVerification
 
 Alias for local which preflight is false but signatureVerification is true
@@ -1479,6 +1487,10 @@ Alias for local which preflight is false but signatureVerification is true
 signatureVerification( transaction: ICommand | IUnsignedCommand ): Promise<ICommandResult & { preflightWarnings?: string[] }>;
 ```
 
+| Parameter   | Type                         | Description                           |
+| ----------- | ---------------------------- | ------------------------------------- |
+| transaction | ICommand \| IUnsignedCommand | The signed or unsigned command object |
+
 #### Client: runPact
 
 If you just want to see the result of a pact code and dont want to create a
@@ -1486,25 +1498,65 @@ command object you can use `runPact` function. this function creates a command
 object internally.
 
 ```TS
-runPact(code: string, data?: Record<string, unknown>, option?: INetworkOptions): Promise<ICommandResult>;
+runPact(code: string, data?: Record<string, unknown>, option?: { chainId:ChainId, networkId:string }): Promise<ICommandResult>;
 ```
+
+| Parameter | Type                                  | Description                                        |
+| --------- | ------------------------------------- | -------------------------------------------------- |
+| code      | string                                | pact code                                          |
+| data      | Record<string, unknown>               | data to be sent with the transaction               |
+| option    | { chainId:ChainId, networkId:string } | chainId and networkId that you want send the tx to |
 
 #### Examples
 
 ```TS
 const { runPact } = createClient()
 
-const result = await runPact(`(coin.getBalance "alice")`, {}, { networkId:"mainnet01", chainId:"1" })
+const result = await runPact(`(coin.getBalance "alice")`, { }, { networkId:"mainnet01", chainId:"1" })
+
 ```
+
+### Request SPV (Simple Payment Verification) proof
+
+You need SPV roof mainly for cross-chain transactions - but its not limited to
+this and you can request SPV proof for all kind of transactions.
+
+there are two functions for this purpose which both uses `/spv` endpoint.
+
+- `createSPV`
+- `pollCreateSPV`
+
+#### Client : createSPV
+
+Request SPV proof if its ready.
+
+```TS
+createSpv(transactionDescriptor: ITransactionDescriptor, targetChainId: ChainId): Promise<string>;
+```
+
+| Parameter             | Type                                                     | Description                                  |
+| --------------------- | -------------------------------------------------------- | -------------------------------------------- |
+| transactionDescriptor | { requestKey:string, networkId:string, chainId:ChainId } | The transaction you want to create spv proof |
+| targetChainId         | ChainId                                                  | The chain which consumes this proof          |
+
+#### Client : createSPV
+
+poll for the SPV proof an await till its ready
+
+```TS
+pollCreateSpv(
+  transactionDescriptor: ITransactionDescriptor,
+  targetChainId: ChainId,
+  pollOptions?: { onPoll?: (id: string) => void; timeout?: Milliseconds; interval?: Milliseconds; }
+): Promise<string>;
+```
+
+| Parameter             | Type                                                                                | Description                                                                                                                                                                                                                                                     |
+| --------------------- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| transactionDescriptor | { requestKey:string, networkId:string, chainId:ChainId }                            | The transaction you want to create spv proof                                                                                                                                                                                                                    |
+| targetChainId         | ChainId                                                                             | The chain which consumes this proof                                                                                                                                                                                                                             |
+| pollOptions           | { onPoll?: (id: string) => void; timeout?: Milliseconds; interval?: Milliseconds; } | onPoll: callback is called when the request is polling this might call several times if the request is not ready yet. timeout: timeout if the result is not ready (default `180000` // 3 minutes). interval: delay between retries (default is `5000` // 5 sec) |
 
 ## Complete and Runnable Examples
 
 Check out [Client Examples](../client-examples/)
-
-```
-
-```
-
-```
-
-```
