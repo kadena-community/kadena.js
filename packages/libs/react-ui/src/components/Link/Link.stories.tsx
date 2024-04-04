@@ -1,7 +1,11 @@
+import {
+  MonoAdd,
+  MonoChevronLeft,
+  MonoChevronRight,
+} from '@kadena/react-icons/system';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import React from 'react';
 import { button } from '../Button/SharedButton.css';
-import { LeadingIcon, Plus, TrailingIcon } from '../Icon/System/SystemIcon';
 import { Box } from '../Layout/Box/Box';
 import { Heading } from '../Typography/Heading/Heading';
 import type { ILinkProps } from './Link';
@@ -128,8 +132,8 @@ export const AllVariants: StoryFn<ILinkProps> = ({
           isLoading={isLoading}
           href="#"
           variant="contained"
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
+          startIcon={<MonoChevronLeft />}
+          endIcon={<MonoChevronRight />}
         >
           {color}
         </Link>
@@ -147,8 +151,8 @@ export const AllVariants: StoryFn<ILinkProps> = ({
           href="#"
           isDisabled={isDisabled}
           isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
+          startIcon={<MonoChevronLeft />}
+          endIcon={<MonoChevronRight />}
         >
           {color}
         </Link>
@@ -166,8 +170,8 @@ export const AllVariants: StoryFn<ILinkProps> = ({
           isCompact={isCompact}
           isDisabled={isDisabled}
           isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
+          startIcon={<MonoChevronLeft />}
+          endIcon={<MonoChevronRight />}
         >
           {color}
         </Link>
@@ -185,8 +189,8 @@ export const AllVariants: StoryFn<ILinkProps> = ({
           isCompact={isCompact}
           isDisabled={isDisabled}
           isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
+          startIcon={<MonoChevronLeft />}
+          endIcon={<MonoChevronRight />}
         >
           {color}
         </Link>
@@ -203,7 +207,7 @@ export const StartIcon: StoryFn<ILinkProps> = ({
   variant,
 }) => (
   <Link
-    startIcon={<Plus />}
+    startIcon={<MonoAdd />}
     isCompact={isCompact}
     isDisabled={isDisabled}
     isLoading={isLoading}
@@ -222,7 +226,7 @@ export const EndIcon: StoryFn<ILinkProps> = ({
   variant,
 }) => (
   <Link
-    endIcon={<Plus />}
+    endIcon={<MonoAdd />}
     isCompact={isCompact}
     isDisabled={isDisabled}
     isLoading={isLoading}
@@ -241,7 +245,7 @@ export const OnlyIcon: StoryFn<ILinkProps> = ({
   variant,
 }) => (
   <Link
-    icon={<Plus />}
+    icon={<MonoAdd />}
     isCompact={isCompact}
     isDisabled={isDisabled}
     isLoading={isLoading}

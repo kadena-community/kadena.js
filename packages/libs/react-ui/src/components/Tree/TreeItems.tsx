@@ -1,9 +1,8 @@
 'use client';
-import { MonoExpandMore } from '@kadena/react-icons/system';
+import { MonoCake, MonoExpandMore } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React, { useState } from 'react';
-import { SystemIcon } from '../Icon';
 import {
   treeBranchWrapperVariant,
   treeTitleClass,
@@ -79,7 +78,7 @@ export const TreeItem: FC<ITreeItemProps> = ({
               treeToggleVariant[isOpen ? 'opened' : 'closed'],
             )}
           >
-            {hasChildren ? <MonoExpandMore /> : <SystemIcon.Circle size="md" />}
+            {hasChildren ? <MonoExpandMore /> : <MonoCake />}
           </span>
           <span
             className={classNames(

@@ -1,6 +1,10 @@
+import {
+  MonoAdd,
+  MonoChevronLeft,
+  MonoChevronRight,
+} from '@kadena/react-icons/system';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { LeadingIcon, Plus, TrailingIcon } from '../Icon/System/SystemIcon';
 import { Box } from '../Layout/Box/Box';
 import { Heading, Text } from '../Typography';
 import type { IButtonProps } from './Button';
@@ -124,8 +128,8 @@ export const AllVariants: StoryFn<IButtonProps> = ({
           isCompact={isCompact}
           isDisabled={isDisabled}
           isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
+          startIcon={<MonoChevronLeft />}
+          endIcon={<MonoChevronRight />}
         >
           {color}
         </Button>
@@ -142,8 +146,8 @@ export const AllVariants: StoryFn<IButtonProps> = ({
           isCompact={isCompact}
           isDisabled={isDisabled}
           isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
+          startIcon={<MonoChevronLeft />}
+          endIcon={<MonoChevronRight />}
         >
           {color}
         </Button>
@@ -160,8 +164,8 @@ export const AllVariants: StoryFn<IButtonProps> = ({
           isCompact={isCompact}
           isDisabled={isDisabled}
           isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
+          startIcon={<MonoChevronLeft />}
+          endIcon={<MonoChevronRight />}
         >
           {color}
         </Button>
@@ -178,8 +182,8 @@ export const AllVariants: StoryFn<IButtonProps> = ({
           isCompact={isCompact}
           isDisabled={isDisabled}
           isLoading={isLoading}
-          startIcon={<LeadingIcon />}
-          endIcon={<TrailingIcon />}
+          startIcon={<MonoChevronLeft />}
+          endIcon={<MonoChevronRight />}
         >
           {color}
         </Button>
@@ -196,7 +200,7 @@ export const StartIcon: StoryFn<IButtonProps> = ({
   variant,
 }) => (
   <Button
-    startIcon={<Plus />}
+    startIcon={<MonoAdd />}
     isCompact={isCompact}
     isDisabled={isDisabled}
     isLoading={isLoading}
@@ -215,7 +219,7 @@ export const EndIcon: StoryFn<IButtonProps> = ({
   variant,
 }) => (
   <Button
-    endIcon={<Plus />}
+    endIcon={<MonoAdd />}
     isCompact={isCompact}
     isDisabled={isDisabled}
     isLoading={isLoading}
@@ -234,7 +238,7 @@ export const OnlyIcon: StoryFn<IButtonProps> = ({
   variant,
 }) => (
   <Button
-    icon={<Plus />}
+    icon={<MonoAdd />}
     isCompact={isCompact}
     isDisabled={isDisabled}
     isLoading={isLoading}
