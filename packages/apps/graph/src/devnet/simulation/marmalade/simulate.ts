@@ -200,6 +200,11 @@ export async function simulateMarmalade({
             continue;
           }
 
+          if (transferAmount > account.tokens[randomToken]) {
+            logger.warn('Skipping transfer of more tokens than available');
+            continue;
+          }
+
           await transferToken({
             tokenId: randomToken,
             sender: account,
@@ -398,6 +403,10 @@ export async function mintExistingToken({
   filepath: string;
   accountCollection: IAccountWithTokens[];
 }) {
+  logger.info(
+    `Minting existing token ${tokenId}\nAmount ${amount}\nCreator ${creator.account}`,
+  );
+
   const mintResult = await mintToken({
     creator: creator.account,
     tokenId,
