@@ -30,7 +30,7 @@ export const dotenv: {
   MARMALADE_LOCAL_NAMESPACE_PATH: string;
   MEMPOOL_HOSTNAME: string;
   MEMPOOL_PORT: number;
-  GITHUB_TOKEN: string;
+  GITHUB_TOKEN: string | undefined;
   SIMULATE_DEFAULT_CHAIN_ID: ChainId;
   SIMULATE_LOG_FOLDER_NAME: string;
   NODE_ENV: string;
@@ -89,7 +89,7 @@ export const dotenv: {
   ),
   MARMALADE_REMOTE_TEMPLATE_PATH: or(
     process.env.MARMALADE_REMOTE_TEMPLATE_PATH,
-    'pact/yaml/marmalade-v2',
+    'pact/yaml',
   ),
   MARMALADE_REMOTE_NAMESPACE_PATH: or(
     process.env.MARMALADE_REMOTE_NAMESPACE_PATH?.split(','),
@@ -98,7 +98,7 @@ export const dotenv: {
 
   MARMALADE_REMOTE_EXCLUDE: or(
     process.env.MARMALADE_REMOTE_EXCLUDE?.split(','),
-    ['sample', 'data', 'test'],
+    ['sample', 'data'],
   ),
 
   MARMALADE_LOCAL_TEMPLATE_PATH: or(
@@ -111,7 +111,7 @@ export const dotenv: {
   ),
   MEMPOOL_HOSTNAME: or(process.env.MEMPOOL_HOST, 'localhost'),
   MEMPOOL_PORT: parseInt(or(process.env.MEMPOOL_PORT, '1789'), 10),
-  GITHUB_TOKEN: or(process.env.GITHUB_TOKEN, '/pact/marmalade-ns'),
+  GITHUB_TOKEN: process.env.GITHUB_TOKEN,
   SIMULATE_DEFAULT_CHAIN_ID: or(
     process.env.SIMULATE_DEFAULT_CHAIN_ID as ChainId,
     '0' as ChainId,
