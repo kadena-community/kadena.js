@@ -1231,12 +1231,24 @@ interface ICommandResult {
       };
   gas: number;
   logs: string | null;
+  // for defpact functions
   continuation: null | {
-    blockHash: string;
-    blockTime: number;
-    blockHeight: number;
-    prevBlockHash: string;
-    publicMeta?: IPactCommand['meta']
+    pactId: PactTransactionHash;
+    step: Step;
+    stepCount: number;
+    executed: boolean | null;
+    stepHasRollback: boolean;
+    continuation: {
+      def: string;
+      args: PactValue;
+    };
+    yield: {
+      data: Array<[string, PactValue]>;
+      provenance: {
+          targetChainId: ChainId;
+          moduleHash: string;
+      } | null;
+    };
   };
   metaData: null | {
     blockHash: string;
@@ -1245,7 +1257,7 @@ interface ICommandResult {
     prevBlockHash: string;
     publicMeta?: IPactCommand['meta']
   };
-  events?: Array<{
+  events: Array<{
     name: string;
     module: {
       name: string;
@@ -1556,6 +1568,30 @@ pollCreateSpv(
 | transactionDescriptor | { requestKey:string, networkId:string, chainId:ChainId }                            | The transaction you want to create spv proof                                                                                                                                                                                                                    |
 | targetChainId         | ChainId                                                                             | The chain which consumes this proof                                                                                                                                                                                                                             |
 | pollOptions           | { onPoll?: (id: string) => void; timeout?: Milliseconds; interval?: Milliseconds; } | onPoll: callback is called when the request is polling this might call several times if the request is not ready yet. timeout: timeout if the result is not ready (default `180000` // 3 minutes). interval: delay between retries (default is `5000` // 5 sec) |
+
+##### Examples
+
+```TS
+
+const request = await submit(crossChainTx)
+const response = await pollOne(request)
+// create spv proof for the transaction
+const spvProof = await pollSpvProof(request)
+
+const continuationTx = Pact.builder.continuation({
+  pactId: response.continuation.pactId,
+  rollback: false,
+  step:1,
+  proof: spvProof
+}).addMeta({
+  chainId: targetChainId,
+  // using gas station for paying gas fee
+  senderAccount : 'kadena-xchain-gas'
+}).createTransaction()
+
+const contRequest = await submit(continuationTx)
+const finalResult = await pollOne(contRequest)
+```
 
 ## Complete and Runnable Examples
 
