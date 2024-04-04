@@ -7,12 +7,16 @@ export const underlayClass = style({
   zIndex: token('zIndex.overlay'),
 });
 
-export const popoverClass = atoms({
-  backgroundColor: 'base.default',
-  borderRadius: 'sm',
-  height: '100%',
-  overflowY: 'scroll',
-});
+export const popoverClass = style([
+  atoms({
+    backgroundColor: 'base.default',
+    borderRadius: 'sm',
+    overflow: 'auto',
+  }),
+  {
+    maxHeight: '100%',
+  },
+]);
 
 export const arrowClass = style({
   width: '12px',
