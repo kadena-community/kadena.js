@@ -2,7 +2,7 @@ export type { IAccordionProps } from './Accordion';
 export type { IAvatarProps } from './Avatar';
 export type { IBadgeProps } from './Badge';
 export type { IBreadcrumbItemProps, IBreadcrumbsProps } from './Breadcrumbs';
-export type { IButtonProps, IToggleButtonProps } from './Button';
+export type { IButtonProps, IToggleButtonProps, PressEvent } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {

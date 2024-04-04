@@ -1,16 +1,10 @@
-import { mergeProps, useObjectRef } from '@react-aria/utils';
-import type { RecipeVariants } from '@vanilla-extract/recipes';
+import { useObjectRef } from '@react-aria/utils';
 import classNames from 'classnames';
-import type {
-  ComponentProps,
-  ForwardedRef,
-  MouseEventHandler,
-  ReactElement,
-  ReactNode,
-} from 'react';
-import React, { cloneElement, forwardRef } from 'react';
+import type { ForwardedRef, ReactElement } from 'react';
+import React, { forwardRef } from 'react';
 import type { AriaButtonProps, AriaFocusRingProps } from 'react-aria';
-import { useButton, useFocusRing, useHover } from 'react-aria';
+import type { IBaseButtonProps } from '.';
+import { BaseButton } from '.';
 import type { IAvatarProps } from '../Avatar';
 import { Avatar } from '../Avatar';
 import { Badge } from '../Badge';
@@ -18,44 +12,43 @@ import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import {
   avatarStyle,
   badgeStyle,
-  button,
   centerContentWrapper,
   directionStyle,
   disabledBadgeStyle,
   iconOnlyStyle,
-  iconStyle,
+  isCompactStyle,
   noPostfixStyle,
   noPrefixStyle,
   postfixIconStyle,
   prefixIconStyle,
 } from './Button.css';
-import { disableLoadingProps } from './utils';
+import { disableLoadingProps, renderIcon } from './utils';
 
-type Variants = NonNullable<RecipeVariants<typeof button>>;
-
-type BaseProps = Omit<AriaFocusRingProps, 'isTextInput'> & Variants;
+type BaseProps = Omit<AriaFocusRingProps, 'isTextInput'> &
+  Pick<
+    IBaseButtonProps,
+    | 'variant'
+    | 'isCompact'
+    | 'style'
+    | 'children'
+    | 'className'
+    | 'title'
+    | 'isDisabled'
+    | 'isLoading'
+    | 'aria-label'
+  >;
 
 export interface ICustomProps extends BaseProps {
   avatarProps?: Omit<IAvatarProps, 'size'>;
   badgeValue?: string | number;
-  children?: ReactNode | ReactNode[];
-  className?: string;
   icon?: ReactElement;
   iconPosition?: 'start' | 'end';
-  isDisabled?: boolean;
   loadingLabel?: string;
-  style?: ComponentProps<'button'>['style'];
-  // Title to be shown as HTML tooltip
-  title?: ComponentProps<'button'>['title'];
-  // manual override for icon only buttons
-  ariaLabel?: Pick<AriaButtonProps, 'aria-label'>['aria-label'];
 }
 
 export interface IButtonElementProps extends ICustomProps {
   type?: Omit<Pick<AriaButtonProps, 'type'>['type'], 'submit'>;
-  onPress:
-    | Pick<AriaButtonProps, 'onPress'>['onPress']
-    | MouseEventHandler<HTMLButtonElement>;
+  onPress: Pick<AriaButtonProps, 'onPress'>['onPress'];
 }
 
 export interface ISubmitButtonProps extends ICustomProps {
@@ -64,14 +57,6 @@ export interface ISubmitButtonProps extends ICustomProps {
 }
 
 export type IButtonProps = IButtonElementProps | ISubmitButtonProps;
-
-const renderIcon = (icon: ReactElement | undefined) => {
-  if (icon === undefined) return null;
-
-  return cloneElement(icon, {
-    className: iconStyle,
-  });
-};
 
 /**
  * Button component
@@ -91,139 +76,127 @@ const renderIcon = (icon: ReactElement | undefined) => {
  * @param title - title to be shown as HTML tooltip
  */
 
-const BaseButton = (
-  {
-    icon,
-    iconPosition = 'end',
-    children,
-    avatarProps,
-    badgeValue,
-    isCompact = false,
-    loadingLabel = 'Loading',
-    variant = 'primary',
-    ...props
-  }: IButtonProps,
-  forwardedRef: ForwardedRef<HTMLButtonElement>,
-) => {
-  props = disableLoadingProps(props);
-  const ref = useObjectRef(forwardedRef);
-  const { buttonProps, isPressed } = useButton(props as ICustomProps, ref);
-  const { hoverProps, isHovered } = useHover(props);
-  const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
+const Button = forwardRef(
+  (
+    {
+      icon,
+      iconPosition = 'end',
+      children,
+      avatarProps,
+      badgeValue,
+      isCompact = false,
+      loadingLabel = 'Loading',
+      variant = 'primary',
+      className,
+      ...props
+    }: IButtonProps,
+    forwardedRef: ForwardedRef<HTMLButtonElement>,
+  ) => {
+    props = disableLoadingProps(props);
+    const ref = useObjectRef(forwardedRef);
 
-  const startIcon = iconPosition === 'start' && icon;
-  const endIcon = iconPosition === 'end' && icon;
-  const iconOnly =
-    (icon && !children) || (loadingLabel === '' && props.isLoading);
-  const isLoading = props.isLoading && loadingLabel !== '';
+    const startIcon = iconPosition === 'start' && icon;
+    const endIcon = iconPosition === 'end' && icon;
+    const iconOnly =
+      (icon && !children) || (loadingLabel === '' && props.isLoading);
+    const isLoading = props.isLoading && loadingLabel !== '';
 
-  const isLoadingAriaLiveLabel = `${
-    typeof children === 'string' ? children : buttonProps['aria-label'] ?? 'is'
-  } loading`.trim();
+    const isLoadingAriaLiveLabel = `${
+      typeof children === 'string' ? children : props['aria-label'] ?? 'is'
+    } loading`.trim();
 
-  // Content to show before the children
-  const prefixContent =
-    startIcon || avatarProps ? (
-      <span className={startIcon ? prefixIconStyle : avatarStyle}>
-        {avatarProps ? (
-          <Avatar
-            isDisabled={props.isDisabled}
-            size={isCompact ? 'sm' : 'md'}
-            {...avatarProps}
-          />
-        ) : (
-          renderIcon(icon)
-        )}
-      </span>
+    // Content to show before the children
+    const prefixContent =
+      startIcon || avatarProps ? (
+        <span className={startIcon ? prefixIconStyle : avatarStyle}>
+          {avatarProps ? (
+            <Avatar
+              isDisabled={props.isDisabled}
+              size={isCompact ? 'sm' : 'md'}
+              {...avatarProps}
+            />
+          ) : (
+            renderIcon(icon)
+          )}
+        </span>
+      ) : null;
+
+    // Icon to be rendered after the center content
+    const postfixContent = endIcon ? (
+      <span className={postfixIconStyle}>{renderIcon(icon)}</span>
     ) : null;
 
-  // Icon to be rendered after the center content
-  const postfixContent = endIcon ? (
-    <span className={postfixIconStyle}>{renderIcon(icon)}</span>
-  ) : null;
+    // Content with optional badge component
+    const centerContent = (
+      <span
+        className={classNames(centerContentWrapper, {
+          [badgeStyle]: !postfixContent && badgeValue,
+          [noPostfixStyle]: !postfixContent && !badgeValue,
+          [noPrefixStyle]: !prefixContent,
+        })}
+      >
+        {children}
+        {badgeValue ? (
+          <Badge
+            size={'sm'}
+            className={classNames({ [disabledBadgeStyle]: props.isDisabled })}
+            style={
+              ['outlined', 'transparent'].includes(variant) || props.isDisabled
+                ? 'default'
+                : 'inverse'
+            }
+          >
+            {badgeValue}
+          </Badge>
+        ) : null}
+      </span>
+    );
 
-  // Content with optional badge component
-  const centerContent = (
-    <span
-      className={classNames(centerContentWrapper, {
-        [badgeStyle]: !postfixContent && badgeValue,
-        [noPostfixStyle]: !postfixContent && !badgeValue,
-        [noPrefixStyle]: !prefixContent,
-      })}
-    >
-      {children}
-      {badgeValue ? (
-        <Badge
-          size={'sm'}
-          className={classNames({ [disabledBadgeStyle]: props.isDisabled })}
-          style={
-            ['outlined', 'transparent'].includes(variant) || props.isDisabled
-              ? 'default'
-              : 'inverse'
-          }
-        >
-          {badgeValue}
-        </Badge>
-      ) : null}
-    </span>
-  );
+    // For buttons with icons only or empty loader text, only show the loader
+    const content = props.isLoading ? (
+      <span
+        className={classNames({
+          [`${noPrefixStyle} ${postfixIconStyle} ${centerContentWrapper}`]:
+            (endIcon && isLoading) || !iconOnly,
+          [`${noPostfixStyle} ${prefixIconStyle} ${centerContentWrapper}`]:
+            (startIcon && isLoading) || !iconOnly,
+          [iconOnlyStyle]: iconOnly,
+          [directionStyle]: startIcon,
+        })}
+      >
+        {iconOnly ? null : loadingLabel}
+        <ProgressCircle
+          size={isCompact ? 'sm' : 'md'}
+          aria-hidden="true"
+          aria-label={isLoadingAriaLiveLabel}
+          isIndeterminate
+        />
+      </span>
+    ) : iconOnly ? (
+      <span className={iconOnlyStyle}>{renderIcon(icon)}</span>
+    ) : (
+      <>
+        {prefixContent}
+        {centerContent}
+        {postfixContent}
+      </>
+    );
 
-  // For buttons with icons only or empty loader text, only show the loader
-  const content = props.isLoading ? (
-    <span
-      className={classNames({
-        [`${noPrefixStyle} ${postfixIconStyle} ${centerContentWrapper}`]:
-          (endIcon && isLoading) || !iconOnly,
-        [`${noPostfixStyle} ${prefixIconStyle} ${centerContentWrapper}`]:
-          (startIcon && isLoading) || !iconOnly,
-        [iconOnlyStyle]: iconOnly,
-        [directionStyle]: startIcon,
-      })}
-    >
-      {iconOnly ? null : loadingLabel}
-      <ProgressCircle
-        size={isCompact ? 'sm' : 'md'}
-        aria-hidden="true"
-        aria-label={isLoadingAriaLiveLabel}
-        isIndeterminate
-      />
-    </span>
-  ) : iconOnly ? (
-    <span className={iconOnlyStyle}>{renderIcon(icon)}</span>
-  ) : (
-    <>
-      {prefixContent}
-      {centerContent}
-      {postfixContent}
-    </>
-  );
+    return (
+      <BaseButton
+        {...(props as BaseProps)}
+        onPress={props.onPress}
+        variant={variant}
+        isCompact={isCompact}
+        className={classNames(className, isCompactStyle[`${isCompact}`])}
+        ref={ref}
+      >
+        {content}
+      </BaseButton>
+    );
+  },
+);
 
-  return (
-    <button
-      {...mergeProps(buttonProps, hoverProps, focusProps)}
-      className={classNames(
-        button({
-          variant,
-          isCompact,
-          isLoading: props.isLoading,
-        }),
-        props.className,
-      )}
-      style={props.style}
-      title={props.title}
-      aria-disabled={props.isLoading || undefined}
-      data-disabled={props.isDisabled || undefined}
-      data-pressed={isPressed || undefined}
-      data-hovered={(!isPressed && isHovered) || undefined}
-      data-focused={isFocused || undefined}
-      data-focus-visible={isFocusVisible || undefined}
-      ref={ref}
-    >
-      {content}
-    </button>
-  );
-};
+Button.displayName = 'Button';
 
-BaseButton.displayName = 'Button';
-
-export const Button = forwardRef(BaseButton);
+export { Button };
