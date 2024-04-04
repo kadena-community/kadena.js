@@ -251,11 +251,12 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   const getToken = useCallback(
     (id: string): IToken | undefined => {
       //id could be eventId or a requestkey
+      console.log({ mintingTokens });
       return [...mintingTokens, ...successTokens, ...tokens].find(
         (token) => token.requestKey === id || token.eventId === id,
       );
     },
-    [mintingTokens],
+    [mintingTokens, successTokens],
   );
 
   return (

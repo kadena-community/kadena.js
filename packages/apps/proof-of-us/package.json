@@ -3,7 +3,7 @@
   "version": "0.2.6",
   "private": true,
   "scripts": {
-    "build": "pnpm run generate:sdk && next build",
+    "build": " next build",
     "create-event": "ts-node -T ./src/scripts/createEvent.ts",
     "dev": "concurrently --kill-others \"npm:next:dev\" \"npm:generate:sdk:watch\"",
     "dev:save": "next dev  --experimental-https",

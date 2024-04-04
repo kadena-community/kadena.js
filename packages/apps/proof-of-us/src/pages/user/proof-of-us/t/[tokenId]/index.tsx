@@ -3,8 +3,6 @@ import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { Share } from '@/features/Share/Share';
-import { getClient } from '@/utils/client';
-import { env } from '@/utils/env';
 import { fetchManifestData } from '@/utils/fetchManifestData';
 import { getTokenUri, getTransaction } from '@/utils/proofOfUs';
 import { Stack } from '@kadena/react-ui';
@@ -14,7 +12,7 @@ interface IProps {
   params: {
     tokenId: string;
   };
-  transaction?: IPollResponse;
+  transaction?: any;
   data?: IProofOfUsTokenMeta;
   metadataUri?: string;
 }

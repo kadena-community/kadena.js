@@ -100,7 +100,7 @@ export const ListItem: FC<IProps> = ({ token }) => {
     if (isMinted) {
       return `/user/proof-of-us/t/${token?.id}`;
     } else {
-      return `/user/proof-of-us/t/${token?.id}/${token?.requestKey}`;
+      return `/user/proof-of-us/t/${token?.id}/${token?.requestKey}/${token?.proofOfUsId}`;
     }
   }, [
     isMinted,

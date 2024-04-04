@@ -21,33 +21,30 @@ interface IProps {
 }
 
 const Page: NextPage<IProps> = ({ params }) => {
-  const { getToken } = useTokens();
+  const { tokens, getToken } = useTokens();
   const [error, setError] = useState();
   const [token, setToken] = useState<IToken>();
   const router = useRouter();
 
   const init = async () => {
     if (!token) return;
-
     try {
-      const result = await token?.listener;
-      console.log({ result });
+      await token?.listener;
 
       router.replace(
-        `/user/proof-of-us/t/${params.tokenId}?requestKey=${token.requestKey}`,
+        `/user/proof-of-us/t/${params.tokenId}?requestKey=${params.requestKey}`,
       );
     } catch (e) {
       console.log('fail on the page');
       setError(e);
     }
-    //TODO: use listener from the tokenprovider
   };
 
   useEffect(() => {
     const result = getToken(params.requestKey);
     if (!result) return;
     setToken(result);
-  }, []);
+  }, [params.requestKey, tokens]);
 
   useEffect(() => {
     init();
