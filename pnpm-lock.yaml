@@ -564,12 +564,12 @@ importers:
       '@graphql-yoga/apollo-link':
         specifier: ~3.0.3
         version: 3.0.3(@apollo/client@3.8.8)(@types/node@18.17.14)(graphql@16.8.1)
-      '@kadena/react-icons':
-        specifier: workspace:*
-        version: link:../../libs/react-icons
       '@kadena/graph':
         specifier: workspace:*
         version: link:../graph
+      '@kadena/react-icons':
+        specifier: workspace:*
+        version: link:../../libs/react-icons
       '@kadena/react-ui':
         specifier: workspace:*
         version: link:../../libs/react-ui
