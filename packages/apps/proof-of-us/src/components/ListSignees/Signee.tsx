@@ -10,6 +10,7 @@ import { Text } from '../Typography/Text';
 import {
   accountClass,
   ellipsClass,
+  multipleNameClass,
   multipleSigneeClass,
   nameClass,
   signeeClass,
@@ -50,11 +51,18 @@ export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
       className={classNames(isMultiple ? multipleSigneeClass : signeeClass)}
       style={getSuccessStyle(signee)}
     >
-      <Stack gap="md">
+      <Stack gap="sm" alignItems="center">
         <SignStatus status={signee?.signerStatus} />
         <PingStatus signee={signee} />
       </Stack>
-      <Text className={classNames(nameClass, ellipsClass)} bold>
+      <Text
+        className={classNames(
+          nameClass,
+          ellipsClass,
+          isMultiple && multipleNameClass,
+        )}
+        bold
+      >
         {getSigneeName(signee)} {isMeChecked && ' (me)'}
       </Text>
       <Text className={classNames(accountClass, ellipsClass)}>

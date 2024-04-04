@@ -24,7 +24,7 @@ export const PingStatus: FC<IProps> = ({ signee }) => {
   };
 
   useEffect(() => {
-    const interval = setInterval(checkTime, 10000);
+    const interval = setInterval(checkTime, 3000);
 
     return () => {
       clearInterval(interval);

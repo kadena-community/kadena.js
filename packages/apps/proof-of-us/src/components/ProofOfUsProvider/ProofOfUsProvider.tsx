@@ -126,8 +126,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
   //update the ping of the account signer
   useEffect(() => {
     pingSignee();
-    const interval = setInterval(pingSignee, 10000);
-
+    const interval = setInterval(pingSignee, 6000);
     return () => {
       clearInterval(interval);
     };
