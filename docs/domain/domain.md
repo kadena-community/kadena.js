@@ -1,84 +1,109 @@
-Domain model: conceptual model of the entities that exist. This doesn't
-necessarily mean the interfaces will represent the entities in the same way
+## Domain model
 
-Bike shedding: 
-* `sender` vs `gaspayer`
-* `data` for transaction, what does it mean, adds scope
-* use of the word `guard`
-* 
+Explanation of the entities with their properties and the relations between them
+([see also](https://www.ictdemy.com/software-design/uml/uml-domain-model)).  
+The relations describe their cardinality and how they are related.
+
+- `<>` open diamond: association, they can exist independently or relate to each
+  other
+- `<>` filled diamond: composition, the child cannot exist without the parent
+- `|>` open arrow: generalization, the child is a specialization of the parent
+- `--` line: association, the entities are related
+
+Bike shedding:
+
+- `sender` vs `gaspayer`
+- `data` for transaction, what does it mean, adds scope
+- use of the word `guard`
+-
 
 ```mermaid
+---
+title: Chainweb Domain Model
+---
+classDiagram
 
-erDiagram
-  Transaction ||--o{ Signer : "signed by"
-  Transaction ||--o{ Signature : "signed with"
-  Transaction ||--|| CoinAccount : "send by (payed gas)"
-  Signer ||--|{ Capability : "signs for"
-  Signer ||--|| Signature : "produces"
-  Block  ||--|{ Block : "adjacent"
-  Block  ||--|| Block : "parent"
-  Block  ||--|{ TransactionExecution : "contains"
-  Block  ||--|{ CoinAccount : "minted by miner"
-  CoinAccount ||--|| KeySet : "guarded by"
-  Transaction ||--o{ TransactionExecution : "appears in"
-
-  Transaction {
-    string code
-    JSONObject data
-    Chain chainId
-    integer gasLimit
-    float gasPrice
-    Interval timeToLive "time of seconds after creationTime"
-    TimeStamp creationTime
-    TransactionHash hash
+  class Transaction {
+    code
+    data
+    chainId
+    gasLimit
+    gasPrice
+    creationTime
+    timeToLive
+    hash
   }
 
-  Signer {
-    PublicKey publicKey
-    Address address "way back: ecdsa pubkey, address are different"
-    SigningScheme Scheme "no more support for ETH (chainweb node team)"
+  class Signer {
+    publicKey
+    address
+    Scheme
+    capabilities
   }
 
-  Signature {
-    string signature
+  class Signature {
+    signature
   }
 
-  Capability {
-    string name "fully qualified capability name"
-    PactValue[] arguments
+  class Capability {
+    name
+    arguments
   }
 
-  TransactionExecution {
-    TransactionHash requestKey
-    string logs
-    Integer gas
-    string result  "`Success` | `Failure`"
-    PactValue data "string | object | integer | boolean | any"
-    Integer transactionId "(Database-internal transaction tracking ID"
+  class Block {
+    creationTime
+    epochStart
+    height
+    chainId
+    featureFlags
+    payloadHash
+    transactionsHash
+    outputsHash
+    networkId
+    nonce
+    weight
+    target
   }
 
-  Block {
-    TimeStamp creationTime
-    TimeStamp epochStart
-    Integer height
-    Chain chainId
-    Integer featureFlags
-    Hash payloadHash
-    Hash transactionsHash
-    Hash outputsHash
-    Hash payloadHash
-    string networkId "was 'chainwebVersion'"
-    string nonce
-    string weight "TODO: refine further"
-    string target "TODO: refine further"
+  class Chain {
+    chainId
   }
 
-  CoinAccount {
-    string accountName
+  class TransactionExecution {
+    requestKey
+    logs
+    gas
+    result
+    data
+    transactionId
   }
 
-  KeySet {
-    string predicate
-    PublicKey[] publicKeys
+  class Fungible {
+    accountName
   }
+  <<interface>> Fungible
+
+  class CoinAccount {
+  }
+
+  class KeySet {
+    predicate
+    publicKeys
+  }
+
+  Transaction "1" *-- "0..*" Signer : signed by
+  Transaction "1" *-- "0..*" Signature : signed with
+  Signature "1" -- "1..*" Capability : grants
+  Transaction "1" o-- "1" CoinAccount : send by (payed gas)
+  Fungible --|> CoinAccount
+  Signer "1" -- "0..*" Capability : signs for
+  Signer "1" -- "0..*" Signature : produces
+  Block "1" -- "0..*" Block : adjacent
+  Block "1" -- "1" Block : parent
+  Block "1" -- "0..*" TransactionExecution : contains
+  Block "1..*" -- "1" CoinAccount : miner
+  CoinAccount "1" -- "1" KeySet : guarded by
+  Transaction "1" *-- "0..*" TransactionExecution : appears in
+  Block --* Chain
+
 ```
