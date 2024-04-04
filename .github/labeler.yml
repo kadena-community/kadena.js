@@ -1,0 +1,132 @@
+Release:
+  - head-branch:
+      - changeset-release/main
+Github Config & Actions:
+  - changed-files:
+      - any-glob-to-any-file: .github/*
+bootstrap-lib:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/bootstrap-lib/*
+chainweb-node-client:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/chainweb-node-client/*
+chainweb-stream-client:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/chainweb-stream-client/*
+chainwebjs:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/chainwebjs/*
+client:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/client/*
+client-examples:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/client-examples/*
+client-utils:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/client-utils/*
+cookbook:
+  - changed-files:
+      - any-glob-to-any-file: packages/tools/cookbook/*
+create-kadena-app:
+  - changed-files:
+      - any-glob-to-any-file: packages/tools/create-kadena-app/*
+cryptography-utils:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/cryptography-utils/*
+dev-wallet:
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/dev-wallet/*
+dev-wallet-desktop:
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/dev-wallet-desktop/*
+docs:
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/docs/*
+docs-tools:
+  - changed-files:
+      - any-glob-to-any-file: packages/tools/docs-tools/*
+graph:
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/graph/*
+graph-client:
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/graph-client/*
+hd-wallet:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/hd-wallet/*
+js-monorepo:
+  - changed-files:
+      - any-glob-to-any-file: ./*
+kadena-cli:
+  - changed-files:
+      - any-glob-to-any-file: packages/tools/kadena-cli/*
+kda-cli:
+  - changed-files:
+      - any-glob-to-any-file: packages/tools/kda-cli/*
+pactjs:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/pactjs/*
+pactjs-cli:
+  - changed-files:
+      - any-glob-to-any-file: packages/tools/pactjs-cli/*
+pactjs-generator:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/pactjs-generator/*
+proof-of-us:
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/proof-of-us/*
+react-icons:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/react-icons/*
+react-ui:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/react-ui/*
+spirekey-example:
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/spirekey-example/*
+toolbox:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/toolbox/*
+tools:
+  - changed-files:
+      - any-glob-to-any-file: packages/apps/tools/*
+types:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/types/*
+e2e-base:
+  - changed-files:
+      - any-glob-to-any-file: packages/e2e/e2e-base/*
+eslint-config:
+  - changed-files:
+      - any-glob-to-any-file: packages/tools/eslint-config/*
+eslint-plugin:
+  - changed-files:
+      - any-glob-to-any-file: packages/tools/eslint-plugin/*
+integration-tests:
+  - changed-files:
+      - any-glob-to-any-file: packages/tools/integration-tests/*
+lint-package:
+  - changed-files:
+      - any-glob-to-any-file: packages/tools/lint-package/*
+markdown:
+  - changed-files:
+      - any-glob-to-any-file: packages/tools/markdown/*
+scripts:
+  - changed-files:
+      - any-glob-to-any-file: packages/tools/scripts/*
+shared-config:
+  - changed-files:
+      - any-glob-to-any-file: packages/tools/shared-config/*
+e2e-docs:
+  - changed-files:
+      - any-glob-to-any-file: packages/e2e/e2e-docs/*
+e2e-graph:
+  - changed-files:
+      - any-glob-to-any-file: packages/e2e/e2e-graph/*
+e2e-tools:
+  - changed-files:
+      - any-glob-to-any-file: packages/e2e/e2e-tools/*
+kadena.js:
+  - changed-files:
+      - any-glob-to-any-file: packages/libs/kadena.js/*
