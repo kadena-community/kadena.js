@@ -24,9 +24,7 @@ import { RightInfoSidebar } from '@/components/Partials/transactions/transfer/ri
 import { SignForm } from '@/components/Partials/transactions/transfer/sign-form';
 import { SubmitTransaction } from '@/components/Partials/transactions/transfer/submit-transaction';
 import useIsLedgerLibSupported from '@/hooks/use-is-ledger-lib-supported';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { MonoHelp } from '@kadena/react-icons/system';
-import { FormProvider, useForm } from 'react-hook-form';
 
 const TransferPage = () => {
   const router = useRouter();
