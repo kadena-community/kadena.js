@@ -63,6 +63,10 @@ For example, to see all of the options available for adding a new wallet, you ca
 kadena wallet add --help
 ```
 
+The following diagram provides an overview of the kadena command-line interface:
+
+![Kadena command-line interface at a glance](/assets/docs/kadena-cli-overview.png)
+
 ## kadena
 
 Use the `kadena` parent as the primary entry point for commands used to create, test, deploy, and managed decentralized applications you develop for the Kadena network.
@@ -192,9 +196,11 @@ Use the following action to specify the operation you want to perform.
 | Use this action | To do this
 | --------------- | -----------
 | `add` | Create a new project directory using a frontend framework template.
-| `help` |
+| `help` | Display usage information for a specified command.
 
 ### Arguments
+
+The following table summarizes all of the options you can specify.
 
 | Use this argument | To do this
 | ----------------- | -----------
@@ -371,6 +377,7 @@ Use the following actions to specify the operation you want to perform.
 
 Depending on the action you select, you can specify different arguments and options.
 The following table summarizes all of the arguments you can specify.
+To see usage information for a specific action, use the `--help` flag in the command-line or see the examples for performing specific tasks.
 
 | Use this argument | To do this
 | ----------------- | -----------
@@ -474,16 +481,22 @@ Use the following actions to specify the operation you want to perform.
 
 Depending on the action you select, you can specify different arguments and options.
 The following table summarizes all of the arguments you can specify.
+To see usage information for a specific action, use the `--help` flag in the command-line or see the examples for performing specific tasks.
 
 | Use this argument | To do this
 | ----------------- | -----------
-| `-a`, `--account-name` <`accountName`> | Specify the account name associated with one or more specified public keys.
 | `--account-alias` <`accountAlias`> | Specify an alias to store your account information.
-| `-p`, `--public-keys` <`publicKeys`> | Specify public keys for an account in a comma-separated list.
-| `-p`, `--predicate` <`predicate`> | Specify the number of signatures required in a keyset for a transaction to be valid. You can specify `keys-all`, `keys-any`, `keys-2`, or a custom predicate.
+| `-a`, `--account-name` <`accountName`> | Specify the account name associated with one or more specified public keys.
+| `-f`, `--fungible` <`fungible`> | Specify the name of a fungible asset type. The valid values are `coin` and `nft`. The default is `coin`.
 | `-n`, `--network` <`network`> | Specify the Kadena network name—for example, `testnet` or `mainnet`—to use.
 | `-c`, `--chain-id` <`chainId`> | Specify the chain identifier to use.
-| `-f`, `--fungible` <`fungible`> | Specify the name of a fungible asset type. The default is `coin`.
+| `-p`, `--public-keys` <`publicKeys`> | Specify public keys for an account in a comma-separated list.
+| `-p`, `--predicate` <`predicate`> | Specify the number of signatures required in a keyset for a transaction to be valid. You can specify `keys-all`, `keys-any`, `keys-2`, or a custom predicate.
+| `-w`, `--wallet-name` <`walletName`> | Specify the wallet name you are adding an account from.
+| `-o`, `--account-overwrite` | Overwrite account details from the chain.
+| `-a`, `--account-kdn-name` <`accountName`> | Specify the Kadena domain address (.kda) that you want to translate to a Kadena account name.
+| `-a`, `--account-kdn-address` <`accountKdnAddress`> | Specify the Kadena account name (k: prefix) that you want to translate to a Kadena domain address (`.kda`).
+| `-c`, `--confirm` | Confirm that you want to delete a specified account.	
 | `-h`, `--help` | Display help for a specified command.
 
 ### Examples
@@ -494,89 +507,72 @@ To create an account on the Kadena public blockchain network (mainnet) interacti
 kadena account create
 ```
 
-example:
+To add an account on the development network manually, you can run a command similar to the following:
 
-kadena account add-manual --account-alias="myalias" --account-name="myaccountname" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="mypublickey" --predicate="keys-all"
-kadena account add-from-wallet [arguments]
-Arguments & Options	Description	Required
---account-alias	Set alias for account	
---key-wallet	Provide the name of the wallet	
---fungible	Fungible e.g coin	
---network	Name of the network to be used	
---chain-id	Chain to be used	
---public-keys	Comma separated list of public keys	
---predicate	keys-all, keys-any, keys-2, Custom predicate	
-example:
+```bash
+kadena account add-manual --account-alias="pistolas" --account-name="k:bbccc99ec-accountname" --fungible="coin" --network="devnet" --chain-id="1" --public-keys="bbccc99ec-publickey" --predicate="keys-all"
+```
 
-kadena account add-from-wallet --account-alias="myalias" --key-wallet="mywallet.wallet" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="publickey" --predicate="keys-all"
-kadena account create [arguments]
-Arguments & Options	Description	Required
---account-name	Provide an account name	No
---fungible	Fungible e.g coin	No
---chain-id	Chain to be used	
---public-keys	Comma separated list of public keys	
---predicate	keys-all, keys-any, keys-2, Custom predicate	
-example:
+To add an account on the test network from a wallet you've exported to a file, you can run a command similar to the following:
 
-create an account with optional account name and fungible
+```bash
+kadena account add-from-wallet --account-alias="myalias" --wallet="mywallet.wallet" --fungible="coin" --network="testnet" --chain-id="5" --public-keys="publickey" --predicate="keys-all"
+```
 
-kadena account create --account-name="" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0"
-create an account with an account name and fungible
+To see details about an account by using the account alias, you can run a command similar to the following:
 
-kadena account create --account-name="mainnet_test_account" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0" --fungible="coin
-kadena account details [arguments]
-Arguments & Options	Description	Required
---account	Provide account alias/name for account	
---network	Name of the network to be used	
---chain-id	Chain to be used	
-example using account alias:
+```bash
+kadena account details --account="pistolas" --network="testnet" --chain-id="1" 
+```
 
-kadena account details --account="myalias" --network="mainnet" --chain-id="1"
-example using account name:
+This command returns output similar to the following for the specified alias:
 
-kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="1"
-kadena account fund [arguments]
-Arguments & Options	Description	Required
---account	Provide alias for account	
---amount	Amount to fund	
---network	Name of the network to be used	
---chain-id	Chain to be used	
-example:
+```bash
+Details of account "pistolas" on network "testnet04" and chain "1" is:
 
-kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="1"
-kadena account account name-to-address [arguments]
-Arguments & Options	Description	Required
---network	Name of the network to be used	
---account-kdn-name	Provide .kda name to resolve to k:account	
-example:
+Account Name                 Public Keys         Predicate Balance      
+k:5ec41b89....bc76dc5c35e2c0 5ec41b89....c35e2c0 keys-all  69.9986947922
 
+Executed:
+kadena account details --account="pistolas" --network="mainnet" --chain-id="1"
+```
+
+To fund an account on the test network using the account alias, you can run a command similar to the following:
+
+```bash
+kadena account fund --account="pistolas" --amount="10" --network="testnet" --chain-id="2"
+```
+
+To display the Kadena account name (`k:` prefix) for a specified Kadena domain address (`.kda`) name, you can run a command similar to the following:
+
+```bash
 kadena account name-to-address --network="mainnet" --account-kdn-name="kadena.kda"
-kadena account address-to-name [arguments]
-Arguments & Options	Description	Required
---network	Name of the network to be used	
---account-kdn-address	Provide k:account to resolve to .kda name	
-example:
+```
 
-kadena account address-to-name --network="mainnet" --account-kdn-address="k:account"
-kadena account list [arguments]
-Arguments & Options	Description
---account-alias	Provide the alias of the account
-example for listing specific account:
+To display the Kadena domain address (`.kda`) for a specified Kadena account name (`k:` prefix) name, you can run a command similar to the following:
 
-kadena account list --account-alias="accountAlias"
-example for listing all accounts:
+```bash
+kadena account address-to-name --network="mainnet" --account-kdn-address="k:3b60fe83bc63cc9c797cf13d153b5f90dc538be97246a79561fe488490112886"
+```
 
-kadena account list --account-alias="all"
-kadena account delete [arguments]
-Arguments & Options	Description
---account-alias	Provide the alias of the account
---confirm	Confirm deletion of account
+To list account information for a specified account alias, you can run a command similar to the following:
 
-### Examples 
+```bash
+kadena account list --account-alias="pistolas"
+```
+
+This command returns output similar to the following for the specified alias:
+
+```bash
+Account Alias Account Name                     Public Key(s)            Predicate Fungible
+pistolas      k:5ec41b89d323....bc76dc5c35e2c0 5ec41b89d3....dc5c35e2c0 keys-all  coin    
+```
+
+To list account information for all account aliases, you can specify --account-alias="all" in the command.
 
 To delete a specific account:
 
-kadena account delete --account-alias="accountAlias" --confirm
+kadena account delete --account-alias="nft-owner" --confirm
 
 To delete all accounts:
 
@@ -601,6 +597,7 @@ You can use the following optional flags with the `kadena tx` command.
 | Use this flag | To do this
 | ------------- | -----------
 | `-h`, `--help` |	Display usage information.
+| `-l`, `--legacy` | Sign transaction using a legacy format.
 | `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
 | `-V`, `--version`	| Display version information.
 
@@ -617,72 +614,106 @@ Use the following actions to specify the operation you want to perform.
 | list [options] | List transactions.
 | help [command] | Display usage information for a specified command.
 
+### Arguments
+
+Depending on the action you select, you can specify different arguments and options.
+The following table summarizes all of the options you can specify.
+To see the options to use for a specific action, use the `--help` flag on the command-line or review the examples.
+
+| Use this argument | To do this
+| ----------------- | -----------
+| `--directory` <`directory`> | Specify the directory that contains the transaction file. The default is your current working directory.
+| `-s`, `--tx-signed-transaction-files` <`txSignedTransactionFiles`> | Specify the name of signed transaction files. You can specify multiple files in a comma-separated list.
+| `-n`, `--tx-transaction-network` <`txTransactionNetwork`> | Specify the Kadena networks that you want to send the transaction to. You can specify networks in a comma-separated list in the order you want the transaction sent.  For example, to send a transaction to the development network then the test network, you can specify "devnet, testnet"
+| `-p`, `--poll` | Poll for transaction status.
+| `-s`, `--tx-sign-with` <`txSignWith`> | Select a signing method for a transaction. The valid signing methods are `keyPair`, `aliasFile`, and `localWallet`.
+| `-w`, `--wallet-name` <`walletName`>  | Specify the wallet to use to sign a transaction.
+| `--password-file` <`passwordFile`> | Specify the path to the password file.
+| `-u`, `--tx-unsigned-transaction-files` <`txUnsignedTransactionFiles`> | Specify the name of unsigned transaction files that you want to sign using the specified signing method. You can specify multiple files in a comma-separated list.
+| `-a`, `--key-alias-select` <`keyAliasSelect`> | Sign a transaction using the specified key alias.
+| `-k`, `--key-pairs` <`keyPairs`> | Specify key pairs as strings on the command-line. You can specify multiple key pairs separated by semi-colons (;).
+| `-n`, `--network` <`network`> | Specify the Kadena network name—for example, `testnet` or `mainnet`—to use.
+| `-c`, `--chain-id` <`chainId`> | Specify the chain identifier to use.
+| `--template `<`template`> | Select a template for adding a transaction.
+| `--template-data` <`templateData`> | Specify a template data file for adding a transaction.
+| `--template-variables` <`templateVariables`> | Specify template variables to use for adding a transaction.
+| `-o`, `--out-file` <`outFile`> | Specify the file name to save the output from adding a transaction.
+
 ### Examples
 
-kadena tx add --template="transfer.yaml" --template-data="path" (--account-from="k:account" --account-to="k:toaccount" --amount="1" --chain-id="1" --pk-from="publicKey") --network-id="testnet04" --out-file="transaction-(request-key).json"
-Template variables are prompted unless assigned via --template-data or direct flags. Variables can be prefixed to enable value selection using:
+To sign an unsigned transaction using a public and secret key pair, you can run a command similar to the following:
 
-account: to select a account name
-key: to select a public key
-network: to select existing networkId
-decimal: to enable decimal input validation
-kadena tx sign [arguments]
-Arguments & Options	Description	Required
---tx-sign-with="aliasFile"	Provide signing method	Yes
---key-pairs	Provide publickey and secretKey (or list separated my semicolon)	
---tx-unsigned-transaction-files	Provided unsigned transaction file(s) to sign (or comma seperated list)	
-example:
-
+```bash
 kadena tx sign --tx-sign-with="keyPair" --key-pairs="publicKey=xxx,secretKey=xxx" --tx-unsigned-transaction-files="transaction-(request-key).json"
-kadena kadena sign [arguments]
-Arguments & Options	Description	Required
---tx-sign-with="aliasFile"	Provide signing method	Yes
---key-wallet	Provide the name of the wallet	
---security-password	Provide the password for the wallet	
---key-alias-select	Select a aliased file	
---tx-unsigned-transaction-files	Provided unsigned transaction file(s) to sign (or comma separated list)	
-example:
+```
 
-kadena sign --tx-sign-with="aliasFile" --key-wallet="mywallet.wallet" --security-password=1234567 --key-alias-select="mywalletalias.key" --tx-unsigned-transaction-files="transaction-(request-key).json,transaction-(request-key).json"
-password will be hidden after entry: --security-password=*
+To sign two unsigned transactions using a key alias file from a wallet, you can run a command similar to the following:
 
-kadena tx sign [arguments]
-Arguments & Options	Description	Required
---tx-sign-with="localWallet"	Provide signing method	Yes
---key-wallet	Provide the name of the wallet	
---security-password	Provide the password for the wallet	
---key-alias-select	Select a aliased file	
---tx-unsigned-transaction-files	Provided unsigned transaction file(s) to sign (or comma separated list)	
-example:
+```bash
+kadena sign --tx-sign-with="aliasFile" --wallet-name="mywallet.wallet" --key-alias-select="mywalletalias.key" --tx-unsigned-transaction-files="transaction-(request-key).json,transaction-(request-key).json"
+```
 
-kadena tx sign --tx-sign-with="localWallet"  --key-wallet="mywallet.wallet" --security-password=12345678 --tx-unsigned-transaction-files="transaction-(request-key)-signed.json"
-password will be hidden after entry: --security-password=*
+You can use the `kadena tx test` command to use a local API endpoint to check whether a signed transaction for a specified network is viable without submitting the transaction. 
+By using the local endpoints, you can dry-run smart contract code using data in the `coin` contract tables without paying transaction fees.
 
-kadena tx test-signed-transaction [arguments]
-Arguments & Options	Description	Required
---network	Name of the network to be used	
---directory	Provide the directory for the signed transaction	
---tx-signed-transaction-files	Provided signed transaction file(s) to sign (or comma separated list)	
---chain-id	Chain to be used	
-example:
+To test whether a signed transaction would be successful on the test network using the local endpoint, you can run a command similar to the following:
 
-kadena tx test-signed-transaction --network="testnet" --directory="./" --tx-signed-transaction-files="transaction-(request-key)-signed.json" --chain-id="1"
-kadena tx send [arguments]
-Arguments & Options	Description	Required
---tx-signed-transaction-files	Provided signed transaction file(s) to sign (or comma separated list)	
---tx-transaction-network	Kadena networks comma separated list in order of transaction	
-(e.g. "mainnet, testnet, devnet, ...")	
---poll	Poll status of sent transactions	
-example:
+```bash
+kadena tx test --network="testnet" --directory="./my-tx" --tx-signed-transaction-files="transaction-(request-key)-signed.json" --chain-id="1"
+```
 
-kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --tx-transaction-network "mainnet, testnet"
+To send a signed transaction to the Kadena main network and test network, you can run a command similar to the following:
+
+```bash
 kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --tx-transaction-network "mainnet, testnet" --poll
-kadena tx status [arguments]
-Arguments & Options	Description	Required
---request-key	Provide a transaction request key	
---network	Select name of the network where transaction happened	
-(e.g. "mainnet, testnet, devnet, ...")	
---chain-id	Chain to be used in the transaction	
-example:
+```
 
-kadena tx status --request-key="118mEpX1-6NpJT1kArsWIHHVtJaOERQOeEwNoouOSGU" --network="testnet" --chain-id="0"
+The `kadena tx add` command enables you to create transactions using **templates** in combination with values you specify to generate the most common types of transactions that are ready to sign and submit across multiple chains with minimal effort.
+Currently, there are two default templates—`transfer` and `safe-transfer`—to enable to you create transactions that transfer tokens between accounts.
+For more information about using templates to generate transactions, see [Code templates](/build/code-templates).
+To generate a transaction from a template interactively, you can run the following command:
+
+```bash
+kadena tx add
+```
+
+This command then prompts you to select the template to use and information about the account to transfer from and the account to transfer to. enter the alias you want to use for the key and the number of keys to generate.
+
+For example:
+
+```bash
+? Which template do you want to use: transfer.ktpl
+? File path of data to use for template .json or .yaml (optional):
+? Template value account-from:
+k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e
+? Template value account-to:
+k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e
+? Template value decimal-amount: 1.0
+? Template value chain-id: 1
+? Template value pk-from:
+bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e
+? Template value network-id: testnet
+? Where do you want to save the output: my-test-output
+```
+
+After you respond to the prompts, the command displays the transaction you constructed and confirms the location of the file containing the unsigned transaction.
+
+## kadena wallet
+
+Usage: index wallet [options] [command]
+
+Tool to generate and manage wallets
+
+Options:
+  -h, --help                 display help for command
+
+Commands:
+  add [options]              Add a new local wallet
+  import [options]           Import (restore) wallet from mnemonic phrase
+  generate-keys [options]    Generate public/secret key pair(s) from your
+                             wallet
+  change-password [options]  Update the password for your wallet
+  decrypt [options]          Decrypt message
+  delete [options]           Delete wallet from your local filesystem
+  list [options]             List wallet(s)
+  help [command]             display help for command
