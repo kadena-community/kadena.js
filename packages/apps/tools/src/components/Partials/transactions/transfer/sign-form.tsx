@@ -22,7 +22,10 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 
 import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { stripAccountPrefix } from '@/utils/string';
-import { MonoKeyboardArrowRight } from '@kadena/react-icons/system';
+import {
+  MonoKeyboardArrowRight,
+  MonoRefresh,
+} from '@kadena/react-icons/system';
 import type { ChainId } from '@kadena/types';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { z } from 'zod';
@@ -218,7 +221,7 @@ export const SignForm = ({
             <Button
               // isLoading={isLoading}
               // isDisabled={ledgerSignState.loading}
-              endIcon={<SystemIcon.Refresh />}
+              endIcon={<MonoRefresh />}
               title={t('Reset')}
               type="reset"
             >
