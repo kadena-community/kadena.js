@@ -1,6 +1,6 @@
+import { MonoCheck, MonoClose } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { SystemIcon } from '..';
 import { withContentWidth } from '../../storyDecorators';
 import type { INotificationProps } from '../Notification';
 import {
@@ -114,10 +114,10 @@ export const Primary: Story = {
         <NotificationHeading>{heading}</NotificationHeading>
         {children}
         <NotificationFooter>
-          <NotificationButton intent="positive" icon={<SystemIcon.Check />}>
+          <NotificationButton intent="positive" icon={<MonoCheck />}>
             Accept
           </NotificationButton>
-          <NotificationButton intent="negative" icon={<SystemIcon.Close />}>
+          <NotificationButton intent="negative" icon={<MonoClose />}>
             Reject
           </NotificationButton>
         </NotificationFooter>

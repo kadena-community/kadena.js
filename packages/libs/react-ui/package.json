@@ -76,6 +76,7 @@
     "verify": "tsc --noEmit"
   },
   "dependencies": {
+    "@kadena/react-icons": "workspace:*",
     "@react-aria/accordion": "3.0.0-alpha.25",
     "@react-aria/focus": "^3.16.0",
     "@react-aria/selection": "3.17.3",
@@ -106,7 +107,6 @@
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
-    "@kadena/react-icons": "workspace:*",
     "@react-types/shared": "^3.22.0",
     "@rushstack/eslint-config": "~3.3.0",
     "@storybook/addon-a11y": "^8.0.2",
