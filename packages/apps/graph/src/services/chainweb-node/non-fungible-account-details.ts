@@ -1,4 +1,5 @@
-import { IClient, Pact, createClient } from '@kadena/client';
+import type { IClient } from '@kadena/client';
+import { Pact, createClient } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import { networkConfig } from '../..';
@@ -18,7 +19,7 @@ export type NonFungibleChainAccountDetails = {
 
 function getClient(chainId: string, networkId: string): IClient {
   return createClient(
-    `http://${dotenv.NETWORK_HOST}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+    `${dotenv.NETWORK_HOST}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
   );
 }
 
@@ -35,7 +36,7 @@ export async function getNonFungibleAccountDetails(
       Pact.builder
         .execution(
           // @ts-ignore
-          Pact.modules['kip.poly-fungible-v2']['details'](tokenId, accountName),
+          Pact.modules['marmalade-v2.ledger'].details(tokenId, accountName),
         )
         .setMeta({
           chainId: chainId as ChainId,
