@@ -2,7 +2,7 @@
 title: Command-line interface
 description:
   The `@kadena/kadena-cli` library provides a complete set of commands for creating applications and interacting with the Kadena network interactively or by using scripts from the command-line.
-menu: Frontend libraries
+menu: Frontend frameworks
 label: Command-line interface
 order: 2
 layout: full
@@ -700,20 +700,129 @@ After you respond to the prompts, the command displays the transaction you const
 
 ## kadena wallet
 
-Usage: index wallet [options] [command]
+Use kadena wallet to generate, import, and manage a local wallet.
 
-Tool to generate and manage wallets
+### Basic usage
 
-Options:
-  -h, --help                 display help for command
+The basic syntax for the `kadena wallet` command is:
 
-Commands:
-  add [options]              Add a new local wallet
-  import [options]           Import (restore) wallet from mnemonic phrase
-  generate-keys [options]    Generate public/secret key pair(s) from your
-                             wallet
-  change-password [options]  Update the password for your wallet
-  decrypt [options]          Decrypt message
-  delete [options]           Delete wallet from your local filesystem
-  list [options]             List wallet(s)
-  help [command]             display help for command
+```bash
+kadena wallet <action> <arguments> [flag]
+```
+
+### Flags
+
+You can use the following optional flags with the `kadena wallet` command.
+
+| Use this flag | To do this
+| ------------- | -----------
+| `-h`, `--help` |	Display usage information.
+| `-l`, `--legacy` | Use a legacy format for output.
+| `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
+| `-V`, `--version`	| Display version information.
+
+### Actions
+
+Use the following actions to specify the operation you want to perform.
+
+| Use this action | To do this
+| --------------- | -----------
+| add [options] | Add a new local wallet.
+| import [options] | Import or restore wallet from a 12-word mnemonic secret phrase.
+| generate-keys [options] | Generate public and secret key pairs from your wallet.
+| change-password [options] | Update the password used to unlock your wallet.
+| decrypt [options] | Decrypt an encrypted  message.
+| delete [options] | Delete a specified wallet from your local filesystem.
+| list [options] | List information about a specified wallets or all wallets.
+| help [command] | Display usage information for a specified command.
+
+### Arguments
+
+Depending on the action you select, you can specify different arguments and options.
+The following table summarizes all of the options you can specify.
+To see the options to use for a specific action, use the `--help` flag on the command-line or review the examples.
+
+| Use this argument | To do this
+| ----------------- | -----------
+| `-w`, `--wallet-name` <`walletName`> | Specify the name for your wallet.
+| `--password-file` <`passwordFile`>  | Specify the path to the password file.
+| `-m`, `--key-mnemonic` <`keyMnemonic`> | Enter the 12-word mnemonic secret phrase used to generate your wallet keys.
+| `-c`, `--key-gen-from-choice` <`keyGenFromChoice`> | Select the type of key you want to generate. The valid options are `genPublicKey` (public key only), `genPublicSecretKey` (public and secret key), and `genPublicSecretKeyDec` (public key and secret key decrypted).
+| `-a`, `--key-alias` <`keyAlias`> | Specify an alias for storing the key on the filesystem.
+| `-r`, `--key-index-or-range` <`keyIndexOrRange`> | Enter the index or range of indices for key generation. For example, you can specify zero (0) for the parent key pair or generate a range of child key pairs (1-5). The default index is 0.
+| `-c`, `--current-password-file` <`currentPasswordFile`> | Specify the path to the current password file. In most cases, you use this option to change a password or decrypt a message when using the `--quiet` flag for non-interactive input.
+| `-n`, `--new-password-file` <`newPasswordFile`> | Specify the path to the new password file. In most cases, you use this option to change a password when using the `--quiet` flag for non-interactive input.
+| `--confirm` | Confirm that you want to change the password for the wallet or delete a wallet. In most cases, you use this option to change a password when using the `--quiet` flag for non-interactive input.
+| `-m`, `--message` <`message`> | Specify the message you want to decrypt.
+| -c, --current-password-file <currentPasswordFile>  Filepath to the current password file
+
+### Examples
+
+To add a new local wallet interactively, you can run the following command:
+
+```bash
+kadena wallet add
+```
+
+This command prompts you to enter the wallet name and to set and confirm the password to unlock the wallet, then displays your 12-word secret phrase and the location of your local wallet.
+For example:
+
+```bash
+You can use the --password-file flag to provide a password.
+Mnemonic Phrase                                                            
+house second brick miracle trip fire peasant supply hen boost supper dignity
+Please store the mnemonic phrase in a safe place. You will need it to recover your wallet.
+
+Wallet Storage Location                                           
+/Users/tech-pubs/.kadena/wallets/pistolas-test/pistolas-test.wallet
+```
+
+To import a Chainweaver wallet so you to manage it from the command-line, you can run a command similar to the following:
+
+```bash
+kadena wallet import --key-mnemonic="model amber rose spoil motor deal alcohol lucky garage empty sausage lunch" --wallet-name="chainweaver-desktop" --legacy
+```
+
+This command prompts you to enter and confirm the password to unlock the wallet, then displays the location of your local wallet.
+
+To generate four hierarchical deterministic public and secret key pairs for a local wallet, you can run a command similar to the following:
+
+```bash
+kadena wallet generate-keys --wallet-name="pistolas-test.wallet" --key-index-or-range="1-4" --key-gen-from-choice="genPublicSecretKey" --key-alias="pistolas-keys"
+```
+
+This command prompts you to enter the password the keys, then displays the public and secret key pairs and the location of the keys on the local filesystem.
+
+To list keys for all wallets, , you can run a command similar to the following:
+
+```bash
+kadena wallet list --wallet-name="all"
+```
+
+This command returns output similar to the following for all wallets:
+
+```bash
+Wallet: chainweaver-desktop (legacy)
+No keys
+
+Wallet: lola-pistola
+Filename      Index  Legacy   Public Key            Secret Key
+pistola1.key  1      No       48bb354f....a721693c  OUVReUwz....UxNS0pweDk5ZVFLYTdOS3VBRXJHQQ==
+pistola2.key  2      No       7b355f98....9454959b  WXg2bXFB....WZZb2FxOUdNVUlaaGc2VXpsTWk3Tw==
+pistola3.key  3      No       256be5b3....a0ba2e12  aU1YVjI3....E9LNUVQb2hGRGZqeFJpcTRMbjR1TA==
+pistola4.key  4      No       b3f0f14a....1f04d21a  U0cxQWEr....1VxWHJWZVFKaCtBVUd5WFhYcnNHSQ==
+
+
+Wallet: pistolas-test
+Filename      Index  Legacy   Public Key            Secret Key
+genkey1.key   1      No       c7141a14....ac01a3c9  N/A
+```
+
+To delete a wallet interactively, you can run the following command:
+
+```bash
+kadena wallet delete
+```
+
+This command prompts you to select the wallet you want to delete and to confirm the action.
+If you select Yes, the wallet is deleted from the local filesystem.
