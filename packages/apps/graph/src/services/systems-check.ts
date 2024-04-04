@@ -9,8 +9,11 @@ import { Listr } from 'listr2';
 import path from 'path';
 import { mempoolGetPending } from './chainweb-node/mempool';
 
-export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
-  const networkId = (await networkConfig).networkId;
+export async function runSystemsCheck(
+  networkConfigAsync: Promise<NetworkConfig>,
+) {
+  const networkConfig = await networkConfigAsync;
+  const { networkId, apiVersion } = networkConfig;
 
   console.log('\n');
   return new Listr([
@@ -58,7 +61,7 @@ export async function runSystemsCheck(networkConfig: Promise<NetworkConfig>) {
               task: async () => {
                 await createClient(
                   ({ chainId }) =>
-                    `${dotenv.NETWORK_HOST}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+                    `${dotenv.NETWORK_HOST}/chainweb/${apiVersion}/${networkId}/chain/${chainId}/pact`,
                 ).local(
                   createTransaction(
                     composePactCommand(
