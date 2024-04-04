@@ -18,3 +18,5 @@ Publish one, set, or all packages (from root):
 ```sh
 pnpm publish-set
 ```
+
+This is a test to see if labels are added correctly
