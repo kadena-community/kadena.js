@@ -55,7 +55,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   const storageListener = useCallback(
     (event: StorageEvent) => {
       if (event.key === 'mintingTokens') {
-        console.log('eventkey');
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         setMintingTokens(getMintingTokensFromLocalStorage());
       }
@@ -66,7 +65,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     setMintingTokens(getMintingTokensFromLocalStorage());
-    console.log('init');
     window.addEventListener('storage', storageListener);
     return () => {
       window.removeEventListener('storage', storageListener);
@@ -75,7 +73,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     if (!data) return;
-
     setTokens(data as IToken[]);
   }, [data]);
 
@@ -114,11 +111,9 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
       try {
         isDateOlderThan5Minutes(new Date(token.mintStartDate))
           .then(() => {
-            console.log('timeout complete?');
             removeMintingToken(token);
           })
           .catch(() => {
-            console.log('timeout fail?');
             removeMintingToken(token);
           });
 
@@ -136,16 +131,13 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
                 'success',
               );
             } else {
-              console.log('result is fail', result[token.requestKey]);
               removeMintingToken(token);
             }
           })
           .catch((e) => {
-            console.log('something wrong');
             console.log({ e });
           });
       } catch (e) {
-        console.log('catch fail');
         console.error(e);
         removeMintingToken(token);
       }
@@ -192,7 +184,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
       //check if the tokenid is not already in the data
       //if it is we can remove this mintingtoken
       if (tokens.find((t) => t.id === tokenData.id)) {
-        console.log('remove');
         removeMintingToken(tokenData);
         return;
       }
@@ -203,7 +194,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
           account?.accountName,
         );
         if (isMinted) {
-          console.log('remove isminted');
           removeMintingToken(tokenData);
           return;
         }
@@ -241,8 +231,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!v.find((t) => t.requestKey === token.requestKey)) {
         newArray.push(token);
       }
-
-      console.log({ newArray });
       localStorage.setItem('mintingTokens', JSON.stringify(newArray));
       return newArray;
     });
@@ -251,7 +239,6 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   const getToken = useCallback(
     (id: string): IToken | undefined => {
       //id could be eventId or a requestkey
-      console.log({ mintingTokens });
       return [...mintingTokens, ...successTokens, ...tokens].find(
         (token) => token.requestKey === id || token.eventId === id,
       );
