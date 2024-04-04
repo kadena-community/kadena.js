@@ -33,7 +33,9 @@ const Page: NextPage<IProps> = ({ params }) => {
       const result = await token?.listener;
       console.log({ result });
 
-      router.replace(`/user/proof-of-us/t/${params.tokenId}`);
+      router.replace(
+        `/user/proof-of-us/t/${params.tokenId}?requestKey=${token.requestKey}`,
+      );
     } catch (e) {
       console.log('fail on the page');
       setError(e);

@@ -1,8 +1,27 @@
-import type { IUnsignedCommand } from '@kadena/client';
+import type { IPollResponse, IUnsignedCommand } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { getClient } from './client';
 import { env } from './env';
+
+export const getTransaction = async (
+  requestKey?: string,
+): Promise<IPollResponse | undefined> => {
+  if (!requestKey) return;
+
+  const txRes = {
+    chainId: env.CHAINID,
+    networkId: env.NETWORKID,
+    requestKey,
+  };
+
+  let transaction;
+  try {
+    transaction = await getClient().getStatus(txRes);
+  } catch (e) {}
+
+  return transaction;
+};
 
 export const getProofOfUs = async (
   id: string,
