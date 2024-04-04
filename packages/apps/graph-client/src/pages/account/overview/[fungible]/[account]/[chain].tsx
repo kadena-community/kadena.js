@@ -321,7 +321,7 @@ const ChainAccount: React.FC = () => {
                   <TokenTable
                     tokens={
                       nonFungibleChainAccountData.nonFungibleChainAccount
-                        .nonFungibles as NonFungibleTokenBalance[]
+                        .nonFungibleTokenBalances as NonFungibleTokenBalance[]
                     }
                   />
                 </GridItem>

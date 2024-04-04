@@ -1,4 +1,5 @@
 import { fungibleAccountDetailsLoader } from '../graph/data-loaders/fungible-account-details';
+import { nonFungibleAccountDetailsLoader } from '../graph/data-loaders/non-fungible-account-details';
 import { tokenDetailsLoader } from '../graph/data-loaders/token-details';
 import type {
   FungibleChainAccount,
@@ -50,15 +51,18 @@ export async function getNonFungibleChainAccount({
 }): Promise<NonFungibleChainAccount | null> {
   const tokenDetails = await tokenDetailsLoader.load({ accountName, chainId });
 
+  const accountDetails = await nonFungibleAccountDetailsLoader.load({
+    tokenId: tokenDetails[0].id,
+    accountName,
+    chainId,
+  });
+
   return tokenDetails !== null && tokenDetails.length !== 0
     ? {
         __typename: NonFungibleChainAccountName,
         chainId,
         accountName,
-        guard: {
-          keys: [],
-          predicate: 'keys-all',
-        },
+        guard: accountDetails.guard,
         nonFungibleTokenBalances: tokenDetails,
         transactions: [],
       }

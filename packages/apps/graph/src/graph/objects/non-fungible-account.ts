@@ -1,5 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
+import { getNonFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -9,7 +10,10 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { nonFungibleChainCheck } from '../data-loaders/non-fungible-chain-check';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
-import type { Guard, NonFungibleAccount } from '../types/graphql-types';
+import type {
+  NonFungibleAccount,
+  NonFungibleChainAccount,
+} from '../types/graphql-types';
 import {
   NonFungibleAccountName,
   NonFungibleChainAccountName,
@@ -54,19 +58,18 @@ export default builder.node(
               accountName: parent.accountName,
             });
 
-            return chainIds.map((chainId) => {
-              return {
-                __typename: NonFungibleChainAccountName,
-                chainId,
-                accountName: parent.accountName,
-                guard: {
-                  keys: [],
-                  predicate: 'keys-all' as Guard['predicate'],
-                },
-                nonFungibleTokenBalances: [],
-                transactions: [],
-              };
-            });
+            return (
+              await Promise.all(
+                chainIds.map(async (chainId) => {
+                  return getNonFungibleChainAccount({
+                    chainId,
+                    accountName: parent.accountName,
+                  });
+                }),
+              )
+            ).filter(
+              (chainAccount) => chainAccount !== null,
+            ) as NonFungibleChainAccount[];
           } catch (error) {
             throw normalizeError(error);
           }

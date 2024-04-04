@@ -1,5 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
+import { getNonFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -8,10 +9,7 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { nonFungibleAccountDetailsLoader } from '../data-loaders/non-fungible-account-details';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
-import type {
-  Guard as GuardType,
-  NonFungibleChainAccount,
-} from '../types/graphql-types';
+import type { NonFungibleChainAccount } from '../types/graphql-types';
 import { NonFungibleChainAccountName } from '../types/graphql-types';
 import Guard from './guard';
 import NonFungibleTokenBalance from './non-fungible-token-balance';
@@ -32,17 +30,10 @@ export default builder.node(
     },
     async loadOne({ chainId, accountName }) {
       try {
-        return {
-          __typename: NonFungibleChainAccountName,
+        return await getNonFungibleChainAccount({
           chainId,
           accountName,
-          guard: {
-            keys: [],
-            predicate: 'keys-all' as GuardType['predicate'],
-          },
-          nonFungibleTokenBalances: [],
-          transactions: [],
-        };
+        });
       } catch (error) {
         throw normalizeError(error);
       }
@@ -55,8 +46,13 @@ export default builder.node(
         complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
         async resolve(parent) {
           try {
+            const tokenDetails = await tokenDetailsLoader.load({
+              accountName: parent.accountName,
+              chainId: parent.chainId,
+            });
+
             const accountDetails = await nonFungibleAccountDetailsLoader.load({
-              tokenId: parent.nonFungibleTokenBalances[0].id,
+              tokenId: tokenDetails[0].id,
               accountName: parent.accountName,
               chainId: parent.chainId,
             });

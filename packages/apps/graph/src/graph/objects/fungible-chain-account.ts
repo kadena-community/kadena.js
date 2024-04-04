@@ -34,7 +34,7 @@ export default builder.node(
     },
     async loadOne({ chainId, fungibleName, accountName }) {
       try {
-        return getFungibleChainAccount({
+        return await getFungibleChainAccount({
           chainId,
           fungibleName,
           accountName,
