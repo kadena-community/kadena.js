@@ -7,7 +7,7 @@ import {
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import { accountDetailsLoader } from '../data-loaders/account-details';
+import { fungibleAccountDetailsLoader } from '../data-loaders/fungible-account-details';
 import type { FungibleChainAccount } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
 import Guard from './guard';
@@ -52,7 +52,7 @@ export default builder.node(
         complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
         async resolve(parent) {
           try {
-            const accountDetails = await accountDetailsLoader.load({
+            const accountDetails = await fungibleAccountDetailsLoader.load({
               fungibleName: parent.fungibleName,
               accountName: parent.accountName,
               chainId: parent.chainId,

@@ -235,7 +235,7 @@ type NonFungibleAccount implements Node {
   accountName: String!
   chainAccounts: [NonFungibleChainAccount!]!
   id: ID!
-  nonFungibles: [NonFungibleTokenBalance!]!
+  nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
 
   """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleAccountTransactionsConnection!
@@ -256,8 +256,9 @@ type NonFungibleAccountTransactionsConnectionEdge {
 type NonFungibleChainAccount implements Node {
   accountName: String!
   chainId: ID!
+  guard: Guard!
   id: ID!
-  nonFungibles: [NonFungibleTokenBalance!]!
+  nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
 
   """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleChainAccountTransactionsConnection!

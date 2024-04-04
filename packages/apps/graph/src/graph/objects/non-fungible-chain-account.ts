@@ -6,9 +6,14 @@ import {
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
+import { nonFungibleAccountDetailsLoader } from '../data-loaders/non-fungible-account-details';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
-import type { NonFungibleChainAccount } from '../types/graphql-types';
+import type {
+  Guard as GuardType,
+  NonFungibleChainAccount,
+} from '../types/graphql-types';
 import { NonFungibleChainAccountName } from '../types/graphql-types';
+import Guard from './guard';
 import NonFungibleTokenBalance from './non-fungible-token-balance';
 
 export default builder.node(
@@ -31,7 +36,11 @@ export default builder.node(
           __typename: NonFungibleChainAccountName,
           chainId,
           accountName,
-          nonFungibles: [],
+          guard: {
+            keys: [],
+            predicate: 'keys-all' as GuardType['predicate'],
+          },
+          nonFungibleTokenBalances: [],
           transactions: [],
         };
       } catch (error) {
@@ -41,7 +50,27 @@ export default builder.node(
     fields: (t) => ({
       chainId: t.exposeID('chainId'),
       accountName: t.exposeString('accountName'),
-      nonFungibles: t.field({
+      guard: t.field({
+        type: Guard,
+        complexity: COMPLEXITY.FIELD.CHAINWEB_NODE,
+        async resolve(parent) {
+          try {
+            const accountDetails = await nonFungibleAccountDetailsLoader.load({
+              tokenId: parent.nonFungibleTokenBalances[0].id,
+              accountName: parent.accountName,
+              chainId: parent.chainId,
+            });
+
+            return {
+              keys: accountDetails.guard.keys,
+              predicate: accountDetails.guard.pred,
+            };
+          } catch (error) {
+            throw normalizeError(error);
+          }
+        },
+      }),
+      nonFungibleTokenBalances: t.field({
         type: [NonFungibleTokenBalance],
         complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
         async resolve(parent) {
