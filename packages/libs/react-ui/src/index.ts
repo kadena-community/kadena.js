@@ -46,6 +46,7 @@ export type {
   ITooltipProps,
   ITrackerCardProps,
   MaskOptions,
+  PressEvent,
 } from './components';
 
 export {

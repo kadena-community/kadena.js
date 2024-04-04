@@ -5,7 +5,7 @@ import React from 'react';
 import { Link } from '.';
 import { getVariants } from '../../storyDecorators/getVariants';
 import { iconControl } from '../../storyDecorators/iconControl';
-import { button } from '../Button/Button.css';
+import { button } from '../Button/BaseButton/BaseButton.css';
 import { Box } from '../Layout/Box/Box';
 import type { ILinkProps } from './Link';
 
@@ -62,11 +62,6 @@ const meta: Meta<ILinkProps> = {
     },
     loadingLabel: {
       description: 'label to be shown when loading',
-      control: {
-        type: 'text',
-      },
-    },
-    ariaLabel: {
       control: {
         type: 'text',
       },
