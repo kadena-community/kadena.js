@@ -1,3 +1,4 @@
+import { getColorStyle } from '@/utils/getColor';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import { bulletPositionClass, smallClass } from './styles.css';
@@ -30,6 +31,7 @@ export const SigneePosition: FC<IProps> = ({
       )}
       data-xpercentage={position?.xPercentage}
       data-ypercentage={position?.yPercentage}
+      style={getColorStyle(idx)}
     ></button>
   );
 };

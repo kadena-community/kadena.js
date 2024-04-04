@@ -75,6 +75,7 @@ export const bulletPositionClass = style([
     height: '4.5rem',
     aspectRatio: '1/1',
     zIndex: 100,
+    backgroundColor: 'var(--bulletColor)',
 
     selectors: {
       '&:before': {
@@ -86,18 +87,7 @@ export const bulletPositionClass = style([
         width: '3.5rem',
         height: '3.5rem',
         aspectRatio: '1/1',
-      },
-      '&[data-position="0"]': {
-        background: 'rgba(255, 0, 0, 0.42)',
-      },
-      '&[data-position="1"]': {
-        background: 'rgba(255, 199, 0, 0.42)',
-      },
-      '&[data-position="0"]:before': {
-        background: 'rgba(255, 0, 0, 0.42)',
-      },
-      '&[data-position="1"]:before': {
-        background: 'rgba(255, 199, 0, 0.42)',
+        backgroundColor: 'var(--bulletColor)',
       },
     },
   },
