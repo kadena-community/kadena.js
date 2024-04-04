@@ -353,7 +353,7 @@ export async function transferToken({
     tokenId,
     sender,
     receiver,
-    amount: new PactNumber(1).toPactDecimal(),
+    amount: new PactNumber(amount).toPactDecimal(),
   });
 
   appendToFile(filepath, {
