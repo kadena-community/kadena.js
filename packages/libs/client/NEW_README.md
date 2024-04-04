@@ -1519,7 +1519,7 @@ runPact(code: string, data?: Record<string, unknown>, option?: { chainId:ChainId
 | data      | Record<string, unknown>               | data to be sent with the transaction               |
 | option    | { chainId:ChainId, networkId:string } | chainId and networkId that you want send the tx to |
 
-#### Examples
+##### Examples
 
 ```TS
 const { runPact } = createClient()
