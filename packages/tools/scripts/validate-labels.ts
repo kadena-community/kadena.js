@@ -19,7 +19,7 @@ const main = async () => {
     yaml.load(await fs.readFile(labelerYmlPath, 'utf8')) || {};
 
   for (const pkg of packages) {
-    const packageName = pkg.name.split('/').pop();
+    const packageName = pkg.name;
 
     if (!existingLabels[packageName]) {
       throw new Error(
