@@ -39,7 +39,10 @@ export const ConnectView: FC<IProps> = () => {
   const check2AddSignee = async () => {
     if (!proofOfUs?.proofOfUsId || !signees) return;
     const isSigneeResult = await isSignee();
-    if (signees.length >= env.MAXSIGNERS && !isSigneeResult) {
+    if (
+      (signees.length >= env.MAXSIGNERS && !isSigneeResult) ||
+      isAlreadySigning(proofOfUs)
+    ) {
       setShowMaxModal(true);
       return;
     }
@@ -101,9 +104,13 @@ export const ConnectView: FC<IProps> = () => {
 
   if (showMaxModal) {
     return (
-      <Modal label="Maximum signees" onClose={() => {}}>
+      <Modal label="No more signees allowed" onClose={() => {}}>
         <Stack flexDirection="column" gap="md">
-          <Text>There are already a max of {env.MAXSIGNERS} signed in.</Text>
+          <Text>
+            There are already a max of {env.MAXSIGNERS} signed in.
+            <br />
+            Or we are already signing the NFT{' '}
+          </Text>
 
           <Link href="/user">
             <Button>Close</Button>
