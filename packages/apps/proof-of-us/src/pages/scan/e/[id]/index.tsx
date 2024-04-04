@@ -39,7 +39,7 @@ const Page: NextPage<IProps> = ({ params }) => {
   return (
     <UserLayout>
       <ScreenHeight>
-        <ProofOfUsProvider>
+        <ProofOfUsProvider proofOfUsId={params.id}>
           <TitleHeader label="Attendance @" />
           {isLoading && <MainLoader />}
           {error && <div>...error</div>}

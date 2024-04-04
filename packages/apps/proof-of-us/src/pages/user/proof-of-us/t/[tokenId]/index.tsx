@@ -21,33 +21,31 @@ const Page: NextPage<IProps> = ({ params, data, metadataUri, transaction }) => {
   return (
     <LoginBoundry>
       <UserLayout>
-        <ProofOfUsProvider>
-          {data && (
-            <Share
-              tokenId={params.tokenId}
-              data={data}
-              metadataUri={metadataUri}
-            />
-          )}
-          {transaction?.result?.status === 'failure' && (
-            <>
-              <Stack
-                padding="md"
-                flexDirection="column"
-                style={{
-                  maxWidth: '800px',
-                  width: '100%',
-                  marginInline: 'auto',
-                }}
-              >
-                <MessageBlock variant="error" title="Something went wrong">
-                  {transaction?.result.error.message}
-                </MessageBlock>
-              </Stack>
-              <pre>{JSON.stringify(transaction, null, 2)}</pre>
-            </>
-          )}
-        </ProofOfUsProvider>
+        {data && (
+          <Share
+            tokenId={params.tokenId}
+            data={data}
+            metadataUri={metadataUri}
+          />
+        )}
+        {transaction?.result?.status === 'failure' && (
+          <>
+            <Stack
+              padding="md"
+              flexDirection="column"
+              style={{
+                maxWidth: '800px',
+                width: '100%',
+                marginInline: 'auto',
+              }}
+            >
+              <MessageBlock variant="error" title="Something went wrong">
+                {transaction?.result.error.message}
+              </MessageBlock>
+            </Stack>
+            <pre>{JSON.stringify(transaction, null, 2)}</pre>
+          </>
+        )}
       </UserLayout>
     </LoginBoundry>
   );

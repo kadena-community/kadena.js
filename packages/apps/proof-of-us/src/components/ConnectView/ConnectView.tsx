@@ -87,10 +87,15 @@ export const ConnectView: FC<IProps> = () => {
       setSigned(innerSigned);
       if (proofOfUs.tokenId && proofOfUs.requestKey && innerSigned) {
         router.replace(
-          `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
+          `${getReturnHostUrl()}/user/proof-of-us/mint/${
             proofOfUs.requestKey
-          }/${proofOfUs.proofOfUsId}`,
+          }/`,
         );
+        // router.replace(
+        //   `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
+        //     proofOfUs.requestKey
+        //   }/${proofOfUs.proofOfUsId}`,
+        // );
       }
     },
     [setSigned],

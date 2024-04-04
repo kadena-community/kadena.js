@@ -77,10 +77,14 @@ export const useSubmit = () => {
         }
 
         router.replace(
-          `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs?.tokenId}/${proofOfUs?.requestKey}/${
-            proofOfUs.proofOfUsId
-          }`,
+          `${getReturnHostUrl()}/user/proof-of-us/mint/${proofOfUs?.requestKey}`,
         );
+
+        // router.replace(
+        //   `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs?.tokenId}/${proofOfUs?.requestKey}/${
+        //     proofOfUs.proofOfUsId
+        //   }`,
+        // );
         return;
       }
     } catch (err: any) {

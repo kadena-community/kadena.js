@@ -15,12 +15,12 @@ import { useEffect, useState } from 'react';
 
 interface IProps {
   params: {
-    tokenId: string;
     requestKey: string;
   };
 }
 
 const Page: NextPage<IProps> = ({ params }) => {
+  console.log({ params });
   const { tokens, getToken } = useTokens();
   const [error, setError] = useState();
   const [token, setToken] = useState<IToken>();
@@ -29,10 +29,13 @@ const Page: NextPage<IProps> = ({ params }) => {
   const init = async () => {
     if (!token) return;
     try {
-      await token?.listener;
+      const result = await token?.listener;
+
+      const transaction = result[params.requestKey];
+      if (!transaction) return;
 
       router.replace(
-        `/user/proof-of-us/t/${params.tokenId}?requestKey=${params.requestKey}`,
+        `/user/proof-of-us/t/${transaction.result.data}?requestKey=${params.requestKey}`,
       );
     } catch (e) {
       console.log('fail on the page');
@@ -53,7 +56,7 @@ const Page: NextPage<IProps> = ({ params }) => {
   return (
     <LoginBoundry>
       <UserLayout>
-        <ProofOfUsProvider proofOfUsId={params.id}>
+        <ProofOfUsProvider proofOfUsId={token?.proofOfUsId}>
           <ScreenHeight>
             {error ? (
               <Stack
@@ -88,11 +91,10 @@ const Page: NextPage<IProps> = ({ params }) => {
 export const getServerSideProps = async (
   ctx: GetServerSidePropsContext,
 ): Promise<{ props: IProps }> => {
-  const tokenId = `${ctx.query.tokenId}`;
-  const requestKey = `${ctx.query.requestkey}`;
+  const requestKey = `${ctx.query.requestKey}`;
 
   return {
-    props: { params: { tokenId, requestKey } },
+    props: { params: { requestKey } },
   };
 };
 
