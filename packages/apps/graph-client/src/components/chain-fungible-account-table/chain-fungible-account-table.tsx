@@ -1,5 +1,6 @@
 import type { FungibleChainAccount } from '@/__generated__/sdk';
 import routes from '@constants/routes';
+import { MonoLink } from '@kadena/react-icons/system';
 import {
   Box,
   Cell,
@@ -28,7 +29,7 @@ export const FungibleChainAccountTable = (
     <>
       <ContentHeader
         heading="Chain Accounts"
-        icon="Link"
+        icon={<MonoLink />}
         description="All chains where this account was found"
       />
       <Box margin="md" />

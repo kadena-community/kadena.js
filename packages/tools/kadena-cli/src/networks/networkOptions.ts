@@ -85,11 +85,11 @@ export const networkOptions = {
     ),
   }),
   networkDefaultConfirmation: createOption({
-    key: 'networkDefaultConfirmation' as const,
+    key: 'confirm' as const,
     prompt: networks.networkDefaultConfirmationPrompt,
     validation: z.boolean(),
     option: new Option(
-      '-c, --network-default-confirmation',
+      '-c, --confirm',
       'Confirm to set/unset the network as default',
     ),
   }),
