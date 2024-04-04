@@ -1,11 +1,13 @@
+import { deviceColors } from '@/styles/tokens.css';
 import { atoms, tokens } from '@kadena/react-ui/styles';
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 
 export const wrapperClass = style([
   atoms({
     display: 'flex',
     width: '100%',
     padding: 'no',
+    margin: 'no',
   }),
   {
     flexWrap: 'wrap',
@@ -32,27 +34,6 @@ export const multipleSigneeClass = style([
     gap: 'sm',
     alignItems: 'center',
   }),
-  {
-    selectors: {
-      '&:nth-child(even)': {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      },
-      '&:nth-child(odd)': {
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-      },
-      '&:not(:last-child)': {
-        borderBlockEnd: '1px solid rgba(255,255,255,.2)',
-      },
-      '&:first-child': {
-        borderTopLeftRadius: tokens.kda.foundation.radius.md,
-        borderTopRightRadius: tokens.kda.foundation.radius.md,
-      },
-      '&:last-child': {
-        borderBottomLeftRadius: tokens.kda.foundation.radius.md,
-        borderBottomRightRadius: tokens.kda.foundation.radius.md,
-      },
-    },
-  },
 ]);
 
 export const signeeClass = style([
@@ -69,14 +50,7 @@ export const signeeClass = style([
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     selectors: {
       '&:first-child': {
-        borderTopLeftRadius: tokens.kda.foundation.radius.md,
-        borderBottomLeftRadius: tokens.kda.foundation.radius.md,
-        border: '1px solid rgba(255,255,255,.2)',
-      },
-
-      '&:last-child': {
-        borderTopRightRadius: tokens.kda.foundation.radius.md,
-        borderBottomRightRadius: tokens.kda.foundation.radius.md,
+        borderRadius: tokens.kda.foundation.radius.md,
         border: '1px solid rgba(255,255,255,.2)',
       },
     },
@@ -99,6 +73,7 @@ export const nameClass = style([
     textAlign: 'center',
   },
 ]);
+
 export const multipleNameClass = style([
   {
     textAlign: 'initial',
@@ -112,3 +87,35 @@ export const ellipsClass = style([
     whiteSpace: 'nowrap',
   },
 ]);
+
+export const removeClass = style([
+  atoms({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 'md',
+  }),
+  {
+    height: '100%',
+    backgroundColor: deviceColors.red,
+    userSelect: 'none',
+  },
+]);
+
+globalStyle(`${multipleWrapperClass} > :nth-child(even)`, {
+  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+});
+globalStyle(`${multipleWrapperClass} > :nth-child(odd)`, {
+  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+});
+globalStyle(`${multipleWrapperClass} > :not(:last-child)`, {
+  borderBlockEnd: '1px solid rgba(255,255,255,.2)',
+});
+globalStyle(`${multipleWrapperClass} > :first-child`, {
+  borderTopLeftRadius: tokens.kda.foundation.radius.md,
+  borderTopRightRadius: tokens.kda.foundation.radius.md,
+});
+globalStyle(`${multipleWrapperClass} > :last-child`, {
+  borderBottomLeftRadius: tokens.kda.foundation.radius.md,
+  borderBottomRightRadius: tokens.kda.foundation.radius.md,
+});

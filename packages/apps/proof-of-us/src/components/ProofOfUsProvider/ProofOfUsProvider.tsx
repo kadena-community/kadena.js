@@ -25,7 +25,7 @@ export interface IProofOfUsContext {
     proofOfUsId,
     signee,
   }: {
-    proofOfUsId: string;
+    proofOfUsId?: string;
     signee: IProofOfUsSignee;
   }) => Promise<void>;
   updateSignee: (value: any, isOverwrite?: boolean) => Promise<void>;
@@ -162,7 +162,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     proofOfUsId,
     signee,
   }: {
-    proofOfUsId: string;
+    proofOfUsId?: string;
     signee: IProofOfUsSignee;
   }) => {
     if (!proofOfUs) return;
