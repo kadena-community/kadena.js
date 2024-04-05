@@ -46,7 +46,10 @@ export const dialogClass = style([
   },
 ]);
 
-export const headerClass = style({
-  fontSize: '18px',
-  width: '100%',
-});
+export const headerClass = style([
+  atoms({
+    fontSize: 'md',
+    width: '100%',
+    fontWeight: 'primaryFont.bold',
+  }),
+]);
