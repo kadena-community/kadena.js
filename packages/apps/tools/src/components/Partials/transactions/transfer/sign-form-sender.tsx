@@ -24,7 +24,7 @@ import {
 } from '@/pages/transactions/transfer/styles.css';
 import type { ChainId } from '@kadena/types';
 import useTranslation from 'next-translate/useTranslation';
-import { useForm } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { SenderDetails } from './sender-details';
 import type { FormData } from './sign-form';
 
@@ -54,7 +54,7 @@ export const SignFormSender = ({
     // control,
     formState: { errors },
     watch,
-  } = useForm<FormData>();
+  } = useFormContext<FormData>();
   const [chainSelectOptions, setChainSelectOptions] = useState<
     { chainId: ChainId; data: string | number }[]
   >([]);
