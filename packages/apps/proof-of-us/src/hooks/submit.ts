@@ -65,6 +65,7 @@ export const useSubmit = () => {
       router.replace(
         `${getReturnHostUrl()}/user/proof-of-us/mint/${innerProofOfUs?.requestKey}`,
       );
+
       return;
     } catch (err: any) {
       setStatus(SubmitStatus.ERROR);

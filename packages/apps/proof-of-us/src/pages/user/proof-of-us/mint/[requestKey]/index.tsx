@@ -67,13 +67,11 @@ const Page: NextPage<IProps> = ({ params }) => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      const result = getToken(params.requestKey);
-      if (!result) return;
+    const result = getToken(params.requestKey);
+    if (!result) return;
 
-      console.log({ result });
-      setToken(result);
-    }, 1000);
+    console.log({ result });
+    setToken(result);
   }, [params.requestKey, tokens, getToken]);
 
   useEffect(() => {

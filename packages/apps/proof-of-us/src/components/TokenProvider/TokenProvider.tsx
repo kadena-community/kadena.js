@@ -140,6 +140,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
           });
       } catch (e) {
         console.error(e);
+        console.log('something went wrong making listener');
         removeMintingToken(token);
       }
     }
@@ -149,18 +150,22 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     listenAll();
   }, [mintingTokens]);
 
+  const addListener = useCallback((requestKey: string) => {
+    return getClient()
+      .pollStatus({
+        requestKey,
+        chainId: env.CHAINID,
+        networkId: env.NETWORKID,
+      })
+      .catch(console.log);
+  }, []);
+
   const listenForMinting = useCallback(async (data: IToken) => {
     try {
       const isAlreadyListening = !!data.listener;
       if (isAlreadyListening || !data.requestKey) return;
 
-      data.listener = getClient()
-        .pollStatus({
-          requestKey: data.requestKey,
-          chainId: env.CHAINID,
-          networkId: env.NETWORKID,
-        })
-        .catch(console.log);
+      data.listener = addListener(data.requestKey);
 
       setMintingTokens((v) =>
         v.map((item) => (item.requestKey === data.requestKey ? data : item)),
@@ -227,6 +232,8 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
         id: proofOfUs.tokenId,
         mintStartDate: Date.now(),
       };
+
+      token.listener = addListener(proofOfUs.requestKey);
 
       setMintingTokens((v) => {
         const newArray = [...v];
