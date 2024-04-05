@@ -38,15 +38,24 @@ type BaseProps = Omit<AriaFocusRingProps, 'isTextInput'> &
     | 'aria-label'
     | 'type'
     | 'href'
-  >;
+  > & {
+    avatarProps?: Omit<IAvatarProps, 'size'>;
+    badgeValue?: string | number;
+    icon?: ReactElement;
+    iconPosition?: 'start' | 'end';
+    loadingLabel?: string;
+  };
 
-export interface ILinkProps extends BaseProps {
-  avatarProps?: Omit<IAvatarProps, 'size'>;
-  badgeValue?: string | number;
-  icon?: ReactElement;
+export interface ILinkWithoutAvatar {
   iconPosition?: 'start' | 'end';
-  loadingLabel?: string;
 }
+
+interface ILinkWithAvatar {
+  avatarProps?: Omit<IAvatarProps, 'size'>;
+  iconPosition?: 'end';
+}
+
+export type ILinkProps = (ILinkWithAvatar | ILinkWithoutAvatar) & BaseProps;
 
 /**
  * Link component
@@ -70,7 +79,6 @@ export interface ILinkProps extends BaseProps {
 const Link = forwardRef(
   (
     {
-      avatarProps,
       badgeValue,
       children,
       href,
@@ -85,6 +93,7 @@ const Link = forwardRef(
     forwardedRef: ForwardedRef<HTMLAnchorElement>,
   ) => {
     props = disableLoadingProps(props);
+    const avatarProps = 'avatarProps' in props ? props.avatarProps : undefined;
     const ref = useObjectRef(forwardedRef);
 
     const startIcon = iconPosition === 'start' && icon;
@@ -97,7 +106,7 @@ const Link = forwardRef(
       typeof children === 'string' ? children : props['aria-label'] ?? 'is'
     } loading`.trim();
 
-    // Content to show before the children
+    // Content to show before the children, either an icon or avatar
     const prefixContent =
       startIcon || avatarProps ? (
         <span className={startIcon ? prefixIconStyle : avatarStyle}>
@@ -122,7 +131,9 @@ const Link = forwardRef(
     const centerContent = (
       <span
         className={classNames(centerContentWrapper, {
+          // Spacing for when only the label and badge are shown
           [badgeStyle]: !postfixContent && badgeValue,
+          // Spacing for when only the label is shown
           [noPostfixStyle]: !postfixContent && !badgeValue,
           [noPrefixStyle]: !prefixContent,
         })}

@@ -1,8 +1,8 @@
 import { useObjectRef } from '@react-aria/utils';
 import classNames from 'classnames';
-import type { ForwardedRef, ReactElement } from 'react';
+import type { ForwardedRef, HTMLAttributes, ReactElement } from 'react';
 import React, { forwardRef } from 'react';
-import type { AriaButtonProps, AriaFocusRingProps } from 'react-aria';
+import type { AriaFocusRingProps } from 'react-aria';
 import type { IBaseButtonProps } from '.';
 import { BaseButton } from '.';
 import type { IAvatarProps } from '../Avatar';
@@ -30,36 +30,36 @@ type BaseProps = Omit<AriaFocusRingProps, 'isTextInput'> &
     | 'variant'
     | 'isCompact'
     | 'style'
-    | 'children'
     | 'className'
     | 'title'
     | 'isDisabled'
     | 'isLoading'
     | 'aria-label'
-  >;
+    | 'onPress'
+    | 'type'
+  > & {
+    badgeValue?: string | number;
+    loadingLabel?: string;
+    children?: string | string[];
+    onClick?: Pick<HTMLAttributes<HTMLButtonElement>, 'onClick'>['onClick'];
+    icon?: ReactElement;
+  };
 
-export interface ICustomProps extends BaseProps {
-  avatarProps?: Omit<IAvatarProps, 'size'>;
-  badgeValue?: string | number;
-  icon?: ReactElement;
+export interface IButtonWithoutAvatar {
   iconPosition?: 'start' | 'end';
-  loadingLabel?: string;
 }
 
-export interface IButtonElementProps extends ICustomProps {
-  type?: Omit<Pick<AriaButtonProps, 'type'>['type'], 'submit'>;
-  onPress: Pick<AriaButtonProps, 'onPress'>['onPress'];
+interface IButtonWithAvatar {
+  avatarProps?: Omit<IAvatarProps, 'size'>;
+  iconPosition?: 'end';
 }
 
-export interface ISubmitButtonProps extends ICustomProps {
-  type: 'submit';
-  onPress?: never;
-}
-
-export type IButtonProps = IButtonElementProps | ISubmitButtonProps;
+export type IButtonProps = (IButtonWithAvatar | IButtonWithoutAvatar) &
+  BaseProps;
 
 /**
  * Button component
+ * @param onClick - use onPress whenever you can for accessibility, onClick allows backwards compatibility
  * @param onPress - callback when button is clicked
  * @param variant - button style variant
  * @param children - label to be shown
@@ -82,7 +82,6 @@ const Button = forwardRef(
       icon,
       iconPosition = 'end',
       children,
-      avatarProps,
       badgeValue,
       isCompact = false,
       loadingLabel = 'Loading',
@@ -94,6 +93,8 @@ const Button = forwardRef(
   ) => {
     props = disableLoadingProps(props);
     const ref = useObjectRef(forwardedRef);
+    const avatarProps = 'avatarProps' in props ? props.avatarProps : undefined;
+    const onPress = 'onPress' in props ? props.onPress : undefined;
 
     const startIcon = iconPosition === 'start' && icon;
     const endIcon = iconPosition === 'end' && icon;
@@ -105,7 +106,7 @@ const Button = forwardRef(
       typeof children === 'string' ? children : props['aria-label'] ?? 'is'
     } loading`.trim();
 
-    // Content to show before the children
+    // Content to show before the children, either an icon or avatar
     const prefixContent =
       startIcon || avatarProps ? (
         <span className={startIcon ? prefixIconStyle : avatarStyle}>
@@ -130,7 +131,9 @@ const Button = forwardRef(
     const centerContent = (
       <span
         className={classNames(centerContentWrapper, {
+          // Spacing for when only the label and badge are shown
           [badgeStyle]: !postfixContent && badgeValue,
+          // Spacing for when only the label is shown
           [noPostfixStyle]: !postfixContent && !badgeValue,
           [noPrefixStyle]: !prefixContent,
         })}
@@ -185,7 +188,7 @@ const Button = forwardRef(
     return (
       <BaseButton
         {...(props as BaseProps)}
-        onPress={props.onPress}
+        onPress={onPress}
         variant={variant}
         isCompact={isCompact}
         className={classNames(className, isCompactStyle[`${isCompact}`])}
