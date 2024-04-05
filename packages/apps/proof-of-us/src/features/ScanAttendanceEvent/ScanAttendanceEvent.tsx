@@ -44,7 +44,6 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     transaction: string,
   ): IProofOfUsData => {
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
-    console.log({ tx });
 
     const proof: IProofOfUsData = {
       proofOfUsId: data.properties.eventId,
@@ -62,8 +61,6 @@ export const ScanAttendanceEvent: FC<IProps> = ({
       status: 4,
       manifestUri: data.manifestUri,
     };
-
-    console.log('inner', { proof });
 
     return proof;
   };

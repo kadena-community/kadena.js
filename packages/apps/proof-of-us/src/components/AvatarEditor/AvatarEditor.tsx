@@ -141,8 +141,6 @@ export const AvatarEditor: FC<IProps> = ({ next, status }) => {
     if (!proofOfUs) return;
 
     await addBackground(proofOfUs, { bg: canvasRef.current.toDataURL() });
-
-    console.log('update in avatareditor');
     await updateProofOfUs({
       backgroundColor: updateBackgroundColor(color),
     });

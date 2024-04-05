@@ -21,7 +21,6 @@ interface IProps {
 }
 
 const Page: NextPage<IProps> = ({ params }) => {
-  console.log({ params });
   const { tokens, getToken } = useTokens();
   const [error, setError] = useState<unknown>();
   const [token, setToken] = useState<IToken>();
@@ -43,7 +42,6 @@ const Page: NextPage<IProps> = ({ params }) => {
       }
 
       const result = await token.listener;
-      console.log({ result });
 
       // if there is no token with a reqyestKey, then maybe the token has already been minted.
       // lets check the block by requestKey
@@ -58,8 +56,6 @@ const Page: NextPage<IProps> = ({ params }) => {
         return;
       }
 
-      console.log({ transaction });
-
       router.replace(
         `/user/proof-of-us/t/${transaction.result.data}?requestKey=${params.requestKey}`,
       );
@@ -70,7 +66,6 @@ const Page: NextPage<IProps> = ({ params }) => {
   };
 
   useEffect(() => {
-    console.log(tokens);
     const result = getToken(params.requestKey);
     if (!result) return;
     setToken(result);

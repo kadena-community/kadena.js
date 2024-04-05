@@ -20,7 +20,7 @@ export const TokenContext = createContext<ITokenContext>({
   tokens: [],
   isLoading: false,
   removeTokenFromData: (token: IToken) => {},
-  addMintingData: async (proofOfUs: IProofOfUsData) => {},
+  addMintingData: async (proofOfUs: IProofOfUsData) => ({}) as IToken,
   getToken: () => undefined,
 });
 
