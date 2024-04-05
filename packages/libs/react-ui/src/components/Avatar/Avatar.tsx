@@ -19,7 +19,7 @@ export interface IAvatarProps extends StatusVariants, CircleVariants {
   isDisabled?: boolean;
 }
 
-export const Avatar = ({
+const Avatar = ({
   size,
   status,
   name,
@@ -50,3 +50,7 @@ export const Avatar = ({
     </div>
   );
 };
+
+Avatar.displayName = 'Avatar';
+
+export { Avatar };

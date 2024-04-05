@@ -46,7 +46,7 @@ const resultsMapToTreeItems = (
           title={chainId + (hash ? ` - ${hash}` : '')}
         >
           {chainId}
-          {hash ? ` - ${truncateString(hash, CHARCOUNT_BREAKING_POINT)}` : null}
+          {hash ? ` - ${truncateString(hash, CHARCOUNT_BREAKING_POINT)}` : ''}
         </Button>
       ),
     })),

@@ -1,6 +1,6 @@
 import { analyticsEvent, EVENT_NAMES } from '@/utils/analytics';
 import { isEmailValid } from '@/utils/isEmailValid';
-import type { IButtonProps } from '@kadena/react-ui';
+import type { IButtonProps, PressEvent } from '@kadena/react-ui';
 import type { ChangeEvent, MouseEvent } from 'react';
 import { useState } from 'react';
 
@@ -24,10 +24,9 @@ export const useSubscribe = (): IReturn => {
   const hasSuccess = Boolean(message) && !hasError;
 
   const handleSubscribe = async (
-    event: MouseEvent<HTMLButtonElement>,
+    event: MouseEvent | PressEvent,
   ): Promise<void> => {
-    event.preventDefault();
-
+    (event as MouseEvent)?.preventDefault();
     setIsLoading(true);
     analyticsEvent(EVENT_NAMES['click:subscribe']);
 
