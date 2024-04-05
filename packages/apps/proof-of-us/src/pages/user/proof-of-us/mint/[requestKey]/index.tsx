@@ -27,6 +27,7 @@ const Page: NextPage<IProps> = ({ params }) => {
   const router = useRouter();
 
   const init = async () => {
+    console.log({ token });
     if (!token) return;
     try {
       if (!token.listener) {
@@ -68,6 +69,8 @@ const Page: NextPage<IProps> = ({ params }) => {
   useEffect(() => {
     const result = getToken(params.requestKey);
     if (!result) return;
+
+    console.log({ result });
     setToken(result);
   }, [params.requestKey, tokens]);
 

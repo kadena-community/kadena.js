@@ -93,6 +93,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
           const newArray = [...v];
           delete token.proofOfUsId;
           delete token.listener;
+          token.id = tokenId;
           if (!v.find((t) => t.requestKey === token.requestKey)) {
             newArray.push(token);
           }
