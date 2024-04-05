@@ -18,6 +18,7 @@ import './objects/transaction-command';
 import './objects/transaction-meta';
 import './objects/transaction-payload';
 import './objects/transaction-result';
+import './objects/transaction-signature';
 import './objects/transfer';
 import './query/block';
 import './query/blocks-from-depth';
