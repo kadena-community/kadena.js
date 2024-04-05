@@ -214,10 +214,10 @@ kadena network add --network-name="mainnet" --network-id="mainnet01" --network-h
 kadena network set-default [options]
 ```
 
-| **Arguments & Options**        | **Description**                               | **Required** |
-| ------------------------------ | --------------------------------------------- | ------------ |
-| --network                      | Select name of network to set default         |              |
-| --confirm                      | Confirmation for default network to set/unset |              |
+| **Arguments & Options** | **Description**                               | **Required** |
+| ----------------------- | --------------------------------------------- | ------------ |
+| --network               | Select name of network to set default         |              |
+| --confirm               | Confirmation for default network to set/unset |              |
 
 example for setting default network:
 
@@ -311,45 +311,42 @@ password will be hidden after entry: --security-new-password=\*
 ---
 
 ```
-kadena wallet generate-keys [arguments]
+kadena wallet generate-key [arguments]
 ```
 
 Generate a keypair from a wallet mnemonic
 
-| **Arguments & Options** | **Description**                                                                     | **Required** |
-| ----------------------- | ----------------------------------------------------------------------------------- | ------------ |
-| --wallet-name           | Provide the name of the wallet                                                      |              |
-| --key-index-or-range    | Set index or range of indices for key generation (e.g., 5 or 1-5)                   |              |
-| --security-password     | Set the password for the wallet                                                     |              |
-| --key-gen-from-choice   | Select generation type: genPublicKey (publicKey only), genPublicSecretKey           |              |
-|                         | (publickey and secretKey), genPublicSecretKeyDec (publicKey and SecretKey Decrypted |              |
+| **Arguments & Options** | **Description**                                                            | **Required** |
+| ----------------------- | -------------------------------------------------------------------------- | ------------ |
+| --wallet-name           | Provide the name of the wallet                                             |              |
+| --amount                | The amount of keys to be generated, starting from last generated key index |              |
+| --start-index           | Set start index for generating the next key                                |              |
+| --password-file         | Password of the wallet, can be passed via stdin                            |              |
+| --key-alias             | An optional alias given to the key(s) to recognize them later              |              |
 
-example generating public keys using a range
-
-```
-kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0-5" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
-```
-
-example generating a public key using a index
+example generating public keys using a range (you will be prompted for password)
 
 ```
-kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicKey" --key-alias="myalias" --security-password=12345678
+kadena wallet generate-key --wallet-name="kadenawallet" --amount="1" --key-alias=""
 ```
 
-example generating a public and secret key using a index
+Example passing password via a file
 
 ```
-kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKey" --key-alias="myalias" --security-password=12345678
+kadena wallet generate-key --wallet-name="kadenawallet" --amount="1" --key-alias="" --password-file=./kadenawallet-pw.txt
 ```
 
-example generating a public and decrypted secret key using a index (will not be
-stored on filesystem)
+Example passing password via a stdin
 
 ```
-kadena wallet add --wallet-name="kadenawallet.wallet" --key-index-or-range="0" --key-gen-from-choice="genPublicSecretKeyDec" --security-password=12345678
+echo "supersecret" | kadena wallet generate-key --wallet-name="kadenawallet" --amount="1" --key-alias=""
 ```
 
-password will be hidden after entry: --security-password=\*
+example generating a key at a specific starting index index
+
+```
+kadena wallet generate-key --wallet-name="kadenawallet" --amount="1" --start-index="100" --key-alias=""
+```
 
 ---
 
@@ -422,21 +419,28 @@ kadena wallet list --wallet-name="all"
 ---
 
 ```
-kadena wallet decrypt [arguments]
+kadena wallet export [arguments]
 ```
 
-| **Arguments & Options**     | **Description**                     |
-| --------------------------- | ----------------------------------- |
-| --key-message               | Provide encrypted Message           |
-| --security-current-password | Provide password to decrypt message |
+Export a KeyPair from a wallet unencrypted. Prints to stdout as yaml by default
 
-example:
+| **Arguments & Options** | **Description**                                          |
+| ----------------------- | -------------------------------------------------------- |
+| --wallet-name           | Name of the wallet you want to export a key from         |
+| --key-index             | The index of the key to export                           |
+| --password-file         | Filepath to the wallet password, can be passed via stdin |
+
+example (password will be prompted):
 
 ```
-kadena wallet decrypt --key-message="encryptedmessage" --security-current-password=12345678
+kadena wallet export --wallet-name="kadenawallet" --key-index="0" > mykey.yaml
 ```
 
-password will be hidden after entry: --security-current-password=\*
+print as json (password will be prompted):
+
+```
+kadena wallet export --wallet-name="kadenawallet" --key-index="0" --json > mykey.json
+```
 
 ---
 
@@ -605,7 +609,6 @@ kadena account details [arguments]
 | --fungible              | Type of fungible asset (e.g., "coin").                                                                                                    |              |
 | --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |              |
 
-
 Example: **Single Chain ID:**
 
 using account alias:
@@ -613,6 +616,7 @@ using account alias:
 ```
 kadena account details --account="myalias" --network="mainnet" --chain-id="1"
 ```
+
 Note: Fungible type is retrieved from the account alias file.
 
 using account name:
@@ -620,7 +624,9 @@ using account name:
 ```
 kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="1"
 ```
-Note: Specify `--fungible` if using an account name. Defaults to "coin" if not provided.
+
+Note: Specify `--fungible` if using an account name. Defaults to "coin" if not
+provided.
 
 **Chain ID Range:**
 
@@ -845,7 +851,7 @@ Below is a YAML template `transfer.yaml` that outlines the structure for a coin
 transfer operation on Kadena. Notice the use of placeholders with prefixes to
 define expected data types for each field:
 
-```yaml
+```
 code: |-
   (coin.transfer "{{{account:from}}}" "{{{account:to}}}" {{decimal:amount}})
 data:
@@ -859,7 +865,7 @@ signers:
   - public: '{{key:from}}'
     caps:
       - name: 'coin.TRANSFER'
-        args: ['{{{account:from}}}', '{{{account:to}}}', {{ decimal:amount }}]
+        args: ['{{{account:from}}}', '{{{account:to}}}', {{decimal:amount}}]
       - name: 'coin.GAS'
         args: []
 networkId: '{{network:networkId}}'
