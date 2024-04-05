@@ -1,6 +1,7 @@
 import { getAccountDetails } from '@services/chainweb-node/account-details';
 import DataLoader from 'dataloader';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 interface AccountDetailsKey {
   fungibleName: string;
   accountName: string;

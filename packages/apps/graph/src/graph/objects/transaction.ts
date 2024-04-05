@@ -1,12 +1,9 @@
-import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
-import {
-  getMempoolTransactionSigners,
-  getMempoolTransactionStatus,
-} from '@services/chainweb-node/mempool';
+import { getMempoolTransactionStatus } from '@services/chainweb-node/mempool';
 import { normalizeError } from '@utils/errors';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { builder } from '../builder';
+import { signersLoader } from '../data-loaders/signers';
 import TransactionCommand from './transaction-command';
 import TransactonInfo from './transaction-result';
 import TransactionSigs from './transaction-signature';
@@ -24,23 +21,11 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
     sigs: t.field({
       type: [TransactionSigs],
       async resolve(parent) {
-        let signers = [];
-
-        // This is needed because if the transaction is in the mempool, the
-        // signers are not stored in the database and there is no status.
-        // If blockHash has a value, we do not check the mempool for signers or status
-        if (nullishOrEmpty(parent.blockHash)) {
-          signers = await getMempoolTransactionSigners(
-            parent.requestKey,
-            parent.chainId.toString(),
-          );
-        } else {
-          signers = await prismaClient.signer.findMany({
-            where: {
-              requestKey: parent.requestKey,
-            },
-          });
-        }
+        const signers = await signersLoader.load({
+          blockHash: parent.blockHash,
+          requestKey: parent.requestKey,
+          chainId: parent.chainId.toString(),
+        });
 
         return signers.map((signer) => ({
           sig: signer.signature,
@@ -52,23 +37,11 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
 
       async resolve(parent, __args, context) {
         try {
-          let signers = [];
-
-          // This is needed because if the transaction is in the mempool, the
-          // signers are not stored in the database and there is no status.
-          // If blockHash has a value, we do not check the mempool for signers or status
-          if (nullishOrEmpty(parent.blockHash)) {
-            signers = await getMempoolTransactionSigners(
-              parent.requestKey,
-              parent.chainId.toString(),
-            );
-          } else {
-            signers = await prismaClient.signer.findMany({
-              where: {
-                requestKey: parent.requestKey,
-              },
-            });
-          }
+          const signers = await signersLoader.load({
+            blockHash: parent.blockHash,
+            requestKey: parent.requestKey,
+            chainId: parent.chainId.toString(),
+          });
 
           return {
             nonce: parent.nonce,
