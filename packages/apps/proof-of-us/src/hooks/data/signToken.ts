@@ -46,12 +46,6 @@ export const useSignToken = () => {
     if (accountIsInitiator) return;
 
     router.replace(`${getReturnHostUrl()}/user/proof-of-us/mint/${tx.hash}`);
-
-    // router.replace(
-    //   `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
-    //     tx.hash
-    //   }/${proofOfUs.proofOfUsId}`,
-    // );
   };
 
   useEffect(() => {

@@ -91,11 +91,6 @@ export const ConnectView: FC<IProps> = () => {
             proofOfUs.requestKey
           }/`,
         );
-        // router.replace(
-        //   `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
-        //     proofOfUs.requestKey
-        //   }/${proofOfUs.proofOfUsId}`,
-        // );
       }
     },
     [setSigned],
@@ -124,6 +119,7 @@ export const ConnectView: FC<IProps> = () => {
       </Modal>
     );
   }
+
   return (
     <ScreenHeight>
       <TitleHeader label={proofOfUs.title ?? ''} />

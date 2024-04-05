@@ -12,7 +12,7 @@ export interface ITokenContext {
   tokens: IToken[] | undefined;
   isLoading: boolean;
   removeTokenFromData: (token: IToken) => void;
-  addMintingData: (proofOfUs: IProofOfUsData) => void;
+  addMintingData: (proofOfUs: IProofOfUsData) => Promise<IToken>;
   getToken: (id: string) => IToken | undefined;
 }
 
@@ -20,7 +20,7 @@ export const TokenContext = createContext<ITokenContext>({
   tokens: [],
   isLoading: false,
   removeTokenFromData: (token: IToken) => {},
-  addMintingData: (proofOfUs: IProofOfUsData) => {},
+  addMintingData: async (proofOfUs: IProofOfUsData) => {},
   getToken: () => undefined,
 });
 
@@ -214,27 +214,32 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
     [tokens],
   );
 
-  const addMintingData = useCallback(async (proofOfUs: IProofOfUsData) => {
-    const token: IToken = {
-      eventId: proofOfUs.eventId,
-      proofOfUsId: proofOfUs.proofOfUsId,
-      requestKey: proofOfUs.requestKey,
-      info: {
-        uri: proofOfUs.manifestUri ?? '',
-      },
-      id: proofOfUs.tokenId,
-      mintStartDate: Date.now(),
-    };
+  const addMintingData = useCallback(
+    async (proofOfUs: IProofOfUsData): Promise<IToken> => {
+      const token: IToken = {
+        eventId: proofOfUs.eventId,
+        proofOfUsId: proofOfUs.proofOfUsId,
+        requestKey: proofOfUs.requestKey,
+        info: {
+          uri: proofOfUs.manifestUri ?? '',
+        },
+        id: proofOfUs.tokenId,
+        mintStartDate: Date.now(),
+      };
 
-    setMintingTokens((v) => {
-      const newArray = [...v];
-      if (!v.find((t) => t.requestKey === token.requestKey)) {
-        newArray.push(token);
-      }
-      localStorage.setItem('mintingTokens', JSON.stringify(newArray));
-      return newArray;
-    });
-  }, []);
+      setMintingTokens((v) => {
+        const newArray = [...v];
+        if (!v.find((t) => t.requestKey === token.requestKey)) {
+          newArray.push(token);
+        }
+        localStorage.setItem('mintingTokens', JSON.stringify(newArray));
+        return newArray;
+      });
+
+      return token;
+    },
+    [],
+  );
 
   const getToken = useCallback(
     (id: string): IToken | undefined => {

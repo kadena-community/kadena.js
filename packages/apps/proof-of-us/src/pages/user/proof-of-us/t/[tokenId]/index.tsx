@@ -1,6 +1,5 @@
 import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
 import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
-import { ProofOfUsProvider } from '@/components/ProofOfUsProvider/ProofOfUsProvider';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { Share } from '@/features/Share/Share';
 import { fetchManifestData } from '@/utils/fetchManifestData';

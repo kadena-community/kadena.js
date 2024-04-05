@@ -7,6 +7,7 @@ import { ErrorStatus } from '@/components/Status/ErrorStatus';
 import { LoadingStatus } from '@/components/Status/LoadingStatus';
 import UserLayout from '@/components/UserLayout/UserLayout';
 import { useTokens } from '@/hooks/tokens';
+import { getTransaction } from '@/utils/proofOfUs';
 import { Stack } from '@kadena/react-ui';
 import type { GetServerSidePropsContext, NextPage } from 'next';
 import Link from 'next/link';
@@ -22,17 +23,42 @@ interface IProps {
 const Page: NextPage<IProps> = ({ params }) => {
   console.log({ params });
   const { tokens, getToken } = useTokens();
-  const [error, setError] = useState();
+  const [error, setError] = useState<unknown>();
   const [token, setToken] = useState<IToken>();
   const router = useRouter();
 
   const init = async () => {
     if (!token) return;
     try {
-      const result = await token?.listener;
+      if (!token.listener) {
+        if (!token.requestKey) {
+          setError('no transaction found');
+          return;
+        }
+        const transaction = await getTransaction(params.requestKey);
+        if (!transaction) {
+          setError('no transaction found');
+        }
+        return;
+      }
 
-      const transaction = result[params.requestKey];
-      if (!transaction) return;
+      const result = await token.listener;
+      console.log({ result });
+
+      // if there is no token with a reqyestKey, then maybe the token has already been minted.
+      // lets check the block by requestKey
+      let transaction;
+      if (!result) {
+        transaction = await getTransaction(params.requestKey);
+      } else {
+        transaction = result[params.requestKey];
+      }
+      if (!transaction) {
+        setError('no transaction found');
+        return;
+      }
+
+      console.log({ transaction });
 
       router.replace(
         `/user/proof-of-us/t/${transaction.result.data}?requestKey=${params.requestKey}`,
@@ -44,6 +70,7 @@ const Page: NextPage<IProps> = ({ params }) => {
   };
 
   useEffect(() => {
+    console.log(tokens);
     const result = getToken(params.requestKey);
     if (!result) return;
     setToken(result);

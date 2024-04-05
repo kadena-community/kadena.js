@@ -42,8 +42,9 @@ export const useSubmit = () => {
     processTransaction(transaction);
   }, [transaction]);
 
-  const doSubmit = async (txArg?: string, waitForMint: boolean = false) => {
+  const doSubmit = async (txArg?: string, proof?: IProofOfUsData) => {
     const innerTransaction = txArg ? txArg : transaction;
+    const innerProofOfUs = proof ? proof : proofOfUs;
     if (!innerTransaction) return;
     setStatus(SubmitStatus.LOADING);
     const client = getClient();
@@ -54,39 +55,17 @@ export const useSubmit = () => {
 
     const tx = JSON.parse(Buffer.from(signedTransaction, 'base64').toString());
     try {
-      const txRes = await client.submit(tx);
+      await client.submit(tx);
 
-      if (waitForMint) {
-        const result = await client.listen(txRes);
-
-        if (result.result.status === 'success') {
-          setStatus(SubmitStatus.SUCCESS);
-          setResult(result);
-        } else {
-          setStatus(SubmitStatus.SUCCESS);
-          setResult({
-            status: 'Could not submit transaction',
-            data: 'Already claimed',
-          });
-        }
-        router.replace(`${getReturnUrl()}`);
-      } else {
-        if (!proofOfUs?.tokenId || !proofOfUs?.requestKey) {
-          router.replace(`${getReturnHostUrl()}/user`);
-          return;
-        }
-
-        router.replace(
-          `${getReturnHostUrl()}/user/proof-of-us/mint/${proofOfUs?.requestKey}`,
-        );
-
-        // router.replace(
-        //   `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs?.tokenId}/${proofOfUs?.requestKey}/${
-        //     proofOfUs.proofOfUsId
-        //   }`,
-        // );
+      if (!innerProofOfUs?.requestKey) {
+        router.replace(`${getReturnHostUrl()}/user`);
         return;
       }
+
+      router.replace(
+        `${getReturnHostUrl()}/user/proof-of-us/mint/${innerProofOfUs?.requestKey}`,
+      );
+      return;
     } catch (err: any) {
       setStatus(SubmitStatus.ERROR);
       console.log(err);
