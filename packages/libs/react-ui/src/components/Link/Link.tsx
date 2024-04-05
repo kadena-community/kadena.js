@@ -39,10 +39,8 @@ type BaseProps = Omit<AriaFocusRingProps, 'isTextInput'> &
     | 'type'
     | 'href'
   > & {
-    avatarProps?: Omit<IAvatarProps, 'size'>;
     badgeValue?: string | number;
     icon?: ReactElement;
-    iconPosition?: 'start' | 'end';
     loadingLabel?: string;
   };
 
