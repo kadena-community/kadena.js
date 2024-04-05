@@ -27,6 +27,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useFormContext } from 'react-hook-form';
 import { SenderDetails } from './sender-details';
 import type { FormData } from './sign-form';
+import { defaultValues } from './sign-form';
 
 export const accountFromOptions = ['Ledger', 'Coming soon…'] as const;
 export type SenderType = (typeof accountFromOptions)[number];
@@ -209,8 +210,8 @@ export const SignFormSender = ({
           {...register('amount')}
           id="ledger-transfer-amount"
           label={t('Amount')}
-          onValueChange={() => setValue('amount', watchAmount)}
-          // value={getValues('amount')}
+          onValueChange={(value) => setValue('amount', value)}
+          defaultValue={defaultValues.amount}
           isDisabled={!!senderData.error}
           isInvalid={!!errors.amount || invalidAmount}
           errorMessage={
