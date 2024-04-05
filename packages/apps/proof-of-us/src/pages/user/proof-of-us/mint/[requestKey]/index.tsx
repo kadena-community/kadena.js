@@ -67,16 +67,20 @@ const Page: NextPage<IProps> = ({ params }) => {
   };
 
   useEffect(() => {
-    const result = getToken(params.requestKey);
-    if (!result) return;
+    setTimeout(() => {
+      const result = getToken(params.requestKey);
+      if (!result) return;
 
-    console.log({ result });
-    setToken(result);
-  }, [params.requestKey, tokens]);
+      console.log({ result });
+      setToken(result);
+    }, 1000);
+  }, [params.requestKey, tokens, getToken]);
 
   useEffect(() => {
     init();
   }, [token]);
+
+  const isAttendanceToken = token?.proofOfUsId?.startsWith('proof-of-us');
 
   return (
     <LoginBoundry>
@@ -97,7 +101,8 @@ const Page: NextPage<IProps> = ({ params }) => {
             ) : (
               <Stack flex={1} flexDirection="column">
                 <LoadingStatus />
-                <ListSignees />
+                {isAttendanceToken ? null : <ListSignees />}
+
                 <Stack flex={1} />
                 <Stack>
                   <Link href="/user">

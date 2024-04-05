@@ -33,10 +33,10 @@ const senderPubKey =
 const namespace = 'n_31cd1d224d06ca2b327f1b03f06763e305099250';
 const collectionId = process.env.NEXT_PUBLIC_CONNECTION_COLLECTIONID ?? '';
 
-const eventName = 'test event 9';
-const startTime = Math.round(new Date(2024, 3, 5, 13, 27).getTime() / 1000);
+const eventName = 'test event 12';
+const startTime = Math.round(new Date(2024, 3, 5, 15, 13).getTime() / 1000);
 const endTime = Math.round(new Date(2025, 3, 6, 12, 15).getTime() / 1000);
-const bgColor = '#ffff00';
+const bgColor = '#ff00ff';
 
 console.log({
   startime: new Date(startTime * 1000),
