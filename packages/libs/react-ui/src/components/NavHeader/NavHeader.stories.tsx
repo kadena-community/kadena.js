@@ -5,6 +5,7 @@ import {
 } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+import { tokens } from 'src/styles/tokens/contract.css';
 import { atoms } from '../../styles/atoms.css';
 import { SelectItem } from '../Form/Select';
 import { KadenaLogo } from '../Logo';
@@ -113,10 +114,26 @@ export const Dynamic: IStory = {
             </NavHeaderLink>
           ))}
         </NavHeaderLinkList>
-        <NavHeaderButton icon={<MonoAccountCircle />} />
         <NavHeaderButton
-          icon={<MonoContrast />}
-          className={atoms({ marginInlineEnd: 'sm' })}
+          icon={
+            <MonoAccountCircle
+              className={atoms({
+                color: 'text.base.default',
+              })}
+            />
+          }
+        />
+        <NavHeaderButton
+          icon={
+            <MonoContrast
+              className={atoms({
+                color: 'text.base.default',
+              })}
+            />
+          }
+          className={atoms({
+            marginInlineEnd: 'sm',
+          })}
         />
         <NavHeaderSelect
           aria-label="Select Network"

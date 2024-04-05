@@ -153,14 +153,12 @@ export function NumberFieldBase(
           <Button
             icon={<MonoExpandLess className={iconClass} />}
             variant="text"
-            isCompact
             className={buttonClass}
             {...incrementButtonProps}
           />
           <Button
             icon={<MonoExpandMore className={iconClass} />}
             variant="text"
-            isCompact
             className={buttonClass}
             {...decrementButtonProps}
           />
