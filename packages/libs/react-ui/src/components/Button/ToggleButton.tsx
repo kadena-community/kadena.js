@@ -7,6 +7,7 @@ import { useFocusRing, useHover, useToggleButton } from 'react-aria';
 import { useToggleState } from 'react-stately';
 import { ProgressCircle } from '../ProgressCircle';
 import { button } from './BaseButton/BaseButton.css';
+import { iconOnlyStyle } from './Button.css';
 import type { ISharedButtonProps } from './utils';
 import { disableLoadingProps } from './utils';
 
@@ -29,7 +30,7 @@ const ToggleButtonBase = (
 
   const onlyIcon = props.icon !== undefined;
   const content = onlyIcon ? (
-    props.icon
+    <span className={iconOnlyStyle}>{props.icon}</span>
   ) : (
     <>
       {props.startIcon}
