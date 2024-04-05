@@ -23,7 +23,7 @@ export const accountOptions = {
     validation: z.string(),
     option: new Option(
       '--account-alias <accountAlias>',
-      'Enter an alias to store your account',
+      'Alias to store your account details',
     ),
   }),
   accountName: createOption({
@@ -32,7 +32,7 @@ export const accountOptions = {
     validation: z.string(),
     option: new Option(
       '-a, --account-name <accountName>',
-      'Enter your account name',
+      'Account name',
     ),
   }),
   accountKdnName: createOption({
@@ -41,7 +41,7 @@ export const accountOptions = {
     validation: z.string(),
     option: new Option(
       '-a, --account-kdn-name <accountName>',
-      'Enter your kadena names name',
+      'Kadena names name',
     ),
   }),
   accountKdnAddress: createOption({
@@ -50,7 +50,7 @@ export const accountOptions = {
     validation: z.string(),
     option: new Option(
       '-a, --account-kdn-address <accountKdnAddress>',
-      'Enter your kadena names address',
+      'Kadena names address',
     ),
   }),
   accountOverwrite: createOption({
@@ -67,10 +67,7 @@ export const accountOptions = {
     prompt: account.accountSelectPrompt,
     defaultIsOptional: false,
     validation: z.string(),
-    option: new Option(
-      '-a, --account <account>',
-      'Enter your account alias name',
-    ),
+    option: new Option('-a, --account <account>', 'Account alias name'),
     expand: async (accountAlias: string): Promise<IAliasAccountData | null> => {
       try {
         const accountDetails = await readAccountFromFile(accountAlias);
@@ -89,10 +86,7 @@ export const accountOptions = {
     prompt: account.accountSelectAllPrompt,
     defaultIsOptional: false,
     validation: z.string(),
-    option: new Option(
-      '-a, --account-alias <account>',
-      'Enter your account alias name',
-    ),
+    option: new Option('-a, --account-alias <account>', 'Account alias name'),
   }),
   accountMultiSelect: createOption({
     key: 'accountAlias' as const,
@@ -101,7 +95,7 @@ export const accountOptions = {
     validation: z.string(),
     option: new Option(
       '-a, --account-alias <account>',
-      'Enter an alias account(s) (comma separated for multiple accounts)',
+      'Alias account(s) (comma separated for multiple accounts)',
     ),
   }),
   publicKeys: createOption({
@@ -110,7 +104,7 @@ export const accountOptions = {
     validation: z.string(),
     option: new Option(
       '-k, --public-keys <publicKeys>',
-      'Enter your public keys (comma separated for multiple keys)',
+      'Public keys (comma separated for multiple keys)',
     ),
     expand: async (publicKeys: string) => {
       return publicKeys
@@ -123,16 +117,13 @@ export const accountOptions = {
     key: 'fungible' as const,
     prompt: account.fungiblePrompt,
     validation: z.string(),
-    option: new Option('-f, --fungible <fungible>', 'Enter your fungible'),
+    option: new Option('-f, --fungible <fungible>', 'Fungible module name'),
   }),
   predicate: createOption({
     key: 'predicate' as const,
     prompt: account.predicatePrompt,
     validation: z.string(),
-    option: new Option(
-      '-p, --predicate <predicate>',
-      'Enter your keyset predicate',
-    ),
+    option: new Option('-p, --predicate <predicate>', 'Account keyset predicate'),
   }),
   fundAmount: createOption({
     key: 'amount' as const,
@@ -142,10 +133,7 @@ export const accountOptions = {
       /* eslint-disable-next-line @typescript-eslint/naming-convention */
       invalid_type_error: 'Error: -m, --amount must be a positive number',
     }),
-    option: new Option(
-      '-m, --amount <amount>',
-      'Enter an amount to fund your account',
-    ),
+    option: new Option('-m, --amount <amount>', 'Amount to fund your account'),
     transform: (amount: string) => {
       try {
         const parsedAmount = Number(amount);
@@ -174,7 +162,7 @@ export const accountOptions = {
     }),
     option: new Option(
       '-c, --chain-id <chainId>',
-      'Enter your chain id(s) (supported formats: 1 / 0-3 / 1,5 / all)',
+      'Kadena chain id range (e.g: 1 / 0-3 / 0,1,5 / all)',
     ),
     transform: (chainId: string) => {
       if (chainId === 'all') {
