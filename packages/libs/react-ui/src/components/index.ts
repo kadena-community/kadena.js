@@ -1,7 +1,8 @@
 export type { IAccordionProps } from './Accordion';
 export type { IAvatarProps } from './Avatar';
+export type { IBadgeProps } from './Badge';
 export type { IBreadcrumbItemProps, IBreadcrumbsProps } from './Breadcrumbs';
-export type { IButtonProps, IToggleButtonProps } from './Button';
+export type { IButtonProps, IToggleButtonProps, PressEvent } from './Button';
 export type { ICardProps } from './Card';
 export type { IContentHeaderProps } from './ContentHeader';
 export type {
@@ -54,6 +55,7 @@ export type { IHeadingProps, ITextProps } from './Typography';
 
 export { Accordion, AccordionItem } from './Accordion';
 export { Avatar } from './Avatar';
+export { Badge } from './Badge';
 export { Breadcrumbs, BreadcrumbsItem } from './Breadcrumbs';
 export { Button, ToggleButton } from './Button';
 export { Card } from './Card';

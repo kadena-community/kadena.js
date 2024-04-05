@@ -42,11 +42,11 @@ const resultsMapToTreeItems = (
         <Button
           onPress={() => onItemClick({ chainId, moduleName })}
           isCompact
-          endIcon={<MonoExitToApp />}
+          icon={<MonoExitToApp />}
           title={chainId + (hash ? ` - ${hash}` : '')}
         >
           {chainId}
-          {hash ? ` - ${truncateString(hash, CHARCOUNT_BREAKING_POINT)}` : null}
+          {hash ? ` - ${truncateString(hash, CHARCOUNT_BREAKING_POINT)}` : ''}
         </Button>
       ),
     })),

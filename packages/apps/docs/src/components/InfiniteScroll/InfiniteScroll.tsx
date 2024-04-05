@@ -48,7 +48,8 @@ export const InfiniteScroll: FC<IProps> = ({
 
             <Button
               onPress={() => handleLoad(true)}
-              startIcon={<SystemIcon.Refresh />}
+              iconPosition="start"
+              icon={<SystemIcon.Refresh />}
             >
               Try again
             </Button>

@@ -17,15 +17,14 @@ export const PageNav: FC<IPageNavProps> = ({
   onClick,
 }) => {
   const isPrevious = direction === 'prev';
-  const isNext = direction === 'next';
 
   return (
     <Button
-      variant="text"
+      variant="transparent"
       isDisabled={isDisabled}
       onPress={onClick}
-      startIcon={isPrevious ? <MonoChevronLeft /> : undefined}
-      endIcon={isNext ? <MonoChevronRight /> : undefined}
+      iconPosition={isPrevious ? 'start' : 'end'}
+      icon={isPrevious ? <MonoChevronLeft /> : <MonoChevronRight />}
     >
       {label}
     </Button>

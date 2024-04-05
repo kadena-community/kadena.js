@@ -13,6 +13,7 @@ import {
   MonoHistory,
   MonoInfo,
   MonoKeyboardArrowRight,
+  MonoRefresh,
 } from '@kadena/react-icons/system';
 import {
   Box,
@@ -215,10 +216,10 @@ const CheckTransactions: FC = () => {
         </GridItem>
         <GridItem>
           <div className={headerButtonGroupClass}>
-            <Button icon={<MonoDelete />} onClick={resetFiltersEvent}>
+            <Button icon={<MonoDelete />} onPress={resetFiltersEvent}>
               {t('Reset all filters')}
             </Button>
-            <Button icon="Refresh" onClick={refreshResultsEvent}>
+            <Button icon={<MonoRefresh />} onPress={refreshResultsEvent}>
               {t('Reload')}
             </Button>
           </div>
@@ -273,9 +274,9 @@ const CheckTransactions: FC = () => {
                 <Cell>{displayAccountName(result.fromAccount as string)}</Cell>
                 <Cell>
                   <Button
-                    variant="text"
+                    variant="transparent"
                     icon={<MonoKeyboardArrowRight />}
-                    onClick={() => handleOpenTransactionDetails(result)}
+                    onPress={() => handleOpenTransactionDetails(result)}
                   />
                 </Cell>
               </Row>

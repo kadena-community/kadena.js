@@ -1,13 +1,10 @@
-import type { FC } from 'react';
 import React from 'react';
-import type { IButtonProps } from '../Button';
+import type { IButtonElementProps } from '../Button';
 import { Button } from '../Button';
 
-export interface INavHeaderButtonProps extends IButtonProps {}
-
-export const NavHeaderButton: FC<INavHeaderButtonProps> = ({
+export const NavHeaderButton = ({
   className,
   ...props
-}) => {
-  return <Button className={className} isCompact {...props} />;
-};
+}: IButtonElementProps) => (
+  <Button className={className} isCompact {...props} />
+);

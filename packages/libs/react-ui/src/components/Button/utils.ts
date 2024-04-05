@@ -1,7 +1,9 @@
 import type { RecipeVariants } from '@vanilla-extract/recipes';
-import type { ComponentProps, ReactNode } from 'react';
+import type { ComponentProps, ReactElement, ReactNode } from 'react';
+import { cloneElement } from 'react';
 import type { HoverEvents } from 'react-aria';
-import type { button } from './SharedButton.css';
+import type { button } from './BaseButton/BaseButton.css';
+import { iconStyle } from './Button.css';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function disableLoadingProps<T>(props: T): T {
@@ -20,17 +22,21 @@ export function disableLoadingProps<T>(props: T): T {
   return newProps;
 }
 
+export const renderIcon = (icon: ReactElement | undefined) => {
+  if (icon === undefined) return null;
+
+  return cloneElement(icon, {
+    className: iconStyle,
+  });
+};
+
 type Variants = Omit<NonNullable<RecipeVariants<typeof button>>, 'onlyIcon'>;
 export interface ISharedButtonProps extends HoverEvents, Variants {
   className?: string;
   startIcon?: ReactNode;
   endIcon?: ReactNode;
   icon?: ReactNode;
-  /**
-   * @deprecated use `onPress` instead to be consistent with React Aria, also keep in mind that `onPress` is not a native event it is a synthetic event created by React Aria
-   * @see https://react-spectrum.adobe.com/react-aria/useButton.html#props
-   */
-  onClick?: ComponentProps<'button'>['onClick'];
   style?: ComponentProps<'button'>['style'];
+  // Title to be shown as HTML tooltip
   title?: ComponentProps<'button'>['title'];
 }
