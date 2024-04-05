@@ -43,6 +43,14 @@ export const schema = z.object({
 
 export type FormData = z.infer<typeof schema>;
 
+export const defaultValues = {
+  senderChainId: CHAINS[0],
+  receiverChainId: undefined,
+  receiver: '',
+  sender: '',
+  amount: 0,
+};
+
 export const SignForm = ({
   onSuccess,
   onSenderChainUpdate,
@@ -57,14 +65,6 @@ export const SignForm = ({
   const { t } = useTranslation('common');
 
   const [ledgerSignState, signTx] = useLedgerSign();
-
-  const defaultValues = {
-    senderChainId: CHAINS[0],
-    receiverChainId: undefined,
-    receiver: '',
-    sender: '',
-    amount: 0,
-  };
 
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
