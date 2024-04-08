@@ -14,6 +14,7 @@ import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import { writeDevnet } from '../devnet/utils/devnetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
+import { KadenaError } from '../services/service-error.js';
 import { CommandError, printCommandError } from './command.util.js';
 import { log } from './logger.js';
 
@@ -59,6 +60,9 @@ export function mergeConfigs<T extends object>(
 }
 
 export function handlePromptError(error: unknown): never {
+  if (handleNoKadenaDirectory(error)) {
+    process.exit(0);
+  }
   if (error instanceof CommandError) {
     printCommandError(error);
   } else if (error instanceof Error) {
@@ -99,6 +103,10 @@ export function getPubKeyFromAccount(account: string): string {
 }
 
 export async function getExistingNetworks(): Promise<ICustomNetworkChoice[]> {
+  if (defaultNetworksPath === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+
   await services.filesystem.ensureDirectoryExists(defaultNetworksPath);
 
   try {
@@ -317,54 +325,94 @@ export function getFileParser(
 }
 
 export const passwordPromptTransform =
-  // prettier-ignore
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  (flag: string) =>
-    async (
-      passwordFile: string | { _password: string },
-      args: Record<string, unknown>,
-    ): Promise<string> => {
-      const password =
-        typeof passwordFile === 'string'
-          ? passwordFile === '-'
-            ? (args.stdin as string | null)
-            : await services.filesystem.readFile(passwordFile)
-          : passwordFile._password;
+  (
+    flag: string,
+    useStdin?: boolean,
+  ): ((
+    passwordFile: string | { _password: string },
+    args: Record<string, unknown>,
+  ) => Promise<string>) =>
+  async (passwordFile, args) => {
+    const password =
+      typeof passwordFile === 'string'
+        ? useStdin === true && passwordFile === '-'
+          ? (args.stdin as string | null)
+          : await services.filesystem.readFile(passwordFile)
+        : passwordFile._password;
 
-      if (password === null) {
-        throw new CommandError({
-          errors: [`Password file not found: ${passwordFile}`],
-          exitCode: 1,
-        });
-      }
+    if (password === null) {
+      throw new CommandError({
+        errors: [`Password file not found: ${passwordFile}`],
+        exitCode: 1,
+      });
+    }
 
-      const trimmedPassword = password.trim();
+    const trimmedPassword = password.trim();
 
-      if (typeof passwordFile !== 'string') {
-        log.info(`You can use the ${flag} flag to provide a password.`);
-      }
+    if (typeof passwordFile !== 'string') {
+      log.info(`You can use the ${flag} flag to provide a password.`);
+    }
 
-      if (trimmedPassword.length < 8) {
-        throw new CommandError({
-          errors: ['Password should be at least 8 characters long.'],
-          exitCode: 1,
-        });
-      }
+    if (trimmedPassword.length < 8) {
+      throw new CommandError({
+        errors: ['Password should be at least 8 characters long.'],
+        exitCode: 1,
+      });
+    }
 
-      if (trimmedPassword.includes('\n')) {
-        log.warning(
-          'Password contains new line characters. Make sure you are using the correct password.',
-        );
-      }
+    if (trimmedPassword.includes('\n')) {
+      log.warning(
+        'Password contains new line characters. Make sure you are using the correct password.',
+      );
+    }
 
-      return trimmedPassword;
-    };
+    return trimmedPassword;
+  };
+
+export const mnemonicPromptTransform =
+  (
+    flag: string,
+  ): ((
+    filepath: string | { _secret: string },
+    args: Record<string, unknown>,
+  ) => Promise<string>) =>
+  async (filepath, args) => {
+    const content =
+      typeof filepath === 'string'
+        ? filepath === '-'
+          ? (args.stdin as string | null)
+          : await services.filesystem.readFile(filepath)
+        : filepath._secret;
+
+    if (content === null) {
+      throw new CommandError({
+        errors: [`Mnemonic file not found: ${filepath}`],
+        exitCode: 1,
+      });
+    }
+
+    const trimmedContent = content.trim();
+
+    if (typeof filepath !== 'string') {
+      log.info(`You can use the ${flag} flag to provide a mnemonic.`);
+    }
+
+    if (trimmedContent.includes('\n')) {
+      log.warning(
+        'Mnemonic contains new line characters. Make sure you are using the correct Mnemonic.',
+      );
+    }
+
+    return trimmedContent;
+  };
 
 const defaultNetworkSchema = z.object({
   name: z.string(),
 });
 
 export const getDefaultNetworkName = async (): Promise<string | undefined> => {
+  if (defaultNetworksSettingsFilePath === null) return;
+
   const isDefaultNetworkAvailable = await services.filesystem.fileExists(
     defaultNetworksSettingsFilePath,
   );
@@ -391,26 +439,21 @@ export const generateAllChainIds = (): ChainId[] =>
     (_, index) => index.toString() as ChainId,
   );
 
-export const maskSensitiveInfo = (
-  obj: unknown,
-  fieldsToMask: string[] = ['password', 'passwordFile', 'newPasswordFile'],
-  mask: string = '******',
-): unknown => {
-  if (typeof obj !== 'object' || obj === null) return obj;
-
-  if (Array.isArray(obj)) {
-    return obj.map((item) => maskSensitiveInfo(item, fieldsToMask));
-  }
-
-  return Object.entries(obj as Record<string, unknown>).reduce(
-    (acc, [key, value]) => {
-      acc[key] = fieldsToMask.includes(key)
-        ? mask
-        : typeof value === 'object' && value !== null
-        ? maskSensitiveInfo(value, fieldsToMask)
-        : value;
-      return acc;
-    },
-    {} as Record<string, unknown>,
+export const printNoKadenaDirectory = (): void => {
+  log.warning(
+    'No kadena directory found. Run the following command to create one:\n',
   );
+  log.info('  kadena config init\n');
 };
+
+export function handleNoKadenaDirectory(error: unknown): boolean {
+  if (error instanceof KadenaError) {
+    if (error.code === 'no_kadena_directory') {
+      printNoKadenaDirectory();
+      log.debug(error);
+      process.exitCode = 1;
+      return true;
+    }
+  }
+  return false;
+}

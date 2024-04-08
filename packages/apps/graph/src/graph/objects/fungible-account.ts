@@ -9,7 +9,7 @@ import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import { accountDetailsLoader } from '../data-loaders/account-details';
+import { fungibleAccountDetailsLoader } from '../data-loaders/fungible-account-details';
 import type {
   FungibleAccount,
   FungibleChainAccount,
@@ -60,8 +60,8 @@ export default builder.node(
             return (
               await Promise.all(
                 chainIds.map(async (chainId) => {
-                  return await getFungibleChainAccount({
-                    chainId: chainId,
+                  return getFungibleChainAccount({
+                    chainId,
                     fungibleName: parent.fungibleName,
                     accountName: parent.accountName,
                   });
@@ -83,7 +83,7 @@ export default builder.node(
             return (
               await Promise.all(
                 chainIds.map(async (chainId) => {
-                  return accountDetailsLoader.load({
+                  return fungibleAccountDetailsLoader.load({
                     fungibleName: parent.fungibleName,
                     accountName: parent.accountName,
                     chainId: chainId,

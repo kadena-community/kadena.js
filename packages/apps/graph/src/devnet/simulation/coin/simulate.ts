@@ -252,7 +252,7 @@ export async function simulateCoin({
     }
   } catch (error) {
     logger.error(error);
-    appendToFile(filepath, { error });
+    appendToFile(filepath, { error: JSON.stringify(error) });
     throw error;
   }
 }

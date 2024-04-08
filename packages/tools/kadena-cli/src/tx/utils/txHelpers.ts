@@ -24,6 +24,7 @@ import type {
 import type { CommandResult } from '../../utils/command.util.js';
 import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
+import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
 import type { ISavedTransaction } from './storage.js';
 
 export interface ICommandData {
@@ -614,4 +615,31 @@ export function processSigningStatus(
       warnings: signingStatus.warnings,
     };
   }
+}
+
+export function displaySignersFromUnsignedCommands(
+  unsignedCommands: IUnsignedCommand[],
+): void {
+  unsignedCommands.forEach((unsignedCommand, index) => {
+    const command: IPactCommand = JSON.parse(unsignedCommand.cmd);
+
+    const headers: TableHeader = ['Public Key', 'Capabilities'];
+    const rows: TableRow[] = command.signers.map((signer) => [
+      signer.pubKey,
+      (signer.clist || [])
+        .map(
+          (capability) => `${capability.name}(${capability.args.join(', ')})`,
+        )
+        .join('\n'),
+    ]);
+
+    const tableString = log.generateTableString(headers, rows);
+
+    log.info(
+      `Command ${index + 1} (hash: ${
+        unsignedCommand.hash
+      }) will now be signed with the following signers:`,
+    );
+    log.output(tableString, command.signers);
+  });
 }

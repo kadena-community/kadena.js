@@ -441,7 +441,7 @@ const RequestKey: React.FC = () => {
                 <Cell>
                   {transaction.cmd.signers
                     ?.map((signer) => {
-                      return signer.publicKey;
+                      return signer.pubkey;
                     })
                     .join(', ')}
                 </Cell>
@@ -451,7 +451,7 @@ const RequestKey: React.FC = () => {
                   <strong>Signatures</strong>
                 </Cell>
                 <Cell>
-                  {transaction.cmd.signers
+                  {transaction.sigs
                     ?.map((signer) => {
                       return signer.sig;
                     })

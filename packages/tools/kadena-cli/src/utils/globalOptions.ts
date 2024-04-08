@@ -48,7 +48,7 @@ export const globalOptions = {
   }),
   yaml: createOption({
     key: 'yaml' as const,
-    // json is never prompted
+    // yaml is never prompted
     prompt: () => false,
     validation: z.boolean().optional(),
     option: new Option(
@@ -124,7 +124,7 @@ export const globalOptions = {
       /* eslint-disable-next-line @typescript-eslint/naming-convention */
       invalid_type_error: 'Error: -c, --chain-id must be a number',
     }),
-    option: new Option('-c, --chain-id <chainId>'),
+    option: new Option('-c, --chain-id <chainId>', 'Kadena chain id (e.g. 0)'),
     transform: (chainId: string) => {
       const parsedChainId = Number(chainId.trim());
       try {
@@ -143,7 +143,7 @@ export const globalOptions = {
     validation: z.string(),
     option: new Option(
       '-k, --key-pairs <keyPairs>',
-      'Enter key pairs as string publicKey=xxx,secretKey=xxx;...',
+      'Key pairs as string publicKey=xxx,secretKey=xxx;...',
     ),
     transform: (input) => {
       try {
@@ -157,16 +157,13 @@ export const globalOptions = {
     key: 'keyAlias',
     prompt: keys.keyAliasPrompt,
     validation: z.string(),
-    option: new Option(
-      '-a, --key-alias <keyAlias>',
-      'Enter an alias to store your key',
-    ),
+    option: new Option('-a, --key-alias <keyAlias>', 'Alias to store your key'),
   }),
   walletSelect: createOption({
     key: 'walletName',
     prompt: wallets.walletSelectPrompt,
     validation: z.string(),
-    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
+    option: new Option('-w, --wallet-name <walletName>', 'Wallet name'),
     defaultIsOptional: false,
     expand: async (walletAlias: string) => {
       return await services.wallet.getByAlias(walletAlias);
@@ -180,7 +177,7 @@ export const globalOptions = {
         : wallets.walletSelectPrompt();
     },
     validation: z.string(),
-    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
+    option: new Option('-w, --wallet-name <walletName>', 'Wallet name'),
     defaultIsOptional: false,
     expand: async (walletAlias: string) => {
       return await services.wallet.getByAlias(walletAlias);
@@ -193,7 +190,7 @@ export const globalOptions = {
     validation: z.string().optional(),
     option: new Option(
       '-o, --out-file <outFile>',
-      'Enter the file name to save the output',
+      'File name to save the output',
     ),
     defaultIsOptional: true,
     transform(value: string) {
@@ -209,7 +206,7 @@ export const globalOptions = {
     validation: z.string().optional(),
     option: new Option(
       '--directory <directory>',
-      `Enter your directory (default: working directory)`,
+      `Config file directory path (default: working directory)`,
     ),
     transform(value: string) {
       if (typeof value !== 'string' || value === '') {
@@ -228,12 +225,12 @@ export const securityOptions = {
     return createOption({
       key: 'passwordFile' as const,
       prompt: security.passwordPrompt(args),
-      validation: z.string().or(z.object({ _password: z.string() })),
+      validation: z.literal('-').or(z.object({ _password: z.string() })),
       option: new Option(
         '--password-file <passwordFile>',
         'Filepath to the password file',
       ),
-      transform: passwordPromptTransform('--password-file'),
+      transform: passwordPromptTransform('--password-file', args.useStdin),
     })(optionArgs);
   },
   createNewPasswordOption: (
@@ -243,12 +240,12 @@ export const securityOptions = {
     return createOption({
       key: 'newPasswordFile' as const,
       prompt: security.passwordPrompt(args),
-      validation: z.string().or(z.object({ _password: z.string() })),
+      validation: z.literal('-').or(z.object({ _password: z.string() })),
       option: new Option(
         '--new-password-file <newPasswordFile>',
         'Filepath to the new password file',
       ),
-      transform: passwordPromptTransform('--new-password-file'),
+      transform: passwordPromptTransform('--new-password-file', args.useStdin),
     })(optionArgs);
   },
 };

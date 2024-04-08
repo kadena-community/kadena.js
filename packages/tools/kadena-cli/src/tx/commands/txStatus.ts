@@ -10,33 +10,59 @@ import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
 
-export const getTxStatus = async (config: {
+export const getTxStatus = async ({
+  requestKey,
+  chainId,
+  networkConfig,
+  txPoll,
+}: {
   requestKey: string;
   chainId: ChainId;
-  networkConfig: INetworkCreateOptions;
+  networkConfig: Omit<INetworkCreateOptions, 'networkExplorerUrl'>;
+  txPoll: boolean;
 }): Promise<CommandResult<ICommandResult>> => {
+  const notFoundErrorMessage = `No Transaction found for requestkey "${requestKey}" on network "${networkConfig.networkId}" and chain "${chainId}".`;
   try {
-    const { pollStatus } = createClient(
-      `${config.networkConfig.networkHost}/chainweb/0.0/${config.networkConfig.networkId}/chain/${config.chainId}/pact`,
+    const { getStatus, pollStatus } = createClient(
+      `${networkConfig.networkHost}/chainweb/0.0/${networkConfig.networkId}/chain/${chainId}/pact`,
     );
-    const result = await pollStatus(
-      {
-        requestKey: config.requestKey,
-        chainId: config.chainId,
-        networkId: config.networkConfig.networkId,
-      },
-      { timeout: 25000 },
-    );
+    let result = null;
+    const payload = {
+      requestKey: requestKey,
+      chainId: chainId,
+      networkId: networkConfig.networkId,
+    };
+    if (txPoll) {
+      result = await pollStatus(payload, {
+        timeout: 60000,
+      });
+    } else {
+      result = await getStatus(payload);
+    }
+
+    const trimmedRequestKey = requestKey.endsWith('=')
+      ? requestKey.slice(0, -1)
+      : requestKey;
+
+    if (result[trimmedRequestKey] === undefined) {
+      return {
+        status: 'error',
+        errors: [
+          notFoundErrorMessage,
+          `If the transaction is just submitted, please try with poll flag: kadena tx status --request-key=${requestKey} --chain-id=${chainId} --network=${networkConfig.network} --poll`,
+        ],
+      };
+    }
 
     return {
       status: 'success',
-      data: result[config.requestKey],
+      data: result[trimmedRequestKey],
     };
   } catch (error) {
     const errorMessage =
       error.message === 'TIME_OUT_REJECT'
-        ? `Transaction request for ${config.requestKey} is timed out. Please check your "chainID" input and try again.`
-        : `Transaction request for ${config.requestKey} is failed with : ${error.message}`;
+        ? `Request timed out.\n ${notFoundErrorMessage}`
+        : `Transaction for request key "${requestKey}" is failed with : ${error.message}`;
     return {
       status: 'error',
       errors: [errorMessage],
@@ -87,14 +113,15 @@ export const createTxStatusCommand: (
     txOptions.requestKey(),
     globalOptions.networkSelect({ isOptional: false }),
     globalOptions.chainId(),
+    txOptions.txPoll(),
   ],
   async (option, { collect }) => {
-    log.debug('status-tx:action');
-
     const config = await collect(option);
+    log.debug('status-tx:action', config);
 
-    const loader = ora('Getting transaction...\n').start();
-
+    const loader = config.txPoll
+      ? ora('Getting transaction...\n').start()
+      : undefined;
     const result = await getTxStatus(config);
     assertCommandError(result, loader);
 

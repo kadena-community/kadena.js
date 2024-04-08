@@ -18,7 +18,7 @@ describe('createAccountConfigFile', () => {
 
     const filePath = path.join(
       root,
-      ACCOUNT_DIR,
+      ACCOUNT_DIR!,
       `${config.accountAlias}.yaml`,
     );
     const fs = services.filesystem;
@@ -50,7 +50,7 @@ describe('createAccountConfigFile', () => {
     };
     const filePath = path.join(
       root,
-      ACCOUNT_DIR,
+      ACCOUNT_DIR!,
       `${config.accountAlias}.yaml`,
     );
     const fs = services.filesystem;

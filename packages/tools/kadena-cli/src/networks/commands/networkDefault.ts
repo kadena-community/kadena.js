@@ -8,6 +8,7 @@ import {
   defaultNetworksSettingsPath,
 } from '../../constants/networks.js';
 import { services } from '../../services/index.js';
+import { KadenaError } from '../../services/service-error.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
@@ -22,6 +23,13 @@ import { removeDefaultNetwork } from '../utils/networkHelpers.js';
 export const setNetworkDefault = async (
   network: string,
 ): Promise<CommandResult<{}>> => {
+  if (
+    defaultNetworksPath === null ||
+    defaultNetworksSettingsPath === null ||
+    defaultNetworksSettingsFilePath === null
+  ) {
+    throw new KadenaError('no_kadena_directory');
+  }
   try {
     const filePath = path.join(defaultNetworksPath, `${network}.yaml`);
 

@@ -17,9 +17,14 @@ import type {
 import yaml from 'js-yaml';
 import path from 'path';
 import { services } from '../../services/index.js';
+import { KadenaError } from '../../services/service-error.js';
 import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
 
 export async function displayNetworksConfig(): Promise<void> {
+  if (defaultNetworksPath === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+
   const header: TableHeader = [
     'Network',
     'Network ID',
@@ -34,7 +39,7 @@ export async function displayNetworksConfig(): Promise<void> {
   const networks = await Promise.all(
     existingNetworks.map(async (network) => {
       const networkFilePath = path.join(
-        defaultNetworksPath,
+        defaultNetworksPath!,
         `${network.value}.yaml`,
       );
       const fileContent = await services.filesystem.readFile(networkFilePath);
