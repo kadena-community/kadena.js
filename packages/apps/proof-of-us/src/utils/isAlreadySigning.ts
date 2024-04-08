@@ -27,11 +27,9 @@ export const haveAllSigned = (signees: IProofOfUsSignee[]): boolean => {
 export const getPercentageSignees = (signees: IProofOfUsSignee[]): number => {
   if (!signees) return 0;
 
-  const signedList = signees.filter(
-    (s) => s.signerStatus === 'success' && !s.initiator,
-  );
+  const signedList = signees.filter((s) => s.signerStatus === 'success');
 
-  const signersLength = signees.length - 1; //all signees, expcept for initiator
+  const signersLength = signees.length; //all signees, expcept for initiator
 
   return parseFloat((signedList.length / signersLength).toFixed(3));
 };
@@ -41,8 +39,9 @@ export const isReadyToMint = (signees?: IProofOfUsSignee[]): boolean => {
   const MINAMOUNT_SIGNERS = 4;
   const MINPERCENTAGE_SIGNERS = 0.51;
 
-  const signedlist = signees.filter(
-    (s) => s.signerStatus === 'success' && !s.initiator,
+  const [, ...signeesMinusInitiator] = signees;
+  const signedlist = signeesMinusInitiator.filter(
+    (s) => s.signerStatus === 'success',
   );
 
   if (signees.length < MINAMOUNT_SIGNERS) {
@@ -51,6 +50,6 @@ export const isReadyToMint = (signees?: IProofOfUsSignee[]): boolean => {
     // the amount of signers needs to be at least MINAMOUNT_SIGNERS (minus the initiator)
     if (signedlist.length < MINAMOUNT_SIGNERS - 1) return false;
 
-    return getPercentageSignees(signees) > MINPERCENTAGE_SIGNERS;
+    return getPercentageSignees(signeesMinusInitiator) > MINPERCENTAGE_SIGNERS;
   }
 };
