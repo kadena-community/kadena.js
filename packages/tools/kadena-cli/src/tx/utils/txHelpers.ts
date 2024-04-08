@@ -10,7 +10,7 @@ import {
   kadenaSign as legacyKadenaSign,
   kadenaSignFromRootKey as legacyKadenaSignWithSeed,
 } from '@kadena/hd-wallet/chainweaver';
-import type { ICap, ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
+import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
 
 import { isAbsolute, join } from 'path';
 import { z } from 'zod';
