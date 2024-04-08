@@ -824,7 +824,7 @@ After you've completed the changes to secure the gas station account, you are re
 
 To update the smart contract and complete the workshop:
 
-1. Open the `election-dap/pact` folder in a terminal shell on your computer and verify all of the tests you created in the workshop pass using the Pact REPL.
+1. Open the `election-dapp/pact` folder in a terminal shell on your computer and verify all of the tests you created in the workshop pass using the Pact REPL.
    
    - pact/candidates.repl
    - pact/election-gas-station.repl
