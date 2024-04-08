@@ -90,12 +90,7 @@ Kadena Chainweaver” icon from the desktop
 
 ![ova upgrade](/assets/docs/ova-upgrade.png)
 
-:::note Help
-
-See the [Chainweaver Troubleshoot ](./chainweaver-troubleshooting.md)page if you
-encountered issues installing the .ova
-
-:::
+See the [Troubleshooting](#troubleshooting) if you encounter issues installing the virtual image.
 
 ### Create a new wallet or restore an existing wallet
 
@@ -769,33 +764,37 @@ Chainweaver will only communicate through verified channels.
 
 ## Troubleshooting
 
+Most common problems can be resolved by signing out and signing back in or by uninstalling and reinstalling the software.
+The topics in this section provide answers to the most commonly-asked questions.
 
-### Debian Installation Issues
+### Debian installation
 
+If you have problems installing using the Debian package, you should remove Chainweaver then try to reinstall it using the command line.
+Removing Chainweaver won't delete your wallet, just Chainweaver itself.
 
-#### Uninstall Chainweaver
+To reinstall:
 
-To remove Chainweaver (this won't delete your wallet, just chainweaver itself)
-to try to reinstall, type `sudo dpkg -r kadena-chainweaver` in a terminal.
+1. Open a terminal shell on your computer., t
+2. Type the following command:
+   
+   ```bash
+   sudo dpkg -r kadena-chainweaver
+   ```
 
-### OVA Installation Issues
+### Virtual machine image
 
-#### Starting the Virtual Machine
-
-You don't need to import the ova each time to run Chainweaver. To start
-Chainweaver again, open Virtual Box from the start menu. The Virtual Box Manager
-should open up and you can double click "Chainweaver VM".
+You don't need to import the .ova file each time to run Chainweaver. 
+To start Chainweaver again, open Virtual Box from the start menu. 
+The Virtual Box Manager should open up and you can double-click **Chainweaver VM**.
 
 ![ova vm menu](/assets/docs/ova_startvm.png)
 
-#### Stopping the Virtual Machine
-
 To stop the virtual machine, it is best to shut it down like a regular computer.
-Press "Applications" in the lower left corner.
+Click **Applications** in the lower left corner.
 
 ![applications menu](/assets/docs/ova_menu.png)
 
-And press "Log Off" then hit "Shutdown in the Dialog that appears.
+Select **Log Off** then click **Shutdown**.
 
 ![shutdown menu](/assets/docs/ova_shutdown.png)
 
@@ -803,11 +802,10 @@ It is safe to close the "Virtual Box Manager" window at this time.
 
 #### Upgrading the Virtual Machine
 
-When a new Chainweaver is released, you don't need to download a new OVA every
-time. Instead, close the Chainweaver application inside the VM and notice these
-two icons on the desktop. Click the "Upgrade Chainweaver" icon and an update
-script will start. You can then click the other desktop icon to restart
-Chainweaver.
+When a new version of Chainweaver is released, you don't need to download a new OVA every time. 
+Instead, close the Chainweaver application inside the VM and notice these two icons on the desktop. 
+Click **Upgrade Chainweaver** to run an update script. 
+After you run the script, click the other desktop icon to restart Chainweaver.
 
 ![desktop icons](/assets/docs/ova_desktop.png)
 
