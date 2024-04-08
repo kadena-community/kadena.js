@@ -16,16 +16,16 @@ import {
   execution,
   setMeta,
 } from '@kadena/client/fp';
-import { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
-import { IPactInt } from '@kadena/types';
+import type { IGeneralCapability } from '@kadena/client/lib/interfaces/type-utilities';
+import type { IPactInt } from '@kadena/types';
 import { submitClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
-import {
+import type {
   ICreateTokenPolicyConfig,
   PolicyProps,
   WithCreateTokenPolicy,
-  validatePolicies,
 } from './policy-config';
+import { validatePolicies } from './policy-config';
 
 interface ICreateTokenInput {
   policies?: string[];
@@ -41,58 +41,6 @@ interface ICreateTokenInput {
     };
   };
 }
-
-const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
-  policies = [],
-  uri,
-  tokenId,
-  precision,
-  creator,
-  chainId,
-  policyConfig,
-  ...policyProps
-}: WithCreateTokenPolicy<C, ICreateTokenInput>) => {
-  validatePolicies(policyConfig as ICreateTokenPolicyConfig, policies);
-  return composePactCommand(
-    execution(
-      Pact.modules['marmalade-v2.ledger']['create-token'](
-        tokenId,
-        precision,
-        uri,
-        policies.length > 0
-          ? ([policies.join(' ')] as unknown as PactReference)
-          : ([] as unknown as PactReference),
-        readKeyset('creation-guard'),
-      ),
-    ),
-    setMeta({ senderAccount: creator.account, chainId }),
-    addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
-    addSigner(creator.keyset.keys, (signFor) => [
-      signFor('coin.GAS'),
-      signFor('marmalade-v2.ledger.CREATE-TOKEN', tokenId, creator.keyset),
-
-      ...generatePolicyCapabilities(
-        policyConfig as ICreateTokenPolicyConfig,
-        { ...policyProps, tokenId } as unknown as PolicyProps & {
-          tokenId: string;
-        },
-        signFor,
-      ),
-    ]),
-    ...generatePolicyTransactionData(
-      policyConfig as ICreateTokenPolicyConfig,
-      policyProps as unknown as PolicyProps,
-    ),
-  );
-};
-
-export const createToken = <C extends ICreateTokenPolicyConfig>(
-  inputs: WithCreateTokenPolicy<C, ICreateTokenInput>,
-  config: IClientConfig,
-) =>
-  submitClient<
-    PactReturnType<IPactModules['marmalade-v2.ledger']['create-token']>
-  >(config)(createTokenCommand(inputs));
 
 const generatePolicyCapabilities = (
   policyConfig: ICreateTokenPolicyConfig,
@@ -150,10 +98,62 @@ const generatePolicyTransactionData = (
   }
 
   if (policyConfig?.customPolicies) {
-    for (const key in props.customPolicyData) {
+    for (const key of Object.keys(props.customPolicyData)) {
       data.push(addData(key, props.customPolicyData[key]));
     }
   }
 
   return data;
 };
+
+const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
+  policies = [],
+  uri,
+  tokenId,
+  precision,
+  creator,
+  chainId,
+  policyConfig,
+  ...policyProps
+}: WithCreateTokenPolicy<C, ICreateTokenInput>) => {
+  validatePolicies(policyConfig as ICreateTokenPolicyConfig, policies);
+  return composePactCommand(
+    execution(
+      Pact.modules['marmalade-v2.ledger']['create-token'](
+        tokenId,
+        precision,
+        uri,
+        policies.length > 0
+          ? ([policies.join(' ')] as unknown as PactReference)
+          : ([] as unknown as PactReference),
+        readKeyset('creation-guard'),
+      ),
+    ),
+    setMeta({ senderAccount: creator.account, chainId }),
+    addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
+    addSigner(creator.keyset.keys, (signFor) => [
+      signFor('coin.GAS'),
+      signFor('marmalade-v2.ledger.CREATE-TOKEN', tokenId, creator.keyset),
+
+      ...generatePolicyCapabilities(
+        policyConfig as ICreateTokenPolicyConfig,
+        { ...policyProps, tokenId } as unknown as PolicyProps & {
+          tokenId: string;
+        },
+        signFor,
+      ),
+    ]),
+    ...generatePolicyTransactionData(
+      policyConfig as ICreateTokenPolicyConfig,
+      policyProps as unknown as PolicyProps,
+    ),
+  );
+};
+
+export const createToken = <C extends ICreateTokenPolicyConfig>(
+  inputs: WithCreateTokenPolicy<C, ICreateTokenInput>,
+  config: IClientConfig,
+) =>
+  submitClient<
+    PactReturnType<IPactModules['marmalade-v2.ledger']['create-token']>
+  >(config)(createTokenCommand(inputs));

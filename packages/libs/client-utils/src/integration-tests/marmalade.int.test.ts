@@ -1,5 +1,5 @@
 import type { ChainId } from '@kadena/client';
-import { BuiltInPredicate, createSignWithKeypair } from '@kadena/client';
+import { createSignWithKeypair } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { describeModule } from '../built-in';
@@ -36,7 +36,7 @@ const inputs = {
     account: sourceAccount.account,
     keyset: {
       keys: [sourceAccount.publicKey],
-      pred: 'keys-all' as BuiltInPredicate,
+      pred: 'keys-all' as const,
     },
   },
 };

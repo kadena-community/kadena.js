@@ -1,4 +1,4 @@
-import { BuiltInPredicate } from '@kadena/client';
+import type { BuiltInPredicate } from '@kadena/client';
 import type { IPactDecimal } from '@kadena/types';
 export interface IRoyaltyInfoInput {
   fungible: string;
