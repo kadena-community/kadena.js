@@ -8,6 +8,7 @@ import validateTypeScriptFileLinks from './validateTypeScriptFileLinks';
 
 const args = process.argv.slice(2);
 const isCi = args.includes('--ci');
+let ERRORCOUNT = 0;
 
 // This is to avoid false positives for links that are not broken within the docs
 // but are broken in the website E.g. might comes from the different docs repo
@@ -37,6 +38,7 @@ export default async function validateLinks(basePath: string): Promise<void> {
       console.log(chalk.blue(`File: ${result.file}`));
       result.brokenLinks.forEach((link) => {
         console.log(chalk.red(`    - ${link}`));
+        ERRORCOUNT++;
       });
     });
   } else {
@@ -49,6 +51,7 @@ export default async function validateLinks(basePath: string): Promise<void> {
       console.log(chalk.blue(`File: ${result.file}`));
       result.brokenLinks.forEach((link) => {
         console.log(chalk.red(`    - ${link}`));
+        ERRORCOUNT++;
       });
     });
   } else {
@@ -62,6 +65,7 @@ export default async function validateLinks(basePath: string): Promise<void> {
       if (result.invalidAnchors.length > 0) {
         result.invalidAnchors.forEach((link) => {
           console.log(chalk.red(`    - ${link}`));
+          ERRORCOUNT++;
         });
       }
       if (result.invalidInternalAnchors.length > 0) {
@@ -96,3 +100,4 @@ export default async function validateLinks(basePath: string): Promise<void> {
 const basePath: string = './src/pages';
 
 await validateLinks(basePath);
+console.log('ERRORCOUNT', ERRORCOUNT);

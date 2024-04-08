@@ -15,10 +15,10 @@ const errors: string[] = [];
 const success: string[] = [];
 
 const copyBlogchain = (): void => {
-  fs.mkdirSync(`./src/pages/blogchain`, { recursive: true });
-  fs.cpSync(`./src/docs/blogchain`, `./src/pages/blogchain`, {
-    recursive: true,
-  });
+  // fs.mkdirSync(`./src/pages/blogchain`, { recursive: true });
+  // fs.cpSync(`./src/docs/blogchain`, `./src/pages/blogchain`, {
+  //   recursive: true,
+  // });
 };
 
 export const copyPage = (parentDir: string, page: IConfigTreeItem): void => {
