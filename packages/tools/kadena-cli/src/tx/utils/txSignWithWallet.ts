@@ -175,22 +175,24 @@ export async function signWithWallet(
   assertCommandError(results);
 
   results.data.commands?.forEach((tx, i) => {
+    const cmd = JSON.parse(results.data.commands[i]?.command?.cmd ?? '{}');
+    const code = JSON.stringify(cmd?.payload?.exec?.code, null, 2);
+    const codeMinified = JSON.stringify(cmd?.payload?.exec?.code);
+
     log.info(log.color.green(`Transaction executed code: `));
-    log.output(
-      JSON.stringify(
-        JSON.parse(results.data.commands[i]?.command?.cmd)?.payload?.exec?.code,
-        null,
-        2,
-      ),
-      JSON.stringify(
-        JSON.parse(results.data.commands[i]?.command?.cmd)?.payload?.exec?.code,
-      ),
-    );
-    log.info(
-      log.color.green(
-        `\nTransaction with hash: ${results.data.commands[i]?.command?.hash} was successfully signed.`,
-      ),
-    );
-    log.info(`Signed transaction saved to ${tx.path}`);
+    log.output(code, codeMinified);
+
+    const hash = results.data.commands[i]?.command?.hash;
+    if (hash) {
+      log.info(
+        log.color.green(
+          `\nTransaction with hash: ${hash} was successfully signed.`,
+        ),
+      );
+    }
+
+    if (tx.path) {
+      log.info(`Signed transaction saved to ${tx.path}`);
+    }
   });
 }
