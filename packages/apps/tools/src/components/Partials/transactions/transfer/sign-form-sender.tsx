@@ -168,10 +168,11 @@ export const SignFormSender = ({
             {/*/>*/}
             <ChainSelect
               {...register('senderChainId')}
-              selectedKey={watchChain}
+              // selectedKey={watchChain}
               id="senderChainId"
               onSelectionChange={(chainId) => {
                 // onChange(chainId);
+                setValue('senderChainId', chainId);
                 onChainUpdate(chainId);
               }}
               additionalInfoOptions={chainSelectOptions}
