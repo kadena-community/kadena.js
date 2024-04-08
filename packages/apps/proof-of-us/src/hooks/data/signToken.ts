@@ -45,11 +45,7 @@ export const useSignToken = () => {
     //if they are the initiator, you dont, so the app will submit the nft
     if (accountIsInitiator) return;
 
-    router.replace(
-      `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
-        tx.hash
-      }`,
-    );
+    router.replace(`${getReturnHostUrl()}/user/proof-of-us/mint/${tx.hash}`);
   };
 
   useEffect(() => {

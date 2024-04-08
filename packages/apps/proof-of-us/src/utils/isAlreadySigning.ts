@@ -30,5 +30,5 @@ export const isReadyToMint = (signees?: IProofOfUsSignee[]): boolean => {
     (s) => s.signerStatus === 'success' && !s.initiator,
   );
 
-  return signinglist.length >= signees.length - 1;
+  return signinglist.length >= signees.length - 1 && signinglist.length > 0;
 };

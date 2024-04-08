@@ -4,7 +4,7 @@ import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
-import { SubmitStatus, useSubmit } from '@/hooks/submit';
+import { useSubmit } from '@/hooks/submit';
 import { useTokens } from '@/hooks/tokens';
 import { env } from '@/utils/env';
 import { getReturnUrl } from '@/utils/getReturnUrl';
@@ -13,7 +13,7 @@ import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { Dispatch, FC, SetStateAction } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
@@ -26,17 +26,18 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   data,
   eventId,
   isMinted,
-  handleIsMinted,
 }) => {
-  const { isLoading, hasSuccess, hasError, isPending, claim } =
-    useClaimAttendanceToken();
+  const { claim } = useClaimAttendanceToken();
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const { account, isMounted, login } = useAccount();
-  console.log({ account });
-  const { addMintingData } = useTokens();
-  const { doSubmit, isStatusLoading, status } = useSubmit();
+  const { addMintingData, tokens } = useTokens();
+  const { doSubmit, isStatusLoading } = useSubmit();
+
+  const tokenId = useMemo(() => {
+    const token = tokens?.find((t) => t.info?.uri === data.manifestUri);
+    return token?.id;
+  }, [tokens, data]);
 
   const getProof = (
     data: IProofOfUsTokenMeta,
@@ -64,21 +65,17 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     return proof;
   };
 
-  useEffect(() => {
-    if (status === SubmitStatus.SUCCESS) {
-      handleIsMinted(true);
-    }
-  }, [status]);
-
-  useEffect(() => {
+  const createProof = async () => {
     const transaction = searchParams.get('transaction') ?? '';
     if (!transaction || !account) return;
 
     const proof = getProof(data, transaction);
-    addMintingData(proof);
+    await addMintingData(proof);
+    await doSubmit(transaction, proof);
+  };
 
-    console.log('submit');
-    doSubmit(transaction, true);
+  useEffect(() => {
+    createProof();
   }, [account, searchParams]);
 
   const handleClaim = async () => {
@@ -105,15 +102,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const hasStarted = isBefore(startDate, Date.now());
   const hasEnded = isAfter(Date.now(), endDate);
 
-  const showClaimButton =
-    hasStarted &&
-    !hasEnded &&
-    !hasSuccess &&
-    !hasError &&
-    !isLoading &&
-    !isMinted &&
-    !isPending &&
-    account;
+  const showClaimButton = hasStarted && !hasEnded && !isMinted && account;
 
   return (
     <>
@@ -166,21 +155,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
             <Button onPress={handleClaim}>Claim NFT</Button>
           </Stack>
         )}
-        {isLoading && <MainLoader />}
-        {hasError && (
-          <Stack width="100%" flexDirection="column" gap="md">
-            <MessageBlock title="Error" variant="error">
-              There was an issue with minting
-            </MessageBlock>
-            <Stack gap="md">
-              {account && (
-                <Link href="/user">
-                  <Button>Go to dashboard</Button>
-                </Link>
-              )}
-            </Stack>
-          </Stack>
-        )}
+
         {!account && isMounted && (
           <Stack width="100%">
             <Button onClick={login}>Login to mint</Button>
@@ -191,9 +166,18 @@ export const ScanAttendanceEvent: FC<IProps> = ({
             <MessageBlock title="Success" variant="success">
               The token is minted
             </MessageBlock>
-            <Link href="/user">
-              <Button>Go to dashboard</Button>
-            </Link>
+
+            <Stack gap="md">
+              <Button>
+                <Link href="/user">Go to dashboard</Link>
+              </Button>
+
+              <Button>
+                <Link href={`/user/proof-of-us/t/${tokenId}`}>
+                  Go to Proof{' '}
+                </Link>
+              </Button>
+            </Stack>
           </Stack>
         )}
       </Stack>

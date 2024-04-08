@@ -5,7 +5,6 @@ import { getSigneeAccount } from '@/utils/getSigneeAccount';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
 import { store } from '@/utils/socket/store';
 import type { IUnsignedCommand } from '@kadena/client';
-import { useParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
 
@@ -63,9 +62,12 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   getSignature: async () => undefined,
 });
 
-export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
+interface IProps extends PropsWithChildren {
+  proofOfUsId?: string;
+}
+
+export const ProofOfUsProvider: FC<IProps> = ({ children, proofOfUsId }) => {
   const { account } = useAccount();
-  const params = useParams();
   const { addMintingData } = useTokens();
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
   const [signees, setSignees] = useState<IProofOfUsSignee[]>();
@@ -77,10 +79,10 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     async (data: IProofOfUsData | undefined) => {
       let innerData: IProofOfUsData | undefined | null = data;
 
-      if (!innerData && params && params.id !== 'new') {
-        innerData = await store.getProofOfUs(`${params.id}`);
+      if (!innerData && proofOfUsId !== 'new') {
+        innerData = await store.getProofOfUs(`${proofOfUsId}`);
         if (!innerData) return;
-        innerData = { ...innerData, proofOfUsId: `${params?.id}` };
+        innerData = { ...innerData, proofOfUsId: `${proofOfUsId}` };
       }
 
       if (!innerData) return;
@@ -91,21 +93,21 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
 
       setProofOfUs({ ...innerData });
     },
-    [setProofOfUs, params?.id],
+    [setProofOfUs, proofOfUsId],
   );
 
   const listenToSigneesData = useCallback(
     async (data: IProofOfUsSignee[]) => {
       let innerData: IProofOfUsSignee[] = data ?? [];
 
-      if (!innerData && params && params.id !== 'new') {
-        innerData = await store.getProofOfUsSignees(`${params.id}`);
+      if (!innerData && proofOfUsId !== 'new') {
+        innerData = await store.getProofOfUsSignees(`${proofOfUsId}`);
         if (!innerData) return;
       }
 
       setSignees([...innerData]);
     },
-    [setSignees, params?.id],
+    [setSignees, proofOfUsId],
   );
 
   const pingSignee = async () => {
@@ -117,11 +119,11 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
 
   //start listeners
   useEffect(() => {
-    if (!params?.id || !account) return;
-    store.listenProofOfUsData(`${params.id}`, account, listenToProofOfUsData);
-    store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
-    store.listenProofOfUsSigneesData(`${params.id}`, listenToSigneesData);
-  }, [account]);
+    if (!proofOfUsId || !account) return;
+    store.listenProofOfUsData(`${proofOfUsId}`, account, listenToProofOfUsData);
+    store.listenProofOfUsBackgroundData(`${proofOfUsId}`, setBackground);
+    store.listenProofOfUsSigneesData(`${proofOfUsId}`, listenToSigneesData);
+  }, [account, proofOfUsId]);
 
   //update the ping of the account signer
   useEffect(() => {

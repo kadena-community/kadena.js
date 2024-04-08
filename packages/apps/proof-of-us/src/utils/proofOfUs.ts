@@ -1,8 +1,27 @@
-import type { IUnsignedCommand } from '@kadena/client';
+import type { IPollResponse, IUnsignedCommand } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { getClient } from './client';
 import { env } from './env';
+
+export const getTransaction = async (
+  requestKey?: string,
+): Promise<IPollResponse | undefined> => {
+  if (!requestKey) return;
+
+  const txRes = {
+    chainId: env.CHAINID,
+    networkId: env.NETWORKID,
+    requestKey,
+  };
+
+  let transaction;
+  try {
+    transaction = await getClient().getStatus(txRes);
+  } catch (e) {}
+
+  return transaction;
+};
 
 export const getProofOfUs = async (
   id: string,
@@ -39,7 +58,7 @@ export const getTokenId = async (
 
   const transaction = Pact.builder
     .execution(
-      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.retrieve-connection-token-id "${eventId}" "${uri}"
+      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.retrieve-connection-token-id "" "${uri}"
       )`,
     )
     .setNetworkId(env.NETWORKID)
@@ -183,12 +202,7 @@ export const createConnectTokenTransaction = async (
   account: IAccount,
 ): Promise<IUnsignedCommand | undefined> => {
   const credential = account.credentials[0];
-  const eventId = process.env.NEXT_PUBLIC_CONNECTION_EVENTID ?? '';
   const collectionId = process.env.NEXT_PUBLIC_CONNECTION_COLLECTIONID ?? '';
-
-  if (!eventId) {
-    throw new Error('eventId not found');
-  }
 
   if (!collectionId) {
     throw new Error('collectionId not found');
@@ -213,7 +227,6 @@ export const createConnectTokenTransaction = async (
       (map (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard) [${guardString}])
       )`,
     )
-    .addData('event_id', eventId)
     .addData('collection_id', collectionId)
     .addData('uri', manifestUri)
     .setNetworkId(env.NETWORKID)
@@ -242,7 +255,7 @@ export const createConnectTokenTransaction = async (
           ),
           withCap(
             `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.CONNECT`,
-            `${eventId}`,
+            ``,
             `${manifestUri}`,
           ),
         ],
@@ -256,7 +269,7 @@ export const createConnectTokenTransaction = async (
         (withCap) => [
           withCap(
             `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.CONNECT`,
-            `${eventId}`,
+            ``,
             `${manifestUri}`,
           ),
         ],
