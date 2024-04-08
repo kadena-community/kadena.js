@@ -5,7 +5,6 @@ import {
   NavHeaderLinkList,
   NavHeaderSelect,
   SelectItem,
-  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 import { FC } from 'react';
@@ -43,7 +42,7 @@ export const Layout: FC = () => {
           aria-label="Select Network"
           selectedKey={activeNetwork?.networkId}
           onSelectionChange={(value) => handleNetworkUpdate(value as string)}
-          startIcon={<SystemIcon.Earth />}
+          startIcon={<MonoPublic />}
         >
           {networks.map((network) => (
             <SelectItem key={network.networkId} textValue={network.name}>

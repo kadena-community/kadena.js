@@ -41,7 +41,7 @@ export function SelectProfile() {
           <Link to="/create-profile" style={{ textDecoration: 'none' }}>
             <div className={cardClass}>
               <div className={imgClass}>
-                <SystemIcon.Plus size="xl" />
+                <MonoAdd />
               </div>
 
               <div className={aliasClass}>

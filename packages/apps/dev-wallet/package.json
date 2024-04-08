@@ -23,6 +23,7 @@
     "@kadena/hd-wallet": "workspace:*",
     "@kadena/pactjs": "workspace:*",
     "@kadena/pactjs-generator": "workspace:*",
+    "@kadena/react-icons": "workspace:*",
     "@kadena/react-ui": "workspace:*",
     "@scure/bip39": "^1.2.1",
     "@tauri-apps/api": "^1.4.0",
