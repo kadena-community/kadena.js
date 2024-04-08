@@ -111,3 +111,20 @@ classDiagram
   Guard --|> KeySet
 
 ```
+
+```mermaid
+
+
+---
+title: Pact Modules Domain Model
+---
+classDiagram
+
+  Module --|> Token
+  Token --|> Fungible
+  Token --|> NonFungible
+  Fungible --|> Coin
+  NonFungible --|> Marmalade
+  Marmalade --|> MarmaladeFungible
+
+```
