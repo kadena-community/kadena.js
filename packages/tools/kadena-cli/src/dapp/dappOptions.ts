@@ -10,7 +10,7 @@ export const dappOptions = {
     validation: z.string(),
     option: new Option(
       '-t, --dapp-template <dappTemplate>',
-      'Select a dapp template',
+      'Template to create sample dApp(e.g. angular, nextjs, vuejs)',
     ),
   }),
 };

@@ -185,7 +185,7 @@ export const txOptions = {
     validation: requestKeyValidation,
     option: new Option(
       '-k, --request-key <requestKey>',
-      'Enter your request key',
+      'Request key of the transaction',
     ),
   }),
   holes: createOption({

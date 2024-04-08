@@ -29,7 +29,7 @@ export function getTransactionsQuery(accountName: string) {
               }
               signers {
                 id
-                publicKey
+                pubkey
                 clist {
                   args
                   name

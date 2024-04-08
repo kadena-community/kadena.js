@@ -15,6 +15,7 @@ import { parseTransactionsFromStdin } from './input.js';
 import { saveSignedTransactions } from './storage.js';
 import {
   assessTransactionSigningStatus,
+  displaySignersFromUnsignedCommands,
   extractRelevantWalletAndKeyPairsFromCommand,
   filterRelevantUnsignedCommandsForWallet,
   getTransactionsFromFile,
@@ -157,6 +158,8 @@ export async function signWithWallet(
             (walletItem) => walletItem.wallet.alias === walletConfig.alias,
           ),
         );
+
+      displaySignersFromUnsignedCommands(unsignedCommands);
 
       return await signTransactionsWithWallet({
         password: password.passwordFile,

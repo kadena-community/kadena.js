@@ -23,14 +23,17 @@ export const accountOptions = {
     validation: z.string(),
     option: new Option(
       '--account-alias <accountAlias>',
-      'Enter an alias to store your account',
+      'Alias to store your account details',
     ),
   }),
   accountName: createOption({
     key: 'accountName' as const,
     prompt: account.accountNamePrompt,
     validation: z.string(),
-    option: new Option('-a, --account-name <accountName>', 'Account name'),
+    option: new Option(
+      '-a, --account-name <accountName>',
+      'Account name',
+    ),
   }),
   accountKdnName: createOption({
     key: 'accountKdnName' as const,
@@ -56,7 +59,7 @@ export const accountOptions = {
     prompt: account.accountOverWritePrompt,
     option: new Option(
       '-o, --account-overwrite',
-      'Overwrite account details from chain',
+      'Confirm overwrite account details from chain',
     ),
   }),
   accountSelect: createOption({
@@ -64,7 +67,7 @@ export const accountOptions = {
     prompt: account.accountSelectPrompt,
     defaultIsOptional: false,
     validation: z.string(),
-    option: new Option('-a, --account <account>', 'Select an account'),
+    option: new Option('-a, --account <account>', 'Account alias name'),
     expand: async (accountAlias: string): Promise<IAliasAccountData | null> => {
       try {
         const accountDetails = await readAccountFromFile(accountAlias);
@@ -83,10 +86,7 @@ export const accountOptions = {
     prompt: account.accountSelectAllPrompt,
     defaultIsOptional: false,
     validation: z.string(),
-    option: new Option(
-      '-a, --account-alias <account>',
-      'Enter your account alias file',
-    ),
+    option: new Option('-a, --account-alias <account>', 'Account alias name'),
   }),
   accountMultiSelect: createOption({
     key: 'accountAlias' as const,
@@ -95,7 +95,7 @@ export const accountOptions = {
     validation: z.string(),
     option: new Option(
       '-a, --account-alias <account>',
-      'Enter an alias account(s) separated by a comma',
+      'Alias account(s) (comma separated for multiple accounts)',
     ),
   }),
   publicKeys: createOption({
@@ -104,7 +104,7 @@ export const accountOptions = {
     validation: z.string(),
     option: new Option(
       '-k, --public-keys <publicKeys>',
-      'Public keys (comma separated)',
+      'Public keys (comma separated for multiple keys)',
     ),
     expand: async (publicKeys: string) => {
       return publicKeys
@@ -117,13 +117,13 @@ export const accountOptions = {
     key: 'fungible' as const,
     prompt: account.fungiblePrompt,
     validation: z.string(),
-    option: new Option('-f, --fungible <fungible>', 'Fungible'),
+    option: new Option('-f, --fungible <fungible>', 'Fungible module name'),
   }),
   predicate: createOption({
     key: 'predicate' as const,
     prompt: account.predicatePrompt,
     validation: z.string(),
-    option: new Option('-p, --predicate <predicate>', 'Keyset predicate'),
+    option: new Option('-p, --predicate <predicate>', 'Account keyset predicate'),
   }),
   fundAmount: createOption({
     key: 'amount' as const,
@@ -133,7 +133,7 @@ export const accountOptions = {
       /* eslint-disable-next-line @typescript-eslint/naming-convention */
       invalid_type_error: 'Error: -m, --amount must be a positive number',
     }),
-    option: new Option('-m, --amount <amount>', 'Amount'),
+    option: new Option('-m, --amount <amount>', 'Amount to fund your account'),
     transform: (amount: string) => {
       try {
         const parsedAmount = Number(amount);
@@ -160,7 +160,10 @@ export const accountOptions = {
       /* eslint-disable-next-line @typescript-eslint/naming-convention */
       invalid_type_error: 'Error: -c, --chain-id must be a number',
     }),
-    option: new Option('-c, --chain-id <chainId>'),
+    option: new Option(
+      '-c, --chain-id <chainId>',
+      'Kadena chain id range (e.g: 1 / 0-3 / 0,1,5 / all)',
+    ),
     transform: (chainId: string) => {
       if (chainId === 'all') {
         return generateAllChainIds();

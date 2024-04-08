@@ -35,6 +35,7 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
           <Column>Token Id</Column>
           <Column>Chain</Column>
           <Column>Balance</Column>
+          <Column>Guard</Column>
         </TableHeader>
         <TableBody>
           {tokens.map((token, index) => {
@@ -43,6 +44,11 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
                 <Cell>{token.id}</Cell>
                 <Cell>{token.chainId}</Cell>
                 <Cell>{token.balance}</Cell>
+                <Cell>
+                  <strong>Predicate:</strong> {token.guard.predicate}
+                  <br />
+                  <strong>Keys:</strong> {token.guard.keys.join(', ')}
+                </Cell>
               </Row>
             );
           })}

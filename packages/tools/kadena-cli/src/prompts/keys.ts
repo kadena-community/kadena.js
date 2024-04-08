@@ -18,8 +18,11 @@ export async function keyAliasPrompt(): Promise<string> {
   });
 }
 
-export async function keyMnemonicPrompt(): Promise<string> {
-  return await input({
+export async function keyMnemonicPrompt(
+  args: Record<string, unknown>,
+): Promise<'-' | { _secret: string }> {
+  if ((args.stdin as string | null) !== null) return '-';
+  const secret = await input({
     message: `Enter your 12-word mnemonic phrase:`,
     validate: function (input) {
       const words = input
@@ -42,6 +45,7 @@ export async function keyMnemonicPrompt(): Promise<string> {
         .join(' ');
     },
   });
+  return { _secret: secret };
 }
 
 export async function keyAmountPrompt(): Promise<string> {
