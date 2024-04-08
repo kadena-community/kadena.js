@@ -212,7 +212,7 @@ export const SignFormSender = ({
           id="ledger-transfer-amount"
           label={t('Amount')}
           onValueChange={(value) => setValue('amount', value)}
-          defaultValue={defaultValues.amount}
+          // defaultValue={defaultValues.amount}
           isDisabled={!!senderData.error}
           isInvalid={!!errors.amount || invalidAmount}
           errorMessage={
