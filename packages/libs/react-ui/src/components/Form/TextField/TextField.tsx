@@ -154,7 +154,6 @@ export function TextFieldBase(
           </div>
         )}
       </div>
-
       {props.description && !validation.isInvalid && (
         <FormFieldHelpText
           {...descriptionProps}

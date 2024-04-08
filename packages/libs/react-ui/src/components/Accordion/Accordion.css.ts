@@ -1,6 +1,5 @@
 import { style } from '@vanilla-extract/css';
 import { atoms, bodyBaseBold, token } from '../../styles';
-import { iconFill } from '../Icon/IconWrapper.css';
 
 export const accordionSectionClass = style([
   atoms({
@@ -29,9 +28,6 @@ export const accordionButtonClass = style([
   }),
   {
     color: token('color.text.subtle.default'),
-    vars: {
-      [iconFill]: token('color.text.subtle.default'),
-    },
   },
 ]);
 
