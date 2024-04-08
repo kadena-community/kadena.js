@@ -1,4 +1,5 @@
-import { SystemIcon, TextField } from '@kadena/react-ui';
+import { MonoSearch } from '@kadena/react-icons';
+import { TextField } from '@kadena/react-ui';
 import type { FC, FormEvent, ForwardedRef, KeyboardEvent } from 'react';
 import React, { forwardRef } from 'react';
 import { searchFormClass } from './styles.css';
@@ -13,8 +14,6 @@ interface IProps {
 export const SearchBar: FC<IProps> = forwardRef<HTMLInputElement, IProps>(
   // eslint-disable-next-line react/prop-types
   ({ onSubmit = () => {}, onKeyUp = () => {}, query }, ref) => {
-    const MagnifierIcon = SystemIcon.Magnify;
-
     const handleKeyUp = (e: KeyboardEvent<HTMLInputElement>): void => {
       e.preventDefault();
       onKeyUp(e);
@@ -37,7 +36,7 @@ export const SearchBar: FC<IProps> = forwardRef<HTMLInputElement, IProps>(
           defaultValue={query}
           type="text"
           aria-label="Search"
-          endAddon={<MagnifierIcon />}
+          endAddon={<MonoSearch />}
         />
       </form>
     );

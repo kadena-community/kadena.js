@@ -1,11 +1,11 @@
-import { SystemIcon } from '@kadena/react-ui';
+import { MonoLoading } from '@kadena/react-icons';
 import type { FC } from 'react';
 import { animateClass, loaderWrapperClass } from './style.css';
 
 export const IsLoading: FC = () => {
   return (
     <div className={loaderWrapperClass}>
-      <SystemIcon.Loading className={animateClass} />
+      <MonoLoading className={animateClass} />
     </div>
   );
 };

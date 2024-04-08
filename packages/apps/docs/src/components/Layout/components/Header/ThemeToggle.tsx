@@ -1,5 +1,6 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { NavHeaderButton, SystemIcon } from '@kadena/react-ui';
+import { MonoContrast } from '@kadena/react-icons';
+import { NavHeaderButton } from '@kadena/react-ui';
 import { useTheme } from 'next-themes';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
@@ -27,7 +28,7 @@ export const ThemeToggle: FC = () => {
       onPress={toggleTheme}
       title="Toggle between Light and Dark theme"
       aria-label="Toggle between Light and Dark theme"
-      icon={<SystemIcon.ThemeLightDark />}
+      icon={<MonoContrast />}
     />
   );
 };

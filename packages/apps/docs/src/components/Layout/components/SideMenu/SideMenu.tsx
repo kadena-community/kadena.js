@@ -1,6 +1,7 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { IMenuItem } from '@kadena/docs-tools';
-import { Box, Heading, SystemIcon, TextField } from '@kadena/react-ui';
+import { MonoSearch } from '@kadena/react-icons';
+import { Box, Heading, TextField } from '@kadena/react-ui';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC, KeyboardEvent } from 'react';
@@ -30,8 +31,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
     menuItems,
   );
   const router = useRouter();
-  const MagnifierIcon = SystemIcon.Magnify;
-
   const activeItem = menuItems.find((item) => item.isMenuOpen);
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>): void => {
@@ -74,7 +73,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
             isOutlined
             type="text"
             aria-label="Search"
-            endAddon={<MagnifierIcon />}
+            endAddon={<MonoSearch />}
           />
         </Box>
       </ShowOnMobile>

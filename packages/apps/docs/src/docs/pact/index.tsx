@@ -15,6 +15,7 @@ import {
 } from '@/styles/index.css';
 import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
+import { MonoChevronRight } from '@kadena/react-icons';
 import {
   Box,
   Card,
@@ -22,7 +23,6 @@ import {
   GridItem,
   Heading,
   Link as KadenaLink,
-  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 import classNames from 'classnames';
@@ -56,10 +56,7 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   Pact to create a smart contract
                 </Text>
               </Box>
-              <KadenaLink
-                icon={<SystemIcon.TrailingIcon />}
-                href="/pact/beginner"
-              >
+              <KadenaLink icon={<MonoChevronRight />} href="/pact/beginner">
                 Getting started
               </KadenaLink>
             </Card>

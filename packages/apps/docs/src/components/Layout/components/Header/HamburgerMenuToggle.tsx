@@ -1,5 +1,5 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
-import { SystemIcon } from '@kadena/react-ui';
+import { MonoClose, MonoMenuOpen } from '@kadena/react-icons';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
@@ -24,7 +24,7 @@ export const HamburgerMenuToggle: FC<IProps> = ({ toggleMenu, isMenuOpen }) => {
       title="Open the sidemenu"
       onClick={onToggleMenu}
     >
-      {isMenuOpen ? <SystemIcon.Close /> : <SystemIcon.MenuOpen />}
+      {isMenuOpen ? <MonoClose /> : <MonoMenuOpen />}
     </button>
   );
 };

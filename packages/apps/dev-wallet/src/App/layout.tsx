@@ -1,4 +1,5 @@
 import { useNetwork } from '@/modules/network/network.hook';
+import { MonoPublic } from '@kadena/react-icons';
 import {
   KadenaLogo,
   NavHeader,

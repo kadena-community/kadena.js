@@ -96,7 +96,6 @@ export {
   Select,
   SelectItem,
   Stack,
-  SystemIcon,
   TabItem,
   Table,
   TableBody,

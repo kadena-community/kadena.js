@@ -3,6 +3,7 @@ import { Loading } from '@/components/Loading/Loading';
 import type { ITabs } from '@/components/SearchDialog/SearchDialog';
 import type { IConversation } from '@/hooks/useSearch/useConversation';
 import { filePathToRoute } from '@/pages/api/semanticsearch';
+import { MonoChevronRight, MonoWarning } from '@kadena/react-icons';
 import {
   Box,
   Button,
@@ -10,7 +11,6 @@ import {
   Notification,
   NotificationHeading,
   Stack,
-  SystemIcon,
   TabItem,
   Tabs,
   useDialog,
@@ -101,7 +101,7 @@ export const SearchResults: FC<IProps> = ({
             {semanticError ? (
               <Notification
                 intent="negative"
-                icon={<SystemIcon.AlertBox />}
+                icon={<MonoWarning />}
                 role="status"
               >
                 {semanticError}
@@ -119,7 +119,7 @@ export const SearchResults: FC<IProps> = ({
                   <Stack justifyContent="flex-end">
                     <Link href={`/search?q=${query}`} passHref legacyBehavior>
                       <Button
-                        icon={<SystemIcon.TrailingIcon />}
+                        icon={<MonoChevronRight />}
                         title="Go to search results"
                         onPress={state.close}
                       >
@@ -135,7 +135,7 @@ export const SearchResults: FC<IProps> = ({
 
         <TabItem key="qa" title="QA Space">
           <Box marginBlockEnd="xxl">
-            <Notification icon={<SystemIcon.AlertBox />} role="none">
+            <Notification icon={<MonoWarning />} role="none">
               <NotificationHeading>QA search is in beta</NotificationHeading>
               QA search our latest AI vector-based search, designed to provide
               instant answers to your queries.
@@ -162,7 +162,7 @@ export const SearchResults: FC<IProps> = ({
             {error && (
               <Notification
                 intent={'negative'}
-                icon={<SystemIcon.AlertBox />}
+                icon={<MonoWarning />}
                 role="status"
               >
                 {error}

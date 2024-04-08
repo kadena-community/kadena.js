@@ -6,6 +6,7 @@ import { docsCardLink } from '@/components/DocsCard/styles.css';
 import MostPopular from '@/components/MostPopular/MostPopular';
 import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
+import { MonoChevronRight } from '@kadena/react-icons';
 import {
   Box,
   Card,
@@ -14,7 +15,6 @@ import {
   Heading,
   Link,
   Stack,
-  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 import type { GetStaticProps } from 'next';
@@ -43,7 +43,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 clicking Quick start.
               </Text>
             </Box>
-            <Link icon={<SystemIcon.TrailingIcon />} href="/build/quickstart">
+            <Link icon={<MonoChevronRight />} href="/build/quickstart">
               Quick start
             </Link>
           </Card>
