@@ -156,6 +156,7 @@ export const SignFormReceiver = ({
           id="receiverChainId"
           onSelectionChange={(chainId) => {
             // onChange(chainId);
+            setValue('receiverChainId', chainId);
             onChainUpdate(chainId);
           }}
           additionalInfoOptions={chainSelectOptions}
