@@ -23,10 +23,12 @@ interface ICreateTokenIdInput {
   uri: string;
   precision: IPactInt | PactReference;
   chainId: ChainId;
-  creator: string;
-  creatorGuard: {
-    keys: string[];
-    pred: BuiltInPredicate;
+  creator: {
+    account: string;
+    keyset: {
+      keys: string[];
+      pred: BuiltInPredicate;
+    };
   };
 }
 
@@ -35,7 +37,6 @@ const createTokenIdCommand = ({
   uri,
   precision,
   creator,
-  creatorGuard,
   chainId,
   policyConfig,
 }: ICreateTokenIdInput) => {
@@ -48,8 +49,8 @@ const createTokenIdCommand = ({
         readKeyset('creation-guard'),
       ),
     ),
-    addKeyset('creation-guard', creatorGuard.pred, ...creatorGuard.keys),
-    setMeta({ senderAccount: creator, chainId }),
+    addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
+    setMeta({ senderAccount: creator.account, chainId }),
   );
 };
 

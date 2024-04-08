@@ -32,10 +32,12 @@ const inputs = {
   precision: { int: '0' },
   uri: Date.now().toString(),
   policies: [],
-  creator: sourceAccount.account,
-  creatorGuard: {
-    keys: [sourceAccount.publicKey],
-    pred: 'keys-all' as BuiltInPredicate,
+  creator: {
+    account: sourceAccount.account,
+    keyset: {
+      keys: [sourceAccount.publicKey],
+      pred: 'keys-all' as BuiltInPredicate,
+    },
   },
 };
 const config = {

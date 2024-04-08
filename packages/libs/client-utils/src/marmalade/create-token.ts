@@ -33,10 +33,12 @@ interface ICreateTokenInput {
   tokenId: string;
   precision: IPactInt | PactReference;
   chainId: ChainId;
-  creator: string;
-  creatorGuard: {
-    keys: string[];
-    pred: BuiltInPredicate;
+  creator: {
+    account: string;
+    keyset: {
+      keys: string[];
+      pred: BuiltInPredicate;
+    };
   };
 }
 
@@ -46,7 +48,6 @@ const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
   tokenId,
   precision,
   creator,
-  creatorGuard,
   chainId,
   policyConfig,
   ...policyProps
@@ -64,11 +65,11 @@ const createTokenCommand = <C extends ICreateTokenPolicyConfig>({
         readKeyset('creation-guard'),
       ),
     ),
-    setMeta({ senderAccount: creator, chainId }),
-    addKeyset('creation-guard', creatorGuard.pred, ...creatorGuard.keys),
-    addSigner(creatorGuard.keys, (signFor) => [
+    setMeta({ senderAccount: creator.account, chainId }),
+    addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
+    addSigner(creator.keyset.keys, (signFor) => [
       signFor('coin.GAS'),
-      signFor('marmalade-v2.ledger.CREATE-TOKEN', tokenId, creatorGuard),
+      signFor('marmalade-v2.ledger.CREATE-TOKEN', tokenId, creator.keyset),
 
       ...generatePolicyCapabilities(
         policyConfig as ICreateTokenPolicyConfig,
