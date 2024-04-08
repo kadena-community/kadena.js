@@ -13,7 +13,7 @@ export const buttonContainerClass = style([
   {
     borderLeft: `1px solid ${token('color.border.base.bold')}`,
     position: 'absolute',
-    borderRadius: `0 ${token('spacing.sm')} ${token('spacing.sm')} 0`,
+    borderRadius: `0 ${token('spacing.xs')} ${token('spacing.xs')} 0`,
     right: 0,
   },
 ]);
@@ -26,6 +26,6 @@ export const iconClass = style([
 
 export const buttonClass = style([
   {
-    padding: '0 8px',
+    padding: '1px 0',
   },
 ]);

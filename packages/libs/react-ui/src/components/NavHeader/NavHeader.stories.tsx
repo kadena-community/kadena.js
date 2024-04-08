@@ -115,6 +115,7 @@ export const Dynamic: IStory = {
           ))}
         </NavHeaderLinkList>
         <NavHeaderButton
+          variant="transparent"
           icon={
             <MonoAccountCircle
               className={atoms({
@@ -124,6 +125,7 @@ export const Dynamic: IStory = {
           }
         />
         <NavHeaderButton
+          variant="transparent"
           icon={
             <MonoContrast
               className={atoms({
