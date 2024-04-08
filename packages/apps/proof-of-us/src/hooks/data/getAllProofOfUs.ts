@@ -13,9 +13,9 @@ export const useGetAllProofOfUs: IDataHook<NonFungibleTokenBalance[]> = () => {
   });
 
   const tokens: NonFungibleTokenBalance[] = useMemo(() => {
-    return (data?.nonFungibleAccount?.nonFungibles ??
+    return (data?.nonFungibleAccount?.nonFungibleTokenBalances ??
       []) as NonFungibleTokenBalance[];
-  }, [data?.nonFungibleAccount?.nonFungibles.length]);
+  }, [data?.nonFungibleAccount?.nonFungibleTokenBalances.length]);
 
   return {
     isLoading,
