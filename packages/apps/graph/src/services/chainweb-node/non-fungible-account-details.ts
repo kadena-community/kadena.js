@@ -17,9 +17,13 @@ export type NonFungibleChainAccountDetails = {
   };
 };
 
-function getClient(chainId: string, networkId: string): IClient {
+function getClient(
+  chainId: string,
+  networkId: string,
+  apiVersion: string,
+): IClient {
   return createClient(
-    `${dotenv.NETWORK_HOST}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
+    `${dotenv.NETWORK_HOST}/chainweb/${apiVersion}/${networkId}/chain/${chainId}/pact`,
   );
 }
 
@@ -29,13 +33,13 @@ export async function getNonFungibleAccountDetails(
   chainId: string,
 ): Promise<NonFungibleChainAccountDetails | null> {
   let result;
-  const networkId = (await networkConfig).networkId;
+  const { networkId, apiVersion } = await networkConfig;
 
   try {
     let result;
     let commandResult;
 
-    commandResult = await getClient(chainId, networkId).dirtyRead(
+    commandResult = await getClient(chainId, networkId, apiVersion).dirtyRead(
       Pact.builder
         .execution(
           Pact.modules['marmalade.ledger'].details(tokenId, accountName),
@@ -48,7 +52,7 @@ export async function getNonFungibleAccountDetails(
     );
 
     if (commandResult.result.status === 'failure') {
-      commandResult = await getClient(chainId, networkId).dirtyRead(
+      commandResult = await getClient(chainId, networkId, apiVersion).dirtyRead(
         Pact.builder
           .execution(
             Pact.modules['marmalade-v2.ledger'].details(tokenId, accountName),
