@@ -110,7 +110,7 @@ export default builder.node(
                 senderAccount: parent.accountName,
                 events: {
                   some: {
-                    moduleName: { startsWith: 'marmalade-v2' },
+                    moduleName: { startsWith: 'marmalade' },
                   },
                 },
               },
