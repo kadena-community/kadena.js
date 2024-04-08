@@ -32,11 +32,13 @@ export async function getNonFungibleAccountDetails(
   const networkId = (await networkConfig).networkId;
 
   try {
-    const commandResult = await getClient(chainId, networkId).dirtyRead(
+    let result;
+    let commandResult;
+
+    commandResult = await getClient(chainId, networkId).dirtyRead(
       Pact.builder
         .execution(
-          // @ts-ignore
-          Pact.modules['marmalade-v2.ledger'].details(tokenId, accountName),
+          Pact.modules['marmalade.ledger'].details(tokenId, accountName),
         )
         .setMeta({
           chainId: chainId as ChainId,
@@ -45,8 +47,21 @@ export async function getNonFungibleAccountDetails(
         .createTransaction(),
     );
 
-    const result = (commandResult.result as unknown as any)
-      .data as unknown as any;
+    if (commandResult.result.status === 'failure') {
+      commandResult = await getClient(chainId, networkId).dirtyRead(
+        Pact.builder
+          .execution(
+            Pact.modules['marmalade-v2.ledger'].details(tokenId, accountName),
+          )
+          .setMeta({
+            chainId: chainId as ChainId,
+          })
+          .setNetworkId(networkId)
+          .createTransaction(),
+      );
+    }
+
+    result = (commandResult.result as unknown as any).data as unknown as any;
 
     if (typeof result.balance === 'object') {
       result.balance = parseFloat(result.balance.decimal);

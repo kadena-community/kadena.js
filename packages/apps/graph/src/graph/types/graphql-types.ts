@@ -20,6 +20,7 @@ export interface NonFungibleTokenBalance {
   id: string;
   balance: number;
   chainId: string;
+  guard: Guard;
   info?: NonFungibleToken;
   version: string;
 }
@@ -73,7 +74,6 @@ export interface NonFungibleChainAccount {
   __typename: typeof NonFungibleChainAccountName;
   chainId: string;
   accountName: string;
-  guard: Guard;
   nonFungibleTokenBalances: NonFungibleTokenBalance[];
   transactions: Transaction[];
 }
