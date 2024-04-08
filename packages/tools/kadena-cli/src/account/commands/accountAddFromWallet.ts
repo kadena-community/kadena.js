@@ -52,8 +52,8 @@ export const createAddAccountFromWalletCommand = createCommand(
   'add-from-wallet',
   'Add an account from a key wallet',
   [
-    accountOptions.accountAlias(),
     globalOptions.walletSelect(),
+    accountOptions.accountAlias(),
     accountOptions.fungible(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
@@ -63,8 +63,8 @@ export const createAddAccountFromWalletCommand = createCommand(
   ],
 
   async (option, values) => {
-    const accountAlias = (await option.accountAlias()).accountAlias;
     const wallet = await option.walletName();
+    const accountAlias = (await option.accountAlias()).accountAlias;
     if (!wallet.walletNameConfig) {
       log.error(`Wallet ${wallet.walletName} does not exist.`);
       return;

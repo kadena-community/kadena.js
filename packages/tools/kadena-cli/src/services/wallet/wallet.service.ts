@@ -1,5 +1,6 @@
 import type { EncryptedString } from '@kadena/hd-wallet';
 import {
+  kadenaDecrypt,
   kadenaEncrypt,
   kadenaGenKeypairFromSeed,
   kadenaGenMnemonic,
@@ -49,6 +50,7 @@ export interface IWalletService {
     currentPassword: string,
     newPassword: string,
   ) => Promise<IWallet>;
+  testPassword: (wallet: IWallet, password: string) => Promise<boolean>;
 }
 
 export class WalletService implements IWalletService {
@@ -212,6 +214,14 @@ export class WalletService implements IWalletService {
       return await legacykadenaMnemonicToRootKeypair(password, words);
     }
     return await kadenaMnemonicToSeed(password, words);
+  }
+
+  public async testPassword(
+    wallet: IWallet,
+    password: string,
+  ): Promise<boolean> {
+    const result = await kadenaDecrypt(password, wallet.seed).catch(() => null);
+    return result !== null;
   }
 
   private async _generateKey({

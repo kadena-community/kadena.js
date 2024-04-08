@@ -300,7 +300,7 @@ const Account: React.FC = () => {
                   <TokenTable
                     tokens={
                       nonFungibleAccountData.nonFungibleAccount
-                        .nonFungibles as NonFungibleTokenBalance[]
+                        .nonFungibleTokenBalances as NonFungibleTokenBalance[]
                     }
                   />
                 </TabItem>

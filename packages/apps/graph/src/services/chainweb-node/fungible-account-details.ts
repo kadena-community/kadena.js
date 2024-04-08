@@ -15,7 +15,7 @@ export type FungibleChainAccountDetails = {
   };
 };
 
-export async function getAccountDetails(
+export async function getFungibleAccountDetails(
   fungibleName: string,
   accountName: string,
   chainId: string,

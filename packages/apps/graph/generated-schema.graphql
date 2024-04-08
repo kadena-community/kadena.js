@@ -235,7 +235,7 @@ type NonFungibleAccount implements Node {
   accountName: String!
   chainAccounts: [NonFungibleChainAccount!]!
   id: ID!
-  nonFungibles: [NonFungibleTokenBalance!]!
+  nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
 
   """
   Default page size is 20. Note that custom token related transactions are not included.
@@ -259,7 +259,7 @@ type NonFungibleChainAccount implements Node {
   accountName: String!
   chainId: ID!
   id: ID!
-  nonFungibles: [NonFungibleTokenBalance!]!
+  nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
 
   """
   Default page size is 20. Note that custom token related transactions are not included.
@@ -289,6 +289,7 @@ type NonFungibleToken {
 type NonFungibleTokenBalance {
   balance: Int!
   chainId: String!
+  guard: Guard!
   id: ID!
   info: NonFungibleToken
   version: String!

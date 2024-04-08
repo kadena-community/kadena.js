@@ -3,7 +3,11 @@ import { CLINAME } from '../constants/config.js';
 import { CommandError, printCommandError } from './command.util.js';
 import type { OptionType, createOption } from './createOption.js';
 import { globalOptions } from './globalOptions.js';
-import { handlePromptError, notEmpty } from './helpers.js';
+import {
+  handleNoKadenaDirectory,
+  handlePromptError,
+  notEmpty,
+} from './helpers.js';
 import { log } from './logger.js';
 import { readStdin } from './stdin.js';
 import type { FlattenObject, Fn, Prettify } from './typeUtilities.js';
@@ -257,6 +261,7 @@ export const createCommand =
           );
         }
       } catch (error) {
+        if (handleNoKadenaDirectory(error)) return;
         if (error instanceof CommandError) {
           printCommandError(error);
           if (prompted) {

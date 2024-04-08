@@ -11,6 +11,12 @@ export default builder.objectType('NonFungibleTokenBalance', {
     balance: t.exposeInt('balance'),
     chainId: t.exposeString('chainId'),
     version: t.exposeString('version'),
+    guard: t.field({
+      type: 'Guard',
+      resolve(parent) {
+        return parent.guard;
+      },
+    }),
     info: t.field({
       type: NonFungibleToken,
       nullable: true,

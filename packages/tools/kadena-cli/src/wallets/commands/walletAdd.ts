@@ -4,8 +4,10 @@ import { services } from '../../services/index.js';
 import path from 'node:path';
 import { writeAccountAliasMinimal } from '../../account/utils/createAccountConfigFile.js';
 import { ACCOUNT_DIR } from '../../constants/config.js';
+import { KadenaError } from '../../services/service-error.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
+import { handleNoKadenaDirectory } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import { walletOptions } from '../walletOptions.js';
@@ -31,6 +33,10 @@ export const createGenerateWalletCommand: (
     walletOptions.createAccount(),
   ],
   async (option, { collect }) => {
+    if (ACCOUNT_DIR === null) {
+      throw new KadenaError('no_kadena_directory');
+    }
+
     const config = await collect(option);
     log.debug('create-wallet:action', config);
 
@@ -99,6 +105,7 @@ export const createGenerateWalletCommand: (
         wallet,
       });
     } catch (error) {
+      if (handleNoKadenaDirectory(error)) return;
       if (error instanceof Error) {
         log.error(error.message);
       } else {

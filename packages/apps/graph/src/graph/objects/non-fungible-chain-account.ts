@@ -1,5 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
+import { getNonFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -27,13 +28,10 @@ export default builder.node(
     },
     async loadOne({ chainId, accountName }) {
       try {
-        return {
-          __typename: NonFungibleChainAccountName,
+        return await getNonFungibleChainAccount({
           chainId,
           accountName,
-          nonFungibles: [],
-          transactions: [],
-        };
+        });
       } catch (error) {
         throw normalizeError(error);
       }
@@ -41,7 +39,7 @@ export default builder.node(
     fields: (t) => ({
       chainId: t.exposeID('chainId'),
       accountName: t.exposeString('accountName'),
-      nonFungibles: t.field({
+      nonFungibleTokenBalances: t.field({
         type: [NonFungibleTokenBalance],
         complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
         async resolve(parent) {

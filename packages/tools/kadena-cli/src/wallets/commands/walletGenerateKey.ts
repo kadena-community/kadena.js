@@ -18,12 +18,12 @@ export const createGenerateHdKeysCommand: (
   'Generate public/secret key pair(s) from your wallet',
   [
     globalOptions.walletSelect(),
-    walletOptions.amount(),
-    walletOptions.startIndex({ disableQuestion: true }),
-    walletOptions.keyAlias(),
     securityOptions.createPasswordOption({
       message: 'Enter the wallet password',
     }),
+    walletOptions.amount(),
+    walletOptions.startIndex({ disableQuestion: true }),
+    walletOptions.keyAlias(),
   ],
   async (option) => {
     const { walletNameConfig, walletName } = await option.walletName();
@@ -32,11 +32,10 @@ export const createGenerateHdKeysCommand: (
       throw new Error(`Wallet: ${walletName} does not exist.`);
     }
 
+    const { passwordFile } = await option.passwordFile({ wallet });
     const { amount } = await option.amount();
     const { startIndex } = await option.startIndex();
     const { keyAlias } = await option.keyAlias();
-
-    const { passwordFile } = await option.passwordFile();
 
     const loadingSpinner = ora('Generating keys..').start();
 

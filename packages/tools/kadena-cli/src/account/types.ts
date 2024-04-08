@@ -31,7 +31,11 @@ export interface IGuard {
 export interface IAccountDetailsResult {
   guard: IGuard;
   account: string;
-  balance: number;
+  balance:
+    | number
+    | {
+        decimal: number;
+      };
 }
 
 export interface IAliasAccountData {

@@ -37,15 +37,15 @@ export const networkDefaults: IDefaultNetworkOptions = {
   },
 };
 
-export const defaultNetworksPath: string = NETWORKS_DIR;
-export const defaultNetworksSettingsPath = join(
-  DEFAULT_SETTINGS_PATH,
-  'networks',
-);
-export const defaultNetworksSettingsFilePath = join(
-  defaultNetworksSettingsPath,
-  '__default__.yaml',
-);
+export const defaultNetworksPath = NETWORKS_DIR;
+export const defaultNetworksSettingsPath =
+  DEFAULT_SETTINGS_PATH !== null
+    ? join(DEFAULT_SETTINGS_PATH, 'networks')
+    : null;
+export const defaultNetworksSettingsFilePath =
+  defaultNetworksSettingsPath !== null
+    ? join(defaultNetworksSettingsPath, '__default__.yaml')
+    : null;
 
 export const standardNetworks: string[] = ['mainnet', 'testnet'];
 export const defaultNetwork: string = 'testnet';
@@ -54,15 +54,15 @@ type NetworkKey = Exclude<keyof typeof networkDefaults, 'other'>;
 
 type INetworkFiles = Record<NetworkKey, string>;
 
-export const networkFiles: INetworkFiles = Object.keys(networkDefaults).reduce(
-  (files, key) => {
+export const getNetworkFiles = (kadenaDir: string): INetworkFiles => {
+  const networkPath = join(kadenaDir, 'networks');
+  return Object.keys(networkDefaults).reduce((files, key) => {
     if (key !== 'other') {
-      files[key as NetworkKey] = join(defaultNetworksPath, `${key}.yaml`);
+      files[key as NetworkKey] = join(networkPath, `${key}.yaml`);
     }
     return files;
-  },
-  {} as INetworkFiles,
-);
+  }, {} as INetworkFiles);
+};
 
 export const NETWORK_CONFIG_NOT_FOUND_MESSAGE =
   'No network configuration found for a network name';

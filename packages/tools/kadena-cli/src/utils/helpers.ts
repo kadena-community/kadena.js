@@ -14,6 +14,7 @@ import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import { writeDevnet } from '../devnet/utils/devnetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
+import { KadenaError } from '../services/service-error.js';
 import { CommandError, printCommandError } from './command.util.js';
 import { log } from './logger.js';
 
@@ -59,6 +60,9 @@ export function mergeConfigs<T extends object>(
 }
 
 export function handlePromptError(error: unknown): never {
+  if (handleNoKadenaDirectory(error)) {
+    process.exit(0);
+  }
   if (error instanceof CommandError) {
     printCommandError(error);
   } else if (error instanceof Error) {
@@ -99,6 +103,10 @@ export function getPubKeyFromAccount(account: string): string {
 }
 
 export async function getExistingNetworks(): Promise<ICustomNetworkChoice[]> {
+  if (defaultNetworksPath === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+
   await services.filesystem.ensureDirectoryExists(defaultNetworksPath);
 
   try {
@@ -365,6 +373,8 @@ const defaultNetworkSchema = z.object({
 });
 
 export const getDefaultNetworkName = async (): Promise<string | undefined> => {
+  if (defaultNetworksSettingsFilePath === null) return;
+
   const isDefaultNetworkAvailable = await services.filesystem.fileExists(
     defaultNetworksSettingsFilePath,
   );
@@ -391,26 +401,21 @@ export const generateAllChainIds = (): ChainId[] =>
     (_, index) => index.toString() as ChainId,
   );
 
-export const maskSensitiveInfo = (
-  obj: unknown,
-  fieldsToMask: string[] = ['password', 'passwordFile', 'newPasswordFile'],
-  mask: string = '******',
-): unknown => {
-  if (typeof obj !== 'object' || obj === null) return obj;
-
-  if (Array.isArray(obj)) {
-    return obj.map((item) => maskSensitiveInfo(item, fieldsToMask));
-  }
-
-  return Object.entries(obj as Record<string, unknown>).reduce(
-    (acc, [key, value]) => {
-      acc[key] = fieldsToMask.includes(key)
-        ? mask
-        : typeof value === 'object' && value !== null
-        ? maskSensitiveInfo(value, fieldsToMask)
-        : value;
-      return acc;
-    },
-    {} as Record<string, unknown>,
+export const printNoKadenaDirectory = (): void => {
+  log.warning(
+    'No kadena directory found. Run the following command to create one:\n',
   );
+  log.info('  kadena config init\n');
 };
+
+export function handleNoKadenaDirectory(error: unknown): boolean {
+  if (error instanceof KadenaError) {
+    if (error.code === 'no_kadena_directory') {
+      printNoKadenaDirectory();
+      log.debug(error);
+      process.exitCode = 1;
+      return true;
+    }
+  }
+  return false;
+}
