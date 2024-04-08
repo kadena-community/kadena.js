@@ -1,6 +1,7 @@
 import { checkAccountChains } from '@services/token-service';
 import DataLoader from 'dataloader';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 interface NonFungibleChainCheck {
   accountName: string;
 }

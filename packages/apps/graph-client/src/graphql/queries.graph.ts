@@ -213,8 +213,7 @@ export const getTransactions: DocumentNode = gql`
           }
           cmd {
             signers {
-              publicKey
-              sig
+              pubkey
             }
           }
         }

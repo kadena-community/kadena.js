@@ -4,6 +4,9 @@ import { gql } from '@apollo/client';
 export const CORE_TRANSACTION_FIELDS: DocumentNode = gql`
   fragment CoreTransactionFields on Transaction {
     hash
+    sigs {
+      sig
+    }
     cmd {
       meta {
         chainId
@@ -54,8 +57,7 @@ export const ALL_TRANSACTION_FIELDS: DocumentNode = gql`
       }
 
       signers {
-        publicKey
-        sig
+        pubkey
         clist {
           name
           args

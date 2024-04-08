@@ -35,6 +35,7 @@ import type {
   TransactionMempoolInfo,
   TransactionMeta,
   TransactionResult,
+  TransactionSignature,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -90,6 +91,7 @@ export const builder = new SchemaBuilder<
       TransactionResult: TransactionResult;
       TransactionCommand: TransactionCommand;
       TransactionCapability: TransactionCapability;
+      TransactionSignature: TransactionSignature;
     };
   }
 >({

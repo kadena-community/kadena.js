@@ -41,8 +41,7 @@ export const getTransactionByRequestKey: DocumentNode = gql`
 
       cmd {
         signers {
-          publicKey
-          sig
+          pubkey
         }
       }
     }

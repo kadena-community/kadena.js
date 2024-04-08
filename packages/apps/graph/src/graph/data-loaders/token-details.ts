@@ -2,6 +2,7 @@ import { getTokenDetails } from '@services/token-service';
 import DataLoader from 'dataloader';
 import type { NonFungibleTokenBalance } from '../types/graphql-types';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 interface TokenDetailsKey {
   accountName: string;
   chainId?: string;
