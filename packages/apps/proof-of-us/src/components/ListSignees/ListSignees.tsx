@@ -1,6 +1,9 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { env } from '@/utils/env';
-import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import {
+  getPercentageSignees,
+  isAlreadySigning,
+} from '@/utils/isAlreadySigning';
 import { MonoDelete } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
@@ -51,7 +54,10 @@ export const ListSignees: FC = () => {
     <Stack flexDirection="column" gap="md">
       <Stack>
         <Heading as="h5">Signees ({signees.length})</Heading>
-        <Stack flex={1} />
+
+        <Stack flex={1}>
+          {isAlreadySigning(proofOfUs) && getPercentageSignees(signees)}
+        </Stack>
         <Heading as="h6">Max {env.MAXSIGNERS}</Heading>
       </Stack>
 
