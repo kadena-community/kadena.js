@@ -83,27 +83,31 @@ classDiagram
   }
   <<interface>> Fungible
 
-  class CoinAccount {
-  }
+  class CoinAccount { }
 
   class KeySet {
     predicate
     publicKeys
   }
 
+  class Guard { }
+  <<interface>> Guard
+
   Transaction "1" *-- "0..*" Signer : signed by
   Transaction "1" *-- "0..*" Signature : signed with
-  Signature "1" -- "1..*" Capability : grants
-  Transaction "1" o-- "1" CoinAccount : send by (payed gas)
+  Signature "1" -- "0..*" Capability : grants
+  Transaction "1" *-- "1" CoinAccount : send by (payed gas)
   Fungible --|> CoinAccount
   Signer "1" -- "0..*" Capability : signs for
   Signer "1" -- "0..*" Signature : produces
-  Block "1" -- "0..*" Block : adjacent
+  Block "1" -- "0..*" Block : orphan
   Block "1" -- "1" Block : parent
   Block "1" -- "0..*" TransactionExecution : contains
   Block "1..*" -- "1" CoinAccount : miner
-  CoinAccount "1" -- "1" KeySet : guarded by
+  Chain "1" -- "3..*" Chain : neighbor
+  CoinAccount "1" -- "1" Guard : guarded by
   Transaction "1" *-- "0..*" TransactionExecution : appears in
   Block --* Chain
+  Guard --|> KeySet
 
 ```
