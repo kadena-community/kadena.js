@@ -19,6 +19,8 @@ export const createConfigPathCommand: (
     }
 
     log.info(log.color.green('Currently using kadena config directory in:'));
-    log.output(KADENA_DIR);
+    log.output(KADENA_DIR, {
+      directory: KADENA_DIR,
+    });
   },
 );

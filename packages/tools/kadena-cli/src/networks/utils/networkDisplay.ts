@@ -39,7 +39,7 @@ export async function displayNetworksConfig(): Promise<void> {
   const networks = await Promise.all(
     existingNetworks.map(async (network) => {
       const networkFilePath = path.join(
-        defaultNetworksPath,
+        defaultNetworksPath!,
         `${network.value}.yaml`,
       );
       const fileContent = await services.filesystem.readFile(networkFilePath);
