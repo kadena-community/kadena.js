@@ -116,7 +116,7 @@ admin-keyset access to the module.
 :::info
 
 If you’re unfamiliar with modules and keyset, our
-[Pact Modules Tutorial](/pact/beginner/modules)
+[Pact Modules Tutorial](/build/pact/modules)
 
 is a great place to get started.
 
@@ -183,7 +183,7 @@ accounts.
 
 :::info
 
-Try using [enforce](/pact/reference/functions#enforceh-1604583454) to regulate
+Try using [enforce](/reference/functions/general#enforceh-1604583454) to regulate
 who has access to create an account.
 
 :::

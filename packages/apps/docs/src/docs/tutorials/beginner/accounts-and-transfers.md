@@ -183,7 +183,7 @@ accounts.
 
 :::info
 
-Try using [enforce](/pact/reference/functions#enforceh-1604583454) to regulate
+Try using [enforce](/reference/functions/general#enforceh-1604583454) to regulate
 who has access to create an account.
 
 :::

@@ -249,7 +249,7 @@ the loans smart contract.
 :::info
 
 Constant definitions are covered in the documentation
-[here](/pact/reference/syntax#defconsth645951102).
+[here](/reference/syntax#defconsth645951102).
 
 :::
 
@@ -298,7 +298,7 @@ as you progress through other functions in the smart contract.
 
 :::info Hint
 
-Try using the [format](/pact/reference/functions#formath-1268779017) function to
+Try using the [format](/reference/functions/general#formath-1268779017) function to
 combine inputs into a string.
 
 :::
@@ -523,7 +523,7 @@ Take some time now to create each of the tables for the loans smart contract.
 :::info
 
 Table creation is covered in the
-[Tables and Schemas Tutorial](/pact/reference/functions/database#create-tableh447366077).
+[Tables and Schemas Tutorial](/reference/functions/database#create-tableh447366077).
 
 :::
 

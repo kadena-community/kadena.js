@@ -539,6 +539,6 @@ You also had some hands-on experience with the following tasks:
 The most important next step from here is to start learning how to write your own smart contracts using the Pact programming language.
 The following are the best resources for learning Pact:
 
-*   [Welcome to Pact](https://docs.kadena.io/learn-pact/beginner/welcome-to-pact).
+*   [Get started with Pact](/build/pact).
+*   [Set up a local development network](/build/pact/dev-network)
 *   [Real World Pact](https://github.com/thomashoneyman/real-world-pact#real-world-pact) tutorial series by Thomas Honeyman.
-*   [Language Reference](https://docs.kadena.io/pact/reference).

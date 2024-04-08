@@ -65,15 +65,15 @@ tables are and how they provide value to your Pact smart contracts.
 
 **Pact Language Reference**
 
-- [Table Creation](/pact/reference/concepts#table-creationh-1731482831)
-- [Types and Schemas](/pact/reference/concepts#types-and-schemash-1143751614)
+- [Table Creation](/build/pact/advanced#table-creationh-1731482831)
+- [Types and Schemas](/build/pact/advanced#types-and-schemash-1143751614)
 
 ### Define Schemas
 
 Before creating a table in Pact, you need to define its schema, which describes
 the structure of the table. Schemas specify the columns and data types that are
 meant to be in a table. Schemas are defined within Pact modules using
-[defschema](/pact/reference/syntax#defschemah-1003560474) and consist of a
+[defschema](/reference/syntax#defschemah-1003560474) and consist of a
 series of **field names** and **field types**.
 
 Each field name specifies a column in the table, and each field type specifies
@@ -110,7 +110,7 @@ Pact.
 :::info
 
 The data types supported by Pact can be found
-[here](/pact/reference/concepts#data-typesh1781031043)
+[here](/build/pact/advanced#data-typesh1781031043)
 
 :::
 
@@ -121,10 +121,10 @@ Tables hold data created by the smart contract.
 These are defined within Pact modules and there is no limit to the number of
 tables you can define. This data can be added, read, or changed using functions,
 and access to this data can be restricted using what is known as
-[table guards](/pact/reference/concepts#module-table-guardsh-1588944812).
+[table guards](/build/pact/advanced#module-table-guardsh-1588944812).
 
 Tables are defined after the prerequisite schema is defined, using
-[deftable](/pact/reference/syntax#deftableh661222121) followed by the table name
+[deftable](/reference/syntax#deftableh661222121) followed by the table name
 and a reference to the table’s schema.
 
 **Accounts Example**
@@ -168,10 +168,10 @@ outside of the module. This is done to ensure that the module may be redefined
 or updated later without having to re-create the table.
 
 The relationship of modules to tables is important, as described in
-[table guards](/pact/reference/concepts#module-table-guardsh-1588944812)
+[table guards](/build/pact/advanced#module-table-guardsh-1588944812)
 
 Tables are created outside of the module using
-[create-table](/pact/reference/functions/database#create-tableh447366077)
+[create-table](/reference/functions/database#create-tableh447366077)
 followed by the table name as defined within the module.
 
 ```pact title=" "
@@ -190,8 +190,8 @@ work with table data.
 
 | function type                                                   | purpose                       |
 | --------------------------------------------------------------- | ----------------------------- |
-| [Insert](/pact/reference/functions/database#inserth-1183792455) | Insert new rows into a table. |
-| [Read](/pact/reference/functions/database#readh3496342)         | Read values from a table.     |
+| [Insert](/reference/functions/database#inserth-1183792455) | Insert new rows into a table. |
+| [Read](/reference/functions/database#readh3496342)         | Read values from a table.     |
 | [Update](/pact/beginner/schemas-and-tables#updateh-1754979095)  | Update values within a table. |
 | Delete                                                          | Not possible in Pact.         |
 
@@ -208,7 +208,7 @@ insert.
 
 ### Insert
 
-[Insert](/pact/reference/functions/database#inserth-1183792455) functions are
+[Insert](/reference/functions/database#inserth-1183792455) functions are
 used to add new data into a table. These are useful when creating new artifacts
 such as entities, loans, accounts, and in any other case where you may want to
 add data.
@@ -261,7 +261,7 @@ the following into the **entity-table**.
 
 ### Read
 
-[Read](/pact/reference/functions/database#readh3496342) allows you to read rows
+[Read](/reference/functions/database#readh3496342) allows you to read rows
 from a table for a given key.
 
 For this example, imagine you had the following table and you wanted to read the
@@ -398,7 +398,7 @@ This query will return the following values from the **assets-table**.
 
 Along with select, you can also use a
 
-[where](/pact/reference/functions#whereh113097959)statement to further refine
+[where](/reference/functions/general#whereh113097959)statement to further refine
 your query as shown below.
 
 ```pact title=" "
@@ -426,7 +426,7 @@ This query would return the following values from the **assets-table**.
 
 ### Keys
 
-[Keys](/pact/reference/functions/database#keysh3288564) allows you to return all
+[Keys](/reference/functions/database#keysh3288564) allows you to return all
 the **key** values in a table.
 
 Given the previously shown **assets-table**, you could return each of the keys

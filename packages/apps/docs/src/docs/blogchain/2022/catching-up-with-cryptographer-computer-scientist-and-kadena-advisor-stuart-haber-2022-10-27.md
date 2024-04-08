@@ -112,7 +112,7 @@ speaker.
 ### What are Kadena and Pact?
 
 [Kadena](https://kadena.io/about/) is a unique scalable layer-1 Proof of Work
-(PoW) blockchain platform, and [Pact](/pact/beginner) is a very impressive and
+(PoW) blockchain platform, and [Pact](/build/pact) is a very impressive and
 proprietary smart contract language that comes with it. Kadena was founded by
 Stuart Popejoy and William Martino, whom I’ve known for several years now.
 

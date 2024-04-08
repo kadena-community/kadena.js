@@ -41,7 +41,7 @@ access the latest Pact tutorials.
 
 ## Introduction to Pact Modules
 
-A Pact [Module](/pact/reference/concepts#module-declarationh676938214) contains
+A Pact [Module](/build/pact/advanced#module-declarationh676938214) contains
 the logic necessary to create your application. It is where all code is written
 to for a smart contract. All API and data definitions exist within the Module.
 
@@ -83,7 +83,7 @@ smart contract. For that reason, we refer to the logic within a Pact file as a
 module.
 
 For more information see
-[modules](/pact/reference/concepts#module-declarationh676938214) in the
+[modules](/build/pact/advanced#module-declarationh676938214) in the
 developer documentation.
 
 ### Create a Module
@@ -204,13 +204,13 @@ before.
 
 **Contract Built-in functions include:**
 
-- [enforce](/pact/reference/functions#enforceh-1604583454)
-- [insert](/pact/reference/functions/database#inserth-1183792455)
-- [with-read](/pact/reference/functions/database#with-readh866473533)
+- [enforce](/reference/functions/general#enforceh-1604583454)
+- [insert](/reference/functions/database#inserth-1183792455)
+- [with-read](/reference/functions/database#with-readh866473533)
 
 We’ll also go over each of these in more detail in later tutorials. You can
 explore the
-[Pact Language Reference built-in functions](/pact/reference/functions) to learn
+[Pact Language Reference built-in functions](/reference/functions) to learn
 more about each of them now if you’d like.
 
 ---

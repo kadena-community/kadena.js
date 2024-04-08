@@ -22,7 +22,7 @@ layout: blog
 - **[Namespaces](https://github.com/kadena-io/pact/pull/337):** an important
   milestone to make upgrading contracts easier and more user-friendly.
 
-- **[Capabilities](/pact/reference/concepts#capabilitiesh-1323277354#capabilities):**
+- **[Capabilities](/build/pact/advanced#capabilitiesh-1323277354#capabilities):**
   a recently merged new feature, provides the building blocks for upcoming work
   that will allow programmable governance of Pact smart contracts.
 

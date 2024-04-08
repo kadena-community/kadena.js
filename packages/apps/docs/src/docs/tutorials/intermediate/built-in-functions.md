@@ -15,12 +15,12 @@ tags: ['pact', 'built in functions', 'intermediate', 'pact tutorials']
 Welcome to this introduction to some more advanced Pact built-in functions.
 
 In this guide, we will go through and explain specific built-in functions that
-are listed in the [pact reference page](/pact/intermediate/built-in-functions).
+are listed in the [pact reference page](/build/pact/built-in-functions).
 
 ## Simple Payment Verification
 
 The quick explanation of the `verify-spv` function can be found
-[here](/pact/reference/functions/spv).
+[here](/reference/functions/spv).
 
 `verify-spv` takes some blob, a binary data type, provided by the user and runs
 code on it that would be too expensive to do in pact. Thus, in the statement
@@ -34,7 +34,7 @@ retrieved from infura.
 
 In a REPL script, all you can do is simulate this, as the "ETH" support does not
 ship with Pact. The
-[`mock-spv`](/pact/reference/functions/repl-only-functions#mock-spvh-643983626)
+[`mock-spv`](/reference/functions/repl-only-functions#mock-spvh-643983626)
 REPL native allows you to mock a call to verify-spv
 ([github](https://github.com/kadena-io/kadenaswap/blob/master/pact/relay/kerc/kERC.repl#L44-L81)).
 
@@ -58,10 +58,10 @@ can be used for "broadcast" of e.g. a price feed to other chains.
 ## Managed Capabilities
 
 Documentation for understanding capabilities can be found
-[here](/pact/reference/concepts#capabilitiesh-1323277354).
+[here](/build/pact/advanced#capabilitiesh-1323277354).
 
 The capability built-in functions can be found
-[here](/pact/reference/functions/capabilities#compose-capabilityh1942343731).
+[here](/reference/functions/capabilities#compose-capabilityh1942343731).
 
 Before diving into managed capabilities, it is important to understand the
 difference between managed and unmanaged capabilities. Capabilities are never
@@ -102,7 +102,7 @@ what's new in the managed case. The fact that it gets passed as an argument in
 is just a syntactic convenience.
 
 Now lets take a look at the
-[TRANSFER managed capability](/pact/reference/concepts#the-transfer-managed-capabilityh262225727)
+[TRANSFER managed capability](/build/pact/advanced#the-transfer-managed-capabilityh262225727)
 to get a better understanding.
 
 The `@managed` keyword identifies the argument referring to the resource

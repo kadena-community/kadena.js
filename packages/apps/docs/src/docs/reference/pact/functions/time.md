@@ -89,8 +89,7 @@ pact> (add-time (time "2016-07-22T12:00:00Z") (minutes 1))
 
 _format_&nbsp;`string` _utcval_&nbsp;`string` _&rarr;_&nbsp;`time`
 
-Construct time from UTCVAL using FORMAT. See
-["Time Formats" docs](/pact/reference/time-formats) for supported formats.
+Construct time from UTCVAL using FORMAT. See [Time formats](#time-formats) for supported formats.
 
 ```pact
 pact> (parse-time "%F" "2016-09-12")
@@ -110,8 +109,8 @@ pact> (time "2016-07-22T11:26:35Z")
 
 ## Time formats
 
-The [parse-time](/pact/reference/functions/time#parse-timeh-1026813529) and
-[format-time](/pact/reference/functions/time#format-timeh1412423395) functions
+The [parse-time](/reference/functions/time#parse-timeh-1026813529) and
+[format-time](/reference/functions/time#format-timeh1412423395) functions
 accept format codes that derive from GNU `strftime` with some extensions, as
 follows:
 
@@ -225,7 +224,7 @@ here.
 ### Default format and JSON serialization
 
 The default format is a UTC ISO8601 date+time format: "%Y-%m-%dT%H:%M:%SZ", as
-accepted by the [time](/pact/reference/functions/time#timeh3560141) function.
+accepted by the [time](/reference/functions/time#timeh3560141) function.
 While the time object internally supports up to microsecond resolution, values
 returned from the Pact interpreter as JSON will be serialized with the default
 format. When higher resolution is desired, explicitly format times with `%v` and

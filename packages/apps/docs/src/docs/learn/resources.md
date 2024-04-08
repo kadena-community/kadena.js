@@ -35,7 +35,7 @@ For more information about Pact, see the following resources:
 - [Safer, Smarter Contracts with Pact](/blogchain/2019/safer-smarter-contracts-with-pact-2019-02-20)
 - [Pact Smart Contract Language](https://www.kadena.io/whitepapers)
 - [Pact GitHub](https://github.com/kadena-io/pact)
-- [Pact Language Reference](/pact/reference)
+- [Pact Language Reference](/reference)
 
 Note that the links to older articles or whitepapers are provided for
 convenience and historical context, but might contain information that is

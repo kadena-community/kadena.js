@@ -174,7 +174,7 @@ verbose: True
 
 Next, populate the **example.yaml** file with the example provided below. This
 code is also included in the Pact language documentation
-[here](/pact/reference/rest-api#api-request-formatterh-1762879533).
+[here](/reference/rest-api#api-request-formatterh-1762879533).
 
 Copy this text, paste it into your **example.yaml** file, and save the file.
 
@@ -210,7 +210,7 @@ can also view the keyPairs for this code.
 
 This code is formatted using the **Request YAML file format** specified in the
 Pact language documentation
-[here](/pact/reference/rest-api#request-yaml-file-formath1595040947).
+[here](/reference/rest-api#request-yaml-file-formath1595040947).
 
 ```bash title=" "
 code: Transaction code
@@ -238,7 +238,7 @@ included.
 Some things to note are that if you use the data key it defaults to an empty
 object, and nonce defaults to the current date and time. Other details about
 each of these keys can be found in the
-[documentation](/pact/reference/rest-api#request-yaml-file-formath1595040947).
+[documentation](/reference/rest-api#request-yaml-file-formath1595040947).
 
 :::
 

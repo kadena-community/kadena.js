@@ -131,7 +131,7 @@ Complete define and read the **module-admin-keyset** and the
 
 View
 
-[define-keyset](/pact/reference/functions/keysets#define-keyseth1939391989#define-keyset)
+[define-keyset](/reference/functions/keysets#define-keyseth1939391989#define-keyset)
 
 for more information on defining and reading keysets.
 
@@ -154,7 +154,7 @@ keyset.
 
 :::info
 
-View [module](/pact/reference/syntax#moduleh-1068784020) for more information on
+View [module](/reference/syntax#moduleh-1068784020) for more information on
 creating modules.
 
 :::
@@ -176,8 +176,8 @@ Define the user schema and table.
 
 :::info
 
-View [defschema](/pact/reference/syntax#defschemah-1003560474) and
-[deftable](/pact/reference/syntax#defschemah-1003560474) for more information on
+View [defschema](/reference/syntax#defschemah-1003560474) and
+[deftable](/reference/syntax#defschemah-1003560474) for more information on
 creating schemas and tables.
 
 :::
@@ -215,9 +215,9 @@ user.
 :::info
 
 View
-[enforce-keyset](/pact/reference/functions/keysets#enforce-keyseth1553446382)
+[enforce-keyset](/reference/functions/keysets#enforce-keyseth1553446382)
 
-and [insert](/pact/reference/functions/database#inserth-1183792455) for more
+and [insert](/reference/functions/database#inserth-1183792455) for more
 information related to completing this challenge.
 
 :::
@@ -259,9 +259,9 @@ with a given id.
 :::info
 
 View
-[enforce-keyset](/pact/reference/functions/keysets#enforce-keyseth1553446382),
-[with-read](/pact/reference/functions/database#with-readh866473533), and
-[bind](/pact/reference/functions#bindh3023933) for more information related to
+[enforce-keyset](/reference/functions/keysets#enforce-keyseth1553446382),
+[with-read](/reference/functions/database#with-readh866473533), and
+[bind](/reference/functions/general#bindh3023933) for more information related to
 completing this challenge.
 
 :::
@@ -304,7 +304,7 @@ keyset to update their nickname in the **users** table.
 :::info
 
 View [update](/pact/beginner/schemas-and-tables#updateh-1754979095) and
-[format](/pact/reference/functions#formath-1268779017) for more information
+[format](/reference/functions/general#formath-1268779017) for more information
 related to completing this challenge.
 
 :::
@@ -335,8 +335,8 @@ change their keyset.
 
 :::info
 
-View [update](/pact/beginner/schemas-and-tables#updateh-1754979095) and
-[format](/pact/reference/functions#format) for more information related to
+View [update](/build/pact/schemas-and-tables#updateh-1754979095) and
+[format](/reference/functions/general#format) for more information related to
 completing this challenge.
 
 :::

@@ -101,7 +101,7 @@ Pact REPL only built-in functions.
 When building a REPL file, there are many built-in functions available to you.
 
 These functions are known as the
-[REPL only functions](/pact/reference/functions/repl-only-functions) because
+[REPL only functions](/reference/functions/repl-only-functions) because
 they cannot be used in pact files. While all of these built-in functions are
 valuable, there are some that are more commonly used.
 
@@ -110,12 +110,12 @@ as the summary of commonly used functions provided below.
 
 | function                                                                         | purpose                                                         |
 | -------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| [begin-tx](/pact/reference/functions/repl-only-functions#begin-txh1489375784)    | Begin a transaction.                                            |
-| [commit-tx](/pact/reference/functions/repl-only-functions#commit-txh-1491210534) | Commit a transaction.                                           |
-| [env-data](/pact/reference/functions/repl-only-functions#env-datah-2100751222)   | Set transaction data.                                           |
-| [env-keys](/pact/reference/functions/repl-only-functions#env-keysh-2100538668)   | Set transaction signature keys.                                 |
-| [expect](/pact/reference/functions/repl-only-functions#expecth-1289163687)       | Evaluate expression and verify that it equals what is expected. |
-| [load](/pact/reference/functions/repl-only-functions#loadh3327206)               | Load and evaluate a file.                                       |
+| [begin-tx](/reference/functions/repl-only-functions#begin-txh1489375784)    | Begin a transaction.                                            |
+| [commit-tx](/reference/functions/repl-only-functions#commit-txh-1491210534) | Commit a transaction.                                           |
+| [env-data](/reference/functions/repl-only-functions#env-datah-2100751222)   | Set transaction data.                                           |
+| [env-keys](/reference/functions/repl-only-functions#env-keysh-2100538668)   | Set transaction signature keys.                                 |
+| [expect](/reference/functions/repl-only-functions#expecth-1289163687)       | Evaluate expression and verify that it equals what is expected. |
+| [load](/reference/functions/repl-only-functions#loadh3327206)               | Load and evaluate a file.                                       |
 
 Coming up, you will create a .REPL file for yourself that uses many of the
 functions listed above.
@@ -181,8 +181,8 @@ in functions; **env-keys** and **env-data**.
 
 | function                                                                       | purpose                                                                                |
 | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
-| [env-keys](/pact/reference/functions/repl-only-functions#env-keysh-2100538668) | Set transaction signature keys.                                                        |
-| [env-data](/pact/reference/functions/repl-only-functions#env-datah-2100751222) | Set transaction JSON data, either as encoded string, or as pact types coerced to JSON. |
+| [env-keys](/reference/functions/repl-only-functions#env-keysh-2100538668) | Set transaction signature keys.                                                        |
+| [env-data](/reference/functions/repl-only-functions#env-datah-2100751222) | Set transaction JSON data, either as encoded string, or as pact types coerced to JSON. |
 
 **env-keys example**
 
@@ -231,8 +231,8 @@ commit the transaction. This is done using **begin-tx** and **commit-tx**.
 
 | function                                                                         | purpose                               |
 | -------------------------------------------------------------------------------- | ------------------------------------- |
-| [begin-tx](/pact/reference/functions/repl-only-functions#begin-txh1489375784)    | Begin transaction with optional NAME. |
-| [commit-tx](/pact/reference/functions/repl-only-functions#commit-txh-1491210534) | Commit transaction.                   |
+| [begin-tx](/reference/functions/repl-only-functions#begin-txh1489375784)    | Begin transaction with optional NAME. |
+| [commit-tx](/reference/functions/repl-only-functions#commit-txh-1491210534) | Commit transaction.                   |
 
 It’s valuable to use these built-in functions to group calls into small
 transactions within your REPL file.
@@ -278,7 +278,7 @@ This is done using the built-in **load** function.
 
 | function                                                           | purpose                 |
 | ------------------------------------------------------------------ | ----------------------- |
-| [load](/pact/reference/functions/repl-only-functions#loadh3327206) | Load and evaluate FILE. |
+| [load](/reference/functions/repl-only-functions#loadh3327206) | Load and evaluate FILE. |
 
 The syntax for this is simple.
 
@@ -514,8 +514,8 @@ outcome of an expression is what you would have expected.
 
 |                                                                                            |                                                                  |
 | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| [expect](/pact/reference/functions/repl-only-functions#expecth-1289163687)                 | Evaluate expression and verify that it equals what is expected.  |
-| [expect-failure](/pact/reference/functions/repl-only-functions#expect-failureh-1357342698) | Evaluates the expression and succeed only if it throws an error. |
+| [expect](/reference/functions/repl-only-functions#expecth-1289163687)                 | Evaluate expression and verify that it equals what is expected.  |
+| [expect-failure](/reference/functions/repl-only-functions#expect-failureh-1357342698) | Evaluates the expression and succeed only if it throws an error. |
 
 On line 35, notice the line that states that it expects the real-keyset should
 fail.

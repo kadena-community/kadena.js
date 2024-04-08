@@ -26,7 +26,7 @@ the language syntax, and write a few functions for yourself.
 
 :::note Key Takeaway
 
-The [Pact Language Reference](/pact/reference) includes an overview of the
+The [Pact Language Reference](/reference) includes an overview of the
 syntax, basic commands, and built-in functions you’ll use to create smart
 contracts. By getting familiar with these commands, you’ll be prepared to build
 simple and safe smart contracts with the Pact programming language.
@@ -52,7 +52,7 @@ access the latest Pact tutorials.
 ## Get Started
 
 To get started with the Pact Language Basics, navigate to the
-[Pact Smart Contract Language reference](/pact/reference). The Pact Smart
+[Pact Smart Contract Language reference](/reference). The Pact Smart
 Contract Language reference describes the syntax and semantics of the Pact
 language.
 
@@ -63,7 +63,7 @@ understand the Pact language.
 
 ### Pact Language Syntax
 
-Start by reviewing the language [syntax](/pact/reference/syntax). Pact syntax
+Start by reviewing the language [syntax](/reference/syntax). Pact syntax
 can be found using the navigation on the left or by scrolling down to “Syntax”
 on the home page.
 
@@ -131,7 +131,7 @@ Preceding strings with a single ` is commonly used to mark unique items such as
 function or table names. It does not support whitespace or multi-line strings,
 but can be a helpful way to identify strings more succinctly.
 
-These are referred to as [symbols](/pact/reference/syntax#symbolsh-78785093).
+These are referred to as [symbols](/reference/syntax#symbolsh-78785093).
 
 #### Boolean
 
@@ -211,8 +211,7 @@ example shown above.
 | %S     | second of minute (without decimal part), 0-padded to two chars, "00"–"60"                                                                                 |
 | %N     | ISO 8601 style numeric time zone (e.g., "-06:00" or "+01:00") /EXTENSION/                                                                                 |
 
-View the language reference for more
-[time formats](/pact/reference/time-formats).
+View the language reference for more [time formats](/reference/functions/time).
 
 #### Parenthesis
 
@@ -251,7 +250,7 @@ module.
 
 After getting familiar with the Pact language syntax, you are ready to start
 working with some of Pacts built-in functions. To access the Pact
-[built-in functions](/pact/reference/functions), navigate to **Built-in
+[built-in functions](/reference/functions), navigate to **Built-in
 Functions** using the navigation on the left.
 
 ![3-built-in-functions](/assets/docs/3-built-in-functions.png)
@@ -292,10 +291,10 @@ pact> (* 5 5)
 ```
 
 Other math operations can be performed by changing
-[multiply](/pact/reference/functions/operators#h42) to
-[add](/pact/reference/functions/operators#h43),
-[subtract](/pact/reference/functions/operators#h45), or
-[divide](/pact/reference/functions/operators#h47).
+[multiply](/reference/functions/operators#h42) to
+[add](/reference/functions/operators#h43),
+[subtract](/reference/functions/operators#h45), or
+[divide](/reference/functions/operators#h47).
 
 #### Combine Expressions
 
@@ -338,7 +337,7 @@ Along with arithmetic operators and comparison operators, Pact supports boolean,
 exponential, rounding, and many other common operators. You can learn more about
 each of these in the
 
-[operator documentation](/pact/reference/functions/operators).
+[operator documentation](/reference/functions/operators).
 
 ### General Built-in Functions
 
@@ -348,7 +347,7 @@ assigning values, checking values, and have many other use cases.
 ### At
 
 The first function listed on this page is
-[at](/pact/reference/functions#ath3123).
+[at](/reference/functions/general#ath3123).
 
 To run the **at** function, type the following command into your terminal and
 hit enter.
@@ -375,7 +374,7 @@ Scratchy
 
 ### Bind
 
-**[Bind](/pact/reference/functions#bindh3023933)** allows you to map a variable
+**[Bind](/reference/functions/general#bindh3023933)** allows you to map a variable
 to a value from within an object.
 
 To create a binding, use the keyword **bind** followed by a source object.
@@ -409,7 +408,7 @@ rather than the variable **from-bal**.
 
 ### Map
 
-[Map](/pact/reference/functions#maph107868) allows you to apply a specific
+[Map](/reference/functions/general#maph107868) allows you to apply a specific
 operation to all elements within a list and return the results.
 
 To create a mapping, use the keyword **map** followed by the operation and the
@@ -443,7 +442,7 @@ You can use any of the operators available in Pact when creating a mapping.
 
 ### Format
 
-**[Format](/pact/reference/functions#formath-1268779017)** allows you to piece
+**[Format](/reference/functions/general#formath-1268779017)** allows you to piece
 messages together using a mix of strings and variables. Formatting is great to
 use any time you need to send messages to your users.
 
@@ -580,7 +579,7 @@ functions.
 ### Simple Payment Verification
 
 The quick explanation of the `verify-spv` function can be found
-[here](/pact/reference/functions/spv).
+[here](/reference/functions/spv).
 
 `verify-spv` takes some blob, a binary data type, provided by the user and runs
 code on it that would be too expensive to do in pact. Thus, in the statement
@@ -594,7 +593,7 @@ retrieved from infura.
 
 In a repl script, all you can do is simulate this, as the "ETH" support does not
 ship with Pact. The
-[`mock-spv`](/pact/reference/functions/repl-only-functions#mock-spvh-643983626)
+[`mock-spv`](/reference/functions/repl-only-functions#mock-spvh-643983626)
 REPL native allows you to mock a call to verify-spv
 ([github](https://github.com/kadena-io/kadenaswap/blob/master/pact/relay/kerc/kERC.repl#L44-L81)).
 
@@ -618,10 +617,10 @@ can be used for "broadcast" of e.g. a price feed to other chains.
 ### Managed Capabilities
 
 Documentation for understanding capabilities can be found
-[here](/pact/reference/concepts#capabilitiesh-1323277354#capabilities).
+[here](/build/pact/advanced#capabilitiesh-1323277354#capabilities).
 
 The capability built-in functions can be found
-[here](/pact/reference/functions/capabilities#compose-capabilityh1942343731).
+[here](/reference/functions/capabilities#compose-capabilityh1942343731).
 
 Before diving into managed capabilities, it is important to understand the
 difference between managed and unmanaged capabilities. Capabilities are never
@@ -662,7 +661,7 @@ what's new in the managed case. The fact that it gets passed as an argument in
 is just a syntactic convenience.
 
 Now lets take a look at the
-[TRANSFER managed capability](/pact/reference/concepts#the-transfer-managed-capabilityh262225727)
+[TRANSFER managed capability](/build/pact/advanced#the-transfer-managed-capabilityh262225727)
 to get a better understanding.
 
 The `@managed` keyword identifies the argument referring to the resource

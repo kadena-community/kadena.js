@@ -216,7 +216,7 @@ the full command.
 ### Detached Signature Transaction Format
 
 The YAML input expected by `pact -u` is similar to the
-[Public Blockchain YAML format](/pact/reference/rest-api#detached-signature-transaction-formath-260011505)
+[Public Blockchain YAML format](/reference/rest-api#detached-signature-transaction-formath-260011505)
 described above with one major difference. Instead of the `keyPairs` field which
 requires both the public and secret keys, `pact -u` expects a `signers` field
 that only needs a public key. This allows signatures to be added on

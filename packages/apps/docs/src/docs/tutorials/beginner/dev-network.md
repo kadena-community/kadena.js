@@ -168,7 +168,7 @@ In this example, the error is a missing keyset and you can click **Fix** to auto
 
 If you delete the keyset created for you, you can use the Data section to create a keyset by typing a keyset name, then clicking **Create**. 
 By default, keysets require all of the keys associated with an account to sign transactions, so you'll see **keys-all** selected for the new keyset. 
-You'll learn more about keysets, in [Keysets](/build/pact/beginner/keysets).
+You'll learn more about keysets, in [Keysets](/build/pact/keysets).
 
 You can also create keysets manually using the JSON format by clicking **Raw**, then defining the keyset **name**, **keys**, and **pred** values.
 You can see the JSON format for keysets you have created by clicking **Result**.
@@ -280,7 +280,7 @@ After you select a deployed contract, you can click **View** to see details abou
 You can click **Open** to see the full contract code in the code editor.
 
 You can also call individual functions from within the Module Explorer. 
-You'll learn more about calling functions in [Hello World](/build/pact/beginner/hello-world).
+You'll learn more about calling functions in [Hello World](/build/pact/hello-world).
 
 ## Next steps
 

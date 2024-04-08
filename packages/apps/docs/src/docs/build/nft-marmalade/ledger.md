@@ -118,7 +118,7 @@ token-policies, and the function is executed at `ledger.transfer`.
 **Sale**
 
 `sale` allows a two-step offer - buy escrow system using
-[defpact](/pact/reference/syntax#defpacth1545231271). Arguments include:
+[defpact](/reference/syntax#defpacth1545231271). Arguments include:
 
 - `id`: token-id
 - `seller`: seller account
@@ -139,7 +139,7 @@ Step 0-rollback executes `withdraw`. `withdraw` transfers token from the escrow
 back to the seller. `withdraw` can be executed after timeout, by sending in
 `cont` command with `rollback: true`, `step: 0`. Formatting `cont` commands can
 be read in
-[here](/pact/reference/rest-api#yaml-continuation-command-requesth-2127282742)
+[here](/reference/rest-api#yaml-continuation-command-requesth-2127282742)
 
 `policy-manager.enforce-withdraw` calls `policy:enforce-withdraw` in stored
 token-policies, and the function is executed at step 0-rollback of `sale`.
