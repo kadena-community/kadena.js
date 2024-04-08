@@ -184,6 +184,11 @@ export async function signTransactionWithWallet(
 
     return addSignatures(unsignedTransaction, ...signatures);
   } catch (error) {
+    if (error.message === 'Decryption failed') {
+      throw new Error(
+        'Incorrect password. Please verify the password and try again.',
+      );
+    }
     log.error(`Error signing transaction: ${error.message}`);
     return unsignedTransaction;
   }

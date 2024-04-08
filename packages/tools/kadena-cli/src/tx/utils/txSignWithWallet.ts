@@ -176,12 +176,23 @@ export async function signWithWallet(
 
   if (results.data.commands.length !== 0) {
     results.data.commands.forEach((tx, i) => {
-      log.info(
-        `Transaction with hash: ${results.data.commands[i].command.hash} was successfully signed.`,
-      );
+      log.info(log.color.green(`Transaction executed code: `));
       log.output(
-        JSON.stringify(results.data.commands[i].command, null, 2),
-        results.data.commands[i].command,
+        JSON.stringify(
+          JSON.parse(results.data.commands[i]?.command?.cmd)?.payload?.exec
+            ?.code,
+          null,
+          2,
+        ),
+        JSON.stringify(
+          JSON.parse(results.data.commands[i]?.command?.cmd)?.payload?.exec
+            ?.code,
+        ),
+      );
+      log.info(
+        log.color.green(
+          `\nTransaction with hash: ${results.data.commands[i].command.hash} was successfully signed.`,
+        ),
       );
       log.info(`Signed transaction saved to ${tx.path}`);
     });
