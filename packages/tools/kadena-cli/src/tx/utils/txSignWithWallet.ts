@@ -191,7 +191,7 @@ export async function signWithWallet(
       );
       log.info(
         log.color.green(
-          `\nTransaction with hash: ${results.data.commands[i].command.hash} was successfully signed.`,
+          `\nTransaction with hash: ${results.data.commands[i]?.command?.hash} was successfully signed.`,
         ),
       );
       log.info(`Signed transaction saved to ${tx.path}`);
