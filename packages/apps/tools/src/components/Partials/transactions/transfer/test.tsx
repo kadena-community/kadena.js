@@ -3,6 +3,7 @@ import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { useAccountChainDetailsQuery } from '@/hooks/use-account-chain-details-query';
 import type { useAccountDetailsQuery } from '@/hooks/use-account-details-query';
 import useLedgerPublicKey from '@/hooks/use-ledger-public-key';
+import { GasDefaults } from '@/hooks/use-ledger-sign';
 import { chainSelectContainerClass } from '@/pages/transactions/transfer/styles.css';
 import { MonoContentCopy } from '@kadena/react-icons/system';
 import { Button, NumberField, Stack, Text } from '@kadena/react-ui';
@@ -193,6 +194,11 @@ export const Test: FC<ITestProps> = ({
           invalidAmount ? invalidAmountMessage : errors.amount?.message
         }
         info={t('The amount of KDA to transfer.')}
+        description={
+          isLedger
+            ? `Gas Price: ${GasDefaults.PRICE}, Gas limit: ${GasDefaults.LIMIT}`
+            : undefined
+        }
       />
     </>
   );
