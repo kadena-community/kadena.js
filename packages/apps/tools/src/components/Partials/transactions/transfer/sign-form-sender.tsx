@@ -86,7 +86,7 @@ export const SignFormSender: FC<ISignFormSenderProps> = ({
           target={'_blank'}
           key={'key'}
         >
-          {t('Find your key')}
+          {t('forgot-ledger-key-index')}
         </Link>
       </Stack>
 
