@@ -1,4 +1,5 @@
 import type {
+  BuiltInPredicate,
   ChainId,
   IPactModules,
   PactReference,
@@ -14,18 +15,18 @@ import {
 import type { IPactInt } from '@kadena/types';
 import { dirtyReadClient } from '../core/client-helpers';
 import type { IClientConfig } from '../core/utils/helpers';
+import { ICreateTokenPolicyConfig, validatePolicies } from './policy-config';
 
 interface ICreateTokenIdInput {
+  policyConfig?: ICreateTokenPolicyConfig;
   policies?: string[];
   uri: string;
   precision: IPactInt | PactReference;
   chainId: ChainId;
-  creator: {
-    account: string;
-    keyset: {
-      keys: string[];
-      pred: 'keys-all' | 'keys-2' | 'keys-any';
-    };
+  creator: string;
+  creatorGuard: {
+    keys: string[];
+    pred: BuiltInPredicate;
   };
 }
 
@@ -34,18 +35,23 @@ const createTokenIdCommand = ({
   uri,
   precision,
   creator,
+  creatorGuard,
   chainId,
-}: ICreateTokenIdInput) =>
-  composePactCommand(
+  policyConfig,
+}: ICreateTokenIdInput) => {
+  validatePolicies(policyConfig, policies);
+
+  return composePactCommand(
     execution(
       Pact.modules['marmalade-v2.ledger']['create-token-id'](
         { precision, uri, policies },
         readKeyset('creation-guard'),
       ),
     ),
-    addKeyset('creation-guard', creator.keyset.pred, ...creator.keyset.keys),
-    setMeta({ senderAccount: creator.account, chainId }),
+    addKeyset('creation-guard', creatorGuard.pred, ...creatorGuard.keys),
+    setMeta({ senderAccount: creator, chainId }),
   );
+};
 
 export const createTokenId = (
   inputs: ICreateTokenIdInput,

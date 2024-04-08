@@ -1,7 +1,10 @@
-import type { IPactModules, PactReturnType } from '@kadena/client';
-import { Pact, readKeyset } from '@kadena/client';
+import type {
+  BuiltInPredicate,
+  IPactModules,
+  PactReturnType,
+} from '@kadena/client';
+import { Pact } from '@kadena/client';
 import {
-  addKeyset,
   addSigner,
   composePactCommand,
   execution,
@@ -11,10 +14,11 @@ import type { ChainId, IPactDecimal } from '@kadena/types';
 import { submitClient } from '../core';
 import type { IClientConfig } from '../core/utils/helpers';
 
-interface IMintTokenInput {
+interface IBurnTokenInput {
   policyConfig?: {
     guarded?: boolean;
     nonFungible?: boolean;
+    hasRoyalty?: boolean;
   };
   tokenId: string;
   accountName: string;
@@ -23,43 +27,39 @@ interface IMintTokenInput {
     account: string;
     keyset: {
       keys: string[];
-      pred: 'keys-all' | 'keys-2' | 'keys-any';
+      pred: BuiltInPredicate;
     };
   };
   amount: IPactDecimal;
 }
 
-const mintTokenCommand = ({
+const burnTokenCommand = ({
   tokenId,
   accountName,
   chainId,
   guard,
   amount,
   policyConfig,
-}: IMintTokenInput) => {
-  if (policyConfig?.nonFungible && amount.decimal !== '1') {
-    throw new Error(
-      'Non-fungible tokens can only be minted with an amount of 1',
-    );
+}: IBurnTokenInput) => {
+  if (policyConfig?.nonFungible) {
+    throw new Error('Non-fungible tokens cannot be burned');
+  }
+
+  if (policyConfig?.hasRoyalty) {
+    throw new Error('Royalty tokens cannot be burned');
   }
 
   return composePactCommand(
     execution(
-      Pact.modules['marmalade-v2.ledger'].mint(
-        tokenId,
-        accountName,
-        readKeyset('guard'),
-        amount,
-      ),
+      Pact.modules['marmalade-v2.ledger'].burn(tokenId, accountName, amount),
     ),
-    addKeyset('guard', guard.keyset.pred, ...guard.keyset.keys),
     addSigner(guard.keyset.keys, (signFor) => [
       signFor('coin.GAS'),
-      signFor('marmalade-v2.ledger.MINT', tokenId, accountName, amount),
+      signFor('marmalade-v2.ledger.BURN', tokenId, accountName, amount),
       ...(!!policyConfig?.guarded
         ? [
             signFor(
-              'marmalade-v2.guard-policy-v1.MINT',
+              'marmalade-v2.guard-policy-v1.BURN',
               tokenId,
               accountName,
               amount,
@@ -71,7 +71,7 @@ const mintTokenCommand = ({
   );
 };
 
-export const mintToken = (inputs: IMintTokenInput, config: IClientConfig) =>
-  submitClient<PactReturnType<IPactModules['marmalade-v2.ledger']['mint']>>(
+export const burnToken = (inputs: IBurnTokenInput, config: IClientConfig) =>
+  submitClient<PactReturnType<IPactModules['marmalade-v2.ledger']['burn']>>(
     config,
-  )(mintTokenCommand(inputs));
+  )(burnTokenCommand(inputs));

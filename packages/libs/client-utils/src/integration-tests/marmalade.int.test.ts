@@ -1,10 +1,16 @@
 import type { ChainId } from '@kadena/client';
-import { createSignWithKeypair } from '@kadena/client';
+import { BuiltInPredicate, createSignWithKeypair } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { describeModule } from '../built-in';
 import { transferCreate } from '../coin';
 import type { IClientConfig } from '../core/utils/helpers';
+import {
+  burnToken,
+  getAccountDetails,
+  getTokenInfo,
+  getUri,
+} from '../marmalade';
 import { createToken } from '../marmalade/create-token';
 import { createTokenId } from '../marmalade/create-token-id';
 import { getTokenBalance } from '../marmalade/get-token-balance';
@@ -26,12 +32,10 @@ const inputs = {
   precision: { int: '0' },
   uri: Date.now().toString(),
   policies: [],
-  creator: {
-    account: sourceAccount.account,
-    keyset: {
-      keys: [sourceAccount.publicKey],
-      pred: 'keys-all' as const,
-    },
+  creator: sourceAccount.account,
+  creatorGuard: {
+    keys: [sourceAccount.publicKey],
+    pred: 'keys-all' as BuiltInPredicate,
   },
 };
 const config = {
@@ -122,7 +126,7 @@ describe('createTokenId', () => {
 });
 
 describe('createToken', () => {
-  it('shoud create a token', async () => {
+  it('should create a token', async () => {
     const withStep = withStepFactory();
 
     const result = await createToken(
@@ -175,14 +179,14 @@ describe('createToken', () => {
 });
 
 describe('mintToken', () => {
-  it('shoud mint a token', async () => {
+  it('should mint a token', async () => {
     const withStep = withStepFactory();
 
     const result = await mintToken(
       {
         ...inputs,
         tokenId: tokenId as string,
-        creatorAccount: sourceAccount.account,
+        accountName: sourceAccount.account,
         guard: {
           account: sourceAccount.account,
           keyset: {
@@ -255,13 +259,13 @@ describe('mintToken', () => {
 
     expect(balance).toBe(1);
   });
-  it('shoud throw error when non-existent token is minted', async () => {
+  it('should throw error when non-existent token is minted', async () => {
     const nonExistingTokenId = 'non-existing-token';
     const task = mintToken(
       {
         ...inputs,
         tokenId: nonExistingTokenId,
-        creatorAccount: sourceAccount.account,
+        accountName: sourceAccount.account,
         guard: {
           account: sourceAccount.account,
           keyset: {
@@ -281,7 +285,7 @@ describe('mintToken', () => {
 });
 
 describe('getTokenBalance', () => {
-  it('shoud get a balance', async () => {
+  it('should get a balance', async () => {
     const result = await getTokenBalance(
       {
         accountName: sourceAccount.account,
@@ -326,8 +330,152 @@ describe('getTokenBalance', () => {
   });
 });
 
+describe('getTokenInfo', () => {
+  it('should get the info', async () => {
+    const result = await getTokenInfo(
+      {
+        chainId,
+        guard: {
+          account: sourceAccount.account,
+          keyset: {
+            keys: [sourceAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
+        tokenId: tokenId as string,
+      },
+      config,
+    ).execute();
+
+    expect(result).toStrictEqual({
+      supply: 1,
+      precision: { int: 0 },
+      uri: inputs.uri,
+      id: tokenId,
+      policies: [],
+    });
+  });
+  it('should throw an error if token does not exist', async () => {
+    const nonExistingTokenId = 'non-existing-token';
+    const task = getTokenInfo(
+      {
+        chainId,
+        guard: {
+          account: sourceAccount.account,
+          keyset: {
+            keys: [sourceAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
+        tokenId: nonExistingTokenId,
+      },
+      config,
+    );
+
+    await expect(() => task.execute()).rejects.toThrowError(
+      new Error(`with-read: row not found: ${nonExistingTokenId}`),
+    );
+  });
+});
+
+describe('getTokenUri', () => {
+  it('should get the uri', async () => {
+    const result = await getUri(
+      {
+        chainId,
+        guard: {
+          account: sourceAccount.account,
+          keyset: {
+            keys: [sourceAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
+        tokenId: tokenId as string,
+      },
+      config,
+    ).execute();
+
+    expect(result).toBe(inputs.uri);
+  });
+  it('should throw an error if token does not exist', async () => {
+    const nonExistingTokenId = 'non-existing-token';
+    const task = getUri(
+      {
+        chainId,
+        guard: {
+          account: sourceAccount.account,
+          keyset: {
+            keys: [sourceAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
+        tokenId: nonExistingTokenId,
+      },
+      config,
+    );
+
+    await expect(() => task.execute()).rejects.toThrowError(
+      new Error(`read: row not found: ${nonExistingTokenId}`),
+    );
+  });
+});
+
+describe('getAccountDetails', () => {
+  it('should get the account details', async () => {
+    const result = await getAccountDetails(
+      {
+        chainId,
+        accountName: sourceAccount.account,
+        guard: {
+          account: sourceAccount.account,
+          keyset: {
+            keys: [sourceAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
+        tokenId: tokenId as string,
+      },
+      config,
+    ).execute();
+
+    expect(result).toStrictEqual({
+      account: sourceAccount.account,
+      balance: 1,
+      guard: {
+        keys: [sourceAccount.publicKey],
+        pred: 'keys-all' as const,
+      },
+      id: tokenId,
+    });
+  });
+  it('should throw an error if token does not exist', async () => {
+    const nonExistingTokenId = 'non-existing-token';
+    const task = getAccountDetails(
+      {
+        chainId,
+        accountName: sourceAccount.account,
+        guard: {
+          account: sourceAccount.account,
+          keyset: {
+            keys: [sourceAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
+        tokenId: nonExistingTokenId,
+      },
+      config,
+    );
+
+    await expect(() => task.execute()).rejects.toThrowError(
+      new Error(
+        `read: row not found: ${nonExistingTokenId}:${sourceAccount.account}`,
+      ),
+    );
+  });
+});
+
 describe('transferCreateToken', () => {
-  it('shoud transfer-create a token', async () => {
+  it('should transfer-create a token', async () => {
     const withStep = withStepFactory();
 
     const result = await transferCreateToken(
@@ -439,6 +587,128 @@ describe('transferCreateToken', () => {
 
     await expect(() => task.execute()).rejects.toThrowError(
       new Error('Insufficient funds'),
+    );
+  });
+});
+
+describe('burnToken', () => {
+  it('should burn a token', async () => {
+    const withStep = withStepFactory();
+
+    const burnConfig = {
+      host: 'http://127.0.0.1:8080',
+      defaults: {
+        networkId: 'development',
+      },
+      sign: createSignWithKeypair([secondaryTargetAccount]),
+    };
+
+    const result = await burnToken(
+      {
+        ...inputs,
+        tokenId: tokenId as string,
+        accountName: secondaryTargetAccount.account,
+        guard: {
+          account: secondaryTargetAccount.account,
+          keyset: {
+            keys: [secondaryTargetAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
+        amount: new PactNumber(1).toPactDecimal(),
+      },
+      burnConfig,
+    )
+      .on(
+        'sign',
+        withStep((step, tx) => {
+          expect(step).toBe(1);
+          expect(tx.sigs).toHaveLength(1);
+          expect(tx.sigs[0].sig).toBeTruthy();
+        }),
+      )
+      .on(
+        'preflight',
+        withStep((step, prResult) => {
+          expect(step).toBe(2);
+          if (prResult.result.status === 'failure') {
+            expect(prResult.result.status).toBe('success');
+          } else {
+            expect(prResult.result.data).toBe(true);
+          }
+        }),
+      )
+      .on(
+        'submit',
+        withStep((step, trDesc) => {
+          expect(step).toBe(3);
+          expect(trDesc.networkId).toBe(NetworkIds.development);
+          expect(trDesc.chainId).toBe(chainId);
+          expect(trDesc.requestKey).toBeTruthy();
+        }),
+      )
+      .on(
+        'listen',
+        withStep((step, sbResult) => {
+          expect(step).toBe(4);
+          if (sbResult.result.status === 'failure') {
+            expect(sbResult.result.status).toBe('success');
+          } else {
+            expect(sbResult.result.data).toBe(true);
+          }
+        }),
+      )
+      .execute();
+
+    expect(result).toBe(true);
+
+    const balance = await getTokenBalance(
+      {
+        accountName: secondaryTargetAccount.account,
+        chainId,
+        guard: {
+          account: secondaryTargetAccount.account,
+          keyset: {
+            keys: [secondaryTargetAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
+        tokenId: tokenId as string,
+      },
+      burnConfig,
+    ).execute();
+
+    expect(balance).toBe(0);
+  });
+  it('should throw error when non-existent token is burned', async () => {
+    const burnConfig = {
+      host: 'http://127.0.0.1:8080',
+      defaults: {
+        networkId: 'development',
+      },
+      sign: createSignWithKeypair([secondaryTargetAccount]),
+    };
+
+    const nonExistingTokenId = 'non-existing-token';
+    const task = burnToken(
+      {
+        ...inputs,
+        tokenId: nonExistingTokenId,
+        accountName: secondaryTargetAccount.account,
+        guard: {
+          account: secondaryTargetAccount.account,
+          keyset: {
+            keys: [secondaryTargetAccount.publicKey],
+            pred: 'keys-all' as const,
+          },
+        },
+        amount: new PactNumber(1).toPactDecimal(),
+      },
+      burnConfig,
+    );
+
+    await expect(() => task.execute()).rejects.toThrowError(
+      new Error('with-read: row not found: non-existing-token'),
     );
   });
 });
