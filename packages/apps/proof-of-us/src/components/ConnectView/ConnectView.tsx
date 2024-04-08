@@ -1,3 +1,5 @@
+import { Confirmation } from '@/components/Confirmation/Confirmation';
+import { showModalBtnWrapperClass } from '@/components/ConnectView/styles.css';
 import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useAccount } from '@/hooks/account';
@@ -144,7 +146,13 @@ export const ConnectView: FC<IProps> = () => {
               <Button>Go to Proof</Button>
             </Link>
           ) : (
-            <Button onPress={handleSignOff}>Drop out!</Button>
+            <Confirmation
+              text="Are you sure you want to be removed from the list?"
+              action={handleSignOff}
+              showModalBtnWrapperClass={showModalBtnWrapperClass}
+            >
+              <Button>Drop out!</Button>
+            </Confirmation>
           )}
         </Stack>
       )}
