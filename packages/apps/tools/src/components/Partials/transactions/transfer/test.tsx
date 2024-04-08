@@ -41,7 +41,7 @@ export const Test: FC<ITestProps> = ({
     watch,
   } = useFormContext<FormData>();
 
-  const [watchSender, watchChain] = watch(['sender', 'senderChainId']);
+  const watchSender = watch('sender');
 
   const [chainSelectOptions, setChainSelectOptions] = useState<
     { chainId: ChainId; data: string | number }[]
@@ -196,7 +196,7 @@ export const Test: FC<ITestProps> = ({
         info={t('The amount of KDA to transfer.')}
         description={
           isLedger
-            ? `Gas Price: ${GasDefaults.PRICE}, Gas limit: ${GasDefaults.LIMIT}`
+            ? `Gas price: ${GasDefaults.PRICE}, Gas limit: ${GasDefaults.LIMIT}`
             : undefined
         }
       />
