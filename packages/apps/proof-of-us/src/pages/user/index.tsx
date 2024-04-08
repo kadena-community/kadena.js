@@ -1,5 +1,6 @@
 'use client';
 import { Button } from '@/components/Button/Button';
+import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { List } from '@/components/List/List';
 import { ListItem } from '@/components/List/ListItem';
@@ -36,9 +37,14 @@ const Page: FC = () => {
             <TitleHeader
               label="Dashboard"
               Append={() => (
-                <IconButton onClick={logout}>
-                  <MonoLogout />
-                </IconButton>
+                <Confirmation
+                  text="Are you sure you want to logout?"
+                  action={logout}
+                >
+                  <IconButton title="Logout">
+                    <MonoLogout />
+                  </IconButton>
+                </Confirmation>
               )}
             />
             <Stack flex={1} width="100%">
