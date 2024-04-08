@@ -1,31 +1,33 @@
-import { AccountNameField } from '@/components/Global';
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
-import { MonoContentCopy } from '@kadena/react-icons/system';
-import { Button } from '@kadena/react-ui';
-import useTranslation from 'next-translate/useTranslation';
+import type { ChainId } from '@kadena/types';
 import type { FC } from 'react';
 import React, { useCallback } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { LedgerDetails } from './ledger-details';
 import type { FormData } from './sign-form';
 import type { accountFromOptions } from './sign-form-sender';
+import type { ITestProps } from './test';
+import { Test } from './test';
 
 export interface ISenderDetailsProps {
   type: (typeof accountFromOptions)[number];
   onKeyIdUpdate: (keyId: number) => void;
   onDerivationUpdate: (derivationMode: DerivationMode) => void;
+  senderDataQuery: ITestProps['senderDataQuery'];
+  onChainUpdate: (chainId: ChainId) => void;
 }
 
 export const SenderDetails: FC<ISenderDetailsProps> = ({
   type,
   onKeyIdUpdate,
   onDerivationUpdate,
+  senderDataQuery,
+  onChainUpdate,
 }) => {
-  const { t } = useTranslation('common');
-
   const {
-    formState: { errors },
     setValue,
+    formState: { errors },
+    register,
     control,
   } = useFormContext<FormData>();
 
@@ -47,32 +49,10 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
           onDerivationUpdate={onDerivationUpdate}
         />
       )}
-      <Controller
-        name="sender"
-        control={control}
-        render={({ field }) => (
-          <AccountNameField
-            {...field}
-            isDisabled={isLedger}
-            id="sender-account-name"
-            isInvalid={!!errors.sender}
-            errorMessage={errors.sender?.message}
-            endAddon={
-              <Button
-                icon={<MonoContentCopy />}
-                variant="text"
-                onPress={async () => {
-                  await navigator.clipboard.writeText(field.value);
-                }}
-                aria-label="Copy Account Name"
-                title="Copy Account Name"
-                color="primary"
-                type="button"
-              />
-            }
-            description={isLedger ? t('unexpected-account-name') : undefined}
-          />
-        )}
+      <Test
+        isLedger={isLedger}
+        senderDataQuery={senderDataQuery}
+        onChainUpdate={onChainUpdate}
       />
     </>
   );
