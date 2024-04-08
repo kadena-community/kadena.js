@@ -68,6 +68,7 @@ export const LedgerDetails: FC<ILedgerDetailsProps> = ({
             setKeyIndex(keyIndex);
             onKeyIdUpdate(keyIndex);
           }}
+          defaultValue={0}
           isInvalid={!!state.error}
           errorMessage={
             state.error ? 'You need to connect to your Ledger device.' : ''
