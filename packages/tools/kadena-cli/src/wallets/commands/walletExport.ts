@@ -13,16 +13,17 @@ export const createExportCommand: (program: Command, version: string) => void =
     'Export unencrypted keypair(s) from a wallet',
     [
       globalOptions.walletSelect(),
-      walletOptions.keyIndex(),
       securityOptions.createPasswordOption({
         message: 'Enter the wallet password:',
       }),
+      walletOptions.keyIndex(),
     ],
     async (option) => {
       const { walletNameConfig: wallet } = await option.walletName();
-      const { keyIndex } = await option.keyIndex({ wallet });
+      const { passwordFile } = await option.passwordFile({ wallet });
       log.warning(`Warning: this will print the keypair unencrypted.`);
-      const { passwordFile } = await option.passwordFile();
+      const { keyIndex } = await option.keyIndex({ wallet });
+
       log.debug('wallet-export:action', {
         wallet,
         keyIndex,

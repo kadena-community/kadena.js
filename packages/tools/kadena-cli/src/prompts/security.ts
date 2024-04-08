@@ -1,9 +1,10 @@
+import { services } from '../services/index.js';
+import type { IWallet } from '../services/wallet/wallet.types.js';
 import { CommandError } from '../utils/command.util.js';
 import { password as passwordInput } from '../utils/prompts.js';
 
 // eslint-disable-next-line @kadena-dev/no-eslint-disable
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-
 export const passwordPrompt =
   ({
     message,
@@ -20,10 +21,20 @@ export const passwordPrompt =
     const password = await passwordInput({
       message: message,
       mask: '*',
-      validate: (value) => {
+      validate: async (value) => {
         if (value.length < 8) {
           return 'Password should be at least 8 characters long.';
         }
+
+        const wallet = args.wallet as IWallet | undefined;
+
+        if (
+          wallet &&
+          (await services.wallet.testPassword(wallet, value)) === false
+        ) {
+          return 'Password is incorrect. Please try again.';
+        }
+
         return true;
       },
     });
