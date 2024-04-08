@@ -643,6 +643,7 @@ export { default as MonoList } from './MonoList';
 export { default as MonoListAlt } from './MonoListAlt';
 export { default as MonoLiveHelp } from './MonoLiveHelp';
 export { default as MonoLiveTv } from './MonoLiveTv';
+export { default as MonoLoading } from './MonoLoading';
 export { default as MonoLocalGasStation } from './MonoLocalGasStation';
 export { default as MonoLocalGroceryStore } from './MonoLocalGroceryStore';
 export { default as MonoLocalHospital } from './MonoLocalHospital';
