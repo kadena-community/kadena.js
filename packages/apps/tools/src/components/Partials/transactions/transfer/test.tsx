@@ -19,6 +19,8 @@ export interface ITestProps {
   onChainUpdate: (chainId: ChainId) => void;
 }
 
+export const NON_EXISTING_ACCOUNT_ON_CHAIN = '—'; // "em dash" character
+
 export const Test: FC<ITestProps> = ({
   isLedger,
   senderDataQuery,
@@ -55,7 +57,9 @@ export const Test: FC<ITestProps> = ({
         setChainSelectOptions(
           senderAccountChains.data.map((item) => ({
             chainId: item.chainId,
-            data: item.data ? `${item.data.balance.toFixed(4)} KDA` : 'N/A',
+            data: item.data
+              ? `${item.data.balance.toFixed(4)} KDA`
+              : NON_EXISTING_ACCOUNT_ON_CHAIN,
           })),
         );
       }
@@ -145,6 +149,9 @@ export const Test: FC<ITestProps> = ({
             additionalInfoOptions={chainSelectOptions}
             isInvalid={!!errors.senderChainId}
             errorMessage={errors.senderChainId?.message}
+            disabledKeys={chainSelectOptions
+              .filter((x) => x.data === NON_EXISTING_ACCOUNT_ON_CHAIN)
+              .map((x) => x.chainId)}
           />
         </div>
         {senderDataQuery.isFetching ? (
