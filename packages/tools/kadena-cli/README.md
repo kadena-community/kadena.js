@@ -1037,6 +1037,7 @@ kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0T
 ```
 kadena tx status [arguments]
 ```
+The kadena tx status command is used to retrieve the status of a transaction on the Kadena blockchain. By providing a transaction request key and specifying the network and chain id, users can query the current state of their transactions. This command supports additional options for polling, allowing for real-time status updates until the transaction is finalized.
 
 | **Arguments & Options** | **Description**                                       | **Required** |
 | ----------------------- | ----------------------------------------------------- | ------------ |
@@ -1044,12 +1045,23 @@ kadena tx status [arguments]
 | --network               | Select name of the network where transaction happened |              |
 |                         | (e.g. "mainnet, testnet, devnet, ...")                |              |
 | --chain-id              | Chain to be used in the transaction                   |              |
+| --poll                  | Poll status to get transaction details                |              |
 
-example:
-
+To check the status of a transaction, use the following command:
 ```
 kadena tx status --request-key="118mEpX1-6NpJT1kArsWIHHVtJaOERQOeEwNoouOSGU" --network="testnet" --chain-id="0"
 ```
+This will return the current status of the transaction identified by the provided request key.
+
+**With Polling:**
+To continuously monitor the status of a transaction until it is finalized, add the `--poll` option:
+
+```
+kadena tx status --request-key="118mEpX1-6NpJT1kArsWIHHVtJaOERQOeEwNoouOSGU" --network="testnet" --chain-id="0" --poll
+```
+Polling checks the transaction status in real-time and will keep running until the transaction is confirmed.
+
+The default timeout for polling is 60 seconds, but it will attempt to keep polling until confirmation is achieved.
 
 ---
 
