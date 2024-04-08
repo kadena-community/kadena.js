@@ -5,7 +5,7 @@ import { formatWithOptions } from 'node:util';
 import z from 'zod';
 import type { TableHeader, TableRow } from '../utils/tableDisplay.js';
 import { displayTable } from '../utils/tableDisplay.js';
-import { maskSensitiveInfo } from './helpers.js';
+import { maskSensitiveInfo } from './logger-utils.js';
 
 /**
  * Custom logging class for kadena-cli
