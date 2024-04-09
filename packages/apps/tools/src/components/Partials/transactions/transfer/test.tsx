@@ -187,6 +187,7 @@ export const Test: FC<ITestProps> = ({
         id="ledger-transfer-amount"
         label={t('Amount')}
         onValueChange={(value) => setValue('amount', value)}
+        minValue={0}
         // defaultValue={defaultValues.amount}
         isDisabled={!!senderDataQuery.error}
         isInvalid={!!errors.amount || invalidAmount}
