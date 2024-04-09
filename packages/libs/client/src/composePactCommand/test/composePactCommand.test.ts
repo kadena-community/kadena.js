@@ -334,6 +334,14 @@ describe('composePactCommand', () => {
       },
     });
   });
+  it('default values only added if not presented', () => {
+    const command = composePactCommand(
+      composePactCommand({ meta: { chainId: '8' } }),
+      { meta: { gasLimit: 10 } },
+    )();
+    expect(command.meta?.chainId).toEqual('8');
+    expect(command.meta?.gasLimit).toEqual(10);
+  });
 });
 
 describe('mergePayload', () => {

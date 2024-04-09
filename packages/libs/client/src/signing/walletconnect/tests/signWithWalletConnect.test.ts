@@ -192,4 +192,62 @@ describe('signWithWalletConnect', () => {
       signWithWalletConnect(createTransaction(transaction)),
     ).rejects.toThrowError('Error signing transaction');
   });
+
+  it('uses kadena: as prefix when its not presented', async () => {
+    const client = {
+      request: vi.fn(() =>
+        Promise.resolve({
+          body: { cmd: 'test-cmd', sigs: [{ sig: 'test-sig' }] },
+          catch: vi.fn(),
+        }),
+      ),
+    };
+
+    const signWithWalletConnect = createWalletConnectSign(
+      client as unknown as Client,
+      session,
+      'testnet04',
+    );
+
+    const signedTransaction = await signWithWalletConnect(
+      createTransaction(transaction),
+    );
+
+    expect(client.request).toHaveBeenCalledWith({
+      topic: session.topic,
+      chainId: 'kadena:testnet04',
+      request: {
+        id: 1,
+        jsonrpc: '2.0',
+        method: 'kadena_sign_v1',
+        params: {
+          code: transaction.payload.exec.code,
+          data: transaction.payload.exec.data,
+          caps: [
+            {
+              role: 'test-cap-name',
+              description: 'Description for cap.test-cap-name',
+              cap: {
+                name: 'cap.test-cap-name',
+                args: ['test-cap-arg'],
+              },
+            },
+          ],
+          nonce: transaction.nonce,
+          chainId: transaction.meta.chainId,
+          gasLimit: transaction.meta.gasLimit,
+          gasPrice: transaction.meta.gasPrice,
+          sender: transaction.meta.sender,
+          ttl: transaction.meta.ttl,
+        },
+      },
+    });
+
+    expect(signedTransaction.cmd).toBe('test-cmd');
+
+    expect(signedTransaction).toEqual({
+      cmd: 'test-cmd',
+      sigs: [{ sig: 'test-sig' }],
+    });
+  });
 });

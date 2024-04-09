@@ -25,7 +25,9 @@ import type { SessionTypes } from '@walletconnect/types';
 // @public
 export const addSignatures: (transaction: IUnsignedCommand, ...signatures: {
     sig: string;
-    pubKey?: string;
+    pubKey: string;
+}[] | {
+    sig: string;
 }[]) => IUnsignedCommand | ICommand;
 
 // @public (undocumented)
@@ -57,10 +59,10 @@ export const createTransaction: (pactCommand: IPartialPactCommand) => IUnsignedC
 export const createTransactionBuilder: (initial?: IPartialPactCommand) => ITransactionBuilder;
 
 // @public
-export function createWalletConnectQuicksign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISignFunction;
+export function createWalletConnectQuicksign(client: Client, session: SessionTypes.Struct, networkId: string): ISignFunction;
 
 // @public
-export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, walletConnectChainId: TWalletConnectChainId): ISingleSignFunction;
+export function createWalletConnectSign(client: Client, session: SessionTypes.Struct, networkId: string): ISingleSignFunction;
 
 // @public
 export const getHostUrl: (hostBaseUrl: string) => ({ networkId, chainId }: INetworkOptions) => string;

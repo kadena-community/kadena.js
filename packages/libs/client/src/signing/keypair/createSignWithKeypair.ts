@@ -109,8 +109,11 @@ function signWithKeypairs(
 ): IUnsignedCommand {
   return relevantKeypairs.reduce((tx, keypair) => {
     const { sig, pubKey } = signHash(tx.hash, keypair);
+    if (sig === undefined || pubKey === undefined) {
+      return tx;
+    }
 
     debug(`adding signature from keypair: pubkey: ${keypair.publicKey}`);
-    return addSignatures(tx, { sig: sig!, pubKey });
+    return addSignatures(tx, { sig: sig, pubKey: pubKey });
   }, tx);
 }
