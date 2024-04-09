@@ -16,18 +16,6 @@
   "bin": {
     "kadena-graph": "./dist/index.js"
   },
-  "files": [
-    ".env.example",
-    "CHANGELOG.md",
-    "generated-schema.graphql",
-    "cwd-extra-migrations/",
-    "dist/",
-    "!dist/devnet",
-    "!dist/scripts",
-    "!**/*.d.ts",
-    "!**/*.d.ts.map",
-    "!**/*.js.map"
-  ],
   "scripts": {
     "build": "pnpm run pactjs:generate:contract:coin && pnpm run pactjs:generate:contract:marmalade && pnpm run pactjs:generate:contract:marmalade-v2 && pnpm prisma:generate && tsc",
     "deploy:marmalade": "ts-node -T src/devnet/deployment/index.ts deploy:marmalade",
