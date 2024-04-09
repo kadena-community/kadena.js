@@ -56,6 +56,7 @@ export async function mempoolGetPending() {
 
 export async function mempoolLookup(hash: string, chainId?: string) {
   let chainsToCheck = chainIds;
+  const { networkId, apiVersion } = await networkConfig;
 
   if (chainId) {
     chainsToCheck = [chainId];
@@ -66,7 +67,7 @@ export async function mempoolLookup(hash: string, chainId?: string) {
       const options = {
         hostname: dotenv.MEMPOOL_HOSTNAME,
         port: dotenv.MEMPOOL_PORT,
-        path: `/chainweb/0.0/development/chain/${chainId}/mempool/lookup`,
+        path: `/chainweb/${apiVersion}/${networkId}/chain/${chainId}/mempool/lookup`,
         method: 'POST',
         rejectUnauthorized: false, // This disables certificate verification
         headers: {
