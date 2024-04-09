@@ -4,7 +4,7 @@ import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { log } from '../utils/logger.js';
 
-const ENV_KADENA_DIR = process.env.KADENA_DIR;
+export const ENV_KADENA_DIR = process.env.KADENA_DIR;
 
 // app executable (for development run `npm link` or use the dev command)
 export const CLINAME = 'kadena';
@@ -51,8 +51,7 @@ export const KADENA_DIR = (() => {
 })();
 
 // wallet path
-// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-export const WALLET_DIR = KADENA_DIR && `${KADENA_DIR}/wallets`;
+export const WALLET_DIR = 'wallets';
 
 // wallet path
 // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -64,8 +63,7 @@ export const TX_TEMPLATE_FOLDER =
   KADENA_DIR && `${KADENA_DIR}/transaction-templates`;
 
 // account path
-// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-export const ACCOUNT_DIR = KADENA_DIR && `${KADENA_DIR}/accounts`;
+export const ACCOUNT_DIR = 'accounts';
 
 // Default settings path
 // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions

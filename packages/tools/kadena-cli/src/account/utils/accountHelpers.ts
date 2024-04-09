@@ -230,3 +230,12 @@ export const isValidForOnlyKeysAllPredicate = (
   accountName: string,
   publicKeys: string[],
 ): boolean => isKAccount(accountName) && publicKeys.length === 1;
+
+export const getAccountDirectory = async (): Promise<string> => {
+  const directory = await services.config.getDirectory();
+  if (directory === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+
+  return join(directory, ACCOUNT_DIR);
+};

@@ -108,3 +108,13 @@ export async function walletSelectByWalletPrompt(
 
   return selectedWallet;
 }
+
+export async function createWalletPrompt(): Promise<string> {
+  return await select({
+    message: 'Would you like to create a wallet?',
+    choices: [
+      { value: 'true', name: 'Yes' },
+      { value: 'false', name: 'No' },
+    ],
+  });
+}
