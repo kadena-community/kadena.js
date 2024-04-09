@@ -18,6 +18,7 @@ export interface ITestProps {
   isLedger: boolean;
   senderDataQuery: ReturnType<typeof useAccountDetailsQuery>;
   onChainUpdate: (chainId: ChainId) => void;
+  isConnected?: boolean;
 }
 
 export const NON_EXISTING_ACCOUNT_ON_CHAIN = '—'; // "em dash" character
@@ -26,12 +27,11 @@ export const Test: FC<ITestProps> = ({
   isLedger,
   senderDataQuery,
   onChainUpdate,
+  isConnected = false,
 }) => {
   const { t } = useTranslation('common');
 
   const { selectedNetwork: network } = useWalletConnectClient();
-
-  const [state, getter] = useLedgerPublicKey();
 
   const {
     setValue,
@@ -76,12 +76,8 @@ export const Test: FC<ITestProps> = ({
     ? `Cannot send more than ${senderDataQuery.data.balance.toFixed(4)} KDA.`
     : '';
 
-  if (isLedger && !state.value) {
-    return (
-      <Button onPress={() => getter({ keyId: 0 })} isLoading={state.loading}>
-        Connect Ledger
-      </Button>
-    );
+  if (isLedger && !isConnected) {
+    return null;
   }
 
   return (
