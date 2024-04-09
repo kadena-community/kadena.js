@@ -95,7 +95,11 @@ export const LedgerDetails: FC<ILedgerDetailsProps> = ({
           toggled={legacyToggleOn}
         />
       </Stack>
-      <ConnectLedgerButton />
+      <ConnectLedgerButton
+        onPress={() => getter({ keyId: 0, derivationMode })}
+        isLoading={state.loading}
+        isConnected={!!state.value}
+      />
     </>
   );
 };
