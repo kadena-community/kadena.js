@@ -668,7 +668,7 @@ export async function logTransactionDetails(command: ICommand): Promise<void> {
 
     if (rows.length > 0) {
       log.info(
-        log.color.green(`\nTransation details for command with hash: ${hash}`),
+        log.color.green(`\nTransaction detail for command with hash: ${hash}`),
       );
       log.output(log.generateTableString(header, rows), command);
       log.info('\n\n');
