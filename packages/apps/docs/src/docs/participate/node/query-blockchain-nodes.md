@@ -9,5 +9,5 @@ layout: full
 
 # Interact with Nodes
 
-- [REST API Examples with curl](/pact/api): View commands for querying a node to
-  get database information such as block header and cut height
+- [REST API Examples with curl](/reference/pact/api): View commands for querying a node to
+  get database information such as block header and cut height.

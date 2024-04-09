@@ -192,7 +192,7 @@ work with table data.
 | --------------------------------------------------------------- | ----------------------------- |
 | [Insert](/reference/functions/database#inserth-1183792455) | Insert new rows into a table. |
 | [Read](/reference/functions/database#readh3496342)         | Read values from a table.     |
-| [Update](/pact/beginner/schemas-and-tables#updateh-1754979095)  | Update values within a table. |
+| [Update](/build/pact/schemas-and-tables#updateh-1754979095)  | Update values within a table. |
 | Delete                                                          | Not possible in Pact.         |
 
 Notice that these functions are similar to common options available in other
@@ -300,7 +300,7 @@ values.
 
 ### Update
 
-[Update](/pact/beginner/schemas-and-tables#updateh-1754979095) functions can be
+[Update](/build/pact/schemas-and-tables#updateh-1754979095) functions can be
 used to update a values in an existing row of a table. Updating is helpful in
 situations where you need to change the status of a column or amend the initial
 dataset to a new value.
@@ -352,7 +352,7 @@ status of the asset as it progresses through the process.
 
 ### Select
 
-[Select](/pact/beginner/schemas-and-tables#selecth-1822154468) is used to read
+[Select](/build/pact/schemas-and-tables#selecth-1822154468) is used to read
 values from a table.
 
 This is similar to **read** but select includes more specificity allowing you

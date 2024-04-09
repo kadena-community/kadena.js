@@ -63,7 +63,7 @@ Similarly, if you want to reduce the token supply, only accounts with the `burn`
 If you want to transfer a token to a new owner, the guard policy verifies the transfer is executed by an account the `transfer` key.
 When you're ready to sell, the guard policy confirms the sale ID in the pact and verifies that only accounts with the `sale` key can complete this action to guarantee it's an authorized sale.
 
-For technical details about the guard policy, see [Guard policy](/reference/nft-ref/guard-policy).
+For technical details about the guard policy, see [Guard policy](/reference/nft-ref/policy-manager/guard-policy).
 
 ## Collection policy
 
@@ -87,7 +87,7 @@ For example, you can specify that a token is part of a collection by providing a
 }
 ```
 
-For technical details about the collection policy, see [Collection policy](/reference/nft-ref/collection-policy).
+For technical details about the collection policy, see [Collection policy](/reference/nft-ref/policy-manager/collection-policy).
 
 ## Non-fungible policy
 
@@ -95,7 +95,7 @@ The non-fungible policy ensures the uniqueness of digital assets.
 If you apply this policy to a token, the policy guarantees that the token supply is one with a precision of zero.
 No additional configuration is necessary for this policy.
 
-For technical details about the non-fungible policy, see [Non-fungible policy](/reference/nft-ref/non-fungible-policy).
+For technical details about the non-fungible policy, see [Non-fungible policy](/reference/nft-ref/policy-manager/non-fungible-policy).
 
 ## Royalty policy
 

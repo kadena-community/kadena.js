@@ -42,7 +42,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                   Why Kadena?
                 </Link>
 
-                <Link className={docsCardLink} href="/learn/crypto">
+                <Link className={docsCardLink} href="/learn/cryptography">
                   What we mean when we say crypto
                 </Link>
 
@@ -69,7 +69,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 </Link>
                 <Link
                   className={docsCardLink}
-                  href="/build/pact/get-started-with-pact"
+                  href="/build/pact"
                 >
                   Get started with Pact smart contract language
                 </Link>
@@ -89,14 +89,14 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 <Link className={docsCardLink} href="/build/pact">
                   Smart contracts
                 </Link>
-                <Link className={docsCardLink} href="/build/kadena-client">
+                <Link className={docsCardLink} href="/build/frontend">
                   Frontend libraries
                 </Link>
-                <Link className={docsCardLink} href="/build/code-templates">
+                <Link className={docsCardLink} href="/build/templates">
                   Code templates
                 </Link>
-                <Link className={docsCardLink} href="/build/cryptography">
-                  Cryptographic utilities
+                <Link className={docsCardLink} href="/build/nft-marmalade">
+                  Non-fungible tokens
                 </Link>
               </BrowseSection>
             </DocsCard>
@@ -113,8 +113,8 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 <Link className={docsCardLink} href="/deploy">
                   Prepare to deploy
                 </Link>
-                <Link className={docsCardLink} href="/deploy/node">
-                  Manage a Chainweb node
+                <Link className={docsCardLink} href="/deploy/chainweb-get-started">
+                  Get started as a Chainweb node operator
                 </Link>
 
                 <Link
@@ -150,7 +150,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                   Community programs
                 </Link>
 
-                <Link className={docsCardLink} href="/participate/developer">
+                <Link className={docsCardLink} href="/participate/developers">
                   Developer programs
                 </Link>
 

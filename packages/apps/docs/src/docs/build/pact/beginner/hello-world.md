@@ -61,7 +61,7 @@ panel and open the “Hello World” example.
 :::info
 
 If you’re not familiar with the module explorer, you can learn more
-[here](/pact/beginner/web-editor#module-explorerh-261281933).
+[here](/build/pact/dev-network#module-explorerh-261281933).
 
 :::
 

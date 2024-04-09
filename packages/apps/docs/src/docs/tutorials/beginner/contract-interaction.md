@@ -119,9 +119,9 @@ Both auth.pact and payments.pact are smart contracts that you have worked with
 in previous tutorials. If you would like to learn more about these smart
 contracts, feel free to view each of their tutorials.
 
-- **Auth Module:** [Project: Rotatable Wallet](/pact/beginner/rotatable-wallet)
+- **Auth Module:** [Project: Rotatable Wallet](/build/pact/rotatable-wallet)
 - **Payments Module:**
-  [Accounts and Transfers](/pact/beginner/accounts-and-transfers) :::
+  [Accounts and Transfers](/build/pact/accounts-and-transfers) :::
 
 There’s not much code to write for this project. Most of it has been written
 previously in the tutorials linked above. For this tutorial, focus on
@@ -197,7 +197,7 @@ authorization.
 :::info
 
 A function similar to this is covered in Challenge
-[4.2 in Project Rotatable Wallet](/pact/beginner/rotatable-wallet#42-enforce-user).
+[4.2 in Project Rotatable Wallet](/build/pact/rotatable-wallet#42-enforce-user).
 You can look back to this challenge for more information to help get you
 started.
 
@@ -347,7 +347,7 @@ Load the **auth** module into the **payments.repl** file.
 :::info
 
 Transactions and loading are covered in more detail in
-[Testing Pact Code in the SDK](/pact/beginner/test-in-the-sdk).
+[Testing Pact Code in the SDK](/build/pact/test-in-the-sdk).
 
 :::
 
@@ -439,7 +439,7 @@ The output to your terminal should look similar to the image shown below.
 :::info
 
 For more information on running files from the terminal, view
-[Testing Pact Code in the SDK](/pact/beginner/test-in-the-sdk#run-repl-file).
+[Testing Pact Code in the SDK](/build/pact/test-in-the-sdk#run-repl-file).
 
 :::
 

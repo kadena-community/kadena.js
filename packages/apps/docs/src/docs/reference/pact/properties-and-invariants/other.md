@@ -1,8 +1,8 @@
 ---
-title: Other Operators
+title: Unclassified operators
 description:
   Pact comes equipped with the ability for smart contract authors to express and
-  automatically check properties -- or, specifications -- of Pact programs.
+  automatically check properties—or, specifications—of Pact programs.
 menu: Other Operators
 label: Other Operators
 order: 14
@@ -10,7 +10,7 @@ layout: full
 tags: ['pact', 'language reference', 'other operators', 'pact operators']
 ---
 
-# Other operators
+# Unclassified operators
 
 ## where
 

@@ -343,7 +343,7 @@ The offer can include a specific price that's not negotiable or be configured to
 For example, you can configure a sale to use a **conventional auction** format or a **dutch auction** format to attract buyers to bid on the work.
 Each auction format is implemented as sales-specific smart contract that you can attach to a sale pact when you're ready to offer your tokens for sale.
 
-You can find an introduction to sales-specific contracts—like the conventional and dutch auction contracts—in [Layered contract architecture](/build/nft-marmalade/contract-architecture#sales-specific-contracts).
+You can find an introduction to sales-specific contracts—like the conventional and dutch auction contracts—in [Layered contract architecture](/build/nft-marmalade/architecture#sales-specific-contracts).
 For information about the difference between a conventional auction and a dutch auction, see [Auctions](/build/nft-marmalade/sales/auctions) 
 
 For technical details about the conventional auction contract, see [Conventional auction sale contract](/reference/nft-ref/sale-contracts/conventional-auction).

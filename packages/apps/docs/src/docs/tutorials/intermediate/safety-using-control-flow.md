@@ -558,7 +558,7 @@ check if the function succeeds or not.
 :::info Note
 
 For more information on running .repl files from Atom, see the tutorial
-[Contract Interaction > Run REPL File](/pact/beginner/test-in-the-sdk#run-repl-file).
+[Contract Interaction > Run REPL File](/build/pact/test-in-the-sdk#run-repl-file).
 
 :::
 

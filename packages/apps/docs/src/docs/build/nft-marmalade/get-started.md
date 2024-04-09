@@ -130,7 +130,7 @@ As you wait for the transaction to finish, you can copy the request key displaye
 To review your transaction results:
 
 1. Copy the **Request Key** displayed in Chainweaver, then click **Done**.
-2. Open the [Kadena Testnet block explorer](explorer.chainweb.com/testnet).
+2. Open the [Kadena Testnet block explorer](https://explorer.chainweb.com/testnet).
 3. Select **Request Key**, then paste the key you copied from Chainweaver into the Search field.
 4. Review the transaction results and the events recorded for the mint transaction.
    

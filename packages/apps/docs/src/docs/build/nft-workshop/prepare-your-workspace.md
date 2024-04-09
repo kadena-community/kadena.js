@@ -3,7 +3,7 @@ title: "Prepare your workspace"
 description: "Get started with the NFT marketplace workshop by starting a local blockchain network."
 menu: "Workshop: NFT marketplace"
 label: "Prepare your workspace"
-order: 1
+order: 2
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---

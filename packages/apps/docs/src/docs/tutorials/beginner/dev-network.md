@@ -11,7 +11,7 @@ tags: ['pact', 'web editor', 'pact tutorials']
 # Set up a local development network
 
 The first step in developing smart contracts using Pact is to set up a local development environment.
-If you followed the steps in [Deploy your first contract](/quickstart), you should already have a local development network running in a Docker container.
+If you followed the steps in [Deploy your first contract](/build/quickstart), you should already have a local development network running in a Docker container.
 
 Your local development environment should also include:
 

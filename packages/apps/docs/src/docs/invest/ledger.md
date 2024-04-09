@@ -1,19 +1,15 @@
 ---
-title: Ledger User Guide
+title: Use Ledger User Guide
 description: Ledger User Guide
-menu: Ledger
-label: Ledger User Guide
+menu: Wallets
+label: Use Ledger hardware wallet
 order: 3
 layout: full
 ---
 
-# Ledger User Guide
+# Use a Ledger hardware wallet
 
----
-
-## Short Introduction
-
-In this doc you will learn how to install the Kadena App, connect to the Kadena Transfer Tool, view token balances, send tokens, and receive tokens using your Ledger Device.
+In this doc, you will learn how to install the Kadena App, connect to the Kadena Transfer Tool, view token balances, send tokens, and receive tokens using your Ledger Device.
 
 Before you start, make sure:
 
@@ -53,7 +49,7 @@ Before you start, make sure:
 
 - Verify the account name provided by the Transfer Tool app by selecting
   “Verify” in the web app and following the prompts shown on the Ledger device.
-- Using any of the [officially recognized wallets](/kadena/wallets), select
+- Using any of the [officially recognized wallets](/invest/wallets), select
   “Watch Account” and enter the account name verified in the Transfer Tool.
 - This will add the Ledger device controlled account to your account list so the
   balance on each chain can be seen.

@@ -670,7 +670,7 @@ kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0T
 
 The `kadena tx add` command enables you to create transactions using **templates** in combination with values you specify to generate the most common types of transactions that are ready to sign and submit across multiple chains with minimal effort.
 Currently, there are two default templates—`transfer` and `safe-transfer`—to enable to you create transactions that transfer tokens between accounts.
-For more information about using templates to generate transactions, see [Code templates](/build/code-templates).
+For more information about using templates to generate transactions, see [Code templates](/build/templates).
 To generate a transaction from a template interactively, you can run the following command:
 
 ```bash

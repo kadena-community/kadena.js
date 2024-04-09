@@ -1,5 +1,5 @@
 ---
-title: Authorization Operators
+title: Authorization operators
 description:
   Pact comes equipped with the ability for smart contract authors to express and
   automatically check properties -- or, specifications -- of Pact programs.
@@ -20,18 +20,39 @@ tags:
 
 ## authorized-by
 
+Use `authorized-by` to check whether the transaction is signed by an authorized keyset guard.
+
+#### Basic syntax
+
 ```pact
-(authorized-by k)
+(authorized-by keyset)
 ```
 
-- takes `k`: `string`
-- produces `bool`
+#### Parameters
 
-Whether the named keyset/guard is satisfied by the executing transaction
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| keyset | `string` | Specifies the keyset string.
+
+#### Return type
+
+Returns a `bool` type that indicates whether the specified keyset guard is satisfied by the executing transaction.
+
+#### Example
+
+```pact
+(authorized-by "bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e")
+```
+
+#### Support
 
 Supported in properties only.
 
 ## row-enforced
+
+Use `row-enforced` to check whether the keyset in the row is enforced by the function under analysis.
+
+#### Basic syntax
 
 ```pact
 (row-enforced t c r)
@@ -44,33 +65,55 @@ Supported in properties only.
 - where _a_ is of type `table` or `string`
 - where _b_ is of type `column` or `string`
 
-Whether the keyset in the row is enforced by the function under analysis
+#### Support
 
 Supported in properties only.
 
 ## is-principal
 
+Use `is-principal` to check whether the specified string conforms to the principal format without proving validity.
+
+#### Basic syntax
+
 ```pact
 (is-principal s)
 ```
 
-- takes `s`: `string`
-- produces `bool`
+#### Parameters
 
-Whether `s` conforms to the principal format without proving validity.
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| s | `string` | Specifies the string to check the formatting for.
+
+#### Return type
+
+Returns a `bool` type that indicates whether the specified string `s` has the format of a principal.
+
+#### Support
 
 Supported in either invariants or properties.
 
 ## typeof-principal
 
+Use `typeof-principal` to check the protocol type of the specified string `s` value. 
+If input value is not a `principal` data type, then the empty string is returned.
+
+#### Basic syntax
+
 ```pact
 (typeof-principal s)
 ```
 
-- takes `s`: `string`
-- produces `string`
+#### Parameters
 
-Return the protocol type of the given `s` value. If input value is not a
-principal type, then the empty string is returned.
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| s | `string` | Specifies the string to check the protocol type of.
+
+#### Return type
+
+If input value is not a `principal` data type, then the empty string is returned.
+
+#### Support
 
 Supported in either invariants or properties.

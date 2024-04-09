@@ -1,16 +1,16 @@
 ---
-title: Atom SDK
+title: Develop using Atom SDK
 description:
   The goal of this tutorial is to get you up and running with the Pact
   environment and the Pact Atom SDK to begin running Pact programs locally.
-menu: Atom SDK
-label: Atom SDK
+menu: Smart contracts
+label: Develop using Atom SDK
 order: 8
 layout: full
-tags: ['pact', 'atom sdk', 'pact installation', 'local development']
+tags: ['pact', 'smart contracts', 'atom sdk', 'pact installation', 'local development']
 ---
 
-# Atom SDK
+# Develop using Atom SDK
 
 Welcome to this tutorial on Pact Development on Atom SDK!
 
@@ -53,7 +53,7 @@ More instructions on installing Pact can be found on the
 
 To get started with Pact you’ll first need to install the Pact programming
 language. Next we go over the steps with
-[Mac](/pact/beginner/atom-sdk#installing-pact-mac) and Linux to get it installed
+[Mac](/build/pact/atom-sdk#installing-pact-mac) and Linux to get it installed
 on your local computer.
 
 #### Installing Pact Linux
@@ -102,7 +102,7 @@ https://www.youtube.com/watch?v=J-GuviTE3qo
 
 The easiest way to do this for Mac is by using Homebrew. If you have Homebrew
 continue to
-[installing Pact language with Homebrew](/pact/beginner/atom-sdk#installing-pact-with-homebrew).
+[installing Pact language with Homebrew](/build/pact/atom-sdk#installing-pact-with-homebrew).
 
 ##### Homebrew
 

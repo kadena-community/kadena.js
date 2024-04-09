@@ -114,7 +114,7 @@ compare your solution with the finished code at every step along the way.
 - [Add an administrator account](/build/election/add-admin-account)
 - [Define a namespaces](/build/election/define-a-namespace)
 - [Define keysets](/build/election/define-keysets)
-- [Write the smart contract](/buildelection/write-a-smart-contract)
+- [Write the smart contract](/build/election/write-a-smart-contract)
 - [Nominate candidates](/build/election/nominate-candidates)
 - [Add voting management](/build/election/add-vote-management)
 - [Add a gas station](/build/election/add-a-gas-station)

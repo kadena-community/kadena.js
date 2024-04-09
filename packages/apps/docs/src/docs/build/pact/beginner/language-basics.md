@@ -1,20 +1,19 @@
 ---
-title: Language Basics
+title: Explore Pact Language Basics
 description: Kadena makes blockchain work for everyone.
-menu: Language Basics
-label: Language Basics
+menu: Smart contracts
+label: Explore language basics
 order: 4
 layout: full
 tags: ['pact', 'language basics']
 ---
 
-# Language Basics
+# Explore Pact language basics
 
-Welcome to this tutorial on the Pact Language Basics!
+In [Set up a local development network](/build/pact/dev-network), you learned how to set up a local development environment and connect to it using Chainweaver.
+As part of the introduction to the development environment, you saw how to navigate smart contracts and the basics of using Chainweaver developer tools, including the interactive Pact REPL.
 
-In this tutorial you'll learn some fundamental concepts you need to get started
-with Pact. You’ll review some of the built-in functions Pact provides, review
-the language syntax, and write a few functions for yourself.
+In this tutorial, you'll learn some more fundamental concepts for working with Pact as a smart contract language and explore some of the most important built-in functions that Pact provides.
 
 **Topics covered in this tutorial**
 
@@ -38,7 +37,7 @@ simple and safe smart contracts with the Pact programming language.
 You can run each of the commands described to get more familiar with the Pact
 programming language.
 
-View the [Pact Online Code Editor Tutorial](/pact/beginner/web-editor) for more
+View the [Pact Online Code Editor Tutorial](/build/pact/dev-network) for more
 information on running Pact commands. :::
 
 ## Pact Language Basics Tutorial
@@ -708,7 +707,7 @@ and the capability has not yet been granted.
 ### Select
 
 The `select` built-in funciton can be found
-[here](/pact/beginner/schemas-and-tables#selecth-1822154468).
+[here](/build/pact/schemas-and-tables#selecth-1822154468).
 
 The `select` function is able to pull information from a table under specific
 conditions.

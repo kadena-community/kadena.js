@@ -9,7 +9,7 @@ layout: full
 
 # Create a sale contract
 
-As discussed in [Layered contract architecture](/build/nft-marmalade/contract-architecture), you can use a sales-specific contract to manage how tokens are sold—for example, by offering tokens for sale in a [conventional auction sale contract](/reference/nft-ref/sale-contracts/conventional-auction) or a [dutch auction sale contract](/reference/nft-ref/sale-contracts/dutch-auction).
+As discussed in [Layered contract architecture](/build/nft-marmalade/architecture), you can use a sales-specific contract to manage how tokens are sold—for example, by offering tokens for sale in a [conventional auction sale contract](/reference/nft-ref/sale-contracts/conventional-auction) or a [dutch auction sale contract](/reference/nft-ref/sale-contracts/dutch-auction).
 
 Although this is a flexible system for managing sales, sales-specific contracts must be registered in the policy manager to ensure that the policy manager can enforce the proper collection and distribution of tokens and funds. 
 Before you can register a sales-specific contract, the contract must be reviewed by an auditor to ensure that the contract logic is safe to use.

@@ -21,7 +21,7 @@ layout: full
     A list of bootstrap nodes for Mainnet and Testnet
 *   [Hardware specs required to run a node](https://github.com/kadena-io/chainweb-node#installing-chainweb-node):
     Kadena's official README
-*   [Troubleshooting](/contribute/node): Common issues related to running a node
+*   [Troubleshooting](/deploy/troubleshoot-chainweb): Common issues related to running a node
 
 **Guides**
 

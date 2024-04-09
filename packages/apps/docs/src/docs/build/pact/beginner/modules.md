@@ -114,14 +114,13 @@ modules.
 
 ### Example Modules
 
-You can find examples using the Module Explorer in the
-[Pact Online Editor](https://pact.kadena.io/).
+You can find examples using the Module Explorer in [Set up a local development network](/build/pact/dev-network).
 
 #### Hello World
 
 From the Module Explorer, open the Hello World Smart Contract. If you’re
 interested, this smart contract is explained in depth in the
-[Hello World with Pact](/pact/beginner/hello-world).
+[Hello World with Pact](/build/pact/hello-world).
 
 Notice that the pattern of this smart contract is similar to the outline
 described above.
@@ -246,6 +245,5 @@ in later tutorials.
 For now, the important takeaway is to understand what a module is, as well as to
 recognize the key elements that belong inside and outside of Pact modules.
 
-Take some time now to continue exploring the examples provided in the Pact
-Online Editor. When you’re ready, you can learn more about the Pact programming
+Take some time now to continue exploring the examples provided. When you’re ready, you can learn more about the Pact programming
 language in our next tutorial.

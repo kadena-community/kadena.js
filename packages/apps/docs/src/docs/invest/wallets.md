@@ -22,7 +22,7 @@ This section provides an introduction to the custody solutions available with li
 Official Kadena wallet for advanced blockchain usage and smart contract development. 
 Chainweaver has an integrated signing API that enables you to sign transactions interactively from applications that implement the API.
 
-[User Guide](/kadena/wallets/chainweaver)
+[Get started with Chainweaver](/invest/wallets/chainweaver)
 
 [Web beta](https://chainweaver.kadena.network)
 
@@ -128,7 +128,7 @@ To connect to the Kadena transfer tool:
 To view token balances:
 
 1. Verify the account name provided by the Transfer Tool app by selecting **Verify** in the web app and following the prompts shown on the Ledger device.
-1. Using any of the [officially recognized wallets](/kadena/wallets), select **Watch Account** and enter the account name verified in the Transfer Tool.
+2. Using any of the officially recognized wallets, select **Watch Account** and enter the account name verified in the Transfer Tool.
    You should see the Ledger device controlled account added to your account list so the balance on each chain can be seen.
 
 To send tokens:

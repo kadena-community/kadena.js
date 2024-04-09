@@ -50,11 +50,11 @@ access the latest Pact tutorials.
 Before starting this tutorial, it helps to have completed the following
 pre-requisites.
 
-- [Pact Development on Atom SDK](/pact/beginner/atom-sdk) : The SDK is required
+- [Pact Development on Atom SDK](/build/pact/atom-sdk) : The SDK is required
   for testing in the SDK. You can get up and running with the SDK using this
   tutorial.
 
-- [Project: Loans](/pact/beginner/loans) : You will be building a REPL file for
+- [Project: Loans](/build/pact/loans) : You will be building a REPL file for
   the Loans project covered in a separate tutorial. This isn’t required but is a
   helpful way to better understand the smart contract used throughout this
   tutorial.
@@ -82,19 +82,15 @@ file which sends the output to your terminal window.
 ### Comparison to Online Editor
 
 To better grasp the importance of the REPL file, it helps to look at a tool you
-may be more familiar with - the [online editor](https://pact.kadena.io/).
+may be more familiar with—the **Contracts** section of the Chainweaver development environment.
 
-![2-online-editor](/assets/docs/2-online-editor.png)
-
-Many features provided by the online editor’s UI are things that you will need
+Many features provided by the Contracts UI are things that you will need
 to code for yourself in a local or production environment. Things like loading
 the pact file into the REPL, setting up the environment data and keys, and
 making function calls will all be done from within the REPL file.
 
-![3-online-editor-callouts](/assets/docs/3-online-editor-callouts-e658cfb55f5db40590426ae1364d01bb.png)
-
 You will complete all of this and other important testing features using the
-Pact REPL only built-in functions.
+Pact REPL built-in functions.
 
 ## Built-in Functions
 
@@ -325,9 +321,9 @@ loans project. Here is a brief overview of each of the functions you will call.
 
 | function                                               | purpose                                                             |
 | ------------------------------------------------------ | ------------------------------------------------------------------- |
-| [create-a-loan](/pact/beginner/loans#52-create-a-loan) | Accepts parameters to add the appropriate information to each table |
-| [assign-a-loan](/pact/beginner/loans#53-assign-a-loan) | Assigns a loan to an entity.                                        |
-| [sell-a-loan](/pact/beginner/loans#54-sell-a-loan)     | Sell a loan and log details in the loan history table.              |
+| [create-a-loan](/build/pact/loans#52-create-a-loan) | Accepts parameters to add the appropriate information to each table |
+| [assign-a-loan](/build/pact/loans#53-assign-a-loan) | Assigns a loan to an entity.                                        |
+| [sell-a-loan](/build/pact/loans#54-sell-a-loan)     | Sell a loan and log details in the loan history table.              |
 
 Follow the links provided or view the loans.pact file for more details.
 
@@ -344,7 +340,7 @@ from the loans.pact file and provide your own inputs as needed.
 :::info
 
 If you have not already completed the
-[Project: Loans tutorial](/pact/beginner/loans)
+[Project: Loans tutorial](/build/pact/loans)
 
 , try working through this tutorial to build the entire Loans smart contract for
 yourself!
@@ -362,8 +358,8 @@ Here is a brief overview of the functions you will call in this challenge.
 
 | function                                                                  | purpose                                      |
 | ------------------------------------------------------------------------- | -------------------------------------------- |
-| [read-loan-inventory](/pact/beginner/loans#59-read-loan-inventory)        | Reads all loans in the loan inventory table. |
-| [read-loans-with-status](/pact/beginner/loans#510-read-loans-with-status) | Reads all loans with a specific status.      |
+| [read-loan-inventory](/build/pact/loans#59-read-loan-inventory)        | Reads all loans in the loan inventory table. |
+| [read-loans-with-status](/build/pact/loans#510-read-loans-with-status) | Reads all loans with a specific status.      |
 
 :::caution Code Challenge
 

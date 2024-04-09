@@ -12,7 +12,7 @@ tags: ['pact', 'rest api', 'pact api', 'pact api reference']
 
 # Pact REST API
 
-See [/pact/api](/pact/api) for latest OpenAPI docs.
+For the latest OpenAPI documentation, see [Pact OpenAPI](/reference/pact/api).
 
 ### Pact built-in server
 
@@ -61,9 +61,10 @@ $ pact -a tests/apireq.yaml -l | curl -d @- http://localhost:8080/api/v1/local
 
 ### Request YAML file format
 
-Request yaml files takes two forms. An _execution_ Request yaml file describes
-the [exec](/pact/api) payload. Meanwhile, a _continuation_ Request yaml file
-describes the [cont](/pact/api) payload.
+Request yaml files takes two forms:
+
+- An _execution_ request yaml file describes the `exec` payload.
+- A _continuation_ request yaml file describes the `cont` payload.
 
 #### YAML exec command request
 
@@ -162,9 +163,9 @@ the command and all the signatures on stdout.
 Both `add-sig` and `combine-sigs` will output YAML if the output transaction
 hasn't accumulated enough signatures to be valid. If all the necessary
 signatures are present, then they will output JSON in final form that is ready
-to be sent to the blockchain on the [`/send` endpoint](/pact/api). If you would
-like to do a test run of the transaction, you can use the `-l` flag to generate
-output suitable for use with the [`/local` endpoint](/pact/api).
+to be sent to the blockchain on the [`/send` endpoint](/reference/pact/api#tag/endpoint-send/paths/~1send/post). 
+If you would like to do a test run of the transaction, you can use the `-l` flag to generate
+output suitable for use with the [`/local` endpoint](/reference/pact/api#tag/endpoint-local/paths/~1local/post).
 
 The above example adds signatures in parallel, but the `add-sig` command can
 also be used to add signatures sequentially in separate steps or all at once in

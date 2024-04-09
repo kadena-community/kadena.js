@@ -119,7 +119,7 @@ specifies access to this keyset.
 :::info
 
 If you’re unfamiliar with modules and keyset, our
-[Pact Modules Tutorial](/pact/beginner/modules) is a great place to get started.
+[Pact Modules Tutorial](/build/pact/modules) is a great place to get started.
 
 :::
 
@@ -138,7 +138,7 @@ goal is to create the schema definition for each of these tables.
 :::info
 
 Schema definitions are introduced in the
-[Schemas and Tables Tutorial](/pact/beginner/schemas-and-tables#define-schemas).
+[Schemas and Tables Tutorial](/build/pact/schemas-and-tables#define-schemas).
 
 :::
 
@@ -223,7 +223,7 @@ Take some time now to define each of the tables for the loans smart contract.
 :::info
 
 Table definitions are covered in the
-[Pact Schemas and Tables Tutorial](/pact/beginner/schemas-and-tables#define-tables).
+[Pact Schemas and Tables Tutorial](/build/pact/schemas-and-tables#define-tables).
 
 :::
 
@@ -272,7 +272,7 @@ your smart contract.
 :::info
 
 You can review each of these function types in the
-[Pact Schemas and Tables Tutorial](/pact/beginner/schemas-and-tables#table-built-in-functions).
+[Pact Schemas and Tables Tutorial](/build/pact/schemas-and-tables#table-built-in-functions).
 
 :::
 
@@ -539,8 +539,8 @@ inside of the repository you cloned.
 For help getting started and deploying in each of these environments, try the
 following tutorials.
 
-- [Pact Online Editor](/pact/beginner/web-editor)
-- [Pact Development on Atom SDK Tutorial](/pact/beginner/atom-sdk)
+- [Set up a local development network](/build/pact/dev-network)
+- [Develop with Atom SDK](/build/pact/atom-sdk)
 
 ## Review
 

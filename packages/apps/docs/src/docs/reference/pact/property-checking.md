@@ -2,9 +2,9 @@
 title: Property validation
 description:
   Pact comes equipped with the ability for smart contract authors to express and
-  automatically check properties -- or, specifications -- of Pact programs.
+  automatically check properties—or, specifications—of Pact programs.
 menu: Property validation
-label: Property validation
+label: Validate smart contract code
 order: 7
 layout: full
 tags: ['pact', 'property checking system']
@@ -18,7 +18,7 @@ Instead of requiring smart contract authors to try to imagine all possible ways 
 
 For example, for an arbitrarily complex Pact program, we might want to
 definitively prove that the program only allows "administrators" of the contract
-to modify the database -- for all other users, we're guaranteed that the
+to modify the database—for all other users, we're guaranteed that the
 contract's logic permits read-only access to the DB. We can prove such a
 property _statically_, before any code is deployed to the blockchain.
 
@@ -47,7 +47,7 @@ sophisticated properties about their smart contracts over time.
 
 ## What do properties and schema invariants look like?
 
-Here's an example of Pact's properties in action -- we declare a property
+Here's an example of Pact's properties in action—we declare a property
 alongside the docstring of the function to which it corresponds. Note that the
 function delegates its implementation of keyset enforcement to another function,
 `enforce-admin`, and we don't need to be concerned about its internal details.
@@ -87,7 +87,7 @@ will always maintain the invariant that token balances are greater than zero:
 ## How does it work?
 
 Pact's property checker works by realizing the language's semantics in an SMT
-("Satisfiability Modulo Theories") solver -- by building a formula for a
+("Satisfiability Modulo Theories") solver—by building a formula for a
 program, and testing the validity of that formula. The SMT solver can prove that
 there is no possible assignment of values to variables which can falsify a
 provided proposition about some Pact code. Pact currently uses Microsoft's
@@ -212,23 +212,15 @@ abort. To write this kind of assertion, instead of `property`, you can use
 With this model, we're guaranteed that no transaction will ever run on the
 blockchain with a non-positive `val`.
 
-We've now seen all three valid forms of model assertions -- `property`,
+We've now seen all three valid forms of model assertions—`property`,
 `succeeds-when`, and `fails-when`.
-
-### More comprehensive properties API documentation
-
-For the full listing of functionality available in properties, see the API
-documentation at
-[Property and Invariant Functions](/reference/properties-and-invariants).
 
 ## Expressing schema invariants
 
 Schema invariants are described by a more restricted subset of the functionality
-available in property definitions -- effectively the functions which are not
+available in property definitions—effectively the functions which are not
 concerned with authorization, DB access, transaction success/failure, and
-function arguments and return values. See the API documentation at
-[Property and Invariant Functions](/reference/properties-and-invariants)
-for the full listing of functions available in invariant definitions.
+function arguments and return values.
 
 <!--- *** This second is disabled until we add `valid`/`satisfiable` alternatives to `property`, which currently assumes tx success ***
 
@@ -336,7 +328,7 @@ or that it increases by a set amount during a transaction:
 ```
 
 `column-delta` is defined in terms of the increase of the column from before to
-after the transaction (i.e. `after - before`) -- not an absolute value of
+after the transaction (i.e. `after - before`)—not an absolute value of
 change. So here `1` means an increase of `1` to the column's total sum.
 
 ### Universal and existential quantification
@@ -492,7 +484,7 @@ And then we can use it within `@model` at the function level:
       (update accounts to   { "balance": (+ to-bal amount) }))))
 ```
 
-When we run `verify` this time, the property checker finds a bug again -- it's
+When we run `verify` this time, the property checker finds a bug again—it's
 able to falsify the property when `from` and `to` are set to the same account.
 When this is the case, we see that the code actually creates money out of thin
 air!

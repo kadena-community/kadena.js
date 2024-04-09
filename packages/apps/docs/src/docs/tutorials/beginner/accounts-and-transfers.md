@@ -116,7 +116,7 @@ admin-keyset access to the module.
 :::info
 
 If you’re unfamiliar with modules and keyset, our
-[Pact Modules Tutorial](/pact/beginner/modules)
+[Pact Modules Tutorial](/build/pact/modules)
 
 is a great place to get started.
 
@@ -148,7 +148,7 @@ Define a schema and table with columns **balance** and **keyset**.
 :::info
 
 Schema definitions are introduced in the
-[Pact Schemas and Tables Tutorial](/pact/beginner/schemas-and-tables#define-schemas).
+[Pact Schemas and Tables Tutorial](/build/pact/schemas-and-tables#define-schemas).
 
 :::
 
@@ -161,8 +161,8 @@ accounts.
 :::info
 
 You can review each of the function types in the
-[Schemas and Tables Tutorial](/pact/beginner/schemas-and-tables) as well as the
-[Pact Language Basics Tutorial](/pact/beginner/language-basics).
+[Schemas and Tables Tutorial](/build/pact/schemas-and-tables) as well as the
+[Pact Language Basics Tutorial](/build/pact/language-basics).
 
 :::
 
@@ -283,16 +283,15 @@ Sarah and James.
 Congratulations, at this point you have completed the Simple Payment smart
 contract!
 
-If you’d like, you can try deploying this smart contract. You can deploy this
-contract using the **Pact Online Editor** or from the **Pact Atom SDK**. If you
-choose to deploy this locally, you’ll need the REPL file which you can find
-inside of the repository you cloned.
+If you’d like, you can try deploying this smart contract. 
+You can deploy this contract locally on the development network using **Chainweaver** or from the **Pact Atom SDK**. 
+If you choose to deploy this locally, you’ll need the REPL file which you can find inside of the repository you cloned.
 
 For help getting started and deploying in each of these environments, try the
 following tutorials.
 
-- [Pact Online Editor](/pact/beginner/web-editor)
-- [Pact Development on Atom SDK Tutorial](/pact/beginner/atom-sdk)
+- [Set up a local development network](/build/pact/dev-network)
+- [Develop with Atom SDK](/build/pact/atom-sdk)
 
 ## Review
 

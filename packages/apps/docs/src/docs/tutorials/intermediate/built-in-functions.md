@@ -149,7 +149,7 @@ and the capability has not yet been granted.
 ## Select
 
 The `select` built-in function can be found
-[here](/pact/beginner/schemas-and-tables#selecth-1822154468).
+[here](/build/pact/schemas-and-tables#selecth-1822154468).
 
 The `select` function is able to pull information from a table under specific
 conditions.

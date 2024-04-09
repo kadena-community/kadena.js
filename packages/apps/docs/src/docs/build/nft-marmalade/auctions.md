@@ -32,7 +32,7 @@ Using functions in the `marmalade-sale.conventional-auction` contract, you can:
 - Define a process for refunding bids.
 - Define rules for concluding the auction and determining the winning bid.
 
-For reference information about the conventional auction smart contract, see [Conventional auction reference](/reference/nft-ref/sale-contracts/conventional-auction-ref).
+For reference information about the conventional auction smart contract, see [Conventional auction reference](/reference/nft-ref/sale-contracts/conventional-auction).
 
 ## Dutch auction
 

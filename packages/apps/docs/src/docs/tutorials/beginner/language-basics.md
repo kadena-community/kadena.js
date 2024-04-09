@@ -38,7 +38,7 @@ simple and safe smart contracts with the Pact programming language.
 You can run each of the commands described to get more familiar with the Pact
 programming language.
 
-View the [Pact Online Code Editor Tutorial](/pact/beginner/web-editor) for more
+View the [Pact Online Code Editor Tutorial](/build/pact/dev-network) for more
 information on running Pact commands. :::
 
 ## Pact Language Basics Tutorial
@@ -211,7 +211,7 @@ example shown above.
 | %S     | second of minute (without decimal part), 0-padded to two chars, "00"–"60"                                                                                 |
 | %N     | ISO 8601 style numeric time zone (e.g., "-06:00" or "+01:00") /EXTENSION/                                                                                 |
 
-View the language reference for more [time formats](/reference/funtions/time).
+View the language reference for more [time formats](/reference/functions/time).
 
 #### Parenthesis
 
@@ -708,7 +708,7 @@ and the capability has not yet been granted.
 ### Select
 
 The `select` built-in funciton can be found
-[here](/pact/beginner/schemas-and-tables#selecth-1822154468).
+[here](/build/pact/schemas-and-tables#selecth-1822154468).
 
 The `select` function is able to pull information from a table under specific
 conditions.

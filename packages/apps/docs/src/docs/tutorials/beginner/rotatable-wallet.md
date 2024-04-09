@@ -303,7 +303,7 @@ keyset to update their nickname in the **users** table.
 
 :::info
 
-View [update](/pact/beginner/schemas-and-tables#updateh-1754979095) and
+View [update](/build/pact/schemas-and-tables#updateh-1754979095) and
 [format](/reference/functions/general#formath-1268779017) for more information
 related to completing this challenge.
 
@@ -335,7 +335,7 @@ change their keyset.
 
 :::info
 
-View [update](/pact/beginner/schemas-and-tables#updateh-1754979095) and
+View [update](/build/pact/schemas-and-tables#updateh-1754979095) and
 [format](/reference/functions/general#format) for more information related to
 completing this challenge.
 
@@ -362,9 +362,9 @@ this contract similar to how you would deploy other smart contracts.
 For more information on deploying this smart contract, view the following
 tutorials.
 
-- [Hello World with Pact](/pact/beginner/hello-world)
-- [Pact Online Editor](/pact/beginner/web-editor)
-- [Pact Development on Atom SDK](/pact/beginner/atom-sdk)
+- [Hello World with Pact](/build/pact/hello-world)
+- [Set up a local development network](/build/pact/dev-network)
+- [Develop with Atom SDK](/build/pact/atom-sdk)
 
 ## Review
 

@@ -95,7 +95,7 @@ To create a new wallet:
 
 1. ​Set a strong, secret, and unique password for unlocking your wallet. 
 
-   For suggestions on generating secure passwords, see [Basic safety tips]().
+   For suggestions on generating secure passwords, see [Basic safety tips](#basic-safety-tips).
 
 2. Record your secret 12-word recovery phrase and store the phrase in a secure location.
 
@@ -104,7 +104,7 @@ To create a new wallet:
    .
 3. Verify the recovery phrase by typing each word in the correct order to complete wallet creation.
    
-   After creating the wallet, you'll be ready to [create an account](/kadena/wallets/chainweaver#create-an-accounth1279555262) on the blockchain.
+   After creating the wallet, you'll be ready to [create an account](/invest/wallets/chainweaver#create-an-accounth1279555262) on the blockchain.
 
 ### Restore a wallet using a recovery phrase
 

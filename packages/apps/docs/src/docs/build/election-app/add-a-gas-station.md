@@ -316,7 +316,7 @@ To deploy the new Pact module on the development network:
    Remember that `k:<your-public-key>` is the default **account name** for the administrative account that you funded in [Add an administrator account](/build/election/add-admin-account).
    You can copy this account name from Chainweaver when viewing the account watch list.
 
-    The `election-dapp/deploy-gas-station.ts` script is similar to the `election-dapp/deploy-module.ts` script, except that it deploys the `election-gas-station.pact` module.
+   The `election-dapp/deploy-gas-station.ts` script is similar to the `election-dapp/deploy-module.ts` script, except that it deploys the `election-gas-station.pact` module.
 
    When you run the script, you should see Chainweaver display a QuickSign Request.
   

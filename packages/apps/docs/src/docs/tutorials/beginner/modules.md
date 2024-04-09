@@ -114,14 +114,13 @@ modules.
 
 ### Example Modules
 
-You can find examples using the Module Explorer in the
-[Pact Online Editor](https://pact.kadena.io/).
+You can find examples using the Module Explorer in Chainweaver.
 
 #### Hello World
 
 From the Module Explorer, open the Hello World Smart Contract. If you’re
 interested, this smart contract is explained in depth in the
-[Hello World with Pact](/pact/beginner/hello-world).
+[Hello World with Pact](/build/pact/hello-world).
 
 Notice that the pattern of this smart contract is similar to the outline
 described above.

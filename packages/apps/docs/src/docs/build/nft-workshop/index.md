@@ -3,7 +3,7 @@ title: "Workshop: NFT marketplace"
 description: Learn how to create, mint, sell, and buy tokens using Marmalade marketplace smart contracts on the Kadena blockchain.
 menu: "Workshop: NFT marketplace"
 label: "Welcome"
-order: 3
+order: 1
 layout: full
 tags: [pact, smart contract, typescript, tutorial]
 ---
@@ -27,7 +27,7 @@ By completing the tutorials in this workshop, you’ll learn how to:
 - Create and mint the token collection using concrete policies.
 - Offer a token from the collection for sale using a conventional auction contract.
 - Bid and buy a token from the collection using a buyer account.
-- Receive payment in your token owner account.
+- Receive payment in your token creator account.
 
 Some of the topics covered in this workshop are similar to topics introduced in
 the [_Deploy your first contract_](/build/quickstart) and in [Create a token collection](/build/nft-marmalade/create-a-collection). 
@@ -64,7 +64,7 @@ whether your development environment meets the following basic requirements:
 This workshop consists of tutorials that you should complete in order.
 
 - [Prepare your workspace](/build/nft-workshop/prepare-your-workspace)
-- [Deploy contracts on a local blockchain](/build/nft-workshop/deploy-local-contracts)
+- [Deploy contracts on a local blockchain](/build/nft-workshop/deploy-locally)
 - [Define a collection](/build/nft-workshop/define-collection)
 - [Upload assets](/build/nft-workshop/upload-assets)
 - [Create and upload metadata](/build/nft-workshop/upload-metadata)

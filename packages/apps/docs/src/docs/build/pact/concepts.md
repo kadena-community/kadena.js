@@ -70,7 +70,7 @@ definitions for smart contracts. They are comprised of:
 - [pact](/reference/syntax#defpacth1545231271) special functions
 - [constant](/reference/syntax#defconsth645951102) values
 - [models](/reference/property-checking)
-- [capabilities](/reference/concepts#capabilitiesh-1323277354)
+- [capabilities](/build/pact/advanced#capabilitiesh-1323277354)
 - [imports](/reference/syntax#useh116103)
 - [implements](/reference/syntax#implementsh-915384400)
 
@@ -589,7 +589,7 @@ Pact provides the `defcap` construct to do this.
 
 `ALLOW_ENTRY` is the name or _domain_ of the capability. `user-id` is a
 _parameter_. Together, they form the _specification_ of a capability. Thus,
-`(ALLOW_ENTRY 'dave)` and `(ALLOW_ENTRY 'carol)` describe separate capailities.
+`(ALLOW_ENTRY 'dave)` and `(ALLOW_ENTRY 'carol)` describe separate capabilities.
 (Note that capability theory's notion of _designation_ is indicated here, which
 we'll return to when we discuss capabilities and signatures).
 
@@ -1586,12 +1586,9 @@ transaction time.
 
 #### Types as necessary
 
-With table schemas, Pact will be strongly typed for most use cases, but
-functions that do not use the database might still need types. Use the
-[typecheck](typecheck) REPL function to add the necessary types. There is a
-small cost for type enforcement at runtime, and too many type signatures can
-harm readability. However types can help document an API, so this is a judgement
-call.
+With table schemas, Pact will be strongly typed for most use cases, but functions that do not use the database might still need types. 
+Use the [typecheck](/reference/functions/repl-only-functions#typecheckh522701326) REPL function to add the necessary types. There is a small cost for type enforcement at runtime, and too many type signatures can harm readability. 
+However types can help document an API, so this is a judgement call.
 
 ### Control Flow
 
@@ -1733,7 +1730,7 @@ A pact is defined with arguments, similarly to function definition. However,
 arguments values are only evaluated in the execution of the initial step, after
 which those values are available unchanged to subsequent steps. To share new
 values with subsequent steps, a step can
-[yield](pact/reference/functions#yieldh114974605) values which the subsequent
+[yield](reference/functions/general#yieldh114974605) values which the subsequent
 step can recover using the special
 [resume](/reference/functions#resumeh-934426579) binding form.
 
@@ -1755,7 +1752,7 @@ all necessary cancel options.
 ### Yield and Resume
 
 A step can yield values to the following step using
-[yield](pact/reference/functions#yieldh114974605) and
+[yield](reference/functions/general#yieldh114974605) and
 [resume](/reference/functions#resumeh-934426579). This is an unforgeable
 value, as it is maintained within the blockchain pact scope.
 

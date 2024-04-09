@@ -177,7 +177,7 @@ pages:
             url: /prepare-your-workspace
             file: /build/election-app/prepare-your-workspace.md
           start:
-            url: /start-local-blockchain
+            url: /start-a-local-blockchain
             file: /build/election-app/start-a-local-blockchain.md
           admin:
             url: /add-admin-account
@@ -210,6 +210,30 @@ pages:
           prepare:
             url: /prepare
             file: /build/nft-workshop/prepare-your-workspace.md
+          deploylocally:
+            url: /deploy-locally
+            file: /build/nft-workshop/deploy-locally.md
+          definecollection:
+            url: /define-collection
+            file: /build/nft-workshop/define-collection.md
+          uploadassets:
+            url: /upload-assets
+            file: /build/nft-workshop/upload-assets.md
+          uploadmetadata:
+            url: /upload-metadata
+            file: /build/nft-workshop/upload-metadata.md
+          minttokens:
+            url: /create-and-mint
+            file: /build/nft-workshop/mint-tokens.md
+          configureoffer:
+            url: /configure-offer
+            file: /build/nft-workshop/configure-offer.md
+          bidandbuy:
+            url: /bid-and-buy
+            file: /build/nft-workshop/bid-and-buy.md
+          receivefunds:
+            url: /receive-funds
+            file: /build/nft-workshop/receive-funds.md
   deploy:
     url: /deploy
     file: /deploy/deploy.md
@@ -275,7 +299,7 @@ pages:
         file: /tutorials/beginner/index.md
         children:
           webeditor:
-            url: /web-editor
+            url: /dev-network
             file: /tutorials/beginner/dev-network.md
           helloworld:
             url: /hello-world
@@ -374,6 +398,9 @@ pages:
         url: /property-checking
         file: /reference/pact/property-checking.md
         children:
+          properties-and-invariants:
+            url: /properties-and-invariants
+            file: /reference/pact/properties-and-invariants.md
           numerical:
             url: /numerical
             file: /reference/pact/properties-and-invariants/numerical.md

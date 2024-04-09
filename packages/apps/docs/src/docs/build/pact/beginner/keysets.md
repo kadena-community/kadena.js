@@ -485,7 +485,7 @@ smart contract to produce this outcome?
 
 You are now ready to deploy the **Simple Payments** smart contract. For
 information on deploying a smart contract, view
-[Deploy to the Testnet](/pact/beginner/hello-world#deploy-to-the-testnet) from
+[Deploy to the Testnet](/build/pact/hello-world#deploy-to-the-testnet) from
 the Hello World with Pact tutorial.
 
 ### Deployed Payments Contract Function Call
