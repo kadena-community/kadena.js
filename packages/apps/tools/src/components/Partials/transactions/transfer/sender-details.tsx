@@ -25,12 +25,7 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
   senderDataQuery,
   onChainUpdate,
 }) => {
-  const {
-    setValue,
-    formState: { errors },
-    register,
-    control,
-  } = useFormContext<FormData>();
+  const { setValue } = useFormContext<FormData>();
 
   const isLedger = type === 'Ledger';
 
