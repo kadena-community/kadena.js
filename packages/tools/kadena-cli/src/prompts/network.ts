@@ -295,17 +295,20 @@ export const networkDeletePrompt: IPrompt<string> = async (
   }
 
   let message = `Are you sure you want to delete the configuration for network "${defaultValue}"?`;
-  if (previousQuestions.isDefaultNetwork === true) {
-    message += `\nYou have currently set this as your "default network". If you delete it, then the default network settings will also be deleted.`;
+  if (isNotEmptyString(previousQuestions.isDefaultNetwork)) {
+    message += `\nThis is a "default network". If you delete it, then the default network settings will also be deleted.`;
   }
-
-  return await select({
-    message,
-    choices: [
-      { value: 'yes', name: 'Yes' },
-      { value: 'no', name: 'No' },
-    ],
+  message += '\n  type "yes" to confirm or "no" to cancel and press enter. \n';
+  const answer = await input({
+    message: message,
+    validate: (input) => {
+      if (input === 'yes' || input === 'no') {
+        return true;
+      }
+      return 'Please type "yes" to confirm or "no" to cancel.';
+    },
   });
+  return answer;
 };
 
 export const networkDefaultConfirmationPrompt: IPrompt<boolean> = async (
