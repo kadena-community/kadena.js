@@ -1013,6 +1013,7 @@ export { default as MonoSimCardAlert } from './MonoSimCardAlert';
 export { default as MonoSimCardDownload } from './MonoSimCardDownload';
 export { default as MonoSkipNext } from './MonoSkipNext';
 export { default as MonoSkipPrevious } from './MonoSkipPrevious';
+export { default as MonoSlashForward } from './MonoSlashForward';
 export { default as MonoSlideshow } from './MonoSlideshow';
 export { default as MonoSlowMotionVideo } from './MonoSlowMotionVideo';
 export { default as MonoSmartButton } from './MonoSmartButton';

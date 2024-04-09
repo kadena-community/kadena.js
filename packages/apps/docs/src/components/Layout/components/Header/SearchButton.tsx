@@ -1,6 +1,6 @@
 import { SearchDialog } from '@/components/SearchDialog/SearchDialog';
 import { useOpenSearch } from '@/hooks/useOpenSearch';
-import { MonoSearch } from '@kadena/react-icons';
+import { MonoSearch, MonoSlashForward } from '@kadena/react-icons';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
@@ -25,7 +25,7 @@ export const SearchButton: FC = () => {
       >
         <MonoSearch />
         <span className={searchButtonSlashClass}>
-          {/* <SystemIcon.SlashForward /> */}
+        <MonoSlashForward />
         </span>
       </button>
 
