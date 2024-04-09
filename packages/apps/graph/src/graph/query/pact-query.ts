@@ -52,17 +52,47 @@ builder.queryField('pactQuery', (t) =>
     }),
     async resolve(__parent, args) {
       try {
-        return args.pactQuery.map(
-          async (query) =>
-            await sendRawQuery(
-              query.code,
-              query.chainId,
-              query.data as CommandData[],
-            ),
+        const queries = args.pactQuery.map((query) =>
+          sendRawQuery(query.code, query.chainId, query.data as CommandData[]),
+        );
+
+        const results = (await Promise.race([
+          Promise.allSettled(queries),
+          new Promise(
+            (_, reject) =>
+              setTimeout(
+                () => reject(new Error('Total query time exceeded')),
+                5000,
+              ), // 5000 ms = 5 seconds
+          ),
+        ])) as PromiseSettledResult<any>[];
+
+        console.log(results);
+
+        if (results instanceof Error) {
+          throw results;
+        }
+
+        return results.map((result) =>
+          result.status === 'fulfilled' ? result.value : null,
         );
       } catch (error) {
         throw normalizeError(error);
       }
     },
+    // async resolve(__parent, args) {
+    //   try {
+    //     return args.pactQuery.map(
+    //       async (query) =>
+    //         await sendRawQuery(
+    //           query.code,
+    //           query.chainId,
+    //           query.data as CommandData[],
+    //         ),
+    //     );
+    //   } catch (error) {
+    //     throw normalizeError(error);
+    //   }
+    // },
   }),
 );
