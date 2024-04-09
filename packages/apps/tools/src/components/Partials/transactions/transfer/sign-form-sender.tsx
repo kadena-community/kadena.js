@@ -38,14 +38,7 @@ export const SignFormSender: FC<ISignFormSenderProps> = ({
   onSigningMethodUpdate,
 }) => {
   const { t } = useTranslation('common');
-  const {
-    register,
-    setValue,
-    // getValues,
-    control,
-    formState: { errors },
-    watch,
-  } = useFormContext<FormData>();
+  const { watch } = useFormContext<FormData>();
 
   const { selectedNetwork: network } = useWalletConnectClient();
 
@@ -64,7 +57,7 @@ export const SignFormSender: FC<ISignFormSenderProps> = ({
 
   return (
     <LoadingCard fullWidth isLoading={senderData.isFetching}>
-      <Heading as={'h5'}>{t('Sender')} </Heading>
+      <Heading as={'h5'}>{t('Sender')}</Heading>
 
       <Stack flexDirection={'row'} justifyContent={'space-between'}>
         <Select
