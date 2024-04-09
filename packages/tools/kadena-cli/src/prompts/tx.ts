@@ -519,7 +519,7 @@ function determineNetwork(networkId: string | null): string {
     return 'testnet';
   } else if (id.includes('mainnet')) {
     return 'mainnet';
-  } else if (id.includes('devnet')) {
+  } else if (id.includes('development')) {
     return 'devnet';
   }
   return '';
