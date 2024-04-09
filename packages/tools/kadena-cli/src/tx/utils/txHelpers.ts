@@ -29,7 +29,7 @@ import type {
 import type { CommandResult } from '../../utils/command.util.js';
 import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
-import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
+import { createTable } from '../../utils/table.js';
 import type { ISavedTransaction } from './storage.js';
 
 export interface ICommandData {
@@ -633,24 +633,25 @@ export function displaySignersFromUnsignedCommands(
   unsignedCommands.forEach((unsignedCommand, index) => {
     const command: IPactCommand = JSON.parse(unsignedCommand.cmd);
 
-    const headers: TableHeader = ['Public Key', 'Capabilities'];
-    const rows: TableRow[] = command.signers.map((signer) => [
-      signer.pubKey,
-      (signer.clist || [])
-        .map(
-          (capability) => `${capability.name}(${capability.args.join(', ')})`,
-        )
-        .join('\n'),
-    ]);
+    const table = createTable({ head: ['Public Key', 'Capabilities'] });
 
-    const tableString = log.generateTableString(headers, rows);
+    table.push(
+      ...command.signers.map((signer) => [
+        signer.pubKey,
+        (signer.clist || [])
+          .map(
+            (capability) => `${capability.name}(${capability.args.join(', ')})`,
+          )
+          .join('\n'),
+      ]),
+    );
 
     log.info(
       `Command ${index + 1} (hash: ${
         unsignedCommand.hash
       }) will now be signed with the following signers:`,
     );
-    log.output(tableString, command.signers);
+    log.output(table.toString(), command.signers);
   });
 }
 
