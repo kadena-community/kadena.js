@@ -10,9 +10,7 @@ layout: landing
 tags: [pact, typescript, account, transactions, utils]
 ---
 
-# TEMP H1 
-
-## Smart contracts: Pact
+# Smart contracts: Pact
 
 Pact is a smart contract programming language, specifically designed for correct, transactional execution on the Kadena high-performance blockchain.
 
@@ -33,11 +31,11 @@ The Kadena client is a collection`of libraries, functions, and utilities written
 
 The Kadena client includes the following packages:
 
-- [Pact-JS](/reference/pactjs) is a TypeScript library that provides a frontend application programming interface (API) for interacting with Pact smart contracts and the Kadena network.
+- [Pact-JS](/reference/pactjs-api) is a TypeScript library that provides a frontend application programming interface (API) for interacting with Pact smart contracts and the Kadena network.
 
-- [Client utilities](reference/frontend/client-utils)
+- [Client utilities](reference/kadena-client/client-utils)
 
-- [Command-line interface](/reference/frontend/kadena-cli)
+- [Command-line interface](/reference/kadena-client/kadena-cli)
 
 ## NFT marketplace: Marmalade technical reference
 

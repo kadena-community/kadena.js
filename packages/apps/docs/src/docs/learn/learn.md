@@ -23,14 +23,20 @@ You should start here to learn the basics about blockchains, cryptography, conse
 
 - [What is a blockchain?](/learn/what-is-a-blockchain) introduces the basics of blockchain technology, including the common concepts and terminology you need as context for learning more.
 - [Why build on a blockchain?](/learn/why-build) highlights the unique properties and value propositions that blockchains offer as extensions of the modern internet.
-- [What you need to know about crypto](/learn/crypto) focuses on the fundamentals of cryptography as the key to all interactions with the blockchain.
+- [What you need to know about crypto](/learn/cryptography) focuses on the fundamentals of cryptography as the key to all interactions with the blockchain.
 - [Why Kadena?](/learn/why-kadena) summarizes the core principles and features that set the Kadena network apart.
 - [Consensus](/learn/consensus) describes consensus models and the consensus workflow from peer-to-peer communication, block finalization, and canonical chain resolution.
-- [Transaction lifecycle](/learn/transaction-lifecycle) explains transaction types and how transactions are received, queued, and executed.
-- [State and storage](/learn/states-and-storage) describes how Kadena handles state changes and data storage.
-- [Accounts and keys](/learn/accounts-keys) explains account ownership, account types, and the relationship between accounts, addresses, and keys.
-- [Apps and smart contracts](/learn/smart-contracts) introduces smart contracts as the backend for applications that run on a blockchain.
-- [Nodes and clients](/learn/nodes-clients) provides a simplified overview of the network architecture.
+- [Chainweb simplified](/learn/chainweb) provides an overview of the Chainweb consensus protocol.
+- [Accounts and keys](/learn/accounts) explains account ownership, account types, and the relationship between accounts, addresses, and keys.
 - [Glossary](/learn/glossary) defines and explains concepts and terminology that are specific to blockchain technology or the Kadena ecosystem.
+- [Kadena FAQ](/learn/kadena-faq) answers many of the most commonly-asked questions.
+- [Kadena resources](/learn/resources) includes links to information resources outside of the documentation.
 
 These topics won't make you an expert, but they should give you a good foundation and links to where you can find out more.
+
+<!--
+- [Transaction lifecycle](/learn/transaction-lifecycle) explains transaction types and how transactions are received, queued, and executed.
+- [State and storage](/learn/states-and-storage) describes how Kadena handles state changes and data storage.
+- [Apps and smart contracts](/learn/smart-contracts) introduces smart contracts as the backend for applications that run on a blockchain.
+- [Nodes and clients](/learn/nodes-clients) provides a simplified overview of the network architecture.
+-->

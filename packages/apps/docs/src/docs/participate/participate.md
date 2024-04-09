@@ -21,13 +21,18 @@ This part of the documentation highlights how you can get involved and where to 
 
 To participate as a Chainweb a node operator, see the following topics:
 
+- [Get started as a Chainweb operator](/deploy/chainweb/chainweb-get-started)
+- [Run a node](/participate/node)
+- [Query blockchain nodes](/participate/query-blockchain-nodes)
+- [Troubleshoot Chainweb](/deploy/chainweb/troubleshoot-chainweb)
+
 ## Community and ecosystem development programs
 
 To participate as a voice in the community or as a developer, see the following topics:
 
 - [Social media channels](https://www.kadena.io/community)
 - [Community programs](/participate/community)
-- [Developer programs](/participate/developer)
+- [Developer programs](/participate/developers)
 - [Grants](https://www.kadena.io/grants) and [partnerships](https://www.kadena.io/ecosystem)
 
 ## Contribute to documentation
