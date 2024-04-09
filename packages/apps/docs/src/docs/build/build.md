@@ -29,7 +29,7 @@ In the onboarding experience, you'll:
 - Fund the account wallet.
 - Play and score points.
 
-When you're ready to start building, take the first step with the [Deploy your first contract - Quick start](/quick-start) to set up a development environment and deploy your first smart contract on Kadena.
+When you're ready to start building, take the first step with the [Deploy your first contract - Quick start](/build/quickstart) to set up a development environment and deploy your first smart contract on Kadena.
 In the Quick start, you'll learn how to:
 
 - Set up the development environment on a local computer.

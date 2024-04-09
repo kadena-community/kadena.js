@@ -1,10 +1,10 @@
 ---
-title: Troubleshooting Chainweb
+title: Troubleshoot Chainweb
 description:
   If you're running a node and getting something like this the following, then
   it means that peer synchronization has failed
-menu: Troubleshooting Chainweb
-label: Troubleshooting Chainweb
+menu: Troubleshoot Chainweb
+label: Troubleshoot Chainweb
 order: 4
 layout: full
 ---

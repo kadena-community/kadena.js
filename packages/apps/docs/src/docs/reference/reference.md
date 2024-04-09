@@ -31,9 +31,9 @@ The Kadena client is a collection`of libraries, functions, and utilities written
 
 The Kadena client includes the following packages:
 
-- [Pact-JS](/reference/pactjs-api) is a TypeScript library that provides a frontend application programming interface (API) for interacting with Pact smart contracts and the Kadena network.
+- [Pact-JS](/reference/kadena-client/pactjs-api) is a TypeScript library that provides a frontend application programming interface (API) for interacting with Pact smart contracts and the Kadena network.
 
-- [Client utilities](reference/kadena-client/client-utils)
+- [Client utilities](reference/kadena-client)
 
 - [Command-line interface](/reference/kadena-client/kadena-cli)
 

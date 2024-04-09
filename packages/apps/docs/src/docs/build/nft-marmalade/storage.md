@@ -148,22 +148,24 @@ When you call the `get-uri` function and pass in a token ID, the function access
 
 Arweave is a blockchain protocol designed to provide decentralized permanent storage for data. 
 
-The Akord application is a data storage and collaboration product that leverages the Arweave blockchain to store files, messages, and all protocol transactions. 
-With Akord, files and messages are organized into vaults and your private data is end-to-end encrypted. 
-With an Akord account, you own the keys that encrypt your data.
+Akord is a platform built on the Arweave blockchain that helps NFT projects and creators get the most of permanent storage and data ownership. Akord facilitates easy uploading to Arweave, caching, reposting, file management, end-to-end encryption, notifications, token-gated access, private messaging, note creation, and more. 
 
-There are other products that provide data storage on Arweave.
-However, Akord has some key differentiating features to consider.
-For example, Akord makes it easy to sign up for an account and create a wallet with 250 MB of free storage.
+Everything in Akord happens through public or private digital vaults, where you can invite others and set access control. 
 
-In addition, Akord offers:
+### How is Akord different?
 
-- **A secure space to collaborate with others**. 
-Akord believes if you want to store something permanently, it's because it has a social dimension—value for others—so, they provide the tools to facilitate the collaborative process.
+Although there are other products that also provide data storage on Arweave, Akord has some key differentiating features.
 
-**A focus on user experience with a web3, decentralised vision**. 
-Many decentralized applications suffer from poor user experience and performance issues. 
-Akord started by focusing on the best UX possible, then matured to become a fully decentralized application.
+- **The easiest and cheapest way to upload to Arweave**. Akord makes it simple to upload to Arweave using its API, CLI, or application.
+- **The only service to offer free Arweave storage**. Akord offers 100 MB on sign up, and their prices are also the cheapest in the ecosystem. 
+- **A secure space to manage on-chain data**. Akord uses an advanced system of end-to-end encryption that not only secures your files, but also allows key rotation to facilitate collaboration in privacy.  
+- **A focus on user experience for developers and end users**. Akord’s vision is to make the power of web3 accessible, a vision shared by Kadena. 
 
-For an example of how to store your NFT data on ArweaveSee using Akord, see the [File management](https://docs.akord.com/app/product-guides/file-management) in the Akord documentation.
-Akord also offers a command-line interface—[akord-cli](https://docs.akord.com/build/akord-cli)—and a JavaScript SDK ([Akord-js](https://github.com/Akord-com/akord-js))
+### Use Akord
+
+All users get [100 MB of free permanent storage](https://v2.akord.com/signup) on Arweave when signing up.
+
+- [Storing NFT assets on Arweave](https://docs.akord.com/nfts/storing-nft-assets-on-arweave-100-mb-free). Learn how to store NFT assets on Arweave using Akord, and how to manage your data by generating a manifest. 
+- [Simple API upload to Arweave](https://docs.akord.com/api-and-dev-tools/simple-api-upload-to-arweave). A super simple, fast way to upload to Arweave with no tokens or wallets needed. 
+- [Full developer documentation](https://docs.akord.com/api-and-dev-tools/learn). Developers can learn about Akord protocol, the Akord API, and open source CLI and Akord JS, as well as how to publish a website on Arweave.
+- [Use the intuitive web app](https://v2.akord.com/signup). The Akord web app abstracts away the complexities of web3 and makes it easy to store any of your data, personal or professional, on Arweave.

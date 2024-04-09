@@ -21,10 +21,10 @@ This part of the documentation highlights how you can get involved and where to 
 
 To participate as a Chainweb a node operator, see the following topics:
 
-- [Get started as a Chainweb operator](/deploy/chainweb/chainweb-get-started)
+- [Get started as a Chainweb operator](/deploy/chainweb-get-started)
 - [Run a node](/participate/node)
-- [Query blockchain nodes](/participate/query-blockchain-nodes)
-- [Troubleshoot Chainweb](/deploy/chainweb/troubleshoot-chainweb)
+- [Query blockchain nodes](/participate/node/query-nodes)
+- [Troubleshoot Chainweb](/deploy/troubleshoot-chainweb)
 
 ## Community and ecosystem development programs
 
