@@ -50,7 +50,7 @@ const confirmDelete = createOption({
         `Are you sure you want to delete the wallet:\n` +
         `${`  - ${walletConfig.alias} with ${walletConfig.keys.length} key${
           walletConfig.keys.length > 1 ? 's' : ''
-        }`}\n type "yes" to confirm or "no" to cancel \n`;
+        }`}\n type "yes" to confirm or "no" to cancel and press enter. \n`;
 
       const answer = await input({
         message: message,
