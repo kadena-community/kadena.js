@@ -25,7 +25,7 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
   senderDataQuery,
   onChainUpdate,
 }) => {
-  const { setValue } = useFormContext<FormData>();
+  const { setValue, clearErrors } = useFormContext<FormData>();
 
   const [isConnected, setIsConnected] = useState(false);
 
@@ -36,8 +36,9 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
       setValue('sender', `k:${ledgerPublicKey}`);
       setIsConnected(true);
       setValue('isConnected', true);
+      clearErrors('isConnected');
     },
-    [setValue],
+    [clearErrors, setValue],
   );
 
   return (
