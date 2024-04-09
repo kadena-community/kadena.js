@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Button, Notification, Stack } from '@kadena/react-ui';
+import type { IButtonProps } from '@kadena/react-ui';
+import { Button, Stack } from '@kadena/react-ui';
 
 import { NAME_VALIDATION } from '@/components/Global/AccountNameField';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
@@ -178,6 +179,26 @@ export const SignForm = ({
     onPubKeysUpdate([]);
   };
 
+  const getSubmitButtonText = () => {
+    if (signingMethod !== 'Ledger') {
+      return t('Sign');
+    }
+
+    if (ledgerSignState.loading) {
+      return t('Waiting for Ledger');
+    }
+
+    return t('Sign on Ledger');
+  };
+
+  const getSubmitButtonColor = (): IButtonProps['color'] => {
+    if (signingMethod === 'Ledger' && ledgerSignState.loading) {
+      return 'info';
+    }
+
+    return 'primary';
+  };
+
   return (
     <FormProvider {...methods}>
       <form
@@ -229,14 +250,12 @@ export const SignForm = ({
             </Button>
 
             <Button
-              // isLoading={receiverData.isFetching || ledgerSignState.loading}
-              isLoading={ledgerSignState.loading}
-              // isDisabled={isSubmitting}
               endIcon={<MonoKeyboardArrowRight />}
-              title={t('Sign')}
+              title={getSubmitButtonText()}
               type="submit"
+              color={getSubmitButtonColor()}
             >
-              {t('Sign')}
+              {getSubmitButtonText()}
             </Button>
           </Stack>
         </Stack>

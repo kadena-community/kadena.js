@@ -35,6 +35,8 @@
   "Amount": "Amount",
   "Enter amount to transfer": "Enter amount to transfer",
   "Sign": "Sign",
+  "Sign on Ledger": "Sign on Ledger",
+  "Waiting for Ledger": "Waiting for Ledger",
   "Enter private key to sign the transaction": "Enter private key to sign the transaction",
   "Make Transfer": "Make Transfer",
   "Request Key": "Request Key",
