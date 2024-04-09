@@ -27,9 +27,7 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
       <ApolloProvider client={client}>
         <AccountProvider>
           <TokenProvider>
-            <ToastProvider>
-              <ThemeProvider>{children}</ThemeProvider>
-            </ToastProvider>
+            <ThemeProvider>{children}</ThemeProvider>
           </TokenProvider>
         </AccountProvider>
       </ApolloProvider>

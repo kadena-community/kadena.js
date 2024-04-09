@@ -238,7 +238,6 @@ export const createConnectTokenTransaction = async (
       ttl: 30000,
     });
 
-  console.log(9999, { signees });
   signees.forEach((signee, idx) => {
     if (idx === 0) {
       transactionBuilder.addSigner(

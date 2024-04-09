@@ -7,6 +7,7 @@ import {
 import { MonoDelete } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
+import { motion } from 'framer-motion';
 import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import {
@@ -56,7 +57,19 @@ export const ListSignees: FC = () => {
         <Heading as="h5">Signees ({signees.length})</Heading>
 
         <Stack flex={1}>
-          {isAlreadySigning(proofOfUs) && getPercentageSignees(signees)}
+          {signees.length > 1 && (
+            <motion.div
+              key="percentage"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {getPercentageSignees(signees)}
+            </motion.div>
+          )}
+          {isAlreadySigning(proofOfUs) && (
+            <motion.div>{getPercentageSignees(signees)}</motion.div>
+          )}
         </Stack>
         <Heading as="h6">Max {env.MAXSIGNERS}</Heading>
       </Stack>

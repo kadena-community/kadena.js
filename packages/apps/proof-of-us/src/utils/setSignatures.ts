@@ -9,12 +9,13 @@ export const setSignatures = (
 
     const signee = signees.find((signee) => signee.publicKey === pubKey);
 
-    if (!signee) return acc;
+    if (!signee || !signee.signature) return acc;
 
     acc.push({ sig: signee.signature });
 
     return acc;
   }, []);
 
+  console.log('sigs4', { ...innerTx, sigs });
   return Buffer.from(JSON.stringify({ ...innerTx, sigs })).toString('base64');
 };
