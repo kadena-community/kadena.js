@@ -124,7 +124,10 @@ export async function removeDefaultNetwork(): Promise<void> {
   if (defaultNetworksSettingsFilePath === null) {
     throw new KadenaError('no_kadena_directory');
   }
-  await services.filesystem.deleteFile(defaultNetworksSettingsFilePath);
+
+  if (await services.filesystem.fileExists(defaultNetworksSettingsFilePath)) {
+    await services.filesystem.deleteFile(defaultNetworksSettingsFilePath);
+  }
 }
 
 export async function loadNetworkConfig(

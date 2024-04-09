@@ -46,7 +46,9 @@ export const deleteNetworksCommand: (
     }
 
     await removeNetwork(networkData.networkConfig);
-    await removeDefaultNetwork();
+    if (isDefaultNetwork) {
+      await removeDefaultNetwork();
+    }
 
     log.info(
       log.color.green(
