@@ -28,6 +28,7 @@ import { parseTransactionsFromStdin } from '../utils/input.js';
 import {
   extractCommandData,
   getTransactionsFromFile,
+  logTransactionDetails,
 } from '../utils/txHelpers.js';
 
 interface INetworkDetails extends INetworkCreateOptions {
@@ -141,6 +142,7 @@ export const sendTransactionAction = async ({
 
       const client = getClient(details);
 
+      await logTransactionDetails(command);
       const localResponse = await client.local(command);
       if (localResponse.result.status === 'failure') {
         throw localResponse.result.error;

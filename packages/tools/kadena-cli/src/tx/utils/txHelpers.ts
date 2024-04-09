@@ -10,7 +10,12 @@ import {
   kadenaSign as legacyKadenaSign,
   kadenaSignFromRootKey as legacyKadenaSignWithSeed,
 } from '@kadena/hd-wallet/chainweaver';
-import type { ICommand, IKeyPair, IUnsignedCommand } from '@kadena/types';
+import type {
+  ICommand,
+  ICommandPayload,
+  IKeyPair,
+  IUnsignedCommand,
+} from '@kadena/types';
 
 import { isAbsolute, join } from 'path';
 import { z } from 'zod';
@@ -642,4 +647,30 @@ export function displaySignersFromUnsignedCommands(
     );
     log.output(tableString, command.signers);
   });
+}
+
+export async function logTransactionDetails(command: ICommand): Promise<void> {
+  const header = ['Network ID', 'Chain ID'];
+  const rows: Array<Array<string>> = [];
+
+  try {
+    const cmdPayload: ICommandPayload = JSON.parse(command.cmd);
+    const networkId = cmdPayload.networkId ?? 'N/A';
+    const chainId = cmdPayload.meta.chainId ?? 'N/A';
+    const hash = command.hash ?? 'N/A';
+
+    rows.push([networkId, chainId]);
+
+    if (rows.length > 0) {
+      log.info(
+        log.color.green(`\nTransation details for command with hash: ${hash}`),
+      );
+      log.output(log.generateTableString(header, rows), command);
+      log.info('\n\n');
+    } else {
+      log.info(`No transaction details to display for hash: ${hash}`);
+    }
+  } catch (error) {
+    log.info(`No transaction details to display`);
+  }
 }

@@ -1,4 +1,8 @@
-import type { ICommand, IUnsignedCommand } from '@kadena/types';
+import type {
+  ICommand,
+  ICommandPayload,
+  IUnsignedCommand,
+} from '@kadena/types';
 import { z } from 'zod';
 import {
   getTransactions,
@@ -508,6 +512,19 @@ export async function selectSignMethodPrompt(): Promise<'wallet' | 'keyPair'> {
   });
 }
 
+function determineNetwork(networkId: string | null): string {
+  const id = networkId ?? '';
+
+  if (id.includes('testnet')) {
+    return 'testnet';
+  } else if (id.includes('mainnet')) {
+    return 'mainnet';
+  } else if (id.includes('devnet')) {
+    return 'devnet';
+  }
+  return '';
+}
+
 export const txTransactionNetworks: IPrompt<string[]> = async (
   args: Record<string, unknown>,
 ) => {
@@ -517,12 +534,17 @@ export const txTransactionNetworks: IPrompt<string[]> = async (
   )[];
 
   const networkPerTransaction: string[] = [];
-  for (const [index] of commands.entries()) {
-    const network = await networkSelectPrompt(
-      {},
-      { networkText: `Select network for transaction ${index + 1}:` },
-      false,
-    );
+  for (const [index, command] of commands.entries()) {
+    const cmdPayload: ICommandPayload = JSON.parse(command.cmd);
+    let network = determineNetwork(cmdPayload.networkId);
+
+    if (network === '') {
+      network = await networkSelectPrompt(
+        {},
+        { networkText: `Select network for transaction ${index + 1}:` },
+        false,
+      );
+    }
 
     networkPerTransaction.push(network);
   }
