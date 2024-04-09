@@ -7,7 +7,7 @@ export async function addAccount(
   config: IAddAccountConfig,
 ): Promise<CommandResult<string>> {
   try {
-    const filePath = getAccountFilePath(config.accountAlias);
+    const filePath = await getAccountFilePath(config.accountAlias);
     const updatedConfig =
       config.accountDetailsFromChain === undefined
         ? config

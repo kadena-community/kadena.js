@@ -1,11 +1,10 @@
 import path from 'path';
 
-import { ACCOUNT_DIR } from '../../constants/config.js';
-import { KadenaError } from '../../services/service-error.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import type { IAccountDetailsResult, IAddAccountConfig } from '../types.js';
+import { getAccountDirectory } from './accountHelpers.js';
 
 export const isEmpty = (value?: string | null): boolean =>
   value === undefined || value === '' || value === null;
@@ -32,12 +31,10 @@ export const getUpdatedConfig = (
   }
 };
 
-export const getAccountFilePath = (fileName: string): string => {
-  if (ACCOUNT_DIR === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
+export const getAccountFilePath = async (fileName: string): Promise<string> => {
+  const accountDir = await getAccountDirectory();
   const sanitizedAlias = sanitizeFilename(fileName);
-  return path.join(ACCOUNT_DIR, `${sanitizedAlias}.yaml`);
+  return path.join(accountDir, `${sanitizedAlias}.yaml`);
 };
 
 export const displayAddAccountSuccess = (

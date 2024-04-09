@@ -2,8 +2,6 @@ import type { Command } from 'commander';
 import { services } from '../../services/index.js';
 
 import { getAccountDirectory } from '../../account/utils/accountHelpers.js';
-import { ACCOUNT_DIR } from '../../constants/config.js';
-import { KadenaError } from '../../services/service-error.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
 import { handleNoKadenaDirectory } from '../../utils/helpers.js';
@@ -37,9 +35,7 @@ export const createGenerateWalletCommand: (
     walletOptions.createAccount(),
   ],
   async (option, { collect }) => {
-    if (ACCOUNT_DIR === null) {
-      throw new KadenaError('no_kadena_directory');
-    }
+    const accountDir = await getAccountDirectory();
 
     const config = await collect(option);
     log.debug('create-wallet:action', config);
@@ -63,7 +59,6 @@ export const createGenerateWalletCommand: (
 
       log.info();
       if (config.createAccount === 'true') {
-        const accountDir = await getAccountDirectory();
         const { accountName, accountFilepath } =
           await createAccountAliasByPublicKey(
             wallet.alias,

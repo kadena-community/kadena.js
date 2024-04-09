@@ -11,7 +11,6 @@ import {
 import {
   detectArrayFileParseType,
   getFileParser,
-  isNotEmptyString,
   notEmpty,
   safeYamlParse,
 } from '../../utils/helpers.js';
@@ -59,7 +58,7 @@ export class ConfigService implements IConfigService {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   private async setDirectory(directory?: string): Promise<void> {
     // Priority 1: directory passed in constructor
-    if (isNotEmptyString(directory)) {
+    if (directory !== undefined) {
       this.directory = directory;
       return;
     }

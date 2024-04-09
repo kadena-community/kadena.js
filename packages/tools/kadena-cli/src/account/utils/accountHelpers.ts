@@ -13,7 +13,6 @@ import { ACCOUNT_DIR, MAX_CHAIN_VALUE } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import { KadenaError } from '../../services/service-error.js';
 import { isNotEmptyString, notEmpty } from '../../utils/helpers.js';
-import { isEmpty } from './addHelpers.js';
 
 export const accountAliasFileSchema = z.object({
   name: z.string(),
@@ -33,16 +32,23 @@ export const formatZodErrors = (errors: ZodError): string => {
     .join('\n');
 };
 
+export const getAccountDirectory = async (): Promise<string> => {
+  const directory = await services.config.getDirectory();
+  if (directory === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+
+  return join(directory, ACCOUNT_DIR);
+};
+
 export const readAccountFromFile = async (
   accountFile: string,
 ): Promise<IAliasAccountData> => {
-  if (ACCOUNT_DIR === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
+  const accountDir = await getAccountDirectory();
   const ext = extname(accountFile);
   const fileWithExt =
     !ext || ext !== '.yaml' ? `${accountFile}.yaml` : accountFile;
-  const filePath = join(ACCOUNT_DIR, fileWithExt);
+  const filePath = join(accountDir, fileWithExt);
 
   if (!(await services.filesystem.fileExists(filePath))) {
     throw new Error(`Account alias "${accountFile}" file not exist`);
@@ -57,7 +63,7 @@ export const readAccountFromFile = async (
       alias: fileWithExt,
     };
   } catch (error) {
-    if (isEmpty(content)) {
+    if (!isNotEmptyString(content)) {
       throw new Error(
         `Error parsing alias file: ${accountFile}, file is empty`,
       );
@@ -69,34 +75,27 @@ export const readAccountFromFile = async (
 };
 
 export async function ensureAccountAliasDirectoryExists(): Promise<boolean> {
-  if (ACCOUNT_DIR === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
-  return await services.filesystem.directoryExists(ACCOUNT_DIR);
+  const accountDir = await getAccountDirectory();
+  return await services.filesystem.directoryExists(accountDir);
 }
 
 export async function ensureAccountAliasFilesExists(): Promise<boolean> {
-  if (ACCOUNT_DIR === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
   if (!(await ensureAccountAliasDirectoryExists())) {
     return false;
   }
-
-  const files = await services.filesystem.readDir(ACCOUNT_DIR);
+  const accountDir = await getAccountDirectory();
+  const files = await services.filesystem.readDir(accountDir);
 
   return files.length > 0;
 }
 
 export async function getAllAccounts(): Promise<IAliasAccountData[]> {
-  if (ACCOUNT_DIR === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
   if (!(await ensureAccountAliasDirectoryExists())) {
     return [];
   }
 
-  const files = await services.filesystem.readDir(ACCOUNT_DIR);
+  const accountDir = await getAccountDirectory();
+  const files = await services.filesystem.readDir(accountDir);
 
   const allAccounts = await Promise.all(
     files.map((file) => readAccountFromFile(file).catch(() => null)),
@@ -190,7 +189,7 @@ const getChainIds = (
   input: string,
   separator?: ',' | '-',
 ): number[] | undefined => {
-  if (isEmpty(separator)) {
+  if (!isNotEmptyString(separator)) {
     return [parseInt(input.trim(), 10)];
   } else if (separator === ',') {
     const splitValue = new Set(input.split(','));
@@ -230,12 +229,3 @@ export const isValidForOnlyKeysAllPredicate = (
   accountName: string,
   publicKeys: string[],
 ): boolean => isKAccount(accountName) && publicKeys.length === 1;
-
-export const getAccountDirectory = async (): Promise<string> => {
-  const directory = await services.config.getDirectory();
-  if (directory === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
-
-  return join(directory, ACCOUNT_DIR);
-};
