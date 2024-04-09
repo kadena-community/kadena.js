@@ -102,7 +102,7 @@ export async function signWithWallet(
         walletConfig,
       );
 
-      const password = await option.passwordFile();
+      const password = await option.passwordFile({ wallet: walletConfig });
       log.debug('sign-with-wallet:action', {
         walletConfig,
         password,
@@ -149,7 +149,7 @@ export async function signWithWallet(
         throw new Error(`Wallet: ${walletName} does not exist.`);
       }
 
-      const password = await option.passwordFile();
+      const password = await option.passwordFile({ wallet: walletConfig });
 
       const { unsignedCommands, skippedCommands, relevantKeyPairs } =
         await filterRelevantUnsignedCommandsForWallet(
