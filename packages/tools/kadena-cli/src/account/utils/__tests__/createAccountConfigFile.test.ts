@@ -2,14 +2,13 @@ import yaml from 'js-yaml';
 import path from 'path';
 import { describe, expect, it } from 'vitest';
 
+import { ACCOUNT_DIR, CWD_KADENA_DIR } from '../../../constants/config.js';
 import { services } from '../../../services/index.js';
-import { getAccountDirectory } from '../accountHelpers.js';
 import { createAccountConfigFile } from '../createAccountConfigFile.js';
 import { defaultConfigMock } from './mocks.js';
 
-describe('createAccountConfigFile', async () => {
-  const root = path.join(__dirname, '../../../../');
-  const accountDir = await getAccountDirectory();
+describe('createAccountConfigFile', () => {
+  const accountDir = path.join(CWD_KADENA_DIR, ACCOUNT_DIR);
   it('should write "config" in config file', async () => {
     const config = {
       ...defaultConfigMock,
@@ -17,7 +16,7 @@ describe('createAccountConfigFile', async () => {
       accountName: 'accountName',
     };
 
-    const filePath = path.join(root, accountDir, `${config.accountAlias}.yaml`);
+    const filePath = path.join(accountDir, `${config.accountAlias}.yaml`);
     const fs = services.filesystem;
     // To start fresh delete the file if it already exists
     if (await fs.fileExists(filePath)) {
@@ -37,6 +36,8 @@ describe('createAccountConfigFile', async () => {
       }),
     );
     expect(await fs.fileExists(filePath)).toBe(true);
+    // Cleanup the file after test
+    await fs.deleteFile(filePath);
   });
 
   it('should return false with errors message', async () => {
@@ -45,7 +46,7 @@ describe('createAccountConfigFile', async () => {
       accountAlias: 'unit-test-alias',
       accountName: 'accountName',
     };
-    const filePath = path.join(root, accountDir, `${config.accountAlias}.yaml`);
+    const filePath = path.join(accountDir, `${config.accountAlias}.yaml`);
     const fs = services.filesystem;
     // Create a file before writing
     await fs.writeFile(filePath, 'test');
