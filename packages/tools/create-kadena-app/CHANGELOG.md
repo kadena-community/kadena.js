@@ -1,5 +1,11 @@
 # @kadena/create-kadena-app
 
+## 0.1.2
+
+### Patch Changes
+
+- 8bb3168818: fix: use new text and header components from react-ui package
+
 ## 0.1.1
 
 ### Patch Changes

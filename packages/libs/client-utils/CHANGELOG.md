@@ -1,5 +1,14 @@
 # @kadena/client-utils
 
+## 0.5.3
+
+### Patch Changes
+
+- Updated dependencies [3bbfeaaa9]
+  - @kadena/chainweb-node-client@0.6.0
+  - @kadena/client@1.11.0
+  - @kadena/pactjs-cli@1.11.0
+
 ## 0.5.2
 
 ### Patch Changes
