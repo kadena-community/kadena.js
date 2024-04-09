@@ -656,8 +656,7 @@ export function displaySignersFromUnsignedCommands(
 }
 
 export async function logTransactionDetails(command: ICommand): Promise<void> {
-  const header = ['Network ID', 'Chain ID'];
-  const rows: Array<Array<string>> = [];
+  const table = createTable({ head: ['Network ID', 'Chain ID'] });
 
   try {
     const cmdPayload: ICommandPayload = JSON.parse(command.cmd);
@@ -665,13 +664,14 @@ export async function logTransactionDetails(command: ICommand): Promise<void> {
     const chainId = cmdPayload.meta.chainId ?? 'N/A';
     const hash = command.hash ?? 'N/A';
 
-    rows.push([networkId, chainId]);
+    table.push([networkId, chainId]);
 
-    if (rows.length > 0) {
+    if (table.length > 0) {
       log.info(
         log.color.green(`\nTransaction detail for command with hash: ${hash}`),
       );
-      log.output(log.generateTableString(header, rows), command);
+
+      log.output(table.toString(), command);
       log.info('\n\n');
     } else {
       log.info(`No transaction details to display for hash: ${hash}`);
