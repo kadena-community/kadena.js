@@ -40,6 +40,7 @@ export const schema = z.object({
   receiver: NAME_VALIDATION,
   amount: z.number().positive(),
   receiverChainId: z.enum(CHAINS),
+  isConnected: z.boolean().refine((val) => val === true),
 });
 
 export type FormData = z.infer<typeof schema>;

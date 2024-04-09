@@ -110,6 +110,13 @@ export const Test: FC<ITestProps> = ({
         )}
       />
 
+      <input
+        type="hidden"
+        {...register('isConnected', {
+          value: !isLedger,
+        })}
+      />
+
       <Stack
         flexDirection={'row'}
         justifyContent={'space-between'}

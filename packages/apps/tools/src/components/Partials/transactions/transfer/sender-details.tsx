@@ -35,6 +35,7 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
     (ledgerPublicKey: string) => {
       setValue('sender', `k:${ledgerPublicKey}`);
       setIsConnected(true);
+      setValue('isConnected', true);
     },
     [setValue],
   );
