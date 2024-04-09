@@ -237,6 +237,7 @@ export const SignForm = ({
               // isLoading={isLoading}
               // isDisabled={ledgerSignState.loading}
               endIcon={<MonoRefresh />}
+              color="secondary"
               title={t('Reset')}
               type="reset"
             >
