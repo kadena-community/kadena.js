@@ -7,7 +7,7 @@ import NonFungibleToken from './non-fungible-token';
 export default builder.objectType('NonFungibleTokenBalance', {
   description: 'The token identifier and its balance.',
   fields: (t) => ({
-    id: t.exposeID('id'),
+    id: t.exposeString('id'),
     balance: t.exposeInt('balance'),
     chainId: t.exposeString('chainId'),
     version: t.exposeString('version'),
