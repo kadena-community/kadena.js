@@ -13,6 +13,7 @@ import { versionCommand } from './version/index.js';
 
 import type { Command } from 'commander';
 import { readFileSync } from 'node:fs';
+import { CLINAME } from './constants/config.js';
 import { globalOptions } from './utils/globalOptions.js';
 
 const packageJson: { version: string } = JSON.parse(
@@ -42,6 +43,7 @@ export function loadProgram(program: Command): Command {
     });
 
   program
+    .name(CLINAME)
     .description('CLI to interact with Kadena and its ecosystem')
     .version(packageJson.version);
 
