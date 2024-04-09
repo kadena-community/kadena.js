@@ -232,12 +232,6 @@ export const SignForm = ({
             />
           )}
 
-          {ledgerSignState.loading && (
-            <Notification role="alert">
-              {t('Waiting for ledger signature…')}
-            </Notification>
-          )}
-
           <Stack justifyContent={'flex-end'} gap={'lg'}>
             <Button
               // isLoading={isLoading}
