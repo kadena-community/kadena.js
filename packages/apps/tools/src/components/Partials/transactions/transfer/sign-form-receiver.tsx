@@ -233,6 +233,8 @@ export const SignFormReceiver = ({
           })),
         );
       }
+    } else {
+      setChainSelectOptions([]); // reset to initial state
     }
   }, [receiverAccountChains.isSuccess, receiverAccountChains.data]);
 
