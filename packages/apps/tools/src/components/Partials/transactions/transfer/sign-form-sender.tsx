@@ -90,20 +90,13 @@ export const SignFormSender: FC<ISignFormSenderProps> = ({
         </Link>
       </Stack>
 
-      <Stack
-        flexDirection="column"
-        justifyContent="flex-start"
-        alignItems="stretch"
-        gap="md"
-      >
-        <SenderDetails
-          type={signingMethod}
-          onKeyIdUpdate={onKeyIdUpdate}
-          onDerivationUpdate={onDerivationUpdate}
-          senderDataQuery={senderData}
-          onChainUpdate={onChainUpdate}
-        />
-      </Stack>
+      <SenderDetails
+        type={signingMethod}
+        onKeyIdUpdate={onKeyIdUpdate}
+        onDerivationUpdate={onDerivationUpdate}
+        senderDataQuery={senderData}
+        onChainUpdate={onChainUpdate}
+      />
     </LoadingCard>
   );
 };

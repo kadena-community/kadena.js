@@ -1,4 +1,5 @@
 import type { DerivationMode } from '@/hooks/use-ledger-public-key';
+import { Stack } from '@kadena/react-ui';
 import type { ChainId } from '@kadena/types';
 import type { FC } from 'react';
 import React, { useCallback } from 'react';
@@ -41,7 +42,12 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
   );
 
   return (
-    <>
+    <Stack
+      flexDirection="column"
+      justifyContent="flex-start"
+      alignItems="stretch"
+      gap="md"
+    >
       {isLedger && (
         <LedgerDetails
           onLedgerKeyUpdate={onLedgerKeyUpdate}
@@ -54,6 +60,6 @@ export const SenderDetails: FC<ISenderDetailsProps> = ({
         senderDataQuery={senderDataQuery}
         onChainUpdate={onChainUpdate}
       />
-    </>
+    </Stack>
   );
 };
