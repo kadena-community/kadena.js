@@ -224,6 +224,7 @@
   "link-to-kadena-explorer": "Request Key: <0></0>",
   "Target Chain Request key: ": "Target Chain Request key: ",
   "ledger-info-notification": "Please visit <0>the Ledger Docs</0> for more information on how to install the Kadena Ledger app on your device.",
+  "ledger-sign-error": "You haven't connected your Ledger yet. Make sure to connect it first.",
   "forgot-ledger-key-index": "Forgot the index?",
   "is Legacy": "is Legacy",
   "The amount of KDA to transfer.": "The amount of KDA to transfer.",

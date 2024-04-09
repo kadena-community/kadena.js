@@ -73,7 +73,11 @@ export const SignForm = ({
     defaultValues,
   });
 
-  const { reset, handleSubmit } = methods;
+  const {
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
 
   const { selectedNetwork: network } = useWalletConnectClient();
 
@@ -230,6 +234,13 @@ export const SignForm = ({
             <FormStatusNotification
               status="erroneous"
               body={ledgerSignState.error.message}
+            />
+          )}
+
+          {errors.isConnected && (
+            <FormStatusNotification
+              status="erroneous"
+              body={t('ledger-sign-error')}
             />
           )}
 
