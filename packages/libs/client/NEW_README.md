@@ -88,6 +88,7 @@ Checkout different sections:
 - [Command Builder](#command-builder)
 - [Signing Transactions](#signing-transactions)
 - [Communicate With Network](#communicate-with-network)
+- [FP Compose Pact Command](#fp-compose-pact-command)
 - [Examples](#complete-and-runnable-examples)
 
 ## Install
