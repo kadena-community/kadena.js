@@ -4,7 +4,7 @@ import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import GQLPactQueryResponse from '../objects/pact-query-response';
-import { PactQueryResponse } from '../types/graphql-types';
+import type { PactQueryResponse } from '../types/graphql-types';
 
 const PactData = builder.inputType('PactQueryData', {
   fields: (t) => ({
