@@ -17,7 +17,6 @@ import {
 } from '../Button/Button.css';
 import { disableLoadingProps } from '../Button/utils';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
-import { BaseLink } from './BaseLink';
 
 type Variants = NonNullable<RecipeVariants<typeof button>>;
 
