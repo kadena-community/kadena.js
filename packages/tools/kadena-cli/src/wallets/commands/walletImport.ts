@@ -15,10 +15,11 @@ export const createImportWalletCommand: (
   'import',
   'Import (restore) wallet from mnemonic phrase',
   [
-    walletOptions.keyMnemonic(),
+    walletOptions.mnemonicFile(),
     securityOptions.createPasswordOption({
       message: 'Enter the new wallet password',
       confirmPasswordMessage: 'Re-enter the password',
+      useStdin: false,
     }),
     walletOptions.walletName(),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
@@ -29,17 +30,24 @@ export const createImportWalletCommand: (
 
     const loading = ora('Importing...').start();
     try {
-      const wallet = await services.wallet.import({
+      let wallet = await services.wallet.import({
         alias: config.walletName,
         legacy: config.legacy,
         password: config.passwordFile,
-        mnemonic: config.keyMnemonic,
+        mnemonic: config.mnemonicFile,
       });
+      const key = await services.wallet.generateKey({
+        seed: wallet.seed,
+        legacy: wallet.legacy,
+        password: config.passwordFile,
+        index: 0,
+      });
+      wallet = await services.wallet.storeKey(wallet, key);
 
       loading.succeed('Wallet imported successfully');
 
       log.info(
-        log.generateTableString(['Mnemonic Phrase'], [[config.keyMnemonic]]),
+        log.generateTableString(['Mnemonic Phrase'], [[config.mnemonicFile]]),
       );
       log.info(
         log.color.yellow(
@@ -53,7 +61,7 @@ export const createImportWalletCommand: (
         ),
       );
       log.output(null, {
-        words: config.keyMnemonic,
+        words: config.mnemonicFile,
         wallet,
       });
     } catch (error) {

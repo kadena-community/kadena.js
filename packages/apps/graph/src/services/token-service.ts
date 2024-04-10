@@ -1,6 +1,7 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Prisma } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
+import { nonFungibleAccountDetailsLoader } from '../graph/data-loaders/non-fungible-account-details';
 import type { NonFungibleTokenBalance } from '../graph/types/graphql-types';
 
 export async function getTokenDetails(
@@ -35,11 +36,11 @@ export async function getTokenDetails(
     return [];
   }
 
-  allEvents.forEach((event) => {
+  for (const event of allEvents) {
     const tokenChainIdKey = `${event.token}-${event.chainId}`;
 
     if (processedTokens.has(tokenChainIdKey) || !event.token) {
-      return;
+      continue;
     }
 
     let balance = null;
@@ -53,17 +54,29 @@ export async function getTokenDetails(
     }
 
     if (balance) {
+      const finalChainId = event.chainId
+        ? event.chainId.toString()
+        : dotenv.SIMULATE_DEFAULT_CHAIN_ID.toString();
+
+      const accountDetails = await nonFungibleAccountDetailsLoader.load({
+        tokenId: event.token,
+        accountName: accountName,
+        chainId: finalChainId,
+      });
+
       result.push({
         balance,
         id: event.token,
-        chainId: event.chainId
-          ? event.chainId.toString()
-          : dotenv.SIMULATE_DEFAULT_CHAIN_ID.toString(),
+        chainId: finalChainId,
+        guard: {
+          keys: accountDetails.guard.keys,
+          predicate: accountDetails.guard.pred,
+        },
         version: event.version!,
       });
       processedTokens.add(tokenChainIdKey);
     }
-  });
+  }
 
   return result;
 }

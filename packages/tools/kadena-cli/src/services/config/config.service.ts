@@ -10,6 +10,7 @@ import {
 } from '../../utils/helpers.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import type { Services } from '../index.js';
+import { KadenaError } from '../service-error.js';
 import {
   WALLET_SCHEMA_VERSION,
   walletSchema,
@@ -119,6 +120,7 @@ export class ConfigService implements IConfigService {
     wallet: IWalletCreate,
     update?: boolean,
   ): ReturnType<IConfigService['setWallet']> {
+    if (WALLET_DIR === null) throw new KadenaError('no_kadena_directory');
     const filename = sanitize(wallet.alias);
     const filepath = path.join(WALLET_DIR, `${filename}${YAML_EXT}`);
     const exists = await this.services.filesystem.fileExists(filepath);
@@ -142,8 +144,12 @@ export class ConfigService implements IConfigService {
   }
 
   public async getWallets(): ReturnType<IConfigService['getWallets']> {
+    if (WALLET_DIR === null) throw new KadenaError('no_kadena_directory');
+    if (!(await this.services.filesystem.directoryExists(WALLET_DIR))) {
+      return [];
+    }
     const files = await this.services.filesystem.readDir(WALLET_DIR);
-    const filepaths = files.map((file) => path.join(WALLET_DIR, file));
+    const filepaths = files.map((file) => path.join(WALLET_DIR!, file));
 
     const wallets = await Promise.all(
       filepaths.map(async (filepath) =>

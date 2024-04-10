@@ -235,7 +235,7 @@ type NonFungibleAccount implements Node {
   accountName: String!
   chainAccounts: [NonFungibleChainAccount!]!
   id: ID!
-  nonFungibles: [NonFungibleTokenBalance!]!
+  nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
 
   """
   Default page size is 20. Note that custom token related transactions are not included.
@@ -259,7 +259,7 @@ type NonFungibleChainAccount implements Node {
   accountName: String!
   chainId: ID!
   id: ID!
-  nonFungibles: [NonFungibleTokenBalance!]!
+  nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
 
   """
   Default page size is 20. Note that custom token related transactions are not included.
@@ -289,6 +289,7 @@ type NonFungibleToken {
 type NonFungibleTokenBalance {
   balance: Int!
   chainId: String!
+  guard: Guard!
   id: ID!
   info: NonFungibleToken
   version: String!
@@ -508,12 +509,10 @@ type Signer implements Node {
   clist: [TransactionCapability!]!
   id: ID!
   orderIndex: Int
-  publicKey: String!
-  requestKey: String!
+  pubkey: String!
 
   """The signature scheme that was used to sign."""
   scheme: String
-  sig: String
 }
 
 type Subscription {
@@ -542,6 +541,7 @@ type Transaction implements Node {
   hash: String!
   id: ID!
   result: TransactionInfo!
+  sigs: [TransactionSignature!]!
 }
 
 """List of capabilities associated with/installed by this signer."""
@@ -630,6 +630,11 @@ type TransactionResultTransfersConnection {
 type TransactionResultTransfersConnectionEdge {
   cursor: String!
   node: Transfer!
+}
+
+"""List of capabilities associated with/installed by this signer."""
+type TransactionSignature {
+  sig: String!
 }
 
 """A transfer of funds from a fungible between two accounts."""

@@ -1,7 +1,7 @@
 import type { ChainId } from '@kadena/types';
 import { z } from 'zod';
 import { chainIdValidation } from '../account/utils/accountHelpers.js';
-import { MAX_CHAIN_VALUE } from '../constants/config.js';
+import { KADENA_DIR, MAX_CHAIN_VALUE } from '../constants/config.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
@@ -10,6 +10,7 @@ import {
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
+import { KadenaError } from '../services/service-error.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   getExistingNetworks,
@@ -186,13 +187,16 @@ export const networkSelectPrompt: IPrompt<string> = async (
 };
 
 const getEnsureExistingNetworks = async (): Promise<ICustomNetworkChoice[]> => {
+  if (defaultNetworksPath === null || KADENA_DIR === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   const isNetworksFolderExists =
     await services.filesystem.directoryExists(defaultNetworksPath);
   if (
     !isNetworksFolderExists ||
     (await services.filesystem.readDir(defaultNetworksPath)).length === 0
   ) {
-    await ensureNetworksConfiguration();
+    await ensureNetworksConfiguration(KADENA_DIR);
   }
   const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
 
@@ -291,8 +295,8 @@ export const networkDeletePrompt: IPrompt<string> = async (
   }
 
   let message = `Are you sure you want to delete the configuration for network "${defaultValue}"?`;
-  if (isNotEmptyString(previousQuestions.isDefaultNetwork)) {
-    message += `\nThis is the "default network". If you delete it, then the default network settings will also be deleted.`;
+  if (previousQuestions.isDefaultNetwork === true) {
+    message += `\nYou have currently set this as your "default network". If you delete it, then the default network settings will also be deleted.`;
   }
 
   return await select({

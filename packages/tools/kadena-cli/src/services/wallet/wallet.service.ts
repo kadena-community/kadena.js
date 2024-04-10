@@ -38,7 +38,7 @@ export interface IWalletService {
   import: (wallet: IWalletImport) => Promise<IWallet>;
   delete: (filepath: string) => Promise<void>;
   generateKey: (data: IWalletKeyCreate) => Promise<IWalletKey>;
-  /** stores given key and mutates key array in wallet */
+  /** Stores given key and returns a new wallet. Note: wallet passed in arguments in not mutated. */
   storeKey: (wallet: IWallet, key: IWalletKey) => Promise<IWallet>;
   getKeyPair: (
     wallet: IWallet,

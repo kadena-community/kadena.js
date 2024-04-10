@@ -204,6 +204,12 @@ pnpm run fund -- -k <key> -a <amount>
 
 An alternative is to run a full simulation of traffic on the devnet, see [Simulating traffic on the devnet](#simulating-traffic-on-the-devnet).
 
+
+#### GraphQL 
+The devnet includes a built-in GraphQL server operating on port `4000`. For convenience, the HTTP API proxies the GraphQL endpoint via the `/graphql` route. Additional information and resources can be accessed on the splash page at port `8080`.
+
+Please note: This built-in version is intended for consumption when not actively developing. If you're making changes to your project, be aware that the built-in GraphQL server will not reflect these updates. In a development scenario, you should set up your own instance of the GraphQL server to test your changes.
+
 ### Connecting to the database
 
 If you want to have a quick glance into the chainweb-data database, you can use Prisma's built in Studio as a database GUI, using

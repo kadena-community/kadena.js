@@ -1,5 +1,20 @@
 # @kadena/kadena-cli
 
+## 0.2.0
+
+### Minor Changes
+
+- e4b24d905d: Added default network setup
+- 990dda2ad0: Added getting a transaction status(tx status) command
+
+### Patch Changes
+
+- Updated dependencies [3bbfeaaa9]
+  - @kadena/client@1.11.0
+  - @kadena/client-utils@0.5.3
+  - @kadena/pactjs-cli@1.11.0
+  - @kadena/pactjs-generator@1.11.0
+
 ## 0.1.2
 
 ### Patch Changes
