@@ -11,7 +11,7 @@ import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import type { FormData } from './sign-form';
+import { defaultValues, type FormData } from './sign-form';
 
 export interface ITestProps {
   isLedger: boolean;
@@ -144,7 +144,7 @@ export const Test: FC<ITestProps> = ({
           {/*/>*/}
           <ChainSelect
             {...register('senderChainId')}
-            // selectedKey={watchChain}
+            defaultSelectedKey={defaultValues.senderChainId}
             id="senderChainId"
             onSelectionChange={(chainId) => {
               // onChange(chainId);
