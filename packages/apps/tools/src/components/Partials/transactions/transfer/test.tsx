@@ -63,6 +63,8 @@ export const Test: FC<ITestProps> = ({
           })),
         );
       }
+    } else {
+      setChainSelectOptions([]); // reset to initial state
     }
   }, [senderAccountChains.isSuccess, senderAccountChains.data]);
 
