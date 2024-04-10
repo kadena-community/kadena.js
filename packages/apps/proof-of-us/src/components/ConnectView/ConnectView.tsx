@@ -13,7 +13,7 @@ import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '../Button/Button';
 import { ListSignees } from '../ListSignees/ListSignees';
 import { Modal } from '../Modal/Modal';
@@ -33,17 +33,9 @@ export const ConnectView: FC<IProps> = () => {
 
   const { account } = useAccount();
   const [signed, setSigned] = useState(false);
-  const [signee, setSignee] = useState<IProofOfUsSignee | undefined>(undefined);
   const [showMaxModal, setShowMaxModal] = useState(false);
-  const {
-    proofOfUs,
-    signees,
-    addSignee,
-    removeSignee,
-    hasSigned,
-    isSignee,
-    getSignee,
-  } = useProofOfUs();
+  const { proofOfUs, signees, addSignee, removeSignee, hasSigned, isSignee } =
+    useProofOfUs();
   const router = useRouter();
 
   const check2AddSignee = async () => {
@@ -91,13 +83,16 @@ export const ConnectView: FC<IProps> = () => {
     router.replace('/user');
   };
 
+  const signee = useMemo(() => {
+    return getAccountSignee(signees, account);
+  }, [signees, account]);
+
   const initSigned = useCallback(
     async (proofOfUs?: IProofOfUsData) => {
       if (!proofOfUs) return;
       const innerSigned = await hasSigned();
-      const innerSignee = await getSignee();
       setSigned(innerSigned);
-      setSignee(innerSignee);
+
       if (proofOfUs.tokenId && proofOfUs.requestKey && innerSigned) {
         router.replace(
           `${getReturnHostUrl()}/user/proof-of-us/mint/${
@@ -106,7 +101,7 @@ export const ConnectView: FC<IProps> = () => {
         );
       }
     },
-    [setSigned, proofOfUs],
+    [setSigned],
   );
 
   useEffect(() => {
@@ -132,8 +127,6 @@ export const ConnectView: FC<IProps> = () => {
       </Modal>
     );
   }
-
-  console.log(isAlreadySigning(proofOfUs), signed, signee?.signerStatus);
 
   return (
     <ScreenHeight>

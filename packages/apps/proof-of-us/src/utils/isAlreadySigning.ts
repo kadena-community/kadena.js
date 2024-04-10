@@ -18,12 +18,6 @@ export const isSignedOnce = (signees?: IProofOfUsSignee[]): boolean => {
   return !!signinglist.length;
 };
 
-export const haveAllSigned = (signees: IProofOfUsSignee[]): boolean => {
-  const signinglist = signees.filter((s) => s.signerStatus !== 'success');
-
-  return !!signinglist.length;
-};
-
 export const getPercentageSignees = (signees: IProofOfUsSignee[]): number => {
   if (!signees) return 0;
 
