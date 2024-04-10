@@ -168,3 +168,12 @@ export interface TransactionCapability {
 export interface TransactionSignature {
   sig: string;
 }
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface PactQueryResponse {
+  status: string;
+  result: string | null;
+  error: string | null;
+  chainId: string;
+  code: string;
+}

@@ -308,6 +308,15 @@ input PactQueryData {
   value: String!
 }
 
+"""Information related to a token."""
+type PactQueryResponse {
+  chainId: String!
+  code: String!
+  error: String
+  result: String
+  status: String!
+}
+
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
@@ -413,7 +422,7 @@ type Query {
   """
   Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
   """
-  pactQuery(pactQuery: [PactQuery!]!): [String!]!
+  pactQuery(pactQuery: [PactQuery!]!): [PactQueryResponse!]!
 
   """
   Retrieve one transaction by its unique key. Throws an error if multiple transactions are found.
