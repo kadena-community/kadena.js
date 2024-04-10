@@ -182,6 +182,21 @@ const ProofOfUsStore = () => {
     );
   };
 
+  const toggleAllowedToSign = async (
+    proofOfUs: IProofOfUsData,
+    account: IProofOfUsSignee,
+  ) => {
+    const newStatus: ISignerStatus =
+      account.signerStatus === 'init' ? 'notsigning' : 'init';
+    return await set(
+      ref(
+        database,
+        `signees/${proofOfUs.proofOfUsId}/${account.accountName}/signerStatus`,
+      ),
+      newStatus,
+    );
+  };
+
   const updateSignee = async (
     proofOfUs: IProofOfUsData,
     account: IProofOfUsSignee,
@@ -291,6 +306,7 @@ const ProofOfUsStore = () => {
     getProofOfUsSignees,
     addSignee,
     removeSignee,
+    toggleAllowedToSign,
     updateSignee,
     updateSigneePing,
     addBackground,

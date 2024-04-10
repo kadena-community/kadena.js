@@ -79,6 +79,11 @@ export const multipleNameClass = style([
     textAlign: 'initial',
   },
 ]);
+export const notAllowedToSignClass = style([
+  {
+    opacity: '.2',
+  },
+]);
 
 export const ellipsClass = style([
   {
@@ -98,6 +103,20 @@ export const removeClass = style([
   {
     height: '100%',
     backgroundColor: deviceColors.red,
+    userSelect: 'none',
+  },
+]);
+
+export const removeSigningClass = style([
+  atoms({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 'md',
+  }),
+  {
+    height: '100%',
+    backgroundColor: deviceColors.blue,
     userSelect: 'none',
   },
 ]);

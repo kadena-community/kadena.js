@@ -4,13 +4,18 @@ import {
   getPercentageSignees,
   isAlreadySigning,
 } from '@/utils/isAlreadySigning';
-import { MonoDelete } from '@kadena/react-icons';
+import {
+  MonoDelete,
+  MonoSignature,
+  MonoSignatureNotAllowed,
+} from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
 import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import {
+  LeadingActions,
   SwipeAction,
   SwipeableList,
   SwipeableListItem,
@@ -20,10 +25,16 @@ import {
 import 'react-swipeable-list/dist/styles.css';
 import { Heading } from '../Typography/Heading';
 import { Signee } from './Signee';
-import { multipleWrapperClass, removeClass, wrapperClass } from './style.css';
+import {
+  multipleWrapperClass,
+  removeClass,
+  removeSigningClass,
+  wrapperClass,
+} from './style.css';
 
 export const ListSignees: FC = () => {
-  const { signees, isInitiator, removeSignee, proofOfUs } = useProofOfUs();
+  const { signees, isInitiator, removeSignee, proofOfUs, toggleAllowedToSign } =
+    useProofOfUs();
   const [accountIsInitiator, setAccountIsInitiator] = useState(false);
 
   const checkInitiator = async () => {
@@ -40,6 +51,15 @@ export const ListSignees: FC = () => {
       if (!signee || !isInitiator) return;
 
       removeSignee({ signee });
+    },
+    [],
+  );
+
+  const handleToggleAllowedToSign = useCallback(
+    (signee: IProofOfUsSignee, isInitiator: boolean) => () => {
+      if (!signee || !isInitiator) return;
+
+      toggleAllowedToSign({ signee });
     },
     [],
   );
@@ -102,11 +122,29 @@ export const ListSignees: FC = () => {
             </TrailingActions>
           );
 
+          const leadingActions = () => (
+            <LeadingActions>
+              <SwipeAction
+                destructive={false}
+                onClick={handleToggleAllowedToSign(signee, accountIsInitiator)}
+              >
+                <div className={removeSigningClass}>
+                  {signee.signerStatus === 'notsigning' ? (
+                    <MonoSignature />
+                  ) : (
+                    <MonoSignatureNotAllowed />
+                  )}
+                </div>
+              </SwipeAction>
+            </LeadingActions>
+          );
+
           return (
             <SwipeableListItem
               blockSwipe={!accountIsInitiator || isAlreadySigning(proofOfUs)}
               key={signee.accountName}
               trailingActions={trailingActions()}
+              leadingActions={leadingActions()}
             >
               <Signee
                 key={signee.accountName}

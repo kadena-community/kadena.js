@@ -115,7 +115,7 @@ interface IError {
   status?: string;
 }
 
-type ISignerStatus = 'init' | 'signing' | 'success' | 'error';
+type ISignerStatus = 'init' | 'notsigning' | 'signing' | 'success' | 'error';
 
 type ISocial = string;
 

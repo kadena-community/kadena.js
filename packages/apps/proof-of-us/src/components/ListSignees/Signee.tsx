@@ -13,6 +13,7 @@ import {
   multipleNameClass,
   multipleSigneeClass,
   nameClass,
+  notAllowedToSignClass,
   signeeClass,
 } from './style.css';
 
@@ -46,9 +47,13 @@ export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
   if (!signee) return null;
 
   const isMeChecked = isMe(signee, account);
+  const notAllowedToSign = signee.signerStatus === 'notsigning';
   return (
     <div
-      className={classNames(isMultiple ? multipleSigneeClass : signeeClass)}
+      className={classNames(
+        isMultiple ? multipleSigneeClass : signeeClass,
+        notAllowedToSign && notAllowedToSignClass,
+      )}
       style={getSuccessStyle(signee)}
     >
       <Stack gap="sm" alignItems="center">

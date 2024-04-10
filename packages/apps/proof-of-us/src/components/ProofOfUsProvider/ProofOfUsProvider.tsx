@@ -27,6 +27,13 @@ export interface IProofOfUsContext {
     proofOfUsId?: string;
     signee: IProofOfUsSignee;
   }) => Promise<void>;
+  toggleAllowedToSign: ({
+    proofOfUsId,
+    signee,
+  }: {
+    proofOfUsId?: string;
+    signee: IProofOfUsSignee;
+  }) => Promise<void>;
   updateSignee: (value: any, isOverwrite?: boolean) => Promise<void>;
   createToken: ({ proofOfUsId }: { proofOfUsId: string }) => Promise<void>;
   changeTitle: (value: string) => string;
@@ -50,6 +57,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   updateStatus: async () => {},
   addSignee: async () => {},
   removeSignee: async () => {},
+  toggleAllowedToSign: async () => {},
   updateSignee: async () => {},
   createToken: async () => {},
   changeTitle: () => '',
@@ -171,6 +179,17 @@ export const ProofOfUsProvider: FC<IProps> = ({ children, proofOfUsId }) => {
   }) => {
     if (!proofOfUs) return;
     await store.removeSignee(proofOfUs, signee);
+  };
+
+  const toggleAllowedToSign = async ({
+    proofOfUsId,
+    signee,
+  }: {
+    proofOfUsId?: string;
+    signee: IProofOfUsSignee;
+  }) => {
+    if (!proofOfUs) return;
+    await store.toggleAllowedToSign(proofOfUs, signee);
   };
 
   const updateSignee = async (
@@ -309,6 +328,7 @@ export const ProofOfUsProvider: FC<IProps> = ({ children, proofOfUsId }) => {
       value={{
         addSignee,
         removeSignee,
+        toggleAllowedToSign,
         updateSignee,
         createToken,
         isConnected,
