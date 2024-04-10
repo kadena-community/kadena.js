@@ -73,15 +73,30 @@ builder.queryField('pactQuery', (t) =>
               query.code,
               query.chainId,
               query.data as CommandData[],
-            ).then((result) => {
-              return {
-                status: 'success',
-                result,
-                error: null,
-                chainId: query.chainId,
-                code: query.code,
-              };
-            });
+            )
+              .then((result) => {
+                return {
+                  status: 'success',
+                  result,
+                  error: null,
+                  chainId: query.chainId,
+                  code: query.code,
+                };
+              })
+              .catch((error) => {
+                console.log(error);
+                return {
+                  status: 'error',
+                  result: null,
+                  error: error.pactError
+                    ? error.pactError.message
+                      ? error.pactError.message
+                      : JSON.stringify(error.pactError)
+                    : JSON.stringify(error),
+                  chainId: query.chainId,
+                  code: query.code,
+                };
+              });
             return Promise.race([sendQuery, timeout]);
           }),
         );
