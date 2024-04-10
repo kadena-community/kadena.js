@@ -3,9 +3,10 @@ import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { Link } from '.';
+import { Avatar, Badge } from '..';
 import { getVariants } from '../../storyDecorators/getVariants';
 import { iconControl } from '../../storyDecorators/iconControl';
-import { button } from '../Button/BaseButton/BaseButton.css';
+import { button } from '../Button/Button.css';
 import { Box } from '../Layout/Box/Box';
 import type { ILinkProps } from './Link';
 
@@ -22,34 +23,21 @@ const meta: Meta<ILinkProps> = {
     docs: {
       description: {
         component:
-          'A link component used for navigating to different pages or sections of the same page',
+          'The Link component renders an anchor which will be styled according to the variant prop.',
       },
     },
   },
   argTypes: {
-    href: { control: { type: 'text' } },
-    icon: iconControl,
-    iconPosition: {
-      control: {
-        type: 'radio',
-      },
-      options: ['start', 'end'],
-    },
-    badgeValue: {
-      description: 'badge value to be shown after the children',
-      control: {
-        type: 'text',
-      },
-    },
+    startVisual: iconControl,
+    endVisual: iconControl,
     variant: {
       options: variants.variant,
       control: {
         type: 'select',
       },
-      description: 'Link style variant',
+      description: 'button style variant',
     },
     isDisabled: {
-      description: 'only used when rendered as Link',
       control: {
         type: 'boolean',
       },
@@ -67,14 +55,7 @@ const meta: Meta<ILinkProps> = {
       },
     },
     isCompact: {
-      description: 'compact Link style',
-      control: {
-        type: 'boolean',
-      },
-    },
-    avatarProps: {
-      description:
-        'Props for the avatar component which can be rendered instead of startIcon',
+      description: 'compact button style',
       control: {
         type: 'boolean',
       },
@@ -84,7 +65,7 @@ const meta: Meta<ILinkProps> = {
 
 type LinkStory = StoryObj<ILinkProps>;
 
-export const _Link: LinkStory = {
+export const _Button: LinkStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
@@ -98,8 +79,7 @@ export const StartIcon: LinkStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    icon: <MonoChevronLeft />,
-    iconPosition: 'start',
+    startVisual: <MonoChevronLeft />,
   },
   render: (props: ILinkProps) => {
     return <Link {...props}>{props.children}</Link>;
@@ -110,7 +90,7 @@ export const EndIcon: LinkStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    icon: <MonoChevronRight />,
+    endVisual: <MonoChevronRight />,
   },
   render: (props: ILinkProps) => {
     return <Link {...props}>{props.children}</Link>;
@@ -121,10 +101,7 @@ export const WithAvatar: LinkStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    avatarProps: {
-      imageUrl: 'https://via.placeholder.com/150',
-      status: 'info',
-    },
+    startVisual: <Avatar name="Robin Mulder" color="category3" />,
   },
   render: (props: ILinkProps) => {
     return <Link {...props}>{props.children}</Link>;
@@ -135,7 +112,11 @@ export const BadgeOnly: LinkStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    badgeValue: '6',
+    endVisual: (
+      <Badge size="sm" style="inverse">
+        6
+      </Badge>
+    ),
   },
   render: (props: ILinkProps) => {
     return <Link {...props}>{props.children}</Link>;
@@ -146,8 +127,14 @@ export const BadgeAndEndIcon: LinkStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    icon: <MonoChevronRight />,
-    badgeValue: '6',
+    endVisual: (
+      <>
+        <Badge size="sm" style="inverse">
+          6
+        </Badge>
+        <MonoChevronRight />
+      </>
+    ),
   },
   render: (props: ILinkProps) => {
     return <Link {...props}>{props.children}</Link>;
@@ -158,9 +145,12 @@ export const BadgeAndStartIcon: LinkStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    icon: <MonoChevronLeft />,
-    iconPosition: 'start',
-    badgeValue: '6',
+    startVisual: <MonoChevronLeft />,
+    endVisual: (
+      <Badge size="sm" style="inverse">
+        6
+      </Badge>
+    ),
   },
   render: (props: ILinkProps) => {
     return <Link {...props}>{props.children}</Link>;
@@ -170,7 +160,7 @@ export const BadgeAndStartIcon: LinkStory = {
 export const IconOnly: LinkStory = {
   args: {
     variant: 'primary',
-    icon: <MonoChevronRight />,
+    children: <MonoChevronRight />,
   },
   render: (props: ILinkProps) => {
     return <Link {...props}>{props.children}</Link>;

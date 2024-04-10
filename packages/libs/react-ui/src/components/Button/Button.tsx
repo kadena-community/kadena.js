@@ -1,75 +1,52 @@
-import { useObjectRef } from '@react-aria/utils';
+import { mergeProps, useObjectRef } from '@react-aria/utils';
+import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
 import type { ForwardedRef, HTMLAttributes, ReactElement } from 'react';
 import React, { forwardRef } from 'react';
-import type { AriaFocusRingProps } from 'react-aria';
-import type { IBaseButtonProps } from '.';
-import { BaseButton } from '.';
-import type { IAvatarProps } from '../Avatar';
-import { Avatar } from '../Avatar';
-import { Badge } from '../Badge';
+import type { AriaButtonProps, AriaFocusRingProps } from 'react-aria';
+import { useButton, useFocusRing, useHover } from 'react-aria';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import {
-  avatarStyle,
-  badgeStyle,
+  button,
   centerContentWrapper,
   directionStyle,
-  disabledBadgeStyle,
+  endVisualStyle,
   iconOnlyStyle,
-  isCompactStyle,
-  noPostfixStyle,
-  noPrefixStyle,
-  postfixIconStyle,
-  prefixIconStyle,
+  noEndVisualStyle,
+  noStartVisualStyle,
+  startVisualStyle,
 } from './Button.css';
-import { disableLoadingProps, renderIcon } from './utils';
+import { disableLoadingProps } from './utils';
 
-type BaseProps = Omit<AriaFocusRingProps, 'isTextInput'> &
-  Pick<
-    IBaseButtonProps,
-    | 'variant'
-    | 'isCompact'
-    | 'style'
-    | 'className'
-    | 'title'
-    | 'isDisabled'
-    | 'isLoading'
-    | 'aria-label'
-    | 'onPress'
-    | 'type'
-  > & {
-    badgeValue?: string | number;
+type Variants = NonNullable<RecipeVariants<typeof button>>;
+
+export type IButtonProps = Omit<AriaFocusRingProps, 'isTextInput'> &
+  Variants &
+  Omit<AriaFocusRingProps, 'isTextInput'> &
+  Pick<AriaButtonProps<'button'>, 'aria-label' | 'onPress' | 'type'> & {
+    className?: string;
+    isLoading?: boolean;
+    isDisabled?: boolean;
+    title?: string;
+    style?: React.CSSProperties;
     loadingLabel?: string;
-    children?: string | string[];
+    children?: string | number | ReactElement;
     onClick?: Pick<HTMLAttributes<HTMLButtonElement>, 'onClick'>['onClick'];
-    icon?: ReactElement;
+    startVisual?: ReactElement;
+    endVisual?: ReactElement;
   };
-
-export interface IButtonWithoutAvatar {
-  iconPosition?: 'start' | 'end';
-}
-
-interface IButtonWithAvatar {
-  avatarProps?: Omit<IAvatarProps, 'size'>;
-  iconPosition?: 'end';
-}
-
-export type IButtonProps = (IButtonWithAvatar | IButtonWithoutAvatar) &
-  BaseProps;
 
 /**
  * Button component
  * @param onClick - use onPress whenever you can for accessibility, onClick allows backwards compatibility
  * @param onPress - callback when button is clicked
  * @param variant - button style variant
+ * @param startVisual - visual to render at the beginning of the button
+ * @param endVisual - visual to render at the end of the button
  * @param children - label to be shown
- * @param badgeValue - badge value to be shown after the label
- * @param icon - icon to be shown as only child
- * @param iconPosition - position of the icon either "start" or "end"
  * @param isDisabled - disabled state
  * @param isLoading - loading state
  * @param isCompact - compact button style
- * @param avatarProps - Props for the avatar component which can be rendered instead of startIcon
  * @param loadingLabel - label to be shown when loading
  * @param className - additional class name
  * @param style - additional style
@@ -79,10 +56,9 @@ export type IButtonProps = (IButtonWithAvatar | IButtonWithoutAvatar) &
 const Button = forwardRef(
   (
     {
-      icon,
-      iconPosition = 'end',
+      startVisual,
+      endVisual,
       children,
-      badgeValue,
       isCompact = false,
       loadingLabel = 'Loading',
       variant = 'primary',
@@ -92,110 +68,79 @@ const Button = forwardRef(
     forwardedRef: ForwardedRef<HTMLButtonElement>,
   ) => {
     props = disableLoadingProps(props);
+    loadingLabel = loadingLabel.trim();
     const ref = useObjectRef(forwardedRef);
-    const avatarProps = 'avatarProps' in props ? props.avatarProps : undefined;
-    const onPress = 'onPress' in props ? props.onPress : undefined;
+    const { buttonProps, isPressed } = useButton(props, ref);
+    const { hoverProps, isHovered } = useHover(props);
+    const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
 
-    const startIcon = iconPosition === 'start' && icon;
-    const endIcon = iconPosition === 'end' && icon;
-    const iconOnly =
-      (icon && !children) || (loadingLabel === '' && props.isLoading);
-    const isLoading = props.isLoading && loadingLabel !== '';
+    const iconOnly = Boolean(
+      // check if children is a ReactElement
+      (typeof children !== 'string' && typeof children !== 'number') ||
+        // check if no visuals are provided
+        (!startVisual && !endVisual && !children) ||
+        // check if only one visual is provided
+        (!children &&
+          ((startVisual && !endVisual) || (endVisual && !startVisual))) ||
+        // check if there is a loading label while loading
+        (!loadingLabel && props.isLoading),
+    );
 
     const isLoadingAriaLiveLabel = `${
       typeof children === 'string' ? children : props['aria-label'] ?? 'is'
     } loading`.trim();
 
-    // Content to show before the children, either an icon or avatar
-    const prefixContent =
-      startIcon || avatarProps ? (
-        <span className={startIcon ? prefixIconStyle : avatarStyle}>
-          {avatarProps ? (
-            <Avatar
-              isDisabled={props.isDisabled}
-              size={isCompact ? 'sm' : 'md'}
-              {...avatarProps}
-            />
-          ) : (
-            renderIcon(icon)
-          )}
-        </span>
-      ) : null;
-
-    // Icon to be rendered after the center content
-    const postfixContent = endIcon ? (
-      <span className={postfixIconStyle}>{renderIcon(icon)}</span>
-    ) : null;
-
-    // Content with optional badge component
-    const centerContent = (
-      <span
-        className={classNames(centerContentWrapper, {
-          // Spacing for when only the label and badge are shown
-          [badgeStyle]: !postfixContent && badgeValue,
-          // Spacing for when only the label is shown
-          [noPostfixStyle]: !postfixContent && !badgeValue,
-          [noPrefixStyle]: !prefixContent,
-        })}
-      >
-        {children}
-        {badgeValue ? (
-          <Badge
-            size={'sm'}
-            className={classNames({ [disabledBadgeStyle]: props.isDisabled })}
-            style={
-              ['outlined', 'transparent'].includes(variant) || props.isDisabled
-                ? 'default'
-                : 'inverse'
-            }
-          >
-            {badgeValue}
-          </Badge>
-        ) : null}
-      </span>
-    );
-
-    // For buttons with icons only or empty loader text, only show the loader
-    const content = props.isLoading ? (
-      <span
-        className={classNames({
-          [`${noPrefixStyle} ${postfixIconStyle} ${centerContentWrapper}`]:
-            (endIcon && isLoading) || !iconOnly,
-          [`${noPostfixStyle} ${prefixIconStyle} ${centerContentWrapper}`]:
-            (startIcon && isLoading) || !iconOnly,
-          [iconOnlyStyle]: iconOnly,
-          [directionStyle]: startIcon,
-        })}
-      >
-        {iconOnly ? null : loadingLabel}
-        <ProgressCircle
-          size={isCompact ? 'sm' : 'md'}
-          aria-hidden="true"
-          aria-label={isLoadingAriaLiveLabel}
-          isIndeterminate
-        />
-      </span>
-    ) : iconOnly ? (
-      <span className={iconOnlyStyle}>{renderIcon(icon)}</span>
-    ) : (
-      <>
-        {prefixContent}
-        {centerContent}
-        {postfixContent}
-      </>
-    );
-
     return (
-      <BaseButton
-        {...(props as BaseProps)}
-        onPress={onPress}
-        variant={variant}
-        isCompact={isCompact}
-        className={classNames(className, isCompactStyle[`${isCompact}`])}
+      <button
+        {...mergeProps(buttonProps, hoverProps, focusProps)}
+        className={classNames(
+          button({
+            variant,
+            isCompact,
+            isLoading: props.isLoading,
+          }),
+          className,
+        )}
+        style={props.style}
+        title={props.title}
+        aria-disabled={props.isLoading || undefined}
+        data-disabled={props.isDisabled || undefined}
+        data-pressed={isPressed || undefined}
+        data-hovered={(!isPressed && isHovered) || undefined}
+        data-focused={isFocused || undefined}
+        data-focus-visible={isFocusVisible || undefined}
         ref={ref}
       >
-        {content}
-      </BaseButton>
+        <span
+          className={classNames({
+            [centerContentWrapper]: !iconOnly,
+            [iconOnlyStyle]: iconOnly,
+            [noEndVisualStyle]: !endVisual && !iconOnly,
+            [noStartVisualStyle]: !startVisual && !iconOnly,
+            [startVisualStyle]: startVisual && !iconOnly,
+            [endVisualStyle]: endVisual && !iconOnly,
+            [directionStyle]: props.isLoading && startVisual && !endVisual,
+          })}
+        >
+          {props.isLoading ? (
+            <>
+              {iconOnly ? null : loadingLabel}
+              <ProgressCircle
+                size={isCompact ? 'sm' : 'md'}
+                aria-hidden="true"
+                aria-label={isLoadingAriaLiveLabel}
+                isIndeterminate
+              />
+            </>
+          ) : (
+            <>
+              {startVisual ?? startVisual}
+              {children}
+              {endVisual ?? endVisual}
+            </>
+          )}
+        </span>
+      </button>
     );
   },
 );

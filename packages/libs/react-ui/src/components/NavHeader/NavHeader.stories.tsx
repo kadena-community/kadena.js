@@ -109,9 +109,9 @@ export const Dynamic: IStory = {
             </NavHeaderLink>
           ))}
         </NavHeaderLinkList>
-        <NavHeaderButton icon={<SystemIcon.Account />} />
+        <NavHeaderButton endVisual={<SystemIcon.Account />} />
         <NavHeaderButton
-          icon={<SystemIcon.ThemeLightDark />}
+          endVisual={<SystemIcon.ThemeLightDark />}
           className={atoms({ marginInlineEnd: 'sm' })}
         />
         <NavHeaderSelect

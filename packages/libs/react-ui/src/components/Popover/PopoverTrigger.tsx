@@ -12,7 +12,7 @@ import { Popover } from './Popover';
 
 type PopoverButtonProps = Pick<
   IButtonProps,
-  'icon' | 'variant' | 'isCompact' | 'isLoading' | 'isDisabled'
+  'endVisual' | 'variant' | 'isCompact' | 'isLoading' | 'isDisabled'
 >;
 interface IPopoverTriggerProps
   extends PopoverButtonProps,
@@ -39,7 +39,7 @@ function PopoverTriggerBase(
       <Button
         {...(triggerProps as IButtonProps)}
         ref={ref}
-        icon={props.icon}
+        endVisual={props.endVisual}
         variant={props.variant}
         isCompact={props.isCompact}
         isLoading={props.isLoading}
