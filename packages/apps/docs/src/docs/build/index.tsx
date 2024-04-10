@@ -43,7 +43,10 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 clicking Quick start.
               </Text>
             </Box>
-            <Link icon={<SystemIcon.TrailingIcon />} href="/build/quickstart">
+            <Link
+              endVisual={<SystemIcon.TrailingIcon />}
+              href="/build/quickstart"
+            >
               Quick start
             </Link>
           </Card>

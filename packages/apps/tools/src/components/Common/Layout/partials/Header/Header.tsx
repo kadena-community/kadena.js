@@ -91,30 +91,28 @@ const Header: FC<IHeaderProps> = () => {
         </NavHeaderLinkList>
         <NavHeaderButton
           aria-label="Toggle theme"
-          icon={
-            <MonoContrast
-              className={atoms({
-                color: 'text.base.default',
-              })}
-            />
-          }
           onPress={() => toggleTheme()}
           className={atoms({ marginInlineEnd: 'sm' })}
-        />
+        >
+          <MonoContrast
+            className={atoms({
+              color: 'text.base.default',
+            })}
+          />
+        </NavHeaderButton>
         <NavHeaderButton
           aria-label={'Application Settings'}
-          icon={
-            <MonoBuildCircle
-              className={atoms({
-                color: 'text.base.default',
-              })}
-            />
-          }
           onPress={() => handleDevOptionsClick()}
           className={atoms({
             marginInlineEnd: 'sm',
           })}
-        />
+        >
+          <MonoBuildCircle
+            className={atoms({
+              color: 'text.base.default',
+            })}
+          />
+        </NavHeaderButton>
         <NavHeaderSelect
           id="network-select"
           aria-label={t('Select Network')}

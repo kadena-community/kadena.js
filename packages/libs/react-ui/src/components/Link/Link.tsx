@@ -30,7 +30,7 @@ export type ILinkProps = Omit<AriaFocusRingProps, 'isTextInput'> &
     title?: string;
     style?: React.CSSProperties;
     loadingLabel?: string;
-    children?: string | ReactElement;
+    children?: string | number | ReactElement;
     startVisual?: ReactElement;
     endVisual?: ReactElement;
   };

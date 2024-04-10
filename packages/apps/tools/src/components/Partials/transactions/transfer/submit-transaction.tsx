@@ -242,14 +242,15 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
               ]}
             />
             <Button
-              icon={<MonoContentCopy />}
               onPress={async () => {
                 await navigator.clipboard.writeText(requestKey);
               }}
               title={t('copy request Key')}
               aria-label={t('copy request Key')}
               variant="transparent"
-            />
+            >
+              <MonoContentCopy />
+            </Button>
           </Stack>
 
           {!onSameChain ? (

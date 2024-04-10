@@ -428,7 +428,6 @@ const NewAccountFaucetPage: FC = () => {
                   isInvalid={!!errors.pubKey}
                   endAddon={
                     <Button
-                      icon={<MonoAdd />}
                       variant="transparent"
                       onPress={() => {
                         const value = getValues('pubKey');
@@ -447,7 +446,9 @@ const NewAccountFaucetPage: FC = () => {
                       aria-label="Add public key"
                       title="Add Public Key"
                       type="button"
-                    />
+                    >
+                      <MonoAdd />
+                    </Button>
                   }
                 />
               )}
@@ -475,7 +476,6 @@ const NewAccountFaucetPage: FC = () => {
                   isDisabled
                   endAddon={
                     <Button
-                      icon={<MonoContentCopy />}
                       variant="transparent"
                       onPress={async () => {
                         const value = getValues('name');
@@ -484,7 +484,9 @@ const NewAccountFaucetPage: FC = () => {
                       aria-label="Copy Account Name"
                       title="Copy Account Name"
                       type="button"
-                    />
+                    >
+                      <MonoContentCopy />
+                    </Button>
                   }
                 />
               </div>
@@ -501,7 +503,7 @@ const NewAccountFaucetPage: FC = () => {
             <Button
               isLoading={requestStatus.status === 'processing'}
               isDisabled={mainnetSelected}
-              icon={<MonoKeyboardArrowRight />}
+              endVisual={<MonoKeyboardArrowRight />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
               type="submit"
             >

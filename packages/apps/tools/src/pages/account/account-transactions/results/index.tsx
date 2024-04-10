@@ -216,10 +216,10 @@ const CheckTransactions: FC = () => {
         </GridItem>
         <GridItem>
           <div className={headerButtonGroupClass}>
-            <Button icon={<MonoDelete />} onPress={resetFiltersEvent}>
+            <Button endVisual={<MonoDelete />} onPress={resetFiltersEvent}>
               {t('Reset all filters')}
             </Button>
-            <Button icon={<MonoRefresh />} onPress={refreshResultsEvent}>
+            <Button endVisual={<MonoRefresh />} onPress={refreshResultsEvent}>
               {t('Reload')}
             </Button>
           </div>
@@ -275,9 +275,10 @@ const CheckTransactions: FC = () => {
                 <Cell>
                   <Button
                     variant="transparent"
-                    icon={<MonoKeyboardArrowRight />}
                     onPress={() => handleOpenTransactionDetails(result)}
-                  />
+                  >
+                    <MonoKeyboardArrowRight />
+                  </Button>
                 </Cell>
               </Row>
             );
