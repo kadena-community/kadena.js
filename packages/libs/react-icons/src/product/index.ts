@@ -1,3 +1,9 @@
+export { default as KodeDesignSystemKdacolorDark } from './KodeDesignSystemKdacolorDark';
+export { default as KodeDesignSystemKdacolorLight } from './KodeDesignSystemKdacolorLight';
+export { default as MarmaladeV2KdacolorDark } from './MarmaladeV2KdacolorDark';
+export { default as MarmaladeV2KdacolorLight } from './MarmaladeV2KdacolorLight';
+export { default as ProofOfUsKdacolorDark } from './ProofOfUsKdacolorDark';
+export { default as ProofOfUsKdacolorLight } from './ProofOfUsKdacolorLight';
 export { default as SpireKeyKdacolorDark } from './SpireKeyKdacolorDark';
 export { default as SpireKeyKdacolorLight } from './SpireKeyKdacolorLight';
 export { default as SpireKeyKdacolorLogoBlack } from './SpireKeyKdacolorLogoBlack';
