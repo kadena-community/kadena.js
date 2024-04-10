@@ -286,12 +286,14 @@ type NonFungibleToken {
 }
 
 """The token identifier and its balance."""
-type NonFungibleTokenBalance {
+type NonFungibleTokenBalance implements Node {
+  accountName: String!
   balance: Int!
   chainId: String!
   guard: Guard!
-  id: String!
+  id: ID!
   info: NonFungibleToken
+  tokenId: String!
   version: String!
 }
 
