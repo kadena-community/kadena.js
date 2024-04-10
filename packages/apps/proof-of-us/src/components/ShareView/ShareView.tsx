@@ -8,7 +8,6 @@ import {
   MonoArrowBack,
   MonoArrowDownward,
   MonoCheckCircle,
-  MonoSignature,
 } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
