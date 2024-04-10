@@ -11,7 +11,8 @@ import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { defaultValues, type FormData } from './sign-form';
+import type { FormData } from './sign-form';
+import { defaultValues } from './sign-form';
 
 export interface ITestProps {
   isLedger: boolean;
