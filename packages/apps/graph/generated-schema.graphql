@@ -15,7 +15,7 @@ type Block implements Node {
 
   """Default page size is 20."""
   events(after: String, before: String, first: Int, last: Int): BlockEventsConnection!
-  hash: ID!
+  hash: String!
   height: BigInt!
   id: ID!
   minerAccount: FungibleChainAccount!
@@ -164,7 +164,7 @@ type FungibleAccountTransfersConnectionEdge {
 type FungibleChainAccount implements Node {
   accountName: String!
   balance: Float!
-  chainId: ID!
+  chainId: String!
   fungibleName: String!
   guard: Guard!
   id: ID!
@@ -257,7 +257,7 @@ type NonFungibleAccountTransactionsConnectionEdge {
 """A chain and non-fungible-specific account."""
 type NonFungibleChainAccount implements Node {
   accountName: String!
-  chainId: ID!
+  chainId: String!
   id: ID!
   nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
 
@@ -290,7 +290,7 @@ type NonFungibleTokenBalance {
   balance: Int!
   chainId: String!
   guard: Guard!
-  id: ID!
+  id: String!
   info: NonFungibleToken
   version: String!
 }
@@ -304,6 +304,15 @@ input PactQuery {
 input PactQueryData {
   key: String!
   value: String!
+}
+
+"""Information related to a token."""
+type PactQueryResponse {
+  chainId: String!
+  code: String!
+  error: String
+  result: String
+  status: String!
 }
 
 type PageInfo {
@@ -411,7 +420,7 @@ type Query {
   """
   Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
   """
-  pactQuery(pactQuery: [PactQuery!]!): [String!]!
+  pactQuery(pactQuery: [PactQuery!]!): [PactQueryResponse!]!
 
   """
   Retrieve one transaction by its unique key. Throws an error if multiple transactions are found.
