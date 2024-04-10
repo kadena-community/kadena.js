@@ -78,7 +78,7 @@ export const ListSignees: FC = () => {
         <Heading as="h5">Signees ({getAllowedSigners(signees).length})</Heading>
 
         <Stack flex={1}>
-          {signees.length > 1 && (
+          {isAlreadySigning(proofOfUs) && (
             <motion.div
               key="percentage"
               initial={{ opacity: 0 }}
@@ -87,9 +87,6 @@ export const ListSignees: FC = () => {
             >
               {getPercentageSignees(signees)}
             </motion.div>
-          )}
-          {isAlreadySigning(proofOfUs) && (
-            <motion.div>{getPercentageSignees(signees)}</motion.div>
           )}
         </Stack>
         <Heading as="h6">Max {env.MAXSIGNERS}</Heading>
