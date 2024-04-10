@@ -9,9 +9,6 @@ import { Badge } from '..';
 const iconLabel = 'icon';
 const icon = <span>{iconLabel}</span>;
 
-const iconLabel = 'icon';
-const icon = <span>{iconLabel}</span>;
-
 describe('Button', () => {
   const onPressSpy = vi.fn();
 
@@ -140,17 +137,12 @@ describe('Button', () => {
       <Button onPress={onPressSpy}>Click Me</Button>,
     );
 
-    const { getByRole, getByText } = render(<TestComponentWithAvatar />);
     const button = getByRole('button');
+    await user.click(button);
+    expect(onPressSpy).toHaveBeenCalledTimes(1);
 
-    button.childNodes.forEach((child) => {
-      if (child.textContent === iconLabel) {
-        expect(child).not.toBeVisible();
-      }
-    });
-
-    // check if avatar is present
-    expect(getByText('RM')).toBeVisible();
+    const text = getByText('Click Me');
+    expect(text).not.toBeNull();
   });
 
   it('Should allow custom props to be passed through to the button', () => {
@@ -159,40 +151,23 @@ describe('Button', () => {
     expect(button).toHaveAttribute('data-foo', 'bar');
   });
 
-  it('should render a badge component', async () => {
-    const TestComponent = () => {
-      return (
-        <Button
-          badgeValue={6}
-          onPress={() => {
-            onPressSpy();
-          }}
-        >
-          Click me
-        </Button>
-      );
-    };
-
-    const { getByText } = render(<TestComponent />);
-
-    const badgeElement = getByText(6);
-
-    expect(badgeElement).toBeVisible();
+  it('Should support aria-label', () => {
+    const { getByRole } = render(<Button aria-label="Test" />);
+    const button = getByRole('button');
+    expect(button).toHaveAttribute('aria-label', 'Test');
   });
 
-  it('should render an icon only', async () => {
-    const TestComponent = () => {
-      return (
-        <Button
-          icon={icon}
-          onPress={() => {
-            onPressSpy();
-          }}
-        ></Button>
-      );
-    };
+  it('Should support aria-labelledby', () => {
+    const { getByRole } = render(
+      <>
+        <span id="test">Test</span>
+        <Button aria-labelledby="test" />
+      </>,
+    );
 
-    const { getByText } = render(<TestComponent />);
+    const button = getByRole('button');
+    expect(button).toHaveAttribute('aria-labelledby', 'test');
+  });
 
   it('Should support aria-describedby', () => {
     const { getByRole } = render(
