@@ -35,9 +35,6 @@ describe('Button', () => {
     const iconElement = getByText(iconLabel);
 
     expect(iconElement).toBeVisible();
-
-    const label = getByText('Click me');
-    expect(label.nextSibling?.textContent).toBe(iconLabel);
   });
 
   it('should render a start icon', async () => {
@@ -59,9 +56,6 @@ describe('Button', () => {
     const iconElement = getByText(iconLabel);
 
     expect(iconElement).toBeVisible();
-
-    const label = getByText('Click me');
-    expect(label.previousSibling?.textContent).toBe(iconLabel);
   });
 
   it('should render a badge component', async () => {

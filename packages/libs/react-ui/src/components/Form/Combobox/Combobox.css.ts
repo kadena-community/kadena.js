@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { atoms, bodyBaseRegular, token } from '../../../styles';
-import { buttonReset } from '../../Button/BaseButton/BaseButton.css';
+import { buttonReset } from '../../Button/Button.css';
 
 export const comboBoxControlClass = style([
   bodyBaseRegular,

@@ -6,9 +6,9 @@ import { Avatar, Badge } from '..';
 import { getVariants } from '../../storyDecorators/getVariants';
 import { iconControl } from '../../storyDecorators/iconControl';
 import { Box } from '../Layout/Box/Box';
-import { button } from './BaseButton/BaseButton.css';
 import type { IButtonProps } from './Button';
 import { Button } from './Button';
+import { button } from './Button.css';
 
 const variants = getVariants(button);
 
