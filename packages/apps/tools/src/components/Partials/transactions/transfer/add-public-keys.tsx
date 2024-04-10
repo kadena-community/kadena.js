@@ -68,13 +68,14 @@ export const AddPublicKeysSection = ({
           isReadOnly
           endAddon={
             <Button
-              icon={<MonoDelete />}
               variant="transparent"
               onPress={() => deletePublicKey(index)}
               aria-label="Delete public key"
               title="Delete public Key"
               type="button"
-            />
+            >
+              <MonoDelete />
+            </Button>
           }
         />
       ))}
@@ -101,7 +102,7 @@ export const AddPublicKeysSection = ({
         />
         <Stack flexDirection={'row-reverse'}>
           <Button
-            icon={<MonoAdd />}
+            endVisual={<MonoAdd />}
             onPress={() => {
               const value = publicKey;
               const valid = validatePublicKey(stripAccountPrefix(value || ''));

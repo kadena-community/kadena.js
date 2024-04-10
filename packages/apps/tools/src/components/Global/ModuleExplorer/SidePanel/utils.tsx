@@ -26,7 +26,7 @@ export const contractToTreeItems = (
               onInterfaceClick({ chainId: module!.chainId, moduleName: i.name })
             }
             isCompact
-            icon={<MonoExitToApp />}
+            endVisual={<MonoExitToApp />}
           >
             {i.name}
           </Button>
