@@ -1,5 +1,11 @@
 # @kadena/graph
 
+## 0.1.14
+
+### Patch Changes
+
+- d82fbd97d: Fix network id and api version on mempool connection test
+
 ## 0.1.13
 
 ### Patch Changes
