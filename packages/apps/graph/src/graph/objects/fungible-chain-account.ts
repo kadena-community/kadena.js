@@ -44,7 +44,7 @@ export default builder.node(
       }
     },
     fields: (t) => ({
-      chainId: t.exposeID('chainId'),
+      chainId: t.exposeString('chainId'),
       accountName: t.exposeString('accountName'),
       fungibleName: t.exposeString('fungibleName'),
       guard: t.field({

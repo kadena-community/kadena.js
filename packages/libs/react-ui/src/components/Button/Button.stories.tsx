@@ -2,12 +2,13 @@ import { MonoChevronLeft, MonoChevronRight } from '@kadena/react-icons';
 import type { Meta, StoryFn, StoryObj } from '@storybook/react';
 import React from 'react';
 
+import { Avatar, Badge } from '..';
 import { getVariants } from '../../storyDecorators/getVariants';
 import { iconControl } from '../../storyDecorators/iconControl';
 import { Box } from '../Layout/Box/Box';
-import { button } from './BaseButton/BaseButton.css';
 import type { IButtonProps } from './Button';
 import { Button } from './Button';
+import { button } from './Button.css';
 
 const variants = getVariants(button);
 
@@ -34,19 +35,8 @@ const meta: Meta<IButtonProps> = {
         disable: true,
       },
     },
-    icon: iconControl,
-    iconPosition: {
-      control: {
-        type: 'radio',
-      },
-      options: ['start', 'end'],
-    },
-    badgeValue: {
-      description: 'badge value to be shown after the children',
-      control: {
-        type: 'text',
-      },
-    },
+    startVisual: iconControl,
+    endVisual: iconControl,
     variant: {
       options: variants.variant,
       control: {
@@ -105,8 +95,7 @@ export const StartIcon: ButtonStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    icon: <MonoChevronLeft />,
-    iconPosition: 'start',
+    startVisual: <MonoChevronLeft />,
     onPress: () => undefined,
   },
   render: (props: IButtonProps) => {
@@ -118,7 +107,7 @@ export const EndIcon: ButtonStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    icon: <MonoChevronRight />,
+    endVisual: <MonoChevronRight />,
     onPress: () => undefined,
   },
   render: (props: IButtonProps) => {
@@ -130,11 +119,8 @@ export const WithAvatar: ButtonStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    avatarProps: {
-      imageUrl: 'https://via.placeholder.com/150',
-      status: 'info',
-    },
     onPress: () => undefined,
+    startVisual: <Avatar name="Robin Mulder" color="category3" />,
   },
   render: (props: IButtonProps) => {
     return <Button {...props}>{props.children}</Button>;
@@ -145,8 +131,12 @@ export const BadgeOnly: ButtonStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    badgeValue: '6',
     onPress: () => undefined,
+    endVisual: (
+      <Badge size="sm" style="inverse">
+        6
+      </Badge>
+    ),
   },
   render: (props: IButtonProps) => {
     return <Button {...props}>{props.children}</Button>;
@@ -157,8 +147,14 @@ export const BadgeAndEndIcon: ButtonStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    icon: <MonoChevronRight />,
-    badgeValue: '6',
+    endVisual: (
+      <>
+        <Badge size="sm" style="inverse">
+          6
+        </Badge>
+        <MonoChevronRight />
+      </>
+    ),
     onPress: () => undefined,
   },
   render: (props: IButtonProps) => {
@@ -170,9 +166,12 @@ export const BadgeAndStartIcon: ButtonStory = {
   args: {
     children: 'Hello world',
     variant: 'primary',
-    icon: <MonoChevronLeft />,
-    iconPosition: 'start',
-    badgeValue: '6',
+    startVisual: <MonoChevronLeft />,
+    endVisual: (
+      <Badge size="sm" style="inverse">
+        6
+      </Badge>
+    ),
     onPress: () => undefined,
   },
   render: (props: IButtonProps) => {
@@ -183,7 +182,7 @@ export const BadgeAndStartIcon: ButtonStory = {
 export const IconOnly: ButtonStory = {
   args: {
     variant: 'primary',
-    icon: <MonoChevronRight />,
+    children: <MonoChevronRight />,
     onPress: () => undefined,
   },
   render: (props: IButtonProps) => {

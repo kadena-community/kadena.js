@@ -200,7 +200,7 @@ export const SignForm = ({
               // isLoading={receiverData.isFetching || ledgerSignState.loading}
               isLoading={ledgerSignState.loading}
               // isDisabled={isSubmitting}
-              icon={<MonoKeyboardArrowRight />}
+              endVisual={<MonoKeyboardArrowRight />}
               title={t('Sign')}
               type="submit"
             >

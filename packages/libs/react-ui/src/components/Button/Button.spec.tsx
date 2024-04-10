@@ -4,6 +4,10 @@ import React, { useState } from 'react';
 import { Button } from './Button';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { Badge } from '..';
+
+const iconLabel = 'icon';
+const icon = <span>{iconLabel}</span>;
 
 const iconLabel = 'icon';
 const icon = <span>{iconLabel}</span>;
@@ -15,40 +19,11 @@ describe('Button', () => {
     onPressSpy.mockClear();
   });
 
-  it('should render an avatar if start icon and avatar are provided', async () => {
-    const TestComponentWithAvatar = () => {
-      return (
-        <Button
-          icon={icon}
-          iconPosition="start"
-          avatarProps={{ name: 'Robin Mulder' }}
-          onPress={() => {
-            onPressSpy();
-          }}
-        >
-          Click me
-        </Button>
-      );
-    };
-
-    const { getByRole, getByText } = render(<TestComponentWithAvatar />);
-    const button = getByRole('button');
-
-    button.childNodes.forEach((child) => {
-      if (child.textContent === iconLabel) {
-        expect(child).not.toBeVisible();
-      }
-    });
-
-    // check if avatar is present
-    expect(getByText('RM')).toBeVisible();
-  });
-
   it('should render an end icon', async () => {
     const TestComponent = () => {
       return (
         <Button
-          icon={icon}
+          endVisual={icon}
           onPress={() => {
             onPressSpy();
           }}
@@ -63,17 +38,13 @@ describe('Button', () => {
     const iconElement = getByText(iconLabel);
 
     expect(iconElement).toBeVisible();
-
-    const label = getByText('Click me');
-    expect(label.nextSibling?.textContent).toBe(iconLabel);
   });
 
   it('should render a start icon', async () => {
     const TestComponent = () => {
       return (
         <Button
-          icon={icon}
-          iconPosition="start"
+          startVisual={icon}
           onPress={() => {
             onPressSpy();
           }}
@@ -88,16 +59,13 @@ describe('Button', () => {
     const iconElement = getByText(iconLabel);
 
     expect(iconElement).toBeVisible();
-
-    const label = getByText('Click me');
-    expect(label.previousSibling?.textContent).toBe(iconLabel);
   });
 
   it('should render a badge component', async () => {
     const TestComponent = () => {
       return (
         <Button
-          badgeValue={6}
+          endVisual={<Badge>6</Badge>}
           onPress={() => {
             onPressSpy();
           }}
@@ -118,11 +86,12 @@ describe('Button', () => {
     const TestComponent = () => {
       return (
         <Button
-          icon={icon}
           onPress={() => {
             onPressSpy();
           }}
-        ></Button>
+        >
+          {icon}
+        </Button>
       );
     };
 
@@ -163,5 +132,108 @@ describe('Button', () => {
     // Multiple clicks shouldn't call onPressSpy
     await user.click(button);
     expect(onPressSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle defaults', async () => {
+    const user = userEvent.setup({ pointerEventsCheck: 0 });
+    const { getByRole, getByText } = render(
+      <Button onPress={onPressSpy}>Click Me</Button>,
+    );
+
+    const { getByRole, getByText } = render(<TestComponentWithAvatar />);
+    const button = getByRole('button');
+
+    button.childNodes.forEach((child) => {
+      if (child.textContent === iconLabel) {
+        expect(child).not.toBeVisible();
+      }
+    });
+
+    // check if avatar is present
+    expect(getByText('RM')).toBeVisible();
+  });
+
+  it('Should allow custom props to be passed through to the button', () => {
+    const { getByRole } = render(<Button data-foo="bar">Click Me</Button>);
+    const button = getByRole('button');
+    expect(button).toHaveAttribute('data-foo', 'bar');
+  });
+
+  it('should render a badge component', async () => {
+    const TestComponent = () => {
+      return (
+        <Button
+          badgeValue={6}
+          onPress={() => {
+            onPressSpy();
+          }}
+        >
+          Click me
+        </Button>
+      );
+    };
+
+    const { getByText } = render(<TestComponent />);
+
+    const badgeElement = getByText(6);
+
+    expect(badgeElement).toBeVisible();
+  });
+
+  it('should render an icon only', async () => {
+    const TestComponent = () => {
+      return (
+        <Button
+          icon={icon}
+          onPress={() => {
+            onPressSpy();
+          }}
+        ></Button>
+      );
+    };
+
+    const { getByText } = render(<TestComponent />);
+
+  it('Should support aria-describedby', () => {
+    const { getByRole } = render(
+      <>
+        <span id="test">Test</span>
+        <Button aria-describedby="test">Hi</Button>
+      </>,
+    );
+
+    const button = getByRole('button');
+    expect(button).toHaveAttribute('aria-describedby', 'test');
+  });
+
+  it('Should allow a custom className on the button', () => {
+    const { getByRole } = render(
+      <Button className="x-men-first-class">Click Me</Button>,
+    );
+
+    const button = getByRole('button');
+    expect(button.getAttribute('class')).toEqual(
+      expect.stringContaining('x-men-first-class'),
+    );
+  });
+
+  it('Should not respond when disabled', async () => {
+    const user = userEvent.setup({ pointerEventsCheck: 0 });
+    const { getByRole } = render(
+      <Button onPress={onPressSpy} isDisabled>
+        Click Me
+      </Button>,
+    );
+
+    const button = getByRole('button');
+    await user.click(button);
+    expect(button).toBeDisabled();
+    expect(onPressSpy).not.toHaveBeenCalled();
+  });
+
+  it('Should support autoFocus', () => {
+    const { getByRole } = render(<Button autoFocus>Click Me</Button>);
+    const button = getByRole('button');
+    expect(document.activeElement).toBe(button);
   });
 });

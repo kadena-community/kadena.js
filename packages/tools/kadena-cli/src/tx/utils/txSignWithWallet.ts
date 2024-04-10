@@ -102,7 +102,7 @@ export async function signWithWallet(
         walletConfig,
       );
 
-      const password = await option.passwordFile();
+      const password = await option.passwordFile({ wallet: walletConfig });
       log.debug('sign-with-wallet:action', {
         walletConfig,
         password,
@@ -149,7 +149,7 @@ export async function signWithWallet(
         throw new Error(`Wallet: ${walletName} does not exist.`);
       }
 
-      const password = await option.passwordFile();
+      const password = await option.passwordFile({ wallet: walletConfig });
 
       const { unsignedCommands, skippedCommands, relevantKeyPairs } =
         await filterRelevantUnsignedCommandsForWallet(
@@ -174,16 +174,25 @@ export async function signWithWallet(
 
   assertCommandError(results);
 
-  if (results.data.commands.length !== 0) {
-    results.data.commands.forEach((tx, i) => {
+  results.data.commands?.forEach((tx, i) => {
+    const cmd = JSON.parse(results.data.commands[i]?.command?.cmd ?? '{}');
+    const code = JSON.stringify(cmd?.payload?.exec?.code, null, 2);
+    const codeMinified = JSON.stringify(cmd?.payload?.exec?.code);
+
+    log.info(log.color.green(`Transaction executed code: `));
+    log.output(code, codeMinified);
+
+    const hash = results.data.commands[i]?.command?.hash;
+    if (hash) {
       log.info(
-        `Transaction with hash: ${results.data.commands[i].command.hash} was successfully signed.`,
+        log.color.green(
+          `\nTransaction with hash: ${hash} was successfully signed.`,
+        ),
       );
-      log.output(
-        JSON.stringify(results.data.commands[i].command, null, 2),
-        results.data.commands[i].command,
-      );
+    }
+
+    if (tx.path) {
       log.info(`Signed transaction saved to ${tx.path}`);
-    });
-  }
+    }
+  });
 }

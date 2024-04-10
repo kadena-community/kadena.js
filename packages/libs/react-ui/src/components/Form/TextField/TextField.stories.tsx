@@ -210,7 +210,7 @@ export const WithAddons: Story = {
           value={value}
           onValueChange={setValue}
           startAddon={<MonoAccountCircle />}
-          endAddon={<Button icon={<MonoAdd />} isCompact />}
+          endAddon={<Button endVisual={<MonoAdd />} isCompact />}
         />
         <Button type="submit">Submit</Button>
       </Form>

@@ -25,7 +25,7 @@ const WalletConnectButton: FC = () => {
     <Button
       title={buttonTitle}
       variant="positive"
-      icon={<MonoLink />}
+      endVisual={<MonoLink />}
       onPress={handleClick}
       isDisabled={isInitializing}
       isLoading={isInitializing}

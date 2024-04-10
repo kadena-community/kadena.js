@@ -96,26 +96,29 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
                     <Button
                       title="Radio"
                       aria-label="Radio"
-                      icon={<MonoRadioButtonChecked />}
                       variant="transparent"
                       onPress={() => setSelected(key as DevOption)}
-                    />
+                    >
+                      <MonoRadioButtonChecked />
+                    </Button>
                   ) : (
                     <Button
                       title="Radio"
                       aria-label="Radio"
-                      icon={<MonoRadioButtonUnchecked />}
                       variant="transparent"
                       onPress={() => setSelected(key as DevOption)}
-                    />
+                    >
+                      <MonoRadioButtonUnchecked />
+                    </Button>
                   )}
                   <Button
                     title="Radio"
                     aria-label="Radio"
-                    icon={value.icon}
                     variant="transparent"
                     onPress={() => setSelected(key as DevOption)}
-                  />
+                  >
+                    {value.icon}
+                  </Button>
                   <Stack flexDirection="column" marginInline="md">
                     <div className={titleTagStyle}>
                       <Text as="span">{value.title}</Text>
