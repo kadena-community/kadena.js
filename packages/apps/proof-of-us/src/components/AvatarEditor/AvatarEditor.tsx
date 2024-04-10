@@ -186,6 +186,7 @@ export const AvatarEditor: FC<IProps> = ({ next, status }) => {
         ></video>
         {!isAlreadySigning(proofOfUs) && (
           <button
+            aria-label="capture"
             className={cameraButton}
             id="capture"
             onClick={handleCapture}
