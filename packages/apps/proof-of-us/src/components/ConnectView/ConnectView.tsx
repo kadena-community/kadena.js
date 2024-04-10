@@ -33,14 +33,23 @@ export const ConnectView: FC<IProps> = () => {
 
   const { account } = useAccount();
   const [signed, setSigned] = useState(false);
+  const [signee, setSignee] = useState<IProofOfUsSignee | undefined>(undefined);
   const [showMaxModal, setShowMaxModal] = useState(false);
-  const { proofOfUs, signees, addSignee, removeSignee, hasSigned, isSignee } =
-    useProofOfUs();
+  const {
+    proofOfUs,
+    signees,
+    addSignee,
+    removeSignee,
+    hasSigned,
+    isSignee,
+    getSignee,
+  } = useProofOfUs();
   const router = useRouter();
 
   const check2AddSignee = async () => {
     if (!proofOfUs?.proofOfUsId || !signees) return;
     const isSigneeResult = await isSignee();
+
     if (
       (signees.length >= env.MAXSIGNERS && !isSigneeResult) ||
       isAlreadySigning(proofOfUs)
@@ -86,7 +95,9 @@ export const ConnectView: FC<IProps> = () => {
     async (proofOfUs?: IProofOfUsData) => {
       if (!proofOfUs) return;
       const innerSigned = await hasSigned();
+      const innerSignee = await getSignee();
       setSigned(innerSigned);
+      setSignee(innerSignee);
       if (proofOfUs.tokenId && proofOfUs.requestKey && innerSigned) {
         router.replace(
           `${getReturnHostUrl()}/user/proof-of-us/mint/${
@@ -95,7 +106,7 @@ export const ConnectView: FC<IProps> = () => {
         );
       }
     },
-    [setSigned],
+    [setSigned, proofOfUs],
   );
 
   useEffect(() => {
@@ -122,13 +133,17 @@ export const ConnectView: FC<IProps> = () => {
     );
   }
 
+  console.log(isAlreadySigning(proofOfUs), signed, signee?.signerStatus);
+
   return (
     <ScreenHeight>
       <TitleHeader label={proofOfUs.title ?? ''} />
       <ImagePositions />
       <ListSignees />
       <Stack flex={1} />
-      {isAlreadySigning(proofOfUs) && !signed ? (
+      {isAlreadySigning(proofOfUs) &&
+      !signed &&
+      signee?.signerStatus !== 'notsigning' ? (
         <Stack gap="md">
           <Button onPress={handleJoin}>
             Sign <MonoSignature />
@@ -140,13 +155,7 @@ export const ConnectView: FC<IProps> = () => {
             Dashboard
           </Button>
 
-          {proofOfUs.tokenId ? (
-            <Link
-              href={`/user/proof-of-us/t/${proofOfUs.tokenId}/${proofOfUs.requestKey}/${proofOfUs.proofOfUsId}`}
-            >
-              <Button>Go to Proof</Button>
-            </Link>
-          ) : (
+          {proofOfUs.tokenId ? null : (
             <Confirmation
               text="Are you sure you want to be removed from the list?"
               action={handleSignOff}

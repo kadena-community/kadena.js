@@ -157,7 +157,6 @@ const ProofOfUsStore = () => {
     signees: IProofOfUsSignee[],
     account: IProofOfUsSignee,
   ) => {
-    console.log('addsigner??', signees);
     if (signees.find((s) => s.accountName === account.accountName)) return;
 
     const signee: IProofOfUsSignee = {
@@ -230,7 +229,8 @@ const ProofOfUsStore = () => {
         ref(database, `signees/${proofOfUs.proofOfUsId}/${signee.accountName}`),
         {
           ...signee,
-          signerStatus: 'init',
+          signerStatus:
+            signee.signerStatus !== 'notsigning' ? 'init' : 'notsigning',
         },
       );
     });

@@ -26,6 +26,7 @@ import { createConnectTokenTransaction, getTokenId } from '@/utils/proofOfUs';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import { Confirmation } from '../Confirmation/Confirmation';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
+import { StartSigningButton } from '../StartSigningButton/StartSigningButton';
 import { copyClass, qrClass } from './style.css';
 
 interface IProps {
@@ -144,7 +145,9 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
   };
 
   const handleStartSigning = async () => {
+    console.log(1111);
     const transactionData = await createTx();
+    console.log({ transactionData });
     if (!transactionData) return;
     const transaction = Buffer.from(
       JSON.stringify(transactionData.transaction),
@@ -207,11 +210,10 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                 />
               </div>
               <Stack gap="md">
-                {(signees?.length ?? 0) > 1 && (
-                  <Button onPress={handleStartSigning}>
-                    Start signing <MonoSignature />
-                  </Button>
-                )}
+                <StartSigningButton
+                  signees={signees}
+                  onPress={handleStartSigning}
+                />
               </Stack>
               <ListSignees />
             </>

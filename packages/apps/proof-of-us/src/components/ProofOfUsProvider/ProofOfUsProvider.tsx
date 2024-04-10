@@ -2,7 +2,7 @@
 import { useAccount } from '@/hooks/account';
 import { useTokens } from '@/hooks/tokens';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
-import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { getAllowedSigners, isAlreadySigning } from '@/utils/isAlreadySigning';
 import { store } from '@/utils/socket/store';
 import type { IUnsignedCommand } from '@kadena/client';
 import type { FC, PropsWithChildren } from 'react';
@@ -43,6 +43,7 @@ export interface IProofOfUsContext {
   isInitiator: () => Promise<boolean>;
   hasSigned: () => Promise<boolean>;
   isSignee: () => Promise<boolean>;
+  getSignee: () => Promise<IProofOfUsSignee | undefined>;
   updateSigneePing: (signee: IProofOfUsSignee) => Promise<void>;
   updateProofOfUs: (value: any) => Promise<void>;
   getSignature: (tx: IUnsignedCommand) => Promise<string | undefined>;
@@ -67,6 +68,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   isInitiator: async () => false,
   hasSigned: async () => false,
   isSignee: async () => false,
+  getSignee: async () => undefined,
   updateSigneePing: async () => {},
   updateProofOfUs: async () => {},
   getSignature: async () => undefined,
@@ -222,7 +224,7 @@ export const ProofOfUsProvider: FC<IProps> = ({ children, proofOfUsId }) => {
       innerSignees = await store.getProofOfUsSignees(proofOfUs.proofOfUsId);
     }
 
-    const idx = innerSignees.findIndex(
+    const idx = getAllowedSigners(innerSignees).findIndex(
       (a) => a.accountName === account.accountName,
     );
     if (idx < 0) return;
@@ -281,6 +283,20 @@ export const ProofOfUsProvider: FC<IProps> = ({ children, proofOfUsId }) => {
     );
 
     return !!signee;
+  };
+  const getSignee = async (): Promise<IProofOfUsSignee | undefined> => {
+    if (!proofOfUs) return;
+
+    let innerSignees = signees;
+    if (!innerSignees?.length) {
+      innerSignees = await store.getProofOfUsSignees(proofOfUs.proofOfUsId);
+    }
+
+    const signee = innerSignees.find(
+      (s) => s.accountName === account?.accountName,
+    );
+
+    return signee;
   };
 
   const updateSigneePing = async (signee: IProofOfUsSignee): Promise<void> => {
@@ -342,6 +358,7 @@ export const ProofOfUsProvider: FC<IProps> = ({ children, proofOfUsId }) => {
         updateProofOfUs,
         hasSigned,
         isSignee,
+        getSignee,
         updateSigneePing,
         getSignature,
         resetSignatures,

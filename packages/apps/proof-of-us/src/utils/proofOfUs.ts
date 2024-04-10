@@ -3,6 +3,7 @@ import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { getClient } from './client';
 import { env } from './env';
+import { getAllowedSigners } from './isAlreadySigning';
 
 export const getTransaction = async (
   requestKey?: string,
@@ -238,7 +239,7 @@ export const createConnectTokenTransaction = async (
       ttl: 30000,
     });
 
-  signees.forEach((signee, idx) => {
+  getAllowedSigners(signees).forEach((signee, idx) => {
     if (idx === 0) {
       transactionBuilder.addSigner(
         {

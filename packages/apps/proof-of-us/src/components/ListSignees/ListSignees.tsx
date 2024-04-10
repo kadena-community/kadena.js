@@ -1,6 +1,7 @@
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { env } from '@/utils/env';
 import {
+  getAllowedSigners,
   getPercentageSignees,
   isAlreadySigning,
 } from '@/utils/isAlreadySigning';
@@ -74,7 +75,7 @@ export const ListSignees: FC = () => {
   return (
     <Stack flexDirection="column" gap="md">
       <Stack>
-        <Heading as="h5">Signees ({signees.length})</Heading>
+        <Heading as="h5">Signees ({getAllowedSigners(signees).length})</Heading>
 
         <Stack flex={1}>
           {signees.length > 1 && (

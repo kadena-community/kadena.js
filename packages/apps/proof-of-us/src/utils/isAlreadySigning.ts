@@ -34,6 +34,18 @@ export const getPercentageSignees = (signees: IProofOfUsSignee[]): number => {
   return parseFloat((signedList.length / signersLength).toFixed(3));
 };
 
+export const getPercentageAllowedSignees = (
+  signees: IProofOfUsSignee[],
+): number => {
+  if (!signees) return 0;
+
+  const signingList = signees.filter((s) => s.signerStatus !== 'notsigning');
+
+  const signersLength = signees.length; //all signees, expcept for initiator
+
+  return parseFloat((signingList.length / signersLength).toFixed(3));
+};
+
 export const isReadyToMint = (signees?: IProofOfUsSignee[]): boolean => {
   if (!signees || signees.length === 0) return false;
   const MINAMOUNT_SIGNERS = 4;
@@ -51,5 +63,30 @@ export const isReadyToMint = (signees?: IProofOfUsSignee[]): boolean => {
     if (signedlist.length < MINAMOUNT_SIGNERS - 1) return false;
 
     return getPercentageSignees(signeesMinusInitiator) > MINPERCENTAGE_SIGNERS;
+  }
+};
+
+// remove all the nonsigning signees from the list
+export const getAllowedSigners = (signees: IProofOfUsSignee[]) => {
+  return signees.filter((s) => s.signerStatus !== 'notsigning');
+};
+
+export const isReadyToSign = (signees?: IProofOfUsSignee[]): boolean => {
+  if (!signees || signees.length === 0) return false;
+  const allowedSingers = getAllowedSigners(signees);
+
+  if (allowedSingers.length < 2) return false;
+
+  const MINAMOUNT_SIGNERS = 4;
+  const MINPERCENTAGE_SIGNERS = 0.51;
+
+  if (signees.length < MINAMOUNT_SIGNERS) {
+    return allowedSingers.length === signees.length;
+  } else {
+    // the amount of signers needs to be at least MINAMOUNT_SIGNERS
+    if (allowedSingers.length < MINAMOUNT_SIGNERS) return false;
+
+    console.log(getPercentageAllowedSignees(signees));
+    return getPercentageAllowedSignees(signees) > MINPERCENTAGE_SIGNERS;
   }
 };

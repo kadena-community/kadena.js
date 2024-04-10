@@ -27,6 +27,7 @@ export const useSignToken = () => {
     const signed = await hasSigned();
 
     if (!transaction || signed || !proofOfUs) return;
+    console.log({ transaction });
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
 
     const signature = await getSignature(tx);
