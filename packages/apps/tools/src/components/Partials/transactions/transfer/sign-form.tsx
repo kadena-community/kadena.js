@@ -37,7 +37,10 @@ import { SignFormSender } from './sign-form-sender';
 export const schema = z.object({
   sender: NAME_VALIDATION,
   senderChainId: z.enum(CHAINS),
-  receiver: NAME_VALIDATION,
+  receiver: NAME_VALIDATION.regex(
+    /^k:[0-9A-Fa-f]{64}/,
+    'Signing with Ledger currently only supports single key accounts.',
+  ),
   amount: z.number().positive(),
   receiverChainId: z.enum(CHAINS),
   isConnected: z.boolean().refine((val) => val === true),

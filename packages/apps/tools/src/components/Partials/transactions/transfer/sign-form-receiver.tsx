@@ -52,6 +52,8 @@ export const SignFormReceiver = ({
 }) => {
   const { t } = useTranslation('common');
 
+  const isLedger = signingMethod === 'Ledger';
+
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
 
   const {
@@ -127,6 +129,9 @@ export const SignFormReceiver = ({
                 color="primary"
                 type="button"
               />
+            }
+            description={
+              isLedger ? t('ledger-account-name-signing') : undefined
             }
           />
         )}
@@ -237,8 +242,6 @@ export const SignFormReceiver = ({
       setChainSelectOptions([]); // reset to initial state
     }
   }, [receiverAccountChains.isSuccess, receiverAccountChains.data]);
-
-  const isLedger = signingMethod === 'Ledger';
 
   return (
     <LoadingCard fullWidth isLoading={receiverData.isFetching}>
