@@ -99,7 +99,7 @@ httpServer.on('connection', (socket) => {
   httpServer.once('close', () => sockets.delete(socket));
 });
 
-runSystemsCheck(networkConfig)
+runSystemsCheck()
   .then(() => {
     httpServer.listen(dotenv.PORT, () => {
       console.info(
@@ -107,7 +107,8 @@ runSystemsCheck(networkConfig)
       );
     });
   })
-  .catch(() => {
+  .catch((e) => {
+    console.log(e)
     console.log('\nSystem checks failed. Unable to start the graph server.\n');
     process.exit(1);
   });

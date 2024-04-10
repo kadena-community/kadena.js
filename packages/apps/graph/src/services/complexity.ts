@@ -1,5 +1,3 @@
-import { PRISMA } from '../graph/builder';
-
 export const COMPLEXITY = {
   FIELD: {
     DEFAULT: 1,
@@ -10,6 +8,10 @@ export const COMPLEXITY = {
   MULTIPLIER: {
     DEFAULT: 1,
   },
+};
+
+const PRISMA = {
+  DEFAULT_SIZE: 20,
 };
 
 export const getDefaultConnectionComplexity = (options?: {

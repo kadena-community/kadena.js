@@ -3,18 +3,13 @@ import { createClient, createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 import { Prisma } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
-import type { NetworkConfig } from '@utils/network';
+import { NetworkConfig } from '@utils/network';
 import { readdir } from 'fs/promises';
 import { Listr } from 'listr2';
 import path from 'path';
 import { mempoolGetPending } from './chainweb-node/mempool';
 
-export async function runSystemsCheck(
-  networkConfigAsync: Promise<NetworkConfig>,
-) {
-  const networkConfig = await networkConfigAsync;
-  const { networkId, apiVersion } = networkConfig;
-
+export async function runSystemsCheck() {
   console.log('\n');
   return new Listr([
     {
@@ -59,6 +54,9 @@ export async function runSystemsCheck(
             {
               title: 'Checking if chainweb node is running and reachable.',
               task: async () => {
+                const networkConfig = await NetworkConfig.create(dotenv.NETWORK_HOST);
+                const { networkId, apiVersion } = networkConfig;
+
                 await createClient(
                   ({ chainId }) =>
                     `${dotenv.NETWORK_HOST}/chainweb/${apiVersion}/${networkId}/chain/${chainId}/pact`,

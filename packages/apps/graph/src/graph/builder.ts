@@ -65,10 +65,6 @@ export interface IContext {
   networkId: string;
 }
 
-export const PRISMA = {
-  DEFAULT_SIZE: 20,
-};
-
 // eslint-disable-next-line @rushstack/typedef-var
 export const builder = new SchemaBuilder<
   IDefaultTypesExtension & {

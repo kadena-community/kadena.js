@@ -14,8 +14,22 @@
     "Nil Amrutlal <nil.amrutlal@deptagency.com>"
   ],
   "bin": {
-    "kadena-graph": "./dist/index.js"
+    "build-kadena-graph": "./dist/scripts/build-esbuild.js",
+    "kadena-graph": "./dist/index.js",
+    "kadena-graph-esbuild": "./dist/index-build.js"
   },
+  "files": [
+    ".env.example",
+    "CHANGELOG.md",
+    "generated-schema.graphql",
+    "cwd-extra-migrations/",
+    "dist/",
+    "dist/devnet",
+    "dist/scripts",
+    "!**/*.d.ts",
+    "!**/*.d.ts.map",
+    "!**/*.js.map"
+  ],
   "scripts": {
     "build": "pnpm run pactjs:generate:contract:coin && pnpm run pactjs:generate:contract:marmalade && pnpm run pactjs:generate:contract:marmalade-v2 && pnpm prisma:generate && tsc",
     "deploy:marmalade": "ts-node -T src/devnet/deployment/index.ts deploy:marmalade",
@@ -65,6 +79,8 @@
     "dataloader": "^2.2.2",
     "debug": "~4.3.4",
     "dotenv": "~16.0.3",
+    "esbuild": "^0.20.2",
+    "esbuild-plugin-alias-path": "^2.0.2",
     "eslint": "^8.45.0",
     "graphql": "~16.8.1",
     "graphql-scalars": "~1.22.4",
