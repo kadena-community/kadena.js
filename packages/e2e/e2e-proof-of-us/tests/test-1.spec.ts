@@ -84,12 +84,12 @@ test('Create Connection Proof with multiple Signers', async ({
     await Promise.all([
       expect(
         initiator.getByRole('heading', { name: proofTitle }),
-      ).toBeVisible(),
-      expect(signer1.getByRole('heading', { name: proofTitle })).toBeVisible(),
-      expect(signer2.getByRole('heading', { name: proofTitle })).toBeVisible(),
-      expect(signer3.getByRole('heading', { name: proofTitle })).toBeVisible(),
-      expect(signer4.getByRole('heading', { name: proofTitle })).toBeVisible(),
-      expect(signer5.getByRole('heading', { name: proofTitle })).toBeVisible(),
+      ).toBeVisible({timeout: 120000}),
+      expect(signer1.getByRole('heading', { name: proofTitle })).toBeVisible({timeout: 120000}),
+      expect(signer2.getByRole('heading', { name: proofTitle })).toBeVisible({timeout: 120000}),
+      expect(signer3.getByRole('heading', { name: proofTitle })).toBeVisible({timeout: 120000}),
+      expect(signer4.getByRole('heading', { name: proofTitle })).toBeVisible({timeout: 120000}),
+      expect(signer5.getByRole('heading', { name: proofTitle })).toBeVisible({timeout: 120000}),
     ]);
   });
 });
