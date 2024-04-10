@@ -209,17 +209,14 @@ const ProofOfUsStore = () => {
     proofOfUs: IProofOfUsData,
     signees: IProofOfUsSignee[],
   ) => {
-    delete proofOfUs.tokenId;
-    delete proofOfUs.tx;
-    delete proofOfUs.requestKey;
-
     const promises = signees.map((signee) => {
+      delete signee.signature;
       return set(
-        ref(
-          database,
-          `signees/${proofOfUs.proofOfUsId}/${signee.accountName}/signature`,
-        ),
-        null,
+        ref(database, `signees/${proofOfUs.proofOfUsId}/${signee.accountName}`),
+        {
+          ...signee,
+          signerStatus: 'init',
+        },
       );
     });
 
@@ -229,6 +226,9 @@ const ProofOfUsStore = () => {
       ...proofOfUs,
       isReadyToSign: false,
       status: 3,
+      tokenId: null,
+      tx: null,
+      requestKey: null,
       mintStatus: 'init',
     });
   };

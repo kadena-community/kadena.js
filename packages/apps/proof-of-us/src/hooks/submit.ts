@@ -63,7 +63,9 @@ export const useSubmit = () => {
       }
 
       router.replace(
-        `${getReturnHostUrl()}/user/proof-of-us/mint/${innerProofOfUs?.requestKey}`,
+        `${getReturnHostUrl()}/user/proof-of-us/mint/${innerProofOfUs?.requestKey}?id=${
+          innerProofOfUs.proofOfUsId
+        }`,
       );
 
       return;

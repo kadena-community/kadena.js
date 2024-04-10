@@ -96,7 +96,7 @@ export const ListItem: FC<IProps> = ({ token }) => {
     if (isMinted) {
       return `/user/proof-of-us/t/${token?.id}`;
     } else {
-      return `/user/proof-of-us/mint/${token?.requestKey}`;
+      return `/user/proof-of-us/mint/${token?.requestKey}?id=${token?.proofOfUsId}`;
     }
   }, [isMinted, token?.id, token?.requestKey]);
 

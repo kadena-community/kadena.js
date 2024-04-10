@@ -43,8 +43,9 @@ type IProofOfUsBackground = {
 type TokenType = 'connect' | 'attendance';
 
 interface IProofOfUsData {
-  tx?: IUnsignedCommand;
-  requestKey?: string;
+  tx: IUnsignedCommand;
+  tokenId: string;
+  requestKey: string;
   manifestUri?: string;
   imageUri: string;
   eventName?: string;

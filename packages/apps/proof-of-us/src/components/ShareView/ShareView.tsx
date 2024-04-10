@@ -223,15 +223,19 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
           )}
 
           <Stack width="100%" gap="md">
-            <Button isDisabled={!readyToMint} onPress={handleSign}>
-              {readyToMint ? 'Sign & Upload' : 'Waiting for signatures'}
-            </Button>
-            <Confirmation
-              text="Are you sure you want to reset all signatures?"
-              action={resetSignatures}
-            >
-              <Button>Reset Signers</Button>
-            </Confirmation>
+            {isAlreadySigning(proofOfUs) && (
+              <>
+                <Confirmation
+                  text="Are you sure you want to reset all signatures?"
+                  action={resetSignatures}
+                >
+                  <Button variant="secondary">Reset Signers</Button>
+                </Confirmation>
+                <Button isDisabled={!readyToMint} onPress={handleSign}>
+                  {readyToMint ? 'Sign & Upload' : 'Waiting for signatures'}
+                </Button>
+              </>
+            )}
           </Stack>
         </>
       )}

@@ -91,7 +91,7 @@ export const ConnectView: FC<IProps> = () => {
         router.replace(
           `${getReturnHostUrl()}/user/proof-of-us/mint/${
             proofOfUs.requestKey
-          }/`,
+          }?id=${proofOfUs.proofOfUsId}`,
         );
       }
     },
