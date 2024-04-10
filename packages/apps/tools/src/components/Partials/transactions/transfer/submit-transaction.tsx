@@ -32,6 +32,7 @@ import {
   MonoKeyboardArrowRight,
 } from '@kadena/react-icons/system';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
+import { useQueryClient } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
 import Link from 'next/link';
 
@@ -53,6 +54,17 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
     status: FormStatus;
     message?: string;
   }>({ status: 'idle' });
+
+  const queryClient = useQueryClient();
+
+  if (requestStatus.status === 'successful') {
+    void queryClient.invalidateQueries({
+      queryKey: ['account-details'],
+    });
+    void queryClient.invalidateQueries({
+      queryKey: ['account-chain-details'],
+    });
+  }
 
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
   const networkData: INetworkData = networksData.filter(
