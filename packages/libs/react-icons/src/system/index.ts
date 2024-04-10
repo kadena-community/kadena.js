@@ -1007,6 +1007,7 @@ export { default as MonoSignalCellularAlt } from './MonoSignalCellularAlt';
 export { default as MonoSignalCellularAlt1Bar } from './MonoSignalCellularAlt1Bar';
 export { default as MonoSignalCellularAlt2Bar } from './MonoSignalCellularAlt2Bar';
 export { default as MonoSignature } from './MonoSignature';
+export { default as MonoSignatureNotAllowed } from './MonoSignatureNotAllowed';
 export { default as MonoSignpost } from './MonoSignpost';
 export { default as MonoSimCard } from './MonoSimCard';
 export { default as MonoSimCardAlert } from './MonoSimCardAlert';

@@ -11,6 +11,7 @@ import './objects/non-fungible-account';
 import './objects/non-fungible-chain-account';
 import './objects/non-fungible-token';
 import './objects/non-fungible-token-balance';
+import './objects/pact-query-response';
 import './objects/signer';
 import './objects/transaction';
 import './objects/transaction-capability';
