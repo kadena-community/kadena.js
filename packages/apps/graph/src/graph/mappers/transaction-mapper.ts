@@ -1,6 +1,6 @@
 import type { Transaction } from '@prisma/client';
 
-export function mempooTransactionMapper(mempoolData: any): Transaction {
+export function mempoolTransactionMapper(mempoolData: any): Transaction {
   const mempoolTx = JSON.parse(mempoolData.contents);
 
   mempoolTx.cmd = JSON.parse(mempoolTx.cmd);
