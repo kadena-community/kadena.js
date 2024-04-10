@@ -6,8 +6,7 @@ import type { AriaToggleButtonProps } from 'react-aria';
 import { useFocusRing, useHover, useToggleButton } from 'react-aria';
 import { useToggleState } from 'react-stately';
 import { ProgressCircle } from '../ProgressCircle';
-import { button } from './BaseButton/BaseButton.css';
-import { iconOnlyStyle } from './Button.css';
+import { button, iconOnlyStyle } from './Button.css';
 import type { ISharedButtonProps } from './utils';
 import { disableLoadingProps } from './utils';
 

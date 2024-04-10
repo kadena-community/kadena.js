@@ -9,6 +9,7 @@ export const buttonContainerClass = style([
     backgroundColor: 'input.default',
     color: 'text.base.default',
     outline: 'none',
+    height: '100%',
   }),
   {
     borderLeft: `1px solid ${token('color.border.base.bold')}`,

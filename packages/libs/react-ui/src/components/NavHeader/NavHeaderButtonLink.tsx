@@ -5,7 +5,9 @@ import { Link } from '../Link';
 import type { ILinkProps } from '../Link/';
 import { iconButtonClass } from './NavHeader.css';
 
-export const NavHeaderButtonLink: FC<ILinkProps> = ({
+export interface INavHeaderButtonLinkProps extends ILinkProps {}
+
+export const NavHeaderButtonLink: FC<INavHeaderButtonLinkProps> = ({
   className,
   ...props
 }) => {

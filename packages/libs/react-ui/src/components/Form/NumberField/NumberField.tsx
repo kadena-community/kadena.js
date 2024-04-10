@@ -151,19 +151,21 @@ export function NumberFieldBase(
 
         <div className={buttonContainerClass}>
           <Button
-            icon={<ChevronUp size="sm" className={iconClass} />}
-            variant="text"
+            variant="transparent"
             isCompact
             className={buttonClass}
             {...incrementButtonProps}
-          />
+          >
+            <ChevronUp size="sm" className={iconClass} />
+          </Button>
           <Button
-            icon={<ChevronDown size="sm" className={iconClass} />}
-            variant="text"
+            variant="transparent"
             isCompact
             className={buttonClass}
             {...decrementButtonProps}
-          />
+          >
+            <ChevronDown size="sm" className={iconClass} />
+          </Button>
         </div>
       </div>
 

@@ -211,7 +211,7 @@ export const WithAddons: Story = {
           value={value}
           onValueChange={setValue}
           startAddon={<Account />}
-          endAddon={<Button icon={<Plus />} isCompact />}
+          endAddon={<Button endVisual={<Plus />} isCompact />}
         />
         <Button type="submit">Submit</Button>
       </Form>

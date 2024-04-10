@@ -1,4 +1,4 @@
-import { createVar, style } from '@vanilla-extract/css';
+import { createVar, globalStyle, style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import {
   atoms,
@@ -14,6 +14,14 @@ export const focusBackgroundColor = createVar();
 export const textColor = createVar();
 export const backgroundColor = createVar();
 export const iconFill = createVar();
+export const iconSize = createVar();
+
+globalStyle('svg:not(["role=progressbar"])', {
+  fill: iconFill,
+  height: iconSize,
+  width: iconSize,
+  transition: 'fill 0.2s ease-in-out',
+});
 
 const focus = {
   outline: `${tokens.kda.foundation.color.border.tint.outline} solid ${tokens.kda.foundation.border.width.normal}`,

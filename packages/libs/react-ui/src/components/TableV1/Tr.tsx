@@ -30,21 +30,15 @@ export const Tr: FC<ITrProps> = ({ children, url, onClick, className }) => {
 
       {url !== undefined ? (
         <td className={linkButtonClass}>
-          <Link
-            href={url}
-            title={url}
-            icon={<SystemIcon.TrailingIcon />}
-            aria-label={url}
-          />
+          <Link href={url} title={url} aria-label={url}>
+            <SystemIcon.TrailingIcon />
+          </Link>
         </td>
       ) : onClick !== undefined ? (
         <td className={linkButtonClass}>
-          <Button
-            title=""
-            aria-label=""
-            onPress={onClick}
-            icon={<SystemIcon.TrailingIcon />}
-          />
+          <Button title="" aria-label="" onClick={onClick}>
+            <SystemIcon.TrailingIcon />
+          </Button>
         </td>
       ) : (
         ''
