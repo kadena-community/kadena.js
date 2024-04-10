@@ -258,7 +258,7 @@ Tool to generate and manage wallets
 | --------------- | --------------------------------------------------- | ----------------- |
 | add             | Add a new local wallet                              |                   |
 | import          | Import ( restore ) wallet from mnemonic phrase      |                   |
-| generate-keys   | Generate public/secret key pair(s) from your wallet |                   |
+| generate-key    | Generate public/secret key pair(s) from your wallet |                   |
 | change-password | Update the password for your wallet                 |                   |
 | delete          | Delete existing wallet from local filesystem        |                   |
 | list            | List wallet(s)                                      |                   |
@@ -518,7 +518,7 @@ kadena account add-manual [arguments]
 | ----------------------- | -------------------------------------------- | ------------ |
 | --account-alias         | Set alias for account                        |              |
 | --account-name          | Set account name                             |              |
-| --fungible              | Fungible e.g coin                            |              |
+| --fungible              | Fungible module name (default: coin)         |              |
 | --network               | Name of the network to be used               |              |
 | --chain-id              | Chain to be used                             |              |
 | --public-keys           | Comma separated list of public keys          |              |
@@ -540,7 +540,7 @@ kadena account add-from-wallet [arguments]
 | ----------------------- | -------------------------------------------- | ------------ |
 | --account-alias         | Set alias for account                        |              |
 | --key-wallet            | Provide the name of the wallet               |              |
-| --fungible              | Fungible e.g coin                            |              |
+| --fungible              | Fungible module name (default: coin)         |              |
 | --network               | Name of the network to be used               |              |
 | --chain-id              | Chain to be used                             |              |
 | --public-keys           | Comma separated list of public keys          |              |
@@ -1037,7 +1037,12 @@ kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0T
 ```
 kadena tx status [arguments]
 ```
-The kadena tx status command is used to retrieve the status of a transaction on the Kadena blockchain. By providing a transaction request key and specifying the network and chain id, users can query the current state of their transactions. This command supports additional options for polling, allowing for real-time status updates until the transaction is finalized.
+
+The kadena tx status command is used to retrieve the status of a transaction on
+the Kadena blockchain. By providing a transaction request key and specifying the
+network and chain id, users can query the current state of their transactions.
+This command supports additional options for polling, allowing for real-time
+status updates until the transaction is finalized.
 
 | **Arguments & Options** | **Description**                                       | **Required** |
 | ----------------------- | ----------------------------------------------------- | ------------ |
@@ -1048,20 +1053,26 @@ The kadena tx status command is used to retrieve the status of a transaction on 
 | --poll                  | Poll status to get transaction details                |              |
 
 To check the status of a transaction, use the following command:
+
 ```
 kadena tx status --request-key="118mEpX1-6NpJT1kArsWIHHVtJaOERQOeEwNoouOSGU" --network="testnet" --chain-id="0"
 ```
-This will return the current status of the transaction identified by the provided request key.
 
-**With Polling:**
-To continuously monitor the status of a transaction until it is finalized, add the `--poll` option:
+This will return the current status of the transaction identified by the
+provided request key.
+
+**With Polling:** To continuously monitor the status of a transaction until it
+is finalized, add the `--poll` option:
 
 ```
 kadena tx status --request-key="118mEpX1-6NpJT1kArsWIHHVtJaOERQOeEwNoouOSGU" --network="testnet" --chain-id="0" --poll
 ```
-Polling checks the transaction status in real-time and will keep running until the transaction is confirmed.
 
-The default timeout for polling is 60 seconds, but it will attempt to keep polling until confirmation is achieved.
+Polling checks the transaction status in real-time and will keep running until
+the transaction is confirmed.
+
+The default timeout for polling is 60 seconds, but it will attempt to keep
+polling until confirmation is achieved.
 
 ---
 

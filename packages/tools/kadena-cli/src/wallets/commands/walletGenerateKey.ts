@@ -10,6 +10,25 @@ import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import { walletOptions } from '../walletOptions.js';
 
+/** find `amount` of free indexes starting at a `startIndex` while excluding indexes already in use by `existingIndexes` */
+function findFreeIndexes(
+  amount: number,
+  startIndex: number,
+  existingIndexes: number[],
+): number[] {
+  const freeNumbers = [];
+  let currentNumber = startIndex;
+
+  while (freeNumbers.length < amount) {
+    if (!existingIndexes.includes(currentNumber)) {
+      freeNumbers.push(currentNumber);
+    }
+    currentNumber++;
+  }
+
+  return freeNumbers;
+}
+
 export const createGenerateHdKeysCommand: (
   program: Command,
   version: string,
@@ -39,21 +58,27 @@ export const createGenerateHdKeysCommand: (
 
     const loadingSpinner = ora('Generating keys..').start();
 
-    const defaultStartIndex =
-      Math.max(...wallet.keys.map((key) => key.index)) + 1;
-
+    const startIndexNum = Number(startIndex) || 0;
     const keyAmount = Number(amount) || 1;
+
+    const indexes = findFreeIndexes(
+      keyAmount,
+      startIndexNum,
+      wallet.keys.map((x) => x.index),
+    );
+
     const keys: IWalletKey[] = [];
-    for (let i = 0; i < keyAmount; i++) {
+    for (const index of indexes) {
       const key = await services.wallet
         .generateKey({
-          index: (Number(startIndex) || defaultStartIndex) + i,
+          index,
           legacy: wallet.legacy,
           password: passwordFile,
           seed: wallet.seed,
           alias: keyAlias,
         })
         .catch((error) => {
+          loadingSpinner.fail('failed to generate key');
           throw new CommandError({
             errors: [
               `Something went wrong generating a new key, did you use the right password?`,
