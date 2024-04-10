@@ -14,6 +14,9 @@ importers:
       '@kadena-dev/markdown':
         specifier: workspace:*
         version: link:packages/tools/markdown
+      buffer:
+        specifier: ^5.5.0||^6.0.0
+        version: 6.0.3
       knip:
         specifier: ^2.38.1
         version: 2.38.1
@@ -1446,6 +1449,58 @@ importers:
       ws:
         specifier: ^8.16.0
         version: 8.16.0
+
+  packages/e2e/e2e-proof-of-us:
+    dependencies:
+      '@kadena/tools':
+        specifier: workspace:*
+        version: link:../../apps/tools
+      '@playwright/test':
+        specifier: ^1.41.1
+        version: 1.41.2
+    devDependencies:
+      '@kadena-dev/e2e-base':
+        specifier: workspace:*
+        version: link:../e2e-base
+      '@kadena-dev/eslint-config':
+        specifier: workspace:*
+        version: link:../../tools/eslint-config
+      '@kadena-dev/eslint-plugin':
+        specifier: workspace:*
+        version: link:../../tools/eslint-plugin
+      '@kadena-dev/lint-package':
+        specifier: workspace:*
+        version: link:../../tools/lint-package
+      '@kadena-dev/markdown':
+        specifier: workspace:*
+        version: link:../../tools/markdown
+      '@kadena-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../tools/shared-config
+      '@kadena/types':
+        specifier: workspace:*
+        version: link:../../libs/types
+      '@rushstack/eslint-config':
+        specifier: ~3.3.0
+        version: 3.3.0(eslint@8.53.0)(typescript@5.2.2)
+      '@types/node':
+        specifier: ^18.17.14
+        version: 18.17.14
+      eslint:
+        specifier: ^8.45.0
+        version: 8.53.0
+      eslint-import-resolver-typescript:
+        specifier: 3.5.5
+        version: 3.5.5(@typescript-eslint/parser@5.59.11)(eslint-plugin-import@2.27.5)(eslint@8.53.0)
+      eslint-plugin-playwright:
+        specifier: 0.16.0
+        version: 0.16.0(eslint@8.53.0)
+      playwright-i18next-fixture:
+        specifier: ^1.0.0
+        version: 1.0.0(@playwright/test@1.41.2)
+      prettier:
+        specifier: ~3.0.3
+        version: 3.0.3
 
   packages/e2e/e2e-tools:
     dependencies:
