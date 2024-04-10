@@ -20,6 +20,7 @@ export const NonFungibleTokenBalanceName: 'NonFungibleTokenBalance' =
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface NonFungibleTokenBalance {
+  __typename: typeof NonFungibleTokenBalanceName;
   tokenId: string;
   balance: number;
   accountName: string;
