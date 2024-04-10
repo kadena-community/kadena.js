@@ -1,8 +1,8 @@
 import type { Signer } from '@prisma/client';
 import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
+import { networkData } from '@utils/network';
 import https from 'https';
-import { networkConfig } from '../..';
 
 export class MempoolError extends Error {
   public mempoolError: any;
@@ -14,13 +14,11 @@ export class MempoolError extends Error {
 }
 
 export async function mempoolGetPending() {
-  const { networkId, apiVersion } = await networkConfig;
-
   return new Promise((resolve, reject) => {
     const options = {
       hostname: dotenv.MEMPOOL_HOSTNAME,
       port: dotenv.MEMPOOL_PORT,
-      path: `/chainweb/${apiVersion}/${networkId}/chain/0/mempool/getPending`,
+      path: `/chainweb/${networkData.apiVersion}/${networkData.networkId}/chain/0/mempool/getPending`,
       method: 'POST',
       rejectUnauthorized: false, // This disables certificate verification
       headers: {
@@ -56,7 +54,6 @@ export async function mempoolGetPending() {
 
 export async function mempoolLookup(hash: string, chainId?: string) {
   let chainsToCheck = chainIds;
-  const { networkId, apiVersion } = await networkConfig;
 
   if (chainId) {
     chainsToCheck = [chainId];
@@ -67,7 +64,7 @@ export async function mempoolLookup(hash: string, chainId?: string) {
       const options = {
         hostname: dotenv.MEMPOOL_HOSTNAME,
         port: dotenv.MEMPOOL_PORT,
-        path: `/chainweb/${apiVersion}/${networkId}/chain/${chainId}/mempool/lookup`,
+        path: `/chainweb/${networkData.apiVersion}/${networkData.networkId}/chain/${chainId}/mempool/lookup`,
         method: 'POST',
         rejectUnauthorized: false, // This disables certificate verification
         headers: {

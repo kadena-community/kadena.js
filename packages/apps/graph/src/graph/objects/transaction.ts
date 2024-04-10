@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { getMempoolTransactionStatus } from '@services/chainweb-node/mempool';
 import { normalizeError } from '@utils/errors';
+import { networkData } from '@utils/network';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import { builder } from '../builder';
 import { signersLoader } from '../data-loaders/signers';
@@ -62,7 +63,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
               proof: parent.proof,
             },
             signers,
-            networkId: context.networkId,
+            networkId: networkData.networkId,
           };
         } catch (error) {
           throw normalizeError(error);

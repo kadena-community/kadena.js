@@ -63,7 +63,6 @@ interface IDefaultTypesExtension {
 export interface IContext {
   req: IncomingMessage;
   extensions: any;
-  networkId: string;
 }
 
 export const PRISMA = {

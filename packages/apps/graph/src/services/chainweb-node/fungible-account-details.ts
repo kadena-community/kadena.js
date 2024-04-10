@@ -1,7 +1,7 @@
 import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
-import { networkConfig } from '../..';
+import { networkData } from '@utils/network';
 import type { Guard } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
 
@@ -21,12 +21,11 @@ export async function getFungibleAccountDetails(
   chainId: string,
 ): Promise<FungibleChainAccountDetails | null> {
   let result;
-  const networkId = (await networkConfig).networkId;
 
   try {
     result = (await details(
       accountName,
-      networkId,
+      networkData.networkId,
       chainId as ChainId,
       dotenv.NETWORK_HOST,
       fungibleName,
