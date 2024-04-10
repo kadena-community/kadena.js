@@ -24,6 +24,7 @@ import { useAccount } from '@/hooks/account';
 import { createManifest } from '@/utils/createManifest';
 import { createConnectTokenTransaction, getTokenId } from '@/utils/proofOfUs';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
+import { Confirmation } from '../Confirmation/Confirmation';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { copyClass, qrClass } from './style.css';
 
@@ -39,8 +40,14 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const { proofOfUs, signees, background, isInitiator, updateProofOfUs } =
-    useProofOfUs();
+  const {
+    proofOfUs,
+    signees,
+    background,
+    isInitiator,
+    updateProofOfUs,
+    resetSignatures,
+  } = useProofOfUs();
   const { account } = useAccount();
   const { signToken } = useSignToken();
   const router = useRouter();
@@ -215,9 +222,17 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
             </>
           )}
 
-          <Button isDisabled={!readyToMint} onPress={handleSign}>
-            {readyToMint ? 'Sign & Upload' : 'Waiting for signatures'}
-          </Button>
+          <Stack width="100%" gap="md">
+            <Button isDisabled={!readyToMint} onPress={handleSign}>
+              {readyToMint ? 'Sign & Upload' : 'Waiting for signatures'}
+            </Button>
+            <Confirmation
+              text="Are you sure you want to reset all signatures?"
+              action={resetSignatures}
+            >
+              <Button>Reset Signers</Button>
+            </Confirmation>
+          </Stack>
         </>
       )}
       {status === 4 && (

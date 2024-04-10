@@ -32,6 +32,7 @@ export interface IProofOfUsContext {
   changeTitle: (value: string) => string;
   updateBackgroundColor: (value: string) => string;
   isConnected: () => Promise<boolean>;
+  resetSignatures: () => Promise<void>;
   isInitiator: () => Promise<boolean>;
   hasSigned: () => Promise<boolean>;
   isSignee: () => Promise<boolean>;
@@ -54,6 +55,7 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   changeTitle: () => '',
   updateBackgroundColor: () => '',
   isConnected: async () => false,
+  resetSignatures: async () => {},
   isInitiator: async () => false,
   hasSigned: async () => false,
   isSignee: async () => false,
@@ -292,6 +294,16 @@ export const ProofOfUsProvider: FC<IProps> = ({ children, proofOfUsId }) => {
     return !!foundAccount?.initiator;
   };
 
+  const resetSignatures = async (): Promise<void> => {
+    if (!proofOfUs) return;
+    let innerSignees = signees;
+    if (!innerSignees?.length) {
+      innerSignees = await store.getProofOfUsSignees(proofOfUs.proofOfUsId);
+    }
+
+    store.resetAllSignatures(proofOfUs.proofOfUsId, innerSignees);
+  };
+
   return (
     <ProofOfUsContext.Provider
       value={{
@@ -312,6 +324,7 @@ export const ProofOfUsProvider: FC<IProps> = ({ children, proofOfUsId }) => {
         isSignee,
         updateSigneePing,
         getSignature,
+        resetSignatures,
       }}
     >
       {children}

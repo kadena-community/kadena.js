@@ -205,6 +205,14 @@ const ProofOfUsStore = () => {
     );
   };
 
+  const resetAllSignatures = async (
+    proofOfUsId: string,
+    signees: IProofOfUsSignee[],
+  ) => {
+    console.log({ proofOfUsId, signees });
+    console.log('needs to be implemented');
+  };
+
   const closeToken = async (proofOfUsId: string, proofOfUs: IProofOfUsData) => {
     await set(ref(database, `signees/${proofOfUsId}`), null);
     return await set(ref(database, `data/${proofOfUsId}`), null);
@@ -277,6 +285,7 @@ const ProofOfUsStore = () => {
     getAllAccounts,
     saveLeaderboardAccounts,
     listenLeaderboard,
+    resetAllSignatures,
   };
 };
 

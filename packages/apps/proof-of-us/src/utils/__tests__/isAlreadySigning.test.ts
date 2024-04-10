@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import { isReadyToMint } from '../isAlreadySigning';
 
 const createSigners = (
