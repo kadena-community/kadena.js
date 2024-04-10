@@ -25,7 +25,7 @@ export const SearchButton: FC = () => {
       >
         <MonoSearch />
         <span className={searchButtonSlashClass}>
-        <MonoSlashForward />
+          <MonoSlashForward />
         </span>
       </button>
 
