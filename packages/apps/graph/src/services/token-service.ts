@@ -2,10 +2,8 @@ import { prismaClient } from '@db/prisma-client';
 import type { Prisma } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
 import { nonFungibleAccountDetailsLoader } from '../graph/data-loaders/non-fungible-account-details';
-import {
-  NonFungibleTokenBalanceName,
-  type NonFungibleTokenBalance,
-} from '../graph/types/graphql-types';
+import type { NonFungibleTokenBalance } from '../graph/types/graphql-types';
+import { NonFungibleTokenBalanceName } from '../graph/types/graphql-types';
 
 export async function getTokenDetails(
   accountName: string,
