@@ -3,6 +3,8 @@ import type { CommandData } from '@services/chainweb-node/utils';
 import { COMPLEXITY } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
+import GQLPactQueryResponse from '../objects/pact-query-response';
+import { PactQueryResponse } from '../types/graphql-types';
 
 const PactData = builder.inputType('PactQueryData', {
   fields: (t) => ({
@@ -43,7 +45,7 @@ builder.queryField('pactQuery', (t) =>
   t.field({
     description:
       'Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).',
-    type: ['String'],
+    type: [GQLPactQueryResponse],
     args: {
       pactQuery: t.arg({ type: [PactQuery], required: true }),
     },
@@ -52,47 +54,40 @@ builder.queryField('pactQuery', (t) =>
     }),
     async resolve(__parent, args) {
       try {
-        const queries = args.pactQuery.map((query) =>
-          sendRawQuery(query.code, query.chainId, query.data as CommandData[]),
-        );
-
-        const results = (await Promise.race([
-          Promise.allSettled(queries),
-          new Promise(
-            (_, reject) =>
+        return Promise.all(
+          args.pactQuery.map(async (query) => {
+            const timeout: Promise<PactQueryResponse> = new Promise((resolve) =>
               setTimeout(
-                () => reject(new Error('Total query time exceeded')),
-                5000,
-              ), // 5000 ms = 5 seconds
-          ),
-        ])) as PromiseSettledResult<any>[];
-
-        console.log(results);
-
-        if (results instanceof Error) {
-          throw results;
-        }
-
-        return results.map((result) =>
-          result.status === 'fulfilled' ? result.value : null,
+                () =>
+                  resolve({
+                    status: 'timeout',
+                    result: null,
+                    error: 'The query took too long to execute and was aborted',
+                    chainId: query.chainId,
+                    code: query.code,
+                  }),
+                5000, // 5 seconds timeout
+              ),
+            );
+            const sendQuery = sendRawQuery(
+              query.code,
+              query.chainId,
+              query.data as CommandData[],
+            ).then((result) => {
+              return {
+                status: 'success',
+                result,
+                error: null,
+                chainId: query.chainId,
+                code: query.code,
+              };
+            });
+            return Promise.race([sendQuery, timeout]);
+          }),
         );
       } catch (error) {
         throw normalizeError(error);
       }
     },
-    // async resolve(__parent, args) {
-    //   try {
-    //     return args.pactQuery.map(
-    //       async (query) =>
-    //         await sendRawQuery(
-    //           query.code,
-    //           query.chainId,
-    //           query.data as CommandData[],
-    //         ),
-    //     );
-    //   } catch (error) {
-    //     throw normalizeError(error);
-    //   }
-    // },
   }),
 );

@@ -30,6 +30,7 @@ import type {
   NonFungibleChainAccount,
   NonFungibleToken,
   NonFungibleTokenBalance,
+  PactQueryResponse,
   TransactionCapability,
   TransactionCommand,
   TransactionMempoolInfo,
@@ -92,6 +93,7 @@ export const builder = new SchemaBuilder<
       TransactionCommand: TransactionCommand;
       TransactionCapability: TransactionCapability;
       TransactionSignature: TransactionSignature;
+      PactQueryResponse: PactQueryResponse;
     };
   }
 >({
