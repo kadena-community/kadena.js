@@ -29,7 +29,6 @@
   "devDependencies": {
     "@changesets/cli": "^2.26.2",
     "@kadena-dev/markdown": "workspace:*",
-    "buffer": "^5.5.0||^6.0.0",
     "knip": "^2.38.1",
     "only-allow": "^1.2.1",
     "prettier": "~3.2.5",
