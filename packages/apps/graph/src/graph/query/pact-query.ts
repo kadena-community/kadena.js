@@ -1,6 +1,7 @@
 import { sendRawQuery } from '@services/chainweb-node/raw-query';
 import type { CommandData } from '@services/chainweb-node/utils';
 import { COMPLEXITY } from '@services/complexity';
+import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import GQLPactQueryResponse from '../objects/pact-query-response';
@@ -66,7 +67,7 @@ builder.queryField('pactQuery', (t) =>
                     chainId: query.chainId,
                     code: query.code,
                   }),
-                5000, // 5 seconds timeout
+                dotenv.TIMEOUT_PACT_QUERY, //timeout in ms
               ),
             );
             const sendQuery = sendRawQuery(
@@ -74,25 +75,22 @@ builder.queryField('pactQuery', (t) =>
               query.chainId,
               query.data as CommandData[],
             )
-              .then((result) => {
-                return {
-                  status: 'success',
-                  result,
-                  error: null,
-                  chainId: query.chainId,
-                  code: query.code,
-                };
-              })
+              .then((result) => ({
+                status: 'success',
+                result,
+                error: null,
+                chainId: query.chainId,
+                code: query.code,
+              }))
               .catch((error) => {
-                console.log(error);
+                const pactErrorMessage =
+                  error.pactError?.message ||
+                  JSON.stringify(error.pactError || error);
+
                 return {
                   status: 'error',
                   result: null,
-                  error: error.pactError
-                    ? error.pactError.message
-                      ? error.pactError.message
-                      : JSON.stringify(error.pactError)
-                    : JSON.stringify(error),
+                  error: pactErrorMessage,
                   chainId: query.chainId,
                   code: query.code,
                 };
