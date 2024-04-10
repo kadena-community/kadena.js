@@ -206,11 +206,31 @@ const ProofOfUsStore = () => {
   };
 
   const resetAllSignatures = async (
-    proofOfUsId: string,
+    proofOfUs: IProofOfUsData,
     signees: IProofOfUsSignee[],
   ) => {
-    console.log({ proofOfUsId, signees });
-    console.log('needs to be implemented');
+    delete proofOfUs.tokenId;
+    delete proofOfUs.tx;
+    delete proofOfUs.requestKey;
+
+    const promises = signees.map((signee) => {
+      return set(
+        ref(
+          database,
+          `signees/${proofOfUs.proofOfUsId}/${signee.accountName}/signature`,
+        ),
+        null,
+      );
+    });
+
+    await Promise.all(promises);
+
+    await set(ref(database, `data/${proofOfUs.proofOfUsId}`), {
+      ...proofOfUs,
+      isReadyToSign: false,
+      status: 3,
+      mintStatus: 'init',
+    });
   };
 
   const closeToken = async (proofOfUsId: string, proofOfUs: IProofOfUsData) => {

@@ -301,7 +301,7 @@ export const ProofOfUsProvider: FC<IProps> = ({ children, proofOfUsId }) => {
       innerSignees = await store.getProofOfUsSignees(proofOfUs.proofOfUsId);
     }
 
-    store.resetAllSignatures(proofOfUs.proofOfUsId, innerSignees);
+    store.resetAllSignatures(proofOfUs, innerSignees);
   };
 
   return (
