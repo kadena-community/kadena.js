@@ -109,7 +109,7 @@ export const SignForm = ({
     pred.current = predicate;
   };
 
-  const keyId = useRef<number>();
+  const keyId = useRef<number>(0);
   const onKeyIdUpdate = (id: number) => {
     keyId.current = id;
   };
@@ -170,10 +170,7 @@ export const SignForm = ({
 
     const { isSigned, pactCommand } = await signTx(transferInput, {
       networkId: network,
-      derivationPath: getDerivationPath(
-        keyId.current!,
-        derivationMode.current!,
-      ),
+      derivationPath: getDerivationPath(keyId.current, derivationMode.current!),
     });
 
     if (isSigned) {
