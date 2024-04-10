@@ -1,7 +1,11 @@
 import { EditorForm } from '@/EditorForm/EditorForm';
 import { useAccount } from '@/hooks/account';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
+import {
+  getAccountSignee,
+  isAlreadySigning,
+  isSignedOnce,
+} from '@/utils/isAlreadySigning';
 import type { FC, MouseEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Modal } from '../Modal/Modal';
@@ -15,6 +19,7 @@ export const ImagePositions: FC<IProps> = () => {
   const { proofOfUs, signees, updateSignee, background } = useProofOfUs();
   const { account } = useAccount();
   const [isMounted, setIsMounted] = useState(false);
+  const [signee, setSignee] = useState<IProofOfUsSignee | undefined>();
   const [isLocked, setIsLocked] = useState(false);
   const [signer, setSigner] = useState<IProofOfUsSignee>();
   const imgRef = useRef<HTMLImageElement>(null);
@@ -77,6 +82,11 @@ export const ImagePositions: FC<IProps> = () => {
   };
 
   useEffect(() => {
+    const foundSignee = getAccountSignee(signees, account);
+    setSignee(foundSignee);
+  }, [signees]);
+
+  useEffect(() => {
     setMarkers();
     window.addEventListener('resize', setMarkers);
 
@@ -101,7 +111,7 @@ export const ImagePositions: FC<IProps> = () => {
     });
   };
 
-  const handleRemove = async () => {
+  const handleRemove: MouseEventHandler<HTMLButtonElement> = async (e) => {
     console.log('update in imageposition remove');
     await updateSignee({ position: null });
   };
@@ -131,7 +141,9 @@ export const ImagePositions: FC<IProps> = () => {
             variant="small"
             key={s.accountName}
             position={s?.position}
-            onClick={handleRemove}
+            onClick={
+              signee?.accountName === s.accountName ? handleRemove : handleClick
+            }
             idx={idx}
           />
         ))}

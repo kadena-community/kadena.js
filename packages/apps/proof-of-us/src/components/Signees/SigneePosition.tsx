@@ -6,8 +6,9 @@ import { bulletPositionClass, smallClass } from './styles.css';
 interface IProps {
   position?: ISigneePosition;
   idx: number;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement | HTMLImageElement>;
   variant?: 'default' | 'small';
+  accountName?: string;
 }
 
 export const SigneePosition: FC<IProps> = ({
@@ -15,9 +16,12 @@ export const SigneePosition: FC<IProps> = ({
   idx,
   onClick,
   variant = 'default',
+  accountName,
 }) => {
-  const handleClick = () => {
-    if (onClick) onClick();
+  const handleClick: React.MouseEventHandler<
+    HTMLButtonElement | HTMLImageElement
+  > = (e) => {
+    if (onClick) onClick(e);
   };
 
   if (!position) return null;
@@ -29,6 +33,7 @@ export const SigneePosition: FC<IProps> = ({
         bulletPositionClass,
         variant === 'small' && smallClass,
       )}
+      data-account={accountName}
       data-xpercentage={position?.xPercentage}
       data-ypercentage={position?.yPercentage}
       style={getColorStyle(idx)}

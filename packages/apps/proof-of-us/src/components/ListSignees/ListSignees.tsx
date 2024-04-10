@@ -25,6 +25,7 @@ import {
 } from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
 import { Heading } from '../Typography/Heading';
+import { SignedPercentage } from './SignedPercentage';
 import { Signee } from './Signee';
 import {
   multipleWrapperClass,
@@ -85,7 +86,7 @@ export const ListSignees: FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              {getPercentageSignees(signees)}
+              <SignedPercentage percentage={getPercentageSignees(signees)} />
             </motion.div>
           )}
         </Stack>
