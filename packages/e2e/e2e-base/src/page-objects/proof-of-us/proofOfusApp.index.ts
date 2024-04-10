@@ -1,6 +1,4 @@
 import type { Page } from '@playwright/test';
-import { expect } from '@playwright/test';
-import { WebAuthNHelper } from '../../helpers/spirekey/webauthn.helper';
 
 export class ProofOfUsAppIndex {
   public constructor() {}
@@ -26,15 +24,15 @@ export class ProofOfUsAppIndex {
     return shareUrl;
   }
 
-  public async startSigningProcessWith(actor: Page) {
+  public async startSigningProcessWith(actor: Page): Promise<void> {
     await actor.getByRole('button', { name: 'START SIGNING' }).click();
   }
 
-  public async signProofWith(actor: Page) {
+  public async signProofWith(actor: Page): Promise<void> {
   await actor.getByRole('button', { name: 'SIGN' }).click();
   }
 
-  public async uploadProofWith(actor: Page) {
+  public async uploadProofWith(actor: Page): Promise<void> {
   await actor.getByRole('button', { name: 'SIGN & UPLOAD' }).waitFor();
   await actor.getByRole('button', { name: 'SIGN & UPLOAD' }).click()
   }

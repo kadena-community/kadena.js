@@ -8,6 +8,7 @@ export class SpireKeyIndex {
   public async createSpireKeyAccountFor(
     actor: Page,
     alias: string,
+    wait = false,
   ): Promise<void> {
     const webAuthNHelper = new WebAuthNHelper(actor);
     await webAuthNHelper.enableWebAuthN();
@@ -40,9 +41,12 @@ export class SpireKeyIndex {
     await expect(actor.locator('h4')).toHaveText('Connect');
     await actor.getByTestId('card').click();
     await actor.getByRole('link', { name: 'Connect' }).click();
+    if (wait) {
+      await actor.waitForTimeout(45000);
+    }
   }
 
-  public async signTransaction(actor: Page) {
+  public async signTransaction(actor: Page):Promise<void> {
     await expect(
       actor.getByRole('heading', { name: 'Sign', exact: true }),
     ).toBeVisible();
