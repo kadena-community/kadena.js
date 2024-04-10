@@ -228,14 +228,15 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
               ]}
             />
             <Button
-              icon={<MonoContentCopy />}
               onPress={async () => {
                 await navigator.clipboard.writeText(requestKey);
               }}
               title={t('copy request Key')}
               aria-label={t('copy request Key')}
               variant="transparent"
-            />
+            >
+              <MonoContentCopy />
+            </Button>
           </Stack>
 
           {!onSameChain ? (
@@ -286,16 +287,15 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
               />
 
               <Button
-                icon={
-                  <MonoContentCopy className={notificationLinkErrorStyle} />
-                }
                 onPress={async () => {
                   await navigator.clipboard.writeText(completeLinkToFinisher);
                 }}
                 title={t('copy link to finisher')}
                 aria-label={t('copy link to finisher')}
                 variant="transparent"
-              />
+              >
+                <MonoContentCopy className={notificationLinkErrorStyle} />
+              </Button>
             </Stack>
           ) : null}
         </Stack>
@@ -305,7 +305,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         <Button
           isLoading={isLoading}
           // isDisabled={ledgerSignState.loading}
-          icon={<MonoKeyboardArrowRight />}
+          endVisual={<MonoKeyboardArrowRight />}
           title={t('Transfer')}
           onPress={onSubmit}
         >

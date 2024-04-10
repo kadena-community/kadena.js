@@ -43,7 +43,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
                 clicking Quick start.
               </Text>
             </Box>
-            <Link icon={<MonoChevronRight />} href="/build/quickstart">
+            <Link endVisual={<MonoChevronRight />} href="/build/quickstart">
               Quick start
             </Link>
           </Card>

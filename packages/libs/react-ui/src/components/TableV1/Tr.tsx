@@ -1,4 +1,4 @@
-import { MonoChevronRight } from '@kadena/react-icons/system';
+import { MonoChevronLeft, MonoChevronRight } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
@@ -32,21 +32,15 @@ export const Tr: FC<ITrProps> = ({ children, url, onClick, className }) => {
 
       {url !== undefined ? (
         <td className={linkButtonClass}>
-          <Link
-            href={url}
-            title={url}
-            icon={<MonoChevronRight />}
-            aria-label={url}
-          />
+          <Link href={url} title={url} aria-label={url}>
+            <MonoChevronRight />
+          </Link>
         </td>
       ) : onClick !== undefined ? (
         <td className={linkButtonClass}>
-          <Button
-            title=""
-            aria-label=""
-            onPress={onClick}
-            icon={<MonoChevronRight />}
-          />
+          <Button title="" aria-label="" onClick={onClick}>
+            <MonoChevronLeft />
+          </Button>
         </td>
       ) : (
         ''

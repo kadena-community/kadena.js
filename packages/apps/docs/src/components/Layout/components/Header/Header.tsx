@@ -64,15 +64,17 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
             className={socialsClass}
             href="https://twitter.com/kadena_io"
             title="Go to our X"
-            icon={<MonoLogoX />}
-          />
+          >
+            <MonoLogoX />
+          </NavHeaderButtonLink>
 
           <NavHeaderButtonLink
             className={socialsClass}
             href="https://github.com/kadena-community"
             title="Go to our Github"
-            icon={<MonoLogoGithub />}
-          />
+          >
+            <MonoLogoGithub />
+          </NavHeaderButtonLink>
 
           <ThemeToggle />
 

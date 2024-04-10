@@ -21,7 +21,7 @@ export const GraphQLQueryDialog = (
   return (
     <>
       <Button
-        icon={<MonoInfo />}
+        endVisual={<MonoInfo />}
         title="Show the GraphQL query used."
         isCompact
         variant="transparent"

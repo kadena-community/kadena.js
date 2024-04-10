@@ -1,5 +1,22 @@
 # @kadena/dev-wallet
 
+## 0.0.8
+
+### Patch Changes
+
+- 8bb3168818: fix: use new text and header components from react-ui package
+- Updated dependencies [b316674811]
+- Updated dependencies [fa60f7fd9]
+- Updated dependencies [6aac4b623]
+- Updated dependencies [3bbfeaaa9]
+- Updated dependencies [5a304c326]
+- Updated dependencies [8bb3168818]
+- Updated dependencies [5c5937eef6]
+  - @kadena/react-ui@0.8.4
+  - @kadena/client@1.11.0
+  - @kadena/client-utils@0.5.3
+  - @kadena/pactjs-generator@1.11.0
+
 ## 0.0.7
 
 ### Patch Changes

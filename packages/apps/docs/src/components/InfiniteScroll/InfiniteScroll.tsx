@@ -49,8 +49,7 @@ export const InfiniteScroll: FC<IProps> = ({
 
             <Button
               onPress={() => handleLoad(true)}
-              iconPosition="start"
-              icon={<MonoRefresh />}
+              startVisual={<MonoRefresh />}
             >
               Try again
             </Button>

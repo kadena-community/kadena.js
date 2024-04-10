@@ -57,7 +57,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               </Text>
             </Box>
             <KadenaLink
-              icon={<MonoChevronRight />}
+              endVisual={<MonoChevronRight />}
               href="/marmalade/quick-start"
             >
               Get started

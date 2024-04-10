@@ -228,7 +228,7 @@ export const WithAddon: Story = {
           label="With addon"
           value={value}
           onValueChange={setValue}
-          endAddon={<Button icon={<MonoAdd />} isCompact />}
+          endAddon={<Button endVisual={<MonoAdd />} isCompact />}
         />
         <Button type="submit">Submit</Button>
       </Form>

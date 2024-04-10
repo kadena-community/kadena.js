@@ -18,7 +18,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
   select: {},
   fields: (t) => ({
     // database fields
-    hash: t.exposeID('hash'),
+    hash: t.exposeString('hash'),
     chainId: t.expose('chainId', { type: 'BigInt' }),
     creationTime: t.expose('creationTime', { type: 'DateTime' }),
     epoch: t.expose('epoch', {

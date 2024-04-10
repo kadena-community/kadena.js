@@ -116,7 +116,6 @@ export const SignFormReceiver = ({
             isDisabled={tab === 'new'}
             endAddon={
               <Button
-                icon={<MonoContentCopy />}
                 variant="transparent"
                 onPress={async () => {
                   await navigator.clipboard.writeText(field.value);
@@ -124,7 +123,9 @@ export const SignFormReceiver = ({
                 aria-label="Copy Account Name"
                 title="Copy Account Name"
                 type="button"
-              />
+              >
+                <MonoContentCopy />
+              </Button>
             }
           />
         )}

@@ -56,7 +56,10 @@ const Home: FC<IProps> = ({ popularPages, blogPosts }) => {
                   Pact to create a smart contract
                 </Text>
               </Box>
-              <KadenaLink icon={<MonoChevronRight />} href="/pact/beginner">
+              <KadenaLink
+                endVisual={<MonoChevronRight />}
+                href="/pact/beginner"
+              >
                 Getting started
               </KadenaLink>
             </Card>
