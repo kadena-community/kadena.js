@@ -15,7 +15,7 @@ export const getTokenInfo = async (
   tokenId: string,
   chainId: ChainId,
   version: string,
-): Promise<TokenInfo | undefined> => {
+): Promise<TokenInfo | null> => {
   if (version !== 'v1' && version !== 'v2') {
     throw new Error(
       `Invalid version found for token ${tokenId}. Got ${version} but expected v1 or v2.`,
@@ -74,7 +74,7 @@ export const getTokenInfo = async (
   const tokenInfo = await dirtyReadClient<any>(config)(command).execute();
 
   if (!tokenInfo) {
-    return undefined;
+    return null;
   }
 
   // if (version === 'v1') {

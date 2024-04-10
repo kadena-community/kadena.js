@@ -66,7 +66,8 @@ export async function getTokenDetails(
 
       result.push({
         balance,
-        id: event.token,
+        accountName,
+        tokenId: event.token,
         chainId: finalChainId,
         guard: {
           keys: accountDetails.guard.keys,
