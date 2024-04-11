@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import type { FC } from 'react';
 import { PingStatus } from '../PingStatus/PingStatus';
 import { SignStatus } from '../SignStatus/SignStatus';
+import { Tag } from '../Tag/Tag';
 import { Text } from '../Typography/Text';
 import {
   accountClass,
@@ -46,33 +47,42 @@ export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
 
   if (!signee) return null;
 
+  const isInitiator = signee.initiator;
   const isMeChecked = isMe(signee, account);
   const notAllowedToSign = signee.signerStatus === 'notsigning';
   return (
-    <div
+    <Stack
       className={classNames(
         isMultiple ? multipleSigneeClass : signeeClass,
         notAllowedToSign && notAllowedToSignClass,
       )}
       style={getSuccessStyle(signee)}
+      flexDirection="column"
+      justifyContent="flex-start"
     >
-      <Stack gap="sm" alignItems="center">
-        <SignStatus status={signee?.signerStatus} />
-        <PingStatus signee={signee} />
+      <Stack gap="md" alignItems="center" width="100%">
+        <Stack gap="sm" alignItems="center">
+          <SignStatus status={signee?.signerStatus} />
+          <PingStatus signee={signee} />
+        </Stack>
+        <Text
+          className={classNames(
+            nameClass,
+            ellipsClass,
+            isMultiple && multipleNameClass,
+          )}
+          bold
+        >
+          {getSigneeName(signee)}
+        </Text>
+        <Text className={classNames(accountClass, ellipsClass)}>
+          {getAccount(signee)}
+        </Text>
       </Stack>
-      <Text
-        className={classNames(
-          nameClass,
-          ellipsClass,
-          isMultiple && multipleNameClass,
-        )}
-        bold
-      >
-        {getSigneeName(signee)} {isMeChecked && ' (me)'}
-      </Text>
-      <Text className={classNames(accountClass, ellipsClass)}>
-        {getAccount(signee)}
-      </Text>
-    </div>
+      <Stack paddingBlockStart="sm" gap="sm">
+        {isInitiator && <Tag>initiator</Tag>}
+        {isMeChecked && <Tag color="red">me</Tag>}
+      </Stack>
+    </Stack>
   );
 };

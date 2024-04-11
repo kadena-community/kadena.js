@@ -38,22 +38,12 @@ export const notReadytoMintClass = style([
 
 export const multipleSigneeClass = style([
   atoms({
-    display: 'flex',
-    width: '100%',
     padding: 'md',
-    gap: 'sm',
-    alignItems: 'center',
+    width: '100%',
   }),
 ]);
 
 export const signeeClass = style([
-  atoms({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 'md',
-    padding: 'md',
-  }),
   {
     flex: '1 1 50%',
     width: '50%',
