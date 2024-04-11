@@ -66,12 +66,7 @@ async function* iteratorFn(
 ): AsyncGenerator<Event[] | undefined, void, unknown> {
   let lastEventId;
 
-  lastEventId = await getLatestEventId(
-    qualifiedEventName,
-    chainId,
-    parametersFilter,
-    minimumDepth,
-  );
+  lastEventId = await getLatestEventId();
 
   if (!nullishOrEmpty(lastEventId)) {
     yield [];
@@ -159,12 +154,7 @@ async function getLastEvents(
   return eventsToReturn.sort((a, b) => b.id - a.id);
 }
 
-async function getLatestEventId(
-  eventName: string,
-  chainId?: string | null,
-  parametersFilter?: string | null,
-  minimumDepth?: number | null,
-) {
+async function getLatestEventId() {
   try {
     const lastEventId = await prismaClient.event.aggregate({
       _max: {
