@@ -166,7 +166,7 @@ async function getLatestEventId(
   minimumDepth?: number | null,
 ) {
   try {
-    let lastEventId = await prismaClient.event.aggregate({
+    const lastEventId = await prismaClient.event.aggregate({
       _max: {
         id: true,
       },
