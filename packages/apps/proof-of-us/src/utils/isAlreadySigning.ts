@@ -50,9 +50,23 @@ export const isReadyToMint = (signees?: IProofOfUsSignee[]): boolean => {
     (s) => s.signerStatus === 'success',
   );
 
-  if (signees.length < MINAMOUNT_SIGNERS) {
-    return signedlist.length === signees.length - 1 && signees.length > 1;
+  const unsignedList = signeesMinusInitiator.filter(
+    (s) =>
+      s.signerStatus === 'init' ||
+      s.signerStatus === 'signing' ||
+      s.signerStatus === 'error',
+  );
+
+  if (unsignedList.length > 0) {
+    return false;
   } else {
+    if (signees.length < MINAMOUNT_SIGNERS) {
+      return (
+        signedlist.length === signeesMinusInitiator.length &&
+        signeesMinusInitiator.length > 0
+      );
+    }
+
     // the amount of signers needs to be at least MINAMOUNT_SIGNERS (minus the initiator)
     if (signedlist.length < MINAMOUNT_SIGNERS - 1) return false;
 

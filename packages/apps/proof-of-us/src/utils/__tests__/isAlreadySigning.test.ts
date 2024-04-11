@@ -52,39 +52,12 @@ describe('utils isReadyToMint', () => {
     ); //3 signed
     expect(result).toEqual(false);
 
-    const resul3 = isReadyToMint(
-      createSigners({ count: 5, startSignedCount: 1, endSignedCount: 3 }),
-    ); //3 signed (+ initiator will make > 51%)
-    expect(resul3).toEqual(true);
-
     const result2 = isReadyToMint(
       createSigners({ count: 5, startSignedCount: 1 }),
     ); // all, minus initiator signed
     expect(result2).toEqual(true);
   });
-  test('should be ready to sign if atleast 3/6 have signed, minus the intiator', async () => {
-    const result = isReadyToMint(
-      createSigners({ count: 6, startSignedCount: 1, endSignedCount: 3 }),
-    ); //3 signed (+ initiator will make > 51%)
-    expect(result).toEqual(true);
-  });
-  test('should be ready to sign if atleast 4/8 have signed, minus the intiator', async () => {
-    const result = isReadyToMint(
-      createSigners({ count: 8, startSignedCount: 1, endSignedCount: 4 }),
-    ); //4 signed
-    expect(result).toEqual(true);
 
-    const result2 = isReadyToMint(
-      createSigners({ count: 8, startSignedCount: 1, endSignedCount: 3 }),
-    ); //4 signed
-    expect(result2).toEqual(false);
-  });
-  test('should be ready to sign if atleast 1/2 have signed, minus the intiator', async () => {
-    const result = isReadyToMint(
-      createSigners({ count: 2, startSignedCount: 1 }),
-    ); //1 signed
-    expect(result).toEqual(true);
-  });
   test('should never be ready to sign if only 1 user, minus the intiator', async () => {
     const result = isReadyToMint(
       createSigners({ count: 1, startSignedCount: 0 }),
