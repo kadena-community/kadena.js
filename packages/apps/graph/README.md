@@ -93,7 +93,7 @@ subscription {
 
 If you need to overwrite the default environment variables, you can do so by creating a `.env` file in the root of the project and copying the contents of `.env.example` to it.
 
-### Example queries for use case  
+### Example queries per use case  
 
 We've curated a list of useful queries and subscriptions tailored for different user types. You can experiment with these examples and more using the GraphiQL Explorer interface.
 

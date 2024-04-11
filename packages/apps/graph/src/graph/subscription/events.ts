@@ -121,8 +121,8 @@ async function getLastEvents(
     where: {
       ...extendedFilter.where,
       qualifiedName: eventName,
-      transaction: {
-        NOT: [],
+      requestKey: {
+        not: 'cb',
       },
       ...(chainId && {
         chainId: parseInt(chainId),
@@ -169,28 +169,6 @@ async function getLatestEventId(
     const lastEventId = await prismaClient.event.aggregate({
       _max: {
         id: true,
-      },
-      where: {
-        qualifiedName: eventName,
-        transaction: {
-          NOT: [],
-        },
-        ...(chainId && {
-          chainId: parseInt(chainId),
-        }),
-        ...(parametersFilter && {
-          parameters: parsePrismaJsonColumn(parametersFilter, {
-            subscription: 'events',
-            queryParameter: 'parametersFilter',
-            column: 'parameters',
-          }),
-        }),
-        ...(minimumDepth && {
-          OR: await getConditionForMinimumDepth(
-            minimumDepth,
-            chainId ? [chainId] : undefined,
-          ),
-        }),
       },
     });
     return lastEventId._max.id;
