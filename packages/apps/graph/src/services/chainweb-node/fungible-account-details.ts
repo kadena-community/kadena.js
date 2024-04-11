@@ -19,6 +19,8 @@ export async function getFungibleAccountDetails(
   fungibleName: string,
   accountName: string,
   chainId: string,
+  retries = dotenv.CHAINWEB_NODE_RETRY_ATTEMPTS,
+  delay = dotenv.CHAINWEB_NODE_RETRY_DELAY,
 ): Promise<FungibleChainAccountDetails | null> {
   let result;
 
@@ -43,7 +45,17 @@ export async function getFungibleAccountDetails(
     ) {
       return null;
     } else {
-      throw new PactCommandError('Pact Command failed with error', result);
+      if (retries > 0) {
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        return getFungibleAccountDetails(
+          fungibleName,
+          accountName,
+          chainId,
+          retries - 1,
+        );
+      } else {
+        throw new PactCommandError('Pact Command failed with error', result);
+      }
     }
   }
 }
