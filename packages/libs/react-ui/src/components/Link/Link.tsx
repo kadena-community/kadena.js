@@ -57,7 +57,7 @@ const Link = forwardRef(
       children,
       isCompact = false,
       loadingLabel = 'Loading',
-      variant = 'primary',
+      variant = 'transparent',
       className,
       ...props
     }: ILinkProps,
