@@ -52,7 +52,7 @@ export const walletOptions = {
     prompt: keys.walletCreateAccountPrompt,
     validation: z.string(),
     option: new Option(
-      '-c, --create-account <createAccount>',
+      '-a, --create-account <createAccount>',
       'Create an account using the first wallet key',
     ),
   }),

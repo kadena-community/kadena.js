@@ -149,13 +149,44 @@ Available subjects
 
 Tool for setting up and managing the CLI configuration
 
-init creates a .kadena/ folder with default networks devnet/mainnet/testnet
-
 | **Subcommand** | **Description**            | **Default value** |
 | -------------- | -------------------------- | ----------------- |
 | init           | initialize default project |                   |
 
+
+### Initializing the CLI configuration
+
+The `kadena config init` command is your starting point. It creates a .kadena folder pre configured with default network settings (devnet, mainnet, testnet). You have the flexibility to specify the location of your .kadena folder, making it easier to organize your configurations either in the current working directory or a global directory such as your home directory.
+
+Additionally, this command assists in the creation of your initial wallet and account, setting the stage for your transactions on the Kadena network.
+
+```
+kadena config init [options]
+```
+
+| **Options**         | **Description**                                         | **Required** |
+| ------------------- | ------------------------------------------------------- | ------------ |
+| --location          | Path for the .kadena directory creation (e.g., home directory or current working directory).  |              |
+| --create-wallet     | Confirm the creation of a new wallet. Set to true to enable.              |              |
+| --wallet-name       | Name for the new wallet                                 |              |
+| --password-file     | Path to a file containing the wallet's password, alternatively, passwords can be passed via stdin. |              |
+| --create-account    | Enable the creation of an account using the first wallet key.                 |              |
+
 ---
+
+Examples
+
+Setup in a Specific Directory with a New Wallet and Account:
+```
+kadena config init --location="/my-app/.kadena" --create-wallet="true" --wallet-name="my_first_wallet" --create-account="true"
+```
+
+Setup Without Creating a Wallet or Account:
+```
+kadena config init --location="/my-app/.kadena" --create-wallet="false"
+```
+
+Note: All configurations will be stored within the specified .kadena/ folder, ensuring your settings are organized and easily accessible.
 
 ## kadena network
 
