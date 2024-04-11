@@ -87,7 +87,7 @@ export const createConfigInitCommand: (
     logWalletInfo(created.words, wallet.filepath, key.publicKey);
 
     if (createAccount === 'true') {
-      const directory = await services.config.getDirectory();
+      const directory = services.config.getDirectory();
       if (directory === null) {
         throw new KadenaError('no_kadena_directory');
       }

@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
 import { services } from '../../services/index.js';
+import { KadenaError } from '../../services/service-error.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
@@ -13,7 +14,11 @@ import {
 } from '../utils/accountHelpers.js';
 
 async function deleteAccountDir(): Promise<CommandResult<null>> {
-  const accountDir = await getAccountDirectory();
+  const accountDir = getAccountDirectory();
+  if (accountDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+
   try {
     await services.filesystem.deleteDirectory(accountDir);
     return {
@@ -31,7 +36,11 @@ async function deleteAccountDir(): Promise<CommandResult<null>> {
 async function removeAccount(
   accountAlias: string,
 ): Promise<CommandResult<null>> {
-  const accountDir = await getAccountDirectory();
+  const accountDir = getAccountDirectory();
+  if (accountDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+
   if (accountAlias === 'all') {
     return await deleteAccountDir();
   }

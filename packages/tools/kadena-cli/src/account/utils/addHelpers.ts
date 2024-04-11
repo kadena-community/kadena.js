@@ -1,5 +1,6 @@
 import path from 'path';
 
+import { KadenaError } from '../../services/service-error.js';
 import { sanitizeFilename } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
@@ -31,8 +32,11 @@ export const getUpdatedConfig = (
   }
 };
 
-export const getAccountFilePath = async (fileName: string): Promise<string> => {
-  const accountDir = await getAccountDirectory();
+export const getAccountFilePath = (fileName: string): string => {
+  const accountDir = getAccountDirectory();
+  if (accountDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   const sanitizedAlias = sanitizeFilename(fileName);
   return path.join(accountDir, `${sanitizedAlias}.yaml`);
 };

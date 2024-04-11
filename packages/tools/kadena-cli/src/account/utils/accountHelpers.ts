@@ -32,19 +32,19 @@ export const formatZodErrors = (errors: ZodError): string => {
     .join('\n');
 };
 
-export const getAccountDirectory = async (): Promise<string> => {
-  const directory = await services.config.getDirectory();
-  if (directory === null) {
-    throw new KadenaError('no_kadena_directory');
-  }
+export const getAccountDirectory = (): string | null => {
+  const directory = services.config.getDirectory();
 
-  return join(directory, ACCOUNT_DIR);
+  return isNotEmptyString(directory) ? join(directory, ACCOUNT_DIR) : null;
 };
 
 export const readAccountFromFile = async (
   accountFile: string,
 ): Promise<IAliasAccountData> => {
-  const accountDir = await getAccountDirectory();
+  const accountDir = getAccountDirectory();
+  if (accountDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   const ext = extname(accountFile);
   const fileWithExt =
     !ext || ext !== '.yaml' ? `${accountFile}.yaml` : accountFile;
@@ -75,7 +75,10 @@ export const readAccountFromFile = async (
 };
 
 export async function ensureAccountAliasDirectoryExists(): Promise<boolean> {
-  const accountDir = await getAccountDirectory();
+  const accountDir = getAccountDirectory();
+  if (accountDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   return await services.filesystem.directoryExists(accountDir);
 }
 
@@ -83,7 +86,10 @@ export async function ensureAccountAliasFilesExists(): Promise<boolean> {
   if (!(await ensureAccountAliasDirectoryExists())) {
     return false;
   }
-  const accountDir = await getAccountDirectory();
+  const accountDir = getAccountDirectory();
+  if (accountDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   const files = await services.filesystem.readDir(accountDir);
 
   return files.length > 0;
@@ -94,7 +100,10 @@ export async function getAllAccounts(): Promise<IAliasAccountData[]> {
     return [];
   }
 
-  const accountDir = await getAccountDirectory();
+  const accountDir = getAccountDirectory();
+  if (accountDir === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   const files = await services.filesystem.readDir(accountDir);
 
   const allAccounts = await Promise.all(

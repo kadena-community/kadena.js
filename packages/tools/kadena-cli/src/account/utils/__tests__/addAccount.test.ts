@@ -10,7 +10,7 @@ import { defaultConfigMock } from './mocks.js';
 
 describe('addAccount', () => {
   afterEach(async () => {
-    const filePath = await getAccountFilePath(defaultConfigMock.accountAlias);
+    const filePath = getAccountFilePath(defaultConfigMock.accountAlias);
     const fs = services.filesystem;
     if (await fs.fileExists(filePath)) {
       await fs.deleteFile(filePath);
@@ -32,7 +32,7 @@ describe('addAccount', () => {
         balance: 0,
       },
     };
-    const filePath = await getAccountFilePath(defaultConfigMock.accountAlias);
+    const filePath = getAccountFilePath(defaultConfigMock.accountAlias);
     const result = await addAccount(config);
 
     assert(result.status === 'success');
@@ -48,7 +48,7 @@ describe('addAccount', () => {
       publicKeysConfig: ['publicKey1', 'publicKey2'],
       accountDetailsFromChain: undefined,
     };
-    const filePath = await getAccountFilePath(defaultConfigMock.accountAlias);
+    const filePath = getAccountFilePath(defaultConfigMock.accountAlias);
     const result = await addAccount(config);
 
     assert(result.status === 'success');
@@ -74,7 +74,7 @@ describe('addAccount', () => {
       },
       accountOverwrite: true,
     };
-    const filePath = await getAccountFilePath(defaultConfigMock.accountAlias);
+    const filePath = getAccountFilePath(defaultConfigMock.accountAlias);
     const result = await addAccount(config);
 
     const fileContent = await services.filesystem.readFile(filePath);
@@ -98,7 +98,7 @@ describe('addAccount', () => {
       accountAlias: 'unit-test-alias',
       accountName: 'accountName',
     };
-    const filePath = await getAccountFilePath(config.accountAlias);
+    const filePath = getAccountFilePath(config.accountAlias);
     const fs = services.filesystem;
     await fs.writeFile(filePath, 'test');
     expect(await fs.fileExists(filePath)).toBe(true);

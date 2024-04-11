@@ -32,7 +32,7 @@ import type {
 } from './config.types.js';
 
 export interface IConfigService {
-  getDirectory(): Promise<string | null>;
+  getDirectory(): string | null;
   // Key
   getPlainKey(filepath: string): Promise<IPlainKey | null>;
   getPlainKeys(directory?: string): Promise<IPlainKey[]>;
@@ -89,7 +89,7 @@ export class ConfigService implements IConfigService {
     this.directory = null;
   }
 
-  public async getDirectory(): Promise<string | null> {
+  public getDirectory(): string | null {
     return this.directory;
   }
 
