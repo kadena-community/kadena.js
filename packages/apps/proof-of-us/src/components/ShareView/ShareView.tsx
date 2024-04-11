@@ -11,7 +11,7 @@ import {
 } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
@@ -51,7 +51,6 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
   const { account } = useAccount();
   const { signToken } = useSignToken();
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const handleBack = () => {
     prev();
@@ -80,11 +79,6 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
   useEffect(() => {
     checkInitiator();
   }, [proofOfUs, account]);
-
-  useEffect(() => {
-    const transaction = searchParams.get('transaction');
-    if (!transaction || !proofOfUs) return;
-  }, []);
 
   useEffect(() => {
     if (!isCopied) return;

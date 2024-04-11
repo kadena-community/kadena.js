@@ -6,12 +6,13 @@ import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
 import { useSubmit } from '@/hooks/submit';
 import { useTokens } from '@/hooks/tokens';
+import { useTransaction } from '@/hooks/transaction';
 import { env } from '@/utils/env';
 import { getReturnUrl } from '@/utils/getReturnUrl';
 import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import type { Dispatch, FC, SetStateAction } from 'react';
 import { useEffect, useMemo } from 'react';
 
@@ -29,10 +30,10 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 }) => {
   const { claim } = useClaimAttendanceToken();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { account, isMounted, login } = useAccount();
   const { addMintingData, tokens } = useTokens();
   const { doSubmit, isStatusLoading } = useSubmit();
+  const { transaction } = useTransaction();
 
   const tokenId = useMemo(() => {
     const token = tokens?.find((t) => t.info?.uri === data.manifestUri);
@@ -66,7 +67,6 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   };
 
   const createProof = async () => {
-    const transaction = searchParams.get('transaction') ?? '';
     if (!transaction || !account) return;
 
     const proof = getProof(data, transaction);
@@ -76,7 +76,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
   useEffect(() => {
     createProof();
-  }, [account, searchParams]);
+  }, [account, transaction]);
 
   const handleClaim = async () => {
     const transaction = await claim(eventId);
@@ -89,7 +89,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     router.push(
       `${
         process.env.NEXT_PUBLIC_WALLET_URL
-      }sign?transaction=${bufferedTx}&chainId=${
+      }sign#transaction=${bufferedTx}&chainId=${
         env.CHAINID
       }&returnUrl=${getReturnUrl()}
       `,

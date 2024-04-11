@@ -15,7 +15,7 @@ interface IProps {
 
 export const MintView: FC<IProps> = () => {
   const { proofOfUs, signees, updateSignee } = useProofOfUs();
-  const { doSubmit } = useSubmit();
+  const { doSubmit, transaction } = useSubmit();
   const { uploadBackground } = useAvatar();
 
   const handleMint = async () => {
@@ -35,13 +35,13 @@ export const MintView: FC<IProps> = () => {
   };
 
   useEffect(() => {
-    if (!proofOfUs || !signees) return;
+    if (!proofOfUs || !signees || !transaction) return;
 
     if (!proofOfUs.tx) {
       throw new Error('no tx is found');
     }
     handleMint();
-  }, [proofOfUs?.tx, signees?.length]);
+  }, [proofOfUs?.tx, signees?.length, transaction]);
 
   if (!proofOfUs) return;
 
