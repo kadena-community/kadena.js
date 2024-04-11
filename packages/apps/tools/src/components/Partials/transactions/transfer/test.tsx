@@ -125,30 +125,11 @@ export const Test: FC<ITestProps> = ({
         alignItems={'center'}
       >
         <div className={chainSelectContainerClass}>
-          {/*<Controller*/}
-          {/*  name="senderChainId"*/}
-          {/*  control={control}*/}
-          {/*  render={({ field: { onChange, value, ...rest } }) => (*/}
-          {/*    <ChainSelect*/}
-          {/*      {...rest}*/}
-          {/*      selectedKey={value}*/}
-          {/*      id="senderChainId"*/}
-          {/*      onSelectionChange={(chainId) => {*/}
-          {/*        onChange(chainId);*/}
-          {/*        onChainUpdate(chainId);*/}
-          {/*      }}*/}
-          {/*      additionalInfoOptions={chainSelectOptions}*/}
-          {/*      isInvalid={!!errors.senderChainId}*/}
-          {/*      errorMessage={errors.senderChainId?.message}*/}
-          {/*    />*/}
-          {/*  )}*/}
-          {/*/>*/}
           <ChainSelect
             {...register('senderChainId')}
             defaultSelectedKey={defaultValues.senderChainId}
             id="senderChainId"
             onSelectionChange={(chainId) => {
-              // onChange(chainId);
               setValue('senderChainId', chainId);
               onChainUpdate(chainId);
             }}
@@ -169,31 +150,12 @@ export const Test: FC<ITestProps> = ({
         )}
       </Stack>
 
-      {/*<Controller*/}
-      {/*  name="amount"*/}
-      {/*  control={control}*/}
-      {/*  render={({ field: { onChange, ...rest } }) => (*/}
-      {/*    <NumberField*/}
-      {/*      {...rest}*/}
-      {/*      id="ledger-transfer-amount"*/}
-      {/*      label={t('Amount')}*/}
-      {/*      onValueChange={(value) => onChange(value)}*/}
-      {/*      isDisabled={!!senderData.error}*/}
-      {/*      isInvalid={!!errors.amount || invalidAmount}*/}
-      {/*      errorMessage={*/}
-      {/*        invalidAmount ? invalidAmountMessage : errors.amount?.message*/}
-      {/*      }*/}
-      {/*      info={t('The amount of KDA to transfer.')}*/}
-      {/*    />*/}
-      {/*  )}*/}
-      {/*/>*/}
       <NumberField
         {...register('amount')}
         id="ledger-transfer-amount"
         label={t('Amount')}
         onValueChange={(value) => setValue('amount', value)}
         minValue={0}
-        // defaultValue={defaultValues.amount}
         isDisabled={!!senderDataQuery.error}
         isInvalid={!!errors.amount || invalidAmount}
         errorMessage={
