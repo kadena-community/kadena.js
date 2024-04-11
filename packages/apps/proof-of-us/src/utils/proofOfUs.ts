@@ -235,7 +235,7 @@ export const createConnectTokenTransaction = async (
       chainId: `${env.CHAINID}`,
       senderAccount: 'proof-of-us-gas-station',
       gasPrice: 0.000001,
-      gasLimit: 10000,
+      gasLimit: 100000,
       ttl: 30000,
     });
 
