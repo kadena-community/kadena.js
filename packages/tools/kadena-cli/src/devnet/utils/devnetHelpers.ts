@@ -3,7 +3,7 @@ import {
   defaultDevnetsPath,
   devnetDefaults,
 } from '../../constants/devnets.js';
-import { mergeConfigs, sanitizeFilename } from '../../utils/helpers.js';
+import { mergeConfigs, sanitizeFilename } from '../../utils/globalHelpers.js';
 
 import yaml from 'js-yaml';
 import path from 'path';

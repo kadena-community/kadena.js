@@ -13,7 +13,7 @@ import {
   formatZodError,
   maskStringPreservingStartAndEnd,
   truncateText,
-} from '../utils/helpers.js';
+} from '../utils/globalHelpers.js';
 import { checkbox, input, select } from '../utils/prompts.js';
 
 export const publicKeysPrompt: IPrompt<string> = async (

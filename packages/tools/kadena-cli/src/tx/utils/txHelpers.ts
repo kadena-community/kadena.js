@@ -27,7 +27,7 @@ import type {
   IWalletKeyPair,
 } from '../../services/wallet/wallet.types.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { notEmpty } from '../../utils/helpers.js';
+import { notEmpty } from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
 import { createTable } from '../../utils/table.js';
 import type { ISavedTransaction } from './storage.js';

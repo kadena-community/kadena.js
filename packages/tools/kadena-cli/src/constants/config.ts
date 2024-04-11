@@ -53,9 +53,8 @@ export const KADENA_DIR = (() => {
 // wallet path
 export const WALLET_DIR = 'wallets';
 
-// wallet path
-// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-export const NETWORKS_DIR = KADENA_DIR && `${KADENA_DIR}/networks`;
+// network path
+export const NETWORKS_DIR = 'networks';
 
 // templates
 export const TX_TEMPLATE_FOLDER =
@@ -66,8 +65,7 @@ export const TX_TEMPLATE_FOLDER =
 export const ACCOUNT_DIR = 'accounts';
 
 // Default settings path
-// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-export const DEFAULT_SETTINGS_PATH = KADENA_DIR && `${KADENA_DIR}/defaults`;
+export const DEFAULT_SETTINGS_PATH = 'defaults';
 
 // key extensions
 export const WALLET_EXT = '.wallet';

@@ -13,7 +13,7 @@ import {
   getFileParser,
   notEmpty,
   safeYamlParse,
-} from '../../utils/helpers.js';
+} from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import type { Services } from '../index.js';

@@ -12,10 +12,8 @@ import { KadenaError } from '../../services/service-error.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
-import {
-  getDefaultNetworkName,
-  isNotEmptyObject,
-} from '../../utils/helpers.js';
+import { isNotEmptyObject } from '../../utils/globalHelpers.js';
+import { getDefaultNetworkName } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { networkOptions } from '../networkOptions.js';
 import { removeDefaultNetwork } from '../utils/networkHelpers.js';

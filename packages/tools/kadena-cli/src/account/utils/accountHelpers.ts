@@ -12,7 +12,7 @@ import type { IAliasAccountData } from './../types.js';
 import { ACCOUNT_DIR, MAX_CHAIN_VALUE } from '../../constants/config.js';
 import { services } from '../../services/index.js';
 import { KadenaError } from '../../services/service-error.js';
-import { isNotEmptyString, notEmpty } from '../../utils/helpers.js';
+import { isNotEmptyString, notEmpty } from '../../utils/globalHelpers.js';
 
 export const accountAliasFileSchema = z.object({
   name: z.string(),

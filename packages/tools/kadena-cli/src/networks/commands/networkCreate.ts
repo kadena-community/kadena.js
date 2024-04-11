@@ -1,7 +1,6 @@
 import type { Command } from 'commander';
 import path from 'path';
 
-import { KADENA_DIR } from '../../constants/config.js';
 import { defaultNetworksPath } from '../../constants/networks.js';
 import { services } from '../../services/index.js';
 import { KadenaError } from '../../services/service-error.js';
@@ -24,7 +23,8 @@ export const createNetworksCommand: (
     networkOptions.networkOverwrite(),
   ],
   async (option, { collect }) => {
-    if (defaultNetworksPath === null || KADENA_DIR === null) {
+    const kadenaDir = services.config.getDirectory();
+    if (defaultNetworksPath === null || kadenaDir === null) {
       throw new KadenaError('no_kadena_directory');
     }
 
@@ -53,7 +53,7 @@ export const createNetworksCommand: (
       networkExplorerUrl: config.networkExplorerUrl,
     };
 
-    await writeNetworks(KADENA_DIR, networkConfig);
+    await writeNetworks(kadenaDir, networkConfig);
 
     log.info(
       log.color.green(

@@ -1,7 +1,7 @@
 import path from 'path';
 
 import { KadenaError } from '../../services/service-error.js';
-import { sanitizeFilename } from '../../utils/helpers.js';
+import { sanitizeFilename } from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
 import type { IAccountDetailsResult, IAddAccountConfig } from '../types.js';

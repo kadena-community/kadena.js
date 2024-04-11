@@ -1,6 +1,10 @@
 import { join } from 'path';
 import type { INetworkCreateOptions } from '../networks/utils/networkHelpers.js';
-import { DEFAULT_SETTINGS_PATH, NETWORKS_DIR } from './config.js';
+import {
+  getNetworkDirectory,
+  getNetworksDefaultSettingsDirectory,
+  getNetworksSettingsFilePath,
+} from '../networks/utils/networkPath.js';
 
 export interface IDefaultNetworkOptions {
   [key: string]: INetworkCreateOptions;
@@ -37,15 +41,10 @@ export const networkDefaults: IDefaultNetworkOptions = {
   },
 };
 
-export const defaultNetworksPath = NETWORKS_DIR;
+export const defaultNetworksPath = getNetworkDirectory();
 export const defaultNetworksSettingsPath =
-  DEFAULT_SETTINGS_PATH !== null
-    ? join(DEFAULT_SETTINGS_PATH, 'networks')
-    : null;
-export const defaultNetworksSettingsFilePath =
-  defaultNetworksSettingsPath !== null
-    ? join(defaultNetworksSettingsPath, '__default__.yaml')
-    : null;
+  getNetworksDefaultSettingsDirectory();
+export const defaultNetworksSettingsFilePath = getNetworksSettingsFilePath();
 
 export const standardNetworks: string[] = ['mainnet', 'testnet'];
 export const defaultNetwork: string = 'testnet';

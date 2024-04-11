@@ -15,11 +15,8 @@ import {
 import { services } from '../services/index.js';
 import { KadenaError } from '../services/service-error.js';
 import type { IPrompt } from '../utils/createOption.js';
-import {
-  getExistingNetworks,
-  isAlphabetic,
-  isNotEmptyString,
-} from '../utils/helpers.js';
+import { isAlphabetic, isNotEmptyString } from '../utils/globalHelpers.js';
+import { getExistingNetworks } from '../utils/helpers.js';
 import { input, select } from '../utils/prompts.js';
 import { getInputPrompt } from './generic.js'; // Importing getInputPrompt from another file
 

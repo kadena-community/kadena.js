@@ -7,10 +7,10 @@ import {
 
 import {
   formatZodError,
-  getDefaultNetworkName,
   mergeConfigs,
   sanitizeFilename,
-} from '../../utils/helpers.js';
+} from '../../utils/globalHelpers.js';
+import { getDefaultNetworkName } from '../../utils/helpers.js';
 
 import yaml from 'js-yaml';
 import path from 'path';
