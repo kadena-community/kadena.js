@@ -4,50 +4,7 @@ import {
   isReadyToMint,
   isReadyToSign,
 } from '../isAlreadySigning';
-
-interface ICreateSignersProps {
-  count: number;
-  startSignedCount: number;
-  endSignedCount?: number;
-  startNotAllowedCount?: number;
-  endNotAllowedCount?: number;
-}
-const createSigners = ({
-  count,
-  startSignedCount,
-  endSignedCount = 999999,
-  startNotAllowedCount,
-  endNotAllowedCount = 99999,
-}: ICreateSignersProps): IProofOfUsSignee[] => {
-  const signers: IProofOfUsSignee[] = [];
-
-  const shouldBeSigned = (idx: number) => {
-    let value: ISignerStatus =
-      idx >= startSignedCount && idx <= endSignedCount ? 'success' : 'init';
-
-    value =
-      startNotAllowedCount &&
-      idx >= startNotAllowedCount &&
-      idx <= endNotAllowedCount
-        ? 'notsigning'
-        : value;
-
-    return value;
-  };
-
-  for (let i = 0; i < count; i++) {
-    const signee = {
-      accountName: `account ${i}`,
-      alias: `alias ${i}`,
-      initiator: i === 0,
-      signerStatus: shouldBeSigned(i),
-    } as unknown as IProofOfUsSignee;
-
-    signers.push(signee);
-  }
-
-  return signers;
-};
+import { createSigners } from './testutils/createSigners';
 
 describe('utils getAllowedSigners', () => {
   test('should filter out all signers that are not allowed to sign', () => {

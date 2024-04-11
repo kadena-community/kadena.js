@@ -16,6 +16,5 @@ export const setSignatures = (
     return acc;
   }, []);
 
-  console.log('sigs4', { ...innerTx, sigs });
   return Buffer.from(JSON.stringify({ ...innerTx, sigs })).toString('base64');
 };
