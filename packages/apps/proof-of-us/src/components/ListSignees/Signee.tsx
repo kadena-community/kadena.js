@@ -59,8 +59,14 @@ export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
       style={getSuccessStyle(signee)}
       flexDirection="column"
       justifyContent="flex-start"
+      padding={isMultiple ? 'sm' : 'md'}
     >
-      <Stack gap="md" alignItems="center" width="100%">
+      <Stack
+        gap="md"
+        alignItems="center"
+        width="100%"
+        flexDirection={isMultiple ? 'row' : 'column'}
+      >
         <Stack gap="sm" alignItems="center">
           <SignStatus status={signee?.signerStatus} />
           <PingStatus signee={signee} />
@@ -79,7 +85,11 @@ export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
           {getAccount(signee)}
         </Text>
       </Stack>
-      <Stack paddingBlockStart="sm" gap="sm">
+      <Stack
+        paddingBlockStart="sm"
+        gap="sm"
+        justifyContent={isMultiple ? 'flex-start' : 'center'}
+      >
         {isInitiator && <Tag>initiator</Tag>}
         {isMeChecked && <Tag color="red">me</Tag>}
       </Stack>
