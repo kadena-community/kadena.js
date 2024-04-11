@@ -66,3 +66,6 @@ export const getNetworkFiles = (kadenaDir: string): INetworkFiles => {
 
 export const NETWORK_CONFIG_NOT_FOUND_MESSAGE =
   'No network configuration found for a network name';
+
+export const NETWORK_NOT_FOUND_MESSAGE =
+  'No supported networks found. To create one, use: "kadena network add".\nTo create kadena default networks, use: "kadena config init" command.';

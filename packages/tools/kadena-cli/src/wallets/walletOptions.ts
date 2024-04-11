@@ -10,16 +10,13 @@ export const walletOptions = {
     key: 'walletName' as const,
     prompt: wallets.walletNamePrompt,
     validation: z.string(),
-    option: new Option(
-      '-w, --wallet-name <walletName>',
-      'Enter you wallet name',
-    ),
+    option: new Option('-w, --wallet-name <walletName>', 'Name for the wallet'),
   }),
   walletNameSelectWithAll: createOption({
     key: 'walletName',
     prompt: wallets.walletSelectAllPrompt,
     validation: z.string(),
-    option: new Option('-w, --wallet-name <walletName>', 'Enter your wallet'),
+    option: new Option('-w, --wallet-name <walletName>', 'Name for the wallet'),
     defaultIsOptional: false,
     expand: async (walletName: string) => {
       return walletName === 'all'
