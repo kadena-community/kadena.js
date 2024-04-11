@@ -106,61 +106,32 @@ export const SignFormReceiver = ({
 
   const renderAccountFieldWithChain = (tab: TabValue) => (
     <Stack flexDirection={'column'} gap={'md'}>
-      <Controller
-        name="receiver"
-        control={control}
-        defaultValue={''}
-        render={({ field }) => (
-          <AccountNameField
-            {...field}
-            id="receiver-account-name"
-            isInvalid={!!errors.receiver}
-            errorMessage={errors.receiver?.message}
-            isDisabled={tab === 'new'}
-            endAddon={
-              <Button
-                icon={<MonoContentCopy />}
-                variant="text"
-                onPress={async () => {
-                  await navigator.clipboard.writeText(field.value);
-                }}
-                aria-label="Copy Account Name"
-                title="Copy Account Name"
-                color="primary"
-                type="button"
-              />
-            }
-            description={
-              isLedger ? t('ledger-account-name-signing') : undefined
-            }
+      <AccountNameField
+        {...register('receiver')}
+        id="receiver-account-name"
+        isInvalid={!!errors.receiver}
+        errorMessage={errors.receiver?.message}
+        isDisabled={tab === 'new'}
+        endAddon={
+          <Button
+            icon={<MonoContentCopy />}
+            variant="text"
+            onPress={async () => {
+              await navigator.clipboard.writeText(getValues('receiver'));
+            }}
+            aria-label="Copy Account Name"
+            title="Copy Account Name"
+            color="primary"
+            type="button"
           />
-        )}
+        }
+        description={isLedger ? t('ledger-account-name-signing') : undefined}
       />
       <div className={chainSelectContainerClass}>
-        {/*<Controller*/}
-        {/*  name="receiverChainId"*/}
-        {/*  control={control}*/}
-        {/*  render={({ field: { onChange, value, ...rest } }) => (*/}
-        {/*    <ChainSelect*/}
-        {/*      {...rest}*/}
-        {/*      selectedKey={value}*/}
-        {/*      id="receiverChainId"*/}
-        {/*      onSelectionChange={(chainId) => {*/}
-        {/*        onChange(chainId);*/}
-        {/*        onChainUpdate(chainId);*/}
-        {/*      }}*/}
-        {/*      additionalInfoOptions={chainSelectOptions}*/}
-        {/*      isInvalid={!!errors.receiverChainId}*/}
-        {/*      errorMessage={errors.receiverChainId?.message}*/}
-        {/*    />*/}
-        {/*  )}*/}
-        {/*/>*/}
         <ChainSelect
           {...register('receiverChainId')}
-          selectedKey={watchChain}
           id="receiverChainId"
           onSelectionChange={(chainId) => {
-            // onChange(chainId);
             setValue('receiverChainId', chainId);
             onChainUpdate(chainId);
           }}
@@ -234,7 +205,7 @@ export const SignFormReceiver = ({
         setChainSelectOptions(
           receiverAccountChains.data.map((item) => ({
             chainId: item.chainId,
-            data: item.data ? `existing` : 'new',
+            data: item.data ? 'existing' : 'new',
           })),
         );
       }
