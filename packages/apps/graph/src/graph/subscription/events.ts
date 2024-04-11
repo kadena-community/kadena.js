@@ -64,32 +64,30 @@ async function* iteratorFn(
   parametersFilter?: string | null,
   minimumDepth?: number | null,
 ): AsyncGenerator<Event[] | undefined, void, unknown> {
-  const eventResult = await getLastEvents(
+  let lastEventId;
+
+  lastEventId = await getLatestEventId(
     qualifiedEventName,
-    undefined,
     chainId,
     parametersFilter,
     minimumDepth,
   );
 
-  let lastEvent;
-
-  if (!nullishOrEmpty(eventResult)) {
-    lastEvent = eventResult[0];
+  if (!nullishOrEmpty(lastEventId)) {
     yield [];
   }
 
   while (!context.req.socket.destroyed) {
     const newEvents = await getLastEvents(
       qualifiedEventName,
-      lastEvent?.id,
+      lastEventId ?? undefined,
       chainId,
       parametersFilter,
       minimumDepth,
     );
 
     if (!nullishOrEmpty(newEvents)) {
-      lastEvent = newEvents[0];
+      lastEventId = newEvents[0].id;
       yield newEvents;
     }
 
@@ -159,4 +157,44 @@ async function getLastEvents(
   }
 
   return eventsToReturn.sort((a, b) => b.id - a.id);
+}
+
+async function getLatestEventId(
+  eventName: string,
+  chainId?: string | null,
+  parametersFilter?: string | null,
+  minimumDepth?: number | null,
+) {
+  try {
+    let lastEventId = await prismaClient.event.aggregate({
+      _max: {
+        id: true,
+      },
+      where: {
+        qualifiedName: eventName,
+        transaction: {
+          NOT: [],
+        },
+        ...(chainId && {
+          chainId: parseInt(chainId),
+        }),
+        ...(parametersFilter && {
+          parameters: parsePrismaJsonColumn(parametersFilter, {
+            subscription: 'events',
+            queryParameter: 'parametersFilter',
+            column: 'parameters',
+          }),
+        }),
+        ...(minimumDepth && {
+          OR: await getConditionForMinimumDepth(
+            minimumDepth,
+            chainId ? [chainId] : undefined,
+          ),
+        }),
+      },
+    });
+    return lastEventId._max.id;
+  } catch (error) {
+    return null;
+  }
 }
