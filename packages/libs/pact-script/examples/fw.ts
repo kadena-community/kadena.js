@@ -30,3 +30,4 @@ declare const defModule: any;
 declare const defGovernance: any;
 declare type decimal = number & { _brand?: 'decimal' };
 declare type guard = any;
+declare type Table<T> = any;

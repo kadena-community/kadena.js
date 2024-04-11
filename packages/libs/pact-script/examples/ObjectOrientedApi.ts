@@ -1,25 +1,28 @@
+interface coin_scheme {
+  account: string;
+  guard: guard;
+}
+
 @namespace('free')
 class coin implements fungible_v2, fungible_xchain_v1 {
+  /**
+   * docsfasd
+   */
   @governance GOVERNANCE() {
     enforce(false, 'Enforce non-upgradeability');
   }
 
-  coin_scheme = defscheme({
-    balance: 'decimal',
-    guard: 'guard',
-  });
+  coin_scheme: coin_scheme;
 
-  coin_table = deftable(this.coin_scheme);
+  coin_table: Table<coin_scheme>;
 
   @defcap DEBIT(sender: string) {
-    // "Capability for managing debiting operations"
-    enforce_guard(read('coin-table', sender).guard);
-    enforce(sender != '', 'valid sender');
+    enforce_guard(this.coin_table.read(sender).guard);
+    enforce(sender !== '', 'valid sender');
   }
 
   @defcap CREDIT(receiver: string) {
-    // Capability for managing crediting operations
-    enforce(receiver != '', 'valid receiver');
+    enforce(receiver !== '', 'valid receiver');
   }
 
   @defcap TRANSFER_mgr(managed: decimal, requested: decimal): decimal {
@@ -33,7 +36,7 @@ class coin implements fungible_v2, fungible_xchain_v1 {
 
   @defcap TRANSFER(sender: string, receiver: string, amount: number) {
     managed(amount, this.TRANSFER_mgr);
-    enforce(sender != receiver, 'same sender and receiver');
+    enforce(sender !== receiver, 'same sender and receiver');
     enforce_unit(amount);
     enforce(amount > 0.0);
     compose_capability(this.DEBIT(sender));
@@ -66,7 +69,7 @@ class coin implements fungible_v2, fungible_xchain_v1 {
   }
 
   transfer(sender: string, receiver: string, amount: number): string {
-    enforce(sender != receiver, 'same sender and receiver');
+    enforce(sender !== receiver, 'same sender and receiver');
     validate_account(sender);
     validate_account(receiver);
     enforce(amount > 0.0);
