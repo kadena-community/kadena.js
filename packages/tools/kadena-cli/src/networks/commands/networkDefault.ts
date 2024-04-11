@@ -2,11 +2,6 @@ import type { Command } from 'commander';
 import yaml from 'js-yaml';
 import path from 'node:path';
 import { isEmpty } from '../../account/utils/addHelpers.js';
-import {
-  defaultNetworksPath,
-  defaultNetworksSettingsFilePath,
-  defaultNetworksSettingsPath,
-} from '../../constants/networks.js';
 import { services } from '../../services/index.js';
 import { KadenaError } from '../../services/service-error.js';
 import type { CommandResult } from '../../utils/command.util.js';
@@ -17,19 +12,27 @@ import { getDefaultNetworkName } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { networkOptions } from '../networkOptions.js';
 import { removeDefaultNetwork } from '../utils/networkHelpers.js';
+import {
+  getNetworkDirectory,
+  getNetworksDefaultSettingsDirectory,
+  getNetworksSettingsFilePath,
+} from '../utils/networkPath.js';
 
 export const setNetworkDefault = async (
   network: string,
 ): Promise<CommandResult<{}>> => {
+  const networkDir = getNetworkDirectory();
+  const networkSettingDir = getNetworksDefaultSettingsDirectory();
+  const networkSettingsFilePath = getNetworksSettingsFilePath();
   if (
-    defaultNetworksPath === null ||
-    defaultNetworksSettingsPath === null ||
-    defaultNetworksSettingsFilePath === null
+    networkDir === null ||
+    networkSettingDir === null ||
+    networkSettingsFilePath === null
   ) {
     throw new KadenaError('no_kadena_directory');
   }
   try {
-    const filePath = path.join(defaultNetworksPath, `${network}.yaml`);
+    const filePath = path.join(networkDir, `${network}.yaml`);
 
     if (!(await services.filesystem.fileExists(filePath))) {
       return {
@@ -40,16 +43,14 @@ export const setNetworkDefault = async (
       };
     }
 
-    await services.filesystem.ensureDirectoryExists(
-      defaultNetworksSettingsPath,
-    );
+    await services.filesystem.ensureDirectoryExists(networkSettingDir);
 
     const data = {
       name: network,
     };
 
     await services.filesystem.writeFile(
-      defaultNetworksSettingsFilePath,
+      networkSettingsFilePath,
       yaml.dump(data),
     );
 

@@ -1,10 +1,9 @@
 import type { ChainId } from '@kadena/types';
 import { z } from 'zod';
 import { chainIdValidation } from '../account/utils/accountHelpers.js';
-import { KADENA_DIR, MAX_CHAIN_VALUE } from '../constants/config.js';
+import {  MAX_CHAIN_VALUE } from '../constants/config.js';
 import {
   NO_NETWORKS_FOUND_ERROR_MESSAGE,
-  defaultNetworksPath,
 } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
@@ -12,6 +11,7 @@ import {
   getNetworksInOrder,
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
+import { getNetworkDirectory } from '../networks/utils/networkPath.js';
 import { services } from '../services/index.js';
 import { KadenaError } from '../services/service-error.js';
 import type { IPrompt } from '../utils/createOption.js';
@@ -185,16 +185,18 @@ export const networkSelectPrompt: IPrompt<string> = async (
 };
 
 const getEnsureExistingNetworks = async (): Promise<ICustomNetworkChoice[]> => {
-  if (defaultNetworksPath === null || KADENA_DIR === null) {
+  const kadenaDir = services.config.getDirectory();
+  const networkDir = getNetworkDirectory();
+  if (networkDir === null || kadenaDir === null) {
     throw new KadenaError('no_kadena_directory');
   }
   const isNetworksFolderExists =
-    await services.filesystem.directoryExists(defaultNetworksPath);
+    await services.filesystem.directoryExists(networkDir);
   if (
     !isNetworksFolderExists ||
-    (await services.filesystem.readDir(defaultNetworksPath)).length === 0
+    (await services.filesystem.readDir(networkDir)).length === 0
   ) {
-    await ensureNetworksConfiguration(KADENA_DIR);
+    await ensureNetworksConfiguration(kadenaDir);
   }
   const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
 

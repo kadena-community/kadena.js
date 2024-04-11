@@ -2,13 +2,13 @@ import { load } from 'js-yaml';
 import path from 'path';
 import z from 'zod';
 import { defaultDevnetsPath, devnetDefaults } from '../constants/devnets.js';
-import {
-  defaultNetworksPath,
-  defaultNetworksSettingsFilePath,
-} from '../constants/networks.js';
 import type { ICustomDevnetsChoice } from '../devnet/utils/devnetHelpers.js';
 import { writeDevnet } from '../devnet/utils/devnetHelpers.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
+import {
+  getNetworkDirectory,
+  getNetworksSettingsFilePath,
+} from '../networks/utils/networkPath.js';
 import { services } from '../services/index.js';
 import { KadenaError } from '../services/service-error.js';
 import { CommandError, printCommandError } from './command.util.js';
@@ -35,19 +35,18 @@ export function handlePromptError(error: unknown): never {
 }
 
 export async function getExistingNetworks(): Promise<ICustomNetworkChoice[]> {
-  if (defaultNetworksPath === null) {
+  const networkDir = getNetworkDirectory();
+  if (networkDir === null) {
     throw new KadenaError('no_kadena_directory');
   }
 
-  await services.filesystem.ensureDirectoryExists(defaultNetworksPath);
+  await services.filesystem.ensureDirectoryExists(networkDir);
 
   try {
-    return (await services.filesystem.readDir(defaultNetworksPath)).map(
-      (filename) => ({
-        value: path.basename(filename.toLowerCase(), '.yaml'),
-        name: path.basename(filename.toLowerCase(), '.yaml'),
-      }),
-    );
+    return (await services.filesystem.readDir(networkDir)).map((filename) => ({
+      value: path.basename(filename.toLowerCase(), '.yaml'),
+      name: path.basename(filename.toLowerCase(), '.yaml'),
+    }));
   } catch (error) {
     log.error('Error reading networks directory:', error);
     return [];
@@ -176,6 +175,7 @@ const defaultNetworkSchema = z.object({
 });
 
 export const getDefaultNetworkName = async (): Promise<string | undefined> => {
+  const defaultNetworksSettingsFilePath = getNetworksSettingsFilePath();
   if (defaultNetworksSettingsFilePath === null) return;
 
   const isDefaultNetworkAvailable = await services.filesystem.fileExists(

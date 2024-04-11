@@ -1,6 +1,6 @@
 import type { Command } from 'commander';
 
-import { KADENA_DIR } from '../../constants/config.js';
+import { services } from '../../services/index.js';
 import { KadenaError } from '../../services/service-error.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
@@ -27,7 +27,8 @@ export const manageNetworksCommand: (
     networkOptions.networkName(),
   ],
   async (option) => {
-    if (KADENA_DIR === null) {
+    const kadenaDir = services.config.getDirectory();
+    if (kadenaDir === null) {
       throw new KadenaError('no_kadena_directory');
     }
 
@@ -44,7 +45,7 @@ export const manageNetworksCommand: (
       networkName,
     });
 
-    await writeNetworks(KADENA_DIR, {
+    await writeNetworks(kadenaDir, {
       network: networkName.networkName,
       networkId: networkId.networkId,
       networkHost: networkHost.networkHost,
