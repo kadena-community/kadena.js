@@ -9,11 +9,11 @@ import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import {
   button,
   centerContentWrapper,
-  directionStyle,
   endVisualStyle,
   iconOnlyStyle,
   noEndVisualStyle,
   noStartVisualStyle,
+  reverseDirectionStyle,
   startVisualStyle,
 } from './Button.css';
 import { disableLoadingProps } from './utils';
@@ -22,7 +22,6 @@ type Variants = NonNullable<RecipeVariants<typeof button>>;
 
 export type IButtonProps = Omit<AriaFocusRingProps, 'isTextInput'> &
   Variants &
-  Omit<AriaFocusRingProps, 'isTextInput'> &
   Pick<AriaButtonProps<'button'>, 'aria-label' | 'onPress' | 'type'> & {
     className?: string;
     isLoading?: boolean;
@@ -73,6 +72,7 @@ const Button = forwardRef(
     const { buttonProps, isPressed } = useButton(props, ref);
     const { hoverProps, isHovered } = useHover(props);
     const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
+    const { isLoading, isDisabled, style, title } = props;
 
     const iconOnly = Boolean(
       // check if children is a ReactElement
@@ -81,9 +81,7 @@ const Button = forwardRef(
         (!startVisual && !endVisual && !children) ||
         // check if only one visual is provided
         (!children &&
-          ((startVisual && !endVisual) || (endVisual && !startVisual))) ||
-        // check if there is a loading label while loading
-        (!loadingLabel && props.isLoading),
+          ((startVisual && !endVisual) || (endVisual && !startVisual))),
     );
 
     const isLoadingAriaLiveLabel = `${
@@ -97,49 +95,64 @@ const Button = forwardRef(
           button({
             variant,
             isCompact,
-            isLoading: props.isLoading,
+            isLoading,
           }),
           className,
         )}
-        style={props.style}
-        title={props.title}
-        aria-disabled={props.isLoading || undefined}
-        data-disabled={props.isDisabled || undefined}
+        style={style}
+        title={title}
+        aria-disabled={isLoading || undefined}
+        data-disabled={isDisabled || undefined}
         data-pressed={isPressed || undefined}
         data-hovered={(!isPressed && isHovered) || undefined}
         data-focused={isFocused || undefined}
         data-focus-visible={isFocusVisible || undefined}
         ref={ref}
       >
-        <span
-          className={classNames({
-            [centerContentWrapper]: !iconOnly,
-            [iconOnlyStyle]: iconOnly,
-            [noEndVisualStyle]: !endVisual && !iconOnly,
-            [noStartVisualStyle]: !startVisual && !iconOnly,
-            [startVisualStyle]: startVisual && !iconOnly,
-            [endVisualStyle]: endVisual && !iconOnly,
-            [directionStyle]: props.isLoading && startVisual && !endVisual,
-          })}
-        >
-          {props.isLoading ? (
-            <>
-              {iconOnly ? null : loadingLabel}
+        <>
+          {isLoading ? (
+            <span
+              className={classNames(
+                !loadingLabel
+                  ? iconOnlyStyle
+                  : {
+                      [noEndVisualStyle]: !endVisual && startVisual,
+                      [noStartVisualStyle]: !startVisual || endVisual,
+                      [startVisualStyle]: startVisual && !endVisual,
+                      [endVisualStyle]: endVisual || !startVisual,
+                      [reverseDirectionStyle]: startVisual && !endVisual,
+                    },
+                centerContentWrapper,
+              )}
+            >
+              {iconOnly && !loadingLabel ? null : loadingLabel}
               <ProgressCircle
                 size={isCompact ? 'sm' : 'md'}
                 aria-hidden="true"
                 aria-label={isLoadingAriaLiveLabel}
                 isIndeterminate
               />
-            </>
+            </span>
           ) : (
-            <>
+            <span
+              className={classNames(
+                iconOnly
+                  ? iconOnlyStyle
+                  : {
+                      [noEndVisualStyle]: !endVisual,
+                      [noStartVisualStyle]: !startVisual,
+                      [startVisualStyle]: startVisual,
+                      [endVisualStyle]: endVisual,
+                      [centerContentWrapper]: true,
+                    },
+              )}
+            >
               {startVisual ?? startVisual}
               {children}
               {endVisual ?? endVisual}
-            </>
+            </span>
           )}
-        </span>
+        </>
       </button>
     );
   },
