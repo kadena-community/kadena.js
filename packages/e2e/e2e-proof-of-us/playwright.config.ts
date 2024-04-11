@@ -18,6 +18,7 @@ const config: PlaywrightTestConfig = {
         // isMobile: true,
         // hasTouch: true,
         defaultBrowserType: 'chromium',
+        hasTouch: true,
         permissions: ["clipboard-read", "clipboard-write"],
         launchOptions: {
           slowMo: 1000,
