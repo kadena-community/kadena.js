@@ -11,7 +11,7 @@ import {
   Tabs,
   Text,
 } from '@kadena/react-ui';
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import { ChainSelect } from '@/components/Global/ChainSelect';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
@@ -60,6 +60,7 @@ export const SignFormReceiver = ({
     register,
     formState: { errors },
     getValues,
+    control,
     watch,
     setValue,
   } = useFormContext<FormData>();
@@ -105,38 +106,53 @@ export const SignFormReceiver = ({
 
   const renderAccountFieldWithChain = (tab: TabValue) => (
     <Stack flexDirection={'column'} gap={'md'}>
-      <AccountNameField
-        {...register('receiver')}
-        id="receiver-account-name"
-        isInvalid={!!errors.receiver}
-        errorMessage={errors.receiver?.message}
-        isDisabled={tab === 'new'}
-        endAddon={
-          <Button
-            icon={<MonoContentCopy />}
-            variant="text"
-            onPress={async () => {
-              await navigator.clipboard.writeText(getValues('receiver'));
-            }}
-            aria-label="Copy Account Name"
-            title="Copy Account Name"
-            color="primary"
-            type="button"
+      <Controller
+        name="receiver"
+        control={control}
+        render={({ field }) => (
+          <AccountNameField
+            {...field}
+            id="receiver-account-name"
+            isInvalid={!!errors.receiver}
+            errorMessage={errors.receiver?.message}
+            isDisabled={tab === 'new'}
+            endAddon={
+              <Button
+                icon={<MonoContentCopy />}
+                variant="text"
+                onPress={async () => {
+                  await navigator.clipboard.writeText(field.value);
+                }}
+                aria-label="Copy Account Name"
+                title="Copy Account Name"
+                color="primary"
+                type="button"
+              />
+            }
+            description={
+              isLedger ? t('ledger-account-name-signing') : undefined
+            }
           />
-        }
-        description={isLedger ? t('ledger-account-name-signing') : undefined}
+        )}
       />
+
       <div className={chainSelectContainerClass}>
-        <ChainSelect
-          {...register('receiverChainId')}
-          id="receiverChainId"
-          onSelectionChange={(chainId) => {
-            setValue('receiverChainId', chainId);
-            onChainUpdate(chainId);
-          }}
-          additionalInfoOptions={chainSelectOptions}
-          isInvalid={!!errors.receiverChainId}
-          errorMessage={errors.receiverChainId?.message}
+        <Controller
+          name="receiverChainId"
+          control={control}
+          render={({ field }) => (
+            <ChainSelect
+              {...field}
+              id="receiverChainId"
+              onSelectionChange={(chainId) => {
+                setValue('receiverChainId', chainId);
+                onChainUpdate(chainId);
+              }}
+              additionalInfoOptions={chainSelectOptions}
+              isInvalid={!!errors.receiverChainId}
+              errorMessage={errors.receiverChainId?.message}
+            />
+          )}
         />
       </div>
     </Stack>
