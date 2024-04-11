@@ -25,6 +25,16 @@ export const multipleWrapperClass = style([
     border: '1px solid rgba(255,255,255,.2)',
   },
 ]);
+export const readytoMintClass = style([
+  {
+    color: deviceColors.green,
+  },
+]);
+export const notReadytoMintClass = style([
+  {
+    opacity: 0.8,
+  },
+]);
 
 export const multipleSigneeClass = style([
   atoms({

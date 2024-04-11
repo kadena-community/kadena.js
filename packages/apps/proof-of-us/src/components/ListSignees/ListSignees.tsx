@@ -75,7 +75,7 @@ export const ListSignees: FC = () => {
 
   return (
     <Stack flexDirection="column" gap="md">
-      <Stack>
+      <Stack gap="sm" alignItems="center">
         <Heading as="h5">Signees ({getAllowedSigners(signees).length})</Heading>
 
         <Stack flex={1}>
@@ -86,7 +86,10 @@ export const ListSignees: FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <SignedPercentage percentage={getPercentageSignees(signees)} />
+              <SignedPercentage
+                signees={signees}
+                percentage={getPercentageSignees(signees)}
+              />
             </motion.div>
           )}
         </Stack>
