@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import * as globalHelpers from '../globalHelpers.js';
 
-describe.skip('safeAssign', () => {
+describe('safeAssign', () => {
   it('should assign value to object if value is not undefined or empty string', () => {
     const obj = { key: 'original' };
     globalHelpers.safeAssign(obj, 'key', 'new value');

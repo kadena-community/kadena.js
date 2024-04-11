@@ -45,7 +45,8 @@ export interface IConfigService {
 }
 
 export class ConfigService implements IConfigService {
-  public directory: string | null = null;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  private directory: string | null = null;
   public constructor(
     // eslint-disable-next-line @typescript-eslint/naming-convention, @typescript-eslint/parameter-properties
     private services: Services,
