@@ -172,7 +172,7 @@ Tool to add and manage networks
 ---
 
 ```
-kadena network update [arguments]
+kadena network update [options]
 ```
 
 | **Options**             | **Description**                         | **Required** |
@@ -191,7 +191,7 @@ kadena network update --network-name="mainnet" --network-id="mainnet01" --networ
 ---
 
 ```
-kadena network add [arguments]
+kadena network add [options]
 ```
 
 | **Options**             | **Description**                      | **Required** |
@@ -234,7 +234,7 @@ kadena network set-default --network="none" --confirm
 ## Passing a network as "none" will remove the default network
 
 ```
-kadena network delete [arguments]
+kadena network delete [options]
 ```
 
 | **Options**             | **Description**                  | **Required** |
@@ -266,7 +266,7 @@ Tool to generate and manage wallets
 ---
 
 ```
-kadena wallet add [arguments]
+kadena wallet add [options]
 ```
 
 | **Options**                | **Description**                                | **Required** |
@@ -288,7 +288,7 @@ password will be hidden after entry: --security-password=\*
 ---
 
 ```
-kadena wallet import [arguments]
+kadena wallet import [options]
 ```
 
 | **Options**                | **Description**                                | **Required** |
@@ -311,7 +311,7 @@ password will be hidden after entry: --security-new-password=\*
 ---
 
 ```
-kadena wallet generate-key [arguments]
+kadena wallet generate-key [options]
 ```
 
 Generate a keypair from a wallet mnemonic
@@ -351,7 +351,7 @@ kadena wallet generate-key --wallet-name="kadenawallet" --amount="1" --start-ind
 ---
 
 ```
-kadena wallet change-password [arguments]
+kadena wallet change-password [options]
 ```
 
 | **Options**                 | **Description**                                    |
@@ -374,7 +374,7 @@ password will be hidden after entry: --security-current-password=\*
 ---
 
 ```
-kadena wallet delete [arguments]
+kadena wallet delete [options]
 ```
 
 | **Options**             | **Description**               |
@@ -397,7 +397,7 @@ kadena wallet delete --wallet-name="all" --confirm=true
 ---
 
 ```
-kadena wallet list [arguments]
+kadena wallet list [options]
 ```
 
 | **Options**             | **Description**            |
@@ -419,7 +419,7 @@ kadena wallet list --wallet-name="all"
 ---
 
 ```
-kadena wallet export [arguments]
+kadena wallet export [options]
 ```
 
 Export a KeyPair from a wallet unencrypted. Prints to stdout as yaml by default
@@ -456,7 +456,7 @@ Tool to generate and manage keys
 ---
 
 ```
-kadena key generate [arguments]
+kadena key generate [options]
 ```
 
 Generate a plain keypair using a random mnemonic
@@ -511,7 +511,7 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 ---
 
 ```
-kadena account add-manual [arguments]
+kadena account add-manual [options]
 ```
 
 | **Options**             | **Description**                              | **Required** |
@@ -533,7 +533,7 @@ kadena account add-manual --account-alias="myalias" --account-name="myaccountnam
 ---
 
 ```
-kadena account add-from-wallet [arguments]
+kadena account add-from-wallet [options]
 ```
 
 | **Options**             | **Description**                              | **Required** |
@@ -565,7 +565,7 @@ If you would like to create an account on
 command.
 
 ```
-kadena account create [arguments]
+kadena account create [options]
 ```
 
 | **Options**             | **Description**                              | **Required** |
@@ -599,7 +599,7 @@ specified account on the Kadena blockchain, such as its balance, guard
 conditions (public keys, predicate), and the account's name.
 
 ```
-kadena account details [arguments]
+kadena account details [options]
 ```
 
 | **Options**             | **Description**                                                                                                                           | **Required** |
@@ -661,7 +661,7 @@ account does not exist, it will be automatically _created_ and funded. Note that
 this command is not applicable to the mainnet network.
 
 ```
-kadena account fund [arguments]
+kadena account fund [options]
 ```
 
 | **Options**             | **Description**                                                                                                                           | **Required** |
@@ -706,7 +706,7 @@ kadena account fund --account="myalias" --amount="10" --network="testnet" --chai
 ---
 
 ```
-kadena account account name-to-address [arguments]
+kadena account account name-to-address [options]
 ```
 
 | **Options**             | **Description**                           | **Required** |
@@ -723,7 +723,7 @@ kadena account name-to-address --network="mainnet" --account-kdn-name="kadena.kd
 ---
 
 ```
-kadena account address-to-name [arguments]
+kadena account address-to-name [options]
 ```
 
 | **Options**             | **Description**                           | **Required** |
@@ -740,7 +740,7 @@ kadena account address-to-name --network="mainnet" --account-kdn-address="k:acco
 ---
 
 ```
-kadena account list [arguments]
+kadena account list [options]
 ```
 
 | **Options**             | **Description**                  |
@@ -762,7 +762,7 @@ kadena account list --account-alias="all"
 ---
 
 ```
-kadena account delete [arguments]
+kadena account delete [options]
 ```
 
 | **Options**             | **Description**                  |
@@ -800,7 +800,7 @@ Tool for creating and managing transactions
 ---
 
 ```
-kadena tx add [arguments]
+kadena tx add [options]
 ```
 
 `kadena tx add` is a powerful command that leverages transaction templates to
@@ -819,7 +819,7 @@ transfers of tokens between accounts.
 ### Command Usage
 
 ```plaintext
-kadena tx add [options] [arguments]
+kadena tx add [options] [options]
 ```
 
 This command accepts various arguments and options, allowing for detailed
@@ -889,8 +889,8 @@ guidance simplifies the transaction creation process, enhancing the security and
 reliability of the transactions constructed.
 
 In contrast, when operating in non-interactive mode, the system relies on
-arguments passed directly via the command line. In this scenario, the values for
-the transaction are provided as arguments, and the prefixes are ignored. This
+options passed directly via the command line. In this scenario, the values for
+the transaction are provided as options, and the prefixes are ignored. This
 means that the responsibility for ensuring the correctness and appropriateness
 of the input values shifts entirely to the user. It's crucial for users to be
 mindful of the data types and formats expected by the template to avoid errors.
@@ -902,7 +902,7 @@ running the CLI in environments where interactive prompts are not feasible.
 
 Variables are a critical part of transaction templates, defining the data
 required to construct a transaction. Users can be prompted for variables missing
-from the `--template-data` file or not provided as command-line arguments. The
+from the `--template-data` file or not provided as command-line options. The
 `--holes` option is particularly useful for identifying all the variables a
 template requires.
 
@@ -925,14 +925,14 @@ network-id: ''
 ---
 
 ```
-kadena tx sign [arguments]
+kadena tx sign [options]
 ```
 
 | **Options**                     | **Description**                                                         | **Required** |
 | ------------------------------- | ----------------------------------------------------------------------- | ------------ |
 | --tx-sign-with="aliasFile"      | Provide signing method                                                  | Yes          |
 | --key-pairs                     | Provide publickey and secretKey (or list separated my semicolon)        |              |
-| --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma seperated list) |              |
+| --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma separated list) |              |
 
 example:
 
@@ -943,7 +943,7 @@ kadena tx sign --tx-sign-with="keyPair" --key-pairs="publicKey=xxx,secretKey=xxx
 ---
 
 ```
-kadena kadena sign [arguments]
+kadena kadena sign [options]
 ```
 
 | **Options**                     | **Description**                                                         | **Required** |
@@ -965,7 +965,7 @@ password will be hidden after entry: --security-password=\*
 ---
 
 ```
-kadena tx sign [arguments]
+kadena tx sign [options]
 ```
 
 | **Options**                     | **Description**                                                         | **Required** |
@@ -987,7 +987,7 @@ password will be hidden after entry: --security-password=\*
 ---
 
 ```
-kadena tx test-signed-transaction [arguments]
+kadena tx test-signed-transaction [options]
 ```
 
 Testing a signed transaction for its viability against a specified network by
@@ -1012,7 +1012,7 @@ kadena tx test-signed-transaction --network="testnet" --directory="./" --tx-sign
 ---
 
 ```
-kadena tx send [arguments]
+kadena tx send [options]
 ```
 
 | **Options**       | **Description**                                                       | **Required** |
@@ -1035,7 +1035,7 @@ kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0T
 ---
 
 ```
-kadena tx status [arguments]
+kadena tx status [options]
 ```
 The kadena tx status command is used to retrieve the status of a transaction on the Kadena blockchain. By providing a transaction request key and specifying the network and chain id, users can query the current state of their transactions. This command supports additional options for polling, allowing for real-time status updates until the transaction is finalized.
 
@@ -1086,7 +1086,7 @@ Tool for creating dapp projects
 | add            | add a new Dapp project |                   |
 
 ```
-kadena dapp add [arguments]
+kadena dapp add <arguments> [options]
 ```
 
 | **Arguments**           | **Description**                          | **Required** |
