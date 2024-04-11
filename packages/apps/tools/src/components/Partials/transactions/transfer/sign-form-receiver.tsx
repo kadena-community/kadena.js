@@ -11,7 +11,7 @@ import {
   Tabs,
   Text,
 } from '@kadena/react-ui';
-import { Controller, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import { ChainSelect } from '@/components/Global/ChainSelect';
 import type { PredKey } from '@/components/Global/PredKeysSelect';
@@ -58,7 +58,6 @@ export const SignFormReceiver = ({
 
   const {
     register,
-    control,
     formState: { errors },
     getValues,
     watch,
