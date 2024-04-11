@@ -57,9 +57,7 @@ export const WALLET_DIR = 'wallets';
 export const NETWORKS_DIR = 'networks';
 
 // templates
-export const TX_TEMPLATE_FOLDER =
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  KADENA_DIR && `${KADENA_DIR}/transaction-templates`;
+export const TX_TEMPLATE_FOLDER = 'transaction-templates';
 
 // account path
 export const ACCOUNT_DIR = 'accounts';
