@@ -58,6 +58,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
   const queryClient = useQueryClient();
 
   if (requestStatus.status === 'successful') {
+    // After successfully transferring we'd like to refetch the updated account details
     void queryClient.invalidateQueries({
       queryKey: ['account-details'],
     });
