@@ -99,23 +99,7 @@ enable users to perform the following steps:
 The following diagram illustrates the process for registering an account using
 Kadena SpireKey.
 
-```mermaid
-sequenceDiagram
-  participant u as User
-  participant s as Kadena SpireKey
-  participant w as WebAuthn
-  participant k as Kadena Blockchain
-    u->>s: create account
-    s->>w: request authentication token
-    w->>s: `WebAuthn-token`
-    s->>k: create account with `WebAuthn-token`
-  alt Validation by blockchain
-    k->>k: executing transaction, mining block
-    k->>s: account created `c:my-account`
-  else Validation failed
-    k->>s: transaction invalid
-  end
-```
+![Registration workflow](/assets/docs/register-spirekey-account.png)
 
 ### Log in with Kadena SpireKey
 
