@@ -37,6 +37,11 @@ import type { SenderType } from './sign-form-sender';
 
 type TabValue = 'new' | 'existing';
 
+interface IChainInfo {
+  chainId: ChainId;
+  data: string | number;
+}
+
 export const SignFormReceiver = ({
   onDataUpdate,
   onPubKeysUpdate,
@@ -64,9 +69,9 @@ export const SignFormReceiver = ({
     setValue,
   } = useFormContext<FormData>();
 
-  const [chainSelectOptions, setChainSelectOptions] = useState<
-    { chainId: ChainId; data: string | number }[]
-  >([]);
+  const [chainSelectOptions, setChainSelectOptions] = useState<IChainInfo[]>(
+    [],
+  );
 
   const [watchReceiver, watchChain] = watch(['receiver', 'receiverChainId']);
 
@@ -102,6 +107,27 @@ export const SignFormReceiver = ({
   }, [onDataUpdate, receiverData.data, receiverData.isSuccess]);
 
   const [toAccountTab, setToAccountTab] = useState<TabValue>('existing');
+
+  const [pubKeys, setPubKeys] = useState<string[]>([]);
+
+  const [initialPublicKey, setInitialPublicKey] = useState<string>('');
+
+  const deletePublicKey = () => setValue('receiver', '');
+
+  const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
+
+  const switchToTabBasedOnChain = (chainInfo: IChainInfo) => {
+    const { data } = chainInfo;
+    const tab = data as TabValue;
+    if (tab === 'new') {
+      setToAccountTab('new');
+      setInitialPublicKey('');
+      setPubKeys([stripAccountPrefix(getValues('receiver'))]);
+    } else {
+      setToAccountTab('existing');
+      setPubKeys([]);
+    }
+  };
 
   const renderAccountFieldWithChain = (tab: TabValue) => (
     <Stack flexDirection={'column'} gap={'md'}>
@@ -146,6 +172,15 @@ export const SignFormReceiver = ({
               selectedKey={value}
               onSelectionChange={(chainId) => {
                 onChange(chainId);
+
+                const chainInfo = chainSelectOptions.find(
+                  (item) => item.chainId === chainId,
+                );
+
+                if (chainInfo) {
+                  switchToTabBasedOnChain(chainInfo);
+                }
+
                 onChainUpdate(chainId);
               }}
               additionalInfoOptions={chainSelectOptions}
@@ -157,28 +192,6 @@ export const SignFormReceiver = ({
       </div>
     </Stack>
   );
-
-  const [pubKeys, setPubKeys] = useState<string[]>([]);
-
-  const [initialPublicKey, setInitialPublicKey] = useState<string>('');
-
-  const deletePublicKey = () => setValue('receiver', '');
-
-  const [pred, onPredSelectChange] = useState<PredKey>('keys-all');
-
-  if (toAccountTab === 'existing' && receiverData?.error) {
-    setToAccountTab('new');
-    setInitialPublicKey('');
-    if (getValues('receiver').startsWith('k:')) {
-      setPubKeys([stripAccountPrefix(getValues('receiver'))]);
-    }
-  }
-
-  if (toAccountTab === 'new' && receiverData?.data) {
-    setTimeout(() => {
-      setToAccountTab('existing');
-    }, 500);
-  }
 
   const watchReceiverChainId = watch('receiverChainId');
 
