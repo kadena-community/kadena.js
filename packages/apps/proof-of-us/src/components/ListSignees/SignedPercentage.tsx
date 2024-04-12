@@ -20,7 +20,7 @@ export const SignedPercentage: FC<IProps> = ({ percentage, signees }) => {
         readyToMint ? readytoMintClass : notReadytoMintClass,
       )}
     >
-      {percentage * 100}%
+      {Math.round(percentage * 10000) / 100}%
     </Heading>
   );
 };

@@ -75,6 +75,8 @@ export default async function handler(
     });
   }
 
+  console.log(222, results);
+
   res.status(200).json({
     message: JSON.stringify(
       {

@@ -128,17 +128,18 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
       process.env.NEXT_PUBLIC_CONNECTION_EVENTID ?? '',
       manifestData.url,
     );
+
+    console.log('_________NEW COMPLETELY!!!!!!!!_________');
     return {
       transaction: transaction,
       manifestUri: manifestData?.url,
       imageUri: imageData.url,
-      eventName: manifest.properties.eventName,
+      eventName: '',
       tokenId,
     };
   };
 
   const handleStartSigning = async () => {
-    console.log(1111);
     const transactionData = await createTx();
     console.log({ transactionData });
     if (!transactionData) return;

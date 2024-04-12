@@ -81,8 +81,8 @@ interface IProofOfUsTokenMeta {
   image: string;
   name: string;
   properties: {
-    eventName: string;
-    eventId: string;
+    eventName?: string;
+    eventId?: string;
     eventType: TokenType;
     date: number;
     avatar?: {
