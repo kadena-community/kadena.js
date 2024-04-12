@@ -37,8 +37,8 @@ builder.queryField('fungibleChainAccountByPublicKey', (t) =>
 
         const fungibleChainAccounts = (
           await Promise.all(
-            accountNames.map(async (accountName: string) => {
-              return await getFungibleChainAccount({
+            accountNames.map((accountName: string) => {
+              return getFungibleChainAccount({
                 chainId: args.chainId,
                 fungibleName: 'coin',
                 accountName,

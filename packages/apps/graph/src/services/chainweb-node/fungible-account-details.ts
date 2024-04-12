@@ -25,12 +25,6 @@ export async function getFungibleAccountDetails(
   let result;
 
   try {
-    console.log(
-      'gettingAccountDetails for',
-      accountName,
-      chainId,
-      fungibleName,
-    );
     result = (await details(
       accountName,
       networkData.networkId,

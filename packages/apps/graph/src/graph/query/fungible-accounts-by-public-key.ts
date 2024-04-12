@@ -7,7 +7,7 @@ import FungibleAccount from '../objects/fungible-account';
 import type { FungibleChainAccount } from '../types/graphql-types';
 import { FungibleAccountName } from '../types/graphql-types';
 
-builder.queryField('fungibleAccountByPublicKey', (t) =>
+builder.queryField('fungibleAccountsByPublicKey', (t) =>
   t.field({
     description: 'Retrieve an account by public key.',
     args: {
@@ -28,7 +28,7 @@ builder.queryField('fungibleAccountByPublicKey', (t) =>
           return null;
         }
 
-        const accountsWithChainAccounts = await Promise.all(
+        const fungibleAccounts = await Promise.all(
           accountNames.map(async (accountName: string) => {
             const chainAccounts = (
               await Promise.all(
@@ -54,8 +54,7 @@ builder.queryField('fungibleAccountByPublicKey', (t) =>
           }),
         );
 
-        console.log('returning', accountsWithChainAccounts);
-        return accountsWithChainAccounts;
+        return fungibleAccounts;
       } catch (error) {
         throw normalizeError(error);
       }
