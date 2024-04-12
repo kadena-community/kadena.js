@@ -139,12 +139,13 @@ export const SignFormReceiver = ({
         <Controller
           name="receiverChainId"
           control={control}
-          render={({ field }) => (
+          render={({ field: { onChange, value, ...rest } }) => (
             <ChainSelect
-              {...field}
+              {...rest}
               id="receiverChainId"
+              selectedKey={value}
               onSelectionChange={(chainId) => {
-                setValue('receiverChainId', chainId);
+                onChange(chainId);
                 onChainUpdate(chainId);
               }}
               additionalInfoOptions={chainSelectOptions}
