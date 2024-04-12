@@ -2,6 +2,7 @@ import type { ChainId } from '@kadena/types';
 import { Option } from 'commander';
 import { z } from 'zod';
 import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
+import { actionAskForDeployDevnet } from '../prompts/genericActionPrompts.js';
 import { account } from '../prompts/index.js';
 import { createOption } from '../utils/createOption.js';
 import { formatZodError, generateAllChainIds } from '../utils/helpers.js';
@@ -187,5 +188,14 @@ export const accountOptions = {
 
       return parse.data.map((id) => id.toString()) as ChainId[];
     },
+  }),
+  deployDevnet: createOption({
+    key: 'deployDevnet',
+    validation: z.boolean(),
+    prompt: actionAskForDeployDevnet,
+    option: new Option(
+      '-d, --deploy-devnet',
+      'Deploy devnet if not available.',
+    ),
   }),
 };
