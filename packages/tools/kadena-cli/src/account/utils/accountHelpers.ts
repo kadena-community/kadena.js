@@ -34,8 +34,7 @@ export const formatZodErrors = (errors: ZodError): string => {
 
 export const getAccountDirectory = (): string | null => {
   const directory = services.config.getDirectory();
-
-  return isNotEmptyString(directory) ? join(directory, ACCOUNT_DIR) : null;
+  return notEmpty(directory) ? join(directory, ACCOUNT_DIR) : null;
 };
 
 export const readAccountFromFile = async (

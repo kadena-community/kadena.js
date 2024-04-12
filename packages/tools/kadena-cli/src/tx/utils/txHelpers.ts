@@ -17,7 +17,7 @@ import type {
   IUnsignedCommand,
 } from '@kadena/types';
 
-import path, { isAbsolute, join } from 'path';
+import path, { isAbsolute, join } from 'node:path';
 import { z } from 'zod';
 import { TX_TEMPLATE_FOLDER } from '../../constants/config.js';
 import { ICommandSchema } from '../../prompts/tx.js';
@@ -28,7 +28,7 @@ import type {
   IWalletKeyPair,
 } from '../../services/wallet/wallet.types.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { isNotEmptyString, notEmpty } from '../../utils/globalHelpers.js';
+import { notEmpty } from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
 import { createTable } from '../../utils/table.js';
 import type { ISavedTransaction } from './storage.js';
@@ -684,7 +684,5 @@ export async function logTransactionDetails(command: ICommand): Promise<void> {
 
 export const getTxTemplateDirectory = (): string | null => {
   const kadenaDir = services.config.getDirectory();
-  return isNotEmptyString(kadenaDir)
-    ? path.join(kadenaDir, TX_TEMPLATE_FOLDER)
-    : null;
+  return notEmpty(kadenaDir) ? path.join(kadenaDir, TX_TEMPLATE_FOLDER) : null;
 };

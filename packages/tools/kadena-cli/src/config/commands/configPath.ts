@@ -1,8 +1,8 @@
 import type { Command } from 'commander';
+import { services } from '../../services/index.js';
 import { KadenaError } from '../../services/service-error.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
-import { services } from '../../services/index.js';
 
 export const createConfigPathCommand: (
   program: Command,
