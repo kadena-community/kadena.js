@@ -150,11 +150,11 @@ pages:
               auctions:
                 url: /auctions
                 file: /build/nft-marmalade/auctions.md
-              offer:
-                url: /offers
+              startsale:
+                url: /start-a-sale
                 file: /build/nft-marmalade/start-a-sale.md
-              conventional:
-                url: /conventional-auction
+              createauction:
+                url: /create-an-auction
                 file: /build/nft-marmalade/create-an-auction.md
       authentication:
         url: /authentication
@@ -208,7 +208,7 @@ pages:
         file: /build/nft-workshop/index.md
         children:
           prepare:
-            url: /prepare
+            url: /prepare-your-workspace
             file: /build/nft-workshop/prepare-your-workspace.md
           deploylocally:
             url: /deploy-locally
@@ -223,7 +223,7 @@ pages:
             url: /upload-metadata
             file: /build/nft-workshop/upload-metadata.md
           minttokens:
-            url: /create-and-mint
+            url: /mint-tokens
             file: /build/nft-workshop/mint-tokens.md
           configureoffer:
             url: /configure-offer
