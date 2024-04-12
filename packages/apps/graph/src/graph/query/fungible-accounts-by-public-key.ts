@@ -85,11 +85,5 @@ async function getAccountNamesByPublicKey(
         OR tx.code LIKE '%coin.create-account%')
   `) as { to_acct: string }[];
 
-  const result = accountsFromTransactions.map((account) => account.to_acct);
-
-  if (result.length === 0) {
-    return [];
-  }
-
-  return result;
+  return accountsFromTransactions.map((account) => account.to_acct);
 }
