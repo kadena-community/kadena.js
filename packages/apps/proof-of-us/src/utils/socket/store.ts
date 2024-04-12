@@ -242,6 +242,8 @@ const ProofOfUsStore = () => {
       isReadyToSign: false,
       status: 3,
       tokenId: null,
+      manifestUri: null,
+      imageUri: null,
       tx: null,
       requestKey: null,
       mintStatus: 'init',

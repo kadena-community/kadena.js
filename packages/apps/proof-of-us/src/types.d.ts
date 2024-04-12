@@ -157,3 +157,12 @@ interface IToken {
   mintStartDate?: number;
   listener?: Promise<any>;
 }
+
+interface IUploadResult {
+  imageCid: string;
+  imageUrl: string;
+  imageUrlUpload: string;
+  metadataCid: string;
+  metadataUrl: string;
+  metadataUrlUpload: string;
+}
