@@ -2,4 +2,4 @@
 '@kadena/graph': patch
 ---
 
-Implement raw query for account by public key
+Implement account and chain account by public key queries;
