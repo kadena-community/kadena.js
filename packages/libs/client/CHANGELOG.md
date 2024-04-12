@@ -1,5 +1,43 @@
 # Change Log - @kadena/client
 
+## 1.11.0
+
+### Minor Changes
+
+- 3bbfeaaa9: added support for confirmationDepth in client added `pollOne` as an
+  alternative to `listen` that uses `/poll` endpoint
+
+### Patch Changes
+
+- Updated dependencies [3bbfeaaa9]
+  - @kadena/chainweb-node-client@0.6.0
+
+## 1.10.1
+
+### Patch Changes
+
+- d67b52906: Fixed IParsedCode interface
+
+## 1.10.0
+
+### Minor Changes
+
+- 016b9dbfc: Added support for verifiers in @kadena/client
+
+## 1.9.0
+
+### Minor Changes
+
+- b53c2600c: Add WebAuthn as a valid scheme for signers
+
+### Patch Changes
+
+- 6ddf094d8: Fix parse objects and arrays to pact values
+- 6ddf094d8: Add Record<string,any> to PactValue type
+  - @kadena/chainweb-node-client@0.5.3
+  - @kadena/cryptography-utils@0.4.2
+  - @kadena/pactjs@0.4.2
+
 ## 1.8.1
 
 ### Patch Changes

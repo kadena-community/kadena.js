@@ -2,10 +2,21 @@ import { atoms, darkThemeClass, tokens } from '@kadena/react-ui/styles';
 import { style } from '@vanilla-extract/css';
 
 export const gridItemMiniMenuStyle = style([
-  {
-    height: '100%',
+  atoms({
+    display: 'flex',
     flexDirection: 'column',
+    height: '100%',
     position: 'relative',
+  }),
+]);
+
+export const iconWrapperClass = style([
+  atoms({
+    display: 'block',
+  }),
+  {
+    width: tokens.kda.foundation.size.n4,
+    height: tokens.kda.foundation.size.n4,
   },
 ]);
 
@@ -49,12 +60,12 @@ export const gridMiniMenuLinkButtonStyle = style([
     border: 'none',
     cursor: 'pointer',
     textAlign: 'left',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
     fontSize: 'sm',
     pointerEvents: 'none',
+    width: '100%',
   }),
   {
-    width: '100%',
     borderBottom: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
     padding: '0.85rem 1rem',
 
@@ -110,13 +121,14 @@ export const bottomIconsContainerStyle = style([
 export const gridItemMenuStyle = style([
   {
     borderLeft: `${tokens.kda.foundation.border.width.hairline} solid ${tokens.kda.foundation.color.border.base.default}`,
+    width: '100%',
   },
 ]);
 
 export const subMenuTitleClass = style([
   atoms({
     fontSize: 'sm',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -142,6 +154,6 @@ export const iconRightStyle = style([
 export const subMenuContentStyle = style([
   atoms({
     height: '100%',
-    backgroundColor: 'layer-2.default',
+    backgroundColor: 'base.default',
   }),
 ]);

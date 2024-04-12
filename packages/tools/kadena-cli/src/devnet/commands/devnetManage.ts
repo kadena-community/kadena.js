@@ -1,20 +1,20 @@
 import { devnetOverwritePrompt } from '../../prompts/devnet.js';
-import { globalOptions } from '../../utils/globalOptions.js';
 import { writeDevnet } from '../utils/devnetHelpers.js';
 
 import { createExternalPrompt } from '../../prompts/generic.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
+import { devnetOptions } from '../devnetOptions.js';
 
 export const manageDevnetsCommand = createCommand(
   'manage',
   'Manage devnets',
   [
-    globalOptions.devnetSelect(),
-    globalOptions.devnetPort(),
-    globalOptions.devnetUseVolume(),
-    globalOptions.devnetMountPactFolder(),
-    globalOptions.devnetVersion(),
+    devnetOptions.devnetSelect(),
+    devnetOptions.devnetPort(),
+    devnetOptions.devnetUseVolume(),
+    devnetOptions.devnetMountPactFolder(),
+    devnetOptions.devnetVersion(),
   ],
   async (option, { collect }) => {
     const config = await collect(option);

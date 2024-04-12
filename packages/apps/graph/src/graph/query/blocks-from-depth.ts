@@ -1,72 +1,91 @@
 import { prismaClient } from '@db/prisma-client';
-import { COMPLEXITY } from '@services/complexity';
+import type { Block } from '@prisma/client';
+import { getDefaultConnectionComplexity } from '@services/complexity';
+import {
+  getConditionForMinimumDepth,
+  getConfirmationDepth,
+} from '@services/depth-service';
 import { normalizeError } from '@utils/errors';
-import { PRISMA, builder } from '../builder';
-import Block from '../objects/block';
+import { builder } from '../builder';
+import GQLBlock from '../objects/block';
 
 builder.queryField('blocksFromDepth', (t) =>
-  t.prismaField({
-    description: 'Retrieve blocks by chain and minimal depth.',
+  t.prismaConnection({
+    description:
+      'Retrieve blocks by chain and minimal depth. Default page size is 20.',
     args: {
-      minimumDepth: t.arg.int({ required: true }),
-      chainIds: t.arg.stringList({ required: true }),
+      minimumDepth: t.arg.int({
+        required: true,
+        validate: {
+          nonnegative: true,
+        },
+      }),
+      chainIds: t.arg.stringList({
+        required: false,
+        description: 'Default: all chains',
+        validate: {
+          minLength: 1,
+          items: {
+            minLength: 1,
+          },
+        },
+      }),
     },
-    type: [Block],
+    cursor: 'hash',
+    type: GQLBlock,
     nullable: true,
-    complexity:
-      (COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS +
-        COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS) *
-      PRISMA.DEFAULT_SIZE,
+    complexity: (args) => ({
+      field: getDefaultConnectionComplexity({
+        withRelations: true,
+        first: args.first,
+        last: args.last,
+        minimumDepth: args.minimumDepth,
+      }),
+    }),
+    // @ts-ignore
     async resolve(query, __parent, { minimumDepth, chainIds }) {
       try {
-        const blocksArray = await Promise.all(
-          chainIds.map(async (chainId) => {
-            const latestBlock = await prismaClient.block.findFirst({
-              where: {
-                chainId: parseInt(chainId),
-              },
-              orderBy: {
-                height: 'desc',
-              },
-              select: {
-                height: true,
-              },
-            });
+        let blocks: Block[] = [];
+        let skip = 0;
+        const take = query.take;
 
-            if (!latestBlock) return [];
+        while (blocks.length < take) {
+          const remaining = take - blocks.length;
+          const fetchedBlocks = await prismaClient.block.findMany({
+            ...query,
+            where: {
+              OR: await getConditionForMinimumDepth(
+                minimumDepth,
+                chainIds ? chainIds : undefined,
+              ),
+            },
+            orderBy: [{ height: 'desc' }, { chainId: 'desc' }, { id: 'desc' }],
+            take: remaining,
+            skip,
+          });
 
-            return prismaClient.block.findMany({
-              ...query,
-              where: {
-                chainId: parseInt(chainId),
-                height: {
-                  lte: parseInt(latestBlock.height.toString()) - minimumDepth,
-                },
-              },
-              orderBy: [
-                {
-                  height: 'desc',
-                },
-                { creationTime: 'desc' },
-              ],
-              take: PRISMA.DEFAULT_SIZE,
-              select: {
-                ...query.select,
-                height: true,
-              },
-            });
-          }),
-        );
+          if (fetchedBlocks.length === 0) {
+            break;
+          }
 
-        const blocks = blocksArray
-          .flat()
-          .sort(
-            (a, b) =>
-              parseInt(b.height.toString()) - parseInt(a.height.toString()),
-          )
-          .slice(0, PRISMA.DEFAULT_SIZE);
+          if (minimumDepth) {
+            const confirmationDepths = await Promise.all(
+              fetchedBlocks.map((block) => getConfirmationDepth(block.hash)),
+            );
 
-        return blocks;
+            const filteredBlocks = fetchedBlocks.filter(
+              (__block, index) => confirmationDepths[index] >= minimumDepth,
+            );
+
+            blocks = [...blocks, ...filteredBlocks];
+          } else {
+            blocks = [...blocks, ...fetchedBlocks];
+          }
+
+          skip += remaining;
+        }
+
+        return blocks.slice(0, take);
       } catch (error) {
         throw normalizeError(error);
       }

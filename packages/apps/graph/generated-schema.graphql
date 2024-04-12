@@ -12,8 +12,10 @@ type Block implements Node {
   The moment the difficulty is adjusted to maintain a block validation time of 30 seconds.
   """
   epoch: DateTime!
+
+  """Default page size is 20."""
   events(after: String, before: String, first: Int, last: Int): BlockEventsConnection!
-  hash: ID!
+  hash: String!
   height: BigInt!
   id: ID!
   minerAccount: FungibleChainAccount!
@@ -22,6 +24,8 @@ type Block implements Node {
 
   """The proof of work hash."""
   powHash: String!
+
+  """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): BlockTransactionsConnection!
 }
 
@@ -92,7 +96,7 @@ type Event implements Node {
   name: String!
 
   """
-  The order index of this event, in the case that there are multiple events.
+  The order index of this event, in the case that there are multiple events in one transaction.
   """
   orderIndex: BigInt!
   parameterText: String!
@@ -126,7 +130,11 @@ type FungibleAccount implements Node {
   fungibleName: String!
   id: ID!
   totalBalance: Decimal!
+
+  """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): FungibleAccountTransactionsConnection!
+
+  """Default page size is 20."""
   transfers(after: String, before: String, first: Int, last: Int): FungibleAccountTransfersConnection!
 }
 
@@ -156,11 +164,15 @@ type FungibleAccountTransfersConnectionEdge {
 type FungibleChainAccount implements Node {
   accountName: String!
   balance: Float!
-  chainId: ID!
+  chainId: String!
   fungibleName: String!
   guard: Guard!
   id: ID!
+
+  """Default page size is 20."""
   transactions(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransactionsConnection!
+
+  """Default page size is 20."""
   transfers(after: String, before: String, first: Int, last: Int): FungibleChainAccountTransfersConnection!
 }
 
@@ -223,7 +235,11 @@ type NonFungibleAccount implements Node {
   accountName: String!
   chainAccounts: [NonFungibleChainAccount!]!
   id: ID!
-  nonFungibles: [Token!]!
+  nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
+
+  """
+  Default page size is 20. Note that custom token related transactions are not included.
+  """
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleAccountTransactionsConnection!
 }
 
@@ -241,9 +257,13 @@ type NonFungibleAccountTransactionsConnectionEdge {
 """A chain and non-fungible-specific account."""
 type NonFungibleChainAccount implements Node {
   accountName: String!
-  chainId: ID!
+  chainId: String!
   id: ID!
-  nonFungibles: [Token!]!
+  nonFungibleTokenBalances: [NonFungibleTokenBalance!]!
+
+  """
+  Default page size is 20. Note that custom token related transactions are not included.
+  """
   transactions(after: String, before: String, first: Int, last: Int): NonFungibleChainAccountTransactionsConnection!
 }
 
@@ -258,6 +278,25 @@ type NonFungibleChainAccountTransactionsConnectionEdge {
   node: Transaction!
 }
 
+"""Information related to a token."""
+type NonFungibleToken {
+  precision: Int!
+  supply: Int!
+  uri: String!
+}
+
+"""The token identifier and its balance."""
+type NonFungibleTokenBalance implements Node {
+  accountName: String!
+  balance: Int!
+  chainId: String!
+  guard: Guard!
+  id: ID!
+  info: NonFungibleToken
+  tokenId: String!
+  version: String!
+}
+
 input PactQuery {
   chainId: String!
   code: String!
@@ -267,6 +306,15 @@ input PactQuery {
 input PactQueryData {
   key: String!
   value: String!
+}
+
+"""Information related to a token."""
+type PactQueryResponse {
+  chainId: String!
+  code: String!
+  error: String
+  result: String
+  status: String!
 }
 
 type PageInfo {
@@ -283,42 +331,79 @@ type Query {
   """Retrieve a block by hash."""
   block(hash: String!): Block
 
-  """Retrieve blocks by chain and minimal depth."""
-  blocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
+  """Retrieve blocks by chain and minimal depth. Default page size is 20."""
+  blocksFromDepth(
+    after: String
+    before: String
 
-  """Retrieve blocks by chain and minimal height."""
-  blocksFromHeight(chainIds: [String!], startHeight: Int!): [Block!]!
+    """Default: all chains"""
+    chainIds: [String!]
+    first: Int
+    last: Int
+    minimumDepth: Int!
+  ): QueryBlocksFromDepthConnection
 
-  """Retrieve all completed blocks from a given height."""
-  completedBlockHeights(chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"], completedHeights: Boolean = false, heightCount: Int = 3): [Block!]!
+  """Retrieve blocks by chain and minimal height. Default page size is 20."""
+  blocksFromHeight(
+    after: String
+    before: String
 
-  """Retrieve a single event by its unique key."""
-  event(blockHash: String!, orderIndex: Int!, requestKey: String!): Event
+    """Default: all chains"""
+    chainIds: [String!]
+    first: Int
+    last: Int
+    startHeight: Int!
+  ): QueryBlocksFromHeightConnection!
 
-  """Retrieve events."""
-  events(after: String, before: String, chainId: String, first: Int, last: Int, parametersFilter: String, qualifiedEventName: String!): QueryEventsConnection!
+  """
+  Retrieve all completed blocks from a given height. Default page size is 20.
+  """
+  completedBlockHeights(
+    after: String
+    before: String
+
+    """Default: all chains"""
+    chainIds: [String!] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
+    completedHeights: Boolean = false
+    first: Int
+    heightCount: Int = 3
+    last: Int
+  ): QueryCompletedBlockHeightsConnection!
+
+  """
+  Retrieve events by qualifiedName (e.g. `coin.TRANSFER`). Default page size is 20.
+         
+        The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
+         
+        An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
+  """
+  events(after: String, before: String, blockHash: String, chainId: String, first: Int, last: Int, minimumDepth: Int, orderIndex: Int, parametersFilter: String, qualifiedEventName: String!, requestKey: String): QueryEventsConnection!
 
   """
   Retrieve an fungible specific account by its name and fungible, such as coin.
   """
-  fungibleAccount(accountName: String!, fungibleName: String!): FungibleAccount
-
-  """Retrieve an account by public key."""
-  fungibleAccountByPublicKey(publicKey: String!): [FungibleAccount!]
+  fungibleAccount(accountName: String!, fungibleName: String): FungibleAccount
 
   """
   Retrieve an account by its name and fungible, such as coin, on a specific chain.
   """
-  fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String!): FungibleChainAccount
+  fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String): FungibleChainAccount
 
-  """Retrieve a chain account by public key."""
-  fungibleChainAccountByPublicKey(chainId: String!, publicKey: String!): [FungibleChainAccount!]
-
-  """Estimate the gas limit for a transaction."""
-  gasLimitEstimate(input: String!): GasLimitEstimation!
-
-  """Estimate the gas limit for a list of transactions."""
-  gasLimitEstimates(input: [String!]!): [GasLimitEstimation!]!
+  """
+  Estimate the gas limit for one or more transactions. Throws an error when the transaction fails or is invalid. The input accepts a JSON object and based on the parameters passed it will determine what type of format it is and return the gas limit estimation. The following types are supported:
+         
+        - `full-transaction`: A complete transaction object. Required parameters: `cmd`, `hash` and `sigs`.
+        - `stringified-command`: A JSON stringified command. Required parameters: `cmd`. It also optionally accepts `sigs`.
+        - `full-command`: A full command. Required parameters: `payload`, `meta` and `signers`.
+        - `partial-command`: A partial command. Required parameters: `payload` and either `meta` or `signers`. In case `meta` is not given, but `signers` is given, you can also add `chainId` as a parameter.
+        - `payload`: A just the payload of a command. Required parameters: `payload` and `chainId`.
+        - `code`: The code of an execution. Required parameters: `code` and `chainId`.
+         
+        Every type accepts an optional parameter called `networkId` to override the default value from the environment variables.
+         
+        Example of the input needed for a type `code` query: `gasLimitEstimate(input: "{\"code\":\"(coin.details \\\"k:1234\\\")\",\"chainId\":\"3\"}")`
+  """
+  gasLimitEstimate(input: [String!]!): [GasLimitEstimation!]!
 
   """Get the configuration of the graph."""
   graphConfiguration: GraphConfiguration!
@@ -337,27 +422,51 @@ type Query {
   """
   Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
   """
-  pactQueries(pactQuery: [PactQuery!]!): [String!]!
+  pactQuery(pactQuery: [PactQuery!]!): [PactQueryResponse!]!
 
   """
-  Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
+  Retrieve one transaction by its unique key. Throws an error if multiple transactions are found.
   """
-  pactQuery(pactQuery: PactQuery!): String!
+  transaction(blockHash: String, minimumDepth: Int, requestKey: String!): Transaction
 
-  """Retrieve one transaction by its unique key."""
-  transaction(blockHash: String!, requestKey: String!): Transaction
-
-  """Retrieve transactions."""
-  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransactionsConnection!
+  """Retrieve transactions. Default page size is 20."""
+  transactions(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, minimumDepth: Int, requestKey: String): QueryTransactionsConnection!
 
   """Retrieve all transactions by a given public key."""
   transactionsByPublicKey(after: String, before: String, first: Int, last: Int, publicKey: String!): QueryTransactionsByPublicKeyConnection!
 
-  """Retrieve one transfer by its unique key."""
-  transfer(blockHash: String!, chainId: String!, moduleHash: String!, orderIndex: Int!, requestKey: String!): Transfer
+  """Retrieve transfers. Default page size is 20."""
+  transfers(accountName: String, after: String, before: String, blockHash: String, chainId: String, first: Int, fungibleName: String, last: Int, requestKey: String): QueryTransfersConnection!
+}
 
-  """Retrieve transfers."""
-  transfers(accountName: String, after: String, before: String, chainId: String, first: Int, fungibleName: String, last: Int): QueryTransfersConnection!
+type QueryBlocksFromDepthConnection {
+  edges: [QueryBlocksFromDepthConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type QueryBlocksFromDepthConnectionEdge {
+  cursor: String!
+  node: Block!
+}
+
+type QueryBlocksFromHeightConnection {
+  edges: [QueryBlocksFromHeightConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type QueryBlocksFromHeightConnectionEdge {
+  cursor: String!
+  node: Block!
+}
+
+type QueryCompletedBlockHeightsConnection {
+  edges: [QueryCompletedBlockHeightsConnectionEdge]!
+  pageInfo: PageInfo!
+}
+
+type QueryCompletedBlockHeightsConnectionEdge {
+  cursor: String!
+  node: Block!
 }
 
 type QueryEventsConnection {
@@ -372,7 +481,7 @@ type QueryEventsConnectionEdge {
 }
 
 type QueryTransactionsByPublicKeyConnection {
-  edges: [QueryTransactionsByPublicKeyConnectionEdge!]!
+  edges: [QueryTransactionsByPublicKeyConnectionEdge]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
@@ -408,22 +517,24 @@ type QueryTransfersConnectionEdge {
 type Signer implements Node {
   """The signer for the gas."""
   address: String
-  capabilities: String
+  clist: [TransactionCapability!]!
   id: ID!
-  orderIndex: Int!
-  publicKey: String!
-  requestKey: String!
+  orderIndex: Int
+  pubkey: String!
 
   """The signature scheme that was used to sign."""
   scheme: String
-
-  """The result of the signing operation of the hash of the transaction."""
-  signature: String!
 }
 
 type Subscription {
-  """Listen for events by qualifiedName (e.g. `coin.TRANSFER`)."""
-  events(chainId: String, parametersFilter: String, qualifiedEventName: String!): [Event!]
+  """
+  Listen for events by qualifiedName (e.g. `coin.TRANSFER`).
+         
+        The parametersFilter is a stringified JSON object that matches the [JSON object property filters](https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/working-with-json-fields#filter-on-object-property) from Prisma.
+         
+        An example of such a filter parameter value: `events(parametersFilter: "{\"array_starts_with\": \"k:abcdefg\"}")`
+  """
+  events(chainId: String, minimumDepth: Int, parametersFilter: String, qualifiedEventName: String!): [Event!]
 
   """Subscribe to new blocks."""
   newBlocks(chainIds: [String!]): [Block!]
@@ -431,37 +542,23 @@ type Subscription {
   """Subscribe to new blocks from a specific depth."""
   newBlocksFromDepth(chainIds: [String!]!, minimumDepth: Int!): [Block!]
 
-  """
-  Listen for a transaction by request key. Returns the ID when it is in a block.
-  """
-  transaction(requestKey: String!): Transaction
+  """Listen for a transaction by request key."""
+  transaction(chainId: String, requestKey: String!): Transaction
 }
 
-"""The token identifier and its balance."""
-type Token {
-  balance: Int!
-  chainId: String!
-  id: ID!
-  info: TokenInfo
-  version: String!
-}
-
-"""Information related to a token."""
-type TokenInfo {
-  precision: Int!
-  supply: Int!
-  uri: String!
-}
-
-"""A confirmed transaction."""
+"""A transaction."""
 type Transaction implements Node {
-  block: Block
   cmd: TransactionCommand!
-  events: [Event!]
   hash: String!
   id: ID!
-  result: TransactionResult!
-  transfers: [Transfer!]
+  result: TransactionInfo!
+  sigs: [TransactionSignature!]!
+}
+
+"""List of capabilities associated with/installed by this signer."""
+type TransactionCapability {
+  args: String!
+  name: String!
 }
 
 """A transaction command."""
@@ -472,7 +569,16 @@ type TransactionCommand {
   networkId: String!
   nonce: String!
   payload: TransactionPayload!
-  signers: [Signer!]
+  signers: [Signer!]!
+}
+
+"""The result of a transaction."""
+union TransactionInfo = TransactionMempoolInfo | TransactionResult
+
+"""The mempool information."""
+type TransactionMempoolInfo {
+  """The status of the mempool."""
+  status: String
 }
 
 """The metadata of a transaction."""
@@ -492,12 +598,14 @@ union TransactionPayload = ContinuationPayload | ExecutionPayload
 type TransactionResult {
   """The transaction result when it was successful. Formatted as raw JSON."""
   badResult: String
+  block: Block!
 
   """
   The JSON stringified continuation in the case that it is a continuation.
   """
   continuation: String
   eventCount: BigInt
+  events(after: String, before: String, first: Int, last: Int): TransactionResultEventsConnection!
   gas: BigInt!
 
   """The transaction result when it was successful. Formatted as raw JSON."""
@@ -510,6 +618,34 @@ type TransactionResult {
   logs: String
   metadata: String
   transactionId: BigInt
+  transfers(after: String, before: String, first: Int, last: Int): TransactionResultTransfersConnection!
+}
+
+type TransactionResultEventsConnection {
+  edges: [TransactionResultEventsConnectionEdge]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type TransactionResultEventsConnectionEdge {
+  cursor: String!
+  node: Event!
+}
+
+type TransactionResultTransfersConnection {
+  edges: [TransactionResultTransfersConnectionEdge]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type TransactionResultTransfersConnectionEdge {
+  cursor: String!
+  node: Transfer!
+}
+
+"""List of capabilities associated with/installed by this signer."""
+type TransactionSignature {
+  sig: String!
 }
 
 """A transfer of funds from a fungible between two accounts."""

@@ -1,8 +1,11 @@
 import type { Command } from 'commander';
 
+import { KADENA_DIR } from '../../constants/config.js';
+import { KadenaError } from '../../services/service-error.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { networkOptions } from '../networkOptions.js';
 import { removeNetwork, writeNetworks } from '../utils/networkHelpers.js';
 
 /**
@@ -15,15 +18,19 @@ export const manageNetworksCommand: (
   version: string,
 ) => void = createCommand(
   'update',
-  'Update local networks',
+  'Update networks',
   [
     globalOptions.network({ isOptional: false }),
-    globalOptions.networkExplorerUrl(),
-    globalOptions.networkHost(),
-    globalOptions.networkId(),
-    globalOptions.networkName(),
+    networkOptions.networkExplorerUrl(),
+    networkOptions.networkHost(),
+    networkOptions.networkId(),
+    networkOptions.networkName(),
   ],
   async (option) => {
+    if (KADENA_DIR === null) {
+      throw new KadenaError('no_kadena_directory');
+    }
+
     const networkData = await option.network();
     const networkName = await option.networkName();
     const networkId = await option.networkId();
@@ -37,7 +44,7 @@ export const manageNetworksCommand: (
       networkName,
     });
 
-    await writeNetworks({
+    await writeNetworks(KADENA_DIR, {
       network: networkName.networkName,
       networkId: networkId.networkId,
       networkHost: networkHost.networkHost,

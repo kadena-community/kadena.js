@@ -204,13 +204,16 @@ export const getTransactions: DocumentNode = gql`
         cursor
         node {
           ...CoreTransactionFields
-          block {
-            hash
+          result {
+            ... on TransactionResult {
+              block {
+                hash
+              }
+            }
           }
           cmd {
             signers {
-              publicKey
-              signature
+              pubkey
             }
           }
         }
@@ -307,7 +310,7 @@ export const getEvents: DocumentNode = gql`
 `;
 
 export const estimateGasLimit: DocumentNode = gql`
-  query estimateGasLimit($input: String!) {
+  query estimateGasLimit($input: [String!]!) {
     gasLimitEstimate(input: $input) {
       amount
       inputType
@@ -329,10 +332,14 @@ export const getNonFungibleAccount: DocumentNode = gql`
       chainAccounts {
         ...CoreNonFungibleChainAccountFields
       }
-      nonFungibles {
+      nonFungibleTokenBalances {
         balance
-        id
+        tokenId
         chainId
+        guard {
+          predicate
+          keys
+        }
       }
       transactions {
         edges {
@@ -352,10 +359,14 @@ export const getNonFungibleChainAccount: DocumentNode = gql`
   query getNonFungibleChainAccount($accountName: String!, $chainId: String!) {
     nonFungibleChainAccount(accountName: $accountName, chainId: $chainId) {
       ...CoreNonFungibleChainAccountFields
-      nonFungibles {
+      nonFungibleTokenBalances {
         balance
-        id
+        tokenId
         chainId
+        guard {
+          predicate
+          keys
+        }
       }
       transactions {
         edges {

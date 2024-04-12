@@ -12,14 +12,14 @@ import { dotenv } from '@utils/dotenv';
 interface ICreateTokenIdInput {
   policies?: string[];
   uri: string;
-  precision?: number;
+  precision?: { decimal: string } | { int: string };
   creator: IAccount;
 }
 
 export async function createTokenId({
   policies = [],
   uri,
-  precision = 0,
+  precision = { int: '0' },
   creator,
 }: ICreateTokenIdInput): Promise<string> {
   return (await dirtyReadClient({

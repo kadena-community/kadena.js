@@ -1,5 +1,6 @@
 import { getFungibleChainAccount } from '@services/account-service';
 import { chainIds } from '@utils/chains';
+import { dotenv } from '@utils/dotenv';
 import { builder } from '../builder';
 import FungibleAccount from '../objects/fungible-account';
 import type { FungibleChainAccount } from '../types/graphql-types';
@@ -11,8 +12,18 @@ builder.queryField('fungibleAccount', (t) =>
       'Retrieve an fungible specific account by its name and fungible, such as coin.',
     nullable: true,
     args: {
-      accountName: t.arg.string({ required: true }),
-      fungibleName: t.arg.string({ required: true }),
+      accountName: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      fungibleName: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: FungibleAccount,
     async resolve(__parent, args) {
@@ -21,7 +32,7 @@ builder.queryField('fungibleAccount', (t) =>
           chainIds.map(async (chainId) => {
             return getFungibleChainAccount({
               chainId: chainId,
-              fungibleName: args.fungibleName,
+              fungibleName: args.fungibleName || dotenv.DEFAULT_FUNGIBLE_NAME,
               accountName: args.accountName,
             });
           }),
@@ -37,7 +48,7 @@ builder.queryField('fungibleAccount', (t) =>
       return {
         __typename: FungibleAccountName,
         accountName: args.accountName,
-        fungibleName: args.fungibleName,
+        fungibleName: args.fungibleName || dotenv.DEFAULT_FUNGIBLE_NAME,
         chainAccounts: chainAccounts,
         totalBalance: 0,
         transactions: [],

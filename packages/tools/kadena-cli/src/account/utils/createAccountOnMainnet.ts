@@ -63,19 +63,19 @@ export async function createAccountOnMainnet({
     ).execute();
 
     return {
-      success: true,
+      status: 'success',
       data: account,
     };
   } catch (e) {
     if (e.message.includes('row found') === true) {
       const account = isNotEmptyString(accountName) ? `"${accountName}" ` : '';
       return {
-        success: false,
+        status: 'error',
         errors: [`Account ${account}already exists on chain "${chainId}"`],
       };
     }
     return {
-      success: false,
+      status: 'error',
       errors: [e.message],
     };
   }

@@ -1,5 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
+import { getNonFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -9,7 +10,7 @@ import { builder } from '../builder';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
 import type { NonFungibleChainAccount } from '../types/graphql-types';
 import { NonFungibleChainAccountName } from '../types/graphql-types';
-import Token from './token';
+import NonFungibleTokenBalance from './non-fungible-token-balance';
 
 export default builder.node(
   builder.objectRef<NonFungibleChainAccount>(NonFungibleChainAccountName),
@@ -27,22 +28,19 @@ export default builder.node(
     },
     async loadOne({ chainId, accountName }) {
       try {
-        return {
-          __typename: NonFungibleChainAccountName,
+        return await getNonFungibleChainAccount({
           chainId,
           accountName,
-          nonFungibles: [],
-          transactions: [],
-        };
+        });
       } catch (error) {
         throw normalizeError(error);
       }
     },
     fields: (t) => ({
-      chainId: t.exposeID('chainId'),
+      chainId: t.exposeString('chainId'),
       accountName: t.exposeString('accountName'),
-      nonFungibles: t.field({
-        type: [Token],
+      nonFungibleTokenBalances: t.field({
+        type: [NonFungibleTokenBalance],
         complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
         async resolve(parent) {
           try {
@@ -58,6 +56,8 @@ export default builder.node(
         },
       }),
       transactions: t.prismaConnection({
+        description:
+          'Default page size is 20. Note that custom token related transactions are not included.',
         type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
@@ -74,7 +74,7 @@ export default builder.node(
               senderAccount: parent.accountName,
               events: {
                 some: {
-                  moduleName: 'marmalade-v2.ledger',
+                  moduleName: { startsWith: 'marmalade' },
                 },
               },
               chainId: parseInt(parent.chainId),
@@ -89,7 +89,7 @@ export default builder.node(
                 senderAccount: parent.accountName,
                 events: {
                   some: {
-                    moduleName: 'marmalade-v2.ledger',
+                    moduleName: { startsWith: 'marmalade-v2' },
                   },
                 },
                 chainId: parseInt(parent.chainId),

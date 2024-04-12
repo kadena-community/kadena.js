@@ -12,12 +12,14 @@
       "outputMode": "new-only"
     },
     "test:integration": {
+      "cache": false,
       "dependsOn": ["build"],
       "inputs": ["src/**/*.ts", "src/**/*.tsx"],
       "outputMode": "new-only"
     },
     "test:e2e": {
-      "inputs": ["test/**/*.ts", "test/**/*.tsx"],
+      "cache": false,
+      "inputs": ["tests/**/*.ts", "tests/**/*.tsx"],
       "outputMode": "new-only"
     },
     "lint": {

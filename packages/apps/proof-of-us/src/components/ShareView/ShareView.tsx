@@ -3,25 +3,29 @@ import { ListSignees } from '@/components/ListSignees/ListSignees';
 import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { getReturnHostUrl } from '@/utils/getReturnUrl';
-import { isAlreadySigning, isSignedOnce } from '@/utils/isAlreadySigning';
+import { isAlreadySigning, isReadyToMint } from '@/utils/isAlreadySigning';
 import {
   MonoArrowBack,
   MonoArrowDownward,
-  MonoCheck,
+  MonoCheckCircle,
+  MonoSignature,
 } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { IconButton } from '../IconButton/IconButton';
 import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
 
 import { useAccount } from '@/hooks/account';
+import { createManifest } from '@/utils/createManifest';
+import { createConnectTokenTransaction, getTokenId } from '@/utils/proofOfUs';
+import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
-import { qrClass } from './style.css';
+import { copyClass, qrClass } from './style.css';
 
 interface IProps {
   next: () => void;
@@ -35,7 +39,8 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const { proofOfUs, isInitiator } = useProofOfUs();
+  const { proofOfUs, signees, background, isInitiator, updateProofOfUs } =
+    useProofOfUs();
   const { account } = useAccount();
   const { signToken } = useSignToken();
   const router = useRouter();
@@ -55,20 +60,36 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   //check that the account is also really the initiator.
   //other accounts have no business here and are probably looking for the scan view
-  useEffect(() => {
-    if (!isInitiator()) {
+
+  const checkInitiator = async () => {
+    const initiator = await isInitiator();
+    if (!initiator) {
       router.replace(`/scan/${proofOfUs?.proofOfUsId}`);
       return;
     }
     setIsMounted(true);
+  };
+
+  useEffect(() => {
+    checkInitiator();
   }, [proofOfUs, account]);
 
   useEffect(() => {
     const transaction = searchParams.get('transaction');
     if (!transaction || !proofOfUs) return;
-
-    //updateStatus({ proofOfUsId: proofOfUs.proofOfUsId, status: 4 });
   }, []);
+
+  useEffect(() => {
+    if (!isCopied) return;
+
+    const timer = setTimeout(() => {
+      setIsCopied(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [isCopied]);
+
+  const readyToMint = useMemo(() => isReadyToMint(signees), [signees]);
 
   if (!proofOfUs || !account || !isMounted) return;
 
@@ -79,6 +100,58 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
     setIsCopied(true);
   };
 
+  const createTx = async () => {
+    if (!proofOfUs || !account || !signees) return;
+
+    const imageData = await createImageUrl(background.bg);
+    if (!imageData) {
+      console.error('no image found');
+      return;
+    }
+    const manifest = await createManifest(proofOfUs, signees, imageData.url);
+    const manifestData = await createMetaDataUrl(manifest);
+    if (!manifestData) {
+      console.error('no manifestData found');
+      return;
+    }
+
+    const transaction = await createConnectTokenTransaction(
+      manifestData?.url,
+      signees,
+      account,
+    );
+
+    const tokenId = await getTokenId(
+      process.env.NEXT_PUBLIC_CONNECTION_EVENTID ?? '',
+      manifestData.url,
+    );
+    return {
+      transaction: transaction,
+      manifestUri: manifestData?.url,
+      imageUri: imageData.url,
+      eventName: manifest.properties.eventName,
+      tokenId,
+    };
+  };
+
+  const handleStartSigning = async () => {
+    const transactionData = await createTx();
+    if (!transactionData) return;
+    const transaction = Buffer.from(
+      JSON.stringify(transactionData.transaction),
+    ).toString('base64');
+
+    updateProofOfUs({
+      tx: transaction,
+      requestKey: transactionData.transaction?.hash,
+      tokenId: transactionData.tokenId,
+      manifestUri: transactionData.manifestUri,
+      imageUri: transactionData.imageUri,
+      eventName: transactionData.eventName,
+      isReadyToSign: true,
+    });
+  };
+
   return (
     <ScreenHeight>
       {status === 3 && (
@@ -86,7 +159,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
           <TitleHeader
             Prepend={() => (
               <>
-                {!isAlreadySigning(proofOfUs.signees) && (
+                {!isAlreadySigning(proofOfUs) && (
                   <IconButton onClick={handleBack}>
                     <MonoArrowBack />
                   </IconButton>
@@ -94,9 +167,18 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
               </>
             )}
             label="Share"
+            Append={() => (
+              <>
+                {isCopied ? (
+                  <Stack>
+                    Copied <MonoCheckCircle className={copyClass} />
+                  </Stack>
+                ) : null}
+              </>
+            )}
           />
 
-          {!isAlreadySigning(proofOfUs.signees) ? (
+          {!isAlreadySigning(proofOfUs) ? (
             <>
               <div
                 className={qrClass}
@@ -105,7 +187,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
               >
                 <QRCode
                   ecLevel="H"
-                  size={qrContainerRef.current?.offsetWidth || 300}
+                  size={300}
                   ref={qrRef}
                   value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
                   removeQrCodeBehindLogo={true}
@@ -115,12 +197,13 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                   eyeRadius={10}
                 />
               </div>
-              <Button onPress={handleCopy}>Click to copy link</Button>
-              {isCopied ? (
-                <Stack>
-                  Copied! <MonoCheck />
-                </Stack>
-              ) : null}
+              <Stack gap="md">
+                {(signees?.length ?? 0) > 1 && (
+                  <Button onPress={handleStartSigning}>
+                    Start signing <MonoSignature />
+                  </Button>
+                )}
+              </Stack>
               <ListSignees />
             </>
           ) : (
@@ -129,9 +212,10 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
               <ListSignees />
             </>
           )}
-          {isSignedOnce(proofOfUs.signees) && (
-            <Button onPress={handleSign}>Sign & Upload</Button>
-          )}
+
+          <Button isDisabled={!readyToMint} onPress={handleSign}>
+            {readyToMint ? 'Sign & Upload' : 'Waiting for signatures'}
+          </Button>
         </>
       )}
       {status === 4 && (

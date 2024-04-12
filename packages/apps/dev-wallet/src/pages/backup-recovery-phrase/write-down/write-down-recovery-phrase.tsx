@@ -69,8 +69,8 @@ export function WriteDownRecoveryPhrase() {
           <TextField id="password" type="password" {...register('password')} />
           <Button type="submit">Show Phrase</Button>
         </form>
-        {error && <Text variant="base">{error}</Text>}
-        <Text variant="small">{mnemonic}</Text>
+        {error && <Text>{error}</Text>}
+        <Text size="small">{mnemonic}</Text>
         <Button
           type="submit"
           onClick={() => {

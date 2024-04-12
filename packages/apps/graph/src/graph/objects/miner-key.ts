@@ -16,16 +16,20 @@ export default builder.prismaNode(Prisma.ModelName.MinerKey, {
       nullable: false,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
+        blocks: true,
         blockHash: true,
       },
       async resolve(query, parent) {
         try {
-          return await prismaClient.block.findUniqueOrThrow({
-            ...query,
-            where: {
-              hash: parent.blockHash,
-            },
-          });
+          return (
+            parent.blocks ||
+            (await prismaClient.block.findUniqueOrThrow({
+              ...query,
+              where: {
+                hash: parent.blockHash,
+              },
+            }))
+          );
         } catch (error) {
           throw normalizeError(error);
         }

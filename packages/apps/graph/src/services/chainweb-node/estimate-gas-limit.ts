@@ -3,6 +3,7 @@ import { createClient, createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 import { hash as hashFunction } from '@kadena/cryptography-utils';
 import { dotenv } from '@utils/dotenv';
+import { networkData } from '@utils/network';
 import type { GasLimitEstimation } from '../../graph/types/graphql-types';
 
 export class GasLimitEstimationError extends Error {
@@ -153,6 +154,8 @@ export const estimateGasLimit = async (
   const paredInput = jsonParseInput(rawInput);
   const input = determineInputType(paredInput);
 
+  const { networkId } = input.networkId ? input : networkData;
+
   const returnValue: GasLimitEstimation = {
     amount: 0,
     inputType: input.type,
@@ -185,8 +188,13 @@ export const estimateGasLimit = async (
           { payload: input.payload },
           { meta: input.meta },
           { signers: input.signers },
-          { networkId: input.networkId || dotenv.NETWORK_ID },
-        )(),
+          { networkId },
+        )({
+          meta: {
+            gasLimit: 10000,
+            gasPrice: 1.0e-8,
+          },
+        }),
       );
       break;
     case 'partial-command':
@@ -199,8 +207,13 @@ export const estimateGasLimit = async (
           { payload: input.payload },
           { meta: input.meta },
           { signers: input.signers },
-          { networkId: input.networkId || dotenv.NETWORK_ID },
-        )(),
+          { networkId },
+        )({
+          meta: {
+            gasLimit: 10000,
+            gasPrice: 1.0e-8,
+          },
+        }),
       );
       break;
     case 'payload':
@@ -208,7 +221,12 @@ export const estimateGasLimit = async (
         composePactCommand(
           { payload: input.payload },
           { meta: { chainId: input.chainId } },
-        )(),
+        )({
+          meta: {
+            gasLimit: 10000,
+            gasPrice: 1.0e-8,
+          },
+        }),
       );
       break;
     case 'code':
@@ -223,7 +241,12 @@ export const estimateGasLimit = async (
             },
           },
           { meta: { chainId: input.chainId } },
-        )(),
+        )({
+          meta: {
+            gasLimit: 10000,
+            gasPrice: 1.0e-8,
+          },
+        }),
       );
       break;
     default:
@@ -240,10 +263,12 @@ export const estimateGasLimit = async (
   try {
     const result = await createClient(
       ({ chainId }) =>
-        `${dotenv.NETWORK_HOST}/chainweb/0.0/${
-          input.networkId || dotenv.NETWORK_ID
-        }/chain/${chainId}/pact`,
+        `${dotenv.NETWORK_HOST}/chainweb/0.0/${networkId}/chain/${chainId}/pact`,
     ).local(transaction, configuration);
+
+    if (result.result.status === 'failure') {
+      throw result.result.error;
+    }
 
     returnValue.amount = result.gas;
     returnValue.transaction = JSON.stringify(transaction);
@@ -251,7 +276,11 @@ export const estimateGasLimit = async (
     return returnValue;
   } catch (error) {
     throw new GasLimitEstimationError(
-      'Chainweb Node was unable to estimate the gas limit for the transaction. Please check your input and try again.',
+      `Chainweb Node was unable to estimate the gas limit ${
+        error.type === 'TxFailure'
+          ? 'due to the transaction failing'
+          : 'for an unknown reason'
+      }. Please check your input and try again.`,
       error,
     );
   }

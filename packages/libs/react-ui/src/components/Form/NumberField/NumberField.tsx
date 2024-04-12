@@ -11,7 +11,7 @@ import React, { forwardRef, useCallback } from 'react';
 import type { AriaNumberFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useLocale, useNumberField } from 'react-aria';
 import { useNumberFieldState } from 'react-stately';
-import { bodyBaseRegular, codeBaseRegular } from '../../../styles';
+import { bodyBaseRegular, monospaceBaseRegular } from '../../../styles';
 import { Button } from '../../Button';
 import { ChevronDown, ChevronUp } from '../../Icon/System/SystemIcon';
 import { formField, input, inputContainer, startAddon } from '../Form.css';
@@ -137,7 +137,7 @@ export function NumberFieldBase(
           ref={ref}
           className={classNames(
             input,
-            props.inputFont === 'code' ? codeBaseRegular : bodyBaseRegular,
+            props.inputFont === 'code' ? monospaceBaseRegular : bodyBaseRegular,
           )}
           data-focused={isFocused || undefined}
           data-disabled={isDisabled || undefined}

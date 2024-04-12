@@ -17,10 +17,16 @@ import { stringifyAndMakePOSTRequest } from './stringifyAndMakePOSTRequest';
 export async function poll(
   requestBody: IPollRequestBody,
   apiHost: string,
+  confirmationDepth = 0,
 ): Promise<IPollResponse> {
   const request = stringifyAndMakePOSTRequest(requestBody);
   const pollUrl = new URL(`${apiHost}/api/v1/poll`);
-
+  if (confirmationDepth > 0) {
+    pollUrl.searchParams.append(
+      'confirmationDepth',
+      confirmationDepth.toString(),
+    );
+  }
   const response = await fetch(pollUrl.toString(), request);
   return parseResponse<IPollResponse>(response);
 }

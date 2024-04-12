@@ -4,6 +4,8 @@ import { style } from '@vanilla-extract/css';
 export const itemClass = style([
   atoms({
     padding: 'md',
+    flexDirection: 'column',
+    alignItems: 'center',
   }),
   {
     flex: '1 1 50%',
@@ -29,7 +31,7 @@ export const itemClass = style([
 export const titleClass = style([
   atoms({
     width: '100%',
-    fontWeight: 'bodyFont.bold',
+    fontWeight: 'secondaryFont.bold',
   }),
 ]);
 
@@ -42,6 +44,7 @@ export const bulletClass = style([
     width: '1.2rem',
     height: '1.2rem',
     aspectRatio: '1/1',
+    backgroundColor: 'var(--bulletColor)',
 
     selectors: {
       '&:before': {
@@ -53,18 +56,7 @@ export const bulletClass = style([
         width: '.8rem',
         height: '.8rem',
         aspectRatio: '1/1',
-      },
-      '&[data-position="0"]': {
-        background: 'rgba(255, 0, 0, 0.42)',
-      },
-      '&[data-position="1"]': {
-        background: 'rgba(255, 199, 0, 0.42)',
-      },
-      '&[data-position="0"]:before': {
-        background: 'rgba(255, 0, 0, 0.42)',
-      },
-      '&[data-position="1"]:before': {
-        background: 'rgba(255, 199, 0, 0.42)',
+        background: 'var(--bulletColor)',
       },
     },
   },

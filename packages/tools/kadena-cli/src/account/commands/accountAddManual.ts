@@ -1,8 +1,10 @@
+import { KEYS_ALL_PRED_ERROR_MESSAGE } from '../../constants/account.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
+import { isValidForOnlyKeysAllPredicate } from '../utils/accountHelpers.js';
 import { addAccount } from '../utils/addAccount.js';
 import { displayAddAccountSuccess } from '../utils/addHelpers.js';
 import { getAccountDetails } from '../utils/getAccountDetails.js';
@@ -14,12 +16,12 @@ export const createAddAccountManualCommand = createCommand(
   [
     accountOptions.accountAlias(),
     accountOptions.accountName(),
-    globalOptions.fungible(),
+    accountOptions.fungible(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
     accountOptions.accountOverwrite(),
-    globalOptions.publicKeys(),
-    globalOptions.predicate(),
+    accountOptions.publicKeys(),
+    accountOptions.predicate(),
   ],
 
   async (option) => {
@@ -51,11 +53,22 @@ export const createAddAccountManualCommand = createCommand(
 
     let publicKeysPrompt;
     let predicate = 'keys-all';
+    let isKeysAllPredicate = false;
 
     // If the user choose not to overwrite the account, we need to ask for the public keys and predicate
     if (!accountOverwrite) {
       publicKeysPrompt = await option.publicKeys();
-      predicate = (await option.predicate()).predicate || 'keys-all';
+      isKeysAllPredicate = isValidForOnlyKeysAllPredicate(
+        accountName,
+        publicKeysPrompt.publicKeysConfig,
+      );
+      const allowedPredicates = isKeysAllPredicate ? ['keys-all'] : undefined;
+      predicate =
+        (
+          await option.predicate({
+            allowedPredicates,
+          })
+        ).predicate || 'keys-all';
     }
 
     const { publicKeys, publicKeysConfig = [] } = publicKeysPrompt ?? {};
@@ -66,6 +79,10 @@ export const createAddAccountManualCommand = createCommand(
       throw new Error(
         'Missing required argument PublicKeys: "-p, --public-keys <publicKeys>"',
       );
+    }
+
+    if (isKeysAllPredicate && predicate !== 'keys-all') {
+      throw new Error(KEYS_ALL_PRED_ERROR_MESSAGE);
     }
 
     const validPublicKeys = publicKeysConfig.filter((key) => !!key);
@@ -114,6 +131,6 @@ export const createAddAccountManualCommand = createCommand(
 
     assertCommandError(result);
 
-    displayAddAccountSuccess(accountAlias);
+    displayAddAccountSuccess(accountAlias, result.data);
   },
 );

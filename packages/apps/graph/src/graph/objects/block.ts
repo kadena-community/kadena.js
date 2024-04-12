@@ -18,7 +18,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
   select: {},
   fields: (t) => ({
     // database fields
-    hash: t.exposeID('hash'),
+    hash: t.exposeString('hash'),
     chainId: t.expose('chainId', { type: 'BigInt' }),
     creationTime: t.expose('creationTime', { type: 'DateTime' }),
     epoch: t.expose('epoch', {
@@ -89,6 +89,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
     // relations
     transactions: t.prismaConnection({
       type: Prisma.ModelName.Transaction,
+      description: 'Default page size is 20.',
       cursor: 'blockHash_requestKey',
       edgesNullable: false,
       complexity: (args) => ({
@@ -118,9 +119,6 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
             where: {
               blockHash: (parent as Block).hash,
             },
-            orderBy: {
-              height: 'desc',
-            },
           });
         } catch (error) {
           throw normalizeError(error);
@@ -129,6 +127,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
     }),
 
     events: t.prismaConnection({
+      description: 'Default page size is 20.',
       type: Prisma.ModelName.Event,
       cursor: 'blockHash_orderIndex_requestKey',
       edgesNullable: false,
@@ -139,30 +138,22 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
         }),
       }),
       select: {
-        hash: true,
+        events: true,
       },
       async totalCount(parent) {
         try {
-          return await prismaClient.event.count({
-            where: {
-              blockHash: (parent as Block).hash,
-            },
-          });
+          return (
+            parent as Prisma.BlockGetPayload<{ select: { events: true } }>
+          ).events.length;
         } catch (error) {
           throw normalizeError(error);
         }
       },
-      async resolve(query, parent) {
+      async resolve(__query, parent) {
         try {
-          return await prismaClient.event.findMany({
-            ...query,
-            where: {
-              blockHash: (parent as Block).hash,
-            },
-            orderBy: {
-              orderIndex: 'asc',
-            },
-          });
+          return (
+            parent as Prisma.BlockGetPayload<{ select: { events: true } }>
+          ).events;
         } catch (error) {
           throw normalizeError(error);
         }

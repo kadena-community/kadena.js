@@ -4,7 +4,6 @@ import { themes } from '@storybook/theming';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime'; // next 13
 
 export const parameters = {
-  actions: { argTypesRegex: '^on[A-Z].*' },
   nextRouter: {
     Provider: RouterContext.Provider,
   },

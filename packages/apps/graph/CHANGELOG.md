@@ -1,5 +1,145 @@
 # @kadena/graph
 
+## 1.0.1
+
+### Patch Changes
+
+- 2ff01d300: Optimize events subscription; minor fix in documentation
+
+## 1.0.0
+
+### Major Changes
+
+- f09f02356: Release version 1.0.0
+
+### Patch Changes
+
+- 427957e46: Change non-id field types to strings instead of id's
+- 2efb4332e: Add timeouts in pact queries and implement pact query response
+  object
+- 77dddd8b0: Optimize fetching of latest id for events
+- 0e1d37089: Fixed network config retrieval running before system checks
+- 4eb925ccc: Added retry mechanism for chainweb-node calls; added environmental
+  variables to support this functionality
+- 920c38344: Fix auxiliary queries in readme.md
+- 9810956fb: Fixed incorrect IDs in schema
+
+## 0.1.14
+
+### Patch Changes
+
+- d82fbd97d: Fix network id and api version on mempool connection test
+
+## 0.1.13
+
+### Patch Changes
+
+- fe324038b: Rerelease with all files
+
+## 0.1.12
+
+### Patch Changes
+
+- 2bac09b5e: Implemented confirmation depth verification for blocks in queries
+  and subscriptions
+- 8f7b1221c: Small fixes for marmamalde simulation
+- 89412c156d: Fixed gas limit estimations returning 2500 on failed transactions
+- 2a7d0978ee: Removed the account by public key queries
+- 3373d6397e: Removed single transfer and event queries due to ineffective
+  primary key usage
+- 0e5cceacc9: Made fungible name non-required for fungible account queries;
+  created default value
+- e44ac6fdc: Changed non-fungible account query to accomodate all transactions
+  made with marmalade-v2
+- fa2cce1cb: Renamed Token and TokenInfo to NonFungibleTokenBalance and
+  NonFungibleToken accordingly
+- f83bdeac1: Added documentation on in-built graphql server
+- 96c7b98341: Improved Schema documentation for events and gas limit
+  estimations. And made it easier to query for a transaction.
+- 6514f74a5f: Fix transaction on events object; regenerate schema
+- 7d1dbdd25: Improved functional documentation, added some query examples
+- b3af5a40e: Added Guard to non fungible chain accounts
+- 1ebfb0a52: Adjust transactions signatures/signers to domain model
+- 3b2e0fe7c: Added input validation to queries and subscriptions
+- fc1308be85: Removed duplicate queries
+- 96e8c2556: Expand non-fungible account transaction search to all marmalade
+  related transactions - v1 and v2
+- 6c2ec7fa9: Change default values in dotenv and fix github token default value
+- ffb089144: Restore nested querying
+- fcdcf99f4: Add minimum depth argument in transaction queries
+- a605cc1a6: Added documentation on non-fungible transaction; fixed marmalade
+  simulation create-token-id method; implemented dynamic assignment of
+  apiVersion instead of hardcoded
+- b7c5ca5789: Refactored transactions to include mempool data; refactored all
+  objects with relation to transactions
+- 077c7c1e6: Add minimum depth parameter on events query and subscription
+- Updated dependencies [3bbfeaaa9]
+  - @kadena/chainweb-node-client@0.6.0
+  - @kadena/client@1.11.0
+  - @kadena/client-utils@0.5.3
+
+## 0.1.11
+
+### Patch Changes
+
+- d5e63d759: Removed obsolete totalCount on some queries and made all array
+  return values connections
+- 66938ac8f: Updated the README
+- 8c8d70d60: Fix typo in transfers object, transaction field\
+- 61ef8bc03: Do not return one object by default on subcriptions if it's not new
+
+## 0.1.10
+
+### Patch Changes
+
+- Updated dependencies [d67b52906]
+  - @kadena/client@1.10.1
+  - @kadena/client-utils@0.5.2
+
+## 0.1.9
+
+### Patch Changes
+
+- Updated dependencies [016b9dbfc]
+  - @kadena/client@1.10.0
+  - @kadena/client-utils@0.5.1
+
+## 0.1.8
+
+### Patch Changes
+
+- a5acd8581: Naming consistency and chainId as stringList
+- 339ac3155: Added more filter options to the events query and subscription
+- b571a8445: Create database index for qualname on events; adjusted the events
+  query
+- 2c1228774: Add fungible account by public key and chain fungible account by
+  public key queries
+- 727191dc9: Added system status checker
+- 21dfce774: Improved gas limit estimation with support for more types of input
+- 6677a71f4: Added Events to Block and removed obsolete fields
+- 8716b6b72: Changed the way object relations are handled. Instead of performing
+  multiple queries we use prisma's relation to select the object
+- ea63873ba: fix an issue where retrieval of marmalade-v2.ledger.get-token-info
+  results in invalid json for `policies` removed `policies` for now.
+- b9b7eaa13: Fetch network id from /info instead of getting it fron environment
+  variables
+- cb969a4d7: Optimize the use of Data Loaders for non-fungible account and chain
+  accounts
+- 1809e6212: Removed confirmation depth as a block property. Added query and
+  subscription for blocks from depth
+- 01b9ed3e9: Refactored transactions to follow domain model. Adapted
+  graph-client to new data format
+- 7e50d4949: Replaced SSE with WebSockets for Subscriptions
+- Updated dependencies [b53c2600c]
+- Updated dependencies [57a734447]
+- Updated dependencies [6ddf094d8]
+- Updated dependencies [6ddf094d8]
+  - @kadena/client@1.9.0
+  - @kadena/client-utils@0.5.0
+  - @kadena/chainweb-node-client@0.5.3
+  - @kadena/cryptography-utils@0.4.2
+  - @kadena/pactjs@0.4.2
+
 ## 0.1.7
 
 ### Patch Changes

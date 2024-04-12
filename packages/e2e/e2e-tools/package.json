@@ -11,7 +11,8 @@
     "lint:fmt": "prettier . --cache --check",
     "lint:pkg": "lint-package",
     "lint:src": "eslint . --ext .js,.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test  --ui"
   },
   "dependencies": {
     "@kadena/tools": "workspace:*",

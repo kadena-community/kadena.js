@@ -10,7 +10,15 @@ builder.subscriptionField('newBlocks', (t) =>
   t.field({
     description: 'Subscribe to new blocks.',
     args: {
-      chainIds: t.arg.stringList({ required: false }),
+      chainIds: t.arg.stringList({
+        required: false,
+        validate: {
+          minLength: 1,
+          items: {
+            minLength: 1,
+          },
+        },
+      }),
     },
     type: [GQLBlock],
     nullable: true,
@@ -29,11 +37,12 @@ async function* iteratorFn(
 ): AsyncGenerator<Block[], void, unknown> {
   const startingTimestamp = new Date().toISOString();
   const blockResult = await getLastBlocks(chainIds, startingTimestamp);
+
   let lastBlock;
 
   if (!nullishOrEmpty(blockResult)) {
     lastBlock = blockResult[0];
-    yield [lastBlock];
+    yield [];
   }
 
   while (!context.req.socket.destroyed) {

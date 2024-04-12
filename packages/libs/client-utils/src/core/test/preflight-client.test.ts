@@ -40,13 +40,9 @@ describe('preflightClient', () => {
     )
       .on('sign', (tx) => {
         expect(tx).toEqual({
-          cmd: '{"payload":{"exec":{"code":"(test 1 2 3)","data":{}}},"signers":[{"pubKey":"pk","scheme":"ED25519"}],"meta":{"gasLimit":2500,"gasPrice":1e-8,"sender":"","ttl":28800,"creationTime":1698278400,"chainId":"1"},"nonce":"kjs:nonce:1698278400000","networkId":"test-network"}',
-          hash: 'ABVQq4j4C4atHw9SzbY7QuSzhyXIkOGo_MI0m9_wT4s',
-          sigs: [
-            {
-              sig: 'sig-hash',
-            },
-          ],
+          cmd: '{"networkId":"test-network","payload":{"exec":{"code":"(test 1 2 3)","data":{}}},"signers":[{"pubKey":"pk","scheme":"ED25519"}],"meta":{"gasLimit":2500,"gasPrice":1e-8,"sender":"","ttl":28800,"creationTime":1698278400,"chainId":"1"},"nonce":"kjs:nonce:1698278400000"}',
+          hash: 'uoS6m3KFHVs-8ByRWfiOweZobK1YzV7WloA1DWM1gd4',
+          sigs: [{ sig: 'sig-hash' }],
         });
       })
       .on('preflight', (result) => {

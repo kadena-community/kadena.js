@@ -3,7 +3,15 @@ import { getLexerOutput } from '../lexer';
 interface IToken {
   value: string;
   // TODO: complete this list and remove string
-  type?: 'lparen' | 'rparen' | 'dot' | 'string' | 'namespace' | 'arom' | string;
+  type?:
+    | 'lparen'
+    | 'rparen'
+    | 'dot'
+    | 'string'
+    | 'namespace'
+    | 'arom'
+    | 'decimal'
+    | string;
 }
 
 export interface IPointer {
@@ -21,6 +29,7 @@ export const getPointer = (contract: string): IPointer => {
   let idx = -1;
   return {
     next: () => {
+      if (idx === tokens.length - 1) return undefined;
       idx += 1;
       return tokens[idx];
     },

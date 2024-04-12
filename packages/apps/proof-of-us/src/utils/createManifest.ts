@@ -7,17 +7,14 @@ const getEventData = async (
   const event = await getProofOfUs(eventId);
   if (!event) return;
   const data = await fetchManifestData(event?.uri);
-
   return data;
 };
 
 export const createManifest = async (
   proofOfUs: IProofOfUsData,
+  signees: IProofOfUsSignee[],
   url: string,
 ): Promise<IProofOfUsTokenMeta> => {
-  const signees =
-    Object.keys(proofOfUs.signees).map((k: any) => proofOfUs.signees[k]) ?? [];
-
   const eventData = await getEventData(proofOfUs.eventId);
 
   return {

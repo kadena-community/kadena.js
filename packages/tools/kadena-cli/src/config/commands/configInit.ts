@@ -1,9 +1,10 @@
 import type { Command } from 'commander';
-import { devnetDefaults } from '../../constants/devnets.js';
-import { writeDevnet } from '../../devnet/utils/devnetHelpers.js';
+import { getNetworkFiles } from '../../constants/networks.js';
 import { ensureNetworksConfiguration } from '../../networks/utils/networkHelpers.js';
+import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { log } from '../../utils/logger.js';
+import { configOptions } from '../configOptions.js';
 
 export const createConfigInitCommand: (
   program: Command,
@@ -11,16 +12,28 @@ export const createConfigInitCommand: (
 ) => void = createCommand(
   'init',
   'Initialize default configuration of the Kadena CLI',
-  [],
-  async () => {
-    log.debug('config init');
+  [configOptions.location()],
+  async (option) => {
+    const { location } = await option.location();
+    log.debug('config init', { location });
 
-    await ensureNetworksConfiguration();
-    log.info(log.color.green('Configured default networks.'));
+    const exists = await services.filesystem.directoryExists(location);
+    if (exists) {
+      log.warning(`The configuration directory already exists at ${location}.`);
+      return;
+    }
 
-    await writeDevnet(devnetDefaults.devnet);
-    log.info(log.color.green('Configured default devnets.'));
+    await services.filesystem.ensureDirectoryExists(location);
 
-    log.info(log.color.green('Configuration complete!'));
+    await ensureNetworksConfiguration(location);
+
+    log.info(log.color.green('Created configuration directory:\n'));
+    log.info(`  ${location}\n`);
+    log.info(log.color.green(`Added default networks:\n`));
+    log.info(
+      `${Object.keys(getNetworkFiles(location))
+        .map((x) => `  - ${x}`)
+        .join('\n')}`,
+    );
   },
 );

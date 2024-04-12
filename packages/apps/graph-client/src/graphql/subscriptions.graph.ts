@@ -24,16 +24,24 @@ export const getTransactionByRequestKey: DocumentNode = gql`
   subscription getTransactionByRequestKey($requestKey: String!) {
     transaction(requestKey: $requestKey) {
       ...AllTransactionFields
-      block {
-        hash
+      result {
+        ... on TransactionResult {
+          block {
+            hash
+          }
+          events {
+            edges {
+              node {
+                ...CoreEventFields
+              }
+            }
+          }
+        }
       }
-      events {
-        ...CoreEventFields
-      }
+
       cmd {
         signers {
-          publicKey
-          signature
+          pubkey
         }
       }
     }

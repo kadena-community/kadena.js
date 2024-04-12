@@ -1,3 +1,4 @@
+import { MonoClose } from '@kadena/react-icons/system';
 import { useObjectRef } from '@react-aria/utils';
 import cn from 'classnames';
 import type { FC, ReactNode } from 'react';
@@ -6,7 +7,6 @@ import type { AriaDialogProps } from 'react-aria';
 import { mergeProps, useDialog } from 'react-aria';
 import type { OverlayTriggerState } from 'react-stately';
 import { useOverlayTriggerState } from 'react-stately';
-import { SystemIcon } from '../Icon';
 import type { IModalProps } from '../Modal/Modal';
 import { Modal } from '../Modal/Modal';
 import { DialogContext } from './Dialog.context';
@@ -47,7 +47,7 @@ const BaseDialog = React.forwardRef<HTMLDivElement, IBaseDialogProps>(
               aria-label="Close Modal"
               title="Close Modal"
             >
-              <SystemIcon.Close />
+              <MonoClose />
             </button>
           )}
         </div>

@@ -1,4 +1,5 @@
-import type { ITreeProps, SystemIcon } from '@kadena/react-ui';
+import type { ITreeProps } from '@kadena/react-ui';
+import type { ReactElement } from 'react';
 
 export interface IMenuItem {
   title: string;
@@ -15,6 +16,6 @@ export interface ISidebarToolbarItem {
   title: string;
   href?: string;
   active?: boolean;
-  icon: keyof typeof SystemIcon;
+  icon: ReactElement;
   items?: ISidebarSubMenuItem[];
 }

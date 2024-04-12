@@ -1,4 +1,4 @@
-import type { ChainId, ICap } from '@kadena/types';
+import type { ChainId, ICap, PactValue } from '@kadena/types';
 import type { AllPartial } from './type-utilities';
 
 /**
@@ -60,6 +60,11 @@ export interface IPactCommand {
     pubKey: string;
     address?: string;
     scheme?: SignerScheme;
+    clist?: ICap[];
+  }>;
+  verifiers?: Array<{
+    name: string;
+    proof: PactValue;
     clist?: ICap[];
   }>;
   networkId: string;

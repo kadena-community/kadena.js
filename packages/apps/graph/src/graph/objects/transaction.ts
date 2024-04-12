@@ -1,46 +1,47 @@
-import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
-import { COMPLEXITY } from '@services/complexity';
-import { dotenv } from '@utils/dotenv';
+import { getMempoolTransactionStatus } from '@services/chainweb-node/mempool';
 import { normalizeError } from '@utils/errors';
-import { PRISMA, builder } from '../builder';
+import { networkData } from '@utils/network';
+import { nullishOrEmpty } from '@utils/nullish-or-empty';
+import { builder } from '../builder';
+import { signersLoader } from '../data-loaders/signers';
 import TransactionCommand from './transaction-command';
-import TransactionResult from './transaction-result';
+import TransactonInfo from './transaction-result';
+import TransactionSigs from './transaction-signature';
 
 export default builder.prismaNode(Prisma.ModelName.Transaction, {
-  description: 'A confirmed transaction.',
-  id: { field: 'blockHash_requestKey' },
-  select: {},
-
+  description: 'A transaction.',
+  // We can assume this id field because we never return connections when
+  // querying transactions from the mempool
+  id: {
+    field: 'blockHash_requestKey',
+  },
   fields: (t) => ({
     hash: t.exposeString('requestKey'),
-    cmd: t.field({
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
-      type: TransactionCommand,
-      select: {
-        senderAccount: true,
-        chainId: true,
-        gasLimit: true,
-        gasPrice: true,
-        ttl: true,
-        creationTime: true,
-        nonce: true,
-        pactId: true,
-        step: true,
-        rollback: true,
-        data: true,
-        proof: true,
-        code: true,
-        requestKey: true,
-      },
+
+    sigs: t.field({
+      type: [TransactionSigs],
       async resolve(parent) {
+        const signers = await signersLoader.load({
+          blockHash: parent.blockHash,
+          requestKey: parent.requestKey,
+          chainId: parent.chainId.toString(),
+        });
+
+        return signers.map((signer) => ({
+          sig: signer.signature,
+        }));
+      },
+    }),
+    cmd: t.field({
+      type: TransactionCommand,
+
+      async resolve(parent, __args, context) {
         try {
-          const signers = await prismaClient.signer.findMany({
-            where: {
-              requestKey: parent.requestKey,
-            },
-            take: PRISMA.DEFAULT_SIZE,
+          const signers = await signersLoader.load({
+            blockHash: parent.blockHash,
+            requestKey: parent.requestKey,
+            chainId: parent.chainId.toString(),
           });
 
           return {
@@ -62,7 +63,7 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
               proof: parent.proof,
             },
             signers,
-            networkId: dotenv.NETWORK_ID,
+            networkId: networkData.networkId,
           };
         } catch (error) {
           throw normalizeError(error);
@@ -70,102 +71,40 @@ export default builder.prismaNode(Prisma.ModelName.Transaction, {
       },
     }),
     result: t.field({
-      type: TransactionResult,
-      select: {
-        badResult: true,
-        continuation: true,
-        gas: true,
-        goodResult: true,
-        height: true,
-        logs: true,
-        metadata: true,
-        eventCount: true,
-        transactionId: true,
-      },
-      resolve(parent) {
-        return {
-          badResult: parent.badResult ? JSON.stringify(parent.badResult) : null,
-          continuation: parent.continuation
-            ? JSON.stringify(parent.continuation)
-            : null,
-          gas: parent.gas,
-          goodResult: parent.goodResult
-            ? JSON.stringify(parent.goodResult)
-            : null,
-          height: parent.height,
-          logs: parent.logs,
-          metadata: parent.metadata ? JSON.stringify(parent.metadata) : null,
-          eventCount: parent.eventCount,
-          transactionId: parent.transactionId,
-        };
-      },
-    }),
-    // relations
-    block: t.prismaField({
-      type: Prisma.ModelName.Block,
-      nullable: true,
-      complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
-      select: {
-        blockHash: true,
-      },
-      async resolve(query, parent) {
+      type: TransactonInfo,
+      resolve: async (parent) => {
         try {
-          return await prismaClient.block.findUnique({
-            ...query,
-            where: {
-              hash: parent.blockHash,
-            },
-          });
-        } catch (error) {
-          throw normalizeError(error);
-        }
-      },
-    }),
+          const status = await getMempoolTransactionStatus(
+            parent.requestKey,
+            parent.chainId.toString(),
+          );
 
-    events: t.prismaField({
-      type: [Prisma.ModelName.Event],
-      nullable: true,
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
-      select: {
-        blockHash: true,
-        requestKey: true,
-      },
-      async resolve(query, parent) {
-        try {
-          return await prismaClient.event.findMany({
-            ...query,
-            where: {
-              requestKey: parent.requestKey,
-              blockHash: parent.blockHash,
-            },
-            take: PRISMA.DEFAULT_SIZE,
-          });
-        } catch (error) {
-          throw normalizeError(error);
-        }
-      },
-    }),
+          if (!nullishOrEmpty(status) && status) {
+            return {
+              status,
+            };
+          }
 
-    transfers: t.prismaField({
-      type: [Prisma.ModelName.Transfer],
-      nullable: true,
-      complexity:
-        COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS * PRISMA.DEFAULT_SIZE,
-      select: {
-        blockHash: true,
-        requestKey: true,
-      },
-      async resolve(query, parent) {
-        try {
-          return await prismaClient.transfer.findMany({
-            ...query,
-            where: {
-              requestKey: parent.requestKey,
-              blockHash: parent.blockHash,
-            },
-            take: PRISMA.DEFAULT_SIZE,
-          });
+          return {
+            hash: parent.requestKey,
+            chainId: parent.chainId,
+            badResult: parent.badResult
+              ? JSON.stringify(parent.badResult)
+              : null,
+            continuation: parent.continuation
+              ? JSON.stringify(parent.continuation)
+              : null,
+            gas: parent.gas,
+            goodResult: parent.goodResult
+              ? JSON.stringify(parent.goodResult)
+              : null,
+            height: parent.height,
+            logs: parent.logs,
+            metadata: parent.metadata ? JSON.stringify(parent.metadata) : null,
+            eventCount: parent.eventCount,
+            transactionId: parent.transactionId,
+            blockHash: parent.blockHash,
+          };
         } catch (error) {
           throw normalizeError(error);
         }

@@ -3,10 +3,11 @@ import type { DocumentNode } from 'graphql';
 
 export const CORE_SIGNER_KEY_FIELDS: DocumentNode = gql`
   fragment CoreSignerKeyFields on Signer {
-    capabilities
-    publicKey
-    requestKey
-    signature
+    clist {
+      args
+      name
+    }
+    pubkey
   }
 `;
 

@@ -33,7 +33,7 @@ export const asideItemClass = style([
     selectors: {
       '&::marker': {
         color: tokens.kda.foundation.color.brand.primary.n60,
-        fontWeight: tokens.kda.foundation.typography.weight.bodyFont.bold,
+        fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.bold,
         display: 'inline-block',
         width: tokens.kda.foundation.spacing.md,
         margin: `0 ${tokens.kda.foundation.spacing.xs}`,

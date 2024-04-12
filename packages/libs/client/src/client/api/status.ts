@@ -24,7 +24,12 @@ export const pollStatus: IPollStatus = (
   requestIds: string[],
   options?: IPollOptions,
 ): IPollRequestPromise<ICommandResult> => {
-  const { onPoll = () => {}, timeout, interval } = options ?? {};
+  const {
+    onPoll = () => {},
+    timeout,
+    interval,
+    confirmationDepth = 0,
+  } = options ?? {};
   let requestKeys = [...requestIds];
   const prs: Record<string, IExtPromise<ICommandResult>> = requestKeys.reduce(
     (acc, requestKey) => ({
@@ -35,7 +40,7 @@ export const pollStatus: IPollStatus = (
   );
   const task = async (): Promise<void> => {
     requestKeys.forEach(onPoll);
-    const pollResponse = await poll({ requestKeys }, host);
+    const pollResponse = await poll({ requestKeys }, host, confirmationDepth);
     Object.values(pollResponse).forEach((item) => {
       prs[item.reqKey].resolve(item);
       requestKeys = requestKeys.filter((key) => key !== item.reqKey);

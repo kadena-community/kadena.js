@@ -80,11 +80,7 @@ export const getInitialNetworks = (): INetworkData[] => {
   return allNetworkObjects;
 };
 
-export const getApiHost = ({
-  api,
-  networkId,
-  chainId,
-}: IApiHostData): string => {
+export const prefixApi = (api: string): string => {
   let scheme = '';
   if (!api.startsWith('http')) {
     scheme = 'https://';
@@ -92,7 +88,15 @@ export const getApiHost = ({
   if (api.includes('localhost')) {
     scheme = 'http://';
   }
-  return `${scheme}${api}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
+  return `${scheme}${api}`;
+};
+
+export const getApiHost = ({
+  api,
+  networkId,
+  chainId,
+}: IApiHostData): string => {
+  return `${prefixApi(api)}/chainweb/0.0/${networkId}/chain/${chainId}/pact`;
 };
 
 export const getEstatsHost = ({

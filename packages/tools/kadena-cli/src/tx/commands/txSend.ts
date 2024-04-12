@@ -11,6 +11,7 @@ import type {
 } from '@kadena/client';
 import { createClient, isSignedTransaction } from '@kadena/client';
 import ora from 'ora';
+import { IS_TEST } from '../../constants/config.js';
 import type {
   ICustomNetworkChoice,
   INetworkCreateOptions,
@@ -19,6 +20,7 @@ import { loadNetworkConfig } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
+import { globalOptions } from '../../utils/globalOptions.js';
 import { getExistingNetworks } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { txOptions } from '../txOptions.js';
@@ -26,6 +28,7 @@ import { parseTransactionsFromStdin } from '../utils/input.js';
 import {
   extractCommandData,
   getTransactionsFromFile,
+  logTransactionDetails,
 } from '../utils/txHelpers.js';
 
 interface INetworkDetails extends INetworkCreateOptions {
@@ -139,6 +142,12 @@ export const sendTransactionAction = async ({
 
       const client = getClient(details);
 
+      await logTransactionDetails(command);
+      const localResponse = await client.local(command);
+      if (localResponse.result.status === 'failure') {
+        throw localResponse.result.error;
+      }
+
       const response = await client.submit(command);
       successfulCommands.push({
         transaction: command,
@@ -152,16 +161,16 @@ export const sendTransactionAction = async ({
   }
 
   if (errors.length === transactionsWithDetails.length) {
-    return { success: false, errors };
+    return { status: 'error', errors };
   } else if (errors.length > 0) {
     return {
-      success: true,
+      status: 'success',
       data: { transactions: successfulCommands },
       warnings: errors,
     };
   }
 
-  return { success: true, data: { transactions: successfulCommands } };
+  return { status: 'success', data: { transactions: successfulCommands } };
 };
 
 export const createSendTransactionCommand: (
@@ -171,7 +180,7 @@ export const createSendTransactionCommand: (
   'send',
   'Send a transaction to the network',
   [
-    txOptions.directory({ disableQuestion: true }),
+    globalOptions.directory({ disableQuestion: true }),
     txOptions.txSignedTransactionFiles(),
     txOptions.txTransactionNetwork(),
     txOptions.txPoll(),
@@ -237,11 +246,14 @@ export const createSendTransactionCommand: (
     }
 
     if (transactionsWithDetails.length > 0) {
-      const loader = ora('Sending transactions...\n').start();
+      const loader = ora({
+        text: 'Sending transactions...\n',
+        isEnabled: !IS_TEST,
+      }).start();
       const result = await sendTransactionAction({ transactionsWithDetails });
       assertCommandError(result, loader);
 
-      if (result.success) {
+      if (result.status === 'success') {
         log.info(
           result.data.transactions
             .map(

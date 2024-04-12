@@ -1,4 +1,5 @@
 import { Button } from '@/components/Button/Button';
+import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
@@ -16,7 +17,7 @@ import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { TextField } from '../TextField/TextField';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
-import { imageWrapper, titleErrorClass } from './style.css';
+import { imageWrapper } from './style.css';
 
 interface IProps {
   next: () => void;
@@ -24,8 +25,7 @@ interface IProps {
 }
 
 export const DetailView: FC<IProps> = ({ next, prev }) => {
-  const { proofOfUs, closeToken, changeTitle, updateProofOfUs } =
-    useProofOfUs();
+  const { proofOfUs, changeTitle, updateProofOfUs } = useProofOfUs();
   const { removeBackground } = useAvatar();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
@@ -50,7 +50,6 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
   };
   const handleClose = async () => {
     if (!confirm('Are you sure you want to stop with this token?')) return;
-    await closeToken({ proofOfUsId: proofOfUs.proofOfUsId });
     setIsMounted(false);
     router.replace('/user');
   };
@@ -78,7 +77,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
       <TitleHeader
         Prepend={() => (
           <>
-            {!isAlreadySigning(proofOfUs.signees) && (
+            {!isAlreadySigning(proofOfUs) && (
               <IconButton onClick={handleRedo}>
                 <MonoArrowBack />
               </IconButton>
@@ -88,7 +87,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         label="Details"
         Append={() => (
           <>
-            {!isAlreadySigning(proofOfUs.signees) && (
+            {!isAlreadySigning(proofOfUs) && (
               <IconButton onClick={handleClose}>
                 <MonoClose />
               </IconButton>
@@ -97,7 +96,7 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
         )}
       />
 
-      {!isAlreadySigning(proofOfUs.signees) ? (
+      {!isAlreadySigning(proofOfUs) ? (
         <>
           <div className={imageWrapper}>
             <ImagePositions />
@@ -115,10 +114,10 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
       )}
 
       <Stack flex={1} />
+      {titleError && <MessageBlock variant="error">{titleError}</MessageBlock>}
       <Button variant="primary" onPress={handleShare}>
         Share <MonoQrCodeScanner />
       </Button>
-      {titleError && <div className={titleErrorClass}>{titleError}</div>}
     </ScreenHeight>
   );
 };

@@ -15,16 +15,22 @@ export interface GasLimitEstimation {
   transaction: string;
 }
 
+export const NonFungibleTokenBalanceName: 'NonFungibleTokenBalance' =
+  'NonFungibleTokenBalance';
+
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export interface Token {
-  id: string;
+export interface NonFungibleTokenBalance {
+  __typename: typeof NonFungibleTokenBalanceName;
+  tokenId: string;
   balance: number;
+  accountName: string;
   chainId: string;
-  info?: TokenInfo;
+  guard: Guard;
+  info?: NonFungibleToken;
   version: string;
 }
 
-export interface TokenInfo {
+export interface NonFungibleToken {
   supply: number;
   precision: number;
   uri: string;
@@ -73,7 +79,7 @@ export interface NonFungibleChainAccount {
   __typename: typeof NonFungibleChainAccountName;
   chainId: string;
   accountName: string;
-  nonFungibles: Token[];
+  nonFungibleTokenBalances: NonFungibleTokenBalance[];
   transactions: Transaction[];
 }
 
@@ -85,6 +91,7 @@ export interface NonFungibleAccount {
   __typename: typeof NonFungibleAccountName;
   accountName: string;
   chainAccounts: NonFungibleChainAccount[];
+  nonFungibleTokenBalances: NonFungibleTokenBalance[];
   transactions: Transaction[];
 }
 
@@ -123,9 +130,16 @@ export interface TransactionMeta {
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
+export interface TransactionMempoolInfo {
+  status: string;
+}
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export interface TransactionResult {
+  hash: string;
+  chainId: bigint;
   badResult: string | null;
+  blockHash: string;
   continuation: string | null;
   gas: bigint;
   goodResult: string | null;
@@ -134,4 +148,33 @@ export interface TransactionResult {
   metadata: string | null;
   eventCount: bigint | null;
   transactionId: bigint | null;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface TransactionCommand {
+  payload: ExecutionPayload | ContinuationPayload;
+  meta: TransactionMeta;
+  signers: Signer[];
+  networkId: string;
+  nonce: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface TransactionCapability {
+  name: string;
+  args: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface TransactionSignature {
+  sig: string;
+}
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface PactQueryResponse {
+  status: string;
+  result: string | null;
+  error: string | null;
+  chainId: string;
+  code: string;
 }

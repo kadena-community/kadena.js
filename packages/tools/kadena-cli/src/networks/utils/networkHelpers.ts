@@ -1,11 +1,13 @@
 import {
   defaultNetworksPath,
+  defaultNetworksSettingsFilePath,
+  getNetworkFiles,
   networkDefaults,
-  networkFiles,
 } from '../../constants/networks.js';
 
 import {
   formatZodError,
+  getDefaultNetworkName,
   mergeConfigs,
   sanitizeFilename,
 } from '../../utils/helpers.js';
@@ -14,6 +16,7 @@ import yaml from 'js-yaml';
 import path from 'path';
 import { z } from 'zod';
 import { services } from '../../services/index.js';
+import { KadenaError } from '../../services/service-error.js';
 
 export interface ICustomNetworkChoice {
   value: string; // | typeof skipSymbol | typeof createSymbol;
@@ -54,12 +57,14 @@ const networkSchema = z.object({
  * @returns {void} - No return value; the function writes directly to a file.
  */
 export async function writeNetworks(
+  kadenaDir: string,
   options: INetworkCreateOptions,
 ): Promise<void> {
   const { network } = options;
   const sanitizedNetwork = sanitizeFilename(network).toLowerCase();
   const networkFilePath = path.join(
-    defaultNetworksPath,
+    kadenaDir,
+    'networks',
     `${sanitizedNetwork}.yaml`,
   );
 
@@ -102,6 +107,9 @@ export async function writeNetworks(
 export async function removeNetwork(
   options: Pick<INetworkCreateOptions, 'network'>,
 ): Promise<void> {
+  if (defaultNetworksPath === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   const { network } = options;
   const sanitizedNetwork = sanitizeFilename(network).toLowerCase();
   const networkFilePath = path.join(
@@ -112,9 +120,22 @@ export async function removeNetwork(
   await services.filesystem.deleteFile(networkFilePath);
 }
 
+export async function removeDefaultNetwork(): Promise<void> {
+  if (defaultNetworksSettingsFilePath === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
+
+  if (await services.filesystem.fileExists(defaultNetworksSettingsFilePath)) {
+    await services.filesystem.deleteFile(defaultNetworksSettingsFilePath);
+  }
+}
+
 export async function loadNetworkConfig(
   network: string,
 ): Promise<INetworksCreateOptions> {
+  if (defaultNetworksPath === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   const networkFilePath = path.join(defaultNetworksPath, `${network}.yaml`);
 
   const file = await services.filesystem.readFile(networkFilePath);
@@ -125,12 +146,49 @@ export async function loadNetworkConfig(
   return yaml.load(file) as INetworksCreateOptions;
 }
 
-export async function ensureNetworksConfiguration(): Promise<void> {
-  await services.filesystem.ensureDirectoryExists(defaultNetworksPath);
+export async function ensureNetworksConfiguration(
+  kadenaDir: string,
+): Promise<void> {
+  await services.filesystem.ensureDirectoryExists(
+    path.join(kadenaDir, 'networks'),
+  );
 
+  const networkFiles = getNetworkFiles(kadenaDir);
   for (const [network, filePath] of Object.entries(networkFiles)) {
     if (!(await services.filesystem.fileExists(filePath))) {
-      await writeNetworks(networkDefaults[network]);
+      await writeNetworks(kadenaDir, networkDefaults[network]);
     }
   }
+}
+
+interface INetworkChoiceOption {
+  network?: string;
+  name?: string;
+}
+
+export async function getNetworksInOrder<T extends INetworkChoiceOption>(
+  networks: T[],
+): Promise<T[]> {
+  const defaultNetworkName = await getDefaultNetworkName();
+
+  const partitionedNetworks = networks.reduce(
+    (acc, obj) => {
+      const networkKey = obj.network ?? obj.name;
+      if (networkKey === defaultNetworkName) {
+        acc.defaultNetworks.push(obj);
+      } else {
+        acc.remainingNetworks.push(obj);
+      }
+      return acc;
+    },
+    { defaultNetworks: [], remainingNetworks: [] } as {
+      defaultNetworks: T[];
+      remainingNetworks: T[];
+    },
+  );
+
+  return [
+    ...partitionedNetworks.defaultNetworks,
+    ...partitionedNetworks.remainingNetworks,
+  ];
 }

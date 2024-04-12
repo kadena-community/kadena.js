@@ -21,7 +21,7 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
     orderIndex: t.expose('orderIndex', {
       type: 'BigInt',
       description:
-        'The order index of this event, in the case that there are multiple events.',
+        'The order index of this event, in the case that there are multiple events in one transaction.',
     }),
     moduleName: t.exposeString('moduleName'),
     name: t.exposeString('name'),
@@ -49,20 +49,24 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
       nullable: true,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
+        transaction: true,
         blockHash: true,
         requestKey: true,
       },
       async resolve(query, parent) {
         try {
-          return await prismaClient.transaction.findUnique({
-            ...query,
-            where: {
-              blockHash_requestKey: {
-                blockHash: parent.blockHash,
-                requestKey: parent.requestKey,
+          return (
+            parent.transaction ||
+            (await prismaClient.transaction.findUnique({
+              ...query,
+              where: {
+                blockHash_requestKey: {
+                  blockHash: parent.blockHash,
+                  requestKey: parent.requestKey,
+                },
               },
-            },
-          });
+            }))
+          );
         } catch (error) {
           throw normalizeError(error);
         }
@@ -74,16 +78,20 @@ export default builder.prismaNode(Prisma.ModelName.Event, {
       nullable: false,
       complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
       select: {
+        block: true,
         blockHash: true,
       },
       async resolve(query, parent) {
         try {
-          return await prismaClient.block.findUniqueOrThrow({
-            ...query,
-            where: {
-              hash: parent.blockHash,
-            },
-          });
+          return (
+            parent.block ||
+            (await prismaClient.block.findUniqueOrThrow({
+              ...query,
+              where: {
+                hash: parent.blockHash,
+              },
+            }))
+          );
         } catch (error) {
           throw normalizeError(error);
         }
