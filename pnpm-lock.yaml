@@ -727,6 +727,9 @@ importers:
       react-qrcode-logo:
         specifier: ^2.9.0
         version: 2.9.0(react-dom@18.2.0)(react@18.2.0)
+      react-swipeable-list:
+        specifier: ^1.9.3
+        version: 1.9.3
       swr:
         specifier: ^2.2.2
         version: 2.2.4(react@18.2.0)
@@ -29850,6 +29853,10 @@ packages:
       react: 18.2.0
       tslib: 2.6.2
     dev: true
+
+  /react-swipeable-list@1.9.3:
+    resolution: {integrity: sha512-YinT0+Ww3SNJZaTVBGAN86tNL2cka5s4m8MkQfgp8kdoORuGaPoo+PemFK3kA3mb6vkSZc0IBCp6Ci3y1Er21Q==}
+    dev: false
 
   /react-tabs@3.2.3(react@18.2.0):
     resolution: {integrity: sha512-jx325RhRVnS9DdFbeF511z0T0WEqEoMl1uCE3LoZ6VaZZm7ytatxbum0B8bCTmaiV0KsU+4TtLGTGevCic7SWg==}

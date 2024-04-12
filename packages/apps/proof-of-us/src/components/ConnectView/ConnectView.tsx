@@ -1,17 +1,19 @@
+import { Confirmation } from '@/components/Confirmation/Confirmation';
+import { showModalBtnWrapperClass } from '@/components/ConnectView/styles.css';
 import { ImagePositions } from '@/components/ImagePositions/ImagePositions';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
 import { useAccount } from '@/hooks/account';
 import { useSignToken } from '@/hooks/data/signToken';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { env } from '@/utils/env';
-import { getReturnHostUrl } from '@/utils/getReturnUrl';
+import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
 import { getAccountSignee, isAlreadySigning } from '@/utils/isAlreadySigning';
 import { MonoSignature } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import type { FC } from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '../Button/Button';
 import { ListSignees } from '../ListSignees/ListSignees';
 import { Modal } from '../Modal/Modal';
@@ -26,6 +28,9 @@ interface IProps {
 
 export const ConnectView: FC<IProps> = () => {
   const { signToken } = useSignToken();
+  const params = useSearchParams();
+  const shouldAddParam = params.get('shouldAdd');
+
   const { account } = useAccount();
   const [signed, setSigned] = useState(false);
   const [showMaxModal, setShowMaxModal] = useState(false);
@@ -36,18 +41,34 @@ export const ConnectView: FC<IProps> = () => {
   const check2AddSignee = async () => {
     if (!proofOfUs?.proofOfUsId || !signees) return;
     const isSigneeResult = await isSignee();
-    console.log(22, isSigneeResult, signees.length);
-    if (signees.length >= env.MAXSIGNERS && !isSigneeResult) {
+
+    if (
+      (signees.length >= env.MAXSIGNERS && !isSigneeResult) ||
+      isAlreadySigning(proofOfUs)
+    ) {
       setShowMaxModal(true);
       return;
     }
 
     addSignee();
+    router.replace(getReturnUrl());
+  };
+
+  const checkIfSignee = async () => {
+    if (!proofOfUs?.proofOfUsId || !signees) return;
+    const isSigneeResult = await isSignee();
+    if (isSigneeResult) return;
+
+    router.replace('/');
   };
 
   useEffect(() => {
+    if (!shouldAddParam) {
+      checkIfSignee();
+      return;
+    }
     check2AddSignee();
-  }, [proofOfUs?.proofOfUsId, signees?.length]);
+  }, [proofOfUs?.proofOfUsId, signees?.length, shouldAddParam]);
 
   const handleJoin = async () => {
     signToken();
@@ -62,16 +83,21 @@ export const ConnectView: FC<IProps> = () => {
     router.replace('/user');
   };
 
+  const signee = useMemo(() => {
+    return getAccountSignee(signees, account);
+  }, [signees, account]);
+
   const initSigned = useCallback(
     async (proofOfUs?: IProofOfUsData) => {
       if (!proofOfUs) return;
       const innerSigned = await hasSigned();
       setSigned(innerSigned);
+
       if (proofOfUs.tokenId && proofOfUs.requestKey && innerSigned) {
         router.replace(
-          `${getReturnHostUrl()}/user/proof-of-us/t/${proofOfUs.tokenId}/${
+          `${getReturnHostUrl()}/user/proof-of-us/mint/${
             proofOfUs.requestKey
-          }`,
+          }?id=${proofOfUs.proofOfUsId}`,
         );
       }
     },
@@ -86,9 +112,13 @@ export const ConnectView: FC<IProps> = () => {
 
   if (showMaxModal) {
     return (
-      <Modal label="Maximum signees" onClose={() => {}}>
+      <Modal label="No more signees allowed" onClose={() => {}}>
         <Stack flexDirection="column" gap="md">
-          <Text>There are already a max of {env.MAXSIGNERS} signed in.</Text>
+          <Text>
+            There are already a max of {env.MAXSIGNERS} signed in.
+            <br />
+            Or we are already signing the NFT{' '}
+          </Text>
 
           <Link href="/user">
             <Button>Close</Button>
@@ -97,13 +127,16 @@ export const ConnectView: FC<IProps> = () => {
       </Modal>
     );
   }
+
   return (
     <ScreenHeight>
       <TitleHeader label={proofOfUs.title ?? ''} />
       <ImagePositions />
       <ListSignees />
       <Stack flex={1} />
-      {isAlreadySigning(proofOfUs) && !signed ? (
+      {isAlreadySigning(proofOfUs) &&
+      !signed &&
+      signee?.signerStatus !== 'notsigning' ? (
         <Stack gap="md">
           <Button onPress={handleJoin}>
             Sign <MonoSignature />
@@ -115,14 +148,14 @@ export const ConnectView: FC<IProps> = () => {
             Dashboard
           </Button>
 
-          {proofOfUs.tokenId ? (
-            <Link
-              href={`/user/proof-of-us/t/${proofOfUs.tokenId}/${proofOfUs.requestKey}`}
+          {proofOfUs.tokenId ? null : (
+            <Confirmation
+              text="Are you sure you want to be removed from the list?"
+              action={handleSignOff}
+              showModalBtnWrapperClass={showModalBtnWrapperClass}
             >
-              <Button>Go to Proof</Button>
-            </Link>
-          ) : (
-            <Button onPress={handleSignOff}>Drop out!</Button>
+              <Button>Drop out!</Button>
+            </Confirmation>
           )}
         </Stack>
       )}

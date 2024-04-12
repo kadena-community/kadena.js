@@ -1,3 +1,4 @@
+//firebase returns objects, instead of arrays
 export const convertSignersObjectToArray = (
   obj?: Record<string, IProofOfUsSignee>,
 ): IProofOfUsSignee[] => {
