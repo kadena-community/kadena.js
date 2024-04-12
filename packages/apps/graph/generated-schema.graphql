@@ -393,7 +393,7 @@ type Query {
   fungibleChainAccount(accountName: String!, chainId: String!, fungibleName: String): FungibleChainAccount
 
   """Retrieve a chain account by public key."""
-  fungibleChainAccountByPublicKey(chainId: String!, publicKey: String!): [FungibleChainAccount!]
+  fungibleChainAccountsByPublicKey(chainId: String!, publicKey: String!): [FungibleChainAccount!]
 
   """
   Estimate the gas limit for one or more transactions. Throws an error when the transaction fails or is invalid. The input accepts a JSON object and based on the parameters passed it will determine what type of format it is and return the gas limit estimation. The following types are supported:

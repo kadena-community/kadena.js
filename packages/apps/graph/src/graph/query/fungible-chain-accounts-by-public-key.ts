@@ -5,7 +5,7 @@ import { builder } from '../builder';
 import FungibleChainAccount from '../objects/fungible-chain-account';
 import type { FungibleChainAccount as FungibleChainAccountType } from '../types/graphql-types';
 
-builder.queryField('fungibleChainAccountByPublicKey', (t) =>
+builder.queryField('fungibleChainAccountsByPublicKey', (t) =>
   t.field({
     description: 'Retrieve a chain account by public key.',
     args: {
