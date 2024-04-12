@@ -1,5 +1,11 @@
 # @kadena/graph
 
+## 1.0.1
+
+### Patch Changes
+
+- 2ff01d300: Optimize events subscription; minor fix in documentation
+
 ## 1.0.0
 
 ### Major Changes
