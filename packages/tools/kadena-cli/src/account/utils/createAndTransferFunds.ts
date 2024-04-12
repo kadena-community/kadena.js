@@ -31,7 +31,7 @@ export async function createAndTransferFund({
   try {
     const { chainId, amount, networkConfig } = config;
 
-    if (networkConfig.networkId === 'mainnet01') {
+    if (networkConfig.networkId.includes('mainnet')) {
       throw new Error('Cannot transfer fund on mainnet');
     }
 

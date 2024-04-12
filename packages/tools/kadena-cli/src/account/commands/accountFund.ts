@@ -50,10 +50,9 @@ export const createAccountFundCommand = createCommand(
     }
 
     if (!notEmpty(accountConfig)) {
-      log.error(
-        `\nAccount details are missing. Please check selected "${account}" account alias file.\n`,
+      return log.error(
+        `Account details are missing. Please check "${account}" account alias file.`,
       );
-      return;
     }
 
     const config = {
@@ -65,9 +64,9 @@ export const createAccountFundCommand = createCommand(
 
     log.debug('account-fund:action', config);
 
-    if (['mainnet01'].includes(networkConfig.networkId)) {
+    if (networkConfig.networkId.includes('mainnet')) {
       return log.error(
-        `Network "${network}" of id "${networkConfig.networkId}" is not supported.`,
+        `Fundings are not allowed on "${networkConfig.networkId}" network.`,
       );
     }
 
@@ -75,7 +74,7 @@ export const createAccountFundCommand = createCommand(
       return log.error(`You can't fund an account other than "coin" fungible.`);
     }
 
-    if (networkConfig.networkId === 'development') {
+    if (networkConfig.networkId.includes('development')) {
       if (!(await networkIsAlive(networkConfig.networkHost))) {
         return log.error(
           `Devnet host "${networkConfig.networkHost}" is not running.`,

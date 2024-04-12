@@ -27,8 +27,10 @@ export async function transferFund({
   try {
     const { chainId, amount, networkConfig } = config;
 
-    if (networkConfig.networkId === 'mainnet01') {
-      throw new Error('Cannot transfer fund on mainnet');
+    if (networkConfig.networkId.includes('mainnet')) {
+      throw new Error(
+        `Cannot transfer fund on mainnet with network ID: "${networkConfig.networkId}"`,
+      );
     }
 
     const keyPair = genKeyPair();
