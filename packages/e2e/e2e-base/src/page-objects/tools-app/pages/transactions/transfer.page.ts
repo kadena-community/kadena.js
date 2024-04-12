@@ -82,6 +82,12 @@ export class TransferPage {
     }
   }
 
+  public async connectLedger(): Promise<void> {
+    await this._page
+      .getByRole('button', { name: 'Connect Ledger', exact: true })
+      .click();
+  }
+
   public async signTransaction(): Promise<void> {
     await this._page.getByRole('button', { name: 'Sign', exact: true }).click();
   }
