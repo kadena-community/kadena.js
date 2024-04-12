@@ -1,10 +1,13 @@
 import yaml from 'js-yaml';
+import { vol } from 'memfs';
+import { statSync } from 'node:fs';
 import path from 'node:path';
 import sanitize from 'sanitize-filename';
 import {
   CWD_KADENA_DIR,
   ENV_KADENA_DIR,
   HOME_KADENA_DIR,
+  IS_TEST,
   WALLET_DIR,
   YAML_EXT,
 } from '../../constants/config.js';
@@ -31,6 +34,18 @@ import type {
   IWalletCreate,
 } from './config.types.js';
 
+// To avoid promises / asynchrounous operations in the constructor
+// instead of using a filesystem service, created "directoryExists" helper
+const directoryExists = (path?: string): boolean => {
+  if (path === undefined) return false;
+  try {
+    const stat = IS_TEST ? vol.statSync.bind(vol) : statSync;
+    return stat(path).isDirectory();
+  } catch (e) {
+    return false;
+  }
+};
+
 export interface IConfigService {
   getDirectory(): string | null;
   // Key
@@ -52,22 +67,18 @@ export class ConfigService implements IConfigService {
     private services: Services,
     directory?: string,
   ) {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this.setDirectory(directory);
   }
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  private async setDirectory(directory?: string): Promise<void> {
+  private setDirectory(directory?: string): void {
     // Priority 1: directory passed in constructor
     if (directory !== undefined) {
       this.directory = directory;
       return;
     }
     // Priority 2: ENV KADENA_DIR
-    if (
-      ENV_KADENA_DIR !== undefined &&
-      (await this.services.filesystem.directoryExists(ENV_KADENA_DIR))
-    ) {
+    if (ENV_KADENA_DIR !== undefined && directoryExists(ENV_KADENA_DIR)) {
       this.directory = ENV_KADENA_DIR!;
       return;
     } else if (ENV_KADENA_DIR !== undefined) {
@@ -77,12 +88,12 @@ export class ConfigService implements IConfigService {
       log.warning();
     }
     // Priority 3: CWD .kadena dir
-    if (await this.services.filesystem.directoryExists(CWD_KADENA_DIR)) {
+    if (directoryExists(CWD_KADENA_DIR)) {
       this.directory = CWD_KADENA_DIR;
       return;
     }
     // Priority 4: HOME .kadena dir
-    if (await this.services.filesystem.directoryExists(HOME_KADENA_DIR)) {
+    if (directoryExists(HOME_KADENA_DIR)) {
       this.directory = HOME_KADENA_DIR;
       return;
     }
