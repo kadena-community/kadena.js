@@ -47,7 +47,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
 
     const proof: IProofOfUsData = {
-      proofOfUsId: data.properties.eventId,
+      proofOfUsId: data.properties.eventId || '',
       type: 'attendance',
       requestKey: tx.hash,
       title: data.name,
@@ -55,7 +55,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
       mintStatus: 'init',
       imageUri: data.image,
       date: Date.now(),
-      eventId: data.properties.eventId,
+      eventId: data.properties.eventId || '',
       eventName: data.properties.eventName,
       backgroundColor: data.properties.avatar?.backgroundColor,
       tx: transaction,

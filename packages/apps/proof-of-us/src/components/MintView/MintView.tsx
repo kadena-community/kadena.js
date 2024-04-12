@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Button } from '../Button/Button';
-import { Confirmation } from '../Confirmation/Confirmation';
 import { ListSignees } from '../ListSignees/ListSignees';
 import { Modal } from '../Modal/Modal';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
