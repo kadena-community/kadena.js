@@ -57,7 +57,6 @@ export const SignFormReceiver = ({
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
 
   const {
-    register,
     formState: { errors },
     getValues,
     control,
