@@ -41,7 +41,7 @@ export const createAccountFundCommand = createCommand(
     const { account, accountConfig } = await option.account();
     const { amount } = await option.amount();
     const { network, networkConfig } = await option.network({
-      allowedNetworkIds: ['testnet04', 'development'],
+      allowedNetworkIds: ['testnet', 'development'],
     });
     const { chainId } = await option.chainId();
 

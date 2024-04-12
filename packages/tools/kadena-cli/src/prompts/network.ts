@@ -231,7 +231,7 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
 
   const filteredNetworks = existingNetworksData.filter((network) =>
     allowedNetworkIds.length > 0
-      ? allowedNetworkIds.includes(network.networkId)
+      ? allowedNetworkIds.some((allowed) => network.networkId.includes(allowed))
       : true,
   );
 
