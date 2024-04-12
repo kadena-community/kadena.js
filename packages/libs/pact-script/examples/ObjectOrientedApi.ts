@@ -6,15 +6,15 @@ interface coin_scheme {
 @namespace('free')
 class coin implements fungible_v2, fungible_xchain_v1 {
   /**
-   * docsfasd
+   * doc can be here
    */
   @governance GOVERNANCE() {
     enforce(false, 'Enforce non-upgradeability');
   }
 
-  coin_scheme: coin_scheme;
+  @defscheme coin_scheme: coin_scheme;
 
-  coin_table: Table<coin_scheme>;
+  @deftable coin_table: Table<coin_scheme>;
 
   @defcap DEBIT(sender: string) {
     enforce_guard(this.coin_table.read(sender).guard);
@@ -58,8 +58,7 @@ class coin implements fungible_v2, fungible_xchain_v1 {
     enforce(amount > 0.0, 'credit amount must be positive');
     enforce_unit(amount);
     require_capability(this.CREDIT(account));
-    const { balance = -1.0, guard: retg = guard } =
-      this.coin_table.read(account);
+    const { balance, guard: retg } = this.coin_table.read(account);
     enforce(retg === guard, 'account guards do not match');
     const is_new = balance === -1 ? enforce_reserved(account, guard) : false;
     return this.coin_table.write(account, {

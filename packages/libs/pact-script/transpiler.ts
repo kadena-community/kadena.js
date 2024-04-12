@@ -22,8 +22,8 @@ const asPactType = (type: ts.TypeNode) => {
   return 'string';
 };
 
-const binaryOperatorMapper = (operator: ts.BinaryOperatorToken) => {
-  switch (operator.kind) {
+const operatorMap = (code: number) => {
+  switch (code) {
     case ts.SyntaxKind.ExclamationEqualsEqualsToken:
     case ts.SyntaxKind.ExclamationEqualsToken:
       return '!=';
@@ -43,16 +43,18 @@ const binaryOperatorMapper = (operator: ts.BinaryOperatorToken) => {
     case ts.SyntaxKind.PlusToken:
       return '+';
     default: {
-      throw new Error(
-        `Error: TOKEN: ${ts.SyntaxKind[operator.kind]} is not supported`,
-      );
+      throw new Error(`Error: TOKEN: ${ts.SyntaxKind[code]} is not supported`);
     }
   }
 };
 
+const binaryOperatorMapper = (operator: ts.BinaryOperatorToken) => {
+  return operatorMap(operator.kind);
+};
+
 const createExpression = (
-  statement: ts.Expression | ts.VariableStatement,
-): string => {
+  statement: ts.Expression | ts.VariableStatement | ts.Block,
+): string | { code: string; openedBlock: number } => {
   switch (statement.kind) {
     case ts.SyntaxKind.FalseKeyword:
       return 'false';
@@ -64,8 +66,10 @@ const createExpression = (
       return (statement as ts.Identifier).escapedText.toString();
     case ts.SyntaxKind.StringLiteral:
       return `"${(statement as ts.StringLiteral).text}"`;
-    case ts.SyntaxKind.PrefixUnaryExpression:
-      return;
+    case ts.SyntaxKind.PrefixUnaryExpression: {
+      const pue = statement as ts.PrefixUnaryExpression;
+      return `${operatorMap(pue.operator)}${createExpression(pue.operand)}`;
+    }
     case ts.SyntaxKind.CallExpression: {
       const callExpression = statement as ts.CallExpression;
       const functionName = getFunctionName(callExpression);
@@ -96,16 +100,64 @@ const createExpression = (
     case ts.SyntaxKind.FirstStatement:
     case ts.SyntaxKind.VariableStatement: {
       const variableStatement = statement as ts.VariableStatement;
-      return variableStatement.declarationList.declarations
-        .map((dec) => {
+      return (
+        variableStatement.declarationList.declarations.map((dec) => {
           if (!dec.initializer) {
             throw new Error('variable should have initializer');
           }
-          return `(let ((${
-            (dec.name as ts.Identifier).escapedText
-          } ${createExpression(dec.initializer)}))`;
-        })
-        .join('\n');
+          if (dec.name.kind === ts.SyntaxKind.Identifier) {
+            return {
+              code: `(let ((${dec.name.escapedText} ${createExpression(
+                dec.initializer,
+              )}))`,
+              openedBlock: 1,
+            };
+          }
+          if (dec.name.kind === ts.SyntaxKind.ObjectBindingPattern) {
+            const elements = dec.name.elements;
+            const vars = elements.map((elm) => {
+              if (elm.name.kind !== ts.SyntaxKind.Identifier) {
+                return { name: formatError(elm.name) };
+              }
+              return {
+                name: elm.name.escapedText,
+                propertyName: elm.propertyName
+                  ? (elm.propertyName as ts.Identifier).escapedText
+                  : undefined,
+                defaultValue: elm.initializer
+                  ? createExpression(elm.initializer)
+                  : undefined,
+              };
+            });
+
+            if (vars.length === 1 && vars[0].defaultValue === undefined) {
+              const [variable] = vars;
+              return {
+                code: `(let ((${variable.name} (at "${
+                  variable.propertyName ?? variable.name
+                }" ${createExpression(dec.initializer)})))`,
+                openedBlock: 1,
+              };
+            }
+            if (vars.length > 1) {
+              const tempVariable = 'temp_variable';
+              const varChain = vars.reduce(
+                (acc, variable) =>
+                  `(let ((${variable.name} (at "${
+                    variable.propertyName ?? variable.name
+                  }" ${tempVariable})))${acc ? `\n${indent(2)(acc)}` : ''}`,
+                '',
+              );
+              return {
+                code: `(let (( ${tempVariable} ${createExpression(
+                  dec.initializer,
+                )}))\n${indent(2)(varChain)}`,
+                openedBlock: vars.length + 1,
+              };
+            }
+          }
+        })[0] ?? ''
+      );
     }
 
     case ts.SyntaxKind.ArrayLiteralExpression: {
@@ -121,8 +173,25 @@ const createExpression = (
       )} ${createExpression(whenFalse)})`;
     }
 
+    case ts.SyntaxKind.ObjectLiteralExpression: {
+      const objectLiteralExpression = statement as ts.ObjectLiteralExpression;
+      const props = objectLiteralExpression.properties.map((prop) => ({
+        name: (prop.name! as ts.Identifier).escapedText,
+        value: createExpression((prop as ts.PropertyAssignment).initializer),
+      }));
+      return `{ ${props
+        .map(({ name, value }) => `${name}: ${value}`)
+        .join(',')} }`;
+    }
+
     case ts.SyntaxKind.ArrowFunction: {
       const arrowFunction = statement as ts.ArrowFunction;
+      return createExpression(arrowFunction.body as ts.Block);
+    }
+
+    case ts.SyntaxKind.Block: {
+      const statements = createBlock(statement as ts.Block);
+      return `\n${indent(2)(statements.join('\n'))}\n`;
     }
 
     default:
@@ -138,10 +207,49 @@ const getFunctionName = (callExpression: ts.CallExpression) => {
     callExpression.expression as ts.PropertyAccessExpression;
   let name = '';
   while (next.kind === ts.SyntaxKind.PropertyAccessExpression) {
-    name = `${name ? `${name}.` : ''}${next.name.escapedText}`;
+    name = `${next.name.escapedText}${name ? `.${name}` : ''}`;
     next = next.expression as ts.PropertyAccessExpression;
   }
   return name;
+};
+
+const createBlock = (block: ts.Block) => {
+  let blockOpened = 0;
+
+  const statements: string[] =
+    block.statements
+      .map((statement) => {
+        let expression: ts.Expression | ts.VariableStatement | undefined;
+        if (statement.kind === ts.SyntaxKind.ExpressionStatement) {
+          expression = (statement as ts.ExpressionStatement).expression;
+        }
+        if (statement.kind === ts.SyntaxKind.VariableStatement) {
+          expression = statement as ts.VariableStatement;
+        }
+        if (statement.kind === ts.SyntaxKind.ReturnStatement) {
+          expression = (statement as ts.ReturnStatement).expression;
+        }
+        if (expression) {
+          const res = createExpression(expression);
+          if (typeof res === 'string') {
+            return indent(blockOpened * 2)(res);
+          }
+          const { code, openedBlock } = res;
+          console.log('code', code);
+          const old = blockOpened;
+          blockOpened += openedBlock;
+          try {
+            return indent(old * 2)(code);
+          } catch (e) {
+            return e.message;
+          }
+        }
+
+        return formatError(statement);
+      })
+      .filter(Boolean) ?? [];
+
+  return [...statements, ...(blockOpened ? [')'.repeat(blockOpened)] : [])];
 };
 
 const extractMethod = (method: ts.MethodDeclaration) => {
@@ -157,51 +265,13 @@ const extractMethod = (method: ts.MethodDeclaration) => {
     type: parameter.type ? asPactType(parameter.type) : 'unknown',
   }));
 
-  let blockOpened = 0;
-  const statements: string[] =
-    method.body?.statements
-      .map((statement) => {
-        if (statement.kind === ts.SyntaxKind.ExpressionStatement) {
-          const expression = (statement as ts.ExpressionStatement).expression;
-          try {
-            return indent(blockOpened * 2)(createExpression(expression));
-          } catch (e) {
-            return e.message;
-          }
-        }
-        if (statement.kind === ts.SyntaxKind.VariableStatement) {
-          blockOpened += 1;
-          const variableStatement = statement as ts.VariableStatement;
-          try {
-            return indent((blockOpened - 1) * 2)(
-              createExpression(variableStatement),
-            );
-          } catch (e) {
-            return e.message;
-          }
-        }
-        if (statement.kind === ts.SyntaxKind.ReturnStatement) {
-          const expression = (statement as ts.ReturnStatement).expression;
-          if (expression) {
-            try {
-              return indent(blockOpened * 2)(createExpression(expression));
-            } catch (e) {
-              return e.message;
-            }
-          }
-          return;
-        }
-        return formatError(statement);
-      })
-      .filter(Boolean) ?? [];
+  const statements = method.body ? createBlock(method.body) : [];
 
   return {
     decorator: decoratorName,
     method: (method.name as ts.Identifier).escapedText,
     parameters,
-    statements: blockOpened
-      ? [...statements, ')'.repeat(blockOpened)]
-      : statements,
+    statements,
   };
 };
 
