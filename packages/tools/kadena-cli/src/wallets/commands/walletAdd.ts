@@ -26,8 +26,9 @@ export const createGenerateWalletCommand: (
   [
     walletOptions.walletName({ isOptional: false }),
     securityOptions.createPasswordOption({
-      message: 'Enter the new wallet password',
-      confirmPasswordMessage: 'Re-enter the password',
+      message: 'Enter the new wallet password:',
+      confirmPasswordMessage: 'Re-enter the password:',
+      confirmEmptyPassword: true,
     }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
     walletOptions.createAccount(),
@@ -92,10 +93,7 @@ export const createGenerateWalletCommand: (
             [[relativeToCwd(accountFilepath)]],
           ),
         );
-        // TODO: ask to fund created account
-        // - prompt "Do you want to fund the account?"
-        // - prompt network
-        // - prompt chainId
+
         log.info(`\nTo fund the account, use the following command:`);
         log.info(`kadena account fund --account ${accountName}`);
       }
