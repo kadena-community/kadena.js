@@ -24,7 +24,9 @@ describe('transferFund', () => {
         },
       });
     }).rejects.toEqual(
-      Error('Failed to transfer fund : "Cannot transfer fund on mainnet"'),
+      Error(
+        'Failed to transfer fund : "Cannot transfer fund on mainnet with network ID: "mainnet01""',
+      ),
     );
   });
 
