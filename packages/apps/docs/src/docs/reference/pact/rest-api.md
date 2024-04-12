@@ -12,26 +12,327 @@ tags: ['pact', 'rest api', 'pact api', 'pact api reference']
 
 # Pact REST API
 
-For the latest OpenAPI documentation, see [Pact OpenAPI](/reference/pact/api).
+For full documentation of Pact endpoints for Chainweb nodes, including sample requests and responses, see the [Pact OpenAPI](https://api.chainweb.com/openapi/pact.html).
 
-### Pact built-in server
+## local
 
-Pact ships with a built-in HTTP server and SQLite backend. To start up the
-server issue `pact -s config.yaml`, with a suitable config.
+Use the `/local` endpoint to submit a synchronous command for non-transactional execution. 
+In a blockchain environment, this call would be a node-local “dirty read” that can act as a read-evaluate-print-loop for testing or a fully gassed transaction simulation and transaction validation. 
+Any database writes or changes to the environment are rolled back.
 
-### pact-lang-api JS Library
+`POST /local`
 
-The `pact-lang-api` JS library is
-[available via npm](https://www.npmjs.com/package/pact-lang-api) for web
+### Query parameters
+
+Content type: application/json
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `preflight`	| boolean | Trigger fully-gassed mainnet transaction execution simulation and transaction metadata validations.
+| `rewindDepth`	| integer >= 0 | Rewind transaction execution environment by a number of block heights.
+| `signatureVerification`	| boolean | Require user signature verification when validating transaction metadata.
+
+### Request body schema
+
+Content type: application/json
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `cmd` (required) | string | Stringified JSON payload object. Canonic non-malleable signed transaction data.
+| `hash` (required) | string <base64url> | Unpadded Base64URL of Blake2s-256 hash of the cmd field value. Serves as a command requestKey since each transaction must be unique.
+| `sigs` (required) | Array of objects >= 0 items | List of signatures corresponding one-to-one with signers array in the payload.
+
+### Successful response (200) 
+
+Content type: application/json
+
+Executing the command returns either the command results or preflight results.
+
+#### Command results
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `reqKey` (required) | string <base64url> | Unique ID of a Pact transaction consisting of its hash. (Request Key) = 43 characters ^[a-zA-Z0-9_-]{43}$
+| `result` (required) | object | Success (object) or Failure (object).
+| `txId`	| number | Database-internal transaction tracking ID.
+| `logs` (required) | string | Backend-specific value providing image of database logs.
+| `metaData` (required) | object | Metadata included with the transaction.
+| `events` | Array of object | Array of event objects.
+| `continuation`	| object | Describes result of a `defpact` execution.
+| `gas` (required) | number | Gas required to execute the transaction.
+
+#### Preflight /local results
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `preflightResult` (required) | object (Command Result) | The result of attempting to execute a single well-formed Pact command.
+| `preflightWarnings` (required) | Array of strings | A list of warnings associated with deprecated features in upcoming Pact releases. 
+
+### Invalid command response (400) 
+
+Content type: text/plain
+
+The command was invalid.
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| | string (Validation Failure) | Failure message of unexecuted command due to an invalid gas payer, metadata, or other environments issues.
+
+## send
+
+Use the `/send` endpoint for asynchronous submission of one or more public (unencrypted) commands to the blockchain for execution.
+
+`POST /send`
+
+### Request body schema
+
+Content type: application/json
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `cmds` (required) | Array of objects | Pact commands (non-empty).
+
+### Successful response (200) 
+
+Content type: application/json
+
+The commands were successfully submitted. 
+The response contains their request keys.
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `requestKeys` (required) | Array of strings | Request keys you can use with `poll` or `listen` to retrieve results. Request key = 43 characters ^[a-zA-Z0-9_-]{43}$.
+
+### Invalid command response (400) 
+
+Content type: text/plain
+
+The command was invalid.
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| | string (Validation Failure) | Failure message of unexecuted command due to an invalid gas payer, metadata, or other environments issues.
+
+## poll
+
+Use the `/poll` endpoint to check for one or more command results by request key.
+
+`POST /poll`
+
+### Query parameters
+
+Content type: application/json
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `confirmationDepth`	| integer >= 0 | Configures how many blocks should be mined until the requested transaction is ready.
+
+### Request body schema
+
+Content type: application/json
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `requestKeys` (required) | Array of strings | Request keys (non-empty). [ items = 43 characters ^[a-zA-Z0-9_-]{43}$ ]
+
+#### Request example
+
+```json
+{
+  "requestKeys": [
+    "y3aWL72-3wAy7vL9wcegGXnstH0lHi-q-cfxkhD5JCw"
+  ]
+}
+```
+
+### Successful response (200) 
+
+Content type: application/json
+
+The command results for some of the request keys included in the `/poll` request.
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `property-name*` | object (Command Result) | The result of attempting to execute a single well-formed Pact command.
+| `reqKey` (required) | string <base64url> | Unique ID of a pact transaction consisting of its hash. Request key = 43 characters ^[a-zA-Z0-9_-]{43}$.
+| `result` (required) | object | Success (object) or Failure (object).
+| `txId` | number | Database-internal transaction tracking ID.
+| `logs` (required) | string | Backend-specific value providing image of database logs.
+| `metaData` (required) | object | Metadata included with the transaction.
+| `events` | Array of object | Array of event objects.
+| `continuation` | object | Describes result of a `defpact` execution.
+| `gas` (required) | number | Gas consumed by the transaction.
+| `events`
+
+#### Response example
+
+```json
+{
+  "property1": {
+    "gas": 123,
+    "result": {},
+    "reqKey": "cQ-guhschk0wTvMBtrqc92M7iYm4S2MYhipQ2vNKxoI",
+    "logs": "wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8",
+    "metaData": null,
+    "continuation": null,
+    "txId": "456",
+    "events": []
+  },
+  "property2": {
+    "gas": 123,
+    "result": {},
+    "reqKey": "cQ-guhschk0wTvMBtrqc92M7iYm4S2MYhipQ2vNKxoI",
+    "logs": "wsATyGqckuIvlm89hhd2j4t6RMkCrcwJe_oeCYr7Th8",
+    "metaData": null,
+    "continuation": null,
+    "txId": "456",
+    "events": []
+  }
+}
+```
+## listen
+
+Use the `/listen` endpoint to submit a blocking request for single transaction result.
+
+`POST /listen`
+
+### Request body schema
+
+Content type: application/json
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `listen` (required) | string <base64url>| Unique ID of a Pact transaction consisting of its hash. Request key = 43 characters ^[a-zA-Z0-9_-]{43}$.
+
+### Successful response (200) 
+
+Content type: application/json
+
+The transaction result for the request key was found.
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `reqKey` (required) | string <base64url> | Unique ID of a pact transaction consisting of its hash. Request key = 43 characters ^[a-zA-Z0-9_-]{43}$.
+| `result` (required) | object | Success (object) or Failure (object).
+| `txId`	| number | Database-internal transaction tracking ID.
+| `logs` (required) | string | Backend-specific value providing image of database logs.
+| `metaData` (required) | object | Metadata included with the transaction.
+| `events` | Array of objects | Array of event objects.
+| `continuation` | object | Describes result of a `defpact` execution.
+| `gas` (required) | number | Gas consumed by the transaction.
+
+## private
+
+Use the /private endpoint for asynchronous submission of a single command transmitted with end-to-end encryption between addressed entity nodes. 
+Private payload metadata is required.
+
+`POST /private`
+
+### Request body schema
+
+Content type: application/json
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `cmd` (required) | string | Stringified JSON payload object. Canonic non-malleable signed transaction data.
+| `hash` (required) | string <base64url> | Unpadded Base64URL of Blake2s-256 hash of the cmd field value. Serves as a command requestKey since each transaction must be unique.
+| `sigs` (required) | Array of objects >= 0 | List of signatures corresponding one-to-one with the signers array in the payload.
+
+### Successful response (200) 
+
+Content type: application/json
+
+The command was accepted.
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `requestKeys` (required) | Array of strings | Request keys you can use with `poll` or `listen` to retrieve results. Request key = 43 characters ^[a-zA-Z0-9_-]{43}$.
+
+## spv
+
+Use the `/spv` endpoint to issue a blocking request to fetch a simple payment verificiation (spv) proof of a cross-chain transaction. 
+The request must be sent to the chain where the transaction initiated.
+
+`POST /spv`
+
+### Request body schema
+
+Content type: application/json
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `requestKey` (required) | string | Request Key of an initiated cross-chain transaction at the source chain.
+| `targetChainId` (required) | string | Target chain ID of the cross-chain transaction.
+
+### Successful response (200) 
+
+Content type: application/json
+
+The requested spv proof.
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| | string | Backend-specific data for continuing a cross-chain proof.
+
+### Invalid command response (400) 
+
+Content type: text/plain
+
+The requested spv proof could not be found.
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| | string (Validation Failure) | Error message with the description of failed proof requests.
+
+## Pact commands, results, and payloads
+
+Pact commands consist of the following parameters:
+
+| Parameter | Type | Description
+| --------- | ---- | -----------
+| `cmd` (required) | string | Stringified JSON payload object. Canonic non-malleable signed transaction data.
+| `hash` (required) | string <base64url> | Unpadded Base64URL of Blake2s-256 hash of the cmd field value. Serves as a command requestKey since each transaction must be unique.
+| `sigs` (required) | Array of objects >= 0 | List of signatures corresponding one-to-one with the signers array in the payload.
+
+Pact results consist of the following parameters:
+
+ Parameter | Type | Description
+| --------- | ---- | -----------
+| `reqKey` (required) | string <base64url> | Unique ID of a Pact transaction consisting of its hash. Request key = 43 characters ^[a-zA-Z0-9_-]{43}$.
+| `result` (required) | object | Success (object) or Failure (object).
+| `txId`	| number | Database-internal transaction tracking ID.
+| `logs` (required) | string | Backend-specific value providing image of database logs.
+| `metaData` (required) | object | Metadata included with the transaction.
+| `events` | Array of object | Array of event objects.
+| `continuation` | object | Describes result of a `defpact` execution.
+| `gas` (required) | number | Gas consumed by the transaction.
+
+Pact command payloads consist of the following parameters:
+
+ Parameter | Type | Description
+| --------- | ---- | -----------
+| `payload` (required) | object | The `exec` message object or `continuation` message object.
+| `meta` (required) | object | Public Chainweb metadata object or private metadata object.
+| `signers` (required) | Array of objects | List of signers, corresponding with list of signatures in outer command.
+| `networkId` (required) | string | Backend-specific identifier of the target network such as "mainnet01" or "testnet04".
+| `nonce` (required) | string | Arbitrary user-supplied value.
+
+## Pact built-in server
+
+Pact ships with a built-in HTTP server and SQLite backend. 
+To start up the server issue `pact -s config.yaml`, with a suitable config.
+
+## pact-lang-api JS Library
+
+The `pact-lang-api` JS library is available as an [npm package](https://www.npmjs.com/package/pact-lang-api) for web
 development.
 
-### API request formatter
+## API request formatter
 
-The `pact` tool accepts the `-a` option to format API request JSON, using a YAML
-file describing the request. The output can then be used with a POST tool like
-Postman or even piping into `curl`.
+The `pact` tool accepts the `--apireq` option to format an API request JSON using a YAML file as input to describe the request. 
+The output can then be used with a POST tool like Postman or even piping into `curl`.
 
-For instance, a yaml file called "apireq.yaml" with the following contents:
+For example, you can create a `my-api-request.yaml` file with the following content:
 
 ```yaml
 code: '(+ 1 2)'
@@ -43,7 +344,7 @@ keyPairs:
     secret: 8693e641ae2bbe9ea802c736f42027b03f86afe63cae315e7169c9c496c17332
 ```
 
-can be fed into `pact` to obtain a valid API request:
+You can then pass this file to `pact` to create a valid API request like this:
 
 ```bash
 $ pact -a tests/apireq.yaml -l
@@ -51,7 +352,7 @@ $ pact -a tests/apireq.yaml -l
 
 ```
 
-Here's an example of piping into curl, hitting a pact server running on port
+Here's an example of piping the output to `curl` and hitting a pact server running on port
 8080:
 
 ```bash
@@ -59,14 +360,14 @@ $ pact -a tests/apireq.yaml -l | curl -d @- http://localhost:8080/api/v1/local
 {"status":"success","response":{"status":"success","data":3}}
 ```
 
-### Request YAML file format
+## Request YAML file format
 
-Request yaml files takes two forms:
+You can create two types of request yaml files:
 
 - An _execution_ request yaml file describes the `exec` payload.
 - A _continuation_ request yaml file describes the `cont` payload.
 
-#### YAML exec command request
+### YAML exec command request
 
 The execution request yaml for a public blockchain takes the following keys:
 
@@ -94,7 +395,7 @@ The execution request yaml for a public blockchain takes the following keys:
   type: exec
 ```
 
-#### YAML Continuation command request
+### YAML continuation command request
 
 The continuation request yaml for a public blockchain takes the following keys:
 
@@ -127,7 +428,7 @@ The continuation request yaml for a public blockchain takes the following keys:
 Note that the optional "proof" field only makes sense when using cross-chain
 continuations.
 
-## Signing Transactions
+## Signing transactions
 
 As of Pact 3.5.0, the `pact` command line tool now has several commands to
 facilitate signing transactions. Here's a full script showing how these commands
@@ -163,20 +464,20 @@ the command and all the signatures on stdout.
 Both `add-sig` and `combine-sigs` will output YAML if the output transaction
 hasn't accumulated enough signatures to be valid. If all the necessary
 signatures are present, then they will output JSON in final form that is ready
-to be sent to the blockchain on the [`/send` endpoint](/reference/pact/api#tag/endpoint-send/paths/~1send/post). 
+to be sent to the blockchain on the `/send` endpoint. 
 If you would like to do a test run of the transaction, you can use the `-l` flag to generate
-output suitable for use with the [`/local` endpoint](/reference/pact/api#tag/endpoint-local/paths/~1local/post).
+output suitable for use with the `/local` endpoint.
 
 The above example adds signatures in parallel, but the `add-sig` command can
 also be used to add signatures sequentially in separate steps or all at once in
 a single step as shown in the following two examples:
 
-```
+```shell
 cat tx-unsigned.yaml | pact add-sig alice-key.yaml | pact add-sig bob-key.yaml
 cat tx-unsigned.yaml | pact add-sig alice-key.yaml add-sig bob-key.yaml
 ```
 
-### Offline Signing with a Cold Wallet
+### Offline signing with a cold wallet
 
 Some cold wallet signing procedures use QR codes to get transaction data on and
 off the cold wallet machine. Since QR codes can transmit a fairly limited amount
@@ -214,7 +515,7 @@ submit the output directly to the blockchain. You'll have to use `combine-sigs`
 to combine those signatures with the original `tx-unsigned.yaml` file which has
 the full command.
 
-### Detached Signature Transaction Format
+### Detached signature transaction format
 
 The YAML input expected by `pact -u` is similar to the
 [Public Blockchain YAML format](/reference/rest-api#detached-signature-transaction-formath-260011505)

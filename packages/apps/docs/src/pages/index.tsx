@@ -67,10 +67,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 <Link className={docsCardLink} href="/build/quickstart">
                   Deploy your first contract - Quick start
                 </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/build/pact"
-                >
+                <Link className={docsCardLink} href="/build/pact">
                   Get started with Pact smart contract language
                 </Link>
               </BrowseSection>
@@ -113,7 +110,10 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 <Link className={docsCardLink} href="/deploy">
                   Prepare to deploy
                 </Link>
-                <Link className={docsCardLink} href="/deploy/chainweb-get-started">
+                <Link
+                  className={docsCardLink}
+                  href="/deploy/chainweb-get-started"
+                >
                   Get started as a Chainweb node operator
                 </Link>
 

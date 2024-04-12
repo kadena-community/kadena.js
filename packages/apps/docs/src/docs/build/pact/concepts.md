@@ -403,15 +403,13 @@ the balance, by first enforcing the keyset using
 
 ## Namespaces
 
-Namespaces are [defined](/reference/functions#define-namespaceh-1430035511)
-by specifying a namespace name and
-[associating](/reference/functions/keysets#read-keyseth2039204282) a keyset
-with the namespace. Namespace scope is entered by declaring the namespace
-environment. All definitions issued after the namespace scope is entered will be
-accessible by their fully qualified names. These names are of the form
-_namespace.module.definition_. This form can also be used to access code outside
-of the current namespace for the purpose of importing module code, or
+Namespaces are defined by specifying a namespace name and associating a keyset with the namespace. 
+Namespace scope is entered by declaring the namespace environment. 
+All definitions issued after the namespace scope is entered are accessible by their fully qualified names. 
+These names are of the form _namespace.module.definition_. 
+This form can also be used to access code outside of the current namespace for the purpose of importing module code, or
 implementing modules:
+
 
 ```pact
 (implements my-namespace.my-interface)
@@ -1492,18 +1490,16 @@ Here we cover various aspects of Pact's approach to computation.
 
 ### Turing-Incomplete
 
-Pact is turing-incomplete, in that there is no recursion (recursion is detected
-before execution and results in an error) and no ability to loop indefinitely.
-Pact does support operation on list structures via
-[map](/reference/functions#maph107868),
-[fold](/reference/functions#foldh3148801#fold) and
-[filter](/reference/functions#filterh-1274492040), but since there is no
+Pact is turing-incomplete.
+The language doesn't allow recursion.
+Recursion is detected before execution and results in an error.
+Pact also doesn't allow code to loop indefinitely.
+Pact does support operations on list structures using [map](/reference/functions/general#maph107868), [fold](/reference/functions/general#foldh3148801#fold) and [filter](/reference/functions/general#filterh-1274492040), but since there is no
 ability to define infinite lists, these are necessarily bounded.
 
-Turing-incompleteness allows Pact module loading to resolve all references in
-advance, meaning that instead of addressing functions in a lookup table, the
-function definition is directly injected (or "inlined") into the callsite. This
-is an example of the performance advantages of a Turing-incomplete language.
+Turing-incompleteness allows Pact module loading to resolve all references in advance.
+Instead of addressing functions in a lookup table, the function definition is directly injected (or "inlined") into the call site. 
+This is an example of the performance advantages of a Turing-incomplete language.
 
 ### Single-assignment Variables
 
@@ -1515,7 +1511,7 @@ they cannot be re-assigned, or modified in-place.
 A common variable declaration occurs in the
 [with-read](/reference/functions/database#with-readh866473533) function,
 assigning variables to column values by name. The
-[bind](/reference/functions#bindh3023933) function offers this same
+[bind](/reference/functions/general#bindh3023933) function offers this same
 functionality for objects.
 
 Module-global constant values can be declared with
@@ -1592,19 +1588,19 @@ However types can help document an API, so this is a judgement call.
 
 ### Control Flow
 
-Pact supports conditionals via [if](/reference/functions#ifh3357), bounded
+Pact supports conditionals via [if](/reference/functions/general#ifh3357), bounded
 looping, and of course function application.
 
 #### Use enforce
 
 "If" should never be used to enforce business logic invariants: instead,
-[enforce](/reference/functions#enforceh-1604583454) is the right choice,
+[enforce](/reference/functions/general#enforceh-1604583454) is the right choice,
 which will fail the transaction.
 
 Indeed, failure is the only _non-local exit_ allowed by Pact. This reflects
 Pact's emphasis on _totality_.
 
-Note that [enforce-one](/reference/functions#enforce-oneh281764347) (added
+Note that [enforce-one](/reference/functions/general#enforce-oneh281764347) (added
 in Pact 2.3) allows for testing a list of enforcements such that if any pass,
 the whole expression passes. This is the sole example in Pact of "exception
 catching" in that a failed enforcement simply results in the next test being
@@ -1622,9 +1618,9 @@ which is slower.
 ### Functional Concepts
 
 Pact includes the functional-programming "greatest hits":
-[map](/reference/functions#maph107868),
-[fold](/reference/functions#foldh3148801) and
-[filter](/reference/functions#filterh-1274492040). These all employ
+[map](/reference/functions/general#maph107868),
+[fold](/reference/functions/general#foldh3148801) and
+[filter](/reference/functions/general#filterh-1274492040). These all employ
 [partial application](/reference/syntax#partial-applicationh1147799825),
 where the list item is appended onto the application arguments in order to
 serially execute the function.
@@ -1634,7 +1630,7 @@ serially execute the function.
 (fold (+) "" ["Concatenate" " " "me"])
 ```
 
-Pact also has [compose](/reference/functions#composeh950497682), which
+Pact also has [compose](/reference/functions/general#composeh950497682), which
 allows "chaining" applications in a functional style.
 
 ### Pure execution
@@ -1658,7 +1654,7 @@ this code to execute quickly.
 
 Pact expects code to arrive in a message with a JSON payload and signatures.
 Message data is read using
-[read-msg](/reference/functions#read-msgh-868697398) and related functions.
+[read-msg](/reference/functions/general#read-msgh-868697398) and related functions.
 While signatures are not directly readable or writable, they are evaluated as
 part of
 [keyset predicate](/build/pact/advanced#keyset-predicatesh2121179193)
@@ -1670,7 +1666,7 @@ Values returned from Pact transactions are expected to be directly represented
 as JSON values.
 
 When reading values from a message via
-[read-msg](/reference/functions#read-msgh-868697398), Pact coerces JSON
+[read-msg](/reference/functions/general#read-msgh-868697398), Pact coerces JSON
 types as follows:
 
 - String -> `string`
@@ -1680,7 +1676,7 @@ types as follows:
 - Array -> `list`
 
 Integer values are represented as objects and read using
-[read-integer](/reference/functions#read-integerh1563412487).
+[read-integer](/reference/functions/general#read-integerh1563412487).
 
 ## Confidentiality
 
@@ -1732,7 +1728,7 @@ which those values are available unchanged to subsequent steps. To share new
 values with subsequent steps, a step can
 [yield](reference/functions/general#yieldh114974605) values which the subsequent
 step can recover using the special
-[resume](/reference/functions#resumeh-934426579) binding form.
+[resume](/reference/functions/general#resumeh-934426579) binding form.
 
 Pacts are comprised of steps that can only execute in strict sequence. Any
 enforcement of who can execute a step happens within the code of the step
@@ -1753,13 +1749,13 @@ all necessary cancel options.
 
 A step can yield values to the following step using
 [yield](reference/functions/general#yieldh114974605) and
-[resume](/reference/functions#resumeh-934426579). This is an unforgeable
+[resume](/reference/functions/general#resumeh-934426579). This is an unforgeable
 value, as it is maintained within the blockchain pact scope.
 
 ### Pact execution scope and pact-id
 
 Every time a pact is initiated, it is given a unique ID which is retrievable
-using the [pact-id](/reference/functions#pact-idh-806844250) function,
+using the [pact-id](/reference/functions/general#pact-idh-806844250) function,
 which will return the ID of the currently executing pact, or fail if not running
 within a pact scope. This mechanism can thus be used to guard access to
 resources, analogous to the use of keysets and signatures. One typical use of
