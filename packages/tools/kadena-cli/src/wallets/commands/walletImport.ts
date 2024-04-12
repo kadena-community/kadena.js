@@ -46,20 +46,18 @@ export const createImportWalletCommand: (
 
       loading.succeed('Wallet imported successfully');
 
-      log.info(
-        log.generateTableString(['Mnemonic Phrase'], [[config.mnemonicFile]]),
-      );
+      log.info(log.color.green('Mnemonic Phrase'));
+      log.info(config.mnemonicFile);
+
       log.info(
         log.color.yellow(
           `\nPlease store the mnemonic phrase in a safe place. You will need it to recover your wallet.\n`,
         ),
       );
-      log.info(
-        log.generateTableString(
-          ['Wallet Storage Location'],
-          [[relativeToCwd(wallet.filepath)]],
-        ),
-      );
+
+      log.info(log.color.green('Wallet Storage Location'));
+      log.info(relativeToCwd(wallet.filepath));
+
       log.output(null, {
         words: config.mnemonicFile,
         wallet,
