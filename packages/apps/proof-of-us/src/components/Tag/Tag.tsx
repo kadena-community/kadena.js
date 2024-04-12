@@ -3,7 +3,7 @@ import type { FC, PropsWithChildren } from 'react';
 import { tagClass } from './style.css';
 
 interface IProps extends PropsWithChildren {
-  color?: 'blue' | 'red';
+  color?: 'blue' | 'red' | 'green';
 }
 
 export const Tag: FC<IProps> = ({ children, color = 'blue' }) => {

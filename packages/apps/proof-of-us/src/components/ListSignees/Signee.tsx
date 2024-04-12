@@ -91,7 +91,8 @@ export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
         justifyContent={isMultiple ? 'flex-start' : 'center'}
       >
         {isInitiator && <Tag>initiator</Tag>}
-        {isMeChecked && <Tag color="red">me</Tag>}
+        {isMeChecked && <Tag color="green">me</Tag>}
+        {notAllowedToSign && <Tag color="red">no need to sign</Tag>}
       </Stack>
     </Stack>
   );
