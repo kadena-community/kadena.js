@@ -8,7 +8,11 @@ import {
 } from '@kadena/client';
 import { genKeyPair } from '@kadena/cryptography-utils';
 import { PactNumber } from '@kadena/pactjs';
-import { GAS_STATIONS_MAP, NAMESPACES_MAP } from '../../constants/account.js';
+import {
+  GAS_STATIONS_MAP,
+  MAINNET_FUND_TRANSFER_ERROR_MESSAGE,
+  NAMESPACES_MAP,
+} from '../../constants/account.js';
 import { DEFAULT_CONTRACT_NAME } from '../../devnet/faucet/deploy/constants.js';
 import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 
@@ -32,7 +36,9 @@ export async function createAndTransferFund({
     const { chainId, amount, networkConfig } = config;
 
     if (networkConfig.networkId.includes('mainnet')) {
-      throw new Error('Cannot transfer fund on mainnet');
+      throw new Error(
+        `${MAINNET_FUND_TRANSFER_ERROR_MESSAGE} "${networkConfig.networkId}"`,
+      );
     }
 
     const KEYSET_NAME = 'new_keyset';

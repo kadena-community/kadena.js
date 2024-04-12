@@ -91,7 +91,7 @@ export const createAccountFundCommand = createCommand(
 
       if (undeployedChainIds.length > 0) {
         log.warning(
-          `Faucet module is not available on chain "${undeployedChainIdsStr}" in "${networkConfig.network}".`,
+          `Faucet module unavailable on chain "${undeployedChainIdsStr}" in the "${networkConfig.network}" network.`,
         );
 
         const { deployFaucet } = await option.deployFaucet();
@@ -100,17 +100,17 @@ export const createAccountFundCommand = createCommand(
           return;
         }
         const loader = ora(
-          `Deploying faucet on chain Id(s): "${undeployedChainIdsStr}" in "${network}"...\n`,
+          `Deploying faucet on chain Id(s): "${undeployedChainIdsStr}" in "${network}" network...\n`,
         ).start();
 
         await deployDevNetFaucet(undeployedChainIds).catch((e) => {
           loader.fail(
-            `Failed to deploy faucet module on chain "${undeployedChainIdsStr}" in "${network}".\n`,
+            `Failed to deploy faucet module on chain "${undeployedChainIdsStr}" in "${network}" network.\n`,
           );
           throw Error(e);
         });
         loader.succeed(
-          `Deployed faucet module on chain "${undeployedChainIdsStr}" in "${network}".\n`,
+          `Deployed faucet module on chain "${undeployedChainIdsStr}" in "${network}" network.\n`,
         );
       }
     }

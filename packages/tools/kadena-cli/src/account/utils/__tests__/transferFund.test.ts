@@ -1,5 +1,6 @@
 import { HttpResponse, http } from 'msw';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { MAINNET_FUND_TRANSFER_ERROR_MESSAGE } from '../../../constants/account.js';
 import { server } from '../../../mocks/server.js';
 import { transferFund } from '../transferFund.js';
 import { devNetConfigMock } from './mocks.js';
@@ -25,7 +26,7 @@ describe('transferFund', () => {
       });
     }).rejects.toEqual(
       Error(
-        'Failed to transfer fund : "Cannot transfer fund on mainnet with network ID: "mainnet01""',
+        `Failed to transfer fund : "${MAINNET_FUND_TRANSFER_ERROR_MESSAGE} "mainnet01""`,
       ),
     );
   });
