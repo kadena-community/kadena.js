@@ -2,7 +2,7 @@ import type { ChainId } from '@kadena/types';
 import { Option } from 'commander';
 import { z } from 'zod';
 import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
-import { actionAskForDeployDevnet } from '../prompts/genericActionPrompts.js';
+import { actionAskForDeployFaucet } from '../prompts/genericActionPrompts.js';
 import { account } from '../prompts/index.js';
 import { createOption } from '../utils/createOption.js';
 import { formatZodError, generateAllChainIds } from '../utils/helpers.js';
@@ -189,13 +189,13 @@ export const accountOptions = {
       return parse.data.map((id) => id.toString()) as ChainId[];
     },
   }),
-  deployDevnet: createOption({
-    key: 'deployDevnet',
+  deployFaucet: createOption({
+    key: 'deployFaucet',
     validation: z.boolean(),
-    prompt: actionAskForDeployDevnet,
+    prompt: actionAskForDeployFaucet,
     option: new Option(
-      '-d, --deploy-devnet',
-      'Deploy devnet if not available.',
+      '-d, --deploy-faucet',
+      'Deploy faucet on devnet if not available on chain.',
     ),
   }),
 };

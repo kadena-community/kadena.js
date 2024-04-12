@@ -1,4 +1,3 @@
-import { describeModule } from '@kadena/client-utils/built-in';
 import ora from 'ora';
 import {
   CHAIN_ID_ACTION_ERROR_MESSAGE,
@@ -10,11 +9,13 @@ import { networkIsAlive } from '../../devnet/utils/network.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
+import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
 import { ensureAccountAliasFilesExists } from '../utils/accountHelpers.js';
 import { fund } from '../utils/fund.js';
 import {
+  findMissingModuleDeployments,
   getTxDetails,
   logAccountFundingTxResults,
   logTransactionExplorerUrls,
@@ -28,7 +29,7 @@ export const createAccountFundCommand = createCommand(
     accountOptions.fundAmount(),
     globalOptions.networkSelect(),
     accountOptions.chainIdRange(),
-    accountOptions.deployDevnet(),
+    accountOptions.deployFaucet(),
   ],
   async (option) => {
     const isAccountAliasesExist = await ensureAccountAliasFilesExists();
@@ -44,12 +45,11 @@ export const createAccountFundCommand = createCommand(
     });
     const { chainId } = await option.chainId();
 
-    if (chainId === undefined) {
-      log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
-      return;
+    if (!notEmpty(chainId)) {
+      return log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
     }
 
-    if (!accountConfig) {
+    if (!notEmpty(accountConfig)) {
       log.error(
         `\nAccount details are missing. Please check selected "${account}" account alias file.\n`,
       );
@@ -67,14 +67,12 @@ export const createAccountFundCommand = createCommand(
 
     if (['mainnet01'].includes(networkConfig.networkId)) {
       return log.error(
-        `\nNetwork "${network}" of id "${networkConfig.networkId}" is not supported.\n`,
+        `Network "${network}" of id "${networkConfig.networkId}" is not supported.`,
       );
     }
 
     if (accountConfig.fungible.trim() !== 'coin') {
-      return log.error(
-        `\nYou can't fund an account other than "coin" fungible.\n`,
-      );
+      return log.error(`You can't fund an account other than "coin" fungible.`);
     }
 
     if (networkConfig.networkId === 'development') {
@@ -84,37 +82,36 @@ export const createAccountFundCommand = createCommand(
         );
       }
 
-      const hasModuleAvailable = await describeModule(FAUCET_MODULE_NAME, {
-        host: networkConfig.networkHost,
-        defaults: {
-          networkId: networkConfig.networkId,
-          meta: { chainId: chainId[0] },
-        },
-      }).catch(() => false);
+      const undeployedChainIds = await findMissingModuleDeployments(
+        FAUCET_MODULE_NAME,
+        networkConfig,
+        chainId,
+      );
 
-      if (hasModuleAvailable === false) {
+      const undeployedChainIdsStr = undeployedChainIds.join(', ');
+
+      if (undeployedChainIds.length > 0) {
         log.warning(
-          `\nFaucet module is not available on chain "${chainId}" in "${networkConfig.network}".\n`,
+          `Faucet module is not available on chain "${undeployedChainIdsStr}" in "${networkConfig.network}".`,
         );
 
-        const { deployDevnet } = await option.deployDevnet();
+        const { deployFaucet } = await option.deployFaucet();
 
-        if (!deployDevnet) {
+        if (!deployFaucet) {
           return;
         }
+        const loader = ora(
+          `Deploying faucet on chain Id(s): "${undeployedChainIdsStr}" in "${network}"...\n`,
+        ).start();
 
-        log.info('  Deploying faucet...\n');
-
-        await deployDevNetFaucet(chainId).catch((e) => {
-          log.error(
-            `\nFailed to deploy faucet module on chain "${chainId}" in "${network}".\n`,
+        await deployDevNetFaucet(undeployedChainIds).catch((e) => {
+          loader.fail(
+            `Failed to deploy faucet module on chain "${undeployedChainIdsStr}" in "${network}".\n`,
           );
           throw Error(e);
         });
-        log.info(
-          log.color.green(
-            `\nDeployed faucet module on chain "${chainId}" in "${network}".\n`,
-          ),
+        loader.succeed(
+          `Deployed faucet module on chain "${undeployedChainIdsStr}" in "${network}".\n`,
         );
       }
     }

@@ -27,7 +27,7 @@ export const networkDefaults: IDefaultNetworkOptions = {
     network: 'devnet',
     networkId: 'development',
     networkHost: 'http://localhost:8080',
-    networkExplorerUrl: 'http://localhost:8080/explorer',
+    networkExplorerUrl: 'http://localhost:8080/explorer/development/tx/',
   },
   other: {
     network: '',
