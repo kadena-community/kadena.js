@@ -17,7 +17,7 @@ import { useFormContext } from 'react-hook-form';
 import { SenderFields } from './sender-fields';
 import type { FormData } from './sign-form';
 
-export const accountFromOptions = ['Ledger', 'Coming soon…', 'Test'] as const;
+export const accountFromOptions = ['Ledger', 'Coming soon…'] as const;
 export type SenderType = (typeof accountFromOptions)[number];
 
 export interface ISignFormSenderProps {
