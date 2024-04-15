@@ -1,7 +1,11 @@
 import { EditorForm } from '@/EditorForm/EditorForm';
 import { useAccount } from '@/hooks/account';
 import { useProofOfUs } from '@/hooks/proofOfUs';
-import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import {
+  getAccountSignee,
+  isAlreadySigning,
+  isSignedOnce,
+} from '@/utils/isAlreadySigning';
 import type { FC, MouseEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Modal } from '../Modal/Modal';
@@ -12,10 +16,10 @@ import { imageClass, wrapperClass } from './style.css';
 interface IProps {}
 
 export const ImagePositions: FC<IProps> = () => {
-  const { proofOfUs, updateSigner, background, updateProofOfUs } =
-    useProofOfUs();
+  const { proofOfUs, signees, updateSignee, background } = useProofOfUs();
   const { account } = useAccount();
   const [isMounted, setIsMounted] = useState(false);
+  const [signee, setSignee] = useState<IProofOfUsSignee | undefined>();
   const [isLocked, setIsLocked] = useState(false);
   const [signer, setSigner] = useState<IProofOfUsSignee>();
   const imgRef = useRef<HTMLImageElement>(null);
@@ -24,11 +28,11 @@ export const ImagePositions: FC<IProps> = () => {
   const [isTagInfoOpen, setIsTagInfoOpen] = useState(true);
 
   useEffect(() => {
-    setSigner(
-      proofOfUs?.signees.find((c) => c.accountName === account?.accountName),
-    );
-    setIsLocked(isAlreadySigning(proofOfUs?.signees));
-  }, [proofOfUs]);
+    if (!signees || !proofOfUs) return;
+
+    setSigner(signees.find((c) => c.accountName === account?.accountName));
+    setIsLocked(isAlreadySigning(proofOfUs));
+  }, [proofOfUs, signees]);
 
   const getPosition = <T extends HTMLElement>(
     elm: T,
@@ -71,12 +75,16 @@ export const ImagePositions: FC<IProps> = () => {
         yPercentage,
       });
 
-      elm.setAttribute(
-        'style',
-        `display: flex; top: ${yPos}px; left: ${xPos}px;`,
-      );
+      elm.style.display = 'flex';
+      elm.style.top = `${yPos}px`;
+      elm.style.left = `${xPos}px`;
     });
   };
+
+  useEffect(() => {
+    const foundSignee = getAccountSignee(signees, account);
+    setSignee(foundSignee);
+  }, [signees]);
 
   useEffect(() => {
     setMarkers();
@@ -85,7 +93,7 @@ export const ImagePositions: FC<IProps> = () => {
     return () => {
       window.removeEventListener('resize', setMarkers);
     };
-  }, [wrapperRef, imgRef, proofOfUs?.signees, isMounted]);
+  }, [wrapperRef, imgRef, signees, isMounted]);
 
   const handleClick: MouseEventHandler<HTMLImageElement> = async (e) => {
     if (!imgRef.current || isLocked) return;
@@ -98,19 +106,17 @@ export const ImagePositions: FC<IProps> = () => {
     const yPercentage = ((e.clientY - rect.top) / imgRef.current.height) * 100;
 
     console.log('update in imageposition click');
-    await updateProofOfUs({
-      signees: updateSigner({
-        position: { xPercentage, yPercentage },
-      }),
+    await updateSignee({
+      position: { xPercentage, yPercentage },
     });
   };
 
-  const handleRemove = async () => {
+  const handleRemove: MouseEventHandler<HTMLButtonElement> = async (e) => {
     console.log('update in imageposition remove');
-    await updateProofOfUs({
-      signees: updateSigner({ position: null }),
-    });
+    await updateSignee({ position: null });
   };
+
+  if (!signees) return null;
 
   return (
     <>
@@ -127,15 +133,17 @@ export const ImagePositions: FC<IProps> = () => {
           onClick={handleClick}
           onLoad={() => setIsMounted(true)}
         />
-        {isTagInfoOpen && (
+        {isTagInfoOpen && proofOfUs && !isSignedOnce(signees) && (
           <TagInfo handleClose={() => setIsTagInfoOpen(false)} />
         )}
-        {proofOfUs?.signees.map((s, idx) => (
+        {signees.map((s, idx) => (
           <SigneePosition
             variant="small"
             key={s.accountName}
             position={s?.position}
-            onClick={handleRemove}
+            onClick={
+              signee?.accountName === s.accountName ? handleRemove : handleClick
+            }
             idx={idx}
           />
         ))}

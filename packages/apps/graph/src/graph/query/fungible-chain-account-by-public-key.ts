@@ -8,8 +8,18 @@ builder.queryField('fungibleChainAccountByPublicKey', (t) =>
   t.field({
     description: 'Retrieve a chain account by public key.',
     args: {
-      publicKey: t.arg.string({ required: true }),
-      chainId: t.arg.string({ required: true }),
+      publicKey: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
+      chainId: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: FungibleChainAccount,
     nullable: true,
@@ -36,7 +46,7 @@ builder.queryField('fungibleChainAccountByPublicKey', (t) =>
   }),
 );
 
-export async function getChainAccountNameByPublicKey(
+async function getChainAccountNameByPublicKey(
   publicKey: string,
   chainId: string,
 ): Promise<string | undefined> {

@@ -9,6 +9,12 @@ import type { ITransaction } from '@/services/accounts/get-transactions';
 import { getTransactions } from '@/services/accounts/get-transactions';
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import {
+  MonoDelete,
+  MonoHistory,
+  MonoInfo,
+  MonoKeyboardArrowRight,
+} from '@kadena/react-icons/system';
+import {
   Box,
   Breadcrumbs,
   BreadcrumbsItem,
@@ -20,7 +26,6 @@ import {
   GridItem,
   Heading,
   Row,
-  SystemIcon,
   Table,
   TableBody,
   TableHeader,
@@ -145,7 +150,7 @@ const CheckTransactions: FC = () => {
         ref={transactionDetailsRef}
         sections={[
           {
-            icon: 'Information',
+            icon: <MonoInfo />,
             title: t('Transaction Details'),
             children: (
               <>
@@ -206,13 +211,11 @@ const CheckTransactions: FC = () => {
       <Box marginBlockEnd="sm" />
       <Grid columns={2}>
         <GridItem>
-          <Heading bold={false} as="h5">
-            {t('Account Transactions')}
-          </Heading>
+          <Heading as="h5">{t('Account Transactions')}</Heading>
         </GridItem>
         <GridItem>
           <div className={headerButtonGroupClass}>
-            <Button icon="TrashCan" onClick={resetFiltersEvent}>
+            <Button icon={<MonoDelete />} onClick={resetFiltersEvent}>
               {t('Reset all filters')}
             </Button>
             <Button icon="Refresh" onClick={refreshResultsEvent}>
@@ -248,7 +251,7 @@ const CheckTransactions: FC = () => {
 
       <ContentHeader
         heading={t('Transactions')}
-        icon={'History'}
+        icon={<MonoHistory />}
         description="This table is listing all the incoming and outgoing transactions sorted by date."
       />
       <Box marginBlockEnd="xxxl" />
@@ -271,7 +274,7 @@ const CheckTransactions: FC = () => {
                 <Cell>
                   <Button
                     variant="text"
-                    icon={<SystemIcon.TrailingIcon />}
+                    icon={<MonoKeyboardArrowRight />}
                     onClick={() => handleOpenTransactionDetails(result)}
                   />
                 </Cell>

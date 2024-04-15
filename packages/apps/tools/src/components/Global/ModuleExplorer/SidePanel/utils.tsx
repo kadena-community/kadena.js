@@ -1,6 +1,7 @@
 import type { contractParser } from '@kadena/pactjs-generator';
+import { MonoExitToApp } from '@kadena/react-icons/system';
 import type { ITreeProps } from '@kadena/react-ui';
-import { Button, SystemIcon } from '@kadena/react-ui';
+import { Button } from '@kadena/react-ui';
 import React from 'react';
 import type { IOutlineProps } from './outline';
 
@@ -25,7 +26,7 @@ export const contractToTreeItems = (
               onInterfaceClick({ chainId: module!.chainId, moduleName: i.name })
             }
             isCompact
-            endIcon={<SystemIcon.ExitToApp />}
+            endIcon={<MonoExitToApp />}
           >
             {i.name}
           </Button>

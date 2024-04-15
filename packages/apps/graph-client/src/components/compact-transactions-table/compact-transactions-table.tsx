@@ -7,6 +7,7 @@ import type {
   QueryTransactionsConnection,
 } from '@/__generated__/sdk';
 import routes from '@constants/routes';
+import { KSquareKdacolorGreen } from '@kadena/react-icons/brand';
 import {
   Box,
   Cell,
@@ -45,7 +46,7 @@ export const CompactTransactionsTable = (
     <>
       <ContentHeader
         heading="Transactions"
-        icon="KIcon"
+        icon={<KSquareKdacolorGreen />}
         description={
           description
             ? description
@@ -69,11 +70,17 @@ export const CompactTransactionsTable = (
           {transactions.edges.slice(0, 10).map((edge, index) => {
             return (
               <Row key={index}>
-                <Cell>{edge.node.hash}</Cell>
+                <Cell>{edge?.node.hash}</Cell>
                 <Cell>
                   {new Date(edge.node.cmd.meta.creationTime).toLocaleString()}
                 </Cell>
-                <Cell>{edge.node.result.height}</Cell>
+                <Cell>
+                  {edge.node.result.__typename === 'TransactionResult' ? (
+                    edge.node.result.height
+                  ) : (
+                    <span style={{ color: 'lightgray' }}>N/A</span>
+                  )}
+                </Cell>
                 <Cell>
                   <Link href={`${routes.TRANSACTIONS}/${edge.node.hash}`}>
                     {truncateColumns ? (

@@ -1,7 +1,7 @@
 import { Option } from 'commander';
 import { z } from 'zod';
 
-import type { IWallet } from '../../keys/utils/keysHelpers.js';
+import type { IWallet } from '../../services/wallet/wallet.types.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { createOption } from '../../utils/createOption.js';
@@ -10,19 +10,17 @@ import { log } from '../../utils/logger.js';
 import { checkbox } from '../../utils/prompts.js';
 import { accountOptions } from '../accountOptions.js';
 import { addAccount } from '../utils/addAccount.js';
-import {
-  displayAddAccountSuccess,
-  getAllPublicKeysFromWalletConfig,
-  isEmpty,
-} from '../utils/addHelpers.js';
+import { displayAddAccountSuccess, isEmpty } from '../utils/addHelpers.js';
 import { validateAndRetrieveAccountDetails } from '../utils/validateAndRetrieveAccountDetails.js';
 
 const selectPublicKeys = createOption({
   key: 'publicKeys' as const,
   defaultIsOptional: false,
   async prompt(args) {
-    const publicKeysList = await getAllPublicKeysFromWalletConfig(
-      args.walletNameConfig as IWallet,
+    const wallet = args.walletNameConfig as IWallet;
+    const publicKeysList = wallet.keys.reduce(
+      (acc, key) => acc.concat([key.publicKey]),
+      [] as string[],
     );
     const selectedKeys = await checkbox({
       message: 'Select public keys to add to account',
@@ -52,21 +50,21 @@ const selectPublicKeys = createOption({
 
 export const createAddAccountFromWalletCommand = createCommand(
   'add-from-wallet',
-  'Add an local account from a key wallet',
+  'Add an account from a key wallet',
   [
-    accountOptions.accountAlias(),
     globalOptions.walletSelect(),
-    globalOptions.fungible(),
+    accountOptions.accountAlias(),
+    accountOptions.fungible(),
     globalOptions.networkSelect(),
     globalOptions.chainId(),
     selectPublicKeys(),
-    globalOptions.predicate(),
+    accountOptions.predicate(),
     accountOptions.accountOverwrite(),
   ],
 
   async (option, values) => {
-    const accountAlias = (await option.accountAlias()).accountAlias;
     const wallet = await option.walletName();
+    const accountAlias = (await option.accountAlias()).accountAlias;
     if (!wallet.walletNameConfig) {
       log.error(`Wallet ${wallet.walletName} does not exist.`);
       return;
@@ -124,6 +122,6 @@ export const createAddAccountFromWalletCommand = createCommand(
 
     assertCommandError(result);
 
-    displayAddAccountSuccess(config.accountAlias);
+    displayAddAccountSuccess(config.accountAlias, result.data);
   },
 );

@@ -1,177 +1,272 @@
 'use client';
 import { useAccount } from '@/hooks/account';
+import { useGetAllProofOfUs } from '@/hooks/data/getAllProofOfUs';
+import { useHasMintedAttendaceToken } from '@/hooks/data/hasMintedAttendaceToken';
 import { getClient } from '@/utils/client';
 import { env } from '@/utils/env';
-
-import { store } from '@/utils/socket/store';
 import { differenceInMinutes, isPast } from 'date-fns';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 
 export interface ITokenContext {
-  tokens: IProofOfUsData[] | undefined;
+  tokens: IToken[] | undefined;
   isLoading: boolean;
+  removeTokenFromData: (token: IToken) => void;
+  addMintingData: (proofOfUs: IProofOfUsData) => Promise<IToken>;
+  getToken: (id: string) => IToken | undefined;
 }
 
 export const TokenContext = createContext<ITokenContext>({
   tokens: [],
   isLoading: false,
+  removeTokenFromData: (token: IToken) => {},
+  addMintingData: async (proofOfUs: IProofOfUsData) => ({}) as IToken,
+  getToken: () => undefined,
 });
-
-interface IListener {
-  requestKey: string;
-  proofOfUsId: string;
-  listener: any;
-  startDate: number;
-}
 
 const isDateOlderThan5Minutes = async (dateToCheck: Date): Promise<boolean> => {
   return new Promise((resolve, reject) => {
-    try {
-      const currentDate = new Date();
-      const minutesDifference = differenceInMinutes(currentDate, dateToCheck);
-
-      if (isPast(dateToCheck) && minutesDifference > 10) {
-        resolve(true); // Date is older than 5 minutes
-      } else {
-        resolve(false); // Date is not older than 5 minutes
+    const checkCondition = () => {
+      try {
+        const currentDate = new Date();
+        const minutesDifference = differenceInMinutes(currentDate, dateToCheck);
+        if (isPast(dateToCheck) && minutesDifference > 15) {
+          resolve(true); // Date is older than 5 minutes
+        } else {
+          setTimeout(checkCondition, 1000); // Check again in 1 second
+        }
+      } catch (error) {
+        reject(error);
       }
-    } catch (error) {
-      reject(error);
-    }
+    };
+
+    checkCondition();
   });
 };
 
 export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [tokens, setTokens] = useState<IProofOfUsData[]>();
-  const [isLoading, setIsLoading] = useState(false);
-  const [listeners, setListeners] = useState<IListener[]>([]);
+  const [tokens, setTokens] = useState<IToken[]>([]);
+  const [mintingTokens, setMintingTokens] = useState<IToken[]>([]);
+  const [successTokens, setSuccessTokens] = useState<IToken[]>([]);
+  const { data, isLoading } = useGetAllProofOfUs();
+  const { hasMinted } = useHasMintedAttendaceToken();
   const { account } = useAccount();
 
-  useEffect(() => {
-    if (Array.isArray(tokens)) {
-      setIsLoading(false);
-    }
-  }, [tokens]);
+  const storageListener = useCallback(
+    (event: StorageEvent) => {
+      if (event.key === 'mintingTokens') {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        setMintingTokens(getMintingTokensFromLocalStorage());
+      }
+    },
+    [setMintingTokens],
+  );
 
   useEffect(() => {
-    if (!account) return;
-    setIsLoading(true);
-    store.listenToUser(account, setTokens);
-  }, [account]);
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    setMintingTokens(getMintingTokensFromLocalStorage());
+    window.addEventListener('storage', storageListener);
+    return () => {
+      window.removeEventListener('storage', storageListener);
+    };
+  }, []);
 
   useEffect(() => {
-    if (!tokens) return;
-    tokens.forEach(listenForMinting);
-  }, [tokens]);
+    if (!data) return;
+    setTokens(data as IToken[]);
+  }, [data]);
 
-  const removeMintingToken = (listener: IListener) => {
-    const filtered = listeners.filter(
-      (l) => l.proofOfUsId !== listener.proofOfUsId,
-    );
-    setListeners(filtered);
-  };
+  const removeMintingToken = useCallback((token: IToken) => {
+    setMintingTokens((v) => {
+      const newArray = v.filter((t) => t.requestKey !== token.requestKey);
+      localStorage.setItem('mintingTokens', JSON.stringify(newArray));
+      return newArray;
+    });
+  }, []);
 
-  const updateToken = async (
-    tokenId: string,
-    listener: IListener,
-    mintStatus: 'error' | 'success',
-  ) => {
-    const token = tokens?.find((t) => t.proofOfUsId === listener.proofOfUsId);
-    if (!token) return;
+  const updateToken = useCallback(
+    async (tokenId: string, token: IToken, mintStatus: 'error' | 'success') => {
+      removeMintingToken(token);
 
-    const signees = token.signees.map((s) => ({
-      ...s,
-      signerStatus: 'success',
-    })) as IProofOfUsSignee[];
+      if (mintStatus === 'success') {
+        setSuccessTokens((v) => {
+          const newArray = [...v];
+          delete token.proofOfUsId;
+          delete token.listener;
+          token.id = tokenId;
+          if (!v.find((t) => t.requestKey === token.requestKey)) {
+            newArray.push(token);
+          }
+          return newArray;
+        });
+      }
+    },
+    [setSuccessTokens, removeMintingToken],
+  );
+  const listenAll = useCallback(async () => {
+    for (let i = 0; i < mintingTokens.length; i++) {
+      const token = mintingTokens[i];
 
-    console.log('update in tokenprovider', signees);
-    store.updateProofOfUs(
-      { ...token, signees },
-      {
-        tokenId,
-        mintStatus,
-      },
-    );
-  };
-  const listenAll = async () => {
-    for (let i = 0; i < listeners.length; i++) {
-      const listener = listeners[i];
+      if (!token.requestKey || !token.listener || !token.mintStartDate) return;
 
       try {
-        const promises = await Promise.all([
-          isDateOlderThan5Minutes(new Date(listener.startDate)),
-          listener.listener,
-        ]);
+        isDateOlderThan5Minutes(new Date(token.mintStartDate))
+          .then(() => {
+            removeMintingToken(token);
+          })
+          .catch(() => {
+            removeMintingToken(token);
+          });
 
-        console.log(promises[1][listener.requestKey]);
-        if (
-          promises[1] &&
-          promises[1][listener.requestKey] &&
-          promises[1][listener.requestKey].result?.status === 'success'
-        ) {
-          updateToken(
-            promises[1][listener.requestKey].result.data,
-            listener,
-            'success',
-          );
-        }
-        if (
-          promises[1] &&
-          promises[1][listener.requestKey] &&
-          promises[1][listener.requestKey].result?.status === 'failure'
-        ) {
-          updateToken(
-            promises[1][listener.requestKey].result.data,
-            listener,
-            'error',
-          );
-        }
-        if (promises[0]) {
-          removeMintingToken(listener);
-        }
+        token.listener
+          .then((result) => {
+            if (!token.requestKey) return;
+            if (
+              result &&
+              result[token.requestKey] &&
+              result[token.requestKey].result?.status === 'success'
+            ) {
+              updateToken(
+                result[token.requestKey].result.data,
+                token,
+                'success',
+              );
+            } else {
+              removeMintingToken(token);
+            }
+          })
+          .catch((e) => {
+            console.log({ e });
+          });
       } catch (e) {
         console.error(e);
-        updateToken('', listener, 'error');
-        removeMintingToken(listener);
+        console.log('something went wrong making listener');
+        removeMintingToken(token);
       }
     }
-  };
+  }, [tokens, mintingTokens]);
+
   useEffect(() => {
     listenAll();
-  }, [listeners]);
+  }, [mintingTokens]);
 
-  async function listenForMinting(data: IProofOfUsData) {
-    try {
-      const isAlreadyListening = listeners.find(
-        (listener) => listener.proofOfUsId === data.proofOfUsId,
-      );
-      if (isAlreadyListening || data.mintStatus === 'success') return;
-
-      const listener = getClient().pollStatus({
-        requestKey: data.requestKey,
+  const addListener = useCallback((requestKey: string) => {
+    return getClient()
+      .pollStatus({
+        requestKey,
         chainId: env.CHAINID,
         networkId: env.NETWORKID,
-      });
+      })
+      .catch(console.log);
+  }, []);
 
-      const obj = {
-        proofOfUsId: data.proofOfUsId,
-        requestKey: data.requestKey,
-        listener,
-        startDate: data.date,
-      } as IListener;
+  const listenForMinting = useCallback(async (data: IToken) => {
+    try {
+      const isAlreadyListening = !!data.listener;
+      if (isAlreadyListening || !data.requestKey) return;
 
-      setListeners((v) => [...v, obj]);
+      data.listener = addListener(data.requestKey);
+
+      setMintingTokens((v) =>
+        v.map((item) => (item.requestKey === data.requestKey ? data : item)),
+      );
     } catch (e) {
       console.error(data.requestKey, e);
     }
-  }
+  }, []);
+
+  const getMintingTokensFromLocalStorage = useCallback((): IToken[] => {
+    if (typeof window === 'undefined') {
+      return [];
+    }
+
+    const rawMintingTokensData = localStorage.getItem('mintingTokens') || '[]';
+
+    const mintingTokensData = JSON.parse(rawMintingTokensData) as IToken[];
+    mintingTokensData.forEach(async (tokenData) => {
+      //remove listener data, because that will be a function (promise listening to the chain)
+      delete tokenData.listener;
+
+      //check if the tokenid is not already in the data
+      //if it is we can remove this mintingtoken
+      if (tokens.find((t) => t.id === tokenData.id)) {
+        removeMintingToken(tokenData);
+        return;
+      }
+
+      if (!tokenData.id && tokenData.eventId) {
+        const isMinted = await hasMinted(
+          tokenData.eventId,
+          account?.accountName,
+        );
+        if (isMinted) {
+          removeMintingToken(tokenData);
+          return;
+        }
+      }
+
+      listenForMinting(tokenData);
+    });
+
+    return mintingTokensData;
+  }, []);
+
+  const removeTokenFromData = useCallback(
+    (token: IToken) => {
+      if (!tokens) return;
+      const newTokens = tokens.filter((t) => t.id !== token.id);
+      setTokens(newTokens);
+    },
+    [tokens],
+  );
+
+  const addMintingData = useCallback(
+    async (proofOfUs: IProofOfUsData): Promise<IToken> => {
+      const token: IToken = {
+        eventId: proofOfUs.eventId,
+        proofOfUsId: proofOfUs.proofOfUsId,
+        requestKey: proofOfUs.requestKey,
+        info: {
+          uri: proofOfUs.manifestUri ?? '',
+        },
+        id: proofOfUs.tokenId,
+        mintStartDate: Date.now(),
+      };
+
+      token.listener = addListener(proofOfUs.requestKey);
+
+      setMintingTokens((v) => {
+        const newArray = [...v];
+        if (!v.find((t) => t.requestKey === token.requestKey)) {
+          newArray.push(token);
+        }
+        localStorage.setItem('mintingTokens', JSON.stringify(newArray));
+        return newArray;
+      });
+
+      return token;
+    },
+    [],
+  );
+
+  const getToken = useCallback(
+    (id: string): IToken | undefined => {
+      //id could be eventId or a requestkey
+      return [...mintingTokens, ...successTokens, ...tokens].find(
+        (token) => token.requestKey === id || token.eventId === id,
+      );
+    },
+    [mintingTokens, successTokens],
+  );
 
   return (
     <TokenContext.Provider
       value={{
-        tokens,
+        tokens: [...mintingTokens, ...successTokens, ...tokens],
         isLoading,
+        removeTokenFromData,
+        addMintingData,
+        getToken,
       }}
     >
       {children}

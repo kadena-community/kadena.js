@@ -16,23 +16,22 @@ describe('fund', () => {
         publicKeys: ['publicKey'],
         predicate: 'predicate',
         fungible: 'coin',
-        alias: 'my_testnet.yaml',
       },
       amount: '100',
       networkConfig: testNetworkConfigMock,
-      chainId: '1',
+      chainId: ['1'],
     });
     expect(result).toStrictEqual({
-      success: true,
-      data: {
-        result: {
-          reqKey: 'requestKey-1',
-          result: {
-            status: 'success',
-            data: 'Write succeeded',
-          },
+      status: 'success',
+      data: [
+        {
+          chainId: '1',
+          networkId: 'testnet04',
+          requestKey: 'requestKey-1',
         },
-      },
+      ],
+      errors: [],
+      warnings: [],
     });
   });
 
@@ -61,23 +60,24 @@ describe('fund', () => {
         publicKeys: ['publicKey'],
         predicate: 'predicate',
         fungible: 'coin',
-        alias: 'my_testnet.yaml',
       },
       amount: '100',
       networkConfig: testNetworkConfigMock,
-      chainId: '1',
+      chainId: ['1'],
     });
     expect(result).toStrictEqual({
-      success: true,
-      data: {
-        result: {
-          reqKey: 'requestKey-1',
-          result: {
-            status: 'success',
-            data: 'Write succeeded',
-          },
+      status: 'success',
+      data: [
+        {
+          chainId: '1',
+          networkId: 'testnet04',
+          requestKey: 'requestKey-1',
         },
-      },
+      ],
+      errors: [],
+      warnings: [
+        'Account "accountName" does not exist on Chain ID(s) 1. So the account will be created on these Chain ID(s).',
+      ],
     });
   });
 
@@ -100,34 +100,28 @@ describe('fund', () => {
         publicKeys: ['publicKey'],
         predicate: 'predicate',
         fungible: 'coin',
-        alias: 'my_testnet.yaml',
       },
       amount: '100',
       networkConfig: testNetworkConfigMock,
-      chainId: '1',
+      chainId: ['1'],
     });
 
     expect(result).toStrictEqual({
-      success: false,
-      errors: ['{"error":"something went wrong"}'],
+      status: 'error',
+      errors: [],
+      data: [],
+      warnings: ['Error on Chain ID 1 - {"error":"something went wrong"}'],
     });
   });
 
-  it('should return success false and error message when transfer fund api status returns failure', async () => {
+  it('should return success false and error message when api call fails', async () => {
     server.use(
       http.post(
-        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/listen',
+        'https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/1/pact/api/v1/send',
         () => {
           return HttpResponse.json(
-            {
-              result: {
-                status: 'failure',
-                error: {
-                  message: 'coin can be requested only every 30 minutes',
-                },
-              },
-            },
-            { status: 200 },
+            { error: 'something went wrong' },
+            { status: 500 },
           );
         },
       ),
@@ -139,17 +133,18 @@ describe('fund', () => {
         publicKeys: ['publicKey'],
         predicate: 'predicate',
         fungible: 'coin',
-        alias: 'my_testnet.yaml',
       },
       amount: '100',
       networkConfig: testNetworkConfigMock,
-      chainId: '1',
+      chainId: ['1'],
     });
 
     expect(result).toStrictEqual({
-      success: false,
-      errors: [
-        'Failed to transfer fund : "coin can be requested only every 30 minutes"',
+      status: 'error',
+      data: [],
+      errors: [],
+      warnings: [
+        'Error on Chain ID 1 - Failed to transfer fund : "{"error":"something went wrong"}"',
       ],
     });
   });

@@ -1,14 +1,29 @@
-import type { IUnsignedCommand } from '@kadena/client';
+import type { IPollResponse, IUnsignedCommand } from '@kadena/client';
 import { Pact } from '@kadena/client';
 import { PactNumber } from '@kadena/pactjs';
 import { getClient } from './client';
-import { proofOfUsData } from './data';
 import { env } from './env';
+import { getAllowedSigners } from './isAlreadySigning';
 
-export const getAllProofOfUs = async (): Promise<IProofOfUsToken[]> => {
-  const data = proofOfUsData.filter((d) => d && d['token-id']);
-  return data as IProofOfUsToken[];
+export const getTransaction = async (
+  requestKey?: string,
+): Promise<IPollResponse | undefined> => {
+  if (!requestKey) return;
+
+  const txRes = {
+    chainId: env.CHAINID,
+    networkId: env.NETWORKID,
+    requestKey,
+  };
+
+  let transaction;
+  try {
+    transaction = await getClient().getStatus(txRes);
+  } catch (e) {}
+
+  return transaction;
 };
+
 export const getProofOfUs = async (
   id: string,
 ): Promise<IProofOfUsToken | undefined> => {
@@ -44,7 +59,7 @@ export const getTokenId = async (
 
   const transaction = Pact.builder
     .execution(
-      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.retrieve-connection-token-id "${eventId}" "${uri}"
+      `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.retrieve-connection-token-id "" "${uri}"
       )`,
     )
     .setNetworkId(env.NETWORKID)
@@ -184,16 +199,11 @@ export const hasMintedAttendaceToken = async (
 
 export const createConnectTokenTransaction = async (
   manifestUri: string,
-  proofOfUs: IProofOfUsData,
+  signees: IProofOfUsSignee[],
   account: IAccount,
 ): Promise<IUnsignedCommand | undefined> => {
   const credential = account.credentials[0];
-  const eventId = process.env.NEXT_PUBLIC_CONNECTION_EVENTID ?? '';
   const collectionId = process.env.NEXT_PUBLIC_CONNECTION_COLLECTIONID ?? '';
-
-  if (!eventId) {
-    throw new Error('eventId not found');
-  }
 
   if (!collectionId) {
     throw new Error('collectionId not found');
@@ -203,24 +213,21 @@ export const createConnectTokenTransaction = async (
     throw new Error('credential of account not found');
   }
 
-  if (proofOfUs.signees.length < 2) {
+  if (signees.length < 2) {
     throw new Error('You need at least 2 signers');
   }
 
-  const guardString = proofOfUs.signees.reduce((acc: string, val) => {
+  const guardString = signees.reduce((acc: string, val) => {
     return `${acc} "${val.accountName}"`;
   }, '');
 
   const transactionBuilder = Pact.builder
     .execution(
       `(${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.create-and-mint-connection-token
-        "${eventId}"
       "${manifestUri}"
       (map (${process.env.NEXT_PUBLIC_WEBAUTHN_NAMESPACE}.webauthn-wallet.get-wallet-guard) [${guardString}])
       )`,
     )
-
-    .addData('event_id', eventId)
     .addData('collection_id', collectionId)
     .addData('uri', manifestUri)
     .setNetworkId(env.NETWORKID)
@@ -228,11 +235,11 @@ export const createConnectTokenTransaction = async (
       chainId: `${env.CHAINID}`,
       senderAccount: 'proof-of-us-gas-station',
       gasPrice: 0.000001,
-      gasLimit: 10000,
+      gasLimit: 100000,
       ttl: 30000,
     });
 
-  proofOfUs.signees.forEach((signee, idx) => {
+  getAllowedSigners(signees).forEach((signee, idx) => {
     if (idx === 0) {
       transactionBuilder.addSigner(
         {
@@ -248,7 +255,7 @@ export const createConnectTokenTransaction = async (
           ),
           withCap(
             `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.CONNECT`,
-            `${eventId}`,
+            ``,
             `${manifestUri}`,
           ),
         ],
@@ -262,7 +269,7 @@ export const createConnectTokenTransaction = async (
         (withCap) => [
           withCap(
             `${process.env.NEXT_PUBLIC_NAMESPACE}.proof-of-us.CONNECT`,
-            `${eventId}`,
+            ``,
             `${manifestUri}`,
           ),
         ],

@@ -1,10 +1,5 @@
 import { atoms } from '../../styles/atoms.css';
 
-export const fontVariants = {
-  main: [atoms({ fontFamily: 'primaryFont' })],
-  mono: [atoms({ fontFamily: 'codeFont' })],
-};
-
 export const transformVariants = {
   uppercase: [atoms({ textTransform: 'uppercase' })],
   lowercase: [atoms({ textTransform: 'lowercase' })],

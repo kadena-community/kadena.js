@@ -35,7 +35,7 @@ describe('addAccount', () => {
     const filePath = getAccountFilePath(defaultConfigMock.accountAlias);
     const result = await addAccount(config);
 
-    assert(result.success);
+    assert(result.status === 'success');
     expect(result.data).toEqual(filePath);
     expect(result.warnings).toEqual([]);
   });
@@ -51,7 +51,7 @@ describe('addAccount', () => {
     const filePath = getAccountFilePath(defaultConfigMock.accountAlias);
     const result = await addAccount(config);
 
-    assert(result.success);
+    assert(result.status === 'success');
     expect(result.data).toEqual(filePath);
     expect(result.warnings).toEqual([
       'The account "k:3645365457567ghghdghf6534673" is not on chain yet. To create it on-chain, transfer funds to it from testnet and use "kadena account fund" command.',
@@ -79,7 +79,7 @@ describe('addAccount', () => {
 
     const fileContent = await services.filesystem.readFile(filePath);
 
-    assert(result.success);
+    assert(result.status === 'success');
     expect(result.data).toEqual(filePath);
     expect(fileContent).toBe(
       yaml.dump({
@@ -105,7 +105,7 @@ describe('addAccount', () => {
 
     const result = await addAccount(config);
 
-    assert(!result.success);
+    assert(result.status === 'error');
     expect(result.errors).toEqual([
       `The account configuration "${filePath}" already exists.`,
     ]);

@@ -9,6 +9,7 @@ import useLedgerPublicKey, {
   derivationModes,
 } from '@/hooks/use-ledger-public-key';
 import type { ChainId } from '@kadena/client';
+import { MonoCAccount, MonoKey, MonoUsb } from '@kadena/react-icons/system';
 import {
   Breadcrumbs,
   BreadcrumbsItem,
@@ -20,7 +21,6 @@ import {
   Select,
   SelectItem,
   Stack,
-  SystemIcon,
   Text,
 } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
@@ -79,7 +79,7 @@ const Storybook = () => {
         <Card fullWidth>
           <Stack flexDirection="column">
             <Heading as="h5">
-              <Text as="code">useAccountDetailsQuery</Text>
+              <Text variant="code">useAccountDetailsQuery</Text>
             </Heading>
             <Stack gap="md">
               <AccountNameField
@@ -94,7 +94,7 @@ const Storybook = () => {
               />
             </Stack>
             <>
-              <ContentHeader icon="Account" heading="User Details" />
+              <ContentHeader icon={<MonoCAccount />} heading="User Details" />
               {accountDetails ? (
                 <dl>
                   {Object.entries(accountDetails).map(([key, value]) => {
@@ -130,7 +130,7 @@ const Storybook = () => {
             <Stack gap="md">
               <Combobox
                 allowsCustomValue
-                startIcon={<SystemIcon.KeyIconFilled />}
+                startIcon={<MonoKey />}
                 label="Key ID"
                 onInputChange={async (value) => {
                   console.log('onInputChange', value);
@@ -160,7 +160,7 @@ const Storybook = () => {
               </Select>
             </Stack>
             <>
-              <ContentHeader icon="UsbFlashDrive" heading="Ledger Public Key" />
+              <ContentHeader icon={<MonoUsb />} heading="Ledger Public Key" />
               {ledgerPublicKey ? (
                 <dl>
                   <dt>Public Key</dt>

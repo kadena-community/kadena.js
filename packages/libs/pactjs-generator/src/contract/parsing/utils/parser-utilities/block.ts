@@ -13,3 +13,16 @@ export const block: ISeq = (...parsers) => {
     return seqParser(blockPinter);
   });
 };
+
+export const restrictedBlock: ISeq = (...parsers) => {
+  const seqParser = seq(...parsers);
+  return rule((pointer) => {
+    const token = pointer.next();
+    if (token?.type !== 'lparen') return FAILED;
+    const blockPinter = getBlockPointer(pointer);
+    const result = seqParser(blockPinter);
+    const lastToken = pointer.next();
+    if (lastToken?.type !== 'rparen') return FAILED;
+    return result;
+  });
+};

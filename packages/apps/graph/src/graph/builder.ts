@@ -5,9 +5,11 @@ import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
 import RelayPlugin from '@pothos/plugin-relay';
 import TracingPlugin, { wrapResolver } from '@pothos/plugin-tracing';
+import ValidationPlugin from '@pothos/plugin-validation';
 import { Prisma } from '@prisma/client';
 import { logTrace } from '@services/tracing/trace-service';
 import { dotenv } from '@utils/dotenv';
+import { normalizeError } from '@utils/errors';
 import {
   BigIntResolver,
   DateTimeResolver,
@@ -26,11 +28,15 @@ import type {
   Guard,
   NonFungibleAccount,
   NonFungibleChainAccount,
-  Token,
-  TokenInfo,
+  NonFungibleToken,
+  NonFungibleTokenBalance,
+  PactQueryResponse,
+  TransactionCapability,
   TransactionCommand,
+  TransactionMempoolInfo,
   TransactionMeta,
   TransactionResult,
+  TransactionSignature,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -76,16 +82,17 @@ export const builder = new SchemaBuilder<
       Guard: Guard;
       NonFungibleAccount: NonFungibleAccount;
       NonFungibleChainAccount: NonFungibleChainAccount;
-      Token: Token;
-      TokenInfo: TokenInfo;
-      TransactionCommand: TransactionCommand;
+      NonFungibleTokenBalance: NonFungibleTokenBalance;
+      NonFungibleToken: NonFungibleToken;
       TransactionMeta: TransactionMeta;
       ExecutionPayload: ExecutionPayload;
       ContinuationPayload: ContinuationPayload;
+      TransactionMempoolInfo: TransactionMempoolInfo;
       TransactionResult: TransactionResult;
-    };
-    Connection: {
-      totalCount: number;
+      TransactionCommand: TransactionCommand;
+      TransactionCapability: TransactionCapability;
+      TransactionSignature: TransactionSignature;
+      PactQueryResponse: PactQueryResponse;
     };
   }
 >({
@@ -95,6 +102,7 @@ export const builder = new SchemaBuilder<
     PrismaPlugin,
     RelayPlugin,
     TracingPlugin,
+    ValidationPlugin,
   ],
 
   prisma: {
@@ -109,6 +117,10 @@ export const builder = new SchemaBuilder<
   relayOptions: {
     clientMutationId: 'optional',
     cursorType: 'String',
+  },
+
+  validationOptions: {
+    validationError: (message) => normalizeError(message),
   },
 
   ...(dotenv.COMPLEXITY_ENABLED && {

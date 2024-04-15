@@ -5,6 +5,11 @@ export const contributePathUrlRedirects = [
     permanent: true,
   },
   {
+    source: '/contribute/introduction',
+    destination: '/contribute',
+    permanent: true,
+  },
+  {
     source: '/contribute/run-a-node/interact-with-nodes',
     destination: '/contribute/node/interact-with-nodes',
     permanent: true,
@@ -12,6 +17,11 @@ export const contributePathUrlRedirects = [
   {
     source: '/contribute/contribute-to-kadena-docs',
     destination: '/contribute/docs',
+    permanent: true,
+  },
+  {
+    source: '/contribute/node/troubleshooting-chainweb',
+    destination: '/contribute/node/trouble-shooting-chainweb',
     permanent: true,
   },
   {

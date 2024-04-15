@@ -1,11 +1,13 @@
 import type { Command } from 'commander';
 import path from 'path';
 
+import { KADENA_DIR } from '../../constants/config.js';
 import { defaultNetworksPath } from '../../constants/networks.js';
 import { services } from '../../services/index.js';
+import { KadenaError } from '../../services/service-error.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
+import { networkOptions } from '../networkOptions.js';
 import { writeNetworks } from '../utils/networkHelpers.js';
 
 export const createNetworksCommand: (
@@ -13,15 +15,19 @@ export const createNetworksCommand: (
   version: string,
 ) => void = createCommand(
   'add',
-  'Add local network configuration',
+  'Add network configuration',
   [
-    globalOptions.networkName({ isOptional: false }),
-    globalOptions.networkId({ isOptional: false }),
-    globalOptions.networkHost({ isOptional: false }),
-    globalOptions.networkExplorerUrl(),
-    globalOptions.networkOverwrite(),
+    networkOptions.networkName({ isOptional: false }),
+    networkOptions.networkId({ isOptional: false }),
+    networkOptions.networkHost({ isOptional: false }),
+    networkOptions.networkExplorerUrl(),
+    networkOptions.networkOverwrite(),
   ],
   async (option, { collect }) => {
+    if (defaultNetworksPath === null || KADENA_DIR === null) {
+      throw new KadenaError('no_kadena_directory');
+    }
+
     const config = await collect(option);
     log.debug('network-create:action', config);
 
@@ -47,7 +53,7 @@ export const createNetworksCommand: (
       networkExplorerUrl: config.networkExplorerUrl,
     };
 
-    await writeNetworks(networkConfig);
+    await writeNetworks(KADENA_DIR, networkConfig);
 
     log.info(
       log.color.green(

@@ -48,7 +48,7 @@ export function UnlockProfile() {
           <TextField id="password" type="password" {...register('password')} />
           <Button type="submit">Unlock</Button>
         </form>
-        {error && <Text variant="base">{error}</Text>}
+        {error && <Text>{error}</Text>}
         <Link to="/create-profile">Create profile</Link>
       </Box>
     </main>

@@ -1,5 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import { Prisma } from '@prisma/client';
+import { getNonFungibleChainAccount } from '@services/account-service';
 import {
   COMPLEXITY,
   getDefaultConnectionComplexity,
@@ -9,12 +10,15 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { nonFungibleChainCheck } from '../data-loaders/non-fungible-chain-check';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
-import type { NonFungibleAccount } from '../types/graphql-types';
+import type {
+  NonFungibleAccount,
+  NonFungibleChainAccount,
+} from '../types/graphql-types';
 import {
   NonFungibleAccountName,
   NonFungibleChainAccountName,
 } from '../types/graphql-types';
-import Token from './token';
+import Token from './non-fungible-token-balance';
 
 export default builder.node(
   builder.objectRef<NonFungibleAccount>(NonFungibleAccountName),
@@ -33,6 +37,7 @@ export default builder.node(
           __typename: NonFungibleAccountName,
           accountName,
           chainAccounts: [],
+          nonFungibleTokenBalances: [],
           transactions: [],
         };
       } catch (error) {
@@ -53,21 +58,24 @@ export default builder.node(
               accountName: parent.accountName,
             });
 
-            return chainIds.map((chainId) => {
-              return {
-                __typename: NonFungibleChainAccountName,
-                chainId,
-                accountName: parent.accountName,
-                nonFungibles: [],
-                transactions: [],
-              };
-            });
+            return (
+              await Promise.all(
+                chainIds.map(async (chainId) => {
+                  return getNonFungibleChainAccount({
+                    chainId,
+                    accountName: parent.accountName,
+                  });
+                }),
+              )
+            ).filter(
+              (chainAccount) => chainAccount !== null,
+            ) as NonFungibleChainAccount[];
           } catch (error) {
             throw normalizeError(error);
           }
         },
       }),
-      nonFungibles: t.field({
+      nonFungibleTokenBalances: t.field({
         type: [Token],
         complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
         async resolve(parent) {
@@ -83,6 +91,8 @@ export default builder.node(
         },
       }),
       transactions: t.prismaConnection({
+        description:
+          'Default page size is 20. Note that custom token related transactions are not included.',
         type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
@@ -100,7 +110,7 @@ export default builder.node(
                 senderAccount: parent.accountName,
                 events: {
                   some: {
-                    moduleName: 'marmalade-v2.ledger',
+                    moduleName: { startsWith: 'marmalade' },
                   },
                 },
               },
@@ -117,7 +127,7 @@ export default builder.node(
                 senderAccount: parent.accountName,
                 events: {
                   some: {
-                    moduleName: 'marmalade-v2.ledger',
+                    moduleName: { startsWith: 'marmalade-v2' },
                   },
                 },
               },

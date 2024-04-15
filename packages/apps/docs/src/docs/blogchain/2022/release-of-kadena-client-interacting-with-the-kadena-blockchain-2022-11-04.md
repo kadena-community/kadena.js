@@ -37,13 +37,13 @@ Interaction with the Kadena Blockchain works in multiple ways. With the
 @kadena/client tool, there are two ways you will be able to interact with the
 Kadena Blockchain. The two ways are:
 
-1.  [Contract based](https://github.com/kadena-community/kadena.js/blob/master/packages/libs/client/docs/launch-post.md#contract-based-interaction-using-kadenaclient);
+1.  [Contract based](https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client/README.md#contract-based-interaction-using-kadenaclient);
     and
 
-2.  T[emplate based](https://github.com/kadena-community/kadena.js/blob/master/packages/libs/client/docs/launch-post.md#template-based-interaction-using-kadenaclient).
+2.  [Template based](https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client/README.md#template-based-interaction-using-kadenaclient).
 
 There’s also information on an
-[Automated Way of Signing using Chainweaver](https://github.com/kadena-community/kadena.js/blob/master/packages/libs/client/docs/launch-post.md#automated-sign-request-to-chainweaver-desktop),
+[Automated Way of Signing using Chainweaver](https://github.com/kadena-community/kadena.js/blob/main/packages/libs/client/README.md#automated-sign-request-to-chainweaver-desktop),
 which will be later detailed in this article. We will also be exploring the
 concepts and rationale of @kadena/client.
 

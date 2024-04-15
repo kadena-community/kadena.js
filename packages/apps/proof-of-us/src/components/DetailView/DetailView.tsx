@@ -1,4 +1,6 @@
 import { Button } from '@/components/Button/Button';
+import { Confirmation } from '@/components/Confirmation/Confirmation';
+import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAvatar } from '@/hooks/avatar';
 import { useProofOfUs } from '@/hooks/proofOfUs';
 import { isAlreadySigning } from '@/utils/isAlreadySigning';
@@ -16,7 +18,7 @@ import { ImagePositions } from '../ImagePositions/ImagePositions';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
 import { TextField } from '../TextField/TextField';
 import { TitleHeader } from '../TitleHeader/TitleHeader';
-import { imageWrapper, titleErrorClass } from './style.css';
+import { imageWrapper } from './style.css';
 
 interface IProps {
   next: () => void;
@@ -24,8 +26,7 @@ interface IProps {
 }
 
 export const DetailView: FC<IProps> = ({ next, prev }) => {
-  const { proofOfUs, closeToken, changeTitle, updateProofOfUs } =
-    useProofOfUs();
+  const { proofOfUs, changeTitle, updateProofOfUs } = useProofOfUs();
   const { removeBackground } = useAvatar();
   const [isMounted, setIsMounted] = useState(true);
   const router = useRouter();
@@ -44,13 +45,10 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
 
   const handleRedo = async () => {
     if (!proofOfUs) return;
-    if (!confirm('Are you sure you want to retake your photo?')) return;
     await removeBackground(proofOfUs);
     prev();
   };
   const handleClose = async () => {
-    if (!confirm('Are you sure you want to stop with this token?')) return;
-    await closeToken({ proofOfUsId: proofOfUs.proofOfUsId });
     setIsMounted(false);
     router.replace('/user');
   };
@@ -78,26 +76,36 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
       <TitleHeader
         Prepend={() => (
           <>
-            {!isAlreadySigning(proofOfUs.signees) && (
-              <IconButton onClick={handleRedo}>
-                <MonoArrowBack />
-              </IconButton>
+            {!isAlreadySigning(proofOfUs) && (
+              <Confirmation
+                text="Are you sure you want to retake your photo?"
+                action={handleRedo}
+              >
+                <IconButton title="Retake the photo">
+                  <MonoArrowBack />
+                </IconButton>
+              </Confirmation>
             )}
           </>
         )}
         label="Details"
         Append={() => (
           <>
-            {!isAlreadySigning(proofOfUs.signees) && (
-              <IconButton onClick={handleClose}>
-                <MonoClose />
-              </IconButton>
+            {!isAlreadySigning(proofOfUs) && (
+              <Confirmation
+                text="Are you sure you want to stop with this token?"
+                action={handleClose}
+              >
+                <IconButton title="Close">
+                  <MonoClose />
+                </IconButton>
+              </Confirmation>
             )}
           </>
         )}
       />
 
-      {!isAlreadySigning(proofOfUs.signees) ? (
+      {!isAlreadySigning(proofOfUs) ? (
         <>
           <div className={imageWrapper}>
             <ImagePositions />
@@ -115,10 +123,10 @@ export const DetailView: FC<IProps> = ({ next, prev }) => {
       )}
 
       <Stack flex={1} />
+      {titleError && <MessageBlock variant="error">{titleError}</MessageBlock>}
       <Button variant="primary" onPress={handleShare}>
         Share <MonoQrCodeScanner />
       </Button>
-      {titleError && <div className={titleErrorClass}>{titleError}</div>}
     </ScreenHeight>
   );
 };

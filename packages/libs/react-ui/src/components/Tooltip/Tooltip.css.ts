@@ -5,13 +5,13 @@ import { tokens } from '../../styles/index';
 export const base = style([
   atoms({
     position: 'absolute',
-    backgroundColor: 'layer-3.default',
     fontSize: 'sm',
     paddingBlock: 'sm',
     paddingInline: 'md',
     borderRadius: 'md',
-    color: 'text.base.default',
+    color: 'text.base.inverse.default',
     pointerEvents: 'none',
+    backgroundColor: 'base.inverse.default',
     maxWidth: 'content.maxWidth',
   }),
   {
@@ -21,7 +21,7 @@ export const base = style([
       position: 'absolute',
       borderTop: '6px solid transparent',
       borderRight: '6px solid transparent',
-      borderBottom: `6px solid ${tokens.kda.foundation.color.background['layer-3'].default}`,
+      borderBottom: `6px solid ${tokens.kda.foundation.color.background.layer03.default}`,
       borderLeft: '6px solid transparent',
     },
     zIndex: tokens.kda.foundation.zIndex.overlay,

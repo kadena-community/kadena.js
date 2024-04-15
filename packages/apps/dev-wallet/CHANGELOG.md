@@ -1,5 +1,60 @@
 # @kadena/dev-wallet
 
+## 0.0.8
+
+### Patch Changes
+
+- 8bb3168818: fix: use new text and header components from react-ui package
+- Updated dependencies [b316674811]
+- Updated dependencies [fa60f7fd9]
+- Updated dependencies [6aac4b623]
+- Updated dependencies [3bbfeaaa9]
+- Updated dependencies [5a304c326]
+- Updated dependencies [8bb3168818]
+- Updated dependencies [5c5937eef6]
+  - @kadena/react-ui@0.8.4
+  - @kadena/client@1.11.0
+  - @kadena/client-utils@0.5.3
+  - @kadena/pactjs-generator@1.11.0
+
+## 0.0.7
+
+### Patch Changes
+
+- d67b52906: Fixed IParsedCode interface
+- Updated dependencies [d67b52906]
+  - @kadena/pactjs-generator@1.10.1
+  - @kadena/client@1.10.1
+  - @kadena/client-utils@0.5.2
+
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [016b9dbfc]
+- Updated dependencies [25de564cd]
+  - @kadena/client@1.10.0
+  - @kadena/react-ui@0.8.3
+  - @kadena/client-utils@0.5.1
+
+## 0.0.5
+
+### Patch Changes
+
+- f0571c102: Adding atoms and styles to profile overview
+- 3148c8d53: Added navheader for easy extension of routes and more
+- Updated dependencies [b53c2600c]
+- Updated dependencies [57a734447]
+- Updated dependencies [6ddf094d8]
+- Updated dependencies [6ddf094d8]
+- Updated dependencies [550e6d9e4]
+  - @kadena/client@1.9.0
+  - @kadena/client-utils@0.5.0
+  - @kadena/react-ui@0.8.2
+  - @kadena/cryptography-utils@0.4.2
+  - @kadena/hd-wallet@0.3.0
+  - @kadena/pactjs@0.4.2
+
 ## 0.0.4
 
 ### Patch Changes

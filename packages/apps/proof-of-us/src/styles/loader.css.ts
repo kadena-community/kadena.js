@@ -1,3 +1,4 @@
+import { deviceColors } from '@/styles/tokens.css';
 import { keyframes, style } from '@vanilla-extract/css';
 
 const animation = keyframes({
@@ -36,7 +37,7 @@ export const kadenaSpinnerDivDot = style([
   {
     width: '1rem',
     height: '1rem',
-    backgroundColor: '#E41968',
+    backgroundColor: deviceColors.green,
     animation: `1s ${pulse} infinite alternate`,
   },
 ]);
@@ -51,12 +52,12 @@ export const kadenaSpinnerDivRing = style([
 
     selectors: {
       '&:nth-child(1)': {
-        borderLeftColor: '#E41968',
-        borderRightColor: '#E41968',
+        borderLeftColor: deviceColors.green,
+        borderRightColor: deviceColors.green,
       },
       '&:nth-child(2)': {
-        borderTopColor: '#E41968',
-        borderBottomColor: '#E41968',
+        borderTopColor: deviceColors.green,
+        borderBottomColor: deviceColors.green,
         animationDelay: '.8s',
         borderWidth: '0.2rem',
       },

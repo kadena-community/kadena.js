@@ -1,15 +1,11 @@
+import { MonoCAccount } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { withContentWidth } from '../../storyDecorators';
 import type { IContentHeaderProps } from '../ContentHeader';
 import { ContentHeader } from '../ContentHeader';
-import { SystemIcon } from '../Icon';
 
-const meta: Meta<
-  {
-    selectIcon: keyof typeof SystemIcon;
-  } & IContentHeaderProps
-> = {
+const meta: Meta<IContentHeaderProps> = {
   title: 'Patterns/ContentHeader',
   decorators: [withContentWidth],
   parameters: {
@@ -17,7 +13,6 @@ const meta: Meta<
   },
   argTypes: {
     icon: {
-      options: Object.keys(SystemIcon) as (keyof typeof SystemIcon)[],
       control: {
         type: 'select',
       },
@@ -36,11 +31,7 @@ const meta: Meta<
 };
 
 export default meta;
-type Story = StoryObj<
-  {
-    selectIcon: keyof typeof SystemIcon;
-  } & IContentHeaderProps
->;
+type Story = StoryObj<IContentHeaderProps>;
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
@@ -51,7 +42,7 @@ type Story = StoryObj<
 export const Primary: Story = {
   name: 'ContentHeader',
   args: {
-    icon: 'Account',
+    icon: <MonoCAccount />,
     heading: 'Incoming Transactions',
     description:
       'This table is listing all the incoming transaction sorted by date descending descriptive text.',

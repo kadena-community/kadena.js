@@ -9,7 +9,7 @@ moduleAlias.addAliases({
   '@devnet': `${__dirname}/devnet`,
 });
 
-import { runSystemsCheck } from '@services/systems-check';
+import { SystemCheckError, runSystemsCheck } from '@services/systems-check';
 import { dotenv } from '@utils/dotenv';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { createYoga } from 'graphql-yoga';
@@ -40,8 +40,9 @@ const yogaApp = createYoga({
   plugins,
   graphiql: {
     subscriptionsProtocol: 'WS',
+    title: 'Kadena GraphQL',
   },
-  context: () => {
+  context: async () => {
     return {
       extensions: {},
     };
@@ -102,7 +103,17 @@ runSystemsCheck()
       );
     });
   })
-  .catch(() => {
-    console.log('\nSystem checks failed. Unable to start the graph server.\n');
+  .catch((error) => {
+    if (error instanceof SystemCheckError) {
+      console.log(
+        '\nSystem checks failed. Unable to start the graph server.\n',
+      );
+    } else {
+      console.log(
+        '\nAn unexpected error occurred. Unable to start the graph server.\n',
+      );
+      console.error(error);
+    }
+
     process.exit(1);
   });

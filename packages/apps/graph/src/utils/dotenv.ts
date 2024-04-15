@@ -9,6 +9,7 @@ export const dotenv: {
   COMPLEXITY_ENABLED: boolean;
   COMPLEXITY_EXPOSED: boolean;
   DATABASE_URL: string;
+  DEFAULT_FUNGIBLE_NAME: string;
   NETWORK_HOST: string;
   NETWORK_ID: string;
   PORT: number;
@@ -27,10 +28,15 @@ export const dotenv: {
   MARMALADE_REMOTE_EXCLUDE: string[];
   MARMALADE_LOCAL_TEMPLATE_PATH: string;
   MARMALADE_LOCAL_NAMESPACE_PATH: string;
-  GITHUB_TOKEN: string;
+  MEMPOOL_HOSTNAME: string;
+  MEMPOOL_PORT: number;
+  GITHUB_TOKEN: string | undefined;
   SIMULATE_DEFAULT_CHAIN_ID: ChainId;
   SIMULATE_LOG_FOLDER_NAME: string;
   NODE_ENV: string;
+  TIMEOUT_PACT_QUERY: number;
+  CHAINWEB_NODE_RETRY_ATTEMPTS: number;
+  CHAINWEB_NODE_RETRY_DELAY: number;
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
   COMPLEXITY_LIMIT: parseInt(or(process.env.COMPLEXITY_LIMIT, '500'), 10),
@@ -46,6 +52,7 @@ export const dotenv: {
     process.env.DATABASE_URL,
     'postgresql://devnet@localhost:5432/devnet?pool_timeout=0',
   ),
+  DEFAULT_FUNGIBLE_NAME: or(process.env.DEFAULT_FUNGIBLE_NAME, 'coin'),
   NETWORK_HOST: or(process.env.NETWORK_HOST, 'http://localhost:8080'),
   NETWORK_ID: or(process.env.NETWORK_ID, 'development'),
   PORT: parseInt(or(process.env.PORT, '4000'), 10),
@@ -85,7 +92,7 @@ export const dotenv: {
   ),
   MARMALADE_REMOTE_TEMPLATE_PATH: or(
     process.env.MARMALADE_REMOTE_TEMPLATE_PATH,
-    'pact/yaml/marmalade-v2',
+    'pact/yaml',
   ),
   MARMALADE_REMOTE_NAMESPACE_PATH: or(
     process.env.MARMALADE_REMOTE_NAMESPACE_PATH?.split(','),
@@ -94,7 +101,7 @@ export const dotenv: {
 
   MARMALADE_REMOTE_EXCLUDE: or(
     process.env.MARMALADE_REMOTE_EXCLUDE?.split(','),
-    ['sample', 'data', 'test'],
+    ['sample', 'data'],
   ),
 
   MARMALADE_LOCAL_TEMPLATE_PATH: or(
@@ -105,13 +112,24 @@ export const dotenv: {
     process.env.MARMALADE_LOCAL_NAMESPACE_PATH,
     'src/devnet/deployment/marmalade/templates/ns',
   ),
-  GITHUB_TOKEN: or(process.env.GITHUB_TOKEN, '/pact/marmalade-ns'),
+  MEMPOOL_HOSTNAME: or(process.env.MEMPOOL_HOST, 'localhost'),
+  MEMPOOL_PORT: parseInt(or(process.env.MEMPOOL_PORT, '1789'), 10),
+  GITHUB_TOKEN: process.env.GITHUB_TOKEN,
   SIMULATE_DEFAULT_CHAIN_ID: or(
     process.env.SIMULATE_DEFAULT_CHAIN_ID as ChainId,
     '0' as ChainId,
   ),
   SIMULATE_LOG_FOLDER_NAME: or(process.env.SIMULATE_LOG_FOLDER_NAME, 'logs'),
   NODE_ENV: or(process.env.NODE_ENV, 'production'),
+  TIMEOUT_PACT_QUERY: parseInt(or(process.env.TIMEOUT_PACT_QUERY, '5000'), 10),
+  CHAINWEB_NODE_RETRY_ATTEMPTS: parseInt(
+    or(process.env.CHAINWEB_NODE_RETRY_ATTEMPTS, '5'),
+    10,
+  ),
+  CHAINWEB_NODE_RETRY_DELAY: parseInt(
+    or(process.env.CHAINWEB_NODE_RETRY_DELAY, '100'),
+    10,
+  ),
 };
 
 function or<T>(value: T | undefined, otherwise: T): T {

@@ -1,5 +1,6 @@
 'use client';
 import { Button } from '@/components/Button/Button';
+import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { List } from '@/components/List/List';
 import { ListItem } from '@/components/List/ListItem';
@@ -11,7 +12,7 @@ import UserLayout from '@/components/UserLayout/UserLayout';
 import { useAccount } from '@/hooks/account';
 import { useTokens } from '@/hooks/tokens';
 import { secondaryTextClass } from '@/styles/global.css';
-import { MonoGroup, MonoLogout, MonoMilitaryTech } from '@kadena/react-icons';
+import { MonoGroup, MonoLogout } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -32,18 +33,18 @@ const Page: FC = () => {
         {isLoading && <MainLoader />}
 
         {tokens && (
-          <Stack flexDirection="column" flex={1}>
+          <Stack flexDirection="column" flex={1} alignItems="center">
             <TitleHeader
               label="Dashboard"
               Append={() => (
-                <>
-                  <Link href="/leaderboard">
-                    <MonoMilitaryTech />
-                  </Link>
-                  <IconButton onClick={logout}>
+                <Confirmation
+                  text="Are you sure you want to logout?"
+                  action={logout}
+                >
+                  <IconButton title="Logout">
                     <MonoLogout />
                   </IconButton>
-                </>
+                </Confirmation>
               )}
             />
             <Stack flex={1} width="100%">
@@ -52,6 +53,7 @@ const Page: FC = () => {
                   flexDirection="column"
                   justifyContent="center"
                   alignItems="center"
+                  width="100%"
                 >
                   <MonoGroup fontSize="8rem" />
                   <Text bold>Create Your First Proof</Text>
@@ -83,13 +85,8 @@ const Page: FC = () => {
                   >
                     <Text bold>Proofs ({tokens.length})</Text>
                     <List>
-                      {tokens.map((token: IProofOfUsData) => {
-                        return (
-                          <ListItem
-                            key={`${token.proofOfUsId}`}
-                            proofOfUsData={token}
-                          />
-                        );
+                      {tokens.map((token: IToken) => {
+                        return <ListItem key={`${token.id}`} token={token} />;
                       })}
                     </List>
                   </Stack>

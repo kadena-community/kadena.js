@@ -97,13 +97,13 @@ export async function getTransferStatus({
     }
 
     //If crosschain transfer
-    if (sender.chain !== receiver.chain) {
+    if (sender.chain && receiver.chain && sender.chain !== receiver.chain) {
       await checkForProof({
         requestKey,
         network,
-        receiverAccount: receiver.account,
+        receiverAccount: receiver.account ?? t('Not found'),
         receiverChain: receiver.chain,
-        senderAccount: sender.account || t('Not found'),
+        senderAccount: sender.account ?? t('Not found'),
         senderChain: sender.chain,
         amount,
         networksData,
@@ -162,7 +162,7 @@ export async function getXChainTransferInfo({
   t,
 }: {
   requestKey: string;
-  senderAccount: string;
+  senderAccount?: string;
   senderChain: ChainwebChainId;
   receiverChain: ChainwebChainId;
   network: Network;
@@ -280,7 +280,7 @@ export async function checkForProof({
   senderChain: ChainwebChainId;
   receiverAccount: string;
   receiverChain: ChainwebChainId;
-  amount: number;
+  amount?: number;
   networksData: INetworkData[];
   options?: {
     onPoll?: (status: IStatusData) => void;

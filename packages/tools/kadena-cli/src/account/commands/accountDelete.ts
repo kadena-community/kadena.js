@@ -2,6 +2,7 @@ import { join } from 'path';
 import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
 import { ACCOUNT_DIR } from '../../constants/config.js';
 import { services } from '../../services/index.js';
+import { KadenaError } from '../../services/service-error.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
@@ -11,15 +12,18 @@ import { accountOptions } from '../accountOptions.js';
 import { ensureAccountAliasFilesExists } from '../utils/accountHelpers.js';
 
 async function deleteAccountDir(): Promise<CommandResult<null>> {
+  if (ACCOUNT_DIR === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   try {
     await services.filesystem.deleteDirectory(ACCOUNT_DIR);
     return {
       data: null,
-      success: true,
+      status: 'success',
     };
   } catch (error) {
     return {
-      success: false,
+      status: 'error',
       errors: ['Failed to delete all account aliases.'],
     };
   }
@@ -28,6 +32,9 @@ async function deleteAccountDir(): Promise<CommandResult<null>> {
 async function removeAccount(
   accountAlias: string,
 ): Promise<CommandResult<null>> {
+  if (ACCOUNT_DIR === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   if (accountAlias === 'all') {
     return await deleteAccountDir();
   }
@@ -37,11 +44,11 @@ async function removeAccount(
     await services.filesystem.deleteFile(filePath);
     return {
       data: null,
-      success: true,
+      status: 'success',
     };
   } else {
     return {
-      success: false,
+      status: 'error',
       errors: [`The account alias "${accountAlias}" does not exist`],
     };
   }
@@ -49,7 +56,7 @@ async function removeAccount(
 
 export const createAccountDeleteCommand = createCommand(
   'delete',
-  'Delete local account',
+  'Delete account',
   [
     accountOptions.accountSelectWithAll(),
     accountOptions.accountDeleteConfirmation({ isOptional: false }),

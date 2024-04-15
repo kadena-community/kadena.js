@@ -4,16 +4,17 @@ import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { MessageBlock } from '@/components/MessageBlock/MessageBlock';
 import { useAccount } from '@/hooks/account';
 import { useClaimAttendanceToken } from '@/hooks/data/claimAttendanceToken';
-import { SubmitStatus, useSubmit } from '@/hooks/submit';
+import { useSubmit } from '@/hooks/submit';
+import { useTokens } from '@/hooks/tokens';
+import { useTransaction } from '@/hooks/transaction';
+import { env } from '@/utils/env';
 import { getReturnUrl } from '@/utils/getReturnUrl';
-import { getSigneeAccount } from '@/utils/getSigneeAccount';
-import { store } from '@/utils/socket/store';
 import { Stack } from '@kadena/react-ui';
 import { isAfter, isBefore } from 'date-fns';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import type { Dispatch, FC, SetStateAction } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 interface IProps {
   data: IProofOfUsTokenMeta;
@@ -26,33 +27,36 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   data,
   eventId,
   isMinted,
-  handleIsMinted,
 }) => {
-  const { isLoading, hasSuccess, hasError, isPending, claim } =
-    useClaimAttendanceToken();
+  const { claim } = useClaimAttendanceToken();
   const router = useRouter();
-  const searchParams = useSearchParams();
-
   const { account, isMounted, login } = useAccount();
-  const { doSubmit, isStatusLoading, status } = useSubmit();
+  const { addMintingData, tokens } = useTokens();
+  const { doSubmit, isStatusLoading } = useSubmit();
+  const { transaction } = useTransaction();
+
+  const tokenId = useMemo(() => {
+    const token = tokens?.find((t) => t.info?.uri === data.manifestUri);
+    return token?.id;
+  }, [tokens, data]);
 
   const getProof = (
     data: IProofOfUsTokenMeta,
-    account: IAccount,
     transaction: string,
   ): IProofOfUsData => {
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
 
     const proof: IProofOfUsData = {
-      proofOfUsId: data.properties.eventId,
+      proofOfUsId: data.properties.eventId || '',
       type: 'attendance',
       requestKey: tx.hash,
       title: data.name,
-      signees: [{ ...getSigneeAccount(account), initiator: true }],
+      isReadyToSign: false,
       mintStatus: 'init',
       imageUri: data.image,
       date: Date.now(),
-      eventId: data.properties.eventId,
+      eventId: data.properties.eventId || '',
+      eventName: data.properties.eventName,
       backgroundColor: data.properties.avatar?.backgroundColor,
       tx: transaction,
       status: 4,
@@ -62,22 +66,17 @@ export const ScanAttendanceEvent: FC<IProps> = ({
     return proof;
   };
 
-  useEffect(() => {
-    if (status === SubmitStatus.SUCCESS) {
-      handleIsMinted(true);
-    }
-  }, [status]);
-
-  useEffect(() => {
-    const transaction = searchParams.get('transaction') ?? '';
+  const createProof = async () => {
     if (!transaction || !account) return;
 
-    const proof = getProof(data, account, transaction);
-    console.log('update in scanattendance');
-    store.updateProofOfUs(proof, proof);
+    const proof = getProof(data, transaction);
+    await addMintingData(proof);
+    await doSubmit(transaction, proof);
+  };
 
-    doSubmit();
-  }, [account, searchParams]);
+  useEffect(() => {
+    createProof();
+  }, [account, transaction]);
 
   const handleClaim = async () => {
     const transaction = await claim(eventId);
@@ -87,14 +86,12 @@ export const ScanAttendanceEvent: FC<IProps> = ({
       'base64',
     );
 
-    const proof = getProof(data, account, bufferedTx);
-    console.log('update in scanattendance claim');
-    store.updateProofOfUs(proof, proof);
-
     router.push(
       `${
         process.env.NEXT_PUBLIC_WALLET_URL
-      }/sign?transaction=${bufferedTx}&returnUrl=${getReturnUrl()}
+      }sign#transaction=${bufferedTx}&chainId=${
+        env.CHAINID
+      }&returnUrl=${getReturnUrl()}
       `,
     );
   };
@@ -105,51 +102,26 @@ export const ScanAttendanceEvent: FC<IProps> = ({
   const hasStarted = isBefore(startDate, Date.now());
   const hasEnded = isAfter(Date.now(), endDate);
 
-  const showClaimButton =
-    hasStarted &&
-    !hasEnded &&
-    !hasSuccess &&
-    !hasError &&
-    !isLoading &&
-    !isMinted &&
-    !isPending &&
-    account;
+  const showClaimButton = hasStarted && !hasEnded && !isMinted && account;
 
   return (
     <>
       {isStatusLoading && <MainLoader />}
-      <Stack flexDirection="column" flex={1}>
-        <AttendanceTicket data={data} />
+      <AttendanceTicket data={data} />
 
-        <Stack flex={1} />
-        <Stack flexDirection="column">
-          {!hasStarted && (
-            <div>
-              <Stack flexDirection="column" flex={1} gap="md">
-                <MessageBlock title={''}>
-                  {' '}
-                  the event has not started yet. please check back{' '}
-                  {startDate.toLocaleDateString()}{' '}
-                  {startDate.toLocaleTimeString()} to claim the nft
-                </MessageBlock>
-                <Stack gap="md">
-                  {!isMinted && account && (
-                    <Stack flex={1}>
-                      <Link href="/user">
-                        <Button>Go to dashboard</Button>
-                      </Link>
-                    </Stack>
-                  )}
-                </Stack>
-              </Stack>
-            </div>
-          )}
-          {hasEnded && (
-            <Stack flexDirection="column" flex={1} gap="md">
-              <MessageBlock title={''}>The event has ended.</MessageBlock>
+      <Stack flexDirection="column">
+        {!hasStarted && (
+          <div>
+            <Stack flexDirection="column" gap="md">
+              <MessageBlock title={''}>
+                {' '}
+                the event has not started yet. please check back{' '}
+                {startDate.toLocaleDateString()}{' '}
+                {startDate.toLocaleTimeString()} to claim the nft
+              </MessageBlock>
               <Stack gap="md">
                 {!isMinted && account && (
-                  <Stack flex={1}>
+                  <Stack>
                     <Link href="/user">
                       <Button>Go to dashboard</Button>
                     </Link>
@@ -157,50 +129,57 @@ export const ScanAttendanceEvent: FC<IProps> = ({
                 )}
               </Stack>
             </Stack>
-          )}
-
-          {showClaimButton && !isMinted && (
-            <Stack flex={1} gap="md">
-              {account && (
-                <Link href="/user">
-                  <Button>Go to dashboard</Button>
-                </Link>
-              )}
-              <Button onPress={handleClaim}>Claim NFT</Button>
-            </Stack>
-          )}
-          {isLoading && <MainLoader />}
-          {hasError && (
-            <Stack width="100%" flexDirection="column" gap="md">
-              <MessageBlock title="Error" variant="error">
-                There was an issue with minting
-              </MessageBlock>
-              <Stack flex={1} gap="md">
-                {account && (
+          </div>
+        )}
+        {hasEnded && (
+          <Stack flexDirection="column" gap="md">
+            <MessageBlock title={''}>The event has ended.</MessageBlock>
+            <Stack gap="md">
+              {!isMinted && account && (
+                <Stack>
                   <Link href="/user">
                     <Button>Go to dashboard</Button>
                   </Link>
-                )}
-              </Stack>
+                </Stack>
+              )}
             </Stack>
-          )}
-
-          {!account && isMounted && (
-            <Stack width="100%">
-              <Button onClick={login}>Login to mint</Button>
-            </Stack>
-          )}
-          {isMinted && (
-            <Stack width="100%" flexDirection="column" gap="md">
-              <MessageBlock title="Success" variant="success">
-                The token is minted
-              </MessageBlock>
+          </Stack>
+        )}
+        {showClaimButton && !isMinted && (
+          <Stack gap="md">
+            {account && (
               <Link href="/user">
                 <Button>Go to dashboard</Button>
               </Link>
+            )}
+            <Button onPress={handleClaim}>Claim NFT</Button>
+          </Stack>
+        )}
+
+        {!account && isMounted && (
+          <Stack width="100%">
+            <Button onClick={login}>Login to mint</Button>
+          </Stack>
+        )}
+        {isMinted && (
+          <Stack width="100%" flexDirection="column" gap="md">
+            <MessageBlock title="Success" variant="success">
+              The token is minted
+            </MessageBlock>
+
+            <Stack gap="md">
+              <Button>
+                <Link href="/user">Go to dashboard</Link>
+              </Button>
+
+              <Button>
+                <Link href={`/user/proof-of-us/t/${tokenId}`}>
+                  Go to Proof{' '}
+                </Link>
+              </Button>
             </Stack>
-          )}
-        </Stack>
+          </Stack>
+        )}
       </Stack>
     </>
   );

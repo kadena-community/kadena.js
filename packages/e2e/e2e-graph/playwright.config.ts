@@ -7,8 +7,11 @@ const config: PlaywrightTestConfig = {
     command: `pnpm --filter @kadena/graph start:generate`,
     url: 'http://localhost:4000/graphql',
     reuseExistingServer: process.env.CI === undefined,
-    stdout: 'pipe',
-    stderr: 'pipe',
+    stdout: 'ignore',
+    stderr: 'ignore',
+    env: {
+      PORT: '4000',
+    },
   },
   projects: [
     {

@@ -259,11 +259,11 @@ that risk invisibly for the user.
 feeling the pinch of tx volume increasing
 
 **Stuart Popejoy (Kadena)**: For instance, with KDA, we’re launching a
-[bridge relay](./announcing-the-kadena-chain-relay-2021-03-25?source=collection_home---5------4-----------------------)
-secured through bonding, where stakers can take risks to earn up to 30% APY.
-This puts a secure, decentralized foundation under our platform integrations
-with Ethereum, Celo, Terra. We expect bonding to be massive and oversubscribed,
-so that will lock up a lot of KDA 🙂!
+[bridge relay](./announcing-the-kadena-chain-relay-2021-03-25) secured through
+bonding, where stakers can take risks to earn up to 30% APY. This puts a secure,
+decentralized foundation under our platform integrations with Ethereum, Celo,
+Terra. We expect bonding to be massive and oversubscribed, so that will lock up
+a lot of KDA 🙂!
 
 **Blaze (TMW):** Well, this is sounding like a very strong buy to me for our
 community. All this and you are sitting at $72m market cap and what you have

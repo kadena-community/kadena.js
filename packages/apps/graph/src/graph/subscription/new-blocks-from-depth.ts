@@ -1,8 +1,9 @@
 import { prismaClient } from '@db/prisma-client';
 import type { Block } from '@prisma/client';
+import { createBlockDepthMap } from '@services/depth-service';
 import { nullishOrEmpty } from '@utils/nullish-or-empty';
 import type { IContext } from '../builder';
-import { PRISMA, builder } from '../builder';
+import { builder } from '../builder';
 import GQLBlock from '../objects/block';
 
 builder.subscriptionField('newBlocksFromDepth', (t) =>
@@ -10,8 +11,21 @@ builder.subscriptionField('newBlocksFromDepth', (t) =>
     description: 'Subscribe to new blocks from a specific depth.',
     type: [GQLBlock],
     args: {
-      minimumDepth: t.arg.int({ required: true }),
-      chainIds: t.arg.stringList({ required: true }),
+      minimumDepth: t.arg.int({
+        required: true,
+        validate: {
+          nonnegative: true,
+        },
+      }),
+      chainIds: t.arg.stringList({
+        required: true,
+        validate: {
+          minLength: 1,
+          items: {
+            minLength: 1,
+          },
+        },
+      }),
     },
     nullable: true,
     subscribe: (__root, args, context) =>
@@ -31,12 +45,14 @@ async function* iteratorFn(
     minimumDepth,
     startingTimestamp,
   );
+
   let lastBlock;
 
   if (!nullishOrEmpty(blockResult)) {
     lastBlock = blockResult[0];
-    yield [lastBlock];
+    yield [];
   }
+
   while (!context.req.socket.destroyed) {
     const newBlocks = await getLastBlocksWithDepth(
       chainIds,
@@ -60,7 +76,7 @@ async function getLastBlocksWithDepth(
   date: string,
   id?: number,
 ): Promise<Block[]> {
-  const blocksArray = await Promise.all(
+  const blocks = await Promise.all(
     chainIds.map(async (chainId) => {
       const latestBlock = await prismaClient.block.findFirst({
         where: {
@@ -112,12 +128,11 @@ async function getLastBlocksWithDepth(
     }),
   );
 
-  const blocks = blocksArray
-    .flat()
-    .sort(
-      (a, b) => parseInt(b.height.toString()) - parseInt(a.height.toString()),
-    )
-    .slice(0, PRISMA.DEFAULT_SIZE);
+  const blocksToReturn = blocks.flat();
 
-  return blocks;
+  const blockHashToDepth = await createBlockDepthMap(blocksToReturn, 'hash');
+
+  return blocksToReturn.filter(
+    (block) => blockHashToDepth[block.hash] >= minimumDepth,
+  );
 }

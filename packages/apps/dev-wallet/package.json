@@ -1,6 +1,6 @@
 {
   "name": "@kadena/dev-wallet",
-  "version": "0.0.4",
+  "version": "0.0.8",
   "private": true,
   "description": "Kadena developer wallet",
   "type": "module",
@@ -12,7 +12,8 @@
     "generate-coin-type": "pactjs contract-generate --contract \"coin\" --api \"https://api.testnet.chainweb.com/chainweb/0.0/testnet04/chain/14/pact\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "verify": "tsc --noEmit"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",
@@ -21,6 +22,7 @@
     "@kadena/cryptography-utils": "workspace:*",
     "@kadena/hd-wallet": "workspace:*",
     "@kadena/pactjs": "workspace:*",
+    "@kadena/pactjs-generator": "workspace:*",
     "@kadena/react-ui": "workspace:*",
     "@scure/bip39": "^1.2.1",
     "@tauri-apps/api": "^1.4.0",
@@ -37,16 +39,16 @@
     "yup": "^1.2.0"
   },
   "devDependencies": {
-    "@kadena/pactjs-cli": "workspace:*",
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
+    "@kadena/pactjs-cli": "workspace:*",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "@vanilla-extract/vite-plugin": "^3.9.3",
+    "@vanilla-extract/vite-plugin": "4.0.7",
     "@vitejs/plugin-react-swc": "^3.3.2",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",

@@ -178,7 +178,7 @@ export function parseResponse<T>(response: Response): Promise<T>;
 export function parseResponseTEXT(response: Response): Promise<string>;
 
 // @alpha
-export function poll(requestBody: IPollRequestBody, apiHost: string): Promise<IPollResponse>;
+export function poll(requestBody: IPollRequestBody, apiHost: string, confirmationDepth?: number): Promise<IPollResponse>;
 
 // @alpha
 export function send(requestBody: ISendRequestBody, apiHost: string): Promise<SendResponse>;

@@ -9,12 +9,20 @@ import ora from 'ora';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
 // import { createOption } from '../../utils/createOption.js';
-import { NO_ACCOUNTS_FOUND_ERROR_MESSAGE } from '../../constants/account.js';
+import {
+  CHAIN_ID_ACTION_ERROR_MESSAGE,
+  NO_ACCOUNTS_FOUND_ERROR_MESSAGE,
+} from '../../constants/account.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { accountOptions } from '../accountOptions.js';
 import { ensureAccountAliasFilesExists } from '../utils/accountHelpers.js';
 import { fund } from '../utils/fund.js';
+import {
+  getTxDetails,
+  logAccountFundingTxResults,
+  logTransactionExplorerUrls,
+} from '../utils/fundHelpers.js';
 
 // const deployDevnet = createOption({
 //   key: 'deployDevnet',
@@ -32,7 +40,7 @@ export const createAccountFundCommand = createCommand(
     accountOptions.accountSelect(),
     accountOptions.fundAmount(),
     globalOptions.networkSelect(),
-    globalOptions.chainId(),
+    accountOptions.chainIdRange(),
     // deployDevnet(),
   ],
   async (option) => {
@@ -48,6 +56,11 @@ export const createAccountFundCommand = createCommand(
       allowedNetworkIds: ['testnet04'],
     });
     const { chainId } = await option.chainId();
+
+    if (!chainId) {
+      log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
+      return;
+    }
 
     if (!accountConfig) {
       log.error(
@@ -126,15 +139,33 @@ export const createAccountFundCommand = createCommand(
     //   }
     // }
 
-    const loader = ora('Funding account...\n').start();
-
     const result = await fund(config);
-    assertCommandError(result, loader);
+    const isSuccessOrParitalSuccess =
+      result.status === 'success' || result.status === 'partial';
+    assertCommandError(result);
+    logTransactionExplorerUrls(result, networkConfig.networkExplorerUrl);
+    if (isSuccessOrParitalSuccess && result.data.length > 0) {
+      const loader = ora('Funding account...\n').start();
+      const { txResults, txErrors } = await getTxDetails(
+        result.data,
+        networkConfig.networkHost,
+        networkConfig.networkId,
+      );
 
-    log.info(
-      log.color.green(
-        `"${accountConfig.name}" account funded with "${amount}" ${accountConfig.fungible} on chain ${chainId} in ${networkConfig.networkId} network.`,
-      ),
-    );
+      if (txErrors.length === 0) {
+        loader.succeed('Funding account successful.');
+      } else {
+        loader.fail('Failed to fund account.');
+      }
+
+      logAccountFundingTxResults(
+        txResults,
+        txErrors,
+        accountConfig.name,
+        accountConfig.fungible,
+        amount,
+        networkConfig.networkId,
+      );
+    }
   },
 );

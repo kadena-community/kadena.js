@@ -7,15 +7,13 @@ import { tx } from '../prompts/index.js';
 import {
   templateDataPrompt,
   templateVariables,
+  txRequestKeyPrompt,
   txTransactionNetworks,
 } from '../prompts/tx.js';
 import { services } from '../services/index.js';
 import { createOption } from '../utils/createOption.js';
-import { isNotEmptyString } from '../utils/helpers.js';
-import { log } from '../utils/logger.js';
-import { getTemplate } from './commands/templates/templates.js';
-import { getTemplateVariables } from './utils/template.js';
-import { parseInput } from './utils/txHelpers.js';
+import { getVariablesByTemplate } from './utils/template.js';
+import { parseInput, requestKeyValidation } from './utils/txHelpers.js';
 
 export const txOptions = {
   selectTemplate: createOption({
@@ -23,37 +21,7 @@ export const txOptions = {
     option: new Option('--template <template>', 'select a template'),
     validation: z.string(),
     prompt: tx.selectTemplate,
-    async expand(templateInput: string, args) {
-      // option 1. --template="transfer.yaml"
-      // option 2. --template="./transfer.ktpl"
-      // option 3. cat send.yaml | kadena tx create-transaction
-
-      let template: string;
-
-      if (templateInput === '-' && isNotEmptyString(args.stdin)) {
-        log.debug('using stdin');
-        template = args.stdin;
-      } else {
-        template = await getTemplate(templateInput);
-      }
-
-      if (template === undefined) {
-        // not in template list, try to load from file
-        const templatePath = join(process.cwd(), templateInput);
-        const file = await services.filesystem.readFile(templatePath);
-
-        if (file === null) {
-          // not in file either, error
-          throw Error(`Template "${templateInput}" not found`);
-        }
-
-        template = file;
-      }
-
-      const variables = getTemplateVariables(template);
-
-      return { template, variables };
-    },
+    expand: getVariablesByTemplate,
   }),
   templateData: createOption({
     key: 'templateData',
@@ -158,7 +126,7 @@ export const txOptions = {
   txSignedTransactionFile: createOption({
     key: 'txSignedTransactionFile',
     prompt: tx.transactionSelectPrompt,
-    validation: tx.ICommandSchema,
+    validation: tx.ISignedCommandSchema,
     option: new Option(
       '-s, --tx-signed-transaction-file <txSignedTransactionFile>',
       'provide your signed transaction file',
@@ -179,22 +147,6 @@ export const txOptions = {
         return parseInput(txSignedTransactionFiles);
       }
       return txSignedTransactionFiles;
-    },
-  }),
-  directory: createOption({
-    key: 'directory' as const,
-    // Directory is an optional flag, and never prompted
-    prompt: () => null,
-    validation: z.string().optional(),
-    option: new Option(
-      '--directory <directory>',
-      `Enter your directory (default: working directory)`,
-    ),
-    transform(value: string) {
-      if (typeof value !== 'string' || value === '') {
-        return process.cwd();
-      }
-      return value;
     },
   }),
   txTransactionNetwork: createOption({
@@ -225,5 +177,26 @@ export const txOptions = {
     },
     validation: z.boolean().optional(),
     option: new Option('-p, --poll', 'Poll for transaction status'),
+  }),
+  requestKey: createOption({
+    key: 'requestKey',
+    prompt: txRequestKeyPrompt,
+    defaultIsOptional: false,
+    validation: requestKeyValidation,
+    option: new Option(
+      '-k, --request-key <requestKey>',
+      'Request key of the transaction',
+    ),
+  }),
+  holes: createOption({
+    key: 'holes' as const,
+    prompt: ({ holes }): boolean => {
+      return holes === true || holes === 'true' || false;
+    },
+    validation: z.boolean().optional(),
+    option: new Option(
+      '-h --holes',
+      'Get a list of all the values this template needs',
+    ),
   }),
 };

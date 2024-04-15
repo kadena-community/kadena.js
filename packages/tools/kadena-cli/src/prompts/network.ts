@@ -1,13 +1,16 @@
 import type { ChainId } from '@kadena/types';
 import { z } from 'zod';
 import { chainIdValidation } from '../account/utils/accountHelpers.js';
+import { KADENA_DIR, MAX_CHAIN_VALUE } from '../constants/config.js';
 import { defaultNetworksPath } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
   ensureNetworksConfiguration,
+  getNetworksInOrder,
   loadNetworkConfig,
 } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
+import { KadenaError } from '../services/service-error.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   getExistingNetworks,
@@ -24,10 +27,10 @@ export const chainIdPrompt: IPrompt<string> = async (
 ) => {
   const defaultValue = (args.defaultValue as string) || '0';
   return (await input({
-    message: 'Enter ChainId (0-19)',
+    message: `Enter ChainId (0-${MAX_CHAIN_VALUE})`,
     default: defaultValue,
     validate: function (input) {
-      const chainId = parseInt(input, 10);
+      const chainId = parseInt(input.trim(), 10);
       const result = chainIdValidation.safeParse(chainId);
       if (!result.success) {
         const formatted = result.error.format();
@@ -161,10 +164,13 @@ export const networkSelectPrompt: IPrompt<string> = async (
     );
   }
 
-  const choices: ICustomNetworkChoice[] = filteredNetworks.map((network) => ({
+  const networksInOrder = await getNetworksInOrder(filteredNetworks);
+
+  const choices: ICustomNetworkChoice[] = networksInOrder.map((network) => ({
     value: network.value,
     name: network.name,
   }));
+
   if (isOptional === true) {
     choices.unshift({
       value: 'skip',
@@ -180,20 +186,18 @@ export const networkSelectPrompt: IPrompt<string> = async (
   return selectedNetwork;
 };
 
-export const networkSelectOnlyPrompt: IPrompt<string> = async (
-  previousQuestions,
-  args,
-  isOptional,
-) => {
+const getEnsureExistingNetworks = async (): Promise<ICustomNetworkChoice[]> => {
+  if (defaultNetworksPath === null || KADENA_DIR === null) {
+    throw new KadenaError('no_kadena_directory');
+  }
   const isNetworksFolderExists =
     await services.filesystem.directoryExists(defaultNetworksPath);
   if (
     !isNetworksFolderExists ||
     (await services.filesystem.readDir(defaultNetworksPath)).length === 0
   ) {
-    await ensureNetworksConfiguration();
+    await ensureNetworksConfiguration(KADENA_DIR);
   }
-
   const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
 
   if (!existingNetworks.length) {
@@ -201,6 +205,15 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
       'No existing networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init',
     );
   }
+  return existingNetworks;
+};
+
+export const networkSelectOnlyPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const existingNetworks = await getEnsureExistingNetworks();
 
   const allowedNetworkIds =
     previousQuestions.allowedNetworkIds !== undefined
@@ -228,10 +241,40 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
     );
   }
 
-  const choices: ICustomNetworkChoice[] = filteredNetworks.map((network) => ({
+  const networksInOrder = await getNetworksInOrder(filteredNetworks);
+
+  const choices: ICustomNetworkChoice[] = networksInOrder.map((network) => ({
     value: network.value,
     name: network.name,
   }));
+
+  const selectedNetwork = await select({
+    message: 'Select a network',
+    choices: choices,
+  });
+
+  return selectedNetwork;
+};
+
+export const networkSelectWithNonePrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+): Promise<string> => {
+  const defaultNetwork = previousQuestions.defaultNetwork;
+  const existingNetworks = await getEnsureExistingNetworks();
+
+  const choices: ICustomNetworkChoice[] = existingNetworks.map((network) => ({
+    value: network.value,
+    name: network.name,
+  }));
+
+  if (isNotEmptyString(defaultNetwork)) {
+    choices.unshift({
+      value: 'none',
+      name: 'Remove default network',
+    });
+  }
 
   const selectedNetwork = await select({
     message: 'Select a network',
@@ -250,12 +293,40 @@ export const networkDeletePrompt: IPrompt<string> = async (
   if (previousQuestions.network === undefined) {
     throw new Error('Network name is required for the delete prompt.');
   }
-  const message = `Are you sure you want to delete the configuration for network "${defaultValue}"?`;
+
+  let message = `Are you sure you want to delete the configuration for network "${defaultValue}"?`;
+  if (previousQuestions.isDefaultNetwork === true) {
+    message += `\nYou have currently set this as your "default network". If you delete it, then the default network settings will also be deleted.`;
+  }
+
   return await select({
     message,
     choices: [
       { value: 'yes', name: 'Yes' },
       { value: 'no', name: 'No' },
+    ],
+  });
+};
+
+export const networkDefaultConfirmationPrompt: IPrompt<boolean> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const defaultValue = args.defaultValue ?? previousQuestions.network;
+  if (defaultValue === undefined && previousQuestions.action === 'set') {
+    throw new Error('Network name is required to set the default network.');
+  }
+
+  const message =
+    previousQuestions.action === 'set'
+      ? `Are you sure you want to set "${defaultValue}" as the default network?`
+      : `Are you sure you want to remove the "${defaultValue}" default network?`;
+  return await select({
+    message,
+    choices: [
+      { value: true, name: 'Yes' },
+      { value: false, name: 'No' },
     ],
   });
 };

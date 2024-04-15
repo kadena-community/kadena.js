@@ -1,12 +1,15 @@
-import type { ICommand, IUnsignedCommand } from '@kadena/types';
+import type {
+  ICommand,
+  ICommandPayload,
+  IUnsignedCommand,
+} from '@kadena/types';
 import { z } from 'zod';
-import { getTransactions } from '../tx/utils/txHelpers.js';
+import {
+  getTransactions,
+  requestKeyValidation,
+} from '../tx/utils/txHelpers.js';
 
 import { getAllAccounts } from '../account/utils/accountHelpers.js';
-import {
-  getAllPlainKeys,
-  getAllWalletKeys,
-} from '../keys/utils/keysHelpers.js';
 import { loadNetworkConfig } from '../networks/utils/networkHelpers.js';
 import { services } from '../services/index.js';
 import { getTemplates } from '../tx/commands/templates/templates.js';
@@ -14,6 +17,7 @@ import { CommandError } from '../utils/command.util.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   getExistingNetworks,
+  isNotEmptyString,
   maskStringPreservingStartAndEnd,
   notEmpty,
 } from '../utils/helpers.js';
@@ -38,7 +42,7 @@ export const SignatureOrUndefinedOrNull = z.union([
 export const ICommandSchema = z.object({
   cmd: CommandPayloadStringifiedJSONSchema,
   hash: PactTransactionHashSchema,
-  sigs: z.array(ISignatureJsonSchema),
+  sigs: z.array(SignatureOrUndefinedOrNull),
 });
 
 export const IUnsignedCommandSchema = z.object({
@@ -47,12 +51,11 @@ export const IUnsignedCommandSchema = z.object({
   sigs: z.array(SignatureOrUndefinedOrNull),
 });
 
-// export const ISignatureJsonSchema = z.union([
-//   z.object({
-//     sig: z.string(),
-//   }),
-//   z.null(),
-// ]);
+export const ISignedCommandSchema = z.object({
+  cmd: CommandPayloadStringifiedJSONSchema,
+  hash: PactTransactionHashSchema,
+  sigs: z.array(ISignatureJsonSchema),
+});
 
 export async function txUnsignedCommandPrompt(): Promise<IUnsignedCommand> {
   const result = await input({
@@ -230,11 +233,15 @@ const promptVariableValue = async (
     log.info(`${log.color.green('>')} Using account name ${value}`);
     return value;
   } else if (key.startsWith('key:')) {
-    const walletKeys = await getAllWalletKeys();
-    const plainKeys = await getAllPlainKeys();
+    const wallets = await services.wallet.list();
+    const walletKeysCount = wallets.reduce(
+      (acc, wallet) => acc + wallet.keys.length,
+      0,
+    );
+    const plainKeys = await services.plainKey.list();
     const accounts = await getAllAccounts().catch(() => []);
 
-    const hasKeys = walletKeys.length > 0 || plainKeys.length > 0;
+    const hasKeys = walletKeysCount > 0 || plainKeys.length > 0;
     const hasAccounts = accounts.length > 0;
     let value: string | null = null;
     let targetSelection: string | null = null;
@@ -251,7 +258,7 @@ const promptVariableValue = async (
       const accountConfig = accounts.find((x) => x.name === accountMatch);
       if (accountConfig) {
         const selection = await select({
-          message: `Template key "${key}" matches account "${accountName}". Use public key?`,
+          message: `Template key "${key}" matches account "${accountName}". Use public account's key?`,
           choices: [
             ...accountConfig.publicKeys.map((key) => ({
               value: key,
@@ -300,41 +307,59 @@ const promptVariableValue = async (
             }
           : undefined,
       ].filter(notEmpty);
-      if (choices.length === 1) targetSelection = choices[0].value;
-      else {
-        targetSelection = await select({
-          message: `Select public key from:`,
-          choices: choices,
-        });
-      }
+
+      targetSelection =
+        choices.length === 1
+          ? choices[0].value
+          : await select({
+              message: `Template value "${key}" public key:`,
+              choices: choices,
+            });
     }
 
     // Pick from wallet keys or plain keys
     if (targetSelection === '_key_') {
-      const choices = [
-        ...tableFormatPrompt([
-          ...walletKeys.map((key) => ({
-            value: key.publicKey,
-            name: [
-              key.alias,
-              maskStringPreservingStartAndEnd(key.publicKey),
-              `(wallet ${key.wallet.folder})`,
-            ],
+      const choices = [] as { value: '_wallet_' | '_plain_'; name: string }[];
+      if (walletKeysCount > 0)
+        choices.push({ value: '_wallet_', name: 'Wallet keys' });
+      if (plainKeys.length > 0)
+        choices.push({ value: '_plain_', name: 'Plain keys' });
+      const target =
+        choices.length === 1
+          ? choices[0].value
+          : await select({
+              message: `Select public key alias for template value ${key}:`,
+              choices: choices,
+            });
+      if (target === '_wallet_') {
+        const wallet =
+          wallets.length === 1
+            ? wallets[0]
+            : await select({
+                message: `Select wallet for template value ${key}:`,
+                choices: wallets.map((wallet) => ({
+                  value: wallet,
+                  name: wallet.alias,
+                })),
+              });
+        // Purposely did not auto-select if 1 key for transparency
+        value = await select({
+          message: `Select public key from wallet ${wallet.alias}:`,
+          choices: wallet.keys.map((wallet) => ({
+            value: wallet.publicKey,
+            name: wallet.publicKey,
           })),
-          ...plainKeys.map((key) => ({
+        });
+      } else if (target === '_plain_') {
+        // Purposely did not auto-select if 1 key for transparency
+        value = await select({
+          message: `Select public key from plain keys:`,
+          choices: plainKeys.map((key) => ({
             value: key.publicKey,
-            name: [
-              key.alias,
-              maskStringPreservingStartAndEnd(key.publicKey),
-              `(plain key)`,
-            ],
+            name: key.publicKey,
           })),
-        ]),
-      ];
-      value = await select({
-        message: `Select public key alias for template value ${key}:`,
-        choices: choices,
-      });
+        });
+      }
     }
 
     // Pick public key from accounts
@@ -402,9 +427,10 @@ const promptVariableValue = async (
     log.info('keyset alias', alias);
     return alias;
   } else if (key.startsWith('network:')) {
+    const keyName = key.substring('network:'.length);
     const networks = await getExistingNetworks();
     const networkName = await select({
-      message: `Select network id for template value ${key}:`,
+      message: `Select network id for template value ${keyName}:`,
       choices: networks,
     });
     const network = await loadNetworkConfig(networkName);
@@ -471,19 +497,13 @@ export const templateDataPrompt: IPrompt<string | null> = async () => {
   return result ?? null;
 };
 
-export async function selectSignMethodPrompt(): Promise<
-  'localWallet' | 'aliasFile' | 'keyPair'
-> {
+export async function selectSignMethodPrompt(): Promise<'wallet' | 'keyPair'> {
   return await select({
     message: 'Select an action',
     choices: [
       {
-        value: 'localWallet',
-        name: 'Sign with local wallet',
-      },
-      {
-        value: 'aliasFile',
-        name: 'Sign with aliased file',
+        value: 'wallet',
+        name: 'Sign with wallet',
       },
       {
         value: 'keyPair',
@@ -491,6 +511,19 @@ export async function selectSignMethodPrompt(): Promise<
       },
     ],
   });
+}
+
+function determineNetwork(networkId: string | null): string {
+  const id = networkId ?? '';
+
+  if (id.includes('testnet')) {
+    return 'testnet';
+  } else if (id.includes('mainnet')) {
+    return 'mainnet';
+  } else if (id.includes('development')) {
+    return 'devnet';
+  }
+  return '';
 }
 
 export const txTransactionNetworks: IPrompt<string[]> = async (
@@ -502,15 +535,37 @@ export const txTransactionNetworks: IPrompt<string[]> = async (
   )[];
 
   const networkPerTransaction: string[] = [];
-  for (const [index] of commands.entries()) {
-    const network = await networkSelectPrompt(
-      {},
-      { networkText: `Select network for transaction ${index + 1}:` },
-      false,
-    );
+  for (const [index, command] of commands.entries()) {
+    const cmdPayload: ICommandPayload = JSON.parse(command.cmd);
+    let network = determineNetwork(cmdPayload.networkId);
+
+    if (network === '') {
+      network = await networkSelectPrompt(
+        {},
+        { networkText: `Select network for transaction ${index + 1}:` },
+        false,
+      );
+    }
 
     networkPerTransaction.push(network);
   }
 
   return networkPerTransaction;
+};
+
+export const txRequestKeyPrompt: IPrompt<string> = async () => {
+  return await input({
+    message: 'Enter transaction request key:',
+    validate: (value) => {
+      if (!isNotEmptyString(value.trim())) {
+        return 'Request key cannot be empty';
+      }
+
+      const parse = requestKeyValidation.safeParse(value);
+      if (parse.success) return true;
+
+      const formatted = parse.error.format();
+      return formatted._errors[0];
+    },
+  });
 };

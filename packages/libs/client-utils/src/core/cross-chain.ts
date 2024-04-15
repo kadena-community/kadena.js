@@ -18,6 +18,7 @@ import { asyncPipe } from './utils/asyncPipe';
 import type { IAccount, IClientConfig, IEmit } from './utils/helpers';
 import {
   checkSuccess,
+  composeWithDefaults,
   extractResult,
   getClient,
   safeSign,
@@ -78,7 +79,7 @@ export const crossChain = <T = PactValue>(
     targetChainGasPayer: { account: string; publicKeys?: string[] };
   }) =>
     asyncPipe(
-      composePactCommand(defaults ?? {}),
+      composeWithDefaults(defaults),
       createTransaction,
       safeSign(sign),
       emit('sign'),
@@ -94,7 +95,7 @@ export const crossChain = <T = PactValue>(
       (data) => data,
       continuation,
       createPactCommand(targetChainId, targetChainGasPayer),
-      composePactCommand(defaults ?? {}),
+      composeWithDefaults(defaults),
       createTransaction,
       safeSign(sign),
       emit(

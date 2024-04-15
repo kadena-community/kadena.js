@@ -5,7 +5,12 @@ import { idToColor } from '@/utils/id-to-color';
 import { accountRepository } from '../account/account.repository';
 import { keySourceManager } from '../key-source/key-source-manager';
 import { INetwork } from '../network/network.repository';
-import { IKeySource, IProfile, walletRepository } from './wallet.repository';
+import {
+  IKeyItem,
+  IKeySource,
+  IProfile,
+  walletRepository,
+} from './wallet.repository';
 
 export function getProfile(profileId: string) {
   return walletRepository.getProfile(profileId);
@@ -34,7 +39,7 @@ export function sign(
             )
             .filter((index) => index !== undefined) as number[];
 
-          const service = keySourceManager.get(source);
+          const service = await keySourceManager.get(source);
 
           if (!service.isConnected()) {
             // call onConnect to connect to the keySource;
@@ -42,13 +47,16 @@ export function sign(
             await onConnect(keySource);
           }
 
-          const signatures = await service.sign(
-            Tx.hash,
-            keySource.uuid,
-            relevantIndexes,
-          );
+          if (relevantIndexes.length > 0) {
+            const signatures = await service.sign(
+              keySource.uuid,
+              Tx.hash,
+              relevantIndexes,
+            );
 
-          return signatures;
+            return signatures;
+          }
+          return [];
         }),
       );
       return addSignatures(Tx, ...signatures.flat());
@@ -56,6 +64,21 @@ export function sign(
   );
 
   return signedTx;
+}
+
+export function getRelevantKeys(
+  keySources: IKeySource[],
+  Tx: IUnsignedCommand,
+) {
+  return keySources.flatMap((keySource) => {
+    const { keys } = keySource;
+    const cmd: IPactCommand = JSON.parse(Tx.cmd);
+    const publicKeys = cmd.signers
+      .map((signer) => keys.find((key) => key.publicKey === signer.pubKey))
+      .filter((index) => index !== undefined) as Array<IKeyItem>;
+
+    return { ...keySource, keys: publicKeys };
+  });
 }
 
 export async function createProfile(
@@ -101,7 +124,7 @@ export const unlockProfile = async (profileId: string, password: string) => {
 };
 
 export async function createKey(keySource: IKeySource) {
-  const service = keySourceManager.get(keySource.source);
+  const service = await keySourceManager.get(keySource.source);
   const key = await service.createKey(keySource.uuid);
   return key;
 }

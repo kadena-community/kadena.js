@@ -5,7 +5,7 @@ import { composePactCommand, setMeta } from '@kadena/client/fp';
 import type { PactValue } from '@kadena/types';
 import { asyncPipe } from './utils/asyncPipe';
 import type { IClientConfig, IEmit } from './utils/helpers';
-import { extractResult, getClient } from './utils/helpers';
+import { composeWithDefaults, extractResult, getClient } from './utils/helpers';
 
 const chainIds = [...Array(20).keys()].map((key) => `${key}` as ChainId);
 
@@ -16,7 +16,7 @@ export const query =
   ) =>
   (emit: IEmit) =>
     asyncPipe(
-      composePactCommand(defaults ?? {}),
+      composeWithDefaults(defaults),
       createTransaction,
       client.dirtyRead,
       extractResult<T>,
@@ -31,7 +31,7 @@ export const queryAllChains =
   ) =>
   (emit: IEmit) =>
     asyncPipe(
-      composePactCommand(defaults ?? {}),
+      composeWithDefaults(defaults),
       (command) =>
         composePactCommand(command, setMeta({ chainId: undefined }))({}),
       (command: IPartialPactCommand) => {

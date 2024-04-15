@@ -7,7 +7,6 @@ import { ThemeProvider } from 'next-themes';
 import type { FC, PropsWithChildren } from 'react';
 import { SWRConfig } from 'swr';
 import { AccountProvider } from '../AccountProvider/AccountProvider';
-import { ToastProvider } from '../ToastProvider/ToastProvider';
 import { TokenProvider } from '../TokenProvider/TokenProvider';
 
 // next/apollo-link bug: https://github.com/dotansimha/graphql-yoga/issues/2194
@@ -25,13 +24,11 @@ export const Providers: FC<PropsWithChildren> = ({ children }) => {
   return (
     <SWRConfig value={{ provider: localStorageProvider }}>
       <ApolloProvider client={client}>
-        <ToastProvider>
-          <AccountProvider>
-            <ThemeProvider>
-              <TokenProvider>{children}</TokenProvider>
-            </ThemeProvider>
-          </AccountProvider>
-        </ToastProvider>
+        <AccountProvider>
+          <TokenProvider>
+            <ThemeProvider>{children}</ThemeProvider>
+          </TokenProvider>
+        </AccountProvider>
       </ApolloProvider>
     </SWRConfig>
   );

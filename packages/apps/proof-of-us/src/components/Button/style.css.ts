@@ -31,6 +31,9 @@ export const tertiaryClass = style({
   border: '0',
   backgroundColor: deviceColors.orange,
 });
+export const disabledClass = style({
+  opacity: 0.5,
+});
 
 globalStyle(`${buttonClass} a`, {
   textDecoration: 'none',

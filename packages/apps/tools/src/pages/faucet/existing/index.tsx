@@ -22,7 +22,6 @@ import {
   Notification,
   NotificationHeading,
   Stack,
-  SystemIcon,
 } from '@kadena/react-ui';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -39,6 +38,11 @@ import { sidebarLinks } from '@/constants/side-links';
 import { notificationLinkStyle } from '@/pages/faucet/new/styles.css';
 import { getExplorerLink } from '@/utils/getExplorerLink';
 import type { ITransactionDescriptor } from '@kadena/client';
+import {
+  MonoInfo,
+  MonoKeyboardArrowRight,
+  MonoLink,
+} from '@kadena/react-icons/system';
 import Link from 'next/link';
 import {
   accountNameContainerClass,
@@ -291,7 +295,7 @@ const ExistingAccountFaucetPage: FC = () => {
             <Button
               isLoading={requestStatus.status === 'processing'}
               isDisabled={mainnetSelected}
-              endIcon={<SystemIcon.TrailingIcon />}
+              endIcon={<MonoKeyboardArrowRight />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
               type="submit"
             >
@@ -328,7 +332,7 @@ const ExistingAccountFaucetPage: FC = () => {
         initialOpenItem={openItem}
         sections={[
           {
-            icon: 'Information',
+            icon: <MonoInfo />,
             title: t('Frequently asked questions'),
             children: (
               <>
@@ -342,7 +346,7 @@ const ExistingAccountFaucetPage: FC = () => {
             ),
           },
           {
-            icon: 'Link',
+            icon: <MonoLink />,
             title: t('Resources & Links'),
             children: (
               <div className={linksBoxStyle}>

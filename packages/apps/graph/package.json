@@ -1,6 +1,6 @@
 {
   "name": "@kadena/graph",
-  "version": "0.1.7",
+  "version": "1.0.1",
   "description": "GraphQL server, available for running your own GraphQL endpoint. This project uses chainweb-data as the datasource.",
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
   "scripts": {
     "build": "pnpm run pactjs:generate:contract:coin && pnpm run pactjs:generate:contract:marmalade && pnpm run pactjs:generate:contract:marmalade-v2 && pnpm prisma:generate && tsc",
     "deploy:marmalade": "ts-node -T src/devnet/deployment/index.ts deploy:marmalade",
-    "devnet": "docker volume create kadena_devnet; docker run --rm -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -v kadena_devnet:/data -v ./cwd-extra-migrations:/cwd-extra-migrations:ro --name devnet kadena/devnet",
+    "devnet": "docker volume create kadena_devnet; docker run --rm -it -p 8080:8080 -p 5432:5432 -p 9999:9999 -p 1789:1789 -v kadena_devnet:/data -v ./cwd-extra-migrations:/cwd-extra-migrations:ro --name devnet kadena/devnet",
     "devnet:update": "docker pull kadena/devnet",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
@@ -58,6 +58,7 @@
     "@pothos/plugin-prisma": "~3.63.0",
     "@pothos/plugin-relay": "~3.45.1",
     "@pothos/plugin-tracing": "^0.5.8",
+    "@pothos/plugin-validation": "^3.10.1",
     "@prisma/client": "^5.7.1",
     "cli-highlight": "^2.1.11",
     "commander": "^11.0.0",
@@ -75,7 +76,8 @@
     "module-alias": "^2.2.3",
     "prisma": "^5.7.1",
     "seedrandom": "~3.0.5",
-    "ws": "^8.16.0"
+    "ws": "^8.16.0",
+    "zod": "~3.18.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",

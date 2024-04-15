@@ -1,64 +1,47 @@
-import { getTransport } from '@/utils/getTransport';
-import type { IPactCommand } from '@kadena/client';
-import { createTransaction, isSignedTransaction } from '@kadena/client';
-import {
+import type { Network } from '@/constants/kadena';
+import type { AppKdaLike } from '@/utils/ledger';
+import { getKadenaLedgerApp } from '@/utils/ledger';
+import { isSignedTransaction } from '@kadena/client';
+import type {
   createCrossChainCommand,
   transferCommand,
   transferCreateCommand,
 } from '@kadena/client-utils/coin';
-import type { ICommand, IUnsignedCommand } from '@kadena/types';
-import type {
-  BuildTransactionResult,
-  TransferCrossChainTxParams,
-} from '@ledgerhq/hw-app-kda';
-import AppKda from '@ledgerhq/hw-app-kda';
+import type { TransferCrossChainTxParams } from '@ledgerhq/hw-app-kda';
 import { useAsyncFn } from 'react-use';
 
-type ITransferInput = Parameters<typeof transferCommand>[0];
-type ICreateTransferInput = Parameters<typeof transferCreateCommand>[0];
-type ICrossChainInput = Parameters<typeof createCrossChainCommand>[0];
-
-type TransferInput = Omit<ICrossChainInput, 'targetChainId' | 'receiver'> & {
-  targetChainId?: ICrossChainInput['targetChainId'];
-  receiver: ITransferInput['receiver'] | ICreateTransferInput['receiver'];
-};
-
-/**
- * parse a ICommand or IUnsignedCommand JSON object to IPactCommand
- *
- * FYI; copied over from;
- *
- * @see; packages/libs/client/src/signing/utils/parseTransactionCommand.ts
- */
-const parseTransactionCommand: (
-  transaction: IUnsignedCommand | ICommand,
-) => IPactCommand = (transaction) => {
-  return JSON.parse(transaction.cmd) as IPactCommand;
-};
+export type ITransferInput = Parameters<typeof transferCommand>[0];
+export type ICreateTransferInput = Parameters<typeof transferCreateCommand>[0];
+export type ICrossChainInput = Parameters<typeof createCrossChainCommand>[0];
+export type TransferInput =
+  | ITransferInput
+  | ICreateTransferInput
+  | ICrossChainInput;
 
 const pactToLedger = (
-  pactCommand: IUnsignedCommand,
-  { receiver, amount, targetChainId }: TransferInput,
+  input: TransferInput,
   derivationPath: string,
+  networkId: Network,
 ): TransferCrossChainTxParams => {
-  const parsedTransaction = parseTransactionCommand(pactCommand);
-
+  const { receiver, amount, chainId } = input;
   const recipient = typeof receiver === 'string' ? receiver : receiver.account;
+  const recipient_chainId =
+    'targetChainId' in input ? input.targetChainId : '0';
 
   return {
     path: derivationPath,
     recipient,
     amount,
-    chainId: parseInt(parsedTransaction.meta.chainId, 10),
-    recipient_chainId: parseInt(targetChainId ?? '0', 10),
-    network: parsedTransaction.networkId,
+    chainId: parseInt(chainId, 10),
+    recipient_chainId: parseInt(recipient_chainId, 10),
+    network: networkId,
   };
 };
 
 const isCrossChainInput = (
   transferInput: TransferInput,
 ): transferInput is ICrossChainInput => {
-  return !!transferInput.targetChainId;
+  return 'targetChainId' in transferInput;
 };
 
 const isTransferInput = (
@@ -67,25 +50,13 @@ const isTransferInput = (
   return typeof transferInput.receiver === 'string';
 };
 
-const transferInputToPactCommand = (transferInput: TransferInput) => {
-  if (isCrossChainInput(transferInput)) {
-    return createCrossChainCommand(transferInput);
-  }
-
-  if (isTransferInput(transferInput)) {
-    return transferCommand(transferInput);
-  }
-
-  return transferCreateCommand(transferInput as ICreateTransferInput);
-};
-
 const signWithLedger = (
-  app: AppKda,
-  pactCommand: IUnsignedCommand,
+  app: AppKdaLike,
   transferInput: TransferInput,
   derivationPath: string,
+  networkId: Network,
 ) => {
-  const ledgerParams = pactToLedger(pactCommand, transferInput, derivationPath);
+  const ledgerParams = pactToLedger(transferInput, derivationPath, networkId);
 
   if (isCrossChainInput(transferInput)) {
     return app.signTransferCrossChainTx(ledgerParams);
@@ -98,35 +69,23 @@ const signWithLedger = (
   return app.signTransferCreateTx(ledgerParams);
 };
 
-const ledgerToPact = (
-  ledgerCommand: BuildTransactionResult,
-  pactCommand: ICommand | IUnsignedCommand,
-): ICommand | IUnsignedCommand => {
-  pactCommand.sigs = ledgerCommand.pact_command.sigs;
-
-  return pactCommand;
-};
-
 const sign = async (
-  app: AppKda,
+  app: AppKdaLike,
   transferInput: TransferInput,
   networkId: string,
   derivationPath: string,
 ) => {
-  const transaction = createTransaction(
-    transferInputToPactCommand(transferInput)({ networkId }),
-  );
-
   const signed = await signWithLedger(
     app,
-    transaction,
     transferInput,
     derivationPath,
+    networkId,
   );
 
-  const pactCommand = ledgerToPact(signed, transaction);
-
-  return { pactCommand, isSigned: isSignedTransaction(pactCommand) };
+  return {
+    pactCommand: signed.pact_command,
+    isSigned: isSignedTransaction(signed.pact_command),
+  };
 };
 
 const useLedgerSign = () => {
@@ -138,8 +97,7 @@ const useLedgerSign = () => {
         derivationPath,
       }: { networkId: string; derivationPath: string },
     ) => {
-      const transport = await getTransport();
-      const app = new AppKda(transport);
+      const app = await getKadenaLedgerApp();
       return sign(app, transferInput, networkId, derivationPath);
     },
   );

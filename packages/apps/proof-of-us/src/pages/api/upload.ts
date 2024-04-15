@@ -10,7 +10,7 @@ interface IResponseData {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<IResponseData>,
+  res: NextApiResponse<IResponseData | IUploadResult>,
 ) {
   if (req.method !== 'POST') {
     return res.status(405).json({
@@ -23,6 +23,7 @@ export default async function handler(
 
   const background = await store.getBackground(proofOfUsId);
   const proofOfUs = await store.getProofOfUs(proofOfUsId);
+  const signees = await store.getProofOfUsSignees(proofOfUsId);
 
   if (!background?.bg) {
     return res.status(404).json({
@@ -49,7 +50,7 @@ export default async function handler(
     });
   }
 
-  const manifest = await createManifest(proofOfUs, imageData.url);
+  const manifest = await createManifest(proofOfUs, signees, imageData.url);
   const metadata = await createMetaDataUrl(manifest, proofOfUs.manifestUri);
 
   if (!metadata) {
@@ -59,7 +60,7 @@ export default async function handler(
   }
 
   const client = new NFTStorage({ token: process.env.NFTSTORAGE_API_TOKEN });
-  const results = await Promise.allSettled([
+  const results: any[] = await Promise.allSettled([
     client.storeCar(imageData.data.car),
     client.storeCar(metadata.data.car),
   ]);
@@ -74,16 +75,12 @@ export default async function handler(
     });
   }
 
-  res.status(200).json({
-    message: JSON.stringify(
-      {
-        imageCid: imageData.data.cid.toString(),
-        imageUrl: imageData.url,
-        metadataCid: metadata.data.cid.toString(),
-        metadataUrl: metadata.url,
-      },
-      null,
-      2,
-    ),
-  });
+  return res.status(200).json({
+    imageCid: imageData.data.cid.toString(),
+    imageUrl: imageData.url,
+    imageUrlUpload: `${results[0].value}`,
+    metadataCid: metadata.data.cid.toString(),
+    metadataUrl: metadata.url,
+    metadataUrlUpload: `${results[1].value}`,
+  } as IUploadResult);
 }

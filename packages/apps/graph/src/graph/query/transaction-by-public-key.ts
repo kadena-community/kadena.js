@@ -7,9 +7,13 @@ import { builder } from '../builder';
 builder.queryField('transactionsByPublicKey', (t) =>
   t.prismaConnection({
     description: 'Retrieve all transactions by a given public key.',
-    edgesNullable: false,
     args: {
-      publicKey: t.arg.string({ required: true }),
+      publicKey: t.arg.string({
+        required: true,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: Prisma.ModelName.Transaction,
     cursor: 'blockHash_requestKey',
@@ -18,7 +22,7 @@ builder.queryField('transactionsByPublicKey', (t) =>
         getDefaultConnectionComplexity({
           first: args.first,
           last: args.last,
-        }) * 2, // Times two because of the exra call to signers.
+        }) * 2, // Times two because of the extra call to signers.
     }),
     async totalCount(__parent, args) {
       const requestKeys = await prismaClient.signer.findMany({
@@ -49,7 +53,7 @@ builder.queryField('transactionsByPublicKey', (t) =>
           },
         });
 
-        return await prismaClient.transaction.findMany({
+        return prismaClient.transaction.findMany({
           ...query,
           where: {
             requestKey: {

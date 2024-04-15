@@ -1,5 +1,49 @@
 # @kadena/client-utils
 
+## 0.5.3
+
+### Patch Changes
+
+- Updated dependencies [3bbfeaaa9]
+  - @kadena/chainweb-node-client@0.6.0
+  - @kadena/client@1.11.0
+  - @kadena/pactjs-cli@1.11.0
+
+## 0.5.2
+
+### Patch Changes
+
+- Updated dependencies [d67b52906]
+  - @kadena/client@1.10.1
+  - @kadena/pactjs-cli@1.10.1
+
+## 0.5.1
+
+### Patch Changes
+
+- Updated dependencies [016b9dbfc]
+  - @kadena/client@1.10.0
+  - @kadena/pactjs-cli@1.10.0
+
+## 0.5.0
+
+### Minor Changes
+
+- 57a734447: Introducing accountDiscovery and queryAllChainsClient
+
+### Patch Changes
+
+- 6ddf094d8: Add Record<string,any> to PactValue type
+- Updated dependencies [b53c2600c]
+- Updated dependencies [6ddf094d8]
+- Updated dependencies [6ddf094d8]
+  - @kadena/client@1.9.0
+  - @kadena/types@0.6.1
+  - @kadena/pactjs-cli@1.9.0
+  - @kadena/chainweb-node-client@0.5.3
+  - @kadena/cryptography-utils@0.4.2
+  - @kadena/pactjs@0.4.2
+
 ## 0.4.1
 
 ### Patch Changes

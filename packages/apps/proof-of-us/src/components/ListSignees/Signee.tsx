@@ -4,12 +4,23 @@ import { getSigneeName } from '@/utils/getSigneeName';
 import { Stack } from '@kadena/react-ui';
 import classNames from 'classnames';
 import type { FC } from 'react';
+import { PingStatus } from '../PingStatus/PingStatus';
 import { SignStatus } from '../SignStatus/SignStatus';
+import { Tag } from '../Tag/Tag';
 import { Text } from '../Typography/Text';
-import { accountClass, ellipsClass, nameClass, signeeClass } from './style.css';
+import {
+  accountClass,
+  ellipsClass,
+  multipleNameClass,
+  multipleSigneeClass,
+  nameClass,
+  notAllowedToSignClass,
+  signeeClass,
+} from './style.css';
 
 interface IProps {
   signee?: IProofOfUsSignee;
+  isMultiple: boolean;
 }
 
 const isMe = (signer?: IProofOfUsSignee, account?: IAccount) => {
@@ -22,7 +33,7 @@ const getAccount = (signee?: IProofOfUsSignee): string => {
   return signee.accountName;
 };
 
-export const Signee: FC<IProps> = ({ signee }) => {
+export const Signee: FC<IProps> = ({ signee, isMultiple }) => {
   const { account } = useAccount();
 
   const getSuccessStyle = (signee?: IProofOfUsSignee) => {
@@ -33,21 +44,56 @@ export const Signee: FC<IProps> = ({ signee }) => {
     }
     return {};
   };
+
+  if (!signee) return null;
+
+  const isInitiator = signee.initiator;
+  const isMeChecked = isMe(signee, account);
+  const notAllowedToSign = signee.signerStatus === 'notsigning';
   return (
     <Stack
-      className={signeeClass}
-      flexDirection="column"
-      alignItems="center"
-      gap="sm"
+      className={classNames(
+        isMultiple ? multipleSigneeClass : signeeClass,
+        notAllowedToSign && notAllowedToSignClass,
+      )}
       style={getSuccessStyle(signee)}
+      flexDirection="column"
+      justifyContent="flex-start"
+      padding={isMultiple ? 'sm' : 'md'}
     >
-      <SignStatus status={signee?.signerStatus} />
-      <Text className={classNames(nameClass, ellipsClass)} bold>
-        {getSigneeName(signee)} {isMe(signee, account) && ' (me)'}
-      </Text>
-      <Text className={classNames(accountClass, ellipsClass)}>
-        {getAccount(signee)}
-      </Text>
+      <Stack
+        gap="md"
+        alignItems="center"
+        width="100%"
+        flexDirection={isMultiple ? 'row' : 'column'}
+      >
+        <Stack gap="sm" alignItems="center">
+          <SignStatus status={signee?.signerStatus} />
+          <PingStatus signee={signee} />
+        </Stack>
+        <Text
+          className={classNames(
+            nameClass,
+            ellipsClass,
+            isMultiple && multipleNameClass,
+          )}
+          bold
+        >
+          {getSigneeName(signee)}
+        </Text>
+        <Text className={classNames(accountClass, ellipsClass)}>
+          {getAccount(signee)}
+        </Text>
+      </Stack>
+      <Stack
+        paddingBlockStart="sm"
+        gap="sm"
+        justifyContent={isMultiple ? 'flex-start' : 'center'}
+      >
+        {isInitiator && <Tag>initiator</Tag>}
+        {isMeChecked && <Tag color="green">me</Tag>}
+        {notAllowedToSign && <Tag color="red">no need to sign</Tag>}
+      </Stack>
     </Stack>
   );
 };

@@ -6,6 +6,7 @@ import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
+import { typescriptOptions } from '../typescriptOptions.js';
 import {
   TARGET_PACKAGE,
   findPackageJson,
@@ -20,11 +21,11 @@ export const typescriptGenerateCommand = createCommand(
   'generate',
   'Generate typescript definitions based on a smart contract',
   [
-    globalOptions.typescriptClean(),
-    globalOptions.typescriptCapsInterface(),
-    globalOptions.typescriptFile(),
-    globalOptions.typescriptContract(),
-    globalOptions.typescriptNamespace(),
+    typescriptOptions.typescriptClean(),
+    typescriptOptions.typescriptCapsInterface(),
+    typescriptOptions.typescriptFile(),
+    typescriptOptions.typescriptContract(),
+    typescriptOptions.typescriptNamespace(),
     globalOptions.network(),
     globalOptions.chainId(),
   ],

@@ -9,7 +9,6 @@ import {
   Notification,
   NotificationHeading,
   Stack,
-  SystemIcon,
 } from '@kadena/react-ui';
 
 import {
@@ -58,6 +57,14 @@ import { getExplorerLink } from '@/utils/getExplorerLink';
 import { stripAccountPrefix } from '@/utils/string';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { ITransactionDescriptor } from '@kadena/client';
+import {
+  MonoAdd,
+  MonoContentCopy,
+  MonoDelete,
+  MonoInfo,
+  MonoKeyboardArrowRight,
+  MonoLink,
+} from '@kadena/react-icons/system';
 import { useQuery } from '@tanstack/react-query';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -319,7 +326,7 @@ const NewAccountFaucetPage: FC = () => {
           onIconButtonClick={() => {
             deletePublicKey(index);
           }}
-          icon="TrashCan"
+          icon={<MonoDelete />}
           maskOptions={{ headLength: 4, character: '.' }}
         />
       ))}
@@ -421,7 +428,7 @@ const NewAccountFaucetPage: FC = () => {
                   isInvalid={!!errors.pubKey}
                   endAddon={
                     <Button
-                      icon={<SystemIcon.Plus />}
+                      icon={<MonoAdd />}
                       variant="text"
                       onPress={() => {
                         const value = getValues('pubKey');
@@ -469,7 +476,7 @@ const NewAccountFaucetPage: FC = () => {
                   isDisabled
                   endAddon={
                     <Button
-                      icon={<SystemIcon.ContentCopy />}
+                      icon={<MonoContentCopy />}
                       variant="text"
                       onPress={async () => {
                         const value = getValues('name');
@@ -496,7 +503,7 @@ const NewAccountFaucetPage: FC = () => {
             <Button
               isLoading={requestStatus.status === 'processing'}
               isDisabled={mainnetSelected}
-              endIcon={<SystemIcon.TrailingIcon />}
+              endIcon={<MonoKeyboardArrowRight />}
               title={t('Fund X Coins', { amount: AMOUNT_OF_COINS_FUNDED })}
               type="submit"
             >
@@ -532,7 +539,7 @@ const NewAccountFaucetPage: FC = () => {
         initialOpenItem={openItem}
         sections={[
           {
-            icon: 'Information',
+            icon: <MonoInfo />,
             title: t('Frequently asked questions'),
             children: (
               <>
@@ -546,7 +553,7 @@ const NewAccountFaucetPage: FC = () => {
             ),
           },
           {
-            icon: 'Link',
+            icon: <MonoLink />,
             title: t('Resources & Links'),
             children: (
               <div className={linksBoxStyle}>

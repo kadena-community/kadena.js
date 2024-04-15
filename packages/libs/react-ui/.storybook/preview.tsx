@@ -1,19 +1,15 @@
-import { KodeMono } from '@kadena/fonts';
 import { DocsContainer } from '@storybook/addon-docs';
 import { type Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';
 import React from 'react';
 import { useDarkMode } from 'storybook-dark-mode';
 import { withCenteredStory } from '../src/storyDecorators';
-import { atoms, darkThemeClass } from '../src/styles';
+import { darkThemeClass } from '../src/styles';
 import { colorPalette } from '../src/styles/colors';
 import '../src/styles/global.css';
 
-KodeMono();
-
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,

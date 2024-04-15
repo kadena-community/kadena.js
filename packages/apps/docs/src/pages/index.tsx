@@ -21,7 +21,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
         <Grid gap="lg" columns={{ sm: 1, lg: 2 }}>
           <GridItem rowSpan={1}>
             <DocsCard
-              label="Engage / Learn"
+              label="Engage"
               description="Start here to learn the basics, including blockchain fundamentals and the core concepts of the Kadena network."
               schema="info"
               background="contribute"
@@ -55,7 +55,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
 
           <GridItem>
             <DocsCard
-              label="Onboard / Build"
+              label="Onboard"
               description="Try Kadena as a first time user or start your journey as a developer with a guided tour."
               schema="warning"
               background="marmalade"
@@ -65,7 +65,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                   Explore the blockchain
                 </Link>
                 <Link className={docsCardLink} href="/build/quickstart">
-                  Deploy your first contract - Quick start
+                  Deploy your first contract
                 </Link>
                 <Link className={docsCardLink} href="/build/pact">
                   Get started with Pact smart contract language
@@ -76,7 +76,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
 
           <GridItem>
             <DocsCard
-              label="Coach / Build"
+              label="Build"
               description="Take your game to the next level with tools, sample code, and 
               how-to guides."
               schema="success"
@@ -92,8 +92,8 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 <Link className={docsCardLink} href="/build/templates">
                   Code templates
                 </Link>
-                <Link className={docsCardLink} href="/build/nft-marmalade">
-                  Non-fungible tokens
+                <Link className={docsCardLink} href="/build/frontend">
+                  Command-line interface
                 </Link>
               </BrowseSection>
             </DocsCard>
@@ -101,7 +101,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
 
           <GridItem>
             <DocsCard
-              label="Propel / Deploy / Get technical"
+              label="Deploy"
               description="Deploy your smart contracts on the network or support the infrastructure by deploying a Chainweb node."
               schema="success"
               background="whitepapers"
@@ -110,11 +110,8 @@ const Home: FC<IProps> = ({ blogPosts }) => {
                 <Link className={docsCardLink} href="/deploy">
                   Prepare to deploy
                 </Link>
-                <Link
-                  className={docsCardLink}
-                  href="/deploy/chainweb-get-started"
-                >
-                  Get started as a Chainweb node operator
+                <Link className={docsCardLink} href="/deploy">
+                  Manage a Chainweb node
                 </Link>
 
                 <Link
@@ -135,7 +132,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
 
           <GridItem rowSpan={1}>
             <DocsCard
-              label="Embrace / Participate / Join us"
+              label="Embrace"
               description="Find out about community programs, grants, partnerships, and business development opportunities,
               to grow the Kadena ecosystem and how you can contribute."
               schema="info"
@@ -167,7 +164,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
 
           <GridItem>
             <DocsCard
-              label="Explore / Go beyond"
+              label="Explore beyond"
               description="Explore videos, whitepapers, discussion forums, and other sites and tools that are outside the scope of documentation."
               schema="warning"
               background="marmalade"
@@ -214,7 +211,7 @@ export const getStaticProps: GetStaticProps = async () => {
         subTitle: 'Build the future on Kadena',
         label: 'Introduction',
         order: 0,
-        description: 'Welcome to Kadena&apos;s documentation!',
+        description: 'Welcome to Kadena documentation!',
         layout: 'landing',
       },
     },

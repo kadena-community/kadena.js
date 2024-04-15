@@ -9,7 +9,7 @@ import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import { accountDetailsLoader } from '../data-loaders/account-details';
+import { fungibleAccountDetailsLoader } from '../data-loaders/fungible-account-details';
 import type {
   FungibleAccount,
   FungibleChainAccount,
@@ -59,9 +59,9 @@ export default builder.node(
           try {
             return (
               await Promise.all(
-                chainIds.map(async (chainId) => {
-                  return await getFungibleChainAccount({
-                    chainId: chainId,
+                chainIds.map((chainId) => {
+                  return getFungibleChainAccount({
+                    chainId,
                     fungibleName: parent.fungibleName,
                     accountName: parent.accountName,
                   });
@@ -83,7 +83,7 @@ export default builder.node(
             return (
               await Promise.all(
                 chainIds.map(async (chainId) => {
-                  return accountDetailsLoader.load({
+                  return fungibleAccountDetailsLoader.load({
                     fungibleName: parent.fungibleName,
                     accountName: parent.accountName,
                     chainId: chainId,
@@ -102,6 +102,7 @@ export default builder.node(
         },
       }),
       transactions: t.prismaConnection({
+        description: 'Default page size is 20.',
         type: Prisma.ModelName.Transaction,
         cursor: 'blockHash_requestKey',
         edgesNullable: false,
@@ -150,6 +151,7 @@ export default builder.node(
         },
       }),
       transfers: t.prismaConnection({
+        description: 'Default page size is 20.',
         type: Prisma.ModelName.Transfer,
         cursor: 'blockHash_chainId_orderIndex_moduleHash_requestKey',
         edgesNullable: false,

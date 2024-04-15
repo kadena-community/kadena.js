@@ -63,7 +63,7 @@ export const Header: FC<IProps> = ({ menuItems, layout = 'full' }) => {
           <NavHeaderButtonLink
             className={socialsClass}
             href="https://twitter.com/kadena_io"
-            title="Go to our Twitter"
+            title="Go to our X"
             icon={<SystemIcon.Twitter />}
           />
 

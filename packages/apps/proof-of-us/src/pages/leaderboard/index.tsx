@@ -13,6 +13,7 @@ import {
   itemsContainerClass,
   listCounterClass,
   listItemClass,
+  overflowClass,
   secondPlaceClass,
   winnerClass,
   winnerListClass,
@@ -79,7 +80,7 @@ const Page: FC = () => {
                       justifyContent="space-between"
                       className={itemsContainerClass}
                     >
-                      <div>
+                      <div className={overflowClass}>
                         {winner.alias}
                         <div className={accountNameClass}>
                           {winner.accountName}

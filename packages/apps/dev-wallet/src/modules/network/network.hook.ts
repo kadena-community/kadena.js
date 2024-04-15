@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { dbService } from '../db/db.service';
 import { INetwork, networkRepository } from './network.repository';
 
 export function useNetwork() {
@@ -15,40 +16,36 @@ export function useNetwork() {
     );
   }, []);
 
-  const addNetwork = useCallback(
-    async (network: INetwork) => {
-      await networkRepository.addNetwork(network);
-      await retrieveNetworks();
-    },
-    [retrieveNetworks],
-  );
-
-  const updateNetwork = useCallback(
-    async (network: INetwork) => {
-      await networkRepository.updateNetwork(network);
-      await retrieveNetworks();
-    },
-    [retrieveNetworks],
-  );
-
-  const deleteNetwork = useCallback(
-    async (networkId: string) => {
-      await networkRepository.deleteNetwork(networkId);
-      await retrieveNetworks();
-    },
-    [retrieveNetworks],
-  );
-
   useEffect(() => {
     retrieveNetworks();
   }, [retrieveNetworks]);
 
+  // subscribe to db changes and update the context
+  useEffect(() => {
+    const unsubscribe = dbService.subscribe(async (event, storeName) => {
+      if (!['add', 'update', 'delete'].includes(event)) return;
+      // update the context when the db changes
+      switch (storeName) {
+        case 'network': {
+          {
+            const networks = (await networkRepository.getNetworkList()) ?? [];
+            setNetworks(networks);
+            break;
+          }
+        }
+        default:
+          break;
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [setNetworks]);
+
   return {
     networks,
     activeNetwork,
-    addNetwork,
-    updateNetwork,
-    deleteNetwork,
     retrieveNetworks,
+    setActiveNetwork,
   };
 }

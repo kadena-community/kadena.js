@@ -1,6 +1,10 @@
 import { getClient } from '@/utils/client';
-import { useSearchParams } from 'next/navigation';
+import { getReturnHostUrl, getReturnUrl } from '@/utils/getReturnUrl';
+import { setSignatures } from '@/utils/setSignatures';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useProofOfUs } from './proofOfUs';
+import { useTransaction } from './transaction';
 
 export enum SubmitStatus {
   IDLE = 'idle',
@@ -12,16 +16,17 @@ export enum SubmitStatus {
 }
 
 export const useSubmit = () => {
-  const searchParams = useSearchParams();
-  const transaction = searchParams.get('transaction');
+  const { proofOfUs, signees } = useProofOfUs();
   const [result, setResult] = useState<any>({});
   const [status, setStatus] = useState(SubmitStatus.IDLE);
   const [tx, setTx] = useState<any>(null);
   const [preview, setPreview] = useState<any>(null);
+  const router = useRouter();
+
+  const { transaction } = useTransaction();
 
   const processTransaction = async (transaction: string) => {
     const client = getClient();
-
     const tx = JSON.parse(Buffer.from(transaction, 'base64').toString());
     setTx(tx);
 
@@ -38,29 +43,34 @@ export const useSubmit = () => {
     processTransaction(transaction);
   }, [transaction]);
 
-  const doSubmit = async (txArg?: string) => {
-    const innerTransaction = transaction;
+  const doSubmit = async (txArg?: string, proof?: IProofOfUsData) => {
+    const innerTransaction = txArg ? txArg : transaction;
+    const innerProofOfUs = proof ? proof : proofOfUs;
+    console.log(innerTransaction);
     if (!innerTransaction) return;
     setStatus(SubmitStatus.LOADING);
     const client = getClient();
 
-    const tx = JSON.parse(Buffer.from(innerTransaction, 'base64').toString());
-    try {
-      const txRes = await client.submit(tx);
-      const result = await client.listen(txRes);
-      //router.replace(getReturnUrl());
+    const signedTransaction = txArg
+      ? innerTransaction
+      : setSignatures(innerTransaction, signees);
 
-      if (result.result.status === 'success') {
-        setStatus(SubmitStatus.SUCCESS);
-        setResult(result);
-      } else {
-        setStatus(SubmitStatus.ERROR);
-        setResult({
-          status: 'Could not submit transaction',
-          data: 'Already claimed',
-        });
+    const tx = JSON.parse(Buffer.from(signedTransaction, 'base64').toString());
+    try {
+      await client.submit(tx);
+
+      if (!innerProofOfUs?.requestKey) {
+        router.replace(`${getReturnHostUrl()}/user`);
+        return;
       }
-      // router.replace(getReturnUrl());
+
+      router.replace(
+        `${getReturnHostUrl()}/user/proof-of-us/mint/${innerProofOfUs?.requestKey}?id=${
+          innerProofOfUs.proofOfUsId
+        }`,
+      );
+
+      return;
     } catch (err: any) {
       setStatus(SubmitStatus.ERROR);
       console.log(err);
@@ -68,6 +78,7 @@ export const useSubmit = () => {
         status: 'Could not submit transaction',
         data: err.toString(),
       });
+      router.replace(getReturnUrl());
     }
   };
 
@@ -79,6 +90,7 @@ export const useSubmit = () => {
     status !== SubmitStatus.ERROR;
   return {
     doSubmit,
+    transaction,
     tx,
     preview,
     result,

@@ -72,7 +72,7 @@ export function AccountDiscovery() {
           <>
             <Text> We are trying for first 20 keys - only K: account</Text>
             <Box>
-              <Text variant="base">
+              <Text>
                 checking{' '}
                 {key && (
                   <Text>

@@ -9,17 +9,8 @@ env:
 
 jobs:
   visual-regression-tests:
-    name: ${{ matrix.package }}
+    name: '@kadena/react-ui'
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - package: '@kadena/react-ui'
-            path: packages/libs/react-ui
-            projectToken: 'REACT_UI_CHROMATIC_TOKEN'
-          - package: '@kadena/docs'
-            path: packages/apps/docs
-            projectToken: 'DOCS_CHROMATIC_TOKEN'
 
     steps:
       - uses: actions/checkout@v4
@@ -32,7 +23,7 @@ jobs:
         with:
           filters: |
             pathFilter:
-                - '${{ matrix.path }}/**'
+                - 'packages/libs/react-ui/**'
 
       - uses: pnpm/action-setup@v2
         if: steps.changed.outputs.pathFilter == 'true'
@@ -55,11 +46,11 @@ jobs:
 
       - name: Publish Storybook
         if: steps.changed.outputs.pathFilter == 'true'
-        uses: chromaui/action@v1
+        uses: chromaui/action@latest
         with:
           exitOnceUploaded: true
           buildScriptName: 'build:storybook'
-          projectToken: ${{ secrets[matrix.projectToken] }}
-          workingDir: ${{ matrix.path }}
+          projectToken: ${{ secrets.REACT_UI_CHROMATIC_TOKEN }}
+          workingDir: packages/libs/react-ui
           autoAcceptChanges: 'main'
           onlyChanged: true # Required option to enable TurboSnap

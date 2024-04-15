@@ -11,7 +11,7 @@ export const inlineCode = style([
     color: 'text.semantic.info.default',
     marginInlineStart: 'xs',
     marginInlineEnd: 'xs',
-    fontFamily: 'codeFont',
+    fontFamily: 'monospaceFont',
   }),
   {
     padding: `calc(${tokens.kda.foundation.spacing.xs} / 4) ${tokens.kda.foundation.spacing.xs}`,
@@ -52,8 +52,8 @@ globalStyle(
 export const codeWrapper = style([
   atoms({
     fontSize: 'sm',
-    fontFamily: 'codeFont',
-    lineHeight: 'lg',
+    fontFamily: 'monospaceFont',
+    lineHeight: 'base',
     marginInline: 'no',
     marginBlock: 'xxxl',
     borderRadius: 'lg',
@@ -73,7 +73,7 @@ export const codeWrapper = style([
 export const code = style([
   atoms({
     whiteSpace: 'break-spaces',
-    fontFamily: 'codeFont',
+    fontFamily: 'monospaceFont',
     display: 'none',
     position: 'relative',
   }),
@@ -111,7 +111,7 @@ export const code = style([
 export const codeLine = style([
   atoms({
     width: '100%',
-    fontFamily: 'codeFont',
+    fontFamily: 'monospaceFont',
     zIndex: 1,
     paddingInlineEnd: 'md',
     display: 'inline-flex',
@@ -151,7 +151,7 @@ export const codeLine = style([
 ]);
 
 globalStyle(`code span`, {
-  fontFamily: tokens.kda.foundation.typography.family.codeFont,
+  fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
   wordBreak: 'break-word',
 });
 
@@ -179,8 +179,8 @@ export const codeTitle = style([
   atoms({
     display: 'none',
     alignItems: 'center',
-    fontFamily: 'bodyFont',
-    fontWeight: 'bodyFont.bold',
+    fontFamily: 'secondaryFont',
+    fontWeight: 'secondaryFont.bold',
     textTransform: 'capitalize',
     padding: 'sm',
   }),
@@ -205,7 +205,7 @@ export const codeTitle = style([
         borderRadius: tokens.kda.foundation.radius.sm,
         width: tokens.kda.foundation.spacing.lg,
         height: tokens.kda.foundation.spacing.lg,
-        fontFamily: tokens.kda.foundation.typography.family.codeFont,
+        fontFamily: tokens.kda.foundation.typography.family.monospaceFont,
         fontWeight: 'bold',
         fontSize: 'smaller',
       },
