@@ -1,4 +1,5 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import type { FC } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import type { IButtonProps } from '@kadena/react-ui';
 import { Button, Stack } from '@kadena/react-ui';
