@@ -153,6 +153,7 @@ export const Test: FC<ITestProps> = ({
       <NumberField
         {...register('amount')}
         id="ledger-transfer-amount"
+        defaultValue={defaultValues.amount}
         label={t('Amount')}
         onValueChange={(value) => setValue('amount', value)}
         minValue={0}
