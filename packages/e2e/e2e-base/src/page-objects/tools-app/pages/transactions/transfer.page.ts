@@ -89,7 +89,7 @@ export class TransferPage {
   }
 
   public async signTransaction(): Promise<void> {
-    await this._page.getByRole('button', { name: 'Sign', exact: true }).click();
+    await this._page.getByRole('button', { name: 'Sign' }).click();
   }
 
   public async transfer(): Promise<void> {
