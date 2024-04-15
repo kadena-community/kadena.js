@@ -55,9 +55,11 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
     message?: string;
   }>({ status: 'idle' });
 
+  const isSuccessfulTransfer = requestStatus.status === 'successful';
+
   const queryClient = useQueryClient();
 
-  if (requestStatus.status === 'successful') {
+  if (isSuccessfulTransfer) {
     // After successfully transferring we'd like to refetch the updated account details
     void queryClient.invalidateQueries({
       queryKey: ['account-details'],
@@ -284,7 +286,7 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
         <Stack flexDirection={'column'} marginBlockStart={'md'}>
           {requestStatus.message}
 
-          {!onSameChain && requestStatus.status === 'erroneous' ? (
+          {requestStatus.status === 'erroneous' && !onSameChain ? (
             <Stack gap={'sm'} alignItems={'center'}>
               <Trans
                 i18nKey="common:link-to-finisher"
@@ -311,14 +313,16 @@ export const SubmitTransaction: FC<ISubmitTransactionProps> = ({
                 variant="text"
               />
             </Stack>
-          ) : null}
+          ) : (
+            t('successful-transfer-page-transfer')
+          )}
         </Stack>
       </FormStatusNotification>
 
       <Stack justifyContent={'flex-end'} gap={'lg'}>
         <Button
           isLoading={isLoading}
-          // isDisabled={ledgerSignState.loading}
+          isDisabled={isSuccessfulTransfer}
           endIcon={<MonoKeyboardArrowRight />}
           title={t('Transfer')}
           onPress={onSubmit}

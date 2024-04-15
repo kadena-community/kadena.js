@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 
 import type { IButtonProps } from '@kadena/react-ui';
 import { Button, Stack } from '@kadena/react-ui';
@@ -56,16 +56,20 @@ export const defaultValues: Partial<FormData> = {
   amount: 0,
 };
 
-export const SignForm = ({
-  onSuccess,
-  onSenderChainUpdate,
-  onReceiverChainUpdate,
-  setIsLedger,
-}: {
+export interface ISignFormProps {
   onSuccess: (pactCommandObject: PactCommandObject) => void;
   onSenderChainUpdate: (chainId: ChainId) => void;
   onReceiverChainUpdate: (chainId: ChainId) => void;
   setIsLedger: (mode: boolean) => void;
+  onReset: () => void;
+}
+
+export const SignForm: FC<ISignFormProps> = ({
+  onSuccess,
+  onSenderChainUpdate,
+  onReceiverChainUpdate,
+  setIsLedger,
+  onReset,
 }) => {
   const { t } = useTranslation('common');
 
@@ -182,6 +186,8 @@ export const SignForm = ({
     reset(defaultValues);
 
     onPubKeysUpdate([]);
+
+    onReset();
   };
 
   const getSubmitButtonText = () => {

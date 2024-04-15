@@ -270,6 +270,7 @@
   "unexpected-account-name": "If this is not the expected account name, try changing the Legacy toggle",
   "transfer-sidebar-title": "Tips & tricks",
   "ledger-error-notification": "You cannot sign with Ledger on the current browser! Please visit <0>this website</0> for more information on browser compatibility.",
+  "successful-transfer-page-transfer": "You can do another transfer after resetting the form.",
   "Transaction": "Transaction",
   "Reset": "Reset",
   "Hide raw transaction details": "Hide raw transaction details",
