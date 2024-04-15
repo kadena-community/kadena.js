@@ -34,8 +34,8 @@ const namespace = 'n_31cd1d224d06ca2b327f1b03f06763e305099250';
 const collectionId = 'collection:tC8klNIATdbDN2iTwLI89qRoJovqDz2mi5Pbk7igNXk'; 
 
 const eventName = 'Kadena';
-const startTime = Math.round(new Date(2024, 4, 15, 10, 0).getTime() / 1000);
-const endTime = Math.round(new Date(2025, 4, 20, 13, 0).getTime() / 1000);
+const startTime = Math.round(new Date(2024, 3, 15, 10, 0).getTime() / 1000);
+const endTime = Math.round(new Date(2025, 3, 20, 13, 0).getTime() / 1000);
 const bgColor = '#ff00ff';
 
 console.log({
