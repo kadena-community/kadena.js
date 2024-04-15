@@ -1,7 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import { getFungibleChainAccount } from '@services/account-service';
 import { chainIds } from '@utils/chains';
-import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import FungibleAccount from '../objects/fungible-account';
@@ -29,24 +28,25 @@ builder.queryField('fungibleAccountsByPublicKey', (t) =>
     nullable: true,
     async resolve(__parent, args) {
       try {
-        const accountNames = await getAccountNamesByPublicKey(
-          args.publicKey,
-          args.fungibleName ?? undefined,
-        );
+        const accountAndFungibleNames =
+          await getAccountAndFungibleNamesByPublicKey(
+            args.publicKey,
+            args.fungibleName ?? undefined,
+          );
 
-        if (accountNames.length === 0) {
+        if (accountAndFungibleNames.length === 0) {
           return null;
         }
 
         const fungibleAccounts = await Promise.all(
-          accountNames.map(async (accountName: string) => {
+          accountAndFungibleNames.map(async (accountAndFungibleName) => {
             const chainAccounts = (
               await Promise.all(
                 chainIds.map((chainId) =>
                   getFungibleChainAccount({
                     chainId: chainId,
-                    fungibleName: 'coin',
-                    accountName: accountName,
+                    fungibleName: accountAndFungibleName.fungiblename,
+                    accountName: accountAndFungibleName.accountname,
                   }),
                 ),
               )
@@ -54,8 +54,8 @@ builder.queryField('fungibleAccountsByPublicKey', (t) =>
 
             return {
               __typename: FungibleAccountName,
-              accountName,
-              fungibleName: 'coin',
+              accountName: accountAndFungibleName.accountname,
+              fungibleName: accountAndFungibleName.fungiblename,
               chainAccounts,
               totalBalance: 0,
               transactions: [],
@@ -72,27 +72,38 @@ builder.queryField('fungibleAccountsByPublicKey', (t) =>
   }),
 );
 
-async function getAccountNamesByPublicKey(
+async function getAccountAndFungibleNamesByPublicKey(
   publicKey: string,
-  fungible = dotenv.DEFAULT_FUNGIBLE_NAME,
-): Promise<string[]> {
+  fungible?: string,
+): Promise<{ accountname: string; fungiblename: string }[]> {
   const regex = /^[a-zA-Z0-9]+$/;
 
   if (publicKey.length !== 64 || !regex.test(publicKey)) {
     throw new Error('Invalid public key');
   }
 
-  const accountsFromTransactions = (await prismaClient.$queryRaw`
-    SELECT DISTINCT to_acct
+  // This is required because prisma queryRaw does not support string interpolation for entire query fragments.
+  if (fungible) {
+    return (await prismaClient.$queryRaw`
+    SELECT DISTINCT to_acct AS accountname, moduleName as fungiblename
     FROM transfers AS tr
     INNER JOIN transactions AS tx
       ON tx.block = tr.block AND tx.requestkey = tr.requestkey
     WHERE
     tx.data::text LIKE ${`%${publicKey}%`}
       AND
-      (tx.code LIKE ${`%${fungible}.transfer-create%`}
-        OR tx.code LIKE ${`%${fungible}.create-account%`})
-  `) as { to_acct: string }[];
-
-  return accountsFromTransactions.map((account) => account.to_acct);
+      (tx.code LIKE ${`%${fungible ?? ''}.transfer-create%`}
+        OR tx.code LIKE ${`%${fungible ?? ''}.create-account%`})
+      AND tr.moduleName = ${fungible}
+  `) as { accountname: string; fungiblename: string }[];
+  } else {
+    return (await prismaClient.$queryRaw`
+    SELECT DISTINCT to_acct AS accountname, moduleName as fungiblename
+    FROM transfers AS tr
+    INNER JOIN transactions AS tx
+      ON tx.block = tr.block AND tx.requestkey = tr.requestkey
+    WHERE
+      tx.data::text LIKE ${`%${publicKey}%`}
+  `) as { accountname: string; fungiblename: string }[];
+  }
 }
