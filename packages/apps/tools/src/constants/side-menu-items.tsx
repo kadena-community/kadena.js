@@ -37,14 +37,10 @@ const menuData: ISidebarToolbarItem[] = [
         title: 'Cross Chain Transfer Finisher',
         href: Routes.CROSS_CHAIN_TRANSFER_FINISHER,
       },
-      ...(isDevEnvironment
-        ? [
-            {
-              title: 'Transfer',
-              href: Routes.TRANSFER,
-            },
-          ]
-        : []),
+      {
+        title: 'Transfer',
+        href: Routes.TRANSFER,
+      },
     ],
   },
 ];
