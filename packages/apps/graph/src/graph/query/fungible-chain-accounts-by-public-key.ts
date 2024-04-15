@@ -1,5 +1,6 @@
 import { prismaClient } from '@db/prisma-client';
 import { getFungibleChainAccount } from '@services/account-service';
+import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import FungibleChainAccount from '../objects/fungible-chain-account';
@@ -21,6 +22,12 @@ builder.queryField('fungibleChainAccountsByPublicKey', (t) =>
           minLength: 1,
         },
       }),
+      fungibleName: t.arg.string({
+        required: false,
+        validate: {
+          minLength: 1,
+        },
+      }),
     },
     type: [FungibleChainAccount],
     nullable: true,
@@ -29,6 +36,7 @@ builder.queryField('fungibleChainAccountsByPublicKey', (t) =>
         const accountNames = await getChainAccountNamesByPublicKey(
           args.publicKey,
           args.chainId,
+          args.fungibleName ?? undefined,
         );
 
         if (accountNames.length === 0) {
@@ -58,9 +66,8 @@ builder.queryField('fungibleChainAccountsByPublicKey', (t) =>
 async function getChainAccountNamesByPublicKey(
   publicKey: string,
   chainId: string,
+  fungible = dotenv.DEFAULT_FUNGIBLE_NAME,
 ): Promise<string[]> {
-  const searchPubKey = `%${publicKey}%`;
-
   const regex = /^[a-zA-Z0-9]+$/;
 
   if (publicKey.length !== 64 || !regex.test(publicKey)) {
@@ -73,11 +80,11 @@ async function getChainAccountNamesByPublicKey(
     INNER JOIN transactions AS tx
       ON tx.block = tr.block AND tx.requestkey = tr.requestkey
     WHERE
-      tx.data::text LIKE ${searchPubKey}
+      tx.data::text LIKE ${`%${publicKey}%`}
       AND tx.chainid = ${BigInt(chainId)}
       AND
-        (tx.code LIKE '%coin.transfer-create%'
-        OR tx.code LIKE '%coin.create-account%')
+        (tx.code LIKE ${`%${fungible}.transfer-create%`}
+        OR tx.code LIKE ${`%${fungible}.create-account%`})
   `) as { to_acct: string }[];
 
   if (result.length === 0) {
