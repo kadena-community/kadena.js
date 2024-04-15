@@ -127,6 +127,13 @@ const createEvent = async () => {
         new PactNumber(2500).toPactInteger(),
         new PactNumber(1).toPactDecimal(),
       ),
+      withCap(
+        `${namespace}.proof-of-us.EVENT`,
+        collectionId,
+        eventId,
+        eventName,
+        metadata.url,
+      ),
     ])
     .addSigner(creatorPublicKey)
 
