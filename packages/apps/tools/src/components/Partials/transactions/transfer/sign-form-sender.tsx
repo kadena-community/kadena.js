@@ -14,7 +14,7 @@ import { notificationLinkStyle } from '@/pages/transactions/transfer/styles.css'
 import type { ChainId } from '@kadena/types';
 import useTranslation from 'next-translate/useTranslation';
 import { useFormContext } from 'react-hook-form';
-import { SenderDetails } from './sender-details';
+import { SenderFields } from './sender-fields';
 import type { FormData } from './sign-form';
 
 export const accountFromOptions = ['Ledger', 'Coming soon…', 'Test'] as const;
@@ -83,7 +83,7 @@ export const SignFormSender: FC<ISignFormSenderProps> = ({
         </Link>
       </Stack>
 
-      <SenderDetails
+      <SenderFields
         type={signingMethod}
         onKeyIdUpdate={onKeyIdUpdate}
         onDerivationUpdate={onDerivationUpdate}
