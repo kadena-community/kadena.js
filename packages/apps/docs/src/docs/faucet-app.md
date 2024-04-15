@@ -383,7 +383,7 @@ account limit or return more funds than they have requested. To specify an
 invariant, use (invariant) and provide a predicate; the Z3 theorem prover will
 check that the variables used in your predicate can never have values that would
 fail the predicate. Not all Pact functions can be used in the predicate.
-For more information about property and invariant functions, see [Property validation](/reference/properties-checking).
+For more information about property and invariant functions, see [Property validation](/reference/property-checking).
 
 The first invariant ensures that you can never receive more funds than your
 account limit. The second ensures you can never return more funds than you have

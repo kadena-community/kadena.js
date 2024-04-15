@@ -26,7 +26,7 @@ Before you start this tutorial, verify the following basic requirements:
 - You have cloned the [election-dapp](https://github.com/kadena-community/voting-dapp.git) repository as described in [Prepare your workspace](/build/election/prepare-your-workspace).
 - You have the development network running in a Docker container as described in [Start a local blockchain](/build/election/start-a-local-blockchain).
 - You are [connected to the development network](/build/election/start-a-local-blockchain#connect-to-the-development-network) using your local host IP address and port number 8080.
-- You have created and funded an administrative account as described in [Add an administrator account](/build/election-dapp-tutorial/add-admin-account).
+- You have created and funded an administrative account as described in [Add an administrator account](/build/election/add-admin-account).
 - You have created a principal namespace on the development network as described in [Define a namespace](/build/election/define-a-namespace).
 - You have defined the keyset that controls your namespace using the administrative account as described in [Define keysets](/build/election/define-keysets).
 - You have created an election Pact module and deployed it as described in [Write a smart contract](/build/election/write-a-smart-contract) and updated its functionality as described in [Nominate candidates](/build/election/nominate-candidates).

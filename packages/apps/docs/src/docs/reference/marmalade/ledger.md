@@ -122,7 +122,7 @@ When you submit the `transfer` transaction, the `policy-manager.enforce-transfer
 
 ## sale
 
-Use `sale` to execute a two-step transaction using the offer and buy steps with an escrow account as described in [Token sales and trustless-escrow](/build/nft-marmalade/what-is-marmalade#token-sales-and-trustless-escrowh1493505976).
+Use `sale` to execute a two-step transaction using the offer and buy steps with an escrow account as described in [Token sales and trustless-escrow](/build/nft-marmalade#token-sales-and-trustless-escrowh1493505976).
 
 Because a sale requires two steps that must be completed in a specific order, the transaction is defined using a pact.
 For information about the syntax used to define a pact, see [defpact](/reference/syntax#defpacth1545231271).

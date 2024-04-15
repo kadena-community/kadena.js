@@ -382,7 +382,7 @@ To deploy the new Pact module on the development network:
    The `election-dapp/deploy-gas-station.ts` script is similar to the `election-dapp/deploy-module.ts` script, except that it deploys the `election-gas-station.pact` module.
    Remember that `k:<your-public-key>` is the default **account name** for the
    administrative account that you funded in
-   [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
+   [Add an administrator account](/build/election/add-admin-account).
    You can copy this account name from Chainweaver when viewing the account
    watch list.
 
@@ -638,7 +638,7 @@ To deploy the new Pact module on the development network:
 
    Remember that `k:<your-public-key>` is the default **account name** for the
    administrative account that you funded in
-   [Add an administrator account](/build/guides/election-dapp-tutorial/add-admin-account).
+   [Add an administrator account](/build/election/add-admin-account).
    You can copy this account name from Chainweaver when viewing the account
    watch list.
 
@@ -652,7 +652,7 @@ To deploy the new Pact module on the development network:
    { status: 'success', data: [ 'Write succeeded' ] }
    ```
 
-1. Verify that the gas station account now exists with a 0 KDA balance on the development network by running the following script. 
+6. Verify that the gas station account now exists with a 0 KDA balance on the development network by running the following script. 
 
    ```bash
    npm run coin-details:devnet -- c:<capability-guarded-account-name>
@@ -1025,7 +1025,7 @@ client to interact with a smart contract deployed on the Kadena blockchain as
 its backend. The workshop demonstrates the basic functionality for conducting an
 election online that uses a blockchain to provide more efficient, transparent,
 and tamper-proof results. However, as you saw in
-[Add vote management](/build/guides/election-dapp-tutorial/add-vote-management),
+[Add vote management](/build/election/add-vote-management),
 it's possible for individuals to vote more than once by simply creating
 additional Kadena accounts. That might be a challenge you want to explore.
 

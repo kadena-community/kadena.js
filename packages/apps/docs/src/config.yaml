@@ -408,14 +408,14 @@ pages:
             url: /bitwise
             file: /reference/pact/properties-and-invariants/bitwise.md
           objectoperators:
-            url: /object-operators
-            file: /reference/pact/properties-and-invariants/object-operators.md
+            url: /object
+            file: /reference/pact/properties-and-invariants/object.md
           logicaloperators:
-            url: /logical-operators
+            url: /logical
             file: /reference/pact/properties-and-invariants/logical.md
           listoperators:
-            url: /list-operators
-            file: /reference/pact/properties-and-invariants/list-operators.md
+            url: /list
+            file: /reference/pact/properties-and-invariants/list.md
           string:
             url: /string
             file: /reference/pact/properties-and-invariants/string.md

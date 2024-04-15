@@ -23,7 +23,7 @@ The reference information for the Pact programming language covers the following
 - [Pact REPL](/reference/pact-repl) provides command-line reference information for the Pact REPL interactive command-line program.
 - [Pact REST API](/reference/rest-api) describes the Pact REST API and how you can use it to interact with the blockchain.
 
-For information about the design of the Pact programming language, see the [Pact white paper](/kadena) or the [Pact home page](https://www.kadena.io/pact).
+For information about the design of the Pact programming language, see the [Pact white paper](https://cdn.sanity.io/files/agrhq0bu/production/70f01649395af96655ca94d331fb1bd01af9fc8a.pdf) or the [Pact home page](https://www.kadena.io/pact).
 
 ## Frontend libraries: Kadena client
 

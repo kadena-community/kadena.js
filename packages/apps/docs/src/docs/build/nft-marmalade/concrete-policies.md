@@ -95,7 +95,7 @@ The non-fungible policy ensures the uniqueness of digital assets.
 If you apply this policy to a token, the policy guarantees that the token supply is one with a precision of zero.
 No additional configuration is necessary for this policy.
 
-For technical details about the non-fungible policy, see [Non-fungible policy](/reference/nft-ref/policy-manager/non-fungible-policy).
+For technical details about the non-fungible policy, see [Non-fungible policy](/reference/nft-ref/policy-manager/nft-policy).
 
 ## Royalty policy
 

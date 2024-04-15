@@ -356,9 +356,8 @@ Here is a list of functions from the smart contract along with their purpose.
 
 :::info
 
-While the code here is new, most of the functionality is covered in previous
-tutorials throughout the [Pact beginner tutorials](/pact/beginner). If you have
-not completed these tutorials, take some time to look through them now to get a
+While the code here is new, most of the functionality is covered in previous tutorials. 
+If you have not completed these tutorials, take some time to look through them now to get a
 better understanding of this Pact smart contract.
 
 :::
