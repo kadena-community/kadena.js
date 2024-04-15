@@ -15,7 +15,7 @@ export const baseConfig: PlaywrightTestConfig = {
     headless: process.env.CI !== undefined,
     baseURL: 'http://localhost:3000/',
     channel: 'chromium',
-    trace: 'retain-on-failure',
+    trace: 'off',
     viewport: { width: 1920, height: 1080 },
   },
   expect: {

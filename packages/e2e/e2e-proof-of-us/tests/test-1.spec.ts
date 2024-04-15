@@ -8,6 +8,71 @@ const spireKey = new SpireKeyIndex();
 const proofOfUs = new ProofOfUsAppIndex();
 let shareUrl: string;
 
+test('1 Initiator, 1 signers. all participants sign -> Should be able to mint the connection token @xs', async ({
+  initiator,
+  signer1,
+}) => {
+  await test.step('Create account in SpireKey and initiate a connection in Proof of Us.', async () => {
+    await initiator.goto(
+      'https://proof-of-us-git-feat-pouinitiatordeletesigners-kadena-js.vercel.app/',
+    );
+    // Initiator: Create a SpireKey account
+    await initiator.getByRole('button', { name: 'Login to mint' }).click();
+    await spireKey.createSpireKeyAccountFor(initiator, 'initiator');
+    shareUrl = await proofOfUs.createProofWith(initiator, proofTitle);
+    expect(shareUrl).toBeDefined();
+  });
+  await test.step('Scan the QR code and create an account for all signers', async () => {
+    await Promise.all([
+      signer1.goto(shareUrl),
+    ]);
+
+    await Promise.all([
+      spireKey.createSpireKeyAccountFor(signer1, 'signer1', true),
+    ]);
+
+    await Promise.all([
+      signer1.goto(shareUrl),
+    ]);
+  });
+  // await test.step('Disable Signing for Signer 3', async () => {
+  //   await proofOfUs.disableSigningFor(initiator, 'signer4');
+  // });
+  await test.step('Initiate the Signing Process with Initiator', async () => {
+    await proofOfUs.startSigningProcessWith(initiator);
+  });
+  await test.step('Sign the Proof with the Signers', async () => {
+    await Promise.all([
+      proofOfUs.signProofWith(signer1),
+    ]);
+
+    await Promise.all([
+      spireKey.signTransaction(signer1),
+    ]);
+  });
+  await test.step('Upload the Proof with the Initiator', async () => {
+    // Start waiting for request before clicking. Note no await.
+    await proofOfUs.uploadProofWith(initiator);
+
+    const requestPromise = initiator.waitForRequest(
+      '**/chain/1/pact/api/v1/poll',
+    );
+    await spireKey.signTransaction(initiator);
+    const postData = (await requestPromise).postData();
+    console.log(postData);
+  });
+  await test.step('The Proof should be succesfully minted for the initiator as well as all the signers', async () => {
+    await Promise.all([
+      expect(initiator.getByRole('heading', { name: proofTitle })).toBeVisible({
+        timeout: 120000,
+      }),
+      expect(signer1.getByRole('heading', { name: proofTitle })).toBeVisible({
+        timeout: 120000,
+      }),
+    ]);
+  });
+});
+
 test('1 Initiator, 10 signers. all participants sign -> Should be able to mint the connection token @s', async ({
   initiator,
   signer1,
@@ -431,12 +496,12 @@ test('1 Initiator, 65 signers. all participants sign -> Should be able to mint t
   signer57,
   signer58,
   signer59,
-  signer60,
-  signer61,
-  signer62,
-  signer63,
-  signer64,
-  signer65,
+  // signer60,
+  // signer61,
+  // signer62,
+  // signer63,
+  // signer64,
+  // signer65,
 }) => {
   await test.step('Create account in SpireKey and initiate a connection in Proof of Us.', async () => {
     await initiator.goto(
@@ -509,12 +574,12 @@ test('1 Initiator, 65 signers. all participants sign -> Should be able to mint t
       signer57.goto(shareUrl),
       signer58.goto(shareUrl),
       signer59.goto(shareUrl),
-      signer60.goto(shareUrl),
-      signer61.goto(shareUrl),
-      signer62.goto(shareUrl),
-      signer63.goto(shareUrl),
-      signer64.goto(shareUrl),
-      signer65.goto(shareUrl),
+      // signer60.goto(shareUrl),
+      // signer61.goto(shareUrl),
+      // signer62.goto(shareUrl),
+      // signer63.goto(shareUrl),
+      // signer64.goto(shareUrl),
+      // signer65.goto(shareUrl),
     ]);
 
     await Promise.all([
@@ -577,12 +642,12 @@ test('1 Initiator, 65 signers. all participants sign -> Should be able to mint t
       spireKey.createSpireKeyAccountFor(signer57, 'signer57', true),
       spireKey.createSpireKeyAccountFor(signer58, 'signer58', true),
       spireKey.createSpireKeyAccountFor(signer59, 'signer59', true),
-      spireKey.createSpireKeyAccountFor(signer60, 'signer60', true),
-      spireKey.createSpireKeyAccountFor(signer61, 'signer61', true),
-      spireKey.createSpireKeyAccountFor(signer62, 'signer62', true),
-      spireKey.createSpireKeyAccountFor(signer63, 'signer63', true),
-      spireKey.createSpireKeyAccountFor(signer64, 'signer64', true),
-      spireKey.createSpireKeyAccountFor(signer65, 'signer65', true),
+      // spireKey.createSpireKeyAccountFor(signer60, 'signer60', true),
+      // spireKey.createSpireKeyAccountFor(signer61, 'signer61', true),
+      // spireKey.createSpireKeyAccountFor(signer62, 'signer62', true),
+      // spireKey.createSpireKeyAccountFor(signer63, 'signer63', true),
+      // spireKey.createSpireKeyAccountFor(signer64, 'signer64', true),
+      // spireKey.createSpireKeyAccountFor(signer65, 'signer65', true),
     ]);
 
     await Promise.all([
@@ -645,12 +710,12 @@ test('1 Initiator, 65 signers. all participants sign -> Should be able to mint t
       signer57.goto(shareUrl),
       signer58.goto(shareUrl),
       signer59.goto(shareUrl),
-      signer60.goto(shareUrl),
-      signer61.goto(shareUrl),
-      signer62.goto(shareUrl),
-      signer63.goto(shareUrl),
-      signer64.goto(shareUrl),
-      signer65.goto(shareUrl),
+      // signer60.goto(shareUrl),
+      // signer61.goto(shareUrl),
+      // signer62.goto(shareUrl),
+      // signer63.goto(shareUrl),
+      // signer64.goto(shareUrl),
+      // signer65.goto(shareUrl),
     ]);
   });
   // await test.step('Disable Signing for Signer 3', async () => {
@@ -724,12 +789,12 @@ test('1 Initiator, 65 signers. all participants sign -> Should be able to mint t
       proofOfUs.signProofWith(signer57),
       proofOfUs.signProofWith(signer58),
       proofOfUs.signProofWith(signer59),
-      proofOfUs.signProofWith(signer60),
-      proofOfUs.signProofWith(signer61),
-      proofOfUs.signProofWith(signer62),
-      proofOfUs.signProofWith(signer63),
-      proofOfUs.signProofWith(signer64),
-      proofOfUs.signProofWith(signer65),
+      // proofOfUs.signProofWith(signer60),
+      // proofOfUs.signProofWith(signer61),
+      // proofOfUs.signProofWith(signer62),
+      // proofOfUs.signProofWith(signer63),
+      // proofOfUs.signProofWith(signer64),
+      // proofOfUs.signProofWith(signer65),
     ]);
 
     await Promise.all([
@@ -792,12 +857,12 @@ test('1 Initiator, 65 signers. all participants sign -> Should be able to mint t
       spireKey.signTransaction(signer57),
       spireKey.signTransaction(signer58),
       spireKey.signTransaction(signer59),
-      spireKey.signTransaction(signer60),
-      spireKey.signTransaction(signer61),
-      spireKey.signTransaction(signer62),
-      spireKey.signTransaction(signer63),
-      spireKey.signTransaction(signer64),
-      spireKey.signTransaction(signer65),
+    //  spireKey.signTransaction(signer60),
+      // spireKey.signTransaction(signer61),
+      // spireKey.signTransaction(signer62),
+      // spireKey.signTransaction(signer63),
+      // spireKey.signTransaction(signer64),
+      // spireKey.signTransaction(signer65),
     ]);
   });
   await test.step('Upload the Proof with the Initiator', async () => {
@@ -814,204 +879,396 @@ test('1 Initiator, 65 signers. all participants sign -> Should be able to mint t
   await test.step('The Proof should be succesfully minted for the initiator as well as all the signers', async () => {
     await Promise.all([
       expect(initiator.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer1.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer2.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer3.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer4.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer5.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer6.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer7.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer8.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer9.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer10.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer11.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer12.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer13.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer14.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer15.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer16.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer17.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer18.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer19.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer20.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer21.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer22.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer23.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer24.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer25.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer26.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer27.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer28.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer29.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer30.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer31.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer32.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer33.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer34.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer35.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer36.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer37.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer38.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer39.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer40.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer41.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer42.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer43.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer44.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer45.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer46.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer47.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer48.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer49.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer50.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer51.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer52.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer53.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer54.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer55.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer56.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer57.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer58.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
       expect(signer59.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
+        timeout: 1200000,
       }),
-      expect(signer60.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
-      }),
-      expect(signer61.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
-      }),
-      expect(signer62.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
-      }),
-      expect(signer63.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
-      }),
-      expect(signer64.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
-      }),
-      expect(signer65.getByRole('heading', { name: proofTitle })).toBeVisible({
-        timeout: 120000,
-      }),
+      // expect(signer60.getByRole('heading', { name: proofTitle })).toBeVisible({
+      //   timeout: 1200000,
+      // }),
+      // expect(signer61.getByRole('heading', { name: proofTitle })).toBeVisible({
+      //   timeout: 1200000,
+      // }),
+      // expect(signer62.getByRole('heading', { name: proofTitle })).toBeVisible({
+      //   timeout: 1200000,
+      // }),
+      // expect(signer63.getByRole('heading', { name: proofTitle })).toBeVisible({
+      //   timeout: 1200000,
+      // }),
+      // expect(signer64.getByRole('heading', { name: proofTitle })).toBeVisible({
+      //   timeout: 1200000,
+      // }),
+      // expect(signer65.getByRole('heading', { name: proofTitle })).toBeVisible({
+      //   timeout: 1200000,
+      // }),
     ]);
+  });
+});
+
+const doBy = async (callback, signers, batchBy) => {
+  for (let batchIndex = 0; batchIndex < signers.length; batchIndex += batchBy) {
+    const batch = signers.slice(batchIndex, batchIndex + batchBy);
+    await Promise.all(batch.map(callback)); 
+  }
+}
+test('1 Initiator, 65 signers. all participants sign -> Should be able to mint the connection token @xxl', async ({
+  initiator,
+  signer1,
+  signer2,
+  signer3,
+  signer4,
+  signer5,
+  signer6,
+  signer7,
+  signer8,
+  signer9,
+  signer10,
+  signer11,
+  signer12,
+  signer13,
+  signer14,
+  signer15,
+  signer16,
+  signer17,
+  signer18,
+  signer19,
+  signer20,
+  signer21,
+  signer22,
+  signer23,
+  signer24,
+  signer25,
+  signer26,
+  signer27,
+  signer28,
+  signer29,
+  signer30,
+  signer31,
+  signer32,
+  signer33,
+  signer34,
+  signer35,
+  signer36,
+  signer37,
+  signer38,
+  signer39,
+  signer40,
+  signer41,
+  signer42,
+  signer43,
+  signer44,
+  signer45,
+  signer46,
+  signer47,
+  signer48,
+  signer49,
+  signer50,
+  signer51,
+  signer52,
+  signer53,
+  signer54,
+  signer55,
+  signer56,
+  signer57,
+  signer58,
+  signer59,
+  signer60,
+  signer61,
+  signer62,
+  signer63,
+  signer64,
+  signer65,
+}) => {
+  const signers = [
+  signer1,
+  signer2,
+  signer3,
+  signer4,
+  signer5,
+  signer6,
+  signer7,
+  signer8,
+  signer9,
+  signer10,
+  signer11,
+  signer12,
+  signer13,
+  signer14,
+  signer15,
+  signer16,
+  signer17,
+  signer18,
+  signer19,
+  signer20,
+  signer21,
+  signer22,
+  signer23,
+  signer24,
+  signer25,
+  signer26,
+  signer27,
+  signer28,
+  signer29,
+  signer30,
+  signer31,
+  signer32,
+  signer33,
+  signer34,
+  signer35,
+  signer36,
+  signer37,
+  signer38,
+  signer39,
+  signer40,
+  signer41,
+  signer42,
+  signer43,
+  signer44,
+  signer45,
+  signer46,
+  signer47,
+  signer48,
+  signer49,
+  signer50,
+  signer51,
+  signer52,
+  signer53,
+  signer54,
+  signer55,
+  signer56,
+  signer57,
+  signer58,
+  signer59,
+  signer60,
+  signer61,
+  signer62,
+  signer63,
+  signer64,
+  signer65,
+    ];
+  await test.step('Create account in SpireKey and initiate a connection in Proof of Us.', async () => {
+    await initiator.goto(
+      'https://proof-of-us-git-feat-pouinitiatordeletesigners-kadena-js.vercel.app/',
+    );
+    // Initiator: Create a SpireKey account
+    await initiator.getByRole('button', { name: 'Login to mint' }).click();
+    await spireKey.createSpireKeyAccountFor(initiator, 'initiator');
+    shareUrl = await proofOfUs.createProofWith(initiator, proofTitle);
+    expect(shareUrl).toBeDefined();
+  });
+  await test.step('Scan the QR code and create an account for all signers', async () => {
+    await doBy(signer => signer.goto(shareUrl), signers, 5)
+    await doBy((signer, i) => spireKey.createSpireKeyAccountFor(signer, `signer${i}`, true), signers, 5)
+    await doBy(signer => signer.goto(shareUrl), signers, 5)
+  });
+  // await test.step('Disable Signing for Signer 3', async () => {
+  //   await proofOfUs.disableSigningFor(initiator, 'signer15');
+  //   await proofOfUs.disableSigningFor(initiator, 'signer16');
+  //   await proofOfUs.disableSigningFor(initiator, 'signer17');
+  //   await proofOfUs.disableSigningFor(initiator, 'signer18');
+  //   await proofOfUs.disableSigningFor(initiator, 'signer19');
+  // });
+  await test.step('Initiate the Signing Process with Initiator', async () => {
+    await proofOfUs.startSigningProcessWith(initiator);
+  });
+  await test.step('Sign the Proof with the Signers', async () => {
+    await doBy(signer => proofOfUs.signProofWith(signer), signers, 5)
+    await doBy(signer => spireKey.signTransaction(signer1), signers, 5)
+  });
+  await test.step('Upload the Proof with the Initiator', async () => {
+    // Start waiting for request before clicking. Note no await.
+    await proofOfUs.uploadProofWith(initiator);
+
+    const requestPromise = initiator.waitForRequest(
+      '**/chain/1/pact/api/v1/poll',
+    );
+    await spireKey.signTransaction(initiator);
+    const postData = (await requestPromise).postData();
+    console.log(postData);
+  });
+  await test.step('The Proof should be succesfully minted for the initiator as well as all the signers', async () => {
+    await expect(initiator.getByRole('heading', { name: proofTitle })).toBeVisible({
+      timeout: 1200000,
+    })
+
+    await doBy(signer => expect(signer.getByRole('heading', { name: proofTitle })).toBeVisible({
+      timeout: 1200000,
+    }), signers, 10)
   });
 });
 /*

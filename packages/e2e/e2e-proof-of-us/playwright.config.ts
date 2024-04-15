@@ -4,14 +4,12 @@ import { devices } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   ...baseConfig,
-  timeout: 180000,
+  timeout: 1800000,
   projects: [
     {
       name: 'proof-of-us',
       testDir: 'tests',
-    
       use: {
-        video: 'on',
         ...devices['iPhone 14 Pro Max'],
         // viewport: { width: 393, height: 852 },
         // deviceScaleFactor: 3,

@@ -14,9 +14,6 @@ importers:
       '@kadena-dev/markdown':
         specifier: workspace:*
         version: link:packages/tools/markdown
-      buffer:
-        specifier: ^5.5.0||^6.0.0
-        version: 6.0.3
       knip:
         specifier: ^2.38.1
         version: 2.38.1

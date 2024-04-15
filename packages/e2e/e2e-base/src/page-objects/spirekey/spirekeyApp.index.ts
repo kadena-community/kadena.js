@@ -11,7 +11,7 @@ export class SpireKeyIndex {
     wait = false,
   ): Promise<void> {
     const webAuthNHelper = new WebAuthNHelper();
-    const authenticatorSession = await webAuthNHelper.enableWebAuthN(actor);
+    await webAuthNHelper.enableWebAuthN(actor);
     // Create Spirekey Account
     await actor.getByRole('link', { name: 'Create' }).click();
 
@@ -36,7 +36,6 @@ export class SpireKeyIndex {
     await expect(actor.getByRole('heading', { name: 'Color' })).toBeVisible();
     await actor.getByRole('button', { name: 'Complete' }).click();
     //await actor.goBack()
-    console.log('credentials', await authenticatorSession.cdp.send('WebAuthn.getCredentials', { authenticatorId: authenticatorSession.id }))
 
     // We should now be on the card overview
     await expect(actor.locator('h4')).toHaveText('Connect');
@@ -52,5 +51,6 @@ export class SpireKeyIndex {
       actor.getByRole('heading', { name: 'Sign', exact: true }),
     ).toBeVisible();
     await actor.getByRole('button', { name: 'Sign' }).click();
+    
   }
 }
