@@ -14,6 +14,9 @@ importers:
       '@kadena-dev/markdown':
         specifier: workspace:*
         version: link:packages/tools/markdown
+      buffer:
+        specifier: ^5.5.0||^6.0.0
+        version: 6.0.3
       knip:
         specifier: ^2.38.1
         version: 2.38.1
@@ -28108,6 +28111,9 @@ packages:
     resolution: {integrity: sha512-W+gxAq7aQ9dJIg/XLKGcRT0cvnStFAQHPaI0pvD0U2l6IVLueUAm3nwN7lkY62zZNmlvNx6jNtE4wlbS+CyqSg==}
     engines: {node: '>= 12.0.0'}
     hasBin: true
+    peerDependenciesMeta:
+      '@parcel/core':
+        optional: true
     dependencies:
       '@parcel/config-default': 2.12.0(@parcel/core@2.12.0)
       '@parcel/core': 2.12.0
