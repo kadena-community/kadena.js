@@ -41,18 +41,18 @@ export const schema = z.object({
     /^k:[0-9A-Fa-f]{64}/,
     'Signing with Ledger currently only supports single key accounts.',
   ),
-  amount: z.number().positive(),
   receiverChainId: z.enum(CHAINS),
+  amount: z.number().positive(),
   isConnected: z.boolean().refine((val) => val === true),
 });
 
 export type FormData = z.infer<typeof schema>;
 
-export const defaultValues = {
-  senderChainId: CHAINS[0],
-  receiverChainId: undefined,
-  receiver: '',
+export const defaultValues: Partial<FormData> = {
   sender: '',
+  senderChainId: CHAINS[0],
+  receiver: '',
+  // receiverChainId: undefined,
   amount: 0,
 };
 
