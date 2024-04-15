@@ -246,8 +246,6 @@ export const SignForm = ({
 
           <Stack justifyContent={'flex-end'} gap={'lg'}>
             <Button
-              // isLoading={isLoading}
-              // isDisabled={ledgerSignState.loading}
               endIcon={<MonoRefresh />}
               color="secondary"
               title={t('Reset')}
