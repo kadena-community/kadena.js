@@ -257,7 +257,6 @@ const ModuleExplorerPage = (
 
   const setDeeplink = useCallback(
     (module: IChainModule) => {
-      // eslint-disable-next-line no-void
       void router.replace(
         `?${QueryParams.MODULE}=${module.moduleName}&${QueryParams.CHAIN}=${module.chainId}`,
         undefined,
@@ -333,7 +332,6 @@ const ModuleExplorerPage = (
         onModuleClick={onModuleOpen}
         onInterfaceClick={onModuleOpen}
         onModuleExpand={({ moduleName, chains }) => {
-          // eslint-disable-next-line no-void
           void enrichModule(
             { moduleName, chains },
             network,
