@@ -57,7 +57,7 @@ const Editor = ({
         <Heading variant="h4">{t('No code to be shown yet')}</Heading>
         <p>
           {t(
-            'Click on a module from the left panel to see its code in this panel.',
+            'Click on a module from the left panel to see its code in this panel',
           )}
         </p>
       </section>
