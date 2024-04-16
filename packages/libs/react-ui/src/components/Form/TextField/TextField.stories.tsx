@@ -1,11 +1,10 @@
 import { MonoAccountCircle, MonoAdd } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { onLayer2, withContentWidth } from '../../../storyDecorators';
+import { withContentWidth } from '../../../storyDecorators';
 import { atoms } from '../../../styles';
 import { Button } from '../../Button';
 import { Text } from '../../Typography/Text/Text';
-import { CopyButton } from '../ActionButtons/CopyButton';
 import { Form } from '../Form';
 import { TextField } from '../TextField';
 import type { ITextFieldProps } from './TextField';
@@ -19,7 +18,7 @@ const formStoryClass = atoms({
 const meta: Meta<ITextFieldProps> = {
   title: 'Form/TextField',
   component: TextField,
-  decorators: [withContentWidth, onLayer2],
+  decorators: [withContentWidth],
   parameters: {
     status: { type: 'releaseCandidate' },
     docs: {
@@ -30,6 +29,20 @@ const meta: Meta<ITextFieldProps> = {
     },
   },
   argTypes: {
+    fontType: {
+      control: {
+        type: 'radio',
+      },
+      options: ['ui', 'code'],
+      defaultValue: 'ui',
+    },
+    size: {
+      control: {
+        type: 'radio',
+      },
+      options: ['sm', 'md', 'lg'],
+      defaultValue: 'md',
+    },
     onChange: {
       description: 'onChange handler',
       control: {
@@ -38,6 +51,19 @@ const meta: Meta<ITextFieldProps> = {
       table: {
         disable: true,
       },
+    },
+    variant: {
+      control: {
+        type: 'select',
+      },
+      options: [
+        'default',
+        'positive',
+        'warning',
+        'negative',
+        'info',
+        'readonly',
+      ],
     },
     onValueChange: {
       description: 'onValueChange handler',
@@ -55,17 +81,6 @@ const meta: Meta<ITextFieldProps> = {
       },
       table: {
         type: { summary: 'string' },
-      },
-    },
-    inputFont: {
-      description: 'Font to use for the input.',
-      control: {
-        type: 'select',
-        options: ['body', 'code'],
-      },
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'body' },
       },
     },
     info: {
@@ -102,16 +117,6 @@ const meta: Meta<ITextFieldProps> = {
       },
       table: {
         type: { summary: 'string' },
-      },
-    },
-    isPositive: {
-      description: 'Applies positive visual styling.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
       },
     },
     isInvalid: {
@@ -173,11 +178,9 @@ export const TextFieldStory: Story = {
     placeholder: 'This is a placeholder',
     value: '',
     isInvalid: false,
-    isPositive: false,
     isReadOnly: false,
     isRequired: false,
     errorMessage: '',
-    inputFont: 'body',
   },
   render: (props) => {
     const [value, setValue] = useState<string>('');
@@ -209,10 +212,9 @@ export const WithAddons: Story = {
           label="With addon"
           value={value}
           onValueChange={setValue}
-          startAddon={<MonoAccountCircle />}
+          startVisual={<MonoAccountCircle />}
           endAddon={<Button endVisual={<MonoAdd />} isCompact />}
         />
-        <Button type="submit">Submit</Button>
       </Form>
     );
   },
@@ -384,7 +386,7 @@ export const CustomErrorMessage: Story = {
             v === 'kda' ? 'You are a true believer 🚀' : 'Answer carefully'
           }
           value={value}
-          isPositive={v === 'kda'}
+          variant="positive"
           onValueChange={setValue}
           validationBehavior="aria"
           isInvalid={!!v && v !== 'kda'}
@@ -407,7 +409,11 @@ export const WithCopyButton: Story = {
       <TextField
         id="with-copy-button"
         label="With copy button"
-        endAddon={<CopyButton inputId="with-copy-button" />}
+        actionButton={{
+          children: 'Copy',
+          icon: <span>icon</span>,
+          onPress: () => alert('copied'),
+        }}
       />
     );
   },

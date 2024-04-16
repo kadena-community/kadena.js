@@ -41,8 +41,7 @@ export const textarea = style([
       },
       '&[data-disabled]': {
         pointerEvents: 'none',
-        backgroundColor: token('color.background.input.inverse.default'),
-        color: token('color.text.base.inverse.@disabled'),
+        backgroundColor: token('color.background.layer.default'),
       },
       '&[data-focused]': {
         outline: `2px solid ${token('color.border.semantic.info.@focus')}`,
