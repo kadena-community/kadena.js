@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { ISidePanelProps } from './SidePanel';
 import SidePanel from './SidePanel';
 import type { IEditorProps } from './editor';
@@ -26,19 +26,27 @@ const ModuleExplorer = ({
   onActiveModuleChange,
   onTabClose,
 }: IModuleExplorerProps): React.JSX.Element => {
+  const [activeModule, setActiveModule] = useState<IChainModule>();
   const results = getModulesMap(modules);
   return (
     <div className={containerStyle}>
       <SidePanel
         results={results}
-        onResultClick={onModuleClick}
+        onResultClick={(result) => {
+          onModuleClick(result);
+          setActiveModule(result);
+        }}
         onInterfaceClick={onInterfaceClick}
         onModuleExpand={onModuleExpand}
         selectedModule={openedModules[0]}
       />
       <Editor
         openedModules={openedModules}
-        onActiveModuleChange={onActiveModuleChange}
+        activeModule={activeModule}
+        onActiveModuleChange={(activeModule) => {
+          onActiveModuleChange(activeModule);
+          setActiveModule(activeModule);
+        }}
         onTabClose={onTabClose}
       />
     </div>

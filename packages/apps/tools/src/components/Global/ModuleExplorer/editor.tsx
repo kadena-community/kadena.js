@@ -32,6 +32,7 @@ export interface IEditorProps {
   openedModules: IChainModule[];
   onActiveModuleChange: (module: IChainModule) => void;
   onTabClose: (module: IChainModule) => void;
+  activeModule?: IChainModule;
 }
 
 const moduleToTabId = ({ moduleName, chainId }: IChainModule): string => {
@@ -42,26 +43,13 @@ const Editor = ({
   openedModules,
   onActiveModuleChange,
   onTabClose,
+  activeModule,
 }: IEditorProps): React.JSX.Element => {
   const { t } = useTranslation('common');
   const [keyboardHandler, setKeyboardHandler] =
     usePersistentState<KeyboardHandler>('keyboard-handler', keyboards[0]);
   const [theme, setTheme] = usePersistentState<Theme>('theme', 'monokai');
   const [mode, setMode] = usePersistentState<Mode>('mode', 'lisp');
-
-  const [activeModule, setActiveModule] = useState(
-    openedModules.length
-      ? moduleToTabId(openedModules[openedModules.length - 1])
-      : undefined,
-  );
-
-  useEffect(() => {
-    setActiveModule(
-      openedModules.length
-        ? moduleToTabId(openedModules[openedModules.length - 1])
-        : undefined,
-    );
-  }, [openedModules]);
 
   if (!openedModules.length) {
     return (
@@ -122,10 +110,8 @@ const Editor = ({
         </GridItem>
       </Grid>
       <Tabs
-        selectedKey={activeModule}
+        selectedKey={activeModule ? moduleToTabId(activeModule) : null}
         onSelectionChange={(key) => {
-          setActiveModule(key as string);
-
           const activeModule = openedModules.find((module) => {
             return moduleToTabId(module) === key;
           });
