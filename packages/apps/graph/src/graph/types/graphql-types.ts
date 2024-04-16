@@ -178,3 +178,12 @@ export interface PactQueryResponse {
   chainId: string;
   code: string;
 }
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export interface NetworkInfo {
+  networkHost: string;
+  networkId: string;
+  apiVersion: string;
+  circulatingCoins: number;
+  totalTransactions: number;
+}

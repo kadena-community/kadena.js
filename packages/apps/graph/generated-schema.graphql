@@ -226,6 +226,24 @@ type MinerKey implements Node {
   key: String!
 }
 
+"""Information about the network."""
+type NetworkInfo {
+  """The version of the API."""
+  apiVersion: String!
+
+  """The number of circulating coins."""
+  circulatingCoins: Float!
+
+  """The host of the network."""
+  networkHost: String!
+
+  """The ID of the network."""
+  networkId: String!
+
+  """The total number of transactions."""
+  totalTransactions: Int!
+}
+
 interface Node {
   id: ID!
 }
@@ -410,6 +428,9 @@ type Query {
 
   """Get the height of the block with the highest height."""
   lastBlockHeight: BigInt
+
+  """Get information about the network."""
+  networkInfo: NetworkInfo
   node(id: ID!): Node
   nodes(ids: [ID!]!): [Node]!
 

@@ -26,6 +26,7 @@ import type {
   GasLimitEstimation,
   GraphConfiguration,
   Guard,
+  NetworkInfo,
   NonFungibleAccount,
   NonFungibleChainAccount,
   NonFungibleToken,
@@ -93,6 +94,7 @@ export const builder = new SchemaBuilder<
       TransactionCapability: TransactionCapability;
       TransactionSignature: TransactionSignature;
       PactQueryResponse: PactQueryResponse;
+      NetworkInfo: NetworkInfo;
     };
   }
 >({
