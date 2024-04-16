@@ -18,6 +18,12 @@ export type TransferInput =
   | ICreateTransferInput
   | ICrossChainInput;
 
+// For now copied over default from Library; https://github.com/obsidiansystems/hw-app-kda/blob/37e1b863b0e8c28023efde9ff1fd26cd25bc3997/src/Kadena.ts#L175-L176
+export const GasDefaults = {
+  LIMIT: 2300,
+  PRICE: '1.0e-6',
+};
+
 const pactToLedger = (
   input: TransferInput,
   derivationPath: string,
@@ -35,6 +41,8 @@ const pactToLedger = (
     chainId: parseInt(chainId, 10),
     recipient_chainId: parseInt(recipient_chainId, 10),
     network: networkId,
+    gasLimit: `${GasDefaults.LIMIT}`,
+    gasPrice: GasDefaults.PRICE,
   };
 };
 
