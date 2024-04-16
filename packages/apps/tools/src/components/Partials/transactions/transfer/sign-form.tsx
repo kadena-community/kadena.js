@@ -203,7 +203,7 @@ export const SignForm: FC<ISignFormProps> = ({
     return t('Sign on Ledger');
   };
 
-  const getSubmitButtonColor = (): IButtonProps['color'] => {
+  const getSubmitButtonColor = (): IButtonProps['variant'] => {
     if (signingMethod === 'Ledger' && ledgerSignState.loading) {
       return 'info';
     }
