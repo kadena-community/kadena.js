@@ -21,11 +21,11 @@ export const PageNav: FC<IPageNavProps> = ({
 
   return (
     <Button
-      variant="text"
+      variant="transparent"
       isDisabled={isDisabled}
       onPress={onClick}
-      startIcon={isPrevious ? <SystemIcon.LeadingIcon /> : undefined}
-      endIcon={isNext ? <SystemIcon.TrailingIcon /> : undefined}
+      startVisual={isPrevious ? <SystemIcon.LeadingIcon /> : undefined}
+      endVisual={isNext ? <SystemIcon.TrailingIcon /> : undefined}
     >
       {label}
     </Button>

@@ -143,16 +143,16 @@ export const SignFormReceiver = ({
             isDisabled={tab === 'new'}
             endAddon={
               <Button
-                icon={<MonoContentCopy />}
-                variant="text"
+                variant="transparent"
                 onPress={async () => {
                   await navigator.clipboard.writeText(field.value);
                 }}
                 aria-label="Copy Account Name"
                 title="Copy Account Name"
-                color="primary"
                 type="button"
-              />
+              >
+                <MonoContentCopy />
+              </Button>
             }
             description={
               isLedger ? t('ledger-account-name-signing') : undefined

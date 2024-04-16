@@ -6,9 +6,10 @@ export const buttonContainerClass = style([
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: 'layer10.default',
+    backgroundColor: 'input.default',
     color: 'text.base.default',
     outline: 'none',
+    height: '100%',
   }),
   {
     borderLeft: `1px solid ${token('color.border.base.bold')}`,

@@ -1,87 +1,163 @@
 import { mergeProps, useObjectRef } from '@react-aria/utils';
+import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
-import type { ForwardedRef } from 'react';
+import type { ForwardedRef, HTMLAttributes, ReactElement } from 'react';
 import React, { forwardRef } from 'react';
-import type { AriaButtonProps } from 'react-aria';
+import type { AriaButtonProps, AriaFocusRingProps } from 'react-aria';
 import { useButton, useFocusRing, useHover } from 'react-aria';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
-import { button } from './SharedButton.css';
-import type { ISharedButtonProps } from './utils';
+import {
+  button,
+  centerContentWrapper,
+  endVisualStyle,
+  iconOnlyStyle,
+  noEndVisualStyle,
+  noStartVisualStyle,
+  reverseDirectionStyle,
+  startVisualStyle,
+} from './Button.css';
 import { disableLoadingProps } from './utils';
 
-// omit link related props from `AriaButtonProps`
-type PickedAriaButtonProps = Omit<
-  AriaButtonProps,
-  'href' | 'target' | 'rel' | 'elementType'
->;
+type Variants = NonNullable<RecipeVariants<typeof button>>;
 
-export interface IButtonProps
-  extends PickedAriaButtonProps,
-    ISharedButtonProps {}
+export type IButtonProps = Omit<AriaFocusRingProps, 'isTextInput'> &
+  Variants &
+  Pick<AriaButtonProps<'button'>, 'aria-label' | 'onPress' | 'type'> & {
+    className?: string;
+    isLoading?: boolean;
+    isDisabled?: boolean;
+    title?: string;
+    style?: React.CSSProperties;
+    loadingLabel?: string;
+    children?: string | number | ReactElement;
+    onClick?: Pick<HTMLAttributes<HTMLButtonElement>, 'onClick'>['onClick'];
+    startVisual?: ReactElement;
+    endVisual?: ReactElement;
+  };
 
-const BaseButton = (
-  props: IButtonProps,
-  forwardedRef: ForwardedRef<HTMLButtonElement>,
-) => {
-  props = disableLoadingProps(props);
-  const ref = useObjectRef(forwardedRef);
-  const { buttonProps, isPressed } = useButton(props, ref);
-  const { hoverProps, isHovered } = useHover(props);
-  const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
+/**
+ * Button component
+ * @param onClick - use onPress whenever you can for accessibility, onClick allows backwards compatibility
+ * @param onPress - callback when button is clicked
+ * @param variant - button style variant
+ * @param startVisual - visual to render at the beginning of the button
+ * @param endVisual - visual to render at the end of the button
+ * @param children - label to be shown
+ * @param isDisabled - disabled state
+ * @param isLoading - loading state
+ * @param isCompact - compact button style
+ * @param loadingLabel - label to be shown when loading
+ * @param className - additional class name
+ * @param style - additional style
+ * @param title - title to be shown as HTML tooltip
+ */
 
-  const onlyIcon = props.icon !== undefined;
-  const content = onlyIcon ? (
-    props.icon
-  ) : (
-    <>
-      {props.startIcon}
-      {props.children}
-      {props.endIcon}
-    </>
-  );
+const Button = forwardRef(
+  (
+    {
+      startVisual,
+      endVisual,
+      children,
+      isCompact = false,
+      loadingLabel = 'Loading',
+      variant = 'primary',
+      className,
+      ...props
+    }: IButtonProps,
+    forwardedRef: ForwardedRef<HTMLButtonElement>,
+  ) => {
+    props = disableLoadingProps(props);
+    loadingLabel = loadingLabel.trim();
+    const ref = useObjectRef(forwardedRef);
+    const { buttonProps, isPressed } = useButton(props, ref);
+    const { hoverProps, isHovered } = useHover(props);
+    const { focusProps, isFocused, isFocusVisible } = useFocusRing(props);
+    const { isLoading, isDisabled, style, title } = props;
 
-  const isLoadingAriaLiveLabel = `${
-    typeof props.children === 'string'
-      ? props.children
-      : buttonProps['aria-label'] ?? 'is'
-  } loading`.trim();
+    const iconOnly = Boolean(
+      // check if children is a ReactElement
+      (typeof children !== 'string' && typeof children !== 'number') ||
+        // check if no visuals are provided
+        (!startVisual && !endVisual && !children) ||
+        // check if only one visual is provided
+        (!children &&
+          ((startVisual && !endVisual) || (endVisual && !startVisual))),
+    );
 
-  return (
-    <button
-      {...mergeProps(buttonProps, hoverProps, focusProps)}
-      ref={ref}
-      className={classNames(
-        button({
-          variant: props.variant,
-          color: props.color,
-          isCompact: props.isCompact,
-          isLoading: props.isLoading,
-        }),
-        props.className,
-      )}
-      style={props.style}
-      title={props.title}
-      aria-disabled={props.isLoading || undefined}
-      data-disabled={props.isDisabled || undefined}
-      data-pressed={isPressed || undefined}
-      data-hovered={isHovered || undefined}
-      data-focused={isFocused || undefined}
-      data-focus-visible={isFocusVisible || undefined}
-    >
-      {props.isLoading ? (
+    const isLoadingAriaLiveLabel = `${
+      typeof children === 'string' ? children : props['aria-label'] ?? 'is'
+    } loading`.trim();
+
+    return (
+      <button
+        {...mergeProps(buttonProps, hoverProps, focusProps)}
+        className={classNames(
+          button({
+            variant,
+            isCompact,
+            isLoading,
+          }),
+          className,
+        )}
+        style={style}
+        title={title}
+        aria-disabled={isLoading || undefined}
+        data-disabled={isDisabled || undefined}
+        data-pressed={isPressed || undefined}
+        data-hovered={(!isPressed && isHovered) || undefined}
+        data-focused={isFocused || undefined}
+        data-focus-visible={isFocusVisible || undefined}
+        ref={ref}
+      >
         <>
-          {onlyIcon ? null : 'Loading'}
-          <ProgressCircle
-            aria-hidden="true"
-            aria-label={isLoadingAriaLiveLabel}
-            isIndeterminate
-          />
+          {isLoading ? (
+            <span
+              className={classNames(
+                !loadingLabel
+                  ? iconOnlyStyle
+                  : {
+                      [noEndVisualStyle]: !endVisual && startVisual,
+                      [noStartVisualStyle]: !startVisual || endVisual,
+                      [startVisualStyle]: startVisual && !endVisual,
+                      [endVisualStyle]: endVisual || !startVisual,
+                      [reverseDirectionStyle]: startVisual && !endVisual,
+                    },
+                centerContentWrapper,
+              )}
+            >
+              {iconOnly && !loadingLabel ? null : loadingLabel}
+              <ProgressCircle
+                size={isCompact ? 'sm' : 'md'}
+                aria-hidden="true"
+                aria-label={isLoadingAriaLiveLabel}
+                isIndeterminate
+              />
+            </span>
+          ) : (
+            <span
+              className={classNames(
+                iconOnly
+                  ? iconOnlyStyle
+                  : {
+                      [noEndVisualStyle]: !endVisual,
+                      [noStartVisualStyle]: !startVisual,
+                      [startVisualStyle]: startVisual,
+                      [endVisualStyle]: endVisual,
+                      [centerContentWrapper]: true,
+                    },
+              )}
+            >
+              {startVisual ?? startVisual}
+              {children}
+              {endVisual ?? endVisual}
+            </span>
+          )}
         </>
-      ) : (
-        content
-      )}
-    </button>
-  );
-};
+      </button>
+    );
+  },
+);
 
-export const Button = forwardRef(BaseButton);
+Button.displayName = 'Button';
+
+export { Button };
