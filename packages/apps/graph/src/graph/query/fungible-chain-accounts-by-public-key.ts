@@ -29,17 +29,16 @@ builder.queryField('fungibleChainAccountsByPublicKey', (t) =>
       }),
     },
     type: [FungibleChainAccount],
-    nullable: true,
     async resolve(__parent, args) {
       try {
         const accountAndFungibleNames = await getChainAccountNamesByPublicKey(
           args.publicKey,
           args.chainId,
-          args.fungibleName ?? undefined,
+          args.fungibleName,
         );
 
         if (accountAndFungibleNames.length === 0) {
-          return null;
+          return [];
         }
 
         const fungibleChainAccounts = (
@@ -65,7 +64,7 @@ builder.queryField('fungibleChainAccountsByPublicKey', (t) =>
 async function getChainAccountNamesByPublicKey(
   publicKey: string,
   chainId: string,
-  fungible?: string,
+  fungible?: string | null,
 ): Promise<{ accountname: string; fungiblename: string }[]> {
   const regex = /^[a-zA-Z0-9]+$/;
 
@@ -84,8 +83,8 @@ async function getChainAccountNamesByPublicKey(
       tx.data::text LIKE ${`%${publicKey}%`}
       AND tx.chainid = ${BigInt(chainId)}
       AND
-        (tx.code LIKE ${`%${fungible ?? ''}.transfer-create%`}
-        OR tx.code LIKE ${`%${fungible ?? ''}.create-account%`})
+        (tx.code LIKE ${`%${fungible}.transfer-create%`}
+        OR tx.code LIKE ${`%${fungible}.create-account%`})
       AND tr.moduleName = ${fungible}
   `) as { accountname: string; fungiblename: string }[];
   } else {
@@ -98,8 +97,8 @@ async function getChainAccountNamesByPublicKey(
       tx.data::text LIKE ${`%${publicKey}%`}
       AND tx.chainid = ${BigInt(chainId)}
       AND
-        (tx.code LIKE ${`%${fungible ?? ''}.transfer-create%`}
-        OR tx.code LIKE ${`%${fungible ?? ''}.create-account%`})
+        (tx.code LIKE ${`%.transfer-create%`}
+        OR tx.code LIKE ${`%.create-account%`})
   `) as { accountname: string; fungiblename: string }[];
   }
 }
