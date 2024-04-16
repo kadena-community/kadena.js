@@ -1,4 +1,5 @@
 import {
+  Button,
   Grid,
   GridItem,
   Heading,
@@ -18,6 +19,7 @@ import type {
 } from '@/components/Global/Ace/helper';
 import { keyboards, modes, themes } from '@/components/Global/Ace/helper';
 import { usePersistentState } from '@/hooks/use-persistent-state';
+import { MonoClose } from '@kadena/react-icons/system';
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
@@ -139,13 +141,15 @@ const Editor = ({
               title={`${moduleName} @ ${chainId}`}
               key={moduleToTabId({ moduleName, chainId })}
             >
-              <button
-                onClick={() => {
+              <Button
+                onPress={() => {
                   onTabClose(module);
                 }}
+                isCompact
+                // endIcon={<MonoClose />}
               >
                 Close
-              </button>
+              </Button>
               <AceViewer
                 code={code}
                 width="100%"
