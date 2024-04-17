@@ -68,13 +68,6 @@ const meta: Meta<IButtonProps> = {
         type: 'boolean',
       },
     },
-    avatarProps: {
-      description:
-        'Props for the avatar component which can be rendered instead of startIcon',
-      control: {
-        type: 'boolean',
-      },
-    },
   },
 };
 
