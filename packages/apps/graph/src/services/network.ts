@@ -2,6 +2,15 @@ import { prismaClient } from '@db/prisma-client';
 import { dotenv } from '@utils/dotenv';
 import http from 'http';
 
+export class NetworkError extends Error {
+  public networkError?: Error;
+
+  constructor(message: string, networkError?: Error) {
+    super(message);
+    this.networkError = networkError;
+  }
+}
+
 export async function getCirculatingCoins(): Promise<number> {
   return await new Promise((resolve, reject) => {
     http
@@ -13,11 +22,15 @@ export async function getCirculatingCoins(): Promise<number> {
         });
 
         res.on('end', () => {
-          resolve(Number(JSON.parse(data)));
+          try {
+            resolve(Number(JSON.parse(data)));
+          } catch (error) {
+            reject(new NetworkError('Unable to parse response data.', error));
+          }
         });
 
         res.on('error', (error) => {
-          reject(error);
+          reject(new NetworkError('Unable to get circulating coins.', error));
         });
       })
       .end();
