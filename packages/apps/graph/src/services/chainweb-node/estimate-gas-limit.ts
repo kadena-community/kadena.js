@@ -3,7 +3,7 @@ import { createClient, createTransaction } from '@kadena/client';
 import { composePactCommand } from '@kadena/client/fp';
 import { hash as hashFunction } from '@kadena/cryptography-utils';
 import { dotenv } from '@utils/dotenv';
-import { networkConfig } from '../..';
+import { networkData } from '@utils/network';
 import type { GasLimitEstimation } from '../../graph/types/graphql-types';
 
 export class GasLimitEstimationError extends Error {
@@ -154,7 +154,7 @@ export const estimateGasLimit = async (
   const paredInput = jsonParseInput(rawInput);
   const input = determineInputType(paredInput);
 
-  const networkId = input.networkId || (await networkConfig).networkId;
+  const { networkId } = input.networkId ? input : networkData;
 
   const returnValue: GasLimitEstimation = {
     amount: 0,

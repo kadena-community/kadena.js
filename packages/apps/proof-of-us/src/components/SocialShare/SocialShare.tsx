@@ -29,7 +29,7 @@ export const SocialShare: FC<IProps> = ({ data, tokenId }) => {
   const url = `${process.env.NEXT_PUBLIC_URL}/share/${tokenId}`;
 
   const shareDetails = { url, title, text, label };
-  const [isShowed, setIsShowed] = useState(false);
+  const [isShown, setIsShown] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export const SocialShare: FC<IProps> = ({ data, tokenId }) => {
   };
 
   const shareFallback = async () => {
-    setIsShowed((v) => !v);
+    setIsShown((v) => !v);
   };
 
   const handleClick = async (): Promise<void> => {
@@ -117,8 +117,8 @@ export const SocialShare: FC<IProps> = ({ data, tokenId }) => {
 
   return (
     <div>
-      {isShowed ? (
-        <Modal label={headerModal} onClose={() => setIsShowed(false)}>
+      {isShown ? (
+        <Modal label={headerModal} onClose={() => setIsShown(false)}>
           <ul className={listClass}>
             <li>
               <IconButton onClick={onFacebookShare}>
@@ -152,7 +152,7 @@ export const SocialShare: FC<IProps> = ({ data, tokenId }) => {
             </li>
           </ul>
           <Stack marginBlockStart="md">
-            <Button variant="secondary" onClick={() => setIsShowed(false)}>
+            <Button variant="secondary" onClick={() => setIsShown(false)}>
               Cancel
             </Button>
           </Stack>

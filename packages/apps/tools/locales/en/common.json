@@ -35,6 +35,8 @@
   "Amount": "Amount",
   "Enter amount to transfer": "Enter amount to transfer",
   "Sign": "Sign",
+  "Sign on Ledger": "Sign on Ledger",
+  "Waiting for Ledger": "Waiting for Ledger",
   "Enter private key to sign the transaction": "Enter private key to sign the transaction",
   "Make Transfer": "Make Transfer",
   "Request Key": "Request Key",
@@ -222,7 +224,11 @@
   "link-to-kadena-explorer": "Request Key: <0></0>",
   "Target Chain Request key: ": "Target Chain Request key: ",
   "ledger-info-notification": "Please visit <0>the Ledger Docs</0> for more information on how to install the Kadena Ledger app on your device.",
-  "Find your key": "Find your key",
+  "ledger-sign-error": "You haven't connected your Ledger yet. Make sure to connect it first.",
+  "ledger-account-name-signing": "Signing with Ledger currently only supports single key accounts.",
+  "forgot-ledger-key-index": "Forgot the index?",
+  "ledger-account-creation-info": "The Ledger signing method only supports the creation of single key accounts at the moment.",
+  "ledger-key-index": "Ledger Key Index",
   "is Legacy": "is Legacy",
   "The amount of KDA to transfer.": "The amount of KDA to transfer.",
   "Raw": "Raw",
@@ -264,6 +270,9 @@
   "unexpected-account-name": "If this is not the expected account name, try changing the Legacy toggle",
   "transfer-sidebar-title": "Tips & tricks",
   "ledger-error-notification": "You cannot sign with Ledger on the current browser! Please visit <0>this website</0> for more information on browser compatibility.",
+  "successful-transfer-page-transfer": "You can do another transfer after resetting the form.",
   "Transaction": "Transaction",
-  "ledger-account-creation-info": "The Ledger signing method only supports the creation of single key accounts at the moment."
+  "Reset": "Reset",
+  "Hide raw transaction details": "Hide raw transaction details",
+  "Show raw transaction details": "Show raw transaction details"
 }

@@ -56,7 +56,7 @@ export const centerContentWrapper = style([
   },
 ]);
 
-export const directionStyle = style({
+export const reverseDirectionStyle = style({
   flexDirection: 'row-reverse',
 });
 

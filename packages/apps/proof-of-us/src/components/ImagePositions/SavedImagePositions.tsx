@@ -47,10 +47,9 @@ export const SavedImagePositions: FC<IProps> = ({ data }) => {
         yPercentage,
       });
 
-      elm.setAttribute(
-        'style',
-        `display: flex; top: ${yPos}px; left: ${xPos}px;`,
-      );
+      elm.style.display = 'flex';
+      elm.style.top = `${yPos}px`;
+      elm.style.left = `${xPos}px`;
     });
   };
 

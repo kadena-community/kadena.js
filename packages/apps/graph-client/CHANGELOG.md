@@ -1,5 +1,27 @@
 # @kadena/graph-client
 
+## 0.1.19
+
+### Patch Changes
+
+- Updated dependencies [2ff01d300]
+  - @kadena/graph@1.0.1
+
+## 0.1.18
+
+### Patch Changes
+
+- 9810956fb: Fixed incorrect IDs in schema
+- Updated dependencies [427957e46]
+- Updated dependencies [2efb4332e]
+- Updated dependencies [77dddd8b0]
+- Updated dependencies [0e1d37089]
+- Updated dependencies [4eb925ccc]
+- Updated dependencies [920c38344]
+- Updated dependencies [f09f02356]
+- Updated dependencies [9810956fb]
+  - @kadena/graph@1.0.0
+
 ## 0.1.17
 
 ### Patch Changes

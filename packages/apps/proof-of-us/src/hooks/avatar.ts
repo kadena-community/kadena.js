@@ -13,13 +13,15 @@ export const useAvatar = () => {
     await store.removeBackground(proofOfUs);
   };
 
-  const uploadBackground = async (proofOfUsId: string) => {
-    await fetch('/api/upload', {
+  const uploadBackground = async (
+    proofOfUsId: string,
+  ): Promise<IUploadResult> => {
+    return fetch('/api/upload', {
       method: 'POST',
       body: JSON.stringify({
         proofOfUsId,
       }),
-    });
+    }).then((r) => r.json());
   };
 
   return {

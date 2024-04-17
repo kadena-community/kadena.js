@@ -1,7 +1,7 @@
 import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
-import { networkConfig } from '../..';
+import { networkData } from '@utils/network';
 import type { Guard } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
 
@@ -19,14 +19,15 @@ export async function getFungibleAccountDetails(
   fungibleName: string,
   accountName: string,
   chainId: string,
+  retries = dotenv.CHAINWEB_NODE_RETRY_ATTEMPTS,
+  delay = dotenv.CHAINWEB_NODE_RETRY_DELAY,
 ): Promise<FungibleChainAccountDetails | null> {
   let result;
-  const networkId = (await networkConfig).networkId;
 
   try {
     result = (await details(
       accountName,
-      networkId,
+      networkData.networkId,
       chainId as ChainId,
       dotenv.NETWORK_HOST,
       fungibleName,
@@ -44,7 +45,17 @@ export async function getFungibleAccountDetails(
     ) {
       return null;
     } else {
-      throw new PactCommandError('Pact Command failed with error', result);
+      if (retries > 0) {
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        return getFungibleAccountDetails(
+          fungibleName,
+          accountName,
+          chainId,
+          retries - 1,
+        );
+      } else {
+        throw new PactCommandError('Pact Command failed with error', result);
+      }
     }
   }
 }

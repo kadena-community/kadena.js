@@ -55,7 +55,8 @@ export const createGenerateWalletCommand: (
       });
       wallet = await services.wallet.storeKey(wallet, key);
 
-      log.info(log.generateTableString(['Mnemonic Phrase'], [[created.words]]));
+      log.info(log.color.green('Mnemonic Phrase'));
+      log.info(created.words);
       log.info(
         log.color.yellow(
           `\nPlease store the mnemonic phrase in a safe place. You will need it to recover your wallet.\n`,
@@ -65,12 +66,8 @@ export const createGenerateWalletCommand: (
       log.info(log.color.green(`First keypair generated`));
       log.info(`publicKey: ${key.publicKey}\n`);
 
-      log.info(
-        log.generateTableString(
-          ['Wallet Storage Location'],
-          [[relativeToCwd(wallet.filepath)]],
-        ),
-      );
+      log.info(log.color.green('Wallet Storage Location'));
+      log.info(relativeToCwd(wallet.filepath));
       log.info();
       if (config.createAccount === 'true') {
         const accountFilepath = path.join(ACCOUNT_DIR, `${wallet.alias}.yaml`);
@@ -86,16 +83,10 @@ export const createGenerateWalletCommand: (
         );
         log.info(log.color.green(`Account created`));
         log.info(`accountName: ${accountName}\n`);
-        log.info(
-          log.generateTableString(
-            ['Account Storage Location'],
-            [[relativeToCwd(accountFilepath)]],
-          ),
-        );
-        // TODO: ask to fund created account
-        // - prompt "Do you want to fund the account?"
-        // - prompt network
-        // - prompt chainId
+
+        log.info(log.color.green('Account Storage Location'));
+        log.info(relativeToCwd(accountFilepath));
+
         log.info(`\nTo fund the account, use the following command:`);
         log.info(`kadena account fund --account ${accountName}`);
       }

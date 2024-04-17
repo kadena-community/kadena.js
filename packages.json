@@ -85,13 +85,13 @@
   },
   {
     "name": "@kadena/graph",
-    "version": "0.1.14",
+    "version": "1.0.1",
     "private": false,
     "path": "packages/apps/graph"
   },
   {
     "name": "@kadena/graph-client",
-    "version": "0.1.17",
+    "version": "0.1.19",
     "private": true,
     "path": "packages/apps/graph-client"
   },
@@ -139,7 +139,7 @@
   },
   {
     "name": "@kadena/proof-of-us",
-    "version": "0.2.9",
+    "version": "0.2.11",
     "private": true,
     "path": "packages/apps/proof-of-us"
   },

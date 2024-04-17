@@ -59,7 +59,7 @@ export default builder.node(
           try {
             return (
               await Promise.all(
-                chainIds.map(async (chainId) => {
+                chainIds.map((chainId) => {
                   return getFungibleChainAccount({
                     chainId,
                     fungibleName: parent.fungibleName,

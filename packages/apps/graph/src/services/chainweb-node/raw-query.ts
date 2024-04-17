@@ -1,7 +1,7 @@
 import { dirtyReadClient } from '@kadena/client-utils/core';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
-import { networkConfig } from '../..';
+import { networkData } from '@utils/network';
 import type { CommandData } from './utils';
 import { PactCommandError } from './utils';
 
@@ -11,13 +11,12 @@ export async function sendRawQuery(
   data?: CommandData[],
 ): Promise<string> {
   let result;
-  const networkId = (await networkConfig).networkId;
 
   try {
     result = await dirtyReadClient({
       host: dotenv.NETWORK_HOST,
       defaults: {
-        networkId: networkId,
+        networkId: networkData.networkId,
         meta: { chainId: chainId as ChainId },
         payload: {
           exec: {

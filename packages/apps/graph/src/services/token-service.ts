@@ -3,6 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
 import { nonFungibleAccountDetailsLoader } from '../graph/data-loaders/non-fungible-account-details';
 import type { NonFungibleTokenBalance } from '../graph/types/graphql-types';
+import { NonFungibleTokenBalanceName } from '../graph/types/graphql-types';
 
 export async function getTokenDetails(
   accountName: string,
@@ -65,8 +66,10 @@ export async function getTokenDetails(
       });
 
       result.push({
+        __typename: NonFungibleTokenBalanceName,
         balance,
-        id: event.token,
+        accountName,
+        tokenId: event.token,
         chainId: finalChainId,
         guard: {
           keys: accountDetails.guard.keys,

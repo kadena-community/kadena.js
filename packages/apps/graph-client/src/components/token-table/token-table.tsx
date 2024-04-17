@@ -41,7 +41,7 @@ export const TokenTable = (props: ITokenTableProps): JSX.Element => {
           {tokens.map((token, index) => {
             return (
               <Row key={index}>
-                <Cell>{token.id}</Cell>
+                <Cell>{token.tokenId}</Cell>
                 <Cell>{token.chainId}</Cell>
                 <Cell>{token.balance}</Cell>
                 <Cell>
