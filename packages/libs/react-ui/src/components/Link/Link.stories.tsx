@@ -55,14 +55,7 @@ const meta: Meta<ILinkProps> = {
       },
     },
     isCompact: {
-      description: 'compact Link style',
-      control: {
-        type: 'boolean',
-      },
-    },
-    avatarProps: {
-      description:
-        'Props for the avatar component which can be rendered instead of startIcon',
+      description: 'compact button link style',
       control: {
         type: 'boolean',
       },
