@@ -2,13 +2,13 @@ import { dirtyReadClient } from '@kadena/client-utils/core';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import { networkData } from '@utils/network';
-import type { CommandData } from './utils';
+import type { ICommandData } from './utils';
 import { PactCommandError } from './utils';
 
 export async function sendRawQuery(
   code: string,
   chainId: string,
-  data?: CommandData[],
+  data?: ICommandData[],
 ): Promise<string> {
   let result;
 

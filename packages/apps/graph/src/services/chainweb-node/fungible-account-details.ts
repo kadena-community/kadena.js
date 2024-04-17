@@ -2,18 +2,17 @@ import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import { networkData } from '@utils/network';
-import type { Guard } from '../../graph/types/graphql-types';
+import type { IGuard } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type FungibleChainAccountDetails = {
+export interface IFungibleChainAccountDetails {
   account: string;
   balance: number;
   guard: {
     keys: string[];
-    pred: Guard['predicate'];
+    pred: IGuard['predicate'];
   };
-};
+}
 
 export async function getFungibleAccountDetails(
   fungibleName: string,
@@ -21,7 +20,7 @@ export async function getFungibleAccountDetails(
   chainId: string,
   retries = dotenv.CHAINWEB_NODE_RETRY_ATTEMPTS,
   delay = dotenv.CHAINWEB_NODE_RETRY_DELAY,
-): Promise<FungibleChainAccountDetails | null> {
+): Promise<IFungibleChainAccountDetails | null> {
   let result;
 
   try {
@@ -31,13 +30,14 @@ export async function getFungibleAccountDetails(
       chainId as ChainId,
       dotenv.NETWORK_HOST,
       fungibleName,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     )) as any;
 
     if (typeof result.balance === 'object') {
       result.balance = parseFloat(result.balance.decimal);
     }
 
-    return result as FungibleChainAccountDetails;
+    return result as IFungibleChainAccountDetails;
   } catch (error) {
     if (
       error.message.includes('with-read: row not found') || // Account not found

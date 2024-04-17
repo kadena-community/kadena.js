@@ -1,21 +1,22 @@
 import { dotenv } from './dotenv';
 
-interface NetworkData {
+interface INetworkData {
   networkId: string;
   apiVersion: string;
 }
 
-export let networkData: NetworkData;
+export let networkData: INetworkData;
 
 export async function getNetworkConfig(
   newtorkHost = dotenv.NETWORK_HOST,
-): Promise<NetworkData> {
+): Promise<INetworkData> {
   if (networkData) {
     return networkData;
   }
 
   const res = await fetch(`${newtorkHost}/info`);
-  const data = await res.json();
+  const data: { nodeVersion?: string; nodeApiVersion?: string } =
+    await res.json();
 
   if (!data.nodeVersion) throw new Error('Network Id not found');
   if (!data.nodeApiVersion) throw new Error('API Version not found');

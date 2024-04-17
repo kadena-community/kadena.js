@@ -4,7 +4,7 @@ import { chainIds } from '@utils/chains';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import FungibleAccount from '../objects/fungible-account';
-import type { FungibleChainAccount } from '../types/graphql-types';
+import type { IFungibleChainAccount } from '../types/graphql-types';
 import { FungibleAccountName } from '../types/graphql-types';
 
 builder.queryField('fungibleAccountByPublicKey', (t) =>
@@ -40,7 +40,7 @@ builder.queryField('fungibleAccountByPublicKey', (t) =>
           )
         ).filter(
           (chainAccount) => chainAccount !== null,
-        ) as FungibleChainAccount[];
+        ) as IFungibleChainAccount[];
 
         if (chainAccounts.length === 0) {
           return null;

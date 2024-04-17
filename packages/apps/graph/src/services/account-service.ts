@@ -1,8 +1,8 @@
 import { fungibleAccountDetailsLoader } from '../graph/data-loaders/fungible-account-details';
 import { tokenDetailsLoader } from '../graph/data-loaders/token-details';
 import type {
-  FungibleChainAccount,
-  NonFungibleChainAccount,
+  IFungibleChainAccount,
+  INonFungibleChainAccount,
 } from '../graph/types/graphql-types';
 import {
   FungibleChainAccountName,
@@ -17,7 +17,7 @@ export async function getFungibleChainAccount({
   chainId: string;
   fungibleName: string;
   accountName: string;
-}): Promise<FungibleChainAccount | null> {
+}): Promise<IFungibleChainAccount | null> {
   const accountDetails = await fungibleAccountDetailsLoader.load({
     fungibleName,
     accountName,
@@ -47,7 +47,7 @@ export async function getNonFungibleChainAccount({
 }: {
   chainId: string;
   accountName: string;
-}): Promise<NonFungibleChainAccount | null> {
+}): Promise<INonFungibleChainAccount | null> {
   const tokenDetails = await tokenDetailsLoader.load({ accountName, chainId });
 
   return tokenDetails !== null && tokenDetails.length !== 0
