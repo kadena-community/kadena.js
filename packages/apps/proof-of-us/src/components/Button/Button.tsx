@@ -6,7 +6,12 @@ import type { ButtonProps } from 'react-aria-components';
 import { Button as AriaButton } from 'react-aria-components';
 import type { Variants } from './SharedButton.css';
 import { button, progressIndicator } from './SharedButton.css';
-import { buttonClass, secondaryClass, tertiaryClass } from './style.css';
+import {
+  buttonClass,
+  disabledClass,
+  secondaryClass,
+  tertiaryClass,
+} from './style.css';
 
 interface Props extends ButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
@@ -25,6 +30,7 @@ const BaseButton = (props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
         buttonClass,
         variant === 'secondary' && secondaryClass,
         variant === 'tertiary' && tertiaryClass,
+        restProps.isDisabled && disabledClass,
       )}
       {...restProps}
     >

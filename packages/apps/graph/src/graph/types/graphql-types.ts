@@ -15,10 +15,15 @@ export interface GasLimitEstimation {
   transaction: string;
 }
 
+export const NonFungibleTokenBalanceName: 'NonFungibleTokenBalance' =
+  'NonFungibleTokenBalance';
+
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface NonFungibleTokenBalance {
-  id: string;
+  __typename: typeof NonFungibleTokenBalanceName;
+  tokenId: string;
   balance: number;
+  accountName: string;
   chainId: string;
   guard: Guard;
   info?: NonFungibleToken;

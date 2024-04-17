@@ -29,7 +29,7 @@ import type {
 import type { CommandResult } from '../../utils/command.util.js';
 import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
-import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
+import { createTable } from '../../utils/table.js';
 import type { ISavedTransaction } from './storage.js';
 
 export interface ICommandData {
@@ -633,30 +633,30 @@ export function displaySignersFromUnsignedCommands(
   unsignedCommands.forEach((unsignedCommand, index) => {
     const command: IPactCommand = JSON.parse(unsignedCommand.cmd);
 
-    const headers: TableHeader = ['Public Key', 'Capabilities'];
-    const rows: TableRow[] = command.signers.map((signer) => [
-      signer.pubKey,
-      (signer.clist || [])
-        .map(
-          (capability) => `${capability.name}(${capability.args.join(', ')})`,
-        )
-        .join('\n'),
-    ]);
+    const table = createTable({ head: ['Public Key', 'Capabilities'] });
 
-    const tableString = log.generateTableString(headers, rows);
+    table.push(
+      ...command.signers.map((signer) => [
+        signer.pubKey,
+        (signer.clist || [])
+          .map(
+            (capability) => `${capability.name}(${capability.args.join(', ')})`,
+          )
+          .join('\n'),
+      ]),
+    );
 
     log.info(
       `Command ${index + 1} (hash: ${
         unsignedCommand.hash
       }) will now be signed with the following signers:`,
     );
-    log.output(tableString, command.signers);
+    log.output(table.toString(), command.signers);
   });
 }
 
 export async function logTransactionDetails(command: ICommand): Promise<void> {
-  const header = ['Network ID', 'Chain ID'];
-  const rows: Array<Array<string>> = [];
+  const table = createTable({ head: ['Network ID', 'Chain ID'] });
 
   try {
     const cmdPayload: ICommandPayload = JSON.parse(command.cmd);
@@ -664,13 +664,14 @@ export async function logTransactionDetails(command: ICommand): Promise<void> {
     const chainId = cmdPayload.meta.chainId ?? 'N/A';
     const hash = command.hash ?? 'N/A';
 
-    rows.push([networkId, chainId]);
+    table.push([networkId, chainId]);
 
-    if (rows.length > 0) {
+    if (table.length > 0) {
       log.info(
         log.color.green(`\nTransaction detail for command with hash: ${hash}`),
       );
-      log.output(log.generateTableString(header, rows), command);
+
+      log.output(table.toString(), command);
       log.info('\n\n');
     } else {
       log.info(`No transaction details to display for hash: ${hash}`);

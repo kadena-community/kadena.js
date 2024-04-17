@@ -2,10 +2,9 @@
 import { useAccount } from '@/hooks/account';
 import { useTokens } from '@/hooks/tokens';
 import { getSigneeAccount } from '@/utils/getSigneeAccount';
-import { isAlreadySigning } from '@/utils/isAlreadySigning';
+import { getAllowedSigners, isAlreadySigning } from '@/utils/isAlreadySigning';
 import { store } from '@/utils/socket/store';
 import type { IUnsignedCommand } from '@kadena/client';
-import { useParams } from 'next/navigation';
 import type { FC, PropsWithChildren } from 'react';
 import { createContext, useCallback, useEffect, useState } from 'react';
 
@@ -25,7 +24,14 @@ export interface IProofOfUsContext {
     proofOfUsId,
     signee,
   }: {
-    proofOfUsId: string;
+    proofOfUsId?: string;
+    signee: IProofOfUsSignee;
+  }) => Promise<void>;
+  toggleAllowedToSign: ({
+    proofOfUsId,
+    signee,
+  }: {
+    proofOfUsId?: string;
     signee: IProofOfUsSignee;
   }) => Promise<void>;
   updateSignee: (value: any, isOverwrite?: boolean) => Promise<void>;
@@ -33,9 +39,12 @@ export interface IProofOfUsContext {
   changeTitle: (value: string) => string;
   updateBackgroundColor: (value: string) => string;
   isConnected: () => Promise<boolean>;
+  resetSignatures: () => Promise<void>;
   isInitiator: () => Promise<boolean>;
   hasSigned: () => Promise<boolean>;
   isSignee: () => Promise<boolean>;
+  getSignee: () => Promise<IProofOfUsSignee | undefined>;
+  updateSigneePing: (signee: IProofOfUsSignee) => Promise<void>;
   updateProofOfUs: (value: any) => Promise<void>;
   getSignature: (tx: IUnsignedCommand) => Promise<string | undefined>;
 }
@@ -49,21 +58,28 @@ export const ProofOfUsContext = createContext<IProofOfUsContext>({
   updateStatus: async () => {},
   addSignee: async () => {},
   removeSignee: async () => {},
+  toggleAllowedToSign: async () => {},
   updateSignee: async () => {},
   createToken: async () => {},
   changeTitle: () => '',
   updateBackgroundColor: () => '',
   isConnected: async () => false,
+  resetSignatures: async () => {},
   isInitiator: async () => false,
   hasSigned: async () => false,
   isSignee: async () => false,
+  getSignee: async () => undefined,
+  updateSigneePing: async () => {},
   updateProofOfUs: async () => {},
   getSignature: async () => undefined,
 });
 
-export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
+interface IProps extends PropsWithChildren {
+  proofOfUsId?: string;
+}
+
+export const ProofOfUsProvider: FC<IProps> = ({ children, proofOfUsId }) => {
   const { account } = useAccount();
-  const params = useParams();
   const { addMintingData } = useTokens();
   const [proofOfUs, setProofOfUs] = useState<IProofOfUsData>();
   const [signees, setSignees] = useState<IProofOfUsSignee[]>();
@@ -75,10 +91,10 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     async (data: IProofOfUsData | undefined) => {
       let innerData: IProofOfUsData | undefined | null = data;
 
-      if (!innerData && params && params.id !== 'new') {
-        innerData = await store.getProofOfUs(`${params.id}`);
+      if (!innerData && proofOfUsId !== 'new') {
+        innerData = await store.getProofOfUs(`${proofOfUsId}`);
         if (!innerData) return;
-        innerData = { ...innerData, proofOfUsId: `${params?.id}` };
+        innerData = { ...innerData, proofOfUsId: `${proofOfUsId}` };
       }
 
       if (!innerData) return;
@@ -89,30 +105,46 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
 
       setProofOfUs({ ...innerData });
     },
-    [setProofOfUs, params?.id],
+    [setProofOfUs, proofOfUsId],
   );
 
   const listenToSigneesData = useCallback(
     async (data: IProofOfUsSignee[]) => {
       let innerData: IProofOfUsSignee[] = data ?? [];
 
-      if (!innerData && params && params.id !== 'new') {
-        innerData = await store.getProofOfUsSignees(`${params.id}`);
+      if (!innerData && proofOfUsId !== 'new') {
+        innerData = await store.getProofOfUsSignees(`${proofOfUsId}`);
         if (!innerData) return;
       }
 
       setSignees([...innerData]);
     },
-    [setSignees, params?.id],
+    [setSignees, proofOfUsId],
   );
+
+  const pingSignee = async () => {
+    const signee = signees?.find((s) => s.accountName === account?.accountName);
+    if (!signee) return;
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    await updateSigneePing(signee);
+  };
 
   //start listeners
   useEffect(() => {
-    if (!params?.id || !account) return;
-    store.listenProofOfUsData(`${params.id}`, account, listenToProofOfUsData);
-    store.listenProofOfUsBackgroundData(`${params.id}`, setBackground);
-    store.listenProofOfUsSigneesData(`${params.id}`, listenToSigneesData);
-  }, [account]);
+    if (!proofOfUsId || !account) return;
+    store.listenProofOfUsData(`${proofOfUsId}`, account, listenToProofOfUsData);
+    store.listenProofOfUsBackgroundData(`${proofOfUsId}`, setBackground);
+    store.listenProofOfUsSigneesData(`${proofOfUsId}`, listenToSigneesData);
+  }, [account, proofOfUsId]);
+
+  //update the ping of the account signer
+  useEffect(() => {
+    pingSignee();
+    const interval = setInterval(pingSignee, 6000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [signees?.length]);
 
   const updateStatus = async ({
     proofOfUsId,
@@ -144,11 +176,22 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     proofOfUsId,
     signee,
   }: {
-    proofOfUsId: string;
+    proofOfUsId?: string;
     signee: IProofOfUsSignee;
   }) => {
     if (!proofOfUs) return;
     await store.removeSignee(proofOfUs, signee);
+  };
+
+  const toggleAllowedToSign = async ({
+    proofOfUsId,
+    signee,
+  }: {
+    proofOfUsId?: string;
+    signee: IProofOfUsSignee;
+  }) => {
+    if (!proofOfUs) return;
+    await store.toggleAllowedToSign(proofOfUs, signee);
   };
 
   const updateSignee = async (
@@ -181,7 +224,7 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
       innerSignees = await store.getProofOfUsSignees(proofOfUs.proofOfUsId);
     }
 
-    const idx = innerSignees.findIndex(
+    const idx = getAllowedSigners(innerSignees).findIndex(
       (a) => a.accountName === account.accountName,
     );
     if (idx < 0) return;
@@ -241,6 +284,25 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
 
     return !!signee;
   };
+  const getSignee = async (): Promise<IProofOfUsSignee | undefined> => {
+    if (!proofOfUs) return;
+
+    let innerSignees = signees;
+    if (!innerSignees?.length) {
+      innerSignees = await store.getProofOfUsSignees(proofOfUs.proofOfUsId);
+    }
+
+    const signee = innerSignees.find(
+      (s) => s.accountName === account?.accountName,
+    );
+
+    return signee;
+  };
+
+  const updateSigneePing = async (signee: IProofOfUsSignee): Promise<void> => {
+    if (!proofOfUs) return;
+    return store.updateSigneePing(proofOfUs, signee);
+  };
 
   const isConnected = async () => {
     if (!proofOfUs) return false;
@@ -267,11 +329,22 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
     return !!foundAccount?.initiator;
   };
 
+  const resetSignatures = async (): Promise<void> => {
+    if (!proofOfUs) return;
+    let innerSignees = signees;
+    if (!innerSignees?.length) {
+      innerSignees = await store.getProofOfUsSignees(proofOfUs.proofOfUsId);
+    }
+
+    store.resetAllSignatures(proofOfUs, innerSignees);
+  };
+
   return (
     <ProofOfUsContext.Provider
       value={{
         addSignee,
         removeSignee,
+        toggleAllowedToSign,
         updateSignee,
         createToken,
         isConnected,
@@ -285,7 +358,10 @@ export const ProofOfUsProvider: FC<PropsWithChildren> = ({ children }) => {
         updateProofOfUs,
         hasSigned,
         isSignee,
+        getSignee,
+        updateSigneePing,
         getSignature,
+        resetSignatures,
       }}
     >
       {children}

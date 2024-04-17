@@ -55,14 +55,7 @@ const meta: Meta<ILinkProps> = {
       },
     },
     isCompact: {
-      description: 'compact Link style',
-      control: {
-        type: 'boolean',
-      },
-    },
-    avatarProps: {
-      description:
-        'Props for the avatar component which can be rendered instead of startIcon',
+      description: 'compact button link style',
       control: {
         type: 'boolean',
       },
@@ -168,6 +161,54 @@ export const IconOnly: LinkStory = {
   args: {
     variant: 'primary',
     children: <MonoChevronRight />,
+  },
+  render: (props: ILinkProps) => {
+    return <Link {...props}>{props.children}</Link>;
+  },
+};
+
+export const StartVisualLoading: LinkStory = {
+  args: {
+    variant: 'primary',
+    startVisual: <MonoChevronRight />,
+    children: 'Hello world',
+    isLoading: true,
+  },
+  render: (props: ILinkProps) => {
+    return <Link {...props}>{props.children}</Link>;
+  },
+};
+
+export const EndVisualLoading: LinkStory = {
+  args: {
+    variant: 'primary',
+    endVisual: <MonoChevronRight />,
+    children: 'Hello world',
+    isLoading: true,
+  },
+  render: (props: ILinkProps) => {
+    return <Link {...props}>{props.children}</Link>;
+  },
+};
+
+export const IconOnlyLoadingWithLabel: LinkStory = {
+  args: {
+    variant: 'primary',
+    children: <MonoChevronRight />,
+    isLoading: true,
+    loadingLabel: 'Loading...',
+  },
+  render: (props: ILinkProps) => {
+    return <Link {...props}>{props.children}</Link>;
+  },
+};
+
+export const IconOnlyLoading: LinkStory = {
+  args: {
+    variant: 'primary',
+    children: <MonoChevronRight />,
+    isLoading: true,
+    loadingLabel: '',
   },
   render: (props: ILinkProps) => {
     return <Link {...props}>{props.children}</Link>;

@@ -334,7 +334,7 @@ export const getNonFungibleAccount: DocumentNode = gql`
       }
       nonFungibleTokenBalances {
         balance
-        id
+        tokenId
         chainId
         guard {
           predicate
@@ -361,7 +361,7 @@ export const getNonFungibleChainAccount: DocumentNode = gql`
       ...CoreNonFungibleChainAccountFields
       nonFungibleTokenBalances {
         balance
-        id
+        tokenId
         chainId
         guard {
           predicate

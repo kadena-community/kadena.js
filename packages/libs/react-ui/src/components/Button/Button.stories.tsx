@@ -190,6 +190,58 @@ export const IconOnly: ButtonStory = {
   },
 };
 
+export const StartVisualLoading: ButtonStory = {
+  args: {
+    variant: 'primary',
+    startVisual: <MonoChevronRight />,
+    children: 'Hello world',
+    isLoading: true,
+    onPress: () => undefined,
+  },
+  render: (props: IButtonProps) => {
+    return <Button {...props}>{props.children}</Button>;
+  },
+};
+
+export const EndVisualLoading: ButtonStory = {
+  args: {
+    variant: 'primary',
+    endVisual: <MonoChevronRight />,
+    children: 'Hello world',
+    isLoading: true,
+    onPress: () => undefined,
+  },
+  render: (props: IButtonProps) => {
+    return <Button {...props}>{props.children}</Button>;
+  },
+};
+
+export const IconOnlyLoadingWithLabel: ButtonStory = {
+  args: {
+    variant: 'primary',
+    children: <MonoChevronRight />,
+    isLoading: true,
+    loadingLabel: 'Loading...',
+    onPress: () => undefined,
+  },
+  render: (props: IButtonProps) => {
+    return <Button {...props}>{props.children}</Button>;
+  },
+};
+
+export const IconOnlyLoading: ButtonStory = {
+  args: {
+    variant: 'primary',
+    children: <MonoChevronRight />,
+    isLoading: true,
+    loadingLabel: '',
+    onPress: () => undefined,
+  },
+  render: (props: IButtonProps) => {
+    return <Button {...props}>{props.children}</Button>;
+  },
+};
+
 export const AllVariants: StoryFn<IButtonProps> = ({
   variant,
   ...props

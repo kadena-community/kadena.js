@@ -2,7 +2,7 @@ import type { IClient } from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
-import { networkConfig } from '../..';
+import { networkData } from '@utils/network';
 import type { Guard } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
 
@@ -17,13 +17,9 @@ export type NonFungibleChainAccountDetails = {
   };
 };
 
-function getClient(
-  chainId: string,
-  networkId: string,
-  apiVersion: string,
-): IClient {
+function getClient(chainId: string): IClient {
   return createClient(
-    `${dotenv.NETWORK_HOST}/chainweb/${apiVersion}/${networkId}/chain/${chainId}/pact`,
+    `${dotenv.NETWORK_HOST}/chainweb/${networkData.apiVersion}/${networkData.networkId}/chain/${chainId}/pact`,
   );
 }
 
@@ -33,13 +29,12 @@ export async function getNonFungibleAccountDetails(
   chainId: string,
 ): Promise<NonFungibleChainAccountDetails | null> {
   let result;
-  const { networkId, apiVersion } = await networkConfig;
 
   try {
     let result;
     let commandResult;
 
-    commandResult = await getClient(chainId, networkId, apiVersion).dirtyRead(
+    commandResult = await getClient(chainId).dirtyRead(
       Pact.builder
         .execution(
           Pact.modules['marmalade.ledger'].details(tokenId, accountName),
@@ -47,12 +42,12 @@ export async function getNonFungibleAccountDetails(
         .setMeta({
           chainId: chainId as ChainId,
         })
-        .setNetworkId(networkId)
+        .setNetworkId(networkData.networkId)
         .createTransaction(),
     );
 
     if (commandResult.result.status === 'failure') {
-      commandResult = await getClient(chainId, networkId, apiVersion).dirtyRead(
+      commandResult = await getClient(chainId).dirtyRead(
         Pact.builder
           .execution(
             Pact.modules['marmalade-v2.ledger'].details(tokenId, accountName),
@@ -60,7 +55,7 @@ export async function getNonFungibleAccountDetails(
           .setMeta({
             chainId: chainId as ChainId,
           })
-          .setNetworkId(networkId)
+          .setNetworkId(networkData.networkId)
           .createTransaction(),
       );
     }
