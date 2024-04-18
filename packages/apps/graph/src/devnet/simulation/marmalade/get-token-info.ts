@@ -9,6 +9,7 @@ interface ITokenInfo {
   precision: number;
   uri: string;
   id: string;
+  policies: { moduleName: string }[];
 }
 
 export const getTokenInfo = async (
@@ -95,6 +96,16 @@ export const getTokenInfo = async (
     ) {
       tokenInfo.precision = (tokenInfo.precision as { int: number }).int;
     }
+  }
+
+  if ('policies' in tokenInfo) {
+    if (!Array.isArray(tokenInfo.policies)) {
+      tokenInfo.policies = tokenInfo.policies.map((policy: string) => ({
+        moduleName: policy,
+      }));
+    }
+  } else if ('policy' in tokenInfo) {
+    tokenInfo.policies = { moduleName: tokenInfo.policy.toString() };
   }
 
   return tokenInfo as ITokenInfo;

@@ -280,6 +280,7 @@ type NonFungibleChainAccountTransactionsConnectionEdge {
 
 """Information related to a token."""
 type NonFungibleToken {
+  policies: [NonFungibleTokenPolicy!]!
   precision: Int!
   supply: Int!
   uri: String!
@@ -295,6 +296,11 @@ type NonFungibleTokenBalance implements Node {
   info: NonFungibleToken
   tokenId: String!
   version: String!
+}
+
+"""A policy that defines the rules for a non-fungible token."""
+type NonFungibleTokenPolicy {
+  moduleName: String!
 }
 
 input PactQuery {

@@ -27,12 +27,15 @@ export interface INonFungibleTokenBalance {
   version: string;
 }
 
+export interface INonFungibleTokenPolicy {
+  moduleName: string;
+}
+
 export interface INonFungibleToken {
   supply: number;
   precision: number;
   uri: string;
-  // TODO: figure out what to do with weird pact-arrays
-  // policies: string[];
+  policies: INonFungibleTokenPolicy[];
 }
 
 export const FungibleChainAccountName: 'FungibleChainAccount' =
