@@ -344,8 +344,8 @@ const ModuleExplorerPage = (
           setOpenedModules(
             openedModules.filter((openedModule) => {
               return (
-                openedModule.moduleName !== module.moduleName &&
-                openedModule.chainId !== module.chainId
+                `${openedModule.moduleName}-${openedModule.chainId}` !==
+                `${module.moduleName}-${module.chainId}`
               );
             }),
           );
