@@ -7,7 +7,7 @@ export const flood = async (
   txPerIteration: number,
   timeoutBetweenIteration: number,
   finishAfterTx: number,
-) => {
+): Promise<void> => {
   const account = await generateAccount();
   let newStack: Promise<ICommandResult>[] = [];
 
@@ -18,6 +18,7 @@ export const flood = async (
   let count = 0;
   let totalTx = 0;
 
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     for (let i = 0; i < 19; i++) {
       if (totalTx >= finishAfterTx) {

@@ -32,7 +32,7 @@ export async function deployMarmaladeContracts(
   templateDestinationPath: string = marmaladeLocalConfig.templatePath,
   codeFileDestinationPath: string = marmaladeLocalConfig.codeFilesPath,
   nsDestinationPath: string = marmaladeLocalConfig.namespacePath,
-) {
+): Promise<void> {
   logger.info('Validating repository data...');
   validateConfig(
     marmaladeRepository,
@@ -220,7 +220,7 @@ export async function getCodeFiles({
   templateRemotePath: string;
   fileExtension: string;
   basePath?: string;
-}) {
+}): Promise<void> {
   try {
     const templateFiles = readdirSync(localConfigData.templatePath);
 
@@ -234,6 +234,7 @@ export async function getCodeFiles({
           join(localConfigData.templatePath, file),
           'utf8',
         );
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const yamlContent = yaml.load(fileContent) as any;
 
         if (!yamlContent?.codeFile) {
@@ -275,7 +276,7 @@ export async function getNsCodeFiles({
   repositoryData: IMarmaladeRepository;
   remoteConfigData: IMarmaladeRemoteConfig;
   localPath: string;
-}) {
+}): Promise<void> {
   try {
     await Promise.all(
       remoteConfigData.namespacePaths.map(async (path) => {
@@ -306,6 +307,7 @@ export async function updateTemplateFilesWithCodeFile(
           join(templateDirectory, templateFile),
           'utf8',
         );
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const yamlContent = yaml.load(templateFileContent) as any;
 
         if (!yamlContent?.codeFile) {

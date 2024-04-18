@@ -60,7 +60,7 @@ builder.queryField('transaction', (t) =>
           );
 
           filteredTransactions = transactions.filter(
-            (_, index) =>
+            (__value, index) =>
               confirmationDepths[index] >= (args.minimumDepth as number),
           );
 

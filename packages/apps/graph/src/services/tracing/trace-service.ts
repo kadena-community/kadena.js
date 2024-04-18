@@ -5,8 +5,8 @@ export async function logTrace(
   parentType: string,
   fieldName: string,
   duration: number,
-) {
-  fs.appendFileSync(
+): Promise<void> {
+  return fs.promises.appendFile(
     dotenv.TRACING_LOG_FILENAME,
     `${parentType}.${fieldName},${duration}\n`,
   );

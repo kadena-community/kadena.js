@@ -6,6 +6,7 @@ to be replaced in the marmalade templates and code files  */
 export const argumentConfig = {
   sender_key: sender00.keys[0].publicKey,
   marmalade_namespace: 'marmalade-v2',
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   marmalade_sale_namespace: 'marmalade-sale',
   is_upgrade: 'false',
   network: dotenv.NETWORK_ID,
@@ -13,7 +14,9 @@ export const argumentConfig = {
   sender: sender00.account,
   kip_namespace: 'kip',
   signer: sender00.keys[0].publicKey,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   marmalade_user_key_1: sender00.keys[0].publicKey,
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   marmalade_user_key_2: sender00.keys[0].publicKey,
 };
 
