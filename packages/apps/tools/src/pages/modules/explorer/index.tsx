@@ -250,7 +250,7 @@ const ModuleExplorerPage = (
     .filter(([, data]) => Boolean(data))
     .map(([, data]) => data as IChainModule);
   if (results.every((result) => result.status === 'success')) {
-    fetchedModules = results.map((result) => result.data as IChainModule);
+    fetchedModules = results.map((result) => result.data!);
   }
 
   const router = useRouter();
