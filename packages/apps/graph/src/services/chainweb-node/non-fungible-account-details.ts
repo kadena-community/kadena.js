@@ -27,8 +27,6 @@ export async function getNonFungibleAccountDetails(
   accountName: string,
   chainId: string,
 ): Promise<INonFungibleChainAccountDetails | null> {
-  let result;
-
   try {
     let commandResult;
 
@@ -73,7 +71,7 @@ export async function getNonFungibleAccountDetails(
     ) {
       return null;
     } else {
-      throw new PactCommandError('Pact Command failed with error', result);
+      throw new PactCommandError('Pact Command failed with error', error);
     }
   }
 }

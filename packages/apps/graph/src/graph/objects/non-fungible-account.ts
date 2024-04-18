@@ -18,7 +18,7 @@ import {
   NonFungibleAccountName,
   NonFungibleChainAccountName,
 } from '../types/graphql-types';
-import Token from './non-fungible-token-balance';
+import NonFungibleTokenBalance from './non-fungible-token-balance';
 
 export default builder.node(
   builder.objectRef<INonFungibleAccount>(NonFungibleAccountName),
@@ -77,7 +77,7 @@ export default builder.node(
         },
       }),
       nonFungibleTokenBalances: t.field({
-        type: [Token],
+        type: [NonFungibleTokenBalance],
         complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
         async resolve(parent) {
           try {
