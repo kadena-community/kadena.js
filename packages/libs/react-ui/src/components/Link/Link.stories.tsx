@@ -55,7 +55,7 @@ const meta: Meta<ILinkProps> = {
       },
     },
     isCompact: {
-      description: 'compact button style',
+      description: 'compact button link style',
       control: {
         type: 'boolean',
       },

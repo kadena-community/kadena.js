@@ -1,7 +1,9 @@
+import { MonoChevronLeft, MonoChevronRight } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import React from 'react';
-import { Link, SystemIcon } from '..';
+import { Link } from '..';
+import type { PressEvent } from '../Button';
 import { Button } from '../Button/Button';
 import { linkButtonClass, trClass } from './Table.css';
 import { Td } from './Td';
@@ -11,7 +13,7 @@ import type { CompoundType } from './types';
 export interface ITrProps {
   children?: CompoundType<typeof Td> | CompoundType<typeof Th>;
   url?: string;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: (e: PressEvent) => void;
   className?: string;
 }
 
@@ -31,13 +33,13 @@ export const Tr: FC<ITrProps> = ({ children, url, onClick, className }) => {
       {url !== undefined ? (
         <td className={linkButtonClass}>
           <Link href={url} title={url} aria-label={url}>
-            <SystemIcon.TrailingIcon />
+            <MonoChevronRight />
           </Link>
         </td>
       ) : onClick !== undefined ? (
         <td className={linkButtonClass}>
           <Button title="" aria-label="" onClick={onClick}>
-            <SystemIcon.TrailingIcon />
+            <MonoChevronLeft />
           </Button>
         </td>
       ) : (

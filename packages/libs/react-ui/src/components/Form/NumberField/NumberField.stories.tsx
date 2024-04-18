@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { onLayer2, withContentWidth } from '../../../storyDecorators';
 import { atoms } from '../../../styles';
 import { Button } from '../../Button';
-import { Account } from '../../Icon/System/svgs/Account';
 import { NumberField } from './NumberField';
 
+import { MonoAccountCircle } from '@kadena/react-icons/system';
 import { Form } from '../Form';
 import type { INumberFieldProps } from './NumberField';
 
@@ -238,7 +238,7 @@ export const WithStartAddon: Story = {
           label="With addon"
           value={value}
           onValueChange={setValue}
-          startAddon={<Account />}
+          startAddon={<MonoAccountCircle />}
         />
         <Button type="submit">Submit</Button>
       </Form>

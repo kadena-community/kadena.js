@@ -10,5 +10,10 @@ export const NavHeaderButton = ({
   className,
   ...props
 }: INavHeaderButtonProps) => (
-  <Button className={cn(iconButtonClass, className)} isCompact {...props} />
+  <Button
+    className={cn(iconButtonClass, className)}
+    isCompact
+    variant="transparent"
+    {...props}
+  />
 );

@@ -1,7 +1,7 @@
+import { MonoChevronLeft, MonoChevronRight } from '@kadena/react-icons/system';
 import type { FC } from 'react';
 import React from 'react';
 import { Button } from '../Button';
-import { SystemIcon } from '../Icon';
 
 interface IPageNavProps {
   label: string;
@@ -24,8 +24,8 @@ export const PageNav: FC<IPageNavProps> = ({
       variant="transparent"
       isDisabled={isDisabled}
       onPress={onClick}
-      startVisual={isPrevious ? <SystemIcon.LeadingIcon /> : undefined}
-      endVisual={isNext ? <SystemIcon.TrailingIcon /> : undefined}
+      startVisual={isPrevious ? <MonoChevronLeft /> : undefined}
+      endVisual={isNext ? <MonoChevronRight /> : undefined}
     >
       {label}
     </Button>
