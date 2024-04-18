@@ -11,8 +11,8 @@ import { builder } from '../builder';
 import { nonFungibleChainCheck } from '../data-loaders/non-fungible-chain-check';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
 import type {
-  NonFungibleAccount,
-  NonFungibleChainAccount,
+  INonFungibleAccount,
+  INonFungibleChainAccount,
 } from '../types/graphql-types';
 import {
   NonFungibleAccountName,
@@ -21,7 +21,7 @@ import {
 import Token from './non-fungible-token-balance';
 
 export default builder.node(
-  builder.objectRef<NonFungibleAccount>(NonFungibleAccountName),
+  builder.objectRef<INonFungibleAccount>(NonFungibleAccountName),
   {
     description: 'A non-fungible-specific account.',
     id: {
@@ -29,6 +29,7 @@ export default builder.node(
       parse: (id) => id,
     },
     isTypeOf(source) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (source as any).__typename === NonFungibleAccountName;
     },
     async loadOne(accountName) {
@@ -69,7 +70,7 @@ export default builder.node(
               )
             ).filter(
               (chainAccount) => chainAccount !== null,
-            ) as NonFungibleChainAccount[];
+            ) as INonFungibleChainAccount[];
           } catch (error) {
             throw normalizeError(error);
           }

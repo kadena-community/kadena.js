@@ -8,12 +8,12 @@ import {
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { fungibleAccountDetailsLoader } from '../data-loaders/fungible-account-details';
-import type { FungibleChainAccount } from '../types/graphql-types';
+import type { IFungibleChainAccount } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
 import Guard from './guard';
 
 export default builder.node(
-  builder.objectRef<FungibleChainAccount>(FungibleChainAccountName),
+  builder.objectRef<IFungibleChainAccount>(FungibleChainAccountName),
   {
     description: 'A fungible specific chain-account.',
     id: {
@@ -30,6 +30,7 @@ export default builder.node(
       }),
     },
     isTypeOf(source) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (source as any).__typename === FungibleChainAccountName;
     },
     async loadOne({ chainId, fungibleName, accountName }) {
@@ -59,8 +60,8 @@ export default builder.node(
             });
 
             return {
-              keys: accountDetails.guard.keys,
-              predicate: accountDetails.guard.pred,
+              keys: accountDetails!.guard.keys,
+              predicate: accountDetails!.guard.pred,
             };
           } catch (error) {
             throw normalizeError(error);

@@ -3,19 +3,18 @@ import { Pact, createClient } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
 import { networkData } from '@utils/network';
-import type { Guard } from '../../graph/types/graphql-types';
+import type { IGuard } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type NonFungibleChainAccountDetails = {
+export interface INonFungibleChainAccountDetails {
   id: string;
   account: string;
   balance: number;
   guard: {
     keys: string[];
-    pred: Guard['predicate'];
+    pred: IGuard['predicate'];
   };
-};
+}
 
 function getClient(chainId: string): IClient {
   return createClient(
@@ -27,11 +26,10 @@ export async function getNonFungibleAccountDetails(
   tokenId: string,
   accountName: string,
   chainId: string,
-): Promise<NonFungibleChainAccountDetails | null> {
+): Promise<INonFungibleChainAccountDetails | null> {
   let result;
 
   try {
-    let result;
     let commandResult;
 
     commandResult = await getClient(chainId).dirtyRead(
@@ -60,13 +58,15 @@ export async function getNonFungibleAccountDetails(
       );
     }
 
-    result = (commandResult.result as unknown as any).data as unknown as any;
+    const result =
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (commandResult.result as unknown as any).data as unknown as any;
 
     if (typeof result.balance === 'object') {
       result.balance = parseFloat(result.balance.decimal);
     }
 
-    return result as NonFungibleChainAccountDetails;
+    return result as INonFungibleChainAccountDetails;
   } catch (error) {
     if (
       error.message.includes('with-read: row not found') // Account not found

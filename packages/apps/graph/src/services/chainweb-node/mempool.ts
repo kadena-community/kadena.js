@@ -5,15 +5,17 @@ import { networkData } from '@utils/network';
 import https from 'https';
 
 export class MempoolError extends Error {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public mempoolError: any;
 
-  constructor(message: string, mempoolError?: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public constructor(message: string, mempoolError?: any) {
     super(message);
     this.mempoolError = mempoolError;
   }
 }
 
-export async function mempoolGetPending() {
+export async function mempoolGetPending(): Promise<unknown> {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: dotenv.MEMPOOL_HOSTNAME,
@@ -52,7 +54,11 @@ export async function mempoolGetPending() {
   });
 }
 
-export async function mempoolLookup(hash: string, chainId?: string) {
+export async function mempoolLookup(
+  hash: string,
+  chainId?: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> {
   let chainsToCheck = chainIds;
 
   if (chainId) {
@@ -60,7 +66,7 @@ export async function mempoolLookup(hash: string, chainId?: string) {
   }
 
   for (const chainId of chainsToCheck) {
-    const result: any = await new Promise((resolve, reject) => {
+    const result = await new Promise((resolve, reject) => {
       const options = {
         hostname: dotenv.MEMPOOL_HOSTNAME,
         port: dotenv.MEMPOOL_PORT,
@@ -97,6 +103,7 @@ export async function mempoolLookup(hash: string, chainId?: string) {
       req.end();
     });
 
+    // @ts-ignore
     if (result && result[0] && result[0].contents) {
       return result;
     }
@@ -124,6 +131,7 @@ export async function getMempoolTransactionSigners(
     const mempoolTx = JSON.parse(mempoolData[0].contents);
     mempoolTx.cmd = JSON.parse(mempoolTx.cmd);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mempoolTx.cmd.signers = mempoolTx.cmd.signers.map((signer: any) => ({
       publicKey: signer.pubKey,
       scheme: signer.scheme,

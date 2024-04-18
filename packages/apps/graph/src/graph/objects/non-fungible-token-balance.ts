@@ -3,12 +3,12 @@ import type { ChainId } from '@kadena/types';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
-import type { NonFungibleTokenBalance } from '../types/graphql-types';
+import type { INonFungibleTokenBalance } from '../types/graphql-types';
 import { NonFungibleTokenBalanceName } from '../types/graphql-types';
 import NonFungibleToken from './non-fungible-token';
 
 export default builder.node(
-  builder.objectRef<NonFungibleTokenBalance>(NonFungibleTokenBalanceName),
+  builder.objectRef<INonFungibleTokenBalance>(NonFungibleTokenBalanceName),
   {
     description: 'The token identifier and its balance.',
     id: {
@@ -21,6 +21,7 @@ export default builder.node(
       }),
     },
     isTypeOf(source) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (source as any).__typename === NonFungibleTokenBalanceName;
     },
     async loadOne({ tokenId, accountName, chainId }) {
