@@ -1,13 +1,19 @@
-import { MonoAccountCircle, MonoAdd } from '@kadena/react-icons/system';
+import { MonoAccountBalance } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { withContentWidth } from '../../../storyDecorators';
+import { getVariants } from '../../../storyDecorators/getVariants';
 import { atoms } from '../../../styles';
 import { Button } from '../../Button';
 import { Text } from '../../Typography/Text/Text';
 import { Form } from '../Form';
+import { input } from '../Form.css';
 import { TextField } from '../TextField';
 import type { ITextFieldProps } from './TextField';
+
+import { iconControl } from '../../../storyDecorators/iconControl';
+
+const { variant, fontType, size } = getVariants(input);
 
 const formStoryClass = atoms({
   display: 'flex',
@@ -29,50 +35,26 @@ const meta: Meta<ITextFieldProps> = {
     },
   },
   argTypes: {
+    startVisual: iconControl,
     fontType: {
       control: {
         type: 'radio',
       },
-      options: ['ui', 'code'],
+      options: fontType,
       defaultValue: 'ui',
     },
     size: {
       control: {
         type: 'radio',
       },
-      options: ['sm', 'md', 'lg'],
+      options: size,
       defaultValue: 'md',
-    },
-    onChange: {
-      description: 'onChange handler',
-      control: {
-        disable: true,
-      },
-      table: {
-        disable: true,
-      },
     },
     variant: {
       control: {
         type: 'select',
       },
-      options: [
-        'default',
-        'positive',
-        'warning',
-        'negative',
-        'info',
-        'readonly',
-      ],
-    },
-    onValueChange: {
-      description: 'onValueChange handler',
-      control: {
-        disable: true,
-      },
-      table: {
-        disable: true,
-      },
+      options: variant,
     },
     description: {
       description: 'Helper text to display below the input.',
@@ -92,11 +74,22 @@ const meta: Meta<ITextFieldProps> = {
         type: { summary: 'string' },
       },
     },
+    tag: {
+      description: 'Tag to display below the input.',
+      control: {
+        type: 'text',
+      },
+      defaultValue: 'tag',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
     label: {
       description: 'Label to display above the input.',
       control: {
         type: 'text',
       },
+      defaultValue: 'Label',
       table: {
         type: { summary: 'string' },
       },
@@ -106,6 +99,7 @@ const meta: Meta<ITextFieldProps> = {
       control: {
         type: 'text',
       },
+      defaultValue: 'This is a placeholder',
       table: {
         type: { summary: 'string' },
       },
@@ -119,31 +113,12 @@ const meta: Meta<ITextFieldProps> = {
         type: { summary: 'string' },
       },
     },
-    isInvalid: {
-      description: 'Marks the input as invalid and applies visual styling.',
-      control: {
-        type: 'boolean',
-      },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
     isDisabled: {
       description: 'Disables the input and applies visual styling.',
       control: {
         type: 'boolean',
       },
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
-    },
-    isReadOnly: {
-      description: 'Prevents the input from being edited.',
-      control: {
-        type: 'boolean',
-      },
+      defaultValue: false,
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -154,11 +129,43 @@ const meta: Meta<ITextFieldProps> = {
       control: {
         type: 'boolean',
       },
+      defaultValue: false,
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
     },
+    onChange: {
+      description: 'onChange handler',
+      control: {
+        disable: true,
+      },
+      table: {
+        disable: true,
+      },
+    },
+    onValueChange: {
+      description: 'onValueChange handler',
+      control: {
+        disable: true,
+      },
+      table: {
+        disable: true,
+      },
+    },
+  },
+  args: {
+    fontType: 'ui',
+    size: 'md',
+    variant: 'default',
+    description: 'Helper text',
+    info: 'Additional information',
+    tag: 'tag',
+    label: 'Label',
+    placeholder: 'This is a placeholder',
+    errorMessage: 'Error message',
+    isDisabled: false,
+    isRequired: false,
   },
 };
 
@@ -168,20 +175,6 @@ type Story = StoryObj<ITextFieldProps>;
 
 export const TextFieldStory: Story = {
   name: 'TextField',
-  args: {
-    isDisabled: false,
-    tag: 'tag',
-    description: 'This is helper text',
-    info: '(optional)',
-    label: 'Label',
-    id: 'TextFieldStory',
-    placeholder: 'This is a placeholder',
-    value: '',
-    isInvalid: false,
-    isReadOnly: false,
-    isRequired: false,
-    errorMessage: '',
-  },
   render: (props) => {
     const [value, setValue] = useState<string>('');
     return <TextField {...props} value={value} onValueChange={setValue} />;
@@ -197,7 +190,7 @@ export const WithoutLabel: Story = {
 
 export const WithAddons: Story = {
   name: 'With addons',
-  render: () => {
+  render: (props) => {
     const [value, setValue] = useState<string>('');
 
     return (
@@ -209,11 +202,44 @@ export const WithAddons: Story = {
         }}
       >
         <TextField
+          {...props}
+          size="sm"
           label="With addon"
+          placeholder="With addon"
           value={value}
           onValueChange={setValue}
-          startVisual={<MonoAccountCircle />}
-          endAddon={<Button endVisual={<MonoAdd />} isCompact />}
+          startVisual={<MonoAccountBalance />}
+          endAddon={
+            <Button isCompact variant="transparent">
+              Button
+            </Button>
+          }
+        />
+        <TextField
+          {...props}
+          variant="readonly"
+          size="md"
+          label="With addon"
+          placeholder="With addon"
+          value={value}
+          onValueChange={setValue}
+          startVisual={<MonoAccountBalance />}
+          endAddon={
+            <Button variant="transparent" onClick={(e) => e.stopPropagation()}>
+              Button
+            </Button>
+          }
+        />
+        <TextField
+          {...props}
+          variant="positive"
+          size="lg"
+          label="With addon"
+          placeholder="With addon"
+          value={value}
+          onValueChange={setValue}
+          startVisual={<MonoAccountBalance />}
+          endAddon={<Button variant="transparent">Button</Button>}
         />
       </Form>
     );
@@ -411,7 +437,6 @@ export const WithCopyButton: Story = {
         label="With copy button"
         actionButton={{
           children: 'Copy',
-          icon: <span>icon</span>,
           onPress: () => alert('copied'),
         }}
       />

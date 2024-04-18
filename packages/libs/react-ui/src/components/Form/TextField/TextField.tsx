@@ -10,7 +10,6 @@ import type {
 import React, { forwardRef, useCallback } from 'react';
 import type { AriaTextFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useTextField } from 'react-aria';
-import type { IButtonProps } from '../../Button/Button';
 import { Field } from '../Field/Field';
 import { input } from '../Form.css';
 
@@ -21,18 +20,15 @@ type PickedAriaTextFieldProps = Omit<
 
 type Variants = NonNullable<RecipeVariants<typeof input>>;
 
-// add readonly variant, check disabled state
-
 export interface ITextFieldProps extends PickedAriaTextFieldProps {
-  className?: string;
-  tag?: string;
-  info?: string;
-  startVisual?: ReactElement;
-  endAddon?: ReactElement;
-  actionButton?: Omit<IButtonProps, 'variant'>;
   variant?: Variants['variant'];
   fontType?: Variants['fontType'];
   size?: Variants['size'];
+  startVisual?: ReactElement;
+  endAddon?: ReactElement;
+  className?: string;
+  tag?: string;
+  info?: string;
   /*
    * @deprecated Use `isDisabled` instead. only here to support libs that manages props like `react-hook-form`
    */
@@ -50,14 +46,13 @@ export interface ITextFieldProps extends PickedAriaTextFieldProps {
 export function TextFieldBase(
   {
     className,
-    tag,
-    info,
-    startVisual,
-    actionButton,
-    fontType = 'ui',
-    size = 'md',
-    variant = 'default',
     endAddon,
+    fontType = 'ui',
+    info,
+    size = 'md',
+    startVisual,
+    tag,
+    variant = 'default',
     ...props
   }: ITextFieldProps,
   forwardedRef: ForwardedRef<ElementRef<'input'>>,
@@ -97,6 +92,7 @@ export function TextFieldBase(
       description={props.description}
       startAddon={startVisual}
       endAddon={endAddon}
+      size={size}
       tag={tag}
       info={info}
       ref={ref}
@@ -116,7 +112,7 @@ export function TextFieldBase(
         data-focus-visible={isFocusVisible || undefined}
         data-invalid={fieldProps.isInvalid || undefined}
         data-has-start-addon={!!startVisual || undefined}
-        data-has-end-addon={!!actionButton || undefined}
+        data-has-end-addon={!!endAddon || undefined}
       />
     </Field>
   );

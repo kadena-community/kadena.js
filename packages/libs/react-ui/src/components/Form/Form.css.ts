@@ -1,4 +1,10 @@
-import { createVar, style } from '@vanilla-extract/css';
+import {
+  createVar,
+  fallbackVar,
+  globalStyle,
+  style,
+  styleVariants,
+} from '@vanilla-extract/css';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import { recipe } from '@vanilla-extract/recipes';
 import {
@@ -20,29 +26,32 @@ export const statusOutlineColor = createVar();
 
 export const outlineColor = createVar();
 export const iconFill = createVar();
-const backgroundColor = createVar();
+const backgroundColor = fallbackVar(token('color.background.input.default'));
+
+const outlineStyles = {
+  outlineOffset: '3px',
+  outlineStyle: `solid`,
+  outlineWidth: '2px',
+  outlineColor,
+  borderRadius: token('radius.sm'),
+};
 
 export const baseContainerClass = recipe({
   base: [
     atoms({
       alignItems: 'stretch',
       display: 'flex',
-      color: 'text.base.@init',
       position: 'relative',
       width: '100%',
-      backgroundColor: 'transparent',
     }),
     {
       transition: 'outline-color 0.2s ease-in-out',
       outlineColor: 'transparent',
+      backgroundColor: backgroundColor,
       selectors: {
-        '&:focus-within': {
-          outlineOffset: '3px',
-          outlineStyle: `solid`,
-          outlineWidth: '2px',
-          outlineColor,
-          borderRadius: token('radius.sm'),
-        },
+        // outline should not be shown if there is a button which is focused
+        '&:focus-within:has(button:not(button:focus))': outlineStyles,
+        '&:focus-within:not(&:has(button))': outlineStyles,
       },
     },
   ],
@@ -51,30 +60,38 @@ export const baseContainerClass = recipe({
       default: {
         vars: {
           [outlineColor]: token('color.border.tint.outline'),
+          [iconFill]: token('color.icon.base.default'),
         },
       },
       positive: {
         vars: {
           [outlineColor]: token('color.border.semantic.positive.default'),
+          [iconFill]: token('color.icon.semantic.positive.default'),
         },
       },
       info: {
         vars: {
           [outlineColor]: token('color.border.semantic.info.default'),
+          [iconFill]: token('color.icon.semantic.info.default'),
         },
       },
       negative: {
         vars: {
           [outlineColor]: token('color.border.semantic.negative.default'),
+          [iconFill]: token('color.icon.semantic.negative.default'),
         },
       },
       warning: {
         vars: {
           [outlineColor]: token('color.border.semantic.warning.default'),
+          [iconFill]: token('color.icon.semantic.warning.default'),
         },
       },
       readonly: {
         cursor: 'not-allowed',
+        vars: {
+          [iconFill]: token('color.icon.base.@disabled'),
+        },
       },
     },
   },
@@ -86,6 +103,7 @@ export const formField = atoms({
   justifyContent: 'flex-start',
   alignItems: 'stretch',
   gap: 'sm',
+  flex: 1,
 });
 
 export const inputContainer = atoms({
@@ -95,20 +113,43 @@ export const inputContainer = atoms({
   alignItems: 'stretch',
 });
 
-// Field shared css
+const baseStartAddon = style([
+  atoms({
+    position: 'absolute',
+  }),
+  {
+    insetBlockStart: '50%',
+    transform: 'translateY(-50%)',
+    insetInlineStart: token('spacing.n3'),
+    color: iconFill,
+  },
+]);
 
-export const startAddon = style({
-  position: 'absolute',
-  insetBlockStart: '50%',
-  transform: 'translateY(-50%)',
-  insetInlineStart: token('spacing.sm'),
+// Field shared css
+export const startAddon = styleVariants({
+  sm: [baseStartAddon, { fontSize: '11px' }],
+  md: [baseStartAddon, { fontSize: '13px' }],
+  lg: [baseStartAddon, { fontSize: token('size.n4') }],
 });
 
-export const endAddon = style({
-  position: 'absolute',
-  insetBlockStart: '50%',
-  transform: 'translateY(-50%)',
-  insetInlineEnd: token('spacing.sm'),
+export const endAddon = style([
+  atoms({
+    height: '100%',
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 0,
+    backgroundColor: 'surface.default',
+    overflow: 'hidden',
+  }),
+  {
+    top: '50%',
+    transform: 'translateY(-50%)',
+  },
+]);
+
+globalStyle(`${endAddon} > button`, {
+  height: '100%',
+  borderRadius: '0',
 });
 
 export const input = recipe({
@@ -117,32 +158,43 @@ export const input = recipe({
       color: 'text.base.default',
       outline: 'none',
       flex: 1,
-      paddingInlineStart: 'n4',
-      paddingInlineEnd: 'n4',
-      paddingBlock: 'n2',
       borderRadius: 'no',
+      paddingInlineStart: 'n4',
       border: 'none',
     }),
     {
-      backgroundColor: backgroundColor,
-      transition: 'box-shadow 0.2s ease-in-out',
+      background: 'transparent',
+      transition: 'box-shadow, background-color 0.2s ease-in-out',
       '::placeholder': {
         color: token('color.text.base.@init'),
       },
       selectors: {
+        '&[data-focused]': {
+          color: token('color.text.base.@focus'),
+          vars: {
+            [backgroundColor]: token('color.background.input.@focus'),
+          },
+        },
+        '&[data-hovered]': {
+          color: token('color.text.base.@hover'),
+          vars: {
+            [backgroundColor]: token('color.background.input.@hover'),
+          },
+        },
         '&[data-has-end-addon]': {
           paddingInlineEnd: `calc(var(--end-addon-width) + ${token(
-            'spacing.lg',
+            'spacing.n2',
           )})`,
         },
         '&[data-has-start-addon]': {
           paddingInlineStart: `calc(var(--start-addon-width) + ${token(
-            'spacing.lg',
+            'spacing.n5',
           )})`,
         },
         '&[data-disabled]': {
           pointerEvents: 'none',
           color: token('color.text.base.@disabled'),
+          boxShadow: 'none',
           vars: {
             [backgroundColor]: token('color.background.input.default'),
           },
@@ -152,9 +204,9 @@ export const input = recipe({
   ],
   variants: {
     size: {
-      sm: {},
-      md: {},
-      lg: {},
+      sm: atoms({ paddingBlock: 'n2' }),
+      md: atoms({ paddingBlock: 'n3' }),
+      lg: atoms({ paddingBlock: 'n4' }),
     },
     fontType: {
       ui: uiSmallRegular,
@@ -164,60 +216,39 @@ export const input = recipe({
       default: {
         boxShadow: `0 -1px 0 0 ${token('color.border.base.default')} inset`,
         vars: {
-          [iconFill]: token('color.icon.base.default'),
           [backgroundColor]: token('color.background.input.default'),
         },
       },
       positive: {
-        boxShadow: `0 0 0 1px ${token(
-          'color.border.semantic.positive.default',
-        )} inset`,
+        boxShadow: `0 0 0 1px ${outlineColor} inset`,
         selectors: {
           '&[data-focused]': {
             boxShadow: 'none',
           },
-        },
-        vars: {
-          [iconFill]: token('color.icon.semantic.positive.default'),
         },
       },
       info: {
-        boxShadow: `0 0 0 1px ${token(
-          'color.border.semantic.info.default',
-        )} inset`,
+        boxShadow: `0 0 0 1px ${outlineColor} inset`,
         selectors: {
           '&[data-focused]': {
             boxShadow: 'none',
           },
-        },
-        vars: {
-          [iconFill]: token('color.icon.semantic.info.default'),
         },
       },
       negative: {
-        boxShadow: `0 0 0 1px ${token(
-          'color.border.semantic.negative.default',
-        )} inset`,
+        boxShadow: `0 0 0 1px ${outlineColor} inset`,
         selectors: {
           '&[data-focused]': {
             boxShadow: 'none',
           },
-        },
-        vars: {
-          [iconFill]: token('color.icon.semantic.negative.default'),
         },
       },
       warning: {
-        boxShadow: `0 0 0 1px ${token(
-          'color.border.semantic.warning.default',
-        )} inset`,
+        boxShadow: `0 0 0 1px ${outlineColor} inset`,
         selectors: {
           '&[data-focused]': {
             boxShadow: 'none',
           },
-        },
-        vars: {
-          [iconFill]: token('color.icon.semantic.warning.default'),
         },
       },
       readonly: {
@@ -230,7 +261,6 @@ export const input = recipe({
           },
         },
         vars: {
-          [iconFill]: token('color.icon.base.@disabled'),
           [backgroundColor]: 'transparent',
         },
       },
