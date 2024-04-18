@@ -24,6 +24,7 @@ interface IFieldProps {
   isInvalid: boolean;
   label?: string | ReactNode;
   labelProps: DOMAttributes<FocusableElement>;
+  isDisabled?: boolean;
   startAddon?: ReactNode;
   variant: InputVariants['variant'];
   size: NonNullable<InputVariants['size']>;
@@ -48,6 +49,7 @@ const Field = forwardRef(
       size,
       startAddon,
       tag,
+      isDisabled = false,
       validationDetails,
       validationErrors,
       variant,
@@ -56,6 +58,7 @@ const Field = forwardRef(
   ) => {
     const isPositive = variant === 'positive';
     const isInvalid = variant === 'negative';
+    isDisabled = isDisabled || variant === 'readonly';
     // aggregate error message from validation props
     const error =
       typeof errorMessage === 'function'
@@ -69,11 +72,15 @@ const Field = forwardRef(
             label={label}
             tag={tag}
             info={info}
-            isDisabled={variant === 'readonly'}
+            isDisabled={isDisabled}
             {...labelProps}
           />
         )}
-        <div className={baseContainerClass({ variant })}>
+        <div
+          className={baseContainerClass({
+            variant: isDisabled ? 'readonly' : variant,
+          })}
+        >
           {startAddon && (
             <div
               className={startAddonClass[size]}
@@ -115,7 +122,7 @@ const Field = forwardRef(
             {description}
           </FormFieldHelpText>
         )}
-        {isInvalid && (
+        {(isInvalid || error) && (
           <FormFieldHelpText {...errorMessageProps} intent="negative">
             {error || description}
           </FormFieldHelpText>

@@ -25,8 +25,9 @@ export const statusColor = createVar();
 export const statusOutlineColor = createVar();
 
 export const outlineColor = createVar();
-export const iconFill = createVar();
+export const iconFill = fallbackVar(token('color.icon.base.@init'));
 const backgroundColor = fallbackVar(token('color.background.input.default'));
+const textColor = fallbackVar(token('color.text.base.@init'));
 
 const outlineStyles = {
   outlineOffset: '3px',
@@ -47,7 +48,7 @@ export const baseContainerClass = recipe({
     {
       transition: 'outline-color 0.2s ease-in-out',
       outlineColor: 'transparent',
-      backgroundColor: backgroundColor,
+      backgroundColor,
       selectors: {
         // outline should not be shown if there is a button which is focused
         '&:focus-within:has(button:not(button:focus))': outlineStyles,
@@ -91,6 +92,7 @@ export const baseContainerClass = recipe({
         cursor: 'not-allowed',
         vars: {
           [iconFill]: token('color.icon.base.@disabled'),
+          [backgroundColor]: token('color.background.input.@disabled'),
         },
       },
     },
@@ -125,7 +127,6 @@ const baseStartAddon = style([
   },
 ]);
 
-// Field shared css
 export const startAddon = styleVariants({
   sm: [baseStartAddon, { fontSize: '11px' }],
   md: [baseStartAddon, { fontSize: '13px' }],
@@ -155,7 +156,6 @@ globalStyle(`${endAddon} > button`, {
 export const input = recipe({
   base: [
     atoms({
-      color: 'text.base.default',
       outline: 'none',
       flex: 1,
       borderRadius: 'no',
@@ -163,10 +163,11 @@ export const input = recipe({
       border: 'none',
     }),
     {
+      color: textColor,
       background: 'transparent',
       transition: 'box-shadow, background-color 0.2s ease-in-out',
       '::placeholder': {
-        color: token('color.text.base.@init'),
+        color: textColor,
       },
       selectors: {
         '&[data-focused]': {
@@ -193,10 +194,9 @@ export const input = recipe({
         },
         '&[data-disabled]': {
           pointerEvents: 'none',
-          color: token('color.text.base.@disabled'),
           boxShadow: 'none',
           vars: {
-            [backgroundColor]: token('color.background.input.default'),
+            [textColor]: token('color.text.base.@disabled'),
           },
         },
       },

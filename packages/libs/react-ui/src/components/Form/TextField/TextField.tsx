@@ -89,6 +89,7 @@ export function TextFieldBase(
       {...fieldProps}
       variant={variant}
       label={props.label}
+      isDisabled={isDisabled}
       description={props.description}
       startAddon={startVisual}
       endAddon={endAddon}

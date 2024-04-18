@@ -1,4 +1,4 @@
-import { MonoAccountBalance } from '@kadena/react-icons/system';
+import { MonoAccountBalance, MonoCopyAll } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { withContentWidth } from '../../../storyDecorators';
@@ -119,10 +119,6 @@ const meta: Meta<ITextFieldProps> = {
         type: 'boolean',
       },
       defaultValue: false,
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     isRequired: {
       description: 'Marks the input as required',
@@ -188,8 +184,31 @@ export const WithoutLabel: Story = {
   },
 };
 
-export const WithAddons: Story = {
-  name: 'With addons',
+export const Disabled: Story = {
+  render: (props) => {
+    return (
+      <TextField
+        {...props}
+        variant="readonly"
+        size="md"
+        label="With addon"
+        placeholder="With addon"
+        startVisual={<MonoAccountBalance />}
+        endAddon={
+          <Button
+            isDisabled
+            variant="transparent"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Button
+          </Button>
+        }
+      />
+    );
+  },
+};
+
+export const Variants: Story = {
   render: (props) => {
     const [value, setValue] = useState<string>('');
 
@@ -204,7 +223,7 @@ export const WithAddons: Story = {
         <TextField
           {...props}
           size="sm"
-          label="With addon"
+          label="Default"
           placeholder="With addon"
           value={value}
           onValueChange={setValue}
@@ -217,24 +236,53 @@ export const WithAddons: Story = {
         />
         <TextField
           {...props}
-          variant="readonly"
           size="md"
-          label="With addon"
+          label="readonly"
+          variant="readonly"
           placeholder="With addon"
           value={value}
           onValueChange={setValue}
           startVisual={<MonoAccountBalance />}
-          endAddon={
-            <Button variant="transparent" onClick={(e) => e.stopPropagation()}>
-              Button
-            </Button>
-          }
+          endAddon={<Button variant="transparent">Button</Button>}
         />
         <TextField
           {...props}
+          size="md"
+          label="negative"
+          variant="negative"
+          placeholder="With addon"
+          value={value}
+          onValueChange={setValue}
+          startVisual={<MonoAccountBalance />}
+          endAddon={<Button variant="transparent">Button</Button>}
+        />
+        <TextField
+          {...props}
+          size="md"
+          label="positive"
           variant="positive"
-          size="lg"
-          label="With addon"
+          placeholder="With addon"
+          value={value}
+          onValueChange={setValue}
+          startVisual={<MonoAccountBalance />}
+          endAddon={<Button variant="transparent">Button</Button>}
+        />
+        <TextField
+          {...props}
+          size="md"
+          label="info"
+          variant="info"
+          placeholder="With addon"
+          value={value}
+          onValueChange={setValue}
+          startVisual={<MonoAccountBalance />}
+          endAddon={<Button variant="transparent">Button</Button>}
+        />
+        <TextField
+          {...props}
+          size="md"
+          label="warning"
+          variant="warning"
           placeholder="With addon"
           value={value}
           onValueChange={setValue}
@@ -435,10 +483,11 @@ export const WithCopyButton: Story = {
       <TextField
         id="with-copy-button"
         label="With copy button"
-        actionButton={{
-          children: 'Copy',
-          onPress: () => alert('copied'),
-        }}
+        endAddon={
+          <Button variant="transparent" onPress={() => alert('Copied!')}>
+            <MonoCopyAll />
+          </Button>
+        }
       />
     );
   },
