@@ -145,8 +145,9 @@ export const enrichModule = async (
 
   const moduleOnAllChains = await Promise.all(promises);
 
-  queryClient.setQueryData(['modules', network, networksData], (oldData) =>
-    replaceOldWithNew(oldData as IChainModule[], moduleOnAllChains),
+  queryClient.setQueryData<IChainModule[]>(
+    ['modules', network, networksData],
+    (oldData) => replaceOldWithNew(oldData!, moduleOnAllChains),
   );
 };
 
@@ -242,13 +243,13 @@ const ModuleExplorerPage = (
 
   const queryClient = useQueryClient();
 
-  const cached = queryClient.getQueriesData({
+  const cached = queryClient.getQueriesData<IChainModule>({
     queryKey: ['module', network],
     type: 'active',
   });
   let fetchedModules: IEditorProps['openedModules'] = cached
     .filter(([, data]) => Boolean(data))
-    .map(([, data]) => data as IChainModule);
+    .map(([, data]) => data!);
   if (results.every((result) => result.status === 'success')) {
     fetchedModules = results.map((result) => result.data!);
   }
