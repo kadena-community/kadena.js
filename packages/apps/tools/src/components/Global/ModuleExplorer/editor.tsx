@@ -50,6 +50,15 @@ const Editor = ({
     usePersistentState<KeyboardHandler>('keyboard-handler', keyboards[0]);
   const [theme, setTheme] = usePersistentState<Theme>('theme', 'monokai');
   const [mode, setMode] = usePersistentState<Mode>('mode', 'lisp');
+  const [selectedKey, setSelectedKey] = useState(
+    activeModule ? moduleToTabId(activeModule) : null,
+  );
+  useEffect(() => {
+    console.log('active module changed', activeModule);
+    if (activeModule) {
+      setSelectedKey(moduleToTabId(activeModule));
+    }
+  }, [activeModule]);
 
   if (!openedModules.length) {
     return (
@@ -110,8 +119,14 @@ const Editor = ({
         </GridItem>
       </Grid>
       <Tabs
-        selectedKey={activeModule ? moduleToTabId(activeModule) : null}
+        // selectedKey={activeModule ? moduleToTabId(activeModule) : null}
+        // defaultSelectedKey={
+        //   activeModule ? moduleToTabId(activeModule) : undefined
+        // }
+        selectedKey={selectedKey}
         onSelectionChange={(key) => {
+          setSelectedKey(key as string);
+
           const activeModule = openedModules.find((module) => {
             return moduleToTabId(module) === key;
           });
