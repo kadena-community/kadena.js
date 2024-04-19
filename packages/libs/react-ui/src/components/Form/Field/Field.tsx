@@ -18,7 +18,7 @@ interface IFieldProps {
   description?: string | ReactNode;
   descriptionProps: DOMAttributes<FocusableElement>;
   endAddon?: ReactNode;
-  errorMessage?: string | ((validation: ValidationResult) => string);
+  errorMessage?: ReactNode | ((validation: ValidationResult) => ReactNode);
   errorMessageProps: DOMAttributes<FocusableElement>;
   info?: string;
   isInvalid: boolean;
@@ -50,6 +50,7 @@ const Field = forwardRef(
       startAddon,
       tag,
       isDisabled = false,
+      isInvalid,
       validationDetails,
       validationErrors,
       variant,
@@ -57,8 +58,15 @@ const Field = forwardRef(
     ref: ForwardedRef<ElementRef<'input' | 'textarea' | 'select'>>,
   ) => {
     const isPositive = variant === 'positive';
-    const isInvalid = variant === 'negative';
+    isInvalid = isInvalid || variant === 'negative';
     isDisabled = isDisabled || variant === 'readonly';
+
+    const currentVariant = isInvalid
+      ? 'negative'
+      : isPositive
+      ? 'positive'
+      : variant;
+
     // aggregate error message from validation props
     const error =
       typeof errorMessage === 'function'
@@ -78,7 +86,7 @@ const Field = forwardRef(
         )}
         <div
           className={baseContainerClass({
-            variant: isDisabled ? 'readonly' : variant,
+            variant: currentVariant,
           })}
         >
           {startAddon && (
@@ -117,14 +125,14 @@ const Field = forwardRef(
         {description && !isInvalid && (
           <FormFieldHelpText
             {...descriptionProps}
-            intent={isPositive ? 'positive' : 'info'}
+            intent={variant === 'readonly' ? 'default' : variant}
           >
             {description}
           </FormFieldHelpText>
         )}
-        {(isInvalid || error) && (
+        {isInvalid && (
           <FormFieldHelpText {...errorMessageProps} intent="negative">
-            {error || description}
+            {error || (errorMessage as string)}
           </FormFieldHelpText>
         )}
       </div>

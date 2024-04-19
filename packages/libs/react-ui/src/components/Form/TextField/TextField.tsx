@@ -52,6 +52,7 @@ export function TextFieldBase(
     size = 'md',
     startVisual,
     tag,
+    errorMessage,
     variant = 'default',
     ...props
   }: ITextFieldProps,
@@ -64,7 +65,7 @@ export function TextFieldBase(
       ...props,
       onChange: props.onValueChange,
       inputElementType: 'input',
-      isDisabled: isDisabled,
+      isDisabled,
     },
     ref,
   );
@@ -93,6 +94,7 @@ export function TextFieldBase(
       description={props.description}
       startAddon={startVisual}
       endAddon={endAddon}
+      errorMessage={errorMessage}
       size={size}
       tag={tag}
       info={info}
@@ -103,7 +105,7 @@ export function TextFieldBase(
         onChange={handleOnChange}
         ref={ref}
         className={input({
-          variant,
+          variant: fieldProps.isInvalid ? 'negative' : variant,
           size,
           fontType,
         })}

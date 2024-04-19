@@ -184,6 +184,18 @@ export const WithoutLabel: Story = {
   },
 };
 
+export const WithErrorMessage: Story = {
+  render: () => {
+    return (
+      <TextField
+        errorMessage="Something went wrong"
+        isInvalid
+        placeholder="placeholder"
+      />
+    );
+  },
+};
+
 export const Disabled: Story = {
   render: (props) => {
     return (
@@ -224,7 +236,7 @@ export const Variants: Story = {
           {...props}
           size="sm"
           label="Default"
-          placeholder="With addon"
+          placeholder="Default"
           value={value}
           onValueChange={setValue}
           startVisual={<MonoAccountBalance />}
@@ -239,7 +251,7 @@ export const Variants: Story = {
           size="md"
           label="readonly"
           variant="readonly"
-          placeholder="With addon"
+          placeholder="Readonly"
           value={value}
           onValueChange={setValue}
           startVisual={<MonoAccountBalance />}
@@ -250,7 +262,7 @@ export const Variants: Story = {
           size="md"
           label="negative"
           variant="negative"
-          placeholder="With addon"
+          placeholder="Negative"
           value={value}
           onValueChange={setValue}
           startVisual={<MonoAccountBalance />}
@@ -261,7 +273,7 @@ export const Variants: Story = {
           size="md"
           label="positive"
           variant="positive"
-          placeholder="With addon"
+          placeholder="Positive"
           value={value}
           onValueChange={setValue}
           startVisual={<MonoAccountBalance />}
@@ -272,7 +284,7 @@ export const Variants: Story = {
           size="md"
           label="info"
           variant="info"
-          placeholder="With addon"
+          placeholder="Info"
           value={value}
           onValueChange={setValue}
           startVisual={<MonoAccountBalance />}
@@ -283,7 +295,7 @@ export const Variants: Story = {
           size="md"
           label="warning"
           variant="warning"
-          placeholder="With addon"
+          placeholder="Warning"
           value={value}
           onValueChange={setValue}
           startVisual={<MonoAccountBalance />}
@@ -323,7 +335,6 @@ export const NativeValidation: Story = {
           onValueChange={setEmail}
           placeholder="required (email)"
           minLength={5}
-          maxLength={10}
         />
         <TextField
           isRequired
