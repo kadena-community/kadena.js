@@ -19,7 +19,7 @@ export interface IModuleExplorerProps {
 
 const ModuleExplorer = ({
   modules,
-  openedModules,
+  openedModules: fetchedModules,
   onModuleClick,
   onInterfaceClick,
   onModuleExpand,
@@ -28,11 +28,41 @@ const ModuleExplorer = ({
 }: IModuleExplorerProps): React.JSX.Element => {
   const [activeModule, setActiveModule] = useState<IChainModule>();
   const results = getModulesMap(modules);
+  const [openedModules, setOpenedModules] =
+    useState<IChainModule[]>(fetchedModules);
   return (
     <div className={containerStyle}>
       <SidePanel
         results={results}
         onResultClick={(result) => {
+          setOpenedModules((prev) => {
+            const alreadyOpened = prev.find((openedModule) => {
+              return (
+                openedModule.moduleName === result.moduleName &&
+                openedModule.chainId === result.chainId
+              );
+            });
+
+            if (alreadyOpened) {
+              return prev;
+            }
+
+            let add = result;
+
+            const enhanced = modules.find((module) => {
+              return (
+                module.moduleName === result.moduleName &&
+                module.chainId === result.chainId
+              );
+            });
+
+            if (enhanced) {
+              add = enhanced;
+            }
+
+            return [...prev, add];
+          });
+
           onModuleClick(result);
           setActiveModule(result);
         }}
@@ -45,9 +75,19 @@ const ModuleExplorer = ({
         activeModule={activeModule}
         onActiveModuleChange={(activeModule) => {
           onActiveModuleChange(activeModule);
-          setActiveModule(activeModule);
+          // setActiveModule(activeModule);
         }}
-        onTabClose={onTabClose}
+        onTabClose={(module) => {
+          setOpenedModules(
+            openedModules.filter((openedModule) => {
+              return (
+                `${openedModule.moduleName}-${openedModule.chainId}` !==
+                `${module.moduleName}-${module.chainId}`
+              );
+            }),
+          );
+          onTabClose(module);
+        }}
       />
     </div>
   );
