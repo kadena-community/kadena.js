@@ -1,6 +1,23 @@
 import { readFileSync, writeFileSync } from 'fs';
 import * as ts from 'typescript';
 
+const createContext = <T extends Record<string, unknown>>() => {
+  let context = {} as T;
+  return {
+    setContext(ctx: Partial<T>) {
+      context = { ...context, ...ctx };
+    },
+    useContext() {
+      return context;
+    },
+  };
+};
+
+const { setContext, useContext } = createContext<{
+  tables: TableInterface[];
+  schemes: SchemeInterface[];
+}>();
+
 const indent =
   (space = 1) =>
   (text: string) =>
@@ -8,6 +25,14 @@ const indent =
       .split('\n')
       .map((line) => ' '.repeat(space) + line)
       .join('\n');
+
+const formatError = (node: ts.Node) => {
+  return `\n=====Error======\n${
+    ts.SyntaxKind[node.kind]
+  } is not supported\n _TS_____\n|${indent(1)(
+    node.getText(),
+  )}\n================\n`;
+};
 
 const asPactType = (type: ts.TypeNode) => {
   switch (type.kind) {
@@ -53,7 +78,7 @@ const binaryOperatorMapper = (operator: ts.BinaryOperatorToken) => {
 };
 
 const createExpression = (
-  statement: ts.Expression | ts.VariableStatement | ts.Block,
+  statement: ts.Expression | ts.VariableStatement | ts.Block | ts.Statement,
 ): string | { code: string; openedBlock: number } => {
   switch (statement.kind) {
     case ts.SyntaxKind.FalseKeyword:
@@ -72,8 +97,19 @@ const createExpression = (
     }
     case ts.SyntaxKind.CallExpression: {
       const callExpression = statement as ts.CallExpression;
-      const functionName = getFunctionName(callExpression);
-      const args = callExpression.arguments.map(createExpression);
+      let functionName = getFunctionName(callExpression);
+      const parts = functionName.split('.');
+      let args = callExpression.arguments.map(createExpression);
+      const { tables } = useContext();
+      if (tables) {
+        const table = tables.find(
+          ({ propertyName }) => propertyName === parts[0],
+        );
+        if (table) {
+          args = [`"${table.tableName}"`, ...args];
+          functionName = parts[1];
+        }
+      }
       return `(${functionName} ${args.join(' ')})`;
     }
     case ts.SyntaxKind.PropertyAccessExpression: {
@@ -201,7 +237,7 @@ const createExpression = (
 
 const getFunctionName = (callExpression: ts.CallExpression) => {
   if (callExpression.expression.kind === ts.SyntaxKind.Identifier) {
-    return (callExpression.expression as ts.Identifier).escapedText;
+    return (callExpression.expression as ts.Identifier).escapedText.toString();
   }
   let next: ts.PropertyAccessExpression =
     callExpression.expression as ts.PropertyAccessExpression;
@@ -215,16 +251,12 @@ const getFunctionName = (callExpression: ts.CallExpression) => {
 
 const createBlock = (block: ts.Block) => {
   let blockOpened = 0;
-
   const statements: string[] =
     block.statements
       .map((statement) => {
-        let expression: ts.Expression | ts.VariableStatement | undefined;
+        let expression: ts.Expression | ts.Statement | undefined = statement;
         if (statement.kind === ts.SyntaxKind.ExpressionStatement) {
           expression = (statement as ts.ExpressionStatement).expression;
-        }
-        if (statement.kind === ts.SyntaxKind.VariableStatement) {
-          expression = statement as ts.VariableStatement;
         }
         if (statement.kind === ts.SyntaxKind.ReturnStatement) {
           expression = (statement as ts.ReturnStatement).expression;
@@ -235,7 +267,6 @@ const createBlock = (block: ts.Block) => {
             return indent(blockOpened * 2)(res);
           }
           const { code, openedBlock } = res;
-          console.log('code', code);
           const old = blockOpened;
           blockOpened += openedBlock;
           try {
@@ -252,36 +283,154 @@ const createBlock = (block: ts.Block) => {
   return [...statements, ...(blockOpened ? [')'.repeat(blockOpened)] : [])];
 };
 
-const extractMethod = (method: ts.MethodDeclaration) => {
-  const decorator = (
-    method.modifiers?.length ? method.modifiers[0] : undefined
-  ) as ts.Decorator | undefined;
-  const decoratorName = decorator
-    ? (decorator.expression as ts.Identifier).escapedText
-    : undefined;
+const extractDecorator = (decorator: ts.ModifierLike) => {
+  if (decorator.kind === ts.SyntaxKind.Decorator) {
+    switch (decorator.expression.kind) {
+      case ts.SyntaxKind.CallExpression: {
+        const callExpression = decorator.expression as ts.CallExpression;
+        if (callExpression.expression.kind !== ts.SyntaxKind.Identifier) {
+          throw new Error('Only one call for decorators is supported');
+        }
+        return {
+          isCall: true as const,
+          name: (callExpression.expression as ts.Identifier).getText(),
+          arguments: callExpression.arguments.map((arg) => {
+            if (arg.kind !== ts.SyntaxKind.StringLiteral) {
+              throw new Error(
+                'only string literal is acceptable for decorators arguments',
+              );
+            }
+            return (arg as ts.StringLiteral).text;
+          }),
+        };
+      }
+      case ts.SyntaxKind.Identifier: {
+        return {
+          isCall: false as const,
+          name: decorator.expression.getText(),
+        };
+      }
+    }
+  }
+};
 
+const extractMethod = (method: ts.MethodDeclaration) => {
   const parameters = method.parameters.map((parameter) => ({
     name: (parameter.name as ts.Identifier).escapedText,
     type: parameter.type ? asPactType(parameter.type) : 'unknown',
   }));
 
   const statements = method.body ? createBlock(method.body) : [];
+  const decorators = method.modifiers?.map(extractDecorator) ?? [];
+  if (decorators.length > 1) {
+    throw new Error('only one decorator is valid');
+  }
 
   return {
-    decorator: decoratorName,
+    decorator: decorators[0],
     method: (method.name as ts.Identifier).escapedText,
     parameters,
     statements,
   };
 };
 
-const formatError = (node: ts.Node) => {
-  return `\n=====Error=====\n ${
-    ts.SyntaxKind[node.kind]
-  } is not supported\n${node.getText()}\n================\n`;
+const extractProperty = (item: ts.PropertyDeclaration) => {
+  const decorators = item.modifiers?.map(extractDecorator) ?? [];
+  if (decorators.length > 1) {
+    throw new Error('only one de decorator is valid fpr properties');
+  }
+  switch (item.initializer?.kind) {
+    case ts.SyntaxKind.NewExpression: {
+      const initializer = item.initializer as ts.NewExpression;
+      const name = initializer.expression.getText();
+      const typeArgs =
+        initializer.typeArguments?.map((t) => {
+          if (ts.isTypeReferenceNode(t)) {
+            const schemeType = (
+              t.typeName as ts.Identifier
+            ).escapedText.toString();
+            return schemeType;
+          }
+        }) ?? [];
+
+      const args =
+        (initializer.arguments
+          ?.map(createExpression)
+          .filter((a) => typeof a === 'string') as string[]) ?? [];
+
+      return {
+        decorator: decorators[0],
+        name: item.name.getText(),
+        initializer: {
+          class: name,
+          typeArguments: typeArgs,
+        },
+        args,
+      };
+    }
+    default:
+      throw new Error(
+        item.initializer
+          ? formatError(item.initializer)
+          : 'Initializer of a property cant be undefined',
+      );
+  }
 };
 
-function classMember(member: ts.ClassElement) {
+const extractScheme =
+  (definedInterfaces: DefinedInterface[]) =>
+  (member: ts.ClassElement): SchemeInterface | undefined => {
+    if (member.kind !== ts.SyntaxKind.PropertyDeclaration) {
+      return;
+    }
+    const { decorator, name, initializer } = extractProperty(
+      member as ts.PropertyDeclaration,
+    );
+    if (
+      (decorator && decorator.name === 'defschema') ||
+      (!decorator && initializer.class === 'Scheme')
+    ) {
+      if (initializer.typeArguments.length !== 1) {
+        throw new Error('type argument is required for defining a scheme');
+      }
+      const intf = definedInterfaces.find(
+        (v) => v.name === initializer.typeArguments[0],
+      );
+      if (!intf) {
+        throw new Error('Interface can not be found');
+      }
+      return {
+        schemeName: decorator?.arguments?.length
+          ? decorator.arguments[0]
+          : name,
+        propertyName: name,
+        type: intf,
+      };
+    }
+  };
+
+const extractTables = (member: ts.ClassElement): TableInterface | undefined => {
+  if (member.kind !== ts.SyntaxKind.PropertyDeclaration) {
+    return;
+  }
+  const { decorator, name, initializer, args } = extractProperty(
+    member as ts.PropertyDeclaration,
+  );
+  if (
+    (decorator && decorator.name === 'deftable') ||
+    (!decorator && initializer.class === 'Table')
+  ) {
+    if (args.length !== 1) {
+      throw new Error('scheme is required for defining a table');
+    }
+    return {
+      tableName: decorator?.arguments?.length ? decorator.arguments[0] : name,
+      propertyName: name,
+    };
+  }
+};
+
+const classMember = (member: ts.ClassElement) => {
   switch (member.kind) {
     case ts.SyntaxKind.MethodDeclaration: {
       const { decorator, method, parameters, statements } = extractMethod(
@@ -291,28 +440,78 @@ function classMember(member: ts.ClassElement) {
         .map(({ name, type }) => `${name}${type ? `:${type}` : ''}`)
         .join(' ');
       let fun = '';
-      if (decorator === 'defcap' || decorator === 'governance') {
+      if (decorator?.name === 'defcap' || decorator?.name === 'governance') {
         fun = `defcap`;
       }
-      if (decorator === 'defpact') {
+      if (decorator?.name === 'defpact') {
         fun = `defpact`;
       }
-      if (!decorator) {
+      if (!decorator?.name) {
         fun = `defun`;
       }
       if (fun !== '') {
-        return `(${fun} ${method} (${params})${
+        return `(${fun} ${
+          decorator?.isCall && decorator.arguments.length > 0
+            ? decorator.arguments[0]
+            : method
+        } (${params})${
           statements?.length ? `\n${indent(2)(statements.join('\n'))}\n` : ''
         })`;
+      }
+    }
+    case ts.SyntaxKind.PropertyDeclaration: {
+      const property = member as ts.PropertyDeclaration;
+      const { decorator, name, initializer } = extractProperty(property);
+      if (
+        (decorator && decorator.name === 'defschema') ||
+        initializer.class === 'Scheme'
+      ) {
+        const { schemes } = useContext();
+        const scheme = schemes.find(
+          ({ propertyName }) => propertyName === name,
+        );
+        if (!scheme) {
+          throw new Error(`Scheme is not available for property ${name}`);
+        }
+        return `(defschema ${scheme?.schemeName}\n${scheme.type.properties
+          .map((p) => `  ${p.prop}: ${p.type}`)
+          .join('\n')}\n)`;
+      }
+
+      if (
+        (decorator && decorator.name === 'deftable') ||
+        initializer.class === 'Table'
+      ) {
+        const { decorator, name, initializer, args } =
+          extractProperty(property);
+        const schemeProperty = args[0];
+        if (!schemeProperty) {
+          throw new Error('Scheme should be passed to the Table');
+        }
+        const { schemes } = useContext();
+        const scheme = schemes.find(
+          ({ propertyName }) => propertyName === schemeProperty,
+        );
+        if (!scheme) {
+          throw new Error(
+            `Scheme is not available for property ${schemeProperty}`,
+          );
+        }
+        return `(deftable ${
+          (decorator?.arguments && decorator.arguments[0]) ?? name
+        }:{${scheme.schemeName}} )`;
       }
     }
 
     default:
       return formatError(member);
   }
-}
+};
 
-function convertClass(classObject: ts.ClassDeclaration) {
+function convertClass(
+  classObject: ts.ClassDeclaration,
+  definedInterfaces: DefinedInterface[],
+) {
   const namespace = classObject.modifiers
     ?.map((mod) => {
       if (mod.kind === ts.SyntaxKind.Decorator) {
@@ -323,7 +522,17 @@ function convertClass(classObject: ts.ClassDeclaration) {
     })
     .filter(Boolean);
 
-  const interfaces =
+  const moduleNameDecorator = classObject.modifiers
+    ?.map((mod) => {
+      if (mod.kind === ts.SyntaxKind.Decorator) {
+        if ((mod.expression as any).expression.escapedText === 'module') {
+          return (mod.expression as any).arguments[0].text;
+        }
+      }
+    })
+    .filter(Boolean);
+
+  const usedInterfaces =
     classObject.heritageClauses?.flatMap((item) => {
       if (item.token === ts.SyntaxKind.ImplementsKeyword) {
         return item.types.map(
@@ -337,14 +546,36 @@ function convertClass(classObject: ts.ClassDeclaration) {
         const { decorator, method } = extractMethod(
           member as ts.MethodDeclaration,
         );
-        if (decorator === 'governance') return method;
+        if (decorator?.name === 'governance')
+          return decorator?.isCall && decorator.arguments.length > 0
+            ? decorator.arguments[0]
+            : method;
       }
     })
     .filter(Boolean)[0];
+
+  const schemes = classObject.members
+    .map(extractScheme(definedInterfaces))
+    .filter(Boolean) as SchemeInterface[];
+
+  setContext({ schemes });
+
+  const tables = classObject.members
+    .map(extractTables)
+    .filter(Boolean) as Array<{
+    tableName: string;
+    propertyName: string;
+  }>;
+
+  setContext({ tables });
+
+  const moduleName = moduleNameDecorator?.length
+    ? moduleNameDecorator[0]
+    : classObject.name?.escapedText ?? 'no-name';
   return `; AUTO-GENERATED FILE
 ${namespace?.map((name) => `(namespace "${name}")`)}
-(module ${classObject.name?.escapedText || 'not-named'} ${governance ?? ''}
-${interfaces
+(module ${moduleName} ${governance ?? ''}
+${usedInterfaces
   .map((itf) => `(implements ${itf})`)
   .map(indent(2))
   .join('\n')}
@@ -358,14 +589,55 @@ ${classObject.members
   `;
 }
 
+interface DefinedInterface {
+  name: string;
+  properties: {
+    prop: string;
+    type: string | undefined;
+  }[];
+}
+
+interface SchemeInterface {
+  type: DefinedInterface;
+  schemeName: string;
+  propertyName: string;
+}
+
+interface TableInterface {
+  tableName: string;
+  propertyName: string;
+}
+
+function toInterface(intf: ts.InterfaceDeclaration): DefinedInterface {
+  const name = intf.name.escapedText;
+  return {
+    name: `${name}`,
+    properties: intf.members.map((elm) => {
+      if (elm.kind !== ts.SyntaxKind.PropertySignature) {
+        return { prop: formatError(elm), type: undefined };
+      }
+      const property = elm as ts.PropertySignature;
+      return { prop: property.name.getText(), type: property.type?.getText() };
+    }),
+  };
+}
+
 export function convertFile(sourceFile: ts.SourceFile) {
   if (sourceFile.kind !== ts.SyntaxKind.SourceFile) {
     throw 'not a valid ts file';
   }
 
+  const interfaces = sourceFile.statements
+    .map((node) => {
+      if (node.kind == ts.SyntaxKind.InterfaceDeclaration) {
+        return toInterface(node as ts.InterfaceDeclaration);
+      }
+    })
+    .filter(Boolean) as DefinedInterface[];
+
   return sourceFile.statements.map((node) => {
     if (node.kind == ts.SyntaxKind.ClassDeclaration) {
-      return convertClass(node as ts.ClassDeclaration);
+      return convertClass(node as ts.ClassDeclaration, interfaces);
     }
   });
 }

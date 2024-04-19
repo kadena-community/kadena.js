@@ -1,12 +1,11 @@
+declare const module: any;
 declare const governance: any;
 declare const defun: any;
 declare const defcap: any;
-declare const defscheme: any;
+declare const defschema: any;
 declare const deftable: any;
 declare const bless: any;
 declare const doc: any;
-declare interface fungible_v2 {}
-declare interface fungible_xchain_v1 {}
 declare const with_capability: any;
 declare const enforce: any;
 declare const enforce_guard: any;
@@ -30,4 +29,14 @@ declare const defModule: any;
 declare const defGovernance: any;
 declare type decimal = number & { _brand?: 'decimal' };
 declare type guard = any;
-declare type Table<T> = any;
+declare class Table<T> {
+  constructor(scheme: Scheme<T>);
+  read(key: string): any;
+  write(key: string, value: any);
+}
+@module('fungible-v2')
+class fungibleV2 {}
+@module('fungible-xchain-v1')
+class fungibleXChainV1 {}
+
+declare class Scheme<T> {}

@@ -3,31 +3,24 @@
 
 ; AUTO-GENERATED FILE
 (namespace "free")
-(module coin GOVERNANCE
-  (implements fungible_v2)
-  (implements fungible_xchain_v1)
-
+(module my-coin GOVERNANCE
+  (implements fungibleV2)
+  (implements fungibleXChainV1)
+  
 
   (defcap GOVERNANCE ()
     (enforce false "Enforce non-upgradeability")
   )
 
+  (defschema coin-scheme
+    balance: decimal
+    guard: guard
+  )
 
-  =====Error=====
-   PropertyDeclaration is not supported
-  @defscheme coin_scheme: coin_scheme;
-  ================
-
-
-
-  =====Error=====
-   PropertyDeclaration is not supported
-  @deftable coin_table: Table<coin_scheme>;
-  ================
-
+  (deftable coin-table:{coin-scheme} )
 
   (defcap DEBIT (sender:string)
-    (enforce_guard (at "guard" (coin_table.read sender) ))
+    (enforce_guard (at "guard" (read "coin-table" sender) ))
     (enforce (!= sender "") "valid sender")
   )
 
@@ -35,7 +28,7 @@
     (enforce (!= receiver "") "valid receiver")
   )
 
-  (defcap TRANSFER_mgr (managed:decimal requested:decimal)
+  (defcap TRANSFER-mgr (managed:decimal requested:decimal)
     (let ((newbal (- managed requested)))
       (enforce (>= newbal 0) (format "TRANSFER exceeded for balance {}" [managed]))
       newbal
@@ -56,7 +49,7 @@
     (enforce (> amount 0) "debit amount must be positive")
     (enforce_unit amount)
     (require_capability (DEBIT account))
-    (let ((balance (at "balance" (coin_table.read account))))
+    (let ((balance (at "balance" (read "coin-table" account))))
       (enforce (<= amount balance) "Insufficient funds")
       (update "coin-table" account { balance: (- balance amount) })
     )
@@ -67,12 +60,12 @@
     (enforce (> amount 0) "credit amount must be positive")
     (enforce_unit amount)
     (require_capability (CREDIT account))
-    (let (( temp_variable (coin_table.read account)))
+    (let (( temp_variable (read "coin-table" account)))
       (let ((retg (at "guard" temp_variable)))
         (let ((balance (at "balance" temp_variable)))
           (enforce (= retg guard) "account guards do not match")
           (let ((is_new (if (= balance -1) (enforce_reserved account guard) false)))
-            (coin_table.write account { balance: (if is_new amount (+ balance amount)),guard: retg })
+            (write "coin-table" account { balance: (if is_new amount (+ balance amount)),guard: retg })
     ))))
   )
 
@@ -82,11 +75,12 @@
     (validate_account receiver)
     (enforce (> amount 0))
     (enforce_unit amount)
-    (with_capability (TRANSFER sender receiver amount)
+    (with_capability (TRANSFER sender receiver amount) 
       (debit sender amount)
-      (let ((guard (at "guard" (coin_table.read receiver))))
+      (let ((guard (at "guard" (read "coin-table" receiver))))
         (credit receiver guard amount)
       )
     )
   )
 )
+  

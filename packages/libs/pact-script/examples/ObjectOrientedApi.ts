@@ -1,10 +1,11 @@
-interface coin_scheme {
-  account: string;
+interface CoinScheme {
+  balance: decimal;
   guard: guard;
 }
 
 @namespace('free')
-class coin implements fungible_v2, fungible_xchain_v1 {
+@module('my-coin')
+class coin implements fungibleV2, fungibleXChainV1 {
   /**
    * doc can be here
    */
@@ -12,12 +13,13 @@ class coin implements fungible_v2, fungible_xchain_v1 {
     enforce(false, 'Enforce non-upgradeability');
   }
 
-  @defscheme coin_scheme: coin_scheme;
+  @defschema('coin-scheme') coinScheme =
+    new Scheme<CoinScheme>(/** we can pass model as scheme validator */);
 
-  @deftable coin_table: Table<coin_scheme>;
+  @deftable('coin-table') coinTable = new Table(this.coinScheme);
 
   @defcap DEBIT(sender: string) {
-    enforce_guard(this.coin_table.read(sender).guard);
+    enforce_guard(this.coinTable.read(sender).guard);
     enforce(sender !== '', 'valid sender');
   }
 
@@ -25,7 +27,10 @@ class coin implements fungible_v2, fungible_xchain_v1 {
     enforce(receiver !== '', 'valid receiver');
   }
 
-  @defcap TRANSFER_mgr(managed: decimal, requested: decimal): decimal {
+  @defcap('TRANSFER-mgr') TRANSFER_mgr(
+    managed: decimal,
+    requested: decimal,
+  ): decimal {
     const newbal = managed - requested;
     enforce(
       newbal >= 0.0,
@@ -48,7 +53,7 @@ class coin implements fungible_v2, fungible_xchain_v1 {
     enforce(amount > 0.0, 'debit amount must be positive');
     enforce_unit(amount);
     require_capability(this.DEBIT(account));
-    const { balance } = this.coin_table.read(account);
+    const { balance } = this.coinTable.read(account);
     enforce(amount <= balance, 'Insufficient funds');
     return update('coin-table', account, { balance: balance - amount });
   }
@@ -58,10 +63,10 @@ class coin implements fungible_v2, fungible_xchain_v1 {
     enforce(amount > 0.0, 'credit amount must be positive');
     enforce_unit(amount);
     require_capability(this.CREDIT(account));
-    const { balance, guard: retg } = this.coin_table.read(account);
+    const { balance, guard: retg } = this.coinTable.read(account);
     enforce(retg === guard, 'account guards do not match');
     const is_new = balance === -1 ? enforce_reserved(account, guard) : false;
-    return this.coin_table.write(account, {
+    return this.coinTable.write(account, {
       balance: is_new ? amount : balance + amount,
       guard: retg,
     });
@@ -75,7 +80,7 @@ class coin implements fungible_v2, fungible_xchain_v1 {
     enforce_unit(amount);
     return with_capability(this.TRANSFER(sender, receiver, amount), () => {
       this.debit(sender, amount);
-      const { guard } = this.coin_table.read(receiver);
+      const { guard } = this.coinTable.read(receiver);
       return this.credit(receiver, guard, amount);
     });
   }
