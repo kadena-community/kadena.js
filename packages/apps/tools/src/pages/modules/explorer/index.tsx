@@ -217,43 +217,43 @@ const ModuleExplorerPage = (
     refetchOnWindowFocus: false,
   });
 
-  const results = useQueries({
-    queries: openedModules.map((module) => {
-      return {
-        queryKey: [
-          'module',
-          network,
-          module.chainId,
-          module.moduleName,
-          networksData,
-        ],
-        queryFn: () => getCompleteModule(module, network, networksData),
-        initialData: () => {
-          return props.openedModules.find((openedModule) => {
-            return (
-              openedModule.moduleName === module.moduleName &&
-              openedModule.chainId === module.chainId
-            );
-          });
-        },
-        staleTime: 1500, // We need to set this in combination with initialData, otherwise the query will immediately refetch when it mounts
-        refetchOnWindowFocus: false,
-      };
-    }),
-  });
+  // const results = useQueries({
+  //   queries: openedModules.map((module) => {
+  //     return {
+  //       queryKey: [
+  //         'module',
+  //         network,
+  //         module.chainId,
+  //         module.moduleName,
+  //         networksData,
+  //       ],
+  //       queryFn: () => getCompleteModule(module, network, networksData),
+  //       initialData: () => {
+  //         return props.openedModules.find((openedModule) => {
+  //           return (
+  //             openedModule.moduleName === module.moduleName &&
+  //             openedModule.chainId === module.chainId
+  //           );
+  //         });
+  //       },
+  //       staleTime: 1500, // We need to set this in combination with initialData, otherwise the query will immediately refetch when it mounts
+  //       refetchOnWindowFocus: false,
+  //     };
+  //   }),
+  // });
 
   const queryClient = useQueryClient();
 
-  const cached = queryClient.getQueriesData<IChainModule>({
-    queryKey: ['module', network],
-    type: 'active',
-  });
-  let fetchedModules: IEditorProps['openedModules'] = cached
-    .filter(([, data]) => Boolean(data))
-    .map(([, data]) => data!);
-  if (results.every((result) => result.status === 'success')) {
-    fetchedModules = results.map((result) => result.data!);
-  }
+  // const cached = queryClient.getQueriesData<IChainModule>({
+  //   queryKey: ['module', network],
+  //   type: 'active',
+  // });
+  // let fetchedModules: IEditorProps['openedModules'] = cached
+  //   .filter(([, data]) => Boolean(data))
+  //   .map(([, data]) => data!);
+  // if (results.every((result) => result.status === 'success')) {
+  //   fetchedModules = results.map((result) => result.data!);
+  // }
 
   const router = useRouter();
 
@@ -297,19 +297,19 @@ const ModuleExplorerPage = (
 
   const onModuleOpen = useCallback<(module: IChainModule) => void>(
     (module) => {
-      setOpenedModules((prev) => {
-        const alreadyOpened = prev.find((openedModule) => {
-          return (
-            openedModule.moduleName === module.moduleName &&
-            openedModule.chainId === module.chainId
-          );
-        });
+      // setOpenedModules((prev) => {
+      //   const alreadyOpened = prev.find((openedModule) => {
+      //     return (
+      //       openedModule.moduleName === module.moduleName &&
+      //       openedModule.chainId === module.chainId
+      //     );
+      //   });
 
-        if (alreadyOpened) {
-          return prev;
-        }
-        return [...prev, module];
-      });
+      //   if (alreadyOpened) {
+      //     return prev;
+      //   }
+      //   return [...prev, module];
+      // });
 
       setDeeplink(module);
     },
@@ -343,16 +343,17 @@ const ModuleExplorerPage = (
         }}
         onActiveModuleChange={setDeeplink}
         onTabClose={(module) => {
-          setOpenedModules(
-            openedModules.filter((openedModule) => {
-              return (
-                `${openedModule.moduleName}-${openedModule.chainId}` !==
-                `${module.moduleName}-${module.chainId}`
-              );
-            }),
-          );
+          console.log('closing', module);
+          // setOpenedModules(
+          //   openedModules.filter((openedModule) => {
+          //     return (
+          //       `${openedModule.moduleName}-${openedModule.chainId}` !==
+          //       `${module.moduleName}-${module.chainId}`
+          //     );
+          //   }),
+          // );
         }}
-        openedModules={fetchedModules}
+        openedModules={props.openedModules}
       />
     </>
   );
