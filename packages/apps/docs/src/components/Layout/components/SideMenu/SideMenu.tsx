@@ -71,7 +71,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
             id="search"
             onKeyUp={handleKeyPress}
             placeholder="Search"
-            isOutlined
             type="text"
             aria-label="Search"
             endAddon={<MagnifierIcon />}

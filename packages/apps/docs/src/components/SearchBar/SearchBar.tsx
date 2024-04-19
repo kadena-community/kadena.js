@@ -40,7 +40,6 @@ export const SearchBar: ForwardRefExoticComponent<
           id="seachinput"
           onKeyUp={handleKeyUp}
           placeholder="Search"
-          isOutlined
           ref={ref}
           defaultValue={query}
           type="text"
