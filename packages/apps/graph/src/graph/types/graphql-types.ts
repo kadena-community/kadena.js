@@ -23,7 +23,7 @@ export interface INonFungibleTokenBalance {
   accountName: string;
   chainId: string;
   guard: IGuard;
-  info?: INonFungibleToken;
+  info?: INonFungibleTokenInfo;
   version: string;
 }
 
@@ -31,7 +31,7 @@ export interface INonFungibleTokenPolicy {
   moduleName: string;
 }
 
-export interface INonFungibleToken {
+export interface INonFungibleTokenInfo {
   supply: number;
   precision: number;
   uri: string;

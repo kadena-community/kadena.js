@@ -9,7 +9,7 @@ import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { nonFungibleChainCheck } from '../data-loaders/non-fungible-chain-check';
-import { tokenDetailsLoader } from '../data-loaders/token-details';
+import { nonFungibleTokenBalancesLoader } from '../data-loaders/non-fungible-token-balances';
 import type {
   INonFungibleAccount,
   INonFungibleChainAccount,
@@ -81,7 +81,7 @@ export default builder.node(
         complexity: COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS,
         async resolve(parent) {
           try {
-            const tokenDetails = await tokenDetailsLoader.load({
+            const tokenDetails = await nonFungibleTokenBalancesLoader.load({
               accountName: parent.accountName,
             });
 
