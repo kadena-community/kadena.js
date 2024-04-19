@@ -25,9 +25,9 @@ interface IFieldProps {
   label?: string | ReactNode;
   labelProps: DOMAttributes<FocusableElement>;
   isDisabled?: boolean;
-  startAddon?: ReactNode;
+  startVisual?: ReactNode;
   variant: InputVariants['variant'];
-  size: NonNullable<InputVariants['size']>;
+  size?: NonNullable<InputVariants['size']>;
   tag?: string;
   validationDetails: ValidityState;
   validationErrors: string[];
@@ -46,14 +46,14 @@ const Field = forwardRef(
       info,
       label,
       labelProps,
-      size,
-      startAddon,
+      size = 'md',
+      startVisual,
       tag,
       isDisabled = false,
       isInvalid,
       validationDetails,
       validationErrors,
-      variant,
+      variant = 'default',
     }: IFieldProps,
     ref: ForwardedRef<ElementRef<'input' | 'textarea' | 'select'>>,
   ) => {
@@ -64,8 +64,8 @@ const Field = forwardRef(
     const currentVariant = isInvalid
       ? 'negative'
       : isPositive
-      ? 'positive'
-      : variant;
+        ? 'positive'
+        : variant;
 
     // aggregate error message from validation props
     const error =
@@ -89,7 +89,7 @@ const Field = forwardRef(
             variant: currentVariant,
           })}
         >
-          {startAddon && (
+          {startVisual && (
             <div
               className={startAddonClass[size]}
               ref={(el) => {
@@ -101,7 +101,7 @@ const Field = forwardRef(
                 }
               }}
             >
-              {startAddon}
+              {startVisual}
             </div>
           )}
           {children}

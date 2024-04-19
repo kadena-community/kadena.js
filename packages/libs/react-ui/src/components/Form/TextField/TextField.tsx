@@ -1,5 +1,6 @@
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
+import classNames from 'classnames';
 import type {
   ChangeEvent,
   ComponentProps,
@@ -92,7 +93,7 @@ export function TextFieldBase(
       label={props.label}
       isDisabled={isDisabled}
       description={props.description}
-      startAddon={startVisual}
+      startVisual={startVisual}
       endAddon={endAddon}
       errorMessage={errorMessage}
       size={size}
@@ -104,11 +105,14 @@ export function TextFieldBase(
         {...mergeProps(inputProps, focusProps, hoverProps)}
         onChange={handleOnChange}
         ref={ref}
-        className={input({
-          variant: fieldProps.isInvalid ? 'negative' : variant,
-          size,
-          fontType,
-        })}
+        className={classNames(
+          input({
+            variant: fieldProps.isInvalid ? 'negative' : variant,
+            size,
+            fontType,
+          }),
+          className,
+        )}
         data-focused={isFocused || undefined}
         data-disabled={isDisabled || undefined}
         data-hovered={isHovered || undefined}

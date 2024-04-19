@@ -140,7 +140,6 @@ export const endAddon = style([
     position: 'absolute',
     right: 0,
     backgroundColor: 'surface.default',
-    overflow: 'hidden',
   }),
   {
     top: '50%',
@@ -148,7 +147,7 @@ export const endAddon = style([
   },
 ]);
 
-globalStyle(`${endAddon} > button`, {
+globalStyle(`${endAddon}  button`, {
   height: '100%',
   borderRadius: '0',
 });

@@ -159,7 +159,7 @@ const meta: Meta<ITextFieldProps> = {
     tag: 'tag',
     label: 'Label',
     placeholder: 'This is a placeholder',
-    errorMessage: 'Error message',
+    errorMessage: '',
     isDisabled: false,
     isRequired: false,
   },
