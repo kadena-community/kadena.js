@@ -121,6 +121,7 @@ const replaceOldWithNew = (
     return {
       ...old,
       hash: newModule.hash,
+      code: newModule.code,
     };
   });
 };
