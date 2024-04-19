@@ -28,8 +28,8 @@ import type {
   IGuard,
   INonFungibleAccount,
   INonFungibleChainAccount,
-  INonFungibleToken,
   INonFungibleTokenBalance,
+  INonFungibleTokenInfo,
   INonFungibleTokenPolicy,
   IPactQueryResponse,
   ITransactionCapability,
@@ -85,7 +85,7 @@ export const builder = new SchemaBuilder<
       NonFungibleChainAccount: INonFungibleChainAccount;
       NonFungibleTokenBalance: INonFungibleTokenBalance;
       NonFungibleTokenPolicy: INonFungibleTokenPolicy;
-      NonFungibleToken: INonFungibleToken;
+      NonFungibleTokenInfo: INonFungibleTokenInfo;
       TransactionMeta: ITransactionMeta;
       ExecutionPayload: IExecutionPayload;
       ContinuationPayload: IContinuationPayload;

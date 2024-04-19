@@ -1,7 +1,7 @@
 import { builder } from '../builder';
 import NonFungibleTokenPolicy from './non-fungible-token-policy';
 
-export default builder.objectType('NonFungibleToken', {
+export default builder.objectType('NonFungibleTokenInfo', {
   description: 'Information related to a token.',
   fields: (t) => ({
     supply: t.exposeInt('supply'),
