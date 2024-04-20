@@ -88,7 +88,7 @@ export const getRandomOption = <T>(randomSeed: number, options: T[]): T => {
   return options[index];
 };
 
-export const stringifyProperty = <T>(keys: T[], property: keyof T) => {
+export const stringifyProperty = <T>(keys: T[], property: keyof T): string => {
   return keys.map((key) => key[property]).join(', ');
 };
 
@@ -98,7 +98,7 @@ export const getAccountBalance = async ({
 }: {
   account: string;
   chainId: ChainId;
-}) => {
+}): Promise<string> => {
   const result = await getBalance(
     account,
     dotenv.NETWORK_ID,

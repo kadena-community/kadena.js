@@ -1,5 +1,6 @@
 import type { Transaction } from '@prisma/client';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function mempoolTransactionMapper(mempoolData: any): Transaction {
   const mempoolTx = JSON.parse(mempoolData.contents);
 
@@ -13,6 +14,7 @@ export function mempoolTransactionMapper(mempoolData: any): Transaction {
 
   mempoolTx.cmd.payload.data = JSON.stringify(mempoolTx.cmd.payload.data);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mempoolTx.cmd.signers = mempoolTx.cmd.signers.map((signer: any) => ({
     publicKey: signer.pubKey,
     scheme: signer.scheme,

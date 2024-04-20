@@ -123,7 +123,7 @@ async function getLastEvents(
         chainId: parseInt(chainId),
       }),
       ...(parametersFilter && {
-        parameters: parsePrismaJsonColumn(parametersFilter, {
+        parameters: parsePrismaJsonColumn<'Event'>(parametersFilter, {
           subscription: 'events',
           queryParameter: 'parametersFilter',
           column: 'parameters',
@@ -154,7 +154,7 @@ async function getLastEvents(
   return eventsToReturn.sort((a, b) => b.id - a.id);
 }
 
-async function getLatestEventId() {
+async function getLatestEventId(): Promise<number | null> {
   try {
     const lastEventId = await prismaClient.event.aggregate({
       _max: {

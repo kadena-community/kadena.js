@@ -21,10 +21,6 @@ export const chainSelectContainerClass = style([
   { width: tokens.kda.foundation.size.n56 },
 ]);
 
-export const buttonContainerClass = style([
-  atoms({ display: 'flex', justifyContent: 'flex-end' }),
-]);
-
 export const tooltipInfoContainer = style([
   atoms({ paddingBlockStart: 'xxl' }),
 ]);

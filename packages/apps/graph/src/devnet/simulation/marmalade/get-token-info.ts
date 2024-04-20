@@ -4,7 +4,7 @@ import { dirtyReadClient } from '@kadena/client-utils/core';
 import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
 import { dotenv } from '@utils/dotenv';
 
-interface TokenInfo {
+interface ITokenInfo {
   supply: number;
   precision: number;
   uri: string;
@@ -15,7 +15,7 @@ export const getTokenInfo = async (
   tokenId: string,
   chainId: ChainId,
   version: string,
-): Promise<TokenInfo | null> => {
+): Promise<ITokenInfo | null> => {
   if (version !== 'v1' && version !== 'v2') {
     throw new Error(
       `Invalid version found for token ${tokenId}. Got ${version} but expected v1 or v2.`,
@@ -71,6 +71,7 @@ export const getTokenInfo = async (
     },
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tokenInfo = await dirtyReadClient<any>(config)(command).execute();
 
   if (!tokenInfo) {
@@ -96,5 +97,5 @@ export const getTokenInfo = async (
     }
   }
 
-  return tokenInfo as TokenInfo;
+  return tokenInfo as ITokenInfo;
 };

@@ -1,7 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { atoms, tokens } from '../../styles';
 import { token } from '../../styles/themeUtils';
-import { iconFill } from '../Icon/IconWrapper.css';
 
 export const containerClass = style([
   atoms({
@@ -113,15 +112,11 @@ export const linkClass = style([
 export const iconButtonClass = style([
   {
     background: 'none !important',
-    vars: {
-      [iconFill]: `${token('color.neutral.n70')} !important`,
-    },
+    fill: `${token('color.neutral.n70')} !important`,
     selectors: {
       '&:hover, &:focus-visible': {
         background: 'none',
-        vars: {
-          [iconFill]: `${token('color.neutral.n100')} !important`,
-        },
+        fill: `${token('color.neutral.n100')} !important`,
       },
     },
   },

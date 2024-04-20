@@ -1,11 +1,11 @@
 import { sendRawQuery } from '@services/chainweb-node/raw-query';
-import type { CommandData } from '@services/chainweb-node/utils';
+import type { ICommandData } from '@services/chainweb-node/utils';
 import { COMPLEXITY } from '@services/complexity';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import GQLPactQueryResponse from '../objects/pact-query-response';
-import type { PactQueryResponse } from '../types/graphql-types';
+import type { IPactQueryResponse } from '../types/graphql-types';
 
 const PactData = builder.inputType('PactQueryData', {
   fields: (t) => ({
@@ -57,23 +57,25 @@ builder.queryField('pactQuery', (t) =>
       try {
         return Promise.all(
           args.pactQuery.map(async (query) => {
-            const timeout: Promise<PactQueryResponse> = new Promise((resolve) =>
-              setTimeout(
-                () =>
-                  resolve({
-                    status: 'timeout',
-                    result: null,
-                    error: 'The query took too long to execute and was aborted',
-                    chainId: query.chainId,
-                    code: query.code,
-                  }),
-                dotenv.TIMEOUT_PACT_QUERY, //timeout in ms
-              ),
+            const timeout: Promise<IPactQueryResponse> = new Promise(
+              (resolve) =>
+                setTimeout(
+                  () =>
+                    resolve({
+                      status: 'timeout',
+                      result: null,
+                      error:
+                        'The query took too long to execute and was aborted',
+                      chainId: query.chainId,
+                      code: query.code,
+                    }),
+                  dotenv.TIMEOUT_PACT_QUERY, //timeout in ms
+                ),
             );
             const sendQuery = sendRawQuery(
               query.code,
               query.chainId,
-              query.data as CommandData[],
+              query.data as ICommandData[],
             )
               .then((result) => ({
                 status: 'success',

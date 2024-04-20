@@ -1,4 +1,5 @@
 'use client';
+import { MonoClose } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import type { FC, FunctionComponentElement as FCElement } from 'react';
 import React, { Children, useContext } from 'react';
@@ -6,7 +7,6 @@ import {
   accordionButtonClass,
   accordionSectionClass,
 } from '../Accordion/Accordion.css';
-import { SystemIcon } from '../Icon';
 import { Heading } from '../Typography/Heading/Heading';
 import { NavAccordionContext } from './NavAccordion.context';
 import {
@@ -57,12 +57,7 @@ export const NavAccordionSection: FC<INavAccordionSectionProps> = ({
         onClick={handleClick}
       >
         <Heading variant="h3">{title}</Heading>
-        <SystemIcon.Close
-          // className={classNames(accordionToggleIconClass, {
-          //   isOpen,
-          // })}
-          size="sm"
-        />
+        <MonoClose />
       </button>
 
       {children && isOpen && (

@@ -1,9 +1,9 @@
+import { MonoAdd } from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { onLayer2, withContentWidth } from '../../../storyDecorators';
 import { atoms } from '../../../styles';
 import { Button } from '../../Button';
-import { Plus } from '../../Icon/System/SystemIcon';
 import { Text } from '../../Typography/Text/Text';
 import { CopyButton } from '../ActionButtons/CopyButton';
 import { Form } from '../Form';
@@ -228,7 +228,7 @@ export const WithAddon: Story = {
           label="With addon"
           value={value}
           onValueChange={setValue}
-          endAddon={<Button icon={<Plus />} isCompact />}
+          endAddon={<Button endVisual={<MonoAdd />} isCompact />}
         />
         <Button type="submit">Submit</Button>
       </Form>

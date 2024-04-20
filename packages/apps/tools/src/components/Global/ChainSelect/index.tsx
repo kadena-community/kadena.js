@@ -12,13 +12,16 @@ export type OnChainSelectChange = (value: ChainwebChainId) => void;
 const ELEMENT_ID = 'select-chain-id';
 
 interface ChainSelectProps
-  extends Omit<ISelectProps, 'onSelectionChange' | 'selectedKey' | 'children'> {
+  extends Omit<
+    ISelectProps,
+    'onSelectionChange' | 'selectedKey' | 'defaultSelectedKey' | 'children'
+  > {
   onSelectionChange?: OnChainSelectChange;
   selectedKey?: ChainwebChainId;
+  defaultSelectedKey?: ChainwebChainId;
   additionalInfoOptions?: any[];
 }
 const ChainSelect: FC<ChainSelectProps> = ({
-  selectedKey,
   onSelectionChange,
   additionalInfoOptions,
   id,
@@ -41,7 +44,6 @@ const ChainSelect: FC<ChainSelectProps> = ({
       label="Chain ID"
       id={id ?? ELEMENT_ID}
       onSelectionChange={onSelectChange}
-      selectedKey={selectedKey}
       startIcon={<MonoLink />}
       aria-label="Select Chain ID"
     >
