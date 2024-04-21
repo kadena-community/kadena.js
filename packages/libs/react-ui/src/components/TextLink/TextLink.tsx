@@ -2,7 +2,7 @@ import { MonoLink } from '@kadena/react-icons/system';
 import { mergeProps, useObjectRef } from '@react-aria/utils';
 import type { RecipeVariants } from '@vanilla-extract/recipes';
 import classNames from 'classnames';
-import type { ForwardedRef, ReactElement } from 'react';
+import type { ForwardedRef } from 'react';
 import React, { forwardRef } from 'react';
 import type { AriaButtonProps, AriaFocusRingProps } from 'react-aria';
 import { useFocusRing, useHover, useLink } from 'react-aria';
@@ -12,6 +12,7 @@ import {
   endVisualStyle,
 } from '../Button/Button.css';
 import { disableLoadingProps } from '../Button/utils';
+import { textLinkClass } from './TextLink.css';
 
 type Variants = NonNullable<RecipeVariants<typeof button>>;
 
@@ -55,6 +56,7 @@ const TextLink = forwardRef(
             variant: 'transparent',
             isCompact,
           }),
+          textLinkClass,
           className,
         )}
         style={style}
