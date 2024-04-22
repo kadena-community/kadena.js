@@ -68,7 +68,38 @@ const ModuleExplorer = ({
           onModuleClick(result);
           setActiveModule(result);
         }}
-        onInterfaceClick={onInterfaceClick}
+        onInterfaceClick={(result) => {
+          setOpenedModules((prev) => {
+            const alreadyOpened = prev.find((openedModule) => {
+              return (
+                openedModule.moduleName === result.moduleName &&
+                openedModule.chainId === result.chainId
+              );
+            });
+
+            if (alreadyOpened) {
+              return prev;
+            }
+
+            let add = result;
+
+            const enhanced = modules.find((module) => {
+              return (
+                module.moduleName === result.moduleName &&
+                module.chainId === result.chainId
+              );
+            });
+
+            if (enhanced) {
+              add = enhanced;
+            }
+
+            return [...prev, add];
+          });
+
+          onInterfaceClick(result);
+          setActiveModule(result);
+        }}
         onInterfacesExpand={onInterfacesExpand}
         onModuleExpand={onModuleExpand}
         selectedModule={openedModules[0]}
