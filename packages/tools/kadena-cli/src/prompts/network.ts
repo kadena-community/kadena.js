@@ -2,7 +2,10 @@ import type { ChainId } from '@kadena/types';
 import { z } from 'zod';
 import { chainIdValidation } from '../account/utils/accountHelpers.js';
 import { KADENA_DIR, MAX_CHAIN_VALUE } from '../constants/config.js';
-import { defaultNetworksPath } from '../constants/networks.js';
+import {
+  NO_NETWORKS_FOUND_ERROR_MESSAGE,
+  defaultNetworksPath,
+} from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
   ensureNetworksConfiguration,
@@ -159,9 +162,7 @@ export const networkSelectPrompt: IPrompt<string> = async (
   );
 
   if (!filteredNetworks.length) {
-    throw new Error(
-      'No networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init`.',
-    );
+    throw new Error(NO_NETWORKS_FOUND_ERROR_MESSAGE);
   }
 
   const networksInOrder = await getNetworksInOrder(filteredNetworks);
@@ -201,9 +202,7 @@ const getEnsureExistingNetworks = async (): Promise<ICustomNetworkChoice[]> => {
   const existingNetworks: ICustomNetworkChoice[] = await getExistingNetworks();
 
   if (!existingNetworks.length) {
-    throw new Error(
-      'No existing networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init',
-    );
+    throw new Error(NO_NETWORKS_FOUND_ERROR_MESSAGE);
   }
   return existingNetworks;
 };
@@ -236,9 +235,7 @@ export const networkSelectOnlyPrompt: IPrompt<string> = async (
   );
 
   if (!filteredNetworks.length) {
-    throw new Error(
-      'No supported networks found. To create one, use: `kadena networks create`. To set default networks, use: `kadena config init',
-    );
+    throw new Error(NO_NETWORKS_FOUND_ERROR_MESSAGE);
   }
 
   const networksInOrder = await getNetworksInOrder(filteredNetworks);
