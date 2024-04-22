@@ -143,7 +143,7 @@ const Editor = ({
                   onTabClose(module);
                 }}
                 isCompact
-                // endIcon={<MonoClose />}
+                endVisual={<MonoClose />}
               >
                 Close
               </Button>
