@@ -37,13 +37,13 @@
   "dependencies": {
     "@kadena/client": "workspace:*",
     "@kadena/pactjs-generator": "workspace:*",
-    "commander": "^11.0.0",
+    "commander": "^12.0.0",
     "cross-fetch": "~3.1.5",
     "debug": "~4.3.4",
     "mkdirp": "~1.0.4",
-    "prettier": "~3.0.3",
+    "prettier": "~3.2.5",
     "rimraf": "~5.0.1",
-    "zod": "~3.18.0"
+    "zod": "~3.23.0"
   },
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
@@ -51,15 +51,15 @@
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
     "@microsoft/api-extractor": "^7.38.0",
-    "@rushstack/eslint-config": "~3.3.0",
-    "@types/debug": "~4.1.7",
+    "@rushstack/eslint-config": "~3.6.9",
+    "@types/debug": "~4.1.12",
     "@types/mkdirp": "~1.0.2",
-    "@types/node": "^18.17.14",
+    "@types/node": "^20.12.7",
     "@types/rimraf": "~3.0.2",
     "@vitest/coverage-v8": "^1.1.0",
-    "eslint": "^8.45.0",
+    "eslint": "^9.1.0",
     "msw": "^2.0.0",
-    "typescript": "5.2.2",
+    "typescript": "5.4.5",
     "vitest": "^1.1.0"
   }
 }

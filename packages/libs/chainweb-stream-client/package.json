@@ -46,13 +46,13 @@
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
     "@microsoft/api-extractor": "^7.38.0",
-    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/eslint-config": "~3.6.9",
     "@types/eventsource": "1.1.11",
-    "@types/node": "^18.17.14",
+    "@types/node": "^20.12.7",
     "@vitest/coverage-v8": "^1.1.0",
-    "eslint": "^8.45.0",
-    "prettier": "~3.0.3",
-    "typescript": "5.2.2",
+    "eslint": "^9.1.0",
+    "prettier": "~3.2.5",
+    "typescript": "5.4.5",
     "vitest": "^1.1.0"
   },
   "publishConfig": {
