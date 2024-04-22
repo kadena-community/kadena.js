@@ -70,6 +70,7 @@ export async function getNonFungibleTokenBalances(
         tokenId: event.token,
         accountName: accountName,
         chainId: finalChainId,
+        version: event.version!,
       });
 
       result.push({
@@ -130,6 +131,8 @@ export async function getNonFungibleTokenInfo(
   }
 
   let executionCmd;
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   if (version === 'v1') {
     // Note: Alternative approach left for reference
@@ -208,14 +211,64 @@ export async function getNonFungibleTokenInfo(
   }
 
   if ('policies' in tokenInfo) {
-    if (!Array.isArray(tokenInfo.policies)) {
-      tokenInfo.policies = tokenInfo.policies.map((policy: string) => ({
-        moduleName: policy,
+    if (Array.isArray(tokenInfo.policies)) {
+      tokenInfo.policies = tokenInfo.policies.map((policy: any) => ({
+        moduleName: `${policy.refName.namespace}.${policy.refName.name}`,
       }));
     }
   } else if ('policy' in tokenInfo) {
     tokenInfo.policies = { moduleName: tokenInfo.policy.toString() };
+  } else {
+    tokenInfo.policies = [];
   }
 
   return tokenInfo as INonFungibleTokenInfo;
+}
+
+export async function getNonFungibleTokenDetails(
+  tokenId: string,
+  accountName: string,
+  chainId: string,
+  version?: string,
+) {
+  const config = {
+    host: dotenv.NETWORK_HOST,
+    defaults: {
+      networkId: dotenv.NETWORK_ID,
+    },
+  };
+
+  const commandV2 = composePactCommand(
+    execution(
+      Pact.modules['marmalade-v2.ledger'].details(tokenId, accountName),
+    ),
+    setMeta({
+      chainId: chainId as ChainId,
+    }),
+  );
+
+  const commandV1 = composePactCommand(
+    execution(
+      Pact.modules['marmalade.ledger']['details'](tokenId, accountName),
+    ),
+    setMeta({
+      chainId: chainId as ChainId,
+    }),
+  );
+
+  if (version === 'v2') {
+    return dirtyReadClient(config)(commandV2).execute();
+  } else if (version === 'v1') {
+    return dirtyReadClient(config)(commandV1).execute();
+  } else {
+    try {
+      return await dirtyReadClient(config)(commandV1).execute();
+    } catch (error) {
+      // As safety measure, we're doing a timeout before retrying the command
+      await new Promise((resolve) =>
+        setTimeout(resolve, dotenv.CHAINWEB_NODE_RETRY_DELAY),
+      );
+      return await dirtyReadClient(config)(commandV2).execute();
+    }
+  }
 }

@@ -1,8 +1,9 @@
 import type { IClient } from '@kadena/client';
 import { Pact, createClient } from '@kadena/client';
-import type { ChainId } from '@kadena/types';
+import { getNonFungibleTokenDetails } from '@services/token-service';
 import { dotenv } from '@utils/dotenv';
 import { networkData } from '@utils/network';
+import { withRetry } from '@utils/withRetry';
 import type { IGuard } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
 
@@ -26,42 +27,33 @@ export async function getNonFungibleAccountDetails(
   tokenId: string,
   accountName: string,
   chainId: string,
+  version?: string,
 ): Promise<INonFungibleChainAccountDetails | null> {
   try {
-    let commandResult;
-
-    commandResult = await getClient(chainId).dirtyRead(
-      Pact.builder
-        .execution(
-          Pact.modules['marmalade.ledger'].details(tokenId, accountName),
-        )
-        .setMeta({
-          chainId: chainId as ChainId,
-        })
-        .setNetworkId(networkData.networkId)
-        .createTransaction(),
+    const commandResult = await getNonFungibleTokenDetails(
+      tokenId,
+      accountName,
+      chainId,
+      version,
     );
-
-    if (commandResult.result.status === 'failure') {
-      commandResult = await getClient(chainId).dirtyRead(
-        Pact.builder
-          .execution(
-            Pact.modules['marmalade-v2.ledger'].details(tokenId, accountName),
-          )
-          .setMeta({
-            chainId: chainId as ChainId,
-          })
-          .setNetworkId(networkData.networkId)
-          .createTransaction(),
-      );
-    }
 
     const result =
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (commandResult.result as unknown as any).data as unknown as any;
+      commandResult as unknown as any as unknown as any;
 
     if (typeof result.balance === 'object') {
       result.balance = parseFloat(result.balance.decimal);
+    }
+
+    if ('guard' in result) {
+      if ('cgArgs' in result.guard) {
+        result.guard.pred = result.guard.cgArgs[result.guard.cgArgs.length - 1]
+          .split(':')
+          .pop();
+        result.guard.keys = result.guard.cgArgs.map((arg: string) =>
+          arg.split(':').slice(0, -1).join(':'),
+        );
+      }
     }
 
     return result as INonFungibleChainAccountDetails;
@@ -75,3 +67,9 @@ export async function getNonFungibleAccountDetails(
     }
   }
 }
+
+export const getNonFungibleAccountDetailsWithRetry = withRetry(
+  getNonFungibleAccountDetails,
+  dotenv.CHAINWEB_NODE_RETRY_ATTEMPTS,
+  dotenv.CHAINWEB_NODE_RETRY_DELAY,
+);
