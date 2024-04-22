@@ -372,6 +372,17 @@ const ModuleExplorerPage = (
             queryClient,
           );
         }}
+        onInterfacesExpand={(interfaces) => {
+          void enrichModules(
+            interfaces.map((i) => ({
+              chains: [i.chainId],
+              moduleName: i.moduleName,
+            })),
+            network,
+            networksData,
+            queryClient,
+          );
+        }}
         onActiveModuleChange={setDeeplink}
         onTabClose={(module) => {
           console.log('closing', module);

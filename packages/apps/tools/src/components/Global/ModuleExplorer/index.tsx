@@ -12,6 +12,7 @@ export interface IModuleExplorerProps {
   openedModules: IEditorProps['openedModules'];
   onModuleClick: ISidePanelProps['onResultClick'];
   onInterfaceClick: ISidePanelProps['onInterfaceClick'];
+  onInterfacesExpand: ISidePanelProps['onInterfacesExpand'];
   onModuleExpand: ISidePanelProps['onModuleExpand'];
   onActiveModuleChange: IEditorProps['onActiveModuleChange'];
   onTabClose: IEditorProps['onTabClose'];
@@ -22,6 +23,7 @@ const ModuleExplorer = ({
   openedModules: fetchedModules,
   onModuleClick,
   onInterfaceClick,
+  onInterfacesExpand,
   onModuleExpand,
   onActiveModuleChange,
   onTabClose,
@@ -67,6 +69,7 @@ const ModuleExplorer = ({
           setActiveModule(result);
         }}
         onInterfaceClick={onInterfaceClick}
+        onInterfacesExpand={onInterfacesExpand}
         onModuleExpand={onModuleExpand}
         selectedModule={openedModules[0]}
       />

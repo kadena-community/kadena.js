@@ -9,10 +9,11 @@ import { contractToTreeItems } from './utils';
 export interface IOutlineProps extends React.HTMLAttributes<HTMLDivElement> {
   selectedModule?: IChainModule;
   onInterfaceClick: (module: IChainModule) => void;
+  onInterfacesExpand: (interfaces: IChainModule[]) => void;
 }
 
 const Outline = (props: IOutlineProps): React.JSX.Element => {
-  const { selectedModule, onInterfaceClick } = props;
+  const { selectedModule, onInterfaceClick, onInterfacesExpand } = props;
   const { t } = useTranslation('common');
 
   let parsedContract: Contract;
@@ -35,6 +36,7 @@ const Outline = (props: IOutlineProps): React.JSX.Element => {
             parsedContract!,
             onInterfaceClick,
             selectedModule,
+            onInterfacesExpand,
           )}
           isOpen
         />
