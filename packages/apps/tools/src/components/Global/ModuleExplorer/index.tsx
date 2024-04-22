@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { ISidePanelProps } from './SidePanel';
 import SidePanel from './SidePanel';
 import type { IEditorProps } from './editor';
@@ -32,71 +32,51 @@ const ModuleExplorer = ({
   const results = getModulesMap(modules);
   const [openedModules, setOpenedModules] =
     useState<IChainModule[]>(fetchedModules);
+
+  const updateOpenedModules = useCallback(
+    (result: IChainModule) => {
+      setOpenedModules((prev) => {
+        const alreadyOpened = prev.find((openedModule) => {
+          return (
+            openedModule.moduleName === result.moduleName &&
+            openedModule.chainId === result.chainId
+          );
+        });
+
+        if (alreadyOpened) {
+          return prev;
+        }
+
+        let add = result;
+
+        const enhanced = modules.find((module) => {
+          return (
+            module.moduleName === result.moduleName &&
+            module.chainId === result.chainId
+          );
+        });
+
+        if (enhanced) {
+          add = enhanced;
+        }
+
+        return [...prev, add];
+      });
+    },
+    [modules],
+  );
+
   return (
     <div className={containerStyle}>
       <SidePanel
         results={results}
         onResultClick={(result) => {
-          setOpenedModules((prev) => {
-            const alreadyOpened = prev.find((openedModule) => {
-              return (
-                openedModule.moduleName === result.moduleName &&
-                openedModule.chainId === result.chainId
-              );
-            });
-
-            if (alreadyOpened) {
-              return prev;
-            }
-
-            let add = result;
-
-            const enhanced = modules.find((module) => {
-              return (
-                module.moduleName === result.moduleName &&
-                module.chainId === result.chainId
-              );
-            });
-
-            if (enhanced) {
-              add = enhanced;
-            }
-
-            return [...prev, add];
-          });
-
+          updateOpenedModules(result);
           onModuleClick(result);
           setActiveModule(result);
         }}
         onInterfaceClick={(result) => {
-          setOpenedModules((prev) => {
-            const alreadyOpened = prev.find((openedModule) => {
-              return (
-                openedModule.moduleName === result.moduleName &&
-                openedModule.chainId === result.chainId
-              );
-            });
-
-            if (alreadyOpened) {
-              return prev;
-            }
-
-            let add = result;
-
-            const enhanced = modules.find((module) => {
-              return (
-                module.moduleName === result.moduleName &&
-                module.chainId === result.chainId
-              );
-            });
-
-            if (enhanced) {
-              add = enhanced;
-            }
-
-            return [...prev, add];
-          });
-
+          updateOpenedModules(result);
           onInterfaceClick(result);
           setActiveModule(result);
         }}
@@ -107,10 +87,7 @@ const ModuleExplorer = ({
       <Editor
         openedModules={openedModules}
         activeModule={activeModule}
-        onActiveModuleChange={(activeModule) => {
-          onActiveModuleChange(activeModule);
-          // setActiveModule(activeModule);
-        }}
+        onActiveModuleChange={onActiveModuleChange}
         onTabClose={(module) => {
           setOpenedModules(
             openedModules.filter((openedModule) => {
