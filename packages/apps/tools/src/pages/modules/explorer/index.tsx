@@ -152,6 +152,37 @@ export const enrichModule = async (
   );
 };
 
+/*
+ * In this function we'll add the `hash` property to the module, so that, in the list of modules,
+ * you can see if there are any differences in the module on certain chains.
+ */
+export const enrichModules = async (
+  modules: IModule[],
+  network: Network,
+  networksData: INetworkData[],
+  queryClient: QueryClient,
+) => {
+  const promises = modules.reduce<Promise<IChainModule>[]>((acc, module) => {
+    module.chains.forEach((chain) => {
+      acc.push(
+        getCompleteModule(
+          { moduleName: module.moduleName, chainId: chain },
+          network,
+          networksData,
+        ),
+      );
+    });
+    return acc;
+  }, []);
+
+  const moduleOnAllChains = await Promise.all(promises);
+
+  queryClient.setQueryData<IChainModule[]>(
+    ['modules', network, networksData],
+    (oldData) => replaceOldWithNew(oldData!, moduleOnAllChains),
+  );
+};
+
 export const getServerSideProps: GetServerSideProps<{
   data: IChainModule[];
   openedModules: IEditorProps['openedModules'];
