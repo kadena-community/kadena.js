@@ -19,8 +19,6 @@ export async function getFungibleAccountDetails(
   fungibleName: string,
   accountName: string,
   chainId: string,
-  // retries = dotenv.CHAINWEB_NODE_RETRY_ATTEMPTS,
-  // delay = dotenv.CHAINWEB_NODE_RETRY_DELAY,
 ): Promise<IFungibleChainAccountDetails | null> {
   let result;
 
