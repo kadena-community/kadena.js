@@ -1,5 +1,5 @@
+import type { Event } from '@/__generated__/sdk';
 import {
-  Event,
   useGetEventsByNameSubscription,
   useGetEventsQuery,
 } from '@/__generated__/sdk';
