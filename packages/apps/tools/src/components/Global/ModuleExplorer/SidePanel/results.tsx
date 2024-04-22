@@ -37,10 +37,10 @@ const resultsMapToTreeItems = (
     ),
     onOpen: () =>
       onModuleExpand({ moduleName, chains: chainsInfo.map((x) => x.chainId) }),
-    items: chainsInfo.map(({ chainId, hash }) => ({
+    items: chainsInfo.map(({ chainId, hash, code }) => ({
       title: (
         <Button
-          onPress={() => onItemClick({ chainId, moduleName })}
+          onPress={() => onItemClick({ chainId, moduleName, code })}
           isCompact
           endVisual={<MonoExitToApp />}
           title={chainId + (hash ? ` - ${hash}` : '')}
