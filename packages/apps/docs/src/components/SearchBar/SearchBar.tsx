@@ -1,6 +1,5 @@
 import { SystemIcon, TextField } from '@kadena/react-ui';
 import type {
-  FC,
   FormEvent,
   ForwardRefExoticComponent,
   ForwardedRef,
