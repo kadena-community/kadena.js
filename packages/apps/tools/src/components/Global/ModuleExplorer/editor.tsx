@@ -119,10 +119,6 @@ const Editor = ({
         </GridItem>
       </Grid>
       <Tabs
-        // selectedKey={activeModule ? moduleToTabId(activeModule) : null}
-        // defaultSelectedKey={
-        //   activeModule ? moduleToTabId(activeModule) : undefined
-        // }
         selectedKey={selectedKey}
         onSelectionChange={(key) => {
           setSelectedKey(key as string);
