@@ -45,8 +45,8 @@ function validateAnchorLinks(
     const internalContent: string | null = fs.existsSync(internalLinkFilePath)
       ? fs.readFileSync(internalLinkFilePath, 'utf8')
       : fs.existsSync(internalLinkFileIndexPath)
-      ? fs.readFileSync(internalLinkFileIndexPath, 'utf8')
-      : null;
+        ? fs.readFileSync(internalLinkFileIndexPath, 'utf8')
+        : null;
 
     if (internalContent === null) {
       return true;
