@@ -1,8 +1,5 @@
-import type { IClient } from '@kadena/client';
-import { Pact, createClient } from '@kadena/client';
 import { getNonFungibleTokenDetails } from '@services/token-service';
 import { dotenv } from '@utils/dotenv';
-import { networkData } from '@utils/network';
 import { withRetry } from '@utils/withRetry';
 import type { IGuard } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
@@ -15,12 +12,6 @@ export interface INonFungibleChainAccountDetails {
     keys: string[];
     pred: IGuard['predicate'];
   };
-}
-
-function getClient(chainId: string): IClient {
-  return createClient(
-    `${dotenv.NETWORK_HOST}/chainweb/${networkData.apiVersion}/${networkData.networkId}/chain/${chainId}/pact`,
-  );
 }
 
 export async function getNonFungibleAccountDetails(

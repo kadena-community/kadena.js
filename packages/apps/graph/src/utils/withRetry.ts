@@ -1,5 +1,6 @@
 import { dotenv } from './dotenv';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function withRetry<T extends any[], R>(
   func: (...args: T) => Promise<R>,
   retries: number = dotenv.CHAINWEB_NODE_RETRY_ATTEMPTS,

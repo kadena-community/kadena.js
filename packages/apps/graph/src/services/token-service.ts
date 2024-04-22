@@ -212,6 +212,7 @@ export async function getNonFungibleTokenInfo(
 
   if ('policies' in tokenInfo) {
     if (Array.isArray(tokenInfo.policies)) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       tokenInfo.policies = tokenInfo.policies.map((policy: any) => ({
         moduleName: `${policy.refName.namespace}.${policy.refName.name}`,
       }));
@@ -225,6 +226,7 @@ export async function getNonFungibleTokenInfo(
   return tokenInfo as INonFungibleTokenInfo;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export async function getNonFungibleTokenDetails(
   tokenId: string,
   accountName: string,
@@ -248,9 +250,7 @@ export async function getNonFungibleTokenDetails(
   );
 
   const commandV1 = composePactCommand(
-    execution(
-      Pact.modules['marmalade.ledger']['details'](tokenId, accountName),
-    ),
+    execution(Pact.modules['marmalade.ledger'].details(tokenId, accountName)),
     setMeta({
       chainId: chainId as ChainId,
     }),
