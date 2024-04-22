@@ -127,8 +127,8 @@ const replaceOldWithNew = (
 };
 
 /*
- * In this function we'll add the `hash` property to the module, so that, in the list of modules,
- * you can see if there are any differences in the module on certain chains.
+ * In this function we'll add the `hash` and `code` property to the module, so that, in the list of
+ * modules, you can see if there are any differences in the module on certain chains.
  */
 export const enrichModule = async (
   module: IModule,
@@ -153,8 +153,8 @@ export const enrichModule = async (
 };
 
 /*
- * In this function we'll add the `hash` property to the module, so that, in the list of modules,
- * you can see if there are any differences in the module on certain chains.
+ * In this function we'll add the `hash` and `code` property to the modules, so that, in the list of
+ * modules, you can see if there are any differences in the module on certain chains.
  */
 export const enrichModules = async (
   modules: IModule[],
