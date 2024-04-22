@@ -53,7 +53,7 @@
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
     "@kadena/types": "workspace:*",
-    "@microsoft/api-extractor": "^7.38.0",
+    "@microsoft/api-extractor": "^7.43.1",
     "@rushstack/eslint-config": "~3.6.9",
     "@types/node": "^20.12.7",
     "@vitest/coverage-v8": "^1.1.0",

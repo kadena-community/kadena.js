@@ -45,7 +45,7 @@
     "@kadena-dev/lint-package": "workspace:*",
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
-    "@microsoft/api-extractor": "^7.38.0",
+    "@microsoft/api-extractor": "^7.43.1",
     "@rushstack/eslint-config": "~3.6.9",
     "@types/eventsource": "1.1.11",
     "@types/node": "^20.12.7",
