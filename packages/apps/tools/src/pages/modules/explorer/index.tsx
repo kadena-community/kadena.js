@@ -26,7 +26,7 @@ import type {
 import { CHAINS } from '@kadena/chainweb-node-client';
 import { Breadcrumbs, BreadcrumbsItem } from '@kadena/react-ui';
 import type { QueryClient } from '@tanstack/react-query';
-import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useTranslation from 'next-translate/useTranslation';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -34,7 +34,7 @@ import type {
   GetServerSideProps,
   InferGetServerSidePropsType,
 } from 'next/types';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { getCookieValue, getQueryValue } from './utils';
 
 const QueryParams = {
@@ -236,10 +236,6 @@ const ModuleExplorerPage = (
 ) => {
   const { selectedNetwork: network, networksData } = useWalletConnectClient();
 
-  const [openedModules, setOpenedModules] = useState<IChainModule[]>(
-    props.openedModules,
-  );
-
   const { data: modules } = useQuery({
     queryKey: ['modules', network, networksData],
     queryFn: () => getModules(network, networksData),
@@ -248,47 +244,11 @@ const ModuleExplorerPage = (
     refetchOnWindowFocus: false,
   });
 
-  // const results = useQueries({
-  //   queries: openedModules.map((module) => {
-  //     return {
-  //       queryKey: [
-  //         'module',
-  //         network,
-  //         module.chainId,
-  //         module.moduleName,
-  //         networksData,
-  //       ],
-  //       queryFn: () => getCompleteModule(module, network, networksData),
-  //       initialData: () => {
-  //         return props.openedModules.find((openedModule) => {
-  //           return (
-  //             openedModule.moduleName === module.moduleName &&
-  //             openedModule.chainId === module.chainId
-  //           );
-  //         });
-  //       },
-  //       staleTime: 1500, // We need to set this in combination with initialData, otherwise the query will immediately refetch when it mounts
-  //       refetchOnWindowFocus: false,
-  //     };
-  //   }),
-  // });
-
   const queryClient = useQueryClient();
-
-  // const cached = queryClient.getQueriesData<IChainModule>({
-  //   queryKey: ['module', network],
-  //   type: 'active',
-  // });
-  // let fetchedModules: IEditorProps['openedModules'] = cached
-  //   .filter(([, data]) => Boolean(data))
-  //   .map(([, data]) => data!);
-  // if (results.every((result) => result.status === 'success')) {
-  //   fetchedModules = results.map((result) => result.data!);
-  // }
 
   const router = useRouter();
 
-  const setDeeplink = useCallback(
+  const setDeepLink = useCallback(
     (module: IChainModule) => {
       void router.replace(
         `?${QueryParams.MODULE}=${module.moduleName}&${QueryParams.CHAIN}=${module.chainId}`,
@@ -299,52 +259,11 @@ const ModuleExplorerPage = (
     [router],
   );
 
-  const openModule = useCallback<(selectedModule: IChainModule) => void>(
-    (selectedModule) => {
-      setOpenedModules([selectedModule]);
-
-      setDeeplink(selectedModule);
-    },
-    [setDeeplink],
-  );
-
-  const onInterfaceClick = useCallback<
-    (selectedInterface: IChainModule) => void
-  >((selectedInterface) => {
-    setOpenedModules((prev) => {
-      const alreadyOpened = prev.find((module) => {
-        return (
-          module.moduleName === selectedInterface.moduleName &&
-          module.chainId === selectedInterface.chainId
-        );
-      });
-
-      if (alreadyOpened) {
-        return prev;
-      }
-      return [...prev, selectedInterface];
-    });
-  }, []);
-
   const onModuleOpen = useCallback<(module: IChainModule) => void>(
     (module) => {
-      // setOpenedModules((prev) => {
-      //   const alreadyOpened = prev.find((openedModule) => {
-      //     return (
-      //       openedModule.moduleName === module.moduleName &&
-      //       openedModule.chainId === module.chainId
-      //     );
-      //   });
-
-      //   if (alreadyOpened) {
-      //     return prev;
-      //   }
-      //   return [...prev, module];
-      // });
-
-      setDeeplink(module);
+      setDeepLink(module);
     },
-    [setDeeplink],
+    [setDeepLink],
   );
 
   const { t } = useTranslation('common');
@@ -383,17 +302,9 @@ const ModuleExplorerPage = (
             queryClient,
           );
         }}
-        onActiveModuleChange={setDeeplink}
+        onActiveModuleChange={setDeepLink}
         onTabClose={(module) => {
           console.log('closing', module);
-          // setOpenedModules(
-          //   openedModules.filter((openedModule) => {
-          //     return (
-          //       `${openedModule.moduleName}-${openedModule.chainId}` !==
-          //       `${module.moduleName}-${module.chainId}`
-          //     );
-          //   }),
-          // );
         }}
         openedModules={props.openedModules}
       />
