@@ -1,5 +1,12 @@
 import { SystemIcon, TextField } from '@kadena/react-ui';
-import type { FC, FormEvent, ForwardedRef, KeyboardEvent } from 'react';
+import type {
+  FC,
+  FormEvent,
+  ForwardRefExoticComponent,
+  ForwardedRef,
+  KeyboardEvent,
+  RefAttributes,
+} from 'react';
 import React, { forwardRef } from 'react';
 import { searchFormClass } from './styles.css';
 
@@ -10,7 +17,9 @@ interface IProps {
   ref?: ForwardedRef<HTMLInputElement>;
 }
 
-export const SearchBar: FC<IProps> = forwardRef<HTMLInputElement, IProps>(
+export const SearchBar: ForwardRefExoticComponent<
+  Omit<IProps, 'ref'> & RefAttributes<HTMLInputElement>
+> = forwardRef<HTMLInputElement, IProps>(
   // eslint-disable-next-line react/prop-types
   ({ onSubmit = () => {}, onKeyUp = () => {}, query }, ref) => {
     const MagnifierIcon = SystemIcon.Magnify;
