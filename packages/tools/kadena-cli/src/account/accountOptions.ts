@@ -30,10 +30,7 @@ export const accountOptions = {
     key: 'accountName' as const,
     prompt: account.accountNamePrompt,
     validation: z.string(),
-    option: new Option(
-      '-a, --account-name <accountName>',
-      'Account name',
-    ),
+    option: new Option('-a, --account-name <accountName>', 'Account name'),
   }),
   accountKdnName: createOption({
     key: 'accountKdnName' as const,
@@ -123,7 +120,10 @@ export const accountOptions = {
     key: 'predicate' as const,
     prompt: account.predicatePrompt,
     validation: z.string(),
-    option: new Option('-p, --predicate <predicate>', 'Account keyset predicate'),
+    option: new Option(
+      '-p, --predicate <predicate>',
+      'Account keyset predicate',
+    ),
   }),
   fundAmount: createOption({
     key: 'amount' as const,

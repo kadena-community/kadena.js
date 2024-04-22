@@ -14,8 +14,8 @@ export const maskSensitiveInfo = (
       acc[key] = fieldsToMask.includes(key)
         ? mask
         : typeof value === 'object' && value !== null
-        ? maskSensitiveInfo(value, fieldsToMask)
-        : value;
+          ? maskSensitiveInfo(value, fieldsToMask)
+          : value;
       return acc;
     },
     {} as Record<string, unknown>,

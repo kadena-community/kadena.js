@@ -2,6 +2,9 @@
 
 # @kadena/kadena-cli
 
+Kadena CLI tool to interact with the Kadena blockchain (manage keys,
+transactions, etc.)
+
 <picture>
   <source srcset="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-white.png" media="(prefers-color-scheme: dark)"/>
   <img src="https://raw.githubusercontent.com/kadena-community/kadena.js/main/common/images/Kadena.JS_logo-black.png" width="200" alt="kadena.js logo" />
@@ -9,21 +12,21 @@
 
 <!-- genericHeader end -->
 
-- [@kadena/kadena-cli](#kadena/kadena-cli)
-- [KADENA CLI](#kadena-cli)
-  - [installation from npm](#installation-from-npm)
-  - [list of commands](#list-of-commands)
-    - [list of root commands and flags](#list-of-root-commands-and-flags)
-    - [Command specific help](#command-specific-help)
-  - [Subjects](#subjects)
-  - [kadena config](#kadena-config)
-  - [kadena network](#kadena-network)
-  - [kadena wallet](#kadena-wallet)
-  - [kadena key](#kadena-key)
-  - [kadena account](#kadena-account)
-  - [kadena tx](#kadena-tx)
-  - [kadena dapp](#kadena-dapp)
-  - [Supported Templates](#supported-templates)
+- [@kadena/kadena-cli][1]
+- [KADENA CLI][2]
+  - [installation from npm][3]
+  - [list of commands][4]
+    - [list of root commands and flags][5]
+    - [Command specific help][6]
+  - [Subjects][7]
+  - [kadena config][8]
+  - [kadena network][9]
+  - [kadena wallet][10]
+  - [kadena key][11]
+  - [kadena account][12]
+  - [kadena tx][13]
+  - [kadena dapp][14]
+  - [Supported Templates][15]
 
 <hr>
 
@@ -283,7 +286,7 @@ kadena wallet add --wallet-name="kadenawallet" --security-password=1245678 --sec
 ```
 
 password will be hidden after entry: --security-password=\*
---security-verify-password=\*
+\--security-verify-password=\*
 
 ---
 
@@ -306,7 +309,7 @@ kadena wallet import-wallet --key-mnemonic="male more sugar violin accuse panel 
 ```
 
 password will be hidden after entry: --security-new-password=\*
---security-verify-password=\*
+\--security-verify-password=\*
 
 ---
 
@@ -369,7 +372,7 @@ kadena wallet change-password --wallet-name="kadenawallet.wallet" --security-cur
 ```
 
 password will be hidden after entry: --security-current-password=\*
---security-new-password=\* --security-verify-password=\*
+\--security-new-password=\* --security-verify-password=\*
 
 ---
 
@@ -560,9 +563,8 @@ The kadena account create command allows you to create a new account on the
 mainnet network. This command is restricted to mainnet use and it doesn't
 support on other networks.
 
-If you would like to create an account on
-[testnet](#funding-an-account-on-testnet), please use the `kadena account fund`
-command.
+If you would like to create an account on [testnet][16], please use the
+`kadena account fund` command.
 
 ```
 kadena account create [arguments]
@@ -1037,7 +1039,12 @@ kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0T
 ```
 kadena tx status [arguments]
 ```
-The kadena tx status command is used to retrieve the status of a transaction on the Kadena blockchain. By providing a transaction request key and specifying the network and chain id, users can query the current state of their transactions. This command supports additional options for polling, allowing for real-time status updates until the transaction is finalized.
+
+The kadena tx status command is used to retrieve the status of a transaction on
+the Kadena blockchain. By providing a transaction request key and specifying the
+network and chain id, users can query the current state of their transactions.
+This command supports additional options for polling, allowing for real-time
+status updates until the transaction is finalized.
 
 | **Arguments & Options** | **Description**                                       | **Required** |
 | ----------------------- | ----------------------------------------------------- | ------------ |
@@ -1048,20 +1055,26 @@ The kadena tx status command is used to retrieve the status of a transaction on 
 | --poll                  | Poll status to get transaction details                |              |
 
 To check the status of a transaction, use the following command:
+
 ```
 kadena tx status --request-key="118mEpX1-6NpJT1kArsWIHHVtJaOERQOeEwNoouOSGU" --network="testnet" --chain-id="0"
 ```
-This will return the current status of the transaction identified by the provided request key.
 
-**With Polling:**
-To continuously monitor the status of a transaction until it is finalized, add the `--poll` option:
+This will return the current status of the transaction identified by the
+provided request key.
+
+**With Polling:** To continuously monitor the status of a transaction until it
+is finalized, add the `--poll` option:
 
 ```
 kadena tx status --request-key="118mEpX1-6NpJT1kArsWIHHVtJaOERQOeEwNoouOSGU" --network="testnet" --chain-id="0" --poll
 ```
-Polling checks the transaction status in real-time and will keep running until the transaction is confirmed.
 
-The default timeout for polling is 60 seconds, but it will attempt to keep polling until confirmation is achieved.
+Polling checks the transaction status in real-time and will keep running until
+the transaction is confirmed.
+
+The default timeout for polling is 60 seconds, but it will attempt to keep
+polling until confirmation is achieved.
 
 ---
 
@@ -1089,10 +1102,10 @@ Tool for creating dapp projects
 kadena dapp add [arguments]
 ```
 
-| **Arguments & Options** | **Description**                          | **Required** |
-| ----------------------- | ---------------------------------------- | ------------ |
-| project-directory       | Specify the project directory [Required] | yes          |
-| --dapp-template         | Select template: vuejs, nextjs, angular  |              |
+| **Arguments & Options** | **Description**                           | **Required** |
+| ----------------------- | ----------------------------------------- | ------------ |
+| project-directory       | Specify the project directory \[Required] | yes          |
+| --dapp-template         | Select template: vuejs, nextjs, angular   |              |
 
 example:
 
@@ -1108,14 +1121,30 @@ It supports a number of well known and widely used frameworks to choose from
 when starting a new project. The following project templates are currently
 available:
 
-- [Nextjs][1]
-- [Vuejs][2]
-- [Angular][3]
-
-[1]: https://nextjs.org/
-[2]: https://vuejs.org/
-[3]: https://angular.io/
+- [Nextjs][17]
+- [Vuejs][18]
+- [Angular][19]
 
 ```
 
 ```
+
+[1]: #kadena/kadena-cli
+[2]: #kadena-cli
+[3]: #installation-from-npm
+[4]: #list-of-commands
+[5]: #list-of-root-commands-and-flags
+[6]: #command-specific-help
+[7]: #subjects
+[8]: #kadena-config
+[9]: #kadena-network
+[10]: #kadena-wallet
+[11]: #kadena-key
+[12]: #kadena-account
+[13]: #kadena-tx
+[14]: #kadena-dapp
+[15]: #supported-templates
+[16]: #funding-an-account-on-testnet
+[17]: https://nextjs.org/
+[18]: https://vuejs.org/
+[19]: https://angular.io/
