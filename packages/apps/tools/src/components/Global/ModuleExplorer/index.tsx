@@ -82,12 +82,15 @@ const ModuleExplorer = ({
         }}
         onInterfacesExpand={onInterfacesExpand}
         onModuleExpand={onModuleExpand}
-        selectedModule={openedModules[0]}
+        selectedModule={activeModule}
       />
       <Editor
         openedModules={openedModules}
         activeModule={activeModule}
-        onActiveModuleChange={onActiveModuleChange}
+        onActiveModuleChange={(module) => {
+          onActiveModuleChange(module);
+          setActiveModule(module);
+        }}
         onTabClose={(module) => {
           setOpenedModules(
             openedModules.filter((openedModule) => {
