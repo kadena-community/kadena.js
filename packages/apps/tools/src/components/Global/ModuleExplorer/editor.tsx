@@ -54,7 +54,6 @@ const Editor = ({
     activeModule ? moduleToTabId(activeModule) : null,
   );
   useEffect(() => {
-    console.log('active module changed', activeModule);
     if (activeModule) {
       setSelectedKey(moduleToTabId(activeModule));
     }
