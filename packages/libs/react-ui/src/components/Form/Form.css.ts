@@ -136,6 +136,8 @@ export const startAddon = styleVariants({
 export const endAddon = style([
   atoms({
     height: '100%',
+    display: 'flex',
+    alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
     right: 0,
