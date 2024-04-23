@@ -11,10 +11,6 @@ const config: PlaywrightTestConfig = {
       testDir: 'tests',
       use: {
         ...devices['iPhone 14 Pro Max'],
-        // viewport: { width: 393, height: 852 },
-        // deviceScaleFactor: 3,
-        // isMobile: true,
-        // hasTouch: true,
         defaultBrowserType: 'chromium',
         hasTouch: true,
         permissions: ["clipboard-read", "clipboard-write"],
