@@ -118,8 +118,6 @@ interface IError {
 
 type ISignerStatus = 'init' | 'notsigning' | 'signing' | 'success' | 'error';
 
-type ISocial = string;
-
 interface ISigneePosition {
   xPercentage: number;
   yPercentage: number;
@@ -130,7 +128,6 @@ type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   signerStatus: ISignerStatus;
   signature?: string;
   initiator: boolean;
-  socialLink?: ISocial;
   position?: ISigneePosition;
   publicKey: string;
   lastPingTime?: number;
@@ -142,7 +139,7 @@ type IAccountLeaderboard = Pick<IAccount, 'alias' | 'accountName'> & {
 
 type IProofOfUsTokenSignee = Pick<
   IProofOfUsSignee,
-  'accountName' | 'socialLink' | 'position'
+  'accountName' | 'position'
 > & {
   name: string;
 };
