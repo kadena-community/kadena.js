@@ -286,12 +286,14 @@ type NonFungibleToken {
 }
 
 """The token identifier and its balance."""
-type NonFungibleTokenBalance {
+type NonFungibleTokenBalance implements Node {
+  accountName: String!
   balance: Int!
   chainId: String!
   guard: Guard!
-  id: String!
+  id: ID!
   info: NonFungibleToken
+  tokenId: String!
   version: String!
 }
 
@@ -304,6 +306,15 @@ input PactQuery {
 input PactQueryData {
   key: String!
   value: String!
+}
+
+"""Information related to a token."""
+type PactQueryResponse {
+  chainId: String!
+  code: String!
+  error: String
+  result: String
+  status: String!
 }
 
 type PageInfo {
@@ -411,7 +422,7 @@ type Query {
   """
   Execute arbitrary Pact code via a local call without gas-estimation or signature-verification (e.g. (+ 1 2) or (coin.get-details <account>)).
   """
-  pactQuery(pactQuery: [PactQuery!]!): [String!]!
+  pactQuery(pactQuery: [PactQuery!]!): [PactQueryResponse!]!
 
   """
   Retrieve one transaction by its unique key. Throws an error if multiple transactions are found.

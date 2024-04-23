@@ -1,35 +1,31 @@
-export class NetworkConfig {
-  networkHost: string;
+import { dotenv } from './dotenv';
+
+interface INetworkData {
   networkId: string;
   apiVersion: string;
-
-  private constructor(
-    networkHost: string,
-    networkId: string,
-    apiVersion: string,
-  ) {
-    this.networkHost = networkHost;
-    this.networkId = networkId;
-    this.apiVersion = apiVersion;
-  }
-
-  static async create(networkHost: string): Promise<NetworkConfig> {
-    const { networkId, apiVersion } = await getNetworkId(networkHost);
-    return new NetworkConfig(networkHost, networkId, apiVersion);
-  }
 }
 
-export async function getNetworkId(
-  newtorkHost: string,
-): Promise<{ networkId: string; apiVersion: string }> {
+export let networkData: INetworkData;
+
+export async function getNetworkConfig(
+  newtorkHost = dotenv.NETWORK_HOST,
+): Promise<INetworkData> {
+  if (networkData) {
+    return networkData;
+  }
+
   const res = await fetch(`${newtorkHost}/info`);
-  const data = await res.json();
+  const data: { nodeVersion?: string; nodeApiVersion?: string } =
+    await res.json();
 
   if (!data.nodeVersion) throw new Error('Network Id not found');
   if (!data.nodeApiVersion) throw new Error('API Version not found');
 
-  return {
+  // eslint-disable-next-line require-atomic-updates
+  networkData = {
     networkId: data.nodeVersion,
     apiVersion: data.nodeApiVersion,
   };
+
+  return networkData;
 }

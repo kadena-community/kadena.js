@@ -8,6 +8,7 @@ import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
+import { createTable } from '../../utils/table.js';
 import { walletOptions } from '../walletOptions.js';
 
 /** find `amount` of free indexes starting at a `startIndex` while excluding indexes already in use by `existingIndexes` */
@@ -92,19 +93,13 @@ export const createGenerateHdKeysCommand: (
 
     loadingSpinner.succeed('Keys generated successfully');
 
-    log.output(
-      log.generateTableString(
-        ['Public key', 'Index'],
-        keys.map((key) => [key.publicKey, key.index.toString()]),
-      ),
-      keys,
-    );
+    const table = createTable({ head: ['Public key', 'Index'] });
+    table.push(...keys.map((key) => [key.publicKey, key.index.toString()]));
+    log.output(table.toString(), keys);
+
     log.info();
-    log.info(
-      log.generateTableString(
-        ['Wallet Storage Location'],
-        [[relativeToCwd(wallet.filepath)]],
-      ),
-    );
+
+    log.info(log.color.green('Wallet Storage Location'));
+    log.info(relativeToCwd(wallet.filepath));
   },
 );

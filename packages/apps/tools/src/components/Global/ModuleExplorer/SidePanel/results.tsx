@@ -37,16 +37,18 @@ const resultsMapToTreeItems = (
     ),
     onOpen: () =>
       onModuleExpand({ moduleName, chains: chainsInfo.map((x) => x.chainId) }),
-    items: chainsInfo.map(({ chainId, hash }) => ({
+    items: chainsInfo.map(({ chainId, hash, code }) => ({
       title: (
         <Button
-          onPress={() => onItemClick({ chainId, moduleName })}
+          onPress={() => onItemClick({ chainId, moduleName, code })}
           isCompact
-          endIcon={<MonoExitToApp />}
+          endVisual={<MonoExitToApp />}
           title={chainId + (hash ? ` - ${hash}` : '')}
         >
-          {chainId}
-          {hash ? ` - ${truncateString(hash, CHARCOUNT_BREAKING_POINT)}` : null}
+          <>
+            {chainId}
+            {hash ? ` - ${truncateString(hash, CHARCOUNT_BREAKING_POINT)}` : ''}
+          </>
         </Button>
       ),
     })),

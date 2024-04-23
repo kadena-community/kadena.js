@@ -11,8 +11,8 @@ import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { fungibleAccountDetailsLoader } from '../data-loaders/fungible-account-details';
 import type {
-  FungibleAccount,
-  FungibleChainAccount,
+  IFungibleAccount,
+  IFungibleChainAccount,
 } from '../types/graphql-types';
 import {
   FungibleAccountName,
@@ -20,7 +20,7 @@ import {
 } from '../types/graphql-types';
 
 export default builder.node(
-  builder.objectRef<FungibleAccount>(FungibleAccountName),
+  builder.objectRef<IFungibleAccount>(FungibleAccountName),
   {
     description: 'A fungible-specific account.',
     id: {
@@ -32,6 +32,7 @@ export default builder.node(
       }),
     },
     isTypeOf(source) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (source as any).__typename === FungibleAccountName;
     },
     async loadOne({ fungibleName, accountName }) {
@@ -59,7 +60,7 @@ export default builder.node(
           try {
             return (
               await Promise.all(
-                chainIds.map(async (chainId) => {
+                chainIds.map((chainId) => {
                   return getFungibleChainAccount({
                     chainId,
                     fungibleName: parent.fungibleName,
@@ -69,7 +70,7 @@ export default builder.node(
               )
             ).filter(
               (chainAccount) => chainAccount !== null,
-            ) as FungibleChainAccount[];
+            ) as IFungibleChainAccount[];
           } catch (error) {
             throw normalizeError(error);
           }

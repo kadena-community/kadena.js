@@ -34,6 +34,9 @@ export const dotenv: {
   SIMULATE_DEFAULT_CHAIN_ID: ChainId;
   SIMULATE_LOG_FOLDER_NAME: string;
   NODE_ENV: string;
+  TIMEOUT_PACT_QUERY: number;
+  CHAINWEB_NODE_RETRY_ATTEMPTS: number;
+  CHAINWEB_NODE_RETRY_DELAY: number;
 } = {
   CHAIN_COUNT: parseInt(or(process.env.CHAIN_COUNT, '20'), 10),
   COMPLEXITY_LIMIT: parseInt(or(process.env.COMPLEXITY_LIMIT, '500'), 10),
@@ -118,6 +121,15 @@ export const dotenv: {
   ),
   SIMULATE_LOG_FOLDER_NAME: or(process.env.SIMULATE_LOG_FOLDER_NAME, 'logs'),
   NODE_ENV: or(process.env.NODE_ENV, 'production'),
+  TIMEOUT_PACT_QUERY: parseInt(or(process.env.TIMEOUT_PACT_QUERY, '5000'), 10),
+  CHAINWEB_NODE_RETRY_ATTEMPTS: parseInt(
+    or(process.env.CHAINWEB_NODE_RETRY_ATTEMPTS, '5'),
+    10,
+  ),
+  CHAINWEB_NODE_RETRY_DELAY: parseInt(
+    or(process.env.CHAINWEB_NODE_RETRY_DELAY, '100'),
+    10,
+  ),
 };
 
 function or<T>(value: T | undefined, otherwise: T): T {

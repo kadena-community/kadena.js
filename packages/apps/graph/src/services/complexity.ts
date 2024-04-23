@@ -17,7 +17,7 @@ export const getDefaultConnectionComplexity = (options?: {
   first?: number | null;
   last?: number | null;
   minimumDepth?: number | null;
-}) => {
+}): number => {
   let baseComplexity = options?.withRelations
     ? COMPLEXITY.FIELD.PRISMA_WITH_RELATIONS
     : COMPLEXITY.FIELD.PRISMA_WITHOUT_RELATIONS;

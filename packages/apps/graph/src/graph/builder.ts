@@ -19,23 +19,24 @@ import {
 import type { IncomingMessage } from 'http';
 import { prismaClient } from '../db/prisma-client';
 import type {
-  ContinuationPayload,
-  ExecutionPayload,
-  FungibleAccount,
-  FungibleChainAccount,
-  GasLimitEstimation,
-  GraphConfiguration,
-  Guard,
-  NonFungibleAccount,
-  NonFungibleChainAccount,
-  NonFungibleToken,
-  NonFungibleTokenBalance,
-  TransactionCapability,
-  TransactionCommand,
-  TransactionMempoolInfo,
-  TransactionMeta,
-  TransactionResult,
-  TransactionSignature,
+  IContinuationPayload,
+  IExecutionPayload,
+  IFungibleAccount,
+  IFungibleChainAccount,
+  IGasLimitEstimation,
+  IGraphConfiguration,
+  IGuard,
+  INonFungibleAccount,
+  INonFungibleChainAccount,
+  INonFungibleToken,
+  INonFungibleTokenBalance,
+  IPactQueryResponse,
+  ITransactionCapability,
+  ITransactionCommand,
+  ITransactionMempoolInfo,
+  ITransactionMeta,
+  ITransactionResult,
+  ITransactionSignature,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -61,37 +62,37 @@ interface IDefaultTypesExtension {
 
 export interface IContext {
   req: IncomingMessage;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   extensions: any;
-  networkId: string;
 }
 
 export const PRISMA = {
   DEFAULT_SIZE: 20,
 };
 
-// eslint-disable-next-line @rushstack/typedef-var
 export const builder = new SchemaBuilder<
   IDefaultTypesExtension & {
     PrismaTypes: PrismaTypes;
     Context: IContext;
     Objects: {
-      FungibleAccount: FungibleAccount;
-      FungibleChainAccount: FungibleChainAccount;
-      GasLimitEstimation: GasLimitEstimation;
-      GraphConfiguration: GraphConfiguration;
-      Guard: Guard;
-      NonFungibleAccount: NonFungibleAccount;
-      NonFungibleChainAccount: NonFungibleChainAccount;
-      NonFungibleTokenBalance: NonFungibleTokenBalance;
-      NonFungibleToken: NonFungibleToken;
-      TransactionMeta: TransactionMeta;
-      ExecutionPayload: ExecutionPayload;
-      ContinuationPayload: ContinuationPayload;
-      TransactionMempoolInfo: TransactionMempoolInfo;
-      TransactionResult: TransactionResult;
-      TransactionCommand: TransactionCommand;
-      TransactionCapability: TransactionCapability;
-      TransactionSignature: TransactionSignature;
+      FungibleAccount: IFungibleAccount;
+      FungibleChainAccount: IFungibleChainAccount;
+      GasLimitEstimation: IGasLimitEstimation;
+      GraphConfiguration: IGraphConfiguration;
+      Guard: IGuard;
+      NonFungibleAccount: INonFungibleAccount;
+      NonFungibleChainAccount: INonFungibleChainAccount;
+      NonFungibleTokenBalance: INonFungibleTokenBalance;
+      NonFungibleToken: INonFungibleToken;
+      TransactionMeta: ITransactionMeta;
+      ExecutionPayload: IExecutionPayload;
+      ContinuationPayload: IContinuationPayload;
+      TransactionMempoolInfo: ITransactionMempoolInfo;
+      TransactionResult: ITransactionResult;
+      TransactionCommand: ITransactionCommand;
+      TransactionCapability: ITransactionCapability;
+      TransactionSignature: ITransactionSignature;
+      PactQueryResponse: IPactQueryResponse;
     };
   }
 >({
@@ -155,7 +156,6 @@ type ScalarTypeResolver<TScalarInputShape, TScalarOutputShape> =
   >;
 
 // Defines the custom scalars
-// eslint-disable-next-line @rushstack/typedef-var
 const SCALARS = [
   ['BigInt', BigIntResolver],
   ['DateTime', DateTimeResolver],

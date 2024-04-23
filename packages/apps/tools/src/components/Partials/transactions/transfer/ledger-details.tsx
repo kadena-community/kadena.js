@@ -13,6 +13,7 @@ import classNames from 'classnames';
 import useTranslation from 'next-translate/useTranslation';
 import type { FC } from 'react';
 import React, { useEffect, useState } from 'react';
+import { ConnectLedgerButton } from './connect-ledger-button';
 
 export interface ILedgerDetailsProps {
   onLedgerKeyUpdate: (ledgerPublicKey: string) => void;
@@ -54,43 +55,51 @@ export const LedgerDetails: FC<ILedgerDetailsProps> = ({
   }, [onLedgerKeyUpdate, state.value]);
 
   return (
-    <Stack
-      flexDirection={'row'}
-      justifyContent={'space-between'}
-      alignItems={'flex-end'}
-      marginBlockStart={'md'}
-    >
-      <Stack gap={'md'}>
-        <NumberField
-          startAddon={<MonoKey />}
-          label={t('Key Index')}
-          onValueChange={(keyIndex) => {
-            setKeyIndex(keyIndex);
-            onKeyIdUpdate(keyIndex);
-          }}
-          isInvalid={!!state.error}
-          errorMessage={
-            state.error ? 'You need to connect to your Ledger device.' : ''
-          }
-          minValue={0}
-          maxValue={99}
+    <>
+      <Stack
+        flexDirection={'row'}
+        justifyContent={'space-between'}
+        alignItems={'flex-end'}
+        marginBlockStart={'md'}
+      >
+        <Stack gap={'md'}>
+          <NumberField
+            startAddon={<MonoKey />}
+            label={t('ledger-key-index')}
+            onValueChange={(keyIndex) => {
+              setKeyIndex(keyIndex);
+              onKeyIdUpdate(keyIndex);
+            }}
+            defaultValue={0}
+            isInvalid={!!state.error}
+            errorMessage={
+              state.error ? 'You need to connect to your Ledger device.' : ''
+            }
+            minValue={0}
+            maxValue={99}
+          />
+          <div
+            className={classNames(
+              tooltipInfoContainer,
+              state.error ? marginBottomOnError : null,
+            )}
+          >
+            <Tooltip content={t('ledger tooltip content')} position={'top'}>
+              <MonoInfo />
+            </Tooltip>
+          </div>
+        </Stack>
+        <Toggle
+          label={t('is Legacy')}
+          onClick={setLegacyOn}
+          toggled={legacyToggleOn}
         />
-        <div
-          className={classNames(
-            tooltipInfoContainer,
-            state.error ? marginBottomOnError : null,
-          )}
-        >
-          <Tooltip content={t('ledger tooltip content')} position={'top'}>
-            <MonoInfo />
-          </Tooltip>
-        </div>
       </Stack>
-      <Toggle
-        label={t('is Legacy')}
-        onClick={setLegacyOn}
-        toggled={legacyToggleOn}
+      <ConnectLedgerButton
+        onPress={() => getter({ keyId: 0, derivationMode })}
+        isLoading={state.loading}
+        isConnected={!!state.value}
       />
-    </Stack>
+    </>
   );
 };

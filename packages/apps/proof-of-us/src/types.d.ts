@@ -81,8 +81,8 @@ interface IProofOfUsTokenMeta {
   image: string;
   name: string;
   properties: {
-    eventName: string;
-    eventId: string;
+    eventName?: string;
+    eventId?: string;
     eventType: TokenType;
     date: number;
     avatar?: {
@@ -115,7 +115,7 @@ interface IError {
   status?: string;
 }
 
-type ISignerStatus = 'init' | 'signing' | 'success' | 'error';
+type ISignerStatus = 'init' | 'notsigning' | 'signing' | 'success' | 'error';
 
 type ISocial = string;
 
@@ -132,6 +132,7 @@ type IProofOfUsSignee = Pick<IAccount, 'accountName' | 'alias'> & {
   socialLink?: ISocial;
   position?: ISigneePosition;
   publicKey: string;
+  lastPingTime?: number;
 };
 
 type IAccountLeaderboard = Pick<IAccount, 'alias' | 'accountName'> & {
@@ -155,4 +156,13 @@ interface IToken {
   };
   mintStartDate?: number;
   listener?: Promise<any>;
+}
+
+interface IUploadResult {
+  imageCid: string;
+  imageUrl: string;
+  imageUrlUpload: string;
+  metadataCid: string;
+  metadataUrl: string;
+  metadataUrlUpload: string;
 }

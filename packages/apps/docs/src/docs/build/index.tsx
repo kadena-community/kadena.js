@@ -44,8 +44,7 @@ const Home: FC<IProps> = ({ blogPosts, popularPages }) => {
               </Text>
             </Box>
             <Link
-              endIcon={<SystemIcon.TrailingIcon />}
-              variant="contained"
+              endVisual={<SystemIcon.TrailingIcon />}
               href="/build/quickstart"
             >
               Quick start

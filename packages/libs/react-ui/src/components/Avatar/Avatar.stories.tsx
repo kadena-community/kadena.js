@@ -20,6 +20,14 @@ const meta: Meta<IAvatarProps> = {
       },
     },
   },
+  argTypes: {
+    size: {
+      control: {
+        type: 'select',
+      },
+      options: ['sm', 'md', 'lg'],
+    },
+  },
 };
 
 export default meta;

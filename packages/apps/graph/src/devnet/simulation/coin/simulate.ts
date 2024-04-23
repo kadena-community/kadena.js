@@ -126,6 +126,7 @@ export async function simulateCoin({
     let seededRandomNo = seedRandom(seed);
     let counter: number = 0;
 
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       // Transfer between accounts
       for (let i = 0; i < accounts.length; i++) {

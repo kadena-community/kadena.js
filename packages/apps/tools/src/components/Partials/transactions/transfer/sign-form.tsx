@@ -1,6 +1,8 @@
+import type { FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Button, Notification, Stack } from '@kadena/react-ui';
+import type { IButtonProps } from '@kadena/react-ui';
+import { Button, Stack } from '@kadena/react-ui';
 
 import { NAME_VALIDATION } from '@/components/Global/AccountNameField';
 import { FormStatusNotification } from '@/components/Global/FormStatusNotification';
@@ -18,13 +20,14 @@ import { CHAINS } from '@kadena/chainweb-node-client';
 import useTranslation from 'next-translate/useTranslation';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { buttonContainerClass } from '@/pages/transactions/transfer/styles.css';
-
 import { useWalletConnectClient } from '@/context/connect-wallet-context';
 
 import type { AccountDetails } from '@/hooks/use-account-details-query';
 import { stripAccountPrefix } from '@/utils/string';
-import { MonoKeyboardArrowRight } from '@kadena/react-icons/system';
+import {
+  MonoKeyboardArrowRight,
+  MonoRefresh,
+} from '@kadena/react-icons/system';
 import type { ChainId } from '@kadena/types';
 import type { PactCommandObject } from '@ledgerhq/hw-app-kda';
 import { z } from 'zod';
@@ -32,26 +35,42 @@ import { SignFormReceiver } from './sign-form-receiver';
 import type { SenderType } from './sign-form-sender';
 import { SignFormSender } from './sign-form-sender';
 
-const schema = z.object({
+export const schema = z.object({
   sender: NAME_VALIDATION,
   senderChainId: z.enum(CHAINS),
-  receiver: NAME_VALIDATION,
-  amount: z.number().positive(),
+  receiver: NAME_VALIDATION.regex(
+    /^k:[0-9A-Fa-f]{64}/,
+    'Signing with Ledger currently only supports single key accounts.',
+  ),
   receiverChainId: z.enum(CHAINS),
+  amount: z.number().positive(),
+  isConnected: z.boolean().refine((val) => val === true),
 });
 
 export type FormData = z.infer<typeof schema>;
 
-export const SignForm = ({
-  onSuccess,
-  onSenderChainUpdate,
-  onReceiverChainUpdate,
-  setIsLedger,
-}: {
+export const defaultValues: Partial<FormData> = {
+  sender: '',
+  senderChainId: CHAINS[0],
+  receiver: '',
+  // receiverChainId: undefined,
+  amount: 0,
+};
+
+export interface ISignFormProps {
   onSuccess: (pactCommandObject: PactCommandObject) => void;
   onSenderChainUpdate: (chainId: ChainId) => void;
   onReceiverChainUpdate: (chainId: ChainId) => void;
   setIsLedger: (mode: boolean) => void;
+  onReset: () => void;
+}
+
+export const SignForm: FC<ISignFormProps> = ({
+  onSuccess,
+  onSenderChainUpdate,
+  onReceiverChainUpdate,
+  setIsLedger,
+  onReset,
 }) => {
   const { t } = useTranslation('common');
 
@@ -59,13 +78,21 @@ export const SignForm = ({
 
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { senderChainId: CHAINS[0], receiverChainId: undefined },
+    defaultValues,
   });
+
+  const {
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
 
   const { selectedNetwork: network } = useWalletConnectClient();
 
   const watchChains = methods.watch(['senderChainId', 'receiverChainId']);
-  const onSameChain = watchChains.every((chain) => chain === watchChains[0]);
+  const onSameChain = watchChains.every(
+    (chain: ChainId) => chain === watchChains[0],
+  );
 
   const senderDataRef = useRef<AccountDetails>();
   const onSenderDataUpdate = (data: AccountDetails) => {
@@ -87,7 +114,7 @@ export const SignForm = ({
     pred.current = predicate;
   };
 
-  const keyId = useRef<number>();
+  const keyId = useRef<number>(0);
   const onKeyIdUpdate = (id: number) => {
     keyId.current = id;
   };
@@ -148,10 +175,7 @@ export const SignForm = ({
 
     const { isSigned, pactCommand } = await signTx(transferInput, {
       networkId: network,
-      derivationPath: getDerivationPath(
-        keyId.current!,
-        derivationMode.current!,
-      ),
+      derivationPath: getDerivationPath(keyId.current, derivationMode.current!),
     });
 
     if (isSigned) {
@@ -159,9 +183,40 @@ export const SignForm = ({
     }
   };
 
+  const handleReset = () => {
+    reset(defaultValues);
+
+    onPubKeysUpdate([]);
+
+    onReset();
+  };
+
+  const getSubmitButtonText = () => {
+    if (signingMethod !== 'Ledger') {
+      return t('Sign');
+    }
+
+    if (ledgerSignState.loading) {
+      return t('Waiting for Ledger');
+    }
+
+    return t('Sign on Ledger');
+  };
+
+  const getSubmitButtonColor = (): IButtonProps['variant'] => {
+    if (signingMethod === 'Ledger' && ledgerSignState.loading) {
+      return 'info';
+    }
+
+    return 'primary';
+  };
+
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSignTransaction)}>
+      <form
+        onSubmit={handleSubmit(handleSignTransaction)}
+        onReset={handleReset}
+      >
         <Stack flexDirection="column" gap="lg">
           {/* SENDER  FLOW */}
           <SignFormSender
@@ -189,24 +244,32 @@ export const SignForm = ({
             />
           )}
 
-          {ledgerSignState.loading && (
-            <Notification role="alert">
-              {t('Waiting for ledger signature…')}
-            </Notification>
+          {errors.isConnected && (
+            <FormStatusNotification
+              status="erroneous"
+              body={t('ledger-sign-error')}
+            />
           )}
 
-          <div className={buttonContainerClass}>
+          <Stack justifyContent={'flex-end'} gap={'lg'}>
             <Button
-              // isLoading={receiverData.isFetching || ledgerSignState.loading}
-              isLoading={ledgerSignState.loading}
-              // isDisabled={isSubmitting}
-              endIcon={<MonoKeyboardArrowRight />}
-              title={t('Sign')}
-              type="submit"
+              endVisual={<MonoRefresh />}
+              variant="outlined"
+              title={t('Reset')}
+              type="reset"
             >
-              {t('Sign')}
+              {t('Reset')}
             </Button>
-          </div>
+
+            <Button
+              endVisual={<MonoKeyboardArrowRight />}
+              title={getSubmitButtonText()}
+              type="submit"
+              variant={getSubmitButtonColor()}
+            >
+              {getSubmitButtonText()}
+            </Button>
+          </Stack>
         </Stack>
       </form>
     </FormProvider>

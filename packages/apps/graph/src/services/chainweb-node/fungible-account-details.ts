@@ -1,42 +1,43 @@
 import { details } from '@kadena/client-utils/coin';
 import type { ChainId } from '@kadena/types';
 import { dotenv } from '@utils/dotenv';
-import { networkConfig } from '../..';
-import type { Guard } from '../../graph/types/graphql-types';
+import { networkData } from '@utils/network';
+import type { IGuard } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-export type FungibleChainAccountDetails = {
+export interface IFungibleChainAccountDetails {
   account: string;
   balance: number;
   guard: {
     keys: string[];
-    pred: Guard['predicate'];
+    pred: IGuard['predicate'];
   };
-};
+}
 
 export async function getFungibleAccountDetails(
   fungibleName: string,
   accountName: string,
   chainId: string,
-): Promise<FungibleChainAccountDetails | null> {
+  retries = dotenv.CHAINWEB_NODE_RETRY_ATTEMPTS,
+  delay = dotenv.CHAINWEB_NODE_RETRY_DELAY,
+): Promise<IFungibleChainAccountDetails | null> {
   let result;
-  const networkId = (await networkConfig).networkId;
 
   try {
     result = (await details(
       accountName,
-      networkId,
+      networkData.networkId,
       chainId as ChainId,
       dotenv.NETWORK_HOST,
       fungibleName,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     )) as any;
 
     if (typeof result.balance === 'object') {
       result.balance = parseFloat(result.balance.decimal);
     }
 
-    return result as FungibleChainAccountDetails;
+    return result as IFungibleChainAccountDetails;
   } catch (error) {
     if (
       error.message.includes('with-read: row not found') || // Account not found
@@ -44,7 +45,17 @@ export async function getFungibleAccountDetails(
     ) {
       return null;
     } else {
-      throw new PactCommandError('Pact Command failed with error', result);
+      if (retries > 0) {
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        return getFungibleAccountDetails(
+          fungibleName,
+          accountName,
+          chainId,
+          retries - 1,
+        );
+      } else {
+        throw new PactCommandError('Pact Command failed with error', result);
+      }
     }
   }
 }

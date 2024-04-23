@@ -611,15 +611,15 @@ const CrossChainTransferFinisher: FC = () => {
                         className={textareaWrapperStyle}
                       />
                       <Button
-                        color="primary"
-                        icon={<MonoContentCopy />}
                         onPress={async () => {
                           await handleCopySigData();
                         }}
                         title={t('copySigData')}
                         aria-label={t('copySigData')}
-                        variant="text"
-                      />
+                        variant="transparent"
+                      >
+                        <MonoContentCopy />
+                      </Button>
                     </div>
                   </GridItem>
                 </Grid>
@@ -631,7 +631,7 @@ const CrossChainTransferFinisher: FC = () => {
           <Button
             type="submit"
             isLoading={processingTx}
-            endIcon={<MonoKeyboardArrowRight />}
+            endVisual={<MonoKeyboardArrowRight />}
           >
             {t('Finish Transaction')}
           </Button>

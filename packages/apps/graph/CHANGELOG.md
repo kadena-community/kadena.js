@@ -1,5 +1,29 @@
 # @kadena/graph
 
+## 1.0.1
+
+### Patch Changes
+
+- 2ff01d300: Optimize events subscription; minor fix in documentation
+
+## 1.0.0
+
+### Major Changes
+
+- f09f02356: Release version 1.0.0
+
+### Patch Changes
+
+- 427957e46: Change non-id field types to strings instead of id's
+- 2efb4332e: Add timeouts in pact queries and implement pact query response
+  object
+- 77dddd8b0: Optimize fetching of latest id for events
+- 0e1d37089: Fixed network config retrieval running before system checks
+- 4eb925ccc: Added retry mechanism for chainweb-node calls; added environmental
+  variables to support this functionality
+- 920c38344: Fix auxiliary queries in readme.md
+- 9810956fb: Fixed incorrect IDs in schema
+
 ## 0.1.14
 
 ### Patch Changes

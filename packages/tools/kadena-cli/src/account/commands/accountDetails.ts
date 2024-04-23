@@ -1,4 +1,5 @@
 import type { ChainId } from '@kadena/types';
+import type { Table } from 'cli-table3';
 import { CHAIN_ID_ACTION_ERROR_MESSAGE } from '../../constants/account.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
@@ -10,6 +11,7 @@ import {
   notEmpty,
 } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
+import { createTable } from '../../utils/table.js';
 import { accountOptions } from '../accountOptions.js';
 import type { IAccountDetailsResult } from '../types.js';
 import type { IGetAccountDetailsParams } from '../utils/getAccountDetails.js';
@@ -83,17 +85,10 @@ export async function accountDetails(
   };
 }
 
-function generateTableForAccountDetails(accounts: IAccountDetails[]): {
-  headers: string[];
-  data: string[][];
-} {
-  const headers = [
-    'Account Name',
-    'ChainID',
-    'Public Keys',
-    'Predicate',
-    'Balance',
-  ];
+function generateTableForAccountDetails(accounts: IAccountDetails[]): Table {
+  const table = createTable({
+    head: ['Account Name', 'ChainID', 'Public Keys', 'Predicate', 'Balance'],
+  });
 
   const data = accounts.map((acc) => {
     const chainId = Object.keys(acc)[0];
@@ -111,10 +106,9 @@ function generateTableForAccountDetails(accounts: IAccountDetails[]): {
     ];
   });
 
-  return {
-    headers,
-    data: data,
-  };
+  table.push(...data);
+
+  return table;
 }
 
 export const createAccountDetailsCommand = createCommand(
@@ -168,10 +162,7 @@ export const createAccountDetailsCommand = createCommand(
         ),
       );
       const table = generateTableForAccountDetails(result.data);
-      log.output(
-        log.generateTableString(table.headers, table.data),
-        result.data,
-      );
+      log.output(table.toString(), result.data);
     }
     assertCommandError(result);
   },

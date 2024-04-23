@@ -8,12 +8,12 @@ import {
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
 import { tokenDetailsLoader } from '../data-loaders/token-details';
-import type { NonFungibleChainAccount } from '../types/graphql-types';
+import type { INonFungibleChainAccount } from '../types/graphql-types';
 import { NonFungibleChainAccountName } from '../types/graphql-types';
 import NonFungibleTokenBalance from './non-fungible-token-balance';
 
 export default builder.node(
-  builder.objectRef<NonFungibleChainAccount>(NonFungibleChainAccountName),
+  builder.objectRef<INonFungibleChainAccount>(NonFungibleChainAccountName),
   {
     description: 'A chain and non-fungible-specific account.',
     id: {
@@ -24,6 +24,7 @@ export default builder.node(
       }),
     },
     isTypeOf(source) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (source as any).__typename === NonFungibleChainAccountName;
     },
     async loadOne({ chainId, accountName }) {

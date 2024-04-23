@@ -258,7 +258,7 @@ const promptVariableValue = async (
       const accountConfig = accounts.find((x) => x.name === accountMatch);
       if (accountConfig) {
         const selection = await select({
-          message: `Template key "${key}" matches account "${accountName}". Use public key?`,
+          message: `Template key "${key}" matches account "${accountName}". Use public account's key?`,
           choices: [
             ...accountConfig.publicKeys.map((key) => ({
               value: key,
@@ -312,7 +312,7 @@ const promptVariableValue = async (
         choices.length === 1
           ? choices[0].value
           : await select({
-              message: `Select public key from:`,
+              message: `Template value "${key}" public key:`,
               choices: choices,
             });
     }
@@ -427,9 +427,10 @@ const promptVariableValue = async (
     log.info('keyset alias', alias);
     return alias;
   } else if (key.startsWith('network:')) {
+    const keyName = key.substring('network:'.length);
     const networks = await getExistingNetworks();
     const networkName = await select({
-      message: `Select network id for template value ${key}:`,
+      message: `Select network id for template value ${keyName}:`,
       choices: networks,
     });
     const network = await loadNetworkConfig(networkName);

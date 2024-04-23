@@ -2,11 +2,15 @@ import type { IPlainKey } from '../../services/index.js';
 import type { IWallet as IServiceWallet } from '../../services/wallet/wallet.types.js';
 import { log } from '../../utils/logger.js';
 import { relativeToCwd } from '../../utils/path.util.js';
-import type { TableHeader, TableRow } from '../../utils/tableDisplay.js';
+import { TABLE_DEFAULT, createTable } from '../../utils/table.js';
 
 export async function printPlainKeys(plainKeys: IPlainKey[]): Promise<void> {
-  const header: TableHeader = ['Filename', 'Public Key'];
-  const rows: TableRow[] = [];
+  const hasLegacy = plainKeys.some((key) => key.legacy);
+  const table = createTable({
+    head: hasLegacy
+      ? ['Filename', 'Public Key', 'Legacy']
+      : ['Filename', 'Public Key'],
+  });
 
   if (plainKeys.length === 0) {
     log.info('There are no key files in your working directory.');
@@ -14,20 +18,16 @@ export async function printPlainKeys(plainKeys: IPlainKey[]): Promise<void> {
     log.info('  kadena key generate');
     return;
   }
-
-  const hasLegacy = plainKeys.some((key) => key.legacy);
-  if (hasLegacy) header.push('Legacy');
-
   for (const key of plainKeys) {
     const row = [key.alias, key.publicKey];
     if (hasLegacy) row.push(key.legacy ? 'Yes' : 'No');
-    rows.push(row);
+    table.push(row);
   }
 
   log.info(`Listing keys in the working directory:`);
 
-  if (rows.length > 0) {
-    log.output(log.generateTableString(header, rows), plainKeys);
+  if (table.length > 0) {
+    log.output(table.toString(), plainKeys);
   } else {
     log.info('No valid keys found');
   }
@@ -38,8 +38,10 @@ export async function printWalletKeys(
 ): Promise<void> {
   if (!wallet) return;
 
-  const header: TableHeader = ['Alias', 'Index', 'Public Key'];
-  const rows: TableRow[] = [];
+  const table = createTable({
+    ...TABLE_DEFAULT,
+    head: ['Alias', 'Index', 'Public key'],
+  });
 
   if (wallet.keys.length === 0) {
     log.info(`\nWallet: ${wallet.alias}${wallet.legacy ? ' (legacy)' : ''}`);
@@ -47,16 +49,16 @@ export async function printWalletKeys(
   }
 
   for (const key of wallet.keys) {
-    rows.push([
+    table.push([
       key.alias ?? `N/A`,
       key.index.toString(),
       key.publicKey ?? 'N/A',
     ]);
   }
 
-  if (rows.length > 0) {
+  if (table.length > 0) {
     log.info(`\nWallet: ${wallet.alias}${wallet.legacy ? ' (legacy)' : ''}`);
-    log.info(log.generateTableString(header, rows));
+    log.output(table.toString(), wallet.keys);
   } else {
     log.info(`\nWallet: ${wallet.alias}${wallet.legacy ? ' (legacy)' : ''}`);
     log.info('No valid keys found');
@@ -88,9 +90,6 @@ export function displayGeneratedPlainKeys(keys: IPlainKey[]): void {
     return;
   }
 
-  const header: TableHeader = ['Public Key'];
-  const rows: TableRow[] = keys.map((key) => [key.publicKey]);
-
   const hasLegacy = keys.some((key) => key.legacy);
   log.info(
     log.color.green(
@@ -100,8 +99,9 @@ export function displayGeneratedPlainKeys(keys: IPlainKey[]): void {
     ),
   );
 
+  log.info(log.color.green('Public key'));
   log.output(
-    log.generateTableString(header, rows),
+    keys.map((key) => key.publicKey).join('\n'),
     keys.length === 1 ? keys[0] : keys,
   );
   log.info('');

@@ -1,26 +1,26 @@
 import type { Signer } from '@prisma/client';
 import { chainIds } from '@utils/chains';
 import { dotenv } from '@utils/dotenv';
+import { networkData } from '@utils/network';
 import https from 'https';
-import { networkConfig } from '../..';
 
 export class MempoolError extends Error {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public mempoolError: any;
 
-  constructor(message: string, mempoolError?: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public constructor(message: string, mempoolError?: any) {
     super(message);
     this.mempoolError = mempoolError;
   }
 }
 
-export async function mempoolGetPending() {
-  const { networkId, apiVersion } = await networkConfig;
-
+export async function mempoolGetPending(): Promise<unknown> {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: dotenv.MEMPOOL_HOSTNAME,
       port: dotenv.MEMPOOL_PORT,
-      path: `/chainweb/${apiVersion}/${networkId}/chain/0/mempool/getPending`,
+      path: `/chainweb/${networkData.apiVersion}/${networkData.networkId}/chain/0/mempool/getPending`,
       method: 'POST',
       rejectUnauthorized: false, // This disables certificate verification
       headers: {
@@ -54,20 +54,23 @@ export async function mempoolGetPending() {
   });
 }
 
-export async function mempoolLookup(hash: string, chainId?: string) {
+export async function mempoolLookup(
+  hash: string,
+  chainId?: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> {
   let chainsToCheck = chainIds;
-  const { networkId, apiVersion } = await networkConfig;
 
   if (chainId) {
     chainsToCheck = [chainId];
   }
 
   for (const chainId of chainsToCheck) {
-    const result: any = await new Promise((resolve, reject) => {
+    const result = await new Promise((resolve, reject) => {
       const options = {
         hostname: dotenv.MEMPOOL_HOSTNAME,
         port: dotenv.MEMPOOL_PORT,
-        path: `/chainweb/${apiVersion}/${networkId}/chain/${chainId}/mempool/lookup`,
+        path: `/chainweb/${networkData.apiVersion}/${networkData.networkId}/chain/${chainId}/mempool/lookup`,
         method: 'POST',
         rejectUnauthorized: false, // This disables certificate verification
         headers: {
@@ -100,6 +103,7 @@ export async function mempoolLookup(hash: string, chainId?: string) {
       req.end();
     });
 
+    // @ts-ignore
     if (result && result[0] && result[0].contents) {
       return result;
     }
@@ -127,6 +131,7 @@ export async function getMempoolTransactionSigners(
     const mempoolTx = JSON.parse(mempoolData[0].contents);
     mempoolTx.cmd = JSON.parse(mempoolTx.cmd);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mempoolTx.cmd.signers = mempoolTx.cmd.signers.map((signer: any) => ({
       publicKey: signer.pubKey,
       scheme: signer.scheme,

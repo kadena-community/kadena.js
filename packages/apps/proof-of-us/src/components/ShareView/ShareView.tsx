@@ -8,11 +8,10 @@ import {
   MonoArrowBack,
   MonoArrowDownward,
   MonoCheckCircle,
-  MonoSignature,
 } from '@kadena/react-icons';
 import { Stack } from '@kadena/react-ui';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import type { FC } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
@@ -24,7 +23,9 @@ import { useAccount } from '@/hooks/account';
 import { createManifest } from '@/utils/createManifest';
 import { createConnectTokenTransaction, getTokenId } from '@/utils/proofOfUs';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
+import { Confirmation } from '../Confirmation/Confirmation';
 import { ScreenHeight } from '../ScreenHeight/ScreenHeight';
+import { StartSigningButton } from '../StartSigningButton/StartSigningButton';
 import { copyClass, qrClass } from './style.css';
 
 interface IProps {
@@ -39,12 +40,17 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   const [isMounted, setIsMounted] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const { proofOfUs, signees, background, isInitiator, updateProofOfUs } =
-    useProofOfUs();
+  const {
+    proofOfUs,
+    signees,
+    background,
+    isInitiator,
+    updateProofOfUs,
+    resetSignatures,
+  } = useProofOfUs();
   const { account } = useAccount();
   const { signToken } = useSignToken();
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const handleBack = () => {
     prev();
@@ -75,11 +81,6 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
   }, [proofOfUs, account]);
 
   useEffect(() => {
-    const transaction = searchParams.get('transaction');
-    if (!transaction || !proofOfUs) return;
-  }, []);
-
-  useEffect(() => {
     if (!isCopied) return;
 
     const timer = setTimeout(() => {
@@ -93,10 +94,12 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
 
   if (!proofOfUs || !account || !isMounted) return;
 
+  const SHARE_LINK = `${getReturnHostUrl()}/scan/${
+    proofOfUs.proofOfUsId
+  }?shouldAdd=true`;
+
   const handleCopy = () => {
-    navigator.clipboard.writeText(
-      `${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`,
-    );
+    navigator.clipboard.writeText(SHARE_LINK);
     setIsCopied(true);
   };
 
@@ -125,17 +128,20 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
       process.env.NEXT_PUBLIC_CONNECTION_EVENTID ?? '',
       manifestData.url,
     );
+
+    console.log('_________NEW COMPLETELY!!!!!!!!_________');
     return {
       transaction: transaction,
       manifestUri: manifestData?.url,
       imageUri: imageData.url,
-      eventName: manifest.properties.eventName,
+      eventName: '',
       tokenId,
     };
   };
 
   const handleStartSigning = async () => {
     const transactionData = await createTx();
+    console.log({ transactionData });
     if (!transactionData) return;
     const transaction = Buffer.from(
       JSON.stringify(transactionData.transaction),
@@ -189,7 +195,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                   ecLevel="H"
                   size={300}
                   ref={qrRef}
-                  value={`${getReturnHostUrl()}/scan/${proofOfUs.proofOfUsId}`}
+                  value={SHARE_LINK}
                   removeQrCodeBehindLogo={true}
                   logoImage="/assets/qrlogo.png"
                   logoPadding={5}
@@ -198,11 +204,10 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
                 />
               </div>
               <Stack gap="md">
-                {(signees?.length ?? 0) > 1 && (
-                  <Button onPress={handleStartSigning}>
-                    Start signing <MonoSignature />
-                  </Button>
-                )}
+                <StartSigningButton
+                  signees={signees}
+                  onPress={handleStartSigning}
+                />
               </Stack>
               <ListSignees />
             </>
@@ -213,9 +218,21 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
             </>
           )}
 
-          <Button isDisabled={!readyToMint} onPress={handleSign}>
-            {readyToMint ? 'Sign & Upload' : 'Waiting for signatures'}
-          </Button>
+          <Stack width="100%" gap="md">
+            {isAlreadySigning(proofOfUs) && (
+              <>
+                <Confirmation
+                  text="Are you sure you want to reset all signatures?"
+                  action={resetSignatures}
+                >
+                  <Button variant="secondary">Reset Signers</Button>
+                </Confirmation>
+                <Button isDisabled={!readyToMint} onPress={handleSign}>
+                  {readyToMint ? 'Sign & Upload' : 'Waiting for signatures'}
+                </Button>
+              </>
+            )}
+          </Stack>
         </>
       )}
       {status === 4 && (
