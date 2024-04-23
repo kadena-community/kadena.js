@@ -3,6 +3,7 @@ import { createClient } from '@kadena/client';
 import { describeModule } from '@kadena/client-utils';
 import type { ChainId } from '@kadena/types';
 
+import deployDevNetFaucet from '../../devnet/faucet/deploy/index.js';
 import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { notEmpty } from '../../utils/helpers.js';
@@ -152,4 +153,29 @@ export async function findMissingModuleDeployments(
   }
 
   return undeployedChainIds;
+}
+
+interface IFaucetDeployFailedResult {
+  chainId: ChainId;
+  message: string;
+}
+
+export async function deployFaucetsToChains(
+  chainIds: ChainId[],
+): Promise<[ChainId[], IFaucetDeployFailedResult[]]> {
+  const succeededDeployments: ChainId[] = [];
+  const failedDeployments: IFaucetDeployFailedResult[] = [];
+  await Promise.all(
+    chainIds.map(async (chainId) => {
+      try {
+        await deployDevNetFaucet(chainId);
+        succeededDeployments.push(chainId);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : '';
+        failedDeployments.push({ message: message, chainId });
+      }
+    }),
+  );
+
+  return [succeededDeployments, failedDeployments];
 }

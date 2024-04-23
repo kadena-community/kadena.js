@@ -4,7 +4,6 @@ import {
   NO_ACCOUNTS_FOUND_ERROR_MESSAGE,
 } from '../../constants/account.js';
 import { FAUCET_MODULE_NAME } from '../../constants/devnets.js';
-import deployDevNetFaucet from '../../devnet/faucet/deploy/index.js';
 import { networkIsAlive } from '../../devnet/utils/network.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
@@ -15,6 +14,7 @@ import { accountOptions } from '../accountOptions.js';
 import { ensureAccountAliasFilesExists } from '../utils/accountHelpers.js';
 import { fund } from '../utils/fund.js';
 import {
+  deployFaucetsToChains,
   findMissingModuleDeployments,
   getTxDetails,
   logAccountFundingTxResults,
@@ -74,7 +74,7 @@ export const createAccountFundCommand = createCommand(
       return log.error(`You can't fund an account other than "coin" fungible.`);
     }
 
-    if (networkConfig.networkId.includes('development')) {
+    if (networkConfig.networkId.includes('development') === true) {
       if (!(await networkIsAlive(networkConfig.networkHost))) {
         return log.error(
           `Devnet host "${networkConfig.networkHost}" is not running.`,
@@ -99,18 +99,31 @@ export const createAccountFundCommand = createCommand(
         if (!deployFaucet) {
           return;
         }
+
         const loader = ora(
           `Deploying faucet on chain Id(s): "${undeployedChainIdsStr}" in "${network}" network...\n`,
         ).start();
 
-        await deployDevNetFaucet(undeployedChainIds).catch((e) => {
-          loader.fail(
-            `Failed to deploy faucet module on chain "${undeployedChainIdsStr}" in "${network}" network.\n`,
+        const [succeededFaucetDeployments, failedFaucetDeployments] =
+          await deployFaucetsToChains(chainId);
+
+        if (failedFaucetDeployments.length > 0) {
+          const completeError = succeededFaucetDeployments.length === 0;
+          const loaderState = completeError ? 'fail' : 'warn';
+          loader[loaderState](
+            `Failed to deploy faucet module on "${network}" network in the following chain Id(s):\n`,
           );
-          throw Error(e);
-        });
+          failedFaucetDeployments.forEach(({ chainId, message }) => {
+            log.error(`Chain Id: ${chainId}, Error: ${message}`);
+          });
+        }
+
+        if (succeededFaucetDeployments.length === 0) {
+          return;
+        }
+
         loader.succeed(
-          `Deployed faucet module on chain "${undeployedChainIdsStr}" in "${network}" network.\n`,
+          `\nDeployed faucet module on chain "${undeployedChainIdsStr}" in "${network}" network.\n`,
         );
       }
     }
