@@ -88,6 +88,7 @@ You can use the following optional flags with the `kadena` parent command or wit
 | ------------- | -----------
 | `-h`, `--help` |	Display usage information.
 | `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
+| `--json` | Display command output in JSON format.
 | `-V`, `--version`	| Display version information.
 
 ### Subcommands
@@ -221,6 +222,136 @@ After running the command, you can change to your project directory by running a
 ```bash
 cd my-vuejs
 ```
+
+## kadena wallet
+
+Use `kadena wallet` to generate, import, and manage a local wallet.
+
+### Basic usage
+
+The basic syntax for the `kadena wallet` command is:
+
+```bash
+kadena wallet <action> <arguments> [flag]
+```
+
+### Flags
+
+You can use the following optional flags with the `kadena wallet` command.
+
+| Use this flag | To do this
+| ------------- | -----------
+| `-h`, `--help` |	Display usage information.
+| `-l`, `--legacy` | Use a legacy format for output.
+| `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
+| `-V`, `--version`	| Display version information.
+
+### Actions
+
+Use the following actions to specify the operation you want to perform.
+
+| Use this action | To do this
+| --------------- | -----------
+| add [options] | Add a new local wallet.
+| import [options] | Import or restore wallet from a 12-word mnemonic secret phrase.
+| generate-key [options] | Generate public and secret key pairs from your wallet.
+| change-password [options] | Update the password used to unlock your wallet.
+| decrypt [options] | Decrypt an encrypted  message.
+| delete [options] | Delete a specified wallet from your local filesystem.
+| list [options] | List information about a specified wallets or all wallets.
+| help [command] | Display usage information for a specified command.
+
+### Arguments
+
+Depending on the action you select, you can specify different arguments and options.
+The following table summarizes all of the options you can specify.
+To see the options to use for a specific action, use the `--help` flag on the command-line or review the examples.
+
+| Use this argument | To do this
+| ----------------- | -----------
+| `-w`, `--wallet-name` <`walletName`> | Specify the name for your wallet.
+| `--password-file` <`passwordFile`>  | Specify the path to the password file.
+| `-m`, `--key-mnemonic` <`keyMnemonic`> | Enter the 12-word mnemonic secret phrase used to generate your wallet keys.
+| `-c`, `--key-gen-from-choice` <`keyGenFromChoice`> | Select the type of key you want to generate. The valid options are `genPublicKey` (public key only), `genPublicSecretKey` (public and secret key), and `genPublicSecretKeyDec` (public key and secret key decrypted).
+| `-a`, `--key-alias` <`keyAlias`> | Specify an alias for storing the key on the filesystem.
+| `-r`, `--key-index-or-range` <`keyIndexOrRange`> | Enter the index or range of indices for key generation. For example, you can specify zero (0) for the parent key pair or generate a range of child key pairs (1-5). The default index is 0.
+| `-c`, `--current-password-file` <`currentPasswordFile`> | Specify the path to the current password file. In most cases, you use this option to change a password or decrypt a message when using the `--quiet` flag for non-interactive input.
+| `-n`, `--new-password-file` <`newPasswordFile`> | Specify the path to the new password file. In most cases, you use this option to change a password when using the `--quiet` flag for non-interactive input.
+| `-c`, `--confirm` | Confirm that you want to change the password for the wallet or delete a wallet. In most cases, you use this option to change a password when using the `--quiet` flag for non-interactive input.
+| `-m`, `--message` <`message`> | Specify the message you want to decrypt.
+| `-c`, `--current-password-file` <`currentPasswordFile`> | Specify the path to the current password file.
+| `-n`, `--amount` <`amount`> | Specify the number of keys to generate for a wallet. The default is one.
+
+### Examples
+
+To add a new local wallet interactively, you can run the following command:
+
+```bash
+kadena wallet add
+```
+
+This command prompts you to enter the wallet name and to set and confirm the password to unlock the wallet, then displays your 12-word secret phrase and the location of your local wallet.
+For example:
+
+```bash
+You can use the --password-file flag to provide a password.
+Mnemonic Phrase                                                            
+house second brick miracle trip fire peasant supply hen boost supper dignity
+Please store the mnemonic phrase in a safe place. You will need it to recover your wallet.
+
+Wallet Storage Location                                           
+/Users/tech-pubs/.kadena/wallets/pistolas-test/pistolas-test.wallet
+```
+
+To import a Chainweaver wallet so you to manage it from the command-line, you can run a command similar to the following:
+
+```bash
+kadena wallet import --key-mnemonic="model amber rose spoil motor deal alcohol lucky garage empty sausage lunch" --wallet-name="chainweaver-desktop" --legacy
+```
+
+This command prompts you to enter and confirm the password to unlock the wallet, then displays the location of your local wallet.
+
+To generate four hierarchical deterministic public and secret key pairs for a local wallet, you can run a command similar to the following:
+
+```bash
+kadena wallet generate-keys --wallet-name="pistolas-test.wallet" --key-index-or-range="1-4" --key-gen-from-choice="genPublicSecretKey" --key-alias="pistolas-keys"
+```
+
+This command prompts you to enter the password the keys, then displays the public and secret key pairs and the location of the keys on the local filesystem.
+
+To list keys for all wallets, , you can run a command similar to the following:
+
+```bash
+kadena wallet list --wallet-name="all"
+```
+
+This command returns output similar to the following for all wallets:
+
+```bash
+Wallet: chainweaver-desktop (legacy)
+No keys
+
+Wallet: lola-pistola
+Filename      Index  Legacy   Public Key            Secret Key
+pistola1.key  1      No       48bb354f....a721693c  OUVReUwz....UxNS0pweDk5ZVFLYTdOS3VBRXJHQQ==
+pistola2.key  2      No       7b355f98....9454959b  WXg2bXFB....WZZb2FxOUdNVUlaaGc2VXpsTWk3Tw==
+pistola3.key  3      No       256be5b3....a0ba2e12  aU1YVjI3....E9LNUVQb2hGRGZqeFJpcTRMbjR1TA==
+pistola4.key  4      No       b3f0f14a....1f04d21a  U0cxQWEr....1VxWHJWZVFKaCtBVUd5WFhYcnNHSQ==
+
+
+Wallet: pistolas-test
+Filename      Index  Legacy   Public Key            Secret Key
+genkey1.key   1      No       c7141a14....ac01a3c9  N/A
+```
+
+To delete a wallet interactively, you can run the following command:
+
+```bash
+kadena wallet delete
+```
+
+This command prompts you to select the wallet you want to delete and to confirm the action.
+If you select Yes, the wallet is deleted from the local filesystem.
 
 ## kadena key
 
@@ -382,8 +513,8 @@ To see usage information for a specific action, use the `--help` flag in the com
 | Use this argument | To do this
 | ----------------- | -----------
 | `-n`, `--network-name` <`networkName`> | Specify the name of the network to act on.
-| `--network-id` <`networkId`>| Specify the identifier for the network to act on.
-| `--network-host` <`networkHost`>| Specify the host for the network to act on.
+| `-i`, `--network-id` <`networkId`>| Specify the identifier for the network to act on.
+| `-s`, `--network-host` <`networkHost`>| Specify the host for the network to act on.
 | `--network-explorer-url` <`networkExplorerURL`>| Specify the explorer URL for the network to act on.
 | `--network-overwrite` yes|no | Confirm that you want to overwrite existing information for the specified network.
 | `--network-delete` yes|no | Confirm that you want to delete the specified network.
@@ -485,12 +616,12 @@ To see usage information for a specific action, use the `--help` flag in the com
 
 | Use this argument | To do this
 | ----------------- | -----------
-| `--account-alias` <`accountAlias`> | Specify an alias to store your account information.
+| `-l`, `--account-alias` <`accountAlias`> | Specify an alias to store your account information.
 | `-a`, `--account-name` <`accountName`> | Specify the account name associated with one or more specified public keys.
 | `-f`, `--fungible` <`fungible`> | Specify the name of a fungible asset type. The valid values are `coin` and `nft`. The default is `coin`.
 | `-n`, `--network` <`network`> | Specify the Kadena network name—for example, `testnet` or `mainnet`—to use.
 | `-c`, `--chain-id` <`chainId`> | Specify the chain identifier to use.
-| `-p`, `--public-keys` <`publicKeys`> | Specify public keys for an account in a comma-separated list.
+| `-k`, `--public-keys` <`publicKeys`> | Specify public keys for an account in a comma-separated list.
 | `-p`, `--predicate` <`predicate`> | Specify the number of signatures required in a keyset for a transaction to be valid. You can specify `keys-all`, `keys-any`, `keys-2`, or a custom predicate.
 | `-w`, `--wallet-name` <`walletName`> | Specify the wallet name you are adding an account from.
 | `-o`, `--account-overwrite` | Overwrite account details from the chain.
@@ -607,10 +738,10 @@ Use the following actions to specify the operation you want to perform.
 
 | Use this action | To do this
 | --------------- | -----------
-| send [options] | Send a transaction to the network.
-| sign [options] | Sign a transaction using your local wallet/aliased file/keypair.
-| test [options] | Test a signed transaction on testnet.
 | add [options] | Select a template and add a transaction.
+| sign [options] | Sign a transaction using your local wallet/aliased file/keypair.
+| send [options] | Send a transaction to the network.
+| test [options] | Test a signed transaction on testnet.
 | list [options] | List transactions.
 | help [command] | Display usage information for a specified command.
 
@@ -622,7 +753,7 @@ To see the options to use for a specific action, use the `--help` flag on the co
 
 | Use this argument | To do this
 | ----------------- | -----------
-| `--directory` <`directory`> | Specify the directory that contains the transaction file. The default is your current working directory.
+| `-d`, `--directory` <`directory`> | Specify the directory that contains the transaction file. The default is your current working directory.
 | `-s`, `--tx-signed-transaction-files` <`txSignedTransactionFiles`> | Specify the name of signed transaction files. You can specify multiple files in a comma-separated list.
 | `-n`, `--tx-transaction-network` <`txTransactionNetwork`> | Specify the Kadena networks that you want to send the transaction to. You can specify networks in a comma-separated list in the order you want the transaction sent.  For example, to send a transaction to the development network then the test network, you can specify "devnet, testnet"
 | `-p`, `--poll` | Poll for transaction status.
@@ -634,12 +765,43 @@ To see the options to use for a specific action, use the `--help` flag on the co
 | `-k`, `--key-pairs` <`keyPairs`> | Specify key pairs as strings on the command-line. You can specify multiple key pairs separated by semi-colons (;).
 | `-n`, `--network` <`network`> | Specify the Kadena network name—for example, `testnet` or `mainnet`—to use.
 | `-c`, `--chain-id` <`chainId`> | Specify the chain identifier to use.
-| `--template `<`template`> | Select a template for adding a transaction.
-| `--template-data` <`templateData`> | Specify a template data file for adding a transaction.
+| `-t`, `--template `<`template`> | Select a template for adding a transaction.
+| `-d`, `--template-data` <`templateData`> | Specify a template data file for adding a transaction.
 | `--template-variables` <`templateVariables`> | Specify template variables to use for adding a transaction.
 | `-o`, `--out-file` <`outFile`> | Specify the file name to save the output from adding a transaction.
+| `-l`, `--holes` | List all of the values a specified template requires.
 
 ### Examples
+
+The `kadena tx add` command enables you to create transactions using **templates** in combination with values you specify to generate the most common types of transactions that are ready to sign and submit across multiple chains with minimal effort.
+Currently, there are two default templates—`transfer` and `safe-transfer`—to enable to you create transactions that transfer tokens between accounts.
+For more information about using templates to generate transactions, see [Code templates](/build/templates).
+To generate a transaction from a template interactively, you can run the following command:
+
+```bash
+kadena tx add
+```
+
+This command then prompts you to select the template to use and information about the account to transfer from and the account to transfer to.
+
+For example:
+
+```bash
+? Which template do you want to use: transfer.ktpl
+? File path of data to use for template .json or .yaml (optional):
+? Template value account-from:
+k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e
+? Template value account-to:
+k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e
+? Template value decimal-amount: 1.0
+? Template value chain-id: 1
+? Template value pk-from:
+bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e
+? Template value network-id: testnet
+? Where do you want to save the output: my-test-output
+```
+
+After you respond to the prompts, the command displays the transaction you constructed and confirms the location of the file containing the unsigned transaction.
 
 To sign an unsigned transaction using a public and secret key pair, you can run a command similar to the following:
 
@@ -668,161 +830,23 @@ To send a signed transaction to the Kadena main network and test network, you ca
 kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0TQf7Zv1J5v45Yc2MYxPURU-signed.json" --tx-transaction-network "mainnet, testnet" --poll
 ```
 
-The `kadena tx add` command enables you to create transactions using **templates** in combination with values you specify to generate the most common types of transactions that are ready to sign and submit across multiple chains with minimal effort.
-Currently, there are two default templates—`transfer` and `safe-transfer`—to enable to you create transactions that transfer tokens between accounts.
-For more information about using templates to generate transactions, see [Code templates](/build/templates).
-To generate a transaction from a template interactively, you can run the following command:
+To get the status of a transaction on the Kadena blockchain, you can run a command similar to the following:
 
 ```bash
-kadena tx add
+kadena tx status --request-key="118mEpX1-6NpJT1kArsWIHHVtJaOERQOeEwNoouOSGU" --network="testnet" --chain-id="0"
 ```
 
-This command then prompts you to select the template to use and information about the account to transfer from and the account to transfer to. enter the alias you want to use for the key and the number of keys to generate.
+This command returns the current status of the transaction identified by the
+provided request key.
 
+To monitor the status of a transaction until it is finalized, you can add the `--poll` option.
 For example:
 
 ```bash
-? Which template do you want to use: transfer.ktpl
-? File path of data to use for template .json or .yaml (optional):
-? Template value account-from:
-k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e
-? Template value account-to:
-k:bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e
-? Template value decimal-amount: 1.0
-? Template value chain-id: 1
-? Template value pk-from:
-bbccc99ec9eeed17d60159fbb88b09e30ec5e63226c34544e64e750ba424d35e
-? Template value network-id: testnet
-? Where do you want to save the output: my-test-output
+kadena tx status --request-key="118mEpX1-6NpJT1kArsWIHHVtJaOERQOeEwNoouOSGU" --network="testnet" --chain-id="0" --poll
 ```
 
-After you respond to the prompts, the command displays the transaction you constructed and confirms the location of the file containing the unsigned transaction.
-
-## kadena wallet
-
-Use kadena wallet to generate, import, and manage a local wallet.
-
-### Basic usage
-
-The basic syntax for the `kadena wallet` command is:
-
-```bash
-kadena wallet <action> <arguments> [flag]
-```
-
-### Flags
-
-You can use the following optional flags with the `kadena wallet` command.
-
-| Use this flag | To do this
-| ------------- | -----------
-| `-h`, `--help` |	Display usage information.
-| `-l`, `--legacy` | Use a legacy format for output.
-| `-q`, `--quiet` | Eliminate interactive prompts and confirmations to enable automation of tasks.
-| `-V`, `--version`	| Display version information.
-
-### Actions
-
-Use the following actions to specify the operation you want to perform.
-
-| Use this action | To do this
-| --------------- | -----------
-| add [options] | Add a new local wallet.
-| import [options] | Import or restore wallet from a 12-word mnemonic secret phrase.
-| generate-keys [options] | Generate public and secret key pairs from your wallet.
-| change-password [options] | Update the password used to unlock your wallet.
-| decrypt [options] | Decrypt an encrypted  message.
-| delete [options] | Delete a specified wallet from your local filesystem.
-| list [options] | List information about a specified wallets or all wallets.
-| help [command] | Display usage information for a specified command.
-
-### Arguments
-
-Depending on the action you select, you can specify different arguments and options.
-The following table summarizes all of the options you can specify.
-To see the options to use for a specific action, use the `--help` flag on the command-line or review the examples.
-
-| Use this argument | To do this
-| ----------------- | -----------
-| `-w`, `--wallet-name` <`walletName`> | Specify the name for your wallet.
-| `--password-file` <`passwordFile`>  | Specify the path to the password file.
-| `-m`, `--key-mnemonic` <`keyMnemonic`> | Enter the 12-word mnemonic secret phrase used to generate your wallet keys.
-| `-c`, `--key-gen-from-choice` <`keyGenFromChoice`> | Select the type of key you want to generate. The valid options are `genPublicKey` (public key only), `genPublicSecretKey` (public and secret key), and `genPublicSecretKeyDec` (public key and secret key decrypted).
-| `-a`, `--key-alias` <`keyAlias`> | Specify an alias for storing the key on the filesystem.
-| `-r`, `--key-index-or-range` <`keyIndexOrRange`> | Enter the index or range of indices for key generation. For example, you can specify zero (0) for the parent key pair or generate a range of child key pairs (1-5). The default index is 0.
-| `-c`, `--current-password-file` <`currentPasswordFile`> | Specify the path to the current password file. In most cases, you use this option to change a password or decrypt a message when using the `--quiet` flag for non-interactive input.
-| `-n`, `--new-password-file` <`newPasswordFile`> | Specify the path to the new password file. In most cases, you use this option to change a password when using the `--quiet` flag for non-interactive input.
-| `--confirm` | Confirm that you want to change the password for the wallet or delete a wallet. In most cases, you use this option to change a password when using the `--quiet` flag for non-interactive input.
-| `-m`, `--message` <`message`> | Specify the message you want to decrypt.
-| -c, --current-password-file <currentPasswordFile>  Filepath to the current password file
-
-### Examples
-
-To add a new local wallet interactively, you can run the following command:
-
-```bash
-kadena wallet add
-```
-
-This command prompts you to enter the wallet name and to set and confirm the password to unlock the wallet, then displays your 12-word secret phrase and the location of your local wallet.
-For example:
-
-```bash
-You can use the --password-file flag to provide a password.
-Mnemonic Phrase                                                            
-house second brick miracle trip fire peasant supply hen boost supper dignity
-Please store the mnemonic phrase in a safe place. You will need it to recover your wallet.
-
-Wallet Storage Location                                           
-/Users/tech-pubs/.kadena/wallets/pistolas-test/pistolas-test.wallet
-```
-
-To import a Chainweaver wallet so you to manage it from the command-line, you can run a command similar to the following:
-
-```bash
-kadena wallet import --key-mnemonic="model amber rose spoil motor deal alcohol lucky garage empty sausage lunch" --wallet-name="chainweaver-desktop" --legacy
-```
-
-This command prompts you to enter and confirm the password to unlock the wallet, then displays the location of your local wallet.
-
-To generate four hierarchical deterministic public and secret key pairs for a local wallet, you can run a command similar to the following:
-
-```bash
-kadena wallet generate-keys --wallet-name="pistolas-test.wallet" --key-index-or-range="1-4" --key-gen-from-choice="genPublicSecretKey" --key-alias="pistolas-keys"
-```
-
-This command prompts you to enter the password the keys, then displays the public and secret key pairs and the location of the keys on the local filesystem.
-
-To list keys for all wallets, , you can run a command similar to the following:
-
-```bash
-kadena wallet list --wallet-name="all"
-```
-
-This command returns output similar to the following for all wallets:
-
-```bash
-Wallet: chainweaver-desktop (legacy)
-No keys
-
-Wallet: lola-pistola
-Filename      Index  Legacy   Public Key            Secret Key
-pistola1.key  1      No       48bb354f....a721693c  OUVReUwz....UxNS0pweDk5ZVFLYTdOS3VBRXJHQQ==
-pistola2.key  2      No       7b355f98....9454959b  WXg2bXFB....WZZb2FxOUdNVUlaaGc2VXpsTWk3Tw==
-pistola3.key  3      No       256be5b3....a0ba2e12  aU1YVjI3....E9LNUVQb2hGRGZqeFJpcTRMbjR1TA==
-pistola4.key  4      No       b3f0f14a....1f04d21a  U0cxQWEr....1VxWHJWZVFKaCtBVUd5WFhYcnNHSQ==
-
-
-Wallet: pistolas-test
-Filename      Index  Legacy   Public Key            Secret Key
-genkey1.key   1      No       c7141a14....ac01a3c9  N/A
-```
-
-To delete a wallet interactively, you can run the following command:
-
-```bash
-kadena wallet delete
-```
-
-This command prompts you to select the wallet you want to delete and to confirm the action.
-If you select Yes, the wallet is deleted from the local filesystem.
+This command checks the transaction status and continues to run until
+the transaction is confirmed.
+The default timeout for polling is 60 seconds, but it will attempt to keep
+polling until confirmation is achieved.
