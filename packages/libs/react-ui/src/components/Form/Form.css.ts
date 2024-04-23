@@ -26,13 +26,12 @@ export const statusOutlineColor = createVar();
 
 export const outlineColor = createVar();
 export const iconFill = fallbackVar(token('color.icon.base.@init'));
-const backgroundColor = fallbackVar(token('color.background.input.default'));
 const textColor = fallbackVar(token('color.text.base.@init'));
 
 const outlineStyles = {
-  outlineOffset: '3px',
   outlineStyle: `solid`,
   outlineWidth: '2px',
+  outlineOffset: '2px',
   outlineColor,
   borderRadius: token('radius.sm'),
 };
@@ -46,9 +45,9 @@ export const baseContainerClass = recipe({
       width: '100%',
     }),
     {
+      padding: '2px',
       transition: 'outline-color 0.2s ease-in-out',
       outlineColor: 'transparent',
-      backgroundColor,
       selectors: {
         // outline should not be shown if there is a button which is focused
         '&:focus-within:has(button:not(button:focus))': outlineStyles,
@@ -92,7 +91,6 @@ export const baseContainerClass = recipe({
         cursor: 'not-allowed',
         vars: {
           [iconFill]: token('color.icon.base.@disabled'),
-          [backgroundColor]: token('color.background.input.@disabled'),
         },
       },
     },
@@ -149,7 +147,7 @@ export const endAddon = style([
   },
 ]);
 
-globalStyle(`${endAddon}  button`, {
+globalStyle(`${endAddon} button`, {
   height: '100%',
   borderRadius: '0',
 });
@@ -159,13 +157,13 @@ export const input = recipe({
     atoms({
       outline: 'none',
       flex: 1,
-      borderRadius: 'no',
       paddingInlineStart: 'n4',
       border: 'none',
     }),
     {
+      backgroundColor: token('color.background.input.default'),
+      borderRadius: '0',
       color: textColor,
-      background: 'transparent',
       transition: 'box-shadow, background-color 0.2s ease-in-out',
       '::placeholder': {
         color: textColor,
@@ -173,15 +171,12 @@ export const input = recipe({
       selectors: {
         '&[data-focused]': {
           color: token('color.text.base.@focus'),
-          vars: {
-            [backgroundColor]: token('color.background.input.@focus'),
-          },
+          boxShadow: 'none',
+          backgroundColor: token('color.background.input.@focus'),
         },
         '&[data-hovered]': {
           color: token('color.text.base.@hover'),
-          vars: {
-            [backgroundColor]: token('color.background.input.@hover'),
-          },
+          backgroundColor: token('color.background.input.@hover'),
         },
         '&[data-has-end-addon]': {
           paddingInlineEnd: `calc(var(--end-addon-width) + ${token(
@@ -216,9 +211,7 @@ export const input = recipe({
     variant: {
       default: {
         boxShadow: `0 -1px 0 0 ${token('color.border.base.default')} inset`,
-        vars: {
-          [backgroundColor]: token('color.background.input.default'),
-        },
+        backgroundColor: token('color.background.input.default'),
       },
       positive: {
         boxShadow: `0 0 0 1px ${outlineColor} inset`,
@@ -256,13 +249,11 @@ export const input = recipe({
         boxShadow: `0 -1px 0 0 ${token('color.border.base.default')} inset`,
         pointerEvents: 'none',
         color: token('color.text.base.@disabled'),
+        backgroundColor: token('color.background.input.@disabled'),
         selectors: {
           '&::placeholder': {
             color: token('color.text.base.@disabled'),
           },
-        },
-        vars: {
-          [backgroundColor]: 'transparent',
         },
       },
     },
