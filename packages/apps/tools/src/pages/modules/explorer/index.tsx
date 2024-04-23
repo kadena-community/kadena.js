@@ -253,7 +253,7 @@ const ModuleExplorerPage = (
   const setDeepLink = useCallback(
     (module: IChainModule) => {
       void router.replace(
-        `?${QueryParams.MODULE}=${module.moduleName}&${QueryParams.CHAIN}=${module.chainId}`,
+        `?${QueryParams.MODULE}=${module.moduleName}&${QueryParams.CHAIN}=${module.chainId}&network=${module.network}`,
         undefined,
         { shallow: true },
       );
