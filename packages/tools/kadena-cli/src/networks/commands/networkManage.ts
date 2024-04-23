@@ -45,14 +45,21 @@ export const manageNetworksCommand: (
       networkName,
     });
 
-    await writeNetworks(kadenaDir, {
-      network: networkName.networkName,
-      networkId: networkId.networkId,
-      networkHost: networkHost.networkHost,
-      networkExplorerUrl: networkExplorerUrl.networkExplorerUrl,
-    });
+    const hasNetworkNameChanged =
+      networkData.network !== networkName.networkName;
 
-    if (networkData.network !== networkName.networkName) {
+    await writeNetworks(
+      kadenaDir,
+      {
+        network: networkName.networkName,
+        networkId: networkId.networkId,
+        networkHost: networkHost.networkHost,
+        networkExplorerUrl: networkExplorerUrl.networkExplorerUrl,
+      },
+      hasNetworkNameChanged ? networkData.network : undefined,
+    );
+
+    if (hasNetworkNameChanged) {
       await removeNetwork(networkData.networkConfig);
     }
 

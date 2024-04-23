@@ -3,6 +3,7 @@ import { getNetworkFiles, networkDefaults } from '../../constants/networks.js';
 import {
   formatZodError,
   mergeConfigs,
+  notEmpty,
   sanitizeFilename,
 } from '../../utils/globalHelpers.js';
 import { getDefaultNetworkName } from '../../utils/helpers.js';
@@ -58,10 +59,23 @@ const networkSchema = z.object({
 export async function writeNetworks(
   kadenaDir: string,
   options: INetworkCreateOptions,
+  previousNetworkName?: string,
 ): Promise<void> {
   const { network } = options;
+  const existingNetworkName = notEmpty(previousNetworkName)
+    ? previousNetworkName
+    : network;
+
+  const sanitizedExistingNetwork =
+    sanitizeFilename(existingNetworkName).toLowerCase();
   const sanitizedNetwork = sanitizeFilename(network).toLowerCase();
-  const networkFilePath = path.join(
+  const existingNetworkFilePath = path.join(
+    kadenaDir,
+    'networks',
+    `${sanitizedExistingNetwork}.yaml`,
+  );
+
+  const newNetworkFilePath = path.join(
     kadenaDir,
     'networks',
     `${sanitizedNetwork}.yaml`,
@@ -72,27 +86,25 @@ export async function writeNetworks(
       ? { ...networkDefaults[network] }
       : { ...networkDefaults.other };
 
-  if (await services.filesystem.fileExists(networkFilePath)) {
-    const content = await services.filesystem.readFile(networkFilePath);
+  if (await services.filesystem.fileExists(existingNetworkFilePath)) {
+    const content = await services.filesystem.readFile(existingNetworkFilePath);
     if (content !== null) {
       existingConfig = yaml.load(content!) as INetworkCreateOptions;
     }
   }
 
   const networkConfig = mergeConfigs(existingConfig, options);
+  const validation = networkSchema.safeParse(networkConfig);
 
-  await services.filesystem.ensureDirectoryExists(networkFilePath);
-
-  const parsed = networkSchema.safeParse(networkConfig);
-
-  if (!parsed.success) {
+  if (!validation.success) {
     throw new Error(
-      `Failed to write network config: ${formatZodError(parsed.error)}`,
+      `Failed to write network config: ${formatZodError(validation.error)}`,
     );
   }
 
+  await services.filesystem.ensureDirectoryExists(newNetworkFilePath);
   await services.filesystem.writeFile(
-    networkFilePath,
+    newNetworkFilePath,
     yaml.dump(networkConfig),
   );
 }
