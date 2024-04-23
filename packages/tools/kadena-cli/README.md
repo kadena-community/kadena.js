@@ -172,10 +172,10 @@ Tool to add and manage networks
 ---
 
 ```
-kadena network update [arguments]
+kadena network update [options]
 ```
 
-| **Arguments & Options** | **Description**                         | **Required** |
+| **Options**             | **Description**                         | **Required** |
 | ----------------------- | --------------------------------------- | ------------ |
 | --network-name          | Update the name of the network          |              |
 | --network-id            | Update the id of the network            |              |
@@ -191,10 +191,10 @@ kadena network update --network-name="mainnet" --network-id="mainnet01" --networ
 ---
 
 ```
-kadena network add [arguments]
+kadena network add [options]
 ```
 
-| **Arguments & Options** | **Description**                      | **Required** |
+| **Options**             | **Description**                      | **Required** |
 | ----------------------- | ------------------------------------ | ------------ |
 | --network-name          | Set the name of the network          |              |
 | --network-id            | Set the id of the network            |              |
@@ -214,7 +214,7 @@ kadena network add --network-name="mainnet" --network-id="mainnet01" --network-h
 kadena network set-default [options]
 ```
 
-| **Arguments & Options** | **Description**                               | **Required** |
+| **Options**             | **Description**                               | **Required** |
 | ----------------------- | --------------------------------------------- | ------------ |
 | --network               | Select name of network to set default         |              |
 | --confirm               | Confirmation for default network to set/unset |              |
@@ -234,10 +234,10 @@ kadena network set-default --network="none" --confirm
 ## Passing a network as "none" will remove the default network
 
 ```
-kadena network delete [arguments]
+kadena network delete [options]
 ```
 
-| **Arguments & Options** | **Description**                  | **Required** |
+| **Options**             | **Description**                  | **Required** |
 | ----------------------- | -------------------------------- | ------------ |
 | --network               | Select name of network to delete |              |
 | --network-delete        | Confirm deletion of network      |              |
@@ -266,10 +266,10 @@ Tool to generate and manage wallets
 ---
 
 ```
-kadena wallet add [arguments]
+kadena wallet add [options]
 ```
 
-| **Arguments & Options**    | **Description**                                | **Required** |
+| **Options**                | **Description**                                | **Required** |
 | -------------------------- | ---------------------------------------------- | ------------ |
 | --wallet-name              | Set the name of the wallet                     |              |
 | --security-password        | Set the password for the wallet                |              |
@@ -288,12 +288,12 @@ password will be hidden after entry: --security-password=\*
 ---
 
 ```
-kadena wallet import [arguments]
+kadena wallet import [options]
 ```
 
-| **Arguments & Options**    | **Description**                                | **Required** |
+| **Options**                | **Description**                                | **Required** |
 | -------------------------- | ---------------------------------------------- | ------------ |
-| --key-mnemonic             | 12 word mnemnoc phrase                         |              |
+| --key-mnemonic             | 12 word mnemonic phrase                        |              |
 | --security-new-password    | Set the password for the wallet                |              |
 | --security-verify-password | Set the password for the wallet (verification) |              |
 | --wallet-name              | Set the name of the wallet                     |              |
@@ -311,12 +311,12 @@ password will be hidden after entry: --security-new-password=\*
 ---
 
 ```
-kadena wallet generate-key [arguments]
+kadena wallet generate-key [options]
 ```
 
 Generate a keypair from a wallet mnemonic
 
-| **Arguments & Options** | **Description**                                                            | **Required** |
+| **Options**             | **Description**                                                            | **Required** |
 | ----------------------- | -------------------------------------------------------------------------- | ------------ |
 | --wallet-name           | Provide the name of the wallet                                             |              |
 | --amount                | The amount of keys to be generated, starting from last generated key index |              |
@@ -351,10 +351,10 @@ kadena wallet generate-key --wallet-name="kadenawallet" --amount="1" --start-ind
 ---
 
 ```
-kadena wallet change-password [arguments]
+kadena wallet change-password [options]
 ```
 
-| **Arguments & Options**     | **Description**                                    |
+| **Options**                 | **Description**                                    |
 | --------------------------- | -------------------------------------------------- |
 | --wallet-name               | Provide the name of the wallet                     |
 | --security-current-password | Provide the current password of the wallet         |
@@ -374,10 +374,10 @@ password will be hidden after entry: --security-current-password=\*
 ---
 
 ```
-kadena wallet delete [arguments]
+kadena wallet delete [options]
 ```
 
-| **Arguments & Options** | **Description**               |
+| **Options**             | **Description**               |
 | ----------------------- | ----------------------------- |
 | --wallet-name           | Select the name of the wallet |
 | --confirm               | Confirm deletion of wallet    |
@@ -397,10 +397,10 @@ kadena wallet delete --wallet-name="all" --confirm=true
 ---
 
 ```
-kadena wallet list [arguments]
+kadena wallet list [options]
 ```
 
-| **Arguments & Options** | **Description**            |
+| **Options**             | **Description**            |
 | ----------------------- | -------------------------- |
 | --wallet-name           | Set the name of the wallet |
 
@@ -419,12 +419,12 @@ kadena wallet list --wallet-name="all"
 ---
 
 ```
-kadena wallet export [arguments]
+kadena wallet export [options]
 ```
 
 Export a KeyPair from a wallet unencrypted. Prints to stdout as yaml by default
 
-| **Arguments & Options** | **Description**                                          |
+| **Options**             | **Description**                                          |
 | ----------------------- | -------------------------------------------------------- |
 | --wallet-name           | Name of the wallet you want to export a key from         |
 | --key-index             | The index of the key to export                           |
@@ -456,12 +456,12 @@ Tool to generate and manage keys
 ---
 
 ```
-kadena key generate [arguments]
+kadena key generate [options]
 ```
 
 Generate a plain keypair using a random mnemonic
 
-| **Arguments & Options** | **Description**                             |
+| **Options**             | **Description**                             |
 | ----------------------- | ------------------------------------------- |
 | --key-alias             | Set alias of the key to store on filesystem |
 | --key-amount            | Set the amount of keys to generate          |
@@ -483,7 +483,7 @@ kadena key generate --key-alias="myalias" --key-amount="5" --legacy
 kadena key list
 ```
 
-| **Arguments & Options** | **Description** |
+| **Options**             | **Description** |
 | ----------------------- | --------------- |
 
 example for listing all keys
@@ -511,10 +511,10 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 ---
 
 ```
-kadena account add-manual [arguments]
+kadena account add-manual [options]
 ```
 
-| **Arguments & Options** | **Description**                              | **Required** |
+| **Options**             | **Description**                              | **Required** |
 | ----------------------- | -------------------------------------------- | ------------ |
 | --account-alias         | Set alias for account                        |              |
 | --account-name          | Set account name                             |              |
@@ -533,10 +533,10 @@ kadena account add-manual --account-alias="myalias" --account-name="myaccountnam
 ---
 
 ```
-kadena account add-from-wallet [arguments]
+kadena account add-from-wallet [options]
 ```
 
-| **Arguments & Options** | **Description**                              | **Required** |
+| **Options**             | **Description**                              | **Required** |
 | ----------------------- | -------------------------------------------- | ------------ |
 | --account-alias         | Set alias for account                        |              |
 | --key-wallet            | Provide the name of the wallet               |              |
@@ -565,10 +565,10 @@ If you would like to create an account on
 command.
 
 ```
-kadena account create [arguments]
+kadena account create [options]
 ```
 
-| **Arguments & Options** | **Description**                              | **Required** |
+| **Options**             | **Description**                              | **Required** |
 | ----------------------- | -------------------------------------------- | ------------ |
 | --account-name          | Provide an account name                      | No           |
 | --fungible              | Fungible e.g coin                            | No           |
@@ -599,10 +599,10 @@ specified account on the Kadena blockchain, such as its balance, guard
 conditions (public keys, predicate), and the account's name.
 
 ```
-kadena account details [arguments]
+kadena account details [options]
 ```
 
-| **Arguments & Options** | **Description**                                                                                                                           | **Required** |
+| **Options**             | **Description**                                                                                                                           | **Required** |
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
 | --account               | Provide account alias/name to retrieve its details                                                                                        |              |
 | --network               | Name of the network to be used                                                                                                            |              |
@@ -661,10 +661,10 @@ account does not exist, it will be automatically _created_ and funded. Note that
 this command is not applicable to the mainnet network.
 
 ```
-kadena account fund [arguments]
+kadena account fund [options]
 ```
 
-| **Arguments & Options** | **Description**                                                                                                                           | **Required** |
+| **Options**             | **Description**                                                                                                                           | **Required** |
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
 | --account               | Provide alias for an account                                                                                                              |              |
 | --amount                | Amount to fund                                                                                                                            |              |
@@ -706,10 +706,10 @@ kadena account fund --account="myalias" --amount="10" --network="testnet" --chai
 ---
 
 ```
-kadena account account name-to-address [arguments]
+kadena account account name-to-address [options]
 ```
 
-| **Arguments & Options** | **Description**                           | **Required** |
+| **Options**             | **Description**                           | **Required** |
 | ----------------------- | ----------------------------------------- | ------------ |
 | --network               | Name of the network to be used            |              |
 | --account-kdn-name      | Provide .kda name to resolve to k:account |              |
@@ -723,10 +723,10 @@ kadena account name-to-address --network="mainnet" --account-kdn-name="kadena.kd
 ---
 
 ```
-kadena account address-to-name [arguments]
+kadena account address-to-name [options]
 ```
 
-| **Arguments & Options** | **Description**                           | **Required** |
+| **Options**             | **Description**                           | **Required** |
 | ----------------------- | ----------------------------------------- | ------------ |
 | --network               | Name of the network to be used            |              |
 | --account-kdn-address   | Provide k:account to resolve to .kda name |              |
@@ -740,10 +740,10 @@ kadena account address-to-name --network="mainnet" --account-kdn-address="k:acco
 ---
 
 ```
-kadena account list [arguments]
+kadena account list [options]
 ```
 
-| **Arguments & Options** | **Description**                  |
+| **Options**             | **Description**                  |
 | ----------------------- | -------------------------------- |
 | --account-alias         | Provide the alias of the account |
 
@@ -762,10 +762,10 @@ kadena account list --account-alias="all"
 ---
 
 ```
-kadena account delete [arguments]
+kadena account delete [options]
 ```
 
-| **Arguments & Options** | **Description**                  |
+| **Options**             | **Description**                  |
 | ----------------------- | -------------------------------- |
 | --account-alias         | Provide the alias of the account |
 | --confirm               | Confirm deletion of account      |
@@ -800,7 +800,7 @@ Tool for creating and managing transactions
 ---
 
 ```
-kadena tx add [arguments]
+kadena tx add [options]
 ```
 
 `kadena tx add` is a powerful command that leverages transaction templates to
@@ -819,14 +819,14 @@ transfers of tokens between accounts.
 ### Command Usage
 
 ```plaintext
-kadena tx add [options] [arguments]
+kadena tx add [options] [options]
 ```
 
 This command accepts various arguments and options, allowing for detailed
 customization of the transaction being created. Below is a breakdown of the
 options available:
 
-| **Arguments & Options** | **Description**                                           | Required |
+| **Options**             | **Description**                                           | Required |
 | ----------------------- | --------------------------------------------------------- | -------- |
 | `--template`            | Path to the transaction template file.                    | Yes      |
 | `--template-data`       | File path for the data used to fill the template.         | No       |
@@ -889,8 +889,8 @@ guidance simplifies the transaction creation process, enhancing the security and
 reliability of the transactions constructed.
 
 In contrast, when operating in non-interactive mode, the system relies on
-arguments passed directly via the command line. In this scenario, the values for
-the transaction are provided as arguments, and the prefixes are ignored. This
+options passed directly via the command line. In this scenario, the values for
+the transaction are provided as options, and the prefixes are ignored. This
 means that the responsibility for ensuring the correctness and appropriateness
 of the input values shifts entirely to the user. It's crucial for users to be
 mindful of the data types and formats expected by the template to avoid errors.
@@ -902,7 +902,7 @@ running the CLI in environments where interactive prompts are not feasible.
 
 Variables are a critical part of transaction templates, defining the data
 required to construct a transaction. Users can be prompted for variables missing
-from the `--template-data` file or not provided as command-line arguments. The
+from the `--template-data` file or not provided as command-line options. The
 `--holes` option is particularly useful for identifying all the variables a
 template requires.
 
@@ -925,14 +925,14 @@ network-id: ''
 ---
 
 ```
-kadena tx sign [arguments]
+kadena tx sign [options]
 ```
 
-| **Arguments & Options**         | **Description**                                                         | **Required** |
+| **Options**                     | **Description**                                                         | **Required** |
 | ------------------------------- | ----------------------------------------------------------------------- | ------------ |
 | --tx-sign-with="aliasFile"      | Provide signing method                                                  | Yes          |
 | --key-pairs                     | Provide publickey and secretKey (or list separated my semicolon)        |              |
-| --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma seperated list) |              |
+| --tx-unsigned-transaction-files | Provided unsigned transaction file(s) to sign (or comma separated list) |              |
 
 example:
 
@@ -943,10 +943,10 @@ kadena tx sign --tx-sign-with="keyPair" --key-pairs="publicKey=xxx,secretKey=xxx
 ---
 
 ```
-kadena kadena sign [arguments]
+kadena kadena sign [options]
 ```
 
-| **Arguments & Options**         | **Description**                                                         | **Required** |
+| **Options**                     | **Description**                                                         | **Required** |
 | ------------------------------- | ----------------------------------------------------------------------- | ------------ |
 | --tx-sign-with="aliasFile"      | Provide signing method                                                  | Yes          |
 | --key-wallet                    | Provide the name of the wallet                                          |              |
@@ -965,10 +965,10 @@ password will be hidden after entry: --security-password=\*
 ---
 
 ```
-kadena tx sign [arguments]
+kadena tx sign [options]
 ```
 
-| **Arguments & Options**         | **Description**                                                         | **Required** |
+| **Options**                     | **Description**                                                         | **Required** |
 | ------------------------------- | ----------------------------------------------------------------------- | ------------ |
 | --tx-sign-with="localWallet"    | Provide signing method                                                  | Yes          |
 | --key-wallet                    | Provide the name of the wallet                                          |              |
@@ -987,7 +987,7 @@ password will be hidden after entry: --security-password=\*
 ---
 
 ```
-kadena tx test-signed-transaction [arguments]
+kadena tx test-signed-transaction [options]
 ```
 
 Testing a signed transaction for its viability against a specified network by
@@ -996,7 +996,7 @@ contracts using actual data in the coin contract tables. This is perfect for
 checking the viability of your transactions / smart contracts, as well as to
 check account data without necessarily having to spend tokens.
 
-| **Arguments & Options**       | **Description**                                                       | **Required** |
+| **Options**                   | **Description**                                                       | **Required** |
 | ----------------------------- | --------------------------------------------------------------------- | ------------ |
 | --network                     | Name of the network to be used                                        |              |
 | --directory                   | Provide the directory for the signed transaction                      |              |
@@ -1012,10 +1012,10 @@ kadena tx test-signed-transaction --network="testnet" --directory="./" --tx-sign
 ---
 
 ```
-kadena tx send [arguments]
+kadena tx send [options]
 ```
 
-| **Arguments & Options**       | **Description**                                                       | **Required** |
+| **Options**       | **Description**                                                       | **Required** |
 | ----------------------------- | --------------------------------------------------------------------- | ------------ |
 | --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma separated list) |              |
 | --tx-transaction-network      | Kadena networks comma separated list in order of transaction          |              |
@@ -1035,11 +1035,11 @@ kadena tx send --tx-signed-transaction-files="transaction-I4WaMUwQZDxhaf2r2FZj0T
 ---
 
 ```
-kadena tx status [arguments]
+kadena tx status [options]
 ```
 The kadena tx status command is used to retrieve the status of a transaction on the Kadena blockchain. By providing a transaction request key and specifying the network and chain id, users can query the current state of their transactions. This command supports additional options for polling, allowing for real-time status updates until the transaction is finalized.
 
-| **Arguments & Options** | **Description**                                       | **Required** |
+| **Options**             | **Description**                                       | **Required** |
 | ----------------------- | ----------------------------------------------------- | ------------ |
 | --request-key           | Provide a transaction request key                     |              |
 | --network               | Select name of the network where transaction happened |              |
@@ -1086,12 +1086,16 @@ Tool for creating dapp projects
 | add            | add a new Dapp project |                   |
 
 ```
-kadena dapp add [arguments]
+kadena dapp add <arguments> [options]
 ```
 
-| **Arguments & Options** | **Description**                          | **Required** |
+| **Arguments**           | **Description**                          | **Required** |
 | ----------------------- | ---------------------------------------- | ------------ |
 | project-directory       | Specify the project directory [Required] | yes          |
+
+
+| **Options**             | **Description**                          | **Required** |
+| ----------------------- | ---------------------------------------- | ------------ |
 | --dapp-template         | Select template: vuejs, nextjs, angular  |              |
 
 example:
