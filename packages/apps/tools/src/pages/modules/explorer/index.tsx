@@ -210,11 +210,12 @@ export const getServerSideProps: GetServerSideProps<{
     context.query,
     (value) => CHAINS.includes(value),
   );
-  if (moduleQueryValue && chainQueryValue) {
+  const networkQueryValue = getQueryValue(QueryParams.NETWORK, context.query);
+  if (moduleQueryValue && chainQueryValue && networkQueryValue) {
     const moduleResponse = (await describeModule(
       moduleQueryValue,
       chainQueryValue as ChainwebChainId,
-      network,
+      networkQueryValue,
       networksData,
       kadenaConstants.DEFAULT_SENDER,
       kadenaConstants.GAS_PRICE,
@@ -226,7 +227,7 @@ export const getServerSideProps: GetServerSideProps<{
         code: (moduleResponse.result.data as unknown as { code: string }).code,
         moduleName: moduleQueryValue,
         chainId: chainQueryValue as ChainwebChainId,
-        network,
+        network: networkQueryValue,
       });
     }
   }
