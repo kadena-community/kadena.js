@@ -60,7 +60,7 @@ const Results = ({
   onItemClick,
   onModuleExpand,
   filter,
-  ...rest
+  className,
 }: IResultsProps): React.JSX.Element => {
   const items = useMemo(() => {
     let filteredData = data;
@@ -75,7 +75,7 @@ const Results = ({
   }, [data, filter, onItemClick, onModuleExpand]);
 
   return (
-    <div {...rest}>
+    <div className={className}>
       <Tree items={items} isOpen />
     </div>
   );
