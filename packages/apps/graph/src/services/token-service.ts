@@ -131,31 +131,33 @@ export async function getNonFungibleTokenInfo(
   }
 
   let executionCmd;
+  let tokenInfo;
+  let policies;
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   if (version === 'v1') {
+    executionCmd = execution(
+      Pact.modules['marmalade.ledger']['get-policy-info'](tokenId),
+    );
     // Note: Alternative approach left for reference
-    // executionCmd = execution(
-    //   Pact.modules['marmalade.ledger']['get-policy-info'](tokenId),
-    // );
-    executionCmd = execution(`(bind
-        (marmalade.ledger.get-policy-info "${tokenId}")
-        {"token" := token }
-        (bind
-            token
-            { "id" := id, "precision":= precision, "supply":= supply, "manifest":= manifest }
-            { "id": id, "precision": precision, "supply": supply, "uri":
-                (format
-                    "data:{},{}"
-                    [
-                      (at 'scheme (at 'uri manifest))
-                      (at 'data (at 'uri manifest))
-                    ]
-                )
-            }
-        )
-    )`);
+    // executionCmd = execution(`(bind
+    //     (marmalade.ledger.get-policy-info "${tokenId}")
+    //     {"token" := token }
+    //     (bind
+    //         token
+    //         { "id" := id, "precision":= precision, "supply":= supply, "manifest":= manifest }
+    //         { "id": id, "precision": precision, "supply": supply, "uri":
+    //             (format
+    //                 "data:{},{}"
+    //                 [
+    //                   (at 'scheme (at 'uri manifest))
+    //                   (at 'data (at 'uri manifest))
+    //                 ]
+    //             )
+    //         }
+    //     )
+    // )`);
   } else {
     executionCmd = execution(
       Pact.modules['marmalade-v2.ledger']['get-token-info'](tokenId),
@@ -184,22 +186,31 @@ export async function getNonFungibleTokenInfo(
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tokenInfo = await dirtyReadClient<any>(config)(command).execute();
+  const tokenInfoResult = await dirtyReadClient<any>(config)(command).execute();
 
-  if (!tokenInfo) {
+  if (!tokenInfoResult) {
     return null;
   }
 
   // Note: Alternative approach left for reference
-  // if (version === 'v1') {
-  //   if ('token' in tokenInfo) {
-  //     tokenInfo = tokenInfo.token;
-  //   }
+  if (version === 'v1') {
+    if ('token' in tokenInfoResult) {
+      tokenInfo = tokenInfoResult.token;
+    }
 
-  //   if ('manifest' in tokenInfo) {
-  //     tokenInfo.uri = `data:${tokenInfo.manifest.uri.scheme},${tokenInfo.manifest.uri.data}`;
-  //   }
-  // }
+    if ('policy' in tokenInfoResult) {
+      policies = Array(tokenInfoResult.policy);
+    }
+
+    if ('manifest' in tokenInfo) {
+      tokenInfo.uri = `data:${tokenInfo.manifest.uri.scheme},${tokenInfo.manifest.uri.data}`;
+    }
+  } else {
+    tokenInfo = tokenInfoResult;
+    if ('policies' in tokenInfoResult) {
+      policies = tokenInfoResult.policies;
+    }
+  }
 
   if ('precision' in tokenInfo) {
     if (
@@ -210,15 +221,17 @@ export async function getNonFungibleTokenInfo(
     }
   }
 
-  if ('policies' in tokenInfo) {
-    if (Array.isArray(tokenInfo.policies)) {
+  if (policies) {
+    if (Array.isArray(policies)) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      tokenInfo.policies = tokenInfo.policies.map((policy: any) => ({
+      tokenInfo.policies = policies.map((policy: any) => ({
         moduleName: `${policy.refName.namespace}.${policy.refName.name}`,
       }));
+    } else {
+      tokenInfo.policies = {
+        moduleName: `${policies.refName.namespace}.${policies.refName.name}`,
+      };
     }
-  } else if ('policy' in tokenInfo) {
-    tokenInfo.policies = { moduleName: tokenInfo.policy.toString() };
   } else {
     tokenInfo.policies = [];
   }
