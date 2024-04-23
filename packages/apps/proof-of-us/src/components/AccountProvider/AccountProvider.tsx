@@ -1,6 +1,6 @@
 'use client';
-import { ACCOUNT_COOKIE_NAME } from '@/constants';
 import { env } from '@/utils/env';
+import { getAccountCookieName } from '@/utils/getAccountCookieName';
 import { getReturnUrl } from '@/utils/getReturnUrl';
 import { store } from '@/utils/socket/store';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -47,49 +47,49 @@ export const AccountProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const login = useCallback(() => {
     router.push(
-      `${env.WALLET_URL}/connect?returnUrl=${getReturnUrl(true)}&networkId=${
-        env.NETWORKID
-      }&chainId=${env.CHAINID}&optimistic=true`,
+      `${env.WALLET_URL}/connect?returnUrl=${getReturnUrl([
+        'user',
+      ])}&networkId=${env.NETWORKID}&chainId=${env.CHAINID}&optimistic=true`,
     );
   }, [router]);
 
   const logout = useCallback(() => {
-    localStorage.removeItem(ACCOUNT_COOKIE_NAME);
+    localStorage.removeItem(getAccountCookieName());
     setAccount(undefined);
     router.replace('/');
   }, []);
 
   const loginResponse = useCallback(async () => {
-    const userResponse = searchParams.get('user');
+    const innerSearchParams = new URLSearchParams(window.location.search);
+    const userResponse = innerSearchParams.has('user')
+      ? innerSearchParams.get('user')
+      : localStorage.getItem(getAccountCookieName());
 
     if (!userResponse) {
       setIsMounted(true);
       return;
     }
 
-    localStorage.setItem(ACCOUNT_COOKIE_NAME, userResponse);
+    if (innerSearchParams.has('user')) {
+      localStorage.setItem(getAccountCookieName(), userResponse);
+    }
     const account = decodeAccount(userResponse);
-
     store.saveAlias(account);
-
     setAccount(account);
     setIsMounted(true);
-    router.replace(getReturnUrl(true));
-  }, [setAccount, setIsMounted, searchParams, decodeAccount]);
+
+    if (searchParams.has('user')) {
+      setTimeout(() => {
+        router.replace(getReturnUrl(['user']));
+      }, 100);
+    }
+  }, [setAccount, setIsMounted, searchParams, decodeAccount, router]);
 
   useEffect(() => {
     loginResponse();
-  }, [searchParams, setAccount, decodeAccount, setIsMounted]);
-
-  useEffect(() => {
-    const userResponse = localStorage.getItem(ACCOUNT_COOKIE_NAME);
-
-    if (!userResponse) return;
-
-    const acc = decodeAccount(userResponse);
-    setAccount(acc);
-    setIsMounted(true);
   }, []);
+
+  console.log({ account }, account?.accountName);
 
   return (
     <AccountContext.Provider value={{ account, login, logout, isMounted }}>

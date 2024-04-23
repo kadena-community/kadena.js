@@ -4,6 +4,7 @@ import { Confirmation } from '@/components/Confirmation/Confirmation';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { List } from '@/components/List/List';
 import { ListItem } from '@/components/List/ListItem';
+import { LoginBoundry } from '@/components/LoginBoundry/LoginBoundry';
 import { MainLoader } from '@/components/MainLoader/MainLoader';
 import { ScreenHeight } from '@/components/ScreenHeight/ScreenHeight';
 import { TitleHeader } from '@/components/TitleHeader/TitleHeader';
@@ -28,76 +29,78 @@ const Page: FC = () => {
   };
 
   return (
-    <UserLayout>
-      <ScreenHeight>
-        {isLoading && <MainLoader />}
+    <LoginBoundry>
+      <UserLayout>
+        <ScreenHeight>
+          {isLoading && <MainLoader />}
 
-        {tokens && (
-          <Stack flexDirection="column" flex={1} alignItems="center">
-            <TitleHeader
-              label="Dashboard"
-              Append={() => (
-                <Confirmation
-                  text="Are you sure you want to logout?"
-                  action={logout}
-                >
-                  <IconButton title="Logout">
-                    <MonoLogout />
-                  </IconButton>
-                </Confirmation>
-              )}
-            />
-            <Stack flex={1} width="100%">
-              {tokens.length === 0 ? (
-                <Stack
-                  flexDirection="column"
-                  justifyContent="center"
-                  alignItems="center"
-                  width="100%"
-                >
-                  <MonoGroup fontSize="8rem" />
-                  <Text bold>Create Your First Proof</Text>
-
-                  <p className={secondaryTextClass}>
-                    Welcome to the &quot;Proof Of Us&quot; dApp.
-                    <br />
-                    With this tool, you can make your moments immutable.
-                    <br />
-                    <Link
-                      style={{ fontWeight: 'bold' }}
-                      href="/user/proof-of-us/new"
-                    >
-                      Go check it out!
-                    </Link>
-                  </p>
-                </Stack>
-              ) : (
-                <Stack flexDirection="column" flex={1} gap="md">
-                  <Stack
-                    display="flex"
-                    flexDirection="column"
-                    gap="md"
-                    width="100%"
-                    style={{
-                      flex: '1 1 0',
-                      overflowY: 'scroll',
-                    }}
+          {tokens && (
+            <Stack flexDirection="column" flex={1} alignItems="center">
+              <TitleHeader
+                label="Dashboard"
+                Append={() => (
+                  <Confirmation
+                    text="Are you sure you want to logout?"
+                    action={logout}
                   >
-                    <Text bold>Proofs ({tokens.length})</Text>
-                    <List>
-                      {tokens.map((token: IToken) => {
-                        return <ListItem key={`${token.id}`} token={token} />;
-                      })}
-                    </List>
+                    <IconButton title="Logout">
+                      <MonoLogout />
+                    </IconButton>
+                  </Confirmation>
+                )}
+              />
+              <Stack flex={1} width="100%">
+                {tokens.length === 0 ? (
+                  <Stack
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    width="100%"
+                  >
+                    <MonoGroup fontSize="8rem" />
+                    <Text bold>Create Your First Proof</Text>
+
+                    <p className={secondaryTextClass}>
+                      Welcome to the &quot;Proof Of Us&quot; dApp.
+                      <br />
+                      With this tool, you can make your moments immutable.
+                      <br />
+                      <Link
+                        style={{ fontWeight: 'bold' }}
+                        href="/user/proof-of-us/new"
+                      >
+                        Go check it out!
+                      </Link>
+                    </p>
                   </Stack>
-                  <Button onPress={handleNew}>Create Proof</Button>
-                </Stack>
-              )}
+                ) : (
+                  <Stack flexDirection="column" flex={1} gap="md">
+                    <Stack
+                      display="flex"
+                      flexDirection="column"
+                      gap="md"
+                      width="100%"
+                      style={{
+                        flex: '1 1 0',
+                        overflowY: 'scroll',
+                      }}
+                    >
+                      <Text bold>Proofs ({tokens.length})</Text>
+                      <List>
+                        {tokens.map((token: IToken) => {
+                          return <ListItem key={`${token.id}`} token={token} />;
+                        })}
+                      </List>
+                    </Stack>
+                    <Button onPress={handleNew}>Create Proof</Button>
+                  </Stack>
+                )}
+              </Stack>
             </Stack>
-          </Stack>
-        )}
-      </ScreenHeight>
-    </UserLayout>
+          )}
+        </ScreenHeight>
+      </UserLayout>
+    </LoginBoundry>
   );
 };
 
