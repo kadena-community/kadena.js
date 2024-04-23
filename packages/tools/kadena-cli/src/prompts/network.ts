@@ -15,7 +15,7 @@ import { getNetworkDirectory } from '../networks/utils/networkPath.js';
 import { services } from '../services/index.js';
 import { KadenaError } from '../services/service-error.js';
 import type { IPrompt } from '../utils/createOption.js';
-import { isAlphabetic, isNotEmptyString } from '../utils/globalHelpers.js';
+import { isNotEmptyString, isValidFilename } from '../utils/globalHelpers.js';
 import { getExistingNetworks } from '../utils/helpers.js';
 import { input, select } from '../utils/prompts.js';
 import { getInputPrompt } from './generic.js'; // Importing getInputPrompt from another file
@@ -51,8 +51,8 @@ export const networkNamePrompt: IPrompt<string> = async (
     message: 'Enter a network name (e.g. "mainnet")',
     default: defaultValue,
     validate: function (input) {
-      if (!isAlphabetic(input)) {
-        return 'Network names must be alphanumeric! Please enter a valid network name.';
+      if (!isValidFilename(input)) {
+        return 'Name is used as a filename. Do not use these characters: \\ / : * ? " < > |. Please choose a different name without these characters';
       }
       return true;
     },

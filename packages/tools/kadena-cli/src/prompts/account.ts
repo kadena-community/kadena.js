@@ -11,6 +11,7 @@ import { MAX_CHAIN_VALUE } from '../constants/config.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   formatZodError,
+  isValidFilename,
   maskStringPreservingStartAndEnd,
   truncateText,
 } from '../utils/globalHelpers.js';
@@ -40,6 +41,10 @@ export const accountAliasPrompt: IPrompt<string> = async () =>
     validate: function (value: string) {
       if (!value || value.trim().length < 3) {
         return 'Alias must be minimum at least 3 characters long.';
+      }
+
+      if (!isValidFilename(value)) {
+        return `Alias is used as a filename. Do not use these characters: \\ / : * ? " < > |. Please choose a different name without these characters.`;
       }
 
       return true;
