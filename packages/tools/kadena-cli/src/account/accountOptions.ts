@@ -22,7 +22,7 @@ export const accountOptions = {
     prompt: account.accountAliasPrompt,
     validation: z.string(),
     option: new Option(
-      '--account-alias <accountAlias>',
+      '-l, --account-alias <accountAlias>',
       'Alias to store your account details',
     ),
   }),
@@ -114,7 +114,10 @@ export const accountOptions = {
     key: 'fungible' as const,
     prompt: account.fungiblePrompt,
     validation: z.string(),
-    option: new Option('-f, --fungible <fungible>', 'Fungible module name'),
+    option: new Option(
+      '-f, --fungible <fungible>',
+      'Fungible module name (default: coin)',
+    ),
   }),
   predicate: createOption({
     key: 'predicate' as const,

@@ -1,4 +1,5 @@
 import {
+  Button,
   Grid,
   GridItem,
   Heading,
@@ -18,9 +19,10 @@ import type {
 } from '@/components/Global/Ace/helper';
 import { keyboards, modes, themes } from '@/components/Global/Ace/helper';
 import { usePersistentState } from '@/hooks/use-persistent-state';
+import { MonoClose } from '@kadena/react-icons/system';
 import useTranslation from 'next-translate/useTranslation';
 import dynamic from 'next/dynamic';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const AceViewer = dynamic(import('@/components/Global/Ace'), {
   ssr: false,
@@ -28,18 +30,34 @@ const AceViewer = dynamic(import('@/components/Global/Ace'), {
 
 export interface IEditorProps {
   openedModules: IChainModule[];
+  onActiveModuleChange: (module: IChainModule) => void;
+  onTabClose: (module: IChainModule) => void;
+  activeModule?: IChainModule;
 }
 
 const moduleToTabId = ({ moduleName, chainId }: IChainModule): string => {
   return `${moduleName}-${chainId}`;
 };
 
-const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
+const Editor = ({
+  openedModules,
+  onActiveModuleChange,
+  onTabClose,
+  activeModule,
+}: IEditorProps): React.JSX.Element => {
   const { t } = useTranslation('common');
   const [keyboardHandler, setKeyboardHandler] =
     usePersistentState<KeyboardHandler>('keyboard-handler', keyboards[0]);
   const [theme, setTheme] = usePersistentState<Theme>('theme', 'monokai');
   const [mode, setMode] = usePersistentState<Mode>('mode', 'lisp');
+  const [selectedKey, setSelectedKey] = useState(
+    activeModule ? moduleToTabId(activeModule) : null,
+  );
+  useEffect(() => {
+    if (activeModule) {
+      setSelectedKey(moduleToTabId(activeModule));
+    }
+  }, [activeModule]);
 
   if (!openedModules.length) {
     return (
@@ -47,7 +65,7 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
         <Heading variant="h4">{t('No code to be shown yet')}</Heading>
         <p>
           {t(
-            'Click on a module from the left panel to see its code in this panel.',
+            'Click on a module from the left panel to see its code in this panel',
           )}
         </p>
       </section>
@@ -99,13 +117,35 @@ const Editor = ({ openedModules }: IEditorProps): React.JSX.Element => {
           </Select>
         </GridItem>
       </Grid>
-      <Tabs defaultSelectedKey={moduleToTabId(openedModules[0])}>
-        {openedModules.map(({ moduleName, chainId, code }) => {
+      <Tabs
+        selectedKey={selectedKey}
+        onSelectionChange={(key) => {
+          setSelectedKey(key as string);
+
+          const activeModule = openedModules.find((module) => {
+            return moduleToTabId(module) === key;
+          });
+          if (activeModule) {
+            onActiveModuleChange(activeModule);
+          }
+        }}
+      >
+        {openedModules.map((module) => {
+          const { moduleName, chainId, code } = module;
           return (
             <TabItem
               title={`${moduleName} @ ${chainId}`}
               key={moduleToTabId({ moduleName, chainId })}
             >
+              <Button
+                onPress={() => {
+                  onTabClose(module);
+                }}
+                isCompact
+                endVisual={<MonoClose />}
+              >
+                Close
+              </Button>
               <AceViewer
                 code={code}
                 width="100%"

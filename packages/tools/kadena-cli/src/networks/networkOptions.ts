@@ -28,7 +28,7 @@ export const networkOptions = {
     prompt: networks.networkIdPrompt,
     validation: z.string(),
     option: new Option(
-      '--network-id <networkId>',
+      '-i, --network-id <networkId>',
       'Kadena network Id (e.g. "mainnet01")',
     ),
     transform: (networkId: string) => {
@@ -40,7 +40,7 @@ export const networkOptions = {
     prompt: networks.networkHostPrompt,
     validation: z.string(),
     option: new Option(
-      '-h, --network-host <networkHost>',
+      '-s, --network-host <networkHost>',
       'Kadena network host (e.g. "https://api.chainweb.com")',
     ),
     transform: (value: string) => {

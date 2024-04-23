@@ -17,6 +17,7 @@ export interface ISidePanelProps {
   onResultClick: IResultsProps['onItemClick'];
   onModuleExpand: IResultsProps['onModuleExpand'];
   onInterfaceClick: IOutlineProps['onInterfaceClick'];
+  onInterfacesExpand: IOutlineProps['onInterfacesExpand'];
   selectedModule?: IChainModule;
 }
 
@@ -24,6 +25,7 @@ const SidePanel = ({
   results,
   onResultClick,
   onInterfaceClick,
+  onInterfacesExpand,
   onModuleExpand,
   selectedModule,
 }: ISidePanelProps): React.JSX.Element => {
@@ -62,6 +64,7 @@ const SidePanel = ({
         selectedModule={selectedModule}
         className={outlineStyle}
         onInterfaceClick={onInterfaceClick}
+        onInterfacesExpand={onInterfacesExpand}
       />
     </div>
   );
