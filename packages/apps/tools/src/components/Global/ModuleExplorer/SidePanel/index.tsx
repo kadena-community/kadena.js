@@ -1,3 +1,4 @@
+import { useWalletConnectClient } from '@/context/connect-wallet-context';
 import { Text, TextField } from '@kadena/react-ui';
 import useTranslation from 'next-translate/useTranslation';
 import React, { useState, useTransition } from 'react';
@@ -33,6 +34,7 @@ const SidePanel = ({
   const [searchQuery, setSearchQuery] = useState<string>();
   const [isPending, startTransition] = useTransition();
   const { t } = useTranslation('common');
+  const { selectedNetwork } = useWalletConnectClient();
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setText(e.target.value);
@@ -54,6 +56,7 @@ const SidePanel = ({
       </div>
       {isPending && <Text>Loading...</Text>}
       <Results
+        key={`results-${selectedNetwork}`}
         data={results}
         filter={searchQuery}
         onItemClick={onResultClick}

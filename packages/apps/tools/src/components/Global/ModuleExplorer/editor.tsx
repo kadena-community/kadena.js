@@ -35,8 +35,12 @@ export interface IEditorProps {
   activeModule?: IChainModule;
 }
 
-const moduleToTabId = ({ moduleName, chainId }: IChainModule): string => {
-  return `${moduleName}-${chainId}`;
+const moduleToTabId = ({
+  moduleName,
+  chainId,
+  network,
+}: IChainModule): string => {
+  return `${moduleName}-${chainId}-${network}`;
 };
 
 const Editor = ({
@@ -131,11 +135,11 @@ const Editor = ({
         }}
       >
         {openedModules.map((module) => {
-          const { moduleName, chainId, code } = module;
+          const { moduleName, chainId, code, network } = module;
           return (
             <TabItem
               title={`${moduleName} @ ${chainId}`}
-              key={moduleToTabId({ moduleName, chainId })}
+              key={moduleToTabId({ moduleName, chainId, network })}
             >
               <Button
                 onPress={() => {
