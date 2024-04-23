@@ -6,7 +6,11 @@ import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { networkOptions } from '../networkOptions.js';
-import { removeNetwork, writeNetworks } from '../utils/networkHelpers.js';
+import {
+  mergeNetworkConfig,
+  removeNetwork,
+  writeNetworks,
+} from '../utils/networkHelpers.js';
 
 /**
  * Creates a command to generate wallets.
@@ -38,7 +42,7 @@ export const manageNetworksCommand: (
     const networkHost = await option.networkHost();
     const networkExplorerUrl = await option.networkExplorerUrl();
 
-    log.debug('manage-networks', {
+    log.debug('update-network:action', {
       networkExplorerUrl,
       networkHost,
       networkId,
@@ -48,16 +52,18 @@ export const manageNetworksCommand: (
     const hasNetworkNameChanged =
       networkData.network !== networkName.networkName;
 
-    await writeNetworks(
+    const updatedNetworkConfig = await mergeNetworkConfig(
       kadenaDir,
+      networkData.network,
       {
         network: networkName.networkName,
         networkId: networkId.networkId,
         networkHost: networkHost.networkHost,
         networkExplorerUrl: networkExplorerUrl.networkExplorerUrl,
       },
-      hasNetworkNameChanged ? networkData.network : undefined,
     );
+
+    await writeNetworks(kadenaDir, updatedNetworkConfig);
 
     if (hasNetworkNameChanged) {
       await removeNetwork(networkData.networkConfig);
