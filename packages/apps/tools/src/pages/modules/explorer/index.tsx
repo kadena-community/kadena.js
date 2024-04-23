@@ -102,6 +102,7 @@ export const getCompleteModule = async (
     moduleName,
     chainId,
     hash,
+    network,
   };
 };
 
@@ -138,7 +139,7 @@ export const enrichModule = async (
 ) => {
   const promises = module.chains.map((chain) => {
     return getCompleteModule(
-      { moduleName: module.moduleName, chainId: chain },
+      { moduleName: module.moduleName, chainId: chain, network },
       network,
       networksData,
     );
@@ -166,7 +167,7 @@ export const enrichModules = async (
     module.chains.forEach((chain) => {
       acc.push(
         getCompleteModule(
-          { moduleName: module.moduleName, chainId: chain },
+          { moduleName: module.moduleName, chainId: chain, network },
           network,
           networksData,
         ),
@@ -224,6 +225,7 @@ export const getServerSideProps: GetServerSideProps<{
         code: (moduleResponse.result.data as unknown as { code: string }).code,
         moduleName: moduleQueryValue,
         chainId: chainQueryValue as ChainwebChainId,
+        network,
       });
     }
   }
