@@ -71,14 +71,34 @@ export const closeButtonClass = style([
   },
 ]);
 
-export const contentClass = style([
-  atoms({
-    fontSize: 'base',
-    gap: 'xs',
-    maxWidth: 'content.maxWidth',
-    marginBlockStart: 'xxs',
-  }),
-]);
+export const contentClassRecipie = recipe({
+  base: [
+    atoms({
+      display: 'flex',
+      fontSize: 'base',
+      gap: 'xs',
+      maxWidth: 'content.maxWidth',
+      marginBlockStart: 'xxs',
+    }),
+  ],
+  variants: {
+    type: {
+      inline: [
+        atoms({
+          flexDirection: 'row',
+        }),
+      ],
+      stacked: [
+        atoms({
+          flexDirection: 'column',
+        }),
+      ],
+    },
+  },
+  defaultVariants: {
+    type: 'stacked',
+  },
+});
 
 export const titleClass = style([
   atoms({

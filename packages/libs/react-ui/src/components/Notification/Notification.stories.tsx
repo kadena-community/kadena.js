@@ -9,7 +9,7 @@ import {
   NotificationFooter,
   NotificationHeading,
 } from '../Notification';
-import { notificationRecipe } from './Notification.css';
+import { contentClassRecipie, notificationRecipe } from './Notification.css';
 
 // eslint-disable-next-line @kadena-dev/typedef-var
 const intentVariants = Object.keys(
@@ -20,6 +20,11 @@ const intentVariants = Object.keys(
 const displayStyleVariant = Object.keys(
   (notificationRecipe as any).classNames?.variants?.displayStyle,
 ) as INotificationProps['displayStyle'][];
+
+// eslint-disable-next-line @kadena-dev/typedef-var
+const typeStyleVariant = Object.keys(
+  (contentClassRecipie as any).classNames?.variants?.type,
+) as INotificationProps['type'][];
 
 type StoryType = {
   heading: string;
@@ -63,6 +68,17 @@ const meta: Meta<StoryType> = {
         defaultValue: { summary: 'default' },
       },
     },
+    type: {
+      options: typeStyleVariant,
+      control: {
+        type: 'select',
+      },
+      description: 'way of presenting the content of the notification',
+      table: {
+        type: { summary: typeStyleVariant.join(' | ') },
+        defaultValue: { summary: 'default' },
+      },
+    },
     isDismissable: {
       control: {
         type: 'boolean',
@@ -100,10 +116,18 @@ export const Primary: Story = {
       'Notification children to inform users about the event that occurred!',
     displayStyle: 'bordered',
   },
-  render: ({ heading, isDismissable, intent, children, displayStyle }) => {
+  render: ({
+    heading,
+    isDismissable,
+    intent,
+    children,
+    displayStyle,
+    type,
+  }) => {
     return (
       <Notification
         intent={intent}
+        type={type}
         isDismissable={isDismissable}
         onDismiss={() => {
           alert('Close button clicked');

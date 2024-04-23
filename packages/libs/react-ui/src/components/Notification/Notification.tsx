@@ -4,13 +4,16 @@ import type { FC } from 'react';
 import React, { useState } from 'react';
 import {
   closeButtonClass,
-  contentClass,
+  contentClassRecipie,
   iconClass,
   notificationRecipe,
 } from './Notification.css';
 
 type Variants = NonNullable<RecipeVariants<typeof notificationRecipe>>;
-export interface INotificationProps extends Variants {
+type ContentTypeVariants = NonNullable<
+  RecipeVariants<typeof contentClassRecipie>
+>;
+export interface INotificationProps extends Variants, ContentTypeVariants {
   children?: React.ReactNode;
   isDismissable?: boolean;
   onDismiss?: () => void;
@@ -26,6 +29,7 @@ export const Notification: FC<INotificationProps> = ({
   onDismiss,
   icon,
   role,
+  type,
 }) => {
   const [isDismissed, setIsDismissed] = useState(false);
 
@@ -41,7 +45,7 @@ export const Notification: FC<INotificationProps> = ({
     >
       <span className={iconClass}>{icon ? icon : <MonoInfo />}</span>
 
-      <div className={contentClass}>{children}</div>
+      <div className={contentClassRecipie({ type })}>{children}</div>
 
       {isDismissable && (
         <button
