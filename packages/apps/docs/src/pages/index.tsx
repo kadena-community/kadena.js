@@ -76,7 +76,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
 
           <GridItem>
             <DocsCard
-              label="Build"
+              label="Coach"
               description="Take your game to the next level with tools, sample code, and 
               how-to guides."
               schema="success"
@@ -101,7 +101,7 @@ const Home: FC<IProps> = ({ blogPosts }) => {
 
           <GridItem>
             <DocsCard
-              label="Deploy"
+              label="Propel"
               description="Deploy your smart contracts on the network or support the infrastructure by deploying a Chainweb node."
               schema="success"
               background="whitepapers"
