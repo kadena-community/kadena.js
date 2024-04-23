@@ -1,5 +1,5 @@
 ---
-title: List Operators
+title: List operators
 description:
   Pact comes equipped with the ability for smart contract authors to express and
   automatically check properties -- or, specifications -- of Pact programs.
