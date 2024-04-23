@@ -45,7 +45,6 @@ export const baseContainerClass = recipe({
       width: '100%',
     }),
     {
-      padding: '2px',
       transition: 'outline-color 0.2s ease-in-out',
       outlineColor: 'transparent',
       selectors: {
@@ -148,7 +147,6 @@ export const endAddon = style([
 ]);
 
 globalStyle(`${endAddon} button`, {
-  height: '100%',
   borderRadius: '0',
 });
 
