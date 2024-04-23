@@ -143,7 +143,7 @@ details, you should see the following properties:
 If you use the optimistic flow for onboarding users, you can use the
 chainweb-data API to poll the status of pending transaction using the identifier
 from the `pendingTxIds` property. For example, if the `pendingTxIds` property in
-the `user` object is `gzlhITOU8hMaOXHKcSJgxLl0Ir8j2crUnFh20cGcxsR`,the
+the `user` object is `gzlhITOU8hMaOXHKcSJgxLl0Ir8j2crUnFh20cGcxsR`, the
 chainweb-data API request would look like this:
 
 https://estats.testnet.chainweb.com/txs/tx?requestkey=gzlhITOU8hMaOXHKcSJgxLl0Ir8j2crUnFh20cGcxsR
