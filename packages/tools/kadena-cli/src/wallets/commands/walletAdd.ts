@@ -26,8 +26,9 @@ export const createGenerateWalletCommand: (
   [
     walletOptions.walletName({ isOptional: false }),
     securityOptions.createPasswordOption({
-      message: 'Enter the new wallet password',
-      confirmPasswordMessage: 'Re-enter the password',
+      message: 'Enter the new wallet password:',
+      confirmPasswordMessage: 'Re-enter the password:',
+      confirmEmptyPassword: true,
     }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
     walletOptions.createAccount(),
