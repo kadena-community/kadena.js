@@ -1,8 +1,8 @@
 import { style } from '@vanilla-extract/css';
+import { token } from '../../styles';
 import { atoms } from '../../styles/atoms.css';
 
 export const textLinkClass = style([
-  // buttonReset,
   atoms({
     display: 'inline-flex',
     justifyContent: 'center',
@@ -12,16 +12,22 @@ export const textLinkClass = style([
     paddingBlock: 'sm',
   }),
   {
+    color: token('color.link.base.default'),
     selectors: {
       '&[data-hovered]': {
         textDecoration: 'underline',
         background: 'none',
+        color: `${token('color.link.base.@focus')} !important`,
       },
-      // '&[data-pressed]': change color,
-      '&[data-focus-visible]': { textDecoration: 'underline' },
-      // '&[data-selected]': change color,
+      '&[data-focus-visible]': {
+        textDecoration: 'underline',
+        color: `${token('color.link.base.@focus')} !important`,
+      },
       '&[data-disabled]': {
         cursor: 'not-allowed',
+      },
+      '&:visited': {
+        color: token('color.link.base.@visited'),
       },
     },
   },

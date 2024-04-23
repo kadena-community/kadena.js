@@ -40,6 +40,7 @@ type TextLinkStory = StoryObj<ITextLinkProps>;
 export const _Base: TextLinkStory = {
   args: {
     children: 'Hello world',
+    href: 'https://www.google.com',
   },
   render: (props: ITextLinkProps) => {
     return <TextLink {...props}>{props.children}</TextLink>;
