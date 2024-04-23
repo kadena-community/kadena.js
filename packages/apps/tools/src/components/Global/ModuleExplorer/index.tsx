@@ -39,7 +39,8 @@ const ModuleExplorer = ({
         const alreadyOpened = prev.find((openedModule) => {
           return (
             openedModule.moduleName === result.moduleName &&
-            openedModule.chainId === result.chainId
+            openedModule.chainId === result.chainId &&
+            openedModule.network === result.network
           );
         });
 
@@ -95,8 +96,8 @@ const ModuleExplorer = ({
           setOpenedModules(
             openedModules.filter((openedModule) => {
               return (
-                `${openedModule.moduleName}-${openedModule.chainId}` !==
-                `${module.moduleName}-${module.chainId}`
+                `${openedModule.moduleName}-${openedModule.chainId}-${openedModule.network}` !==
+                `${module.moduleName}-${module.chainId}-${module.network}`
               );
             }),
           );
