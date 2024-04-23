@@ -20,12 +20,12 @@ export async function fund({
   accountConfig,
   amount,
   networkConfig,
-  chainId,
+  chainIds,
 }: {
   accountConfig: Omit<IAliasAccountData, 'alias'>;
   amount: string;
   networkConfig: Pick<INetworkCreateOptions, 'networkId' | 'networkHost'>;
-  chainId: ChainId[];
+  chainIds: ChainId[];
 }): Promise<CommandResult<ITransactionDescriptor[]>> {
   let status: 'success' | 'partial' | 'error' = 'success';
   const errors: string[] = [];
@@ -34,7 +34,7 @@ export async function fund({
   let accountFundsResult: (ITransactionDescriptor | null)[] = [];
   try {
     accountFundsResult = await Promise.all(
-      chainId.map(async (chainId) => {
+      chainIds.map(async (chainId) => {
         try {
           const accountDetailsFromChain = await getAccountDetails({
             accountName: accountConfig.name,

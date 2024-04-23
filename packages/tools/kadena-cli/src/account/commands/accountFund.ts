@@ -43,9 +43,9 @@ export const createAccountFundCommand = createCommand(
     const { network, networkConfig } = await option.network({
       allowedNetworkIds: ['testnet', 'development'],
     });
-    const { chainId } = await option.chainId();
+    const { chainIds } = await option.chainIds();
 
-    if (!notEmpty(chainId)) {
+    if (!notEmpty(chainIds)) {
       return log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
     }
 
@@ -58,13 +58,13 @@ export const createAccountFundCommand = createCommand(
     const config = {
       accountConfig,
       amount,
-      chainId,
+      chainIds,
       networkConfig,
     };
 
     log.debug('account-fund:action', config);
 
-    if (networkConfig.networkId.includes('mainnet')) {
+    if (networkConfig.networkId.includes('mainnet') === true) {
       return log.error(
         `Fundings are not allowed on "${networkConfig.networkId}" network.`,
       );
@@ -84,7 +84,7 @@ export const createAccountFundCommand = createCommand(
       const undeployedChainIds = await findMissingModuleDeployments(
         FAUCET_MODULE_NAME,
         networkConfig,
-        chainId,
+        chainIds,
       );
 
       const undeployedChainIdsStr = undeployedChainIds.join(', ');
@@ -96,7 +96,7 @@ export const createAccountFundCommand = createCommand(
 
         const { deployFaucet } = await option.deployFaucet();
 
-        if (!deployFaucet) {
+        if (deployFaucet === false) {
           return;
         }
 
@@ -105,7 +105,7 @@ export const createAccountFundCommand = createCommand(
         ).start();
 
         const [succeededFaucetDeployments, failedFaucetDeployments] =
-          await deployFaucetsToChains(chainId);
+          await deployFaucetsToChains(chainIds);
 
         if (failedFaucetDeployments.length > 0) {
           const completeError = succeededFaucetDeployments.length === 0;

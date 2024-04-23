@@ -157,7 +157,7 @@ export const accountOptions = {
     option: new Option('-c, --confirm', 'Confirm account deletion'),
   }),
   chainIdRange: createOption({
-    key: 'chainId' as const,
+    key: 'chainIds' as const,
     prompt: account.chainIdPrompt,
     defaultIsOptional: false,
     validation: z.string({
