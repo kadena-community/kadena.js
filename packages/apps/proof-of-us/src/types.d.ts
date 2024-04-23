@@ -47,6 +47,7 @@ interface IProofOfUsData {
   tokenId: string;
   requestKey: string;
   manifestUri?: string;
+  manifestData?: string;
   imageUri: string;
   eventName?: string;
   eventId: string;
