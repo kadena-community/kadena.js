@@ -232,7 +232,7 @@ export const WithStartAddon: Story = {
           label="With addon"
           value={value}
           onValueChange={setValue}
-          startVisual={<Account />}
+          startVisual={<MonoAccountCircle />}
         />
         <Button type="submit">Submit</Button>
       </Form>
