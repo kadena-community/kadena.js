@@ -77,7 +77,7 @@ export const createAddAccountManualCommand = createCommand(
     // public keys are required to add account
     if (!hasAccountDetails && !publicKeysConfig.length) {
       throw new Error(
-        'Missing required argument PublicKeys: "-p, --public-keys <publicKeys>"',
+        'Missing required argument PublicKeys: "-k, --public-keys <publicKeys>"',
       );
     }
 

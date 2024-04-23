@@ -56,7 +56,7 @@ const confirmDelete = createOption({
     }
   },
   validation: z.boolean(),
-  option: new Option('--confirm', 'Confirm wallet deletion'),
+  option: new Option('-c, --confirm', 'Confirm wallet deletion'),
 });
 
 export const createDeleteWalletsCommand: (

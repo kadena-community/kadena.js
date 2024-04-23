@@ -11,6 +11,7 @@ export const contractToTreeItems = (
   contract: Contract,
   onInterfaceClick: IOutlineProps['onInterfaceClick'],
   module: IOutlineProps['selectedModule'],
+  onInterfacesExpand: IOutlineProps['onInterfacesExpand'],
 ): ITreeProps['items'] => {
   const { usedInterface: interfaces, capabilities, functions } = contract;
   const items: ITreeProps['items'] = [];
@@ -18,12 +19,27 @@ export const contractToTreeItems = (
   if (interfaces?.length) {
     items.push({
       title: 'Interfaces',
-      isOpen: true,
+      // isOpen: true,
+      onOpen: () => {
+        onInterfacesExpand(
+          interfaces.map((i) => {
+            return {
+              chainId: module!.chainId,
+              moduleName: i.name,
+              network: module!.network,
+            };
+          }),
+        );
+      },
       items: interfaces.map((i) => ({
         title: (
           <Button
             onPress={() =>
-              onInterfaceClick({ chainId: module!.chainId, moduleName: i.name })
+              onInterfaceClick({
+                chainId: module!.chainId,
+                moduleName: i.name,
+                network: module!.network,
+              })
             }
             isCompact
             endVisual={<MonoExitToApp />}

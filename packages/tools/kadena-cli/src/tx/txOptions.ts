@@ -18,7 +18,10 @@ import { parseInput, requestKeyValidation } from './utils/txHelpers.js';
 export const txOptions = {
   selectTemplate: createOption({
     key: 'template',
-    option: new Option('--template <template>', 'select a template'),
+    option: new Option(
+      '-t, --template <template>',
+      'Filepath of ktpl template to create a transaction from',
+    ),
     validation: z.string(),
     prompt: tx.selectTemplate,
     expand: getVariablesByTemplate,
@@ -26,7 +29,10 @@ export const txOptions = {
   templateData: createOption({
     key: 'templateData',
     validation: z.string(),
-    option: new Option('--template-data <templateData>', 'template data file'),
+    option: new Option(
+      '-d, --template-data <templateData>',
+      'Filepath of JSON or YAML file to use as template data',
+    ),
     prompt: templateDataPrompt,
     async expand(filePath) {
       if (filePath === undefined) return null;
@@ -57,7 +63,7 @@ export const txOptions = {
     validation: z.object({}).passthrough(),
     option: new Option(
       '--template-variables <templateVariables>',
-      'template variables',
+      'Dynamic placeholder flag for template data, do not use this flag directly',
     ),
     prompt: templateVariables,
     allowUnknownOptions: true,
@@ -195,7 +201,7 @@ export const txOptions = {
     },
     validation: z.boolean().optional(),
     option: new Option(
-      '-h --holes',
+      '-l --holes',
       'Get a list of all the values this template needs',
     ),
   }),

@@ -53,9 +53,9 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
     [Key in DevOption]: IDevOption;
   } = {
     BASIC: {
-      title: t('Basic User Interface'),
+      title: t('devoptions-basic-title'),
       text: t(
-        'This view can be used for basic operations and handling things within the user interface.',
+        'This view can be used for basic operations and handling things within the user interface',
       ),
       icon: <MonoWebAsset />,
     },
@@ -63,7 +63,7 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
       title: t('Backend Developers'),
       tag: t('for PACT developers'),
       text: t(
-        'This option is meant for developers who need more sophisticated options within the user interface.',
+        'This option is meant for developers who need more sophisticated options within the user interface',
       ),
       icon: <MonoCode />,
     },
@@ -71,7 +71,7 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
       title: t('dApp Developers'),
       tag: t('for Javascript developers'),
       text: t(
-        'This option is meant for developers who need more sophisticated options within the user interface.',
+        'This option is meant for developers who need more sophisticated options within the user interface',
       ),
       icon: <MonoCode />,
     },
