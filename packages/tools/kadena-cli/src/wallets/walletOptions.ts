@@ -50,7 +50,10 @@ export const walletOptions = {
     key: 'amount' as const,
     prompt: keys.walletGenerateKeyAmountPrompt,
     validation: z.string(),
-    option: new Option('-n, --amount <amount>', 'Amount of keys to generate'),
+    option: new Option(
+      '-n, --amount <amount>',
+      'Amount of keys to generate (default: 1)',
+    ),
   }),
   startIndex: createOption({
     key: 'startIndex' as const,

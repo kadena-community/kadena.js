@@ -194,6 +194,7 @@ export const createCommand =
         if (!process.stderr.isTTY) args.quiet = true;
 
         handleQuietOption(args, options);
+
         if (args.json === true) {
           log.setOutputMode('json');
         } else if (args.yaml === true) {

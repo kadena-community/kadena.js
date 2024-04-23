@@ -22,7 +22,7 @@ export const accountOptions = {
     prompt: account.accountAliasPrompt,
     validation: z.string(),
     option: new Option(
-      '--account-alias <accountAlias>',
+      '-l, --account-alias <accountAlias>',
       'Alias to store your account details',
     ),
   }),
@@ -30,10 +30,7 @@ export const accountOptions = {
     key: 'accountName' as const,
     prompt: account.accountNamePrompt,
     validation: z.string(),
-    option: new Option(
-      '-a, --account-name <accountName>',
-      'Account name',
-    ),
+    option: new Option('-a, --account-name <accountName>', 'Account name'),
   }),
   accountKdnName: createOption({
     key: 'accountKdnName' as const,
@@ -117,13 +114,19 @@ export const accountOptions = {
     key: 'fungible' as const,
     prompt: account.fungiblePrompt,
     validation: z.string(),
-    option: new Option('-f, --fungible <fungible>', 'Fungible module name'),
+    option: new Option(
+      '-f, --fungible <fungible>',
+      'Fungible module name (default: coin)',
+    ),
   }),
   predicate: createOption({
     key: 'predicate' as const,
     prompt: account.predicatePrompt,
     validation: z.string(),
-    option: new Option('-p, --predicate <predicate>', 'Account keyset predicate'),
+    option: new Option(
+      '-p, --predicate <predicate>',
+      'Account keyset predicate',
+    ),
   }),
   fundAmount: createOption({
     key: 'amount' as const,
