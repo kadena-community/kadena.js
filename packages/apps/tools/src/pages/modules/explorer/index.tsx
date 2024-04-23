@@ -40,6 +40,7 @@ import { getCookieValue, getQueryValue } from './utils';
 const QueryParams = {
   MODULE: 'module',
   CHAIN: 'chain',
+  NETWORK: 'network',
 };
 
 export const getModules = async (
@@ -253,7 +254,7 @@ const ModuleExplorerPage = (
   const setDeepLink = useCallback(
     (module: IChainModule) => {
       void router.replace(
-        `?${QueryParams.MODULE}=${module.moduleName}&${QueryParams.CHAIN}=${module.chainId}&network=${module.network}`,
+        `?${QueryParams.MODULE}=${module.moduleName}&${QueryParams.CHAIN}=${module.chainId}&${QueryParams.NETWORK}=${module.network}`,
         undefined,
         { shallow: true },
       );
