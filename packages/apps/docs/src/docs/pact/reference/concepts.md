@@ -674,6 +674,16 @@ the capability's predicate function allows this signer to install the
 capability, the installed version will then govern any code needing the
 capability to unlock some protected operation, by means of a _manager function_.
 
+### Verifiers and Capabilities
+
+Since Pact 4.11 ([KIP 0028](https://github.com/kadena-io/KIPs/pull/57)), capabilities can be installed by *verifiers*, which are also
+scoped to those capabilities that they install. A verifier is a named plugin external
+to Pact that given some proof value (similar to a signature) can grant capabilities.
+Whereas a capability can check that it was granted by some signer using 
+`(enforce-guard g)` with a keyset guard `g` including that signer, a 
+capability can check that it was granted by some verifier using 
+`(enforce-verifier 'name)`, given that `"name"` is the name of that verifier.
+
 #### Capability management with a manager function
 
 A managed capability allows for safe interoperation with otherwise untrusted
