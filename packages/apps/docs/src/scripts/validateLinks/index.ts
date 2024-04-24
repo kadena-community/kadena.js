@@ -6,9 +6,6 @@ import validateMarkdownLinks from './validateMarkdownLinks';
 import type { IValidateTypeScriptFileLinksResult } from './validateTypeScriptFileLinks';
 import validateTypeScriptFileLinks from './validateTypeScriptFileLinks';
 
-//const args = process.argv.slice(2);
-//const isCi = args.includes('--ci');
-
 const errors: string[] = [];
 const success: string[] = [];
 
@@ -16,7 +13,6 @@ const success: string[] = [];
 // but are broken in the website E.g. might comes from the different docs repo
 // it could be fixed in the following PR later on
 // to avoid the hard dependency on the doc website repo
-
 // since we already have the redirect in place for the /learn-pact/beginner/welcome-to-pact it's ignored
 const ignoreLinks: string[] = [];
 
