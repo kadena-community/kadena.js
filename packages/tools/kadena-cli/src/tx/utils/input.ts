@@ -1,6 +1,6 @@
 import type { IUnsignedCommand } from '@kadena/types';
 import { IUnsignedCommandSchema } from '../../prompts/tx.js';
-import { formatZodError } from '../../utils/helpers.js';
+import { formatZodError } from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
 
 export const parseTransactionsFromStdin = async (

@@ -12,7 +12,7 @@ export const simulationOptions = {
     validation: z.number(),
     option: new Option(
       '-a, --simulation-number-of-accounts <simulationNumberOfAccounts>',
-      'Amount of accounts to be created in the simulation.',
+      'Amount of accounts to be created in the simulation (default: 6)',
     ).argParser((value) => parseInt(value, 10)),
   }),
   simulationTransferInterval: createOption({
@@ -21,7 +21,7 @@ export const simulationOptions = {
     validation: z.number(),
     option: new Option(
       '-i, --simulation-transfer-interval <simulationTransferInterval>',
-      'Transfer interval in milliseconds.',
+      'Transfer interval in milliseconds (default: 100)',
     ).argParser((value) => parseInt(value, 10)),
   }),
 
@@ -31,7 +31,7 @@ export const simulationOptions = {
     validation: z.number(),
     option: new Option(
       '-m, --simulation-max-transfer-amount <simulationMaxTransferAmount>',
-      'Max transfer amount per single transaction (coin).',
+      'Max transfer amount per single transaction of coin (default: 25)',
     ).argParser((value) => parseInt(value, 10)),
   }),
 
@@ -41,7 +41,7 @@ export const simulationOptions = {
     validation: z.number(),
     option: new Option(
       '-p, --simulation-token-pool <simulationTokenPool>',
-      'Total token pool (coin).',
+      'Total token pool of coin (default: 1000000)',
     ).argParser((value) => parseInt(value, 10)),
   }),
   simulationSeed: createOption({
@@ -63,7 +63,7 @@ export const simulationOptions = {
     },
     option: new Option(
       '-c, --simulation-default-chain-id <simulationDefaultChainId>',
-      'Default chain id for the simulation (eg. 0).',
+      'Default chain id for the simulation (default: 0).',
     ),
   }),
 
@@ -73,7 +73,7 @@ export const simulationOptions = {
     validation: z.number(),
     option: new Option(
       '-t, --simulation-max-time <simulationMaxTime>',
-      'Specify the maximum time in miliseconds the simulation will run.',
+      'Specify the maximum time in milliseconds the simulation will run (default: 7 days)',
     ).argParser((value) => parseInt(value, 10)),
   }),
 };

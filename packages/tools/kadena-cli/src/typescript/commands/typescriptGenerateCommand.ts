@@ -3,8 +3,8 @@ import { join } from 'path';
 import { generateDts, pactParser } from '@kadena/pactjs-generator';
 import { services } from '../../services/index.js';
 import { createCommand } from '../../utils/createCommand.js';
+import { notEmpty } from '../../utils/globalHelpers.js';
 import { globalOptions } from '../../utils/globalOptions.js';
-import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
 import { typescriptOptions } from '../typescriptOptions.js';
 import {

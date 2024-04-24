@@ -7,7 +7,7 @@ import {
   isNotEmptyString,
   maskStringPreservingStartAndEnd,
   truncateText,
-} from '../../utils/helpers.js';
+} from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
 import { createTable } from '../../utils/table.js';
 import { accountOptions } from '../accountOptions.js';

@@ -37,10 +37,10 @@ const resultsMapToTreeItems = (
     ),
     onOpen: () =>
       onModuleExpand({ moduleName, chains: chainsInfo.map((x) => x.chainId) }),
-    items: chainsInfo.map(({ chainId, hash }) => ({
+    items: chainsInfo.map(({ chainId, hash, code, network }) => ({
       title: (
         <Button
-          onPress={() => onItemClick({ chainId, moduleName })}
+          onPress={() => onItemClick({ chainId, moduleName, code, network })}
           isCompact
           endVisual={<MonoExitToApp />}
           title={chainId + (hash ? ` - ${hash}` : '')}
@@ -60,7 +60,7 @@ const Results = ({
   onItemClick,
   onModuleExpand,
   filter,
-  ...rest
+  className,
 }: IResultsProps): React.JSX.Element => {
   const items = useMemo(() => {
     let filteredData = data;
@@ -75,7 +75,7 @@ const Results = ({
   }, [data, filter, onItemClick, onModuleExpand]);
 
   return (
-    <div {...rest}>
+    <div className={className}>
       <Tree items={items} isOpen />
     </div>
   );

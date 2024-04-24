@@ -14,7 +14,7 @@ describe('accountDetails', () => {
   it('should return account details', async () => {
     const result = await accountDetails({
       accountName: 'accountName',
-      chainId: ['1'],
+      chainIds: ['1'],
       networkId: devNetConfigMock.networkId,
       networkHost: devNetConfigMock.networkHost,
       fungible: 'coin',
@@ -45,7 +45,7 @@ describe('accountDetails', () => {
     );
     const result = await accountDetails({
       accountName: 'k:accountName',
-      chainId: ['1'],
+      chainIds: ['1'],
       networkId: devNetConfigMock.networkId,
       networkHost: devNetConfigMock.networkHost,
       fungible: 'coin',
