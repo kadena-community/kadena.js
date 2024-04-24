@@ -1,10 +1,13 @@
 import type { ChainId } from '@kadena/types';
 import { z } from 'zod';
 import { chainIdValidation } from '../account/utils/accountHelpers.js';
-import {  MAX_CHAIN_VALUE } from '../constants/config.js';
 import {
   NO_NETWORKS_FOUND_ERROR_MESSAGE,
 } from '../constants/networks.js';
+import {
+  INVALID_FILE_NAME_ERROR_MSG,
+  MAX_CHAIN_VALUE,
+} from '../constants/config.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
   ensureNetworksConfiguration,
@@ -15,7 +18,7 @@ import { getNetworkDirectory } from '../networks/utils/networkPath.js';
 import { services } from '../services/index.js';
 import { KadenaError } from '../services/service-error.js';
 import type { IPrompt } from '../utils/createOption.js';
-import { isAlphabetic, isNotEmptyString } from '../utils/globalHelpers.js';
+import { isNotEmptyString, isValidFilename } from '../utils/globalHelpers.js';
 import { getExistingNetworks } from '../utils/helpers.js';
 import { input, select } from '../utils/prompts.js';
 import { getInputPrompt } from './generic.js'; // Importing getInputPrompt from another file
@@ -51,9 +54,12 @@ export const networkNamePrompt: IPrompt<string> = async (
     message: 'Enter a network name (e.g. "mainnet")',
     default: defaultValue,
     validate: function (input) {
-      if (!isAlphabetic(input)) {
-        return 'Network names must be alphanumeric! Please enter a valid network name.';
+      if (!isNotEmptyString(input.trim())) return 'Network name is required.';
+
+      if (!isValidFilename(input)) {
+        return `Name is used as a filename. ${INVALID_FILE_NAME_ERROR_MSG}`;
       }
+
       return true;
     },
   });

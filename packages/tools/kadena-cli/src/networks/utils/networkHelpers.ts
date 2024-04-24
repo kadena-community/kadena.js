@@ -61,40 +61,23 @@ export async function writeNetworks(
 ): Promise<void> {
   const { network } = options;
   const sanitizedNetwork = sanitizeFilename(network).toLowerCase();
+
   const networkFilePath = path.join(
     kadenaDir,
     'networks',
     `${sanitizedNetwork}.yaml`,
   );
 
-  let existingConfig: INetworkCreateOptions =
-    typeof networkDefaults[network] !== 'undefined'
-      ? { ...networkDefaults[network] }
-      : { ...networkDefaults.other };
+  const validation = networkSchema.safeParse(options);
 
-  if (await services.filesystem.fileExists(networkFilePath)) {
-    const content = await services.filesystem.readFile(networkFilePath);
-    if (content !== null) {
-      existingConfig = yaml.load(content!) as INetworkCreateOptions;
-    }
-  }
-
-  const networkConfig = mergeConfigs(existingConfig, options);
-
-  await services.filesystem.ensureDirectoryExists(networkFilePath);
-
-  const parsed = networkSchema.safeParse(networkConfig);
-
-  if (!parsed.success) {
+  if (!validation.success) {
     throw new Error(
-      `Failed to write network config: ${formatZodError(parsed.error)}`,
+      `Failed to write network config: ${formatZodError(validation.error)}`,
     );
   }
 
-  await services.filesystem.writeFile(
-    networkFilePath,
-    yaml.dump(networkConfig),
-  );
+  await services.filesystem.ensureDirectoryExists(networkFilePath);
+  await services.filesystem.writeFile(networkFilePath, yaml.dump(options));
 }
 
 /**
@@ -190,4 +173,31 @@ export async function getNetworksInOrder<T extends INetworkChoiceOption>(
     ...partitionedNetworks.defaultNetworks,
     ...partitionedNetworks.remainingNetworks,
   ];
+}
+
+export async function mergeNetworkConfig(
+  kadenaDir: string,
+  network: string,
+  options: INetworkCreateOptions,
+): Promise<INetworkCreateOptions> {
+  const sanitizedNetwork = sanitizeFilename(network).toLowerCase();
+  const networkFilePath = path.join(
+    kadenaDir,
+    'networks',
+    `${sanitizedNetwork}.yaml`,
+  );
+
+  let existingConfig: INetworkCreateOptions =
+    typeof networkDefaults[network] !== 'undefined'
+      ? { ...networkDefaults[network] }
+      : { ...networkDefaults.other };
+
+  if (await services.filesystem.fileExists(networkFilePath)) {
+    const content = await services.filesystem.readFile(networkFilePath);
+    if (content !== null) {
+      existingConfig = yaml.load(content!) as INetworkCreateOptions;
+    }
+  }
+
+  return mergeConfigs(existingConfig, options);
 }
