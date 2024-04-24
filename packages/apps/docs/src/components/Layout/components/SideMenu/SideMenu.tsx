@@ -25,14 +25,9 @@ interface IProps {
 }
 
 export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
-  const { active, clickMenu, clickSubMenu, setActive, treeRef } = useSideMenu(
-    closeMenu,
-    menuItems,
-  );
+  const { active, clickSubMenu, treeRef } = useSideMenu(closeMenu, menuItems);
   const router = useRouter();
   const MagnifierIcon = SystemIcon.Magnify;
-
-  const activeItem = menuItems.find((item) => item.isMenuOpen);
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>): void => {
     e.preventDefault();
@@ -50,20 +45,6 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
 
   return (
     <div className={sideMenuClass}>
-      {active === 0 && (
-        <div className={sideMenuTitleClass}>
-          <Heading as="h5">Kadena Docs</Heading>
-        </div>
-      )}
-      {active === 1 && (
-        <button
-          type="button"
-          onClick={() => setActive(0)}
-          className={classNames(sideMenuTitleClass, sideMenuTitleButtonClass)}
-        >
-          <Heading as="h5">{activeItem?.menu}</Heading>
-        </button>
-      )}
       <ShowOnMobile>
         <Box marginInline="md" marginBlockStart="md" marginBlockEnd="xl">
           {/* TODO: Replace with SearchField */}
@@ -78,35 +59,19 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
           />
         </Box>
       </ShowOnMobile>
-      <MenuCard cyTestId="sidemenu-main" active={active} idx={0}>
-        <ul className={listClass}>
-          {menuItems.map((item) => (
-            <li key={item.root} className={listItemClass}>
-              <ListLink
-                onClick={(e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) =>
-                  clickMenu(e, item)
-                }
-                href={item.root}
-                hasSubMenu={!!item.children?.length}
-              >
-                {item.menu}
-              </ListLink>
-            </li>
+
+      <MenuCard
+        cyTestId="sidemenu-submenu"
+        active={active}
+        idx={1}
+        onClick={clickSubMenu}
+      >
+        <TreeList ref={treeRef} root={true}>
+          {menuItems.map((menu) => (
+            <MainTreeItem key={menu.root} item={menu} root={false} level={0} />
           ))}
-        </ul>
+        </TreeList>
       </MenuCard>
-      {activeItem && (
-        <MenuCard
-          cyTestId="sidemenu-submenu"
-          active={active}
-          idx={1}
-          onClick={clickSubMenu}
-        >
-          <TreeList ref={treeRef} root={true}>
-            <MainTreeItem item={activeItem} root={true} />
-          </TreeList>
-        </MenuCard>
-      )}
     </div>
   );
 };

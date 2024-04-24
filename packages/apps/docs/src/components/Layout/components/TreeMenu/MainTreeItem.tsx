@@ -13,7 +13,7 @@ interface IProps {
   testId?: string;
 }
 
-export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 1 }) => {
+export const MainTreeItem: FC<IProps> = ({ item, root = false, level = 0 }) => {
   const [menuOpen, setMenuOpen] = useState<boolean>(item.isMenuOpen ?? false);
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const ref = useRef<HTMLLIElement>(null);

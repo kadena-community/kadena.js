@@ -29,9 +29,9 @@ const remarkSideMenuToProps = (): Plugin => {
     const items = await checkSubTreeForActive(getPath(file.history[0]));
 
     const itemsReduced = items.map((item: Partial<IMenuItem>) => {
-      if (item?.isMenuOpen) return item;
+      // if (item?.isMenuOpen) return item;
 
-      delete item.children;
+      // delete item.children;
       return item;
     });
 

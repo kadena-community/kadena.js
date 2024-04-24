@@ -43,6 +43,8 @@ export const MyApp = ({
   const props = deserializePageProps(pageProps);
   const Layout = getLayout(props.frontmatter.layout);
 
+  console.log({ left: pageProps.leftMenuTree });
+
   // check for a router query
   const router = useRouter();
   useEffect(() => {

@@ -11,7 +11,7 @@ import {
 interface IProps {
   children: ReactNode;
   onClick: () => void;
-  level?: 'l1' | 'l2' | 'l3';
+  level?: 'l0' | 'l1' | 'l2' | 'l3';
   menuOpen?: boolean;
 }
 

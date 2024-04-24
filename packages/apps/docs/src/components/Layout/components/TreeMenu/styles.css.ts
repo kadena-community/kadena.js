@@ -16,6 +16,7 @@ export const treeListClass = style([
 ]);
 
 export const treeListLevelVariantClass = styleVariants({
+  l0: {},
   l1: {},
   l2: {},
   l3: {
@@ -56,6 +57,7 @@ export const listItemClass = style({
 });
 
 export const listItemVariants = styleVariants({
+  l0: {},
   l1: {},
   l2: {},
   l3: {
@@ -74,6 +76,14 @@ export const linkActiveClass = styleVariants({
 });
 
 export const levelItemVariantClass = styleVariants({
+  l0: {
+    display: 'block',
+    cursor: 'pointer',
+    fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.bold,
+    padding: `${tokens.kda.foundation.spacing.md} 0 ${tokens.kda.foundation.spacing.sm}`,
+    borderBottom: `2px solid ${$$borderColor}`,
+    fontSize: tokens.kda.foundation.typography.fontSize.lg,
+  },
   l1: {
     display: 'block',
     cursor: 'pointer',
@@ -104,6 +114,7 @@ const markerStyle: Record<string, string> = {
 };
 
 export const levelItemLinkPseudoVariantClass = styleVariants({
+  l0: {},
   l1: {},
   l2: {
     selectors: {
