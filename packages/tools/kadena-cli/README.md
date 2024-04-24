@@ -475,7 +475,7 @@ kadena wallet export --wallet-name="kadenawallet" --key-index="0" --json > mykey
 
 ---
 
-## kadena keys
+## kadena key
 
 Tool to generate and manage keys
 
@@ -570,7 +570,7 @@ kadena account add-from-wallet [options]
 | **Options**             | **Description**                              | **Required** |
 | ----------------------- | -------------------------------------------- | ------------ |
 | --account-alias         | Set alias for account                        |              |
-| --key-wallet            | Provide the name of the wallet               |              |
+| --wallet-name           | Provide the name of the wallet               |              |
 | --fungible              | Fungible module name (default: coin)         |              |
 | --network               | Name of the network to be used               |              |
 | --chain-id              | Chain to be used                             |              |
@@ -580,7 +580,7 @@ kadena account add-from-wallet [options]
 example:
 
 ```
-kadena account add-from-wallet --account-alias="myalias" --key-wallet="mywallet.wallet" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="publickey" --predicate="keys-all"
+kadena account add-from-wallet --account-alias="myalias" --wallet-name="mywallet" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="publickey" --predicate="keys-all"
 ```
 
 ---
@@ -1175,6 +1175,3 @@ available:
 [2]: https://vuejs.org/
 [3]: https://angular.io/
 
-```
-
-```
