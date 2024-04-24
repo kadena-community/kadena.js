@@ -28,9 +28,6 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
-    "validate-links": "node --loader @swc-node/register/esm ./src/scripts/validateLinks/index.ts",
-    "validate-links:ci": "pnpm run validate-links --ci",
-    "validate-links:dev": "pnpm run build:scripts && pnpm run validate-links",
     "verify": "tsc --noEmit"
   },
   "dependencies": {
