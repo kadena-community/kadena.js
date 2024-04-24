@@ -21,7 +21,7 @@ export const createImportWalletCommand: (
       confirmPasswordMessage: 'Re-enter the password',
       useStdin: false,
     }),
-    walletOptions.walletName(),
+    walletOptions.walletName({ isOptional: false }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
   ],
   async (option, { collect }) => {
