@@ -225,7 +225,8 @@ export const darkThemeValues = {
           semantic: {
             positive: {
               default: tokens.kda.foundation.color.semantic.positive.n20,
-              subtle: tokens.kda.foundation.color.semantic.positive.n1,
+              subtle:
+                tokens.kda.foundation.color.semantic.positive['n20@alpha20'],
               subtlest: tokens.kda.foundation.color.semantic.positive.n0,
               '@hover': tokens.kda.foundation.color.semantic.positive.n30,
               '@focus':
@@ -233,7 +234,8 @@ export const darkThemeValues = {
               '@active': tokens.kda.foundation.color.semantic.positive.n10,
               inverse: {
                 default: tokens.kda.foundation.color.semantic.positive.n80,
-                subtle: tokens.kda.foundation.color.semantic.positive.n99,
+                subtle:
+                  tokens.kda.foundation.color.semantic.positive['n80@alpha20'],
                 subtlest: tokens.kda.foundation.color.semantic.positive.n100,
                 '@hover': tokens.kda.foundation.color.semantic.positive.n70,
                 '@focus':
@@ -243,7 +245,8 @@ export const darkThemeValues = {
             },
             negative: {
               default: tokens.kda.foundation.color.semantic.negative.n20,
-              subtle: tokens.kda.foundation.color.semantic.negative.n1,
+              subtle:
+                tokens.kda.foundation.color.semantic.negative['n20@alpha20'],
               subtlest: tokens.kda.foundation.color.semantic.negative.n0,
               '@hover': tokens.kda.foundation.color.semantic.negative.n30,
               '@focus':
@@ -251,7 +254,8 @@ export const darkThemeValues = {
               '@active': tokens.kda.foundation.color.semantic.negative.n10,
               inverse: {
                 default: tokens.kda.foundation.color.semantic.negative.n80,
-                subtle: tokens.kda.foundation.color.semantic.negative.n99,
+                subtle:
+                  tokens.kda.foundation.color.semantic.negative['n80@alpha20'],
                 subtlest: tokens.kda.foundation.color.semantic.negative.n100,
                 '@hover': tokens.kda.foundation.color.semantic.negative.n70,
                 '@focus':
@@ -261,7 +265,8 @@ export const darkThemeValues = {
             },
             warning: {
               default: tokens.kda.foundation.color.semantic.warning.n20,
-              subtle: tokens.kda.foundation.color.semantic.warning.n1,
+              subtle:
+                tokens.kda.foundation.color.semantic.warning['n20@alpha20'],
               subtlest: tokens.kda.foundation.color.semantic.warning.n0,
               '@hover': tokens.kda.foundation.color.semantic.warning.n30,
               '@focus':
@@ -269,7 +274,8 @@ export const darkThemeValues = {
               '@active': tokens.kda.foundation.color.semantic.warning.n10,
               inverse: {
                 default: tokens.kda.foundation.color.semantic.warning.n80,
-                subtle: tokens.kda.foundation.color.semantic.warning.n99,
+                subtle:
+                  tokens.kda.foundation.color.semantic.warning['n80@alpha20'],
                 subtlest: tokens.kda.foundation.color.semantic.warning.n100,
                 '@hover': tokens.kda.foundation.color.semantic.warning.n70,
                 '@focus':
@@ -279,7 +285,7 @@ export const darkThemeValues = {
             },
             info: {
               default: tokens.kda.foundation.color.semantic.info.n20,
-              subtle: tokens.kda.foundation.color.semantic.info.n1,
+              subtle: tokens.kda.foundation.color.semantic.info['n20@alpha20'],
               subtlest: tokens.kda.foundation.color.semantic.info.n0,
               '@hover': tokens.kda.foundation.color.semantic.info.n30,
               '@focus':
@@ -287,7 +293,8 @@ export const darkThemeValues = {
               '@active': tokens.kda.foundation.color.semantic.info.n10,
               inverse: {
                 default: tokens.kda.foundation.color.semantic.info.n80,
-                subtle: tokens.kda.foundation.color.semantic.info.n99,
+                subtle:
+                  tokens.kda.foundation.color.semantic.info['n80@alpha20'],
                 subtlest: tokens.kda.foundation.color.semantic.info.n100,
                 '@hover': tokens.kda.foundation.color.semantic.info.n70,
                 '@focus':
@@ -297,28 +304,41 @@ export const darkThemeValues = {
             },
           },
           input: {
-            default: tokens.kda.foundation.color.neutral['n20@alpha80'],
+            default: tokens.kda.foundation.color.neutral['n5@alpha80'],
+            '@hover': tokens.kda.foundation.color.neutral['n20@alpha80'],
+            '@focus': tokens.kda.foundation.color.neutral['n5@alpha80'],
+            '@active': tokens.kda.foundation.color.neutral.n5,
+            '@disabled': tokens.kda.foundation.color.neutral['n100@alpha10'],
             inverse: {
               default: tokens.kda.foundation.color.neutral['n80@alpha80'],
+              '@hover': tokens.kda.foundation.color.neutral.n90,
+              '@focus': tokens.kda.foundation.color.neutral['n95@alpha80'],
+              '@active': tokens.kda.foundation.color.neutral.n95,
+              '@disabled': tokens.kda.foundation.color.neutral['n0@alpha10'],
             },
           },
         },
         border: {
           base: {
-            subtle: tokens.kda.foundation.color.neutral.n100,
+            subtle: tokens.kda.foundation.color.neutral['n99@alpha10'],
             default: tokens.kda.foundation.color.neutral['n90@alpha25'],
-            bold: tokens.kda.foundation.color.neutral.n100,
-            boldest: tokens.kda.foundation.color.neutral.n100,
+            bold: tokens.kda.foundation.color.neutral['n99@alpha50'],
+            boldest: tokens.kda.foundation.color.neutral['n100@alpha70'],
             'high-contrast': tokens.kda.foundation.color.neutral.n100,
             '@disabled': tokens.kda.foundation.color.neutral.n20,
             '@hover': tokens.kda.foundation.color.neutral.n20,
             '@focus': tokens.kda.foundation.color.neutral.n60,
             '@active': tokens.kda.foundation.color.neutral.n80,
             inverse: {
-              default: tokens.kda.foundation.color.neutral.n100,
-              '@hover': tokens.kda.foundation.color.neutral.n95,
-              '@focus': tokens.kda.foundation.color.neutral.n90,
-              '@active': tokens.kda.foundation.color.neutral.n20,
+              subtle: tokens.kda.foundation.color.neutral['n1@alpha10'],
+              default: tokens.kda.foundation.color.neutral['n1@alpha20'],
+              bold: tokens.kda.foundation.color.neutral['n0@alpha40'],
+              boldest: tokens.kda.foundation.color.neutral['n1@alpha50'],
+              'high-contrast': tokens.kda.foundation.color.neutral.n0,
+              '@disabled': tokens.kda.foundation.color.neutral.n20,
+              '@hover': tokens.kda.foundation.color.neutral.n20,
+              '@focus': tokens.kda.foundation.color.neutral.n60,
+              '@active': tokens.kda.foundation.color.neutral.n80,
             },
           },
           brand: {
@@ -662,8 +682,10 @@ export const darkThemeValues = {
           'n1@alpha80': '#020e1bcc',
           'n1@alpha90': '#020e1be6',
           'n5@alpha80': '#131e2bcc',
+          'n10@alpha80': '#252f3acc',
           'n20@alpha80': '#475059cc',
           'n80@alpha80': '#b0b3b7cc',
+          'n90@alpha20': '#d2d4d633',
           'n90@alpha25': '#d2d4d640',
           'n95@alpha80': '#e4e5e5cc',
           'n99@alpha1': '#f5f5f503',
@@ -992,6 +1014,8 @@ export const darkThemeValues = {
             n5: tokens.kda.foundation.color.palette.blue.n5,
             n10: tokens.kda.foundation.color.palette.blue.n10,
             n20: tokens.kda.foundation.color.palette.blue.n20,
+            'n20@alpha20':
+              tokens.kda.foundation.color.palette.blue['n20@alpha20'],
             'n20@alpha80':
               tokens.kda.foundation.color.palette.blue['n20@alpha80'],
             n30: tokens.kda.foundation.color.palette.blue.n30,
@@ -1000,6 +1024,8 @@ export const darkThemeValues = {
             n60: tokens.kda.foundation.color.palette.blue.n60,
             n70: tokens.kda.foundation.color.palette.blue.n70,
             n80: tokens.kda.foundation.color.palette.blue.n80,
+            'n80@alpha20':
+              tokens.kda.foundation.color.palette.blue['n80@alpha20'],
             'n80@alpha80':
               tokens.kda.foundation.color.palette.blue['n80@alpha80'],
             n90: tokens.kda.foundation.color.palette.blue.n90,
@@ -1013,6 +1039,8 @@ export const darkThemeValues = {
             n5: tokens.kda.foundation.color.palette.red.n5,
             n10: tokens.kda.foundation.color.palette.red.n10,
             n20: tokens.kda.foundation.color.palette.red.n20,
+            'n20@alpha20':
+              tokens.kda.foundation.color.palette.red['n20@alpha20'],
             'n20@alpha80':
               tokens.kda.foundation.color.palette.red['n20@alpha80'],
             n30: tokens.kda.foundation.color.palette.red.n30,
@@ -1021,6 +1049,8 @@ export const darkThemeValues = {
             n60: tokens.kda.foundation.color.palette.red.n60,
             n70: tokens.kda.foundation.color.palette.red.n70,
             n80: tokens.kda.foundation.color.palette.red.n80,
+            'n80@alpha20':
+              tokens.kda.foundation.color.palette.red['n80@alpha20'],
             'n80@alpha80':
               tokens.kda.foundation.color.palette.red['n80@alpha80'],
             n90: tokens.kda.foundation.color.palette.red.n90,
@@ -1034,6 +1064,8 @@ export const darkThemeValues = {
             n5: tokens.kda.foundation.color.palette.celery.n5,
             n10: tokens.kda.foundation.color.palette.celery.n10,
             n20: tokens.kda.foundation.color.palette.celery.n20,
+            'n20@alpha20':
+              tokens.kda.foundation.color.palette.celery['n20@alpha20'],
             'n20@alpha80':
               tokens.kda.foundation.color.palette.celery['n20@alpha80'],
             n30: tokens.kda.foundation.color.palette.celery.n30,
@@ -1042,6 +1074,8 @@ export const darkThemeValues = {
             n60: tokens.kda.foundation.color.palette.celery.n60,
             n70: tokens.kda.foundation.color.palette.celery.n70,
             n80: tokens.kda.foundation.color.palette.celery.n80,
+            'n80@alpha20':
+              tokens.kda.foundation.color.palette.celery['n80@alpha20'],
             'n80@alpha80':
               tokens.kda.foundation.color.palette.celery['n80@alpha80'],
             n90: tokens.kda.foundation.color.palette.celery.n90,
@@ -1055,6 +1089,8 @@ export const darkThemeValues = {
             n5: tokens.kda.foundation.color.palette.yellow.n5,
             n10: tokens.kda.foundation.color.palette.yellow.n10,
             n20: tokens.kda.foundation.color.palette.yellow.n20,
+            'n20@alpha20':
+              tokens.kda.foundation.color.palette.yellow['n20@alpha20'],
             'n20@alpha80':
               tokens.kda.foundation.color.palette.yellow['n20@alpha80'],
             n30: tokens.kda.foundation.color.palette.yellow.n30,
@@ -1063,6 +1099,8 @@ export const darkThemeValues = {
             n60: tokens.kda.foundation.color.palette.yellow.n60,
             n70: tokens.kda.foundation.color.palette.yellow.n70,
             n80: tokens.kda.foundation.color.palette.yellow.n80,
+            'n80@alpha20':
+              tokens.kda.foundation.color.palette.yellow['n80@alpha20'],
             'n80@alpha80':
               tokens.kda.foundation.color.palette.yellow['n80@alpha80'],
             n90: tokens.kda.foundation.color.palette.yellow.n90,
