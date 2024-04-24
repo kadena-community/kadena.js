@@ -91,6 +91,9 @@ export const createDeleteWalletsCommand: (
           ),
         );
       }
+      log.output(null, {
+        deleted: config.walletNameConfig.map((x) => x.alias),
+      });
       return;
     }
 
@@ -100,5 +103,8 @@ export const createDeleteWalletsCommand: (
         `The wallet: "${config.walletNameConfig.alias}" and associated keys have been deleted.`,
       ),
     );
+    log.output(null, {
+      deleted: [config.walletNameConfig.alias],
+    });
   },
 );

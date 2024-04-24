@@ -2,7 +2,7 @@ import { Option } from 'commander';
 import { z } from 'zod';
 import { networks } from '../prompts/index.js';
 import { createOption } from '../utils/createOption.js';
-import { isNotEmptyString } from '../utils/helpers.js';
+import { isNotEmptyString } from '../utils/globalHelpers.js';
 import { loadNetworkConfig } from './utils/networkHelpers.js';
 
 export const networkOptions = {

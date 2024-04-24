@@ -1,7 +1,7 @@
 import path from 'node:path';
-import { TX_TEMPLATE_FOLDER } from '../../../constants/config.js';
 import { services } from '../../../services/index.js';
 import { KadenaError } from '../../../services/service-error.js';
+import { getTxTemplateDirectory } from '../../utils/txHelpers.js';
 
 const transferTemplate = `
 code: |-
@@ -57,13 +57,14 @@ export const defaultTemplates = {
 } as Record<string, string>;
 
 export const writeTemplatesToDisk = async (): Promise<string[]> => {
-  if (TX_TEMPLATE_FOLDER === null) {
+  const templateFolder = getTxTemplateDirectory();
+  if (templateFolder === null) {
     throw new KadenaError('no_kadena_directory');
   }
-  await services.filesystem.ensureDirectoryExists(TX_TEMPLATE_FOLDER);
+  await services.filesystem.ensureDirectoryExists(templateFolder);
   const templatesAdded = [];
   for (const [name, template] of Object.entries(defaultTemplates)) {
-    const filePath = path.join(TX_TEMPLATE_FOLDER, `${name}.ktpl`);
+    const filePath = path.join(templateFolder, `${name}.ktpl`);
     const exists = await services.filesystem.fileExists(filePath);
     if (exists === false) {
       await services.filesystem.writeFile(filePath, template);
@@ -74,14 +75,15 @@ export const writeTemplatesToDisk = async (): Promise<string[]> => {
 };
 
 export const getTemplate = async (filename: string): Promise<string> => {
-  if (TX_TEMPLATE_FOLDER === null) {
+  const templateFolder = getTxTemplateDirectory();
+  if (templateFolder === null) {
     throw new KadenaError('no_kadena_directory');
   }
   const cwdFile = await services.filesystem.readFile(filename);
   if (cwdFile !== null) {
     return cwdFile;
   }
-  const filePath = path.join(TX_TEMPLATE_FOLDER, filename);
+  const filePath = path.join(templateFolder, filename);
   const template = await services.filesystem.readFile(filePath);
   if (template !== null) {
     return template;
@@ -90,10 +92,11 @@ export const getTemplate = async (filename: string): Promise<string> => {
 };
 
 export const getTemplates = async (): Promise<Record<string, string>> => {
-  if (TX_TEMPLATE_FOLDER === null) {
+  const templateFolder = getTxTemplateDirectory();
+  if (templateFolder === null) {
     throw new KadenaError('no_kadena_directory');
   }
-  const files = await services.filesystem.readDir(TX_TEMPLATE_FOLDER);
+  const files = await services.filesystem.readDir(templateFolder);
   const templates: Record<string, string> = {};
   for (const file of files) {
     const template = await getTemplate(file).catch(() => null);
