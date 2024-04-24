@@ -4,12 +4,12 @@ import { CHAIN_ID_ACTION_ERROR_MESSAGE } from '../../constants/account.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { assertCommandError } from '../../utils/command.util.js';
 import { createCommand } from '../../utils/createCommand.js';
-import { globalOptions } from '../../utils/globalOptions.js';
 import {
   isNotEmptyObject,
   maskStringPreservingStartAndEnd,
   notEmpty,
-} from '../../utils/helpers.js';
+} from '../../utils/globalHelpers.js';
+import { globalOptions } from '../../utils/globalOptions.js';
 import { log } from '../../utils/logger.js';
 import { createTable } from '../../utils/table.js';
 import { accountOptions } from '../accountOptions.js';

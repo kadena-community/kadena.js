@@ -2,7 +2,7 @@ import { services } from '../services/index.js';
 import type { IWallet } from '../services/wallet/wallet.types.js';
 import { CommandError } from '../utils/command.util.js';
 
-import { isValidFilename } from '../utils/helpers.js';
+import { isValidFilename } from '../utils/globalHelpers.js';
 import { input, select } from '../utils/prompts.js';
 
 export async function walletNamePrompt(): Promise<string> {
@@ -107,4 +107,14 @@ export async function walletSelectByWalletPrompt(
   });
 
   return selectedWallet;
+}
+
+export async function createWalletPrompt(): Promise<string> {
+  return await select({
+    message: 'Would you like to create a wallet?',
+    choices: [
+      { value: 'true', name: 'Yes' },
+      { value: 'false', name: 'No' },
+    ],
+  });
 }

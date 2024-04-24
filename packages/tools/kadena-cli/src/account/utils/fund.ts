@@ -2,7 +2,7 @@ import type { ITransactionDescriptor } from '@kadena/client';
 import type { ChainId } from '@kadena/types';
 import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { isNotEmptyString, notEmpty } from '../../utils/helpers.js';
+import { isNotEmptyString, notEmpty } from '../../utils/globalHelpers.js';
 import type { IAliasAccountData } from '../types.js';
 import { createAndTransferFund } from './createAndTransferFunds.js';
 import { getAccountDetails } from './getAccountDetails.js';

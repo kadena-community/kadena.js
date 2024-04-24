@@ -6,7 +6,7 @@ import type { ChainId } from '@kadena/types';
 import deployDevNetFaucet from '../../devnet/faucet/deploy/index.js';
 import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
-import { notEmpty } from '../../utils/helpers.js';
+import { notEmpty } from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
 import { getTransactionExplorerUrl } from './accountHelpers.js';
 

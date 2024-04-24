@@ -2,12 +2,9 @@ import type { Command } from 'commander';
 import { CLINAME } from '../constants/config.js';
 import { CommandError, printCommandError } from './command.util.js';
 import type { OptionType, createOption } from './createOption.js';
+import { notEmpty } from './globalHelpers.js';
 import { globalOptions } from './globalOptions.js';
-import {
-  handleNoKadenaDirectory,
-  handlePromptError,
-  notEmpty,
-} from './helpers.js';
+import { handleNoKadenaDirectory, handlePromptError } from './helpers.js';
 import { log } from './logger.js';
 import { readStdin } from './stdin.js';
 import type { FlattenObject, Fn, Prettify } from './typeUtilities.js';

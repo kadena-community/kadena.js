@@ -5,7 +5,7 @@ import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
 import { actionAskForDeployFaucet } from '../prompts/genericActionPrompts.js';
 import { account } from '../prompts/index.js';
 import { createOption } from '../utils/createOption.js';
-import { formatZodError, generateAllChainIds } from '../utils/helpers.js';
+import { formatZodError, generateAllChainIds } from '../utils/globalHelpers.js';
 import { log } from '../utils/logger.js';
 import type { IAliasAccountData } from './types.js';
 import {
@@ -165,7 +165,7 @@ export const accountOptions = {
       invalid_type_error: 'Error: -c, --chain-id must be a number',
     }),
     option: new Option(
-      '-c, --chain-id <chainId>',
+      '-c, --chain-ids <chainIds>',
       'Kadena chain id range (e.g: 1 / 0-3 / 0,1,5 / all)',
     ),
     transform: (chainId: string) => {

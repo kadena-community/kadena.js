@@ -1,7 +1,4 @@
-import {
-  defaultNetworksPath,
-  networkDefaults,
-} from '../../constants/networks.js';
+import { networkDefaults } from '../../constants/networks.js';
 
 import { log } from '../../utils/logger.js';
 
@@ -19,9 +16,11 @@ import path from 'path';
 import { services } from '../../services/index.js';
 import { KadenaError } from '../../services/service-error.js';
 import { createTable } from '../../utils/table.js';
+import { getNetworkDirectory } from './networkPath.js';
 
 export async function displayNetworksConfig(): Promise<void> {
-  if (defaultNetworksPath === null) {
+  const networkDir = getNetworkDirectory();
+  if (networkDir === null) {
     throw new KadenaError('no_kadena_directory');
   }
 
@@ -40,10 +39,7 @@ export async function displayNetworksConfig(): Promise<void> {
 
   const networks = await Promise.all(
     existingNetworks.map(async (network) => {
-      const networkFilePath = path.join(
-        defaultNetworksPath!,
-        `${network.value}.yaml`,
-      );
+      const networkFilePath = path.join(networkDir!, `${network.value}.yaml`);
       const fileContent = await services.filesystem.readFile(networkFilePath);
       const networkConfig: INetworkCreateOptions =
         fileContent !== null
