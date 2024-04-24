@@ -165,7 +165,7 @@ export const accountOptions = {
       invalid_type_error: 'Error: -c, --chain-id must be a number',
     }),
     option: new Option(
-      '-c, --chain-id <chainId>',
+      '-c, --chain-ids <chainIds>',
       'Kadena chain id range (e.g: 1 / 0-3 / 0,1,5 / all)',
     ),
     transform: (chainId: string) => {
