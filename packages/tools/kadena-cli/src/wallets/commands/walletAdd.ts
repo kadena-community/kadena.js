@@ -1,15 +1,17 @@
 import type { Command } from 'commander';
 import { services } from '../../services/index.js';
 
-import path from 'node:path';
-import { writeAccountAliasMinimal } from '../../account/utils/createAccountConfigFile.js';
-import { ACCOUNT_DIR } from '../../constants/config.js';
+import { getAccountDirectory } from '../../account/utils/accountHelpers.js';
 import { KadenaError } from '../../services/service-error.js';
 import { createCommand } from '../../utils/createCommand.js';
 import { globalOptions, securityOptions } from '../../utils/globalOptions.js';
 import { handleNoKadenaDirectory } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
-import { relativeToCwd } from '../../utils/path.util.js';
+import {
+  createAccountAliasByPublicKey,
+  logAccountCreation,
+  logWalletInfo,
+} from '../utils/walletHelpers.js';
 import { walletOptions } from '../walletOptions.js';
 
 /**
@@ -26,14 +28,16 @@ export const createGenerateWalletCommand: (
   [
     walletOptions.walletName({ isOptional: false }),
     securityOptions.createPasswordOption({
-      message: 'Enter the new wallet password',
-      confirmPasswordMessage: 'Re-enter the password',
+      message: 'Enter the new wallet password:',
+      confirmPasswordMessage: 'Re-enter the password:',
+      confirmEmptyPassword: true,
     }),
     globalOptions.legacy({ isOptional: true, disableQuestion: true }),
     walletOptions.createAccount(),
   ],
   async (option, { collect }) => {
-    if (ACCOUNT_DIR === null) {
+    const accountDir = getAccountDirectory();
+    if (accountDir === null) {
       throw new KadenaError('no_kadena_directory');
     }
 
@@ -55,38 +59,17 @@ export const createGenerateWalletCommand: (
       });
       wallet = await services.wallet.storeKey(wallet, key);
 
-      log.info(log.color.green('Mnemonic Phrase'));
-      log.info(created.words);
-      log.info(
-        log.color.yellow(
-          `\nPlease store the mnemonic phrase in a safe place. You will need it to recover your wallet.\n`,
-        ),
-      );
+      logWalletInfo(created.words, wallet.filepath, key.publicKey);
 
-      log.info(log.color.green(`First keypair generated`));
-      log.info(`publicKey: ${key.publicKey}\n`);
-
-      log.info(log.color.green('Wallet Storage Location'));
-      log.info(relativeToCwd(wallet.filepath));
       log.info();
       if (config.createAccount === 'true') {
-        const accountFilepath = path.join(ACCOUNT_DIR, `${wallet.alias}.yaml`);
-        const accountName = `k:${wallet.keys[0].publicKey}`;
-        await writeAccountAliasMinimal(
-          {
-            accountName,
-            fungible: 'coin',
-            predicate: `keys-all`,
-            publicKeysConfig: [wallet.keys[0].publicKey],
-          },
-          accountFilepath,
-        );
-        log.info(log.color.green(`Account created`));
-        log.info(`accountName: ${accountName}\n`);
-
-        log.info(log.color.green('Account Storage Location'));
-        log.info(relativeToCwd(accountFilepath));
-
+        const { accountName, accountFilepath } =
+          await createAccountAliasByPublicKey(
+            wallet.alias,
+            wallet.keys[0].publicKey,
+            accountDir,
+          );
+        logAccountCreation(accountName, accountFilepath);
         log.info(`\nTo fund the account, use the following command:`);
         log.info(`kadena account fund --account ${accountName}`);
       }

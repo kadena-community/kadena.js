@@ -1,13 +1,11 @@
 import type { Signer, Transaction, Transfer } from '@prisma/client';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface Guard {
+export interface IGuard {
   keys: string[];
   predicate: 'keys-all' | 'keys-any' | 'keys-two';
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface GasLimitEstimation {
+export interface IGasLimitEstimation {
   amount: number;
   inputType: string;
   usedPreflight: boolean;
@@ -18,19 +16,18 @@ export interface GasLimitEstimation {
 export const NonFungibleTokenBalanceName: 'NonFungibleTokenBalance' =
   'NonFungibleTokenBalance';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface NonFungibleTokenBalance {
+export interface INonFungibleTokenBalance {
   __typename: typeof NonFungibleTokenBalanceName;
   tokenId: string;
   balance: number;
   accountName: string;
   chainId: string;
-  guard: Guard;
-  info?: NonFungibleToken;
+  guard: IGuard;
+  info?: INonFungibleToken;
   version: string;
 }
 
-export interface NonFungibleToken {
+export interface INonFungibleToken {
   supply: number;
   precision: number;
   uri: string;
@@ -41,13 +38,12 @@ export interface NonFungibleToken {
 export const FungibleChainAccountName: 'FungibleChainAccount' =
   'FungibleChainAccount';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface FungibleChainAccount {
+export interface IFungibleChainAccount {
   __typename: typeof FungibleChainAccountName;
   chainId: string;
   fungibleName: string;
   accountName: string;
-  guard: Guard;
+  guard: IGuard;
   balance: number;
   transactions: Transaction[];
   transfers: Transfer[];
@@ -55,63 +51,56 @@ export interface FungibleChainAccount {
 
 export const FungibleAccountName: 'FungibleAccount' = 'FungibleAccount';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface FungibleAccount {
+export interface IFungibleAccount {
   __typename: typeof FungibleAccountName;
   fungibleName: string;
   accountName: string;
-  chainAccounts: FungibleChainAccount[];
+  chainAccounts: IFungibleChainAccount[];
   totalBalance: number;
   transactions: Transaction[];
   transfers: Transfer[];
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface GraphConfiguration {
+export interface IGraphConfiguration {
   minimumBlockHeight: bigint;
 }
 
 export const NonFungibleChainAccountName: 'NonFungibleChainAccount' =
   'NonFungibleChainAccount';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface NonFungibleChainAccount {
+export interface INonFungibleChainAccount {
   __typename: typeof NonFungibleChainAccountName;
   chainId: string;
   accountName: string;
-  nonFungibleTokenBalances: NonFungibleTokenBalance[];
+  nonFungibleTokenBalances: INonFungibleTokenBalance[];
   transactions: Transaction[];
 }
 
 export const NonFungibleAccountName: 'NonFungibleAccount' =
   'NonFungibleAccount';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface NonFungibleAccount {
+export interface INonFungibleAccount {
   __typename: typeof NonFungibleAccountName;
   accountName: string;
-  chainAccounts: NonFungibleChainAccount[];
-  nonFungibleTokenBalances: NonFungibleTokenBalance[];
+  chainAccounts: INonFungibleChainAccount[];
+  nonFungibleTokenBalances: INonFungibleTokenBalance[];
   transactions: Transaction[];
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface TransactionCommand {
-  payload: ExecutionPayload | ContinuationPayload;
-  meta: TransactionMeta;
+export interface ITransactionCommand {
+  payload: IExecutionPayload | IContinuationPayload;
+  meta: ITransactionMeta;
   signers: Signer[];
   networkId: string;
   nonce: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface ExecutionPayload {
+export interface IExecutionPayload {
   code: string | null;
   data: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface ContinuationPayload {
+export interface IContinuationPayload {
   pactId: string | null;
   step: number | null;
   rollback: boolean | null;
@@ -119,8 +108,7 @@ export interface ContinuationPayload {
   proof: string | null;
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface TransactionMeta {
+export interface ITransactionMeta {
   sender: string;
   chainId: bigint;
   gasLimit: bigint;
@@ -129,13 +117,11 @@ export interface TransactionMeta {
   creationTime: Date;
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface TransactionMempoolInfo {
+export interface ITransactionMempoolInfo {
   status: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface TransactionResult {
+export interface ITransactionResult {
   hash: string;
   chainId: bigint;
   badResult: string | null;
@@ -150,28 +136,24 @@ export interface TransactionResult {
   transactionId: bigint | null;
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface TransactionCommand {
-  payload: ExecutionPayload | ContinuationPayload;
-  meta: TransactionMeta;
+export interface ITransactionCommand {
+  payload: IExecutionPayload | IContinuationPayload;
+  meta: ITransactionMeta;
   signers: Signer[];
   networkId: string;
   nonce: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface TransactionCapability {
+export interface ITransactionCapability {
   name: string;
   args: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface TransactionSignature {
+export interface ITransactionSignature {
   sig: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface PactQueryResponse {
+export interface IPactQueryResponse {
   status: string;
   result: string | null;
   error: string | null;

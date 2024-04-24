@@ -1,4 +1,4 @@
-import { isNumeric } from '../../utils/helpers.js';
+import { isNumeric } from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
 import { createTable } from '../../utils/table.js';
 

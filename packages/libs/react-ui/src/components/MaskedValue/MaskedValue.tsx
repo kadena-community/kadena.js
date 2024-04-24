@@ -1,7 +1,7 @@
 'use client';
+import { MonoVisibility, MonoVisibilityOff } from '@kadena/react-icons/system';
 import type { FC } from 'react';
 import React, { useState } from 'react';
-import { SystemIcon } from '../Icon';
 import {
   iconContainer,
   titleContainer,
@@ -48,12 +48,12 @@ export const MaskedValue: FC<IMaskedValueProps> = ({
       <div className={valueIconContainer}>
         <div className={valueContainer}>{visible ? value : maskedValue}</div>
         {visible ? (
-          <SystemIcon.EyeOffOutline
+          <MonoVisibilityOff
             className={iconContainer}
             onClick={toggleVisibility}
           />
         ) : (
-          <SystemIcon.EyeOutline
+          <MonoVisibility
             className={iconContainer}
             onClick={toggleVisibility}
           />

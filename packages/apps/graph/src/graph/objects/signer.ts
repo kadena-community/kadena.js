@@ -19,11 +19,14 @@ export default builder.prismaNode(Prisma.ModelName.Signer, {
       type: ['TransactionCapability'],
       resolve: (parent) => {
         return (
-          parent.capabilities as Array<{ args: any[]; name: string }>
-        ).map(({ name, args }) => ({
-          name,
-          args: JSON.stringify(args),
-        }));
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (parent.capabilities as Array<{ args: any[]; name: string }>).map(
+            ({ name, args }) => ({
+              name,
+              args: JSON.stringify(args),
+            }),
+          )
+        );
       },
     }),
   }),

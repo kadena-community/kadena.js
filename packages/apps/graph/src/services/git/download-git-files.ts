@@ -71,6 +71,7 @@ export async function downloadGitFiles({
 export async function getGitData(
   url: string,
   rawResponse: boolean = false,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   const options: https.RequestOptions = {
     headers: {

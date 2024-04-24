@@ -1,8 +1,12 @@
+import {
+  MonoAccountCircle,
+  MonoContrast,
+  MonoUsb,
+} from '@kadena/react-icons/system';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { atoms } from '../../styles/atoms.css';
 import { SelectItem } from '../Form/Select';
-import { SystemIcon } from '../Icon';
 import { KadenaLogo } from '../Logo';
 import {
   NavHeader,
@@ -109,16 +113,16 @@ export const Dynamic: IStory = {
             </NavHeaderLink>
           ))}
         </NavHeaderLinkList>
-        <NavHeaderButton icon={<SystemIcon.Account />} />
+        <NavHeaderButton endVisual={<MonoAccountCircle />} />
         <NavHeaderButton
-          icon={<SystemIcon.ThemeLightDark />}
+          endVisual={<MonoContrast />}
           className={atoms({ marginInlineEnd: 'sm' })}
         />
         <NavHeaderSelect
           aria-label="Select Network"
           selectedKey={value}
           onSelectionChange={(value: any) => setValue(value)}
-          startIcon={<SystemIcon.Earth />}
+          startIcon={<MonoUsb />}
         >
           {sampleNetworkItems.map((network) => (
             <SelectItem key={network} textValue={network}>

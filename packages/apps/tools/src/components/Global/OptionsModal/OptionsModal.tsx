@@ -53,9 +53,9 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
     [Key in DevOption]: IDevOption;
   } = {
     BASIC: {
-      title: t('Basic User Interface'),
+      title: t('devoptions-basic-title'),
       text: t(
-        'This view can be used for basic operations and handling things within the user interface.',
+        'This view can be used for basic operations and handling things within the user interface',
       ),
       icon: <MonoWebAsset />,
     },
@@ -63,7 +63,7 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
       title: t('Backend Developers'),
       tag: t('for PACT developers'),
       text: t(
-        'This option is meant for developers who need more sophisticated options within the user interface.',
+        'This option is meant for developers who need more sophisticated options within the user interface',
       ),
       icon: <MonoCode />,
     },
@@ -71,7 +71,7 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
       title: t('dApp Developers'),
       tag: t('for Javascript developers'),
       text: t(
-        'This option is meant for developers who need more sophisticated options within the user interface.',
+        'This option is meant for developers who need more sophisticated options within the user interface',
       ),
       icon: <MonoCode />,
     },
@@ -96,26 +96,29 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
                     <Button
                       title="Radio"
                       aria-label="Radio"
-                      icon={<MonoRadioButtonChecked />}
-                      variant="text"
+                      variant="transparent"
                       onPress={() => setSelected(key as DevOption)}
-                    />
+                    >
+                      <MonoRadioButtonChecked />
+                    </Button>
                   ) : (
                     <Button
                       title="Radio"
                       aria-label="Radio"
-                      icon={<MonoRadioButtonUnchecked />}
-                      variant="text"
+                      variant="transparent"
                       onPress={() => setSelected(key as DevOption)}
-                    />
+                    >
+                      <MonoRadioButtonUnchecked />
+                    </Button>
                   )}
                   <Button
                     title="Radio"
                     aria-label="Radio"
-                    icon={value.icon}
-                    variant="text"
+                    variant="transparent"
                     onPress={() => setSelected(key as DevOption)}
-                  />
+                  >
+                    {value.icon}
+                  </Button>
                   <Stack flexDirection="column" marginInline="md">
                     <div className={titleTagStyle}>
                       <Text as="span">{value.title}</Text>
@@ -158,11 +161,10 @@ export const OptionsModal: FC<IOptionsModalProps> = ({
               <div className={modalWrapperStyle}>
                 <Button
                   title={`${t('Save')}`}
-                  onClick={() => {
+                  onPress={() => {
                     setDevOption(selected);
                     state.close();
                   }}
-                  color="primary"
                   className={modalButtonStyle}
                 >
                   {`${t('Save')}`}

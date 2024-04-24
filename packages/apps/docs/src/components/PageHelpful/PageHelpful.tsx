@@ -45,21 +45,19 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
         </Text>
         <Stack gap="xs">
           <ToggleButton
-            color="positive"
             icon={<SystemIcon.ThumbUpOutline />}
             onPress={handlePageHelpful}
             title="Useful"
             aria-label="Useful"
-            variant="alternative"
+            variant="positive"
             isSelected={isPageHelpful === 'up'}
           />
           <ToggleButton
-            color="negative"
             icon={<SystemIcon.ThumbDownOutline />}
             onPress={handlePageNotHelpful}
             title="Not useful"
             aria-label="Not useful"
-            variant="alternative"
+            variant="negative"
             isSelected={isPageHelpful === 'down'}
           />
         </Stack>
@@ -94,7 +92,7 @@ export const PageHelpful: FC<IProps> = ({ editLink }) => {
                 name="feedback"
                 className={textAreaClass}
               ></textarea>
-              <Button onClick={closeModal}>Send Feedback</Button>
+              <Button onPress={closeModal}>Send Feedback</Button>
             </Stack>
           </div>
         </DialogContent>

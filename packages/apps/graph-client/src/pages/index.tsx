@@ -64,7 +64,7 @@ const Home: React.FC = () => {
         <Button
           title="Toggle subscription polling."
           isCompact
-          variant="text"
+          variant="transparent"
           onPress={() => setSubscriptionPaused(!subscriptionPaused)}
         >
           {subscriptionPaused ? 'Continue' : 'Pause'}

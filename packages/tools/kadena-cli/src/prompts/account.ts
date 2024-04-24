@@ -7,13 +7,17 @@ import {
   parseChainIdRange,
 } from '../account/utils/accountHelpers.js';
 import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
-import { MAX_CHAIN_VALUE } from '../constants/config.js';
+import {
+  INVALID_FILE_NAME_ERROR_MSG,
+  MAX_CHAIN_VALUE,
+} from '../constants/config.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   formatZodError,
+  isValidFilename,
   maskStringPreservingStartAndEnd,
   truncateText,
-} from '../utils/helpers.js';
+} from '../utils/globalHelpers.js';
 import { checkbox, input, select } from '../utils/prompts.js';
 
 export const publicKeysPrompt: IPrompt<string> = async (
@@ -40,6 +44,10 @@ export const accountAliasPrompt: IPrompt<string> = async () =>
     validate: function (value: string) {
       if (!value || value.trim().length < 3) {
         return 'Alias must be minimum at least 3 characters long.';
+      }
+
+      if (!isValidFilename(value)) {
+        return `Alias is used as a filename. ${INVALID_FILE_NAME_ERROR_MSG}`;
       }
 
       return true;

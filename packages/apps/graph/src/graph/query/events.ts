@@ -24,7 +24,7 @@ const generateEventsFilter = async (args: {
     not: 'cb',
   },
   ...(args.parametersFilter && {
-    parameters: parsePrismaJsonColumn(args.parametersFilter, {
+    parameters: parsePrismaJsonColumn<'Event'>(args.parametersFilter, {
       query: 'events',
       queryParameter: 'parametersFilter',
       column: 'parameters',

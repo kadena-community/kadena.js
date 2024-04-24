@@ -165,7 +165,7 @@ const ChainAccount: React.FC = () => {
               onKeyDown={handleKeyPress}
             />
 
-            <Button onClick={search}>Search</Button>
+            <Button onPress={search}>Search</Button>
           </Box>
 
           <Box margin="sm" />

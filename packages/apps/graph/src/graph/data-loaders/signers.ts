@@ -2,15 +2,14 @@ import type { Signer } from '@prisma/client';
 import { getSigners } from '@services/chainweb-node/signer';
 import DataLoader from 'dataloader';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-interface SignersKey {
+interface ISignersKey {
   requestKey: string;
   blockHash: string;
   chainId: string;
 }
 
-export const signersLoader = new DataLoader<SignersKey, Signer[]>(
-  async (keys: readonly SignersKey[]) => {
+export const signersLoader = new DataLoader<ISignersKey, Signer[]>(
+  async (keys: readonly ISignersKey[]) => {
     const results = await Promise.all(
       keys.map(({ requestKey, blockHash, chainId }) => {
         return getSigners(requestKey, blockHash, chainId);

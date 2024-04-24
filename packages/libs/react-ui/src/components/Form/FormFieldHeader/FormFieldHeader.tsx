@@ -1,7 +1,7 @@
+import { MonoErrorOutline } from '@kadena/react-icons/system';
 import classNames from 'classnames';
 import type { ComponentProps, FC, ReactNode } from 'react';
 import React from 'react';
-import { AlertCircleOutline } from '../../Icon/System/SystemIcon';
 import {
   headerClass,
   infoClass,
@@ -31,7 +31,7 @@ export const FormFieldHeader: FC<IFormFieldHeaderProps> = ({
       {Boolean(info) && (
         <span className={infoClass}>
           {info}
-          <AlertCircleOutline size="sm" />
+          <MonoErrorOutline />
         </span>
       )}
     </div>
