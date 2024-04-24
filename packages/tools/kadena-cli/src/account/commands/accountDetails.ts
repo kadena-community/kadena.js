@@ -19,7 +19,7 @@ import { getAccountDetailsFromChain } from '../utils/getAccountDetails.js';
 
 interface IAccountDetailsConfig
   extends Omit<IGetAccountDetailsParams, 'chainId'> {
-  chainId: ChainId[];
+  chainIds: ChainId[];
 }
 
 interface IAccountDetails {
@@ -44,7 +44,7 @@ export async function accountDetails(
   let accountDetailsList: (IAccountDetails | null)[] = [];
   try {
     accountDetailsList = await Promise.all(
-      config.chainId.map(async (chainId) => {
+      config.chainIds.map(async (chainId) => {
         try {
           const accountDetails = await getAccountDetailsFromChain({
             ...config,
@@ -133,9 +133,9 @@ export const createAccountDetailsCommand = createCommand(
     }
 
     const { networkConfig } = await option.network();
-    const { chainId } = await option.chainId();
+    const { chainIds } = await option.chainIds();
 
-    if (chainId === undefined || chainId.length === 0) {
+    if (chainIds === undefined || chainIds.length === 0) {
       log.error(CHAIN_ID_ACTION_ERROR_MESSAGE);
       return;
     }
@@ -143,14 +143,14 @@ export const createAccountDetailsCommand = createCommand(
     log.debug('account-details:action', {
       account,
       accountConfig,
-      chainId,
+      chainIds,
       networkConfig,
       fungible,
     });
 
     const result = await accountDetails({
       accountName: accountName,
-      chainId: chainId,
+      chainIds: chainIds,
       networkId: networkConfig.networkId,
       networkHost: networkConfig.networkHost,
       fungible: fungible,

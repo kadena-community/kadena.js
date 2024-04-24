@@ -1,5 +1,10 @@
 import type { ICommandResult, ITransactionDescriptor } from '@kadena/client';
 import { createClient } from '@kadena/client';
+import { describeModule } from '@kadena/client-utils';
+import type { ChainId } from '@kadena/types';
+
+import deployDevNetFaucet from '../../devnet/faucet/deploy/index.js';
+import type { INetworkCreateOptions } from '../../networks/utils/networkHelpers.js';
 import type { CommandResult } from '../../utils/command.util.js';
 import { notEmpty } from '../../utils/helpers.js';
 import { log } from '../../utils/logger.js';
@@ -124,4 +129,53 @@ export function logAccountFundingTxResults(
       log.error(error);
     });
   }
+}
+
+export async function findMissingModuleDeployments(
+  moduleName: string,
+  network: Pick<INetworkCreateOptions, 'networkId' | 'networkHost'>,
+  targetChainIds: ChainId[],
+): Promise<ChainId[]> {
+  const undeployedChainIds: ChainId[] = [];
+
+  for (const chainId of targetChainIds) {
+    const moduleDeployed = await describeModule(moduleName, {
+      host: network.networkHost,
+      defaults: {
+        networkId: network.networkId,
+        meta: { chainId },
+      },
+    }).catch(() => false);
+
+    if (moduleDeployed === false) {
+      undeployedChainIds.push(chainId);
+    }
+  }
+
+  return undeployedChainIds;
+}
+
+interface IFaucetDeployFailedResult {
+  chainId: ChainId;
+  message: string;
+}
+
+export async function deployFaucetsToChains(
+  chainIds: ChainId[],
+): Promise<[ChainId[], IFaucetDeployFailedResult[]]> {
+  const succeededDeployments: ChainId[] = [];
+  const failedDeployments: IFaucetDeployFailedResult[] = [];
+  await Promise.all(
+    chainIds.map(async (chainId) => {
+      try {
+        await deployDevNetFaucet(chainId);
+        succeededDeployments.push(chainId);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : '';
+        failedDeployments.push({ message: message, chainId });
+      }
+    }),
+  );
+
+  return [succeededDeployments, failedDeployments];
 }

@@ -2,6 +2,7 @@ import type { ChainId } from '@kadena/types';
 import { Option } from 'commander';
 import { z } from 'zod';
 import { CHAIN_ID_RANGE_ERROR_MESSAGE } from '../constants/account.js';
+import { actionAskForDeployFaucet } from '../prompts/genericActionPrompts.js';
 import { account } from '../prompts/index.js';
 import { createOption } from '../utils/createOption.js';
 import { formatZodError, generateAllChainIds } from '../utils/helpers.js';
@@ -156,7 +157,7 @@ export const accountOptions = {
     option: new Option('-c, --confirm', 'Confirm account deletion'),
   }),
   chainIdRange: createOption({
-    key: 'chainId' as const,
+    key: 'chainIds' as const,
     prompt: account.chainIdPrompt,
     defaultIsOptional: false,
     validation: z.string({
@@ -187,5 +188,14 @@ export const accountOptions = {
 
       return parse.data.map((id) => id.toString()) as ChainId[];
     },
+  }),
+  deployFaucet: createOption({
+    key: 'deployFaucet',
+    validation: z.boolean(),
+    prompt: actionAskForDeployFaucet,
+    option: new Option(
+      '-d, --deploy-faucet',
+      'Deploy faucet on devnet if not available on chain.',
+    ),
   }),
 };
