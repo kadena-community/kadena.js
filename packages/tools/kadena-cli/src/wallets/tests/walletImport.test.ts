@@ -1,7 +1,5 @@
 import path from 'node:path';
-import { afterEach } from 'node:test';
-import {} from 'ora';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { services } from '../../services/index.js';
 import { mockPrompts, runCommandJson } from '../../utils/test.util.js';
 
@@ -37,7 +35,6 @@ describe('wallet import command', () => {
 
   it('should import a wallet with mnemonic using prompts', async () => {
     mockPrompts({
-      verbose: true,
       input: {
         'Enter your 12-word mnemonic phrase': mnemonic,
         'Enter your wallet name': 'test',

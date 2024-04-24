@@ -12,7 +12,7 @@ describe('wallet add', () => {
   });
 
   it('Should add a wallet', async () => {
-    const wallet = await runCommandJson('wallet add -w test -c --quiet', {
+    const wallet = await runCommandJson('wallet add -w test --quiet', {
       stdin: '123123123',
     });
 
