@@ -1,7 +1,7 @@
 import type { ChainwebChainId } from '@kadena/chainweb-node-client';
 import { MonoExitToApp } from '@kadena/react-icons/system';
 import type { ITreeProps } from '@kadena/react-ui';
-import { Button, Tree } from '@kadena/react-ui';
+import { Accordion, AccordionItem, Button, Text, Tree } from '@kadena/react-ui';
 import React, { useMemo } from 'react';
 import type { IChainModule } from '../types';
 import type { getModulesMap } from '../utils';
@@ -55,6 +55,20 @@ const resultsMapToTreeItems = (
   }));
 };
 
+const resultsMapToAccordionItems = (data: IResultsProps['data']) => {
+  return Array.from(data, ([moduleName, chainsInfo]) => ({
+    title: moduleName,
+    items: chainsInfo.map((chainInfo) => ({
+      title:
+        chainInfo.chainId +
+        (chainInfo.hash
+          ? ` - ${truncateString(chainInfo.hash, CHARCOUNT_BREAKING_POINT)}`
+          : ''),
+      data: chainInfo,
+    })),
+  }));
+};
+
 const Results = ({
   data,
   onItemClick,
@@ -71,12 +85,63 @@ const Results = ({
         }),
       );
     }
-    return resultsMapToTreeItems(filteredData, onItemClick, onModuleExpand);
-  }, [data, filter, onItemClick, onModuleExpand]);
+    // return resultsMapToTreeItems(filteredData, onItemClick, onModuleExpand);
+    return resultsMapToAccordionItems(filteredData);
+  }, [data, filter]);
 
   return (
     <div className={className}>
-      <Tree items={items} isOpen />
+      {/* <Tree items={items} isOpen /> */}
+      <Accordion
+        items={items}
+        // selectionMode="multiple"
+        onSelectionChange={(keys) => {
+          if (keys instanceof Set) {
+            const [first] = keys;
+            const expandedModule = data.get(first as string);
+
+            console.log('onSelectionChange', expandedModule);
+
+            if (expandedModule) {
+              onModuleExpand({
+                chains: expandedModule.map((x) => x.chainId),
+                moduleName: first as string,
+              });
+            }
+          }
+        }}
+      >
+        {(item) => {
+          return (
+            <AccordionItem
+              key={item.title}
+              title={item.title}
+              hasChildItems={true}
+            >
+              <ul>
+                {item.items.map((child) => {
+                  return (
+                    <li key={`${item.title}-${child.title}`}>
+                      <Button
+                        onPress={() =>
+                          onItemClick({
+                            chainId: child.data.chainId,
+                            moduleName: item.title,
+                            code: child.data.code,
+                            network: child.data.network,
+                          })
+                        }
+                      >
+                        {child.title}
+                      </Button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </AccordionItem>
+          );
+        }}
+      </Accordion>
     </div>
   );
 };
