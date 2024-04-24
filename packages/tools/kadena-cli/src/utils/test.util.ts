@@ -2,7 +2,7 @@ import { Command } from 'commander';
 import { format } from 'util';
 import { vi } from 'vitest';
 import { loadProgram } from '../program.js';
-import { safeJsonParse } from './helpers.js';
+import { safeJsonParse } from './globalHelpers.js';
 import type { LevelValue } from './logger.js';
 import { LEVELS, log } from './logger.js';
 import * as prompts from './prompts.js';
