@@ -49,9 +49,9 @@ export const textClass = style([
   atoms({
     display: 'block',
     textAlign: 'center',
+    color: 'text.subtlest.default',
   }),
   {
-    color: tokens.kda.foundation.color.text.subtlest,
     selectors: {
       [`${darkThemeClass} &`]: {
         color: tokens.kda.foundation.color.text.subtlest.default,
@@ -66,9 +66,9 @@ export const linkClass = style([
     display: 'block',
     textDecoration: 'none',
     textAlign: 'center',
+    color: 'text.subtlest.default',
   }),
   {
-    color: tokens.kda.foundation.color.text.subtlest,
     paddingInline: tokens.kda.foundation.size.n3,
     selectors: {
       [`${darkThemeClass} &`]: {
