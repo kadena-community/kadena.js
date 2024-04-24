@@ -161,11 +161,10 @@ export interface IPactQueryResponse {
   code: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export interface NetworkInfo {
+export interface INetworkInfo {
   networkHost: string;
   networkId: string;
   apiVersion: string;
-  circulatingCoins: number;
-  totalTransactions: number;
+  coinsInCirculation: number;
+  transactionCount: number;
 }

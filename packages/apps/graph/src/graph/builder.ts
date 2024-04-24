@@ -26,6 +26,7 @@ import type {
   IGasLimitEstimation,
   IGraphConfiguration,
   IGuard,
+  INetworkInfo,
   INonFungibleAccount,
   INonFungibleChainAccount,
   INonFungibleToken,
@@ -37,7 +38,6 @@ import type {
   ITransactionMeta,
   ITransactionResult,
   ITransactionSignature,
-  NetworkInfo,
 } from './types/graphql-types';
 
 interface IDefaultTypesExtension {
@@ -94,7 +94,7 @@ export const builder = new SchemaBuilder<
       TransactionCapability: ITransactionCapability;
       TransactionSignature: ITransactionSignature;
       PactQueryResponse: IPactQueryResponse;
-      NetworkInfo: NetworkInfo;
+      NetworkInfo: INetworkInfo;
     };
   }
 >({

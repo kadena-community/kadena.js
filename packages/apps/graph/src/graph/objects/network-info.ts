@@ -12,10 +12,10 @@ export default builder.objectType('NetworkInfo', {
     apiVersion: t.exposeString('apiVersion', {
       description: 'The version of the API.',
     }),
-    circulatingCoins: t.exposeFloat('circulatingCoins', {
+    coinsInCirculation: t.exposeFloat('coinsInCirculation', {
       description: 'The number of circulating coins.',
     }),
-    totalTransactions: t.exposeInt('totalTransactions', {
+    transactionCount: t.exposeInt('transactionCount', {
       description: 'The total number of transactions.',
     }),
   }),

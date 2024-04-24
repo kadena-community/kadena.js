@@ -232,7 +232,7 @@ type NetworkInfo {
   apiVersion: String!
 
   """The number of circulating coins."""
-  circulatingCoins: Float!
+  coinsInCirculation: Float!
 
   """The host of the network."""
   networkHost: String!
@@ -241,7 +241,7 @@ type NetworkInfo {
   networkId: String!
 
   """The total number of transactions."""
-  totalTransactions: Int!
+  transactionCount: Int!
 }
 
 interface Node {

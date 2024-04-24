@@ -1,4 +1,4 @@
-import { getCirculatingCoins, getTransactionCount } from '@services/network';
+import { getNetworkStatistics } from '@services/network';
 import { dotenv } from '@utils/dotenv';
 import { normalizeError } from '@utils/errors';
 import { networkData } from '@utils/network';
@@ -11,12 +11,16 @@ builder.queryField('networkInfo', (t) =>
     nullable: true,
     async resolve() {
       try {
+        const { networkId, apiVersion } = networkData;
+        const { coinsInCirculation, transactionCount } =
+          await getNetworkStatistics();
+
         return {
           networkHost: dotenv.NETWORK_HOST,
-          networkId: networkData.networkId,
-          apiVersion: networkData.apiVersion,
-          circulatingCoins: await getCirculatingCoins(),
-          totalTransactions: await getTransactionCount(),
+          networkId,
+          apiVersion,
+          coinsInCirculation,
+          transactionCount,
         };
       } catch (error) {
         throw normalizeError(error);
