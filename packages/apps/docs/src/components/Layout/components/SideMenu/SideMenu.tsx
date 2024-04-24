@@ -1,22 +1,14 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { IMenuItem } from '@kadena/docs-tools';
-import { Box, Heading, SystemIcon, TextField } from '@kadena/react-ui';
-import classNames from 'classnames';
+import { Box, SystemIcon, TextField } from '@kadena/react-ui';
 import { useRouter } from 'next/router';
 import type { FC, KeyboardEvent } from 'react';
 import React from 'react';
 import { MainTreeItem } from '../TreeMenu/MainTreeItem';
 import { TreeList } from '../TreeMenu/TreeList';
 import { MenuCard } from './MenuCard';
-import { ListLink } from './components/ListLink';
 import { ShowOnMobile } from './components/ShowOnMobile';
-import {
-  listClass,
-  listItemClass,
-  sideMenuClass,
-  sideMenuTitleButtonClass,
-  sideMenuTitleClass,
-} from './sideMenu.css';
+import { sideMenuClass } from './sideMenu.css';
 import { useSideMenu } from './useSideMenu';
 
 interface IProps {

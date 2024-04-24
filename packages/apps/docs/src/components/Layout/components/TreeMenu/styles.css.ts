@@ -129,6 +129,14 @@ export const levelItemLinkPseudoVariantClass = styleVariants({
 });
 
 export const treeItemPseudoMenuVariantClass = styleVariants({
+  'l0-true': {
+    selectors: {
+      '&::after': {
+        transform: 'translate(1px, 1px)  rotate(45deg)!important',
+      },
+    },
+  },
+  'l0-false': {},
   'l1-true': {
     selectors: {
       '&::after': {
@@ -175,6 +183,7 @@ export const treeItemButtonClass = style([
 ]);
 
 export const treeItemPseudoVariantClass = styleVariants({
+  l0: {},
   l1: {
     selectors: {
       '&::after': {

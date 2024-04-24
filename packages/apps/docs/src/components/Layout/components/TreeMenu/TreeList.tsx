@@ -10,7 +10,7 @@ import {
 interface IProps {
   children: ReactNode;
   menuOpen?: boolean;
-  level?: 'l1' | 'l2' | 'l3';
+  level?: 'l0' | 'l1' | 'l2' | 'l3';
   root?: boolean;
 }
 
