@@ -48,10 +48,10 @@ export const footerClass = style([
 export const textClass = style([
   atoms({
     display: 'block',
-    color: 'text.subtlest.inverse.default',
     textAlign: 'center',
   }),
   {
+    color: tokens.kda.foundation.color.text.subtlest,
     selectors: {
       [`${darkThemeClass} &`]: {
         color: tokens.kda.foundation.color.text.subtlest.default,
@@ -65,10 +65,10 @@ export const linkClass = style([
   atoms({
     display: 'block',
     textDecoration: 'none',
-    color: 'text.subtlest.inverse.default',
     textAlign: 'center',
   }),
   {
+    color: tokens.kda.foundation.color.text.subtlest,
     paddingInline: tokens.kda.foundation.size.n3,
     selectors: {
       [`${darkThemeClass} &`]: {
