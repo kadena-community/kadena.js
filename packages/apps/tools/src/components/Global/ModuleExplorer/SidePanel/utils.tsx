@@ -71,3 +71,37 @@ export const contractToTreeItems = (
 
   return items;
 };
+
+export const contractToAccordionItems = (contract: Contract) => {
+  const { usedInterface: interfaces, capabilities, functions } = contract;
+  const items = [];
+
+  if (interfaces?.length) {
+    items.push({
+      title: 'Interfaces',
+      items: interfaces.map((i) => ({
+        title: i.name,
+      })),
+    });
+  }
+
+  if (capabilities?.length) {
+    items.push({
+      title: 'Capabilities',
+      items: capabilities.map((c) => ({
+        title: c.name,
+      })),
+    });
+  }
+
+  if (functions?.length) {
+    items.push({
+      title: 'Functions',
+      items: functions.map((f) => ({
+        title: f.name,
+      })),
+    });
+  }
+
+  return items;
+};
