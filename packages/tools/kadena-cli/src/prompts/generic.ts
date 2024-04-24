@@ -1,5 +1,5 @@
 import type { IPrompt } from '../utils/createOption.js';
-import { isValidFilename } from '../utils/helpers.js';
+import { isValidFilename } from '../utils/globalHelpers.js';
 import { input } from '../utils/prompts.js';
 
 export async function genericFileNamePrompt(type?: string): Promise<string> {

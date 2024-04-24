@@ -19,7 +19,7 @@ describe('fund', () => {
       },
       amount: '100',
       networkConfig: testNetworkConfigMock,
-      chainId: ['1'],
+      chainIds: ['1'],
     });
     expect(result).toStrictEqual({
       status: 'success',
@@ -63,7 +63,7 @@ describe('fund', () => {
       },
       amount: '100',
       networkConfig: testNetworkConfigMock,
-      chainId: ['1'],
+      chainIds: ['1'],
     });
     expect(result).toStrictEqual({
       status: 'success',
@@ -103,7 +103,7 @@ describe('fund', () => {
       },
       amount: '100',
       networkConfig: testNetworkConfigMock,
-      chainId: ['1'],
+      chainIds: ['1'],
     });
 
     expect(result).toStrictEqual({
@@ -136,7 +136,7 @@ describe('fund', () => {
       },
       amount: '100',
       networkConfig: testNetworkConfigMock,
-      chainId: ['1'],
+      chainIds: ['1'],
     });
 
     expect(result).toStrictEqual({

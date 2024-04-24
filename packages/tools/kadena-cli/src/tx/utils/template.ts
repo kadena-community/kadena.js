@@ -8,7 +8,7 @@ import {
   formatZodError,
   isNotEmptyString,
   notEmpty,
-} from '../../utils/helpers.js';
+} from '../../utils/globalHelpers.js';
 import { log } from '../../utils/logger.js';
 import { getTemplate } from '../commands/templates/templates.js';
 

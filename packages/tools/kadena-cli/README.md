@@ -152,13 +152,44 @@ Available subjects
 
 Tool for setting up and managing the CLI configuration
 
-init creates a .kadena/ folder with default networks devnet/mainnet/testnet
-
 | **Subcommand** | **Description**            | **Default value** |
 | -------------- | -------------------------- | ----------------- |
 | init           | initialize default project |                   |
 
+
+### Initializing the CLI configuration
+
+The `kadena config init` command is your starting point. It creates a .kadena folder pre configured with default network settings (devnet, mainnet, testnet). You have the flexibility to specify the location of your .kadena folder, making it easier to organize your configurations either in the current working directory or a global directory such as your home directory.
+
+Additionally, this command assists in the creation of your initial wallet and account, setting the stage for your transactions on the Kadena network.
+
+```
+kadena config init [options]
+```
+
+| **Options**         | **Description**                                         | **Required** |
+| ------------------- | ------------------------------------------------------- | ------------ |
+| --location          | Path for the .kadena directory creation (e.g., home directory or current working directory).  |              |
+| --create-wallet     | Confirm the creation of a new wallet. Set to true to enable.              |              |
+| --wallet-name       | Name for the new wallet                                 |              |
+| --password-file     | Path to a file containing the wallet's password, alternatively, passwords can be passed via stdin. |              |
+| --create-account    | Enable the creation of an account using the first wallet key.                 |              |
+
 ---
+
+Examples
+
+Setup in a Specific Directory with a New Wallet and Account:
+```
+kadena config init --location="/my-app/.kadena" --create-wallet="true" --wallet-name="my_first_wallet" --create-account="true"
+```
+
+Setup Without Creating a Wallet or Account:
+```
+kadena config init --location="/my-app/.kadena" --create-wallet="false"
+```
+
+Note: All configurations will be stored within the specified .kadena/ folder, ensuring your settings are organized and easily accessible.
 
 ## kadena network
 
@@ -505,7 +536,7 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 | add-from-wallet | Add an account from a key wallet                    |                   |
 | create          | create an account in mainnet on chain(nr) for token |                   |
 | details         | Get details of an account                           |                   |
-| fund            | Fund a existing/new account                         |                   |
+| fund            | Fund an existing/new account                        |                   |
 | name-to-address | Resolve a .kda name to a k:address (kadena names)   |                   |
 | address-to-name | Resolve a k:address to a .kda name (kadena names)   |                   |
 | list            | List available account(s)                           |                   |
@@ -655,12 +686,15 @@ kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="
 
 ---
 
-### Funding an account on testnet
+### Funding an account on testnet/devnet
 
-The kadena account fund command is tailored for the **testnet** network. It
-allows you to fund an account with a specific amount of a fungible asset. If the
-account does not exist, it will be automatically _created_ and funded. Note that
-this command is not applicable to the mainnet network.
+The kadena account fund command is used to add funds to an account on the
+**testnet** or **development** networks. This command also creates the account
+if it does not exist. Remember, this operation is not allowed on the mainnet.
+
+If a faucet contract isn't available on the development network for the
+specified chain ID, you can use the `--deploy-faucet` option. This will deploy
+the faucet, allowing you to fund accounts on the development network.
 
 ```
 kadena account fund [options]
@@ -673,6 +707,7 @@ kadena account fund [options]
 | --network               | Name of the network to be used                                                                                                            |              |
 | --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |              |
 | --fungible              | Type of fungible asset (e.g., "coin") Defaults to "coin" if not provided                                                                  |              |
+| --deploy-faucet         | Deploy a coin faucet contract to fund the account on devnet (development)                                                                 |              |
 
 Example: **Single Chain ID:**
 
@@ -681,6 +716,15 @@ Fund an account on a specific chain:
 ```
 kadena account fund --account="myalias" --amount="10" --network="testnet" --chain-id="1"
 ```
+
+Fund an account on a devnet with deploying faucet:
+
+```
+kadena account fund --account="myalias" --amount="20" --network="devnet" --chain-id="17" --deploy-faucet
+```
+
+**Note**: To deploy a faucet on the development network, please make sure devnet
+is running and accessible. To setup devnet, please refer [here](https://docs.kadena.io/pact/beginner/web-editor#start-the-development-networkh2097912892)
 
 **Chain ID Range:**
 

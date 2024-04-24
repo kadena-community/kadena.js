@@ -13,7 +13,8 @@ export interface IOutlineProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Outline = (props: IOutlineProps): React.JSX.Element => {
-  const { selectedModule, onInterfaceClick, onInterfacesExpand } = props;
+  const { selectedModule, onInterfaceClick, onInterfacesExpand, className } =
+    props;
   const { t } = useTranslation('common');
 
   let parsedContract: Contract;
@@ -23,7 +24,7 @@ const Outline = (props: IOutlineProps): React.JSX.Element => {
   }
 
   return (
-    <div {...props}>
+    <div className={className}>
       <Heading as="h4">
         Outline
         {selectedModule

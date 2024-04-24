@@ -2,7 +2,9 @@ import { Command } from 'commander';
 import { format } from 'util';
 import { vi } from 'vitest';
 import { loadProgram } from '../program.js';
-import { log } from './logger.js';
+import { safeJsonParse } from './globalHelpers.js';
+import type { LevelValue } from './logger.js';
+import { LEVELS, log } from './logger.js';
 import * as prompts from './prompts.js';
 import * as readStdin from './stdin.js';
 
@@ -14,8 +16,9 @@ export function isValidEncryptedValue(value: string | unknown): boolean {
   return parts.length === 3 || parts.length === 4;
 }
 
-const captureLogs = (): (() => string[]) => {
+const captureLogs = (level?: LevelValue): (() => string[]) => {
   const logs: string[] = [];
+  if (level !== undefined) log.setLevel(level);
   log.setTransport((record) => {
     logs.push(format(...record.args));
   });
@@ -23,17 +26,41 @@ const captureLogs = (): (() => string[]) => {
 };
 
 export const runCommand = async (
-  args: string[],
-  stdin?: string,
+  args: string | string[],
+  options?: { stdin?: string; logLevel?: LevelValue },
 ): Promise<string> => {
+  const argsArray = Array.isArray(args) ? args : args.split(' ');
   process.stderr.isTTY = true;
-  const getLogs = captureLogs();
-  if (stdin !== undefined) {
+  const getLogs = captureLogs(options?.logLevel);
+  if (options?.stdin !== undefined) {
     const stdinMock = vi.spyOn(readStdin, 'readStdin');
-    stdinMock.mockImplementation(async () => stdin ?? null);
+    stdinMock.mockImplementation(async () => options.stdin ?? null);
   }
-  await loadProgram(new Command()).parseAsync(['node', 'index.js', ...args]);
+  if (!argsArray.includes('--quiet')) argsArray.push('--quiet');
+  await loadProgram(new Command()).parseAsync([
+    'node',
+    'index.js',
+    ...argsArray,
+  ]);
   return getLogs().join('\n');
+};
+
+export const runCommandJson = async (
+  args: string | string[],
+  options?: { stdin?: string },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> => {
+  const argsArray = Array.isArray(args) ? args : args.split(' ');
+  if (!argsArray.includes('--json')) argsArray.push('--json');
+  const output = await runCommand(argsArray, {
+    stdin: options?.stdin,
+    logLevel: LEVELS.output,
+  });
+  const parsed = safeJsonParse(output);
+  if (parsed === null) {
+    throw new Error(`Failed to parse JSON output: ${output}`);
+  }
+  return parsed;
 };
 
 export const mockPrompts = (data: {

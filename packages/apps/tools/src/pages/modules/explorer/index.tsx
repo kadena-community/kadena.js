@@ -40,6 +40,7 @@ import { getCookieValue, getQueryValue } from './utils';
 const QueryParams = {
   MODULE: 'module',
   CHAIN: 'chain',
+  NETWORK: 'network',
 };
 
 export const getModules = async (
@@ -102,6 +103,7 @@ export const getCompleteModule = async (
     moduleName,
     chainId,
     hash,
+    network,
   };
 };
 
@@ -138,7 +140,7 @@ export const enrichModule = async (
 ) => {
   const promises = module.chains.map((chain) => {
     return getCompleteModule(
-      { moduleName: module.moduleName, chainId: chain },
+      { moduleName: module.moduleName, chainId: chain, network },
       network,
       networksData,
     );
@@ -166,7 +168,7 @@ export const enrichModules = async (
     module.chains.forEach((chain) => {
       acc.push(
         getCompleteModule(
-          { moduleName: module.moduleName, chainId: chain },
+          { moduleName: module.moduleName, chainId: chain, network },
           network,
           networksData,
         ),
@@ -208,11 +210,12 @@ export const getServerSideProps: GetServerSideProps<{
     context.query,
     (value) => CHAINS.includes(value),
   );
-  if (moduleQueryValue && chainQueryValue) {
+  const networkQueryValue = getQueryValue(QueryParams.NETWORK, context.query);
+  if (moduleQueryValue && chainQueryValue && networkQueryValue) {
     const moduleResponse = (await describeModule(
       moduleQueryValue,
       chainQueryValue as ChainwebChainId,
-      network,
+      networkQueryValue,
       networksData,
       kadenaConstants.DEFAULT_SENDER,
       kadenaConstants.GAS_PRICE,
@@ -224,6 +227,7 @@ export const getServerSideProps: GetServerSideProps<{
         code: (moduleResponse.result.data as unknown as { code: string }).code,
         moduleName: moduleQueryValue,
         chainId: chainQueryValue as ChainwebChainId,
+        network: networkQueryValue,
       });
     }
   }
@@ -251,7 +255,7 @@ const ModuleExplorerPage = (
   const setDeepLink = useCallback(
     (module: IChainModule) => {
       void router.replace(
-        `?${QueryParams.MODULE}=${module.moduleName}&${QueryParams.CHAIN}=${module.chainId}`,
+        `?${QueryParams.MODULE}=${module.moduleName}&${QueryParams.CHAIN}=${module.chainId}&${QueryParams.NETWORK}=${module.network}`,
         undefined,
         { shallow: true },
       );
