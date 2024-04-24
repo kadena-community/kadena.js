@@ -1,6 +1,7 @@
 import path from 'path';
 import { describe, expect, it } from 'vitest';
 import { services } from '../../services/index.js';
+import { runCommandJson } from '../../utils/test.util.js';
 
 const root = path.join(__dirname, '../../../');
 
@@ -22,7 +23,8 @@ describe('delete wallet', () => {
       throw new Error('Wallet content not found');
     }
 
-    await services.wallet.delete(walletPath);
+    const res = await runCommandJson(['wallet', 'delete', '-w', 'test', '-c']);
+    expect(res.deleted).toEqual(['test']);
 
     expect(await services.filesystem.fileExists(walletPath)).toBe(false);
   });

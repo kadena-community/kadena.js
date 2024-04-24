@@ -44,7 +44,7 @@ const stderrColorsEnabled =
 const stdoutColorsEnabled =
   stderrColorsEnabled === false || process.stdout.isTTY !== true ? false : true;
 
-const LEVELS = {
+export const LEVELS = {
   error: 0,
   warning: 1,
   output: 2,
@@ -56,7 +56,7 @@ const LEVELS = {
 
 type Levels = typeof LEVELS;
 type LevelKey = keyof Levels;
-type LevelValue = Levels[keyof Levels];
+export type LevelValue = Levels[keyof Levels];
 
 type OutputMode = 'plain' | 'json' | 'yaml';
 
