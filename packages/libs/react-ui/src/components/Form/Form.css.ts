@@ -147,6 +147,7 @@ export const endAddon = style([
 ]);
 
 globalStyle(`${endAddon} button`, {
+  height: '100%',
   borderRadius: '0',
 });
 
