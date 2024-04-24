@@ -79,7 +79,14 @@ const ModuleExplorer = ({
         onInterfaceClick={(result) => {
           updateOpenedModules(result);
           onInterfaceClick(result);
-          setActiveModule(result);
+
+          // Since the modules got updated in the `onInterfacesExpand`, we need to search for it in the updated `modules`
+          const enhancedInterfaceModule = modules.find(
+            (module) =>
+              module.moduleName === result.moduleName &&
+              module.chainId === result.chainId,
+          );
+          setActiveModule(enhancedInterfaceModule);
         }}
         onInterfacesExpand={onInterfacesExpand}
         onModuleExpand={onModuleExpand}
