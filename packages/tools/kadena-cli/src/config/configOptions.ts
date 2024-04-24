@@ -8,6 +8,7 @@ export const configOptions = {
     key: 'location' as const,
     prompt: prompts.configLocationPrompt,
     validation: z.string(),
+    defaultIsOptional: false,
     option: new Option(
       '-l, --location <location>',
       'Kadena directory in working directory or home directory',

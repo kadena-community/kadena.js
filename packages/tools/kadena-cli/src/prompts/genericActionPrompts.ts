@@ -51,7 +51,7 @@ export async function actionAskForDappTemplate(): Promise<string> {
   });
 }
 
-export async function actionAskForDeployDevnet(): Promise<boolean> {
+export async function actionAskForDeployFaucet(): Promise<boolean> {
   const deploy = await actionHelper('Do you wish to deploy faucet module?');
   return deploy === 'yes';
 }

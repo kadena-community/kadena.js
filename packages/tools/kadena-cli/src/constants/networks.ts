@@ -1,6 +1,5 @@
 import { join } from 'path';
 import type { INetworkCreateOptions } from '../networks/utils/networkHelpers.js';
-import { DEFAULT_SETTINGS_PATH, NETWORKS_DIR } from './config.js';
 
 export interface IDefaultNetworkOptions {
   [key: string]: INetworkCreateOptions;
@@ -27,7 +26,7 @@ export const networkDefaults: IDefaultNetworkOptions = {
     network: 'devnet',
     networkId: 'development',
     networkHost: 'http://localhost:8080',
-    networkExplorerUrl: 'http://localhost:8080/explorer',
+    networkExplorerUrl: 'http://localhost:8080/explorer/development/tx/',
   },
   other: {
     network: '',
@@ -36,16 +35,6 @@ export const networkDefaults: IDefaultNetworkOptions = {
     networkExplorerUrl: '',
   },
 };
-
-export const defaultNetworksPath = NETWORKS_DIR;
-export const defaultNetworksSettingsPath =
-  DEFAULT_SETTINGS_PATH !== null
-    ? join(DEFAULT_SETTINGS_PATH, 'networks')
-    : null;
-export const defaultNetworksSettingsFilePath =
-  defaultNetworksSettingsPath !== null
-    ? join(defaultNetworksSettingsPath, '__default__.yaml')
-    : null;
 
 export const standardNetworks: string[] = ['mainnet', 'testnet'];
 export const defaultNetwork: string = 'testnet';
@@ -66,3 +55,6 @@ export const getNetworkFiles = (kadenaDir: string): INetworkFiles => {
 
 export const NETWORK_CONFIG_NOT_FOUND_MESSAGE =
   'No network configuration found for a network name';
+
+export const NO_NETWORKS_FOUND_ERROR_MESSAGE =
+  'No networks found. To add one, use: `kadena network add`. To add default networks, use: `kadena config init`.';
