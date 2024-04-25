@@ -10,7 +10,7 @@ layout: landing
 tags: [pact, typescript, account, transactions, utils]
 ---
 
-# TEMP H1
+# Support community and earn rewards
 
 There are many ways to become an active participant in the Kadena community.
 For example, you can join the conversation on Discord, ask and answer questions on Stack Overflow, or attend Kadena events at conferences. 
