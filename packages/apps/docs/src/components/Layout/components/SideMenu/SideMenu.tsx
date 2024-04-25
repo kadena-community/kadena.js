@@ -2,6 +2,7 @@ import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { IMenuItem } from '@kadena/docs-tools';
 import { MonoSearch } from '@kadena/react-icons';
 import { Box, Heading, TextField } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC, KeyboardEvent } from 'react';
@@ -70,10 +71,9 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
             id="search"
             onKeyUp={handleKeyPress}
             placeholder="Search"
-            isOutlined
             type="text"
             aria-label="Search"
-            endAddon={<MonoSearch />}
+            endAddon={<MonoSearch className={atoms({ paddingInline: 'n2' })} />}
           />
         </Box>
       </ShowOnMobile>

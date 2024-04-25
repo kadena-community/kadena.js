@@ -14,6 +14,12 @@ export const helperText = recipe({
   },
   variants: {
     intent: {
+      default: {
+        color: token('color.text.base.default'),
+        vars: {
+          [iconFill]: token('color.icon.base.default'),
+        },
+      },
       info: {
         color: token('color.text.semantic.info.default'),
       },

@@ -25,7 +25,7 @@ export const asyncPipe: IAsyncPipe;
 // Warning: (ae-forgotten-export) The symbol "IAccount" needs to be exported by the entry point index.d.ts
 //
 // @alpha (undocumented)
-export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => (targetChainId: ChainId, targetChainGasPayer: IAccount) => {
+export const crossChainClient: <T = PactValue>(args_0: IClientConfig, client?: IClient | undefined) => (targetChainId: ChainId, targetChainGasPayer: IAccount) => {
     (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
     event: "sign";
     data: ICommand;
@@ -367,7 +367,7 @@ export const crossChainClient: <T = PactValue>(args_0: IClientConfig, args_1?: I
 };
 
 // @alpha (undocumented)
-export const dirtyReadClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">, args_1?: IClient | undefined) => {
+export const dirtyReadClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">, client?: IClient | undefined) => {
     (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
     event: "dirtyRead";
     data: ICommandResult;
@@ -409,7 +409,7 @@ export interface IEmitterWrapper<T extends Array<{
 }
 
 // @alpha (undocumented)
-export const preflightClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => {
+export const preflightClient: <T = PactValue>(args_0: IClientConfig, client?: IClient | undefined) => {
     (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
     event: "sign";
     data: IUnsignedCommand;
@@ -433,7 +433,7 @@ export const preflightClient: <T = PactValue>(args_0: IClientConfig, args_1?: IC
 };
 
 // @alpha (undocumented)
-export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">, args_1?: IClient | undefined) => {
+export const queryAllChainsClient: <T = PactValue>(args_0: Omit<IClientConfig, "sign">, client?: IClient | undefined) => {
     (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
     event: "query-result";
     data: {
@@ -497,7 +497,7 @@ export const
 setGlobalConfig: (cfg: Partial<IClientConfig>) => void;
 
 // @alpha (undocumented)
-export const submitClient: <T = PactValue>(args_0: IClientConfig, args_1?: IClient | undefined) => {
+export const submitClient: <T = PactValue>(args_0: IClientConfig, client?: IClient | undefined) => {
     (cmd?: (Partial<IPartialPactCommand> | (() => Partial<IPartialPactCommand>)) | undefined): IEmitterWrapper<[{
     event: "sign";
     data: ICommand;

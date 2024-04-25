@@ -1,4 +1,3 @@
-import { createManifest } from '@/utils/createManifest';
 import { store } from '@/utils/socket/store';
 import { createImageUrl, createMetaDataUrl } from '@/utils/upload';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -23,7 +22,6 @@ export default async function handler(
 
   const background = await store.getBackground(proofOfUsId);
   const proofOfUs = await store.getProofOfUs(proofOfUsId);
-  const signees = await store.getProofOfUsSignees(proofOfUsId);
 
   if (!background?.bg) {
     return res.status(404).json({
@@ -50,7 +48,7 @@ export default async function handler(
     });
   }
 
-  const manifest = await createManifest(proofOfUs, signees, imageData.url);
+  const manifest = JSON.parse(proofOfUs.manifestData ?? '{}');
   const metadata = await createMetaDataUrl(manifest, proofOfUs.manifestUri);
 
   if (!metadata) {

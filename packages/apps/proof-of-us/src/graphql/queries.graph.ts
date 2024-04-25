@@ -8,7 +8,7 @@ export const GET_TOKENS: DocumentNode = gql`
       id
       nonFungibleTokenBalances {
         balance
-        id
+        tokenId
         info {
           uri
         }

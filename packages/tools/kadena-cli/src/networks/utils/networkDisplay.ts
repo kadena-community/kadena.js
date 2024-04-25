@@ -45,8 +45,8 @@ export async function displayNetworksConfig(): Promise<void> {
         fileContent !== null
           ? (yaml.load(fileContent) as INetworkCreateOptions)
           : networkDefaults[network.value] !== undefined
-          ? networkDefaults[network.value]
-          : ({} as INetworkCreateOptions);
+            ? networkDefaults[network.value]
+            : ({} as INetworkCreateOptions);
       return {
         ...networkConfig,
       };

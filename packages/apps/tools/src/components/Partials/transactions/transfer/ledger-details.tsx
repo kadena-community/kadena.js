@@ -64,7 +64,7 @@ export const LedgerDetails: FC<ILedgerDetailsProps> = ({
       >
         <Stack gap={'md'}>
           <NumberField
-            startAddon={<MonoKey />}
+            startVisual={<MonoKey />}
             label={t('ledger-key-index')}
             onValueChange={(keyIndex) => {
               setKeyIndex(keyIndex);

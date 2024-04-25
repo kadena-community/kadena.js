@@ -132,6 +132,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
     console.log('_________NEW COMPLETELY!!!!!!!!_________');
     return {
       transaction: transaction,
+      manifest,
       manifestUri: manifestData?.url,
       imageUri: imageData.url,
       eventName: '',
@@ -151,6 +152,7 @@ export const ShareView: FC<IProps> = ({ prev, status }) => {
       tx: transaction,
       requestKey: transactionData.transaction?.hash,
       tokenId: transactionData.tokenId,
+      manifestData: JSON.stringify(transactionData.manifest),
       manifestUri: transactionData.manifestUri,
       imageUri: transactionData.imageUri,
       eventName: transactionData.eventName,

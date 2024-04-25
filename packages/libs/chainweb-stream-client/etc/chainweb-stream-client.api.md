@@ -42,9 +42,9 @@ export enum ConnectionState {
     // (undocumented)
     Connected = 1,
     // (undocumented)
-    Connecting = 0,
+    Connecting = 0,// error; will transition to 4 -> 0 almost immediately at first, then with exponential backoffs if not successful
     // (undocumented)
-    None = 3,
+    None = 3,// before initialization
     // (undocumented)
     WaitReconnect = 4
 }
