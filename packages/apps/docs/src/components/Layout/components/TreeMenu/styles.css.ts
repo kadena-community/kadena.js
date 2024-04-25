@@ -100,7 +100,7 @@ export const levelItemVariantClass = styleVariants({
     cursor: 'pointer',
     padding: `${tokens.kda.foundation.spacing.xs} 0`,
     border: 0,
-    fontSize: tokens.kda.foundation.typography.fontSize.sm,
+    fontSize: tokens.kda.foundation.typography.fontSize.base,
   },
   l3: {
     display: 'block',
