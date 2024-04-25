@@ -32,8 +32,8 @@ export default class TreeHelper {
       'src',
       'pages',
     );
-    console.log('baseDir======');
-    console.log(baseDir);
+    // console.log('baseDir======');
+    // console.log(baseDir);
     const directory = path.join(baseDir, pageToCheck);
     const exclusioDir = path.join(baseDir, 'pact', 'api');
     const exclusionRegExp = new RegExp(exclusioDir);
