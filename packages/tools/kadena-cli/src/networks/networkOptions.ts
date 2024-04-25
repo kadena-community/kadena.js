@@ -32,7 +32,7 @@ export const networkOptions = {
       'Kadena network Id (e.g. "mainnet01")',
     ),
     transform: (networkId: string) => {
-      return networkId.trim();
+      return networkId?.trim();
     },
   }),
   networkHost: createOption({
