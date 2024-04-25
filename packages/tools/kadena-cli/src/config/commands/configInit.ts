@@ -41,7 +41,7 @@ export const createConfigInitCommand: (
     });
     const exists = await services.filesystem.directoryExists(location);
     if (exists) {
-      log.warning(`The configuration directory already exists at ${location}.`);
+      log.warning(`The configuration directory already exists at ${location}`);
       return;
     }
 

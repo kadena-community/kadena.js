@@ -36,11 +36,10 @@ export const Subscribe: FC = () => {
               <Stack gap="sm" paddingBlock="xs">
                 <TextField
                   id="email"
-                  startAddon={<SystemIcon.At />}
+                  startVisual={<SystemIcon.At />}
                   onChange={handleFormState}
                   placeholder="Email address"
                   type="email"
-                  isOutlined
                   aria-label="Fill in email address"
                 />
 

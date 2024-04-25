@@ -14,7 +14,6 @@ import {
 interface IProps {
   name?: string;
   accountName?: string;
-  socialLink?: ISocial;
   idx: number;
   isMultiple: boolean;
 }
@@ -23,7 +22,6 @@ export const SigneeItem: FC<IProps> = ({
   name,
   accountName,
   idx,
-  socialLink,
   isMultiple,
 }) => {
   return (
@@ -37,13 +35,6 @@ export const SigneeItem: FC<IProps> = ({
         <div className={classNames(titleClass, ellipsClass)}>{name}</div>
       </Stack>
       <div className={classNames(nameClass, ellipsClass)}>{accountName}</div>
-      {socialLink && (
-        <Stack justifyContent="center">
-          <a href="{socialLink}" target="_blank">
-            Social Link
-          </a>
-        </Stack>
-      )}
     </li>
   );
 };

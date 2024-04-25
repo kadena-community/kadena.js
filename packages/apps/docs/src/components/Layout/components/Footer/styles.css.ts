@@ -48,8 +48,8 @@ export const footerClass = style([
 export const textClass = style([
   atoms({
     display: 'block',
-    color: 'text.subtlest.inverse.default',
     textAlign: 'center',
+    color: 'text.subtlest.default',
   }),
   {
     selectors: {
@@ -65,8 +65,8 @@ export const linkClass = style([
   atoms({
     display: 'block',
     textDecoration: 'none',
-    color: 'text.subtlest.inverse.default',
     textAlign: 'center',
+    color: 'text.subtlest.default',
   }),
   {
     paddingInline: tokens.kda.foundation.size.n3,

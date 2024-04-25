@@ -22,7 +22,7 @@ const BaseAccountNameField = (
       <TextField
         {...props}
         label={props.label ?? t('Account Name')}
-        inputFont="code"
+        fontType="code"
         placeholder={props.placeholder ?? t('Type Account Name')}
         id={props.id ?? 'kd-select-account-input'}
         isInvalid={!!props.errorMessage}
