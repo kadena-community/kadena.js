@@ -24367,6 +24367,15 @@ packages:
       hasown: 2.0.2
       side-channel: 1.0.6
 
+  /internmap@1.0.1:
+    resolution: {integrity: sha512-lDB5YccMydFBtasVtxnZ3MRBHuaoE8GKsppq+EchKL2U4nK/DmEpPHNH8MZe5HkMtpSiTSOZwfN0tzYjO/lJEw==}
+    dev: false
+
+  /internmap@2.0.3:
+    resolution: {integrity: sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==}
+    engines: {node: '>=12'}
+    dev: false
+
   /interpret@2.2.0:
     resolution: {integrity: sha512-Ju0Bz/cEia55xDwUWEa8+olFpCiQoypjnQySseKtmjNrnps3P+xfpUmGr90T7yjlVJmOtybRvPXhKMbHr+fWnw==}
     engines: {node: '>= 0.10'}
@@ -25633,6 +25642,13 @@ packages:
       reselect: 4.1.8
       tslib: 2.6.2
     dev: true
+
+  /katex@0.16.10:
+    resolution: {integrity: sha512-ZiqaC04tp2O5utMsl2TEZTXxa6WSC4yo0fv5ML++D3QZv/vx2Mct0mTlRx3O+uUkjfuAgOkzsCmq5MiUEsDDdA==}
+    hasBin: true
+    dependencies:
+      commander: 8.3.0
+    dev: false
 
   /keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -35824,9 +35840,24 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
-  git@github.com+alamgu/hw-app-alamgu/6822e963dd4a92d50929bd8a3b750c90973504b3(typescript@5.4.5):
-    resolution: {commit: 6822e963dd4a92d50929bd8a3b750c90973504b3, repo: git@github.com:alamgu/hw-app-alamgu.git, type: git}
-    id: git@github.com+alamgu/hw-app-alamgu/6822e963dd4a92d50929bd8a3b750c90973504b3
+  git@github.com+obsidiansystems/hw-app-kda/37e1b863b0e8c28023efde9ff1fd26cd25bc3997(typescript@5.4.5):
+    resolution: {commit: 37e1b863b0e8c28023efde9ff1fd26cd25bc3997, repo: git@github.com:obsidiansystems/hw-app-kda.git, type: git}
+    id: git@github.com+obsidiansystems/hw-app-kda/37e1b863b0e8c28023efde9ff1fd26cd25bc3997
+    name: hw-app-kda
+    version: 0.1.0
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      '@ledgerhq/hw-transport': 6.30.3
+      blake2b: 2.1.4
+      hw-app-alamgu: github.com/alamgu/hw-app-alamgu/6822e963dd4a92d50929bd8a3b750c90973504b3(typescript@5.4.5)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
+
+  github.com/alamgu/hw-app-alamgu/6822e963dd4a92d50929bd8a3b750c90973504b3(typescript@5.4.5):
+    resolution: {tarball: https://codeload.github.com/alamgu/hw-app-alamgu/tar.gz/6822e963dd4a92d50929bd8a3b750c90973504b3}
+    id: github.com/alamgu/hw-app-alamgu/6822e963dd4a92d50929bd8a3b750c90973504b3
     name: hw-app-alamgu
     version: 0.1.1
     prepare: true
@@ -35835,22 +35866,6 @@ packages:
       '@ledgerhq/hw-transport': 6.30.3
       fast-sha256: 1.3.0
       typedoc: 0.22.18(typescript@5.4.5)
-    transitivePeerDependencies:
-      - typescript
-    dev: false
-
-  git@github.com+obsidiansystems/hw-app-kda/37e1b863b0e8c28023efde9ff1fd26cd25bc3997(typescript@5.4.5):
-    resolution: {commit: 37e1b863b0e8c28023efde9ff1fd26cd25bc3997, repo: git@github.com:obsidiansystems/hw-app-kda.git, type: git}
-    id: git@github.com+obsidiansystems/hw-app-kda/37e1b863b0e8c28023efde9ff1fd26cd25bc3997
-    name: hw-app-kda
-    version: 0.1.0
-    hasBin: true
-    prepare: true
-    requiresBuild: true
-    dependencies:
-      '@ledgerhq/hw-transport': 6.30.3
-      blake2b: 2.1.4
-      hw-app-alamgu: git@github.com+alamgu/hw-app-alamgu/6822e963dd4a92d50929bd8a3b750c90973504b3(typescript@5.4.5)
     transitivePeerDependencies:
       - typescript
     dev: false
