@@ -39,7 +39,6 @@ export const createManifest = async (
               xPercentage: signee.position?.xPercentage,
               yPercentage: signee.position?.yPercentage,
             },
-            socialLink: signee.socialLink,
           } as IProofOfUsTokenSignee;
         }) ?? [],
     },

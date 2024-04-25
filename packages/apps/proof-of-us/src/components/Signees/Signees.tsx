@@ -23,7 +23,6 @@ export const Signees: FC<IProps> = ({ signees, authors }) => {
               name={signee.name}
               accountName={signee.accountName}
               idx={idx}
-              socialLink={signee.socialLink}
               isMultiple={isMultiple}
             />
           ))

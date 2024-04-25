@@ -156,40 +156,47 @@ Tool for setting up and managing the CLI configuration
 | -------------- | -------------------------- | ----------------- |
 | init           | initialize default project |                   |
 
-
 ### Initializing the CLI configuration
 
-The `kadena config init` command is your starting point. It creates a .kadena folder pre configured with default network settings (devnet, mainnet, testnet). You have the flexibility to specify the location of your .kadena folder, making it easier to organize your configurations either in the current working directory or a global directory such as your home directory.
+The `kadena config init` command is your starting point. It creates a .kadena
+folder pre configured with default network settings (devnet, mainnet, testnet).
+You have the flexibility to specify the location of your .kadena folder, making
+it easier to organize your configurations either in the current working
+directory or a global directory such as your home directory.
 
-Additionally, this command assists in the creation of your initial wallet and account, setting the stage for your transactions on the Kadena network.
+Additionally, this command assists in the creation of your initial wallet and
+account, setting the stage for your transactions on the Kadena network.
 
 ```
 kadena config init [options]
 ```
 
-| **Options**         | **Description**                                         | **Required** |
-| ------------------- | ------------------------------------------------------- | ------------ |
-| --location          | Path for the .kadena directory creation (e.g., home directory or current working directory).  |              |
-| --create-wallet     | Confirm the creation of a new wallet. Set to true to enable.              |              |
-| --wallet-name       | Name for the new wallet                                 |              |
-| --password-file     | Path to a file containing the wallet's password, alternatively, passwords can be passed via stdin. |              |
-| --create-account    | Enable the creation of an account using the first wallet key.                 |              |
+| **Options**      | **Description**                                                                                    | **Required** |
+| ---------------- | -------------------------------------------------------------------------------------------------- | ------------ |
+| --location       | Path for the .kadena directory creation (e.g., home directory or current working directory).       |              |
+| --create-wallet  | Confirm the creation of a new wallet. Set to true to enable.                                       |              |
+| --wallet-name    | Name for the new wallet                                                                            |              |
+| --password-file  | Path to a file containing the wallet's password, alternatively, passwords can be passed via stdin. |              |
+| --create-account | Enable the creation of an account using the first wallet key.                                      |              |
 
 ---
 
 Examples
 
 Setup in a Specific Directory with a New Wallet and Account:
+
 ```
 kadena config init --location="/my-app/.kadena" --create-wallet="true" --wallet-name="my_first_wallet" --create-account="true"
 ```
 
 Setup Without Creating a Wallet or Account:
+
 ```
 kadena config init --location="/my-app/.kadena" --create-wallet="false"
 ```
 
-Note: All configurations will be stored within the specified .kadena/ folder, ensuring your settings are organized and easily accessible.
+Note: All configurations will be stored within the specified .kadena/ folder,
+ensuring your settings are organized and easily accessible.
 
 ## kadena network
 
@@ -209,12 +216,12 @@ Tool to add and manage networks
 kadena network update [options]
 ```
 
-| **Options**             | **Description**                         | **Required** |
-| ----------------------- | --------------------------------------- | ------------ |
-| --network-name          | Update the name of the network          |              |
-| --network-id            | Update the id of the network            |              |
-| --network-host          | Update the host for the network         |              |
-| --network-explorer-url  | Update the explorer url for the network |              |
+| **Options**            | **Description**                         | **Required** |
+| ---------------------- | --------------------------------------- | ------------ |
+| --network-name         | Update the name of the network          |              |
+| --network-id           | Update the id of the network            |              |
+| --network-host         | Update the host for the network         |              |
+| --network-explorer-url | Update the explorer url for the network |              |
 
 example:
 
@@ -228,13 +235,13 @@ kadena network update --network-name="mainnet" --network-id="mainnet01" --networ
 kadena network add [options]
 ```
 
-| **Options**             | **Description**                      | **Required** |
-| ----------------------- | ------------------------------------ | ------------ |
-| --network-name          | Set the name of the network          |              |
-| --network-id            | Set the id of the network            |              |
-| --network-host          | Set the host for the network         |              |
-| --network-explorer-url  | Set the explorer url for the network |              |
-| --network-overwrite     | Confirm overwrite configuration      |              |
+| **Options**            | **Description**                      | **Required** |
+| ---------------------- | ------------------------------------ | ------------ |
+| --network-name         | Set the name of the network          |              |
+| --network-id           | Set the id of the network            |              |
+| --network-host         | Set the host for the network         |              |
+| --network-explorer-url | Set the explorer url for the network |              |
+| --network-overwrite    | Confirm overwrite configuration      |              |
 
 example:
 
@@ -248,10 +255,10 @@ kadena network add --network-name="mainnet" --network-id="mainnet01" --network-h
 kadena network set-default [options]
 ```
 
-| **Options**             | **Description**                               | **Required** |
-| ----------------------- | --------------------------------------------- | ------------ |
-| --network               | Select name of network to set default         |              |
-| --confirm               | Confirmation for default network to set/unset |              |
+| **Options** | **Description**                               | **Required** |
+| ----------- | --------------------------------------------- | ------------ |
+| --network   | Select name of network to set default         |              |
+| --confirm   | Confirmation for default network to set/unset |              |
 
 example for setting default network:
 
@@ -271,10 +278,10 @@ kadena network set-default --network="none" --confirm
 kadena network delete [options]
 ```
 
-| **Options**             | **Description**                  | **Required** |
-| ----------------------- | -------------------------------- | ------------ |
-| --network               | Select name of network to delete |              |
-| --network-delete        | Confirm deletion of network      |              |
+| **Options**      | **Description**                  | **Required** |
+| ---------------- | -------------------------------- | ------------ |
+| --network        | Select name of network to delete |              |
+| --network-delete | Confirm deletion of network      |              |
 
 example:
 
@@ -350,13 +357,13 @@ kadena wallet generate-key [options]
 
 Generate a keypair from a wallet mnemonic
 
-| **Options**             | **Description**                                                            | **Required** |
-| ----------------------- | -------------------------------------------------------------------------- | ------------ |
-| --wallet-name           | Provide the name of the wallet                                             |              |
-| --amount                | The amount of keys to be generated, starting from last generated key index |              |
-| --start-index           | Set start index for generating the next key                                |              |
-| --password-file         | Password of the wallet, can be passed via stdin                            |              |
-| --key-alias             | An optional alias given to the key(s) to recognize them later              |              |
+| **Options**     | **Description**                                                            | **Required** |
+| --------------- | -------------------------------------------------------------------------- | ------------ |
+| --wallet-name   | Provide the name of the wallet                                             |              |
+| --amount        | The amount of keys to be generated, starting from last generated key index |              |
+| --start-index   | Set start index for generating the next key                                |              |
+| --password-file | Password of the wallet, can be passed via stdin                            |              |
+| --key-alias     | An optional alias given to the key(s) to recognize them later              |              |
 
 example generating public keys using a range (you will be prompted for password)
 
@@ -411,10 +418,10 @@ password will be hidden after entry: --security-current-password=\*
 kadena wallet delete [options]
 ```
 
-| **Options**             | **Description**               |
-| ----------------------- | ----------------------------- |
-| --wallet-name           | Select the name of the wallet |
-| --confirm               | Confirm deletion of wallet    |
+| **Options**   | **Description**               |
+| ------------- | ----------------------------- |
+| --wallet-name | Select the name of the wallet |
+| --confirm     | Confirm deletion of wallet    |
 
 example single wallet deletion:
 
@@ -434,9 +441,9 @@ kadena wallet delete --wallet-name="all" --confirm=true
 kadena wallet list [options]
 ```
 
-| **Options**             | **Description**            |
-| ----------------------- | -------------------------- |
-| --wallet-name           | Set the name of the wallet |
+| **Options**   | **Description**            |
+| ------------- | -------------------------- |
+| --wallet-name | Set the name of the wallet |
 
 example for listing specific wallet:
 
@@ -458,11 +465,11 @@ kadena wallet export [options]
 
 Export a KeyPair from a wallet unencrypted. Prints to stdout as yaml by default
 
-| **Options**             | **Description**                                          |
-| ----------------------- | -------------------------------------------------------- |
-| --wallet-name           | Name of the wallet you want to export a key from         |
-| --key-index             | The index of the key to export                           |
-| --password-file         | Filepath to the wallet password, can be passed via stdin |
+| **Options**     | **Description**                                          |
+| --------------- | -------------------------------------------------------- |
+| --wallet-name   | Name of the wallet you want to export a key from         |
+| --key-index     | The index of the key to export                           |
+| --password-file | Filepath to the wallet password, can be passed via stdin |
 
 example (password will be prompted):
 
@@ -478,7 +485,7 @@ kadena wallet export --wallet-name="kadenawallet" --key-index="0" --json > mykey
 
 ---
 
-## kadena keys
+## kadena key
 
 Tool to generate and manage keys
 
@@ -495,11 +502,11 @@ kadena key generate [options]
 
 Generate a plain keypair using a random mnemonic
 
-| **Options**             | **Description**                             |
-| ----------------------- | ------------------------------------------- |
-| --key-alias             | Set alias of the key to store on filesystem |
-| --key-amount            | Set the amount of keys to generate          |
-| --legacy                | Generate legacy keys                        |
+| **Options**  | **Description**                             |
+| ------------ | ------------------------------------------- |
+| --key-alias  | Set alias of the key to store on filesystem |
+| --key-amount | Set the amount of keys to generate          |
+| --legacy     | Generate legacy keys                        |
 
 example
 
@@ -517,8 +524,8 @@ kadena key generate --key-alias="myalias" --key-amount="5" --legacy
 kadena key list
 ```
 
-| **Options**             | **Description** |
-| ----------------------- | --------------- |
+| **Options** | **Description** |
+| ----------- | --------------- |
 
 example for listing all keys
 
@@ -548,15 +555,15 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 kadena account add-manual [options]
 ```
 
-| **Options**             | **Description**                              | **Required** |
-| ----------------------- | -------------------------------------------- | ------------ |
-| --account-alias         | Set alias for account                        |              |
-| --account-name          | Set account name                             |              |
-| --fungible              | Fungible module name (default: coin)         |              |
-| --network               | Name of the network to be used               |              |
-| --chain-id              | Chain to be used                             |              |
-| --public-keys           | Comma separated list of public keys          |              |
-| --predicate             | keys-all, keys-any, keys-2, Custom predicate |              |
+| **Options**     | **Description**                              | **Required** |
+| --------------- | -------------------------------------------- | ------------ |
+| --account-alias | Set alias for account                        |              |
+| --account-name  | Set account name                             |              |
+| --fungible      | Fungible module name (default: coin)         |              |
+| --network       | Name of the network to be used               |              |
+| --chain-id      | Chain to be used                             |              |
+| --public-keys   | Comma separated list of public keys          |              |
+| --predicate     | keys-all, keys-any, keys-2, Custom predicate |              |
 
 example:
 
@@ -570,20 +577,20 @@ kadena account add-manual --account-alias="myalias" --account-name="myaccountnam
 kadena account add-from-wallet [options]
 ```
 
-| **Options**             | **Description**                              | **Required** |
-| ----------------------- | -------------------------------------------- | ------------ |
-| --account-alias         | Set alias for account                        |              |
-| --key-wallet            | Provide the name of the wallet               |              |
-| --fungible              | Fungible module name (default: coin)         |              |
-| --network               | Name of the network to be used               |              |
-| --chain-id              | Chain to be used                             |              |
-| --public-keys           | Comma separated list of public keys          |              |
-| --predicate             | keys-all, keys-any, keys-2, Custom predicate |              |
+| **Options**     | **Description**                              | **Required** |
+| --------------- | -------------------------------------------- | ------------ |
+| --account-alias | Set alias for account                        |              |
+| --wallet-name   | Provide the name of the wallet               |              |
+| --fungible      | Fungible module name (default: coin)         |              |
+| --network       | Name of the network to be used               |              |
+| --chain-id      | Chain to be used                             |              |
+| --public-keys   | Comma separated list of public keys          |              |
+| --predicate     | keys-all, keys-any, keys-2, Custom predicate |              |
 
 example:
 
 ```
-kadena account add-from-wallet --account-alias="myalias" --key-wallet="mywallet.wallet" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="publickey" --predicate="keys-all"
+kadena account add-from-wallet --account-alias="myalias" --wallet-name="mywallet" --fungible="coin" --network="mainnet" --chain-id="1" --public-keys="publickey" --predicate="keys-all"
 ```
 
 ---
@@ -601,13 +608,13 @@ If you would like to create an account on [testnet][16], please use the
 kadena account create [options]
 ```
 
-| **Options**             | **Description**                              | **Required** |
-| ----------------------- | -------------------------------------------- | ------------ |
-| --account-name          | Provide an account name                      | No           |
-| --fungible              | Fungible e.g coin                            | No           |
-| --chain-id              | Chain to be used                             |              |
-| --public-keys           | Comma separated list of public keys          |              |
-| --predicate             | keys-all, keys-any, keys-2, Custom predicate |              |
+| **Options**    | **Description**                              | **Required** |
+| -------------- | -------------------------------------------- | ------------ |
+| --account-name | Provide an account name                      | No           |
+| --fungible     | Fungible e.g coin                            | No           |
+| --chain-id     | Chain to be used                             |              |
+| --public-keys  | Comma separated list of public keys          |              |
+| --predicate    | keys-all, keys-any, keys-2, Custom predicate |              |
 
 example:
 
@@ -635,12 +642,12 @@ conditions (public keys, predicate), and the account's name.
 kadena account details [options]
 ```
 
-| **Options**             | **Description**                                                                                                                           | **Required** |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
-| --account               | Provide account alias/name to retrieve its details                                                                                        |              |
-| --network               | Name of the network to be used                                                                                                            |              |
-| --fungible              | Type of fungible asset (e.g., "coin").                                                                                                    |              |
-| --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |              |
+| **Options** | **Description**                                                                                                                           | **Required** |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| --account   | Provide account alias/name to retrieve its details                                                                                        |              |
+| --network   | Name of the network to be used                                                                                                            |              |
+| --fungible  | Type of fungible asset (e.g., "coin").                                                                                                    |              |
+| --chain-id  | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |              |
 
 Example: **Single Chain ID:**
 
@@ -700,14 +707,14 @@ the faucet, allowing you to fund accounts on the development network.
 kadena account fund [options]
 ```
 
-| **Options**             | **Description**                                                                                                                           | **Required** |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
-| --account               | Provide alias for an account                                                                                                              |              |
-| --amount                | Amount to fund                                                                                                                            |              |
-| --network               | Name of the network to be used                                                                                                            |              |
-| --chain-id              | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |              |
-| --fungible              | Type of fungible asset (e.g., "coin") Defaults to "coin" if not provided                                                                  |              |
-| --deploy-faucet         | Deploy a coin faucet contract to fund the account on devnet (development)                                                                 |              |
+| **Options**     | **Description**                                                                                                                           | **Required** |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| --account       | Provide alias for an account                                                                                                              |              |
+| --amount        | Amount to fund                                                                                                                            |              |
+| --network       | Name of the network to be used                                                                                                            |              |
+| --chain-id      | Provide the chain ID associated with the account<br/>Supports individual IDs, ranges (e.g., "1-5" or 2,5), <br/> or "all" for all chains. |              |
+| --fungible      | Type of fungible asset (e.g., "coin") Defaults to "coin" if not provided                                                                  |              |
+| --deploy-faucet | Deploy a coin faucet contract to fund the account on devnet (development)                                                                 |              |
 
 Example: **Single Chain ID:**
 
@@ -724,7 +731,7 @@ kadena account fund --account="myalias" --amount="20" --network="devnet" --chain
 ```
 
 **Note**: To deploy a faucet on the development network, please make sure devnet
-is running and accessible. To setup devnet, please refer [here](https://docs.kadena.io/pact/beginner/web-editor#start-the-development-networkh2097912892)
+is running and accessible. To setup devnet, please refer [here][17]
 
 **Chain ID Range:**
 
@@ -755,10 +762,10 @@ kadena account fund --account="myalias" --amount="10" --network="testnet" --chai
 kadena account account name-to-address [options]
 ```
 
-| **Options**             | **Description**                           | **Required** |
-| ----------------------- | ----------------------------------------- | ------------ |
-| --network               | Name of the network to be used            |              |
-| --account-kdn-name      | Provide .kda name to resolve to k:account |              |
+| **Options**        | **Description**                           | **Required** |
+| ------------------ | ----------------------------------------- | ------------ |
+| --network          | Name of the network to be used            |              |
+| --account-kdn-name | Provide .kda name to resolve to k:account |              |
 
 example:
 
@@ -772,10 +779,10 @@ kadena account name-to-address --network="mainnet" --account-kdn-name="kadena.kd
 kadena account address-to-name [options]
 ```
 
-| **Options**             | **Description**                           | **Required** |
-| ----------------------- | ----------------------------------------- | ------------ |
-| --network               | Name of the network to be used            |              |
-| --account-kdn-address   | Provide k:account to resolve to .kda name |              |
+| **Options**           | **Description**                           | **Required** |
+| --------------------- | ----------------------------------------- | ------------ |
+| --network             | Name of the network to be used            |              |
+| --account-kdn-address | Provide k:account to resolve to .kda name |              |
 
 example:
 
@@ -789,9 +796,9 @@ kadena account address-to-name --network="mainnet" --account-kdn-address="k:acco
 kadena account list [options]
 ```
 
-| **Options**             | **Description**                  |
-| ----------------------- | -------------------------------- |
-| --account-alias         | Provide the alias of the account |
+| **Options**     | **Description**                  |
+| --------------- | -------------------------------- |
+| --account-alias | Provide the alias of the account |
 
 example for listing specific account:
 
@@ -811,10 +818,10 @@ kadena account list --account-alias="all"
 kadena account delete [options]
 ```
 
-| **Options**             | **Description**                  |
-| ----------------------- | -------------------------------- |
-| --account-alias         | Provide the alias of the account |
-| --confirm               | Confirm deletion of account      |
+| **Options**     | **Description**                  |
+| --------------- | -------------------------------- |
+| --account-alias | Provide the alias of the account |
+| --confirm       | Confirm deletion of account      |
 
 example for delete a specific account:
 
@@ -872,14 +879,14 @@ This command accepts various arguments and options, allowing for detailed
 customization of the transaction being created. Below is a breakdown of the
 options available:
 
-| **Options**             | **Description**                                           | Required |
-| ----------------------- | --------------------------------------------------------- | -------- |
-| `--template`            | Path to the transaction template file.                    | Yes      |
-| `--template-data`       | File path for the data used to fill the template.         | No       |
-| `--network-id`          | Specifies the network ID (e.g., `testnet04`).             | Yes      |
-| `--out-file`            | Path for saving the generated transaction file.           | No       |
-| `--holes`               | Displays a list of required template variables.           | No       |
-| Custom options          | Generated based on the chosen template's required fields. | Varies   |
+| **Options**       | **Description**                                           | Required |
+| ----------------- | --------------------------------------------------------- | -------- |
+| `--template`      | Path to the transaction template file.                    | Yes      |
+| `--template-data` | File path for the data used to fill the template.         | No       |
+| `--network-id`    | Specifies the network ID (e.g., `testnet04`).             | Yes      |
+| `--out-file`      | Path for saving the generated transaction file.           | No       |
+| `--holes`         | Displays a list of required template variables.           | No       |
+| Custom options    | Generated based on the chosen template's required fields. | Varies   |
 
 ### Example Command
 
@@ -1061,7 +1068,7 @@ kadena tx test-signed-transaction --network="testnet" --directory="./" --tx-sign
 kadena tx send [options]
 ```
 
-| **Options**       | **Description**                                                       | **Required** |
+| **Options**                   | **Description**                                                       | **Required** |
 | ----------------------------- | --------------------------------------------------------------------- | ------------ |
 | --tx-signed-transaction-files | Provided signed transaction file(s) to sign (or comma separated list) |              |
 | --tx-transaction-network      | Kadena networks comma separated list in order of transaction          |              |
@@ -1090,13 +1097,13 @@ network and chain id, users can query the current state of their transactions.
 This command supports additional options for polling, allowing for real-time
 status updates until the transaction is finalized.
 
-| **Options**             | **Description**                                       | **Required** |
-| ----------------------- | ----------------------------------------------------- | ------------ |
-| --request-key           | Provide a transaction request key                     |              |
-| --network               | Select name of the network where transaction happened |              |
-|                         | (e.g. "mainnet, testnet, devnet, ...")                |              |
-| --chain-id              | Chain to be used in the transaction                   |              |
-| --poll                  | Poll status to get transaction details                |              |
+| **Options**   | **Description**                                       | **Required** |
+| ------------- | ----------------------------------------------------- | ------------ |
+| --request-key | Provide a transaction request key                     |              |
+| --network     | Select name of the network where transaction happened |              |
+|               | (e.g. "mainnet, testnet, devnet, ...")                |              |
+| --chain-id    | Chain to be used in the transaction                   |              |
+| --poll        | Poll status to get transaction details                |              |
 
 To check the status of a transaction, use the following command:
 
@@ -1146,13 +1153,13 @@ Tool for creating dapp projects
 kadena dapp add <arguments> [options]
 ```
 
-| **Arguments**           | **Description**                          | **Required** |
-| ----------------------- | ---------------------------------------- | ------------ |
-| project-directory       | Specify the project directory [Required] | yes          |
+| **Arguments**     | **Description**                           | **Required** |
+| ----------------- | ----------------------------------------- | ------------ |
+| project-directory | Specify the project directory \[Required] | yes          |
 
-| **Options**             | **Description**                          | **Required** |
-| ----------------------- | ---------------------------------------- | ------------ |
-| --dapp-template         | Select template: vuejs, nextjs, angular  |              |
+| **Options**     | **Description**                         | **Required** |
+| --------------- | --------------------------------------- | ------------ |
+| --dapp-template | Select template: vuejs, nextjs, angular |              |
 
 example:
 
@@ -1168,9 +1175,9 @@ It supports a number of well known and widely used frameworks to choose from
 when starting a new project. The following project templates are currently
 available:
 
-- [Nextjs][17]
-- [Vuejs][18]
-- [Angular][19]
+- [Nextjs][18]
+- [Vuejs][19]
+- [Angular][20]
 
 ```
 
@@ -1192,6 +1199,8 @@ available:
 [14]: #kadena-dapp
 [15]: #supported-templates
 [16]: #funding-an-account-on-testnet
-[17]: https://nextjs.org/
-[18]: https://vuejs.org/
-[19]: https://angular.io/
+[17]:
+  https://docs.kadena.io/pact/beginner/web-editor#start-the-development-networkh2097912892
+[18]: https://nextjs.org/
+[19]: https://vuejs.org/
+[20]: https://angular.io/
