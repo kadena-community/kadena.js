@@ -33,8 +33,8 @@ export const MenuButton: FC<IMenuButtonProps> = ({
     rotateClass === undefined
       ? ''
       : rotateClass === 'left'
-      ? iconLeftStyle
-      : iconRightStyle;
+        ? iconLeftStyle
+        : iconRightStyle;
 
   const button = (
     <button
