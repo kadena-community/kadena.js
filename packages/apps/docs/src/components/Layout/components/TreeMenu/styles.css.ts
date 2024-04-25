@@ -82,15 +82,15 @@ export const levelItemVariantClass = styleVariants({
   l0: {
     display: 'block',
     cursor: 'pointer',
-    fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.bold,
+    fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.medium,
     padding: `${tokens.kda.foundation.spacing.md} 0 ${tokens.kda.foundation.spacing.sm}`,
-    borderBottom: `2px solid  ${tokens.kda.foundation.color.border.base.boldest}`,
+    borderBottom: `1px solid  ${tokens.kda.foundation.color.border.base.boldest}`,
     fontSize: tokens.kda.foundation.typography.fontSize.lg,
   },
   l1: {
     display: 'block',
     cursor: 'pointer',
-    fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.bold,
+    fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.regular,
     padding: `${tokens.kda.foundation.spacing.md} 0 ${tokens.kda.foundation.spacing.sm}`,
     borderBottom: `1px solid ${$$borderColor}`,
     fontSize: tokens.kda.foundation.typography.fontSize.md,
