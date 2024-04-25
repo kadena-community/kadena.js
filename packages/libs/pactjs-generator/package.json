@@ -19,12 +19,7 @@
     "lib"
   ],
   "scripts": {
-    "prebuild": "pnpm run build:lexer && pnpm run build:grammar",
     "build": "tsc && api-extractor run --verbose",
-    "build:grammar": "nearleyc src/grammar.ne -o src/grammar.js",
-    "build:grammar:watch": "chokidar src/lexer.js src/grammar.ne src/tests/test.contract.pact -c \"pnpm run build:grammar\"",
-    "build:lexer": "tsc src/lexer.ts",
-    "build:lexer:watch": "chokidar src/lexer.ts -c \"pnpm run build:lexer\"",
     "format": "pnpm run --sequential /^format:.*/",
     "format:lint": "pnpm run lint:src --fix",
     "format:md": "remark README.md -o --use @kadena-dev/markdown",
