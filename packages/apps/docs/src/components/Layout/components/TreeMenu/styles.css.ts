@@ -176,6 +176,9 @@ export const treeItemButtonClass = style([
     color: 'text.base.default',
   }),
   {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
     borderTop: 0,
     borderRight: 0,
     borderLeft: 0,
