@@ -13,11 +13,17 @@ import {
 import type { IChainModule } from './types';
 
 import type {
+  EditingMode,
   KeyboardHandler,
   Mode,
   Theme,
 } from '@/components/Global/Ace/helper';
-import { keyboards, modes, themes } from '@/components/Global/Ace/helper';
+import {
+  editingModes,
+  keyboards,
+  modes,
+  themes,
+} from '@/components/Global/Ace/helper';
 import { usePersistentState } from '@/hooks/use-persistent-state';
 import { MonoClose } from '@kadena/react-icons/system';
 import useTranslation from 'next-translate/useTranslation';
@@ -54,6 +60,10 @@ const Editor = ({
     usePersistentState<KeyboardHandler>('keyboard-handler', keyboards[0]);
   const [theme, setTheme] = usePersistentState<Theme>('theme', 'monokai');
   const [mode, setMode] = usePersistentState<Mode>('mode', 'lisp');
+  const [editingMode, setEditingMode] = usePersistentState<EditingMode>(
+    'editing-mode',
+    'disabled',
+  );
   const [selectedKey, setSelectedKey] = useState(
     activeModule ? moduleToTabId(activeModule) : null,
   );
@@ -77,7 +87,7 @@ const Editor = ({
   }
   return (
     <Stack flexDirection={'column'}>
-      <Grid columns={3}>
+      <Grid columns={4}>
         <GridItem>
           <Select
             label={t('Keyboard handler')}
@@ -120,6 +130,23 @@ const Editor = ({
             ))}
           </Select>
         </GridItem>
+        <GridItem>
+          <Select
+            label={t('Editing')}
+            id="editor-editing-mode-select"
+            aria-label={t(
+              'Select whether to enable/disable editing for the code editor',
+            )}
+            onSelectionChange={(key) => {
+              const [, mode] = key.toString().split('-');
+              setEditingMode(mode as EditingMode);
+            }}
+          >
+            {editingModes.map((mode) => (
+              <SelectItem key={`editing-${mode}`}>{mode}</SelectItem>
+            ))}
+          </Select>
+        </GridItem>
       </Grid>
       <Tabs
         selectedKey={selectedKey}
@@ -153,7 +180,7 @@ const Editor = ({
               <AceViewer
                 code={code}
                 width="100%"
-                readOnly={false}
+                readOnly={editingMode === 'disabled'}
                 keyboardHandler={keyboardHandler}
                 theme={theme}
                 mode={mode}
