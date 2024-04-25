@@ -11,17 +11,17 @@ import type {
 import React, { forwardRef, useCallback } from 'react';
 import type { AriaTextFieldProps } from 'react-aria';
 import { useFocusRing, useHover, useTextField } from 'react-aria';
-import { bodyBaseRegular, monospaceBaseRegular } from '../../../styles';
-import { formField, inputContainer } from '../Form.css';
-import { FormFieldHeader } from '../FormFieldHeader/FormFieldHeader';
-import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
-import { addon, textarea } from './TextareaField.css';
+import { Field } from '../Field/Field';
+import type { InputVariants } from '../Form.css';
+import { input } from '../Form.css';
+import { textarea } from './TextareaField.css';
 
 type PickedAriaTextFieldProps = Omit<
   AriaTextFieldProps,
   'children' | 'inputElementType' | 'onChange' | 'type' | 'pattern'
 >;
 export interface ITextareaFieldProps extends PickedAriaTextFieldProps {
+  variant?: InputVariants['variant'];
   className?: string;
   isPositive?: boolean;
   tag?: string;
@@ -40,9 +40,11 @@ export interface ITextareaFieldProps extends PickedAriaTextFieldProps {
   onValueChange?: (value: string) => void;
   rows?: number;
   autoResize?: boolean;
+  startVisual?: ReactNode;
   endAddon?: ReactNode;
   isOutlined?: boolean;
-  inputFont?: 'body' | 'code';
+  fontType?: 'ui' | 'code';
+  size?: 'sm' | 'md' | 'lg';
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, react/function-component-definition
@@ -50,15 +52,22 @@ export function TextareaFieldBase(
   props: ITextareaFieldProps,
   forwardedRef: ForwardedRef<ElementRef<'textarea'>>,
 ) {
+  const {
+    size = 'md',
+    fontType = 'ui',
+    className,
+    tag,
+    startVisual,
+    info,
+    errorMessage,
+    endAddon,
+    description,
+    variant = 'default',
+    label,
+  } = props;
   const ref = useObjectRef<ElementRef<'textarea'>>(forwardedRef);
   const isDisabled = props.isDisabled || props.disabled;
-  const {
-    labelProps,
-    inputProps,
-    descriptionProps,
-    errorMessageProps,
-    ...validation
-  } = useTextField(
+  const { inputProps, ...fieldProps } = useTextField(
     {
       ...props,
       onChange: props.onValueChange,
@@ -117,71 +126,45 @@ export function TextareaFieldBase(
     [props.onChange, inputProps.onChange],
   );
 
-  // aggregate error message from validation props
-  const errorMessage =
-    typeof props.errorMessage === 'function'
-      ? props.errorMessage(validation)
-      : props.errorMessage ?? validation.validationErrors.join(' ');
-
   return (
-    <div className={classNames(formField, props.className)}>
-      {props.label && (
-        <FormFieldHeader
-          label={props.label}
-          tag={props.tag}
-          info={props.info}
-          {...labelProps}
-        />
-      )}
-      <div className={inputContainer}>
-        <textarea
-          {...mergeProps(inputProps, focusProps, hoverProps)}
-          rows={props.rows}
-          onChange={handleOnChange}
-          ref={ref}
-          className={classNames(
-            textarea,
-            props.inputFont === 'code' ? monospaceBaseRegular : bodyBaseRegular,
-          )}
-          data-outlined={props.isOutlined || undefined}
-          data-focused={isFocused || undefined}
-          data-disabled={isDisabled || undefined}
-          data-hovered={isHovered || undefined}
-          data-focus-visible={isFocusVisible || undefined}
-          data-invalid={validation.isInvalid || undefined}
-          data-positive={props.isPositive || undefined}
-        />
-        {props.endAddon && (
-          <div
-            className={addon}
-            ref={(el) => {
-              if (el) {
-                ref.current?.style.setProperty(
-                  '--end-addon-width',
-                  `${el.offsetWidth}px`,
-                );
-              }
-            }}
-          >
-            {props.endAddon}
-          </div>
+    <Field
+      {...fieldProps}
+      startVisual={startVisual}
+      variant={variant}
+      label={label}
+      isDisabled={isDisabled}
+      description={description}
+      endAddon={endAddon}
+      errorMessage={errorMessage}
+      size={size}
+      tag={tag}
+      info={info}
+      ref={ref}
+      inlineVisuals
+    >
+      <textarea
+        {...mergeProps(inputProps, focusProps, hoverProps)}
+        rows={props.rows}
+        onChange={handleOnChange}
+        ref={ref}
+        className={classNames(
+          input({
+            variant: fieldProps.isInvalid ? 'negative' : variant,
+            size,
+            fontType,
+          }),
+          textarea[size],
+          className,
         )}
-      </div>
-
-      {props.description && !validation.isInvalid && (
-        <FormFieldHelpText
-          {...descriptionProps}
-          intent={props.isPositive ? 'positive' : 'info'}
-        >
-          {props.description}
-        </FormFieldHelpText>
-      )}
-      {validation.isInvalid && (
-        <FormFieldHelpText {...errorMessageProps} intent="negative">
-          {errorMessage}
-        </FormFieldHelpText>
-      )}
-    </div>
+        data-outlined={props.isOutlined || undefined}
+        data-focused={isFocused || undefined}
+        data-disabled={isDisabled || undefined}
+        data-hovered={isHovered || undefined}
+        data-focus-visible={isFocusVisible || undefined}
+        data-has-start-addon={!!startVisual || undefined}
+        data-has-end-addon={!!endAddon || undefined}
+      />
+    </Field>
   );
 }
 
