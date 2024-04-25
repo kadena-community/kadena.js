@@ -143,6 +143,7 @@
     "@types/dockerode": "^3.3.23",
     "@types/node": "^20.12.7",
     "@types/tar": "^6.1.11",
+    "tsx": "^4.7.2",
     "@vitest/coverage-v8": "^1.6.0",
     "tsx": "^3.12.10",
     "typescript": "5.4.5",
