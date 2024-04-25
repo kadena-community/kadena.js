@@ -93,7 +93,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
           const newArray = [...v];
           delete token.proofOfUsId;
           delete token.listener;
-          token.id = tokenId;
+          token.tokenId = tokenId;
           if (!v.find((t) => t.requestKey === token.requestKey)) {
             newArray.push(token);
           }
@@ -189,12 +189,12 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
 
       //check if the tokenid is not already in the data
       //if it is we can remove this mintingtoken
-      if (tokens.find((t) => t.id === tokenData.id)) {
+      if (tokens.find((t) => t.tokenId === tokenData.tokenId)) {
         removeMintingToken(tokenData);
         return;
       }
 
-      if (!tokenData.id && tokenData.eventId) {
+      if (!tokenData.tokenId && tokenData.eventId) {
         const isMinted = await hasMinted(
           tokenData.eventId,
           account?.accountName,
@@ -214,7 +214,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
   const removeTokenFromData = useCallback(
     (token: IToken) => {
       if (!tokens) return;
-      const newTokens = tokens.filter((t) => t.id !== token.id);
+      const newTokens = tokens.filter((t) => t.tokenId !== token.tokenId);
       setTokens(newTokens);
     },
     [tokens],
@@ -229,7 +229,7 @@ export const TokenProvider: FC<PropsWithChildren> = ({ children }) => {
         info: {
           uri: proofOfUs.manifestUri ?? '',
         },
-        id: proofOfUs.tokenId,
+        tokenId: proofOfUs.tokenId,
         mintStartDate: Date.now(),
       };
 

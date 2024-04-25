@@ -2,12 +2,10 @@ import type { ChainId } from '@kadena/types';
 import { z } from 'zod';
 import { chainIdValidation } from '../account/utils/accountHelpers.js';
 import {
-  NO_NETWORKS_FOUND_ERROR_MESSAGE,
-} from '../constants/networks.js';
-import {
   INVALID_FILE_NAME_ERROR_MSG,
   MAX_CHAIN_VALUE,
 } from '../constants/config.js';
+import { NO_NETWORKS_FOUND_ERROR_MESSAGE } from '../constants/networks.js';
 import type { ICustomNetworkChoice } from '../networks/utils/networkHelpers.js';
 import {
   ensureNetworksConfiguration,

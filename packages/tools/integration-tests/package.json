@@ -29,9 +29,9 @@
     "@kadena-dev/markdown": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
     "@kadena/types": "workspace:*",
-    "@types/node": "^18.17.14",
+    "@types/node": "^20.12.7",
     "@types/supertest": "^2.0.16",
     "eslint": "^8.45.0",
-    "typescript": "5.2.2"
+    "typescript": "5.4.5"
   }
 }

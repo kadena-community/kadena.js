@@ -31,7 +31,7 @@ export const ConnectView: FC<IProps> = () => {
   const params = useSearchParams();
   const shouldAddParam = params.get('shouldAdd');
 
-  const { account } = useAccount();
+  const { account, isMounted } = useAccount();
   const [signed, setSigned] = useState(false);
   const [showMaxModal, setShowMaxModal] = useState(false);
   const { proofOfUs, signees, addSignee, removeSignee, hasSigned, isSignee } =
@@ -50,7 +50,7 @@ export const ConnectView: FC<IProps> = () => {
       return;
     }
 
-    addSignee();
+    await addSignee();
     router.replace(getReturnUrl());
   };
 
@@ -63,12 +63,14 @@ export const ConnectView: FC<IProps> = () => {
   };
 
   useEffect(() => {
+    if (!isMounted || !signees?.length) return;
+
     if (!shouldAddParam) {
       checkIfSignee();
       return;
     }
     check2AddSignee();
-  }, [proofOfUs?.proofOfUsId, signees?.length, shouldAddParam]);
+  }, [proofOfUs?.proofOfUsId, signees, shouldAddParam, isMounted]);
 
   const handleJoin = async () => {
     signToken();

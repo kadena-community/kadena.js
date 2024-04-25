@@ -38,12 +38,12 @@
   "devDependencies": {
     "@kadena-dev/eslint-config": "workspace:*",
     "@kadena-dev/shared-config": "workspace:*",
-    "@rushstack/eslint-config": "~3.3.0",
+    "@rushstack/eslint-config": "~3.6.9",
     "@types/mdast": "^4.0.1",
-    "@types/node": "^18.17.14",
+    "@types/node": "^20.12.7",
     "eslint": "^8.45.0",
-    "prettier": "~3.0.3",
-    "typescript": "5.2.2",
+    "prettier": "~3.2.5",
+    "typescript": "5.4.5",
     "unified": "11.0.3",
     "vfile": "6.0.1"
   }
