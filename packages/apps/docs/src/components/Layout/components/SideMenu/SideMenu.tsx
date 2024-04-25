@@ -58,7 +58,7 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
         idx={1}
         onClick={clickSubMenu}
       >
-        <TreeList ref={treeRef} root={true}>
+        <TreeList ref={treeRef} root={true} level="l0">
           {menuItems.map((menu) => (
             <MainTreeItem key={menu.root} item={menu} root={false} level={0} />
           ))}

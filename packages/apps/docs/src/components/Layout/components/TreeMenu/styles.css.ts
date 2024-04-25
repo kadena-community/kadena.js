@@ -8,7 +8,6 @@ export const treeListClass = style([
     fontSize: 'sm',
   }),
   {
-    overflowX: 'hidden',
     listStyle: 'none',
     overflowY: 'hidden',
     transition: 'all .5s ease',
@@ -39,6 +38,9 @@ export const linkClass = style([
     textTransform: 'capitalize',
   }),
   {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
     selectors: {
       '&:hover': {
         color: tokens.kda.foundation.color.brand.primary.n60,
@@ -49,6 +51,7 @@ export const linkClass = style([
 ]);
 
 export const listItemClass = style({
+  overflowX: 'hidden',
   selectors: {
     '&:first-of-type': {
       marginBlockStart: tokens.kda.foundation.spacing.sm,

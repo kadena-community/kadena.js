@@ -1,3 +1,4 @@
+import type { LevelType } from '@kadena/docs-tools';
 import classnames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import React from 'react';
@@ -11,7 +12,7 @@ import {
 interface IProps {
   children: ReactNode;
   onClick: () => void;
-  level?: 'l0' | 'l1' | 'l2' | 'l3';
+  level: `l${LevelType}`;
   menuOpen?: boolean;
 }
 
