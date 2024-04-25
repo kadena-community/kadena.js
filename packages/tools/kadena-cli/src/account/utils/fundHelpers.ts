@@ -138,7 +138,7 @@ export async function findMissingModuleDeployments(
 ): Promise<ChainId[]> {
   const undeployedChainIds: ChainId[] = [];
 
-  for (const chainId of targetChainIds) {
+  await Promise.all(targetChainIds.map(async (chainId) => {
     const moduleDeployed = await describeModule(moduleName, {
       host: network.networkHost,
       defaults: {
@@ -150,7 +150,7 @@ export async function findMissingModuleDeployments(
     if (moduleDeployed === false) {
       undeployedChainIds.push(chainId);
     }
-  }
+  }));
 
   return undeployedChainIds;
 }
