@@ -88,7 +88,9 @@ const Page: FC = () => {
                       <Text bold>Proofs ({tokens.length})</Text>
                       <List>
                         {tokens.map((token: IToken) => {
-                          return <ListItem key={`${token.id}`} token={token} />;
+                          return (
+                            <ListItem key={`${token.tokenId}`} token={token} />
+                          );
                         })}
                       </List>
                     </Stack>

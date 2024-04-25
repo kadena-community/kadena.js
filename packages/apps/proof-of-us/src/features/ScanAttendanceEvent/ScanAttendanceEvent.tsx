@@ -37,7 +37,7 @@ export const ScanAttendanceEvent: FC<IProps> = ({
 
   const tokenId = useMemo(() => {
     const token = tokens?.find((t) => t.info?.uri === data.manifestUri);
-    return token?.id;
+    return token?.tokenId;
   }, [tokens, data]);
 
   const getProof = (
