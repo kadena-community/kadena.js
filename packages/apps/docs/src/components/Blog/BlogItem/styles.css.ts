@@ -119,7 +119,7 @@ export const authorTitleClass = style([
   atoms({
     fontSize: 'md',
     fontWeight: 'secondaryFont.regular',
-    color: 'text.subtlest.inverse.default',
+    color: 'text.subtlest.default',
   }),
 ]);
 

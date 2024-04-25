@@ -173,6 +173,7 @@ const createTree = async (
 
       return acc;
     }, -1);
+
     if (fileIdx > -1) {
       newFiles[fileIdx] = file;
     }
@@ -261,8 +262,6 @@ export const createDocsTree = async (): Promise<IScriptResult> => {
   });
 
   const result = await createTree(INITIAL_PATH, TREE, pages);
-
-  //
 
   fs.mkdirSync(MENU_FILE_DIR, { recursive: true });
   fs.writeFileSync(

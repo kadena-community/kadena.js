@@ -1,10 +1,9 @@
-import { BlogPostsStrip } from '@/components/BlogPostsStrip/BlogPostsStrip';
 import { BrowseSection } from '@/components/BrowseSection/BrowseSection';
 import { DocsCard } from '@/components/DocsCard/DocsCard';
 import { docsCardLink } from '@/components/DocsCard/styles.css';
 import { getPageConfig } from '@/utils/config';
 import type { IMenuData } from '@kadena/docs-tools';
-import { Box, Grid, GridItem, Heading, Stack } from '@kadena/react-ui';
+import { Box, Grid, GridItem, Stack } from '@kadena/react-ui';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import type { FC } from 'react';
@@ -14,7 +13,7 @@ interface IProps {
   blogPosts: IMenuData[];
 }
 
-const Home: FC<IProps> = ({ blogPosts }) => {
+const Home: FC<IProps> = () => {
   return (
     <Stack flexDirection="column" gap="xxl">
       <Box marginBlockEnd="xxxl">
@@ -201,7 +200,6 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       ...(await getPageConfig({
-        blogPosts: ['kadena'],
         filename: __filename,
       })),
 
