@@ -12,11 +12,13 @@ import {
   INVALID_FILE_NAME_ERROR_MSG,
   MULTI_SELECT_INSTRUCTIONS,
 } from '../constants/global.js';
+import type { IWallet } from '../services/wallet/wallet.types.js';
 import type { IPrompt } from '../utils/createOption.js';
 import {
   formatZodError,
   isValidFilename,
   maskStringPreservingStartAndEnd,
+  notEmpty,
   truncateText,
 } from '../utils/globalHelpers.js';
 import { checkbox, input, select } from '../utils/prompts.js';
@@ -307,4 +309,46 @@ export const chainIdPrompt: IPrompt<string> = async (
       return true;
     },
   })) as ChainId;
+};
+
+export const selectPublicKeysFromWalletPrompt: IPrompt<string> = async (
+  previousQuestions,
+  args,
+  isOptional,
+) => {
+  const wallet = previousQuestions.walletNameConfig as IWallet;
+  const maxAliasLength = Math.max(
+    ...wallet.keys.map(({ alias = '' }) => alias.length),
+  );
+  const publicKeysList = wallet.keys.reduce(
+    (acc, key) => {
+      const { index, alias, publicKey } = key;
+      const indexString = index.toString().padEnd(3, ' ');
+      const aliasStr = notEmpty(alias) ? alias : '';
+      const aliasMaxLength = maxAliasLength < 20 ? maxAliasLength : 20;
+      const paddedAlias = aliasStr.padEnd(aliasMaxLength, ' ');
+      const publicKeyStr = maskStringPreservingStartAndEnd(publicKey, 24);
+      const name = `idx ${indexString} - ${paddedAlias} - ${publicKeyStr}`;
+      acc.push({
+        name,
+        value: publicKey,
+      });
+      return acc;
+    },
+    [] as { name: string; value: string }[],
+  );
+  const selectedKeys = await checkbox({
+    message: 'Select public keys to add to account:',
+    choices: publicKeysList.map(({ name, value }) => ({ value, name })),
+    pageSize: 10,
+    instructions: MULTI_SELECT_INSTRUCTIONS,
+    validate: (input) => {
+      if (input.length === 0) {
+        return 'Please select at least one public key';
+      }
+
+      return true;
+    },
+  });
+  return selectedKeys.join(',');
 };
