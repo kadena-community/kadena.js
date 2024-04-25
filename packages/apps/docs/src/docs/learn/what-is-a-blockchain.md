@@ -51,7 +51,7 @@ With the proof-of-work consensus model, the node that completes a computational 
 
 The Kadena proof-of-work consensus model is unique in its use of multiple chains to improve the scalability of its consensus model.
 This unique consensus model is defined in the **Chainweb** protocol.
-For more information about Chainweb, see [Chainweb, simplified](/learn/chainweb-simplified).
+For more information about Chainweb, see [Chainweb, simplified](/learn/chainweb).
 
 For a blockchain to be fault tolerant and provide a consistent view of state even if some nodes are compromised by malicious actors or unavailable because of network outages, some consensus models require at least two-thirds of the nodes to agree on state. 
 This two-thirds majority ensures that the network is fault tolerant and can withstand some network participants behaving badly, regardless of whether the behavior is intentional or accidental.
