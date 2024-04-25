@@ -6,6 +6,7 @@ import { useAccount } from '../account';
 export const useGetAllProofOfUs: IDataHook<NonFungibleTokenBalance[]> = () => {
   const { account } = useAccount();
 
+  console.log(account?.accountName);
   const { data, loading: isLoading } = useGetTokensQuery({
     variables: {
       accountName: account?.accountName ?? '',
