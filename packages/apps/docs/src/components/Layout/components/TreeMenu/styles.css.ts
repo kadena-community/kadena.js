@@ -84,7 +84,7 @@ export const levelItemVariantClass = styleVariants({
     cursor: 'pointer',
     fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.bold,
     padding: `${tokens.kda.foundation.spacing.md} 0 ${tokens.kda.foundation.spacing.sm}`,
-    borderBottom: `2px solid ${$$borderColor}`,
+    borderBottom: `2px solid  ${tokens.kda.foundation.color.border.base.boldest}`,
     fontSize: tokens.kda.foundation.typography.fontSize.lg,
   },
   l1: {
@@ -93,12 +93,14 @@ export const levelItemVariantClass = styleVariants({
     fontWeight: tokens.kda.foundation.typography.weight.secondaryFont.bold,
     padding: `${tokens.kda.foundation.spacing.md} 0 ${tokens.kda.foundation.spacing.sm}`,
     borderBottom: `1px solid ${$$borderColor}`,
+    fontSize: tokens.kda.foundation.typography.fontSize.md,
   },
   l2: {
     display: 'block',
     cursor: 'pointer',
     padding: `${tokens.kda.foundation.spacing.xs} 0`,
     border: 0,
+    fontSize: tokens.kda.foundation.typography.fontSize.sm,
   },
   l3: {
     display: 'block',
@@ -186,7 +188,19 @@ export const treeItemButtonClass = style([
 ]);
 
 export const treeItemPseudoVariantClass = styleVariants({
-  l0: {},
+  l0: {
+    selectors: {
+      '&::after': {
+        position: 'absolute',
+        right: tokens.kda.foundation.spacing.xs,
+        content: '+',
+        fontWeight:
+          tokens.kda.foundation.typography.weight.secondaryFont.regular,
+        transform: 'translate(0, 0) rotate(0)',
+        transition: 'transform .2s ease',
+      },
+    },
+  },
   l1: {
     selectors: {
       '&::after': {
