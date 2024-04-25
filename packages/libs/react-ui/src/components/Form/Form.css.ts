@@ -146,26 +146,32 @@ export const startAddonSize = styleVariants({
   lg: { fontSize: token('size.n4') },
 });
 
-export const endAddon = style([
+const endAddonBase = style([
   atoms({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    backgroundColor: 'surface.default',
   }),
+  {
+    selectors: {
+      [`&:has(button)`]: {
+        backgroundColor: token('color.background.surface.default'),
+      },
+    },
+  },
 ]);
 
 export const endAddonStyles = styleVariants({
   inline: [
-    endAddon,
+    endAddonBase,
     {
       top: token('spacing.n2'),
       right: token('spacing.n2'),
     },
   ],
   fullHeight: [
-    endAddon,
+    endAddonBase,
     {
       top: '50%',
       height: '100%',

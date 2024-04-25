@@ -1,4 +1,5 @@
 import { SystemIcon, TextField } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import type {
   FormEvent,
   ForwardRefExoticComponent,
@@ -44,7 +45,9 @@ export const SearchBar: ForwardRefExoticComponent<
           defaultValue={query}
           type="text"
           aria-label="Search"
-          endAddon={<MagnifierIcon />}
+          endAddon={
+            <MagnifierIcon className={atoms({ paddingInline: 'n2' })} />
+          }
         />
       </form>
     );

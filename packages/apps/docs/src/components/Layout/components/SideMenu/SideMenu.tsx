@@ -1,6 +1,7 @@
 import { EVENT_NAMES, analyticsEvent } from '@/utils/analytics';
 import type { IMenuItem } from '@kadena/docs-tools';
 import { Box, Heading, SystemIcon, TextField } from '@kadena/react-ui';
+import { atoms } from '@kadena/react-ui/styles';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import type { FC, KeyboardEvent } from 'react';
@@ -73,7 +74,9 @@ export const SideMenu: FC<IProps> = ({ closeMenu, menuItems }) => {
             placeholder="Search"
             type="text"
             aria-label="Search"
-            endAddon={<MagnifierIcon />}
+            endAddon={
+              <MagnifierIcon className={atoms({ paddingInline: 'n2' })} />
+            }
           />
         </Box>
       </ShowOnMobile>
