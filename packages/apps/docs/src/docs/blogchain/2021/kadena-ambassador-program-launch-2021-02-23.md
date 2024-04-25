@@ -95,7 +95,7 @@ description of the community channel you want to create and explain how the
 channel would be beneficial for spreading Kadena’s brand. In addition, Community
 Leaders can create rules more or less strict than in our official channels.
 However, Community Leaders must ensure that there is no misinformation being
-spread and uphold Kadena’s brand and [Code of Conduct](/kadena/code-of-conduct).
+spread and uphold Kadena’s brand and [Code of Conduct](https://www.kadena.io/community-guidelines).
 
 Kadena recognizes that **community events** are crucial in bringing members
 together to help spread Kadena’s brand. One example of a community-led event was

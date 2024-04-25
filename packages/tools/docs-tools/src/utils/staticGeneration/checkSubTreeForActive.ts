@@ -98,5 +98,6 @@ export const checkSubTreeForActive = async (
     throw new Error('no path');
   }
 
-  return tree.map(mapSubTree(path, noChildren, true));
+  const newTree = tree.filter((item) => !item.root.includes('blogchain'));
+  return newTree.map(mapSubTree(path, noChildren, true));
 };
