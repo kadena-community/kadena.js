@@ -67,8 +67,8 @@ const Field = forwardRef(
     const currentVariant = isInvalid
       ? 'negative'
       : isPositive
-      ? 'positive'
-      : variant;
+        ? 'positive'
+        : variant;
 
     // aggregate error message from validation props
     const error =
