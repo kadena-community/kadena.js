@@ -10,7 +10,7 @@ layout: landing
 tags: [pact, chainweb, network, node operator, developer]
 ---
 
-# TEMP H1
+# Deploy infrastructure or smart contracts
 
 There are two main deployment scenarios for the Kadena network:
 

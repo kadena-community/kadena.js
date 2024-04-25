@@ -10,7 +10,7 @@ layout: landing page
 tags: [pact, typescript, account, transactions, utils]
 ---
 
-# TEMP H1 
+# Invest in the Kadena network 
 
 The native Kadena token is listed on exchanges as KDA.
 KDA is a digital currency that is used to pay for the resources used to process transaction on the Kadena public blockchain. 

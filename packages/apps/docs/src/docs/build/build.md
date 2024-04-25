@@ -12,7 +12,7 @@ tags: [pact, typescript, account, transactions, utils]
 
 ---
 
-# Temp H1
+# Build applications for the Kadena ecosystem
 
 Building applications to run on a blockchain doesn't have to be hard, time-consuming, or expensive. 
 Get started with the basics through hands-on tutorials. 
