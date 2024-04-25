@@ -178,6 +178,23 @@ export function normalizeError(error: unknown): GraphQLError {
     });
   }
 
+  if (
+    error instanceof Error &&
+    'code' in error &&
+    'type' in error &&
+    error.code === 'ECONNRESET'
+  ) {
+    return new GraphQLError('Chainweb Node Connection Reset', {
+      extensions: {
+        type: error.type,
+        message: error.message,
+        description:
+          'Chainweb Node connection reset. Check if you have reached any rate limits, or if the Chainweb Node is overloaded.',
+        data: error.stack,
+      },
+    });
+  }
+
   return new GraphQLError('Unknown error occured.', {
     extensions: {
       type: 'UnknownError',
