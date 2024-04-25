@@ -1,4 +1,4 @@
-import { getNonFungibleTokenInfo } from '@services/token-service';
+import { getNonFungibleTokenInfoWithRetry } from '@services/token-service';
 import DataLoader from 'dataloader';
 import type { INonFungibleTokenInfo } from '../types/graphql-types';
 
@@ -17,7 +17,7 @@ export const nonFungibleTokenInfoLoader = new DataLoader<
 >(async (keys: readonly INonFungibleTokenInfoKey[]) => {
   const results = await Promise.all(
     keys.map(({ tokenId, chainId, version }) =>
-      getNonFungibleTokenInfo(tokenId, chainId, version),
+      getNonFungibleTokenInfoWithRetry(tokenId, chainId, version),
     ),
   );
 

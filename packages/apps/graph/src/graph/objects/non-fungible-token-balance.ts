@@ -5,6 +5,7 @@ import { nonFungibleTokenBalancesLoader } from '../data-loaders/non-fungible-tok
 import { nonFungibleTokenInfoLoader } from '../data-loaders/non-fungible-token-info';
 import type { INonFungibleTokenBalance } from '../types/graphql-types';
 import { NonFungibleTokenBalanceName } from '../types/graphql-types';
+import Guard from './guard';
 import NonFungibleTokenInfo from './non-fungible-token-info';
 
 export default builder.node(
@@ -43,7 +44,7 @@ export default builder.node(
       chainId: t.exposeString('chainId'),
       version: t.exposeString('version'),
       guard: t.field({
-        type: 'Guard',
+        type: Guard,
         resolve(parent) {
           return parent.guard;
         },

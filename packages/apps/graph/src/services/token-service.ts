@@ -5,6 +5,7 @@ import { dirtyReadClient } from '@kadena/client-utils/core';
 import { composePactCommand, execution, setMeta } from '@kadena/client/fp';
 import type { Prisma } from '@prisma/client';
 import { dotenv } from '@utils/dotenv';
+import { withRetry } from '@utils/withRetry';
 import { nonFungibleAccountDetailsLoader } from '../graph/data-loaders/non-fungible-account-details';
 import type {
   INonFungibleTokenBalance,
@@ -73,16 +74,19 @@ export async function getNonFungibleTokenBalances(
         version: event.version!,
       });
 
+      if (!accountDetails) {
+        throw new Error(
+          `Account details not found for token ${event.token} and account ${accountName}`,
+        );
+      }
+
       result.push({
         __typename: NonFungibleTokenBalanceName,
         balance,
         accountName,
         tokenId: event.token,
         chainId: finalChainId,
-        guard: {
-          keys: accountDetails!.guard.keys,
-          predicate: accountDetails!.guard.pred,
-        },
+        guard: accountDetails.guard,
         version: event.version!,
       });
       processedTokens.add(tokenChainIdKey);
@@ -132,9 +136,6 @@ export async function getNonFungibleTokenInfo(
 
   let executionCmd;
   let tokenInfo;
-  let policies;
-
-  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   if (version === 'v1') {
     executionCmd = execution(
@@ -198,18 +199,18 @@ export async function getNonFungibleTokenInfo(
       tokenInfo = tokenInfoResult.token;
     }
 
-    if ('policy' in tokenInfoResult) {
-      policies = Array(tokenInfoResult.policy);
-    }
+    // if ('policy' in tokenInfoResult) {
+    //   policies = Array(tokenInfoResult.policy);
+    // }
 
     if ('manifest' in tokenInfo) {
       tokenInfo.uri = `data:${tokenInfo.manifest.uri.scheme},${tokenInfo.manifest.uri.data}`;
     }
   } else {
     tokenInfo = tokenInfoResult;
-    if ('policies' in tokenInfoResult) {
-      policies = tokenInfoResult.policies;
-    }
+    // if ('policies' in tokenInfoResult) {
+    //   policies = tokenInfoResult.policies;
+    // }
   }
 
   if ('precision' in tokenInfo) {
@@ -221,23 +222,22 @@ export async function getNonFungibleTokenInfo(
     }
   }
 
-  if (policies) {
-    if (Array.isArray(policies)) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      tokenInfo.policies = policies.map((policy: any) => ({
-        moduleName: `${policy.refName.namespace}.${policy.refName.name}`,
-      }));
+  if ('policy' in tokenInfoResult || 'policies' in tokenInfoResult) {
+    if (version === 'v1') {
+      tokenInfo.policies = Array(tokenInfoResult.policy);
     } else {
-      tokenInfo.policies = {
-        moduleName: `${policies.refName.namespace}.${policies.refName.name}`,
-      };
+      tokenInfo.policies = tokenInfoResult.policies;
     }
-  } else {
-    tokenInfo.policies = [];
   }
 
   return tokenInfo as INonFungibleTokenInfo;
 }
+
+export const getNonFungibleTokenInfoWithRetry = withRetry(
+  getNonFungibleTokenInfo,
+  dotenv.CHAINWEB_NODE_RETRY_ATTEMPTS,
+  dotenv.CHAINWEB_NODE_RETRY_DELAY,
+);
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export async function getNonFungibleTokenDetails(

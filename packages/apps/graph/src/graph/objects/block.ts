@@ -7,7 +7,7 @@ import {
 } from '@services/complexity';
 import { normalizeError } from '@utils/errors';
 import { builder } from '../builder';
-import type { IGuard } from '../types/graphql-types';
+import type { IKeyset } from '../types/graphql-types';
 import { FungibleChainAccountName } from '../types/graphql-types';
 import FungibleChainAccount from './fungible-chain-account';
 
@@ -56,7 +56,7 @@ export default builder.prismaNode(Prisma.ModelName.Block, {
               },
             })
           )?.map((x) => x.key),
-          predicate: parent.predicate as IGuard['predicate'],
+          predicate: parent.predicate as IKeyset['predicate'],
         },
         balance: 0,
         transactions: [],

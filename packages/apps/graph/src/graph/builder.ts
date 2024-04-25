@@ -25,13 +25,15 @@ import type {
   IFungibleChainAccount,
   IGasLimitEstimation,
   IGraphConfiguration,
-  IGuard,
+  IJsonString,
+  IKeyset,
+  IModuleReference,
   INonFungibleAccount,
   INonFungibleChainAccount,
   INonFungibleTokenBalance,
   INonFungibleTokenInfo,
-  INonFungibleTokenPolicy,
   IPactQueryResponse,
+  IPolicy,
   ITransactionCapability,
   ITransactionCommand,
   ITransactionMempoolInfo,
@@ -80,11 +82,10 @@ export const builder = new SchemaBuilder<
       FungibleChainAccount: IFungibleChainAccount;
       GasLimitEstimation: IGasLimitEstimation;
       GraphConfiguration: IGraphConfiguration;
-      Guard: IGuard;
+      Keyset: IKeyset;
       NonFungibleAccount: INonFungibleAccount;
       NonFungibleChainAccount: INonFungibleChainAccount;
       NonFungibleTokenBalance: INonFungibleTokenBalance;
-      NonFungibleTokenPolicy: INonFungibleTokenPolicy;
       NonFungibleTokenInfo: INonFungibleTokenInfo;
       TransactionMeta: ITransactionMeta;
       ExecutionPayload: IExecutionPayload;
@@ -95,6 +96,9 @@ export const builder = new SchemaBuilder<
       TransactionCapability: ITransactionCapability;
       TransactionSignature: ITransactionSignature;
       PactQueryResponse: IPactQueryResponse;
+      Policy: IPolicy;
+      ModuleReference: IModuleReference;
+      JsonString: IJsonString;
     };
   }
 >({

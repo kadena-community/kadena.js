@@ -1,17 +1,14 @@
 import { getNonFungibleTokenDetails } from '@services/token-service';
 import { dotenv } from '@utils/dotenv';
 import { withRetry } from '@utils/withRetry';
-import type { IGuard } from '../../graph/types/graphql-types';
+import type { IJsonString, IKeyset } from '../../graph/types/graphql-types';
 import { PactCommandError } from './utils';
 
 export interface INonFungibleChainAccountDetails {
   id: string;
   account: string;
   balance: number;
-  guard: {
-    keys: string[];
-    pred: IGuard['predicate'];
-  };
+  guard: IKeyset | IJsonString;
 }
 
 export async function getNonFungibleAccountDetails(
@@ -37,14 +34,10 @@ export async function getNonFungibleAccountDetails(
     }
 
     if ('guard' in result) {
-      if ('cgArgs' in result.guard) {
-        result.guard.pred = result.guard.cgArgs[result.guard.cgArgs.length - 1]
-          .split(':')
-          .pop();
-        result.guard.keys = result.guard.cgArgs.map((arg: string) =>
-          arg.split(':').slice(0, -1).join(':'),
-        );
-      }
+      result.guard = {
+        type: 'Guard',
+        value: JSON.stringify(result.guard),
+      };
     }
 
     return result as INonFungibleChainAccountDetails;

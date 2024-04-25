@@ -1,5 +1,5 @@
 import { builder } from '../builder';
-import NonFungibleTokenPolicy from './non-fungible-token-policy';
+import Policy from './policy';
 
 export default builder.objectType('NonFungibleTokenInfo', {
   description: 'Information related to a token.',
@@ -8,7 +8,7 @@ export default builder.objectType('NonFungibleTokenInfo', {
     precision: t.exposeInt('precision'),
     uri: t.exposeString('uri'),
     policies: t.field({
-      type: [NonFungibleTokenPolicy],
+      type: [Policy],
       resolve: (parent) => parent.policies,
     }),
   }),
