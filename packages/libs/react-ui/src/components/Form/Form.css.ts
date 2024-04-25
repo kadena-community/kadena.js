@@ -9,6 +9,7 @@ import type { RecipeVariants } from '@vanilla-extract/recipes';
 import { recipe } from '@vanilla-extract/recipes';
 import {
   atoms,
+  breakpoints,
   monospaceBaseRegular,
   monospaceSmallRegular,
   monospaceSmallestRegular,
@@ -105,48 +106,68 @@ export const formField = atoms({
   flex: 1,
 });
 
-export const inputContainer = atoms({
-  display: 'flex',
-  flex: 1,
-  position: 'relative',
-  alignItems: 'stretch',
-});
-
-const baseStartAddon = style([
+const startAddonBase = style([
   atoms({
     position: 'absolute',
   }),
   {
-    insetBlockStart: '50%',
-    transform: 'translateY(-50%)',
     insetInlineStart: token('spacing.n3'),
     color: iconFill,
   },
 ]);
 
-export const startAddon = styleVariants({
-  sm: [baseStartAddon, { fontSize: '11px' }],
-  md: [baseStartAddon, { fontSize: '13px' }],
-  lg: [baseStartAddon, { fontSize: token('size.n4') }],
+export const startAddonStyles = styleVariants({
+  inline: [
+    startAddonBase,
+    {
+      top: token('spacing.n4'),
+    },
+  ],
+  fullHeight: [
+    startAddonBase,
+    {
+      insetBlockStart: '50%',
+      transform: 'translateY(-50%)',
+    },
+  ],
+});
+
+export const startAddonSize = styleVariants({
+  sm: { fontSize: '11px' },
+  md: { fontSize: '13px' },
+  lg: { fontSize: token('size.n4') },
 });
 
 export const endAddon = style([
   atoms({
-    height: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    right: 0,
     backgroundColor: 'surface.default',
   }),
-  {
-    top: '50%',
-    transform: 'translateY(-50%)',
-  },
 ]);
 
-globalStyle(`${endAddon} button`, {
+export const endAddonStyles = styleVariants({
+  inline: [
+    endAddon,
+    {
+      top: token('spacing.n2'),
+      right: token('spacing.n2'),
+    },
+  ],
+  fullHeight: [
+    endAddon,
+    {
+      top: '50%',
+      height: '100%',
+      transform: 'translateY(-50%)',
+      right: 0,
+    },
+  ],
+});
+
+globalStyle(`${endAddonStyles.fullHeight} button`, {
   height: '100%',
   borderRadius: '0',
 });
@@ -166,6 +187,15 @@ export const input = recipe({
       transition: 'box-shadow, background-color 0.2s ease-in-out',
       '::placeholder': {
         color: textColor,
+      },
+      minWidth: '150px',
+      '@media': {
+        [breakpoints.sm]: {
+          maxWidth: '100%',
+        },
+        [breakpoints.md]: {
+          maxWidth: '40rem',
+        },
       },
       selectors: {
         '&[data-focused]': {

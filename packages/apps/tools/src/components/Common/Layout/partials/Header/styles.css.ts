@@ -38,3 +38,11 @@ export const headerButtonStyle = style([
     },
   },
 ]);
+
+export const rightSideMenu = style([
+  atoms({ flex: 1, display: 'flex' }),
+  {
+    maxWidth: '25%',
+    minWidth: '200px',
+  },
+]);

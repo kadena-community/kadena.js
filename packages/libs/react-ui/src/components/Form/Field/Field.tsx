@@ -6,9 +6,10 @@ import { FormFieldHeader } from '..';
 import type { InputVariants } from '../Form.css';
 import {
   baseContainerClass,
-  endAddon as endAddonClass,
+  endAddonStyles,
   formField,
-  startAddon as startAddonClass,
+  startAddonSize,
+  startAddonStyles,
 } from '../Form.css';
 import { FormFieldHelpText } from '../FormFieldHelpText/FormFieldHelpText';
 
@@ -31,6 +32,7 @@ interface IFieldProps {
   tag?: string;
   validationDetails: ValidityState;
   validationErrors: string[];
+  inlineVisuals?: boolean;
 }
 
 const Field = forwardRef(
@@ -54,8 +56,9 @@ const Field = forwardRef(
       validationDetails,
       validationErrors,
       variant = 'default',
+      inlineVisuals = false,
     }: IFieldProps,
-    ref: ForwardedRef<ElementRef<'input' | 'textarea' | 'select'>>,
+    ref: ForwardedRef<ElementRef<'input' | 'textarea' | 'select' | 'button'>>,
   ) => {
     const isPositive = variant === 'positive';
     isInvalid = isInvalid || variant === 'negative';
@@ -91,7 +94,10 @@ const Field = forwardRef(
         >
           {startVisual && (
             <div
-              className={startAddonClass[size]}
+              className={classNames(
+                startAddonSize[size],
+                startAddonStyles[inlineVisuals ? 'inline' : 'fullHeight'],
+              )}
               ref={(el) => {
                 if (el && ref && 'current' in ref) {
                   ref.current?.style.setProperty(
@@ -107,7 +113,9 @@ const Field = forwardRef(
           {children}
           {endAddon && (
             <div
-              className={endAddonClass}
+              className={classNames(
+                endAddonStyles[inlineVisuals ? 'inline' : 'fullHeight'],
+              )}
               ref={(el) => {
                 if (el && ref && 'current' in ref) {
                   ref.current?.style.setProperty(
