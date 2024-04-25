@@ -117,8 +117,6 @@ export const getTokenUri = async (id: string): Promise<string | undefined> => {
     signatureVerification: false,
   });
 
-  console.log(result);
-
   return result.status === 'success' ? (result.data as string) : undefined;
 };
 
