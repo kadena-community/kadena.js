@@ -93,6 +93,7 @@ const Editor = ({
             label={t('Keyboard handler')}
             id="editor-keyboard-handler"
             aria-label={t('Select which keyboard to use for the code editor')}
+            selectedKey={keyboardHandler}
             onSelectionChange={(key) => {
               setKeyboardHandler(key.toString() as KeyboardHandler);
             }}
@@ -107,6 +108,7 @@ const Editor = ({
             label={t('Theme')}
             id="editor-theme-select"
             aria-label={t('Select which theme to use for the code editor')}
+            selectedKey={theme}
             onSelectionChange={(key) => {
               setTheme(key.toString() as Theme);
             }}
@@ -121,6 +123,7 @@ const Editor = ({
             label={t('Mode')}
             id="editor-mode-select"
             aria-label={t('Select which mode to use for the code editor')}
+            selectedKey={mode}
             onSelectionChange={(key) => {
               setMode(key.toString() as Mode);
             }}
@@ -137,6 +140,7 @@ const Editor = ({
             aria-label={t(
               'Select whether to enable/disable editing for the code editor',
             )}
+            selectedKey={`editing-${editingMode}`}
             onSelectionChange={(key) => {
               const [, mode] = key.toString().split('-');
               setEditingMode(mode as EditingMode);
