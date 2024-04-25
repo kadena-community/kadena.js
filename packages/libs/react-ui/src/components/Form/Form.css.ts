@@ -106,6 +106,14 @@ export const formField = atoms({
   flex: 1,
 });
 
+// TODO: remove when all fields are updated
+export const inputContainer = atoms({
+  display: 'flex',
+  flex: 1,
+  position: 'relative',
+  alignItems: 'stretch',
+});
+
 const startAddonBase = style([
   atoms({
     position: 'absolute',
