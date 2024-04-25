@@ -845,8 +845,8 @@ export const tokens = createThemeContract({
                */
               default: '',
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.positive.n1}
-               * @dark {@link tokens.kda.foundation.color.semantic.positive.n1}
+               * @light {@link tokens.kda.foundation.color.semantic.positive.n20@alpha20}
+               * @dark {@link tokens.kda.foundation.color.semantic.positive.n20@alpha20}
                */
               subtle: '',
               /**
@@ -876,8 +876,8 @@ export const tokens = createThemeContract({
                  */
                 default: '',
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.positive.n99}
-                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n99}
+                 * @light {@link tokens.kda.foundation.color.semantic.positive.n80@alpha20}
+                 * @dark {@link tokens.kda.foundation.color.semantic.positive.n80@alpha20}
                  */
                 subtle: '',
                 /**
@@ -909,8 +909,8 @@ export const tokens = createThemeContract({
                */
               default: '',
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.negative.n1}
-               * @dark {@link tokens.kda.foundation.color.semantic.negative.n1}
+               * @light {@link tokens.kda.foundation.color.semantic.negative.n20@alpha20}
+               * @dark {@link tokens.kda.foundation.color.semantic.negative.n20@alpha20}
                */
               subtle: '',
               /**
@@ -940,8 +940,8 @@ export const tokens = createThemeContract({
                  */
                 default: '',
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.negative.n99}
-                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n99}
+                 * @light {@link tokens.kda.foundation.color.semantic.negative.n80@alpha20}
+                 * @dark {@link tokens.kda.foundation.color.semantic.negative.n80@alpha20}
                  */
                 subtle: '',
                 /**
@@ -973,8 +973,8 @@ export const tokens = createThemeContract({
                */
               default: '',
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.warning.n1}
-               * @dark {@link tokens.kda.foundation.color.semantic.warning.n1}
+               * @light {@link tokens.kda.foundation.color.semantic.warning.n20@alpha20}
+               * @dark {@link tokens.kda.foundation.color.semantic.warning.n20@alpha20}
                */
               subtle: '',
               /**
@@ -1004,8 +1004,8 @@ export const tokens = createThemeContract({
                  */
                 default: '',
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.warning.n99}
-                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n99}
+                 * @light {@link tokens.kda.foundation.color.semantic.warning.n80@alpha20}
+                 * @dark {@link tokens.kda.foundation.color.semantic.warning.n80@alpha20}
                  */
                 subtle: '',
                 /**
@@ -1037,8 +1037,8 @@ export const tokens = createThemeContract({
                */
               default: '',
               /**
-               * @light {@link tokens.kda.foundation.color.semantic.info.n1}
-               * @dark {@link tokens.kda.foundation.color.semantic.info.n1}
+               * @light {@link tokens.kda.foundation.color.semantic.info.n20@alpha20}
+               * @dark {@link tokens.kda.foundation.color.semantic.info.n20@alpha20}
                */
               subtle: '',
               /**
@@ -1068,8 +1068,8 @@ export const tokens = createThemeContract({
                  */
                 default: '',
                 /**
-                 * @light {@link tokens.kda.foundation.color.semantic.info.n99}
-                 * @dark {@link tokens.kda.foundation.color.semantic.info.n99}
+                 * @light {@link tokens.kda.foundation.color.semantic.info.n80@alpha20}
+                 * @dark {@link tokens.kda.foundation.color.semantic.info.n80@alpha20}
                  */
                 subtle: '',
                 /**
@@ -1097,24 +1097,64 @@ export const tokens = createThemeContract({
           },
           input: {
             /**
-             * @light {@link tokens.kda.foundation.color.neutral.n5@alpha80}
-             * @dark {@link tokens.kda.foundation.color.neutral.n20@alpha80}
+             * @light {@link tokens.kda.foundation.color.neutral.n1@alpha80}
+             * @dark {@link tokens.kda.foundation.color.neutral.n5@alpha80}
              */
             default: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.neutral.n10}
+             * @dark {@link tokens.kda.foundation.color.neutral.n20@alpha80}
+             */
+            '@hover': '',
+            /**
+             * @light {@link tokens.kda.foundation.color.neutral.n5@alpha80}
+             * @dark {@link tokens.kda.foundation.color.neutral.n5@alpha80}
+             */
+            '@focus': '',
+            /**
+             * @light {@link tokens.kda.foundation.color.neutral.n5}
+             * @dark {@link tokens.kda.foundation.color.neutral.n5}
+             */
+            '@active': '',
+            /**
+             * @light {@link tokens.kda.foundation.color.neutral.n100@alpha10}
+             * @dark {@link tokens.kda.foundation.color.neutral.n100@alpha10}
+             */
+            '@disabled': '',
             inverse: {
               /**
                * @light {@link tokens.kda.foundation.color.neutral.n80@alpha80}
                * @dark {@link tokens.kda.foundation.color.neutral.n80@alpha80}
                */
               default: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n90}
+               * @dark {@link tokens.kda.foundation.color.neutral.n90}
+               */
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n95@alpha80}
+               * @dark {@link tokens.kda.foundation.color.neutral.n95@alpha80}
+               */
+              '@focus': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n95}
+               * @dark {@link tokens.kda.foundation.color.neutral.n95}
+               */
+              '@active': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n0@alpha10}
+               * @dark {@link tokens.kda.foundation.color.neutral.n0@alpha10}
+               */
+              '@disabled': '',
             },
           },
         },
         border: {
           base: {
             /**
-             * @light {@link tokens.kda.foundation.color.neutral.n100}
-             * @dark {@link tokens.kda.foundation.color.neutral.n100}
+             * @light {@link tokens.kda.foundation.color.neutral.n10@alpha80}
+             * @dark {@link tokens.kda.foundation.color.neutral.n99@alpha10}
              */
             subtle: '',
             /**
@@ -1123,13 +1163,13 @@ export const tokens = createThemeContract({
              */
             default: '',
             /**
-             * @light {@link tokens.kda.foundation.color.neutral.n100}
-             * @dark {@link tokens.kda.foundation.color.neutral.n100}
+             * @light {@link tokens.kda.foundation.color.neutral.n99@alpha50}
+             * @dark {@link tokens.kda.foundation.color.neutral.n99@alpha50}
              */
             bold: '',
             /**
-             * @light {@link tokens.kda.foundation.color.neutral.n100}
-             * @dark {@link tokens.kda.foundation.color.neutral.n100}
+             * @light {@link tokens.kda.foundation.color.neutral.n100@alpha70}
+             * @dark {@link tokens.kda.foundation.color.neutral.n100@alpha70}
              */
             boldest: '',
             /**
@@ -1159,23 +1199,48 @@ export const tokens = createThemeContract({
             '@active': '',
             inverse: {
               /**
-               * @light {@link tokens.kda.foundation.color.neutral.n100}
-               * @dark {@link tokens.kda.foundation.color.neutral.n100}
+               * @light {@link tokens.kda.foundation.color.neutral.n1@alpha10}
+               * @dark {@link tokens.kda.foundation.color.neutral.n1@alpha10}
+               */
+              subtle: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n1@alpha20}
+               * @dark {@link tokens.kda.foundation.color.neutral.n1@alpha20}
                */
               default: '',
               /**
-               * @light {@link tokens.kda.foundation.color.neutral.n95}
-               * @dark {@link tokens.kda.foundation.color.neutral.n95}
+               * @light {@link tokens.kda.foundation.color.neutral.n0@alpha40}
+               * @dark {@link tokens.kda.foundation.color.neutral.n0@alpha40}
                */
-              '@hover': '',
+              bold: '',
               /**
-               * @light {@link tokens.kda.foundation.color.neutral.n90}
-               * @dark {@link tokens.kda.foundation.color.neutral.n90}
+               * @light {@link tokens.kda.foundation.color.neutral.n1@alpha50}
+               * @dark {@link tokens.kda.foundation.color.neutral.n1@alpha50}
                */
-              '@focus': '',
+              boldest: '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n0}
+               * @dark {@link tokens.kda.foundation.color.neutral.n0}
+               */
+              'high-contrast': '',
               /**
                * @light {@link tokens.kda.foundation.color.neutral.n20}
                * @dark {@link tokens.kda.foundation.color.neutral.n20}
+               */
+              '@disabled': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n20}
+               * @dark {@link tokens.kda.foundation.color.neutral.n20}
+               */
+              '@hover': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n60}
+               * @dark {@link tokens.kda.foundation.color.neutral.n60}
+               */
+              '@focus': '',
+              /**
+               * @light {@link tokens.kda.foundation.color.neutral.n80}
+               * @dark {@link tokens.kda.foundation.color.neutral.n80}
                */
               '@active': '',
             },
@@ -2329,6 +2394,7 @@ export const tokens = createThemeContract({
            */
           n5: '',
           /**
+           * [generated]
            * @light  `"#d2d4d6"`
            * @dark  `"#252f3a"`
            */
@@ -2514,6 +2580,12 @@ export const tokens = createThemeContract({
           'n5@alpha80': '',
           /**
            * [generated]
+           * @light  `"#d2d4d6cc"`
+           * @dark  `"#252f3acc"`
+           */
+          'n10@alpha80': '',
+          /**
+           * [generated]
            * @light  `"#b0b3b7cc"`
            * @dark  `"#475059cc"`
            */
@@ -2524,6 +2596,12 @@ export const tokens = createThemeContract({
            * @dark  `"#b0b3b7cc"`
            */
           'n80@alpha80': '',
+          /**
+           * [generated]
+           * @light  `"#252f3a33"`
+           * @dark  `"#d2d4d633"`
+           */
+          'n90@alpha20': '',
           /**
            * [generated]
            * @light  `"#252f3a40"`
@@ -3915,6 +3993,11 @@ export const tokens = createThemeContract({
              */
             n20: '',
             /**
+             * @light {@link tokens.kda.foundation.color.palette.blue.n20@alpha20}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n20@alpha20}
+             */
+            'n20@alpha20': '',
+            /**
              * @light {@link tokens.kda.foundation.color.palette.blue.n20@alpha80}
              * @dark {@link tokens.kda.foundation.color.palette.blue.n20@alpha80}
              */
@@ -3949,6 +4032,11 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.palette.blue.n80}
              */
             n80: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.palette.blue.n80@alpha20}
+             * @dark {@link tokens.kda.foundation.color.palette.blue.n80@alpha20}
+             */
+            'n80@alpha20': '',
             /**
              * @light {@link tokens.kda.foundation.color.palette.blue.n80@alpha80}
              * @dark {@link tokens.kda.foundation.color.palette.blue.n80@alpha80}
@@ -4002,6 +4090,11 @@ export const tokens = createThemeContract({
              */
             n20: '',
             /**
+             * @light {@link tokens.kda.foundation.color.palette.red.n20@alpha20}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n20@alpha20}
+             */
+            'n20@alpha20': '',
+            /**
              * @light {@link tokens.kda.foundation.color.palette.red.n20@alpha80}
              * @dark {@link tokens.kda.foundation.color.palette.red.n20@alpha80}
              */
@@ -4036,6 +4129,11 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.palette.red.n80}
              */
             n80: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.palette.red.n80@alpha20}
+             * @dark {@link tokens.kda.foundation.color.palette.red.n80@alpha20}
+             */
+            'n80@alpha20': '',
             /**
              * @light {@link tokens.kda.foundation.color.palette.red.n80@alpha80}
              * @dark {@link tokens.kda.foundation.color.palette.red.n80@alpha80}
@@ -4089,6 +4187,11 @@ export const tokens = createThemeContract({
              */
             n20: '',
             /**
+             * @light {@link tokens.kda.foundation.color.palette.celery.n20@alpha20}
+             * @dark {@link tokens.kda.foundation.color.palette.celery.n20@alpha20}
+             */
+            'n20@alpha20': '',
+            /**
              * @light {@link tokens.kda.foundation.color.palette.celery.n20@alpha80}
              * @dark {@link tokens.kda.foundation.color.palette.celery.n20@alpha80}
              */
@@ -4123,6 +4226,11 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.palette.celery.n80}
              */
             n80: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.palette.celery.n80@alpha20}
+             * @dark {@link tokens.kda.foundation.color.palette.celery.n80@alpha20}
+             */
+            'n80@alpha20': '',
             /**
              * @light {@link tokens.kda.foundation.color.palette.celery.n80@alpha80}
              * @dark {@link tokens.kda.foundation.color.palette.celery.n80@alpha80}
@@ -4176,6 +4284,11 @@ export const tokens = createThemeContract({
              */
             n20: '',
             /**
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n20@alpha20}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n20@alpha20}
+             */
+            'n20@alpha20': '',
+            /**
              * @light {@link tokens.kda.foundation.color.palette.yellow.n20@alpha80}
              * @dark {@link tokens.kda.foundation.color.palette.yellow.n20@alpha80}
              */
@@ -4210,6 +4323,11 @@ export const tokens = createThemeContract({
              * @dark {@link tokens.kda.foundation.color.palette.yellow.n80}
              */
             n80: '',
+            /**
+             * @light {@link tokens.kda.foundation.color.palette.yellow.n80@alpha20}
+             * @dark {@link tokens.kda.foundation.color.palette.yellow.n80@alpha20}
+             */
+            'n80@alpha20': '',
             /**
              * @light {@link tokens.kda.foundation.color.palette.yellow.n80@alpha80}
              * @dark {@link tokens.kda.foundation.color.palette.yellow.n80@alpha80}
